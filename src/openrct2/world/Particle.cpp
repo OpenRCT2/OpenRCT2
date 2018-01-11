@@ -18,7 +18,7 @@
 #include "../core/Util.hpp"
 #include "../scenario/Scenario.h"
 #include "../paint/sprite/Sprite.h"
-#include "sprite.h"
+#include "Sprite.h"
 
 /**
  *

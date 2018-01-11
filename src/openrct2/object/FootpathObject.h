@@ -20,7 +20,7 @@
 
 #include "Object.h"
 
-#include "../world/footpath.h"
+#include "../world/Footpath.h"
 
 class FootpathObject final : public Object
 {

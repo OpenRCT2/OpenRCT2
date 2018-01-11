@@ -24,7 +24,7 @@
 #include "../Cheats.h"
 #include "../world/Entrance.h"
 #include "../world/Park.h"
-#include "../world/footpath.h"
+#include "../world/Footpath.h"
 
 struct PlaceParkEntranceAction : public GameActionBase<GAME_COMMAND_PLACE_PARK_ENTRANCE, GameActionResult>
 {

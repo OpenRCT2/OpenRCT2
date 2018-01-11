@@ -19,7 +19,7 @@
 #include "../audio/audio.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
-#include "sprite.h"
+#include "Sprite.h"
 
 bool rct_sprite::IsBalloon()
 {

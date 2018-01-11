@@ -25,11 +25,11 @@
 #include "ride/Station.h"
 #include "util/Util.h"
 #include "world/Climate.h"
-#include "world/footpath.h"
+#include "world/Footpath.h"
 #include "world/Map.h"
 #include "world/Park.h"
-#include "world/scenery.h"
-#include "world/sprite.h"
+#include "world/Scenery.h"
+#include "world/Sprite.h"
 
 bool gCheatsSandboxMode = false;
 bool gCheatsDisableClearanceChecks = false;

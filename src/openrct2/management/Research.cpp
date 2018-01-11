@@ -30,7 +30,7 @@
 #include "../ride/RideData.h"
 #include "../ride/RideGroupManager.h"
 #include "../ride/TrackData.h"
-#include "../world/scenery.h"
+#include "../world/Scenery.h"
 #include "NewsItem.h"
 #include "Finance.h"
 #include "Research.h"

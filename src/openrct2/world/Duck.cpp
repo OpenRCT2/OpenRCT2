@@ -22,7 +22,7 @@
 #include "../Game.h"
 #include "../localisation/Date.h"
 #include "../scenario/Scenario.h"
-#include "sprite.h"
+#include "Sprite.h"
 
 enum DUCK_STATE
 {

@@ -24,7 +24,7 @@
 #include "../paint/tile_element/TileElement.h"
 #include "../sprites.h"
 #include "../world/Map.h"
-#include "../world/sprite.h"
+#include "../world/Sprite.h"
 #include "TrackData.h"
 #include "RideData.h"
 #include "TrackPaint.h"

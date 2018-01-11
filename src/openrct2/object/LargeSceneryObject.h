@@ -20,7 +20,7 @@
 
 #include "SceneryObject.h"
 
-#include "../world/scenery.h"
+#include "../world/Scenery.h"
 
 class LargeSceneryObject final : public SceneryObject
 {

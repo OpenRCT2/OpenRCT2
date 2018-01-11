@@ -26,7 +26,7 @@
 #include "LargeScenery.h"
 #include "Map.h"
 #include "Park.h"
-#include "scenery.h"
+#include "Scenery.h"
 #include "SmallScenery.h"
 #include "Wall.h"
 

@@ -38,7 +38,7 @@
 #include "Entrance.h"
 #include "Map.h"
 #include "Park.h"
-#include "sprite.h"
+#include "Sprite.h"
 
 
 rct_string_id gParkName;

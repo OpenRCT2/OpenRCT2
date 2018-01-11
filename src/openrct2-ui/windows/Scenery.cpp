@@ -27,7 +27,7 @@
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/sprites.h>
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2/world/scenery.h>
+#include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
 
 #define WINDOW_SCENERY_WIDTH    634

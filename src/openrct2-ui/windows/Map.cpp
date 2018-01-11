@@ -28,8 +28,8 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/world/Entrance.h>
-#include <openrct2/world/footpath.h>
-#include <openrct2/world/scenery.h>
+#include <openrct2/world/Footpath.h>
+#include <openrct2/world/Scenery.h>
 
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/windows/Window.h>

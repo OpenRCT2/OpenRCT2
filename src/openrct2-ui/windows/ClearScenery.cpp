@@ -20,7 +20,7 @@
 
 #include <openrct2/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/world/scenery.h>
+#include <openrct2/world/Scenery.h>
 #include <openrct2-ui/interface/LandTool.h>
 
 enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {

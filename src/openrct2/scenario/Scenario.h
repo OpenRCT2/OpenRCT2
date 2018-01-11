@@ -27,8 +27,8 @@
 #include "../ride/ride_ratings.h"
 #include "../world/Banner.h"
 #include "../world/Map.h"
-#include "../world/map_animation.h"
-#include "../world/sprite.h"
+#include "../world/MapAnimation.h"
+#include "../world/Sprite.h"
 
 typedef struct ParkLoadResult ParkLoadResult;
 

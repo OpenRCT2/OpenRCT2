@@ -18,7 +18,7 @@
 #include "../OpenRCT2.h"
 
 #include "Entrance.h"
-#include "footpath.h"
+#include "Footpath.h"
 #include "Map.h"
 #include "Park.h"
 #include "../Cheats.h"

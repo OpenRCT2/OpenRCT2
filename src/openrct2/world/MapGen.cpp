@@ -30,9 +30,9 @@
 #include "../platform/platform.h"
 #include "../util/Util.h"
 #include "Map.h"
-#include "map_helpers.h"
+#include "MapHelpers.h"
 #include "MapGen.h"
-#include "scenery.h"
+#include "Scenery.h"
 #include "SmallScenery.h"
 
 #pragma region Height map struct

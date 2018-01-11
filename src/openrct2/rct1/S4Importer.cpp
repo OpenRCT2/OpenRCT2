@@ -53,12 +53,12 @@
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
-#include "../world/footpath.h"
-#include "../world/map_animation.h"
+#include "../world/Footpath.h"
+#include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Entrance.h"
 #include "../world/LargeScenery.h"
-#include "../world/scenery.h"
+#include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 
 class EntryList

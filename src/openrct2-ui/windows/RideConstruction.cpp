@@ -37,7 +37,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Entrance.h>
-#include <openrct2/world/footpath.h>
+#include <openrct2/world/Footpath.h>
 
 #pragma region Widgets
 

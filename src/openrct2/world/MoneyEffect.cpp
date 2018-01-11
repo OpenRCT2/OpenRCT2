@@ -18,7 +18,7 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../OpenRCT2.h"
-#include "sprite.h"
+#include "Sprite.h"
 
 static const LocationXY16 _moneyEffectMoveOffset[] = {
     {1,  -1},

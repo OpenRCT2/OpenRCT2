@@ -20,7 +20,7 @@
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Widget.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/world/footpath.h>
+#include <openrct2/world/Footpath.h>
 
 static rct_widget window_main_widgets[] = {
     { WWT_VIEWPORT, 0, 0x0000, -1, 0x0000, -1, STR_VIEWPORT, 0xFFFF },

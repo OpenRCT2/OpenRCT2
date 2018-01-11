@@ -30,9 +30,9 @@
 #include <openrct2/sprites.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/windows/tile_inspector.h>
-#include <openrct2/world/footpath.h>
+#include <openrct2/world/Footpath.h>
 #include <openrct2/world/LargeScenery.h>
-#include <openrct2/world/scenery.h>
+#include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
 #include <openrct2/world/TileInspector.h>
 

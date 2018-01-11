@@ -22,7 +22,7 @@
 #include "../../util/Util.h"
 #include "../../world/Map.h"
 #include "../../world/LargeScenery.h"
-#include "../../world/scenery.h"
+#include "../../world/Scenery.h"
 #include "../Paint.h"
 #include "../Supports.h"
 #include "TileElement.h"

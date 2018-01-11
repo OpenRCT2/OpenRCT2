@@ -23,7 +23,7 @@
 #include "../ride/Ride.h"
 #include "../util/Util.h"
 #include "../world/Park.h"
-#include "../world/sprite.h"
+#include "../world/Sprite.h"
 #include "Finance.h"
 
 /**

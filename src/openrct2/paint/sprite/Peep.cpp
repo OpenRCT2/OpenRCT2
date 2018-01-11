@@ -19,7 +19,7 @@
 #include "../../interface/Viewport.h"
 #include "Sprite.h"
 #include "../../peep/Peep.h"
-#include "../../world/sprite.h"
+#include "../../world/Sprite.h"
 #include "../Paint.h"
 
 /**

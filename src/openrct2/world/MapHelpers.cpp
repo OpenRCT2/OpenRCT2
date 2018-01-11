@@ -14,15 +14,18 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
+#include "../core/Math.hpp"
 #include "Map.h"
-#include "map_helpers.h"
+#include "MapHelpers.h"
 
 /**
  * Not perfect, this still leaves some particular tiles unsmoothed.
  */
 sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
 {
-    sint32 i, x, y, highest, count, cornerHeights[4], doubleCorner, raisedLand = 0;
+    sint32 i, x, y, count, doubleCorner, raisedLand = 0;
+    uint8 highest, cornerHeights[4];
     rct_tile_element *tileElement, *tileElement2;
     for (y = t; y < b; y++) {
         for (x = l; x < r; x++) {
@@ -31,10 +34,10 @@ sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
 
             // Raise to edge height - 2
             highest = tileElement->base_height;
-            highest = max(highest, map_get_surface_element_at(x - 1, y + 0)->base_height);
-            highest = max(highest, map_get_surface_element_at(x + 1, y + 0)->base_height);
-            highest = max(highest, map_get_surface_element_at(x + 0, y - 1)->base_height);
-            highest = max(highest, map_get_surface_element_at(x + 0, y + 1)->base_height);
+            highest = std::max(highest, map_get_surface_element_at(x - 1, y + 0)->base_height);
+            highest = std::max(highest, map_get_surface_element_at(x + 1, y + 0)->base_height);
+            highest = std::max(highest, map_get_surface_element_at(x + 0, y - 1)->base_height);
+            highest = std::max(highest, map_get_surface_element_at(x + 0, y + 1)->base_height);
             if (tileElement->base_height < highest - 2) {
                 raisedLand = 1;
                 tileElement->base_height = tileElement->clearance_height = highest - 2;
@@ -48,7 +51,7 @@ sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
             cornerHeights[3] = map_get_surface_element_at(x - 1, y + 1)->base_height;
             highest = tileElement->base_height;
             for (i = 0; i < 4; i++)
-                highest = max(highest, cornerHeights[i]);
+                highest = std::max(highest, cornerHeights[i]);
 
             if (highest >= tileElement->base_height + 4) {
                 count = 0;
@@ -64,22 +67,22 @@ sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
                         switch (i){
                         default:
                         case 0:
-                            highestOnLowestSide = max(
+                            highestOnLowestSide = std::max(
                                 map_get_surface_element_at(x + 1, y)->base_height,
                                 map_get_surface_element_at(x, y + 1)->base_height);
                             break;
                         case 1:
-                            highestOnLowestSide = max(
+                            highestOnLowestSide = std::max(
                                 map_get_surface_element_at(x - 1, y)->base_height,
                                 map_get_surface_element_at(x, y + 1)->base_height);
                             break;
                         case 2:
-                            highestOnLowestSide = max(
+                            highestOnLowestSide = std::max(
                                 map_get_surface_element_at(x - 1, y)->base_height,
                                 map_get_surface_element_at(x, y - 1)->base_height);
                             break;
                         case 3:
-                            highestOnLowestSide = max(
+                            highestOnLowestSide = std::max(
                                 map_get_surface_element_at(x + 1, y)->base_height,
                                 map_get_surface_element_at(x, y - 1)->base_height);
                             break;
@@ -209,7 +212,8 @@ static sint32 map_get_corner_height(sint32 x, sint32 y, sint32 corner)
  */
 static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
 {
-    sint32 i, x, y, highest, count, cornerHeights[4], doubleCorner, raisedLand = 0;
+    sint32 i, x, y, count, doubleCorner, raisedLand = 0;
+    uint8 highest, cornerHeights[4];
     rct_tile_element *tileElement;
     for (y = t; y < b; y++)
     {
@@ -220,10 +224,10 @@ static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
 
             // Raise to edge height - 2
             highest = tileElement->base_height;
-            highest = max(highest, map_get_surface_element_at(x - 1, y + 0)->base_height);
-            highest = max(highest, map_get_surface_element_at(x + 1, y + 0)->base_height);
-            highest = max(highest, map_get_surface_element_at(x + 0, y - 1)->base_height);
-            highest = max(highest, map_get_surface_element_at(x + 0, y + 1)->base_height);
+            highest = std::max(highest, map_get_surface_element_at(x - 1, y + 0)->base_height);
+            highest = std::max(highest, map_get_surface_element_at(x + 1, y + 0)->base_height);
+            highest = std::max(highest, map_get_surface_element_at(x + 0, y - 1)->base_height);
+            highest = std::max(highest, map_get_surface_element_at(x + 0, y + 1)->base_height);
             if (tileElement->base_height < highest - 2) {
                 raisedLand = 1;
                 tileElement->base_height = tileElement->clearance_height = highest - 2;
@@ -231,13 +235,13 @@ static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
 
             // Check corners
             doubleCorner = -1;
-            cornerHeights[0] = max(map_get_corner_height(x - 1, y - 1, 0), max(map_get_corner_height(x + 1, y + 0, 1), map_get_corner_height(x + 0, y + 1, 2)));
-            cornerHeights[1] = max(map_get_corner_height(x + 1, y - 1, 1), max(map_get_corner_height(x - 1, y + 0, 0), map_get_corner_height(x + 0, y + 1, 3)));
-            cornerHeights[2] = max(map_get_corner_height(x + 1, y + 1, 3), max(map_get_corner_height(x + 1, y + 0, 3), map_get_corner_height(x + 0, y - 1, 0)));
-            cornerHeights[3] = max(map_get_corner_height(x - 1, y + 1, 2), max(map_get_corner_height(x - 1, y + 0, 2), map_get_corner_height(x + 0, y - 1, 1)));
+            cornerHeights[0] = std::max(map_get_corner_height(x - 1, y - 1, 0), std::max(map_get_corner_height(x + 1, y + 0, 1), map_get_corner_height(x + 0, y + 1, 2)));
+            cornerHeights[1] = std::max(map_get_corner_height(x + 1, y - 1, 1), std::max(map_get_corner_height(x - 1, y + 0, 0), map_get_corner_height(x + 0, y + 1, 3)));
+            cornerHeights[2] = std::max(map_get_corner_height(x + 1, y + 1, 3), std::max(map_get_corner_height(x + 1, y + 0, 3), map_get_corner_height(x + 0, y - 1, 0)));
+            cornerHeights[3] = std::max(map_get_corner_height(x - 1, y + 1, 2), std::max(map_get_corner_height(x - 1, y + 0, 2), map_get_corner_height(x + 0, y - 1, 1)));
             highest = tileElement->base_height;
             for (i = 0; i < 4; i++)
-                highest = max(highest, cornerHeights[i]);
+                highest = std::max(highest, cornerHeights[i]);
 
             if (highest >= tileElement->base_height + 4) {
                 count = 0;
@@ -381,10 +385,10 @@ sint32 tile_smooth(sint32 x, sint32 y)
     }
 
     // Count number from the three tiles that is currently higher
-    sint8 thresholdW = clamp(neighbourHeightOffset.SW, 0, 1) + clamp(neighbourHeightOffset.W, 0, 1) + clamp(neighbourHeightOffset.NW, 0, 1);
-    sint8 thresholdN = clamp(neighbourHeightOffset.NW, 0, 1) + clamp(neighbourHeightOffset.N, 0, 1) + clamp(neighbourHeightOffset.NE, 0, 1);
-    sint8 thresholdE = clamp(neighbourHeightOffset.NE, 0, 1) + clamp(neighbourHeightOffset.E, 0, 1) + clamp(neighbourHeightOffset.SE, 0, 1);
-    sint8 thresholdS = clamp(neighbourHeightOffset.SE, 0, 1) + clamp(neighbourHeightOffset.S, 0, 1) + clamp(neighbourHeightOffset.SW, 0, 1);
+    sint8 thresholdW = Math::Clamp(neighbourHeightOffset.SW, 0, 1) + Math::Clamp(neighbourHeightOffset.W, 0, 1) + Math::Clamp(neighbourHeightOffset.NW, 0, 1);
+    sint8 thresholdN = Math::Clamp(neighbourHeightOffset.NW, 0, 1) + Math::Clamp(neighbourHeightOffset.N, 0, 1) + Math::Clamp(neighbourHeightOffset.NE, 0, 1);
+    sint8 thresholdE = Math::Clamp(neighbourHeightOffset.NE, 0, 1) + Math::Clamp(neighbourHeightOffset.E, 0, 1) + Math::Clamp(neighbourHeightOffset.SE, 0, 1);
+    sint8 thresholdS = Math::Clamp(neighbourHeightOffset.SE, 0, 1) + Math::Clamp(neighbourHeightOffset.S, 0, 1) + Math::Clamp(neighbourHeightOffset.SW, 0, 1);
 
     uint8 slope = TILE_ELEMENT_SLOPE_FLAT;
     slope |= (thresholdW >= 1) ? SLOPE_W_THRESHOLD_FLAGS : 0;

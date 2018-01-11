@@ -27,7 +27,7 @@
 #include "../ride/TrackData.h"
 #include "../Cheats.h"
 #include "../network/network.h"
-#include "../world/scenery.h"
+#include "../world/Scenery.h"
 
 #pragma warning(disable : 4295) // 'identifier': array is too small to include a terminating null character
 

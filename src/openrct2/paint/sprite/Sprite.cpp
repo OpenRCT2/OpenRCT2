@@ -17,7 +17,7 @@
 #include "Sprite.h"
 #include "../Paint.h"
 #include "../../drawing/Drawing.h"
-#include "../../world/sprite.h"
+#include "../../world/Sprite.h"
 #include "../../ride/RideData.h"
 #include "../../interface/Viewport.h"
 #include "../../ride/VehiclePaint.h"

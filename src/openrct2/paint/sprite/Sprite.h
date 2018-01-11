@@ -18,7 +18,7 @@
 #define _PAINT_SPRITE_H
 
 #include "../../common.h"
-#include "../../world/sprite.h"
+#include "../../world/Sprite.h"
 
 #ifdef __cplusplus
 extern "C" {

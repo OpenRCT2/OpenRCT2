@@ -32,7 +32,7 @@
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "../world/Map.h"
-#include "../world/sprite.h"
+#include "../world/Sprite.h"
 #include "Viewport.h"
 #include "Widget.h"
 #include "Window.h"

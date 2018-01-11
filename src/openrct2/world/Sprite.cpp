@@ -16,6 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../Cheats.h"
+#include "../core/Math.hpp"
 #include "../Game.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
@@ -23,7 +24,7 @@
 #include "../OpenRCT2.h"
 #include "../scenario/Scenario.h"
 #include "Fountain.h"
-#include "sprite.h"
+#include "Sprite.h"
 
 uint16 gSpriteListHead[6];
 uint16 gSpriteListCount[6];
@@ -189,8 +190,8 @@ static size_t GetSpatialIndexOffset(sint32 x, sint32 y)
 {
     size_t index = SPATIAL_INDEX_LOCATION_NULL;
     if (x != LOCATION_NULL) {
-        x = clamp(0, x, 0xFFFF);
-        y = clamp(0, y, 0xFFFF);
+        x = Math::Clamp(0, x, 0xFFFF);
+        y = Math::Clamp(0, y, 0xFFFF);
 
         sint16 flooredX = floor2(x, 32);
         uint8 tileY = y >> 5;
@@ -835,7 +836,7 @@ static rct_sprite * find_sprite_list_cycle(uint16 sprite_idx)
 {
     if (sprite_idx == SPRITE_INDEX_NULL)
     {
-        return false;
+        return nullptr;
     }
     const rct_sprite * fast = get_sprite(sprite_idx);
     const rct_sprite * slow = fast;
@@ -870,7 +871,7 @@ static rct_sprite * find_sprite_quadrant_cycle(uint16 sprite_idx)
 {
     if (sprite_idx == SPRITE_INDEX_NULL)
     {
-        return false;
+        return nullptr;
     }
     const rct_sprite * fast = get_sprite(sprite_idx);
     const rct_sprite * slow = fast;
@@ -949,7 +950,7 @@ sint32 check_for_sprite_list_cycles(bool fix)
 
                 // Now re-add remainder of the cycle back to list, safely.
                 // Add each sprite to the list until we encounter one that is already part of the list.
-                while (!index_is_in_list(cycle_next, i))
+                while (!index_is_in_list(cycle_next, (SPRITE_LIST)i))
                 {
                     rct_sprite * spr = get_sprite(cycle_next);
 
@@ -1027,7 +1028,7 @@ sint32 check_for_spatial_index_cycles(bool fix)
 
                 // Now re-add remainder of the cycle back to list, safely.
                 // Add each sprite to the list until we encounter one that is already part of the list.
-                while (!index_is_in_list(cycle_next, i))
+                while (!index_is_in_list(cycle_next, (SPRITE_LIST)i))
                 {
                     rct_sprite * spr = get_sprite(cycle_next);
 

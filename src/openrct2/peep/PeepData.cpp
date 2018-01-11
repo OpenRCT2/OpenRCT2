@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../core/Util.hpp"
-#include "../world/sprite.h"
+#include "../world/Sprite.h"
 
 // clang-format off
 static const uint8 PeepSpriteImage_Normal_00_sequence[] = { 0, 1, 2, 3, 4, 5 };

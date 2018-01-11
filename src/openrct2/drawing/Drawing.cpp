@@ -23,7 +23,7 @@
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"
-#include "../world/water.h"
+#include "../world/Water.h"
 #include "Drawing.h"
 
 extern "C"
