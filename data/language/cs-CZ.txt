@@ -4508,6 +4508,9 @@ STR_6198    :{BLACK}Den:
 STR_6199    :Nastavit datum
 STR_6200    :Resetovat datum
 STR_6201    :{MONTH}
+STR_6202    :Vykreslovat virtuální mřížku
+STR_6203    :{SMALLFONT}{BLACK}Pro usnadnění vertikálního umisťování objektů můžete podržet klávesu Ctrl nebo Shift a poté bude vykreslena pomocná virtuální mřížka.
+
 
 ###############################################################################
 ## RCT2 Objects

@@ -4503,6 +4503,8 @@ STR_6198    :{BLACK}Dag:
 STR_6199    :Datum instellen
 STR_6200    :Datum resetten
 STR_6201    :{MONTH}
+STR_6202    :Hulpraster inschakelen
+STR_6203    :{SMALLFONT}{BLACK}Als dit is ingeschakeld, zal er een hulpraster worden weergegeven als je CTRL of SHIFT ingedrukt houdt, om het plaatsen van elementen gemakkelijker te maken.
 
 #############
 # Scenarios #

@@ -4480,6 +4480,18 @@ STR_6171    :Sök
 STR_6172    :{SMALLFONT}{BLACK}Sök
 STR_6173    :Vänligen skriv in ett namn att söka:
 
+STR_6191    :Mark
+STR_6192    :Vägg
+STR_6193    :{COMMA16} gäst
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} gäst
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} gäst
+STR_6196    :{BLACK}År:
+STR_6197    :{BLACK}Månad:
+STR_6198    :{BLACK}Dag:
+STR_6199    :Välj datum
+STR_6200    :Återställ datum
+STR_6201    :{MONTH}
+
 #############
 # Scenarion #
 ################
