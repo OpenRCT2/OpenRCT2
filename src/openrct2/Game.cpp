@@ -231,7 +231,7 @@ void update_palette_effects()
         uint32 shade = 0;
         if (gConfigGeneral.render_weather_gloom)
         {
-            auto paletteId = climate_get_weather_gloom_palette_id(&gClimateCurrent);
+            auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
             if (paletteId != PALETTE_NULL)
             {
                 shade = 1;

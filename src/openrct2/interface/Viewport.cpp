@@ -914,7 +914,7 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
 
 static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi)
 {
-    FILTER_PALETTE_ID paletteId = climate_get_weather_gloom_palette_id(&gClimateCurrent);
+    auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
     if (paletteId != PALETTE_NULL)
     {
         gfx_filter_rect(

@@ -208,22 +208,22 @@ extern "C"
         climate_update_rain_sound();
         climate_update_thunder_sound();
     }
-
-    FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState * state)
-    {
-        auto paletteId = PALETTE_NULL;
-        auto gloom = state->WeatherGloom;
-        if (gloom < Util::CountOf(ClimateWeatherGloomColours))
-        {
-            paletteId = ClimateWeatherGloomColours[gloom];
-        }
-        return paletteId;
-    }
 }
 
 bool climate_is_raining()
 {
     return gClimateCurrent.RainLevel != RAIN_LEVEL_NONE;
+}
+
+FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState &state)
+{
+    auto paletteId = PALETTE_NULL;
+    auto gloom = state.WeatherGloom;
+    if (gloom < Util::CountOf(ClimateWeatherGloomColours))
+    {
+        paletteId = ClimateWeatherGloomColours[gloom];
+    }
+    return paletteId;
 }
 
 uint32 climate_get_weather_sprite_id(const ClimateState &state)
