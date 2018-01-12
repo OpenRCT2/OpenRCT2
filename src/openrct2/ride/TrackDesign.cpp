@@ -481,7 +481,7 @@ static void track_design_load_scenery_objects(rct_track_td6 * td6)
 static void track_design_mirror_scenery(rct_track_td6 * td6)
 {
     rct_td6_scenery_element * scenery = td6->scenery_elements;
-    for (; scenery->scenery_object.end_flag != 0xFF; scenery++)
+    for (; scenery != nullptr && scenery->scenery_object.end_flag != 0xFF; scenery++)
     {
         uint8 entry_type, entry_index;
         if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index))
