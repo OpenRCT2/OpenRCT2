@@ -85,13 +85,11 @@ extern "C"
     void climate_update();
     void climate_update_sound();
     void climate_force_weather(uint8 weather);
-
-    FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState * state);
-
 #ifdef __cplusplus
 }
 
 bool climate_is_raining();
+FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState &state);
 uint32 climate_get_weather_sprite_id(const ClimateState &state);
 
 #endif
