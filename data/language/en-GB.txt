@@ -4521,6 +4521,9 @@ STR_6211    :Brown sandstone
 STR_6212    :Grey sandstone
 STR_6213    :Skyscraper A
 STR_6214    :Skyscraper B
+STR_6215    :Construction
+STR_6216    :Operation
+STR_6217    :Ride / track availability
 
 #############
 # Scenarios #

@@ -3870,6 +3870,10 @@ enum {
     STR_TILE_INSPECTOR_TERRAIN_EDGE_SKYSCRAPER_A = 6213,
     STR_TILE_INSPECTOR_TERRAIN_EDGE_SKYSCRAPER_B = 6214,
 
+    STR_CHEAT_GROUP_CONSTRUCTION = 6215,
+    STR_CHEAT_GROUP_OPERATION = 6216,
+    STR_CHEAT_GROUP_AVAILABILITY = 6217,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
