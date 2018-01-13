@@ -588,6 +588,42 @@ sint32 tile_inspector_path_toggle_edge(sint32 x, sint32 y, sint32 elementIndex, 
     return 0;
 }
 
+sint32 tile_inspector_entrance_make_usable(sint32 x, sint32 y, sint32 elementIndex, sint32 flags)
+{
+    rct_tile_element * const entranceElement = map_get_nth_element_at(x, y, elementIndex);
+
+    if (!entranceElement || tile_element_get_type(entranceElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+    {
+        return MONEY32_UNDEFINED;
+    }
+
+    if (flags & GAME_COMMAND_FLAG_APPLY)
+    {
+        Ride * ride         = get_ride(entranceElement->properties.entrance.ride_index);
+        uint8  stationIndex = entranceElement->properties.entrance.index >> 6;
+
+        switch (entranceElement->properties.entrance.type)
+        {
+        case ENTRANCE_TYPE_RIDE_ENTRANCE:
+            ride->entrances[stationIndex].x = x;
+            ride->entrances[stationIndex].y = y;
+            break;
+        case ENTRANCE_TYPE_RIDE_EXIT:
+            ride->exits[stationIndex].x = x;
+            ride->exits[stationIndex].y = y;
+            break;
+        }
+
+        rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
+        if (tileInspectorWindow != nullptr && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
+        {
+            window_invalidate(tileInspectorWindow);
+        }
+    }
+
+    return 0;
+}
+
 sint32 tile_inspector_wall_set_slope(sint32 x, sint32 y, sint32 elementIndex, sint32 slopeValue, sint32 flags)
 {
     rct_tile_element * const wallElement = map_get_nth_element_at(x, y, elementIndex);
