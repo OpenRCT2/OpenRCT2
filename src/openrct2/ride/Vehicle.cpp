@@ -6933,7 +6933,7 @@ static sint32 vehicle_get_swing_amount(rct_vehicle * vehicle)
  */
 static void vehicle_update_swinging_car(rct_vehicle * vehicle)
 {
-    sint32 dword_F64E08 = _vehicleVelocityF64E08;
+    sint32 dword_F64E08 = abs(_vehicleVelocityF64E08);
     vehicle->var_4E += (-vehicle->swinging_car_var_0) >> 6;
     sint32 swingAmount = vehicle_get_swing_amount(vehicle);
     if (swingAmount < 0)
