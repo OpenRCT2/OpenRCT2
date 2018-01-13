@@ -58,6 +58,7 @@
 - Fix: [#5741] Land rights indicators disappear when switching views.
 - Fix: [#5788] Empty scenario names cause invisible entries in scenario list.
 - Fix: [#5761] Mini coaster doesn't appear despite being selected.
+- Fix: [#5809] Support Steam RCT1 file layout when loading CSG images.
 - Fix: [#5838] Crash when saving very large track designs.
 - Fix: [#6101] Rides remain in ride list window briefly after demolition.
 - Fix: [#6114] Crash when using a non-LL CSG1.DAT.
