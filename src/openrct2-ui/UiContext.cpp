@@ -19,8 +19,8 @@
 #include <cstdlib>
 #include <cmath>
 #include <memory>
-#include <vector>
 #include <SDL2/SDL.h>
+#include <openrct2/PlatformEnvironment.h>
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
@@ -33,6 +33,7 @@
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/Version.h>
+#include <vector>
 #include "CursorRepository.h"
 #include "drawing/engines/DrawingEngineFactory.hpp"
 #include "input/KeyboardShortcuts.h"
@@ -103,6 +104,24 @@ public:
         {
             SDLException::Throw("SDL_Init(SDL_INIT_VIDEO)");
         }
+
+        if (gConfigGeneral.window_scale == -1)
+        {
+#ifndef __MINGW32__
+            float ddpi, hdpi, vdpi;
+            if (SDL_GetDisplayDPI(0, &ddpi, &hdpi, &vdpi))
+            {
+                SDLException::Throw("SDL_GetDisplayDPI(...)");
+            }
+            // divide acutal dpi by default (96.0f) dpi
+            gConfigGeneral.window_scale = ddpi / 96.0f;
+#else
+            gConfigGeneral.window_scale = 1.0f;
+#endif
+            auto configPath = env->GetFilePath(PATHID::CONFIG);
+            config_save(configPath.c_str());
+        }
+
         _cursorRepository.LoadCursors();
         _keyboardShortcuts.Reset();
         _keyboardShortcuts.Load();
