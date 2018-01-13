@@ -4526,6 +4526,8 @@ STR_6216    :Operation
 STR_6217    :Ride / track availability
 STR_6218    :OpenRCT2 Official
 STR_6219    :Highlight path issues
+STR_6220    :Make Usable
+STR_6221    :{SMALLFONT}{BLACK}This will set the ride's known entrance or exit location to the currently selected tile. Only one entrance and exit location can be made usable per stations.
 
 #############
 # Scenarios #

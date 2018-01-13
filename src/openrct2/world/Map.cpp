@@ -4444,6 +4444,12 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
         *ebx = tile_inspector_path_toggle_edge(x, y, elementIndex, edgeIndex, flags);
         break;
     }
+    case TILE_INSPECTOR_ENTRANCE_MAKE_USABLE:
+    {
+        const sint32 elementIndex = *edx;
+        *ebx = tile_inspector_entrance_make_usable(x, y, elementIndex, flags);
+        break;
+    }
     case TILE_INSPECTOR_WALL_SET_SLOPE:
     {
         const sint32 elementIndex = *edx;
