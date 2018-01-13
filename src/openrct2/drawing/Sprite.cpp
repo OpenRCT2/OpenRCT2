@@ -177,6 +177,30 @@ void mask_scalar(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, co
     }
 }
 
+static std::string gfx_get_csg_header_path()
+{
+    auto path = Path::ResolveCasing(Path::Combine(gConfigGeneral.rct1_path, "Data", "csg1i.dat"));
+    if (path.empty())
+    {
+        path = Path::ResolveCasing(Path::Combine(gConfigGeneral.rct1_path, "RCTdeluxe_install", "Data", "csg1i.dat"));
+    }
+    return path;
+}
+
+static std::string gfx_get_csg_data_path()
+{
+    // csg1.1 and csg1.dat are the same file.
+    // In the CD version, it's called csg1.1 on the CD and csg1.dat on the disk.
+    // In the GOG version, it's always called csg1.1.
+    // In the Steam version, it's called csg1.dat in the "disk" folder and csg1.1 in the "CD" folder.
+    auto path = Path::ResolveCasing(Path::Combine(gConfigGeneral.rct1_path, "Data", "csg1.1"));
+    if (path.empty())
+    {
+        path = Path::ResolveCasing(Path::Combine(gConfigGeneral.rct1_path, "Data", "csg1.dat"));
+    }
+    return path;
+}
+
 extern "C"
 {
     static void *   _g1Buffer = nullptr;
@@ -295,44 +319,6 @@ extern "C"
         return false;
     }
 
-    static utf8 * gfx_get_csg_header_path()
-    {
-        char path[MAX_PATH];
-        safe_strcpy(path, gConfigGeneral.rct1_path, sizeof(path));
-        safe_strcat_path(path, "Data", sizeof(path));
-        safe_strcat_path(path, "csg1i.dat", sizeof(path));
-
-        auto fixedPath = Path::ResolveCasing(path);
-        utf8 * fixedPathC = new utf8[fixedPath.size() + 1];
-        Memory::Copy(fixedPathC, fixedPath.data(), fixedPath.size() + 1);
-        return fixedPathC;
-    }
-
-    static utf8 * gfx_get_csg_data_path()
-    {
-        // csg1.1 and csg1.dat are the same file.
-        // In the CD version, it's called csg1.1 on the CD and csg1.dat on the disk.
-        // In the GOG version, it's always called csg1.1.
-        // In the Steam version, it's always called csg1.dat.
-        char path[MAX_PATH];
-        safe_strcpy(path, gConfigGeneral.rct1_path, sizeof(path));
-        safe_strcat_path(path, "Data", sizeof(path));
-        safe_strcat_path(path, "csg1.1", sizeof(path));
-
-        auto fixedPath = Path::ResolveCasing(path);
-        if (fixedPath.empty())
-        {
-            safe_strcpy(path, gConfigGeneral.rct1_path, sizeof(path));
-            safe_strcat_path(path, "Data", sizeof(path));
-            safe_strcat_path(path, "csg1.dat", sizeof(path));
-            fixedPath = Path::ResolveCasing(path);
-        }
-
-        utf8 * fixedPathC = new utf8[fixedPath.size() + 1];
-        Memory::Copy(fixedPathC, fixedPath.data(), fixedPath.size() + 1);
-        return fixedPathC;
-    }
-
     bool gfx_load_csg()
     {
         log_verbose("gfx_load_csg()");
@@ -343,12 +329,12 @@ extern "C"
             return false;
         }
 
-        auto pathHeaderPath = std::unique_ptr<utf8[]>(gfx_get_csg_header_path());
-        auto pathDataPath = std::unique_ptr<utf8[]>(gfx_get_csg_data_path());
+        auto pathHeaderPath = gfx_get_csg_header_path();
+        auto pathDataPath = gfx_get_csg_data_path();
         try
         {
-            auto fileHeader = FileStream(pathHeaderPath.get(), FILE_MODE_OPEN);
-            auto fileData = FileStream(pathDataPath.get(), FILE_MODE_OPEN);
+            auto fileHeader = FileStream(pathHeaderPath, FILE_MODE_OPEN);
+            auto fileData = FileStream(pathDataPath, FILE_MODE_OPEN);
             size_t fileHeaderSize = fileHeader.GetLength();
             size_t fileDataSize = fileData.GetLength();
 
