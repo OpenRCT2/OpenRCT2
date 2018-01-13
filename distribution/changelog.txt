@@ -100,7 +100,7 @@
 - Fix: [#6846] Zoom level in some ride overview windows was erroneously set too high.
 - Fix: [#6904] Manually added multiplayer servers not saved.
 - Fix: [#7003] Building sloped paths through flat paths with clearance checks off causes glitches.
-- Fix: [#7011]: Swinging and bobsleigh cars going backwards swing in the wrong direction (original bug).
+- Fix: [#7011] Swinging and bobsleigh cars going backwards swing in the wrong direction (original bug).
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
 - Fix: Clear IME buffer after committing composed text.
