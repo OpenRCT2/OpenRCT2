@@ -1598,27 +1598,29 @@ void footpath_queue_chain_push(uint8 rideIndex)
  */
 void footpath_update_queue_chains()
 {
-    for (uint8 *queueChainPtr = _footpathQueueChain; queueChainPtr < _footpathQueueChainNext; queueChainPtr++) {
-        uint8 rideIndex = *queueChainPtr;
-        Ride *ride = get_ride(rideIndex);
-        if (ride->type == RIDE_TYPE_NULL) {
+    for (uint8 * queueChainPtr = _footpathQueueChain; queueChainPtr < _footpathQueueChainNext; queueChainPtr++)
+    {
+        uint8  rideIndex = *queueChainPtr;
+        Ride * ride      = get_ride(rideIndex);
+        if (ride->type == RIDE_TYPE_NULL)
             continue;
-        }
 
-        for (sint32 i = 0; i < MAX_STATIONS; i++) {
-            if (ride->entrances[i].xy == RCT_XY8_UNDEFINED) {
+        for (sint32 i = 0; i < MAX_STATIONS; i++)
+        {
+            if (ride->entrances[i].xy == RCT_XY8_UNDEFINED)
                 continue;
-            }
 
-            uint8 x = ride->entrances[i].x;
-            uint8 y = ride->entrances[i].y;
-            uint8 z = ride->station_heights[i];
-
-            rct_tile_element *tileElement = map_get_first_element_at(x, y);
-            do {
-                if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE) continue;
-                if (tileElement->base_height != z) continue;
-                if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE) continue;
+            uint8              x           = ride->entrances[i].x;
+            uint8              y           = ride->entrances[i].y;
+            rct_tile_element * tileElement = map_get_first_element_at(x, y);
+            do
+            {
+                if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+                    continue;
+                if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
+                    continue;
+                if (tileElement->properties.entrance.ride_index != rideIndex)
+                    continue;
 
                 uint8 direction = tile_element_get_direction_with_offset(tileElement, 2);
                 footpath_chain_ride_queue(rideIndex, i, x << 5, y << 5, tileElement, direction);
