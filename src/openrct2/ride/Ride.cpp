@@ -4516,7 +4516,7 @@ static rct_vehicle *vehicle_create_car(
     vehicle->sound2_id = RCT12_SOUND_ID_NULL;
     vehicle->next_vehicle_on_train = SPRITE_INDEX_NULL;
     vehicle->var_C4 = 0;
-    vehicle->var_C5 = 0;
+    vehicle->animation_frame = 0;
     vehicle->var_C8 = 0;
     vehicle->scream_sound_id = 255;
     vehicle->vehicle_sprite_type = 0;

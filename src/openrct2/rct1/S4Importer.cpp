@@ -1166,7 +1166,7 @@ private:
         dst->sound2_id = RCT12_SOUND_ID_NULL;
         dst->var_C0 = src->var_C0;
         dst->var_C4 = src->var_C4;
-        dst->var_C5 = src->var_C5;
+        dst->animation_frame = src->animation_frame;
         dst->var_C8 = src->var_C8;
         dst->var_CA = src->var_CA;
         dst->var_CE = src->var_CE;

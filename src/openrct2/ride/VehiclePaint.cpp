@@ -910,7 +910,7 @@ static void vehicle_sprite_paint(paint_session * session, rct_vehicle * vehicle,
     }
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23)
     {
-        baseImage_id += vehicle->var_C5;
+        baseImage_id += vehicle->animation_frame;
     }
     uint32 rotation = get_current_rotation();
     sint32 image_id =
@@ -933,7 +933,7 @@ static void vehicle_sprite_paint(paint_session * session, rct_vehicle * vehicle,
                                                                      vehicle->peep_tshirt_colours[(i * 2) + 1]);
                 if (i == 0 && vehicleEntry->flags & VEHICLE_ENTRY_FLAG_24)
                 {
-                    image_id += (vehicleEntry->no_vehicle_images * vehicle->var_C5);
+                    image_id += (vehicleEntry->no_vehicle_images * vehicle->animation_frame);
                 }
                 sub_98199C(session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y,
                            bb.offset_z + z, rotation);
@@ -3036,7 +3036,7 @@ void vehicle_paint(paint_session * session, rct_vehicle * vehicle, sint32 imageD
 
     if (vehicle->flags & SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE)
     {
-        uint32 ebx = 22965 + vehicle->var_C5;
+        uint32 ebx = 22965 + vehicle->animation_frame;
         sub_98197C(session, ebx, 0, 0, 1, 1, 0, z, 0, 0, z + 2, get_current_rotation());
         return;
     }

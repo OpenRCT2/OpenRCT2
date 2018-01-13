@@ -340,7 +340,7 @@ typedef struct rct1_vehicle {
     uint8 speed;                    // 0xC2
     uint8 powered_acceleration;     // 0xC3
     uint8 var_C4;
-    uint8 var_C5;
+    uint8 animation_frame;
     uint8 pad_C6[0x2];
     uint16 var_C8;
     uint16 var_CA;

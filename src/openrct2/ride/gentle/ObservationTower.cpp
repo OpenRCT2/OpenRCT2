@@ -57,7 +57,7 @@ void vehicle_visual_observation_tower(paint_session * session, sint32 x, sint32 
     }
     else
     {
-        baseImage_id = (vehicle->var_C5 * 2) + vehicleEntry->base_image_id + 8;
+        baseImage_id = (vehicle->animation_frame * 2) + vehicleEntry->base_image_id + 8;
     }
 
     image_id =

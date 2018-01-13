@@ -40,7 +40,7 @@ void vehicle_visual_roto_drop(paint_session * session, sint32 x, sint32 imageDir
                               rct_vehicle * vehicle, const rct_ride_entry_vehicle * vehicleEntry)
 {
     sint32 image_id;
-    sint32 baseImage_id = (vehicleEntry->base_image_id + 4) + ((vehicle->var_C5 / 4) & 0x3);
+    sint32 baseImage_id = (vehicleEntry->base_image_id + 4) + ((vehicle->animation_frame / 4) & 0x3);
     if (vehicle->restraints_position >= 64)
     {
         baseImage_id += 7;
@@ -62,7 +62,7 @@ void vehicle_visual_roto_drop(paint_session * session, sint32 x, sint32 imageDir
     {
         uint8 cl = (i & 3) * 16;
         cl += (i & 0xFC);
-        cl += vehicle->var_C5 / 4;
+        cl += vehicle->animation_frame / 4;
         cl += (imageDirection / 8) * 16;
         cl &= 0x3F;
         riding_peep_sprites[cl] = vehicle->peep_tshirt_colours[i];
