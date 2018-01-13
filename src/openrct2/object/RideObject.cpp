@@ -390,7 +390,7 @@ void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * strea
     vehicle->sprite_width = stream->ReadValue<uint8>();
     vehicle->sprite_height_negative = stream->ReadValue<uint8>();
     vehicle->sprite_height_positive = stream->ReadValue<uint8>();
-    vehicle->var_11 = stream->ReadValue<uint8>();
+    vehicle->additional_animation = stream->ReadValue<uint8>();
     vehicle->flags = stream->ReadValue<uint32>();
     vehicle->base_num_frames = stream->ReadValue<uint16>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
@@ -484,9 +484,9 @@ uint8 RideObject::CalculateNumVerticalFrames(const rct_ride_entry_vehicle * vehi
     {
         if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES))
         {
-            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23 && vehicleEntry->var_11 != 6)
+            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23 && vehicleEntry->additional_animation != VEHICLE_ENTRY_ADDITIONAL_ANIMATION_6)
             {
-                if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_7))
+                if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS))
                 {
                     numVerticalFrames = 4;
                 }
