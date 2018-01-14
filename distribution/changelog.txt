@@ -33,6 +33,7 @@
 - Feature: [#6731] Object indexing progress is now reported via command line output.
 - Feature: [#6779] On-ride photo segment for Splash Boats.
 - Feature: [#6838] Ability to auto-pause server when no clients are connected.
+- Feature: [#7031] Better support for displaced ride entrances and exits.
 - Feature: Add search box to track design window.
 - Feature: Allow using object files from RCT Classic.
 - Feature: Title sequences now testable in-game.
