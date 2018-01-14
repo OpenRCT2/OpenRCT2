@@ -126,6 +126,9 @@ private:
     uint8 _researchRideEntryUsed[MAX_RIDE_OBJECTS];
     uint8 _researchRideTypeUsed[RCT1_RIDE_TYPE_COUNT];
 
+    // Scenario repository - used for determining scenario name
+    IScenarioRepository * _scenarioRepository = GetScenarioRepository();
+
 public:
     ParkLoadResult Load(const utf8 * path) override
     {
@@ -325,7 +328,7 @@ private:
         InitialiseEntryMaps();
         uint16 mapSize = _s4.map_size == 0 ? 128 : _s4.map_size;
 
-        String::Set(gScenarioFileName, sizeof(gScenarioFileName), Path::GetFileName(_s4Path));
+        String::Set(gScenarioFileName, sizeof(gScenarioFileName), GetRCT1ScenarioName().c_str());
 
         // Do map initialisation, same kind of stuff done when loading scenario editor
         GetObjectManager()->UnloadAll();
@@ -333,6 +336,12 @@ private:
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gS6Info.category = SCENARIO_CATEGORY_OTHER;
+    }
+
+    std::string GetRCT1ScenarioName()
+    {
+        const scenario_index_entry * scenarioEntry = _scenarioRepository->GetByIndex(_s4.scenario_slot_index);
+        return path_get_filename(scenarioEntry->path);
     }
 
     void InitialiseEntryMaps()
