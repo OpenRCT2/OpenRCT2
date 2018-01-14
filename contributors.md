@@ -58,7 +58,7 @@ The following people are not part of the project team, but have been contributin
 * Robert Jordan (trigger-death) - UI theming, title sequence editor, misc.
 * Aaron van Geffen (AaronVanGeffen) - scenario select screen, font detection, misc.
 * Michał Janiszewski (janisozaur) - Linux port, crash handling, security, misc.
-* Kelson Blakewood (spacek531) - title sequences for 0.0.4, 0.0.5/0.0.6/0.0.7, and 0.1.0; title sequences using milliseconds
+* Kelson Blakewood (spacek531) - title sequences for release versions 0.0.4, 0.0.5/0.0.6/0.0.7, 0.1.0/0.1.1, and 0.1.2, title sequences using milliseconds
 * Hugo Wallenburg (Goddesen) - Misc.
 * Matte Andersson (Nubbie) - Misc, UX
 * Daniel Trujillo Viedma (gDanix) - Custom currency.
