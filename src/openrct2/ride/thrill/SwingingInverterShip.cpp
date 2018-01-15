@@ -14,17 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 /** rct2: 0x01428010 */
-static const uint32 swinging_inverter_ship_base_sprite_offset[] = { 0, 16, 0, 16 };
+static constexpr const uint32 swinging_inverter_ship_base_sprite_offset[] = { 0, 16, 0, 16 };
 
 /** rct2: 0x01428020 */
-static const uint32 swinging_inverter_ship_animating_base_sprite_offset[] = { 32, 33, 32, 33 };
+static constexpr const uint32 swinging_inverter_ship_animating_base_sprite_offset[] = { 32, 33, 32, 33 };
 
 typedef struct swinging_inverter_ship_bound_box
 {
@@ -35,7 +35,7 @@ typedef struct swinging_inverter_ship_bound_box
 } swinging_inverter_ship_bound_box;
 
 /** rct2: 0x01428020 */
-static const swinging_inverter_ship_bound_box swinging_inverter_ship_bounds[] = {
+static constexpr const swinging_inverter_ship_bound_box swinging_inverter_ship_bounds[] = {
     { 32, 16, 0, 8 }, { 16, 32, 8, 0 }, { 32, 16, 0, 8 }, { 16, 32, 8, 0 }
 };
 
@@ -47,7 +47,7 @@ enum
     SPR_SWINGING_INVERTER_SHIP_FRAME_3 = 22001,
 };
 
-static const uint32 swinging_inverter_ship_frame_sprites[] = { SPR_SWINGING_INVERTER_SHIP_FRAME_0,
+static constexpr const uint32 swinging_inverter_ship_frame_sprites[] = { SPR_SWINGING_INVERTER_SHIP_FRAME_0,
                                                                SPR_SWINGING_INVERTER_SHIP_FRAME_1,
                                                                SPR_SWINGING_INVERTER_SHIP_FRAME_2,
                                                                SPR_SWINGING_INVERTER_SHIP_FRAME_3 };
@@ -58,7 +58,7 @@ static void paint_swinging_inverter_ship_structure(paint_session * session, Ride
     rct_tile_element * savedTileElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
 
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-    rct_vehicle *    vehicle  = NULL;
+    rct_vehicle *    vehicle  = nullptr;
 
     sint8 xOffset = !(direction & 1) ? axisOffset : 0;
     sint8 yOffset = (direction & 1) ? axisOffset : 0;
@@ -72,7 +72,7 @@ static void paint_swinging_inverter_ship_structure(paint_session * session, Ride
     }
 
     uint32 vehicleImageId = rideEntry->vehicles[0].base_image_id + swinging_inverter_ship_base_sprite_offset[direction];
-    if (vehicle != NULL)
+    if (vehicle != nullptr)
     {
         sint32 rotation = (sint8)vehicle->vehicle_sprite_type;
         if (rotation != 0)
@@ -196,7 +196,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_swinging_inverter_ship(sint32 trac
 {
     if (trackType != FLAT_TRACK_ELEM_1_X_4_B)
     {
-        return NULL;
+        return nullptr;
     }
 
     return paint_swinging_inverter_ship;

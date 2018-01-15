@@ -20,7 +20,7 @@
 #include "../core/Guard.hpp"
 #include "../OpenRCT2.h"
 
-#include "drawing.h"
+#include "Drawing.h"
 
 constexpr uint32 BASE_IMAGE_ID = 29294;
 constexpr uint32 MAX_IMAGES = 262144;
@@ -237,7 +237,7 @@ extern "C"
             for (uint32 i = 0; i < count; i++)
             {
                 uint32 imageId = baseImageId + i;
-                rct_g1_element g1 = { 0 };
+                rct_g1_element g1 = { nullptr };
                 gfx_set_g1_element(imageId, &g1);
                 drawing_engine_invalidate_image(imageId);
             }

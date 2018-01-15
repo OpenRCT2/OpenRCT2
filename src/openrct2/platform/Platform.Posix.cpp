@@ -18,7 +18,8 @@
 
 #include <cstring>
 #include <pwd.h>
-#include <stdlib.h>
+#include <cstdlib>
+#include <ctime>
 #include "../core/String.hpp"
 #include "Platform2.h"
 #include "platform.h"
@@ -81,6 +82,20 @@ namespace Platform
         platform_resolve_openrct_data_path();
         platform_get_openrct_data_path(path, sizeof(path));
         return path;
+    }
+
+    std::string FormatShortDate(std::time_t timestamp)
+    {
+        char date[20];
+        std::strftime(date, sizeof(date), "%x", std::gmtime(&timestamp));
+        return std::string(date);
+    }
+
+    std::string FormatTime(std::time_t timestamp)
+    {
+        char time[20];
+        std::strftime(time, sizeof(time), "%X", std::gmtime(&timestamp));
+        return std::string(time);
     }
 }
 

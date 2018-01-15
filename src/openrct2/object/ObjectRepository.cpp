@@ -41,12 +41,12 @@
 #include "StexObject.h"
 
 #include "../config/Config.h"
-#include "../localisation/localisation.h"
-#include "../object.h"
-#include "../object_list.h"
+#include "../localisation/Localisation.h"
+#include "../object/Object.h"
+#include "ObjectList.h"
 #include "../platform/platform.h"
-#include "../util/sawyercoding.h"
-#include "../util/util.h"
+#include "../util/SawyerCoding.h"
+#include "../util/Util.h"
 
 using namespace OpenRCT2;
 
@@ -55,9 +55,9 @@ struct ObjectEntryHash
     size_t operator()(const rct_object_entry &entry) const
     {
         uint32 hash = 5381;
-        for (sint32 i = 0; i < 8; i++)
+        for (auto i : entry.name)
         {
-            hash = ((hash << 5) + hash) + entry.name[i];
+            hash = ((hash << 5) + hash) + i;
         }
         return hash;
     }
@@ -83,7 +83,7 @@ private:
     static constexpr auto PATTERN = "*.dat;*.pob";
 
 public:
-    ObjectFileIndex(IPlatformEnvironment * env) :
+    explicit ObjectFileIndex(IPlatformEnvironment * env) :
         FileIndex("object index",
             MAGIC_NUMBER,
             VERSION,
@@ -195,7 +195,7 @@ class ObjectRepository final : public IObjectRepository
     ObjectEntryMap                      _itemMap;
 
 public:
-    ObjectRepository(IPlatformEnvironment * env)
+    explicit ObjectRepository(IPlatformEnvironment * env)
         : _env(env),
           _fileIndex(env)
     {
@@ -303,7 +303,7 @@ public:
                 SaveObject(path, objectEntry, data, dataSize);
                 ScanObject(path);
             }
-            catch (const Exception &)
+            catch (const std::exception &)
             {
                 Console::Error::WriteLine("Failed saving object: [%s] to '%s'.", objectName, path);
             }
@@ -487,7 +487,7 @@ private:
                     Memory::Free(newData);
                     Memory::Free(extraBytes);
                 }
-                catch (const Exception &)
+                catch (const std::exception &)
                 {
                     Memory::Free(newData);
                     Memory::Free(extraBytes);
@@ -514,7 +514,7 @@ private:
 
             Memory::Free(encodedDataBuffer);
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             Memory::Free(encodedDataBuffer);
             throw;
@@ -591,7 +591,7 @@ private:
         const ObjectRepositoryItem * item = FindObject(entry);
         if (item == nullptr)
         {
-            throw Exception(String::StdFormat("Unable to find object '%.8s'", entry->name));
+            throw std::runtime_error(String::StdFormat("Unable to find object '%.8s'", entry->name));
         }
 
         // Read object data from file
@@ -599,7 +599,7 @@ private:
         auto fileEntry = fs.ReadValue<rct_object_entry>();
         if (!object_entry_compare(entry, &fileEntry))
         {
-            throw Exception("Header found in object file does not match object to pack.");
+            throw std::runtime_error("Header found in object file does not match object to pack.");
         }
         auto chunkReader = SawyerChunkReader(&fs);
         auto chunk = chunkReader.ReadChunk();
@@ -709,12 +709,12 @@ extern "C"
                     Object * object = objectRepository->LoadObject(ori);
                     if (object != nullptr)
                     {
-                        StexObject * stexObject = static_cast<StexObject*>(object);
-                        const utf8 * scenarioName = stexObject->GetScenarioName();
-                        const utf8 * scenarioDetails = stexObject->GetScenarioDetails();
+                        auto stexObject = static_cast<StexObject*>(object);
+                        auto scenarioName = stexObject->GetScenarioName();
+                        auto scenarioDetails = stexObject->GetScenarioDetails();
 
-                        String::Set(scenarioEntry->name, sizeof(scenarioEntry->name), scenarioName);
-                        String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), scenarioDetails);
+                        String::Set(scenarioEntry->name, sizeof(scenarioEntry->name), scenarioName.c_str());
+                        String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), scenarioDetails.c_str());
 
                         delete object;
                     }
@@ -757,39 +757,6 @@ extern "C"
         }
     }
 
-    const utf8 * object_get_description(const void * object)
-    {
-        const Object * baseObject = static_cast<const Object *>(object);
-        switch (baseObject->GetObjectType()) {
-        case OBJECT_TYPE_RIDE:
-        {
-            const RideObject * rideObject = static_cast<const RideObject *>(baseObject);
-            return rideObject->GetDescription();
-        }
-        case OBJECT_TYPE_SCENARIO_TEXT:
-        {
-            const StexObject * stexObject = static_cast<const StexObject *>(baseObject);
-            return stexObject->GetScenarioDetails();
-        }
-        default:
-            return "";
-        }
-    }
-
-    const utf8 * object_get_capacity(const void * object)
-    {
-        const Object * baseObject = static_cast<const Object *>(object);
-        switch (baseObject->GetObjectType()) {
-        case OBJECT_TYPE_RIDE:
-        {
-            auto rideObject = static_cast<const RideObject *>(baseObject);
-            return rideObject->GetCapacity();
-        }
-        default:
-            return "";
-        }
-    }
-
     void object_draw_preview(const void * object, rct_drawpixelinfo * dpi, sint32 width, sint32 height)
     {
         const Object * baseObject = static_cast<const Object *>(object);
@@ -803,31 +770,31 @@ extern "C"
         {
             if ((a->flags & 0x0F) != (b->flags & 0x0F))
             {
-                return 0;
+                return false;
             }
             sint32 match = memcmp(a->name, b->name, 8);
             if (match)
             {
-                return 0;
+                return false;
             }
         }
         else
         {
             if (a->flags != b->flags)
             {
-                return 0;
+                return false;
             }
             sint32 match = memcmp(a->name, b->name, 8);
             if (match)
             {
-                return 0;
+                return false;
             }
             if (a->checksum != b->checksum)
             {
-                return 0;
+                return false;
             }
         }
-        return 1;
+        return true;
     }
 
     sint32 object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength)

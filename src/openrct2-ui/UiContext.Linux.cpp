@@ -21,7 +21,7 @@
 #include <stdexcept>
 #include <openrct2/common.h>
 #include <openrct2/core/String.hpp>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/ui/UiContext.h>
 #include "UiContext.h"
 

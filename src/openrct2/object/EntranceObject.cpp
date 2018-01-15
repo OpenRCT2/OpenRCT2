@@ -18,8 +18,8 @@
 #include "../core/String.hpp"
 #include "EntranceObject.h"
 
-#include "../drawing/drawing.h"
-#include "../localisation/localisation.h"
+#include "../drawing/Drawing.h"
+#include "../localisation/Localisation.h"
 
 void EntranceObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {

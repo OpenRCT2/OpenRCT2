@@ -30,13 +30,12 @@
 
 extern "C"
 {
-    #include "../localisation/language.h"
-    #include "../scenario/scenario.h"
+    #include "../localisation/Language.h"
+    #include "../scenario/Scenario.h"
     #include "platform.h"
 }
 
 #include "../core/Console.hpp"
-#include "../core/Exception.hpp"
 #include "../rct2/S6Exporter.h"
 #include "../Version.h"
 
@@ -99,7 +98,7 @@ static bool OnCrash(const wchar_t * dumpPath,
         exporter->SaveGame(saveFilePathUTF8);
         savedGameDumped = true;
     }
-    catch (const Exception &)
+    catch (const std::exception &)
     {
     }
     free(saveFilePathUTF8);

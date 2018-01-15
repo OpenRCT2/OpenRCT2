@@ -16,9 +16,9 @@
 
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
-#include <openrct2/interface/widget.h>
+#include <openrct2/interface/Widget.h>
 
 static rct_widget window_title_logo_widgets[] = {
     { WIDGETS_END },
@@ -63,7 +63,7 @@ static rct_window_event_list window_title_logo_events = {
  */
 rct_window * window_title_logo_open()
 {
-    rct_window *window = window_create(0, 0, 200, 106, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
+    rct_window *window = window_create(0, 0, 232, 136, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_logo_widgets;
     window_init_scroll_widgets(window);
     window->colours[0] = TRANSLUCENT(COLOUR_GREY);

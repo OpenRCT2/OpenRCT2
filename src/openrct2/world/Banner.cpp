@@ -22,14 +22,14 @@
 #include "../core/String.hpp"
 #include "../network/network.h"
 
-#include "banner.h"
-#include "map.h"
-#include "park.h"
-#include "scenery.h"
+#include "Banner.h"
+#include "Map.h"
+#include "Park.h"
+#include "Scenery.h"
 #include "../Game.h"
-#include "../interface/window.h"
-#include "../localisation/localisation.h"
-#include "../ride/ride.h"
+#include "../interface/Window.h"
+#include "../localisation/Localisation.h"
+#include "../ride/Ride.h"
 #include "../ride/Track.h"
 
 rct_banner gBanners[MAX_BANNERS];
@@ -492,7 +492,7 @@ extern "C"
         sint32 i, rideIndex;
         Ride *ride;
 
-        static const LocationXY16 NeighbourCheckOrder[] =
+        static constexpr const LocationXY16 NeighbourCheckOrder[] =
         {
             {  32,   0 },
             { -32,   0 },

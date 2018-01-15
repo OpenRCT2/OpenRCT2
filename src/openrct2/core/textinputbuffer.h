@@ -34,7 +34,7 @@ void textinputbuffer_init(textinputbuffer * tib, utf8 * buffer, size_t size);
 void textinputbuffer_clear(textinputbuffer * tib);
 void textinputbuffer_remove_selected(textinputbuffer * tib);
 void textinputbuffer_insert_codepoint(textinputbuffer * tib, uint32 codepoint);
-void textinputbuffer_insert(textinputbuffer * tib, utf8 * source);
+void textinputbuffer_insert(textinputbuffer * tib, const utf8 * source);
 void textinputbuffer_cursor_left(textinputbuffer * tib);
 void textinputbuffer_cursor_right(textinputbuffer * tib);
 void textinputbuffer_cursor_home(textinputbuffer * tib);

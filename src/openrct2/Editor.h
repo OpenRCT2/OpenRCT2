@@ -18,10 +18,10 @@
 #define _EDITOR_H_
 
 #include "common.h"
-#include "object.h"
+#include "object/Object.h"
 
 #ifdef __cplusplus
-#include "object.h"
+#include "object/Object.h"
 
 namespace Editor
 {

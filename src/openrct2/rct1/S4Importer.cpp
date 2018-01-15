@@ -18,7 +18,6 @@
 #include <vector>
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
-#include "../core/Exception.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
@@ -33,33 +32,33 @@
 #include "../ride/Station.h"
 #include "../scenario/ScenarioSources.h"
 #include "Tables.h"
-#include "../object_list.h"
+#include "../object/ObjectList.h"
 
 #include "../audio/audio.h"
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../Editor.h"
 #include "../Game.h"
-#include "../interface/window.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
+#include "../interface/Window.h"
+#include "../localisation/Date.h"
+#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
-#include "../object.h"
+#include "../object/Object.h"
 #include "../object/ObjectManager.h"
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
-#include "../rct1.h"
-#include "../ride/ride_data.h"
+#include "RCT1.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
-#include "../util/sawyercoding.h"
-#include "../util/util.h"
+#include "../util/SawyerCoding.h"
+#include "../util/Util.h"
 #include "../world/Climate.h"
-#include "../world/footpath.h"
-#include "../world/map_animation.h"
-#include "../world/park.h"
-#include "../world/entrance.h"
+#include "../world/Footpath.h"
+#include "../world/MapAnimation.h"
+#include "../world/Park.h"
+#include "../world/Entrance.h"
 #include "../world/LargeScenery.h"
-#include "../world/scenery.h"
+#include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 
 class EntryList
@@ -141,7 +140,7 @@ public:
         }
         else
         {
-            throw Exception("Invalid RCT1 park extension.");
+            throw std::runtime_error("Invalid RCT1 park extension.");
         }
     }
 
@@ -202,7 +201,7 @@ public:
         }
         else
         {
-            throw Exception("Unable to decode park.");
+            throw std::runtime_error("Unable to decode park.");
         }
         return ParkLoadResult::CreateOK();
     }
@@ -268,6 +267,8 @@ public:
         {
             desc.title = name.c_str();
         }
+
+        String::Set(dst->internal_name, sizeof(dst->internal_name), desc.title);
 
         rct_string_id localisedStringIds[3];
         if (language_get_localised_scenario_strings(desc.title, localisedStringIds))
@@ -405,11 +406,11 @@ private:
                 }
             }
 
-            switch (researchItem->category) {
-            case RCT1_RESEARCH_CATEGORY_THEME:
+            switch (researchItem->type) {
+            case RCT1_RESEARCH_TYPE_THEME:
                 AddEntriesForSceneryTheme(researchItem->item);
                 break;
-            case RCT1_RESEARCH_CATEGORY_RIDE:
+            case RCT1_RESEARCH_TYPE_RIDE:
             {
                 uint8 rideType = researchItem->item;
 
@@ -431,7 +432,7 @@ private:
                         }
                     }
 
-                    if (researchItem2->category == RCT1_RESEARCH_CATEGORY_VEHICLE &&
+                    if (researchItem2->type == RCT1_RESEARCH_TYPE_VEHICLE &&
                         researchItem2->related_ride == rideType)
                     {
                         AddEntryForVehicleType(rideType, researchItem2->item);
@@ -462,7 +463,7 @@ private:
             case TILE_ELEMENT_TYPE_PATH:
             {
                 uint8 pathColour = tile_element_get_direction(tileElement);
-                uint8 pathType = (tileElement->properties.path.type & 0xF0) >> 4;
+                uint8 pathType   = footpath_element_get_type(tileElement);
 
                 pathType = (pathType << 2) | pathColour;
                 uint8 pathAdditionsType = tileElement->properties.path.additions & 0x0F;
@@ -509,9 +510,12 @@ private:
         for (size_t i = 0; i < Util::CountOf(_s4.rides); i++)
         {
             rct1_ride * ride = &_s4.rides[i];
-            if (ride->type != RCT1_RIDE_TYPE_NULL && RCT1::RideTypeUsesVehicles(ride->type))
+            if (ride->type != RCT1_RIDE_TYPE_NULL)
             {
-                AddEntryForVehicleType(ride->type, ride->vehicle_type);
+                if (RCT1::RideTypeUsesVehicles(ride->type))
+                    AddEntryForVehicleType(ride->type, ride->vehicle_type);
+                else
+                    AddEntryForRideType(ride->type);
             }
         }
     }
@@ -685,7 +689,7 @@ private:
 
     void ImportRides()
     {
-        for (sint32 i = 0; i < MAX_RIDES; i++)
+        for (sint32 i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
         {
             if (_s4.rides[i].type != RIDE_TYPE_NULL)
             {
@@ -722,7 +726,8 @@ private:
         // This can happen with hacked parks
         if (rideEntry == nullptr)
         {
-            dst = nullptr;
+            log_warning("Discarding ride with invalid ride entry");
+            dst->type = RIDE_TYPE_NULL;
             return;
         }
 
@@ -866,8 +871,8 @@ private:
         dst->mechanic = src->mechanic;
         dst->breakdown_reason_pending = src->breakdown_reason_pending;
         dst->inspection_station = src->inspection_station;
-        //dst->broken_car?
-        //dst->broken_vehicle?
+        dst->broken_car = src->broken_car;
+        dst->broken_vehicle = src->broken_vehicle;
 
         // Measurement data
         dst->excitement = src->excitement;
@@ -1015,6 +1020,16 @@ private:
                 }
             }
         }
+
+        // In RCT1 and AA, the maze was always hedges.
+        // LL has 4 types, like RCT2. For LL, only guard against invalid values.
+        if (dst->type == RIDE_TYPE_MAZE)
+        {
+            if (_gameVersion < FILE_VERSION_RCT1_LL || src->track_colour_supports[0] > 3)
+                dst->track_colour_supports[0] = MAZE_WALL_TYPE_HEDGE;
+            else
+                dst->track_colour_supports[0] = src->track_colour_supports[0];
+        }
     }
 
     void FixRideVehicleLinks(const uint16 * spriteIndexMap)
@@ -1122,7 +1137,7 @@ private:
         dst->sprite_right = src->sprite_right;
         dst->sprite_bottom = src->sprite_bottom;
 
-        dst->friction = src->friction;
+        dst->mass = src->mass;
         dst->num_seats = src->num_seats;
         dst->speed = src->speed;
         dst->powered_acceleration = src->powered_acceleration;
@@ -1130,12 +1145,12 @@ private:
 
         dst->velocity = src->velocity;
         dst->acceleration = src->acceleration;
-        dst->var_4A = src->var_4A;
+        dst->swing_sprite = src->swing_sprite;
         dst->swinging_car_var_0 = src->swinging_car_var_0;
         dst->var_4E = src->var_4E;
         dst->restraints_position = src->restraints_position;
         dst->var_BA = src->var_BA;
-        dst->var_BF = src->var_BF;
+        dst->sound_vector_factor = src->sound_vector_factor;
         dst->var_B6 = src->var_B6;
         dst->var_B8 = src->var_B8;
         dst->sound1_id = RCT12_SOUND_ID_NULL;
@@ -1260,9 +1275,9 @@ private:
 
     void FixVehiclePeepLinks(rct_vehicle * vehicle, const uint16 * spriteIndexMap)
     {
-        for (int i = 0; i < 32; i++)
+        for (auto &peep : vehicle->peep)
         {
-            vehicle->peep[i] = MapSpriteIndex(vehicle->peep[i], spriteIndexMap);
+            peep = MapSpriteIndex(peep, spriteIndexMap);
         }
     }
 
@@ -1401,8 +1416,8 @@ private:
         dst->nausea_target = src->nausea_target;
         dst->hunger = src->hunger;
         dst->thirst = src->thirst;
-        dst->bathroom = src->bathroom;
-        dst->var_41 = src->var_41;
+        dst->toilet = src->toilet;
+        dst->mass = src->mass;
 
         dst->litter_count = src->litter_count;
         dst->disgusting_count = src->disgusting_count;
@@ -1441,6 +1456,10 @@ private:
 
         dst->voucher_arguments = src->voucher_arguments;
         dst->voucher_type = src->voucher_type;
+
+        dst->surroundings_thought_timeout = src->surroundings_thought_timeout;
+        dst->angriness = src->angriness;
+        dst->var_F4 = src->var_F4;
 
         for (size_t i = 0; i < 32; i++)
         {
@@ -1506,9 +1525,9 @@ private:
 
     void FixRidePeepLinks(Ride * ride, const uint16 * spriteIndexMap)
     {
-        for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
+        for (auto &peep : ride->last_peep_in_queue)
         {
-            ride->last_peep_in_queue[i] = MapSpriteIndex(ride->last_peep_in_queue[i], spriteIndexMap);
+            peep = MapSpriteIndex(peep, spriteIndexMap);
         }
         ride->mechanic = MapSpriteIndex(ride->mechanic, spriteIndexMap);
         if (ride->type == RIDE_TYPE_SPIRAL_SLIDE)
@@ -1565,12 +1584,11 @@ private:
 
     void ImportLitter()
     {
-
-        for (size_t i = 0; i < RCT1_MAX_SPRITES; i++)
+        for (auto &sprite : _s4.sprites)
         {
-            if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
+            if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
             {
-                rct_litter * srcLitter = &_s4.sprites[i].litter;
+                rct_litter * srcLitter = &sprite.litter;
 
                 rct_litter * litter = (rct_litter *) create_sprite(SPRITE_IDENTIFIER_LITTER);
                 move_sprite_to_list((rct_sprite *) litter, SPRITE_LIST_LITTER * 2);
@@ -1594,11 +1612,11 @@ private:
 
     void ImportMiscSprites()
     {
-        for (size_t i = 0; i < RCT1_MAX_SPRITES; i++)
+        for (auto &sprite : _s4.sprites)
         {
-            if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_MISC)
+            if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_MISC)
             {
-                rct1_unk_sprite * src = &_s4.sprites[i].unknown;
+                rct1_unk_sprite * src = &sprite.unknown;
                 rct_unk_sprite * dst = (rct_unk_sprite *) create_sprite(SPRITE_IDENTIFIER_MISC);
                 move_sprite_to_list((rct_sprite *) dst, SPRITE_LIST_MISC * 2);
 
@@ -1814,7 +1832,7 @@ private:
             if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_GROUP)
             {
                 log_error("Failed to load %s.", objectName);
-                throw Exception("Failed to load object.");
+                throw std::runtime_error("Failed to load object.");
             }
 
             entryIndex++;
@@ -1931,8 +1949,8 @@ private:
                 }
             }
 
-            switch (researchItem->category) {
-            case RCT1_RESEARCH_CATEGORY_THEME:
+            switch (researchItem->type) {
+            case RCT1_RESEARCH_TYPE_THEME:
             {
                 uint8 rct1SceneryTheme = researchItem->item;
                 uint8 sceneryGroupEntryIndex = _sceneryThemeTypeToEntryMap[rct1SceneryTheme];
@@ -1943,7 +1961,7 @@ private:
                 }
                 break;
             }
-            case RCT1_RESEARCH_CATEGORY_RIDE:
+            case RCT1_RESEARCH_TYPE_RIDE:
             {
                 uint8 rct1RideType = researchItem->item;
                 _researchRideTypeUsed[rct1RideType] = true;
@@ -1960,7 +1978,7 @@ private:
                         continue;
                     }
 
-                    if (researchItem2->category == RCT1_RESEARCH_CATEGORY_VEHICLE &&
+                    if (researchItem2->type == RCT1_RESEARCH_TYPE_VEHICLE &&
                         researchItem2->related_ride == rct1RideType)
                     {
                         // Only add the vehicles that were listed before this ride, otherwise we might
@@ -1988,7 +2006,7 @@ private:
 
                 break;
             }
-            case RCT1_RESEARCH_CATEGORY_VEHICLE:
+            case RCT1_RESEARCH_TYPE_VEHICLE:
                 // Only add vehicle if the related ride has been seen, this to make sure that vehicles
                 // are researched only after the ride has been researched
                 if (_researchRideTypeUsed[researchItem->related_ride])
@@ -1997,35 +2015,33 @@ private:
                 }
 
                 break;
-            case RCT1_RESEARCH_CATEGORY_SPECIAL:
+            case RCT1_RESEARCH_TYPE_SPECIAL:
                 // Not supported
                 break;
             }
         }
 
-        research_remove_non_separate_vehicle_types();
-
         // Research funding / priority
         uint8 activeResearchTypes = 0;
-        if (_s4.research_priority & RCT1_RESEARCH_EXPENDITURE_ROLLERCOASTERS)
+        if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_ROLLERCOASTERS)
         {
             activeResearchTypes |= (1 << RESEARCH_CATEGORY_ROLLERCOASTER);
         }
-        if (_s4.research_priority & RCT1_RESEARCH_EXPENDITURE_THRILL_RIDES)
+        if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_THRILL_RIDES)
         {
             activeResearchTypes |= (1 << RESEARCH_CATEGORY_THRILL);
             activeResearchTypes |= (1 << RESEARCH_CATEGORY_WATER);
         }
-        if (_s4.research_priority & RCT1_RESEARCH_EXPENDITURE_GENTLE_TRANSPORT_RIDES)
+        if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_GENTLE_TRANSPORT_RIDES)
         {
             activeResearchTypes |= (1 << RESEARCH_CATEGORY_GENTLE);
             activeResearchTypes |= (1 << RESEARCH_CATEGORY_TRANSPORT);
         }
-        if (_s4.research_priority & RCT1_RESEARCH_EXPENDITURE_SHOPS)
+        if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_SHOPS)
         {
             activeResearchTypes |= (1 << RESEARCH_CATEGORY_SHOP);
         }
-        if (_s4.research_priority & RCT1_RESEARCH_EXPENDITURE_SCENERY_THEMEING)
+        if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_SCENERY_THEMEING)
         {
             activeResearchTypes |= (1 << RESEARCH_CATEGORY_SCENERYSET);
         }
@@ -2035,8 +2051,7 @@ private:
         // Research history
         gResearchProgress = _s4.research_progress;
         // gResearchProgressStage =
-        gResearchNextItem = _s4.next_research_item;
-        gResearchNextCategory = _s4.next_research_category;
+        gResearchNextItem.rawValue = _s4.next_research_item;
         // gResearchExpectedDay =
         // gResearchExpectedMonth =
 
@@ -2154,16 +2169,16 @@ private:
     {
         gClimate = _s4.climate;
         gClimateUpdateTimer = _s4.climate_timer;
-        gClimateCurrentTemperature = _s4.temperature;
-        gClimateCurrentWeather = _s4.weather;
-        gClimateCurrentWeatherEffect = 0;
-        gClimateCurrentWeatherGloom = _s4.weather_gloom;
-        gClimateCurrentRainLevel = _s4.rain;
-        gClimateNextTemperature = _s4.target_temperature;
-        gClimateNextWeather = _s4.target_weather;
-        gClimateNextWeatherEffect = 0;
-        gClimateNextWeatherGloom = _s4.target_weather_gloom;
-        gClimateNextRainLevel = _s4.target_rain;
+        gClimateCurrent.Temperature = _s4.temperature;
+        gClimateCurrent.Weather = _s4.weather;
+        gClimateCurrent.WeatherEffect = WEATHER_EFFECT_NONE;
+        gClimateCurrent.WeatherGloom = _s4.weather_gloom;
+        gClimateCurrent.RainLevel = _s4.rain;
+        gClimateNext.Temperature = _s4.target_temperature;
+        gClimateNext.Weather = _s4.target_weather;
+        gClimateNext.WeatherEffect = WEATHER_EFFECT_NONE;
+        gClimateNext.WeatherGloom = _s4.target_weather_gloom;
+        gClimateNext.RainLevel = _s4.target_rain;
     }
 
     void ImportScenarioNameDetails()
@@ -2351,7 +2366,7 @@ private:
             {
                 // Type
                 uint8 pathColour = tileElement->type & 3;
-                uint8 pathType = (tileElement->properties.path.type & 0xF0) >> 4;
+                uint8 pathType   = footpath_element_get_type(tileElement);
 
                 pathType = (pathType << 2) | pathColour;
                 uint8 entryIndex = _pathTypeToEntryMap[pathType];
@@ -2731,7 +2746,7 @@ extern "C"
                 s4Importer->Import();
             }
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             delete result;
             result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
@@ -2751,7 +2766,7 @@ extern "C"
                 s4Importer->Import();
             }
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             delete result;
             result = new ParkLoadResult(ParkLoadResult::CreateUnknown());

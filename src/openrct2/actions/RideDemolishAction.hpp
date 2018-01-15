@@ -16,15 +16,15 @@
 
 #pragma once
 
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../Context.h"
 #include "../core/MemoryStream.h"
-#include "../interface/window.h"
-#include "../localisation/localisation.h"
-#include "../ride/ride.h"
+#include "../interface/Window.h"
+#include "../localisation/Localisation.h"
+#include "../ride/Ride.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
-#include "../world/park.h"
+#include "../world/Park.h"
 #include "GameAction.h"
 
 struct RideDemolishAction : public GameActionBase<GAME_COMMAND_DEMOLISH_RIDE, GameActionResult>
@@ -87,15 +87,14 @@ public:
         sub_6CB945(_rideIndex);
         news_item_disable_news(NEWS_ITEM_RIDE, _rideIndex);
 
-        for (sint32 i = 0; i < MAX_BANNERS; i++) 
+        for (auto &banner : gBanners)
         {
-            rct_banner *banner = &gBanners[i];
-            if (banner->type != BANNER_NULL &&
-                banner->flags & BANNER_FLAG_LINKED_TO_RIDE &&
-                banner->colour == _rideIndex)
+            if (banner.type != BANNER_NULL &&
+                banner.flags & BANNER_FLAG_LINKED_TO_RIDE &&
+                banner.colour == _rideIndex)
             {
-                banner->flags &= 0xFB;
-                banner->string_idx = STR_DEFAULT_SIGN;
+                banner.flags &= 0xFB;
+                banner.string_idx = STR_DEFAULT_SIGN;
             }
         }
 
@@ -172,11 +171,15 @@ public:
 
             for (sint32 i = 0; i < PEEP_MAX_THOUGHTS; i++)
             {
-                if (peep->thoughts[i].item == _rideIndex)
+                if (peep->thoughts[i].type != PEEP_THOUGHT_TYPE_NONE &&
+                    peep->thoughts[i].item == _rideIndex)
                 {
                     // Clear top thought, push others up
                     memmove(&peep->thoughts[i], &peep->thoughts[i + 1], sizeof(rct_peep_thought)*(PEEP_MAX_THOUGHTS - i - 1));
                     peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
+                    peep->thoughts[PEEP_MAX_THOUGHTS - 1].item = PEEP_THOUGHT_ITEM_NONE;
+                    //Next iteration, check the new thought at this index
+                    i--;
                 }
             }
         }

@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <stdexcept>
 #include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../OpenRCT2.h"
@@ -22,7 +23,7 @@
 #include "../ui/WindowManager.h"
 
 #include "../platform/platform.h"
-#include "../util/sawyercoding.h"
+#include "../util/SawyerCoding.h"
 
 #include "network.h"
 
@@ -56,13 +57,13 @@ static sint32 _pickup_peep_old_x = LOCATION_NULL;
 
 #include "../config/Config.h"
 #include "../Game.h"
-#include "../interface/chat.h"
-#include "../interface/window.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
-#include "../scenario/scenario.h"
-#include "../util/util.h"
-#include "../cheats.h"
+#include "../interface/Chat.h"
+#include "../interface/Window.h"
+#include "../localisation/Date.h"
+#include "../localisation/Localisation.h"
+#include "../scenario/Scenario.h"
+#include "../util/Util.h"
+#include "../Cheats.h"
 
 #include "NetworkAction.h"
 
@@ -121,6 +122,9 @@ Network::Network()
     server_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Server_Handle_TOKEN;
     server_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Server_Handle_OBJECTS;
     OpenSSL_add_all_algorithms();
+
+    _chat_log_fs << std::unitbuf;
+    _server_log_fs << std::unitbuf;
 }
 
 Network::~Network()
@@ -244,7 +248,7 @@ bool Network::BeginClient(const char* host, uint16 port)
             auto fs = FileStream(keyPath, FILE_MODE_WRITE);
             _key.SavePrivate(&fs);
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             log_error("Unable to save private key at %s.", keyPath);
             return false;
@@ -260,7 +264,7 @@ bool Network::BeginClient(const char* host, uint16 port)
             auto fs = FileStream(keyPath, FILE_MODE_WRITE);
             _key.SavePublic(&fs);
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             log_error("Unable to save public key at %s.", keyPath);
             return false;
@@ -274,7 +278,7 @@ bool Network::BeginClient(const char* host, uint16 port)
             auto fs = FileStream(keyPath, FILE_MODE_OPEN);
             ok = _key.LoadPrivate(&fs);
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             log_error("Unable to read private key from %s.", keyPath);
             return false;
@@ -309,9 +313,9 @@ bool Network::BeginServer(uint16 port, const char* address)
     {
         listening_socket->Listen(address, port);
     }
-    catch (const Exception &ex)
+    catch (const std::exception &ex)
     {
-        Console::Error::WriteLine(ex.GetMessage());
+        Console::Error::WriteLine(ex.what());
         Close();
         return false;
     }
@@ -349,6 +353,11 @@ bool Network::BeginServer(uint16 port, const char* address)
     listening_port = port;
     if (gConfigNetwork.advertise) {
         _advertiser = CreateServerAdvertiser(listening_port);
+    }
+
+    if (gConfigNetwork.pause_server_if_no_clients)
+    {
+        game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
     }
 
     return true;
@@ -543,6 +552,7 @@ void Network::UpdateClient()
                 intent.putExtra(INTENT_EXTRA_MESSAGE, std::string { str_disconnected });
                 context_open_intent(&intent);
             }
+            window_close_by_class(WC_MULTIPLAYER);
             Close();
         }
         break;
@@ -661,7 +671,7 @@ void Network::CheckDesynchronizaton()
         _desynchronised = true;
 
         char str_desync[256];
-        format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, NULL);
+        format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
 
         auto intent = Intent(WC_NETWORK_STATUS);
         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string { str_desync });
@@ -807,9 +817,9 @@ void Network::SaveGroups()
         {
             Json::WriteToFile(path, jsonGroupsCfg, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
         }
-        catch (const Exception &ex)
+        catch (const std::exception &ex)
         {
-            log_error("Unable to save %s: %s", path, ex.GetMessage());
+            log_error("Unable to save %s: %s", path, ex.what());
         }
 
         json_decref(jsonGroupsCfg);
@@ -856,8 +866,8 @@ void Network::LoadGroups()
     if (platform_file_exists(path)) {
         try {
             json = Json::ReadFromFile(path);
-        } catch (const Exception &e) {
-            log_error("Failed to read %s as JSON. Setting default groups. %s", path, e.GetMessage());
+        } catch (const std::exception &e) {
+            log_error("Failed to read %s as JSON. Setting default groups. %s", path, e.what());
         }
     }
 
@@ -894,33 +904,35 @@ std::string Network::BeginLog(const std::string &directory, const std::string &m
         throw std::runtime_error("strftime failed");
     }
 
+    platform_ensure_directory_exists(Path::Combine(directory, midName).c_str());
     return Path::Combine(directory, midName, filename);
 }
 
-void Network::AppendLog(const std::string &logPath, const std::string &s)
+void Network::AppendLog(std::ostream &fs, const std::string &s)
 {
-    std::string directory = Path::GetDirectory(logPath);
-    if (platform_ensure_directory_exists(directory.c_str())) {
-        try
+    if (fs.fail())
+    {
+        log_error("bad ostream failed to append log");
+        return;
+    }
+    try
+    {
+        utf8 buffer[256];
+        time_t timer;
+        time(&timer);
+        auto tmInfo = localtime(&timer);
+        if (strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo) != 0)
         {
-            auto fs = FileStream(logPath, FILE_MODE_APPEND);
+            String::Append(buffer, sizeof(buffer), s.c_str());
+            utf8_remove_formatting(buffer, false);
+            String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
 
-            utf8 buffer[256];
-            time_t timer;
-            time(&timer);
-            auto tmInfo = localtime(&timer);
-            if (strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo) != 0) {
-                String::Append(buffer, sizeof(buffer), s.c_str());
-                utf8_remove_formatting(buffer, false);
-                String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
-
-                fs.Write(buffer, strlen(buffer));
-            }
+            fs.write(buffer, strlen(buffer));
         }
-        catch (const Exception &ex)
-        {
-            log_error("%s", ex.GetMessage());
-        }
+    }
+    catch (const std::exception &ex)
+    {
+        log_error("%s", ex.what());
     }
 }
 
@@ -928,23 +940,39 @@ void Network::BeginChatLog()
 {
     auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_CHAT);
     _chatLogPath = BeginLog(directory, "", _chatLogFilenameFormat);
+
+#if defined(_WIN32) && !defined(__MINGW32__)
+    auto pathW = std::unique_ptr<wchar_t>(utf8_to_widechar(_chatLogPath.c_str()));
+    _chat_log_fs.open(pathW.get(), std::ios::out | std::ios::app);
+#else
+    _chat_log_fs.open(_chatLogPath, std::ios::out | std::ios::app);
+#endif
 }
 
 void Network::AppendChatLog(const std::string &s)
 {
-    if (gConfigNetwork.log_chat) {
-        AppendLog(_chatLogPath, s);
+    if (gConfigNetwork.log_chat && _chat_log_fs.is_open())
+    {
+        AppendLog(_chat_log_fs, s);
     }
 }
 
 void Network::CloseChatLog()
 {
+    _chat_log_fs.close();
 }
 
 void Network::BeginServerLog()
 {
     auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_SERVER);
     _serverLogPath = BeginLog(directory, ServerName, _serverLogFilenameFormat);
+
+#if defined(_WIN32) && !defined(__MINGW32__)
+    auto pathW = std::unique_ptr<wchar_t>(utf8_to_widechar(_serverLogPath.c_str()));
+    _server_log_fs.open(pathW.get(), std::ios::out | std::ios::app);
+#else
+    _server_log_fs.open(_serverLogPath, std::ios::out | std::ios::app);
+#endif
 
     // Log server start event
     utf8 logMessage[256];
@@ -958,8 +986,9 @@ void Network::BeginServerLog()
 
 void Network::AppendServerLog(const std::string &s)
 {
-    if (gConfigNetwork.log_server_actions) {
-        AppendLog(_serverLogPath, s);
+    if (gConfigNetwork.log_server_actions && _server_log_fs.is_open())
+    {
+        AppendLog(_server_log_fs, s);
     }
 }
 
@@ -973,6 +1002,7 @@ void Network::CloseServerLog()
         format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STOPPED, nullptr);
     }
     AppendServerLog(logMessage);
+    _server_log_fs.close();
 }
 
 void Network::Client_Send_TOKEN()
@@ -1502,6 +1532,10 @@ void Network::EnqueueGameAction(const GameAction *action)
 
 void Network::AddClient(ITcpSocket * socket)
 {
+    if (gConfigNetwork.pause_server_if_no_clients && game_is_paused())
+    {
+        game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+    }
     auto connection = std::make_unique<NetworkConnection>();
     connection->Socket = socket;
     char addr[128];
@@ -1540,6 +1574,10 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
                           return player.get() == connection_player;
                       }), player_list.end());
     client_connection_list.remove(connection);
+    if (gConfigNetwork.pause_server_if_no_clients && game_is_not_paused() && client_connection_list.size() == 0)
+    {
+        game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+    }
     Server_Send_PLAYERLIST();
 }
 
@@ -1643,10 +1681,10 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
         auto fs = FileStream(keyPath, FILE_MODE_OPEN);
         if (!_key.LoadPrivate(&fs))
         {
-            throw Exception();
+            throw std::runtime_error("Failed to load private key.");
         }
     }
-    catch (Exception)
+    catch (const std::exception &)
     {
         log_error("Failed to load key %s", keyPath);
         connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
@@ -1672,7 +1710,12 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
     // Don't keep private key in memory. There's no need and it may get leaked
     // when process dump gets collected at some point in future.
     _key.Unload();
-    Client_Send_AUTH(gConfigNetwork.player_name, "", pubkey.c_str(), signature, sigsize);
+
+    const char* password = String::IsNullOrEmpty(gCustomPassword) ?
+        "" :
+        gCustomPassword;
+    Client_Send_AUTH(gConfigNetwork.player_name, password, pubkey.c_str(), signature, sigsize);
+
     delete [] signature;
 }
 
@@ -1845,13 +1888,13 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
                 const char *signature = (const char *)packet.Read(sigsize);
                 if (signature == nullptr)
                 {
-                    throw Exception();
+                    throw std::runtime_error("Failed to read packet.");
                 }
 
                 auto ms = MemoryStream(pubkey, strlen(pubkey));
                 if (!connection.Key.LoadPublic(&ms))
                 {
-                    throw Exception();
+                    throw std::runtime_error("Failed to load public key.");
                 }
 
                 bool verified = connection.Key.Verify(connection.Challenge.data(), connection.Challenge.size(), signature, sigsize);
@@ -1875,7 +1918,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
                     log_verbose("Signature verification failed!");
                 }
             }
-            catch (Exception)
+            catch (const std::exception &)
             {
                 connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
                 log_verbose("Signature verification failed, invalid data!");
@@ -2037,7 +2080,7 @@ bool Network::LoadMap(IStream * stream)
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         result = true;
     }
-    catch (const Exception &)
+    catch (const std::exception &)
     {
     }
     return result;
@@ -2083,7 +2126,7 @@ bool Network::SaveMap(IStream * stream, const std::vector<const ObjectRepository
 
         result = true;
     }
-    catch (const Exception &)
+    catch (const std::exception &)
     {
     }
     return result;
@@ -3136,7 +3179,7 @@ void network_send_password(const char* password)
         auto fs = FileStream(keyPath, FILE_MODE_OPEN);
         gNetwork._key.LoadPrivate(&fs);
     }
-    catch (Exception)
+    catch (const std::exception &)
     {
         log_error("Error reading private key from %s.", keyPath);
         return;

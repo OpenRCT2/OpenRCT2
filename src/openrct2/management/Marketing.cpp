@@ -17,11 +17,11 @@
 #include "../config/Config.h"
 #include "../core/Util.hpp"
 #include "../Game.h"
-#include "../interface/window.h"
-#include "../localisation/localisation.h"
-#include "../ride/ride.h"
-#include "../ride/ride_data.h"
-#include "../cheats.h"
+#include "../interface/Window.h"
+#include "../localisation/Localisation.h"
+#include "../ride/Ride.h"
+#include "../ride/RideData.h"
+#include "../Cheats.h"
 #include "Finance.h"
 #include "Marketing.h"
 #include "NewsItem.h"
@@ -36,7 +36,7 @@ const money16 AdvertisingCampaignPricePerWeek[] =
     MONEY(200, 00)   // RIDE
 };
 
-static const sint32 AdvertisingCampaignGuestGenerationProbabilities[] = {400, 300, 200, 200, 250, 200};
+static constexpr const sint32 AdvertisingCampaignGuestGenerationProbabilities[] = {400, 300, 200, 200, 250, 200};
 
 uint8 gMarketingCampaignDaysLeft[20];
 uint8 gMarketingCampaignRideIndex[22];

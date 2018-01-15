@@ -14,9 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../world/Climate.h"
-#include "drawing.h"
+#include "Drawing.h"
 #include "../config/Config.h"
 
 #include "IDrawingEngine.h"
@@ -175,8 +175,8 @@ static void DrawRainAnimation(rct_drawpixelinfo * dpi, IRainDrawer * rainDrawer,
 void DrawRain(rct_drawpixelinfo * dpi, IRainDrawer * rainDrawer)
 {
     // Get rain draw function and draw rain
-    uint32 rainType = gClimateCurrentRainLevel;
-    if (rainType > 0 && !gTrackDesignSaveMode)
+    uint32 rainType = gClimateCurrent.RainLevel;
+    if (rainType != RAIN_LEVEL_NONE && !gTrackDesignSaveMode)
     {
         DrawRainAnimation(dpi, rainDrawer, rainType);
     }

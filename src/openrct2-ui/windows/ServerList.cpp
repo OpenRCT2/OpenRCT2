@@ -21,13 +21,12 @@
 #include <openrct2/Context.h>
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/http.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/util.h>
-#include <openrct2/windows/dropdown.h>
-#include <openrct2/windows/tooltip.h>
+#include <openrct2/util/Util.h>
+#include <openrct2-ui/interface/Dropdown.h>
 
 #define WWIDTH_MIN 500
 #define WHEIGHT_MIN 300
@@ -64,9 +63,9 @@ static rct_widget window_server_list_widgets[] = {
     { WWT_CLOSEBOX,         0,  327,    337,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },     // close x button
     { WWT_TEXT_BOX,         1,  100,    344,    20,     31,     STR_NONE,                   STR_NONE },                 // player name text box
     { WWT_SCROLL,           1,  6,      337,    37,     50,     STR_NONE,                   STR_NONE },                 // server list
-    { WWT_DROPDOWN_BUTTON,  1,  6,      106,    53,     64,     STR_FETCH_SERVERS,          STR_NONE },                 // fetch servers button
-    { WWT_DROPDOWN_BUTTON,  1,  112,    212,    53,     64,     STR_ADD_SERVER,             STR_NONE },                 // add server button
-    { WWT_DROPDOWN_BUTTON,  1,  218,    318,    53,     64,     STR_START_SERVER,           STR_NONE },                 // start server button
+    { WWT_BUTTON,           1,  6,      106,    53,     64,     STR_FETCH_SERVERS,          STR_NONE },                 // fetch servers button
+    { WWT_BUTTON,           1,  112,    212,    53,     64,     STR_ADD_SERVER,             STR_NONE },                 // add server button
+    { WWT_BUTTON,           1,  218,    318,    53,     64,     STR_START_SERVER,           STR_NONE },                 // start server button
     { WIDGETS_END },
 };
 
@@ -351,7 +350,8 @@ static void window_server_list_textinput(rct_window *w, rct_widgetindex widgetIn
     case WIDX_ADD_SERVER:
         {
             std::lock_guard<std::mutex> guard(_mutex);
-            add_server_entry(text);
+            server_entry * entry = add_server_entry(text);
+            entry->favourite = true;
             sort_servers();
             server_list_save_server_entries();
         }

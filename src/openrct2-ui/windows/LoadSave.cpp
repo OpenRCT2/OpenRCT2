@@ -14,33 +14,36 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <string>
-
-#include <openrct2/config/Config.h>
-#include <openrct2/title/TitleScreen.h>
-#include <openrct2/core/Memory.hpp>
-#include <openrct2/Context.h>
-#include <openrct2/windows/Intent.h>
+#include <algorithm>
+#include <ctime>
 #include <openrct2-ui/windows/Window.h>
-
-#include <time.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/Context.h>
 #include <openrct2/core/Guard.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/platform.h>
-#include <openrct2/util/util.h>
+#include <openrct2/platform/Platform2.h>
+#include <openrct2/title/TitleScreen.h>
+#include <openrct2/util/Util.h>
+#include <openrct2/windows/Intent.h>
+#include <string>
+#include <vector>
 
 #pragma region Widgets
 
 #define WW 340
 #define WH 400
 
-enum {
+enum
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
+    WIDX_RESIZE,
     WIDX_DEFAULT,
     WIDX_UP,
     WIDX_NEW_FOLDER,
@@ -52,18 +55,20 @@ enum {
 };
 
 // 0x9DE48C
-static rct_widget window_loadsave_widgets[] = {
+static rct_widget window_loadsave_widgets[] =
+{
     { WWT_FRAME,        0,      0,                  WW - 1,         0,          WH - 1,     STR_NONE,                           STR_NONE },
     { WWT_CAPTION,      0,      1,                  WW - 2,         1,          14,         STR_NONE,                           STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,     0,      WW - 13,            WW - 3,         2,          13,         STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP },     //Window close button
-    { WWT_CLOSEBOX,     0,      4,                  85,             36,         49,         STR_LOADSAVE_DEFAULT,               STR_LOADSAVE_DEFAULT_TIP }, // Go to default directory
-    { WWT_CLOSEBOX,     0,      86,                 167,            36,         49,         STR_FILEBROWSER_ACTION_UP,          STR_NONE},                  // Up
-    { WWT_CLOSEBOX,     0,      168,                251,            36,         49,         STR_FILEBROWSER_ACTION_NEW_FOLDER,  STR_NONE },                 // New
-    { WWT_CLOSEBOX,     0,      252,                334,            36,         49,         STR_FILEBROWSER_ACTION_NEW_FILE,    STR_NONE },                 // New
-    { WWT_CLOSEBOX,     0,      4,                  (WW - 5) / 2,   55,         68,         STR_NONE,                           STR_NONE },                 // Name
-    { WWT_CLOSEBOX,     0,      (WW - 5) / 2 + 1,   WW - 5 - 1,     55,         68,         STR_NONE,                           STR_NONE },                 // Date
+    { WWT_RESIZE,       1,      0,                  WW - 1,         WH - 1,     WH - 1,     0xFFFFFFFF,                         STR_NONE },                 // tab content panel
+    { WWT_BUTTON,       0,      4,                  85,             36,         49,         STR_LOADSAVE_DEFAULT,               STR_LOADSAVE_DEFAULT_TIP }, // Go to default directory
+    { WWT_BUTTON,       0,      86,                 167,            36,         49,         STR_FILEBROWSER_ACTION_UP,          STR_NONE},                  // Up
+    { WWT_BUTTON,       0,      168,                251,            36,         49,         STR_FILEBROWSER_ACTION_NEW_FOLDER,  STR_NONE },                 // New
+    { WWT_BUTTON,       0,      252,                334,            36,         49,         STR_FILEBROWSER_ACTION_NEW_FILE,    STR_NONE },                 // New
+    { WWT_TABLE_HEADER, 0,      4,                  (WW - 5) / 2,   55,         68,         STR_NONE,                           STR_NONE },                 // Name
+    { WWT_TABLE_HEADER, 0,      (WW - 5) / 2 + 1,   WW - 5 - 1,     55,         68,         STR_NONE,                           STR_NONE },                 // Date
     { WWT_SCROLL,       0,      4,                  WW - 5,         68,         WH - 30,    SCROLL_VERTICAL,                    STR_NONE },                 // File list
-    { WWT_CLOSEBOX,     0,      4,                  200,            WH - 24,    WH - 6,     STR_FILEBROWSER_USE_SYSTEM_WINDOW,  STR_NONE },                 // Use native browser
+    { WWT_BUTTON,       0,      4,                  200,            WH - 24,    WH - 6,     STR_FILEBROWSER_USE_SYSTEM_WINDOW,  STR_NONE },                 // Use native browser
     { WIDGETS_END }
 };
 
@@ -73,18 +78,22 @@ static rct_widget window_loadsave_widgets[] = {
 
 static void window_loadsave_close(rct_window *w);
 static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_loadsave_resize(rct_window *w);
 static void window_loadsave_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_loadsave_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_loadsave_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
+static void window_loadsave_compute_max_date_width();
+static void window_loadsave_invalidate(rct_window *w);
 static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
-static rct_window_event_list window_loadsave_events = {
+static rct_window_event_list window_loadsave_events =
+{
     window_loadsave_close,
     window_loadsave_mouseup,
-    nullptr,
+    window_loadsave_resize,
     nullptr,
     nullptr,
     nullptr,
@@ -107,30 +116,33 @@ static rct_window_event_list window_loadsave_events = {
     window_loadsave_tooltip,
     nullptr,
     nullptr,
-    nullptr,
+    window_loadsave_invalidate,
     window_loadsave_paint,
     window_loadsave_scrollpaint
 };
 
 #pragma endregion
 
-enum {
+enum
+{
     TYPE_DIRECTORY,
     TYPE_FILE,
 };
 
-typedef struct loadsave_list_item {
-    char name[256];
-    char path[MAX_PATH];
+typedef struct LoadSaveListItem
+{
+    std::string name;
+    std::string path;
     time_t date_modified;
+    std::string date_formatted;
+    std::string time_formatted;
     uint8 type;
     bool loaded;
-} loadsave_list_item;
+} LoadSaveListItem;
 
 static loadsave_callback _loadSaveCallback;
 
-static sint32 _listItemsCount = 0;
-static loadsave_list_item *_listItems = nullptr;
+static std::vector<LoadSaveListItem> _listItems;
 static char _directory[MAX_PATH];
 static char _shortenedDirectory[MAX_PATH];
 static char _parentDirectory[MAX_PATH];
@@ -138,9 +150,12 @@ static char _extension[32];
 static char _defaultName[MAX_PATH];
 static sint32 _type;
 
+static sint32 maxDateWidth = 0;
+static sint32 maxTimeWidth = 0;
+
 static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, const char *directory, const char *extension);
 static void window_loadsave_select(rct_window *w, const char *path);
-static void window_loadsave_sort_list(sint32 index, sint32 endIndex);
+static void window_loadsave_sort_list();
 
 static rct_window *window_overwrite_prompt_open(const char *name, const char *path);
 
@@ -156,10 +171,12 @@ static sint32 window_loadsave_get_dir(utf8 *last_save, char *path, const char *s
     else
         platform_get_user_directory(path, subdir, pathSize);
 
-    if (!platform_ensure_directory_exists(path)) {
+    if (!platform_ensure_directory_exists(path))
+    {
         log_error("Unable to create save directory.");
         return 0;
     }
+
     return 1;
 }
 
@@ -169,15 +186,30 @@ rct_window *window_loadsave_open(sint32 type, const char *defaultName)
     _type = type;
     _defaultName[0] = '\0';
 
-    if (!str_is_null_or_empty(defaultName)) {
+    if (!str_is_null_or_empty(defaultName))
+    {
         safe_strcpy(_defaultName, defaultName, sizeof(_defaultName));
     }
 
     rct_window *w = window_bring_to_front_by_class(WC_LOADSAVE);
-    if (w == nullptr) {
-        w = window_create_centred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT);
+    if (w == nullptr)
+    {
+        w = window_create_centred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT | WF_RESIZABLE);
         w->widgets = window_loadsave_widgets;
-        w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_UP) | (1 << WIDX_NEW_FOLDER) | (1 << WIDX_NEW_FILE) | (1 << WIDX_SORT_NAME) | (1 << WIDX_SORT_DATE) | (1 << WIDX_BROWSE) | (1 << WIDX_DEFAULT);
+        w->enabled_widgets =
+            (1 << WIDX_CLOSE) |
+            (1 << WIDX_UP) |
+            (1 << WIDX_NEW_FOLDER) |
+            (1 << WIDX_NEW_FILE) |
+            (1 << WIDX_SORT_NAME) |
+            (1 << WIDX_SORT_DATE) |
+            (1 << WIDX_BROWSE) |
+            (1 << WIDX_DEFAULT);
+
+        w->min_width = WW;
+        w->min_height = WH / 2;
+        w->max_width = WW * 2;
+        w->max_height = WH * 2;
     }
 
     w->no_list_items = 0;
@@ -187,65 +219,89 @@ rct_window *window_loadsave_open(sint32 type, const char *defaultName)
     bool success = false;
     char path[MAX_PATH];
 
-    switch (type & 0x0E) {
+    switch (type & 0x0E)
+    {
     case LOADSAVETYPE_GAME:
         w->widgets[WIDX_TITLE].text = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
-        if (window_loadsave_get_dir(gConfigGeneral.last_save_game_directory, path, "save", sizeof(path))) {
+        if (window_loadsave_get_dir(gConfigGeneral.last_save_game_directory, path, "save", sizeof(path)))
+        {
             window_loadsave_populate_list(w, isSave, path, isSave ? ".sv6" : ".sv6;.sc6;.sv4;.sc4");
             success = true;
         }
         break;
+
     case LOADSAVETYPE_LANDSCAPE:
         w->widgets[WIDX_TITLE].text = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
-        if (window_loadsave_get_dir(gConfigGeneral.last_save_landscape_directory, path, "landscape", sizeof(path))) {
+        if (window_loadsave_get_dir(gConfigGeneral.last_save_landscape_directory, path, "landscape", sizeof(path)))
+        {
             window_loadsave_populate_list(w, isSave, path, isSave ? ".sc6" : ".sc6;.sv6;.sc4;.sv4");
             success = true;
         }
         break;
+
     case LOADSAVETYPE_SCENARIO:
         w->widgets[WIDX_TITLE].text = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
-        if (window_loadsave_get_dir(gConfigGeneral.last_save_scenario_directory, path, "scenario", sizeof(path))) {
+        if (window_loadsave_get_dir(gConfigGeneral.last_save_scenario_directory, path, "scenario", sizeof(path)))
+        {
             window_loadsave_populate_list(w, isSave, path, ".sc6");
             success = true;
         }
         break;
+
     case LOADSAVETYPE_TRACK:
         w->widgets[WIDX_TITLE].text = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
-        if (window_loadsave_get_dir(gConfigGeneral.last_save_track_directory, path, "track", sizeof(path))) {
+        if (window_loadsave_get_dir(gConfigGeneral.last_save_track_directory, path, "track", sizeof(path)))
+        {
             window_loadsave_populate_list(w, isSave, path, isSave ? ".td6" : ".td6;.td4");
             success = true;
         }
         break;
+
     case LOADSAVETYPE_IMAGE:
         openrct2_assert(!isSave, "Cannot save images through loadsave window");
         w->widgets[WIDX_TITLE].text = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
-        if (window_loadsave_get_dir(gConfigGeneral.last_save_track_directory, path, "", sizeof(path))) {
+        if (window_loadsave_get_dir(gConfigGeneral.last_save_track_directory, path, "", sizeof(path)))
+        {
             window_loadsave_populate_list(w, false, path, ".bmp;.png");
             success = true;
         }
         break;
+
     default:
         log_error("Unsupported load/save type: %d", type & 0x0F);
     }
 
-    if (!success) {
+    if (!success)
+    {
         window_close(w);
         return nullptr;
     }
 
-    w->no_list_items = _listItemsCount;
+    w->no_list_items = static_cast<uint16>(_listItems.size());
     window_init_scroll_widgets(w);
+    window_loadsave_compute_max_date_width();
+
     return w;
 }
 
 static void window_loadsave_close(rct_window *w)
 {
-    if (_listItems != nullptr) {
-        free(_listItems);
-        _listItems = nullptr;
-    }
-
+    _listItems.clear();
     window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
+}
+
+static void window_loadsave_resize(rct_window *w)
+{
+    if (w->width < w->min_width)
+    {
+        window_invalidate(w);
+        w->width = w->min_width;
+    }
+    if (w->height < w->min_height)
+    {
+        window_invalidate(w);
+        w->height = w->min_height;
+    }
 }
 
 static bool browse(bool isSave, char *path, size_t pathSize)
@@ -260,27 +316,32 @@ static bool browse(bool isSave, char *path, size_t pathSize)
     desc.default_filename = isSave ? path : nullptr;
 
     rct_string_id title = STR_NONE;
-    switch (_type & 0x0E) {
+    switch (_type & 0x0E)
+    {
     case LOADSAVETYPE_GAME:
         title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
         desc.filters[0].name = language_get_string(STR_OPENRCT2_SAVED_GAME);
         desc.filters[0].pattern = isSave ? "*.sv6" : "*.sv6;*.sc6;*.sv4;*.sc4";
         break;
+
     case LOADSAVETYPE_LANDSCAPE:
         title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
         desc.filters[0].name = language_get_string(STR_OPENRCT2_LANDSCAPE_FILE);
         desc.filters[0].pattern = isSave ? "*.sc6" : "*.sc6;*.sv6;*.sc4;*.sv4";
         break;
+
     case LOADSAVETYPE_SCENARIO:
         title = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
         desc.filters[0].name = language_get_string(STR_OPENRCT2_SCENARIO_FILE);
         desc.filters[0].pattern = "*.sc6";
         break;
+
     case LOADSAVETYPE_TRACK:
         title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
         desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
         desc.filters[0].pattern = isSave ? "*.td6" : "*.td6;*.td4";
         break;
+
     case LOADSAVETYPE_IMAGE:
         title = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
         desc.filters[0].name = language_get_string(STR_OPENRCT2_HEIGHTMAP_FILE);
@@ -301,22 +362,27 @@ static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
     char path[MAX_PATH];
 
     bool isSave = (_type & 0x01) == LOADSAVETYPE_SAVE;
-    switch (widgetIndex){
+    switch (widgetIndex)
+    {
     case WIDX_CLOSE:
         window_close(w);
         break;
+
     case WIDX_UP:
         safe_strcpy(path, _parentDirectory, sizeof(path));
         window_loadsave_populate_list(w, isSave, path, _extension);
         window_init_scroll_widgets(w);
-        w->no_list_items = _listItemsCount;
+        w->no_list_items = static_cast<uint16>(_listItems.size());
         break;
+
     case WIDX_NEW_FILE:
         window_text_input_open(w, WIDX_NEW_FILE, STR_NONE, STR_FILEBROWSER_FILE_NAME_PROMPT, STR_STRING, (uintptr_t)&_defaultName, 64);
         break;
+
     case WIDX_NEW_FOLDER:
         window_text_input_raw_open(w, WIDX_NEW_FOLDER, STR_NONE, STR_FILEBROWSER_FOLDER_NAME_PROMPT, nullptr, 64);
         break;
+
     case WIDX_BROWSE:
         if (browse(isSave, path, sizeof(path)))
         {
@@ -328,31 +394,41 @@ static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             safe_strcpy(path, _directory, sizeof(path));
             window_loadsave_populate_list(w, isSave, path, _extension);
             window_init_scroll_widgets(w);
-            w->no_list_items = _listItemsCount;
+            w->no_list_items = static_cast<uint16>(_listItems.size());
         }
         break;
+
     case WIDX_SORT_NAME:
-        if (gConfigGeneral.load_save_sort == SORT_NAME_ASCENDING){
+        if (gConfigGeneral.load_save_sort == SORT_NAME_ASCENDING)
+        {
             gConfigGeneral.load_save_sort = SORT_NAME_DESCENDING;
-        } else {
+        }
+        else
+        {
             gConfigGeneral.load_save_sort = SORT_NAME_ASCENDING;
         }
         config_save_default();
-        window_loadsave_sort_list(0, _listItemsCount - 1);
+        window_loadsave_sort_list();
         window_invalidate(w);
         break;
+
     case WIDX_SORT_DATE:
-        if (gConfigGeneral.load_save_sort == SORT_DATE_DESCENDING){
+        if (gConfigGeneral.load_save_sort == SORT_DATE_DESCENDING)
+        {
             gConfigGeneral.load_save_sort = SORT_DATE_ASCENDING;
-        } else {
+        }
+        else
+        {
             gConfigGeneral.load_save_sort = SORT_DATE_DESCENDING;
         }
         config_save_default();
-        window_loadsave_sort_list(0, _listItemsCount - 1);
+        window_loadsave_sort_list();
         window_invalidate(w);
         break;
+
     case WIDX_DEFAULT:
-        switch (_type & 0x0E) {
+        switch (_type & 0x0E)
+        {
         case LOADSAVETYPE_GAME:
             platform_get_user_directory(path, "save", sizeof(path));
             break;
@@ -369,7 +445,7 @@ static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 
         window_loadsave_populate_list(w, isSave, path, _extension);
         window_init_scroll_widgets(w);
-        w->no_list_items = _listItemsCount;
+        w->no_list_items = static_cast<uint16>(_listItems.size());
         break;
     }
 }
@@ -386,7 +462,9 @@ static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, s
     selectedItem = y / SCROLLABLE_ROW_HEIGHT;
     if (selectedItem >= w->no_list_items)
         return;
-    if (_listItems[selectedItem].type == TYPE_DIRECTORY){
+
+    if (_listItems[selectedItem].type == TYPE_DIRECTORY)
+    {
         // The selected item is a folder
         sint32 includeNewItem;
 
@@ -395,19 +473,21 @@ static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, s
         includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
 
         char directory[MAX_PATH];
-        safe_strcpy(directory, _listItems[selectedItem].path, sizeof(directory));
+        safe_strcpy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
 
         window_loadsave_populate_list(w, includeNewItem, directory, _extension);
         window_init_scroll_widgets(w);
 
-        w->no_list_items = _listItemsCount;
-    } else {
+        w->no_list_items = static_cast<uint16>(_listItems.size());
+    }
+    else
+    {
         // TYPE_FILE
         // Load or overwrite
         if ((_type & 0x01) == LOADSAVETYPE_SAVE)
-            window_overwrite_prompt_open(_listItems[selectedItem].name, _listItems[selectedItem].path);
+            window_overwrite_prompt_open(_listItems[selectedItem].name.c_str(), _listItems[selectedItem].path.c_str());
         else
-            window_loadsave_select(w, _listItems[selectedItem].path);
+            window_loadsave_select(w, _listItems[selectedItem].path.c_str());
     }
 }
 
@@ -427,14 +507,16 @@ static void window_loadsave_scrollmouseover(rct_window *w, sint32 scrollIndex, s
 static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
     char path[MAX_PATH];
-    sint32 i, overwrite;
+    bool overwrite;
 
     if (text == nullptr || text[0] == 0)
         return;
 
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
         case WIDX_NEW_FOLDER:
-            if (!filename_valid_characters(text)) {
+            if (!filename_valid_characters(text))
+            {
                 context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
                 return;
             }
@@ -442,28 +524,33 @@ static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex
             safe_strcpy(path, _directory, sizeof(path));
             safe_strcat_path(path, text, sizeof(path));
 
-            if (!platform_ensure_directory_exists(path)) {
+            if (!platform_ensure_directory_exists(path))
+            {
                 context_show_error(STR_UNABLE_TO_CREATE_FOLDER, STR_NONE);
                 return;
             }
+
             w->no_list_items = 0;
             w->selected_list_item = -1;
 
             window_loadsave_populate_list(w, (_type & 1) == LOADSAVETYPE_SAVE, path, _extension);
             window_init_scroll_widgets(w);
 
-            w->no_list_items = _listItemsCount;
+            w->no_list_items = static_cast<uint16>(_listItems.size());
             window_invalidate(w);
             break;
+
         case WIDX_NEW_FILE:
             safe_strcpy(path, _directory, sizeof(path));
             safe_strcat_path(path, text, sizeof(path));
             path_append_extension(path, _extension, sizeof(path));
 
-            overwrite = 0;
-            for (i = 0; i < _listItemsCount; i++) {
-                if (_stricmp(_listItems[i].path, path) == 0) {
-                    overwrite = 1;
+            overwrite = false;
+            for (auto &item : _listItems)
+            {
+                if (_stricmp(item.path.c_str(), path) == 0)
+                {
+                    overwrite = true;
                     break;
                 }
             }
@@ -474,8 +561,6 @@ static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex
                 window_loadsave_select(w, path);
             break;
     }
-
-
 }
 
 static void window_loadsave_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
@@ -483,11 +568,60 @@ static void window_loadsave_tooltip(rct_window* w, rct_widgetindex widgetIndex, 
     set_format_arg(0, rct_string_id, STR_LIST);
 }
 
+static void window_loadsave_compute_max_date_width()
+{
+    // Generate a time object for a relatively wide time: 2000-10-20 00:00:00
+    std::tm tm;
+    tm.tm_sec = 0;
+    tm.tm_min = 0;
+    tm.tm_hour = 0;
+    tm.tm_mday = 20;
+    tm.tm_mon = 9;
+    tm.tm_year = 100;
+    tm.tm_wday = 5;
+    tm.tm_yday = 294;
+    tm.tm_isdst = -1;
+
+    std::time_t long_time = mktime(&tm);
+
+    std::string date = Platform::FormatShortDate(long_time);
+    maxDateWidth = gfx_get_string_width(date.c_str());
+
+    std::string time = Platform::FormatTime(long_time);
+    maxTimeWidth = gfx_get_string_width(time.c_str());
+}
+
+static void window_loadsave_invalidate(rct_window *w)
+{
+    window_loadsave_widgets[WIDX_TITLE].right = w->width - 2;
+    window_loadsave_widgets[WIDX_CLOSE].left = w->width - 13;
+    window_loadsave_widgets[WIDX_CLOSE].right = w->width - 3;
+    window_loadsave_widgets[WIDX_BACKGROUND].right = w->width - 1;
+    window_loadsave_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+    window_loadsave_widgets[WIDX_RESIZE].top = w->height - 1;
+    window_loadsave_widgets[WIDX_RESIZE].right = w->width - 1;
+    window_loadsave_widgets[WIDX_RESIZE].bottom = w->height - 1;
+
+    rct_widget * date_widget = &window_loadsave_widgets[WIDX_SORT_DATE];
+    date_widget->left = w->width - maxDateWidth - maxTimeWidth - 24;
+    date_widget->right = w->width - 5;
+
+    window_loadsave_widgets[WIDX_SORT_NAME].left = 4;
+    window_loadsave_widgets[WIDX_SORT_NAME].right = window_loadsave_widgets[WIDX_SORT_DATE].left - 1;
+
+    window_loadsave_widgets[WIDX_SCROLL].right = w->width - 4;
+    window_loadsave_widgets[WIDX_SCROLL].bottom = w->height - 30;
+
+    window_loadsave_widgets[WIDX_BROWSE].top = w->height - 24;
+    window_loadsave_widgets[WIDX_BROWSE].bottom = w->height - 6;
+}
+
 static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
     window_draw_widgets(w, dpi);
 
-    if (_shortenedDirectory[0] == '\0') {
+    if (_shortenedDirectory[0] == '\0')
+    {
         shorten_path(_shortenedDirectory, sizeof(_shortenedDirectory), _directory, w->width - 8);
     }
 
@@ -499,18 +633,25 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
     ch = utf8_write_codepoint(ch, FORMAT_BLACK);
     safe_strcpy(ch, _shortenedDirectory, sizeof(buffer) - (ch - buffer));
 
-    // Draw shadow
-    gfx_draw_string(dpi, buffer, COLOUR_BLACK, w->x + 4, w->y + 20);
-    rct_string_id id = STR_NONE;
+    // Draw path text
+#ifdef __APPLE__
+    set_format_arg(0, uintptr_t, (uintptr_t) macos_str_decomp_to_precomp(buffer));
+#else
+    set_format_arg(0, uintptr_t, (uintptr_t) buffer);
+#endif
+    gfx_draw_string_left_clipped(dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->x + 4, w->y + 20, w->width - 8);
 
     // Name button text
+    rct_string_id id = STR_NONE;
     if (gConfigGeneral.load_save_sort == SORT_NAME_ASCENDING)
         id = STR_UP;
     else if (gConfigGeneral.load_save_sort == SORT_NAME_DESCENDING)
         id = STR_DOWN;
 
-    gfx_draw_string_centred_clipped(dpi, STR_NAME, &id, COLOUR_GREY, w->x + 4 + (w->width - 8) / 4,
-        w->y + window_loadsave_widgets[WIDX_SORT_NAME].top + 1, (w->width - 8) / 2);
+    // Draw name button indicator.
+    rct_widget sort_name_widget = window_loadsave_widgets[WIDX_SORT_NAME];
+    gfx_draw_string_left(dpi, STR_NAME, &id, COLOUR_GREY, w->x + sort_name_widget.left + 11,
+        w->y + sort_name_widget.top + 1);
 
     // Date button text
     if (gConfigGeneral.load_save_sort == SORT_DATE_ASCENDING)
@@ -520,8 +661,9 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
     else
         id = STR_NONE;
 
-    gfx_draw_string_centred_clipped(dpi, STR_DATE, &id, COLOUR_GREY, w->x + 4 + (w->width - 8) * 3 / 4,
-        w->y + window_loadsave_widgets[WIDX_SORT_DATE].top + 1, (w->width - 8) / 2);
+    rct_widget sort_date_widget = window_loadsave_widgets[WIDX_SORT_DATE];
+    gfx_draw_string_left(dpi, STR_DATE, &id, COLOUR_GREY, w->x + sort_date_widget.left + 5,
+        w->y + sort_date_widget.top + 1);
 }
 
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
@@ -529,7 +671,8 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
     const sint32 listWidth = w->widgets[WIDX_SCROLL].right - w->widgets[WIDX_SCROLL].left;
 
-    for (sint32 i = 0; i < w->no_list_items; i++) {
+    for (sint32 i = 0; i < w->no_list_items; i++)
+    {
         sint32 y = i * SCROLLABLE_ROW_HEIGHT;
         if (y > dpi->y + dpi->height)
             break;
@@ -540,101 +683,100 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
         rct_string_id stringId = STR_BLACK_STRING;
 
         // If hovering over item, change the color and fill the backdrop.
-        if (i == w->selected_list_item) {
+        if (i == w->selected_list_item)
+        {
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
             gfx_filter_rect(dpi, 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT, PALETTE_DARKEN_1);
         }
         // display a marker next to the currently loaded game file
-        if (_listItems[i].loaded) {
+        if (_listItems[i].loaded)
+        {
             set_format_arg(0, rct_string_id, STR_RIGHTGUILLEMET);
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 0, y);
         }
 
+        // Print filename
         set_format_arg(0, rct_string_id, STR_STRING);
-        set_format_arg(2, char*, _listItems[i].name);
-        gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, SCROLLABLE_ROW_HEIGHT, y);
+        set_format_arg(2, char*, _listItems[i].name.c_str());
+        sint32 max_file_width = w->widgets[WIDX_SORT_NAME].right - w->widgets[WIDX_SORT_NAME].left - 10;
+        gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 10, y, max_file_width);
+
+        // Print formatted modified date, if this is a file
+        if (_listItems[i].type == TYPE_FILE)
+        {
+            sint32 offset = w->widgets[WIDX_SORT_DATE].left + maxDateWidth;
+
+            set_format_arg(0, rct_string_id, STR_STRING);
+            set_format_arg(2, char*, _listItems[i].date_formatted.c_str());
+            gfx_draw_string_right_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, offset - 2, y, maxDateWidth);
+
+            set_format_arg(2, char*, _listItems[i].time_formatted.c_str());
+            gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, offset + 2, y, maxTimeWidth);
+        }
     }
 }
 
-static sint32 list_item_sort(const void *a, const void *b)
+static bool list_item_sort(LoadSaveListItem &a, LoadSaveListItem &b)
 {
-    const loadsave_list_item *itemA = (loadsave_list_item*)a;
-    const loadsave_list_item *itemB = (loadsave_list_item*)b;
+    if (a.type != b.type)
+        return a.type - b.type < 0;
 
-    if (itemA->type != itemB->type)
-        return itemA->type - itemB->type;
-
-    switch (gConfigGeneral.load_save_sort){
+    switch (gConfigGeneral.load_save_sort)
+    {
     case SORT_NAME_ASCENDING:
-        return strcicmp(itemA->name, itemB->name);
+        return strcicmp(a.name.c_str(), b.name.c_str()) < 0;
     case SORT_NAME_DESCENDING:
-        return -strcicmp(itemA->name, itemB->name);
+        return -strcicmp(a.name.c_str(), b.name.c_str()) < 0;
     case SORT_DATE_DESCENDING:
-        return (sint32) -difftime(itemA->date_modified, itemB->date_modified);
+        return -difftime(a.date_modified, b.date_modified) < 0;
     case SORT_DATE_ASCENDING:
-        return (sint32) difftime(itemA->date_modified, itemB->date_modified);
+        return difftime(a.date_modified, b.date_modified) < 0;
     default:
-        return strcicmp(itemA->name, itemB->name);
+        return strcicmp(a.name.c_str(), b.name.c_str()) < 0;
     }
 }
 
-static void window_loadsave_sort_list(sint32 index, sint32 endIndex)
+static void window_loadsave_sort_list()
 {
-    sint32 count = endIndex - index + 1;
-    if (count < 0)
-        return;
-
-    qsort(_listItems + index, count, sizeof(loadsave_list_item), list_item_sort);
+    std::sort(_listItems.begin(), _listItems.end(), list_item_sort);
 }
 
 static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, const char *directory, const char *extension)
 {
     safe_strcpy(_directory, directory, sizeof(_directory));
-    if (_extension != extension) {
+    if (_extension != extension)
+    {
         safe_strcpy(_extension, extension, sizeof(_extension));
     }
     _shortenedDirectory[0] = '\0';
 
-    if (_listItems != nullptr)
-        free(_listItems);
-
-    sint32 listItemCapacity = 8;
-    _listItems = Memory::AllocateArray<loadsave_list_item>(listItemCapacity);
-    _listItemsCount = 0;
+    _listItems.clear();
 
     // Show "new" buttons when saving
-    window_loadsave_widgets[WIDX_NEW_FILE].type = includeNewItem ? WWT_CLOSEBOX : WWT_EMPTY;
-    window_loadsave_widgets[WIDX_NEW_FOLDER].type = includeNewItem ? WWT_CLOSEBOX : WWT_EMPTY;
+    window_loadsave_widgets[WIDX_NEW_FILE].type = includeNewItem ? WWT_BUTTON : WWT_EMPTY;
+    window_loadsave_widgets[WIDX_NEW_FOLDER].type = includeNewItem ? WWT_BUTTON : WWT_EMPTY;
 
     sint32 drives = platform_get_drives();
-    if (str_is_null_or_empty(directory) && drives) {
+    if (str_is_null_or_empty(directory) && drives)
+    {
         // List Windows drives
         w->disabled_widgets |= (1 << WIDX_NEW_FILE) | (1 << WIDX_NEW_FOLDER) | (1 << WIDX_UP);
-        for (sint32 x = 0; x < 26; x++){
-            if (listItemCapacity <= _listItemsCount) {
-                listItemCapacity *= 2;
-                void *new_memory = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
-                if (new_memory == nullptr) {
-                    log_error("Failed to reallocate memory for loadsave list");
-                    return;
-                }
-                _listItems = (loadsave_list_item*)new_memory;
-            }
-
-            if (drives & (1 << x)){
+        for (sint32 x = 0; x < 26; x++)
+        {
+            if (drives & (1 << x))
+            {
                 // If the drive exists, list it
-                loadsave_list_item *listItem = &_listItems[_listItemsCount];
+                LoadSaveListItem newListItem;
+                newListItem.path = std::string(1, 'A' + x) + ":" PATH_SEPARATOR;
+                newListItem.name = newListItem.path;
+                newListItem.type = TYPE_DIRECTORY;
 
-                snprintf(listItem->path, sizeof(listItem->path), "%c:" PATH_SEPARATOR, 'A' + x);
-                safe_strcpy(listItem->name, listItem->path, sizeof(listItem->name));
-                listItem->type = TYPE_DIRECTORY;
-
-                _listItemsCount++;
+                _listItems.push_back(newListItem);
             }
         }
     }
-    else {
-
+    else
+    {
         // Remove the separator at the end of the path, if present
         safe_strcpy(_parentDirectory, directory, sizeof(_parentDirectory));
         if (_parentDirectory[strlen(_parentDirectory) - 1] == *PATH_SEPARATOR
@@ -645,12 +787,17 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
         char *ch = strrchr(_parentDirectory, *PATH_SEPARATOR);
         char *posix_ch = strrchr(_parentDirectory, '/');
         ch = ch < posix_ch ? posix_ch : ch;
-        if (ch != nullptr) {
+        if (ch != nullptr)
+        {
             *(ch + 1) = '\0';
-        } else if (drives) {
+        }
+        else if (drives)
+        {
             // If on Windows, clear the entire path to show the drives
             _parentDirectory[0] = '\0';
-        } else {
+        }
+        else
+        {
             // Else, go to the root directory
             snprintf(_parentDirectory, MAX_PATH, "%c", *PATH_SEPARATOR);
         }
@@ -668,20 +815,20 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
         // List all directories
         char subDir[MAX_PATH];
         sint32 fileEnumHandle = platform_enumerate_directories_begin(directory);
-        while (platform_enumerate_directories_next(fileEnumHandle, subDir)) {
-            if (listItemCapacity <= _listItemsCount) {
-                listItemCapacity *= 2;
-                _listItems = Memory::ReallocateArray(_listItems, listItemCapacity);
-            }
+        while (platform_enumerate_directories_next(fileEnumHandle, subDir))
+        {
+            LoadSaveListItem newListItem;
 
-            loadsave_list_item *listItem = &_listItems[_listItemsCount];
-            safe_strcpy(listItem->path, directory, sizeof(listItem->path));
-            safe_strcat_path(listItem->path, subDir, sizeof(listItem->path));
-            safe_strcpy(listItem->name, subDir, sizeof(listItem->name));
-            listItem->type = TYPE_DIRECTORY;
-            listItem->loaded = false;
+            char path[MAX_PATH];
+            safe_strcpy(path, directory, sizeof(path));
+            safe_strcat_path(path, subDir, sizeof(path));
 
-            _listItemsCount++;
+            newListItem.path = path;
+            newListItem.name = subDir;
+            newListItem.type = TYPE_DIRECTORY;
+            newListItem.loaded = false;
+
+            _listItems.push_back(newListItem);
         }
         platform_enumerate_files_end(fileEnumHandle);
 
@@ -692,34 +839,47 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
         char * extToken;
         bool showExtension = false;
         extToken = strtok(extCopy, ";");
-        while (extToken != nullptr) {
+        while (extToken != nullptr)
+        {
             safe_strcpy(filter, directory, sizeof(filter));
             safe_strcat_path(filter, "*", sizeof(filter));
             path_append_extension(filter, extToken, sizeof(filter));
 
             file_info fileInfo;
             fileEnumHandle = platform_enumerate_files_begin(filter);
-            while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
-                if (listItemCapacity <= _listItemsCount) {
-                    listItemCapacity *= 2;
-                    _listItems = Memory::ReallocateArray(_listItems, listItemCapacity);
-                }
+            while (platform_enumerate_files_next(fileEnumHandle, &fileInfo))
+            {
+                LoadSaveListItem newListItem;
 
-                loadsave_list_item *listItem = &_listItems[_listItemsCount];
+                char path[MAX_PATH];
+                safe_strcpy(path, directory, sizeof(path));
+                safe_strcat_path(path, fileInfo.path, sizeof(path));
 
-                safe_strcpy(listItem->path, directory, sizeof(listItem->path));
-                safe_strcat_path(listItem->path, fileInfo.path, sizeof(listItem->path));
-                listItem->type = TYPE_FILE;
-                listItem->date_modified = platform_file_get_modified_time(listItem->path);
+                newListItem.path = path;
+                newListItem.type = TYPE_FILE;
+
+                newListItem.date_modified = platform_file_get_modified_time(newListItem.path.c_str());
+
+                // Cache a human-readable version of the modified date.
+                newListItem.date_formatted = Platform::FormatShortDate(newListItem.date_modified);
+                newListItem.time_formatted = Platform::FormatTime(newListItem.date_modified);
+
                 // Mark if file is the currently loaded game
-                listItem->loaded = strcmp(listItem->path, gCurrentLoadedPath) == 0;
+                newListItem.loaded = newListItem.path.compare(gCurrentLoadedPath) == 0;
 
                 // Remove the extension (but only the first extension token)
-                safe_strcpy(listItem->name, fileInfo.path, sizeof(listItem->name));
                 if (!showExtension)
-                    path_remove_extension(listItem->name);
+                {
+                    utf8 * removeExt = (utf8 *) fileInfo.path;
+                    path_remove_extension(removeExt);
+                    newListItem.name = String::ToStd(removeExt);
+                }
+                else
+                {
+                    newListItem.name = fileInfo.path;
+                }
 
-                _listItemsCount++;
+                _listItems.push_back(newListItem);
             }
             platform_enumerate_files_end(fileEnumHandle);
 
@@ -727,13 +887,14 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
             showExtension = true; //Show any extension after the first iteration
         }
 
-        window_loadsave_sort_list(0, _listItemsCount - 1);
+        window_loadsave_sort_list();
     }
 }
 
 static void window_loadsave_invoke_callback(sint32 result, const utf8 * path)
 {
-    if (_loadSaveCallback != nullptr) {
+    if (_loadSaveCallback != nullptr)
+    {
         _loadSaveCallback(result, path);
     }
 }
@@ -760,7 +921,8 @@ static bool is_valid_path(const char * path)
 
 static void window_loadsave_select(rct_window *w, const char *path)
 {
-    if (!is_valid_path(path)) {
+    if (!is_valid_path(path))
+    {
         context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
         return;
     }
@@ -769,7 +931,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
     safe_strcpy(pathBuffer, path, sizeof(pathBuffer));
 
     switch (_type & 0x0F) {
-    case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
+    case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME):
         save_path(&gConfigGeneral.last_save_game_directory, pathBuffer);
         safe_strcpy(gScenarioSavePath, pathBuffer, MAX_PATH);
         safe_strcpy(gCurrentLoadedPath, pathBuffer, MAX_PATH);
@@ -778,9 +940,11 @@ static void window_loadsave_select(rct_window *w, const char *path)
         window_close_by_class(WC_LOADSAVE);
         gfx_invalidate_screen();
         break;
-    case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
+
+    case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME):
         save_path(&gConfigGeneral.last_save_game_directory, pathBuffer);
-        if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 1 : 0)) {
+        if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 1 : 0))
+        {
             safe_strcpy(gScenarioSavePath, pathBuffer, MAX_PATH);
             safe_strcpy(gCurrentLoadedPath, pathBuffer, MAX_PATH);
             gFirstTimeSaving = false;
@@ -789,37 +953,48 @@ static void window_loadsave_select(rct_window *w, const char *path)
             gfx_invalidate_screen();
 
             window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
-        } else {
+        }
+        else
+        {
             context_show_error(STR_SAVE_GAME, STR_GAME_SAVE_FAILED);
             window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
         }
         break;
-    case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
+
+    case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE):
         save_path(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
-        if (Editor::LoadLandscape(pathBuffer)) {
+        if (Editor::LoadLandscape(pathBuffer))
+        {
             safe_strcpy(gCurrentLoadedPath, pathBuffer, MAX_PATH);
             gfx_invalidate_screen();
             window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
-        } else {
+        }
+        else
+        {
             // Not the best message...
             context_show_error(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA);
             window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
         }
         break;
-    case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
+
+    case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE):
         save_path(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
         safe_strcpy(gScenarioFileName, pathBuffer, sizeof(gScenarioFileName));
-        if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2)) {
+        if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2))
+        {
             safe_strcpy(gCurrentLoadedPath, pathBuffer, MAX_PATH);
             window_close_by_class(WC_LOADSAVE);
             gfx_invalidate_screen();
             window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
-        } else {
+        }
+        else
+        {
             context_show_error(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED);
             window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
         }
         break;
-    case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
+
+    case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO):
     {
         save_path(&gConfigGeneral.last_save_scenario_directory, pathBuffer);
         sint32 parkFlagsBackup = gParkFlags;
@@ -829,18 +1004,22 @@ static void window_loadsave_select(rct_window *w, const char *path)
         sint32 success = scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2);
         gParkFlags = parkFlagsBackup;
 
-        if (success) {
+        if (success)
+        {
             window_close_by_class(WC_LOADSAVE);
             window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
             title_load();
-        } else {
+        }
+        else
+        {
             context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
             gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
             window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
         }
         break;
     }
-    case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
+
+    case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK):
     {
         save_path(&gConfigGeneral.last_save_track_directory, pathBuffer);
         auto intent = Intent(WC_INSTALL_TRACK);
@@ -850,22 +1029,27 @@ static void window_loadsave_select(rct_window *w, const char *path)
         window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
         break;
     }
-    case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK) :
+
+    case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK):
     {
         path_set_extension(pathBuffer, "td6", sizeof(pathBuffer));
         sint32 success = track_design_save_to_file(pathBuffer);
 
-        if (success) {
+        if (success)
+        {
             window_close_by_class(WC_LOADSAVE);
             window_ride_measurements_design_cancel();
             window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
-        } else {
+        }
+        else
+        {
             context_show_error(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED);
             window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
         }
         break;
     }
-    case (LOADSAVETYPE_LOAD | LOADSAVETYPE_IMAGE) :
+
+    case (LOADSAVETYPE_LOAD | LOADSAVETYPE_IMAGE):
         window_close_by_class(WC_LOADSAVE);
         window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
         break;
@@ -885,19 +1069,21 @@ enum {
     WIDX_OVERWRITE_CANCEL
 };
 
-static rct_widget window_overwrite_prompt_widgets[] = {
+static rct_widget window_overwrite_prompt_widgets[] =
+{
     { WWT_FRAME,            0, 0,                   OVERWRITE_WW - 1,   0,                  OVERWRITE_WH - 1,   STR_NONE,                           STR_NONE },
     { WWT_CAPTION,          0, 1,                   OVERWRITE_WW - 2,   1,                  14,                 STR_FILEBROWSER_OVERWRITE_TITLE,    STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,         0, OVERWRITE_WW - 13,   OVERWRITE_WW - 3,   2,                  13,                 STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP },
-    { WWT_DROPDOWN_BUTTON,  0, 10,                  94,                 OVERWRITE_WH - 20,  OVERWRITE_WH - 9,   STR_FILEBROWSER_OVERWRITE_TITLE,    STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  0, OVERWRITE_WW - 95,   OVERWRITE_WW - 11,  OVERWRITE_WH - 20,  OVERWRITE_WH - 9,   STR_SAVE_PROMPT_CANCEL,             STR_NONE },
+    { WWT_BUTTON,           0, 10,                  94,                 OVERWRITE_WH - 20,  OVERWRITE_WH - 9,   STR_FILEBROWSER_OVERWRITE_TITLE,    STR_NONE },
+    { WWT_BUTTON,           0, OVERWRITE_WW - 95,   OVERWRITE_WW - 11,  OVERWRITE_WH - 20,  OVERWRITE_WH - 9,   STR_SAVE_PROMPT_CANCEL,             STR_NONE },
     { WIDGETS_END }
 };
 
 static void window_overwrite_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_overwrite_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_overwrite_prompt_events = {
+static rct_window_event_list window_overwrite_prompt_events =
+{
     nullptr,
     window_overwrite_prompt_mouseup,
     nullptr,
@@ -939,8 +1125,13 @@ static rct_window *window_overwrite_prompt_open(const char *name, const char *pa
 
     w = window_create_centred(OVERWRITE_WW, OVERWRITE_WH, &window_overwrite_prompt_events, WC_LOADSAVE_OVERWRITE_PROMPT, WF_STICK_TO_FRONT);
     w->widgets = window_overwrite_prompt_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_OVERWRITE_CANCEL) | (1 << WIDX_OVERWRITE_OVERWRITE);
+    w->enabled_widgets =
+        (1 << WIDX_CLOSE) |
+        (1 << WIDX_OVERWRITE_CANCEL) |
+        (1 << WIDX_OVERWRITE_OVERWRITE);
+
     window_init_scroll_widgets(w);
+
     w->flags |= WF_TRANSPARENT;
     w->colours[0] = TRANSLUCENT(COLOUR_BORDEAUX_RED);
 
@@ -954,7 +1145,8 @@ static void window_overwrite_prompt_mouseup(rct_window *w, rct_widgetindex widge
 {
     rct_window *loadsaveWindow;
 
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_OVERWRITE_OVERWRITE:
         loadsaveWindow = window_find_by_class(WC_LOADSAVE);
         if (loadsaveWindow != nullptr)
@@ -963,6 +1155,7 @@ static void window_overwrite_prompt_mouseup(rct_window *w, rct_widgetindex widge
         // windows we can't use window_close(w).
         window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
         break;
+
     case WIDX_OVERWRITE_CANCEL:
     case WIDX_OVERWRITE_CLOSE:
         window_close(w);
@@ -981,6 +1174,5 @@ static void window_overwrite_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
     sint32 y = w->y + (w->height / 2) - 3;
     gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, COLOUR_BLACK);
 }
-
 
 #pragma endregion

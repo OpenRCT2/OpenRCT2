@@ -18,9 +18,9 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2-ui/input/KeyboardShortcuts.h>
 
-#include <openrct2/interface/window.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/Window.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 
 #define WW 250
 #define WH 60

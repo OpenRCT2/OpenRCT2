@@ -27,11 +27,11 @@
 #include "X8DrawingEngine.h"
 
 #include "../Game.h"
-#include "../interface/viewport.h"
-#include "../interface/window.h"
-#include "../intro.h"
-#include "drawing.h"
-#include "lightfx.h"
+#include "../interface/Viewport.h"
+#include "../interface/Window.h"
+#include "../Intro.h"
+#include "Drawing.h"
+#include "LightFX.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -54,7 +54,7 @@ void X8RainDrawer::SetDPI(rct_drawpixelinfo * dpi)
 
 void X8RainDrawer::Draw(sint32 x, sint32 y, sint32 width, sint32 height, sint32 xStart, sint32 yStart)
 {
-    static const uint8 RainPattern[] =
+    static constexpr const uint8 RainPattern[] =
     {
         32, 32, 0, 12, 0, 14, 0, 16, 255, 0, 255, 0, 255, 0, 255, 0, 255,
         0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
@@ -163,7 +163,7 @@ void X8DrawingEngine::SetPalette(const rct_palette_entry * palette)
 {
 }
 
-void X8DrawingEngine::SetUncappedFrameRate(bool uncapped)
+void X8DrawingEngine::SetVSync(bool vsync)
 {
     // Not applicable for this engine
 }
@@ -220,7 +220,7 @@ void X8DrawingEngine::EndDraw()
 
 void X8DrawingEngine::PaintWindows()
 {
-    ResetWindowVisbilities();
+    window_reset_visibilities();
 
     // Redraw dirty regions before updating the viewports, otherwise
     // when viewports get panned, they copy dirty pixels
@@ -383,16 +383,6 @@ void X8DrawingEngine::ConfigureDirtyGrid()
     _dirtyGrid.Blocks = new uint8[_dirtyGrid.BlockColumns * _dirtyGrid.BlockRows];
 }
 
-void X8DrawingEngine::ResetWindowVisbilities()
-{
-    // reset window visibility status to unknown
-    for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
-    {
-        w->visibility = VC_UNKNOWN;
-        if (w->viewport != nullptr) w->viewport->visibility = VC_UNKNOWN;
-    }
-}
-
 void X8DrawingEngine::DrawAllDirtyBlocks()
 {
     uint32  dirtyBlockColumns = _dirtyGrid.BlockColumns;
@@ -506,7 +496,8 @@ void X8DrawingContext::Clear(uint8 paletteIndex)
 }
 
 /** rct2: 0x0097FF04 */
-static const uint16 Pattern[] = {
+// clang-format off
+static constexpr const uint16 Pattern[] = {
     0b0111111110000000,
     0b0011111111000000,
     0b0001111111100000,
@@ -526,7 +517,7 @@ static const uint16 Pattern[] = {
 };
 
 /** rct2: 0x0097FF14 */
-static const uint16 PatternInverse[] = {
+static constexpr const uint16 PatternInverse[] = {
     0b1000000001111111,
     0b1100000000111111,
     0b1110000000011111,
@@ -546,10 +537,11 @@ static const uint16 PatternInverse[] = {
 };
 
 /** rct2: 0x0097FEFC */
-static const uint16 * Patterns[] = {
+static constexpr const uint16 * Patterns[] = {
     Pattern,
     PatternInverse
 };
+// clang-format on
 
 void X8DrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {

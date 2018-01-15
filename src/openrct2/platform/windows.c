@@ -31,11 +31,11 @@
 #include <sys/stat.h>
 
 #include "../config/Config.h"
-#include "../localisation/date.h"
-#include "../localisation/language.h"
+#include "../localisation/Date.h"
+#include "../localisation/Language.h"
 #include "../OpenRCT2.h"
-#include "../rct2.h"
-#include "../util/util.h"
+#include "../rct2/RCT2.h"
+#include "../util/Util.h"
 #include "../Version.h"
 #include "platform.h"
 

@@ -195,6 +195,7 @@ extern "C"
 #endif
     void context_init();
     void context_setcurrentcursor(sint32 cursor);
+    void context_update_cursor_scale();
     void context_hide_cursor();
     void context_show_cursor();
     void context_get_cursor_position(sint32 * x, sint32 * y);
@@ -222,6 +223,7 @@ extern "C"
     void context_broadcast_intent(Intent * intent);
     void context_force_close_window_by_class(rct_windowclass wc);
     void context_update_map_tooltip();
+    void context_handle_input();
     void context_input_handle_keyboard(bool isTitle);
     bool context_read_bmp(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const utf8 * path);
     void context_quit();

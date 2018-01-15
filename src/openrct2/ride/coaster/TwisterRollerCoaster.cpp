@@ -14,17 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../drawing/drawing.h"
-#include "../../interface/viewport.h"
-#include "../../paint/tile_element/tile_element.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
+#include "../../drawing/Drawing.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/tile_element/TileElement.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
 #include "../../sprites.h"
-#include "../../world/map.h"
-#include "../../world/sprite.h"
-#include "../ride_data.h"
+#include "../../world/Map.h"
+#include "../../world/Sprite.h"
+#include "../RideData.h"
 #include "../TrackData.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 #include "BolligerMabillardTrack.h"
 
 /** rct2: 0x008AB6A4 */
@@ -1833,5 +1833,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_twister_rc(sint32 trackType, sint3
     case TRACK_ELEM_BOOSTER:
         return twister_rc_track_booster;
     }
-    return NULL;
+    return nullptr;
 }

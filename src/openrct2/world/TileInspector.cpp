@@ -18,12 +18,12 @@
 #include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../Game.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../ride/Track.h"
 #include "../windows/Intent.h"
 #include "../windows/tile_inspector.h"
-#include "footpath.h"
-#include "map.h"
+#include "Footpath.h"
+#include "Map.h"
 #include "TileInspector.h"
 
 uint32 windowTileInspectorTileX;
@@ -459,7 +459,7 @@ sint32 tile_inspector_surface_toggle_corner(sint32 x, sint32 y, sint32 cornerInd
         // All corners are raised
         if ((surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
-            surfaceElement->properties.surface.slope &= ~TILE_ELEMENT_SLOPE_MASK;
+            surfaceElement->properties.surface.slope &= ~TILE_ELEMENT_SURFACE_SLOPE_MASK;
 
             if (diagonal)
             {

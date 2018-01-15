@@ -17,8 +17,9 @@
 #include "../core/Util.hpp"
 #include "Track.h"
 #include "TrackData.h"
-#include "track_paint.h"
+#include "TrackPaint.h"
 
+// clang-format off
 const rct_track_coordinates FlatTrackCoordinates[] = {
     {    0,    0,    0,    0,    0,    0 },
     {    0,    0,    0,    0,    0,    0 },
@@ -6303,15 +6304,15 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[RIDE_TYPE_COUNT] =
     get_track_paint_function_side_friction_rc,                      // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
     get_track_paint_function_wild_mouse,        // RIDE_TYPE_STEEL_WILD_MOUSE
     get_track_paint_function_multi_dimension_rc,                        // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
-    0,                      // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
+    nullptr,                      // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
     get_track_paint_function_flying_rc,                     // RIDE_TYPE_FLYING_ROLLER_COASTER
-    0,                      // RIDE_TYPE_FLYING_ROLLER_COASTER_ALT
+    nullptr,                      // RIDE_TYPE_FLYING_ROLLER_COASTER_ALT
     get_track_paint_function_virginia_reel,     // RIDE_TYPE_VIRGINIA_REEL
     get_track_paint_function_splash_boats,      // RIDE_TYPE_SPLASH_BOATS
     get_track_paint_function_mini_helicopters,  // RIDE_TYPE_MINI_HELICOPTERS
     get_track_paint_function_lay_down_rc,                       // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER
     get_track_paint_function_suspended_monorail,                        // RIDE_TYPE_SUSPENDED_MONORAIL
-    0,                      // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT
+    nullptr,                      // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT
     get_track_paint_function_reverser_rc,                       // RIDE_TYPE_REVERSER_ROLLER_COASTER
     get_track_paint_function_heartline_twister_rc,                      // RIDE_TYPE_HEARTLINE_TWISTER_COASTER
     get_track_paint_function_mini_golf,     // RIDE_TYPE_MINI_GOLF
@@ -6332,11 +6333,11 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[RIDE_TYPE_COUNT] =
     get_track_paint_function_shop,                      // RIDE_TYPE_52
     get_track_paint_function_shop,                      // RIDE_TYPE_53
     get_track_paint_function_shop,                      // RIDE_TYPE_54
-    0,                      // RIDE_TYPE_55
+    nullptr,                      // RIDE_TYPE_55
     get_track_paint_function_inverted_impulse_rc,                       // RIDE_TYPE_INVERTED_IMPULSE_COASTER
     get_track_paint_function_mini_rc,                       // RIDE_TYPE_MINI_ROLLER_COASTER
     get_track_paint_function_mine_ride,                     // RIDE_TYPE_MINE_RIDE
-    0,                      // RIDE_TYPE_59
+    nullptr,                      // RIDE_TYPE_59
     get_track_paint_function_lim_launched_rc,                       // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
 };
 
@@ -6486,8 +6487,8 @@ const track_descriptor gTrackDescriptors[142] = {
 };
 
 #define CREATE_VEHICLE_INFO(VAR, ...) \
-    static const rct_vehicle_info VAR##_data [] = __VA_ARGS__ ; \
-    static const rct_vehicle_info_list VAR = { static_cast<uint16>(Util::CountOf(VAR##_data)), VAR##_data };
+    static constexpr const rct_vehicle_info VAR##_data [] = __VA_ARGS__ ; \
+    static constexpr const rct_vehicle_info_list VAR = { static_cast<uint16>(Util::CountOf(VAR##_data)), VAR##_data };
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_8BE57A, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
@@ -32310,3 +32311,4 @@ const uint16 TrackFlags[] = {
     /* TRACK_ELEM_MULTIDIM_FLAT_TO_90_DEG_DOWN_QUARTER_LOOP            */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
     /*                                                                 */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
 };
+// clang-format on

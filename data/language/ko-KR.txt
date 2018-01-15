@@ -1849,9 +1849,9 @@ STR_1842    :좋아하는 손님 수: {COMMA16}명
 STR_1843    :좋아하는 손님 수: {COMMA16}명
 STR_1844    :{SMALLFONT}{BLACK}놀이기구/시설 목록에서 보여줄 정보를 선택하세요
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} 손님
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} 손님
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} 손님
+STR_1846    :손님 {COMMA16}명
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}손님 {COMMA16}명
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}손님 {COMMA16}명
 STR_1849    :{WINDOW_COLOUR_2}음악 재생
 STR_1850    :{SMALLFONT}{BLACK}이 놀이기구에 배경음악을 재생할지를 선택합니다
 STR_1851    :{WINDOW_COLOUR_2}유지비: {BLACK}시간당 {CURRENCY2DP}
@@ -2233,7 +2233,7 @@ STR_2224    :{WINDOW_COLOUR_2}재정: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}재정: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}공원 가치: {BLACK}{CURRENCY}
 STR_2227    :{WINDOW_COLOUR_2}회사 가치: {BLACK}{CURRENCY}
-STR_2228    :{WINDOW_COLOUR_2}음식/음료수 또는 물건으로 벌어들인 지난달 수익: {BLACK}{CURRENCY}
+STR_2228    :{WINDOW_COLOUR_2}음식/음료/물건으로 번 지난달 수익: {BLACK}{CURRENCY}
 STR_2229    :수직으로 상승
 STR_2230    :수직 트랙
 STR_2231    :낙하 브레이크
@@ -3222,7 +3222,7 @@ STR_3210    :다음 단계로:
 STR_3211    :지도 크기:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :더 이상 맵 크기를 줄일 수 없습니다
-STR_3214    :더 이상 맵 크기를 늘일 수 없습니다
+STR_3214    :더 이상 맵 크기를 늘릴 수 없습니다
 STR_3215    :지도 가장자리와 너무 가깝습니다
 STR_3216    :{SMALLFONT}{BLACK}공원 소유지 등을 선택합니다
 STR_3217    :소유한 땅
@@ -4035,7 +4035,7 @@ STR_5727    :크기 조절 방식:
 STR_5728    :하드웨어 디스플레이 설정 필요
 STR_5729    :{SMALLFONT}{BLACK}하드웨어 디스플레이를 설정해야 합니다.
 STR_5730    :<removed string - do not use>
-STR_5731    :<removed string - do not use>
+STR_5731    :선형
 STR_5732    :<removed string - do not use>
 STR_5733    :<removed string - do not use>
 # tooltip for tab in options window
@@ -4149,7 +4149,7 @@ STR_5839    :{SMALLFONT}{BLACK}메인 매뉴에 연구 및 개발 창을 위한 
 STR_5840    :{SMALLFONT}{BLACK}메인 메뉴에 치트 창을 위한 별도의 버튼을 표시합니다.
 STR_5841    :{SMALLFONT}{BLACK}메인 메뉴에 최근 메시지 창을 위한 별도의 버튼을 표시합니다.
 STR_5842    :{SMALLFONT}{BLACK}시나리오를 (RCT2처럼) 난이도 별로 정렬하거나 (RCT1처럼) 출신 게임별로 정렬합니다.
-STR_5843    :{SMALLFONT}{BLACK}시나리오 해제 기능을 켭니다. (RCT1처럼)
+STR_5843    :{SMALLFONT}{BLACK}(RCT1 처럼) 시나리오를 클리어하면 다음 시나리오를 해제합니다.
 STR_5844    :{SMALLFONT}{BLACK}멀티 플레이 서버에서 비동기화나 오류가 발생하여도 접속을 유지합니다.
 STR_5845    :{SMALLFONT}{BLACK}메인 메뉴에 디버깅 툴을 위한 버튼을 추가합니다.{NEWLINE}개발자 콘솔을 여는 키보드 단축키가 활성화됩니다.
 STR_5846    :{SMALLFONT}{BLACK}OpenRCT2의 자동 저장 빈도를 설정합니다.
@@ -4465,9 +4465,51 @@ STR_6155    :KDialog나 Zenity가 모두 설치되어있지 않으니, 둘 중 �
 STR_6156    :이미 사용 중인 이름입니다
 STR_6157    :콘솔
 STR_6158    :이 파일을 불러오지 못했습니다...{NEWLINE}호환되지 않는 RCT 클래식 버전: {COMMA16}
-STR_6159    :부드러운 최대 인접 픽셀
+STR_6159    :부드러운 최대인접 픽셀
 STR_6160    :{WINDOW_COLOUR_2}사용할 수 있는 차량: {BLACK}{STRING}
 STR_6161    :땅에 격자선 표시
+STR_6162    :회전 와일드 마우스
+STR_6163    :급격한 코너와 짧은 낙하를 지나면서 속도를 내고, 차량의 부드러운 회전이 탑승객의 방향 감각을 잃게 만드는 쥐 모양의 차량
+STR_6164    :{WHITE}{CROSS}
+STR_6165    :수직 동기화 사용
+STR_6166    :{SMALLFONT}{BLACK}게임에 표시되는 각 프레임을 모니터의 갱신 주기에 동기화하여 갈라짐 현상을 방지합니다.
+STR_6167    :{SMALLFONT}{BLACK}고급
+STR_6168    :타이틀 시퀀스
+STR_6169    :시나리오 선택
+STR_6170    :기타
+STR_6171    :검색
+STR_6172    :{SMALLFONT}{BLACK}검색
+STR_6173    :검색할 이름을 입력하세요:
+STR_6174    :세이브 불러오기
+STR_6175    :시나리오 불러오기
+STR_6176    :불러올 시나리오:
+STR_6177    :불러오기{MOVE_X}{87}선택된 시나리오 없음
+STR_6178    :불러오기{MOVE_X}{87}{RED}시나리오 없음
+STR_6179    :선택
+STR_6180    :선택된 시나리오 없음
+STR_6181    :{RED}시나리오 없음
+STR_6182    :따라가기{MOVE_X}{87}{STRING}
+STR_6183    :따라가기{MOVE_X}{87}선택된 스프라이트 없음
+STR_6184    :스프라이트 따라가기
+STR_6185    :스프라이트 선택
+STR_6186    :선택된 스프라이트 없음
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :구토
+STR_6189    :오리
+STR_6190    :{SMALLFONT}{BLACK}메인 타이틀 시퀀스가 활성화되어 있을 때에는 스프라이트를 선택할 수 없습니다.
+STR_6191    :지면
+STR_6192    :벽
+STR_6193    :손님 {COMMA16}명
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}손님 {COMMA16}명
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}손님 {COMMA16}명
+STR_6196    :{BLACK}연:
+STR_6197    :{BLACK}월:
+STR_6198    :{BLACK}일:
+STR_6199    :날짜 설정
+STR_6200    :날짜 초기화
+STR_6201    :{MONTH}
+STR_6202    :가상 지면 사용
+STR_6203    :{SMALLFONT}{BLACK}이 설정을 켜면, Ctrl이나 Shift 키를 누르고 있을 때 오브젝트의 수직 설치에 도움이 되는 가상 지면을 표시해줍니다.
 
 #############
 # Scenarios #

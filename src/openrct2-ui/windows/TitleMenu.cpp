@@ -21,11 +21,11 @@
 
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
-#include <openrct2/input.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/Input.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/Dropdown.h>
 
 enum {
     WIDX_START_NEW_GAME,
@@ -143,7 +143,7 @@ static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex
         else {
             window_close_by_class(WC_LOADSAVE);
             window_close_by_class(WC_SERVER_LIST);
-            window_scenarioselect_open(window_title_menu_scenarioselect_callback);
+            window_scenarioselect_open(window_title_menu_scenarioselect_callback, false);
         }
         break;
     case WIDX_CONTINUE_SAVED_GAME:

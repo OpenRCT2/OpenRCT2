@@ -17,7 +17,6 @@
 #include <stdexcept>
 #include "../Context.h"
 #include "../ui/UiContext.h"
-#include "../core/Exception.hpp"
 #include "../interface/Screenshot.h"
 #include "../paint/Painter.h"
 #include "IDrawingContext.h"
@@ -25,8 +24,8 @@
 #include "NewDrawing.h"
 
 #include "../config/Config.h"
-#include "../drawing/drawing.h"
-#include "../localisation/string_ids.h"
+#include "../drawing/Drawing.h"
+#include "../localisation/StringIds.h"
 #include "../platform/platform.h"
 
 using namespace OpenRCT2;
@@ -105,10 +104,10 @@ extern "C"
             try
             {
                 drawingEngine->Initialise();
-                drawingEngine->SetUncappedFrameRate(gConfigGeneral.uncap_fps == 1);
+                drawingEngine->SetVSync(gConfigGeneral.use_vsync);
                 _drawingEngine = drawingEngine;
             }
-            catch (const Exception &ex)
+            catch (const std::exception &ex)
             {
                 delete _painter;
                 _painter = nullptr;
@@ -117,13 +116,13 @@ extern "C"
                 if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
                 {
                     _drawingEngineType = DRAWING_ENGINE_NONE;
-                    log_error(ex.GetMessage());
+                    log_error(ex.what());
                     log_fatal("Unable to initialise a drawing engine.");
                     exit(-1);
                 }
                 else
                 {
-                    log_error(ex.GetMessage());
+                    log_error(ex.what());
                     log_error("Unable to initialise drawing engine. Falling back to software.");
 
                     // Fallback to software
@@ -202,11 +201,11 @@ extern "C"
         }
     }
 
-    void drawing_engine_set_fps_uncapped(bool uncapped)
+    void drawing_engine_set_vsync(bool vsync)
     {
         if (_drawingEngine != nullptr)
         {
-            _drawingEngine->SetUncappedFrameRate(uncapped);
+            _drawingEngine->SetVSync(vsync);
         }
     }
 

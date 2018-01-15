@@ -14,17 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../drawing/drawing.h"
-#include "../../interface/viewport.h"
-#include "../../paint/tile_element/tile_element.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
+#include "../../drawing/Drawing.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/tile_element/TileElement.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
 #include "../../sprites.h"
-#include "../../world/map.h"
-#include "../../world/sprite.h"
-#include "../ride_data.h"
+#include "../../world/Map.h"
+#include "../../world/Sprite.h"
+#include "../RideData.h"
 #include "../TrackData.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 /** rct2: 0x008AD674 */
 static void giga_rc_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
@@ -105,7 +105,7 @@ static void giga_rc_track_flat(paint_session * session, uint8 rideIndex, uint8 t
 static void giga_rc_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
                                   rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][3] = {
+    static constexpr const uint32 imageIds[4][3] = {
         { 18084, 18076, SPR_STATION_BASE_A_SW_NE },
         { 18085, 18077, SPR_STATION_BASE_A_NW_SE },
         { 18084, 18076, SPR_STATION_BASE_A_SW_NE },
@@ -8514,5 +8514,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_giga_rc(sint32 trackType, sint32 d
     case TRACK_ELEM_BOOSTER:
         return giga_rc_track_booster;
     }
-    return NULL;
+    return nullptr;
 }

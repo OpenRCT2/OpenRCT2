@@ -31,7 +31,7 @@
 #include "AudioFormat.h"
 
 #include <openrct2/config/Config.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/platform/platform.h>
 
@@ -380,7 +380,7 @@ namespace OpenRCT2 { namespace Audio
             SpeexResamplerState * resampler = channel->GetResampler();
             if (resampler == nullptr)
             {
-                resampler = speex_resampler_init(_format.channels, _format.freq, _format.freq, 0, 0);
+                resampler = speex_resampler_init(_format.channels, _format.freq, _format.freq, 0, nullptr);
                 channel->SetResampler(resampler);
             }
             speex_resampler_set_rate(resampler, inRate, outRate);

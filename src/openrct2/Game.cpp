@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "audio/audio.h"
-#include "cheats.h"
+#include "Cheats.h"
 #include "config/Config.h"
 #include "Context.h"
 #include "core/Math.hpp"
@@ -23,46 +23,46 @@
 #include "Editor.h"
 #include "FileClassifier.h"
 #include "Game.h"
-#include "input.h"
+#include "Input.h"
 #include "interface/Screenshot.h"
-#include "interface/viewport.h"
-#include "interface/widget.h"
-#include "interface/window.h"
-#include "localisation/localisation.h"
+#include "interface/Viewport.h"
+#include "interface/Widget.h"
+#include "interface/Window.h"
+#include "localisation/Localisation.h"
 #include "management/Finance.h"
 #include "management/Marketing.h"
 #include "management/NewsItem.h"
 #include "management/Research.h"
 #include "network/network.h"
-#include "object.h"
+#include "object/Object.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "peep/Peep.h"
 #include "peep/Staff.h"
 #include "platform/platform.h"
-#include "rct1.h"
-#include "ride/ride.h"
+#include "rct1/RCT1.h"
+#include "ride/Ride.h"
 #include "ride/ride_ratings.h"
 #include "ride/Track.h"
 #include "ride/TrackDesign.h"
 #include "ride/Vehicle.h"
-#include "scenario/scenario.h"
+#include "scenario/Scenario.h"
 #include "title/TitleScreen.h"
 #include "title/TitleSequencePlayer.h"
-#include "util/sawyercoding.h"
-#include "util/util.h"
+#include "util/SawyerCoding.h"
+#include "util/Util.h"
 #include "windows/Intent.h"
-#include "windows/tooltip.h"
-#include "world/banner.h"
+#include "world/Banner.h"
 #include "world/Climate.h"
-#include "world/entrance.h"
-#include "world/footpath.h"
-#include "world/map.h"
-#include "world/map_animation.h"
-#include "world/park.h"
-#include "world/scenery.h"
-#include "world/sprite.h"
-#include "world/water.h"
+#include "world/Entrance.h"
+#include "world/Footpath.h"
+#include "world/Map.h"
+#include "world/MapAnimation.h"
+#include "world/Park.h"
+#include "world/Scenery.h"
+#include "world/Sprite.h"
+#include "world/Water.h"
+#include "object/ObjectList.h"
 
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 
@@ -83,10 +83,10 @@ uint8 gUnk141F568;
 
 uint32 gCurrentTicks;
 
-GAME_COMMAND_CALLBACK_POINTER * game_command_callback = 0;
+GAME_COMMAND_CALLBACK_POINTER * game_command_callback = nullptr;
 static GAME_COMMAND_CALLBACK_POINTER * const game_command_callback_table[] = {
-    0,
-    0,
+    nullptr,
+    nullptr,
     game_command_callback_ride_construct_placed_front,
     game_command_callback_ride_construct_placed_back,
     game_command_callback_ride_remove_track_piece,
@@ -122,7 +122,7 @@ GAME_COMMAND_CALLBACK_POINTER * game_command_callback_get_callback(uint32 index)
     {
         return game_command_callback_table[index];
     }
-    return 0;
+    return nullptr;
 }
 
 void game_increase_game_speed()
@@ -231,12 +231,11 @@ void update_palette_effects()
         uint32 shade = 0;
         if (gConfigGeneral.render_weather_gloom)
         {
-            uint8 gloom = gClimateCurrentWeatherGloom;
-            if (gloom != 0)
+            auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
+            if (paletteId != PALETTE_NULL)
             {
-                FILTER_PALETTE_ID weatherColour = ClimateWeatherGloomColours[gloom];
                 shade = 1;
-                if (weatherColour != PALETTE_DARKEN_1)
+                if (paletteId != PALETTE_DARKEN_1)
                 {
                     shade = 2;
                 }
@@ -424,7 +423,7 @@ void game_update()
         // Input
         gUnk141F568 = gUnk13CA740;
 
-        game_handle_input();
+        context_handle_input();
     }
 
     // Always perform autosave check, even when paused
@@ -662,7 +661,7 @@ sint32 game_do_command_p(uint32 command, sint32 * eax, sint32 * ebx, sint32 * ec
                     if (network_get_mode() == NETWORK_MODE_CLIENT)
                     {
                         // Client sent the command to the server, do not run it locally, just return.  It will run when server sends it.
-                        game_command_callback = 0;
+                        game_command_callback = nullptr;
                         // Decrement nest count
                         gGameCommandNestLevel--;
                         return cost;
@@ -679,7 +678,7 @@ sint32 game_do_command_p(uint32 command, sint32 * eax, sint32 * ebx, sint32 * ec
                 if (game_command_callback && !(flags & GAME_COMMAND_FLAG_GHOST))
                 {
                     game_command_callback(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
-                    game_command_callback = 0;
+                    game_command_callback = nullptr;
                 }
             }
 
@@ -728,7 +727,7 @@ sint32 game_do_command_p(uint32 command, sint32 * eax, sint32 * ebx, sint32 * ec
     gGameCommandNestLevel--;
 
     // Clear the game command callback to prevent the next command triggering it
-    game_command_callback = 0;
+    game_command_callback = nullptr;
 
     // Show error window
     if (gGameCommandNestLevel == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && gUnk141F568 == gUnk13CA740 && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
@@ -737,7 +736,7 @@ sint32 game_do_command_p(uint32 command, sint32 * eax, sint32 * ebx, sint32 * ec
     return MONEY32_UNDEFINED;
 }
 
-void game_log_multiplayer_command(int command, int * eax, int * ebx, int * ecx, int * edx, int * edi, int * ebp)
+void game_log_multiplayer_command(int command, const int * eax, const int * ebx, const int * ecx, int * edx, int * edi, int * ebp)
 {
     // Get player name
     int player_index = network_get_player_index(game_command_playerid);
@@ -1135,14 +1134,12 @@ void game_convert_strings_to_utf8()
     rct2_to_utf8_self(gScenarioDetails, 256);
 
     // User strings
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++)
+    for (auto * string : gUserStrings)
     {
-        utf8 * userString = gUserStrings[i];
-
-        if (!str_is_null_or_empty(userString))
+        if (!str_is_null_or_empty(string))
         {
-            rct2_to_utf8_self(userString, RCT12_USER_STRING_MAX_LENGTH);
-            utf8_remove_formatting(userString, true);
+            rct2_to_utf8_self(string, RCT12_USER_STRING_MAX_LENGTH);
+            utf8_remove_formatting(string, true);
         }
     }
 
@@ -1175,10 +1172,8 @@ void game_convert_strings_to_rct2(rct_s6_data * s6)
     utf8_to_rct2_self(s6->scenario_description, sizeof(s6->scenario_description));
 
     // User strings
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++)
+    for (auto * userString : s6->custom_strings)
     {
-        char * userString = s6->custom_strings[i];
-
         if (!str_is_null_or_empty(userString))
         {
             utf8_to_rct2_self(userString, RCT12_USER_STRING_MAX_LENGTH);
@@ -1186,13 +1181,11 @@ void game_convert_strings_to_rct2(rct_s6_data * s6)
     }
 
     // News items
-    for (sint32 i = 0; i < MAX_NEWS_ITEMS; i++)
+    for (auto &newsItem : s6->news_items)
     {
-        rct12_news_item * newsItem = &s6->news_items[i];
-
-        if (!str_is_null_or_empty(newsItem->Text))
+        if (!str_is_null_or_empty(newsItem.Text))
         {
-            utf8_to_rct2_self(newsItem->Text, sizeof(newsItem->Text));
+            utf8_to_rct2_self(newsItem.Text, sizeof(newsItem.Text));
         }
     }
 }
@@ -1245,44 +1238,7 @@ void game_fix_save_vars()
         }
     }
 
-    // Fix invalid research items
-    for (sint32 i = 0; i < MAX_RESEARCH_ITEMS; i++)
-    {
-        rct_research_item * researchItem = &gResearchItems[i];
-        if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPARATOR)
-            continue;
-        if (researchItem->entryIndex == RESEARCHED_ITEMS_END)
-        {
-            if (i == MAX_RESEARCH_ITEMS - 1)
-            {
-                (--researchItem)->entryIndex = RESEARCHED_ITEMS_END;
-            }
-            (++researchItem)->entryIndex = RESEARCHED_ITEMS_END_2;
-            break;
-        }
-        if (researchItem->entryIndex == RESEARCHED_ITEMS_END_2)
-            break;
-        if (researchItem->entryIndex & RESEARCH_ENTRY_RIDE_MASK)
-        {
-            uint8          entryIndex  = researchItem->entryIndex & 0xFF;
-            rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
-            if (rideEntry == nullptr)
-            {
-                research_remove(researchItem->entryIndex);
-                i--;
-            }
-        }
-        else
-        {
-            uint8                   entryIndex          = researchItem->entryIndex;
-            rct_scenery_group_entry * sceneryGroupEntry = get_scenery_group_entry(entryIndex);
-            if (sceneryGroupEntry == nullptr)
-            {
-                research_remove(researchItem->entryIndex);
-                i--;
-            }
-        }
-    }
+    research_fix();
 
     // Fix banner list pointing to NULL map elements
     banner_reset_broken_index();
@@ -1352,8 +1308,13 @@ void game_load_init()
     {
         viewport_init_all();
         game_create_windows();
+        mainWindow = window_get_main();
     }
-    mainWindow = window_get_main();
+    else
+    {
+        mainWindow = window_get_main();
+        window_unfollow_sprite(mainWindow);
+    }
 
     if (mainWindow != nullptr)
     {

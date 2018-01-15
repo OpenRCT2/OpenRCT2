@@ -23,14 +23,14 @@
 #include "../OpenRCT2.h"
 #include "Screenshot.h"
 
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../Game.h"
-#include "../intro.h"
-#include "../localisation/localisation.h"
+#include "../Intro.h"
+#include "../localisation/Localisation.h"
 #include "../platform/platform.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "../world/Climate.h"
-#include "viewport.h"
+#include "Viewport.h"
 
 using namespace OpenRCT2;
 
@@ -271,6 +271,7 @@ sint32 cmdline_for_gfxbench(const char **argv, sint32 argc)
         return -1;
     }
 
+    core_init();
     sint32 iteration_count = 40;
     if (argc == 2)
     {
@@ -355,7 +356,7 @@ sint32 cmdline_for_gfxbench(const char **argv, sint32 argc)
     return 1;
 }
 
-sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
+sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOptions * options)
 {
     // Don't include options in the count (they have been handled by CommandLine::ParseOptions already)
     for (sint32 i = 0; i < argc; i++)
@@ -375,6 +376,7 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
         return -1;
     }
 
+    core_init();
     bool customLocation = false;
     bool centreMapX = false;
     bool centreMapY = false;
@@ -496,9 +498,9 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
             gCurrentRotation = gSavedViewRotation;
         }
 
-        if (gScreenshotWeather != 0)
+        if (options->weather != 0)
         {
-            if (gScreenshotWeather < 1 || gScreenshotWeather > 6)
+            if (options->weather < 1 || options->weather > 6)
             {
                 std::printf("Weather can only be set to an integer value from 1 till 6.");
                 drawing_engine_dispose();
@@ -506,7 +508,7 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
                 return -1;
             }
 
-            uint8 customWeather = gScreenshotWeather - 1;
+            uint8 customWeather = options->weather - 1;
             climate_force_weather(customWeather);
         }
 
@@ -521,6 +523,41 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
         dpi.pitch = 0;
         dpi.zoom_level = 0;
         dpi.bits = (uint8 *)malloc(dpi.width * dpi.height);
+
+        if (options->hide_guests)
+        {
+            viewport.flags |= VIEWPORT_FLAG_INVISIBLE_PEEPS;
+        }
+
+        if (options->hide_sprites)
+        {
+            viewport.flags |= VIEWPORT_FLAG_INVISIBLE_SPRITES;
+        }
+
+        if (options->mowed_grass)
+        {
+            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGRASSLENGTH, GRASS_LENGTH_MOWED, GAME_COMMAND_CHEAT, 0, 0);
+        }
+
+        if (options->clear_grass || options->tidy_up_park)
+        {
+            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGRASSLENGTH, GRASS_LENGTH_CLEAR_0, GAME_COMMAND_CHEAT, 0, 0);
+        }
+
+        if (options->water_plants || options->tidy_up_park)
+        {
+            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_WATERPLANTS, 0, GAME_COMMAND_CHEAT, 0, 0);
+        }
+
+        if (options->fix_vandalism || options->tidy_up_park)
+        {
+            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_FIXVANDALISM, 0, GAME_COMMAND_CHEAT, 0, 0);
+        }
+
+        if (options->remove_litter || options->tidy_up_park)
+        {
+            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_REMOVELITTER, 0, GAME_COMMAND_CHEAT, 0, 0);
+        }
 
         viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
 

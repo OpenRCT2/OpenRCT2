@@ -19,15 +19,16 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
-#include <openrct2/interface/graph.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/date.h>
-#include <openrct2/localisation/localisation.h>
-#include <openrct2/ride/ride_data.h>
+#include <openrct2-ui/interface/Graph.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Date.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/sprites.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/Dropdown.h>
 
-enum {
+enum
+{
     WINDOW_FINANCES_PAGE_SUMMARY,
     WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH,
     WINDOW_FINANCES_PAGE_VALUE_GRAPH,
@@ -37,7 +38,8 @@ enum {
     WINDOW_FINANCES_PAGE_COUNT
 };
 
-enum {
+enum
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -75,76 +77,64 @@ enum {
 
 #pragma region Widgets
 
-static rct_widget window_finances_summary_widgets[] = {
-    { WWT_FRAME,            0,  0,      529,    0,      288,    0xFFFFFFFF,                         STR_NONE },
-    { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_FINANCIAL_SUMMARY,              STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP },
-    { WWT_RESIZE,           1,  0,      529,    43,     288,    0xFFFFFFFF,                         STR_NONE },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,         STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,         STR_FINANCES_SHOW_CASH_TAB_TIP },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,         STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,         STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,         STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,         STR_FINANCES_RESEARCH_TIP },
+#define TAB_WIDGETS \
+    { WWT_TAB,      1,  3,      33,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_SHOW_SUMMARY_TAB_TIP       }, \
+    { WWT_TAB,      1,  34,     64,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_SHOW_CASH_TAB_TIP          }, \
+    { WWT_TAB,      1,  65,     95,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP    }, \
+    { WWT_TAB,      1,  96,     126,    17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP }, \
+    { WWT_TAB,      1,  127,    157,    17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_SHOW_MARKETING_TAB_TIP     }, \
+    { WWT_TAB,      1,  158,    188,    17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_RESEARCH_TIP               }
+
+static rct_widget _windowFinancesSummaryWidgets[] =
+{
+    { WWT_FRAME,            0,  0,      529,    0,  288,    0xFFFFFFFF,                 STR_NONE                                }, \
+    { WWT_CAPTION,          0,  1,      528,    1,  14,     STR_FINANCIAL_SUMMARY,      STR_WINDOW_TITLE_TIP                    }, \
+    { WWT_CLOSEBOX,         0,  517,    527,    2,  13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP                    }, \
+    { WWT_RESIZE,           1,  0,      529,    43, 288,    0xFFFFFFFF,                 STR_NONE                                }, \
+    TAB_WIDGETS,
     { WWT_SPINNER,          1,  64,     153,    259,    270,    STR_FINANCES_SUMMARY_LOAN_VALUE,    STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  142,    152,    260,    264,    STR_NUMERIC_UP,                     STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  142,    152,    265,    269,    STR_NUMERIC_DOWN,                   STR_NONE },
+    { WWT_BUTTON,           1,  142,    152,    260,    264,    STR_NUMERIC_UP,                     STR_NONE },
+    { WWT_BUTTON,           1,  142,    152,    265,    269,    STR_NUMERIC_DOWN,                   STR_NONE },
     { WIDGETS_END },
 };
 
-static rct_widget window_finances_cash_widgets[] = {
+static rct_widget _windowFinancesCashWidgets[] =
+{
     { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,             STR_NONE },
     { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_FINANCIAL_GRAPH,    STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },
     { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_CASH_TAB_TIP },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_RESEARCH_TIP },
+    TAB_WIDGETS,
     { WIDGETS_END },
 };
 
-static rct_widget window_finances_park_value_widgets[] = {
+static rct_widget _windowFinancesParkValueWidgets[] =
+{
     { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,             STR_NONE },
     { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_PARK_VALUE_GRAPH,   STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },
     { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_CASH_TAB_TIP },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_RESEARCH_TIP },
+    TAB_WIDGETS,
     { WIDGETS_END },
 };
 
-static rct_widget window_finances_profit_widgets[] = {
+static rct_widget _windowFinancesProfitWidgets[] =
+{
     { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,             STR_NONE },
     { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_PROFIT_GRAPH,       STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },
     { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_CASH_TAB_TIP },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_RESEARCH_TIP },
+    TAB_WIDGETS,
     { WIDGETS_END },
 };
 
-static rct_widget window_finances_marketing_widgets[] = {
+static rct_widget _windowFinancesMarketingWidgets[] =
+{
     { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,                             STR_NONE },
     { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_MARKETING,                          STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },
     { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,                             STR_NONE },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_CASH_TAB_TIP },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_RESEARCH_TIP },
+    TAB_WIDGETS,
     { WWT_GROUPBOX,         2,  3,      526,    47,     91,     STR_MARKETING_CAMPAIGNS_IN_OPERATION,   STR_NONE },
     { WWT_GROUPBOX,         2,  3,      526,    47,     252,    STR_MARKETING_CAMPAIGNS_AVAILABLE,      STR_NONE },
     { WWT_IMGBTN,           1,  8,      521,    0,      13,     0xFFFFFFFF,                             STR_START_THIS_MARKETING_CAMPAIGN },
@@ -156,20 +146,16 @@ static rct_widget window_finances_marketing_widgets[] = {
     { WIDGETS_END },
 };
 
-static rct_widget window_finances_research_widgets[] = {
+static rct_widget _windowFinancesResearchWidgets[] =
+{
     { WWT_FRAME,            0,  0,      319,    0,      206,    0xFFFFFFFF,                             STR_NONE },
     { WWT_CAPTION,          0,  1,      318,    1,      14,     STR_RESEARCH_FUNDING,                   STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,         0,  307,    317,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },
     { WWT_RESIZE,           1,  0,      319,    43,     206,    0xFFFFFFFF,                             STR_NONE },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_CASH_TAB_TIP },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_RESEARCH_TIP },
+    TAB_WIDGETS,
     { WWT_GROUPBOX,         2,  3,      316,    47,     91,     STR_RESEARCH_FUNDING_,                  STR_NONE },
     { WWT_DROPDOWN,         2,  8,      167,    59,     70,     0xFFFFFFFF,                             STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
-    { WWT_DROPDOWN_BUTTON,  2,  156,    166,    60,     69,     STR_DROPDOWN_GLYPH,                     STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
+    { WWT_BUTTON,           2,  156,    166,    60,     69,     STR_DROPDOWN_GLYPH,                     STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
     { WWT_GROUPBOX,         2,  3,      316,    96,     202,    STR_RESEARCH_PRIORITIES,                STR_NONE },
     { WWT_CHECKBOX,         2,  8,      311,    108,    119,    STR_RESEARCH_NEW_TRANSPORT_RIDES,       STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP },
     { WWT_CHECKBOX,         2,  8,      311,    121,    132,    STR_RESEARCH_NEW_GENTLE_RIDES,          STR_RESEARCH_NEW_GENTLE_RIDES_TIP },
@@ -181,13 +167,14 @@ static rct_widget window_finances_research_widgets[] = {
     { WIDGETS_END },
 };
 
-static rct_widget *window_finances_page_widgets[] = {
-    window_finances_summary_widgets,
-    window_finances_cash_widgets,
-    window_finances_park_value_widgets,
-    window_finances_profit_widgets,
-    window_finances_marketing_widgets,
-    window_finances_research_widgets
+static rct_widget *_windowFinancesPageWidgets[] =
+{
+    _windowFinancesSummaryWidgets,
+    _windowFinancesCashWidgets,
+    _windowFinancesParkValueWidgets,
+    _windowFinancesProfitWidgets,
+    _windowFinancesMarketingWidgets,
+    _windowFinancesResearchWidgets
 };
 
 #pragma endregion
@@ -228,7 +215,8 @@ static void window_finances_research_invalidate(rct_window *w);
 static void window_finances_research_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x00988EB8
-static rct_window_event_list window_finances_summary_events = {
+static rct_window_event_list _windowFinancesSummaryEvents =
+{
     nullptr,
     window_finances_summary_mouseup,
     nullptr,
@@ -260,7 +248,8 @@ static rct_window_event_list window_finances_summary_events = {
 };
 
 // 0x00988F28
-static rct_window_event_list window_finances_financial_graph_events = {
+static rct_window_event_list _windowFinancesFinancialGraphEvents =
+{
     nullptr,
     window_finances_financial_graph_mouseup,
     nullptr,
@@ -292,7 +281,8 @@ static rct_window_event_list window_finances_financial_graph_events = {
 };
 
 // 0x00988F98
-static rct_window_event_list window_finances_value_graph_events = {
+static rct_window_event_list _windowFinancesValueGraphEvents =
+{
     nullptr,
     window_finances_park_value_graph_mouseup,
     nullptr,
@@ -324,7 +314,8 @@ static rct_window_event_list window_finances_value_graph_events = {
 };
 
 // 0x00989008
-static rct_window_event_list window_finances_profit_graph_events = {
+static rct_window_event_list _windowFinancesProfitGraphEvents =
+{
     nullptr,
     window_finances_profit_graph_mouseup,
     nullptr,
@@ -356,7 +347,8 @@ static rct_window_event_list window_finances_profit_graph_events = {
 };
 
 // 0x00989078
-static rct_window_event_list window_finances_marketing_events = {
+static rct_window_event_list _windowFinancesMarketingEvents =
+{
     nullptr,
     window_finances_marketing_mouseup,
     nullptr,
@@ -388,7 +380,8 @@ static rct_window_event_list window_finances_marketing_events = {
 };
 
 // 0x009890E8
-static rct_window_event_list window_finances_research_events = {
+static rct_window_event_list _windowFinancesResearchEvents =
+{
     nullptr,
     window_finances_research_mouseup,
     nullptr,
@@ -419,92 +412,65 @@ static rct_window_event_list window_finances_research_events = {
     nullptr
 };
 
-static rct_window_event_list *window_finances_page_events[] = {
-    &window_finances_summary_events,
-    &window_finances_financial_graph_events,
-    &window_finances_value_graph_events,
-    &window_finances_profit_graph_events,
-    &window_finances_marketing_events,
-    &window_finances_research_events
+static rct_window_event_list *const _windowFinancesPageEvents[] =
+{
+    &_windowFinancesSummaryEvents,
+    &_windowFinancesFinancialGraphEvents,
+    &_windowFinancesValueGraphEvents,
+    &_windowFinancesProfitGraphEvents,
+    &_windowFinancesMarketingEvents,
+    &_windowFinancesResearchEvents
 };
-
-static void window_finances_set_colours();
 
 #pragma endregion
 
 #pragma region Enabled widgets
 
-static uint32 window_finances_page_enabled_widgets[] = {
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_LOAN_INCREASE) |
-    (1 << WIDX_LOAN_DECREASE),
+#define ALWAYS_ENABLED_WIDGETS \
+    ((1ULL << WIDX_CLOSE) | \
+    (1ULL << WIDX_TAB_1) | \
+    (1ULL << WIDX_TAB_2) | \
+    (1ULL << WIDX_TAB_3) | \
+    (1ULL << WIDX_TAB_4) | \
+    (1ULL << WIDX_TAB_5) | \
+    (1ULL << WIDX_TAB_6))
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6),
+static constexpr const uint32 WindowFinancesPageEnabledWidgets[] =
+{
+    ALWAYS_ENABLED_WIDGETS |
+    (1ULL << WIDX_LOAN_INCREASE) |
+    (1ULL << WIDX_LOAN_DECREASE),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6),
+    ALWAYS_ENABLED_WIDGETS,
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6),
+    ALWAYS_ENABLED_WIDGETS,
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_CAMPAIGN_1) |
-    (1 << WIDX_CAMPAIGN_2) |
-    (1 << WIDX_CAMPAIGN_3) |
-    (1 << WIDX_CAMPAIGN_4) |
-    (1 << WIDX_CAMPAIGN_5) |
-    (1 << WIDX_CAMPAIGN_6),
+    ALWAYS_ENABLED_WIDGETS,
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
+    ALWAYS_ENABLED_WIDGETS |
+    (1ULL << WIDX_CAMPAIGN_1) |
+    (1ULL << WIDX_CAMPAIGN_2) |
+    (1ULL << WIDX_CAMPAIGN_3) |
+    (1ULL << WIDX_CAMPAIGN_4) |
+    (1ULL << WIDX_CAMPAIGN_5) |
+    (1ULL << WIDX_CAMPAIGN_6),
 
-    (1 << WIDX_RESEARCH_FUNDING) |
-    (1 << WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON) |
-    (1 << WIDX_TRANSPORT_RIDES) |
-    (1 << WIDX_GENTLE_RIDES) |
-    (1 << WIDX_ROLLER_COASTERS) |
-    (1 << WIDX_THRILL_RIDES) |
-    (1 << WIDX_WATER_RIDES) |
-    (1 << WIDX_SHOPS_AND_STALLS) |
-    (1 << WIDX_SCENERY_AND_THEMING)
+    ALWAYS_ENABLED_WIDGETS |
+    (1ULL << WIDX_RESEARCH_FUNDING) |
+    (1ULL << WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON) |
+    (1ULL << WIDX_TRANSPORT_RIDES) |
+    (1ULL << WIDX_GENTLE_RIDES) |
+    (1ULL << WIDX_ROLLER_COASTERS) |
+    (1ULL << WIDX_THRILL_RIDES) |
+    (1ULL << WIDX_WATER_RIDES) |
+    (1ULL << WIDX_SHOPS_AND_STALLS) |
+    (1ULL << WIDX_SCENERY_AND_THEMING)
 };
 
-static uint32 window_finances_page_hold_down_widgets[] = {
-    (1 << WIDX_LOAN_INCREASE) |
-    (1 << WIDX_LOAN_DECREASE),
+static constexpr const uint32 WindowFinancesPageHoldDownWidgets[] =
+{
+    (1ULL << WIDX_LOAN_INCREASE) |
+    (1ULL << WIDX_LOAN_DECREASE),
 
     0,
     0,
@@ -515,9 +481,12 @@ static uint32 window_finances_page_hold_down_widgets[] = {
 
 #pragma endregion
 
-const sint32 window_finances_tab_animation_loops[] = { 16, 32, 32, 32, 38, 16 };
+static constexpr const sint32 WindowFinancesTabAnimationLoops[] =
+{
+    16, 32, 32, 32, 38, 16
+};
 
-static const rct_string_id window_finances_summary_row_labels[RCT_EXPENDITURE_TYPE_COUNT] = {
+static constexpr const rct_string_id window_finances_summary_row_labels[RCT_EXPENDITURE_TYPE_COUNT] = {
     STR_FINANCES_SUMMARY_RIDE_CONSTRUCTION,
     STR_FINANCES_SUMMARY_RIDE_RUNNING_COSTS,
     STR_FINANCES_SUMMARY_LAND_PURCHASE,
@@ -548,7 +517,7 @@ rct_window * window_finances_open()
 
     w = window_bring_to_front_by_class(WC_FINANCES);
     if (w == nullptr) {
-        w = window_create_auto_pos(530, 290, window_finances_page_events[0], WC_FINANCES, WF_10);
+        w = window_create_auto_pos(530, 290, _windowFinancesPageEvents[0], WC_FINANCES, WF_10);
         w->number = 0;
         w->frame_no = 0;
 
@@ -561,10 +530,10 @@ rct_window * window_finances_open()
     w->height = 290;
     window_invalidate(w);
 
-    w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_SUMMARY];
-    w->enabled_widgets = window_finances_page_enabled_widgets[WINDOW_FINANCES_PAGE_SUMMARY];
-    w->hold_down_widgets = window_finances_page_hold_down_widgets[WINDOW_FINANCES_PAGE_SUMMARY];
-    w->event_handlers = window_finances_page_events[WINDOW_FINANCES_PAGE_SUMMARY];
+    w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
+    w->enabled_widgets = WindowFinancesPageEnabledWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
+    w->hold_down_widgets = WindowFinancesPageHoldDownWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
+    w->event_handlers = _windowFinancesPageEvents[WINDOW_FINANCES_PAGE_SUMMARY];
     w->pressed_widgets = 0;
     w->disabled_widgets = 0;
     window_init_scroll_widgets(w);
@@ -633,7 +602,7 @@ static void window_finances_summary_mousedown(rct_window *w, rct_widgetindex wid
 static void window_finances_summary_update(rct_window *w)
 {
     // Tab animation
-    if (++w->frame_no >= window_finances_tab_animation_loops[w->page])
+    if (++w->frame_no >= WindowFinancesTabAnimationLoops[w->page])
         w->frame_no = 0;
     widget_invalidate(w, WIDX_TAB_1);
 }
@@ -644,8 +613,8 @@ static void window_finances_summary_update(rct_window *w)
  */
 static void window_finances_summary_invalidate(rct_window *w)
 {
-    if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_SUMMARY]) {
-        w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_SUMMARY];
+    if (w->widgets != _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY]) {
+        w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
         window_init_scroll_widgets(w);
     }
 
@@ -786,7 +755,7 @@ static void window_finances_financial_graph_mouseup(rct_window *w, rct_widgetind
 static void window_finances_financial_graph_update(rct_window *w)
 {
     // Tab animation
-    if (++w->frame_no >= window_finances_tab_animation_loops[w->page])
+    if (++w->frame_no >= WindowFinancesTabAnimationLoops[w->page])
         w->frame_no = 0;
     widget_invalidate(w, WIDX_TAB_2);
 }
@@ -797,8 +766,8 @@ static void window_finances_financial_graph_update(rct_window *w)
  */
 static void window_finances_financial_graph_invalidate(rct_window *w)
 {
-    if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH]) {
-        w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH];
+    if (w->widgets != _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH]) {
+        w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH];
         window_init_scroll_widgets(w);
     }
 
@@ -816,7 +785,7 @@ static void window_finances_financial_graph_paint(rct_window *w, rct_drawpixelin
     window_draw_widgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
-    rct_widget *pageWidget = &window_finances_cash_widgets[WIDX_PAGE_BACKGROUND];
+    rct_widget *pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
     graphLeft = w->x + pageWidget->left + 4;
     graphTop = w->y + pageWidget->top + 15;
     graphRight = w->x + pageWidget->right - 4;
@@ -892,7 +861,7 @@ static void window_finances_park_value_graph_mouseup(rct_window *w, rct_widgetin
 static void window_finances_park_value_graph_update(rct_window *w)
 {
     // Tab animation
-    if (++w->frame_no >= window_finances_tab_animation_loops[w->page])
+    if (++w->frame_no >= WindowFinancesTabAnimationLoops[w->page])
         w->frame_no = 0;
     widget_invalidate(w, WIDX_TAB_2);
 }
@@ -903,8 +872,8 @@ static void window_finances_park_value_graph_update(rct_window *w)
  */
 static void window_finances_park_value_graph_invalidate(rct_window *w)
 {
-    if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH]) {
-        w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH];
+    if (w->widgets != _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH]) {
+        w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH];
         window_init_scroll_widgets(w);
     }
 
@@ -922,7 +891,7 @@ static void window_finances_park_value_graph_paint(rct_window *w, rct_drawpixeli
     window_draw_widgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
-    rct_widget *pageWidget = &window_finances_cash_widgets[WIDX_PAGE_BACKGROUND];
+    rct_widget *pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
     graphLeft = w->x + pageWidget->left + 4;
     graphTop = w->y + pageWidget->top + 15;
     graphRight = w->x + pageWidget->right - 4;
@@ -996,7 +965,7 @@ static void window_finances_profit_graph_mouseup(rct_window *w, rct_widgetindex 
 static void window_finances_profit_graph_update(rct_window *w)
 {
     // Tab animation
-    if (++w->frame_no >= window_finances_tab_animation_loops[w->page])
+    if (++w->frame_no >= WindowFinancesTabAnimationLoops[w->page])
         w->frame_no = 0;
     widget_invalidate(w, WIDX_TAB_2);
 }
@@ -1007,8 +976,8 @@ static void window_finances_profit_graph_update(rct_window *w)
  */
 static void window_finances_profit_graph_invalidate(rct_window *w)
 {
-    if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH]) {
-        w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH];
+    if (w->widgets != _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH]) {
+        w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH];
         window_init_scroll_widgets(w);
     }
 
@@ -1026,7 +995,7 @@ static void window_finances_profit_graph_paint(rct_window *w, rct_drawpixelinfo 
     window_draw_widgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
-    rct_widget *pageWidget = &window_finances_cash_widgets[WIDX_PAGE_BACKGROUND];
+    rct_widget *pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
     graphLeft = w->x + pageWidget->left + 4;
     graphTop = w->y + pageWidget->top + 15;
     graphRight = w->x + pageWidget->right - 4;
@@ -1103,7 +1072,7 @@ static void window_finances_marketing_mouseup(rct_window *w, rct_widgetindex wid
 static void window_finances_marketing_update(rct_window *w)
 {
     // Tab animation
-    if (++w->frame_no >= window_finances_tab_animation_loops[w->page])
+    if (++w->frame_no >= WindowFinancesTabAnimationLoops[w->page])
         w->frame_no = 0;
     widget_invalidate(w, WIDX_TAB_5);
 }
@@ -1116,8 +1085,8 @@ static void window_finances_marketing_invalidate(rct_window *w)
 {
     sint32 i;
 
-    if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_MARKETING]) {
-        w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_MARKETING];
+    if (w->widgets != _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING]) {
+        w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING];
         window_init_scroll_widgets(w);
     }
 
@@ -1132,13 +1101,13 @@ static void window_finances_marketing_invalidate(rct_window *w)
     sint32 y = Math::Max(1, numActiveCampaigns) * LIST_ROW_HEIGHT + 92;
 
     // Update group box positions
-    window_finances_marketing_widgets[WIDX_ACTIVE_CAMPAIGNS_GROUP].bottom = y - 22;
-    window_finances_marketing_widgets[WIDX_CAMPAIGNS_AVAILABLE_GROUP].top = y - 13;
+    _windowFinancesMarketingWidgets[WIDX_ACTIVE_CAMPAIGNS_GROUP].bottom = y - 22;
+    _windowFinancesMarketingWidgets[WIDX_CAMPAIGNS_AVAILABLE_GROUP].top = y - 13;
 
     // Update new campaign button visibility
     y += 3;
     for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++) {
-        rct_widget *campaignButton = &window_finances_marketing_widgets[WIDX_CAMPAIGN_1 + i];
+        rct_widget *campaignButton = &_windowFinancesMarketingWidgets[WIDX_CAMPAIGN_1 + i];
 
         campaignButton->type = WWT_EMPTY;
 
@@ -1148,7 +1117,7 @@ static void window_finances_marketing_invalidate(rct_window *w)
         if (!marketing_is_campaign_type_applicable(i))
             continue;
 
-        campaignButton->type = WWT_DROPDOWN_BUTTON;
+        campaignButton->type = WWT_BUTTON;
         campaignButton->top = y;
         campaignButton->bottom = y + BUTTON_FACE_HEIGHT + 1;
         y += BUTTON_FACE_HEIGHT + 2;
@@ -1210,7 +1179,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 
     // Draw campaign button text
     for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++) {
-        rct_widget *campaginButton = &window_finances_marketing_widgets[WIDX_CAMPAIGN_1 + i];
+        rct_widget *campaginButton = &_windowFinancesMarketingWidgets[WIDX_CAMPAIGN_1 + i];
 
         if (campaginButton->type == WWT_EMPTY)
             continue;
@@ -1257,7 +1226,7 @@ static void window_finances_research_mouseup(rct_window *w, rct_widgetindex widg
     case WIDX_SHOPS_AND_STALLS:
     case WIDX_SCENERY_AND_THEMING:
         activeResearchTypes = gResearchPriorities;
-        activeResearchTypes ^= 1 << (widgetIndex - WIDX_TRANSPORT_RIDES);
+        activeResearchTypes ^= 1ULL << (widgetIndex - WIDX_TRANSPORT_RIDES);
         research_set_priority(activeResearchTypes);
         break;
     }
@@ -1315,7 +1284,7 @@ static void window_finances_research_dropdown(rct_window *w, rct_widgetindex wid
 static void window_finances_research_update(rct_window *w)
 {
     // Tab animation
-    if (++w->frame_no >= window_finances_tab_animation_loops[w->page])
+    if (++w->frame_no >= WindowFinancesTabAnimationLoops[w->page])
         w->frame_no = 0;
     widget_invalidate(w, WIDX_TAB_6);
 }
@@ -1326,27 +1295,27 @@ static void window_finances_research_update(rct_window *w)
  */
 static void window_finances_research_invalidate(rct_window *w)
 {
-    if (w->widgets != window_finances_page_widgets[WINDOW_FINANCES_PAGE_RESEARCH]) {
-        w->widgets = window_finances_page_widgets[WINDOW_FINANCES_PAGE_RESEARCH];
+    if (w->widgets != _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH]) {
+        w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH];
         window_init_scroll_widgets(w);
     }
 
     window_finances_set_pressed_tab(w);
     if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL) {
-        window_finances_research_widgets[WIDX_RESEARCH_FUNDING].type = WWT_EMPTY;
-        window_finances_research_widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WWT_EMPTY;
+        _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING].type = WWT_EMPTY;
+        _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WWT_EMPTY;
     }
     sint32 currentResearchLevel = gResearchFundingLevel;
 
     // Current funding
-    window_finances_research_widgets[WIDX_RESEARCH_FUNDING].text = ResearchFundingLevelNames[currentResearchLevel];
+    _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING].text = ResearchFundingLevelNames[currentResearchLevel];
 
     // Checkboxes
     uint8 activeResearchTypes = gResearchPriorities;
     sint32 uncompletedResearchTypes = gResearchUncompletedCategories;
     for (sint32 i = 0; i < 7; i++) {
         sint32 mask = 1 << i;
-        sint32 widgetMask = 1 << (i + WIDX_TRANSPORT_RIDES);
+        sint32 widgetMask = 1ULL << (i + WIDX_TRANSPORT_RIDES);
 
         // Set checkbox disabled if research type is complete
         if (uncompletedResearchTypes & mask) {
@@ -1393,10 +1362,10 @@ static void window_finances_set_page(rct_window *w, sint32 page)
         w->viewport = nullptr;
     }
 
-    w->enabled_widgets = window_finances_page_enabled_widgets[page];
-    w->hold_down_widgets = window_finances_page_hold_down_widgets[page];
-    w->event_handlers = window_finances_page_events[page];
-    w->widgets = window_finances_page_widgets[page];
+    w->enabled_widgets = WindowFinancesPageEnabledWidgets[page];
+    w->hold_down_widgets = WindowFinancesPageHoldDownWidgets[page];
+    w->event_handlers = _windowFinancesPageEvents[page];
+    w->widgets = _windowFinancesPageWidgets[page];
     w->disabled_widgets = 0;
     w->pressed_widgets = 0;
 
@@ -1422,7 +1391,7 @@ static void window_finances_set_pressed_tab(rct_window *w)
 {
     sint32 i;
     for (i = 0; i < WINDOW_FINANCES_PAGE_COUNT; i++)
-        w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
+        w->pressed_widgets &= ~(1ULL << (WIDX_TAB_1 + i));
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 

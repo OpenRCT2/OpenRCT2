@@ -20,9 +20,9 @@
 #include "../core/String.hpp"
 #include "SmallSceneryObject.h"
 
-#include "../drawing/drawing.h"
-#include "../localisation/language.h"
-#include "../world/scenery.h"
+#include "../drawing/Drawing.h"
+#include "../localisation/Language.h"
+#include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 
 SmallSceneryObject::~SmallSceneryObject()
@@ -155,6 +155,7 @@ uint8 * SmallSceneryObject::ReadFrameOffsets(IStream * stream)
     return Memory::Duplicate(data.data(), data.size());
 }
 
+// clang-format off
 void SmallSceneryObject::PerformFixes()
 {
     std::string identifier = GetIdentifier();
@@ -219,6 +220,7 @@ void SmallSceneryObject::PerformFixes()
         SetPrimarySceneryGroup(&scgAbstr);
     }
 }
+// clang-format on
 
 rct_object_entry SmallSceneryObject::GetScgPiratHeader()
 {

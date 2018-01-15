@@ -18,10 +18,10 @@
 #define _TRACK_DESIGN_H_
 
 #include "../common.h"
-#include "../object.h"
-#include "../rct12.h"
-#include "../rct2.h"
-#include "../world/map.h"
+#include "../object/Object.h"
+#include "../rct12/RCT12.h"
+#include "../rct2/RCT2.h"
+#include "../world/Map.h"
 #include "Vehicle.h"
 
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)

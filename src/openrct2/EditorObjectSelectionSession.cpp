@@ -19,14 +19,14 @@
 #include "Editor.h"
 #include "EditorObjectSelectionSession.h"
 #include "Game.h"
-#include "localisation/localisation.h"
+#include "localisation/Localisation.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "OpenRCT2.h"
-#include "ride/ride_data.h"
+#include "ride/RideData.h"
 #include "windows/Intent.h"
 #include "windows/_legacy.h"
-#include "world/footpath.h"
+#include "world/Footpath.h"
 #include "world/LargeScenery.h"
 
 bool _maxObjectsWasHit;
@@ -48,16 +48,19 @@ static void setup_track_manager_objects()
 {
     sint32 numObjects = (sint32)object_repository_get_items_count();
     const ObjectRepositoryItem * items = object_repository_get_items();
-    for (sint32 i = 0; i < numObjects; i++) {
+    for (sint32 i = 0; i < numObjects; i++)
+    {
         uint8 * selectionFlags = &_objectSelectionFlags[i];
         const ObjectRepositoryItem * item = &items[i];
         uint8 object_type = item->ObjectEntry.flags & 0xF;
-        if (object_type == OBJECT_TYPE_RIDE) {
+        if (object_type == OBJECT_TYPE_RIDE)
+        {
             *selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
-            for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
-                uint8 rideType = item->RideType[j];
-                if (rideType != RIDE_TYPE_NULL && ride_type_has_flag(rideType, RIDE_TYPE_FLAG_HAS_TRACK)) {
+            for (auto rideType : item->RideType)
+            {
+                if (rideType != RIDE_TYPE_NULL && ride_type_has_flag(rideType, RIDE_TYPE_FLAG_HAS_TRACK))
+                {
                     *selectionFlags &= ~OBJECT_SELECTION_FLAG_6;
                     break;
                 }
@@ -74,17 +77,21 @@ static void setup_track_designer_objects()
 {
     sint32 numObjects = (sint32)object_repository_get_items_count();
     const ObjectRepositoryItem * items = object_repository_get_items();
-    for (sint32 i = 0; i < numObjects; i++) {
+    for (sint32 i = 0; i < numObjects; i++)
+    {
         uint8 * selectionFlags = &_objectSelectionFlags[i];
         const ObjectRepositoryItem * item = &items[i];
         uint8 objectType = item->ObjectEntry.flags & 0xF;
-        if (objectType == OBJECT_TYPE_RIDE){
+        if (objectType == OBJECT_TYPE_RIDE)
+        {
             *selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
-            for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
-                uint8 rideType = item->RideType[j];
-                if (rideType != RIDE_TYPE_NULL) {
-                    if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER) {
+            for (uint8 rideType : item->RideType)
+            {
+                if (rideType != RIDE_TYPE_NULL)
+                {
+                    if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER)
+                    {
                         *selectionFlags &= ~OBJECT_SELECTION_FLAG_6;
                         break;
                     }
@@ -143,6 +150,9 @@ void setup_in_use_selection_flags()
             break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
             if (iter.element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+                break;
+            // Skip if not the middle part
+            if (iter.element->properties.entrance.index != 0)
                 break;
 
             Editor::SelectedObjects[OBJECT_TYPE_PARK_ENTRANCE][0] |= OBJECT_SELECTION_FLAG_SELECTED;
@@ -268,12 +278,21 @@ static void remove_selected_objects_from_research(const rct_object_entry* instal
     if (entry_type == OBJECT_TYPE_RIDE){
         rct_ride_entry* rideEntry = (rct_ride_entry*)object_entry_groups[entry_type].chunks[entry_index];
 
-        for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
-            research_remove(entry_index | rideEntry->ride_type[j] << 8 | 0x10000);
+        for (auto rideType : rideEntry->ride_type)
+        {
+            rct_research_item tmp = {};
+            tmp.type = RESEARCH_ENTRY_TYPE_RIDE;
+            tmp.entryIndex = entry_index;
+            tmp.baseRideType = rideType;
+            research_remove(&tmp);
         }
     }
-    else if (entry_type == OBJECT_TYPE_SCENERY_GROUP){
-        research_remove(entry_index);
+    else if (entry_type == OBJECT_TYPE_SCENERY_GROUP)
+    {
+        rct_research_item tmp = {};
+        tmp.type = RESEARCH_ENTRY_TYPE_SCENERY;
+        tmp.entryIndex = entry_index;
+        research_remove(&tmp);
     }
 }
 
@@ -308,9 +327,11 @@ void unload_unselected_objects()
 */
 static void window_editor_object_selection_select_default_objects()
 {
-    if (_numSelectedObjectsForType[0] == 0) {
-        for (sint32 i = 0; i < (sint32)Util::CountOf(DefaultSelectedObjects); i++) {
-            window_editor_object_selection_select_object(0, 7, &DefaultSelectedObjects[i]);
+    if (_numSelectedObjectsForType[0] == 0)
+    {
+        for (const auto &defaultSelectedObject : DefaultSelectedObjects)
+        {
+            window_editor_object_selection_select_object(0, 7, &defaultSelectedObject);
         }
     }
 }
@@ -333,8 +354,9 @@ static void window_editor_object_selection_select_required_objects()
  */
 void reset_selected_object_count_and_size()
 {
-    for (uint8 objectType = 0; objectType < 11; objectType++) {
-        _numSelectedObjectsForType[objectType] = 0;
+    for (auto &objectType : _numSelectedObjectsForType)
+    {
+        objectType = 0;
     }
 
     sint32 numObjects = (sint32)object_repository_get_items_count();

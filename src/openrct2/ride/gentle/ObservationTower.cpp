@@ -15,13 +15,13 @@
 #pragma endregion
 
 #include "../../common.h"
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
-#include "../../world/map.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
+#include "../../world/Map.h"
 #include "../Track.h"
-#include "../track_paint.h"
-#include "../vehicle_paint.h"
+#include "../TrackPaint.h"
+#include "../VehiclePaint.h"
 
 enum
 {
@@ -63,7 +63,7 @@ void vehicle_visual_observation_tower(paint_session * session, sint32 x, sint32 
     image_id =
         baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
     paint_struct * ps = sub_98197C(session, image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1, get_current_rotation());
-    if (ps != NULL)
+    if (ps != nullptr)
     {
         ps->tertiary_colour = vehicle->colours_extended;
     }
@@ -71,7 +71,7 @@ void vehicle_visual_observation_tower(paint_session * session, sint32 x, sint32 
     image_id++;
 
     ps = sub_98197C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
-    if (ps != NULL)
+    if (ps != nullptr)
     {
         ps->tertiary_colour = vehicle->colours_extended;
     }
@@ -89,7 +89,7 @@ static void paint_observation_tower_base(paint_session * session, uint8 rideInde
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     uint32 imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
@@ -191,5 +191,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_observation_tower(sint32 trackType
         return paint_observation_tower_section;
     }
 
-    return NULL;
+    return nullptr;
 }

@@ -24,9 +24,9 @@
 #include <openrct2/ui/UiContext.h>
 #include "DrawingEngines.h"
 
-#include <openrct2/drawing/lightfx.h>
+#include <openrct2/drawing/LightFX.h>
 #include <openrct2/Game.h>
-#include <openrct2/paint/paint.h>
+#include <openrct2/paint/Paint.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -53,6 +53,7 @@ private:
     uint32  _pixelAfterOverlay      = 0;
     bool    _overlayActive          = false;
     bool    _pausedBeforeOverlay    = false;
+    bool    _useVsync               = true;
 
     std::vector<uint32> _dirtyVisualsTime;
     
@@ -76,7 +77,18 @@ public:
 
     void Initialise() override
     {
-        _sdlRenderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        _sdlRenderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | (_useVsync ? SDL_RENDERER_PRESENTVSYNC : 0));
+    }
+
+    void SetVSync(bool vsync) override
+    {
+        if (_useVsync != vsync)
+        {
+            _useVsync = vsync;
+            SDL_DestroyRenderer(_sdlRenderer);
+            Initialise();
+            Resize(_uiContext->GetWidth(), _uiContext->GetHeight());
+        }
     }
 
     void Resize(uint32 width, uint32 height) override
@@ -134,7 +146,7 @@ public:
         }        
 
         uint32 format;
-        SDL_QueryTexture(_screenTexture, &format, 0, 0, 0);
+        SDL_QueryTexture(_screenTexture, &format, nullptr, nullptr, nullptr);
         _screenTextureFormat = SDL_AllocFormat(format);
 
         ConfigureBits(width, height, width);
@@ -240,7 +252,7 @@ private:
         }
     }
 
-    void CopyBitsToTexture(SDL_Texture * texture, uint8 * src, sint32 width, sint32 height, uint32 * palette)
+    void CopyBitsToTexture(SDL_Texture * texture, uint8 * src, sint32 width, sint32 height, const uint32 * palette)
     {
         void *  pixels;
         sint32     pitch;

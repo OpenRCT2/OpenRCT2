@@ -22,7 +22,6 @@
 
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>
-#include <openrct2/core/Exception.hpp>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/drawing/IDrawingContext.h>
@@ -31,10 +30,10 @@
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/ui/UiContext.h>
 
-#include <openrct2/interface/window.h>
-#include <openrct2/intro.h>
-#include <openrct2/drawing/drawing.h>
-#include <openrct2/drawing/lightfx.h>
+#include <openrct2/interface/Window.h>
+#include <openrct2/Intro.h>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/LightFX.h>
 
 #include "../DrawingEngines.h"
 #include "GLSLTypes.h"
@@ -136,7 +135,7 @@ private:
     size_t  _bitsSize   = 0;
     uint8 * _bits       = nullptr;
 
-    rct_drawpixelinfo _bitsDPI  = { 0 };
+    rct_drawpixelinfo _bitsDPI  = { nullptr };
 
     OpenGLDrawingContext *    _drawingContext;
 
@@ -149,7 +148,7 @@ public:
     SDL_Color Palette[256];
     vec4      GLPalette[256];
 
-    OpenGLDrawingEngine(IUiContext * uiContext)
+    explicit OpenGLDrawingEngine(IUiContext * uiContext)
         : _uiContext(uiContext)
     {
         _window = (SDL_Window *)_uiContext->GetWindow();
@@ -182,13 +181,13 @@ public:
         {
             char szRequiredVersion[32];
             snprintf(szRequiredVersion, 32, "OpenGL %d.%d", requiredVersion.Major, requiredVersion.Minor);
-            throw Exception(std::string(szRequiredVersion) + std::string(" not available."));
+            throw std::runtime_error(std::string(szRequiredVersion) + std::string(" not available."));
         }
         SDL_GL_MakeCurrent(_window, _context);
 
         if (!OpenGLAPI::Initialise())
         {
-            throw Exception("Unable to initialise OpenGL.");
+            throw std::runtime_error("Unable to initialise OpenGL.");
         }
 
         _drawingContext->Initialise();
@@ -225,9 +224,9 @@ public:
         _drawingContext->ResetPalette();
     }
 
-    void SetUncappedFrameRate(bool uncapped) override
+    void SetVSync(bool vsync) override
     {
-        SDL_GL_SetSwapInterval(uncapped ? 0 : 1);
+        SDL_GL_SetSwapInterval(vsync);
     }
 
     void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) override
@@ -635,7 +634,7 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     right += _clipLeft;
     bottom += _clipTop;
 
-    auto texture = _textureCache->GetOrLoadImageTexture(image);
+    const auto texture = _textureCache->GetOrLoadImageTexture(image);
 
     int paletteCount;
     ivec3 palettes{};
@@ -674,10 +673,10 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
         DrawRectCommand& command = _commandBuffers.transparent.allocate();
 
         command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
-        command.texColourAtlas = texture->index;
-        command.texColourBounds = texture->normalizedBounds;
-        command.texMaskAtlas = texture->index;
-        command.texMaskBounds = texture->normalizedBounds;
+        command.texColourAtlas = texture.index;
+        command.texColourBounds = texture.normalizedBounds;
+        command.texMaskAtlas = texture.index;
+        command.texMaskBounds = texture.normalizedBounds;
         command.palettes = palettes;
         command.colour = palettes.x - (special ? 1 : 0);
         command.bounds = { left, top, right, bottom };
@@ -689,8 +688,8 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
         DrawRectCommand& command = _commandBuffers.rects.allocate();
 
         command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
-        command.texColourAtlas = texture->index;
-        command.texColourBounds = texture->normalizedBounds;
+        command.texColourAtlas = texture.index;
+        command.texColourBounds = texture.normalizedBounds;
         command.texMaskAtlas = 0;
         command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
         command.palettes = palettes;
@@ -710,8 +709,8 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
         return;
     }
 
-    auto textureMask = _textureCache->GetOrLoadImageTexture(maskImage);
-    auto textureColour = _textureCache->GetOrLoadImageTexture(colourImage);
+    const auto textureMask = _textureCache->GetOrLoadImageTexture(maskImage);
+    const auto textureColour = _textureCache->GetOrLoadImageTexture(colourImage);
 
     uint8 zoomLevel = (1 << _dpi->zoom_level);
 
@@ -752,10 +751,10 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
     command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
-    command.texColourAtlas = textureColour->index;
-    command.texColourBounds = textureColour->normalizedBounds;
-    command.texMaskAtlas = textureMask->index;
-    command.texMaskBounds = textureMask->normalizedBounds;
+    command.texColourAtlas = textureColour.index;
+    command.texColourBounds = textureColour.normalizedBounds;
+    command.texMaskAtlas = textureMask.index;
+    command.texMaskBounds = textureMask.normalizedBounds;
     command.palettes = { 0, 0, 0 };
     command.flags = DrawRectCommand::FLAG_MASK;
     command.colour = 0;
@@ -774,7 +773,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
         return;
     }
 
-    auto texture = _textureCache->GetOrLoadImageTexture(image);
+    const auto texture = _textureCache->GetOrLoadImageTexture(image);
 
     sint32 drawOffsetX = g1Element->x_offset;
     sint32 drawOffsetY = g1Element->y_offset;
@@ -805,8 +804,8 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
     command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
     command.texColourAtlas = 0;
     command.texColourBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
-    command.texMaskAtlas = texture->index;
-    command.texMaskBounds = texture->normalizedBounds;
+    command.texMaskAtlas = texture.index;
+    command.texMaskBounds = texture.normalizedBounds;
     command.palettes = { 0, 0, 0 };
     command.flags = DrawRectCommand::FLAG_NO_TEXTURE | DrawRectCommand::FLAG_MASK;
     command.colour = colour & 0xFF;
@@ -822,7 +821,7 @@ void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * p
         return;
     }
 
-    auto texture = _textureCache->GetOrLoadGlyphTexture(image, palette);
+    const auto texture = _textureCache->GetOrLoadGlyphTexture(image, palette);
 
     sint32 drawOffsetX = g1Element->x_offset;
     sint32 drawOffsetY = g1Element->y_offset;

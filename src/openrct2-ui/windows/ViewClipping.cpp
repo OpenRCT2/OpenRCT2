@@ -17,9 +17,9 @@
 #include <openrct2/config/Config.h>
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/interface/widget.h>
-#include <openrct2/interface/viewport.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/localisation/Localisation.h>
 
 enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -50,8 +50,8 @@ static rct_widget window_view_clipping_widgets[] = {
     { WWT_CLOSEBOX,     0,  WW - 13,    WW - 3, 2,  13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }, // close x button
     { WWT_CHECKBOX,     0,  11,     149,    19, 29,     STR_VIEW_CLIPPING_HEIGHT_ENABLE,    STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP }, // clip height enable/disable check box
     { WWT_SPINNER,      0,  90,     149,    34, 45,     STR_NONE,               STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE }, // clip height value
-    { WWT_DROPDOWN_BUTTON,  0,  138,        148,    35, 39,     STR_NUMERIC_UP,             STR_NONE }, // clip height increase
-    { WWT_DROPDOWN_BUTTON,  0,  138,        148,    40, 44,     STR_NUMERIC_DOWN,           STR_NONE }, // clip height decrease
+    { WWT_BUTTON,           0,  138,        148,    35, 39,     STR_NUMERIC_UP,             STR_NONE }, // clip height increase
+    { WWT_BUTTON,           0,  138,        148,    40, 44,     STR_NUMERIC_DOWN,           STR_NONE }, // clip height decrease
     { WWT_SCROLL,       0,  11,     149,    49, 61,     SCROLL_HORIZONTAL,          STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP }, // clip height scrollbar
     { WIDGETS_END }
 };

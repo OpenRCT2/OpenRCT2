@@ -14,13 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "core/Console.hpp"
 #include "core/FileStream.hpp"
 #include "core/Path.hpp"
 #include "FileClassifier.h"
 #include "rct12/SawyerChunkReader.h"
 
-#include "scenario/scenario.h"
-#include "util/sawyercoding.h"
+#include "scenario/Scenario.h"
+#include "util/SawyerCoding.h"
 
 static bool TryClassifyAsS6(IStream * stream, ClassifiedFileInfo * result);
 static bool TryClassifyAsS4(IStream * stream, ClassifiedFileInfo * result);
@@ -33,7 +34,7 @@ bool TryClassifyFile(const std::string &path, ClassifiedFileInfo * result)
         auto fs = FileStream(path, FILE_MODE_OPEN);
         return TryClassifyFile(&fs, result);
     }
-    catch (Exception)
+    catch (const std::exception &)
     {
         return false;
     }
@@ -86,8 +87,10 @@ static bool TryClassifyAsS6(IStream * stream, ClassifiedFileInfo * result)
         result->Version = s6Header.version;
         success = true;
     }
-    catch (Exception)
+    catch (const std::exception &e)
     {
+        // Exceptions are likely to occur if file is not S6 format
+        log_verbose(e.what());
     }
     stream->SetPosition(originalPosition);
     return success;
@@ -95,57 +98,70 @@ static bool TryClassifyAsS6(IStream * stream, ClassifiedFileInfo * result)
 
 static bool TryClassifyAsS4(IStream * stream, ClassifiedFileInfo * result)
 {
+    bool success = false;
     uint64 originalPosition = stream->GetPosition();
-    size_t dataLength = (size_t)stream->GetLength();
-    uint8 * data = stream->ReadArray<uint8>(dataLength);
+    try
+    {
+        size_t dataLength = (size_t)stream->GetLength();
+        std::unique_ptr<uint8> data(stream->ReadArray<uint8>(dataLength));
+        stream->SetPosition(originalPosition);
+        sint32 fileTypeVersion = sawyercoding_detect_file_type(data.get(), dataLength);
+
+        sint32 type = fileTypeVersion & FILE_TYPE_MASK;
+        sint32 version = fileTypeVersion & FILE_VERSION_MASK;
+
+        if (type == FILE_TYPE_SV4)
+        {
+            result->Type = FILE_TYPE::SAVED_GAME;
+            result->Version = version;
+            success = true;
+        }
+        else if (type == FILE_TYPE_SC4)
+        {
+            result->Type = FILE_TYPE::SCENARIO;
+            result->Version = version;
+            success = true;
+        }
+    }
+    catch (const std::exception &e)
+    {
+        Console::Error::WriteLine(e.what());
+    }
+
     stream->SetPosition(originalPosition);
-    sint32 fileTypeVersion = sawyercoding_detect_file_type(data, dataLength);
-    Memory::Free(data);
-
-    sint32 type = fileTypeVersion & FILE_TYPE_MASK;
-    sint32 version = fileTypeVersion & FILE_VERSION_MASK;
-
-    if (type == FILE_TYPE_SV4)
-    {
-        result->Type = FILE_TYPE::SAVED_GAME;
-        result->Version = version;
-        return true;
-    }
-    else if (type == FILE_TYPE_SC4)
-    {
-        result->Type = FILE_TYPE::SCENARIO;
-        result->Version = version;
-        return true;
-    }
-
-    return false;
+    return success;
 }
 
 static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFileInfo * result)
 {
     bool success = false;
     uint64 originalPosition = stream->GetPosition();
-    size_t dataLength = (size_t)stream->GetLength();
-    uint8 * data = stream->ReadArray<uint8>(dataLength);
-    stream->SetPosition(originalPosition);
-
-    if (sawyercoding_validate_track_checksum(data, dataLength))
+    try
     {
-        uint8 * td6data = Memory::Allocate<uint8>(0x10000);
-        size_t td6len = sawyercoding_decode_td6(data, td6data, dataLength);
-        if (td6data != nullptr && td6len >= 8)
+        size_t dataLength = (size_t)stream->GetLength();
+        std::unique_ptr<uint8> data(stream->ReadArray<uint8>(dataLength));
+        stream->SetPosition(originalPosition);
+
+        if (sawyercoding_validate_track_checksum(data.get(), dataLength))
         {
-            uint8 version = (td6data[7] >> 2) & 3;
-            if (version <= 2)
+            std::unique_ptr<uint8>td6data(Memory::Allocate<uint8>(0x10000));
+            size_t td6len = sawyercoding_decode_td6(data.get(), td6data.get(), dataLength);
+            if (td6data != nullptr && td6len >= 8)
             {
-                result->Type = FILE_TYPE::TRACK_DESIGN;
-                result->Version = version;
-                success = true;
+                uint8 version = (td6data.get()[7] >> 2) & 3;
+                if (version <= 2)
+                {
+                    result->Type = FILE_TYPE::TRACK_DESIGN;
+                    result->Version = version;
+                    success = true;
+                }
             }
         }
-        Memory::Free(td6data);
     }
-    Memory::Free(data);
+    catch (const std::exception& e)
+    {
+        Console::Error::WriteLine(e.what());
+    }
 
     return success;
 }

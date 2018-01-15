@@ -18,7 +18,6 @@
 #include "../common.h"
 #include "../Context.h"
 #include "../core/Console.hpp"
-#include "../core/Exception.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/Path.hpp"
@@ -33,11 +32,11 @@
 #include "TitleSequencePlayer.h"
 
 #include "../Game.h"
-#include "../interface/viewport.h"
-#include "../interface/window.h"
+#include "../interface/Viewport.h"
+#include "../interface/Window.h"
 #include "../management/NewsItem.h"
 #include "../windows/Intent.h"
-#include "../world/scenery.h"
+#include "../world/Scenery.h"
 
 using namespace OpenRCT2;
 
@@ -180,7 +179,7 @@ public:
     {
         if (targetPosition < 0 || targetPosition >= (sint32)_sequence->NumCommands)
         {
-            throw Exception("Invalid position.");
+            throw std::runtime_error("Invalid position.");
         }
         if (_position >= targetPosition)
         {
@@ -289,6 +288,9 @@ private:
         case TITLE_SCRIPT_SPEED:
             gGameSpeed = Math::Clamp<uint8>(1, command->Speed, 4);
             break;
+        case TITLE_SCRIPT_FOLLOW:
+            FollowSprite(command->SpriteIndex);
+            break;
         case TITLE_SCRIPT_RESTART:
             Reset();
             break;
@@ -339,6 +341,21 @@ private:
             }
             break;
         }
+        case TITLE_SCRIPT_LOADSC:
+        {
+            bool loadSuccess = false;
+            auto scenario = GetScenarioRepository()->GetByInternalName(command->Scenario);
+            if (scenario != nullptr)
+            {
+                loadSuccess = LoadParkFromFile(scenario->path);
+            }
+            if (!loadSuccess)
+            {
+                Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", command->Scenario);
+                return false;
+            }
+            break;
+        }
         }
         return true;
     }
@@ -364,6 +381,24 @@ private:
         }
     }
 
+    void FollowSprite(uint16 spriteIndex)
+    {
+        rct_window * w = window_get_main();
+        if (w != nullptr)
+        {
+            window_follow_sprite(w, spriteIndex);
+        }
+    }
+
+    void UnfollowSprite()
+    {
+        rct_window * w = window_get_main();
+        if (w != nullptr)
+        {
+            window_unfollow_sprite(w);
+        }
+    }
+
     bool LoadParkFromFile(const utf8 * path)
     {
         log_verbose("TitleSequencePlayer::LoadParkFromFile(%s)", path);
@@ -385,7 +420,7 @@ private:
             PrepareParkForPlayback();
             success = true;
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             Console::Error::WriteLine("Unable to load park: %s", path);
         }
@@ -420,7 +455,7 @@ private:
             PrepareParkForPlayback();
             success = true;
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             Console::Error::WriteLine("Unable to load park: %s", hintPath.c_str());
         }
@@ -530,7 +565,7 @@ private:
     void FixViewLocation()
     {
         rct_window * w = window_get_main();
-        if (w != nullptr)
+        if (w != nullptr && w->viewport_smart_follow_sprite == SPRITE_INDEX_NULL)
         {
             if (w->width != _lastScreenWidth ||
                 w->height != _lastScreenHeight)

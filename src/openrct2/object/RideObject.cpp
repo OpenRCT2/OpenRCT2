@@ -22,17 +22,17 @@
 #include "RideObject.h"
 #include "../ride/RideGroupManager.h"
 
-#include "../drawing/drawing.h"
-#include "../localisation/language.h"
-#include "../rct2.h"
-#include "../ride/ride.h"
+#include "../drawing/Drawing.h"
+#include "../localisation/Language.h"
+#include "../rct2/RCT2.h"
+#include "../ride/Ride.h"
 #include "../ride/Track.h"
 
 RideObject::~RideObject()
 {
-    for (sint32 i = 0; i < 4; i++)
+    for (auto &peepLoadingPosition : _peepLoadingPositions)
     {
-        Memory::Free(_peepLoadingPositions[i]);
+        Memory::Free(peepLoadingPosition);
     }
 }
 
@@ -40,9 +40,9 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(8, STREAM_SEEK_CURRENT);
     _legacyType.flags = stream->ReadValue<uint32>();
-    for (sint32 i = 0; i < RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    for (auto &rideType : _legacyType.ride_type)
     {
-        _legacyType.ride_type[i] = stream->ReadValue<uint8>();
+        rideType = stream->ReadValue<uint8>();
     }
     _legacyType.min_cars_in_train = stream->ReadValue<uint8>();
     _legacyType.max_cars_in_train = stream->ReadValue<uint8>();
@@ -55,10 +55,9 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     _legacyType.rear_vehicle = stream->ReadValue<uint8>();
     _legacyType.third_vehicle = stream->ReadValue<uint8>();
     _legacyType.pad_019 = stream->ReadValue<uint8>();
-    for (sint32 i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE_ENTRY; i++)
+    for (auto &vehicleEntry : _legacyType.vehicles)
     {
-        rct_ride_entry_vehicle * entry = &_legacyType.vehicles[i];
-        ReadLegacyVehicle(context, stream, entry);
+        ReadLegacyVehicle(context, stream, &vehicleEntry);
     }
     stream->Seek(4, STREAM_SEEK_CURRENT);
     _legacyType.excitement_multiplier = stream->ReadValue<sint8>();
@@ -128,7 +127,6 @@ void RideObject::Load()
     _legacyType.naming.name = language_allocate_object_string(GetName());
     _legacyType.naming.description = language_allocate_object_string(GetDescription());
     _legacyType.capacity = language_allocate_object_string(GetCapacity());
-    _legacyType.vehicleName = language_allocate_object_string(GetVehicleName());
     _legacyType.images_offset = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
     _legacyType.vehicle_preset_list = &_presetColours;
 
@@ -303,13 +301,11 @@ void RideObject::Unload()
     language_free_object_string(_legacyType.naming.name);
     language_free_object_string(_legacyType.naming.description);
     language_free_object_string(_legacyType.capacity);
-    language_free_object_string(_legacyType.vehicleName);
     gfx_object_free_images(_legacyType.images_offset, GetImageTable()->GetCount());
 
     _legacyType.naming.name = 0;
     _legacyType.naming.description = 0;
     _legacyType.capacity = 0;
-    _legacyType.vehicleName = 0;
     _legacyType.images_offset = 0;
 }
 
@@ -317,9 +313,9 @@ void RideObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 heigh
 {
     uint32 imageId = _legacyType.images_offset;
 
-    for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    for (auto rideType : _legacyType.ride_type)
     {
-        if (_legacyType.ride_type[i] != RIDE_TYPE_NULL)
+        if (rideType != RIDE_TYPE_NULL)
             break;
         else
             imageId++;
@@ -328,19 +324,14 @@ void RideObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 heigh
     gfx_draw_sprite(dpi, imageId, 0, 0, 0);
 }
 
-const utf8 * RideObject::GetDescription() const
+std::string RideObject::GetDescription() const
 {
     return GetString(OBJ_STRING_ID_DESCRIPTION);
 }
 
-const utf8 * RideObject::GetCapacity() const
+std::string RideObject::GetCapacity() const
 {
     return GetString(OBJ_STRING_ID_CAPACITY);
-}
-
-const utf8 * RideObject::GetVehicleName() const
-{
-    return GetString(OBJ_STRING_ID_VEHICLE_NAME);
 }
 
 void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
@@ -355,10 +346,6 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
     }
 
     uint8 flags = 0;
-    if (_legacyType.flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)
-    {
-        flags |= ORI_RIDE_FLAG_SEPARATE;
-    }
     item->RideFlags = flags;
 
     // Find the first non-null ride type, to be used when checking the ride group
@@ -396,7 +383,7 @@ void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * strea
     vehicle->num_vertical_frames = stream->ReadValue<uint8>();
     vehicle->num_horizontal_frames = stream->ReadValue<uint8>();
     vehicle->spacing = stream->ReadValue<uint32>();
-    vehicle->car_friction = stream->ReadValue<uint16>();
+    vehicle->car_mass = stream->ReadValue<uint16>();
     vehicle->tab_height = stream->ReadValue<sint8>();
     vehicle->num_seats = stream->ReadValue<uint8>();
     vehicle->sprite_flags = stream->ReadValue<uint16>();
@@ -427,7 +414,7 @@ void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * strea
     vehicle->friction_sound_id = stream->ReadValue<uint8>();
     vehicle->var_58 = stream->ReadValue<uint8>();
     vehicle->sound_range = stream->ReadValue<uint8>();
-    vehicle->var_5A = stream->ReadValue<uint8>();
+    vehicle->double_sound_frequency = stream->ReadValue<uint8>();
     vehicle->powered_acceleration = stream->ReadValue<uint8>();
     vehicle->powered_max_speed = stream->ReadValue<uint8>();
     vehicle->car_visual = stream->ReadValue<uint8>();
@@ -442,9 +429,9 @@ void RideObject::PerformFixes()
     std::string identifier = GetIdentifier();
     
     // Add boosters if the track type is eligible
-    for (sint32 i = 0; i < RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    for (auto rideType : _legacyType.ride_type)
     {
-        if (ride_type_supports_boosters(_legacyType.ride_type[i]))
+        if (ride_type_supports_boosters(rideType))
         {
             _legacyType.enabledTrackPieces |= (1ULL << TRACK_BOOSTER);
         }
@@ -554,4 +541,3 @@ uint8 RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * ve
 
     return numHorizontalFrames;
 }
-

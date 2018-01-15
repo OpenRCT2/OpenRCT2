@@ -35,12 +35,14 @@ typedef struct GeneralConfiguration
     sint32      drawing_engine;
     sint32      scale_quality;
     bool        uncap_fps;
+    bool        use_vsync;
     bool        show_fps;
     bool        minimize_fullscreen_focus_loss;
 
     // Map rendering
     bool        landscape_smoothing;
     bool        always_show_gridlines;
+    bool        use_virtual_floor;
     bool        day_night_cycle;
     bool        enable_light_fx;
     bool        upper_case_banners;
@@ -62,6 +64,7 @@ typedef struct GeneralConfiguration
 
     // Controls
     bool        edge_scrolling;
+    sint32      edge_scrolling_speed;
     bool        trap_cursor;
     bool        invert_viewport_drag;
     bool        zoom_to_cursor;
@@ -155,6 +158,7 @@ typedef struct NetworkConfiguration
     bool        known_keys_only;
     bool        log_chat;
     bool        log_server_actions;
+    bool        pause_server_if_no_clients;
 } NetworkConfiguration;
 
 typedef struct NotificationConfiguration

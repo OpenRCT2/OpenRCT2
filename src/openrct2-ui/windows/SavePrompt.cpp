@@ -23,8 +23,8 @@
 
 #include <openrct2/audio/audio.h>
 #include <openrct2/Game.h>
-#include <openrct2/localisation/localisation.h>
-#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/interface/Widget.h>
 
 enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -40,10 +40,10 @@ static rct_widget window_save_prompt_widgets[] = {
     { WWT_FRAME,            0,  0,      259,    0,  49, STR_NONE,                   STR_NONE },                 // panel / background
     { WWT_CAPTION,          0,  1,      258,    1,  14, 0,                          STR_WINDOW_TITLE_TIP },     // title bar
     { WWT_CLOSEBOX,         0,  247,    257,    2,  13, STR_CLOSE_X_WHITE,          STR_CLOSE_WINDOW_TIP },     // close x button
-    { WWT_12,               0,  2,      257,    19, 30, 0,                          STR_NONE },                 // question/label
-    { WWT_DROPDOWN_BUTTON,  0,  8,      85,     35, 46, STR_SAVE_PROMPT_SAVE,       STR_NONE },     // save
-    { WWT_DROPDOWN_BUTTON,  0,  91,     168,    35, 46, STR_SAVE_PROMPT_DONT_SAVE,  STR_NONE },     // don't save
-    { WWT_DROPDOWN_BUTTON,  0,  174,    251,    35, 46, STR_SAVE_PROMPT_CANCEL,     STR_NONE },     // cancel
+    { WWT_LABEL_CENTRED,    0,  2,      257,    19, 30, 0,                          STR_NONE },                 // question/label
+    { WWT_BUTTON,           0,  8,      85,     35, 46, STR_SAVE_PROMPT_SAVE,       STR_NONE },     // save
+    { WWT_BUTTON,           0,  91,     168,    35, 46, STR_SAVE_PROMPT_DONT_SAVE,  STR_NONE },     // don't save
+    { WWT_BUTTON,           0,  174,    251,    35, 46, STR_SAVE_PROMPT_CANCEL,     STR_NONE },     // cancel
     { WIDGETS_END },
 };
 
@@ -59,12 +59,12 @@ static rct_widget window_quit_prompt_widgets[] = {
     { WWT_FRAME,            0,  0,      176,    0,  33, STR_NONE,                   STR_NONE },                 // panel / background
     { WWT_CAPTION,          0,  1,      175,    1,  14, STR_QUIT_GAME_PROMPT_TITLE, STR_WINDOW_TITLE_TIP },     // title bar
     { WWT_CLOSEBOX,         0,  164,    174,    2,  13, STR_CLOSE_X_WHITE,          STR_CLOSE_WINDOW_TIP },     // close x button
-    { WWT_DROPDOWN_BUTTON,  0,  8,      85,     19, 30, STR_OK,                     STR_NONE },     // ok
-    { WWT_DROPDOWN_BUTTON,  0,  91,     168,    19, 30, STR_CANCEL,                 STR_NONE },     // cancel
+    { WWT_BUTTON,           0,  8,      85,     19, 30, STR_OK,                     STR_NONE },     // ok
+    { WWT_BUTTON,           0,  91,     168,    19, 30, STR_CANCEL,                 STR_NONE },     // cancel
     { WIDGETS_END },
 };
 
-static const rct_string_id window_save_prompt_labels[][2] = {
+static constexpr const rct_string_id window_save_prompt_labels[][2] = {
     { STR_LOAD_GAME_PROMPT_TITLE,   STR_SAVE_BEFORE_LOADING },
     { STR_QUIT_GAME_PROMPT_TITLE,   STR_SAVE_BEFORE_QUITTING },
     { STR_QUIT_GAME_2_PROMPT_TITLE, STR_SAVE_BEFORE_QUITTING_2 },

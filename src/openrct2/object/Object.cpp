@@ -16,17 +16,18 @@
 
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
-#include "../localisation/language.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/Language.h"
+#include "../localisation/StringIds.h"
 #include "Object.h"
+#include "ObjectLimits.h"
 
 
 Object::Object(const rct_object_entry &entry)
 {
     _objectEntry = entry;
 
-    char name[9] = { 0 };
-    Memory::Copy(name, entry.name, 8);
+    char name[DAT_NAME_LENGTH + 1] = { 0 };
+    Memory::Copy(name, entry.name, DAT_NAME_LENGTH);
     _identifier = String::Duplicate(name);
 }
 
@@ -35,7 +36,7 @@ Object::~Object()
     Memory::Free(_identifier);
 }
 
-const utf8 * Object::GetOverrideString(uint8 index) const
+std::string Object::GetOverrideString(uint8 index) const
 {
     const char * identifier = GetIdentifier();
     rct_string_id stringId = language_get_object_override_string_id(identifier, index);
@@ -45,23 +46,17 @@ const utf8 * Object::GetOverrideString(uint8 index) const
     {
         result = language_get_string(stringId);
     }
-    return result;
+    return String::ToStd(result);
 }
 
-const utf8 * Object::GetString(uint8 index) const
+std::string Object::GetString(uint8 index) const
 {
     auto sz = GetOverrideString(index);
-    if (sz == nullptr && index == OBJ_STRING_ID_VEHICLE_NAME)
-    {
-        // If no vehicle name is specified, fall back to the ride name. This is also required if we fall back
-        // to the .DAT name (which does not contain separate ride and vehicle names).
-        return GetName();
-    }
-    else if (sz == nullptr)
+    if (sz.empty())
     {
         sz = GetStringTable()->GetString(index);
     }
-    return sz != nullptr ? sz : "";
+    return sz;
 }
 
 rct_object_entry Object::GetScgWallsHeader()
@@ -74,11 +69,11 @@ rct_object_entry Object::GetScgPathXHeader()
     return Object::CreateHeader("SCGPATHX", 207140231, 890227440);
 }
 
-rct_object_entry Object::CreateHeader(const char name[9], uint32 flags, uint32 checksum)
+rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32 flags, uint32 checksum)
 {
     rct_object_entry header = { 0 };
     header.flags = flags;
-    Memory::Copy(header.name, name, 8);
+    Memory::Copy(header.name, name, DAT_NAME_LENGTH);
     header.checksum = checksum;
     return header;
 }
@@ -89,7 +84,7 @@ rct_object_entry Object::CreateHeader(const char name[9], uint32 flags, uint32 c
     #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 #endif
 
-const utf8 * Object::GetName() const
+std::string Object::GetName() const
 {
     return GetString(OBJ_STRING_ID_NAME);
 }

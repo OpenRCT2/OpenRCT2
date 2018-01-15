@@ -17,15 +17,15 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/audio/audio.h>
-#include <openrct2/cheats.h>
+#include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/Game.h>
-#include <openrct2/input.h>
-#include <openrct2/interface/viewport.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/Input.h>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesignRepository.h>
@@ -58,7 +58,7 @@ static rct_widget window_track_place_widgets[] = {
     { WWT_CLOSEBOX,         0,  187,    197,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP                        },
     { WWT_FLATBTN,          0,  173,    196,    83,     106,    SPR_ROTATE_ARROW,               STR_ROTATE_90_TIP                           },
     { WWT_FLATBTN,          0,  173,    196,    59,     82,     SPR_MIRROR_ARROW,               STR_MIRROR_IMAGE_TIP                        },
-    { WWT_DROPDOWN_BUTTON,  0,  4,      195,    109,    120,    STR_SELECT_A_DIFFERENT_DESIGN,  STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP  },
+    { WWT_BUTTON,           0,  4,      195,    109,    120,    STR_SELECT_A_DIFFERENT_DESIGN,  STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP  },
     { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                     STR_NONE                                    },
     { WIDGETS_END },
 };
@@ -467,7 +467,7 @@ static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Draw mini tile preview
     rct_drawpixelinfo clippedDpi;
     if (clip_drawpixelinfo(&clippedDpi, dpi, w->x + 4, w->y + 18, 168, 78)) {
-        rct_g1_element g1temp = { 0 };
+        rct_g1_element g1temp = { nullptr };
         g1temp.offset = _window_track_place_mini_preview;
         g1temp.width = TRACK_MINI_PREVIEW_WIDTH;
         g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;

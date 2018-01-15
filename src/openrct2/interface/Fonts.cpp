@@ -21,14 +21,15 @@
 #include "Fonts.h"
 #include "FontFamilies.h"
 
-#include "../drawing/drawing.h"
-#include "../drawing/ttf.h"
-#include "../localisation/language.h"
+#include "../drawing/Drawing.h"
+#include "../drawing/TTF.h"
+#include "../localisation/Language.h"
 
 #ifndef NO_TTF
 uint8 const HINTING_THRESHOLD_LOW    = 40;
 uint8 const HINTING_THRESHOLD_MEDIUM = 60;
 
+// clang-format off
 TTFFontSetDescriptor TTFFontMSGothic = { {
     { "msgothic.ttc", "MS PGothic",  9, 1, -1, 10, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "msgothic.ttc", "MS PGothic", 12, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
@@ -98,6 +99,7 @@ TTFFontSetDescriptor TTFFontArialUnicode = { {
     { "arialuni.ttf", "Arial Unicode MS", 11, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
     { "arialuni.ttf", "Arial Unicode MS", 12, 0, -1, 14, HINTING_THRESHOLD_LOW, nullptr },
 } };
+// clang-format on
 #endif // NO_TTF
 
 static void LoadSpriteFont()

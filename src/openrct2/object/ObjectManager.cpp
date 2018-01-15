@@ -19,7 +19,7 @@
 #include <unordered_set>
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
@@ -29,7 +29,7 @@
 #include "SmallSceneryObject.h"
 #include "WallObject.h"
 
-#include "../object_list.h"
+#include "ObjectList.h"
 
 class ObjectManager final : public IObjectManager
 {
@@ -583,15 +583,15 @@ private:
 
     static void ReportMissingObject(const rct_object_entry * entry)
     {
-        utf8 objName[9] = { 0 };
-        Memory::Copy(objName, entry->name, 8);
+        utf8 objName[DAT_NAME_LENGTH + 1] = { 0 };
+        Memory::Copy(objName, entry->name, DAT_NAME_LENGTH);
         Console::Error::WriteLine("[%s] Object not found.", objName);
     }
 
     void ReportObjectLoadProblem(const rct_object_entry * entry)
     {
-        utf8 objName[9] = { 0 };
-        Memory::Copy(objName, entry->name, 8);
+        utf8 objName[DAT_NAME_LENGTH + 1] = { 0 };
+        Memory::Copy(objName, entry->name, DAT_NAME_LENGTH);
         Console::Error::WriteLine("[%s] Object could not be loaded.", objName);
     }
 

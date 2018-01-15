@@ -1,5 +1,5 @@
 #include "openrct2/localisation/LanguagePack.h"
-#include "openrct2/localisation/string_ids.h"
+#include "openrct2/localisation/StringIds.h"
 #include <gtest/gtest.h>
 
 class LanguagePackTest : public testing::Test
@@ -22,7 +22,7 @@ TEST_F(LanguagePackTest, create_mutable_id_1)
     ILanguagePack * lang = LanguagePackFactory::FromText(1, "STR_0000:\n");
     ASSERT_EQ(lang->GetId(), 1);
     ASSERT_EQ(lang->GetCount(), 1);
-    ASSERT_STREQ(lang->GetString(0), "");
+    ASSERT_STREQ(lang->GetString(0), nullptr);
     lang->SetString(0, "xx");
     ASSERT_EQ(lang->GetCount(), 1);
     ASSERT_STREQ(lang->GetString(0), "xx");

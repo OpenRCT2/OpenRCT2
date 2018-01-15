@@ -27,7 +27,7 @@
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
-#include <openrct2/localisation/string_ids.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform2.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
@@ -40,9 +40,9 @@
 #include "UiContext.h"
 #include "WindowManager.h"
 
-#include <openrct2/input.h>
-#include <openrct2/interface/console.h>
-#include <openrct2/interface/window.h>
+#include <openrct2/Input.h>
+#include <openrct2/interface/Console.h>
+#include <openrct2/interface/Window.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -87,7 +87,7 @@ private:
     float               _gestureRadius          = 0;
 
 public:
-    UiContext(IPlatformEnvironment * env)
+    explicit UiContext(IPlatformEnvironment * env)
         : _platformUiContext(CreatePlatformUiContext()),
           _windowManager(CreateWindowManager()),
           _keyboardShortcuts(env)
@@ -132,7 +132,7 @@ public:
 
     void SetFullscreenMode(FULLSCREEN_MODE mode) override
     {
-        static const sint32 SDLFSFlags[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
+        static constexpr const sint32 SDLFSFlags[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
         uint32 windowFlags = SDLFSFlags[(sint32)mode];
 
         // HACK Changing window size when in fullscreen usually has no effect
@@ -210,6 +210,11 @@ public:
     void SetCursor(CURSOR_ID cursor) override
     {
         _cursorRepository.SetCurrentCursor(cursor);
+    }
+
+    void SetCursorScale(uint8 scale) override
+    {
+        _cursorRepository.SetCursorScale(scale);
     }
 
     void SetCursorVisible(bool value) override

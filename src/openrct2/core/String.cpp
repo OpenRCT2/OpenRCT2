@@ -18,8 +18,8 @@
 #include <stdexcept>
 #include <vector>
 
-#include "../localisation/localisation.h"
-#include "../util/util.h"
+#include "../localisation/Localisation.h"
+#include "../util/Util.h"
 
 #include "Math.hpp"
 #include "Memory.hpp"
@@ -447,6 +447,12 @@ namespace String
         return utf8_write_codepoint(dst, codepoint);
     }
 
+    bool IsWhiteSpace(codepoint_t codepoint)
+    {
+        // 0x3000 is the 'ideographic space', a 'fullwidth' character used in CJK languages.
+        return iswspace((wchar_t)codepoint) || codepoint == 0x3000;
+    }
+
     utf8 * Trim(utf8 * str)
     {
         utf8 * firstNonWhitespace = nullptr;
@@ -456,7 +462,7 @@ namespace String
         utf8 * nextCh;
         while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
         {
-            if (codepoint <= WCHAR_MAX && !iswspace((wchar_t)codepoint))
+            if (codepoint <= WCHAR_MAX && !IsWhiteSpace(codepoint))
             {
                 if (firstNonWhitespace == nullptr)
                 {
@@ -469,7 +475,10 @@ namespace String
         if (firstNonWhitespace != nullptr &&
             firstNonWhitespace != str)
         {
-            size_t newStringSize = ch - firstNonWhitespace;
+            // Take multibyte characters into account: use the last byte of the
+            // current character.
+            size_t newStringSize = (nextCh - 1) - firstNonWhitespace;
+
 #ifdef DEBUG
             size_t currentStringSize = String::SizeOf(str);
             Guard::Assert(newStringSize < currentStringSize, GUARD_LINE);
@@ -493,18 +502,25 @@ namespace String
         const utf8 * nextCh;
         while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
         {
-            if (codepoint <= WCHAR_MAX && !iswspace((wchar_t)codepoint))
+            if (codepoint <= WCHAR_MAX && !IsWhiteSpace(codepoint))
             {
                 return ch;
             }
             ch = nextCh;
         }
-        return str;
+        // String is all whitespace
+        return ch;
     }
 
     utf8 * TrimStart(utf8 * buffer, size_t bufferSize, const utf8 * src)
     {
         return String::Set(buffer, bufferSize, TrimStart(src));
+    }
+
+    std::string TrimStart(const std::string &s)
+    {
+        const utf8 * trimmed = TrimStart(s.c_str());
+        return std::string(trimmed);
     }
 
     std::string Trim(const std::string &s)
@@ -516,14 +532,17 @@ namespace String
         const utf8 * endSubstr = nullptr;
         while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
         {
-            bool isWhiteSpace = codepoint <= WCHAR_MAX && iswspace((wchar_t)codepoint);
+            bool isWhiteSpace = codepoint <= WCHAR_MAX && IsWhiteSpace(codepoint);
             if (!isWhiteSpace)
             {
                 if (startSubstr == nullptr)
                 {
                     startSubstr = ch;
                 }
-                endSubstr = ch;
+
+                // Take multibyte characters into account: move pointer towards
+                // the last byte of the current character.
+                endSubstr = nextCh - 1;
             }
             ch = nextCh;
         }

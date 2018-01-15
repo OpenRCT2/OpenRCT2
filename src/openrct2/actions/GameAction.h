@@ -24,8 +24,8 @@
 #include "../core/IStream.hpp"
 
 #include "../Game.h"
-#include "../localisation/string_ids.h"
-#include "../world/map.h"
+#include "../localisation/StringIds.h"
+#include "../world/Map.h"
 
 /**
  * Common error codes for game actions.

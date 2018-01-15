@@ -19,13 +19,13 @@
 #include <openrct2/Context.h>
 
 #include <openrct2/Game.h>
-#include <openrct2/input.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/Input.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/interface/themes.h>
-#include <openrct2/util/util.h>
+#include <openrct2/util/Util.h>
 
 enum {
     WINDOW_THEMES_TAB_SETTINGS,
@@ -128,10 +128,10 @@ static rct_widget window_themes_widgets[] = {
     { WWT_TAB,              1,  220,    250,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_PROMPTS_TIP },           // prompts tab
     { WWT_TAB,              1,  251,    281,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_FEATURES_TIP },          // features tab
     { WWT_DROPDOWN,         1,  125,    299,    60,     71,     STR_NONE,                                       STR_NONE },                             // Preset colour schemes
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    61,     70,     STR_DROPDOWN_GLYPH,                             STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  10,     100,    82,     93,     STR_TITLE_EDITOR_ACTION_DUPLICATE,              STR_THEMES_ACTION_DUPLICATE_TIP },      // Duplicate button
-    { WWT_DROPDOWN_BUTTON,  1,  110,    200,    82,     93,     STR_TRACK_MANAGE_DELETE,                        STR_THEMES_ACTION_DELETE_TIP },         // Delete button
-    { WWT_DROPDOWN_BUTTON,  1,  210,    300,    82,     93,     STR_TRACK_MANAGE_RENAME,                        STR_THEMES_ACTION_RENAME_TIP },         // Rename button
+    { WWT_BUTTON,           1,  288,    298,    61,     70,     STR_DROPDOWN_GLYPH,                             STR_NONE },
+    { WWT_BUTTON,           1,  10,     100,    82,     93,     STR_TITLE_EDITOR_ACTION_DUPLICATE,              STR_THEMES_ACTION_DUPLICATE_TIP },      // Duplicate button
+    { WWT_BUTTON,           1,  110,    200,    82,     93,     STR_TRACK_MANAGE_DELETE,                        STR_THEMES_ACTION_DELETE_TIP },         // Delete button
+    { WWT_BUTTON,           1,  210,    300,    82,     93,     STR_TRACK_MANAGE_RENAME,                        STR_THEMES_ACTION_RENAME_TIP },         // Rename button
     { WWT_COLOURBTN,        1,  0,      0,      0,      0,      STR_NONE,                                       STR_NONE },                             // colour button mask
     { WWT_SCROLL,           1,  3,      316,    60,     103,    SCROLL_VERTICAL,                                STR_NONE },                             // staff list
     { WWT_CHECKBOX,         1,  10,     299,    54,     65,     STR_THEMES_OPTION_RCT1_RIDE_CONTROLS,           STR_NONE },                             // rct1 ride lights
@@ -270,10 +270,10 @@ static rct_windowclass *window_themes_tab_classes[] = {
 static uint8 _selected_tab = 0;
 static sint16 _colour_index_1 = -1;
 static sint8 _colour_index_2 = -1;
-static const uint8 _row_height = 32;
-static const uint8 _button_offset_x = 220;
-static const uint8 _button_offset_y = 3;
-static const uint8 _check_offset_y = 3 + 12 + 2;
+static constexpr const uint8 _row_height = 32;
+static constexpr const uint8 _button_offset_x = 220;
+static constexpr const uint8 _button_offset_y = 3;
+static constexpr const uint8 _check_offset_y = 3 + 12 + 2;
 
 static void window_themes_init_vars()
 {
@@ -735,11 +735,11 @@ void window_themes_invalidate(rct_window *w)
         window_themes_widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WWT_EMPTY;
-        window_themes_widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WWT_DROPDOWN_BUTTON;
-        window_themes_widgets[WIDX_THEMES_DELETE_BUTTON].type = WWT_DROPDOWN_BUTTON;
-        window_themes_widgets[WIDX_THEMES_RENAME_BUTTON].type = WWT_DROPDOWN_BUTTON;
+        window_themes_widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WWT_BUTTON;
+        window_themes_widgets[WIDX_THEMES_DELETE_BUTTON].type = WWT_BUTTON;
+        window_themes_widgets[WIDX_THEMES_RENAME_BUTTON].type = WWT_BUTTON;
         window_themes_widgets[WIDX_THEMES_PRESETS].type = WWT_DROPDOWN;
-        window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WWT_BUTTON;
     }
     else if (_selected_tab == WINDOW_THEMES_TAB_FEATURES) {
         window_themes_widgets[WIDX_THEMES_LIST].type = WWT_EMPTY;

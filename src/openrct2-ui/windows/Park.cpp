@@ -17,21 +17,21 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
+#include <openrct2-ui/interface/Graph.h>
+#include <openrct2-ui/interface/LandTool.h>
 #include <openrct2/core/Util.hpp>
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/Game.h>
-#include <openrct2/localisation/date.h>
-#include <openrct2/localisation/localisation.h>
-#include <openrct2/input.h>
-#include <openrct2/interface/graph.h>
-#include <openrct2/interface/land_tool.h>
-#include <openrct2/interface/viewport.h>
-#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/Date.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/Input.h>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/Widget.h>
 #include <openrct2/management/Award.h>
-#include <openrct2/util/util.h>
-#include <openrct2/world/entrance.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2/util/Util.h>
+#include <openrct2/world/Entrance.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/interface/themes.h>
 #include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/scenario/ScenarioRepository.h>
@@ -96,7 +96,7 @@ enum WINDOW_PARK_WIDGET_IDX {
 static rct_widget window_park_entrance_widgets[] = {
     MAIN_PARK_WIDGETS,
     { WWT_VIEWPORT,         1,  3,      204,    46,     160,    0xFFFFFFFF,                     STR_NONE },                         // viewport
-    { WWT_12,               1,  3,      204,    161,    171,    0xFFFFFFFF,                     STR_NONE },                         // status
+    { WWT_LABEL_CENTRED,    1,  3,      204,    161,    171,    0xFFFFFFFF,                     STR_NONE },                         // status
     { WWT_FLATBTN,          1,  205,    228,    49,     72,     0xFFFFFFFF,                     STR_OPEN_OR_CLOSE_PARK_TIP },       // open / close
     { WWT_FLATBTN,          1,  205,    228,    73,     96,     SPR_BUY_LAND_RIGHTS,            STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP },         // buy land rights
     { WWT_FLATBTN,          1,  205,    228,    97,     120,    SPR_LOCATE,                     STR_LOCATE_SUBJECT_TIP },           // locate
@@ -118,10 +118,10 @@ static rct_widget window_park_guests_widgets[] = {
 
 static rct_widget window_park_price_widgets[] = {
     MAIN_PARK_WIDGETS,
-    { WWT_24,               1,  7,      146,    50,     61,     STR_ADMISSION_PRICE,            STR_NONE },                         //
+    { WWT_LABEL,            1,  21,     146,    50,     61,     STR_ADMISSION_PRICE,            STR_NONE },                         //
     { WWT_SPINNER,          1,  147,    222,    50,     61,     STR_ARG_6_CURRENCY2DP,          STR_NONE },                         // price
-    { WWT_DROPDOWN_BUTTON,  1,  211,    221,    51,     55,     STR_NUMERIC_UP,                 STR_NONE },                         // increase price
-    { WWT_DROPDOWN_BUTTON,  1,  211,    221,    56,     60,     STR_NUMERIC_DOWN,               STR_NONE },                         // decrease price
+    { WWT_BUTTON,           1,  211,    221,    51,     55,     STR_NUMERIC_UP,                 STR_NONE },                         // increase price
+    { WWT_BUTTON,           1,  211,    221,    56,     60,     STR_NUMERIC_DOWN,               STR_NONE },                         // decrease price
     { WIDGETS_END },
 };
 
@@ -531,7 +531,7 @@ typedef struct window_park_award {
     uint32 sprite;
 } window_park_award;
 
-static const window_park_award ParkAwards[] = {
+static constexpr const window_park_award ParkAwards[] = {
     { STR_AWARD_MOST_UNTIDY,                SPR_AWARD_MOST_UNTIDY },
     { STR_AWARD_MOST_TIDY,                  SPR_AWARD_MOST_TIDY },
     { STR_AWARD_BEST_ROLLERCOASTERS,        SPR_AWARD_BEST_ROLLERCOASTERS },
@@ -666,7 +666,7 @@ static void window_park_entrance_mouseup(rct_window *w, rct_widgetindex widgetIn
         break;
     case WIDX_RENAME:
         set_format_arg(16, uint32, gParkNameArgs);
-        window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, 32);
+        window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, USER_STRING_MAX_LENGTH);
         break;
     case WIDX_CLOSE_LIGHT:
         park_set_open(0);
@@ -1279,15 +1279,15 @@ static void window_park_price_invalidate(rct_window *w)
     // If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
     if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !park_entry_price_unlocked())
     {
-        window_park_price_widgets[WIDX_PRICE].type = WWT_12;
+        window_park_price_widgets[WIDX_PRICE].type = WWT_LABEL_CENTRED;
         window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_EMPTY;
         window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_EMPTY;
     }
     else
     {
         window_park_price_widgets[WIDX_PRICE].type = WWT_SPINNER;
-        window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_DROPDOWN_BUTTON;
-        window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_DROPDOWN_BUTTON;
+        window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_BUTTON;
+        window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_BUTTON;
     }
 
     money16 parkEntranceFee = park_get_entrance_fee();
@@ -1337,7 +1337,7 @@ static void window_park_stats_mouseup(rct_window *w, rct_widgetindex widgetIndex
  */
 static void window_park_stats_resize(rct_window *w)
 {
-    window_set_resize(w, 230, 109, 230, 109);
+    window_set_resize(w, 230, 119, 230, 119);
 }
 
 /**
@@ -1410,25 +1410,25 @@ static void window_park_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
     set_format_arg(0, uint32, parkSize);
     gfx_draw_string_left(dpi, stringIndex, gCommonFormatArgs, COLOUR_BLACK, x, y);
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
     // Draw number of rides / attractions
     if (w->list_information_type != (uint16)-1) {
         set_format_arg(0, uint32, w->list_information_type);
         gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
     // Draw number of staff
     if (w->numberOfStaff != -1) {
         set_format_arg(0, uint32, w->numberOfStaff);
         gfx_draw_string_left(dpi, STR_STAFF_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
     // Draw number of guests in park
     gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, COLOUR_BLACK, x, y);
-    y += 10;
+    y += LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_TOTAL_ADMISSIONS, &gTotalAdmissions, COLOUR_BLACK, x, y);
 }
 
@@ -1540,7 +1540,7 @@ static void window_park_objective_mouseup(rct_window *w, rct_widgetindex widgetI
  */
 static void window_park_objective_resize(rct_window *w)
 {
-    window_set_resize(w, 230, 224, 230, 224);
+    window_set_resize(w, 230, 226, 230, 226);
 }
 
 /**
@@ -1575,7 +1575,7 @@ static void window_park_objective_invalidate(rct_window *w)
     window_park_prepare_window_title_text();
 
     if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
-        window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_DROPDOWN_BUTTON;
+        window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_BUTTON;
     else
         window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_EMPTY;
 
@@ -1604,7 +1604,7 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     // Your objective:
     gfx_draw_string_left(dpi, STR_OBJECTIVE_LABEL, nullptr, COLOUR_BLACK, x, y);
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
     // Objective
     set_format_arg(0, uint16, gScenarioObjectiveNumGuests);

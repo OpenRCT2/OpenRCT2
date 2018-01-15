@@ -17,7 +17,7 @@
 #pragma once
 
 #include "../common.h"
-#include "map.h"
+#include "Map.h"
 
 typedef enum {
     TILE_INSPECTOR_ELEMENT_ANY = 0,

@@ -17,12 +17,12 @@
 #pragma once
 
 #include "../core/MemoryStream.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "GameAction.h"
 
-#include "../cheats.h"
-#include "../interface/window.h"
-#include "../world/park.h"
+#include "../Cheats.h"
+#include "../interface/Window.h"
+#include "../world/Park.h"
 
 struct SetParkEntranceFeeAction : public GameActionBase<GAME_COMMAND_SET_PARK_ENTRANCE_FEE, GameActionResult>
 {

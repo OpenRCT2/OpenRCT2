@@ -27,12 +27,12 @@
 #include "TitleSequencePlayer.h"
 
 #include "../audio/audio.h"
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../Game.h"
-#include "../input.h"
-#include "../interface/viewport.h"
-#include "../interface/window.h"
-#include "../localisation/localisation.h"
+#include "../Input.h"
+#include "../interface/Viewport.h"
+#include "../interface/Window.h"
+#include "../localisation/Localisation.h"
 
 // TODO Remove when no longer required.
 static TitleScreen * _singleton = nullptr;
@@ -84,6 +84,11 @@ void TitleScreen::StopPreviewingSequence()
 {
     if (_previewingSequence)
     {
+        rct_window * mainWindow = window_get_main();
+        if (mainWindow != nullptr)
+        {
+            window_unfollow_sprite(mainWindow);
+        }
         _previewingSequence = false;
         _currentSequence = title_get_config_sequence();
         gPreviewingTitleSequenceInGame = false;
@@ -177,7 +182,7 @@ void TitleScreen::Update()
 
     gSavedAge++;
 
-    game_handle_input();
+    context_handle_input();
 
     gInUpdateCode = false;
 }
@@ -382,6 +387,10 @@ extern "C"
         // Write name and version information
         openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
         gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5 - 13);
+
+        // Invalidate screen area
+        sint16 width = (sint16)gfx_get_string_width(buffer);
+        gfx_set_dirty_blocks(x, y, x + width, y + 30); // 30 is an arbitrary height to catch both strings
 
         // Write platform information
         snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);

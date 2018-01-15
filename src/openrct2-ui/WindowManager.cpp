@@ -18,6 +18,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/config/Config.h>
+#include <openrct2/Input.h>
 #include "input/Input.h"
 #include "input/KeyboardShortcuts.h"
 #include "WindowManager.h"
@@ -246,7 +247,7 @@ public:
             return window_track_list_open(rideItem);
         }
         case WC_SCENARIO_SELECT:
-            return window_scenarioselect_open((scenarioselect_callback) intent->GetPointerExtra(INTENT_EXTRA_CALLBACK));
+            return window_scenarioselect_open((scenarioselect_callback) intent->GetPointerExtra(INTENT_EXTRA_CALLBACK), false);
         case WD_VEHICLE:
             return window_ride_open_vehicle((rct_vehicle *) intent->GetPointerExtra(INTENT_EXTRA_VEHICLE));
         case WD_TRACK:
@@ -362,6 +363,11 @@ public:
     void UpdateMapTooltip() override
     {
         window_map_tooltip_update_visibility();
+    }
+
+    void HandleInput() override
+    {
+        game_handle_input();
     }
 
     void HandleKeyboard(bool isTitle) override

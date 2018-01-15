@@ -18,7 +18,7 @@
 
 #include <openrct2/common.h>
 
-#include <openrct2/interface/window.h>
+#include <openrct2/interface/Window.h>
 #include <openrct2/windows/tile_inspector.h>
 
 typedef void (*loadsave_callback)(sint32 result, const utf8 * path);
@@ -87,7 +87,7 @@ rct_window * window_guest_list_open_with_filter(sint32 type, sint32 index);
 rct_window * window_staff_fire_prompt_open(rct_peep* peep);
 void window_title_editor_open(sint32 tab);
 void window_title_command_editor_open(struct TitleSequence * sequence, sint32 command, bool insert);
-rct_window * window_scenarioselect_open(scenarioselect_callback callback);
+rct_window * window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor);
 
 rct_window * window_error_open(rct_string_id title, rct_string_id message);
 
@@ -131,7 +131,7 @@ void window_network_status_close();
 
 void window_text_input_key(rct_window * w, char keychar);
 void window_text_input_open(rct_window * call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength);
-void window_text_input_raw_open(rct_window * call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, sint32 maxLength);
+void window_text_input_raw_open(rct_window * call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, const_utf8string existing_text, sint32 maxLength);
 
 rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects, const rct_object_entry * missingObjects);
 
@@ -161,3 +161,8 @@ void window_tile_inspector_set_page(rct_window *w, tile_inspector_page page);
 void window_tile_inspector_auto_set_buttons(rct_window *w);
 
 rct_window * window_editor_object_selection_open();
+
+void window_tooltip_reset(sint32 x, sint32 y);
+void window_tooltip_show(rct_string_id id, sint32 x, sint32 y);
+void window_tooltip_open(rct_window * widgetWindow, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+void window_tooltip_close();

@@ -15,24 +15,24 @@
 #pragma endregion
 
 #include "../audio/audio.h"
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../config/Config.h"
 #include "../Game.h"
-#include "../interface/viewport.h"
-#include "../localisation/localisation.h"
+#include "../interface/Viewport.h"
+#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
-#include "../rct1.h"
-#include "../util/sawyercoding.h"
-#include "../util/util.h"
-#include "../world/footpath.h"
-#include "../world/map.h"
-#include "../world/map_animation.h"
-#include "../world/park.h"
-#include "../world/scenery.h"
-#include "ride.h"
-#include "ride_data.h"
+#include "../rct1/RCT1.h"
+#include "../util/SawyerCoding.h"
+#include "../util/Util.h"
+#include "../world/Footpath.h"
+#include "../world/Map.h"
+#include "../world/MapAnimation.h"
+#include "../world/Park.h"
+#include "../world/Scenery.h"
+#include "Ride.h"
+#include "RideData.h"
 #include "ride_ratings.h"
 #include "RideGroupManager.h"
 #include "Station.h"
@@ -41,7 +41,8 @@
 
 uint8 gTrackGroundFlags;
 
-/**　rct2: 0x00997C9D */
+/**  rct2: 0x00997C9D */
+// clang-format off
 const rct_trackdefinition TrackDefinitions[256] =
 {
     // TYPE                         VANGLE END                  VANGLE START                BANK END                BANK START              PREVIEW Z OFFSET
@@ -563,6 +564,7 @@ const rct_trackdefinition FlatRideTrackDefinitions[256] =
     { TRACK_QUARTER_LOOP_UNINVERTED,TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_90,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                           },  // 253
     { TRACK_QUARTER_LOOP_UNINVERTED,TRACK_SLOPE_DOWN_90,        TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                           },  // 254
 };
+// clang-format on
 
 /**
  * Helper method to determine if a connects to b by its bank and angle, not location.
@@ -1205,7 +1207,10 @@ static money32 track_place(sint32 rideIndex,
 
         if (!gCheatsDisableClearanceChecks || flags & GAME_COMMAND_FLAG_GHOST)
         {
-            if (!map_can_construct_with_clear_at(x, y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl, flags, &cost))
+            uint8 crossingMode = (ride->type == RIDE_TYPE_MINIATURE_RAILWAY && type == TRACK_ELEM_FLAT) ?
+                CREATE_CROSSING_MODE_TRACK_OVER_PATH :
+                CREATE_CROSSING_MODE_NONE;
+            if (!map_can_construct_with_clear_at(x, y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl, flags, &cost, crossingMode))
                 return MONEY32_UNDEFINED;
         }
 
@@ -1287,7 +1292,7 @@ static money32 track_place(sint32 rideIndex,
             }
         }
 
-        if (gMapGroundFlags & ELEMENT_IS_UNDERWATER)
+        if (gMapGroundFlags & ELEMENT_IS_UNDERWATER && !gCheatsDisableClearanceChecks)
         {
             gGameCommandErrorText = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
             return MONEY32_UNDEFINED;
@@ -1966,7 +1971,7 @@ static uint8 maze_element_get_segment_bit(uint16 x, uint16 y)
 }
 
 /** rct2: 0x00993CE9 */
-static const uint8 byte_993CE9[] = {
+static constexpr const uint8 byte_993CE9[] = {
     0xFF, 0xE0, 0xFF,
     14, 0, 1, 2,
     6, 2, 4, 5,
@@ -1975,12 +1980,12 @@ static const uint8 byte_993CE9[] = {
 };
 
 /** rct2: 0x00993CFC */
-static const uint8 byte_993CFC[] = {
+static constexpr const uint8 byte_993CFC[] = {
     5, 12, 0xFF, 0xFF, 9, 0, 0xFF, 0xFF, 13, 4, 0xFF, 0xFF, 1, 8, 0xFF, 0xFF
 };
 
 /** rct2: 0x00993D0C */
-static const uint8 byte_993D0C[] = {
+static constexpr const uint8 byte_993D0C[] = {
     3, 0, 0xFF, 0xFF, 0, 1, 0xFF, 0xFF, 1, 2, 0xFF, 0xFF, 2, 3, 0xFF, 0xFF
 };
 

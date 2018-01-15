@@ -25,7 +25,7 @@
 #include <openrct2/PlatformEnvironment.h>
 #include "KeyboardShortcuts.h"
 
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Input;
@@ -70,9 +70,9 @@ bool KeyboardShortcuts::Load()
             }
         }
     }
-    catch (const Exception &ex)
+    catch (const std::exception &ex)
     {
-        Console::WriteLine("Error reading shortcut keys: %s", ex.GetMessage());
+        Console::WriteLine("Error reading shortcut keys: %s", ex.what());
     }
     return result;
 }
@@ -91,9 +91,9 @@ bool KeyboardShortcuts::Save()
         }
         result = true;
     }
-    catch (const Exception &ex)
+    catch (const std::exception &ex)
     {
-        Console::WriteLine("Error writing shortcut keys: %s", ex.GetMessage());
+        Console::WriteLine("Error writing shortcut keys: %s", ex.what());
     }
     return result;
 }

@@ -17,13 +17,13 @@
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 
-#include "entrance.h"
-#include "footpath.h"
-#include "map.h"
-#include "park.h"
-#include "../cheats.h"
+#include "Entrance.h"
+#include "Footpath.h"
+#include "Map.h"
+#include "Park.h"
+#include "../Cheats.h"
 #include "../Game.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/Track.h"
 
@@ -141,7 +141,7 @@ static money32 RideEntranceExitPlace(sint16 x,
         sint16 clear_z = z / 8 + (isExit ? 5 : 7);
 
         if (!gCheatsDisableClearanceChecks &&
-            !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, &cost))
+            !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, &cost, CREATE_CROSSING_MODE_NONE))
         {
             return MONEY32_UNDEFINED;
         }
@@ -256,7 +256,7 @@ static money32 RideEntranceExitPlace(sint16 x,
         sint8 clear_z = (z / 8) + (isExit ? 5 : 7);
 
         if (!gCheatsDisableClearanceChecks &&
-            !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, &cost))
+            !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, &cost, CREATE_CROSSING_MODE_NONE))
         {
             return MONEY32_UNDEFINED;
         }
@@ -687,17 +687,17 @@ extern "C"
     void fix_park_entrance_locations(void)
     {
         // Fix gParkEntrance locations for which the tile_element no longer exists
-        for (uint8 entranceNum = 0; entranceNum < MAX_PARK_ENTRANCES; ++entranceNum)
+        for (auto &entrance : gParkEntrances)
         {
-            if (gParkEntrances[entranceNum].x == LOCATION_NULL)
+            if (entrance.x == LOCATION_NULL)
                 continue;
 
             if (map_get_park_entrance_element_at(
-                gParkEntrances[entranceNum].x,
-                gParkEntrances[entranceNum].y,
-                gParkEntrances[entranceNum].z >> 3, false) == NULL)
+                entrance.x,
+                entrance.y,
+                entrance.z >> 3, false) == nullptr)
             {
-                gParkEntrances[entranceNum].x = LOCATION_NULL;
+                entrance.x = LOCATION_NULL;
             }
         }
     }

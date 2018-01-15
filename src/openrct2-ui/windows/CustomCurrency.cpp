@@ -17,10 +17,10 @@
 #include <openrct2/config/Config.h>
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/localisation/localisation.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/util/util.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/util/Util.h>
+#include <openrct2-ui/interface/Dropdown.h>
 
 enum WINDOW_CUSTOM_CURRENCY_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -39,11 +39,11 @@ static rct_widget window_custom_currency_widgets[] = {
     { WWT_CAPTION,          0,  1,      398,    1,      14, STR_CUSTOM_CURRENCY_WINDOW_TITLE,   STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,         0,  387,    397,    2,      13, STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP },
     { WWT_SPINNER,          1,  100,    200,    30,     40, STR_CHEAT_CURRENCY_FORMAT,          STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  189,    199,    31,     35, STR_NUMERIC_UP,                     STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  189,    199,    36,     40, STR_NUMERIC_DOWN,                   STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  120,    200,    50,     60, 0,                                  STR_NONE },
+    { WWT_BUTTON,           1,  189,    199,    31,     35, STR_NUMERIC_UP,                     STR_NONE },
+    { WWT_BUTTON,           1,  189,    199,    36,     40, STR_NUMERIC_DOWN,                   STR_NONE },
+    { WWT_BUTTON,           1,  120,    200,    50,     60, 0,                                  STR_NONE },
     { WWT_DROPDOWN,         1,  220,    350,    50,     60, STR_STRINGID,                       STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  339,    349,    51,     59, STR_DROPDOWN_GLYPH,                 STR_NONE },
+    { WWT_BUTTON,           1,  339,    349,    51,     59, STR_DROPDOWN_GLYPH,                 STR_NONE },
     { WIDGETS_END },
 };
 

@@ -17,7 +17,6 @@
 #ifndef DISABLE_OPENGL
 
 #include <openrct2/core/Console.hpp>
-#include <openrct2/core/Exception.hpp>
 #include <openrct2/core/FileStream.hpp>
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/core/Path.hpp>
@@ -51,7 +50,7 @@ OpenGLShader::OpenGLShader(const char * name, GLenum type)
         Console::Error::WriteLine("Error compiling %s", path);
         Console::Error::WriteLine(buffer);
 
-        throw Exception("Error compiling shader.");
+        throw std::runtime_error("Error compiling shader.");
     }
 }
 
@@ -115,7 +114,7 @@ OpenGLShaderProgram::OpenGLShaderProgram(const char * name)
         Console::Error::WriteLine("Error linking %s", name);
         Console::Error::WriteLine(buffer);
 
-        throw Exception("Failed to link OpenGL shader.");
+        throw std::runtime_error("Failed to link OpenGL shader.");
     }
 }
 

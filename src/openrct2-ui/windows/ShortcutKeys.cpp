@@ -18,8 +18,8 @@
 #include <openrct2-ui/input/KeyboardShortcuts.h>
 #include "Window.h"
 
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 
 #define WW 420
 #define WH 280
@@ -41,7 +41,7 @@ static rct_widget window_shortcut_widgets[] = {
     { WWT_CAPTION,          0,  1,      WW - 2, 1,      14,         STR_SHORTCUTS_TITLE,        STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,         0,  WW-13,  WW - 3, 2,      13,         STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },
     { WWT_SCROLL,           0,  4,      WW - 5, 18,     WH - 18,    SCROLL_VERTICAL,            STR_SHORTCUT_LIST_TIP },
-    { WWT_DROPDOWN_BUTTON,  0,  4,      153,    WH-15,  WH - 4,     STR_SHORTCUT_ACTION_RESET,  STR_SHORTCUT_ACTION_RESET_TIP },
+    { WWT_BUTTON,           0,  4,      153,    WH-15,  WH - 4,     STR_SHORTCUT_ACTION_RESET,  STR_SHORTCUT_ACTION_RESET_TIP },
     { WIDGETS_END }
 };
 

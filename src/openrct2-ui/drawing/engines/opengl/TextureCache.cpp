@@ -21,7 +21,14 @@
 #include <openrct2/core/Memory.hpp>
 #include "TextureCache.h"
 
-#include <openrct2/drawing/drawing.h>
+#include <openrct2/drawing/Drawing.h>
+
+constexpr uint32 UNUSED_INDEX = 0xFFFFFFFF;
+
+TextureCache::TextureCache()
+{
+    std::fill(_indexMap.begin(), _indexMap.end(), UNUSED_INDEX);
+}
 
 TextureCache::~TextureCache()
 {
@@ -30,31 +37,61 @@ TextureCache::~TextureCache()
 
 void TextureCache::InvalidateImage(uint32 image)
 {
-    auto kvp = _imageTextureMap.find(image);
-    if (kvp != _imageTextureMap.end())
+    uint32 index = _indexMap[image];
+    if (index == UNUSED_INDEX)
+        return;
+
+    AtlasTextureInfo& elem = _textureCache.at(index);
+
+    _atlases[elem.index].Free(elem);
+    _indexMap[image] = UNUSED_INDEX;
+
+    if (index == _textureCache.size() - 1)
     {
-        _atlases[kvp->second.index].Free(kvp->second);
-        _imageTextureMap.erase(kvp);
+        // Last element can be popped back.
+        _textureCache.pop_back();
+    }
+    else
+    {
+        // Swap last element with element to erase and then pop back.
+        AtlasTextureInfo& last = _textureCache.back();
+
+        // Move last to current.
+        elem = last;
+
+        // Change index for moved element.
+        _indexMap[last.image] = index;
+
+        _textureCache.pop_back();
     }
 }
 
-const CachedTextureInfo* TextureCache::GetOrLoadImageTexture(uint32 image)
+BasicTextureInfo TextureCache::GetOrLoadImageTexture(uint32 image)
 {
     image &= 0x7FFFF;
 
-    auto kvp = _imageTextureMap.find(image);
-    if (kvp != _imageTextureMap.end())
+    uint32 index = _indexMap[image];
+    if (index != UNUSED_INDEX)
     {
-        return &kvp->second;
+        const auto& info = _textureCache[index];
+        return
+        {
+            info.index,
+            info.normalizedBounds,
+        };
     }
 
-    auto cacheInfo = LoadImageTexture(image);
-    auto cacheItr = _imageTextureMap.insert(std::make_pair(image, cacheInfo));
+    index = (uint32)_textureCache.size();
 
-    return &(cacheItr.first->second);
+    AtlasTextureInfo info = LoadImageTexture(image);
+
+    _textureCache.push_back(info);
+    _indexMap[image] = index;
+
+    return info;
 }
 
-CachedTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32 image, uint8 * palette)
+BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32 image, uint8 * palette)
 {
     GlyphId glyphId;
     glyphId.Image = image;
@@ -63,13 +100,18 @@ CachedTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32 image, uint8 * pale
     auto kvp = _glyphTextureMap.find(glyphId);
     if (kvp != _glyphTextureMap.end())
     {
-        return kvp->second;
+        const auto& info = kvp->second;
+        return
+        {
+            info.index,
+            info.normalizedBounds,
+        };
     }
 
     auto cacheInfo = LoadGlyphTexture(image, palette);
-    _glyphTextureMap[glyphId] = cacheInfo;
+    auto it = _glyphTextureMap.insert(std::make_pair(glyphId, cacheInfo));
 
-    return cacheInfo;
+    return (*it.first).second;
 }
 
 void TextureCache::CreateTextures()
@@ -149,33 +191,27 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
     _atlasesTextureIndices = newIndices;
 }
 
-CachedTextureInfo TextureCache::LoadImageTexture(uint32 image)
+AtlasTextureInfo TextureCache::LoadImageTexture(uint32 image)
 {
     rct_drawpixelinfo dpi = GetImageAsDPI(image, 0);
 
     auto cacheInfo = AllocateImage(dpi.width, dpi.height);
+    cacheInfo.image = image;
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
     glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, dpi.width, dpi.height, 1, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
 
     DeleteDPI(dpi);
 
-    cacheInfo.computedBounds = 
-    {
-        cacheInfo.normalizedBounds.x,
-        cacheInfo.normalizedBounds.y,
-        (cacheInfo.normalizedBounds.z - cacheInfo.normalizedBounds.x) / (float)(cacheInfo.bounds.z - cacheInfo.bounds.x),
-        (cacheInfo.normalizedBounds.w - cacheInfo.normalizedBounds.y) / (float)(cacheInfo.bounds.w - cacheInfo.bounds.y)
-    };
-
     return cacheInfo;
 }
 
-CachedTextureInfo TextureCache::LoadGlyphTexture(uint32 image, uint8 * palette)
+AtlasTextureInfo TextureCache::LoadGlyphTexture(uint32 image, uint8 * palette)
 {
     rct_drawpixelinfo dpi = GetGlyphAsDPI(image, palette);
 
     auto cacheInfo = AllocateImage(dpi.width, dpi.height);
+    cacheInfo.image = image;
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
     glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, dpi.width, dpi.height, 1, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
@@ -185,7 +221,7 @@ CachedTextureInfo TextureCache::LoadGlyphTexture(uint32 image, uint8 * palette)
     return cacheInfo;
 }
 
-CachedTextureInfo TextureCache::AllocateImage(sint32 imageWidth, sint32 imageHeight)
+AtlasTextureInfo TextureCache::AllocateImage(sint32 imageWidth, sint32 imageHeight)
 {
     CreateTextures();
 
@@ -247,7 +283,8 @@ void TextureCache::FreeTextures()
 {
     // Free array texture
     glDeleteTextures(1, &_atlasesTexture);
-    _imageTextureMap.clear();
+    _textureCache.clear();
+    std::fill(_indexMap.begin(), _indexMap.end(), UNUSED_INDEX);
 }
 
 rct_drawpixelinfo TextureCache::CreateDPI(sint32 width, sint32 height)

@@ -15,14 +15,14 @@
 #pragma endregion
 
 #include <SDL.h>
-#include <ctype.h>
+#include <cctype>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/common.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/input.h>
-#include <openrct2/interface/chat.h>
-#include <openrct2/interface/console.h>
+#include <openrct2/Input.h>
+#include <openrct2/interface/Chat.h>
+#include <openrct2/interface/Console.h>
 #include <openrct2-ui/windows/Window.h>
 #include "KeyboardShortcuts.h"
 #include "Input.h"
@@ -81,11 +81,11 @@ static void game_handle_key_scroll()
     sint32       scrollX, scrollY;
 
     mainWindow = window_get_main();
-    if (mainWindow == NULL)
+    if (mainWindow == nullptr)
         return;
     if ((mainWindow->flags & WF_NO_SCROLLING) || (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO)))
         return;
-    if (mainWindow->viewport == NULL)
+    if (mainWindow->viewport == nullptr)
         return;
 
     rct_window * textWindow;
@@ -101,6 +101,10 @@ static void game_handle_key_scroll()
     const uint8 * keysState = context_get_keys_state();
     get_keyboard_map_scroll(keysState, &scrollX, &scrollY);
 
+    if (scrollX != 0 || scrollY != 0)
+    {
+        window_unfollow_sprite(mainWindow);
+    }
     input_scroll_viewport(scrollX, scrollY);
 }
 
@@ -165,6 +169,14 @@ void input_handle_keyboard(bool isTitle)
         }
     }
 
+    if (gConfigGeneral.use_virtual_floor)
+    {
+        if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
+            map_enable_virtual_floor();
+        else
+            map_remove_virtual_floor();
+    }
+
     // Handle key input
     sint32 key;
     while (!gOpenRCT2Headless && (key = get_next_key()) != 0)
@@ -196,7 +208,7 @@ void input_handle_keyboard(bool isTitle)
         key |= gInputPlaceObjectModifier << 8;
 
         rct_window * w = window_find_by_class(WC_TEXTINPUT);
-        if (w != NULL)
+        if (w != nullptr)
         {
             char keychar = input_scancode_to_rct_keycode(key & 0xFF);
             window_text_input_key(w, keychar);
@@ -204,7 +216,7 @@ void input_handle_keyboard(bool isTitle)
         else if (!gUsingWidgetTextBox)
         {
             w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
-            if (w != NULL)
+            if (w != nullptr)
             {
                 keyboard_shortcuts_set(key);
                 window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);

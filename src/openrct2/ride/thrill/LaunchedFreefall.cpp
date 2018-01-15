@@ -16,13 +16,13 @@
 
 #include "../../common.h"
 #include "../../config/Config.h"
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
-#include "../../world/sprite.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
+#include "../../world/Sprite.h"
 #include "../Track.h"
-#include "../track_paint.h"
-#include "../vehicle_paint.h"
+#include "../TrackPaint.h"
+#include "../VehiclePaint.h"
 
 enum
 {
@@ -31,7 +31,7 @@ enum
     SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT_TOP = 14566,
 };
 
-static const uint32 launched_freefall_fence_sprites[] = { SPR_FENCE_METAL_NE, SPR_FENCE_METAL_SE, SPR_FENCE_METAL_SW,
+static constexpr const uint32 launched_freefall_fence_sprites[] = { SPR_FENCE_METAL_NE, SPR_FENCE_METAL_SE, SPR_FENCE_METAL_SW,
                                                           SPR_FENCE_METAL_NW };
 
 /**
@@ -100,7 +100,7 @@ static void paint_launched_freefall_base(paint_session * session, uint8 rideInde
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     uint32 imageId = SPR_FLOOR_METAL | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
@@ -201,5 +201,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_launched_freefall(sint32 trackType
         return paint_launched_freefall_tower_section;
     }
 
-    return NULL;
+    return nullptr;
 }

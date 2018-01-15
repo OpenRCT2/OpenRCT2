@@ -16,7 +16,7 @@
 
 #include "Text.h"
 
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 
 static TextPaint _legacyPaint;
 
@@ -196,6 +196,11 @@ extern "C"
     void gfx_draw_string_centred_clipped(rct_drawpixelinfo * dpi, rct_string_id format, void * args, uint8 colour, sint32 x, sint32 y, sint32 width)
     {
         DrawTextEllipsisedCompat(dpi, x, y, width, format, args, colour, TextAlignment::CENTRE);
+    }
+
+    void gfx_draw_string_right_clipped(rct_drawpixelinfo * dpi, rct_string_id format, void * args, uint8 colour, sint32 x, sint32 y, sint32 width)
+    {
+        DrawTextEllipsisedCompat(dpi, x, y, width, format, args, colour, TextAlignment::RIGHT);
     }
 
     // Wrapping

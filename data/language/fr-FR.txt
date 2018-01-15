@@ -604,170 +604,170 @@ STR_0599    :Des voitures individuelles descendent des pentes régulières en vi
 STR_0600    :Train de mine à propulsion franchissant une voie régulière et alambiquée
 STR_0601    :
 STR_0602    :Train de montagnes russes propulsé hors de la station par des moteurs à induction linéaire et fonçant dans des inversions renversantes
-STR_0603    :Visiteur {INT32}
-STR_0604    :Visiteur {INT32}
-STR_0605    :Visiteur {INT32}
-STR_0606    :Visiteur {INT32}
-STR_0607    :Visiteur {INT32}
-STR_0608    :Visiteur {INT32}
-STR_0609    :Visiteur {INT32}
-STR_0610    :Visiteur {INT32}
-STR_0611    :Visiteur {INT32}
-STR_0612    :Visiteur {INT32}
-STR_0613    :Visiteur {INT32}
-STR_0614    :Visiteur {INT32}
-STR_0615    :Visiteur {INT32}
-STR_0616    :Visiteur {INT32}
-STR_0617    :Visiteur {INT32}
-STR_0618    :Visiteur {INT32}
-STR_0619    :Visiteur {INT32}
-STR_0620    :Visiteur {INT32}
-STR_0621    :Visiteur {INT32}
-STR_0622    :Visiteur {INT32}
-STR_0623    :Visiteur {INT32}
-STR_0624    :Visiteur {INT32}
-STR_0625    :Visiteur {INT32}
-STR_0626    :Visiteur {INT32}
-STR_0627    :Visiteur {INT32}
-STR_0628    :Visiteur {INT32}
-STR_0629    :Visiteur {INT32}
-STR_0630    :Visiteur {INT32}
-STR_0631    :Visiteur {INT32}
-STR_0632    :Visiteur {INT32}
-STR_0633    :Visiteur {INT32}
-STR_0634    :Visiteur {INT32}
-STR_0635    :Visiteur {INT32}
-STR_0636    :Visiteur {INT32}
-STR_0637    :Visiteur {INT32}
-STR_0638    :Visiteur {INT32}
-STR_0639    :Visiteur {INT32}
-STR_0640    :Visiteur {INT32}
-STR_0641    :Visiteur {INT32}
-STR_0642    :Visiteur {INT32}
-STR_0643    :Visiteur {INT32}
-STR_0644    :Visiteur {INT32}
-STR_0645    :Visiteur {INT32}
-STR_0646    :Visiteur {INT32}
-STR_0647    :Visiteur {INT32}
-STR_0648    :Visiteur {INT32}
-STR_0649    :Visiteur {INT32}
-STR_0650    :Visiteur {INT32}
-STR_0651    :Visiteur {INT32}
-STR_0652    :Visiteur {INT32}
-STR_0653    :Visiteur {INT32}
-STR_0654    :Visiteur {INT32}
-STR_0655    :Visiteur {INT32}
-STR_0656    :Visiteur {INT32}
-STR_0657    :Visiteur {INT32}
-STR_0658    :Visiteur {INT32}
-STR_0659    :Visiteur {INT32}
-STR_0660    :Visiteur {INT32}
-STR_0661    :Visiteur {INT32}
-STR_0662    :Visiteur {INT32}
-STR_0663    :Visiteur {INT32}
-STR_0664    :Visiteur {INT32}
-STR_0665    :Visiteur {INT32}
-STR_0666    :Visiteur {INT32}
-STR_0667    :Visiteur {INT32}
-STR_0668    :Visiteur {INT32}
-STR_0669    :Visiteur {INT32}
-STR_0670    :Visiteur {INT32}
-STR_0671    :Visiteur {INT32}
-STR_0672    :Visiteur {INT32}
-STR_0673    :Visiteur {INT32}
-STR_0674    :Visiteur {INT32}
-STR_0675    :Visiteur {INT32}
-STR_0676    :Visiteur {INT32}
-STR_0677    :Visiteur {INT32}
-STR_0678    :Visiteur {INT32}
-STR_0679    :Visiteur {INT32}
-STR_0680    :Visiteur {INT32}
-STR_0681    :Visiteur {INT32}
-STR_0682    :Visiteur {INT32}
-STR_0683    :Visiteur {INT32}
-STR_0684    :Visiteur {INT32}
-STR_0685    :Visiteur {INT32}
-STR_0686    :Visiteur {INT32}
-STR_0687    :Visiteur {INT32}
-STR_0688    :Visiteur {INT32}
-STR_0689    :Visiteur {INT32}
-STR_0690    :Visiteur {INT32}
-STR_0691    :Visiteur {INT32}
-STR_0692    :Visiteur {INT32}
-STR_0693    :Visiteur {INT32}
-STR_0694    :Visiteur {INT32}
-STR_0695    :Visiteur {INT32}
-STR_0696    :Visiteur {INT32}
-STR_0697    :Visiteur {INT32}
-STR_0698    :Visiteur {INT32}
-STR_0699    :Visiteur {INT32}
-STR_0700    :Visiteur {INT32}
-STR_0701    :Visiteur {INT32}
-STR_0702    :Visiteur {INT32}
-STR_0703    :Visiteur {INT32}
-STR_0704    :Visiteur {INT32}
-STR_0705    :Visiteur {INT32}
-STR_0706    :Visiteur {INT32}
-STR_0707    :Visiteur {INT32}
-STR_0708    :Visiteur {INT32}
-STR_0709    :Visiteur {INT32}
-STR_0710    :Visiteur {INT32}
-STR_0711    :Visiteur {INT32}
-STR_0712    :Visiteur {INT32}
-STR_0713    :Visiteur {INT32}
-STR_0714    :Visiteur {INT32}
-STR_0715    :Visiteur {INT32}
-STR_0716    :Visiteur {INT32}
-STR_0717    :Visiteur {INT32}
-STR_0718    :Visiteur {INT32}
-STR_0719    :Visiteur {INT32}
-STR_0720    :Visiteur {INT32}
-STR_0721    :Visiteur {INT32}
-STR_0722    :Visiteur {INT32}
-STR_0723    :Visiteur {INT32}
-STR_0724    :Visiteur {INT32}
-STR_0725    :Visiteur {INT32}
-STR_0726    :Visiteur {INT32}
-STR_0727    :Visiteur {INT32}
-STR_0728    :Visiteur {INT32}
-STR_0729    :Visiteur {INT32}
-STR_0730    :Visiteur {INT32}
-STR_0731    :Visiteur {INT32}
-STR_0732    :Visiteur {INT32}
-STR_0733    :Visiteur {INT32}
-STR_0734    :Visiteur {INT32}
-STR_0735    :Visiteur {INT32}
-STR_0736    :Visiteur {INT32}
-STR_0737    :Visiteur {INT32}
-STR_0738    :Visiteur {INT32}
-STR_0739    :Visiteur {INT32}
-STR_0740    :Visiteur {INT32}
-STR_0741    :Visiteur {INT32}
-STR_0742    :Visiteur {INT32}
-STR_0743    :Visiteur {INT32}
-STR_0744    :Visiteur {INT32}
-STR_0745    :Visiteur {INT32}
-STR_0746    :Visiteur {INT32}
-STR_0747    :Visiteur {INT32}
-STR_0748    :Visiteur {INT32}
-STR_0749    :Visiteur {INT32}
-STR_0750    :Visiteur {INT32}
-STR_0751    :Visiteur {INT32}
-STR_0752    :Visiteur {INT32}
-STR_0753    :Visiteur {INT32}
-STR_0754    :Visiteur {INT32}
-STR_0755    :Visiteur {INT32}
-STR_0756    :Visiteur {INT32}
-STR_0757    :Visiteur {INT32}
-STR_0758    :Visiteur {INT32}
-STR_0759    :Visiteur {INT32}
-STR_0760    :Visiteur {INT32}
-STR_0761    :Visiteur {INT32}
-STR_0762    :Visiteur {INT32}
-STR_0763    :Visiteur {INT32}
-STR_0764    :Visiteur {INT32}
-STR_0765    :Visiteur {INT32}
-STR_0766    :Visiteur {INT32}
+STR_0603    :<removed string - do not use>
+STR_0604    :<removed string - do not use>
+STR_0605    :<removed string - do not use>
+STR_0606    :<removed string - do not use>
+STR_0607    :<removed string - do not use>
+STR_0608    :<removed string - do not use>
+STR_0609    :<removed string - do not use>
+STR_0610    :<removed string - do not use>
+STR_0611    :<removed string - do not use>
+STR_0612    :<removed string - do not use>
+STR_0613    :<removed string - do not use>
+STR_0614    :<removed string - do not use>
+STR_0615    :<removed string - do not use>
+STR_0616    :<removed string - do not use>
+STR_0617    :<removed string - do not use>
+STR_0618    :<removed string - do not use>
+STR_0619    :<removed string - do not use>
+STR_0620    :<removed string - do not use>
+STR_0621    :<removed string - do not use>
+STR_0622    :<removed string - do not use>
+STR_0623    :<removed string - do not use>
+STR_0624    :<removed string - do not use>
+STR_0625    :<removed string - do not use>
+STR_0626    :<removed string - do not use>
+STR_0627    :<removed string - do not use>
+STR_0628    :<removed string - do not use>
+STR_0629    :<removed string - do not use>
+STR_0630    :<removed string - do not use>
+STR_0631    :<removed string - do not use>
+STR_0632    :<removed string - do not use>
+STR_0633    :<removed string - do not use>
+STR_0634    :<removed string - do not use>
+STR_0635    :<removed string - do not use>
+STR_0636    :<removed string - do not use>
+STR_0637    :<removed string - do not use>
+STR_0638    :<removed string - do not use>
+STR_0639    :<removed string - do not use>
+STR_0640    :<removed string - do not use>
+STR_0641    :<removed string - do not use>
+STR_0642    :<removed string - do not use>
+STR_0643    :<removed string - do not use>
+STR_0644    :<removed string - do not use>
+STR_0645    :<removed string - do not use>
+STR_0646    :<removed string - do not use>
+STR_0647    :<removed string - do not use>
+STR_0648    :<removed string - do not use>
+STR_0649    :<removed string - do not use>
+STR_0650    :<removed string - do not use>
+STR_0651    :<removed string - do not use>
+STR_0652    :<removed string - do not use>
+STR_0653    :<removed string - do not use>
+STR_0654    :<removed string - do not use>
+STR_0655    :<removed string - do not use>
+STR_0656    :<removed string - do not use>
+STR_0657    :<removed string - do not use>
+STR_0658    :<removed string - do not use>
+STR_0659    :<removed string - do not use>
+STR_0660    :<removed string - do not use>
+STR_0661    :<removed string - do not use>
+STR_0662    :<removed string - do not use>
+STR_0663    :<removed string - do not use>
+STR_0664    :<removed string - do not use>
+STR_0665    :<removed string - do not use>
+STR_0666    :<removed string - do not use>
+STR_0667    :<removed string - do not use>
+STR_0668    :<removed string - do not use>
+STR_0669    :<removed string - do not use>
+STR_0670    :<removed string - do not use>
+STR_0671    :<removed string - do not use>
+STR_0672    :<removed string - do not use>
+STR_0673    :<removed string - do not use>
+STR_0674    :<removed string - do not use>
+STR_0675    :<removed string - do not use>
+STR_0676    :<removed string - do not use>
+STR_0677    :<removed string - do not use>
+STR_0678    :<removed string - do not use>
+STR_0679    :<removed string - do not use>
+STR_0680    :<removed string - do not use>
+STR_0681    :<removed string - do not use>
+STR_0682    :<removed string - do not use>
+STR_0683    :<removed string - do not use>
+STR_0684    :<removed string - do not use>
+STR_0685    :<removed string - do not use>
+STR_0686    :<removed string - do not use>
+STR_0687    :<removed string - do not use>
+STR_0688    :<removed string - do not use>
+STR_0689    :<removed string - do not use>
+STR_0690    :<removed string - do not use>
+STR_0691    :<removed string - do not use>
+STR_0692    :<removed string - do not use>
+STR_0693    :<removed string - do not use>
+STR_0694    :<removed string - do not use>
+STR_0695    :<removed string - do not use>
+STR_0696    :<removed string - do not use>
+STR_0697    :<removed string - do not use>
+STR_0698    :<removed string - do not use>
+STR_0699    :<removed string - do not use>
+STR_0700    :<removed string - do not use>
+STR_0701    :<removed string - do not use>
+STR_0702    :<removed string - do not use>
+STR_0703    :<removed string - do not use>
+STR_0704    :<removed string - do not use>
+STR_0705    :<removed string - do not use>
+STR_0706    :<removed string - do not use>
+STR_0707    :<removed string - do not use>
+STR_0708    :<removed string - do not use>
+STR_0709    :<removed string - do not use>
+STR_0710    :<removed string - do not use>
+STR_0711    :<removed string - do not use>
+STR_0712    :<removed string - do not use>
+STR_0713    :<removed string - do not use>
+STR_0714    :<removed string - do not use>
+STR_0715    :<removed string - do not use>
+STR_0716    :<removed string - do not use>
+STR_0717    :<removed string - do not use>
+STR_0718    :<removed string - do not use>
+STR_0719    :<removed string - do not use>
+STR_0720    :<removed string - do not use>
+STR_0721    :<removed string - do not use>
+STR_0722    :<removed string - do not use>
+STR_0723    :<removed string - do not use>
+STR_0724    :<removed string - do not use>
+STR_0725    :<removed string - do not use>
+STR_0726    :<removed string - do not use>
+STR_0727    :<removed string - do not use>
+STR_0728    :<removed string - do not use>
+STR_0729    :<removed string - do not use>
+STR_0730    :<removed string - do not use>
+STR_0731    :<removed string - do not use>
+STR_0732    :<removed string - do not use>
+STR_0733    :<removed string - do not use>
+STR_0734    :<removed string - do not use>
+STR_0735    :<removed string - do not use>
+STR_0736    :<removed string - do not use>
+STR_0737    :<removed string - do not use>
+STR_0738    :<removed string - do not use>
+STR_0739    :<removed string - do not use>
+STR_0740    :<removed string - do not use>
+STR_0741    :<removed string - do not use>
+STR_0742    :<removed string - do not use>
+STR_0743    :<removed string - do not use>
+STR_0744    :<removed string - do not use>
+STR_0745    :<removed string - do not use>
+STR_0746    :<removed string - do not use>
+STR_0747    :<removed string - do not use>
+STR_0748    :<removed string - do not use>
+STR_0749    :<removed string - do not use>
+STR_0750    :<removed string - do not use>
+STR_0751    :<removed string - do not use>
+STR_0752    :<removed string - do not use>
+STR_0753    :<removed string - do not use>
+STR_0754    :<removed string - do not use>
+STR_0755    :<removed string - do not use>
+STR_0756    :<removed string - do not use>
+STR_0757    :<removed string - do not use>
+STR_0758    :<removed string - do not use>
+STR_0759    :<removed string - do not use>
+STR_0760    :<removed string - do not use>
+STR_0761    :<removed string - do not use>
+STR_0762    :<removed string - do not use>
+STR_0763    :<removed string - do not use>
+STR_0764    :<removed string - do not use>
+STR_0765    :<removed string - do not use>
+STR_0766    :<removed string - do not use>
 STR_0767    :Visiteur {INT32}
 STR_0768    :Agent d'entretien {INT32}
 STR_0769    :Mécanicien {INT32}
@@ -1929,7 +1929,7 @@ STR_1919    :Pas assez d'argent disponible !
 STR_1920    :Impossible de rembourser l'emprunt !
 STR_1921    :{SMALLFONT}{BLACK}Commencer une nouvelle partie
 STR_1922    :{SMALLFONT}{BLACK}Continuer une partie sauvegardée
-STR_1923    :{SMALLFONT}{BLACK}Didacticiel
+STR_1923    :<removed string - do not use>
 STR_1924    :{SMALLFONT}{BLACK}Quitter
 STR_1925    :Impossible de placer quelqu'un ici...
 STR_1926    :{SMALLFONT}
@@ -2000,7 +2000,7 @@ STR_1990    :Plan du parc
 STR_1991    :Photo sur le vif
 STR_1992    :Parapluie
 STR_1993    :Boisson gazeuse
-STR_1994    :Hamurger
+STR_1994    :Hamburger
 STR_1995    :Frites
 STR_1996    :Glace
 STR_1997    :Barbe-à-papa
@@ -2028,7 +2028,7 @@ STR_2018    :Plans du parc
 STR_2019    :Photos sur le vif
 STR_2020    :Parapluies
 STR_2021    :Boissons gazeuses
-STR_2022    :Hamurgers
+STR_2022    :Hamburgers
 STR_2023    :Frites
 STR_2024    :Glaces
 STR_2025    :Barbes-à-papa
@@ -2056,13 +2056,13 @@ STR_2046    :un plan du parc
 STR_2047    :une photo sur le vif
 STR_2048    :un parapluie
 STR_2049    :une boisson gazeuse
-STR_2050    :un hamurger
+STR_2050    :un hamburger
 STR_2051    :des frites
 STR_2052    :une glace
 STR_2053    :une barbe-à-papa
 STR_2054    :une canette vide
 STR_2055    :un déchet
-STR_2056    :une boîte à hamurger vide
+STR_2056    :une boîte à hamburger vide
 STR_2057    :une pizza
 STR_2058    :un bon
 STR_2059    :du popcorn
@@ -2084,7 +2084,7 @@ STR_2074    :Plan de {STRINGID}
 STR_2075    :Photo sur le vif de {STRINGID}
 STR_2076    :Parapluie {OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2077    :Boisson gazeuse
-STR_2078    :Hamurger
+STR_2078    :Hamburger
 STR_2079    :Frites
 STR_2080    :Glace
 STR_2081    :Barbe-à-papa
@@ -2864,8 +2864,8 @@ STR_2852    :Voie déjà installée
 STR_2853    :Interdit par les autorités locales !
 STR_2854    :{RED}Vos visiteurs ne peuvent atteindre l'entrée de {STRINGID} !{NEWLINE}Construisez une allée vers l'entrée
 STR_2855    :{RED}{STRINGID} ne dispose pas d'allée à partir de sa sortie !{NEWLINE}Construisez une allée à la sortie de l'attraction
-STR_2856    :{WINDOW_COLOUR_2}Didacticiel
-STR_2857    :{WINDOW_COLOUR_2}(Appuyez sur une touche ou un bouton de la souris pour essayer vous-même)
+STR_2856    :<removed string - do not use>
+STR_2857    :<removed string - do not use>
 STR_2858    :Impossible de commencer campagne marketing...
 STR_2859    :Une session de RollerCoaster Tycoon 2 est déjà ouverte
 STR_2860    :<removed string - do not use>
@@ -3063,9 +3063,9 @@ STR_3051    :Trou de golf C
 STR_3052    :Trou de golf D
 STR_3053    :Trou de golf E
 STR_3054    :Chargement...
-STR_3055    :Blanc
-STR_3056    :Translucide
-STR_3057    :{WINDOW_COLOUR_2}Marque construction :
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :Mur de briques
 STR_3059    :Haies
 STR_3060    :Blocs de glace
@@ -3393,58 +3393,58 @@ STR_3381    :Le fichier n'est pas compatible ou contient des données invalides
 STR_3382    :Copie du fichier échouée
 STR_3383    :Sélectionnez le nouveau nom pour le modèle de circuit
 STR_3384    :Un modèle de circuit possède déjà ce nom - Veuillez en choisir un autre pour celui-ci :
-STR_3385    :Didacticiel pour débutants
-STR_3386    :Didacticiel attractions personnalisées
-STR_3387    :Didacticiel construction des montagnes russes
+STR_3385    :<removed string - do not use>
+STR_3386    :<removed string - do not use>
+STR_3387    :<removed string - do not use>
 STR_3388    :Impossible de changer au mode sélectionné
 STR_3389    :Impossible de choisir plus d'objets du décor...
 STR_3390    :Trop d'objets sélectionnés
-STR_3391    :{SMALLFONT}{BLACK}Voici notre parc. Voyons ça d'un peu plus près...
-STR_3392    :{SMALLFONT}{BLACK}Pour déplacer la vue, maintenez le bouton DROIT de la souris enfoncé puis bouger la souris...
-STR_3393    :{SMALLFONT}{BLACK}Pour élargir la vue, faites un zoom arrière à l'aide de l'icône placée en haut de l'écran...
-STR_3394    :{SMALLFONT}{BLACK}Vous pouvez aussi faire pivoter la vue par tranches de 90 degrés...
-STR_3395    :{SMALLFONT}{BLACK}Difficile d'entamer une construction avec une vue aussi large. Faites un zoom avant...
-STR_3396    :{SMALLFONT}{BLACK}Construisons d'abord une simple attraction...
-STR_3397    :{SMALLFONT}{BLACK}L'image fantôme blanche montre l'emplacement de l'attraction. Déplacez le pointeur pour choisir la position puis cliquez pour valider...
-STR_3398    :{SMALLFONT}{BLACK}Chaque attraction doit comporter une entrée et une sortie. Déplacez le pointeur jusqu'au bord de l'attraction, et cliquez pour l'entrée puis pour la sortie...
-STR_3399    :{SMALLFONT}{BLACK}Des allées doivent mener les visiteurs à votre nouvelle attraction...
-STR_3400    :{SMALLFONT}{BLACK}Avant l'entrée, vous devez construire une "zone d'attente"...
-STR_3401    :{SMALLFONT}{BLACK}Après la sortie, un chemin ordinaire fera l'affaire...
-STR_3402    :{SMALLFONT}{BLACK}Bien, et si on ouvrait l'attraction maintenant ? Cliquez sur le petit drapeau placé dans la fenêtre Attractions puis sélectionnez "ouvrir"...
-STR_3403    :{SMALLFONT}{BLACK}Mais où sont passés les visiteurs ?
-STR_3404    :{SMALLFONT}{BLACK}Zut. Nous avons oublié d'ouvrir le parc. Bon il est temps d'y remédier...
-STR_3405    :{SMALLFONT}{BLACK}En attendant vos premiers visiteurs, occupons-nous du décor...
-STR_3406    :{SMALLFONT}{BLACK}Voici notre parc vide. Nous allons construire une attraction simple et personnalisée...
-STR_3407    :{SMALLFONT}{BLACK}Tout d'abord on doit choisir le point de départ...
-STR_3408    :{SMALLFONT}{BLACK}La section du circuit que nous venons de construire est la 'station', cela permet aux visiteurs de monter et descendre de l'attraction...
-STR_3409    :{SMALLFONT}{BLACK}Nous allons étendre cette station en ajoutant quelques blocs...
-STR_3410    :{SMALLFONT}{BLACK}Les icônes en haut de la fenêtre de construction vous permet les différentes parties du circuit à ajouter...
-STR_3411    :{SMALLFONT}{BLACK}Nous choisissons une courbe vers la gauche...
-STR_3412    :{SMALLFONT}{BLACK}La courbe n'est pas encore construite, mais l'image fantôme blanche indique où elle le sera. Cliquez sur l'icône 'construire ceci' pour construire le bloc...
-STR_3413    :{SMALLFONT}{BLACK}Maintenant nous voulons construire un tracé droit, donc on clique sur l'icône 'tracé droit'...
-STR_3414    :{SMALLFONT}{BLACK}Maintenant que le circuit est terminé, nous devons construire l'entrée et la sortie...
-STR_3415    :{SMALLFONT}{BLACK}Testons notre attraction pour voir si tout va bien...
-STR_3416    :{SMALLFONT}{BLACK}Pendant son test, on va construire la zone d'attente et l'allée de sortie...
-STR_3417    :{SMALLFONT}{BLACK}OK - Ouvrons le parc et l'attraction...
-STR_3418    :{SMALLFONT}{BLACK}Notre nouvelle attraction n'est pas très attractive - Peut-être que nous devons rajouter du décor ?
-STR_3419    :{SMALLFONT}{BLACK}Pour construire du décor l'un au-dessus de l'autre ou en plein vol, maintenez la touche MAJ key et déplacez la souris pour choisir l'hauteur...
-STR_3420    :{SMALLFONT}{BLACK}Certains éléments du décor peuvent être repeints après leur construction...
-STR_3421    :{SMALLFONT}{BLACK}Ajoutons un peu de musique à notre attraction...
-STR_3422    :{SMALLFONT}{BLACK}Construisons un montagne russe !
-STR_3423    :{SMALLFONT}{BLACK}Il y a plein de modèles prédéfinis, mais nous allons construire notre propre circuit...
-STR_3424    :{SMALLFONT}{BLACK}Voilà la station construite. Maintenant la montée...
-STR_3425    :{SMALLFONT}{BLACK}Les trains des montagnes russes ne sont pas propulsés, une 'échelle' est nécessaire pour tirer le train lors de la première montée...
-STR_3426    :{SMALLFONT}{BLACK}La montée est terminée - Maintenant la descente...
-STR_3427    :{SMALLFONT}{BLACK}Ces courbes sont une mauvaise idée - Les visiteurs vont être projetés sur le côté de leur siège par les forces G latérales pendant que le train tourne...
-STR_3428    :{SMALLFONT}{BLACK}Pencher les courbes améliorera l'attraction - Les visiteurs auront leur dos collé aux sièges plutôt que d'être projetés sur les côtés...
-STR_3429    :{SMALLFONT}{BLACK}Non - Ca ne fonctionnera pas ! Regardez les marques de hauteur - La deuxième montée est plus grande que la première...
-STR_3430    :{SMALLFONT}{BLACK}Pour être sûr que le train réussisse le circuit, chaque montée doit être légèrement plus petite que la précédente...
-STR_3431    :{SMALLFONT}{BLACK}C'est mieux - Notre train pourra passer cette montée ! Ajoutons des voies plus tordues...
-STR_3432    :{SMALLFONT}{BLACK}Nous devons freiner le train avant la courbe finale et la station, ajoutons quelques freins...
-STR_3433    :{SMALLFONT}{BLACK}Et finalement nous rajouterons des 'freins de blocs', cela permettra à 2 trains de parcourir le circuit en sécurité...
-STR_3434    :{SMALLFONT}{BLACK}Testons l'attraction et regardons si tout fonctionne !
-STR_3435    :{SMALLFONT}{BLACK}Génial - Tout fonctionne ! Ajoutons la zone d'attente et l'allée de sortie pour que les visiteurs puissent y accéder...
-STR_3436    :{SMALLFONT}{BLACK}En attendant les premiers passagers, on va personnaliser un peu l'attraction...
+STR_3391    :<removed string - do not use>
+STR_3392    :<removed string - do not use>
+STR_3393    :<removed string - do not use>
+STR_3394    :<removed string - do not use>
+STR_3395    :<removed string - do not use>
+STR_3396    :<removed string - do not use>
+STR_3397    :<removed string - do not use>
+STR_3398    :<removed string - do not use>
+STR_3399    :<removed string - do not use>
+STR_3400    :<removed string - do not use>
+STR_3401    :<removed string - do not use>
+STR_3402    :<removed string - do not use>
+STR_3403    :<removed string - do not use>
+STR_3404    :<removed string - do not use>
+STR_3405    :<removed string - do not use>
+STR_3406    :<removed string - do not use>
+STR_3407    :<removed string - do not use>
+STR_3408    :<removed string - do not use>
+STR_3409    :<removed string - do not use>
+STR_3410    :<removed string - do not use>
+STR_3411    :<removed string - do not use>
+STR_3412    :<removed string - do not use>
+STR_3413    :<removed string - do not use>
+STR_3414    :<removed string - do not use>
+STR_3415    :<removed string - do not use>
+STR_3416    :<removed string - do not use>
+STR_3417    :<removed string - do not use>
+STR_3418    :<removed string - do not use>
+STR_3419    :<removed string - do not use>
+STR_3420    :<removed string - do not use>
+STR_3421    :<removed string - do not use>
+STR_3422    :<removed string - do not use>
+STR_3423    :<removed string - do not use>
+STR_3424    :<removed string - do not use>
+STR_3425    :<removed string - do not use>
+STR_3426    :<removed string - do not use>
+STR_3427    :<removed string - do not use>
+STR_3428    :<removed string - do not use>
+STR_3429    :<removed string - do not use>
+STR_3430    :<removed string - do not use>
+STR_3431    :<removed string - do not use>
+STR_3432    :<removed string - do not use>
+STR_3433    :<removed string - do not use>
+STR_3434    :<removed string - do not use>
+STR_3435    :<removed string - do not use>
+STR_3436    :<removed string - do not use>
 STR_3437    :{SMALLFONT}{BLACK}Nettoyer grande zone de décor du paysage
 STR_3438    :Impossible d'effacer tout le décor de cette zone...
 STR_3439    :Effacer décor
@@ -3461,7 +3461,7 @@ STR_5120    :Finances
 STR_5121    :Recherche
 STR_5122    :Choisir attractions selon type de voie (comme RCT1)
 STR_5123    :Renouveler attr.
-STR_5124    :<not used anymore>
+STR_5124    :<removed string - do not use>
 STR_5125    :Tout destructible
 STR_5126    :Musique aléatoire
 STR_5127    :{SMALLFONT}{BLACK}Outil pinceau de surface{NEWLINE}Peint le terrain au lieu de changer l'élévation
@@ -3833,7 +3833,7 @@ STR_5490    :Couper le son lorsque la fenêtre est minimisée
 STR_5491    :Liste d'inventions
 STR_5492    :Options du scénario
 STR_5493    :Envoyer un message
-STR_5494    :<not used anymore>
+STR_5494    :<removed string - do not use>
 STR_5495    :Liste des joueurs
 STR_5496    :Joueur :
 STR_5497    :Ping :
@@ -3846,7 +3846,7 @@ STR_5503    :Saisir nom d'hôte ou adresse IP :
 STR_5504    :{SMALLFONT}{BLACK}Afficher le statut multijoueur
 STR_5505    :Impossible de se connecter au serveur
 STR_5506    :Les visiteurs ignorent l'intensité
-STR_5507    :Les agents d'entretien tondent la pelouse par défaut
+STR_5507    :<removed string - do not use>
 STR_5508    :Autor. charg. de fichiers avec une empreinte incorrecte
 STR_5509    :{SMALLFONT}{BLACK}Autorise le chargement de scénarios et sauvegardes ayant une empreinte incorrecte, par exemple les scénarios de la démo ou des sauvegardes corrompues.
 STR_5510    :Périphérique audio par défaut
@@ -4130,7 +4130,7 @@ STR_5817    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Définit
 STR_5818    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Utilise l'échelle la plus proche quand le ratio de mise à l'échelle est un entier (1, 2, 3, etc.)
 STR_5819    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Met le jeu en pause quand l'overlay Steam est ouvert
 STR_5820    :{SMALLFONT}{BLACK}Minimise le jeu si le focus est perdu en plein écran
-STR_5821    :{SMALLFONT}{BLACK}Change la couleur de la marque de construction pendant la construction d'attractions, allées, boutiques, éléments de décor, etc.
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Active le cycle jour / nuit.{NEWLINE}Chaque cycle dure un mois de jeu
 STR_5823    :{SMALLFONT}{BLACK}Affiche le texte des bannières en majuscule (comme dans RCT1)
 STR_5824    :{SMALLFONT}{BLACK}Désactive les éclairs pendant les orages
@@ -4159,7 +4159,7 @@ STR_5846    :{SMALLFONT}{BLACK}Définit la fréquence de la sauvegarde automatiq
 STR_5847    :{SMALLFONT}{BLACK}Sélectionne la séquence de parcs utilisée dans le menu principal. Les séquences titre de RCT1/2 requièrent des scénarios importés pour fonctionner
 STR_5848    :{SMALLFONT}{BLACK}Créer et gérer des séquences titre personnalisées
 STR_5849    :{SMALLFONT}{BLACK}Placer automatiquement les nouveaux employés
-STR_5850    :{SMALLFONT}{BLACK}Les nouveaux agents d'entretien tondent la pelouse par défaut (comme RCT1)
+STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Définit le délai d'inspection par défaut sur les nouvelles attractions
 STR_5852    :{SMALLFONT}{BLACK}Définit le nom de la chaîne TwitchTV utilisée pour l'intégration à Twitch
 STR_5853    :{SMALLFONT}{BLACK}Active/désactive les effets sonores
@@ -4206,7 +4206,7 @@ STR_5893    :Taux de change
 STR_5894    :Entrez le taux de change
 STR_5895    :Sauvegarder la voie
 STR_5896    :La sauvegarde de la voie a échoué !
-STR_5897    :Nombre de fenêtres max. :
+STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}Impossible de charger la voie, le fichier est peut-être corrompu ou manquant !
 STR_5899    :Afficher/masquer fenêtre de débogage du dessin
 STR_5900    :Utiliser le code de dessin original

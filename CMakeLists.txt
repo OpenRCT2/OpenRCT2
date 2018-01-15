@@ -70,15 +70,12 @@ function (ADD_CHECK_CXX_COMPILER_FLAG _CXXFLAGS _CACHE_VAR _FLAG)
     endif ()
 endfunction ()
 
-# Launchpad turns on -Wdate-time for compilers that support it, this shouldn't break our build
-ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_WRITE_STRINGS -Wno-error=date-time)
 ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_MISSING_VARIABLE_DECLARATIONS -Wmissing-variable-declarations)
 ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_DUPLICATED_COND -Wduplicated-cond)
 ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_DUPLICATED_BRANCHES -Wduplicated-branches)
 ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_LOGICAL_OP -Wlogical-op)
 ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_RESTRICT -Wrestrict)
 ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_UNREACHABLE_CODE_BREAK -Wunreachable-code-break)
-ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_WRITE_STRINGS -Wno-error=date-time)
 ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NULL_DEREFERENCE -Wnull-dereference)
 ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_TYPES -Wsuggest-final-types)
 ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_METHODS -Wsuggest-final-methods)
@@ -114,6 +111,17 @@ if(EXISTS "${ROOT_DIR}/discord-rpc")
     message("Building with discord-rpc support")
 else()
 	message("No discord-rpc detected, to enable clone discord-rpc to root directory: ${ROOT_DIR}")
+endif()
+
+# Copied from https://github.com/opencv/opencv/blob/dcdd6af5a856826fe62c95322145731e702e54c5/cmake/OpenCVDetectCXXCompiler.cmake#L63-L70
+if(MSVC64 OR MINGW64)
+    set(X86_64 1)
+elseif(MINGW OR (MSVC AND NOT CMAKE_CROSSCOMPILING))
+    set(X86 1)
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "amd64.*|x86_64.*|AMD64.*")
+    set(X86_64 1)
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "i686.*|i386.*|x86.*|amd64.*|AMD64.*")
+    set(X86 1)
 endif()
 
 # Include sub-projects

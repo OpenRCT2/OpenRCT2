@@ -22,13 +22,13 @@
 
 extern "C"
 {
-    #include <openrct2/drawing/drawing.h>
-    #include <openrct2/interface/colour.h>
-    #include <openrct2/paint/paint.h>
-    #include <openrct2/paint/tile_element/tile_element.h>
+    #include <openrct2/drawing/Drawing.h>
+    #include <openrct2/interface/Colour.h>
+    #include <openrct2/paint/Paint.h>
+    #include <openrct2/paint/tile_element/TileElement.h>
 }
 
-#include "addresses.h"
+#include "Addresses.h"
 
 #define gRideEntries                RCT2_ADDRESS(0x009ACFA4, rct_ride_entry*)
 #define gSupportSegments            RCT2_ADDRESS(0x0141E9B4, support_height)

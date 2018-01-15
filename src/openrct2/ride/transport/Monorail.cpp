@@ -15,14 +15,14 @@
 #pragma endregion
 
 #include "../../common.h"
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
-#include "../../world/map.h"
-#include "../ride_data.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
+#include "../../world/Map.h"
+#include "../RideData.h"
 #include "../Track.h"
-#include "../track_paint.h"
-#include "../vehicle_paint.h"
+#include "../TrackPaint.h"
+#include "../VehiclePaint.h"
 
 enum
 {
@@ -138,14 +138,14 @@ enum
     SPR_MONORAIL_DIAG_25_DEG_UP_S_N                = 23340,
 };
 
-static const uint32 monorail_track_pieces_flat[4] = {
+static constexpr const uint32 monorail_track_pieces_flat[4] = {
     SPR_MONORAIL_FLAT_SW_NE,
     SPR_MONORAIL_FLAT_NW_SE,
     SPR_MONORAIL_FLAT_SW_NE,
     SPR_MONORAIL_FLAT_NW_SE,
 };
 
-static const uint32 monorail_track_pieces_flat_quarter_turn_5_tiles[4][5] = {
+static constexpr const uint32 monorail_track_pieces_flat_quarter_turn_5_tiles[4][5] = {
     {
         SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_0,
         SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_1,
@@ -176,28 +176,28 @@ static const uint32 monorail_track_pieces_flat_quarter_turn_5_tiles[4][5] = {
     }
 };
 
-static const uint32 monorail_track_pieces_25_deg_up[4] = {
+static constexpr const uint32 monorail_track_pieces_25_deg_up[4] = {
     SPR_MONORAIL_25_DEG_UP_SW_NE,
     SPR_MONORAIL_25_DEG_UP_NW_SE,
     SPR_MONORAIL_25_DEG_UP_NE_SW,
     SPR_MONORAIL_25_DEG_UP_SE_NW,
 };
 
-static const uint32 monorail_track_pieces_flat_to_25_deg_up[4] = {
+static constexpr const uint32 monorail_track_pieces_flat_to_25_deg_up[4] = {
     SPR_MONORAIL_FLAT_TO_25_DEG_UP_SW_NE,
     SPR_MONORAIL_FLAT_TO_25_DEG_UP_NW_SE,
     SPR_MONORAIL_FLAT_TO_25_DEG_UP_NE_SW,
     SPR_MONORAIL_FLAT_TO_25_DEG_UP_SE_NW,
 };
 
-static const uint32 monorail_track_pieces_25_deg_up_to_flat[4] = {
+static constexpr const uint32 monorail_track_pieces_25_deg_up_to_flat[4] = {
     SPR_MONORAIL_25_DEG_UP_TO_FLAT_SW_NE,
     SPR_MONORAIL_25_DEG_UP_TO_FLAT_NW_SE,
     SPR_MONORAIL_25_DEG_UP_TO_FLAT_NE_SW,
     SPR_MONORAIL_25_DEG_UP_TO_FLAT_SE_NW,
 };
 
-static const uint32 monorail_track_pieces_s_bend_left[2][4] = { {
+static constexpr const uint32 monorail_track_pieces_s_bend_left[2][4] = { {
                                                                     SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_0,
                                                                     SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_1,
                                                                     SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_2,
@@ -210,7 +210,7 @@ static const uint32 monorail_track_pieces_s_bend_left[2][4] = { {
                                                                     SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_0,
                                                                 } };
 
-static const uint32 monorail_track_pieces_s_bend_right[2][4] = { {
+static constexpr const uint32 monorail_track_pieces_s_bend_right[2][4] = { {
                                                                      SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_0,
                                                                      SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_1,
                                                                      SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_2,
@@ -223,7 +223,7 @@ static const uint32 monorail_track_pieces_s_bend_right[2][4] = { {
                                                                      SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_0,
                                                                  } };
 
-static const uint32 monorail_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
+static constexpr const uint32 monorail_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
     { SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_0, SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_1,
       SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_2 },
     { SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_0, SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_1,
@@ -234,7 +234,7 @@ static const uint32 monorail_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
       SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_2 }
 };
 
-static const uint32 ghost_train_track_pieces_right_eight_to_diag[4][4] = {
+static constexpr const uint32 ghost_train_track_pieces_right_eight_to_diag[4][4] = {
     {
         SPR_MONORAIL_EIGHT_TO_DIAG_SW_E_PART_0,
         SPR_MONORAIL_EIGHT_TO_DIAG_SW_E_PART_1,
@@ -261,7 +261,7 @@ static const uint32 ghost_train_track_pieces_right_eight_to_diag[4][4] = {
     },
 };
 
-static const LocationXY16 ghost_train_track_pieces_right_eight_to_diag_bounds[4][4] = {
+static constexpr const LocationXY16 ghost_train_track_pieces_right_eight_to_diag_bounds[4][4] = {
     {
         { 32, 20 },
         { 32, 16 },
@@ -288,7 +288,7 @@ static const LocationXY16 ghost_train_track_pieces_right_eight_to_diag_bounds[4]
     },
 };
 
-static const LocationXY16 ghost_train_track_pieces_right_eight_to_diag_offset[4][4] = {
+static constexpr const LocationXY16 ghost_train_track_pieces_right_eight_to_diag_offset[4][4] = {
     {
         { 0, 6 },
         { 0, 16 },
@@ -315,7 +315,7 @@ static const LocationXY16 ghost_train_track_pieces_right_eight_to_diag_offset[4]
     },
 };
 
-static const uint32 ghost_train_track_pieces_left_eight_to_diag[4][4] = {
+static constexpr const uint32 ghost_train_track_pieces_left_eight_to_diag[4][4] = {
     {
         SPR_MONORAIL_EIGHT_TO_DIAG_SW_N_PART_0,
         SPR_MONORAIL_EIGHT_TO_DIAG_SW_N_PART_1,
@@ -342,7 +342,7 @@ static const uint32 ghost_train_track_pieces_left_eight_to_diag[4][4] = {
     },
 };
 
-static const LocationXY16 ghost_train_track_pieces_left_eight_to_diag_bounds[4][4] = {
+static constexpr const LocationXY16 ghost_train_track_pieces_left_eight_to_diag_bounds[4][4] = {
     {
         { 32, 20 },
         { 32, 16 },
@@ -369,7 +369,7 @@ static const LocationXY16 ghost_train_track_pieces_left_eight_to_diag_bounds[4][
     },
 };
 
-static const LocationXY16 ghost_train_track_pieces_left_eight_to_diag_offset[4][4] = {
+static constexpr const LocationXY16 ghost_train_track_pieces_left_eight_to_diag_offset[4][4] = {
     {
         { 0, 6 },
         { 0, 0 },
@@ -396,28 +396,28 @@ static const LocationXY16 ghost_train_track_pieces_left_eight_to_diag_offset[4][
     },
 };
 
-static const uint32 monorail_track_pieces_diag_flat[4] = {
+static constexpr const uint32 monorail_track_pieces_diag_flat[4] = {
     SPR_MONORAIL_DIAG_FLAT_W_E,
     SPR_MONORAIL_DIAG_FLAT_N_S,
     SPR_MONORAIL_DIAG_FLAT_E_W,
     SPR_MONORAIL_DIAG_FLAT_S_N,
 };
 
-static const uint32 monorail_track_pieces_diag_flat_to_25_deg_up[4] = {
+static constexpr const uint32 monorail_track_pieces_diag_flat_to_25_deg_up[4] = {
     SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_W_E,
     SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_N_S,
     SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_E_W,
     SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_S_N,
 };
 
-static const uint32 monorail_track_pieces_diag_25_deg_up_to_flat[4] = {
+static constexpr const uint32 monorail_track_pieces_diag_25_deg_up_to_flat[4] = {
     SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_W_E,
     SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_N_S,
     SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_E_W,
     SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_S_N,
 };
 
-static const uint32 monorail_track_pieces_diag_25_deg_up[4] = {
+static constexpr const uint32 monorail_track_pieces_diag_25_deg_up[4] = {
     SPR_MONORAIL_DIAG_25_DEG_UP_W_E,
     SPR_MONORAIL_DIAG_25_DEG_UP_N_S,
     SPR_MONORAIL_DIAG_25_DEG_UP_E_W,
@@ -670,7 +670,7 @@ static void paint_monorail_track_right_quarter_turn_5_tiles(paint_session * sess
     track_paint_util_right_quarter_turn_5_tiles_paint(
         session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         monorail_track_pieces_flat_quarter_turn_5_tiles, defaultRightQuarterTurn5TilesOffsets,
-        defaultRightQuarterTurn5TilesBoundLengths, NULL, get_current_rotation());
+        defaultRightQuarterTurn5TilesBoundLengths, nullptr, get_current_rotation());
 
     switch (trackSequence)
     {
@@ -934,7 +934,7 @@ static void paint_monorail_track_right_quarter_turn_3_tiles(paint_session * sess
     track_paint_util_right_quarter_turn_3_tiles_paint(
         session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         monorail_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets,
-        defaultRightQuarterTurn3TilesBoundLengths, NULL, get_current_rotation());
+        defaultRightQuarterTurn3TilesBoundLengths, nullptr, get_current_rotation());
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_6);
 
     switch (trackSequence)
@@ -971,7 +971,7 @@ static void paint_monorail_track_left_quarter_turn_3_tiles(paint_session * sessi
     paint_monorail_track_right_quarter_turn_3_tiles(session, rideIndex, trackSequence, (direction + 1) % 4, height, tileElement);
 }
 
-static const sint8 paint_monorail_eighth_to_diag_index[] = { 0, 1, 2, -1, 3 };
+static constexpr const sint8 paint_monorail_eighth_to_diag_index[] = { 0, 1, 2, -1, 3 };
 
 /** rct2: 0x008AE31C */
 static void paint_monorail_track_left_eighth_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence,
@@ -1117,7 +1117,7 @@ static void paint_monorail_track_right_eighth_to_orthogonal(paint_session * sess
     paint_monorail_track_left_eighth_to_diag(session, rideIndex, trackSequence, (direction + 3) % 4, height, tileElement);
 }
 
-static const bool monorail_diag_image_segment[][4] =
+static constexpr const bool monorail_diag_image_segment[][4] =
 {
     { false, true, false, false },
     { false, false, false, true },
@@ -1125,9 +1125,9 @@ static const bool monorail_diag_image_segment[][4] =
     { true, false, false, false },
 };
 
-static const uint8 monorail_diag_support_segment[] = { 1, 0, 2, 3 };
+static constexpr const uint8 monorail_diag_support_segment[] = { 1, 0, 2, 3 };
 
-static const sint32 monorail_diag_blocked_segments[] = { SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC,
+static constexpr const sint32 monorail_diag_blocked_segments[] = { SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC,
                                                          SEGMENT_C4 | SEGMENT_CC | SEGMENT_C8 | SEGMENT_B4,
                                                          SEGMENT_D0 | SEGMENT_C4 | SEGMENT_C0 | SEGMENT_D4,
                                                          SEGMENT_D0 | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_C8 };
@@ -1352,5 +1352,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_monorail(sint32 trackType, sint32 
         return paint_monorail_track_diag_25_deg_down_to_flat;
     }
 
-    return NULL;
+    return nullptr;
 }

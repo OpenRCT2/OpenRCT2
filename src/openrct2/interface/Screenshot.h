@@ -25,7 +25,19 @@ extern "C"
 {
 #endif
     extern uint8 gScreenshotCountdown;
-    extern sint32 gScreenshotWeather;
+
+    struct ScreenshotOptions
+    {
+        sint32 weather     = 0;
+        bool hide_guests   = false;
+        bool hide_sprites  = false;
+        bool clear_grass   = false;
+        bool mowed_grass   = false;
+        bool water_plants  = false;
+        bool fix_vandalism = false;
+        bool remove_litter = false;
+        bool tidy_up_park  = false;
+    };
 
     void screenshot_check();
     sint32 screenshot_dump();
@@ -33,7 +45,7 @@ extern "C"
     sint32 screenshot_dump_png_32bpp(sint32 width, sint32 height, const void *pixels);
 
     void screenshot_giant();
-    sint32 cmdline_for_screenshot(const char **argv, sint32 argc);
+    sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOptions * options);
     sint32 cmdline_for_gfxbench(const char **argv, sint32 argc);
 #ifdef __cplusplus
 }

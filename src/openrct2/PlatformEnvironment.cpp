@@ -16,7 +16,6 @@
 
 #include "config/Config.h"
 #include "core/Console.hpp"
-#include "core/Exception.hpp"
 #include "core/Guard.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
@@ -34,7 +33,7 @@ private:
     std::string _basePath[DIRBASE_COUNT];
 
 public:
-    PlatformEnvironment(DIRBASE_VALUES basePaths)
+    explicit PlatformEnvironment(DIRBASE_VALUES basePaths)
     {
         for (sint32 i = 0; i < DIRBASE_COUNT; i++)
         {
@@ -175,6 +174,7 @@ IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment()
     return env;
 }
 
+// clang-format off
 const char * PlatformEnvironment::DirectoryNamesRCT2[] =
 {
     "Data",                 // DATA
@@ -226,3 +226,4 @@ const char * PlatformEnvironment::FileNames[] =
     "scores.dat",           // SCORES (LEGACY)
     "Saved Games" PATH_SEPARATOR "scores.dat",  // SCORES (RCT2)
 };
+// clang-format on

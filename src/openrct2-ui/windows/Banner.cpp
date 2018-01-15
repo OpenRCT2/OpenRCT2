@@ -18,11 +18,11 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/Game.h>
-#include <openrct2/localisation/localisation.h>
-#include <openrct2/interface/viewport.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/world/scenery.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/world/Scenery.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/sprites.h>
 
 #define WW 113
@@ -41,7 +41,7 @@ enum WINDOW_BANNER_WIDGET_IDX {
     WIDX_TEXT_COLOUR_DROPDOWN_BUTTON
 };
 
-static const rct_string_id BannerColouredTextFormats[] = {
+static constexpr const rct_string_id BannerColouredTextFormats[] = {
     STR_TEXT_COLOR_BLACK,
     STR_TEXT_COLOR_GREY,
     STR_TEXT_COLOR_WHITE,
@@ -68,7 +68,7 @@ static rct_widget window_banner_widgets[] = {
     { WWT_FLATBTN,          1,  WW - 25,    WW - 2, 67,     90,         SPR_DEMOLISH,               STR_DEMOLISH_BANNER_TIP},           // demolish button
     { WWT_COLOURBTN,        1,  5,          16,     WH - 16,WH - 5,     0xFFFFFFFF,                 STR_SELECT_MAIN_SIGN_COLOUR_TIP},   // high money
     { WWT_DROPDOWN,         1,  43,         81,     WH - 16,WH - 5,     0xFFFFFFFF,                 STR_NONE},                          // high money
-    { WWT_DROPDOWN_BUTTON,  1,  70,         80,     WH - 15,WH - 6,     STR_DROPDOWN_GLYPH,         STR_SELECT_TEXT_COLOUR_TIP},        // high money
+    { WWT_BUTTON,           1,  70,         80,     WH - 15,WH - 6,     STR_DROPDOWN_GLYPH,         STR_SELECT_TEXT_COLOUR_TIP},        // high money
     { WIDGETS_END },
 };
 

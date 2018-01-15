@@ -17,14 +17,14 @@
 #pragma once
 
 #include "../core/MemoryStream.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "../OpenRCT2.h"
 #include "GameAction.h"
 
-#include "../cheats.h"
-#include "../world/entrance.h"
-#include "../world/park.h"
-#include "../world/footpath.h"
+#include "../Cheats.h"
+#include "../world/Entrance.h"
+#include "../world/Park.h"
+#include "../world/Footpath.h"
 
 struct PlaceParkEntranceAction : public GameActionBase<GAME_COMMAND_PLACE_PARK_ENTRANCE, GameActionResult>
 {

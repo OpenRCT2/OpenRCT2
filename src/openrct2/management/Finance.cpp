@@ -15,15 +15,15 @@
 #pragma endregion
 
 #include "../Game.h"
-#include "../interface/window.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
+#include "../interface/Window.h"
+#include "../localisation/Date.h"
+#include "../localisation/Localisation.h"
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
-#include "../ride/ride.h"
-#include "../util/util.h"
-#include "../world/park.h"
-#include "../world/sprite.h"
+#include "../ride/Ride.h"
+#include "../util/Util.h"
+#include "../world/Park.h"
+#include "../world/Sprite.h"
 #include "Finance.h"
 
 /**
@@ -48,7 +48,7 @@ const money32 research_cost_table[RESEARCH_FUNDING_COUNT] =
     MONEY(400, 00)       // Maximum funding
 };
 
-static const sint32 dword_988E60[RCT_EXPENDITURE_TYPE_COUNT] = {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0};
+static constexpr const sint32 dword_988E60[RCT_EXPENDITURE_TYPE_COUNT] = {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0};
 
 money32 gInitialCash;
 money32 gCash;

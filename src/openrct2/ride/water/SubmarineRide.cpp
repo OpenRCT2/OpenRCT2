@@ -14,13 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
-#include "../ride_data.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
+#include "../RideData.h"
 #include "../Track.h"
-#include "../track_paint.h"
-#include "../vehicle_paint.h"
+#include "../TrackPaint.h"
+#include "../VehiclePaint.h"
 
 #ifndef NO_VEHICLES
 /**
@@ -54,7 +54,7 @@ void vehicle_visual_submarine(paint_session * session, sint32 x, sint32 imageDir
         }
         baseImage_id *= vehicleEntry->base_num_frames;
         baseImage_id += vehicleEntry->base_image_id;
-        baseImage_id += vehicle->var_4A;
+        baseImage_id += vehicle->swing_sprite;
     }
 
     vehicle_boundbox bb = VehicleBoundboxes[vehicleEntry->draw_order][imageDirection / 2];
@@ -63,7 +63,7 @@ void vehicle_visual_submarine(paint_session * session, sint32 x, sint32 imageDir
         baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
     paint_struct * ps = sub_98197C(session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y,
                                    bb.offset_z + z, get_current_rotation());
-    if (ps != NULL)
+    if (ps != nullptr)
     {
         ps->tertiary_colour = vehicle->colours_extended;
     }
@@ -72,7 +72,7 @@ void vehicle_visual_submarine(paint_session * session, sint32 x, sint32 imageDir
                IMAGE_TYPE_REMAP_2_PLUS;
     ps = sub_98197C(session, image_id, 0, 0, bb.length_x, bb.length_y, 2, z, bb.offset_x, bb.offset_y, bb.offset_z + z - 10,
                     get_current_rotation());
-    if (ps != NULL)
+    if (ps != nullptr)
     {
         ps->tertiary_colour = vehicle->colours_extended;
     }
@@ -173,7 +173,7 @@ static void submarine_ride_paint_track_left_quarter_turn_3_tiles(paint_session *
     paint_util_set_general_support_height(session, height + 16, 0x20);
 }
 
-static const uint8 submarine_ride_right_quarter_turn_3_tiles_to_left_turn_map[] = { 3, 1, 2, 0 };
+static constexpr const uint8 submarine_ride_right_quarter_turn_3_tiles_to_left_turn_map[] = { 3, 1, 2, 0 };
 static void submarine_ride_paint_track_right_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
@@ -228,5 +228,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_submarine_ride(sint32 trackType, s
         return submarine_ride_paint_track_right_quarter_turn_1_tile;
     }
 
-    return NULL;
+    return nullptr;
 }

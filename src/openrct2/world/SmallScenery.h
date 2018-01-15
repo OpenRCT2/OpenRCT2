@@ -14,9 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma once
+
 #include "../common.h"
-#include "map.h"
-#include "scenery.h"
+#include "Map.h"
+#include "Scenery.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -46,12 +46,12 @@ template<typename T>
 class ConfigEnum final : public IConfigEnum<T>
 {
 private:
-    std::vector<ConfigEnumEntry<T>> _entries;
+    const std::vector<ConfigEnumEntry<T>> _entries;
 
 public:
-    ConfigEnum(std::initializer_list<ConfigEnumEntry<T>> entries)
+    ConfigEnum(const std::initializer_list<ConfigEnumEntry<T>>& entries)
+        : _entries(entries)
     {
-        _entries = entries;
     }
 
     std::string GetName(T value) const override

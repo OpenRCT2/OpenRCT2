@@ -14,11 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 enum
 {
@@ -31,7 +31,7 @@ enum
     SPR_DODGEMS_FENCE_TOP_LEFT     = 21937
 };
 
-const uint32 dodgems_fence_sprites[] = { SPR_DODGEMS_FENCE_TOP_RIGHT, SPR_DODGEMS_FENCE_BOTTOM_RIGHT,
+static constexpr const uint32 dodgems_fence_sprites[] = { SPR_DODGEMS_FENCE_TOP_RIGHT, SPR_DODGEMS_FENCE_BOTTOM_RIGHT,
                                          SPR_DODGEMS_FENCE_BOTTOM_LEFT, SPR_DODGEMS_FENCE_TOP_LEFT };
 
 static void paint_dodgems_roof(paint_session * session, sint32 height, sint32 offset)
@@ -52,7 +52,7 @@ static void paint_dodgems(paint_session * session, uint8 rideIndex, uint8 trackS
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     uint32 imageId = SPR_DODGEMS_FLOOR | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 30, 30, 1, height, 1, 1, height, get_current_rotation());
@@ -102,7 +102,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_dodgems(sint32 trackType, sint32 d
 {
     if (trackType != FLAT_TRACK_ELEM_4_X_4)
     {
-        return NULL;
+        return nullptr;
     }
 
     return paint_dodgems;

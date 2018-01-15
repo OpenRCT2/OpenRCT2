@@ -18,16 +18,16 @@
 
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "GameAction.h"
 
-#include "../localisation/date.h"
-#include "../cheats.h"
-#include "../interface/window.h"
-#include "../world/park.h"
-#include "../rct1.h"
-#include "../ride/ride_data.h"
-#include "../ride/ride.h"
+#include "../localisation/Date.h"
+#include "../Cheats.h"
+#include "../interface/Window.h"
+#include "../world/Park.h"
+#include "../rct1/RCT1.h"
+#include "../ride/RideData.h"
+#include "../ride/Ride.h"
 #include "../ride/Station.h"
 
 class RideCreateGameActionResult final : public GameActionResult
@@ -75,7 +75,7 @@ public:
         if (rideIndex == -1)
         {
             // No more free slots available.
-            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_NONE);
+            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_RIDES);
         }
 
         if (_rideType >= RIDE_TYPE_COUNT)
@@ -153,9 +153,9 @@ public:
             ride->queue_time[i] = 0;
         }
 
-        for (size_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
+        for (auto &vehicle : ride->vehicles)
         {
-            ride->vehicles[i] = SPRITE_INDEX_NULL;
+            vehicle = SPRITE_INDEX_NULL;
         }
 
         ride->status = RIDE_STATUS_CLOSED;

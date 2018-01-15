@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "textinputbuffer.h"
 
 void textinputbuffer_init(textinputbuffer * tib, utf8 * buffer, size_t size)
@@ -74,7 +74,7 @@ void textinputbuffer_insert_codepoint(textinputbuffer * tib, uint32 codepoint)
     }
 }
 
-void textinputbuffer_insert(textinputbuffer * tib, utf8 * source)
+void textinputbuffer_insert(textinputbuffer * tib, const utf8 * source)
 {
     const utf8 *ch = source;
     uint32 codepoint;

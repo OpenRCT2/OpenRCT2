@@ -44,7 +44,7 @@ typedef uint16_t uint16;
 typedef uint32_t uint32;
 typedef uint64_t uint64;
 
-#include "diagnostic.h"
+#include "Diagnostic.h"
 
 typedef char utf8;
 typedef utf8* utf8string;
@@ -193,15 +193,21 @@ typedef fixed64_1dp money64;
 typedef void (EMPTY_ARGS_VOID_POINTER)();
 typedef uint16 rct_string_id;
 
-#define SafeFree(x) do { free(x); (x) = NULL; } while (0)
+#define SafeFree(x) do { free(x); (x) = NULL; } while (false)
 
-#define SafeDelete(x) do { delete (x); (x) = nullptr; } while (0)
-#define SafeDeleteArray(x) do { delete[] (x); (x) = nullptr; } while (0)
+#define SafeDelete(x) do { delete (x); (x) = nullptr; } while (false)
+#define SafeDeleteArray(x) do { delete[] (x); (x) = nullptr; } while (false)
 
 #ifndef interface
     #define interface struct
 #endif
 #define abstract = 0
+
+#if defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))
+    #define OPENRCT2_X86
+#elif defined(_MSC_VER) && (_MSC_VER >= 1500) && (defined(_M_X64) || defined(_M_IX86)) // VS2008
+    #define OPENRCT2_X86
+#endif
 
 #if defined(__i386__) || defined(_M_IX86)
 #define PLATFORM_X86

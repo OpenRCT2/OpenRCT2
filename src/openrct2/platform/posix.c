@@ -34,10 +34,10 @@
 #include <time.h>
 #include <unistd.h>
 #include "../config/Config.h"
-#include "../localisation/date.h"
-#include "../localisation/language.h"
+#include "../localisation/Date.h"
+#include "../localisation/Language.h"
 #include "../OpenRCT2.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "platform.h"
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "openrct2.lock"

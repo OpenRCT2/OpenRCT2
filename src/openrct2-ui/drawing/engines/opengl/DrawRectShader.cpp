@@ -18,11 +18,14 @@
 
 #include "DrawRectShader.h"
 
-struct VDStruct
+namespace
 {
-    GLfloat mat[4][2];
-    GLfloat vec[2];
-};
+    struct VDStruct
+    {
+        GLfloat mat[4][2];
+        GLfloat vec[2];
+    };
+}
 
 constexpr VDStruct VertexData[4] =
 {

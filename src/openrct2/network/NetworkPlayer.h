@@ -22,8 +22,8 @@
 #include "../common.h"
 
 #include "../peep/Peep.h"
-#include "../world/map.h"
-#include "../world/sprite.h"
+#include "../world/Map.h"
+#include "../world/Sprite.h"
 
 class NetworkPacket;
 
@@ -40,7 +40,7 @@ public:
     sint32      LastAction              = -999;
     uint32      LastActionTime          = 0;
     LocationXYZ16   LastActionCoord         = { 0 };
-    rct_peep*   PickupPeep              = 0;
+    rct_peep*   PickupPeep              = nullptr;
     sint32      PickupPeepOldX          = LOCATION_NULL;
     std::string KeyHash;
     uint32      LastDemolishRideTime    = 0;

@@ -38,8 +38,8 @@ int NormalisedMain(int argc, const char * * argv)
 int main(int argc, const char * * argv)
 #endif
 {
+    int runGame = cmdline_run(argv, argc);
     core_init();
-    int runGame = cmdline_run((const char * *)argv, argc);
     if (runGame == 1)
     {
         if (gOpenRCT2Headless)

@@ -20,8 +20,8 @@
 #include "ObjectRepository.h"
 #include "SceneryGroupObject.h"
 
-#include "../drawing/drawing.h"
-#include "../localisation/language.h"
+#include "../drawing/Drawing.h"
+#include "../localisation/Language.h"
 
 SceneryGroupObject::~SceneryGroupObject()
 {

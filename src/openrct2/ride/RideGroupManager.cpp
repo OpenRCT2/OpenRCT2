@@ -20,88 +20,88 @@
 #include "../config/Config.h"
 #include "../core/String.hpp"
 
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "../management/Research.h"
-#include "ride.h"
-#include "ride_data.h"
+#include "Ride.h"
+#include "RideData.h"
 #include "Track.h"
 #include "TrackData.h"
 
-static const RideGroup ride_group_corkscrew_rc = {
+static constexpr const RideGroup ride_group_corkscrew_rc = {
     /*.RideType =*/ RIDE_TYPE_CORKSCREW_ROLLER_COASTER,
     /*.MaximumHeight =*/ 28,
     /*.AvailableTrackPieces =*/ (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_VERTICAL_LOOP) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HALF_LOOP) | (1ULL << TRACK_CORKSCREW) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_BOOSTER),
     /*.Naming =*/ { STR_CORKSCREW_RC_GROUP, STR_CORKSCREW_RC_GROUP_DESC },
 };
 
-static const RideGroup ride_group_hypercoaster = {
+static constexpr const RideGroup ride_group_hypercoaster = {
     /*.RideType =*/ RIDE_TYPE_CORKSCREW_ROLLER_COASTER,
     /*.MaximumHeight =*/ 45,
     /*.AvailableTrackPieces =*/ (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_SLOPE_STEEP_LONG),
     /*.Naming =*/ { STR_HYPERCOASTER_GROUP, STR_HYPERCOASTER_GROUP_DESC },
 };
 
-static const RideGroup ride_group_car_ride = {
+static constexpr const RideGroup ride_group_car_ride = {
     /*.RideType =*/ RIDE_TYPE_CAR_RIDE,
     /*.MaximumHeight =*/ 6,
     /*.AvailableTrackPieces =*/ (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_SPINNING_TUNNEL),
     /*.Naming =*/ { STR_CAR_RIDE_GROUP, STR_CAR_RIDE_GROUP_DESC },
 };
 
-static const RideGroup ride_group_monster_trucks = {
+static constexpr const RideGroup ride_group_monster_trucks = {
     /*.RideType =*/ RIDE_TYPE_CAR_RIDE,
     /*.MaximumHeight =*/ 18,
     /*.AvailableTrackPieces =*/ (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_RAPIDS),
     /*.Naming =*/ { STR_MONSTER_TRUCKS_GROUP, STR_MONSTER_TRUCKS_GROUP_DESC },
 };
 
-static const RideGroup ride_group_steel_twister_rc = {
+static constexpr const RideGroup ride_group_steel_twister_rc = {
     /*.RideType =*/ RIDE_TYPE_TWISTER_ROLLER_COASTER,
-    /*.MaximumHeight =*/ 34,
+    /*.MaximumHeight =*/ 40,
     /*.AvailableTrackPieces =*/ (1ULL << TRACK_FLAT) | (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_VERTICAL_LOOP) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HALF_LOOP) | (1ULL << TRACK_CORKSCREW) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_SLOPE_VERTICAL) | (1ULL << TRACK_BARREL_ROLL) | (1ULL << TRACK_POWERED_LIFT) | (1ULL << TRACK_HALF_LOOP_LARGE) | (1ULL << TRACK_SLOPE_CURVE_BANKED) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_SLOPE_ROLL_BANKING) | (1ULL << TRACK_SLOPE_STEEP_LONG) | (1ULL << TRACK_CURVE_VERTICAL) | (1ULL << TRACK_QUARTER_LOOP) | (1ULL << TRACK_BOOSTER),
     /*.Naming =*/ { STR_STEEL_TWISTER_GROUP, STR_STEEL_TWISTER_GROUP_DESC },
 };
 
-static const RideGroup ride_group_hyper_twister = {
+static constexpr const RideGroup ride_group_hyper_twister = {
     /*.RideType =*/ RIDE_TYPE_TWISTER_ROLLER_COASTER,
     /*.MaximumHeight =*/ 54,
     /*.AvailableTrackPieces =*/ (1ULL << TRACK_FLAT) | (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_POWERED_LIFT) | (1ULL << TRACK_SLOPE_CURVE_BANKED) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_SLOPE_ROLL_BANKING) | (1ULL << TRACK_SLOPE_STEEP_LONG),
     /*.Naming =*/ { STR_HYPER_TWISTER_GROUP, STR_HYPER_TWISTER_GROUP_DESC },
 };
 
-static const RideGroup ride_group_junior_rc = {
+static constexpr const RideGroup ride_group_junior_rc = {
     /*.RideType =*/ RIDE_TYPE_JUNIOR_ROLLER_COASTER,
     /*.MaximumHeight =*/ 12,
     /*.AvailableTrackPieces =*/ (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_LIFT_HILL_CURVE) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_BOOSTER),
     /*.Naming =*/ { STR_JUNIOR_RC_GROUP, STR_JUNIOR_RC_GROUP_DESC },
 };
 
-static const RideGroup ride_group_classic_mini_coaster = {
+static constexpr const RideGroup ride_group_classic_mini_coaster = {
     /*.RideType =*/ RIDE_TYPE_JUNIOR_ROLLER_COASTER,
     /*.MaximumHeight =*/ 15,
     /*.AvailableTrackPieces =*/ (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_LIFT_HILL_CURVE) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_BOOSTER),
     /*.Naming =*/ { STR_CLASSIC_MINI_COASTER_GROUP, STR_CLASSIC_MINI_COASTER_GROUP_DESC },
 };
 
-static const RideGroup ride_group_steel_wild_mouse = {
+static constexpr const RideGroup ride_group_steel_wild_mouse = {
     /*.RideType =*/ RIDE_TYPE_STEEL_WILD_MOUSE,
     /*.MaximumHeight =*/ 16,
     /*.AvailableTrackPieces =*/ (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_LIFT_HILL_STEEP) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES),
     /*.Naming =*/ { STR_RIDE_NAME_WILD_MOUSE, STR_RIDE_DESCRIPTION_WILD_MOUSE },
 };
 
-static const RideGroup ride_group_spinning_wild_mouse = {
+static constexpr const RideGroup ride_group_spinning_wild_mouse = {
     /*.RideType =*/ RIDE_TYPE_STEEL_WILD_MOUSE,
     /*.MaximumHeight =*/ 16,
     /*.AvailableTrackPieces =*/ (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_ROTATION_CONTROL_TOGGLE),
     /*.Naming =*/ { STR_SPINNING_WILD_MOUSE_GROUP, STR_SPINNING_WILD_MOUSE_GROUP_DESC },
 };
 
-static const RideGroup corkscrew_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_corkscrew_rc, ride_group_hypercoaster };
-static const RideGroup junior_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_junior_rc, ride_group_classic_mini_coaster };
-static const RideGroup car_ride_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_car_ride, ride_group_monster_trucks };
-static const RideGroup twister_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_steel_twister_rc, ride_group_hyper_twister };
-static const RideGroup steel_wild_mouse_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_steel_wild_mouse, ride_group_spinning_wild_mouse };
+static constexpr const RideGroup corkscrew_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_corkscrew_rc, ride_group_hypercoaster };
+static constexpr const RideGroup junior_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_junior_rc, ride_group_classic_mini_coaster };
+static constexpr const RideGroup car_ride_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_car_ride, ride_group_monster_trucks };
+static constexpr const RideGroup twister_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_steel_twister_rc, ride_group_hyper_twister };
+static constexpr const RideGroup steel_wild_mouse_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_steel_wild_mouse, ride_group_spinning_wild_mouse };
 
 const RideGroup * RideGroupManager::GetRideGroup(const uint8 rideType, const rct_ride_entry * rideEntry)
 {
@@ -212,6 +212,7 @@ bool RideGroupManager::RideGroupIsInvented(const RideGroup * rideGroup)
 
 const std::vector<const char *> RideGroupManager::GetPreferredRideEntryOrder(const uint8 rideType)
 {
+    // clang-format off
     static const std::vector<const char *> preferredRideEntryOrder[] =
     {
         { "SPDRCR  " },                                                             // RIDE_TYPE_SPIRAL_ROLLER_COASTER
@@ -305,7 +306,8 @@ const std::vector<const char *> RideGroupManager::GetPreferredRideEntryOrder(con
         { "PMT1    " },                                                             // RIDE_TYPE_MINE_RIDE
         { },                                                                        // RIDE_TYPE_59
         { "PREMT1  " },                                                             // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
-   };
+    };
+    // clang-format on
     return preferredRideEntryOrder[rideType];
 }
 
@@ -433,24 +435,6 @@ bool RideGroupManager::RideTypeIsIndependent(const uint8 rideType)
 
     assert(false);
     return true;
-}
-
-extern "C"
-{
-    const RideGroup * get_ride_group(uint8 rideType, const rct_ride_entry * rideEntry)
-    {
-        return RideGroupManager::GetRideGroup(rideType, rideEntry);
-    }
-
-    bool ride_type_has_ride_groups(const uint8 rideType)
-    {
-        return RideGroupManager::RideTypeHasRideGroups(rideType);
-    }
-
-    bool rideTypeIsIndependent(const uint8 rideType)
-    {
-        return RideGroupManager::RideTypeIsIndependent(rideType);
-    }
 }
 
 const uint8 gRideCategories[] = {

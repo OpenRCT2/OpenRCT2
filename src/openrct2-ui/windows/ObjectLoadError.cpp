@@ -17,8 +17,8 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/core/Memory.hpp>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/platform/platform.h>
 
@@ -46,12 +46,12 @@ static rct_widget window_object_load_error_widgets[] = {
     { WWT_FRAME,             0, 0,               WW - 1,                0,          WH - 1,     STR_NONE,                       STR_NONE },                // Background
     { WWT_CAPTION,           0, 1,               WW - 2,                1,          14,         STR_OBJECT_LOAD_ERROR_TITLE,    STR_WINDOW_TITLE_TIP },    // Title bar
     { WWT_CLOSEBOX,          0, WW - 13,         WW - 3,                2,          13,         STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP },    // Close button
-    { WWT_13,                0, NAME_COL_LEFT,   SOURCE_COL_LEFT - 1,   57,         68,         STR_OBJECT_NAME,                STR_NONE },                // 'Object name' header
-    { WWT_13,                0, SOURCE_COL_LEFT, TYPE_COL_LEFT - 1,     57,         68,         STR_OBJECT_SOURCE,              STR_NONE },                // 'Object source' header
-    { WWT_13,                0, TYPE_COL_LEFT,   WW_LESS_PADDING - 1,   57,         68,         STR_OBJECT_TYPE,                STR_NONE },                // 'Object type' header
+    { WWT_TABLE_HEADER,      0, NAME_COL_LEFT,   SOURCE_COL_LEFT - 1,   57,         68,         STR_OBJECT_NAME,                STR_NONE },                // 'Object name' header
+    { WWT_TABLE_HEADER,      0, SOURCE_COL_LEFT, TYPE_COL_LEFT - 1,     57,         68,         STR_OBJECT_SOURCE,              STR_NONE },                // 'Object source' header
+    { WWT_TABLE_HEADER,      0, TYPE_COL_LEFT,   WW_LESS_PADDING - 1,   57,         68,         STR_OBJECT_TYPE,                STR_NONE },                // 'Object type' header
     { WWT_SCROLL,            0, 4,               WW_LESS_PADDING,       68,         WH - 40,    SCROLL_VERTICAL,                STR_NONE },                // Scrollable list area
-    { WWT_CLOSEBOX,          0, 45,              225,                   WH - 32,    WH - 12,    STR_COPY_SELECTED,              STR_NONE },                // Copy selected btn
-    { WWT_CLOSEBOX,          0, 225,             395,                   WH - 32,    WH - 12,    STR_COPY_ALL,                   STR_NONE },                // Copy all btn
+    { WWT_BUTTON,            0, 45,              225,                   WH - 32,    WH - 12,    STR_COPY_SELECTED,              STR_NONE },                // Copy selected btn
+    { WWT_BUTTON,            0, 225,             395,                   WH - 32,    WH - 12,    STR_COPY_ALL,                   STR_NONE },                // Copy all btn
     { WIDGETS_END },
 };
 

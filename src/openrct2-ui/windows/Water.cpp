@@ -18,9 +18,9 @@
 #include <openrct2/core/Math.hpp>
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/interface/land_tool.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2-ui/interface/LandTool.h>
 
 enum WINDOW_WATER_WIDGET_IDX {
     WIDX_BACKGROUND,

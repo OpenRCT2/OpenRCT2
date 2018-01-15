@@ -14,13 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../localisation/localisation.h"
-#include "../interface/viewport.h"
-#include "../interface/window.h"
+#include "../localisation/Localisation.h"
+#include "../interface/Viewport.h"
+#include "../interface/Window.h"
 #include "../OpenRCT2.h"
-#include "sprite.h"
+#include "Sprite.h"
 
-static const LocationXY16 _moneyEffectMoveOffset[] = {
+static constexpr const LocationXY16 _moneyEffectMoveOffset[] = {
     {1,  -1},
     {1,  1},
     {-1, 1},

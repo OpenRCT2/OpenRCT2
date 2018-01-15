@@ -15,13 +15,13 @@
 #pragma endregion
 
 #include "../../common.h"
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
-#include "../../world/map.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
+#include "../../world/Map.h"
 #include "../Track.h"
-#include "../track_paint.h"
-#include "../vehicle_paint.h"
+#include "../TrackPaint.h"
+#include "../VehiclePaint.h"
 
 enum
 {
@@ -95,35 +95,35 @@ enum
     SPR_GO_KARTS_START_LIGHTS_GREEN_SE_NW              = 20819,
 };
 
-static const uint32 go_karts_track_pieces_starting_grid_end[4][2] = {
+static constexpr const uint32 go_karts_track_pieces_starting_grid_end[4][2] = {
     { SPR_GO_KARTS_STARTING_GRID_END_SW_NE, SPR_GO_KARTS_STARTING_GRID_END_FRONT_SW_NE },
     { SPR_GO_KARTS_STARTING_GRID_END_NW_SE, SPR_GO_KARTS_STARTING_GRID_END_FRONT_NW_SE },
     { SPR_GO_KARTS_STARTING_GRID_END_NE_SW, SPR_GO_KARTS_STARTING_GRID_END_FRONT_NE_SW },
     { SPR_GO_KARTS_STARTING_GRID_END_SE_NW, SPR_GO_KARTS_STARTING_GRID_END_FRONT_SE_NW },
 };
 
-static const uint32 go_karts_track_pieces_starting_grid[4][2] = {
+static constexpr const uint32 go_karts_track_pieces_starting_grid[4][2] = {
     { SPR_GO_KARTS_STARTING_GRID_SW_NE, SPR_GO_KARTS_STARTING_GRID_FRONT_SW_NE },
     { SPR_GO_KARTS_STARTING_GRID_NW_SE, SPR_GO_KARTS_STARTING_GRID_FRONT_NW_SE },
     { SPR_GO_KARTS_STARTING_GRID_NE_SW, SPR_GO_KARTS_STARTING_GRID_FRONT_NE_SW },
     { SPR_GO_KARTS_STARTING_GRID_SE_NW, SPR_GO_KARTS_STARTING_GRID_FRONT_SE_NW },
 };
 
-static const uint32 go_karts_track_pieces_25_deg_up[4][2] = {
+static constexpr const uint32 go_karts_track_pieces_25_deg_up[4][2] = {
     { SPR_GO_KARTS_25_DEG_UP_SW_NE, SPR_GO_KARTS_25_DEG_UP_FRONT_SW_NE },
     { SPR_GO_KARTS_25_DEG_UP_NW_SE, SPR_GO_KARTS_25_DEG_UP_FRONT_NW_SE },
     { SPR_GO_KARTS_25_DEG_UP_NE_SW, SPR_GO_KARTS_25_DEG_UP_FRONT_NE_SW },
     { SPR_GO_KARTS_25_DEG_UP_SE_NW, SPR_GO_KARTS_25_DEG_UP_FRONT_SE_NW },
 };
 
-static const uint32 go_karts_track_pieces_flat_to_25_deg_up[4][2] = {
+static constexpr const uint32 go_karts_track_pieces_flat_to_25_deg_up[4][2] = {
     { SPR_GO_KARTS_FLAT_TO_25_DEG_UP_SW_NE, SPR_GO_KARTS_FLAT_TO_25_DEG_UP_FRONT_SW_NE },
     { SPR_GO_KARTS_FLAT_TO_25_DEG_UP_NW_SE, SPR_GO_KARTS_FLAT_TO_25_DEG_UP_FRONT_NW_SE },
     { SPR_GO_KARTS_FLAT_TO_25_DEG_UP_NE_SW, SPR_GO_KARTS_FLAT_TO_25_DEG_UP_FRONT_NE_SW },
     { SPR_GO_KARTS_FLAT_TO_25_DEG_UP_SE_NW, SPR_GO_KARTS_FLAT_TO_25_DEG_UP_FRONT_SE_NW },
 };
 
-static const uint32 go_karts_track_pieces_25_deg_up_to_flat[4][2] = {
+static constexpr const uint32 go_karts_track_pieces_25_deg_up_to_flat[4][2] = {
     { SPR_GO_KARTS_25_DEG_UP_TO_FLAT_SW_NE, SPR_GO_KARTS_25_DEG_UP_TO_FLAT_FRONT_SW_NE },
     { SPR_GO_KARTS_25_DEG_UP_TO_FLAT_NW_SE, SPR_GO_KARTS_25_DEG_UP_TO_FLAT_FRONT_NW_SE },
     { SPR_GO_KARTS_25_DEG_UP_TO_FLAT_NE_SW, SPR_GO_KARTS_25_DEG_UP_TO_FLAT_FRONT_NE_SW },
@@ -156,7 +156,7 @@ static void paint_go_karts_track_flat(paint_session * session, uint8 rideIndex, 
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -194,19 +194,19 @@ static void paint_go_karts_track_25_deg_up(paint_session * session, uint8 rideIn
     switch (direction)
     {
     case 0:
-        wooden_a_supports_paint_setup(session, 0, 9, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, 0, 9, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_push_tunnel_left(session, height - 8, TUNNEL_7);
         break;
     case 1:
-        wooden_a_supports_paint_setup(session, 1, 10, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, 1, 10, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
         break;
     case 2:
-        wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
         break;
     case 3:
-        wooden_a_supports_paint_setup(session, 1, 12, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, 1, 12, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_push_tunnel_right(session, height - 8, TUNNEL_7);
         break;
     }
@@ -247,19 +247,19 @@ static void paint_go_karts_track_flat_to_25_deg_up(paint_session * session, uint
     switch (direction)
     {
     case 0:
-        wooden_a_supports_paint_setup(session, 0, 1, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, 0, 1, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
         break;
     case 1:
-        wooden_a_supports_paint_setup(session, 1, 2, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, 1, 2, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_push_tunnel_right(session, height, TUNNEL_8);
         break;
     case 2:
-        wooden_a_supports_paint_setup(session, 0, 3, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, 0, 3, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_push_tunnel_left(session, height, TUNNEL_8);
         break;
     case 3:
-        wooden_a_supports_paint_setup(session, 1, 4, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, 1, 4, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
         break;
     }
@@ -300,19 +300,19 @@ static void paint_go_karts_track_25_deg_up_to_flat(paint_session * session, uint
     switch (direction)
     {
     case 0:
-        wooden_a_supports_paint_setup(session, 0, 5, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, 0, 5, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_push_tunnel_left(session, height - 8, TUNNEL_6);
         break;
     case 1:
-        wooden_a_supports_paint_setup(session, 1, 6, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, 1, 6, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_push_tunnel_right(session, height + 8, TUNNEL_14);
         break;
     case 2:
-        wooden_a_supports_paint_setup(session, 0, 7, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, 0, 7, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_push_tunnel_left(session, height + 8, TUNNEL_14);
         break;
     case 3:
-        wooden_a_supports_paint_setup(session, 1, 8, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, 1, 8, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_push_tunnel_right(session, height - 8, TUNNEL_6);
         break;
     }
@@ -446,7 +446,7 @@ static void paint_go_karts_station(paint_session * session, uint8 rideIndex, uin
         }
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -515,7 +515,7 @@ static void paint_go_karts_track_left_quarter_turn_1_tile(paint_session * sessio
         break;
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -563,5 +563,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_go_karts(sint32 trackType, sint32 
         return paint_go_karts_track_right_quarter_turn_1_tile;
     }
 
-    return NULL;
+    return nullptr;
 }

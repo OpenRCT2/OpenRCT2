@@ -14,14 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <time.h>
+#include <ctime>
 
 #include "../core/Guard.hpp"
 
 #include "../config/Config.h"
 #include "../platform/crash.h"
 #include "../platform/platform.h"
-#include "../localisation/language.h"
+#include "../localisation/Language.h"
 
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
@@ -63,7 +63,8 @@ static utf8 * _openrctDataPath = nullptr;
 static utf8 * _rct2DataPath    = nullptr;
 static bool   _silentBreakpad  = false;
 
-static const CommandLineOptionDefinition StandardOptions[]
+// clang-format off
+static constexpr const CommandLineOptionDefinition StandardOptions[]
 {
     { CMDLINE_TYPE_SWITCH,  &_help,            'h', "help",              "show this help message and exit"                            },
     { CMDLINE_TYPE_SWITCH,  &_version,         'v', "version",           "show version information and exit"                          },
@@ -98,7 +99,7 @@ static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator
 
 static bool _removeShell = false;
 
-static const CommandLineOptionDefinition RegisterShellOptions[]
+static constexpr const CommandLineOptionDefinition RegisterShellOptions[]
 {
     { CMDLINE_TYPE_SWITCH, &_removeShell, 'd', "remove", "remove shell integration" },
 };
@@ -156,6 +157,7 @@ const CommandLineExample CommandLine::RootExamples[]
 #endif
     ExampleTableEnd
 };
+// clang-format on
 
 exitcode_t CommandLine::HandleCommandDefault()
 {
@@ -458,7 +460,7 @@ static void PrintLaunchInformation()
     Console::WriteLine();
     Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
     Console::WriteLine();
-    Console::WriteFormat("@ %s", OPENRCT2_TIMESTAMP);
+    Console::WriteFormat("@ %s", OPENRCT2_CUSTOM_INFO);
     Console::WriteLine();
     Console::WriteLine();
 

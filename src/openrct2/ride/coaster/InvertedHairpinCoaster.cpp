@@ -14,17 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../drawing/drawing.h"
-#include "../../interface/viewport.h"
-#include "../../paint/tile_element/tile_element.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
+#include "../../drawing/Drawing.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/tile_element/TileElement.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
 #include "../../sprites.h"
-#include "../../world/map.h"
-#include "../../world/sprite.h"
-#include "../ride_data.h"
+#include "../../world/Map.h"
+#include "../../world/Sprite.h"
+#include "../RideData.h"
 #include "../TrackData.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 /** rct2: 0x00890CB4 */
 static void inverted_hairpin_rc_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
@@ -85,7 +85,7 @@ static void inverted_hairpin_rc_track_flat(paint_session * session, uint8 rideIn
 static void inverted_hairpin_rc_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                               sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][3] = {
+    static constexpr const uint32 imageIds[4][3] = {
         { SPR_STATION_BASE_C_SW_NE, 17028, SPR_STATION_INVERTED_BAR_0_SW_NE },
         { SPR_STATION_BASE_C_NW_SE, 17029, SPR_STATION_INVERTED_BAR_0_NW_SE },
         { SPR_STATION_BASE_C_SW_NE, 17028, SPR_STATION_INVERTED_BAR_0_SW_NE },
@@ -1268,5 +1268,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_inverted_hairpin_rc(sint32 trackTy
     case TRACK_ELEM_BLOCK_BRAKES:
         return inverted_hairpin_rc_track_block_brakes;
     }
-    return NULL;
+    return nullptr;
 }

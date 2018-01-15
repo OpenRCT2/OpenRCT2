@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../common.h"
-#include <math.h>
+#include <cmath>
 #include <vector>
 
 #include "../Context.h"
@@ -25,14 +25,14 @@
 #include "../core/Util.hpp"
 #include "../Game.h"
 #include "../Imaging.h"
-#include "../localisation/string_ids.h"
-#include "../object.h"
+#include "../localisation/StringIds.h"
+#include "../object/Object.h"
 #include "../platform/platform.h"
-#include "../util/util.h"
-#include "map.h"
-#include "map_helpers.h"
+#include "../util/Util.h"
+#include "Map.h"
+#include "MapHelpers.h"
 #include "MapGen.h"
-#include "scenery.h"
+#include "Scenery.h"
 #include "SmallScenery.h"
 
 #pragma region Height map struct
@@ -51,7 +51,7 @@ static struct
 
 #pragma region Random objects
 
-static const char * GrassTrees[] = {
+static constexpr const char * GrassTrees[] = {
     // Dark
     "TCF     ",     // Caucasian Fir Tree
     "TRF     ",     // Red Fir Tree
@@ -67,7 +67,7 @@ static const char * GrassTrees[] = {
     "TEL     ",     // European Larch Tree
 };
 
-static const char * DesertTrees[] = {
+static constexpr const char * DesertTrees[] = {
     "TMP     ",     // Monkey-Puzzle Tree
     "THL     ",     // Honey Locust Tree
     "TH1     ",     // Canary Palm Tree
@@ -78,7 +78,7 @@ static const char * DesertTrees[] = {
     "TSC     ",     // Cactus
 };
 
-static const char * SnowTrees[] = {
+static constexpr const char * SnowTrees[] = {
     "TCFS    ",     // Snow-covered Caucasian Fir Tree
     "TNSS    ",     // Snow-covered Norway Spruce Tree
     "TRF3    ",     // Snow-covered Red Fir Tree
@@ -88,7 +88,7 @@ static const char * SnowTrees[] = {
 #pragma endregion
 
 // Randomly chosen base terrains. We rarely want a whole map made out of chequerboard or rock.
-static const uint8 BaseTerrain[] = {TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_LIGHT, TERRAIN_DIRT, TERRAIN_ICE};
+static constexpr const uint8 BaseTerrain[] = {TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_LIGHT, TERRAIN_DIRT, TERRAIN_ICE};
 
 #define BLOB_HEIGHT 255
 
@@ -242,6 +242,10 @@ static void mapgen_place_tree(sint32 type, sint32 x, sint32 y)
     sint32 surfaceZ;
     rct_tile_element  * tileElement;
     rct_scenery_entry * sceneryEntry = get_small_scenery_entry(type);
+    if (sceneryEntry == nullptr)
+    {
+        return;
+    }
 
     surfaceZ    = tile_element_height(x * 32 + 16, y * 32 + 16) / 8;
     tileElement = tile_element_insert(x, y, surfaceZ, (1 | 2 | 4 | 8));
@@ -342,7 +346,7 @@ static void mapgen_place_trees()
 
     // Place trees
     float  treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
-    sint32 numTrees        = Math::Max(4, (sint32) (availablePositions.size() * treeToLandRatio));
+    sint32 numTrees        = std::min(std::max(4, (sint32) (availablePositions.size() * treeToLandRatio)), (sint32)availablePositions.size());
 
     for (sint32 i = 0; i < numTrees; i++)
     {
@@ -494,9 +498,9 @@ static uint8 perm[512];
 
 static void noise_rand()
 {
-    for (uint32 i = 0; i < Util::CountOf(perm); i++)
+    for (auto &i : perm)
     {
-        perm[i] = util_rand() & 0xFF;
+        i = util_rand() & 0xFF;
     }
 }
 

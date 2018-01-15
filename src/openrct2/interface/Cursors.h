@@ -55,6 +55,8 @@ enum CURSOR_ID
 
 namespace OpenRCT2 { namespace Ui
 {
+    constexpr size_t CURSOR_BIT_WIDTH = 32;
+    constexpr size_t CURSOR_HEIGHT    = 4;
     struct CursorData
     {
         struct HotSpot
@@ -62,8 +64,8 @@ namespace OpenRCT2 { namespace Ui
             sint16 X;
             sint16 Y;
         } HotSpot;
-        uint8 Data[32 * 4];
-        uint8 Mask[32 * 4];
+        uint8 Data[CURSOR_BIT_WIDTH * CURSOR_HEIGHT];
+        uint8 Mask[CURSOR_BIT_WIDTH * CURSOR_HEIGHT];
     };
 } }
 

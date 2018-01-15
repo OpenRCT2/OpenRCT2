@@ -14,17 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../drawing/drawing.h"
-#include "../../interface/viewport.h"
-#include "../../paint/tile_element/tile_element.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
+#include "../../drawing/Drawing.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/tile_element/TileElement.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
 #include "../../sprites.h"
-#include "../../world/map.h"
-#include "../../world/sprite.h"
-#include "../ride_data.h"
+#include "../../world/Map.h"
+#include "../../world/Sprite.h"
+#include "../RideData.h"
 #include "../TrackData.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 #include "BolligerMabillardTrack.h"
 
 void bolliger_mabillard_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
@@ -85,7 +85,7 @@ void bolliger_mabillard_track_flat(paint_session * session, uint8 rideIndex, uin
 void bolliger_mabillard_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                       sint32 height, rct_tile_element * tileElement, sint32 supportType)
 {
-    static const uint32 imageIds[4][3] = {
+    static constexpr const uint32 imageIds[4][3] = {
         { 17154, 17150, SPR_STATION_BASE_A_SW_NE },
         { 17155, 17151, SPR_STATION_BASE_A_NW_SE },
         { 17154, 17150, SPR_STATION_BASE_A_SW_NE },

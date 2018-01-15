@@ -47,10 +47,11 @@ to create a new issue in the OpenRCT2/Localisation repository about the new stri
 so that they can translate the new strings as quick as possible. Similarly if you change any existing string, it is more
 important that you create an issue as this can be more easily overlooked.
 
-When coding, please also add a string constant for your strings to ```./src/localisation/string_ids.h```.
+When coding, please also add a string constant for your strings to ```./src/localisation/StringIds.h```.
 
-### Coding style / language
-OpenRCT2 currently does not have a strict coding style. This will be implemented after the entire game is implemented and
-undergoes heavy refactoring. For now, it is recommended that you only write C files as the majority of the game is currently in
-C. Exceptions are to modules that have no direct relationship to original code such as the new software audio mixer, the
-HTTP integration and the Twitch integration.
+### Coding style
+Use [this](https://github.com/OpenRCT2/OpenRCT2/wiki/Coding-Style) code style as a reference for new or changed code.
+
+### Language
+For now, it is recommended that you only write C++ files as the majority of the game is currently in
+C++. Exceptions are to modules that have direct relationship to original code.

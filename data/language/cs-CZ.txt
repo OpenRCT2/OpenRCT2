@@ -3642,7 +3642,7 @@ STR_5300    :{SMALLFONT}{BLACK}Propustit zaměstnance
 STR_5301    :{MEDIUMFONT}{BLACK}Vyrovnání dluhů
 STR_5302    :Vyrovnat dluh
 STR_5303    :Povolit stavění, když je hra pozastavená
-STR_5304    :Herní sekvence:
+STR_5304    :Úvodní herní sekvence:
 STR_5305    :RollerCoaster Tycoon 1
 STR_5306    :RollerCoaster Tycoon 1 (AA)
 STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
@@ -3968,7 +3968,7 @@ STR_5626    :Ostatní parky
 STR_5627    :Seskupit scénáře podle:
 STR_5628    :Původní hry
 STR_5629    :Obtížnosti
-STR_5630    :Zapnout odemykání scénářů
+STR_5630    :Zapnout progresivní odemykání scénářů
 STR_5631    :Originální DLC parky
 STR_5632    :Postav si vlastní...
 STR_5633    :CMD + 
@@ -4149,7 +4149,7 @@ STR_5839    :{SMALLFONT}{BLACK}Zobrazit samostatné tlačítko pro výzkum a vý
 STR_5840    :{SMALLFONT}{BLACK}Zobrazit samostatné tlačítko pro cheaty na nástrojové liště
 STR_5841    :{SMALLFONT}{BLACK}Zobrazit samostatné tlačítko pro poslední novinky na nástrojové liště
 STR_5842    :{SMALLFONT}{BLACK}Roztřídit scénáře do záložek podle obtížnosti (RCT2 chování), nebo podle hry, ze které pocházejí (RCT1 chování)
-STR_5843    :{SMALLFONT}{BLACK}Zapnout odemykání scénářů (RCT1 chování)
+STR_5843    :{SMALLFONT}{BLACK}Zapnout progresivní odemykání scénářů (RCT1 chování)
 STR_5844    :{SMALLFONT}{BLACK}Zachovat připojení do hry více hráčů,{NEWLINE}i když dojde k desynchronizaci
 STR_5845    :{SMALLFONT}{BLACK}Přidá tlačítko s vývojářskými nástroji na nástrojovou lištu.{NEWLINE}Povolí klávesovou zkratku pro vývojářskou konzoli
 STR_5846    :{SMALLFONT}{BLACK}Nastavení frekvence automatického ukládání hry
@@ -4470,6 +4470,47 @@ STR_6160    :{WINDOW_COLOUR_2}Dostupné vozy: {BLACK}{STRING}
 STR_6161    :Přepnout vykreslování mřížky
 STR_6162    :Točící se divoká myš
 STR_6163    :Vozy ve tvaru myší jedou po dřevěné trati a pro dezorientaci návštěvníků se točí, zatímco se naklání v ostrých zatáčkách a drsných pádech
+STR_6164    :{WHITE}{CROSS}
+STR_6165    :Vertikální synchronizace obrazu
+STR_6166    :{SMALLFONT}{BLACK}Synchonizuje každý zobrazený snímek dle obnovovací frekvence monitoru. Zamezuje trhání obrazu.
+STR_6167    :{SMALLFONT}{BLACK}Pokročilé
+STR_6168    :Úvodní herní sekvence
+STR_6169    :Výběr scénáře
+STR_6170    :Vychytávky
+STR_6171    :Vyhledávání
+STR_6172    :{SMALLFONT}{BLACK}Vyhledávání
+STR_6173    :Zadejte jméno k vyhledání:
+STR_6174    :Načíst uloženou hru
+STR_6175    :Načíst scénář
+STR_6176    :Scénář k načtení:
+STR_6177    :Načíst{MOVE_X}{87}Zvolte scénář
+STR_6178    :Načíst{MOVE_X}{87}{RED}Chybějící scénář
+STR_6179    :Vybrat
+STR_6180    :Zvolte scénář
+STR_6181    :{RED}Chybějící scénář
+STR_6182    :Následovat{MOVE_X}{87}{STRING}
+STR_6183    :Následovat{MOVE_X}{87}Zvolte sprite
+STR_6184    :Následovat sprite
+STR_6185    :Zvolit sprite
+STR_6186    :Nezvolen žádný sprite
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :Zvratky
+STR_6189    :Kachna
+STR_6190    :{SMALLFONT}{BLACK}Nelze zvolit sprite, když je aktivní hlavní obrazovka.
+STR_6191    :Povrch
+STR_6192    :Stěna
+STR_6193    :{COMMA16} návštěvník
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} návštěvník
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} návštěvník
+STR_6196    :{BLACK}Rok:
+STR_6197    :{BLACK}Měsíc:
+STR_6198    :{BLACK}Den:
+STR_6199    :Nastavit datum
+STR_6200    :Resetovat datum
+STR_6201    :{MONTH}
+STR_6202    :Vykreslovat virtuální mřížku
+STR_6203    :{SMALLFONT}{BLACK}Pro usnadnění vertikálního umisťování objektů můžete podržet klávesu Ctrl nebo Shift a poté bude vykreslena pomocná virtuální mřížka.
+
 
 ###############################################################################
 ## RCT2 Objects

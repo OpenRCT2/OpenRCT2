@@ -37,9 +37,9 @@
 #include <pwd.h>
 
 #include "../config/Config.h"
-#include "../localisation/language.h"
-#include "../localisation/string_ids.h"
-#include "../util/util.h"
+#include "../localisation/Language.h"
+#include "../localisation/StringIds.h"
+#include "../util/Util.h"
 #include "platform.h"
 
 void platform_get_exe_path(utf8 *outPath, size_t outSize)

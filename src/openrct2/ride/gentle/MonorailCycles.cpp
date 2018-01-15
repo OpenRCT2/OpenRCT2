@@ -15,13 +15,13 @@
 #pragma endregion
 
 #include "../../common.h"
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
-#include "../../world/map.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
+#include "../../world/Map.h"
 #include "../Track.h"
-#include "../track_paint.h"
-#include "../vehicle_paint.h"
+#include "../TrackPaint.h"
+#include "../VehiclePaint.h"
 
 enum
 {
@@ -77,9 +77,9 @@ enum
     SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_3              = 16869,
 };
 
-static const uint32 monorail_cycles_track_pieces_flat[4] = { SPR_MONORAIL_CYCLES_FLAT_SW_NE, SPR_MONORAIL_CYCLES_FLAT_NW_SE };
+static constexpr const uint32 monorail_cycles_track_pieces_flat[4] = { SPR_MONORAIL_CYCLES_FLAT_SW_NE, SPR_MONORAIL_CYCLES_FLAT_NW_SE };
 
-static const uint32 monorail_cycles_track_pieces_flat_quarter_turn_5_tiles[4][5] = {
+static constexpr const uint32 monorail_cycles_track_pieces_flat_quarter_turn_5_tiles[4][5] = {
     {
         SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_0,
         SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_1,
@@ -110,7 +110,7 @@ static const uint32 monorail_cycles_track_pieces_flat_quarter_turn_5_tiles[4][5]
     }
 };
 
-static const uint32 monorail_cycles_track_pieces_s_bend_left[2][4] = { {
+static constexpr const uint32 monorail_cycles_track_pieces_s_bend_left[2][4] = { {
                                                                            SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_0,
                                                                            SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_1,
                                                                            SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_2,
@@ -123,7 +123,7 @@ static const uint32 monorail_cycles_track_pieces_s_bend_left[2][4] = { {
                                                                            SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_3,
                                                                        } };
 
-static const uint32 monorail_cycles_track_pieces_s_bend_right[2][4] = { {
+static constexpr const uint32 monorail_cycles_track_pieces_s_bend_right[2][4] = { {
                                                                             SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_0,
                                                                             SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_1,
                                                                             SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_2,
@@ -136,7 +136,7 @@ static const uint32 monorail_cycles_track_pieces_s_bend_right[2][4] = { {
                                                                             SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_3,
                                                                         } };
 
-static const uint32 monorail_cycles_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
+static constexpr const uint32 monorail_cycles_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
     { SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0, SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
       SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2 },
     { SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0, SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1,
@@ -254,7 +254,7 @@ static void paint_monorail_cycles_track_left_quarter_turn_3_tiles(paint_session 
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static const uint8 monorail_cycles_right_quarter_turn_3_tiles_to_left_turn_map[] = { 3, 1, 2, 0 };
+static constexpr const uint8 monorail_cycles_right_quarter_turn_3_tiles_to_left_turn_map[] = { 3, 1, 2, 0 };
 
 /** rct2: 0x0088AD98 */
 static void paint_monorail_cycles_track_right_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex,
@@ -266,14 +266,14 @@ static void paint_monorail_cycles_track_right_quarter_turn_3_tiles(paint_session
                                                           tileElement);
 }
 
-static const sint8 monorail_cycles_track_right_quarter_turn_5_tiles_support_height_offset[][7] = {
+static constexpr const sint8 monorail_cycles_track_right_quarter_turn_5_tiles_support_height_offset[][7] = {
     { -2, 0, -2, 0, 0, -3, -1 },
     { -3, 0, 0, 0, 0, 0, 0 },
     { 0 },
     { 0, 0, 0, 0, 0, -2, -3 },
 };
 
-static const sint8 monorail_cycles_track_right_quarter_turn_5_tiles_support_special[][7] = {
+static constexpr const sint8 monorail_cycles_track_right_quarter_turn_5_tiles_support_special[][7] = {
     { 0, 0, 0, 0, 0, 0, 0 },
     { 0, 0, 0, 0, 0, 0, 1 },
     { 0, 0, 1, 0, 0, 1, 1 },
@@ -287,7 +287,7 @@ static void paint_monorail_cycles_track_right_quarter_turn_5_tiles(paint_session
 {
     track_paint_util_right_quarter_turn_5_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        monorail_cycles_track_pieces_flat_quarter_turn_5_tiles, NULL, defaultRightQuarterTurn5TilesBoundLengths,
+        monorail_cycles_track_pieces_flat_quarter_turn_5_tiles, nullptr, defaultRightQuarterTurn5TilesBoundLengths,
         defaultRightQuarterTurn5TilesBoundOffsets, get_current_rotation());
 
     sint32 supportHeight =
@@ -631,5 +631,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_monorail_cycles(sint32 trackType, 
         return paint_monorail_cycles_track_right_quarter_turn_3_tiles;
     }
 
-    return NULL;
+    return nullptr;
 }

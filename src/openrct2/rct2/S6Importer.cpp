@@ -15,16 +15,15 @@
 #pragma endregion
 
 #include "../core/Console.hpp"
-#include "../core/Exception.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../management/Award.h"
 #include "../network/network.h"
+#include "../object/ObjectLimits.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
-#include "../object/ObjectManager.h"
 #include "../ParkImporter.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerEncoding.h"
@@ -32,29 +31,29 @@
 
 #include "../config/Config.h"
 #include "../Game.h"
-#include "../interface/viewport.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
+#include "../interface/Viewport.h"
+#include "../localisation/Date.h"
+#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
 #include "../OpenRCT2.h"
 #include "../peep/Staff.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../ride/ride_ratings.h"
-#include "../scenario/scenario.h"
-#include "../util/sawyercoding.h"
+#include "../scenario/Scenario.h"
+#include "../util/SawyerCoding.h"
 #include "../world/Climate.h"
-#include "../world/entrance.h"
-#include "../world/map_animation.h"
-#include "../world/park.h"
+#include "../world/Entrance.h"
+#include "../world/MapAnimation.h"
+#include "../world/Park.h"
 
-class ObjectLoadException : public Exception
+class ObjectLoadException : public std::runtime_error
 {
 public:
-    ObjectLoadException() : Exception("Unable to load objects.") { }
-    explicit ObjectLoadException(const char * message) : Exception(message) { }
+    ObjectLoadException() : std::runtime_error("Unable to load objects.") { }
+    explicit ObjectLoadException(const std::string &message) : std::runtime_error(message) { }
 };
 
 /**
@@ -91,7 +90,7 @@ public:
         }
         else
         {
-            throw Exception("Invalid RCT2 park extension.");
+            throw std::runtime_error("Invalid RCT2 park extension.");
         }
     }
 
@@ -129,7 +128,7 @@ public:
         {
             if (_s6.header.type != S6_TYPE_SCENARIO)
             {
-                throw Exception("Park is not a scenario.");
+                throw std::runtime_error("Park is not a scenario.");
             }
             chunkReader.ReadChunk(&_s6.info, sizeof(_s6.info));
         }
@@ -137,7 +136,7 @@ public:
         {
             if (_s6.header.type != S6_TYPE_SAVEDGAME)
             {
-                throw Exception("Park is not a saved game.");
+                throw std::runtime_error("Park is not a saved game.");
             }
         }
 
@@ -235,8 +234,8 @@ public:
         gGuestChangeModifier  = _s6.guest_count_change_modifier;
         gResearchFundingLevel = _s6.current_research_level;
         // pad_01357400
-        memcpy(gResearchedRideTypes, _s6.researched_ride_types, sizeof(_s6.researched_ride_types));
-        memcpy(gResearchedRideEntries, _s6.researched_ride_entries, sizeof(_s6.researched_ride_entries));
+        ImportResearchedRideTypes();
+        ImportResearchedRideEntries();
         // _s6.researched_track_types_a
         // _s6.researched_track_types_b
 
@@ -257,20 +256,20 @@ public:
         gStaffMechanicColour = _s6.mechanic_colour;
         gStaffSecurityColour = _s6.security_colour;
 
-        memcpy(gResearchedSceneryItems, _s6.researched_scenery_items, sizeof(_s6.researched_scenery_items));
+        ImportResearchedSceneryItems();
 
         gParkRating = _s6.park_rating;
 
         memcpy(gParkRatingHistory, _s6.park_rating_history, sizeof(_s6.park_rating_history));
         memcpy(gGuestsInParkHistory, _s6.guests_in_park_history, sizeof(_s6.guests_in_park_history));
 
-        gResearchPriorities      = _s6.active_research_types;
-        gResearchProgressStage   = _s6.research_progress_stage;
-        gResearchLastItemSubject = _s6.last_researched_item_subject;
+        gResearchPriorities                = _s6.active_research_types;
+        gResearchProgressStage             = _s6.research_progress_stage;
+        gResearchLastItem.rawValue  = _s6.last_researched_item_subject;
         // pad_01357CF8
-        gResearchNextItem           = _s6.next_research_item;
+        gResearchNextItem.rawValue  = _s6.next_research_item;
         gResearchProgress           = _s6.research_progress;
-        gResearchNextCategory       = _s6.next_research_category;
+        gResearchNextItem.category  = _s6.next_research_category;
         gResearchExpectedDay        = _s6.next_research_expected_day;
         gResearchExpectedMonth      = _s6.next_research_expected_month;
         gGuestInitialHappiness      = _s6.guest_initial_happiness;
@@ -345,7 +344,7 @@ public:
         gLastEntranceStyle             = _s6.last_entrance_style;
         // rct1_water_colour
         // pad_01358842
-        memcpy(gResearchItems, _s6.research_items, sizeof(_s6.research_items));
+        ImportResearchList();
         gMapBaseZ = _s6.map_base_z;
         memcpy(gScenarioName, _s6.scenario_name, sizeof(_s6.scenario_name));
         memcpy(gScenarioDetails, _s6.scenario_description, sizeof(_s6.scenario_description));
@@ -406,16 +405,16 @@ public:
         // byte_13CA742
         // pad_013CA747
         gClimateUpdateTimer          = _s6.climate_update_timer;
-        gClimateCurrentWeather       = _s6.current_weather;
-        gClimateNextWeather          = _s6.next_weather;
-        gClimateCurrentTemperature   = _s6.temperature;
-        gClimateNextTemperature      = _s6.next_temperature;
-        gClimateCurrentWeatherEffect = _s6.current_weather_effect;
-        gClimateNextWeatherEffect    = _s6.next_weather_effect;
-        gClimateCurrentWeatherGloom  = _s6.current_weather_gloom;
-        gClimateNextWeatherGloom     = _s6.next_weather_gloom;
-        gClimateCurrentRainLevel     = _s6.current_rain_level;
-        gClimateNextRainLevel        = _s6.next_rain_level;
+        gClimateCurrent.Weather       = _s6.current_weather;
+        gClimateNext.Weather          = _s6.next_weather;
+        gClimateCurrent.Temperature   = _s6.temperature;
+        gClimateNext.Temperature      = _s6.next_temperature;
+        gClimateCurrent.WeatherEffect = _s6.current_weather_effect;
+        gClimateNext.WeatherEffect    = _s6.next_weather_effect;
+        gClimateCurrent.WeatherGloom  = _s6.current_weather_gloom;
+        gClimateNext.WeatherGloom     = _s6.next_weather_gloom;
+        gClimateCurrent.RainLevel     = _s6.current_rain_level;
+        gClimateNext.RainLevel        = _s6.next_rain_level;
 
         // News items
         for (size_t i = 0; i < RCT12_MAX_NEWS_ITEMS; i++)
@@ -461,7 +460,7 @@ public:
 
     void ImportRides()
     {
-        for (uint16 index = 0; index < RCT2_MAX_RIDES_IN_PARK; index++)
+        for (uint16 index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
         {
             auto src = &_s6.rides[index];
             auto dst = get_ride(index);
@@ -699,6 +698,56 @@ public:
         // pad_208[0x58];
     }
 
+    void ImportResearchedRideTypes()
+    {
+        set_every_ride_type_not_invented();
+
+        for (sint32 rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++)
+        {
+            sint32 quadIndex = rideType >> 5;
+            sint32 bitIndex  = rideType & 0x1F;
+            bool   invented  = (_s6.researched_ride_types[quadIndex] & ((uint32) 1 << bitIndex));
+
+            if (invented)
+                ride_type_set_invented(rideType);
+        }
+    }
+
+    void ImportResearchedRideEntries()
+    {
+        set_every_ride_entry_not_invented();
+
+        for (sint32 rideEntryIndex = 0; rideEntryIndex < MAX_RIDE_OBJECTS; rideEntryIndex++)
+        {
+            sint32 quadIndex = rideEntryIndex >> 5;
+            sint32 bitIndex  = rideEntryIndex & 0x1F;
+            bool   invented  = (_s6.researched_ride_entries[quadIndex] & ((uint32) 1 << bitIndex));
+
+            if (invented)
+                ride_entry_set_invented(rideEntryIndex);
+        }
+    }
+
+    void ImportResearchedSceneryItems()
+    {
+        set_all_scenery_items_not_invented();
+
+        for (uint16 sceneryEntryIndex = 0; sceneryEntryIndex < RCT2_MAX_RESEARCHED_SCENERY_ITEMS; sceneryEntryIndex++)
+        {
+            sint32 quadIndex = sceneryEntryIndex >> 5;
+            sint32 bitIndex  = sceneryEntryIndex & 0x1F;
+            bool   invented  = (_s6.researched_scenery_items[quadIndex] & ((uint32) 1 << bitIndex));
+
+            if (invented)
+                scenery_set_invented(sceneryEntryIndex);
+        }
+    }
+
+    void ImportResearchList()
+    {
+        memcpy(gResearchItems, _s6.research_items, sizeof(_s6.research_items));
+    }
+
     void Initialise()
     {
         game_init_all(_s6.map_size);
@@ -735,6 +784,11 @@ public:
         }
         else
         {
+            // Amity Airfield has peeps entering from the corner of the tile, instead of the middle.
+            if (String::Equals(_s6.scenario_filename, "Amity Airfield.SC6"))
+                _s6.peep_spawns[0].y = 1296;
+
+            
             for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
             {
                 gPeepSpawns[i] = _s6.peep_spawns[i];
@@ -784,7 +838,7 @@ extern "C"
             gErrorType     = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_GAME_SAVE_FAILED;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             gErrorType     = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
@@ -833,7 +887,7 @@ extern "C"
             gErrorType     = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_GAME_SAVE_FAILED;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             gErrorType     = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;

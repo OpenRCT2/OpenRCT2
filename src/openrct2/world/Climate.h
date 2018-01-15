@@ -18,7 +18,7 @@
 
 #include "../common.h"
 
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 
 enum CLIMATE
 {
@@ -38,6 +38,20 @@ enum WEATHER
     WEATHER_THUNDER,
 };
 
+enum WEATHER_EFFECT
+{
+    WEATHER_EFFECT_NONE,
+    WEATHER_EFFECT_RAIN,
+    WEATHER_EFFECT_STORM,
+};
+
+enum RAIN_LEVEL
+{
+    RAIN_LEVEL_NONE,
+    RAIN_LEVEL_LIGHT,
+    RAIN_LEVEL_HEAVY,
+};
+
 typedef struct WeatherState
 {
     sint8   TemperatureDelta;
@@ -47,26 +61,24 @@ typedef struct WeatherState
     uint32  SpriteId;
 } WeatherState;
 
+typedef struct ClimateState
+{
+    uint8 Weather;
+    sint8 Temperature;
+    uint8 WeatherEffect;
+    uint8 WeatherGloom;
+    uint8 RainLevel;
+} ClimateState;
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-    extern uint8    gClimate;
-    extern uint8    gClimateCurrentWeather;
-    extern sint8    gClimateCurrentTemperature;
-    extern uint8    gClimateCurrentWeatherEffect;
-    extern uint8    gClimateCurrentWeatherGloom;
-    extern uint8    gClimateCurrentRainLevel;
-    extern uint8    gClimateNextWeather;
-    extern sint8    gClimateNextTemperature;
-    extern uint8    gClimateNextWeatherEffect;
-    extern uint8    gClimateNextWeatherGloom;
-    extern uint8    gClimateNextRainLevel;
-    extern uint16   gClimateUpdateTimer;
-    extern uint16   gClimateLightningFlash;
-
-    extern const WeatherState       ClimateWeatherData[6];
-    extern const FILTER_PALETTE_ID  ClimateWeatherGloomColours[4];
+    extern uint8        gClimate;
+    extern ClimateState gClimateCurrent;
+    extern ClimateState gClimateNext;
+    extern uint16       gClimateUpdateTimer;
+    extern uint16       gClimateLightningFlash;
 
     sint32 climate_celsius_to_fahrenheit(sint32 celsius);
     void climate_reset(sint32 climate);
@@ -75,4 +87,9 @@ extern "C"
     void climate_force_weather(uint8 weather);
 #ifdef __cplusplus
 }
+
+bool climate_is_raining();
+FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState &state);
+uint32 climate_get_weather_sprite_id(const ClimateState &state);
+
 #endif

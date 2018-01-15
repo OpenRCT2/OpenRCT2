@@ -17,13 +17,13 @@
 #pragma once
 
 #include "../core/MemoryStream.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "GameAction.h"
 
-#include "../cheats.h"
-#include "../interface/window.h"
-#include "../localisation/localisation.h"
-#include "../world/park.h"
+#include "../Cheats.h"
+#include "../interface/Window.h"
+#include "../localisation/Localisation.h"
+#include "../world/Park.h"
 
 struct GuestSetNameAction : public GameActionBase<GAME_COMMAND_SET_GUEST_NAME, GameActionResult>
 {

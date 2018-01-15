@@ -17,10 +17,10 @@
 #include "../core/IStream.hpp"
 #include "FootpathItemObject.h"
 
-#include "../drawing/drawing.h"
-#include "../localisation/localisation.h"
-#include "../object.h"
-#include "../object_list.h"
+#include "../drawing/Drawing.h"
+#include "../localisation/Localisation.h"
+#include "../object/Object.h"
+#include "ObjectList.h"
 
 void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
@@ -30,6 +30,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     _legacyType.path_bit.tool_id = stream->ReadValue<uint8>();
     _legacyType.path_bit.price = stream->ReadValue<sint16>();
     _legacyType.path_bit.scenery_tab_id = stream->ReadValue<uint8>();
+    stream->Seek(1, STREAM_SEEK_CURRENT);
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
 

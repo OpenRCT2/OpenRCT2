@@ -49,24 +49,24 @@
 
 #include "audio/audio.h"
 #include "config/Config.h"
-#include "drawing/lightfx.h"
+#include "drawing/LightFX.h"
 #include "Editor.h"
 #include "Game.h"
-#include "input.h"
-#include "interface/chat.h"
-#include "interface/console.h"
+#include "Input.h"
+#include "interface/Chat.h"
+#include "interface/Console.h"
 #include "interface/themes.h"
-#include "intro.h"
-#include "localisation/date.h"
-#include "localisation/language.h"
+#include "Intro.h"
+#include "localisation/Date.h"
+#include "localisation/Language.h"
 #include "network/DiscordService.h"
 #include "network/http.h"
 #include "network/network.h"
 #include "network/twitch.h"
-#include "object_list.h"
+#include "object/ObjectList.h"
 #include "platform/platform.h"
-#include "rct1.h"
-#include "util/util.h"
+#include "rct1/RCT1.h"
+#include "util/Util.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
@@ -121,6 +121,7 @@ namespace OpenRCT2
 
         ~Context() override
         {
+            window_close_all();
             network_close();
             http_dispose();
             language_close_all();
@@ -186,7 +187,7 @@ namespace OpenRCT2
 
         std::string GetPathLegacy(sint32 pathId) override
         {
-            static const char * const LegacyFileNames[PATH_ID_END] =
+            static constexpr const char * const LegacyFileNames[PATH_ID_END] =
             {
                 nullptr,
                 nullptr,
@@ -403,48 +404,54 @@ namespace OpenRCT2
                         parkImporter.reset(ParkImporter::CreateS6(_objectRepository, _objectManager));
                     }
 
-                    auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
-                    if (result.Error == PARK_LOAD_ERROR_OK)
+                    try
                     {
-                        parkImporter->Import();
-                        game_fix_save_vars();
-                        sprite_position_tween_reset();
-                        gScreenAge = 0;
-                        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-                        if (info.Type == FILE_TYPE::SAVED_GAME)
+                        auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
+                        if (result.Error == PARK_LOAD_ERROR_OK)
                         {
-                            if (network_get_mode() == NETWORK_MODE_CLIENT)
+                            parkImporter->Import();
+                            game_fix_save_vars();
+                            sprite_position_tween_reset();
+                            gScreenAge = 0;
+                            gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+                            if (info.Type == FILE_TYPE::SAVED_GAME)
                             {
-                                network_close();
+                                if (network_get_mode() == NETWORK_MODE_CLIENT)
+                                {
+                                    network_close();
+                                }
+                                game_load_init();
+                                if (network_get_mode() == NETWORK_MODE_SERVER)
+                                {
+                                    network_send_map();
+                                }
                             }
-                            game_load_init();
-                            if (network_get_mode() == NETWORK_MODE_SERVER)
+                            else
                             {
-                                network_send_map();
+                                scenario_begin();
+                                if (network_get_mode() == NETWORK_MODE_SERVER)
+                                {
+                                    network_send_map();
+                                }
+                                if (network_get_mode() == NETWORK_MODE_CLIENT)
+                                {
+                                    network_close();
+                                }
                             }
+                            // This ensures that the newly loaded save reflects the user's
+                            // 'show real names of guests' option, now that it's a global setting
+                            peep_update_names(gConfigGeneral.show_real_names_of_guests);
+                            return true;
                         }
                         else
                         {
-                            scenario_begin();
-                            if (network_get_mode() == NETWORK_MODE_SERVER)
-                            {
-                                network_send_map();
-                            }
-                            if (network_get_mode() == NETWORK_MODE_CLIENT)
-                            {
-                                network_close();
-                            }
+                            handle_park_load_failure_with_title_opt(&result, path.c_str(), loadTitleScreenFirstOnFail);
                         }
-                        // This ensures that the newly loaded save reflects the user's
-                        // 'show real names of guests' option, now that it's a global setting
-                        peep_update_names(gConfigGeneral.show_real_names_of_guests);
-                        return true;
                     }
-                    else
+                    catch (const std::exception &e)
                     {
-                        handle_park_load_failure_with_title_opt(&result, path.c_str(), loadTitleScreenFirstOnFail);
+                        Console::Error::WriteLine(e.what());
                     }
-
                 }
                 else
                 {
@@ -907,6 +914,11 @@ extern "C"
         GetContext()->GetUiContext()->SetCursor((CURSOR_ID)cursor);
     }
 
+    void context_update_cursor_scale()
+    {
+        GetContext()->GetUiContext()->SetCursorScale(static_cast<uint8>(round(gConfigGeneral.window_scale)));
+    }
+
     void context_hide_cursor()
     {
         GetContext()->GetUiContext()->SetCursorVisible(false);
@@ -1056,6 +1068,12 @@ extern "C"
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
         windowManager->UpdateMapTooltip();
+    }
+
+    void context_handle_input()
+    {
+        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        windowManager->HandleInput();
     }
 
     void context_input_handle_keyboard(bool isTitle)

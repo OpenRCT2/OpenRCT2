@@ -16,7 +16,7 @@
 
 #pragma warning(disable : 4127) // conditional expression is constant
 
-#include "drawing.h"
+#include "Drawing.h"
 
 template<sint32 image_type, sint32 zoom_level>
 static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,

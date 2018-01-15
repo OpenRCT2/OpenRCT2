@@ -18,11 +18,13 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <datetimeapi.h>
 #include <shlobj.h>
 #undef GetEnvironmentVariable
 
 #if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
     #define __USE_SHGETKNOWNFOLDERPATH__
+    #define __USE_GETDATEFORMATEX__
 #endif
 
 #include "../core/Path.hpp"
@@ -143,6 +145,53 @@ namespace Platform
         platform_resolve_openrct_data_path();
         platform_get_openrct_data_path(path, sizeof(path));
         return path;
+    }
+
+    static SYSTEMTIME TimeToSystemTime(std::time_t timestamp)
+    {
+        LONGLONG ll = Int32x32To64(timestamp, 10000000) + 116444736000000000;
+
+        FILETIME ft;
+        ft.dwLowDateTime = (DWORD) ll;
+        ft.dwHighDateTime = ll >> 32;
+
+        SYSTEMTIME st;
+        FileTimeToSystemTime(&ft, &st);
+        return st;
+    }
+
+    std::string FormatShortDate(std::time_t timestamp)
+    {
+        SYSTEMTIME st = TimeToSystemTime(timestamp);
+
+#ifdef __USE_GETDATEFORMATEX__
+        wchar_t date[20];
+        GetDateFormatEx(LOCALE_NAME_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, sizeof(date), nullptr);
+        std::string result = String::ToUtf8(std::wstring(date));
+#else
+        char date[20];
+        GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, sizeof(date));
+        std::string result(date);
+#endif
+
+        return result;
+    }
+
+    std::string FormatTime(std::time_t timestamp)
+    {
+        SYSTEMTIME st = TimeToSystemTime(timestamp);
+
+#ifdef __USE_GETDATEFORMATEX__
+        wchar_t time[20];
+        GetTimeFormatEx(LOCALE_NAME_USER_DEFAULT, 0, &st, nullptr, time, sizeof(time));
+        std::string result = String::ToUtf8(std::wstring(time));
+#else
+        char time[20];
+        GetTimeFormat(LOCALE_USER_DEFAULT, 0, &st, nullptr, time, sizeof(time));
+        std::string result(time);
+#endif
+
+        return result;
     }
 }
 

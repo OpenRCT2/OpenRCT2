@@ -19,19 +19,19 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
-#include <openrct2/input.h>
-#include <openrct2/interface/viewport.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/Input.h>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Marketing.h>
 #include <openrct2/network/network.h>
 #include <openrct2/peep/Peep.h>
 #include <openrct2/peep/Staff.h>
-#include <openrct2/ride/ride_data.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/util.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/footpath.h>
+#include <openrct2/world/Footpath.h>
 
 enum WINDOW_GUEST_PAGE {
     WINDOW_GUEST_OVERVIEW,
@@ -79,9 +79,9 @@ static rct_widget window_guest_overview_widgets[] = {
     {WWT_TAB,      1, 96,  126, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},        // Tab 4
     {WWT_TAB,      1, 127, 157, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},       // Tab 5
     {WWT_TAB,      1, 158, 188, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},          // Tab 6
-    {WWT_12,       1, 3,   166, 45,  56,  0xFFFFFFFF, STR_NONE},                // Label Thought marquee
-    {WWT_VIEWPORT, 1, 3,   166, 57,  143, 0xFFFFFFFF, STR_NONE},                // Viewport
-    {WWT_12,       1, 3,   166, 144, 154, 0xFFFFFFFF, STR_NONE},                // Label Action
+    {WWT_LABEL_CENTRED,    1, 3,   166, 45,  56,  0xFFFFFFFF, STR_NONE},                            // Label Thought marquee
+    {WWT_VIEWPORT,         1, 3,   166, 57,  143, 0xFFFFFFFF, STR_NONE},                            // Viewport
+    {WWT_LABEL_CENTRED,    1, 3,   166, 144, 154, 0xFFFFFFFF, STR_NONE},                            // Label Action
     {WWT_FLATBTN,  1, 167, 190, 45,  68,  SPR_PICKUP_BTN,       STR_PICKUP_TIP},                    // Pickup Button
     {WWT_FLATBTN,  1, 167, 190, 69,  92,  SPR_RENAME,           STR_NAME_GUEST_TIP},                // Rename Button
     {WWT_FLATBTN,  1, 167, 190, 93,  116, SPR_LOCATE,           STR_LOCATE_SUBJECT_TIP},            // Locate Button
@@ -418,7 +418,7 @@ static rct_window_event_list *window_guest_page_events[] = {
 void window_guest_set_colours();
 
 // 0x981D3C
-static const uint32 window_guest_page_enabled_widgets[] = {
+static constexpr const uint32 window_guest_page_enabled_widgets[] = {
     (1 << WIDX_CLOSE) |
     (1 << WIDX_TAB_1) |
     (1 << WIDX_TAB_2) |
@@ -1117,7 +1117,7 @@ void window_guest_overview_update(rct_window* w){
                 sint32 random = util_rand() & 0xFFFF;
                 if (random <= 0x2AAA) {
                     rct_peep* peep = GET_PEEP(w->number);
-                    peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WATCHED, 0xFF);
+                    peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WATCHED, PEEP_THOUGHT_ITEM_NONE);
                 }
             }
         }
@@ -1245,7 +1245,7 @@ void window_guest_mouse_up(rct_window *w, rct_widgetindex widgetIndex)
  */
 void window_guest_stats_resize(rct_window *w)
 {
-    window_set_resize(w, 192, 162, 192, 162);
+    window_set_resize(w, 192, 180, 192, 180);
 }
 
 /**
@@ -1307,24 +1307,28 @@ void window_guest_stats_invalidate(rct_window *w)
 *
 *  ebp: colour, contains flag BAR_BLINK for blinking
 */
-static void window_guest_stats_bars_paint(sint32 value, sint32 x, sint32 y, rct_window *w, rct_drawpixelinfo *dpi, sint32 colour){
-    value *= 0x76;
-    value >>= 8;
+static void window_guest_stats_bars_paint(sint32 value, sint32 x, sint32 y, rct_window *w, rct_drawpixelinfo *dpi, sint32 colour)
+{
+    if (font_get_line_height(gCurrentFontSpriteBase) > 10)
+    {
+        y += 1;
+    }
 
-    gfx_fill_rect_inset(dpi, x + 0x3A, y + 1, x + 0x3A + 0x79, y + 9, w->colours[1], INSET_RECT_F_30);
+    gfx_fill_rect_inset(dpi, x + 61, y + 1, x + 61 + 121, y + 9, w->colours[1], INSET_RECT_F_30);
 
     sint32 blink_flag = colour & BAR_BLINK;
     colour &= ~BAR_BLINK;
 
-    if (!blink_flag ||
-        game_is_paused() ||
-        (gCurrentTicks & 8) == 0)
+    if (!blink_flag || game_is_paused() || (gCurrentTicks & 8) == 0)
     {
+        value *= 118;
+        value >>= 8;
+
         if (value <= 2)
             return;
-        gfx_fill_rect_inset(dpi, x + 0x3C, y + 2, x + 0x3C + value - 1, y + 8, colour, 0);
-    }
 
+        gfx_fill_rect_inset(dpi, x + 63, y + 2, x + 63 + value - 1, y + 8, colour, 0);
+    }
 }
 
 /**
@@ -1362,7 +1366,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_guest_stats_bars_paint(happiness, x, y, w, dpi, ebp);
 
     // Energy
-    y += 10;
+    y += LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_GUEST_STAT_ENERGY_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     sint32 energy = ((peep->energy - PEEP_MIN_ENERGY) * 255) / (PEEP_MAX_ENERGY - PEEP_MIN_ENERGY);
@@ -1374,7 +1378,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_guest_stats_bars_paint(energy, x, y, w, dpi, ebp);
 
     // Hunger
-    y += 10;
+    y += LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_GUEST_STAT_HUNGER_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     sint32 hunger = peep->hunger;
@@ -1393,7 +1397,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_guest_stats_bars_paint(hunger, x, y, w, dpi, ebp);
 
     // Thirst
-    y += 10;
+    y += LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_GUEST_STAT_THIRST_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     sint32 thirst = peep->thirst;
@@ -1412,7 +1416,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_guest_stats_bars_paint(thirst, x, y, w, dpi, ebp);
 
     // Nausea
-    y += 10;
+    y += LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     sint32 nausea = peep->nausea - 32;
@@ -1427,26 +1431,26 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
     window_guest_stats_bars_paint(nausea, x, y, w, dpi, ebp);
 
-    // Bathroom
-    y += 10;
+    // Toilet
+    y += LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_GUEST_STAT_TOILET_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
-    sint32 bathroom = peep->bathroom - 32;
-    if (bathroom > 210) bathroom = 210;
+    sint32 toilet = peep->toilet - 32;
+    if (toilet > 210) toilet = 210;
 
-    bathroom -= 32;
-    if (bathroom < 0) bathroom = 0;
-    bathroom *= 45;
-    bathroom /= 32;
+    toilet -= 32;
+    if (toilet < 0) toilet = 0;
+    toilet *= 45;
+    toilet /= 32;
 
     ebp = COLOUR_BRIGHT_RED;
-    if (bathroom > 160){
+    if (toilet > 160){
         ebp |= BAR_BLINK;
     }
-    window_guest_stats_bars_paint(bathroom, x, y, w, dpi, ebp);
+    window_guest_stats_bars_paint(toilet, x, y, w, dpi, ebp);
 
     // Time in park
-    y += 11;
+    y += LIST_ROW_HEIGHT + 1;
     if (peep->time_in_park != -1){
         sint32 eax = gScenarioTicks;
         eax -= peep->time_in_park;
@@ -1455,12 +1459,12 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(dpi, STR_GUEST_STAT_TIME_IN_PARK, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
 
-    y += 19;
+    y += LIST_ROW_HEIGHT + 9;
     gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
     // Preferred Ride
     gfx_draw_string_left(dpi, STR_GUEST_STAT_PREFERRED_RIDE, nullptr, COLOUR_BLACK, x, y);
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
     // Intensity
     sint32 intensity = peep->intensity / 16;
@@ -1476,13 +1480,13 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_draw_string_left(dpi, string_id, gCommonFormatArgs, COLOUR_BLACK, x + 4, y);
 
     // Nausea tolerance
-    static const rct_string_id nauseaTolerances[] = {
+    static constexpr const rct_string_id nauseaTolerances[] = {
         STR_PEEP_STAT_NAUSEA_TOLERANCE_NONE,
         STR_PEEP_STAT_NAUSEA_TOLERANCE_LOW,
         STR_PEEP_STAT_NAUSEA_TOLERANCE_AVERAGE,
         STR_PEEP_STAT_NAUSEA_TOLERANCE_HIGH,
     };
-    y += 10;
+    y += LIST_ROW_HEIGHT;
     sint32 nausea_tolerance = peep->nausea_tolerance & 0x3;
     set_format_arg(0, rct_string_id, nauseaTolerances[nausea_tolerance]);
     gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_TOLERANCE, gCommonFormatArgs, COLOUR_BLACK, x, y);
@@ -1711,7 +1715,7 @@ void window_guest_rides_scroll_paint(rct_window *w, rct_drawpixelinfo *dpi, sint
  */
 void window_guest_finance_resize(rct_window *w)
 {
-    window_set_resize(w, 210, 134, 210, 134);
+    window_set_resize(w, 210, 148, 210, 148);
 }
 
 /**
@@ -1784,11 +1788,11 @@ void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_IN_POCKET, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     // Cash spent
-    y += 10;
+    y += LIST_ROW_HEIGHT;
     set_format_arg(0, money32, peep->cash_spent);
     gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_SPENT, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
-    y += 20;
+    y += LIST_ROW_HEIGHT * 2;
     gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
     // Paid to enter
@@ -1796,7 +1800,7 @@ void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_ENTRANCE_FEE, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
     // Paid on rides
-    y += 10;
+    y += LIST_ROW_HEIGHT;
     set_format_arg(0, money32, peep->paid_on_rides);
     set_format_arg(4, uint16, peep->no_of_rides);
     if (peep->no_of_rides != 1){
@@ -1807,7 +1811,7 @@ void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
 
     // Paid on food
-    y += 10;
+    y += LIST_ROW_HEIGHT;
     set_format_arg(0, money32, peep->paid_on_food);
     set_format_arg(4, uint16, peep->no_of_food);
     if (peep->no_of_food != 1){
@@ -1818,7 +1822,7 @@ void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
 
     // Paid on drinks
-    y += 10;
+    y += LIST_ROW_HEIGHT;
     set_format_arg(0, money32, peep->paid_on_drink);
     set_format_arg(4, uint16, peep->no_of_drinks);
     if (peep->no_of_drinks != 1){
@@ -1829,7 +1833,7 @@ void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
 
     // Paid on souvenirs
-    y += 10;
+    y += LIST_ROW_HEIGHT;
     set_format_arg(0, money32, peep->paid_on_souvenirs);
     set_format_arg(4, uint16, peep->no_of_souvenirs);
     if (peep->no_of_souvenirs != 1){

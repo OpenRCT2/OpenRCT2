@@ -15,14 +15,14 @@
 #pragma endregion
 
 #include "../../common.h"
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
-#include "../../world/map.h"
-#include "../ride_data.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
+#include "../../world/Map.h"
+#include "../RideData.h"
 #include "../Track.h"
-#include "../track_paint.h"
-#include "../vehicle_paint.h"
+#include "../TrackPaint.h"
+#include "../VehiclePaint.h"
 
 enum
 {
@@ -76,70 +76,70 @@ enum
     SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SE_NE_PART_2  = 28820,
 };
 
-static const uint32 car_ride_track_pieces_flat[4] = {
+static constexpr const uint32 car_ride_track_pieces_flat[4] = {
     SPR_CAR_RIDE_FLAT_SW_NE,
     SPR_CAR_RIDE_FLAT_NW_SE,
     SPR_CAR_RIDE_FLAT_SW_NE,
     SPR_CAR_RIDE_FLAT_NW_SE,
 };
 
-static const uint32 car_ride_track_pieces_log_bumps[4] = {
+static constexpr const uint32 car_ride_track_pieces_log_bumps[4] = {
     SPR_CAR_RIDE_LOG_BUMPS_SW_NE,
     SPR_CAR_RIDE_LOG_BUMPS_NW_SE,
     SPR_CAR_RIDE_LOG_BUMPS_SW_NE,
     SPR_CAR_RIDE_LOG_BUMPS_NW_SE,
 };
 
-static const uint32 car_ride_track_pieces_25_deg_up[4] = {
+static constexpr const uint32 car_ride_track_pieces_25_deg_up[4] = {
     SPR_CAR_RIDE_25_DEG_UP_SW_NE,
     SPR_CAR_RIDE_25_DEG_UP_NW_SE,
     SPR_CAR_RIDE_25_DEG_UP_NE_SW,
     SPR_CAR_RIDE_25_DEG_UP_SE_NW,
 };
 
-static const uint32 car_ride_track_pieces_flat_to_25_deg_up[4] = {
+static constexpr const uint32 car_ride_track_pieces_flat_to_25_deg_up[4] = {
     SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_SW_NE,
     SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_NW_SE,
     SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_NE_SW,
     SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_SE_NW,
 };
 
-static const uint32 car_ride_track_pieces_25_deg_up_to_flat[4] = {
+static constexpr const uint32 car_ride_track_pieces_25_deg_up_to_flat[4] = {
     SPR_CAR_RIDE_DEG_UP_TO_FLAT_SW_NE,
     SPR_CAR_RIDE_DEG_UP_TO_FLAT_NW_SE,
     SPR_CAR_RIDE_DEG_UP_TO_FLAT_NE_SW,
     SPR_CAR_RIDE_DEG_UP_TO_FLAT_SE_NW,
 };
 
-static const uint32 car_ride_track_pieces_60_deg_up[4] = {
+static constexpr const uint32 car_ride_track_pieces_60_deg_up[4] = {
     SPR_CAR_RIDE_60_DEG_UP_SW_NE,
     SPR_CAR_RIDE_60_DEG_UP_NW_SE,
     SPR_CAR_RIDE_60_DEG_UP_NE_SW,
     SPR_CAR_RIDE_60_DEG_UP_SE_NW,
 };
 
-static const uint32 car_ride_track_pieces_25_deg_up_to_60_deg_up[4][2] = {
+static constexpr const uint32 car_ride_track_pieces_25_deg_up_to_60_deg_up[4][2] = {
     { SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_SW_NE, 0 },
     { SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_NW_SE, SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_FRONT_NW_SE },
     { SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_NE_SW, SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_FRONT_NE_SW },
     { SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_SE_NW, 0 },
 };
 
-static const uint32 car_ride_track_pieces_60_deg_up_to_25_deg_up[4][2] = {
+static constexpr const uint32 car_ride_track_pieces_60_deg_up_to_25_deg_up[4][2] = {
     { SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_SW_NE, 0 },
     { SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_NW_SE, SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_FRONT_NW_SE },
     { SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_NE_SW, SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_FRONT_NE_SW },
     { SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_SE_NW, 0 },
 };
 
-static const uint32 car_ride_track_pieces_left_quarter_turn_1_tile[4] = {
+static constexpr const uint32 car_ride_track_pieces_left_quarter_turn_1_tile[4] = {
     SPR_CAR_RIDE_QUARTER_TURN_1_TILE_SW_NW,
     SPR_CAR_RIDE_QUARTER_TURN_1_TILE_NW_NE,
     SPR_CAR_RIDE_QUARTER_TURN_1_TILE_NE_SE,
     SPR_CAR_RIDE_QUARTER_TURN_1_TILE_SE_SW,
 };
 
-static const uint32 car_ride_track_pieces_quarter_turn_3_tiles[4][3] = {
+static constexpr const uint32 car_ride_track_pieces_quarter_turn_3_tiles[4][3] = {
     { SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SW_SE_PART_0, SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SW_SE_PART_1,
       SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SW_SE_PART_2 },
     { SPR_CAR_RIDE_QUARTER_TURN_3_TILES_NW_SW_PART_0, SPR_CAR_RIDE_QUARTER_TURN_3_TILES_NW_SW_PART_1,
@@ -372,7 +372,7 @@ static void paint_car_ride_track_right_quarter_turn_3_tiles(paint_session * sess
     track_paint_util_right_quarter_turn_3_tiles_paint(
         session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         car_ride_track_pieces_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets,
-        defaultRightQuarterTurn3TilesBoundLengths, NULL, get_current_rotation());
+        defaultRightQuarterTurn3TilesBoundLengths, nullptr, get_current_rotation());
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence)
@@ -472,7 +472,7 @@ static void paint_car_ride_track_spinning_tunnel(paint_session * session, uint8 
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -751,5 +751,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_car_ride(sint32 trackType, sint32 
         return paint_car_ride_track_spinning_tunnel;
     }
 
-    return NULL;
+    return nullptr;
 }

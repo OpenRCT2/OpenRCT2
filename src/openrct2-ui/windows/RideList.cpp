@@ -21,11 +21,11 @@
 #include <openrct2/core/Util.hpp>
 #include <openrct2/Game.h>
 #include <openrct2/interface/themes.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/windows/Intent.h>
 
 enum {
@@ -60,8 +60,8 @@ static rct_widget window_ride_list_widgets[] = {
     { WWT_RESIZE,           1,  0,      339,    43,     239,    0xFFFFFFFF,                 STR_NONE },                                 // tab page background
     { WWT_FLATBTN,          1,  315,    338,    60,     83,     SPR_TOGGLE_OPEN_CLOSE,      STR_OPEN_OR_CLOSE_ALL_RIDES },              // open / close all toggle
     { WWT_DROPDOWN,         1,  150,    273,    46,     57,     0xFFFFFFFF,                 STR_NONE },                                 // current information type
-    { WWT_DROPDOWN_BUTTON,  1,  262,    272,    47,     56,     STR_DROPDOWN_GLYPH,         STR_RIDE_LIST_INFORMATION_TYPE_TIP },       // information type dropdown button
-    { WWT_DROPDOWN_BUTTON,  1,  280,    333,    46,     57,     STR_SORT,                   STR_RIDE_LIST_SORT_TIP },                   // sort button
+    { WWT_BUTTON,           1,  262,    272,    47,     56,     STR_DROPDOWN_GLYPH,         STR_RIDE_LIST_INFORMATION_TYPE_TIP },       // information type dropdown button
+    { WWT_BUTTON,           1,  280,    333,    46,     57,     STR_SORT,                   STR_RIDE_LIST_SORT_TIP },                   // sort button
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_LIST_RIDES_TIP },                       // tab 1
     { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_LIST_SHOPS_AND_STALLS_TIP },            // tab 2
     { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_LIST_KIOSKS_AND_FACILITIES_TIP },       // tab 3
@@ -137,7 +137,7 @@ enum {
     DROPDOWN_LIST_COUNT
 };
 
-static const rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
+static constexpr const rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
     STR_STATUS,
     STR_POPULARITY,
     STR_SATISFACTION,
@@ -155,13 +155,13 @@ static const rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = 
     STR_GUESTS_FAVOURITE
 };
 
-static const rct_string_id ride_list_statusbar_count_strings[PAGE_COUNT] = {
+static constexpr const rct_string_id ride_list_statusbar_count_strings[PAGE_COUNT] = {
     STR_NUMBER_RIDES,
     STR_NUMBER_SHOPS_AND_STALLS,
     STR_NUMBER_RESTROOMS_AND_INFORMATION_KIOSKS,
 };
 
-static const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
+static constexpr const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
     false,
     false,
     false,
@@ -179,7 +179,7 @@ static const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
     false
 };
 
-static const rct_string_id page_names[] = {
+static constexpr const rct_string_id page_names[] = {
     STR_RIDES,
     STR_SHOPS_AND_STALLS,
     STR_RESTROOMS_AND_INFORMATION_KIOSKS,
@@ -421,7 +421,7 @@ static void window_ride_list_scrollgetsize(rct_window *w, sint32 scrollIndex, si
 {
     sint32 top;
 
-    *height = w->no_list_items * 10;
+    *height = w->no_list_items * SCROLLABLE_ROW_HEIGHT;
     if (w->selected_list_item != -1) {
         w->selected_list_item = -1;
         window_invalidate(w);
@@ -444,7 +444,7 @@ static void window_ride_list_scrollmousedown(rct_window *w, sint32 scrollIndex, 
 {
     sint32 index;
 
-    index = y / 10;
+    index = y / SCROLLABLE_ROW_HEIGHT;
     if (index >= w->no_list_items)
         return;
 
@@ -469,7 +469,7 @@ static void window_ride_list_scrollmouseover(rct_window *w, sint32 scrollIndex, 
 {
     sint32 index;
 
-    index = y / 10;
+    index = y / SCROLLABLE_ROW_HEIGHT;
     if (index >= w->no_list_items)
         return;
 
@@ -590,7 +590,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 
         // Background highlight
         if (i == w->selected_list_item) {
-            gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
+            gfx_filter_rect(dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
             format = (_quickDemolishMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
         }
 
@@ -715,7 +715,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 
         set_format_arg(0, rct_string_id, formatSecondary);
         gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 160, y - 1, 157);
-        y += 10;
+        y += SCROLLABLE_ROW_HEIGHT;
     }
 }
 

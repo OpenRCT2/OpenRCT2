@@ -15,11 +15,11 @@
 #pragma endregion
 
 #include "../../common.h"
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 enum
 {
@@ -35,7 +35,7 @@ enum
     SPR_LIFT_CAGE_NW_FRONT = 15003,
 };
 
-static const uint32 lift_cage_sprites[][2] = {
+static constexpr const uint32 lift_cage_sprites[][2] = {
     { SPR_LIFT_CAGE_BACK, SPR_LIFT_CAGE_FRONT },       { SPR_LIFT_CAGE_NE_BACK, SPR_LIFT_CAGE_NE_FRONT },
     { SPR_LIFT_CAGE_SE_BACK, SPR_LIFT_CAGE_SE_FRONT }, { SPR_LIFT_CAGE_SW_BACK, SPR_LIFT_CAGE_SW_FRONT },
     { SPR_LIFT_CAGE_NW_BACK, SPR_LIFT_CAGE_NW_FRONT },
@@ -152,5 +152,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_lift(sint32 trackType, sint32 dire
         return paint_lift_tower_section;
     }
 
-    return NULL;
+    return nullptr;
 }

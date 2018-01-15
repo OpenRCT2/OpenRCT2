@@ -99,7 +99,7 @@ namespace OpenRCT2
             void Initialise() override;
             void Resize(uint32 width, uint32 height) override;
             void SetPalette(const rct_palette_entry * palette) override;
-            void SetUncappedFrameRate(bool uncapped) override;
+            void SetVSync(bool vsync) override;
             void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) override;
             void BeginDraw() override;
             void EndDraw() override;

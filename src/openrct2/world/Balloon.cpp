@@ -17,9 +17,9 @@
 #include "../network/network.h"
 
 #include "../audio/audio.h"
-#include "../scenario/scenario.h"
-#include "../util/util.h"
-#include "sprite.h"
+#include "../scenario/Scenario.h"
+#include "../util/Util.h"
+#include "Sprite.h"
 
 bool rct_sprite::IsBalloon()
 {

@@ -17,15 +17,15 @@
 #include "../audio/audio.h"
 #include "../Context.h"
 #include "../core/Util.hpp"
-#include "../input.h"
-#include "../interface/window.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
+#include "../Input.h"
+#include "../interface/Window.h"
+#include "../localisation/Date.h"
+#include "../localisation/Localisation.h"
 #include "../OpenRCT2.h"
-#include "../ride/ride.h"
-#include "../util/util.h"
+#include "../ride/Ride.h"
+#include "../util/Util.h"
 #include "../windows/Intent.h"
-#include "../world/sprite.h"
+#include "../world/Sprite.h"
 #include "NewsItem.h"
 
 NewsItem gNewsItems[MAX_NEWS_ITEMS];
@@ -90,9 +90,9 @@ void news_item_init_queue()
     news_item_get(11)->Type = NEWS_ITEM_NULL;
 
     // Throttles for warning types (PEEP_*_WARNING)
-    for (uint32 i = 0; i < Util::CountOf(gPeepWarningThrottle); i++)
+    for (auto &warningThrottle : gPeepWarningThrottle)
     {
-        gPeepWarningThrottle[i] = 0;
+        warningThrottle = 0;
     }
 
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);

@@ -86,7 +86,7 @@ typedef struct rct_vehicle_sound_params
     sint16 pan_y;
     uint16 frequency;
     sint16 volume;
-    uint16 var_A;
+    uint16 priority;
 } rct_vehicle_sound_params;
 
 typedef enum RCT2_SOUND

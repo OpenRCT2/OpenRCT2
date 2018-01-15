@@ -19,21 +19,21 @@
 #include "../Context.h"
 #include "../config/Config.h"
 #include "../Game.h"
-#include "../input.h"
-#include "../interface/viewport.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
-#include "../localisation/string_ids.h"
+#include "../Input.h"
+#include "../interface/Viewport.h"
+#include "../localisation/Date.h"
+#include "../localisation/Localisation.h"
+#include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
-#include "../object_list.h"
-#include "../paint/tile_element/tile_element.h"
-#include "../scenario/scenario.h"
-#include "../util/util.h"
-#include "../world/entrance.h"
-#include "../world/footpath.h"
-#include "../world/scenery.h"
-#include "../world/sprite.h"
+#include "../object/ObjectList.h"
+#include "../paint/tile_element/TileElement.h"
+#include "../scenario/Scenario.h"
+#include "../util/Util.h"
+#include "../world/Entrance.h"
+#include "../world/Footpath.h"
+#include "../world/Scenery.h"
+#include "../world/Sprite.h"
 #include "Peep.h"
 #include "Staff.h"
 
@@ -122,7 +122,7 @@ static inline void staff_autoposition_new_staff_member(rct_peep * newPeep)
     sint16     x, y, z;
     uint32     count = 0;
     uint16     sprite_index;
-    rct_peep * guest = NULL;
+    rct_peep * guest = nullptr;
 
     // Count number of walking guests
     FOR_ALL_GUESTS(sprite_index, guest)
@@ -249,7 +249,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
         const rct_sprite_bounds * spriteBounds;
         rct_peep *                newPeep = &(create_sprite(flags)->peep);
 
-        if (newPeep == NULL)
+        if (newPeep == nullptr)
         {
             gGameCommandErrorText = STR_TOO_MANY_PEOPLE_IN_GAME;
             return MONEY32_UNDEFINED;
@@ -315,7 +315,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
             newPeep->id         = newStaffIndex;
             newPeep->staff_type = staff_type;
 
-            static const rct_string_id staffNames[] = {
+            static constexpr const rct_string_id staffNames[] = {
                 STR_HANDYMAN_X,
                 STR_MECHANIC_X,
                 STR_SECURITY_GUARD_X,
@@ -323,7 +323,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
             };
 
             /* rct2: 0x009929FC */
-            static const uint8 spriteTypes[] = {
+            static constexpr const uint8 spriteTypes[] = {
                 PEEP_SPRITE_TYPE_HANDYMAN,
                 PEEP_SPRITE_TYPE_MECHANIC,
                 PEEP_SPRITE_TYPE_SECURITY,
@@ -399,7 +399,7 @@ void game_command_hire_new_staff_member(sint32 * eax, sint32 * ebx, sint32 * ecx
 }
 
 /** rct2: 0x00982134 */
-static const bool peep_slow_walking_types[] = {
+static constexpr const bool peep_slow_walking_types[] = {
     false, // PEEP_SPRITE_TYPE_NORMAL
     false, // PEEP_SPRITE_TYPE_HANDYMAN
     false, // PEEP_SPRITE_TYPE_MECHANIC
@@ -904,8 +904,8 @@ void staff_toggle_patrol_area(sint32 staffIndex, sint32 x, sint32 y)
 static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
 {
     uint16       nearestLitterDist = (uint16)-1;
-    rct_litter * nearestLitter     = NULL;
-    rct_litter * litter            = NULL;
+    rct_litter * nearestLitter     = nullptr;
+    rct_litter * litter            = nullptr;
 
     for (uint16 litterIndex = gSpriteListHead[SPRITE_LIST_LITTER]; litterIndex != 0xFFFF; litterIndex = litter->next)
     {
@@ -1003,10 +1003,10 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep * peep, uint8 vali
 
         if (peep->next_var_29 & 0x4)
         {
-            if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK) != byte_98D800[peep->next_var_29 & 0x3])
+            if ((tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK) != byte_98D800[peep->next_var_29 & 0x3])
                 return 0xFF;
         }
-        else if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK) != 0)
+        else if ((tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK) != 0)
             return 0xFF;
     }
 
@@ -1102,7 +1102,7 @@ static sint32 staff_path_finding_handyman(rct_peep * peep)
         {
             rct_tile_element * tileElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
 
-            if (tileElement == NULL)
+            if (tileElement == nullptr)
                 return 1;
 
             uint8 pathDirections = (tileElement->properties.path.edges & validDirections) & 0xF;
@@ -1395,7 +1395,7 @@ static sint32 staff_path_finding_mechanic(rct_peep * peep)
     else
     {
         rct_tile_element * pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
-        if (pathElement == NULL)
+        if (pathElement == nullptr)
             return 1;
 
         direction = staff_mechanic_direction_path(peep, validDirections, pathElement);
@@ -1483,7 +1483,7 @@ static sint32 staff_path_finding_misc(rct_peep * peep)
     else
     {
         rct_tile_element * pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
-        if (pathElement == NULL)
+        if (pathElement == nullptr)
             return 1;
 
         direction = staff_direction_path(peep, validDirections, pathElement);

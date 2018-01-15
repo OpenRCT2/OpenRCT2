@@ -17,10 +17,10 @@
 #include "../core/IStream.hpp"
 #include "BannerObject.h"
 
-#include "../drawing/drawing.h"
-#include "../localisation/language.h"
-#include "../object.h"
-#include "../object_list.h"
+#include "../drawing/Drawing.h"
+#include "../localisation/Language.h"
+#include "../object/Object.h"
+#include "ObjectList.h"
 
 void BannerObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
@@ -29,6 +29,7 @@ void BannerObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     _legacyType.banner.flags = stream->ReadValue<uint8>();
     _legacyType.banner.price = stream->ReadValue<sint16>();
     _legacyType.banner.scenery_tab_id = stream->ReadValue<uint8>();
+    stream->Seek(1, STREAM_SEEK_CURRENT);
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
 

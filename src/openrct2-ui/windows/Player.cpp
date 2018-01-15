@@ -19,13 +19,13 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/Game.h>
-#include <openrct2/input.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/Input.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
-#include <openrct2/interface/viewport.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/util/util.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/util/Util.h>
+#include <openrct2-ui/interface/Dropdown.h>
 
 enum WINDOW_PLAYER_PAGE {
     WINDOW_PLAYER_PAGE_OVERVIEW,
@@ -60,7 +60,7 @@ enum WINDOW_PLAYER_WIDGET_IDX {
 static rct_widget window_player_overview_widgets[] = {
     WINDOW_PLAYER_COMMON_WIDGETS,
     { WWT_DROPDOWN,         1,  3,      177,    46,     57,     0xFFFFFFFF,         STR_NONE },                 // Permission group
-    { WWT_DROPDOWN_BUTTON,  1,  167,    177,    47,     56,     STR_DROPDOWN_GLYPH, STR_NONE },                 //
+    { WWT_BUTTON,           1,  167,    177,    47,     56,     STR_DROPDOWN_GLYPH, STR_NONE },                 //
     { WWT_FLATBTN,          1,  179,    190,    45,     68,     SPR_LOCATE,         STR_LOCATE_PLAYER_TIP },    // Locate button
     { WWT_FLATBTN,          1,  179,    190,    69,     92,     SPR_DEMOLISH,       STR_KICK_PLAYER_TIP },      // Kick button
     { WWT_VIEWPORT,         1,  3,      177,    60,     120,    0xFFFFFFFF,         STR_NONE },                 // Viewport

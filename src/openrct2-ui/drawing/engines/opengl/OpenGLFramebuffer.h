@@ -17,7 +17,7 @@
 #pragma once
 
 #include <openrct2/common.h>
-#include <openrct2/drawing/drawing.h>
+#include <openrct2/drawing/Drawing.h>
 #include "OpenGLAPI.h"
 
 #include <vector>

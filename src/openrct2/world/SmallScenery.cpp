@@ -14,14 +14,14 @@
 *****************************************************************************/
 #pragma endregion
 
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "../ride/TrackDesign.h"
-#include "footpath.h"
-#include "map.h"
-#include "park.h"
-#include "scenery.h"
+#include "Footpath.h"
+#include "Map.h"
+#include "Park.h"
+#include "Scenery.h"
 #include "SmallScenery.h"
 
 static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 flags)
@@ -303,7 +303,7 @@ static money32 SmallSceneryPlace(sint16 x,
         !supportsRequired &&
         !isOnWater &&
         surfaceElement != nullptr &&
-        (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK))
+        (surfaceElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK))
     {
 
         gGameCommandErrorText = STR_LEVEL_LAND_REQUIRED;
@@ -377,7 +377,8 @@ static money32 SmallSceneryPlace(sint16 x,
             &map_place_scenery_clear_func,
             blSupports | collisionQuadrants,
             flags,
-            &clearCost))
+            &clearCost,
+            CREATE_CROSSING_MODE_NONE))
     {
         return MONEY32_UNDEFINED;
     }

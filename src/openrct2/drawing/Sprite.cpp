@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <memory>
+#include <stdexcept>
 #include "../common.h"
 #include "../config/Config.h"
 #include "../Context.h"
@@ -27,8 +28,8 @@
 #include "../ui/UiContext.h"
 
 #include "../platform/platform.h"
-#include "../util/util.h"
-#include "drawing.h"
+#include "../util/Util.h"
+#include "Drawing.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
@@ -68,7 +69,7 @@ static inline uint32 rctc_to_rct2_index(uint32 image)
     else if (image >= 23804 && image < 24670) return image - 43;
     else if (image >= 24674 && image < 28244) return image - 47;
     else if (image >= 28246                 ) return image - 49;
-    else throw Exception("Invalid RCTC g1.dat file");
+    else throw std::runtime_error("Invalid RCTC g1.dat file");
 }
 
 static void read_and_convert_gxdat(IStream * stream, size_t count, bool is_rctc, rct_g1_element *elements)
@@ -153,6 +154,29 @@ static void read_and_convert_gxdat(IStream * stream, size_t count, bool is_rctc,
     Memory::Free(g1Elements32);
 }
 
+void mask_scalar(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
+                 uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap)
+{
+    for (sint32 yy = 0; yy < height; yy++)
+    {
+        for (sint32 xx = 0; xx < width; xx++)
+        {
+            uint8 colour = (*colourSrc) & (*maskSrc);
+            if (colour != 0)
+            {
+                *dst = colour;
+            }
+
+            maskSrc++;
+            colourSrc++;
+            dst++;
+        }
+        maskSrc += maskWrap;
+        colourSrc += colourWrap;
+        dst += dstWrap;
+    }
+}
+
 extern "C"
 {
     static void *   _g1Buffer = nullptr;
@@ -162,7 +186,7 @@ extern "C"
 
     static size_t   _g1ElementsCount = 0;
     static rct_g1_element * _g1Elements = nullptr;
-    static rct_g1_element _g1Temp = { 0 };
+    static rct_g1_element _g1Temp = { nullptr };
     bool gTinyFontAntiAliased = false;
 
     /**
@@ -182,7 +206,7 @@ extern "C"
 
             if (header.num_entries < SPR_G1_END)
             {
-                throw Exception("Not enough elements in g1.dat");
+                throw std::runtime_error("Not enough elements in g1.dat");
             }
 
             // Read element headers
@@ -202,7 +226,7 @@ extern "C"
             }
             return true;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             log_fatal("Unable to load g1 graphics");
             if (!gOpenRCT2Headless)
@@ -259,7 +283,7 @@ extern "C"
             }
             return true;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             log_fatal("Unable to load g2 graphics");
             if (!gOpenRCT2Headless)
@@ -331,6 +355,12 @@ extern "C"
             _csg.header.num_entries = (uint32)(fileHeaderSize / sizeof(rct_g1_element_32bit));
             _csg.header.total_size = (uint32)fileDataSize;
 
+            if (_csg.header.num_entries < 69917)
+            {
+                log_warning("Cannot load CSG1.DAT, it has too few entries. Only CSG1.DAT from Loopy Landscapes will work.");
+                return false;
+            }
+
             // Read element headers
             _csg.elements = Memory::AllocateArray<rct_g1_element>(_csg.header.num_entries);
             read_and_convert_gxdat(&fileHeader, _csg.header.num_entries, false, _csg.elements);
@@ -348,7 +378,7 @@ extern "C"
             _csgLoaded = true;
             return true;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             log_error("Unable to load csg graphics");
             return false;
@@ -360,7 +390,7 @@ extern "C"
      * image.
      *  rct2: 0x0067A690
      */
-    void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, const rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, sint32 height, sint32 width, sint32 image_type)
+    void FASTCALL gfx_bmp_sprite_to_buffer(const uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, const rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, sint32 height, sint32 width, sint32 image_type)
     {
         uint16 zoom_level = dest_dpi->zoom_level;
         uint8 zoom_amount = 1 << zoom_level;
@@ -443,7 +473,6 @@ extern "C"
             dest_pointer = next_dest_pointer;
             source_pointer = next_source_pointer;
         }
-        return;
     }
 
     uint8* FASTCALL gfx_draw_sprite_get_palette(sint32 image_id, uint32 tertiary_colour) {
@@ -713,28 +742,15 @@ extern "C"
         sint32 skipX = left - x;
         sint32 skipY = top - y;
 
-        uint8 *maskSrc = imgMask->offset + (skipY * imgMask->width) + skipX;
-        uint8 *colourSrc = imgColour->offset + (skipY * imgColour->width) + skipX;
-        uint8 *dst = dpi->bits + (left - dpi->x) + ((top - dpi->y) * (dpi->width + dpi->pitch));
+        uint8 const * maskSrc   = imgMask->offset + (skipY * imgMask->width) + skipX;
+        uint8 const * colourSrc = imgColour->offset + (skipY * imgColour->width) + skipX;
+        uint8       * dst       = dpi->bits + (left - dpi->x) + ((top - dpi->y) * (dpi->width + dpi->pitch));
 
-        sint32 maskWrap = imgMask->width - width;
+        sint32 maskWrap   = imgMask->width - width;
         sint32 colourWrap = imgColour->width - width;
-        sint32 dstWrap = ((dpi->width + dpi->pitch) - width);
-        for (sint32 yy = top; yy < bottom; yy++) {
-            for (sint32 xx = left; xx < right; xx++) {
-                uint8 colour = (*colourSrc) & (*maskSrc);
-                if (colour != 0) {
-                    *dst = colour;
-                }
+        sint32 dstWrap    = ((dpi->width + dpi->pitch) - width);
 
-                maskSrc++;
-                colourSrc++;
-                dst++;
-            }
-            maskSrc += maskWrap;
-            colourSrc += colourWrap;
-            dst += dstWrap;
-        }
+        mask_fn(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
     }
 
     const rct_g1_element * gfx_get_g1_element(sint32 image_id)

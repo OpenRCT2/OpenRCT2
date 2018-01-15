@@ -15,10 +15,10 @@
 #pragma endregion
 
 #include "../../common.h"
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 enum
 {
@@ -159,5 +159,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_boat_hire(sint32 trackType, sint32
         return paint_boat_hire_track_right_quarter_turn_1_tile;
     }
 
-    return NULL;
+    return nullptr;
 }

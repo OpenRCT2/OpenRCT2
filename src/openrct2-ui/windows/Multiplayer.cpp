@@ -18,11 +18,11 @@
 #include <openrct2/network/network.h>
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/util.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2/util/Util.h>
+#include <openrct2-ui/interface/Dropdown.h>
 
 enum {
     WINDOW_MULTIPLAYER_PAGE_INFORMATION,
@@ -81,12 +81,12 @@ static rct_widget window_multiplayer_players_widgets[] = {
 static rct_widget window_multiplayer_groups_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
     { WWT_DROPDOWN,         1,  141,    315,    46,     57,     0xFFFFFFFF,                 STR_NONE },                 // default group
-    { WWT_DROPDOWN_BUTTON,  1,  305,    315,    47,     56,     STR_DROPDOWN_GLYPH,         STR_NONE },                 //
-    { WWT_DROPDOWN_BUTTON,  1,  11,     102,    65,     76,     STR_ADD_GROUP,              STR_NONE },                 // add group button
-    { WWT_DROPDOWN_BUTTON,  1,  113,    204,    65,     76,     STR_REMOVE_GROUP,           STR_NONE },                 // remove group button
-    { WWT_DROPDOWN_BUTTON,  1,  215,    306,    65,     76,     STR_RENAME_GROUP,           STR_NONE },                 // rename group button
+    { WWT_BUTTON,           1,  305,    315,    47,     56,     STR_DROPDOWN_GLYPH,         STR_NONE },                 //
+    { WWT_BUTTON,           1,  11,     102,    65,     76,     STR_ADD_GROUP,              STR_NONE },                 // add group button
+    { WWT_BUTTON,           1,  113,    204,    65,     76,     STR_REMOVE_GROUP,           STR_NONE },                 // remove group button
+    { WWT_BUTTON,           1,  215,    306,    65,     76,     STR_RENAME_GROUP,           STR_NONE },                 // rename group button
     { WWT_DROPDOWN,         1,  72,     246,    80,     91,     0xFFFFFFFF,                 STR_NONE },                 // selected group
-    { WWT_DROPDOWN_BUTTON,  1,  236,    246,    81,     90,     STR_DROPDOWN_GLYPH,         STR_NONE },                 //
+    { WWT_BUTTON,           1,  236,    246,    81,     90,     STR_DROPDOWN_GLYPH,         STR_NONE },                 //
     { WWT_SCROLL,           1,  3,      316,    94,     300,    SCROLL_VERTICAL,                            STR_NONE },                 // permissions list
     { WIDGETS_END }
 };
@@ -106,7 +106,7 @@ static rct_widget *window_multiplayer_page_widgets[] = {
     window_multiplayer_options_widgets
 };
 
-const uint64 window_multiplayer_page_enabled_widgets[] = {
+static constexpr const uint64 window_multiplayer_page_enabled_widgets[] = {
     (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4),
     (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4),
     (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_DEFAULT_GROUP) | (1 << WIDX_DEFAULT_GROUP_DROPDOWN) | (1 << WIDX_ADD_GROUP) | (1 << WIDX_REMOVE_GROUP) | (1 << WIDX_RENAME_GROUP) | (1 << WIDX_SELECTED_GROUP) | (1 << WIDX_SELECTED_GROUP_DROPDOWN),
@@ -281,8 +281,8 @@ static rct_window_event_list *window_multiplayer_page_events[] = {
     &window_multiplayer_options_events
 };
 
-static const sint32 window_multiplayer_animation_divisor[] = { 4, 4, 2, 2 };
-static const sint32 window_multiplayer_animation_frames[] = { 8, 8, 7, 4 };
+static constexpr const sint32 window_multiplayer_animation_divisor[] = { 4, 4, 2, 2 };
+static constexpr const sint32 window_multiplayer_animation_frames[] = { 8, 8, 7, 4 };
 
 static void window_multiplayer_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_multiplayer_set_page(rct_window* w, sint32 page);

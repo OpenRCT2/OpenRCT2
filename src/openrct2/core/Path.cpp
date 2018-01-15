@@ -19,8 +19,8 @@
 #endif
 
 #include "../platform/platform.h"
-#include "../localisation/localisation.h"
-#include "../util/util.h"
+#include "../localisation/Localisation.h"
+#include "../util/Util.h"
 
 #include "File.h"
 #include "Math.hpp"

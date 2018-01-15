@@ -23,13 +23,13 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/Game.h>
 #include <openrct2/Editor.h>
-#include <openrct2/input.h>
+#include <openrct2/Input.h>
 #include <openrct2/sprites.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/interface/themes.h>
-#include <openrct2/interface/widget.h>
+#include <openrct2/interface/Widget.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/scenery.h>
+#include <openrct2/world/Scenery.h>
 
 enum {
     WIDX_PREVIOUS_IMAGE,        // 1
@@ -114,7 +114,7 @@ static EMPTY_ARGS_VOID_POINTER *next_button_mouseup_events[] = {
     nullptr
 };
 
-static const rct_string_id EditorStepNames[] = {
+static constexpr const rct_string_id EditorStepNames[] = {
     STR_EDITOR_STEP_OBJECT_SELECTION,
     STR_EDITOR_STEP_LANDSCAPE_EDITOR,
     STR_EDITOR_STEP_INVENTIONS_LIST_SET_UP,
@@ -144,7 +144,7 @@ rct_window * window_editor_bottom_toolbar_open()
         (1 << WIDX_NEXT_IMAGE);
 
     window_init_scroll_widgets(window);
-    reset_researched_scenery_items();
+    set_all_scenery_items_invented();
 
     return window;
 }
@@ -165,7 +165,7 @@ void window_editor_bottom_toolbar_jump_back_to_object_selection() {
 */
 void window_editor_bottom_toolbar_jump_back_to_landscape_editor() {
     window_close_all();
-    reset_researched_scenery_items();
+    set_all_scenery_items_invented();
     scenery_set_default_placement_configuration();
     gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
     context_open_window(WC_MAP);
@@ -227,12 +227,13 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
         return;
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
-        reset_researched_ride_types_and_entries();
+        set_every_ride_type_invented();
+        set_every_ride_entry_invented();
         context_open_window(WC_CONSTRUCT_RIDE);
         gS6Info.editor_step = EDITOR_STEP_ROLLERCOASTER_DESIGNER;
         gfx_invalidate_screen();
     } else {
-        reset_researched_scenery_items();
+        set_all_scenery_items_invented();
         scenery_set_default_placement_configuration();
         gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
         context_open_window(WC_MAP);
@@ -435,7 +436,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
             window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left) / 2 + w->x;
         sint16 stateY = w->height - 0x0C + w->y;
         gfx_draw_string_centred(dpi, EditorStepNames[gS6Info.editor_step],
-            stateX, stateY, NOT_TRANSLUCENT(w->colours[2]) | COLOUR_FLAG_OUTLINE, 0);
+            stateX, stateY, NOT_TRANSLUCENT(w->colours[2]) | COLOUR_FLAG_OUTLINE, nullptr);
 
         if (drawPreviousButton) {
             gfx_draw_sprite(dpi, SPR_PREVIOUS,

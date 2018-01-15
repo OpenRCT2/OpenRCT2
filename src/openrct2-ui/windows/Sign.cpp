@@ -18,14 +18,14 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/Game.h>
-#include <openrct2/localisation/localisation.h>
-#include <openrct2/localisation/string_ids.h>
-#include <openrct2/interface/viewport.h>
-#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/StringIds.h>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/Widget.h>
 #include <openrct2/world/LargeScenery.h>
-#include <openrct2/world/scenery.h>
+#include <openrct2/world/Scenery.h>
 #include <openrct2/world/Wall.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/sprites.h>
 
 #define WW 113
@@ -368,7 +368,7 @@ static void window_sign_paint(rct_window *w, rct_drawpixelinfo *dpi)
 static void window_sign_viewport_rotate(rct_window *w)
 {
     rct_viewport* view = w->viewport;
-    w->viewport = 0;
+    w->viewport = nullptr;
 
     view->width = 0;
     viewport_update_pointers();

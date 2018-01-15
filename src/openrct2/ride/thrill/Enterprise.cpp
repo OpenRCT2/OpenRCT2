@@ -15,11 +15,11 @@
 #pragma endregion
 
 #include "../../common.h"
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 /** rct2: 0x008A2ABC */
 static void paint_enterprise_structure(paint_session * session, Ride * ride, sint8 xOffset, sint8 yOffset, uint16 height,
@@ -29,7 +29,7 @@ static void paint_enterprise_structure(paint_session * session, Ride * ride, sin
 
     rct_tile_element * savedTileElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
     rct_ride_entry *  rideEntry       = get_ride_entry(ride->subtype);
-    rct_vehicle *     vehicle         = NULL;
+    rct_vehicle *     vehicle         = nullptr;
 
     if (rideEntry == nullptr)
     {
@@ -46,7 +46,7 @@ static void paint_enterprise_structure(paint_session * session, Ride * ride, sin
     }
 
     uint32 imageOffset = tile_element_get_direction_with_offset(tileElement, get_current_rotation());
-    if (vehicle != NULL)
+    if (vehicle != nullptr)
     {
         imageOffset = (vehicle->vehicle_sprite_type << 2) + (((vehicle->sprite_direction >> 3) + get_current_rotation()) % 4);
     }
@@ -63,7 +63,7 @@ static void paint_enterprise_structure(paint_session * session, Ride * ride, sin
 
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
 
-    if (dpi->zoom_level == 0 && imageOffset < 12 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != NULL)
+    if (dpi->zoom_level == 0 && imageOffset < 12 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         for (sint32 i = 0; i < 15; i++)
         {
@@ -93,7 +93,7 @@ static void paint_enterprise(paint_session * session, uint8 rideIndex, uint8 tra
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
                                  get_current_rotation());
@@ -171,7 +171,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_enterprise(sint32 trackType, sint3
 {
     if (trackType != FLAT_TRACK_ELEM_4_X_4)
     {
-        return NULL;
+        return nullptr;
     }
 
     return paint_enterprise;

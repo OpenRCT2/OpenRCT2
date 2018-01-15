@@ -19,31 +19,31 @@
 #include <string>
 
 #include <openrct2/audio/audio.h>
-#include <openrct2/cheats.h>
+#include <openrct2/Cheats.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/Util.hpp>
 #include <openrct2/Editor.h>
-#include <openrct2/input.h>
-#include <openrct2/interface/console.h>
-#include <openrct2/interface/land_tool.h>
+#include <openrct2/Input.h>
+#include <openrct2/interface/Console.h>
 #include <openrct2/interface/Screenshot.h>
-#include <openrct2/interface/viewport.h>
-#include <openrct2/interface/widget.h>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/Widget.h>
 #include <openrct2/network/network.h>
 #include <openrct2/network/twitch.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/peep/Staff.h>
-#include <openrct2/util/util.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2/util/Util.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/footpath.h>
+#include <openrct2/world/Footpath.h>
 #include <openrct2/world/LargeScenery.h>
-#include <openrct2/world/scenery.h>
+#include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
 #include <openrct2/world/Wall.h>
+#include <openrct2-ui/interface/LandTool.h>
 
 enum {
     WIDX_PAUSE,
@@ -153,7 +153,7 @@ enum {
 #pragma region Toolbar_widget_ordering
 
 // from left to right
-static const sint32 left_aligned_widgets_order[] = {
+static constexpr const sint32 left_aligned_widgets_order[] = {
     WIDX_PAUSE,
     WIDX_FASTFORWARD,
     WIDX_FILE_MENU,
@@ -173,7 +173,7 @@ static const sint32 left_aligned_widgets_order[] = {
 };
 
 // from right to left
-static const sint32 right_aligned_widgets_order[] = {
+static constexpr const sint32 right_aligned_widgets_order[] = {
     WIDX_NEWS,
     WIDX_GUESTS,
     WIDX_STAFF,
@@ -1284,6 +1284,12 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             *parameter_1 = (selected_scenery & 0xFF) << 8;
             *parameter_2 = (cl ^ (1 << 1)) | (gWindowSceneryPrimaryColour << 8);
             *parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
+
+            if (gConfigGeneral.use_virtual_floor)
+            {
+                map_set_virtual_floor_height(gSceneryPlaceZ);
+            }
+
             return;
         }
 
@@ -1303,7 +1309,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             }
 
             gSceneryPlaceZ = 0;
-            uint16 water_height = tile_element->properties.surface.terrain & TILE_ELEMENT_WATER_HEIGHT_MASK;
+            uint16 water_height = map_get_water_height(tile_element);
             if (water_height != 0) {
                 gSceneryPlaceZ = water_height * 16;
             }
@@ -1376,9 +1382,10 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             return;
         }
 
-        *parameter_1 = 0 | ((tile_element->properties.path.type & 0x7) << 8);
-        *parameter_2 = tile_element->base_height | ((tile_element->properties.path.type >> 4) << 8);
-        if (tile_element->type & 1) {
+        *parameter_1 = (tile_element->properties.path.type & (FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)) << 8;
+        *parameter_2 = tile_element->base_height;
+        *parameter_2 |= ((footpath_element_get_type(tile_element)) << 8);
+        if (footpath_element_is_queue(tile_element)) {
             *parameter_2 |= LOCATION_NULL;
         }
         *parameter_3 = (selected_scenery & 0xFF) + 1;
@@ -1532,6 +1539,11 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         *parameter_3 = gWindowSceneryPrimaryColour;
         break;
     }
+    }
+
+    if (gConfigGeneral.use_virtual_floor)
+    {
+        map_set_virtual_floor_height(gSceneryPlaceZ);
     }
 }
 
@@ -2362,6 +2374,11 @@ static money32 try_place_ghost_scenery(LocationXY16 map_tile, uint32 parameter_1
 static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
     map_invalidate_selection_rect();
     map_invalidate_map_selection_tiles();
+
+    if (gConfigGeneral.use_virtual_floor)
+    {
+        map_invalidate_virtual_floor_tiles();
+    }
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;

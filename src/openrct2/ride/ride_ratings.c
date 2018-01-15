@@ -14,13 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../cheats.h"
-#include "../interface/window.h"
-#include "../localisation/date.h"
+#include "../Cheats.h"
+#include "../interface/Window.h"
+#include "../localisation/Date.h"
 #include "../OpenRCT2.h"
-#include "../world/map.h"
-#include "ride.h"
-#include "ride_data.h"
+#include "../world/Footpath.h"
+#include "../world/Map.h"
+#include "Ride.h"
+#include "RideData.h"
 #include "ride_ratings.h"
 #include "Station.h"
 #include "Track.h"
@@ -517,7 +518,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElemen
             break;
         case TILE_ELEMENT_TYPE_PATH:
             // Bonus for normal path
-            if (tileElement->properties.path.type & 0xF0) {
+            if (footpath_element_get_type(tileElement) != 0) {
                 if (tileElement->clearance_height == inputTileElement->base_height) {
                     proximity_score_increment(PROXIMITY_PATH_TOUCH_ABOVE);
                 }

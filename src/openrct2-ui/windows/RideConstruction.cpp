@@ -17,27 +17,27 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/audio/audio.h>
-#include <openrct2/cheats.h>
+#include <openrct2/Cheats.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/Util.hpp>
 #include <openrct2/Game.h>
-#include <openrct2/input.h>
-#include <openrct2/interface/viewport.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/Input.h>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
-#include <openrct2/ride/ride.h>
+#include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideGroupManager.h>
-#include <openrct2/ride/ride_data.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/sprites.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/entrance.h>
-#include <openrct2/world/footpath.h>
+#include <openrct2/world/Entrance.h>
+#include <openrct2/world/Footpath.h>
 
 #pragma region Widgets
 
@@ -102,7 +102,7 @@ static rct_widget window_ride_construction_widgets[] = {
     { WWT_FLATBTN,          1,  116,    137,    29,     52,     SPR_RIDE_CONSTRUCTION_RIGHT_CURVE,          STR_RIDE_CONSTRUCTION_RIGHT_CURVE_TIP                   },
     { WWT_FLATBTN,          1,  138,    159,    29,     52,     SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL,    STR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL_TIP             },
     { WWT_FLATBTN,          1,  138,    159,    29,     52,     SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL,    STR_RIDE_CONSTRUCTION_RIGHT_CURVE_VERY_SMALL_TIP        },
-    { WWT_DROPDOWN_BUTTON,  1,  17,     148,    55,     68,     STR_YELLOW_STRING,                          STR_RIDE_CONSTRUCTION_OTHER_TRACK_CONFIGURATIONS_TIP    },
+    { WWT_BUTTON,           1,  17,     148,    55,     68,     STR_YELLOW_STRING,                          STR_RIDE_CONSTRUCTION_OTHER_TRACK_CONFIGURATIONS_TIP    },
     { WWT_FLATBTN,          1,  23,     46,     88,     111,    SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP,     STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP              },
     { WWT_FLATBTN,          1,  47,     70,     88,     111,    SPR_RIDE_CONSTRUCTION_SLOPE_DOWN,           STR_RIDE_CONSTRUCTION_SLOPE_DOWN_TIP                    },
     { WWT_FLATBTN,          1,  71,     94,     88,     111,    SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL,          STR_RIDE_CONSTRUCTION_LEVEL_TIP                         },
@@ -118,16 +118,16 @@ static rct_widget window_ride_construction_widgets[] = {
     { WWT_FLATBTN,          1,  20,     43,     338,    361,    SPR_PREVIOUS,                               STR_RIDE_CONSTRUCTION_MOVE_TO_PREVIOUS_SECTION_TIP      },
     { WWT_FLATBTN,          1,  122,    145,    338,    361,    SPR_NEXT,                                   STR_RIDE_CONSTRUCTION_MOVE_TO_NEXT_SECTION_TIP          },
     { WWT_GROUPBOX,         0,  3,      162,    362,    389,    0xFFFFFFFF,                                 STR_NONE                                                },
-    { WWT_DROPDOWN_BUTTON,  1,  9,      78,     372,    383,    STR_RIDE_CONSTRUCTION_ENTRANCE,             STR_RIDE_CONSTRUCTION_ENTRANCE_TIP                      },
-    { WWT_DROPDOWN_BUTTON,  1,  87,     156,    372,    383,    STR_RIDE_CONSTRUCTION_EXIT,                 STR_RIDE_CONSTRUCTION_EXIT_TIP                          },
+    { WWT_BUTTON,           1,  9,      78,     372,    383,    STR_RIDE_CONSTRUCTION_ENTRANCE,             STR_RIDE_CONSTRUCTION_ENTRANCE_TIP                      },
+    { WWT_BUTTON,           1,  87,     156,    372,    383,    STR_RIDE_CONSTRUCTION_EXIT,                 STR_RIDE_CONSTRUCTION_EXIT_TIP                          },
     { WWT_FLATBTN,          1,  94,     115,    29,     52,     SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_LARGE,    STR_RIDE_CONSTRUCTION_RIGHT_CURVE_LARGE_TIP             },
     { WWT_FLATBTN,          1,  72,     95,     338,    361,    SPR_ROTATE_ARROW,                           STR_ROTATE_90_TIP                                       },
     { WWT_FLATBTN,          1,  19,     42,     132,    155,    SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK,       STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP           },
     { WWT_FLATBTN,          1,  123,    146,    132,    155,    SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK,       STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP       },
     { WWT_GROUPBOX,         0,  96,     162,    120,    160,    STR_RIDE_CONSTRUCTION_SEAT_ROT,             STR_NONE                                                },
     { WWT_SPINNER,          1,  101,    158,    138,    149,    0,                                          STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP    },
-    { WWT_DROPDOWN_BUTTON,  1,  147,    157,    139,    143,    STR_NUMERIC_UP,                             STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP    },
-    { WWT_DROPDOWN_BUTTON,  1,  147,    157,    144,    148,    STR_NUMERIC_DOWN,                           STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP    },
+    { WWT_BUTTON,           1,  147,    157,    139,    143,    STR_NUMERIC_UP,                             STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP    },
+    { WWT_BUTTON,           1,  147,    157,    144,    148,    STR_NUMERIC_DOWN,                           STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP    },
     { WIDGETS_END }
 };
 
@@ -183,7 +183,7 @@ static rct_window_event_list window_ride_construction_events = {
 #pragma region RideConfigurationStringIds
 
 // rct2: 0x00999492
-static const rct_string_id RideConfigurationStringIds[] = {
+static constexpr const rct_string_id RideConfigurationStringIds[] = {
     0,                                      // 0
     STR_STATION_PLATFORM,                   // 1
     0,                                      // 2
@@ -486,7 +486,7 @@ static void ride_construction_tooldown_entrance_exit(sint32 screenX, sint32 scre
 
 static uint8 _currentPossibleRideConfigurations[32];
 
-static const rct_string_id RideConstructionSeatAngleRotationStrings[] = {
+static constexpr const rct_string_id RideConstructionSeatAngleRotationStrings[] = {
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180,
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_135,
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_90,
@@ -2676,14 +2676,14 @@ static void window_ride_construction_update_widgets(rct_window *w)
         window_ride_construction_widgets[WIDX_EXIT].type = WWT_EMPTY;
     } else {
         window_ride_construction_widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WWT_GROUPBOX;
-        window_ride_construction_widgets[WIDX_ENTRANCE].type = WWT_DROPDOWN_BUTTON;
-        window_ride_construction_widgets[WIDX_EXIT].type = WWT_DROPDOWN_BUTTON;
+        window_ride_construction_widgets[WIDX_ENTRANCE].type = WWT_BUTTON;
+        window_ride_construction_widgets[WIDX_EXIT].type = WWT_BUTTON;
     }
 
     if (_numCurrentPossibleSpecialTrackPieces == 0) {
         window_ride_construction_widgets[WIDX_SPECIAL_TRACK_DROPDOWN].type = WWT_EMPTY;
     } else {
-        window_ride_construction_widgets[WIDX_SPECIAL_TRACK_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_ride_construction_widgets[WIDX_SPECIAL_TRACK_DROPDOWN].type = WWT_BUTTON;
     }
 
     if (is_track_enabled(TRACK_STRAIGHT)) {
@@ -2961,13 +2961,13 @@ static void window_ride_construction_update_widgets(rct_window *w)
         window_ride_construction_widgets[WIDX_BANK_LEFT].right = 83;
         window_ride_construction_widgets[WIDX_BANK_LEFT].top = 138;
         window_ride_construction_widgets[WIDX_BANK_LEFT].bottom = 149;
-        window_ride_construction_widgets[WIDX_BANK_STRAIGHT].type = WWT_DROPDOWN_BUTTON;
+        window_ride_construction_widgets[WIDX_BANK_STRAIGHT].type = WWT_BUTTON;
         window_ride_construction_widgets[WIDX_BANK_STRAIGHT].text = STR_NUMERIC_UP;
         window_ride_construction_widgets[WIDX_BANK_STRAIGHT].left = 72;
         window_ride_construction_widgets[WIDX_BANK_STRAIGHT].right = 82;
         window_ride_construction_widgets[WIDX_BANK_STRAIGHT].top = 139;
         window_ride_construction_widgets[WIDX_BANK_STRAIGHT].bottom = 143;
-        window_ride_construction_widgets[WIDX_BANK_RIGHT].type = WWT_DROPDOWN_BUTTON;
+        window_ride_construction_widgets[WIDX_BANK_RIGHT].type = WWT_BUTTON;
         window_ride_construction_widgets[WIDX_BANK_RIGHT].text = STR_NUMERIC_DOWN;
         window_ride_construction_widgets[WIDX_BANK_RIGHT].left = 72;
         window_ride_construction_widgets[WIDX_BANK_RIGHT].right = 82;
@@ -2988,8 +2988,8 @@ static void window_ride_construction_update_widgets(rct_window *w)
     ) {
         window_ride_construction_widgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WWT_GROUPBOX;
         window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WWT_SPINNER;
-        window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WWT_DROPDOWN_BUTTON;
-        window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WWT_DROPDOWN_BUTTON;
+        window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WWT_BUTTON;
+        window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WWT_BUTTON;
         window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].right = 92;
         if (window_ride_construction_widgets[WIDX_BANK_LEFT].type != WWT_SPINNER) {
             for (sint32 i = WIDX_BANK_LEFT; i <= WIDX_BANK_RIGHT; i++) {
@@ -3140,6 +3140,13 @@ static void window_ride_construction_update_widgets(rct_window *w)
 
 static void window_ride_construction_select_map_tiles(Ride *ride, sint32 trackType, sint32 trackDirection, sint32 x, sint32 y)
 {
+    // If the scenery tool is active, we do not display our tiles as it
+    // will conflict with larger scenery objects selecting tiles
+    if (scenery_tool_is_active())
+    {
+        return;
+    }
+
     const rct_preview_track *trackBlock;
     sint32 offsetX, offsetY;
 

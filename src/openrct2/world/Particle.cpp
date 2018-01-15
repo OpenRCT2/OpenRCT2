@@ -16,9 +16,9 @@
 
 #include "../audio/audio.h"
 #include "../core/Util.hpp"
-#include "../scenario/scenario.h"
-#include "../paint/sprite/sprite.h"
-#include "sprite.h"
+#include "../scenario/Scenario.h"
+#include "../paint/sprite/Sprite.h"
+#include "Sprite.h"
 
 /**
  *

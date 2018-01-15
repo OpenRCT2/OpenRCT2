@@ -14,14 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 // 1 2 0 3 4
-static const uint8 track_map_1x5[][5] = {
+static constexpr const uint8 track_map_1x5[][5] = {
     { 0, 1, 2, 3, 4 },
     { 0, 4, 3, 2, 1 },
     { 0, 4, 3, 2, 1 },
@@ -37,10 +37,10 @@ typedef struct pirate_ship_bound_box
 } pirate_ship_bound_box;
 
 /** rct2: 0x008A83B0 */
-static const uint32 pirate_ship_base_sprite_offset[] = { 0, 9, 0, 9 };
+static constexpr const uint32 pirate_ship_base_sprite_offset[] = { 0, 9, 0, 9 };
 
 /** rct2: 0x008A83C0 */
-static const pirate_ship_bound_box pirate_ship_data[] = {
+static constexpr const pirate_ship_bound_box pirate_ship_data[] = {
     { 31, 16, 1, 8 },
     { 16, 31, 8, 1 },
     { 31, 16, 1, 8 },
@@ -55,7 +55,7 @@ enum
     SPR_PIRATE_SHIP_FRAME_FRONT_NW_SE = 21997,
 };
 
-static const uint32 pirate_ship_frame_sprites[][2] = {
+static constexpr const uint32 pirate_ship_frame_sprites[][2] = {
     { SPR_PIRATE_SHIP_FRAME_SW_NE, SPR_PIRATE_SHIP_FRAME_FRONT_SW_NE },
     { SPR_PIRATE_SHIP_FRAME_NW_SE, SPR_PIRATE_SHIP_FRAME_FRONT_NW_SE },
 };
@@ -68,7 +68,7 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
     rct_tile_element * savedTileElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
 
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-    rct_vehicle *    vehicle  = NULL;
+    rct_vehicle *    vehicle  = nullptr;
 
     sint8 xOffset = !(direction & 1) ? axisOffset : 0;
     sint8 yOffset = (direction & 1) ? axisOffset : 0;
@@ -84,7 +84,7 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
     }
 
     baseImageId = rideEntry->vehicles[0].base_image_id + pirate_ship_base_sprite_offset[direction];
-    if (vehicle != NULL)
+    if (vehicle != nullptr)
     {
         sint32 rotation = (sint8)vehicle->vehicle_sprite_type;
         if (rotation != 0)
@@ -121,7 +121,7 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
 
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
 
-    if (dpi->zoom_level <= 1 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != NULL)
+    if (dpi->zoom_level <= 1 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         sint32 peep   = 0;
         sint32 offset = 1;
@@ -179,7 +179,7 @@ static void paint_pirate_ship(paint_session * session, uint8 rideIndex, uint8 tr
 
     if (relativeTrackSequence == 1 || relativeTrackSequence == 4)
     {
-        wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     }
     else if (direction & 1)
     {
@@ -320,7 +320,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_pirate_ship(sint32 trackType, sint
 {
     if (trackType != FLAT_TRACK_ELEM_1_X_5)
     {
-        return NULL;
+        return nullptr;
     }
 
     return paint_pirate_ship;

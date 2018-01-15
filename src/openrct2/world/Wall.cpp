@@ -18,15 +18,15 @@
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../Game.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "LargeScenery.h"
-#include "map.h"
-#include "park.h"
-#include "scenery.h"
+#include "Map.h"
+#include "Park.h"
+#include "Scenery.h"
 #include "SmallScenery.h"
 #include "Wall.h"
 
@@ -250,6 +250,7 @@ static bool WallCheckObstruction(rct_scenery_entry * wall,
 
 #pragma region Edge Slopes Table
 
+// clang-format off
 enum EDGE_SLOPE
 {
     EDGE_SLOPE_ELEVATED     = (1 << 0), // 0x01
@@ -261,7 +262,7 @@ enum EDGE_SLOPE
 };
 
 /** rct2: 0x009A3FEC */
-static const uint8 EdgeSlopes[][4] = {
+static constexpr const uint8 EdgeSlopes[][4] = {
 //  Top right                        Bottom right                   Bottom left                       Top left
     { 0,                             0,                             0,                             0                             },
     { 0,                             EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS,          0                             },
@@ -296,6 +297,7 @@ static const uint8 EdgeSlopes[][4] = {
     { EDGE_SLOPE_DOWNWARDS_ELEVATED, EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_UPWARDS_ELEVATED   },
     { 0,                             0,                             0,                             0                             },
 };
+// clang-format on
 
 #pragma endregion
 
@@ -355,7 +357,7 @@ static money32 WallPlace(uint8 wallType,
         }
         position.z = surfaceElement->base_height * 8;
 
-        uint8 slope = surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK;
+        uint8 slope = surfaceElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
         edgeSlope = EdgeSlopes[slope][edge & 3];
         if (edgeSlope & EDGE_SLOPE_ELEVATED)
         {

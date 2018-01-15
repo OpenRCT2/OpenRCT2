@@ -14,11 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 enum
 {
@@ -183,7 +183,7 @@ static void spiral_slide_paint_tile_front(paint_session * session, uint8 rideInd
     }
 }
 
-static const uint32 spiral_slide_fence_sprites[] = {
+static constexpr const uint32 spiral_slide_fence_sprites[] = {
     SPIRAL_SLIDE_FENCE_TOP_RIGHT,
     SPIRAL_SLIDE_FENCE_BOTTOM_RIGHT,
     SPIRAL_SLIDE_FENCE_BOTTOM_LEFT,
@@ -202,7 +202,7 @@ static void paint_spiral_slide(paint_session * session, uint8 rideIndex, uint8 t
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     // Base
     uint32 imageId = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | session->TrackColours[SCHEME_SUPPORTS];
@@ -235,7 +235,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_spiral_slide(sint32 trackType, sin
 {
     if (trackType != FLAT_TRACK_ELEM_2_X_2)
     {
-        return NULL;
+        return nullptr;
     }
 
     return paint_spiral_slide;

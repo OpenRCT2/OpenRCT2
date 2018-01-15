@@ -14,16 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "paint.h"
-#include "../drawing/drawing.h"
-#include "../localisation/localisation.h"
-#include "../config/Config.h"
-#include "../interface/viewport.h"
-#include "../core/Math.hpp"
-#include "tile_element/tile_element.h"
-#include "sprite/sprite.h"
-
 #include <algorithm>
+#include "../config/Config.h"
+#include "../core/Math.hpp"
+#include "../drawing/Drawing.h"
+#include "../interface/Viewport.h"
+#include "../localisation/Localisation.h"
+#include "Paint.h"
+#include "sprite/Sprite.h"
+#include "tile_element/TileElement.h"
 
 // Global for paint clipping height
 uint8 gClipHeight = 128; // Default to middle value
@@ -31,7 +30,7 @@ uint8 gClipHeight = 128; // Default to middle value
 paint_session gPaintSession;
 static bool _paintSessionInUse;
 
-static const uint8 BoundBoxDebugColours[] =
+static constexpr const uint8 BoundBoxDebugColours[] =
 {
     0,   // NONE
     102, // TERRAIN
@@ -64,9 +63,9 @@ static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi)
     session->NextFreePaintStruct = session->PaintStructs;
     session->UnkF1AD28 = nullptr;
     session->UnkF1AD2C = nullptr;
-    for (sint32 i = 0; i < MAX_PAINT_QUADRANTS; i++)
+    for (auto &quadrant : session->Quadrants)
     {
-        session->Quadrants[i] = nullptr;
+        quadrant = nullptr;
     }
     session->QuadrantBackIndex = -1;
     session->QuadrantFrontIndex = 0;
@@ -165,13 +164,13 @@ static paint_struct * sub_9819_c(paint_session * session, uint32 image_id, Locat
         break;
     }
 
-    ps->bound_box_x_end = boundBoxSize.x + boundBoxOffset.x + session->SpritePosition.x;
-    ps->bound_box_z = boundBoxOffset.z;
-    ps->bound_box_z_end = boundBoxOffset.z + boundBoxSize.z;
-    ps->bound_box_y_end = boundBoxSize.y + boundBoxOffset.y + session->SpritePosition.y;
+    ps->bounds.x_end = boundBoxSize.x + boundBoxOffset.x + session->SpritePosition.x;
+    ps->bounds.z = boundBoxOffset.z;
+    ps->bounds.z_end = boundBoxOffset.z + boundBoxSize.z;
+    ps->bounds.y_end = boundBoxSize.y + boundBoxOffset.y + session->SpritePosition.y;
     ps->flags = 0;
-    ps->bound_box_x = boundBoxOffset.x + session->SpritePosition.x;
-    ps->bound_box_y = boundBoxOffset.y + session->SpritePosition.y;
+    ps->bounds.x = boundBoxOffset.x + session->SpritePosition.x;
+    ps->bounds.y = boundBoxOffset.y + session->SpritePosition.y;
     ps->attached_ps = nullptr;
     ps->var_20 = nullptr;
     ps->sprite_type = session->InteractionType;
@@ -295,36 +294,58 @@ void paint_session_generate(paint_session * session)
     }
 }
 
-static bool is_bbox_intersecting(uint8 rotation, const paint_struct_bound_box& initialBBox,
+template<uint8_t> static bool check_bounding_box(const paint_struct_bound_box& initialBBox,
     const paint_struct_bound_box& currentBBox)
 {
-    bool result = false;
-    switch (rotation) {
-    case 0:
-        if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end >= currentBBox.y && initialBBox.x_end >= currentBBox.x
-            && !(initialBBox.z < currentBBox.z_end && initialBBox.y < currentBBox.y_end && initialBBox.x < currentBBox.x_end))
-            result = true;
-        break;
-    case 1:
-        if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end >= currentBBox.y && initialBBox.x_end < currentBBox.x
-            && !(initialBBox.z < currentBBox.z_end && initialBBox.y < currentBBox.y_end && initialBBox.x >= currentBBox.x_end))
-            result = true;
-        break;
-    case 2:
-        if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end < currentBBox.y && initialBBox.x_end < currentBBox.x
-            && !(initialBBox.z < currentBBox.z_end && initialBBox.y >= currentBBox.y_end && initialBBox.x >= currentBBox.x_end))
-            result = true;
-        break;
-    case 3:
-        if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end < currentBBox.y && initialBBox.x_end >= currentBBox.x
-            && !(initialBBox.z < currentBBox.z_end && initialBBox.y >= currentBBox.y_end && initialBBox.x < currentBBox.x_end))
-            result = true;
-        break;
-    }
-    return result;
+    return false;
 }
 
-paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadrantIndex, uint8 flag)
+template<> bool check_bounding_box<0>(const paint_struct_bound_box& initialBBox,
+    const paint_struct_bound_box& currentBBox)
+{
+    if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end >= currentBBox.y && initialBBox.x_end >= currentBBox.x
+        && !(initialBBox.z < currentBBox.z_end && initialBBox.y < currentBBox.y_end && initialBBox.x < currentBBox.x_end))
+    {
+        return true;
+    }
+    return false;
+}
+
+template<> bool check_bounding_box<1>(const paint_struct_bound_box& initialBBox,
+    const paint_struct_bound_box& currentBBox)
+{
+    if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end >= currentBBox.y && initialBBox.x_end < currentBBox.x
+        && !(initialBBox.z < currentBBox.z_end && initialBBox.y < currentBBox.y_end && initialBBox.x >= currentBBox.x_end))
+    {
+        return true;
+    }
+    return false;
+}
+
+template<> bool check_bounding_box<2>(const paint_struct_bound_box& initialBBox,
+    const paint_struct_bound_box& currentBBox)
+{
+    if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end < currentBBox.y && initialBBox.x_end < currentBBox.x
+        && !(initialBBox.z < currentBBox.z_end && initialBBox.y >= currentBBox.y_end && initialBBox.x >= currentBBox.x_end))
+    {
+        return true;
+    }
+    return false;
+}
+
+template<> bool check_bounding_box<3>(const paint_struct_bound_box& initialBBox,
+    const paint_struct_bound_box& currentBBox)
+{
+    if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end < currentBBox.y && initialBBox.x_end >= currentBBox.x
+        && !(initialBBox.z < currentBBox.z_end && initialBBox.y >= currentBBox.y_end && initialBBox.x < currentBBox.x_end))
+    {
+        return true;
+    }
+    return false;
+}
+
+template<uint8 _TRotation>
+static paint_struct * paint_arrange_structs_helper_rotation(paint_struct * ps_next, uint16 quadrantIndex, uint8 flag)
 {
     paint_struct * ps;
     paint_struct * ps_temp;
@@ -358,7 +379,6 @@ paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadr
     } while (ps->quadrant_index <= quadrantIndex + 1);
     ps = ps_temp;
 
-    uint8 rotation = get_current_rotation();
     while (true)
     {
         while (true)
@@ -373,16 +393,7 @@ paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadr
         ps_next->quadrant_flags &= ~PAINT_QUADRANT_FLAG_IDENTICAL;
         ps_temp = ps;
 
-        const paint_struct_bound_box initialBBox =
-        {
-            ps_next->bound_box_x,
-            ps_next->bound_box_y,
-            ps_next->bound_box_z,
-            ps_next->bound_box_x_end,
-            ps_next->bound_box_y_end,
-            ps_next->bound_box_z_end
-        };
-
+        const paint_struct_bound_box& initialBBox = ps_next->bounds;
 
         while (true)
         {
@@ -392,17 +403,9 @@ paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadr
             if (ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_BIGGER) break;
             if (!(ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_NEXT)) continue;
 
-            const paint_struct_bound_box currentBBox =
-            {
-                ps_next->bound_box_x,
-                ps_next->bound_box_y,
-                ps_next->bound_box_z,
-                ps_next->bound_box_x_end,
-                ps_next->bound_box_y_end,
-                ps_next->bound_box_z_end
-            };
+            const paint_struct_bound_box& currentBBox = ps_next->bounds;
 
-            bool compareResult = is_bbox_intersecting(rotation, initialBBox, currentBBox);
+            const bool compareResult = check_bounding_box<_TRotation>(initialBBox, currentBBox);
 
             if (compareResult)
             {
@@ -418,6 +421,22 @@ paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadr
     }
 }
 
+paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadrantIndex, uint8 flag, uint8 rotation)
+{
+    switch (rotation)
+    {
+    case 0:
+        return paint_arrange_structs_helper_rotation<0>(ps_next, quadrantIndex, flag);
+    case 1:
+        return paint_arrange_structs_helper_rotation<1>(ps_next, quadrantIndex, flag);
+    case 2:
+        return paint_arrange_structs_helper_rotation<2>(ps_next, quadrantIndex, flag);
+    case 3:
+        return paint_arrange_structs_helper_rotation<3>(ps_next, quadrantIndex, flag);
+    }
+    return nullptr;
+}
+
 /**
 *
 *  rct2: 0x00688217
@@ -428,6 +447,7 @@ paint_struct paint_session_arrange(paint_session * session)
     paint_struct * ps = &psHead;
     ps->next_quadrant_ps = nullptr;
     uint32 quadrantIndex = session->QuadrantBackIndex;
+    const uint8 rotation = get_current_rotation();
     if (quadrantIndex != UINT32_MAX)
     {
         do
@@ -440,18 +460,20 @@ paint_struct paint_session_arrange(paint_session * session)
                 {
                     ps = ps_next;
                     ps_next = ps_next->next_quadrant_ps;
+
                 } while (ps_next != nullptr);
             }
         } while (++quadrantIndex <= session->QuadrantFrontIndex);
 
-        paint_struct * ps_cache = paint_arrange_structs_helper(&psHead, session->QuadrantBackIndex & 0xFFFF, PAINT_QUADRANT_FLAG_NEXT);
+        paint_struct * ps_cache = paint_arrange_structs_helper(&psHead, session->QuadrantBackIndex & 0xFFFF, PAINT_QUADRANT_FLAG_NEXT, rotation);
 
         quadrantIndex = session->QuadrantBackIndex;
         while (++quadrantIndex < session->QuadrantFrontIndex)
         {
-            ps_cache = paint_arrange_structs_helper(ps_cache, quadrantIndex & 0xFFFF, 0);
+            ps_cache = paint_arrange_structs_helper(ps_cache, quadrantIndex & 0xFFFF, 0, rotation);
         }
     }
+
     return psHead;
 }
 
@@ -490,7 +512,7 @@ void paint_draw_structs(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewF
             paint_ps_image(dpi, ps, imageId, x, y);
         }
 
-        if (ps->var_20 != 0)
+        if (ps->var_20 != nullptr)
         {
             // NOTE: RCT uses var_20 instead of next_quadrant_ps, do we still need it?
             ps = ps->var_20;
@@ -536,65 +558,65 @@ static void paint_ps_image_with_bounding_boxes(rct_drawpixelinfo * dpi, paint_st
 
     const LocationXYZ16 frontTop =
     {
-        (sint16)ps->bound_box_x_end,
-        (sint16)ps->bound_box_y_end,
-        (sint16)ps->bound_box_z_end
+        (sint16)ps->bounds.x_end,
+        (sint16)ps->bounds.y_end,
+        (sint16)ps->bounds.z_end
     };
     const LocationXY16 screenCoordFrontTop = coordinate_3d_to_2d(&frontTop, rotation);
 
     const LocationXYZ16 frontBottom =
     {
-        (sint16)ps->bound_box_x_end,
-        (sint16)ps->bound_box_y_end,
-        (sint16)ps->bound_box_z
+        (sint16)ps->bounds.x_end,
+        (sint16)ps->bounds.y_end,
+        (sint16)ps->bounds.z
     };
     const LocationXY16 screenCoordFrontBottom = coordinate_3d_to_2d(&frontBottom, rotation);
 
     const LocationXYZ16 leftTop =
     {
-        (sint16)ps->bound_box_x,
-        (sint16)ps->bound_box_y_end,
-        (sint16)ps->bound_box_z_end
+        (sint16)ps->bounds.x,
+        (sint16)ps->bounds.y_end,
+        (sint16)ps->bounds.z_end
     };
     const LocationXY16 screenCoordLeftTop = coordinate_3d_to_2d(&leftTop, rotation);
 
     const LocationXYZ16 leftBottom =
     {
-        (sint16)ps->bound_box_x,
-        (sint16)ps->bound_box_y_end,
-        (sint16)ps->bound_box_z
+        (sint16)ps->bounds.x,
+        (sint16)ps->bounds.y_end,
+        (sint16)ps->bounds.z
     };
     const LocationXY16 screenCoordLeftBottom = coordinate_3d_to_2d(&leftBottom, rotation);
 
     const LocationXYZ16 rightTop =
     {
-        (sint16)ps->bound_box_x_end,
-        (sint16)ps->bound_box_y,
-        (sint16)ps->bound_box_z_end
+        (sint16)ps->bounds.x_end,
+        (sint16)ps->bounds.y,
+        (sint16)ps->bounds.z_end
     };
     const LocationXY16 screenCoordRightTop = coordinate_3d_to_2d(&rightTop, rotation);
 
     const LocationXYZ16 rightBottom =
     {
-        (sint16)ps->bound_box_x_end,
-        (sint16)ps->bound_box_y,
-        (sint16)ps->bound_box_z
+        (sint16)ps->bounds.x_end,
+        (sint16)ps->bounds.y,
+        (sint16)ps->bounds.z
     };
     const LocationXY16 screenCoordRightBottom = coordinate_3d_to_2d(&rightBottom, rotation);
 
     const LocationXYZ16 backTop =
     {
-        (sint16)ps->bound_box_x,
-        (sint16)ps->bound_box_y,
-        (sint16)ps->bound_box_z_end
+        (sint16)ps->bounds.x,
+        (sint16)ps->bounds.y,
+        (sint16)ps->bounds.z_end
     };
     const LocationXY16 screenCoordBackTop = coordinate_3d_to_2d(&backTop, rotation);
 
     const LocationXYZ16 backBottom =
     {
-        (sint16)ps->bound_box_x,
-        (sint16)ps->bound_box_y,
-        (sint16)ps->bound_box_z
+        (sint16)ps->bounds.x,
+        (sint16)ps->bounds.y,
+        (sint16)ps->bounds.z
     };
     const LocationXY16 screenCoordBackBottom = coordinate_3d_to_2d(&backBottom, rotation);
 
@@ -806,12 +828,12 @@ extern "C"
         coord_3d.x += session->SpritePosition.x;
         coord_3d.y += session->SpritePosition.y;
 
-        ps->bound_box_x_end = coord_3d.x + boundBox.x;
-        ps->bound_box_y_end = coord_3d.y + boundBox.y;
+        ps->bounds.x_end = coord_3d.x + boundBox.x;
+        ps->bounds.y_end = coord_3d.y + boundBox.y;
 
         // TODO: check whether this is right. edx is ((bound_box_length_z + z_offset) << 16 | z_offset)
-        ps->bound_box_z = coord_3d.z;
-        ps->bound_box_z_end = (boundBox.z + coord_3d.z);
+        ps->bounds.z = coord_3d.z;
+        ps->bounds.z_end = (boundBox.z + coord_3d.z);
 
         LocationXY16 map = coordinate_3d_to_2d(&coord_3d, rotation);
 
@@ -832,8 +854,8 @@ extern "C"
         if (bottom >= (dpi->y + dpi->height)) return nullptr;
 
         ps->flags = 0;
-        ps->bound_box_x = coord_3d.x;
-        ps->bound_box_y = coord_3d.y;
+        ps->bounds.x = coord_3d.x;
+        ps->bounds.y = coord_3d.y;
         ps->attached_ps = nullptr;
         ps->var_20 = nullptr;
         ps->sprite_type = session->InteractionType;
@@ -908,8 +930,8 @@ extern "C"
 
         LocationXY16 attach =
         {
-            (sint16)ps->bound_box_x,
-            (sint16)ps->bound_box_y
+            (sint16)ps->bounds.x,
+            (sint16)ps->bounds.y
         };
 
         rotate_map_coordinates(&attach.x, &attach.y, rotation);
@@ -1133,7 +1155,7 @@ extern "C"
 
         paint_string_struct * ps = &session->NextFreePaintStruct->string;
         ps->string_id = string_id;
-        ps->next = 0;
+        ps->next = nullptr;
         ps->args[0] = amount;
         ps->args[1] = y;
         ps->args[2] = 0;

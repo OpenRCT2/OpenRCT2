@@ -16,13 +16,112 @@
 
 #pragma once
 
+#include "../common.h"
+
 #ifdef __cplusplus
 
-#include "../common.h"
 #include "ImageTable.h"
 #include "StringTable.h"
 
-#include "../object.h"
+#endif
+
+// First 0xF of rct_object_entry->flags
+typedef enum
+{
+    OBJECT_TYPE_RIDE,
+    OBJECT_TYPE_SMALL_SCENERY,
+    OBJECT_TYPE_LARGE_SCENERY,
+    OBJECT_TYPE_WALLS,
+    OBJECT_TYPE_BANNERS,
+    OBJECT_TYPE_PATHS,
+    OBJECT_TYPE_PATH_BITS,
+    OBJECT_TYPE_SCENERY_GROUP,
+    OBJECT_TYPE_PARK_ENTRANCE,
+    OBJECT_TYPE_WATER,
+    OBJECT_TYPE_SCENARIO_TEXT,
+    
+    OBJECT_TYPE_COUNT
+} OBJECT_TYPE;
+
+typedef enum
+{
+    OBJECT_SELECTION_FLAG_SELECTED = (1 << 0),
+    OBJECT_SELECTION_FLAG_2 = (1 << 1),
+    OBJECT_SELECTION_FLAG_IN_USE = (1 << 2),
+    // OBJECT_SELECTION_FLAG_REQUIRED = (1 << 3),               // Unused feature
+    OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED = (1 << 4),
+    OBJECT_SELECTION_FLAG_6 = (1 << 5),
+    OBJECT_SELECTION_FLAG_7 = (1 << 6),
+    OBJECT_SELECTION_FLAG_8 = (1 << 7),
+} OBJECT_SELECTION_FLAGS;
+
+#define OBJECT_SELECTION_NOT_SELECTED_OR_REQUIRED 0
+
+typedef enum
+{
+    OBJECT_SOURCE_CUSTOM,
+    OBJECT_SOURCE_WACKY_WORLDS,
+    OBJECT_SOURCE_TIME_TWISTER,
+    OBJECT_SOURCE_RCT2 = 8
+} OBJECT_SOURCE_GAME;
+
+#define OBJECT_ENTRY_COUNT 721
+
+#pragma pack(push, 1)
+/**
+ * Object entry structure.
+ * size: 0x10
+ */
+typedef struct rct_object_entry {
+    union {
+        uint8 end_flag; // needed not to read past allocated buffer.
+        uint32 flags;
+    };
+    char name[8];
+    uint32 checksum;
+} rct_object_entry;
+assert_struct_size(rct_object_entry, 0x10);
+
+/**
+ * Object entry structure extended.
+ * size: 0x14
+ */
+typedef struct rct_object_entry_extended {
+    union {
+        rct_object_entry entry;
+        struct {
+            uint32 flags;
+            char name[8];
+            uint32 checksum;
+            uint32 chunk_size;
+        };
+    };
+} rct_object_entry_extended;
+assert_struct_size(rct_object_entry_extended, 0x14);
+
+typedef struct rct_object_entry_group {
+    void **chunks;
+    rct_object_entry_extended *entries;
+} rct_object_entry_group;
+#ifdef PLATFORM_32BIT
+assert_struct_size(rct_object_entry_group, 8);
+#endif
+
+typedef struct rct_ride_filters {
+    uint8 category[2];
+    uint8 ride_type;
+} rct_ride_filters;
+assert_struct_size(rct_ride_filters, 3);
+
+typedef struct rct_object_filters {
+    union {
+        rct_ride_filters ride;
+    };
+} rct_object_filters;
+assert_struct_size(rct_object_filters, 3);
+#pragma pack(pop)
+
+#ifdef __cplusplus
 
 enum OBJ_STRING_ID
 {
@@ -32,7 +131,6 @@ enum OBJ_STRING_ID
     OBJ_STRING_ID_PARK_NAME = 1,
     OBJ_STRING_ID_SCENARIO_DETAILS = 2,
     OBJ_STRING_ID_CAPACITY = 2,
-    OBJ_STRING_ID_VEHICLE_NAME = 3,
 };
 
 interface IStream;
@@ -65,8 +163,8 @@ protected:
     const StringTable * GetStringTable() const { return &_stringTable; }
     ImageTable  *       GetImageTable() { return &_imageTable; }
 
-    const utf8 *        GetOverrideString(uint8 index) const;
-    const utf8 *        GetString(uint8 index) const;
+    std::string         GetOverrideString(uint8 index) const;
+    std::string         GetString(uint8 index) const;
 
 public:
     explicit Object(const rct_object_entry &entry);
@@ -84,7 +182,7 @@ public:
     virtual void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const { }
 
     virtual uint8           GetObjectType() const final { return _objectEntry.flags & 0x0F; }
-    virtual const utf8 *    GetName() const;
+    virtual std::string     GetName() const;
 
     virtual void SetRepositoryItem(ObjectRepositoryItem * item) const { }
 
@@ -109,3 +207,30 @@ enum OBJECT_ERROR : uint32
 };
 
 #endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
+    extern sint32 object_entry_group_counts[];
+    extern sint32 object_entry_group_encoding[];
+    
+    extern const rct_object_entry_group object_entry_groups[];
+    
+    void object_list_load();
+    
+    bool object_entry_is_empty(const rct_object_entry *entry);
+    bool object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
+    sint32 object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength);
+    bool find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
+    void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
+    
+    const rct_object_entry * object_list_find_by_name(const char *name);
+    const rct_object_entry * object_list_find(rct_object_entry *entry);
+    
+    void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);
+    
+#ifdef __cplusplus
+}
+#endif
+

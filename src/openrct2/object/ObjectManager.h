@@ -21,7 +21,7 @@
 #endif
 
 #include "../common.h"
-#include "../object.h"
+#include "../object/Object.h"
 
 #ifdef __cplusplus
 

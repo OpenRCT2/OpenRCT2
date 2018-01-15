@@ -21,14 +21,14 @@
 #include <openrct2/Context.h>
 
 #include <openrct2/Game.h>
-#include <openrct2/interface/viewport.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
-#include <openrct2/world/footpath.h>
-#include <openrct2/input.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2/world/Footpath.h>
+#include <openrct2/Input.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/interface/themes.h>
 
 #define WW 190
@@ -78,7 +78,7 @@ static rct_widget window_staff_overview_widgets[] = {
     { WWT_TAB,      1, 65,      95,         17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
     { WWT_TAB,      1, 96,      126,        17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE},              // Tab 4
     { WWT_VIEWPORT, 1, 3,       WW - 26,    47,         WH - 14,0xFFFFFFFF,             STR_NONE},              // Viewport
-    { WWT_12,       1, 3,       WW - 26,    WH - 13,    WH - 3, 0xFFFFFFFF,             STR_NONE },             // Label at bottom of viewport
+    { WWT_LABEL_CENTRED, 1, 3,  WW - 26,    WH - 13,    WH - 3, 0xFFFFFFFF,             STR_NONE },             // Label at bottom of viewport
     { WWT_FLATBTN,  1, WW - 25, WW - 2,     45,         68,     SPR_PICKUP_BTN,         STR_PICKUP_TIP},        // Pickup Button
     { WWT_FLATBTN,  1, WW - 25, WW - 2,     69,         92,     SPR_PATROL_BTN,         STR_SET_PATROL_TIP},    // Patrol Button
     { WWT_FLATBTN,  1, WW - 25, WW - 2,     93,         116,    SPR_RENAME,             STR_NAME_STAFF_TIP},    // Rename Button
@@ -102,7 +102,7 @@ static rct_widget window_staff_options_widgets[] = {
     { WWT_CHECKBOX,         1, 5,       WW - 6, 84,     95,     0xFFFFFFFF,             STR_NONE},              // Checkbox 3
     { WWT_CHECKBOX,         1, 5,       WW - 6, 101,    112,    0xFFFFFFFF,             STR_NONE},              // Checkbox 4
     { WWT_DROPDOWN,         1, 5,       WW - 6, 50,     61,     0xFFFFFFFF,             STR_NONE},              // Costume Dropdown
-    { WWT_DROPDOWN_BUTTON,  1, WW - 17, WW - 7, 51,     60,     STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP},// Costume Dropdown Button
+    { WWT_BUTTON,           1, WW - 17, WW - 7, 51,     60,     STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP},// Costume Dropdown Button
     { WIDGETS_END },
 };
 
@@ -264,7 +264,7 @@ static rct_window_event_list *window_staff_page_events[] = {
     &window_staff_stats_events
 };
 
-static const uint32 window_staff_page_enabled_widgets[] = {
+static constexpr const uint32 window_staff_page_enabled_widgets[] = {
     (1 << WIDX_CLOSE) |
     (1 << WIDX_TAB_1) |
     (1 << WIDX_TAB_2) |
@@ -664,8 +664,8 @@ void window_staff_stats_resize(rct_window *w)
 {
     w->min_width = 190;
     w->max_width = 190;
-    w->min_height = 119;
-    w->max_height = 119;
+    w->min_height = 126;
+    w->max_height = 126;
 
     if (w->width < w->min_width) {
         w->width = w->min_width;
@@ -775,7 +775,7 @@ void window_staff_options_invalidate(rct_window *w)
         window_staff_options_widgets[WIDX_CHECKBOX_3].type = WWT_EMPTY;
         window_staff_options_widgets[WIDX_CHECKBOX_4].type = WWT_EMPTY;
         window_staff_options_widgets[WIDX_COSTUME_BOX].type = WWT_DROPDOWN;
-        window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_DROPDOWN_BUTTON;
+        window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_BUTTON;
         window_staff_options_widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[peep->sprite_type - 4];
         break;
     case STAFF_TYPE_HANDYMAN:
@@ -1049,25 +1049,25 @@ void window_staff_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
         set_format_arg(0, money32, wage_table[peep->staff_type]);
         gfx_draw_string_left(dpi, STR_STAFF_STAT_WAGES, gCommonFormatArgs, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
     }
 
     gfx_draw_string_left(dpi, STR_STAFF_STAT_EMPLOYED_FOR, (void*)&peep->time_in_park, COLOUR_BLACK, x, y);
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
     switch (peep->staff_type){
     case STAFF_TYPE_HANDYMAN:
         gfx_draw_string_left(dpi, STR_STAFF_STAT_LAWNS_MOWN, (void*)&peep->staff_lawns_mown, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
         gfx_draw_string_left(dpi, STR_STAFF_STAT_GARDENS_WATERED, (void*)&peep->staff_gardens_watered, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
         gfx_draw_string_left(dpi, STR_STAFF_STAT_LITTER_SWEPT, (void*)&peep->staff_litter_swept, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
         gfx_draw_string_left(dpi, STR_STAFF_STAT_BINS_EMPTIED, (void*)&peep->staff_bins_emptied, COLOUR_BLACK, x, y);
         break;
     case STAFF_TYPE_MECHANIC:
         gfx_draw_string_left(dpi, STR_STAFF_STAT_RIDES_INSPECTED, (void*)&peep->staff_rides_inspected, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
         gfx_draw_string_left(dpi, STR_STAFF_STAT_RIDES_FIXED, (void*)&peep->staff_rides_fixed, COLOUR_BLACK, x, y);
         break;
     }

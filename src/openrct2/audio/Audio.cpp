@@ -21,18 +21,18 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "../OpenRCT2.h"
 #include "../ui/UiContext.h"
 #include "audio.h"
 #include "AudioContext.h"
 #include "AudioMixer.h"
 
-#include "../interface/viewport.h"
-#include "../intro.h"
-#include "../localisation/language.h"
-#include "../ride/ride.h"
-#include "../util/util.h"
+#include "../interface/Viewport.h"
+#include "../Intro.h"
+#include "../localisation/Language.h"
+#include "../ride/Ride.h"
+#include "../util/Util.h"
 
 using namespace OpenRCT2::Audio;
 
@@ -61,6 +61,7 @@ rct_vehicle_sound           gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params    gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params *  gVehicleSoundParamsListEnd;
 
+// clang-format off
 static sint32 SoundVolumeAdjust[SOUND_MAXID] =
 {
     0,      // SOUND_LIFT_1
@@ -127,6 +128,7 @@ static sint32 SoundVolumeAdjust[SOUND_MAXID] =
     -2700,  // SOUND_DOOR_CLOSE
     -700    // SOUND_62
 };
+// clang-format on
 
 AudioParams audio_get_params_from_location(sint32 soundId, const LocationXYZ16 *location);
 
@@ -223,17 +225,11 @@ AudioParams audio_get_params_from_location(sint32 soundId, const LocationXYZ16 *
 
     uint8 rotation = get_current_rotation();
     LocationXY16 pos2 = coordinate_3d_to_2d(location, rotation);
-    rct_window * window = gWindowNextSlot;
-    while (true)
-    {
-        window--;
-        if (window < g_window_list)
-        {
-            break;
-        }
 
-        rct_viewport * viewport = window->viewport;
-        if (viewport != nullptr && (viewport->flags & VIEWPORT_FLAG_SOUND_ON))
+    rct_viewport * viewport = nullptr;
+    while ((viewport = window_get_previous_viewport(viewport)) != nullptr)
+    {
+        if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
         {
             sint16 vy = pos2.y - viewport->view_y;
             sint16 vx = pos2.x - viewport->view_x;
@@ -306,15 +302,14 @@ void audio_start_title_music()
 
 void audio_stop_ride_music()
 {
-    for (sint32 i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++)
+    for (auto &rideMusic : gRideMusicList)
     {
-        rct_ride_music * rideMusic = &gRideMusicList[i];
-        if (rideMusic->ride_id != RIDE_ID_NULL)
+        if (rideMusic.ride_id != RIDE_ID_NULL)
         {
-            rideMusic->ride_id = RIDE_ID_NULL;
-            if (rideMusic->sound_channel != nullptr)
+            rideMusic.ride_id = RIDE_ID_NULL;
+            if (rideMusic.sound_channel != nullptr)
             {
-                Mixer_Stop_Channel(rideMusic->sound_channel);
+                Mixer_Stop_Channel(rideMusic.sound_channel);
             }
         }
     }
@@ -352,9 +347,8 @@ void audio_init_ride_sounds_and_info()
     sint32 deviceNum = 0;
     audio_init_ride_sounds(deviceNum);
 
-    for (size_t m = 0; m < Util::CountOf(gRideMusicInfoList); m++)
+    for (auto * rideMusicInfo : gRideMusicInfoList)
     {
-        rct_ride_music_info * rideMusicInfo = gRideMusicInfoList[m];
         const utf8 * path = context_get_path_legacy(rideMusicInfo->path_id);
         if (File::Exists(path))
         {
@@ -372,7 +366,7 @@ void audio_init_ride_sounds_and_info()
                     rideMusicInfo->length = fs.GetLength();
                 }
             }
-            catch (const Exception &)
+            catch (const std::exception &)
             {
             }
         }
@@ -382,18 +376,16 @@ void audio_init_ride_sounds_and_info()
 void audio_init_ride_sounds(sint32 device)
 {
     audio_close();
-    for (sint32 i = 0; i < AUDIO_MAX_VEHICLE_SOUNDS; i++)
+    for (auto &vehicleSound : gVehicleSoundList)
     {
-        rct_vehicle_sound * vehicleSound = &gVehicleSoundList[i];
-        vehicleSound->id = SOUND_ID_NULL;
+        vehicleSound.id = SOUND_ID_NULL;
     }
 
     gAudioCurrentDevice = device;
     config_save_default();
-    for (sint32 i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++)
+    for (auto &rideMusic : gRideMusicList)
     {
-        rct_ride_music * rideMusic = &gRideMusicList[i];
-        rideMusic->ride_id = RIDE_ID_NULL;
+        rideMusic.ride_id = RIDE_ID_NULL;
     }
 }
 
@@ -441,19 +433,18 @@ void audio_stop_vehicle_sounds()
         return;
     }
 
-    for (size_t i = 0; i < Util::CountOf(gVehicleSoundList); i++)
+    for (auto &vehicleSound : gVehicleSoundList)
     {
-        rct_vehicle_sound * vehicleSound = &gVehicleSoundList[i];
-        if (vehicleSound->id != SOUND_ID_NULL)
+        if (vehicleSound.id != SOUND_ID_NULL)
         {
-            vehicleSound->id = SOUND_ID_NULL;
-            if (vehicleSound->sound1_id != SOUND_ID_NULL)
+            vehicleSound.id = SOUND_ID_NULL;
+            if (vehicleSound.sound1_id != SOUND_ID_NULL)
             {
-                Mixer_Stop_Channel(vehicleSound->sound1_channel);
+                Mixer_Stop_Channel(vehicleSound.sound1_channel);
             }
-            if (vehicleSound->sound2_id != SOUND_ID_NULL)
+            if (vehicleSound.sound2_id != SOUND_ID_NULL)
             {
-                Mixer_Stop_Channel(vehicleSound->sound2_channel);
+                Mixer_Stop_Channel(vehicleSound.sound2_channel);
             }
         }
     }

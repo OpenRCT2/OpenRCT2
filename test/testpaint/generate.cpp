@@ -26,11 +26,11 @@
 #include "String.hpp"
 #include "Utils.hpp"
 
-#include "data.h"
-#include <openrct2/interface/viewport.h>
-#include <openrct2/rct2.h>
-#include <openrct2/ride/ride.h>
-#include <openrct2/ride/ride_data.h>
+#include "Data.h"
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/rct2/RCT2.h>
+#include <openrct2/ride/Ride.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 
@@ -104,14 +104,14 @@ private:
     {
         const char * includes[] =
         {
-            "../../drawing/drawing.h",
+            "../../drawing/Drawing.h",
             "../../paint/supports.h",
-            "../../interface/viewport.h",
+            "../../interface/Viewport.h",
             "../../paint/tile_element/tile_element.h",
             "../../paint/paint.h",
             "../../sprites.h",
-            "../../world/map.h",
-            "../../world/sprite.h",
+            "../../world/Map.h",
+            "../../world/Sprite.h",
             "../ride_data.h",
             "../TrackData.h",
             "../track_paint.h",

@@ -14,14 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
-#include "../../world/map.h"
-#include "../ride.h"
-#include "../ride_data.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
+#include "../../world/Map.h"
+#include "../Ride.h"
+#include "../RideData.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 enum
 {
@@ -118,9 +118,9 @@ static rct_tile_element * chairlift_paint_util_map_get_track_element_at_from_rid
                                                                                        sint32 rideIndex)
 {
     rct_tile_element * tileElement = map_get_first_element_at(x >> 5, y >> 5);
-    if (tileElement == NULL)
+    if (tileElement == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
 
     do
@@ -135,7 +135,7 @@ static rct_tile_element * chairlift_paint_util_map_get_track_element_at_from_rid
         return tileElement;
     } while (!tile_element_is_last_for_tile(tileElement++));
 
-    return NULL;
+    return nullptr;
 };
 
 static bool chairlift_paint_util_is_first_track(uint8 rideIndex, const rct_tile_element * tileElement, LocationXY16 pos,
@@ -155,7 +155,7 @@ static bool chairlift_paint_util_is_first_track(uint8 rideIndex, const rct_tile_
     rct_tile_element * nextTrack =
         chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(newPos.x, newPos.y, tileElement->base_height, rideIndex);
 
-    return nextTrack == NULL;
+    return nextTrack == nullptr;
 }
 
 static bool chairlift_paint_util_is_last_track(uint8 rideIndex, const rct_tile_element * tileElement, LocationXY16 pos,
@@ -175,7 +175,7 @@ static bool chairlift_paint_util_is_last_track(uint8 rideIndex, const rct_tile_e
     rct_tile_element * nextTrack =
         chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(newPos.x, newPos.y, tileElement->base_height, rideIndex);
 
-    return nextTrack == NULL;
+    return nextTrack == nullptr;
 }
 
 static void chairlift_paint_station_ne_sw(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
@@ -192,7 +192,7 @@ static void chairlift_paint_station_ne_sw(paint_session * session, uint8 rideInd
 
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 
-    wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     if (!isStart && !isEnd)
     {
@@ -283,7 +283,7 @@ static void chairlift_paint_station_se_nw(paint_session * session, uint8 rideInd
 
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 
-    wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     if (!isStart && !isEnd)
     {
@@ -668,5 +668,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(sint32 trackType, sint32
         return chairlift_paint_right_quarter_turn_1_tile;
     }
 
-    return NULL;
+    return nullptr;
 }

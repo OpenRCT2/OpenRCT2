@@ -39,7 +39,7 @@ enum {
 
 #include "../common.h"
 #include "../Game.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 
 #include "../Version.h"
 #include "NetworkTypes.h"
@@ -51,7 +51,7 @@ typedef struct GameAction GameAction;
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "22"
+#define NETWORK_STREAM_VERSION "28"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 #ifdef __cplusplus
@@ -63,6 +63,7 @@ typedef struct GameAction GameAction;
 #include <string>
 #include <vector>
 #include <functional>
+#include <fstream>
 #include <map>
 #include <openssl/evp.h>
 #include "../actions/GameAction.h"
@@ -128,7 +129,7 @@ public:
     void LoadGroups();
 
     std::string BeginLog(const std::string &directory, const std::string &midName, const std::string &filenameFormat);
-    void AppendLog(const std::string &logPath, const std::string &s);
+    void AppendLog(std::ostream &fs, const std::string &s);
 
     void BeginChatLog();
     void AppendChatLog(const std::string &s);
@@ -290,6 +291,9 @@ private:
     void Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
 
     uint8 * save_for_network(size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const;
+
+    std::ofstream _chat_log_fs;
+    std::ofstream _server_log_fs;
 };
 
 #endif // __cplusplus

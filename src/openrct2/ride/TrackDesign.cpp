@@ -24,19 +24,19 @@
 #include "TrackDesignRepository.h"
 
 #include "../audio/audio.h"
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../Game.h"
-#include "../localisation/localisation.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/Localisation.h"
+#include "../localisation/StringIds.h"
 #include "../management/Finance.h"
-#include "../rct1.h"
-#include "../util/sawyercoding.h"
-#include "../util/util.h"
-#include "../world/footpath.h"
-#include "../world/scenery.h"
+#include "../rct1/RCT1.h"
+#include "../util/SawyerCoding.h"
+#include "../util/Util.h"
+#include "../world/Footpath.h"
+#include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
-#include "ride.h"
-#include "ride_data.h"
+#include "Ride.h"
+#include "RideData.h"
 #include "Track.h"
 #include "TrackData.h"
 #include "TrackDesign.h"
@@ -81,7 +81,7 @@ static void track_design_preview_clear_map();
 
 static void td6_reset_trailing_elements(rct_track_td6 * td6);
 
-static void td6_set_element_helper_pointers(rct_track_td6 * td6);
+static void td6_set_element_helper_pointers(rct_track_td6 * td6, bool clearScenery);
 
 rct_track_td6 * track_design_open(const utf8 * path)
 {
@@ -321,7 +321,7 @@ static rct_track_td6 * track_design_open_from_td4(uint8 * src, size_t srcLength)
     td6->elementsSize = td4->elementsSize;
 
     td6_reset_trailing_elements(td6);
-    td6_set_element_helper_pointers(td6);
+    td6_set_element_helper_pointers(td6, true);
 
     SafeFree(td4);
     return td6;
@@ -360,7 +360,7 @@ static rct_track_td6 * track_design_open_from_buffer(uint8 * src, size_t srcLeng
     // Cap operation setting
     td6->operation_setting = Math::Min(td6->operation_setting, RideProperties[td6->type].max_value);
 
-    td6_set_element_helper_pointers(td6);
+    td6_set_element_helper_pointers(td6, false);
     return td6;
 }
 
@@ -375,6 +375,9 @@ static void td6_reset_trailing_elements(rct_track_td6 * td6)
             mazeElement++;
         }
         lastElement = (void *) ((uintptr_t) mazeElement + 1);
+
+        size_t trailingSize = td6->elementsSize - (size_t)((uintptr_t) lastElement - (uintptr_t) td6->elements);
+        memset(lastElement, 0, trailingSize);
     }
     else
     {
@@ -384,14 +387,21 @@ static void td6_reset_trailing_elements(rct_track_td6 * td6)
             trackElement++;
         }
         lastElement = (void *) ((uintptr_t) trackElement + 1);
+
+        size_t trailingSize = td6->elementsSize - (size_t)((uintptr_t) lastElement - (uintptr_t) td6->elements);
+        memset(lastElement, 0xFF, trailingSize);
     }
-    size_t trailingSize = td6->elementsSize - (size_t)((uintptr_t) lastElement - (uintptr_t) td6->elements);
-    memset(lastElement, 0xFF, trailingSize);
 }
 
-static void td6_set_element_helper_pointers(rct_track_td6 * td6)
+/**
+ *
+ * @param td6
+ * @param clearScenery Set when importing TD4 designs, to avoid corrupted data being interpreted as scenery.
+ */
+static void td6_set_element_helper_pointers(rct_track_td6 * td6, bool clearScenery)
 {
     uintptr_t sceneryElementsStart;
+
     if (td6->type == RIDE_TYPE_MAZE)
     {
         td6->track_elements = nullptr;
@@ -422,8 +432,15 @@ static void td6_set_element_helper_pointers(rct_track_td6 * td6)
         sceneryElementsStart = (uintptr_t) entranceElement + 1;
     }
 
-    rct_td6_scenery_element * sceneryElement = (rct_td6_scenery_element *) sceneryElementsStart;
-    td6->scenery_elements = sceneryElement;
+    if (clearScenery)
+    {
+        td6->scenery_elements = nullptr;
+    }
+    else
+    {
+        rct_td6_scenery_element * sceneryElement = (rct_td6_scenery_element *) sceneryElementsStart;
+        td6->scenery_elements = sceneryElement;
+    }
 }
 
 void track_design_dispose(rct_track_td6 * td6)
@@ -450,7 +467,7 @@ static void track_design_load_scenery_objects(rct_track_td6 * td6)
 
     // Load scenery objects
     rct_td6_scenery_element * scenery = td6->scenery_elements;
-    for (; scenery->scenery_object.end_flag != 0xFF; scenery++)
+    for (; scenery != nullptr && scenery->scenery_object.end_flag != 0xFF; scenery++)
     {
         rct_object_entry * sceneryEntry = &scenery->scenery_object;
         object_manager_load_object(sceneryEntry);
@@ -464,7 +481,7 @@ static void track_design_load_scenery_objects(rct_track_td6 * td6)
 static void track_design_mirror_scenery(rct_track_td6 * td6)
 {
     rct_td6_scenery_element * scenery = td6->scenery_elements;
-    for (; scenery->scenery_object.end_flag != 0xFF; scenery++)
+    for (; scenery != nullptr && scenery->scenery_object.end_flag != 0xFF; scenery++)
     {
         uint8 entry_type, entry_index;
         if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index))
@@ -591,7 +608,7 @@ static void track_design_mirror_ride(rct_track_td6 * td6)
 }
 
 /** rct2: 0x00993EDC */
-static const uint8 maze_segment_mirror_map[] = {
+static constexpr const uint8 maze_segment_mirror_map[] = {
     5, 4, 2, 7, 1, 0, 14, 3, 13, 12, 10, 15, 9, 8, 6, 11
 };
 
@@ -1603,7 +1620,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
                     if (cost == MONEY32_UNDEFINED)
                     {
                         _trackDesignPlaceCost = cost;
-                        return 0;
+                        return false;
                     }
                     _trackDesignPlaceStateEntranceExitPlaced = true;
                     break;
@@ -1623,7 +1640,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
                 if (cost == MONEY32_UNDEFINED)
                 {
                     _trackDesignPlaceCost = cost;
-                    return 0;
+                    return false;
                 }
                 else
                 {
@@ -1863,12 +1880,11 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
         {
             uint8             rideGroupIndex = ori->RideGroupIndex;
             const RideGroup * td6RideGroup = RideGroupManager::RideGroupFind(td6->type, rideGroupIndex);
-            rct_ride_entry  * ire;
 
-            uint8      * availableRideEntries = get_ride_entry_indices_for_ride_type(td6->type);
-            for (uint8 * rei                  = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++)
+            uint8 * availableRideEntries = get_ride_entry_indices_for_ride_type(td6->type);
+            for (uint8 * rei = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++)
             {
-                ire = get_ride_entry(*rei);
+                rct_ride_entry * ire = get_ride_entry(*rei);
 
                 if (!ride_entry_is_invented(*rei) && !gCheatsIgnoreResearchStatus)
                 {
@@ -2065,7 +2081,7 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
         sint32 fz0 = z >> 3;
         sint32 fz1 = fz0 + 4;
 
-        if (!map_can_construct_with_clear_at(fx, fy, fz0, fz1, &map_place_non_scenery_clear_func, 15, flags, &cost))
+        if (!map_can_construct_with_clear_at(fx, fy, fz0, fz1, &map_place_non_scenery_clear_func, 15, flags, &cost, CREATE_CROSSING_MODE_NONE))
         {
             return MONEY32_UNDEFINED;
         }

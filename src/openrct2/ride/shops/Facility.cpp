@@ -14,13 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
 #include "../../sprites.h"
-#include "../../world/map.h"
+#include "../../world/Map.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 /**
  *
@@ -32,7 +32,7 @@
 static void facility_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
                                  rct_tile_element * tileElement)
 {
-    bool hasSupports = wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_3], NULL);
+    bool hasSupports = wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_3], nullptr);
 
     Ride *           ride      = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
@@ -99,5 +99,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_facility(sint32 trackType, sint32 
     case FLAT_TRACK_ELEM_1_X_1_A:
         return facility_paint_setup;
     }
-    return NULL;
+    return nullptr;
 }

@@ -24,7 +24,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../drawing/IDrawingEngine.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
@@ -33,11 +33,11 @@
 #include "IniReader.hpp"
 #include "IniWriter.hpp"
 
-#include "../localisation/currency.h"
-#include "../localisation/date.h"
-#include "../localisation/language.h"
+#include "../localisation/Currency.h"
+#include "../localisation/Date.h"
+#include "../localisation/Language.h"
 #include "../platform/platform.h"
-#include "../scenario/scenario.h"
+#include "../scenario/Scenario.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
@@ -46,14 +46,14 @@ namespace Config
 {
     #pragma region Enums
 
-    static auto Enum_MeasurementFormat = ConfigEnum<sint32>(
+    static const auto Enum_MeasurementFormat = ConfigEnum<sint32>(
     {
         ConfigEnumEntry<sint32>("IMPERIAL", MEASUREMENT_FORMAT_IMPERIAL),
         ConfigEnumEntry<sint32>("METRIC", MEASUREMENT_FORMAT_METRIC),
         ConfigEnumEntry<sint32>("SI", MEASUREMENT_FORMAT_SI),
     });
 
-    static auto Enum_Currency = ConfigEnum<sint32>(
+    static const auto Enum_Currency = ConfigEnum<sint32>(
     {
         ConfigEnumEntry<sint32>("GBP", CURRENCY_POUNDS),
         ConfigEnumEntry<sint32>("USD", CURRENCY_DOLLARS),
@@ -74,13 +74,13 @@ namespace Config
         ConfigEnumEntry<sint32>("CUSTOM", CURRENCY_CUSTOM),
     });
 
-    static auto Enum_CurrencySymbolAffix = ConfigEnum<sint32>(
+    static const auto Enum_CurrencySymbolAffix = ConfigEnum<sint32>(
     {
         ConfigEnumEntry<sint32>("PREFIX", CURRENCY_PREFIX),
         ConfigEnumEntry<sint32>("SUFFIX", CURRENCY_SUFFIX),
     });
 
-    static auto Enum_DateFormat = ConfigEnum<sint32>(
+    static const auto Enum_DateFormat = ConfigEnum<sint32>(
     {
         ConfigEnumEntry<sint32>("DD/MM/YY", DATE_FORMAT_DAY_MONTH_YEAR),
         ConfigEnumEntry<sint32>("MM/DD/YY", DATE_FORMAT_MONTH_DAY_YEAR),
@@ -88,20 +88,20 @@ namespace Config
         ConfigEnumEntry<sint32>("YY/DD/MM", DATE_FORMAT_YEAR_DAY_MONTH),
     });
 
-    static auto Enum_DrawingEngine = ConfigEnum<sint32>(
+    static const auto Enum_DrawingEngine = ConfigEnum<sint32>(
     {
         ConfigEnumEntry<sint32>("SOFTWARE", DRAWING_ENGINE_SOFTWARE),
         ConfigEnumEntry<sint32>("SOFTWARE_HWD", DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY),
         ConfigEnumEntry<sint32>("OPENGL", DRAWING_ENGINE_OPENGL),
     });
 
-    static auto Enum_Temperature = ConfigEnum<sint32>(
+    static const auto Enum_Temperature = ConfigEnum<sint32>(
     {
         ConfigEnumEntry<sint32>("CELSIUS", TEMPERATURE_FORMAT_C),
         ConfigEnumEntry<sint32>("FAHRENHEIT", TEMPERATURE_FORMAT_F),
     });
-    
-    static auto Enum_ScaleQuality = ConfigEnum<sint32>(
+
+    static const auto Enum_ScaleQuality = ConfigEnum<sint32>(
     {
         ConfigEnumEntry<sint32>("NEAREST_NEIGHBOUR", SCALE_QUALITY_NN),
         ConfigEnumEntry<sint32>("LINEAR", SCALE_QUALITY_LINEAR),
@@ -149,6 +149,7 @@ namespace Config
             model->custom_currency_affix = reader->GetEnum<sint32>("custom_currency_affix", CURRENCY_SUFFIX, Enum_CurrencySymbolAffix);
             model->custom_currency_symbol = reader->GetCString("custom_currency_symbol", "Ctm");
             model->edge_scrolling = reader->GetBoolean("edge_scrolling", true);
+            model->edge_scrolling_speed = reader->GetSint32("edge_scrolling_speed", 12);
             model->fullscreen_mode = reader->GetSint32("fullscreen_mode", 0);
             model->fullscreen_height = reader->GetSint32("fullscreen_height", -1);
             model->fullscreen_width = reader->GetSint32("fullscreen_width", -1);
@@ -168,6 +169,8 @@ namespace Config
             model->default_display = reader->GetSint32("default_display", 0);
             model->drawing_engine = reader->GetEnum<sint32>("drawing_engine", DRAWING_ENGINE_SOFTWARE, Enum_DrawingEngine);
             model->uncap_fps = reader->GetBoolean("uncap_fps", false);
+            model->use_vsync = reader->GetBoolean("use_vsync", true);
+            model->use_virtual_floor = reader->GetBoolean("use_virtual_floor", true);
 
             // Default config setting is false until ghost trains are implemented #4540
             model->test_unfinished_tracks = reader->GetBoolean("test_unfinished_tracks", false);
@@ -225,6 +228,7 @@ namespace Config
         writer->WriteEnum<sint32>("custom_currency_affix", model->custom_currency_affix, Enum_CurrencySymbolAffix);
         writer->WriteString("custom_currency_symbol", model->custom_currency_symbol);
         writer->WriteBoolean("edge_scrolling", model->edge_scrolling);
+        writer->WriteSint32("edge_scrolling_speed", model->edge_scrolling_speed);
         writer->WriteSint32("fullscreen_mode", model->fullscreen_mode);
         writer->WriteSint32("fullscreen_height", model->fullscreen_height);
         writer->WriteSint32("fullscreen_width", model->fullscreen_width);
@@ -244,6 +248,7 @@ namespace Config
         writer->WriteSint32("default_display", model->default_display);
         writer->WriteEnum<sint32>("drawing_engine", model->drawing_engine, Enum_DrawingEngine);
         writer->WriteBoolean("uncap_fps", model->uncap_fps);
+        writer->WriteBoolean("use_vsync", model->use_vsync);
         writer->WriteBoolean("test_unfinished_tracks", model->test_unfinished_tracks);
         writer->WriteBoolean("no_test_crashes", model->no_test_crashes);
         writer->WriteEnum<sint32>("date_format", model->date_format, Enum_DateFormat);
@@ -278,6 +283,7 @@ namespace Config
         writer->WriteBoolean("render_weather_gloom", model->render_weather_gloom);
         writer->WriteBoolean("show_guest_purchases", model->show_guest_purchases);
         writer->WriteBoolean("show_real_names_of_guests", model->show_real_names_of_guests);
+        writer->WriteBoolean("use_virtual_floor", model->use_virtual_floor);
         writer->WriteBoolean("enable_speedrunning_mode", model->enable_speedrunning_mode);
         writer->WriteBoolean("allow_speed_changes", model->allow_speed_changes);
     }
@@ -382,6 +388,7 @@ namespace Config
             model->known_keys_only = reader->GetBoolean("known_keys_only", false);
             model->log_chat = reader->GetBoolean("log_chat", false);
             model->log_server_actions = reader->GetBoolean("log_server_actions", false);
+            model->pause_server_if_no_clients = reader->GetBoolean("pause_server_if_no_clients", false);
         }
     }
 
@@ -406,6 +413,7 @@ namespace Config
         writer->WriteBoolean("known_keys_only", model->known_keys_only);
         writer->WriteBoolean("log_chat", model->log_chat);
         writer->WriteBoolean("log_server_actions", model->log_server_actions);
+        writer->WriteBoolean("pause_server_if_no_clients", model->pause_server_if_no_clients);
     }
 
     static void ReadNotifications(IIniReader * reader)
@@ -538,7 +546,7 @@ namespace Config
             ReadFont(reader.get());
             return true;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             return false;
         }
@@ -559,7 +567,7 @@ namespace Config
             ReadFont(reader.get());
             return true;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             return false;
         }
@@ -580,10 +588,10 @@ namespace Config
             WriteFont(writer.get());
             return true;
         }
-        catch (const Exception &ex)
+        catch (const std::exception &ex)
         {
             Console::WriteLine("Error saving to '%s'", path.c_str());
-            Console::WriteLine(ex.GetMessage());
+            Console::WriteLine(ex.what());
             return false;
         }
     }
@@ -598,7 +606,7 @@ namespace Config
     {
         log_verbose("config_find_rct2_path(...)");
 
-        static const utf8 * searchLocations[] =
+        static constexpr const utf8 * searchLocations[] =
         {
             R"(C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
             R"(C:\Program Files\Atari\RollerCoaster Tycoon 2)",

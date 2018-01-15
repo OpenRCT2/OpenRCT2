@@ -18,8 +18,8 @@
 #include <openrct2/Context.h>
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
 #define WW 400
@@ -59,13 +59,13 @@ enum WINDOW_ABOUT_WIDGET_IDX {
 
 static rct_widget window_about_openrct2_widgets[] = {
     { WIDGETS_MAIN },
-    { WWT_DROPDOWN_BUTTON,  1,  100,            299,            WH - 50,    WH - 39,    STR_CHANGELOG_ELLIPSIS,                 STR_NONE },             // changelog button
+    { WWT_BUTTON,           1,  100,            299,            WH - 50,    WH - 39,    STR_CHANGELOG_ELLIPSIS,                 STR_NONE },             // changelog button
     { WIDGETS_END }
 };
 
 static rct_widget window_about_rct2_widgets[] = {
     { WIDGETS_MAIN },
-    { WWT_DROPDOWN_BUTTON,  1,  100,            299,            WH - 50,    WH - 39,    STR_MUSIC_ACKNOWLEDGEMENTS_ELLIPSIS,    STR_NONE },             // music credits button
+    { WWT_BUTTON,           1,  100,            299,            WH - 50,    WH - 39,    STR_MUSIC_ACKNOWLEDGEMENTS_ELLIPSIS,    STR_NONE },             // music credits button
     { WIDGETS_END },
 };
 

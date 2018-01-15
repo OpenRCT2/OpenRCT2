@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <stdexcept>
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../OpenRCT2.h"
@@ -52,7 +53,7 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
         if (_data == nullptr)
         {
             context->LogError(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table too large.");
-            throw Exception();
+            throw std::runtime_error("Image table too large.");
         }
 
         // Read g1 element headers
@@ -89,7 +90,7 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
 
         // TODO validate the image data to prevent crashes in-game
     }
-    catch (const Exception &)
+    catch (const std::exception &)
     {
         context->LogError(OBJECT_ERROR_BAD_IMAGE_TABLE, "Bad image table.");
         throw;

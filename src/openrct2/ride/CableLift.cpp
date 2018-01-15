@@ -15,14 +15,14 @@
 #pragma endregion
 
 #include "../core/Math.hpp"
-#include "../rct12.h"
-#include "../util/util.h"
-#include "../world/sprite.h"
+#include "../rct12/RCT12.h"
+#include "../util/Util.h"
+#include "../world/Sprite.h"
 #include "CableLift.h"
-#include "ride.h"
+#include "Ride.h"
 #include "Track.h"
-#include "ride_data.h"
-#include "vehicle_data.h"
+#include "RideData.h"
+#include "VehicleData.h"
 
 static void cable_lift_update_moving_to_end_of_station(rct_vehicle * vehicle);
 static void cable_lift_update_waiting_to_depart(rct_vehicle * vehicle);
@@ -55,13 +55,13 @@ rct_vehicle * cable_lift_segment_create(sint32 rideIndex,
     current->sprite_width           = 10;
     current->sprite_height_negative = 10;
     current->sprite_height_positive = 10;
-    current->friction               = 100;
+    current->mass                   = 100;
     current->num_seats              = 0;
     current->speed                  = 20;
     current->powered_acceleration   = 80;
     current->velocity               = 0;
     current->acceleration           = 0;
-    current->var_4A                 = 0;
+    current->swing_sprite                 = 0;
     current->swinging_car_var_0     = 0;
     current->var_4E                 = 0;
     current->restraints_position    = 0;
@@ -77,9 +77,9 @@ rct_vehicle * cable_lift_segment_create(sint32 rideIndex,
     current->scream_sound_id        = 0xFF;
     current->vehicle_sprite_type    = 0;
     current->bank_rotation          = 0;
-    for (sint32 j = 0; j < 32; j++)
+    for (auto &peep : current->peep)
     {
-        current->peep[j] = SPRITE_INDEX_NULL;
+        peep = SPRITE_INDEX_NULL;
     }
     current->var_CD           = 0;
     current->sprite_direction = direction << 3;
@@ -503,7 +503,7 @@ sint32 cable_lift_update_track_motion(rct_vehicle * cableLift)
     }
 
     uint32 vehicleCount      = 0;
-    uint16 frictionTotal     = 0;
+    uint16 massTotal         = 0;
     sint32 accelerationTotal = 0;
 
     for (uint16 spriteId = cableLift->sprite_index; spriteId != SPRITE_INDEX_NULL;)
@@ -511,7 +511,7 @@ sint32 cable_lift_update_track_motion(rct_vehicle * cableLift)
         rct_vehicle * vehicle = GET_VEHICLE(spriteId);
         vehicleCount++;
 
-        frictionTotal     += vehicle->friction;
+        massTotal         += vehicle->mass;
         accelerationTotal  = add_clamp_sint32(accelerationTotal, vehicle->acceleration);
 
         spriteId = vehicle->next_vehicle_on_train;
@@ -527,7 +527,7 @@ sint32 cable_lift_update_track_motion(rct_vehicle * cableLift)
         edx = -edx;
     }
     edx >>= 4;
-    newAcceleration -= edx / frictionTotal;
+    newAcceleration -= edx / massTotal;
 
     cableLift->acceleration = newAcceleration;
     return _vehicleMotionTrackFlags;

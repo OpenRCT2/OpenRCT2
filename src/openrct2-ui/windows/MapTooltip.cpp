@@ -17,10 +17,10 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/Context.h>
-#include <openrct2/input.h>
+#include <openrct2/Input.h>
 #include <openrct2/interface/themes.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 
 static rct_widget window_map_tooltip_widgets[] = {
     { WWT_IMGBTN, 0, 0, 199, 0, 29, 0xFFFFFFFF, STR_NONE },

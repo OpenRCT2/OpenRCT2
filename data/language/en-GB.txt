@@ -3707,7 +3707,7 @@ STR_5367    :Fast
 STR_5368    :Reset crash status
 STR_5369    :Park parameters...
 STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
-STR_5371    :Object Selection
+STR_5371    :Object selection
 STR_5372    :Invert right mouse dragging
 STR_5373    :Name {STRINGID}
 STR_5374    :Date {STRINGID}
@@ -3966,7 +3966,7 @@ STR_5626    :Other Parks
 STR_5627    :Group scenario list by:
 STR_5628    :Source game
 STR_5629    :Difficulty level
-STR_5630    :Enable unlocking of scenarios
+STR_5630    :Enable progressive unlocking
 STR_5631    :Original DLC Parks
 STR_5632    :Build your own...
 STR_5633    :CMD + 
@@ -4095,7 +4095,7 @@ STR_5787    :{COMMA32} players online
 STR_5788    :Default inspection interval:
 STR_5789    :Disable lightning effect
 STR_5790    :{SMALLFONT}{BLACK}Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and entrance price)
-STR_5791    :{SMALLFONT}{BLACK}Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to "this year"
+STR_5791    :{SMALLFONT}{BLACK}Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to {OPENQUOTES}this year{ENDQUOTES}
 STR_5792    :{SMALLFONT}{BLACK}Fixes all broken down rides
 STR_5793    :{SMALLFONT}{BLACK}Resets the crash history of a ride,{NEWLINE}so guests will not complain that its unsafe
 STR_5794    :{SMALLFONT}{BLACK}Some scenarios disable editing of some{NEWLINE}of the rides already in the park.{NEWLINE}This cheat lifts the restriction
@@ -4138,7 +4138,7 @@ STR_5828    :{SMALLFONT}{BLACK}Changes what measurement format is used for dista
 STR_5829    :{SMALLFONT}{BLACK}Changes what currency format is used. Purely visual, there is no exact exchange rate implementation
 STR_5830    :{SMALLFONT}{BLACK}Changes what language is used
 STR_5831    :{SMALLFONT}{BLACK}Changes what format the{NEWLINE}temperature is displayed in
-STR_5832    :{SMALLFONT}{BLACK}Show height as generic units instead of measurement format set under "Distance and Speed"
+STR_5832    :{SMALLFONT}{BLACK}Show height as generic units instead of measurement format set under {OPENQUOTES}Distance and Speed{ENDQUOTES}
 STR_5833    :{SMALLFONT}{BLACK}Changes what date format is used
 STR_5834    :{SMALLFONT}{BLACK}Select which audio device OpenRCT2 will use
 STR_5835    :{SMALLFONT}{BLACK}Mute the game if the window loses focus
@@ -4149,10 +4149,10 @@ STR_5839    :{SMALLFONT}{BLACK}Show a separate button for the research and devel
 STR_5840    :{SMALLFONT}{BLACK}Show a separate button for the cheats window in the toolbar
 STR_5841    :{SMALLFONT}{BLACK}Show a separate button for the recent news window in the toolbar
 STR_5842    :{SMALLFONT}{BLACK}Sort scenarios into tabs by their difficulty (RCT2 behaviour) or their source game (RCT1 behaviour)
-STR_5843    :{SMALLFONT}{BLACK}Enable scenario unlocking (RCT1 behaviour)
+STR_5843    :{SMALLFONT}{BLACK}Enables progressive unlocking of scenarios (RCT1 behaviour)
 STR_5844    :{SMALLFONT}{BLACK}Stay connected to a multiplayer server{NEWLINE}even if a desync or error occurs
 STR_5845    :{SMALLFONT}{BLACK}Adds a button for{NEWLINE}debugging tools to the toolbar.{NEWLINE}Enables keyboard shortcut for developer console
-STR_5846    :{SMALLFONT}{BLACK}Set often OpenRCT2 automatically saves
+STR_5846    :{SMALLFONT}{BLACK}Set how often OpenRCT2 automatically saves
 STR_5847    :{SMALLFONT}{BLACK}Select park sequence used on the title screen.{NEWLINE}Title sequences from RCT1/2 require imported scenarios to function
 STR_5848    :{SMALLFONT}{BLACK}Create and manage custom title sequences
 STR_5849    :{SMALLFONT}{BLACK}Automatically place{NEWLINE}newly hired staff members
@@ -4471,17 +4471,67 @@ STR_6161    :Gridlines display toggle
 STR_6162    :Spinning Wild Mouse
 STR_6163    :Mouse shaped cars speed through tight corners and short drops, gently spinning around to disorientate the riders
 STR_6164    :{WHITE}{CROSS}
-STR_6165    :{SMALLFONT}{BLACK}Speedrunning
-STR_6166    :Enable speedrunning mode
-STR_6167    :{SMALLFONT}{BLACK}Enables speedrunning mode (see description)
-STR_6168    :Speedrunning mode disables all cheats and changes the rules of the game. Scenario objectives are considered complete at the earliest time their requirements have been met before the deadline. Scenarios are completed consecutively within their respective games/expansions. Cheats are disabled. You may choose to run with or without enabling game speed changes. Navigate back to the main menu to choose a category. The first level in each group has the option to start a run of that group. It's recommended to use the default game sorting to organize scenarios into groups.
-STR_6169    :Allow game speed changes
-STR_6170    :{SMALLFONT}{BLACK}Allows game speed changes (having this checked counts as a separate category)
-STR_6171    :{SMALLFONT}{BLACK}Run all levels in this group
-STR_6172    :{SMALLFONT}{BLACK}Run of this level only
-STR_6173    :Start Speedrun
-STR_6174    :Start IL Speedrun
-STR_6175    :Next Level
+STR_6165    :Use vertical sync
+STR_6166    :{SMALLFONT}{BLACK}Synchronises each frame displayed to the monitor's refresh rate, preventing screen tearing.
+STR_6167    :{SMALLFONT}{BLACK}Advanced
+STR_6168    :Title Sequence
+STR_6169    :Scenario selection
+STR_6170    :Tweaks
+STR_6171    :Search
+STR_6172    :{SMALLFONT}{BLACK}Search
+STR_6173    :Please provide the name to search:
+STR_6174    :Load Save
+STR_6175    :Load Scenario
+STR_6176    :Scenario to load:
+STR_6177    :Load{MOVE_X}{87}No scenario selected
+STR_6178    :Load{MOVE_X}{87}{RED}Missing scenario
+STR_6179    :Select
+STR_6180    :No scenario selected
+STR_6181    :{RED}Missing scenario
+STR_6182    :Follow{MOVE_X}{87}{STRING}
+STR_6183    :Follow{MOVE_X}{87}No sprite selected
+STR_6184    :Follow Sprite
+STR_6185    :Select Sprite
+STR_6186    :No sprite selected
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :Vomit
+STR_6189    :Duck
+STR_6190    :{SMALLFONT}{BLACK}You cannot select a sprite while the main title screen is active.
+STR_6191    :Surface
+STR_6192    :Wall
+STR_6193    :{COMMA16} guest
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guest
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guest
+STR_6196    :{BLACK}Year:
+STR_6197    :{BLACK}Month:
+STR_6198    :{BLACK}Day:
+STR_6199    :Set date
+STR_6200    :Reset date
+STR_6201    :{MONTH}
+STR_6202    :Enable virtual floor
+STR_6203    :{SMALLFONT}{BLACK}When enabled, a virtual floor will be rendered when holding Ctrl or Shift to ease vertical placement of elements.
+STR_6204    :Brick
+STR_6205    :Iron
+STR_6206    :Grey stucco
+STR_6207    :Yellow stucco
+STR_6208    :Red stucco
+STR_6209    :Purple stucco
+STR_6210    :Green stucco
+STR_6211    :Brown sandstone
+STR_6212    :Grey sandstone
+STR_6213    :Skyscraper A
+STR_6214    :Skyscraper B
+STR_6215    :{SMALLFONT}{BLACK}Speedrunning
+STR_6216    :Enable speedrunning mode
+STR_6215    :{SMALLFONT}{BLACK}Enables speedrunning mode (see description)
+STR_6218    :Speedrunning mode disables all cheats and changes the rules of the game. Scenario objectives are considered complete at the earliest time their requirements have been met before the deadline. Scenarios are completed consecutively within their respective games/expansions. Cheats are disabled. You may choose to run with or without enabling game speed changes. Navigate back to the main menu to choose a category. The first level in each group has the option to start a run of that group. It's recommended to use the default game sorting to organize scenarios into groups.
+STR_6219    :Allow game speed changes
+STR_6220    :{SMALLFONT}{BLACK}Allows game speed changes (having this checked counts as a separate category)
+STR_6221    :{SMALLFONT}{BLACK}Run all levels in this group
+STR_6222    :{SMALLFONT}{BLACK}Run of this level only
+STR_6223    :Start Speedrun
+STR_6224    :Start IL Speedrun
+STR_6225    :Next Level
 
 #############
 # Scenarios #
@@ -4936,41 +4986,77 @@ STR_DESC    :Passengers ride in a gondola suspended by large rotating arms, rota
 STR_CPTY    :8 passengers
 
 [BMSD]
-STR_VEHN    :Regular train
+STR_NAME    :Twister train
+STR_DESC    :A spacious train with shoulder restraints
 
 [BMSU]
-STR_VEHN    :Stand-up train
+STR_NAME    :Stand-up twister train
+STR_DESC    :A train with shoulder restraints, in which the riders stand up
 
 [BMFL]
-STR_VEHN    :Floorless train
+STR_NAME    :Floorless twister train
+STR_DESC    :A spacious train with shoulder restraints and no floor, making for a more exciting ride
 
 [WMMINE]
-STR_VEHN    :Mine cars
+STR_NAME    :Mine cars
+STR_DESC    :Cars shaped like an old mine cart
 
 [WMOUSE]
-STR_VEHN    :Mouse cars
+STR_NAME    :Mouse cars
+STR_DESC    :Indivual cars shaped like a mouse
 
 [STEEP1]
-STR_VEHN    :Horses
+STR_NAME    :Horses
+STR_DESC    :Single cars shaped like a horse
 
 [STEEP2]
-STR_VEHN    :Motorbikes
+STR_NAME    :Motorbikes
+STR_DESC    :Single cars shaped like a motorbike
 
 [SBOX]
-STR_VEHN    :Soap boxes
+STR_NAME    :Soap boxes
+STR_DESC    :Single cars shaped like a soap box
+
+[BOB1]
+STR_NAME    :Bobsleigh train
+STR_DESC    :A train consisting of 2-seater cars where the riders are behind each other
+
+[INTBOB]
+STR_NAME    :6-seater bobsleighs
+STR_DESC    :Bobsleighs with three seating rows, with room for two people on each
+
+[LIFT1]
+STR_NAME    :Lift cabin
+STR_DESC    :Steel lift cabin
+
+[ARRT1]
+STR_NAME    :Corkscrew Roller Coaster train
+STR_DESC    :Roller coaster train with shoulder restraints
+
+[ARRT2]
+STR_NAME    :Hypercoaster train
+STR_DESC    :Comfortable trains with only lap bar restraints
 
 #WW
 [CONDORRD]
-STR_NAME    :Condor Ride
+STR_NAME    :Condor train
 STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
 STR_CPTY    :4 passengers per car
-STR_VEHN    :Condor train
 
 #WW
 [CONGAEEL]
-STR_NAME    :Conger Eel Coaster
+STR_NAME    :Conger Eel train
 STR_DESC    :A compact steel-tracked roller coaster where the Eel-shaped train travels through corkscrews and loops
 STR_CPTY    :4 passengers per car
+
+#WW
+[MINELIFT]
+STR_NAME    :Mine lift cabin
+STR_DESC    :A steel lift cabin commonly used in mines
+
+#WW
+[ANACONDA]
+STR_NAME    :Anaconda train
 
 ###########
 # Scenery #

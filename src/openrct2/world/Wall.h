@@ -14,8 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma once
+
 #include "../common.h"
-#include "map.h"
+#include "Map.h"
 
 #ifdef __cplusplus
 extern "C" {

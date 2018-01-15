@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma once
+
 #ifdef __cplusplus
 
 #include <ctime>

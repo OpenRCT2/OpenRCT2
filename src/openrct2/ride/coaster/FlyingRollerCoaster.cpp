@@ -14,17 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../drawing/drawing.h"
-#include "../../interface/viewport.h"
-#include "../../paint/tile_element/tile_element.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
+#include "../../drawing/Drawing.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/tile_element/TileElement.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
 #include "../../sprites.h"
-#include "../../world/map.h"
-#include "../../world/sprite.h"
-#include "../ride_data.h"
+#include "../../world/Map.h"
+#include "../../world/Sprite.h"
+#include "../RideData.h"
 #include "../TrackData.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 /** rct2: 0x007C6FF4 */
 static void flying_rc_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
@@ -139,7 +139,7 @@ static void flying_rc_track_station(paint_session * session, uint8 rideIndex, ui
 {
     if (track_element_is_inverted(tileElement))
     {
-        static const uint32 imageIds[4][3] = {
+        static constexpr const uint32 imageIds[4][3] = {
             { SPR_STATION_BASE_C_SW_NE, 27131, SPR_STATION_INVERTED_BAR_C_SW_NE },
             { SPR_STATION_BASE_C_NW_SE, 27132, SPR_STATION_INVERTED_BAR_C_NW_SE },
             { SPR_STATION_BASE_C_SW_NE, 27131, SPR_STATION_INVERTED_BAR_C_SW_NE },
@@ -157,7 +157,7 @@ static void flying_rc_track_station(paint_session * session, uint8 rideIndex, ui
     }
     else
     {
-        static const uint32 imageIds[4][3] = {
+        static constexpr const uint32 imageIds[4][3] = {
             { 17154, 17150, SPR_STATION_BASE_A_SW_NE },
             { 17155, 17151, SPR_STATION_BASE_A_NW_SE },
             { 17154, 17150, SPR_STATION_BASE_A_SW_NE },
@@ -16262,5 +16262,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_flying_rc(sint32 trackType, sint32
     case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT:
         return flying_rc_track_right_banked_25_deg_down_to_flat;
     }
-    return NULL;
+    return nullptr;
 }

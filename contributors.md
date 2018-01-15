@@ -10,10 +10,11 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Marijn van der Werf (marijnvdwerf) - Developer
 * (zsilencer) - Developer
 * Richard Jenkins (rwjuk) - Developer, issue management
+* Hielke Morsink (Broxzier)
+* Aaron van Geffen (AaronVanGeffen)
 
 ## Long term contributors
 The following people are not part of the project team, but have been contributing for a long time.
-* Hielke Morsink (Broxzier)
 * Matte Andersson (Nubbie)
 * Kenton Boadway (PFCKrutonium)
 * Joe Minor Jr (wolfreak99)
@@ -36,7 +37,7 @@ The following people are not part of the project team, but have been contributin
 * Ben Pye (benpye) - Misc.
 * (JeroenSack) - Misc.
 * Sijmen Schoon (SijmenSchoon) - Misc.
-* (wolfreak99) - Misc.
+* Joe Minor Jr (wolfreak99) - Misc.
 * Inseok Lee (dlunch) - Original command line
 * Lewis Fox (LRFLEW) - Misc.
 * Marijn van der Werf (marijnvdwerf) - Drawing, misc.
@@ -63,10 +64,13 @@ The following people are not part of the project team, but have been contributin
 * Daniel Trujillo Viedma (gDanix) - Custom currency.
 * Niels NTG Poldervaart (Niels-NTG) - Misc.
 * (zaxcav) - Improvements to original pathfinding algorithm.
+* Jeroen D. Stout (JeroenDStout) - Light effects, train crossings, virtual floor.
 * Joël Troch (JoelTroch) - Keyboard shortcuts for ride construction.
 * Thomas Delebo (delebota) - Misc.
 * Brian Callahan (ibara) - OpenBSD port.
 * Jens Heuseveldt (jensj12) - Mountain tool improvements, misc.
+* Park Joon-Kyu (segfault87) - Misc.
+* Harrison Gentry (hgentry) - Date-changing command, misc.
 
 ## Bug fixes
 * (halfbro)
@@ -95,6 +99,8 @@ The following people are not part of the project team, but have been contributin
 * Robbin Voortman (rvoortman)
 * (telk5093)
 * Ethan Smith (ethanhs) - Refactoring.
+* Robert Lewicki (rlewicki)
+* Tyler Ruckinger (TyPR124)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -116,7 +122,7 @@ The following people are not part of the project team, but have been contributin
 
 ## Translation
 * Extracting from original files: Ted John (IntelOrca)
-* Reviewing and merging: Michael Steenbeek (Gymnasiast), Matte Andersson (Nubbie), Rune Laenen (runelaenen)
+* Reviewing and merging: Michael Steenbeek (Gymnasiast), Matte Andersson (Nubbie), Rune Laenen (runelaenen) (formerly)
 * Fixing unmaintained languages: Michael Steenbeek (Gymnasiast)
 * Miscellaneous fixes: Alexander Overvoorde (Overv), Ed Foley (e-foley)
 * English (UK) - Ted John (IntelOrca), (Tinytimrob)
@@ -147,7 +153,7 @@ Design and programming by Chris Sawyer
 Graphics by Simon Foster
 Sound and music by Allister Brimble
 Additional sounds recorded by David Ellis
-Representation by Jacqui Lyons at Mar jacq Ltd.
+Representation by Jacqui Lyons at Marjacq Ltd.
 
 Thanks to: Peter James Adcock, Joe Booth, and John Wardley
 

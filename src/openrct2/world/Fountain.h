@@ -18,8 +18,8 @@
 
 #include "../common.h"
 
-#include "map.h"
-#include "sprite.h"
+#include "Map.h"
+#include "Sprite.h"
 
 enum
 {

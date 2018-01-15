@@ -27,14 +27,16 @@
 #include <openrct2/Context.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/Game.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/NewsItem.h>
-#include <openrct2/rct1.h>
-#include <openrct2/ride/ride_data.h>
+#include <openrct2/management/Research.h>
+#include <openrct2/object/ObjectLimits.h>
+#include <openrct2/rct1/RCT1.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/util.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 
 #define AVAILABILITY_STRING_SIZE 256
@@ -51,7 +53,7 @@ static ride_list_item _windowNewRideListItems[384];
  * The order of ride types shown in the new ride window so that the order stays consistent across games and rides of the same
  * type are kept together.
  */
-const char RideTypeViewOrder[] = {
+static constexpr const char RideTypeViewOrder[] = {
     // Transport rides
     RIDE_TYPE_MINIATURE_RAILWAY,
     RIDE_TYPE_MONORAIL,
@@ -252,7 +254,7 @@ static rct_window_event_list window_new_ride_events = {
 
 #pragma endregion
 
-static const rct_string_id window_new_ride_titles[WINDOW_NEW_RIDE_PAGE_COUNT] = {
+static constexpr const rct_string_id window_new_ride_titles[WINDOW_NEW_RIDE_PAGE_COUNT] = {
     STR_NEW_TRANSPORT_RIDES,
     STR_NEW_GENTLE_RIDES,
     STR_NEW_ROLLER_COASTERS,
@@ -262,8 +264,8 @@ static const rct_string_id window_new_ride_titles[WINDOW_NEW_RIDE_PAGE_COUNT] = 
     STR_RESEARCH_AND_DEVELOPMENT,
 };
 
-const sint32 window_new_ride_tab_animation_loops[] = { 20, 32, 10, 72, 24, 28, 16 };
-const sint32 window_new_ride_tab_animation_divisor[] = { 4, 8, 2, 4, 4, 4, 2 };
+static constexpr const sint32 window_new_ride_tab_animation_loops[] = { 20, 32, 10, 72, 24, 28, 16 };
+static constexpr const sint32 window_new_ride_tab_animation_divisor[] = { 4, 8, 2, 4, 4, 4, 2 };
 
 static void window_new_ride_set_page(rct_window *w, sint32 page);
 static void window_new_ride_refresh_widget_sizing(rct_window *w);
@@ -339,16 +341,16 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
     bool allowDrawingOverLastButton = false;
     uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideType);
 
-    char preferredVehicleName[9];
+    char preferredVehicleName[DAT_NAME_LENGTH + 1];
     safe_strcpy(preferredVehicleName, "        ", sizeof(preferredVehicleName));
 
     // For each ride entry for this ride type
     while (*rideEntryIndexPtr != RIDE_ENTRY_INDEX_NULL)
     {
         uint8 rideEntryIndex = *rideEntryIndexPtr++;
-        char rideEntryName[9];
+        char rideEntryName[DAT_NAME_LENGTH + 1];
         memcpy(rideEntryName,object_entry_groups[OBJECT_TYPE_RIDE].entries[rideEntryIndex].name,8);
-        rideEntryName[8]=0;
+        rideEntryName[DAT_NAME_LENGTH] = 0;
 
         // Skip if vehicle type is not invented yet
         if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
@@ -371,11 +373,11 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
         {
             if (strcmp(preferredVehicleName, "        \0") == 0) {
                 safe_strcpy(preferredVehicleName, rideEntryName, sizeof(preferredVehicleName));
-                preferredVehicleName[8] = 0;
+                preferredVehicleName[DAT_NAME_LENGTH] = 0;
             } else {
                 if (RideGroupManager::VehiclePreferenceCompare(rideType, preferredVehicleName, rideEntryName) == 1) {
                     safe_strcpy(preferredVehicleName, rideEntryName, sizeof(preferredVehicleName));
-                    preferredVehicleName[8] = 0;
+                    preferredVehicleName[DAT_NAME_LENGTH] = 0;
                 } else {
                     continue;
                 }
@@ -640,7 +642,7 @@ static void window_new_ride_set_pressed_tab(rct_window *w)
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + _windowNewRideCurrentTab);
 }
 
-const sint32 ThrillRidesTabAnimationSequence[] = {
+static constexpr const sint32 ThrillRidesTabAnimationSequence[] = {
     5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0
 };
 
@@ -684,7 +686,7 @@ static void window_new_ride_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         window_close(w);
         break;
     case WIDX_LAST_DEVELOPMENT_BUTTON:
-        news_item_open_subject(NEWS_ITEM_RESEARCH, (sint32)gResearchLastItemSubject);
+        news_item_open_subject(NEWS_ITEM_RESEARCH, gResearchLastItem.rawValue);
         break;
     case WIDX_RESEARCH_FUNDING_BUTTON:
         context_open_window_view(WV_FINANCES_RESEARCH);
@@ -802,10 +804,12 @@ static void window_new_ride_invalidate(rct_window *w)
 
     if (_windowNewRideCurrentTab == WINDOW_NEW_RIDE_PAGE_RESEARCH) {
         window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_EMPTY;
-        uint32 typeId = gResearchLastItemSubject;
-        if (typeId != 0xFFFFFFFF) {
+        if (gResearchLastItem.rawValue != RESEARCHED_ITEMS_SEPARATOR)
+        {
+            uint8 type = gResearchLastItem.type;
             window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
-            window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = typeId >= 0x10000 ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
+            window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image =
+                (type == RESEARCH_ENTRY_TYPE_RIDE) ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
         }
     }
 }
@@ -910,7 +914,7 @@ static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window *w
 
 static sint32 get_num_track_designs(ride_list_item item)
 {
-    char entry[9];
+    char entry[DAT_NAME_LENGTH + 1];
     const char * entryPtr = nullptr;
     rct_ride_entry * rideEntry = nullptr;
 
@@ -958,8 +962,8 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 
         if (availabilityString[0] != 0)
         {
-            const char * drawString = _strdup(availabilityString);
-            gfx_draw_string_left_clipped(dpi, STR_AVAILABLE_VEHICLES, (void*)&drawString, COLOUR_BLACK, x, y + 39, WW - 2);
+            const char * drawString = availabilityString;
+            gfx_draw_string_left_clipped(dpi, STR_AVAILABLE_VEHICLES, &drawString, COLOUR_BLACK, x, y + 39, WW - 2);
         }
 
         // Track designs are disabled in multiplayer, so don't say there are any designs available when in multiplayer
@@ -1079,7 +1083,7 @@ static void window_new_ride_list_vehicles_for(const uint8 rideType, const rct_ri
                 continue;
         }
 
-        const char * vehicleName = language_get_string(currentRideEntry->vehicleName);
+        const char * vehicleName = language_get_string(currentRideEntry->naming.name);
 
         if (numItems > 0)
         {

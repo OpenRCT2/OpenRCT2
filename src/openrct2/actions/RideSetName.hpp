@@ -16,15 +16,15 @@
 
 #pragma once
 
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../Context.h"
 #include "../core/MemoryStream.h"
-#include "../interface/window.h"
-#include "../localisation/localisation.h"
-#include "../localisation/string_ids.h"
+#include "../interface/Window.h"
+#include "../localisation/Localisation.h"
+#include "../localisation/StringIds.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
-#include "../world/park.h"
+#include "../world/Park.h"
 #include "GameAction.h"
 
 using namespace OpenRCT2;

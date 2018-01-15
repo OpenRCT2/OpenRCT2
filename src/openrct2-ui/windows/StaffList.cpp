@@ -20,17 +20,17 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 
-#include <openrct2/drawing/drawing.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/Game.h>
-#include <openrct2/input.h>
-#include <openrct2/interface/viewport.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/Input.h>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/util.h>
-#include <openrct2/world/footpath.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2/util/Util.h>
+#include <openrct2/world/Footpath.h>
+#include <openrct2-ui/interface/Dropdown.h>
 
 enum {
     WINDOW_STAFF_LIST_TAB_HANDYMEN,
@@ -121,7 +121,7 @@ static rct_widget window_staff_list_widgets[] = {
     { WWT_TAB,              1,  96,         126,        17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_ENTERTAINERS_TAB_TIP },   // entertainers tab
     { WWT_SCROLL,           1,  3,          316,        72,     266,    SCROLL_BOTH,            STR_NONE },                         // staff list
     { WWT_COLOURBTN,        1,  130,        141,        58,     69,     STR_NONE,               STR_UNIFORM_COLOUR_TIP },           // uniform colour picker
-    { WWT_DROPDOWN_BUTTON,  0,  WW - 155,   WW - 11,    17,     29,     STR_NONE,               STR_HIRE_STAFF_TIP },               // hire button
+    { WWT_BUTTON,           0,  WW - 155,   WW - 11,    17,     29,     STR_NONE,               STR_HIRE_STAFF_TIP },               // hire button
     { WWT_FLATBTN,          1,  WW - 77,    WW - 54,    46,     69,     SPR_DEMOLISH,           STR_QUICK_FIRE_STAFF },             // quick fire staff
     { WWT_FLATBTN,          1,  WW - 53,    WW - 30,    46,     69,     SPR_PATROL_BTN,         STR_SHOW_PATROL_AREA_TIP },         // show staff patrol area tool
     { WWT_FLATBTN,          1,  WW - 29,    WW - 6,     46,     69,     SPR_MAP,                STR_SHOW_STAFF_ON_MAP_TIP },        // show staff on map button
@@ -141,7 +141,7 @@ typedef struct staff_naming_convention
     rct_string_id action_hire;
 } staff_naming_convention;
 
-static const staff_naming_convention StaffNamingConvention[] = {
+static constexpr const staff_naming_convention StaffNamingConvention[] = {
     { STR_HANDYMAN_PLURAL,          STR_HANDYMAN_SINGULAR,          STR_HIRE_HANDYMAN },
     { STR_MECHANIC_PLURAL,          STR_MECHANIC_SINGULAR,          STR_HIRE_MECHANIC },
     { STR_SECURITY_GUARD_PLURAL,    STR_SECURITY_GUARD_SINGULAR,    STR_HIRE_SECURITY_GUARD },
@@ -616,14 +616,14 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 }
 
 /** rct2: 0x00992A08 */
-static const uint32 staffOrderBaseSprites[] = {
+static constexpr const uint32 staffOrderBaseSprites[] = {
     SPR_STAFF_ORDERS_SWEEPING,
     SPR_STAFF_ORDERS_INSPECT_RIDES,
     0,
     0,
 };
 
-static const uint32 staffCostumeSprites[] = {
+static constexpr const uint32 staffCostumeSprites[] = {
     SPR_STAFF_COSTUME_PANDA,
     SPR_STAFF_COSTUME_TIGER,
     SPR_STAFF_COSTUME_ELEPHANT,

@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../object.h"
+#include "../object/Object.h"
 
 #ifndef _LEGACY_H
 #define _LEGACY_H

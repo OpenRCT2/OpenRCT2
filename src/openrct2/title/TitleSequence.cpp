@@ -29,6 +29,9 @@
 #include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
 #include "../core/Zip.h"
+#include "../scenario/ScenarioRepository.h"
+#include "../scenario/ScenarioSources.h"
+#include "../util/Util.h"
 #include "TitleSequence.h"
 
 
@@ -158,7 +161,7 @@ extern "C"
                 }
                 catch (const IOException& exception)
                 {
-                    Console::Error::WriteLine(exception.GetMessage());
+                    Console::Error::WriteLine(exception.what());
                 }
 
                 if (fileStream != nullptr)
@@ -205,7 +208,7 @@ extern "C"
                 fs.Write(script, String::SizeOf(script));
                 success = true;
             }
-            catch (Exception)
+            catch (const std::exception &)
             {
             }
         }
@@ -252,9 +255,9 @@ extern "C"
                 delete zip;
                 Memory::Free(fdata);
             }
-            catch (const Exception &ex)
+            catch (const std::exception &ex)
             {
-                Console::Error::WriteLine(ex.GetMessage());
+                Console::Error::WriteLine(ex.what());
             }
         }
         else
@@ -453,6 +456,12 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
                 command.Type = TITLE_SCRIPT_SPEED;
                 command.Speed = Math::Max(1, Math::Min(4, atoi(part1) & 0xFF));
             }
+            else if (_stricmp(token, "FOLLOW") == 0)
+            {
+                command.Type = TITLE_SCRIPT_FOLLOW;
+                command.SpriteIndex = atoi(part1) & 0xFFFF;
+                safe_strcpy(command.SpriteName, part2, USER_STRING_MAX_LENGTH);
+            }
             else if (_stricmp(token, "WAIT") == 0)
             {
                 command.Type = TITLE_SCRIPT_WAIT;
@@ -475,6 +484,16 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
                 command.Type = TITLE_SCRIPT_LOADRCT1;
                 command.SaveIndex = atoi(part1) & 0xFF;
             }
+            else if (_stricmp(token, "LOADSC") == 0)
+            {
+                command.Type = TITLE_SCRIPT_LOADSC;
+                // Confirm the scenario exists
+                //source_desc desc;
+                //if (ScenarioSources::TryGetByName(part1, &desc))
+                //{
+                    safe_strcpy(command.Scenario, part1, sizeof(command.Scenario));
+                //}
+            }
         }
         if (command.Type != TITLE_SCRIPT_UNDEFINED)
         {
@@ -495,7 +514,8 @@ static void LegacyScriptGetLine(IStream * stream, char * parts)
     sint32 cindex = 0;
     sint32 whitespace = 1;
     sint32 comment = 0;
-    sint32 load = 0;
+    bool load = false;
+    bool sprite = false;
     for (; part < 3;)
     {
         sint32 c = 0;
@@ -513,13 +533,18 @@ static void LegacyScriptGetLine(IStream * stream, char * parts)
             parts[part * 128 + cindex] = 0;
             comment = 1;
         }
-        else if (c == ' ' && !comment && !load)
+        else if (c == ' ' && !comment && !load && (!sprite || part != 2))
         {
             if (!whitespace)
             {
-                if (part == 0 && cindex == 4 && _strnicmp(parts, "LOAD", 4) == 0)
+                if (part == 0 && ((cindex == 4 && _strnicmp(parts, "LOAD", 4) == 0) ||
+                                  (cindex == 6 && _strnicmp(parts, "LOADSC", 6) == 0)))
                 {
                     load = true;
+                }
+                else if (part == 0 && cindex == 6 && _strnicmp(parts, "FOLLOW", 6) == 0)
+                {
+                    sprite = true;
                 }
                 parts[part * 128 + cindex] = 0;
                 part++;
@@ -555,7 +580,7 @@ static void * ReadScriptFile(const utf8 * path, size_t * outSize)
         buffer = Memory::Allocate<void>(size);
         fs.Read(buffer, size);
     }
-    catch (Exception)
+    catch (const std::exception &)
     {
         Memory::Free(buffer);
         buffer = nullptr;
@@ -589,10 +614,22 @@ static utf8 * LegacyScriptWrite(TitleSequence * seq)
             if (command->SaveIndex == 0xFF)
             {
                 sb.Append("LOAD <No save file>");
-            } else
+            }
+            else
             {
                 sb.Append("LOAD ");
                 sb.Append(seq->Saves[command->SaveIndex]);
+            }
+            break;
+        case TITLE_SCRIPT_LOADSC:
+            if (command->Scenario[0] == '\0')
+            {
+                sb.Append("LOADSC <No scenario name>");
+            }
+            else
+            {
+                sb.Append("LOADSC ");
+                sb.Append(command->Scenario);
             }
             break;
         case TITLE_SCRIPT_LOCATION:
@@ -606,6 +643,11 @@ static utf8 * LegacyScriptWrite(TitleSequence * seq)
         case TITLE_SCRIPT_ZOOM:
             String::Format(buffer, sizeof(buffer), "ZOOM %u", command->Zoom);
             sb.Append(buffer);
+            break;
+        case TITLE_SCRIPT_FOLLOW:
+            String::Format(buffer, sizeof(buffer), "FOLLOW %u ", command->SpriteIndex);
+            sb.Append(buffer);
+            sb.Append(command->SpriteName);
             break;
         case TITLE_SCRIPT_SPEED:
             String::Format(buffer, sizeof(buffer), "SPEED %u", command->Speed);
@@ -634,6 +676,7 @@ bool TitleSequenceIsLoadCommand(const TitleCommand * command)
     case TITLE_SCRIPT_LOADMM:
     case TITLE_SCRIPT_LOAD:
     case TITLE_SCRIPT_LOADRCT1:
+    case TITLE_SCRIPT_LOADSC:
         return true;
     default:
         return false;

@@ -20,11 +20,9 @@
 
 #include <string>
 #include <vector>
-
 #include "../common.h"
-
-#include "../scenario/scenario.h"
-#include "../object_list.h"
+#include "../object/ObjectList.h"
+#include "../scenario/Scenario.h"
 
 interface   IStream;
 struct      ObjectRepositoryItem;
@@ -53,6 +51,10 @@ private:
 
     void Save(IStream * stream, bool isScenario);
     static uint32 GetLoanHash(money32 initialCash, money32 bankLoan, uint32 maxBankLoan);
+    void ExportResearchedRideTypes();
+    void ExportResearchedRideEntries();
+    void ExportResearchedSceneryItems();
+    void ExportResearchList();
 };
 
 #endif

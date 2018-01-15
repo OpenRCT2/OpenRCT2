@@ -28,10 +28,10 @@
 #include "TestTrack.hpp"
 #include "Utils.hpp"
 
-#include "data.h"
-#include <openrct2/rct2.h>
-#include <openrct2/ride/ride.h>
-#include <openrct2/ride/ride_data.h>
+#include "Data.h"
+#include <openrct2/rct2/RCT2.h>
+#include <openrct2/ride/Ride.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 

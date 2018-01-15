@@ -14,11 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 enum
 {
@@ -47,15 +47,15 @@ typedef struct bound_box
 } bound_box;
 
 /** rct2: 0x01428220 */
-static const sint16 MagicCarpetOscillationZ[] = { -2, -1, 1,  5,  10, 16, 23, 30, 37, 45, 52, 59, 65, 70, 74, 76,
+static constexpr const sint16 MagicCarpetOscillationZ[] = { -2, -1, 1,  5,  10, 16, 23, 30, 37, 45, 52, 59, 65, 70, 74, 76,
                                                   77, 76, 74, 70, 65, 59, 52, 45, 37, 30, 23, 16, 10, 5,  1,  -1 };
 
 /** rct2: 0x01428260 */
-static const sint8 MagicCarpetOscillationXY[] = { 0, 6,  12,  18,  23,  27,  30,  31,  32,  31,  30,  27,  23,  18,  12,  6,
+static constexpr const sint8 MagicCarpetOscillationXY[] = { 0, 6,  12,  18,  23,  27,  30,  31,  32,  31,  30,  27,  23,  18,  12,  6,
                                                   0, -5, -11, -17, -22, -26, -29, -30, -31, -30, -29, -26, -22, -17, -11, -5 };
 
 /** rct2: 0x014281F0 */
-static const bound_box MagicCarpetBounds[] = { { 0, 8, 32, 16 }, { 8, 0, 16, 32 }, { 0, 8, 32, 16 }, { 8, 0, 16, 32 } };
+static constexpr const bound_box MagicCarpetBounds[] = { { 0, 8, 32, 16 }, { 8, 0, 16, 32 }, { 0, 8, 32, 16 }, { 8, 0, 16, 32 } };
 
 static rct_vehicle * get_first_vehicle(Ride * ride)
 {
@@ -67,7 +67,7 @@ static rct_vehicle * get_first_vehicle(Ride * ride)
             return GET_VEHICLE(vehicleSpriteIndex);
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 static void paint_magic_carpet_frame(paint_session * session, uint8 plane, uint8 direction, LocationXYZ16 offset,
@@ -156,7 +156,7 @@ static void paint_magic_carpet_vehicle(paint_session * session, Ride * ride, uin
     if (dpi->zoom_level <= 1 && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
         rct_vehicle * vehicle = get_first_vehicle(ride);
-        if (vehicle != NULL)
+        if (vehicle != nullptr)
         {
             uint32 baseImageId = IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (vehicleImageId + 4);
             for (uint8 peepIndex = 0; peepIndex < vehicle->num_peeps; peepIndex += 2)
@@ -178,7 +178,7 @@ static void paint_magic_carpet_structure(paint_session * session, Ride * ride, u
     rct_vehicle *     vehicle         = get_first_vehicle(ride);
 
     uint32 swingImageId = 0;
-    if (vehicle != NULL)
+    if (vehicle != nullptr)
     {
         swingImageId                = vehicle->vehicle_sprite_type;
         session->InteractionType    = VIEWPORT_INTERACTION_ITEM_SPRITE;
@@ -266,5 +266,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(sint32 trackType, sin
     case FLAT_TRACK_ELEM_1_X_4_A:
         return paint_magic_carpet;
     }
-    return NULL;
+    return nullptr;
 }

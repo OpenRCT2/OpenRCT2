@@ -20,7 +20,7 @@
 
 #include <memory>
 #include "../common.h"
-#include "../util/sawyercoding.h"
+#include "../util/SawyerCoding.h"
 #include "SawyerChunk.h"
 
 interface IStream;

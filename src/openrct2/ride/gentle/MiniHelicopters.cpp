@@ -14,14 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
-#include "../../world/map.h"
-#include "../ride_data.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
+#include "../../world/Map.h"
+#include "../RideData.h"
 #include "../Track.h"
-#include "../track_paint.h"
-#include "../vehicle_paint.h"
+#include "../TrackPaint.h"
+#include "../VehiclePaint.h"
 
 /** rct2: 0x */
 static void paint_mini_helicopters_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
@@ -266,7 +266,7 @@ static void paint_mini_helicopters_track_left_quarter_turn_3_tiles(paint_session
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static const uint8 mini_helicopters_right_quarter_turn_3_tiles_to_left_turn_map[] = { 3, 1, 2, 0 };
+static constexpr const uint8 mini_helicopters_right_quarter_turn_3_tiles_to_left_turn_map[] = { 3, 1, 2, 0 };
 
 /** rct2: 0x0081F3F8 */
 static void paint_mini_helicopters_track_right_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex,
@@ -341,5 +341,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_mini_helicopters(sint32 trackType,
         return paint_mini_helicopters_track_right_quarter_turn_1_tile;
     }
 
-    return NULL;
+    return nullptr;
 }

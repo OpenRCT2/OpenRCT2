@@ -350,5 +350,34 @@
 		"x_offset": -14,
 		"y_offset": -2,
 		"palette": "keep"
+    },
+    {
+        "path": "icons/search.png"
+    },
+    {
+        "path": "surface/glassy_recolourable.png",
+        "x_offset": -32,
+        "y_offset": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "surface/selection_edge_nw.png",
+        "x_offset": -32,
+        "y_offset": -1
+    },
+    {
+        "path": "surface/selection_edge_ne.png",
+        "x_offset": 0,
+        "y_offset": -1
+    },
+    {
+        "path": "surface/selection_edge_sw.png",
+        "x_offset": -32,
+        "y_offset": 15
+    },
+    {
+        "path": "surface/selection_edge_se.png",
+        "x_offset": 0,
+        "y_offset": 15
     }
 ]

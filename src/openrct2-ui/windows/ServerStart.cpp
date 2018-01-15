@@ -21,11 +21,11 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/interface/chat.h>
+#include <openrct2/interface/Chat.h>
 #include <openrct2/interface/themes.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
-#include <openrct2/util/util.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/util/Util.h>
 
 static char _port[7];
 static char _name[65];
@@ -63,11 +63,11 @@ static rct_widget window_server_start_widgets[] = {
     { WWT_TEXT_BOX,         1,  120,    WW-8,   68,         80,     STR_NONE,                       STR_NONE },                 // greeting text box
     { WWT_TEXT_BOX,         1,  120,    WW-8,   84,         96,     STR_NONE,                       STR_NONE },                 // password text box
     { WWT_SPINNER,          1,  120,    WW-8,   100,        109,    STR_SERVER_MAX_PLAYERS_VALUE,   STR_NONE },                 // max players
-    { WWT_DROPDOWN_BUTTON,  1,  WW-18,  WW-8,   100,        104,    STR_NUMERIC_UP,                 STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  WW-18,  WW-8,   104,        108,    STR_NUMERIC_DOWN,               STR_NONE },
+    { WWT_BUTTON,           1,  WW-18,  WW-8,   100,        104,    STR_NUMERIC_UP,                 STR_NONE },
+    { WWT_BUTTON,           1,  WW-18,  WW-8,   104,        108,    STR_NUMERIC_DOWN,               STR_NONE },
     { WWT_CHECKBOX,         1,  6,      WW-8,   117,        123,    STR_ADVERTISE,                  STR_ADVERTISE_SERVER_TIP }, // advertise checkbox
-    { WWT_DROPDOWN_BUTTON,  1,  6,      106,    WH-6-11,    WH-6,   STR_NEW_GAME,                   STR_NONE },                 // start server button
-    { WWT_DROPDOWN_BUTTON,  1,  112,    212,    WH-6-11,    WH-6,   STR_LOAD_GAME,                  STR_NONE },
+    { WWT_BUTTON,           1,  6,      106,    WH-6-11,    WH-6,   STR_NEW_GAME,                   STR_NONE },                 // start server button
+    { WWT_BUTTON,           1,  112,    212,    WH-6-11,    WH-6,   STR_LOAD_GAME,                  STR_NONE },
     { WIDGETS_END },
 };
 
@@ -221,7 +221,7 @@ static void window_server_start_mouseup(rct_window *w, rct_widgetindex widgetInd
         window_invalidate(w);
         break;
     case WIDX_START_SERVER:
-        window_scenarioselect_open(window_server_start_scenarioselect_callback);
+        window_scenarioselect_open(window_server_start_scenarioselect_callback, false);
         break;
     case WIDX_LOAD_SERVER:
         network_set_password(_password);

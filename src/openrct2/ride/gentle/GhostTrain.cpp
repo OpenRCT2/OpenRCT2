@@ -14,14 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
-#include "../../world/map.h"
-#include "../ride_data.h"
+#include "../../interface/Viewport.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
+#include "../../world/Map.h"
+#include "../RideData.h"
 #include "../Track.h"
-#include "../track_paint.h"
-#include "../vehicle_paint.h"
+#include "../TrackPaint.h"
+#include "../VehiclePaint.h"
 
 enum
 {
@@ -74,42 +74,42 @@ enum
     SPR_GHOST_TRAIN_TRACK_BRAKES_NW_SE = 28882
 };
 
-static const uint32 ghost_train_track_pieces_flat[4] = {
+static constexpr const uint32 ghost_train_track_pieces_flat[4] = {
     SPR_GHOST_TRAIN_TRACK_FLAT_SW_NE,
     SPR_GHOST_TRAIN_TRACK_FLAT_NW_SE,
     SPR_GHOST_TRAIN_TRACK_FLAT_SW_NE,
     SPR_GHOST_TRAIN_TRACK_FLAT_NW_SE,
 };
 
-static const uint32 ghost_train_track_pieces_flat_to_25_deg_up[4][2] = {
+static constexpr const uint32 ghost_train_track_pieces_flat_to_25_deg_up[4][2] = {
     { SPR_GHOST_TRAIN_TRACK_FLAT_TO_25_DEG_UP_SW_NE, SPR_GHOST_TRAIN_TRACK_FLAT_TO_25_DEG_UP_FRONT_SW_NE },
     { SPR_GHOST_TRAIN_TRACK_FLAT_TO_25_DEG_UP_NW_SE, SPR_GHOST_TRAIN_TRACK_FLAT_TO_25_DEG_UP_FRONT_NW_SE },
     { SPR_GHOST_TRAIN_TRACK_FLAT_TO_25_DEG_UP_NE_SW, SPR_GHOST_TRAIN_TRACK_FLAT_TO_25_DEG_UP_FRONT_NE_SW },
     { SPR_GHOST_TRAIN_TRACK_FLAT_TO_25_DEG_UP_SE_NW, SPR_GHOST_TRAIN_TRACK_FLAT_TO_25_DEG_UP_FRONT_SE_NW },
 };
 
-static const uint32 ghost_train_track_pieces_25_deg_up_to_flat[4][2] = {
+static constexpr const uint32 ghost_train_track_pieces_25_deg_up_to_flat[4][2] = {
     { SPR_GHOST_TRAIN_TRACK_25_DEG_UP_TO_FLAT_SW_NE, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_TO_FLAT_FRONT_SW_NE },
     { SPR_GHOST_TRAIN_TRACK_25_DEG_UP_TO_FLAT_NW_SE, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_TO_FLAT_FRONT_NW_SE },
     { SPR_GHOST_TRAIN_TRACK_25_DEG_UP_TO_FLAT_NE_SW, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_TO_FLAT_FRONT_NE_SW },
     { SPR_GHOST_TRAIN_TRACK_25_DEG_UP_TO_FLAT_SE_NW, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_TO_FLAT_FRONT_SE_NW },
 };
 
-static const uint32 ghost_train_track_pieces_25_deg_up[4][2] = {
+static constexpr const uint32 ghost_train_track_pieces_25_deg_up[4][2] = {
     { SPR_GHOST_TRAIN_TRACK_25_DEG_UP_SW_NE, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_SW_NE },
     { SPR_GHOST_TRAIN_TRACK_25_DEG_UP_NW_SE, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_NW_SE },
     { SPR_GHOST_TRAIN_TRACK_25_DEG_UP_NE_SW, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_NE_SW },
     { SPR_GHOST_TRAIN_TRACK_25_DEG_UP_SE_NW, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_SE_NW },
 };
 
-static const uint32 ghost_train_track_pieces_quarter_turn_1_tile[4] = {
+static constexpr const uint32 ghost_train_track_pieces_quarter_turn_1_tile[4] = {
     SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_SW_NW,
     SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_NW_NE,
     SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_NE_SE,
     SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_SE_SW,
 };
 
-static const uint32 ghost_train_track_pieces_quarter_turn_3_tiles[4][3] = {
+static constexpr const uint32 ghost_train_track_pieces_quarter_turn_3_tiles[4][3] = {
     { SPR_GHOST_TRAIN_QUARTER_TURN_3_TILES_SW_SE_PART_0, SPR_GHOST_TRAIN_QUARTER_TURN_3_TILES_SW_SE_PART_1,
       SPR_GHOST_TRAIN_QUARTER_TURN_3_TILES_SW_SE_PART_2 },
     { SPR_GHOST_TRAIN_QUARTER_TURN_3_TILES_NW_SW_PART_0, SPR_GHOST_TRAIN_QUARTER_TURN_3_TILES_NW_SW_PART_1,
@@ -120,14 +120,14 @@ static const uint32 ghost_train_track_pieces_quarter_turn_3_tiles[4][3] = {
       SPR_GHOST_TRAIN_QUARTER_TURN_3_TILES_SE_NE_PART_2 }
 };
 
-static const uint32 ghost_train_track_pieces_spinning_tunnel_track[4] = {
+static constexpr const uint32 ghost_train_track_pieces_spinning_tunnel_track[4] = {
     SPR_GHOST_TRAIN_SPINNING_TUNNEL_TRACK_SW_NE,
     SPR_GHOST_TRAIN_SPINNING_TUNNEL_TRACK_NW_SE,
     SPR_GHOST_TRAIN_SPINNING_TUNNEL_TRACK_SW_NE,
     SPR_GHOST_TRAIN_SPINNING_TUNNEL_TRACK_NW_SE,
 };
 
-static const uint32 ghost_train_track_pieces_brakes[4] = {
+static constexpr const uint32 ghost_train_track_pieces_brakes[4] = {
     SPR_GHOST_TRAIN_TRACK_BRAKES_SW_NE,
     SPR_GHOST_TRAIN_TRACK_BRAKES_NW_SE,
     SPR_GHOST_TRAIN_TRACK_BRAKES_SW_NE,
@@ -429,7 +429,7 @@ static void paint_ghost_train_track_right_quarter_turn_3_tiles(paint_session * s
 {
     track_paint_util_right_quarter_turn_3_tiles_paint(
         session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        ghost_train_track_pieces_quarter_turn_3_tiles, NULL, defaultRightQuarterTurn3TilesBoundLengths,
+        ghost_train_track_pieces_quarter_turn_3_tiles, nullptr, defaultRightQuarterTurn3TilesBoundLengths,
         defaultRightQuarterTurn3TilesBoundOffsets, get_current_rotation());
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
@@ -515,7 +515,7 @@ static void paint_ghost_train_track_spinning_tunnel(paint_session * session, uin
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -603,5 +603,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_ghost_train(sint32 trackType, sint
         return paint_ghost_train_track_spinning_tunnel;
     }
 
-    return NULL;
+    return nullptr;
 }

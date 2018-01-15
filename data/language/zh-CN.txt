@@ -609,170 +609,170 @@ STR_0599    :A compact roller coaster with individual cars and smooth twisting d
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0601    :
 STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
-STR_0603    :游客 {INT32}
-STR_0604    :游客 {INT32}
-STR_0605    :游客 {INT32}
-STR_0606    :游客 {INT32}
-STR_0607    :游客 {INT32}
-STR_0608    :游客 {INT32}
-STR_0609    :游客 {INT32}
-STR_0610    :游客 {INT32}
-STR_0611    :游客 {INT32}
-STR_0612    :游客 {INT32}
-STR_0613    :游客 {INT32}
-STR_0614    :游客 {INT32}
-STR_0615    :游客 {INT32}
-STR_0616    :游客 {INT32}
-STR_0617    :游客 {INT32}
-STR_0618    :游客 {INT32}
-STR_0619    :游客 {INT32}
-STR_0620    :游客 {INT32}
-STR_0621    :游客 {INT32}
-STR_0622    :游客 {INT32}
-STR_0623    :游客 {INT32}
-STR_0624    :游客 {INT32}
-STR_0625    :游客 {INT32}
-STR_0626    :游客 {INT32}
-STR_0627    :游客 {INT32}
-STR_0628    :游客 {INT32}
-STR_0629    :游客 {INT32}
-STR_0630    :游客 {INT32}
-STR_0631    :游客 {INT32}
-STR_0632    :游客 {INT32}
-STR_0633    :游客 {INT32}
-STR_0634    :游客 {INT32}
-STR_0635    :游客 {INT32}
-STR_0636    :游客 {INT32}
-STR_0637    :游客 {INT32}
-STR_0638    :游客 {INT32}
-STR_0639    :游客 {INT32}
-STR_0640    :游客 {INT32}
-STR_0641    :游客 {INT32}
-STR_0642    :游客 {INT32}
-STR_0643    :游客 {INT32}
-STR_0644    :游客 {INT32}
-STR_0645    :游客 {INT32}
-STR_0646    :游客 {INT32}
-STR_0647    :游客 {INT32}
-STR_0648    :游客 {INT32}
-STR_0649    :游客 {INT32}
-STR_0650    :游客 {INT32}
-STR_0651    :游客 {INT32}
-STR_0652    :游客 {INT32}
-STR_0653    :游客 {INT32}
-STR_0654    :游客 {INT32}
-STR_0655    :游客 {INT32}
-STR_0656    :游客 {INT32}
-STR_0657    :游客 {INT32}
-STR_0658    :游客 {INT32}
-STR_0659    :游客 {INT32}
-STR_0660    :游客 {INT32}
-STR_0661    :游客 {INT32}
-STR_0662    :游客 {INT32}
-STR_0663    :游客 {INT32}
-STR_0664    :游客 {INT32}
-STR_0665    :游客 {INT32}
-STR_0666    :游客 {INT32}
-STR_0667    :游客 {INT32}
-STR_0668    :游客 {INT32}
-STR_0669    :游客 {INT32}
-STR_0670    :游客 {INT32}
-STR_0671    :游客 {INT32}
-STR_0672    :游客 {INT32}
-STR_0673    :游客 {INT32}
-STR_0674    :游客 {INT32}
-STR_0675    :游客 {INT32}
-STR_0676    :游客 {INT32}
-STR_0677    :游客 {INT32}
-STR_0678    :游客 {INT32}
-STR_0679    :游客 {INT32}
-STR_0680    :游客 {INT32}
-STR_0681    :游客 {INT32}
-STR_0682    :游客 {INT32}
-STR_0683    :游客 {INT32}
-STR_0684    :游客 {INT32}
-STR_0685    :游客 {INT32}
-STR_0686    :游客 {INT32}
-STR_0687    :游客 {INT32}
-STR_0688    :游客 {INT32}
-STR_0689    :游客 {INT32}
-STR_0690    :游客 {INT32}
-STR_0691    :游客 {INT32}
-STR_0692    :游客 {INT32}
-STR_0693    :游客 {INT32}
-STR_0694    :游客 {INT32}
-STR_0695    :游客 {INT32}
-STR_0696    :游客 {INT32}
-STR_0697    :游客 {INT32}
-STR_0698    :游客 {INT32}
-STR_0699    :游客 {INT32}
-STR_0700    :游客 {INT32}
-STR_0701    :游客 {INT32}
-STR_0702    :游客 {INT32}
-STR_0703    :游客 {INT32}
-STR_0704    :游客 {INT32}
-STR_0705    :游客 {INT32}
-STR_0706    :游客 {INT32}
-STR_0707    :游客 {INT32}
-STR_0708    :游客 {INT32}
-STR_0709    :游客 {INT32}
-STR_0710    :游客 {INT32}
-STR_0711    :游客 {INT32}
-STR_0712    :游客 {INT32}
-STR_0713    :游客 {INT32}
-STR_0714    :游客 {INT32}
-STR_0715    :游客 {INT32}
-STR_0716    :游客 {INT32}
-STR_0717    :游客 {INT32}
-STR_0718    :游客 {INT32}
-STR_0719    :游客 {INT32}
-STR_0720    :游客 {INT32}
-STR_0721    :游客 {INT32}
-STR_0722    :游客 {INT32}
-STR_0723    :游客 {INT32}
-STR_0724    :游客 {INT32}
-STR_0725    :游客 {INT32}
-STR_0726    :游客 {INT32}
-STR_0727    :游客 {INT32}
-STR_0728    :游客 {INT32}
-STR_0729    :游客 {INT32}
-STR_0730    :游客 {INT32}
-STR_0731    :游客 {INT32}
-STR_0732    :游客 {INT32}
-STR_0733    :游客 {INT32}
-STR_0734    :游客 {INT32}
-STR_0735    :游客 {INT32}
-STR_0736    :游客 {INT32}
-STR_0737    :游客 {INT32}
-STR_0738    :游客 {INT32}
-STR_0739    :游客 {INT32}
-STR_0740    :游客 {INT32}
-STR_0741    :游客 {INT32}
-STR_0742    :游客 {INT32}
-STR_0743    :游客 {INT32}
-STR_0744    :游客 {INT32}
-STR_0745    :游客 {INT32}
-STR_0746    :游客 {INT32}
-STR_0747    :游客 {INT32}
-STR_0748    :游客 {INT32}
-STR_0749    :游客 {INT32}
-STR_0750    :游客 {INT32}
-STR_0751    :游客 {INT32}
-STR_0752    :游客 {INT32}
-STR_0753    :游客 {INT32}
-STR_0754    :游客 {INT32}
-STR_0755    :游客 {INT32}
-STR_0756    :游客 {INT32}
-STR_0757    :游客 {INT32}
-STR_0758    :游客 {INT32}
-STR_0759    :游客 {INT32}
-STR_0760    :游客 {INT32}
-STR_0761    :游客 {INT32}
-STR_0762    :游客 {INT32}
-STR_0763    :游客 {INT32}
-STR_0764    :游客 {INT32}
-STR_0765    :游客 {INT32}
-STR_0766    :游客 {INT32}
+STR_0603    :<removed string - do not use>
+STR_0604    :<removed string - do not use>
+STR_0605    :<removed string - do not use>
+STR_0606    :<removed string - do not use>
+STR_0607    :<removed string - do not use>
+STR_0608    :<removed string - do not use>
+STR_0609    :<removed string - do not use>
+STR_0610    :<removed string - do not use>
+STR_0611    :<removed string - do not use>
+STR_0612    :<removed string - do not use>
+STR_0613    :<removed string - do not use>
+STR_0614    :<removed string - do not use>
+STR_0615    :<removed string - do not use>
+STR_0616    :<removed string - do not use>
+STR_0617    :<removed string - do not use>
+STR_0618    :<removed string - do not use>
+STR_0619    :<removed string - do not use>
+STR_0620    :<removed string - do not use>
+STR_0621    :<removed string - do not use>
+STR_0622    :<removed string - do not use>
+STR_0623    :<removed string - do not use>
+STR_0624    :<removed string - do not use>
+STR_0625    :<removed string - do not use>
+STR_0626    :<removed string - do not use>
+STR_0627    :<removed string - do not use>
+STR_0628    :<removed string - do not use>
+STR_0629    :<removed string - do not use>
+STR_0630    :<removed string - do not use>
+STR_0631    :<removed string - do not use>
+STR_0632    :<removed string - do not use>
+STR_0633    :<removed string - do not use>
+STR_0634    :<removed string - do not use>
+STR_0635    :<removed string - do not use>
+STR_0636    :<removed string - do not use>
+STR_0637    :<removed string - do not use>
+STR_0638    :<removed string - do not use>
+STR_0639    :<removed string - do not use>
+STR_0640    :<removed string - do not use>
+STR_0641    :<removed string - do not use>
+STR_0642    :<removed string - do not use>
+STR_0643    :<removed string - do not use>
+STR_0644    :<removed string - do not use>
+STR_0645    :<removed string - do not use>
+STR_0646    :<removed string - do not use>
+STR_0647    :<removed string - do not use>
+STR_0648    :<removed string - do not use>
+STR_0649    :<removed string - do not use>
+STR_0650    :<removed string - do not use>
+STR_0651    :<removed string - do not use>
+STR_0652    :<removed string - do not use>
+STR_0653    :<removed string - do not use>
+STR_0654    :<removed string - do not use>
+STR_0655    :<removed string - do not use>
+STR_0656    :<removed string - do not use>
+STR_0657    :<removed string - do not use>
+STR_0658    :<removed string - do not use>
+STR_0659    :<removed string - do not use>
+STR_0660    :<removed string - do not use>
+STR_0661    :<removed string - do not use>
+STR_0662    :<removed string - do not use>
+STR_0663    :<removed string - do not use>
+STR_0664    :<removed string - do not use>
+STR_0665    :<removed string - do not use>
+STR_0666    :<removed string - do not use>
+STR_0667    :<removed string - do not use>
+STR_0668    :<removed string - do not use>
+STR_0669    :<removed string - do not use>
+STR_0670    :<removed string - do not use>
+STR_0671    :<removed string - do not use>
+STR_0672    :<removed string - do not use>
+STR_0673    :<removed string - do not use>
+STR_0674    :<removed string - do not use>
+STR_0675    :<removed string - do not use>
+STR_0676    :<removed string - do not use>
+STR_0677    :<removed string - do not use>
+STR_0678    :<removed string - do not use>
+STR_0679    :<removed string - do not use>
+STR_0680    :<removed string - do not use>
+STR_0681    :<removed string - do not use>
+STR_0682    :<removed string - do not use>
+STR_0683    :<removed string - do not use>
+STR_0684    :<removed string - do not use>
+STR_0685    :<removed string - do not use>
+STR_0686    :<removed string - do not use>
+STR_0687    :<removed string - do not use>
+STR_0688    :<removed string - do not use>
+STR_0689    :<removed string - do not use>
+STR_0690    :<removed string - do not use>
+STR_0691    :<removed string - do not use>
+STR_0692    :<removed string - do not use>
+STR_0693    :<removed string - do not use>
+STR_0694    :<removed string - do not use>
+STR_0695    :<removed string - do not use>
+STR_0696    :<removed string - do not use>
+STR_0697    :<removed string - do not use>
+STR_0698    :<removed string - do not use>
+STR_0699    :<removed string - do not use>
+STR_0700    :<removed string - do not use>
+STR_0701    :<removed string - do not use>
+STR_0702    :<removed string - do not use>
+STR_0703    :<removed string - do not use>
+STR_0704    :<removed string - do not use>
+STR_0705    :<removed string - do not use>
+STR_0706    :<removed string - do not use>
+STR_0707    :<removed string - do not use>
+STR_0708    :<removed string - do not use>
+STR_0709    :<removed string - do not use>
+STR_0710    :<removed string - do not use>
+STR_0711    :<removed string - do not use>
+STR_0712    :<removed string - do not use>
+STR_0713    :<removed string - do not use>
+STR_0714    :<removed string - do not use>
+STR_0715    :<removed string - do not use>
+STR_0716    :<removed string - do not use>
+STR_0717    :<removed string - do not use>
+STR_0718    :<removed string - do not use>
+STR_0719    :<removed string - do not use>
+STR_0720    :<removed string - do not use>
+STR_0721    :<removed string - do not use>
+STR_0722    :<removed string - do not use>
+STR_0723    :<removed string - do not use>
+STR_0724    :<removed string - do not use>
+STR_0725    :<removed string - do not use>
+STR_0726    :<removed string - do not use>
+STR_0727    :<removed string - do not use>
+STR_0728    :<removed string - do not use>
+STR_0729    :<removed string - do not use>
+STR_0730    :<removed string - do not use>
+STR_0731    :<removed string - do not use>
+STR_0732    :<removed string - do not use>
+STR_0733    :<removed string - do not use>
+STR_0734    :<removed string - do not use>
+STR_0735    :<removed string - do not use>
+STR_0736    :<removed string - do not use>
+STR_0737    :<removed string - do not use>
+STR_0738    :<removed string - do not use>
+STR_0739    :<removed string - do not use>
+STR_0740    :<removed string - do not use>
+STR_0741    :<removed string - do not use>
+STR_0742    :<removed string - do not use>
+STR_0743    :<removed string - do not use>
+STR_0744    :<removed string - do not use>
+STR_0745    :<removed string - do not use>
+STR_0746    :<removed string - do not use>
+STR_0747    :<removed string - do not use>
+STR_0748    :<removed string - do not use>
+STR_0749    :<removed string - do not use>
+STR_0750    :<removed string - do not use>
+STR_0751    :<removed string - do not use>
+STR_0752    :<removed string - do not use>
+STR_0753    :<removed string - do not use>
+STR_0754    :<removed string - do not use>
+STR_0755    :<removed string - do not use>
+STR_0756    :<removed string - do not use>
+STR_0757    :<removed string - do not use>
+STR_0758    :<removed string - do not use>
+STR_0759    :<removed string - do not use>
+STR_0760    :<removed string - do not use>
+STR_0761    :<removed string - do not use>
+STR_0762    :<removed string - do not use>
+STR_0763    :<removed string - do not use>
+STR_0764    :<removed string - do not use>
+STR_0765    :<removed string - do not use>
+STR_0766    :<removed string - do not use>
 STR_0767    :游客 {INT32}
 STR_0768    :勤杂工 {INT32}
 STR_0769    :机械师 {INT32}
@@ -1933,7 +1933,7 @@ STR_1919    :没有足够的现金!
 STR_1920    :不能偿还贷款!
 STR_1921    :{SMALLFONT}{BLACK}开始新游戏
 STR_1922    :{SMALLFONT}{BLACK}从存档继续玩
-STR_1923    :{SMALLFONT}{BLACK}打开教学任务
+STR_1923    :<removed string - do not use>
 STR_1924    :{SMALLFONT}{BLACK}退出游戏
 STR_1925    :不能放置人物于此...
 STR_1926    :{SMALLFONT}
@@ -2869,8 +2869,8 @@ STR_2852    :轨道设计已经安装过了
 STR_2853    :被当地政府禁止!
 STR_2854    :{RED}游客都不能走到去{STRINGID}的入口!{NEWLINE}请建造道路连接入口
 STR_2855    :{RED}{STRINGID}的出口并没有道路连接!{NEWLINE}请建造道路连接出口
-STR_2856    :{WINDOW_COLOUR_2}教学
-STR_2857    :{WINDOW_COLOUR_2}(按下任意键来获取控制)
+STR_2856    :<removed string - do not use>
+STR_2857    :<removed string - do not use>
 STR_2858    :不能开始实行营销计划...
 STR_2859    :另外一个OpenRCT2进程已在运行中
 STR_2860    :<removed string - do not use>
@@ -3068,9 +3068,9 @@ STR_3051    :高尔夫球洞C
 STR_3052    :高尔夫球洞D
 STR_3053    :高尔夫球洞E
 STR_3054    :加载中...
-STR_3055    :白色
-STR_3056    :半透明
-STR_3057    :{WINDOW_COLOUR_2}建造标记:
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :砖墙
 STR_3059    :树篱
 STR_3060    :冰砖墙
@@ -3398,59 +3398,59 @@ STR_3381    :不兼容的文件或含有非法数据
 STR_3382    :复制文件失败
 STR_3383    :输入这个轨道设计的新名称
 STR_3384    :已有相同名称的轨道设计 - 请输入这个轨道设计的新名称:
-STR_3385    :新手入门教学
-STR_3386    :自订游乐设施教学
-STR_3387    :云霄飞车建造教学
+STR_3385    :<removed string - do not use>
+STR_3386    :<removed string - do not use>
+STR_3387    :<removed string - do not use>
 STR_3388    :无法切换至已选择的模式
 STR_3389    :无法选择额外的景观对象...
 STR_3390    :选取了太多对象
 # Start of tutorial strings. Not used at the moment, so not necessary to translate.
-STR_3391    :{SMALLFONT}{BLACK}Here is our park - Let's have a quick look around...
-STR_3392    :{SMALLFONT}{BLACK}Holding down the RIGHT mouse button and moving the mouse is the quickest way to move the view...
-STR_3393    :{SMALLFONT}{BLACK}To view more of the park, you can zoom the view out using the icon at the top of the screen...
-STR_3394    :{SMALLFONT}{BLACK}You can also rotate the view in 90 degree steps...
-STR_3395    :{SMALLFONT}{BLACK}Building anything at this scale is a bit difficult, so let's zoom the view back in again...
-STR_3396    :{SMALLFONT}{BLACK}Let's build a simple ride to get the park started...
-STR_3397    :{SMALLFONT}{BLACK}The white 'ghost' image shows where the ride will be built. We'll move the pointer to select the position then click to build it...
-STR_3398    :{SMALLFONT}{BLACK}Rides need an entrance and an exit. We'll move the pointer to a square on the edge of the ride and then click to build first the entrance and then the exit...
-STR_3399    :{SMALLFONT}{BLACK}We need to build footpaths to allow guests to reach our new ride...
-STR_3400    :{SMALLFONT}{BLACK}For the path to the ride entrance we'll use a special 'queue line' path...
-STR_3401    :{SMALLFONT}{BLACK}For the exit path, just an 'ordinary' path will do...
-STR_3402    :{SMALLFONT}{BLACK}Right, lets open the ride! To open the ride we click the flag icon on the ride window and select 'open'...
-STR_3403    :{SMALLFONT}{BLACK}But where are the guests?
-STR_3404    :{SMALLFONT}{BLACK}Oh - The park is still closed! Right - Let's open it...
-STR_3405    :{SMALLFONT}{BLACK}While we're waiting for our first guests, let's build some scenery...
-STR_3406    :{SMALLFONT}{BLACK}Here's our empty park. We're going to build a simple custom-designed ride...
-STR_3407    :{SMALLFONT}{BLACK}First we need to choose a starting position...
-STR_3408    :{SMALLFONT}{BLACK}The section of track we've just built is a 'station platform', to allow guests to get on and off the ride...
-STR_3409    :{SMALLFONT}{BLACK}We'll extend the platform a bit by adding a couple more station platform sections...
-STR_3410    :{SMALLFONT}{BLACK}The icons at the top of the construction window let you choose different track pieces to add...
-STR_3411    :{SMALLFONT}{BLACK}We'll select a left-hand curve...
-STR_3412    :{SMALLFONT}{BLACK}The curve hasn't been built yet, but the white ghost image shows where it will be built. Clicking the large 'build this' icon actually builds the track...
-STR_3413    :{SMALLFONT}{BLACK}Now we want to build straight track, so we click the straight track icon...
-STR_3414    :{SMALLFONT}{BLACK}Now that the circuit is complete, we need to build the ride entrance and exit...
-STR_3415    :{SMALLFONT}{BLACK}Let's test our ride to check it works...
-STR_3416    :{SMALLFONT}{BLACK}White it's being tested, we'll build the queue line and exit path...
-STR_3417    :{SMALLFONT}{BLACK}OK - Let's open the park and the ride...
-STR_3418    :{SMALLFONT}{BLACK}Our new ride isn't very exciting - Perhaps we should add some scenery?
-STR_3419    :{SMALLFONT}{BLACK}To build scenery above other scenery or in mid-air, hold down the SHIFT key and move the mouse to select the height...
-STR_3420    :{SMALLFONT}{BLACK}Some types of scenery can be re-painted after it's built...
-STR_3421    :{SMALLFONT}{BLACK}Let's add some music to the ride...
-STR_3422    :{SMALLFONT}{BLACK}Let's build a roller coaster !
-STR_3423    :{SMALLFONT}{BLACK}There are loads of pre-designed coasters, but we're going to build our own custom design...
-STR_3424    :{SMALLFONT}{BLACK}That's the station platform built. Now we need a lift hill...
-STR_3425    :{SMALLFONT}{BLACK}Roller coaster trains aren't powered, so a 'chain lift' is needed to pull the train up the first hill...
-STR_3426    :{SMALLFONT}{BLACK}That's the lift hill complete - Now for the first drop...
-STR_3427    :{SMALLFONT}{BLACK}Those curves are a bad idea - The riders will be flung to the sides by the lateral G forces as the train hurtles around...
-STR_3428    :{SMALLFONT}{BLACK}Banking the curves will improve the ride - Riders will be pushed down into their seats instead of flung to the sides...
-STR_3429    :{SMALLFONT}{BLACK}No - That won't work! Look at the height marks - The second hill is taller than the lift hill...
-STR_3430    :{SMALLFONT}{BLACK}To ensure the train makes it around, each hill should be slightly smaller than the previous one...
-STR_3431    :{SMALLFONT}{BLACK}That's better - Our train should make it up that hill now! Let's try some more twisted track...
-STR_3432    :{SMALLFONT}{BLACK}We need to slow the train before the final curve and station, so let's add some brakes...
-STR_3433    :{SMALLFONT}{BLACK}And finally we'll add 'block brakes', which allow two trains to operate more safely on the circuit...
-STR_3434    :{SMALLFONT}{BLACK}Let's test the ride and see if it works!
-STR_3435    :{SMALLFONT}{BLACK}Great - It worked! Let's add the footpaths and let guests onto our new roller coaster...
-STR_3436    :{SMALLFONT}{BLACK}While waiting for our first riders, we could customise the ride a bit...
+STR_3391    :<removed string - do not use>
+STR_3392    :<removed string - do not use>
+STR_3393    :<removed string - do not use>
+STR_3394    :<removed string - do not use>
+STR_3395    :<removed string - do not use>
+STR_3396    :<removed string - do not use>
+STR_3397    :<removed string - do not use>
+STR_3398    :<removed string - do not use>
+STR_3399    :<removed string - do not use>
+STR_3400    :<removed string - do not use>
+STR_3401    :<removed string - do not use>
+STR_3402    :<removed string - do not use>
+STR_3403    :<removed string - do not use>
+STR_3404    :<removed string - do not use>
+STR_3405    :<removed string - do not use>
+STR_3406    :<removed string - do not use>
+STR_3407    :<removed string - do not use>
+STR_3408    :<removed string - do not use>
+STR_3409    :<removed string - do not use>
+STR_3410    :<removed string - do not use>
+STR_3411    :<removed string - do not use>
+STR_3412    :<removed string - do not use>
+STR_3413    :<removed string - do not use>
+STR_3414    :<removed string - do not use>
+STR_3415    :<removed string - do not use>
+STR_3416    :<removed string - do not use>
+STR_3417    :<removed string - do not use>
+STR_3418    :<removed string - do not use>
+STR_3419    :<removed string - do not use>
+STR_3420    :<removed string - do not use>
+STR_3421    :<removed string - do not use>
+STR_3422    :<removed string - do not use>
+STR_3423    :<removed string - do not use>
+STR_3424    :<removed string - do not use>
+STR_3425    :<removed string - do not use>
+STR_3426    :<removed string - do not use>
+STR_3427    :<removed string - do not use>
+STR_3428    :<removed string - do not use>
+STR_3429    :<removed string - do not use>
+STR_3430    :<removed string - do not use>
+STR_3431    :<removed string - do not use>
+STR_3432    :<removed string - do not use>
+STR_3433    :<removed string - do not use>
+STR_3434    :<removed string - do not use>
+STR_3435    :<removed string - do not use>
+STR_3436    :<removed string - do not use>
 # End of tutorial strings
 STR_3437    :{SMALLFONT}{BLACK}在地形中清理大范围内的景物Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here...
@@ -3468,7 +3468,7 @@ STR_5120    :财务
 STR_5121    :研发
 STR_5122    :根据轨道类型选择游乐设施 (像RCT1一样)
 STR_5123    :Renew rides
-STR_5124    :<not used anymore>
+STR_5124    :<removed string - do not use>
 STR_5125    :All destructable
 STR_5126    :随机主题音乐
 STR_5127    :{SMALLFONT}{BLACK}While dragging, paint landscape instead of changing elevation
@@ -3838,7 +3838,7 @@ STR_5490    :游戏失去焦点时静音
 STR_5491    :研发列表
 STR_5492    :剧情选项
 STR_5493    :发送信息
-STR_5494    :<not used anymore>
+STR_5494    :<removed string - do not use>
 STR_5495    :玩家列表
 STR_5496    :玩家:
 STR_5497    :延迟值(Ping):
@@ -3851,7 +3851,7 @@ STR_5503    :请输入主机名称或IP地址:
 STR_5504    :{SMALLFONT}{BLACK}显示多人联机状态
 STR_5505    :无法连接至服务器.
 STR_5506    :游客忽略强烈程度
-STR_5507    :清洁工默认会修剪草皮
+STR_5507    :<removed string - do not use>
 STR_5508    :允许读取校验失败的文件
 STR_5509    :{SMALLFONT}{BLACK}允许读取校验失败的剧情和存档文件,{NEWLINE}例如试玩版的剧情或损坏的存档.
 STR_5510    :默认音频设备
@@ -4135,7 +4135,7 @@ STR_5817    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}设置UI缩放
 STR_5818    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}使用最近相邻缩放{NEWLINE}当窗口缩放比例设置为{NEWLINE}整数值时 (例如1, 2, 3等等)
 STR_5819    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}暂停游戏当游戏内{NEWLINE}Steam overlay打开时
 STR_5820    :{SMALLFONT}{BLACK}全屏模式时若游戏失焦{NEWLINE}则最小化游戏
-STR_5821    :{SMALLFONT}{BLACK}当修建游乐设施, 道路, 商店, 景观等时{NEWLINE}调整建造的颜色.
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}日夜循环.{NEWLINE}完成一个循环花费游戏内一个月时间
 STR_5823    :{SMALLFONT}{BLACK}横幅上显示全大写英文(RCT1效果)
 STR_5824    :{SMALLFONT}{BLACK}当暴风雨来临时{NEWLINE}禁用闪电效果
@@ -4164,7 +4164,7 @@ STR_5846    :{SMALLFONT}{BLACK}设置自动保存的频率
 STR_5847    :{SMALLFONT}{BLACK}选择主菜单界面使用的游乐园动画. 过山车大亨1/2的主菜单动画需要导入响应的文件
 STR_5848    :{SMALLFONT}{BLACK}创建并管理自定义主菜单动画
 STR_5849    :{SMALLFONT}{BLACK}自动放置新雇佣的员工
-STR_5850    :{SMALLFONT}{BLACK}新雇佣的清洁工默认会修剪草坪(过山车大亨1行为)
+STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}设置新建游乐设施的默认检查的时间间隔
 STR_5852    :{SMALLFONT}{BLACK}设置Twitch集成中使用的TwitchTV频道名
 STR_5853    :{SMALLFONT}{BLACK}开启/关闭音效
@@ -4211,7 +4211,7 @@ STR_5893    :汇率
 STR_5894    :请输入汇率
 STR_5895    :保存轨道设计
 STR_5896    :保存轨道设计失败!
-STR_5897    :窗口数量限制:
+STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}无法加载轨道, 文件可能{NEWLINE}损坏或丢失!
 STR_5899    :开启/关闭debug窗口
 STR_5900    :使用原始的渲染代码

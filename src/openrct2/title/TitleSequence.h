@@ -17,6 +17,9 @@
 #pragma once
 
 #include "../common.h"
+#include "../localisation/Localisation.h"
+
+#define TITLE_COMMAND_SCENARIO_LENGTH 64
 
 typedef struct TitleCommand
 {
@@ -28,10 +31,16 @@ typedef struct TitleCommand
             uint8 X;
             uint8 Y;
         };
-        uint8 Rotations;    // ROTATE (counter-clockwise)
-        uint8 Zoom;         // ZOOM
-        uint8 Speed;        // SPEED
-        uint16 Milliseconds;      // WAIT
+        uint8  Rotations;                                // ROTATE (counter-clockwise)
+        uint8  Zoom;                                     // ZOOM
+        struct                                           // FOLLOW
+        {
+            uint16 SpriteIndex;
+            utf8 SpriteName[USER_STRING_MAX_LENGTH];
+        };
+        uint8  Speed;                                    // SPEED
+        uint16 Milliseconds;                             // WAIT
+        utf8   Scenario[TITLE_COMMAND_SCENARIO_LENGTH];  // LOADSC
     };
 } TitleCommand;
 
@@ -63,6 +72,7 @@ enum TITLE_SCRIPT
     TITLE_SCRIPT_LOCATION,
     TITLE_SCRIPT_ROTATE,
     TITLE_SCRIPT_ZOOM,
+    TITLE_SCRIPT_FOLLOW,
     TITLE_SCRIPT_RESTART,
     TITLE_SCRIPT_LOAD,
     TITLE_SCRIPT_END,
@@ -70,6 +80,7 @@ enum TITLE_SCRIPT
     TITLE_SCRIPT_LOOP,
     TITLE_SCRIPT_ENDLOOP,
     TITLE_SCRIPT_LOADRCT1,
+    TITLE_SCRIPT_LOADSC,
 };
 
 #ifdef __cplusplus

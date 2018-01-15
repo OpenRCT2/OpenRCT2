@@ -34,7 +34,8 @@
 #include "WallObject.h"
 #include "WaterObject.h"
 
-#include "../object.h"
+#include "../object/Object.h"
+#include "ObjectLimits.h"
 
 class ReadObjectContext : public IReadObjectContext
 {
@@ -92,7 +93,7 @@ namespace ObjectFactory
             // TODO check that ex is really EOF and not some other error
             context->LogError(OBJECT_ERROR_UNEXPECTED_EOF, "Unexpectedly reached end of file.");
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             context->LogError(OBJECT_ERROR_UNKNOWN, nullptr);
         }
@@ -111,7 +112,7 @@ namespace ObjectFactory
             rct_object_entry entry = fs.ReadValue<rct_object_entry>();
             result = CreateObject(entry);
 
-            utf8 objectName[9] = { 0 };
+            utf8 objectName[DAT_NAME_LENGTH + 1] = { 0 };
             object_entry_get_name_fixed(objectName, sizeof(objectName), &entry);
             log_verbose("  entry: { 0x%08X, \"%s\", 0x%08X }", entry.flags, objectName, entry.checksum);
 
@@ -123,10 +124,10 @@ namespace ObjectFactory
             ReadObjectLegacy(result, &readContext, &chunkStream);
             if (readContext.WasError())
             {
-                throw Exception("Object has errors");
+                throw std::runtime_error("Object has errors");
             }
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             Console::Error::WriteLine("Unable to open or read '%s'", path);
 
@@ -144,7 +145,7 @@ namespace ObjectFactory
         Object * result = CreateObject(*entry);
         if (result != nullptr)
         {
-            utf8 objectName[9];
+            utf8 objectName[DAT_NAME_LENGTH + 1];
             object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
 
             auto readContext = ReadObjectContext(objectName);
@@ -199,7 +200,7 @@ namespace ObjectFactory
             result = new StexObject(entry);
             break;
         default:
-            throw Exception("Invalid object type");
+            throw std::runtime_error("Invalid object type");
         }
         return result;
     }

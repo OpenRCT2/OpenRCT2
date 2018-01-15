@@ -20,18 +20,18 @@
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/Context.h>
 #include <openrct2/audio/audio.h>
-#include <openrct2/cheats.h>
+#include <openrct2/Cheats.h>
 #include <openrct2/Game.h>
-#include <openrct2/input.h>
-#include <openrct2/interface/land_tool.h>
-#include <openrct2/interface/viewport.h>
-#include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/Input.h>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Track.h>
-#include <openrct2/world/entrance.h>
-#include <openrct2/world/footpath.h>
-#include <openrct2/world/scenery.h>
+#include <openrct2/world/Entrance.h>
+#include <openrct2/world/Footpath.h>
+#include <openrct2/world/Scenery.h>
 
+#include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/windows/Window.h>
 
 #define MAP_COLOUR_2(colourA, colourB) ((colourA << 8) | colourB)
@@ -82,8 +82,8 @@ static rct_widget window_map_widgets[] = {
     { WWT_COLOURBTN,        1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SHOW_RIDES_STALLS_ON_MAP_TIP },
     { WWT_SCROLL,           1,  3,      241,    46,     225,    SCROLL_BOTH,                            STR_NONE },
     { WWT_SPINNER,          1,  104,    198,    229,    240,    STR_MAP_SIZE_VALUE,                     STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    230,    234,    STR_NUMERIC_UP,                         STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    235,    239,    STR_NUMERIC_DOWN,                       STR_NONE },
+    { WWT_BUTTON,           1,  187,    197,    230,    234,    STR_NUMERIC_UP,                         STR_NONE },
+    { WWT_BUTTON,           1,  187,    197,    235,    239,    STR_NUMERIC_DOWN,                       STR_NONE },
     { WWT_FLATBTN,          1,  4,      27,     1,      24,     SPR_BUY_LAND_RIGHTS,                    STR_SELECT_PARK_OWNED_LAND_TIP },
     { WWT_FLATBTN,          1,  4,      27,     1,      24,     SPR_PARK_ENTRANCE,                      STR_BUILD_PARK_ENTRANCE_TIP },
     { WWT_FLATBTN,          1,  28,     51,     1,      24,     (uint32) SPR_NONE,                      STR_SET_STARTING_POSITIONS_TIP },
@@ -95,13 +95,13 @@ static rct_widget window_map_widgets[] = {
     { WWT_CHECKBOX,         1,  58,     241,    197,    208,    STR_LAND_SALE,                          STR_SET_LAND_TO_BE_AVAILABLE_TIP },
     { WWT_CHECKBOX,         1,  58,     231,    197,    208,    STR_CONSTRUCTION_RIGHTS_SALE,           STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP },
     { WWT_FLATBTN,          1,  218,    241,    45,     68,     SPR_ROTATE_ARROW,                       STR_ROTATE_OBJECTS_90 },
-    { WWT_DROPDOWN_BUTTON,  1,  110,    240,    190,    201,    STR_MAPGEN_WINDOW_TITLE,                STR_MAP_GENERATOR_TIP},
+    { WWT_BUTTON,           1,  110,    240,    190,    201,    STR_MAPGEN_WINDOW_TITLE,                STR_MAP_GENERATOR_TIP},
     { WIDGETS_END },
 };
 
 // used in transforming viewport view coordinates to minimap coordinates
 // rct2: 0x00981BBC
-const LocationXY16 MiniMapOffsets[] = {
+static constexpr const LocationXY16 MiniMapOffsets[] = {
     { 256 - 8,   0 },
     { 512 - 8, 256 },
     { 256 - 8, 512 },
@@ -109,7 +109,7 @@ const LocationXY16 MiniMapOffsets[] = {
 };
 
 /** rct2: 0x00981BCC */
-static const uint16 RideKeyColours[] = {
+static constexpr const uint16 RideKeyColours[] = {
     MAP_COLOUR(PALETTE_INDEX_61),   // COLOUR_KEY_RIDE
     MAP_COLOUR(PALETTE_INDEX_42),   // COLOUR_KEY_FOOD
     MAP_COLOUR(PALETTE_INDEX_20),   // COLOUR_KEY_DRINK
@@ -736,7 +736,7 @@ static void window_map_invalidate(rct_window *w)
     if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
         w->widgets[WIDX_MAP].bottom = w->height - 1 - 72;
     else if (w->selected_tab == PAGE_RIDES)
-        w->widgets[WIDX_MAP].bottom = w->height - 1 - 44;
+        w->widgets[WIDX_MAP].bottom = w->height - 1 - (4 * LIST_ROW_HEIGHT + 4);
     else
         w->widgets[WIDX_MAP].bottom = w->height - 1 - 14;
 
@@ -843,13 +843,16 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_sprite(dpi, IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (COLOUR_LIGHT_BROWN << 24) | (COLOUR_BRIGHT_RED << 19) | SPR_6410, x, y, 0);
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode) {
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+    {
         // Render the map legend
-        if (w->selected_tab == PAGE_RIDES) {
+        if (w->selected_tab == PAGE_RIDES)
+        {
             x = w->x + 4;
             y = w->y + w->widgets[WIDX_MAP].bottom + 2;
 
-            static rct_string_id mapLabels[] = {
+            static rct_string_id mapLabels[] =
+            {
                 STR_MAP_RIDE,
                 STR_MAP_FOOD_STALL,
                 STR_MAP_DRINK_STALL,
@@ -860,13 +863,15 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 STR_MAP_TOILET,
             };
 
-            for (sint32 i = 0; i < 8; i++) {
+            for (uint32 i = 0; i < Util::CountOf(RideKeyColours); i++)
+            {
                 gfx_fill_rect(dpi, x, y + 2, x + 6, y + 8, RideKeyColours[i]);
-                gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, x + 10, y);
-                y += 10;
-                if (i == 3) {
+                gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, x + LIST_ROW_HEIGHT, y);
+                y += LIST_ROW_HEIGHT;
+                if (i == 3)
+                {
                     x += 118;
-                    y -= 40;
+                    y -= LIST_ROW_HEIGHT * 4;
                 }
             }
         }
@@ -883,7 +888,7 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
 {
     gfx_clear(dpi, PALETTE_INDEX_10);
 
-    rct_g1_element g1temp = { 0 };
+    rct_g1_element g1temp = { nullptr };
     g1temp.offset = (uint8 *)_mapImageData;
     g1temp.width = MAP_WINDOW_MAP_SIZE;
     g1temp.height = MAP_WINDOW_MAP_SIZE;
@@ -974,12 +979,12 @@ static void window_map_show_default_scenario_editor_buttons(rct_window *w) {
     w->widgets[WIDX_BUILD_PARK_ENTRANCE].type = WWT_FLATBTN;
     w->widgets[WIDX_PEOPLE_STARTING_POSITION].type = WWT_FLATBTN;
     w->widgets[WIDX_MAP_SIZE_SPINNER].type = WWT_SPINNER;
-    w->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WWT_DROPDOWN_BUTTON;
-    w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WWT_DROPDOWN_BUTTON;
+    w->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WWT_BUTTON;
+    w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WWT_BUTTON;
 
     // Only show this in the scenario editor, even when in sandbox mode.
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-        w->widgets[WIDX_MAP_GENERATOR].type = WWT_DROPDOWN_BUTTON;
+        w->widgets[WIDX_MAP_GENERATOR].type = WWT_BUTTON;
 
     set_format_arg(2, uint16, gMapSize - 2);
 }
@@ -1429,8 +1434,8 @@ static void map_window_decrease_map_size()
     gfx_invalidate_screen();
 }
 
-static const uint16 WaterColour = MAP_COLOUR(PALETTE_INDEX_195);
-static const uint16 TerrainColour[] = {
+static constexpr const uint16 WaterColour = MAP_COLOUR(PALETTE_INDEX_195);
+static constexpr const uint16 TerrainColour[] = {
     MAP_COLOUR(PALETTE_INDEX_73),                       // TERRAIN_GRASS
     MAP_COLOUR(PALETTE_INDEX_40),                       // TERRAIN_SAND
     MAP_COLOUR(PALETTE_INDEX_108),                      // TERRAIN_DIRT
@@ -1447,7 +1452,7 @@ static const uint16 TerrainColour[] = {
     MAP_COLOUR(PALETTE_INDEX_222),                      // TERRAIN_SAND_LIGHT
 };
 
-static const uint16 ElementTypeMaskColour[] = {
+static constexpr const uint16 ElementTypeMaskColour[] = {
     0xFFFF,         // TILE_ELEMENT_TYPE_SURFACE
     0x0000,         // TILE_ELEMENT_TYPE_PATH
     0x00FF,         // TILE_ELEMENT_TYPE_TRACK
@@ -1459,7 +1464,7 @@ static const uint16 ElementTypeMaskColour[] = {
     0x0000,         // TILE_ELEMENT_TYPE_CORRUPT
 };
 
-static const uint16 ElementTypeAddColour[] = {
+static constexpr const uint16 ElementTypeAddColour[] = {
     MAP_COLOUR(PALETTE_INDEX_0),                        // TILE_ELEMENT_TYPE_SURFACE
     MAP_COLOUR(PALETTE_INDEX_17),                       // TILE_ELEMENT_TYPE_PATH
     MAP_COLOUR_2(PALETTE_INDEX_183, PALETTE_INDEX_0),   // TILE_ELEMENT_TYPE_TRACK
@@ -1482,7 +1487,7 @@ enum {
     COLOUR_KEY_TOILETS
 };
 
-static const uint8 RideColourKey[] = {
+static constexpr const uint8 RideColourKey[] = {
     COLOUR_KEY_RIDE,                // RIDE_TYPE_SPIRAL_ROLLER_COASTER
     COLOUR_KEY_RIDE,                // RIDE_TYPE_STAND_UP_ROLLER_COASTER
     COLOUR_KEY_RIDE,                // RIDE_TYPE_SUSPENDED_SWINGING_COASTER

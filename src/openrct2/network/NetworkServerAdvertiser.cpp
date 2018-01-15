@@ -24,13 +24,13 @@
 #include "NetworkServerAdvertiser.h"
 
 #include "../config/Config.h"
-#include "../localisation/date.h"
+#include "../localisation/Date.h"
 #include "../management/Finance.h"
 #include "../peep/Peep.h"
 #include "../platform/platform.h"
-#include "../util/util.h"
-#include "../world/map.h"
-#include "../world/park.h"
+#include "../util/Util.h"
+#include "../world/Map.h"
+#include "../world/Park.h"
 #include "http.h"
 
 #ifndef DISABLE_HTTP
@@ -229,7 +229,7 @@ private:
     static std::string GenerateAdvertiseKey()
     {
         // Generate a string of 16 random hex characters (64-integer key as a hex formatted string)
-        static const char hexChars[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+        static constexpr const char hexChars[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
         char key[17];
         for (sint32 i = 0; i < 16; i++)
         {
