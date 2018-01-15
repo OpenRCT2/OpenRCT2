@@ -2703,4 +2703,28 @@ rct_viewport * window_get_viewport(rct_window * w)
     return w->viewport;
 }
 
+
+rct_window * window_get_listening()
+{
+    for (rct_window * w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
+    {
+        if (w->viewport == nullptr)
+        {
+            continue;
+        }
+
+        if (w->viewport->flags & VIEWPORT_FLAG_SOUND_ON)
+        {
+            return w;
+        }
+    }
+
+    return nullptr;
+}
+
+rct_windowclass window_get_classification(rct_window * window)
+{
+    return window->classification;
+}
+
 }

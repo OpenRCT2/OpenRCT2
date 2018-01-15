@@ -88,6 +88,7 @@ extern "C" {
         INTENT_ACTION_SET_TILE_INSPECTOR_PAGE,
         INTENT_ACTION_SET_TILE_INSPECTOR_BUTTONS,
         INTENT_ACTION_REFRESH_STAFF_LIST,
+        INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW,
     };
 
     Intent *intent_create(rct_windowclass clss);

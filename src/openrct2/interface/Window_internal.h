@@ -103,9 +103,5 @@ struct rct_window {
 // rct2: 0x01420078
 extern rct_window g_window_list[WINDOW_LIMIT_MAX + WINDOW_LIMIT_RESERVED];
 
-extern rct_window * gWindowFirst;
-extern rct_window * gWindowNextSlot;
-extern rct_window * gWindowAudioExclusive;
-
 }
 #endif
