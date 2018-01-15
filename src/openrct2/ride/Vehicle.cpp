@@ -25,7 +25,6 @@
 #include "../core/Util.hpp"
 #include "../Game.h"
 #include "../interface/Viewport.h"
-#include "../interface/Window_internal.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
 #include "../platform/platform.h"
@@ -44,6 +43,7 @@
 #include "Track.h"
 #include "TrackData.h"
 #include "VehicleData.h"
+#include "../windows/Intent.h"
 
 static void vehicle_update(rct_vehicle * vehicle);
 
@@ -880,7 +880,7 @@ static void vehicle_update_sound_params(rct_vehicle * vehicle)
     sint16 quarter_w = g_music_tracking_viewport->view_width / 4;
     sint16 quarter_h = g_music_tracking_viewport->view_height / 4;
 
-    if (gWindowAudioExclusive->classification == WC_MAIN_WINDOW)
+    if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
     {
         left -= quarter_w;
         bottom -= quarter_h;
@@ -892,7 +892,7 @@ static void vehicle_update_sound_params(rct_vehicle * vehicle)
     sint16 right = g_music_tracking_viewport->view_width + left;
     sint16 top = g_music_tracking_viewport->view_height + bottom;
 
-    if (gWindowAudioExclusive->classification == WC_MAIN_WINDOW)
+    if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
     {
         right += quarter_w + quarter_w;
         top += quarter_h + quarter_h;
@@ -1010,31 +1010,23 @@ static sint32 vehicle_get_sound_priority_factor(rct_vehicle * vehicle)
 static void vehicle_sounds_update_window_setup()
 {
     g_music_tracking_viewport = nullptr;
-    rct_viewport * viewport = nullptr;
-    rct_window *   window = gWindowNextSlot;
-    while (true)
-    {
-        window--;
-        if (window < g_window_list)
-        {
-            break;
-        }
-        viewport = window->viewport;
-        if (viewport && viewport->flags & VIEWPORT_FLAG_SOUND_ON)
-        {
-            break;
-        }
-    }
-    g_music_tracking_viewport = viewport;
-    if (viewport == nullptr)
-        return;
 
-    if (window)
+    rct_window * window = window_get_listening();
+    if (window == nullptr)
     {
-        gWindowAudioExclusive = window;
-        const uint8 ZoomToVolume[MAX_ZOOM_LEVEL + 1] = { 0, 35, 70, 70 };
-        gVolumeAdjustZoom = ZoomToVolume[viewport->zoom];
+        return;
     }
+
+    rct_viewport * viewport = window_get_viewport(window);
+    if (viewport == nullptr)
+    {
+        return;
+    }
+
+    g_music_tracking_viewport = viewport;
+    gWindowAudioExclusive = window;
+    const uint8 ZoomToVolume[MAX_ZOOM_LEVEL + 1] = { 0, 35, 70, 70 };
+    gVolumeAdjustZoom = ZoomToVolume[viewport->zoom];
 }
 
 static uint8 vehicle_sounds_update_get_pan_volume(rct_vehicle_sound_params * sound_params)
@@ -9873,21 +9865,7 @@ sint32 vehicle_get_total_num_peeps(rct_vehicle * vehicle)
  */
 void vehicle_invalidate_window(rct_vehicle * vehicle)
 {
-    sint32       viewVehicleIndex;
-    Ride *       ride;
-    rct_window * w;
-
-    w = window_find_by_number(WC_RIDE, vehicle->ride);
-    if (w == nullptr)
-        return;
-
-    ride             = get_ride(vehicle->ride);
-    viewVehicleIndex = w->ride.view - 1;
-    if (viewVehicleIndex < 0 || viewVehicleIndex >= ride->num_vehicles)
-        return;
-
-    if (vehicle->sprite_index != ride->vehicles[viewVehicleIndex])
-        return;
-
-    window_invalidate(w);
+    auto intent = Intent(INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW);
+    intent.putExtra(INTENT_EXTRA_VEHICLE, vehicle);
+    context_broadcast_intent(&intent);
 }

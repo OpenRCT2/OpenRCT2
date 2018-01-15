@@ -549,6 +549,10 @@ typedef void (*close_callback)();
 #define WINDOW_LIMIT_MAX 64
 #define WINDOW_LIMIT_RESERVED 4 // Used to reserve room for the main viewport, toolbars, etc.
 
+extern rct_window * gWindowFirst;
+extern rct_window * gWindowNextSlot;
+extern rct_window * gWindowAudioExclusive;
+
 extern uint16 gWindowUpdateTicks;
 extern uint8 gToolbarDirtyFlags;
 extern uint16 gWindowMapFlashingFlags;
@@ -722,6 +726,9 @@ extern uint64 _enabledRidePieces;
 extern uint8 _rideConstructionState2;
 extern bool _stationConstructed;
 extern bool _deferClose;
+
+rct_window * window_get_listening();
+rct_windowclass window_get_classification(rct_window * window);
 
 #ifdef __cplusplus
 }

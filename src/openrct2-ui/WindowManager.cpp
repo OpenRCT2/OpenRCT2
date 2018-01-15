@@ -354,6 +354,28 @@ public:
             window_tile_inspector_auto_set_buttons(window);
             break;
         }
+
+        case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
+        {
+            rct_vehicle * vehicle = static_cast<rct_vehicle *>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
+            sint32 viewVehicleIndex;
+            Ride * ride;
+            rct_window * w;
+
+            w = window_find_by_number(WC_RIDE, vehicle->ride);
+            if (w == nullptr)
+                return;
+
+            ride = get_ride(vehicle->ride);
+            viewVehicleIndex = w->ride.view - 1;
+            if (viewVehicleIndex < 0 || viewVehicleIndex >= ride->num_vehicles)
+                return;
+
+            if (vehicle->sprite_index != ride->vehicles[viewVehicleIndex])
+                return;
+
+            window_invalidate(w);
+        }
         }
     }
 
