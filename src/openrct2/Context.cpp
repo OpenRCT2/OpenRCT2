@@ -666,6 +666,7 @@ namespace OpenRCT2
 
         void RunFrame()
         {
+            platform_advance_ticks();
             // Make sure we catch the state change and reset it.
             bool useVariableFrame = ShouldRunVariableFrame();
             if (_variableFrame != useVariableFrame)
@@ -686,7 +687,6 @@ namespace OpenRCT2
 
         void RunFixedFrame()
         {
-            platform_advance_ticks();
             uint32 currentTick = platform_get_ticks();
 
             if (_lastTick == 0)
