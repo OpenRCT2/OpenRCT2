@@ -146,11 +146,12 @@ void platform_refresh_video(bool recreate_window)
     gfx_invalidate_screen();
 }
 
-static uint32 _ticks = 0;
+static double _ticks = 0;
 
 void platform_advance_ticks()
 {
-    _ticks += 25;
+    // ms to advance ticks by. 16.67 => 1000/16.67 = 60fps
+    _ticks += 16.67;
 }
 
 static void platform_ticks_init()
@@ -165,7 +166,7 @@ static void platform_ticks_init()
 
 uint32 platform_get_ticks()
 {
-    return _ticks;
+    return round(_ticks);
 }
 
 void platform_sleep(uint32 ms)
