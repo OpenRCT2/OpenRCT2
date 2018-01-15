@@ -60,6 +60,9 @@
 #define CONSOLE_BUFFER_2_SIZE 256
 #define CONSOLE_HISTORY_SIZE 64
 #define CONSOLE_INPUT_SIZE 256
+#define CONSOLE_CARET_FLASH_THRESHOLD 15
+#define CONSOLE_EDGE_PADDING 4
+#define CONSOLE_CARET_WIDTH 6
 
 extern "C"
 {
@@ -187,14 +190,19 @@ void console_draw(rct_drawpixelinfo *dpi)
 
     console_invalidate();
 
+    // Give console area a translucent effect.
+    gfx_filter_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, PALETTE_51);
+
+    // Make input area more opaque.
+    gfx_filter_rect(dpi, _consoleLeft, _consoleBottom - lineHeight - 10, _consoleRight, _consoleBottom - 1, PALETTE_51);
+
     // Paint background colour.
     uint8 backgroundColour = theme_get_colour(WC_CONSOLE, 0);
-    gfx_filter_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, PALETTE_51);
     gfx_fill_rect_inset(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
     gfx_fill_rect_inset(dpi, _consoleLeft + 1, _consoleTop + 1, _consoleRight - 1, _consoleBottom - 1, backgroundColour, INSET_RECT_FLAG_BORDER_INSET);
 
-    sint32 x = _consoleLeft + 4;
-    sint32 y = _consoleTop + 4;
+    sint32 x = _consoleLeft + CONSOLE_EDGE_PADDING;
+    sint32 y = _consoleTop + CONSOLE_EDGE_PADDING;
 
     // Draw previous lines
     utf8 lineBuffer[2 + 256], *lineCh;
@@ -212,7 +220,7 @@ void console_draw(rct_drawpixelinfo *dpi)
         if (currentLine < (lines - maxLines + 4) - _consoleScrollPos) {
             if (*nextLine == '\n') {
                 ch = nextLine + 1;
-                x = _consoleLeft + 4;
+                x = _consoleLeft + CONSOLE_EDGE_PADDING;
                 // y += lineHeight;
             }
             else {
@@ -231,21 +239,32 @@ void console_draw(rct_drawpixelinfo *dpi)
         memcpy(lineCh, ch, lineLength);
         lineCh[lineLength] = 0;
 
-        gfx_draw_string(dpi, lineBuffer, COLOUR_LIGHT_PURPLE | COLOUR_FLAG_OUTLINE | COLOUR_FLAG_INSET, x, y);
+        // TTF looks far better without the outlines
+        if (gUseTrueTypeFont)
+        {
+            gfx_draw_string(dpi, lineBuffer, COLOUR_WHITE, x, y);
+        }
+        else
+        {
+            gfx_draw_string(dpi, lineBuffer, COLOUR_WHITE | COLOUR_FLAG_OUTLINE | COLOUR_FLAG_INSET, x, y);
+
+        }
 
         x = gLastDrawStringX;
 
-        if (*nextLine == '\n') {
+        // Checking new y position prevents console history overflowing into input area
+        sint32 newY = y + lineHeight;
+        if (*nextLine == '\n' && newY < (_consoleBottom - 2 * lineHeight - 11)) {
             ch = nextLine + 1;
-            x = _consoleLeft + 4;
-            y += lineHeight;
+            x = _consoleLeft + CONSOLE_EDGE_PADDING;
+            y = newY;
         } else {
             break;
         }
     }
 
-    x = _consoleLeft + 4;
-    y = _consoleBottom - lineHeight - 5;
+    x = _consoleLeft + CONSOLE_EDGE_PADDING;
+    y = _consoleBottom - lineHeight - CONSOLE_EDGE_PADDING - 1;
 
     // Draw current line
     lineCh = lineBuffer;
@@ -254,14 +273,14 @@ void console_draw(rct_drawpixelinfo *dpi)
     gfx_draw_string(dpi, lineBuffer, TEXT_COLOUR_255, x, y);
 
     // Draw caret
-    if (_consoleCaretTicks < 15) {
+    if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD) {
         memcpy(lineBuffer, _consoleCurrentLine, _consoleTextInputSession->SelectionStart);
         lineBuffer[_consoleTextInputSession->SelectionStart] = 0;
         sint32 caretX = x + gfx_get_string_width(lineBuffer);
         sint32 caretY = y + lineHeight;
 
-        uint8 caretColour = ColourMapA[BASE_COLOUR(backgroundColour)].dark;
-        gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, caretColour);
+        uint8 caretColour = ColourMapA[BASE_COLOUR(backgroundColour)].lightest;
+        gfx_fill_rect(dpi, caretX, caretY, caretX + CONSOLE_CARET_WIDTH, caretY + 1, caretColour);
     }
 
     // What about border colours?
