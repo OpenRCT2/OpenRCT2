@@ -16,6 +16,8 @@
 
 #pragma once;
 
+#include <openrct2/Context.h>
+
 #include "Speedrunning.h"
 
 using namespace OpenRCT2;

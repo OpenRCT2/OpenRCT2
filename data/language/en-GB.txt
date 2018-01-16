@@ -4523,15 +4523,16 @@ STR_6213    :Skyscraper A
 STR_6214    :Skyscraper B
 STR_6215    :{SMALLFONT}{BLACK}Speedrunning
 STR_6216    :Enable speedrunning mode
-STR_6215    :{SMALLFONT}{BLACK}Enables speedrunning mode (see description)
+STR_6217    :{SMALLFONT}{BLACK}Enables speedrunning mode (see description)
 STR_6218    :Speedrunning mode disables all cheats and changes the rules of the game. Scenario objectives are considered complete at the earliest time their requirements have been met before the deadline. Scenarios are completed consecutively within their respective games/expansions. Cheats are disabled. You may choose to run with or without enabling game speed changes. Navigate back to the main menu to choose a category. The first level in each group has the option to start a run of that group. It's recommended to use the default game sorting to organize scenarios into groups.
 STR_6219    :Allow game speed changes
 STR_6220    :{SMALLFONT}{BLACK}Allows game speed changes (having this checked counts as a separate category)
 STR_6221    :{SMALLFONT}{BLACK}Run all levels in this group
 STR_6222    :{SMALLFONT}{BLACK}Run of this level only
-STR_6223    :Start Speedrun
-STR_6224    :Start IL Speedrun
-STR_6225    :Next Level
+STR_6223    :Start speedrun
+STR_6224    :Start IL speedrun
+STR_6225    :Next level
+STR_6226    :Quit to menu
 
 #############
 # Scenarios #

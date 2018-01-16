@@ -47,6 +47,7 @@
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
 #include "Scenario.h"
+#include "../Speedrunning.h"
 #include "../Context.h"
 #include "../ride/Track.h"
 
@@ -229,6 +230,10 @@ void scenario_success()
         gParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
         gScenarioCompanyValueRecord = companyValue;
     }
+    if (gConfigGeneral.enable_speedrunning_mode) {
+        // Record fastest completion if speedrunning
+        scenario_repository_try_record_speedrun_highscore(gScenarioFileName, gSpeedrunningState.speedrunning_time_in_days, gConfigGeneral.allow_speed_changes);
+    }
     scenario_end();
 }
 
@@ -315,6 +320,7 @@ static void scenario_day_update()
     default:
         //In speedrunning mode, always check the objective every day
         if (gConfigGeneral.enable_speedrunning_mode) {
+            gSpeedrunningState.speedrunning_time_in_days += 1;
             scenario_objective_check();
         }
         break;

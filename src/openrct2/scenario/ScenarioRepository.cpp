@@ -323,6 +323,8 @@ private:
     ScenarioFileIndex const _fileIndex;
     std::vector<scenario_index_entry> _scenarios;
     std::vector<scenario_highscore_entry*> _highscores;
+    std::vector<scenario_speedrun_days_record_entry*> _speedrunDaysHighscores;
+    std::vector<scenario_speedrun_time_record_entry*> _speedrunTimesHighscores;
 
 public:
     explicit ScenarioRepository(IPlatformEnvironment * env)
@@ -385,20 +387,21 @@ public:
         return nullptr;
     }
 
-	const scenario_index_entry * GetByInternalName(const utf8 * name) const override {
-		for (size_t i = 0; i < _scenarios.size(); i++) {
-			const scenario_index_entry * scenario = &_scenarios[i];
+    const scenario_index_entry * GetByInternalName(const utf8 * name) const override 
+    {
+        for (size_t i = 0; i < _scenarios.size(); i++) {
+            const scenario_index_entry * scenario = &_scenarios[i];
 
-			if (scenario->source_game == SCENARIO_SOURCE_OTHER)
-				continue;
+            if (scenario->source_game == SCENARIO_SOURCE_OTHER)
+                continue;
 
-			// Note: this is always case insensitive search for cross platform consistency
-			if (String::Equals(name, scenario->internal_name, true)) {
-				return &_scenarios[i];
-			}
-		}
-		return nullptr;
-	}
+            // Note: this is always case insensitive search for cross platform consistency
+            if (String::Equals(name, scenario->internal_name, true)) {
+                return &_scenarios[i];
+            }
+        }
+        return nullptr;
+    }
 
     const scenario_index_entry * GetByPath(const utf8 * path) const override
     {
@@ -446,6 +449,61 @@ public:
                 highscore->company_value = companyValue;
                 SaveHighscores();
                 return true;
+            }
+        }
+        return false;
+    }
+
+    bool TryRecordSpeedrunRecords(const utf8 * scenarioFileName, uint32 daysValue, bool allowedSpeedChanges) override
+    {
+        // Scan the scenarios so we have a fresh list to query. This is to prevent the issue of scenario completions
+        // not getting recorded, see #4951.
+        Scan();
+
+        scenario_index_entry * scenario = GetByFilename(scenarioFileName);
+        if (scenario != nullptr)
+        {
+            // Only record time record if speed changes allowed
+            if (allowedSpeedChanges) {
+                // Check if time record value has been broken
+                scenario_speedrun_time_record_entry * highscore_time = scenario->time_record;
+                datetime64 end_time = platform_get_datetime_now_utc();
+                if (highscore_time == nullptr || end_time - gSpeedrunning.speedrun_start_time < highscore->time_record)
+                {
+                    if (highscore_time == nullptr)
+                    {
+                        highscore_time = InsertHighscore();
+                        scenario->time_record = highscore_time;
+                    }
+                    else
+                    {
+                        SafeFree(highscore_time->fileName);
+                    }
+                    highscore_time->fileName = String::Duplicate(Path::GetFileName(scenario->path));
+                    highscore_time->time_record = end_time - gConfigGeneral.speedrun_start_time;
+                    SaveHighscores();
+                    return true;
+                }
+            }
+            else {
+                // Check if days record value has been broken
+                scenario_speedrun_days_record_entry * highscore_days = scenario->days_record;
+                if (highscore_days == nullptr || daysValue < highscore->days_record)
+                {
+                    if (highscore_days == nullptr)
+                    {
+                        highscore_days = InsertHighscore();
+                        scenario->days_record = highscore_days;
+                    }
+                    else
+                    {
+                        SafeFree(highscore->fileName);
+                    }
+                    highscore_days->fileName = String::Duplicate(Path::GetFileName(scenario->path));
+                    highscore_days->days_record = daysValue;
+                    SaveHighscores();
+                    return true;
+                }
             }
         }
         return false;
@@ -690,6 +748,22 @@ private:
         return highscore;
     }
 
+    scenario_speedrun_days_record_entry * InsertSpeedrunDaysHighscore()
+    {
+        auto highscore = new scenario_speedrun_days_record_entry();
+        memset(highscore, 0, sizeof(scenario_speedrun_days_record_entry));
+        _speedrunDaysHighscores.push_back(highscore);
+        return highscore;
+    }
+
+    scenario_speedrun_time_record_entry * InsertSpeedrunTimeHighscore()
+    {
+        auto highscore = new scenario_speedrun_time_record_entry();
+        memset(highscore, 0, sizeof(scenario_speedrun_time_record_entry));
+        _speedrunTimesHighscores.push_back(highscore);
+        return highscore;
+    }
+
     void AttachHighscores()
     {
         for (auto &highscore : _highscores)
@@ -763,5 +837,11 @@ extern "C"
     {
         IScenarioRepository * repo = GetScenarioRepository();
         return repo->TryRecordHighscore(scenarioFileName, companyValue, name);
+    }
+
+    bool scenario_repository_try_record_speedrun_highscore(const utf8 * scenarioFileName, uint32 daysValue, bool allowedSpeedChanges)
+    {
+        IScenarioRepository * repo = GetScenarioRepository();
+        return repo->TryRecordSpeedrunRecords(scenarioFileName, daysValue, allowedSpeedChanges);
     }
 }

@@ -3880,6 +3880,7 @@ enum {
     STR_START_FULL_SPEEDRUN = 6223,
     STR_START_IL_SPEEDRUN = 6224,
     STR_SPEEDRUNNING_NEXT_LEVEL = 6225,
+    STR_SPEEDRUNNING_QUIT_TO_MENU = 6226,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768

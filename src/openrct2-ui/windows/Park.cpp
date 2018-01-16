@@ -132,8 +132,8 @@ static rct_widget window_park_stats_widgets[] = {
 
 static rct_widget window_park_objective_widgets[] = {
     MAIN_PARK_WIDGETS,
-    { WWT_DROPDOWN_BUTTON,  1,  7,      222,    193,    204,    STR_SPEEDRUNNING_NEXT_LEVEL,                STR_NONE },             // Speedrunning: Move to next level in order
-    { WWT_DROPDOWN_BUTTON,  1,  7,      222,    209,    220,    STR_ENTER_NAME_INTO_SCENARIO_CHART,         STR_NONE },             // enter name
+    { WWT_BUTTON,  1,  7,      222,    193,    204,    STR_SPEEDRUNNING_NEXT_LEVEL,                STR_NONE },             // Speedrunning: Move to next level in order
+    { WWT_BUTTON,  1,  7,      222,    209,    220,    STR_ENTER_NAME_INTO_SCENARIO_CHART,         STR_NONE },             // enter name
     { WIDGETS_END },
 };
 
@@ -1514,22 +1514,25 @@ static void window_park_objective_mouseup(rct_window *w, rct_widgetindex widgetI
         );
         break;
     case WIDX_NEXT_LEVEL:
-        if (gConfigGeneral.enable_speedrunning_mode && !gSpeedrunningState.is_il_run) {
-            _scenarioRepository = GetScenarioRepository();
-            _scenarioRepository->Scan();
-            const scenario_index_entry * scenario = _scenarioRepository->GetByIndex(gSpeedrunningState.current_scenario_index + 1);
-            if (scenario != nullptr) {
-                gSpeedrunningState.current_scenario_index += 1;
-                _callback(scenario->path);
-            }
-            else {
-                //TODO Hopefully this will quit to menu
+        if (gConfigGeneral.enable_speedrunning_mode) {
+            if (gSpeedrunningState.is_il_run) {
+                //TODO This quits the game, need to quit to menu
                 context_quit();
             }
-        }
-        else {
-            //TODO Hopefully this will quit to menu
-            context_quit();
+            else {
+                _scenarioRepository = GetScenarioRepository();
+                _scenarioRepository->Scan();
+                const scenario_index_entry * scenario = _scenarioRepository->GetByIndex(gSpeedrunningState.current_scenario_index + 1);
+                if (scenario != nullptr) {
+                    gSpeedrunningState.current_scenario_index += 1;
+                    gSpeedrunningState.speedrunning_time_in_days = 0;
+                    _callback(scenario->path);
+                }
+                else {
+                    //TODO This quits the game, need to quit to menu
+                    context_quit();
+                }
+            }
         }
     }
 }
@@ -1574,10 +1577,31 @@ static void window_park_objective_invalidate(rct_window *w)
     window_park_set_pressed_tab(w);
     window_park_prepare_window_title_text();
 
-    if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
+    if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT) {
         window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_BUTTON;
-    else
+
+        widget_set_enabled(w, WIDX_NEXT_LEVEL, true);
+        if (gConfigGeneral.enable_speedrunning_mode) {
+            if (gSpeedrunningState.is_il_run) {
+                window_park_objective_widgets[WIDX_NEXT_LEVEL].text = STR_SPEEDRUNNING_QUIT_TO_MENU;
+            }
+            else {
+                _scenarioRepository = GetScenarioRepository();
+                _scenarioRepository->Scan();
+                const scenario_index_entry * scenario = _scenarioRepository->GetByIndex(gSpeedrunningState.current_scenario_index + 1);
+                if (scenario == nullptr) {
+                    window_park_objective_widgets[WIDX_NEXT_LEVEL].text = STR_SPEEDRUNNING_QUIT_TO_MENU;
+                }
+            }
+        }
+        else {
+            window_park_objective_widgets[WIDX_NEXT_LEVEL].type = WWT_EMPTY;
+        }
+    }
+    else {
         window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_EMPTY;
+        window_park_objective_widgets[WIDX_NEXT_LEVEL].type = WWT_EMPTY;
+    }
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
     window_park_anchor_border_widgets(w);

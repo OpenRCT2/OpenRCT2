@@ -17,7 +17,6 @@
 #include <memory>
 #include "../Context.h"
 #include "../core/Console.hpp"
-#include "../core/Exception.hpp"
 #include "../core/File.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"

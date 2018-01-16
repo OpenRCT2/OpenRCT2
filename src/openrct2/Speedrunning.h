@@ -16,10 +16,14 @@
 
 #pragma once
 
+#include "common.h"
+
 typedef struct SpeedrunningState {
     bool        is_il_run;
     sint32      current_scenario_index;
     sint32      current_scenario_group;
+    uint32      speedrunning_time_in_days;
+    datetime64  speedrun_start_time;
 } SpeedrunningState;
 
 #ifdef __cplusplus
