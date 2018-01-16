@@ -370,7 +370,7 @@ typedef struct tile_descriptor tile_descriptor;
 
 struct tile_descriptor
 {
-    rct_tile_element * tile_element;
+    const rct_tile_element * tile_element;
     uint8 terrain;
     uint8 slope;
     corner_height corner_heights;
@@ -445,7 +445,7 @@ static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] =
 };
 // clang-format on
 
-static uint8 viewport_surface_paint_setup_get_relative_slope(rct_tile_element * tileElement, sint32 rotation)
+static uint8 viewport_surface_paint_setup_get_relative_slope(const rct_tile_element * tileElement, sint32 rotation)
 {
     const uint8 slope = tileElement->properties.surface.slope;
     const uint8 slopeHeight = slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
@@ -928,7 +928,7 @@ static void viewport_surface_draw_water_side_top(paint_session * session, enum e
 * @param height (dx)
 * @param tile_element (esi)
 */
-void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element * tileElement)
+void surface_paint(paint_session * session, uint8 direction, uint16 height, const rct_tile_element * tileElement)
 {
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;

@@ -578,7 +578,7 @@ rct_tile_element *map_get_track_element_at_with_direction_from_ride(sint32 x, si
 
 bool map_is_location_at_edge(sint32 x, sint32 y);
 void map_obstruction_set_error_text(rct_tile_element *tileElement);
-uint8 wall_element_get_animation_frame(rct_tile_element *fenceElement);
+uint8 wall_element_get_animation_frame(const rct_tile_element * fenceElement);
 void wall_element_set_animation_frame(rct_tile_element * wallElement, uint8 frameNum);
 
 uint32 map_get_available_peep_spawn_index_list(uint32* peepSpawnIndexList);

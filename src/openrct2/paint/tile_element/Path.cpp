@@ -79,13 +79,32 @@ static constexpr const uint8 byte_98D8A4[] = {
 };
 // clang-format on
 
-void path_paint_box_support(paint_session * session, rct_tile_element * tileElement, sint32 height, rct_footpath_entry * footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
-void path_paint_pole_support(paint_session * session, rct_tile_element* tileElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
-
-
+void path_paint_box_support(
+    paint_session *          session,
+    const rct_tile_element * tileElement,
+    sint32                   height,
+    rct_footpath_entry *     footpathEntry,
+    bool                     hasFences,
+    uint32                   imageFlags,
+    uint32                   sceneryImageFlags);
+void path_paint_pole_support(
+    paint_session *          session,
+    const rct_tile_element * tileElement,
+    sint16                   height,
+    rct_footpath_entry *     footpathEntry,
+    bool                     hasFences,
+    uint32                   imageFlags,
+    uint32                   sceneryImageFlags);
 
 /* rct2: 0x006A5AE5 */
-static void path_bit_lights_paint(paint_session * session, rct_scenery_entry* pathBitEntry, rct_tile_element* tileElement, sint32 height, uint8 edges, uint32 pathBitImageFlags) {
+static void path_bit_lights_paint(
+    paint_session *          session,
+    rct_scenery_entry *      pathBitEntry,
+    const rct_tile_element * tileElement,
+    sint32                   height,
+    uint8                    edges,
+    uint32                   pathBitImageFlags)
+{
     if (footpath_element_is_sloped(tileElement))
         height += 8;
 
@@ -136,7 +155,14 @@ static void path_bit_lights_paint(paint_session * session, rct_scenery_entry* pa
 }
 
 /* rct2: 0x006A5C94 */
-static void path_bit_bins_paint(paint_session * session, rct_scenery_entry* pathBitEntry, rct_tile_element* tileElement, sint32 height, uint8 edges, uint32 pathBitImageFlags) {
+static void path_bit_bins_paint(
+    paint_session *          session,
+    rct_scenery_entry *      pathBitEntry,
+    const rct_tile_element * tileElement,
+    sint32                   height,
+    uint8                    edges,
+    uint32                   pathBitImageFlags)
+{
     if (footpath_element_is_sloped(tileElement))
         height += 8;
 
@@ -224,7 +250,14 @@ static void path_bit_bins_paint(paint_session * session, rct_scenery_entry* path
 }
 
 /* rct2: 0x006A5E81 */
-static void path_bit_benches_paint(paint_session * session, rct_scenery_entry* pathBitEntry, rct_tile_element* tileElement, sint32 height, uint8 edges, uint32 pathBitImageFlags) {
+static void path_bit_benches_paint(
+    paint_session *          session,
+    rct_scenery_entry *      pathBitEntry,
+    const rct_tile_element * tileElement,
+    sint32                   height,
+    uint8                    edges,
+    uint32                   pathBitImageFlags)
+{
     uint32 imageId;
 
     if (!(edges & EDGE_NE)) {
@@ -272,7 +305,15 @@ static void path_bit_benches_paint(paint_session * session, rct_scenery_entry* p
 }
 
 /* rct2: 0x006A6008 */
-static void path_bit_jumping_fountains_paint(paint_session * session, rct_scenery_entry* pathBitEntry, rct_tile_element* tileElement, sint32 height, uint8 edges, uint32 pathBitImageFlags, rct_drawpixelinfo* dpi) {
+static void path_bit_jumping_fountains_paint(
+    paint_session *          session,
+    rct_scenery_entry *      pathBitEntry,
+    const rct_tile_element * tileElement,
+    sint32                   height,
+    uint8                    edges,
+    uint32                   pathBitImageFlags,
+    rct_drawpixelinfo *      dpi)
+{
     if (dpi->zoom_level != 0)
         return;
 
@@ -292,7 +333,15 @@ static void path_bit_jumping_fountains_paint(paint_session * session, rct_scener
  * @param ebp (ebp)
  * @param base_image_id (0x00F3EF78)
  */
-static void sub_6A4101(paint_session * session, rct_tile_element * tile_element, uint16 height, uint32 ebp, bool word_F3F038, rct_footpath_entry * footpathEntry, uint32 base_image_id, uint32 imageFlags)
+static void sub_6A4101(
+    paint_session *          session,
+    const rct_tile_element * tile_element,
+    uint16                   height,
+    uint32                   ebp,
+    bool                     word_F3F038,
+    rct_footpath_entry *     footpathEntry,
+    uint32                   base_image_id,
+    uint32                   imageFlags)
 {
     if (footpath_element_is_queue(tile_element)) {
         uint8 local_ebp = ebp & 0x0F;
@@ -594,7 +643,15 @@ static void sub_6A4101(paint_session * session, rct_tile_element * tile_element,
  * @param imageFlags (0x00F3EF70)
  * @param sceneryImageFlags (0x00F3EF74)
  */
-static void sub_6A3F61(paint_session * session, rct_tile_element * tile_element, uint16 connectedEdges, uint16 height, rct_footpath_entry * footpathEntry, uint32 imageFlags, uint32 sceneryImageFlags, bool word_F3F038)
+static void sub_6A3F61(
+    paint_session *          session,
+    const rct_tile_element * tile_element,
+    uint16                   connectedEdges,
+    uint16                   height,
+    rct_footpath_entry *     footpathEntry,
+    uint32                   imageFlags,
+    uint32                   sceneryImageFlags,
+    bool                     word_F3F038)
 {
     // eax --
     // ebx --
@@ -693,7 +750,7 @@ static void sub_6A3F61(paint_session * session, rct_tile_element * tile_element,
 /**
  * rct2: 0x0006A3590
  */
-void path_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element * tile_element)
+void path_paint(paint_session * session, uint8 direction, uint16 height, const rct_tile_element * tile_element)
 {
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
 
@@ -827,7 +884,14 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_til
 #endif
 }
 
-void path_paint_box_support(paint_session * session, rct_tile_element * tileElement, sint32 height, rct_footpath_entry * footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags)
+void path_paint_box_support(
+    paint_session *          session,
+    const rct_tile_element * tileElement,
+    sint32                   height,
+    rct_footpath_entry *     footpathEntry,
+    bool                     hasFences,
+    uint32                   imageFlags,
+    uint32                   sceneryImageFlags)
 {
     // Rol edges around rotation
     uint8 edges = ((tileElement->properties.path.edges << get_current_rotation()) & 0xF) |
@@ -945,7 +1009,14 @@ void path_paint_box_support(paint_session * session, rct_tile_element * tileElem
     }
 }
 
-void path_paint_pole_support(paint_session * session, rct_tile_element* tileElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags)
+void path_paint_pole_support(
+    paint_session *          session,
+    const rct_tile_element * tileElement,
+    sint16                   height,
+    rct_footpath_entry *     footpathEntry,
+    bool                     hasFences,
+    uint32                   imageFlags,
+    uint32                   sceneryImageFlags)
 {
     // Rol edges around rotation
     uint8 edges = ((tileElement->properties.path.edges << get_current_rotation()) & 0xF) |

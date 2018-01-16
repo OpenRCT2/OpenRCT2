@@ -187,7 +187,7 @@ bool track_design_save(uint8 rideIndex)
     return true;
 }
 
-bool track_design_save_contains_tile_element(rct_tile_element *tileElement)
+bool track_design_save_contains_tile_element(const rct_tile_element * tileElement)
 {
     for (size_t i = 0; i < _trackSavedTileElementsCount; i++) {
         if (_trackSavedTileElements[i] == tileElement) {

@@ -42,7 +42,7 @@ void scenery_large_set_secondary_colour(rct_tile_element * tileElement, colour_t
     tileElement->properties.scenerymultiple.colour[1] |= colour;
 }
 
-sint32 scenery_large_get_banner_id(rct_tile_element * tileElement)
+sint32 scenery_large_get_banner_id(const rct_tile_element * tileElement)
 {
     return (tileElement->type & 0xC0) |
            (((tileElement->properties.scenerymultiple.colour[0]) &~ TILE_ELEMENT_COLOUR_MASK) >> 2) |
@@ -56,12 +56,12 @@ void scenery_large_set_banner_id(rct_tile_element * tileElement, uint8 bannerInd
     tileElement->properties.scenerymultiple.colour[1] |= (bannerIndex & 7) << 5;
 }
 
-sint32 scenery_large_get_type(rct_tile_element * tileElement)
+sint32 scenery_large_get_type(const rct_tile_element * tileElement)
 {
     return (tileElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
 }
 
-sint32 scenery_large_get_sequence(rct_tile_element * tileElement)
+sint32 scenery_large_get_sequence(const rct_tile_element * tileElement)
 {
     return (tileElement->properties.scenerymultiple.type >> 10);
 }

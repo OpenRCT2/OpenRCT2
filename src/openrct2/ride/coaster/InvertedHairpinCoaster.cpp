@@ -27,8 +27,13 @@
 #include "../TrackPaint.h"
 
 /** rct2: 0x00890CB4 */
-static void inverted_hairpin_rc_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                           sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -82,8 +87,13 @@ static void inverted_hairpin_rc_track_flat(paint_session * session, uint8 rideIn
 }
 
 /** rct2: 0x00890D84, 0x00890D94, 0x00890DA4 */
-static void inverted_hairpin_rc_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                              sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_station(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     static constexpr const uint32 imageIds[4][3] = {
         { SPR_STATION_BASE_C_SW_NE, 17028, SPR_STATION_INVERTED_BAR_0_SW_NE },
@@ -106,8 +116,13 @@ static void inverted_hairpin_rc_track_station(paint_session * session, uint8 rid
 }
 
 /** rct2: 0x00890CC4 */
-static void inverted_hairpin_rc_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -191,8 +206,13 @@ static void inverted_hairpin_rc_track_25_deg_up(paint_session * session, uint8 r
 }
 
 /** rct2: 0x00890CD4 */
-static void inverted_hairpin_rc_track_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_60_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -252,8 +272,13 @@ static void inverted_hairpin_rc_track_60_deg_up(paint_session * session, uint8 r
 }
 
 /** rct2: 0x00890CE4 */
-static void inverted_hairpin_rc_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_flat_to_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -337,8 +362,13 @@ static void inverted_hairpin_rc_track_flat_to_25_deg_up(paint_session * session,
 }
 
 /** rct2: 0x00890CF4 */
-static void inverted_hairpin_rc_track_25_deg_up_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_25_deg_up_to_60_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -406,8 +436,13 @@ static void inverted_hairpin_rc_track_25_deg_up_to_60_deg_up(paint_session * ses
 }
 
 /** rct2: 0x00890D04 */
-static void inverted_hairpin_rc_track_60_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_60_deg_up_to_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -499,8 +534,13 @@ static void inverted_hairpin_rc_track_60_deg_up_to_25_deg_up(paint_session * ses
 }
 
 /** rct2: 0x00890D14 */
-static void inverted_hairpin_rc_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_25_deg_up_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -584,52 +624,87 @@ static void inverted_hairpin_rc_track_25_deg_up_to_flat(paint_session * session,
 }
 
 /** rct2: 0x00890D24 */
-static void inverted_hairpin_rc_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     inverted_hairpin_rc_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x00890D34 */
-static void inverted_hairpin_rc_track_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_60_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     inverted_hairpin_rc_track_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x00890D44 */
-static void inverted_hairpin_rc_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_flat_to_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     inverted_hairpin_rc_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x00890D54 */
-static void inverted_hairpin_rc_track_25_deg_down_to_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                 uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_25_deg_down_to_60_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     inverted_hairpin_rc_track_60_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
                                                      tileElement);
 }
 
 /** rct2: 0x00890D64 */
-static void inverted_hairpin_rc_track_60_deg_down_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                 uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_60_deg_down_to_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     inverted_hairpin_rc_track_25_deg_up_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
                                                      tileElement);
 }
 
 /** rct2: 0x00890D74 */
-static void inverted_hairpin_rc_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_25_deg_down_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     inverted_hairpin_rc_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x00890DB4 */
-static void inverted_hairpin_rc_track_left_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_left_quarter_turn_3(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -735,17 +810,26 @@ static void inverted_hairpin_rc_track_left_quarter_turn_3(paint_session * sessio
 }
 
 /** rct2: 0x00890DC4 */
-static void inverted_hairpin_rc_track_right_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_right_quarter_turn_3(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     inverted_hairpin_rc_track_left_quarter_turn_3(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x00890DD4 */
-static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_up(paint_session * session, uint8 rideIndex,
-                                                                    uint8 trackSequence, uint8 direction, sint32 height,
-                                                                    rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -822,9 +906,13 @@ static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_up(paint_sessio
 }
 
 /** rct2: 0x00890DE4 */
-static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_up(paint_session * session, uint8 rideIndex,
-                                                                     uint8 trackSequence, uint8 direction, sint32 height,
-                                                                     rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -901,9 +989,13 @@ static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_up(paint_sessi
 }
 
 /** rct2: 0x00890DF4 */
-static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_down(paint_session * session, uint8 rideIndex,
-                                                                      uint8 trackSequence, uint8 direction, sint32 height,
-                                                                      rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height,
@@ -911,9 +1003,13 @@ static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_down(paint_sess
 }
 
 /** rct2: 0x00890E04 */
-static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_down(paint_session * session, uint8 rideIndex,
-                                                                       uint8 trackSequence, uint8 direction, sint32 height,
-                                                                       rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height,
@@ -921,8 +1017,13 @@ static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_down(paint_ses
 }
 
 /** rct2: 0x00890E64 */
-static void inverted_hairpin_rc_track_left_quarter_turn_1(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_left_quarter_turn_1(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -966,15 +1067,25 @@ static void inverted_hairpin_rc_track_left_quarter_turn_1(paint_session * sessio
 }
 
 /** rct2: 0x00890E74 */
-static void inverted_hairpin_rc_track_right_quarter_turn_1(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_right_quarter_turn_1(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     inverted_hairpin_rc_track_left_quarter_turn_1(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x00890E24 */
-static void inverted_hairpin_rc_track_flat_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_flat_to_60_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -1042,8 +1153,13 @@ static void inverted_hairpin_rc_track_flat_to_60_deg_up(paint_session * session,
 }
 
 /** rct2: 0x00890E34 */
-static void inverted_hairpin_rc_track_60_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_60_deg_up_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -1132,22 +1248,37 @@ static void inverted_hairpin_rc_track_60_deg_up_to_flat(paint_session * session,
 }
 
 /** rct2: 0x00890E44 */
-static void inverted_hairpin_rc_track_flat_to_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_flat_to_60_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     inverted_hairpin_rc_track_60_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x00890E54 */
-static void inverted_hairpin_rc_track_60_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_60_deg_down_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     inverted_hairpin_rc_track_flat_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x00890E14 */
-static void inverted_hairpin_rc_track_brakes(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                             sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_brakes(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -1176,8 +1307,13 @@ static void inverted_hairpin_rc_track_brakes(paint_session * session, uint8 ride
 }
 
 /** rct2: 0x00890E84 */
-static void inverted_hairpin_rc_track_block_brakes(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void inverted_hairpin_rc_track_block_brakes(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     switch (direction)
     {

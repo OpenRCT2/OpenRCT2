@@ -20,7 +20,7 @@
 #include "Map.h"
 
 colour_t wall_get_primary_colour(const rct_tile_element * tileElement);
-colour_t wall_get_secondary_colour(rct_tile_element * wallElement);
+colour_t wall_get_secondary_colour(const rct_tile_element * wallElement);
 colour_t wall_get_tertiary_colour(const rct_tile_element * tileElement);
 void wall_set_primary_colour(rct_tile_element * tileElement, colour_t colour);
 void wall_set_secondary_colour(rct_tile_element * wallElement, colour_t secondaryColour);
