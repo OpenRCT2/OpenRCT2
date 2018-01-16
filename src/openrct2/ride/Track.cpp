@@ -2450,7 +2450,7 @@ void track_get_front(rct_xy_element * input, rct_xy_element * output)
     *output = lastTrack;
 }
 
-bool track_element_is_lift_hill(rct_tile_element * trackElement)
+bool track_element_is_lift_hill(const rct_tile_element * trackElement)
 {
     return trackElement->type & TRACK_ELEMENT_FLAG_CHAIN_LIFT;
 }
@@ -2493,7 +2493,7 @@ bool track_element_is_block_start(rct_tile_element * trackElement)
     return false;
 }
 
-bool track_element_is_cable_lift(rct_tile_element * trackElement)
+bool track_element_is_cable_lift(const rct_tile_element * trackElement)
 {
     return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
@@ -2508,7 +2508,7 @@ void track_element_clear_cable_lift(rct_tile_element * trackElement)
     trackElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
 
-bool track_element_is_inverted(rct_tile_element * tileElement)
+bool track_element_is_inverted(const rct_tile_element * tileElement)
 {
     return tileElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
 }

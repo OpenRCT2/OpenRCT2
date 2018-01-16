@@ -43,8 +43,13 @@ static void paint_dodgems_roof(paint_session * session, sint32 height, sint32 of
     paint_attach_to_previous_ps(session, image_id, 0, 0);
 }
 
-static void paint_dodgems(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                          rct_tile_element * tileElement)
+static void paint_dodgems(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     uint8 relativeTrackSequence = track_map_4x4[direction][trackSequence];
 

@@ -28,7 +28,13 @@
 #include "TileElement.h"
 
 // 6B8172:
-static void large_scenery_paint_supports(paint_session * session, uint8 direction, uint16 height, rct_tile_element *tileElement, uint32 dword_F4387C, rct_large_scenery_tile *tile)
+static void large_scenery_paint_supports(
+    paint_session *          session,
+    uint8                    direction,
+    uint16                   height,
+    const rct_tile_element * tileElement,
+    uint32                   dword_F4387C,
+    rct_large_scenery_tile * tile)
 {
     if (tile->var_7 & 0x20) {
         return;
@@ -185,7 +191,7 @@ static constexpr const boundbox s98E3C4[] = {
 *
 * rct2: 0x006B7F0C
 */
-void large_scenery_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element * tileElement)
+void large_scenery_paint(paint_session * session, uint8 direction, uint16 height, const rct_tile_element * tileElement)
 {
     if (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     {

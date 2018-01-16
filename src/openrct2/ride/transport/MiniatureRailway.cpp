@@ -558,7 +558,7 @@ static uint32 miniature_railway_track_to_grooved(uint32 imageId)
     return imageId - SPR_MINIATURE_RAILWAY_FLAT_SW_NE + SPR_G2_MINIATURE_RAILWAY_GROOVED_SW_NE;
 }
 
-static uint32 miniature_railway_track_to_grooved_indent(uint32 imageId, rct_tile_element *path, uint8 direction)
+static uint32 miniature_railway_track_to_grooved_indent(uint32 imageId, const rct_tile_element * path, uint8 direction)
 {
     if (!path)
     {
@@ -589,8 +589,13 @@ static uint32 miniature_railway_track_to_grooved_indent(uint32 imageId, rct_tile
 }
 
 /** rct2: 0x008AD0C0 */
-static void paint_miniature_railway_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                               sint32 height, rct_tile_element * tileElement)
+static void paint_miniature_railway_track_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     bool paintAsGravel  = false;
     bool paintGrooved   = false;
@@ -657,8 +662,13 @@ static void paint_miniature_railway_track_flat(paint_session * session, uint8 ri
 }
 
 /** rct2: 0x008AD170, 0x008AD180, 0x008AD190 */
-static void paint_miniature_railway_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                            sint32 height, rct_tile_element * tileElement)
+static void paint_miniature_railway_station(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     uint32 imageId;
 
@@ -680,8 +690,13 @@ static void paint_miniature_railway_station(paint_session * session, uint8 rideI
 }
 
 /** rct2: 0x008AD0D0 */
-static void paint_miniature_railway_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                    uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_miniature_railway_track_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
 
     uint32 imageId = miniature_railway_track_pieces_25_deg_up[direction] | session->TrackColours[SCHEME_TRACK];
@@ -711,8 +726,13 @@ static void paint_miniature_railway_track_25_deg_up(paint_session * session, uin
 }
 
 /** rct2: 0x008AD0E0 */
-static void paint_miniature_railway_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_miniature_railway_track_flat_to_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
 
     uint32 imageId = miniature_railway_track_pieces_flat_to_25_deg_up[direction] | session->TrackColours[SCHEME_TRACK];
@@ -742,8 +762,13 @@ static void paint_miniature_railway_track_flat_to_25_deg_up(paint_session * sess
 }
 
 /** rct2: 0x008AD0F0 */
-static void paint_miniature_railway_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_miniature_railway_track_25_deg_up_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
 
     uint32 imageId = miniature_railway_track_pieces_25_deg_up_to_flat[direction] | session->TrackColours[SCHEME_TRACK];
@@ -773,22 +798,37 @@ static void paint_miniature_railway_track_25_deg_up_to_flat(paint_session * sess
 }
 
 /** rct2: 0x008AD100 */
-static void paint_miniature_railway_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_miniature_railway_track_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     paint_miniature_railway_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
 /** rct2: 0x008AD110 */
-static void paint_miniature_railway_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_miniature_railway_track_flat_to_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     paint_miniature_railway_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
 /** rct2: 0x008AD120 */
-static void paint_miniature_railway_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_miniature_railway_track_25_deg_down_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     paint_miniature_railway_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
@@ -900,9 +940,13 @@ static constexpr const sint8 right_quarter_turn_5_supports_type[4][7] = {
 static constexpr const sint8 miniature_railway_right_quarter_turn_5_tiles_sprite_map[] = { 0, -1, 1, 2, -1, 3, 4 };
 
 /** rct2: 0x008AD140 */
-static void paint_miniature_railway_track_right_quarter_turn_5_tiles(paint_session * session, uint8 rideIndex,
-                                                                     uint8 trackSequence, uint8 direction, sint32 height,
-                                                                     rct_tile_element * tileElement)
+static void paint_miniature_railway_track_right_quarter_turn_5_tiles(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
 
     if (right_quarter_turn_5_supports_type[direction][trackSequence] != -1)
@@ -988,9 +1032,13 @@ static void paint_miniature_railway_track_right_quarter_turn_5_tiles(paint_sessi
 }
 
 /** rct2: 0x008AD130 */
-static void paint_miniature_railway_track_left_quarter_turn_5_tiles(paint_session * session, uint8 rideIndex,
-                                                                    uint8 trackSequence, uint8 direction, sint32 height,
-                                                                    rct_tile_element * tileElement)
+static void paint_miniature_railway_track_left_quarter_turn_5_tiles(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     paint_miniature_railway_track_right_quarter_turn_5_tiles(session, rideIndex, trackSequence, (direction + 1) % 4, height,
@@ -1009,8 +1057,13 @@ static constexpr const uint32 miniature_railway_s_bend_left_tiles_track_floor[2]
                                                                               } };
 
 /** rct2: 0x8AD150 */
-static void paint_miniature_railway_track_s_bend_left(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_miniature_railway_track_s_bend_left(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     if (direction == 2 || direction == 3)
     {
@@ -1103,8 +1156,13 @@ static constexpr const uint32 miniature_railway_s_bend_right_tiles_track_floor[2
                                                                                } };
 
 /** rct2: 0x008AD160 */
-static void paint_miniature_railway_track_s_bend_right(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_miniature_railway_track_s_bend_right(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     if (direction == 2 || direction == 3)
     {
@@ -1228,9 +1286,13 @@ static constexpr const LocationXYZ16 miniature_railway_right_quarter_turn_3_tile
                                                                                     } };
 
 /** rct2: 0x008AD1B0 */
-static void paint_miniature_railway_track_right_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex,
-                                                                     uint8 trackSequence, uint8 direction, sint32 height,
-                                                                     rct_tile_element * tileElement)
+static void paint_miniature_railway_track_right_quarter_turn_3_tiles(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     bool isSupported = false;
     if (trackSequence != 1 && trackSequence != 2)
@@ -1294,9 +1356,13 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(paint_sessi
 }
 
 /** rct2: 0x008AD1A0 */
-static void paint_miniature_railway_track_left_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex,
-                                                                    uint8 trackSequence, uint8 direction, sint32 height,
-                                                                    rct_tile_element * tileElement)
+static void paint_miniature_railway_track_left_quarter_turn_3_tiles(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     paint_miniature_railway_track_right_quarter_turn_3_tiles(session, rideIndex, trackSequence, (direction + 1) % 4, height,
@@ -1377,8 +1443,13 @@ static constexpr const LocationXY16 miniature_railway_track_floor_pieces_left_ei
 };
 
 /** rct2: 0x008AD1C0 */
-static void paint_miniature_railway_track_left_eighth_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_miniature_railway_track_left_eighth_to_diag(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     const uint8 supportType[4][5] = { { 0, 0, 3, 5, 1 }, { 1, 1, 4, 2, 0 }, { 0, 0, 5, 3, 1 }, { 1, 1, 2, 4, 0 } };
 
@@ -1515,8 +1586,13 @@ static constexpr const LocationXY16 miniature_railway_track_floor_pieces_right_e
 };
 
 /** rct2: 0x008AD1D0 */
-static void paint_miniature_railway_track_right_eighth_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                               uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_miniature_railway_track_right_eighth_to_diag(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     const uint8 supportType[4][5] = { { 0, 0, 2, 4, 1 }, { 1, 1, 3, 5, 0 }, { 0, 0, 4, 2, 1 }, { 1, 1, 5, 3, 0 } };
 
@@ -1584,9 +1660,13 @@ static void paint_miniature_railway_track_right_eighth_to_diag(paint_session * s
 }
 
 /** rct2: 0x008AD1E0 */
-static void paint_miniature_railway_track_left_eighth_to_orthogonal(paint_session * session, uint8 rideIndex,
-                                                                    uint8 trackSequence, uint8 direction, sint32 height,
-                                                                    rct_tile_element * tileElement)
+static void paint_miniature_railway_track_left_eighth_to_orthogonal(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
     paint_miniature_railway_track_right_eighth_to_diag(session, rideIndex, trackSequence, (direction + 2) % 4, height,
@@ -1594,9 +1674,13 @@ static void paint_miniature_railway_track_left_eighth_to_orthogonal(paint_sessio
 }
 
 /** rct2: 0x008AD1F0 */
-static void paint_miniature_railway_track_right_eighth_to_orthogonal(paint_session * session, uint8 rideIndex,
-                                                                     uint8 trackSequence, uint8 direction, sint32 height,
-                                                                     rct_tile_element * tileElement)
+static void paint_miniature_railway_track_right_eighth_to_orthogonal(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
     paint_miniature_railway_track_left_eighth_to_diag(session, rideIndex, trackSequence, (direction + 3) % 4, height,
@@ -1644,8 +1728,13 @@ static constexpr const floor_desc floors[] = {
 };
 
 /** rct2: 0x008AD200 */
-static void miniature_railway_track_diag_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                              sint32 height, rct_tile_element * tileElement)
+static void miniature_railway_track_diag_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     bool   isSupported = false;
     sint16 supportType = monorail_diag_support_types[direction][trackSequence];
@@ -1713,8 +1802,13 @@ static bool wooden_supports_paint_setup(paint_session * session, sint32 woodType
 }
 
 /** rct2: 0x008AD230 */
-static void miniature_railway_track_diag_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void miniature_railway_track_diag_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     // TODO: The supports are inconsistent for different rotations
 
@@ -1784,8 +1878,13 @@ static void miniature_railway_track_diag_25_deg_up(paint_session * session, uint
 }
 
 /** rct2: 0x008AD210 */
-static void miniature_railway_track_diag_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void miniature_railway_track_diag_flat_to_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     bool hasSupports = false;
 
@@ -1832,8 +1931,13 @@ static void miniature_railway_track_diag_flat_to_25_deg_up(paint_session * sessi
 }
 
 /** rct2: 0x008AD220 */
-static void miniature_railway_track_diag_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void miniature_railway_track_diag_25_deg_up_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     const sint8 supportOffsets[][4] = {
         { 0, +8, +8, +8 },
@@ -1904,8 +2008,13 @@ static void miniature_railway_track_diag_25_deg_up_to_flat(paint_session * sessi
 }
 
 /** rct2: 0x008AD260 */
-static void miniature_railway_track_diag_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void miniature_railway_track_diag_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     const sint8 supportOffsets[][4] = {
         { 0, +16, +16, 0 },
@@ -1975,8 +2084,13 @@ static void miniature_railway_track_diag_25_deg_down(paint_session * session, ui
 }
 
 /** rct2: 0x008AD240 */
-static void miniature_railway_track_diag_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void miniature_railway_track_diag_flat_to_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     const sint8 supportOffsets[][4] = {
         { 0, +16, +16, 0 },
@@ -2044,8 +2158,13 @@ static void miniature_railway_track_diag_flat_to_25_deg_down(paint_session * ses
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
-static void miniature_railway_track_diag_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void miniature_railway_track_diag_25_deg_down_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     bool     hasSupports      = false;
     uint32   floorImage       = 0;

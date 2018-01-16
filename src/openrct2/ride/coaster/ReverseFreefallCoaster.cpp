@@ -200,8 +200,13 @@ static constexpr const uint32 reverse_freefall_rc_track_pieces_vertical_supports
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_SE_NW,
 };
 
-static void paint_reverse_freefall_rc_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                           sint32 height, rct_tile_element * tileElement)
+static void paint_reverse_freefall_rc_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     if (direction & 1)
     {
@@ -221,8 +226,13 @@ static void paint_reverse_freefall_rc_flat(paint_session * session, uint8 rideIn
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static void paint_reverse_freefall_rc_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                              sint32 height, rct_tile_element * tileElement)
+static void paint_reverse_freefall_rc_station(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     Ride *                               ride          = get_ride(rideIndex);
     uint32                               imageId;
@@ -262,8 +272,13 @@ static void paint_reverse_freefall_rc_station(paint_session * session, uint8 rid
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static void paint_reverse_freefall_rc_slope(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                            sint32 height, rct_tile_element * tileElement)
+static void paint_reverse_freefall_rc_slope(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     TESTPAINT_IGNORE_ALL();
 
@@ -354,8 +369,13 @@ static void paint_reverse_freefall_rc_slope(paint_session * session, uint8 rideI
     }
 }
 
-static void paint_reverse_freefall_rc_vertical(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                               sint32 height, rct_tile_element * tileElement)
+static void paint_reverse_freefall_rc_vertical(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     uint32 supportsImageId, trackImageId;
     switch (trackSequence)

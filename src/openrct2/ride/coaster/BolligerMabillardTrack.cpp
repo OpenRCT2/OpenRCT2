@@ -27,8 +27,14 @@
 #include "../TrackPaint.h"
 #include "BolligerMabillardTrack.h"
 
-void bolliger_mabillard_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                   sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -82,8 +88,14 @@ void bolliger_mabillard_track_flat(paint_session * session, uint8 rideIndex, uin
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-void bolliger_mabillard_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                      sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_station(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     static constexpr const uint32 imageIds[4][3] = {
         { 17154, 17150, SPR_STATION_BASE_A_SW_NE },
@@ -115,8 +127,14 @@ void bolliger_mabillard_track_station(paint_session * session, uint8 rideIndex, 
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-void bolliger_mabillard_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                        sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -183,8 +201,14 @@ void bolliger_mabillard_track_25_deg_up(paint_session * session, uint8 rideIndex
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
-void bolliger_mabillard_track_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                        sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_60_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -251,8 +275,14 @@ void bolliger_mabillard_track_60_deg_up(paint_session * session, uint8 rideIndex
     paint_util_set_general_support_height(session, height + 104, 0x20);
 }
 
-void bolliger_mabillard_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_flat_to_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -319,9 +349,14 @@ void bolliger_mabillard_track_flat_to_25_deg_up(paint_session * session, uint8 r
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
-void bolliger_mabillard_track_25_deg_up_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                     sint32 supportType)
+void bolliger_mabillard_track_25_deg_up_to_60_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -396,9 +431,14 @@ void bolliger_mabillard_track_25_deg_up_to_60_deg_up(paint_session * session, ui
     paint_util_set_general_support_height(session, height + 72, 0x20);
 }
 
-void bolliger_mabillard_track_60_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                     sint32 supportType)
+void bolliger_mabillard_track_60_deg_up_to_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -473,8 +513,14 @@ void bolliger_mabillard_track_60_deg_up_to_25_deg_up(paint_session * session, ui
     paint_util_set_general_support_height(session, height + 72, 0x20);
 }
 
-void bolliger_mabillard_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_25_deg_up_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -541,53 +587,90 @@ void bolliger_mabillard_track_25_deg_up_to_flat(paint_session * session, uint8 r
     paint_util_set_general_support_height(session, height + 40, 0x20);
 }
 
-void bolliger_mabillard_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                          sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement, supportType);
 }
 
-void bolliger_mabillard_track_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                          sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_60_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement, supportType);
 }
 
-void bolliger_mabillard_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                  sint32 supportType)
+void bolliger_mabillard_track_flat_to_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement,
                                                supportType);
 }
 
-void bolliger_mabillard_track_25_deg_down_to_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                         sint32 supportType)
+void bolliger_mabillard_track_25_deg_down_to_60_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_60_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement,
                                                     supportType);
 }
 
-void bolliger_mabillard_track_60_deg_down_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                         sint32 supportType)
+void bolliger_mabillard_track_60_deg_down_to_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_25_deg_up_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement,
                                                     supportType);
 }
 
-void bolliger_mabillard_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                  sint32 supportType)
+void bolliger_mabillard_track_25_deg_down_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement,
                                                supportType);
 }
 
-void bolliger_mabillard_track_left_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                  sint32 supportType)
+void bolliger_mabillard_track_left_quarter_turn_5(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -739,17 +822,28 @@ void bolliger_mabillard_track_left_quarter_turn_5(paint_session * session, uint8
     }
 }
 
-void bolliger_mabillard_track_right_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                   sint32 supportType)
+void bolliger_mabillard_track_right_quarter_turn_5(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     bolliger_mabillard_track_left_quarter_turn_5(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement,
                                                  supportType);
 }
 
-void bolliger_mabillard_track_flat_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_flat_to_left_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -784,8 +878,14 @@ void bolliger_mabillard_track_flat_to_left_bank(paint_session * session, uint8 r
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-void bolliger_mabillard_track_flat_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_flat_to_right_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -820,8 +920,14 @@ void bolliger_mabillard_track_flat_to_right_bank(paint_session * session, uint8 
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-void bolliger_mabillard_track_left_bank_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_left_bank_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -856,8 +962,14 @@ void bolliger_mabillard_track_left_bank_to_flat(paint_session * session, uint8 r
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-void bolliger_mabillard_track_right_bank_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_right_bank_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -892,9 +1004,14 @@ void bolliger_mabillard_track_right_bank_to_flat(paint_session * session, uint8 
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-void bolliger_mabillard_track_banked_left_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                         sint32 supportType)
+void bolliger_mabillard_track_banked_left_quarter_turn_5(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -1053,18 +1170,28 @@ void bolliger_mabillard_track_banked_left_quarter_turn_5(paint_session * session
     }
 }
 
-void bolliger_mabillard_track_banked_right_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                          sint32 supportType)
+void bolliger_mabillard_track_banked_right_quarter_turn_5(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     bolliger_mabillard_track_banked_left_quarter_turn_5(session, rideIndex, trackSequence, (direction - 1) & 3, height,
                                                         tileElement, supportType);
 }
 
-void bolliger_mabillard_track_left_bank_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                     sint32 supportType)
+void bolliger_mabillard_track_left_bank_to_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -1106,9 +1233,14 @@ void bolliger_mabillard_track_left_bank_to_25_deg_up(paint_session * session, ui
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
-void bolliger_mabillard_track_right_bank_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                      sint32 supportType)
+void bolliger_mabillard_track_right_bank_to_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -1150,9 +1282,14 @@ void bolliger_mabillard_track_right_bank_to_25_deg_up(paint_session * session, u
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
-void bolliger_mabillard_track_25_deg_up_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                     sint32 supportType)
+void bolliger_mabillard_track_25_deg_up_to_left_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -1194,9 +1331,14 @@ void bolliger_mabillard_track_25_deg_up_to_left_bank(paint_session * session, ui
     paint_util_set_general_support_height(session, height + 40, 0x20);
 }
 
-void bolliger_mabillard_track_25_deg_up_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                      sint32 supportType)
+void bolliger_mabillard_track_25_deg_up_to_right_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -1238,40 +1380,66 @@ void bolliger_mabillard_track_25_deg_up_to_right_bank(paint_session * session, u
     paint_util_set_general_support_height(session, height + 40, 0x20);
 }
 
-void bolliger_mabillard_track_left_bank_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                       sint32 supportType)
+void bolliger_mabillard_track_left_bank_to_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_25_deg_up_to_right_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement,
                                                      supportType);
 }
 
-void bolliger_mabillard_track_right_bank_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                        sint32 supportType)
+void bolliger_mabillard_track_right_bank_to_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_25_deg_up_to_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement,
                                                     supportType);
 }
 
-void bolliger_mabillard_track_25_deg_down_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                       sint32 supportType)
+void bolliger_mabillard_track_25_deg_down_to_left_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_right_bank_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement,
                                                      supportType);
 }
 
-void bolliger_mabillard_track_25_deg_down_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                        sint32 supportType)
+void bolliger_mabillard_track_25_deg_down_to_right_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_left_bank_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement,
                                                     supportType);
 }
 
-void bolliger_mabillard_track_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                        sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_left_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -1302,15 +1470,26 @@ void bolliger_mabillard_track_left_bank(paint_session * session, uint8 rideIndex
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-void bolliger_mabillard_track_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                         sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_right_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement, supportType);
 }
 
-void bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                            sint32 supportType)
+void bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -1457,9 +1636,14 @@ void bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(paint_session * sess
     }
 }
 
-void bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                             sint32 supportType)
+void bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -1606,26 +1790,42 @@ void bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(paint_session * ses
     }
 }
 
-void bolliger_mabillard_track_left_quarter_turn_5_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                              sint32 supportType)
+void bolliger_mabillard_track_left_quarter_turn_5_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height,
                                                             tileElement, supportType);
 }
 
-void bolliger_mabillard_track_right_quarter_turn_5_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                               uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                               sint32 supportType)
+void bolliger_mabillard_track_right_quarter_turn_5_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height,
                                                            tileElement, supportType);
 }
 
-void bolliger_mabillard_track_s_bend_left(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                          sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_s_bend_left(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -1747,8 +1947,14 @@ void bolliger_mabillard_track_s_bend_left(paint_session * session, uint8 rideInd
     }
 }
 
-void bolliger_mabillard_track_s_bend_right(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                           sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_s_bend_right(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -1870,8 +2076,14 @@ void bolliger_mabillard_track_s_bend_right(paint_session * session, uint8 rideIn
     }
 }
 
-void bolliger_mabillard_track_left_vertical_loop(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_left_vertical_loop(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -2093,9 +2305,14 @@ void bolliger_mabillard_track_left_vertical_loop(paint_session * session, uint8 
     }
 }
 
-void bolliger_mabillard_track_right_vertical_loop(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                  sint32 supportType)
+void bolliger_mabillard_track_right_vertical_loop(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -2285,9 +2502,14 @@ void bolliger_mabillard_track_right_vertical_loop(paint_session * session, uint8
     track_paint_util_right_vertical_loop_segments(session, direction, trackSequence);
 }
 
-void bolliger_mabillard_track_left_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                  sint32 supportType)
+void bolliger_mabillard_track_left_quarter_turn_3(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -2384,18 +2606,28 @@ void bolliger_mabillard_track_left_quarter_turn_3(paint_session * session, uint8
     }
 }
 
-void bolliger_mabillard_track_right_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                   sint32 supportType)
+void bolliger_mabillard_track_right_quarter_turn_3(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     bolliger_mabillard_track_left_quarter_turn_3(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement,
                                                  supportType);
 }
 
-void bolliger_mabillard_track_left_quarter_turn_3_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                       sint32 supportType)
+void bolliger_mabillard_track_left_quarter_turn_3_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -2496,18 +2728,28 @@ void bolliger_mabillard_track_left_quarter_turn_3_bank(paint_session * session, 
     }
 }
 
-void bolliger_mabillard_track_right_quarter_turn_3_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                        sint32 supportType)
+void bolliger_mabillard_track_right_quarter_turn_3_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     bolliger_mabillard_track_left_quarter_turn_3_bank(session, rideIndex, trackSequence, (direction - 1) & 3, height,
                                                       tileElement, supportType);
 }
 
-void bolliger_mabillard_track_left_quarter_turn_3_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                            sint32 supportType)
+void bolliger_mabillard_track_left_quarter_turn_3_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -2575,9 +2817,14 @@ void bolliger_mabillard_track_left_quarter_turn_3_25_deg_up(paint_session * sess
     }
 }
 
-void bolliger_mabillard_track_right_quarter_turn_3_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                             sint32 supportType)
+void bolliger_mabillard_track_right_quarter_turn_3_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -2648,27 +2895,42 @@ void bolliger_mabillard_track_right_quarter_turn_3_25_deg_up(paint_session * ses
     }
 }
 
-void bolliger_mabillard_track_left_quarter_turn_3_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                              sint32 supportType)
+void bolliger_mabillard_track_left_quarter_turn_3_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     bolliger_mabillard_track_right_quarter_turn_3_25_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height,
                                                             tileElement, supportType);
 }
 
-void bolliger_mabillard_track_right_quarter_turn_3_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                               uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                               sint32 supportType)
+void bolliger_mabillard_track_right_quarter_turn_3_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     bolliger_mabillard_track_left_quarter_turn_3_25_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height,
                                                            tileElement, supportType);
 }
 
-void bolliger_mabillard_track_left_half_banked_helix_up_small(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                              sint32 supportType)
+void bolliger_mabillard_track_left_half_banked_helix_up_small(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -2867,9 +3129,14 @@ void bolliger_mabillard_track_left_half_banked_helix_up_small(paint_session * se
     }
 }
 
-void bolliger_mabillard_track_right_half_banked_helix_up_small(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                               uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                               sint32 supportType)
+void bolliger_mabillard_track_right_half_banked_helix_up_small(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -3068,9 +3335,14 @@ void bolliger_mabillard_track_right_half_banked_helix_up_small(paint_session * s
     }
 }
 
-void bolliger_mabillard_track_left_half_banked_helix_down_small(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                                sint32 supportType)
+void bolliger_mabillard_track_left_half_banked_helix_down_small(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     if (trackSequence >= 4)
     {
@@ -3082,9 +3354,14 @@ void bolliger_mabillard_track_left_half_banked_helix_down_small(paint_session * 
                                                               tileElement, supportType);
 }
 
-void bolliger_mabillard_track_right_half_banked_helix_down_small(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                 uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                                 sint32 supportType)
+void bolliger_mabillard_track_right_half_banked_helix_down_small(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     if (trackSequence >= 4)
     {
@@ -3096,9 +3373,14 @@ void bolliger_mabillard_track_right_half_banked_helix_down_small(paint_session *
                                                              tileElement, supportType);
 }
 
-void bolliger_mabillard_track_left_half_banked_helix_up_large(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                              sint32 supportType)
+void bolliger_mabillard_track_left_half_banked_helix_up_large(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -3407,9 +3689,14 @@ void bolliger_mabillard_track_left_half_banked_helix_up_large(paint_session * se
     }
 }
 
-void bolliger_mabillard_track_right_half_banked_helix_up_large(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                               uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                               sint32 supportType)
+void bolliger_mabillard_track_right_half_banked_helix_up_large(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -3724,9 +4011,14 @@ void bolliger_mabillard_track_right_half_banked_helix_up_large(paint_session * s
     }
 }
 
-void bolliger_mabillard_track_left_half_banked_helix_down_large(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                                sint32 supportType)
+void bolliger_mabillard_track_left_half_banked_helix_down_large(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     if (trackSequence >= 7)
     {
@@ -3738,9 +4030,14 @@ void bolliger_mabillard_track_left_half_banked_helix_down_large(paint_session * 
                                                               tileElement, supportType);
 }
 
-void bolliger_mabillard_track_right_half_banked_helix_down_large(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                 uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                                 sint32 supportType)
+void bolliger_mabillard_track_right_half_banked_helix_down_large(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     if (trackSequence >= 7)
     {
@@ -3752,9 +4049,14 @@ void bolliger_mabillard_track_right_half_banked_helix_down_large(paint_session *
                                                              tileElement, supportType);
 }
 
-void bolliger_mabillard_track_left_quarter_turn_1_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                            sint32 supportType)
+void bolliger_mabillard_track_left_quarter_turn_1_60_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -3788,9 +4090,14 @@ void bolliger_mabillard_track_left_quarter_turn_1_60_deg_up(paint_session * sess
     paint_util_set_general_support_height(session, height + 104, 0x20);
 }
 
-void bolliger_mabillard_track_right_quarter_turn_1_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                             sint32 supportType)
+void bolliger_mabillard_track_right_quarter_turn_1_60_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -3824,24 +4131,40 @@ void bolliger_mabillard_track_right_quarter_turn_1_60_deg_up(paint_session * ses
     paint_util_set_general_support_height(session, height + 104, 0x20);
 }
 
-void bolliger_mabillard_track_left_quarter_turn_1_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                              sint32 supportType)
+void bolliger_mabillard_track_left_quarter_turn_1_60_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_right_quarter_turn_1_60_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height,
                                                             tileElement, supportType);
 }
 
-void bolliger_mabillard_track_right_quarter_turn_1_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                               uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                               sint32 supportType)
+void bolliger_mabillard_track_right_quarter_turn_1_60_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_left_quarter_turn_1_60_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height,
                                                            tileElement, supportType);
 }
 
-void bolliger_mabillard_track_brakes(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                     sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_brakes(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -3866,9 +4189,14 @@ void bolliger_mabillard_track_brakes(paint_session * session, uint8 rideIndex, u
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-void bolliger_mabillard_track_25_deg_up_left_banked(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                    uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                    sint32 supportType)
+void bolliger_mabillard_track_25_deg_up_left_banked(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -3906,9 +4234,14 @@ void bolliger_mabillard_track_25_deg_up_left_banked(paint_session * session, uin
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
-void bolliger_mabillard_track_25_deg_up_right_banked(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                     sint32 supportType)
+void bolliger_mabillard_track_25_deg_up_right_banked(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -3946,8 +4279,14 @@ void bolliger_mabillard_track_25_deg_up_right_banked(paint_session * session, ui
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
-void bolliger_mabillard_track_on_ride_photo(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                            sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_on_ride_photo(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -3986,24 +4325,40 @@ void bolliger_mabillard_track_on_ride_photo(paint_session * session, uint8 rideI
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
-void bolliger_mabillard_track_25_deg_down_left_banked(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                      sint32 supportType)
+void bolliger_mabillard_track_25_deg_down_left_banked(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_25_deg_up_right_banked(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement,
                                                     supportType);
 }
 
-void bolliger_mabillard_track_25_deg_down_right_banked(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                       sint32 supportType)
+void bolliger_mabillard_track_25_deg_down_right_banked(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_25_deg_up_left_banked(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement,
                                                    supportType);
 }
 
-void bolliger_mabillard_track_90_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                        sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_90_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -4037,15 +4392,26 @@ void bolliger_mabillard_track_90_deg_up(paint_session * session, uint8 rideIndex
     }
 }
 
-void bolliger_mabillard_track_90_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                          sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_90_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_90_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement, supportType);
 }
 
-void bolliger_mabillard_track_60_deg_up_to_90_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                     sint32 supportType)
+void bolliger_mabillard_track_60_deg_up_to_90_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -4083,17 +4449,27 @@ void bolliger_mabillard_track_60_deg_up_to_90_deg_up(paint_session * session, ui
     }
 }
 
-void bolliger_mabillard_track_90_deg_down_to_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                         sint32 supportType)
+void bolliger_mabillard_track_90_deg_down_to_60_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_60_deg_up_to_90_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement,
                                                     supportType);
 }
 
-void bolliger_mabillard_track_90_deg_up_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                     sint32 supportType)
+void bolliger_mabillard_track_90_deg_up_to_60_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -4128,9 +4504,14 @@ void bolliger_mabillard_track_90_deg_up_to_60_deg_up(paint_session * session, ui
     paint_util_set_general_support_height(session, height + 80, 0x20);
 }
 
-void bolliger_mabillard_track_60_deg_down_to_90_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                         sint32 supportType)
+void bolliger_mabillard_track_60_deg_down_to_90_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -4167,9 +4548,14 @@ void bolliger_mabillard_track_60_deg_down_to_90_deg_down(paint_session * session
     }
 }
 
-void bolliger_mabillard_track_left_eighth_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                  sint32 supportType)
+void bolliger_mabillard_track_left_eighth_to_diag(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -4291,9 +4677,14 @@ void bolliger_mabillard_track_left_eighth_to_diag(paint_session * session, uint8
     }
 }
 
-void bolliger_mabillard_track_right_eighth_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                   sint32 supportType)
+void bolliger_mabillard_track_right_eighth_to_diag(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -4415,27 +4806,42 @@ void bolliger_mabillard_track_right_eighth_to_diag(paint_session * session, uint
     }
 }
 
-void bolliger_mabillard_track_left_eighth_to_orthogonal(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                        sint32 supportType)
+void bolliger_mabillard_track_left_eighth_to_orthogonal(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
     bolliger_mabillard_track_right_eighth_to_diag(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement,
                                                   supportType);
 }
 
-void bolliger_mabillard_track_right_eighth_to_orthogonal(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                         sint32 supportType)
+void bolliger_mabillard_track_right_eighth_to_orthogonal(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
     bolliger_mabillard_track_left_eighth_to_diag(session, rideIndex, trackSequence, (direction + 3) & 3, height, tileElement,
                                                  supportType);
 }
 
-void bolliger_mabillard_track_left_eighth_bank_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                       sint32 supportType)
+void bolliger_mabillard_track_left_eighth_bank_to_diag(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -4557,9 +4963,14 @@ void bolliger_mabillard_track_left_eighth_bank_to_diag(paint_session * session, 
     }
 }
 
-void bolliger_mabillard_track_right_eighth_bank_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                        sint32 supportType)
+void bolliger_mabillard_track_right_eighth_bank_to_diag(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -4681,26 +5092,42 @@ void bolliger_mabillard_track_right_eighth_bank_to_diag(paint_session * session,
     }
 }
 
-void bolliger_mabillard_track_left_eighth_bank_to_orthogonal(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                             sint32 supportType)
+void bolliger_mabillard_track_left_eighth_bank_to_orthogonal(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
     bolliger_mabillard_track_right_eighth_bank_to_diag(session, rideIndex, trackSequence, (direction + 2) & 3, height,
                                                        tileElement, supportType);
 }
 
-void bolliger_mabillard_track_right_eighth_bank_to_orthogonal(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                              sint32 supportType)
+void bolliger_mabillard_track_right_eighth_bank_to_orthogonal(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
     bolliger_mabillard_track_left_eighth_bank_to_diag(session, rideIndex, trackSequence, (direction + 3) & 3, height,
                                                       tileElement, supportType);
 }
 
-void bolliger_mabillard_track_diag_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                        sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_diag_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -4827,8 +5254,14 @@ void bolliger_mabillard_track_diag_flat(paint_session * session, uint8 rideIndex
     }
 }
 
-void bolliger_mabillard_track_diag_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                             sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_diag_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -4955,8 +5388,14 @@ void bolliger_mabillard_track_diag_25_deg_up(paint_session * session, uint8 ride
     }
 }
 
-void bolliger_mabillard_track_diag_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                             sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_diag_60_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -5083,9 +5522,14 @@ void bolliger_mabillard_track_diag_60_deg_up(paint_session * session, uint8 ride
     }
 }
 
-void bolliger_mabillard_track_diag_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                     sint32 supportType)
+void bolliger_mabillard_track_diag_flat_to_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -5212,9 +5656,14 @@ void bolliger_mabillard_track_diag_flat_to_25_deg_up(paint_session * session, ui
     }
 }
 
-void bolliger_mabillard_track_diag_25_deg_up_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                          sint32 supportType)
+void bolliger_mabillard_track_diag_25_deg_up_to_60_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -5341,9 +5790,14 @@ void bolliger_mabillard_track_diag_25_deg_up_to_60_deg_up(paint_session * sessio
     }
 }
 
-void bolliger_mabillard_track_diag_60_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                          sint32 supportType)
+void bolliger_mabillard_track_diag_60_deg_up_to_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -5470,9 +5924,14 @@ void bolliger_mabillard_track_diag_60_deg_up_to_25_deg_up(paint_session * sessio
     }
 }
 
-void bolliger_mabillard_track_diag_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                     sint32 supportType)
+void bolliger_mabillard_track_diag_25_deg_up_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -5599,8 +6058,14 @@ void bolliger_mabillard_track_diag_25_deg_up_to_flat(paint_session * session, ui
     }
 }
 
-void bolliger_mabillard_track_diag_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                               sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_diag_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -5727,8 +6192,14 @@ void bolliger_mabillard_track_diag_25_deg_down(paint_session * session, uint8 ri
     }
 }
 
-void bolliger_mabillard_track_diag_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                               sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_diag_60_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -5855,9 +6326,14 @@ void bolliger_mabillard_track_diag_60_deg_down(paint_session * session, uint8 ri
     }
 }
 
-void bolliger_mabillard_track_diag_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                       sint32 supportType)
+void bolliger_mabillard_track_diag_flat_to_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -5982,9 +6458,14 @@ void bolliger_mabillard_track_diag_flat_to_25_deg_down(paint_session * session, 
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
-void bolliger_mabillard_track_diag_25_deg_down_to_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                              sint32 supportType)
+void bolliger_mabillard_track_diag_25_deg_down_to_60_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -6111,9 +6592,14 @@ void bolliger_mabillard_track_diag_25_deg_down_to_60_deg_down(paint_session * se
     }
 }
 
-void bolliger_mabillard_track_diag_60_deg_down_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                              sint32 supportType)
+void bolliger_mabillard_track_diag_60_deg_down_to_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -6240,9 +6726,14 @@ void bolliger_mabillard_track_diag_60_deg_down_to_25_deg_down(paint_session * se
     }
 }
 
-void bolliger_mabillard_track_diag_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                       sint32 supportType)
+void bolliger_mabillard_track_diag_25_deg_down_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -6369,9 +6860,14 @@ void bolliger_mabillard_track_diag_25_deg_down_to_flat(paint_session * session, 
     }
 }
 
-void bolliger_mabillard_track_diag_flat_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                     sint32 supportType)
+void bolliger_mabillard_track_diag_flat_to_60_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -6498,9 +6994,14 @@ void bolliger_mabillard_track_diag_flat_to_60_deg_up(paint_session * session, ui
     }
 }
 
-void bolliger_mabillard_track_diag_60_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                     sint32 supportType)
+void bolliger_mabillard_track_diag_60_deg_up_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -6627,9 +7128,14 @@ void bolliger_mabillard_track_diag_60_deg_up_to_flat(paint_session * session, ui
     }
 }
 
-void bolliger_mabillard_track_diag_flat_to_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                       sint32 supportType)
+void bolliger_mabillard_track_diag_flat_to_60_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -6756,9 +7262,14 @@ void bolliger_mabillard_track_diag_flat_to_60_deg_down(paint_session * session, 
     }
 }
 
-void bolliger_mabillard_track_diag_60_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                       sint32 supportType)
+void bolliger_mabillard_track_diag_60_deg_down_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -6885,9 +7396,14 @@ void bolliger_mabillard_track_diag_60_deg_down_to_flat(paint_session * session, 
     }
 }
 
-void bolliger_mabillard_track_diag_flat_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                     sint32 supportType)
+void bolliger_mabillard_track_diag_flat_to_left_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -6954,9 +7470,14 @@ void bolliger_mabillard_track_diag_flat_to_left_bank(paint_session * session, ui
     }
 }
 
-void bolliger_mabillard_track_diag_flat_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                      sint32 supportType)
+void bolliger_mabillard_track_diag_flat_to_right_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -7023,9 +7544,14 @@ void bolliger_mabillard_track_diag_flat_to_right_bank(paint_session * session, u
     }
 }
 
-void bolliger_mabillard_track_diag_left_bank_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                     sint32 supportType)
+void bolliger_mabillard_track_diag_left_bank_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -7092,9 +7618,14 @@ void bolliger_mabillard_track_diag_left_bank_to_flat(paint_session * session, ui
     }
 }
 
-void bolliger_mabillard_track_diag_right_bank_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                      sint32 supportType)
+void bolliger_mabillard_track_diag_right_bank_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -7161,9 +7692,14 @@ void bolliger_mabillard_track_diag_right_bank_to_flat(paint_session * session, u
     }
 }
 
-void bolliger_mabillard_track_diag_left_bank_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                          sint32 supportType)
+void bolliger_mabillard_track_diag_left_bank_to_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -7230,9 +7766,14 @@ void bolliger_mabillard_track_diag_left_bank_to_25_deg_up(paint_session * sessio
     }
 }
 
-void bolliger_mabillard_track_diag_right_bank_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                           sint32 supportType)
+void bolliger_mabillard_track_diag_right_bank_to_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -7299,9 +7840,14 @@ void bolliger_mabillard_track_diag_right_bank_to_25_deg_up(paint_session * sessi
     }
 }
 
-void bolliger_mabillard_track_diag_25_deg_up_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                          sint32 supportType)
+void bolliger_mabillard_track_diag_25_deg_up_to_left_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -7368,9 +7914,14 @@ void bolliger_mabillard_track_diag_25_deg_up_to_left_bank(paint_session * sessio
     }
 }
 
-void bolliger_mabillard_track_diag_25_deg_up_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                           sint32 supportType)
+void bolliger_mabillard_track_diag_25_deg_up_to_right_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -7437,9 +7988,14 @@ void bolliger_mabillard_track_diag_25_deg_up_to_right_bank(paint_session * sessi
     }
 }
 
-void bolliger_mabillard_track_diag_left_bank_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                            sint32 supportType)
+void bolliger_mabillard_track_diag_left_bank_to_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -7504,9 +8060,14 @@ void bolliger_mabillard_track_diag_left_bank_to_25_deg_down(paint_session * sess
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
-void bolliger_mabillard_track_diag_right_bank_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                             sint32 supportType)
+void bolliger_mabillard_track_diag_right_bank_to_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -7571,9 +8132,14 @@ void bolliger_mabillard_track_diag_right_bank_to_25_deg_down(paint_session * ses
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
-void bolliger_mabillard_track_diag_25_deg_down_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                            sint32 supportType)
+void bolliger_mabillard_track_diag_25_deg_down_to_left_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -7640,9 +8206,14 @@ void bolliger_mabillard_track_diag_25_deg_down_to_left_bank(paint_session * sess
     }
 }
 
-void bolliger_mabillard_track_diag_25_deg_down_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                             sint32 supportType)
+void bolliger_mabillard_track_diag_25_deg_down_to_right_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -7709,8 +8280,14 @@ void bolliger_mabillard_track_diag_25_deg_down_to_right_bank(paint_session * ses
     }
 }
 
-void bolliger_mabillard_track_diag_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                             sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_diag_left_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -7775,8 +8352,14 @@ void bolliger_mabillard_track_diag_left_bank(paint_session * session, uint8 ride
     }
 }
 
-void bolliger_mabillard_track_diag_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                              sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_diag_right_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -7841,9 +8424,14 @@ void bolliger_mabillard_track_diag_right_bank(paint_session * session, uint8 rid
     }
 }
 
-void bolliger_mabillard_track_left_bank_to_left_quarter_turn_3_25_deg_up(paint_session * session, uint8 rideIndex,
-                                                                         uint8 trackSequence, uint8 direction, sint32 height,
-                                                                         rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_left_bank_to_left_quarter_turn_3_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -7913,9 +8501,14 @@ void bolliger_mabillard_track_left_bank_to_left_quarter_turn_3_25_deg_up(paint_s
     }
 }
 
-void bolliger_mabillard_track_right_bank_to_right_quarter_turn_3_25_deg_up(paint_session * session, uint8 rideIndex,
-                                                                           uint8 trackSequence, uint8 direction, sint32 height,
-                                                                           rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_right_bank_to_right_quarter_turn_3_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -7988,9 +8581,14 @@ void bolliger_mabillard_track_right_bank_to_right_quarter_turn_3_25_deg_up(paint
     }
 }
 
-void bolliger_mabillard_track_left_quarter_turn_3_25_deg_down_to_left_bank(paint_session * session, uint8 rideIndex,
-                                                                           uint8 trackSequence, uint8 direction, sint32 height,
-                                                                           rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_left_quarter_turn_3_25_deg_down_to_left_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -8063,10 +8661,14 @@ void bolliger_mabillard_track_left_quarter_turn_3_25_deg_down_to_left_bank(paint
     }
 }
 
-void bolliger_mabillard_track_right_quarter_turn_3_25_deg_down_to_right_bank(paint_session * session, uint8 rideIndex,
-                                                                             uint8 trackSequence, uint8 direction,
-                                                                             sint32 height, rct_tile_element * tileElement,
-                                                                             sint32 supportType)
+void bolliger_mabillard_track_right_quarter_turn_3_25_deg_down_to_right_bank(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -8136,8 +8738,14 @@ void bolliger_mabillard_track_right_quarter_turn_3_25_deg_down_to_right_bank(pai
     }
 }
 
-void bolliger_mabillard_track_block_brakes(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                           sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_block_brakes(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -8162,9 +8770,14 @@ void bolliger_mabillard_track_block_brakes(paint_session * session, uint8 rideIn
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-void bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_up(paint_session * session, uint8 rideIndex,
-                                                                   uint8 trackSequence, uint8 direction, sint32 height,
-                                                                   rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -8235,9 +8848,14 @@ void bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_up(paint_session
     }
 }
 
-void bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_up(paint_session * session, uint8 rideIndex,
-                                                                    uint8 trackSequence, uint8 direction, sint32 height,
-                                                                    rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -8311,27 +8929,42 @@ void bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_up(paint_sessio
     }
 }
 
-void bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_down(paint_session * session, uint8 rideIndex,
-                                                                     uint8 trackSequence, uint8 direction, sint32 height,
-                                                                     rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3,
                                                                    height, tileElement, supportType);
 }
 
-void bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_down(paint_session * session, uint8 rideIndex,
-                                                                      uint8 trackSequence, uint8 direction, sint32 height,
-                                                                      rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3,
                                                                   height, tileElement, supportType);
 }
 
-void bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_up(paint_session * session, uint8 rideIndex,
-                                                                   uint8 trackSequence, uint8 direction, sint32 height,
-                                                                   rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -8481,9 +9114,14 @@ void bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_up(paint_session
     }
 }
 
-void bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_up(paint_session * session, uint8 rideIndex,
-                                                                    uint8 trackSequence, uint8 direction, sint32 height,
-                                                                    rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -8633,27 +9271,42 @@ void bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_up(paint_sessio
     }
 }
 
-void bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_down(paint_session * session, uint8 rideIndex,
-                                                                     uint8 trackSequence, uint8 direction, sint32 height,
-                                                                     rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3,
                                                                    height, tileElement, supportType);
 }
 
-void bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_down(paint_session * session, uint8 rideIndex,
-                                                                      uint8 trackSequence, uint8 direction, sint32 height,
-                                                                      rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3,
                                                                   height, tileElement, supportType);
 }
 
-void bolliger_mabillard_track_25_deg_up_to_left_banked_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                 uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                                 sint32 supportType)
+void bolliger_mabillard_track_25_deg_up_to_left_banked_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -8693,9 +9346,14 @@ void bolliger_mabillard_track_25_deg_up_to_left_banked_25_deg_up(paint_session *
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
-void bolliger_mabillard_track_25_deg_up_to_right_banked_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                  uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                                  sint32 supportType)
+void bolliger_mabillard_track_25_deg_up_to_right_banked_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -8735,9 +9393,14 @@ void bolliger_mabillard_track_25_deg_up_to_right_banked_25_deg_up(paint_session 
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
-void bolliger_mabillard_track_left_banked_25_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                 uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                                 sint32 supportType)
+void bolliger_mabillard_track_left_banked_25_deg_up_to_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -8777,9 +9440,14 @@ void bolliger_mabillard_track_left_banked_25_deg_up_to_25_deg_up(paint_session *
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
-void bolliger_mabillard_track_right_banked_25_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                  uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                                  sint32 supportType)
+void bolliger_mabillard_track_right_banked_25_deg_up_to_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -8819,41 +9487,66 @@ void bolliger_mabillard_track_right_banked_25_deg_up_to_25_deg_up(paint_session 
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
-void bolliger_mabillard_track_25_deg_down_to_left_banked_25_deg_down(paint_session * session, uint8 rideIndex,
-                                                                     uint8 trackSequence, uint8 direction, sint32 height,
-                                                                     rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_25_deg_down_to_left_banked_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_right_banked_25_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
                                                                  tileElement, supportType);
 }
 
-void bolliger_mabillard_track_25_deg_down_to_right_banked_25_deg_down(paint_session * session, uint8 rideIndex,
-                                                                      uint8 trackSequence, uint8 direction, sint32 height,
-                                                                      rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_25_deg_down_to_right_banked_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_left_banked_25_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
                                                                 tileElement, supportType);
 }
 
-void bolliger_mabillard_track_left_banked_25_deg_down_to_25_deg_down(paint_session * session, uint8 rideIndex,
-                                                                     uint8 trackSequence, uint8 direction, sint32 height,
-                                                                     rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_left_banked_25_deg_down_to_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_25_deg_up_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
                                                                  tileElement, supportType);
 }
 
-void bolliger_mabillard_track_right_banked_25_deg_down_to_25_deg_down(paint_session * session, uint8 rideIndex,
-                                                                      uint8 trackSequence, uint8 direction, sint32 height,
-                                                                      rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_right_banked_25_deg_down_to_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_25_deg_up_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
                                                                 tileElement, supportType);
 }
 
-void bolliger_mabillard_track_left_banked_flat_to_left_banked_25_deg_up(paint_session * session, uint8 rideIndex,
-                                                                        uint8 trackSequence, uint8 direction, sint32 height,
-                                                                        rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_left_banked_flat_to_left_banked_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -8891,9 +9584,14 @@ void bolliger_mabillard_track_left_banked_flat_to_left_banked_25_deg_up(paint_se
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
-void bolliger_mabillard_track_right_banked_flat_to_right_banked_25_deg_up(paint_session * session, uint8 rideIndex,
-                                                                          uint8 trackSequence, uint8 direction, sint32 height,
-                                                                          rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_right_banked_flat_to_right_banked_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -8931,9 +9629,14 @@ void bolliger_mabillard_track_right_banked_flat_to_right_banked_25_deg_up(paint_
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
-void bolliger_mabillard_track_left_banked_25_deg_up_to_left_banked_flat(paint_session * session, uint8 rideIndex,
-                                                                        uint8 trackSequence, uint8 direction, sint32 height,
-                                                                        rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_left_banked_25_deg_up_to_left_banked_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -8971,9 +9674,14 @@ void bolliger_mabillard_track_left_banked_25_deg_up_to_left_banked_flat(paint_se
     paint_util_set_general_support_height(session, height + 40, 0x20);
 }
 
-void bolliger_mabillard_track_right_banked_25_deg_up_to_right_banked_flat(paint_session * session, uint8 rideIndex,
-                                                                          uint8 trackSequence, uint8 direction, sint32 height,
-                                                                          rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_right_banked_25_deg_up_to_right_banked_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -9011,41 +9719,66 @@ void bolliger_mabillard_track_right_banked_25_deg_up_to_right_banked_flat(paint_
     paint_util_set_general_support_height(session, height + 40, 0x20);
 }
 
-void bolliger_mabillard_track_left_banked_flat_to_left_banked_25_deg_down(paint_session * session, uint8 rideIndex,
-                                                                          uint8 trackSequence, uint8 direction, sint32 height,
-                                                                          rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_left_banked_flat_to_left_banked_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_right_banked_25_deg_up_to_right_banked_flat(session, rideIndex, trackSequence, (direction + 2) & 3,
                                                                          height, tileElement, supportType);
 }
 
-void bolliger_mabillard_track_right_banked_flat_to_right_banked_25_deg_down(paint_session * session, uint8 rideIndex,
-                                                                            uint8 trackSequence, uint8 direction, sint32 height,
-                                                                            rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_right_banked_flat_to_right_banked_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_left_banked_25_deg_up_to_left_banked_flat(session, rideIndex, trackSequence, (direction + 2) & 3,
                                                                        height, tileElement, supportType);
 }
 
-void bolliger_mabillard_track_left_banked_25_deg_down_to_left_banked_flat(paint_session * session, uint8 rideIndex,
-                                                                          uint8 trackSequence, uint8 direction, sint32 height,
-                                                                          rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_left_banked_25_deg_down_to_left_banked_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_right_banked_flat_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3,
                                                                          height, tileElement, supportType);
 }
 
-void bolliger_mabillard_track_right_banked_25_deg_down_to_right_banked_flat(paint_session * session, uint8 rideIndex,
-                                                                            uint8 trackSequence, uint8 direction, sint32 height,
-                                                                            rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_right_banked_25_deg_down_to_right_banked_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_left_banked_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3,
                                                                        height, tileElement, supportType);
 }
 
-void bolliger_mabillard_track_flat_to_left_banked_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                            sint32 supportType)
+void bolliger_mabillard_track_flat_to_left_banked_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -9085,9 +9818,14 @@ void bolliger_mabillard_track_flat_to_left_banked_25_deg_up(paint_session * sess
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
-void bolliger_mabillard_track_flat_to_right_banked_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                             sint32 supportType)
+void bolliger_mabillard_track_flat_to_right_banked_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -9127,9 +9865,14 @@ void bolliger_mabillard_track_flat_to_right_banked_25_deg_up(paint_session * ses
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
-void bolliger_mabillard_track_left_banked_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                            sint32 supportType)
+void bolliger_mabillard_track_left_banked_25_deg_up_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -9169,9 +9912,14 @@ void bolliger_mabillard_track_left_banked_25_deg_up_to_flat(paint_session * sess
     paint_util_set_general_support_height(session, height + 40, 0x20);
 }
 
-void bolliger_mabillard_track_right_banked_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                             sint32 supportType)
+void bolliger_mabillard_track_right_banked_25_deg_up_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -9211,41 +9959,66 @@ void bolliger_mabillard_track_right_banked_25_deg_up_to_flat(paint_session * ses
     paint_util_set_general_support_height(session, height + 40, 0x20);
 }
 
-void bolliger_mabillard_track_flat_to_left_banked_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                              sint32 supportType)
+void bolliger_mabillard_track_flat_to_left_banked_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_right_banked_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height,
                                                             tileElement, supportType);
 }
 
-void bolliger_mabillard_track_flat_to_right_banked_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                               uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                               sint32 supportType)
+void bolliger_mabillard_track_flat_to_right_banked_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_left_banked_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height,
                                                            tileElement, supportType);
 }
 
-void bolliger_mabillard_track_left_banked_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                              sint32 supportType)
+void bolliger_mabillard_track_left_banked_25_deg_down_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_flat_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
                                                             tileElement, supportType);
 }
 
-void bolliger_mabillard_track_right_banked_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                               uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                               sint32 supportType)
+void bolliger_mabillard_track_right_banked_25_deg_down_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
                                                            tileElement, supportType);
 }
 
-void bolliger_mabillard_track_left_quarter_turn_1_90_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                            sint32 supportType)
+void bolliger_mabillard_track_left_quarter_turn_1_90_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -9283,9 +10056,14 @@ void bolliger_mabillard_track_left_quarter_turn_1_90_deg_up(paint_session * sess
     }
 }
 
-void bolliger_mabillard_track_right_quarter_turn_1_90_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                             sint32 supportType)
+void bolliger_mabillard_track_right_quarter_turn_1_90_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -9323,25 +10101,41 @@ void bolliger_mabillard_track_right_quarter_turn_1_90_deg_up(paint_session * ses
     }
 }
 
-void bolliger_mabillard_track_left_quarter_turn_1_90_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                              sint32 supportType)
+void bolliger_mabillard_track_left_quarter_turn_1_90_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_right_quarter_turn_1_90_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height,
                                                             tileElement, supportType);
 }
 
-void bolliger_mabillard_track_right_quarter_turn_1_90_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                               uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                               sint32 supportType)
+void bolliger_mabillard_track_right_quarter_turn_1_90_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_left_quarter_turn_1_90_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height,
                                                            tileElement, supportType);
 }
 
 /* The following track elements used to be specific to the Vertical Roller Coaster */
-void bolliger_mabillard_track_flat_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_flat_to_60_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -9410,8 +10204,14 @@ void bolliger_mabillard_track_flat_to_60_deg_up(paint_session * session, uint8 r
     paint_util_set_general_support_height(session, height + 64, 0x20);
 }
 
-void bolliger_mabillard_track_60_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_60_deg_up_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     if (track_element_is_lift_hill(tileElement))
     {
@@ -9480,24 +10280,40 @@ void bolliger_mabillard_track_60_deg_up_to_flat(paint_session * session, uint8 r
     paint_util_set_general_support_height(session, height + 72, 0x20);
 }
 
-void bolliger_mabillard_track_flat_to_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                  sint32 supportType)
+void bolliger_mabillard_track_flat_to_60_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_60_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement,
                                                supportType);
 }
 
-void bolliger_mabillard_track_60_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                  sint32 supportType)
+void bolliger_mabillard_track_60_deg_down_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_flat_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement,
                                                supportType);
 }
 
-void bolliger_mabillard_track_brake_for_drop(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                             sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_brake_for_drop(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -9537,8 +10353,14 @@ void bolliger_mabillard_track_brake_for_drop(paint_session * session, uint8 ride
 }
 
 /* The following track elements used to be specific to the Steel Twister */
-void bolliger_mabillard_track_half_loop_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                           sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_half_loop_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -9644,14 +10466,26 @@ void bolliger_mabillard_track_half_loop_up(paint_session * session, uint8 rideIn
     }
 }
 
-void bolliger_mabillard_track_half_loop_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                             sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_half_loop_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_half_loop_up(session, rideIndex, 3 - trackSequence, direction, height, tileElement, supportType);
 }
 
-void bolliger_mabillard_track_left_corkscrew_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_left_corkscrew_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -9747,8 +10581,14 @@ void bolliger_mabillard_track_left_corkscrew_up(paint_session * session, uint8 r
     }
 }
 
-void bolliger_mabillard_track_right_corkscrew_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_right_corkscrew_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -9845,25 +10685,40 @@ void bolliger_mabillard_track_right_corkscrew_up(paint_session * session, uint8 
     }
 }
 
-void bolliger_mabillard_track_left_corkscrew_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                  sint32 supportType)
+void bolliger_mabillard_track_left_corkscrew_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_right_corkscrew_up(session, rideIndex, 2 - trackSequence, (direction + 1) & 3, height, tileElement,
                                                 supportType);
 }
 
-void bolliger_mabillard_track_right_corkscrew_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                   sint32 supportType)
+void bolliger_mabillard_track_right_corkscrew_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_left_corkscrew_up(session, rideIndex, 2 - trackSequence, (direction - 1) & 3, height, tileElement,
                                                supportType);
 }
 
-void bolliger_mabillard_track_flat_to_60_deg_up_long_base(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                          sint32 supportType)
+void bolliger_mabillard_track_flat_to_60_deg_up_long_base(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -9996,9 +10851,14 @@ void bolliger_mabillard_track_flat_to_60_deg_up_long_base(paint_session * sessio
 }
 
 /** rct2: 0x008AC104 */
-void bolliger_mabillard_track_60_deg_up_to_flat_long_base(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                          sint32 supportType)
+void bolliger_mabillard_track_60_deg_up_to_flat_long_base(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -10130,25 +10990,40 @@ void bolliger_mabillard_track_60_deg_up_to_flat_long_base(paint_session * sessio
     }
 }
 
-void bolliger_mabillard_track_flat_to_60_deg_down_long_base(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                            sint32 supportType)
+void bolliger_mabillard_track_flat_to_60_deg_down_long_base(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_flat_to_60_deg_up_long_base(session, rideIndex, 3 - trackSequence, (direction + 2) & 3, height,
                                                          tileElement, supportType);
 }
 
-void bolliger_mabillard_track_60_deg_up_to_flat_long_base122(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                             sint32 supportType)
+void bolliger_mabillard_track_60_deg_up_to_flat_long_base122(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_60_deg_up_to_flat_long_base(session, rideIndex, 3 - trackSequence, (direction + 2) & 3, height,
                                                          tileElement, supportType);
 }
 
-void bolliger_mabillard_track_left_barrel_roll_up_to_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                          sint32 supportType)
+void bolliger_mabillard_track_left_barrel_roll_up_to_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -10272,9 +11147,14 @@ void bolliger_mabillard_track_left_barrel_roll_up_to_down(paint_session * sessio
     }
 }
 
-void bolliger_mabillard_track_right_barrel_roll_up_to_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                           sint32 supportType)
+void bolliger_mabillard_track_right_barrel_roll_up_to_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -10398,24 +11278,40 @@ void bolliger_mabillard_track_right_barrel_roll_up_to_down(paint_session * sessi
     }
 }
 
-void bolliger_mabillard_track_left_barrel_roll_down_to_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                          sint32 supportType)
+void bolliger_mabillard_track_left_barrel_roll_down_to_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_left_barrel_roll_up_to_down(session, rideIndex, 2 - trackSequence, (direction + 2) & 3, height,
                                                          tileElement, supportType);
 }
 
-void bolliger_mabillard_track_right_barrel_roll_down_to_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                           sint32 supportType)
+void bolliger_mabillard_track_right_barrel_roll_down_to_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_right_barrel_roll_up_to_down(session, rideIndex, 2 - trackSequence, (direction + 2) & 3, height,
                                                           tileElement, supportType);
 }
 
-void bolliger_mabillard_track_powered_lift(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                           sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_powered_lift(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (direction)
     {
@@ -10450,9 +11346,14 @@ void bolliger_mabillard_track_powered_lift(paint_session * session, uint8 rideIn
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
-void bolliger_mabillard_track_left_large_half_loop_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                      sint32 supportType)
+void bolliger_mabillard_track_left_large_half_loop_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -10649,9 +11550,14 @@ void bolliger_mabillard_track_left_large_half_loop_up(paint_session * session, u
     }
 }
 
-void bolliger_mabillard_track_right_large_half_loop_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                       sint32 supportType)
+void bolliger_mabillard_track_right_large_half_loop_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -10848,25 +11754,40 @@ void bolliger_mabillard_track_right_large_half_loop_up(paint_session * session, 
     }
 }
 
-void bolliger_mabillard_track_right_large_half_loop_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                         sint32 supportType)
+void bolliger_mabillard_track_right_large_half_loop_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_right_large_half_loop_up(session, rideIndex, 6 - trackSequence, direction, height, tileElement,
                                                       supportType);
 }
 
-void bolliger_mabillard_track_left_large_half_loop_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * tileElement,
-                                                        sint32 supportType)
+void bolliger_mabillard_track_left_large_half_loop_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_left_large_half_loop_up(session, rideIndex, 6 - trackSequence, direction, height, tileElement,
                                                      supportType);
 }
 
-void bolliger_mabillard_track_90_deg_to_inverted_flat_quarter_loop_up(paint_session * session, uint8 rideIndex,
-                                                                      uint8 trackSequence, uint8 direction, sint32 height,
-                                                                      rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_90_deg_to_inverted_flat_quarter_loop_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     switch (trackSequence)
     {
@@ -10949,16 +11870,27 @@ void bolliger_mabillard_track_90_deg_to_inverted_flat_quarter_loop_up(paint_sess
     }
 }
 
-void bolliger_mabillard_track_inverted_flat_to_90_deg_quarter_loop_down(paint_session * session, uint8 rideIndex,
-                                                                        uint8 trackSequence, uint8 direction, sint32 height,
-                                                                        rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_inverted_flat_to_90_deg_quarter_loop_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     bolliger_mabillard_track_90_deg_to_inverted_flat_quarter_loop_up(session, rideIndex, 2 - trackSequence, direction, height,
                                                                      tileElement, supportType);
 }
 
-void bolliger_mabillard_track_booster(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                      sint32 height, rct_tile_element * tileElement, sint32 supportType)
+void bolliger_mabillard_track_booster(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement,
+    sint32                   supportType)
 {
     // These offsets could be moved to the g2.dat file when that supports offsets.
     sint8 ne_sw_offsetX = 8;

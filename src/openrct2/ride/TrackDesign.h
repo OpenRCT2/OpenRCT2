@@ -228,7 +228,7 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels);
 ///////////////////////////////////////////////////////////////////////////////
 void track_design_save_init();
 void track_design_save_reset_scenery();
-bool track_design_save_contains_tile_element(rct_tile_element *tileElement);
+bool track_design_save_contains_tile_element(const rct_tile_element * tileElement);
 void track_design_save_select_nearby_scenery(sint32 rideIndex);
 void track_design_save_select_tile_element(sint32 interactionType, sint32 x, sint32 y, rct_tile_element *tileElement, bool collect);
 bool track_design_save(uint8 rideIndex);

@@ -32,7 +32,7 @@ static uint32 _unk9E32BC;
  *
  *  rct2: 0x0066508C, 0x00665540
  */
-static void ride_entrance_exit_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* tile_element)
+static void ride_entrance_exit_paint(paint_session * session, uint8 direction, sint32 height, const rct_tile_element * tile_element)
 {
 
     uint8 is_exit = tile_element->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
@@ -186,7 +186,8 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
  *
  *  rct2: 0x006658ED
  */
-static void park_entrance_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* tile_element){
+static void park_entrance_paint(paint_session * session, uint8 direction, sint32 height, const rct_tile_element * tile_element)
+{
     if (gTrackDesignSaveMode || (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
 
@@ -291,7 +292,8 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
  *
  *  rct2: 0x00664FD4
  */
-void entrance_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* tile_element){
+void entrance_paint(paint_session * session, uint8 direction, sint32 height, const rct_tile_element * tile_element)
+{
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_LABEL;
 
     rct_drawpixelinfo* dpi = session->Unk140E9A8;

@@ -271,8 +271,13 @@ void vehicle_visual_river_rapids(paint_session * session, sint32 x, sint32 image
 #endif
 
 /** rct2: 0x00757650 */
-static void paint_river_rapids_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                          sint32 height, rct_tile_element * tileElement)
+static void paint_river_rapids_track_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     uint32 imageId;
 
@@ -313,8 +318,13 @@ static void paint_river_rapids_track_flat(paint_session * session, uint8 rideInd
 }
 
 /** rct2: 0x007576C0 */
-static void paint_river_rapids_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                       sint32 height, rct_tile_element * tileElement)
+static void paint_river_rapids_station(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     Ride * ride = get_ride(rideIndex);
 
@@ -500,52 +510,87 @@ static void paint_river_rapids_track_25_deg_to_flat_b(paint_session * session, u
 }
 
 /** rct2: 0x00757660 */
-static void paint_river_rapids_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                               sint32 height, rct_tile_element * tileElement)
+static void paint_river_rapids_track_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     paint_river_rapids_track_25_deg(session, direction, height, river_rapids_track_pieces_25_deg_up);
 }
 
 /** rct2: 0x00757670 */
-static void paint_river_rapids_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_river_rapids_track_flat_to_25_deg_up(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     paint_river_rapids_track_25_deg_to_flat_b(session, direction, height, river_rapids_track_pieces_flat_to_25_deg_up);
 }
 
 /** rct2: 0x00757680 */
-static void paint_river_rapids_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_river_rapids_track_25_deg_up_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     paint_river_rapids_track_25_deg_to_flat_a(session, direction, height, river_rapids_track_pieces_25_deg_up_to_flat);
 }
 
 /** rct2: 0x00757690 */
-static void paint_river_rapids_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * tileElement)
+static void paint_river_rapids_track_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     paint_river_rapids_track_25_deg(session, (direction + 2) % 4, height, river_rapids_track_pieces_25_deg_down);
 }
 
 /** rct2: 0x007576A0 */
-static void paint_river_rapids_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_river_rapids_track_flat_to_25_deg_down(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     paint_river_rapids_track_25_deg_to_flat_a(session, (direction + 2) % 4, height,
                                               river_rapids_track_pieces_flat_to_25_deg_down);
 }
 
 /** rct2: 0x007576B0 */
-static void paint_river_rapids_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_river_rapids_track_25_deg_down_to_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     paint_river_rapids_track_25_deg_to_flat_b(session, (direction + 2) % 4, height,
                                               river_rapids_track_pieces_25_deg_down_to_flat);
 }
 
 /** rct2: 0x007576F0 */
-static void paint_river_rapids_track_left_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_river_rapids_track_left_quarter_turn_1_tile(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     uint32 imageId;
     switch (direction)
@@ -599,8 +644,13 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(paint_session * se
 }
 
 /** rct2: 0x00757700 */
-static void paint_river_rapids_track_right_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                               uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_river_rapids_track_right_quarter_turn_1_tile(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     uint32 imageId;
 
@@ -655,8 +705,13 @@ static void paint_river_rapids_track_right_quarter_turn_1_tile(paint_session * s
 }
 
 /** rct2: 0x00757710 */
-static void paint_river_rapids_track_waterfall(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                               sint32 height, rct_tile_element * tileElement)
+static void paint_river_rapids_track_waterfall(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     uint32 imageId;
 
@@ -717,8 +772,13 @@ static void paint_river_rapids_track_waterfall(paint_session * session, uint8 ri
 }
 
 /** rct2: 0x00757720 */
-static void paint_river_rapids_track_rapids(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                            sint32 height, rct_tile_element * tileElement)
+static void paint_river_rapids_track_rapids(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     uint32 imageId;
 
@@ -757,8 +817,13 @@ static void paint_river_rapids_track_rapids(paint_session * session, uint8 rideI
 }
 
 /** rct2: 0x00757740 */
-static void paint_river_rapids_track_on_ride_photo(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_river_rapids_track_on_ride_photo(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     paint_river_rapids_track_flat(session, rideIndex, trackSequence, direction, height, tileElement);
     track_paint_util_onride_photo_paint(session, direction, height + 13, tileElement);
@@ -766,8 +831,13 @@ static void paint_river_rapids_track_on_ride_photo(paint_session * session, uint
 }
 
 /** rct2: 0x */
-static void paint_river_rapids_track_whirlpool(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                               sint32 height, rct_tile_element * tileElement)
+static void paint_river_rapids_track_whirlpool(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     uint32 imageId;
 

@@ -688,7 +688,7 @@ static money32 WallSetColour(sint16 x,
     return 0;
 }
 
-uint8 wall_element_get_animation_frame(rct_tile_element * wallElement)
+uint8 wall_element_get_animation_frame(const rct_tile_element * wallElement)
 {
     return (wallElement->properties.wall.animation >> 3) & 0xF;
 }
@@ -704,7 +704,7 @@ colour_t wall_get_primary_colour(const rct_tile_element * tileElement)
     return tileElement->properties.wall.colour_1 & TILE_ELEMENT_COLOUR_MASK;
 }
 
-colour_t wall_get_secondary_colour(rct_tile_element * wallElement)
+colour_t wall_get_secondary_colour(const rct_tile_element * wallElement)
 {
     uint8 secondaryColour = (wallElement->properties.wall.colour_1 &~ TILE_ELEMENT_COLOUR_MASK) >> 5;
     secondaryColour |= (wallElement->flags & 0x60) >> 2;

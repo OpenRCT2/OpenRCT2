@@ -37,8 +37,13 @@ enum
 };
 
 /** rct2: 0x008B0E40 */
-static void paint_boat_hire_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                       sint32 height, rct_tile_element * tileElement)
+static void paint_boat_hire_track_flat(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     uint32 imageId;
 
@@ -65,8 +70,13 @@ static void paint_boat_hire_track_flat(paint_session * session, uint8 rideIndex,
 }
 
 /** rct2: 0x008B0E50 */
-static void paint_boat_hire_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                    sint32 height, rct_tile_element * tileElement)
+static void paint_boat_hire_station(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     LocationXY16                             position      = session->MapPosition;
     Ride *                               ride          = get_ride(rideIndex);
@@ -90,8 +100,13 @@ static void paint_boat_hire_station(paint_session * session, uint8 rideIndex, ui
 }
 
 /** rct2: 0x008B0E80 */
-static void paint_boat_hire_track_left_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_boat_hire_track_left_quarter_turn_1_tile(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     uint32 imageId;
     switch (direction)
@@ -132,8 +147,13 @@ static void paint_boat_hire_track_left_quarter_turn_1_tile(paint_session * sessi
 }
 
 /** rct2: 0x008B0E90 */
-static void paint_boat_hire_track_right_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_tile_element * tileElement)
+static void paint_boat_hire_track_right_quarter_turn_1_tile(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     paint_boat_hire_track_left_quarter_turn_1_tile(session, rideIndex, trackSequence, (direction + 3) % 4, height, tileElement);
 }

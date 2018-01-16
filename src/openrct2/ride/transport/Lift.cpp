@@ -53,8 +53,13 @@ static void paint_lift_cage(paint_session * session, sint8 index, uint32 colourF
 }
 
 /** rct2: 0x0076C6CC */
-static void paint_lift_base(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                            rct_tile_element * tileElement)
+static void paint_lift_base(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -122,8 +127,13 @@ static void paint_lift_base(paint_session * session, uint8 rideIndex, uint8 trac
 }
 
 /** rct2: 0x0076C6DC */
-static void paint_lift_tower_section(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                     sint32 height, rct_tile_element * tileElement)
+static void paint_lift_tower_section(
+    paint_session *          session,
+    uint8                    rideIndex,
+    uint8                    trackSequence,
+    uint8                    direction,
+    sint32                   height,
+    const rct_tile_element * tileElement)
 {
     if (trackSequence == 1)
     {
