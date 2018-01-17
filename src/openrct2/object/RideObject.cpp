@@ -505,7 +505,7 @@ uint8 RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * ve
     uint8 numHorizontalFrames;
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SWINGING)
     {
-        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) && !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
+        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) && !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SLIDE_SWING))
         {
             if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25)
             {
@@ -516,7 +516,7 @@ uint8 RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * ve
                 numHorizontalFrames = 5;
             }
         }
-        else if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) || !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
+        else if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) || !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SLIDE_SWING))
         {
             numHorizontalFrames = 7;
         }

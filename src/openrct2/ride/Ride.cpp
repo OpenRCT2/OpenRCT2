@@ -4491,7 +4491,7 @@ static rct_vehicle *vehicle_create_car(
     regs.edx = vehicleEntry->spacing >> 1;
     *remainingDistance -= regs.edx;
     vehicle->remaining_distance = *remainingDistance;
-    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_30)) {
+    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)) {
         *remainingDistance -= regs.edx;
     }
 
@@ -4527,7 +4527,7 @@ static rct_vehicle *vehicle_create_car(
         vehicle->peep[i] = SPRITE_INDEX_NULL;
     }
 
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_31) {
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT) {
         // loc_6DDCA4:
         vehicle->var_CD = 0;
         sint32 direction = tile_element_get_direction(tileElement);
@@ -4558,11 +4558,11 @@ static rct_vehicle *vehicle_create_car(
         sprite_move(chosenLoc.x, chosenLoc.y, z, (rct_sprite*)vehicle);
     } else {
         regs.dl = 0;
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_28) {
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIR_LIFT) {
             regs.dl = 1;
         }
 
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_30) {
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART) {
             // Choose which lane Go Kart should start in
             regs.dl = 5;
             if (vehicleIndex & 1) {
@@ -4848,7 +4848,7 @@ static bool ride_create_vehicles(Ride *ride, sint32 rideIndex, rct_xy_element *e
 
                 rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
-                if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_31)) {
+                if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)) {
                     vehicle_update_track_motion(vehicle, nullptr);
                 }
 
