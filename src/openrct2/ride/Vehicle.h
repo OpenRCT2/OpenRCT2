@@ -45,26 +45,29 @@ typedef struct rct_ride_entry_vehicle {
     uint8 additional_animation;     // 0x11 , 0x2B
     uint32 flags;                   // 0x12 , 0x2C
     uint16 base_num_frames;         // 0x16 , 0x30, The number of sprites for a flat non-banked track piece.
-    uint32 base_image_id;           // 0x18 , 0x32
-    uint32 var_1C;                  // 0x1C , 0x36
-    uint32 var_20;                  // 0x20 , 0x3A
-    uint32 var_24;                  // 0x24 , 0x3E
-    uint32 var_28;                  // 0x28 , 0x42
-    uint32 var_2C;                  // 0x2C , 0x46
-    uint32 var_30;                  // 0x30 , 0x4A
-    uint32 var_34;                  // 0x34 , 0x4E
-    uint32 var_38;                  // 0x38 , 0x52
-    uint32 var_3C;                  // 0x3C , 0x56
-    uint32 var_40;                  // 0x40 , 0x5A
-    uint32 var_44;                  // 0x44 , 0x5E
-    uint32 var_48;                  // 0x48 , 0x62
-    uint32 var_4C;                  // 0x4C , 0x66
+    uint32 base_image_id;           // 0x18 , 0x32, Following image_id's populated during loading
+    uint32 restraint_image_id;                      // 0x1C , 0x36
+    uint32 gentle_slope_image_id;                   // 0x20 , 0x3A
+    uint32 steep_slope_image_id;                    // 0x24 , 0x3E
+    uint32 vertical_slope_image_id;                 // 0x28 , 0x42
+    uint32 diagonal_slope_image_id;                 // 0x2C , 0x46
+    uint32 banked_image_id;                         // 0x30 , 0x4A
+    uint32 inline_twist_image_id;                   // 0x34 , 0x4E
+    uint32 flat_to_gentle_bank_image_id;            // 0x38 , 0x52
+    uint32 diagonal_to_gentle_slope_bank_image_id;  // 0x3C , 0x56
+    uint32 gentle_slope_to_bank_image_id;           // 0x40 , 0x5A
+    uint32 gentle_slope_bank_turn_image_id;         // 0x44 , 0x5E
+    uint32 flat_bank_to_gentle_slope_image_id;      // 0x48 , 0x62
+    union {
+        uint32 curved_lift_hill_image_id;           // 0x4C , 0x66
+        uint32 corkscrew_image_id;                  // 0x4C , 0x66
+    };
     uint32 no_vehicle_images;       // 0x50 , 0x6A
     uint8 no_seating_rows;          // 0x54 , 0x6E
     uint8 spinning_inertia;         // 0x55 , 0x6F
     uint8 spinning_friction;        // 0x56 , 0x70
     uint8 friction_sound_id;        // 0x57 , 0x71
-    uint8 var_58;                   // 0x58 , 0x72
+    uint8 log_flume_reverser_vehicle_type;          // 0x58 , 0x72
     uint8 sound_range;              // 0x59 , 0x73
     uint8 double_sound_frequency;   // 0x5A , 0x74 (Doubles the velocity when working out the sound frequency {used on go karts})
     uint8 powered_acceleration;     // 0x5B , 0x75
@@ -335,7 +338,7 @@ enum {
     VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS = (1 << 11),
     VEHICLE_SPRITE_FLAG_CORKSCREWS = (1 << 12),
     VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION = (1 << 13),
-    VEHICLE_SPRITE_FLAG_14 = (1 << 14),
+    VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL = (1 << 14),
     VEHICLE_SPRITE_FLAG_15 = (1 << 15),
 };
 

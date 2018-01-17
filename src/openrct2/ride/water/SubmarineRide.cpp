@@ -39,7 +39,7 @@ void vehicle_visual_submarine(paint_session * session, sint32 x, sint32 imageDir
             baseImage_id /= 8;
             baseImage_id += ((vehicle->restraints_position - 64) / 64) * 4;
             baseImage_id *= vehicleEntry->base_num_frames;
-            baseImage_id += vehicleEntry->var_1C;
+            baseImage_id += vehicleEntry->restraint_image_id;
         }
     }
     else

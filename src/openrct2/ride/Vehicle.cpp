@@ -8254,7 +8254,7 @@ loc_6DAEB9:
         {
             if (vehicle->track_progress == 32)
             {
-                vehicle->vehicle_type = vehicleEntry->var_58;
+                vehicle->vehicle_type = vehicleEntry->log_flume_reverser_vehicle_type;
                 vehicleEntry          = vehicle_get_vehicle_entry(vehicle);
             }
         }
