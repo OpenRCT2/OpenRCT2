@@ -1461,7 +1461,7 @@ static bool vehicle_open_restraints(rct_vehicle * vehicle)
                 continue;
             }
         }
-        if (vehicleEntry->additional_animation == VEHICLE_ENTRY_ADDITIONAL_ANIMATION_6 && vehicle->animation_frame != 0)
+        if (vehicleEntry->animation == VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER && vehicle->animation_frame != 0)
         {
 
             if (vehicle->var_C8 + 0x3333 < 0xFFFF)
@@ -7284,9 +7284,9 @@ static void vehicle_update_additional_animation(rct_vehicle * vehicle)
     {
         return;
     }
-    switch (vehicleEntry->additional_animation)
+    switch (vehicleEntry->animation)
     {
-    case VEHICLE_ENTRY_ADDITIONAL_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // loc_6D652B
+    case VEHICLE_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // loc_6D652B
         *var_C8 += _vehicleVelocityF64E08;
         al = (*var_C8 >> 20) & 3;
         if (vehicle->animation_frame != al)
@@ -7319,7 +7319,7 @@ static void vehicle_update_additional_animation(rct_vehicle * vehicle)
             vehicle_invalidate(vehicle);
         }
         break;
-    case VEHICLE_ENTRY_ADDITIONAL_ANIMATION_2: // loc_6D6424
+    case VEHICLE_ENTRY_ANIMATION_SWAN: // loc_6D6424
         *var_C8 += _vehicleVelocityF64E08;
         al = (*var_C8 >> 18) & 2;
         if (vehicle->animation_frame != al)
@@ -7328,7 +7328,7 @@ static void vehicle_update_additional_animation(rct_vehicle * vehicle)
             vehicle_invalidate(vehicle);
         }
         break;
-    case VEHICLE_ENTRY_ADDITIONAL_ANIMATION_3: // loc_6D6482
+    case VEHICLE_ENTRY_ANIMATION_CANOES: // loc_6D6482
         *var_C8 += _vehicleVelocityF64E08;
         eax = ((*var_C8 >> 13) & 0xFF) * 6;
         ah  = (eax >> 8) & 0xFF;
@@ -7338,7 +7338,7 @@ static void vehicle_update_additional_animation(rct_vehicle * vehicle)
             vehicle_invalidate(vehicle);
         }
         break;
-    case VEHICLE_ENTRY_ADDITIONAL_ANIMATION_4: // loc_6D64F7
+    case VEHICLE_ENTRY_ANIMATION_ROW_BOATS: // loc_6D64F7
         *var_C8 += _vehicleVelocityF64E08;
         eax = ((*var_C8 >> 13) & 0xFF) * 7;
         ah  = (eax >> 8) & 0xFF;
@@ -7348,7 +7348,7 @@ static void vehicle_update_additional_animation(rct_vehicle * vehicle)
             vehicle_invalidate(vehicle);
         }
         break;
-    case VEHICLE_ENTRY_ADDITIONAL_ANIMATION_5: // loc_6D6453
+    case VEHICLE_ENTRY_ANIMATION_WATER_TRICYCLES: // loc_6D6453
         *var_C8 += _vehicleVelocityF64E08;
         al = (*var_C8 >> 19) & 1;
         if (vehicle->animation_frame != al)
@@ -7357,7 +7357,7 @@ static void vehicle_update_additional_animation(rct_vehicle * vehicle)
             vehicle_invalidate(vehicle);
         }
         break;
-    case VEHICLE_ENTRY_ADDITIONAL_ANIMATION_6: // loc_6D65C3
+    case VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER: // loc_6D65C3
         if (vehicle->var_C8 <= 0xCCCC)
         {
             vehicle->var_C8 += 0x3333;
@@ -7370,7 +7370,7 @@ static void vehicle_update_additional_animation(rct_vehicle * vehicle)
             vehicle_invalidate(vehicle);
         }
         break;
-    case VEHICLE_ENTRY_ADDITIONAL_ANIMATION_7: // loc_6D63F5
+    case VEHICLE_ENTRY_ANIMATION_HELICARS: // loc_6D63F5
         *var_C8 += _vehicleVelocityF64E08;
         al = (*var_C8 >> 18) & 3;
         if (vehicle->animation_frame != al)
@@ -7379,7 +7379,7 @@ static void vehicle_update_additional_animation(rct_vehicle * vehicle)
             vehicle_invalidate(vehicle);
         }
         break;
-    case VEHICLE_ENTRY_ADDITIONAL_ANIMATION_8: // loc_6D64B6
+    case VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES: // loc_6D64B6
         if (vehicle->num_peeps != 0)
         {
             *var_C8 += _vehicleVelocityF64E08;
@@ -7392,7 +7392,7 @@ static void vehicle_update_additional_animation(rct_vehicle * vehicle)
             }
         }
         break;
-    case VEHICLE_ENTRY_ADDITIONAL_ANIMATION_9: // loc_6D65E1
+    case VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER: // loc_6D65E1
         if (vehicle->seat_rotation != vehicle->target_seat_rotation)
         {
             if (vehicle->var_C8 <= 0xCCCC)

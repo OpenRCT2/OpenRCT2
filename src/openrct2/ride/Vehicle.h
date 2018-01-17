@@ -42,7 +42,7 @@ typedef struct rct_ride_entry_vehicle {
     uint8 sprite_width;             // 0x0E , 0x28
     uint8 sprite_height_negative;   // 0x0F , 0x29
     uint8 sprite_height_positive;   // 0x10 , 0x2A
-    uint8 additional_animation;     // 0x11 , 0x2B
+    uint8 animation;                // 0x11 , 0x2B
     uint32 flags;                   // 0x12 , 0x2C
     uint16 base_num_frames;         // 0x16 , 0x30, The number of sprites for a flat non-banked track piece.
     uint32 base_image_id;           // 0x18 , 0x32, Following image_id's populated during loading
@@ -260,16 +260,16 @@ enum {
 };
 
 enum {
-    VEHICLE_ENTRY_ADDITIONAL_ANIMATION_0,
-    VEHICLE_ENTRY_ADDITIONAL_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE,
-    VEHICLE_ENTRY_ADDITIONAL_ANIMATION_2,
-    VEHICLE_ENTRY_ADDITIONAL_ANIMATION_3,
-    VEHICLE_ENTRY_ADDITIONAL_ANIMATION_4,
-    VEHICLE_ENTRY_ADDITIONAL_ANIMATION_5,
-    VEHICLE_ENTRY_ADDITIONAL_ANIMATION_6,
-    VEHICLE_ENTRY_ADDITIONAL_ANIMATION_7,
-    VEHICLE_ENTRY_ADDITIONAL_ANIMATION_8,
-    VEHICLE_ENTRY_ADDITIONAL_ANIMATION_9
+    VEHICLE_ENTRY_ANIMATION_NONE,
+    VEHICLE_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE,
+    VEHICLE_ENTRY_ANIMATION_SWAN,
+    VEHICLE_ENTRY_ANIMATION_CANOES,
+    VEHICLE_ENTRY_ANIMATION_ROW_BOATS,
+    VEHICLE_ENTRY_ANIMATION_WATER_TRICYCLES,
+    VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER,
+    VEHICLE_ENTRY_ANIMATION_HELICARS,
+    VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES,
+    VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER
 };
 
 enum {
