@@ -49,6 +49,7 @@
 #include "../world/Sprite.h"
 #include "Peep.h"
 #include "Staff.h"
+#include "../windows/Intent.h"
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 bool gPathFindDebug = false;
@@ -2247,7 +2248,8 @@ void peep_remove(rct_peep * peep)
         if (peep->outside_of_park == 0)
         {
             decrement_guests_in_park();
-            gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+            auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
+            context_broadcast_intent(&intent);
         }
         if (peep->state == PEEP_STATE_ENTERING_PARK)
         {
@@ -5739,7 +5741,8 @@ static void peep_update_leaving_park(rct_peep * peep)
     peep->outside_of_park       = 1;
     peep->destination_tolerance = 5;
     decrement_guests_in_park();
-    gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+    auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
+    context_broadcast_intent(&intent);
     peep->var_37 = 1;
 
     window_invalidate_by_class(WC_GUEST_LIST);
@@ -5883,8 +5886,8 @@ static void peep_update_entering_park(rct_peep * peep)
     peep->time_in_park    = gScenarioTicks;
     increment_guests_in_park();
     decrement_guests_heading_for_park();
-    gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
-    window_invalidate_by_class(WC_GUEST_LIST);
+    auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
+    context_broadcast_intent(&intent);
 }
 
 /**

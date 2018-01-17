@@ -5250,7 +5250,8 @@ static void vehicle_kill_all_passengers(rct_vehicle * vehicle)
             if (peep->outside_of_park == 0)
             {
                 decrement_guests_in_park();
-                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+                auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
+                context_broadcast_intent(&intent);
             }
             ride->num_riders--;
             peep_sprite_remove(peep);

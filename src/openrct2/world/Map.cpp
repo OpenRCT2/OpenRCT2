@@ -4352,10 +4352,9 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
         }
     }
 
-    rct_window* w = window_bring_to_front_by_number(WC_BANNER, *ecx);
-    if (w) {
-        window_invalidate(w);
-    }
+    auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
+    intent.putExtra(INTENT_EXTRA_BANNER_INDEX, *ecx);
+    context_broadcast_intent(&intent);
 
     *ebx = 0;
 }

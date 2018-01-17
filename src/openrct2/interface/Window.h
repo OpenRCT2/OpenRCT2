@@ -554,7 +554,6 @@ extern rct_window * gWindowNextSlot;
 extern rct_window * gWindowAudioExclusive;
 
 extern uint16 gWindowUpdateTicks;
-extern uint8 gToolbarDirtyFlags;
 extern uint16 gWindowMapFlashingFlags;
 
 extern colour_t gCurrentWindowColours[4];

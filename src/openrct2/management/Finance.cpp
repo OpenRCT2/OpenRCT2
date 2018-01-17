@@ -25,6 +25,8 @@
 #include "../world/Park.h"
 #include "../world/Sprite.h"
 #include "Finance.h"
+#include "../Context.h"
+#include "../windows/Intent.h"
 
 /**
  * Monthly staff wages
@@ -85,9 +87,8 @@ void finance_payment(money32 amount, rct_expenditure_type type)
         gCurrentExpenditure -= amount;
     }
 
-
-    gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
-    window_invalidate_by_class(WC_FINANCES);
+    auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
+    context_broadcast_intent(&intent);
 }
 
 /**
@@ -346,8 +347,8 @@ void game_command_set_current_loan(sint32 * eax, sint32 * ebx, sint32 * ecx, sin
         gBankLoan    = newLoan;
         gInitialCash = gCash;
 
-        window_invalidate_by_class(WC_FINANCES);
-        gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
+        auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
+        context_broadcast_intent(&intent);
     }
 
     *ebx = 0;

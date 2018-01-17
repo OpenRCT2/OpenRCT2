@@ -376,6 +376,37 @@ public:
 
             window_invalidate(w);
         }
+
+        case INTENT_ACTION_UPDATE_CLIMATE:
+            gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
+            window_invalidate_by_class(WC_GUEST_LIST);
+            break;
+
+        case INTENT_ACTION_UPDATE_PARK_RATING:
+            gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
+            window_invalidate_by_class(WC_PARK_INFORMATION);
+            break;
+
+        case INTENT_ACTION_UPDATE_DATE:
+            gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_DATE;
+            break;
+
+        case INTENT_ACTION_UPDATE_CASH:
+            window_invalidate_by_class(WC_FINANCES);
+            gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
+            break;
+
+        case INTENT_ACTION_UPDATE_BANNER:
+        {
+            uint8 bannerIndex = static_cast<uint8>(intent.GetUIntExtra(INTENT_EXTRA_BANNER_INDEX));
+
+            rct_window * w = window_find_by_number(WC_BANNER, bannerIndex);
+            if (w != nullptr)
+            {
+                window_invalidate(w);
+            }
+        }
+
         }
     }
 

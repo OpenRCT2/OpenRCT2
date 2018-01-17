@@ -31,6 +31,8 @@
 #include "../localisation/Localisation.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
+#include "../windows/Intent.h"
+#include "../Context.h"
 
 rct_banner gBanners[MAX_BANNERS];
 
@@ -159,11 +161,10 @@ static money32 BannerSetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 direc
             return MONEY32_UNDEFINED;
         }
 
-        rct_window* window = window_find_by_number(WC_BANNER, tileElement->properties.banner.index);
-        if (window != nullptr)
-        {
-            window_invalidate(window);
-        }
+        auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
+        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, tileElement->properties.banner.index);
+        context_broadcast_intent(&intent);
+
         gBanners[tileElement->properties.banner.index].colour = colour;
         map_invalidate_tile_zoom1(x, y, z, z + 32);
     }
@@ -331,11 +332,10 @@ static money32 BannerSetName(uint8 bannerIndex,
         rct_string_id prevStringId = banner->string_idx;
         banner->string_idx = stringId;
         user_string_free(prevStringId);
-        rct_window* w = window_bring_to_front_by_number(WC_BANNER, bannerIndex);
-        if (w != nullptr)
-        {
-            window_invalidate(w);
-        }
+
+        auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
+        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, bannerIndex);
+        context_broadcast_intent(&intent);
     }
     else
     {
@@ -398,11 +398,10 @@ static money32 BannerSetStyle(uint8 bannerIndex, uint8 colour, uint8 textColour,
         rct_string_id prevStringId = banner->string_idx;
         banner->string_idx = stringId;
         user_string_free(prevStringId);
-        rct_window* w = window_bring_to_front_by_number(WC_BANNER, bannerIndex);
-        if (w != nullptr)
-        {
-            window_invalidate(w);
-        }
+
+        auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
+        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, bannerIndex);
+        context_broadcast_intent(&intent);
     }
     else
     {
