@@ -1,9 +1,11 @@
 ﻿---
 BasedOnStyle: LLVM
 AccessModifierOffset: '-4'
+AlignAfterOpenBracket: AlwaysBreak
 AlignConsecutiveAssignments: 'true'
 AlignConsecutiveDeclarations: 'true'
 AllowShortFunctionsOnASingleLine: Empty
+BinPackParameters: 'false'
 BreakBeforeBraces: Allman
 ColumnLimit: '128'
 Cpp11BracedListStyle: 'false'
