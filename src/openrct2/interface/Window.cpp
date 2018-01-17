@@ -62,7 +62,6 @@ bool gUsingWidgetTextBox = false;
 TextInputSession * gTextInput;
 
 uint16 gWindowUpdateTicks;
-uint8 gToolbarDirtyFlags;
 uint16 gWindowMapFlashingFlags;
 
 colour_t gCurrentWindowColours[4];

@@ -49,6 +49,7 @@
 #include "Scenario.h"
 #include "../Context.h"
 #include "../ride/Track.h"
+#include "../windows/Intent.h"
 
 extern "C"
 {
@@ -318,7 +319,8 @@ static void scenario_day_update()
     uint16 casualtyPenaltyModifier = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
     gParkRatingCasualtyPenalty = std::max(0, gParkRatingCasualtyPenalty - casualtyPenaltyModifier);
 
-    gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_DATE;
+    auto intent = Intent(INTENT_ACTION_UPDATE_DATE);
+    context_broadcast_intent(&intent);
 }
 
 static void scenario_week_update()

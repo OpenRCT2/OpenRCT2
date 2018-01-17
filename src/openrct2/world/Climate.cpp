@@ -29,6 +29,8 @@
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "Climate.h"
+#include "../windows/Intent.h"
+#include "../Context.h"
 
 constexpr sint32 MAX_THUNDER_INSTANCES = 2;
 
@@ -124,7 +126,8 @@ extern "C"
             {
                 if (gClimateUpdateTimer == 960)
                 {
-                    gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
+                    auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
+                    context_broadcast_intent(&intent);
                 }
                 gClimateUpdateTimer--;
             }
@@ -142,7 +145,8 @@ extern "C"
                         {
                             gClimateCurrent.Weather = gClimateNext.Weather;
                             climate_determine_future_weather(scenario_rand());
-                            gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
+                            auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
+                            context_broadcast_intent(&intent);
                         }
                         else if (gClimateNext.RainLevel <= RAIN_LEVEL_HEAVY)
                         {
@@ -158,7 +162,8 @@ extern "C"
                 else
                 {
                     gClimateCurrent.Temperature = climate_step_weather_level(gClimateCurrent.Temperature, gClimateNext.Temperature);
-                    gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
+                    auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
+                    context_broadcast_intent(&intent);
                 }
             }
 

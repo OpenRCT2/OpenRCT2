@@ -68,6 +68,8 @@ static rct_widget window_game_bottom_toolbar_widgets[] =
     { WIDGETS_END },
 };
 
+uint8 gToolbarDirtyFlags;
+
 static void window_game_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_game_bottom_toolbar_invalidate(rct_window *w);
