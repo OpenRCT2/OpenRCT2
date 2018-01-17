@@ -4479,7 +4479,23 @@ STR_6170    :Anpassa
 STR_6171    :Sök
 STR_6172    :{SMALLFONT}{BLACK}Sök
 STR_6173    :Vänligen skriv in ett namn att söka:
-
+STR_6174    :Ladda sparfil
+STR_6175    :Ladda scenario
+STR_6176    :Scenario att ladda:
+STR_6177    :Load{MOVE_X}{87}Inget scenario valt
+STR_6178    :Load{MOVE_X}{87}{RED}Saknar scenario
+STR_6179    :Välj
+STR_6180    :Inget scenario valt
+STR_6181    :{RED}Saknar scenario
+STR_6182    :Följ{MOVE_X}{87}{STRING}
+STR_6183    :Följ{MOVE_X}{87}Inget objekt valt
+STR_6184    :Följ objekt
+STR_6185    :Välj objekt
+STR_6186    :Inget objekt valt
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :Spya
+STR_6189    :Anka
+STR_6190    :{SMALLFONT}{BLACK}Du kan inte välja ett objekt medan titelsekvensen spelas.
 STR_6191    :Mark
 STR_6192    :Vägg
 STR_6193    :{COMMA16} gäst
@@ -4491,6 +4507,8 @@ STR_6198    :{BLACK}Dag:
 STR_6199    :Välj datum
 STR_6200    :Återställ datum
 STR_6201    :{MONTH}
+STR_6202    :Aktivera virtuella golv
+STR_6203    :{SMALLFONT}{BLACK}När aktiverad, kommer ett rutnät att ritas i samma höjd som elementen är på när du håller in Ctrl eller Shift vilket förenklar vertikala placeringar.
 
 #############
 # Scenarion #
