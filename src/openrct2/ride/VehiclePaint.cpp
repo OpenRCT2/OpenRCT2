@@ -908,7 +908,7 @@ static void vehicle_sprite_paint(paint_session * session, rct_vehicle * vehicle,
     {
         baseImage_id += (vehicle->spin_sprite / 8) & 31;
     }
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23)
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION)
     {
         baseImage_id += vehicle->animation_frame;
     }
@@ -931,7 +931,7 @@ static void vehicle_sprite_paint(paint_session * session, rct_vehicle * vehicle,
             {
                 image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[i * 2],
                                                                      vehicle->peep_tshirt_colours[(i * 2) + 1]);
-                if (i == 0 && vehicleEntry->flags & VEHICLE_ENTRY_FLAG_24)
+                if (i == 0 && vehicleEntry->flags & VEHICLE_ENTRY_FLAG_RIDER_ANIMATION)
                 {
                     image_id += (vehicleEntry->no_vehicle_images * vehicle->animation_frame);
                 }
