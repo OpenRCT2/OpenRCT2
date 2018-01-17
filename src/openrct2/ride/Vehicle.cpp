@@ -4003,7 +4003,7 @@ loc_6D8E36:
 
     vehicle->var_C0++;
     if ((flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1) &&
-        (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_30) &&
+        (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART) &&
         (vehicle->var_C0 < 40))
     {
         return;
@@ -6666,7 +6666,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle * vehicle)
     }
 
     // Is chair lift type
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_28)
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIR_LIFT)
     {
         sint32 velocity = ride->speed << 16;
         if (_vehicleBreakdown == 0)
@@ -6970,7 +6970,7 @@ static void vehicle_update_swinging_car(rct_vehicle * vehicle)
     }
     sint16 cx = -dx;
 
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27)
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SLIDE_SWING)
     {
         dx = 5370;
         cx = -5370;
@@ -7768,7 +7768,7 @@ static bool vehicle_update_motion_collision_detection(rct_vehicle * vehicle, sin
             if (x_diff + y_diff >= ecx)
                 continue;
 
-            if (!(collideType->flags & VEHICLE_ENTRY_FLAG_30))
+            if (!(collideType->flags & VEHICLE_ENTRY_FLAG_GO_KART))
             {
                 mayCollide = true;
                 break;
@@ -7953,11 +7953,11 @@ static void sub_6DBF3E(rct_vehicle * vehicle)
     else
     {
         uint16 cx = 17;
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_28)
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIR_LIFT)
         {
             cx = 6;
         }
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_30)
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
         {
             cx = vehicle->var_CD == 6 ? 18 : 20;
         }
@@ -8102,7 +8102,7 @@ loc_6DB41D:
     {
         return false;
     }
-    if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_30) && vehicle->var_CD < 7)
+    if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART) && vehicle->var_CD < 7)
     {
         trackType = track_element_get_type(tileElement);
         if (trackType == TRACK_ELEM_FLAT)
@@ -8393,7 +8393,7 @@ loc_6DB967:
         }
     }
 
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_30)
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
     {
         vehicle->velocity -= vehicle->velocity >> 2;
     }
@@ -8713,7 +8713,7 @@ loc_6DBE7F:
         }
     }
 
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_30)
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
     {
         vehicle->velocity -= vehicle->velocity >> 2;
         _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;

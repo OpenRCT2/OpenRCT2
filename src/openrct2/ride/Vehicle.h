@@ -252,11 +252,11 @@ enum {
     VEHICLE_ENTRY_FLAG_24 = 1 << 24,
     VEHICLE_ENTRY_FLAG_25 = 1 << 25,
     VEHICLE_ENTRY_FLAG_26 = 1 << 26,
-    VEHICLE_ENTRY_FLAG_27 = 1 << 27,
-    VEHICLE_ENTRY_FLAG_28 = 1 << 28,
+    VEHICLE_ENTRY_FLAG_SLIDE_SWING = 1 << 27,                   // Set on dingy slides. They have there own swing value calculations and have a different amount of images.
+    VEHICLE_ENTRY_FLAG_CHAIR_LIFT = 1 << 28,
     VEHICLE_ENTRY_FLAG_WATER_RIDE = 1 << 29,                    // Set on rides where water would provide continuous propulsion
-    VEHICLE_ENTRY_FLAG_30 = 1 << 30,
-    VEHICLE_ENTRY_FLAG_31 = 1u << 31,
+    VEHICLE_ENTRY_FLAG_GO_KART = 1 << 30,
+    VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT = 1u << 31,
 };
 
 enum {
