@@ -4324,7 +4324,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle * vehicle)
     {
         return;
     }
-    if (vehicleEntry->flags & (VEHICLE_ENTRY_FLAG_23 | VEHICLE_ENTRY_FLAG_24))
+    if (vehicleEntry->flags & (VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION | VEHICLE_ENTRY_FLAG_RIDER_ANIMATION))
     {
         vehicle_update_additional_animation(vehicle);
     }
@@ -9652,7 +9652,7 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
             vehicle_update_spinning_car(car);
         }
         // Rider sprites?? animation??
-        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23) || (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_24))
+        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION) || (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_RIDER_ANIMATION))
         {
             vehicle_update_additional_animation(car);
         }
