@@ -24,6 +24,7 @@
 
 #ifdef _WIN32
 
+#undef interface
 #include <windows.h>
 #include <lmcons.h>
 #include <psapi.h>
@@ -31,6 +32,7 @@
 #include <sys/stat.h>
 
 #include "../config/Config.h"
+#include "../core/Util.hpp"
 #include "../localisation/Date.h"
 #include "../localisation/Language.h"
 #include "../OpenRCT2.h"
@@ -47,6 +49,9 @@
 
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
+
+extern "C"
+{
 
 static utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
@@ -206,7 +211,7 @@ void platform_resolve_openrct_data_path()
 
     if (gCustomOpenrctDataPath[0] != 0) {
         wchar_t *customOpenrctDataPathW = utf8_to_widechar(gCustomOpenrctDataPath);
-        if (GetFullPathNameW(customOpenrctDataPathW, countof(wOutPath), wOutPath, NULL) == 0) {
+        if (GetFullPathNameW(customOpenrctDataPathW, (DWORD)Util::CountOf(wOutPath), wOutPath, NULL) == 0) {
             log_fatal("Unable to resolve path '%s'.", gCustomOpenrctDataPath);
             exit(-1);
         }
@@ -507,7 +512,7 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 {
 #if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
     wchar_t *fontFolder;
-    if (SUCCEEDED(SHGetKnownFolderPath(&FOLDERID_Fonts, 0, NULL, &fontFolder)))
+    if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Fonts, 0, NULL, &fontFolder)))
     {
         // Convert wchar to utf8, then copy the font folder path to the buffer.
         utf8 *outPathTemp = widechar_to_utf8(fontFolder);
@@ -540,7 +545,7 @@ utf8 * platform_get_absolute_path(const utf8 * relativePath, const utf8 * basePa
 
     wchar_t * pathW = utf8_to_widechar(path);
     wchar_t fullPathW[MAX_PATH];
-    DWORD fullPathLen = GetFullPathNameW(pathW, countof(fullPathW), fullPathW, NULL);
+    DWORD fullPathLen = GetFullPathNameW(pathW, (DWORD)Util::CountOf(fullPathW), fullPathW, NULL);
 
     free(pathW);
 
@@ -792,3 +797,5 @@ bool platform_setup_uri_protocol()
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif
+
+}
