@@ -14,7 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include "../Cheats.h"
+#include "../core/Math.hpp"
+#include "../core/Util.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../OpenRCT2.h"
@@ -22,9 +25,12 @@
 #include "../world/Map.h"
 #include "Ride.h"
 #include "RideData.h"
-#include "ride_ratings.h"
+#include "RideRatings.h"
 #include "Station.h"
 #include "Track.h"
+
+extern "C"
+{
 
 enum {
     RIDE_RATINGS_STATE_FIND_NEXT_RIDE,
@@ -69,7 +75,7 @@ typedef void (*ride_ratings_calculation)(Ride *ride);
 
 rct_ride_rating_calc_data gRideRatingsCalcData;
 
-static const ride_ratings_calculation ride_ratings_calculate_func_table[RIDE_TYPE_COUNT];
+static ride_ratings_calculation ride_ratings_get_calculate_func(uint8 rideType);
 
 static void ride_ratings_update_state();
 static void ride_ratings_update_state_0();
@@ -491,13 +497,14 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElemen
     sint32 y = gRideRatingsCalcData.proximity_y;
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
+        sint32 waterHeight;
         switch (tile_element_get_type(tileElement)) {
         case TILE_ELEMENT_TYPE_SURFACE:
             gRideRatingsCalcData.proximity_base_height = tileElement->base_height;
             if (tileElement->base_height * 8 == gRideRatingsCalcData.proximity_z) {
                 proximity_score_increment(PROXIMITY_SURFACE_TOUCH);
             }
-            sint32 waterHeight = map_get_water_height(tileElement);
+            waterHeight = map_get_water_height(tileElement);
             if (waterHeight != 0) {
                 sint32 z = waterHeight * 16;
                 if (z <= gRideRatingsCalcData.proximity_z) {
@@ -626,7 +633,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElemen
 
 static void ride_ratings_calculate(Ride *ride)
 {
-    ride_ratings_calculation calcFunc = ride_ratings_calculate_func_table[ride->type];
+    auto calcFunc = ride_ratings_get_calculate_func(ride->type);
     if (calcFunc != NULL) {
         calcFunc(ride);
     }
@@ -643,10 +650,7 @@ static void ride_ratings_calculate(Ride *ride)
 
 static void ride_ratings_calculate_value(Ride *ride)
 {
-    typedef struct row {
-        sint32 months, multiplier, divisor, summand;
-    } row;
-
+    struct row { sint32 months, multiplier, divisor, summand; };
     static const row age_table_new[] = {
         {5,         3,          2,          0},   // 1.5x
         {13,        6,          5,          0},   // 1.2x
@@ -692,11 +696,11 @@ static void ride_ratings_calculate_value(Ride *ride)
     }
 
     const row *age_table = age_table_new;
-    sint32 table_size = countof(age_table_new);
+    sint32 table_size = Util::CountOf(age_table_new);
 
 #ifdef ORIGINAL_RATINGS
     age_table = age_table_old;
-    table_size = countof(age_table_old);
+    table_size = Util::CountOf(age_table_old);
 #endif
 
     row last_row = age_table[table_size-1];
@@ -728,7 +732,7 @@ static void ride_ratings_calculate_value(Ride *ride)
     if (otherRidesOfSameType > 1)
         value -= value / 4;
 
-    ride->value = max(0, value);
+    ride->value = std::max(0, value);
 }
 
 /**
@@ -856,7 +860,7 @@ static void ride_ratings_apply_adjustments(Ride *ride, rating_tuple *ratings)
         sint32 nauseaModifier;
         if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS) {
             // Limit airtime bonus for heartline twister coaster (see issues #2031 and #2064)
-            excitementModifier = min(ride->total_air_time, 96) / 8;
+            excitementModifier = std::min<uint16>(ride->total_air_time, 96) / 8;
         } else {
             excitementModifier = ride->total_air_time / 8;
         }
@@ -874,12 +878,14 @@ static void ride_ratings_apply_adjustments(Ride *ride, rating_tuple *ratings)
 static void ride_ratings_apply_intensity_penalty(rating_tuple *ratings)
 {
     static const ride_rating intensityBounds[] = { 1000, 1100, 1200, 1320, 1450 };
-    sint32 i;
-
     ride_rating excitement = ratings->excitement;
-    for (i = 0; i < countof(intensityBounds); i++)
-        if (ratings->intensity >= intensityBounds[i])
+    for (auto intensityBound : intensityBounds)
+    {
+        if (ratings->intensity >= intensityBound)
+        {
             excitement -= excitement / 4;
+        }
+    }
     ratings->excitement = excitement;
 }
 
@@ -896,14 +902,14 @@ static void set_unreliability_factor(Ride *ride)
 
 static uint32 get_proximity_score_helper_1(uint16 x, uint16 max, uint32 multiplier)
 {
-    return (min(x, max) * multiplier) >> 16;
+    return (std::min(x, max) * multiplier) >> 16;
 }
 
 static uint32 get_proximity_score_helper_2(uint16 x, uint16 additionIfNotZero, uint16 max, uint32 multiplier)
 {
     uint32 result = x;
     if (result != 0) result += additionIfNotZero;
-    return (min(result, max) * multiplier) >> 16;
+    return (std::min<sint32>(result, max) * multiplier) >> 16;
 }
 
 static uint32 get_proximity_score_helper_3(uint16 x, uint16 resultIfNotZero)
@@ -1039,12 +1045,12 @@ static rating_tuple get_sloped_turns_rating(Ride* ride) {
     sint32 no_2_turns = get_turn_count_2_elements(ride, 2);
     sint32 no_1_turns = get_turn_count_1_element(ride, 2);
 
-    rating.excitement = (min(no_4_plus_turns, 4) * 0x78000) >> 16;
-    rating.excitement += (min(no_3_turns, 6) * 273066) >> 16;
-    rating.excitement += (min(no_2_turns, 6) * 0x3AAAA) >> 16;
-    rating.excitement += (min(no_1_turns, 7) * 187245) >> 16;
+    rating.excitement = (std::min(no_4_plus_turns, 4) * 0x78000) >> 16;
+    rating.excitement += (std::min(no_3_turns, 6) * 273066) >> 16;
+    rating.excitement += (std::min(no_2_turns, 6) * 0x3AAAA) >> 16;
+    rating.excitement += (std::min(no_1_turns, 7) * 187245) >> 16;
     rating.intensity = 0;
-    rating.nausea = (min(no_4_plus_turns, 8) * 0x78000) >> 16;
+    rating.nausea = (std::min(no_4_plus_turns, 8) * 0x78000) >> 16;
 
     return rating;
 }
@@ -1056,7 +1062,7 @@ static rating_tuple get_sloped_turns_rating(Ride* ride) {
 static rating_tuple get_inversions_ratings(uint8 inversions) {
     rating_tuple rating;
 
-    rating.excitement = (min(inversions, 6) * 0x1AAAAA) >> 16;
+    rating.excitement = (std::min<sint32>(inversions, 6) * 0x1AAAAA) >> 16;
     rating.intensity = (inversions * 0x320000) >> 16;
     rating.nausea = (inversions * 0x15AAAA) >> 16;
 
@@ -1095,17 +1101,17 @@ static rating_tuple get_special_track_elements_rating(uint8 type, Ride *ride) {
         }
     }
     uint8 helix_sections = ride_get_helix_sections(ride);
-    sint32 al = min(helix_sections, 9);
+    sint32 al = std::min<sint32>(helix_sections, 9);
     excitement += (al * 254862) >> 16;
 
-    al = min(helix_sections, 11);
+    al = std::min<sint32>(helix_sections, 11);
     intensity += (al * 148945) >> 16;
 
-    al = max(helix_sections - 5, 0);
-    al = min(al, 10);
+    al = std::max<sint32>(helix_sections - 5, 0);
+    al = std::min(al, 10);
     nausea += (al * 0x140000) >> 16;
 
-    rating_tuple rating = { excitement, intensity, nausea };
+    rating_tuple rating = { (ride_rating)excitement, (ride_rating)intensity, (ride_rating)nausea };
     return rating;
 }
 
@@ -1142,7 +1148,7 @@ static rating_tuple ride_ratings_get_turns_ratings(Ride *ride)
     intensity  += inversions_rating.intensity;
     nausea     += inversions_rating.nausea;
 
-    rating_tuple rating = { excitement, intensity, nausea };
+    rating_tuple rating = { (ride_rating)excitement, (ride_rating)intensity, (ride_rating)nausea };
     return rating;
 }
 
@@ -1153,13 +1159,13 @@ static rating_tuple ride_ratings_get_turns_ratings(Ride *ride)
 static rating_tuple ride_ratings_get_sheltered_ratings(Ride *ride)
 {
     sint32 sheltered_length_shifted = (ride->sheltered_length) >> 16;
-    uint32 eax = min(sheltered_length_shifted, 1000);
+    uint32 eax = std::min(sheltered_length_shifted, 1000);
     sint32 excitement = (eax * 9175) >> 16;
 
-    eax = min(sheltered_length_shifted, 2000);
+    eax = std::min(sheltered_length_shifted, 2000);
     sint32 intensity = (eax * 0x2666) >> 16;
 
-    eax = min(sheltered_length_shifted, 1000);
+    eax = std::min(sheltered_length_shifted, 1000);
     sint32 nausea = (eax * 0x4000) >> 16;
 
     /*eax = (ride->var_11C * 30340) >> 16;*/
@@ -1176,10 +1182,10 @@ static rating_tuple ride_ratings_get_sheltered_ratings(Ride *ride)
     }
 
     uint8 lowerval = ride->num_sheltered_sections & 0x1F;
-    lowerval = min(lowerval, 11);
+    lowerval = std::min<uint8>(lowerval, 11);
     excitement += (lowerval * 774516) >> 16;
 
-    rating_tuple rating = { excitement, intensity, nausea };
+    rating_tuple rating = { (ride_rating)excitement, (ride_rating)intensity, (ride_rating)nausea };
     return rating;
 }
 
@@ -1202,12 +1208,12 @@ static rating_tuple ride_ratings_get_gforce_ratings(Ride *ride)
 
     // Apply maximum negative G force factor
     fixed16_2dp gforce = ride->max_negative_vertical_g;
-    result.excitement += (clamp(-FIXED_2DP(2,50), gforce, FIXED_2DP(0,00)) * -15728) >> 16;
+    result.excitement += (Math::Clamp<fixed16_2dp>(-FIXED_2DP(2,50), gforce, FIXED_2DP(0,00)) * -15728) >> 16;
     result.intensity += ((gforce - FIXED_2DP(1,00)) * -52428) >> 16;
     result.nausea += ((gforce - FIXED_2DP(1,00)) * -14563) >> 16;
 
     // Apply lateral G force factor
-    result.excitement += (min(FIXED_2DP(1,50), ride->max_lateral_g) * 26214) >> 16;
+    result.excitement += (std::min<fixed16_2dp>(FIXED_2DP(1,50), ride->max_lateral_g) * 26214) >> 16;
     result.intensity += ride->max_lateral_g;
     result.nausea += (ride->max_lateral_g * 21845) >> 16;
 
@@ -1241,7 +1247,7 @@ static rating_tuple ride_ratings_get_drop_ratings(Ride *ride)
 
     // Apply number of drops factor
     sint32 drops = ride->drops & 0x3F;
-    result.excitement += (min(9, drops) * 728177) >> 16;
+    result.excitement += (std::min(9, drops) * 728177) >> 16;
     result.intensity += (drops * 928426) >> 16;
     result.nausea += (drops * 655360) >> 16;
 
@@ -1289,8 +1295,8 @@ static sint32 ride_ratings_get_scenery_score(Ride *ride)
 
     // Count surrounding scenery items
     sint32 numSceneryItems = 0;
-    for (sint32 yy = max(y - 5, 0); yy <= min(y + 5, 255); yy++) {
-        for (sint32 xx = max(x - 5, 0); xx <= min(x + 5, 255); xx++) {
+    for (sint32 yy = std::max(y - 5, 0); yy <= std::min(y + 5, 255); yy++) {
+        for (sint32 xx = std::max(x - 5, 0); xx <= std::min(x + 5, 255); xx++) {
             // Count scenery items on this tile
             rct_tile_element *tileElement = map_get_first_element_at(xx, yy);
             do {
@@ -1304,7 +1310,7 @@ static sint32 ride_ratings_get_scenery_score(Ride *ride)
         }
     }
 
-    return min(numSceneryItems, 47) * 5;
+    return std::min(numSceneryItems, 47) * 5;
 }
 
 #pragma region Ride rating calculation helpers
@@ -1323,15 +1329,15 @@ static void ride_ratings_add(rating_tuple * rating, sint32 excitement, sint32 in
     sint32 newExcitement = rating->excitement + excitement;
     sint32 newIntensity = rating->intensity + intensity;
     sint32 newNausea = rating->nausea + nausea;
-    rating->excitement = clamp(0, newExcitement, INT16_MAX);
-    rating->intensity = clamp(0, newIntensity, INT16_MAX);
-    rating->nausea = clamp(0, newNausea, INT16_MAX);
+    rating->excitement = Math::Clamp(0, newExcitement, INT16_MAX);
+    rating->intensity = Math::Clamp(0, newIntensity, INT16_MAX);
+    rating->nausea = Math::Clamp(0, newNausea, INT16_MAX);
 }
 
 static void ride_ratings_apply_length(rating_tuple *ratings, Ride *ride, sint32 maxLength, sint32 excitementMultiplier)
 {
     ride_ratings_add(ratings,
-        (min(ride_get_total_length(ride) >> 16, maxLength) * excitementMultiplier) >> 16,
+        (std::min(ride_get_total_length(ride) >> 16, maxLength) * excitementMultiplier) >> 16,
         0,
         0);
 }
@@ -1374,7 +1380,7 @@ static void ride_ratings_apply_average_speed(rating_tuple *ratings, Ride *ride, 
 static void ride_ratings_apply_duration(rating_tuple *ratings, Ride *ride, sint32 maxDuration, sint32 excitementMultiplier)
 {
     ride_ratings_add(ratings,
-        (min(ride_get_total_time(ride), maxDuration) * excitementMultiplier) >> 16,
+        (std::min(ride_get_total_time(ride), maxDuration) * excitementMultiplier) >> 16,
         0,
         0);
 }
@@ -2336,7 +2342,7 @@ static void ride_ratings_calculate_maze(Ride *ride)
     rating_tuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1,30), RIDE_RATING(0,50), RIDE_RATING(0,00));
 
-    sint32 size = min(ride->maze_tiles, 100);
+    sint32 size = std::min<uint16>(ride->maze_tiles, 100);
     ride_ratings_add(&ratings,
         size,
         size * 2,
@@ -3230,7 +3236,7 @@ static void ride_ratings_calculate_reverser_roller_coaster(Ride *ride)
     ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
     ride_ratings_apply_average_speed(&ratings, ride, 364088, 655360);
 
-    sint32 numReversers = min(gRideRatingsCalcData.num_reversers, 6);
+    sint32 numReversers = std::min<uint16>(gRideRatingsCalcData.num_reversers, 6);
     ride_rating reverserRating = numReversers * RIDE_RATING(0,20);
     ride_ratings_add(&ratings,
         reverserRating,
@@ -4348,4 +4354,11 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[RIDE_TYP
     ride_ratings_calculate_lim_launched_roller_coaster,         // LIM_LAUNCHED_ROLLER_COASTER
 };
 
+static ride_ratings_calculation ride_ratings_get_calculate_func(uint8 rideType)
+{
+    return ride_ratings_calculate_func_table[rideType];
+}
+
 #pragma endregion
+
+}
