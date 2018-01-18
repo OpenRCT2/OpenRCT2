@@ -347,9 +347,9 @@ void audio_init_ride_sounds_and_info()
     sint32 deviceNum = 0;
     audio_init_ride_sounds(deviceNum);
 
-    for (auto * rideMusicInfo : gRideMusicInfoList)
+    for (auto &rideMusicInfo : gRideMusicInfoList)
     {
-        const utf8 * path = context_get_path_legacy(rideMusicInfo->path_id);
+        const utf8 * path = context_get_path_legacy(rideMusicInfo.path_id);
         if (File::Exists(path))
         {
             try
@@ -358,12 +358,12 @@ void audio_init_ride_sounds_and_info()
                 uint32 head = fs.ReadValue<uint32>();
                 if (head == 0x78787878)
                 {
-                    rideMusicInfo->length = 0;
+                    rideMusicInfo.length = 0;
                 }
                 // The length used to be hardcoded, but we stopped doing that to allow replacement.
-                if (rideMusicInfo->length == 0)
+                if (rideMusicInfo.length == 0)
                 {
-                    rideMusicInfo->length = fs.GetLength();
+                    rideMusicInfo.length = fs.GetLength();
                 }
             }
             catch (const std::exception &)

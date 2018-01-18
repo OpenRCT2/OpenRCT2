@@ -829,7 +829,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
         return false;
     }
 
-    gTrackPreviewOrigin = (LocationXYZ16) { startX, startY, (sint16)(tileElement->base_height * 8) };
+    gTrackPreviewOrigin = { startX, startY, (sint16)(tileElement->base_height * 8) };
 
     size_t numMazeElements = 0;
     td6->maze_elements = (rct_td6_maze_element *)calloc(8192, sizeof(rct_td6_maze_element));
@@ -928,7 +928,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     // Save global vars as they are still used by scenery
     sint16 startZ = gTrackPreviewOrigin.z;
     place_virtual_track(td6, PTD_OPERATION_DRAW_OUTLINES, true, 0, 4096, 4096, 0);
-    gTrackPreviewOrigin = (LocationXYZ16) { startX, startY, startZ };
+    gTrackPreviewOrigin = { startX, startY, startZ };
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -992,7 +992,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
     sint16 start_x = trackElement.x;
     sint16 start_y = trackElement.y;
     sint16 start_z = z + trackCoordinates->z_begin;
-    gTrackPreviewOrigin = (LocationXYZ16) { start_x, start_y, start_z };
+    gTrackPreviewOrigin = { start_x, start_y, start_z };
 
     size_t numTrackElements = 0;
     td6->track_elements = (rct_td6_track_element *)calloc(TRACK_TD6_MAX_ELEMENTS, sizeof(rct_td6_track_element));
@@ -1124,7 +1124,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
     place_virtual_track(td6, PTD_OPERATION_DRAW_OUTLINES, true, 0, 4096, 4096, 0);
 
     // Resave global vars for scenery reasons.
-    gTrackPreviewOrigin = (LocationXYZ16) { start_x, start_y, start_z };
+    gTrackPreviewOrigin = { start_x, start_y, start_z };
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;

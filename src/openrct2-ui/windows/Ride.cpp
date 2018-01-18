@@ -4813,9 +4813,9 @@ static void window_ride_music_mousedown(rct_window *w, rct_widgetindex widgetInd
         for (size_t n = 0; n < Util::CountOf(MusicStyleOrder); n++)
             window_ride_current_music_style_order[numItems++] = MusicStyleOrder[n];
 
-        if (gRideMusicInfoList[36]->length != 0)
+        if (gRideMusicInfoList[36].length != 0)
             window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_1;
-        if (gRideMusicInfoList[37]->length != 0)
+        if (gRideMusicInfoList[37].length != 0)
             window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_2;
     }
 

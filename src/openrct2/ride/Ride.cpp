@@ -2806,8 +2806,8 @@ static void ride_music_update(sint32 rideIndex)
 
     // Select random tune from available tunes for a music style (of course only merry-go-rounds have more than one tune)
     if (ride->music_tune_id == 255) {
-        uint8 *musicStyleTunes = gRideMusicStyleTuneIds[ride->music];
-        uint8 numTunes = *musicStyleTunes++;
+        const auto &musicStyleTunes = gRideMusicStyleTuneIds[ride->music];
+        auto numTunes = musicStyleTunes.size();
         ride->music_tune_id = musicStyleTunes[util_rand() % numTunes];
         ride->music_position = 0;
         return;
@@ -3431,7 +3431,7 @@ void ride_set_map_tooltip(rct_tile_element *tileElement)
 
 static sint32 ride_music_params_update_label_51(uint32 a1, uint8 * tuneId, uint8 rideIndex, sint32 v32, sint32 pan_x, uint16 sampleRate)
 {
-    if (a1 < gRideMusicInfoList[*tuneId]->length)
+    if (a1 < gRideMusicInfoList[*tuneId].length)
     {
         rct_ride_music_params * ride_music_params = gRideMusicParamsListEnd;
         if (ride_music_params < &gRideMusicParamsList[Util::CountOf(gRideMusicParamsList)])
@@ -3456,7 +3456,7 @@ static sint32 ride_music_params_update_label_51(uint32 a1, uint8 * tuneId, uint8
 
 static sint32 ride_music_params_update_label_58(uint32 position, uint8 * tuneId)
 {
-    rct_ride_music_info * ride_music_info = gRideMusicInfoList[*tuneId];
+    rct_ride_music_info * ride_music_info = &gRideMusicInfoList[*tuneId];
     position += ride_music_info->offset;
     if (position < ride_music_info->length)
     {
@@ -3594,7 +3594,7 @@ sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, u
                 channel++;
                 if (channel >= AUDIO_MAX_RIDE_MUSIC)
                 {
-                    rct_ride_music_info * ride_music_info = gRideMusicInfoList[*tuneId];
+                    rct_ride_music_info * ride_music_info = &gRideMusicInfoList[*tuneId];
                     a1 = position + ride_music_info->offset;
 
                     return ride_music_params_update_label_51(a1, tuneId, rideIndex, v32, pan_x, sampleRate);
@@ -3702,7 +3702,7 @@ void ride_music_update_final()
                         channel2++;
                         if (channel2 >= AUDIO_MAX_RIDE_MUSIC)
                         {
-                            rct_ride_music_info * ride_music_info = gRideMusicInfoList[ride_music_params->tune_id];
+                            rct_ride_music_info * ride_music_info = &gRideMusicInfoList[ride_music_params->tune_id];
                             rct_ride_music      * ride_music_3    = &gRideMusicList[ebx];
                             ride_music_3->sound_channel = Mixer_Play_Music(ride_music_info->path_id, MIXER_LOOP_NONE, true);
                             if (ride_music_3->sound_channel)
