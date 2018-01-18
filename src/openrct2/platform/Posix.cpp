@@ -152,6 +152,8 @@ bool platform_original_game_data_exists(const utf8 *path)
     return platform_file_exists(checkPath);
 }
 
+// Implement our own version of getumask(), as it is documented being
+// "a vaporware GNU extension".
 static mode_t openrct2_getumask()
 {
     mode_t mask = umask(0);
