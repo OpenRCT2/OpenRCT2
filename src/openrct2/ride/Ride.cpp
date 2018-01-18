@@ -50,7 +50,7 @@
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "CableLift.h"
-#include "music_list.h"
+#include "MusicList.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "RideGroupManager.h"

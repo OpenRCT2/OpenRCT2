@@ -17,10 +17,11 @@
 #include "../audio/audio.h"
 #include "../common.h"
 #include "../Context.h"
-#include "music_list.h"
+#include "../core/Util.hpp"
+#include "MusicList.h"
 
 
-#define MAKE_TUNEID_LIST(...) (uint8[]){(countof(((uint8[]){__VA_ARGS__}))), __VA_ARGS__}
+#define MAKE_TUNEID_LIST(...) (uint8[]){(Util::CountOf(((uint8[]){__VA_ARGS__}))), __VA_ARGS__}
 
 // 0x009AEF28
 uint8 * gRideMusicStyleTuneIds[] =
