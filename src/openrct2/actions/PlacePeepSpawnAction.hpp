@@ -101,14 +101,11 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        //uint32 flags = GetFlags();
-
         gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
 
         gCommandPosition.x = _x;
         gCommandPosition.y = _y;
         gCommandPosition.z = _z * 2;
-
 
         // Find empty or next appropriate peep spawn to use
         sint32 peepSpawnIndex = -1;
