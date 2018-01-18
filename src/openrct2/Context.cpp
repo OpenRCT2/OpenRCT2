@@ -380,8 +380,16 @@ namespace OpenRCT2
 
         bool LoadParkFromFile(const std::string &path, bool loadTitleScreenOnFail) final override
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
-            return LoadParkFromStream(&fs, path, loadTitleScreenOnFail);
+            try
+            {
+                auto fs = FileStream(path, FILE_MODE_OPEN);
+                return LoadParkFromStream(&fs, path, loadTitleScreenOnFail);
+            }
+            catch (const std::exception &e)
+            {
+                Console::Error::WriteLine(e.what());
+            }
+            return false;
         }
 
         bool LoadParkFromStream(IStream * stream, const std::string &path, bool loadTitleScreenFirstOnFail) final override
@@ -757,7 +765,7 @@ namespace OpenRCT2
             uint32 currentUpdateTick = platform_get_ticks();
             gTicksSinceLastUpdate = std::min<uint32>(currentUpdateTick - _lastUpdateTick, 500);
             _lastUpdateTick = currentUpdateTick;
-            
+
             if (game_is_not_paused())
             {
                 gPaletteEffectFrame += gTicksSinceLastUpdate;
