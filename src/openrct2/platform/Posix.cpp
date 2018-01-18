@@ -375,7 +375,7 @@ bool platform_file_delete(const utf8 *path)
 static wchar_t *regular_to_wchar(const char* src)
 {
     sint32 len = strnlen(src, MAX_PATH);
-    wchar_t *w_buffer = malloc((len + 1) * sizeof(wchar_t));
+    wchar_t * w_buffer = (wchar_t *)malloc((len + 1) * sizeof(wchar_t));
     mbtowc (NULL, NULL, 0);  /* reset mbtowc */
 
     sint32 max = len;
