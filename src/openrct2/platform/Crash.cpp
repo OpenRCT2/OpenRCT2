@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "crash.h"
+#include "Crash.h"
 
 #ifdef USE_BREAKPAD
 #include <memory>

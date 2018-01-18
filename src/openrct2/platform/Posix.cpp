@@ -44,6 +44,9 @@
 
 #define FILE_BUFFER_SIZE 4096
 
+extern "C"
+{
+
 static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 static utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
@@ -149,7 +152,9 @@ bool platform_original_game_data_exists(const utf8 *path)
     return platform_file_exists(checkPath);
 }
 
-static mode_t getumask()
+// Implement our own version of getumask(), as it is documented being
+// "a vaporware GNU extension".
+static mode_t openrct2_getumask()
 {
     mode_t mask = umask(0);
     umask(mask);
@@ -158,7 +163,7 @@ static mode_t getumask()
 
 bool platform_ensure_directory_exists(const utf8 *path)
 {
-    mode_t mask = getumask();
+    mode_t mask = openrct2_getumask();
     char buffer[MAX_PATH];
     platform_utf8_to_multibyte(path, buffer, MAX_PATH);
 
@@ -375,7 +380,7 @@ bool platform_file_delete(const utf8 *path)
 static wchar_t *regular_to_wchar(const char* src)
 {
     sint32 len = strnlen(src, MAX_PATH);
-    wchar_t *w_buffer = malloc((len + 1) * sizeof(wchar_t));
+    wchar_t * w_buffer = (wchar_t *)malloc((len + 1) * sizeof(wchar_t));
     mbtowc (NULL, NULL, 0);  /* reset mbtowc */
 
     sint32 max = len;
@@ -507,5 +512,7 @@ bool platform_process_is_elevated()
    return false;
 #endif // __EMSCRIPTEN__
 }
+
+} // extern "C"
 
 #endif

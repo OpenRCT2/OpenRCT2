@@ -38,7 +38,7 @@
 #include "object/ObjectRepository.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
-#include "platform/crash.h"
+#include "platform/Crash.h"
 #include "PlatformEnvironment.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/ScenarioRepository.h"
