@@ -55,16 +55,16 @@ uint8 platform_get_locale_measurement_format() {
 }
 
 float platform_get_default_scale() {
-    JNIEnv *env = SDL_AndroidGetJNIEnv();
+    JNIEnv *env = static_cast<JNIEnv *>(SDL_AndroidGetJNIEnv());
 
-    jobject *activity = (jobject *) SDL_AndroidGetActivity();
-    jclass *activityClass = (*env)->GetObjectClass(env, activity);
-    jmethodID getDefaultScale = (*env)->GetMethodID(env, activityClass, "getDefaultScale", "()F");
+    jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+    jclass activityClass = env->GetObjectClass(activity);
+    jmethodID getDefaultScale = env->GetMethodID(activityClass, "getDefaultScale", "()F");
 
-    jfloat displayScale = (*env)->CallFloatMethod(env, activity, getDefaultScale);
+    jfloat displayScale = env->CallFloatMethod(activity, getDefaultScale);
 
-    (*env)->DeleteLocalRef(env, activity);
-    (*env)->DeleteLocalRef(env, activityClass);
+    env->DeleteLocalRef(activity);
+    env->DeleteLocalRef(activityClass);
 
     return displayScale;
 }
