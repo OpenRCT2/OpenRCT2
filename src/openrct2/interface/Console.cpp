@@ -42,6 +42,7 @@
 #include "../platform/platform.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../Speedrunning.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../Version.h"
@@ -104,6 +105,7 @@ static sint32 console_get_num_visible_lines();
 void console_open()
 {
     gConsoleOpen = true;
+    gSpeedrunningState.speedrun_invalidated = true;
     _consoleScrollPos = 0;
     console_refresh_caret();
     _consoleTextInputSession = context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));

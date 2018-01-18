@@ -230,7 +230,7 @@ void scenario_success()
         gParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
         gScenarioCompanyValueRecord = companyValue;
     }
-    if (gConfigGeneral.enable_speedrunning_mode) {
+    if (gConfigGeneral.enable_speedrunning_mode && !gSpeedrunningState.speedrun_invalidated) {
         // Record fastest completion if speedrunning
         scenario_repository_try_record_speedrun_highscore(gScenarioFileName, gSpeedrunningState.speedrunning_time_in_days, gConfigGeneral.allow_speed_changes);
     }

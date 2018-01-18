@@ -93,6 +93,7 @@ interface IScenarioRepository
     virtual const scenario_index_entry * GetByPath(const utf8 * path) const abstract;
 
     virtual bool TryRecordHighscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) abstract;
+    virtual bool TryRecordSpeedrunRecords(const utf8 * scenarioFileName, uint32 daysValue, bool allowedSpeedChanges) abstract;
 };
 
 IScenarioRepository * CreateScenarioRepository(OpenRCT2::IPlatformEnvironment * env);

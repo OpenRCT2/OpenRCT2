@@ -28,6 +28,7 @@
 #include <openrct2/interface/themes.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/Speedrunning.h>
+#include <openrct2/platform/platform.h>
 
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
 
@@ -105,7 +106,6 @@ static void window_scenarioselect_init_tabs(rct_window *w);
 static void window_scenarioselect_close(rct_window *w);
 static void window_scenarioselect_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_scenarioselect_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_scenarioselect_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_scenarioselect_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_scenarioselect_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_scenarioselect_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
@@ -118,7 +118,7 @@ static rct_window_event_list window_scenarioselect_events = {
     window_scenarioselect_mouseup,
     nullptr,
     window_scenarioselect_mousedown,
-    window_scenarioselect_dropdown,
+    nullptr,
     nullptr,
     nullptr,
     nullptr,
@@ -271,6 +271,8 @@ static void window_scenarioselect_mouseup(rct_window *w, rct_widgetindex widgetI
         gSpeedrunningState.speedrunning_time_in_days = 0;
         gSpeedrunningState.current_scenario_index = w->highlighted_scenario->source_index;
         gSpeedrunningState.current_scenario_group = w->highlighted_scenario->category;
+        gSpeedrunningState.speedrun_invalidated = false;
+        gSpeedrunningState.speedrun_start_time = platform_get_datetime_now_utc();
         _callback(w->highlighted_scenario->path);
         break;
     case WIDX_FULL_SPEEDRUN:
@@ -282,6 +284,8 @@ static void window_scenarioselect_mouseup(rct_window *w, rct_widgetindex widgetI
         gSpeedrunningState.speedrunning_time_in_days = 0;
         gSpeedrunningState.current_scenario_index = 0;
         gSpeedrunningState.current_scenario_group = w->highlighted_scenario->category;
+        gSpeedrunningState.speedrun_invalidated = false;
+        gSpeedrunningState.speedrun_start_time = platform_get_datetime_now_utc();
         _callback(w->highlighted_scenario->path);
         break;
     case WIDX_CLOSE:

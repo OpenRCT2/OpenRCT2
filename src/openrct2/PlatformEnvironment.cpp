@@ -104,6 +104,8 @@ private:
         case PATHID::NETWORK_USERS:
         case PATHID::SCORES:
         case PATHID::SCORES_LEGACY:
+        case PATHID::SCORES_SPEEDRUN_DAYS:
+        case PATHID::SCORES_SPEEDRUN_TIME:
         default:
             return DIRBASE::USER;
         }
@@ -213,17 +215,19 @@ const char * PlatformEnvironment::DirectoryNamesOpenRCT2[] =
 
 const char * PlatformEnvironment::FileNames[] =
 {
-    "config.ini",           // CONFIG
-    "hotkeys.dat",          // CONFIG_KEYBOARD
-    "objects.idx",          // CACHE_OBJECTS
-    "tracks.idx",           // CACHE_TRACKS
-    "scenarios.idx",        // CACHE_SCENARIOS
+    "config.ini",               // CONFIG
+    "hotkeys.dat",              // CONFIG_KEYBOARD
+    "objects.idx",              // CACHE_OBJECTS
+    "tracks.idx",               // CACHE_TRACKS
+    "scenarios.idx",            // CACHE_SCENARIOS
     "RCTdeluxe_install" PATH_SEPARATOR "Data" PATH_SEPARATOR "mp.dat", // MP_DAT
-    "groups.json",          // NETWORK_GROUPS
-    "servers.cfg",          // NETWORK_SERVERS
-    "users.json",           // NETWORK_USERS
-    "highscores.dat",       // SCORES
-    "scores.dat",           // SCORES (LEGACY)
+    "groups.json",              // NETWORK_GROUPS
+    "servers.cfg",              // NETWORK_SERVERS
+    "users.json",               // NETWORK_USERS
+    "highscores.dat",           // SCORES
+    "scores.dat",               // SCORES (LEGACY)
     "Saved Games" PATH_SEPARATOR "scores.dat",  // SCORES (RCT2)
+    "speedrun_scores_days.dat", // SCORES_SPEEDRUN_DAYS
+    "speedrun_scores_time.dat", // SCORES_SPEEDRUN_TIME
 };
 // clang-format on

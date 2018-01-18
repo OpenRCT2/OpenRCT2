@@ -26,6 +26,7 @@
 #include <openrct2/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Research.h>
+#include <openrct2/Speedrunning.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Scenery.h>
@@ -430,6 +431,8 @@ rct_window * window_editor_inventions_list_open()
         return w;
 
     research_always_researched_setup();
+
+    gSpeedrunningState.speedrun_invalidated = true;
 
     w = window_create_centred(
         600,

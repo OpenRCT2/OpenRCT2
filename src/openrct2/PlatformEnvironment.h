@@ -55,18 +55,20 @@ namespace OpenRCT2
 
     enum class PATHID
     {
-        CONFIG,             // Main configuration (config.ini).
-        CONFIG_KEYBOARD,    // Keyboard shortcuts. (hotkeys.cfg)
-        CACHE_OBJECTS,      // Object repository cache (objects.idx).
-        CACHE_TRACKS,       // Track repository cache (tracks.idx).
-        CACHE_SCENARIOS,    // Scenario repository cache (scenarios.idx).
-        MP_DAT,             // Mega Park data, Steam RCT1 only (\RCTdeluxe_install\Data\mp.dat)
-        NETWORK_GROUPS,     // Server groups with permissions (groups.json).
-        NETWORK_SERVERS,    // Saved servers (servers.cfg).
-        NETWORK_USERS,      // Users and their groups (users.json).
-        SCORES,             // Scenario scores (highscores.dat).
-        SCORES_LEGACY,      // Scenario scores, legacy (scores.dat).
-        SCORES_RCT2,        // Scenario scores, rct2 (\Saved Games\scores.dat).
+        CONFIG,                 // Main configuration (config.ini).
+        CONFIG_KEYBOARD,        // Keyboard shortcuts. (hotkeys.cfg)
+        CACHE_OBJECTS,          // Object repository cache (objects.idx).
+        CACHE_TRACKS,           // Track repository cache (tracks.idx).
+        CACHE_SCENARIOS,        // Scenario repository cache (scenarios.idx).
+        MP_DAT,                 // Mega Park data, Steam RCT1 only (\RCTdeluxe_install\Data\mp.dat)
+        NETWORK_GROUPS,         // Server groups with permissions (groups.json).
+        NETWORK_SERVERS,        // Saved servers (servers.cfg).
+        NETWORK_USERS,          // Users and their groups (users.json).
+        SCORES,                 // Scenario scores (highscores.dat).
+        SCORES_LEGACY,          // Scenario scores, legacy (scores.dat).
+        SCORES_RCT2,            // Scenario scores, rct2 (\Saved Games\scores.dat).
+        SCORES_SPEEDRUN_DAYS,   // Scenario speedrunning time in days (speedrun_scores_days.dat)
+        SCORES_SPEEDRUN_TIME    // Scenario speedrunning time (speedrun_scores_time.dat)
     };
 
     /**

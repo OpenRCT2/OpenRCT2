@@ -35,6 +35,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/peep/Staff.h>
+#include <openrct2/Speedrunning.h>
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/windows/Intent.h>
@@ -510,7 +511,15 @@ static void window_top_toolbar_mousedown(rct_window *w, rct_widgetindex widgetIn
         gDropdownDefaultIndex = DDIDX_SHOW_MAP;
         break;
     case WIDX_FASTFORWARD:
-        top_toolbar_init_fastforward_menu(w, widget);
+        if (gConfigGeneral.enable_speedrunning_mode) {
+            if (gConfigGeneral.allow_speed_changes) {
+                top_toolbar_init_fastforward_menu(w, widget);
+            }
+            // If in speedrunning mode without allowing speed changes, don't do anything.
+        }
+        else {
+            top_toolbar_init_fastforward_menu(w, widget);
+        }
         break;
     case WIDX_ROTATE:
         top_toolbar_init_rotate_menu(w, widget);
@@ -610,12 +619,15 @@ static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetInd
             context_open_window(WC_CHEATS);
             break;
         case DDIDX_ENABLE_SANDBOX_MODE:
+            gSpeedrunningState.speedrun_invalidated = true;
             game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, !gCheatsSandboxMode, GAME_COMMAND_CHEAT, 0, 0);
             break;
         case DDIDX_DISABLE_CLEARANCE_CHECKS:
+            gSpeedrunningState.speedrun_invalidated = true;
             game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, !gCheatsDisableClearanceChecks, GAME_COMMAND_CHEAT, 0, 0);
             break;
         case DDIDX_DISABLE_SUPPORT_LIMITS:
+            gSpeedrunningState.speedrun_invalidated = true;
             game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, !gCheatsDisableSupportLimits, GAME_COMMAND_CHEAT, 0, 0);
             break;
         }
@@ -637,7 +649,15 @@ static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetInd
         }
         break;
     case WIDX_FASTFORWARD:
-        top_toolbar_fastforward_menu_dropdown(dropdownIndex);
+        if (gConfigGeneral.enable_speedrunning_mode) {
+            if (gConfigGeneral.allow_speed_changes) {
+                top_toolbar_fastforward_menu_dropdown(dropdownIndex);
+            }
+            // If in speedrunning mode without allowing speed changes, don't do anything.
+        }
+        else {
+            top_toolbar_fastforward_menu_dropdown(dropdownIndex);
+        }
         break;
     case WIDX_ROTATE:
         top_toolbar_rotate_menu_dropdown(dropdownIndex);

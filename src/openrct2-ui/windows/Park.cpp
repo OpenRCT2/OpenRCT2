@@ -1516,8 +1516,10 @@ static void window_park_objective_mouseup(rct_window *w, rct_widgetindex widgetI
     case WIDX_NEXT_LEVEL:
         if (gConfigGeneral.enable_speedrunning_mode) {
             if (gSpeedrunningState.is_il_run) {
-                //TODO This quits the game, need to quit to menu
-                context_quit();
+                window_close_by_class(WC_MANAGE_TRACK_DESIGN);
+                window_close_by_class(WC_TRACK_DELETE_PROMPT);
+                game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
+                break;
             }
             else {
                 _scenarioRepository = GetScenarioRepository();
@@ -1529,8 +1531,10 @@ static void window_park_objective_mouseup(rct_window *w, rct_widgetindex widgetI
                     _callback(scenario->path);
                 }
                 else {
-                    //TODO This quits the game, need to quit to menu
-                    context_quit();
+                    window_close_by_class(WC_MANAGE_TRACK_DESIGN);
+                    window_close_by_class(WC_TRACK_DELETE_PROMPT);
+                    game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
+                    break;
                 }
             }
         }
