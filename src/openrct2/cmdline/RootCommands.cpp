@@ -19,7 +19,7 @@
 #include "../core/Guard.hpp"
 
 #include "../config/Config.h"
-#include "../platform/crash.h"
+#include "../platform/Crash.h"
 #include "../platform/platform.h"
 #include "../localisation/Language.h"
 
