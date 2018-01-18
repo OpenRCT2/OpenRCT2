@@ -60,6 +60,7 @@
     <ClInclude Include="**\*.h" />
     <ClInclude Include="actions\GuestSetNameAction.hpp" />
     <ClInclude Include="actions\PlaceParkEntranceAction.hpp" />
+    <ClInclude Include="actions\PlacePeepSpawnAction.hpp" />
     <ClInclude Include="actions\RideCreateAction.hpp" />
     <ClInclude Include="actions\RideDemolishAction.hpp" />
     <ClInclude Include="actions\RideSetName.hpp" />

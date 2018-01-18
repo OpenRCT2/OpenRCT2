@@ -110,7 +110,7 @@ LocationXY16 gMapSelectionTiles[300];
 static LocationXYZ16 gVirtualFloorLastMinLocation;
 static LocationXYZ16 gVirtualFloorLastMaxLocation;
 rct2_peep_spawn gPeepSpawns[MAX_PEEP_SPAWNS];
-static sint32 _nextPeepSpawnIndex = 0;
+//static sint32 _nextPeepSpawnIndex = 0;
 
 rct_tile_element *gNextFreeTileElement;
 uint32 gNextFreeTileElementPointerIndex;
@@ -4921,7 +4921,7 @@ void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tile
     }
 }
 
-static money32 map_place_peep_spawn(sint32 flags, sint16 x, sint16 y, sint32 z, sint32 direction)
+/*static money32 map_place_peep_spawn(sint32 flags, sint16 x, sint16 y, sint32 z, sint32 direction)
 {
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
         return MONEY32_UNDEFINED;
@@ -5006,3 +5006,4 @@ void game_command_place_peep_spawn(sint32* eax, sint32* ebx, sint32* ecx, sint32
         *edx & 0xFF,
         (*ebx >> 8) & 0xFF);
 }
+*/
