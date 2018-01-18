@@ -552,7 +552,7 @@ static bool award_is_deserved_best_custom_designed_rides(sint32 awardType, sint3
 }
 
 /** At least 5 colourful rides and more than half of the rides are colourful. */
-static constexpr const uint8 dazzling_ride_colours[] = {5, 14, 20, 30};
+static constexpr const uint8 dazzling_ride_colours[] = {COLOUR_BRIGHT_PURPLE, COLOUR_BRIGHT_GREEN, COLOUR_LIGHT_ORANGE, COLOUR_BRIGHT_PINK};
 
 static bool award_is_deserved_most_dazzling_ride_colours(sint32 awardType, sint32 activeAwardTypes)
 {
