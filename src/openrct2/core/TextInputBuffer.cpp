@@ -15,9 +15,9 @@
 #pragma endregion
 
 #include "../localisation/Localisation.h"
-#include "textinputbuffer.h"
+#include "TextInputBuffer.h"
 
-void textinputbuffer_init(textinputbuffer * tib, utf8 * buffer, size_t size)
+void textinputbuffer_init(TextInputBuffer * tib, utf8 * buffer, size_t size)
 {
     assert(buffer != NULL);
     assert(size > 0);
@@ -31,7 +31,7 @@ void textinputbuffer_init(textinputbuffer * tib, utf8 * buffer, size_t size)
     textinputbuffer_recalculate_length(tib);
 }
 
-void textinputbuffer_clear(textinputbuffer * tib)
+void textinputbuffer_clear(TextInputBuffer * tib)
 {
     tib->buffer[0] = 0;
     tib->current_size = 0;
@@ -40,7 +40,7 @@ void textinputbuffer_clear(textinputbuffer * tib)
     tib->selection_size = 0;
 }
 
-void textinputbuffer_remove_selected(textinputbuffer * tib)
+void textinputbuffer_remove_selected(TextInputBuffer * tib)
 {
     utf8 * targetShiftPtr = tib->buffer + tib->selection_offset;
     utf8 * sourceShiftPtr = targetShiftPtr + tib->selection_size;
@@ -50,7 +50,7 @@ void textinputbuffer_remove_selected(textinputbuffer * tib)
     textinputbuffer_recalculate_length(tib);
 }
 
-void textinputbuffer_insert_codepoint(textinputbuffer * tib, uint32 codepoint)
+void textinputbuffer_insert_codepoint(TextInputBuffer * tib, uint32 codepoint)
 {
     size_t codepointLength = utf8_get_codepoint_length(codepoint);
     size_t remainingSize = tib->max_size - tib->current_size;
@@ -74,7 +74,7 @@ void textinputbuffer_insert_codepoint(textinputbuffer * tib, uint32 codepoint)
     }
 }
 
-void textinputbuffer_insert(textinputbuffer * tib, const utf8 * source)
+void textinputbuffer_insert(TextInputBuffer * tib, const utf8 * source)
 {
     const utf8 *ch = source;
     uint32 codepoint;
@@ -83,7 +83,7 @@ void textinputbuffer_insert(textinputbuffer * tib, const utf8 * source)
     }
 }
 
-void textinputbuffer_cursor_left(textinputbuffer * tib)
+void textinputbuffer_cursor_left(TextInputBuffer * tib)
 {
     size_t selectionOffset = tib->selection_offset;
     if (selectionOffset > 0) {
@@ -97,7 +97,7 @@ void textinputbuffer_cursor_left(textinputbuffer * tib)
     }
 }
 
-void textinputbuffer_cursor_right(textinputbuffer * tib)
+void textinputbuffer_cursor_right(TextInputBuffer * tib)
 {
     size_t selectionOffset = tib->selection_offset;
     size_t selectionMaxOffset = tib->current_size;
@@ -113,17 +113,17 @@ void textinputbuffer_cursor_right(textinputbuffer * tib)
     }
 }
 
-void textinputbuffer_cursor_home(textinputbuffer * tib)
+void textinputbuffer_cursor_home(TextInputBuffer * tib)
 {
     tib->selection_offset = 0;
 }
 
-void textinputbuffer_cursor_end(textinputbuffer * tib)
+void textinputbuffer_cursor_end(TextInputBuffer * tib)
 {
     tib->selection_offset = tib->current_size;
 }
 
-void textinputbuffer_recalculate_length(textinputbuffer * tib)
+void textinputbuffer_recalculate_length(TextInputBuffer * tib)
 {
     tib->current_size = strlen(tib->buffer);
     tib->length = utf8_length(tib->buffer);

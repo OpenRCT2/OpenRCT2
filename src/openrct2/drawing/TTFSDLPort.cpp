@@ -168,16 +168,6 @@ static int TTF_underline_top_row(TTF_Font *font)
     return font->ascent - font->underline_offset - 1;
 }
 
-/* Gets the top row of the underline. for a given glyph. The outline
-is taken into account.
-Need to update row according to height difference between font and glyph:
-font_value - font->ascent + glyph->maxy
-*/
-static int TTF_Glyph_underline_top_row(TTF_Font *font, c_glyph *glyph)
-{
-    return glyph->maxy - font->underline_offset - 1;
-}
-
 /* Gets the bottom row of the underline. The outline
 is taken into account.
 */
@@ -192,16 +182,6 @@ static int TTF_underline_bottom_row(TTF_Font *font)
     return row;
 }
 
-/* Gets the bottom row of the underline. for a given glyph. The outline
-is taken into account.
-Need to update row according to height difference between font and glyph:
-font_value - font->ascent + glyph->maxy
-*/
-static int TTF_Glyph_underline_bottom_row(TTF_Font *font, c_glyph *glyph)
-{
-    return TTF_underline_bottom_row(font) - font->ascent + glyph->maxy;
-}
-
 /* Gets the top row of the strikethrough. The outline
 is taken into account.
 */
@@ -210,16 +190,6 @@ static int TTF_strikethrough_top_row(TTF_Font *font)
     /* With outline, the first text row is 'outline'. */
     /* So, we don't have to remove the top part of the outline height. */
     return font->height / 2;
-}
-
-/* Gets the top row of the strikethrough for a given glyph. The outline
-is taken into account.
-Need to update row according to height difference between font and glyph:
-font_value - font->ascent + glyph->maxy
-*/
-static int TTF_Glyph_strikethrough_top_row(TTF_Font *font, c_glyph *glyph)
-{
-    return TTF_strikethrough_top_row(font) - font->ascent + glyph->maxy;
 }
 
 static void TTF_initLineMectrics(const TTF_Font *font, const TTFSurface *textbuf, const int row, uint8 **pdst, int *pheight)
@@ -528,11 +498,6 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE *src, int freesrc, int ptsize, long in
     return font;
 }
 
-static TTF_Font* TTF_OpenFontRW(FILE *src, int freesrc, int ptsize)
-{
-    return TTF_OpenFontIndexRW(src, freesrc, ptsize, 0);
-}
-
 static TTF_Font* TTF_OpenFontIndex(const char *file, int ptsize, long index)
 {
     FILE *rw = fopen(file, "rb");
@@ -642,7 +607,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16 ch, c_glyph* cached, int want)
     if (((want & CACHED_BITMAP) && !(cached->stored & CACHED_BITMAP)) ||
         ((want & CACHED_PIXMAP) && !(cached->stored & CACHED_PIXMAP))) {
         int mono = (want & CACHED_BITMAP);
-        int i;
+        unsigned int i;
         FT_Bitmap* src;
         FT_Bitmap* dst;
         FT_Glyph bitmap_glyph = NULL;
@@ -740,7 +705,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16 ch, c_glyph* cached, int want)
                 if (mono) {
                     unsigned char *srcp = src->buffer + soffset;
                     unsigned char *dstp = dst->buffer + doffset;
-                    int j;
+                    unsigned int j;
                     if (src->pixel_mode == FT_PIXEL_MODE_MONO) {
                         for (j = 0; j < src->width; j += 8) {
                             unsigned char c = *srcp++;
@@ -801,7 +766,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16 ch, c_glyph* cached, int want)
                     unsigned char *srcp = src->buffer + soffset;
                     unsigned char *dstp = dst->buffer + doffset;
                     unsigned char c;
-                    int j, k;
+                    unsigned int j, k;
                     for (j = 0; j < src->width; j += 8) {
                         c = *srcp++;
                         for (k = 0; k < 8; ++k) {
@@ -819,7 +784,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16 ch, c_glyph* cached, int want)
                     unsigned char *srcp = src->buffer + soffset;
                     unsigned char *dstp = dst->buffer + doffset;
                     unsigned char c;
-                    int j, k;
+                    unsigned int j, k;
                     for (j = 0; j < src->width; j += 4) {
                         c = *srcp++;
                         for (k = 0; k < 4; ++k) {
@@ -1172,7 +1137,7 @@ TTFSurface *TTF_RenderUTF8_Solid(TTF_Font *font,
     uint8* src;
     uint8* dst;
     uint8 *dst_check;
-    int row, col;
+    unsigned int row, col;
     c_glyph *glyph;
 
     FT_Bitmap *current;
@@ -1190,7 +1155,7 @@ TTFSurface *TTF_RenderUTF8_Solid(TTF_Font *font,
     }
 
     /* Create the target surface */
-    textbuf = calloc(1, sizeof(TTFSurface));
+    textbuf = (TTFSurface *)calloc(1, sizeof(TTFSurface));
     if (textbuf == NULL) {
         return NULL;
     }
@@ -1248,7 +1213,7 @@ TTFSurface *TTF_RenderUTF8_Solid(TTF_Font *font,
             if (row + glyph->yoffset < 0) {
                 continue;
             }
-            if (row + glyph->yoffset >= textbuf->h) {
+            if ((row + glyph->yoffset) >= textbuf->h) {
                 continue;
             }
             dst = (uint8*)textbuf->pixels +
@@ -1311,7 +1276,7 @@ TTFSurface *TTF_RenderUTF8_Shaded(TTF_Font *font,
     }
 
     /* Create the target surface */
-    textbuf = calloc(1, sizeof(TTFSurface));
+    textbuf = (TTFSurface *)calloc(1, sizeof(TTFSurface));
     if (textbuf == NULL)
     {
         return NULL;
@@ -1420,17 +1385,6 @@ TTFSurface *TTF_RenderUTF8_Shaded(TTF_Font *font,
         TTF_drawLine_Shaded(font, textbuf, row);
     }
     return textbuf;
-}
-
-static bool CharacterIsDelimiter(char c, const char *delimiters)
-{
-    while (*delimiters) {
-        if (c == *delimiters) {
-            return true;
-        }
-        ++delimiters;
-    }
-    return false;
 }
 
 void TTF_SetFontHinting(TTF_Font* font, int hinting)

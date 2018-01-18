@@ -106,6 +106,12 @@
 		4C7B545C20079C4000A52E21 /* Addresses.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B545720079C4000A52E21 /* Addresses.cpp */; };
 		4C7B545E20079C4000A52E21 /* Data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B545A20079C4000A52E21 /* Data.cpp */; };
 		4C7B546120079C4900A52E21 /* Hook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B545F20079C4900A52E21 /* Hook.cpp */; };
+		4C7B54642007BF1200A52E21 /* TextInputBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54622007BF1200A52E21 /* TextInputBuffer.cpp */; };
+		4C7B54662007BF1A00A52E21 /* ZipAndroid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54652007BF1A00A52E21 /* ZipAndroid.cpp */; };
+		4C7B54692007BF2E00A52E21 /* TTFSDLPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54682007BF2E00A52E21 /* TTFSDLPort.cpp */; };
+		4C7B546B2007BF3C00A52E21 /* Linux.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B546A2007BF3C00A52E21 /* Linux.cpp */; };
+		4C7B54702007BF5F00A52E21 /* TrackDesignSave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B546F2007BF5F00A52E21 /* TrackDesignSave.cpp */; };
+		4C7B54732007C1C200A52E21 /* ride_ratings.c in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54712007C1C200A52E21 /* ride_ratings.c */; };
 		4C8667821EEFDCDF0024AAB8 /* RideGroupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */; };
 		4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */; };
 		4C8B42721EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */; };
@@ -189,7 +195,6 @@
 		4C93F1BC1F8E185600A9330D /* Marketing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B41F8E185600A9330D /* Marketing.cpp */; };
 		4C93F1BD1F8E185600A9330D /* NewsItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B61F8E185600A9330D /* NewsItem.cpp */; };
 		4C93F1BE1F8E185600A9330D /* Research.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B81F8E185600A9330D /* Research.cpp */; };
-		4CB832AB1EFFB8D100B88761 /* ttf_sdlport.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */; };
 		4CC4B8E41FE00C4200660D62 /* CmdlineSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8E21FE00C4100660D62 /* CmdlineSprite.cpp */; };
 		4CC4B8E71FE00C4E00660D62 /* Diagnostic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8E51FE00C4E00660D62 /* Diagnostic.cpp */; };
 		4CC4B8ED1FE00C5D00660D62 /* Intro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8EA1FE00C5D00660D62 /* Intro.cpp */; };
@@ -365,7 +370,6 @@
 		F76C85E11EC4E88300FA49E2 /* MemoryStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C838C1EC4E7CC00FA49E2 /* MemoryStream.cpp */; };
 		F76C85E41EC4E88300FA49E2 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C838F1EC4E7CC00FA49E2 /* Path.cpp */; };
 		F76C85E71EC4E88300FA49E2 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83921EC4E7CC00FA49E2 /* String.cpp */; };
-		F76C85EB1EC4E88300FA49E2 /* textinputbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83961EC4E7CC00FA49E2 /* textinputbuffer.c */; };
 		F76C85EE1EC4E88300FA49E2 /* Zip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83991EC4E7CC00FA49E2 /* Zip.cpp */; };
 		F76C85F41EC4E88300FA49E2 /* DrawingFast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83A01EC4E7CC00FA49E2 /* DrawingFast.cpp */; };
 		F76C85F91EC4E88300FA49E2 /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83A51EC4E7CC00FA49E2 /* Image.cpp */; };
@@ -408,7 +412,6 @@
 		F76C86861EC4E88400FA49E2 /* OpenRCT2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84381EC4E7CC00FA49E2 /* OpenRCT2.cpp */; };
 		F76C869C1EC4E88400FA49E2 /* ParkImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84511EC4E7CC00FA49E2 /* ParkImporter.cpp */; };
 		F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C845A1EC4E7CC00FA49E2 /* Crash.cpp */; };
-		F76C86A51EC4E88400FA49E2 /* linux.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C845C1EC4E7CC00FA49E2 /* linux.c */; };
 		F76C86A61EC4E88400FA49E2 /* macos.m in Sources */ = {isa = PBXBuildFile; fileRef = F76C845D1EC4E7CC00FA49E2 /* macos.m */; };
 		F76C86AA1EC4E88400FA49E2 /* posix.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84611EC4E7CC00FA49E2 /* posix.c */; };
 		F76C86AB1EC4E88400FA49E2 /* shared.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84621EC4E7CC00FA49E2 /* shared.c */; };
@@ -422,8 +425,6 @@
 		F76C86BA1EC4E88400FA49E2 /* SawyerEncoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84731EC4E7CC00FA49E2 /* SawyerEncoding.cpp */; };
 		F76C86C31EC4E88400FA49E2 /* S6Exporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */; };
 		F76C86C51EC4E88400FA49E2 /* S6Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */; };
-		F76C87001EC4E88400FA49E2 /* ride_ratings.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84BE1EC4E7CC00FA49E2 /* ride_ratings.c */; };
-		F76C87191EC4E88400FA49E2 /* track_design_save.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84D91EC4E7CD00FA49E2 /* track_design_save.c */; };
 		F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */; };
 		F76C87331EC4E88400FA49E2 /* ScenarioRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84F61EC4E7CD00FA49E2 /* ScenarioRepository.cpp */; };
 		F76C87351EC4E88400FA49E2 /* ScenarioSources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84F81EC4E7CD00FA49E2 /* ScenarioSources.cpp */; };
@@ -754,6 +755,15 @@
 		4C7B545B20079C4000A52E21 /* data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = data.h; sourceTree = "<group>"; };
 		4C7B545F20079C4900A52E21 /* Hook.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hook.cpp; sourceTree = "<group>"; };
 		4C7B546020079C4900A52E21 /* hook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hook.h; sourceTree = "<group>"; };
+		4C7B54622007BF1200A52E21 /* TextInputBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextInputBuffer.cpp; sourceTree = "<group>"; };
+		4C7B54632007BF1200A52E21 /* TextInputBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextInputBuffer.h; sourceTree = "<group>"; };
+		4C7B54652007BF1A00A52E21 /* ZipAndroid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ZipAndroid.cpp; sourceTree = "<group>"; };
+		4C7B54672007BF2000A52E21 /* FileIndex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FileIndex.hpp; sourceTree = "<group>"; };
+		4C7B54682007BF2E00A52E21 /* TTFSDLPort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTFSDLPort.cpp; sourceTree = "<group>"; };
+		4C7B546A2007BF3C00A52E21 /* Linux.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Linux.cpp; sourceTree = "<group>"; };
+		4C7B546F2007BF5F00A52E21 /* TrackDesignSave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesignSave.cpp; sourceTree = "<group>"; };
+		4C7B54712007C1C200A52E21 /* ride_ratings.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ride_ratings.c; sourceTree = "<group>"; };
+		4C7B54722007C1C200A52E21 /* ride_ratings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ride_ratings.h; sourceTree = "<group>"; };
 		4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideGroupManager.cpp; sourceTree = "<group>"; };
 		4C8667811EEFDCDF0024AAB8 /* RideGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideGroupManager.h; sourceTree = "<group>"; };
 		4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = X8DrawingEngine.cpp; sourceTree = "<group>"; };
@@ -846,7 +856,6 @@
 		4C93F1B71F8E185600A9330D /* NewsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsItem.h; sourceTree = "<group>"; };
 		4C93F1B81F8E185600A9330D /* Research.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Research.cpp; sourceTree = "<group>"; };
 		4C93F1B91F8E185600A9330D /* Research.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Research.h; sourceTree = "<group>"; };
-		4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ttf_sdlport.c; sourceTree = "<group>"; };
 		4CB832AA1EFFB8D100B88761 /* ttf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttf.h; sourceTree = "<group>"; };
 		4CC4B8E21FE00C4100660D62 /* CmdlineSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdlineSprite.cpp; sourceTree = "<group>"; };
 		4CC4B8E31FE00C4200660D62 /* CmdlineSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdlineSprite.h; sourceTree = "<group>"; };
@@ -1228,8 +1237,6 @@
 		F76C83931EC4E7CC00FA49E2 /* String.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = String.hpp; sourceTree = "<group>"; };
 		F76C83941EC4E7CC00FA49E2 /* StringBuilder.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StringBuilder.hpp; sourceTree = "<group>"; };
 		F76C83951EC4E7CC00FA49E2 /* StringReader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StringReader.hpp; sourceTree = "<group>"; };
-		F76C83961EC4E7CC00FA49E2 /* textinputbuffer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = textinputbuffer.c; sourceTree = "<group>"; };
-		F76C83971EC4E7CC00FA49E2 /* textinputbuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = textinputbuffer.h; sourceTree = "<group>"; };
 		F76C83981EC4E7CC00FA49E2 /* Util.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Util.hpp; sourceTree = "<group>"; };
 		F76C83991EC4E7CC00FA49E2 /* Zip.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Zip.cpp; sourceTree = "<group>"; };
 		F76C839A1EC4E7CC00FA49E2 /* Zip.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Zip.h; sourceTree = "<group>"; };
@@ -1319,7 +1326,6 @@
 		F76C84521EC4E7CC00FA49E2 /* ParkImporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParkImporter.h; sourceTree = "<group>"; };
 		F76C845A1EC4E7CC00FA49E2 /* Crash.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Crash.cpp; sourceTree = "<group>"; };
 		F76C845B1EC4E7CC00FA49E2 /* crash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = crash.h; sourceTree = "<group>"; };
-		F76C845C1EC4E7CC00FA49E2 /* linux.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = linux.c; sourceTree = "<group>"; };
 		F76C845D1EC4E7CC00FA49E2 /* macos.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = macos.m; sourceTree = "<group>"; };
 		F76C845E1EC4E7CC00FA49E2 /* platform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
 		F76C84601EC4E7CC00FA49E2 /* Platform2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Platform2.h; sourceTree = "<group>"; };
@@ -1342,9 +1348,6 @@
 		F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = S6Exporter.cpp; sourceTree = "<group>"; };
 		F76C847E1EC4E7CC00FA49E2 /* S6Exporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = S6Exporter.h; sourceTree = "<group>"; };
 		F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = S6Importer.cpp; sourceTree = "<group>"; };
-		F76C84BE1EC4E7CC00FA49E2 /* ride_ratings.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ride_ratings.c; sourceTree = "<group>"; };
-		F76C84BF1EC4E7CC00FA49E2 /* ride_ratings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ride_ratings.h; sourceTree = "<group>"; };
-		F76C84D91EC4E7CD00FA49E2 /* track_design_save.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = track_design_save.c; sourceTree = "<group>"; };
 		F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesignRepository.cpp; sourceTree = "<group>"; };
 		F76C84DD1EC4E7CD00FA49E2 /* TrackDesignRepository.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackDesignRepository.h; sourceTree = "<group>"; };
 		F76C84F51EC4E7CD00FA49E2 /* scenario.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scenario.h; sourceTree = "<group>"; };
@@ -1951,6 +1954,7 @@
 				C6352B831F477022006CCEE3 /* Endianness.h */,
 				F76C837F1EC4E7CC00FA49E2 /* File.cpp */,
 				F76C83801EC4E7CC00FA49E2 /* File.h */,
+				4C7B54672007BF2000A52E21 /* FileIndex.hpp */,
 				F76C83811EC4E7CC00FA49E2 /* FileScanner.cpp */,
 				F76C83821EC4E7CC00FA49E2 /* FileScanner.h */,
 				F76C83831EC4E7CC00FA49E2 /* FileStream.hpp */,
@@ -1972,11 +1976,12 @@
 				F76C83931EC4E7CC00FA49E2 /* String.hpp */,
 				F76C83941EC4E7CC00FA49E2 /* StringBuilder.hpp */,
 				F76C83951EC4E7CC00FA49E2 /* StringReader.hpp */,
-				F76C83961EC4E7CC00FA49E2 /* textinputbuffer.c */,
-				F76C83971EC4E7CC00FA49E2 /* textinputbuffer.h */,
+				4C7B54622007BF1200A52E21 /* TextInputBuffer.cpp */,
+				4C7B54632007BF1200A52E21 /* TextInputBuffer.h */,
 				F76C83981EC4E7CC00FA49E2 /* Util.hpp */,
 				F76C83991EC4E7CC00FA49E2 /* Zip.cpp */,
 				F76C839A1EC4E7CC00FA49E2 /* Zip.h */,
+				4C7B54652007BF1A00A52E21 /* ZipAndroid.cpp */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -2007,7 +2012,7 @@
 				C651A8D71F30204300443BCA /* Text.cpp */,
 				C651A8D81F30204300443BCA /* Text.h */,
 				4C7B53D820002CA400A52E21 /* TTF.cpp */,
-				4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */,
+				4C7B54682007BF2E00A52E21 /* TTFSDLPort.cpp */,
 				4CB832AA1EFFB8D100B88761 /* ttf.h */,
 				4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */,
 				4C8B426F1EEB1ABD00F015CA /* X8DrawingEngine.h */,
@@ -2231,7 +2236,7 @@
 				4CE462421FD1612B0001CD98 /* android.c */,
 				F76C845A1EC4E7CC00FA49E2 /* Crash.cpp */,
 				F76C845B1EC4E7CC00FA49E2 /* crash.h */,
-				F76C845C1EC4E7CC00FA49E2 /* linux.c */,
+				4C7B546A2007BF3C00A52E21 /* Linux.cpp */,
 				F76C845D1EC4E7CC00FA49E2 /* macos.m */,
 				4CE462441FD161360001CD98 /* Platform.Android.cpp */,
 				F76C845E1EC4E7CC00FA49E2 /* platform.h */,
@@ -2300,12 +2305,12 @@
 				4C6A66BE1FF9322A00694CB6 /* music_list.h */,
 				4C6A66BF1FF9322A00694CB6 /* Ride.cpp */,
 				4C6A66C01FF9322A00694CB6 /* Ride.h */,
+				4C7B54712007C1C200A52E21 /* ride_ratings.c */,
+				4C7B54722007C1C200A52E21 /* ride_ratings.h */,
 				4C7B541420060D8E00A52E21 /* RideData.cpp */,
 				4C7B541520060D8E00A52E21 /* RideData.h */,
 				4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */,
 				4C8667811EEFDCDF0024AAB8 /* RideGroupManager.h */,
-				F76C84BE1EC4E7CC00FA49E2 /* ride_ratings.c */,
-				F76C84BF1EC4E7CC00FA49E2 /* ride_ratings.h */,
 				4C6AC20D1F9E1693004324AA /* Station.cpp */,
 				4C6AC20E1F9E1693004324AA /* Station.h */,
 				4CFE4E8E1F9625B0005243C2 /* Track.cpp */,
@@ -2313,11 +2318,11 @@
 				4CFE4E861F950164005243C2 /* TrackData.cpp */,
 				4CFE4E871F950164005243C2 /* TrackData.h */,
 				4CFE4E881F950164005243C2 /* TrackDataOld.cpp */,
-				F76C84D91EC4E7CD00FA49E2 /* track_design_save.c */,
 				4C4C1E971F58226500560300 /* TrackDesign.cpp */,
 				4C4C1E991F5832AA00560300 /* TrackDesign.h */,
 				F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */,
 				F76C84DD1EC4E7CD00FA49E2 /* TrackDesignRepository.h */,
+				4C7B546F2007BF5F00A52E21 /* TrackDesignSave.cpp */,
 				4C7B540B20060D8100A52E21 /* TrackPaint.cpp */,
 				4C7B540C20060D8100A52E21 /* TrackPaint.h */,
 				4CFE4E831F90AF41005243C2 /* Vehicle.cpp */,
@@ -3182,7 +3187,6 @@
 				4C93F14C1F8B744400A9330D /* MiniSuspendedCoaster.cpp in Sources */,
 				C666EE721F37ACB10061AA04 /* Multiplayer.cpp in Sources */,
 				4C6A66B81FE278C900694CB6 /* Supports.cpp in Sources */,
-				4CB832AB1EFFB8D100B88761 /* ttf_sdlport.c in Sources */,
 				C654DF371F69C0430040F43D /* Sign.cpp in Sources */,
 				4C93F1751F8B745700A9330D /* MiniHelicopters.cpp in Sources */,
 				4C7B53F8200143C200A52E21 /* Screenshot.cpp in Sources */,
@@ -3203,6 +3207,7 @@
 				4C7B53FC200143C200A52E21 /* Widget.cpp in Sources */,
 				4C7B54512007646A00A52E21 /* Particle.cpp in Sources */,
 				4C7B546120079C4900A52E21 /* Hook.cpp in Sources */,
+				4C7B54702007BF5F00A52E21 /* TrackDesignSave.cpp in Sources */,
 				4C6A66AD1FE2787700694CB6 /* TileElement.cpp in Sources */,
 				4CE4624C1FD1613D0001CD98 /* Platform.Posix.cpp in Sources */,
 				4C6A669B1FE2786F00694CB6 /* Sprite.cpp in Sources */,
@@ -3258,8 +3263,10 @@
 				C651A8D91F30204300443BCA /* Text.cpp in Sources */,
 				F76C88801EC5324E00FA49E2 /* DrawRectShader.cpp in Sources */,
 				C685E51D1F8907850090598F /* Research.cpp in Sources */,
+				4C7B54692007BF2E00A52E21 /* TTFSDLPort.cpp in Sources */,
 				C64644FB1F3FA4120026AC2D /* EditorScenarioOptions.cpp in Sources */,
 				4C6A66AB1FE2787700694CB6 /* SmallScenery.cpp in Sources */,
+				4C7B54642007BF1200A52E21 /* TextInputBuffer.cpp in Sources */,
 				F775F5371EE3724F001F00E7 /* DummyAudioContext.cpp in Sources */,
 				4C5DFF421FAC69D200CB093A /* Date.cpp in Sources */,
 				4C93F13C1F8B744400A9330D /* BolligerMabillardTrack.cpp in Sources */,
@@ -3342,13 +3349,16 @@
 				C666EE711F37ACB10061AA04 /* MapGen.cpp in Sources */,
 				4C93F17C1F8B747300A9330D /* Facility.cpp in Sources */,
 				C6D2BEEA1F9BB83C008B557C /* NetworkStatus.cpp in Sources */,
+				4C7B546B2007BF3C00A52E21 /* Linux.cpp in Sources */,
 				C64645011F3FA4120026AC2D /* Water.cpp in Sources */,
 				4C7B53D1200029D900A52E21 /* Rect.cpp in Sources */,
 				F76C88851EC5324E00FA49E2 /* OpenGLFramebuffer.cpp in Sources */,
 				4C7B53F7200143C200A52E21 /* Fonts.cpp in Sources */,
 				4C93F1451F8B744400A9330D /* JuniorRollerCoaster.cpp in Sources */,
 				4C7B53D2200029D900A52E21 /* ScrollingText.cpp in Sources */,
+				4C7B54662007BF1A00A52E21 /* ZipAndroid.cpp in Sources */,
 				C61FB2721FA3E25D0095FB9D /* ObjectLoadError.cpp in Sources */,
+				4C7B54732007C1C200A52E21 /* ride_ratings.c in Sources */,
 				F76C88861EC5324E00FA49E2 /* OpenGLShaderProgram.cpp in Sources */,
 				F76C88871EC5324E00FA49E2 /* SwapFramebuffer.cpp in Sources */,
 				F76C88881EC5324E00FA49E2 /* TextureCache.cpp in Sources */,
@@ -3428,7 +3438,6 @@
 				F76C85E11EC4E88300FA49E2 /* MemoryStream.cpp in Sources */,
 				F76C85E41EC4E88300FA49E2 /* Path.cpp in Sources */,
 				F76C85E71EC4E88300FA49E2 /* String.cpp in Sources */,
-				F76C85EB1EC4E88300FA49E2 /* textinputbuffer.c in Sources */,
 				F76C85EE1EC4E88300FA49E2 /* Zip.cpp in Sources */,
 				F76C85F41EC4E88300FA49E2 /* DrawingFast.cpp in Sources */,
 				F76C85F91EC4E88300FA49E2 /* Image.cpp in Sources */,
@@ -3475,7 +3484,6 @@
 				F76C86861EC4E88400FA49E2 /* OpenRCT2.cpp in Sources */,
 				F76C869C1EC4E88400FA49E2 /* ParkImporter.cpp in Sources */,
 				F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */,
-				F76C86A51EC4E88400FA49E2 /* linux.c in Sources */,
 				F76C86A61EC4E88400FA49E2 /* macos.m in Sources */,
 				F76C86AA1EC4E88400FA49E2 /* posix.c in Sources */,
 				F76C86AB1EC4E88400FA49E2 /* shared.c in Sources */,
@@ -3490,8 +3498,6 @@
 				F76C86C31EC4E88400FA49E2 /* S6Exporter.cpp in Sources */,
 				F76C86C51EC4E88400FA49E2 /* S6Importer.cpp in Sources */,
 				C6352B921F477032006CCEE3 /* GameActionCompat.cpp in Sources */,
-				F76C87001EC4E88400FA49E2 /* ride_ratings.c in Sources */,
-				F76C87191EC4E88400FA49E2 /* track_design_save.c in Sources */,
 				F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */,
 				F76C87331EC4E88400FA49E2 /* ScenarioRepository.cpp in Sources */,
 				F76C87351EC4E88400FA49E2 /* ScenarioSources.cpp in Sources */,
