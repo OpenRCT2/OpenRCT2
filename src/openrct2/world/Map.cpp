@@ -4365,7 +4365,7 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
     const sint32 flags = *ebx;
     const sint32 x = *ecx & 0xFF;
     const sint32 y = (*ecx >> 8) & 0xFF;
-    const tile_inspector_instruction instruction = (const tile_inspector_instruction)*eax;
+    const tile_inspector_instruction instruction = static_cast<tile_inspector_instruction>(*eax);
 
     switch (instruction)
     {
