@@ -236,7 +236,7 @@
 #pragma endregion
 
 #pragma region PlacePeepSpawn
-    money32 place_peep_spawn(sint16 x, sint16 y, sint16 z, uint8 direction)
+    money32 place_peep_spawn(sint16 x, sint16 y, sint32 z, sint32 direction)
     {
         auto gameAction = PlacePeepSpawnAction(x, y, z, direction);
         auto result = GameActions::Execute(&gameAction);

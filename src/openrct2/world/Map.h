@@ -589,4 +589,6 @@ uint8 tile_element_get_ride_index(const rct_tile_element * tileElement);
 void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles);
 void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tiles, uint8 ownership);
 
+money32 place_peep_spawn(sint16 x, sint16 y, sint32 z, sint32 direction);
+
 #endif

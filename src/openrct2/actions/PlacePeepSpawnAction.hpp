@@ -32,12 +32,12 @@ struct PlacePeepSpawnAction : public GameActionBase<GAME_COMMAND_PLACE_PEEP_SPAW
 private:
     sint16 _x;
     sint16 _y;
-    sint16 _z;
-    uint8 _direction;
+    sint32 _z;
+    sint32 _direction;
 
 public:
     PlacePeepSpawnAction() {}
-    PlacePeepSpawnAction(sint16 x, sint16 y, sint16 z, sint16 direction) :
+    PlacePeepSpawnAction(sint16 x, sint16 y, sint32 z, sint32 direction) :
         _x(x),
         _y(y),
         _z(z),

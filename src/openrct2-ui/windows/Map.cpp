@@ -1368,16 +1368,7 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
 
     mapZ = tileElement->base_height / 2;
 
-    gGameCommandErrorTitle = STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE;
-    money32 price = game_do_command(
-        mapX,
-        GAME_COMMAND_FLAG_APPLY | (direction << 8),
-        mapY,
-        mapZ,
-        GAME_COMMAND_PLACE_PEEP_SPAWN,
-        0,
-        0
-    );
+    money32 price = place_peep_spawn(mapX, mapY, mapZ, direction);
     if (price != MONEY32_UNDEFINED) {
         audio_play_sound_at_location(
             SOUND_PLACE_ITEM,
