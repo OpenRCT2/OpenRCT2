@@ -16,6 +16,8 @@
 
 #include <chrono>
 #include <cstdlib>
+#include <memory>
+
 #include "../audio/audio.h"
 #include "../Context.h"
 #include "../core/Console.hpp"
@@ -264,6 +266,76 @@ void screenshot_giant()
     context_show_error(STR_SCREENSHOT_SAVED_AS, STR_NONE);
 }
 
+static void benchgfx_render_screenshots(const char *inputPath, std::unique_ptr<IContext>& context, uint32 iterationCount)
+{
+    if (!context->LoadParkFromFile(inputPath))
+    {
+       return;
+    }
+
+    gIntroState = INTRO_STATE_NONE;
+    gScreenFlags = SCREEN_FLAGS_PLAYING;
+
+    sint32 mapSize = gMapSize;
+    sint32 resolutionWidth = (mapSize * 32 * 2);
+    sint32 resolutionHeight = (mapSize * 32 * 1);
+
+    resolutionWidth += 8;
+    resolutionHeight += 128;
+
+    rct_viewport viewport;
+    viewport.x = 0;
+    viewport.y = 0;
+    viewport.width = resolutionWidth;
+    viewport.height = resolutionHeight;
+    viewport.view_width = viewport.width;
+    viewport.view_height = viewport.height;
+    viewport.var_11 = 0;
+    viewport.flags = 0;
+
+    sint32 customX = (gMapSize / 2) * 32 + 16;
+    sint32 customY = (gMapSize / 2) * 32 + 16;
+
+    sint32 x = 0, y = 0;
+    sint32 z = tile_element_height(customX, customY) & 0xFFFF;
+    x = customY - customX;
+    y = ((customX + customY) / 2) - z;
+
+    viewport.view_x = x - ((viewport.view_width) / 2);
+    viewport.view_y = y - ((viewport.view_height) / 2);
+    viewport.zoom = 0;
+    gCurrentRotation = 0;
+
+    // Ensure sprites appear regardless of rotation
+    reset_all_sprite_quadrant_placements();
+
+    rct_drawpixelinfo dpi;
+    dpi.x = 0;
+    dpi.y = 0;
+    dpi.width = resolutionWidth;
+    dpi.height = resolutionHeight;
+    dpi.pitch = 0;
+    dpi.bits = (uint8 *)malloc(dpi.width * dpi.height);
+
+    auto startTime = std::chrono::high_resolution_clock::now();
+    for (uint32 i = 0; i < iterationCount; i++)
+    {
+        // Render at various zoom levels
+        dpi.zoom_level = i & 3;
+        viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
+    }
+    auto endTime = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<float> duration = endTime - startTime;
+    char engine_name[128];
+    rct_string_id engine_id = DrawingEngineStringIds[drawing_engine_get_type()];
+    format_string(engine_name, sizeof(engine_name), engine_id, nullptr);
+    Console::WriteLine("Rendering %d times with drawing engine %s took %.2f seconds.",
+        iterationCount, engine_name,
+        duration.count());
+
+    free(dpi.bits);
+}
+
 sint32 cmdline_for_gfxbench(const char **argv, sint32 argc)
 {
     if (argc != 1 && argc != 2) {
@@ -272,87 +344,26 @@ sint32 cmdline_for_gfxbench(const char **argv, sint32 argc)
     }
 
     core_init();
-    sint32 iteration_count = 40;
+    sint32 iterationCount = 40;
     if (argc == 2)
     {
-        iteration_count = atoi(argv[1]);
+        iterationCount = atoi(argv[1]);
     }
-
-    sint32 resolutionWidth, resolutionHeight, customX = 0, customY = 0;
 
     const char *inputPath = argv[0];
 
     gOpenRCT2Headless = true;
-    auto context = CreateContext();
+
+    std::unique_ptr<IContext> context(CreateContext());
     if (context->Initialise())
     {
         drawing_engine_init();
-        context->LoadParkFromFile(inputPath);
 
-        gIntroState = INTRO_STATE_NONE;
-        gScreenFlags = SCREEN_FLAGS_PLAYING;
+        benchgfx_render_screenshots(inputPath, context, iterationCount);
 
-        sint32 mapSize = gMapSize;
-        resolutionWidth = (mapSize * 32 * 2);
-        resolutionHeight = (mapSize * 32 * 1);
-
-        resolutionWidth += 8;
-        resolutionHeight += 128;
-
-        rct_viewport viewport;
-        viewport.x = 0;
-        viewport.y = 0;
-        viewport.width = resolutionWidth;
-        viewport.height = resolutionHeight;
-        viewport.view_width = viewport.width;
-        viewport.view_height = viewport.height;
-        viewport.var_11 = 0;
-        viewport.flags = 0;
-
-        customX = (mapSize / 2) * 32 + 16;
-        customY = (mapSize / 2) * 32 + 16;
-
-        sint32 x = 0, y = 0;
-        sint32 z = tile_element_height(customX, customY) & 0xFFFF;
-        x = customY - customX;
-        y = ((customX + customY) / 2) - z;
-
-        viewport.view_x = x - ((viewport.view_width) / 2);
-        viewport.view_y = y - ((viewport.view_height) / 2);
-        viewport.zoom = 0;
-        gCurrentRotation = 0;
-
-        // Ensure sprites appear regardless of rotation
-        reset_all_sprite_quadrant_placements();
-
-        rct_drawpixelinfo dpi;
-        dpi.x = 0;
-        dpi.y = 0;
-        dpi.width = resolutionWidth;
-        dpi.height = resolutionHeight;
-        dpi.pitch = 0;
-        dpi.bits = (uint8 *)malloc(dpi.width * dpi.height);
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-        for (sint32 i = 0; i < iteration_count; i++)
-        {
-            // Render at various zoom levels
-            dpi.zoom_level = i & 3;
-            viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
-        }
-        auto endTime = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<float> duration = endTime - startTime;
-        char engine_name[128];
-        rct_string_id engine_id = DrawingEngineStringIds[drawing_engine_get_type()];
-        format_string(engine_name, sizeof(engine_name), engine_id, nullptr);
-        Console::WriteLine("Rendering %d times with drawing engine %s took %.2f seconds.",
-                           iteration_count, engine_name,
-                           duration.count());
-
-        free(dpi.bits);
         drawing_engine_dispose();
     }
-    delete context;
+
     return 1;
 }
 
