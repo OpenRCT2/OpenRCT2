@@ -178,6 +178,21 @@ void console_draw(rct_drawpixelinfo *dpi)
     gCurrentFontSpriteBase = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
     gCurrentFontFlags = 0;
     sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    uint8 textColour = theme_get_colour(WC_CONSOLE, 1);
+    uint8 extraTextFormatCode = 0;
+
+    // This is something of a hack to ensure the text is actually black
+    // as opposed to a desaturated grey
+    if (textColour == COLOUR_BLACK)
+    {
+        extraTextFormatCode = FORMAT_BLACK;
+    }
+
+    // TTF looks far better without the outlines
+    if (!gUseTrueTypeFont)
+    {
+        textColour |= COLOUR_FLAG_OUTLINE;
+    }
 
     sint32 lines = 0;
     sint32 maxLines = console_get_num_visible_lines();
@@ -233,22 +248,23 @@ void console_draw(rct_drawpixelinfo *dpi)
             break;
         drawLines++;
 
-        size_t lineLength = std::min(sizeof(lineBuffer) - (size_t)utf8_get_codepoint_length(FORMAT_WHITE), (size_t)(nextLine - ch));
         lineCh = lineBuffer;
-        lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
-        memcpy(lineCh, ch, lineLength);
-        lineCh[lineLength] = 0;
 
-        // TTF looks far better without the outlines
-        if (gUseTrueTypeFont)
+        size_t lineLength;
+        if (extraTextFormatCode != 0)
         {
-            gfx_draw_string(dpi, lineBuffer, COLOUR_WHITE, x, y);
+            lineLength = std::min(sizeof(lineBuffer) - (size_t)utf8_get_codepoint_length(extraTextFormatCode), (size_t)(nextLine - ch));
+            lineCh = utf8_write_codepoint(lineCh, extraTextFormatCode);
         }
         else
         {
-            gfx_draw_string(dpi, lineBuffer, COLOUR_WHITE | COLOUR_FLAG_OUTLINE | COLOUR_FLAG_INSET, x, y);
-
+            lineLength = std::min(sizeof(lineBuffer), (size_t)(nextLine - ch));
         }
+
+        memcpy(lineCh, ch, lineLength);
+        lineCh[lineLength] = 0;
+
+        gfx_draw_string(dpi, lineBuffer, textColour, x, y);
 
         x = gLastDrawStringX;
 
@@ -268,9 +284,12 @@ void console_draw(rct_drawpixelinfo *dpi)
 
     // Draw current line
     lineCh = lineBuffer;
-    lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
+    if (extraTextFormatCode != 0)
+    {
+        lineCh = utf8_write_codepoint(lineCh, extraTextFormatCode);
+    }
     safe_strcpy(lineCh, _consoleCurrentLine, sizeof(lineBuffer) - (lineCh - lineBuffer));
-    gfx_draw_string(dpi, lineBuffer, TEXT_COLOUR_255, x, y);
+    gfx_draw_string(dpi, lineBuffer, textColour, x, y);
 
     // Draw caret
     if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD) {
