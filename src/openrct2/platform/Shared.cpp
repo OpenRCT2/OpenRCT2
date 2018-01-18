@@ -45,6 +45,9 @@
     #endif
 #endif
 
+extern "C"
+{
+
 #if defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
     static mach_timebase_info_data_t _mach_base_info = { 0 };
 #endif
@@ -60,7 +63,7 @@ char * strndup(const char * src, size_t size)
         return NULL;
     }
 
-    dst      = memcpy(dst, src, len);
+    dst      = (char *)memcpy(dst, src, len);
     dst[len] = '\0';
     return (char *)dst;
 }
@@ -233,4 +236,6 @@ void core_init()
         }
 #endif
     }
+}
+
 }
