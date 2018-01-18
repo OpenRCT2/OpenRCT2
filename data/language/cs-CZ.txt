@@ -4510,6 +4510,20 @@ STR_6200    :Resetovat datum
 STR_6201    :{MONTH}
 STR_6202    :Vykreslovat virtuální mřížku
 STR_6203    :{SMALLFONT}{BLACK}Pro usnadnění vertikálního umisťování objektů můžete podržet klávesu Ctrl nebo Shift a poté bude vykreslena pomocná virtuální mřížka.
+STR_6204    :Cihla
+STR_6205    :Železo
+STR_6206    :Šedý štuk
+STR_6207    :Žlutý štuk
+STR_6208    :Červený štuk
+STR_6209    :Fialový štuk
+STR_6210    :Zelený štuk
+STR_6211    :Hnědý pískovec
+STR_6212    :Šedý pískovec
+STR_6213    :Mrakodrap A
+STR_6214    :Mrakodrap B
+STR_6215    :Budování
+STR_6216    :Provoz
+STR_6217    :Atrakce a tratě
 
 
 ###############################################################################

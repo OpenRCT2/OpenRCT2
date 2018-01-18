@@ -4497,6 +4497,33 @@ STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Vômito
 STR_6189    :Duck
 STR_6190    :{SMALLFONT}{BLACK}Você não pode selecionar um sprite enquanto a tela principal está ativa.
+STR_6191    :Superfície
+STR_6192    :Parede
+STR_6193    :{COMMA16} visitante
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} visitante
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} visitante
+STR_6196    :{BLACK}Ano:
+STR_6197    :{BLACK}Mês:
+STR_6198    :{BLACK}Dia:
+STR_6199    :Definir data
+STR_6200    :Resetar data
+STR_6201    :{MONTH}
+STR_6202    :Habilitar chão virtual 
+STR_6203    :{SMALLFONT}{BLACK}Quando habilitado, um chão virtual será renderizado quando segurar a tecla Ctrl ou Shift para facilitar o posicionamento vertical dos elementos.
+STR_6204    :Tijolo
+STR_6205    :Ferro
+STR_6206    :Estuque cinza
+STR_6207    :Estuque amarelo
+STR_6208    :Estuque vermelho
+STR_6209    :Estuque roxo
+STR_6210    :Estuque verde
+STR_6211    :Arenito marrom
+STR_6212    :Arenito cinza
+STR_6213    :Arranha-céu A
+STR_6214    :Arranha-céu B
+STR_6215    :Construção
+STR_6216    :Operação
+STR_6217    :Atração / disponibilidade de trilho
 
 #############
 # Scenarios #
