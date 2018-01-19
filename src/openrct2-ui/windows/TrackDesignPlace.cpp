@@ -14,23 +14,23 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <openrct2-ui/windows/Window.h>
-
+#include <algorithm>
+#include <vector>
 #include <openrct2/audio/audio.h>
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
-#include <openrct2/core/Memory.hpp>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
-#include <openrct2-ui/interface/Viewport.h>
-#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
+#include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
 
 #define TRACK_MINI_PREVIEW_WIDTH    168
 #define TRACK_MINI_PREVIEW_HEIGHT   78
@@ -104,7 +104,7 @@ static rct_window_event_list window_track_place_events = {
     nullptr
 };
 
-static uint8 *_window_track_place_mini_preview;
+static std::vector<uint8> _window_track_place_mini_preview;
 static sint16 _window_track_place_last_x;
 static sint16 _window_track_place_last_y;
 
@@ -135,7 +135,7 @@ static uint8 *draw_mini_preview_get_pixel_ptr(LocationXY16 pixel);
  */
 static void window_track_place_clear_mini_preview()
 {
-    memset(_window_track_place_mini_preview, PALETTE_INDEX_TRANSPARENT, TRACK_MINI_PREVIEW_SIZE);
+    std::fill(_window_track_place_mini_preview.begin(), _window_track_place_mini_preview.end(), PALETTE_INDEX_TRANSPARENT);
 }
 
 #define swap(x, y) x = x ^ y; y = x ^ y; x = x ^ y;
@@ -153,7 +153,7 @@ rct_window * window_track_place_open(const track_design_file_ref *tdFileRef)
 
     window_close_construction_windows();
 
-    _window_track_place_mini_preview = Memory::Allocate<uint8>(TRACK_MINI_PREVIEW_SIZE);
+    _window_track_place_mini_preview.resize(TRACK_MINI_PREVIEW_SIZE);
 
     rct_window *w = window_create(
         0,
@@ -198,7 +198,8 @@ static void window_track_place_close(rct_window *w)
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     hide_gridlines();
-    SafeFree(_window_track_place_mini_preview);
+    _window_track_place_mini_preview.clear();
+    _window_track_place_mini_preview.shrink_to_fit();
     track_design_dispose(_trackDesign);
     _trackDesign = nullptr;
 }
@@ -468,7 +469,7 @@ static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi)
     rct_drawpixelinfo clippedDpi;
     if (clip_drawpixelinfo(&clippedDpi, dpi, w->x + 4, w->y + 18, 168, 78)) {
         rct_g1_element g1temp = { nullptr };
-        g1temp.offset = _window_track_place_mini_preview;
+        g1temp.offset = _window_track_place_mini_preview.data();
         g1temp.width = TRACK_MINI_PREVIEW_WIDTH;
         g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;
         gfx_set_g1_element(SPR_TEMP, &g1temp);
