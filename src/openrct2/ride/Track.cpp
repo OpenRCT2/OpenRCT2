@@ -33,7 +33,7 @@
 #include "../world/Scenery.h"
 #include "Ride.h"
 #include "RideData.h"
-#include "ride_ratings.h"
+#include "RideRatings.h"
 #include "RideGroupManager.h"
 #include "Station.h"
 #include "Track.h"

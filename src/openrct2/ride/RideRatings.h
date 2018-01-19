@@ -14,8 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _RIDE_RATINGS_H_
-#define _RIDE_RATINGS_H_
+#pragma once
 
 #include "../common.h"
 
@@ -71,6 +70,4 @@ void ride_ratings_update_all();
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

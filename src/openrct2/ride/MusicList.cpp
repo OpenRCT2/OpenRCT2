@@ -17,13 +17,14 @@
 #include "../audio/audio.h"
 #include "../common.h"
 #include "../Context.h"
-#include "music_list.h"
+#include "../core/Util.hpp"
+#include "MusicList.h"
 
 
-#define MAKE_TUNEID_LIST(...) (uint8[]){(countof(((uint8[]){__VA_ARGS__}))), __VA_ARGS__}
+#define MAKE_TUNEID_LIST(...) std::vector<uint8>({__VA_ARGS__})
 
 // 0x009AEF28
-uint8 * gRideMusicStyleTuneIds[] =
+std::vector<uint8> gRideMusicStyleTuneIds[] =
 {
     MAKE_TUNEID_LIST(TUNE_DODGEMS_BEAT),                             // MUSIC_STYLE_DODGEMS_BEAT
     MAKE_TUNEID_LIST(                                                // MUSIC_STYLE_FAIRGROUND_ORGAN
@@ -73,10 +74,10 @@ uint8 * gRideMusicStyleTuneIds[] =
     MAKE_TUNEID_LIST(TUNE_SWEAT_DREAMS),                             // MUSIC_STYLE_CANDY_STYLE
 };
 
-#define INIT_MUSIC_INFO(path_id, offset) (rct_ride_music_info[]){path_id, offset, 0}
+#define INIT_MUSIC_INFO(path_id, offset) { path_id, offset, 0 }
 
 //0x009AF1C8
-rct_ride_music_info * gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS] = {
+rct_ride_music_info gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS] = {
         INIT_MUSIC_INFO(PATH_ID_CSS4,  1378),
         INIT_MUSIC_INFO(PATH_ID_CSS5,  1378),
         INIT_MUSIC_INFO(PATH_ID_CSS6,  1378),

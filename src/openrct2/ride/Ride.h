@@ -22,7 +22,7 @@
 #include "../rct12/RCT12.h"
 #include "../rct2/RCT2.h"
 #include "../world/Map.h"
-#include "ride_ratings.h"
+#include "RideRatings.h"
 #include "Vehicle.h"
 
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY   3
