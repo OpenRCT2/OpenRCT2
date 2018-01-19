@@ -114,7 +114,7 @@ rct_track_td6 * track_design_open(const utf8 * path)
 
             if (td6 != nullptr)
             {
-                td6->name = track_repository_get_name_from_path(path);
+                td6->name = String::Duplicate(GetNameFromTrackPath(path).c_str());
                 return td6;
             }
         }
