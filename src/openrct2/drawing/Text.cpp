@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -20,7 +20,7 @@
 
 static TextPaint _legacyPaint;
 
-static void DrawText(rct_drawpixelinfo * dpi, sint32 x, sint32 y, TextPaint * paint, utf8string text);
+static void DrawText(rct_drawpixelinfo * dpi, sint32 x, sint32 y, TextPaint * paint, const_utf8string text);
 static void DrawText(rct_drawpixelinfo * dpi, sint32 x, sint32 y, TextPaint * paint, rct_string_id format, void * args);
 
 StaticLayout::StaticLayout(utf8string source, TextPaint paint, sint32 width)
@@ -82,7 +82,7 @@ sint32 StaticLayout::GetLineCount()
     return _lineCount;
 }
 
-static void DrawText(rct_drawpixelinfo * dpi, sint32 x, sint32 y, TextPaint * paint, utf8string text)
+static void DrawText(rct_drawpixelinfo * dpi, sint32 x, sint32 y, TextPaint * paint, const_utf8string text)
 {
     sint32 width = gfx_get_string_width(text);
 
@@ -146,7 +146,7 @@ static void DrawTextEllipsisedCompat(rct_drawpixelinfo * dpi, sint32 x, sint32 y
 
 extern "C"
 {
-    void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, uint8 colour, sint32 x, sint32 y)
+    void gfx_draw_string(rct_drawpixelinfo *dpi, const_utf8string buffer, uint8 colour, sint32 x, sint32 y)
     {
         _legacyPaint.UnderlineText = false;
         _legacyPaint.Colour = colour;

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,10 +16,13 @@
 
 #include <algorithm>
 #include <cstdarg>
+#include <string>
+#include <vector>
 
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../core/Math.hpp"
+#include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/Font.h"
@@ -56,8 +59,6 @@
 #include "../drawing/TTF.h"
 #endif
 
-#define CONSOLE_BUFFER_SIZE 8192
-#define CONSOLE_BUFFER_2_SIZE 256
 #define CONSOLE_HISTORY_SIZE 64
 #define CONSOLE_INPUT_SIZE 256
 #define CONSOLE_CARET_FLASH_THRESHOLD 15
@@ -69,26 +70,23 @@ extern "C"
 
 bool gConsoleOpen = false;
 
-static bool _consoleInitialised = false;
-static sint32 _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
-static sint32 _lastMainViewportX, _lastMainViewportY;
-static utf8 _consoleBuffer[CONSOLE_BUFFER_SIZE] = { 0 };
-static utf8 *_consoleBufferPointer = _consoleBuffer;
-static utf8 *_consoleViewBufferStart = _consoleBuffer;
-static utf8 _consoleCurrentLine[CONSOLE_INPUT_SIZE];
-static sint32 _consoleCaretTicks;
-static utf8 _consolePrintfBuffer[CONSOLE_BUFFER_2_SIZE];
-static utf8 _consoleErrorBuffer[CONSOLE_BUFFER_2_SIZE];
-static sint32 _consoleScrollPos = 0;
-static TextInputSession * _consoleTextInputSession;
+static bool                     _consoleInitialised = false;
+static sint32                   _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
+static sint32                   _lastMainViewportX, _lastMainViewportY;
+static std::vector<std::string> _consoleLines;
+static utf8                     _consoleCurrentLine[CONSOLE_INPUT_SIZE];
+static sint32                   _consoleCaretTicks;
+static sint32                   _consoleScrollPos = 0;
+static TextInputSession *       _consoleTextInputSession;
 
-static utf8 _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
+static utf8   _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
 static sint32 _consoleHistoryIndex = 0;
 static sint32 _consoleHistoryCount = 0;
 
 static void console_invalidate();
 static void console_write_prompt();
 static void console_clear_input();
+static void console_scroll_to_end();
 static void console_history_add(const utf8 *src);
 static void console_write_all_commands();
 static sint32 console_parse_int(const utf8 *src, bool *valid);
@@ -107,7 +105,7 @@ static sint32 console_get_num_visible_lines();
 void console_open()
 {
     gConsoleOpen = true;
-    _consoleScrollPos = 0;
+    console_scroll_to_end();
     console_refresh_caret();
     _consoleTextInputSession = context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
 }
@@ -175,11 +173,12 @@ void console_draw(rct_drawpixelinfo *dpi)
         return;
 
     // Set font
-    gCurrentFontSpriteBase = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
-    gCurrentFontFlags = 0;
-    sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
-    uint8 textColour = theme_get_colour(WC_CONSOLE, 1);
-    uint8 extraTextFormatCode = 0;
+    gCurrentFontSpriteBase           = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
+    gCurrentFontFlags                = 0;
+    uint8        textColour          = theme_get_colour(WC_CONSOLE, 1);
+    uint8        extraTextFormatCode = 0;
+    const sint32 lineHeight          = font_get_line_height(gCurrentFontSpriteBase);
+    const sint32 maxLines            = console_get_num_visible_lines();
 
     // This is something of a hack to ensure the text is actually black
     // as opposed to a desaturated grey
@@ -192,15 +191,6 @@ void console_draw(rct_drawpixelinfo *dpi)
     if (!gUseTrueTypeFont)
     {
         textColour |= COLOUR_FLAG_OUTLINE;
-    }
-
-    sint32 lines = 0;
-    sint32 maxLines = console_get_num_visible_lines();
-    utf8 *ch = strchr(_consoleBuffer, 0);
-    while (ch > _consoleBuffer) {
-        ch--;
-        if (*ch == '\n')
-            lines++;
     }
 
     console_invalidate();
@@ -219,83 +209,29 @@ void console_draw(rct_drawpixelinfo *dpi)
     sint32 x = _consoleLeft + CONSOLE_EDGE_PADDING;
     sint32 y = _consoleTop + CONSOLE_EDGE_PADDING;
 
-    // Draw previous lines
-    utf8 lineBuffer[2 + 256], *lineCh;
-    ch = _consoleViewBufferStart;
-    sint32 currentLine = 0;
-    sint32 drawLines = 0;
-    while (*ch != 0) {
-        // Find line break or null terminator
-        utf8 *nextLine = ch;
-        while (*nextLine != 0 && *nextLine != '\n') {
-            nextLine++;
-        }
-
-        currentLine++;
-        if (currentLine < (lines - maxLines + 4) - _consoleScrollPos) {
-            if (*nextLine == '\n') {
-                ch = nextLine + 1;
-                x = _consoleLeft + CONSOLE_EDGE_PADDING;
-                // y += lineHeight;
-            }
-            else {
-                break;
-            }
-            continue;
-        }
-
-        if (drawLines >= maxLines)
-            break;
-        drawLines++;
-
-        lineCh = lineBuffer;
-
-        size_t lineLength;
-        if (extraTextFormatCode != 0)
-        {
-            lineLength = std::min(sizeof(lineBuffer) - (size_t)utf8_get_codepoint_length(extraTextFormatCode), (size_t)(nextLine - ch));
-            lineCh = utf8_write_codepoint(lineCh, extraTextFormatCode);
-        }
-        else
-        {
-            lineLength = std::min(sizeof(lineBuffer), (size_t)(nextLine - ch));
-        }
-
-        memcpy(lineCh, ch, lineLength);
-        lineCh[lineLength] = 0;
-
-        gfx_draw_string(dpi, lineBuffer, textColour, x, y);
-
-        x = gLastDrawStringX;
-
-        // Checking new y position prevents console history overflowing into input area
-        sint32 newY = y + lineHeight;
-        if (*nextLine == '\n' && newY < (_consoleBottom - 2 * lineHeight - 11)) {
-            ch = nextLine + 1;
-            x = _consoleLeft + CONSOLE_EDGE_PADDING;
-            y = newY;
-        } else {
-            break;
-        }
+    // Draw text inside console
+    for (std::size_t i = 0; i < _consoleLines.size() && i < (size_t)maxLines; i++) {
+        const size_t index       = i + _consoleScrollPos;
+        const utf8 * line = static_cast<const utf8*>(_consoleLines[index].c_str());
+        gfx_draw_string(dpi, line, COLOUR_WHITE | COLOUR_FLAG_OUTLINE | COLOUR_FLAG_INSET, x, y);
+        y += lineHeight;
     }
 
-    x = _consoleLeft + CONSOLE_EDGE_PADDING;
     y = _consoleBottom - lineHeight - CONSOLE_EDGE_PADDING - 1;
 
     // Draw current line
-    lineCh = lineBuffer;
+    utf8   buffer[Util::CountOf(_consoleCurrentLine) + 2]{}; // +2 for the extra format code
+    utf8 * bufferPtr = buffer;
     if (extraTextFormatCode != 0)
     {
-        lineCh = utf8_write_codepoint(lineCh, extraTextFormatCode);
+        bufferPtr = utf8_write_codepoint(buffer, extraTextFormatCode);
     }
-    safe_strcpy(lineCh, _consoleCurrentLine, sizeof(lineBuffer) - (lineCh - lineBuffer));
-    gfx_draw_string(dpi, lineBuffer, textColour, x, y);
+    String::Set(bufferPtr, Util::CountOf(_consoleCurrentLine), _consoleCurrentLine);
+    gfx_draw_string(dpi, buffer, TEXT_COLOUR_255, x, y);
 
     // Draw caret
     if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD) {
-        memcpy(lineBuffer, _consoleCurrentLine, _consoleTextInputSession->SelectionStart);
-        lineBuffer[_consoleTextInputSession->SelectionStart] = 0;
-        sint32 caretX = x + gfx_get_string_width(lineBuffer);
+        sint32 caretX = x + gfx_get_string_width(_consoleCurrentLine);
         sint32 caretY = y + lineHeight;
 
         uint8 caretColour = ColourMapA[BASE_COLOUR(backgroundColour)].lightest;
@@ -323,14 +259,14 @@ void console_input(CONSOLE_INPUT input)
         console_refresh_caret();
         break;
     case CONSOLE_INPUT_LINE_EXECUTE:
-        if (_consoleCurrentLine[0] != 0) {
+        if (_consoleCurrentLine[0] != '\0') {
             console_history_add(_consoleCurrentLine);
             console_execute(_consoleCurrentLine);
             console_write_prompt();
             console_clear_input();
             console_refresh_caret();
         }
-        _consoleScrollPos = 0;
+        console_scroll_to_end();
         break;
     case CONSOLE_INPUT_HISTORY_PREVIOUS:
         if (_consoleHistoryIndex > 0) {
@@ -377,45 +313,48 @@ static void console_invalidate()
 
 static void console_write_prompt()
 {
-    console_write("> ");
+    console_writeline("> ");
 }
 
 void console_write(const utf8 *src)
 {
-    size_t charactersRemainingInBuffer = CONSOLE_BUFFER_SIZE - (_consoleBufferPointer - _consoleBuffer) - 1;
-    size_t charactersToWrite = strlen(src);
-    size_t bufferShift = charactersToWrite - charactersRemainingInBuffer;
-    if (charactersToWrite > charactersRemainingInBuffer) {
-        memmove(_consoleBuffer, _consoleBuffer + bufferShift, CONSOLE_BUFFER_SIZE - bufferShift);
-        _consoleBufferPointer -= bufferShift;
-        charactersRemainingInBuffer = CONSOLE_BUFFER_SIZE - (_consoleBufferPointer - _consoleBuffer) - 1;
-    }
-    safe_strcpy(_consoleBufferPointer, src, charactersRemainingInBuffer);
-    _consoleBufferPointer += charactersToWrite;
+    Guard::Assert(_consoleLines.size() > 0);
+    std::string & lastLine = _consoleLines.back();
+    lastLine.append(src);
 }
 
-void console_writeline(const utf8 *src)
+void console_writeline(const utf8 * src, uint32 colourFormat)
 {
-    console_write(src);
-    console_write("\n");
+    utf8 colourCodepoint[4]{};
+    utf8_write_codepoint(colourCodepoint, colourFormat);
+
+    std::string input = String::ToStd(src);
+    std::string line;
+    std::size_t splitPos     = 0;
+    std::size_t stringOffset = 0;
+    while (splitPos != std::string::npos)
+    {
+        splitPos = input.find('\n', stringOffset);
+        line     = input.substr(stringOffset, splitPos - stringOffset);
+        _consoleLines.push_back(colourCodepoint + line);
+        stringOffset = splitPos + 1;
+    }
 }
 
 void console_writeline_error(const utf8 *src)
 {
-    safe_strcpy(_consoleErrorBuffer + 1, src, CONSOLE_BUFFER_2_SIZE - 1);
-    _consoleErrorBuffer[0] = (utf8)(uint8)FORMAT_RED;
-    console_writeline(_consoleErrorBuffer);
+    console_writeline(src, FORMAT_RED);
 }
 
 void console_writeline_warning(const utf8 *src)
 {
-    safe_strcpy(_consoleErrorBuffer + 1, src, CONSOLE_BUFFER_2_SIZE - 1);
-    _consoleErrorBuffer[0] = (utf8)(uint8)FORMAT_YELLOW;
-    console_writeline(_consoleErrorBuffer);
+    console_writeline(src, FORMAT_YELLOW);
 }
 
 void console_printf(const utf8 *format, ...)
 {
+    // TODO: Try to remove buffer
+    utf8    _consolePrintfBuffer[256];
     va_list list;
     va_start(list, format);
     vsnprintf(_consolePrintfBuffer, sizeof(_consolePrintfBuffer), format, list);
@@ -439,34 +378,28 @@ double console_parse_double(const utf8 *src, bool *valid) {
 
 void console_scroll(sint32 linesToScroll)
 {
-    sint32 speed = abs(linesToScroll);
-    sint32 lines = 0;
-    sint32 maxLines = console_get_num_visible_lines();
-    utf8 *ch = strchr(_consoleBuffer, 0);
-    while (ch > _consoleBuffer) {
-        ch--;
-        if (*ch == '\n')
-            lines++;
-    }
-    if (linesToScroll > 0 && _consoleScrollPos + 1 < (lines - maxLines + 4)) {
-        _consoleScrollPos = std::min(_consoleScrollPos + speed, (lines - maxLines + 4));
-    }
-    else if (linesToScroll < 0 && _consoleScrollPos > 0) {
-        _consoleScrollPos = std::max(_consoleScrollPos - speed, 0);
+    const sint32 maxVisibleLines = console_get_num_visible_lines();
+    const sint32 numLines = (sint32)_consoleLines.size();
+    if (numLines > maxVisibleLines)
+    {
+        sint32 maxScrollValue = numLines - maxVisibleLines;
+        _consoleScrollPos     = Math::Clamp<sint32>(0, _consoleScrollPos - linesToScroll, maxScrollValue);
     }
 }
 
 // Calculates the amount of visible lines, based on the console size, excluding the input line.
 static sint32 console_get_num_visible_lines()
 {
-    return ((_consoleBottom - _consoleTop) / font_get_line_height(gCurrentFontSpriteBase)) - 1;
+    const sint32 lineHeight     = font_get_line_height(gCurrentFontSpriteBase);
+    const sint32 consoleHeight  = _consoleBottom - _consoleTop;
+    const sint32 drawableHeight = consoleHeight - 2 * lineHeight - 4; // input line, separator - padding
+    return drawableHeight / lineHeight;
 }
 
 void console_clear()
 {
-    _consoleScrollPos = 0;
-    _consoleBuffer[0] = 0;
-    _consoleBufferPointer = _consoleBuffer;
+    _consoleLines.clear();
+    console_scroll_to_end();
 }
 
 void console_clear_line()
@@ -486,6 +419,11 @@ static void console_clear_input()
     if (gConsoleOpen) {
         context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
     }
+}
+
+static void console_scroll_to_end()
+{
+    _consoleScrollPos = Math::Max<sint32>(0, (sint32)_consoleLines.size() - console_get_num_visible_lines());
 }
 
 static void console_history_add(const utf8 *src)
@@ -1551,7 +1489,7 @@ static void console_write_all_commands()
 
 void console_execute(const utf8 *src)
 {
-    console_writeline(src);
+    console_write(src);
 
     console_execute_silent(src);
 }
