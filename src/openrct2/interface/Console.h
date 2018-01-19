@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,6 +19,7 @@
 
 #include "../common.h"
 #include "../drawing/Drawing.h"
+#include "../localisation/FormatCodes.h"
 
 typedef enum CONSOLE_INPUT
 {
@@ -46,7 +47,7 @@ void console_draw(rct_drawpixelinfo *dpi);
 
 void console_input(CONSOLE_INPUT input);
 void console_write(const utf8 *src);
-void console_writeline(const utf8 *src);
+void console_writeline(const utf8 *src, uint32 colourFormat = FORMAT_WHITE);
 void console_writeline_error(const utf8 *src);
 void console_writeline_warning(const utf8 *src);
 void console_printf(const utf8 *format, ...);

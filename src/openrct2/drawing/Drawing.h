@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -323,7 +323,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, sint3
 void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 maskImage, sint32 colourImage);
 
 // string
-void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, uint8 colour, sint32 x, sint32 y);
+void gfx_draw_string(rct_drawpixelinfo *dpi, const_utf8string buffer, uint8 colour, sint32 x, sint32 y);
 
 void gfx_draw_string_left(rct_drawpixelinfo *dpi, rct_string_id format, void *args, uint8 colour, sint32 x, sint32 y);
 void gfx_draw_string_centred(rct_drawpixelinfo *dpi, rct_string_id format, sint32 x, sint32 y, uint8 colour, void *args);
@@ -351,7 +351,7 @@ sint32 gfx_get_string_width_new_lined(char* buffer);
 sint32 string_get_height_raw(char *buffer);
 sint32 gfx_clip_string(char* buffer, sint32 width);
 void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 availableWidth);
-void ttf_draw_string(rct_drawpixelinfo *dpi, char *text, sint32 colour, sint32 x, sint32 y);
+void ttf_draw_string(rct_drawpixelinfo *dpi, const_utf8string text, sint32 colour, sint32 x, sint32 y);
 
 typedef struct paint_session paint_session;
 
