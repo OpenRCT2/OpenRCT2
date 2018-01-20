@@ -2402,6 +2402,14 @@ bool track_circuit_iterator_next(track_circuit_iterator * it)
     }
 }
 
+bool track_circuit_iterators_match(const track_circuit_iterator * firstIt, const track_circuit_iterator * secondIt)
+{
+    return (firstIt->currentZ == secondIt->currentZ &&
+            firstIt->currentDirection == secondIt->currentDirection &&
+            firstIt->current.x == secondIt->current.x &&
+            firstIt->current.y == secondIt->current.y);
+}
+
 void track_get_back(rct_xy_element * input, rct_xy_element * output)
 {
     rct_xy_element  lastTrack;

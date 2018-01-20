@@ -818,7 +818,7 @@ sint32 ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
     if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
         ride_construction_invalidate_current_track();
 
-    bool counter = true;
+    bool moveSlowIt = true;
     track_circuit_iterator_begin(&it, *input);
     slowIt = it;
     while (track_circuit_iterator_next(&it)) {
@@ -827,13 +827,12 @@ sint32 ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
             return 1;
         }
         //#2081: prevent an infinite loop
-        counter = !counter;
-        if (counter) {
+        moveSlowIt = !moveSlowIt;
+        if (moveSlowIt)
+        {
             track_circuit_iterator_next(&slowIt);
-            if (slowIt.currentZ == it.currentZ &&
-                slowIt.currentDirection == it.currentDirection &&
-                slowIt.current.x == it.current.x &&
-                slowIt.current.y == it.current.y) {
+            if (track_circuit_iterators_match(&it, &slowIt))
+            {
                 *output = it.current;
                 return 1;
             }
@@ -4172,13 +4171,27 @@ static bool ride_check_track_contains_inversions(rct_xy_element *input, rct_xy_e
         ride_construction_invalidate_current_track();
     }
 
-    track_circuit_iterator it;
+    bool moveSlowIt = true;
+    track_circuit_iterator it, slowIt;
     track_circuit_iterator_begin(&it, *input);
+    slowIt = it;
+
     while (track_circuit_iterator_next(&it)) {
         sint32 trackType = track_element_get_type(it.current.element);
         if (TrackFlags[trackType] & TRACK_ELEM_FLAG_INVERSION_TO_NORMAL) {
             *output = it.current;
             return true;
+        }
+
+        // Prevents infinite loops
+        moveSlowIt = !moveSlowIt;
+        if (moveSlowIt)
+        {
+            track_circuit_iterator_next(&slowIt);
+            if (track_circuit_iterators_match(&it, &slowIt))
+            {
+                return false;
+            }
         }
     }
     return false;
@@ -4203,13 +4216,27 @@ static bool ride_check_track_contains_banked(rct_xy_element *input, rct_xy_eleme
         ride_construction_invalidate_current_track();
     }
 
-    track_circuit_iterator it;
+    bool moveSlowIt = true;
+    track_circuit_iterator it, slowIt;
     track_circuit_iterator_begin(&it, *input);
+    slowIt = it;
+
     while (track_circuit_iterator_next(&it)) {
         sint32 trackType = track_element_get_type(output->element);
         if (TrackFlags[trackType] & TRACK_ELEM_FLAG_BANKED) {
             *output = it.current;
             return true;
+        }
+
+        // Prevents infinite loops
+        moveSlowIt = !moveSlowIt;
+        if (moveSlowIt)
+        {
+            track_circuit_iterator_next(&slowIt);
+            if (track_circuit_iterators_match(&it, &slowIt))
+            {
+                return false;
+            }
         }
     }
     return false;
@@ -6991,7 +7018,7 @@ static sint32 ride_get_track_length(Ride * ride)
 {
     rct_window             * w;
     rct_tile_element        * tileElement = nullptr;
-    track_circuit_iterator   it;
+    track_circuit_iterator   it, slowIt;
     sint32                   x = 0, y = 0, z, trackType, rideIndex, result;
     bool                     foundTrack = false;
 
@@ -7033,12 +7060,23 @@ static sint32 ride_get_track_length(Ride * ride)
             ride_construction_invalidate_current_track();
         }
 
+        bool moveSlowIt = true;
         result = 0;
         track_circuit_iterator_begin(&it, {x, y, tileElement});
+        slowIt = it;
         while (track_circuit_iterator_next(&it))
         {
             trackType = track_element_get_type(it.current.element);
             result += TrackPieceLengths[trackType];
+
+            if (moveSlowIt)
+            {
+                track_circuit_iterator_next(&slowIt);
+                if (track_circuit_iterators_match(&it, &slowIt))
+                {
+                    return 0;
+                }
+            }
         }
         return result;
     }
