@@ -3088,7 +3088,7 @@ static void window_ride_mode_tweak_increase(rct_window *w)
 
     uint8 increment = ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
 
-    window_ride_mode_tweak_set(w, Math::Clamp<uint8>(minValue, ride->operation_option + increment, maxValue));
+    window_ride_mode_tweak_set(w, Math::Clamp<sint16>(minValue, ride->operation_option + increment, maxValue));
 }
 
 /**
@@ -3107,7 +3107,7 @@ static void window_ride_mode_tweak_decrease(rct_window *w)
 
     uint8 decrement = ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
 
-    window_ride_mode_tweak_set(w, Math::Clamp<uint8>(minValue, ride->operation_option - decrement, maxValue));
+    window_ride_mode_tweak_set(w, Math::Clamp<sint16>(minValue, ride->operation_option - decrement, maxValue));
 }
 
 /**
@@ -3260,32 +3260,32 @@ static void window_ride_operating_mousedown(rct_window *w, rct_widgetindex widge
     case WIDX_LIFT_HILL_SPEED_INCREASE:
         upper_bound = gCheatsFastLiftHill ? 255 : RideLiftData[ride->type].maximum_speed;
         lower_bound = gCheatsFastLiftHill ? 0 : RideLiftData[ride->type].minimum_speed;
-        set_operating_setting(w->number, RIDE_SETTING_LIFT_HILL_SPEED, Math::Clamp<uint8>(lower_bound, ride->lift_hill_speed + 1, upper_bound));
+        set_operating_setting(w->number, RIDE_SETTING_LIFT_HILL_SPEED, Math::Clamp<sint16>(lower_bound, ride->lift_hill_speed + 1, upper_bound));
         break;
     case WIDX_LIFT_HILL_SPEED_DECREASE:
         upper_bound = gCheatsFastLiftHill ? 255 : RideLiftData[ride->type].maximum_speed;
         lower_bound = gCheatsFastLiftHill ? 0 : RideLiftData[ride->type].minimum_speed;
-        set_operating_setting(w->number, RIDE_SETTING_LIFT_HILL_SPEED, Math::Clamp<uint8>(lower_bound, ride->lift_hill_speed - 1, upper_bound));
+        set_operating_setting(w->number, RIDE_SETTING_LIFT_HILL_SPEED, Math::Clamp<sint16>(lower_bound, ride->lift_hill_speed - 1, upper_bound));
         break;
     case WIDX_MINIMUM_LENGTH_INCREASE:
         upper_bound = 250;
         lower_bound = 0;
-        set_operating_setting(w->number, RIDE_SETTING_MIN_WAITING_TIME, Math::Clamp<uint8>(lower_bound, ride->min_waiting_time + 1, upper_bound));
+        set_operating_setting(w->number, RIDE_SETTING_MIN_WAITING_TIME, Math::Clamp<sint16>(lower_bound, ride->min_waiting_time + 1, upper_bound));
         break;
     case WIDX_MINIMUM_LENGTH_DECREASE:
         upper_bound = 250;
         lower_bound = 0;
-        set_operating_setting(w->number, RIDE_SETTING_MIN_WAITING_TIME, Math::Clamp<uint8>(lower_bound, ride->min_waiting_time - 1, upper_bound));
+        set_operating_setting(w->number, RIDE_SETTING_MIN_WAITING_TIME, Math::Clamp<sint16>(lower_bound, ride->min_waiting_time - 1, upper_bound));
         break;
     case WIDX_MAXIMUM_LENGTH_INCREASE:
         upper_bound = 250;
         lower_bound = 0;
-        set_operating_setting(w->number, RIDE_SETTING_MAX_WAITING_TIME, Math::Clamp<uint8>(lower_bound, ride->max_waiting_time + 1, upper_bound));
+        set_operating_setting(w->number, RIDE_SETTING_MAX_WAITING_TIME, Math::Clamp<sint16>(lower_bound, ride->max_waiting_time + 1, upper_bound));
         break;
     case WIDX_MAXIMUM_LENGTH_DECREASE:
         upper_bound = 250;
         lower_bound = 0;
-        set_operating_setting(w->number, RIDE_SETTING_MAX_WAITING_TIME, Math::Clamp<uint8>(lower_bound, ride->max_waiting_time - 1, upper_bound));
+        set_operating_setting(w->number, RIDE_SETTING_MAX_WAITING_TIME, Math::Clamp<sint16>(lower_bound, ride->max_waiting_time - 1, upper_bound));
         break;
     case WIDX_MODE_DROPDOWN:
         window_ride_mode_dropdown(w, widget);
@@ -3296,12 +3296,12 @@ static void window_ride_operating_mousedown(rct_window *w, rct_widgetindex widge
     case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
         upper_bound = gCheatsFastLiftHill ? 255 : 20;
         lower_bound = 1;
-        set_operating_setting(w->number, RIDE_SETTING_NUM_CIRCUITS, Math::Clamp<uint8>(lower_bound, ride->num_circuits + 1, upper_bound));
+        set_operating_setting(w->number, RIDE_SETTING_NUM_CIRCUITS, Math::Clamp<sint16>(lower_bound, ride->num_circuits + 1, upper_bound));
         break;
     case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
         upper_bound = gCheatsFastLiftHill ? 255 : 20;
         lower_bound = 1;
-        set_operating_setting(w->number, RIDE_SETTING_NUM_CIRCUITS, Math::Clamp<uint8>(lower_bound, ride->num_circuits - 1, upper_bound));
+        set_operating_setting(w->number, RIDE_SETTING_NUM_CIRCUITS, Math::Clamp<sint16>(lower_bound, ride->num_circuits - 1, upper_bound));
         break;
     }
 }
