@@ -214,7 +214,7 @@ const char * PlatformEnvironment::DirectoryNamesOpenRCT2[] =
     "scenario",             // SCENARIO
     "screenshot",           // SCREENSHOT
     "sequence",             // SEQUENCE
-    "shader",               // SHADER
+    "shaders",              // SHADER
     "themes",               // THEME
     "track",                // TRACK
 };

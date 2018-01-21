@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <string>
 #include <openrct2/common.h>
 #include "OpenGLAPI.h"
 
@@ -34,8 +35,8 @@ public:
     GLuint GetShaderId();
 
 private:
-    void GetPath(char * buffer, size_t bufferSize, const char * name);
-    static char * ReadSourceCode(const utf8 * path);
+    std::string GetPath(const std::string &name);
+    static std::string ReadSourceCode(const std::string &path);
 };
 
 class OpenGLShaderProgram
