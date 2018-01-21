@@ -56,17 +56,17 @@ uint32 WallTexturePreviews[] =
     SPR_WALL_TEXTURE_WOOD_RED,
     SPR_WALL_TEXTURE_WOOD_BLACK,
     SPR_WALL_TEXTURE_ICE,
-    SPR_CSG_WALL_TEXTURE_BRICK,
-    SPR_CSG_WALL_TEXTURE_IRON,
-    SPR_CSG_WALL_TEXTURE_GREY,
-    SPR_CSG_WALL_TEXTURE_YELLOW,
-    SPR_CSG_WALL_TEXTURE_RED,
-    SPR_CSG_WALL_TEXTURE_PURPLE,
-    SPR_CSG_WALL_TEXTURE_GREEN,
-    SPR_CSG_WALL_TEXTURE_STONE_BROWN,
-    SPR_CSG_WALL_TEXTURE_STONE_GREY,
-    SPR_CSG_WALL_TEXTURE_SKYSCRAPER_A,
-    SPR_CSG_WALL_TEXTURE_SKYSCRAPER_B,
+    SPR_G2_WALL_TEXTURE_BRICK,
+    SPR_G2_WALL_TEXTURE_IRON,
+    SPR_G2_WALL_TEXTURE_GREY,
+    SPR_G2_WALL_TEXTURE_YELLOW,
+    SPR_G2_WALL_TEXTURE_RED,
+    SPR_G2_WALL_TEXTURE_PURPLE,
+    SPR_G2_WALL_TEXTURE_GREEN,
+    SPR_G2_WALL_TEXTURE_STONE_BROWN,
+    SPR_G2_WALL_TEXTURE_STONE_GREY,
+    SPR_G2_WALL_TEXTURE_SKYSCRAPER_A,
+    SPR_G2_WALL_TEXTURE_SKYSCRAPER_B,
 };
 
 uint16 gLandToolSize;
@@ -119,9 +119,8 @@ void land_tool_show_surface_style_dropdown(rct_window * w, rct_widget * widget, 
 void land_tool_show_edge_style_dropdown(rct_window * w, rct_widget * widget, uint8 currentEdgeType)
 {
     uint8 defaultIndex = 0;
-    const uint8 edgeCount = input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z) && is_csg_loaded() ?
-        TERRAIN_EDGE_COUNT :
-        TERRAIN_EDGE_RCT2_COUNT;
+    // Do not show RCT1 edge styles if the player does not have RCT1.
+    const uint8 edgeCount = is_csg_loaded() ? TERRAIN_EDGE_COUNT : TERRAIN_EDGE_RCT2_COUNT;
 
     for (uint8 i = 0; i < edgeCount; i++) {
         gDropdownItemsFormat[i] = DROPDOWN_FORMAT_LAND_PICKER;

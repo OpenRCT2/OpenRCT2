@@ -379,5 +379,60 @@
         "path": "surface/selection_edge_se.png",
         "x_offset": 0,
         "y_offset": 15
+    },
+    {
+        "path": "edge/brick.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/rust.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/white_stucco.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/yellow_stucco.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/red_stucco.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/purple_stucco.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/green_stucco.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/brown_sandstone.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/grey_sandstone.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/skyscraper_a.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/skyscraper_b.png",
+        "x_offset": 2,
+        "y_offset": 2
     }
 ]
