@@ -47,7 +47,7 @@ void console_draw(rct_drawpixelinfo *dpi);
 
 void console_input(CONSOLE_INPUT input);
 void console_write(const utf8 *src);
-void console_writeline(const utf8 *src, uint32 colourFormat = FORMAT_WHITE);
+void console_writeline(const utf8 * src, uint32 colourFormat = FORMAT_WINDOW_COLOUR_2);
 void console_writeline_error(const utf8 *src);
 void console_writeline_warning(const utf8 *src);
 void console_printf(const utf8 *format, ...);
