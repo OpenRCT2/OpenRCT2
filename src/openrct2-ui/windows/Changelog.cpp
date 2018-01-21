@@ -17,14 +17,17 @@
 #include <fstream>
 #include <vector>
 #include <openrct2/Context.h>
-#include <openrct2/OpenRCT2.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/platform/platform.h>
+#include <openrct2/PlatformEnvironment.h>
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2-ui/interface/Widget.h>
+
+using namespace OpenRCT2;
 
 enum {
     WIDX_BACKGROUND,
@@ -198,17 +201,25 @@ static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
     }
 }
 
+static std::string GetChangelogPath()
+{
+    auto env = GetContext()->GetPlatformEnvironment();
+    return env->GetFilePath(PATHID::CHANGELOG);
+}
+
 static std::string GetChangelogText()
 {
-    utf8 path[MAX_PATH];
-    platform_get_changelog_path(path, sizeof(path));
-
+    auto path = GetChangelogPath();
 #if defined(_WIN32) && !defined(__MINGW32__)
     auto pathW = String::ToUtf16(path);
-    auto fs = std::ifstream(pathW, std::ios::out | std::ios::app);
+    auto fs = std::ifstream(pathW, std::ios::in);
 #else
-    auto fs = std::ifstream(path, std::ios::out | std::ios::app);
+    auto fs = std::ifstream(path, std::ios::in);
 #endif
+    if (!fs.is_open())
+    {
+        throw std::runtime_error("Unable to open " + path);
+    }
     return std::string((std::istreambuf_iterator<char>(fs)), std::istreambuf_iterator<char>());
 }
 

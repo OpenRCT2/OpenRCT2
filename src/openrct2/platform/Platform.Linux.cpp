@@ -18,6 +18,7 @@
 
 #include <pwd.h>
 #include "../core/Path.hpp"
+#include "platform.h"
 #include "Platform2.h"
 
 namespace Platform
@@ -43,6 +44,24 @@ namespace Platform
         default:
             return std::string();
         }
+    }
+
+    std::string GetDocsPath()
+    {
+        static const utf8 * searchLocations[] =
+        {
+            "./doc",
+            "/usr/share/doc/openrct2",
+        };
+        for (auto searchLocation : searchLocations)
+        {
+            log_verbose("Looking for OpenRCT2 doc path at %s", searchLocation);
+            if (platform_directory_exists(searchLocation))
+            {
+                return searchLocation;
+            }
+        }
+        return std::string();
     }
 }
 

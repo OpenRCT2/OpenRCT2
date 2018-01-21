@@ -39,6 +39,11 @@ namespace Platform
             return std::string();
         }
     }
+
+    std::string GetDocsPath()
+    {
+        return std::string();
+    }
 }
 
 #endif
