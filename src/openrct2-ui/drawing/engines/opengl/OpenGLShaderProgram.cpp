@@ -90,7 +90,7 @@ std::string OpenGLShader::ReadSourceCode(const std::string &path)
     }
 
     auto fileData = std::string((size_t)fileLength + 1, '\0');
-    fs.Read(fileData.data(), fileLength);
+    fs.Read((void *)fileData.data(), fileLength);
     return fileData;
 }
 

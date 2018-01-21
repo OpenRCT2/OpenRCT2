@@ -240,7 +240,8 @@ static bool window_changelog_read_file()
         return false;
     }
 
-    auto * start = _changelogText.data();
+    // Non-const cast required until C++17 is enabled
+    auto * start = (char *)_changelogText.data();
     if (_changelogText.size() >= 3 && utf8_is_bom(start))
     {
         start += 3;

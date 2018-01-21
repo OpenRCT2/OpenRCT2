@@ -1201,7 +1201,7 @@ static void window_editor_object_selection_set_pressed_tab(rct_window *w)
 static sint32 get_object_from_object_selection(uint8 object_type, sint32 y)
 {
     sint32 listItemIndex = y / 12;
-    if (listItemIndex < 0 || listItemIndex >= _listItems.size())
+    if (listItemIndex < 0 || (size_t)listItemIndex >= _listItems.size())
         return -1;
 
     return listItemIndex;
