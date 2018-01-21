@@ -19,6 +19,7 @@
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2/Input.h>
 
 static uint16 toolSizeSpriteIndices[] =
 {
@@ -41,9 +42,31 @@ static char FloorTextureOrder[] =
 
 static char WallTextureOrder[] =
 {
-    TERRAIN_EDGE_ROCK,       TERRAIN_EDGE_WOOD_RED,
-    TERRAIN_EDGE_WOOD_BLACK, TERRAIN_EDGE_ICE,
+    TERRAIN_EDGE_ROCK,         TERRAIN_EDGE_WOOD_RED,    TERRAIN_EDGE_WOOD_BLACK, TERRAIN_EDGE_ICE,
+    TERRAIN_EDGE_BRICK,        TERRAIN_EDGE_IRON,
+    TERRAIN_EDGE_GREY,         TERRAIN_EDGE_YELLOW,      TERRAIN_EDGE_RED,        TERRAIN_EDGE_PURPLE, TERRAIN_EDGE_GREEN,
+    TERRAIN_EDGE_STONE_BROWN,  TERRAIN_EDGE_STONE_GREY,
+    TERRAIN_EDGE_SKYSCRAPER_A, TERRAIN_EDGE_SKYSCRAPER_B,
     0, 0
+};
+
+uint32 WallTexturePreviews[] =
+{
+    SPR_WALL_TEXTURE_ROCK,
+    SPR_WALL_TEXTURE_WOOD_RED,
+    SPR_WALL_TEXTURE_WOOD_BLACK,
+    SPR_WALL_TEXTURE_ICE,
+    SPR_CSG_WALL_TEXTURE_BRICK,
+    SPR_CSG_WALL_TEXTURE_IRON,
+    SPR_CSG_WALL_TEXTURE_GREY,
+    SPR_CSG_WALL_TEXTURE_YELLOW,
+    SPR_CSG_WALL_TEXTURE_RED,
+    SPR_CSG_WALL_TEXTURE_PURPLE,
+    SPR_CSG_WALL_TEXTURE_GREEN,
+    SPR_CSG_WALL_TEXTURE_STONE_BROWN,
+    SPR_CSG_WALL_TEXTURE_STONE_GREY,
+    SPR_CSG_WALL_TEXTURE_SKYSCRAPER_A,
+    SPR_CSG_WALL_TEXTURE_SKYSCRAPER_B,
 };
 
 uint16 gLandToolSize;
@@ -96,10 +119,13 @@ void land_tool_show_surface_style_dropdown(rct_window * w, rct_widget * widget, 
 void land_tool_show_edge_style_dropdown(rct_window * w, rct_widget * widget, uint8 currentEdgeType)
 {
     uint8 defaultIndex = 0;
+    const uint8 edgeCount = input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z) && is_csg_loaded() ?
+        TERRAIN_EDGE_COUNT :
+        TERRAIN_EDGE_RCT2_COUNT;
 
-    for (uint8 i = 0; i < TERRAIN_EDGE_RCT2_COUNT; i++) {
+    for (uint8 i = 0; i < edgeCount; i++) {
         gDropdownItemsFormat[i] = DROPDOWN_FORMAT_LAND_PICKER;
-        gDropdownItemsArgs[i] = SPR_WALL_TEXTURE_ROCK + WallTextureOrder[i];
+        gDropdownItemsArgs[i] = WallTexturePreviews[i];
         if (WallTextureOrder[i] == currentEdgeType)
             defaultIndex = i;
     }
@@ -109,9 +135,9 @@ void land_tool_show_edge_style_dropdown(rct_window * w, rct_widget * widget, uin
        widget->bottom - widget->top,
        w->colours[2],
        0,
-       TERRAIN_EDGE_RCT2_COUNT,
+       edgeCount,
        47, 36,
-       gAppropriateImageDropdownItemsPerRow[TERRAIN_EDGE_RCT2_COUNT]
+       gAppropriateImageDropdownItemsPerRow[edgeCount]
     );
 
     gDropdownDefaultIndex = defaultIndex;
