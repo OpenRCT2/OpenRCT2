@@ -21,7 +21,6 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/core/Math.hpp>
-#include <openrct2/core/Memory.hpp>
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/audio/audio.h>

@@ -21,7 +21,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/Util.hpp>
-#include <openrct2/core/Memory.hpp>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/localisation/Localisation.h>

@@ -23,7 +23,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Math.hpp>
-#include <openrct2/core/Memory.hpp>
 #include <openrct2/core/Util.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/audio/AudioChannel.h>

@@ -17,7 +17,6 @@
 #include <vector>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Memory.hpp>
 #include <openrct2/interface/themes.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>

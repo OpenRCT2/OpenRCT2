@@ -18,7 +18,6 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
-#include <openrct2/core/Memory.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/Editor.h>
