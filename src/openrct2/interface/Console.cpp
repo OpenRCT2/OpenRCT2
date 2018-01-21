@@ -16,8 +16,8 @@
 
 #include <algorithm>
 #include <cstdarg>
+#include <deque>
 #include <string>
-#include <vector>
 
 #include "../config/Config.h"
 #include "../Context.h"
@@ -60,6 +60,7 @@
 #include "../drawing/TTF.h"
 #endif
 
+#define CONSOLE_MAX_LINES 300
 #define CONSOLE_HISTORY_SIZE 64
 #define CONSOLE_INPUT_SIZE 256
 #define CONSOLE_CARET_FLASH_THRESHOLD 15
@@ -74,7 +75,7 @@ bool gConsoleOpen = false;
 static bool                     _consoleInitialised = false;
 static sint32                   _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
 static sint32                   _lastMainViewportX, _lastMainViewportY;
-static std::vector<std::string> _consoleLines;
+static std::deque<std::string>  _consoleLines;
 static utf8                     _consoleCurrentLine[CONSOLE_INPUT_SIZE];
 static sint32                   _consoleCaretTicks;
 static sint32                   _consoleScrollPos = 0;
@@ -339,6 +340,12 @@ void console_writeline(const utf8 * src, uint32 colourFormat)
         line     = input.substr(stringOffset, splitPos - stringOffset);
         _consoleLines.push_back(colourCodepoint + line);
         stringOffset = splitPos + 1;
+    }
+
+    if (_consoleLines.size() > CONSOLE_MAX_LINES)
+    {
+        const std::size_t linesToErase = _consoleLines.size() - CONSOLE_MAX_LINES;
+        _consoleLines.erase(_consoleLines.begin(), _consoleLines.begin() + linesToErase);
     }
 }
 
