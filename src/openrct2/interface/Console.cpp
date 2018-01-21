@@ -30,6 +30,7 @@
 #include "../EditorObjectSelectionSession.h"
 #include "../Game.h"
 #include "../Input.h"
+#include "../interface/Colour.h"
 #include "../interface/themes.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/User.h"
@@ -175,16 +176,18 @@ void console_draw(rct_drawpixelinfo *dpi)
     // Set font
     gCurrentFontSpriteBase           = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
     gCurrentFontFlags                = 0;
-    uint8        textColour          = theme_get_colour(WC_CONSOLE, 1);
-    uint8        extraTextFormatCode = 0;
+    uint8        textColour          = NOT_TRANSLUCENT(theme_get_colour(WC_CONSOLE, 1));
     const sint32 lineHeight          = font_get_line_height(gCurrentFontSpriteBase);
     const sint32 maxLines            = console_get_num_visible_lines();
 
     // This is something of a hack to ensure the text is actually black
     // as opposed to a desaturated grey
+    std::string colourFormatStr;
     if (textColour == COLOUR_BLACK)
     {
-        extraTextFormatCode = FORMAT_BLACK;
+        utf8 extraTextFormatCode[4]{};
+        utf8_write_codepoint(extraTextFormatCode, FORMAT_BLACK);
+        colourFormatStr = extraTextFormatCode;
     }
 
     // TTF looks far better without the outlines
@@ -206,28 +209,23 @@ void console_draw(rct_drawpixelinfo *dpi)
     gfx_fill_rect_inset(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
     gfx_fill_rect_inset(dpi, _consoleLeft + 1, _consoleTop + 1, _consoleRight - 1, _consoleBottom - 1, backgroundColour, INSET_RECT_FLAG_BORDER_INSET);
 
-    sint32 x = _consoleLeft + CONSOLE_EDGE_PADDING;
-    sint32 y = _consoleTop + CONSOLE_EDGE_PADDING;
+    std::string lineBuffer;
+    sint32      x = _consoleLeft + CONSOLE_EDGE_PADDING;
+    sint32      y = _consoleTop + CONSOLE_EDGE_PADDING;
 
     // Draw text inside console
     for (std::size_t i = 0; i < _consoleLines.size() && i < (size_t)maxLines; i++) {
-        const size_t index       = i + _consoleScrollPos;
-        const utf8 * line = static_cast<const utf8*>(_consoleLines[index].c_str());
-        gfx_draw_string(dpi, line, COLOUR_WHITE | COLOUR_FLAG_OUTLINE | COLOUR_FLAG_INSET, x, y);
+        const size_t index = i + _consoleScrollPos;
+        lineBuffer         = colourFormatStr + _consoleLines[index];
+        gfx_draw_string(dpi, lineBuffer.c_str(), textColour, x, y);
         y += lineHeight;
     }
 
     y = _consoleBottom - lineHeight - CONSOLE_EDGE_PADDING - 1;
 
     // Draw current line
-    utf8   buffer[Util::CountOf(_consoleCurrentLine) + 2]{}; // +2 for the extra format code
-    utf8 * bufferPtr = buffer;
-    if (extraTextFormatCode != 0)
-    {
-        bufferPtr = utf8_write_codepoint(buffer, extraTextFormatCode);
-    }
-    String::Set(bufferPtr, Util::CountOf(_consoleCurrentLine), _consoleCurrentLine);
-    gfx_draw_string(dpi, buffer, TEXT_COLOUR_255, x, y);
+    lineBuffer = colourFormatStr + _consoleCurrentLine;
+    gfx_draw_string(dpi, lineBuffer.c_str(), TEXT_COLOUR_255, x, y);
 
     // Draw caret
     if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD) {
@@ -325,8 +323,11 @@ void console_write(const utf8 *src)
 
 void console_writeline(const utf8 * src, uint32 colourFormat)
 {
+    // Include text colour format only for special cases
+    // The draw function handles the default text colour differently
     utf8 colourCodepoint[4]{};
-    utf8_write_codepoint(colourCodepoint, colourFormat);
+    if (colourFormat != FORMAT_WINDOW_COLOUR_2)
+        utf8_write_codepoint(colourCodepoint, colourFormat);
 
     std::string input = String::ToStd(src);
     std::string line;
