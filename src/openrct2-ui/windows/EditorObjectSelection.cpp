@@ -14,32 +14,31 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <openrct2-ui/windows/Window.h>
-
+#include <algorithm>
 #include <cctype>
 #include <string>
-
+#include <vector>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
-#include <openrct2/core/Memory.hpp>
 #include <openrct2/Editor.h>
 #include <openrct2/EditorObjectSelectionSession.h>
 #include <openrct2/Game.h>
-#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/RideObject.h>
 #include <openrct2/object/StexObject.h>
-#include <openrct2/object/ObjectList.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/RideGroupManager.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
-#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/windows/Intent.h>
+#include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
 
 enum {
     FILTER_RCT2 = (1 << 0),
@@ -270,42 +269,34 @@ typedef struct list_item {
 
 static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item);
 
-typedef sint32(*sortFunc_t)(const void *, const void *);
+typedef bool (*sortFunc_t)(const list_item &, const list_item &);
 
-static sint32 _numListItems = 0;
-static list_item *_listItems = nullptr;
+static std::vector<list_item> _listItems;
 static sint32 _listSortType = RIDE_SORT_TYPE;
 static bool _listSortDescending = false;
 static void * _loadedObject = nullptr;
 
 static void visible_list_dispose()
 {
-    SafeFree(_listItems);
-    _numListItems = 0;
+    _listItems.clear();
+    _listItems.shrink_to_fit();
 }
 
-static sint32 visible_list_sort_ride_name(const void *rawA, const void *rawB)
+static bool visible_list_sort_ride_name(const list_item &a, const list_item &b)
 {
-    list_item *a = (list_item*)rawA;
-    list_item *b = (list_item*)rawB;
-
-    const char *nameA = a->repositoryItem->Name;
-    const char *nameB = b->repositoryItem->Name;
-    return strcmp(nameA, nameB);
+    auto nameA = a.repositoryItem->Name;
+    auto nameB = b.repositoryItem->Name;
+    return strcmp(nameA, nameB) < 0;
 }
 
-static sint32 visible_list_sort_ride_type(const void *rawA, const void *rawB)
+static bool visible_list_sort_ride_type(const list_item &a, const list_item &b)
 {
-    list_item *a = (list_item*)rawA;
-    list_item *b = (list_item*)rawB;
-
-    const char *rideTypeA = language_get_string(get_ride_type_string_id(a->repositoryItem));
-    const char *rideTypeB = language_get_string(get_ride_type_string_id(b->repositoryItem));
+    auto rideTypeA = language_get_string(get_ride_type_string_id(a.repositoryItem));
+    auto rideTypeB = language_get_string(get_ride_type_string_id(b.repositoryItem));
     sint32 result = strcmp(rideTypeA, rideTypeB);
-    if (result != 0)
-        return result;
-
-    return visible_list_sort_ride_name(rawA, rawB);
+    return result != 0 ?
+        result < 0 :
+        visible_list_sort_ride_name(a, b);
 }
 
 static void visible_list_refresh(rct_window *w)
@@ -314,10 +305,7 @@ static void visible_list_refresh(rct_window *w)
 
     visible_list_dispose();
     w->selected_list_item = -1;
-    _listItems = Memory::AllocateArray<list_item>(numObjects);
-    _numListItems = 0;
 
-    list_item *currentListItem = &_listItems[0];
     const ObjectRepositoryItem *items = object_repository_get_items();
     for (sint32 i = 0; i < numObjects; i++) {
         uint8 selectionFlags = _objectSelectionFlags[i];
@@ -333,29 +321,25 @@ static void visible_list_refresh(rct_window *w)
             filter->ride.category[0] = 0;
             filter->ride.category[1] = 0;
             filter->ride.ride_type = 0;
-            currentListItem->repositoryItem = item;
-            currentListItem->entry = (rct_object_entry *)&item->ObjectEntry;
-            currentListItem->filter = filter;
-            currentListItem->flags = &_objectSelectionFlags[i];
-            currentListItem++;
-            _numListItems++;
+
+            list_item currentListItem;
+            currentListItem.repositoryItem = item;
+            currentListItem.entry = (rct_object_entry *)&item->ObjectEntry;
+            currentListItem.filter = filter;
+            currentListItem.flags = &_objectSelectionFlags[i];
+            _listItems.push_back(std::move(currentListItem));
         }
     }
 
-    if (_numListItems == 0)
+    if (_listItems.size() == 0)
     {
         visible_list_dispose();
-        window_invalidate(w);
-        return;
     }
-
-    _listItems = Memory::ReallocateArray(_listItems, _numListItems);
-    if (_listItems == nullptr) {
-        _numListItems = 0;
-        log_error("Unable to reallocate list items");
-    } else {
+    else
+    {
         sortFunc_t sortFunc = nullptr;
-        switch (_listSortType) {
+        switch (_listSortType)
+        {
         case RIDE_SORT_TYPE:
             sortFunc = visible_list_sort_ride_type;
             break;
@@ -364,17 +348,14 @@ static void visible_list_refresh(rct_window *w)
             break;
         default:
             log_warning("Wrong sort type %d, leaving list as-is.", _listSortType);
-            window_invalidate(w);
-            return;
+            break;
         }
-        qsort(_listItems, _numListItems, sizeof(list_item), sortFunc);
-
-        if (_listSortDescending) {
-            for (sint32 i = 0; i < _numListItems / 2; i++) {
-                sint32 ri = _numListItems - i - 1;
-                list_item temp = _listItems[i];
-                _listItems[i] = _listItems[ri];
-                _listItems[ri] = temp;
+        if (sortFunc != nullptr)
+        {
+            std::sort(_listItems.begin(), _listItems.end(), sortFunc);
+            if (_listSortDescending)
+            {
+                std::reverse(_listItems.begin(), _listItems.end());
             }
         }
     }
@@ -681,7 +662,7 @@ static void window_editor_object_selection_dropdown(rct_window *w, rct_widgetind
  */
 static void window_editor_object_selection_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
-    *height = _numListItems * 12;
+    *height = (sint32)(_listItems.size() * 12);
 }
 
 /**
@@ -1110,7 +1091,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
  */
 static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
-    sint32 x, y, i, colour, colour2;
+    sint32 x, y, colour, colour2;
 
     bool ridePage = (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS);
 
@@ -1118,27 +1099,26 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
     gfx_clear(dpi, paletteIndex);
 
     y = 0;
-    for (i = 0; i < _numListItems; i++) {
-        list_item *listItem = &_listItems[i];
-
+    for (const auto &listItem : _listItems)
+    {
         if (y + 12 >= dpi->y && y <= dpi->y + dpi->height) {
             // Draw checkbox
-            if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem->flags & 0x20))
+            if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
                 gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], INSET_RECT_F_E0);
 
             // Highlight background
             colour = COLOUR_BRIGHT_GREEN | COLOUR_FLAG_TRANSLUCENT;
-            if (listItem->entry == w->object_entry && !(*listItem->flags & OBJECT_SELECTION_FLAG_6)) {
+            if (listItem.entry == w->object_entry && !(*listItem.flags & OBJECT_SELECTION_FLAG_6)) {
                 gfx_filter_rect(dpi, 0, y, w->width, y + 11, PALETTE_DARKEN_1);
                 colour = COLOUR_BRIGHT_GREEN;
             }
 
             // Draw checkmark
-            if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem->flags & OBJECT_SELECTION_FLAG_SELECTED)) {
+            if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem.flags & OBJECT_SELECTION_FLAG_SELECTED)) {
                 x = 2;
                 gCurrentFontSpriteBase = colour == COLOUR_BRIGHT_GREEN ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK : FONT_SPRITE_BASE_MEDIUM_DARK;
                 colour2 = NOT_TRANSLUCENT(w->colours[1]);
-                if (*listItem->flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
+                if (*listItem.flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
                     colour2 |= COLOUR_FLAG_INSET;
 
                 gfx_draw_string(dpi, (char*)CheckBoxMarkString, colour2, x, y);
@@ -1148,7 +1128,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 
             char *bufferWithColour = gCommonStringFormatBuffer;
             char *buffer = utf8_write_codepoint(bufferWithColour, colour);
-            if (*listItem->flags & OBJECT_SELECTION_FLAG_6) {
+            if (*listItem.flags & OBJECT_SELECTION_FLAG_6) {
                 colour = w->colours[1] & 0x7F;
                 gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
             }
@@ -1159,14 +1139,14 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 
             if (ridePage) {
                 // Draw ride type
-                rct_string_id rideTypeStringId = get_ride_type_string_id(listItem->repositoryItem);
+                rct_string_id rideTypeStringId = get_ride_type_string_id(listItem.repositoryItem);
                 safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
                 gfx_draw_string(dpi, bufferWithColour, colour, x, y);
                 x = w->widgets[WIDX_LIST_SORT_RIDE].left - w->widgets[WIDX_LIST].left;
             }
 
             // Draw text
-            safe_strcpy(buffer, listItem->repositoryItem->Name, 256 - (buffer - bufferWithColour));
+            safe_strcpy(buffer, listItem.repositoryItem->Name, 256 - (buffer - bufferWithColour));
             if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
                 while (*buffer != 0 && *buffer != 9)
                     buffer++;
@@ -1221,7 +1201,7 @@ static void window_editor_object_selection_set_pressed_tab(rct_window *w)
 static sint32 get_object_from_object_selection(uint8 object_type, sint32 y)
 {
     sint32 listItemIndex = y / 12;
-    if (listItemIndex < 0 || listItemIndex >= _numListItems)
+    if (listItemIndex < 0 || listItemIndex >= _listItems.size())
         return -1;
 
     return listItemIndex;
