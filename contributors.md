@@ -101,6 +101,7 @@ The following people are not part of the project team, but have been contributin
 * Ethan Smith (ethanhs) - Refactoring.
 * Robert Lewicki (rlewicki)
 * Tyler Ruckinger (TyPR124)
+* Justin Gottula (jgottula)
 
 ## Toolchain
 * (Balletie) - macOS
