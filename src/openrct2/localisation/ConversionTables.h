@@ -21,7 +21,7 @@
 typedef struct encoding_convert_entry
 {
     uint16 code;
-    uint16 unicode;
+    uint32 unicode;
 }
 encoding_convert_entry;
 
