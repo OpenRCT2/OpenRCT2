@@ -78,7 +78,7 @@ static wchar_t encoding_convert_x_to_unicode(wchar_t code, const encoding_conver
     else return entry->unicode;
 }
 
-wchar_t encoding_convert_unicode_to_rct2(wchar_t unicode)
+char32_t encoding_convert_unicode_to_rct2(char32_t unicode)
 {
     // Can't do a binary search as it's sorted by RCT2 code, not unicode
     for (uint32 i = 0; i < Util::CountOf(RCT2ToUnicodeTable); i++) {
