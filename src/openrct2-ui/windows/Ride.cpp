@@ -2924,7 +2924,7 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
     factor = rideEntry->excitement_multiplier;
     if (factor > 0)
     {
-        y += 12;
+        y += LIST_ROW_HEIGHT;
         gfx_draw_string_left(dpi, STR_EXCITEMENT_FACTOR, &factor, COLOUR_BLACK, x, y);
     }
 
@@ -2932,16 +2932,14 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
     factor = rideEntry->intensity_multiplier;
     if (factor > 0)
     {
-		x += 150;
-        gfx_draw_string_left(dpi, STR_INTENSITY_FACTOR, &factor, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_INTENSITY_FACTOR, &factor, COLOUR_BLACK, x+150, y);
     }
 
     // Nausea Factor
     factor = rideEntry->nausea_multiplier;
     if (factor > 0)
     {
-		x -= 150;
-		y += 12;
+        y += LIST_ROW_HEIGHT;
         gfx_draw_string_left(dpi, STR_NAUSEA_FACTOR, &factor, COLOUR_BLACK, x, y);
     }
 
