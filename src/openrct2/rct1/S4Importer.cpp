@@ -2315,6 +2315,10 @@ private:
                     case 171: // TGE5 (Geometric Sculpture)
                         scenery_small_set_secondary_colour(tileElement, COLOUR_WHITE);
                         break;
+                    case 65:
+                    case 68:
+                        scenery_small_set_primary_colour(tileElement, COLOUR_BRIGHT_RED);
+                        scenery_small_set_secondary_colour(tileElement, COLOUR_YELLOW);
                     }
                     break;
                 case TILE_ELEMENT_TYPE_WALL:
