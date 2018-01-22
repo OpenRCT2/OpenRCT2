@@ -1531,7 +1531,7 @@ static void window_park_objective_mouseup(rct_window *w, rct_widgetindex widgetI
                 if (scenario != nullptr) {
                     gSpeedrunningState.current_scenario_index += 1;
                     gSpeedrunningState.speedrunning_time_in_days = 0;
-                    _callback(scenario->path);
+                    context_load_park_from_file(scenario->path);
                 }
                 else {
                     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
