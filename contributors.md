@@ -1,4 +1,4 @@
-# Contributors to OpenRCT2
+﻿# Contributors to OpenRCT2
 Includes all git commit authors. Aliases are GitHub user names.
 
 ## Project team
@@ -102,6 +102,7 @@ The following people are not part of the project team, but have been contributin
 * Robert Lewicki (rlewicki)
 * Tyler Ruckinger (TyPR124)
 * Justin Gottula (jgottula)
+* Seongsik Park (pss9205)
 
 ## Toolchain
 * (Balletie) - macOS
