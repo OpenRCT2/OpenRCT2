@@ -919,7 +919,7 @@ public:
                 auto dst2 = dst->AsPath();
                 auto src2 = src->AsPath();
 
-                dst2->SetEntryIndex(src2->GetEntryIndex());
+                dst2->SetPathEntryIndex(src2->GetEntryIndex());
                 dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
                 dst2->SetSloped(src2->IsSloped());
                 dst2->SetSlopeDirection(src2->GetSlopeDirection());

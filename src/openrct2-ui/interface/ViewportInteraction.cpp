@@ -504,7 +504,7 @@ static void viewport_interaction_remove_footpath(TileElement* tileElement, int32
  */
 static void viewport_interaction_remove_footpath_item(TileElement* tileElement, int32_t x, int32_t y)
 {
-    int32_t type = tileElement->AsPath()->GetEntryIndex();
+    int32_t type = tileElement->AsPath()->GetPathEntryIndex();
     if (tileElement->AsPath()->IsQueue())
         type |= 0x80;
 

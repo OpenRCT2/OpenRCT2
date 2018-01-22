@@ -2063,7 +2063,7 @@ private:
                 dst2->SetDirection(0);
                 dst2->flags &= ~(TILE_ELEMENT_FLAG_BROKEN | TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE);
 
-                dst2->SetEntryIndex(entryIndex);
+                dst2->SetPathEntryIndex(entryIndex);
                 if (RCT1::PathIsQueue(pathType))
                 {
                     dst2->SetIsQueue(true);
