@@ -879,10 +879,10 @@ STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}{DOWN}
-STR_0877    :Muito baixo !
-STR_0878    :Muito alto !
-STR_0879    :Não é possível abaixar o terreno aqui...
-STR_0880    :Não é possível aumentar o terreno aqui...
+STR_0877    :Muito baixo!
+STR_0878    :Muito alto!
+STR_0879    :Impossível abaixar o terreno aqui...
+STR_0880    :Impossível aumentar o terreno aqui...
 STR_0881    :Objeto no caminho
 STR_0882    :Carregar Jogo
 STR_0883    :Salvar Jogo
@@ -894,21 +894,21 @@ STR_0888    :Sair do Construtor de Pista
 STR_0889    :Sair do Gerenciador de Projetos de Pista
 STR_0890    :<removed string - do not use>
 STR_0891    :Captura de tela
-STR_0892    :Captura de tela salvo no disco como '{STRINGID}'
-STR_0893    :Capturas de tela falhou !
-STR_0894    :Dados da área da paisagem cheios !
-STR_0895    :Impossível construir parcialmente em cima e embaixo do chão
+STR_0892    :Captura de tela salva no disco como '{STRINGID}'
+STR_0893    :Captura de tela falhou!
+STR_0894    :Dados da área da paisagem cheios!
+STR_0895    :Impossível construir parcialmente acima e abaixo do chão
 STR_0896    :{POP16}{POP16}{STRINGID} Construção
 STR_0897    :Sentido
-STR_0898    :{SMALLFONT}{BLACK}Curva para esquerda
-STR_0899    :{SMALLFONT}{BLACK}Curva para direita
-STR_0900    :{SMALLFONT}{BLACK}Curva para esquerda (raio pequeno)
-STR_0901    :{SMALLFONT}{BLACK}Curva para direita (raio pequeno)
-STR_0902    :{SMALLFONT}{BLACK}Curva para esquerda (raio muito pequeno)
-STR_0903    :{SMALLFONT}{BLACK}Curva para esquerda (raio muito pequeno)
-STR_0904    :{SMALLFONT}{BLACK}Curva para esquerda (raio grande)
-STR_0905    :{SMALLFONT}{BLACK}Curva para esquerda (raio grande)
-STR_0906    :{SMALLFONT}{BLACK}Linha reta
+STR_0898    :{SMALLFONT}{BLACK}Curva à Esquerda
+STR_0899    :{SMALLFONT}{BLACK}Curva à Direita
+STR_0900    :{SMALLFONT}{BLACK}Curva à Esquerda (Raio Pequeno)
+STR_0901    :{SMALLFONT}{BLACK}Curva à Direita (Raio Pequeno)
+STR_0902    :{SMALLFONT}{BLACK}Curva à Esquerda (Raio Muito Pequeno)
+STR_0903    :{SMALLFONT}{BLACK}Curva à Direita (Raio Muito Pequeno)
+STR_0904    :{SMALLFONT}{BLACK}Curva à Esquerda (Raio Grande)
+STR_0905    :{SMALLFONT}{BLACK}Curva à Direita (Raio Grande)
+STR_0906    :{SMALLFONT}{BLACK}Linha Reta
 STR_0907    :Inclinação
 STR_0908    :Giro/Inclinação
 STR_0909    :Rot. Banco
@@ -1743,7 +1743,7 @@ STR_1737    :{COMMA16}
 STR_1738    :Impossível alterar o número de voltas...
 STR_1739    :Corrida ganha pelo visitante {INT32}
 STR_1740    :Corrida ganha por {STRINGID}
-STR_1741    :Ainda não construido !
+STR_1741    :Ainda não construido!
 STR_1742    :{WINDOW_COLOUR_2}Máx. pessoas na atração:
 STR_1743    :{SMALLFONT}{BLACK}Número máximo permitido de pessoas na atração por vez
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1944,7 +1944,7 @@ STR_1936    :{STRINGID} comprou {STRINGID}
 STR_1937    :{SMALLFONT}{BLACK}Mostrar informação sobre o assunto desta mensagem
 STR_1938    :{SMALLFONT}{BLACK}Mostrar visão do visitante
 STR_1939    :{SMALLFONT}{BLACK}Mostrar visão do funcionário
-STR_1940    :{SMALLFONT}{BLACK}Mostrar felicidade, energia, fome etc. para este visitante
+STR_1940    :{SMALLFONT}{BLACK}Mostrar felicidade, energia, fome, etc. para este visitante
 STR_1941    :{SMALLFONT}{BLACK}Mostrar em quais atrações este visitante esteve
 STR_1942    :{SMALLFONT}{BLACK}Mostrar infomações financeiras deste visitante
 STR_1943    :{SMALLFONT}{BLACK}Mostrar pensamentos recentes do visitante
@@ -2795,8 +2795,8 @@ STR_2784    :Mudar atalho do teclado
 STR_2785    :{WINDOW_COLOUR_2}Pressione uma nova tecla de atalho para:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2786    :{SMALLFONT}{BLACK}Clique na descrição do atalho para selecionar uma nova tecla
 STR_2787    :{WINDOW_COLOUR_2}Valor do parque: {BLACK}{CURRENCY}
-STR_2788    :{WINDOW_COLOUR_2}Parabéns !{NEWLINE}{BLACK}Você alcançou seu objetivo com o valor da empresa de {CURRENCY} !
-STR_2789    :{WINDOW_COLOUR_2}Você falhou no seu objetivo !
+STR_2788    :{WINDOW_COLOUR_2}Parabéns!{NEWLINE}{BLACK}Você alcançou seu objetivo com o valor da empresa de {CURRENCY}!
+STR_2789    :{WINDOW_COLOUR_2}Você falhou no seu objetivo!
 STR_2790    :Inserir nome na lista de cenário
 STR_2791    :Inserir nome
 STR_2792    :Por favor, insira o seu nome {NEWLINE}para a lista de cenário:
@@ -2841,7 +2841,7 @@ STR_2830    :{WINDOW_COLOUR_2}Prêmio de melhores atrações tranquilas
 STR_2831    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque mais desarrumado do país'!
 STR_2832    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque mais arrumado do país'!
 STR_2833    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com as melhores montanhas-russas'!
-STR_2834    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com o melhor valor do país "!
+STR_2834    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com o melhor valor do país'!
 STR_2835    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque mais bonito do país'!
 STR_2836    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com o pior valor do país'!
 STR_2837    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque mais seguro do país'!
@@ -2861,8 +2861,8 @@ STR_2850    :Novo projeto de pista instalado com sucesso
 STR_2851    :Cenário já instalado
 STR_2852    :Projeto de pista já instalado
 STR_2853    :Proibido por autoridades locais!
-STR_2854    :{RED}Os visitantes não conseguem entrar em {STRINGID} !{NEWLINE}Construa um caminho para a entrada
-STR_2855    :{RED}{STRINGID} não tem um caminho de saída !{NEWLINE}Construa um caminho a partir da saída da atração
+STR_2854    :{RED}Os visitantes não conseguem entrar em {STRINGID}!{NEWLINE}Construa um caminho para a entrada
+STR_2855    :{RED}{STRINGID} não tem um caminho de saída!{NEWLINE}Construa um caminho a partir da saída da atração
 STR_2856    :<removed string - do not use>
 STR_2857    :<removed string - do not use>
 STR_2858    :Impossível começar uma campanha de marketing...
@@ -3080,11 +3080,11 @@ STR_3069    :Seção Superior
 STR_3070    :Nivelar
 STR_3071    :{WINDOW_COLOUR_2}Mesmo preço em todo o parque
 STR_3072    :{SMALLFONT}{BLACK}Selecione se este preço deve ser usado em todo o parque
-STR_3073    :{RED}AVISO: A classificação de seu parque está abaixo de 700 !{NEWLINE}Se você não aumentar a classificação de parque em 4 semanas, seu parque será fechado
-STR_3074    :{RED}AVISO: A classificação de seu parque ainda está abaixo de 700 !{NEWLINE}Você tem 3 semanas para aumentar a classificação de parque
-STR_3075    :{RED}AVISO: A classificação de seu parque ainda está abaixo de 700 !{NEWLINE}Você tem só 2 semanas para aumentar a classificação de parque, ou seu parque será fechado
-STR_3076    :{RED}AVISO FINAL: A classificação de seu parque ainda está abaixo de 700 !{NEWLINE} Em 7 dias seu parque será fechado, a não ser que você consiga melhorar a classificação
-STR_3077    :{RED}ANÚNCIO DE ENCERRAMENTO: Seu parque foi fechado !
+STR_3073    :{RED}AVISO: A classificação de seu parque está abaixo de 700!{NEWLINE}Se você não aumentar a classificação de parque em 4 semanas, seu parque será fechado
+STR_3074    :{RED}AVISO: A classificação de seu parque ainda está abaixo de 700!{NEWLINE}Você tem 3 semanas para aumentar a classificação de parque
+STR_3075    :{RED}AVISO: A classificação de seu parque ainda está abaixo de 700!{NEWLINE}Você tem só 2 semanas para aumentar a classificação de parque, ou seu parque será fechado
+STR_3076    :{RED}AVISO FINAL: A classificação de seu parque ainda está abaixo de 700!{NEWLINE} Em 7 dias seu parque será fechado, a não ser que você consiga melhorar a classificação
+STR_3077    :{RED}ANÚNCIO DE ENCERRAMENTO: Seu parque foi fechado!
 STR_3078    :Entrada Simples
 STR_3079    :Entrada de Madeira
 STR_3080    :Entrada de Lona
@@ -3169,7 +3169,7 @@ STR_3158    :gráfico
 STR_3159    :lista
 STR_3160    :{SMALLFONT}{BLACK}Seleciona o número de circuitos por passeio
 STR_3161    :<removed string - do not use>
-STR_3162    :Não é possível alocar memória necessária
+STR_3162    :Impossível alocar memória o suficiente
 STR_3163    :Instalando novos dados: 
 STR_3164    :{BLACK}{COMMA16} selecionado(s) (no máximo {COMMA16})
 STR_3165    :
@@ -3933,7 +3933,7 @@ STR_5593    :Avisos de classificação do parque
 STR_5594    :Atração quebrou
 STR_5595    :Atração bateu
 STR_5596    :Avisos de atração
-STR_5597    :Atração / Cernário pesquisado
+STR_5597    :Atração / Cenário pesquisado
 STR_5598    :Avisos de visitantes
 STR_5599    :Visitante está perdido
 STR_5600    :Visitante saiu do parque
