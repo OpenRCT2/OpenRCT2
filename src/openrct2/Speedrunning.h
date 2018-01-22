@@ -24,7 +24,9 @@ typedef struct SpeedrunningState {
     sint32      current_scenario_group;
     uint32      speedrunning_time_in_days;
     datetime64  speedrun_start_time;
+    datetime64  speedrun_finished_time;
     bool        speedrun_invalidated;
+    bool        speedrun_active;
 } SpeedrunningState;
 
 #ifdef __cplusplus

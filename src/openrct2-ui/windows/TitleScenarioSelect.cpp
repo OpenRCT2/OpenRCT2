@@ -268,6 +268,7 @@ static void window_scenarioselect_mouseup(rct_window *w, rct_widgetindex widgetI
         audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
         gFirstTimeSaving = true;
         gSpeedrunningState.is_il_run = true;
+        gSpeedrunningState.speedrun_active = true;
         gSpeedrunningState.speedrunning_time_in_days = 0;
         gSpeedrunningState.current_scenario_index = w->highlighted_scenario->source_index;
         gSpeedrunningState.current_scenario_group = w->highlighted_scenario->category;
@@ -281,6 +282,7 @@ static void window_scenarioselect_mouseup(rct_window *w, rct_widgetindex widgetI
         audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
         gFirstTimeSaving = true;
         gSpeedrunningState.is_il_run = false;
+        gSpeedrunningState.speedrun_active = true;
         gSpeedrunningState.speedrunning_time_in_days = 0;
         gSpeedrunningState.current_scenario_index = 0;
         gSpeedrunningState.current_scenario_group = w->highlighted_scenario->category;
@@ -340,6 +342,15 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, sint32 scrollIn
             if (y < 0 && !listItem->scenario.is_locked) {
                 audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
                 gFirstTimeSaving = true;
+                if (gConfigGeneral.enable_speedrunning_mode) {
+                    gSpeedrunningState.is_il_run = true;
+                    gSpeedrunningState.speedrun_active = true;
+                    gSpeedrunningState.speedrunning_time_in_days = 0;
+                    gSpeedrunningState.current_scenario_index = w->highlighted_scenario->source_index;
+                    gSpeedrunningState.current_scenario_group = w->highlighted_scenario->category;
+                    gSpeedrunningState.speedrun_invalidated = false;
+                    gSpeedrunningState.speedrun_start_time = platform_get_datetime_now_utc();
+                }
                 _callback(listItem->scenario.scenario->path);
                 if (_titleEditor)
                 {

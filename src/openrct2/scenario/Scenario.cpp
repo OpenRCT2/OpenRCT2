@@ -230,9 +230,16 @@ void scenario_success()
         gParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
         gScenarioCompanyValueRecord = companyValue;
     }
-    if (gConfigGeneral.enable_speedrunning_mode && !gSpeedrunningState.speedrun_invalidated) {
-        // Record fastest completion if speedrunning
-        scenario_repository_try_record_speedrun_highscore(gScenarioFileName, gSpeedrunningState.speedrunning_time_in_days, gConfigGeneral.allow_speed_changes);
+    if (gConfigGeneral.enable_speedrunning_mode) {
+        datetime64 end_time = platform_get_datetime_now_utc();
+
+        gSpeedrunningState.speedrun_active = false;
+        gSpeedrunningState.speedrun_finished_time = end_time - gSpeedrunningState.speedrun_start_time;
+
+        if (!gSpeedrunningState.speedrun_invalidated) {
+            // Record fastest completion
+            scenario_repository_try_record_speedrun_highscore(gScenarioFileName, gSpeedrunningState.speedrunning_time_in_days);
+        }
     }
     scenario_end();
 }
@@ -320,7 +327,9 @@ static void scenario_day_update()
     default:
         //In speedrunning mode, always check the objective every day
         if (gConfigGeneral.enable_speedrunning_mode) {
-            gSpeedrunningState.speedrunning_time_in_days += 1;
+            if (gSpeedrunningState.speedrun_active) {
+                gSpeedrunningState.speedrunning_time_in_days += 1;
+            }
             scenario_objective_check();
         }
         break;

@@ -511,15 +511,7 @@ static void window_top_toolbar_mousedown(rct_window *w, rct_widgetindex widgetIn
         gDropdownDefaultIndex = DDIDX_SHOW_MAP;
         break;
     case WIDX_FASTFORWARD:
-        if (gConfigGeneral.enable_speedrunning_mode) {
-            if (gConfigGeneral.allow_speed_changes) {
-                top_toolbar_init_fastforward_menu(w, widget);
-            }
-            // If in speedrunning mode without allowing speed changes, don't do anything.
-        }
-        else {
-            top_toolbar_init_fastforward_menu(w, widget);
-        }
+        top_toolbar_init_fastforward_menu(w, widget);
         break;
     case WIDX_ROTATE:
         top_toolbar_init_rotate_menu(w, widget);
@@ -649,15 +641,7 @@ static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetInd
         }
         break;
     case WIDX_FASTFORWARD:
-        if (gConfigGeneral.enable_speedrunning_mode) {
-            if (gConfigGeneral.allow_speed_changes) {
-                top_toolbar_fastforward_menu_dropdown(dropdownIndex);
-            }
-            // If in speedrunning mode without allowing speed changes, don't do anything.
-        }
-        else {
-            top_toolbar_fastforward_menu_dropdown(dropdownIndex);
-        }
+        top_toolbar_fastforward_menu_dropdown(dropdownIndex);
         break;
     case WIDX_ROTATE:
         top_toolbar_rotate_menu_dropdown(dropdownIndex);

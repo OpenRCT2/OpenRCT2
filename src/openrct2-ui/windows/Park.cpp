@@ -132,8 +132,8 @@ static rct_widget window_park_stats_widgets[] = {
 
 static rct_widget window_park_objective_widgets[] = {
     MAIN_PARK_WIDGETS,
-    { WWT_BUTTON,  1,  7,      222,    193,    204,    STR_SPEEDRUNNING_NEXT_LEVEL,                STR_NONE },             // Speedrunning: Move to next level in order
-    { WWT_BUTTON,  1,  7,      222,    209,    220,    STR_ENTER_NAME_INTO_SCENARIO_CHART,         STR_NONE },             // enter name
+    { WWT_BUTTON,           1,  7,      222,    195,    206,    STR_SPEEDRUNNING_NEXT_LEVEL,                STR_NONE },             // Speedrunning: Move to next level in order
+    { WWT_BUTTON,           1,  7,      222,    209,    220,    STR_ENTER_NAME_INTO_SCENARIO_CHART,         STR_NONE },             // enter name
     { WIDGETS_END },
 };
 
@@ -205,6 +205,8 @@ static void window_park_awards_resize(rct_window *w);
 static void window_park_awards_update(rct_window *w);
 static void window_park_awards_invalidate(rct_window *w);
 static void window_park_awards_paint(rct_window *w, rct_drawpixelinfo *dpi);
+
+//utf8string TimeDeltaToMmSsHh(datetime64 delta);
 
 static rct_window_event_list window_park_entrance_events = {
     window_park_entrance_close,
@@ -1515,6 +1517,7 @@ static void window_park_objective_mouseup(rct_window *w, rct_widgetindex widgetI
         break;
     case WIDX_NEXT_LEVEL:
         if (gConfigGeneral.enable_speedrunning_mode) {
+            // TODO Do something if objective failed
             if (gSpeedrunningState.is_il_run) {
                 window_close_by_class(WC_MANAGE_TRACK_DESIGN);
                 window_close_by_class(WC_TRACK_DELETE_PROMPT);
@@ -1583,18 +1586,31 @@ static void window_park_objective_invalidate(rct_window *w)
 
     if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT) {
         window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_BUTTON;
+    }
+    else {
+        window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_EMPTY;
+    }
 
-        widget_set_enabled(w, WIDX_NEXT_LEVEL, true);
-        if (gConfigGeneral.enable_speedrunning_mode) {
-            if (gSpeedrunningState.is_il_run) {
-                window_park_objective_widgets[WIDX_NEXT_LEVEL].text = STR_SPEEDRUNNING_QUIT_TO_MENU;
+    if (gConfigGeneral.enable_speedrunning_mode) {
+        // If scenario completed, prompt to advance to next level or quit to menu
+        if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED) {
+            if ((uint32)gScenarioCompletedCompanyValue == 0x80000001) {
+                //TODO retry level or quit to menu
             }
             else {
-                _scenarioRepository = GetScenarioRepository();
-                _scenarioRepository->Scan();
-                const scenario_index_entry * scenario = _scenarioRepository->GetByIndex(gSpeedrunningState.current_scenario_index + 1);
-                if (scenario == nullptr) {
+                window_park_objective_widgets[WIDX_NEXT_LEVEL].text = STR_SPEEDRUNNING_NEXT_LEVEL;
+                window_park_objective_widgets[WIDX_NEXT_LEVEL].type = WWT_BUTTON;
+                widget_set_enabled(w, WIDX_NEXT_LEVEL, true);
+                if (gSpeedrunningState.is_il_run) {
                     window_park_objective_widgets[WIDX_NEXT_LEVEL].text = STR_SPEEDRUNNING_QUIT_TO_MENU;
+                }
+                else {
+                    _scenarioRepository = GetScenarioRepository();
+                    _scenarioRepository->Scan();
+                    const scenario_index_entry * scenario = _scenarioRepository->GetByIndex(gSpeedrunningState.current_scenario_index + 1);
+                    if (scenario == nullptr) {
+                        window_park_objective_widgets[WIDX_NEXT_LEVEL].text = STR_SPEEDRUNNING_QUIT_TO_MENU;
+                    }
                 }
             }
         }
@@ -1603,7 +1619,6 @@ static void window_park_objective_invalidate(rct_window *w)
         }
     }
     else {
-        window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_EMPTY;
         window_park_objective_widgets[WIDX_NEXT_LEVEL].type = WWT_EMPTY;
     }
 
@@ -1642,15 +1657,49 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
     y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 221, ObjectiveNames[gScenarioObjectiveType], COLOUR_BLACK);
     y += 5;
 
+    if (gSpeedrunningState.speedrun_invalidated) {
+        // Indicate invalid speedrun
+        y += gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 222, STR_SPEEDRUNNING_INVALID_RUN, COLOUR_SATURATED_RED);
+    }
+    y += 5;
+
     // Objective outcome
     if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED) {
         if ((uint32)gScenarioCompletedCompanyValue == 0x80000001) {
             // Objective failed
-            gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 222, STR_OBJECTIVE_FAILED, COLOUR_BLACK);
-        } else {
+            y += gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 222, STR_OBJECTIVE_FAILED, COLOUR_BLACK);
+        } 
+        else {
             // Objective completed
             set_format_arg(0, money32, gScenarioCompletedCompanyValue);
-            gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_OBJECTIVE_ACHIEVED, COLOUR_BLACK);
+            y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_OBJECTIVE_ACHIEVED, COLOUR_BLACK);
+
+            // Draw speedrun info
+            if (gConfigGeneral.enable_speedrunning_mode) {
+                y += LIST_ROW_HEIGHT;
+                sint32 x_mid_justify = w->x + window_park_objective_widgets[WIDX_PAGE_BACKGROUND].left + 110;
+
+                // Draw speedrun times
+                gfx_draw_string_left(dpi, STR_SPEEDRUNNING_DAYS_LABEL, nullptr, COLOUR_BLACK, x, y);
+                set_format_arg(0, uint32, gSpeedrunningState.speedrunning_time_in_days);
+                gfx_draw_string_left(dpi, STR_SPEEDRUNNING_DAYS_VALUE, gCommonFormatArgs, COLOUR_BLACK, x_mid_justify, y);
+
+                y += LIST_ROW_HEIGHT;
+                gfx_draw_string_left(dpi, STR_SPEEDRUNNING_TIME_LABEL, nullptr, COLOUR_BLACK, x, y);
+
+                datetime64 delta = gSpeedrunningState.speedrun_finished_time;
+                uint16 minutes = delta / (60 * 10000000);
+                delta -= minutes * 60 * 10000000;
+                uint16 seconds = delta / 10000000;
+                delta -= seconds * 10000000;
+                // TODO This needs to be padded if fewer than 7 digits
+                sint32 fractional_seconds = delta % 10000000;
+
+                set_format_arg(0, uint16, minutes);
+                set_format_arg(2, uint16, seconds);
+                set_format_arg(4, sint32, fractional_seconds);
+                gfx_draw_string_left(dpi, STR_SPEEDRUNNING_TIME_VALUE, gCommonFormatArgs, COLOUR_BLACK, x_mid_justify, y);
+            }
         }
     }
 }

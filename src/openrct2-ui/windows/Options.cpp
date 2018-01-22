@@ -184,7 +184,6 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 
     // Speedrunning
     WIDX_SPEEDRUNNING_CHECKBOX = WIDX_PAGE_START,
-    WIDX_ALLOW_SPEED_CHANGES_CHECKBOX,
 
     // Twitch
     WIDX_CHANNEL_BUTTON = WIDX_PAGE_START,
@@ -370,7 +369,6 @@ static rct_widget window_options_advanced_widgets[] = {
 static rct_widget window_options_speedrunning_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     { WWT_CHECKBOX,         2,  10,     299,    54,     65,     STR_ENABLE_SPEEDRUNNING_MODE,           STR_ENABLE_SPEEDRUNNING_TIP },                  // Enable speedrunning mode
-    { WWT_CHECKBOX,         2,  10,     299,    69,     80,     STR_ENABLE_SPEEDRUNNING_SPEED_CHANGES,  STR_ENABLE_SPEEDRUNNING_SPEED_CHANGES_TIP },    // Enable speed changes in speedrunning mode
     { WIDGETS_END },
 };
 
@@ -612,8 +610,7 @@ static uint64 window_options_page_enabled_widgets[] = {
     (1 << WIDX_PATH_TO_RCT1_CLEAR),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
-    (1 << WIDX_SPEEDRUNNING_CHECKBOX) |
-    (1 << WIDX_ALLOW_SPEED_CHANGES_CHECKBOX),
+    (1 << WIDX_SPEEDRUNNING_CHECKBOX),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_CHANNEL_BUTTON) |
@@ -974,11 +971,6 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             if (gConfigInterface.toolbar_show_cheats && gConfigGeneral.enable_speedrunning_mode)
                 gConfigInterface.toolbar_show_cheats = false;
             //TODO Hide/disable the allow speed changes button unless speedrunning mode is on
-            config_save_default();
-            window_invalidate(w);
-            break;
-        case WIDX_ALLOW_SPEED_CHANGES_CHECKBOX:
-            gConfigGeneral.allow_speed_changes ^= 1;
             config_save_default();
             window_invalidate(w);
             break;
@@ -1826,10 +1818,8 @@ static void window_options_invalidate(rct_window *w)
 
     case WINDOW_OPTIONS_PAGE_SPEEDRUNNING:
         widget_set_checkbox_value(w, WIDX_SPEEDRUNNING_CHECKBOX, gConfigGeneral.enable_speedrunning_mode);
-        widget_set_checkbox_value(w, WIDX_ALLOW_SPEED_CHANGES_CHECKBOX, gConfigGeneral.allow_speed_changes);
 
         window_options_speedrunning_widgets[WIDX_SPEEDRUNNING_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_speedrunning_widgets[WIDX_ALLOW_SPEED_CHANGES_CHECKBOX].type = WWT_CHECKBOX;
         break;
 
     case WINDOW_OPTIONS_PAGE_TWITCH:

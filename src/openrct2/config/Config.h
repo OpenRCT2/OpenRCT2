@@ -100,9 +100,7 @@ typedef struct GeneralConfiguration
     sint32      screenshot_format;
 
     // Speedrunning
-    //TODO These should probably be moved, just don't know how to replicate a file like this which is "always available"
     bool        enable_speedrunning_mode;
-    bool        allow_speed_changes;
 } GeneralConfiguration;
 
 typedef struct InterfaceConfiguration

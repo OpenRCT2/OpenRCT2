@@ -211,7 +211,6 @@ namespace Config
             model->show_guest_purchases = reader->GetBoolean("show_guest_purchases", false);
             model->show_real_names_of_guests = reader->GetBoolean("show_real_names_of_guests", true);
             model->enable_speedrunning_mode = reader->GetBoolean("enable_speedrunning_mode", false);
-            model->allow_speed_changes = reader->GetBoolean("allow_speed_changes", true);
         }
     }
 
@@ -284,7 +283,6 @@ namespace Config
         writer->WriteBoolean("show_real_names_of_guests", model->show_real_names_of_guests);
         writer->WriteBoolean("use_virtual_floor", model->use_virtual_floor);
         writer->WriteBoolean("enable_speedrunning_mode", model->enable_speedrunning_mode);
-        writer->WriteBoolean("allow_speed_changes", model->allow_speed_changes);
     }
 
     static void ReadInterface(IIniReader * reader)
