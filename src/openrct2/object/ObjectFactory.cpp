@@ -253,13 +253,13 @@ namespace ObjectFactory
                     result->ReadJson(&readContext, jRoot);
                     if (readContext.WasError())
                     {
-                        throw Exception("Object has errors");
+                        throw std::runtime_error("Object has errors");
                     }
                 }
             }
             json_decref(jRoot);
         }
-        catch (Exception)
+        catch (std::runtime_error)
         {
             Console::Error::WriteLine("Unable to open or read '%s'", path.c_str());
 

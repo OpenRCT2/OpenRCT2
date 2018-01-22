@@ -757,7 +757,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
     car.friction_sound_id = ObjectJsonHelpers::GetInteger(jCar, "frictionSoundId", 255);
     car.var_58 = ObjectJsonHelpers::GetInteger(jCar, "var58");
     car.sound_range = ObjectJsonHelpers::GetInteger(jCar, "soundRange", 255);
-    car.var_5A = ObjectJsonHelpers::GetInteger(jCar, "var5A");
+    car.double_sound_frequency = ObjectJsonHelpers::GetInteger(jCar, "var5A");
     car.powered_acceleration = ObjectJsonHelpers::GetInteger(jCar, "poweredAcceleration");
     car.powered_max_speed = ObjectJsonHelpers::GetInteger(jCar, "poweredMaxSpeed");
     car.car_visual = ObjectJsonHelpers::GetInteger(jCar, "carVisual");

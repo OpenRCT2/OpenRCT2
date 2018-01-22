@@ -22,8 +22,8 @@
 #include <vector>
 #include "../common.h"
 #include "../core/Json.hpp"
-#include "../drawing/drawing.h"
-#include "../object.h"
+#include "../drawing/Drawing.h"
+#include "../object/Object.h"
 #include "ImageTable.h"
 #include "StringTable.h"
 

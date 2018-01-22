@@ -23,7 +23,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../interface/Cursors.h"
-#include "../localisation/language.h"
+#include "../localisation/Language.h"
 #include "../PlatformEnvironment.h"
 #include "../sprites.h"
 #include "Object.h"

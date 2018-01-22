@@ -17,7 +17,7 @@
 #ifndef _SPRITES_H_
 #define _SPRITES_H_
 
-#include <openrct2/rct1/RCT1.h>
+#include "rct1/RCT1.h"
 
 enum {
     SPR_NONE = -1,
