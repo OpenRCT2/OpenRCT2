@@ -1,5 +1,6 @@
 0.2.1+ (in development)
 ------------------------------------------------------------------------
+- Feature: [#4418] Allow steep slopes on the side-friction roller coaster.
 - Feature: [#7726] Add shortcut to advance one tick.
 - Feature: [#7956, #7964] Add sprite font glyphs for Hungarian and some Czech letters.
 - Feature: [#7971] Toolbox option to open custom content folder.
