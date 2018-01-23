@@ -17,7 +17,6 @@
 #ifndef LOCALISATION_H
 #define LOCALISATION_H
 
-#include <uchar.h>
 #include "Currency.h"
 #include "Date.h"
 #include "FormatCodes.h"
@@ -59,7 +58,7 @@ sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t
 sint32 rct2_to_utf8(utf8 *dst, const char *src);
 sint32 utf8_to_rct2(char *dst, const utf8 *src);
 wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str);
-char32_t encoding_convert_unicode_to_rct2(char32_t unicode);
+uint32 encoding_convert_unicode_to_rct2(uint32 unicode);
 wchar_t encoding_convert_gb2312_to_unicode(wchar_t gb2312);
 wchar_t encoding_convert_big5_to_unicode(wchar_t big5);
 wchar_t encoding_convert_cp932_to_unicode(wchar_t cp932);
