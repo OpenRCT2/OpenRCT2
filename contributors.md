@@ -102,6 +102,7 @@ The following people are not part of the project team, but have been contributin
 * Robert Lewicki (rlewicki)
 * Tyler Ruckinger (TyPR124)
 * Justin Gottula (jgottula)
+* Seongsik Park (pss9205)
 
 ## Toolchain
 * (Balletie) - macOS
