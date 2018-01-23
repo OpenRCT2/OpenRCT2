@@ -766,40 +766,31 @@ public:
         if (String::Equals(_s6.scenario_filename, "WW South America - Rio Carnival.SC6") ||
             String::Equals(_s6.scenario_filename, "South America - Rio Carnival.SC6"))
         {
-            gPeepSpawns[0] = { 2160, 3167, 6, 1 };
-
-            for (size_t i = 1; i < MAX_PEEP_SPAWNS; i++)
-            {
-                gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
-            }
+            _s6.peep_spawns[0] = { 2160, 3167, 6, 1 };
+            _s6.peep_spawns[1].x = PEEP_SPAWN_UNDEFINED;
         }
-        // In this park, gPeepSpawns[0] is correct. Just clear the rest.
+        // In this park, gPeepSpawns[0] is correct. Just clear the other.
         else if (String::Equals(_s6.scenario_filename, "Great Wall of China Tourism Enhancement.SC6") ||
                  String::Equals(_s6.scenario_filename, "Asia - Great Wall of China Tourism Enhancement.SC6"))
         {
-            for (size_t i = 1; i < MAX_PEEP_SPAWNS; i++)
-            {
-                gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
-            }
+            _s6.peep_spawns[1].x = PEEP_SPAWN_UNDEFINED;
+
         }
-        else
+        // Amity Airfield has peeps entering from the corner of the tile, instead of the middle.
+        else if (String::Equals(_s6.scenario_filename, "Amity Airfield.SC6"))
         {
-            // Amity Airfield has peeps entering from the corner of the tile, instead of the middle.
-            if (String::Equals(_s6.scenario_filename, "Amity Airfield.SC6"))
-                _s6.peep_spawns[0].y = 1296;
-
-            
-            for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
-            {
-                gPeepSpawns[i] = _s6.peep_spawns[i];
-            }
-            
-            for (size_t i = RCT12_MAX_PEEP_SPAWNS; i < MAX_PEEP_SPAWNS; i++)
-            {
-                gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
-            }
+            _s6.peep_spawns[0].y = 1296;
         }
 
+        for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
+        {
+            gPeepSpawns[i] = _s6.peep_spawns[i];
+        }
+
+        for (size_t i = RCT12_MAX_PEEP_SPAWNS; i < MAX_PEEP_SPAWNS; i++)
+        {
+            gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
+        }
     }
 };
 
