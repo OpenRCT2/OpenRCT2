@@ -2919,30 +2919,55 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     // Capacity
     gfx_draw_string_left(dpi, STR_CAPACITY, &rideEntry->capacity, COLOUR_BLACK, x, y);
+    if (font_get_line_height(FONT_SPRITE_BASE_MEDIUM) == 10) {
+        // Excitement Factor
+        factor = rideEntry->excitement_multiplier;
+        if (factor > 0)
+        {
+            y += 10;
+            gfx_draw_string_left(dpi, STR_EXCITEMENT_FACTOR, &factor, COLOUR_BLACK, x, y);
+        }
 
-    // Excitement Factor
-    factor = rideEntry->excitement_multiplier;
-    if (factor > 0)
-    {
-        y += LIST_ROW_HEIGHT;
-        gfx_draw_string_left(dpi, STR_EXCITEMENT_FACTOR, &factor, COLOUR_BLACK, x, y);
+        // Intensity Factor
+        factor = rideEntry->intensity_multiplier;
+        if (factor > 0)
+        {
+            y += 10;
+            gfx_draw_string_left(dpi, STR_INTENSITY_FACTOR, &factor, COLOUR_BLACK, x, y);
+        }
+
+        // Nausea Factor
+        factor = rideEntry->nausea_multiplier;
+        if (factor > 0)
+        {
+            y += 10;
+            gfx_draw_string_left(dpi, STR_NAUSEA_FACTOR, &factor, COLOUR_BLACK, x, y);
+        }
     }
+    else{
+        // Excitement Factor
+        factor = rideEntry->excitement_multiplier;
+        if (factor > 0)
+        {
+            y += LIST_ROW_HEIGHT;
+            gfx_draw_string_left(dpi, STR_EXCITEMENT_FACTOR, &factor, COLOUR_BLACK, x, y);
+        }
 
-    // Intensity Factor
-    factor = rideEntry->intensity_multiplier;
-    if (factor > 0)
-    {
-        gfx_draw_string_left(dpi, STR_INTENSITY_FACTOR, &factor, COLOUR_BLACK, x+150, y);
+        // Intensity Factor
+        factor = rideEntry->intensity_multiplier;
+        if (factor > 0)
+        {
+            gfx_draw_string_left(dpi, STR_INTENSITY_FACTOR, &factor, COLOUR_BLACK, x + 150, y);
+        }
+
+        // Nausea Factor
+        factor = rideEntry->nausea_multiplier;
+        if (factor > 0)
+        {
+            y += LIST_ROW_HEIGHT;
+            gfx_draw_string_left(dpi, STR_NAUSEA_FACTOR, &factor, COLOUR_BLACK, x, y);
+        }
     }
-
-    // Nausea Factor
-    factor = rideEntry->nausea_multiplier;
-    if (factor > 0)
-    {
-        y += LIST_ROW_HEIGHT;
-        gfx_draw_string_left(dpi, STR_NAUSEA_FACTOR, &factor, COLOUR_BLACK, x, y);
-    }
-
 }
 
 typedef struct rct_vehichle_paintinfo {
