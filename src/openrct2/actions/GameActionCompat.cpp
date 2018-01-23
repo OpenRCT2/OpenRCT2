@@ -236,32 +236,17 @@
 #pragma endregion
 
 #pragma region PlacePeepSpawn
-    money32 place_peep_spawn(sint16 x, sint16 y, sint32 z, sint32 direction)
+    bool place_peep_spawn(sint16 x, sint16 y, sint32 z, sint32 direction)
     {
         auto gameAction = PlacePeepSpawnAction(x, y, z, direction);
         auto result = GameActions::Execute(&gameAction);
         if (result->Error == GA_ERROR::OK)
         {
-            return 0;
+            return true;
         }
         else
         {
-            return MONEY32_UNDEFINED;
+            return false;
         }
-    }
-
-    /**
-    *
-    *  rct2: 0x006666E7
-    */
-    void game_command_place_peep_spawn(sint32* eax,
-        sint32* ebx,
-        sint32* ecx,
-        sint32* edx,
-        sint32* esi,
-        sint32* edi,
-        sint32* ebp)
-    {
-        Guard::Assert(false, "GAME_COMMAND_PLACE_PEEP_SPAWN DEPRECATED");
     }
 #pragma endregion

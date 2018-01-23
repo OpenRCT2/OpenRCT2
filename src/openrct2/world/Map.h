@@ -519,7 +519,6 @@ void game_command_set_sign_name(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 void game_command_set_banner_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
-void game_command_place_peep_spawn(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 
 struct tile_element_iterator{
     sint32 x;
@@ -589,6 +588,6 @@ uint8 tile_element_get_ride_index(const rct_tile_element * tileElement);
 void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles);
 void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tiles, uint8 ownership);
 
-money32 place_peep_spawn(sint16 x, sint16 y, sint32 z, sint32 direction);
+bool place_peep_spawn(sint16 x, sint16 y, sint32 z, sint32 direction);
 
 #endif
