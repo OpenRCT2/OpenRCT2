@@ -64,6 +64,8 @@
 #define CONSOLE_EDGE_PADDING 4
 #define CONSOLE_CARET_WIDTH 6
 
+static std::vector<utf8> _consoleVector;
+
 extern "C"
 {
 
@@ -72,9 +74,10 @@ bool gConsoleOpen = false;
 static bool _consoleInitialised = false;
 static sint32 _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
 static sint32 _lastMainViewportX, _lastMainViewportY;
-static utf8 _consoleBuffer[CONSOLE_BUFFER_SIZE] = { 0 };
-static utf8 *_consoleBufferPointer = _consoleBuffer;
-static utf8 *_consoleViewBufferStart = _consoleBuffer;
+
+static utf8 * _consoleBuffer;
+static utf8 * _consoleViewBufferStart;
+
 static utf8 _consoleCurrentLine[CONSOLE_INPUT_SIZE];
 static sint32 _consoleCaretTicks;
 static utf8 _consolePrintfBuffer[CONSOLE_BUFFER_2_SIZE];
@@ -125,6 +128,19 @@ void console_toggle()
         console_close();
     else
         console_open();
+}
+
+static void console_update_buffer_pointers()
+{
+    _consoleBuffer = _consoleVector.data();
+    _consoleViewBufferStart = _consoleBuffer;
+
+    size_t vectorSize = _consoleVector.size();
+
+    if (vectorSize > 0)
+    {
+        _consoleBuffer[vectorSize] = '\0';
+    }
 }
 
 static void console_init()
@@ -298,8 +314,8 @@ void console_draw(rct_drawpixelinfo *dpi)
         sint32 caretX = x + gfx_get_string_width(lineBuffer);
         sint32 caretY = y + lineHeight;
 
-        uint8 caretColour = ColourMapA[BASE_COLOUR(backgroundColour)].lightest;
-        gfx_fill_rect(dpi, caretX, caretY, caretX + CONSOLE_CARET_WIDTH, caretY + 1, caretColour);
+        uint8 caretColour = ColourMapA[BASE_COLOUR(textColour)].lightest;
+        gfx_fill_rect(dpi, caretX, caretY, caretX + CONSOLE_CARET_WIDTH, caretY, caretColour);
     }
 
     // What about border colours?
@@ -382,16 +398,12 @@ static void console_write_prompt()
 
 void console_write(const utf8 *src)
 {
-    size_t charactersRemainingInBuffer = CONSOLE_BUFFER_SIZE - (_consoleBufferPointer - _consoleBuffer) - 1;
-    size_t charactersToWrite = strlen(src);
-    size_t bufferShift = charactersToWrite - charactersRemainingInBuffer;
-    if (charactersToWrite > charactersRemainingInBuffer) {
-        memmove(_consoleBuffer, _consoleBuffer + bufferShift, CONSOLE_BUFFER_SIZE - bufferShift);
-        _consoleBufferPointer -= bufferShift;
-        charactersRemainingInBuffer = CONSOLE_BUFFER_SIZE - (_consoleBufferPointer - _consoleBuffer) - 1;
-    }
-    safe_strcpy(_consoleBufferPointer, src, charactersRemainingInBuffer);
-    _consoleBufferPointer += charactersToWrite;
+    std::string srcString(src, strlen(src));
+
+    // begin() and end() must be used here to copy the entire string into the vector
+    // using push_back() would only insert the first character
+    _consoleVector.insert(_consoleVector.end(), srcString.begin(), srcString.end());
+    console_update_buffer_pointers();
 }
 
 void console_writeline(const utf8 *src)
@@ -465,8 +477,9 @@ static sint32 console_get_num_visible_lines()
 void console_clear()
 {
     _consoleScrollPos = 0;
-    _consoleBuffer[0] = 0;
-    _consoleBufferPointer = _consoleBuffer;
+    _consoleVector.clear();
+    _consoleVector.shrink_to_fit();
+    console_update_buffer_pointers();
 }
 
 void console_clear_line()
