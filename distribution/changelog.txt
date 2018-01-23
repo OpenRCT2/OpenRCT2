@@ -78,6 +78,7 @@
 - Fix: [#6293] Restored interface sounds while gameplay is paused.
 - Fix: [#6301] Track list freezes after deleting track in Track Manager.
 - Fix: [#6308] Cannot create title sequence if title sequences folder does not exist.
+- Fix: [#6314] Imported SV4 files do not mark their scenarios as completed.
 - Fix: [#6318] Cannot sack staff that have not been placed
 - Fix: [#6320] Crash when CSS1.DAT is absent.
 - Fix: [#6331] Scenery costs nothing in track designs.
