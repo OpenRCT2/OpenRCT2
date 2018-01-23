@@ -192,7 +192,7 @@
   <Target Name="g2" DependsOnTargets="Build" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
           Condition="'$(TestConfig)'!='true'">
     <Message Text="Building g2.dat..." Importance="high" />
-    <Exec Command="&quot;$(OutputCom)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2\sprites.json&quot;"
+    <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2\sprites.json&quot;"
           StandardOutputImportance="normal" />
   </Target>
 
