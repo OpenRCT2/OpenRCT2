@@ -191,9 +191,9 @@
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
   <Target Name="g2" DependsOnTargets="Build" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
           Condition="'$(TestConfig)'!='true'">
-    <Message Text="Building g2.dat..." />
-    <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2\sprites.json&quot;"
-          StandardOutputImportance="low" />
+    <Message Text="Building g2.dat..." Importance="high" />
+    <Exec Command="&quot;$(OutputCom)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2\sprites.json&quot;"
+          StandardOutputImportance="normal" />
   </Target>
 
   <!-- Target to create openrct2.exe (windows) and openrct2.com (console) -->
