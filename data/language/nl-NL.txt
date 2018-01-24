@@ -4505,6 +4505,20 @@ STR_6200    :Datum resetten
 STR_6201    :{MONTH}
 STR_6202    :Hulpraster inschakelen
 STR_6203    :{SMALLFONT}{BLACK}Als dit is ingeschakeld, zal er een hulpraster worden weergegeven als je CTRL of SHIFT ingedrukt houdt, om het plaatsen van elementen gemakkelijker te maken.
+STR_6204    :Stenen
+STR_6205    :IJzer
+STR_6206    :Wit stucwerk
+STR_6207    :Geel stucwerk
+STR_6208    :Rood stucwerk
+STR_6209    :Paars stucwerk
+STR_6210    :Groen stucwerk
+STR_6211    :Gele zandsteen
+STR_6212    :Grijze zandsteen
+STR_6213    :Wolkenkrabber A
+STR_6214    :Wolkenkrabber B
+STR_6215    :Bouw
+STR_6216    :Bedrijf
+STR_6217    :Beschikbaarheid attr./baanonderdelen
 
 #############
 # Scenarios #
@@ -4705,7 +4719,7 @@ STR_DTLS    :Je mag een enorme kloof ontwikkelen tot een attractiepark.
 <Thunderstorm Park>
 STR_SCNR    :Thunderstorm Park
 STR_PARK    :Thunderstorm Park
-STR_DTLS    :In dit park regent het zo vaak dat er een enorme piramide is gebouwd om overdekte attracties e kunnen bouwen.
+STR_DTLS    :In dit park regent het zo vaak dat er een enorme piramide is gebouwd om overdekte attracties te kunnen bouwen.
 
 <Harmonic Hills>
 STR_SCNR    :Harmonic Hills
@@ -5579,14 +5593,14 @@ STR_CPTY    :16 passagiers
 
 # Monorail Cycles / Fietsbaan
 [MONBK]
-STR_NAME    :Fietsbaan
+STR_NAME    :Fietsen
 STR_DESC    :Speciale fietsen rijden over een stalen monorail, voortbewogen door het trappen van de passagiers.
 STR_CPTY    :1 persoon per fiets
 # End of Monorail Cycles / Fietsbaan
 
 # Launched Freefall / Gelanceerde vrije val
 [SSC1]
-STR_NAME    :Gelanceerde vrije val
+STR_NAME    :Wagen voor gelanceerde vrije val
 STR_DESC    :Een vrijevalwagen wordt pneumatisch langs een hoge stalen toren gelanceerd en gaat daarna in een vrije val weer naar beneden.
 STR_CPTY    :8 passagiers
 # End of Launched Freefall / Gelanceerde vrije val
@@ -5939,12 +5953,12 @@ STR_CPTY    :4 passagiers per karretje
 
 # Observation Tower / Observatietoren
 [OBS1]
-STR_NAME    :Observatietoren
+STR_NAME    :Enkeldekscabine
 STR_DESC    :Draaiende observatiecabine die langs een verticale toren omhoog gaat.
 STR_CPTY    :20 passagiers
 
 [OBS2]
-STR_NAME    :Dubbelsdeks observatietoren
+STR_NAME    :Dubbelsdekscabine
 STR_DESC    :Draaiende observatiecabine met twee dekken die langs een verticale toren omhoog gaat.
 STR_CPTY    :32 passagiers
 
@@ -6126,7 +6140,7 @@ STR_CPTY    :32 passagiers
 
 # River Rafts / Riviertocht
 [RFTBOAT]
-STR_NAME    :Riviertocht
+STR_NAME    :Overdekte vlotten
 STR_DESC    :Boten in de vorm van een vlot varen rustig door een waterbak.
 STR_CPTY    :4 passagiers per vlot
 
@@ -7138,11 +7152,38 @@ STR_NAME    :Basisblok
 [BRBASE3]
 STR_NAME    :Basisblok
 
+[CHBBASE]
+STR_NAME    :Dambord-basisblok
+
+[GEOROOF1]
+STR_NAME    :Glazen dak
+
+[GEOROOF2]
+STR_NAME    :Glazen dak
+
+[ROMROOF2]
+STR_NAME    :Fundament
+
 [TAL]
 STR_NAME    :Boom in alligatorvorm
 
+[TAP]
+STR_NAME    :Aleppoden
+
+[TB1]
+STR_NAME    :Witte loper
+
+[TB2]
+STR_NAME    :Zwarte loper
+
 [TCB]
 STR_NAME    :Klaverenboom
+
+[TCE]
+STR_NAME    :Camperdowniep
+
+[TCRP]
+STR_NAME    :Corsicaanse den
 
 [TDF]
 STR_NAME    :Dolfijnenfontein
@@ -7150,8 +7191,80 @@ STR_NAME    :Dolfijnenfontein
 [TDM]
 STR_NAME    :Ruitenboom
 
+[TDT1]
+STR_NAME    :Dode boom
+
+[TDT2]
+STR_NAME    :Dode boom
+
+[TDT3]
+STR_NAME    :Dode boom
+
 [TEF]
 STR_NAME    :Olifantenfontein
+
+[TG1]
+STR_NAME    :Bloemen
+
+[TG10]
+STR_NAME    :Bloemen
+
+[TG11]
+STR_NAME    :Bloemen
+
+[TG12]
+STR_NAME    :Bloemen
+
+[TG13]
+STR_NAME    :Bloemen
+
+[TG14]
+STR_NAME    :Bloemen
+
+[TG15]
+STR_NAME    :Bloemen
+
+[TG16]
+STR_NAME    :Bloemen
+
+[TG17]
+STR_NAME    :Bloemen
+
+[TG18]
+STR_NAME    :Bloemen
+
+[TG19]
+STR_NAME    :Bloemen
+
+[TG2]
+STR_NAME    :Bloemen
+
+[TG20]
+STR_NAME    :Bloemen
+
+[TG21]
+STR_NAME    :Bloemen
+
+[TG3]
+STR_NAME    :Bloemen
+
+[TG4]
+STR_NAME    :Bloemen
+
+[TG5]
+STR_NAME    :Bloemen
+
+[TG6]
+STR_NAME    :Bloemen
+
+[TG7]
+STR_NAME    :Bloemen
+
+[TG8]
+STR_NAME    :Bloemen
+
+[TG9]
+STR_NAME    :Bloemen
 
 [TGS]
 STR_NAME    :Giraffenstandbeeld
@@ -7159,11 +7272,77 @@ STR_NAME    :Giraffenstandbeeld
 [THRS]
 STR_NAME    :Ruiterstandbeeld
 
+[THL]
+STR_NAME    :Valse christusdoorn
+
 [THT]
 STR_NAME    :Hartenboom
 
+[TIC]
+STR_NAME    :Wierookceder
+
+[TK1]
+STR_NAME    :Wit paard
+
+[TK2]
+STR_NAME    :Zwart paard
+
+[TK3]
+STR_NAME    :Witte koning
+
+[TK4]
+STR_NAME    :Zwarte koning
+
+[TLC]
+STR_NAME    :Californische cipres
+
+[TMBJ]
+STR_NAME    :Jeneverbes
+
+[TMC]
+STR_NAME    :Montereycipres
+
+[TMG]
+STR_NAME    :Magnolia
+
+[TMO1]
+STR_NAME    :Buitenaards object
+
+[TMO2]
+STR_NAME    :Buitenaards object
+
+[TMO3]
+STR_NAME    :Buitenaards object
+
+[TMO4]
+STR_NAME    :Buitenaards object
+
+[TMO5]
+STR_NAME    :Buitenaards object
+
+[TMS1]
+STR_NAME    :Paddenstoel
+
+[TP1]
+STR_NAME    :Witte pion
+
+[TP2]
+STR_NAME    :Zwarte pion
+
+[TQ1]
+STR_NAME    :Witte dame
+
+[TQ2]
+STR_NAME    :Zwarte dame
+
 [TQF]
-STR_NAME    :Cupidofonteinen
+STR_NAME    :Cupidofontein
+
+[TR1]
+STR_NAME    :Witte toren
+
+[TR2]
+STR_NAME    :Zwarte toren
 
 [TSD]
 STR_NAME    :Schoppenboom
@@ -7171,17 +7350,112 @@ STR_NAME    :Schoppenboom
 [TSH]
 STR_NAME    :Paardenstandbeeld
 
+[TSQ]
+STR_NAME    :Boom in eekhoornvorm
+
+[TST1]
+STR_NAME    :Paddenstoel
+
+[TST2]
+STR_NAME    :Paddenstoel
+
+[TST3]
+STR_NAME    :Paddenstoel
+
+[TST4]
+STR_NAME    :Paddenstoel
+
+[TST5]
+STR_NAME    :Paddenstoel
+
 [TSTD]
 STR_NAME    :Dolfijnenstandbeeld
+
+[TTG]
+STR_NAME    :Schietschijf
 
 [TUS]
 STR_NAME    :Eenhoornstandbeeld
 
-[GEOROOF1]
-STR_NAME    :Glazen dak
+[WAG1]
+STR_NAME    :Huifkar
 
-[GEOROOF2]
-STR_NAME    :Glazen dak
+[WAG2]
+STR_NAME    :Huifkar
+
+## Start WW
+[ANTILOPF]
+STR_NAME    :Vrouwtjesantilope
+
+[ANTILOPM]
+STR_NAME    :Mannetjesantilope
+
+[G1DANCER]
+STR_NAME    :Carnavalsdanseres
+
+[G2DANCER]
+STR_NAME    :Carnavalsdanseres
+
+[TRCKPRT1]
+STR_NAME    :Mijnspoor met karretje vol diamanten
+
+[TRCKPRT2]
+STR_NAME    :Mijnspoor met leeg karretje
+
+[TRCKPRT3]
+STR_NAME    :Mijnschacht met diamanten
+
+[TRCKPRT4]
+STR_NAME    :Schacht voor mijnkarretjes
+
+[TRCKPRT5]
+STR_NAME    :Mijnspoor met bocht
+
+[TRCKPRT6]
+STR_NAME    :Kapot stuk mijnspoor
+
+[TRCKPRT7]
+STR_NAME    :Mijnspoor met stootblok
+
+[TRCKPRT8]
+STR_NAME    :Mijnspoor met wissel
+
+[TRCKPRT9]
+STR_NAME    :Recht stuk mijnspoor
+## End WW
+
+## Start TT
+[PDFLAG02]
+STR_NAME    :Historische vlag
+
+[PDFLAG03]
+STR_NAME    :Historische vlag
+
+[PDFLAG04]
+STR_NAME    :Historische vlag
+
+[PDFLAG05]
+STR_NAME    :Historische vlag
+
+[PDFLAG06]
+STR_NAME    :Historische vlag
+
+[PDFLAG08]
+STR_NAME    :Historische vlag
+
+[PDFLAG13]
+STR_NAME    :Historische vlag
+
+[PDFLAG14]
+STR_NAME    :Historische vlag
+
+[PDFLAG15]
+STR_NAME    :Historische vlag
+
+[PDFLAG16]
+STR_NAME    :Historische vlag
+
+## End TT
 
 ## Start CC
 # TT Glass Roofs
@@ -7272,6 +7546,10 @@ STR_NAME    :Basisblok
 #################
 # Large objects #
 #################
+
+[GENSTORE]
+STR_NAME    :General store
+
 [GLTHENT]
 STR_NAME    :'Goliath'-bord
 
@@ -7281,8 +7559,17 @@ STR_NAME    :'Medusa'-bord
 [NITROENT]
 STR_NAME    :'Nitro'-bord
 
+[SALOON]
+STR_NAME    :Saloon
+
+[SCOL]
+STR_NAME    :Colosseum
+
 [SHS1]
 STR_NAME    :Rijtjeshuis
+
+[SMB]
+STR_NAME    :Buitenaards gebouw
 
 [SSIG2]
 STR_NAME    :3D-bord
@@ -7292,6 +7579,16 @@ STR_NAME    :Verticaal 3D-bord
 
 [SSIG4]
 STR_NAME    :3D-bord
+
+## Start WW
+[1X2RHINO]
+STR_NAME    :Neushoorn
+
+[HIPPO01]
+STR_NAME    :Nijlpaard
+
+[HIPPO02]
+STR_NAME    :Nijlpaard
 
 #########
 # Walls #
@@ -7393,7 +7690,7 @@ STR_NAME    :Houten schutting
 STR_NAME    :Junglehek
 
 [WMW]
-STR_NAME    :Muur in Marsstijl
+STR_NAME    :Buitenaardse muur
 
 [WMWW]
 STR_NAME    :Houten hek

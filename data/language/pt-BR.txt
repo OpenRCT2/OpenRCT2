@@ -912,8 +912,8 @@ STR_0906    :{SMALLFONT}{BLACK}Linha Reta
 STR_0907    :Inclinação
 STR_0908    :Giro/Inclinação
 STR_0909    :Rot. Banco
-STR_0910    :{SMALLFONT}{BLACK}Curva retorcida para a esquerda
-STR_0911    :{SMALLFONT}{BLACK}Curva retorcida para a direita
+STR_0910    :{SMALLFONT}{BLACK}Curva em 'S' à Esquerda
+STR_0911    :{SMALLFONT}{BLACK}Curva em 'S' à Direita
 STR_0912    :{SMALLFONT}{BLACK}Sem retorção
 STR_0913    :{SMALLFONT}{BLACK}Mover para a seção anterior
 STR_0914    :{SMALLFONT}{BLACK}Mover para a próxima seção
@@ -935,7 +935,7 @@ STR_0929    :Curva em 'S' (esquerda)
 STR_0930    :Curva em 'S' (direita)
 STR_0931    :Loop Vertical (esquerda)
 STR_0932    :Loop Vertical (direita)
-STR_0933    :Aumentar ou diminuir o terreno primeiro
+STR_0933    :Aumente ou rebaixe o terreno primeiro
 STR_0934    :Entrada da atração no caminho
 STR_0935    :Saída da atração no caminho
 STR_0936    :Entrada do parque no caminho
@@ -944,14 +944,14 @@ STR_0938    :{SMALLFONT}{BLACK}Ajuste de altura do solo e inclinação
 STR_0939    :Subterrâneo/Visão interna
 STR_0940    :Esconder Terreno Base
 STR_0941    :Esconder Faces Verticais
-STR_0942    :Ver Através dos Brinquedos
-STR_0943    :Ver Através dos Cenários
+STR_0942    :Brinquedos Transparentes
+STR_0943    :Cenários Transparentes
 STR_0944    :Salvar
 STR_0945    :Não Salvar
 STR_0946    :Cancelar
-STR_0947    :Salvar antes de carregar ?
-STR_0948    :Salvar antes de sair ?
-STR_0949    :Salvar antes de sair ?
+STR_0947    :Salvar antes de carregar?
+STR_0948    :Salvar antes de sair?
+STR_0949    :Salvar antes de sair?
 STR_0950    :Carregar Jogo
 STR_0951    :Sair do Jogo
 STR_0952    :Sair do Jogo
@@ -1049,9 +1049,9 @@ STR_1043    :OpenRCT2 Jogo Salvo
 STR_1044    :OpenRCT2 Arquivo de Cenário
 STR_1045    :OpenRCT2 Arquivo de Paisagem
 STR_1046    :OpenRCT2 Arquivo de Projeto de Pista
-STR_1047    :Falha ao salvar o jogo!
-STR_1048    :Falha ao salvar o cenário!
-STR_1049    :Falha ao salvar a paisagem!
+STR_1047    :Falha ao salvar jogo!
+STR_1048    :Falha ao salvar cenário!
+STR_1049    :Falha ao salvar paisagem!
 STR_1050    :Falha ao carregar o jogo...{NEWLINE}Arquivo contém dados inválidos!
 STR_1051    :Suportes Invisíveis
 STR_1052    :Pessoas Invisíveis
@@ -1069,7 +1069,7 @@ STR_1063    :Modo vai-e-vem lançado reverso-inclinado
 STR_1064    :Lançamento motorizado (passando pela estação)
 STR_1065    :Modo vai-e-vem
 STR_1066    :Modo aluguel de barcos
-STR_1067    :Lancamento para cima
+STR_1067    :Lançamento para cima
 STR_1068    :Modo de subida rotativa
 STR_1069    :Modo estação à estação
 STR_1070    :Um passeio por ingresso
@@ -1182,7 +1182,7 @@ STR_1176    :Impossível construir calçada aqui...
 STR_1177    :Impossível remover calçada daqui...
 STR_1178    :Inclinação de terreno imprópria
 STR_1179    :Calçada está no caminho
-STR_1180    :Impossível construir isto debaixo de água!
+STR_1180    :Impossível construir isto debaixo da água!
 STR_1181    :Calçadas
 STR_1182    :Tipo
 STR_1183    :Direção
@@ -2335,7 +2335,7 @@ STR_2327    :Opções
 STR_2328    :{WINDOW_COLOUR_2}Moeda:
 STR_2329    :{WINDOW_COLOUR_2}Distância e Velocidade:
 STR_2330    :{WINDOW_COLOUR_2}Temperatura:
-STR_2331    :{WINDOW_COLOUR_2}Marcadores Altura:
+STR_2331    :{WINDOW_COLOUR_2}Marcadores de Altura:
 STR_2332    :Unidades
 STR_2333    :Efeitos sonoros
 STR_2334    :Libras ({POUND})
@@ -2366,8 +2366,8 @@ STR_2358    :Unidades
 STR_2359    :Valores Reais
 STR_2360    :Resolução de Tela:
 STR_2361    :Suavizar Terreno
-STR_2362    :{SMALLFONT}{BLACK}Liga/Desliga suavização do azulejo do terreno
-STR_2363    :Grades no terreno
+STR_2362    :{SMALLFONT}{BLACK}Liga/Desliga suavização do ladrilho de terreno
+STR_2363    :Grades no Terreno
 STR_2364    :{SMALLFONT}{BLACK}Liga/Desliga grades no terreno
 STR_2365    :O banco se recusa a aumentar seu empréstimo!
 STR_2366    :Celsius ({DEGREE}C)
@@ -2379,7 +2379,7 @@ STR_2371    :Alto
 STR_2372    :Baixo
 STR_2373    :Médio
 STR_2374    :Alto
-STR_2375    :Muito alto
+STR_2375    :Muito Alto
 STR_2376    :Extremo
 STR_2377    :Ultra Extremo
 STR_2378    :{SMALLFONT}{BLACK}Ajusta uma área menor de terreno
@@ -2508,8 +2508,8 @@ STR_2500    :Rotacionar objeto de construção
 STR_2501    :Alternar vista subterrânea
 STR_2502    :Alternar terreno base escondido
 STR_2503    :Alternar terreno vertical escondido
-STR_2504    :Alternar ver através dos brinquedos 
-STR_2505    :Alternar ver através dos cenários 
+STR_2504    :Alternar ver através dos brinquedos
+STR_2505    :Alternar ver através dos cenários
 STR_2506    :Alternar suportes invisíveis
 STR_2507    :Alternar pessoas invisíveis
 STR_2508    :Alternar marcas de altura no terreno
@@ -2762,7 +2762,7 @@ STR_2752    :Limpar grama
 STR_2753    :Cortar grama
 STR_2754    :Regar plantas
 STR_2755    :Consertar vandalismo
-STR_2756    :Remover vomitos
+STR_2756    :Remover vômito
 STR_2757    :<not used anymore>
 STR_2758    :<not used anymore>
 STR_2759    :Apuramento Zero
@@ -2791,7 +2791,7 @@ STR_2780    :Janela de Exibição Grande
 STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
-STR_2784    :Mudar atalho do teclado
+STR_2784    :Alterar atalhos do teclado
 STR_2785    :{WINDOW_COLOUR_2}Pressione uma nova tecla de atalho para:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2786    :{SMALLFONT}{BLACK}Clique na descrição do atalho para selecionar uma nova tecla
 STR_2787    :{WINDOW_COLOUR_2}Valor do parque: {BLACK}{CURRENCY}
@@ -2804,8 +2804,8 @@ STR_2793    :{SMALLFONT}(Completado por {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completado por: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} com o valor da empresa de: {BLACK}{CURRENCY}
 STR_2795    :Organizar
 STR_2796    :{SMALLFONT}{BLACK}Organiza lista de atrações usando o tipo de informação exibida
-STR_2797    :Mover tela quando o ponteiro estiver na borda da tela
-STR_2798    :{SMALLFONT}{BLACK}Move a tela quando o ponteiro do mouse estiver na borda da tela
+STR_2797    :Mover câmera quando o cursor estiver na borda da tela
+STR_2798    :{SMALLFONT}{BLACK}Move a câmera quando o cursor do mouse estiver na borda da tela
 STR_2799    :{SMALLFONT}{BLACK}Visualiza ou muda atribuições de teclas de controle
 STR_2800    :{WINDOW_COLOUR_2}Total de ingressos: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Receita dos ingressos: {BLACK}{CURRENCY2DP}
@@ -2866,7 +2866,7 @@ STR_2855    :{RED}{STRINGID} não tem um caminho de saída!{NEWLINE}Construa um 
 STR_2856    :<removed string - do not use>
 STR_2857    :<removed string - do not use>
 STR_2858    :Impossível começar uma campanha de marketing...
-STR_2859    :Um outro exemplar de OpenRCT2 já está executando
+STR_2859    :Uma outra instância de OpenRCT2 já está executando
 STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Licenciado para Infogrames Interactive Inc.
 STR_2862    :Reconhecimentos de música...
@@ -3117,7 +3117,7 @@ STR_3106    :{SMALLFONT}{BLACK}Listar quiosque de informações e outras instala
 STR_3107    :Fechar
 STR_3108    :Testar
 STR_3109    :Abrir
-STR_3110    :{WINDOW_COLOUR_2}Secções de Bloco: {BLACK}{COMMA16}
+STR_3110    :{WINDOW_COLOUR_2}Seções de Bloco: {BLACK}{COMMA16}
 STR_3111    :{SMALLFONT}{BLACK}Clique no projeto para construí-lo
 STR_3112    :{SMALLFONT}{BLACK}Clique no projeto para renomear ou deletá-lo
 STR_3113    :Selecionar um projeto diferente
@@ -3364,7 +3364,7 @@ STR_3353    :Novo nome contém caracteres inválidos
 STR_3354    :Existe outro arquivo com este nome, ou o arquivo é protegido contra gravação
 STR_3355    :Arquivo protegido contra gravação ou trancado
 STR_3356    :Deletar Arquivo
-STR_3357    :{WINDOW_COLOUR_2}Tem certeza que deseja deletar {STRING} permanentemente ?
+STR_3357    :{WINDOW_COLOUR_2}Tem certeza que deseja deletar {STRING} permanentemente?
 STR_3358    :Impossível deletar projeto de pista...
 STR_3359    :{BLACK}Nenhum projeto de pista deste tipo de atração
 STR_3360    :Aviso!
@@ -3795,8 +3795,8 @@ STR_5455    :Ativar o modo sandbox
 STR_5456    :Desabilitar as verificações de depuração
 STR_5457    :Desativar limites de apoio
 STR_5458    :Rotacionar no sentido horário
-STR_5459    :Rotacionar anti-horário
-STR_5460    :Rotacionar visão sentido anti-horário
+STR_5459    :Rotacionar no sentido anti-horário
+STR_5460    :Rotacionar visão no sentido anti-horário
 STR_5461    :Definir parâmetros dos visitantes
 STR_5462    :{CURRENCY}
 STR_5463    :Objetivo: Divirta-se!
@@ -3823,7 +3823,7 @@ STR_5483    :{BLACK}({COMMA16} semanas restantes)
 STR_5484    :{BLACK}({COMMA16} semana restante)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
-STR_5487    :{SMALLFONT}{BLACK}Exibir as mensagens recentes
+STR_5487    :{SMALLFONT}{BLACK}Exibir mensagens recentes
 STR_5488    :Sem entrada (Somente no OpenRCT2!)
 STR_5489    :{SMALLFONT}{BLACK}Mostrar apenas os visitantes monitorados
 STR_5490    :Desativar som quando perder o foco
@@ -4421,7 +4421,7 @@ STR_6111    :Mini Montanha-Russa Clássica
 STR_6112    :Uma montanha russa de aço compacta onde trens viajam por parafusos e loops
 STR_6113    :Uma montanha russa alta que não inverte com grandes quedas, alta velocidade, e trens confortáveis com apenas uma trava de colo
 STR_6114    :Passageiros viajam devagar em veículos eletrizados ao longo de uma rota baseada em pista
-STR_6115    :Gigantes caminhões 4x4 eletrizados que podem subir colinas íngrimes
+STR_6115    :Gigantes caminhões 4x4 eletrizados que podem subir colinas íngremes
 STR_6116    :Trens largos de montanha russa deslizam ao longo de um trilho suave de aço, viajando por uma variedade de inversões
 STR_6117    :Sentados em trens confortáveis com apenas trava de colo, passageiros se divertem em gigantes quedas suaves e trilhos torcidos, bem como muitos "tempos no ar" pelas colinas.
 STR_6118    :Uma montanha russa suave para pessoas que ainda não criaram coragem para encarar atrações maiores
@@ -4480,7 +4480,7 @@ STR_6170    :Melhoras
 STR_6171    :Procurar
 STR_6172    :{SMALLFONT}{BLACK}Procura
 STR_6173    :Por favor forneça um nome para pesquisar:
-STR_6174    :Carregar Save
+STR_6174    :Carregar Jogo Salvo
 STR_6175    :Carregar Cenário
 STR_6176    :Cenário para carregar:
 STR_6177    :Carregar{MOVE_X}{87}Nenhum cenário selecionado

@@ -17,8 +17,8 @@ STR_0012    :Dostihy
 STR_0013    :Autodráha
 STR_0014    :Volný pád
 STR_0015    :Bobová dráha
-STR_0016    :Pozorovací věž
-STR_0017    :Horská dráha s lopinky
+STR_0016    :Vyhlídková věž
+STR_0017    :Horská dráha s loopingy
 STR_0018    :Nafukovací čluny
 STR_0019    :Důlní horská dráha
 STR_0020    :Lanovka
@@ -514,7 +514,7 @@ STR_0509    :
 STR_0510    :
 STR_0511    :
 STR_0512    :Malá ocelová horská dráha se spirálovitým profilem a vozy se sedadly za sebou
-STR_0513    :Návštěvníci jedou po horské dráze s lopinky ve stoje
+STR_0513    :Návštěvníci jedou po horské dráze s loopingy ve stoje
 STR_0514    :Vlaky zavěšené pod kolejí se v zatáčkách houpají do stran
 STR_0515    :Ocelová horská dráha s vlaky držícími zespoda trati s mnoha zatáčkami
 STR_0516    :Pozvolná horská dráha pro ty kdo se zatím neodvažují na větší dráhy
@@ -527,8 +527,8 @@ STR_0522    :Menší horská dráha, na které návštěvníci sedí nad dráhou
 STR_0523    :Návštěvníci jedou pomalu ve vozidlech po postavené dráze.
 STR_0524    :Kabina pro volný pád je pneumaticky vystřelena vzhůru po vysoké ocelové věži a následně volně padá k zemi
 STR_0525    :Návštěvníci jedou po propletené bobové dráze
-STR_0526    :Otáčející se pozorovací kabina, která postupně vyjíždí na vysokou věž
-STR_0527    :Plynulá ocelová horská dráha s lopinky
+STR_0526    :Otáčející se vyhlídková kabina, která postupně vyjíždí na vysokou věž
+STR_0527    :Plynulá ocelová horská dráha s loopingy
 STR_0528    :Návštěvníci jedou v nafukovacích člunech po tobogánu
 STR_0529    :Ocelová horská dráha ve stylu důlního vlaku s věrně vypadajícími důlními kolejemi.
 STR_0530    :Kabiny visí na ocelovém laně, které nepřetržitě jede z jednoho konce na druhý a zpět
@@ -586,7 +586,7 @@ STR_0581    :Kruh sedadel je za pomalé rotace vytažen na vrchol vysoké věže
 STR_0582    :
 STR_0583    :
 STR_0584    :Speciální kola jezdí po ocelové koleji, poháněná šlapáním jezdců
-STR_0585    :Návštěvníci sedí po dvou zavěšení pod tratí a jedou skrze lopinky a ostré zatáčky
+STR_0585    :Návštěvníci sedí po dvou zavěšení pod tratí a jedou skrze loopingy a ostré zatáčky
 STR_0586    :Vozy ve tvaru lodí jedou po trati horské dráhy, což umožňuje ostré zatáčky, strmé klesání a cákající zpomalení pro mírnější říční úseky
 STR_0587    :Po mocném startu na stlačený vzduch se vozy rozjedou po svislé dráze, přes vrchol a svisle dolů zpět do stanice
 STR_0588    :Vozy po jednom jedou pod cik-cak tratí s ostrými zatáčkami a pády
@@ -984,7 +984,7 @@ STR_0978    :Nové mírné atrakce
 STR_0979    :Nové horské dráhy
 STR_0980    :Nové adrenalinové atrakce
 STR_0981    :Nové vodní atrakce
-STR_0982    :Nové obchody & stánky
+STR_0982    :Nové obchody a stánky
 STR_0983    :Výzkum a vývoj
 STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
@@ -1150,11 +1150,11 @@ STR_1144    :Nelze postavit/přesunout vstup této atrakce...
 STR_1145    :Nelze postavit/přesunout výstup z této atrakce...
 STR_1146    :Vstup ještě není postaven
 STR_1147    :Výstup ještě není postaven
-STR_1148    :naložit na 25%
-STR_1149    :naložit na 50%
-STR_1150    :naložit na 75%
-STR_1151    :plně naložit
-STR_1152    :naložit jakkoliv
+STR_1148    :25% naložení
+STR_1149    :50% naložení
+STR_1150    :75% naložení
+STR_1151    :plné naložení
+STR_1152    :jakkékoliv naložení
 STR_1153    :Výškové popisky atrakcí
 STR_1154    :Výškové popisky krajiny
 STR_1155    :Výškové popisky cest
@@ -1176,7 +1176,7 @@ STR_1170    :{STRING}
 STR_1171    :{RED}Zavřeno - - 
 STR_1172    :{YELLOW}{STRINGID} - - 
 STR_1173    :{SMALLFONT}{BLACK}Nástroj pro cesty a fronty
-STR_1174    :Baner v cestě
+STR_1174    :Banner v cestě
 STR_1175    :Toto nelze postavit na strmé cestě
 STR_1176    :Nelze stavět cestu...
 STR_1177    :Tuto cestu nelze odstranit...
@@ -1209,7 +1209,7 @@ STR_1202    :1 návštěvník ve frontě
 STR_1203    :{COMMA16} návštěvníků ve frontě
 STR_1204    :{COMMA16} minutu čekání ve frontě
 STR_1205    :{COMMA16} minut čekání ve frontě
-STR_1206    :{WINDOW_COLOUR_2}Naložit:
+STR_1206    :{WINDOW_COLOUR_2}Čekat na:
 STR_1207    :{WINDOW_COLOUR_2}Vyjet když jiný vlak přijede do stanice
 STR_1208    :{WINDOW_COLOUR_2}Vyplout když jiná loď přijede do přístavu
 STR_1209    :{SMALLFONT}{BLACK}Vyberte, zda se má čekat na návštěvníky před odjezdem
@@ -1961,11 +1961,11 @@ STR_1951    :Graf hodnoty parku
 STR_1952    :Graf zisku
 STR_1953    :Marketing
 STR_1954    :Financování vývoje
-STR_1955    :{WINDOW_COLOUR_2}Počet koleček:
-STR_1956    :{SMALLFONT}{BLACK}Počet koleček za jednu jízdu
+STR_1955    :{WINDOW_COLOUR_2}Počet kol:
+STR_1956    :{SMALLFONT}{BLACK}Počet kol za jednu jízdu
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
-STR_1959    :Počet koleček nelze změnit...
+STR_1959    :Počet kol nelze změnit...
 STR_1960    :{WINDOW_COLOUR_2}Cena balónku:
 STR_1961    :{WINDOW_COLOUR_2}Cena plyšáka:
 STR_1962    :{WINDOW_COLOUR_2}Cena mapy parku:
@@ -2989,15 +2989,15 @@ STR_2976    :{SMALLFONT}{BLACK}Obarvit část atrakce vybranou barevnou kombinac
 STR_2977    :Přejmenovat zaměstnance
 STR_2978    :Zadejte nové jméno tohoto zaměstnance:
 STR_2979    :Nelze přejmenovat zaměstnance...
-STR_2980    :Příliš mnoho banerů ve hře
+STR_2980    :Příliš mnoho bannerů ve hře
 STR_2981    :{RED}Zákaz vstupu - - 
-STR_2982    :Text baneru
-STR_2983    :Zadejte nový text baneru:
-STR_2984    :Nelze změnit text baneru...
-STR_2985    :Baner
-STR_2986    :{SMALLFONT}{BLACK}Změnit text baneru
-STR_2987    :{SMALLFONT}{BLACK}Nastavit tento baner jako "zákaz vstupu" pro návštěvníky
-STR_2988    :{SMALLFONT}{BLACK}Zrušit baner
+STR_2982    :Text banneru
+STR_2983    :Zadejte nový text banneru:
+STR_2984    :Nelze změnit text banneru...
+STR_2985    :Banner
+STR_2986    :{SMALLFONT}{BLACK}Změnit text banneru
+STR_2987    :{SMALLFONT}{BLACK}Nastavit tento banner jako "zákaz vstupu" pro návštěvníky
+STR_2988    :{SMALLFONT}{BLACK}Zrušit banner
 STR_2989    :{SMALLFONT}{BLACK}Vybrat hlavní barvu
 STR_2990    :{SMALLFONT}{BLACK}Vybrat barvu textu
 STR_2991    :Cedule
@@ -3150,7 +3150,7 @@ STR_3137    :Vyberte okolní kulisy
 STR_3138    :Zrušit výběr
 STR_3139    :Řetězový výtah nefunguje v tomto provozním módu
 STR_3140    :Řetězový výtah musí začít hned za stanicí
-STR_3141    :Více koleček za jízdu není přípustné současně s řetězovým výtahem
+STR_3141    :Více kol za jízdu není přípustné současně s řetězovým výtahem
 STR_3142    :{WINDOW_COLOUR_2}Kapacita: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Zobrazit návštěvníky na mapě
 STR_3144    :{SMALLFONT}{BLACK}Zobrazit atrakce a stánky na mapě
@@ -3169,7 +3169,7 @@ STR_3156    :
 STR_3157    :map
 STR_3158    :graph
 STR_3159    :list
-STR_3160    :Vyberte počet koleček za jednu jízdu
+STR_3160    :Vyberte počet kol za jednu jízdu
 STR_3161    :<not used anymore>
 STR_3162    :Nepodařilo se alokovat dostatek paměti
 STR_3163    :Instaluji nová data: 
@@ -3190,7 +3190,7 @@ STR_3177    :Nelze zrušit výběr objektu
 STR_3178    :Alespoň jeden objekt cesty musí být vybrán
 STR_3179    :Alespoň jeden objekt atrakce musí být vybrán
 STR_3180    :Neplatný výběr objektů
-STR_3181    :Výběr objektu - {STRINGID}
+STR_3181    :Výběr objektů - {STRINGID}
 STR_3182    :Vstup do parku musí být vybraný
 STR_3183    :Typ vodních ploch musí být vybraný
 STR_3184    :Vozy/atrakce
@@ -3547,7 +3547,7 @@ STR_5205    :Návštěvník
 STR_5206    :Seznam návštěvníků
 STR_5207    :Personál
 STR_5208    :Seznam personálu
-STR_5209    :Baner
+STR_5209    :Banner
 STR_5210    :Výběr objektu
 STR_5211    :Seznam vynálezů
 STR_5212    :Nastavení scénáře
@@ -3709,7 +3709,7 @@ STR_5367    :Vysoká
 STR_5368    :Vymazat havárii
 STR_5369    :Parametry parku...
 STR_5370    :{SMALLFONT}{BLACK}Klikněte na toto tlačítko pro   {NEWLINE}úpravy parametrů jako omezení parku,{NEWLINE} generování návštěvníků a peněz.
-STR_5371    :Výběr objektu
+STR_5371    :Výběr objektů
 STR_5372    :Obrátit směr posouvání pohledu pravým tlačítkem
 STR_5373    :Název {STRINGID}
 STR_5374    :Datum {STRINGID}
@@ -3812,7 +3812,7 @@ STR_5470    :Posunou mapu vlevo
 STR_5471    :Posunou mapu dolů
 STR_5472    :Posunou mapu vpravo
 STR_5473    :Cyklus dne a noci
-STR_5474    :Zobrazit text na banerech v kapitálkách
+STR_5474    :Zobrazit text na bannerech v kapitálkách
 STR_5475    :{COMMA16} týdnů
 STR_5476    :Hardware
 STR_5477    :Vykreslování mapy
@@ -4129,7 +4129,7 @@ STR_5819    :{SMALLFONT}{BLACK}[Vyžaduje hardwarové zobrazování]{NEWLINE}Poz
 STR_5820    :{SMALLFONT}{BLACK}Minimalizovat hru, pokud je v{NEWLINE}režimu celé obrazovky a jiné okno se stane aktivním
 STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Zapnout cyklus dne a noci.{NEWLINE}Jeden cyklus trvá jeden herní měsíc
-STR_5823    :{SMALLFONT}{BLACK}Zobrazit banery kapitálkami (RCT1 chování)
+STR_5823    :{SMALLFONT}{BLACK}Zobrazit bannery kapitálkami (RCT1 chování)
 STR_5824    :{SMALLFONT}{BLACK}Zakáže blesky během bouřek
 STR_5825    :{SMALLFONT}{BLACK}Udržet kurzor v okně
 STR_5826    :{SMALLFONT}{BLACK}Obrátit směr posouvání pohledu při držení pravého tlačítka myši
@@ -4237,7 +4237,7 @@ STR_5927    :Detail kulis
 STR_5928    :Detaily vstupu
 STR_5929    :Detaily plotu
 STR_5930    :Detaily velkých kulis
-STR_5931    :Detaily baneru
+STR_5931    :Detaily banneru
 STR_5932    :Detaily poškozených elementů
 STR_5933    :Vlastnosti
 STR_5934    :{WINDOW_COLOUR_2}Textura terénu: {BLACK}{STRINGID}
@@ -4286,8 +4286,8 @@ STR_5976    :Rovina
 STR_5977    :Pravá strana
 STR_5978    :Levá strana
 STR_5979    :{WINDOW_COLOUR_2}Typ plotu: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Text baneru: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}To není baner
+STR_5980    :{WINDOW_COLOUR_2}Text banneru: {BLACK}{STRINGID}
+STR_5981    :{WINDOW_COLOUR_2}To není banner
 STR_5982    :{WINDOW_COLOUR_2}Typ velké kulisy: {BLACK}{COMMA16}
 STR_5983    :{WINDOW_COLOUR_2}ID velké kulisy: {BLACK}{COMMA16}
 STR_5984    :Zablokované cesty:
@@ -4665,13 +4665,13 @@ STR_DESC    :Po ocelové kolejnici jezdí speciální jízdní kola, ovládané 
 STR_CPTY    :1 místo na každém kole
 
 [OBS1]
-STR_NAME    :Pozorovací věž
-STR_DESC    :Otáčející se pozorovací kabina, která postupně vyjíždí na vysokou věž
+STR_NAME    :Vyhlídková věž
+STR_DESC    :Otáčející se vyhlídková kabina, která postupně vyjíždí na vysokou věž
 STR_CPTY    :20 návštěvníků
 
 [OBS2]
-STR_NAME    :Dvoupatrová pozorovací věž
-STR_DESC    :Otáčející se dvoupatrová pozorovací věž, která postupně vyjíždí na vysokou věž
+STR_NAME    :Dvoupatrová vyhlídková věž
+STR_DESC    :Otáčející se dvoupatrová vyhlídková věž, která postupně vyjíždí na vysokou věž
 STR_CPTY    :32 návštěvníků
 
 [RCR]
@@ -4721,7 +4721,7 @@ STR_CPTY    :4 místa v každém voze
 
 [ARRT1]
 STR_NAME    :Vývrtková horská dráha
-STR_DESC    :Malá ocelová horská dráha, na které vozy jezdí skrze lopinky a jezdí ve vývrtce
+STR_DESC    :Malá ocelová horská dráha, na které vozy jezdí skrze loopingy a jezdí ve vývrtce
 STR_CPTY    :4 místa v každém voze
 
 [ARRT2]
@@ -4811,7 +4811,7 @@ STR_CPTY    :2 místa v každém vozu
 
 [NEMT]
 STR_NAME    :Zavěšená horská dráha
-STR_DESC    :Vozy jsou zavěšeny na kolejnicích se zatáčkami, pády a lopinky
+STR_DESC    :Vozy jsou zavěšeny na kolejnicích se zatáčkami, pády a loopingy
 STR_CPTY    :4 místa v každém voze
 
 [PMT1]
@@ -4861,7 +4861,7 @@ STR_CPTY    :4 místa v každém voze
 
 [SCHT1]
 STR_NAME    :Horská dráha
-STR_DESC    :Horská dráha s lopinky, po které jezdí vozy s opěrkou v klíně
+STR_DESC    :Horská dráha s loopingy, po které jezdí vozy s opěrkou v klíně
 STR_CPTY    :4 místa v každém voze
 
 [SFRIC1]
@@ -4876,12 +4876,12 @@ STR_CPTY    :1 místo v každém voze
 
 [SLCFO]
 STR_NAME    :Obrácená zavěšená horská dráha
-STR_DESC    :Návštěvníci sedí po dvou zavěšení pod tratí a vidí dopředu nebo dozadu podle toho, jak zrovna jedou skrze lopinky a ostré zatáčky
+STR_DESC    :Návštěvníci sedí po dvou zavěšení pod tratí a vidí dopředu nebo dozadu podle toho, jak zrovna jedou skrze loopingy a ostré zatáčky
 STR_CPTY    :4 místa v každém voze
 
 [SLCT]
 STR_NAME    :Malá zavěšená horská dráha
-STR_DESC    :Návštěvníci sedí po dvou zavěšení pod tratí a jedou skrze lopinky a ostré zatáčky
+STR_DESC    :Návštěvníci sedí po dvou zavěšení pod tratí a jedou skrze loopingy a ostré zatáčky
 STR_CPTY    :2 místa v každém vozu
 
 [SMC1]
@@ -4931,7 +4931,7 @@ STR_CPTY    :4 místa v každém voze
 
 [VEKDV]
 STR_NAME    :Zavěšená svislá dráha
-STR_DESC    :Návštěvníci sedí ve vozech zavěšených pod tratí, jedou pozpátku nahoru po svislé dráze, padají dolů a jezdí skrze lopinky s ostrými zatáčkami
+STR_DESC    :Návštěvníci sedí ve vozech zavěšených pod tratí, jedou pozpátku nahoru po svislé dráze, padají dolů a jezdí skrze loopingy s ostrými zatáčkami
 STR_CPTY    :4 místa v každém voze
 
 [VEKST]
@@ -7092,7 +7092,7 @@ STR_CPTY    :1 místo v každém voze
 
 [CONGAEEL]
 STR_NAME    :Jízda mořského úhoře
-STR_DESC    :Malá ocelová horská dráha, na které vozy připomínající mořské úhoře jezdí skrze lopinky a jezdí ve vývrtce
+STR_DESC    :Malá ocelová horská dráha, na které vozy připomínající mořské úhoře jezdí skrze loopingy a jezdí ve vývrtce
 STR_CPTY    :4 místa v každém voze
 
 [DRAGON]
@@ -7137,7 +7137,7 @@ STR_CPTY    :4 místa v každém voze
 
 [OSTRICH]
 STR_NAME    :Pštrosí jízda
-STR_DESC    :Horská dráha s lopinky, na které se jezdí ve stoje
+STR_DESC    :Horská dráha s loopingy, na které se jezdí ve stoje
 STR_CPTY    :4 místa v každém voze
 
 [PENGUINB]
@@ -7167,7 +7167,7 @@ STR_CPTY    :4 místa v každém voze
 
 [SEALS]
 STR_NAME    :Tulení horská dráha
-STR_DESC    :Malá ocelová horská dráha, na které vozy připomínající tuleně jezdí skrze lopinky a jezdí ve vývrtce
+STR_DESC    :Malá ocelová horská dráha, na které vozy připomínající tuleně jezdí skrze loopingy a jezdí ve vývrtce
 STR_CPTY    :4 místa v každém voze
 
 [SLOTH]
@@ -9217,7 +9217,7 @@ STR_CPTY    :5 nebo 10 míst v každém vagónu
 
 [BMVOCTPS]
 STR_NAME    :Mimozemská hmota
-STR_DESC    :Tématická pozorovací věž s kabinou, která postupně vyjede až na vrchol a zpět dolů
+STR_DESC    :Tématická vyhlídková věž s kabinou, která postupně vyjede až na vrchol a zpět dolů
 STR_CPTY    :20 návštěvníků
 
 [CYCLOPSX]
@@ -9342,7 +9342,7 @@ STR_CPTY    :2 místa v každém voze
 
 [POLCHASE]
 STR_NAME    :Policejní honička
-STR_DESC    :Horská dráha s lopinky, na které návštěvníci ve vozech sedí
+STR_DESC    :Horská dráha s loopingy, na které návštěvníci ve vozech sedí
 STR_CPTY    :4 místa v každém voze
 
 [POLICECR]
@@ -9367,7 +9367,7 @@ STR_CPTY    :4 místa v každém voze
 
 [STAMPHRD]
 STR_NAME    :Horská dráha splašeného stáda
-STR_DESC    :Horská dráha s lopinky a vozy ve tvaru splašeného stáda dinosaurů
+STR_DESC    :Horská dráha s loopingy a vozy ve tvaru splašeného stáda dinosaurů
 STR_CPTY    :4 místa v každém voze
 
 [VALKYRIE]
