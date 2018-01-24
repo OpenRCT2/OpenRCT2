@@ -41,6 +41,7 @@ RUN    echo "[mingw-w64]" >> /etc/pacman.conf \
 
 # Install MingW packages
 RUN pacman -S --noconfirm --noprogressbar \
+        mingw-w64-boost \
         mingw-w64-binutils \
         mingw-w64-crt \
         mingw-w64-gcc \
