@@ -94,7 +94,7 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32 image, uint8 * palet
 {
     GlyphId glyphId;
     glyphId.Image = image;
-    std::copy_n((uint8 *)&glyphId.Palette, sizeof(glyphId.Palette), palette);
+    std::copy_n(palette, sizeof(glyphId.Palette), (uint8 *)&glyphId.Palette);
 
     auto kvp = _glyphTextureMap.find(glyphId);
     if (kvp != _glyphTextureMap.end())
