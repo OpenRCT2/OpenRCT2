@@ -211,7 +211,7 @@ public:
         window_close_by_class(WC_NEW_CAMPAIGN);
 
         // Refresh windows that display the ride name
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
