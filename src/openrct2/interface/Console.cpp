@@ -233,8 +233,8 @@ void console_draw(rct_drawpixelinfo *dpi)
         sint32 caretX = x + gfx_get_string_width(_consoleCurrentLine);
         sint32 caretY = y + lineHeight;
 
-        uint8 caretColour = ColourMapA[BASE_COLOUR(backgroundColour)].lightest;
-        gfx_fill_rect(dpi, caretX, caretY, caretX + CONSOLE_CARET_WIDTH, caretY + 1, caretColour);
+        uint8 caretColour = ColourMapA[BASE_COLOUR(textColour)].lightest;
+        gfx_fill_rect(dpi, caretX, caretY, caretX + CONSOLE_CARET_WIDTH, caretY, caretColour);
     }
 
     // What about border colours?
