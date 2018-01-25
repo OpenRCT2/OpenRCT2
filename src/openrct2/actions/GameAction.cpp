@@ -19,12 +19,11 @@
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../core/Util.hpp"
-#include "../network/network.h"
-#include "GameAction.h"
-
-#include "../platform/platform.h"
 #include "../localisation/Localisation.h"
+#include "../network/network.h"
+#include "../platform/platform.h"
 #include "../world/Park.h"
+#include "GameAction.h"
 
 GameActionResult::GameActionResult()
 {
@@ -88,6 +87,7 @@ namespace GameActions
                 result = factory();
             }
         }
+        Guard::ArgumentNotNull(result);
         return std::unique_ptr<GameAction>(result);
     }
 
