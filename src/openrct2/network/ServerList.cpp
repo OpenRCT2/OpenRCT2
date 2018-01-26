@@ -14,14 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <vector>
 #include "../core/FileStream.hpp"
+#include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../platform/platform.h"
 #include "ServerList.h"
 
-#include "../platform/platform.h"
-
-bool server_list_read(uint32 * outNumEntries, server_entry * * outEntries)
+std::vector<server_entry> server_list_read()
 {
     log_verbose("server_list_read(...)");
 
@@ -29,13 +30,12 @@ bool server_list_read(uint32 * outNumEntries, server_entry * * outEntries)
     platform_get_user_directory(path, nullptr, sizeof(path));
     Path::Append(path, sizeof(path), "servers.cfg");
 
-    uint32 numEntries = 0;
-    server_entry * entries = nullptr;
+    std::vector<server_entry> entries;
     try
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        numEntries = fs.ReadValue<uint32>();
-        entries = Memory::AllocateArray<server_entry>(numEntries);
+        auto numEntries = fs.ReadValue<uint32>();
+        entries.resize(numEntries);
 
         // Load each server entry
         for (uint32 i = 0; i < numEntries; i++)
@@ -53,19 +53,14 @@ bool server_list_read(uint32 * outNumEntries, server_entry * * outEntries)
     }
     catch (const std::exception &)
     {
-        Memory::FreeArray(entries, numEntries);
-        numEntries = 0;
-        entries = nullptr;
+        entries = std::vector<server_entry>();
     }
-
-    *outNumEntries = numEntries;
-    *outEntries = entries;
-    return entries != nullptr;
+    return entries;
 }
 
-bool server_list_write(uint32 numEntries, server_entry * entries)
+bool server_list_write(const std::vector<server_entry> &entries)
 {
-    log_verbose("server_list_write(%d, 0x%p)", numEntries, entries);
+    log_verbose("server_list_write(%d, 0x%p)", entries.size(), entries.data());
 
     utf8 path[MAX_PATH];
     platform_get_user_directory(path, nullptr, sizeof(path));
@@ -74,15 +69,14 @@ bool server_list_write(uint32 numEntries, server_entry * entries)
     try
     {
         auto fs = FileStream(path, FILE_MODE_WRITE);
-        fs.WriteValue<uint32>(numEntries);
+        fs.WriteValue<uint32>((uint32)entries.size());
 
         // Write each server entry
-        for (uint32 i = 0; i < numEntries; i++)
+        for (const auto &entry : entries)
         {
-            server_entry * serverInfo = &entries[i];
-            fs.WriteString(serverInfo->address);
-            fs.WriteString(serverInfo->name);
-            fs.WriteString(serverInfo->description);
+            fs.WriteString(entry.address);
+            fs.WriteString(entry.name);
+            fs.WriteString(entry.description);
         }
         return true;
     }
@@ -91,4 +85,3 @@ bool server_list_write(uint32 numEntries, server_entry * entries)
         return false;
     }
 }
-

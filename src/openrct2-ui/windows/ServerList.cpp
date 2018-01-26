@@ -15,7 +15,9 @@
 #pragma endregion
 
 #include <mutex>
+#include <vector>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/network/network.h>
 #include <openrct2/network/ServerList.h>
 #include <openrct2/Context.h>
@@ -35,8 +37,7 @@
 #define ITEM_HEIGHT (3 + 9 + 3)
 
 static char _playerName[32 + 1];
-static server_entry *_serverEntries = nullptr;
-static sint32 _numServerEntries = 0;
+static std::vector<server_entry> _serverEntries;
 static std::mutex _mutex;
 static uint32 _numPlayersOnline = 0;
 static rct_string_id status_text = STR_SERVER_LIST_CONNECTING;
@@ -119,13 +120,12 @@ enum {
 };
 
 static sint32 _hoverButtonIndex = -1;
-static char * _version = nullptr;
+static std::string _version;
 
 static void server_list_get_item_button(sint32 buttonIndex, sint32 x, sint32 y, sint32 width, sint32 *outX, sint32 *outY);
 static void server_list_load_server_entries();
 static void server_list_save_server_entries();
 static void dispose_server_entry_list();
-static void dispose_server_entry(server_entry *serverInfo);
 static server_entry* add_server_entry(char *address);
 static void remove_server_entry(sint32 index);
 static void sort_servers();
@@ -172,7 +172,7 @@ rct_window * window_server_list_open()
     safe_strcpy(_playerName, gConfigNetwork.player_name, sizeof(_playerName));
 
     server_list_load_server_entries();
-    window->no_list_items = _numServerEntries;
+    window->no_list_items = (uint16)_serverEntries.size();
 
     fetch_servers();
 
@@ -196,13 +196,13 @@ static void window_server_list_mouseup(rct_window *w, rct_widgetindex widgetInde
         break;
     case WIDX_LIST:{
         sint32 serverIndex = w->selected_list_item;
-        if (serverIndex >= 0 && serverIndex < _numServerEntries) {
-            if (strcmp(_serverEntries[serverIndex].version, NETWORK_STREAM_ID) != 0 && strcmp(_serverEntries[serverIndex].version, "") != 0) {
-                set_format_arg(0, void *, _serverEntries[serverIndex].version);
+        if (serverIndex >= 0 && serverIndex < _serverEntries.size()) {
+            if (_serverEntries[serverIndex].version != NETWORK_STREAM_ID && _serverEntries[serverIndex].version != "") {
+                set_format_arg(0, void *, _serverEntries[serverIndex].version.c_str());
                 context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
                 break;
             }
-            char *serverAddress = _serverEntries[serverIndex].address;
+            char *serverAddress = _strdup(_serverEntries[serverIndex].address.c_str());
             join_server(serverAddress);
         }
         }break;
@@ -227,14 +227,14 @@ static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetInd
 {
     sint32 serverIndex = w->selected_list_item;
     if (serverIndex < 0) return;
-    if (serverIndex >= _numServerEntries) return;
+    if (serverIndex >= _serverEntries.size()) return;
 
-    char *serverAddress = _serverEntries[serverIndex].address;
+    char *serverAddress = _strdup(_serverEntries[serverIndex].address.c_str());
 
     switch (dropdownIndex) {
     case DDIDX_JOIN:
-        if (strcmp(_serverEntries[serverIndex].version, NETWORK_STREAM_ID) != 0 && strcmp(_serverEntries[serverIndex].version, "") != 0) {
-            set_format_arg(0, void *, _serverEntries[serverIndex].version);
+        if (_serverEntries[serverIndex].version != NETWORK_STREAM_ID && _serverEntries[serverIndex].version != "") {
+            set_format_arg(0, void *, _serverEntries[serverIndex].version.c_str());
             context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
             break;
         }
@@ -268,7 +268,7 @@ static void window_server_list_scroll_mousedown(rct_window *w, sint32 scrollInde
 {
     sint32 serverIndex = w->selected_list_item;
     if (serverIndex < 0) return;
-    if (serverIndex >= _numServerEntries) return;
+    if (serverIndex >= _serverEntries.size()) return;
 
     rct_widget *listWidget = &w->widgets[WIDX_LIST];
     sint32 ddx = w->x + listWidget->left + x + 2 - w->scrolls[0].h_left;
@@ -362,7 +362,7 @@ static void window_server_list_textinput(rct_window *w, rct_widgetindex widgetIn
 
 static void window_server_list_invalidate(rct_window *w)
 {
-    set_format_arg(0, char *, _version);
+    set_format_arg(0, char *, _version.c_str());
     window_server_list_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_server_list_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
     window_server_list_widgets[WIDX_TITLE].right = w->width - 2;
@@ -386,7 +386,7 @@ static void window_server_list_invalidate(rct_window *w)
     window_server_list_widgets[WIDX_START_SERVER].top = buttonTop;
     window_server_list_widgets[WIDX_START_SERVER].bottom = buttonBottom;
 
-    w->no_list_items = _numServerEntries;
+    w->no_list_items = (uint16)_serverEntries.size();
 }
 
 static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -431,10 +431,10 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
         }
 
         // Draw server information
-        if (highlighted && !str_is_null_or_empty(serverDetails->description)) {
-            gfx_draw_string(dpi, serverDetails->description, colour, 3, y + 3);
+        if (highlighted && !serverDetails->description.empty()) {
+            gfx_draw_string(dpi, serverDetails->description.c_str(), colour, 3, y + 3);
         } else {
-            gfx_draw_string(dpi, serverDetails->name, colour, 3, y + 3);
+            gfx_draw_string(dpi, serverDetails->name.c_str(), colour, 3, y + 3);
         }
 
         sint32 right = width - 3 - 14;
@@ -442,12 +442,12 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
         // Draw compatibility icon
         right -= 10;
         sint32 compatibilitySpriteId;
-        if (str_is_null_or_empty(serverDetails->version)) {
+        if (serverDetails->version.empty()) {
             // Server not online...
             compatibilitySpriteId = SPR_G2_RCT1_CLOSE_BUTTON_0;
         } else {
             // Server online... check version
-            bool correctVersion = strcmp(serverDetails->version, NETWORK_STREAM_ID) == 0;
+            bool correctVersion = serverDetails->version == NETWORK_STREAM_ID;
             compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
         }
         gfx_draw_sprite(dpi, compatibilitySpriteId, right, y + 1, 0);
@@ -481,12 +481,10 @@ static void server_list_get_item_button(sint32 buttonIndex, sint32 x, sint32 y, 
 
 static void server_list_load_server_entries()
 {
-    uint32 numEntries;
-    server_entry * entries;
-    if (server_list_read(&numEntries, &entries)) {
+    auto entries = server_list_read();
+    {
         std::lock_guard<std::mutex> guard(_mutex);
         dispose_server_entry_list();
-        _numServerEntries = numEntries;
         _serverEntries = entries;
         sort_servers();
     }
@@ -496,7 +494,7 @@ static void server_list_save_server_entries()
 {
     // Get total number of favourite servers
     sint32 count = 0;
-    for (sint32 i = 0; i < _numServerEntries; i++) {
+    for (sint32 i = 0; i < _serverEntries.size(); i++) {
         server_entry *serverInfo = &_serverEntries[i];
         if (serverInfo->favourite) {
             count++;
@@ -506,7 +504,7 @@ static void server_list_save_server_entries()
     // Create temporary list of just favourite servers
     server_entry * entries = (server_entry *)calloc(count, sizeof(server_entry));
     sint32 eindex = 0;
-    for (sint32 i = 0; i < _numServerEntries; i++) {
+    for (sint32 i = 0; i < _serverEntries.size(); i++) {
         server_entry *serverInfo = &_serverEntries[i];
         if (serverInfo->favourite) {
             entries[eindex++] = *serverInfo;
@@ -514,7 +512,7 @@ static void server_list_save_server_entries()
     }
 
     // Save servers
-    server_list_write(count, entries);
+    server_list_write(_serverEntries);
 
     // Free temporary list
     free(entries);
@@ -522,60 +520,36 @@ static void server_list_save_server_entries()
 
 static void dispose_server_entry_list()
 {
-    if (_serverEntries != nullptr) {
-        for (sint32 i = 0; i < _numServerEntries; i++) {
-            dispose_server_entry(&_serverEntries[i]);
-        }
-        SafeFree(_serverEntries);
-    }
-    _numServerEntries = 0;
-}
-
-static void dispose_server_entry(server_entry *serverInfo)
-{
-    SafeFree(serverInfo->address);
-    SafeFree(serverInfo->name);
-    SafeFree(serverInfo->description);
-    SafeFree(serverInfo->version);
+    _serverEntries.clear();
+    _serverEntries.shrink_to_fit();
 }
 
 static server_entry* add_server_entry(char *address)
 {
-    for (sint32 i = 0; i < _numServerEntries; i++) {
-        if (strcmp(_serverEntries[i].address, address) == 0) {
+    for (sint32 i = 0; i < _serverEntries.size(); i++)
+    {
+        if (_serverEntries[i].address == address)
+        {
             return &_serverEntries[i];
         }
     }
 
-    _numServerEntries++;
-    if (_serverEntries == nullptr) {
-        _serverEntries = (server_entry *)malloc(_numServerEntries * sizeof(server_entry));
-    } else {
-        _serverEntries = (server_entry *)realloc(_serverEntries, _numServerEntries * sizeof(server_entry));
-    }
-
-    sint32 index = _numServerEntries - 1;
-    server_entry* newserver = &_serverEntries[index];
-    newserver->address = _strdup(address);
-    newserver->name = _strdup(address);
-    newserver->requiresPassword = false;
-    newserver->description = _strdup("");
-    newserver->version = _strdup("");
-    newserver->favourite = false;
-    newserver->players = 0;
-    newserver->maxplayers = 0;
-    return newserver;
+    server_entry newserver;
+    newserver.address = _strdup(address);
+    newserver.name = _strdup(address);
+    newserver.requiresPassword = false;
+    newserver.description = _strdup("");
+    newserver.version = _strdup("");
+    newserver.favourite = false;
+    newserver.players = 0;
+    newserver.maxplayers = 0;
+    _serverEntries.push_back(newserver);
+    return &_serverEntries.back();
 }
 
 static void remove_server_entry(sint32 index)
 {
-    if (_numServerEntries > index) {
-        sint32 serversToMove = _numServerEntries - index - 1;
-        memmove(&_serverEntries[index], &_serverEntries[index + 1], serversToMove * sizeof(server_entry));
-
-        _numServerEntries--;
-        _serverEntries = (server_entry *)realloc(_serverEntries, _numServerEntries * sizeof(server_entry));
-    }
+    _serverEntries.erase(_serverEntries.begin() + index);
 }
 
 static sint32 server_compare(const void *a, const void *b)
@@ -590,8 +564,8 @@ static sint32 server_compare(const void *a, const void *b)
     }
 
     // Then by version
-    bool serverACompatible = strcmp(serverA->version, NETWORK_STREAM_ID) == 0;
-    bool serverBCompatible = strcmp(serverB->version, NETWORK_STREAM_ID) == 0;
+    bool serverACompatible = serverA->version == NETWORK_STREAM_ID;
+    bool serverBCompatible = serverB->version == NETWORK_STREAM_ID;
     if (serverACompatible != serverBCompatible) {
         if (serverACompatible) return -1;
         else return 1;
@@ -604,15 +578,12 @@ static sint32 server_compare(const void *a, const void *b)
     }
 
     // Then by name
-    return _strcmpi(serverA->name, serverB->name);
+    return String::Equals(serverA->name, serverB->name, true);
 }
 
 static void sort_servers()
 {
-    if (_serverEntries == nullptr) {
-        return;
-    }
-    qsort(_serverEntries, _numServerEntries, sizeof(server_entry), server_compare);
+    qsort(_serverEntries.data(), _serverEntries.size(), sizeof(server_entry), server_compare);
 }
 
 static char *substr(char *start, sint32 length)
@@ -657,7 +628,7 @@ static void join_server(char *address)
 static uint32 get_total_player_count()
 {
     uint32 numPlayers = 0;
-    for (sint32 i = 0; i < _numServerEntries; i++) {
+    for (sint32 i = 0; i < _serverEntries.size(); i++) {
         server_entry *serverDetails = &_serverEntries[i];
         numPlayers += serverDetails->players;
     }
@@ -674,7 +645,7 @@ static void fetch_servers()
 
     {
         std::lock_guard<std::mutex> guard(_mutex);
-        for (sint32 i = 0; i < _numServerEntries; i++) {
+        for (sint32 i = 0; i < _serverEntries.size(); i++) {
             if (!_serverEntries[i].favourite) {
                 remove_server_entry(i);
                 i = 0;
@@ -760,13 +731,10 @@ static void fetch_servers_callback(http_response_t* response)
         {
             std::lock_guard<std::mutex> guard(_mutex);
             server_entry* newserver = add_server_entry(address);
-            SafeFree(newserver->name);
-            SafeFree(newserver->description);
-            SafeFree(newserver->version);
-            newserver->name = _strdup(json_string_value(name));
+            newserver->name = json_string_value(name);
             newserver->requiresPassword = json_is_true(requiresPassword);
-            newserver->description = _strdup(description == nullptr ? "" : json_string_value(description));
-            newserver->version = _strdup(json_string_value(version));
+            newserver->description = (description == nullptr ? "" : json_string_value(description));
+            newserver->version = json_string_value(version);
             newserver->players = (uint8)json_integer_value(players);
             newserver->maxplayers = (uint8)json_integer_value(maxPlayers);
         }
