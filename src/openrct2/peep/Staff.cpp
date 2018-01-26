@@ -794,6 +794,7 @@ sint32 staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z,
     default:
         return 0;
     }
+    return 0;
 }
 
 /**
