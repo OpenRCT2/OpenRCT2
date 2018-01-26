@@ -99,6 +99,8 @@ private:
             return DIRBASE::RCT1;
         case PATHID::SCORES_RCT2:
             return DIRBASE::RCT2;
+        case PATHID::CHANGELOG:
+            return DIRBASE::DOCUMENTATION;
         case PATHID::NETWORK_GROUPS:
         case PATHID::NETWORK_SERVERS:
         case PATHID::NETWORK_USERS:
@@ -134,6 +136,7 @@ IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment()
     basePaths[(size_t)DIRBASE::USER] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_DATA), subDirectory);
     basePaths[(size_t)DIRBASE::CONFIG] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_CONFIG), subDirectory);
     basePaths[(size_t)DIRBASE::CACHE] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_CACHE), subDirectory);
+    basePaths[(size_t)DIRBASE::DOCUMENTATION] = Platform::GetDocsPath();
 
     // Override paths that have been specified via the command line
     if (!String::IsNullOrEmpty(gCustomRCT2DataPath))
@@ -149,6 +152,11 @@ IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment()
         basePaths[(size_t)DIRBASE::USER] = gCustomUserDataPath;
         basePaths[(size_t)DIRBASE::CONFIG] = gCustomUserDataPath;
         basePaths[(size_t)DIRBASE::CACHE] = gCustomUserDataPath;
+    }
+
+    if (basePaths[(size_t)DIRBASE::DOCUMENTATION].empty())
+    {
+        basePaths[(size_t)DIRBASE::DOCUMENTATION] = basePaths[(size_t)DIRBASE::OPENRCT2];
     }
 
     auto env = OpenRCT2::CreatePlatformEnvironment(basePaths);
@@ -206,7 +214,7 @@ const char * PlatformEnvironment::DirectoryNamesOpenRCT2[] =
     "scenario",             // SCENARIO
     "screenshot",           // SCREENSHOT
     "sequence",             // SEQUENCE
-    "shader",               // SHADER
+    "shaders",              // SHADER
     "themes",               // THEME
     "track",                // TRACK
 };
@@ -225,5 +233,6 @@ const char * PlatformEnvironment::FileNames[] =
     "highscores.dat",       // SCORES
     "scores.dat",           // SCORES (LEGACY)
     "Saved Games" PATH_SEPARATOR "scores.dat",  // SCORES (RCT2)
+    "changelog.txt"         // CHANGELOG
 };
 // clang-format on

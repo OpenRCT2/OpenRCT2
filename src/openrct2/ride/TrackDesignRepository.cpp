@@ -49,7 +49,7 @@ enum TRACK_REPO_ITEM_FLAGS
     TRIF_READ_ONLY = (1 << 0),
 };
 
-static std::string GetNameFromTrackPath(const std::string &path)
+std::string GetNameFromTrackPath(const std::string &path)
 {
     std::string name = Path::GetFileNameWithoutExtension(path);
     //The track name should be the file name until the first instance of a dot
@@ -222,7 +222,7 @@ public:
      * @param entry The entry name to build a track list for. Leave empty to build track list for the non-separated types (e.g. Hyper-Twister, Car Ride)
      * @return
      */
-    size_t GetItemsForObjectEntry(track_design_file_ref * * outRefs, uint8 rideType, const std::string &entry) const override
+    std::vector<track_design_file_ref> GetItemsForObjectEntry(uint8 rideType, const std::string &entry) const override
     {
         std::vector<track_design_file_ref> refs;
         const IObjectRepository * repo = GetObjectRepository();
@@ -252,11 +252,10 @@ public:
             }
         }
 
-        *outRefs = Collections::ToArray(refs);
-        return refs.size();
+        return refs;
     }
 
-    size_t GetItemsForRideGroup(track_design_file_ref **outRefs, uint8 rideType, const RideGroup * rideGroup) const override
+    std::vector<track_design_file_ref> GetItemsForRideGroup(uint8 rideType, const RideGroup * rideGroup) const override
     {
         std::vector<track_design_file_ref> refs;
         const IObjectRepository * repo = GetObjectRepository();
@@ -281,8 +280,7 @@ public:
             }
         }
 
-        *outRefs = Collections::ToArray(refs);
-        return refs.size();
+        return refs;
     }
 
     void Scan() override
@@ -418,18 +416,6 @@ extern "C"
         repo->Scan();
     }
 
-    size_t track_repository_get_items_for_ride(track_design_file_ref * * outRefs, uint8 rideType, const utf8 * entry)
-    {
-        ITrackDesignRepository * repo = GetTrackDesignRepository();
-        return repo->GetItemsForObjectEntry(outRefs, rideType, String::ToStd(entry));
-    }
-
-    size_t track_repository_get_items_for_ride_group(track_design_file_ref * * outRefs, uint8 rideType, const RideGroup * rideGroup)
-    {
-        ITrackDesignRepository * repo = GetTrackDesignRepository();
-        return repo->GetItemsForRideGroup(outRefs, rideType, rideGroup);
-    }
-
     bool track_repository_delete(const utf8 * path)
     {
         ITrackDesignRepository * repo = GetTrackDesignRepository();
@@ -448,10 +434,5 @@ extern "C"
         ITrackDesignRepository * repo = GetTrackDesignRepository();
         std::string newPath = repo->Install(srcPath);
         return !newPath.empty();
-    }
-
-    utf8 * track_repository_get_name_from_path(const utf8 * path)
-    {
-        return String::Duplicate(GetNameFromTrackPath(path));
     }
 }

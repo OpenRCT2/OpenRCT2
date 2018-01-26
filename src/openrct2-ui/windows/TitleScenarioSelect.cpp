@@ -14,42 +14,45 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <openrct2/config/Config.h>
-#include <openrct2/scenario/ScenarioRepository.h>
-#include <openrct2/scenario/ScenarioSources.h>
-#include <openrct2/core/Memory.hpp>
-#include <openrct2-ui/windows/Window.h>
-
+#include <vector>
 #include <openrct2/audio/audio.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/interface/themes.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/scenario/ScenarioRepository.h>
+#include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/sprites.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2/interface/themes.h>
 #include <openrct2/util/Util.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
 
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
 
-enum {
-    LIST_ITEM_TYPE_HEADING,
-    LIST_ITEM_TYPE_SCENARIO,
-    LIST_ITEM_TYPE_END,
+enum class LIST_ITEM_TYPE : uint8
+{
+    HEADING,
+    SCENARIO,
 };
 
-typedef struct sc_list_item {
-    uint8 type;
-    union {
-        struct {
+struct sc_list_item
+{
+    LIST_ITEM_TYPE type;
+    union
+    {
+        struct
+        {
             rct_string_id string_id;
         } heading;
-        struct {
-            const scenario_index_entry *scenario;
+        struct
+        {
+            const scenario_index_entry * scenario;
             bool is_locked;
         } scenario;
     };
-} sc_list_item;
+};
 
-static sc_list_item *_listItems = nullptr;
+static std::vector<sc_list_item> _listItems;
 
 enum {
     WIDX_BACKGROUND,
@@ -250,7 +253,8 @@ static void window_scenarioselect_init_tabs(rct_window *w)
 
 static void window_scenarioselect_close(rct_window *w)
 {
-    SafeFree(_listItems);
+    _listItems.clear();
+    _listItems.shrink_to_fit();
 }
 
 static void window_scenarioselect_mouseup(rct_window *w, rct_widgetindex widgetIndex)
@@ -277,12 +281,14 @@ static void window_scenarioselect_mousedown(rct_window *w, rct_widgetindex widge
 static void window_scenarioselect_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
     sint32 y = 0;
-    for (sc_list_item *listItem = _listItems; listItem->type != LIST_ITEM_TYPE_END; listItem++) {
-        switch (listItem->type) {
-        case LIST_ITEM_TYPE_HEADING:
+    for (const auto &listItem : _listItems)
+    {
+        switch (listItem.type)
+        {
+        case LIST_ITEM_TYPE::HEADING:
             y += 18;
             break;
-        case LIST_ITEM_TYPE_SCENARIO:
+        case LIST_ITEM_TYPE::SCENARIO:
             y += 24;
             break;
         }
@@ -296,17 +302,19 @@ static void window_scenarioselect_scrollgetsize(rct_window *w, sint32 scrollInde
  */
 static void window_scenarioselect_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-    for (sc_list_item *listItem = _listItems; listItem->type != LIST_ITEM_TYPE_END; listItem++) {
-        switch (listItem->type) {
-        case LIST_ITEM_TYPE_HEADING:
+    for (const auto &listItem : _listItems)
+    {
+        switch (listItem.type)
+        {
+        case LIST_ITEM_TYPE::HEADING:
             y -= 18;
             break;
-        case LIST_ITEM_TYPE_SCENARIO:
+        case LIST_ITEM_TYPE::SCENARIO:
             y -= 24;
-            if (y < 0 && !listItem->scenario.is_locked) {
+            if (y < 0 && !listItem.scenario.is_locked) {
                 audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
                 gFirstTimeSaving = true;
-                _callback(listItem->scenario.scenario->path);
+                _callback(listItem.scenario.scenario->path);
                 if (_titleEditor)
                 {
                     window_close(w);
@@ -329,18 +337,20 @@ static void window_scenarioselect_scrollmouseover(rct_window *w, sint32 scrollIn
     bool originalShowLockedInformation = _showLockedInformation;
     _showLockedInformation = false;
     const scenario_index_entry *selected = nullptr;
-    for (sc_list_item *listItem = _listItems; listItem->type != LIST_ITEM_TYPE_END; listItem++) {
-        switch (listItem->type) {
-        case LIST_ITEM_TYPE_HEADING:
+    for (const auto &listItem : _listItems)
+    {
+        switch (listItem.type)
+        {
+        case LIST_ITEM_TYPE::HEADING:
             y -= 18;
             break;
-        case LIST_ITEM_TYPE_SCENARIO:
+        case LIST_ITEM_TYPE::SCENARIO:
             y -= 24;
             if (y < 0) {
-                if (listItem->scenario.is_locked) {
+                if (listItem.scenario.is_locked) {
                     _showLockedInformation = true;
                 } else {
-                    selected = listItem->scenario.scenario;
+                    selected = listItem.scenario.scenario;
                 }
             }
             break;
@@ -483,30 +493,32 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
     sint32 listWidth = listWidget->right - listWidget->left - 12;
 
     sint32 y = 0;
-    for (sc_list_item *listItem = _listItems; listItem->type != LIST_ITEM_TYPE_END; listItem++) {
+    for (const auto &listItem : _listItems)
+    {
         if (y > dpi->y + dpi->height) {
             continue;
         }
 
-        switch (listItem->type) {
-        case LIST_ITEM_TYPE_HEADING:
+        switch (listItem.type)
+        {
+        case LIST_ITEM_TYPE::HEADING:
         {
             const sint32 horizontalRuleMargin = 4;
-            draw_category_heading(w, dpi, horizontalRuleMargin, listWidth - horizontalRuleMargin, y + 2, listItem->heading.string_id);
+            draw_category_heading(w, dpi, horizontalRuleMargin, listWidth - horizontalRuleMargin, y + 2, listItem.heading.string_id);
             y += 18;
             break;
         }
-        case LIST_ITEM_TYPE_SCENARIO:
+        case LIST_ITEM_TYPE::SCENARIO:
         {
             // Draw hover highlight
-            const scenario_index_entry *scenario = listItem->scenario.scenario;
+            const scenario_index_entry *scenario = listItem.scenario.scenario;
             bool isHighlighted = w->highlighted_scenario == scenario;
             if (isHighlighted) {
                 gfx_filter_rect(dpi, 0, y, w->width, y + 23, PALETTE_DARKEN_1);
             }
 
             bool isCompleted = scenario->highscore != nullptr;
-            bool isDisabled = listItem->scenario.is_locked;
+            bool isDisabled = listItem.scenario.is_locked;
 
             // Draw scenario name
             char buffer[64];
@@ -574,12 +586,8 @@ static void draw_category_heading(rct_window *w, rct_drawpixelinfo *dpi, sint32 
 
 static void initialise_list_items(rct_window *w)
 {
-    SafeFree(_listItems);
-
     size_t numScenarios = scenario_repository_get_count();
-    size_t capacity = numScenarios + 16;
-    size_t length = 0;
-    _listItems = Memory::AllocateArray<sc_list_item>(capacity);
+    _listItems.clear();
 
     // Mega park unlock
     const uint32 rct1RequiredCompletedScenarios = (1 << SC_MEGA_PARK) - 1;
@@ -595,8 +603,6 @@ static void initialise_list_items(rct_window *w)
             continue;
         if (_titleEditor && scenario->source_game == SCENARIO_SOURCE_OTHER)
             continue;
-
-        sc_list_item *listItem;
 
         // Category heading
         rct_string_id headingStringId = STR_NONE;
@@ -623,70 +629,69 @@ static void initialise_list_items(rct_window *w)
             }
         }
 
-        if (headingStringId != STR_NONE) {
-            // Ensure list capacity
-            if (length == capacity) {
-                capacity += 32;
-                _listItems = Memory::ReallocateArray(_listItems, capacity);
-            }
-            listItem = &_listItems[length++];
-
-            listItem->type = LIST_ITEM_TYPE_HEADING;
-            listItem->heading.string_id = headingStringId;
+        if (headingStringId != STR_NONE)
+        {
+            sc_list_item headerItem;
+            headerItem.type = LIST_ITEM_TYPE::HEADING;
+            headerItem.heading.string_id = headingStringId;
+            _listItems.push_back(std::move(headerItem));
         }
-
-        // Ensure list capacity
-        if (length == capacity) {
-            capacity += 32;
-            _listItems = Memory::ReallocateArray(_listItems, capacity);
-        }
-        listItem = &_listItems[length++];
 
         // Scenario
-        listItem->type = LIST_ITEM_TYPE_SCENARIO;
-        listItem->scenario.scenario = scenario;
-        if (is_locking_enabled(w)) {
-            listItem->scenario.is_locked = numUnlocks <= 0;
-            if (scenario->highscore == nullptr) {
+        sc_list_item scenarioItem;
+        scenarioItem.type = LIST_ITEM_TYPE::SCENARIO;
+        scenarioItem.scenario.scenario = scenario;
+        if (is_locking_enabled(w))
+        {
+            scenarioItem.scenario.is_locked = numUnlocks <= 0;
+            if (scenario->highscore == nullptr)
+            {
                 numUnlocks--;
-            } else {
+            }
+            else
+            {
                 // Mark RCT1 scenario as completed
-                if (scenario->sc_id < SC_MEGA_PARK) {
+                if (scenario->sc_id < SC_MEGA_PARK)
+                {
                     rct1CompletedScenarios |= 1 << scenario->sc_id;
                 }
             }
 
             // If scenario is Mega Park, keep a reference to it
-            if (scenario->sc_id == SC_MEGA_PARK) {
-                megaParkListItemIndex = length - 1;
+            if (scenario->sc_id == SC_MEGA_PARK)
+            {
+                megaParkListItemIndex = _listItems.size() - 1;
             }
-        } else {
-            listItem->scenario.is_locked = false;
         }
+        else
+        {
+            scenarioItem.scenario.is_locked = false;
+        }
+        _listItems.push_back(std::move(scenarioItem));
     }
 
-    length++;
-    _listItems = Memory::ReallocateArray(_listItems, capacity);
-    _listItems[length - 1].type = LIST_ITEM_TYPE_END;
-
     // Mega park handling
-    if (megaParkListItemIndex != SIZE_MAX) {
+    if (megaParkListItemIndex != SIZE_MAX)
+    {
         bool megaParkLocked = (rct1CompletedScenarios & rct1RequiredCompletedScenarios) != rct1RequiredCompletedScenarios;
         _listItems[megaParkListItemIndex].scenario.is_locked = megaParkLocked;
-        if (megaParkLocked && gConfigGeneral.scenario_hide_mega_park) {
+        if (megaParkLocked && gConfigGeneral.scenario_hide_mega_park)
+        {
             // Remove mega park
-            size_t remainingItems = length - megaParkListItemIndex - 1;
-            memmove(&_listItems[megaParkListItemIndex], &_listItems[megaParkListItemIndex + 1], remainingItems);
+            _listItems.pop_back();
 
             // Remove empty headings
-            sint32 i = 0;
-            for (sc_list_item *listItem = _listItems; listItem->type != LIST_ITEM_TYPE_END; listItem++) {
-                if (listItem->type == LIST_ITEM_TYPE_HEADING && (listItem + 1)->type != LIST_ITEM_TYPE_SCENARIO) {
-                    remainingItems = length - i - 1;
-                    memmove(&_listItems[i], &_listItems[i + 1], remainingItems);
-                    listItem--;
-                } else {
-                    i++;
+            for (auto it = _listItems.begin(); it != _listItems.end(); it++)
+            {
+                const auto &listItem = *it;
+                if (listItem.type == LIST_ITEM_TYPE::HEADING)
+                {
+                    if ((it + 1) == _listItems.end() ||
+                        (it + 1)->type == LIST_ITEM_TYPE::HEADING)
+                    {
+                        _listItems.erase(it);
+                        it--;
+                    }
                 }
             }
         }

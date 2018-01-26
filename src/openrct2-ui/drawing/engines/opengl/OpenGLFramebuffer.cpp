@@ -16,9 +16,10 @@
 
 #ifndef DISABLE_OPENGL
 
+#include <algorithm>
+#include <memory>
 #include <openrct2/common.h>
 #include <SDL_video.h>
-#include <openrct2/core/Memory.hpp>
 #include "OpenGLFramebuffer.h"
 
 constexpr GLuint BACKBUFFER_ID = 0;
@@ -94,21 +95,20 @@ void OpenGLFramebuffer::GetPixels(rct_drawpixelinfo &dpi) const
 {
     assert(dpi.width == _width && dpi.height == _height);
 
-    uint8 * pixels = Memory::Allocate<uint8>(_width * _height);
+    auto pixels = std::make_unique<uint8[]>(_width * _height);
     glBindTexture(GL_TEXTURE_2D, _texture);
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    glGetTexImage(GL_TEXTURE_2D, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, pixels);
+    glGetTexImage(GL_TEXTURE_2D, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, pixels.get());
 
     // Flip pixels vertically on copy
-    uint8 * src = pixels + ((_height - 1) * _width);
+    uint8 * src = pixels.get() + ((_height - 1) * _width);
     uint8 * dst = dpi.bits;
     for (sint32 y = 0; y < _height; y++)
     {
-        Memory::Copy(dst, src, _width);
+        std::copy_n(src, _width, dst);
         src -= _width;
         dst += dpi.width + dpi.pitch;
     }
-    Memory::Free(pixels);
 }
 
 void OpenGLFramebuffer::SwapColourBuffer(OpenGLFramebuffer &other)

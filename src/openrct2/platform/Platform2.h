@@ -36,6 +36,7 @@ namespace Platform
     std::string GetEnvironmentVariable(const std::string &name);
     std::string GetFolderPath(SPECIAL_FOLDER folder);
     std::string GetInstallPath();
+    std::string GetDocsPath();
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
     std::string GetEnvironmentPath(const char * name);

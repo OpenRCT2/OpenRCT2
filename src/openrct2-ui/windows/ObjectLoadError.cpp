@@ -14,13 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <openrct2-ui/windows/Window.h>
-
-#include <openrct2/core/Memory.hpp>
-#include <openrct2-ui/interface/Widget.h>
+#include <string>
+#include <vector>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/platform/platform.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
 
 enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -96,9 +96,9 @@ static rct_window_event_list window_object_load_error_events = {
     window_object_load_error_scrollpaint
 };
 
-static rct_object_entry * _invalid_entries = nullptr;
+static std::vector<rct_object_entry> _invalid_entries;
 static sint32 highlighted_index = -1;
-static utf8 * file_path = nullptr;
+static std::string file_path;
 
 /**
 *  Returns an rct_string_id that represents an rct_object_entry's type.
@@ -187,9 +187,7 @@ static void copy_object_names_to_clipboard(rct_window *w)
 
 rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects, const rct_object_entry * missingObjects)
 {
-    size_t missingObjectsSize = numMissingObjects * sizeof(rct_object_entry);
-    _invalid_entries = Memory::AllocateArray<rct_object_entry>(numMissingObjects);
-    memcpy(_invalid_entries, missingObjects, missingObjectsSize);
+    _invalid_entries = std::vector<rct_object_entry>(missingObjects, missingObjects + numMissingObjects);
 
     // Check if window is already open
     rct_window * window = window_bring_to_front_by_class(WC_OBJECT_LOAD_ERROR);
@@ -213,7 +211,7 @@ rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects
 
     // Refresh list items and path
     window->no_list_items = (uint16)numMissingObjects;
-    file_path = strndup(path, strnlen(path, MAX_PATH));
+    file_path = path;
 
     window_invalidate(window);
     return window;
@@ -221,7 +219,8 @@ rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects
 
 static void window_object_load_error_close(rct_window *w)
 {
-    SafeFree(_invalid_entries);
+    _invalid_entries.clear();
+    _invalid_entries.shrink_to_fit();
 }
 
 static void window_object_load_error_update(rct_window *w)
@@ -303,7 +302,7 @@ static void window_object_load_error_paint(rct_window *w, rct_drawpixelinfo *dpi
 
     // Draw file name
     set_format_arg(0, rct_string_id, STR_OBJECT_ERROR_WINDOW_FILE);
-    set_format_arg(2, utf8*, file_path);
+    set_format_arg(2, utf8*, file_path.c_str());
     gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, w->x + 5, w->y + 43, WW-5);
 }
 

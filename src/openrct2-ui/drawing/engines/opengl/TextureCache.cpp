@@ -16,12 +16,11 @@
 
 #ifndef DISABLE_OPENGL
 
-#include <vector>
+#include <algorithm>
 #include <stdexcept>
-#include <openrct2/core/Memory.hpp>
-#include "TextureCache.h"
-
+#include <vector>
 #include <openrct2/drawing/Drawing.h>
+#include "TextureCache.h"
 
 constexpr uint32 UNUSED_INDEX = 0xFFFFFFFF;
 
@@ -95,7 +94,7 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32 image, uint8 * palet
 {
     GlyphId glyphId;
     glyphId.Image = image;
-    Memory::Copy<void>(&glyphId.Palette, palette, sizeof(glyphId.Palette));
+    std::copy_n(palette, sizeof(glyphId.Palette), (uint8 *)&glyphId.Palette);
 
     auto kvp = _glyphTextureMap.find(glyphId);
     if (kvp != _glyphTextureMap.end())
@@ -290,8 +289,8 @@ void TextureCache::FreeTextures()
 rct_drawpixelinfo TextureCache::CreateDPI(sint32 width, sint32 height)
 {
     size_t numPixels = width * height;
-    uint8 * pixels8 = Memory::Allocate<uint8>(numPixels);
-    Memory::Set(pixels8, 0, numPixels);
+    auto pixels8 = new uint8[numPixels];
+    std::fill_n(pixels8, numPixels, 0);
 
     rct_drawpixelinfo dpi;
     dpi.bits = pixels8;
@@ -306,7 +305,7 @@ rct_drawpixelinfo TextureCache::CreateDPI(sint32 width, sint32 height)
 
 void TextureCache::DeleteDPI(rct_drawpixelinfo dpi)
 {
-    Memory::Free(dpi.bits);
+    delete dpi.bits;
 }
 
 GLuint TextureCache::GetAtlasesTexture()

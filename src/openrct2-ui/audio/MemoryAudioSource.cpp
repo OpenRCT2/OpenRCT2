@@ -14,10 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
+#include <vector>
 #include <openrct2/common.h>
 #include <SDL.h>
 #include <openrct2/core/Math.hpp>
-#include <openrct2/core/Memory.hpp>
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/audio/AudioSource.h>
 #include "AudioContext.h"
@@ -32,10 +33,15 @@ namespace OpenRCT2 { namespace Audio
     class MemoryAudioSource final : public ISDLAudioSource
     {
     private:
-        AudioFormat _format = { 0 };
-        uint8 *     _data = nullptr;
-        size_t      _length = 0;
-        bool        _isSDLWav = false;
+        AudioFormat         _format = { 0 };
+        std::vector<uint8>  _data;
+        uint8 *             _dataSDL = nullptr;
+        size_t              _length = 0;
+
+        const uint8 * GetData()
+        {
+            return _dataSDL != nullptr ? _dataSDL : _data.data();
+        }
 
     public:
         ~MemoryAudioSource()
@@ -59,7 +65,12 @@ namespace OpenRCT2 { namespace Audio
             if (offset < _length)
             {
                 bytesToRead = (size_t)Math::Min<uint64>(len, _length - offset);
-                Memory::Copy<void>(dst, _data + offset, bytesToRead);
+
+                auto src = GetData();
+                if (src != nullptr)
+                {
+                    std::copy_n(src + offset, bytesToRead, (uint8 *)dst);
+                }
             }
             return bytesToRead;
         }
@@ -76,14 +87,13 @@ namespace OpenRCT2 { namespace Audio
             {
                 SDL_AudioSpec audiospec = { 0 };
                 uint32 audioLen;
-                SDL_AudioSpec * spec = SDL_LoadWAV_RW(rw, false, &audiospec, &_data, &audioLen);
+                SDL_AudioSpec * spec = SDL_LoadWAV_RW(rw, false, &audiospec, &_dataSDL, &audioLen);
                 if (spec != nullptr)
                 {
                     _format.freq = spec->freq;
                     _format.format = spec->format;
                     _format.channels = spec->channels;
                     _length = audioLen;
-                    _isSDLWav = true;
                     result = true;
                 }
                 else
@@ -129,13 +139,13 @@ namespace OpenRCT2 { namespace Audio
                     _format.format = AUDIO_S16LSB;
                     _format.channels = waveFormat.channels;
 
-                    _data = new (std::nothrow) uint8[_length];
-                    if (_data != nullptr)
+                    try
                     {
-                        SDL_RWread(rw, _data, _length, 1);
+                        _data.resize(_length);
+                        SDL_RWread(rw, _data.data(), _length, 1);
                         result = true;
                     }
-                    else
+                    catch (const std::bad_alloc &)
                     {
                         log_verbose("Unable to allocate data");
                     }
@@ -156,20 +166,20 @@ namespace OpenRCT2 { namespace Audio
                 SDL_AudioCVT cvt;
                 if (SDL_BuildAudioCVT(&cvt, _format.format, _format.channels, _format.freq, format->format, format->channels, format->freq) >= 0)
                 {
+                    auto src = GetData();
+                    auto cvtBuffer = std::vector<uint8>(_length * cvt.len_mult);
+                    std::copy_n(src, _length, cvtBuffer.data());
                     cvt.len = (sint32)_length;
-                    cvt.buf = new uint8[cvt.len * cvt.len_mult];
-                    Memory::Copy(cvt.buf, _data, _length);
+                    cvt.buf = cvtBuffer.data();
                     if (SDL_ConvertAudio(&cvt) >= 0)
                     {
+                        cvtBuffer.resize(cvt.len_cvt);
+
                         Unload();
-                        _data = cvt.buf;
+                        _data = std::move(cvtBuffer);
                         _length = cvt.len_cvt;
                         _format = *format;
                         return true;
-                    }
-                    else
-                    {
-                        delete[] cvt.buf;
                     }
                 }
             }
@@ -179,19 +189,14 @@ namespace OpenRCT2 { namespace Audio
     private:
         void Unload()
         {
-            if (_data != nullptr)
-            {
-                if (_isSDLWav)
-                {
-                    SDL_FreeWAV(_data);
-                }
-                else
-                {
-                    delete[] _data;
-                }
-                _data = nullptr;
-            }
-            _isSDLWav = false;
+            // Free our data
+            _data.clear();
+            _data.shrink_to_fit();
+
+            // Free SDL2's data
+            SDL_FreeWAV(_dataSDL);
+            _dataSDL = nullptr;
+
             _length = 0;
         }
     };

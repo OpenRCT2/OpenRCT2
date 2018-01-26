@@ -16,33 +16,29 @@
 
 #ifndef DISABLE_OPENGL
 
+#include <algorithm>
 #include <cmath>
 #include <unordered_map>
 #include <SDL.h>
-
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>
-#include <openrct2/core/Math.hpp>
-#include <openrct2/core/Memory.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/IDrawingContext.h>
 #include <openrct2/drawing/IDrawingEngine.h>
+#include <openrct2/drawing/LightFX.h>
 #include <openrct2/drawing/Rain.h>
 #include <openrct2/interface/Screenshot.h>
-#include <openrct2/ui/UiContext.h>
-
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2/Intro.h>
-#include <openrct2/drawing/Drawing.h>
-#include <openrct2/drawing/LightFX.h>
-
+#include <openrct2-ui/interface/Window.h>
+#include <openrct2/ui/UiContext.h>
 #include "../DrawingEngines.h"
-#include "GLSLTypes.h"
-#include "OpenGLAPI.h"
-#include "OpenGLFramebuffer.h"
 #include "ApplyPaletteShader.h"
 #include "DrawCommands.h"
 #include "DrawLineShader.h"
 #include "DrawRectShader.h"
+#include "GLSLTypes.h"
+#include "OpenGLAPI.h"
+#include "OpenGLFramebuffer.h"
 #include "SwapFramebuffer.h"
 #include "TextureCache.h"
 #include "TransparencyDepth.h"
@@ -346,27 +342,27 @@ private:
         uint8 * newBits = new uint8[newBitsSize];
         if (_bits == nullptr)
         {
-            Memory::Set(newBits, 0, newBitsSize);
+            std::fill_n(newBits, newBitsSize, 0);
         }
         else
         {
             if (_pitch == pitch)
             {
-                Memory::Copy(newBits, _bits, Math::Min(_bitsSize, newBitsSize));
+                std::copy_n(_bits, std::min(_bitsSize, newBitsSize), newBits);
             }
             else
             {
                 uint8 * src = _bits;
                 uint8 * dst = newBits;
 
-                uint32 minWidth = Math::Min(_width, width);
-                uint32 minHeight = Math::Min(_height, height);
+                uint32 minWidth = std::min(_width, width);
+                uint32 minHeight = std::min(_height, height);
                 for (uint32 y = 0; y < minHeight; y++)
                 {
-                    Memory::Copy(dst, src, minWidth);
+                    std::copy_n(src, minWidth, dst);
                     if (pitch - minWidth > 0)
                     {
-                        Memory::Set(dst + minWidth, 0, pitch - minWidth);
+                        std::fill_n(dst + minWidth, pitch - minWidth, 0);
                     }
                     src += _pitch;
                     dst += pitch;
@@ -716,8 +712,8 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
 
     sint32 drawOffsetX = g1ElementMask->x_offset;
     sint32 drawOffsetY = g1ElementMask->y_offset;
-    sint32 drawWidth = Math::Min(g1ElementMask->width, g1ElementColour->width);
-    sint32 drawHeight = Math::Min(g1ElementMask->height, g1ElementColour->height);
+    sint32 drawWidth = std::min(g1ElementMask->width, g1ElementColour->width);
+    sint32 drawHeight = std::min(g1ElementMask->height, g1ElementColour->height);
 
     sint32 left = x + drawOffsetX;
     sint32 top = y + drawOffsetY;

@@ -141,7 +141,7 @@ static rct_window_event_list window_title_command_editor_events = {
     nullptr,
     nullptr,
     nullptr,
-	window_title_command_editor_tool_down,
+    window_title_command_editor_tool_down,
     nullptr,
     nullptr,
     nullptr,

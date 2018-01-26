@@ -147,6 +147,11 @@ namespace Platform
         return path;
     }
 
+    std::string GetDocsPath()
+    {
+        return std::string();
+    }
+
     static SYSTEMTIME TimeToSystemTime(std::time_t timestamp)
     {
         LONGLONG ll = Int32x32To64(timestamp, 10000000) + 116444736000000000;

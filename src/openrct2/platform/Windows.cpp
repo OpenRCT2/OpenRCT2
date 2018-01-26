@@ -244,12 +244,6 @@ void platform_get_openrct_data_path(utf8 *outPath, size_t outSize)
     safe_strcpy(outPath, _openrctDataDirectoryPath, outSize);
 }
 
-void platform_get_changelog_path(utf8 *outPath, size_t outSize)
-{
-    safe_strcpy(outPath, gExePath, outSize);
-    safe_strcat_path(outPath, "changelog.txt", outSize);
-}
-
 bool platform_get_steam_path(utf8 * outPath, size_t outSize)
 {
     wchar_t * wSteamPath;

@@ -16,28 +16,27 @@
 
 #ifndef DISABLE_OPENGL
 
+#include <openrct2/Context.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/FileStream.hpp>
-#include <openrct2/core/Memory.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/PlatformEnvironment.h>
 #include "OpenGLShaderProgram.h"
 
-#include <openrct2/platform/platform.h>
+using namespace OpenRCT2;
 
 OpenGLShader::OpenGLShader(const char * name, GLenum type)
 {
     _type = type;
 
-    utf8 path[MAX_PATH];
-    GetPath(path, sizeof(path), name);
-    char * sourceCode = ReadSourceCode(path);
+    auto path = GetPath(name);
+    auto sourceCode = ReadSourceCode(path);
+    auto sourceCodeStr = sourceCode.c_str();
 
     _id = glCreateShader(type);
-    glShaderSource(_id, 1, (const GLchar**)&sourceCode, nullptr);
+    glShaderSource(_id, 1, (const GLchar * *)&sourceCodeStr, nullptr);
     glCompileShader(_id);
-
-    Memory::Free(sourceCode);
 
     GLint status;
     glGetShaderiv(_id, GL_COMPILE_STATUS, &status);
@@ -47,7 +46,7 @@ OpenGLShader::OpenGLShader(const char * name, GLenum type)
         glGetShaderInfoLog(_id, sizeof(buffer), nullptr, buffer);
         glDeleteShader(_id);
 
-        Console::Error::WriteLine("Error compiling %s", path);
+        Console::Error::WriteLine("Error compiling %s", path.c_str());
         Console::Error::WriteLine(buffer);
 
         throw std::runtime_error("Error compiling shader.");
@@ -64,22 +63,23 @@ GLuint OpenGLShader::GetShaderId()
     return _id;
 }
 
-void OpenGLShader::GetPath(char * buffer, size_t bufferSize, const char * name)
+std::string OpenGLShader::GetPath(const std::string &name)
 {
-    platform_get_openrct_data_path(buffer, bufferSize);
-    Path::Append(buffer, bufferSize, "shaders");
-    Path::Append(buffer, bufferSize, name);
+    auto env = GetContext()->GetPlatformEnvironment();
+    auto shadersPath = env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::SHADER);
+    auto path = Path::Combine(shadersPath, name);
     if (_type == GL_VERTEX_SHADER)
     {
-        String::Append(buffer, bufferSize, ".vert");
+        path += ".vert";
     }
     else
     {
-        String::Append(buffer, bufferSize, ".frag");
+        path += ".frag";
     }
+    return path;
 }
 
-char * OpenGLShader::ReadSourceCode(const utf8 * path)
+std::string OpenGLShader::ReadSourceCode(const std::string &path)
 {
     auto fs = FileStream(path, FILE_MODE_OPEN);
 
@@ -89,9 +89,8 @@ char * OpenGLShader::ReadSourceCode(const utf8 * path)
         throw IOException("Shader source too large.");
     }
 
-    utf8 * fileData = Memory::Allocate<utf8>((size_t)fileLength + 1);
-    fs.Read(fileData, fileLength);
-    fileData[fileLength] = '\0';
+    auto fileData = std::string((size_t)fileLength + 1, '\0');
+    fs.Read((void *)fileData.data(), fileLength);
     return fileData;
 }
 

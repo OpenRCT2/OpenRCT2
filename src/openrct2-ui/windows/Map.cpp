@@ -14,24 +14,24 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <openrct2/OpenRCT2.h>
-#include <openrct2/core/Math.hpp>
-#include <openrct2/core/Util.hpp>
-#include <openrct2/core/Memory.hpp>
-#include <openrct2/Context.h>
+#include <algorithm>
+#include <vector>
 #include <openrct2/audio/audio.h>
 #include <openrct2/Cheats.h>
+#include <openrct2/Context.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/core/Util.hpp>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
-#include <openrct2-ui/interface/Viewport.h>
-#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
-
 #include <openrct2-ui/interface/LandTool.h>
+#include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 
 #define MAP_COLOUR_2(colourA, colourB) ((colourA << 8) | colourB)
@@ -175,7 +175,7 @@ static uint8 _activeTool;
 static uint32 _currentLine;
 
 /** rct2: 0x00F1AD68 */
-static uint8 (*_mapImageData)[MAP_WINDOW_MAP_SIZE][MAP_WINDOW_MAP_SIZE];
+static std::vector<uint8> _mapImageData;
 
 static sint32 _nextPeepSpawnIndex = 0;
 
@@ -217,8 +217,12 @@ rct_window * window_map_open()
         return w;
     }
 
-    _mapImageData = Memory::Allocate<uint8[MAP_WINDOW_MAP_SIZE][MAP_WINDOW_MAP_SIZE]>();
-    if (_mapImageData == nullptr) {
+    try
+    {
+        _mapImageData.resize(MAP_WINDOW_MAP_SIZE * MAP_WINDOW_MAP_SIZE);
+    }
+    catch (const std::bad_alloc &)
+    {
         return nullptr;
     }
 
@@ -284,7 +288,8 @@ void window_map_reset()
 */
 static void window_map_close(rct_window *w)
 {
-    free(_mapImageData);
+    _mapImageData.clear();
+    _mapImageData.shrink_to_fit();
     if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) &&
         gCurrentToolWidget.window_classification == w->classification &&
         gCurrentToolWidget.window_number == w->number) {
@@ -889,7 +894,7 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
     gfx_clear(dpi, PALETTE_INDEX_10);
 
     rct_g1_element g1temp = { nullptr };
-    g1temp.offset = (uint8 *)_mapImageData;
+    g1temp.offset = _mapImageData.data();
     g1temp.width = MAP_WINDOW_MAP_SIZE;
     g1temp.height = MAP_WINDOW_MAP_SIZE;
     g1temp.x_offset = -8;
@@ -914,7 +919,7 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
  */
 static void window_map_init_map()
 {
-    memset(_mapImageData, PALETTE_INDEX_10, sizeof(*_mapImageData));
+    std::fill(_mapImageData.begin(), _mapImageData.end(), PALETTE_INDEX_10);
     _currentLine = 0;
 }
 
@@ -1653,12 +1658,11 @@ static uint16 map_window_get_pixel_colour_ride(sint32 x, sint32 y)
 static void map_window_set_pixels(rct_window *w)
 {
     uint16 colour = 0;
-    uint8 *destination;
     sint32 x = 0, y = 0, dx = 0, dy = 0;
 
     sint32 pos = (_currentLine * (MAP_WINDOW_MAP_SIZE - 1)) + MAXIMUM_MAP_SIZE_TECHNICAL - 1;
     LocationXY16 destinationPosition = MakeXY16(pos % MAP_WINDOW_MAP_SIZE, pos / MAP_WINDOW_MAP_SIZE);
-    destination = &(*_mapImageData)[destinationPosition.y][destinationPosition.x];
+    auto destination = _mapImageData.data() + (destinationPosition.y * MAP_WINDOW_MAP_SIZE) + destinationPosition.x;
     switch (get_current_rotation()) {
     case 0:
         x = _currentLine * 32;
@@ -1709,7 +1713,7 @@ static void map_window_set_pixels(rct_window *w)
 
         destinationPosition.x++;
         destinationPosition.y++;
-        destination = &(*_mapImageData)[destinationPosition.y][destinationPosition.x];
+        destination = _mapImageData.data() + (destinationPosition.y * MAP_WINDOW_MAP_SIZE) + destinationPosition.x;
     }
     _currentLine++;
     if (_currentLine >= MAXIMUM_MAP_SIZE_TECHNICAL)
