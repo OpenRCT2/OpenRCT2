@@ -2327,7 +2327,7 @@ static void ride_breakdown_update(sint32 rideIndex)
 
     // Calculate breakdown probability?
     sint32 unreliabilityAccumulator = ride->unreliability_factor + get_age_penalty(ride);
-    ride->reliability = Math::Max((uint16)0, (uint16)(ride->reliability - unreliabilityAccumulator));
+    ride->reliability = Math::Max<sint32>(0, (ride->reliability - unreliabilityAccumulator));
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
     // Random probability of a breakdown. Roughly this is 1 in
