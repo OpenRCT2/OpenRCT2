@@ -33,6 +33,7 @@ extern uint8 gLandToolTerrainEdge;
 extern money32 gWaterToolRaiseCost;
 extern money32 gWaterToolLowerCost;
 
+extern uint32 WallTextureOrder[];
 extern uint32 WallTexturePreviews[];
 
 uint32 land_tool_size_to_sprite_index(uint16 size);

@@ -33,20 +33,18 @@ static uint16 toolSizeSpriteIndices[] =
     SPR_LAND_TOOL_SIZE_7,
 };
 
-static char FloorTextureOrder[] =
+static uint32 FloorTextureOrder[] =
 {
     TERRAIN_SAND_DARK, TERRAIN_SAND_LIGHT,  TERRAIN_DIRT,      TERRAIN_GRASS_CLUMPS, TERRAIN_GRASS,
     TERRAIN_ROCK,      TERRAIN_SAND,        TERRAIN_MARTIAN,   TERRAIN_CHECKERBOARD, TERRAIN_ICE,
     TERRAIN_GRID_RED,  TERRAIN_GRID_YELLOW, TERRAIN_GRID_BLUE, TERRAIN_GRID_GREEN
 };
 
-static char WallTextureOrder[] =
+uint32 WallTextureOrder[] =
 {
-    TERRAIN_EDGE_ROCK,         TERRAIN_EDGE_WOOD_RED,    TERRAIN_EDGE_WOOD_BLACK, TERRAIN_EDGE_ICE,
-    TERRAIN_EDGE_BRICK,        TERRAIN_EDGE_IRON,
-    TERRAIN_EDGE_GREY,         TERRAIN_EDGE_YELLOW,      TERRAIN_EDGE_RED,        TERRAIN_EDGE_PURPLE, TERRAIN_EDGE_GREEN,
-    TERRAIN_EDGE_STONE_BROWN,  TERRAIN_EDGE_STONE_GREY,
-    TERRAIN_EDGE_SKYSCRAPER_A, TERRAIN_EDGE_SKYSCRAPER_B,
+    TERRAIN_EDGE_ROCK,         TERRAIN_EDGE_WOOD_RED,    TERRAIN_EDGE_WOOD_BLACK, TERRAIN_EDGE_ICE,          TERRAIN_EDGE_BRICK,
+    TERRAIN_EDGE_GREY,         TERRAIN_EDGE_YELLOW,      TERRAIN_EDGE_RED,        TERRAIN_EDGE_PURPLE,       TERRAIN_EDGE_GREEN,
+    TERRAIN_EDGE_IRON,         TERRAIN_EDGE_STONE_BROWN, TERRAIN_EDGE_STONE_GREY, TERRAIN_EDGE_SKYSCRAPER_A, TERRAIN_EDGE_SKYSCRAPER_B,
     0, 0
 };
 
@@ -124,7 +122,7 @@ void land_tool_show_edge_style_dropdown(rct_window * w, rct_widget * widget, uin
 
     for (uint8 i = 0; i < edgeCount; i++) {
         gDropdownItemsFormat[i] = DROPDOWN_FORMAT_LAND_PICKER;
-        gDropdownItemsArgs[i] = WallTexturePreviews[i];
+        gDropdownItemsArgs[i] = WallTexturePreviews[WallTextureOrder[i]];
         if (WallTextureOrder[i] == currentEdgeType)
             defaultIndex = i;
     }

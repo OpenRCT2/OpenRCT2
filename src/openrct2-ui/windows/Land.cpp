@@ -239,7 +239,7 @@ static void window_land_dropdown(rct_window *w, rct_widgetindex widgetIndex, sin
         if (dropdownIndex == -1)
             dropdownIndex = gDropdownHighlightedIndex;
 
-        type = (dropdownIndex == -1) ?_selectedWallTexture : dropdownIndex;
+        type = (dropdownIndex == -1) ?_selectedWallTexture : WallTextureOrder[dropdownIndex];
 
         if (gLandToolTerrainEdge == type) {
             gLandToolTerrainEdge = 255;

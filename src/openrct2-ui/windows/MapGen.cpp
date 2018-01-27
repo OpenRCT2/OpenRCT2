@@ -722,7 +722,7 @@ static void window_mapgen_base_dropdown(rct_window *w, rct_widgetindex widgetInd
         if (dropdownIndex == -1)
             dropdownIndex = gDropdownHighlightedIndex;
 
-        type = (dropdownIndex == -1) ? _wallTexture : dropdownIndex;
+        type = (dropdownIndex == -1) ? _wallTexture : WallTextureOrder[dropdownIndex];
 
         if (gLandToolTerrainEdge == type) {
             gLandToolTerrainEdge = 255;
@@ -1016,7 +1016,7 @@ static void window_mapgen_simplex_dropdown(rct_window *w, rct_widgetindex widget
         if (dropdownIndex == -1)
             dropdownIndex = gDropdownHighlightedIndex;
 
-        type = (dropdownIndex == -1) ? _wallTexture : dropdownIndex;
+        type = (dropdownIndex == -1) ? _wallTexture : WallTextureOrder[dropdownIndex];
 
         if (gLandToolTerrainEdge == type) {
             gLandToolTerrainEdge = 255;
