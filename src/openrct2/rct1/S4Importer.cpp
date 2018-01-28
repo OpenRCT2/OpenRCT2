@@ -2054,7 +2054,7 @@ private:
         }
         if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_SCENERY_THEMEING)
         {
-            activeResearchTypes |= (1 << RESEARCH_CATEGORY_SCENERYSET);
+            activeResearchTypes |= (1 << RESEARCH_CATEGORY_SCENERY_GROUP);
         }
         gResearchPriorities = activeResearchTypes;
         gResearchFundingLevel = _s4.research_level;
