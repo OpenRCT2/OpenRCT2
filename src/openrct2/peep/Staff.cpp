@@ -674,7 +674,7 @@ sint32 staff_is_location_on_patrol_edge(rct_peep * mechanic, sint32 x, sint32 y)
     return onZoneEdge;
 }
 
-sint32 staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z, rct_tile_element * path)
+bool staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z, rct_tile_element * path)
 {
     /* Wide flags can potentially wall off parts of a staff patrol zone
      * for the heuristic search.
@@ -698,11 +698,11 @@ sint32 staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z,
      * ignored. */
 
     if (staff->type != PEEP_TYPE_STAFF)
-        return 0;
+        return false;
 
     if (!staff_is_location_on_patrol_edge(staff, x, y))
     {
-        return 0;
+        return false;
     }
 
     /* Check the connected adjacent paths that are also inside the patrol
@@ -778,22 +778,16 @@ sint32 staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z,
     switch (total)
     {
     case 0: /* Concave corner */
-        return 1;
-        break;
+        return true;
     case 1: /* Straight side */
     case 2: /* Convex corner */
         if (pathcount <= total - 1 || widecount == total)
         {
-            return 1;
+            return true;
         }
-        else
-        {
-            return 0;
-        }
-        break;
-    default:
-        return 0;
     }
+
+    return false;
 }
 
 /**
