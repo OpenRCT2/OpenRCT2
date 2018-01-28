@@ -389,7 +389,7 @@ public:
 		for (size_t i = 0; i < _scenarios.size(); i++) {
 			const scenario_index_entry * scenario = &_scenarios[i];
 
-			if (scenario->source_game == SCENARIO_SOURCE_OTHER)
+			if (scenario->source_game == SCENARIO_SOURCE_OTHER && scenario->sc_id == SC_UNIDENTIFIED)
 				continue;
 
 			// Note: this is always case insensitive search for cross platform consistency
