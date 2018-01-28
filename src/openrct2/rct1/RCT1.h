@@ -633,7 +633,7 @@ typedef struct rct1_s4 {
     uint8 park_rating_history[32];
     uint8 guests_in_park_history[32];
     uint8 research_priority;
-    uint8 research_progress;
+    uint8 research_progress_stage;
     uint8 last_research_item;
     uint8 last_research_ride;
     uint8 last_research_type;
@@ -643,8 +643,11 @@ typedef struct rct1_s4 {
     uint8 next_research_ride;
     uint8 next_research_type;
     uint8 next_research_flags;
-    uint16 unk_19953C;
-    uint32 unk_19953E;
+    uint16 research_progress;
+    uint8 next_research_category;
+    uint8 next_research_expected_day;
+    uint8 next_research_expected_month;
+    uint8 guest_initial_happiness;
     uint16 cheat_detection_land_owned;
     uint16 unk_199544;
     money16 total_ride_value_for_money;
