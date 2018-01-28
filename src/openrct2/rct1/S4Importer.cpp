@@ -1330,6 +1330,17 @@ private:
             FixPeepNextInQueue(peep, spriteIndexMap);
         }
 
+        // Fix the news items in advance
+        for (i = 0; i < MAX_NEWS_ITEMS; i++)
+        {
+            rct12_news_item * newsItem = &_s4.messages[i];
+
+            if (newsItem->Type == NEWS_ITEM_PEEP || newsItem->Type == NEWS_ITEM_PEEP_ON_RIDE)
+            {
+                newsItem->Assoc = MapSpriteIndex(newsItem->Assoc, spriteIndexMap);
+            }
+        }
+
         // The RCT2/OpenRCT2 structures are bigger than in RCT1, so set them to zero
         Memory::Set(gStaffModes, 0, sizeof(gStaffModes));
         Memory::Set(gStaffPatrolAreas, 0, sizeof(gStaffPatrolAreas));
@@ -2070,94 +2081,13 @@ private:
         gResearchExpectedDay   = _s4.next_research_expected_day;
         gResearchExpectedMonth = _s4.next_research_expected_month;
 
-        gResearchNextItem.rawValue = RESEARCHED_ITEMS_SEPARATOR;
-        if (_s4.next_research_type == RCT1_RESEARCH_TYPE_RIDE)
-        {
-            uint8 entryIndex = _rideTypeToRideEntryMap[_s4.next_research_item];
-            rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
-
-            if (entryIndex != 255 && rideEntry != nullptr)
-            {
-                gResearchNextItem.entryIndex = entryIndex;
-                gResearchNextItem.baseRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
-                gResearchNextItem.type = RESEARCH_ENTRY_TYPE_RIDE;
-                gResearchNextItem.flags = 0;
-                gResearchNextItem.category = rideEntry->category[0];
-            }
-        }
-        else if (_s4.next_research_type == RCT1_RESEARCH_TYPE_VEHICLE)
-        {
-            uint8 entryIndex = _vehicleTypeToRideEntryMap[_s4.next_research_item];
-            rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
-
-            if (entryIndex != 255 && rideEntry != nullptr)
-            {
-                gResearchNextItem.entryIndex = entryIndex;
-                gResearchNextItem.baseRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
-                gResearchNextItem.type = RESEARCH_ENTRY_TYPE_RIDE;
-                gResearchNextItem.flags = 0;
-                gResearchNextItem.category = rideEntry->category[0];
-            }
-        }
-        else if (_s4.next_research_type == RCT1_RESEARCH_TYPE_THEME)
-        {
-            uint8 entryIndex = _sceneryThemeTypeToEntryMap[_s4.next_research_item];
-
-            if (entryIndex != 254 && entryIndex != 255)
-            {
-                gResearchNextItem.entryIndex = entryIndex;
-                gResearchNextItem.type = RESEARCH_ENTRY_TYPE_SCENERY;
-                gResearchNextItem.category = RESEARCH_CATEGORY_SCENERYSET;
-                gResearchNextItem.flags = 0;
-            }
-        }
-        else
+        ConvertResearchEntry(&gResearchNextItem, _s4.next_research_item, _s4.next_research_type);
+        if (gResearchNextItem.rawValue == RESEARCHED_ITEMS_SEPARATOR)
         {
             gResearchProgressStage     = RESEARCH_STAGE_INITIAL_RESEARCH;
             gResearchProgress          = 0;
         }
-
-        gResearchLastItem.rawValue = RESEARCHED_ITEMS_SEPARATOR;
-        if (_s4.last_research_type == RCT1_RESEARCH_TYPE_RIDE)
-        {
-            uint8 entryIndex = _rideTypeToRideEntryMap[_s4.last_research_item];
-            rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
-
-            if (entryIndex != 255 && rideEntry != nullptr)
-            {
-                gResearchLastItem.entryIndex = entryIndex;
-                gResearchLastItem.baseRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
-                gResearchLastItem.type = RESEARCH_ENTRY_TYPE_RIDE;
-                gResearchLastItem.flags = 0;
-                gResearchLastItem.category = rideEntry->category[0];
-            }
-        }
-        else if (_s4.last_research_type == RCT1_RESEARCH_TYPE_VEHICLE)
-        {
-            uint8 entryIndex = _vehicleTypeToRideEntryMap[_s4.last_research_item];
-            rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
-
-            if (entryIndex != 255 && rideEntry != nullptr)
-            {
-                gResearchLastItem.entryIndex = entryIndex;
-                gResearchLastItem.baseRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
-                gResearchLastItem.type = RESEARCH_ENTRY_TYPE_RIDE;
-                gResearchLastItem.flags = 0;
-                gResearchLastItem.category = rideEntry->category[0];
-            }
-        }
-        else if (_s4.last_research_type == RCT1_RESEARCH_TYPE_THEME)
-        {
-            uint8 entryIndex = _sceneryThemeTypeToEntryMap[_s4.last_research_item];
-
-            if (entryIndex != 254 && entryIndex != 255)
-            {
-                gResearchLastItem.entryIndex = entryIndex;
-                gResearchLastItem.type = RESEARCH_ENTRY_TYPE_SCENERY;
-                gResearchLastItem.category = RESEARCH_CATEGORY_SCENERYSET;
-                gResearchLastItem.flags = 0;
-            }
-        }
+        ConvertResearchEntry(&gResearchLastItem, _s4.last_research_item, _s4.last_research_type);
     }
 
     void InsertResearchVehicle(const rct1_research_item * researchItem, bool researched)
@@ -2231,11 +2161,24 @@ private:
 
             dst->Type = src->Type;
             dst->Flags = src->Flags;
-            dst->Assoc = src->Assoc;
             dst->Ticks = src->Ticks;
             dst->MonthYear = src->MonthYear;
             dst->Day = src->Day;
             Memory::Copy(dst->Text, src->Text, sizeof(src->Text));
+
+            if (dst->Type == NEWS_ITEM_RESEARCH)
+            {
+                uint8 researchItem = src->Assoc & 0x000000FF;
+                uint8 researchType = (src->Assoc & 0x00FF0000) >> 16;
+
+                rct_research_item tmpResearchItem = {};
+                ConvertResearchEntry(&tmpResearchItem, researchItem, researchType);
+                dst->Assoc = (uint32)tmpResearchItem.rawValue;
+            }
+            else
+            {
+                dst->Assoc = src->Assoc;
+            }
         }
 
         // Initial guest status
@@ -2270,6 +2213,51 @@ private:
 
         gParkSize = _s4.park_size;
         gTotalRideValueForMoney = _s4.total_ride_value_for_money;
+    }
+
+    void ConvertResearchEntry(rct_research_item * dst, uint8 srcItem, uint8 srcType)
+    {
+        dst->rawValue = RESEARCHED_ITEMS_SEPARATOR;
+        if (srcType == RCT1_RESEARCH_TYPE_RIDE)
+        {
+            uint8 entryIndex = _rideTypeToRideEntryMap[srcItem];
+            rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
+
+            if (entryIndex != 255 && rideEntry != nullptr)
+            {
+                dst->entryIndex = entryIndex;
+                dst->baseRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                dst->type = RESEARCH_ENTRY_TYPE_RIDE;
+                dst->flags = 0;
+                dst->category = rideEntry->category[0];
+            }
+        }
+        else if (srcType == RCT1_RESEARCH_TYPE_VEHICLE)
+        {
+            uint8 entryIndex = _vehicleTypeToRideEntryMap[srcItem];
+            rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
+
+            if (entryIndex != 255 && rideEntry != nullptr)
+            {
+                dst->entryIndex = entryIndex;
+                dst->baseRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                dst->type = RESEARCH_ENTRY_TYPE_RIDE;
+                dst->flags = 0;
+                dst->category = rideEntry->category[0];
+            }
+        }
+        else if (srcType == RCT1_RESEARCH_TYPE_THEME)
+        {
+            uint8 entryIndex = _sceneryThemeTypeToEntryMap[srcItem];
+
+            if (entryIndex != 254 && entryIndex != 255)
+            {
+                dst->entryIndex = entryIndex;
+                dst->type = RESEARCH_ENTRY_TYPE_SCENERY;
+                dst->category = RESEARCH_CATEGORY_SCENERYSET;
+                dst->flags = 0;
+            }
+        }
     }
 
     void ImportClimate()
