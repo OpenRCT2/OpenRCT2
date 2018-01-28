@@ -123,7 +123,7 @@ void park_init()
         (1 << RESEARCH_CATEGORY_THRILL) |
         (1 << RESEARCH_CATEGORY_WATER) |
         (1 << RESEARCH_CATEGORY_SHOP) |
-        (1 << RESEARCH_CATEGORY_SCENERYSET);
+        (1 << RESEARCH_CATEGORY_SCENERY_GROUP);
     gResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
     gGuestInitialCash = MONEY(50,00); // Cash per guest (average)

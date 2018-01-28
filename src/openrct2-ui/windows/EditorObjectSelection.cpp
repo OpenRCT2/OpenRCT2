@@ -1255,10 +1255,10 @@ static void editor_load_selected_objects()
                     if (objectType == OBJECT_TYPE_RIDE) {
                         rct_ride_entry *rideEntry = get_ride_entry(entryIndex);
                         uint8 rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
-                        research_insert(1, 0x10000 | (rideType << 8) | entryIndex, rideEntry->category[0]);
+                        research_insert(1, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | entryIndex, rideEntry->category[0]);
                     }
                     else if (objectType == OBJECT_TYPE_SCENERY_GROUP) {
-                        research_insert(1, entryIndex, RESEARCH_CATEGORY_SCENERYSET);
+                        research_insert(1, entryIndex, RESEARCH_CATEGORY_SCENERY_GROUP);
                     }
                 }
             }
