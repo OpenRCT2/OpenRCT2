@@ -365,11 +365,7 @@ void research_update()
     }
 }
 
-/**
- *
- *  rct2: 0x00684AC3
- */
-void research_reset_current_item()
+void research_process_random_items()
 {
     rct_research_item * research = gResearchItems;
     for (; research->rawValue != RESEARCHED_ITEMS_END; research++) { }
@@ -406,28 +402,25 @@ void research_reset_current_item()
         edx->category = ebp->category;
         ebp->category = cat;
     }
+}
+
+/**
+ *
+ *  rct2: 0x00684AC3
+ */
+void research_reset_current_item()
+{
+    research_process_random_items();
 
     set_every_ride_type_not_invented();
     set_every_ride_entry_not_invented();
 
+    // The following two instructions together make all items not tied to a scenery group available.
     set_all_scenery_items_invented();
-
-    for (sint32 i = 0; i < MAX_SCENERY_GROUP_OBJECTS; ++i)
-    {
-        rct_scenery_group_entry * scenery_set = get_scenery_group_entry(i);
-        if (scenery_set == nullptr)
-        {
-            continue;
-        }
-
-        for (sint32 j = 0; j < scenery_set->entry_count; ++j)
-        {
-            scenery_set_not_invented(scenery_set->scenery_entries[j]);
-        }
-    }
+    set_all_scenery_groups_not_invented();
 
 
-    for (research = gResearchItems; research->rawValue != RESEARCHED_ITEMS_SEPARATOR; research++)
+    for (rct_research_item * research = gResearchItems; research->rawValue != RESEARCHED_ITEMS_SEPARATOR; research++)
     {
         research_finish_item(research);
     }
@@ -750,6 +743,23 @@ void scenery_group_set_invented(sint32 sgIndex)
         {
             auto sceneryEntryIndex = sgEntry->scenery_entries[i];
             scenery_set_invented(sceneryEntryIndex);
+        }
+    }
+}
+
+void set_all_scenery_groups_not_invented()
+{
+    for (sint32 i = 0; i < MAX_SCENERY_GROUP_OBJECTS; ++i)
+    {
+        rct_scenery_group_entry * scenery_set = get_scenery_group_entry(i);
+        if (scenery_set == nullptr)
+        {
+            continue;
+        }
+
+        for (sint32 j = 0; j < scenery_set->entry_count; ++j)
+        {
+            scenery_set_not_invented(scenery_set->scenery_entries[j]);
         }
     }
 }

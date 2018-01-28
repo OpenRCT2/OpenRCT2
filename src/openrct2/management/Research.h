@@ -117,6 +117,7 @@ void research_update();
 void research_reset_current_item();
 void research_populate_list_random();
 void research_populate_list_researched();
+void research_process_random_items();
 
 void research_set_funding(sint32 amount);
 void research_set_priority(sint32 activeCategories);
@@ -140,6 +141,7 @@ void scenery_group_set_invented(sint32 sgIndex);
 bool scenery_is_invented(uint16 sceneryItem);
 void set_all_scenery_items_invented();
 void set_all_scenery_items_not_invented();
+void set_all_scenery_groups_not_invented();
 void set_every_ride_type_invented();
 void set_every_ride_type_not_invented();
 void set_every_ride_entry_invented();
