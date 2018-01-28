@@ -3964,7 +3964,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     uint16 reliability = ride->reliability_percentage;
     gfx_draw_string_left(dpi, STR_RELIABILITY_LABEL_1757, &reliability, COLOUR_BLACK, x, y);
-    window_ride_maintenance_draw_bar(w, dpi, x + 103, y, Math::Max<sint32>(10, reliability), COLOUR_BRIGHT_GREEN);
+    window_ride_maintenance_draw_bar(w, dpi, x + 103, y, Math::Max<sint32>(0, reliability), COLOUR_BRIGHT_GREEN);
     y += 11;
 
     uint16 downTime = ride->downtime;
