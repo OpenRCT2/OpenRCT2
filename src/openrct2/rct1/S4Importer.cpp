@@ -340,7 +340,7 @@ private:
 
     std::string GetRCT1ScenarioName()
     {
-        const scenario_index_entry * scenarioEntry = _scenarioRepository->GetByIndex(_s4.scenario_slot_index);
+        const scenario_index_entry * scenarioEntry = _scenarioRepository->GetByInternalName(_s4.scenario_name);
         return path_get_filename(scenarioEntry->path);
     }
 
