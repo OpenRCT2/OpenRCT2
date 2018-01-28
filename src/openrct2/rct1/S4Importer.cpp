@@ -1787,6 +1787,7 @@ private:
         }
         gCurrentExpenditure = _s4.total_expenditure;
 
+        gScenarioCompletedCompanyValue = _s4.completed_company_value;
         gTotalAdmissions = _s4.num_admissions;
         gTotalIncomeFromAdmissions = _s4.admission_total_income;
 
@@ -2241,6 +2242,9 @@ private:
         gGuestInitialCash = _s4.guest_initial_cash;
         gGuestInitialHunger = _s4.guest_initial_hunger;
         gGuestInitialThirst = _s4.guest_initial_thirst;
+        gGuestInitialHappiness = _s4.guest_initial_happiness;
+
+        _guestGenerationProbability = _s4.guest_generation_probability;
 
         // Staff colours
         gStaffHandymanColour = RCT1::GetColour(_s4.handman_colour);
@@ -2263,6 +2267,9 @@ private:
         {
             gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
         }
+
+        gParkSize = _s4.park_size;
+        gTotalRideValueForMoney = _s4.total_ride_value_for_money;
     }
 
     void ImportClimate()

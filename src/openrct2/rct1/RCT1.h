@@ -648,8 +648,8 @@ typedef struct rct1_s4 {
     uint8 next_research_expected_day;
     uint8 next_research_expected_month;
     uint8 guest_initial_happiness;
-    uint16 cheat_detection_land_owned;
-    uint16 unk_199544;
+    uint16 park_size;
+    uint16 guest_generation_probability;
     money16 total_ride_value_for_money;
     money32 max_loan;
     money16 guest_initial_cash;
@@ -670,7 +670,7 @@ typedef struct rct1_s4 {
     money32 weekly_profit_history[RCT12_FINANCE_GRAPH_SIZE];
     money32 park_value;
     money32 park_value_history[RCT12_FINANCE_GRAPH_SIZE];
-    uint32 scenario_objective_score;
+    uint32 completed_company_value;
     uint32 num_admissions;
     money32 admission_total_income;
     money32 company_value;
