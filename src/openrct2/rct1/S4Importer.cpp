@@ -2059,15 +2059,104 @@ private:
         gResearchPriorities = activeResearchTypes;
         gResearchFundingLevel = _s4.research_level;
 
-        // Research history
-        gResearchProgress = _s4.research_progress;
-        // gResearchProgressStage =
-        gResearchNextItem.rawValue = _s4.next_research_item;
-        // gResearchExpectedDay =
-        // gResearchExpectedMonth =
-
-        // This is needed to fix Research. Not sure why.
+        // This will mark items as researched/unresearched according to the research list.
+        // This needs to be called before importing progress, as it will reset it.
         research_reset_current_item();
+
+        // Research history
+        gResearchProgress      = _s4.research_progress;
+        gResearchProgressStage = _s4.research_progress_stage;
+        gResearchExpectedDay   = _s4.next_research_expected_day;
+        gResearchExpectedMonth = _s4.next_research_expected_month;
+
+        gResearchNextItem.rawValue = RESEARCHED_ITEMS_SEPARATOR;
+        if (_s4.next_research_type == RCT1_RESEARCH_TYPE_RIDE)
+        {
+            uint8 entryIndex = _rideTypeToRideEntryMap[_s4.next_research_item];
+            rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
+
+            if (entryIndex != 255 && rideEntry != nullptr)
+            {
+                gResearchNextItem.entryIndex = entryIndex;
+                gResearchNextItem.baseRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                gResearchNextItem.type = RESEARCH_ENTRY_TYPE_RIDE;
+                gResearchNextItem.flags = 0;
+                gResearchNextItem.category = rideEntry->category[0];
+            }
+        }
+        else if (_s4.next_research_type == RCT1_RESEARCH_TYPE_VEHICLE)
+        {
+            uint8 entryIndex = _vehicleTypeToRideEntryMap[_s4.next_research_item];
+            rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
+
+            if (entryIndex != 255 && rideEntry != nullptr)
+            {
+                gResearchNextItem.entryIndex = entryIndex;
+                gResearchNextItem.baseRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                gResearchNextItem.type = RESEARCH_ENTRY_TYPE_RIDE;
+                gResearchNextItem.flags = 0;
+                gResearchNextItem.category = rideEntry->category[0];
+            }
+        }
+        else if (_s4.next_research_type == RCT1_RESEARCH_TYPE_THEME)
+        {
+            uint8 entryIndex = _sceneryThemeTypeToEntryMap[_s4.next_research_item];
+
+            if (entryIndex != 254 && entryIndex != 255)
+            {
+                gResearchNextItem.entryIndex = entryIndex;
+                gResearchNextItem.type = RESEARCH_ENTRY_TYPE_SCENERY;
+                gResearchNextItem.category = RESEARCH_CATEGORY_SCENERYSET;
+                gResearchNextItem.flags = 0;
+            }
+        }
+        else
+        {
+            gResearchProgressStage     = RESEARCH_STAGE_INITIAL_RESEARCH;
+            gResearchProgress          = 0;
+        }
+
+        gResearchLastItem.rawValue = RESEARCHED_ITEMS_SEPARATOR;
+        if (_s4.last_research_type == RCT1_RESEARCH_TYPE_RIDE)
+        {
+            uint8 entryIndex = _rideTypeToRideEntryMap[_s4.last_research_item];
+            rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
+
+            if (entryIndex != 255 && rideEntry != nullptr)
+            {
+                gResearchLastItem.entryIndex = entryIndex;
+                gResearchLastItem.baseRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                gResearchLastItem.type = RESEARCH_ENTRY_TYPE_RIDE;
+                gResearchLastItem.flags = 0;
+                gResearchLastItem.category = rideEntry->category[0];
+            }
+        }
+        else if (_s4.last_research_type == RCT1_RESEARCH_TYPE_VEHICLE)
+        {
+            uint8 entryIndex = _vehicleTypeToRideEntryMap[_s4.last_research_item];
+            rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
+
+            if (entryIndex != 255 && rideEntry != nullptr)
+            {
+                gResearchLastItem.entryIndex = entryIndex;
+                gResearchLastItem.baseRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                gResearchLastItem.type = RESEARCH_ENTRY_TYPE_RIDE;
+                gResearchLastItem.flags = 0;
+                gResearchLastItem.category = rideEntry->category[0];
+            }
+        }
+        else if (_s4.last_research_type == RCT1_RESEARCH_TYPE_THEME)
+        {
+            uint8 entryIndex = _sceneryThemeTypeToEntryMap[_s4.last_research_item];
+
+            if (entryIndex != 254 && entryIndex != 255)
+            {
+                gResearchLastItem.entryIndex = entryIndex;
+                gResearchLastItem.type = RESEARCH_ENTRY_TYPE_SCENERY;
+                gResearchLastItem.category = RESEARCH_CATEGORY_SCENERYSET;
+                gResearchLastItem.flags = 0;
+            }
+        }
     }
 
     void InsertResearchVehicle(const rct1_research_item * researchItem, bool researched)
