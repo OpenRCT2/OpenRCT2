@@ -1763,6 +1763,8 @@ private:
         gCash = _s4.cash;
         gBankLoan = _s4.loan;
         gMaxBankLoan = _s4.max_loan;
+        // It's more like 1.33%, but we can only use integers. Can be fixed once we have our own save format.
+        gBankLoanInterestRate = 1;
         gInitialCash = _s4.cash;
 
         gCompanyValue = _s4.company_value;
