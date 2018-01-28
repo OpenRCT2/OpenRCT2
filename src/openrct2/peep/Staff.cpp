@@ -686,7 +686,7 @@ bool staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z, r
      * Basic points of interest are:
      * - how many such tiles there are;
      * - whether there are connected paths on those tiles;
-     * - whether the conected paths have the wide flag set.
+     * - whether the connected paths have the wide flag set.
      * If there are no such tiles, the path is a concave corner of
      * the patrol zone and the wide flag can be ignored.
      * If there is one such tile, the path is on a straight side of the
