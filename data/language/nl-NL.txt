@@ -7140,6 +7140,10 @@ STR_NAME    :  'Donkere eeuwen'-thema
 [SCGMYTHO]
 STR_NAME    :  Mythologisch thema
 
+#OCC
+[SCGPANDA]
+STR_NAME    :Pandathema
+
 #################
 # Small objects #
 #################
@@ -7297,7 +7301,7 @@ STR_NAME    :Zwarte koning
 STR_NAME    :Californische cipres
 
 [TMBJ]
-STR_NAME    :Jeneverbes
+STR_NAME    :Blauwe jeneverbes
 
 [TMC]
 STR_NAME    :Montereycipres
@@ -7456,6 +7460,14 @@ STR_NAME    :Historische vlag
 STR_NAME    :Historische vlag
 
 ## End TT
+
+## Start OCC
+[BIGPANDA]
+STR_NAME    :Reuzenpanda
+
+[PANDAGR]
+STR_NAME    :Bamboescheuten
+## End OCC
 
 ## Start CC
 # TT Glass Roofs
