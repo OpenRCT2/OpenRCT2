@@ -33,14 +33,6 @@ typedef enum tile_inspector_page
     TILE_INSPECTOR_PAGE_CORRUPT
 } tile_inspector_page;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern uint32 windowTileInspectorTileX;
 extern uint32 windowTileInspectorTileY;
 extern sint32 windowTileInspectorElementCount;
-
-#ifdef __cplusplus
-}
-#endif

@@ -14,67 +14,68 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "_legacy.h"
-#include "../interface/Window.h"
-#include "../peep/Staff.h"
-#include "Intent.h"
-#include "../Context.h"
 #include "../audio/audio.h"
-#include "../Input.h"
+#include "../Cheats.h"
+#include "../Context.h"
+#include "../core/Util.hpp"
 #include "../Game.h"
+#include "../Input.h"
 #include "../interface/Viewport.h"
+#include "../interface/Window.h"
+#include "../network/network.h"
+#include "../peep/Staff.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
-#include "../Cheats.h"
-#include "../network/network.h"
 #include "../world/Scenery.h"
+#include "_legacy.h"
+#include "Intent.h"
 
-#pragma warning(disable : 4295) // 'identifier': array is too small to include a terminating null character
+#define NNS(a,b,c,d,e,f,g,h) {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'}
 
 bool gDisableErrorWindowSound = false;
 
 /** rct2: 0x0098DA74 */
 const rct_object_entry RequiredSelectedObjects[7] = {
         // Objects that are always required
-        { 0x00000087, { "SCGTREES" }, 0 },      // Scenery: Trees
-        { 0x00000087, { "SCGSHRUB" }, 0 },      // Scenery: Shrubs and Ornaments
-        { 0x00000087, { "SCGGARDN" }, 0 },      // Scenery: Gardens
-        { 0x00000087, { "SCGFENCE" }, 0 },      // Scenery: Fences and Walls
-        { 0x00000087, { "SCGWALLS" }, 0 },      // Scenery: Walls and Roofs
-        { 0x00000087, { "SCGPATHX" }, 0 },      // Scenery: Signs and Items for Footpaths
-        { 0x00000085, { "TARMAC  " }, 0 },      // Footpath: Tarmac
+        { 0x00000087, NNS(S,C,G,T,R,E,E,S), 0 },      // Scenery: Trees
+        { 0x00000087, NNS(S,C,G,S,H,R,U,B), 0 },      // Scenery: Shrubs and Ornaments
+        { 0x00000087, NNS(S,C,G,G,A,R,D,N), 0 },      // Scenery: Gardens
+        { 0x00000087, NNS(S,C,G,F,E,N,C,E), 0 },      // Scenery: Fences and Walls
+        { 0x00000087, NNS(S,C,G,W,A,L,L,S), 0 },      // Scenery: Walls and Roofs
+        { 0x00000087, NNS(S,C,G,P,A,T,H,X), 0 },      // Scenery: Signs and Items for Footpaths
+        { 0x00000085, NNS(T,A,R,M,A,C, , ), 0 },      // Footpath: Tarmac
 };
 
 const rct_object_entry DefaultSelectedObjects[26] = {
         // An initial default selection
-        { 0x00000080, { "TWIST1  " }, 0 },      // Ride: Twist
-        { 0x00000080, { "PTCT1   " }, 0 },      // Ride: Wooden Roller Coaster (Wooden Roller Coaster Trains)
-        { 0x00000080, { "ZLDB    " }, 0 },      // Ride: Junior Roller Coaster (Ladybird Trains)
-        { 0x00000080, { "LFB1    " }, 0 },      // Ride: Log Flume
-        { 0x00000080, { "VCR     " }, 0 },      // Ride: Vintage Cars
-        { 0x00000080, { "MGR1    " }, 0 },      // Ride: Merry-Go-Round
-        { 0x00000080, { "TLT1    " }, 0 },      // Ride: Restroom
-        { 0x00000080, { "ATM1    " }, 0 },      // Ride: Cash Machine
-        { 0x00000080, { "FAID1   " }, 0 },      // Ride: First Aid Room
-        { 0x00000080, { "INFOK   " }, 0 },      // Ride: Information Kiosk
-        { 0x00000080, { "DRNKS   " }, 0 },      // Ride: Drinks Stall
-        { 0x00000080, { "CNDYF   " }, 0 },      // Ride: Candyfloss Stall
-        { 0x00000080, { "BURGB   " }, 0 },      // Ride: Burger Bar
-        { 0x00000080, { "BALLN   " }, 0 },      // Ride: Balloon Stall
-        { 0x00000080, { "ARRT1   " }, 0 },      // Ride: Corkscrew Roller Coaster
-        { 0x00000080, { "RBOAT   " }, 0 },      // Ride: Rowing Boats
-        { 0x00000088, { "PKENT1  " }, 0 },      // Park Entrance: Traditional Park Entrance
-        { 0x00000089, { "WTRCYAN " }, 0 },      // Water: Natural Water
-        { 0x00000085, { "TARMACB " }, 0 },      // Footpath: Brown Tarmac Footpath
-        { 0x00000085, { "PATHSPCE" }, 0 },      // Footpath: Space Style Footpath
-        { 0x00000085, { "PATHDIRT" }, 0 },      // Footpath: Dirt Footpath
-        { 0x00000085, { "PATHCRZY" }, 0 },      // Footpath: Crazy Paving Footpath
-        { 0x00000085, { "PATHASH " }, 0 },      // Footpath: Ash Footpath
+        { 0x00000080, NNS(T,W,I,S,T,1, , ), 0 },      // Ride: Twist
+        { 0x00000080, NNS(P,T,C,T,1, , , ), 0 },      // Ride: Wooden Roller Coaster (Wooden Roller Coaster Trains)
+        { 0x00000080, NNS(Z,L,D,B, , , , ), 0 },      // Ride: Junior Roller Coaster (Ladybird Trains)
+        { 0x00000080, NNS(L,F,B,1, , , , ), 0 },      // Ride: Log Flume
+        { 0x00000080, NNS(V,C,R, , , , , ), 0 },      // Ride: Vintage Cars
+        { 0x00000080, NNS(M,G,R,1, , , , ), 0 },      // Ride: Merry-Go-Round
+        { 0x00000080, NNS(T,L,T,1, , , , ), 0 },      // Ride: Restroom
+        { 0x00000080, NNS(A,T,M,1, , , , ), 0 },      // Ride: Cash Machine
+        { 0x00000080, NNS(F,A,I,D,1, , , ), 0 },      // Ride: First Aid Room
+        { 0x00000080, NNS(I,N,F,O,K, , , ), 0 },      // Ride: Information Kiosk
+        { 0x00000080, NNS(D,R,N,K,S, , , ), 0 },      // Ride: Drinks Stall
+        { 0x00000080, NNS(C,N,D,Y,F, , , ), 0 },      // Ride: Candyfloss Stall
+        { 0x00000080, NNS(B,U,R,G,B, , , ), 0 },      // Ride: Burger Bar
+        { 0x00000080, NNS(B,A,L,L,N, , , ), 0 },      // Ride: Balloon Stall
+        { 0x00000080, NNS(A,R,R,T,1, , , ), 0 },      // Ride: Corkscrew Roller Coaster
+        { 0x00000080, NNS(R,B,O,A,T, , , ), 0 },      // Ride: Rowing Boats
+        { 0x00000088, NNS(P,K,E,N,T,1, , ), 0 },      // Park Entrance: Traditional Park Entrance
+        { 0x00000089, NNS(W,T,R,C,Y,A,N, ), 0 },      // Water: Natural Water
+        { 0x00000085, NNS(T,A,R,M,A,C,B, ), 0 },      // Footpath: Brown Tarmac Footpath
+        { 0x00000085, NNS(P,A,T,H,S,P,C,E), 0 },      // Footpath: Space Style Footpath
+        { 0x00000085, NNS(P,A,T,H,D,I,R,T), 0 },      // Footpath: Dirt Footpath
+        { 0x00000085, NNS(P,A,T,H,C,R,Z,Y), 0 },      // Footpath: Crazy Paving Footpath
+        { 0x00000085, NNS(P,A,T,H,A,S,H, ), 0 },      // Footpath: Ash Footpath
 
         // The following are for all random map generation features to work out the box
-        { 0x00000087, { "SCGJUNGL" }, 0 },      // Jungle Theming
-        { 0x00000087, { "SCGSNOW " }, 0 },      // Snow and Ice Theming
-        { 0x00000087, { "SCGWATER" }, 0 }       // Water Feature Theming
+        { 0x00000087, NNS(S,C,G,J,U,N,G,L), 0 },      // Jungle Theming
+        { 0x00000087, NNS(S,C,G,S,N,O,W, ), 0 },      // Snow and Ice Theming
+        { 0x00000087, NNS(S,C,G,W,A,T,E,R), 0 }       // Water Feature Theming
 };
 
 void game_command_callback_pickup_guest(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
@@ -279,7 +280,7 @@ static bool sub_6CA2DF_get_track_element(uint8 *trackElement) {
     }
 
     if (curve <= 8) {
-        for (int i = 0; i < countof(gTrackDescriptors); i++)
+        for (uint32 i = 0; i < Util::CountOf(gTrackDescriptors); i++)
         {
             const track_descriptor * trackDescriptor = &gTrackDescriptors[i];
 
@@ -475,14 +476,14 @@ bool sub_6CA2DF(sint32 *_trackType, sint32 *_trackDirection, sint32 *_rideIndex,
     }
 
 
-    if (_trackType != NULL) *_trackType = trackType;
-    if (_trackDirection != NULL) *_trackDirection = trackDirection;
-    if (_rideIndex != NULL) *_rideIndex = rideIndex;
-    if (_liftHillAndAlternativeState != NULL) *_liftHillAndAlternativeState = liftHillAndAlternativeState;
-    if (_x != NULL) *_x = x;
-    if (_y != NULL) *_y = y;
-    if (_z != NULL) *_z = z;
-    if (_properties != NULL) *_properties = properties;
+    if (_trackType != nullptr) *_trackType = trackType;
+    if (_trackDirection != nullptr) *_trackDirection = trackDirection;
+    if (_rideIndex != nullptr) *_rideIndex = rideIndex;
+    if (_liftHillAndAlternativeState != nullptr) *_liftHillAndAlternativeState = liftHillAndAlternativeState;
+    if (_x != nullptr) *_x = x;
+    if (_y != nullptr) *_y = y;
+    if (_z != nullptr) *_z = z;
+    if (_properties != nullptr) *_properties = properties;
 
     return false;
 }
@@ -492,13 +493,13 @@ void window_ride_construction_do_entrance_exit_check()
     rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
     Ride *ride = get_ride(_currentRideIndex);
 
-    if (w == NULL || ride == NULL) {
+    if (w == nullptr || ride == nullptr) {
         return;
     }
 
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_0) {
         w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-        if (w != NULL) {
+        if (w != nullptr) {
             if (!ride_are_all_possible_entrances_and_exits_built(ride)) {
                 window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
             } else {
@@ -511,7 +512,7 @@ void window_ride_construction_do_entrance_exit_check()
 void window_ride_construction_do_station_check()
 {
     Ride *ride = get_ride(_currentRideIndex);
-    if (ride != NULL) {
+    if (ride != nullptr) {
         _stationConstructed = ride->num_stations != 0;
     }
 }
