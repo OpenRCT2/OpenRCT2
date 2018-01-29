@@ -2254,7 +2254,7 @@ private:
             {
                 dst->entryIndex = entryIndex;
                 dst->type = RESEARCH_ENTRY_TYPE_SCENERY;
-                dst->category = RESEARCH_CATEGORY_SCENERYSET;
+                dst->category = RESEARCH_CATEGORY_SCENERY_GROUP;
                 dst->flags = 0;
             }
         }
