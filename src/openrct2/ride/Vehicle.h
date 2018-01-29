@@ -246,7 +246,7 @@ enum {
     VEHICLE_ENTRY_FLAG_SPINNING = 1 << 18,
     VEHICLE_ENTRY_FLAG_POWERED = 1 << 19,
     VEHICLE_ENTRY_FLAG_RIDERS_SCREAM = 1 << 20,
-    VEHICLE_ENTRY_FLAG_21 = 1 << 21,
+    VEHICLE_ENTRY_FLAG_21 = 1 << 21,// Swinging coaster??
     VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION = 1 << 22,
     VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION = 1 << 23,             // Set on animated vehicles like the Multi-dimension coaster trains, Miniature Railway locomotives and Helicycles.
     VEHICLE_ENTRY_FLAG_RIDER_ANIMATION = 1 << 24,               // Set when the animation updates rider sprite positions
