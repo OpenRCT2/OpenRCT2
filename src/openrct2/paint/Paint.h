@@ -167,7 +167,7 @@ typedef struct paint_session
     rct_tile_element *      TrackElementOnSameHeight;
     bool                    DidPassSurface;
     uint8                   Unk141E9DB;
-    uint16                  Unk141E9DC;
+    uint16                  WaterHeight;
     uint32                  TrackColours[4];
 } paint_session;
 
