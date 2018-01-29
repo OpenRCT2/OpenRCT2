@@ -198,6 +198,8 @@ static http_response_t *http_request(const HttpRequest2 &request)
     curl_easy_setopt(curl, CURLOPT_URL, request.Url.c_str());
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &writeBuffer);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, http_request_write_func);
+    // Force resolving to IPv4 to fix issues where advertising over IPv6 does not work
+    curl_easy_setopt(curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
 
     curlResult = curl_easy_perform(curl);
 
