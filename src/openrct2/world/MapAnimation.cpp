@@ -305,7 +305,7 @@ static bool map_animation_invalidate_track_onridephoto(sint32 x, sint32 y, sint3
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        if (tileElement == NULL)
+        if (tileElement == nullptr)
             break;
         if (tileElement->base_height != baseZ)
             continue;

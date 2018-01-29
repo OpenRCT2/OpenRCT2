@@ -58,9 +58,9 @@ char * strndup(const char * src, size_t size)
     size_t len = strnlen(src, size);
     char * dst = (char *)malloc(len + 1);
 
-    if (dst == NULL)
+    if (dst == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
 
     dst      = (char *)memcpy(dst, src, len);
@@ -193,7 +193,7 @@ void platform_sleep(uint32 ms)
 
 uint8 platform_get_currency_value(const char * currCode)
 {
-    if (currCode == NULL || strlen(currCode) < 3)
+    if (currCode == nullptr || strlen(currCode) < 3)
     {
         return CURRENCY_POUNDS;
     }

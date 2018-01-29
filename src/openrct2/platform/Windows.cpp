@@ -57,11 +57,11 @@ static utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
 #define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
 
-static HMODULE _dllModule = NULL;
+static HMODULE _dllModule = nullptr;
 
 static HMODULE plaform_get_dll_module()
 {
-    if (_dllModule == NULL) {
+    if (_dllModule == nullptr) {
         _dllModule = GetModuleHandle(NULL);
     }
     return _dllModule;
@@ -69,7 +69,7 @@ static HMODULE plaform_get_dll_module()
 
 void platform_get_date_local(rct2_date *out_date)
 {
-    assert(out_date != NULL);
+    assert(out_date != nullptr);
     SYSTEMTIME systime;
 
     GetLocalTime(&systime);
@@ -81,7 +81,7 @@ void platform_get_date_local(rct2_date *out_date)
 
 void platform_get_time_local(rct2_time *out_time)
 {
-    assert(out_time != NULL);
+    assert(out_time != nullptr);
     SYSTEMTIME systime;
     GetLocalTime(&systime);
     out_time->hour = systime.wHour;
@@ -138,15 +138,15 @@ bool platform_directory_delete(const utf8 *path)
     free(wPath);
 
     SHFILEOPSTRUCTW fileop;
-    fileop.hwnd   = NULL;    // no status display
+    fileop.hwnd   = nullptr;    // no status display
     fileop.wFunc  = FO_DELETE;  // delete operation
     fileop.pFrom  = pszFrom;  // source file name as double null terminated string
-    fileop.pTo    = NULL;    // no destination needed
+    fileop.pTo    = nullptr;    // no destination needed
     fileop.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;  // do not prompt the user
 
     fileop.fAnyOperationsAborted = FALSE;
-    fileop.lpszProgressTitle     = NULL;
-    fileop.hNameMappings         = NULL;
+    fileop.lpszProgressTitle     = nullptr;
+    fileop.hNameMappings         = nullptr;
 
     sint32 ret = SHFileOperationW(&fileop);
     return (ret == 0);
@@ -158,10 +158,10 @@ bool platform_lock_single_instance()
 
     // Check if operating system mutex exists
     mutex = OpenMutex(MUTEX_ALL_ACCESS, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
-    if (mutex == NULL) {
+    if (mutex == nullptr) {
         // Create new mutex
         status = CreateMutex(NULL, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
-        if (status == NULL)
+        if (status == nullptr)
             log_error("unable to create mutex\n");
 
         return true;
@@ -545,7 +545,7 @@ utf8 * platform_get_absolute_path(const utf8 * relativePath, const utf8 * basePa
 
     if (fullPathLen == 0)
     {
-        return NULL;
+        return nullptr;
     }
 
     return widechar_to_utf8(fullPathW);
@@ -570,7 +570,7 @@ utf8* platform_get_username()
 
     DWORD usernameLength = UNLEN + 1;
     if (!GetUserName(username, &usernameLength)) {
-        return NULL;
+        return nullptr;
     }
 
     return username;
@@ -579,7 +579,7 @@ utf8* platform_get_username()
 bool platform_process_is_elevated()
 {
     BOOL isElevated = FALSE;
-    HANDLE hToken = NULL;
+    HANDLE hToken = nullptr;
     if (OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken)) {
         TOKEN_ELEVATION Elevation;
         DWORD tokenSize = sizeof(TOKEN_ELEVATION);
@@ -635,8 +635,8 @@ static bool windows_setup_file_association(
     get_progIdName(progIdNameW, extension);
 
     bool result = false;
-    HKEY hKey = NULL;
-    HKEY hRootKey = NULL;
+    HKEY hKey = nullptr;
+    HKEY hRootKey = nullptr;
 
     // [HKEY_CURRENT_USER\Software\Classes]
     if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) != ERROR_SUCCESS) {

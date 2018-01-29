@@ -2870,7 +2870,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
             }
 
             rct_tile_element *new_tile_element = tile_element_insert(curTile.x / 32, curTile.y / 32, zLow, F43887);
-            assert(new_tile_element != NULL);
+            assert(new_tile_element != nullptr);
             map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, curTile.x, curTile.y, zLow);
 
             new_tile_element->clearance_height = zHigh;

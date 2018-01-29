@@ -67,7 +67,7 @@ void platform_get_exe_path(utf8 *outPath, size_t outSize)
 #error "Platform does not support full path exe retrieval"
 #endif
     char *exeDelimiter = strrchr(exePath, *PATH_SEPARATOR);
-    if (exeDelimiter == NULL)
+    if (exeDelimiter == nullptr)
     {
         log_error("should never happen here");
         outPath[0] = '\0';
@@ -110,7 +110,7 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size) {
 
 uint16 platform_get_locale_language(){
     const char *langString = setlocale(LC_MESSAGES, "");
-    if(langString != NULL){
+    if(langString != nullptr){
         // The locale has the following form:
         // language[_territory[.codeset]][@modifier]
         // (see https://www.gnu.org/software/libc/manual/html_node/Locale-Names.html)
@@ -130,7 +130,7 @@ uint16 platform_get_locale_language(){
         pattern[length] = '\0';
         //find _ if present
         const char *strip = strchr(pattern, '_');
-        if(strip != NULL){
+        if(strip != nullptr){
             // could also use '-', but '?' is more flexible. Maybe LanguagesDescriptors will change.
             // pattern is now "language?territory"
             pattern[strip - pattern] = '?';
@@ -155,7 +155,7 @@ uint16 platform_get_locale_language(){
         }
 
         //no exact match found trying only language part
-        if(strip != NULL){
+        if(strip != nullptr){
             pattern[strip - pattern] = '*';
             pattern[strip - pattern +1] = '\0'; // pattern is now "language*"
             for(sint32 i = 1; i < LANGUAGE_COUNT; ++i){
@@ -171,7 +171,7 @@ uint16 platform_get_locale_language(){
 uint8 platform_get_locale_currency(){
     char *langstring = setlocale(LC_MONETARY, "");
 
-    if (langstring == NULL) {
+    if (langstring == nullptr) {
         return platform_get_currency_value(NULL);
     }
 
@@ -188,7 +188,7 @@ uint8 platform_get_locale_measurement_format(){
     const char *langstring = setlocale(LC_ALL, "");
     #endif
 
-    if(langstring != NULL){
+    if(langstring != nullptr){
         //using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
         if(!fnmatch("*_US*", langstring, 0) || !fnmatch("*_MM*", langstring, 0) || !fnmatch("*_LR*", langstring, 0)){
             return MEASUREMENT_FORMAT_IMPERIAL;
@@ -200,7 +200,7 @@ uint8 platform_get_locale_measurement_format(){
 bool platform_get_steam_path(utf8 * outPath, size_t outSize)
 {
     const char * steamRoot = getenv("STEAMROOT");
-    if (steamRoot != NULL)
+    if (steamRoot != nullptr)
     {
         safe_strcpy(outPath, steamRoot, outSize);
         safe_strcat_path(outPath, "steamapps/common", outSize);
@@ -209,7 +209,7 @@ bool platform_get_steam_path(utf8 * outPath, size_t outSize)
 
     char steamPath[1024] = { 0 };
     const char * localSharePath = getenv("XDG_DATA_HOME");
-    if (localSharePath != NULL)
+    if (localSharePath != nullptr)
     {
         safe_strcpy(steamPath, localSharePath, sizeof(steamPath));
         safe_strcat_path(steamPath, "Steam/steamapps/common", sizeof(steamPath));
@@ -221,7 +221,7 @@ bool platform_get_steam_path(utf8 * outPath, size_t outSize)
     }
 
     const char * homeDir = getpwuid(getuid())->pw_dir;
-    if (homeDir != NULL)
+    if (homeDir != nullptr)
     {
         safe_strcpy(steamPath, homeDir, sizeof(steamPath));
         safe_strcat_path(steamPath, ".local/share/Steam/steamapps/common", sizeof(steamPath));
@@ -246,8 +246,8 @@ bool platform_get_steam_path(utf8 * outPath, size_t outSize)
 #ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 {
-    assert(buffer != NULL);
-    assert(font != NULL);
+    assert(buffer != nullptr);
+    assert(font != nullptr);
 
     log_verbose("Looking for font %s with FontConfig.", font->font_name);
     FcConfig* config = FcInitLoadConfigAndFonts();
@@ -276,7 +276,7 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
         // to unrendered characters (tofu) when trying to render e.g. CJK characters using a
         // Western (sans-)serif font. We therefore ignore substitutions FontConfig provides,
         // and instead rely on exact matches on the fonts predefined for each font family.
-        FcChar8* matched_font_face = NULL;
+        FcChar8* matched_font_face = nullptr;
         if (FcPatternGetString(match, FC_FULLNAME, 0, &matched_font_face) == FcResultMatch &&
             strcmp(font->font_name, (const char *) matched_font_face) != 0)
         {
@@ -284,7 +284,7 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
             is_substitute = true;
         }
 
-        FcChar8* filename = NULL;
+        FcChar8* filename = nullptr;
         if (!is_substitute && FcPatternGetString(match, FC_FILE, 0, &filename) == FcResultMatch)
         {
             found = true;

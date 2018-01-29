@@ -164,7 +164,7 @@ bool track_design_save(uint8 rideIndex)
     }
 
     _trackDesign = track_design_save_to_td6(rideIndex);
-    if (_trackDesign == NULL) {
+    if (_trackDesign == nullptr) {
         context_show_error(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
         return false;
     }
@@ -322,7 +322,7 @@ static void track_design_save_add_large_scenery(sint32 x, sint32 y, rct_tile_ele
         y = y0 + offsetY;
         z = (z0 + tile->z_offset) / 8;
         tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
-        if (tileElement != NULL)
+        if (tileElement != nullptr)
         {
             if (sequence == 0)
             {
@@ -423,7 +423,7 @@ static void track_design_save_pop_tile_element(sint32 x, sint32 y, rct_tile_elem
             );
         }
         _trackSavedTileElementsCount--;
-        _trackSavedTileElements[_trackSavedTileElementsCount] = NULL;
+        _trackSavedTileElements[_trackSavedTileElementsCount] = nullptr;
     }
 }
 
@@ -503,7 +503,7 @@ static void track_design_save_remove_large_scenery(sint32 x, sint32 y, rct_tile_
         y = y0 + offsetY;
         z = (z0 + tile->z_offset) / 8;
         tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
-        if (tileElement != NULL)
+        if (tileElement != nullptr)
         {
             if (sequence == 0)
             {
@@ -789,7 +789,7 @@ static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex)
 
     if (!result) {
         track_design_dispose(td6);
-        td6 = NULL;
+        td6 = nullptr;
     }
     return td6;
 }
@@ -800,7 +800,7 @@ static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex)
  */
 static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td6)
 {
-    rct_tile_element *tileElement = NULL;
+    rct_tile_element *tileElement = nullptr;
     bool mapFound = false;
     sint16 startX = 0;
     sint16 startY = 0;
@@ -1172,7 +1172,7 @@ static size_t track_design_get_scenery_elements_count(rct_track_td6 *td6)
 {
     size_t count = 0;
     rct_td6_scenery_element *sceneryElement = td6->scenery_elements;
-    if (sceneryElement != NULL) {
+    if (sceneryElement != nullptr) {
         while (sceneryElement->scenery_object.end_flag != 0xFF) {
             count++;
             sceneryElement++;
@@ -1232,7 +1232,7 @@ bool track_design_save_to_file(const utf8 *path)
 
     // Encode TD6 data
     uint8 *encodedData = (uint8 *)malloc(0x8000);
-    assert(td6Buffer.ptr != NULL);
+    assert(td6Buffer.ptr != nullptr);
     size_t encodedDataLength = sawyercoding_encode_td6((uint8*)td6Buffer.ptr, encodedData, td6Buffer.length);
 
     // Save encoded TD6 data to file
