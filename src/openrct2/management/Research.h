@@ -91,7 +91,7 @@ enum {
     RESEARCH_CATEGORY_THRILL,
     RESEARCH_CATEGORY_WATER,
     RESEARCH_CATEGORY_SHOP,
-    RESEARCH_CATEGORY_SCENERY_GROUP
+    RESEARCH_CATEGORY_SCENERYSET
 };
 
 #ifdef __cplusplus
@@ -123,7 +123,7 @@ void research_set_funding(sint32 amount);
 void research_set_priority(sint32 activeCategories);
 void game_command_set_research_funding(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void research_finish_item(rct_research_item * researchItem);
-void research_insert(sint32 researched, sint32 rawValue, uint8 category);
+void research_insert(sint32 researched, sint32 entryIndex, sint32 category);
 void research_remove(rct_research_item * researchItem);
 
 void research_insert_ride_entry(uint8 entryIndex, bool researched);

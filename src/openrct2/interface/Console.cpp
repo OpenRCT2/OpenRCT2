@@ -1164,7 +1164,7 @@ static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
             for (sint32 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
                 rideType = rideEntry->ride_type[j];
                 if (rideType != RIDE_TYPE_NULL)
-                    research_insert(true, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | groupIndex, rideEntry->category[0]);
+                    research_insert(true, 0x10000 | (rideType << 8) | groupIndex, rideEntry->category[0]);
             }
 
             gSilentResearch = true;
@@ -1172,7 +1172,7 @@ static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
             gSilentResearch = false;
         }
         else if (objectType == OBJECT_TYPE_SCENERY_GROUP) {
-            research_insert(true, groupIndex, RESEARCH_CATEGORY_SCENERY_GROUP);
+            research_insert(true, groupIndex, RESEARCH_CATEGORY_SCENERYSET);
 
             gSilentResearch = true;
             research_reset_current_item();

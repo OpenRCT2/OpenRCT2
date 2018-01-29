@@ -434,7 +434,7 @@ void research_reset_current_item()
  *
  *  rct2: 0x006857FA
  */
-static void research_insert_unresearched(sint32 rawValue, sint32 category)
+static void research_insert_unresearched(sint32 entryIndex, sint32 category)
 {
     rct_research_item * researchItem, * researchItem2;
 
@@ -452,19 +452,19 @@ static void research_insert_unresearched(sint32 rawValue, sint32 category)
             memmove(researchItem + 1, researchItem, (researchItem2 - researchItem + 1) * sizeof(rct_research_item));
 
             // Place new item
-            researchItem->rawValue = rawValue;
-            researchItem->category = category;
+            researchItem->rawValue = entryIndex;
+            researchItem->category   = category;
             break;
         }
     }
-    while (rawValue != (researchItem++)->rawValue);
+    while (entryIndex != (researchItem++)->rawValue);
 }
 
 /**
  *
  *  rct2: 0x00685826
  */
-static void research_insert_researched(sint32 rawValue, uint8 category)
+static void research_insert_researched(sint32 entryIndex, sint32 category)
 {
     rct_research_item * researchItem, * researchItem2;
 
@@ -472,7 +472,7 @@ static void research_insert_researched(sint32 rawValue, uint8 category)
     // First check to make sure that entry is not already accounted for
     for (; researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
     {
-        if ((researchItem->rawValue & 0xFFFFFF) == (rawValue & 0xFFFFFF))
+        if (researchItem->rawValue == entryIndex)
         {
             return;
         }
@@ -491,12 +491,12 @@ static void research_insert_researched(sint32 rawValue, uint8 category)
             memmove(researchItem + 1, researchItem, (researchItem2 - researchItem + 1) * sizeof(rct_research_item));
 
             // Place new item
-            researchItem->rawValue = rawValue;
-            researchItem->category = category;
+            researchItem->rawValue = entryIndex;
+            researchItem->category   = category;
             break;
         }
     }
-    while (rawValue != (researchItem++)->rawValue);
+    while (entryIndex != (researchItem++)->rawValue);
 }
 
 /**
@@ -520,15 +520,15 @@ void research_remove(rct_research_item * researchItem)
     }
 }
 
-void research_insert(sint32 researched, sint32 rawValue, uint8 category)
+void research_insert(sint32 researched, sint32 entryIndex, sint32 category)
 {
     if (researched)
     {
-        research_insert_researched(rawValue, category);
+        research_insert_researched(entryIndex, category);
     }
     else
     {
-        research_insert_unresearched(rawValue, category);
+        research_insert_unresearched(entryIndex, category);
     }
 }
 
@@ -567,7 +567,7 @@ void research_populate_list_random()
         }
 
         sint32 researched = (scenario_rand() & 0xFF) > 85;
-        research_insert(researched, i, RESEARCH_CATEGORY_SCENERY_GROUP);
+        research_insert(researched, i, RESEARCH_CATEGORY_SCENERYSET);
     }
 }
 
@@ -600,7 +600,7 @@ void research_populate_list_researched()
             continue;
         }
 
-        research_insert(true, i, RESEARCH_CATEGORY_SCENERY_GROUP);
+        research_insert(true, i, RESEARCH_CATEGORY_SCENERYSET);
     }
 }
 
@@ -665,7 +665,7 @@ void research_insert_ride_entry(uint8 entryIndex, bool researched)
 
 void research_insert_scenery_group_entry(uint8 entryIndex, bool researched)
 {
-    research_insert(researched, entryIndex, RESEARCH_CATEGORY_SCENERY_GROUP);
+    research_insert(researched, entryIndex, RESEARCH_CATEGORY_SCENERYSET);
 }
 
 bool ride_type_is_invented(sint32 rideType)
