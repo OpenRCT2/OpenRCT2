@@ -124,13 +124,13 @@ static void * _crowdSoundChannel = nullptr;
 
 static void   sub_68F41A(rct_peep * peep, sint32 index);
 static void   peep_update(rct_peep * peep);
-static sint32 peep_has_empty_container(rct_peep * peep);
-static sint32 peep_has_drink(rct_peep * peep);
+static bool   peep_has_empty_container(rct_peep * peep);
+static bool   peep_has_drink(rct_peep * peep);
 static sint32 peep_has_food_standard_flag(rct_peep * peep);
 static sint32 peep_has_food_extra_flag(rct_peep * peep);
 static sint32 peep_empty_container_standard_flag(rct_peep * peep);
 static sint32 peep_empty_container_extra_flag(rct_peep * peep);
-static sint32 peep_should_find_bench(rct_peep * peep);
+static bool   peep_should_find_bench(rct_peep * peep);
 static void   peep_stop_purchase_thought(rct_peep * peep, uint8 ride_type);
 static void   peep_switch_to_next_action_sprite_type(rct_peep * peep);
 static sint32 peep_perform_next_action(rct_peep * peep);
@@ -1227,7 +1227,7 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
                 /* Peep happiness is affected once the peep has been waiting
                  * too long in a queue. */
                 rct_tile_element * tileElement = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
-                uint8             found      = 0;
+                bool               found       = false;
                 do
                 {
                     if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_PATH)
@@ -1242,7 +1242,7 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
                         rct_scenery_entry * sceneryEntry     = get_footpath_item_entry(pathSceneryIndex);
                         if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN)
                         {
-                            found = 1;
+                            found = true;
                         }
                     }
                     break;
@@ -1460,14 +1460,14 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
  * rct2: 0x68F3AE
  * Set peep state to falling if path below has gone missing, return 1 if current path is valid, 0 if peep starts falling
  */
-static sint32 checkForPath(rct_peep * peep)
+static bool checkForPath(rct_peep * peep)
 {
     peep->var_C4++;
     if ((peep->var_C4 & 0xF) != (peep->sprite_index & 0xF))
     {
         // This condition makes the check happen less often so the peeps hover for a short,
         // random time when a path below them has been deleted
-        return 1;
+        return true;
     }
 
     rct_tile_element * tile_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
@@ -1487,7 +1487,7 @@ static sint32 checkForPath(rct_peep * peep)
             if (z == tile_element->base_height)
             {
                 // Found a suitable path
-                return 1;
+                return true;
             }
         }
     } while (!tile_element_is_last_for_tile(tile_element++));
@@ -1496,7 +1496,7 @@ static sint32 checkForPath(rct_peep * peep)
     peep_decrement_num_riders(peep);
     peep->state = PEEP_STATE_FALLING;
     peep_window_state_update(peep);
-    return 0;
+    return false;
 }
 
 static uint8 peep_get_action_sprite_type(rct_peep * peep)
@@ -8468,17 +8468,17 @@ static sint32 peep_has_food_extra_flag(rct_peep * peep)
  * To simplify check of 0x36BA3E0 and 0x11FF78
  * returns 0 on no food.
  */
-sint32 peep_has_food(rct_peep * peep)
+bool peep_has_food(rct_peep * peep)
 {
     return peep_has_food_standard_flag(peep) || peep_has_food_extra_flag(peep);
 }
 
-static sint32 peep_has_drink_standard_flag(rct_peep * peep)
+static bool peep_has_drink_standard_flag(rct_peep * peep)
 {
     return peep->item_standard_flags & (PEEP_ITEM_DRINK | PEEP_ITEM_COFFEE | PEEP_ITEM_LEMONADE);
 }
 
-static sint32 peep_has_drink_extra_flag(rct_peep * peep)
+static bool peep_has_drink_extra_flag(rct_peep * peep)
 {
     return peep->item_extra_flags &
            (PEEP_ITEM_CHOCOLATE | PEEP_ITEM_ICED_TEA | PEEP_ITEM_FRUIT_JUICE | PEEP_ITEM_SOYBEAN_MILK | PEEP_ITEM_SU_JONGKWA);
@@ -8488,7 +8488,7 @@ static sint32 peep_has_drink_extra_flag(rct_peep * peep)
  * To simplify check of NOT(0x12BA3C0 and 0x118F48)
  * returns 0 on no food.
  */
-static sint32 peep_has_drink(rct_peep * peep)
+static bool peep_has_drink(rct_peep * peep)
 {
     return peep_has_drink_standard_flag(peep) || peep_has_drink_extra_flag(peep);
 }
@@ -8505,13 +8505,13 @@ static sint32 peep_empty_container_extra_flag(rct_peep * peep)
            (PEEP_ITEM_EMPTY_BOWL_RED | PEEP_ITEM_EMPTY_DRINK_CARTON | PEEP_ITEM_EMPTY_JUICE_CUP | PEEP_ITEM_EMPTY_BOWL_BLUE);
 }
 
-static sint32 peep_has_empty_container(rct_peep * peep)
+static bool peep_has_empty_container(rct_peep * peep)
 {
     return peep_empty_container_standard_flag(peep) || peep_empty_container_extra_flag(peep);
 }
 
 /* Simplifies 0x690582. Returns 1 if should find bench*/
-static sint32 peep_should_find_bench(rct_peep * peep)
+static bool peep_should_find_bench(rct_peep * peep)
 {
     if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
     {
@@ -8521,21 +8521,21 @@ static sint32 peep_should_find_bench(rct_peep * peep)
             {
                 if (!(peep->next_var_29 & 0x1C))
                 {
-                    return 1;
+                    return true;
                 }
             }
         }
         if (peep->nausea <= 170 && peep->energy > 50)
         {
-            return 0;
+            return false;
         }
 
         if (!(peep->next_var_29 & 0x1C))
         {
-            return 1;
+            return true;
         }
     }
-    return 0;
+    return false;
 }
 
 /**
@@ -8952,7 +8952,7 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
         sint16 next_y = (y & 0xFFE0) + TileDirectionDelta[entranceDirection].y;
 
         // Make sure there is a path right behind the entrance, otherwise turn around
-        uint8             found          = 0;
+        bool               found           = 0;
         rct_tile_element * nextTileElement = map_get_first_element_at(next_x / 32, next_y / 32);
         do
         {
@@ -8971,7 +8971,7 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
                     {
                         continue;
                     }
-                    found = 1;
+                    found = true;
                     break;
                 }
 
@@ -8980,7 +8980,7 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
 
                 if (z - 2 != nextTileElement->base_height)
                     continue;
-                found = 1;
+                found = true;
                 break;
             }
             else
@@ -8989,7 +8989,7 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
                 {
                     continue;
                 }
-                found = 1;
+                found = true;
                 break;
             }
         } while (!tile_element_is_last_for_tile(nextTileElement++));
@@ -10010,7 +10010,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
     }
 
     /* Get the next map element of interest in the direction of test_edge. */
-    bool              found      = false;
+    bool                found      = false;
     rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
     if (tileElement == nullptr)
     {

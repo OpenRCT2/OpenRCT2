@@ -763,7 +763,7 @@ sint32     peep_check_easteregg_name(sint32 index, rct_peep * peep);
 sint32     peep_get_easteregg_name_id(rct_peep * peep);
 sint32     peep_is_mechanic(rct_peep * peep);
 bool       peep_has_item(rct_peep * peep, sint32 peepItem);
-sint32     peep_has_food(rct_peep * peep);
+bool       peep_has_food(rct_peep * peep);
 void       peep_pickup(rct_peep * peep);
 void       peep_pickup_abort(rct_peep * peep, sint32 old_x);
 bool       peep_pickup_place(rct_peep * peep, sint32 x, sint32 y, sint32 z, bool apply);
