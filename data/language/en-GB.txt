@@ -4524,6 +4524,7 @@ STR_6214    :Skyscraper B
 STR_6215    :Construction
 STR_6216    :Operation
 STR_6217    :Ride / track availability
+STR_6218    :OpenRCT2 Official
 
 #############
 # Scenarios #
