@@ -1425,10 +1425,21 @@ static void filter_update_counts()
 static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item)
 {
     rct_string_id result = STR_NONE;
-    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++) {
+    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    {
         uint8 rideType = item->RideType[i];
-        if (rideType != RIDE_TYPE_NULL) {
-            result = RideNaming[rideType].name;
+        if (rideType != RIDE_TYPE_NULL)
+        {
+            if (RideGroupManager::RideTypeHasRideGroups(rideType))
+            {
+                const RideGroup * rideGroup = RideGroupManager::RideGroupFind(rideType, item->RideGroupIndex);
+                result = rideGroup->Naming.name;
+            }
+            else
+            {
+                result = RideNaming[rideType].name;
+            }
+
             break;
         }
     }
