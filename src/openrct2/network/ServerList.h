@@ -23,12 +23,12 @@ struct server_entry
 {
     std::string address;
     std::string name;
-    bool        requiresPassword;
     std::string description;
     std::string version;
-    bool        favourite;
-    uint8       players;
-    uint8       maxplayers;
+    bool        requiresPassword    = false;
+    bool        favourite           = false;
+    uint8       players             = 0;
+    uint8       maxplayers          = 0;
 };
 
 std::vector<server_entry> server_list_read();

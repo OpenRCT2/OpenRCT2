@@ -126,14 +126,15 @@ static void server_list_get_item_button(sint32 buttonIndex, sint32 x, sint32 y, 
 static void server_list_load_server_entries();
 static void server_list_save_server_entries();
 static void dispose_server_entry_list();
-static server_entry* add_server_entry(char *address);
+static server_entry & add_server_entry(const std::string &address);
 static void remove_server_entry(sint32 index);
 static void sort_servers();
-static void join_server(char *address);
+static void join_server(std::string address);
 static void fetch_servers();
 #ifndef DISABLE_HTTP
 static void fetch_servers_callback(http_response_t* response);
 #endif
+static bool is_version_valid(const std::string &version);
 
 rct_window * window_server_list_open()
 {
@@ -187,25 +188,32 @@ static void window_server_list_close(rct_window *w)
 
 static void window_server_list_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_CLOSE:
         window_close(w);
         break;
     case WIDX_PLAYER_NAME_INPUT:
         window_start_textbox(w, widgetIndex, STR_STRING, _playerName, 63);
         break;
-    case WIDX_LIST:{
-        sint32 serverIndex = w->selected_list_item;
-        if (serverIndex >= 0 && serverIndex < _serverEntries.size()) {
-            if (_serverEntries[serverIndex].version != NETWORK_STREAM_ID && _serverEntries[serverIndex].version != "") {
-                set_format_arg(0, void *, _serverEntries[serverIndex].version.c_str());
-                context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
-                break;
+    case WIDX_LIST:
+        {
+            sint32 serverIndex = w->selected_list_item;
+            if (serverIndex >= 0 && serverIndex < _serverEntries.size())
+            {
+                const auto &server = _serverEntries[serverIndex];
+                if (is_version_valid(server.version))
+                {
+                    join_server(server.address);
+                }
+                else
+                {
+                    set_format_arg(0, void *, server.version.c_str());
+                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
+                }
             }
-            char *serverAddress = _strdup(_serverEntries[serverIndex].address.c_str());
-            join_server(serverAddress);
+            break;
         }
-        }break;
     case WIDX_FETCH_SERVERS:
         fetch_servers();
         break;
@@ -225,28 +233,31 @@ static void window_server_list_resize(rct_window *w)
 
 static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
-    sint32 serverIndex = w->selected_list_item;
-    if (serverIndex < 0) return;
-    if (serverIndex >= _serverEntries.size()) return;
-
-    char *serverAddress = _strdup(_serverEntries[serverIndex].address.c_str());
-
-    switch (dropdownIndex) {
-    case DDIDX_JOIN:
-        if (_serverEntries[serverIndex].version != NETWORK_STREAM_ID && _serverEntries[serverIndex].version != "") {
-            set_format_arg(0, void *, _serverEntries[serverIndex].version.c_str());
-            context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
+    auto serverIndex = w->selected_list_item;
+    if (serverIndex >= 0 && serverIndex < _serverEntries.size())
+    {
+        auto &server = _serverEntries[serverIndex];
+        switch (dropdownIndex)
+        {
+        case DDIDX_JOIN:
+            if (is_version_valid(server.address))
+            {
+                join_server(server.address);
+            }
+            else
+            {
+                set_format_arg(0, void *, _serverEntries[serverIndex].version.c_str());
+                context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
+            }
+            break;
+        case DDIDX_FAVOURITE:
+            {
+                std::lock_guard<std::mutex> guard(_mutex);
+                server.favourite = !server.favourite;
+                server_list_save_server_entries();
+            }
             break;
         }
-        join_server(serverAddress);
-        break;
-    case DDIDX_FAVOURITE:
-        {
-            std::lock_guard<std::mutex> guard(_mutex);
-            _serverEntries[serverIndex].favourite = !_serverEntries[serverIndex].favourite;
-            server_list_save_server_entries();
-        }
-        break;
     }
 }
 
@@ -350,8 +361,8 @@ static void window_server_list_textinput(rct_window *w, rct_widgetindex widgetIn
     case WIDX_ADD_SERVER:
         {
             std::lock_guard<std::mutex> guard(_mutex);
-            server_entry * entry = add_server_entry(text);
-            entry->favourite = true;
+            auto &entry = add_server_entry(text);
+            entry.favourite = true;
             sort_servers();
             server_list_save_server_entries();
         }
@@ -524,27 +535,25 @@ static void dispose_server_entry_list()
     _serverEntries.shrink_to_fit();
 }
 
-static server_entry* add_server_entry(char *address)
+static server_entry & add_server_entry(const std::string &address)
 {
-    for (sint32 i = 0; i < _serverEntries.size(); i++)
-    {
-        if (_serverEntries[i].address == address)
+    auto entry = std::find_if(
+        std::begin(_serverEntries),
+        std::end(_serverEntries),
+        [address](const server_entry &entry)
         {
-            return &_serverEntries[i];
-        }
+            return entry.address == address;
+        });
+    if (entry != _serverEntries.end())
+    {
+        return *entry;
     }
 
     server_entry newserver;
-    newserver.address = _strdup(address);
-    newserver.name = _strdup(address);
-    newserver.requiresPassword = false;
-    newserver.description = _strdup("");
-    newserver.version = _strdup("");
-    newserver.favourite = false;
-    newserver.players = 0;
-    newserver.maxplayers = 0;
+    newserver.address = address;
+    newserver.name = address;
     _serverEntries.push_back(newserver);
-    return &_serverEntries.back();
+    return _serverEntries.back();
 }
 
 static void remove_server_entry(sint32 index)
@@ -586,42 +595,30 @@ static void sort_servers()
     qsort(_serverEntries.data(), _serverEntries.size(), sizeof(server_entry), server_compare);
 }
 
-static char *substr(char *start, sint32 length)
-{
-    char *result = (char *)malloc(length + 1);
-    memcpy(result, start, length);
-    result[length] = 0;
-    return result;
-}
-
-static void join_server(char *address)
+static void join_server(std::string address)
 {
     sint32 port = gConfigNetwork.default_port;
-
-    bool addresscopied = false;
-
-    char *endbracket = strrchr(address, ']');
-    char *startbracket = strrchr(address, '[');
-    char *dot = strchr(address, '.');
-
-    char *colon = strrchr(address, ':');
-    if (colon != nullptr && (endbracket != nullptr || dot != nullptr)) {
-        address = substr(address, (sint32)(colon - address));
-        sscanf(colon + 1, "%d", &port);
-        addresscopied = true;
+    auto beginBracketIndex = address.find('[');
+    auto endBracketIndex = address.find(']');
+    auto dotIndex = address.find('.');
+    auto colonIndex = address.find_last_of(':');
+    if (colonIndex != std::string::npos)
+    {
+        if (endBracketIndex != std::string::npos || dotIndex != std::string::npos)
+        {
+            std::sscanf(&address[colonIndex + 1], "%d", &port);
+            address = address.substr(0, colonIndex);
+        }
     }
 
-    if (startbracket && endbracket) {
-        address = substr(startbracket + 1, (sint32)(endbracket - startbracket - 1));
-        addresscopied = true;
+    if (beginBracketIndex != std::string::npos && endBracketIndex != std::string::npos)
+    {
+        address = address.substr(beginBracketIndex + 1, endBracketIndex - beginBracketIndex - 1);
     }
 
-    if (!network_begin_client(address, port)) {
+    if (!network_begin_client(address.c_str(), port))
+    {
         context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE);
-    }
-
-    if (addresscopied) {
-        free(address);
     }
 }
 
@@ -725,18 +722,16 @@ static void fetch_servers_callback(http_response_t* response)
             continue;
         }
 
-        char address[256];
-        snprintf(address, sizeof(address), "%s:%d", json_string_value(addressIp), (sint32)json_integer_value(port));
-
+        auto address = String::StdFormat("%s:%d", json_string_value(addressIp), (sint32)json_integer_value(port));
         {
             std::lock_guard<std::mutex> guard(_mutex);
-            server_entry* newserver = add_server_entry(address);
-            newserver->name = json_string_value(name);
-            newserver->requiresPassword = json_is_true(requiresPassword);
-            newserver->description = (description == nullptr ? "" : json_string_value(description));
-            newserver->version = json_string_value(version);
-            newserver->players = (uint8)json_integer_value(players);
-            newserver->maxplayers = (uint8)json_integer_value(maxPlayers);
+            auto &newserver = add_server_entry(address);
+            newserver.name = json_string_value(name);
+            newserver.requiresPassword = json_is_true(requiresPassword);
+            newserver.description = (description == nullptr ? "" : json_string_value(description));
+            newserver.version = json_string_value(version);
+            newserver.players = (uint8)json_integer_value(players);
+            newserver.maxplayers = (uint8)json_integer_value(maxPlayers);
         }
     }
     http_request_dispose(response);
@@ -748,3 +743,8 @@ static void fetch_servers_callback(http_response_t* response)
     window_invalidate_by_class(WC_SERVER_LIST);
 }
 #endif
+
+static bool is_version_valid(const std::string &version)
+{
+    return version.empty() || version == NETWORK_STREAM_ID;
+}
