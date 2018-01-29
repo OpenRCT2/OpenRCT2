@@ -2636,7 +2636,7 @@ static void peep_go_to_ride_entrance(rct_peep * peep, Ride * ride)
     if (rideEntry != nullptr)
     {
         if (rideEntry->vehicles[rideEntry->default_vehicle].flags & VEHICLE_ENTRY_FLAG_MINI_GOLF ||
-            rideEntry->vehicles[rideEntry->default_vehicle].flags & (VEHICLE_ENTRY_FLAG_CHAIR_LIFT | VEHICLE_ENTRY_FLAG_GO_KART))
+            rideEntry->vehicles[rideEntry->default_vehicle].flags & (VEHICLE_ENTRY_FLAG_CHAIRLIFT | VEHICLE_ENTRY_FLAG_GO_KART))
         {
             shift_multiplier = 32;
         }
@@ -2877,7 +2877,7 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
         {
             uint8 vehicle = ride_entry->default_vehicle;
             if (ride_entry->vehicles[vehicle].flags & VEHICLE_ENTRY_FLAG_MINI_GOLF ||
-                ride_entry->vehicles[vehicle].flags & (VEHICLE_ENTRY_FLAG_CHAIR_LIFT | VEHICLE_ENTRY_FLAG_GO_KART))
+                ride_entry->vehicles[vehicle].flags & (VEHICLE_ENTRY_FLAG_CHAIRLIFT | VEHICLE_ENTRY_FLAG_GO_KART))
             {
                 distanceThreshold = 28;
             }
@@ -3117,7 +3117,7 @@ static void peep_go_to_ride_exit(rct_peep * peep, Ride * ride, sint16 x, sint16 
     {
         rct_ride_entry_vehicle * vehicle_entry = &rideEntry->vehicles[rideEntry->default_vehicle];
         if (vehicle_entry->flags & VEHICLE_ENTRY_FLAG_MINI_GOLF ||
-            vehicle_entry->flags & (VEHICLE_ENTRY_FLAG_CHAIR_LIFT | VEHICLE_ENTRY_FLAG_GO_KART))
+            vehicle_entry->flags & (VEHICLE_ENTRY_FLAG_CHAIRLIFT | VEHICLE_ENTRY_FLAG_GO_KART))
         {
             shift_multiplier = 32;
         }
@@ -3494,7 +3494,7 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
                     shift_multiplier = 9;
                 }
 
-                if (vehicle_entry->flags & (VEHICLE_ENTRY_FLAG_CHAIR_LIFT | VEHICLE_ENTRY_FLAG_GO_KART))
+                if (vehicle_entry->flags & (VEHICLE_ENTRY_FLAG_CHAIRLIFT | VEHICLE_ENTRY_FLAG_GO_KART))
                 {
                     direction = ((vehicle->sprite_direction + 3) / 8) + 1;
                     direction &= 3;
@@ -3642,7 +3642,7 @@ static void peep_update_ride_prepare_for_state_9(rct_peep * peep)
     if (ride_type != nullptr)
     {
         rct_ride_entry_vehicle * vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
-        if (vehicle_entry->flags & (VEHICLE_ENTRY_FLAG_CHAIR_LIFT | VEHICLE_ENTRY_FLAG_GO_KART))
+        if (vehicle_entry->flags & (VEHICLE_ENTRY_FLAG_CHAIRLIFT | VEHICLE_ENTRY_FLAG_GO_KART))
         {
             shift_multiplier = 32;
         }
@@ -3888,7 +3888,7 @@ static void peep_update_ride_sub_state_13(rct_peep * peep)
 
     rct_ride_entry *         ride_type     = get_ride_entry(ride->subtype);
     rct_ride_entry_vehicle * vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
-    if (vehicle_entry->flags & (VEHICLE_ENTRY_FLAG_CHAIR_LIFT | VEHICLE_ENTRY_FLAG_GO_KART))
+    if (vehicle_entry->flags & (VEHICLE_ENTRY_FLAG_CHAIRLIFT | VEHICLE_ENTRY_FLAG_GO_KART))
     {
         shift_multiplier = 32;
     }
