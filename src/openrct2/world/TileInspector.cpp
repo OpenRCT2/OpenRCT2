@@ -606,6 +606,9 @@ sint32 tile_inspector_entrance_make_usable(sint32 x, sint32 y, sint32 elementInd
         case ENTRANCE_TYPE_RIDE_EXIT:
             ride->exits[stationIndex].x = x;
             ride->exits[stationIndex].y = y;
+
+            // TODO: Remove once mechanics don't assume exits always match the station heights
+            ride->station_heights[stationIndex] = entranceElement->base_height;
             break;
         }
 
