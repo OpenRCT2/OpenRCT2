@@ -262,6 +262,10 @@ rct_ride_measurement *get_ride_measurement(sint32 index)
 
 rct_ride_entry * get_ride_entry_by_ride(Ride *ride)
 {
+    if (ride == nullptr)
+    {
+        return nullptr;
+    }
     rct_ride_entry *type = get_ride_entry(ride->subtype);
     if (type == nullptr)
     {
@@ -544,7 +548,7 @@ bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 ri
     if (tileElement == nullptr){
         output->element = nullptr;
         output->x = LOCATION_NULL;
-        return 0;
+        return false;
     }
 
     do{
@@ -576,7 +580,7 @@ bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 ri
         output->x = x;
         output->y = y;
         output->element = tileElement;
-        return 1;
+        return true;
     } while (!tile_element_is_last_for_tile(tileElement++));
 
     if (direction != nullptr) *direction = direction_start;
@@ -584,7 +588,7 @@ bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 ri
     output->x = x;
     output->y = y;
     output->element = --tileElement;
-    return 0;
+    return false;
 }
 
 /**
@@ -668,7 +672,7 @@ bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 ride
         outTrackBeginEnd->end_y = y;
         outTrackBeginEnd->begin_element = nullptr;
         outTrackBeginEnd->begin_direction = directionStart ^ (1 << 1);
-        return 0;
+        return false;
     }
 
     do{
@@ -730,7 +734,7 @@ bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 ride
 
         outTrackBeginEnd->begin_direction = nextRotation;
         outTrackBeginEnd->end_direction = directionStart ^ (1 << 1);
-        return 1;
+        return true;
     } while (!tile_element_is_last_for_tile(tileElement++));
 
     outTrackBeginEnd->end_x = x;
@@ -738,7 +742,7 @@ bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 ride
     outTrackBeginEnd->begin_z = z;
     outTrackBeginEnd->begin_element = nullptr;
     outTrackBeginEnd->end_direction = directionStart ^ (1 << 1);
-    return 0;
+    return false;
 }
 
 /**
@@ -800,7 +804,7 @@ bool track_block_get_previous(sint32 x, sint32 y, rct_tile_element *tileElement,
  * bx result y
  * esi input / output map element
  */
-sint32 ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
+bool ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
 {
     rct_window *w;
     Ride *ride;
@@ -810,9 +814,13 @@ sint32 ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
     assert(tile_element_get_type(input->element) == TILE_ELEMENT_TYPE_TRACK);
     rideIndex = track_element_get_ride_index(input->element);
     ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return false;
+    }
 
     if (ride->type == RIDE_TYPE_MAZE)
-        return 0;
+        return false;
 
     w = window_find_by_class(WC_RIDE_CONSTRUCTION);
     if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
@@ -824,7 +832,7 @@ sint32 ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
     while (track_circuit_iterator_next(&it)) {
         if (!track_is_connected_by_shape(it.last.element, it.current.element)) {
             *output = it.current;
-            return 1;
+            return true;
         }
         //#2081: prevent an infinite loop
         counter = !counter;
@@ -835,17 +843,17 @@ sint32 ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
                 slowIt.current.x == it.current.x &&
                 slowIt.current.y == it.current.y) {
                 *output = it.current;
-                return 1;
+                return true;
             }
         }
 
     }
     if (!it.looped) {
         *output = it.last;
-        return 1;
+        return true;
     }
 
-    return 0;
+    return false;
 }
 
 /**
@@ -855,6 +863,11 @@ sint32 ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
 void ride_get_status(sint32 rideIndex, rct_string_id *formatSecondary, sint32 *argument)
 {
     Ride *ride = get_ride(rideIndex);
+
+    if (ride == nullptr)
+    {
+        return;
+    }
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED) {
         *formatSecondary = STR_CRASHED;
@@ -1044,6 +1057,10 @@ void ride_construct(sint32 rideIndex)
  */
 static void ride_remove_cable_lift(Ride *ride)
 {
+    if (ride == nullptr)
+    {
+        return;
+    }
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT) {
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CABLE_LIFT;
         uint16 spriteIndex = ride->cable_lift;
@@ -1089,10 +1106,11 @@ static void ride_remove_vehicles(Ride *ride)
  */
 void ride_clear_for_construction(sint32 rideIndex)
 {
-    Ride *ride;
-    rct_window *w;
-
-    ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
 
     ride_measurement_clear(ride);
 
@@ -1109,7 +1127,7 @@ void ride_clear_for_construction(sint32 rideIndex)
     ride_remove_cable_lift(ride);
     ride_remove_vehicles(ride);
 
-    w = window_find_by_number(WC_RIDE, rideIndex);
+    rct_window * w = window_find_by_number(WC_RIDE, rideIndex);
     if (w != nullptr)
         window_event_resize_call(w);
 }
@@ -1374,6 +1392,10 @@ void ride_remove_provisional_track_piece()
     z = _unkF440C5.z;
 
     ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
     if (ride->type == RIDE_TYPE_MAZE) {
         sint32 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
         game_do_command(x     , flags | (0 << 8), y     , rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
@@ -1469,9 +1491,11 @@ void ride_construction_invalidate_current_track()
  */
 static void ride_construction_reset_current_piece()
 {
-    Ride *ride;
-
-    ride = get_ride(_currentRideIndex);
+    Ride * ride = get_ride(_currentRideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK) || ride->num_stations == 0) {
         _currentTrackCurve = RideConstructionDefaultTrackType[ride->type] | 0x100;
         _currentTrackSlopeEnd = 0;
@@ -1935,7 +1959,7 @@ sint32 ride_modify(rct_xy_element *input)
  *
  *  rct2: 0x006CC3FB
  */
-sint32 ride_initialise_construction_window(sint32 rideIndex)
+bool ride_initialise_construction_window(sint32 rideIndex)
 {
     Ride *ride;
     rct_window *w;
@@ -1944,7 +1968,7 @@ sint32 ride_initialise_construction_window(sint32 rideIndex)
     ride = get_ride(rideIndex);
 
     if (!ride_check_if_construction_allowed(ride))
-        return 0;
+        return false;
 
     ride_clear_for_construction(rideIndex);
     ride_remove_peeps(rideIndex);
@@ -1955,6 +1979,10 @@ sint32 ride_initialise_construction_window(sint32 rideIndex)
     input_set_flag(INPUT_FLAG_6, true);
 
     ride = get_ride(_currentRideIndex);
+    if (ride == nullptr)
+    {
+        return false;
+    }
 
     _currentTrackCurve = RideConstructionDefaultTrackType[ride->type] | 0x100;
     _currentTrackSlopeEnd = 0;
@@ -1974,7 +2002,7 @@ sint32 ride_initialise_construction_window(sint32 rideIndex)
     _rideConstructionArrowPulseTime = 0;
 
     window_ride_construction_update_active_elements();
-    return 1;
+    return true;
 }
 
 #pragma endregion
@@ -2428,6 +2456,10 @@ void ride_prepare_breakdown(sint32 rideIndex, sint32 breakdownReason)
     rct_vehicle *vehicle;
 
     ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         return;
 
@@ -2500,6 +2532,10 @@ void ride_prepare_breakdown(sint32 rideIndex, sint32 breakdownReason)
 void ride_breakdown_add_news_item(sint32 rideIndex)
 {
     Ride *ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
 
     set_format_arg(0, rct_string_id, ride->name);
     set_format_arg(2, uint32, ride->name_arguments);
@@ -2840,12 +2876,15 @@ static void ride_music_update(sint32 rideIndex)
  */
 void ride_measurement_clear(Ride *ride)
 {
-    rct_ride_measurement *measurement;
+    if (ride == nullptr)
+    {
+        return;
+    }
 
     if (ride->measurement_index == 255)
         return;
 
-    measurement = get_ride_measurement(ride->measurement_index);
+    rct_ride_measurement * measurement = get_ride_measurement(ride->measurement_index);
     measurement->ride_index = 255;
     ride->measurement_index = 255;
 }
@@ -2862,6 +2901,10 @@ static void ride_measurement_update(rct_ride_measurement *measurement)
     sint32 velocity, altitude, verticalG, lateralG;
 
     ride = get_ride(measurement->ride_index);
+    if (ride == nullptr)
+    {
+        return;
+    }
     spriteIndex = ride->vehicles[measurement->vehicle_index];
     if (spriteIndex == SPRITE_INDEX_NULL)
         return;
@@ -2998,6 +3041,11 @@ static sint32 ride_get_free_measurement()
 rct_ride_measurement *ride_get_measurement(sint32 rideIndex, rct_string_id *message)
 {
     Ride *ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        if (message != nullptr) *message = STR_INVALID_RIDE_TYPE;
+        return nullptr;
+    }
 
     // Check if ride type supports data logging
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING)) {
@@ -3025,7 +3073,13 @@ rct_ride_measurement *ride_get_measurement(sint32 rideIndex, rct_string_id *mess
 
             i = lruIndex;
             measurement = get_ride_measurement(i);
-            get_ride(measurement->ride_index)->measurement_index = 255;
+            Ride * measuredRide = get_ride(measurement->ride_index);
+            if (measuredRide == nullptr)
+            {
+                if (message != nullptr) *message = STR_INVALID_RIDE_TYPE;
+                return nullptr;
+            }
+            measuredRide->measurement_index = 255;
         } else {
             measurement = get_ride_measurement(i);
         }
@@ -3126,7 +3180,15 @@ sint32 ride_get_unused_preset_vehicle_colour(uint8 ride_type, uint8 ride_sub_typ
  */
 void ride_set_vehicle_colours_to_random_preset(Ride *ride, uint8 preset_index)
 {
+    if (ride == nullptr)
+    {
+        return;
+    }
     rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
+    if (rideEntry == nullptr)
+    {
+        return;
+    }
     vehicle_colour_preset_list *presetList = rideEntry->vehicle_preset_list;
 
     if (presetList->count != 0 && presetList->count != 255) {
@@ -3324,6 +3386,10 @@ static void ride_track_set_map_tooltip(rct_tile_element *tileElement)
 
     rideIndex = track_element_get_ride_index(tileElement);
     ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
 
     set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
     set_map_tooltip_format_arg(2, rct_string_id, ride->name);
@@ -3631,7 +3697,7 @@ void ride_music_update_final()
         // TODO Allow circus music (CSS24) to play if ride music is disabled (that should be sound)
         if (!gGameSoundsOff && gConfigSound.ride_music_enabled && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         {
-            while (1)
+            while (true)
             {
                 sint32 v8 = 0;
                 sint32 v9 = 1;
@@ -4164,6 +4230,10 @@ static bool ride_check_track_contains_inversions(rct_xy_element *input, rct_xy_e
 {
     sint32 rideIndex = track_element_get_ride_index(input->element);
     Ride *ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return false;
+    }
     if (ride->type == RIDE_TYPE_MAZE)
         return true;
 
@@ -4195,6 +4265,10 @@ static bool ride_check_track_contains_banked(rct_xy_element *input, rct_xy_eleme
 {
     sint32 rideIndex = track_element_get_ride_index(input->element);
     Ride *ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return false;
+    }
     if (ride->type == RIDE_TYPE_MAZE)
         return true;
 
@@ -4414,6 +4488,10 @@ static void ride_set_block_points(rct_xy_element *startElement)
 static void ride_set_start_finish_points(sint32 rideIndex, rct_xy_element *startElement)
 {
     Ride *ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
 
     switch (ride->type) {
     case RIDE_TYPE_BOAT_HIRE:
@@ -4479,6 +4557,10 @@ static rct_vehicle *vehicle_create_car(
     Ride *ride = get_ride(rideIndex);
     rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
     rct_ride_entry_vehicle *vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
+    if (vehicleEntry == nullptr)
+    {
+        return nullptr;
+    }
 
     rct_vehicle *vehicle = (rct_vehicle*)create_sprite(1);
     vehicle->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
@@ -4667,6 +4749,10 @@ static train_ref vehicle_create_train(sint32 rideIndex, sint32 x, sint32 y, sint
 static void vehicle_create_trains(sint32 rideIndex, sint32 x, sint32 y, sint32 z, rct_tile_element *tileElement)
 {
     Ride *ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
     train_ref firstTrain = { nullptr }, lastTrain = { nullptr };
     sint32 remainingDistance = 0;
 
@@ -5014,6 +5100,11 @@ static bool ride_initialise_cable_lift_track(Ride *ride, bool isApplying)
 static bool ride_create_cable_lift(sint32 rideIndex, bool isApplying)
 {
     Ride *ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        gGameCommandErrorText = STR_INVALID_RIDE_TYPE;
+        return false;
+    }
 
     if (ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED &&
         ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT
@@ -5178,30 +5269,30 @@ static rct_tile_element *loc_6B4F6B(sint32 rideIndex, sint32 x, sint32 y)
     return nullptr;
 }
 
-sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sint32 isApplying)
+bool ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sint32 isApplying)
 {
     sint32 stationIndex;
     Ride *ride;
     rct_xy_element trackElement, problematicTrackElement = { 0 };
 
     ride = get_ride(rideIndex);
-    if (ride->type == RIDE_TYPE_NULL)
+    if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
     {
         log_warning("Invalid ride type for ride %u", rideIndex);
-        return 0;
+        return false;
     }
 
     window_close_by_number(WC_RIDE_CONSTRUCTION, rideIndex);
 
     stationIndex = ride_mode_check_station_present(ride);
-    if (stationIndex == -1)return 0;
+    if (stationIndex == -1)return false;
 
     if (!ride_mode_check_valid_station_numbers(ride))
-        return 0;
+        return false;
 
     if (!ride_check_for_entrance_exit(rideIndex)) {
         loc_6B51C0(rideIndex);
-        return 0;
+        return false;
     }
 
     if (goingToBeOpen && isApplying) {
@@ -5216,7 +5307,7 @@ sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
     if (trackElement.element == nullptr) {
         // Maze is strange, station start is 0... investigation required
         if (ride->type != RIDE_TYPE_MAZE)
-            return 0;
+            return false;
     }
 
     if (
@@ -5229,7 +5320,7 @@ sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
             ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)) {
             gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
             ride_scroll_to_track_error(&problematicTrackElement);
-            return 0;
+            return false;
         }
     }
 
@@ -5239,24 +5330,28 @@ sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
         ) {
         if (!ride_check_block_brakes(&trackElement, &problematicTrackElement)) {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return 0;
+            return false;
         }
     }
 
     if (ride->subtype != 255) {
         rct_ride_entry *rideType = get_ride_entry(ride->subtype);
+        if (rideType == nullptr)
+        {
+            return false;
+        }
         if (rideType->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS) {
             gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
             if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement)) {
                 ride_scroll_to_track_error(&problematicTrackElement);
-                return 0;
+                return false;
             }
         }
         if (rideType->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK) {
             gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
             if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement)) {
                 ride_scroll_to_track_error(&problematicTrackElement);
-                return 0;
+                return false;
             }
         }
     }
@@ -5264,19 +5359,19 @@ sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
     if (ride->mode == RIDE_MODE_STATION_TO_STATION) {
         if (!ride_find_track_gap(&trackElement, &problematicTrackElement)) {
             gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
-            return 0;
+            return false;
         }
 
         gGameCommandErrorText = STR_STATION_NOT_LONG_ENOUGH;
         if (!ride_check_station_length(&trackElement, &problematicTrackElement)) {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return 0;
+            return false;
         }
 
         gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
         if (!ride_check_start_and_end_is_station(&trackElement, &problematicTrackElement)) {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return 0;
+            return false;
         }
     }
 
@@ -5288,7 +5383,7 @@ sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
         !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     ) {
         if (!ride_create_vehicles(ride, rideIndex, &trackElement, isApplying)) {
-            return 0;
+            return false;
         }
     }
 
@@ -5298,16 +5393,16 @@ sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
         !(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
         ) {
         if (!ride_create_cable_lift(rideIndex, isApplying))
-            return 0;
+            return false;
     }
 
-    return 1;
+    return true;
 }
 /**
  *
  *  rct2: 0x006B4EEA
  */
-sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isApplying)
+bool ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isApplying)
 {
     sint32 stationIndex;
     Ride *ride;
@@ -5325,14 +5420,14 @@ sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
         window_close_by_number(WC_RIDE_CONSTRUCTION, rideIndex);
 
     stationIndex = ride_mode_check_station_present(ride);
-    if (stationIndex == -1)return 0;
+    if (stationIndex == -1)return false;
 
     if (!ride_mode_check_valid_station_numbers(ride))
-        return 0;
+        return false;
 
     if (!ride_check_for_entrance_exit(rideIndex)) {
         loc_6B51C0(rideIndex);
-        return 0;
+        return false;
     }
 
     if (goingToBeOpen && isApplying) {
@@ -5347,7 +5442,7 @@ sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
     if (trackElement.element == nullptr) {
         // Maze is strange, station start is 0... investigation required
         if (ride->type != RIDE_TYPE_MAZE)
-            return 0;
+            return false;
     }
 
     if (
@@ -5360,7 +5455,7 @@ sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
         if (ride_find_track_gap(&trackElement, &problematicTrackElement)) {
             gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
             ride_scroll_to_track_error(&problematicTrackElement);
-            return 0;
+            return false;
         }
     }
 
@@ -5370,24 +5465,28 @@ sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
     ) {
         if (!ride_check_block_brakes(&trackElement, &problematicTrackElement)) {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return 0;
+            return false;
         }
     }
 
     if (ride->subtype != 255) {
         rct_ride_entry *rideType = get_ride_entry(ride->subtype);
+        if (rideType == nullptr)
+        {
+            return false;
+        }
         if (rideType->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS) {
             gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
             if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement)) {
                 ride_scroll_to_track_error(&problematicTrackElement);
-                return 0;
+                return false;
             }
         }
         if (rideType->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK) {
             gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
             if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement)) {
                 ride_scroll_to_track_error(&problematicTrackElement);
-                return 0;
+                return false;
             }
         }
     }
@@ -5395,19 +5494,19 @@ sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
     if (ride->mode == RIDE_MODE_STATION_TO_STATION) {
         if (!ride_find_track_gap(&trackElement, &problematicTrackElement)) {
             gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
-            return 0;
+            return false;
         }
 
         gGameCommandErrorText = STR_STATION_NOT_LONG_ENOUGH;
         if (!ride_check_station_length(&trackElement, &problematicTrackElement)) {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return 0;
+            return false;
         }
 
         gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
         if (!ride_check_start_and_end_is_station(&trackElement, &problematicTrackElement)) {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return 0;
+            return false;
         }
     }
 
@@ -5419,7 +5518,7 @@ sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
         !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     ) {
         if (!ride_create_vehicles(ride, rideIndex, &trackElement, isApplying)) {
-            return 0;
+            return false;
         }
     }
 
@@ -5429,10 +5528,10 @@ sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
         !(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
     ) {
         if (!ride_create_cable_lift(rideIndex, isApplying))
-            return 0;
+            return false;
     }
 
-    return 1;
+    return true;
 }
 
 /**
@@ -5940,7 +6039,7 @@ void game_command_set_ride_appearance(sint32 *eax, sint32 *ebx, sint32 *ecx, sin
     }
 
     Ride *ride = get_ride(ride_id);
-    if (ride->type == RIDE_TYPE_NULL) {
+    if (ride == nullptr || ride->type == RIDE_TYPE_NULL) {
         log_warning("Invalid game command, ride_id = %u", ride_id);
         *ebx = MONEY32_UNDEFINED;
         return;
@@ -6062,7 +6161,7 @@ void game_command_set_ride_price(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *
         return;
     }
     Ride *ride = get_ride(ride_number);
-    if (ride->type == RIDE_TYPE_NULL)
+    if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
     {
         log_warning("Invalid game command for ride %u", ride_number);
         *ebx = MONEY32_UNDEFINED;
@@ -6577,7 +6676,11 @@ void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sin
         }
     }
 
-    ride          = get_ride(gRideEntranceExitPlaceRideIndex);
+    ride = get_ride(gRideEntranceExitPlaceRideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
     stationHeight = ride->station_heights[gRideEntranceExitPlaceStationIndex];
 
     screen_get_map_xy_with_z(screenX, screenY, stationHeight * 8, &mapX, &mapY);
@@ -6816,6 +6919,10 @@ bool ride_are_all_possible_entrances_and_exits_built(Ride *ride)
 void invalidate_test_results(sint32 rideIndex)
 {
     Ride *ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
 
     ride_measurement_clear(ride);
     ride->excitement = RIDE_RATING_UNDEFINED;
@@ -6843,6 +6950,10 @@ void invalidate_test_results(sint32 rideIndex)
 void ride_fix_breakdown(sint32 rideIndex, sint32 reliabilityIncreaseFactor)
 {
     Ride *ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
 
     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_BREAKDOWN_PENDING;
     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_BROKEN_DOWN;
@@ -6873,6 +6984,10 @@ void ride_fix_breakdown(sint32 rideIndex, sint32 reliabilityIncreaseFactor)
 static void ride_update_vehicle_colours(sint32 rideIndex)
 {
     Ride *ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
     if (ride->type == RIDE_TYPE_SPACE_RINGS || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_16)) {
         gfx_invalidate_screen();
     }
@@ -6936,6 +7051,10 @@ void ride_entry_get_train_layout(sint32 rideEntryIndex, sint32 numCarsPerTrain, 
 uint8 ride_entry_get_vehicle_at_position(sint32 rideEntryIndex,sint32 numCarsPerTrain,sint32 position)
 {
     rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
+    if (rideEntry == nullptr)
+    {
+        return 255;
+    }
     if (position == 0 && rideEntry->front_vehicle != 255) {
         return rideEntry->front_vehicle;
     } else if (position == 1 && rideEntry->second_vehicle != 255) {
@@ -7055,7 +7174,7 @@ static sint32 ride_get_track_length(Ride * ride)
 void ride_update_max_vehicles(sint32 rideIndex)
 {
     Ride *ride = get_ride(rideIndex);
-    if (ride->subtype == RIDE_ENTRY_INDEX_NULL)
+    if (ride == nullptr || ride->subtype == RIDE_ENTRY_INDEX_NULL)
         return;
 
     rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
@@ -7402,6 +7521,10 @@ void game_command_set_ride_vehicles(sint32 *eax, sint32 *ebx, sint32 *ecx, sint3
 void sub_6CB945(sint32 rideIndex)
 {
     Ride* ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
     if (ride->type != RIDE_TYPE_MAZE) {
         for (uint8 stationId = 0; stationId < MAX_STATIONS; ++stationId) {
             if (ride->station_starts[stationId].xy == RCT_XY8_UNDEFINED)
@@ -7583,6 +7706,10 @@ void sub_6CB945(sint32 rideIndex)
 void ride_set_to_default_inspection_interval(sint32 rideIndex)
 {
     Ride *ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
     uint8 defaultInspectionInterval = gConfigGeneral.default_inspection_interval;
     if (ride->inspection_interval != defaultInspectionInterval) {
         if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER) {
@@ -7599,6 +7726,10 @@ void ride_set_to_default_inspection_interval(sint32 rideIndex)
 void ride_crash(uint8 rideIndex, uint8 vehicleIndex)
 {
     Ride *ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
     rct_vehicle *vehicle = GET_VEHICLE(ride->vehicles[vehicleIndex]);
 
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
@@ -7807,6 +7938,10 @@ rct_vehicle *ride_get_broken_vehicle(Ride *ride) {
 void ride_delete(uint8 rideIndex)
 {
     Ride *ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
     user_string_free(ride->name);
     ride->type = RIDE_TYPE_NULL;
 }
@@ -7890,6 +8025,10 @@ static bool check_for_adjacent_station(sint32 x, sint32 y, sint32 z, uint8 direc
         {
             sint32 rideIndex = track_element_get_ride_index(stationElement);
             Ride * ride = get_ride(rideIndex);
+            if (ride == nullptr)
+            {
+                return false;
+            }
             if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
             {
                 found = true;
