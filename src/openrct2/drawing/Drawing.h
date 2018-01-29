@@ -87,6 +87,7 @@ typedef enum {
     PALETTE_34 = 34,
 
     PALETTE_45 = 45, // Decolourise + lighten
+    PALETTE_46 = 46,
 
     PALETTE_DARKEN_3 = 47,
 

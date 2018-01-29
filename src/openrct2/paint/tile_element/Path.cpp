@@ -699,13 +699,13 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_til
         }
 
         if (!track_design_save_contains_tile_element(tile_element)) {
-            imageFlags = 0x21700000;
+            imageFlags = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
         }
     }
 
     if (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     {
-        imageFlags = 0x21700000;
+        imageFlags = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
     }
 
     if (footpath_element_path_scenery_is_ghost(tile_element)) {
