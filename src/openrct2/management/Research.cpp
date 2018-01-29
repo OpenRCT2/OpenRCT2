@@ -808,15 +808,9 @@ rct_string_id research_item_get_name(rct_research_item * researchItem)
         {
             return STR_EMPTY;
         }
-        else if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)
-        {
-            return rideEntry->naming.name;
-        }
         else
         {
-            uint8 baseRideType = researchItem->baseRideType;
-            // Makes sure the correct track name is displayed, e.g. Hyper-Twister instead of Steel Twister.
-            return research_get_friendly_base_ride_type_name(baseRideType, rideEntry);
+            return rideEntry->naming.name;
         }
     }
     else
