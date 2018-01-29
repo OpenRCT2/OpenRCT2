@@ -4558,7 +4558,7 @@ static rct_vehicle *vehicle_create_car(
         sprite_move(chosenLoc.x, chosenLoc.y, z, (rct_sprite*)vehicle);
     } else {
         regs.dl = 0;
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIR_LIFT) {
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIRLIFT) {
             regs.dl = 1;
         }
 

@@ -6666,7 +6666,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle * vehicle)
     }
 
     // Is chair lift type
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIR_LIFT)
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIRLIFT)
     {
         sint32 velocity = ride->speed << 16;
         if (_vehicleBreakdown == 0)
@@ -7953,7 +7953,7 @@ static void sub_6DBF3E(rct_vehicle * vehicle)
     else
     {
         uint16 cx = 17;
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIR_LIFT)
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIRLIFT)
         {
             cx = 6;
         }
