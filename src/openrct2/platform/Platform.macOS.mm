@@ -16,7 +16,11 @@
 
 #if defined(__APPLE__) && defined(__MACH__)
 
+#include <Foundation/Foundation.h>
+#include <mach-o/dyld.h>
+
 #include "../core/Path.hpp"
+#include "../OpenRCT2.h"
 #include "Platform2.h"
 
 namespace Platform
@@ -45,19 +49,37 @@ namespace Platform
         return std::string();
     }
 
+    static std::string GetBundlePath()
+    {
+        @autoreleasepool
+        {
+            NSBundle * bundle = [NSBundle mainBundle];
+            if (bundle)
+            {
+                auto resources = bundle.resourcePath.UTF8String;
+                if (Path::DirectoryExists(resources))
+                {
+                    return resources;
+                }
+            }
+            return std::string();
+        }
+    }
+
     std::string GetInstallPath()
     {
         auto path = std::string(gCustomOpenrctDataPath);
         if (!path.empty())
         {
-            path = Path::GetAbsolute(customPath);
+            path = Path::GetAbsolute(path);
         }
         else
         {
             auto exePath = GetCurrentExecutablePath();
             auto exeDirectory = Path::GetDirectory(exePath);
             path = Path::Combine(exeDirectory, "data");
-            if (!Directory::Exists(path))
+            NSString * nsPath = [NSString stringWithUTF8String:path.c_str()];
+            if (![[NSFileManager defaultManager] fileExistsAtPath:nsPath])
             {
                 path = GetBundlePath();
                 if (path.empty())
@@ -80,23 +102,6 @@ namespace Platform
         }
         else
         {
-            return std::string();
-        }
-    }
-
-    static std::string GetBundlePath()
-    {
-        @autoreleasepool
-        {
-            NSBundle * bundle = [NSBundle mainBundle];
-            if (bundle)
-            {
-                auto resources = bundle.resourcePath.UTF8String;
-                if (Path::DirectoryExists(resources))
-                {
-                    return resources;
-                }
-            }
             return std::string();
         }
     }
