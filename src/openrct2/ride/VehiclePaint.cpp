@@ -916,7 +916,7 @@ static void vehicle_sprite_paint(paint_session * session, rct_vehicle * vehicle,
         baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
     paint_struct * ps = sub_98197C(session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y,
                                    bb.offset_z + z, rotation);
-    if (ps != NULL)
+    if (ps != nullptr)
     {
         ps->tertiary_colour = vehicle->colours_extended;
     }
@@ -3047,7 +3047,7 @@ void vehicle_paint(paint_session * session, rct_vehicle * vehicle, sint32 imageD
     else
     {
         rideEntry = get_ride_entry(vehicle->ride_subtype);
-        if (rideEntry == NULL)
+        if (rideEntry == nullptr)
         {
             return;
         }

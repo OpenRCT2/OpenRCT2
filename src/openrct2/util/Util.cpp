@@ -321,7 +321,7 @@ sint32 strlogicalcmp(char const *a, char const *b) {
 
 utf8 * safe_strtrunc(utf8 * text, size_t size)
 {
-    assert(text != NULL);
+    assert(text != nullptr);
 
     if (size == 0) return text;
 
@@ -343,8 +343,8 @@ utf8 * safe_strtrunc(utf8 * text, size_t size)
 
 char *safe_strcpy(char * destination, const char * source, size_t size)
 {
-    assert(destination != NULL);
-    assert(source != NULL);
+    assert(destination != nullptr);
+    assert(source != nullptr);
 
     if (size == 0) return destination;
 
@@ -371,8 +371,8 @@ char *safe_strcpy(char * destination, const char * source, size_t size)
 
 char *safe_strcat(char *destination, const char *source, size_t size)
 {
-    assert(destination != NULL);
-    assert(source != NULL);
+    assert(destination != nullptr);
+    assert(source != nullptr);
 
     if (size == 0) {
         return destination;

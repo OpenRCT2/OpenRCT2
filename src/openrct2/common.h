@@ -193,7 +193,7 @@ typedef fixed64_1dp money64;
 typedef void (EMPTY_ARGS_VOID_POINTER)();
 typedef uint16 rct_string_id;
 
-#define SafeFree(x) do { free(x); (x) = NULL; } while (false)
+#define SafeFree(x) do { free(x); (x) = nullptr; } while (false)
 
 #define SafeDelete(x) do { delete (x); (x) = nullptr; } while (false)
 #define SafeDeleteArray(x) do { delete[] (x); (x) = nullptr; } while (false)

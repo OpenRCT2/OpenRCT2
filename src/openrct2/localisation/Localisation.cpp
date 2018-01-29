@@ -1338,14 +1338,14 @@ sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t
 {
 #ifdef _WIN32
     utf16 stackBuffer[256];
-    utf16 *heapBuffer = NULL;
+    utf16 *heapBuffer = nullptr;
     utf16 *intermediateBuffer = stackBuffer;
     size_t bufferCount = Util::CountOf(stackBuffer);
     if (maxBufferLength > bufferCount) {
         if (srcLength > bufferCount) {
             bufferCount = srcLength + 4;
             heapBuffer = (utf16 *)malloc(bufferCount * sizeof(utf16));
-            assert(heapBuffer != NULL);
+            assert(heapBuffer != nullptr);
             intermediateBuffer = heapBuffer;
         }
     }

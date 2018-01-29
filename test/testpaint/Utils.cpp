@@ -45,11 +45,11 @@ namespace Utils {
     bool rideSupportsTrackType(uint8 rideType, uint8 trackType) {
         TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
 
-        if (newPaintGetter == NULL) {
+        if (newPaintGetter == nullptr) {
             return false;
         }
 
-        if (newPaintGetter(trackType, 0) == NULL) {
+        if (newPaintGetter(trackType, 0) == nullptr) {
             return false;
         }
 

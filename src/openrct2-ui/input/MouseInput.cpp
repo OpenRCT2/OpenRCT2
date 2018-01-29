@@ -678,7 +678,7 @@ static void input_scroll_continue(rct_window * w, rct_widgetindex widgetIndex, s
     sint32 scroll_part, scroll_id;
     sint32 x2, y2;
 
-    assert(w != NULL);
+    assert(w != nullptr);
 
     widget = &w->widgets[widgetIndex];
     if (w->classification != gPressedWidget.window_classification || w->number != gPressedWidget.window_number ||
@@ -785,7 +785,7 @@ static void input_scroll_part_update_hthumb(rct_window * w, rct_widgetindex widg
  */
 static void input_scroll_part_update_vthumb(rct_window * w, rct_widgetindex widgetIndex, sint32 y, sint32 scroll_id)
 {
-    assert(w != NULL);
+    assert(w != nullptr);
     rct_widget * widget = &w->widgets[widgetIndex];
 
     if (window_find_by_number(w->classification, w->number))
@@ -824,7 +824,7 @@ static void input_scroll_part_update_vthumb(rct_window * w, rct_widgetindex widg
  */
 static void input_scroll_part_update_hleft(rct_window * w, rct_widgetindex widgetIndex, sint32 scroll_id)
 {
-    assert(w != NULL);
+    assert(w != nullptr);
     if (window_find_by_number(w->classification, w->number))
     {
         w->scrolls[scroll_id].flags |= HSCROLLBAR_LEFT_PRESSED;
@@ -841,7 +841,7 @@ static void input_scroll_part_update_hleft(rct_window * w, rct_widgetindex widge
  */
 static void input_scroll_part_update_hright(rct_window * w, rct_widgetindex widgetIndex, sint32 scroll_id)
 {
-    assert(w != NULL);
+    assert(w != nullptr);
     rct_widget * widget = &w->widgets[widgetIndex];
     if (window_find_by_number(w->classification, w->number))
     {
@@ -867,7 +867,7 @@ static void input_scroll_part_update_hright(rct_window * w, rct_widgetindex widg
  */
 static void input_scroll_part_update_vtop(rct_window * w, rct_widgetindex widgetIndex, sint32 scroll_id)
 {
-    assert(w != NULL);
+    assert(w != nullptr);
     if (window_find_by_number(w->classification, w->number))
     {
         w->scrolls[scroll_id].flags |= VSCROLLBAR_UP_PRESSED;
@@ -884,7 +884,7 @@ static void input_scroll_part_update_vtop(rct_window * w, rct_widgetindex widget
  */
 static void input_scroll_part_update_vbottom(rct_window * w, rct_widgetindex widgetIndex, sint32 scroll_id)
 {
-    assert(w != NULL);
+    assert(w != nullptr);
     rct_widget * widget = &w->widgets[widgetIndex];
     if (window_find_by_number(w->classification, w->number))
     {

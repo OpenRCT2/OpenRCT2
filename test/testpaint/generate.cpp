@@ -1046,7 +1046,7 @@ private:
             }
         }
         WriteLine(1, "}");
-        WriteLine(1, "return NULL;");
+        WriteLine(1, "return nullptr;");
         WriteLine(0, "}");
     }
 

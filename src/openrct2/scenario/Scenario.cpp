@@ -478,7 +478,7 @@ static sint32 scenario_create_ducks()
 #ifndef DEBUG_DESYNC
 uint32 scenario_rand()
 #else
-static FILE *fp = NULL;
+static FILE *fp = nullptr;
 static const char *realm = "LC";
 
 uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 line, const void *data)
@@ -489,7 +489,7 @@ uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 li
     gScenarioSrand1 = ror32(originalSrand0, 3);
 
 #ifdef DEBUG_DESYNC
-    if (fp == NULL)
+    if (fp == nullptr)
     {
         if (network_get_mode() == NETWORK_MODE_SERVER)
         {
@@ -505,7 +505,7 @@ uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 li
         {
             if (fp)
                 fclose(fp);
-            fp = NULL;
+            fp = nullptr;
             realm = "LC";
         }
     }
@@ -525,7 +525,7 @@ uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 li
 #ifdef DEBUG_DESYNC
 void dbg_report_desync(uint32 tick, uint32 srand0, uint32 server_srand0, const char *clientHash, const char *serverHash)
 {
-    if (fp == NULL)
+    if (fp == nullptr)
     {
         if (network_get_mode() == NETWORK_MODE_SERVER)
         {

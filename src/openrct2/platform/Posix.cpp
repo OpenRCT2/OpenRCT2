@@ -52,7 +52,7 @@ static utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
 void platform_get_date_utc(rct2_date *out_date)
 {
-    assert(out_date != NULL);
+    assert(out_date != nullptr);
     time_t rawtime;
     struct tm * timeinfo;
     time(&rawtime);
@@ -65,7 +65,7 @@ void platform_get_date_utc(rct2_date *out_date)
 
 void platform_get_time_utc(rct2_time *out_time)
 {
-    assert(out_time != NULL);
+    assert(out_time != nullptr);
     time_t rawtime;
     struct tm * timeinfo;
     time(&rawtime);
@@ -77,7 +77,7 @@ void platform_get_time_utc(rct2_time *out_time)
 
 void platform_get_date_local(rct2_date *out_date)
 {
-    assert(out_date != NULL);
+    assert(out_date != nullptr);
     time_t rawtime;
     struct tm * timeinfo;
     time(&rawtime);
@@ -90,7 +90,7 @@ void platform_get_date_local(rct2_date *out_date)
 
 void platform_get_time_local(rct2_time *out_time)
 {
-    assert(out_time != NULL);
+    assert(out_time != nullptr);
     time_t rawtime;
     struct tm * timeinfo;
     time(&rawtime);
@@ -207,14 +207,14 @@ bool platform_directory_delete(const utf8 *path)
     char* ourPath = _strdup(path);
 
     utf8* const patharray[2] = {ourPath, NULL};
-    if ((ftsp = fts_open(patharray, FTS_COMFOLLOW | FTS_LOGICAL | FTS_NOCHDIR, NULL)) == NULL) {
+    if ((ftsp = fts_open(patharray, FTS_COMFOLLOW | FTS_LOGICAL | FTS_NOCHDIR, NULL)) == nullptr) {
         log_error("fts_open returned NULL");
         free(ourPath);
         return false;
     }
 
     chp = fts_children(ftsp, 0);
-    if (chp == NULL) {
+    if (chp == nullptr) {
         log_verbose("No files to traverse, deleting directory %s", path);
         if (remove(path) != 0)
         {
@@ -224,7 +224,7 @@ bool platform_directory_delete(const utf8 *path)
         return true; // No files to traverse
     }
 
-    while ((p = fts_read(ftsp)) != NULL) {
+    while ((p = fts_read(ftsp)) != nullptr) {
         switch (p->fts_info) {
             case FTS_DP: // Directory postorder, which means
                          // the directory is empty
@@ -258,7 +258,7 @@ utf8 * platform_get_absolute_path(const utf8 * relative_path, const utf8 * base_
 {
     utf8 path[MAX_PATH];
 
-    if (base_path != NULL)
+    if (base_path != nullptr)
     {
         snprintf(path, MAX_PATH, "%s/%s", base_path, relative_path);
     }
@@ -325,7 +325,7 @@ bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite
         dstFile = fopen(dstPath, "wbx");
     }
 
-    if (dstFile == NULL) {
+    if (dstFile == nullptr) {
         if (errno == EEXIST) {
             log_warning("platform_file_copy: Not overwriting %s, because overwrite flag == false", dstPath);
             return false;
@@ -337,7 +337,7 @@ bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite
 
     // Open both files and check whether they are opened correctly
     FILE *srcFile = fopen(srcPath, "rb");
-    if (srcFile == NULL) {
+    if (srcFile == nullptr) {
         fclose(dstFile);
         log_error("Could not open source file %s for copying", srcPath);
         return false;
@@ -418,7 +418,7 @@ void platform_resolve_openrct_data_path()
         // since our `MAX_PATH` macro is set to some other value, pass NULL to have `realpath` return
         // a `malloc`ed buffer.
         char *resolved_path = realpath(gCustomOpenrctDataPath, NULL);
-        if (resolved_path == NULL) {
+        if (resolved_path == nullptr) {
             log_error("Could not resolve path \"%s\", errno = %d", gCustomOpenrctDataPath, errno);
             return;
         } else {
@@ -463,7 +463,7 @@ uint8 platform_get_locale_temperature_format(){
     const char *langstring = setlocale(LC_ALL, "");
 #endif
 
-    if(langstring != NULL){
+    if(langstring != nullptr){
         if (!fnmatch("*_US*", langstring, 0) ||
             !fnmatch("*_BS*", langstring, 0) ||
             !fnmatch("*_BZ*", langstring, 0) ||
@@ -500,7 +500,7 @@ utf8* platform_get_username() {
     if (pw) {
         return pw->pw_name;
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 

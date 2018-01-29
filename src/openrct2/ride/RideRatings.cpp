@@ -634,7 +634,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElemen
 static void ride_ratings_calculate(Ride *ride)
 {
     auto calcFunc = ride_ratings_get_calculate_func(ride->type);
-    if (calcFunc != NULL) {
+    if (calcFunc != nullptr) {
         calcFunc(ride);
     }
 
@@ -828,7 +828,7 @@ static void ride_ratings_apply_adjustments(Ride *ride, rating_tuple *ratings)
 {
     rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
 
-    if (rideEntry == NULL)
+    if (rideEntry == nullptr)
     {
         return;
     }
@@ -975,7 +975,7 @@ static sint32 get_num_of_sheltered_eighths(Ride *ride)
 
     sint32 dh = numShelteredEighths;
     rct_ride_entry *rideType = get_ride_entry(ride->subtype);
-    if (rideType == NULL)
+    if (rideType == nullptr)
     {
         return 0;
     }
