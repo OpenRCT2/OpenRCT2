@@ -22,7 +22,7 @@
 #include "../interface/Window_internal.h"
 #include "../ride/Track.h"
 #include "../windows/Intent.h"
-#include "../windows/tile_inspector.h"
+#include "../windows/TileInspector.h"
 #include "Footpath.h"
 #include "Map.h"
 #include "TileInspector.h"

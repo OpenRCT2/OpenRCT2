@@ -19,7 +19,7 @@
 #include <openrct2/common.h>
 
 #include <openrct2-ui/interface/Window.h>
-#include <openrct2/windows/tile_inspector.h>
+#include <openrct2/windows/TileInspector.h>
 
 typedef void (*loadsave_callback)(sint32 result, const utf8 * path);
 typedef void (*scenarioselect_callback)(const utf8 *path);
