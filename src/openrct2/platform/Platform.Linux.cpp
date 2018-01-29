@@ -14,9 +14,9 @@
 *****************************************************************************/
 #pragma endregion
 
-#if defined(__linux__) && !defined(__ANDROID__)
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || (defined(__linux__) && !defined(__ANDROID__))
 
-#include <linux/limits.h>
+#include <limits.h>
 #include <pwd.h>
 #include "../core/Path.hpp"
 #include "../core/Util.hpp"
