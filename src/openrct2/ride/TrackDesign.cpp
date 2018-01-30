@@ -750,7 +750,8 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
                         new_tile = 0;
                         break;
                     }
-                    if (selectionTile + 1 >= &gMapSelectionTiles[300])
+                    // Need to subtract one because selectionTile in following block is incremented
+                    if (selectionTile + 1 >= &gMapSelectionTiles[Util::CountOf(gMapSelectionTiles) - 1])
                     {
                         new_tile = 0;
                         break;
