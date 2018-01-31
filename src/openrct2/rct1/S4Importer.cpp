@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include <memory>
 #include <vector>
 #include "../core/Collections.hpp"
@@ -241,7 +242,7 @@ public:
 
     bool GetDetails(scenario_index_entry * dst) override
     {
-        Memory::Set(dst, 0, sizeof(scenario_index_entry));
+        *dst = { 0 };
 
         source_desc desc;
         // If no entry is found, this is a custom scenario.
@@ -353,14 +354,14 @@ private:
 
     void InitialiseEntryMaps()
     {
-        Memory::Set(_rideTypeToRideEntryMap, 255, sizeof(_rideTypeToRideEntryMap));
-        Memory::Set(_vehicleTypeToRideEntryMap, 255, sizeof(_vehicleTypeToRideEntryMap));
-        Memory::Set(_smallSceneryTypeToEntryMap, 255, sizeof(_smallSceneryTypeToEntryMap));
-        Memory::Set(_largeSceneryTypeToEntryMap, 255, sizeof(_largeSceneryTypeToEntryMap));
-        Memory::Set(_wallTypeToEntryMap, 255, sizeof(_wallTypeToEntryMap));
-        Memory::Set(_pathTypeToEntryMap, 255, sizeof(_pathTypeToEntryMap));
-        Memory::Set(_pathAdditionTypeToEntryMap, 255, sizeof(_pathAdditionTypeToEntryMap));
-        Memory::Set(_sceneryThemeTypeToEntryMap, 255, sizeof(_sceneryThemeTypeToEntryMap));
+        std::fill(std::begin(_rideTypeToRideEntryMap), std::end(_rideTypeToRideEntryMap), 255);
+        std::fill(std::begin(_vehicleTypeToRideEntryMap), std::end(_vehicleTypeToRideEntryMap), 255);
+        std::fill(std::begin(_smallSceneryTypeToEntryMap), std::end(_smallSceneryTypeToEntryMap), 255);
+        std::fill(std::begin(_largeSceneryTypeToEntryMap), std::end(_largeSceneryTypeToEntryMap), 255);
+        std::fill(std::begin(_wallTypeToEntryMap), std::end(_wallTypeToEntryMap), 255);
+        std::fill(std::begin(_pathTypeToEntryMap), std::end(_pathTypeToEntryMap), 255);
+        std::fill(std::begin(_pathAdditionTypeToEntryMap), std::end(_pathAdditionTypeToEntryMap), 255);
+        std::fill(std::begin(_sceneryThemeTypeToEntryMap), std::end(_sceneryThemeTypeToEntryMap), 255);
     }
 
     /**
@@ -1349,8 +1350,8 @@ private:
         }
 
         // The RCT2/OpenRCT2 structures are bigger than in RCT1, so set them to zero
-        Memory::Set(gStaffModes, 0, sizeof(gStaffModes));
-        Memory::Set(gStaffPatrolAreas, 0, sizeof(gStaffPatrolAreas));
+        std::fill(std::begin(gStaffModes), std::end(gStaffModes), 0);
+        std::fill(std::begin(gStaffPatrolAreas), std::end(gStaffPatrolAreas), 0);
 
         Memory::Copy(gStaffModes, _s4.staff_modes, sizeof(_s4.staff_modes));
 
@@ -1949,8 +1950,8 @@ private:
         const rct1_research_item * researchList = GetResearchList(&researchListCount);
 
         // Initialise the "seen" tables
-        Memory::Set(_researchRideEntryUsed, 0, sizeof(_researchRideEntryUsed));
-        Memory::Set(_researchRideTypeUsed, 0, sizeof(_researchRideTypeUsed));
+        std::fill(std::begin(_researchRideEntryUsed), std::end(_researchRideEntryUsed), 0);
+        std::fill(std::begin(_researchRideTypeUsed), std::end(_researchRideTypeUsed), 0);
 
         // The first six scenery groups are always available
         for (uint8 i = 0; i < 6; i++)
@@ -2341,7 +2342,7 @@ private:
     void ClearExtraTileEntries()
     {
         // Reset the map tile pointers
-        Memory::Set(gTileElementTilePointers, 0, sizeof(rct_tile_element*) * MAX_TILE_TILE_ELEMENT_POINTERS);
+        std::fill(std::begin(gTileElementTilePointers), std::end(gTileElementTilePointers), nullptr);
 
         // Get the first free map element
         rct_tile_element * nextFreeTileElement = gTileElements;

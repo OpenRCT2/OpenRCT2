@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include "../core/Console.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/IStream.hpp"
@@ -66,7 +67,7 @@ private:
     IObjectManager * const      _objectManager;
 
     const utf8 *    _s6Path = nullptr;
-    rct_s6_data     _s6;
+    rct_s6_data     _s6 = { 0 };
     uint8           _gameVersion = 0;
 
 public:
@@ -74,7 +75,6 @@ public:
         : _objectRepository(objectRepository),
           _objectManager(objectManager)
     {
-        Memory::Set(&_s6, 0, sizeof(_s6));
     }
 
     ParkLoadResult Load(const utf8 * path) override
@@ -187,7 +187,7 @@ public:
 
     bool GetDetails(scenario_index_entry * dst) override
     {
-        Memory::Set(dst, 0, sizeof(scenario_index_entry));
+        *dst = { 0 };
         return false;
     }
 
@@ -475,7 +475,7 @@ public:
         {
             auto src = &_s6.rides[index];
             auto dst = get_ride(index);
-            Memory::Set(dst, 0, sizeof(Ride));
+            *dst = { 0 };
             if (src->type == RIDE_TYPE_NULL)
             {
                 dst->type = RIDE_TYPE_NULL;

@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include <array>
 #include <memory>
 #include <unordered_set>
@@ -388,7 +389,7 @@ private:
             void * * legacyChunk = &object_entry_groups[objectType].chunks[entryIndex];
             if (loadedObject == nullptr)
             {
-                Memory::Set(legacyEntry, 0x00, sizeof(rct_object_entry_extended));
+                *legacyEntry = { 0 };
                 *legacyChunk = nullptr;
             }
             else
@@ -474,19 +475,19 @@ private:
         invalidEntries.reserve(OBJECT_ENTRY_COUNT);
         for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
         {
-            const rct_object_entry * entry = &entries[i];
+            auto entry = entries[i];
             const ObjectRepositoryItem * ori = nullptr;
-            if (object_entry_is_empty(entry))
+            if (object_entry_is_empty(&entry))
             {
-                Memory::Set(entry, 0, sizeof(rct_object_entry));
+                entry = { 0 };
                 continue;
             }
 
-            ori = _objectRepository->FindObject(entry);
+            ori = _objectRepository->FindObject(&entry);
             if (ori == nullptr)
             {
-                invalidEntries.push_back(*entry);
-                ReportMissingObject(entry);
+                invalidEntries.push_back(entry);
+                ReportMissingObject(&entry);
             }
             else
             {
@@ -497,8 +498,8 @@ private:
                     loadedObject = _objectRepository->LoadObject(ori);
                     if (loadedObject == nullptr)
                     {
-                        invalidEntries.push_back(*entry);
-                        ReportObjectLoadProblem(entry);
+                        invalidEntries.push_back(entry);
+                        ReportObjectLoadProblem(&entry);
                     }
                     delete loadedObject;
                 }

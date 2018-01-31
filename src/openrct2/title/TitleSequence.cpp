@@ -47,7 +47,7 @@ extern "C"
     TitleSequence * CreateTitleSequence()
     {
         TitleSequence * seq = Memory::Allocate<TitleSequence>();
-        Memory::Set(seq, 0, sizeof(TitleSequence));
+        *seq = { 0 };
         return seq;
     }
 

@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include <stdexcept>
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
@@ -82,8 +83,8 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
         size_t unreadBytes = _dataSize - readBytes;
         if (unreadBytes > 0)
         {
-            void * ptr = (void*)(((uintptr_t)_data) + readBytes);
-            Memory::Set(ptr, 0, unreadBytes);
+            uint8 * ptr = (uint8*)(((uintptr_t)_data) + readBytes);
+            std::fill_n(ptr, unreadBytes, 0);
 
             context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table size shorter than expected.");
         }

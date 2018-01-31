@@ -121,12 +121,6 @@ namespace Memory
     }
 
     template<typename T>
-    static T * Set(T * dst, uint8 value, size_t size)
-    {
-        return (T*)memset((void*)dst, (sint32)value, size);
-    }
-
-    template<typename T>
     static T * CopyArray(T * dst, const T * src, size_t count)
     {
         // Use a loop so that copy constructors are called

@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include "../core/IStream.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
@@ -118,8 +119,8 @@ void SawyerChunkReader::ReadChunk(void * dst, size_t length)
         size_t remainingLength = length - chunkLength;
         if (remainingLength > 0)
         {
-            void * offset = (void *)((uintptr_t)dst + chunkLength);
-            Memory::Set(offset, 0, remainingLength);
+            uint8 * offset = (uint8 *)((uintptr_t)dst + chunkLength);
+            std::fill_n(offset, remainingLength, 0);
         }
     }
 }
@@ -182,7 +183,7 @@ size_t SawyerChunkReader::DecodeChunkRLE(void * dst, size_t dstCapacity, const v
                 throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
             }
 
-            Memory::Set(dst8, src8[i], count);
+            std::fill_n(dst8, count, src8[i]);
             dst8 += count;
         }
         else

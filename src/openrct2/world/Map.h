@@ -408,8 +408,8 @@ extern bool         gMapVirtualFloorVisible;
 
 extern uint8 gMapGroundFlags;
 
-extern rct_tile_element gTileElements[];
-extern rct_tile_element *gTileElementTilePointers[];
+extern rct_tile_element gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
+extern rct_tile_element *gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 
 extern LocationXY16 gMapSelectionTiles[300];
 extern rct2_peep_spawn gPeepSpawns[MAX_PEEP_SPAWNS];
