@@ -5372,3 +5372,84 @@ STR_NAME    :Hot Rod Cars
 #Bulrushes was spelt incorrectly
 [TBR]
 STR_NAME    :Bulrushes
+
+## Start OpenRCT2 Official
+[XXBBBR01]
+STR_NAME    :Base Block
+
+[TTRFTL02]
+STR_NAME    :Roof
+
+[TTRFTL03]
+STR_NAME    :Roof
+
+[TTRFTL04]
+STR_NAME    :Roof
+
+[TTRFTL07]
+STR_NAME    :Roof
+
+[TTRFTL08]
+STR_NAME    :Roof
+
+[TTPIRF02]
+STR_NAME    :Roof
+
+[TTPIRF03]
+STR_NAME    :Roof
+
+[TTPIRF04]
+STR_NAME    :Roof
+
+[TTPIRF05]
+STR_NAME    :Roof
+
+[TTPIRF07]
+STR_NAME    :Roof
+
+[TTPIRF08]
+STR_NAME    :Roof
+
+[MG-PRAR]
+STR_NAME    :Wall with Archway
+
+[TTRFWD01]
+STR_NAME    :Roof
+
+[TTRFWD02]
+STR_NAME    :Roof
+
+[TTRFWD03]
+STR_NAME    :Roof
+
+[TTRFWD04]
+STR_NAME    :Roof
+
+[TTRFWD05]
+STR_NAME    :Roof
+
+[TTRFWD06]
+STR_NAME    :Roof
+
+[TTRFWD07]
+STR_NAME    :Roof
+
+[TTRFWD08]
+STR_NAME    :Roof
+
+[TTRFGL01]
+STR_NAME    :Glass Roof
+
+[TTRFGL02]
+STR_NAME    :Glass Roof
+
+[TTRFGL03]
+STR_NAME    :Glass Roof
+
+[ACWW33]
+STR_NAME    :Wooden Post Wall
+
+[ACWWF32]
+STR_NAME    :Wooden Post Wall
+
+## End OpenRCT2 Official

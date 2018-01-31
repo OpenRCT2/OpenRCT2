@@ -224,7 +224,7 @@ void SmallSceneryObject::PerformFixes()
 
 rct_object_entry SmallSceneryObject::GetScgPiratHeader()
 {
-    return Object::CreateHeader("SCGPATHX", 207140231, 21592567);
+    return Object::CreateHeader("SCGPIRAT", 169381767, 132382977);
 }
 
 rct_object_entry SmallSceneryObject::GetScgMineHeader()
