@@ -159,7 +159,6 @@ bool Object::IsRCT1Object()
         "CNDYF   ",
         "DRNKS   ",
         "ICECR1  ",
-        "ICETST  ",
         "INFOK   ",
         "PIZZS   ",
         "POPCS   ",
