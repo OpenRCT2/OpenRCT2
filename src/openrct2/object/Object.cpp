@@ -22,301 +22,393 @@
 #include "Object.h"
 #include "ObjectLimits.h"
 
-static const char _rct1Objects[][9] =
+Object::Object(const rct_object_entry &entry)
 {
-    "CLIFT1  ",
-    "MONO1   ",
-    "MONO2   ",
-    "NRL     ",
-    "CTCAR   ",
-    "DODG1   ",
-    "FWH1    ",
-    "HHBUILD ",
-    "HMAZE   ",
-    "HSKELT  ",
-    "MGR1    ",
-    "OBS1    ",
-    "RCR     ",
-    "SPCAR   ",
-    "SRINGS  ",
-    "TRUCK1  ",
-    "AMT1    ",
-    "ARRSW1  ",
-    "ARRSW2  ",
-    "BMVD    ",
-    "BOB1    ",
-    "PTCT1   ",
-    "RCKC    ",
-    "REVF1   ",
-    "SKYTR   ",
-    "STEEP1  ",
-    "STEEP2  ",
-    "TOGST   ",
-    "WMMINE  ",
-    "WMOUSE  ",
-    "ZLDB    ",
-    "ZLOG    ",
-    "C3D     ",
-    "KART1   ",
-    "SIMPOD  ",
-    "SSC1    ",
-    "SWSH1   ",
-    "SWSH2   ",
-    "TOPSP1  ",
-    "TWIST1  ",
-    "BBOAT   ",
-    "CBOAT   ",
-    "DING1   ",
-    "LFB1    ",
-    "RAPBOAT ",
-    "RBOAT   ",
-    "SWANS   ",
-    "TRIKE   ",
-    "BALLN   ",
-    "BURGB   ",
-    "CHPSH   ",
-    "CNDYF   ",
-    "DRNKS   ",
-    "ICECR1  ",
-    "ICETST  ",
-    "INFOK   ",
-    "PIZZS   ",
-    "POPCS   ",
-    "SOUVS   ",
-    "TLT1    ",
+    _objectEntry = entry;
 
-    // Small scenery
-    "ALLSORT1",
-    "ALLSORT2",
-    "TAC     ",
-    "TAL     ",
-    "TAP     ",
-    "TAS     ",
-    "TAS1    ",
-    "TAS2    ",
-    "TAS3    ",
-    "TAS4    ",
-    "TB1     ",
-    "TB2     ",
-    "TBC     ",
-    "TBP     ",
-    "TBR     ",
-    "TBR1    ",
-    "TBR2    ",
-    "TBR3    ",
-    "TBR4    ",
-    "TBW     ",
-    "TCB     ",
-    "TCC     ",
-    "TCE     ",
-    "TCF     ",
-    "TCJ     ",
-    "TCL     ",
-    "TCO     ",
-    "TCRP    ",
-    "TCT     ",
-    "TCT1    ",
-    "TCT2    ",
-    "TCY     ",
-    "TDM     ",
-    "TEL     ",
-    "TEN     ",
-    "TEP     ",
-    "TERB    ",
-    "TERS    ",
-    "TES1    ",
-    "TF1     ",
-    "TF2     ",
-    "TGHC    ",
-    "TGHC2   ",
-    "TGS     ",
-    "TH1     ",
-    "TH2     ",
-    "THL     ",
-    "THRS    ",
-    "THT     ",
-    "TIC     ",
-    "TITC    ",
-    "TK1     ",
-    "TK2     ",
-    "TK3     ",
-    "TK4     ",
-    "TL0     ",
-    "TL1     ",
-    "TL2     ",
-    "TL3     ",
-    "TLC     ",
-    "TLP     ",
-    "TLY     ",
-    "TM0     ",
-    "TM1     ",
-    "TM2     ",
-    "TM3     ",
-    "TMBJ    ",
-    "TMC     ",
-    "TMG     ",
-    "TMJ     ",
-    "TML     ",
-    "TMO1    ",
-    "TMO2    ",
-    "TMO3    ",
-    "TMO4    ",
-    "TMO5    ",
-    "TMP     ",
-    "TMS1    ",
-    "TMW     ",
-    "TMZP    ",
-    "TNS     ",
-    "TP1     ",
-    "TP2     ",
-    "TPM     ",
-    "TQ1     ",
-    "TQ2     ",
-    "TR1     ",
-    "TR2     ",
-    "TRC     ",
-    "TRF     ",
-    "TRF2    ",
-    "TRMS    ",
-    "TRWS    ",
-    "TS0     ",
-    "TS1     ",
-    "TS2     ",
-    "TS3     ",
-    "TS4     ",
-    "TS5     ",
-    "TS6     ",
-    "TSB     ",
-    "TSC     ",
-    "TSD     ",
-    "TSH     ",
-    "TSH0    ",
-    "TSH1    ",
-    "TSH2    ",
-    "TSH3    ",
-    "TSH4    ",
-    "TSH5    ",
-    "TSP     ",
-    "TSQ     ",
-    "TST1    ",
-    "TST2    ",
-    "TST3    ",
-    "TST4    ",
-    "TST5    ",
-    "TSTD    ",
-    "TT1     ",
-    "TUS     ",
-    "TVL     ",
-    "TWH1    ",
-    "TWH2    ",
-    "TWN     ",
-    "TWP     ",
-    "TWW     ",
-    "TDF     ",
-    "TEF     ",
-    "TQF     ",
-    "TTF     ",
-    "TWF     ",
-    "TCK     ",
-    "TG1     ",
-    "TG10    ",
-    "TG11    ",
-    "TG12    ",
-    "TG13    ",
-    "TG14    ",
-    "TG15    ",
-    "TG16    ",
-    "TG17    ",
-    "TG18    ",
-    "TG19    ",
-    "TG2     ",
-    "TG20    ",
-    "TG21    ",
-    "TG3     ",
-    "TG4     ",
-    "TG5     ",
-    "TG6     ",
-    "TG7     ",
-    "TG8     ",
-    "TG9     ",
+    char name[DAT_NAME_LENGTH + 1] = { 0 };
+    Memory::Copy(name, entry.name, DAT_NAME_LENGTH);
+    _identifier = String::Duplicate(name);
 
-    // Large Scenery
-    "SCLN    ",
-    "SHS1    ",
-    "SHS2    ",
-    "SMH1    ",
-    "SMH2    ",
-    "SMN1    ",
-    "SCOL    ",
-    "SMB     ",
-    "SPYR    ",
-    "SSPX    ",
+    if (IsRCT1Object())
+    {
+        SetSourceGame(OBJECT_SOURCE_RCT1);
+    }
+    else if (IsAAObject())
+    {
+        SetSourceGame(OBJECT_SOURCE_ADDED_ATTRACTIONS);
+    }
+    else if (IsLLObject())
+    {
+        SetSourceGame(OBJECT_SOURCE_LOOPY_LANDSCAPES);
+    }
+    else if (IsOpenRCT2OfficialObject())
+    {
+        SetSourceGame(OBJECT_SOURCE_OPENRCT2_OFFICIAL);
+    }
+}
 
-    // Walls
-    "WC3     ",
-    "WBR1    ",
-    "WBR2    ",
-    "WBR3    ",
-    "WBRG    ",
-    "WCH     ",
-    "WCHG    ",
-    "WCW1    ",
-    "WCW2    ",
-    "WEW     ",
-    "WFW1    ",
-    "WFWG    ",
-    "WHG     ",
-    "WHGG    ",
-    "WMF     ",
-    "WMFG    ",
-    "WMW     ",
-    "WMWW    ",
-    "WPF     ",
-    "WPFG    ",
-    "WRW     ",
-    "WSW     ",
-    "WSW1    ",
-    "WSW2    ",
-    "WSWG    ",
-
-    // Paths
-    "PATHCRZY",
-    "PATHDIRT",
-    "ROAD    ",
-    "TARMAC  ",
-
-    // Path additions
-    "LAMP1   ",
-    "LAMP2   ",
-    "LAMP3   ",
-    "LAMP4   ",
-    "LITTER1 ",
-    "BENCH1  ",
-    "BENCHSTN",
-    "JUMPFNT1",
-
-    // Scenery groups
-    "SCGFENCE",
-    "SCGGARDN",
-    "SCGPATHX",
-    "SCGSHRUB",
-    "SCGTREES",
-
-    "SCGCLASS",
-    "SCGEGYPT",
-    "SCGMART ",
-    "SCGMINE ",
-    "SCGWOND ",
-
-    // Park entrance
-    "PKENT1  ",
-
-    // Water
-    "WTRCYAN ",
-};
-
-static const char _aaObjects[][9] =
+Object::~Object()
 {
+    Memory::Free(_identifier);
+}
+
+std::string Object::GetOverrideString(uint8 index) const
+{
+    const char * identifier = GetIdentifier();
+    rct_string_id stringId = language_get_object_override_string_id(identifier, index);
+
+    const utf8 * result = nullptr;
+    if (stringId != STR_NONE)
+    {
+        result = language_get_string(stringId);
+    }
+    return String::ToStd(result);
+}
+
+std::string Object::GetString(uint8 index) const
+{
+    auto sz = GetOverrideString(index);
+    if (sz.empty())
+    {
+        sz = GetStringTable()->GetString(index);
+    }
+    return sz;
+}
+
+rct_object_entry Object::GetScgWallsHeader()
+{
+    return Object::CreateHeader("SCGWALLS", 207140231, 3518650219);
+}
+
+rct_object_entry Object::GetScgPathXHeader()
+{
+    return Object::CreateHeader("SCGPATHX", 207140231, 890227440);
+}
+
+rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32 flags, uint32 checksum)
+{
+    rct_object_entry header = { 0 };
+    header.flags = flags;
+    Memory::Copy(header.name, name, DAT_NAME_LENGTH);
+    header.checksum = checksum;
+    return header;
+}
+
+void Object::SetSourceGame(const uint8 sourceGame)
+{
+    _objectEntry.flags &= 0x0F;
+    _objectEntry.flags |= (sourceGame << 4);
+}
+
+bool Object::IsRCT1Object()
+{
+    static const char _rct1Objects[][9] =
+    {
+        "CLIFT1  ",
+        "MONO1   ",
+        "MONO2   ",
+        "NRL     ",
+        "CTCAR   ",
+        "DODG1   ",
+        "FWH1    ",
+        "HHBUILD ",
+        "HMAZE   ",
+        "HSKELT  ",
+        "MGR1    ",
+        "OBS1    ",
+        "RCR     ",
+        "SPCAR   ",
+        "SRINGS  ",
+        "TRUCK1  ",
+        "AMT1    ",
+        "ARRSW1  ",
+        "ARRSW2  ",
+        "BMVD    ",
+        "BOB1    ",
+        "PTCT1   ",
+        "RCKC    ",
+        "REVF1   ",
+        "SKYTR   ",
+        "STEEP1  ",
+        "STEEP2  ",
+        "TOGST   ",
+        "WMMINE  ",
+        "WMOUSE  ",
+        "ZLDB    ",
+        "ZLOG    ",
+        "C3D     ",
+        "KART1   ",
+        "SIMPOD  ",
+        "SSC1    ",
+        "SWSH1   ",
+        "SWSH2   ",
+        "TOPSP1  ",
+        "TWIST1  ",
+        "BBOAT   ",
+        "CBOAT   ",
+        "DING1   ",
+        "LFB1    ",
+        "RAPBOAT ",
+        "RBOAT   ",
+        "SWANS   ",
+        "TRIKE   ",
+        "BALLN   ",
+        "BURGB   ",
+        "CHPSH   ",
+        "CNDYF   ",
+        "DRNKS   ",
+        "ICECR1  ",
+        "ICETST  ",
+        "INFOK   ",
+        "PIZZS   ",
+        "POPCS   ",
+        "SOUVS   ",
+        "TLT1    ",
+
+        // Small scenery
+        "ALLSORT1",
+        "ALLSORT2",
+        "TAC     ",
+        "TAL     ",
+        "TAP     ",
+        "TAS     ",
+        "TAS1    ",
+        "TAS2    ",
+        "TAS3    ",
+        "TAS4    ",
+        "TB1     ",
+        "TB2     ",
+        "TBC     ",
+        "TBP     ",
+        "TBR     ",
+        "TBR1    ",
+        "TBR2    ",
+        "TBR3    ",
+        "TBR4    ",
+        "TBW     ",
+        "TCB     ",
+        "TCC     ",
+        "TCE     ",
+        "TCF     ",
+        "TCJ     ",
+        "TCL     ",
+        "TCO     ",
+        "TCRP    ",
+        "TCT     ",
+        "TCT1    ",
+        "TCT2    ",
+        "TCY     ",
+        "TDM     ",
+        "TEL     ",
+        "TEN     ",
+        "TEP     ",
+        "TERB    ",
+        "TERS    ",
+        "TES1    ",
+        "TF1     ",
+        "TF2     ",
+        "TGHC    ",
+        "TGHC2   ",
+        "TGS     ",
+        "TH1     ",
+        "TH2     ",
+        "THL     ",
+        "THRS    ",
+        "THT     ",
+        "TIC     ",
+        "TITC    ",
+        "TK1     ",
+        "TK2     ",
+        "TK3     ",
+        "TK4     ",
+        "TL0     ",
+        "TL1     ",
+        "TL2     ",
+        "TL3     ",
+        "TLC     ",
+        "TLP     ",
+        "TLY     ",
+        "TM0     ",
+        "TM1     ",
+        "TM2     ",
+        "TM3     ",
+        "TMBJ    ",
+        "TMC     ",
+        "TMG     ",
+        "TMJ     ",
+        "TML     ",
+        "TMO1    ",
+        "TMO2    ",
+        "TMO3    ",
+        "TMO4    ",
+        "TMO5    ",
+        "TMP     ",
+        "TMS1    ",
+        "TMW     ",
+        "TMZP    ",
+        "TNS     ",
+        "TP1     ",
+        "TP2     ",
+        "TPM     ",
+        "TQ1     ",
+        "TQ2     ",
+        "TR1     ",
+        "TR2     ",
+        "TRC     ",
+        "TRF     ",
+        "TRF2    ",
+        "TRMS    ",
+        "TRWS    ",
+        "TS0     ",
+        "TS1     ",
+        "TS2     ",
+        "TS3     ",
+        "TS4     ",
+        "TS5     ",
+        "TS6     ",
+        "TSB     ",
+        "TSC     ",
+        "TSD     ",
+        "TSH     ",
+        "TSH0    ",
+        "TSH1    ",
+        "TSH2    ",
+        "TSH3    ",
+        "TSH4    ",
+        "TSH5    ",
+        "TSP     ",
+        "TSQ     ",
+        "TST1    ",
+        "TST2    ",
+        "TST3    ",
+        "TST4    ",
+        "TST5    ",
+        "TSTD    ",
+        "TT1     ",
+        "TUS     ",
+        "TVL     ",
+        "TWH1    ",
+        "TWH2    ",
+        "TWN     ",
+        "TWP     ",
+        "TWW     ",
+        "TDF     ",
+        "TEF     ",
+        "TQF     ",
+        "TTF     ",
+        "TWF     ",
+        "TCK     ",
+        "TG1     ",
+        "TG10    ",
+        "TG11    ",
+        "TG12    ",
+        "TG13    ",
+        "TG14    ",
+        "TG15    ",
+        "TG16    ",
+        "TG17    ",
+        "TG18    ",
+        "TG19    ",
+        "TG2     ",
+        "TG20    ",
+        "TG21    ",
+        "TG3     ",
+        "TG4     ",
+        "TG5     ",
+        "TG6     ",
+        "TG7     ",
+        "TG8     ",
+        "TG9     ",
+
+        // Large Scenery
+        "SCLN    ",
+        "SHS1    ",
+        "SHS2    ",
+        "SMH1    ",
+        "SMH2    ",
+        "SMN1    ",
+        "SCOL    ",
+        "SMB     ",
+        "SPYR    ",
+        "SSPX    ",
+
+        // Walls
+        "WC3     ",
+        "WBR1    ",
+        "WBR2    ",
+        "WBR3    ",
+        "WBRG    ",
+        "WCH     ",
+        "WCHG    ",
+        "WCW1    ",
+        "WCW2    ",
+        "WEW     ",
+        "WFW1    ",
+        "WFWG    ",
+        "WHG     ",
+        "WHGG    ",
+        "WMF     ",
+        "WMFG    ",
+        "WMW     ",
+        "WMWW    ",
+        "WPF     ",
+        "WPFG    ",
+        "WRW     ",
+        "WSW     ",
+        "WSW1    ",
+        "WSW2    ",
+        "WSWG    ",
+
+        // Paths
+        "PATHCRZY",
+        "PATHDIRT",
+        "ROAD    ",
+        "TARMAC  ",
+
+        // Path additions
+        "LAMP1   ",
+        "LAMP2   ",
+        "LAMP3   ",
+        "LAMP4   ",
+        "LITTER1 ",
+        "BENCH1  ",
+        "BENCHSTN",
+        "JUMPFNT1",
+
+        // Scenery groups
+        "SCGFENCE",
+        "SCGGARDN",
+        "SCGPATHX",
+        "SCGSHRUB",
+        "SCGTREES",
+
+        "SCGCLASS",
+        "SCGEGYPT",
+        "SCGMART ",
+        "SCGMINE ",
+        "SCGWOND ",
+
+        // Park entrance
+        "PKENT1  ",
+
+        // Water
+        "WTRCYAN ",
+    };
+
+    for (const auto entry : _rct1Objects)
+    {
+        if (String::Equals(_identifier, entry))
+            return true;
+    }
+
+    return false;
+}
+
+bool Object::IsAAObject()
+{
+    static const char _aaObjects[][9] =
+    {
         // Rides / vehicles / stalls
         "BMFL    ",
         "BMRB    ",
@@ -418,10 +510,21 @@ static const char _aaObjects[][9] =
         "SCGJUNGL",
         "SCGJURAS",
         "SCGSPOOK",
-};
+    };
 
-static const char _llObjects[][9] =
+    for (const auto entry : _aaObjects)
+    {
+        if (String::Equals(_identifier, entry))
+            return true;
+    }
+
+    return false;
+}
+
+bool Object::IsLLObject()
 {
+    static const char _llObjects[][9] =
+    {
         // Rides / vehicles / stalls
         "AML1    ",
         "ARRT2   ",
@@ -536,150 +639,8 @@ static const char _llObjects[][9] =
 
         // Water
         "WTRORNG ",
-};
+    };
 
-static const char _openRCT2OfficialObjects[][9] =
-{
-    // Offical extended scenery set
-    "XXBBBR01",
-    "TTRFTL02",
-    "TTRFTL03",
-    "TTRFTL04",
-    "TTRFTL07",
-    "TTRFTL08",
-    "TTPIRF02",
-    "TTPIRF03",
-    "TTPIRF04",
-    "TTPIRF05",
-    "TTPIRF07",
-    "TTPIRF08",
-    "MG-PRAR ",
-    "TTRFWD01",
-    "TTRFWD02",
-    "TTRFWD03",
-    "TTRFWD04",
-    "TTRFWD05",
-    "TTRFWD06",
-    "TTRFWD07",
-    "TTRFWD08",
-    "TTRFGL01",
-    "TTRFGL02",
-    "TTRFGL03",
-    "ACWW33  ",
-    "ACWWF32 ",
-
-    // Official DLC
-    "BIGPANDA",
-    "LITTERPA",
-    "PANDAGR ",
-    "SCGPANDA",
-    "WTRPINK ",
-    "ZPANDA  ",
-};
-
-Object::Object(const rct_object_entry &entry)
-{
-    _objectEntry = entry;
-
-    char name[DAT_NAME_LENGTH + 1] = { 0 };
-    Memory::Copy(name, entry.name, DAT_NAME_LENGTH);
-    _identifier = String::Duplicate(name);
-
-    if (IsRCT1Object())
-    {
-        SetSourceGame(OBJECT_SOURCE_RCT1);
-    }
-    else if (IsAAObject())
-    {
-        SetSourceGame(OBJECT_SOURCE_ADDED_ATTRACTIONS);
-    }
-    else if (IsLLObject())
-    {
-        SetSourceGame(OBJECT_SOURCE_LOOPY_LANDSCAPES);
-    }
-    else if (IsOpenRCT2OfficialObject())
-    {
-        SetSourceGame(OBJECT_SOURCE_OPENRCT2_OFFICIAL);
-    }
-}
-
-Object::~Object()
-{
-    Memory::Free(_identifier);
-}
-
-std::string Object::GetOverrideString(uint8 index) const
-{
-    const char * identifier = GetIdentifier();
-    rct_string_id stringId = language_get_object_override_string_id(identifier, index);
-
-    const utf8 * result = nullptr;
-    if (stringId != STR_NONE)
-    {
-        result = language_get_string(stringId);
-    }
-    return String::ToStd(result);
-}
-
-std::string Object::GetString(uint8 index) const
-{
-    auto sz = GetOverrideString(index);
-    if (sz.empty())
-    {
-        sz = GetStringTable()->GetString(index);
-    }
-    return sz;
-}
-
-rct_object_entry Object::GetScgWallsHeader()
-{
-    return Object::CreateHeader("SCGWALLS", 207140231, 3518650219);
-}
-
-rct_object_entry Object::GetScgPathXHeader()
-{
-    return Object::CreateHeader("SCGPATHX", 207140231, 890227440);
-}
-
-rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32 flags, uint32 checksum)
-{
-    rct_object_entry header = { 0 };
-    header.flags = flags;
-    Memory::Copy(header.name, name, DAT_NAME_LENGTH);
-    header.checksum = checksum;
-    return header;
-}
-
-void Object::SetSourceGame(const uint8 sourceGame)
-{
-    _objectEntry.flags &= 0x0F;
-    _objectEntry.flags |= (sourceGame << 4);
-}
-
-bool Object::IsRCT1Object()
-{
-    for (const auto entry : _rct1Objects)
-    {
-        if (String::Equals(_identifier, entry))
-            return true;
-    }
-
-    return false;
-}
-
-bool Object::IsAAObject()
-{
-    for (const auto entry : _aaObjects)
-    {
-        if (String::Equals(_identifier, entry))
-            return true;
-    }
-
-    return false;
-}
-
-bool Object::IsLLObject()
-{
     for (const auto entry : _llObjects)
     {
         if (String::Equals(_identifier, entry))
@@ -691,6 +652,45 @@ bool Object::IsLLObject()
 
 bool Object::IsOpenRCT2OfficialObject()
 {
+    static const char _openRCT2OfficialObjects[][9] =
+    {
+        // Offical extended scenery set
+        "XXBBBR01",
+        "TTRFTL02",
+        "TTRFTL03",
+        "TTRFTL04",
+        "TTRFTL07",
+        "TTRFTL08",
+        "TTPIRF02",
+        "TTPIRF03",
+        "TTPIRF04",
+        "TTPIRF05",
+        "TTPIRF07",
+        "TTPIRF08",
+        "MG-PRAR ",
+        "TTRFWD01",
+        "TTRFWD02",
+        "TTRFWD03",
+        "TTRFWD04",
+        "TTRFWD05",
+        "TTRFWD06",
+        "TTRFWD07",
+        "TTRFWD08",
+        "TTRFGL01",
+        "TTRFGL02",
+        "TTRFGL03",
+        "ACWW33  ",
+        "ACWWF32 ",
+
+        // Official DLC
+        "BIGPANDA",
+        "LITTERPA",
+        "PANDAGR ",
+        "SCGPANDA",
+        "WTRPINK ",
+        "ZPANDA  ",
+    };
+
     for (const auto entry : _openRCT2OfficialObjects)
     {
         if (String::Equals(_identifier, entry))
