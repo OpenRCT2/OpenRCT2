@@ -484,7 +484,7 @@ namespace String
             Guard::Assert(newStringSize < currentStringSize, GUARD_LINE);
 #endif
 
-            Memory::Move(str, firstNonWhitespace, newStringSize);
+            std::memmove(str, firstNonWhitespace, newStringSize);
             str[newStringSize] = '\0';
         }
         else

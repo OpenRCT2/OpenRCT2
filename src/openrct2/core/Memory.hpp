@@ -103,17 +103,6 @@ namespace Memory
     }
 
     template<typename T>
-    static T * Move(T * dst, const T * src, size_t size)
-    {
-        if (size == 0) return (T*)dst;
-        Guard::ArgumentNotNull(dst, "Trying to move memory to nullptr");
-        Guard::ArgumentNotNull(src, "Trying to move memory from nullptr");
-        T* result =(T*)memmove((void*)dst, (const void*)src, size);
-        Guard::ArgumentNotNull(result, "Failed to move %u bytes of memory from %x to %x for %s", size, src, dst, typeid(T).name());
-        return result;
-    }
-
-    template<typename T>
     static T * Duplicate(const T * src, size_t size)
     {
         T *result = Allocate<T>(size);

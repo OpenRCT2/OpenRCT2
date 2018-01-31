@@ -925,7 +925,7 @@ static void vehicle_update_sound_params(rct_vehicle * vehicle)
     // Shift all sound params down one if using a free space
     if (soundParam != gVehicleSoundParamsListEnd)
     {
-        Memory::Move<rct_vehicle_sound_params>(
+        std::memmove(
             soundParam + 1,
             soundParam,
             ((gVehicleSoundParamsListEnd - soundParam) - 1) * sizeof(rct_vehicle_sound_params));
