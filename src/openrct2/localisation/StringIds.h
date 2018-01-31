@@ -3874,6 +3874,8 @@ enum {
     STR_CHEAT_GROUP_OPERATION = 6216,
     STR_CHEAT_GROUP_AVAILABILITY = 6217,
 
+    STR_OBJECT_FILTER_OPENRCT2_OFFICIAL = 6218,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

@@ -296,7 +296,7 @@ namespace Config
             model->console_small_font = reader->GetBoolean("console_small_font", false);
             model->current_theme_preset = reader->GetCString("current_theme", "*RCT2");
             model->current_title_sequence_preset = reader->GetCString("current_title_sequence", "*OPENRCT2");
-            model->object_selection_filter_flags = reader->GetSint32("object_selection_filter_flags", 0x7EF);
+            model->object_selection_filter_flags = reader->GetSint32("object_selection_filter_flags", 0x3FFF);
         }
     }
 

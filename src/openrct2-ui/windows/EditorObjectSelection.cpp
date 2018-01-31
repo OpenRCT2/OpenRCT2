@@ -40,25 +40,32 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 
-enum {
-    FILTER_RCT2 = (1 << 0),
-    FILTER_WW = (1 << 1),
-    FILTER_TT = (1 << 2),
-    FILTER_CUSTOM = (1 << 3),
+enum
+{
+    FILTER_RCT1 = (1 << 0),
+    FILTER_AA = (1 << 1),
+    FILTER_LL = (1 << 2),
+    FILTER_RCT2 = (1 << 3),
+    FILTER_WW = (1 << 4),
+    FILTER_TT = (1 << 5),
+    FILTER_OO = (1 << 6),
+    FILTER_CUSTOM = (1 << 7),
 
-    FILTER_RIDE_TRANSPORT = (1 << 5),
-    FILTER_RIDE_GENTLE = (1 << 6),
-    FILTER_RIDE_COASTER = (1 << 7),
-    FILTER_RIDE_THRILL = (1 << 8),
-    FILTER_RIDE_WATER = (1 << 9),
-    FILTER_RIDE_STALL = (1 << 10),
+    FILTER_RIDE_TRANSPORT = (1 << 8),
+    FILTER_RIDE_GENTLE = (1 << 9),
+    FILTER_RIDE_COASTER = (1 << 10),
+    FILTER_RIDE_THRILL = (1 << 11),
+    FILTER_RIDE_WATER = (1 << 12),
+    FILTER_RIDE_STALL = (1 << 13),
 
-    FILTER_SELECTED = (1 << 12),
-    FILTER_NONSELECTED = (1 << 13),
+    FILTER_SELECTED = (1 << 14),
+    FILTER_NONSELECTED = (1 << 15),
 
     FILTER_RIDES = FILTER_RIDE_TRANSPORT | FILTER_RIDE_GENTLE | FILTER_RIDE_COASTER | FILTER_RIDE_THRILL | FILTER_RIDE_WATER | FILTER_RIDE_STALL,
-    FILTER_ALL = FILTER_RIDES | FILTER_RCT2 | FILTER_WW | FILTER_TT | FILTER_CUSTOM | FILTER_SELECTED | FILTER_NONSELECTED,
+    FILTER_ALL = FILTER_RIDES | FILTER_RCT1 | FILTER_AA | FILTER_LL | FILTER_RCT2 | FILTER_WW | FILTER_TT | FILTER_OO | FILTER_CUSTOM | FILTER_SELECTED | FILTER_NONSELECTED,
 };
+
+static constexpr uint8 _numSourceGameItems = 8;
 
 static uint32 _filter_flags;
 static uint16 _filter_object_counts[11];
@@ -66,9 +73,13 @@ static uint16 _filter_object_counts[11];
 static char _filter_string[MAX_PATH];
 
 #define _FILTER_ALL ((_filter_flags & FILTER_ALL) == FILTER_ALL)
+#define _FILTER_RCT1 (_filter_flags & FILTER_RCT1)
+#define _FILTER_AA (_filter_flags & FILTER_AA)
+#define _FILTER_LL (_filter_flags & FILTER_LL)
 #define _FILTER_RCT2 (_filter_flags & FILTER_RCT2)
 #define _FILTER_WW (_filter_flags & FILTER_WW)
 #define _FILTER_TT (_filter_flags & FILTER_TT)
+#define _FILTER_OO (_filter_flags & FILTER_OO)
 #define _FILTER_CUSTOM (_filter_flags & FILTER_CUSTOM)
 #define _FILTER_SELECTED (_filter_flags & FILTER_SELECTED)
 #define _FILTER_NONSELECTED (_filter_flags & FILTER_NONSELECTED)
@@ -251,9 +262,13 @@ enum {
 };
 
 enum {
+    DDIX_FILTER_RCT1,
+    DDIX_FILTER_AA,
+    DDIX_FILTER_LL,
     DDIX_FILTER_RCT2,
     DDIX_FILTER_WW,
     DDIX_FILTER_TT,
+    DDIX_FILTER_OO,
     DDIX_FILTER_CUSTOM,
     DDIX_FILTER_SEPARATOR,
     DDIX_FILTER_SELECTED,
@@ -505,7 +520,7 @@ static void window_editor_object_selection_mouseup(rct_window *w, rct_widgetinde
     case WIDX_FILTER_RIDE_TAB_WATER:
     case WIDX_FILTER_RIDE_TAB_STALL:
         _filter_flags &= ~FILTER_RIDES;
-        _filter_flags |= (1 << (widgetIndex - WIDX_FILTER_RIDE_TAB_TRANSPORT + 5));
+        _filter_flags |= (1 << (widgetIndex - WIDX_FILTER_RIDE_TAB_TRANSPORT + _numSourceGameItems));
         gConfigInterface.object_selection_filter_flags = _filter_flags;
         config_save_default();
 
@@ -575,23 +590,33 @@ static void window_editor_object_selection_resize(rct_window *w)
 
 void window_editor_object_selection_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    sint32 num_items;
+    sint32 numSelectionItems = 0;
 
     switch (widgetIndex) {
     case WIDX_FILTER_DROPDOWN:
 
-        num_items = 4;
+        gDropdownItemsFormat[DDIX_FILTER_RCT1] = STR_TOGGLE_OPTION;
+        gDropdownItemsFormat[DDIX_FILTER_AA] = STR_TOGGLE_OPTION;
+        gDropdownItemsFormat[DDIX_FILTER_LL] = STR_TOGGLE_OPTION;
         gDropdownItemsFormat[DDIX_FILTER_RCT2] = STR_TOGGLE_OPTION;
         gDropdownItemsFormat[DDIX_FILTER_WW] = STR_TOGGLE_OPTION;
         gDropdownItemsFormat[DDIX_FILTER_TT] = STR_TOGGLE_OPTION;
+        gDropdownItemsFormat[DDIX_FILTER_OO] = STR_TOGGLE_OPTION;
         gDropdownItemsFormat[DDIX_FILTER_CUSTOM] = STR_TOGGLE_OPTION;
+
+        gDropdownItemsArgs[DDIX_FILTER_RCT1] = STR_SCENARIO_CATEGORY_RCT1;
+        gDropdownItemsArgs[DDIX_FILTER_AA] = STR_SCENARIO_CATEGORY_RCT1_AA;
+        gDropdownItemsArgs[DDIX_FILTER_LL] = STR_SCENARIO_CATEGORY_RCT1_LL;
         gDropdownItemsArgs[DDIX_FILTER_RCT2] = STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
         gDropdownItemsArgs[DDIX_FILTER_WW] = STR_OBJECT_FILTER_WW;
         gDropdownItemsArgs[DDIX_FILTER_TT] = STR_OBJECT_FILTER_TT;
+        gDropdownItemsArgs[DDIX_FILTER_OO] = STR_OBJECT_FILTER_OPENRCT2_OFFICIAL;
         gDropdownItemsArgs[DDIX_FILTER_CUSTOM] = STR_OBJECT_FILTER_CUSTOM;
+
         // Track manager cannot select multiple, so only show selection filters if not in track manager
-        if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
-            num_items = 7;
+        if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+        {
+            numSelectionItems = 3;
             gDropdownItemsFormat[DDIX_FILTER_SEPARATOR] = 0;
             gDropdownItemsFormat[DDIX_FILTER_SELECTED] = STR_TOGGLE_OPTION;
             gDropdownItemsFormat[DDIX_FILTER_NONSELECTED] = STR_TOGGLE_OPTION;
@@ -606,10 +631,10 @@ void window_editor_object_selection_mousedown(rct_window *w, rct_widgetindex wid
             widget->bottom - widget->top + 1,
             w->colours[widget->colour],
             DROPDOWN_FLAG_STAY_OPEN,
-            num_items
+            _numSourceGameItems + numSelectionItems
             );
 
-        for (sint32 i = 0; i < 4; i++)
+        for (sint32 i = 0; i < _numSourceGameItems; i++)
         {
             if (_filter_flags & (1 << i))
             {
@@ -922,7 +947,6 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
     rct_widget *widget;
     rct_object_entry *highlightedEntry;
     rct_string_id stringId;
-    uint8 source;
 
     /*if (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
         gfx_fill_rect_inset(dpi,
@@ -1058,13 +1082,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
     }
 
     // Draw object source
-    source = (highlightedEntry->flags & 0xF0) >> 4;
-    switch (source) {
-    case 8: stringId = STR_ROLLERCOASTER_TYCOON_2_DROPDOWN; break;
-    case 1: stringId = STR_OBJECT_FILTER_WW; break;
-    case 2: stringId = STR_OBJECT_FILTER_TT; break;
-    default: stringId = STR_OBJECT_FILTER_CUSTOM; break;
-    }
+    stringId = object_manager_get_source_game_string(highlightedEntry);
     gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
 
     //
@@ -1369,10 +1387,21 @@ static bool filter_source(const ObjectRepositoryItem * item)
         return true;
 
     uint8 source = object_entry_get_source_game(&item->ObjectEntry);
-    return (_FILTER_RCT2 && source == OBJECT_SOURCE_RCT2) ||
+    return (_FILTER_RCT1 && source == OBJECT_SOURCE_RCT1) ||
+           (_FILTER_AA && source == OBJECT_SOURCE_ADDED_ATTRACTIONS) ||
+           (_FILTER_LL && source == OBJECT_SOURCE_LOOPY_LANDSCAPES) ||
+           (_FILTER_RCT2 && source == OBJECT_SOURCE_RCT2) ||
            (_FILTER_WW && source == OBJECT_SOURCE_WACKY_WORLDS) ||
            (_FILTER_TT && source == OBJECT_SOURCE_TIME_TWISTER) ||
-           (_FILTER_CUSTOM && source != OBJECT_SOURCE_RCT2 && source != OBJECT_SOURCE_WACKY_WORLDS && source != OBJECT_SOURCE_TIME_TWISTER);
+           (_FILTER_OO && source == OBJECT_SOURCE_OPENRCT2_OFFICIAL) ||
+           (_FILTER_CUSTOM &&
+               source != OBJECT_SOURCE_RCT1 &&
+               source != OBJECT_SOURCE_ADDED_ATTRACTIONS &&
+               source != OBJECT_SOURCE_LOOPY_LANDSCAPES &&
+               source != OBJECT_SOURCE_RCT2 &&
+               source != OBJECT_SOURCE_WACKY_WORLDS &&
+               source != OBJECT_SOURCE_TIME_TWISTER &&
+               source != OBJECT_SOURCE_OPENRCT2_OFFICIAL);
 }
 
 static bool filter_chunks(const ObjectRepositoryItem * item)
@@ -1389,7 +1418,7 @@ static bool filter_chunks(const ObjectRepositoryItem * item)
                 break;
             }
         }
-        if (_filter_flags & (1 << (gRideCategories[rideType] + 5)))
+        if (_filter_flags & (1 << (gRideCategories[rideType] + _numSourceGameItems)))
             return true;
 
         return false;

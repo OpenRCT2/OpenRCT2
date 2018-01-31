@@ -62,6 +62,10 @@ typedef enum
     OBJECT_SOURCE_CUSTOM,
     OBJECT_SOURCE_WACKY_WORLDS,
     OBJECT_SOURCE_TIME_TWISTER,
+    OBJECT_SOURCE_OPENRCT2_OFFICIAL,
+    OBJECT_SOURCE_RCT1,
+    OBJECT_SOURCE_ADDED_ATTRACTIONS,
+    OBJECT_SOURCE_LOOPY_LANDSCAPES,
     OBJECT_SOURCE_RCT2 = 8
 } OBJECT_SOURCE_GAME;
 
@@ -165,6 +169,12 @@ protected:
 
     std::string         GetOverrideString(uint8 index) const;
     std::string         GetString(uint8 index) const;
+
+    void                SetSourceGame(const uint8 sourceGame);
+    bool                IsRCT1Object();
+    bool                IsAAObject();
+    bool                IsLLObject();
+    bool                IsOpenRCT2OfficialObject();
 
 public:
     explicit Object(const rct_object_entry &entry);

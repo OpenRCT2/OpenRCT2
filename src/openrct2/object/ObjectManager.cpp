@@ -232,15 +232,22 @@ public:
 
     static rct_string_id GetObjectSourceGameString(const rct_object_entry * entry)
     {
-        uint8 source = (entry->flags & 0xF0) >> 4;
-        switch (source)
+        switch (object_entry_get_source_game(entry))
         {
+        case OBJECT_SOURCE_RCT1:
+            return STR_SCENARIO_CATEGORY_RCT1;
+        case OBJECT_SOURCE_ADDED_ATTRACTIONS:
+            return STR_SCENARIO_CATEGORY_RCT1_AA;
+        case OBJECT_SOURCE_LOOPY_LANDSCAPES:
+            return STR_SCENARIO_CATEGORY_RCT1_LL;
         case OBJECT_SOURCE_RCT2:
             return STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
         case OBJECT_SOURCE_WACKY_WORLDS:
             return STR_OBJECT_FILTER_WW;
         case OBJECT_SOURCE_TIME_TWISTER:
             return STR_OBJECT_FILTER_TT;
+        case OBJECT_SOURCE_OPENRCT2_OFFICIAL:
+            return STR_OBJECT_FILTER_OPENRCT2_OFFICIAL;
         default:
             return STR_OBJECT_FILTER_CUSTOM;
         }

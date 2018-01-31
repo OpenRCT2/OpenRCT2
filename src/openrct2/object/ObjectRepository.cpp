@@ -79,7 +79,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32 MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16 VERSION = 16;
+    static constexpr uint16 VERSION = 17;
     static constexpr auto PATTERN = "*.dat;*.pob";
 
 public:
