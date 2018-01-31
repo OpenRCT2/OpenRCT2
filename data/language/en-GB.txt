@@ -5411,7 +5411,7 @@ STR_NAME    :Roof
 STR_NAME    :Roof
 
 [MG-PRAR]
-STR_NAME    :Wall with Archway
+STR_NAME    :Wall with Passageway
 
 [TTRFWD01]
 STR_NAME    :Roof
