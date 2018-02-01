@@ -17,10 +17,7 @@
 #pragma once
 
 #include <openrct2/common.h>
-
-extern "C" {
 #include <openrct2/paint/Paint.h>
-}
 
 enum {
     TUNNELCALL_SKIPPED,

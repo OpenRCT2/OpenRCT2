@@ -367,13 +367,13 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
                 oldCalls.insert(oldCalls.begin(), callBuffer, callBuffer + callCount);
 
                 PaintIntercept::ClearCalls();
-                testpaint_clear_ignore();
+                TestPaint::testClearIgnore();
                 TestPaint::ResetSupportHeights();
                 gPaintSession.WoodenSupportsPrependTo = nullptr;
 
                 CallNew(rideType, trackType, direction, trackSequence, height, &tileElement);
 
-                if (testpaint_is_ignored(direction, trackSequence)) {
+                if (TestPaint::testIsIgnored(direction, trackSequence)) {
                     *error += String::Format("[  IGNORED ]   %s\n", caseName.c_str());
                     continue;
                 }
@@ -464,9 +464,9 @@ static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackTyp
     for (int direction = 0; direction < 4; direction++) {
         TestPaint::ResetSupportHeights();
 
-        testpaint_clear_ignore();
+        TestPaint::testClearIgnore();
         CallNew(rideType, trackType, direction, trackSequence, height, &tileElement);
-        if (testpaint_is_ignored(direction, trackSequence)) {
+        if (TestPaint::testIsIgnored(direction, trackSequence)) {
             continue;
         }
 
@@ -548,9 +548,9 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
     for (int direction = 0; direction < 4; direction++) {
         TestPaint::ResetSupportHeights();
 
-        testpaint_clear_ignore();
+        TestPaint::testClearIgnore();
         CallNew(rideType, trackType, direction, trackSequence, height, &tileElement);
-        if (testpaint_is_ignored(direction, trackSequence)) {
+        if (TestPaint::testIsIgnored(direction, trackSequence)) {
             continue;
         }
 
@@ -641,7 +641,7 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
     for (int direction = 0; direction < 4; direction++) {
         TestPaint::ResetTunnels();
 
-        testpaint_clear_ignore();
+        TestPaint::testClearIgnore();
 
         for (sint8 offset = -8; offset <= 8; offset += 8) {
             // TODO: move tunnel pushing to interface so we don't have to check the output 3 times
@@ -748,12 +748,12 @@ static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, ui
 
     for (int direction = 0; direction < 4; direction++) {
 
-        testpaint_clear_ignore();
+        TestPaint::testClearIgnore();
 
         testPaintVerticalTunnelHeight = 0;
         CallNew(rideType, trackType, direction, trackSequence, height, &tileElement);
 
-        if (testpaint_is_ignored(direction, trackSequence)) {
+        if (TestPaint::testIsIgnored(direction, trackSequence)) {
             continue;
         }
 

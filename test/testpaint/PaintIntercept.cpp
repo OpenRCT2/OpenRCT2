@@ -305,8 +305,6 @@ namespace PaintIntercept {
     }
 };
 
-
-extern "C" {
 bool wooden_a_supports_paint_setup(paint_session * session, int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
     return PaintIntercept::PaintWoodenSupports(SUPPORTS_WOOD_A, supportType, special, height, imageColourFlags, underground, gPaintSession.WoodenSupportsPrependTo);
 }
@@ -389,6 +387,4 @@ paint_struct *sub_98199C(
 
 bool paint_attach_to_previous_ps(paint_session * session, uint32 image_id, uint16 x, uint16 y) {
     return false;
-}
-
 }
