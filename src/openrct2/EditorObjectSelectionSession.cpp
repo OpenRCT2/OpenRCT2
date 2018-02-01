@@ -20,12 +20,12 @@
 #include "EditorObjectSelectionSession.h"
 #include "Game.h"
 #include "localisation/Localisation.h"
+#include "object/default_objects.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "OpenRCT2.h"
 #include "ride/RideData.h"
 #include "windows/Intent.h"
-#include "windows/_legacy.h"
 #include "world/Footpath.h"
 #include "world/LargeScenery.h"
 
