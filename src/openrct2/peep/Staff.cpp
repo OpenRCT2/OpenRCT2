@@ -633,7 +633,7 @@ void staff_update_greyed_patrol_areas()
     }
 }
 
-static sint32 staff_is_location_in_patrol_area(rct_peep * peep, sint32 x, sint32 y)
+static bool staff_is_location_in_patrol_area(rct_peep * peep, sint32 x, sint32 y)
 {
     // Patrol quads are stored in a bit map (8 patrol quads per byte)
     // Each patrol quad is 4x4
@@ -645,24 +645,24 @@ static sint32 staff_is_location_in_patrol_area(rct_peep * peep, sint32 x, sint32
  *
  *  rct2: 0x006C0905
  */
-sint32 staff_is_location_in_patrol(rct_peep * staff, sint32 x, sint32 y)
+bool staff_is_location_in_patrol(rct_peep * staff, sint32 x, sint32 y)
 {
     // Check if location is in the park
     if (!map_is_location_owned_or_has_rights(x, y))
-        return 0;
+        return false;
 
     // Check if staff has patrol area
     if (!(gStaffModes[staff->staff_id] & 2))
-        return 1;
+        return true;
 
     return staff_is_location_in_patrol_area(staff, x, y);
 }
 
-sint32 staff_is_location_on_patrol_edge(rct_peep * mechanic, sint32 x, sint32 y)
+bool staff_is_location_on_patrol_edge(rct_peep * mechanic, sint32 x, sint32 y)
 {
     // Check whether the location x,y is inside and on the edge of the
     // patrol zone for mechanic.
-    sint32 onZoneEdge   = 0;
+    bool   onZoneEdge   = false;
     sint32 neighbourDir = 0;
     while (!onZoneEdge && neighbourDir <= 7)
     {
@@ -1068,7 +1068,7 @@ static sint32 staff_handyman_direction_rand_surface(rct_peep * peep, uint8 valid
  *
  *  rct2: 0x006BFBA8
  */
-static sint32 staff_path_finding_handyman(rct_peep * peep)
+static bool staff_path_finding_handyman(rct_peep * peep)
 {
     peep->var_E2++;
 
@@ -1097,7 +1097,7 @@ static sint32 staff_path_finding_handyman(rct_peep * peep)
             rct_tile_element * tileElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
 
             if (tileElement == nullptr)
-                return 1;
+                return true;
 
             uint8 pathDirections = (tileElement->properties.path.edges & validDirections) & 0xF;
             if (pathDirections == 0)
@@ -1156,7 +1156,7 @@ static sint32 staff_path_finding_handyman(rct_peep * peep)
     {
         peep->destination_tolerance = (scenario_rand() & 7) + 2;
     }
-    return 0;
+    return false;
 }
 
 static uint8 staff_direction_surface(rct_peep * peep, uint8 initialDirection)
@@ -1378,7 +1378,7 @@ static uint8 staff_mechanic_direction_path(rct_peep * peep, uint8 validDirection
  *
  *  rct2: 0x006BFF2C
  */
-static sint32 staff_path_finding_mechanic(rct_peep * peep)
+static bool staff_path_finding_mechanic(rct_peep * peep)
 {
     uint8 validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
     uint8 direction       = 0xFF;
@@ -1390,7 +1390,7 @@ static sint32 staff_path_finding_mechanic(rct_peep * peep)
     {
         rct_tile_element * pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
         if (pathElement == nullptr)
-            return 1;
+            return true;
 
         direction = staff_mechanic_direction_path(peep, validDirections, pathElement);
     }
@@ -1413,7 +1413,7 @@ static sint32 staff_path_finding_mechanic(rct_peep * peep)
     peep->destination_y         = chosenTile.y + 16;
     peep->destination_tolerance = (scenario_rand() & 7) + 2;
 
-    return 0;
+    return false;
 }
 
 /**
@@ -1465,7 +1465,7 @@ static uint8 staff_direction_path(rct_peep * peep, uint8 validDirections, rct_ti
  *
  *  rct2: 0x006C0351
  */
-static sint32 staff_path_finding_misc(rct_peep * peep)
+static bool staff_path_finding_misc(rct_peep * peep)
 {
     uint8 validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
 
@@ -1478,7 +1478,7 @@ static sint32 staff_path_finding_misc(rct_peep * peep)
     {
         rct_tile_element * pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
         if (pathElement == nullptr)
-            return 1;
+            return true;
 
         direction = staff_direction_path(peep, validDirections, pathElement);
     }
@@ -1498,7 +1498,7 @@ static sint32 staff_path_finding_misc(rct_peep * peep)
     peep->destination_y         = chosenTile.y + 16;
     peep->destination_tolerance = (scenario_rand() & 7) + 2;
 
-    return 0;
+    return false;
 }
 
 /**
