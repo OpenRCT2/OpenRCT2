@@ -29,9 +29,6 @@
 #include "Drawing.h"
 #include "LightFX.h"
 
-extern "C"
-{
-
 static uint8 _bakedLightTexture_lantern_0[32*32];
 static uint8 _bakedLightTexture_lantern_1[64*64];
 static uint8 _bakedLightTexture_lantern_2[128*128];
@@ -1016,8 +1013,6 @@ void lightfx_render_to_texture(
             *dst++ = colour;
         }
     }
-}
-
 }
 
 #endif // __ENABLE_LIGHTFX__

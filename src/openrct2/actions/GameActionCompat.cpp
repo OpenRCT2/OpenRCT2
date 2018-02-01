@@ -24,8 +24,6 @@
 #include "RideSetName.hpp"
 #include "RideDemolishAction.hpp"
 
-extern "C"
-{
 #pragma region PlaceParkEntranceAction
     money32 place_park_entrance(sint16 x, sint16 y, sint16 z, uint8 direction)
     {
@@ -236,5 +234,3 @@ extern "C"
     }
 
 #pragma endregion
-
-}

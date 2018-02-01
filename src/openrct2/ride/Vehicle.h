@@ -385,10 +385,6 @@ enum {
 #define VEHICLE_SEAT_PAIR_FLAG  0x80
 #define VEHICLE_SEAT_NUM_MASK   0x7F
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 rct_vehicle * try_get_vehicle(uint16 spriteIndex);
 void vehicle_update_all();
 void vehicle_sounds_update();
@@ -419,10 +415,6 @@ extern uint8 _vehicleBankEndF64E37;
 extern uint8 _vehicleF64E2C;
 extern rct_vehicle * _vehicleFrontVehicle;
 extern LocationXYZ16 unk_F64E20;
-
-#ifdef __cplusplus
-}
-#endif
 
 /** Helper macro until rides are stored in this module. */
 #define GET_VEHICLE(sprite_index) &(get_sprite(sprite_index)->vehicle)

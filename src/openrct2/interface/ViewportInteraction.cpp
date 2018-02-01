@@ -36,9 +36,6 @@
 #include "Window_internal.h"
 #include "../Context.h"
 
-extern "C"
-{
-
 static void viewport_interaction_remove_scenery(rct_tile_element *tileElement, sint32 x, sint32 y);
 static void viewport_interaction_remove_footpath(rct_tile_element *tileElement, sint32 x, sint32 y);
 static void viewport_interaction_remove_footpath_item(rct_tile_element *tileElement, sint32 x, sint32 y);
@@ -654,6 +651,4 @@ void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *di
     *y = map_pos.y & ~0x1F;
     if (direction != nullptr) *direction = myDirection;
     if (tileElement != nullptr) *tileElement = myTileElement;
-}
-
 }

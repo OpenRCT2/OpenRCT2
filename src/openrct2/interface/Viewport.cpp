@@ -40,9 +40,6 @@
 #include "Window.h"
 #include "Window_internal.h"
 
-extern "C"
-{
-
 //#define DEBUG_SHOW_DIRTY_BOX
 uint8 gShowGridLinesRefCount;
 uint8 gShowLandRightsRefCount;
@@ -1793,6 +1790,4 @@ void viewport_set_saved_view()
         gSavedViewZoom = viewport->zoom;
         gSavedViewRotation = get_current_rotation();
     }
-}
-
 }

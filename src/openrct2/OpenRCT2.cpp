@@ -22,30 +22,28 @@
 #include "audio/audio.h"
 #include "platform/platform.h"
 
-extern "C"
-{
-    sint32 gExitCode;
-    sint32 gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
-    utf8 gOpenRCT2StartupActionPath[512] = { 0 };
-    utf8 gExePath[MAX_PATH];
-    utf8 gCustomUserDataPath[MAX_PATH] = { 0 };
-    utf8 gCustomOpenrctDataPath[MAX_PATH] = { 0 };
-    utf8 gCustomRCT2DataPath[MAX_PATH] = { 0 };
-    utf8 gCustomPassword[MAX_PATH] = { 0 };
+sint32 gExitCode;
+sint32 gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
+utf8 gOpenRCT2StartupActionPath[512] = { 0 };
+utf8 gExePath[MAX_PATH];
+utf8 gCustomUserDataPath[MAX_PATH] = { 0 };
+utf8 gCustomOpenrctDataPath[MAX_PATH] = { 0 };
+utf8 gCustomRCT2DataPath[MAX_PATH] = { 0 };
+utf8 gCustomPassword[MAX_PATH] = { 0 };
 
-    bool gOpenRCT2Headless = false;
-    bool gOpenRCT2NoGraphics = false;
+bool gOpenRCT2Headless = false;
+bool gOpenRCT2NoGraphics = false;
 
-    bool gOpenRCT2ShowChangelog;
-    bool gOpenRCT2SilentBreakpad;
+bool gOpenRCT2ShowChangelog;
+bool gOpenRCT2SilentBreakpad;
 
 #ifndef DISABLE_NETWORK
-    // OpenSSL's message digest context used for calculating sprite checksums
-    EVP_MD_CTX * gHashCTX = nullptr;
+// OpenSSL's message digest context used for calculating sprite checksums
+EVP_MD_CTX * gHashCTX = nullptr;
 #endif // DISABLE_NETWORK
 
-    uint32 gCurrentDrawCount = 0;
-    uint8 gScreenFlags;
-    uint32 gScreenAge;
-    uint8 gSavePromptMode;
-}
+uint32 gCurrentDrawCount = 0;
+uint8 gScreenFlags;
+uint32 gScreenAge;
+uint8 gSavePromptMode;
+

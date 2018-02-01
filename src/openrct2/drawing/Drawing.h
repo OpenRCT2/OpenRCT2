@@ -243,10 +243,6 @@ typedef struct rct_size16
 
 #define MAX_SCROLLING_TEXT_MODES 38
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern sint16 gCurrentFontSpriteBase;
 extern uint16 gCurrentFontFlags;
 
@@ -370,10 +366,6 @@ void mask_init();
 
 extern void (*mask_fn)(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
                        uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap);
-
-#ifdef __cplusplus
-}
-#endif
 
 #include "NewDrawing.h"
 

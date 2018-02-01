@@ -19,10 +19,6 @@
 #include "../common.h"
 #include "Map.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 colour_t scenery_large_get_primary_colour(const rct_tile_element * tileElement);
 colour_t scenery_large_get_secondary_colour(const rct_tile_element * tileElement);
 void scenery_large_set_primary_colour(rct_tile_element * tileElement, colour_t colour);
@@ -33,7 +29,3 @@ sint32 scenery_large_get_type(rct_tile_element * tileElement);
 sint32 scenery_large_get_sequence(rct_tile_element * tileElement);
 void scenery_large_set_type(rct_tile_element * tileElement, uint16 type);
 void scenery_large_set_sequence(rct_tile_element * tileElement, uint16 sequence);
-
-#ifdef __cplusplus
-}
-#endif

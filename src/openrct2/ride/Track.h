@@ -519,10 +519,6 @@ typedef struct track_circuit_iterator
     bool            looped;
 } track_circuit_iterator;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern const rct_trackdefinition FlatRideTrackDefinitions[256];
 extern const rct_trackdefinition TrackDefinitions[256];
 
@@ -582,7 +578,3 @@ uint8 track_element_get_ride_index(const rct_tile_element * tileElement);
 void track_element_set_ride_index(rct_tile_element * tileElement, uint8 rideIndex);
 uint8 track_element_get_type(const rct_tile_element * tileElement);
 void track_element_set_type(rct_tile_element * tileElement, uint8 rideIndex);
-
-#ifdef __cplusplus
-}
-#endif

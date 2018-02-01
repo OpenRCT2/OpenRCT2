@@ -688,212 +688,210 @@ static money32 WallSetColour(sint16 x,
     return 0;
 }
 
-extern "C"
+uint8 wall_element_get_animation_frame(rct_tile_element * wallElement)
 {
-    uint8 wall_element_get_animation_frame(rct_tile_element * wallElement)
+    return (wallElement->properties.wall.animation >> 3) & 0xF;
+}
+
+void wall_element_set_animation_frame(rct_tile_element * wallElement, uint8 frameNum)
+{
+    wallElement->properties.wall.animation &= WALL_ANIMATION_FLAG_ALL_FLAGS;
+    wallElement->properties.wall.animation |= (frameNum & 0xF) << 3;
+}
+
+colour_t wall_get_primary_colour(const rct_tile_element * tileElement)
+{
+    return tileElement->properties.wall.colour_1 & TILE_ELEMENT_COLOUR_MASK;
+}
+
+colour_t wall_get_secondary_colour(rct_tile_element * wallElement)
+{
+    uint8 secondaryColour = (wallElement->properties.wall.colour_1 &~ TILE_ELEMENT_COLOUR_MASK) >> 5;
+    secondaryColour |= (wallElement->flags & 0x60) >> 2;
+    return secondaryColour;
+}
+
+colour_t wall_get_tertiary_colour(const rct_tile_element * tileElement)
+{
+    return tileElement->properties.wall.colour_3 & TILE_ELEMENT_COLOUR_MASK;
+}
+
+void wall_set_primary_colour(rct_tile_element * tileElement, colour_t colour)
+{
+    assert(colour <= 31);
+    tileElement->properties.wall.colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
+    tileElement->properties.wall.colour_1 |= colour;
+}
+
+void wall_set_secondary_colour(rct_tile_element * wallElement, colour_t secondaryColour)
+{
+    wallElement->properties.wall.colour_1 &= TILE_ELEMENT_COLOUR_MASK;
+    wallElement->properties.wall.colour_1 |= (secondaryColour & 0x7) << 5;
+    wallElement->flags &= ~0x60;
+    wallElement->flags |= (secondaryColour & 0x18) << 2;
+}
+
+void wall_set_tertiary_colour(rct_tile_element * tileElement, colour_t colour)
+{
+    assert(colour <= 31);
+    tileElement->properties.wall.colour_3 &= ~TILE_ELEMENT_COLOUR_MASK;
+    tileElement->properties.wall.colour_3 |= colour;
+}
+
+/**
+ *
+ *  rct2: 0x006E588E
+ */
+void wall_remove_at(sint32 x, sint32 y, sint32 z0, sint32 z1)
+{
+    rct_tile_element * tileElement;
+
+    z0 /= 8;
+    z1 /= 8;
+repeat:
+    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    do
     {
-        return (wallElement->properties.wall.animation >> 3) & 0xF;
-    }
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
+            continue;
+        if (z0 >= tileElement->clearance_height)
+            continue;
+        if (z1 <= tileElement->base_height)
+            continue;
 
-    void wall_element_set_animation_frame(rct_tile_element * wallElement, uint8 frameNum)
+        tile_element_remove_banner_entry(tileElement);
+        map_invalidate_tile_zoom1(x, y, tileElement->base_height * 8, tileElement->base_height * 8 + 72);
+        tile_element_remove(tileElement);
+        goto repeat;
+    }
+    while (!tile_element_is_last_for_tile(tileElement++));
+}
+
+/**
+ *
+ *  rct2: 0x006E57E6
+ */
+void wall_remove_at_z(sint32 x, sint32 y, sint32 z)
+{
+    wall_remove_at(x, y, z, z + 48);
+}
+
+/**
+ *
+ *  rct2: 0x006E5935
+ */
+void wall_remove_intersecting_walls(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction)
+{
+    rct_tile_element * tileElement;
+
+    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    do
     {
-        wallElement->properties.wall.animation &= WALL_ANIMATION_FLAG_ALL_FLAGS;
-        wallElement->properties.wall.animation |= (frameNum & 0xF) << 3;
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
+            continue;
+
+        if (tileElement->clearance_height <= z0 || tileElement->base_height >= z1)
+            continue;
+
+        if (direction != tile_element_get_direction(tileElement))
+            continue;
+
+        tile_element_remove_banner_entry(tileElement);
+        map_invalidate_tile_zoom1(x, y, tileElement->base_height * 8, tileElement->base_height * 8 + 72);
+        tile_element_remove(tileElement);
+        tileElement--;
     }
+    while (!tile_element_is_last_for_tile(tileElement++));
+}
 
-    colour_t wall_get_primary_colour(const rct_tile_element * tileElement)
-    {
-        return tileElement->properties.wall.colour_1 & TILE_ELEMENT_COLOUR_MASK;
-    }
+/**
+ *
+ *  rct2: 0x006E519A
+ */
+void game_command_place_wall(sint32 * eax,
+                             sint32 * ebx,
+                             sint32 * ecx,
+                             sint32 * edx,
+                             sint32 * esi,
+                             sint32 * edi,
+                             sint32 * ebp)
+{
+    *ebx = WallPlace(
+        (*ebx >> 8) & 0xFF,
+        *eax & 0xFFFF,
+        *ecx & 0xFFFF,
+        *edi & 0xFFFF,
+        *edx & 0xFF,
+        (*edx >> 8) & 0xFF,
+        *ebp & 0xFF,
+        (*ebp >> 8) & 0xFF,
+        *ebx & 0xFF
+    );
+}
 
-    colour_t wall_get_secondary_colour(rct_tile_element * wallElement)
-    {
-        uint8 secondaryColour = (wallElement->properties.wall.colour_1 &~ TILE_ELEMENT_COLOUR_MASK) >> 5;
-        secondaryColour |= (wallElement->flags & 0x60) >> 2;
-        return secondaryColour;
-    }
+money32 wall_place(sint32 type,
+                   sint32 x,
+                   sint32 y,
+                   sint32 z,
+                   sint32 edge,
+                   sint32 primaryColour,
+                   sint32 secondaryColour,
+                   sint32 tertiaryColour,
+                   sint32 flags)
+{
+    sint32 eax = x;
+    sint32 ebx = flags | (type << 8);
+    sint32 ecx = y;
+    sint32 edx = edge | (primaryColour << 8);
+    sint32 esi = 0;
+    sint32 edi = z;
+    sint32 ebp = secondaryColour | (tertiaryColour << 8);
+    game_command_place_wall(&eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+    return ebx;
+}
 
-    colour_t wall_get_tertiary_colour(const rct_tile_element * tileElement)
-    {
-        return tileElement->properties.wall.colour_3 & TILE_ELEMENT_COLOUR_MASK;
-    }
+/**
+ *
+ *  rct2: 0x006E5597
+ */
+void game_command_remove_wall(sint32 * eax,
+                              sint32 * ebx,
+                              sint32 * ecx,
+                              sint32 * edx,
+                              sint32 * esi,
+                              sint32 * edi,
+                              sint32 * ebp)
+{
+    *ebx = WallRemove(
+        *eax & 0xFFFF,
+        *ecx & 0xFFFF,
+        (*edx >> 8) & 0xFF,
+        *edx & 0xFF,
+        *ebx & 0xFF
+    );
+}
 
-    void wall_set_primary_colour(rct_tile_element * tileElement, colour_t colour)
-    {
-        assert(colour <= 31);
-        tileElement->properties.wall.colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
-        tileElement->properties.wall.colour_1 |= colour;
-    }
-
-    void wall_set_secondary_colour(rct_tile_element * wallElement, colour_t secondaryColour)
-    {
-        wallElement->properties.wall.colour_1 &= TILE_ELEMENT_COLOUR_MASK;
-        wallElement->properties.wall.colour_1 |= (secondaryColour & 0x7) << 5;
-        wallElement->flags &= ~0x60;
-        wallElement->flags |= (secondaryColour & 0x18) << 2;
-    }
-
-    void wall_set_tertiary_colour(rct_tile_element * tileElement, colour_t colour)
-    {
-        assert(colour <= 31);
-        tileElement->properties.wall.colour_3 &= ~TILE_ELEMENT_COLOUR_MASK;
-        tileElement->properties.wall.colour_3 |= colour;
-    }
-
-    /**
-     *
-     *  rct2: 0x006E588E
-     */
-    void wall_remove_at(sint32 x, sint32 y, sint32 z0, sint32 z1)
-    {
-        rct_tile_element * tileElement;
-
-        z0 /= 8;
-        z1 /= 8;
-    repeat:
-        tileElement = map_get_first_element_at(x >> 5, y >> 5);
-        do
-        {
-            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
-                continue;
-            if (z0 >= tileElement->clearance_height)
-                continue;
-            if (z1 <= tileElement->base_height)
-                continue;
-
-            tile_element_remove_banner_entry(tileElement);
-            map_invalidate_tile_zoom1(x, y, tileElement->base_height * 8, tileElement->base_height * 8 + 72);
-            tile_element_remove(tileElement);
-            goto repeat;
-        }
-        while (!tile_element_is_last_for_tile(tileElement++));
-    }
-
-    /**
-     *
-     *  rct2: 0x006E57E6
-     */
-    void wall_remove_at_z(sint32 x, sint32 y, sint32 z)
-    {
-        wall_remove_at(x, y, z, z + 48);
-    }
-
-    /**
-     *
-     *  rct2: 0x006E5935
-     */
-    void wall_remove_intersecting_walls(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction)
-    {
-        rct_tile_element * tileElement;
-
-        tileElement = map_get_first_element_at(x >> 5, y >> 5);
-        do
-        {
-            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
-                continue;
-
-            if (tileElement->clearance_height <= z0 || tileElement->base_height >= z1)
-                continue;
-
-            if (direction != tile_element_get_direction(tileElement))
-                continue;
-
-            tile_element_remove_banner_entry(tileElement);
-            map_invalidate_tile_zoom1(x, y, tileElement->base_height * 8, tileElement->base_height * 8 + 72);
-            tile_element_remove(tileElement);
-            tileElement--;
-        }
-        while (!tile_element_is_last_for_tile(tileElement++));
-    }
-
-    /**
-     *
-     *  rct2: 0x006E519A
-     */
-    void game_command_place_wall(sint32 * eax,
-                                 sint32 * ebx,
-                                 sint32 * ecx,
-                                 sint32 * edx,
-                                 sint32 * esi,
-                                 sint32 * edi,
-                                 sint32 * ebp)
-    {
-        *ebx = WallPlace(
-            (*ebx >> 8) & 0xFF,
-            *eax & 0xFFFF,
-            *ecx & 0xFFFF,
-            *edi & 0xFFFF,
-            *edx & 0xFF,
-            (*edx >> 8) & 0xFF,
-            *ebp & 0xFF,
-            (*ebp >> 8) & 0xFF,
-            *ebx & 0xFF
-        );
-    }
-
-    money32 wall_place(sint32 type,
-                       sint32 x,
-                       sint32 y,
-                       sint32 z,
-                       sint32 edge,
-                       sint32 primaryColour,
-                       sint32 secondaryColour,
-                       sint32 tertiaryColour,
-                       sint32 flags)
-    {
-        sint32 eax = x;
-        sint32 ebx = flags | (type << 8);
-        sint32 ecx = y;
-        sint32 edx = edge | (primaryColour << 8);
-        sint32 esi = 0;
-        sint32 edi = z;
-        sint32 ebp = secondaryColour | (tertiaryColour << 8);
-        game_command_place_wall(&eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-        return ebx;
-    }
-
-    /**
-     *
-     *  rct2: 0x006E5597
-     */
-    void game_command_remove_wall(sint32 * eax,
+/**
+ *
+ *  rct2: 0x006E56B5
+ */
+void game_command_set_wall_colour(sint32 * eax,
                                   sint32 * ebx,
                                   sint32 * ecx,
                                   sint32 * edx,
                                   sint32 * esi,
                                   sint32 * edi,
                                   sint32 * ebp)
-    {
-        *ebx = WallRemove(
-            *eax & 0xFFFF,
-            *ecx & 0xFFFF,
-            (*edx >> 8) & 0xFF,
-            *edx & 0xFF,
-            *ebx & 0xFF
-        );
-    }
-
-    /**
-     *
-     *  rct2: 0x006E56B5
-     */
-    void game_command_set_wall_colour(sint32 * eax,
-                                      sint32 * ebx,
-                                      sint32 * ecx,
-                                      sint32 * edx,
-                                      sint32 * esi,
-                                      sint32 * edi,
-                                      sint32 * ebp)
-    {
-        *ebx = WallSetColour(
-            *eax & 0xFFFF,
-            *ecx & 0xFFFF,
-            (*edx >> 8) & 0xFF,
-            *edx & 0xFF,
-            (*ebx >> 8) & 0xFF,
-            *ebp & 0xFF,
-            (*ebp >> 8) & 0xFF,
-            *ebx & 0xFF
-        );
-    }
+{
+    *ebx = WallSetColour(
+        *eax & 0xFFFF,
+        *ecx & 0xFFFF,
+        (*edx >> 8) & 0xFF,
+        *edx & 0xFF,
+        (*ebx >> 8) & 0xFF,
+        *ebp & 0xFF,
+        (*ebp >> 8) & 0xFF,
+        *ebx & 0xFF
+    );
 }
+

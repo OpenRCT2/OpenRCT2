@@ -140,28 +140,22 @@ namespace OpenRCT2
 
 #endif
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    typedef struct rct_window rct_window;
+typedef struct rct_window rct_window;
 
-    /** The current shortcut being changed. */
-    extern uint8 gKeyboardShortcutChangeId;
-    extern const rct_string_id ShortcutStringIds[SHORTCUT_COUNT];
+/** The current shortcut being changed. */
+extern uint8 gKeyboardShortcutChangeId;
+extern const rct_string_id ShortcutStringIds[SHORTCUT_COUNT];
 
-    void keyboard_shortcuts_reset();
-    bool keyboard_shortcuts_load();
-    bool keyboard_shortcuts_save();
-    void keyboard_shortcuts_set(sint32 key);
-    sint32 keyboard_shortcuts_get_from_key(sint32 key);
-    void keyboard_shortcuts_format_string(char * buffer, size_t bufferSize, sint32 shortcut);
+void keyboard_shortcuts_reset();
+bool keyboard_shortcuts_load();
+bool keyboard_shortcuts_save();
+void keyboard_shortcuts_set(sint32 key);
+sint32 keyboard_shortcuts_get_from_key(sint32 key);
+void keyboard_shortcuts_format_string(char * buffer, size_t bufferSize, sint32 shortcut);
 
-    void keyboard_shortcut_handle(sint32 key);
-    void keyboard_shortcut_handle_command(sint32 shortcutIndex);
-    void keyboard_shortcut_format_string(char *buffer, size_t size, uint16 shortcutKey);
+void keyboard_shortcut_handle(sint32 key);
+void keyboard_shortcut_handle_command(sint32 shortcutIndex);
+void keyboard_shortcut_format_string(char *buffer, size_t size, uint16 shortcutKey);
 
-    void get_keyboard_map_scroll(const uint8 * keysState, sint32 * x, sint32 * y);
-#ifdef __cplusplus
-}
-#endif
+void get_keyboard_map_scroll(const uint8 * keysState, sint32 * x, sint32 * y);
+

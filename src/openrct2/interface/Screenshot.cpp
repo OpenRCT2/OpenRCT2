@@ -36,8 +36,6 @@
 
 using namespace OpenRCT2;
 
-extern "C"
-{
 uint8 gScreenshotCountdown = 0;
 
 /**
@@ -583,6 +581,4 @@ sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOption
     }
     delete context;
     return 1;
-}
-
 }

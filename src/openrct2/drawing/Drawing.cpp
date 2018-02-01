@@ -26,9 +26,6 @@
 #include "../world/Water.h"
 #include "Drawing.h"
 
-extern "C"
-{
-
 // HACK These were originally passed back through registers
 sint32 gLastDrawStringX;
 sint32 gLastDrawStringY;
@@ -660,4 +657,3 @@ void gfx_draw_pickedup_peep(rct_drawpixelinfo *dpi)
     }
 }
 
-}

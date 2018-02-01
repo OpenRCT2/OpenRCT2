@@ -59,14 +59,8 @@ std::string GetNameFromTrackPath(const std::string &path);
 
 #endif
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    void    track_repository_scan();
-    bool    track_repository_delete(const utf8 *path);
-    bool    track_repository_rename(const utf8 *path, const utf8 *newName);
-    bool    track_repository_install(const utf8 *srcPath);
-#ifdef __cplusplus
-}
-#endif
+void    track_repository_scan();
+bool    track_repository_delete(const utf8 *path);
+bool    track_repository_rename(const utf8 *path, const utf8 *newName);
+bool    track_repository_install(const utf8 *srcPath);
+

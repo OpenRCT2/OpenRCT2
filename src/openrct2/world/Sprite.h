@@ -385,10 +385,6 @@ enum {
     LITTER_TYPE_EMPTY_BOWL_BLUE,
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 rct_sprite *try_get_sprite(size_t spriteIndex);
 rct_sprite *get_sprite(size_t sprite_idx);
 
@@ -462,9 +458,4 @@ sint32 check_for_sprite_list_cycles(bool fix);
 sint32 check_for_spatial_index_cycles(bool fix);
 sint32 fix_disjoint_sprites();
 
-#ifdef __cplusplus
-}
 #endif
-
-#endif
-

@@ -44,9 +44,6 @@
 
 #define FILE_BUFFER_SIZE 4096
 
-extern "C"
-{
-
 static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 
 void platform_get_date_utc(rct2_date *out_date)
@@ -464,7 +461,5 @@ bool platform_process_is_elevated()
    return false;
 #endif // __EMSCRIPTEN__
 }
-
-} // extern "C"
 
 #endif

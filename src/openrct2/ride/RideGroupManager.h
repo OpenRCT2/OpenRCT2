@@ -19,14 +19,9 @@
 #ifdef __cplusplus
 #include <vector>
 
-extern "C"
-{
 #endif
-    #include "../common.h"
-    #include "RideData.h"
-#ifdef __cplusplus
-}
-#endif
+#include "../common.h"
+#include "RideData.h"
 
 #define MAX_RIDE_GROUPS_PER_RIDE_TYPE 2
 

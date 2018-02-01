@@ -739,29 +739,27 @@ IScenarioRepository * GetScenarioRepository()
     return _scenarioRepository;
 }
 
-extern "C"
+void scenario_repository_scan()
 {
-    void scenario_repository_scan()
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        repo->Scan();
-    }
-
-    size_t scenario_repository_get_count()
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        return repo->GetCount();
-    }
-
-    const scenario_index_entry *scenario_repository_get_by_index(size_t index)
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        return repo->GetByIndex(index);
-    }
-
-    bool scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name)
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        return repo->TryRecordHighscore(scenarioFileName, companyValue, name);
-    }
+    IScenarioRepository * repo = GetScenarioRepository();
+    repo->Scan();
 }
+
+size_t scenario_repository_get_count()
+{
+    IScenarioRepository * repo = GetScenarioRepository();
+    return repo->GetCount();
+}
+
+const scenario_index_entry *scenario_repository_get_by_index(size_t index)
+{
+    IScenarioRepository * repo = GetScenarioRepository();
+    return repo->GetByIndex(index);
+}
+
+bool scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name)
+{
+    IScenarioRepository * repo = GetScenarioRepository();
+    return repo->TryRecordHighscore(scenarioFileName, companyValue, name);
+}
+

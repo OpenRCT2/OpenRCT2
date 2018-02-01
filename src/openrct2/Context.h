@@ -189,47 +189,41 @@ enum
     PATH_ID_END,
 };
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    void context_init();
-    void context_setcurrentcursor(sint32 cursor);
-    void context_update_cursor_scale();
-    void context_hide_cursor();
-    void context_show_cursor();
-    void context_get_cursor_position(sint32 * x, sint32 * y);
-    void context_get_cursor_position_scaled(sint32 * x, sint32 * y);
-    void context_set_cursor_position(sint32 x, sint32 y);
-    const CursorState * context_get_cursor_state();
-    const uint8 * context_get_keys_state();
-    const uint8 * context_get_keys_pressed();
-    TextInputSession * context_start_text_input(utf8 * buffer, size_t maxLength);
-    void context_stop_text_input();
-    bool context_is_input_active();
-    void context_trigger_resize();
-    void context_set_fullscreen_mode(sint32 mode);
-    void context_recreate_window();
-    sint32 context_get_resolutions(struct Resolution * * outResolutions);
-    sint32 context_get_width();
-    sint32 context_get_height();
-    bool context_has_focus();
-    void context_set_cursor_trap(bool value);
-    rct_window * context_open_window(rct_windowclass wc);
-    rct_window * context_open_detail_window(uint8 type, sint32 id);
-    rct_window * context_open_window_view(uint8 view);
-    rct_window * context_show_error(rct_string_id title, rct_string_id message);
-    rct_window * context_open_intent(Intent * intent);
-    void context_broadcast_intent(Intent * intent);
-    void context_force_close_window_by_class(rct_windowclass wc);
-    void context_update_map_tooltip();
-    void context_handle_input();
-    void context_input_handle_keyboard(bool isTitle);
-    bool context_read_bmp(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const utf8 * path);
-    void context_quit();
-    const utf8 * context_get_path_legacy(sint32 pathId);
-    bool context_load_park_from_file(const utf8 * path);
-    bool context_load_park_from_stream(void * stream);
-#ifdef __cplusplus
-}
-#endif
+void context_init();
+void context_setcurrentcursor(sint32 cursor);
+void context_update_cursor_scale();
+void context_hide_cursor();
+void context_show_cursor();
+void context_get_cursor_position(sint32 * x, sint32 * y);
+void context_get_cursor_position_scaled(sint32 * x, sint32 * y);
+void context_set_cursor_position(sint32 x, sint32 y);
+const CursorState * context_get_cursor_state();
+const uint8 * context_get_keys_state();
+const uint8 * context_get_keys_pressed();
+TextInputSession * context_start_text_input(utf8 * buffer, size_t maxLength);
+void context_stop_text_input();
+bool context_is_input_active();
+void context_trigger_resize();
+void context_set_fullscreen_mode(sint32 mode);
+void context_recreate_window();
+sint32 context_get_resolutions(struct Resolution * * outResolutions);
+sint32 context_get_width();
+sint32 context_get_height();
+bool context_has_focus();
+void context_set_cursor_trap(bool value);
+rct_window * context_open_window(rct_windowclass wc);
+rct_window * context_open_detail_window(uint8 type, sint32 id);
+rct_window * context_open_window_view(uint8 view);
+rct_window * context_show_error(rct_string_id title, rct_string_id message);
+rct_window * context_open_intent(Intent * intent);
+void context_broadcast_intent(Intent * intent);
+void context_force_close_window_by_class(rct_windowclass wc);
+void context_update_map_tooltip();
+void context_handle_input();
+void context_input_handle_keyboard(bool isTitle);
+bool context_read_bmp(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const utf8 * path);
+void context_quit();
+const utf8 * context_get_path_legacy(sint32 pathId);
+bool context_load_park_from_file(const utf8 * path);
+bool context_load_park_from_stream(void * stream);
+

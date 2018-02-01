@@ -301,9 +301,6 @@ private:
 #define NETWORK_STREAM_ID "Multiplayer disabled"
 #endif /* DISABLE_NETWORK */
 
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
 void network_set_env(void * env);
 void network_close();
 void network_shutdown_client();
@@ -372,9 +369,5 @@ const utf8 * network_get_server_greeting();
 const utf8 * network_get_server_provider_name();
 const utf8 * network_get_server_provider_email();
 const utf8 * network_get_server_provider_website();
-
-#ifdef __cplusplus
-}
-#endif // __cplusplus
 
 #endif

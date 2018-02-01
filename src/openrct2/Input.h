@@ -76,10 +76,6 @@ typedef struct widget_ref {
     rct_widgetindex widget_index;
 } widget_ref;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern uint8 gInputPlaceObjectModifier;
 
 extern sint32 gInputDragLastX;
@@ -125,9 +121,5 @@ void reset_tooltip_not_shown();
 void input_reset_place_obj_modifier();
 
 void input_scroll_viewport(sint32 scrollX, sint32 scrollY);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

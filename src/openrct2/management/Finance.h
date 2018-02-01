@@ -43,10 +43,6 @@ enum {
 #define EXPENDITURE_TABLE_MONTH_COUNT 16
 #define FINANCE_GRAPH_SIZE 128
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern const money32 wage_table[STAFF_TYPE_COUNT];
 extern const money32 research_cost_table[RESEARCH_FUNDING_COUNT];
 
@@ -92,7 +88,3 @@ money32 finance_get_current_cash();
 void game_command_set_current_loan(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 
 money32 finance_get_last_month_shop_profit();
-
-#ifdef __cplusplus
-}
-#endif

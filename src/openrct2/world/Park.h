@@ -57,10 +57,6 @@ enum
     BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS, // Used in scenario editor
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern rct_string_id gParkName;
 extern uint32 gParkNameArgs;
 extern uint32 gParkFlags;
@@ -119,9 +115,5 @@ money16 park_get_entrance_fee();
 
 bool park_ride_prices_unlocked();
 bool park_entry_price_unlocked();
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

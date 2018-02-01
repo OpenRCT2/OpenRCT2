@@ -197,10 +197,6 @@ enum {
     MAZE_ELEMENT_TYPE_EXIT = (1 << 7)
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern rct_track_td6 *gActiveTrackDesign;
 extern bool gTrackDesignSceneryToggle;
 extern LocationXYZ16 gTrackPreviewMin;
@@ -239,9 +235,5 @@ bool track_design_save(uint8 rideIndex);
 bool track_design_save_to_file(const utf8 *path);
 
 bool track_design_are_entrance_and_exit_placed();
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

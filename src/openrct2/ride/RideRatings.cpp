@@ -29,9 +29,6 @@
 #include "Station.h"
 #include "Track.h"
 
-extern "C"
-{
-
 enum {
     RIDE_RATINGS_STATE_FIND_NEXT_RIDE,
     RIDE_RATINGS_STATE_INITIALISE,
@@ -4362,5 +4359,3 @@ static ride_ratings_calculation ride_ratings_get_calculate_func(uint8 rideType)
 }
 
 #pragma endregion
-
-}

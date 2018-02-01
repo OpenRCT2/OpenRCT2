@@ -16,10 +16,7 @@
 
 #pragma once
 
-extern "C"
-{
-    #include "../common.h"
-}
+#include "../common.h"
 
 #include <cstdarg>
 

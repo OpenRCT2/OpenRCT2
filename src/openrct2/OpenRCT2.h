@@ -44,47 +44,39 @@ enum
     SCREEN_FLAGS_EDITOR = (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER),
 };
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+/** The exit code for OpenRCT2 when it exits. */
+extern sint32 gExitCode;
 
-    /** The exit code for OpenRCT2 when it exits. */
-    extern sint32 gExitCode;
-
-    extern sint32 gOpenRCT2StartupAction;
-    extern utf8 gOpenRCT2StartupActionPath[512];
-    extern utf8 gExePath[MAX_PATH];
-    extern utf8 gCustomUserDataPath[MAX_PATH];
-    extern utf8 gCustomOpenrctDataPath[MAX_PATH];
-    extern utf8 gCustomRCT2DataPath[MAX_PATH];
-    extern utf8 gCustomPassword[MAX_PATH];
-    extern bool gOpenRCT2Headless;
-    extern bool gOpenRCT2NoGraphics;
-    extern bool gOpenRCT2ShowChangelog;
-    extern bool gOpenRCT2SilentBreakpad;
+extern sint32 gOpenRCT2StartupAction;
+extern utf8 gOpenRCT2StartupActionPath[512];
+extern utf8 gExePath[MAX_PATH];
+extern utf8 gCustomUserDataPath[MAX_PATH];
+extern utf8 gCustomOpenrctDataPath[MAX_PATH];
+extern utf8 gCustomRCT2DataPath[MAX_PATH];
+extern utf8 gCustomPassword[MAX_PATH];
+extern bool gOpenRCT2Headless;
+extern bool gOpenRCT2NoGraphics;
+extern bool gOpenRCT2ShowChangelog;
+extern bool gOpenRCT2SilentBreakpad;
 
 #ifndef DISABLE_NETWORK
-    extern EVP_MD_CTX * gHashCTX;
+extern EVP_MD_CTX * gHashCTX;
 #endif // DISABLE_NETWORK
 
 #ifndef DISABLE_NETWORK
-    extern sint32 gNetworkStart;
-    extern char gNetworkStartHost[128];
-    extern sint32 gNetworkStartPort;
-    extern char* gNetworkStartAddress;
+extern sint32 gNetworkStart;
+extern char gNetworkStartHost[128];
+extern sint32 gNetworkStartPort;
+extern char* gNetworkStartAddress;
 #endif
 
-    extern uint32 gCurrentDrawCount;
-    extern uint8 gScreenFlags;
-    extern uint32 gScreenAge;
-    extern uint8 gSavePromptMode;
+extern uint32 gCurrentDrawCount;
+extern uint8 gScreenFlags;
+extern uint32 gScreenAge;
+extern uint8 gSavePromptMode;
 
-    void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize);
-    void openrct2_finish();
+void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize);
+void openrct2_finish();
 
-    sint32 cmdline_run(const char * * argv, sint32 argc);
+sint32 cmdline_run(const char * * argv, sint32 argc);
 
-#ifdef __cplusplus
-}
-#endif

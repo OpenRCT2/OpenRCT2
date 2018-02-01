@@ -50,9 +50,6 @@
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
-extern "C"
-{
-
 #define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
 
 static HMODULE _dllModule = nullptr;
@@ -734,6 +731,4 @@ bool platform_setup_uri_protocol()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-}
 #endif

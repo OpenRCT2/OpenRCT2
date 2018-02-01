@@ -224,29 +224,20 @@ enum OBJECT_ERROR : uint32
 
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-    
-    extern sint32 object_entry_group_counts[];
-    extern sint32 object_entry_group_encoding[];
-    
-    extern const rct_object_entry_group object_entry_groups[];
-    
-    void object_list_load();
-    
-    bool object_entry_is_empty(const rct_object_entry *entry);
-    bool object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
-    sint32 object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength);
-    bool find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
-    void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
-    
-    const rct_object_entry * object_list_find_by_name(const char *name);
-    const rct_object_entry * object_list_find(rct_object_entry *entry);
-    
-    void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);
-    
-#ifdef __cplusplus
-}
-#endif
+extern sint32 object_entry_group_counts[];
+extern sint32 object_entry_group_encoding[];
 
+extern const rct_object_entry_group object_entry_groups[];
+
+void object_list_load();
+
+bool object_entry_is_empty(const rct_object_entry *entry);
+bool object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
+sint32 object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength);
+bool find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
+void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
+
+const rct_object_entry * object_list_find_by_name(const char *name);
+const rct_object_entry * object_list_find(rct_object_entry *entry);
+
+void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);

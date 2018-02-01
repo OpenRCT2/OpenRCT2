@@ -16,11 +16,5 @@
 
 #pragma once
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    void input_handle_keyboard(bool isTitle);
-#ifdef __cplusplus
-}
-#endif
+void input_handle_keyboard(bool isTitle);
+

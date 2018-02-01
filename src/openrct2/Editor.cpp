@@ -808,15 +808,13 @@ namespace Editor
     }
 }
 
-extern "C"
+void editor_open_windows_for_current_step()
 {
-    void editor_open_windows_for_current_step()
-    {
-        Editor::OpenWindowsForCurrentStep();
-    }
-
-    void game_command_edit_scenario_options(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
-    {
-        Editor::GameCommandEditScenarioOptions(eax, ebx, ecx, edx, esi, edi, ebp);
-    }
+    Editor::OpenWindowsForCurrentStep();
 }
+
+void game_command_edit_scenario_options(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+{
+    Editor::GameCommandEditScenarioOptions(eax, ebx, ecx, edx, esi, edi, ebp);
+}
+

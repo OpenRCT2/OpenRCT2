@@ -42,333 +42,330 @@ static void LegacyScriptGetLine(IStream * stream, char * parts);
 static void * ReadScriptFile(const utf8 * path, size_t * outSize);
 static utf8 * LegacyScriptWrite(TitleSequence * seq);
 
-extern "C"
+TitleSequence * CreateTitleSequence()
 {
-    TitleSequence * CreateTitleSequence()
+    TitleSequence * seq = Memory::Allocate<TitleSequence>();
+    *seq = { 0 };
+    return seq;
+}
+
+TitleSequence * LoadTitleSequence(const utf8 * path)
+{
+    size_t scriptLength;
+    utf8 * script;
+    std::vector<utf8 *> saves;
+    bool isZip;
+
+    log_verbose("Loading title sequence: %s", path);
+
+    const utf8 * ext = Path::GetExtension(path);
+    if (String::Equals(ext, TITLE_SEQUENCE_EXTENSION))
     {
-        TitleSequence * seq = Memory::Allocate<TitleSequence>();
-        *seq = { 0 };
-        return seq;
-    }
-
-    TitleSequence * LoadTitleSequence(const utf8 * path)
-    {
-        size_t scriptLength;
-        utf8 * script;
-        std::vector<utf8 *> saves;
-        bool isZip;
-
-        log_verbose("Loading title sequence: %s", path);
-
-        const utf8 * ext = Path::GetExtension(path);
-        if (String::Equals(ext, TITLE_SEQUENCE_EXTENSION))
+        IZipArchive * zip = Zip::TryOpen(path, ZIP_ACCESS_READ);
+        if (zip == nullptr)
         {
-            IZipArchive * zip = Zip::TryOpen(path, ZIP_ACCESS_READ);
-            if (zip == nullptr)
-            {
-                Console::Error::WriteLine("Unable to open '%s'", path);
-                return nullptr;
-            }
+            Console::Error::WriteLine("Unable to open '%s'", path);
+            return nullptr;
+        }
 
-            script = (utf8 *)zip->GetFileData("script.txt", &scriptLength);
-            if (script == nullptr)
-            {
-                Console::Error::WriteLine("Unable to open script.txt in '%s'", path);
-                delete zip;
-                return nullptr;
-            }
-
-            saves = GetSaves(zip);
-            isZip = true;
-
+        script = (utf8 *)zip->GetFileData("script.txt", &scriptLength);
+        if (script == nullptr)
+        {
+            Console::Error::WriteLine("Unable to open script.txt in '%s'", path);
             delete zip;
+            return nullptr;
         }
-        else
+
+        saves = GetSaves(zip);
+        isZip = true;
+
+        delete zip;
+    }
+    else
+    {
+        utf8 scriptPath[MAX_PATH];
+        String::Set(scriptPath, sizeof(scriptPath), path);
+        Path::Append(scriptPath, sizeof(scriptPath), "script.txt");
+        script = (utf8 *)ReadScriptFile(scriptPath, &scriptLength);
+        if (script == nullptr)
         {
-            utf8 scriptPath[MAX_PATH];
-            String::Set(scriptPath, sizeof(scriptPath), path);
-            Path::Append(scriptPath, sizeof(scriptPath), "script.txt");
-            script = (utf8 *)ReadScriptFile(scriptPath, &scriptLength);
-            if (script == nullptr)
-            {
-                Console::Error::WriteLine("Unable to open '%s'", scriptPath);
-                return nullptr;
-            }
-
-            saves = GetSaves(path);
-            isZip = false;
+            Console::Error::WriteLine("Unable to open '%s'", scriptPath);
+            return nullptr;
         }
 
-        std::vector<TitleCommand> commands = LegacyScriptRead(script, scriptLength, saves);
-        Memory::Free(script);
-
-        TitleSequence * seq = CreateTitleSequence();
-        seq->Name = Path::GetFileNameWithoutExtension(path);
-        seq->Path = String::Duplicate(path);
-        seq->NumSaves = saves.size();
-        seq->Saves = Collections::ToArray(saves);
-        seq->NumCommands = commands.size();
-        seq->Commands = Collections::ToArray(commands);
-        seq->IsZip = isZip;
-        return seq;
+        saves = GetSaves(path);
+        isZip = false;
     }
 
-    void FreeTitleSequence(TitleSequence * seq)
+    std::vector<TitleCommand> commands = LegacyScriptRead(script, scriptLength, saves);
+    Memory::Free(script);
+
+    TitleSequence * seq = CreateTitleSequence();
+    seq->Name = Path::GetFileNameWithoutExtension(path);
+    seq->Path = String::Duplicate(path);
+    seq->NumSaves = saves.size();
+    seq->Saves = Collections::ToArray(saves);
+    seq->NumCommands = commands.size();
+    seq->Commands = Collections::ToArray(commands);
+    seq->IsZip = isZip;
+    return seq;
+}
+
+void FreeTitleSequence(TitleSequence * seq)
+{
+    if (seq != nullptr)
     {
-        if (seq != nullptr)
-        {
-            Memory::Free(seq->Name);
-            Memory::Free(seq->Path);
-            Memory::Free(seq->Commands);
-            for (size_t i = 0; i < seq->NumSaves; i++)
-            {
-                Memory::Free(seq->Saves[i]);
-            }
-            Memory::Free(seq->Saves);
-            Memory::Free(seq);
-        }
-    }
-
-    TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t index)
-    {
-        TitleSequenceParkHandle * handle = nullptr;
-        if (index <= seq->NumSaves)
-        {
-            const utf8 * filename = seq->Saves[index];
-            if (seq->IsZip)
-            {
-                IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_READ);
-                if (zip != nullptr)
-                {
-                    handle = Memory::Allocate<TitleSequenceParkHandle>();
-                    handle->Stream = zip->GetFileStream(filename);
-                    handle->HintPath = String::Duplicate(filename);
-                    delete zip;
-                } else {
-                    Console::Error::WriteLine("Failed to open zipped path '%s' from zip '%s'", filename, seq->Path);
-                }
-            }
-            else
-            {
-                utf8 absolutePath[MAX_PATH];
-                String::Set(absolutePath, sizeof(absolutePath), seq->Path);
-                Path::Append(absolutePath, sizeof(absolutePath), filename);
-
-                FileStream* fileStream = nullptr;
-                try
-                {
-                    fileStream = new FileStream(absolutePath, FILE_MODE_OPEN);
-                }
-                catch (const IOException& exception)
-                {
-                    Console::Error::WriteLine(exception.what());
-                }
-
-                if (fileStream != nullptr)
-                {
-                    handle = Memory::Allocate<TitleSequenceParkHandle>();
-                    handle->Stream = fileStream;
-                    handle->HintPath = String::Duplicate(filename);
-                }
-            }
-        }
-        return handle;
-    }
-
-    void TitleSequenceCloseParkHandle(TitleSequenceParkHandle * handle)
-    {
-        if (handle != nullptr)
-        {
-            Memory::Free(handle->HintPath);
-            delete ((IStream *)handle->Stream);
-            Memory::Free(handle);
-        }
-    }
-
-    bool TitleSequenceSave(TitleSequence * seq)
-    {
-        bool success = false;
-        utf8 * script = LegacyScriptWrite(seq);
-        if (seq->IsZip)
-        {
-            IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_WRITE);
-            zip->SetFileData("script.txt", script, String::SizeOf(script));
-            delete zip;
-            success = true;
-        }
-        else
-        {
-            utf8 scriptPath[MAX_PATH];
-            String::Set(scriptPath, sizeof(scriptPath), seq->Path);
-            Path::Append(scriptPath, sizeof(scriptPath), "script.txt");
-
-            try
-            {
-                auto fs = FileStream(scriptPath, FILE_MODE_WRITE);
-                fs.Write(script, String::SizeOf(script));
-                success = true;
-            }
-            catch (const std::exception &)
-            {
-            }
-        }
-
-        Memory::Free(script);
-        return success;
-    }
-
-    bool TitleSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name)
-    {
-        // Get new save index
-        size_t index = SIZE_MAX;
+        Memory::Free(seq->Name);
+        Memory::Free(seq->Path);
+        Memory::Free(seq->Commands);
         for (size_t i = 0; i < seq->NumSaves; i++)
         {
-            if (String::Equals(seq->Saves[i], path, true))
-            {
-                index = i;
-                break;
-            }
+            Memory::Free(seq->Saves[i]);
         }
-        if (index == SIZE_MAX)
-        {
-            seq->Saves = Memory::ReallocateArray(seq->Saves, seq->NumSaves + 1);
-            Guard::Assert(seq->Saves != nullptr, GUARD_LINE);
-            index = seq->NumSaves;
-            seq->NumSaves++;
-        }
-        seq->Saves[index] = String::Duplicate(name);
+        Memory::Free(seq->Saves);
+        Memory::Free(seq);
+    }
+}
 
+TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t index)
+{
+    TitleSequenceParkHandle * handle = nullptr;
+    if (index <= seq->NumSaves)
+    {
+        const utf8 * filename = seq->Saves[index];
         if (seq->IsZip)
         {
-            try
+            IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_READ);
+            if (zip != nullptr)
             {
-                size_t fsize;
-                void * fdata = File::ReadAllBytes(path, &fsize);
-
-                IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_WRITE);
-                if (zip == nullptr)
-                {
-                    Console::Error::WriteLine("Unable to open '%s'", seq->Path);
-                    return false;
-                }
-                zip->SetFileData(name, fdata, fsize);
+                handle = Memory::Allocate<TitleSequenceParkHandle>();
+                handle->Stream = zip->GetFileStream(filename);
+                handle->HintPath = String::Duplicate(filename);
                 delete zip;
-                Memory::Free(fdata);
+            } else {
+                Console::Error::WriteLine("Failed to open zipped path '%s' from zip '%s'", filename, seq->Path);
             }
-            catch (const std::exception &ex)
-            {
-                Console::Error::WriteLine(ex.what());
-            }
-        }
-        else
-        {
-            // Determine destination path
-            utf8 dstPath[MAX_PATH];
-            String::Set(dstPath, sizeof(dstPath), seq->Path);
-            Path::Append(dstPath, sizeof(dstPath), name);
-            if (!File::Copy(path, dstPath, true))
-            {
-                Console::Error::WriteLine("Unable to copy '%s' to '%s'", path, dstPath);
-                return false;
-            }
-        }
-        return true;
-    }
-
-    bool TitleSequenceRenamePark(TitleSequence * seq, size_t index, const utf8 * name)
-    {
-        Guard::Assert(index < seq->NumSaves, GUARD_LINE);
-
-        utf8 * oldRelativePath = seq->Saves[index];
-        if (seq->IsZip)
-        {
-            IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_WRITE);
-            if (zip == nullptr)
-            {
-                Console::Error::WriteLine("Unable to open '%s'", seq->Path);
-                return false;
-            }
-            zip->RenameFile(oldRelativePath, name);
-            delete zip;
-        }
-        else
-        {
-            utf8 srcPath[MAX_PATH];
-            utf8 dstPath[MAX_PATH];
-            String::Set(srcPath, sizeof(srcPath), seq->Path);
-            Path::Append(srcPath, sizeof(srcPath), oldRelativePath);
-            String::Set(dstPath, sizeof(dstPath), seq->Path);
-            Path::Append(dstPath, sizeof(dstPath), name);
-            if (!File::Move(srcPath, dstPath))
-            {
-                Console::Error::WriteLine("Unable to move '%s' to '%s'", srcPath, dstPath);
-                return false;
-            }
-        }
-
-        Memory::Free(seq->Saves[index]);
-        seq->Saves[index] = String::Duplicate(name);
-        return true;
-    }
-
-    bool TitleSequenceRemovePark(TitleSequence * seq, size_t index)
-    {
-        Guard::Assert(index < seq->NumSaves, GUARD_LINE);
-
-        // Delete park file
-        utf8 * relativePath = seq->Saves[index];
-        if (seq->IsZip)
-        {
-            IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_WRITE);
-            if (zip == nullptr)
-            {
-                Console::Error::WriteLine("Unable to open '%s'", seq->Path);
-                return false;
-            }
-            zip->DeleteFile(relativePath);
-            delete zip;
         }
         else
         {
             utf8 absolutePath[MAX_PATH];
             String::Set(absolutePath, sizeof(absolutePath), seq->Path);
-            Path::Append(absolutePath, sizeof(absolutePath), relativePath);
-            if (!File::Delete(absolutePath))
+            Path::Append(absolutePath, sizeof(absolutePath), filename);
+
+            FileStream* fileStream = nullptr;
+            try
             {
-                Console::Error::WriteLine("Unable to delete '%s'", absolutePath);
+                fileStream = new FileStream(absolutePath, FILE_MODE_OPEN);
+            }
+            catch (const IOException& exception)
+            {
+                Console::Error::WriteLine(exception.what());
+            }
+
+            if (fileStream != nullptr)
+            {
+                handle = Memory::Allocate<TitleSequenceParkHandle>();
+                handle->Stream = fileStream;
+                handle->HintPath = String::Duplicate(filename);
+            }
+        }
+    }
+    return handle;
+}
+
+void TitleSequenceCloseParkHandle(TitleSequenceParkHandle * handle)
+{
+    if (handle != nullptr)
+    {
+        Memory::Free(handle->HintPath);
+        delete ((IStream *)handle->Stream);
+        Memory::Free(handle);
+    }
+}
+
+bool TitleSequenceSave(TitleSequence * seq)
+{
+    bool success = false;
+    utf8 * script = LegacyScriptWrite(seq);
+    if (seq->IsZip)
+    {
+        IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_WRITE);
+        zip->SetFileData("script.txt", script, String::SizeOf(script));
+        delete zip;
+        success = true;
+    }
+    else
+    {
+        utf8 scriptPath[MAX_PATH];
+        String::Set(scriptPath, sizeof(scriptPath), seq->Path);
+        Path::Append(scriptPath, sizeof(scriptPath), "script.txt");
+
+        try
+        {
+            auto fs = FileStream(scriptPath, FILE_MODE_WRITE);
+            fs.Write(script, String::SizeOf(script));
+            success = true;
+        }
+        catch (const std::exception &)
+        {
+        }
+    }
+
+    Memory::Free(script);
+    return success;
+}
+
+bool TitleSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name)
+{
+    // Get new save index
+    size_t index = SIZE_MAX;
+    for (size_t i = 0; i < seq->NumSaves; i++)
+    {
+        if (String::Equals(seq->Saves[i], path, true))
+        {
+            index = i;
+            break;
+        }
+    }
+    if (index == SIZE_MAX)
+    {
+        seq->Saves = Memory::ReallocateArray(seq->Saves, seq->NumSaves + 1);
+        Guard::Assert(seq->Saves != nullptr, GUARD_LINE);
+        index = seq->NumSaves;
+        seq->NumSaves++;
+    }
+    seq->Saves[index] = String::Duplicate(name);
+
+    if (seq->IsZip)
+    {
+        try
+        {
+            size_t fsize;
+            void * fdata = File::ReadAllBytes(path, &fsize);
+
+            IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_WRITE);
+            if (zip == nullptr)
+            {
+                Console::Error::WriteLine("Unable to open '%s'", seq->Path);
                 return false;
             }
+            zip->SetFileData(name, fdata, fsize);
+            delete zip;
+            Memory::Free(fdata);
         }
-
-        // Remove from sequence
-        Memory::Free(relativePath);
-        for (size_t i = index; i < seq->NumSaves - 1; i++)
+        catch (const std::exception &ex)
         {
-            seq->Saves[i] = seq->Saves[i + 1];
+            Console::Error::WriteLine(ex.what());
         }
-        seq->NumSaves--;
-
-        // Update load commands
-        for (size_t i = 0; i < seq->NumCommands; i++)
+    }
+    else
+    {
+        // Determine destination path
+        utf8 dstPath[MAX_PATH];
+        String::Set(dstPath, sizeof(dstPath), seq->Path);
+        Path::Append(dstPath, sizeof(dstPath), name);
+        if (!File::Copy(path, dstPath, true))
         {
-            TitleCommand * command = &seq->Commands[i];
-            if (command->Type == TITLE_SCRIPT_LOAD)
+            Console::Error::WriteLine("Unable to copy '%s' to '%s'", path, dstPath);
+            return false;
+        }
+    }
+    return true;
+}
+
+bool TitleSequenceRenamePark(TitleSequence * seq, size_t index, const utf8 * name)
+{
+    Guard::Assert(index < seq->NumSaves, GUARD_LINE);
+
+    utf8 * oldRelativePath = seq->Saves[index];
+    if (seq->IsZip)
+    {
+        IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_WRITE);
+        if (zip == nullptr)
+        {
+            Console::Error::WriteLine("Unable to open '%s'", seq->Path);
+            return false;
+        }
+        zip->RenameFile(oldRelativePath, name);
+        delete zip;
+    }
+    else
+    {
+        utf8 srcPath[MAX_PATH];
+        utf8 dstPath[MAX_PATH];
+        String::Set(srcPath, sizeof(srcPath), seq->Path);
+        Path::Append(srcPath, sizeof(srcPath), oldRelativePath);
+        String::Set(dstPath, sizeof(dstPath), seq->Path);
+        Path::Append(dstPath, sizeof(dstPath), name);
+        if (!File::Move(srcPath, dstPath))
+        {
+            Console::Error::WriteLine("Unable to move '%s' to '%s'", srcPath, dstPath);
+            return false;
+        }
+    }
+
+    Memory::Free(seq->Saves[index]);
+    seq->Saves[index] = String::Duplicate(name);
+    return true;
+}
+
+bool TitleSequenceRemovePark(TitleSequence * seq, size_t index)
+{
+    Guard::Assert(index < seq->NumSaves, GUARD_LINE);
+
+    // Delete park file
+    utf8 * relativePath = seq->Saves[index];
+    if (seq->IsZip)
+    {
+        IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_WRITE);
+        if (zip == nullptr)
+        {
+            Console::Error::WriteLine("Unable to open '%s'", seq->Path);
+            return false;
+        }
+        zip->DeleteFile(relativePath);
+        delete zip;
+    }
+    else
+    {
+        utf8 absolutePath[MAX_PATH];
+        String::Set(absolutePath, sizeof(absolutePath), seq->Path);
+        Path::Append(absolutePath, sizeof(absolutePath), relativePath);
+        if (!File::Delete(absolutePath))
+        {
+            Console::Error::WriteLine("Unable to delete '%s'", absolutePath);
+            return false;
+        }
+    }
+
+    // Remove from sequence
+    Memory::Free(relativePath);
+    for (size_t i = index; i < seq->NumSaves - 1; i++)
+    {
+        seq->Saves[i] = seq->Saves[i + 1];
+    }
+    seq->NumSaves--;
+
+    // Update load commands
+    for (size_t i = 0; i < seq->NumCommands; i++)
+    {
+        TitleCommand * command = &seq->Commands[i];
+        if (command->Type == TITLE_SCRIPT_LOAD)
+        {
+            if (command->SaveIndex == index)
             {
-                if (command->SaveIndex == index)
-                {
-                    // Park no longer exists, so reset load command to invalid
-                    command->SaveIndex = SAVE_INDEX_INVALID;
-                }
-                else if (command->SaveIndex > index)
-                {
-                    // Park index will have shifted by -1
-                    command->SaveIndex--;
-                }
+                // Park no longer exists, so reset load command to invalid
+                command->SaveIndex = SAVE_INDEX_INVALID;
+            }
+            else if (command->SaveIndex > index)
+            {
+                // Park index will have shifted by -1
+                command->SaveIndex--;
             }
         }
-
-        return true;
     }
+
+    return true;
 }
 
 static std::vector<utf8 *> GetSaves(const utf8 * directory)

@@ -408,31 +408,29 @@ ITrackDesignRepository * GetTrackDesignRepository()
     return _trackDesignRepository;
 }
 
-extern "C"
+void track_repository_scan()
 {
-    void track_repository_scan()
-    {
-        ITrackDesignRepository * repo = GetTrackDesignRepository();
-        repo->Scan();
-    }
-
-    bool track_repository_delete(const utf8 * path)
-    {
-        ITrackDesignRepository * repo = GetTrackDesignRepository();
-        return repo->Delete(path);
-    }
-
-    bool track_repository_rename(const utf8 * path, const utf8 * newName)
-    {
-        ITrackDesignRepository * repo = GetTrackDesignRepository();
-        std::string newPath = repo->Rename(path, newName);
-        return !newPath.empty();
-    }
-
-    bool track_repository_install(const utf8 * srcPath)
-    {
-        ITrackDesignRepository * repo = GetTrackDesignRepository();
-        std::string newPath = repo->Install(srcPath);
-        return !newPath.empty();
-    }
+    ITrackDesignRepository * repo = GetTrackDesignRepository();
+    repo->Scan();
 }
+
+bool track_repository_delete(const utf8 * path)
+{
+    ITrackDesignRepository * repo = GetTrackDesignRepository();
+    return repo->Delete(path);
+}
+
+bool track_repository_rename(const utf8 * path, const utf8 * newName)
+{
+    ITrackDesignRepository * repo = GetTrackDesignRepository();
+    std::string newPath = repo->Rename(path, newName);
+    return !newPath.empty();
+}
+
+bool track_repository_install(const utf8 * srcPath)
+{
+    ITrackDesignRepository * repo = GetTrackDesignRepository();
+    std::string newPath = repo->Install(srcPath);
+    return !newPath.empty();
+}
+

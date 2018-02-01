@@ -937,10 +937,6 @@ typedef struct rct_ride_properties {
 
 #define CONSTRUCTION_LIFT_HILL_SELECTED 1
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 
 /** Helper macros until rides are stored in this module. */
@@ -1212,9 +1208,5 @@ void ride_stop_peeps_queuing(sint32 rideIndex);
 LocationXY16 ride_get_rotated_coords(sint16 x, sint16 y, sint16 z);
 
 void fix_ride_entrance_and_exit_locations();
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

@@ -378,10 +378,6 @@ enum
     CREATE_CROSSING_MODE_PATH_OVER_TRACK,
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern const LocationXY16 TileDirectionDelta[];
 extern const money32 TerrainPricing[];
 
@@ -592,11 +588,7 @@ uint32 map_get_available_peep_spawn_index_list(uint32* peepSpawnIndexList);
 uint16 check_max_allowable_land_rights_for_tile(uint8 x, uint8 y, uint8 base_z);
 uint8 tile_element_get_ride_index(const rct_tile_element * tileElement);
 
-#ifdef __cplusplus
 void FixLandOwnershipTiles(std::initializer_list<LocationXY8> tiles);
 void FixLandOwnershipTilesWithOwnership(std::initializer_list<LocationXY8> tiles, uint8 ownership);
-
-}
-#endif
 
 #endif

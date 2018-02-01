@@ -23,10 +23,7 @@
 #define SZ_CLOSEST   "closest"
 #define SZ_DITHERING "dithering"
 
-extern "C"
-{
 sint32 gSpriteMode = 0;
-}
 
 static const char * _mode;
 

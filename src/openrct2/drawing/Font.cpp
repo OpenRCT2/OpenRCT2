@@ -27,9 +27,6 @@ static constexpr const sint32 SpriteFontLineHeight[] = { 6, 10, 10, 18 };
 
 static uint8 _spriteFontCharacterWidths[896];
 
-extern "C"
-{
-
 #ifndef NO_TTF
 TTFFontSetDescriptor *gCurrentTTFFontSet;
 #endif // NO_TTF
@@ -274,6 +271,4 @@ bool font_supports_string(const utf8 *text, sint32 fontSize)
     } else {
         return font_supports_string_sprite(text);
     }
-}
-
 }
