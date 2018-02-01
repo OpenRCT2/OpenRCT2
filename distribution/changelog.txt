@@ -1,5 +1,6 @@
 0.1.2 (in development)
 ------------------------------------------------------------------------
+- Feature: [#2893] Object selection filters for items from RCT1, Added Attractions and Loopy Landscapes.
 - Feature: [#3505] Allow up to 1024 items per scenery tab.
 - Feature: [#3510] Auto-append extension if none is specified.
 - Feature: [#3994] Show bottom toolbar with map tooltip (theme option).
