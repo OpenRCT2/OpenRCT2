@@ -456,6 +456,17 @@ public:
         {
             log_error("Found %d disjoint null sprites", disjoint_sprites_count);
         }
+
+        if (String::Equals(_s6.scenario_filename, "Europe - European Cultural Festival.SC6"))
+        {
+            // This scenario breaks pathfinding. Create passages between the worlds. (List is grouped by neighbouring tiles.)
+            FixLandOwnershipTilesWithOwnership({
+                { 67, 94 }, { 68, 94 }, { 69, 94 },
+                { 58, 24 }, { 58, 25 }, { 58, 26 }, { 58, 27 }, { 58, 28 }, { 58, 29 }, { 58, 30 }, { 58, 31 }, { 58, 32 },
+                { 26, 44 }, { 26, 45 },
+                { 32, 79 }, { 32, 80 }, { 32, 81 }
+            }, OWNERSHIP_OWNED);
+        }
     }
 
     void ImportRides()

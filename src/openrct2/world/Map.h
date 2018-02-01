@@ -20,6 +20,10 @@
 #include "../common.h"
 #include "Location.h"
 
+#ifdef __cplusplus
+#include <initializer_list>
+#endif
+
 #pragma pack(push, 1)
 typedef struct rct_tile_element_surface_properties {
     uint8 slope; //4 0xE0 Edge Style, 0x1F Slope
@@ -589,6 +593,9 @@ uint16 check_max_allowable_land_rights_for_tile(uint8 x, uint8 y, uint8 base_z);
 uint8 tile_element_get_ride_index(const rct_tile_element * tileElement);
 
 #ifdef __cplusplus
+void FixLandOwnershipTiles(std::initializer_list<LocationXY8> tiles);
+void FixLandOwnershipTilesWithOwnership(std::initializer_list<LocationXY8> tiles, uint8 ownership);
+
 }
 #endif
 

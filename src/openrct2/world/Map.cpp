@@ -4894,3 +4894,19 @@ bool map_tile_is_part_of_virtual_floor(sint16 x, sint16 y)
 
     return false;
 }
+
+void FixLandOwnershipTiles(std::initializer_list<LocationXY8> tiles)
+{
+    FixLandOwnershipTilesWithOwnership(tiles, OWNERSHIP_AVAILABLE);
+}
+
+void FixLandOwnershipTilesWithOwnership(std::initializer_list<LocationXY8> tiles, uint8 ownership)
+{
+    rct_tile_element * currentElement;
+    for (const LocationXY8 * tile = tiles.begin(); tile != tiles.end(); ++tile)
+    {
+        currentElement = map_get_surface_element_at((*tile).x, (*tile).y);
+        currentElement->properties.surface.ownership |= ownership;
+        update_park_fences_around_tile((*tile).x * 32, (*tile).y * 32);
+    }
+}
