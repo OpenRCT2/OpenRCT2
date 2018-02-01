@@ -2771,17 +2771,6 @@ private:
         }
     }
 
-    void FixLandOwnershipTiles(std::initializer_list<LocationXY8> tiles)
-    {
-
-        rct_tile_element * currentElement;
-        for (const LocationXY8 * tile = tiles.begin(); tile != tiles.end(); ++tile)
-        {
-            currentElement = map_get_surface_element_at((*tile).x, (*tile).y);
-            currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-        }
-    }
-
     /**
      * Counts the block sections. The reason this iterates over the map is to avoid getting into infinite loops,
      * which can happen with hacked parks.
