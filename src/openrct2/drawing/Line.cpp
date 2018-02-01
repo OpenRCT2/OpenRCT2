@@ -16,9 +16,6 @@
 
 #include "Drawing.h"
 
-extern "C"
-{
-
 /**
  * Draws a horizontal line of specified colour to a buffer.
  *  rct2: 0x0068474C
@@ -144,6 +141,4 @@ void gfx_draw_line_software(rct_drawpixelinfo *dpi, sint32 x1, sint32 y1, sint32
             gfx_draw_line_on_buffer(dpi, colour, y, x_start, no_pixels);
         }
     }
-}
-
 }

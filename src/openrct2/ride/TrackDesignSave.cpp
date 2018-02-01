@@ -40,9 +40,6 @@
 #define TRACK_NEARBY_SCENERY_DISTANCE 1
 #define TRACK_TD6_MAX_ELEMENTS 8192
 
-extern "C"
-{
-
 bool gTrackDesignSaveMode = false;
 uint8 gTrackDesignSaveRideIndex = 255;
 
@@ -1246,6 +1243,4 @@ bool track_design_save_to_file(const utf8 *path)
     free(encodedData);
     free(td6Buffer.ptr);
     return result;
-}
-
 }

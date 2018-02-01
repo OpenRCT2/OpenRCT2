@@ -126,10 +126,6 @@ typedef void (GAME_COMMAND_POINTER)(sint32 * eax, sint32 * ebx, sint32 * ecx, si
 
 typedef void (GAME_COMMAND_CALLBACK_POINTER)(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern GAME_COMMAND_CALLBACK_POINTER * game_command_callback;
 sint32 game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER * callback);
 GAME_COMMAND_CALLBACK_POINTER * game_command_callback_get_callback(uint32 index);
@@ -191,7 +187,3 @@ void game_convert_news_items_to_utf8();
 void game_convert_strings_to_rct2(rct_s6_data * s6);
 void game_fix_save_vars();
 void game_init_all(sint32 mapSize);
-
-#ifdef __cplusplus
-}
-#endif

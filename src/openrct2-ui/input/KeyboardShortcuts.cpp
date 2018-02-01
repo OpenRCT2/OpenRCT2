@@ -200,44 +200,42 @@ void KeyboardShortcuts::GetKeyboardMapScroll(const uint8 * keysState, sint32 * x
     }
 }
 
-extern "C"
+void keyboard_shortcuts_reset()
 {
-    void keyboard_shortcuts_reset()
-    {
-        _instance->Reset();
-    }
-
-    bool keyboard_shortcuts_load()
-    {
-        return _instance->Load();
-    }
-
-    bool keyboard_shortcuts_save()
-    {
-        return _instance->Save();
-    }
-
-    void keyboard_shortcuts_set(sint32 key)
-    {
-        return _instance->Set(key);
-    }
-
-    sint32 keyboard_shortcuts_get_from_key(sint32 key)
-    {
-        return _instance->GetFromKey(key);
-    }
-
-    void keyboard_shortcuts_format_string(char * buffer, size_t bufferSize, sint32 shortcut)
-    {
-        auto str = _instance->GetShortcutString(shortcut);
-        String::Set(buffer, bufferSize, str.c_str());
-    }
-
-    void get_keyboard_map_scroll(const uint8 * keysState, sint32 * x, sint32 * y)
-    {
-        _instance->GetKeyboardMapScroll(keysState, x, y);
-    }
+    _instance->Reset();
 }
+
+bool keyboard_shortcuts_load()
+{
+    return _instance->Load();
+}
+
+bool keyboard_shortcuts_save()
+{
+    return _instance->Save();
+}
+
+void keyboard_shortcuts_set(sint32 key)
+{
+    return _instance->Set(key);
+}
+
+sint32 keyboard_shortcuts_get_from_key(sint32 key)
+{
+    return _instance->GetFromKey(key);
+}
+
+void keyboard_shortcuts_format_string(char * buffer, size_t bufferSize, sint32 shortcut)
+{
+    auto str = _instance->GetShortcutString(shortcut);
+    String::Set(buffer, bufferSize, str.c_str());
+}
+
+void get_keyboard_map_scroll(const uint8 * keysState, sint32 * x, sint32 * y)
+{
+    _instance->GetKeyboardMapScroll(keysState, x, y);
+}
+
 
 // Default keyboard shortcuts
 const uint16 KeyboardShortcuts::DefaultKeys[SHORTCUT_COUNT] =

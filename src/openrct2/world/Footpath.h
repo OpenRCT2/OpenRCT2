@@ -110,10 +110,6 @@ enum
     SLOPE_IS_IRREGULAR_FLAG = (1 << 3), // Flag set in `defaultPathSlope[]` and checked in `footpath_place_real`
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern uint8 gFootpathProvisionalFlags;
 extern LocationXYZ16 gFootpathProvisionalPosition;
 extern uint8 gFootpathProvisionalType;
@@ -174,9 +170,5 @@ rct_footpath_entry * get_footpath_entry(sint32 entryIndex);
 
 void footpath_queue_chain_reset();
 void footpath_queue_chain_push(uint8 rideIndex);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

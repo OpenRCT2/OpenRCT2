@@ -279,121 +279,119 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
     return true;
 }
 
-extern "C"
+void title_load()
 {
-    void title_load()
+    if (_singleton != nullptr)
     {
-        if (_singleton != nullptr)
-        {
-            _singleton->Load();
-        }
-    }
-
-    void title_create_windows()
-    {
-        if (_singleton != nullptr)
-        {
-            _singleton->CreateWindows();
-        }
-    }
-
-    void * title_get_sequence_player()
-    {
-        void * result = nullptr;
-        if (_singleton != nullptr)
-        {
-            result = _singleton->GetSequencePlayer();
-        }
-        return result;
-    }
-
-    void title_sequence_change_preset(size_t preset)
-    {
-        if (_singleton != nullptr)
-        {
-            _singleton->ChangePresetSequence(preset);
-        }
-    }
-
-    bool title_should_hide_version_info()
-    {
-        bool result = false;
-        if (_singleton != nullptr)
-        {
-            result = _singleton->ShouldHideVersionInfo();
-        }
-        return result;
-    }
-
-    void title_set_hide_version_info(bool value)
-    {
-        if (_singleton != nullptr)
-        {
-            _singleton->SetHideVersionInfo(value);
-        }
-    }
-
-    size_t title_get_config_sequence()
-    {
-        return title_sequence_manager_get_index_for_config_id(gConfigInterface.current_title_sequence_preset);
-    }
-
-    size_t title_get_current_sequence()
-    {
-        size_t result = 0;
-        if (_singleton != nullptr)
-        {
-            result = _singleton->GetCurrentSequence();
-        }
-        return result;
-    }
-
-    bool title_preview_sequence(size_t value)
-    {
-        if (_singleton != nullptr)
-        {
-            return _singleton->PreviewSequence(value);
-        }
-        return false;
-    }
-
-    void title_stop_previewing_sequence()
-    {
-        if (_singleton != nullptr)
-        {
-            _singleton->StopPreviewingSequence();
-        }
-    }
-
-    bool title_is_previewing_sequence()
-    {
-        if (_singleton != nullptr)
-        {
-            return _singleton->IsPreviewingSequence();
-        }
-        return false;
-    }
-
-    void DrawOpenRCT2(rct_drawpixelinfo * dpi, sint32 x, sint32 y)
-    {
-        utf8 buffer[256];
-
-        // Write format codes
-        utf8 * ch = buffer;
-        ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
-        ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
-        ch = utf8_write_codepoint(ch, FORMAT_WHITE);
-
-        // Write name and version information
-        openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
-        gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5 - 13);
-
-        // Invalidate screen area
-        sint16 width = (sint16)gfx_get_string_width(buffer);
-        gfx_set_dirty_blocks(x, y, x + width, y + 30); // 30 is an arbitrary height to catch both strings
-
-        // Write platform information
-        snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
-        gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5);
+        _singleton->Load();
     }
 }
+
+void title_create_windows()
+{
+    if (_singleton != nullptr)
+    {
+        _singleton->CreateWindows();
+    }
+}
+
+void * title_get_sequence_player()
+{
+    void * result = nullptr;
+    if (_singleton != nullptr)
+    {
+        result = _singleton->GetSequencePlayer();
+    }
+    return result;
+}
+
+void title_sequence_change_preset(size_t preset)
+{
+    if (_singleton != nullptr)
+    {
+        _singleton->ChangePresetSequence(preset);
+    }
+}
+
+bool title_should_hide_version_info()
+{
+    bool result = false;
+    if (_singleton != nullptr)
+    {
+        result = _singleton->ShouldHideVersionInfo();
+    }
+    return result;
+}
+
+void title_set_hide_version_info(bool value)
+{
+    if (_singleton != nullptr)
+    {
+        _singleton->SetHideVersionInfo(value);
+    }
+}
+
+size_t title_get_config_sequence()
+{
+    return title_sequence_manager_get_index_for_config_id(gConfigInterface.current_title_sequence_preset);
+}
+
+size_t title_get_current_sequence()
+{
+    size_t result = 0;
+    if (_singleton != nullptr)
+    {
+        result = _singleton->GetCurrentSequence();
+    }
+    return result;
+}
+
+bool title_preview_sequence(size_t value)
+{
+    if (_singleton != nullptr)
+    {
+        return _singleton->PreviewSequence(value);
+    }
+    return false;
+}
+
+void title_stop_previewing_sequence()
+{
+    if (_singleton != nullptr)
+    {
+        _singleton->StopPreviewingSequence();
+    }
+}
+
+bool title_is_previewing_sequence()
+{
+    if (_singleton != nullptr)
+    {
+        return _singleton->IsPreviewingSequence();
+    }
+    return false;
+}
+
+void DrawOpenRCT2(rct_drawpixelinfo * dpi, sint32 x, sint32 y)
+{
+    utf8 buffer[256];
+
+    // Write format codes
+    utf8 * ch = buffer;
+    ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
+    ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
+    ch = utf8_write_codepoint(ch, FORMAT_WHITE);
+
+    // Write name and version information
+    openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
+    gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5 - 13);
+
+    // Invalidate screen area
+    sint16 width = (sint16)gfx_get_string_width(buffer);
+    gfx_set_dirty_blocks(x, y, x + width, y + 30); // 30 is an arbitrary height to catch both strings
+
+    // Write platform information
+    snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
+    gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5);
+}
+

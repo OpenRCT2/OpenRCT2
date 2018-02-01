@@ -17,9 +17,6 @@
 #ifndef _WINDOW2_H_
 #define _WINDOW2_H_
 
-extern "C"
-{
-
 /**
  * Window structure
  * size: 0x4C0
@@ -103,5 +100,4 @@ struct rct_window {
 // rct2: 0x01420078
 extern rct_window g_window_list[WINDOW_LIMIT_MAX + WINDOW_LIMIT_RESERVED];
 
-}
 #endif

@@ -46,8 +46,6 @@ static uint32 _drawSCrollNextIndex = 0;
 static void scrolling_text_set_bitmap_for_sprite(utf8 *text, sint32 scroll, uint8 *bitmap, const sint16 *scrollPositionOffsets);
 static void scrolling_text_set_bitmap_for_ttf(utf8 *text, sint32 scroll, uint8 *bitmap, const sint16 *scrollPositionOffsets);
 
-extern "C"
-{
 void scrolling_text_initialise_bitmaps()
 {
     uint8 drawingSurface[64];
@@ -98,7 +96,6 @@ void scrolling_text_initialise_bitmaps()
             gfx_set_g1_element(imageId, &g1);
         }
     }
-}
 }
 
 static uint8 *font_sprite_get_codepoint_bitmap(sint32 codepoint)
@@ -1421,8 +1418,6 @@ static constexpr const sint16* _scrollPositions[MAX_SCROLLING_TEXT_MODES] = {
 };
 // clang-format on
 
-extern "C"
-{
 /**
  *
  *  rct2: 0x006C42D9
@@ -1473,7 +1468,6 @@ sint32 scrolling_text_setup(paint_session * session, rct_string_id stringId, uin
     uint32 imageId = SPR_SCROLLING_TEXT_START + scrollIndex;
     drawing_engine_invalidate_image(imageId);
     return imageId;
-}
 }
 
 static void scrolling_text_set_bitmap_for_sprite(utf8 *text, sint32 scroll, uint8 *bitmap, const sint16 *scrollPositionOffsets)

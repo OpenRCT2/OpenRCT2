@@ -94,10 +94,6 @@ enum {
     RESEARCH_CATEGORY_SCENERY_GROUP
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern uint8 gResearchFundingLevel;
 extern uint8 gResearchPriorities;
 extern uint16 gResearchProgress;
@@ -155,7 +151,3 @@ void research_items_make_all_unresearched();
 void research_items_make_all_researched();
 void research_items_shuffle();
 bool research_item_is_always_researched(rct_research_item * researchItem);
-
-#ifdef __cplusplus
-}
-#endif

@@ -51,9 +51,6 @@
 #include "../ride/Track.h"
 #include "../windows/Intent.h"
 
-extern "C"
-{
-
 const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS,
     STR_CHALLENGING_PARKS,
@@ -970,4 +967,3 @@ static void scenario_objective_check()
     }
 }
 
-}

@@ -18,16 +18,8 @@
 
 #include "Font.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 bool ttf_initialise();
 void ttf_dispose();
-
-#ifdef __cplusplus
-}
-#endif
 
 #ifndef NO_TTF
 
@@ -37,10 +29,6 @@ typedef struct TTFSurface {
     sint32          h;
     sint32          pitch;
 } TTFSurface;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 TTFFontDescriptor * ttf_get_font_from_sprite_base(uint16 spriteBase);
 void ttf_toggle_hinting();
@@ -59,9 +47,5 @@ TTFSurface * TTF_RenderUTF8_Shaded(TTF_Font *font, const char *text, uint32 fg, 
 void TTF_CloseFont(TTF_Font *font);
 void TTF_SetFontHinting(TTF_Font* font, int hinting);
 void TTF_Quit(void);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif // NO_TTF

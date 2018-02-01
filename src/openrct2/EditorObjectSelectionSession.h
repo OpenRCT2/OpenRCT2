@@ -32,17 +32,9 @@ void reset_selected_object_count_and_size();
 sint32 window_editor_object_selection_select_object(uint8 bh, sint32 flags, const rct_object_entry *entry);
 #endif
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+/**
+* Removes all unused objects from the object selection.
+* @return The number of removed objects.
+*/
+sint32 editor_remove_unused_objects();
 
-    /**
-    * Removes all unused objects from the object selection.
-    * @return The number of removed objects.
-    */
-    sint32 editor_remove_unused_objects();
-
-#ifdef __cplusplus
-}
-#endif // __cplusplus

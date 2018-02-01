@@ -127,36 +127,35 @@ close_callback Intent::GetCloseCallbackExtra(uint32 key) const
     return data.closeCallbackVal;
 }
 
-extern "C" {
-    Intent *intent_create(rct_windowclass clss)
-    {
-        return new Intent(clss);
-    }
-
-    void intent_release(Intent *intent)
-    {
-        delete intent;
-    }
-
-    void intent_set_sint(Intent * intent, uint32 key, sint32 value)
-    {
-        intent->putExtra(key, value);
-    }
-
-    void intent_set_string(Intent *intent, uint32 key, utf8string value)
-    {
-        std::string str { value };
-        intent->putExtra(key, str);
-    }
-
-    void intent_set_pointer(Intent *intent, uint32 key, void *value)
-    {
-        intent->putExtra(key, value);
-    }
-
-    void intent_set_uint(Intent *intent, uint32 key, uint32 value)
-    {
-        intent->putExtra(key, value);
-    }
+Intent *intent_create(rct_windowclass clss)
+{
+    return new Intent(clss);
 }
+
+void intent_release(Intent *intent)
+{
+    delete intent;
+}
+
+void intent_set_sint(Intent * intent, uint32 key, sint32 value)
+{
+    intent->putExtra(key, value);
+}
+
+void intent_set_string(Intent *intent, uint32 key, utf8string value)
+{
+    std::string str { value };
+    intent->putExtra(key, str);
+}
+
+void intent_set_pointer(Intent *intent, uint32 key, void *value)
+{
+    intent->putExtra(key, value);
+}
+
+void intent_set_uint(Intent *intent, uint32 key, uint32 value)
+{
+    intent->putExtra(key, value);
+}
+
 

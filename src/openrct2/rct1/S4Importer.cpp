@@ -2828,48 +2828,43 @@ IParkImporter * ParkImporter::CreateS4()
     return new S4Importer();
 }
 
-/////////////////////////////////////////
-// C -> C++ transfer
-/////////////////////////////////////////
-extern "C"
+ParkLoadResult * load_from_sv4(const utf8 * path)
 {
-    ParkLoadResult * load_from_sv4(const utf8 * path)
+    ParkLoadResult * result = nullptr;
+    auto s4Importer = std::make_unique<S4Importer>();
+    try
     {
-        ParkLoadResult * result = nullptr;
-        auto s4Importer = std::make_unique<S4Importer>();
-        try
+        result = new ParkLoadResult(s4Importer->LoadSavedGame(path));
+        if (result->Error == PARK_LOAD_ERROR_OK)
         {
-            result = new ParkLoadResult(s4Importer->LoadSavedGame(path));
-            if (result->Error == PARK_LOAD_ERROR_OK)
-            {
-                s4Importer->Import();
-            }
+            s4Importer->Import();
         }
-        catch (const std::exception &)
-        {
-            delete result;
-            result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
-        }
-        return result;
     }
-
-    ParkLoadResult * load_from_sc4(const utf8 * path)
+    catch (const std::exception &)
     {
-        ParkLoadResult * result = nullptr;
-        auto s4Importer = std::make_unique<S4Importer>();
-        try
-        {
-            result = new ParkLoadResult(s4Importer->LoadScenario(path));
-            if (result->Error == PARK_LOAD_ERROR_OK)
-            {
-                s4Importer->Import();
-            }
-        }
-        catch (const std::exception &)
-        {
-            delete result;
-            result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
-        }
-        return result;
+        delete result;
+        result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
     }
+    return result;
 }
+
+ParkLoadResult * load_from_sc4(const utf8 * path)
+{
+    ParkLoadResult * result = nullptr;
+    auto s4Importer = std::make_unique<S4Importer>();
+    try
+    {
+        result = new ParkLoadResult(s4Importer->LoadScenario(path));
+        if (result->Error == PARK_LOAD_ERROR_OK)
+        {
+            s4Importer->Import();
+        }
+    }
+    catch (const std::exception &)
+    {
+        delete result;
+        result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
+    }
+    return result;
+}
+

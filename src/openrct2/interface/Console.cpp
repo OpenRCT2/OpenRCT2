@@ -67,9 +67,6 @@
 #define CONSOLE_EDGE_PADDING 4
 #define CONSOLE_CARET_WIDTH 6
 
-extern "C"
-{
-
 bool gConsoleOpen = false;
 
 static bool                     _consoleInitialised = false;
@@ -1588,6 +1585,4 @@ static bool invalidArguments(bool *invalid, bool arguments)
         return false;
     }
     return true;
-}
-
 }

@@ -582,32 +582,30 @@ ITitleSequencePlayer * CreateTitleSequencePlayer(IScenarioRepository * scenarioR
     return new TitleSequencePlayer(scenarioRepository);
 }
 
-extern "C"
+bool gPreviewingTitleSequenceInGame = false;
+
+sint32 title_sequence_player_get_current_position(ITitleSequencePlayer * player)
 {
-    bool gPreviewingTitleSequenceInGame = false;
-
-    sint32 title_sequence_player_get_current_position(ITitleSequencePlayer * player)
-    {
-        return player->GetCurrentPosition();
-    }
-
-    bool title_sequence_player_begin(ITitleSequencePlayer * player, uint32 titleSequenceId)
-    {
-        return player->Begin(titleSequenceId);
-    }
-
-    void title_sequence_player_reset(ITitleSequencePlayer * player)
-    {
-        player->Reset();
-    }
-
-    bool title_sequence_player_update(ITitleSequencePlayer * player)
-    {
-        return player->Update();
-    }
-
-    void title_sequence_player_seek(ITitleSequencePlayer * player, uint32 position)
-    {
-        player->Seek(position);
-    }
+    return player->GetCurrentPosition();
 }
+
+bool title_sequence_player_begin(ITitleSequencePlayer * player, uint32 titleSequenceId)
+{
+    return player->Begin(titleSequenceId);
+}
+
+void title_sequence_player_reset(ITitleSequencePlayer * player)
+{
+    player->Reset();
+}
+
+bool title_sequence_player_update(ITitleSequencePlayer * player)
+{
+    return player->Update();
+}
+
+void title_sequence_player_seek(ITitleSequencePlayer * player, uint32 position)
+{
+    player->Seek(position);
+}
+

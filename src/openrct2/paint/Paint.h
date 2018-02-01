@@ -173,10 +173,6 @@ typedef struct paint_session
 
 extern paint_session gPaintSession;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 // Global for paint clipping height.
 extern uint8 gClipHeight;
 
@@ -220,8 +216,4 @@ void paint_draw_money_structs(rct_drawpixelinfo * dpi, paint_string_struct * ps)
 #else
     #define TESTPAINT_IGNORE(direction, trackSequence)
     #define TESTPAINT_IGNORE_ALL()
-#endif
-
-#ifdef __cplusplus
-}
 #endif

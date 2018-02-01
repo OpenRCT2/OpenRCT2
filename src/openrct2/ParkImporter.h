@@ -95,19 +95,13 @@ typedef struct ParkLoadResult ParkLoadResult;
 
 #endif
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    void park_importer_load_from_stream(void * stream, const utf8 * hintPath);
-    bool park_importer_extension_is_scenario(const utf8 * extension);
+void park_importer_load_from_stream(void * stream, const utf8 * hintPath);
+bool park_importer_extension_is_scenario(const utf8 * extension);
 
-    PARK_LOAD_ERROR             ParkLoadResult_GetError(const ParkLoadResult * t);
-    size_t                      ParkLoadResult_GetMissingObjectsCount(const ParkLoadResult * t);
-    const rct_object_entry *    ParkLoadResult_GetMissingObjects(const ParkLoadResult * t);
-    uint8                       ParkLoadResult_GetFlag(const ParkLoadResult * t);
-    void                        ParkLoadResult_Delete(ParkLoadResult * t);
-    ParkLoadResult *            ParkLoadResult_CreateInvalidExtension();
-#ifdef __cplusplus
-}
-#endif
+PARK_LOAD_ERROR             ParkLoadResult_GetError(const ParkLoadResult * t);
+size_t                      ParkLoadResult_GetMissingObjectsCount(const ParkLoadResult * t);
+const rct_object_entry *    ParkLoadResult_GetMissingObjects(const ParkLoadResult * t);
+uint8                       ParkLoadResult_GetFlag(const ParkLoadResult * t);
+void                        ParkLoadResult_Delete(ParkLoadResult * t);
+ParkLoadResult *            ParkLoadResult_CreateInvalidExtension();
+

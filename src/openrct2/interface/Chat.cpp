@@ -25,9 +25,6 @@
 #include "../util/Util.h"
 #include "Chat.h"
 
-extern "C"
-{
-
 bool gChatOpen = false;
 static char _chatCurrentLine[CHAT_MAX_MESSAGE_LENGTH];
 static char _chatHistory[CHAT_HISTORY_SIZE][CHAT_INPUT_SIZE];
@@ -307,6 +304,4 @@ sint32 chat_string_wrapped_get_height(void *args, sint32 width)
     }
 
     return lineY;
-}
-
 }

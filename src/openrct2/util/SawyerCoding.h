@@ -47,10 +47,6 @@ enum {
     FILE_TYPE_SC4 = (2 << 2)
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern bool gUseRLE;
 
 uint32 sawyercoding_calculate_checksum(const uint8* buffer, size_t length);
@@ -64,9 +60,5 @@ sint32 sawyercoding_validate_track_checksum(const uint8* src, size_t length);
 
 sint32 sawyercoding_detect_file_type(const uint8 *src, size_t length);
 sint32 sawyercoding_detect_rct1_version(sint32 gameVersion);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

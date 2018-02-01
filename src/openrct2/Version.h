@@ -78,11 +78,4 @@
 #define OPENRCT2_CUSTOM_INFO ""
 #endif
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    extern const char gVersionInfoFull[];
-#ifdef __cplusplus
-}
-#endif
+extern const char gVersionInfoFull[];

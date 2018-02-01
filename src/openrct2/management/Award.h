@@ -48,15 +48,8 @@ enum PARK_AWARD
 
 #define MAX_AWARDS 4
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    extern Award gCurrentAwards[MAX_AWARDS];
+extern Award gCurrentAwards[MAX_AWARDS];
 
-    bool award_is_positive(sint32 type);
-    void award_reset();
-    void award_update_all();
-#ifdef __cplusplus
-}
-#endif
+bool award_is_positive(sint32 type);
+void award_reset();
+void award_update_all();

@@ -73,10 +73,6 @@ enum
     G141E9DB_FLAG_2 = 2,
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifdef __TESTPAINT__
 extern uint16 testPaintVerticalTunnelHeight;
 #endif
@@ -109,9 +105,5 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_
 void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* tileElement);
 void large_scenery_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *tileElement);
 void track_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element *tileElement);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

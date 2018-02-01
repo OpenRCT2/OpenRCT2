@@ -810,101 +810,99 @@ IParkImporter * ParkImporter::CreateS6(IObjectRepository * objectRepository, IOb
     return new S6Importer(objectRepository, objectManager);
 }
 
-extern "C"
+ParkLoadResult * load_from_sv6(const char * path)
 {
-    ParkLoadResult * load_from_sv6(const char * path)
+    ParkLoadResult * result = nullptr;
+    auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
+    try
     {
-        ParkLoadResult * result = nullptr;
-        auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
-        try
-        {
-            result = new ParkLoadResult(s6Importer->LoadSavedGame(path));
+        result = new ParkLoadResult(s6Importer->LoadSavedGame(path));
 
-            // We mustn't import if there's something
-            // wrong with the park data
-            if (result->Error == PARK_LOAD_ERROR_OK)
-            {
-                s6Importer->Import();
-
-                game_fix_save_vars();
-                sprite_position_tween_reset();
-            }
-        }
-        catch (const ObjectLoadException &)
-        {
-            gErrorType     = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-        }
-        catch (const IOException &)
-        {
-            gErrorType     = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_GAME_SAVE_FAILED;
-        }
-        catch (const std::exception &)
-        {
-            gErrorType     = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-        }
-        delete s6Importer;
-
-        if (result == nullptr)
-        {
-            result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
-        }
+        // We mustn't import if there's something
+        // wrong with the park data
         if (result->Error == PARK_LOAD_ERROR_OK)
         {
-            gScreenAge          = 0;
-            gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-        }
-        return result;
-    }
+            s6Importer->Import();
 
-    /**
-     *
-     *  rct2: 0x00676053
-     * scenario (ebx)
-     */
-    ParkLoadResult * load_from_sc6(const char * path)
+            game_fix_save_vars();
+            sprite_position_tween_reset();
+        }
+    }
+    catch (const ObjectLoadException &)
     {
-        ParkLoadResult * result = nullptr;
-        auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
-        try
-        {
-            result = new ParkLoadResult(s6Importer->LoadScenario(path));
-            if (result->Error == PARK_LOAD_ERROR_OK)
-            {
-                s6Importer->Import();
-
-                game_fix_save_vars();
-                sprite_position_tween_reset();
-            }
-        }
-        catch (const ObjectLoadException &)
-        {
-            gErrorType     = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_GAME_SAVE_FAILED;
-        }
-        catch (const IOException &)
-        {
-            gErrorType     = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_GAME_SAVE_FAILED;
-        }
-        catch (const std::exception &)
-        {
-            gErrorType     = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-        }
-        delete s6Importer;
-
-        if (result == nullptr)
-        {
-            result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
-        }
-        if (result->Error != PARK_LOAD_ERROR_OK)
-        {
-            gScreenAge = 0;
-            gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-        }
-        return result;
+        gErrorType     = ERROR_TYPE_FILE_LOAD;
+        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
     }
+    catch (const IOException &)
+    {
+        gErrorType     = ERROR_TYPE_FILE_LOAD;
+        gErrorStringId = STR_GAME_SAVE_FAILED;
+    }
+    catch (const std::exception &)
+    {
+        gErrorType     = ERROR_TYPE_FILE_LOAD;
+        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+    }
+    delete s6Importer;
+
+    if (result == nullptr)
+    {
+        result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
+    }
+    if (result->Error == PARK_LOAD_ERROR_OK)
+    {
+        gScreenAge          = 0;
+        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+    }
+    return result;
 }
+
+/**
+ *
+ *  rct2: 0x00676053
+ * scenario (ebx)
+ */
+ParkLoadResult * load_from_sc6(const char * path)
+{
+    ParkLoadResult * result = nullptr;
+    auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
+    try
+    {
+        result = new ParkLoadResult(s6Importer->LoadScenario(path));
+        if (result->Error == PARK_LOAD_ERROR_OK)
+        {
+            s6Importer->Import();
+
+            game_fix_save_vars();
+            sprite_position_tween_reset();
+        }
+    }
+    catch (const ObjectLoadException &)
+    {
+        gErrorType     = ERROR_TYPE_FILE_LOAD;
+        gErrorStringId = STR_GAME_SAVE_FAILED;
+    }
+    catch (const IOException &)
+    {
+        gErrorType     = ERROR_TYPE_FILE_LOAD;
+        gErrorStringId = STR_GAME_SAVE_FAILED;
+    }
+    catch (const std::exception &)
+    {
+        gErrorType     = ERROR_TYPE_FILE_LOAD;
+        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+    }
+    delete s6Importer;
+
+    if (result == nullptr)
+    {
+        result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
+    }
+    if (result->Error != PARK_LOAD_ERROR_OK)
+    {
+        gScreenAge = 0;
+        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+    }
+    return result;
+}
+

@@ -720,10 +720,6 @@ enum
     FOR_ALL_PEEPS(sprite_index, peep)                                                                                          \
     if ((peep)->type == PEEP_TYPE_STAFF)
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 // rct2: 0x00982708
 extern rct_peep_animation_entry g_peep_animation_entries[PEEP_SPRITE_TYPE_COUNT];
 
@@ -823,9 +819,5 @@ void increment_guests_in_park();
 void increment_guests_heading_for_park();
 void decrement_guests_in_park();
 void decrement_guests_heading_for_park();
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

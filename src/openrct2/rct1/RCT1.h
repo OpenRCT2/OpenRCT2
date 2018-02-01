@@ -1223,15 +1223,7 @@ enum {
     RCT1_WATER_ORANGE
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 ParkLoadResult * load_from_sv4(const char *path);
 ParkLoadResult * load_from_sc4(const char *path);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

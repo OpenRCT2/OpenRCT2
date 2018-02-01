@@ -21,76 +21,74 @@
 
 #include "../platform/platform.h"
 
-extern "C"
+bool server_list_read(uint32 * outNumEntries, server_entry * * outEntries)
 {
-    bool server_list_read(uint32 * outNumEntries, server_entry * * outEntries)
+    log_verbose("server_list_read(...)");
+
+    utf8 path[MAX_PATH];
+    platform_get_user_directory(path, nullptr, sizeof(path));
+    Path::Append(path, sizeof(path), "servers.cfg");
+
+    uint32 numEntries = 0;
+    server_entry * entries = nullptr;
+    try
     {
-        log_verbose("server_list_read(...)");
+        auto fs = FileStream(path, FILE_MODE_OPEN);
+        numEntries = fs.ReadValue<uint32>();
+        entries = Memory::AllocateArray<server_entry>(numEntries);
 
-        utf8 path[MAX_PATH];
-        platform_get_user_directory(path, nullptr, sizeof(path));
-        Path::Append(path, sizeof(path), "servers.cfg");
-
-        uint32 numEntries = 0;
-        server_entry * entries = nullptr;
-        try
+        // Load each server entry
+        for (uint32 i = 0; i < numEntries; i++)
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
-            numEntries = fs.ReadValue<uint32>();
-            entries = Memory::AllocateArray<server_entry>(numEntries);
-
-            // Load each server entry
-            for (uint32 i = 0; i < numEntries; i++)
-            {
-                server_entry * serverInfo = &entries[i];
-                serverInfo->address = fs.ReadString();
-                serverInfo->name = fs.ReadString();
-                serverInfo->requiresPassword = false;
-                serverInfo->description = fs.ReadString();
-                serverInfo->version = String::Duplicate("");
-                serverInfo->favourite = true;
-                serverInfo->players = 0;
-                serverInfo->maxplayers = 0;
-            }
+            server_entry * serverInfo = &entries[i];
+            serverInfo->address = fs.ReadString();
+            serverInfo->name = fs.ReadString();
+            serverInfo->requiresPassword = false;
+            serverInfo->description = fs.ReadString();
+            serverInfo->version = String::Duplicate("");
+            serverInfo->favourite = true;
+            serverInfo->players = 0;
+            serverInfo->maxplayers = 0;
         }
-        catch (const std::exception &)
-        {
-            Memory::FreeArray(entries, numEntries);
-            numEntries = 0;
-            entries = nullptr;
-        }
-
-        *outNumEntries = numEntries;
-        *outEntries = entries;
-        return entries != nullptr;
+    }
+    catch (const std::exception &)
+    {
+        Memory::FreeArray(entries, numEntries);
+        numEntries = 0;
+        entries = nullptr;
     }
 
-    bool server_list_write(uint32 numEntries, server_entry * entries)
+    *outNumEntries = numEntries;
+    *outEntries = entries;
+    return entries != nullptr;
+}
+
+bool server_list_write(uint32 numEntries, server_entry * entries)
+{
+    log_verbose("server_list_write(%d, 0x%p)", numEntries, entries);
+
+    utf8 path[MAX_PATH];
+    platform_get_user_directory(path, nullptr, sizeof(path));
+    Path::Append(path, sizeof(path), "servers.cfg");
+
+    try
     {
-        log_verbose("server_list_write(%d, 0x%p)", numEntries, entries);
+        auto fs = FileStream(path, FILE_MODE_WRITE);
+        fs.WriteValue<uint32>(numEntries);
 
-        utf8 path[MAX_PATH];
-        platform_get_user_directory(path, nullptr, sizeof(path));
-        Path::Append(path, sizeof(path), "servers.cfg");
-
-        try
+        // Write each server entry
+        for (uint32 i = 0; i < numEntries; i++)
         {
-            auto fs = FileStream(path, FILE_MODE_WRITE);
-            fs.WriteValue<uint32>(numEntries);
-
-            // Write each server entry
-            for (uint32 i = 0; i < numEntries; i++)
-            {
-                server_entry * serverInfo = &entries[i];
-                fs.WriteString(serverInfo->address);
-                fs.WriteString(serverInfo->name);
-                fs.WriteString(serverInfo->description);
-            }
-            return true;
+            server_entry * serverInfo = &entries[i];
+            fs.WriteString(serverInfo->address);
+            fs.WriteString(serverInfo->name);
+            fs.WriteString(serverInfo->description);
         }
-        catch (const std::exception &)
-        {
-            return false;
-        }
+        return true;
+    }
+    catch (const std::exception &)
+    {
+        return false;
     }
 }
+

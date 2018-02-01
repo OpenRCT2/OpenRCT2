@@ -45,10 +45,6 @@ enum LIGHTFX_LIGHT_QUALIFIER {
     LIGHTFX_LIGHT_QUALIFIER_MAP         = 0x2
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 void lightfx_set_available(bool available);
 bool lightfx_is_available();
 
@@ -81,10 +77,6 @@ void lightfx_render_to_texture(
     uint32 height,
     const uint32 * palette,
     const uint32 * lightPalette);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif // __ENABLE_LIGHTFX__
 

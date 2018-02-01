@@ -166,18 +166,16 @@ static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFileInfo * result)
     return success;
 }
 
-extern "C"
+uint32 get_file_extension_type(const utf8 * path)
 {
-    uint32 get_file_extension_type(const utf8 * path)
-    {
-        auto extension = Path::GetExtension(path);
-        if (String::Equals(extension, ".dat", true)) return FILE_EXTENSION_DAT;
-        if (String::Equals(extension, ".sc4", true)) return FILE_EXTENSION_SC4;
-        if (String::Equals(extension, ".sv4", true)) return FILE_EXTENSION_SV4;
-        if (String::Equals(extension, ".td4", true)) return FILE_EXTENSION_TD4;
-        if (String::Equals(extension, ".sc6", true)) return FILE_EXTENSION_SC6;
-        if (String::Equals(extension, ".sv6", true)) return FILE_EXTENSION_SV6;
-        if (String::Equals(extension, ".td6", true)) return FILE_EXTENSION_TD6;
-        return FILE_EXTENSION_UNKNOWN;
-    }
+    auto extension = Path::GetExtension(path);
+    if (String::Equals(extension, ".dat", true)) return FILE_EXTENSION_DAT;
+    if (String::Equals(extension, ".sc4", true)) return FILE_EXTENSION_SC4;
+    if (String::Equals(extension, ".sv4", true)) return FILE_EXTENSION_SV4;
+    if (String::Equals(extension, ".td4", true)) return FILE_EXTENSION_TD4;
+    if (String::Equals(extension, ".sc6", true)) return FILE_EXTENSION_SC6;
+    if (String::Equals(extension, ".sv6", true)) return FILE_EXTENSION_SV6;
+    if (String::Equals(extension, ".td6", true)) return FILE_EXTENSION_TD6;
+    return FILE_EXTENSION_UNKNOWN;
 }
+

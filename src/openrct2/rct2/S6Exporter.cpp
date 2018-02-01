@@ -714,70 +714,68 @@ void S6Exporter::ExportResearchList()
     memcpy(_s6.research_items, gResearchItems, sizeof(_s6.research_items));
 }
 
-extern "C"
-{
-    enum {
-        S6_SAVE_FLAG_EXPORT    = 1 << 0,
-        S6_SAVE_FLAG_SCENARIO  = 1 << 1,
-        S6_SAVE_FLAG_AUTOMATIC = 1u << 31,
-    };
+enum {
+    S6_SAVE_FLAG_EXPORT    = 1 << 0,
+    S6_SAVE_FLAG_SCENARIO  = 1 << 1,
+    S6_SAVE_FLAG_AUTOMATIC = 1u << 31,
+};
 
-    /**
-     *
-     *  rct2: 0x006754F5
-     * @param flags bit 0: pack objects, 1: save as scenario
-     */
-    sint32 scenario_save(const utf8 * path, sint32 flags)
+/**
+ *
+ *  rct2: 0x006754F5
+ * @param flags bit 0: pack objects, 1: save as scenario
+ */
+sint32 scenario_save(const utf8 * path, sint32 flags)
+{
+    if (flags & S6_SAVE_FLAG_SCENARIO)
     {
+        log_verbose("saving scenario");
+    }
+    else
+    {
+        log_verbose("saving game");
+    }
+
+    if (!(flags & S6_SAVE_FLAG_AUTOMATIC))
+    {
+        window_close_construction_windows();
+    }
+
+    map_reorganise_elements();
+    viewport_set_saved_view();
+
+    bool result     = false;
+    auto s6exporter = new S6Exporter();
+    try
+    {
+        if (flags & S6_SAVE_FLAG_EXPORT)
+        {
+            IObjectManager * objManager   = GetObjectManager();
+            s6exporter->ExportObjectsList = objManager->GetPackableObjects();
+        }
+        s6exporter->RemoveTracklessRides = true;
+        s6exporter->Export();
         if (flags & S6_SAVE_FLAG_SCENARIO)
         {
-            log_verbose("saving scenario");
+            s6exporter->SaveScenario(path);
         }
         else
         {
-            log_verbose("saving game");
+            s6exporter->SaveGame(path);
         }
-
-        if (!(flags & S6_SAVE_FLAG_AUTOMATIC))
-        {
-            window_close_construction_windows();
-        }
-
-        map_reorganise_elements();
-        viewport_set_saved_view();
-
-        bool result     = false;
-        auto s6exporter = new S6Exporter();
-        try
-        {
-            if (flags & S6_SAVE_FLAG_EXPORT)
-            {
-                IObjectManager * objManager   = GetObjectManager();
-                s6exporter->ExportObjectsList = objManager->GetPackableObjects();
-            }
-            s6exporter->RemoveTracklessRides = true;
-            s6exporter->Export();
-            if (flags & S6_SAVE_FLAG_SCENARIO)
-            {
-                s6exporter->SaveScenario(path);
-            }
-            else
-            {
-                s6exporter->SaveGame(path);
-            }
-            result = true;
-        }
-        catch (const std::exception &)
-        {
-        }
-        delete s6exporter;
-
-        gfx_invalidate_screen();
-
-        if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
-        {
-            gScreenAge = 0;
-        }
-        return result;
+        result = true;
     }
+    catch (const std::exception &)
+    {
+    }
+    delete s6exporter;
+
+    gfx_invalidate_screen();
+
+    if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
+    {
+        gScreenAge = 0;
+    }
+    return result;
 }
+

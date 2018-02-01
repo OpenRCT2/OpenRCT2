@@ -16,12 +16,4 @@
 
 #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 void reset_user_strings();
-
-#ifdef __cplusplus
-}
-#endif

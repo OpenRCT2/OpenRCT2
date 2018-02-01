@@ -20,10 +20,6 @@
 #include <time.h>
 #include "../common.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 sint32 squaredmetres_to_squaredfeet(sint32 squaredMetres);
 sint32 metres_to_feet(sint32 metres);
 sint32 mph_to_kmph(sint32 mph);
@@ -77,9 +73,5 @@ float flerp(float a, float b, float t);
 uint8 soft_light(uint8 a, uint8 b);
 
 size_t strcatftime(char * buffer, size_t bufferSize, const char * format, const struct tm * tp);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

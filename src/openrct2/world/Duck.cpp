@@ -309,87 +309,85 @@ uint32 rct_duck::GetFrameImage(sint32 direction) const
     return imageId;
 }
 
-extern "C"
+void create_duck(sint32 targetX, sint32 targetY)
 {
-    void create_duck(sint32 targetX, sint32 targetY)
+    rct_sprite * sprite = create_sprite(2);
+    if (sprite != nullptr)
     {
-        rct_sprite * sprite = create_sprite(2);
-        if (sprite != nullptr)
-        {
-            sprite->duck.sprite_identifier = SPRITE_IDENTIFIER_MISC;
-            sprite->duck.misc_identifier = SPRITE_MISC_DUCK;
-            sprite->duck.sprite_width = 9;
-            sprite->duck.sprite_height_negative = 12;
-            sprite->duck.sprite_height_positive = 9;
-            sint32 offsetXY = scenario_rand() & 0x1E;
-            targetX += offsetXY;
-            targetY += offsetXY;
-            sprite->duck.target_x = targetX;
-            sprite->duck.target_y = targetY;
-            uint8 direction = scenario_rand() & 3;
-            switch (direction) {
-            case 0:
-                targetX = 8191 - (scenario_rand() & 0x3F);
-                break;
-            case 1:
-                targetY = scenario_rand() & 0x3F;
-                break;
-            case 2:
-                targetX = scenario_rand() & 0x3F;
-                break;
-            case 3:
-                targetY = 8191 - (scenario_rand() & 0x3F);
-                break;
-            }
-            sprite->duck.sprite_direction = direction << 3;
-            sprite_move(targetX, targetY, 496, sprite);
-            sprite->duck.state = DUCK_STATE::FLY_TO_WATER;
-            sprite->duck.frame = 0;
-        }
-    }
-
-    void duck_update(rct_duck * duck)
-    {
-        switch ((DUCK_STATE)duck->state) {
-        case DUCK_STATE::FLY_TO_WATER:
-            duck->UpdateFlyToWater();
+        sprite->duck.sprite_identifier = SPRITE_IDENTIFIER_MISC;
+        sprite->duck.misc_identifier = SPRITE_MISC_DUCK;
+        sprite->duck.sprite_width = 9;
+        sprite->duck.sprite_height_negative = 12;
+        sprite->duck.sprite_height_positive = 9;
+        sint32 offsetXY = scenario_rand() & 0x1E;
+        targetX += offsetXY;
+        targetY += offsetXY;
+        sprite->duck.target_x = targetX;
+        sprite->duck.target_y = targetY;
+        uint8 direction = scenario_rand() & 3;
+        switch (direction) {
+        case 0:
+            targetX = 8191 - (scenario_rand() & 0x3F);
             break;
-        case DUCK_STATE::SWIM:
-            duck->UpdateSwim();
+        case 1:
+            targetY = scenario_rand() & 0x3F;
             break;
-        case DUCK_STATE::DRINK:
-            duck->UpdateDrink();
+        case 2:
+            targetX = scenario_rand() & 0x3F;
             break;
-        case DUCK_STATE::DOUBLE_DRINK:
-            duck->UpdateDoubleDrink();
-            break;
-        case DUCK_STATE::FLY_AWAY:
-            duck->UpdateFlyAway();
+        case 3:
+            targetY = 8191 - (scenario_rand() & 0x3F);
             break;
         }
-    }
-
-    void duck_press(rct_duck * duck)
-    {
-        audio_play_sound_at_location(SOUND_QUACK, duck->x, duck->y, duck->z);
-    }
-
-    void duck_remove_all()
-    {
-        uint16 nextSpriteIndex;
-        for (uint16 spriteIndex = gSpriteListHead[SPRITE_LIST_MISC]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)
-        {
-            rct_unk_sprite * sprite = &(get_sprite(spriteIndex)->unknown);
-            nextSpriteIndex = sprite->next;
-            if (sprite->misc_identifier == SPRITE_MISC_DUCK)
-            {
-                sprite_remove((rct_sprite *)sprite);
-            }
-        }
-    }
-
-    uint32 duck_get_frame_image(const rct_duck * duck, sint32 direction)
-    {
-        return duck->GetFrameImage(direction);
+        sprite->duck.sprite_direction = direction << 3;
+        sprite_move(targetX, targetY, 496, sprite);
+        sprite->duck.state = DUCK_STATE::FLY_TO_WATER;
+        sprite->duck.frame = 0;
     }
 }
+
+void duck_update(rct_duck * duck)
+{
+    switch ((DUCK_STATE)duck->state) {
+    case DUCK_STATE::FLY_TO_WATER:
+        duck->UpdateFlyToWater();
+        break;
+    case DUCK_STATE::SWIM:
+        duck->UpdateSwim();
+        break;
+    case DUCK_STATE::DRINK:
+        duck->UpdateDrink();
+        break;
+    case DUCK_STATE::DOUBLE_DRINK:
+        duck->UpdateDoubleDrink();
+        break;
+    case DUCK_STATE::FLY_AWAY:
+        duck->UpdateFlyAway();
+        break;
+    }
+}
+
+void duck_press(rct_duck * duck)
+{
+    audio_play_sound_at_location(SOUND_QUACK, duck->x, duck->y, duck->z);
+}
+
+void duck_remove_all()
+{
+    uint16 nextSpriteIndex;
+    for (uint16 spriteIndex = gSpriteListHead[SPRITE_LIST_MISC]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)
+    {
+        rct_unk_sprite * sprite = &(get_sprite(spriteIndex)->unknown);
+        nextSpriteIndex = sprite->next;
+        if (sprite->misc_identifier == SPRITE_MISC_DUCK)
+        {
+            sprite_remove((rct_sprite *)sprite);
+        }
+    }
+}
+
+uint32 duck_get_frame_image(const rct_duck * duck, sint32 direction)
+{
+    return duck->GetFrameImage(direction);
+}
+

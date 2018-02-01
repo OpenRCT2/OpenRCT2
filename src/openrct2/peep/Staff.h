@@ -69,10 +69,6 @@ enum ENTERTAINER_COSTUME
     ENTERTAINER_COSTUME_COUNT
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern const rct_string_id StaffCostumeNames[ENTERTAINER_COSTUME_COUNT];
 
 extern uint32   gStaffPatrolAreas[(STAFF_MAX_COUNT + STAFF_TYPE_COUNT) * STAFF_PATROL_AREA_SIZE];
@@ -116,9 +112,5 @@ colour_t staff_get_colour(uint8 staffType);
 bool     staff_set_colour(uint8 staffType, colour_t value);
 uint32   staff_get_available_entertainer_costumes();
 sint32   staff_get_available_entertainer_costume_list(uint8 * costumeList);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

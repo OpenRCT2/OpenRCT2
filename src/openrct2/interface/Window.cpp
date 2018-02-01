@@ -38,9 +38,6 @@
 #include "Window.h"
 #include "Window_internal.h"
 
-extern "C"
-{
-
 #define RCT2_FIRST_WINDOW       (g_window_list)
 #define RCT2_LAST_WINDOW        (gWindowNextSlot - 1)
 #define RCT2_NEW_WINDOW         (gWindowNextSlot)
@@ -2726,4 +2723,3 @@ rct_windowclass window_get_classification(rct_window * window)
     return window->classification;
 }
 
-}

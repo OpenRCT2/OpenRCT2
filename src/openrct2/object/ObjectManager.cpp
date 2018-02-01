@@ -628,54 +628,52 @@ IObjectManager * GetObjectManager()
     return _objectManager;
 }
 
-extern "C"
+void * object_manager_get_loaded_object_by_index(size_t index)
 {
-    void * object_manager_get_loaded_object_by_index(size_t index)
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        Object * loadedObject = objectManager->GetLoadedObject(index);
-        return (void *)loadedObject;
-    }
+    IObjectManager * objectManager = GetObjectManager();
+    Object * loadedObject = objectManager->GetLoadedObject(index);
+    return (void *)loadedObject;
+}
 
-    void * object_manager_get_loaded_object(const rct_object_entry * entry)
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        Object * loadedObject = objectManager->GetLoadedObject(entry);
-        return (void *)loadedObject;
-    }
+void * object_manager_get_loaded_object(const rct_object_entry * entry)
+{
+    IObjectManager * objectManager = GetObjectManager();
+    Object * loadedObject = objectManager->GetLoadedObject(entry);
+    return (void *)loadedObject;
+}
 
-    uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        const Object * object = static_cast<const Object *>(loadedObject);
-        uint8 entryIndex = objectManager->GetLoadedObjectEntryIndex(object);
-        return entryIndex;
-    }
+uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
+{
+    IObjectManager * objectManager = GetObjectManager();
+    const Object * object = static_cast<const Object *>(loadedObject);
+    uint8 entryIndex = objectManager->GetLoadedObjectEntryIndex(object);
+    return entryIndex;
+}
 
-    void * object_manager_load_object(const rct_object_entry * entry)
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        Object * loadedObject = objectManager->LoadObject(entry);
-        return (void *)loadedObject;
-    }
+void * object_manager_load_object(const rct_object_entry * entry)
+{
+    IObjectManager * objectManager = GetObjectManager();
+    Object * loadedObject = objectManager->LoadObject(entry);
+    return (void *)loadedObject;
+}
 
-    void object_manager_unload_objects(const rct_object_entry * entries, size_t count)
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        objectManager->UnloadObjects(entries, count);
-    }
+void object_manager_unload_objects(const rct_object_entry * entries, size_t count)
+{
+    IObjectManager * objectManager = GetObjectManager();
+    objectManager->UnloadObjects(entries, count);
+}
 
-    void object_manager_unload_all_objects()
+void object_manager_unload_all_objects()
+{
+    IObjectManager * objectManager = GetObjectManager();
+    if (objectManager != nullptr)
     {
-        IObjectManager * objectManager = GetObjectManager();
-        if (objectManager != nullptr)
-        {
-            objectManager->UnloadAll();
-        }
-    }
-
-    rct_string_id object_manager_get_source_game_string(const rct_object_entry * entry)
-    {
-        return ObjectManager::GetObjectSourceGameString(entry);
+        objectManager->UnloadAll();
     }
 }
+
+rct_string_id object_manager_get_source_game_string(const rct_object_entry * entry)
+{
+    return ObjectManager::GetObjectSourceGameString(entry);
+}
+

@@ -57,12 +57,4 @@ bool TryClassifyFile(IStream * stream, ClassifiedFileInfo * result);
 
 #endif // __cplusplus
 
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    uint32 get_file_extension_type(const utf8 * path);
-#ifdef __cplusplus
-}
-#endif
+uint32 get_file_extension_type(const utf8 * path);

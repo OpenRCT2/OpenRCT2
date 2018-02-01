@@ -8,11 +8,6 @@
 #include "../world/Water.h"
 #include "ObjectLimits.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 extern rct_ride_entry               *gRideEntries[MAX_RIDE_OBJECTS];
 extern rct_small_scenery_entry      *gSmallSceneryEntries[MAX_SMALL_SCENERY_OBJECTS];
 extern rct_large_scenery_entry      *gLargeSceneryEntries[MAX_LARGE_SCENERY_OBJECTS];
@@ -30,6 +25,3 @@ const rct_object_entry * get_loaded_object_entry(size_t index);
 void * get_loaded_object_chunk(size_t index);
 uint8 object_entry_get_source_game(const rct_object_entry * objectEntry);
 
-#ifdef __cplusplus
-}
-#endif

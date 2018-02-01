@@ -20,10 +20,6 @@
 
 typedef struct rct_drawpixelinfo rct_drawpixelinfo;
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 extern rct_string_id DrawingEngineStringIds[3];
 
 sint32 drawing_engine_get_type();
@@ -39,7 +35,3 @@ rct_drawpixelinfo * drawing_engine_get_dpi();
 bool drawing_engine_has_dirty_optimisations();
 void drawing_engine_invalidate_image(uint32 image);
 void drawing_engine_set_vsync(bool vsync);
-
-#ifdef __cplusplus
-}
-#endif

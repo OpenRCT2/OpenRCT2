@@ -43,10 +43,6 @@ typedef struct scenario_index_entry scenario_index_entry;
 #define TEXT_INPUT_SIZE 1024
 #define TOP_TOOLBAR_HEIGHT 27
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern uint16 TextInputDescriptionArgs[4];
 extern char gTextBoxInput[TEXT_INPUT_SIZE];
 extern sint32 gMaxTextBoxInputLength;
@@ -728,9 +724,5 @@ extern bool _deferClose;
 
 rct_window * window_get_listening();
 rct_windowclass window_get_classification(rct_window * window);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

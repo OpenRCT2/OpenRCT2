@@ -146,20 +146,12 @@ typedef struct rct_colour_map
     uint8 colour_11;
 } rct_colour_map;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern rct_colour_map ColourMapA[COLOUR_COUNT];
 
 void colours_init_maps();
 
 #ifndef NO_TTF
 uint8 blendColours(const uint8 paletteIndex1, const uint8 paletteIndex2);
-#endif
-
-#ifdef __cplusplus
-}
 #endif
 
 #endif

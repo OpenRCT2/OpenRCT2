@@ -24,9 +24,6 @@
 #include "../util/Util.h"
 #include "TTF.h"
 
-extern "C"
-{
-
 enum {
     TEXT_DRAW_FLAG_INSET = 1 << 0,
     TEXT_DRAW_FLAG_OUTLINE = 1 << 1,
@@ -928,6 +925,4 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 avai
     }
 
     safe_strcpy(buffer, path, bufferSize);
-}
-
 }

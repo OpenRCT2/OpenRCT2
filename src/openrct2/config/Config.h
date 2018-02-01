@@ -234,25 +234,18 @@ enum
 };
 #endif
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    extern GeneralConfiguration         gConfigGeneral;
-    extern InterfaceConfiguration       gConfigInterface;
-    extern SoundConfiguration           gConfigSound;
-    extern TwitchConfiguration          gConfigTwitch;
-    extern NetworkConfiguration         gConfigNetwork;
-    extern NotificationConfiguration    gConfigNotifications;
-    extern FontConfiguration            gConfigFonts;
+extern GeneralConfiguration         gConfigGeneral;
+extern InterfaceConfiguration       gConfigInterface;
+extern SoundConfiguration           gConfigSound;
+extern TwitchConfiguration          gConfigTwitch;
+extern NetworkConfiguration         gConfigNetwork;
+extern NotificationConfiguration    gConfigNotifications;
+extern FontConfiguration            gConfigFonts;
 
-    bool config_open(const utf8 * path);
-    bool config_save(const utf8 * path);
-    void config_get_default_path(utf8 *outPath, size_t size);
-    void config_set_defaults();
-    void config_release();
-    bool config_save_default();
-    bool config_find_or_browse_install_directory();
-#ifdef __cplusplus
-}
-#endif
+bool config_open(const utf8 * path);
+bool config_save(const utf8 * path);
+void config_get_default_path(utf8 *outPath, size_t size);
+void config_set_defaults();
+void config_release();
+bool config_save_default();
+bool config_find_or_browse_install_directory();

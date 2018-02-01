@@ -19,14 +19,7 @@
 
 typedef void * CExceptionHandler;
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    extern bool gOpenRCT2SilentBreakpad;
-    CExceptionHandler crash_init();
-#ifdef __cplusplus
-}
-#endif
+extern bool gOpenRCT2SilentBreakpad;
+CExceptionHandler crash_init();
 
 #endif  /* _OPENRCT2_CRASH_ */

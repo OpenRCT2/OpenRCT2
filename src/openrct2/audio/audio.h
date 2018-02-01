@@ -18,11 +18,6 @@
 
 #include "../common.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 #define AUDIO_DEVICE_NAME_SIZE      256
 #define AUDIO_MAX_RIDE_MUSIC        2
 #define AUDIO_MAX_VEHICLE_SOUNDS    14
@@ -258,7 +253,3 @@ void audio_toggle_all_sounds();
 void audio_unpause_sounds();
 
 void audio_stop_all_music_and_sounds();
-
-#ifdef __cplusplus
-}
-#endif
