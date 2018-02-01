@@ -19,7 +19,6 @@
 #include "common.h"
 #include "object/Object.h"
 
-#ifdef __cplusplus
 extern bool _maxObjectsWasHit;
 extern uint8 * _objectSelectionFlags;
 extern sint32 _numSelectedObjectsForType[OBJECT_TYPE_COUNT];
@@ -30,7 +29,6 @@ void unload_unselected_objects();
 bool sub_6AB211();
 void reset_selected_object_count_and_size();
 sint32 window_editor_object_selection_select_object(uint8 bh, sint32 flags, const rct_object_entry *entry);
-#endif
 
 /**
 * Removes all unused objects from the object selection.

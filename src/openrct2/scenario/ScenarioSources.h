@@ -27,16 +27,12 @@ typedef struct source_desc
     uint8        category;
 } source_desc;
 
-#ifdef __cplusplus
-
 namespace ScenarioSources
 {
     bool TryGetByName(const utf8 * name, source_desc * outDesc);
     bool TryGetById(uint8 id, source_desc * outDesc);
     void NormaliseName(utf8 * buffer, size_t bufferSize, const utf8 * name);
 }
-
-#endif
 
 bool scenario_get_source_desc(const utf8 *name, source_desc *outDesc);
 bool scenario_get_source_desc_by_id(uint8 id, source_desc *outDesc);

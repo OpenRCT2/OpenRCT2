@@ -14,8 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _NETWORK_H_
-#define _NETWORK_H_
+#pragma once
 
 enum {
     NETWORK_MODE_NONE,
@@ -53,8 +52,6 @@ typedef struct GameAction GameAction;
 // single OpenRCT2 version.
 #define NETWORK_STREAM_VERSION "30"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
-
-#ifdef __cplusplus
 
 #include <array>
 #include <list>
@@ -296,7 +293,6 @@ private:
     std::ofstream _server_log_fs;
 };
 
-#endif // __cplusplus
 #else /* DISABLE_NETWORK */
 #define NETWORK_STREAM_ID "Multiplayer disabled"
 #endif /* DISABLE_NETWORK */
@@ -369,5 +365,3 @@ const utf8 * network_get_server_greeting();
 const utf8 * network_get_server_provider_name();
 const utf8 * network_get_server_provider_email();
 const utf8 * network_get_server_provider_website();
-
-#endif

@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include "Object.h"
 
 #include "../world/Scenery.h"
@@ -49,5 +47,3 @@ public:
 private:
     void ReadItems(IStream * stream);
 };
-
-#endif

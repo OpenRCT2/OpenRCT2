@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include <string>
 #include "../common.h"
 
@@ -40,5 +38,3 @@ namespace LanguagePackFactory
     ILanguagePack * FromFile(uint16 id, const utf8 * path);
     ILanguagePack * FromText(uint16 id, const utf8 * text);
 }
-
-#endif

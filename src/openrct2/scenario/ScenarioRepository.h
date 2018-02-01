@@ -51,8 +51,6 @@ typedef struct scenario_index_entry
     utf8 details[256];
 } scenario_index_entry;
 
-#ifdef __cplusplus
-
 namespace OpenRCT2
 {
     interface IPlatformEnvironment;
@@ -81,8 +79,6 @@ interface IScenarioRepository
 
 IScenarioRepository * CreateScenarioRepository(OpenRCT2::IPlatformEnvironment * env);
 IScenarioRepository * GetScenarioRepository();
-
-#endif
 
 void    scenario_repository_scan();
 size_t  scenario_repository_get_count();

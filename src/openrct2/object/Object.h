@@ -17,13 +17,8 @@
 #pragma once
 
 #include "../common.h"
-
-#ifdef __cplusplus
-
 #include "ImageTable.h"
 #include "StringTable.h"
-
-#endif
 
 // First 0xF of rct_object_entry->flags
 typedef enum
@@ -131,8 +126,6 @@ typedef struct rct_object_filters {
 assert_struct_size(rct_object_filters, 3);
 #pragma pack(pop)
 
-#ifdef __cplusplus
-
 enum OBJ_STRING_ID
 {
     OBJ_STRING_ID_NAME,
@@ -221,8 +214,6 @@ enum OBJECT_ERROR : uint32
     OBJECT_ERROR_BAD_IMAGE_TABLE,
     OBJECT_ERROR_UNEXPECTED_EOF,
 };
-
-#endif
 
 extern sint32 object_entry_group_counts[];
 extern sint32 object_entry_group_encoding[];

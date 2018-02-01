@@ -37,8 +37,6 @@ enum DRAWING_ENGINE_FLAGS
     DEF_DIRTY_OPTIMISATIONS = 1 << 0,
 };
 
-#ifdef __cplusplus
-
 struct rct_drawpixelinfo;
 struct rct_palette_entry;
 
@@ -83,5 +81,3 @@ namespace OpenRCT2 { namespace Drawing
             sint32 yStart) abstract;
     };
 } }
-
-#endif

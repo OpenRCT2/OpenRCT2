@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include "../common.h"
 
 class Object;
@@ -28,5 +26,3 @@ namespace ObjectFactory
     Object * CreateObjectFromLegacyData(const rct_object_entry * entry, const void * data, size_t dataSize);
     Object * CreateObject(const rct_object_entry &entry);
 }
-
-#endif

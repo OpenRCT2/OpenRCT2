@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include <string>
 #include "../windows/Intent.h"
 #include "../common.h"
@@ -51,5 +49,3 @@ namespace OpenRCT2
         IWindowManager * CreateDummyWindowManager();
     }
 }
-
-#endif

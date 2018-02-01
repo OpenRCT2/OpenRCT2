@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 interface IScenarioRepository;
 
 interface ITitleSequencePlayer
@@ -34,12 +32,6 @@ interface ITitleSequencePlayer
 };
 
 ITitleSequencePlayer * CreateTitleSequencePlayer(IScenarioRepository * scenarioRepository);
-
-#else
-
-typedef struct ITitleSequencePlayer ITitleSequencePlayer;
-
-#endif
 
 // When testing title sequences within a normal game
 extern bool gPreviewingTitleSequenceInGame;

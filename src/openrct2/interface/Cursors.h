@@ -51,8 +51,6 @@ enum CURSOR_ID
     CURSOR_COUNT,
 };
 
-#ifdef __cplusplus
-
 namespace OpenRCT2 { namespace Ui
 {
     constexpr size_t CURSOR_BIT_WIDTH = 32;
@@ -68,5 +66,3 @@ namespace OpenRCT2 { namespace Ui
         uint8 Mask[CURSOR_BIT_WIDTH * CURSOR_HEIGHT];
     };
 } }
-
-#endif

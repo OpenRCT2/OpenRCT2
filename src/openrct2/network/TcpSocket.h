@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include "../common.h"
 
 enum SOCKET_STATUS
@@ -73,5 +71,3 @@ namespace Convert
     uint16 HostToNetwork(uint16 value);
     uint16 NetworkToHost(uint16 value);
 }
-
-#endif
