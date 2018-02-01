@@ -16,25 +16,18 @@
 
 #pragma once
 
-#ifdef __cplusplus
-    #include <vector>
-#endif
-
+#include <vector>
 #include "../common.h"
-
 #include "../object/Object.h"
 #include "../ride/Ride.h"
 
-#ifdef __cplusplus
-    interface   IStream;
-    class       Object;
-    namespace OpenRCT2
-    {
-        interface IPlatformEnvironment;
-    }
-#else
-    typedef struct Object Object;
-#endif
+interface   IStream;
+class       Object;
+namespace OpenRCT2
+{
+    interface IPlatformEnvironment;
+}
+
 
 typedef struct rct_drawpixelinfo rct_drawpixelinfo;
 
@@ -61,8 +54,6 @@ typedef struct ObjectRepositoryItem
         };
     };
 } ObjectRepositoryItem;
-
-#ifdef __cplusplus
 
 interface IObjectRepository
 {
@@ -91,8 +82,6 @@ IObjectRepository * CreateObjectRepository(OpenRCT2::IPlatformEnvironment * env)
 IObjectRepository * GetObjectRepository();
 
 bool IsObjectCustom(const ObjectRepositoryItem * object);
-
-#endif
 
 size_t                          object_repository_get_items_count();
 const ObjectRepositoryItem *    object_repository_get_items();

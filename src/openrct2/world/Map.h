@@ -17,12 +17,9 @@
 #ifndef _MAP_H_
 #define _MAP_H_
 
+#include <initializer_list>
 #include "../common.h"
 #include "Location.h"
-
-#ifdef __cplusplus
-#include <initializer_list>
-#endif
 
 #pragma pack(push, 1)
 typedef struct rct_tile_element_surface_properties {

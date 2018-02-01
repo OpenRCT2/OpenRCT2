@@ -103,8 +103,6 @@ enum
     SHORTCUT_UNDEFINED = 0xFFFF,
 };
 
-#ifdef __cplusplus
-
 #include <string>
 
 namespace OpenRCT2
@@ -137,8 +135,6 @@ namespace OpenRCT2
         };
     }
 }
-
-#endif
 
 typedef struct rct_window rct_window;
 

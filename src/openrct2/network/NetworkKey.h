@@ -19,10 +19,7 @@
 
 #ifndef DISABLE_NETWORK
 
-#ifdef __cplusplus
-
 #include "../common.h"
-
 #include <string>
 
 typedef struct evp_pkey_st EVP_PKEY;
@@ -50,8 +47,6 @@ private:
     EVP_PKEY_CTX * _ctx = nullptr;
     EVP_PKEY *     _key = nullptr;
 };
-
-#endif
 
 #endif // DISABLE_NETWORK
 

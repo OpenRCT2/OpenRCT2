@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #ifndef DISABLE_NETWORK
 #include <list>
 #include <memory>
@@ -67,4 +65,3 @@ private:
 };
 
 #endif // DISABLE_NETWORK
-#endif

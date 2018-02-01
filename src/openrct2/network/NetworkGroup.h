@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include <array>
 #include <jansson.h>
 #include <string>
@@ -49,5 +47,3 @@ public:
 private:
     std::string _name;
 };
-
-#endif

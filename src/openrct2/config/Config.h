@@ -224,16 +224,6 @@ enum MEASUREMENT_FORMAT
     MEASUREMENT_FORMAT_SI
 };
 
-#ifndef __cplusplus
-// This is only for C files, C++ files should use FULLSCREEN_MODE in UiContext.h
-enum
-{
-    FULLSCREEN_MODE_WINDOWED,
-    FULLSCREEN_MODE_FULLSCREEN,
-    FULLSCREEN_MODE_FULLSCREEN_DESKTOP,
-};
-#endif
-
 extern GeneralConfiguration         gConfigGeneral;
 extern InterfaceConfiguration       gConfigInterface;
 extern SoundConfiguration           gConfigSound;

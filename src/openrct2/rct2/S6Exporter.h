@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include <string>
 #include <vector>
 #include "../common.h"
@@ -56,5 +54,3 @@ private:
     void ExportResearchedSceneryItems();
     void ExportResearchList();
 };
-
-#endif

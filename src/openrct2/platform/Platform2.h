@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include <ctime>
 #include <string>
 #include "../common.h"
@@ -47,5 +45,3 @@ namespace Platform
     std::string FormatShortDate(std::time_t timestamp);
     std::string FormatTime(std::time_t timestamp);
 }
-
-#endif

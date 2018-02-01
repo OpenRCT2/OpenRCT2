@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include <string>
 #include "../common.h"
 
@@ -54,5 +52,3 @@ public:
     void Write(NetworkPacket &packet);
     void AddMoneySpent(money32 cost);
 };
-
-#endif

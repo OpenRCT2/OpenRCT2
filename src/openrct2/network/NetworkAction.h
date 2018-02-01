@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include <vector>
 #include <string>
 #include "../common.h"
@@ -45,5 +43,3 @@ public:
     static sint32 FindCommand(sint32 command);
     static sint32 FindCommandByPermissionName(const std::string &permission_name);
 };
-
-#endif

@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include <string>
 #include <vector>
 #include "../common.h"
@@ -43,5 +41,3 @@ public:
     std::string     GetString(uint8 id) const;
     void            SetString(uint8 id, uint8 language, const std::string &text);
 };
-
-#endif

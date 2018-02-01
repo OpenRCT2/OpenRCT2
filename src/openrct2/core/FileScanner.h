@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include <string>
 #include <vector>
 #include "../common.h"
@@ -70,5 +68,3 @@ namespace Path
 
     std::vector<std::string> GetDirectories(const std::string &path);
 }
-
-#endif

@@ -797,10 +797,8 @@ enum ride_type_flags {
     RIDE_TYPE_FLAG_HAS_LARGE_CURVES = 1 << 30,                  // whether the ride supports large (45 degree turn) curves
     RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = 1u << 31,
 };
-#ifdef __cplusplus
 // Hack for MSVC which thinks RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = 1u << 31 is signed and generates narrowing conversion warnings
 constexpr inline uint32 operator | (ride_type_flags a, ride_type_flags b) { return static_cast<ride_type_flags>(static_cast<uint32>(a) | static_cast<uint32>(b)); }
-#endif
 
 enum {
     RIDE_CRASH_TYPE_NONE = 0,

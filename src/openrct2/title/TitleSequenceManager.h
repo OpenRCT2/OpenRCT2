@@ -15,12 +15,8 @@
 #pragma endregion
 
 #pragma once
-
-#include "../common.h"
-
-#ifdef __cplusplus
-
 #include <string>
+#include "../common.h"
 
 struct TitleSequenceManagerItem
 {
@@ -42,8 +38,6 @@ namespace TitleSequenceManager
 }
 
 constexpr const size_t PREDEFINED_INDEX_CUSTOM = SIZE_MAX;
-
-#endif
 
 size_t title_sequence_manager_get_count();
 const utf8 * title_sequence_manager_get_name(size_t index);

@@ -83,12 +83,8 @@ enum TITLE_SCRIPT
     TITLE_SCRIPT_LOADSC,
 };
 
-#ifdef __cplusplus
-    constexpr const utf8 *  TITLE_SEQUENCE_EXTENSION = ".parkseq";
-    constexpr uint8         SAVE_INDEX_INVALID = UINT8_MAX;
-#else
-    #define                 SAVE_INDEX_INVALID   UINT8_MAX
-#endif
+constexpr const utf8 *  TITLE_SEQUENCE_EXTENSION = ".parkseq";
+constexpr uint8         SAVE_INDEX_INVALID = UINT8_MAX;
 
 TitleSequence * CreateTitleSequence();
 TitleSequence * LoadTitleSequence(const utf8 * path);

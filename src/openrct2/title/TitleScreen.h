@@ -20,7 +20,6 @@
 
 #include "../drawing/Drawing.h"
 
-#ifdef __cplusplus
 interface ITitleSequencePlayer;
 
 class TitleScreen final
@@ -52,7 +51,6 @@ private:
     void TitleInitialise();
     bool TryLoadSequence(bool loadPreview = false);
 };
-#endif
 
 void title_load();
 void title_create_windows();

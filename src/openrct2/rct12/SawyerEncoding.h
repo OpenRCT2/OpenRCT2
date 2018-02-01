@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include "../common.h"
 
 interface IStream;
@@ -26,5 +24,3 @@ namespace SawyerEncoding
 {
     bool ValidateChecksum(IStream * stream);
 }
-
-#endif

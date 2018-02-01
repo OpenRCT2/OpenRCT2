@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include "SceneryObject.h"
 
 #include "../world/Scenery.h"
@@ -47,5 +45,3 @@ private:
     rct_object_entry GetScgMineHeader();
     rct_object_entry GetScgAbstrHeader();
 };
-
-#endif

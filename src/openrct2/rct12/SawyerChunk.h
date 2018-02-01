@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include "../common.h"
 
 /**
@@ -49,5 +47,3 @@ public:
     SawyerChunk(SAWYER_ENCODING encoding, void * data, size_t length);
     ~SawyerChunk();
 };
-
-#endif
