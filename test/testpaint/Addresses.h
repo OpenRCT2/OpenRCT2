@@ -34,11 +34,6 @@
 #define RCT2_ADDRESS(address, type)             ((type*)(GOOD_PLACE_FOR_DATA_SEGMENT - 0x8a4000 + (address)))
 #define RCT2_GLOBAL(address, type)              (*((type*)(GOOD_PLACE_FOR_DATA_SEGMENT - 0x8a4000 + (address))))
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 /**
  * Returns the flags register
  *
@@ -53,8 +48,6 @@ extern "C"
  */
 sint32 RCT2_CALLPROC_X(sint32 address, sint32 _eax, sint32 _ebx, sint32 _ecx, sint32 _edx, sint32 _esi, sint32 _edi, sint32 _ebp);
 
-#ifdef __cplusplus
-}
-#endif
+
 
 #endif

@@ -17,17 +17,11 @@
 #pragma once
 
 #include <vector>
-
 #include <openrct2/common.h>
-
-extern "C"
-{
-    #include <openrct2/drawing/Drawing.h>
-    #include <openrct2/interface/Colour.h>
-    #include <openrct2/paint/Paint.h>
-    #include <openrct2/paint/tile_element/TileElement.h>
-}
-
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/interface/Colour.h>
+#include <openrct2/paint/Paint.h>
+#include <openrct2/paint/tile_element/TileElement.h>
 #include "Addresses.h"
 
 #define gRideEntries                RCT2_ADDRESS(0x009ACFA4, rct_ride_entry*)
@@ -77,6 +71,11 @@ namespace TestPaint
     void ResetEnvironment();
     void ResetTunnels();
     void ResetSupportHeights();
+
+    void testClearIgnore();
+    void testIgnore(uint8 direction, uint8 trackSequence);
+    void testIgnoreAll();
+    bool testIsIgnored(uint8 direction, uint8 trackSequence);
 }
 
 enum Verbosity {
@@ -84,7 +83,4 @@ enum Verbosity {
     NORMAL,
 };
 
-extern "C"
-{
 int generatePaintCode(uint8 rideType);
-}
