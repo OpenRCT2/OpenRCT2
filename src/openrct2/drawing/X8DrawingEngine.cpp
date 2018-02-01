@@ -320,7 +320,7 @@ void X8DrawingEngine::ConfigureBits(uint32 width, uint32 height, uint32 pitch)
     {
         if (_pitch == pitch)
         {
-            Memory::Copy(newBits, _bits, Math::Min(_bitsSize, newBitsSize));
+            std::copy_n(_bits, std::min(_bitsSize, newBitsSize), newBits);
         }
         else
         {
@@ -331,7 +331,7 @@ void X8DrawingEngine::ConfigureBits(uint32 width, uint32 height, uint32 pitch)
             uint32 minHeight = Math::Min(_height, height);
             for (uint32 y = 0; y < minHeight; y++)
             {
-                Memory::Copy(dst, src, minWidth);
+                std::copy_n(src, minWidth, dst);
                 if (pitch - minWidth > 0)
                 {
                     std::fill_n(dst + minWidth, pitch - minWidth, 0);

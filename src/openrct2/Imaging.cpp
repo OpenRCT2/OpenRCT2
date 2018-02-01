@@ -16,6 +16,7 @@
 
 #pragma warning(disable : 4611) // interaction between '_setjmp' and C++ object destruction is non-portable
 
+#include <algorithm>
 #include <png.h>
 #include "core/FileStream.hpp"
 #include "core/Guard.hpp"
@@ -107,7 +108,7 @@ namespace Imaging
                 Guard::Assert(rowBytes == pngWidth, GUARD_LINE);
                 for (png_uint_32 i = 0; i < pngHeight; i++)
                 {
-                    Memory::Copy(dst, rowPointers[i], rowBytes);
+                    std::copy_n(rowPointers[i], rowBytes, dst);
                     dst += rowBytes;
                 }
             }
@@ -117,7 +118,7 @@ namespace Imaging
                 Guard::Assert(rowBytes == pngWidth * 4, GUARD_LINE);
                 for (png_uint_32 i = 0; i < pngHeight; i++)
                 {
-                    Memory::Copy(dst, rowPointers[i], rowBytes);
+                    std::copy_n(rowPointers[i], rowBytes, dst);
                     dst += rowBytes;
                 }
             }

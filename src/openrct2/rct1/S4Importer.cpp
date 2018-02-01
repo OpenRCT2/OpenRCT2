@@ -184,7 +184,7 @@ public:
 
         if (decodedSize == sizeof(rct1_s4))
         {
-            Memory::Copy<void>(&_s4, decodedData.get(), sizeof(rct1_s4));
+            std::memcpy(&_s4, decodedData.get(), sizeof(rct1_s4));
             if (_s4Path)
             {
                 Memory::Free(_s4Path);
@@ -1353,7 +1353,7 @@ private:
         std::fill(std::begin(gStaffModes), std::end(gStaffModes), 0);
         std::fill(std::begin(gStaffPatrolAreas), std::end(gStaffPatrolAreas), 0);
 
-        Memory::Copy(gStaffModes, _s4.staff_modes, sizeof(_s4.staff_modes));
+        std::copy(std::begin(_s4.staff_modes), std::end(_s4.staff_modes), gStaffModes);
 
         FOR_ALL_STAFF(i, peep)
         {
@@ -1856,7 +1856,7 @@ private:
         {
             rct_object_entry entry;
             entry.flags = 0x00008000 + objectType;
-            Memory::Copy(entry.name, objectName, 8);
+            std::copy_n(objectName, 8, entry.name);
             entry.checksum = 0;
 
             Object * object = objectManager->LoadObject(&entry);
@@ -1903,7 +1903,7 @@ private:
         {
             rct_object_entry entry;
             entry.flags = 0x00008000 + objectType;
-            Memory::Copy(entry.name, objectName, 8);
+            std::copy_n(objectName, 8, entry.name);
             entry.checksum = 0;
             
             const ObjectRepositoryItem * ori = objectRepository->FindObject(&entry);
@@ -1927,7 +1927,10 @@ private:
 
     void ImportTileElements()
     {
-        Memory::Copy(gTileElements, _s4.tile_elements, RCT1_MAX_TILE_ELEMENTS * sizeof(rct_tile_element));
+        std::copy(
+            std::begin(_s4.tile_elements),
+            std::end(_s4.tile_elements),
+            gTileElements);
         ClearExtraTileEntries();
         FixSceneryColours();
         FixTileElementZ();
@@ -2172,7 +2175,7 @@ private:
             dst->Ticks = src->Ticks;
             dst->MonthYear = src->MonthYear;
             dst->Day = src->Day;
-            Memory::Copy(dst->Text, src->Text, sizeof(src->Text));
+            std::copy(std::begin(src->Text), std::end(src->Text), dst->Text);
 
             if (dst->Type == NEWS_ITEM_RESEARCH)
             {

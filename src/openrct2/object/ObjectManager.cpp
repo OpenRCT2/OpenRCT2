@@ -592,14 +592,14 @@ private:
     static void ReportMissingObject(const rct_object_entry * entry)
     {
         utf8 objName[DAT_NAME_LENGTH + 1] = { 0 };
-        Memory::Copy(objName, entry->name, DAT_NAME_LENGTH);
+        std::copy_n(entry->name, DAT_NAME_LENGTH, objName);
         Console::Error::WriteLine("[%s] Object not found.", objName);
     }
 
     void ReportObjectLoadProblem(const rct_object_entry * entry)
     {
         utf8 objName[DAT_NAME_LENGTH + 1] = { 0 };
-        Memory::Copy(objName, entry->name, DAT_NAME_LENGTH);
+        std::copy_n(entry->name, DAT_NAME_LENGTH, objName);
         Console::Error::WriteLine("[%s] Object could not be loaded.", objName);
     }
 

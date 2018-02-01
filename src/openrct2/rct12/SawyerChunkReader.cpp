@@ -107,19 +107,19 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
 void SawyerChunkReader::ReadChunk(void * dst, size_t length)
 {
     auto chunk = ReadChunk();
-    const void * chunkData = chunk->GetData();
-    size_t chunkLength = chunk->GetLength();
+    auto chunkData = (const uint8 *)chunk->GetData();
+    auto chunkLength = chunk->GetLength();
     if (chunkLength > length)
     {
-        Memory::Copy(dst, chunkData, length);
+        std::copy_n(chunkData, length, (uint8 *)dst);
     }
     else
     {
-        Memory::Copy(dst, chunkData, chunkLength);
-        size_t remainingLength = length - chunkLength;
+        std::copy_n(chunkData, length, (uint8 *)dst);
+        auto remainingLength = length - chunkLength;
         if (remainingLength > 0)
         {
-            uint8 * offset = (uint8 *)((uintptr_t)dst + chunkLength);
+            auto offset = (uint8 *)dst + chunkLength;
             std::fill_n(offset, remainingLength, 0);
         }
     }
@@ -135,7 +135,7 @@ size_t SawyerChunkReader::DecodeChunk(void * dst, size_t dstCapacity, const void
         {
             throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
         }
-        Memory::Copy(dst, src, header.length);
+        std::copy_n((const uint8 *)src, header.length, (uint8 *)dst);
         resultLength = header.length;
         break;
     case CHUNK_ENCODING_RLE:
@@ -197,7 +197,7 @@ size_t SawyerChunkReader::DecodeChunkRLE(void * dst, size_t dstCapacity, const v
                 throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
             }
 
-            Memory::Copy(dst8, src8 + i + 1, rleCodeByte + 1);
+            std::copy_n(src8 + i + 1, rleCodeByte + 1, dst8);
             dst8 += rleCodeByte + 1;
             i += rleCodeByte + 1;
         }
@@ -226,7 +226,7 @@ size_t SawyerChunkReader::DecodeChunkRepeat(void * dst, size_t dstCapacity, cons
                 throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
             }
 
-            Memory::Copy(dst8, copySrc, count);
+            std::copy_n(copySrc, count, dst8);
             dst8 += count;
         }
     }

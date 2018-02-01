@@ -236,7 +236,7 @@ public:
         rct_object_entry entry = { 0 };
         utf8 entryName[9] = { ' ' };
         String::Set(entryName, sizeof(entryName), name);
-        Memory::Copy<void>(entry.name, entryName, 8);
+        std::copy_n(entryName, 8, entry.name);
 
         auto kvp = _itemMap.find(entry);
         if (kvp != _itemMap.end())
@@ -464,10 +464,10 @@ private:
 
                 // Create new data blob with appended bytes
                 size_t newDataSize = dataSize + extraBytesCount;
-                void * newData = Memory::Allocate<void>(newDataSize);
-                void * newDataSaltOffset = (void *)((uintptr_t)newData + dataSize);
-                Memory::Copy(newData, data, dataSize);
-                Memory::Copy(newDataSaltOffset, extraBytes, extraBytesCount);
+                uint8 * newData = Memory::Allocate<uint8>(newDataSize);
+                uint8 * newDataSaltOffset = newData + dataSize;
+                std::copy_n((const uint8 *)data, dataSize, newData);
+                std::copy_n((const uint8 *)extraBytes, extraBytesCount, newDataSaltOffset);
 
                 try
                 {

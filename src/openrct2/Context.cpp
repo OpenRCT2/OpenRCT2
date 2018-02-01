@@ -14,6 +14,7 @@
 *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include <exception>
 #include <memory>
 #include <string>
@@ -1006,7 +1007,7 @@ extern "C"
         auto resolutions = GetContext()->GetUiContext()->GetFullscreenResolutions();
         sint32 count = (sint32)resolutions.size();
         *outResolutions = Memory::AllocateArray<Resolution>(count);
-        Memory::CopyArray(*outResolutions, resolutions.data(), count);
+        std::copy_n(resolutions.begin(), count, *outResolutions);
         return count;
     }
 

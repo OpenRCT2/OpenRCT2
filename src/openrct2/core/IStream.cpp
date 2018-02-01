@@ -31,7 +31,7 @@ utf8 * IStream::ReadString()
     result.push_back(0);
 
     utf8 * resultString = Memory::AllocateArray<utf8>(result.size());
-    Memory::CopyArray(resultString, result.data(), result.size());
+    std::copy(result.begin(), result.end(), resultString);
     return resultString;
 }
 

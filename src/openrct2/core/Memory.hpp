@@ -89,44 +89,17 @@ namespace Memory
     }
 
     template<typename T>
-    static T * Copy(T * dst, const T * src, size_t size)
-    {
-        if (size == 0) return (T*)dst;
-#ifdef DEBUG
-        uintptr_t srcBegin = (uintptr_t)src;
-        uintptr_t srcEnd = srcBegin + size;
-        uintptr_t dstBegin = (uintptr_t)dst;
-        uintptr_t dstEnd = dstBegin + size;
-        Guard::Assert(srcEnd <= dstBegin || srcBegin >= dstEnd, "Source overlaps destination, try using Memory::Move.");
-#endif
-        return (T*)memcpy((void*)dst, (const void*)src, size);
-    }
-
-    template<typename T>
     static T * Duplicate(const T * src, size_t size)
     {
         T *result = Allocate<T>(size);
-        return Copy(result, src, size);
-    }
-
-    template<typename T>
-    static T * CopyArray(T * dst, const T * src, size_t count)
-    {
-        // Use a loop so that copy constructors are called
-        // compiler should optimise to memcpy if possible
-        T * result = dst;
-        for (; count > 0; count--)
-        {
-            *dst++ = *src++;
-        }
-        return result;
+        return (T *)memcpy(result, src, size);
     }
 
     template<typename T>
     static T * DuplicateArray(const T * src, size_t count)
     {
         T * result = AllocateArray<T>(count);
-        return CopyArray(result, src, count);
+        return (T *)memcpy(result, src, count);
     }
 
     template<typename T>

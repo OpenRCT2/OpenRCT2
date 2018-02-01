@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include <string>
 #include <vector>
 
@@ -407,7 +408,7 @@ private:
 
                     _objectOverrides.push_back(ObjectOverride());
                     _currentObjectOverride = &_objectOverrides[_objectOverrides.size() - 1];
-                    Memory::Copy(_currentObjectOverride->name, _currentGroup.c_str(), 8);
+                    std::copy_n(_currentGroup.c_str(), 8, _currentObjectOverride->name);
                 }
             }
         }
