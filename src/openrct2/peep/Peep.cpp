@@ -1458,7 +1458,7 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
 
 /*
  * rct2: 0x68F3AE
- * Set peep state to falling if path below has gone missing, return 1 if current path is valid, 0 if peep starts falling
+ * Set peep state to falling if path below has gone missing, return true if current path is valid, false if peep starts falling.
  */
 static bool checkForPath(rct_peep * peep)
 {
@@ -8466,7 +8466,7 @@ static sint32 peep_has_food_extra_flag(rct_peep * peep)
 
 /**
  * To simplify check of 0x36BA3E0 and 0x11FF78
- * returns 0 on no food.
+ * returns false on no food.
  */
 bool peep_has_food(rct_peep * peep)
 {
@@ -8952,7 +8952,7 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
         sint16 next_y = (y & 0xFFE0) + TileDirectionDelta[entranceDirection].y;
 
         // Make sure there is a path right behind the entrance, otherwise turn around
-        bool               found           = 0;
+        bool               found           = false;
         rct_tile_element * nextTileElement = map_get_first_element_at(next_x / 32, next_y / 32);
         do
         {
@@ -10010,7 +10010,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
     }
 
     /* Get the next map element of interest in the direction of test_edge. */
-    bool                found      = false;
+    bool               found       = false;
     rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
     if (tileElement == nullptr)
     {
