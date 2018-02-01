@@ -18,7 +18,7 @@
 #include "Object.h"
 
 /** rct2: 0x0098DA74 */
-const object_entry_without_checksum RequiredSelectedObjects[7] =
+const rct_object_entry RequiredSelectedObjects[7] =
 {
     // Objects that are always required
     { 0x00000087, { "SCGTREES" } },      // Scenery: Trees
@@ -30,7 +30,7 @@ const object_entry_without_checksum RequiredSelectedObjects[7] =
     { 0x00000085, { "TARMAC  " } },      // Footpath: Tarmac
 };
 
-const object_entry_without_checksum DefaultSelectedObjects[26] =
+const rct_object_entry DefaultSelectedObjects[26] =
 {
     // An initial default selection
     { 0x00000080, { "TWIST1  " } },      // Ride: Twist

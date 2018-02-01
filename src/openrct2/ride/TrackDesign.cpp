@@ -184,7 +184,7 @@ static rct_track_td6 * track_design_open_from_td4(uint8 * src, size_t srcLength)
     }
 
     // Convert RCT1 vehicle type to RCT2 vehicle type. Intialise with an string consisting of 8 spaces (and no nul terminator).
-    rct_object_entry vehicleObject = {0x80, "", 0};
+    rct_object_entry vehicleObject = {0x80, ""};
     memset(vehicleObject.name, ' ', sizeof(vehicleObject.name));
     if (td4->type == RIDE_TYPE_MAZE)
     {

@@ -269,7 +269,7 @@ static void research_rides_setup(){
 static void research_scenery_groups_setup()
 {
     for (size_t i = 0; i < Util::CountOf(RequiredSelectedObjects); i++) {
-        const rct_object_entry * object = (rct_object_entry *)&RequiredSelectedObjects[i];
+        const rct_object_entry * object = &RequiredSelectedObjects[i];
 
         uint8 entry_type, entryIndex;
         if (!find_object_in_entry_group(object, &entry_type, &entryIndex))

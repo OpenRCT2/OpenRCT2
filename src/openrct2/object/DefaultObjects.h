@@ -18,5 +18,5 @@
 
 #include "Object.h"
 
-extern const object_entry_without_checksum RequiredSelectedObjects[7];
-extern const object_entry_without_checksum DefaultSelectedObjects[26];
+extern const rct_object_entry RequiredSelectedObjects[7];
+extern const rct_object_entry DefaultSelectedObjects[26];

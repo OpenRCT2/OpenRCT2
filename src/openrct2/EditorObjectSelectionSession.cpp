@@ -331,7 +331,7 @@ static void window_editor_object_selection_select_default_objects()
     {
         for (const auto &defaultSelectedObject : DefaultSelectedObjects)
         {
-            window_editor_object_selection_select_object(0, 7, (rct_object_entry *)&defaultSelectedObject);
+            window_editor_object_selection_select_object(0, 7, &defaultSelectedObject);
         }
     }
 }
@@ -345,7 +345,7 @@ static void window_editor_object_selection_select_required_objects()
     sint32 i;
 
     for (i = 0; i < (sint32)Util::CountOf(RequiredSelectedObjects); i++)
-        window_editor_object_selection_select_object(0, 0xF, (rct_object_entry *)&RequiredSelectedObjects[i]);
+        window_editor_object_selection_select_object(0, 0xF, &RequiredSelectedObjects[i]);
 }
 
 /**
