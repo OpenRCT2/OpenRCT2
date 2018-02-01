@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include <openrct2/interface/Cursors.h>
-#include <openrct2/object/default_objects.h>
+#include <openrct2/object/DefaultObjects.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/OpenRCT2.h>
@@ -269,7 +269,7 @@ static void research_rides_setup(){
 static void research_scenery_groups_setup()
 {
     for (size_t i = 0; i < Util::CountOf(RequiredSelectedObjects); i++) {
-        const rct_object_entry * object = &RequiredSelectedObjects[i];
+        const rct_object_entry * object = (rct_object_entry *)&RequiredSelectedObjects[i];
 
         uint8 entry_type, entryIndex;
         if (!find_object_in_entry_group(object, &entry_type, &entryIndex))

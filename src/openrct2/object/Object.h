@@ -111,6 +111,14 @@ typedef struct rct_object_entry_group {
 assert_struct_size(rct_object_entry_group, 8);
 #endif
 
+/* This can be easily casted to an rct_object_entry */
+typedef struct object_entry_without_checksum
+{
+    uint32 flags;
+    char name[9];
+    uint8 pad[3];
+} object_entry_without_checksum;
+
 typedef struct rct_ride_filters {
     uint8 category[2];
     uint8 ride_type;
