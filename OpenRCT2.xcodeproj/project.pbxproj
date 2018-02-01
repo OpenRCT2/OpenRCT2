@@ -108,6 +108,7 @@
 		4C7B54752010DF3C00A52E21 /* Android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54742010DF3C00A52E21 /* Android.cpp */; };
 		4C7B54772010DF4300A52E21 /* Linux.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54762010DF4300A52E21 /* Linux.cpp */; };
 		4C7B547B2010DF4C00A52E21 /* Posix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54782010DF4C00A52E21 /* Posix.cpp */; };
+		4C7B54692007BF2E00A52E21 /* TTFSDLPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54682007BF2E00A52E21 /* TTFSDLPort.cpp */; };
 		4C7B547C2010DF4C00A52E21 /* Shared.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54792010DF4C00A52E21 /* Shared.cpp */; };
 		4C7B547D2010DF4C00A52E21 /* Windows.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B547A2010DF4C00A52E21 /* Windows.cpp */; };
 		4C8667821EEFDCDF0024AAB8 /* RideGroupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */; };
@@ -193,7 +194,6 @@
 		4C93F1BC1F8E185600A9330D /* Marketing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B41F8E185600A9330D /* Marketing.cpp */; };
 		4C93F1BD1F8E185600A9330D /* NewsItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B61F8E185600A9330D /* NewsItem.cpp */; };
 		4C93F1BE1F8E185600A9330D /* Research.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B81F8E185600A9330D /* Research.cpp */; };
-		4CB832AB1EFFB8D100B88761 /* ttf_sdlport.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */; };
 		4CC4B8E41FE00C4200660D62 /* CmdlineSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8E21FE00C4100660D62 /* CmdlineSprite.cpp */; };
 		4CC4B8E71FE00C4E00660D62 /* Diagnostic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8E51FE00C4E00660D62 /* Diagnostic.cpp */; };
 		4CC4B8ED1FE00C5D00660D62 /* Intro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8EA1FE00C5D00660D62 /* Intro.cpp */; };
@@ -756,6 +756,7 @@
 		4C7B545B20079C4000A52E21 /* data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = data.h; sourceTree = "<group>"; };
 		4C7B545F20079C4900A52E21 /* Hook.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hook.cpp; sourceTree = "<group>"; };
 		4C7B546020079C4900A52E21 /* hook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hook.h; sourceTree = "<group>"; };
+ 		4C7B54682007BF2E00A52E21 /* TTFSDLPort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTFSDLPort.cpp; sourceTree = "<group>"; };
 		4C7B54742010DF3C00A52E21 /* Android.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Android.cpp; sourceTree = "<group>"; };
 		4C7B54762010DF4300A52E21 /* Linux.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Linux.cpp; sourceTree = "<group>"; };
 		4C7B54782010DF4C00A52E21 /* Posix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Posix.cpp; sourceTree = "<group>"; };
@@ -854,7 +855,6 @@
 		4C93F1B71F8E185600A9330D /* NewsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsItem.h; sourceTree = "<group>"; };
 		4C93F1B81F8E185600A9330D /* Research.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Research.cpp; sourceTree = "<group>"; };
 		4C93F1B91F8E185600A9330D /* Research.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Research.h; sourceTree = "<group>"; };
-		4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ttf_sdlport.c; sourceTree = "<group>"; };
 		4CB832AA1EFFB8D100B88761 /* ttf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttf.h; sourceTree = "<group>"; };
 		4CC4B8E21FE00C4100660D62 /* CmdlineSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdlineSprite.cpp; sourceTree = "<group>"; };
 		4CC4B8E31FE00C4200660D62 /* CmdlineSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdlineSprite.h; sourceTree = "<group>"; };
@@ -2018,8 +2018,8 @@
 				C651A8D71F30204300443BCA /* Text.cpp */,
 				C651A8D81F30204300443BCA /* Text.h */,
 				4C7B53D820002CA400A52E21 /* TTF.cpp */,
-				4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */,
 				4CB832AA1EFFB8D100B88761 /* ttf.h */,
+ 				4C7B54682007BF2E00A52E21 /* TTFSDLPort.cpp */,
 				4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */,
 				4C8B426F1EEB1ABD00F015CA /* X8DrawingEngine.h */,
 			);
@@ -3199,7 +3199,6 @@
 				4C93F14C1F8B744400A9330D /* MiniSuspendedCoaster.cpp in Sources */,
 				C666EE721F37ACB10061AA04 /* Multiplayer.cpp in Sources */,
 				4C6A66B81FE278C900694CB6 /* Supports.cpp in Sources */,
-				4CB832AB1EFFB8D100B88761 /* ttf_sdlport.c in Sources */,
 				C654DF371F69C0430040F43D /* Sign.cpp in Sources */,
 				4C93F1751F8B745700A9330D /* MiniHelicopters.cpp in Sources */,
 				4C7B53F8200143C200A52E21 /* Screenshot.cpp in Sources */,
@@ -3264,6 +3263,7 @@
 				4C6A66981FE2786F00694CB6 /* Litter.cpp in Sources */,
 				C666ED761F33DBB20061AA04 /* ShortcutKeyChange.cpp in Sources */,
 				F76C887F1EC5324E00FA49E2 /* ApplyPaletteShader.cpp in Sources */,
+				4C7B54692007BF2E00A52E21 /* TTFSDLPort.cpp in Sources */,
 				4CE462411FD0710E0001CD98 /* Game.cpp in Sources */,
 				C685E51C1F8907850090598F /* Map.cpp in Sources */,
 				F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */,
