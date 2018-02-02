@@ -53,8 +53,6 @@
 extern "C"
 {
 
-static utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
-
 #define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
 
 static HMODULE _dllModule = nullptr;
@@ -203,45 +201,6 @@ bool platform_file_delete(const utf8 *path)
     BOOL success = DeleteFileW(wPath);
     free(wPath);
     return success == TRUE;
-}
-
-void platform_resolve_openrct_data_path()
-{
-    wchar_t wOutPath[MAX_PATH];
-
-    if (gCustomOpenrctDataPath[0] != 0) {
-        wchar_t *customOpenrctDataPathW = utf8_to_widechar(gCustomOpenrctDataPath);
-        if (GetFullPathNameW(customOpenrctDataPathW, (DWORD)Util::CountOf(wOutPath), wOutPath, NULL) == 0) {
-            log_fatal("Unable to resolve path '%s'.", gCustomOpenrctDataPath);
-            exit(-1);
-        }
-        utf8 *outPathTemp = widechar_to_utf8(wOutPath);
-        safe_strcpy(_openrctDataDirectoryPath, outPathTemp, sizeof(_openrctDataDirectoryPath));
-        free(outPathTemp);
-        free(customOpenrctDataPathW);
-
-        path_end_with_separator(_openrctDataDirectoryPath, sizeof(_openrctDataDirectoryPath));
-        return;
-    }
-    char buffer[MAX_PATH];
-    platform_get_exe_path(buffer, sizeof(buffer));
-
-    safe_strcat_path(buffer, "data", MAX_PATH);
-
-    if (platform_directory_exists(buffer))
-    {
-        _openrctDataDirectoryPath[0] = '\0';
-        safe_strcpy(_openrctDataDirectoryPath, buffer, sizeof(_openrctDataDirectoryPath));
-        return;
-    } else {
-        log_fatal("Unable to resolve openrct data path.");
-        exit(-1);
-    }
-}
-
-void platform_get_openrct_data_path(utf8 *outPath, size_t outSize)
-{
-    safe_strcpy(outPath, _openrctDataDirectoryPath, outSize);
 }
 
 bool platform_get_steam_path(utf8 * outPath, size_t outSize)
@@ -486,20 +445,6 @@ uint8 platform_get_locale_date_format()
 
     // Default fallback
     return DATE_FORMAT_DAY_MONTH_YEAR;
-}
-
-void platform_get_exe_path(utf8 *outPath, size_t outSize)
-{
-    wchar_t exePath[MAX_PATH];
-    wchar_t tempPath[MAX_PATH];
-    wchar_t *exeDelimiter;
-
-    GetModuleFileNameW(NULL, exePath, MAX_PATH);
-    exeDelimiter = wcsrchr(exePath, *PATH_SEPARATOR);
-    *exeDelimiter = L'\0';
-    wcscpy_s(tempPath, MAX_PATH, exePath);
-    _wfullpath(exePath, tempPath, MAX_PATH);
-    WideCharToMultiByte(CP_UTF8, 0, exePath, MAX_PATH, outPath, (sint32) outSize, NULL, NULL);
 }
 
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)

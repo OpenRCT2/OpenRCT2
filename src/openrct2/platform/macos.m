@@ -34,51 +34,6 @@ void macos_disallow_automatic_window_tabbing()
     }
 }
 
-void platform_get_exe_path(utf8 *outPath, size_t outSize)
-{
-    if (outSize == 0) return;
-    char exePath[MAX_PATH];
-    uint32_t size = MAX_PATH;
-    int result = _NSGetExecutablePath(exePath, &size);
-    if (result != 0) {
-        log_fatal("failed to get path");
-    }
-    exePath[MAX_PATH - 1] = '\0';
-    char *exeDelimiter = strrchr(exePath, *PATH_SEPARATOR);
-    if (exeDelimiter == NULL)
-    {
-        log_error("should never happen here");
-        outPath[0] = '\0';
-        return;
-    }
-    *exeDelimiter = '\0';
-
-    safe_strcpy(outPath, exePath, outSize);
-}
-
-/**
- * Default directory fallback is:
- *   - (command line argument)
- *   - <exePath>/data
- *   - <Resources Folder>
- */
-void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size) {
-    @autoreleasepool
-    {
-        NSBundle *bundle = [NSBundle mainBundle];
-        if (bundle)
-        {
-            const utf8 *resources = bundle.resourcePath.UTF8String;
-            if (platform_directory_exists(resources))
-            {
-                out[0] = '\0';
-                safe_strcpy(out, resources, size);
-                return;
-            }
-        }
-    }
-}
-
 utf8* macos_str_decomp_to_precomp(utf8 *input)
 {
     @autoreleasepool

@@ -48,7 +48,6 @@ extern "C"
 {
 
 static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
-static utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
 void platform_get_date_utc(rct2_date *out_date)
 {
@@ -398,53 +397,6 @@ static wchar_t *regular_to_wchar(const char* src)
         max -= length;
     }
     return w_buffer;
-}
-
-void platform_get_openrct_data_path(utf8 *outPath, size_t outSize)
-{
-    safe_strcpy(outPath, _openrctDataDirectoryPath, outSize);
-}
-
-/**
- * Default directory fallback is:
- *   - (command line argument)
- *   - <exePath>/data
- *   - <platform dependent>
- */
-void platform_resolve_openrct_data_path()
-{
-    if (gCustomOpenrctDataPath[0] != 0) {
-        // NOTE: second argument to `realpath` is meant to either be NULL or `PATH_MAX`-sized buffer,
-        // since our `MAX_PATH` macro is set to some other value, pass NULL to have `realpath` return
-        // a `malloc`ed buffer.
-        char *resolved_path = realpath(gCustomOpenrctDataPath, NULL);
-        if (resolved_path == nullptr) {
-            log_error("Could not resolve path \"%s\", errno = %d", gCustomOpenrctDataPath, errno);
-            return;
-        } else {
-            safe_strcpy(_openrctDataDirectoryPath, resolved_path, MAX_PATH);
-            free(resolved_path);
-        }
-
-        path_end_with_separator(_openrctDataDirectoryPath, MAX_PATH);
-        return;
-    }
-
-    char buffer[MAX_PATH];
-    platform_get_exe_path(buffer, sizeof(buffer));
-
-    safe_strcat_path(buffer, "data", MAX_PATH);
-    log_verbose("Looking for OpenRCT2 data in %s", buffer);
-    if (platform_directory_exists(buffer))
-    {
-        _openrctDataDirectoryPath[0] = '\0';
-        safe_strcpy(_openrctDataDirectoryPath, buffer, MAX_PATH);
-        log_verbose("Found OpenRCT2 data in %s", _openrctDataDirectoryPath);
-        return;
-    }
-
-    platform_posix_sub_resolve_openrct_data_path(_openrctDataDirectoryPath, sizeof(_openrctDataDirectoryPath));
-    log_verbose("Trying to use OpenRCT2 data in %s", _openrctDataDirectoryPath);
 }
 
 time_t platform_file_get_modified_time(const utf8* path){

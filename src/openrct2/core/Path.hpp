@@ -34,6 +34,7 @@ namespace Path
     utf8 * GetDirectory(const utf8 * path);
     utf8 * GetDirectory(utf8 * buffer, size_t bufferSize, const utf8 * path);
     void CreateDirectory(const std::string &path);
+    bool DirectoryExists(const std::string &path);
     std::string GetFileName(const std::string &path);
     const utf8 * GetFileName(const utf8 * path);
     std::string GetFileNameWithoutExtension(const std::string &path);
@@ -42,6 +43,7 @@ namespace Path
     const std::string GetExtension(const std::string &path);
     const utf8 * GetExtension(const utf8 * path);
     utf8 * GetAbsolute(utf8 * buffer, size_t bufferSize, const utf8 * relativePath);
+    std::string GetAbsolute(const std::string &relative);
     bool Equals(const std::string &a, const std::string &b);
     bool Equals(const utf8 * a, const utf8 * b);
 

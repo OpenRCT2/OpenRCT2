@@ -200,7 +200,6 @@
 		4CE462411FD0710E0001CD98 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4623F1FD0710E0001CD98 /* Game.cpp */; };
 		4CE462451FD161360001CD98 /* Platform.Android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462441FD161360001CD98 /* Platform.Android.cpp */; };
 		4CE4624A1FD1613D0001CD98 /* Platform.Linux.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462461FD1613D0001CD98 /* Platform.Linux.cpp */; };
-		4CE4624B1FD1613D0001CD98 /* Platform.macOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462471FD1613D0001CD98 /* Platform.macOS.cpp */; };
 		4CE4624C1FD1613D0001CD98 /* Platform.Posix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462481FD1613D0001CD98 /* Platform.Posix.cpp */; };
 		4CE4624D1FD1613D0001CD98 /* Platform.Win32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462491FD1613D0001CD98 /* Platform.Win32.cpp */; };
 		4CFE4E801F90A3F1005243C2 /* Peep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7B1F90A3F1005243C2 /* Peep.cpp */; };
@@ -485,6 +484,7 @@
 		F775F5371EE3724F001F00E7 /* DummyAudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */; };
 		F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */; };
 		F79F428F1F3260F1009E42F8 /* changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = F79F428E1F3260F1009E42F8 /* changelog.txt */; };
+		F7B2048A201E91BF0000AD7E /* Platform.macOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = F7B20489201E91BF0000AD7E /* Platform.macOS.mm */; };
 		F7CB863F1EEDA0B50030C877 /* WindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */; };
 		F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */; };
 		F7CB864D1EEDA1A80030C877 /* DummyWindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */; };
@@ -867,7 +867,6 @@
 		4CE462401FD0710E0001CD98 /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		4CE462441FD161360001CD98 /* Platform.Android.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Android.cpp; sourceTree = "<group>"; };
 		4CE462461FD1613D0001CD98 /* Platform.Linux.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Linux.cpp; sourceTree = "<group>"; };
-		4CE462471FD1613D0001CD98 /* Platform.macOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.macOS.cpp; sourceTree = "<group>"; };
 		4CE462481FD1613D0001CD98 /* Platform.Posix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Posix.cpp; sourceTree = "<group>"; };
 		4CE462491FD1613D0001CD98 /* Platform.Win32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Win32.cpp; sourceTree = "<group>"; };
 		4CFE4E7B1F90A3F1005243C2 /* Peep.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Peep.cpp; sourceTree = "<group>"; };
@@ -1414,6 +1413,7 @@
 		F775F5331EE35A6B001F00E7 /* DummyUiContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DummyUiContext.cpp; sourceTree = "<group>"; };
 		F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DummyAudioContext.cpp; sourceTree = "<group>"; };
 		F79F428E1F3260F1009E42F8 /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = changelog.txt; path = distribution/changelog.txt; sourceTree = SOURCE_ROOT; };
+		F7B20489201E91BF0000AD7E /* Platform.macOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Platform.macOS.mm; sourceTree = "<group>"; };
 		F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WindowManager.cpp; sourceTree = "<group>"; };
 		F7CB863E1EEDA0B50030C877 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
 		F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardShortcuts.cpp; sourceTree = "<group>"; };
@@ -2243,7 +2243,7 @@
 				4CE462441FD161360001CD98 /* Platform.Android.cpp */,
 				F76C845E1EC4E7CC00FA49E2 /* platform.h */,
 				4CE462461FD1613D0001CD98 /* Platform.Linux.cpp */,
-				4CE462471FD1613D0001CD98 /* Platform.macOS.cpp */,
+				F7B20489201E91BF0000AD7E /* Platform.macOS.mm */,
 				4CE462481FD1613D0001CD98 /* Platform.Posix.cpp */,
 				4CE462491FD1613D0001CD98 /* Platform.Win32.cpp */,
 				F76C84601EC4E7CC00FA49E2 /* Platform2.h */,
@@ -3201,7 +3201,6 @@
 				4C7B53F3200143C200A52E21 /* Chat.cpp in Sources */,
 				4C7B53F4200143C200A52E21 /* Colour.cpp in Sources */,
 				4C7B547B2010DF4C00A52E21 /* Posix.cpp in Sources */,
-				4CE4624B1FD1613D0001CD98 /* Platform.macOS.cpp in Sources */,
 				4C7B53A51FFC180400A52E21 /* ObjectList.cpp in Sources */,
 				4C93F1501F8B744400A9330D /* SideFrictionRollerCoaster.cpp in Sources */,
 				4C93F13D1F8B744400A9330D /* CompactInvertedCoaster.cpp in Sources */,
@@ -3238,6 +3237,7 @@
 				4C93F1541F8B744400A9330D /* TwisterRollerCoaster.cpp in Sources */,
 				4CC4B8E71FE00C4E00660D62 /* Diagnostic.cpp in Sources */,
 				C666EE7B1F37ACB10061AA04 /* TitleExit.cpp in Sources */,
+				F7B2048A201E91BF0000AD7E /* Platform.macOS.mm in Sources */,
 				F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */,
 				F76C887E1EC5324E00FA49E2 /* CursorRepository.cpp in Sources */,
 				4C7B53FD200143C200A52E21 /* Window.cpp in Sources */,

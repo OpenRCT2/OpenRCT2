@@ -16,6 +16,8 @@
 
 #ifdef _WIN32
 
+#include <memory>
+
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <datetimeapi.h>
@@ -30,11 +32,19 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../OpenRCT2.h"
 #include "Platform2.h"
 #include "platform.h"
 
 namespace Platform
 {
+#ifdef __USE_SHGETKNOWNFOLDERPATH__
+    static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid);
+#else
+    static std::string WIN32_GetFolderPath(int nFolder);
+#endif
+    static std::string WIN32_GetModuleFileNameW(HMODULE hModule);
+
     uint32 GetTicks()
     {
         return platform_get_ticks();
@@ -71,31 +81,6 @@ namespace Platform
         }
         return result;
     }
-
-#ifdef __USE_SHGETKNOWNFOLDERPATH__
-    static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid)
-    {
-        std::string path;
-        wchar_t * wpath = nullptr;
-        if (SUCCEEDED(SHGetKnownFolderPath(rfid, KF_FLAG_CREATE, nullptr, &wpath)))
-        {
-            path = String::ToUtf8(std::wstring(wpath));
-        }
-        CoTaskMemFree(wpath);
-        return path;
-    }
-#else
-    static std::string WIN32_GetFolderPath(int nFolder)
-    {
-        std::string path;
-        wchar_t wpath[MAX_PATH];
-        if (SUCCEEDED(SHGetFolderPathW(nullptr, nFolder | CSIDL_FLAG_CREATE, nullptr, 0, wpath)))
-        {
-            path = String::ToUtf8(std::wstring(wpath));
-        }
-        return path;
-    }
-#endif
 
     std::string GetFolderPath(SPECIAL_FOLDER folder)
     {
@@ -141,10 +126,23 @@ namespace Platform
 
     std::string GetInstallPath()
     {
-        utf8 path[MAX_PATH];
-        platform_resolve_openrct_data_path();
-        platform_get_openrct_data_path(path, sizeof(path));
+        auto path = std::string(gCustomOpenrctDataPath);
+        if (!path.empty())
+        {
+            path = Path::GetAbsolute(path);
+        }
+        else
+        {
+            auto exePath = GetCurrentExecutablePath();
+            auto exeDirectory = Path::GetDirectory(exePath);
+            path = Path::Combine(exeDirectory, "data");
+        }
         return path;
+    }
+
+    std::string GetCurrentExecutablePath()
+    {
+        return WIN32_GetModuleFileNameW(nullptr);
     }
 
     std::string GetDocsPath()
@@ -197,6 +195,46 @@ namespace Platform
 #endif
 
         return result;
+    }
+
+#ifdef __USE_SHGETKNOWNFOLDERPATH__
+    static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid)
+    {
+        std::string path;
+        wchar_t * wpath = nullptr;
+        if (SUCCEEDED(SHGetKnownFolderPath(rfid, KF_FLAG_CREATE, nullptr, &wpath)))
+        {
+            path = String::ToUtf8(std::wstring(wpath));
+        }
+        CoTaskMemFree(wpath);
+        return path;
+    }
+#else
+    static std::string WIN32_GetFolderPath(int nFolder)
+    {
+        std::string path;
+        wchar_t wpath[MAX_PATH];
+        if (SUCCEEDED(SHGetFolderPathW(nullptr, nFolder | CSIDL_FLAG_CREATE, nullptr, 0, wpath)))
+        {
+            path = String::ToUtf8(std::wstring(wpath));
+        }
+        return path;
+    }
+#endif
+
+    static std::string WIN32_GetModuleFileNameW(HMODULE hModule)
+    {
+        uint32 wExePathCapacity = MAX_PATH;
+        std::unique_ptr<wchar_t[]> wExePath;
+        uint32 size;
+        do
+        {
+            wExePathCapacity *= 2;
+            wExePath = std::make_unique<wchar_t[]>(wExePathCapacity);
+            size = GetModuleFileNameW(hModule, wExePath.get(), wExePathCapacity);
+        }
+        while (size >= wExePathCapacity);
+        return String::ToUtf8(wExePath.get());
     }
 }
 

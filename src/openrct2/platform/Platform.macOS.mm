@@ -16,7 +16,11 @@
 
 #if defined(__APPLE__) && defined(__MACH__)
 
+#include <Foundation/Foundation.h>
+#include <mach-o/dyld.h>
+
 #include "../core/Path.hpp"
+#include "../OpenRCT2.h"
 #include "Platform2.h"
 
 namespace Platform
@@ -43,6 +47,63 @@ namespace Platform
     std::string GetDocsPath()
     {
         return std::string();
+    }
+
+    static std::string GetBundlePath()
+    {
+        @autoreleasepool
+        {
+            NSBundle * bundle = [NSBundle mainBundle];
+            if (bundle)
+            {
+                auto resources = bundle.resourcePath.UTF8String;
+                if (Path::DirectoryExists(resources))
+                {
+                    return resources;
+                }
+            }
+            return std::string();
+        }
+    }
+
+    std::string GetInstallPath()
+    {
+        auto path = std::string(gCustomOpenrctDataPath);
+        if (!path.empty())
+        {
+            path = Path::GetAbsolute(path);
+        }
+        else
+        {
+            auto exePath = GetCurrentExecutablePath();
+            auto exeDirectory = Path::GetDirectory(exePath);
+            path = Path::Combine(exeDirectory, "data");
+            NSString * nsPath = [NSString stringWithUTF8String:path.c_str()];
+            if (![[NSFileManager defaultManager] fileExistsAtPath:nsPath])
+            {
+                path = GetBundlePath();
+                if (path.empty())
+                {
+                    path = "/";
+                }
+            }
+        }
+        return path;
+    }
+
+    std::string GetCurrentExecutablePath()
+    {
+        char exePath[MAX_PATH];
+        uint32 size = MAX_PATH;
+        int result = _NSGetExecutablePath(exePath, &size);
+        if (result == 0)
+        {
+            return exePath;
+        }
+        else
+        {
+            return std::string();
+        }
     }
 }
 

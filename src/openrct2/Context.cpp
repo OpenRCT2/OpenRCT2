@@ -1169,4 +1169,15 @@ extern "C"
         }
         String::Set(outPath, outSize, path.c_str());
     }
+
+    /**
+     * This function is deprecated.
+     * Use IPlatformEnvironment instad.
+     */
+    void platform_get_openrct_data_path(utf8 * outPath, size_t outSize)
+    {
+        auto env = GetContext()->GetPlatformEnvironment();
+        auto path = env->GetDirectoryPath(DIRBASE::OPENRCT2);
+        String::Set(outPath, outSize, path.c_str());
+    }
 }

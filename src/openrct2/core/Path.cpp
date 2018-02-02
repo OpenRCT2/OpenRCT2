@@ -84,6 +84,11 @@ namespace Path
         platform_ensure_directory_exists(path.c_str());
     }
 
+    bool DirectoryExists(const std::string &path)
+    {
+        return platform_directory_exists(path.c_str());
+    }
+
     std::string GetFileName(const std::string &path)
     {
         return GetFileName(path.c_str());
@@ -206,6 +211,12 @@ namespace Path
             return buffer;
         }
 #endif
+    }
+
+    std::string GetAbsolute(const std::string &relative)
+    {
+        utf8 absolute[MAX_PATH];
+        return GetAbsolute(absolute, sizeof(absolute), relative.c_str());
     }
 
     bool Equals(const std::string &a, const std::string &b)
