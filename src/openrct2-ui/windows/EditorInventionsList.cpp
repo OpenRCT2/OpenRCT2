@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <openrct2/interface/Cursors.h>
+#include <openrct2/object/DefaultObjects.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/OpenRCT2.h>
@@ -29,7 +30,6 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/windows/_legacy.h>
 
 #pragma region Widgets
 

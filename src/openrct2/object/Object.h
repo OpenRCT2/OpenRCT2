@@ -81,8 +81,14 @@ typedef struct rct_object_entry {
         uint8 end_flag; // needed not to read past allocated buffer.
         uint32 flags;
     };
-    char name[8];
-    uint32 checksum;
+    union {
+        char nameWOC[12];
+        struct {
+            char name[8];
+            uint32 checksum;
+        };
+    };
+
 } rct_object_entry;
 assert_struct_size(rct_object_entry, 0x10);
 

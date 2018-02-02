@@ -105,10 +105,10 @@
 		4C7B545C20079C4000A52E21 /* Addresses.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B545720079C4000A52E21 /* Addresses.cpp */; };
 		4C7B545E20079C4000A52E21 /* Data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B545A20079C4000A52E21 /* Data.cpp */; };
 		4C7B546120079C4900A52E21 /* Hook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B545F20079C4900A52E21 /* Hook.cpp */; };
+		4C7B54692007BF2E00A52E21 /* TTFSDLPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54682007BF2E00A52E21 /* TTFSDLPort.cpp */; };
 		4C7B54752010DF3C00A52E21 /* Android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54742010DF3C00A52E21 /* Android.cpp */; };
 		4C7B54772010DF4300A52E21 /* Linux.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54762010DF4300A52E21 /* Linux.cpp */; };
 		4C7B547B2010DF4C00A52E21 /* Posix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54782010DF4C00A52E21 /* Posix.cpp */; };
-		4C7B54692007BF2E00A52E21 /* TTFSDLPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54682007BF2E00A52E21 /* TTFSDLPort.cpp */; };
 		4C7B547C2010DF4C00A52E21 /* Shared.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54792010DF4C00A52E21 /* Shared.cpp */; };
 		4C7B547D2010DF4C00A52E21 /* Windows.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B547A2010DF4C00A52E21 /* Windows.cpp */; };
 		4C8667821EEFDCDF0024AAB8 /* RideGroupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */; };
@@ -274,7 +274,6 @@
 		C6607F481FE2B97E00D3FC0D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8E81FE00C5D00660D62 /* Input.cpp */; };
 		C666ED761F33DBB20061AA04 /* ShortcutKeyChange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED741F33DBB20061AA04 /* ShortcutKeyChange.cpp */; };
 		C666ED771F33DBB20061AA04 /* ShortcutKeys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED751F33DBB20061AA04 /* ShortcutKeys.cpp */; };
-		C666EE0B1F33E3650061AA04 /* _legacy.c in Sources */ = {isa = PBXBuildFile; fileRef = C666ED791F33E3520061AA04 /* _legacy.c */; };
 		C666EE6B1F37ACB10061AA04 /* About.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE551F37ACB10061AA04 /* About.cpp */; };
 		C666EE6C1F37ACB10061AA04 /* Changelog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE561F37ACB10061AA04 /* Changelog.cpp */; };
 		C666EE6D1F37ACB10061AA04 /* Cheats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE571F37ACB10061AA04 /* Cheats.cpp */; };
@@ -485,6 +484,8 @@
 		F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */; };
 		F79F428F1F3260F1009E42F8 /* changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = F79F428E1F3260F1009E42F8 /* changelog.txt */; };
 		F7B2048A201E91BF0000AD7E /* Platform.macOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = F7B20489201E91BF0000AD7E /* Platform.macOS.mm */; };
+		F7B2048C2024E7810000AD7E /* DefaultObjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B2048B2024E7800000AD7E /* DefaultObjects.cpp */; };
+		F7B2048F2024E8B30000AD7E /* _legacy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B2048E2024E8B30000AD7E /* _legacy.cpp */; };
 		F7CB863F1EEDA0B50030C877 /* WindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */; };
 		F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */; };
 		F7CB864D1EEDA1A80030C877 /* DummyWindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */; };
@@ -755,7 +756,7 @@
 		4C7B545B20079C4000A52E21 /* data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = data.h; sourceTree = "<group>"; };
 		4C7B545F20079C4900A52E21 /* Hook.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hook.cpp; sourceTree = "<group>"; };
 		4C7B546020079C4900A52E21 /* hook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hook.h; sourceTree = "<group>"; };
- 		4C7B54682007BF2E00A52E21 /* TTFSDLPort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTFSDLPort.cpp; sourceTree = "<group>"; };
+		4C7B54682007BF2E00A52E21 /* TTFSDLPort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTFSDLPort.cpp; sourceTree = "<group>"; };
 		4C7B54742010DF3C00A52E21 /* Android.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Android.cpp; sourceTree = "<group>"; };
 		4C7B54762010DF4300A52E21 /* Linux.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Linux.cpp; sourceTree = "<group>"; };
 		4C7B54782010DF4C00A52E21 /* Posix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Posix.cpp; sourceTree = "<group>"; };
@@ -959,8 +960,6 @@
 		C654DF3F1F69C18C0040F43D /* Intent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Intent.h; sourceTree = "<group>"; };
 		C666ED741F33DBB20061AA04 /* ShortcutKeyChange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShortcutKeyChange.cpp; sourceTree = "<group>"; };
 		C666ED751F33DBB20061AA04 /* ShortcutKeys.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShortcutKeys.cpp; sourceTree = "<group>"; };
-		C666ED781F33E3520061AA04 /* _legacy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _legacy.h; sourceTree = "<group>"; };
-		C666ED791F33E3520061AA04 /* _legacy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = _legacy.c; sourceTree = "<group>"; };
 		C666EE551F37ACB10061AA04 /* About.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = About.cpp; sourceTree = "<group>"; };
 		C666EE561F37ACB10061AA04 /* Changelog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Changelog.cpp; sourceTree = "<group>"; };
 		C666EE571F37ACB10061AA04 /* Cheats.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cheats.cpp; sourceTree = "<group>"; };
@@ -1414,6 +1413,9 @@
 		F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DummyAudioContext.cpp; sourceTree = "<group>"; };
 		F79F428E1F3260F1009E42F8 /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = changelog.txt; path = distribution/changelog.txt; sourceTree = SOURCE_ROOT; };
 		F7B20489201E91BF0000AD7E /* Platform.macOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Platform.macOS.mm; sourceTree = "<group>"; };
+		F7B2048B2024E7800000AD7E /* DefaultObjects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefaultObjects.cpp; sourceTree = "<group>"; };
+		F7B2048D2024E8A90000AD7E /* DefaultObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultObjects.h; sourceTree = "<group>"; };
+		F7B2048E2024E8B30000AD7E /* _legacy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _legacy.cpp; sourceTree = "<group>"; };
 		F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WindowManager.cpp; sourceTree = "<group>"; };
 		F7CB863E1EEDA0B50030C877 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
 		F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardShortcuts.cpp; sourceTree = "<group>"; };
@@ -2014,7 +2016,7 @@
 				C651A8D81F30204300443BCA /* Text.h */,
 				4C7B53D820002CA400A52E21 /* TTF.cpp */,
 				4CB832AA1EFFB8D100B88761 /* ttf.h */,
- 				4C7B54682007BF2E00A52E21 /* TTFSDLPort.cpp */,
+				4C7B54682007BF2E00A52E21 /* TTFSDLPort.cpp */,
 				4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */,
 				4C8B426F1EEB1ABD00F015CA /* X8DrawingEngine.h */,
 			);
@@ -2132,6 +2134,8 @@
 		F76C84111EC4E7CC00FA49E2 /* object */ = {
 			isa = PBXGroup;
 			children = (
+				F7B2048D2024E8A90000AD7E /* DefaultObjects.h */,
+				F7B2048B2024E7800000AD7E /* DefaultObjects.cpp */,
 				F76C84121EC4E7CC00FA49E2 /* BannerObject.cpp */,
 				F76C84131EC4E7CC00FA49E2 /* BannerObject.h */,
 				F76C84141EC4E7CC00FA49E2 /* EntranceObject.cpp */,
@@ -2507,8 +2511,7 @@
 		F76C850D1EC4E7CD00FA49E2 /* windows */ = {
 			isa = PBXGroup;
 			children = (
-				C666ED791F33E3520061AA04 /* _legacy.c */,
-				C666ED781F33E3520061AA04 /* _legacy.h */,
+				F7B2048E2024E8B30000AD7E /* _legacy.cpp */,
 				C654DF3E1F69C18C0040F43D /* Intent.cpp */,
 				C654DF3F1F69C18C0040F43D /* Intent.h */,
 				F76C854A1EC4E7CD00FA49E2 /* tile_inspector.h */,
@@ -3232,6 +3235,7 @@
 				4C7B544E2007646A00A52E21 /* MapHelpers.cpp in Sources */,
 				4C93F1761F8B745700A9330D /* MonorailCycles.cpp in Sources */,
 				4C93F13E1F8B744400A9330D /* CorkscrewRollerCoaster.cpp in Sources */,
+				F7B2048F2024E8B30000AD7E /* _legacy.cpp in Sources */,
 				C6D2BEE71F9BAACE008B557C /* MapTooltip.cpp in Sources */,
 				4C93F1401F8B744400A9330D /* GigaCoaster.cpp in Sources */,
 				4C93F1541F8B744400A9330D /* TwisterRollerCoaster.cpp in Sources */,
@@ -3278,6 +3282,7 @@
 				4C5DFF421FAC69D200CB093A /* Date.cpp in Sources */,
 				4C93F13C1F8B744400A9330D /* BolligerMabillardTrack.cpp in Sources */,
 				C654DF321F69C0430040F43D /* InstallTrack.cpp in Sources */,
+				F7B2048C2024E7810000AD7E /* DefaultObjects.cpp in Sources */,
 				4C93F14D1F8B744400A9330D /* MultiDimensionRollerCoaster.cpp in Sources */,
 				C64644FF1F3FA4120026AC2D /* StaffList.cpp in Sources */,
 				C6D2BEE81F9BAACE008B557C /* MazeConstruction.cpp in Sources */,
@@ -3478,7 +3483,6 @@
 				F76C866A1EC4E88300FA49E2 /* LargeSceneryObject.cpp in Sources */,
 				F76C866C1EC4E88400FA49E2 /* Object.cpp in Sources */,
 				F76C866E1EC4E88400FA49E2 /* ObjectFactory.cpp in Sources */,
-				C666EE0B1F33E3650061AA04 /* _legacy.c in Sources */,
 				F76C86701EC4E88400FA49E2 /* ObjectManager.cpp in Sources */,
 				F76C86721EC4E88400FA49E2 /* ObjectRepository.cpp in Sources */,
 				F76C86741EC4E88400FA49E2 /* RideObject.cpp in Sources */,

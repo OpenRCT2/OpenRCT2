@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,20 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../object/Object.h"
+#pragma once
 
-#ifndef _LEGACY_H
-#define _LEGACY_H
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "Object.h"
 
 extern const rct_object_entry RequiredSelectedObjects[7];
 extern const rct_object_entry DefaultSelectedObjects[26];
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif // _LEGACY_H
