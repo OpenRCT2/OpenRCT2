@@ -82,7 +82,7 @@ typedef struct rct_object_entry {
         uint32 flags;
     };
     union {
-        char nameWOC[9];
+        char nameWOC[12];
         struct {
             char name[8];
             uint32 checksum;
