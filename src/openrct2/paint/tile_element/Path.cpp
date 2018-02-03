@@ -141,40 +141,45 @@ static void path_bit_bins_paint(paint_session * session, rct_scenery_entry* path
         height += 8;
 
     uint32 imageId;
+    bool binsAreVandalised = tileElement->flags & TILE_ELEMENT_FLAG_BROKEN;
 
     if (!(edges & EDGE_NE)) {
         imageId = pathBitEntry->image + 5;
 
         imageId |= pathBitImageFlags;
 
-        if (!(tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)) {
+        bool binIsFull = false;
+        if (!binsAreVandalised) {
             imageId -= 4;
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            if (!(tileElement->properties.path.addition_status & ror8(0x3,(2 * get_current_rotation()))))
+            binIsFull = !(tileElement->properties.path.addition_status & ror8(0x3,(2 * get_current_rotation())));
+            if (binIsFull)
                 imageId += 8;
         }
 
-
-        sub_98197C(session, imageId, 7, 16, 1, 1, 7, height, 7, 16, height + 2, get_current_rotation());
+        if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) || binIsFull || binsAreVandalised)
+            sub_98197C(session, imageId, 7, 16, 1, 1, 7, height, 7, 16, height + 2, get_current_rotation());
     }
     if (!(edges & EDGE_SE)) {
         imageId = pathBitEntry->image + 6;
 
         imageId |= pathBitImageFlags;
 
-        if (!(tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)) {
+        bool binIsFull = false;
+        if (!binsAreVandalised) {
             imageId -= 4;
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            if (!(tileElement->properties.path.addition_status & ror8(0xC, (2 * get_current_rotation()))))
+            binIsFull = !(tileElement->properties.path.addition_status & ror8(0xC, (2 * get_current_rotation())));
+            if (binIsFull)
                 imageId += 8;
         }
 
-
-        sub_98197C(session, imageId, 16, 25, 1, 1, 7, height, 16, 25, height + 2, get_current_rotation());
+        if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) || binIsFull || binsAreVandalised)
+            sub_98197C(session, imageId, 16, 25, 1, 1, 7, height, 16, 25, height + 2, get_current_rotation());
     }
 
     if (!(edges & EDGE_SW)) {
@@ -182,17 +187,19 @@ static void path_bit_bins_paint(paint_session * session, rct_scenery_entry* path
 
         imageId |= pathBitImageFlags;
 
-        if (!(tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)) {
+        bool binIsFull = false;
+        if (!binsAreVandalised) {
             imageId -= 4;
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            if (!(tileElement->properties.path.addition_status & ror8(0x30, (2 * get_current_rotation()))))
+            binIsFull = !(tileElement->properties.path.addition_status & ror8(0x30, (2 * get_current_rotation())));
+            if (binIsFull)
                 imageId += 8;
         }
 
-
-        sub_98197C(session, imageId, 25, 16, 1, 1, 7, height, 25, 16, height + 2, get_current_rotation());
+        if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) || binIsFull || binsAreVandalised)
+            sub_98197C(session, imageId, 25, 16, 1, 1, 7, height, 25, 16, height + 2, get_current_rotation());
     }
 
     if (!(edges & EDGE_NW)) {
@@ -200,17 +207,19 @@ static void path_bit_bins_paint(paint_session * session, rct_scenery_entry* path
 
         imageId |= pathBitImageFlags;
 
-        if (!(tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)) {
+        bool binIsFull = false;
+        if (!binsAreVandalised) {
             imageId -= 4;
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            if (!(tileElement->properties.path.addition_status & ror8(0xC0, (2 * get_current_rotation()))))
+            binIsFull = !(tileElement->properties.path.addition_status & ror8(0xC0, (2 * get_current_rotation())));
+            if (binIsFull)
                 imageId += 8;
         }
 
-
-        sub_98197C(session, imageId, 16, 7, 1, 1, 7, height, 16, 7, height + 2, get_current_rotation());
+        if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) || binIsFull || binsAreVandalised)
+            sub_98197C(session, imageId, 16, 7, 1, 1, 7, height, 16, 7, height + 2, get_current_rotation());
     }
 }
 
@@ -603,12 +612,6 @@ static void sub_6A3F61(paint_session * session, rct_tile_element * tile_element,
     if (dpi->zoom_level <= 1) {
         if (!gTrackDesignSaveMode) {
             if (footpath_element_has_path_scenery(tile_element)) {
-                if ((gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) &&
-                    !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN))
-                {
-                    return;
-                }
-
                 session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM;
                 if (sceneryImageFlags != 0) {
                     session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
@@ -616,6 +619,14 @@ static void sub_6A3F61(paint_session * session, rct_tile_element * tile_element,
 
                 // Draw additional path bits (bins, benches, lamps, queue screens)
                 rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
+
+                if ((gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) &&
+                    !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN) &&
+                    !(sceneryEntry->path_bit.draw_type == PATH_BIT_DRAW_TYPE_BINS))
+                {
+                    return;
+                }
+
                 switch (sceneryEntry->path_bit.draw_type) {
                 case PATH_BIT_DRAW_TYPE_LIGHTS:
                     path_bit_lights_paint(session, sceneryEntry, tile_element, height, (uint8)connectedEdges, sceneryImageFlags);
