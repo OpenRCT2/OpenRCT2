@@ -855,7 +855,7 @@ STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, todos os direitos reservados
 STR_0851    :{WINDOW_COLOUR_2}Projetado e programado por Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Gráficos por Simon Foster
-STR_0853    :{WINDOW_COLOUR_2}Som e musícas por Allister Brimble
+STR_0853    :{WINDOW_COLOUR_2}Som e músicas por Allister Brimble
 STR_0854    :{WINDOW_COLOUR_2}Sons adicionais gravados por David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representação por Jacqui Lyons na Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Obrigado a:
@@ -1851,7 +1851,7 @@ STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16} Visitantes
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} Visitantes
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} Visitantes
-STR_1849    :{WINDOW_COLOUR_2}Tocar musica
+STR_1849    :{WINDOW_COLOUR_2}Tocar música
 STR_1850    :{SMALLFONT}{BLACK}Selecione a música que deve ser tocada nesta atração
 STR_1851    :{WINDOW_COLOUR_2}Custos de funcionamento: {BLACK}{CURRENCY2DP} por hora
 STR_1852    :{WINDOW_COLOUR_2}Custos de funcionamento: {BLACK}desconhecido
@@ -4987,4 +4987,4 @@ STR_CPTY    :4 passageiros por carro
 [CONGAEEL]
 STR_NAME    :Montanha-Russa Enguia Conger
 STR_DESC    :Uma montanha russa de aço compacta onde trens com formato de enguia viajam por parafusos e loops
-STR_CPTY    :4 passengers por carro
+STR_CPTY    :4 passageiros por carro
