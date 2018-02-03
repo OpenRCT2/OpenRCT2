@@ -341,7 +341,14 @@ private:
     std::string GetRCT1ScenarioName()
     {
         const scenario_index_entry * scenarioEntry = _scenarioRepository->GetByInternalName(_s4.scenario_name);
-        return path_get_filename(scenarioEntry->path);
+        if (scenarioEntry == nullptr)
+        {
+            return "";
+        }
+        else
+        {
+            return path_get_filename(scenarioEntry->path);
+        }
     }
 
     void InitialiseEntryMaps()
