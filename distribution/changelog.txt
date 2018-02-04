@@ -6,6 +6,7 @@
 - Feature: [#3994] Show bottom toolbar with map tooltip (theme option).
 - Feature: [#4184] Add command and cheat to alter the date.
 - Feature: [#4906] Add follow sprite command to title sequences.
+- Feature: [#4984] Add option to highlight path issues: full bins, vandalism & vomit.
 - Feature: [#5826] Add the show_limits command to show map data counts and limits.
 - Feature: [#6078] Game now converts mp.dat to SC21.SC4 (Mega Park) automatically.
 - Feature: [#6125] Path can now be placed in park entrances.
