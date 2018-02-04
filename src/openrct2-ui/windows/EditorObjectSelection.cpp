@@ -909,7 +909,7 @@ static void window_editor_object_selection_invalidate(rct_window *w)
             w->pressed_widgets |= (1 << WIDX_FILTER_RIDE_TAB_ALL);
         else {
             for (sint32 i = 0; i < 6; i++) {
-                if (_filter_flags & (1 << (5 + i)))
+                if (_filter_flags & (1 << (_numSourceGameItems + i)))
                     w->pressed_widgets |= (uint64)(1ULL << (WIDX_FILTER_RIDE_TAB_TRANSPORT + i));
             }
         }
