@@ -27,7 +27,7 @@ Object::Object(const rct_object_entry &entry)
     _objectEntry = entry;
 
     char name[DAT_NAME_LENGTH + 1] = { 0 };
-    Memory::Copy(name, entry.name, DAT_NAME_LENGTH);
+    std::copy_n(entry.name, DAT_NAME_LENGTH, name);
     _identifier = String::Duplicate(name);
 
     if (IsRCT1Object())
@@ -90,7 +90,7 @@ rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint
 {
     rct_object_entry header = { 0 };
     header.flags = flags;
-    Memory::Copy(header.name, name, DAT_NAME_LENGTH);
+    std::copy_n(name, DAT_NAME_LENGTH, header.name);
     header.checksum = checksum;
     return header;
 }

@@ -63,8 +63,8 @@ public:
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         Ride *ride = get_ride(_rideIndex);
         res->ErrorTitle = _StatusErrorTitles[_status];
-        set_format_arg_on(res->ErrorMessageArgs, 6, rct_string_id, ride->name);
-        set_format_arg_on(res->ErrorMessageArgs, 8, uint32, ride->name_arguments);
+        set_format_arg_on(res->ErrorMessageArgs.data(), 6, rct_string_id, ride->name);
+        set_format_arg_on(res->ErrorMessageArgs.data(), 8, uint32, ride->name_arguments);
 
         if (_rideIndex >= MAX_RIDES || _rideIndex < 0)
         {
@@ -104,8 +104,8 @@ public:
 
         Ride *ride = get_ride(_rideIndex);
         res->ErrorTitle = _StatusErrorTitles[_status];
-        set_format_arg_on(res->ErrorMessageArgs, 6, rct_string_id, ride->name);
-        set_format_arg_on(res->ErrorMessageArgs, 8,uint32, ride->name_arguments);
+        set_format_arg_on(res->ErrorMessageArgs.data(), 6, rct_string_id, ride->name);
+        set_format_arg_on(res->ErrorMessageArgs.data(), 8,uint32, ride->name_arguments);
 
         if (ride->type == RIDE_TYPE_NULL)
         {

@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include "Math.hpp"
 #include "Memory.hpp"
 #include "MemoryStream.h"
@@ -135,7 +136,7 @@ void MemoryStream::Read(void * buffer, uint64 length)
         throw IOException("Attempted to read past end of stream.");
     }
 
-    Memory::Copy(buffer, _position, (size_t)length);
+    std::copy_n((const uint8 *)_position, length, (uint8 *)buffer);
     _position = (void*)((uintptr_t)_position + length);
 }
 
@@ -163,7 +164,7 @@ void MemoryStream::Write(const void * buffer, uint64 length)
         }
     }
 
-    Memory::Copy(_position, buffer, (size_t)length);
+    std::copy_n((const uint8 *)buffer, length, (uint8 *)_position);
     _position = (void*)((uintptr_t)_position + length);
     _dataSize = Math::Max<size_t>(_dataSize, (size_t)nextPosition);
 }

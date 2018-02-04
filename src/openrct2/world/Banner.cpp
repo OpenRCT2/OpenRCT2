@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
+#include <cstring>
 #include <limits>
 
 #include "../core/Math.hpp"
@@ -306,10 +308,10 @@ static money32 BannerSetName(uint8 bannerIndex,
         return MONEY32_UNDEFINED;
     }
 
-    size_t nameChunkOffset = Math::Min<size_t>(indexToOffset[nameChunkIndex], Util::CountOf(newName) - 12);
-    Memory::Copy<uint32>((uint32*)(&newName[0 + nameChunkOffset]), &nameChunk1, sizeof(uint32));
-    Memory::Copy<uint32>((uint32*)(&newName[4 + nameChunkOffset]), &nameChunk2, sizeof(uint32));
-    Memory::Copy<uint32>((uint32*)(&newName[8 + nameChunkOffset]), &nameChunk3, sizeof(uint32));
+    size_t nameChunkOffset = std::min<size_t>(indexToOffset[nameChunkIndex], Util::CountOf(newName) - 12);
+    std::memcpy(&newName[0 + nameChunkOffset], &nameChunk1, sizeof(uint32));
+    std::memcpy(&newName[4 + nameChunkOffset], &nameChunk2, sizeof(uint32));
+    std::memcpy(&newName[8 + nameChunkOffset], &nameChunk3, sizeof(uint32));
 
     if (nameChunkIndex != 0)
     {

@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
+#include <cstring>
 #include "../core/FileStream.hpp"
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
@@ -169,7 +171,7 @@ void S6Exporter::Export()
         // RCT2 uses (void *)-1 to mark NULL. Make sure it's written in a vanilla-compatible way.
         if (entryData == nullptr || entryData == (void *)-1)
         {
-            Memory::Set(&_s6.objects[i], 0xFF, sizeof(rct_object_entry));
+            std::memset(&_s6.objects[i], 0xFF, sizeof(rct_object_entry));
         }
         else
         {
@@ -432,7 +434,7 @@ void S6Exporter::ExportRides()
     {
         auto src = get_ride(index);
         auto dst = &_s6.rides[index];
-        Memory::Set(dst, 0, sizeof(rct2_ride));
+        *dst = { 0 };
         if (src->type == RIDE_TYPE_NULL)
         {
             dst->type = RIDE_TYPE_NULL;
@@ -655,7 +657,10 @@ void S6Exporter::ExportRide(rct2_ride * dst, const Ride * src)
 
 void S6Exporter::ExportResearchedRideTypes()
 {
-    Memory::Set(_s6.researched_ride_types, false, sizeof(_s6.researched_ride_types));
+    std::fill(
+        std::begin(_s6.researched_ride_types),
+        std::end(_s6.researched_ride_types),
+        false);
 
     for (sint32 rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++)
     {
@@ -670,7 +675,10 @@ void S6Exporter::ExportResearchedRideTypes()
 
 void S6Exporter::ExportResearchedRideEntries()
 {
-    Memory::Set(_s6.researched_ride_entries, false, sizeof(_s6.researched_ride_entries));
+    std::fill(
+        std::begin(_s6.researched_ride_entries),
+        std::end(_s6.researched_ride_entries),
+        false);
 
     for (sint32 rideEntryIndex = 0; rideEntryIndex < MAX_RIDE_OBJECTS; rideEntryIndex++)
     {
@@ -685,7 +693,10 @@ void S6Exporter::ExportResearchedRideEntries()
 
 void S6Exporter::ExportResearchedSceneryItems()
 {
-    Memory::Set(_s6.researched_scenery_items, false, sizeof(_s6.researched_scenery_items));
+    std::fill(
+        std::begin(_s6.researched_scenery_items),
+        std::end(_s6.researched_scenery_items),
+        false);
 
     for (uint16 sceneryEntryIndex = 0; sceneryEntryIndex < RCT2_MAX_RESEARCHED_SCENERY_ITEMS; sceneryEntryIndex++)
     {

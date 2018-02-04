@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include <cwctype>
 #include <stdexcept>
 #include <vector>
@@ -376,7 +377,7 @@ namespace String
         }
 
         utf8 * result = Memory::Allocate<utf8>(size + 1);
-        Memory::Copy(result, buffer + index, size);
+        std::copy_n(buffer + index, size, result);
         result[size] = '\0';
         return result;
     }
@@ -484,7 +485,7 @@ namespace String
             Guard::Assert(newStringSize < currentStringSize, GUARD_LINE);
 #endif
 
-            Memory::Move(str, firstNonWhitespace, newStringSize);
+            std::memmove(str, firstNonWhitespace, newStringSize);
             str[newStringSize] = '\0';
         }
         else

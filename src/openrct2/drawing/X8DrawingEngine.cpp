@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../ui/UiContext.h"
@@ -313,13 +314,13 @@ void X8DrawingEngine::ConfigureBits(uint32 width, uint32 height, uint32 pitch)
     uint8 * newBits = new uint8[newBitsSize];
     if (_bits == nullptr)
     {
-        Memory::Set(newBits, 0, newBitsSize);
+        std::fill_n(newBits, newBitsSize, 0);
     }
     else
     {
         if (_pitch == pitch)
         {
-            Memory::Copy(newBits, _bits, Math::Min(_bitsSize, newBitsSize));
+            std::copy_n(_bits, std::min(_bitsSize, newBitsSize), newBits);
         }
         else
         {
@@ -330,10 +331,10 @@ void X8DrawingEngine::ConfigureBits(uint32 width, uint32 height, uint32 pitch)
             uint32 minHeight = Math::Min(_height, height);
             for (uint32 y = 0; y < minHeight; y++)
             {
-                Memory::Copy(dst, src, minWidth);
+                std::copy_n(src, minWidth, dst);
                 if (pitch - minWidth > 0)
                 {
-                    Memory::Set(dst + minWidth, 0, pitch - minWidth);
+                    std::fill_n(dst + minWidth, pitch - minWidth, 0);
                 }
                 src += _pitch;
                 dst += pitch;
@@ -490,7 +491,7 @@ void X8DrawingContext::Clear(uint8 paletteIndex)
 
     for (sint32 y = 0; y < h; y++)
     {
-        Memory::Set(ptr, paletteIndex, w);
+        std::fill_n(ptr, w, paletteIndex);
         ptr += w + dpi->pitch;
     }
 }
@@ -652,7 +653,7 @@ void X8DrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 r
         uint8 * dst = startY * (dpi->width + dpi->pitch) + startX + dpi->bits;
         for (sint32 i = 0; i < height; i++)
         {
-            Memory::Set(dst, colour & 0xFF, width);
+            std::fill_n(dst, width, colour & 0xFF);
             dst += dpi->width + dpi->pitch;
         }
     }

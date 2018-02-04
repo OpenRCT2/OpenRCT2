@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
@@ -262,7 +263,10 @@ public:
             }
         }
 
-        Memory::Set(ride->num_customers, 0, sizeof(ride->num_customers));
+        std::fill(
+            std::begin(ride->num_customers),
+            std::end(ride->num_customers),
+            0);
         ride->value = 0xFFFF;
         ride->satisfaction = 255;
         ride->satisfaction_time_out = 0;

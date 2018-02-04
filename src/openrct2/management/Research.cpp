@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/Util.hpp"
@@ -766,32 +767,50 @@ void set_all_scenery_groups_not_invented()
 
 void set_all_scenery_items_invented()
 {
-    Memory::Set(_researchedSceneryItems, true, sizeof(_researchedSceneryItems));
+    std::fill(
+        std::begin(_researchedSceneryItems),
+        std::end(_researchedSceneryItems),
+        true);
 }
 
 void set_all_scenery_items_not_invented()
 {
-    Memory::Set(_researchedSceneryItems, false, sizeof(_researchedSceneryItems));
+    std::fill(
+        std::begin(_researchedSceneryItems),
+        std::end(_researchedSceneryItems),
+        false);
 }
 
 void set_every_ride_type_invented()
 {
-    Memory::Set(_researchedRideTypes, true, sizeof(_researchedRideTypes));
+    std::fill(
+        std::begin(_researchedRideTypes),
+        std::end(_researchedRideTypes),
+        true);
 }
 
 void set_every_ride_type_not_invented()
 {
-    Memory::Set(_researchedRideTypes, false, sizeof(_researchedRideTypes));
+    std::fill(
+        std::begin(_researchedRideTypes),
+        std::end(_researchedRideTypes),
+        false);
 }
 
 void set_every_ride_entry_invented()
 {
-    Memory::Set(_researchedRideEntries, true, sizeof(_researchedRideEntries));
+    std::fill(
+        std::begin(_researchedRideEntries),
+        std::end(_researchedRideEntries),
+        true);
 }
 
 void set_every_ride_entry_not_invented()
 {
-    Memory::Set(_researchedRideEntries, false, sizeof(_researchedRideEntries));
+    std::fill(
+        std::begin(_researchedRideEntries),
+        std::end(_researchedRideEntries),
+        false);
 }
 
 /**

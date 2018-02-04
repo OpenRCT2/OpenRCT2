@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #ifndef _WIN32
     #include <dirent.h>
 #endif
@@ -74,7 +75,7 @@ namespace Path
         }
 
         size_t copyLength = Math::Min(lastPathSepIndex, static_cast<ptrdiff_t>(bufferSize - 1));
-        Memory::Copy(buffer, path, copyLength);
+        std::copy_n(path, copyLength, buffer);
         buffer[copyLength] = '\0';
         return buffer;
     }
@@ -148,7 +149,7 @@ namespace Path
         }
 
         size_t truncatedLength = Math::Min<size_t>(bufferSize - 1, lastDot - path);
-        Memory::Copy(buffer, path, truncatedLength);
+        std::copy_n(path, truncatedLength, buffer);
         buffer[truncatedLength] = '\0';
         return buffer;
     }
