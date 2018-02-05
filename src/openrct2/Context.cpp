@@ -501,19 +501,12 @@ namespace OpenRCT2
             return result;
         }
 
-        bool LoadBaseGraphics()
+        void LoadBaseGraphics()
         {
-            if (!gfx_load_g1(_env))
-            {
-                return false;
-            }
-            if (!gfx_load_g2())
-            {
-                return false;
-            }
+            gfx_load_g1(_env);
+            gfx_load_g2();
             gfx_load_csg();
             font_sprite_initialise_characters();
-            return true;
         }
 
         /**
