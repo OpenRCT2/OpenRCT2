@@ -17,18 +17,15 @@
 #include <memory>
 #include <stdexcept>
 #include <vector>
-#include "../common.h"
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../core/FileStream.hpp"
-#include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../OpenRCT2.h"
+#include "../platform/platform.h"
 #include "../PlatformEnvironment.h"
 #include "../sprites.h"
 #include "../ui/UiContext.h"
-
-#include "../platform/platform.h"
 #include "../util/Util.h"
 #include "Drawing.h"
 
@@ -218,12 +215,11 @@ static std::string gfx_get_csg_data_path()
     return path;
 }
 
-static void *   _g1Buffer = nullptr;
+static rct_gx   _g1 = { 0 };
 static rct_gx   _g2 = { 0 };
 static rct_gx   _csg = { 0 };
 static bool     _csgLoaded = false;
 
-static std::vector<rct_g1_element> _g1Elements;
 static rct_g1_element _g1Temp = { nullptr };
 bool gTinyFontAntiAliased = false;
 
@@ -240,35 +236,35 @@ bool gfx_load_g1(void * platformEnvironment)
     {
         auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA), "g1.dat");
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        rct_g1_header header = fs.ReadValue<rct_g1_header>();
+        _g1.header = fs.ReadValue<rct_g1_header>();
 
-        log_verbose("g1.dat, number of entries: %u", header.num_entries);
+        log_verbose("g1.dat, number of entries: %u", _g1.header.num_entries);
 
-        if (header.num_entries < SPR_G1_END)
+        if (_g1.header.num_entries < SPR_G1_END)
         {
             throw std::runtime_error("Not enough elements in g1.dat");
         }
 
         // Read element headers
-        _g1Elements.resize(324206);
-        bool is_rctc = header.num_entries == SPR_RCTC_G1_END;
-        read_and_convert_gxdat(&fs, header.num_entries, is_rctc, _g1Elements.data());
+        _g1.elements.resize(324206);
+        bool is_rctc = _g1.header.num_entries == SPR_RCTC_G1_END;
+        read_and_convert_gxdat(&fs, _g1.header.num_entries, is_rctc, _g1.elements.data());
         gTinyFontAntiAliased = is_rctc;
 
         // Read element data
-        _g1Buffer = fs.ReadArray<uint8>(header.total_size);
+        _g1.data = fs.ReadArray<uint8>(_g1.header.total_size);
 
         // Fix entry data offsets
-        for (uint32 i = 0; i < header.num_entries; i++)
+        for (uint32 i = 0; i < _g1.header.num_entries; i++)
         {
-            _g1Elements[i].offset += (uintptr_t)_g1Buffer;
+            _g1.elements[i].offset += (uintptr_t)_g1.data;
         }
         return true;
     }
     catch (const std::exception &)
     {
-        _g1Elements.clear();
-        _g1Elements.shrink_to_fit();
+        _g1.elements.clear();
+        _g1.elements.shrink_to_fit();
 
         log_fatal("Unable to load g1 graphics");
         if (!gOpenRCT2Headless)
@@ -282,9 +278,9 @@ bool gfx_load_g1(void * platformEnvironment)
 
 void gfx_unload_g1()
 {
-    SafeFree(_g1Buffer);
-    _g1Elements.clear();
-    _g1Elements.shrink_to_fit();
+    SafeFree(_g1.data);
+    _g1.elements.clear();
+    _g1.elements.shrink_to_fit();
 }
 
 void gfx_unload_g2()
@@ -390,7 +386,6 @@ bool gfx_load_csg()
     }
     catch (const std::exception &)
     {
-        SafeFree(_csg.data);
         _csg.elements.clear();
         _csg.elements.shrink_to_fit();
 
@@ -794,11 +789,11 @@ const rct_g1_element * gfx_get_g1_element(sint32 image_id)
     }
     else if (image_id < SPR_G2_BEGIN)
     {
-        if (image_id >= (sint32)_g1Elements.size())
+        if (image_id >= (sint32)_g1.elements.size())
         {
             return nullptr;
         }
-        return &_g1Elements[image_id];
+        return &_g1.elements[image_id];
     }
     if (image_id < SPR_CSG_BEGIN)
     {
@@ -839,9 +834,9 @@ void gfx_set_g1_element(sint32 imageId, const rct_g1_element * g1)
     }
     else if (imageId >= 0 && imageId < SPR_G2_BEGIN)
     {
-        if (imageId < (sint32)_g1Elements.size())
+        if (imageId < (sint32)_g1.elements.size())
         {
-            _g1Elements[imageId] = *g1;
+            _g1.elements[imageId] = *g1;
         }
     }
 }
