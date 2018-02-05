@@ -150,7 +150,7 @@ const CommandLineExample CommandLine::RootExamples[]
     { "./SnowyPark.sc6",                              "install and open a scenario"            },
     { "./ShuttleLoop.td6",                            "install a track"                        },
 #ifndef DISABLE_HTTP
-    { "https://openrct2.website/files/SnowyPark.sv6", "download and open a saved park"         },
+    { "https://openrct2.io/files/SnowyPark.sv6", "download and open a saved park"         },
 #endif
 #ifndef DISABLE_NETWORK
     { "host ./my_park.sv6 --port 11753 --headless",   "run a headless server for a saved park" },
@@ -433,7 +433,7 @@ static void PrintAbout()
     Console::WriteLine("includes some 3rd party software under different licenses. See the file");
     Console::WriteLine("\"licence.txt\" shipped with the game for details.");
     Console::WriteLine();
-    Console::WriteLine("Website:      https://openrct2.website");
+    Console::WriteLine("Website:      https://openrct2.io");
     Console::WriteLine("GitHub:       https://github.com/OpenRCT2/OpenRCT2");
     Console::WriteLine("Contributors: https://github.com/OpenRCT2/OpenRCT2/blob/develop/contributors.md");
     Console::WriteLine();
