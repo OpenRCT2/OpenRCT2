@@ -178,12 +178,11 @@ bool track_design_save(uint8 rideIndex)
     utf8 track_name[256];
     format_string(track_name, sizeof(track_name), ride->name, &ride->name_arguments);
 
-    Intent * intent = new Intent(WC_LOADSAVE);
-    intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK);
-    intent->putExtra(INTENT_EXTRA_PATH, track_name);
-    intent->putExtra(INTENT_EXTRA_CALLBACK, (void *) track_design_save_callback);
-    context_open_intent(intent);
-    delete intent;
+    auto intent = Intent(WC_LOADSAVE);
+    intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK);
+    intent.putExtra(INTENT_EXTRA_PATH, track_name);
+    intent.putExtra(INTENT_EXTRA_CALLBACK, (void *) track_design_save_callback);
+    context_open_intent(&intent);
 
     return true;
 }

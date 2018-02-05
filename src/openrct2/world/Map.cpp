@@ -430,9 +430,8 @@ void map_init(sint32 size)
     map_remove_out_of_range_elements();
 
 
-    Intent * intent = new Intent(INTENT_ACTION_MAP);
-    context_broadcast_intent(intent);
-    delete intent;
+    auto intent = Intent(INTENT_ACTION_MAP);
+    context_broadcast_intent(&intent);
 }
 
 /**

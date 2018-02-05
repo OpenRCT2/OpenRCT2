@@ -592,11 +592,10 @@ static void shortcut_quick_save_game()
     }
     else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
-        Intent * intent = new Intent(WC_LOADSAVE);
-        intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-        intent->putExtra(INTENT_EXTRA_PATH, gS6Info.name);
-        context_open_intent(intent);
-        delete intent;
+        auto intent = Intent(WC_LOADSAVE);
+        intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
+        intent.putExtra(INTENT_EXTRA_PATH, gS6Info.name);
+        context_open_intent(&intent);
     }
 }
 

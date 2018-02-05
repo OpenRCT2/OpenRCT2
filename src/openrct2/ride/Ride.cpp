@@ -1822,9 +1822,8 @@ static sint32 ride_modify_maze(rct_tile_element *tileElement, sint32 x, sint32 y
     _currentTrackSelectionFlags = 0;
     _rideConstructionArrowPulseTime = 0;
 
-    Intent * intent = new Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
-    context_broadcast_intent(intent);
-    delete intent;
+    auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
+    context_broadcast_intent(&intent);
 
     return 1;
 }
@@ -7603,10 +7602,9 @@ void ride_crash(uint8 rideIndex, uint8 vehicleIndex)
 
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
         // Open ride window for crashed vehicle
-        Intent * intent = new Intent(WD_VEHICLE);
-        intent->putExtra(INTENT_EXTRA_VEHICLE, vehicle);
-        rct_window * w = context_open_intent(intent);
-        delete intent;
+        auto intent = Intent(WD_VEHICLE);
+        intent.putExtra(INTENT_EXTRA_VEHICLE, vehicle);
+        rct_window * w = context_open_intent(&intent);
 
         rct_viewport * viewport = window_get_viewport(w);
         if (w != nullptr && viewport != nullptr) {
