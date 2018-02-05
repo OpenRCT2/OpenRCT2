@@ -64,10 +64,10 @@ void game_command_callback_hire_new_staff_member(sint32 eax, sint32 ebx, sint32 
     else
     {
         rct_peep * peep = &get_sprite(sprite_index)->peep;
-        Intent * intent = intent_create(WC_PEEP);
-        intent_set_pointer(intent, INTENT_EXTRA_PEEP, peep);
+        Intent * intent = new Intent(WC_PEEP);
+        intent->putExtra(INTENT_EXTRA_PEEP, peep);
         context_open_intent(intent);
-        intent_release(intent);
+        delete intent;
     }
 }
 
@@ -202,9 +202,9 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
 }
 
 static bool sub_6CA2DF_get_track_element(uint8 *trackElement) {
-    Intent * intent = intent_create(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES);
+    Intent * intent = new Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES);
     context_broadcast_intent(intent);
-    intent_release(intent);
+    delete intent;
 
     uint8 startSlope = _previousTrackSlopeEnd;
     uint8 endSlope = _currentTrackSlopeEnd;
@@ -543,9 +543,9 @@ void window_ride_construction_mouseup_demolish_next_piece(sint32 x, sint32 y, si
  */
 void window_ride_construction_update_active_elements()
 {
-    Intent * intent = intent_create(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS);
+    Intent * intent = new Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS);
     context_broadcast_intent(intent);
-    intent_release(intent);
+    delete intent;
 }
 
 void game_command_callback_place_banner(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
@@ -575,14 +575,14 @@ bool scenery_tool_is_active()
 
 void init_scenery()
 {
-    Intent * intent = intent_create(INTENT_ACTION_INIT_SCENERY);
+    Intent * intent = new Intent(INTENT_ACTION_INIT_SCENERY);
     context_broadcast_intent(intent);
-    intent_release(intent);
+    delete intent;
 }
 
 void scenery_set_default_placement_configuration()
 {
-    Intent * intent = intent_create(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
+    Intent * intent = new Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
     context_broadcast_intent(intent);
-    intent_release(intent);
+    delete intent;
 }

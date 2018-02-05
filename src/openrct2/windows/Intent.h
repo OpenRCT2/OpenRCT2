@@ -1,15 +1,26 @@
-#ifndef OPENRCT2_INTENT_H
-#define OPENRCT2_INTENT_H
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
 
-#include "../common.h"
-#include "../interface/Window.h"
-#ifdef __cplusplus
+#pragma once
+
 #include <map>
 #include <string>
-#endif // __cplusplus
+#include "../common.h"
+#include "../interface/Window.h"
 
-
-#ifdef __cplusplus
 struct IntentData
 {
     enum DATATYPE { DT_INT, DT_STRING, DT_POINTER, DT_CLOSE_CALLBACK } type;
@@ -42,10 +53,6 @@ public:
     Intent * putExtra(uint32 key, std::string value);
     Intent * putExtra(uint32 key, close_callback value);
 };
-#else
-// Allow C code to use `Intent *`
-typedef struct Intent Intent;
-#endif
 
 enum
 {
@@ -67,7 +74,8 @@ enum
     INTENT_EXTRA_BANNER_INDEX,
 };
 
-enum {
+enum
+{
     INTENT_ACTION_MAP,
     INTENT_ACTION_NEW_RIDE_OF_TYPE,
     INTENT_ACTION_REFRESH_NEW_RIDES,
@@ -92,12 +100,3 @@ enum {
     INTENT_ACTION_UPDATE_CASH,
     INTENT_ACTION_UPDATE_BANNER,
 };
-
-Intent *intent_create(rct_windowclass clss);
-void intent_release(Intent * intent);
-void intent_set_string(Intent *, uint32 key, utf8string value);
-void intent_set_pointer(Intent *, uint32 key, void * value);
-void intent_set_sint(Intent *, uint32 key, sint32 value);
-void intent_set_uint(Intent *, uint32 key, uint32 value);
-
-#endif // OPENRCT2_INTENT_H
