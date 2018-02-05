@@ -2232,29 +2232,37 @@ private:
         if (srcType == RCT1_RESEARCH_TYPE_RIDE)
         {
             uint8 entryIndex = _rideTypeToRideEntryMap[srcItem];
-            rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
 
-            if (entryIndex != 255 && rideEntry != nullptr)
+            if (entryIndex != 255)
             {
-                dst->entryIndex = entryIndex;
-                dst->baseRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
-                dst->type = RESEARCH_ENTRY_TYPE_RIDE;
-                dst->flags = 0;
-                dst->category = rideEntry->category[0];
+                rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
+
+                if (rideEntry != nullptr)
+                {
+                    dst->entryIndex = entryIndex;
+                    dst->baseRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                    dst->type = RESEARCH_ENTRY_TYPE_RIDE;
+                    dst->flags = 0;
+                    dst->category = rideEntry->category[0];
+                }
             }
         }
         else if (srcType == RCT1_RESEARCH_TYPE_VEHICLE)
         {
             uint8 entryIndex = _vehicleTypeToRideEntryMap[srcItem];
-            rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
 
-            if (entryIndex != 255 && rideEntry != nullptr)
+            if (entryIndex != 255)
             {
-                dst->entryIndex = entryIndex;
-                dst->baseRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
-                dst->type = RESEARCH_ENTRY_TYPE_RIDE;
-                dst->flags = 0;
-                dst->category = rideEntry->category[0];
+                rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
+
+                if (rideEntry != nullptr)
+                {
+                    dst->entryIndex = entryIndex;
+                    dst->baseRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                    dst->type = RESEARCH_ENTRY_TYPE_RIDE;
+                    dst->flags = 0;
+                    dst->category = rideEntry->category[0];
+                }
             }
         }
         else if (srcType == RCT1_RESEARCH_TYPE_THEME)
