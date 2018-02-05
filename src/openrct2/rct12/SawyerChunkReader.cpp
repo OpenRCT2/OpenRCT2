@@ -115,7 +115,7 @@ void SawyerChunkReader::ReadChunk(void * dst, size_t length)
     }
     else
     {
-        std::copy_n(chunkData, length, (uint8 *)dst);
+        std::copy_n(chunkData, chunkLength, (uint8 *)dst);
         auto remainingLength = length - chunkLength;
         if (remainingLength > 0)
         {
