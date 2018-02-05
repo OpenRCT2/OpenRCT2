@@ -133,18 +133,16 @@ sint32 viewport_interaction_left_click(sint32 x, sint32 y)
         switch (info.sprite->unknown.sprite_identifier) {
         case SPRITE_IDENTIFIER_VEHICLE:
         {
-            Intent * intent = new Intent(WD_VEHICLE);
-            intent->putExtra(INTENT_EXTRA_VEHICLE, info.vehicle);
-            context_open_intent(intent);
-            delete intent;
+            auto intent = Intent(WD_VEHICLE);
+            intent.putExtra(INTENT_EXTRA_VEHICLE, info.vehicle);
+            context_open_intent(&intent);
             break;
         }
         case SPRITE_IDENTIFIER_PEEP:
         {
-            Intent * intent = new Intent(WC_PEEP);
-            intent->putExtra(INTENT_EXTRA_PEEP, info.peep);
-            context_open_intent(intent);
-            delete intent;
+            auto intent = Intent(WC_PEEP);
+            intent.putExtra(INTENT_EXTRA_PEEP, info.peep);
+            context_open_intent(&intent);
             break;
         }
         case SPRITE_IDENTIFIER_MISC:
@@ -163,10 +161,9 @@ sint32 viewport_interaction_left_click(sint32 x, sint32 y)
         return 1;
     case VIEWPORT_INTERACTION_ITEM_RIDE:
     {
-        Intent * intent = new Intent(WD_TRACK);
-        intent->putExtra(INTENT_EXTRA_TILE_ELEMENT, info.tileElement);
-        context_open_intent(intent);
-        delete intent;
+        auto intent = Intent(WD_TRACK);
+        intent.putExtra(INTENT_EXTRA_TILE_ELEMENT, info.tileElement);
+        context_open_intent(&intent);
         return true;
     }
     case VIEWPORT_INTERACTION_ITEM_PARK:

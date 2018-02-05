@@ -1072,10 +1072,9 @@ static void game_load_or_quit(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 *
  */
 static void load_landscape()
 {
-    Intent * intent = new Intent(WC_LOADSAVE);
-    intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
-    context_open_intent(intent);
-    delete intent;
+    auto intent = Intent(WC_LOADSAVE);
+    intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
+    context_open_intent(&intent);
 }
 
 static void utf8_to_rct2_self(char * buffer, size_t length)
@@ -1268,12 +1267,11 @@ void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, cons
         }
         // The path needs to be duplicated as it's a const here
         // which the window function doesn't like
-        Intent * intent = new Intent(WC_OBJECT_LOAD_ERROR);
-        intent->putExtra(INTENT_EXTRA_PATH, strndup(path, strnlen(path, MAX_PATH)));
-        intent->putExtra(INTENT_EXTRA_LIST, (void *) ParkLoadResult_GetMissingObjects(result));
-        intent->putExtra(INTENT_EXTRA_LIST_COUNT, (uint32) ParkLoadResult_GetMissingObjectsCount(result));
-        context_open_intent(intent);
-        delete intent;
+        auto intent = Intent(WC_OBJECT_LOAD_ERROR);
+        intent.putExtra(INTENT_EXTRA_PATH, strndup(path, strnlen(path, MAX_PATH)));
+        intent.putExtra(INTENT_EXTRA_LIST, (void *) ParkLoadResult_GetMissingObjects(result));
+        intent.putExtra(INTENT_EXTRA_LIST_COUNT, (uint32) ParkLoadResult_GetMissingObjectsCount(result));
+        context_open_intent(&intent);
     }
     else if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_UNSUPPORTED_RCTC_FLAG)
     {
@@ -1349,9 +1347,8 @@ void game_load_init()
     reset_all_sprite_quadrant_placements();
     scenery_set_default_placement_configuration();
 
-    Intent * intent = new Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
-    context_broadcast_intent(intent);
-    delete intent;
+    auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
+    context_broadcast_intent(&intent);
 
     gWindowUpdateTicks = 0;
 
@@ -1359,9 +1356,8 @@ void game_load_init()
 
     if (!gOpenRCT2Headless)
     {
-        intent = new Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
-        context_broadcast_intent(intent);
-        delete intent;
+        intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
+        context_broadcast_intent(&intent);
         window_update_all();
     }
 
@@ -1422,7 +1418,7 @@ void * create_save_game_as_intent()
 
 void save_game_as()
 {
-    Intent * intent = (Intent *) create_save_game_as_intent();
+    auto * intent = (Intent *) create_save_game_as_intent();
     context_open_intent(intent);
     delete intent;
 }
@@ -1582,11 +1578,10 @@ void game_load_or_quit_no_save_prompt()
         }
         else
         {
-            Intent * intent = new Intent(WC_LOADSAVE);
-            intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-            intent->putExtra(INTENT_EXTRA_CALLBACK, (void *) game_load_or_quit_no_save_prompt_callback);
-            context_open_intent(intent);
-            delete intent;
+            auto intent = Intent(WC_LOADSAVE);
+            intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+            intent.putExtra(INTENT_EXTRA_CALLBACK, (void *) game_load_or_quit_no_save_prompt_callback);
+            context_open_intent(&intent);
         }
         break;
     case PM_SAVE_BEFORE_QUIT:
@@ -1633,9 +1628,8 @@ void game_init_all(sint32 mapSize)
     context_init();
     scenery_set_default_placement_configuration();
 
-    Intent * intent = new Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
-    context_broadcast_intent(intent);
-    delete intent;
+    auto intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
+    context_broadcast_intent(&intent);
 
     load_palette();
 }
