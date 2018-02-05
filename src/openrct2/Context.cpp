@@ -1166,6 +1166,7 @@ void platform_get_user_directory(utf8 * outPath, const utf8 * subDirectory, size
     {
         path = Path::Combine(path, subDirectory);
     }
+    String::Set(outPath, outSize, path.c_str());
 }
 
 /**
