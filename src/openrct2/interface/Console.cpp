@@ -1177,9 +1177,9 @@ static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
         }
         scenery_set_default_placement_configuration();
 
-        Intent * intent = intent_create(INTENT_ACTION_REFRESH_NEW_RIDES);
+        Intent * intent = new Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
         context_broadcast_intent(intent);
-        intent_release(intent);
+        delete intent;
 
         gWindowUpdateTicks = 0;
         gfx_invalidate_screen();
