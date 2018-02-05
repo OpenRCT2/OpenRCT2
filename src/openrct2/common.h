@@ -155,7 +155,7 @@ char *strndup(const char *src, size_t size);
 #define MAP_ANONYMOUS MAP_ANON
 #endif
 
-#define OPENRCT2_MASTER_SERVER_URL  "https://servers.openrct2.website"
+#define OPENRCT2_MASTER_SERVER_URL  "https://servers.openrct2.io"
 
 // Time (represented as number of 100-nanosecond intervals since 0001-01-01T00:00:00Z)
 typedef uint64 datetime64;
