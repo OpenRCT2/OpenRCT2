@@ -312,6 +312,10 @@
 		C685E51B1F8907850090598F /* Guest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C685E5161F8907840090598F /* Guest.cpp */; };
 		C685E51C1F8907850090598F /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C685E5171F8907840090598F /* Map.cpp */; };
 		C685E51D1F8907850090598F /* Research.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C685E5181F8907840090598F /* Research.cpp */; };
+		C6887846202897B30084B384 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C688783D202893590084B384 /* Foundation.framework */; };
+		C6887847202897B70084B384 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C688783F202893600084B384 /* Cocoa.framework */; };
+		C6887848202897D10084B384 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C688783D202893590084B384 /* Foundation.framework */; };
+		C68878492028982B0084B384 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C688783F202893600084B384 /* Cocoa.framework */; };
 		C68D98BC1FC6B8AB008E8378 /* TileInspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C68D98BB1FC6B8AB008E8378 /* TileInspector.cpp */; };
 		C6CB94F21EFFBF860065888F /* libfreetype.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B41CF3006400659A24 /* libfreetype.dylib */; };
 		C6D2BEE21F9BAA6C008B557C /* Ride.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6D2BEE11F9BAA6C008B557C /* Ride.cpp */; };
@@ -415,7 +419,7 @@
 		F76C86861EC4E88400FA49E2 /* OpenRCT2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84381EC4E7CC00FA49E2 /* OpenRCT2.cpp */; };
 		F76C869C1EC4E88400FA49E2 /* ParkImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84511EC4E7CC00FA49E2 /* ParkImporter.cpp */; };
 		F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C845A1EC4E7CC00FA49E2 /* Crash.cpp */; };
-		F76C86A61EC4E88400FA49E2 /* macos.m in Sources */ = {isa = PBXBuildFile; fileRef = F76C845D1EC4E7CC00FA49E2 /* macos.m */; };
+		F76C86A61EC4E88400FA49E2 /* macos.mm in Sources */ = {isa = PBXBuildFile; fileRef = F76C845D1EC4E7CC00FA49E2 /* macos.mm */; };
 		F76C86AD1EC4E88400FA49E2 /* PlatformEnvironment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84641EC4E7CC00FA49E2 /* PlatformEnvironment.cpp */; };
 		F76C86AF1EC4E88400FA49E2 /* S4Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84671EC4E7CC00FA49E2 /* S4Importer.cpp */; };
 		F76C86B01EC4E88400FA49E2 /* Tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84681EC4E7CC00FA49E2 /* Tables.cpp */; };
@@ -1002,6 +1006,8 @@
 		C685E5161F8907840090598F /* Guest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Guest.cpp; sourceTree = "<group>"; };
 		C685E5171F8907840090598F /* Map.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Map.cpp; sourceTree = "<group>"; };
 		C685E5181F8907840090598F /* Research.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Research.cpp; sourceTree = "<group>"; };
+		C688783D202893590084B384 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C688783F202893600084B384 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		C68D98BB1FC6B8AB008E8378 /* TileInspector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileInspector.cpp; sourceTree = "<group>"; };
 		C6D2BEE11F9BAA6C008B557C /* Ride.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ride.cpp; sourceTree = "<group>"; };
 		C6D2BEE31F9BAACC008B557C /* TrackList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackList.cpp; sourceTree = "<group>"; };
@@ -1329,7 +1335,7 @@
 		F76C84511EC4E7CC00FA49E2 /* ParkImporter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ParkImporter.cpp; sourceTree = "<group>"; };
 		F76C84521EC4E7CC00FA49E2 /* ParkImporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParkImporter.h; sourceTree = "<group>"; };
 		F76C845A1EC4E7CC00FA49E2 /* Crash.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Crash.cpp; sourceTree = "<group>"; };
-		F76C845D1EC4E7CC00FA49E2 /* macos.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = macos.m; sourceTree = "<group>"; };
+		F76C845D1EC4E7CC00FA49E2 /* macos.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = macos.mm; sourceTree = "<group>"; };
 		F76C845E1EC4E7CC00FA49E2 /* platform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
 		F76C84601EC4E7CC00FA49E2 /* Platform2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Platform2.h; sourceTree = "<group>"; };
 		F76C84641EC4E7CC00FA49E2 /* PlatformEnvironment.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlatformEnvironment.cpp; sourceTree = "<group>"; };
@@ -1438,6 +1444,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6887847202897B70084B384 /* Cocoa.framework in Frameworks */,
+				C6887846202897B30084B384 /* Foundation.framework in Frameworks */,
 				F76C88921EC539A300FA49E2 /* libopenrct2.a in Frameworks */,
 				D47304D51C4FF8250015C0EA /* libz.tbd in Frameworks */,
 				D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */,
@@ -1456,6 +1464,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C68878492028982B0084B384 /* Cocoa.framework in Frameworks */,
+				C6887848202897D10084B384 /* Foundation.framework in Frameworks */,
 				F7D7748D1EC66F8600BE6EBC /* libopenrct2.a in Frameworks */,
 				F7D774901EC66FB000BE6EBC /* libz.tbd in Frameworks */,
 				F7D7748F1EC66FA900BE6EBC /* libcurl.tbd in Frameworks */,
@@ -1553,6 +1563,15 @@
 			children = (
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		C688783C202893590084B384 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C688783F202893600084B384 /* Cocoa.framework */,
+				C688783D202893590084B384 /* Foundation.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D41B72431C21015A0080A7B9 /* Sources */ = {
@@ -1757,6 +1776,7 @@
 				D41B73ED1C21017D0080A7B9 /* Libraries */,
 				D497D0791C20FD52002BF46A /* Products */,
 				C685E5131F8907440090598F /* Recovered References */,
+				C688783C202893590084B384 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 0;
@@ -2243,7 +2263,7 @@
 				F76C845A1EC4E7CC00FA49E2 /* Crash.cpp */,
 				4C7B547E2010DFF700A52E21 /* Crash.h */,
 				4C7B54762010DF4300A52E21 /* Linux.cpp */,
-				F76C845D1EC4E7CC00FA49E2 /* macos.m */,
+				F76C845D1EC4E7CC00FA49E2 /* macos.mm */,
 				4CE462441FD161360001CD98 /* Platform.Android.cpp */,
 				F76C845E1EC4E7CC00FA49E2 /* platform.h */,
 				4CE462461FD1613D0001CD98 /* Platform.Linux.cpp */,
@@ -3495,7 +3515,7 @@
 				F76C86861EC4E88400FA49E2 /* OpenRCT2.cpp in Sources */,
 				F76C869C1EC4E88400FA49E2 /* ParkImporter.cpp in Sources */,
 				F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */,
-				F76C86A61EC4E88400FA49E2 /* macos.m in Sources */,
+				F76C86A61EC4E88400FA49E2 /* macos.mm in Sources */,
 				F76C86AD1EC4E88400FA49E2 /* PlatformEnvironment.cpp in Sources */,
 				F76C86AF1EC4E88400FA49E2 /* S4Importer.cpp in Sources */,
 				F76C86B01EC4E88400FA49E2 /* Tables.cpp in Sources */,

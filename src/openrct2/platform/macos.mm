@@ -16,8 +16,8 @@
 
 #if defined(__APPLE__) && defined(__MACH__)
 
-@import AppKit;
-@import Foundation;
+#import <AppKit/AppKit.h>
+#import <Foundation/Foundation.h>
 #include <mach-o/dyld.h>
 #include <pwd.h>
 #include "platform.h"
