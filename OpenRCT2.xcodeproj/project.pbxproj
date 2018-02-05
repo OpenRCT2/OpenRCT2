@@ -21,207 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		4C4C1E981F58226500560300 /* TrackDesign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C4C1E971F58226500560300 /* TrackDesign.cpp */; };
-		4C5DFF421FAC69D200CB093A /* Date.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C5DFF401FAC69D200CB093A /* Date.cpp */; };
-		4C6A668E1FE14C3A00694CB6 /* SawyerCoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A668A1FE14C3A00694CB6 /* SawyerCoding.cpp */; };
-		4C6A668F1FE14C3A00694CB6 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A668C1FE14C3A00694CB6 /* Util.cpp */; };
-		4C6A66921FE14C9500694CB6 /* Cheats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66901FE14C9500694CB6 /* Cheats.cpp */; };
-		4C6A66981FE2786F00694CB6 /* Litter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66931FE2786F00694CB6 /* Litter.cpp */; };
-		4C6A66991FE2786F00694CB6 /* Misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66941FE2786F00694CB6 /* Misc.cpp */; };
-		4C6A669A1FE2786F00694CB6 /* Peep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66951FE2786F00694CB6 /* Peep.cpp */; };
-		4C6A669B1FE2786F00694CB6 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66961FE2786F00694CB6 /* Sprite.cpp */; };
-		4C6A66A61FE2787700694CB6 /* Banner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A669C1FE2787700694CB6 /* Banner.cpp */; };
-		4C6A66A71FE2787700694CB6 /* Entrance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A669D1FE2787700694CB6 /* Entrance.cpp */; };
-		4C6A66A81FE2787700694CB6 /* Fence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A669E1FE2787700694CB6 /* Fence.cpp */; };
-		4C6A66A91FE2787700694CB6 /* LargeScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A669F1FE2787700694CB6 /* LargeScenery.cpp */; };
-		4C6A66AA1FE2787700694CB6 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66A01FE2787700694CB6 /* Path.cpp */; };
-		4C6A66AB1FE2787700694CB6 /* SmallScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66A11FE2787700694CB6 /* SmallScenery.cpp */; };
-		4C6A66AC1FE2787700694CB6 /* Surface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66A21FE2787700694CB6 /* Surface.cpp */; };
-		4C6A66AD1FE2787700694CB6 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66A41FE2787700694CB6 /* TileElement.cpp */; };
-		4C6A66B51FE278C900694CB6 /* Paint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66AE1FE278C900694CB6 /* Paint.cpp */; };
-		4C6A66B61FE278C900694CB6 /* Painter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66B01FE278C900694CB6 /* Painter.cpp */; };
-		4C6A66B71FE278C900694CB6 /* PaintHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66B21FE278C900694CB6 /* PaintHelpers.cpp */; };
-		4C6A66B81FE278C900694CB6 /* Supports.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66B31FE278C900694CB6 /* Supports.cpp */; };
-		4C6A66BC1FED04EE00694CB6 /* SSE41Drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66BB1FED04EE00694CB6 /* SSE41Drawing.cpp */; settings = {COMPILER_FLAGS = "-msse4.1"; }; };
-		4C6A66C21FF9322A00694CB6 /* Ride.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66BF1FF9322A00694CB6 /* Ride.cpp */; };
-		4C6AC20F1F9E1693004324AA /* Station.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6AC20D1F9E1693004324AA /* Station.cpp */; };
-		4C6AC2121F9E1CB3004324AA /* CableLift.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6AC2101F9E1CB3004324AA /* CableLift.cpp */; };
-		4C7B53A51FFC180400A52E21 /* ObjectList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53A31FFC180400A52E21 /* ObjectList.cpp */; };
-		4C7B53BC1FFF935B00A52E21 /* Convert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53AA1FFF935B00A52E21 /* Convert.cpp */; };
-		4C7B53BD1FFF935B00A52E21 /* Currency.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53AB1FFF935B00A52E21 /* Currency.cpp */; };
-		4C7B53BE1FFF935B00A52E21 /* Date.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53AD1FFF935B00A52E21 /* Date.cpp */; };
-		4C7B53BF1FFF935B00A52E21 /* FormatCodes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53AF1FFF935B00A52E21 /* FormatCodes.cpp */; };
-		4C7B53C01FFF935B00A52E21 /* Language.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53B11FFF935B00A52E21 /* Language.cpp */; };
-		4C7B53C11FFF935B00A52E21 /* LanguagePack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53B31FFF935B00A52E21 /* LanguagePack.cpp */; };
-		4C7B53C21FFF935B00A52E21 /* Localisation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53B51FFF935B00A52E21 /* Localisation.cpp */; };
-		4C7B53C31FFF935B00A52E21 /* RealNames.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53B71FFF935B00A52E21 /* RealNames.cpp */; };
-		4C7B53C41FFF935B00A52E21 /* User.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53B91FFF935B00A52E21 /* User.cpp */; };
-		4C7B53C51FFF935B00A52E21 /* UTF8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53BB1FFF935B00A52E21 /* UTF8.cpp */; };
-		4C7B53C81FFF94F900A52E21 /* ConversionTables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53C61FFF94F900A52E21 /* ConversionTables.cpp */; };
-		4C7B53CE200029CE00A52E21 /* Line.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53CD200029CE00A52E21 /* Line.cpp */; };
-		4C7B53D1200029D900A52E21 /* Rect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53CF200029D900A52E21 /* Rect.cpp */; };
-		4C7B53D2200029D900A52E21 /* ScrollingText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53D0200029D900A52E21 /* ScrollingText.cpp */; };
-		4C7B53D4200029E000A52E21 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53D3200029E000A52E21 /* String.cpp */; };
-		4C7B53D920002CA400A52E21 /* Drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53D520002CA400A52E21 /* Drawing.cpp */; };
-		4C7B53DA20002CA400A52E21 /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53D620002CA400A52E21 /* Font.cpp */; };
-		4C7B53DB20002CA400A52E21 /* LightFX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53D720002CA400A52E21 /* LightFX.cpp */; };
-		4C7B53DC20002CA400A52E21 /* TTF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53D820002CA400A52E21 /* TTF.cpp */; };
-		4C7B53F3200143C200A52E21 /* Chat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53DD200143C200A52E21 /* Chat.cpp */; };
-		4C7B53F4200143C200A52E21 /* Colour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53DF200143C200A52E21 /* Colour.cpp */; };
-		4C7B53F5200143C200A52E21 /* Console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53E1200143C200A52E21 /* Console.cpp */; };
-		4C7B53F6200143C200A52E21 /* FontFamilies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53E4200143C200A52E21 /* FontFamilies.cpp */; };
-		4C7B53F7200143C200A52E21 /* Fonts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53E6200143C200A52E21 /* Fonts.cpp */; };
-		4C7B53F8200143C200A52E21 /* Screenshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53E8200143C200A52E21 /* Screenshot.cpp */; };
-		4C7B53F9200143C200A52E21 /* Theme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53EA200143C200A52E21 /* Theme.cpp */; };
-		4C7B53FA200143C200A52E21 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53EC200143C200A52E21 /* Viewport.cpp */; };
-		4C7B53FB200143C200A52E21 /* ViewportInteraction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53EE200143C200A52E21 /* ViewportInteraction.cpp */; };
-		4C7B53FC200143C200A52E21 /* Widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53EF200143C200A52E21 /* Widget.cpp */; };
-		4C7B53FD200143C200A52E21 /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53F1200143C200A52E21 /* Window.cpp */; };
-		4C7B540120015AC600A52E21 /* VirtualFloor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B540020015AC600A52E21 /* VirtualFloor.cpp */; };
-		4C7B54062005735F00A52E21 /* VehicleData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54052005735F00A52E21 /* VehicleData.cpp */; };
-		4C7B54082005736700A52E21 /* VehiclePaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54072005736700A52E21 /* VehiclePaint.cpp */; };
-		4C7B540D20060D8100A52E21 /* TrackPaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B540B20060D8100A52E21 /* TrackPaint.cpp */; };
-		4C7B541C20060D8E00A52E21 /* RideData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B541420060D8E00A52E21 /* RideData.cpp */; };
-		4C7B54432007646A00A52E21 /* Balloon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B541D2007646A00A52E21 /* Balloon.cpp */; };
-		4C7B54442007646A00A52E21 /* Banner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B541E2007646A00A52E21 /* Banner.cpp */; };
-		4C7B54452007646A00A52E21 /* Climate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54202007646A00A52E21 /* Climate.cpp */; };
-		4C7B54462007646A00A52E21 /* Duck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54222007646A00A52E21 /* Duck.cpp */; };
-		4C7B54472007646A00A52E21 /* Entrance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54232007646A00A52E21 /* Entrance.cpp */; };
-		4C7B54482007646A00A52E21 /* Footpath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54252007646A00A52E21 /* Footpath.cpp */; };
-		4C7B54492007646A00A52E21 /* Fountain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54272007646A00A52E21 /* Fountain.cpp */; };
-		4C7B544A2007646A00A52E21 /* LargeScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54292007646A00A52E21 /* LargeScenery.cpp */; };
-		4C7B544B2007646A00A52E21 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B542C2007646A00A52E21 /* Map.cpp */; };
-		4C7B544C2007646A00A52E21 /* MapAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B542E2007646A00A52E21 /* MapAnimation.cpp */; };
-		4C7B544D2007646A00A52E21 /* MapGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54302007646A00A52E21 /* MapGen.cpp */; };
-		4C7B544E2007646A00A52E21 /* MapHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54322007646A00A52E21 /* MapHelpers.cpp */; };
-		4C7B544F2007646A00A52E21 /* MoneyEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54342007646A00A52E21 /* MoneyEffect.cpp */; };
-		4C7B54502007646A00A52E21 /* Park.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54352007646A00A52E21 /* Park.cpp */; };
-		4C7B54512007646A00A52E21 /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54372007646A00A52E21 /* Particle.cpp */; };
-		4C7B54522007646A00A52E21 /* Scenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54382007646A00A52E21 /* Scenery.cpp */; };
-		4C7B54532007646A00A52E21 /* SmallScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B543A2007646A00A52E21 /* SmallScenery.cpp */; };
-		4C7B54542007646A00A52E21 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B543C2007646A00A52E21 /* Sprite.cpp */; };
-		4C7B54552007646A00A52E21 /* TileInspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B543E2007646A00A52E21 /* TileInspector.cpp */; };
-		4C7B54562007646A00A52E21 /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54402007646A00A52E21 /* Wall.cpp */; };
-		4C7B545C20079C4000A52E21 /* Addresses.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B545720079C4000A52E21 /* Addresses.cpp */; };
-		4C7B545E20079C4000A52E21 /* Data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B545A20079C4000A52E21 /* Data.cpp */; };
-		4C7B546120079C4900A52E21 /* Hook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B545F20079C4900A52E21 /* Hook.cpp */; };
-		4C7B54692007BF2E00A52E21 /* TTFSDLPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54682007BF2E00A52E21 /* TTFSDLPort.cpp */; };
-		4C7B54752010DF3C00A52E21 /* Android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54742010DF3C00A52E21 /* Android.cpp */; };
-		4C7B54772010DF4300A52E21 /* Linux.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54762010DF4300A52E21 /* Linux.cpp */; };
-		4C7B547B2010DF4C00A52E21 /* Posix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54782010DF4C00A52E21 /* Posix.cpp */; };
-		4C7B547C2010DF4C00A52E21 /* Shared.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54792010DF4C00A52E21 /* Shared.cpp */; };
-		4C7B547D2010DF4C00A52E21 /* Windows.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B547A2010DF4C00A52E21 /* Windows.cpp */; };
-		4C8667821EEFDCDF0024AAB8 /* RideGroupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */; };
-		4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */; };
-		4C8B42721EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */; };
-		4C93F13A1F8B744400A9330D /* AirPoweredVerticalCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1181F8B744400A9330D /* AirPoweredVerticalCoaster.cpp */; };
-		4C93F13B1F8B744400A9330D /* BobsleighCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1191F8B744400A9330D /* BobsleighCoaster.cpp */; };
-		4C93F13C1F8B744400A9330D /* BolligerMabillardTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F11B1F8B744400A9330D /* BolligerMabillardTrack.cpp */; };
-		4C93F13D1F8B744400A9330D /* CompactInvertedCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F11C1F8B744400A9330D /* CompactInvertedCoaster.cpp */; };
-		4C93F13E1F8B744400A9330D /* CorkscrewRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F11D1F8B744400A9330D /* CorkscrewRollerCoaster.cpp */; };
-		4C93F13F1F8B744400A9330D /* FlyingRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F11E1F8B744400A9330D /* FlyingRollerCoaster.cpp */; };
-		4C93F1401F8B744400A9330D /* GigaCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F11F1F8B744400A9330D /* GigaCoaster.cpp */; };
-		4C93F1411F8B744400A9330D /* HeartlineTwisterCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1201F8B744400A9330D /* HeartlineTwisterCoaster.cpp */; };
-		4C93F1421F8B744400A9330D /* InvertedHairpinCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1211F8B744400A9330D /* InvertedHairpinCoaster.cpp */; };
-		4C93F1431F8B744400A9330D /* InvertedImpulseCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1221F8B744400A9330D /* InvertedImpulseCoaster.cpp */; };
-		4C93F1441F8B744400A9330D /* InvertedRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1231F8B744400A9330D /* InvertedRollerCoaster.cpp */; };
-		4C93F1451F8B744400A9330D /* JuniorRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1251F8B744400A9330D /* JuniorRollerCoaster.cpp */; };
-		4C93F1461F8B744400A9330D /* LayDownRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1261F8B744400A9330D /* LayDownRollerCoaster.cpp */; };
-		4C93F1471F8B744400A9330D /* LimLaunchedRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1271F8B744400A9330D /* LimLaunchedRollerCoaster.cpp */; };
-		4C93F1481F8B744400A9330D /* LoopingRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1281F8B744400A9330D /* LoopingRollerCoaster.cpp */; };
-		4C93F1491F8B744400A9330D /* MineRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1291F8B744400A9330D /* MineRide.cpp */; };
-		4C93F14A1F8B744400A9330D /* MineTrainCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12A1F8B744400A9330D /* MineTrainCoaster.cpp */; };
-		4C93F14B1F8B744400A9330D /* MiniRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12B1F8B744400A9330D /* MiniRollerCoaster.cpp */; };
-		4C93F14C1F8B744400A9330D /* MiniSuspendedCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12C1F8B744400A9330D /* MiniSuspendedCoaster.cpp */; };
-		4C93F14D1F8B744400A9330D /* MultiDimensionRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12D1F8B744400A9330D /* MultiDimensionRollerCoaster.cpp */; };
-		4C93F14E1F8B744400A9330D /* ReverseFreefallCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12E1F8B744400A9330D /* ReverseFreefallCoaster.cpp */; };
-		4C93F14F1F8B744400A9330D /* ReverserRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12F1F8B744400A9330D /* ReverserRollerCoaster.cpp */; };
-		4C93F1501F8B744400A9330D /* SideFrictionRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1301F8B744400A9330D /* SideFrictionRollerCoaster.cpp */; };
-		4C93F1511F8B744400A9330D /* StandUpRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1311F8B744400A9330D /* StandUpRollerCoaster.cpp */; };
-		4C93F1521F8B744400A9330D /* Steeplechase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1321F8B744400A9330D /* Steeplechase.cpp */; };
-		4C93F1531F8B744400A9330D /* SuspendedSwingingCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1331F8B744400A9330D /* SuspendedSwingingCoaster.cpp */; };
-		4C93F1541F8B744400A9330D /* TwisterRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1341F8B744400A9330D /* TwisterRollerCoaster.cpp */; };
-		4C93F1551F8B744400A9330D /* VerticalDropRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1351F8B744400A9330D /* VerticalDropRollerCoaster.cpp */; };
-		4C93F1561F8B744400A9330D /* VirginiaReel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1361F8B744400A9330D /* VirginiaReel.cpp */; };
-		4C93F1571F8B744400A9330D /* WildMouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1371F8B744400A9330D /* WildMouse.cpp */; };
-		4C93F1581F8B744400A9330D /* WoodenRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1381F8B744400A9330D /* WoodenRollerCoaster.cpp */; };
-		4C93F1591F8B744400A9330D /* WoodenWildMouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1391F8B744400A9330D /* WoodenWildMouse.cpp */; };
-		4C93F16A1F8B745700A9330D /* CarRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15A1F8B745700A9330D /* CarRide.cpp */; };
-		4C93F16B1F8B745700A9330D /* CircusShow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15B1F8B745700A9330D /* CircusShow.cpp */; };
-		4C93F16C1F8B745700A9330D /* CrookedHouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15C1F8B745700A9330D /* CrookedHouse.cpp */; };
-		4C93F16D1F8B745700A9330D /* Dodgems.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15D1F8B745700A9330D /* Dodgems.cpp */; };
-		4C93F16E1F8B745700A9330D /* FerrisWheel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15E1F8B745700A9330D /* FerrisWheel.cpp */; };
-		4C93F16F1F8B745700A9330D /* FlyingSaucers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15F1F8B745700A9330D /* FlyingSaucers.cpp */; };
-		4C93F1701F8B745700A9330D /* GhostTrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1601F8B745700A9330D /* GhostTrain.cpp */; };
-		4C93F1711F8B745700A9330D /* HauntedHouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1611F8B745700A9330D /* HauntedHouse.cpp */; };
-		4C93F1721F8B745700A9330D /* Maze.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1621F8B745700A9330D /* Maze.cpp */; };
-		4C93F1731F8B745700A9330D /* MerryGoRound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1631F8B745700A9330D /* MerryGoRound.cpp */; };
-		4C93F1741F8B745700A9330D /* MiniGolf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1641F8B745700A9330D /* MiniGolf.cpp */; };
-		4C93F1751F8B745700A9330D /* MiniHelicopters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1651F8B745700A9330D /* MiniHelicopters.cpp */; };
-		4C93F1761F8B745700A9330D /* MonorailCycles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1661F8B745700A9330D /* MonorailCycles.cpp */; };
-		4C93F1771F8B745700A9330D /* ObservationTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1671F8B745700A9330D /* ObservationTower.cpp */; };
-		4C93F1781F8B745700A9330D /* SpaceRings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1681F8B745700A9330D /* SpaceRings.cpp */; };
-		4C93F1791F8B745700A9330D /* SpiralSlide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1691F8B745700A9330D /* SpiralSlide.cpp */; };
-		4C93F17C1F8B747300A9330D /* Facility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F17A1F8B747300A9330D /* Facility.cpp */; };
-		4C93F17D1F8B747300A9330D /* Shop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F17B1F8B747300A9330D /* Shop.cpp */; };
-		4C93F1891F8B747A00A9330D /* 3dCinema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F17E1F8B747A00A9330D /* 3dCinema.cpp */; };
-		4C93F18A1F8B747A00A9330D /* Enterprise.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F17F1F8B747A00A9330D /* Enterprise.cpp */; };
-		4C93F18B1F8B747A00A9330D /* GoKarts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1801F8B747A00A9330D /* GoKarts.cpp */; };
-		4C93F18C1F8B747A00A9330D /* LaunchedFreefall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1811F8B747A00A9330D /* LaunchedFreefall.cpp */; };
-		4C93F18D1F8B747A00A9330D /* MagicCarpet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1821F8B747A00A9330D /* MagicCarpet.cpp */; };
-		4C93F18E1F8B747A00A9330D /* MotionSimulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1831F8B747A00A9330D /* MotionSimulator.cpp */; };
-		4C93F18F1F8B747A00A9330D /* PirateShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1841F8B747A00A9330D /* PirateShip.cpp */; };
-		4C93F1901F8B747A00A9330D /* RotoDrop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1851F8B747A00A9330D /* RotoDrop.cpp */; };
-		4C93F1911F8B747A00A9330D /* SwingingInverterShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1861F8B747A00A9330D /* SwingingInverterShip.cpp */; };
-		4C93F1921F8B747A00A9330D /* TopSpin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1871F8B747A00A9330D /* TopSpin.cpp */; };
-		4C93F1931F8B747A00A9330D /* Twist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1881F8B747A00A9330D /* Twist.cpp */; };
-		4C93F1991F8B748200A9330D /* Chairlift.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1941F8B748200A9330D /* Chairlift.cpp */; };
-		4C93F19A1F8B748200A9330D /* Lift.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1951F8B748200A9330D /* Lift.cpp */; };
-		4C93F19B1F8B748200A9330D /* MiniatureRailway.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1961F8B748200A9330D /* MiniatureRailway.cpp */; };
-		4C93F19C1F8B748200A9330D /* Monorail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1971F8B748200A9330D /* Monorail.cpp */; };
-		4C93F19D1F8B748200A9330D /* SuspendedMonorail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1981F8B748200A9330D /* SuspendedMonorail.cpp */; };
-		4C93F1A51F8B748900A9330D /* BoatHire.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F19E1F8B748900A9330D /* BoatHire.cpp */; };
-		4C93F1A61F8B748900A9330D /* DingySlide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F19F1F8B748900A9330D /* DingySlide.cpp */; };
-		4C93F1A71F8B748900A9330D /* LogFlume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A01F8B748900A9330D /* LogFlume.cpp */; };
-		4C93F1A81F8B748900A9330D /* RiverRapids.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A11F8B748900A9330D /* RiverRapids.cpp */; };
-		4C93F1A91F8B748900A9330D /* SplashBoats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A21F8B748900A9330D /* SplashBoats.cpp */; };
-		4C93F1AA1F8B748900A9330D /* SubmarineRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A31F8B748900A9330D /* SubmarineRide.cpp */; };
-		4C93F1AB1F8B748900A9330D /* WaterCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A41F8B748900A9330D /* WaterCoaster.cpp */; };
 		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
 		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
-		4C93F1BA1F8E185600A9330D /* Award.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B01F8E185600A9330D /* Award.cpp */; };
-		4C93F1BB1F8E185600A9330D /* Finance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B21F8E185600A9330D /* Finance.cpp */; };
-		4C93F1BC1F8E185600A9330D /* Marketing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B41F8E185600A9330D /* Marketing.cpp */; };
-		4C93F1BD1F8E185600A9330D /* NewsItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B61F8E185600A9330D /* NewsItem.cpp */; };
-		4C93F1BE1F8E185600A9330D /* Research.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B81F8E185600A9330D /* Research.cpp */; };
-		4CC4B8E41FE00C4200660D62 /* CmdlineSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8E21FE00C4100660D62 /* CmdlineSprite.cpp */; };
-		4CC4B8E71FE00C4E00660D62 /* Diagnostic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8E51FE00C4E00660D62 /* Diagnostic.cpp */; };
-		4CC4B8ED1FE00C5D00660D62 /* Intro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8EA1FE00C5D00660D62 /* Intro.cpp */; };
-		4CE462411FD0710E0001CD98 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4623F1FD0710E0001CD98 /* Game.cpp */; };
-		4CE462451FD161360001CD98 /* Platform.Android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462441FD161360001CD98 /* Platform.Android.cpp */; };
-		4CE4624A1FD1613D0001CD98 /* Platform.Linux.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462461FD1613D0001CD98 /* Platform.Linux.cpp */; };
-		4CE4624C1FD1613D0001CD98 /* Platform.Posix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462481FD1613D0001CD98 /* Platform.Posix.cpp */; };
-		4CE4624D1FD1613D0001CD98 /* Platform.Win32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462491FD1613D0001CD98 /* Platform.Win32.cpp */; };
-		4CFE4E801F90A3F1005243C2 /* Peep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7B1F90A3F1005243C2 /* Peep.cpp */; };
-		4CFE4E811F90A3F1005243C2 /* PeepData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7D1F90A3F1005243C2 /* PeepData.cpp */; };
-		4CFE4E821F90A3F1005243C2 /* Staff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7E1F90A3F1005243C2 /* Staff.cpp */; };
-		4CFE4E851F90AF41005243C2 /* Vehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E831F90AF41005243C2 /* Vehicle.cpp */; };
-		4CFE4E891F950164005243C2 /* TrackData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E861F950164005243C2 /* TrackData.cpp */; };
-		4CFE4E8A1F950164005243C2 /* TrackDataOld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E881F950164005243C2 /* TrackDataOld.cpp */; };
-		4CFE4E901F9625B0005243C2 /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E8E1F9625B0005243C2 /* Track.cpp */; };
-		C606CCC01DB4054000FE4015 /* FunctionCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAE1DB4054000FE4015 /* FunctionCall.cpp */; };
-		C606CCC11DB4054000FE4015 /* generate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCB01DB4054000FE4015 /* generate.cpp */; };
-		C606CCC41DB4054000FE4015 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCB41DB4054000FE4015 /* main.cpp */; };
-		C606CCC51DB4054000FE4015 /* PaintIntercept.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCB51DB4054000FE4015 /* PaintIntercept.cpp */; };
-		C606CCC61DB4054000FE4015 /* Printer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCB61DB4054000FE4015 /* Printer.cpp */; };
-		C606CCC71DB4054000FE4015 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCB81DB4054000FE4015 /* String.cpp */; };
-		C606CCC81DB4054000FE4015 /* TestTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCBA1DB4054000FE4015 /* TestTrack.cpp */; };
-		C606CCC91DB4054000FE4015 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCBC1DB4054000FE4015 /* Utils.cpp */; };
-		C606CCCE1DB427A000FE4015 /* GeneralSupportHeightCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCCA1DB427A000FE4015 /* GeneralSupportHeightCall.cpp */; };
-		C606CCCF1DB427A000FE4015 /* SegmentSupportHeightCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCCC1DB427A000FE4015 /* SegmentSupportHeightCall.cpp */; };
-		C606CCD21DB4D7C800FE4015 /* SideTunnelCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCD01DB4D7C800FE4015 /* SideTunnelCall.cpp */; };
-		C606CCD51DB4DD6C00FE4015 /* VerticalTunnelCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCD31DB4DD6C00FE4015 /* VerticalTunnelCall.cpp */; };
-		C606CD261DB5120C00FE4015 /* TestPaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CD231DB5120900FE4015 /* TestPaint.cpp */; };
 		C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */; };
 		C61ADB211FB7DC060024F2EF /* Scenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB201FB7DC060024F2EF /* Scenery.cpp */; };
 		C61ADB231FBBCB8B0024F2EF /* GameBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */; };
@@ -252,7 +53,6 @@
 		C64644FF1F3FA4120026AC2D /* StaffList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C64644F51F3FA4120026AC2D /* StaffList.cpp */; };
 		C64645001F3FA4120026AC2D /* ViewClipping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C64644F61F3FA4120026AC2D /* ViewClipping.cpp */; };
 		C64645011F3FA4120026AC2D /* Water.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C64644F71F3FA4120026AC2D /* Water.cpp */; };
-		C651A8D91F30204300443BCA /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C651A8D71F30204300443BCA /* Text.cpp */; };
 		C654DF2D1F69C0430040F43D /* Banner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF1C1F69C0430040F43D /* Banner.cpp */; };
 		C654DF2E1F69C0430040F43D /* DemolishRidePrompt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF1D1F69C0430040F43D /* DemolishRidePrompt.cpp */; };
 		C654DF2F1F69C0430040F43D /* Error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF1E1F69C0430040F43D /* Error.cpp */; };
@@ -270,7 +70,6 @@
 		C654DF3B1F69C0430040F43D /* TitleScenarioSelect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF2A1F69C0430040F43D /* TitleScenarioSelect.cpp */; };
 		C654DF3C1F69C0430040F43D /* TrackDesignManage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF2B1F69C0430040F43D /* TrackDesignManage.cpp */; };
 		C654DF3D1F69C0430040F43D /* TrackDesignPlace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF2C1F69C0430040F43D /* TrackDesignPlace.cpp */; };
-		C654DF401F69C18C0040F43D /* Intent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF3E1F69C18C0040F43D /* Intent.cpp */; };
 		C6607F481FE2B97E00D3FC0D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8E81FE00C5D00660D62 /* Input.cpp */; };
 		C666ED761F33DBB20061AA04 /* ShortcutKeyChange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED741F33DBB20061AA04 /* ShortcutKeyChange.cpp */; };
 		C666ED771F33DBB20061AA04 /* ShortcutKeys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED751F33DBB20061AA04 /* ShortcutKeys.cpp */; };
@@ -301,7 +100,6 @@
 		C67B28192002D7F200109C93 /* Window_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = C67B28182002D7F200109C93 /* Window_internal.h */; };
 		C67CCD661FBBCFDB004FAE4C /* EditorBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67CCD651FBBCFDB004FAE4C /* EditorBottomToolbar.cpp */; };
 		C67CCD681FBBD138004FAE4C /* EditorMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67CCD671FBBD137004FAE4C /* EditorMain.cpp */; };
-		C68313C61FDB4EBA006DB3D8 /* input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C68313C51FDB4EBA006DB3D8 /* input.cpp */; };
 		C68313C81FDB4ED4006DB3D8 /* MouseInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C68313C71FDB4ED4006DB3D8 /* MouseInput.cpp */; };
 		C68313CB1FDB4EEC006DB3D8 /* Tooltip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C68313C91FDB4EEC006DB3D8 /* Tooltip.cpp */; };
 		C68313CC1FDB4EEC006DB3D8 /* Dropdown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C68313CA1FDB4EEC006DB3D8 /* Dropdown.cpp */; };
@@ -316,6 +114,210 @@
 		C6887847202897B70084B384 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C688783F202893600084B384 /* Cocoa.framework */; };
 		C6887848202897D10084B384 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C688783D202893590084B384 /* Foundation.framework */; };
 		C68878492028982B0084B384 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C688783F202893600084B384 /* Cocoa.framework */; };
+		C688784A202899B40084B384 /* input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C68313C51FDB4EBA006DB3D8 /* input.cpp */; };
+		C688784B202899B90084B384 /* Intro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8EA1FE00C5D00660D62 /* Intro.cpp */; };
+		C688784C202899BE0084B384 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4623F1FD0710E0001CD98 /* Game.cpp */; };
+		C688784D202899C40084B384 /* Diagnostic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8E51FE00C4E00660D62 /* Diagnostic.cpp */; };
+		C688784E202899CB0084B384 /* Date.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C5DFF401FAC69D200CB093A /* Date.cpp */; };
+		C688784F202899D00084B384 /* CmdlineSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8E21FE00C4100660D62 /* CmdlineSprite.cpp */; };
+		C6887850202899D40084B384 /* Cheats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66901FE14C9500694CB6 /* Cheats.cpp */; };
+		C6887851202899EA0084B384 /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54402007646A00A52E21 /* Wall.cpp */; };
+		C6887852202899ED0084B384 /* TileInspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B543E2007646A00A52E21 /* TileInspector.cpp */; };
+		C6887853202899F00084B384 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B543C2007646A00A52E21 /* Sprite.cpp */; };
+		C6887854202899F30084B384 /* SmallScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B543A2007646A00A52E21 /* SmallScenery.cpp */; };
+		C6887855202899F60084B384 /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54372007646A00A52E21 /* Particle.cpp */; };
+		C6887856202899FA0084B384 /* Scenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54382007646A00A52E21 /* Scenery.cpp */; };
+		C6887857202899FD0084B384 /* Park.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54352007646A00A52E21 /* Park.cpp */; };
+		C688785820289A0A0084B384 /* Balloon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B541D2007646A00A52E21 /* Balloon.cpp */; };
+		C688785920289A0A0084B384 /* Banner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B541E2007646A00A52E21 /* Banner.cpp */; };
+		C688785A20289A0A0084B384 /* Climate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54202007646A00A52E21 /* Climate.cpp */; };
+		C688785B20289A0A0084B384 /* Duck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54222007646A00A52E21 /* Duck.cpp */; };
+		C688785C20289A0A0084B384 /* Entrance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54232007646A00A52E21 /* Entrance.cpp */; };
+		C688785D20289A0A0084B384 /* Footpath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54252007646A00A52E21 /* Footpath.cpp */; };
+		C688785E20289A0A0084B384 /* Fountain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54272007646A00A52E21 /* Fountain.cpp */; };
+		C688785F20289A0A0084B384 /* LargeScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54292007646A00A52E21 /* LargeScenery.cpp */; };
+		C688786020289A0A0084B384 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B542C2007646A00A52E21 /* Map.cpp */; };
+		C688786120289A0A0084B384 /* MapAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B542E2007646A00A52E21 /* MapAnimation.cpp */; };
+		C688786220289A0A0084B384 /* MapGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54302007646A00A52E21 /* MapGen.cpp */; };
+		C688786320289A0A0084B384 /* MapHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54322007646A00A52E21 /* MapHelpers.cpp */; };
+		C688786420289A0A0084B384 /* MoneyEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54342007646A00A52E21 /* MoneyEffect.cpp */; };
+		C688786520289A400084B384 /* _legacy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B2048E2024E8B30000AD7E /* _legacy.cpp */; };
+		C688786620289A430084B384 /* Intent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF3E1F69C18C0040F43D /* Intent.cpp */; };
+		C688786720289A4A0084B384 /* SawyerCoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A668A1FE14C3A00694CB6 /* SawyerCoding.cpp */; };
+		C688786820289A4A0084B384 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A668C1FE14C3A00694CB6 /* Util.cpp */; };
+		C688786920289A660084B384 /* CableLift.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6AC2101F9E1CB3004324AA /* CableLift.cpp */; };
+		C688786B20289A6F0084B384 /* TrackDataOld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E881F950164005243C2 /* TrackDataOld.cpp */; };
+		C688786C20289A6F0084B384 /* TrackDesign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C4C1E971F58226500560300 /* TrackDesign.cpp */; };
+		C688786D20289A6F0084B384 /* TrackPaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B540B20060D8100A52E21 /* TrackPaint.cpp */; };
+		C688786E20289A6F0084B384 /* Vehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E831F90AF41005243C2 /* Vehicle.cpp */; };
+		C688786F20289A6F0084B384 /* VehicleData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54052005735F00A52E21 /* VehicleData.cpp */; };
+		C688787020289A6F0084B384 /* VehiclePaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54072005736700A52E21 /* VehiclePaint.cpp */; };
+		C688787120289A780084B384 /* Ride.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66BF1FF9322A00694CB6 /* Ride.cpp */; };
+		C688787220289A780084B384 /* MusicList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73E320F2011589F00C4D975 /* MusicList.cpp */; };
+		C688787320289A780084B384 /* RideRatings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73E320B2011589E00C4D975 /* RideRatings.cpp */; };
+		C688787420289A780084B384 /* TrackDesignSave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73E320E2011589F00C4D975 /* TrackDesignSave.cpp */; };
+		C688787520289A780084B384 /* RideData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B541420060D8E00A52E21 /* RideData.cpp */; };
+		C688787620289A780084B384 /* RideGroupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */; };
+		C688787720289A780084B384 /* Station.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6AC20D1F9E1693004324AA /* Station.cpp */; };
+		C688787820289A780084B384 /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E8E1F9625B0005243C2 /* Track.cpp */; };
+		C688787920289A780084B384 /* TrackData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E861F950164005243C2 /* TrackData.cpp */; };
+		C688787E20289ADE0084B384 /* Drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53D520002CA400A52E21 /* Drawing.cpp */; };
+		C688787F20289ADE0084B384 /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53D620002CA400A52E21 /* Font.cpp */; };
+		C688788020289ADE0084B384 /* LightFX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53D720002CA400A52E21 /* LightFX.cpp */; };
+		C688788120289ADE0084B384 /* Line.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53CD200029CE00A52E21 /* Line.cpp */; };
+		C688788220289ADE0084B384 /* Rect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53CF200029D900A52E21 /* Rect.cpp */; };
+		C688788320289ADE0084B384 /* ScrollingText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53D0200029D900A52E21 /* ScrollingText.cpp */; };
+		C688788420289ADE0084B384 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53D3200029E000A52E21 /* String.cpp */; };
+		C688788520289ADE0084B384 /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C651A8D71F30204300443BCA /* Text.cpp */; };
+		C688788620289ADE0084B384 /* TTF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53D820002CA400A52E21 /* TTF.cpp */; };
+		C688788720289ADE0084B384 /* TTFSDLPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54682007BF2E00A52E21 /* TTFSDLPort.cpp */; };
+		C688788820289ADE0084B384 /* X8DrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */; };
+		C688788E20289AE70084B384 /* SSE41Drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66BB1FED04EE00694CB6 /* SSE41Drawing.cpp */; settings = {COMPILER_FLAGS = "-msse4.1"; }; };
+		C688788F20289B140084B384 /* Chat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53DD200143C200A52E21 /* Chat.cpp */; };
+		C688789020289B140084B384 /* Colour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53DF200143C200A52E21 /* Colour.cpp */; };
+		C688789120289B140084B384 /* Console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53E1200143C200A52E21 /* Console.cpp */; };
+		C688789220289B140084B384 /* FontFamilies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53E4200143C200A52E21 /* FontFamilies.cpp */; };
+		C688789320289B140084B384 /* Fonts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53E6200143C200A52E21 /* Fonts.cpp */; };
+		C688789420289B140084B384 /* Screenshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53E8200143C200A52E21 /* Screenshot.cpp */; };
+		C688789520289B140084B384 /* Theme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53EA200143C200A52E21 /* Theme.cpp */; };
+		C688789620289B140084B384 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53EC200143C200A52E21 /* Viewport.cpp */; };
+		C688789720289B140084B384 /* ViewportInteraction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53EE200143C200A52E21 /* ViewportInteraction.cpp */; };
+		C688789820289B140084B384 /* Widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53EF200143C200A52E21 /* Widget.cpp */; };
+		C688789920289B140084B384 /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53F1200143C200A52E21 /* Window.cpp */; };
+		C688789A20289B200084B384 /* ConversionTables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53C61FFF94F900A52E21 /* ConversionTables.cpp */; };
+		C688789B20289B200084B384 /* Convert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53AA1FFF935B00A52E21 /* Convert.cpp */; };
+		C688789C20289B200084B384 /* Currency.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53AB1FFF935B00A52E21 /* Currency.cpp */; };
+		C688789D20289B200084B384 /* Date.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53AD1FFF935B00A52E21 /* Date.cpp */; };
+		C688789E20289B200084B384 /* FormatCodes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53AF1FFF935B00A52E21 /* FormatCodes.cpp */; };
+		C688789F20289B200084B384 /* Language.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53B11FFF935B00A52E21 /* Language.cpp */; };
+		C68878A020289B200084B384 /* LanguagePack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53B31FFF935B00A52E21 /* LanguagePack.cpp */; };
+		C68878A120289B200084B384 /* Localisation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53B51FFF935B00A52E21 /* Localisation.cpp */; };
+		C68878A220289B200084B384 /* RealNames.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53B71FFF935B00A52E21 /* RealNames.cpp */; };
+		C68878A320289B200084B384 /* User.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53B91FFF935B00A52E21 /* User.cpp */; };
+		C68878A420289B200084B384 /* UTF8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53BB1FFF935B00A52E21 /* UTF8.cpp */; };
+		C68878A520289B2A0084B384 /* Award.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B01F8E185600A9330D /* Award.cpp */; };
+		C68878A620289B2A0084B384 /* Finance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B21F8E185600A9330D /* Finance.cpp */; };
+		C68878A720289B2A0084B384 /* Marketing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B41F8E185600A9330D /* Marketing.cpp */; };
+		C68878A820289B2A0084B384 /* NewsItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B61F8E185600A9330D /* NewsItem.cpp */; };
+		C68878A920289B2A0084B384 /* Research.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B81F8E185600A9330D /* Research.cpp */; };
+		C68878C020289B710084B384 /* ApplyPaletteShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85911EC4E82600FA49E2 /* ApplyPaletteShader.cpp */; };
+		C68878C120289B710084B384 /* ApplyTransparencyShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D45E09161F99CF2F00854B2B /* ApplyTransparencyShader.cpp */; };
+		C68878C220289B710084B384 /* DrawLineShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85961EC4E82600FA49E2 /* DrawLineShader.cpp */; };
+		C68878C320289B710084B384 /* DrawRectShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85941EC4E82600FA49E2 /* DrawRectShader.cpp */; };
+		C68878C420289B710084B384 /* OpenGLAPI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C859B1EC4E82600FA49E2 /* OpenGLAPI.cpp */; };
+		C68878C520289B710084B384 /* OpenGLDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C859D1EC4E82600FA49E2 /* OpenGLDrawingEngine.cpp */; };
+		C68878C620289B710084B384 /* OpenGLFramebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C859E1EC4E82600FA49E2 /* OpenGLFramebuffer.cpp */; };
+		C68878C720289B710084B384 /* OpenGLShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85A01EC4E82600FA49E2 /* OpenGLShaderProgram.cpp */; };
+		C68878C820289B710084B384 /* SwapFramebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85A21EC4E82600FA49E2 /* SwapFramebuffer.cpp */; };
+		C68878C920289B710084B384 /* TextureCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85A41EC4E82600FA49E2 /* TextureCache.cpp */; };
+		C68878CA20289B710084B384 /* TransparencyDepth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4974F1A1FA04A1900F7FD7F /* TransparencyDepth.cpp */; };
+		C68878CB20289B710084B384 /* HardwareDisplayDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */; };
+		C68878CC20289B710084B384 /* SoftwareDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85A61EC4E82600FA49E2 /* SoftwareDrawingEngine.cpp */; };
+		C68878CD20289B9B0084B384 /* DefaultObjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B2048B2024E7800000AD7E /* DefaultObjects.cpp */; };
+		C68878CE20289B9B0084B384 /* ObjectList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53A31FFC180400A52E21 /* ObjectList.cpp */; };
+		C68878CF20289B9B0084B384 /* Litter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66931FE2786F00694CB6 /* Litter.cpp */; };
+		C68878D020289B9B0084B384 /* Misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66941FE2786F00694CB6 /* Misc.cpp */; };
+		C68878D120289B9B0084B384 /* Peep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66951FE2786F00694CB6 /* Peep.cpp */; };
+		C68878D220289B9B0084B384 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66961FE2786F00694CB6 /* Sprite.cpp */; };
+		C68878D320289B9B0084B384 /* Banner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A669C1FE2787700694CB6 /* Banner.cpp */; };
+		C68878D420289B9B0084B384 /* Entrance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A669D1FE2787700694CB6 /* Entrance.cpp */; };
+		C68878D520289B9B0084B384 /* Fence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A669E1FE2787700694CB6 /* Fence.cpp */; };
+		C68878D620289B9B0084B384 /* LargeScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A669F1FE2787700694CB6 /* LargeScenery.cpp */; };
+		C68878D720289B9B0084B384 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66A01FE2787700694CB6 /* Path.cpp */; };
+		C68878D820289B9B0084B384 /* SmallScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66A11FE2787700694CB6 /* SmallScenery.cpp */; };
+		C68878D920289B9B0084B384 /* Surface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66A21FE2787700694CB6 /* Surface.cpp */; };
+		C68878DA20289B9B0084B384 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66A41FE2787700694CB6 /* TileElement.cpp */; };
+		C68878DB20289B9B0084B384 /* Paint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66AE1FE278C900694CB6 /* Paint.cpp */; };
+		C68878DC20289B9B0084B384 /* Painter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66B01FE278C900694CB6 /* Painter.cpp */; };
+		C68878DD20289B9B0084B384 /* PaintHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66B21FE278C900694CB6 /* PaintHelpers.cpp */; };
+		C68878DE20289B9B0084B384 /* Supports.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66B31FE278C900694CB6 /* Supports.cpp */; };
+		C68878DF20289B9B0084B384 /* VirtualFloor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B540020015AC600A52E21 /* VirtualFloor.cpp */; };
+		C68878E020289B9B0084B384 /* Peep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7B1F90A3F1005243C2 /* Peep.cpp */; };
+		C68878E120289B9B0084B384 /* PeepData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7D1F90A3F1005243C2 /* PeepData.cpp */; };
+		C68878E220289B9B0084B384 /* Staff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7E1F90A3F1005243C2 /* Staff.cpp */; };
+		C68878E320289B9B0084B384 /* Android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54742010DF3C00A52E21 /* Android.cpp */; };
+		C68878E420289B9B0084B384 /* Linux.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54762010DF4300A52E21 /* Linux.cpp */; };
+		C68878E520289B9B0084B384 /* Platform.Android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462441FD161360001CD98 /* Platform.Android.cpp */; };
+		C68878E620289B9B0084B384 /* Platform.Linux.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462461FD1613D0001CD98 /* Platform.Linux.cpp */; };
+		C68878E720289B9B0084B384 /* Platform.Posix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462481FD1613D0001CD98 /* Platform.Posix.cpp */; };
+		C68878E820289B9B0084B384 /* Platform.Win32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462491FD1613D0001CD98 /* Platform.Win32.cpp */; };
+		C68878E920289B9B0084B384 /* Posix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54782010DF4C00A52E21 /* Posix.cpp */; };
+		C68878EA20289B9B0084B384 /* Shared.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54792010DF4C00A52E21 /* Shared.cpp */; };
+		C68878EB20289B9B0084B384 /* Windows.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B547A2010DF4C00A52E21 /* Windows.cpp */; };
+		C68878EC20289B9B0084B384 /* AirPoweredVerticalCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1181F8B744400A9330D /* AirPoweredVerticalCoaster.cpp */; };
+		C68878ED20289B9B0084B384 /* BobsleighCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1191F8B744400A9330D /* BobsleighCoaster.cpp */; };
+		C68878EE20289B9B0084B384 /* BolligerMabillardTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F11B1F8B744400A9330D /* BolligerMabillardTrack.cpp */; };
+		C68878EF20289B9B0084B384 /* CompactInvertedCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F11C1F8B744400A9330D /* CompactInvertedCoaster.cpp */; };
+		C68878F020289B9B0084B384 /* CorkscrewRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F11D1F8B744400A9330D /* CorkscrewRollerCoaster.cpp */; };
+		C68878F120289B9B0084B384 /* FlyingRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F11E1F8B744400A9330D /* FlyingRollerCoaster.cpp */; };
+		C68878F220289B9B0084B384 /* GigaCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F11F1F8B744400A9330D /* GigaCoaster.cpp */; };
+		C68878F320289B9B0084B384 /* HeartlineTwisterCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1201F8B744400A9330D /* HeartlineTwisterCoaster.cpp */; };
+		C68878F420289B9B0084B384 /* InvertedHairpinCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1211F8B744400A9330D /* InvertedHairpinCoaster.cpp */; };
+		C68878F520289B9B0084B384 /* InvertedImpulseCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1221F8B744400A9330D /* InvertedImpulseCoaster.cpp */; };
+		C68878F620289B9B0084B384 /* InvertedRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1231F8B744400A9330D /* InvertedRollerCoaster.cpp */; };
+		C68878F720289B9B0084B384 /* JuniorRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1251F8B744400A9330D /* JuniorRollerCoaster.cpp */; };
+		C68878F820289B9B0084B384 /* LayDownRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1261F8B744400A9330D /* LayDownRollerCoaster.cpp */; };
+		C68878F920289B9B0084B384 /* LimLaunchedRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1271F8B744400A9330D /* LimLaunchedRollerCoaster.cpp */; };
+		C68878FA20289B9B0084B384 /* LoopingRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1281F8B744400A9330D /* LoopingRollerCoaster.cpp */; };
+		C68878FB20289B9B0084B384 /* MineRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1291F8B744400A9330D /* MineRide.cpp */; };
+		C68878FC20289B9B0084B384 /* MineTrainCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12A1F8B744400A9330D /* MineTrainCoaster.cpp */; };
+		C68878FD20289B9B0084B384 /* MiniRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12B1F8B744400A9330D /* MiniRollerCoaster.cpp */; };
+		C68878FE20289B9B0084B384 /* MiniSuspendedCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12C1F8B744400A9330D /* MiniSuspendedCoaster.cpp */; };
+		C68878FF20289B9B0084B384 /* MultiDimensionRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12D1F8B744400A9330D /* MultiDimensionRollerCoaster.cpp */; };
+		C688790020289B9B0084B384 /* ReverseFreefallCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12E1F8B744400A9330D /* ReverseFreefallCoaster.cpp */; };
+		C688790120289B9B0084B384 /* ReverserRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12F1F8B744400A9330D /* ReverserRollerCoaster.cpp */; };
+		C688790220289B9B0084B384 /* SideFrictionRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1301F8B744400A9330D /* SideFrictionRollerCoaster.cpp */; };
+		C688790320289B9B0084B384 /* StandUpRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1311F8B744400A9330D /* StandUpRollerCoaster.cpp */; };
+		C688790420289B9B0084B384 /* Steeplechase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1321F8B744400A9330D /* Steeplechase.cpp */; };
+		C688790520289B9B0084B384 /* SuspendedSwingingCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1331F8B744400A9330D /* SuspendedSwingingCoaster.cpp */; };
+		C688790620289B9B0084B384 /* TwisterRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1341F8B744400A9330D /* TwisterRollerCoaster.cpp */; };
+		C688790720289B9B0084B384 /* VerticalDropRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1351F8B744400A9330D /* VerticalDropRollerCoaster.cpp */; };
+		C688790820289B9B0084B384 /* VirginiaReel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1361F8B744400A9330D /* VirginiaReel.cpp */; };
+		C688790920289B9B0084B384 /* WildMouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1371F8B744400A9330D /* WildMouse.cpp */; };
+		C688790A20289B9B0084B384 /* WoodenRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1381F8B744400A9330D /* WoodenRollerCoaster.cpp */; };
+		C688790B20289B9B0084B384 /* WoodenWildMouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1391F8B744400A9330D /* WoodenWildMouse.cpp */; };
+		C688790C20289B9B0084B384 /* CarRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15A1F8B745700A9330D /* CarRide.cpp */; };
+		C688790D20289B9B0084B384 /* CircusShow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15B1F8B745700A9330D /* CircusShow.cpp */; };
+		C688790E20289B9B0084B384 /* CrookedHouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15C1F8B745700A9330D /* CrookedHouse.cpp */; };
+		C688790F20289B9B0084B384 /* Dodgems.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15D1F8B745700A9330D /* Dodgems.cpp */; };
+		C688791020289B9B0084B384 /* FerrisWheel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15E1F8B745700A9330D /* FerrisWheel.cpp */; };
+		C688791120289B9B0084B384 /* FlyingSaucers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15F1F8B745700A9330D /* FlyingSaucers.cpp */; };
+		C688791220289B9B0084B384 /* GhostTrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1601F8B745700A9330D /* GhostTrain.cpp */; };
+		C688791320289B9B0084B384 /* HauntedHouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1611F8B745700A9330D /* HauntedHouse.cpp */; };
+		C688791420289B9B0084B384 /* Maze.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1621F8B745700A9330D /* Maze.cpp */; };
+		C688791520289B9B0084B384 /* MerryGoRound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1631F8B745700A9330D /* MerryGoRound.cpp */; };
+		C688791620289B9B0084B384 /* MiniGolf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1641F8B745700A9330D /* MiniGolf.cpp */; };
+		C688791720289B9B0084B384 /* MiniHelicopters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1651F8B745700A9330D /* MiniHelicopters.cpp */; };
+		C688791820289B9B0084B384 /* MonorailCycles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1661F8B745700A9330D /* MonorailCycles.cpp */; };
+		C688791920289B9B0084B384 /* ObservationTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1671F8B745700A9330D /* ObservationTower.cpp */; };
+		C688791A20289B9B0084B384 /* SpaceRings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1681F8B745700A9330D /* SpaceRings.cpp */; };
+		C688791B20289B9B0084B384 /* SpiralSlide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1691F8B745700A9330D /* SpiralSlide.cpp */; };
+		C688791C20289B9B0084B384 /* Facility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F17A1F8B747300A9330D /* Facility.cpp */; };
+		C688791D20289B9B0084B384 /* Shop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F17B1F8B747300A9330D /* Shop.cpp */; };
+		C688791E20289B9B0084B384 /* 3dCinema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F17E1F8B747A00A9330D /* 3dCinema.cpp */; };
+		C688791F20289B9B0084B384 /* Enterprise.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F17F1F8B747A00A9330D /* Enterprise.cpp */; };
+		C688792020289B9B0084B384 /* GoKarts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1801F8B747A00A9330D /* GoKarts.cpp */; };
+		C688792120289B9B0084B384 /* LaunchedFreefall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1811F8B747A00A9330D /* LaunchedFreefall.cpp */; };
+		C688792220289B9B0084B384 /* MagicCarpet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1821F8B747A00A9330D /* MagicCarpet.cpp */; };
+		C688792320289B9B0084B384 /* MotionSimulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1831F8B747A00A9330D /* MotionSimulator.cpp */; };
+		C688792420289B9B0084B384 /* PirateShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1841F8B747A00A9330D /* PirateShip.cpp */; };
+		C688792520289B9B0084B384 /* RotoDrop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1851F8B747A00A9330D /* RotoDrop.cpp */; };
+		C688792620289B9B0084B384 /* SwingingInverterShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1861F8B747A00A9330D /* SwingingInverterShip.cpp */; };
+		C688792720289B9B0084B384 /* TopSpin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1871F8B747A00A9330D /* TopSpin.cpp */; };
+		C688792820289B9B0084B384 /* Twist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1881F8B747A00A9330D /* Twist.cpp */; };
+		C688792920289B9B0084B384 /* Chairlift.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1941F8B748200A9330D /* Chairlift.cpp */; };
+		C688792A20289B9B0084B384 /* Lift.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1951F8B748200A9330D /* Lift.cpp */; };
+		C688792B20289B9B0084B384 /* MiniatureRailway.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1961F8B748200A9330D /* MiniatureRailway.cpp */; };
+		C688792C20289B9B0084B384 /* Monorail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1971F8B748200A9330D /* Monorail.cpp */; };
+		C688792D20289B9B0084B384 /* SuspendedMonorail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1981F8B748200A9330D /* SuspendedMonorail.cpp */; };
+		C688792E20289B9B0084B384 /* BoatHire.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F19E1F8B748900A9330D /* BoatHire.cpp */; };
+		C688792F20289B9B0084B384 /* DingySlide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F19F1F8B748900A9330D /* DingySlide.cpp */; };
+		C688793020289B9B0084B384 /* LogFlume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A01F8B748900A9330D /* LogFlume.cpp */; };
+		C688793120289B9B0084B384 /* RiverRapids.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A11F8B748900A9330D /* RiverRapids.cpp */; };
+		C688793220289B9B0084B384 /* SplashBoats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A21F8B748900A9330D /* SplashBoats.cpp */; };
+		C688793320289B9B0084B384 /* SubmarineRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A31F8B748900A9330D /* SubmarineRide.cpp */; };
+		C688793420289B9B0084B384 /* WaterCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A41F8B748900A9330D /* WaterCoaster.cpp */; };
+		C68879A420289C060084B384 /* Platform.macOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = F7B20489201E91BF0000AD7E /* Platform.macOS.mm */; };
 		C68D98BC1FC6B8AB008E8378 /* TileInspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C68D98BB1FC6B8AB008E8378 /* TileInspector.cpp */; };
 		C6CB94F21EFFBF860065888F /* libfreetype.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B41CF3006400659A24 /* libfreetype.dylib */; };
 		C6D2BEE21F9BAA6C008B557C /* Ride.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6D2BEE11F9BAA6C008B557C /* Ride.cpp */; };
@@ -340,20 +342,14 @@
 		D45A395D1CF300AF00659A24 /* libSDL2_ttf.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395E1CF300AF00659A24 /* libSDL2.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395F1CF300AF00659A24 /* libspeexdsp.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B91CF3006400659A24 /* libspeexdsp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		D45E09171F99CF2F00854B2B /* ApplyTransparencyShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D45E09161F99CF2F00854B2B /* ApplyTransparencyShader.cpp */; };
 		D47304D51C4FF8250015C0EA /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D47304D41C4FF8250015C0EA /* libz.tbd */; };
 		D48AFDB71EF78DBF0081C644 /* BenchGfxCommmands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48AFDB61EF78DBF0081C644 /* BenchGfxCommmands.cpp */; };
-		D4974F1C1FA04A1900F7FD7F /* TransparencyDepth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4974F1A1FA04A1900F7FD7F /* TransparencyDepth.cpp */; };
 		D4A8B4B41DB41873007A2F29 /* libpng16.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; };
 		D4A8B4B51DB4188D007A2F29 /* libpng16.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D4EC48E61C2637710024B507 /* g2.dat in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E31C2637710024B507 /* g2.dat */; };
 		D4EC48E71C2637710024B507 /* language in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
 		D4EC48E81C2637710024B507 /* title in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* title */; };
-		F70839921FFC0AFF002DCEFA /* Scenario.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F70839911FFC0AFF002DCEFA /* Scenario.cpp */; };
 		F70839931FFC0B61002DCEFA /* Scenario.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F70839911FFC0AFF002DCEFA /* Scenario.cpp */; };
-		F73E32102011589F00C4D975 /* RideRatings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73E320B2011589E00C4D975 /* RideRatings.cpp */; };
-		F73E32112011589F00C4D975 /* TrackDesignSave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73E320E2011589F00C4D975 /* TrackDesignSave.cpp */; };
-		F73E32122011589F00C4D975 /* MusicList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73E320F2011589F00C4D975 /* MusicList.cpp */; };
 		F76C85B01EC4E88300FA49E2 /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83571EC4E7CC00FA49E2 /* Audio.cpp */; };
 		F76C85B41EC4E88300FA49E2 /* AudioMixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C835B1EC4E7CC00FA49E2 /* AudioMixer.cpp */; };
 		F76C85B71EC4E88300FA49E2 /* NullAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C835E1EC4E7CC00FA49E2 /* NullAudioSource.cpp */; };
@@ -466,33 +462,17 @@
 		F76C887C1EC5324E00FA49E2 /* MemoryAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85881EC4E82600FA49E2 /* MemoryAudioSource.cpp */; };
 		F76C887D1EC5324E00FA49E2 /* CursorData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C858A1EC4E82600FA49E2 /* CursorData.cpp */; };
 		F76C887E1EC5324E00FA49E2 /* CursorRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C858B1EC4E82600FA49E2 /* CursorRepository.cpp */; };
-		F76C887F1EC5324E00FA49E2 /* ApplyPaletteShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85911EC4E82600FA49E2 /* ApplyPaletteShader.cpp */; };
-		F76C88801EC5324E00FA49E2 /* DrawRectShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85941EC4E82600FA49E2 /* DrawRectShader.cpp */; };
-		F76C88811EC5324E00FA49E2 /* DrawLineShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85961EC4E82600FA49E2 /* DrawLineShader.cpp */; };
-		F76C88831EC5324E00FA49E2 /* OpenGLAPI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C859B1EC4E82600FA49E2 /* OpenGLAPI.cpp */; };
-		F76C88841EC5324E00FA49E2 /* OpenGLDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C859D1EC4E82600FA49E2 /* OpenGLDrawingEngine.cpp */; };
-		F76C88851EC5324E00FA49E2 /* OpenGLFramebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C859E1EC4E82600FA49E2 /* OpenGLFramebuffer.cpp */; };
-		F76C88861EC5324E00FA49E2 /* OpenGLShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85A01EC4E82600FA49E2 /* OpenGLShaderProgram.cpp */; };
-		F76C88871EC5324E00FA49E2 /* SwapFramebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85A21EC4E82600FA49E2 /* SwapFramebuffer.cpp */; };
-		F76C88881EC5324E00FA49E2 /* TextureCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85A41EC4E82600FA49E2 /* TextureCache.cpp */; };
-		F76C88891EC5324E00FA49E2 /* SoftwareDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85A61EC4E82600FA49E2 /* SoftwareDrawingEngine.cpp */; };
 		F76C888A1EC5324E00FA49E2 /* TextComposition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85A91EC4E82600FA49E2 /* TextComposition.cpp */; };
 		F76C888B1EC5324E00FA49E2 /* Ui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85AB1EC4E82600FA49E2 /* Ui.cpp */; };
 		F76C888C1EC5324E00FA49E2 /* UiContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85AC1EC4E82600FA49E2 /* UiContext.cpp */; };
 		F76C888D1EC5324E00FA49E2 /* UiContext.Linux.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85AE1EC4E82600FA49E2 /* UiContext.Linux.cpp */; };
 		F76C888E1EC5324E00FA49E2 /* UiContext.Win32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85AF1EC4E82600FA49E2 /* UiContext.Win32.cpp */; };
 		F76C88921EC539A300FA49E2 /* libopenrct2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */; };
-		F775F5341EE35A6B001F00E7 /* DummyUiContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5331EE35A6B001F00E7 /* DummyUiContext.cpp */; };
 		F775F5351EE35A89001F00E7 /* DummyUiContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5331EE35A6B001F00E7 /* DummyUiContext.cpp */; };
-		F775F5371EE3724F001F00E7 /* DummyAudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */; };
 		F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */; };
 		F79F428F1F3260F1009E42F8 /* changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = F79F428E1F3260F1009E42F8 /* changelog.txt */; };
-		F7B2048A201E91BF0000AD7E /* Platform.macOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = F7B20489201E91BF0000AD7E /* Platform.macOS.mm */; };
-		F7B2048C2024E7810000AD7E /* DefaultObjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B2048B2024E7800000AD7E /* DefaultObjects.cpp */; };
-		F7B2048F2024E8B30000AD7E /* _legacy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7B2048E2024E8B30000AD7E /* _legacy.cpp */; };
 		F7CB863F1EEDA0B50030C877 /* WindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */; };
 		F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */; };
-		F7CB864D1EEDA1A80030C877 /* DummyWindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */; };
 		F7CB864E1EEDA2050030C877 /* DummyWindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */; };
 		F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */; };
 		F7D7748D1EC66F8600BE6EBC /* libopenrct2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */; };
@@ -551,15 +531,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C64FDA5B1D6D99F400F259B9 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
 		D41B74201C210B190080A7B9 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -754,12 +725,6 @@
 		4C7B54402007646A00A52E21 /* Wall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Wall.cpp; sourceTree = "<group>"; };
 		4C7B54412007646A00A52E21 /* Wall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wall.h; sourceTree = "<group>"; };
 		4C7B54422007646A00A52E21 /* Water.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Water.h; sourceTree = "<group>"; };
-		4C7B545720079C4000A52E21 /* Addresses.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Addresses.cpp; sourceTree = "<group>"; };
-		4C7B545820079C4000A52E21 /* addresses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = addresses.h; sourceTree = "<group>"; };
-		4C7B545A20079C4000A52E21 /* Data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Data.cpp; sourceTree = "<group>"; };
-		4C7B545B20079C4000A52E21 /* data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = data.h; sourceTree = "<group>"; };
-		4C7B545F20079C4900A52E21 /* Hook.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hook.cpp; sourceTree = "<group>"; };
-		4C7B546020079C4900A52E21 /* hook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hook.h; sourceTree = "<group>"; };
 		4C7B54682007BF2E00A52E21 /* TTFSDLPort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TTFSDLPort.cpp; sourceTree = "<group>"; };
 		4C7B54742010DF3C00A52E21 /* Android.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Android.cpp; sourceTree = "<group>"; };
 		4C7B54762010DF4300A52E21 /* Linux.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Linux.cpp; sourceTree = "<group>"; };
@@ -886,30 +851,6 @@
 		4CFE4E881F950164005243C2 /* TrackDataOld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDataOld.cpp; sourceTree = "<group>"; };
 		4CFE4E8E1F9625B0005243C2 /* Track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Track.cpp; sourceTree = "<group>"; };
 		4CFE4E8F1F9625B0005243C2 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
-		C606CCAE1DB4054000FE4015 /* FunctionCall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = FunctionCall.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		C606CCAF1DB4054000FE4015 /* FunctionCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = FunctionCall.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		C606CCB01DB4054000FE4015 /* generate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = generate.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		C606CCB41DB4054000FE4015 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = main.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		C606CCB51DB4054000FE4015 /* PaintIntercept.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = PaintIntercept.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		C606CCB61DB4054000FE4015 /* Printer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Printer.cpp; sourceTree = "<group>"; };
-		C606CCB71DB4054000FE4015 /* Printer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Printer.hpp; sourceTree = "<group>"; };
-		C606CCB81DB4054000FE4015 /* String.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = String.cpp; sourceTree = "<group>"; };
-		C606CCB91DB4054000FE4015 /* String.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = String.hpp; sourceTree = "<group>"; };
-		C606CCBA1DB4054000FE4015 /* TestTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestTrack.cpp; sourceTree = "<group>"; };
-		C606CCBB1DB4054000FE4015 /* TestTrack.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestTrack.hpp; sourceTree = "<group>"; };
-		C606CCBC1DB4054000FE4015 /* Utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utils.cpp; sourceTree = "<group>"; };
-		C606CCBD1DB4054000FE4015 /* Utils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Utils.hpp; sourceTree = "<group>"; };
-		C606CCCA1DB427A000FE4015 /* GeneralSupportHeightCall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GeneralSupportHeightCall.cpp; sourceTree = "<group>"; };
-		C606CCCB1DB427A000FE4015 /* GeneralSupportHeightCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = GeneralSupportHeightCall.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		C606CCCC1DB427A000FE4015 /* SegmentSupportHeightCall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SegmentSupportHeightCall.cpp; sourceTree = "<group>"; };
-		C606CCCD1DB427A000FE4015 /* SegmentSupportHeightCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SegmentSupportHeightCall.hpp; sourceTree = "<group>"; };
-		C606CCD01DB4D7C800FE4015 /* SideTunnelCall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SideTunnelCall.cpp; sourceTree = "<group>"; };
-		C606CCD11DB4D7C800FE4015 /* SideTunnelCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SideTunnelCall.hpp; sourceTree = "<group>"; };
-		C606CCD31DB4DD6C00FE4015 /* VerticalTunnelCall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VerticalTunnelCall.cpp; sourceTree = "<group>"; };
-		C606CCD41DB4DD6C00FE4015 /* VerticalTunnelCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VerticalTunnelCall.hpp; sourceTree = "<group>"; };
-		C606CCD61DB4E1CD00FE4015 /* PaintIntercept.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = PaintIntercept.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		C606CD231DB5120900FE4015 /* TestPaint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestPaint.cpp; sourceTree = "<group>"; };
-		C606CD241DB5120900FE4015 /* TestPaint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestPaint.hpp; sourceTree = "<group>"; };
 		C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TopToolbar.cpp; sourceTree = "<group>"; };
 		C61ADB201FB7DC060024F2EF /* Scenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scenery.cpp; sourceTree = "<group>"; };
 		C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameBottomToolbar.cpp; sourceTree = "<group>"; };
@@ -940,7 +881,6 @@
 		C64644F51F3FA4120026AC2D /* StaffList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaffList.cpp; sourceTree = "<group>"; };
 		C64644F61F3FA4120026AC2D /* ViewClipping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewClipping.cpp; sourceTree = "<group>"; };
 		C64644F71F3FA4120026AC2D /* Water.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Water.cpp; sourceTree = "<group>"; };
-		C64FDA5D1D6D99F400F259B9 /* PaintTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PaintTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C651A8D71F30204300443BCA /* Text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Text.cpp; sourceTree = "<group>"; };
 		C651A8D81F30204300443BCA /* Text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
 		C654DF1C1F69C0430040F43D /* Banner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Banner.cpp; sourceTree = "<group>"; };
@@ -1433,13 +1373,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C64FDA5A1D6D99F400F259B9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D497D0751C20FD52002BF46A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1482,14 +1415,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8546F74A1D7E1D220004004C /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				C64FDA5E1D6D99F400F259B9 /* Paint */,
-			);
-			name = Tests;
-			sourceTree = "<group>";
-		};
 		C6352B871F477032006CCEE3 /* actions */ = {
 			isa = PBXGroup;
 			children = (
@@ -1503,44 +1428,6 @@
 				C6352B8F1F477032006CCEE3 /* SetParkEntranceFeeAction.hpp */,
 			);
 			path = actions;
-			sourceTree = "<group>";
-		};
-		C64FDA5E1D6D99F400F259B9 /* Paint */ = {
-			isa = PBXGroup;
-			children = (
-				4C7B545720079C4000A52E21 /* Addresses.cpp */,
-				4C7B545820079C4000A52E21 /* addresses.h */,
-				4C7B545A20079C4000A52E21 /* Data.cpp */,
-				4C7B545B20079C4000A52E21 /* data.h */,
-				C606CCAE1DB4054000FE4015 /* FunctionCall.cpp */,
-				C606CCAF1DB4054000FE4015 /* FunctionCall.hpp */,
-				C606CCCA1DB427A000FE4015 /* GeneralSupportHeightCall.cpp */,
-				C606CCCB1DB427A000FE4015 /* GeneralSupportHeightCall.hpp */,
-				C606CCB01DB4054000FE4015 /* generate.cpp */,
-				4C7B545F20079C4900A52E21 /* Hook.cpp */,
-				4C7B546020079C4900A52E21 /* hook.h */,
-				C606CCB41DB4054000FE4015 /* main.cpp */,
-				C606CCB51DB4054000FE4015 /* PaintIntercept.cpp */,
-				C606CCD61DB4E1CD00FE4015 /* PaintIntercept.hpp */,
-				C606CCB61DB4054000FE4015 /* Printer.cpp */,
-				C606CCB71DB4054000FE4015 /* Printer.hpp */,
-				C606CCCC1DB427A000FE4015 /* SegmentSupportHeightCall.cpp */,
-				C606CCCD1DB427A000FE4015 /* SegmentSupportHeightCall.hpp */,
-				C606CCD01DB4D7C800FE4015 /* SideTunnelCall.cpp */,
-				C606CCD11DB4D7C800FE4015 /* SideTunnelCall.hpp */,
-				C606CCB81DB4054000FE4015 /* String.cpp */,
-				C606CCB91DB4054000FE4015 /* String.hpp */,
-				C606CD231DB5120900FE4015 /* TestPaint.cpp */,
-				C606CD241DB5120900FE4015 /* TestPaint.hpp */,
-				C606CCBA1DB4054000FE4015 /* TestTrack.cpp */,
-				C606CCBB1DB4054000FE4015 /* TestTrack.hpp */,
-				C606CCBC1DB4054000FE4015 /* Utils.cpp */,
-				C606CCBD1DB4054000FE4015 /* Utils.hpp */,
-				C606CCD31DB4DD6C00FE4015 /* VerticalTunnelCall.cpp */,
-				C606CCD41DB4DD6C00FE4015 /* VerticalTunnelCall.hpp */,
-			);
-			name = Paint;
-			path = test/testpaint;
 			sourceTree = "<group>";
 		};
 		C68313CF1FDB4F4C006DB3D8 /* interface */ = {
@@ -1772,7 +1659,6 @@
 			children = (
 				D41B72431C21015A0080A7B9 /* Sources */,
 				D497D07A1C20FD52002BF46A /* Resources */,
-				8546F74A1D7E1D220004004C /* Tests */,
 				D41B73ED1C21017D0080A7B9 /* Libraries */,
 				D497D0791C20FD52002BF46A /* Products */,
 				C685E5131F8907440090598F /* Recovered References */,
@@ -1785,7 +1671,6 @@
 			isa = PBXGroup;
 			children = (
 				D497D0781C20FD52002BF46A /* OpenRCT2.app */,
-				C64FDA5D1D6D99F400F259B9 /* PaintTest */,
 				F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */,
 				F7D774841EC66CD700BE6EBC /* OpenRCT2-cli */,
 			);
@@ -2805,24 +2690,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		C64FDA5C1D6D99F400F259B9 /* PaintTest */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C64FDA631D6D99F400F259B9 /* Build configuration list for PBXNativeTarget "PaintTest" */;
-			buildPhases = (
-				C64FDAC61D6DA64A00F259B9 /* Create Segment Files */,
-				C64FDA591D6D99F400F259B9 /* Sources */,
-				C64FDA5A1D6D99F400F259B9 /* Frameworks */,
-				C64FDA5B1D6D99F400F259B9 /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = PaintTest;
-			productName = PaintTest;
-			productReference = C64FDA5D1D6D99F400F259B9 /* PaintTest */;
-			productType = "com.apple.product-type.tool";
-		};
 		D497D0771C20FD52002BF46A /* OpenRCT2 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D497D0891C20FD53002BF46A /* Build configuration list for PBXNativeTarget "OpenRCT2" */;
@@ -2895,9 +2762,6 @@
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = OpenRCT2;
 				TargetAttributes = {
-					C64FDA5C1D6D99F400F259B9 = {
-						CreatedOnToolsVersion = 7.3.1;
-					};
 					C68B2D431EC790690020651C = {
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
@@ -2929,7 +2793,6 @@
 			projectRoot = "";
 			targets = (
 				D497D0771C20FD52002BF46A /* OpenRCT2 */,
-				C64FDA5C1D6D99F400F259B9 /* PaintTest */,
 				F76C80991EC4D9FA00FA49E2 /* libopenrct2 */,
 				F7D774831EC66CD700BE6EBC /* OpenRCT2-cli */,
 				C68B2D431EC790690020651C /* Download Libraries */,
@@ -2961,23 +2824,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		C64FDAC61D6DA64A00F259B9 /* Create Segment Files */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/openrct2.exe",
-			);
-			name = "Create Segment Files";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/openrct2_text",
-				"$(DERIVED_FILE_DIR)/openrct2_data",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "dd if=\"${SRCROOT}/openrct2.exe\" of=\"${DERIVED_FILE_DIR}/openrct2_text\" bs=4096 skip=1 count=1187\ndd if=\"${SRCROOT}/openrct2.exe\" of=\"${DERIVED_FILE_DIR}/openrct2_data\" bs=4096 skip=1188 count=318\ndd if=/dev/zero of=\"${DERIVED_FILE_DIR}/openrct2_data\" bs=4096 seek=318 count=2630 conv=notrunc\ndd if=\"${SRCROOT}/openrct2.exe\" of=\"${DERIVED_FILE_DIR}/openrct2_data\" bs=4096 skip=1506 seek=2948 count=1 conv=notrunc";
-		};
 		C68B2D471EC790710020651C /* Download Libraries */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3104,334 +2950,116 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C64FDA591D6D99F400F259B9 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C606CCD21DB4D7C800FE4015 /* SideTunnelCall.cpp in Sources */,
-				C606CCD51DB4DD6C00FE4015 /* VerticalTunnelCall.cpp in Sources */,
-				C606CCCF1DB427A000FE4015 /* SegmentSupportHeightCall.cpp in Sources */,
-				C606CCC61DB4054000FE4015 /* Printer.cpp in Sources */,
-				C606CCC41DB4054000FE4015 /* main.cpp in Sources */,
-				C606CCC11DB4054000FE4015 /* generate.cpp in Sources */,
-				C606CCC81DB4054000FE4015 /* TestTrack.cpp in Sources */,
-				C606CCC51DB4054000FE4015 /* PaintIntercept.cpp in Sources */,
-				C606CCCE1DB427A000FE4015 /* GeneralSupportHeightCall.cpp in Sources */,
-				C606CCC01DB4054000FE4015 /* FunctionCall.cpp in Sources */,
-				C606CD261DB5120C00FE4015 /* TestPaint.cpp in Sources */,
-				C606CCC71DB4054000FE4015 /* String.cpp in Sources */,
-				C606CCC91DB4054000FE4015 /* Utils.cpp in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D497D0741C20FD52002BF46A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C93F1931F8B747A00A9330D /* Twist.cpp in Sources */,
-				4C93F14A1F8B744400A9330D /* MineTrainCoaster.cpp in Sources */,
-				4C93F1531F8B744400A9330D /* SuspendedSwingingCoaster.cpp in Sources */,
 				C68313CB1FDB4EEC006DB3D8 /* Tooltip.cpp in Sources */,
-				4C93F18B1F8B747A00A9330D /* GoKarts.cpp in Sources */,
-				4C6A66B71FE278C900694CB6 /* PaintHelpers.cpp in Sources */,
-				4C7B53DA20002CA400A52E21 /* Font.cpp in Sources */,
 				C654DF2F1F69C0430040F43D /* Error.cpp in Sources */,
-				4C93F1791F8B745700A9330D /* SpiralSlide.cpp in Sources */,
 				C64644F81F3FA4120026AC2D /* ClearScenery.cpp in Sources */,
 				C654DF2E1F69C0430040F43D /* DemolishRidePrompt.cpp in Sources */,
-				4C7B547D2010DF4C00A52E21 /* Windows.cpp in Sources */,
-				4C93F1891F8B747A00A9330D /* 3dCinema.cpp in Sources */,
 				C6D2BEE21F9BAA6C008B557C /* Ride.cpp in Sources */,
 				C666EE7C1F37ACB10061AA04 /* TitleLogo.cpp in Sources */,
-				4C93F1491F8B744400A9330D /* MineRide.cpp in Sources */,
-				4C7B53BC1FFF935B00A52E21 /* Convert.cpp in Sources */,
 				F76C88781EC5324E00FA49E2 /* AudioChannel.cpp in Sources */,
 				C666EE6D1F37ACB10061AA04 /* Cheats.cpp in Sources */,
-				4C6A66A81FE2787700694CB6 /* Fence.cpp in Sources */,
 				C685E5191F8907850090598F /* NewRide.cpp in Sources */,
-				4C93F1561F8B744400A9330D /* VirginiaReel.cpp in Sources */,
 				C654DF361F69C0430040F43D /* Player.cpp in Sources */,
-				4C6A66BC1FED04EE00694CB6 /* SSE41Drawing.cpp in Sources */,
-				4C93F1A51F8B748900A9330D /* BoatHire.cpp in Sources */,
-				4CFE4E821F90A3F1005243C2 /* Staff.cpp in Sources */,
 				F76C88791EC5324E00FA49E2 /* AudioContext.cpp in Sources */,
-				4C93F1571F8B744400A9330D /* WildMouse.cpp in Sources */,
-				4C7B53DB20002CA400A52E21 /* LightFX.cpp in Sources */,
-				D4974F1C1FA04A1900F7FD7F /* TransparencyDepth.cpp in Sources */,
 				C666EE7A1F37ACB10061AA04 /* Themes.cpp in Sources */,
-				4C6A66A61FE2787700694CB6 /* Banner.cpp in Sources */,
-				4C6A66C21FF9322A00694CB6 /* Ride.cpp in Sources */,
-				4C7B54542007646A00A52E21 /* Sprite.cpp in Sources */,
-				4C93F1781F8B745700A9330D /* SpaceRings.cpp in Sources */,
-				4C6A66A91FE2787700694CB6 /* LargeScenery.cpp in Sources */,
-				4CFE4E8A1F950164005243C2 /* TrackDataOld.cpp in Sources */,
-				4C7B53F5200143C200A52E21 /* Console.cpp in Sources */,
 				C666EE7F1F37ACB10061AA04 /* Viewport.cpp in Sources */,
 				C632C81F1F8A445700781F6D /* RideList.cpp in Sources */,
-				4CC4B8E41FE00C4200660D62 /* CmdlineSprite.cpp in Sources */,
-				4C93F1A71F8B748900A9330D /* LogFlume.cpp in Sources */,
-				4C93F1731F8B745700A9330D /* MerryGoRound.cpp in Sources */,
+				C68878C420289B710084B384 /* OpenGLAPI.cpp in Sources */,
 				C654DF3C1F69C0430040F43D /* TrackDesignManage.cpp in Sources */,
-				4C93F1591F8B744400A9330D /* WoodenWildMouse.cpp in Sources */,
-				4CFE4E891F950164005243C2 /* TrackData.cpp in Sources */,
-				4C7B53D4200029E000A52E21 /* String.cpp in Sources */,
-				4C93F14E1F8B744400A9330D /* ReverseFreefallCoaster.cpp in Sources */,
 				C654DF3B1F69C0430040F43D /* TitleScenarioSelect.cpp in Sources */,
 				C64645001F3FA4120026AC2D /* ViewClipping.cpp in Sources */,
-				4C7B54462007646A00A52E21 /* Duck.cpp in Sources */,
-				4C93F1411F8B744400A9330D /* HeartlineTwisterCoaster.cpp in Sources */,
-				4C93F1BC1F8E185600A9330D /* Marketing.cpp in Sources */,
+				C68878C020289B710084B384 /* ApplyPaletteShader.cpp in Sources */,
 				C666EE791F37ACB10061AA04 /* ServerStart.cpp in Sources */,
 				C61ADB231FBBCB8B0024F2EF /* GameBottomToolbar.cpp in Sources */,
-				4C7B54522007646A00A52E21 /* Scenery.cpp in Sources */,
 				C666EE7E1F37ACB10061AA04 /* TitleOptions.cpp in Sources */,
-				4C8B42721EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp in Sources */,
-				4C93F1BA1F8E185600A9330D /* Award.cpp in Sources */,
 				F76C887A1EC5324E00FA49E2 /* AudioMixer.cpp in Sources */,
-				4CFE4E811F90A3F1005243C2 /* PeepData.cpp in Sources */,
 				C68313C81FDB4ED4006DB3D8 /* MouseInput.cpp in Sources */,
+				C68878C920289B710084B384 /* TextureCache.cpp in Sources */,
 				C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */,
-				4C93F1431F8B744400A9330D /* InvertedImpulseCoaster.cpp in Sources */,
-				4C93F1481F8B744400A9330D /* LoopingRollerCoaster.cpp in Sources */,
-				4C7B53F9200143C200A52E21 /* Theme.cpp in Sources */,
-				4C93F1551F8B744400A9330D /* VerticalDropRollerCoaster.cpp in Sources */,
 				F76C887B1EC5324E00FA49E2 /* FileAudioSource.cpp in Sources */,
-				4C93F18D1F8B747A00A9330D /* MagicCarpet.cpp in Sources */,
+				C68878CA20289B710084B384 /* TransparencyDepth.cpp in Sources */,
 				C64644FD1F3FA4120026AC2D /* Land.cpp in Sources */,
-				4C4C1E981F58226500560300 /* TrackDesign.cpp in Sources */,
+				C68878CB20289B710084B384 /* HardwareDisplayDrawingEngine.cpp in Sources */,
 				C666EE6B1F37ACB10061AA04 /* About.cpp in Sources */,
 				C666ED771F33DBB20061AA04 /* ShortcutKeys.cpp in Sources */,
-				4C93F1AA1F8B748900A9330D /* SubmarineRide.cpp in Sources */,
-				4C6A668F1FE14C3A00694CB6 /* Util.cpp in Sources */,
-				4CE462451FD161360001CD98 /* Platform.Android.cpp in Sources */,
 				C666EE6C1F37ACB10061AA04 /* Changelog.cpp in Sources */,
-				4C93F1441F8B744400A9330D /* InvertedRollerCoaster.cpp in Sources */,
 				C64644FC1F3FA4120026AC2D /* Footpath.cpp in Sources */,
-				4C7B54442007646A00A52E21 /* Banner.cpp in Sources */,
-				F7CB864D1EEDA1A80030C877 /* DummyWindowManager.cpp in Sources */,
 				F76C887C1EC5324E00FA49E2 /* MemoryAudioSource.cpp in Sources */,
 				4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */,
-				4C93F14B1F8B744400A9330D /* MiniRollerCoaster.cpp in Sources */,
 				C654DF3D1F69C0430040F43D /* TrackDesignPlace.cpp in Sources */,
-				4C93F19C1F8B748200A9330D /* Monorail.cpp in Sources */,
-				4C93F14C1F8B744400A9330D /* MiniSuspendedCoaster.cpp in Sources */,
 				C666EE721F37ACB10061AA04 /* Multiplayer.cpp in Sources */,
-				4C6A66B81FE278C900694CB6 /* Supports.cpp in Sources */,
 				C654DF371F69C0430040F43D /* Sign.cpp in Sources */,
-				4C93F1751F8B745700A9330D /* MiniHelicopters.cpp in Sources */,
-				4C7B53F8200143C200A52E21 /* Screenshot.cpp in Sources */,
-				4C7B53C41FFF935B00A52E21 /* User.cpp in Sources */,
-				4C7B53F3200143C200A52E21 /* Chat.cpp in Sources */,
-				4C7B53F4200143C200A52E21 /* Colour.cpp in Sources */,
-				4C7B547B2010DF4C00A52E21 /* Posix.cpp in Sources */,
-				4C7B53A51FFC180400A52E21 /* ObjectList.cpp in Sources */,
-				4C93F1501F8B744400A9330D /* SideFrictionRollerCoaster.cpp in Sources */,
-				4C93F13D1F8B744400A9330D /* CompactInvertedCoaster.cpp in Sources */,
+				C68878CC20289B710084B384 /* SoftwareDrawingEngine.cpp in Sources */,
 				C67CCD681FBBD138004FAE4C /* EditorMain.cpp in Sources */,
-				4C93F1581F8B744400A9330D /* WoodenRollerCoaster.cpp in Sources */,
 				C6E415511FAFD6DC00D4A52A /* RideConstruction.cpp in Sources */,
 				C685E51B1F8907850090598F /* Guest.cpp in Sources */,
 				C64644F91F3FA4120026AC2D /* EditorInventionsList.cpp in Sources */,
-				4C7B54062005735F00A52E21 /* VehicleData.cpp in Sources */,
-				4C7B53FC200143C200A52E21 /* Widget.cpp in Sources */,
-				F73E32112011589F00C4D975 /* TrackDesignSave.cpp in Sources */,
-				4C7B54512007646A00A52E21 /* Particle.cpp in Sources */,
-				4C7B546120079C4900A52E21 /* Hook.cpp in Sources */,
-				4C6A66AD1FE2787700694CB6 /* TileElement.cpp in Sources */,
-				4CE4624C1FD1613D0001CD98 /* Platform.Posix.cpp in Sources */,
-				4C6A669B1FE2786F00694CB6 /* Sprite.cpp in Sources */,
+				C68878C720289B710084B384 /* OpenGLShaderProgram.cpp in Sources */,
 				C6D2BEE61F9BAACE008B557C /* TrackList.cpp in Sources */,
-				4C93F1AB1F8B748900A9330D /* WaterCoaster.cpp in Sources */,
-				4C7B53C21FFF935B00A52E21 /* Localisation.cpp in Sources */,
-				4C93F16D1F8B745700A9330D /* Dodgems.cpp in Sources */,
-				4C93F1A81F8B748900A9330D /* RiverRapids.cpp in Sources */,
-				4C7B53DC20002CA400A52E21 /* TTF.cpp in Sources */,
 				C666EE701F37ACB10061AA04 /* LandRights.cpp in Sources */,
-				4C93F16F1F8B745700A9330D /* FlyingSaucers.cpp in Sources */,
-				4C6A66AA1FE2787700694CB6 /* Path.cpp in Sources */,
 				C666EE781F37ACB10061AA04 /* ServerList.cpp in Sources */,
 				C654DF341F69C0430040F43D /* NewCampaign.cpp in Sources */,
 				F76C887D1EC5324E00FA49E2 /* CursorData.cpp in Sources */,
-				4C7B544E2007646A00A52E21 /* MapHelpers.cpp in Sources */,
-				4C93F1761F8B745700A9330D /* MonorailCycles.cpp in Sources */,
-				4C93F13E1F8B744400A9330D /* CorkscrewRollerCoaster.cpp in Sources */,
-				F7B2048F2024E8B30000AD7E /* _legacy.cpp in Sources */,
+				C68878C520289B710084B384 /* OpenGLDrawingEngine.cpp in Sources */,
 				C6D2BEE71F9BAACE008B557C /* MapTooltip.cpp in Sources */,
-				4C93F1401F8B744400A9330D /* GigaCoaster.cpp in Sources */,
-				4C93F1541F8B744400A9330D /* TwisterRollerCoaster.cpp in Sources */,
-				4CC4B8E71FE00C4E00660D62 /* Diagnostic.cpp in Sources */,
 				C666EE7B1F37ACB10061AA04 /* TitleExit.cpp in Sources */,
-				F7B2048A201E91BF0000AD7E /* Platform.macOS.mm in Sources */,
 				F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */,
 				F76C887E1EC5324E00FA49E2 /* CursorRepository.cpp in Sources */,
-				4C7B53FD200143C200A52E21 /* Window.cpp in Sources */,
-				4C6A66991FE2786F00694CB6 /* Misc.cpp in Sources */,
-				4C7B54772010DF4300A52E21 /* Linux.cpp in Sources */,
-				4C7B544F2007646A00A52E21 /* MoneyEffect.cpp in Sources */,
-				4CFE4E851F90AF41005243C2 /* Vehicle.cpp in Sources */,
-				4C7B540D20060D8100A52E21 /* TrackPaint.cpp in Sources */,
-				4C93F16A1F8B745700A9330D /* CarRide.cpp in Sources */,
-				4C7B545E20079C4000A52E21 /* Data.cpp in Sources */,
 				C654DF331F69C0430040F43D /* LoadSave.cpp in Sources */,
-				C68313C61FDB4EBA006DB3D8 /* input.cpp in Sources */,
-				4C6A66A71FE2787700694CB6 /* Entrance.cpp in Sources */,
-				4C7B53C51FFF935B00A52E21 /* UTF8.cpp in Sources */,
 				C61ADB211FB7DC060024F2EF /* Scenery.cpp in Sources */,
-				F775F5341EE35A6B001F00E7 /* DummyUiContext.cpp in Sources */,
-				C654DF401F69C18C0040F43D /* Intent.cpp in Sources */,
-				4C6A66981FE2786F00694CB6 /* Litter.cpp in Sources */,
+				C68878C120289B710084B384 /* ApplyTransparencyShader.cpp in Sources */,
 				C666ED761F33DBB20061AA04 /* ShortcutKeyChange.cpp in Sources */,
-				F76C887F1EC5324E00FA49E2 /* ApplyPaletteShader.cpp in Sources */,
-				4C7B54692007BF2E00A52E21 /* TTFSDLPort.cpp in Sources */,
-				4CE462411FD0710E0001CD98 /* Game.cpp in Sources */,
 				C685E51C1F8907850090598F /* Map.cpp in Sources */,
 				F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */,
-				4C8667821EEFDCDF0024AAB8 /* RideGroupManager.cpp in Sources */,
-				4C7B53BD1FFF935B00A52E21 /* Currency.cpp in Sources */,
-				4C7B54502007646A00A52E21 /* Park.cpp in Sources */,
-				4C93F18F1F8B747A00A9330D /* PirateShip.cpp in Sources */,
-				4C6A66B61FE278C900694CB6 /* Painter.cpp in Sources */,
 				C654DF381F69C0430040F43D /* StaffFirePrompt.cpp in Sources */,
 				C68313D51FDB4F4C006DB3D8 /* Graph.cpp in Sources */,
-				C651A8D91F30204300443BCA /* Text.cpp in Sources */,
-				F76C88801EC5324E00FA49E2 /* DrawRectShader.cpp in Sources */,
 				C685E51D1F8907850090598F /* Research.cpp in Sources */,
 				C64644FB1F3FA4120026AC2D /* EditorScenarioOptions.cpp in Sources */,
-				4C6A66AB1FE2787700694CB6 /* SmallScenery.cpp in Sources */,
-				F775F5371EE3724F001F00E7 /* DummyAudioContext.cpp in Sources */,
-				4C5DFF421FAC69D200CB093A /* Date.cpp in Sources */,
-				4C93F13C1F8B744400A9330D /* BolligerMabillardTrack.cpp in Sources */,
 				C654DF321F69C0430040F43D /* InstallTrack.cpp in Sources */,
-				F7B2048C2024E7810000AD7E /* DefaultObjects.cpp in Sources */,
-				4C93F14D1F8B744400A9330D /* MultiDimensionRollerCoaster.cpp in Sources */,
 				C64644FF1F3FA4120026AC2D /* StaffList.cpp in Sources */,
 				C6D2BEE81F9BAACE008B557C /* MazeConstruction.cpp in Sources */,
 				C666EE771F37ACB10061AA04 /* SavePrompt.cpp in Sources */,
-				4C6A669A1FE2786F00694CB6 /* Peep.cpp in Sources */,
-				4C7B54562007646A00A52E21 /* Wall.cpp in Sources */,
-				4C7B545C20079C4000A52E21 /* Addresses.cpp in Sources */,
-				4C7B53C31FFF935B00A52E21 /* RealNames.cpp in Sources */,
-				4C93F16C1F8B745700A9330D /* CrookedHouse.cpp in Sources */,
-				4C93F18A1F8B747A00A9330D /* Enterprise.cpp in Sources */,
-				4CE4624A1FD1613D0001CD98 /* Platform.Linux.cpp in Sources */,
 				C654DF391F69C0430040F43D /* TitleCommandEditor.cpp in Sources */,
-				F73E32102011589F00C4D975 /* RideRatings.cpp in Sources */,
-				4C7B54452007646A00A52E21 /* Climate.cpp in Sources */,
-				4C93F13B1F8B744400A9330D /* BobsleighCoaster.cpp in Sources */,
-				4C7B54472007646A00A52E21 /* Entrance.cpp in Sources */,
-				4C93F1701F8B745700A9330D /* GhostTrain.cpp in Sources */,
-				4CFE4E901F9625B0005243C2 /* Track.cpp in Sources */,
-				4C93F1771F8B745700A9330D /* ObservationTower.cpp in Sources */,
-				4C93F17D1F8B747300A9330D /* Shop.cpp in Sources */,
-				4C93F1921F8B747A00A9330D /* TopSpin.cpp in Sources */,
 				C61FB2731FA3E25D0095FB9D /* TextInput.cpp in Sources */,
 				C62D83871FCC7D1A008C04F1 /* EditorObjectSelection.cpp in Sources */,
-				F76C88811EC5324E00FA49E2 /* DrawLineShader.cpp in Sources */,
-				4C93F13A1F8B744400A9330D /* AirPoweredVerticalCoaster.cpp in Sources */,
-				4C7B544D2007646A00A52E21 /* MapGen.cpp in Sources */,
-				4C93F1421F8B744400A9330D /* InvertedHairpinCoaster.cpp in Sources */,
-				4CE4624D1FD1613D0001CD98 /* Platform.Win32.cpp in Sources */,
+				C68878C820289B710084B384 /* SwapFramebuffer.cpp in Sources */,
 				C67CCD661FBBCFDB004FAE4C /* EditorBottomToolbar.cpp in Sources */,
 				C666EE731F37ACB10061AA04 /* MusicCredits.cpp in Sources */,
-				4C93F1511F8B744400A9330D /* StandUpRollerCoaster.cpp in Sources */,
-				4C93F18C1F8B747A00A9330D /* LaunchedFreefall.cpp in Sources */,
-				4C6A66AC1FE2787700694CB6 /* Surface.cpp in Sources */,
-				4C93F1BB1F8E185600A9330D /* Finance.cpp in Sources */,
-				4C93F19A1F8B748200A9330D /* Lift.cpp in Sources */,
-				4C7B53BF1FFF935B00A52E21 /* FormatCodes.cpp in Sources */,
 				C654DF351F69C0430040F43D /* Park.cpp in Sources */,
-				4C7B54752010DF3C00A52E21 /* Android.cpp in Sources */,
-				4C7B54432007646A00A52E21 /* Balloon.cpp in Sources */,
-				4C93F1901F8B747A00A9330D /* RotoDrop.cpp in Sources */,
-				4CFE4E801F90A3F1005243C2 /* Peep.cpp in Sources */,
 				C654DF3A1F69C0430040F43D /* TitleEditor.cpp in Sources */,
 				C666EE6F1F37ACB10061AA04 /* DebugPaint.cpp in Sources */,
-				F76C88831EC5324E00FA49E2 /* OpenGLAPI.cpp in Sources */,
-				4C93F1521F8B744400A9330D /* Steeplechase.cpp in Sources */,
-				4CC4B8ED1FE00C5D00660D62 /* Intro.cpp in Sources */,
-				4C93F1BD1F8E185600A9330D /* NewsItem.cpp in Sources */,
 				F7CB863F1EEDA0B50030C877 /* WindowManager.cpp in Sources */,
-				4C93F13F1F8B744400A9330D /* FlyingRollerCoaster.cpp in Sources */,
-				4C93F14F1F8B744400A9330D /* ReverserRollerCoaster.cpp in Sources */,
-				4C7B540120015AC600A52E21 /* VirtualFloor.cpp in Sources */,
-				F70839921FFC0AFF002DCEFA /* Scenario.cpp in Sources */,
-				4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */,
+				C68878C620289B710084B384 /* OpenGLFramebuffer.cpp in Sources */,
 				C654DF301F69C0430040F43D /* Finances.cpp in Sources */,
-				4C7B54492007646A00A52E21 /* Fountain.cpp in Sources */,
-				4C6A668E1FE14C3A00694CB6 /* SawyerCoding.cpp in Sources */,
-				4C6AC2121F9E1CB3004324AA /* CableLift.cpp in Sources */,
-				4C93F19D1F8B748200A9330D /* SuspendedMonorail.cpp in Sources */,
+				C68878C320289B710084B384 /* DrawRectShader.cpp in Sources */,
 				C666EE751F37ACB10061AA04 /* NewsOptions.cpp in Sources */,
 				C654DF311F69C0430040F43D /* GuestList.cpp in Sources */,
-				4C7B54082005736700A52E21 /* VehiclePaint.cpp in Sources */,
 				4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */,
-				4C93F1BE1F8E185600A9330D /* Research.cpp in Sources */,
-				4C7B53CE200029CE00A52E21 /* Line.cpp in Sources */,
-				4C7B544C2007646A00A52E21 /* MapAnimation.cpp in Sources */,
 				C666EE761F37ACB10061AA04 /* Options.cpp in Sources */,
-				4C6A66921FE14C9500694CB6 /* Cheats.cpp in Sources */,
-				4C7B544B2007646A00A52E21 /* Map.cpp in Sources */,
 				C666EE6E1F37ACB10061AA04 /* CustomCurrency.cpp in Sources */,
-				4C93F1711F8B745700A9330D /* HauntedHouse.cpp in Sources */,
-				4C7B53FA200143C200A52E21 /* Viewport.cpp in Sources */,
-				F76C88841EC5324E00FA49E2 /* OpenGLDrawingEngine.cpp in Sources */,
-				4C93F1471F8B744400A9330D /* LimLaunchedRollerCoaster.cpp in Sources */,
-				4C7B53BE1FFF935B00A52E21 /* Date.cpp in Sources */,
 				C654DF2D1F69C0430040F43D /* Banner.cpp in Sources */,
-				4C93F18E1F8B747A00A9330D /* MotionSimulator.cpp in Sources */,
 				C666EE711F37ACB10061AA04 /* MapGen.cpp in Sources */,
-				4C93F17C1F8B747300A9330D /* Facility.cpp in Sources */,
 				C6D2BEEA1F9BB83C008B557C /* NetworkStatus.cpp in Sources */,
 				C64645011F3FA4120026AC2D /* Water.cpp in Sources */,
-				4C7B53D1200029D900A52E21 /* Rect.cpp in Sources */,
-				F76C88851EC5324E00FA49E2 /* OpenGLFramebuffer.cpp in Sources */,
-				4C7B53F7200143C200A52E21 /* Fonts.cpp in Sources */,
-				4C93F1451F8B744400A9330D /* JuniorRollerCoaster.cpp in Sources */,
-				4C7B53D2200029D900A52E21 /* ScrollingText.cpp in Sources */,
 				C61FB2721FA3E25D0095FB9D /* ObjectLoadError.cpp in Sources */,
-				F76C88861EC5324E00FA49E2 /* OpenGLShaderProgram.cpp in Sources */,
-				F76C88871EC5324E00FA49E2 /* SwapFramebuffer.cpp in Sources */,
-				F76C88881EC5324E00FA49E2 /* TextureCache.cpp in Sources */,
-				D45E09171F99CF2F00854B2B /* ApplyTransparencyShader.cpp in Sources */,
-				4C93F1A61F8B748900A9330D /* DingySlide.cpp in Sources */,
-				4C7B53D920002CA400A52E21 /* Drawing.cpp in Sources */,
 				C68D98BC1FC6B8AB008E8378 /* TileInspector.cpp in Sources */,
-				4C7B53C11FFF935B00A52E21 /* LanguagePack.cpp in Sources */,
-				F76C88891EC5324E00FA49E2 /* SoftwareDrawingEngine.cpp in Sources */,
-				4C93F1A91F8B748900A9330D /* SplashBoats.cpp in Sources */,
-				4C93F1721F8B745700A9330D /* Maze.cpp in Sources */,
 				C64644FA1F3FA4120026AC2D /* EditorObjectiveOptions.cpp in Sources */,
 				C666EE741F37ACB10061AA04 /* News.cpp in Sources */,
-				4C7B53FB200143C200A52E21 /* ViewportInteraction.cpp in Sources */,
 				F76C888A1EC5324E00FA49E2 /* TextComposition.cpp in Sources */,
 				C68313CC1FDB4EEC006DB3D8 /* Dropdown.cpp in Sources */,
 				C68313D61FDB4F4C006DB3D8 /* LandTool.cpp in Sources */,
-				4C6A66B51FE278C900694CB6 /* Paint.cpp in Sources */,
-				4C7B53F6200143C200A52E21 /* FontFamilies.cpp in Sources */,
-				4C93F1741F8B745700A9330D /* MiniGolf.cpp in Sources */,
-				4C93F1911F8B747A00A9330D /* SwingingInverterShip.cpp in Sources */,
-				4C7B53C81FFF94F900A52E21 /* ConversionTables.cpp in Sources */,
-				4C93F1461F8B744400A9330D /* LayDownRollerCoaster.cpp in Sources */,
-				4C93F1991F8B748200A9330D /* Chairlift.cpp in Sources */,
-				4C6AC20F1F9E1693004324AA /* Station.cpp in Sources */,
 				C64644FE1F3FA4120026AC2D /* Main.cpp in Sources */,
-				4C7B547C2010DF4C00A52E21 /* Shared.cpp in Sources */,
-				4C93F16B1F8B745700A9330D /* CircusShow.cpp in Sources */,
-				4C7B53C01FFF935B00A52E21 /* Language.cpp in Sources */,
-				4C7B544A2007646A00A52E21 /* LargeScenery.cpp in Sources */,
-				4C93F19B1F8B748200A9330D /* MiniatureRailway.cpp in Sources */,
+				C68878C220289B710084B384 /* DrawLineShader.cpp in Sources */,
 				F76C888B1EC5324E00FA49E2 /* Ui.cpp in Sources */,
-				4C7B54552007646A00A52E21 /* TileInspector.cpp in Sources */,
 				C685E51A1F8907850090598F /* Staff.cpp in Sources */,
-				F73E32122011589F00C4D975 /* MusicList.cpp in Sources */,
 				F76C888C1EC5324E00FA49E2 /* UiContext.cpp in Sources */,
-				4C7B54482007646A00A52E21 /* Footpath.cpp in Sources */,
-				4C7B54532007646A00A52E21 /* SmallScenery.cpp in Sources */,
 				C666EE7D1F37ACB10061AA04 /* TitleMenu.cpp in Sources */,
 				F76C888D1EC5324E00FA49E2 /* UiContext.Linux.cpp in Sources */,
-				4C7B541C20060D8E00A52E21 /* RideData.cpp in Sources */,
 				F76C888E1EC5324E00FA49E2 /* UiContext.Win32.cpp in Sources */,
-				4C93F16E1F8B745700A9330D /* FerrisWheel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3439,124 +3067,316 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C68878A320289B200084B384 /* User.cpp in Sources */,
 				F70839931FFC0B61002DCEFA /* Scenario.cpp in Sources */,
+				C688791C20289B9B0084B384 /* Facility.cpp in Sources */,
+				C688790C20289B9B0084B384 /* CarRide.cpp in Sources */,
+				C688786820289A4A0084B384 /* Util.cpp in Sources */,
+				C688792720289B9B0084B384 /* TopSpin.cpp in Sources */,
+				C688787E20289ADE0084B384 /* Drawing.cpp in Sources */,
+				C68878A120289B200084B384 /* Localisation.cpp in Sources */,
+				C68878ED20289B9B0084B384 /* BobsleighCoaster.cpp in Sources */,
+				C688785E20289A0A0084B384 /* Fountain.cpp in Sources */,
 				F7CB864E1EEDA2050030C877 /* DummyWindowManager.cpp in Sources */,
+				C688789E20289B200084B384 /* FormatCodes.cpp in Sources */,
+				C688785820289A0A0084B384 /* Balloon.cpp in Sources */,
+				C688788820289ADE0084B384 /* X8DrawingEngine.cpp in Sources */,
 				F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */,
 				F775F5351EE35A89001F00E7 /* DummyUiContext.cpp in Sources */,
 				C6352B931F477032006CCEE3 /* GameActionRegistration.cpp in Sources */,
 				F76C85B01EC4E88300FA49E2 /* Audio.cpp in Sources */,
+				C688790920289B9B0084B384 /* WildMouse.cpp in Sources */,
 				F76C85B01EC4E88300FA49E2 /* Audio.cpp in Sources */,
+				C688791420289B9B0084B384 /* Maze.cpp in Sources */,
+				C688784C202899BE0084B384 /* Game.cpp in Sources */,
 				F76C85B41EC4E88300FA49E2 /* AudioMixer.cpp in Sources */,
 				F76C85B71EC4E88300FA49E2 /* NullAudioSource.cpp in Sources */,
+				C68878E720289B9B0084B384 /* Platform.Posix.cpp in Sources */,
+				C68878CE20289B9B0084B384 /* ObjectList.cpp in Sources */,
+				C688787620289A780084B384 /* RideGroupManager.cpp in Sources */,
+				C688788120289ADE0084B384 /* Line.cpp in Sources */,
+				C688792520289B9B0084B384 /* RotoDrop.cpp in Sources */,
 				F76C85BA1EC4E88300FA49E2 /* CommandLine.cpp in Sources */,
+				C68878EE20289B9B0084B384 /* BolligerMabillardTrack.cpp in Sources */,
 				F76C85BC1EC4E88300FA49E2 /* ConvertCommand.cpp in Sources */,
 				F76C85BD1EC4E88300FA49E2 /* RootCommands.cpp in Sources */,
+				C688791320289B9B0084B384 /* HauntedHouse.cpp in Sources */,
+				C688786E20289A6F0084B384 /* Vehicle.cpp in Sources */,
+				C688789520289B140084B384 /* Theme.cpp in Sources */,
 				F76C85BE1EC4E88300FA49E2 /* ScreenshotCommands.cpp in Sources */,
+				C688786320289A0A0084B384 /* MapHelpers.cpp in Sources */,
 				F76C85BF1EC4E88300FA49E2 /* SpriteCommands.cpp in Sources */,
 				F76C85C01EC4E88300FA49E2 /* UriHandler.cpp in Sources */,
+				C688786220289A0A0084B384 /* MapGen.cpp in Sources */,
+				C68878A820289B2A0084B384 /* NewsItem.cpp in Sources */,
 				F76C85C41EC4E88300FA49E2 /* Config.cpp in Sources */,
+				C688789120289B140084B384 /* Console.cpp in Sources */,
+				C688792920289B9B0084B384 /* Chairlift.cpp in Sources */,
+				C68878A020289B200084B384 /* LanguagePack.cpp in Sources */,
 				F76C85C71EC4E88300FA49E2 /* IniReader.cpp in Sources */,
 				F76C85C91EC4E88300FA49E2 /* IniWriter.cpp in Sources */,
+				C688792620289B9B0084B384 /* SwingingInverterShip.cpp in Sources */,
 				F76C85CC1EC4E88300FA49E2 /* Context.cpp in Sources */,
+				C68878E220289B9B0084B384 /* Staff.cpp in Sources */,
 				F76C85CF1EC4E88300FA49E2 /* Console.cpp in Sources */,
+				C68878DC20289B9B0084B384 /* Painter.cpp in Sources */,
+				C688790120289B9B0084B384 /* ReverserRollerCoaster.cpp in Sources */,
+				C688786120289A0A0084B384 /* MapAnimation.cpp in Sources */,
 				F76C85D11EC4E88300FA49E2 /* Diagnostics.cpp in Sources */,
 				F76C85D41EC4E88300FA49E2 /* File.cpp in Sources */,
+				C688790220289B9B0084B384 /* SideFrictionRollerCoaster.cpp in Sources */,
 				F76C85D61EC4E88300FA49E2 /* FileScanner.cpp in Sources */,
+				C68878F820289B9B0084B384 /* LayDownRollerCoaster.cpp in Sources */,
+				C68878D820289B9B0084B384 /* SmallScenery.cpp in Sources */,
+				C6887856202899FA0084B384 /* Scenery.cpp in Sources */,
+				C688785D20289A0A0084B384 /* Footpath.cpp in Sources */,
 				F76C85D91EC4E88300FA49E2 /* Guard.cpp in Sources */,
+				C688790520289B9B0084B384 /* SuspendedSwingingCoaster.cpp in Sources */,
+				C68878E920289B9B0084B384 /* Posix.cpp in Sources */,
 				D48AFDB71EF78DBF0081C644 /* BenchGfxCommmands.cpp in Sources */,
+				C688790320289B9B0084B384 /* StandUpRollerCoaster.cpp in Sources */,
 				C62D838A1FD36D6F008C04F1 /* EditorObjectSelectionSession.cpp in Sources */,
+				C6887851202899EA0084B384 /* Wall.cpp in Sources */,
 				F76C85DB1EC4E88300FA49E2 /* IStream.cpp in Sources */,
+				C688785A20289A0A0084B384 /* Climate.cpp in Sources */,
+				C68878A920289B2A0084B384 /* Research.cpp in Sources */,
+				C6887850202899D40084B384 /* Cheats.cpp in Sources */,
+				C688784D202899C40084B384 /* Diagnostic.cpp in Sources */,
+				C688787020289A6F0084B384 /* VehiclePaint.cpp in Sources */,
 				F76C85DD1EC4E88300FA49E2 /* Json.cpp in Sources */,
+				C688793120289B9B0084B384 /* RiverRapids.cpp in Sources */,
+				C68878D920289B9B0084B384 /* Surface.cpp in Sources */,
 				F76C85E11EC4E88300FA49E2 /* MemoryStream.cpp in Sources */,
+				C68878D420289B9B0084B384 /* Entrance.cpp in Sources */,
 				F76C85E41EC4E88300FA49E2 /* Path.cpp in Sources */,
 				F76C85E71EC4E88300FA49E2 /* String.cpp in Sources */,
+				C68878DE20289B9B0084B384 /* Supports.cpp in Sources */,
+				C688791720289B9B0084B384 /* MiniHelicopters.cpp in Sources */,
+				C688784F202899D00084B384 /* CmdlineSprite.cpp in Sources */,
 				F76C85EE1EC4E88300FA49E2 /* Zip.cpp in Sources */,
 				F76C85F41EC4E88300FA49E2 /* DrawingFast.cpp in Sources */,
+				C688793220289B9B0084B384 /* SplashBoats.cpp in Sources */,
 				F76C85F91EC4E88300FA49E2 /* Image.cpp in Sources */,
+				C68878FF20289B9B0084B384 /* MultiDimensionRollerCoaster.cpp in Sources */,
+				C688789220289B140084B384 /* FontFamilies.cpp in Sources */,
+				C68878F120289B9B0084B384 /* FlyingRollerCoaster.cpp in Sources */,
+				C688792B20289B9B0084B384 /* MiniatureRailway.cpp in Sources */,
 				F76C85FD1EC4E88300FA49E2 /* NewDrawing.cpp in Sources */,
 				F76C85FF1EC4E88300FA49E2 /* Rain.cpp in Sources */,
+				C688785920289A0A0084B384 /* Banner.cpp in Sources */,
+				C68878EC20289B9B0084B384 /* AirPoweredVerticalCoaster.cpp in Sources */,
 				F76C86031EC4E88300FA49E2 /* Sprite.cpp in Sources */,
+				C688790B20289B9B0084B384 /* WoodenWildMouse.cpp in Sources */,
 				F76C86031EC4E88300FA49E2 /* Sprite.cpp in Sources */,
+				C688792320289B9B0084B384 /* MotionSimulator.cpp in Sources */,
+				C68878EF20289B9B0084B384 /* CompactInvertedCoaster.cpp in Sources */,
+				C68878E320289B9B0084B384 /* Android.cpp in Sources */,
 				F76C86051EC4E88300FA49E2 /* Editor.cpp in Sources */,
 				F76C86071EC4E88300FA49E2 /* FileClassifier.cpp in Sources */,
 				F76C860B1EC4E88300FA49E2 /* Imaging.cpp in Sources */,
+				C688786920289A660084B384 /* CableLift.cpp in Sources */,
+				C688790020289B9B0084B384 /* ReverseFreefallCoaster.cpp in Sources */,
 				C6607F481FE2B97E00D3FC0D /* Input.cpp in Sources */,
 				F76C86451EC4E88300FA49E2 /* Http.cpp in Sources */,
+				C688789F20289B200084B384 /* Language.cpp in Sources */,
+				C688791620289B9B0084B384 /* MiniGolf.cpp in Sources */,
 				F76C86471EC4E88300FA49E2 /* Network.cpp in Sources */,
+				C688787820289A780084B384 /* Track.cpp in Sources */,
 				F76C86491EC4E88300FA49E2 /* NetworkAction.cpp in Sources */,
+				C688788020289ADE0084B384 /* LightFX.cpp in Sources */,
 				F76C864B1EC4E88300FA49E2 /* NetworkConnection.cpp in Sources */,
 				F76C864D1EC4E88300FA49E2 /* NetworkGroup.cpp in Sources */,
 				F76C864F1EC4E88300FA49E2 /* NetworkKey.cpp in Sources */,
+				C688789620289B140084B384 /* Viewport.cpp in Sources */,
+				C68878A520289B2A0084B384 /* Award.cpp in Sources */,
 				F76C86511EC4E88300FA49E2 /* NetworkPacket.cpp in Sources */,
 				F76C86531EC4E88300FA49E2 /* NetworkPlayer.cpp in Sources */,
 				F76C86551EC4E88300FA49E2 /* NetworkServerAdvertiser.cpp in Sources */,
 				F76C86581EC4E88300FA49E2 /* NetworkUser.cpp in Sources */,
 				F76C865A1EC4E88300FA49E2 /* ServerList.cpp in Sources */,
 				F76C865C1EC4E88300FA49E2 /* TcpSocket.cpp in Sources */,
+				C688784B202899B90084B384 /* Intro.cpp in Sources */,
+				C68878FD20289B9B0084B384 /* MiniRollerCoaster.cpp in Sources */,
 				F76C865E1EC4E88300FA49E2 /* Twitch.cpp in Sources */,
 				F76C865E1EC4E88300FA49E2 /* Twitch.cpp in Sources */,
+				C68878D620289B9B0084B384 /* LargeScenery.cpp in Sources */,
+				C6887857202899FD0084B384 /* Park.cpp in Sources */,
 				F76C86601EC4E88300FA49E2 /* BannerObject.cpp in Sources */,
+				C688792A20289B9B0084B384 /* Lift.cpp in Sources */,
+				C688788420289ADE0084B384 /* String.cpp in Sources */,
 				F76C86621EC4E88300FA49E2 /* EntranceObject.cpp in Sources */,
+				C688792820289B9B0084B384 /* Twist.cpp in Sources */,
+				C688792D20289B9B0084B384 /* SuspendedMonorail.cpp in Sources */,
+				C688788620289ADE0084B384 /* TTF.cpp in Sources */,
 				F76C86641EC4E88300FA49E2 /* FootpathItemObject.cpp in Sources */,
+				C688786020289A0A0084B384 /* Map.cpp in Sources */,
+				C68878DD20289B9B0084B384 /* PaintHelpers.cpp in Sources */,
 				F76C86661EC4E88300FA49E2 /* FootpathObject.cpp in Sources */,
+				C688793420289B9B0084B384 /* WaterCoaster.cpp in Sources */,
 				F76C86681EC4E88300FA49E2 /* ImageTable.cpp in Sources */,
+				C68878E620289B9B0084B384 /* Platform.Linux.cpp in Sources */,
+				C688785B20289A0A0084B384 /* Duck.cpp in Sources */,
 				F76C866A1EC4E88300FA49E2 /* LargeSceneryObject.cpp in Sources */,
+				C688788E20289AE70084B384 /* SSE41Drawing.cpp in Sources */,
 				F76C866C1EC4E88400FA49E2 /* Object.cpp in Sources */,
 				F76C866E1EC4E88400FA49E2 /* ObjectFactory.cpp in Sources */,
+				C68878A220289B200084B384 /* RealNames.cpp in Sources */,
+				C688787120289A780084B384 /* Ride.cpp in Sources */,
 				F76C86701EC4E88400FA49E2 /* ObjectManager.cpp in Sources */,
+				C688791D20289B9B0084B384 /* Shop.cpp in Sources */,
 				F76C86721EC4E88400FA49E2 /* ObjectRepository.cpp in Sources */,
 				F76C86741EC4E88400FA49E2 /* RideObject.cpp in Sources */,
+				C688790820289B9B0084B384 /* VirginiaReel.cpp in Sources */,
+				C688791B20289B9B0084B384 /* SpiralSlide.cpp in Sources */,
+				C688786C20289A6F0084B384 /* TrackDesign.cpp in Sources */,
+				C68878F220289B9B0084B384 /* GigaCoaster.cpp in Sources */,
+				C688792420289B9B0084B384 /* PirateShip.cpp in Sources */,
+				C68878F420289B9B0084B384 /* InvertedHairpinCoaster.cpp in Sources */,
+				C68878A620289B2A0084B384 /* Finance.cpp in Sources */,
+				C688788720289ADE0084B384 /* TTFSDLPort.cpp in Sources */,
 				F76C86761EC4E88400FA49E2 /* SceneryGroupObject.cpp in Sources */,
+				C68878F620289B9B0084B384 /* InvertedRollerCoaster.cpp in Sources */,
+				C68878E420289B9B0084B384 /* Linux.cpp in Sources */,
 				F76C86791EC4E88400FA49E2 /* SmallSceneryObject.cpp in Sources */,
+				C688787720289A780084B384 /* Station.cpp in Sources */,
+				C68878DF20289B9B0084B384 /* VirtualFloor.cpp in Sources */,
+				C68878CD20289B9B0084B384 /* DefaultObjects.cpp in Sources */,
+				C688788220289ADE0084B384 /* Rect.cpp in Sources */,
 				F76C867B1EC4E88400FA49E2 /* StexObject.cpp in Sources */,
+				C688787320289A780084B384 /* RideRatings.cpp in Sources */,
+				C688790D20289B9B0084B384 /* CircusShow.cpp in Sources */,
+				C688788F20289B140084B384 /* Chat.cpp in Sources */,
+				C688789A20289B200084B384 /* ConversionTables.cpp in Sources */,
+				C688791020289B9B0084B384 /* FerrisWheel.cpp in Sources */,
+				C688789820289B140084B384 /* Widget.cpp in Sources */,
+				C688791120289B9B0084B384 /* FlyingSaucers.cpp in Sources */,
+				C688784A202899B40084B384 /* input.cpp in Sources */,
 				F76C867D1EC4E88400FA49E2 /* StringTable.cpp in Sources */,
+				C688791520289B9B0084B384 /* MerryGoRound.cpp in Sources */,
 				F76C867F1EC4E88400FA49E2 /* WallObject.cpp in Sources */,
+				C68878D520289B9B0084B384 /* Fence.cpp in Sources */,
+				C68878FC20289B9B0084B384 /* MineTrainCoaster.cpp in Sources */,
+				C6887854202899F30084B384 /* SmallScenery.cpp in Sources */,
+				C68878DB20289B9B0084B384 /* Paint.cpp in Sources */,
 				F76C86811EC4E88400FA49E2 /* WaterObject.cpp in Sources */,
 				F76C86861EC4E88400FA49E2 /* OpenRCT2.cpp in Sources */,
+				C68878F320289B9B0084B384 /* HeartlineTwisterCoaster.cpp in Sources */,
+				C688788320289ADE0084B384 /* ScrollingText.cpp in Sources */,
+				C68878F720289B9B0084B384 /* JuniorRollerCoaster.cpp in Sources */,
+				C688792020289B9B0084B384 /* GoKarts.cpp in Sources */,
+				C68878D020289B9B0084B384 /* Misc.cpp in Sources */,
+				C688792E20289B9B0084B384 /* BoatHire.cpp in Sources */,
 				F76C869C1EC4E88400FA49E2 /* ParkImporter.cpp in Sources */,
 				F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */,
 				F76C86A61EC4E88400FA49E2 /* macos.mm in Sources */,
+				C688789420289B140084B384 /* Screenshot.cpp in Sources */,
+				C688790620289B9B0084B384 /* TwisterRollerCoaster.cpp in Sources */,
+				C688786720289A4A0084B384 /* SawyerCoding.cpp in Sources */,
+				F76C86A61EC4E88400FA49E2 /* macos.m in Sources */,
+				C68878FE20289B9B0084B384 /* MiniSuspendedCoaster.cpp in Sources */,
 				F76C86AD1EC4E88400FA49E2 /* PlatformEnvironment.cpp in Sources */,
+				C688791220289B9B0084B384 /* GhostTrain.cpp in Sources */,
+				C688787F20289ADE0084B384 /* Font.cpp in Sources */,
+				C68878CF20289B9B0084B384 /* Litter.cpp in Sources */,
 				F76C86AF1EC4E88400FA49E2 /* S4Importer.cpp in Sources */,
 				F76C86B01EC4E88400FA49E2 /* Tables.cpp in Sources */,
+				C688788520289ADE0084B384 /* Text.cpp in Sources */,
 				F76C86B41EC4E88400FA49E2 /* SawyerChunk.cpp in Sources */,
+				C68878F920289B9B0084B384 /* LimLaunchedRollerCoaster.cpp in Sources */,
+				C68878E120289B9B0084B384 /* PeepData.cpp in Sources */,
 				F76C86B61EC4E88400FA49E2 /* SawyerChunkReader.cpp in Sources */,
 				F76C86B81EC4E88400FA49E2 /* SawyerChunkWriter.cpp in Sources */,
+				C6887855202899F60084B384 /* Particle.cpp in Sources */,
+				C688784E202899CB0084B384 /* Date.cpp in Sources */,
 				F76C86BA1EC4E88400FA49E2 /* SawyerEncoding.cpp in Sources */,
 				F76C86C31EC4E88400FA49E2 /* S6Exporter.cpp in Sources */,
+				C68878D220289B9B0084B384 /* Sprite.cpp in Sources */,
+				C68878E820289B9B0084B384 /* Platform.Win32.cpp in Sources */,
+				C688791A20289B9B0084B384 /* SpaceRings.cpp in Sources */,
+				C688790420289B9B0084B384 /* Steeplechase.cpp in Sources */,
+				C68878E020289B9B0084B384 /* Peep.cpp in Sources */,
+				C68878DA20289B9B0084B384 /* TileElement.cpp in Sources */,
 				F76C86C51EC4E88400FA49E2 /* S6Importer.cpp in Sources */,
+				C688790A20289B9B0084B384 /* WoodenRollerCoaster.cpp in Sources */,
+				C688787220289A780084B384 /* MusicList.cpp in Sources */,
 				C6352B921F477032006CCEE3 /* GameActionCompat.cpp in Sources */,
+				C68878D720289B9B0084B384 /* Path.cpp in Sources */,
 				F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */,
+				C68878FA20289B9B0084B384 /* LoopingRollerCoaster.cpp in Sources */,
+				C68878A720289B2A0084B384 /* Marketing.cpp in Sources */,
 				F76C87331EC4E88400FA49E2 /* ScenarioRepository.cpp in Sources */,
+				C68878FB20289B9B0084B384 /* MineRide.cpp in Sources */,
+				C688789020289B140084B384 /* Colour.cpp in Sources */,
+				C68878EB20289B9B0084B384 /* Windows.cpp in Sources */,
+				C688789920289B140084B384 /* Window.cpp in Sources */,
 				F76C87351EC4E88400FA49E2 /* ScenarioSources.cpp in Sources */,
 				F76C87381EC4E88400FA49E2 /* TitleScreen.cpp in Sources */,
+				C688789720289B140084B384 /* ViewportInteraction.cpp in Sources */,
 				F76C873A1EC4E88400FA49E2 /* TitleSequence.cpp in Sources */,
+				C6887852202899ED0084B384 /* TileInspector.cpp in Sources */,
+				C68878D320289B9B0084B384 /* Banner.cpp in Sources */,
 				F76C873C1EC4E88400FA49E2 /* TitleSequenceManager.cpp in Sources */,
+				C688793320289B9B0084B384 /* SubmarineRide.cpp in Sources */,
+				C688785C20289A0A0084B384 /* Entrance.cpp in Sources */,
+				C688790E20289B9B0084B384 /* CrookedHouse.cpp in Sources */,
+				C68878F520289B9B0084B384 /* InvertedImpulseCoaster.cpp in Sources */,
+				C688793020289B9B0084B384 /* LogFlume.cpp in Sources */,
+				C688786620289A430084B384 /* Intent.cpp in Sources */,
+				C68878E520289B9B0084B384 /* Platform.Android.cpp in Sources */,
+				C68878EA20289B9B0084B384 /* Shared.cpp in Sources */,
 				F76C873E1EC4E88400FA49E2 /* TitleSequencePlayer.cpp in Sources */,
 				F76C87451EC4E88400FA49E2 /* Version.cpp in Sources */,
 				F76C87511EC4E88400FA49E2 /* (null) in Sources */,
+				C688789C20289B200084B384 /* Currency.cpp in Sources */,
+				C68879A420289C060084B384 /* Platform.macOS.mm in Sources */,
+				C688787420289A780084B384 /* TrackDesignSave.cpp in Sources */,
+				C688790F20289B9B0084B384 /* Dodgems.cpp in Sources */,
 				F76C87521EC4E88400FA49E2 /* (null) in Sources */,
 				F76C87531EC4E88400FA49E2 /* (null) in Sources */,
+				C688791E20289B9B0084B384 /* 3dCinema.cpp in Sources */,
+				C688786420289A0A0084B384 /* MoneyEffect.cpp in Sources */,
 				F76C87541EC4E88400FA49E2 /* (null) in Sources */,
 				F76C87551EC4E88400FA49E2 /* (null) in Sources */,
 				F76C87561EC4E88400FA49E2 /* (null) in Sources */,
+				C68878A420289B200084B384 /* UTF8.cpp in Sources */,
+				C688786D20289A6F0084B384 /* TrackPaint.cpp in Sources */,
 				F76C87571EC4E88400FA49E2 /* (null) in Sources */,
+				C68878D120289B9B0084B384 /* Peep.cpp in Sources */,
+				C688792120289B9B0084B384 /* LaunchedFreefall.cpp in Sources */,
+				C688791920289B9B0084B384 /* ObservationTower.cpp in Sources */,
 				C6352B901F477032006CCEE3 /* GameAction.cpp in Sources */,
 				F76C87841EC4E88400FA49E2 /* (null) in Sources */,
 				F76C87851EC4E88400FA49E2 /* (null) in Sources */,
+				C6887853202899F00084B384 /* Sprite.cpp in Sources */,
+				C688786F20289A6F0084B384 /* VehicleData.cpp in Sources */,
 				F76C87861EC4E88400FA49E2 /* (null) in Sources */,
 				F76C87871EC4E88400FA49E2 /* (null) in Sources */,
 				F76C87881EC4E88400FA49E2 /* (null) in Sources */,
+				C688786520289A400084B384 /* _legacy.cpp in Sources */,
+				C688785F20289A0A0084B384 /* LargeScenery.cpp in Sources */,
+				C688792C20289B9B0084B384 /* Monorail.cpp in Sources */,
 				F76C87891EC4E88400FA49E2 /* (null) in Sources */,
+				C688792220289B9B0084B384 /* MagicCarpet.cpp in Sources */,
 				F76C878A1EC4E88400FA49E2 /* (null) in Sources */,
+				C688786B20289A6F0084B384 /* TrackDataOld.cpp in Sources */,
 				F76C878B1EC4E88400FA49E2 /* (null) in Sources */,
 				F76C878D1EC4E88400FA49E2 /* (null) in Sources */,
+				C688790720289B9B0084B384 /* VerticalDropRollerCoaster.cpp in Sources */,
 				F76C878E1EC4E88400FA49E2 /* (null) in Sources */,
 				F76C878F1EC4E88400FA49E2 /* (null) in Sources */,
+				C688789D20289B200084B384 /* Date.cpp in Sources */,
+				C688787520289A780084B384 /* RideData.cpp in Sources */,
 				F76C87901EC4E88400FA49E2 /* (null) in Sources */,
 				F76C87911EC4E88400FA49E2 /* (null) in Sources */,
+				C688789B20289B200084B384 /* Convert.cpp in Sources */,
+				C688791F20289B9B0084B384 /* Enterprise.cpp in Sources */,
+				C688789320289B140084B384 /* Fonts.cpp in Sources */,
+				C688792F20289B9B0084B384 /* DingySlide.cpp in Sources */,
 				F76C87921EC4E88400FA49E2 /* (null) in Sources */,
 				F76C87931EC4E88400FA49E2 /* (null) in Sources */,
+				C688787920289A780084B384 /* TrackData.cpp in Sources */,
+				C68878F020289B9B0084B384 /* CorkscrewRollerCoaster.cpp in Sources */,
+				C688791820289B9B0084B384 /* MonorailCycles.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3594,104 +3414,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		C64FDA611D6D99F400F259B9 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"NO_VEHICLES=1",
-					__TESTPAINT__,
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/libxc/include",
-					"$(SRCROOT)/libxc/include/SDL2",
-					"$(SRCROOT)/src",
-				);
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/libxc/lib";
-				OTHER_LDFLAGS = (
-					"-sectcreate",
-					rct2_text,
-					__text,
-					"$(DERIVED_FILE_DIR)/openrct2_text",
-					"-segaddr",
-					rct2_text,
-					0x401000,
-					"-segprot",
-					rct2_text,
-					rwx,
-					rx,
-					"-sectcreate",
-					rct2_data,
-					__data,
-					"$(DERIVED_FILE_DIR)/openrct2_data",
-					"-segaddr",
-					rct2_data,
-					0x8a4000,
-					"-segprot",
-					rct2_data,
-					rw,
-					rw,
-					"-segaddr",
-					__TEXT,
-					0x2000000,
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				VALID_ARCHS = i386;
-			};
-			name = Debug;
-		};
-		C64FDA621D6D99F400F259B9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"NO_VEHICLES=1",
-					__TESTPAINT__,
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/libxc/include",
-					"$(SRCROOT)/libxc/include/SDL2",
-					"$(SRCROOT)/src",
-				);
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/libxc/lib";
-				OTHER_LDFLAGS = (
-					"-sectcreate",
-					rct2_text,
-					__text,
-					"$(DERIVED_FILE_DIR)/openrct2_text",
-					"-segaddr",
-					rct2_text,
-					0x401000,
-					"-segprot",
-					rct2_text,
-					rwx,
-					rx,
-					"-sectcreate",
-					rct2_data,
-					__data,
-					"$(DERIVED_FILE_DIR)/openrct2_data",
-					"-segaddr",
-					rct2_data,
-					0x8a4000,
-					"-segprot",
-					rct2_data,
-					rw,
-					rw,
-					"-segaddr",
-					__TEXT,
-					0x2000000,
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				VALID_ARCHS = i386;
-			};
-			name = Release;
-		};
 		C68B2D441EC790690020651C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4014,15 +3736,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C64FDA631D6D99F400F259B9 /* Build configuration list for PBXNativeTarget "PaintTest" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C64FDA611D6D99F400F259B9 /* Debug */,
-				C64FDA621D6D99F400F259B9 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		C68B2D461EC790690020651C /* Build configuration list for PBXAggregateTarget "Download Libraries" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
