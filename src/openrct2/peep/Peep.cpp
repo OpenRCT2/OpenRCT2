@@ -9849,14 +9849,14 @@ static uint8 peep_pathfind_get_max_number_junctions(rct_peep * peep)
 /**
  * Returns if the path as xzy is a 'thin' junction.
  * A junction is considered 'thin' if it has more than 2 edges
- * leading to non-wide path elements; edges leading to non-path elements
- * (e.g. ride/shop entrances) or ride queues are not counted, since entrances
- * and ride queues coming off a path should not result in the path being
- * considered a junction.
+ * leading to/from non-wide path elements; edges leading to/from non-path
+ * elements (e.g. ride/shop entrances) or ride queues are not counted,
+ * since entrances and ride queues coming off a path should not result in
+ * the path being considered a junction.
  */
 static bool path_is_thin_junction(rct_tile_element * path, sint16 x, sint16 y, uint8 z)
 {
-    uint8 edges = path_get_permitted_edges(path);
+    uint8 edges = path->properties.path.edges & 0xF;
 
     sint32 test_edge = bitscanforward(edges);
     if (test_edge == -1)
@@ -10119,7 +10119,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 
             searchResult = PATH_SEARCH_THIN;
 
-            uint8 numEdges = bitcount(path_get_permitted_edges(tileElement));
+            uint8 numEdges = bitcount(tileElement->properties.path.edges & 0x0F);
 
             if (numEdges < 2)
             {
