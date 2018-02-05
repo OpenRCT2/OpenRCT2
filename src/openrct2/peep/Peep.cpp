@@ -1792,7 +1792,7 @@ void peep_decrement_num_riders(rct_peep * peep)
     {
 
         Ride * ride = get_ride(peep->current_ride);
-        ride->num_riders--;
+        ride->num_riders = std::max(0, ride->num_riders - 1);
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
     }
 }

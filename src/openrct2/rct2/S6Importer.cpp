@@ -49,6 +49,7 @@
 #include "../world/Entrance.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
+#include "../world/Sprite.h"
 
 class ObjectLoadException : public std::runtime_error
 {
@@ -471,7 +472,7 @@ public:
 
     void ImportRides()
     {
-        for (uint16 index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
+        for (uint8 index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
         {
             auto src = &_s6.rides[index];
             auto dst = get_ride(index);
@@ -482,12 +483,12 @@ public:
             }
             else
             {
-                ImportRide(dst, src);
+                ImportRide(dst, src, index);
             }
         }
     }
 
-    void ImportRide(Ride * dst, const rct2_ride * src)
+    void ImportRide(Ride * dst, const rct2_ride * src, const uint8 rideIndex)
     {
         memset(dst, 0, sizeof(Ride));
 
@@ -629,7 +630,21 @@ public:
         dst->popularity = src->popularity;
         dst->popularity_time_out = src->popularity_time_out;
         dst->popularity_next = src->popularity_next;
-        dst->num_riders = src->num_riders;
+
+        // The number of riders might have overflown or underflow. Re-calculate the value.
+        uint16 numRiders = 0;
+        for (const rct_sprite sprite : _s6.sprites)
+        {
+            if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            {
+                if (sprite.peep.state == PEEP_STATE_ON_RIDE && sprite.peep.current_ride == rideIndex)
+                {
+                    numRiders++;
+                }
+            }
+        }
+        dst->num_riders = numRiders;
+
         dst->music_tune_id = src->music_tune_id;
         dst->slide_in_use = src->slide_in_use;
         // Includes maze_tiles

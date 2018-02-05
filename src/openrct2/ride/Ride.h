@@ -268,7 +268,7 @@ typedef struct Ride {
     uint8 popularity;                                               // 0x158
     uint8 popularity_time_out;                                      // 0x159 Updated every purchase and ?possibly by time?
     uint8 popularity_next;                                          // 0x15A When timeout reached this will be the next popularity
-    uint8 num_riders;                                               // 0x15B
+    uint8 num_riders_rct2;                                          // 0x15B
     uint8 music_tune_id;                                            // 0x15C
     uint8 slide_in_use;                                             // 0x15D
     union {
@@ -341,7 +341,8 @@ typedef struct Ride {
     uint8 pad_1FD;                                                  // 0x1FD
     uint16 cable_lift;                                              // 0x1FE
     uint16 queue_length[MAX_STATIONS];                              // 0x200
-    uint8 pad_208[0x58];                                            // 0x208
+    uint16 num_riders;                                              // 0x208
+    uint8 pad_210[0x56];                                            // 0x210
 } Ride;
 assert_struct_size(Ride, 0x260);
 
