@@ -35,6 +35,22 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
+#pragma pack(push, 1)
+struct rct_g1_header
+{
+    uint32 num_entries;
+    uint32 total_size;
+};
+assert_struct_size(rct_g1_header, 8);
+#pragma pack(pop)
+
+struct rct_gx
+{
+    rct_g1_header header;
+    std::vector<rct_g1_element> elements;
+    void * data;
+};
+
 constexpr struct
 {
     int start;
@@ -273,14 +289,16 @@ void gfx_unload_g1()
 
 void gfx_unload_g2()
 {
-    SafeFree(_g2.elements);
     SafeFree(_g2.data);
+    _g2.elements.clear();
+    _g2.elements.shrink_to_fit();
 }
 
 void gfx_unload_csg()
 {
-    SafeFree(_csg.elements);
     SafeFree(_csg.data);
+    _csg.elements.clear();
+    _csg.elements.shrink_to_fit();
 }
 
 bool gfx_load_g2()
@@ -297,8 +315,8 @@ bool gfx_load_g2()
         _g2.header = fs.ReadValue<rct_g1_header>();
 
         // Read element headers
-        _g2.elements = Memory::AllocateArray<rct_g1_element>(_g2.header.num_entries);
-        read_and_convert_gxdat(&fs, _g2.header.num_entries, false, _g2.elements);
+        _g2.elements.resize(_g2.header.num_entries);
+        read_and_convert_gxdat(&fs, _g2.header.num_entries, false, _g2.elements.data());
 
         // Read element data
         _g2.data = fs.ReadArray<uint8>(_g2.header.total_size);
@@ -312,6 +330,9 @@ bool gfx_load_g2()
     }
     catch (const std::exception &)
     {
+        _g2.elements.clear();
+        _g2.elements.shrink_to_fit();
+
         log_fatal("Unable to load g2 graphics");
         if (!gOpenRCT2Headless)
         {
@@ -351,8 +372,8 @@ bool gfx_load_csg()
         }
 
         // Read element headers
-        _csg.elements = Memory::AllocateArray<rct_g1_element>(_csg.header.num_entries);
-        read_and_convert_gxdat(&fileHeader, _csg.header.num_entries, false, _csg.elements);
+        _csg.elements.resize(_csg.header.num_entries);
+        read_and_convert_gxdat(&fileHeader, _csg.header.num_entries, false, _csg.elements.data());
 
         // Read element data
         _csg.data = fileData.ReadArray<uint8>(_csg.header.total_size);
@@ -369,6 +390,10 @@ bool gfx_load_csg()
     }
     catch (const std::exception &)
     {
+        SafeFree(_csg.data);
+        _csg.elements.clear();
+        _csg.elements.shrink_to_fit();
+
         log_error("Unable to load csg graphics");
         return false;
     }

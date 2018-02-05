@@ -196,21 +196,6 @@ typedef struct translucent_window_palette {
 
 #pragma pack(push, 1)
 
-typedef struct rct_g1_header {
-    uint32 num_entries;
-    uint32 total_size;
-} rct_g1_header;
-assert_struct_size(rct_g1_header, 8);
-
-typedef struct rct_gx {
-    rct_g1_header header;
-    rct_g1_element *elements;
-    void *data;
-} rct_gx;
-#ifdef PLATFORM_32BIT
-assert_struct_size(rct_gx, 16);
-#endif
-
 typedef struct rct_palette_entry {
     uint8 blue;
     uint8 green;
