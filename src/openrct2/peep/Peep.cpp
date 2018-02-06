@@ -9856,7 +9856,7 @@ static uint8 peep_pathfind_get_max_number_junctions(rct_peep * peep)
  */
 static bool path_is_thin_junction(rct_tile_element * path, sint16 x, sint16 y, uint8 z)
 {
-    uint8 edges = path->properties.path.edges & 0xF;
+    uint8 edges = footpath_get_edges(path);
 
     sint32 test_edge = bitscanforward(edges);
     if (test_edge == -1)
@@ -10119,7 +10119,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 
             searchResult = PATH_SEARCH_THIN;
 
-            uint8 numEdges = bitcount(tileElement->properties.path.edges & 0x0F);
+            uint8 numEdges = bitcount(footpath_get_edges(tileElement));
 
             if (numEdges < 2)
             {
