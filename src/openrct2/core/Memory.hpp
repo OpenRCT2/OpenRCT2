@@ -99,7 +99,7 @@ namespace Memory
     static T * DuplicateArray(const T * src, size_t count)
     {
         T * result = AllocateArray<T>(count);
-        return (T *)memcpy(result, src, count);
+        return (T *)memcpy(result, src, count * sizeof(T));
     }
 
     template<typename T>
