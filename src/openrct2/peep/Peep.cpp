@@ -3622,6 +3622,7 @@ static void peep_update_ride_prepare_for_state_9(rct_peep * peep)
 {
     Ride * ride = get_ride(peep->current_ride);
 
+    Guard::Assert(peep->current_ride_station < Util::CountOf(ride->exits), GUARD_LINE);
     sint16 x = ride->exits[peep->current_ride_station].x;
     sint16 y = ride->exits[peep->current_ride_station].y;
     sint16 z = ride->station_heights[peep->current_ride_station];

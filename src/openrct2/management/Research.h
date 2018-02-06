@@ -125,11 +125,11 @@ void research_remove(rct_research_item * researchItem);
 void research_insert_ride_entry(uint8 entryIndex, bool researched);
 void research_insert_scenery_group_entry(uint8 entryIndex, bool researched);
 
-void ride_type_set_invented(sint32 rideType);
+void ride_type_set_invented(uint32 rideType);
 void ride_entry_set_invented(sint32 rideEntryIndex);
 void scenery_set_invented(uint16 sceneryItem);
 void scenery_set_not_invented(uint16 sceneryItem);
-bool ride_type_is_invented(sint32 rideType);
+bool ride_type_is_invented(uint32 rideType);
 bool ride_entry_is_invented(sint32 rideEntryIndex);
 bool track_piece_is_available_for_ride_type(uint8 rideType, sint32 trackType);
 bool scenery_group_is_invented(sint32 sgIndex);
