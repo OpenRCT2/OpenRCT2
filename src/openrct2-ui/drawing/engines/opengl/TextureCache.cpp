@@ -305,7 +305,7 @@ rct_drawpixelinfo TextureCache::CreateDPI(sint32 width, sint32 height)
 
 void TextureCache::DeleteDPI(rct_drawpixelinfo dpi)
 {
-    delete dpi.bits;
+    delete [] dpi.bits;
 }
 
 GLuint TextureCache::GetAtlasesTexture()
