@@ -20,7 +20,7 @@
 
 sint32 rct2_to_utf8(utf8 *dst, const char *src)
 {
-    sint32 codepoint;
+    wchar_t codepoint;
 
     utf8 *start = dst;
     const char *ch = src;
