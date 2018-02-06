@@ -4524,6 +4524,7 @@ STR_6214    :Mrakodrap B
 STR_6215    :Budování
 STR_6216    :Provoz
 STR_6217    :Atrakce a tratě
+STR_6219    :Zvýraznit problémy s cestami
 
 
 ###############################################################################
