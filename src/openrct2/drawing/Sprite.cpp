@@ -16,23 +16,37 @@
 
 #include <memory>
 #include <stdexcept>
-#include "../common.h"
+#include <vector>
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../core/FileStream.hpp"
-#include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../OpenRCT2.h"
+#include "../platform/platform.h"
 #include "../PlatformEnvironment.h"
 #include "../sprites.h"
 #include "../ui/UiContext.h"
-
-#include "../platform/platform.h"
 #include "../util/Util.h"
 #include "Drawing.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
+
+#pragma pack(push, 1)
+struct rct_g1_header
+{
+    uint32 num_entries;
+    uint32 total_size;
+};
+assert_struct_size(rct_g1_header, 8);
+#pragma pack(pop)
+
+struct rct_gx
+{
+    rct_g1_header header;
+    std::vector<rct_g1_element> elements;
+    void * data;
+};
 
 constexpr struct
 {
@@ -74,7 +88,8 @@ static inline uint32 rctc_to_rct2_index(uint32 image)
 
 static void read_and_convert_gxdat(IStream * stream, size_t count, bool is_rctc, rct_g1_element *elements)
 {
-    auto g1Elements32 = stream->ReadArray<rct_g1_element_32bit>(count);
+    auto g1Elements32 = std::make_unique<rct_g1_element_32bit[]>(count);
+    stream->Read(g1Elements32.get(), count * sizeof(rct_g1_element_32bit));
     if (is_rctc)
     {
         // Process RCTC's g1.dat file
@@ -151,7 +166,6 @@ static void read_and_convert_gxdat(IStream * stream, size_t count, bool is_rctc,
             elements[i].zoomed_offset = src.zoomed_offset;
         }
     }
-    Memory::Free(g1Elements32);
 }
 
 void mask_scalar(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
@@ -201,13 +215,11 @@ static std::string gfx_get_csg_data_path()
     return path;
 }
 
-static void *   _g1Buffer = nullptr;
+static rct_gx   _g1 = { 0 };
 static rct_gx   _g2 = { 0 };
 static rct_gx   _csg = { 0 };
 static bool     _csgLoaded = false;
 
-static size_t   _g1ElementsCount = 0;
-static rct_g1_element * _g1Elements = nullptr;
 static rct_g1_element _g1Temp = { nullptr };
 bool gTinyFontAntiAliased = false;
 
@@ -224,32 +236,36 @@ bool gfx_load_g1(void * platformEnvironment)
     {
         auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA), "g1.dat");
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        rct_g1_header header = fs.ReadValue<rct_g1_header>();
+        _g1.header = fs.ReadValue<rct_g1_header>();
 
-        if (header.num_entries < SPR_G1_END)
+        log_verbose("g1.dat, number of entries: %u", _g1.header.num_entries);
+
+        if (_g1.header.num_entries < SPR_G1_END)
         {
             throw std::runtime_error("Not enough elements in g1.dat");
         }
 
         // Read element headers
-        _g1ElementsCount = 324206;
-        _g1Elements = Memory::AllocateArray<rct_g1_element>(_g1ElementsCount);
-        bool is_rctc = header.num_entries == SPR_RCTC_G1_END;
-        read_and_convert_gxdat(&fs, header.num_entries, is_rctc, _g1Elements);
+        _g1.elements.resize(324206);
+        bool is_rctc = _g1.header.num_entries == SPR_RCTC_G1_END;
+        read_and_convert_gxdat(&fs, _g1.header.num_entries, is_rctc, _g1.elements.data());
         gTinyFontAntiAliased = is_rctc;
 
         // Read element data
-        _g1Buffer = fs.ReadArray<uint8>(header.total_size);
+        _g1.data = fs.ReadArray<uint8>(_g1.header.total_size);
 
         // Fix entry data offsets
-        for (uint32 i = 0; i < header.num_entries; i++)
+        for (uint32 i = 0; i < _g1.header.num_entries; i++)
         {
-            _g1Elements[i].offset += (uintptr_t)_g1Buffer;
+            _g1.elements[i].offset += (uintptr_t)_g1.data;
         }
         return true;
     }
     catch (const std::exception &)
     {
+        _g1.elements.clear();
+        _g1.elements.shrink_to_fit();
+
         log_fatal("Unable to load g1 graphics");
         if (!gOpenRCT2Headless)
         {
@@ -262,20 +278,23 @@ bool gfx_load_g1(void * platformEnvironment)
 
 void gfx_unload_g1()
 {
-    SafeFree(_g1Buffer);
-    SafeFree(_g1Elements);
+    SafeFree(_g1.data);
+    _g1.elements.clear();
+    _g1.elements.shrink_to_fit();
 }
 
 void gfx_unload_g2()
 {
-    SafeFree(_g2.elements);
     SafeFree(_g2.data);
+    _g2.elements.clear();
+    _g2.elements.shrink_to_fit();
 }
 
 void gfx_unload_csg()
 {
-    SafeFree(_csg.elements);
     SafeFree(_csg.data);
+    _csg.elements.clear();
+    _csg.elements.shrink_to_fit();
 }
 
 bool gfx_load_g2()
@@ -292,8 +311,8 @@ bool gfx_load_g2()
         _g2.header = fs.ReadValue<rct_g1_header>();
 
         // Read element headers
-        _g2.elements = Memory::AllocateArray<rct_g1_element>(_g2.header.num_entries);
-        read_and_convert_gxdat(&fs, _g2.header.num_entries, false, _g2.elements);
+        _g2.elements.resize(_g2.header.num_entries);
+        read_and_convert_gxdat(&fs, _g2.header.num_entries, false, _g2.elements.data());
 
         // Read element data
         _g2.data = fs.ReadArray<uint8>(_g2.header.total_size);
@@ -307,6 +326,9 @@ bool gfx_load_g2()
     }
     catch (const std::exception &)
     {
+        _g2.elements.clear();
+        _g2.elements.shrink_to_fit();
+
         log_fatal("Unable to load g2 graphics");
         if (!gOpenRCT2Headless)
         {
@@ -346,8 +368,8 @@ bool gfx_load_csg()
         }
 
         // Read element headers
-        _csg.elements = Memory::AllocateArray<rct_g1_element>(_csg.header.num_entries);
-        read_and_convert_gxdat(&fileHeader, _csg.header.num_entries, false, _csg.elements);
+        _csg.elements.resize(_csg.header.num_entries);
+        read_and_convert_gxdat(&fileHeader, _csg.header.num_entries, false, _csg.elements.data());
 
         // Read element data
         _csg.data = fileData.ReadArray<uint8>(_csg.header.total_size);
@@ -364,6 +386,9 @@ bool gfx_load_csg()
     }
     catch (const std::exception &)
     {
+        _csg.elements.clear();
+        _csg.elements.shrink_to_fit();
+
         log_error("Unable to load csg graphics");
         return false;
     }
@@ -493,14 +518,22 @@ uint8* FASTCALL gfx_draw_sprite_get_palette(sint32 image_id, uint32 tertiary_col
             assert(tertiary_colour < PALETTE_TO_G1_OFFSET_COUNT);
 #endif // DEBUG_LEVEL_2
             uint32 tertiary_offset = palette_to_g1_offset[tertiary_colour];
-            rct_g1_element* tertiary_palette = &_g1Elements[tertiary_offset];
-            memcpy(palette_pointer + 0x2E, &tertiary_palette->offset[0xF3], 12);
+            auto tertiary_palette = gfx_get_g1_element(tertiary_offset);
+            if (tertiary_palette != nullptr)
+            {
+                memcpy(palette_pointer + 0x2E, &tertiary_palette->offset[0xF3], 12);
+            }
         }
-        rct_g1_element* primary_palette = &_g1Elements[primary_offset];
-        rct_g1_element* secondary_palette = &_g1Elements[secondary_offset];
-
-        memcpy(palette_pointer + 0xF3, &primary_palette->offset[0xF3], 12);
-        memcpy(palette_pointer + 0xCA, &secondary_palette->offset[0xF3], 12);
+        auto primary_palette = gfx_get_g1_element(primary_offset);
+        if (primary_palette != nullptr)
+        {
+            memcpy(palette_pointer + 0xF3, &primary_palette->offset[0xF3], 12);
+        }
+        auto secondary_palette = gfx_get_g1_element(secondary_offset);
+        if (secondary_palette != nullptr)
+        {
+            memcpy(palette_pointer + 0xCA, &secondary_palette->offset[0xF3], 12);
+        }
 
         return palette_pointer;
     }
@@ -695,8 +728,12 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, sint3
 void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 maskImage, sint32 colourImage)
 {
     sint32 left, top, right, bottom, width, height;
-    rct_g1_element *imgMask = &_g1Elements[maskImage & 0x7FFFF];
-    rct_g1_element *imgColour = &_g1Elements[colourImage & 0x7FFFF];
+    auto imgMask = gfx_get_g1_element(maskImage & 0x7FFFF);
+    auto imgColour = gfx_get_g1_element(colourImage & 0x7FFFF);
+    if (imgMask == nullptr || imgColour == nullptr)
+    {
+        return;
+    }
 
     assert(imgMask->flags & G1_FLAG_BMP);
     assert(imgColour->flags & G1_FLAG_BMP);
@@ -752,11 +789,11 @@ const rct_g1_element * gfx_get_g1_element(sint32 image_id)
     }
     else if (image_id < SPR_G2_BEGIN)
     {
-        if (image_id >= (sint32)_g1ElementsCount)
+        if (image_id >= (sint32)_g1.elements.size())
         {
             return nullptr;
         }
-        return &_g1Elements[image_id];
+        return &_g1.elements[image_id];
     }
     if (image_id < SPR_CSG_BEGIN)
     {
@@ -797,9 +834,9 @@ void gfx_set_g1_element(sint32 imageId, const rct_g1_element * g1)
     }
     else if (imageId >= 0 && imageId < SPR_G2_BEGIN)
     {
-        if (imageId < (sint32)_g1ElementsCount)
+        if (imageId < (sint32)_g1.elements.size())
         {
-            _g1Elements[imageId] = *g1;
+            _g1.elements[imageId] = *g1;
         }
     }
 }
