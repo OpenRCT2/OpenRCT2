@@ -669,8 +669,9 @@ void research_insert_scenery_group_entry(uint8 entryIndex, bool researched)
     research_insert(researched, entryIndex, RESEARCH_CATEGORY_SCENERY_GROUP);
 }
 
-bool ride_type_is_invented(sint32 rideType)
+bool ride_type_is_invented(uint32 rideType)
 {
+    Guard::Assert(rideType < Util::CountOf(_researchedRideTypes), GUARD_LINE);
     return _researchedRideTypes[rideType];
 }
 
@@ -684,8 +685,9 @@ bool track_piece_is_available_for_ride_type(uint8 rideType, sint32 trackType)
     return RideTypePossibleTrackConfigurations[rideType] & (1ULL << trackType);
 }
 
-void ride_type_set_invented(sint32 rideType)
+void ride_type_set_invented(uint32 rideType)
 {
+    Guard::Assert(rideType < Util::CountOf(_researchedRideTypes), GUARD_LINE);
     _researchedRideTypes[rideType] = true;
 }
 
