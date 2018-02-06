@@ -631,19 +631,7 @@ public:
         dst->popularity_time_out = src->popularity_time_out;
         dst->popularity_next = src->popularity_next;
 
-        // The number of riders might have overflown or underflow. Re-calculate the value.
-        uint16 numRiders = 0;
-        for (const rct_sprite sprite : _s6.sprites)
-        {
-            if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
-            {
-                if (sprite.peep.state == PEEP_STATE_ON_RIDE && sprite.peep.current_ride == rideIndex)
-                {
-                    numRiders++;
-                }
-            }
-        }
-        dst->num_riders = numRiders;
+        ImportNumRiders(dst, rideIndex);
 
         dst->music_tune_id = src->music_tune_id;
         dst->slide_in_use = src->slide_in_use;
@@ -817,6 +805,23 @@ public:
         {
             gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
         }
+    }
+
+    void ImportNumRiders(Ride * dst, const uint8 rideIndex)
+    {
+        // The number of riders might have overflown or underflown. Re-calculate the value.
+        uint16 numRiders = 0;
+        for (const rct_sprite sprite : _s6.sprites)
+        {
+            if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            {
+                if (sprite.peep.state == PEEP_STATE_ON_RIDE && sprite.peep.current_ride == rideIndex)
+                {
+                    numRiders++;
+                }
+            }
+        }
+        dst->num_riders = numRiders;
     }
 };
 

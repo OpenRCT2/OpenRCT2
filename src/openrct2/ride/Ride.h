@@ -130,12 +130,12 @@ typedef struct rct_ride_entry {
 
 /**
  * Ride structure.
- * size: 0x0260
  *
- * This is currently the same as rct2_ride and packed in order to keep Testpaint working.
- * Testpaint could be modified to work with an unpacked and/or modified Ride struct.
+ * This is based on RCT2's ride structure and the fields currently still line up.
+ * It is, however, not the same size.
  */
-typedef struct Ride {
+typedef struct Ride 
+{
     uint8 type;                                                     // 0x000
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
@@ -268,7 +268,7 @@ typedef struct Ride {
     uint8 popularity;                                               // 0x158
     uint8 popularity_time_out;                                      // 0x159 Updated every purchase and ?possibly by time?
     uint8 popularity_next;                                          // 0x15A When timeout reached this will be the next popularity
-    uint8 num_riders_rct2;                                          // 0x15B
+    uint8 pad_15B;                                                  // 0x15B, used to be num_riders in rct2
     uint8 music_tune_id;                                            // 0x15C
     uint8 slide_in_use;                                             // 0x15D
     union {
@@ -342,9 +342,7 @@ typedef struct Ride {
     uint16 cable_lift;                                              // 0x1FE
     uint16 queue_length[MAX_STATIONS];                              // 0x200
     uint16 num_riders;                                              // 0x208
-    uint8 pad_210[0x56];                                            // 0x210
 } Ride;
-assert_struct_size(Ride, 0x260);
 
 /**
  * Ride measurement structure.
