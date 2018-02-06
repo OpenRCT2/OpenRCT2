@@ -2273,3 +2273,8 @@ rct_footpath_entry *get_footpath_entry(sint32 entryIndex)
 {
     return gFootpathEntries[entryIndex];
 }
+
+uint8 footpath_get_edges(const rct_tile_element * element)
+{
+    return element->properties.path.edges & 0xF;
+}

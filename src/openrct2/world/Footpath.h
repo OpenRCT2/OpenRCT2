@@ -171,4 +171,6 @@ rct_footpath_entry * get_footpath_entry(sint32 entryIndex);
 void footpath_queue_chain_reset();
 void footpath_queue_chain_push(uint8 rideIndex);
 
+uint8 footpath_get_edges(const rct_tile_element * element);
+
 #endif
