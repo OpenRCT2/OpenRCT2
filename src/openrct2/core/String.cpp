@@ -342,46 +342,6 @@ namespace String
         return DiscardUse(ptr, String::Duplicate(replacement));
     }
 
-    utf8 * Substring(const utf8 * buffer, size_t index)
-    {
-        size_t bufferSize = String::SizeOf(buffer);
-        bool goodSubstring = index <= bufferSize;
-        Guard::Assert(goodSubstring, "Substring past end of input string.");
-
-        // If assertion continues, return empty string to avoid crash
-        if (!goodSubstring)
-        {
-            return String::Duplicate("");
-        }
-
-        return String::Duplicate(buffer + index);
-    }
-
-    utf8 * Substring(const utf8 * buffer, size_t index, size_t size)
-    {
-        size_t bufferSize = String::SizeOf(buffer);
-        bool goodSubstring = index + size <= bufferSize;
-        Guard::Assert(goodSubstring, "Substring past end of input string.");
-
-        // If assertion continues, cap the substring to avoid crash
-        if (!goodSubstring)
-        {
-            if (index >= bufferSize)
-            {
-                size = 0;
-            }
-            else
-            {
-                size = bufferSize - index;
-            }
-        }
-
-        utf8 * result = Memory::Allocate<utf8>(size + 1);
-        std::copy_n(buffer + index, size, result);
-        result[size] = '\0';
-        return result;
-    }
-
     std::vector<std::string> Split(const std::string &s, const std::string &delimiter)
     {
         if (delimiter.empty())
