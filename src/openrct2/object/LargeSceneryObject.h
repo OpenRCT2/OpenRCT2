@@ -16,21 +16,21 @@
 
 #pragma once
 
-#include "SceneryObject.h"
-
+#include <memory>
+#include <vector>
 #include "../world/Scenery.h"
+#include "SceneryObject.h"
 
 class LargeSceneryObject final : public SceneryObject
 {
 private:
-    rct_scenery_entry           _legacyType = { 0 };
-    uint32                      _baseImageId = 0;
-    rct_large_scenery_text *    _3dFont = nullptr;
-    rct_large_scenery_tile *    _tiles = nullptr;
+    rct_scenery_entry                       _legacyType = { 0 };
+    uint32                                  _baseImageId = 0;
+    std::vector<rct_large_scenery_tile>     _tiles;
+    std::unique_ptr<rct_large_scenery_text> _3dFont;
 
 public:
     explicit LargeSceneryObject(const rct_object_entry &entry) : SceneryObject(entry) { }
-    ~LargeSceneryObject();
 
     void * GetLegacyData()  override { return &_legacyType; }
 
@@ -41,5 +41,5 @@ public:
     void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const override;
 
 private:
-    static rct_large_scenery_tile * ReadTiles(IStream * stream);
+    static std::vector<rct_large_scenery_tile> ReadTiles(IStream * stream);
 };

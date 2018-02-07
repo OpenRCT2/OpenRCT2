@@ -25,11 +25,6 @@
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 
-SmallSceneryObject::~SmallSceneryObject()
-{
-    Memory::Free(_frameOffsets);
-}
-
 void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
@@ -82,7 +77,7 @@ void SmallSceneryObject::Load()
 
     if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
     {
-        _legacyType.small_scenery.frame_offsets = _frameOffsets;
+        _legacyType.small_scenery.frame_offsets = _frameOffsets.data();
     }
 
     PerformFixes();
@@ -142,7 +137,7 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint
     }
 }
 
-uint8 * SmallSceneryObject::ReadFrameOffsets(IStream * stream)
+std::vector<uint8> SmallSceneryObject::ReadFrameOffsets(IStream * stream)
 {
     uint8 frameOffset;
     auto data = std::vector<uint8>();
@@ -152,7 +147,7 @@ uint8 * SmallSceneryObject::ReadFrameOffsets(IStream * stream)
         data.push_back(frameOffset);
     }
     data.push_back(frameOffset);
-    return Memory::Duplicate(data.data(), data.size());
+    return data;
 }
 
 // clang-format off
