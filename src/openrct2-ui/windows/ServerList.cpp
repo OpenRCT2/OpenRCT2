@@ -14,7 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include <mutex>
+#include <numeric>
 #include <vector>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
@@ -126,7 +128,6 @@ static void server_list_load_server_entries();
 static void server_list_save_server_entries();
 static void dispose_server_entry_list();
 static server_entry & add_server_entry(const std::string &address);
-static void remove_server_entry(sint32 index);
 static void sort_servers();
 static void join_server(std::string address);
 static void fetch_servers();
@@ -198,7 +199,7 @@ static void window_server_list_mouseup(rct_window *w, rct_widgetindex widgetInde
     case WIDX_LIST:
         {
             sint32 serverIndex = w->selected_list_item;
-            if (serverIndex >= 0 && serverIndex < _serverEntries.size())
+            if (serverIndex >= 0 && serverIndex < (sint32)_serverEntries.size())
             {
                 const auto &server = _serverEntries[serverIndex];
                 if (is_version_valid(server.version))
@@ -233,7 +234,7 @@ static void window_server_list_resize(rct_window *w)
 static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
     auto serverIndex = w->selected_list_item;
-    if (serverIndex >= 0 && serverIndex < _serverEntries.size())
+    if (serverIndex >= 0 && serverIndex < (sint32)_serverEntries.size())
     {
         auto &server = _serverEntries[serverIndex];
         switch (dropdownIndex)
@@ -278,7 +279,7 @@ static void window_server_list_scroll_mousedown(rct_window *w, sint32 scrollInde
 {
     sint32 serverIndex = w->selected_list_item;
     if (serverIndex < 0) return;
-    if (serverIndex >= _serverEntries.size()) return;
+    if (serverIndex >= (sint32)_serverEntries.size()) return;
 
     rct_widget *listWidget = &w->widgets[WIDX_LIST];
     sint32 ddx = w->x + listWidget->left + x + 2 - w->scrolls[0].h_left;
@@ -502,30 +503,17 @@ static void server_list_load_server_entries()
 
 static void server_list_save_server_entries()
 {
-    // Get total number of favourite servers
-    sint32 count = 0;
-    for (sint32 i = 0; i < _serverEntries.size(); i++) {
-        server_entry *serverInfo = &_serverEntries[i];
-        if (serverInfo->favourite) {
-            count++;
-        }
-    }
-
-    // Create temporary list of just favourite servers
-    server_entry * entries = (server_entry *)calloc(count, sizeof(server_entry));
-    sint32 eindex = 0;
-    for (sint32 i = 0; i < _serverEntries.size(); i++) {
-        server_entry *serverInfo = &_serverEntries[i];
-        if (serverInfo->favourite) {
-            entries[eindex++] = *serverInfo;
-        }
-    }
-
-    // Save servers
-    server_list_write(_serverEntries);
-
-    // Free temporary list
-    free(entries);
+    // Save just favourite servers
+    std::vector<server_entry> favouriteServers;
+    std::copy_if(
+        _serverEntries.begin(),
+        _serverEntries.end(),
+        std::back_inserter(favouriteServers),
+        [](const server_entry &entry)
+        {
+            return entry.favourite;
+        });
+    server_list_write(favouriteServers);
 }
 
 static void dispose_server_entry_list()
@@ -539,9 +527,9 @@ static server_entry & add_server_entry(const std::string &address)
     auto entry = std::find_if(
         std::begin(_serverEntries),
         std::end(_serverEntries),
-        [address](const server_entry &entry)
+        [address](const server_entry &e)
         {
-            return entry.address == address;
+            return e.address == address;
         });
     if (entry != _serverEntries.end())
     {
@@ -555,43 +543,38 @@ static server_entry & add_server_entry(const std::string &address)
     return _serverEntries.back();
 }
 
-static void remove_server_entry(sint32 index)
+static bool server_compare(const server_entry &a, const server_entry &b)
 {
-    _serverEntries.erase(_serverEntries.begin() + index);
-}
-
-static sint32 server_compare(const void *a, const void *b)
-{
-    const server_entry *serverA = (const server_entry*)a;
-    const server_entry *serverB = (const server_entry*)b;
-
     // Order by favourite
-    if (serverA->favourite != serverB->favourite) {
-        if (serverA->favourite) return -1;
-        else return 1;
+    if (a.favourite != b.favourite)
+    {
+        return a.favourite;
     }
 
     // Then by version
-    bool serverACompatible = serverA->version == NETWORK_STREAM_ID;
-    bool serverBCompatible = serverB->version == NETWORK_STREAM_ID;
-    if (serverACompatible != serverBCompatible) {
-        if (serverACompatible) return -1;
-        else return 1;
+    bool serverACompatible = a.version == NETWORK_STREAM_ID;
+    bool serverBCompatible = b.version == NETWORK_STREAM_ID;
+    if (serverACompatible != serverBCompatible)
+    {
+        return serverACompatible;
     }
 
     // Then by password protection
-    if (serverA->requiresPassword != serverB->requiresPassword) {
-        if (!serverA->requiresPassword) return -1;
-        else return 1;
+    if (a.requiresPassword != b.requiresPassword)
+    {
+        return !a.requiresPassword;
     }
 
     // Then by name
-    return String::Equals(serverA->name, serverB->name, true);
+    return String::Compare(a.name, b.name, true) <= 0;
 }
 
 static void sort_servers()
 {
-    qsort(_serverEntries.data(), _serverEntries.size(), sizeof(server_entry), server_compare);
+    std::sort(
+        _serverEntries.begin(),
+        _serverEntries.end(),
+        server_compare);
 }
 
 static void join_server(std::string address)
@@ -623,12 +606,14 @@ static void join_server(std::string address)
 
 static uint32 get_total_player_count()
 {
-    uint32 numPlayers = 0;
-    for (sint32 i = 0; i < _serverEntries.size(); i++) {
-        server_entry *serverDetails = &_serverEntries[i];
-        numPlayers += serverDetails->players;
-    }
-    return numPlayers;
+    return std::accumulate(
+        _serverEntries.begin(),
+        _serverEntries.end(),
+        0,
+        [](uint32 acc, const server_entry &entry)
+        {
+            return acc + entry.players;
+        });
 }
 
 static void fetch_servers()
@@ -641,12 +626,15 @@ static void fetch_servers()
 
     {
         std::lock_guard<std::mutex> guard(_mutex);
-        for (sint32 i = 0; i < _serverEntries.size(); i++) {
-            if (!_serverEntries[i].favourite) {
-                remove_server_entry(i);
-                i = 0;
-            }
-        }
+        _serverEntries.erase(
+            std::remove_if(
+                _serverEntries.begin(),
+                _serverEntries.end(),
+                [](const server_entry &server)
+                {
+                    return !server.favourite;
+                }),
+            _serverEntries.end());
         sort_servers();
     }
 
