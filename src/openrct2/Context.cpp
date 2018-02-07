@@ -454,7 +454,7 @@ namespace OpenRCT2
                         }
                         else
                         {
-                            handle_park_load_failure_with_title_opt(&result, path.c_str(), loadTitleScreenFirstOnFail);
+                            handle_park_load_failure_with_title_opt(&result, path, loadTitleScreenFirstOnFail);
                         }
                     }
                     catch (const std::exception &e)
