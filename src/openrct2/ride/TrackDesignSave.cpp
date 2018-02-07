@@ -180,7 +180,7 @@ bool track_design_save(uint8 rideIndex)
 
     auto intent = Intent(WC_LOADSAVE);
     intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK);
-    intent.putExtra(INTENT_EXTRA_PATH, track_name);
+    intent.putExtra(INTENT_EXTRA_PATH, std::string{track_name});
     intent.putExtra(INTENT_EXTRA_CALLBACK, (void *) track_design_save_callback);
     context_open_intent(&intent);
 
