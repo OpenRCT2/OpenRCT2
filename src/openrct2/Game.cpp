@@ -1268,7 +1268,7 @@ void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, cons
         // The path needs to be duplicated as it's a const here
         // which the window function doesn't like
         auto intent = Intent(WC_OBJECT_LOAD_ERROR);
-        intent.putExtra(INTENT_EXTRA_PATH, strndup(path, strnlen(path, MAX_PATH)));
+        intent.putExtra(INTENT_EXTRA_PATH, std::string{path, path + strnlen(path, MAX_PATH)});
         intent.putExtra(INTENT_EXTRA_LIST, (void *) ParkLoadResult_GetMissingObjects(result));
         intent.putExtra(INTENT_EXTRA_LIST_COUNT, (uint32) ParkLoadResult_GetMissingObjectsCount(result));
         context_open_intent(&intent);
@@ -1411,7 +1411,7 @@ void * create_save_game_as_intent()
 
     Intent * intent = new Intent(WC_LOADSAVE);
     intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
-    intent->putExtra(INTENT_EXTRA_PATH, std::string(name, name + Util::CountOf(name)));
+    intent->putExtra(INTENT_EXTRA_PATH, std::string{name});
 
     return intent;
 }
