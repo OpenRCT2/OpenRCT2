@@ -21,12 +21,6 @@
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 
-LargeSceneryObject::~LargeSceneryObject()
-{
-    Memory::Free(_3dFont);
-    Memory::Free(_tiles);
-}
-
 void LargeSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
@@ -46,9 +40,9 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
 
     if (_legacyType.large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT)
     {
-        _3dFont = Memory::Allocate<rct_large_scenery_text>();
-        stream->Read(_3dFont);
-        _legacyType.large_scenery.text = _3dFont;
+        _3dFont = std::make_unique<rct_large_scenery_text>();
+        stream->Read(_3dFont.get());
+        _legacyType.large_scenery.text = _3dFont.get();
     }
 
     _tiles = ReadTiles(stream);
@@ -78,7 +72,7 @@ void LargeSceneryObject::Load()
     _baseImageId = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
     _legacyType.image = _baseImageId;
 
-    _legacyType.large_scenery.tiles = _tiles;
+    _legacyType.large_scenery.tiles = _tiles.data();
 
     if (_legacyType.large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT)
     {
@@ -112,10 +106,9 @@ void LargeSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint
     gfx_draw_sprite(dpi, imageId, x, y, 0);
 }
 
-rct_large_scenery_tile * LargeSceneryObject::ReadTiles(IStream * stream)
+std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(IStream * stream)
 {
     auto tiles = std::vector<rct_large_scenery_tile>();
-
     while (stream->ReadValue<uint16>() != 0xFFFF)
     {
         stream->Seek(-2, STREAM_SEEK_CURRENT);
@@ -123,6 +116,5 @@ rct_large_scenery_tile * LargeSceneryObject::ReadTiles(IStream * stream)
         tiles.push_back(tile);
     }
     tiles.push_back({ -1, -1, -1, 255, 0xFFFF });
-
-    return Memory::DuplicateArray(tiles.data(), tiles.size());
+    return tiles;
 }

@@ -324,8 +324,9 @@ namespace String
         utf8 * result = nullptr;
         if (src != nullptr)
         {
-            size_t srcSize = SizeOf(src);
-            result = Memory::DuplicateArray(src, srcSize + 1);
+            size_t srcSize = SizeOf(src) + 1;
+            result = Memory::Allocate<utf8>(srcSize);
+            memcpy(result, src, srcSize);
         }
         return result;
     }

@@ -89,20 +89,6 @@ namespace Memory
     }
 
     template<typename T>
-    static T * Duplicate(const T * src, size_t size)
-    {
-        T *result = Allocate<T>(size);
-        return (T *)memcpy(result, src, size);
-    }
-
-    template<typename T>
-    static T * DuplicateArray(const T * src, size_t count)
-    {
-        T * result = AllocateArray<T>(count);
-        return (T *)memcpy(result, src, count * sizeof(T));
-    }
-
-    template<typename T>
     static void FreeArray(T * ptr, size_t count)
     {
         for (size_t i = 0; i < count; i++)

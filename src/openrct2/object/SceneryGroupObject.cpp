@@ -23,11 +23,6 @@
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 
-SceneryGroupObject::~SceneryGroupObject()
-{
-    Memory::Free(_items);
-}
-
 void SceneryGroupObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
@@ -39,7 +34,7 @@ void SceneryGroupObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     _legacyType.entertainer_costumes = stream->ReadValue<uint32>();
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
-    ReadItems(stream);
+    _items = ReadItems(stream);
     GetImageTable()->Read(context, stream);
 }
 
@@ -75,18 +70,16 @@ void SceneryGroupObject::UpdateEntryIndexes()
     IObjectManager * objectManager = GetObjectManager();
 
     _legacyType.entry_count = 0;
-    for (uint32 i = 0; i < _numItems; i++)
+    for (const auto &objectEntry : _items)
     {
-        const rct_object_entry * objectEntry = &_items[i];
-
-        const ObjectRepositoryItem * ori = objectRepository->FindObject(objectEntry);
+        auto ori = objectRepository->FindObject(&objectEntry);
         if (ori == nullptr) continue;
         if (ori->LoadedObject == nullptr) continue;
 
         uint16 sceneryEntry = objectManager->GetLoadedObjectEntryIndex(ori->LoadedObject);
         Guard::Assert(sceneryEntry != UINT8_MAX, GUARD_LINE);
 
-        uint8 objectType = objectEntry->flags & 0x0F;
+        uint8 objectType = objectEntry.flags & 0x0F;
         switch (objectType) {
         case OBJECT_TYPE_SMALL_SCENERY:                        break;
         case OBJECT_TYPE_LARGE_SCENERY: sceneryEntry |= 0x300; break;
@@ -104,25 +97,22 @@ void SceneryGroupObject::SetRepositoryItem(ObjectRepositoryItem * item) const
 {
     Memory::Free(item->ThemeObjects);
 
-    item->NumThemeObjects = _numItems;
-    item->ThemeObjects = Memory::AllocateArray<rct_object_entry>(_numItems);
-    for (uint32 i = 0; i < _numItems; i++)
+    item->NumThemeObjects = (uint16)_items.size();
+    item->ThemeObjects = Memory::AllocateArray<rct_object_entry>(_items.size());
+    for (size_t i = 0; i < _items.size(); i++)
     {
         item->ThemeObjects[i] = _items[i];
     }
 }
 
-void SceneryGroupObject::ReadItems(IStream * stream)
+std::vector<rct_object_entry> SceneryGroupObject::ReadItems(IStream * stream)
 {
     auto items = std::vector<rct_object_entry>();
-
     while (stream->ReadValue<uint8>() != 0xFF)
     {
         stream->Seek(-1, STREAM_SEEK_CURRENT);
         rct_object_entry entry = stream->ReadValue<rct_object_entry>();
         items.push_back(entry);
     }
-
-    _numItems = (uint32)items.size();
-    _items = Memory::DuplicateArray(items.data(), items.size());
+    return items;
 }

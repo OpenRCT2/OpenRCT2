@@ -16,22 +16,20 @@
 
 #pragma once
 
-#include "Object.h"
-
+#include <vector>
 #include "../world/Scenery.h"
+#include "Object.h"
 
 struct ObjectRepositoryItem;
 
 class SceneryGroupObject final : public Object
 {
 private:
-    rct_scenery_group_entry _legacyType = { 0 };
-    uint32                  _numItems = 0;
-    rct_object_entry *      _items = nullptr;
+    rct_scenery_group_entry         _legacyType = { 0 };
+    std::vector<rct_object_entry>   _items;
 
 public:
     explicit SceneryGroupObject(const rct_object_entry &entry) : Object(entry) { }
-    ~SceneryGroupObject();
 
     void * GetLegacyData()  override { return &_legacyType; }
 
@@ -45,5 +43,5 @@ public:
     void SetRepositoryItem(ObjectRepositoryItem * item) const override;
 
 private:
-    void ReadItems(IStream * stream);
+    static std::vector<rct_object_entry> ReadItems(IStream * stream);
 };
