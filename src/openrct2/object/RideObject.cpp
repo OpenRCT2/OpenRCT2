@@ -529,9 +529,17 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
     auto rideTypes = ObjectJsonHelpers::GetJsonStringArray(json_object_get(properties, "type"));
     for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
-        _legacyType.ride_type[i] = (rideTypes.size() > i) ?
-            ParseRideType(rideTypes[i]) :
-            RIDE_TYPE_NULL;
+        uint8 rideType = RIDE_TYPE_NULL;
+        if (i < rideTypes.size())
+        {
+            rideType = ParseRideType(rideTypes[i]);
+            if (rideType == RIDE_TYPE_NULL)
+            {
+                context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, "Unknown ride type");
+            }
+        }
+
+        _legacyType.ride_type[i] = rideType;
     }
 
     auto rideCategories = ObjectJsonHelpers::GetJsonStringArray(json_object_get(properties, "category"));
@@ -748,16 +756,16 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
     car.sprite_width = ObjectJsonHelpers::GetInteger(jCar, "spriteWidth");
     car.sprite_height_negative = ObjectJsonHelpers::GetInteger(jCar, "spriteHeightNegative");
     car.sprite_height_positive = ObjectJsonHelpers::GetInteger(jCar, "spriteHeightPositive");
-    car.animation = ObjectJsonHelpers::GetInteger(jCar, "var11");
+    car.animation = ObjectJsonHelpers::GetInteger(jCar, "animation");
     car.base_num_frames = ObjectJsonHelpers::GetInteger(jCar, "baseNumFrames");
     car.no_vehicle_images = ObjectJsonHelpers::GetInteger(jCar, "numImages");
     car.no_seating_rows = ObjectJsonHelpers::GetInteger(jCar, "numSeatRows");
     car.spinning_inertia = ObjectJsonHelpers::GetInteger(jCar, "spinningInertia");
     car.spinning_friction = ObjectJsonHelpers::GetInteger(jCar, "spinningFriction");
     car.friction_sound_id = ObjectJsonHelpers::GetInteger(jCar, "frictionSoundId", 255);
-    car.log_flume_reverser_vehicle_type = ObjectJsonHelpers::GetInteger(jCar, "var58");
+    car.log_flume_reverser_vehicle_type = ObjectJsonHelpers::GetInteger(jCar, "logFlumeReverserVehicleType");
     car.sound_range = ObjectJsonHelpers::GetInteger(jCar, "soundRange", 255);
-    car.double_sound_frequency = ObjectJsonHelpers::GetInteger(jCar, "var5A");
+    car.double_sound_frequency = ObjectJsonHelpers::GetInteger(jCar, "doubleSoundFrequency");
     car.powered_acceleration = ObjectJsonHelpers::GetInteger(jCar, "poweredAcceleration");
     car.powered_max_speed = ObjectJsonHelpers::GetInteger(jCar, "poweredMaxSpeed");
     car.car_visual = ObjectJsonHelpers::GetInteger(jCar, "carVisual");
@@ -961,7 +969,7 @@ uint8 RideObject::ParseRideType(const std::string &s)
         { "ghost_train",                RIDE_TYPE_GHOST_TRAIN },
         { "twister_rc",                 RIDE_TYPE_TWISTER_ROLLER_COASTER },
         { "wooden_rc",                  RIDE_TYPE_WOODEN_ROLLER_COASTER },
-        { "side_friction",              RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER },
+        { "side_friction_rc",           RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER },
         { "steel_wild_mouse",           RIDE_TYPE_STEEL_WILD_MOUSE },
         { "multi_dimension_rc",         RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER },
         { "flying_rc",                  RIDE_TYPE_FLYING_ROLLER_COASTER },
@@ -978,7 +986,7 @@ uint8 RideObject::ParseRideType(const std::string &s)
         { "flying_saucers",             RIDE_TYPE_FLYING_SAUCERS },
         { "crooked_house",              RIDE_TYPE_CROOKED_HOUSE },
         { "monorail_cycles",            RIDE_TYPE_MONORAIL_CYCLES },
-        { "compact_inverted",           RIDE_TYPE_COMPACT_INVERTED_COASTER },
+        { "compact_inverted_rc",        RIDE_TYPE_COMPACT_INVERTED_COASTER },
         { "water_coaster",              RIDE_TYPE_WATER_COASTER },
         { "air_powered_vertical_rc",    RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER },
         { "inverted_hairpin_rc",        RIDE_TYPE_INVERTED_HAIRPIN_COASTER },
