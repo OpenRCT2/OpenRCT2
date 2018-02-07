@@ -1255,7 +1255,7 @@ void game_fix_save_vars()
     fix_ride_entrance_and_exit_locations();
 }
 
-void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, const utf8 * path, bool loadTitleFirst)
+void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, const std::string & path, bool loadTitleFirst)
 {
     if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_MISSING_OBJECTS)
     {
@@ -1268,7 +1268,7 @@ void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, cons
         // The path needs to be duplicated as it's a const here
         // which the window function doesn't like
         auto intent = Intent(WC_OBJECT_LOAD_ERROR);
-        intent.putExtra(INTENT_EXTRA_PATH, std::string{path, path + strnlen(path, MAX_PATH)});
+        intent.putExtra(INTENT_EXTRA_PATH, path);
         intent.putExtra(INTENT_EXTRA_LIST, (void *) ParkLoadResult_GetMissingObjects(result));
         intent.putExtra(INTENT_EXTRA_LIST_COUNT, (uint32) ParkLoadResult_GetMissingObjectsCount(result));
         context_open_intent(&intent);
@@ -1294,7 +1294,7 @@ void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, cons
     }
 }
 
-void handle_park_load_failure(const ParkLoadResult * result, const utf8 * path)
+void handle_park_load_failure(const ParkLoadResult * result, const std::string & path)
 {
     handle_park_load_failure_with_title_opt(result, path, false);
 }
