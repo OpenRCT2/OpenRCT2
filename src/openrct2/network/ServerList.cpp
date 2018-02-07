@@ -14,45 +14,44 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <vector>
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../Context.h"
+#include "../PlatformEnvironment.h"
 #include "../platform/platform.h"
 #include "ServerList.h"
+
+using namespace OpenRCT2;
 
 std::vector<server_entry> server_list_read()
 {
     log_verbose("server_list_read(...)");
-
-    utf8 path[MAX_PATH];
-    platform_get_user_directory(path, nullptr, sizeof(path));
-    Path::Append(path, sizeof(path), "servers.cfg");
-
     std::vector<server_entry> entries;
     try
     {
+        auto env = GetContext()->GetPlatformEnvironment();
+        auto path = env->GetFilePath(PATHID::NETWORK_SERVERS);
         auto fs = FileStream(path, FILE_MODE_OPEN);
         auto numEntries = fs.ReadValue<uint32>();
-        entries.resize(numEntries);
-
-        // Load each server entry
-        for (uint32 i = 0; i < numEntries; i++)
+        for (size_t i = 0; i < numEntries; i++)
         {
-            server_entry * serverInfo = &entries[i];
-            serverInfo->address = fs.ReadString();
-            serverInfo->name = fs.ReadString();
-            serverInfo->requiresPassword = false;
-            serverInfo->description = fs.ReadString();
-            serverInfo->version = String::Duplicate("");
-            serverInfo->favourite = true;
-            serverInfo->players = 0;
-            serverInfo->maxplayers = 0;
+            server_entry serverInfo;
+            serverInfo.address = fs.ReadString();
+            serverInfo.name = fs.ReadString();
+            serverInfo.requiresPassword = false;
+            serverInfo.description = fs.ReadString();
+            serverInfo.version = String::Duplicate("");
+            serverInfo.favourite = true;
+            serverInfo.players = 0;
+            serverInfo.maxplayers = 0;
+            entries.push_back(std::move(serverInfo));
         }
     }
-    catch (const std::exception &)
+    catch (const std::exception &e)
     {
+        log_error("Unable to read server list: %s", e.what());
         entries = std::vector<server_entry>();
     }
     return entries;
@@ -70,8 +69,6 @@ bool server_list_write(const std::vector<server_entry> &entries)
     {
         auto fs = FileStream(path, FILE_MODE_WRITE);
         fs.WriteValue<uint32>((uint32)entries.size());
-
-        // Write each server entry
         for (const auto &entry : entries)
         {
             fs.WriteString(entry.address);
@@ -80,8 +77,9 @@ bool server_list_write(const std::vector<server_entry> &entries)
         }
         return true;
     }
-    catch (const std::exception &)
+    catch (const std::exception &e)
     {
+        log_error("Unable to write server list: %s", e.what());
         return false;
     }
 }
