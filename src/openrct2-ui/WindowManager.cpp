@@ -234,6 +234,8 @@ public:
             const rct_object_entry * objects = (rct_object_entry *) intent->GetPointerExtra(INTENT_EXTRA_LIST);
             size_t count = intent->GetUIntExtra(INTENT_EXTRA_LIST_COUNT);
             window_object_load_error_open(const_cast<utf8 *>(path.c_str()), count, objects);
+
+            return nullptr;
         }
         case WC_RIDE:
             return window_ride_main_open(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
@@ -265,7 +267,6 @@ public:
 
             return w;
         }
-            break;
         default:
             Console::Error::WriteLine("Unhandled window class for intent (%d)", intent->GetWindowClass());
             return nullptr;
@@ -375,6 +376,7 @@ public:
                 return;
 
             window_invalidate(w);
+            break;
         }
 
         case INTENT_ACTION_UPDATE_CLIMATE:
@@ -405,6 +407,7 @@ public:
             {
                 window_invalidate(w);
             }
+            break;
         }
 
         }
