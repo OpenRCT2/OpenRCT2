@@ -1411,7 +1411,7 @@ void * create_save_game_as_intent()
 
     Intent * intent = new Intent(WC_LOADSAVE);
     intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
-    intent->putExtra(INTENT_EXTRA_PATH, name);
+    intent->putExtra(INTENT_EXTRA_PATH, std::string(name, name + Util::CountOf(name)));
 
     return intent;
 }
