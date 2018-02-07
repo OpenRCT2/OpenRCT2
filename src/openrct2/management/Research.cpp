@@ -940,7 +940,11 @@ void research_fix()
 
                 for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
                 {
-                    ride_type_set_invented(rideEntry->ride_type[j]);
+                    uint32 rideType = rideEntry->ride_type[j];
+                    if (rideType != RIDE_TYPE_NULL)
+                    {
+                        ride_type_set_invented(rideEntry->ride_type[j]);
+                    }
                 }
             }
         }
