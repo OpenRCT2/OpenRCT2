@@ -38,9 +38,9 @@ void SceneryGroupObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     _legacyType.pad_109 = stream->ReadValue<uint8>();
     _legacyType.entertainer_costumes = stream->ReadValue<uint32>();
 
-    GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
+    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
     _items = ReadItems(stream);
-    GetImageTable()->Read(context, stream);
+    GetImageTable().Read(context, stream);
 }
 
 void SceneryGroupObject::Load()

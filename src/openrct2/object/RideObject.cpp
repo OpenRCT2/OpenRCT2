@@ -748,14 +748,14 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
     car.sprite_width = ObjectJsonHelpers::GetInteger(jCar, "spriteWidth");
     car.sprite_height_negative = ObjectJsonHelpers::GetInteger(jCar, "spriteHeightNegative");
     car.sprite_height_positive = ObjectJsonHelpers::GetInteger(jCar, "spriteHeightPositive");
-    car.var_11 = ObjectJsonHelpers::GetInteger(jCar, "var11");
+    car.animation = ObjectJsonHelpers::GetInteger(jCar, "var11");
     car.base_num_frames = ObjectJsonHelpers::GetInteger(jCar, "baseNumFrames");
     car.no_vehicle_images = ObjectJsonHelpers::GetInteger(jCar, "numImages");
     car.no_seating_rows = ObjectJsonHelpers::GetInteger(jCar, "numSeatRows");
     car.spinning_inertia = ObjectJsonHelpers::GetInteger(jCar, "spinningInertia");
     car.spinning_friction = ObjectJsonHelpers::GetInteger(jCar, "spinningFriction");
     car.friction_sound_id = ObjectJsonHelpers::GetInteger(jCar, "frictionSoundId", 255);
-    car.var_58 = ObjectJsonHelpers::GetInteger(jCar, "var58");
+    car.log_flume_reverser_vehicle_type = ObjectJsonHelpers::GetInteger(jCar, "var58");
     car.sound_range = ObjectJsonHelpers::GetInteger(jCar, "soundRange", 255);
     car.double_sound_frequency = ObjectJsonHelpers::GetInteger(jCar, "var5A");
     car.powered_acceleration = ObjectJsonHelpers::GetInteger(jCar, "poweredAcceleration");
@@ -781,25 +781,25 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
         { "flatToGentleSlopeWhileBankedTransitions", VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS },
         { "corkscrews", VEHICLE_SPRITE_FLAG_CORKSCREWS },
         { "restraintAnimation", VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION },
-        { "VEHICLE_SPRITE_FLAG_14", VEHICLE_SPRITE_FLAG_14 },
+        { "curvedLiftHill", VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL },
         { "VEHICLE_SPRITE_FLAG_15", VEHICLE_SPRITE_FLAG_15 } });
 
     car.flags = ObjectJsonHelpers::GetFlags<uint32>(jCar, {
-        { "VEHICLE_ENTRY_FLAG_0", VEHICLE_ENTRY_FLAG_0 },
+        { "VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY", VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY },
         { "VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS", VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS },
         { "VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH", VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH },
         { "VEHICLE_ENTRY_FLAG_MINI_GOLF", VEHICLE_ENTRY_FLAG_MINI_GOLF },
         { "VEHICLE_ENTRY_FLAG_4", VEHICLE_ENTRY_FLAG_4 },
         { "VEHICLE_ENTRY_FLAG_5", VEHICLE_ENTRY_FLAG_5 },
         { "VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET", VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET },
-        { "VEHICLE_ENTRY_FLAG_7", VEHICLE_ENTRY_FLAG_7 },
+        { "VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS", VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS },
         { "VEHICLE_ENTRY_FLAG_ALLOW_DOORS_DEPRECATED", VEHICLE_ENTRY_FLAG_ALLOW_DOORS_DEPRECATED },
         { "VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2", VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2 },
         { "VEHICLE_ENTRY_FLAG_10", VEHICLE_ENTRY_FLAG_10 },
         { "VEHICLE_ENTRY_FLAG_11", VEHICLE_ENTRY_FLAG_11 },
         { "VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES", VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES },
         { "VEHICLE_ENTRY_FLAG_13", VEHICLE_ENTRY_FLAG_13 },
-        { "VEHICLE_ENTRY_FLAG_14", VEHICLE_ENTRY_FLAG_14 },
+        { "VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES", VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES },
         { "VEHICLE_ENTRY_FLAG_15", VEHICLE_ENTRY_FLAG_15 },
         { "VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1", VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1 },
         { "VEHICLE_ENTRY_FLAG_SWINGING", VEHICLE_ENTRY_FLAG_SWINGING },
@@ -807,16 +807,16 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
         { "VEHICLE_ENTRY_FLAG_POWERED", VEHICLE_ENTRY_FLAG_POWERED },
         { "VEHICLE_ENTRY_FLAG_RIDERS_SCREAM", VEHICLE_ENTRY_FLAG_RIDERS_SCREAM },
         { "VEHICLE_ENTRY_FLAG_21", VEHICLE_ENTRY_FLAG_21 },
-        { "VEHICLE_ENTRY_FLAG_22", VEHICLE_ENTRY_FLAG_22 },
-        { "VEHICLE_ENTRY_FLAG_23", VEHICLE_ENTRY_FLAG_23 },
-        { "VEHICLE_ENTRY_FLAG_24", VEHICLE_ENTRY_FLAG_24 },
+        { "VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION", VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION },
+        { "VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION", VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION },
+        { "VEHICLE_ENTRY_FLAG_RIDER_ANIMATION", VEHICLE_ENTRY_FLAG_RIDER_ANIMATION },
         { "VEHICLE_ENTRY_FLAG_25", VEHICLE_ENTRY_FLAG_25 },
         { "VEHICLE_ENTRY_FLAG_26", VEHICLE_ENTRY_FLAG_26 },
-        { "VEHICLE_ENTRY_FLAG_27", VEHICLE_ENTRY_FLAG_27 },
-        { "VEHICLE_ENTRY_FLAG_28", VEHICLE_ENTRY_FLAG_28 },
-        { "VEHICLE_ENTRY_FLAG_29", VEHICLE_ENTRY_FLAG_29 },
-        { "VEHICLE_ENTRY_FLAG_30", VEHICLE_ENTRY_FLAG_30 },
-        { "VEHICLE_ENTRY_FLAG_31", VEHICLE_ENTRY_FLAG_31 } });
+        { "VEHICLE_ENTRY_FLAG_SLIDE_SWING", VEHICLE_ENTRY_FLAG_SLIDE_SWING },
+        { "VEHICLE_ENTRY_FLAG_CHAIRLIFT", VEHICLE_ENTRY_FLAG_CHAIRLIFT },
+        { "VEHICLE_ENTRY_FLAG_WATER_RIDE", VEHICLE_ENTRY_FLAG_WATER_RIDE },
+        { "VEHICLE_ENTRY_FLAG_GO_KART", VEHICLE_ENTRY_FLAG_GO_KART },
+        { "VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT", VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT } });
     return car;
 }
 

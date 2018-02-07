@@ -16,6 +16,8 @@
 
 #pragma warning(disable : 4706) // assignment within conditional expression
 
+#include <cstdlib>
+#include <cstring>
 #include <unordered_map>
 #include "../Context.h"
 #include "../core/Math.hpp"
@@ -217,9 +219,11 @@ namespace ObjectJsonHelpers
             auto images = imgTable.GetImages();
             for (uint32 i = start; i < Math::Min(numImages, end); i++)
             {
-                auto g1 = images[i];
-                auto length = g1_calculate_data_size(&g1);
-                g1.offset = Memory::Duplicate(g1.offset, length);
+                auto &objg1 = images[i];
+                auto length = g1_calculate_data_size(&objg1);
+                auto g1 = objg1;
+                g1.offset = (uint8 *)std::malloc(length);
+                std::memcpy(g1.offset, objg1.offset, length);
                 result.push_back(g1);
             }
             delete obj;
@@ -260,9 +264,11 @@ namespace ObjectJsonHelpers
                 {
                     for (auto i : range)
                     {
-                        auto g1 = *gfx_get_g1_element(SPR_CSG_BEGIN + i);
-                        auto length = g1_calculate_data_size(&g1);
-                        g1.offset = Memory::Duplicate(g1.offset, length);
+                        auto &csg1 = *gfx_get_g1_element(SPR_CSG_BEGIN + i);
+                        auto length = g1_calculate_data_size(&csg1);
+                        auto g1 = csg1;
+                        g1.offset = (uint8 *)std::malloc(length);
+                        std::memcpy(g1.offset, csg1.offset, length);
                         result.push_back(g1);
                     }
                 }
@@ -336,7 +342,7 @@ namespace ObjectJsonHelpers
             for (const auto &g1 : images)
             {
                 imageTable.AddImage(&g1);
-                Memory::Free(g1.offset);
+                std::free(g1.offset);
             }
         }
     }
