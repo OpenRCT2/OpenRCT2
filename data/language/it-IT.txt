@@ -4284,6 +4284,24 @@ STR_6200    :Reimposta data
 STR_6201    :{MONTH}
 STR_6202    :Attiva pavimento virtuale
 STR_6203    :{SMALLFONT}{BLACK}Se attivo mostra un pavimento virtuale mentre si tiene premuto Ctrl o Maiusc, per facilitare il posizionamento di elementi.
+STR_6204    :Mattoni
+STR_6205    :Ferro
+STR_6206    :Cemento grigio
+STR_6207    :Cemento giallo
+STR_6208    :Cemento rosso
+STR_6209    :Cemento viola
+STR_6210    :Cemento verde
+STR_6211    :Pietra marrone
+STR_6212    :Pietra grigia
+STR_6213    :Grattacielo A
+STR_6214    :Grattacielo B
+STR_6215    :Costruzione
+STR_6216    :Operazione
+STR_6217    :Disponibilità percorso / tracciato
+STR_6218    :Ufficiale OpenRCT2
+STR_6219    :Evidenzia problemi sentiero
+STR_6220    :Rendi utilizzabile
+STR_6221    :{SMALLFONT}{BLACK}Questo comando posiziona sulla cella attualmente selezionata l'ingresso o l'uscita dell'attrazione. Solo un ingresso e un'uscita possono essere resi utilizzabili per ogni stazione.
 
 #############
 # Scenarios #
