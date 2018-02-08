@@ -4525,7 +4525,8 @@ STR_6215    :Budování
 STR_6216    :Provoz
 STR_6217    :Atrakce a tratě
 STR_6219    :Zvýraznit problémy s cestami
-
+STR_6220    :Zprovoznit
+STR_6221    :{SMALLFONT}{BLACK}Nastaví vstup do/výstup ze stanice na právě vybrané políčko. V jednu chvíli může každá stanice mít v provozu pouze jeden vchod/východ.
 
 ###############################################################################
 ## RCT2 Objects
@@ -4546,8 +4547,8 @@ STR_DESC    :Lanovka se sedačkami
 STR_CPTY    :2 místa na jedné sedačce
 
 [LIFT1]
-STR_NAME    :Výtahy
-STR_DESC    :Návštěvníci jezdí ve výtahu nahoru nebo dolů, aby se dostali z jednoho patra do druhého
+STR_NAME    :Výtah
+STR_DESC    :Výtah s ocelovou kabinou
 STR_CPTY    :16 návštěvníků
 
 [MONO1]
@@ -4646,7 +4647,7 @@ STR_DESC    :Bludiště je postavené z 2 metrů vysokého živého plotu, nebo 
 STR_CPTY    : 
 
 [HMCAR]
-STR_NAME    :Strašidelná jízda velkým domem
+STR_NAME    :Jízda domem hrůzy
 STR_DESC    :Vozy jezdí po vícepatrovém okruhu okolo strašidelných kulis a speciálních efektů
 STR_CPTY    :2 místa v každém vozu
 
@@ -4661,7 +4662,7 @@ STR_DESC    :Klasický kolotoč s vyřezávanými koníky
 STR_CPTY    :16 návštěvníků
 
 [MONBK]
-STR_NAME    :Jednokolejná jízdní kola
+STR_NAME    :Jízdní kola
 STR_DESC    :Po ocelové kolejnici jezdí speciální jízdní kola, ovládané šlapáním návštěvníků
 STR_CPTY    :1 místo na každém kole
 
@@ -4691,7 +4692,7 @@ STR_DESC    :Tři v sobě zasazené rotující kruhy dají návštěvníkům mo�
 STR_CPTY    :1 místo v každém kruhu
 
 [SUBMAR]
-STR_NAME    :Jízda ponorkou
+STR_NAME    :Ponorky
 STR_DESC    :Návštěvníci vyrazí na podvodní jízdu v ponorce
 STR_CPTY    :4 návštěvníci v každé ponorce
 
@@ -4722,12 +4723,12 @@ STR_CPTY    :4 místa v každém voze
 
 [ARRT1]
 STR_NAME    :Vývrtková horská dráha
-STR_DESC    :Malá ocelová horská dráha, na které vozy jezdí skrze loopingy a jezdí ve vývrtce
+STR_DESC    :Horská dráha s vozy vybavenými ramenními opěrkami
 STR_CPTY    :4 místa v každém voze
 
 [ARRT2]
 STR_NAME    :Hyper horská dráha
-STR_DESC    :Vysoká horská dráha s dlouhými pády, velkou rychlostí a pohodlnými vlaky, kde se jezdí s opěrkou v klíně
+STR_DESC    :Horská dráha s pohodlnými vozy vybavenými opěrkou v klíně
 STR_CPTY    :6 míst v každém voze
 
 [ARRX]
@@ -4746,8 +4747,8 @@ STR_DESC    :Návštěvníci sedí v pohodlných sedadlech pod tratí cestujíc�
 STR_CPTY    :4 místa v každém voze
 
 [BMFL]
-STR_NAME    :Horská dráha bez podlahy
-STR_DESC    :Široká horská dráha bez podlahy poskytují návštěvníkům pocit volného vzduchu během jízdy skrze propletenou dráhu
+STR_NAME    :Zakroucená horská dráha bez podlahy
+STR_DESC    :Rozměrná horská dráha s vozy vybavenými ramenními opěrkami a s chybějící podlahou ve vozech, díky čemuž je jízda opravdu záživná
 STR_CPTY    :4 místa v každém voze
 
 [BMRB]
@@ -4757,22 +4758,22 @@ STR_CPTY    :4 místa v každém voze
 
 [BMSD]
 STR_NAME    :Zakroucená horská dráha
-STR_DESC    :Široká ocelová horská dráha, na které vozy jedou po hladkých kolejnicích skrze propletenou dráhu
+STR_DESC    :Rozměrná horská dráha s vozy vybavenými ramenními opěrkami
 STR_CPTY    :4 místa v každém voze
 
 [BMSU]
-STR_NAME    :Horská dráha "na stojáka"
-STR_DESC    :Návštěvníci jedou ve stoje v širokých vozech se speciálně navrženým držením po propletené dráze s pády
+STR_NAME    :Zakroucená horská dráha "na stojáka"
+STR_DESC    :Návštěvníci jedou ve stoje ve vozech vybavenými ramenními opěrkami
 STR_CPTY    :4 místa v každém voze
 
 [BMVD]
-STR_NAME    :Horská dráha s volným pádem
+STR_NAME    :Šestimístná zakroucená horská dráha
 STR_DESC    :Extra-široké vozy letí dolů po zcela kolmé dráze a poskytují tím pocit volného pádu
 STR_CPTY    :4 místa v každém voze
 
 [BOB1]
 STR_NAME    :Horská bobová dráha
-STR_DESC    :Návštěvníci jedou po propletené bobové dráze
+STR_DESC    :Návštěvníci sedí za sebou ve dvojmístných vozech
 STR_CPTY    :2 místa v každém vozu
 
 [GOLTR]
@@ -4782,7 +4783,7 @@ STR_CPTY    :6 míst v každém voze
 
 [INTBOB]
 STR_NAME    :Létající zatáčky
-STR_DESC    :Návštěvníci jedou po propletené bobové dráze
+STR_DESC    :Návštěvníci v šestimístných vozech sedí vedle sebe po dvou ve třech řadách 
 STR_CPTY    :6 míst v každém voze
 
 [INTINV]
@@ -4796,7 +4797,7 @@ STR_DESC    :Gigantická horská dráha schopna volných pádů a kopců přes 9
 STR_CPTY    :4 místa v každém voze
 
 [IVMC1]
-STR_NAME    :Ostrá zavěšená horská dráha
+STR_NAME    :Čtyřmístná horská dráha
 STR_DESC    :Vozy jsou zavěšeny na kolejnicích s ostrými zatáčkami a ostrými pády
 STR_CPTY    :4 místa v každém voze
 
@@ -4811,7 +4812,7 @@ STR_DESC    :Horská dráha s dvoumístnými vozy bez předků
 STR_CPTY    :2 místa v každém vozu
 
 [NEMT]
-STR_NAME    :Zavěšená horská dráha
+STR_NAME    :Čtyřmístná zavěšená horská dráha
 STR_DESC    :Vozy jsou zavěšeny na kolejnicích se zatáčkami, pády a loopingy
 STR_CPTY    :4 místa v každém voze
 
@@ -4847,7 +4848,7 @@ STR_CPTY    :4 místa v každém voze
 
 [REVCAR]
 STR_NAME    :Otáčivá horská dráha
-STR_DESC    :Po dřevěné dráze jedou vozy, které se ve speciálních místech se otočí a jedou pozpátku
+STR_DESC    :Horská dráha s vozy, které se ve speciálních místech se otočí a jedou pozpátku
 STR_CPTY    :6 míst v každém voze
 
 [REVF1]
@@ -4856,8 +4857,8 @@ STR_DESC    :Velká dráha s vozem pro volný pád pozpátku
 STR_CPTY    :8 návštěvníků
 
 [SBOX]
-STR_NAME    :Závodní dřevěné vozy
-STR_DESC    :Návštěvníci jezdí v dřevěných závodních vozech po jednokolejné horské dráze
+STR_NAME    :Závodní krabičky od mýdla
+STR_DESC    :Návštěvníci jezdí v závodních vozech ve tvaru dávných krabiček od mýdla
 STR_CPTY    :4 místa v každém voze
 
 [SCHT1]
@@ -4871,12 +4872,12 @@ STR_DESC    :Po dráze jezdí vozy, které mají kola horizontálně uložená p
 STR_CPTY    :4 místa v každém voze
 
 [SKYTR]
-STR_NAME    :Mini zavěšená létající horská dráha
+STR_NAME    :Zavěšená horská dráha na "ležáka"
 STR_DESC    :Návštěvníci jedou na jednokolejné trati vleže hlavou dolů, zavěšeni ve speciálním voze, který se v zatáčkách houpe
 STR_CPTY    :1 místo v každém voze
 
 [SLCFO]
-STR_NAME    :Obrácená zavěšená horská dráha
+STR_NAME    :Tvář-rvoucí zavěšená horská dráha
 STR_DESC    :Návštěvníci sedí po dvou zavěšení pod tratí a vidí dopředu nebo dozadu podle toho, jak zrovna jedou skrze loopingy a ostré zatáčky
 STR_CPTY    :4 místa v každém voze
 
@@ -4932,7 +4933,7 @@ STR_CPTY    :4 místa v každém voze
 
 [VEKDV]
 STR_NAME    :Zavěšená svislá dráha
-STR_DESC    :Návštěvníci sedí ve vozech zavěšených pod tratí, jedou pozpátku nahoru po svislé dráze, padají dolů a jezdí skrze loopingy s ostrými zatáčkami
+STR_DESC    :Návštěvníci sedí ve vozech zavěšených pod tratí, jedou pozpátku vzhůru po svislé dráze, padají dolů a jezdí skrze loopingy s ostrými zatáčkami
 STR_CPTY    :4 místa v každém voze
 
 [VEKST]
@@ -4956,13 +4957,13 @@ STR_DESC    :Horská dráha s vozy, které připomínají automobily
 STR_CPTY    :4 místa v každém voze
 
 [WMMINE]
-STR_NAME    :Dřevěná divoká důlní jízda
-STR_DESC    :Malinké důlní vozy jedou po cik-cak dřevěné trati a silně se naklání v ostrých zatáčkách a drsných pádech
+STR_NAME    :Divoká důlní jízda
+STR_DESC    :Horská dráha s vozy, které připomínají klasické důlní vozy 
 STR_CPTY    :2 místa v každém vozu
 
 [WMOUSE]
 STR_NAME    :Dřevěná divoká myš
-STR_DESC    :Malé vozy ve tvaru myší jedou po dřevěné trati a silně se naklání v ostrých zatáčkách a drsných pádech
+STR_DESC    :Horská dráha s vozy ve tvaru myší
 STR_CPTY    :2 místa v každém vozu
 
 [WMSPIN]
@@ -7003,12 +7004,12 @@ STR_NAME    :Oranžová voda
 ###############################################################################
 [LONDONBS]
 STR_NAME    :Tramvaj ve tvaru Londýnského autobusu
-STR_DESC    :Repliky tramvají
+STR_DESC    :Repliky červených dvoupatrových londýnských autobusů
 STR_CPTY    :10 míst v každém voze
 
 [MINELIFT]
 STR_NAME    :Důlní výtah
-STR_DESC    :Návštěvníci jezdí ve výtahu nahoru nebo dolů, aby se dostali z jednoho patra do druhého
+STR_DESC    :Výtah s ocelovou kabinou připomínající důlní výtah
 STR_CPTY    :16 návštěvníků
 
 [SANFTRAM]
@@ -7058,7 +7059,7 @@ STR_CPTY    :2 místa v každém voze
 
 [KILLWHAL]
 STR_NAME    :Zabijácká velryba
-STR_DESC    :Návštěvníci vyrazí na podvodní jízdu v ponorce
+STR_DESC    :Návštěvníci vyrazí na podvodní jízdu v ponorce ve tvaru 
 STR_CPTY    :5 míst v každé ponorce
 
 [SKIDOO]
@@ -7088,12 +7089,12 @@ STR_CPTY    :4 místa v každém voze
 
 [CONDORRD]
 STR_NAME    :Jízda kondorů
-STR_DESC    :Návštěvníci jedou na jednokolejné trati vleže hlavou dolů, zavěšeni ve speciálním voze, který se v zatáčkách houpe
-STR_CPTY    :1 místo v každém voze
+STR_DESC    :Návštěvníci jsou zavěšeni vleže hlavou napřed pod tratí a během jízdy mají pocit volného letu kondora
+STR_CPTY    :4 místa v každém voze
 
 [CONGAEEL]
-STR_NAME    :Jízda mořského úhoře
-STR_DESC    :Malá ocelová horská dráha, na které vozy připomínající mořské úhoře jezdí skrze loopingy a jezdí ve vývrtce
+STR_NAME    :Mořští úhoři
+STR_DESC    :Horská dráha, na které vozy s ramenními opěrkami připomínající mořské úhoře
 STR_CPTY    :4 místa v každém voze
 
 [DRAGON]
@@ -7113,7 +7114,7 @@ STR_CPTY    :4 místa v každém voze
 
 [GRATWHTE]
 STR_NAME    :Žraločí horská dráha
-STR_DESC    :Prostorné vozy s opěrkou v klíně
+STR_DESC    :Horská dríha s vozy vybavenými ramenní opěrkou, které připomínají žraloka bílého 
 STR_CPTY    :6 míst v každém voze
 
 [JAGUARRD]
@@ -7132,7 +7133,7 @@ STR_DESC    :Malá horská dráha, na které vozy po jednom projíždí trať s 
 STR_CPTY    :4 místa v každém voze
 
 [MINECART]
-STR_NAME    :Jízda dolem
+STR_NAME    :Dulní jízda
 STR_DESC    :Dřevěná horská dráha s vozy s polstrovanými sedadly a opěrkou v klíně
 STR_CPTY    :4 místa v každém voze
 
@@ -7152,7 +7153,7 @@ STR_DESC    :Návštěvníci sedí po dvou zavěšení pod tratí a vidí dopře
 STR_CPTY    :4 místa v každém voze
 
 [RHINORID]
-STR_NAME    :Rhino Ride
+STR_NAME    :Nosorožčí jízda
 STR_DESC    :Malá ocelová horská dráha se spirálovitým profilem a vozy se sedadly za sebou
 STR_CPTY    :6 míst v každém voze
 
@@ -7187,7 +7188,7 @@ STR_DESC    :Dřevěná horská dráha s vozy s polstrovanými sedadly a opěrko
 STR_CPTY    :4 místa v každém voze
 
 [SURFBRDC]
-STR_NAME    :Surfující horská dráha
+STR_NAME    :Surferská horská dráha
 STR_DESC    :Návštěvníci jedou ve stoje v širokých vozech se speciálně navrženým držením po propletené dráze s pády
 STR_CPTY    :4 místa v každém voze
 
@@ -7263,17 +7264,17 @@ STR_CPTY    :1 místo v každé lodi
 
 [MANDARIN]
 STR_NAME    :Čínské kachny
-STR_DESC    :Lodě ve tvaru labutí, ovládané šlapáním návštěvníků
+STR_DESC    :Lodě ve tvaru kachen, ovládané šlapáním návštěvníků sedících vepředu
 STR_CPTY    :4 místa na každé lodi
 
 [MANTARAY]
 STR_NAME    :Rejnočí jízda
-STR_DESC    :Velkokapacitní lodě se plaví po vodním kanále, poháněny do pásem do strmých úseků, zrychlují sjížděním svahů a namočí návštěvníky pořádným šplouchnutím
+STR_DESC    :Lodě ve tvaru rejnuků
 STR_CPTY    :16 míst na každé lodi
 
 [OUTRIGGR]
-STR_NAME    :Loď s podporami
-STR_DESC    :Dlouhé kánoe s postranními podporami, u kterých musí návštěvníci pádlovat
+STR_NAME    :Loď s vahadly
+STR_DESC    :Dlouhé kánoe s postranními vahadly, u kterých musí návštěvníci pádlovat
 STR_CPTY    :2 místa v každé lodi
 
 [TUTLBOAT]
