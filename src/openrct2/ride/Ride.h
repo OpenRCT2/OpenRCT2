@@ -128,6 +128,8 @@ typedef struct rct_ride_entry {
     rct_string_id capacity;
 } rct_ride_entry;
 
+#pragma pack(pop)
+
 /**
  * Ride structure.
  *
@@ -328,6 +330,8 @@ typedef struct Ride
     uint16 cable_lift;
     uint16 queue_length[MAX_STATIONS];
 } Ride;
+
+#pragma pack(push, 1)
 
 /**
  * Ride measurement structure.
