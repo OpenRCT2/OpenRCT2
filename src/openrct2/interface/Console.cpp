@@ -39,6 +39,7 @@
 #include "../network/network.h"
 #include "../network/twitch.h"
 #include "../object/Object.h"
+#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../OpenRCT2.h"
@@ -58,7 +59,6 @@
 
 #ifndef NO_TTF
 #include "../drawing/TTF.h"
-#include "../object/ObjectList.h"
 
 #endif
 
