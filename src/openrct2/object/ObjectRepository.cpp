@@ -498,7 +498,7 @@ private:
         }
 
         // Encode data
-        uint8 objectType = entry->flags & 0x0F;
+        uint8 objectType = object_entry_get_type(entry);
         sawyercoding_chunk_header chunkHeader;
         chunkHeader.encoding = object_entry_group_encoding[objectType];
         chunkHeader.length = (uint32)dataSize;
@@ -766,7 +766,7 @@ bool object_entry_compare(const rct_object_entry * a, const rct_object_entry * b
     // If an official object don't bother checking checksum
     if ((a->flags & 0xF0) || (b->flags & 0xF0))
     {
-        if ((a->flags & 0x0F) != (b->flags & 0x0F))
+        if (object_entry_get_type(a) != object_entry_get_type(b))
         {
             return false;
         }

@@ -100,7 +100,7 @@ public:
             loadedObject = ori->LoadedObject;
             if (loadedObject == nullptr)
             {
-                uint8 objectType = entry->flags & 0x0F;
+                uint8 objectType = object_entry_get_type(entry);
                 sint32 slot = FindSpareSlot(objectType);
                 if (slot != -1)
                 {
