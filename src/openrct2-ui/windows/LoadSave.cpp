@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <ctime>
 #include <memory>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
@@ -24,9 +25,9 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/core/Util.hpp>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
-#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/platform/Platform2.h>
@@ -746,10 +747,12 @@ static void window_loadsave_sort_list()
 
 static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, const char *directory, const char *extension)
 {
-    safe_strcpy(_directory, directory, sizeof(_directory));
+    utf8 absoluteDirectory[MAX_PATH];
+    Path::GetAbsolute(absoluteDirectory, Util::CountOf(absoluteDirectory), directory);
+    safe_strcpy(_directory, absoluteDirectory, Util::CountOf(_directory));
     if (_extension != extension)
     {
-        safe_strcpy(_extension, extension, sizeof(_extension));
+        safe_strcpy(_extension, extension, Util::CountOf(_extension));
     }
     _shortenedDirectory[0] = '\0';
 
@@ -781,7 +784,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
     else
     {
         // Remove the separator at the end of the path, if present
-        safe_strcpy(_parentDirectory, directory, sizeof(_parentDirectory));
+        safe_strcpy(_parentDirectory, absoluteDirectory, Util::CountOf(_parentDirectory));
         if (_parentDirectory[strlen(_parentDirectory) - 1] == *PATH_SEPARATOR
             || _parentDirectory[strlen(_parentDirectory) - 1] == '/')
             _parentDirectory[strlen(_parentDirectory) - 1] = '\0';
@@ -816,13 +819,13 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
         w->disabled_widgets &= ~(1 << WIDX_NEW_FOLDER);
 
         // List all directories
-        auto subDirectories = Path::GetDirectories(directory);
+        auto subDirectories = Path::GetDirectories(absoluteDirectory);
         for (const auto &sdName : subDirectories)
         {
             auto subDir = sdName + PATH_SEPARATOR;
 
             LoadSaveListItem newListItem;
-            newListItem.path = Path::Combine(directory, subDir);
+            newListItem.path = Path::Combine(absoluteDirectory, subDir);
             newListItem.name = subDir;
             newListItem.type = TYPE_DIRECTORY;
             newListItem.loaded = false;
@@ -833,15 +836,15 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
         // List all files with the wanted extensions
         char filter[MAX_PATH];
         char extCopy[64];
-        safe_strcpy(extCopy, extension, sizeof(extCopy));
+        safe_strcpy(extCopy, extension, Util::CountOf(extCopy));
         char * extToken;
         bool showExtension = false;
         extToken = strtok(extCopy, ";");
         while (extToken != nullptr)
         {
-            safe_strcpy(filter, directory, sizeof(filter));
-            safe_strcat_path(filter, "*", sizeof(filter));
-            path_append_extension(filter, extToken, sizeof(filter));
+            safe_strcpy(filter, directory, Util::CountOf(filter));
+            safe_strcat_path(filter, "*", Util::CountOf(filter));
+            path_append_extension(filter, extToken, Util::CountOf(filter));
 
             auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, false));
             while (scanner->Next())

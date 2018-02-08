@@ -27,6 +27,7 @@
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../core/Util.hpp"
 #include "../network/network.h"
 #include "../object/ObjectRepository.h"
 #include "../OpenRCT2.h"
@@ -197,25 +198,29 @@ exitcode_t CommandLine::HandleCommandDefault()
 
     if (_userDataPath != nullptr)
     {
-        String::Set(gCustomUserDataPath, sizeof(gCustomUserDataPath), _userDataPath);
+        utf8 absolutePath[MAX_PATH]{};
+        Path::GetAbsolute(absolutePath, Util::CountOf(absolutePath), _userDataPath);
+        String::Set(gCustomUserDataPath, Util::CountOf(gCustomUserDataPath), absolutePath);
         Memory::Free(_userDataPath);
     }
 
     if (_openrctDataPath != nullptr)
     {
-        String::Set(gCustomOpenrctDataPath, sizeof(gCustomOpenrctDataPath), _openrctDataPath);
+        utf8 absolutePath[MAX_PATH]{};
+        Path::GetAbsolute(absolutePath, Util::CountOf(absolutePath), _openrctDataPath);
+        String::Set(gCustomOpenrctDataPath, Util::CountOf(gCustomOpenrctDataPath), absolutePath);
         Memory::Free(_openrctDataPath);
     }
 
     if (_rct2DataPath != nullptr)
     {
-        String::Set(gCustomRCT2DataPath, sizeof(gCustomRCT2DataPath), _rct2DataPath);
+        String::Set(gCustomRCT2DataPath, Util::CountOf(gCustomRCT2DataPath), _rct2DataPath);
         Memory::Free(_rct2DataPath);
     }
 
     if (_password != nullptr)
     {
-        String::Set(gCustomPassword, sizeof(gCustomPassword), _password);
+        String::Set(gCustomPassword, Util::CountOf(gCustomPassword), _password);
         Memory::Free(_password);
     }
 
