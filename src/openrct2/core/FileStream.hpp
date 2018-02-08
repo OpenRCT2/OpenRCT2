@@ -12,6 +12,7 @@
 #include "../common.h"
 #include "../localisation/Language.h"
 #include "IStream.hpp"
+#include "Path.hpp"
 #include "String.hpp"
 
 #include <algorithm>
@@ -79,6 +80,16 @@ namespace OpenRCT2
                     break;
                 default:
                     throw;
+            }
+
+            // Make sure the directory exists before writing to a file inside it
+            if (_canWrite)
+            {
+                std::string directory = Path::GetDirectory(path);
+                if (!Path::DirectoryExists(directory))
+                {
+                    Path::CreateDirectory(directory);
+                }
             }
 
 #ifdef _WIN32
