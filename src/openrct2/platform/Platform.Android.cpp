@@ -16,7 +16,7 @@
 
 #ifdef __ANDROID__
 
-#include <cassert>
+#include "../core/Guard.hpp"
 #include "Platform2.h"
 
 namespace Platform
@@ -48,7 +48,7 @@ namespace Platform
 
     std::string GetCurrentExecutablePath()
     {
-        assert(false, "GetCurrentExecutablePath() not implemented for Android.");
+        Guard::Assert(false, "GetCurrentExecutablePath() not implemented for Android.");
         return std::string();
     }
 }
