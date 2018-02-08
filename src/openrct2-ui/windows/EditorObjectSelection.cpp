@@ -1042,7 +1042,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
     list_item *listItem = &_listItems[w->selected_list_item];
 
     highlightedEntry = w->object_entry;
-    type = highlightedEntry->flags & 0x0F;
+    type = object_entry_get_type(highlightedEntry);
 
     // Draw preview
     widget = &w->widgets[WIDX_PREVIEW];
@@ -1268,7 +1268,7 @@ static void editor_load_selected_objects()
                 }
                 else if (!(gScreenFlags & SCREEN_FLAGS_EDITOR)) {
                     // Defaults selected items to researched (if in-game)
-                    uint8 objectType = entry->flags & 0x0F;
+                    uint8 objectType = object_entry_get_type(entry);
                     uint8 entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
                     if (objectType == OBJECT_TYPE_RIDE) {
                         rct_ride_entry *rideEntry = get_ride_entry(entryIndex);

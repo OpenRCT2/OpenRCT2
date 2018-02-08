@@ -21,6 +21,7 @@
 #include <openrct2/platform/platform.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/object/ObjectList.h>
 
 enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -109,7 +110,7 @@ static std::string file_path;
 static rct_string_id get_object_type_string(const rct_object_entry *entry)
 {
     rct_string_id result;
-    uint8 objectType = entry->flags & 0x0F;
+    uint8 objectType = object_entry_get_type(entry);
     switch (objectType) {
         case OBJECT_TYPE_RIDE:
             result = STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS;

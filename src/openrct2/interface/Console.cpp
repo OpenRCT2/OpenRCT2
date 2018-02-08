@@ -58,6 +58,8 @@
 
 #ifndef NO_TTF
 #include "../drawing/TTF.h"
+#include "../object/ObjectList.h"
+
 #endif
 
 #define CONSOLE_MAX_LINES 300
@@ -1150,7 +1152,7 @@ static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
         }
         sint32 groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
 
-        uint8 objectType = entry->flags & 0x0F;
+        uint8 objectType = object_entry_get_type(entry);
         if (objectType == OBJECT_TYPE_RIDE) {
             // Automatically research the ride so it's supported by the game.
             rct_ride_entry *rideEntry;

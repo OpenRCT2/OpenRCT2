@@ -550,7 +550,7 @@ private:
                 const rct_object_entry * foundEntry = object_list_find_by_name(objectName);
                 if (foundEntry != nullptr)
                 {
-                    uint8 objectType = foundEntry->flags & 0x0F;
+                    uint8 objectType = object_entry_get_type(foundEntry);
                     switch (objectType) {
                     case OBJECT_TYPE_SMALL_SCENERY:
                     case OBJECT_TYPE_LARGE_SCENERY:
