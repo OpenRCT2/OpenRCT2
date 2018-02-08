@@ -234,7 +234,7 @@ AudioParams audio_get_params_from_location(sint32 soundId, const LocationXYZ16 *
             sint16 vy = pos2.y - viewport->view_y;
             sint16 vx = pos2.x - viewport->view_x;
             params.pan = viewport->x + (vx >> viewport->zoom);
-            params.volume = SoundVolumeAdjust[soundId] + ((-1024 * viewport->zoom - 1) << volumeDown) + 1;
+            params.volume = SoundVolumeAdjust[soundId] + ((-1024 * viewport->zoom - 1) * (1 << volumeDown)) + 1;
 
             if (vy < 0 || vy >= viewport->view_height || vx < 0 || vx >= viewport->view_width || params.volume < -10000)
             {
