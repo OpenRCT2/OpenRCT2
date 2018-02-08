@@ -675,7 +675,7 @@ void RideObject::ReadJsonVehicleInfo(IReadObjectContext * context, const json_t 
 {
     _legacyType.min_cars_in_train = json_integer_value(json_object_get(properties, "minCarsPerTrain"));
     _legacyType.max_cars_in_train = json_integer_value(json_object_get(properties, "maxCarsPerTrain"));
-    _legacyType.cars_per_flat_ride = json_integer_value(json_object_get(properties, "carsPerFlatRide"));
+    _legacyType.cars_per_flat_ride = ObjectJsonHelpers::GetInteger(properties, "carsPerFlatRide", 255);
     _legacyType.zero_cars = json_integer_value(json_object_get(properties, "numEmptyCars"));
 
     // Train formation from car indices
