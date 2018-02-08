@@ -95,7 +95,6 @@ enum {
     WINDOW_OBJECT_SELECTION_PAGE_SCENERY_GROUPS,
     WINDOW_OBJECT_SELECTION_PAGE_PARK_ENTRANCE,
     WINDOW_OBJECT_SELECTION_PAGE_WATER,
-    WINDOW_OBJECT_SELECTION_PAGE_SCENARIO_DESCRIPTION,
     WINDOW_OBJECT_SELECTION_PAGE_COUNT
 };
 
@@ -110,7 +109,6 @@ static constexpr const rct_string_id ObjectSelectionPageNames[WINDOW_OBJECT_SELE
     STR_OBJECT_SELECTION_SCENERY_GROUPS,
     STR_OBJECT_SELECTION_PARK_ENTRANCE,
     STR_OBJECT_SELECTION_WATER,
-    STR_OBJECT_SELECTION_SCENARIO_DESCRIPTION,
 };
 
 #pragma region Widgets
@@ -130,15 +128,14 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
     WIDX_TAB_8,                 // 11, 800
     WIDX_TAB_9,                 // 12, 1000
     WIDX_TAB_10,                // 13, 2000
-    WIDX_TAB_11,                // 14, 4000
-    WIDX_ADVANCED,              // 15, 8000
-    WIDX_LIST,                  // 16, 10000
-    WIDX_PREVIEW,               // 17, 20000
-    WIDX_INSTALL_TRACK,         // 18, 40000
-    WIDX_FILTER_DROPDOWN,       // 19, 80000
-    WIDX_FILTER_STRING_BUTTON,  // 20, 100000
-    WIDX_FILTER_CLEAR_BUTTON,   // 21, 200000
-    WIDX_FILTER_RIDE_TAB_FRAME,
+    WIDX_ADVANCED,              // 14, 4000
+    WIDX_LIST,                  // 15, 8000
+    WIDX_PREVIEW,               // 16, 10000
+    WIDX_INSTALL_TRACK,         // 17, 20000
+    WIDX_FILTER_DROPDOWN,       // 18, 40000
+    WIDX_FILTER_STRING_BUTTON,  // 19, 80000
+    WIDX_FILTER_CLEAR_BUTTON,   // 20, 100000
+    WIDX_FILTER_RIDE_TAB_FRAME, // 21, 200000
     WIDX_FILTER_RIDE_TAB_ALL,
     WIDX_FILTER_RIDE_TAB_TRANSPORT,
     WIDX_FILTER_RIDE_TAB_GENTLE,
@@ -167,7 +164,6 @@ static rct_widget window_editor_object_selection_widgets[] = {
     { WWT_TAB,              1,  220,    250,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
     { WWT_TAB,              1,  251,    281,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
     { WWT_TAB,              1,  282,    312,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
-    { WWT_TAB,              1,  313,    343,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
     { WWT_BUTTON,           0,  470,    591,    23,     34,     STR_OBJECT_SELECTION_ADVANCED,  STR_OBJECT_SELECTION_ADVANCED_TIP },
     { WWT_SCROLL,           1,  4,      291,    60,     386,    SCROLL_VERTICAL,                STR_NONE },
     { WWT_FLATBTN,          1,  391,    504,    46,     159,    0xFFFFFFFF,                     STR_NONE },
@@ -416,7 +412,7 @@ rct_window * window_editor_object_selection_open()
     _filter_flags = gConfigInterface.object_selection_filter_flags;
     memset(_filter_string, 0, sizeof(_filter_string));
 
-    for (sint32 i = WIDX_TAB_1; i <= WIDX_TAB_11; i++)
+    for (sint32 i = WIDX_TAB_1; i <= WIDX_TAB_10; i++)
         window->enabled_widgets |= (1LL << i);
     window_init_scroll_widgets(window);
 
@@ -497,7 +493,6 @@ static void window_editor_object_selection_mouseup(rct_window *w, rct_widgetinde
     case WIDX_TAB_8:
     case WIDX_TAB_9:
     case WIDX_TAB_10:
-    case WIDX_TAB_11:
         window_editor_object_set_page(w, widgetIndex - WIDX_TAB_1);
         break;
     case WIDX_FILTER_RIDE_TAB_ALL:
@@ -803,7 +798,6 @@ static void window_editor_object_selection_tooltip(rct_window* w, rct_widgetinde
     case WIDX_TAB_8:
     case WIDX_TAB_9:
     case WIDX_TAB_10:
-    case WIDX_TAB_11:
         set_format_arg(0, rct_string_id, ObjectSelectionPageNames[(widgetIndex - WIDX_TAB_1)]);
         break;
     default:
@@ -943,7 +937,7 @@ static void window_editor_object_selection_invalidate(rct_window *w)
  */
 static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 i, x, y, width, type;
+    sint32 i, x, y, width;
     rct_widget *widget;
     rct_object_entry *highlightedEntry;
     rct_string_id stringId;
@@ -1042,7 +1036,6 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
     list_item *listItem = &_listItems[w->selected_list_item];
 
     highlightedEntry = w->object_entry;
-    type = object_entry_get_type(highlightedEntry);
 
     // Draw preview
     widget = &w->widgets[WIDX_PREVIEW];
@@ -1074,11 +1067,8 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
         x = w->x + w->widgets[WIDX_LIST].right + 4;
         y += 15;
         width = w->x + w->width - x - 4;
-        if (type == OBJECT_TYPE_SCENARIO_TEXT) {
-            gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_OBJECT_SELECTION_DESCRIPTION_SCENARIO_TEXT, COLOUR_BLACK);
-        } else {
-            gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y + 5, width, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_BLACK);
-        }
+
+        gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y + 5, width, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_BLACK);
     }
 
     // Draw object source
@@ -1483,11 +1473,6 @@ static std::string object_get_description(const void * object)
     {
         const RideObject * rideObject = static_cast<const RideObject *>(baseObject);
         return rideObject->GetDescription();
-    }
-    case OBJECT_TYPE_SCENARIO_TEXT:
-    {
-        auto stexObject = static_cast<const StexObject *>(baseObject);
-        return stexObject->GetScenarioDetails();
     }
     default:
         return "";
