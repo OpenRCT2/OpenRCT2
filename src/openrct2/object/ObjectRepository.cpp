@@ -90,8 +90,8 @@ public:
             env->GetFilePath(PATHID::CACHE_OBJECTS),
             std::string(PATTERN),
             std::vector<std::string>({
-                env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT),
-                env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT) }))
+                env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT),
+                env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT) }))
     {
     }
 
@@ -433,9 +433,8 @@ private:
         }
         else
         {
-            // Commented out temporarily to stop flooding terminal for json-objects branch
-            // Console::Error::WriteLine("Object conflict: '%s'", conflict->Path);
-            // Console::Error::WriteLine("               : '%s'", item.Path);
+            Console::Error::WriteLine("Object conflict: '%s'", conflict->Path);
+            Console::Error::WriteLine("               : '%s'", item.Path);
             return false;
         }
     }
