@@ -16,20 +16,21 @@
 
 #pragma once
 
+#include <string>
+#include <vector>
 #include "../common.h"
 
-typedef struct server_entry
+struct server_entry
 {
-    char *  address;
-    utf8 *  name;
-    bool    requiresPassword;
-    utf8 *  description;
-    char *  version;
-    bool    favourite;
-    uint8   players;
-    uint8   maxplayers;
-} server_entry;
+    std::string address;
+    std::string name;
+    std::string description;
+    std::string version;
+    bool        requiresPassword    = false;
+    bool        favourite           = false;
+    uint8       players             = 0;
+    uint8       maxplayers          = 0;
+};
 
-bool server_list_read(uint32 * outNumEntries, server_entry * * outEntries);
-bool server_list_write(uint32 numEntries, server_entry * entries);
-
+std::vector<server_entry> server_list_read();
+bool server_list_write(const std::vector<server_entry> &entries);
