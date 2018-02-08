@@ -144,7 +144,7 @@ void SceneryGroupObject::ReadJson(IReadObjectContext * context, const json_t * r
     }
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(root, GetImageTable());
+    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }
 
 uint32 SceneryGroupObject::ReadJsonEntertainerCostumes(const json_t * jCostumes)

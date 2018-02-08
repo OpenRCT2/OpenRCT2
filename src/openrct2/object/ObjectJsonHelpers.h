@@ -39,7 +39,7 @@ namespace ObjectJsonHelpers
     uint8 ParseCursor(const std::string &s, uint8 defaultValue);
     rct_object_entry ParseObjectEntry(const std::string & s);
     void LoadStrings(const json_t * root, StringTable &stringTable);
-    void LoadImages(const json_t * root, ImageTable &imageTable);
+    void LoadImages(IReadObjectContext * context, const json_t * root, ImageTable &imageTable);
 
     template<typename T>
     T GetFlags(const json_t * obj, std::initializer_list<std::pair<std::string, T>> list)

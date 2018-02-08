@@ -309,7 +309,7 @@ void SmallSceneryObject::ReadJson(IReadObjectContext * context, const json_t * r
     SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(root, GetImageTable());
+    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }
 
 std::vector<uint8> SmallSceneryObject::ReadJsonFrameOffsets(const json_t * jFrameOffsets)

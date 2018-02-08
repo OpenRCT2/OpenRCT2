@@ -145,5 +145,5 @@ void WallObject::ReadJson(IReadObjectContext * context, const json_t * root)
     }
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(root, GetImageTable());
+    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }

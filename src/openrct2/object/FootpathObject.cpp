@@ -83,5 +83,5 @@ void FootpathObject::ReadJson(IReadObjectContext * context, const json_t * root)
         { "editorOnly", FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR } });
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(root, GetImageTable());
+    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }

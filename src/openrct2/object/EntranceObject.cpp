@@ -73,5 +73,5 @@ void EntranceObject::ReadJson(IReadObjectContext * context, const json_t * root)
     _legacyType.text_height = json_integer_value(json_object_get(properties, "textHeight"));
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(root, GetImageTable());
+    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }

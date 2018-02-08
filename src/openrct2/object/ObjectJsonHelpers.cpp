@@ -20,6 +20,8 @@
 #include <cstring>
 #include <unordered_map>
 #include "../Context.h"
+#include "../core/File.h"
+#include "../core/FileScanner.h"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
@@ -205,12 +207,36 @@ namespace ObjectJsonHelpers
         return result;
     }
 
-    static std::vector<rct_g1_element> LoadObjectImages(const std::string &name, uint32 start, uint32 end)
+    static std::string FindLegacyObject(const std::string &name)
     {
-        std::vector<rct_g1_element> result;
         const auto env = GetContext()->GetPlatformEnvironment();
         auto objectsPath = env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
         auto objectPath = Path::Combine(objectsPath, name);
+#ifndef _WIN32
+        if (!File::Exists(objectPath))
+        {
+            // UNIX based systems need to search for any files with the same name
+            // due to case sensitivity.
+            auto filter = Path::Combine(objectsPath, "*.dat");
+            auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, false));
+            while (scanner->Next())
+            {
+                auto relativePath = scanner->GetPathRelative();
+                if (String::Equals(relativePath, name, true))
+                {
+                    objectPath = scanner->GetPath();
+                    break;
+                }
+            }
+        }
+#endif
+        return objectPath;
+    }
+
+    static std::vector<rct_g1_element> LoadObjectImages(IReadObjectContext * context, const std::string &name, uint32 start, uint32 end)
+    {
+        std::vector<rct_g1_element> result;
+        auto objectPath = FindLegacyObject(name);
         auto obj = ObjectFactory::CreateObjectFromLegacyFile(objectPath.c_str());
         if (obj != nullptr)
         {
@@ -230,14 +256,19 @@ namespace ObjectJsonHelpers
         }
         else
         {
-            log_warning("Unable to open '%s'", objectPath.c_str());
+            std::string msg = "Unable to open '" + objectPath + "'";
+            context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, msg.c_str());
         }
 
         // Add place holders
         auto placeHolders = (size_t)(end - start) - result.size();
         if (placeHolders > 0)
         {
-            log_warning("Adding %d placeholders", placeHolders);
+            if (obj != nullptr)
+            {
+                std::string msg = "Adding " + std::to_string(placeHolders) + " placeholders";
+                context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, msg.c_str());
+            }
             for (size_t i = 0; i < placeHolders; i++)
             {
                 auto g1 = rct_g1_element{};
@@ -247,7 +278,7 @@ namespace ObjectJsonHelpers
         return result;
     }
 
-    static std::vector<rct_g1_element> ParseImages(std::string s)
+    static std::vector<rct_g1_element> ParseImages(IReadObjectContext * context, std::string s)
     {
         std::vector<rct_g1_element> result;
         if (s.empty())
@@ -293,7 +324,7 @@ namespace ObjectJsonHelpers
                     imgEnd = range.back();
                 }
             }
-            return LoadObjectImages(name, imgStart, imgEnd);
+            return LoadObjectImages(context, name, imgStart, imgEnd);
         }
         return result;
     }
@@ -332,13 +363,13 @@ namespace ObjectJsonHelpers
         }
     }
 
-    void LoadImages(const json_t * root, ImageTable &imageTable)
+    void LoadImages(IReadObjectContext * context, const json_t * root, ImageTable &imageTable)
     {
         auto jsonImages = json_object_get(root, "images");
         auto imageElements = GetJsonStringArray(jsonImages);
         for (const auto &ie : imageElements)
         {
-            auto images = ParseImages(ie);
+            auto images = ParseImages(context, ie);
             for (const auto &g1 : images)
             {
                 imageTable.AddImage(&g1);

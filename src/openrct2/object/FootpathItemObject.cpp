@@ -118,5 +118,5 @@ void FootpathItemObject::ReadJson(IReadObjectContext * context, const json_t * r
         { "isTelevision", PATH_BIT_FLAG_IS_QUEUE_SCREEN }});
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(root, GetImageTable());
+    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }

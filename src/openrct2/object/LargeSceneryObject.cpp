@@ -163,7 +163,7 @@ void LargeSceneryObject::ReadJson(IReadObjectContext * context, const json_t * r
     SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(root, GetImageTable());
+    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }
 
 std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadJsonTiles(const json_t * jTiles)

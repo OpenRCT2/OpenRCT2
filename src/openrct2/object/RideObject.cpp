@@ -668,7 +668,7 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
         { "disablePainting", RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB } });
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(root, GetImageTable());
+    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }
 
 void RideObject::ReadJsonVehicleInfo(IReadObjectContext * context, const json_t * properties)
