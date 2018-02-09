@@ -45,6 +45,7 @@
 #include "rct1/RCT1.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
+#include "ride/Station.h"
 #include "ride/Track.h"
 #include "ride/TrackDesign.h"
 #include "ride/Vehicle.h"
@@ -1211,12 +1212,22 @@ void game_fix_save_vars()
     peep_sort();
 
     // Fix possibly invalid field values
-    FOR_ALL_PEEPS(spriteIndex, peep)
+    FOR_ALL_GUESTS(spriteIndex, peep)
     {
         if (peep->current_ride_station >= MAX_STATIONS)
         {
-            log_warning("Peep %u has invalid ride station = %u. Resetting.", spriteIndex, peep->current_ride_station);
-            peep->current_ride_station = 0;
+            const uint8 srcStation = peep->current_ride_station;
+            const uint8 ride = peep->current_ride;
+            log_warning("Peep %u has invalid ride station = %u for ride %u.", spriteIndex, srcStation, ride);
+            sint8 station = ride_get_first_valid_station_exit(get_ride(ride));
+            if (station == -1)
+            {
+                log_warning("Couldn't find station, removing peep %u", spriteIndex);
+                peep_remove(peep);
+            } else {
+                log_warning("Amending ride station to %u.", station);
+                peep->current_ride_station = station;
+            }
         }
     }
 
