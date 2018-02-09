@@ -43,8 +43,8 @@ public:
     bool TryPopString(const char * * result);
 };
 
-typedef sint32 exitcode_t;
-typedef exitcode_t (*CommandLineFunc)(CommandLineArgEnumerator *);
+using exitcode_t      = sint32;
+using CommandLineFunc = exitcode_t (*)(CommandLineArgEnumerator *);
 
 enum
 {

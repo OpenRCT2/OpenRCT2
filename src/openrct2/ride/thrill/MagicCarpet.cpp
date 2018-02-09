@@ -38,13 +38,13 @@ enum
     SPR_MAGIC_CARPET_PENDULUM_SW = 22102,
 };
 
-typedef struct bound_box
+struct bound_box
 {
     sint16 x;
     sint16 y;
     sint16 width;
     sint16 height;
-} bound_box;
+};
 
 /** rct2: 0x01428220 */
 static constexpr const sint16 MagicCarpetOscillationZ[] = { -2, -1, 1,  5,  10, 16, 23, 30, 37, 45, 52, 59, 65, 70, 74, 76,

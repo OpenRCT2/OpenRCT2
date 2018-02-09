@@ -518,10 +518,10 @@ static uint32 window_park_page_hold_down_widgets[] = {
 
 #pragma endregion
 
-typedef struct window_park_award {
+struct window_park_award {
     rct_string_id text;
     uint32 sprite;
-} window_park_award;
+};
 
 static constexpr const window_park_award ParkAwards[] = {
     { STR_AWARD_MOST_UNTIDY,                SPR_AWARD_MOST_UNTIDY },

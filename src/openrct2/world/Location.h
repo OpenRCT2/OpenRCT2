@@ -23,49 +23,49 @@
 #define MakeXY16(x, y)    {(sint16)(x), (sint16)(y)}
 
 #pragma pack(push, 1)
-typedef struct LocationXY8 {
+struct LocationXY8 {
     union {
         struct {
             uint8 x, y;
         };
         uint16 xy;
     };
-} LocationXY8;
+};
 assert_struct_size(LocationXY8, 2);
 
-typedef struct LocationXYZ8 {
+struct LocationXYZ8 {
     uint8 x, y, z;
-} LocationXYZ8;
+};
 assert_struct_size(LocationXYZ8, 3);
 
-typedef struct LocationXYZD8 {
+struct LocationXYZD8 {
     uint8 x, y, z, direction;
-} LocationXYZD8;
+};
 assert_struct_size(LocationXYZD8, 4);
 
-typedef struct LocationXY16 {
+struct LocationXY16 {
     sint16 x, y;
-} LocationXY16;
+};
 assert_struct_size(LocationXY16, 4);
 
 
-typedef struct LocationXYZ16 {
+struct LocationXYZ16 {
     sint16 x, y, z;
-} LocationXYZ16;
+};
 assert_struct_size(LocationXYZ16, 6);
 
-typedef struct LocationXYZD16 {
+struct LocationXYZD16 {
     sint16 x, y, z;
     uint8 direction;
-} LocationXYZD16;
+};
 assert_struct_size(LocationXYZD16, 7);
 
-typedef struct LocationXY32 {
+struct LocationXY32 {
     sint32 x, y;
-} LocationXY32;
+};
 
-typedef struct LocationXYZ32 {
+struct LocationXYZ32 {
     sint32 x, y, z;
-} LocationXYZ32;
+};
 
 #pragma pack(pop)

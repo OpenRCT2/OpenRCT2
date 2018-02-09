@@ -21,7 +21,7 @@
 
 #define TITLE_COMMAND_SCENARIO_LENGTH 64
 
-typedef struct TitleCommand
+struct TitleCommand
 {
     uint8 Type;
     union {
@@ -42,9 +42,9 @@ typedef struct TitleCommand
         uint16 Milliseconds;                             // WAIT
         utf8   Scenario[TITLE_COMMAND_SCENARIO_LENGTH];  // LOADSC
     };
-} TitleCommand;
+};
 
-typedef struct TitleSequence
+struct TitleSequence
 {
     const utf8 * Name;
     const utf8 * Path;
@@ -56,13 +56,13 @@ typedef struct TitleSequence
     utf8 * * Saves;
 
     bool IsZip;
-} TitleSequence;
+};
 
-typedef struct TitleSequenceParkHandle
+struct TitleSequenceParkHandle
 {
     const utf8 *    HintPath;
     void *          Stream;
-} TitleSequenceParkHandle;
+};
 
 enum TITLE_SCRIPT
 {

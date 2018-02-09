@@ -36,22 +36,22 @@
 #define RCT1_RESEARCH_FLAGS_SEPARATOR 0xFF
 #define RCT1_MAX_ANIMATED_OBJECTS     1000
 
-typedef struct ParkLoadResult ParkLoadResult;
+struct ParkLoadResult;
 
 #pragma pack(push, 1)
-typedef struct rct1_entrance {
+struct rct1_entrance {
     uint16 x;
     uint16 y;
     uint16 z;
     uint8 direction;
-} rct1_entrance;
+};
 assert_struct_size(rct1_entrance, 7);
 
 /**
  * RCT1 ride structure
  * size: 0x260
  */
-typedef struct rct1_ride {
+struct rct1_ride {
     uint8 type;                                             // 0x000
     uint8 vehicle_type;                                     // 0x001
     uint16 lifecycle_flags;                                 // 0x002
@@ -211,10 +211,10 @@ typedef struct rct1_ride {
     uint8 music;                                            // 0x178
     uint8 entrance_style;                                   // 0x179
     uint8 unk_17A[230];                                     // 0x17A
-} rct1_ride;
+};
 assert_struct_size(rct1_ride, 0x260);
 
-typedef struct rct1_unk_sprite {
+struct rct1_unk_sprite {
     uint8 sprite_identifier;        // 0x00
     uint8 misc_identifier;          // 0x01
     uint16 next_in_quadrant;        // 0x02
@@ -245,9 +245,9 @@ typedef struct rct1_unk_sprite {
     uint8 var_2B;
     uint8 pad_2C[0x45];
     uint8 var_71;
-} rct1_unk_sprite;
+};
 
-typedef struct rct1_vehicle {
+struct rct1_vehicle {
     uint8 sprite_identifier;        // 0x00
     uint8 is_child;                 // 0x01
     uint16 next_in_quadrant;        // 0x02
@@ -361,9 +361,9 @@ typedef struct rct1_vehicle {
     uint8 mini_golf_flags;          // 0xD5
     uint8 ride_subtype;             // 0xD6
     uint8 colours_extended;         // 0xD7
-} rct1_vehicle;
+};
 
-typedef struct rct1_peep {
+struct rct1_peep {
     uint8 sprite_identifier;        // 0x00
     uint8 misc_identifier;          // 0x01
     uint16 next_in_quadrant;        // 0x02
@@ -517,9 +517,8 @@ typedef struct rct1_peep {
     uint8 favourite_ride_rating;    // 0xFA
     uint8 pad_FB;
     uint32 item_standard_flags;     // 0xFC
-} rct1_peep;
+};
 assert_struct_size(rct1_peep, 0x100);
-
 
 enum RCT1_PEEP_SPRITE_TYPE {
     RCT1_PEEP_SPRITE_TYPE_NORMAL = 0,
@@ -552,7 +551,7 @@ enum RCT1_PEEP_SPRITE_TYPE {
     RCT1_PEEP_SPRITE_TYPE_TOFFEE_APPLE = 30
 };
 
-typedef union rct1_sprite {
+union rct1_sprite {
     uint8 pad_00[0x100];
     rct1_unk_sprite unknown;
     rct1_vehicle vehicle;
@@ -565,23 +564,23 @@ typedef union rct1_sprite {
     rct_crashed_vehicle_particle crashed_vehicle_particle;
     rct_crash_splash crash_splash;
     rct_steam_particle steam_particle;
-} rct1_sprite;
+};
 assert_struct_size(rct1_sprite, 0x100);
 
-typedef struct rct1_research_item {
+struct rct1_research_item {
     uint8 item;
     uint8 related_ride;
     uint8 type;
     uint8 flags;
     uint8 category;
-} rct1_research_item;
+};
 assert_struct_size(rct1_research_item, 5);
 
 /**
  * RCT1,AA,LL scenario / saved game structure.
  * size: 0x1F850C
  */
-typedef struct rct1_s4 {
+struct rct1_s4 {
     uint16 month;
     uint16 day;
     uint32 ticks;
@@ -750,14 +749,14 @@ typedef struct rct1_s4 {
     uint32 scenario_flags;
     uint8 unk_1F8358[432];
     uint32 expansion_pack_checksum;
-} rct1_s4;
+};
 assert_struct_size(rct1_s4, 0x1F850C);
 
 /**
  * Track design structure.
  * size: 0x2006
  */
-typedef struct rct_track_td4 {
+struct rct_track_td4 {
     uint8 type;                                     // 0x00
     uint8 vehicle_type;
     uint32 flags;                                   // 0x02
@@ -805,7 +804,7 @@ typedef struct rct_track_td4 {
 
     void *elements;                                 // 0xC4 (data starts here in file, 38 for original RCT1)
     size_t elementsSize;
-} rct_track_td4;
+};
 #pragma pack(pop)
 
 enum {

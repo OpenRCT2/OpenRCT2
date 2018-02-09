@@ -34,7 +34,7 @@ enum
     SET_SEGMENT_HEIGHT,
 };
 
-typedef struct
+struct function_call
 {
     uint8 function;
     struct paint
@@ -56,7 +56,7 @@ typedef struct
         uint32 colour_flags;
         sint32 prepend_to;
     } supports;
-} function_call;
+};
 
 class FunctionCall {
 public:

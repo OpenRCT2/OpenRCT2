@@ -43,7 +43,7 @@ struct HttpRequest2
     void *          Tag = nullptr;
     std::string     Method;
     std::string     Url;
-    http_data_type  Type;
+    HTTP_DATA_TYPE  Type;
     bool            ForceIPv4 = false;
     size_t          Size = 0;
     union
@@ -105,17 +105,17 @@ struct HttpRequest2
     }
 };
 
-typedef struct read_buffer {
+struct read_buffer {
     char *ptr;
     size_t length;
     size_t position;
-} read_buffer;
+};
 
-typedef struct write_buffer {
+struct write_buffer {
     char *ptr;
     size_t length;
     size_t capacity;
-} write_buffer;
+};
 
 void http_init()
 {

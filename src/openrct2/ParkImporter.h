@@ -20,16 +20,14 @@
 
 #include "object/Object.h"
 
-typedef enum PARK_LOAD_ERROR
+enum PARK_LOAD_ERROR
 {
     PARK_LOAD_ERROR_OK,
     PARK_LOAD_ERROR_MISSING_OBJECTS,
     PARK_LOAD_ERROR_INVALID_EXTENSION,
     PARK_LOAD_ERROR_UNSUPPORTED_RCTC_FLAG,
     PARK_LOAD_ERROR_UNKNOWN = 255
-} PARK_LOAD_ERROR;
-
-#ifdef __cplusplus
+};
 
 #include <string>
 #include <vector>
@@ -89,12 +87,6 @@ namespace ParkImporter
     bool ExtensionIsScenario(const std::string &extension);
 }
 
-#else
-
-typedef struct ParkLoadResult ParkLoadResult;
-
-#endif
-
 void park_importer_load_from_stream(void * stream, const utf8 * hintPath);
 bool park_importer_extension_is_scenario(const utf8 * extension);
 
@@ -104,4 +96,3 @@ const rct_object_entry *    ParkLoadResult_GetMissingObjects(const ParkLoadResul
 uint8                       ParkLoadResult_GetFlag(const ParkLoadResult * t);
 void                        ParkLoadResult_Delete(ParkLoadResult * t);
 ParkLoadResult *            ParkLoadResult_CreateInvalidExtension();
-

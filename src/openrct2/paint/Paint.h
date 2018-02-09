@@ -21,10 +21,6 @@
 #include "../interface/Colour.h"
 #include "../drawing/Drawing.h"
 
-typedef struct attached_paint_struct attached_paint_struct;
-typedef struct paint_struct paint_struct;
-typedef union paint_entry paint_entry;
-
 #pragma pack(push, 1)
 /* size 0x12 */
 struct attached_paint_struct {
@@ -51,14 +47,14 @@ enum PAINT_QUADRANT_FLAGS {
     PAINT_QUADRANT_FLAG_NEXT = (1 << 1),
 };
 
-typedef struct paint_struct_bound_box {
+struct paint_struct_bound_box {
     uint16 x;
     uint16 y;
     uint16 z;
     uint16 x_end;
     uint16 y_end;
     uint16 z_end;
-} paint_struct_bound_box;
+};
 
 /* size 0x34 */
 struct paint_struct {
@@ -89,8 +85,6 @@ struct paint_struct {
 assert_struct_size(paint_struct, 0x34);
 #endif
 
-typedef struct paint_string_struct paint_string_struct;
-
 /* size 0x1E */
 struct paint_string_struct {
     rct_string_id string_id;        // 0x00
@@ -111,32 +105,32 @@ union paint_entry {
     paint_string_struct string;
 };
 
-typedef struct sprite_bb {
+struct sprite_bb {
     uint32 sprite_id;
     LocationXYZ16 offset;
     LocationXYZ16 bb_offset;
     LocationXYZ16 bb_size;
-} sprite_bb;
+};
 
 enum PAINT_STRUCT_FLAGS {
     PAINT_STRUCT_FLAG_IS_MASKED = (1 << 0)
 };
 
-typedef struct support_height {
+struct support_height {
     uint16 height;
     uint8 slope;
     uint8 pad;
-} support_height;
+};
 
-typedef struct tunnel_entry {
+struct tunnel_entry {
     uint8 height;
     uint8 type;
-} tunnel_entry;
+};
 
 #define MAX_PAINT_QUADRANTS 512
 #define TUNNEL_MAX_COUNT    65
 
-typedef struct paint_session
+struct paint_session
 {
     rct_drawpixelinfo *      Unk140E9A8;
     paint_entry              PaintStructs[4000];
@@ -169,7 +163,7 @@ typedef struct paint_session
     uint8                    Unk141E9DB;
     uint16                   WaterHeight;
     uint32                   TrackColours[4];
-} paint_session;
+};
 
 extern paint_session gPaintSession;
 

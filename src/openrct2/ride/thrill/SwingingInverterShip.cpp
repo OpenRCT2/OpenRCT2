@@ -26,13 +26,13 @@ static constexpr const uint32 swinging_inverter_ship_base_sprite_offset[] = { 0,
 /** rct2: 0x01428020 */
 static constexpr const uint32 swinging_inverter_ship_animating_base_sprite_offset[] = { 32, 33, 32, 33 };
 
-typedef struct swinging_inverter_ship_bound_box
+struct swinging_inverter_ship_bound_box
 {
     sint16 length_x;
     sint16 length_y;
     sint16 offset_x;
     sint16 offset_y;
-} swinging_inverter_ship_bound_box;
+};
 
 /** rct2: 0x01428020 */
 static constexpr const swinging_inverter_ship_bound_box swinging_inverter_ship_bounds[] = {

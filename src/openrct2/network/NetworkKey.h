@@ -22,8 +22,8 @@
 #include "../common.h"
 #include <string>
 
-typedef struct evp_pkey_st EVP_PKEY;
-typedef struct evp_pkey_ctx_st EVP_PKEY_CTX;
+using EVP_PKEY     = evp_pkey_st;
+using EVP_PKEY_CTX = evp_pkey_ctx_st;
 
 interface IStream;
 

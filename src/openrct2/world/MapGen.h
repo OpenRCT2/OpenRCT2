@@ -18,7 +18,7 @@
 
 #include "../common.h"
 
-typedef struct mapgen_settings
+struct mapgen_settings
 {
     // Base
     sint32 mapSize;
@@ -41,7 +41,7 @@ typedef struct mapgen_settings
     bool   smooth_height_map;
     uint32 smooth_strength;
     bool   normalize_height;
-} mapgen_settings;
+};
 
 void mapgen_generate_blank(mapgen_settings * settings);
 void mapgen_generate(mapgen_settings * settings);

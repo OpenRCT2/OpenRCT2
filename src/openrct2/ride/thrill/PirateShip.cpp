@@ -28,13 +28,13 @@ static constexpr const uint8 track_map_1x5[][5] = {
     { 0, 1, 2, 3, 4 },
 };
 
-typedef struct pirate_ship_bound_box
+struct pirate_ship_bound_box
 {
     sint16 length_x;
     sint16 length_y;
     sint16 offset_x;
     sint16 offset_y;
-} pirate_ship_bound_box;
+};
 
 /** rct2: 0x008A83B0 */
 static constexpr const uint32 pirate_ship_base_sprite_offset[] = { 0, 9, 0, 9 };

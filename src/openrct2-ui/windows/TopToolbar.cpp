@@ -83,7 +83,7 @@ validate_global_widx(WC_TOP_TOOLBAR, WIDX_WATER);
 validate_global_widx(WC_TOP_TOOLBAR, WIDX_SCENERY);
 validate_global_widx(WC_TOP_TOOLBAR, WIDX_PATH);
 
-typedef enum {
+enum FILE_MENU_DDIDX {
     DDIDX_NEW_GAME = 0,
     DDIDX_LOAD_GAME = 1,
     DDIDX_SAVE_GAME = 2,
@@ -98,9 +98,9 @@ typedef enum {
     DDIDX_EXIT_OPENRCT2 = 11,
     // separator
     DDIDX_ENABLE_TWITCH = 13
-} FILE_MENU_DDIDX;
+};
 
-typedef enum {
+enum TOP_TOOLBAR_VIEW_MENU_DDIDX {
     DDIDX_UNDERGROUND_INSIDE = 0,
     DDIDX_HIDE_BASE = 1,
     DDIDX_HIDE_VERTICAL = 2,
@@ -117,9 +117,9 @@ typedef enum {
     DDIDX_HIGHLIGHT_PATH_ISSUES = 15,
 
     TOP_TOOLBAR_VIEW_MENU_COUNT
-} TOP_TOOLBAR_VIEW_MENU_DDIDX;
+};
 
-typedef enum {
+enum TOP_TOOLBAR_DEBUG_DDIDX {
     DDIDX_CONSOLE = 0,
     DDIDX_TILE_INSPECTOR = 1,
     DDIDX_OBJECT_SELECTION = 2,
@@ -128,11 +128,11 @@ typedef enum {
     DDIDX_DEBUG_PAINT = 5,
 
     TOP_TOOLBAR_DEBUG_COUNT
-} TOP_TOOLBAR_DEBUG_DDIDX;
+};
 
-typedef enum {
+enum TOP_TOOLBAR_NETWORK_DDIDX {
     DDIDX_MULTIPLAYER = 0
-} TOP_TOOLBAR_NETWORK_DDIDX;
+};
 
 enum {
     DDIDX_CHEATS,

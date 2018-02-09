@@ -20,15 +20,15 @@
 
 struct rct_object_entry;
 
-typedef struct scenario_highscore_entry
+struct scenario_highscore_entry
 {
     utf8 *      fileName;
     utf8 *      name;
     money32     company_value;
     datetime64  timestamp;
-} scenario_highscore_entry;
+};
 
-typedef struct scenario_index_entry
+struct scenario_index_entry
 {
     utf8    path[MAX_PATH];
     uint64  timestamp;
@@ -49,7 +49,7 @@ typedef struct scenario_index_entry
     utf8 internal_name[64]; // Untranslated name
     utf8 name[64];          // Translated name
     utf8 details[256];
-} scenario_index_entry;
+};
 
 namespace OpenRCT2
 {

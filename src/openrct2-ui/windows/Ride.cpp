@@ -964,10 +964,10 @@ static void set_operating_setting(sint32 rideNumber, uint8 setting, uint8 value)
 
 // Cached overall view for each ride
 // (Re)calculated when the ride window is opened
-typedef struct ride_overall_view_t {
+struct ride_overall_view {
     sint16 x, y, z;
     uint8 zoom;
-} ride_overall_view;
+};
 
 static ride_overall_view ride_overall_views[MAX_RIDES] = {0};
 
@@ -1095,10 +1095,10 @@ static constexpr const rct_string_id MusicStyleNames[] = {
     STR_MUSIC_STYLE_CANDY_STYLE,
 };
 
-typedef struct window_ride_maze_design_option {
+struct window_ride_maze_design_option {
     rct_string_id text;
     uint32 sprite;
-} window_ride_maze_design_option;
+};
 
 static constexpr const window_ride_maze_design_option MazeOptions[] = {
     { STR_RIDE_DESIGN_MAZE_BRICK_WALLS,     SPR_RIDE_DESIGN_PREVIEW_MAZE_BRICK_WALLS },
@@ -1107,11 +1107,11 @@ static constexpr const window_ride_maze_design_option MazeOptions[] = {
     { STR_RIDE_DESIGN_MAZE_WOODEN_FENCES,   SPR_RIDE_DESIGN_PREVIEW_MAZE_WOODEN_FENCES },
 };
 
-typedef struct window_ride_colour_preview
+struct window_ride_colour_preview
 {
     uint32 track;
     uint32 supports;
-} window_ride_colour_preview;
+};
 
 static constexpr const window_ride_colour_preview TrackColourPreviews[] = {
     { SPR_RIDE_DESIGN_PREVIEW_SPIRAL_ROLLER_COASTER_TRACK,          SPR_RIDE_DESIGN_PREVIEW_SPIRAL_ROLLER_COASTER_SUPPORTS},
@@ -1207,12 +1207,12 @@ static constexpr const window_ride_colour_preview TrackColourPreviews[] = {
     { SPR_RIDE_DESIGN_PREVIEW_LIM_LAUNCHED_ROLLER_COASTER_TRACK,    SPR_RIDE_DESIGN_PREVIEW_LIM_LAUNCHED_ROLLER_COASTER_SUPPORTS},
 };
 
-typedef struct rct_window_graphs_y_axis {
+struct rct_window_graphs_y_axis {
     uint8 interval;
     sint8 unit;
     sint8 unit_interval;
     rct_string_id label;
-} rct_window_graphs_y_axis;
+};
 
 /** rct2: 0x0098DD98 */
 static constexpr const rct_window_graphs_y_axis window_graphs_y_axi[] = {
@@ -2859,7 +2859,7 @@ static void window_ride_vehicle_invalidate(rct_window *w)
     }
 
     set_format_arg(6, uint16, carsPerTrain);
-    ride_component_type vehicleType = RideNameConvention[ride->type].vehicle;
+    RIDE_COMPONENT_TYPE vehicleType = RideNameConvention[ride->type].vehicle;
     stringId = RideComponentNames[vehicleType].count;
     if (ride->num_vehicles > 1) {
         stringId = RideComponentNames[vehicleType].count_plural;
@@ -2953,12 +2953,12 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
 }
 
-typedef struct rct_vehichle_paintinfo {
+struct rct_vehichle_paintinfo {
     sint16 x;
     sint16 y;
     sint32 sprite_index;
     sint32 tertiary_colour;
-} rct_vehichle_paintinfo;
+};
 
 static rct_vehichle_paintinfo _sprites_to_draw[144];
 

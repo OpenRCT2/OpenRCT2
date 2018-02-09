@@ -47,7 +47,7 @@
 /**
  * Couples a ride type and subtype together.
  */
-typedef struct ride_list_item {
+struct ride_list_item {
     union {
         struct {
             uint8 type;
@@ -55,46 +55,46 @@ typedef struct ride_list_item {
         };
         uint16 ride_type_and_entry;
     };
-} ride_list_item;
+};
 assert_struct_size(ride_list_item, 2);
 
-typedef struct track_colour {
+struct track_colour {
     uint8 main;
     uint8 additional;
     uint8 supports;
-} track_colour;
+};
 assert_struct_size(track_colour, 3);
 
-typedef struct vehicle_colour {
+struct vehicle_colour {
     uint8 main;
     uint8 additional_1;
     uint8 additional_2;
-} vehicle_colour;
+};
 assert_struct_size(vehicle_colour, 3);
 
-typedef struct track_colour_preset_list {
+struct track_colour_preset_list {
     uint8 count;
     track_colour list[256];
-} track_colour_preset_list;
+};
 assert_struct_size(track_colour_preset_list, (1 + 256 * 3));
 
-typedef struct vehicle_colour_preset_list {
+struct vehicle_colour_preset_list {
     uint8 count;
     vehicle_colour list[256];
-} vehicle_colour_preset_list;
+};
 assert_struct_size(vehicle_colour_preset_list, (1 + 256 * 3));
 
-typedef struct rct_ride_name {
+struct rct_ride_name {
     rct_string_id name;
     rct_string_id description;
-} rct_ride_name;
+};
 assert_struct_size(rct_ride_name, 4);
 
 /**
  * Ride type structure.
  * size: unknown
  */
-typedef struct rct_ride_entry {
+struct rct_ride_entry {
     rct_ride_name naming;
     uint32 images_offset;                               // 0x004. The first three images are previews. They correspond to the ride_type[] array.
     uint32 flags;                                       // 0x008
@@ -126,7 +126,7 @@ typedef struct rct_ride_entry {
     uint8 shop_item;                                    // 0x1C0
     uint8 shop_item_secondary;                          // 0x1C1
     rct_string_id capacity;
-} rct_ride_entry;
+};
 
 #pragma pack(pop)
 
@@ -136,7 +136,7 @@ typedef struct rct_ride_entry {
  * This is based on RCT2's ride structure.
  * Padding and no longer used fields have been removed.
  */
-typedef struct Ride 
+struct Ride 
 {
     uint8 type;
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
@@ -329,7 +329,7 @@ typedef struct Ride
     uint8 cable_lift_z;
     uint16 cable_lift;
     uint16 queue_length[MAX_STATIONS];
-} Ride;
+};
 
 #pragma pack(push, 1)
 
@@ -337,7 +337,7 @@ typedef struct Ride
  * Ride measurement structure.
  * size: 0x04B0C
  */
-typedef struct rct_ride_measurement {
+struct rct_ride_measurement {
     uint8 ride_index;                           // 0x0000
     uint8 flags;                                // 0x0001
     uint32 last_use_tick;                       // 0x0002
@@ -349,10 +349,10 @@ typedef struct rct_ride_measurement {
     sint8 lateral[RIDE_MEASUREMENT_MAX_ITEMS];  // 0x12CC
     uint8 velocity[RIDE_MEASUREMENT_MAX_ITEMS]; // 0x258C
     uint8 altitude[RIDE_MEASUREMENT_MAX_ITEMS]; // 0x384C
-} rct_ride_measurement;
+};
 assert_struct_size(rct_ride_measurement, 0x4b0c);
 
-typedef struct track_begin_end {
+struct track_begin_end {
     sint32 begin_x;
     sint32 begin_y;
     sint32 begin_z;
@@ -362,15 +362,15 @@ typedef struct track_begin_end {
     sint32 end_y;
     sint32 end_direction;
     rct_tile_element *end_element;
-} track_begin_end;
+};
 #ifdef PLATFORM_32BIT
 assert_struct_size(track_begin_end, 36);
 #endif
 
-typedef struct ride_name_args {
+struct ride_name_args {
     uint16 type_name;
     uint16 number;
-} ride_name_args;
+};
 assert_struct_size(ride_name_args, 4);
 
 #pragma pack(pop)
@@ -442,7 +442,7 @@ enum {
     RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2        = 1 << 20,
 };
 
-enum{
+enum {
     RIDE_TESTING_SHELTERED = (1 << 0),
     RIDE_TESTING_TURN_LEFT = (1 << 1),
     RIDE_TESTING_TURN_RIGHT = (1 << 2),
@@ -896,7 +896,7 @@ enum {
     TRACK_SELECTION_FLAG_RECHECK          = 1 << 3,
 };
 
-typedef struct rct_ride_properties {
+struct rct_ride_properties {
     uint32 flags;
     uint8 min_value;
     uint8 max_value;
@@ -904,7 +904,7 @@ typedef struct rct_ride_properties {
     uint8 powered_lift_acceleration;
     uint8 booster_acceleration;
     sint8 booster_speed_factor; // The factor to shift the raw booster speed with
-} rct_ride_properties;
+};
 
 #define RIDE_MODE_COUNT 37
 

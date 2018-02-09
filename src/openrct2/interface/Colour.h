@@ -130,7 +130,7 @@ enum {
 #define NOT_TRANSLUCENT(x)           ((x) & ~COLOUR_FLAG_TRANSLUCENT)
 #define BASE_COLOUR(x)               ((x) & 0x1F)
 
-typedef struct rct_colour_map
+struct rct_colour_map
 {
     uint8 colour_0;
     uint8 colour_1;
@@ -144,7 +144,7 @@ typedef struct rct_colour_map
     uint8 lightest;
     uint8 colour_10;
     uint8 colour_11;
-} rct_colour_map;
+};
 
 extern rct_colour_map ColourMapA[COLOUR_COUNT];
 

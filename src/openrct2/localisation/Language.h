@@ -47,7 +47,7 @@ enum {
     LANGUAGE_COUNT
 };
 
-typedef enum RCT2LanguageId
+enum RCT2LanguageId
 {
     RCT2_LANGUAGE_ID_ENGLISH_UK,
     RCT2_LANGUAGE_ID_ENGLISH_US,
@@ -65,13 +65,13 @@ typedef enum RCT2LanguageId
     RCT2_LANGUAGE_ID_PORTUGUESE,
     RCT2_LANGUAGE_ID_BLANK = 254,
     RCT2_LANGUAGE_ID_END = 255
-} RCT2LanguageId;
+};
 
 #define FONT_OPENRCT2_SPRITE NULL
 
 #include "../interface/FontFamilies.h"
 
-typedef struct language_descriptor {
+struct language_descriptor {
     const char *locale;
     const utf8 *english_name;
     const utf8 *native_name;
@@ -81,7 +81,7 @@ typedef struct language_descriptor {
     void * font_family;
 #endif
     RCT2LanguageId rct2_original_id;
-} language_descriptor;
+};
 
 extern const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT];
 

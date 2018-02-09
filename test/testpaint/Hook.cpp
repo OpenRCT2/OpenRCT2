@@ -161,7 +161,7 @@ static void hookfunc(uintptr_t address, uintptr_t hookAddress, sint32 stacksize)
 #endif // _WIN32
 }
 
-void addhook(uintptr_t address, hook_function *function)
+void addhook(uintptr_t address, hook_function function)
 {
     if (!_hookTableAddress) {
         size_t size = _maxHooks * HOOK_BYTE_COUNT;

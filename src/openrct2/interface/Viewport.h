@@ -76,7 +76,7 @@ enum {
     VIEWPORT_INTERACTION_MASK_BANNER = ~(1 << (VIEWPORT_INTERACTION_ITEM_BANNER - 2)), // Note the -2 for BANNER
 };
 
-typedef struct viewport_interaction_info {
+struct viewport_interaction_info {
     sint32 type;
     sint32 x;
     sint32 y;
@@ -86,7 +86,7 @@ typedef struct viewport_interaction_info {
         rct_peep *peep;
         rct_vehicle *vehicle;
     };
-} viewport_interaction_info;
+};
 
 #define MAX_VIEWPORT_COUNT WINDOW_LIMIT_MAX
 #define MAX_ZOOM_LEVEL 3

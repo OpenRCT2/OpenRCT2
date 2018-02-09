@@ -640,7 +640,7 @@ static bool award_is_deserved_best_gentle_rides(sint32 awardType, sint32 activeA
     return (gentleRides >= 10);
 }
 
-typedef bool (* award_deserved_check)(sint32, sint32);
+using award_deserved_check = bool (*)(sint32, sint32);
 
 static constexpr const award_deserved_check _awardChecks[] =
 {

@@ -24,7 +24,7 @@
 #include <vector>
 #include "Fonts.h"
 
-typedef std::vector<TTFFontSetDescriptor *> TTFontFamily;
+using TTFontFamily = std::vector<TTFFontSetDescriptor *>;
 
 extern TTFontFamily const TTFFamilyChineseSimplified;
 extern TTFontFamily const TTFFamilyChineseTraditional;

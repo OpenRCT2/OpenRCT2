@@ -20,7 +20,7 @@
 #include "Map.h"
 #include "Scenery.h"
 
-typedef enum
+enum SMALL_SCENERY_FLAGS
 {
     SMALL_SCENERY_FLAG_FULL_TILE            = (1 << 0),  // 0x1
     SMALL_SCENERY_FLAG_VOFFSET_CENTRE       = (1 << 1),  // 0x2
@@ -50,8 +50,7 @@ typedef enum
     SMALL_SCENERY_FLAG_THREE_QUARTERS       = (1 << 25), // 0x2000000
     SMALL_SCENERY_FLAG_PAINT_SUPPORTS       = (1 << 26), // 0x4000000; used for scenery items which are support structures
     SMALL_SCENERY_FLAG27                    = (1 << 27), // 0x8000000
-}
-SMALL_SCENERY_FLAGS;
+};
 
 sint32 scenery_small_get_primary_colour(const rct_tile_element * tileElement);
 sint32 scenery_small_get_secondary_colour(const rct_tile_element * tileElement);

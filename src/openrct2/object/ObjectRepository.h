@@ -28,10 +28,9 @@ namespace OpenRCT2
     interface IPlatformEnvironment;
 }
 
+struct rct_drawpixelinfo;
 
-typedef struct rct_drawpixelinfo rct_drawpixelinfo;
-
-typedef struct ObjectRepositoryItem
+struct ObjectRepositoryItem
 {
     size_t             Id;
     rct_object_entry   ObjectEntry;
@@ -53,7 +52,7 @@ typedef struct ObjectRepositoryItem
             rct_object_entry * ThemeObjects;
         };
     };
-} ObjectRepositoryItem;
+};
 
 interface IObjectRepository
 {

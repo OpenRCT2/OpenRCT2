@@ -122,9 +122,8 @@ enum
     ERROR_TYPE_FILE_LOAD = 255
 };
 
-typedef void (GAME_COMMAND_POINTER)(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
-
-typedef void (GAME_COMMAND_CALLBACK_POINTER)(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
+using GAME_COMMAND_POINTER          = void(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
+using GAME_COMMAND_CALLBACK_POINTER = void(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
 
 extern GAME_COMMAND_CALLBACK_POINTER * game_command_callback;
 sint32 game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER * callback);

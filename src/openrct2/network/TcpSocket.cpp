@@ -47,7 +47,7 @@
     #include <sys/socket.h>
     #include <fcntl.h>
     #include "../common.h"
-    typedef sint32 SOCKET;
+    using SOCKET = sint32;
     #define SOCKET_ERROR -1
     #define INVALID_SOCKET -1
     #define LAST_SOCKET_ERROR() errno

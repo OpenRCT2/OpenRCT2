@@ -20,12 +20,12 @@
 #include "../../common.h"
 #include "../../paint/tile_element/TileElement.h"
 
-typedef enum JUNIOR_RC_CHAINTYPE
+enum JUNIOR_RC_CHAINTYPE
 {
     JUNIOR_RC_CHAIN_NONE,
     JUNIOR_RC_CHAIN_FRICTION_WHEELS,
     JUNIOR_RC_CHAIN_CHAIN_LIFT,
-} JUNIOR_RC_CHAINTYPE;
+};
 
 void junior_rc_paint_station(
     paint_session *          session,

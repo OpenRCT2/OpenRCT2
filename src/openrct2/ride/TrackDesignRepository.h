@@ -20,11 +20,11 @@
 #include "RideGroupManager.h"
 
 
-typedef struct track_design_file_ref
+struct track_design_file_ref
 {
     utf8 * name;
     utf8 * path;
-} track_design_file_ref;
+};
 
 #ifdef __cplusplus
 

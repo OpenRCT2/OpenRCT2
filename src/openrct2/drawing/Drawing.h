@@ -21,7 +21,7 @@
 #include "../interface/Colour.h"
 #include "Font.h"
 
-typedef struct rct_g1_element {
+struct rct_g1_element {
     uint8* offset;          // 0x00
     sint16 width;           // 0x04
     sint16 height;          // 0x06
@@ -29,9 +29,9 @@ typedef struct rct_g1_element {
     sint16 y_offset;        // 0x0A
     uint16 flags;           // 0x0C
     uint16 zoomed_offset;   // 0x0E
-} rct_g1_element;
+};
 
-typedef struct rct_drawpixelinfo {
+struct rct_drawpixelinfo {
     uint8* bits;        // 0x00
     sint16 x;           // 0x04
     sint16 y;           // 0x06
@@ -39,9 +39,9 @@ typedef struct rct_drawpixelinfo {
     sint16 height;      // 0x0A
     sint16 pitch;       // 0x0C         note: this is actually (pitch - width)
     uint16 zoom_level;  // 0x0E
-} rct_drawpixelinfo;
+};
 
-typedef struct rct_g1_element_32bit {
+struct rct_g1_element_32bit {
     uint32 offset;                  // 0x00 note: uint32 always!
     sint16 width;                   // 0x04
     sint16 height;                  // 0x06
@@ -49,7 +49,7 @@ typedef struct rct_g1_element_32bit {
     sint16 y_offset;                // 0x0A
     uint16 flags;                   // 0x0C
     uint16 zoomed_offset;           // 0x0E
-} rct_g1_element_32bit;
+};
 assert_struct_size(rct_g1_element_32bit, 0x10);
 
 
@@ -79,7 +79,7 @@ enum {
     INSET_RECT_FLAG_FILL_MID_LIGHT = (1 << 7), // 0x80
 };
 
-typedef enum {
+enum FILTER_PALETTE_ID {
     PALETTE_NULL = 0,
 
     PALETTE_WATER = 32,
@@ -186,35 +186,35 @@ typedef enum {
     PALETTE_GLASS_DARK_PINK         = 112 + COLOUR_DARK_PINK,
     PALETTE_GLASS_BRIGHT_PINK       = 112 + COLOUR_BRIGHT_PINK,
     PALETTE_GLASS_LIGHT_PINK        = 112 + COLOUR_LIGHT_PINK,
-} FILTER_PALETTE_ID;
+};
 
-typedef struct translucent_window_palette {
+struct translucent_window_palette {
     FILTER_PALETTE_ID base;
     FILTER_PALETTE_ID highlight;
     FILTER_PALETTE_ID shadow;
-} translucent_window_palette;
+};
 
 #pragma pack(push, 1)
 
-typedef struct rct_palette_entry {
+struct rct_palette_entry {
     uint8 blue;
     uint8 green;
     uint8 red;
     uint8 alpha;
-} rct_palette_entry;
+};
 assert_struct_size(rct_palette_entry, 4);
 
 #pragma pack(pop)
 
-typedef struct rct_palette {
+struct rct_palette {
     rct_palette_entry entries[256];
-} rct_palette;
+};
 
-typedef struct rct_size16
+struct rct_size16
 {
     sint16 width;
     sint16 height;
-} rct_size16;
+};
 
 #define SPRITE_ID_PALETTE_COLOUR_1(colourId) (IMAGE_TYPE_REMAP | ((colourId) << 19))
 #define SPRITE_ID_PALETTE_COLOUR_2(primaryId, secondaryId) (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP | ((primaryId << 19) | (secondaryId << 24)))
@@ -335,11 +335,9 @@ sint32 gfx_clip_string(char* buffer, sint32 width);
 void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 availableWidth);
 void ttf_draw_string(rct_drawpixelinfo *dpi, const_utf8string text, sint32 colour, sint32 x, sint32 y);
 
-typedef struct paint_session paint_session;
-
 // scrolling text
 void scrolling_text_initialise_bitmaps();
-sint32 scrolling_text_setup(paint_session * session, rct_string_id stringId, uint16 scroll, uint16 scrollingMode);
+sint32 scrolling_text_setup(struct paint_session * session, rct_string_id stringId, uint16 scroll, uint16 scrollingMode);
 
 rct_size16 FASTCALL gfx_get_sprite_size(uint32 image_id);
 

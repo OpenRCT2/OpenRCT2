@@ -19,14 +19,14 @@
 
 #include "Vehicle.h"
 
-typedef struct vehicle_boundbox {
+struct vehicle_boundbox {
     sint8 offset_x;
     sint8 offset_y;
     sint8 offset_z;
     uint8 length_x;
     uint8 length_y;
     uint8 length_z;
-} vehicle_boundbox;
+};
 
 extern const vehicle_boundbox VehicleBoundboxes[16][224];
 

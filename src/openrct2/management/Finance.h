@@ -20,7 +20,7 @@
 #include "../peep/Staff.h"
 #include "Research.h"
 
-typedef sint32 rct_expenditure_type;
+using rct_expenditure_type = sint32;
 
 enum {
     RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION,

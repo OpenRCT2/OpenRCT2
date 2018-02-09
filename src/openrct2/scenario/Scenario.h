@@ -30,28 +30,28 @@
 #include "../world/MapAnimation.h"
 #include "../world/Sprite.h"
 
-typedef struct ParkLoadResult ParkLoadResult;
+struct ParkLoadResult;
 
 #pragma pack(push, 1)
 /**
  * SV6/SC6 header chunk
  * size: 0x20
  */
-typedef struct rct_s6_header {
+struct rct_s6_header {
     uint8 type;                 // 0x00
     uint8 classic_flag;         // 0x01
     uint16 num_packed_objects;  // 0x02
     uint32 version;             // 0x04
     uint32 magic_number;        // 0x08
     uint8 pad_0C[0x14];
-} rct_s6_header;
+};
 assert_struct_size(rct_s6_header, 0x20);
 
 /**
  * SC6 information chunk
  * size: 0x198
  */
-typedef struct rct_s6_info {
+struct rct_s6_info {
     uint8 editor_step;
     uint8 category;             // 0x01
     uint8 objective_type;       // 0x02
@@ -62,10 +62,10 @@ typedef struct rct_s6_info {
     char name[64];              // 0x48
     char details[256];          // 0x88
     rct_object_entry entry;     // 0x188
-} rct_s6_info;
+};
 assert_struct_size(rct_s6_info, 0x198);
 
-typedef enum scenario_source {
+enum SCENARIO_SOURCE {
     SCENARIO_SOURCE_RCT1,
     SCENARIO_SOURCE_RCT1_AA,
     SCENARIO_SOURCE_RCT1_LL,
@@ -73,19 +73,19 @@ typedef enum scenario_source {
     SCENARIO_SOURCE_RCT2_WW,
     SCENARIO_SOURCE_RCT2_TT,
     SCENARIO_SOURCE_REAL,
-    SCENARIO_SOURCE_OTHER
-} scenario_source;
+    SCENARIO_SOURCE_OTHER,
+};
 
-typedef struct rct_stex_entry {
+struct rct_stex_entry {
     rct_string_id scenario_name;    // 0x00
     rct_string_id park_name;        // 0x02
     rct_string_id details;          // 0x04
     uint8 var_06;
-} rct_stex_entry;
+};
 assert_struct_size(rct_stex_entry, 7);
 
 // This will be useful for backwards compatibility
-typedef struct rct_s6_data {
+struct rct_s6_data {
     // SC6[0]
     rct_s6_header header;
 
@@ -294,7 +294,7 @@ typedef struct rct_s6_data {
     uint16 wide_path_tile_loop_x;
     uint16 wide_path_tile_loop_y;
     uint8 pad_13CE778[434];
-} rct_s6_data;
+};
 assert_struct_size(rct_s6_data, 0x46b44a);
 #pragma pack(pop)
 

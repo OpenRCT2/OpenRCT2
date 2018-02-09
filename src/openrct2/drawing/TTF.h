@@ -23,12 +23,12 @@ void ttf_dispose();
 
 #ifndef NO_TTF
 
-typedef struct TTFSurface {
+struct TTFSurface {
     const void *    pixels;
     sint32          w;
     sint32          h;
     sint32          pitch;
-} TTFSurface;
+};
 
 TTFFontDescriptor * ttf_get_font_from_sprite_base(uint16 spriteBase);
 void ttf_toggle_hinting();

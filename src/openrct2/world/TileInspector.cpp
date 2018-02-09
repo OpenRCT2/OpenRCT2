@@ -31,7 +31,7 @@ uint32 windowTileInspectorTileX;
 uint32 windowTileInspectorTileY;
 sint32 windowTileInspectorElementCount = 0;
 
-static void window_tile_inspector_set_page(rct_window * w, const tile_inspector_page page)
+static void window_tile_inspector_set_page(rct_window * w, const TILE_INSPECTOR_PAGE page)
 {
     auto intent = Intent(INTENT_ACTION_SET_TILE_INSPECTOR_PAGE);
     intent.putExtra(INTENT_EXTRA_PAGE, page);

@@ -28,11 +28,11 @@ enum {
     NOTIFICATION_CATEGORY_GUEST
 };
 
-typedef struct notification_def {
+struct notification_def {
     uint8 category;
     rct_string_id caption;
     size_t config_offset;
-} notification_def;
+};
 
 static constexpr const notification_def NewsItemOptionDefinitions[] = {
     { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_AWARD,                        offsetof(NotificationConfiguration, park_award)                         },

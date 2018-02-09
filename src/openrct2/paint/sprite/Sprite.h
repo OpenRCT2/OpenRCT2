@@ -20,7 +20,7 @@
 #include "../../common.h"
 #include "../../world/Sprite.h"
 
-typedef struct paint_session paint_session;
+struct paint_session;
 
 void sprite_paint_setup(paint_session * session, const uint16 eax, const uint16 ecx);
 

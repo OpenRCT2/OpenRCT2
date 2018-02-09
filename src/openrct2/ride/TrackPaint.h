@@ -377,14 +377,14 @@ void track_paint_util_right_vertical_loop_segments(paint_session * session, uint
 
 void track_paint_util_left_corkscrew_up_supports(paint_session * session, uint8 direction, uint16 height);
 
-typedef void (*TRACK_PAINT_FUNCTION)(
+using TRACK_PAINT_FUNCTION = void (*)(
     paint_session *          session,
     uint8                    rideIndex,
     uint8                    trackSequence,
     uint8                    direction,
     sint32                   height,
     const rct_tile_element * tileElement);
-typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(sint32 trackType, sint32 direction);
+using TRACK_PAINT_FUNCTION_GETTER = TRACK_PAINT_FUNCTION (*)(sint32 trackType, sint32 direction);
 
 TRACK_PAINT_FUNCTION get_track_paint_function_stand_up_rc(sint32 trackType, sint32 direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_suspended_swinging_rc(sint32 trackType, sint32 direction);

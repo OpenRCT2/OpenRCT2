@@ -26,7 +26,7 @@
 #include "Sprite.h"
 #include "Footpath.h"
 
-typedef bool (*map_animation_invalidate_event_handler)(sint32 x, sint32 y, sint32 baseZ);
+using map_animation_invalidate_event_handler = bool (*)(sint32 x, sint32 y, sint32 baseZ);
 
 static bool map_animation_invalidate(rct_map_animation *obj);
 

@@ -18,7 +18,7 @@
 
 #include "../common.h"
 
-typedef struct GeneralConfiguration
+struct GeneralConfiguration
 {
     // Paths
     utf8 *      rct1_path;
@@ -98,9 +98,9 @@ typedef struct GeneralConfiguration
     utf8 *      last_run_version;
 
     sint32      screenshot_format;
-} GeneralConfiguration;
+};
 
-typedef struct InterfaceConfiguration
+struct InterfaceConfiguration
 {
     bool        toolbar_show_finances;
     bool        toolbar_show_research;
@@ -111,9 +111,9 @@ typedef struct InterfaceConfiguration
     utf8 *      current_theme_preset;
     utf8 *      current_title_sequence_preset;
     sint32      object_selection_filter_flags;
-} InterfaceConfiguration;
+};
 
-typedef struct SoundConfiguration
+struct SoundConfiguration
 {
     utf8 *      device;
     uint8       master_volume;
@@ -123,9 +123,9 @@ typedef struct SoundConfiguration
     bool        ride_music_enabled;
     uint8       ride_music_volume;
     bool        audio_focus;
-} SoundConfiguration;
+};
 
-typedef struct TwitchConfiguration
+struct TwitchConfiguration
 {
     utf8 *      channel;
     bool        enable_follower_peep_names;
@@ -133,9 +133,9 @@ typedef struct TwitchConfiguration
     bool        enable_chat_peep_names;
     bool        enable_chat_peep_tracking;
     bool        enable_news;
-} TwitchConfiguration;
+};
 
-typedef struct NetworkConfiguration
+struct NetworkConfiguration
 {
     utf8 *      player_name;
     sint32      default_port;
@@ -155,9 +155,9 @@ typedef struct NetworkConfiguration
     bool        log_chat;
     bool        log_server_actions;
     bool        pause_server_if_no_clients;
-} NetworkConfiguration;
+};
 
-typedef struct NotificationConfiguration
+struct NotificationConfiguration
 {
     bool        park_award;
     bool        park_marketing_campaign_finished;
@@ -176,9 +176,9 @@ typedef struct NotificationConfiguration
     bool        guest_bought_item;
     bool        guest_used_facility;
     bool        guest_died;
-} NotificationConfiguration;
+};
 
-typedef struct FontConfiguration
+struct FontConfiguration
 {
     utf8 *      file_name;
     utf8 *      font_name;
@@ -194,7 +194,7 @@ typedef struct FontConfiguration
     sint32      height_big;
     bool        enable_hinting;
     sint32      hinting_threshold;
-} FontConfiguration;
+};
 
 enum SORT
 {

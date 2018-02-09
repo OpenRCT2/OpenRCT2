@@ -26,12 +26,12 @@
 #define AUDIO_PLAY_AT_LOCATION      0x8001
 #define SOUND_ID_NULL               0xFFFF
 
-typedef struct audio_device
+struct audio_device
 {
     char name[AUDIO_DEVICE_NAME_SIZE];
-} audio_device;
+};
 
-typedef struct rct_ride_music
+struct rct_ride_music
 {
     uint8 ride_id;
     uint8 tune_id;
@@ -39,16 +39,16 @@ typedef struct rct_ride_music
     sint16 pan;
     uint16 frequency;
     void* sound_channel;
-} rct_ride_music;
+};
 
-typedef struct rct_ride_music_info
+struct rct_ride_music_info
 {
     uint8 path_id;
     uint32 offset;
     uint32 length;
-} rct_ride_music_info;
+};
 
-typedef struct rct_ride_music_params
+struct rct_ride_music_params
 {
     uint8 ride_id;
     uint8 tune_id;
@@ -56,9 +56,9 @@ typedef struct rct_ride_music_params
     sint16 volume;
     sint16 pan;
     uint16 frequency;
-} rct_ride_music_params;
+};
 
-typedef struct rct_vehicle_sound
+struct rct_vehicle_sound
 {
     uint16 id;
     sint16 volume;
@@ -72,9 +72,9 @@ typedef struct rct_vehicle_sound
     uint16 sound2_freq;
     void* sound1_channel;
     void* sound2_channel;
-} rct_vehicle_sound;
+};
 
-typedef struct rct_vehicle_sound_params
+struct rct_vehicle_sound_params
 {
     uint16 id;
     sint16 pan_x;
@@ -82,9 +82,9 @@ typedef struct rct_vehicle_sound_params
     uint16 frequency;
     sint16 volume;
     uint16 priority;
-} rct_vehicle_sound_params;
+};
 
-typedef enum RCT2_SOUND
+enum RCT2_SOUND
 {
     SOUND_LIFT_1,
     SOUND_TRACK_FRICTION_1,
@@ -150,7 +150,7 @@ typedef enum RCT2_SOUND
     SOUND_DOOR_CLOSE,
     SOUND_62,
     SOUND_MAXID
-} RCT2_SOUND;
+};
 
 extern audio_device *   gAudioDevices;
 extern sint32           gAudioDeviceCount;

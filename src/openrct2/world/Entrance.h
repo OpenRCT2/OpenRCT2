@@ -20,20 +20,20 @@
 #include "../common.h"
 
 #pragma pack(push, 1)
-typedef struct rct_entrance_type {
+struct rct_entrance_type {
     rct_string_id string_idx;   // 0x00
     uint32 image_id;            // 0x02
     uint8 scrolling_mode;       // 0x06
     uint8 text_height;          // 0x07
-} rct_entrance_type;
+};
 assert_struct_size(rct_entrance_type, 8);
 #pragma pack(pop)
 
 void game_command_remove_park_entrance(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 
-typedef struct LocationXYZ16 LocationXYZ16;
-typedef struct LocationXYZD16 LocationXYZD16;
-typedef struct rct_tile_element rct_tile_element;
+struct LocationXYZ16;
+struct LocationXYZD16;
+struct rct_tile_element;
 
 extern bool gParkEntranceGhostExists;
 extern LocationXYZ16 gParkEntranceGhostPosition;

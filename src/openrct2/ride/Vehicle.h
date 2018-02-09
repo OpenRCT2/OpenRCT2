@@ -20,17 +20,17 @@
 #include "../common.h"
 #include "../world/Map.h"
 
-typedef struct rct_vehicle_colour {
+struct rct_vehicle_colour {
     uint8 body_colour;
     uint8 trim_colour;
-} rct_vehicle_colour;
+};
 
 #pragma pack(push, 1)
 /**
  * Ride type vehicle structure.
  * size: 0x65
  */
-typedef struct rct_ride_entry_vehicle {
+struct rct_ride_entry_vehicle {
     uint16 rotation_frame_mask;     // 0x00 , 0x1A
     uint8 num_vertical_frames;      // 0x02 , 0x1C, Appears to be unused, except as a temporary variable in RCT2 (not needed for OpenRCT2)
     uint8 num_horizontal_frames;    // 0x03 , 0x1D, Appears to be unused, except as a temporary variable in RCT2 (not needed for OpenRCT2)
@@ -78,10 +78,10 @@ typedef struct rct_ride_entry_vehicle {
     uint8 num_vertical_frames_override; // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine it. Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
     sint8* peep_loading_positions;  // 0x61 , 0x7B
     uint16 peep_loading_positions_count;
-} rct_ride_entry_vehicle;
+};
 #pragma pack(pop)
 
-typedef struct rct_vehicle {
+struct rct_vehicle {
     uint8 sprite_identifier;        // 0x00
     uint8 is_child;                 // 0x01
     uint16 next_in_quadrant;        // 0x02
@@ -207,22 +207,22 @@ typedef struct rct_vehicle {
     uint8 colours_extended;         // 0xD7
     uint8 seat_rotation;            // 0xD8
     uint8 target_seat_rotation;     // 0xD9
-} rct_vehicle;
+};
 
-typedef struct train_ref {
+struct train_ref {
     rct_vehicle *head;
     rct_vehicle *tail;
-} train_ref;
+};
 
 // Size: 0x09
-typedef struct rct_vehicle_info {
+struct rct_vehicle_info {
     sint16 x;           // 0x00
     sint16 y;           // 0x02
     sint16 z;           // 0x04
     uint8 direction;    // 0x06
     uint8 vehicle_sprite_type;  // 0x07
     uint8 bank_rotation;    // 0x08
-} rct_vehicle_info;
+};
 
 enum {
     VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY = 1 << 0, // Set on powered vehicles that do not slow down when going down a hill

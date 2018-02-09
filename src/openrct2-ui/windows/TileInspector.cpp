@@ -605,7 +605,7 @@ static void window_tile_inspector_select_element_from_list(rct_window *w, sint32
         page = (Math::Min<uint32>(tile_element_get_type(tileElement), TILE_ELEMENT_TYPE_CORRUPT) >> 2) + 1;
     }
 
-    window_tile_inspector_set_page(w, (tile_inspector_page)page);
+    window_tile_inspector_set_page(w, (TILE_INSPECTOR_PAGE)page);
 
     // Enable/disable buttons
     window_tile_inspector_auto_set_buttons(w);
@@ -1346,7 +1346,7 @@ static void window_tile_inspector_scrollgetsize(rct_window *w, sint32 scrollInde
     *height = windowTileInspectorElementCount * LIST_ITEM_HEIGHT;
 }
 
-void window_tile_inspector_set_page(rct_window *w, const tile_inspector_page page)
+void window_tile_inspector_set_page(rct_window *w, const TILE_INSPECTOR_PAGE page)
 {
     w->page = page;
     w->widgets = PageWidgets[page];

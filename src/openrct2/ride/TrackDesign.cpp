@@ -41,7 +41,7 @@
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 
-typedef struct map_backup
+struct map_backup
 {
     rct_tile_element tile_elements[MAX_TILE_ELEMENTS];
     rct_tile_element * tile_pointers[MAX_TILE_TILE_ELEMENT_POINTERS];
@@ -50,7 +50,7 @@ typedef struct map_backup
     uint16          map_size_units_minus_2;
     uint16          map_size;
     uint8           current_rotation;
-} map_backup;
+};
 
 rct_track_td6 * gActiveTrackDesign;
 bool          gTrackDesignSceneryToggle;

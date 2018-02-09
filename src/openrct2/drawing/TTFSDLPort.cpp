@@ -74,7 +74,7 @@ in the result FT_Bitmap after the FT_Render_Glyph() call. */
 #define CACHED_PIXMAP   0x02
 
 /* Cached glyph information */
-typedef struct cached_glyph {
+struct c_glyph {
     int stored;
     FT_UInt index;
     FT_Bitmap bitmap;
@@ -86,7 +86,7 @@ typedef struct cached_glyph {
     int yoffset;
     int advance;
     uint16 cached;
-} c_glyph;
+};
 
 /* The structure used to hold internal font information */
 struct _TTF_Font {

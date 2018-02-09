@@ -162,10 +162,10 @@ static void large_scenery_sign_paint_line(paint_session * session, const utf8 *s
     }
 }
 
-typedef struct boundbox {
+struct boundbox {
     LocationXY16 offset;
     LocationXY16 length;
-} boundbox;
+};
 
 static constexpr const boundbox s98E3C4[] = {
     { 3,   3, 26, 26 },

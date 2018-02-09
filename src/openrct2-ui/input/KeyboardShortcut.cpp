@@ -39,7 +39,7 @@
 
 uint8 gKeyboardShortcutChangeId;
 
-typedef void (*shortcut_action)();
+using shortcut_action = void (*)();
 
 namespace
 {

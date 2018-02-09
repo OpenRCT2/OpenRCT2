@@ -19,7 +19,7 @@
 
 #include "Window.h"
 
-typedef enum {
+enum WINDOW_WIDGET_TYPES {
     WWT_EMPTY = 0,
     WWT_FRAME = 1,
     WWT_RESIZE = 2,
@@ -43,7 +43,7 @@ typedef enum {
     WWT_PLACEHOLDER = 25,
     WWT_TEXT_BOX = 27,
     WWT_LAST = 26,
-} WINDOW_WIDGET_TYPES;
+};
 
 #define WIDGETS_END     WWT_LAST, 0, 0, 0, 0, 0, 0, 0
 #define BAR_BLINK       (1u << 31)

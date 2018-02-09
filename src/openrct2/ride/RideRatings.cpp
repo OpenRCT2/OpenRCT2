@@ -68,7 +68,7 @@ enum {
     PROXIMITY_COUNT
 };
 
-typedef void (*ride_ratings_calculation)(Ride *ride);
+using ride_ratings_calculation = void (*)(Ride *ride);
 
 rct_ride_rating_calc_data gRideRatingsCalcData;
 

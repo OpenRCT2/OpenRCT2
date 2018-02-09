@@ -25,7 +25,7 @@
 
 #pragma pack(push, 1)
 /* size: 0xA12 */
-typedef struct rct_draw_scroll_text {
+struct rct_draw_scroll_text {
     rct_string_id string_id;    // 0x00
     uint32 string_args_0;       // 0x02
     uint32 string_args_1;       // 0x06
@@ -33,7 +33,7 @@ typedef struct rct_draw_scroll_text {
     uint16 mode;                // 0x0C
     uint32 id;                  // 0x0E
     uint8 bitmap[64 * 40];      // 0x12
-} rct_draw_scroll_text;
+};
 assert_struct_size(rct_draw_scroll_text, 0xA12);
 #pragma pack(pop)
 

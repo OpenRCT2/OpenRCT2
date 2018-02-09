@@ -18,7 +18,7 @@
 
 #include "../common.h"
 
-typedef struct rct_drawpixelinfo rct_drawpixelinfo;
+struct rct_drawpixelinfo;
 
 extern rct_string_id DrawingEngineStringIds[3];
 

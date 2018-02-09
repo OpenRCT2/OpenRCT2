@@ -20,8 +20,8 @@
 #include <time.h>
 #include "../common.h"
 
-typedef struct TTFFontDescriptor TTFFontDescriptor;
-typedef struct rct2_install_info rct2_install_info;
+struct TTFFontDescriptor;
+struct rct2_install_info;
 
 #ifndef MAX_PATH
 #define MAX_PATH 260
@@ -44,32 +44,36 @@ typedef struct rct2_install_info rct2_install_info;
 #define ALT 0x400
 #define CMD 0x800
 
-typedef struct resolution {
+struct resolution_t {
     sint32 width, height;
-} resolution_t;
+};
 
-typedef struct file_info {
+struct file_info {
     const char *path;
     uint64 size;
     uint64 last_modified;
-} file_info;
+};
 
-typedef struct rct2_date {
+struct rct2_date {
     uint8 day;
     uint8 month;
     sint16 year;
     uint8 day_of_week;
-} rct2_date;
+};
 
-typedef struct rct2_time {
+struct rct2_time {
     uint8 hour;
     uint8 minute;
     uint8 second;
-} rct2_time;
+};
 
-typedef enum {FD_OPEN, FD_SAVE} filedialog_type;
+enum FILEDIALOG_TYPE
+{
+    FD_OPEN,
+    FD_SAVE
+};
 
-typedef struct file_dialog_desc {
+struct file_dialog_desc {
     uint8 type;
     const utf8 *title;
     const utf8 *initial_directory;
@@ -78,7 +82,7 @@ typedef struct file_dialog_desc {
         const utf8 *name;           // E.g. "Image Files"
         const utf8 *pattern;        // E.g. "*.png;*.jpg;*.gif"
     } filters[8];
-} file_dialog_desc;
+};
 
 // Platform shared definitions
 void platform_update_palette(const uint8 *colours, sint32 start_index, sint32 num_colours);

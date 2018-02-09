@@ -34,13 +34,13 @@ static constexpr const uint8 edges_1x4_nw_se[] = {
     EDGE_NE | EDGE_SW | EDGE_SE,
 };
 
-typedef struct ferris_wheel_bound_box
+struct ferris_wheel_bound_box
 {
     sint16 length_x;
     sint16 length_y;
     sint16 offset_x;
     sint16 offset_y;
-} ferris_wheel_bound_box;
+};
 
 /** rct2: 0x008A8CA8 */
 static ferris_wheel_bound_box ferris_wheel_data[] = {

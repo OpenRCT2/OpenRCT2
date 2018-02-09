@@ -30,8 +30,8 @@ enum {
     X86_FLAG_SIGN = 1 << 7,
 };
 
-typedef uint8 (hook_function)(registers *regs);
+using hook_function = uint8 (*)(registers * regs);
 
-void addhook(uintptr_t address, hook_function *function);
+void addhook(uintptr_t address, hook_function function);
 
 #endif

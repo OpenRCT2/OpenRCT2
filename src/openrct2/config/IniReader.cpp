@@ -62,7 +62,7 @@ struct StringIHash
 {
     std::size_t operator()(const std::string &s) const
     {
-        typedef std::char_traits<char> Traits;
+        using Traits = std::char_traits<char>;
         std::size_t seed = 0;
         for (const char &c : s)
         {
@@ -78,7 +78,7 @@ struct StringICmp
 {
     bool operator()(const std::string &a, const std::string &b) const
     {
-        typedef std::char_traits<char> Traits;
+        using Traits = std::char_traits<char>;
         if (a.size() != b.size()) return false;
         const char *s1 = a.data(), *s2 = b.data();
         for (std::size_t i = a.size(); i > 0; --i, ++s1, ++s2)

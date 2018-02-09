@@ -25,12 +25,12 @@
 #define CHAT_MAX_MESSAGE_LENGTH 200
 #define CHAT_MAX_WINDOW_WIDTH 600
 
-typedef enum CHAT_INPUT
+enum CHAT_INPUT
 {
     CHAT_INPUT_NONE,
     CHAT_INPUT_SEND,
     CHAT_INPUT_CLOSE,
-} CHAT_INPUT;
+};
 
 extern bool gChatOpen;
 

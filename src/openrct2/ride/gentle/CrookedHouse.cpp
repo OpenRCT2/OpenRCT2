@@ -20,13 +20,13 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 
-typedef struct rct_crooked_house_bound_box
+struct rct_crooked_house_bound_box
 {
     sint16 offset_x;
     sint16 offset_y;
     sint16 length_x;
     sint16 length_y;
-} rct_crooked_house_bound_box;
+};
 
 static constexpr const rct_crooked_house_bound_box crooked_house_data[] = { { 6, 0, 42, 24 },
                                                      { 0, 0, 0, 0 },

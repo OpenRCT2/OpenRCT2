@@ -1108,17 +1108,17 @@ static void footpath_connect_corners(sint32 initialX, sint32 initialY, rct_tile_
     }
 }
 
-typedef struct rct_neighbour {
+struct rct_neighbour {
     uint8 order;
     uint8 direction;
     uint8 ride_index;
     uint8 entrance_index;
-} rct_neighbour;
+};
 
-typedef struct rct_neighbour_list {
+struct rct_neighbour_list {
     rct_neighbour items[8];
     sint32 count;
-} rct_neighbour_list;
+};
 
 static sint32 rct_neighbour_compare(const void *a, const void *b)
 {

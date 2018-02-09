@@ -210,7 +210,7 @@ static void CallNew(
     newPaintFunction(&gPaintSession, 0, trackSequence, direction, height, tileElement);
 }
 
-typedef uint8 (*TestFunction)(uint8, uint8, uint8, std::string *);
+using TestFunction = uint8 (*)(uint8, uint8, uint8, std::string *);
 
 static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error);
 

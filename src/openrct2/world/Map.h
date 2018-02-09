@@ -22,15 +22,15 @@
 #include "Location.h"
 
 #pragma pack(push, 1)
-typedef struct rct_tile_element_surface_properties {
+struct rct_tile_element_surface_properties {
     uint8 slope; //4 0xE0 Edge Style, 0x1F Slope
     uint8 terrain; //5 0xE0 Terrain Style, 0x1F Water height
     uint8 grass_length; //6
     uint8 ownership; //7
-} rct_tile_element_surface_properties;
+};
 assert_struct_size(rct_tile_element_surface_properties, 4);
 
-typedef struct rct_tile_element_path_properties {
+struct rct_tile_element_path_properties {
     uint8 type; //4 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is diagonal, 0x03 Rotation
     uint8 additions; //5
     uint8 edges; //6
@@ -38,10 +38,10 @@ typedef struct rct_tile_element_path_properties {
         uint8 addition_status; //7
         uint8 ride_index;
     };
-} rct_tile_element_path_properties;
+};
 assert_struct_size(rct_tile_element_path_properties, 4);
 
-typedef struct rct_tile_element_track_properties {
+struct rct_tile_element_track_properties {
     uint8 type; //4
     union{
         struct{
@@ -62,26 +62,26 @@ typedef struct rct_tile_element_track_properties {
         uint16 maze_entry; // 5
     };
     uint8 ride_index; //7
-} rct_tile_element_track_properties;
+};
 assert_struct_size(rct_tile_element_track_properties, 4);
 
-typedef struct rct_tile_element_scenery_properties {
+struct rct_tile_element_scenery_properties {
     uint8 type; //4
     uint8 age; //5
     uint8 colour_1; //6
     uint8 colour_2; //7
-} rct_tile_element_scenery_properties;
+};
 assert_struct_size(rct_tile_element_scenery_properties, 4);
 
-typedef struct rct_tile_element_entrance_properties {
+struct rct_tile_element_entrance_properties {
     uint8 type; //4
     uint8 index; //5
     uint8 path_type; //6
     uint8 ride_index; //7
-} rct_tile_element_entrance_properties;
+};
 assert_struct_size(rct_tile_element_entrance_properties, 4);
 
-typedef struct rct_tile_element_wall_properties {
+struct rct_tile_element_wall_properties {
     uint8 type; //4
     union {
         uint8 colour_3; //5
@@ -89,24 +89,24 @@ typedef struct rct_tile_element_wall_properties {
     };
     uint8 colour_1; //6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
     uint8 animation; //7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
-} rct_tile_element_wall_properties;
+};
 assert_struct_size(rct_tile_element_wall_properties, 4);
 
-typedef struct rct_tile_element_scenerymultiple_properties {
+struct rct_tile_element_scenerymultiple_properties {
     uint16 type; //4
     uint8 colour[2]; //6
-} rct_tile_element_scenerymultiple_properties;
+};
 assert_struct_size(rct_tile_element_scenerymultiple_properties, 4);
 
-typedef struct rct_tile_element_banner_properties {
+struct rct_tile_element_banner_properties {
     uint8 index; //4
     uint8 position; //5
     uint8 flags; //6
     uint8 unused; //7
-} rct_tile_element_banner_properties;
+};
 assert_struct_size(rct_tile_element_banner_properties, 4);
 
-typedef union {
+union rct_tile_element_properties {
     rct_tile_element_surface_properties surface;
     rct_tile_element_path_properties path;
     rct_tile_element_track_properties track;
@@ -115,20 +115,20 @@ typedef union {
     rct_tile_element_wall_properties wall;
     rct_tile_element_scenerymultiple_properties scenerymultiple;
     rct_tile_element_banner_properties banner;
-} rct_tile_element_properties;
+};
 assert_struct_size(rct_tile_element_properties, 4);
 
 /**
  * Map element structure
  * size: 0x08
  */
-typedef struct rct_tile_element {
+struct rct_tile_element {
     uint8 type; //0
     uint8 flags; //1
     uint8 base_height; //2
     uint8 clearance_height; //3
     rct_tile_element_properties properties;
-} rct_tile_element;
+};
 assert_struct_size(rct_tile_element, 8);
 #pragma pack(pop)
 
@@ -324,20 +324,20 @@ enum {
 #define TILE_UNDEFINED_TILE_ELEMENT NULL
 
 #pragma pack(push, 1)
-typedef struct rct_xy_element {
+struct rct_xy_element {
     sint32 x, y;
     rct_tile_element *element;
-} rct_xy_element;
+};
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_xy_element, 12);
 #endif
 
-typedef struct rct2_peep_spawn {
+struct rct2_peep_spawn {
     uint16 x;
     uint16 y;
     uint8 z;
     uint8 direction;
-} rct2_peep_spawn;
+};
 assert_struct_size(rct2_peep_spawn, 6);
 #pragma pack(pop)
 
@@ -478,10 +478,11 @@ void map_remove_virtual_floor();
 void map_invalidate_virtual_floor_tiles();
 bool map_tile_is_part_of_virtual_floor(sint16 x, sint16 y);
 
-typedef sint32 (CLEAR_FUNC)(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price);
+using CLEAR_FUNC = sint32(*)(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price);
+
 sint32 map_place_non_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price);
 sint32 map_place_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price);
-sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, CLEAR_FUNC *clearFunc, uint8 bl, uint8 flags, money32 *price, uint8 crossingMode);
+sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, CLEAR_FUNC clearFunc, uint8 bl, uint8 flags, money32 *price, uint8 crossingMode);
 sint32 map_can_construct_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, uint8 bl);
 void rotate_map_coordinates(sint16 *x, sint16 *y, sint32 rotation);
 LocationXY16 coordinate_3d_to_2d(const LocationXYZ16* coordinate_3d, sint32 rotation);
@@ -520,11 +521,11 @@ void game_command_set_banner_style(sint32* eax, sint32* ebx, sint32* ecx, sint32
 void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 
-typedef struct tile_element_iterator {
+struct tile_element_iterator{
     sint32 x;
     sint32 y;
     rct_tile_element *element;
-} tile_element_iterator;
+};
 #ifdef PLATFORM_32BIT
 assert_struct_size(tile_element_iterator, 12);
 #endif

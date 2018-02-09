@@ -18,17 +18,11 @@
 
 #include "common.h"
 
-#ifdef __cplusplus
 class Intent;
-#else
-// Allow C code to use `Intent *`
-typedef struct Intent Intent;
-#endif
+struct rct_window;
+using rct_windowclass = uint8;
 
-typedef struct rct_window rct_window;
-typedef uint8 rct_windowclass;
-
-typedef struct CursorState
+struct CursorState
 {
     sint32  x, y;
     uint8   left, middle, right, any;
@@ -36,9 +30,9 @@ typedef struct CursorState
     sint32  old;
     bool    touch, touchIsDouble;
     uint32  touchDownTimestamp;
-} CursorState;
+};
 
-typedef struct TextInputSession
+struct TextInputSession
 {
     utf8 * Buffer;          // UTF-8 stream
     size_t BufferSize;      // Maximum number of bytes (excluding null terminator)
@@ -48,7 +42,7 @@ typedef struct TextInputSession
     size_t SelectionSize;   // Selection length in bytes
 
     const utf8 * ImeBuffer; // IME UTF-8 stream
-} TextInputSession;
+};
 
 struct Resolution
 {

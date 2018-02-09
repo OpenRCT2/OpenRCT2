@@ -20,7 +20,7 @@
 #include "../common.h"
 
 // List of currencies
-typedef enum {
+enum CURRENCY_TYPE {
     CURRENCY_POUNDS,            // British Pound
     CURRENCY_DOLLARS,           // US Dollar
     CURRENCY_FRANC,             // French Franc
@@ -41,18 +41,18 @@ typedef enum {
     CURRENCY_CUSTOM,            // Custom currency
 
     CURRENCY_END                // Last item
-} CURRENCY_TYPE;
+};
 
-typedef enum {
+enum CURRENCY_AFFIX {
     CURRENCY_PREFIX,
     CURRENCY_SUFFIX
-} CURRENCY_AFFIX;
+};
 
 #define CURRENCY_SYMBOL_MAX_SIZE 8
 #define CURRENCY_RATE_MAX_NUM_DIGITS 9
 
 // Currency format specification - inspired by OpenTTD
-typedef struct currency_descriptor {
+struct currency_descriptor {
     char isoCode[4];
     // Rate is relative to 0.10 GBP
     sint32 rate;
@@ -61,7 +61,7 @@ typedef struct currency_descriptor {
     uint8 affix_ascii;
     char symbol_ascii[CURRENCY_SYMBOL_MAX_SIZE];
     rct_string_id stringId;
-} currency_descriptor;
+};
 
 // List of currency formats
 extern currency_descriptor CurrencyDescriptors[CURRENCY_END];

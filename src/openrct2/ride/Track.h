@@ -21,7 +21,7 @@
 #include "Ride.h"
 
 #pragma pack(push, 1)
-typedef struct rct_trackdefinition
+struct rct_trackdefinition
 {
     uint8 type;
     uint8 vangle_end;
@@ -30,14 +30,14 @@ typedef struct rct_trackdefinition
     uint8 bank_start;
     sint8 preview_z_offset;
     uint8 pad[2];
-} rct_trackdefinition;
+};
 assert_struct_size(rct_trackdefinition, 8);
 #pragma pack(pop)
 
 /**
 * Size: 0x0A
 */
-typedef struct rct_preview_track
+struct rct_preview_track
 {
     uint8  index;    // 0x00
     sint16 x;       // 0x01
@@ -46,10 +46,10 @@ typedef struct rct_preview_track
     uint8  var_07;
     uint8  var_08;
     uint8  var_09;
-} rct_preview_track;
+};
 
 /* size 0x0A */
-typedef struct rct_track_coordinates
+struct rct_track_coordinates
 {
     sint8  rotation_begin;   // 0x00
     sint8  rotation_end;     // 0x01
@@ -57,7 +57,7 @@ typedef struct rct_track_coordinates
     sint16 z_end;           // 0x04
     sint16 x;               // 0x06
     sint16 y;               // 0x08
-} rct_track_coordinates;
+};
 
 enum
 {
@@ -508,7 +508,7 @@ enum
     GC_SET_MAZE_TRACK_FILL  = 2,
 };
 
-typedef struct track_circuit_iterator
+struct track_circuit_iterator
 {
     rct_xy_element  last;
     rct_xy_element  current;
@@ -517,7 +517,7 @@ typedef struct track_circuit_iterator
     rct_tile_element * first;
     bool            firstIteration;
     bool            looped;
-} track_circuit_iterator;
+};
 
 extern const rct_trackdefinition FlatRideTrackDefinitions[256];
 extern const rct_trackdefinition TrackDefinitions[256];
