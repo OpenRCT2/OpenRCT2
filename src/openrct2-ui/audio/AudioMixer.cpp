@@ -76,10 +76,10 @@ namespace OpenRCT2 { namespace Audio
             Close();
 
             SDL_AudioSpec want = { 0 };
-            want.freq = 44100;
+            want.freq = 22050;
             want.format = AUDIO_S16SYS;
             want.channels = 2;
-            want.samples = 1024;
+            want.samples = 2048;
             want.callback = [](void * arg, uint8 * dst, sint32 length) -> void
             {
                 auto mixer = static_cast<AudioMixerImpl *>(arg);
