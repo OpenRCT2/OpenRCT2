@@ -1210,6 +1210,16 @@ void game_fix_save_vars()
 
     peep_sort();
 
+    // Fix possibly invalid field values
+    FOR_ALL_PEEPS(spriteIndex, peep)
+    {
+        if (peep->current_ride_station >= MAX_STATIONS)
+        {
+            log_warning("Peep %u has invalid ride station = %u. Resetting.", spriteIndex, peep->current_ride_station);
+            peep->current_ride_station = 0;
+        }
+    }
+
     // Fixes broken saves where a surface element could be null
     // and broken saves with incorrect invisible map border tiles
     for (sint32 y = 0; y < 256; y++)
