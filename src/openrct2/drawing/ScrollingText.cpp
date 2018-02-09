@@ -1501,7 +1501,7 @@ static void scrolling_text_set_bitmap_for_sprite(utf8 *text, sint32 scroll, uint
         sint32 characterWidth = font_sprite_get_codepoint_width(FONT_SPRITE_BASE_TINY, codepoint);
         uint8 *characterBitmap = font_sprite_get_codepoint_bitmap(codepoint);
         for (; characterWidth != 0; characterWidth--, characterBitmap++) {
-            // Skip any none displayed columns
+            // Skip any non-displayed columns
             if (scroll != 0) {
                 scroll--;
                 continue;
@@ -1566,41 +1566,46 @@ static void scrolling_text_set_bitmap_for_ttf(utf8 *text, sint32 scroll, uint8 *
 
     sint32 pitch = surface->pitch;
     sint32 width = surface->w;
-    sint32 height = surface->h;
     auto src = (const uint8 *)surface->pixels;
 
-    // Offset
-    height -= 3;
-    src += 3 * pitch;
-    height = std::min(height, 8);
+    // Pitch offset
+    src += 2 * pitch;
 
-    sint32 x = 0;
-    while (true) {
-        // Skip any none displayed columns
-        if (scroll == 0) {
+    // Line height offset
+    sint32 min_vpos = -fontDesc->offset_y;
+    sint32 max_vpos = std::min(surface->h - 2, min_vpos + 7);
+
+    for (sint32 x = 0; ; x++)
+    {
+        if (x >= width)
+            x = 0;
+
+        // Skip any non-displayed columns
+        if (scroll == 0)
+        {
             sint16 scrollPosition = *scrollPositionOffsets;
-            if (scrollPosition == -1) return;
-            if (scrollPosition > -1) {
+            if (scrollPosition == -1)
+                return;
+
+            if (scrollPosition > -1)
+            {
                 uint8 *dst = &bitmap[scrollPosition];
 
-                for (sint32 y = 0; y < height; y++)
+                for (sint32 y = min_vpos; y < max_vpos; y++)
                 {
                     if (src[y * pitch + x] > 92 || (src[y * pitch + x] != 0 && !gConfigFonts.enable_hinting))
-                    {
                         *dst = colour;
-                    }
 
                     // Jump to next row
                     dst += 64;
                 }
             }
             scrollPositionOffsets++;
-        } else {
+        }
+        else
+        {
             scroll--;
         }
-
-        x++;
-        if (x >= width) x = 0;
     }
 #endif // NO_TTF
 }
