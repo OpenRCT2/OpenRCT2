@@ -240,7 +240,7 @@ static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetInd
         switch (dropdownIndex)
         {
         case DDIDX_JOIN:
-            if (is_version_valid(server.address))
+            if (is_version_valid(server.version))
             {
                 join_server(server.address);
             }
