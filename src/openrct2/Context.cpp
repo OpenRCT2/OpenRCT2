@@ -301,12 +301,15 @@ namespace OpenRCT2
             //  return false;
             // } //This comment was relocated so it would stay where it was in relation to the following lines of code.
 
-            auto rct2InstallPath = GetOrPromptRCT2Path();
-            if (rct2InstallPath.empty())
+            if (!gOpenRCT2Headless)
             {
-                return false;
+                auto rct2InstallPath = GetOrPromptRCT2Path();
+                if (rct2InstallPath.empty())
+                {
+                    return false;
+                }
+                _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
-            _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
 
             _objectRepository = CreateObjectRepository(_env);
             _objectManager = CreateObjectManager(_objectRepository);
