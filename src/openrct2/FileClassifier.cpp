@@ -103,7 +103,8 @@ static bool TryClassifyAsS4(IStream * stream, ClassifiedFileInfo * result)
     try
     {
         size_t dataLength = (size_t)stream->GetLength();
-        std::unique_ptr<uint8> data(stream->ReadArray<uint8>(dataLength));
+        auto deleter_lambda = [dataLength](uint8 * ptr) { Memory::FreeArray(ptr, dataLength); };
+        std::unique_ptr<uint8, decltype(deleter_lambda)> data(stream->ReadArray<uint8>(dataLength), deleter_lambda);
         stream->SetPosition(originalPosition);
         sint32 fileTypeVersion = sawyercoding_detect_file_type(data.get(), dataLength);
 
