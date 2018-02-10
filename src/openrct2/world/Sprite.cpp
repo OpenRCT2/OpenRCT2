@@ -629,7 +629,8 @@ void sprite_remove(rct_sprite *sprite)
     size_t quadrantIndex = GetSpatialIndexOffset(sprite->unknown.x, sprite->unknown.y);
     uint16 *spriteIndex = &gSpriteSpatialIndex[quadrantIndex];
     rct_sprite *quadrantSprite;
-    while ((quadrantSprite = get_sprite(*spriteIndex)) != sprite) {
+    while (*spriteIndex != SPRITE_INDEX_NULL && (quadrantSprite = get_sprite(*spriteIndex)) != sprite)
+    {
         spriteIndex = &quadrantSprite->unknown.next_in_quadrant;
     }
     *spriteIndex = sprite->unknown.next_in_quadrant;
