@@ -168,8 +168,9 @@ public:
                                   const utf8 * path = String::Empty) override
     {
         size_t dataSize = stream->GetLength() - stream->GetPosition();
-        std::unique_ptr<uint8> data = std::unique_ptr<uint8>(stream->ReadArray<uint8>(dataSize));
-        std::unique_ptr<uint8> decodedData = std::unique_ptr<uint8>(Memory::Allocate<uint8>(sizeof(rct1_s4)));
+        auto deleter_lambda = [dataSize](uint8 * ptr) { Memory::FreeArray(ptr, dataSize); };
+        auto data = std::unique_ptr<uint8, decltype(deleter_lambda)>(stream->ReadArray<uint8>(dataSize), deleter_lambda);
+        auto decodedData = std::unique_ptr<uint8, void(*)(uint8*)>(Memory::Allocate<uint8>(sizeof(rct1_s4)), Memory::Free);
 
         size_t decodedSize;
         sint32 fileType = sawyercoding_detect_file_type(data.get(), dataSize);
