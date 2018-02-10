@@ -572,6 +572,9 @@ namespace Config
     {
         try
         {
+            auto directory = Path::GetDirectory(path);
+            Path::CreateDirectory(directory);
+
             auto fs = FileStream(path, FILE_MODE_WRITE);
             auto writer = std::unique_ptr<IIniWriter>(CreateIniWriter(&fs));
             WriteGeneral(writer.get());
