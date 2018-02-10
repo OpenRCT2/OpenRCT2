@@ -188,10 +188,10 @@ sint32 bitscanforward(sint32 source)
 #endif
 
 #ifdef OPENRCT2_X86
-static bool cpuid_x86(uint32 * cpuid_outdata, sint32 eax)
+static bool cpuid_x86(uint32 * cpuid_outdata, sint32 eax, sint32 ecx = 0)
 {
 #if defined(OpenRCT2_CPUID_GNUC_X86)
-    int ret = __get_cpuid(eax, &cpuid_outdata[0], &cpuid_outdata[1], &cpuid_outdata[2], &cpuid_outdata[3]);
+    int ret = __get_cpuid_count(eax, ecx, &cpuid_outdata[0], &cpuid_outdata[1], &cpuid_outdata[2], &cpuid_outdata[3]);
     return ret == 1;
 #elif defined(OpenRCT2_CPUID_MSVC_X86)
     __cpuid((int *)cpuid_outdata, (int)eax);
@@ -218,7 +218,7 @@ bool sse41_available()
 bool avx2_available()
 {
 #ifdef OPENRCT2_X86
-    // AVX2 support is declared as the 5th bit of EBX with CPUID(EAX = 7).
+    // AVX2 support is declared as the 5th bit of EBX with CPUID(EAX = 7, ECX = 0).
     uint32 regs[4] = { 0 };
     if (cpuid_x86(regs, 7))
     {
