@@ -7068,6 +7068,7 @@ static sint32 ride_get_track_length(Ride * ride)
             trackType = track_element_get_type(it.current.element);
             result += TrackPieceLengths[trackType];
 
+            moveSlowIt = !moveSlowIt;
             if (moveSlowIt)
             {
                 track_circuit_iterator_next(&slowIt);
