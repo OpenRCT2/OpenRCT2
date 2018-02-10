@@ -16,10 +16,14 @@ set(CMAKE_MACOSX_RPATH 1)
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2/title-sequence-v0.1.2.zip")
 set(TITLE_SEQUENCE_SHA1 "1136ef92bfb05cd1cba9831ba6dc4a653d87a246")
 
+set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v1.0-beta.2/objects.zip")
+set(OBJECTS_SHA1 "4cc7b67705107f9ee07eec4d6dd3e4786056ddd1")
+
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
 option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
+option(DOWNLOAD_OBJECTS "Download objects during installation." ON)
 
 # Options
 option(STATIC "Create a static build.")
@@ -208,6 +212,12 @@ if (DOWNLOAD_TITLE_SEQUENCES)
             execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/ \"${CMAKE_COMMAND}\" -E tar xvf title-sequences.zip)\n\
             file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/title-sequences.zip)\n\
         endif ()")
+endif ()
+if (DOWNLOAD_OBJECTS)
+    set(OBJECT_DIR "\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/object")
+    install(CODE "file(DOWNLOAD ${OBJECTS_URL} ${OBJECT_DIR}/objects.zip EXPECTED_HASH SHA1=${OBJECTS_SHA1} SHOW_PROGRESS)")
+    install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir ${OBJECT_DIR}/ \"${CMAKE_COMMAND}\" -E tar xvf objects.zip)")
+    install(CODE "file(REMOVE ${OBJECT_DIR}/objects.zip)")
 endif ()
 install(TARGETS "libopenrct2" LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
                               ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
