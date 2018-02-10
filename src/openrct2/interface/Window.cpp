@@ -818,6 +818,11 @@ void window_close_top()
  */
 void window_close_all()
 {
+    if (gWindowNextSlot == nullptr)
+    {
+        return;
+    }
+
     window_close_by_class(WC_DROPDOWN);
 
     for (rct_window * w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
@@ -2667,11 +2672,7 @@ void window_reset_visibilities()
 
 void window_init_all()
 {
-    if (gWindowNextSlot != nullptr)
-    {
-        window_close_all();
-    }
-
+    window_close_all();
     gWindowNextSlot = g_window_list;
 }
 
