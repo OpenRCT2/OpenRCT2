@@ -311,7 +311,6 @@ namespace ObjectJsonHelpers
             auto rangeStart = name.find('[');
             auto imgStart = 0;
             auto imgEnd = INT16_MAX;
-            //auto range = std::vector<sint32>({ 0 });
             if (rangeStart != std::string::npos)
             {
                 auto rangeString = name.substr(rangeStart);
@@ -365,15 +364,18 @@ namespace ObjectJsonHelpers
 
     void LoadImages(IReadObjectContext * context, const json_t * root, ImageTable &imageTable)
     {
-        auto jsonImages = json_object_get(root, "images");
-        auto imageElements = GetJsonStringArray(jsonImages);
-        for (const auto &ie : imageElements)
+        if (context->ShouldLoadImages())
         {
-            auto images = ParseImages(context, ie);
-            for (const auto &g1 : images)
+            auto jsonImages = json_object_get(root, "images");
+            auto imageElements = GetJsonStringArray(jsonImages);
+            for (const auto &ie : imageElements)
             {
-                imageTable.AddImage(&g1);
-                std::free(g1.offset);
+                auto images = ParseImages(context, ie);
+                for (const auto &g1 : images)
+                {
+                    imageTable.AddImage(&g1);
+                    std::free(g1.offset);
+                }
             }
         }
     }

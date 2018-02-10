@@ -20,6 +20,7 @@
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../core/String.hpp"
+#include "../OpenRCT2.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "BannerObject.h"
 #include "EntranceObject.h"
@@ -40,23 +41,24 @@
 class ReadObjectContext : public IReadObjectContext
 {
 private:
-    utf8 *  _objectName;
-    bool    _wasWarning = false;
-    bool    _wasError = false;
+    std::string _objectName;
+    bool        _loadImages;
+    bool        _wasWarning = false;
+    bool        _wasError = false;
 
 public:
     bool WasWarning() const { return _wasWarning; }
     bool WasError() const { return _wasError; }
 
-    explicit ReadObjectContext(const utf8 * objectFileName)
+    ReadObjectContext(const std::string &objectName, bool loadImages)
+        : _objectName(objectName),
+          _loadImages(loadImages)
     {
-        _objectName = String::Duplicate(objectFileName);
     }
 
-    ~ReadObjectContext() override
+    bool ShouldLoadImages() override
     {
-        Memory::Free(_objectName);
-        _objectName = nullptr;
+        return _loadImages;
     }
 
     void LogWarning(uint32 code, const utf8 * text) override
@@ -65,7 +67,7 @@ public:
 
         if (!String::IsNullOrEmpty(text))
         {
-            Console::Error::WriteLine("[%s] Warning: %s", _objectName, text);
+            Console::Error::WriteLine("[%s] Warning: %s", _objectName.c_str(), text);
         }
     }
 
@@ -75,7 +77,7 @@ public:
 
         if (!String::IsNullOrEmpty(text))
         {
-            Console::Error::WriteLine("[%s] Error: %s", _objectName, text);
+            Console::Error::WriteLine("[%s] Error: %s", _objectName.c_str(), text);
         }
     }
 };
@@ -120,7 +122,7 @@ namespace ObjectFactory
             log_verbose("  size: %zu", chunk->GetLength());
 
             auto chunkStream = MemoryStream(chunk->GetData(), chunk->GetLength());
-            auto readContext = ReadObjectContext(objectName);
+            auto readContext = ReadObjectContext(objectName, !gOpenRCT2Headless);
             ReadObjectLegacy(result, &readContext, &chunkStream);
             if (readContext.WasError())
             {
@@ -146,7 +148,7 @@ namespace ObjectFactory
             utf8 objectName[DAT_NAME_LENGTH + 1];
             object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
 
-            auto readContext = ReadObjectContext(objectName);
+            auto readContext = ReadObjectContext(objectName, !gOpenRCT2Headless);
             auto chunkStream = MemoryStream(data, dataSize);
             ReadObjectLegacy(result, &readContext, &chunkStream);
 
@@ -247,7 +249,7 @@ namespace ObjectFactory
                     memcpy(entry.name, originalName.c_str(), minLength);
 
                     result = CreateObject(entry);
-                    auto readContext = ReadObjectContext(id);
+                    auto readContext = ReadObjectContext(id, !gOpenRCT2Headless);
                     result->ReadJson(&readContext, jRoot);
                     if (readContext.WasError())
                     {

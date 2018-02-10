@@ -119,6 +119,8 @@ interface IReadObjectContext
 {
     virtual ~IReadObjectContext() = default;
 
+    virtual bool ShouldLoadImages() abstract;
+
     virtual void LogWarning(uint32 code, const utf8 * text) abstract;
     virtual void LogError(uint32 code, const utf8 * text) abstract;
 };
