@@ -1211,24 +1211,40 @@ void game_fix_save_vars()
 
     peep_sort();
 
+    // Peeps to remove have to be cached here, as removing them from within the loop breaks iteration
+    std::vector<rct_peep *> peepsToRemove;
+
     // Fix possibly invalid field values
     FOR_ALL_GUESTS(spriteIndex, peep)
     {
         if (peep->current_ride_station >= MAX_STATIONS)
         {
             const uint8 srcStation = peep->current_ride_station;
-            const uint8 ride = peep->current_ride;
-            log_warning("Peep %u has invalid ride station = %u for ride %u.", spriteIndex, srcStation, ride);
-            sint8 station = ride_get_first_valid_station_exit(get_ride(ride));
+            const uint8 rideIdx = peep->current_ride;
+            if (rideIdx == RIDE_ID_NULL)
+            {
+                continue;
+            }
+            set_format_arg(0, uint32, peep->id);
+            utf8 * curName = gCommonStringFormatBuffer;
+            rct_string_id curId = peep->name_string_idx;
+            format_string(curName, 256, curId, gCommonFormatArgs);
+            log_warning("Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName, srcStation, rideIdx);
+            sint8 station = ride_get_first_valid_station_exit(get_ride(rideIdx));
             if (station == -1)
             {
                 log_warning("Couldn't find station, removing peep %u", spriteIndex);
-                peep_remove(peep);
+                peepsToRemove.push_back(peep);
             } else {
                 log_warning("Amending ride station to %u.", station);
                 peep->current_ride_station = station;
             }
         }
+    }
+
+    for (auto ptr : peepsToRemove)
+    {
+        peep_remove(ptr);
     }
 
     // Fixes broken saves where a surface element could be null
