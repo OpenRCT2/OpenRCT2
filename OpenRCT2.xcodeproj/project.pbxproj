@@ -471,6 +471,7 @@
 		F775F5351EE35A89001F00E7 /* DummyUiContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5331EE35A6B001F00E7 /* DummyUiContext.cpp */; };
 		F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */; };
 		F79F428F1F3260F1009E42F8 /* changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = F79F428E1F3260F1009E42F8 /* changelog.txt */; };
+		F7C44AF82030E8D3007E099F /* AVX2Drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7C44AF62030E74B007E099F /* AVX2Drawing.cpp */; settings = {COMPILER_FLAGS = "-mavx2"; }; };
 		F7CB863F1EEDA0B50030C877 /* WindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */; };
 		F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */; };
 		F7CB864E1EEDA2050030C877 /* DummyWindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */; };
@@ -1362,6 +1363,7 @@
 		F7B2048B2024E7800000AD7E /* DefaultObjects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefaultObjects.cpp; sourceTree = "<group>"; };
 		F7B2048D2024E8A90000AD7E /* DefaultObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultObjects.h; sourceTree = "<group>"; };
 		F7B2048E2024E8B30000AD7E /* _legacy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _legacy.cpp; sourceTree = "<group>"; };
+		F7C44AF62030E74B007E099F /* AVX2Drawing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AVX2Drawing.cpp; sourceTree = "<group>"; };
 		F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WindowManager.cpp; sourceTree = "<group>"; };
 		F7CB863E1EEDA0B50030C877 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
 		F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardShortcuts.cpp; sourceTree = "<group>"; };
@@ -1897,6 +1899,7 @@
 		F76C839D1EC4E7CC00FA49E2 /* drawing */ = {
 			isa = PBXGroup;
 			children = (
+				F7C44AF62030E74B007E099F /* AVX2Drawing.cpp */,
 				4C7B53D520002CA400A52E21 /* Drawing.cpp */,
 				F76C839F1EC4E7CC00FA49E2 /* drawing.h */,
 				F76C83A01EC4E7CC00FA49E2 /* DrawingFast.cpp */,
@@ -2980,6 +2983,7 @@
 				C68313C81FDB4ED4006DB3D8 /* MouseInput.cpp in Sources */,
 				C68878C920289B710084B384 /* TextureCache.cpp in Sources */,
 				C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */,
+				F7C44AF72030E74B007E099F /* AVX2Drawing.cpp in Sources */,
 				F76C887B1EC5324E00FA49E2 /* FileAudioSource.cpp in Sources */,
 				C68878CA20289B710084B384 /* TransparencyDepth.cpp in Sources */,
 				C64644FD1F3FA4120026AC2D /* Land.cpp in Sources */,
@@ -3067,6 +3071,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7C44AF82030E8D3007E099F /* AVX2Drawing.cpp in Sources */,
 				C68878A320289B200084B384 /* User.cpp in Sources */,
 				F70839931FFC0B61002DCEFA /* Scenario.cpp in Sources */,
 				C688791C20289B9B0084B384 /* Facility.cpp in Sources */,
@@ -3272,7 +3277,7 @@
 				C688789420289B140084B384 /* Screenshot.cpp in Sources */,
 				C688790620289B9B0084B384 /* TwisterRollerCoaster.cpp in Sources */,
 				C688786720289A4A0084B384 /* SawyerCoding.cpp in Sources */,
-				F76C86A61EC4E88400FA49E2 /* macos.m in Sources */,
+				F76C86A61EC4E88400FA49E2 /* macos.mm in Sources */,
 				C68878FE20289B9B0084B384 /* MiniSuspendedCoaster.cpp in Sources */,
 				F76C86AD1EC4E88400FA49E2 /* PlatformEnvironment.cpp in Sources */,
 				C688791220289B9B0084B384 /* GhostTrain.cpp in Sources */,
@@ -3529,6 +3534,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_UNREACHABLE_CODE = NO;
+				CLANG_X86_VECTOR_INSTRUCTIONS = default;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -3565,6 +3571,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_UNREACHABLE_CODE = NO;
+				CLANG_X86_VECTOR_INSTRUCTIONS = default;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
