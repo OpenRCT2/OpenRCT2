@@ -61,6 +61,9 @@ private:
     // Key received from the master server
     std::string         _key;
 
+    // See https://github.com/OpenRCT2/OpenRCT2/issues/6277 and 4953
+    bool                _forceIPv4 = false;
+
 public:
     explicit NetworkServerAdvertiser(uint16 port)
     {
@@ -79,7 +82,7 @@ public:
         case ADVERTISE_STATUS::UNREGISTERED:
             if (_lastAdvertiseTime == 0 || platform_get_ticks() > _lastAdvertiseTime + MASTER_SERVER_REGISTER_TIME)
             {
-                SendRegistration();
+                SendRegistration(_forceIPv4);
             }
             break;
         case ADVERTISE_STATUS::REGISTERED:
@@ -95,7 +98,7 @@ public:
     }
 
 private:
-    void SendRegistration()
+    void SendRegistration(bool forceIPv4)
     {
         _lastAdvertiseTime = platform_get_ticks();
 
@@ -104,6 +107,7 @@ private:
         request.tag = this;
         request.url = GetMasterServerUrl();
         request.method = HTTP_METHOD_POST;
+        request.forceIPv4 = forceIPv4;
 
         json_t *body = json_object();
         json_object_set_new(body, "key", json_string(_key.c_str()));
@@ -180,7 +184,14 @@ private:
                 {
                     message = json_string_value(jsonMessage);
                 }
-                Console::Error::WriteLine("Unable to advertise: %s", message);
+                Console::Error::WriteLine("Unable to advertise (%d): %s", status, message);
+                // Hack for https://github.com/OpenRCT2/OpenRCT2/issues/6277
+                // Master server may not reply correctly if using IPv6, retry forcing IPv4
+                if (!_forceIPv4 && status == 500)
+                {
+                    _forceIPv4 = true;
+                    log_info("Retry with ipv4 only");
+                }
             }
         }
     }

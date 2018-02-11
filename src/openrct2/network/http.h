@@ -33,6 +33,7 @@ typedef struct http_request_t {
     std::string method;
     std::string url;
     http_data_type type = HTTP_DATA_NONE;
+    bool forceIPv4;
     size_t size;
     union {
         const json_t *root;
