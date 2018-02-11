@@ -686,12 +686,11 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
     if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE)
         objectEntryType = OBJECT_TYPE_RIDE;
 
-    void * chunk = object_entry_groups[objectEntryType].chunks[researchItem->entryIndex];
-
+    auto chunk = object_entry_get_chunk(objectEntryType, researchItem->entryIndex);
     if (chunk == nullptr)
         return;
 
-    rct_object_entry * entry = &object_entry_groups[objectEntryType].entries[researchItem->entryIndex].entry;
+    auto entry = (rct_object_entry *)object_entry_get_entry(objectEntryType, researchItem->entryIndex);
 
     // Draw preview
     widget = &w->widgets[WIDX_PREVIEW];

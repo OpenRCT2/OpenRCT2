@@ -276,7 +276,7 @@ static void track_design_save_push_tile_element_desc(rct_object_entry *entry, si
 static void track_design_save_add_scenery(sint32 x, sint32 y, rct_tile_element *tileElement)
 {
     sint32 entryType = tileElement->properties.scenery.type;
-    rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].entries[entryType];
+    rct_object_entry *entry = (rct_object_entry *)object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
 
     uint8 flags = 0;
     flags |= tileElement->type & 3;
@@ -296,7 +296,7 @@ static void track_design_save_add_large_scenery(sint32 x, sint32 y, rct_tile_ele
     sint32 direction, sequence;
 
     sint32 entryType = scenery_large_get_type(tileElement);
-    rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_LARGE_SCENERY].entries[entryType];
+    auto entry = (rct_object_entry *)object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
     z = tileElement->base_height;
@@ -336,7 +336,7 @@ static void track_design_save_add_large_scenery(sint32 x, sint32 y, rct_tile_ele
 static void track_design_save_add_wall(sint32 x, sint32 y, rct_tile_element *tileElement)
 {
     sint32 entryType = tileElement->properties.wall.type;
-    rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_WALLS].entries[entryType];
+    auto entry = (rct_object_entry *)object_entry_get_entry(OBJECT_TYPE_WALLS, entryType);
 
     uint8 flags = 0;
     flags |= tileElement->type & 3;
@@ -352,7 +352,7 @@ static void track_design_save_add_wall(sint32 x, sint32 y, rct_tile_element *til
 static void track_design_save_add_footpath(sint32 x, sint32 y, rct_tile_element *tileElement)
 {
     sint32 entryType = tileElement->properties.path.type >> 4;
-    rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_PATHS].entries[entryType];
+    auto entry = (rct_object_entry *)object_entry_get_entry(OBJECT_TYPE_PATHS, entryType);
 
     uint8 flags = 0;
     flags |= tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
@@ -457,7 +457,7 @@ static void track_design_save_pop_tile_element_desc(rct_object_entry *entry, sin
 static void track_design_save_remove_scenery(sint32 x, sint32 y, rct_tile_element *tileElement)
 {
     sint32 entryType = tileElement->properties.scenery.type;
-    rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].entries[entryType];
+    auto entry = (rct_object_entry *)object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
 
     uint8 flags = 0;
     flags |= tileElement->type & 3;
@@ -477,7 +477,7 @@ static void track_design_save_remove_large_scenery(sint32 x, sint32 y, rct_tile_
     sint32 direction, sequence;
 
     sint32 entryType = scenery_large_get_type(tileElement);
-    rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_LARGE_SCENERY].entries[entryType];
+    auto entry = (rct_object_entry *)object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
     z = tileElement->base_height;
@@ -517,7 +517,7 @@ static void track_design_save_remove_large_scenery(sint32 x, sint32 y, rct_tile_
 static void track_design_save_remove_wall(sint32 x, sint32 y, rct_tile_element *tileElement)
 {
     sint32 entryType = tileElement->properties.wall.type;
-    rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_WALLS].entries[entryType];
+    auto entry = (rct_object_entry *)object_entry_get_entry(OBJECT_TYPE_WALLS, entryType);
 
     uint8 flags = 0;
     flags |= tileElement->type & 3;
@@ -533,7 +533,7 @@ static void track_design_save_remove_wall(sint32 x, sint32 y, rct_tile_element *
 static void track_design_save_remove_footpath(sint32 x, sint32 y, rct_tile_element *tileElement)
 {
     sint32 entryType = tileElement->properties.path.type >> 4;
-    rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_PATHS].entries[entryType];
+    auto entry = (rct_object_entry *)object_entry_get_entry(OBJECT_TYPE_PATHS, entryType);
 
     uint8 flags = 0;
     flags |= tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
@@ -718,7 +718,7 @@ static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex)
     rct_track_td6 *td6 = (rct_track_td6 *)calloc(1, sizeof(rct_track_td6));
     Ride *ride = get_ride(rideIndex);
     td6->type = ride->type;
-    rct_object_entry_extended *object = &object_entry_groups[OBJECT_TYPE_RIDE].entries[ride->subtype];
+    auto object = object_entry_get_entry(OBJECT_TYPE_RIDE, ride->subtype);
 
     // Note we are only copying rct_object_entry in size and
     // not the extended as we don't need the chunk size.

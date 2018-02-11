@@ -349,7 +349,7 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
     {
         uint8 rideEntryIndex = *rideEntryIndexPtr++;
         char rideEntryName[DAT_NAME_LENGTH + 1];
-        memcpy(rideEntryName,object_entry_groups[OBJECT_TYPE_RIDE].entries[rideEntryIndex].name,8);
+        memcpy(rideEntryName, object_entry_get_entry(OBJECT_TYPE_RIDE, rideEntryIndex)->name, 8);
         rideEntryName[DAT_NAME_LENGTH] = 0;
 
         // Skip if vehicle type is not invented yet

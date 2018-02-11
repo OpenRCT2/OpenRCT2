@@ -250,7 +250,7 @@ void get_ride_entry_name(char *name, sint32 index)
         return;
     }
 
-    const char *entryName = object_entry_groups[OBJECT_TYPE_RIDE].entries[index].name;
+    const auto entryName = object_entry_get_entry(OBJECT_TYPE_RIDE, index)->name;
     memcpy(name, entryName, 8);
     name[8] = '\0';
 }

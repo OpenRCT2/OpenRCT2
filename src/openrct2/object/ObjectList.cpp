@@ -133,26 +133,27 @@ void object_create_identifier_name(char* string_buffer, size_t size, const rct_o
  */
 bool find_object_in_entry_group(const rct_object_entry * entry, uint8 * entry_type, uint8 * entry_index)
 {
-    if ((entry->flags & 0xF) >= Util::CountOf(object_entry_groups)) {
-        return false;
-    }
-    *entry_type = entry->flags & 0xF;
-    rct_object_entry_group entry_group = object_entry_groups[*entry_type];
-    for (*entry_index = 0;
-         *entry_index < object_entry_group_counts[*entry_type];
-         ++(*entry_index), entry_group.chunks++, entry_group.entries++)
+    sint32 objectType = object_entry_get_type(entry);
+    if (objectType >= OBJECT_TYPE_COUNT)
     {
-        if (*entry_group.chunks == nullptr)
-            continue;
-
-        if (object_entry_compare((rct_object_entry*)entry_group.entries, entry))
-            break;
+        return false;
     }
 
-    if (*entry_index == object_entry_group_counts[*entry_type])
-        return false;
-
-    return true;
+    auto maxObjects = object_entry_group_counts[objectType];
+    for (sint32 i = 0; i < maxObjects; i++)
+    {
+        if (object_entry_get_chunk(objectType, i) != nullptr)
+        {
+            auto thisEntry = (rct_object_entry *)object_entry_get_entry(*entry_type, i);
+            if (object_entry_compare(thisEntry, entry))
+            {
+                *entry_type = objectType;
+                *entry_index = i;
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void get_type_entry_index(size_t index, uint8 * outObjectType, uint8 * outEntryIndex)
@@ -177,17 +178,14 @@ const rct_object_entry * get_loaded_object_entry(size_t index)
     uint8 objectType, entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
 
-    rct_object_entry * entry = (rct_object_entry *)&(object_entry_groups[objectType].entries[entryIndex]);
-    return entry;
+    return (rct_object_entry *)object_entry_get_entry(objectType, entryIndex);
 }
 
 void * get_loaded_object_chunk(size_t index)
 {
     uint8 objectType, entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
-
-    void *entry = object_entry_groups[objectType].chunks[entryIndex];
-    return entry;
+    return object_entry_get_chunk(objectType, entryIndex);
 }
 
 void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry)
@@ -195,4 +193,14 @@ void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_obj
     bufferSize = Math::Min((size_t)DAT_NAME_LENGTH + 1, bufferSize);
     memcpy(buffer, entry->name, bufferSize - 1);
     buffer[bufferSize - 1] = 0;
+}
+
+void * object_entry_get_chunk(sint32 objectType, size_t index)
+{
+    return object_entry_groups[objectType].chunks[index];
+}
+
+rct_object_entry_extended * object_entry_get_entry(sint32 objectType, size_t index)
+{
+    return &object_entry_groups[objectType].entries[index];
 }

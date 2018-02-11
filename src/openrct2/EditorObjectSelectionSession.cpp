@@ -113,7 +113,7 @@ void setup_in_use_selection_flags()
         for (sint32 i = 0; i < object_entry_group_counts[objectType]; i++)
         {
             Editor::ClearSelectedObject(objectType, i, OBJECT_SELECTION_FLAG_ALL);
-            if (object_entry_groups[objectType].chunks[i] != nullptr)
+            if (object_entry_get_chunk(objectType, i) != nullptr)
             {
                 Editor::SetSelectedObject(objectType, i, OBJECT_SELECTION_FLAG_2);
             }
@@ -274,7 +274,7 @@ static void remove_selected_objects_from_research(const rct_object_entry* instal
         return;
 
     if (entry_type == OBJECT_TYPE_RIDE){
-        rct_ride_entry* rideEntry = (rct_ride_entry*)object_entry_groups[entry_type].chunks[entry_index];
+        auto rideEntry = (rct_ride_entry *)object_entry_get_entry(entry_type, entry_index);
 
         for (auto rideType : rideEntry->ride_type)
         {

@@ -233,3 +233,6 @@ const rct_object_entry * object_list_find_by_name(const char *name);
 const rct_object_entry * object_list_find(rct_object_entry *entry);
 
 void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);
+
+void * object_entry_get_chunk(sint32 objectType, size_t index);
+rct_object_entry_extended * object_entry_get_entry(sint32 objectType, size_t index);

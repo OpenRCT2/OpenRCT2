@@ -1226,7 +1226,7 @@ static void window_editor_object_selection_manage_tracks()
     gS6Info.editor_step = EDITOR_STEP_TRACK_DESIGNS_MANAGER;
 
     sint32 entry_index = 0;
-    for (; (object_entry_groups[0].chunks[entry_index]) == nullptr; ++entry_index);
+    for (; object_entry_get_chunk(OBJECT_TYPE_RIDE, entry_index) == nullptr; entry_index++);
 
     rct_ride_entry* ride_entry = get_ride_entry(entry_index);
     uint8 ride_type = ride_entry_get_first_non_null_ride_type(ride_entry);
