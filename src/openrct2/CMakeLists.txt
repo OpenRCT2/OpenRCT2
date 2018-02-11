@@ -106,6 +106,13 @@ if (NOT DISABLE_NETWORK)
     endif ()
 endif ()
 
+if (NOT APPLE AND NOT MINGW)
+    # This is ugly hack to work around https://bugs.launchpad.net/ubuntu/+source/gcc-5/+bug/1568899.
+    # Once C++17 is enabled (and thus old compilers are no longer supported, this needs to be gone.
+    # We cannot simply detect the _compiler_ version, as the bug exists with the C++ _library_
+    target_link_libraries(${PROJECT} gcc_s gcc)
+endif ()
+
 if (NOT DISABLE_TTF)
     if (STATIC)
         target_link_libraries(${PROJECT} ${FREETYPE_STATIC_LIBRARIES})
