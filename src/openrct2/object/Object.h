@@ -88,26 +88,9 @@ typedef struct rct_object_entry {
 } rct_object_entry;
 assert_struct_size(rct_object_entry, 0x10);
 
-/**
- * Object entry structure extended.
- * size: 0x14
- */
-typedef struct rct_object_entry_extended {
-    union {
-        rct_object_entry entry;
-        struct {
-            uint32 flags;
-            char name[8];
-            uint32 checksum;
-            uint32 chunk_size;
-        };
-    };
-} rct_object_entry_extended;
-assert_struct_size(rct_object_entry_extended, 0x14);
-
 typedef struct rct_object_entry_group {
     void **chunks;
-    rct_object_entry_extended *entries;
+    rct_object_entry *entries;
 } rct_object_entry_group;
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_object_entry_group, 8);
@@ -235,4 +218,4 @@ const rct_object_entry * object_list_find(rct_object_entry *entry);
 void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);
 
 void * object_entry_get_chunk(sint32 objectType, size_t index);
-rct_object_entry_extended * object_entry_get_entry(sint32 objectType, size_t index);
+rct_object_entry * object_entry_get_entry(sint32 objectType, size_t index);

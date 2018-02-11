@@ -385,7 +385,7 @@ private:
             uint8 objectType, entryIndex;
             get_type_entry_index(i, &objectType, &entryIndex);
 
-            rct_object_entry_extended * legacyEntry = object_entry_get_entry(objectType, entryIndex);
+            auto legacyEntry = object_entry_get_entry(objectType, entryIndex);
             void * * legacyChunk = &object_entry_groups[objectType].chunks[entryIndex];
             if (loadedObject == nullptr)
             {
@@ -394,8 +394,7 @@ private:
             }
             else
             {
-                legacyEntry->entry = *loadedObject->GetObjectEntry();
-                legacyEntry->chunk_size = 0;
+                *legacyEntry = *loadedObject->GetObjectEntry();
                 *legacyChunk = loadedObject->GetLegacyData();
             }
         }

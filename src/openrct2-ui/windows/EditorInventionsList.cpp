@@ -690,7 +690,7 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
     if (chunk == nullptr)
         return;
 
-    auto entry = (rct_object_entry *)object_entry_get_entry(objectEntryType, researchItem->entryIndex);
+    auto entry = object_entry_get_entry(objectEntryType, researchItem->entryIndex);
 
     // Draw preview
     widget = &w->widgets[WIDX_PREVIEW];

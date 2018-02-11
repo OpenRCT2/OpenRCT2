@@ -66,17 +66,17 @@ sint32 object_entry_group_encoding[] = {
     rct_water_type              *gWaterEntries[MAX_WATER_OBJECTS];
     rct_stex_entry              *gStexEntries[MAX_SCENARIO_TEXT_OBJECTS];
 
-    static rct_object_entry_extended _objectEntriesRides[MAX_RIDE_OBJECTS];
-    static rct_object_entry_extended _objectEntriesSmallScenery[MAX_SMALL_SCENERY_OBJECTS];
-    static rct_object_entry_extended _objectEntriesLargeScenery[MAX_LARGE_SCENERY_OBJECTS];
-    static rct_object_entry_extended _objectEntriesWalls[MAX_WALL_SCENERY_OBJECTS];
-    static rct_object_entry_extended _objectEntriesBanners[MAX_BANNER_OBJECTS];
-    static rct_object_entry_extended _objectEntriesFootpaths[MAX_PATH_OBJECTS];
-    static rct_object_entry_extended _objectEntriesFootpathAdditions[MAX_PATH_ADDITION_OBJECTS];
-    static rct_object_entry_extended _objectEntriesSceneryGroups[MAX_SCENERY_GROUP_OBJECTS];
-    static rct_object_entry_extended _objectEntriesParkEntrances[MAX_PARK_ENTRANCE_OBJECTS];
-    static rct_object_entry_extended _objectEntriesWaters[MAX_WATER_OBJECTS];
-    static rct_object_entry_extended _objectEntriesStexs[MAX_SCENARIO_TEXT_OBJECTS];
+    static rct_object_entry _objectEntriesRides[MAX_RIDE_OBJECTS];
+    static rct_object_entry _objectEntriesSmallScenery[MAX_SMALL_SCENERY_OBJECTS];
+    static rct_object_entry _objectEntriesLargeScenery[MAX_LARGE_SCENERY_OBJECTS];
+    static rct_object_entry _objectEntriesWalls[MAX_WALL_SCENERY_OBJECTS];
+    static rct_object_entry _objectEntriesBanners[MAX_BANNER_OBJECTS];
+    static rct_object_entry _objectEntriesFootpaths[MAX_PATH_OBJECTS];
+    static rct_object_entry _objectEntriesFootpathAdditions[MAX_PATH_ADDITION_OBJECTS];
+    static rct_object_entry _objectEntriesSceneryGroups[MAX_SCENERY_GROUP_OBJECTS];
+    static rct_object_entry _objectEntriesParkEntrances[MAX_PARK_ENTRANCE_OBJECTS];
+    static rct_object_entry _objectEntriesWaters[MAX_WATER_OBJECTS];
+    static rct_object_entry _objectEntriesStexs[MAX_SCENARIO_TEXT_OBJECTS];
 
 
 // 0x98D97C chunk address', 0x98D980 object_entries
@@ -144,7 +144,7 @@ bool find_object_in_entry_group(const rct_object_entry * entry, uint8 * entry_ty
     {
         if (object_entry_get_chunk(objectType, i) != nullptr)
         {
-            auto thisEntry = (rct_object_entry *)object_entry_get_entry(*entry_type, i);
+            auto thisEntry = object_entry_get_entry(*entry_type, i);
             if (object_entry_compare(thisEntry, entry))
             {
                 *entry_type = objectType;
@@ -178,7 +178,7 @@ const rct_object_entry * get_loaded_object_entry(size_t index)
     uint8 objectType, entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
 
-    return (rct_object_entry *)object_entry_get_entry(objectType, entryIndex);
+    return object_entry_get_entry(objectType, entryIndex);
 }
 
 void * get_loaded_object_chunk(size_t index)
@@ -200,7 +200,7 @@ void * object_entry_get_chunk(sint32 objectType, size_t index)
     return object_entry_groups[objectType].chunks[index];
 }
 
-rct_object_entry_extended * object_entry_get_entry(sint32 objectType, size_t index)
+rct_object_entry * object_entry_get_entry(sint32 objectType, size_t index)
 {
     return &object_entry_groups[objectType].entries[index];
 }
