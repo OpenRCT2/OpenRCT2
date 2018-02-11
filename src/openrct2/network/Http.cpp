@@ -44,6 +44,7 @@ struct HttpRequest2
     std::string     Method;
     std::string     Url;
     http_data_type  Type;
+    bool            ForceIPv4 = false;
     size_t          Size = 0;
     union
     {
@@ -59,6 +60,7 @@ struct HttpRequest2
         Method = request.Method;
         Url = request.Url;
         Type = request.Type;
+        ForceIPv4 = request.ForceIPv4;
         Size = request.Size;
         if (request.Type == HTTP_DATA_JSON)
         {
@@ -77,6 +79,7 @@ struct HttpRequest2
         Method = std::string(request->method);
         Url = std::string(request->url);
         Type = request->type;
+        ForceIPv4 = request->forceIPv4;
         Size = request->size;
         if (request->type == HTTP_DATA_JSON)
         {
@@ -198,8 +201,11 @@ static http_response_t *http_request(const HttpRequest2 &request)
     curl_easy_setopt(curl, CURLOPT_URL, request.Url.c_str());
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &writeBuffer);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, http_request_write_func);
-    // Force resolving to IPv4 to fix issues where advertising over IPv6 does not work
-    curl_easy_setopt(curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+    if (request.ForceIPv4)
+    {
+        // Force resolving to IPv4 to fix issues where advertising over IPv6 does not work
+        curl_easy_setopt(curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+    }
 
     curlResult = curl_easy_perform(curl);
 
