@@ -54,46 +54,6 @@ sint32 object_entry_group_encoding[] = {
     CHUNK_ENCODING_RLE,
     CHUNK_ENCODING_ROTATE
 };
-
-    rct_ride_entry              *gRideEntries[MAX_RIDE_OBJECTS];
-    rct_small_scenery_entry     *gSmallSceneryEntries[MAX_SMALL_SCENERY_OBJECTS];
-    rct_large_scenery_entry     *gLargeSceneryEntries[MAX_LARGE_SCENERY_OBJECTS];
-    rct_wall_scenery_entry      *gWallSceneryEntries[MAX_WALL_SCENERY_OBJECTS];
-    rct_banner                  *gBannerSceneryEntries[MAX_BANNER_OBJECTS];
-    rct_footpath_entry          *gFootpathEntries[MAX_PATH_OBJECTS];
-    rct_path_bit_scenery_entry  *gFootpathAdditionEntries[MAX_PATH_ADDITION_OBJECTS];
-    rct_scenery_group_entry     *gSceneryGroupEntries[MAX_SCENERY_GROUP_OBJECTS];
-    rct_entrance_type           *gParkEntranceEntries[MAX_PARK_ENTRANCE_OBJECTS];
-    rct_water_type              *gWaterEntries[MAX_WATER_OBJECTS];
-    rct_stex_entry              *gStexEntries[MAX_SCENARIO_TEXT_OBJECTS];
-
-    static rct_object_entry _objectEntriesRides[MAX_RIDE_OBJECTS];
-    static rct_object_entry _objectEntriesSmallScenery[MAX_SMALL_SCENERY_OBJECTS];
-    static rct_object_entry _objectEntriesLargeScenery[MAX_LARGE_SCENERY_OBJECTS];
-    static rct_object_entry _objectEntriesWalls[MAX_WALL_SCENERY_OBJECTS];
-    static rct_object_entry _objectEntriesBanners[MAX_BANNER_OBJECTS];
-    static rct_object_entry _objectEntriesFootpaths[MAX_PATH_OBJECTS];
-    static rct_object_entry _objectEntriesFootpathAdditions[MAX_PATH_ADDITION_OBJECTS];
-    static rct_object_entry _objectEntriesSceneryGroups[MAX_SCENERY_GROUP_OBJECTS];
-    static rct_object_entry _objectEntriesParkEntrances[MAX_PARK_ENTRANCE_OBJECTS];
-    static rct_object_entry _objectEntriesWaters[MAX_WATER_OBJECTS];
-    static rct_object_entry _objectEntriesStexs[MAX_SCENARIO_TEXT_OBJECTS];
-
-
-// 0x98D97C chunk address', 0x98D980 object_entries
-const rct_object_entry_group object_entry_groups[] = {
-    (void**)(gRideEntries               ), _objectEntriesRides, // rides
-    (void**)(gSmallSceneryEntries       ), _objectEntriesSmallScenery,  // small scenery    0x009AD1A4, 0xF2FA3C
-    (void**)(gLargeSceneryEntries       ), _objectEntriesLargeScenery,  // large scenery    0x009AD594, 0xF40DEC
-    (void**)(gWallSceneryEntries        ), _objectEntriesWalls, // walls            0x009AD794, 0xF417EC
-    (void**)(gBannerSceneryEntries      ), _objectEntriesBanners,   // banners          0x009AD994, 0xF421EC
-    (void**)(gFootpathEntries           ), _objectEntriesFootpaths, // paths            0x009ADA14, 0xF4246C
-    (void**)(gFootpathAdditionEntries   ), _objectEntriesFootpathAdditions, // path bits        0x009ADA54, 0xF425AC
-    (void**)(gSceneryGroupEntries       ), _objectEntriesSceneryGroups, // scenery sets     0x009ADA90, 0xF426D8
-    (void**)(gParkEntranceEntries       ), _objectEntriesParkEntrances, // park entrance    0x009ADADC, 0xF42854
-    (void**)(gWaterEntries              ), _objectEntriesWaters,    // water            0x009ADAE0, 0xF42868
-    (void**)(gStexEntries               ), _objectEntriesStexs, // scenario text    0x009ADAE4, 0xF4287C
-};
 // clang-format on
 
 bool object_entry_is_empty(const rct_object_entry *entry)

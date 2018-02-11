@@ -202,8 +202,6 @@ enum OBJECT_ERROR : uint32
 extern sint32 object_entry_group_counts[];
 extern sint32 object_entry_group_encoding[];
 
-extern const rct_object_entry_group object_entry_groups[];
-
 void object_list_load();
 
 bool object_entry_is_empty(const rct_object_entry *entry);

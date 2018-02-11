@@ -50,7 +50,6 @@ public:
             _loadedObjects[i] = nullptr;
         }
 
-        UpdateLegacyLoadedObjectList();
         UpdateSceneryGroupIndexes();
         reset_type_to_ride_entry_index_map();
     }
@@ -62,6 +61,13 @@ public:
 
     Object * GetLoadedObject(size_t index) override
     {
+        if (index >= OBJECT_ENTRY_COUNT)
+        {
+#ifdef DEBUG
+            log_warning("Object index %u exceeds maximum of %d.", index, OBJECT_ENTRY_COUNT);
+#endif
+            return nullptr;
+        }
         if (_loadedObjects == nullptr)
         {
             return nullptr;
@@ -71,6 +77,14 @@ public:
 
     Object * GetLoadedObject(sint32 objectType, size_t index) override
     {
+        if (index >= (size_t)object_entry_group_counts[objectType])
+        {
+#ifdef DEBUG
+            log_warning("Object index %u exceeds maximum for type type %d.", index, objectType);
+#endif
+            return nullptr;
+        }
+
         size_t objectIndex = index;
         for (sint32 i = 0; i < objectType; i++)
         {
@@ -118,7 +132,6 @@ public:
                     if (loadedObject != nullptr)
                     {
                         _loadedObjects[slot] = loadedObject;
-                        UpdateLegacyLoadedObjectList();
                         UpdateSceneryGroupIndexes();
                         reset_type_to_ride_entry_index_map();
                     }
@@ -153,7 +166,6 @@ public:
         else
         {
             SetNewLoadedObjectList(loadedObjects);
-            UpdateLegacyLoadedObjectList();
             UpdateSceneryGroupIndexes();
             reset_type_to_ride_entry_index_map();
             log_verbose("%u / %u new objects loaded", numNewLoadedObjects, numRequiredObjects);
@@ -185,7 +197,6 @@ public:
 
         if (numObjectsUnloaded > 0)
         {
-            UpdateLegacyLoadedObjectList();
             UpdateSceneryGroupIndexes();
             reset_type_to_ride_entry_index_map();
         }
@@ -200,7 +211,6 @@ public:
                 UnloadObject(_loadedObjects[i]);
             }
         }
-        UpdateLegacyLoadedObjectList();
         UpdateSceneryGroupIndexes();
         reset_type_to_ride_entry_index_map();
     }
@@ -218,7 +228,6 @@ public:
                     loadedObject->Load();
                 }
             }
-            UpdateLegacyLoadedObjectList();
             UpdateSceneryGroupIndexes();
             reset_type_to_ride_entry_index_map();
         }
@@ -380,31 +389,6 @@ private:
         }
 
         log_verbose("%u / %u objects unloaded", numObjectsUnloaded, totalObjectsLoaded);
-    }
-
-    void UpdateLegacyLoadedObjectList()
-    {
-        for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
-        {
-            Object * loadedObject = nullptr;
-            if (_loadedObjects != nullptr)
-            {
-                loadedObject = _loadedObjects[i];
-            }
-
-            uint8 objectType, entryIndex;
-            get_type_entry_index(i, &objectType, &entryIndex);
-
-            void * * legacyChunk = &object_entry_groups[objectType].chunks[entryIndex];
-            if (loadedObject == nullptr)
-            {
-                *legacyChunk = nullptr;
-            }
-            else
-            {
-                *legacyChunk = loadedObject->GetLegacyData();
-            }
-        }
     }
 
     void UpdateSceneryGroupIndexes()

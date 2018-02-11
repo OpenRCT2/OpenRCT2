@@ -35,6 +35,7 @@
 #include "../management/NewsItem.h"
 #include "../network/network.h"
 #include "../object/ObjectList.h"
+#include "../object/ObjectManager.h"
 #include "../OpenRCT2.h"
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
@@ -233,13 +234,17 @@ Ride *get_ride(sint32 index)
 
 rct_ride_entry * get_ride_entry(sint32 index)
 {
-    if (index < 0 || index >= object_entry_group_counts[OBJECT_TYPE_RIDE])
+    rct_ride_entry * result = nullptr;
+    auto objMgr =  GetObjectManager();
+    if (objMgr != nullptr)
     {
-        log_error("invalid index %d for ride type", index);
-        return nullptr;
+        auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_RIDE, index);
+        if (obj != nullptr)
+        {
+            result = (rct_ride_entry *)obj->GetLegacyData();
+        }
     }
-
-    return gRideEntries[index];
+    return result;
 }
 
 void get_ride_entry_name(char *name, sint32 index)
