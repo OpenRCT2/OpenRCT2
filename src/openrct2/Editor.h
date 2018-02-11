@@ -25,8 +25,6 @@
 
 namespace Editor
 {
-    extern uint8 * SelectedObjects[OBJECT_TYPE_COUNT];
-
     void Load();
     void ConvertSaveToScenario();
     void LoadTrackDesigner();
@@ -38,6 +36,10 @@ namespace Editor
 
     void OpenWindowsForCurrentStep();
     void GameCommandEditScenarioOptions(sint32*, sint32*, sint32*, sint32*, sint32*, sint32*, sint32*);
+
+    uint8 GetSelectedObjectFlags(sint32 objectType, size_t index);
+    void ClearSelectedObject(sint32 objectType, size_t index, uint32 flags);
+    void SetSelectedObject(sint32 objectType, size_t index, uint32 flags);
 }
 
 typedef enum

@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <vector>
 #include "Context.h"
 #include "core/Util.hpp"
 #include "Editor.h"
@@ -30,7 +31,7 @@
 #include "world/LargeScenery.h"
 
 bool _maxObjectsWasHit;
-uint8 * _objectSelectionFlags = nullptr;
+std::vector<uint8> _objectSelectionFlags;
 sint32 _numSelectedObjectsForType[OBJECT_TYPE_COUNT];
 static sint32 _numAvailableObjectsForType[OBJECT_TYPE_COUNT];
 
@@ -107,16 +108,14 @@ static void setup_track_designer_objects()
  */
 void setup_in_use_selection_flags()
 {
-    for (uint8 object_type = 0; object_type < OBJECT_TYPE_COUNT; object_type++){
-        for (uint16 i = 0; i < object_entry_group_counts[object_type]; i++){
-            Editor::SelectedObjects[object_type][i] = OBJECT_SELECTION_NOT_SELECTED_OR_REQUIRED;
-        }
-    }
-
-    for (uint8 object_type = 0; object_type < OBJECT_TYPE_COUNT; object_type++){
-        for (uint16 i = 0; i < object_entry_group_counts[object_type]; i++){
-            if (object_entry_groups[object_type].chunks[i] != nullptr) {
-                Editor::SelectedObjects[object_type][i] |= OBJECT_SELECTION_FLAG_2;
+    for (uint8 objectType = 0; objectType < OBJECT_TYPE_COUNT; objectType++)
+    {
+        for (sint32 i = 0; i < object_entry_group_counts[objectType]; i++)
+        {
+            Editor::ClearSelectedObject(objectType, i, OBJECT_SELECTION_FLAG_ALL);
+            if (object_entry_groups[objectType].chunks[i] != nullptr)
+            {
+                Editor::SetSelectedObject(objectType, i, OBJECT_SELECTION_FLAG_2);
             }
         }
     }
@@ -136,17 +135,17 @@ void setup_in_use_selection_flags()
             type = iter.element->properties.path.type;
             type >>= 4;
             assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
-            Editor::SelectedObjects[OBJECT_TYPE_PATHS][type] |= OBJECT_SELECTION_FLAG_SELECTED;
+            Editor::SetSelectedObject(OBJECT_TYPE_PATHS, type, OBJECT_SELECTION_FLAG_SELECTED);
 
             if (footpath_element_has_path_scenery(iter.element)) {
                 uint8 path_additions = footpath_element_get_path_scenery_index(iter.element);
-                Editor::SelectedObjects[OBJECT_TYPE_PATH_BITS][path_additions] |= OBJECT_SELECTION_FLAG_SELECTED;
+                Editor::SetSelectedObject(OBJECT_TYPE_PATH_BITS, path_additions, OBJECT_SELECTION_FLAG_SELECTED);
             }
             break;
         case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             type = iter.element->properties.scenery.type;
             assert(type < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]);
-            Editor::SelectedObjects[OBJECT_TYPE_SMALL_SCENERY][type] |= OBJECT_SELECTION_FLAG_SELECTED;
+            Editor::SetSelectedObject(OBJECT_TYPE_SMALL_SCENERY, type, OBJECT_SELECTION_FLAG_SELECTED);
             break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
             if (iter.element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
@@ -155,27 +154,27 @@ void setup_in_use_selection_flags()
             if (iter.element->properties.entrance.index != 0)
                 break;
 
-            Editor::SelectedObjects[OBJECT_TYPE_PARK_ENTRANCE][0] |= OBJECT_SELECTION_FLAG_SELECTED;
+            Editor::SetSelectedObject(OBJECT_TYPE_PARK_ENTRANCE, 0, OBJECT_SELECTION_FLAG_SELECTED);
 
             type = iter.element->properties.entrance.path_type;
             assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
-            Editor::SelectedObjects[OBJECT_TYPE_PATHS][type] |= OBJECT_SELECTION_FLAG_SELECTED;
+            Editor::SetSelectedObject(OBJECT_TYPE_PATHS, type, OBJECT_SELECTION_FLAG_SELECTED);
             break;
         case TILE_ELEMENT_TYPE_WALL:
             type = iter.element->properties.wall.type;
             assert(type < object_entry_group_counts[OBJECT_TYPE_WALLS]);
-            Editor::SelectedObjects[OBJECT_TYPE_WALLS][type] |= OBJECT_SELECTION_FLAG_SELECTED;
+            Editor::SetSelectedObject(OBJECT_TYPE_WALLS, type, OBJECT_SELECTION_FLAG_SELECTED);
             break;
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             type = scenery_large_get_type(iter.element);
             assert(type < object_entry_group_counts[OBJECT_TYPE_LARGE_SCENERY]);
-            Editor::SelectedObjects[OBJECT_TYPE_LARGE_SCENERY][type] |= OBJECT_SELECTION_FLAG_SELECTED;
+            Editor::SetSelectedObject(OBJECT_TYPE_LARGE_SCENERY, type, OBJECT_SELECTION_FLAG_SELECTED);
             break;
         case TILE_ELEMENT_TYPE_BANNER:
             banner = &gBanners[iter.element->properties.banner.index];
             type = banner->type;
             assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
-            Editor::SelectedObjects[OBJECT_TYPE_BANNERS][type] |= OBJECT_SELECTION_FLAG_SELECTED;
+            Editor::SetSelectedObject(OBJECT_TYPE_BANNERS, type, OBJECT_SELECTION_FLAG_SELECTED);
             break;
         }
     } while (tile_element_iterator_next(&iter));
@@ -184,7 +183,7 @@ void setup_in_use_selection_flags()
         Ride* ride = get_ride(ride_index);
         if (ride->type != RIDE_TYPE_NULL) {
             uint8 type = ride->subtype;
-            Editor::SelectedObjects[OBJECT_TYPE_RIDE][type] |= OBJECT_SELECTION_FLAG_SELECTED;
+            Editor::SetSelectedObject(OBJECT_TYPE_RIDE, type, OBJECT_SELECTION_FLAG_SELECTED);
         }
     }
 
@@ -197,12 +196,15 @@ void setup_in_use_selection_flags()
 
         uint8 entryType, entryIndex;
         if (find_object_in_entry_group(&item->ObjectEntry, &entryType, &entryIndex)) {
-            if (Editor::SelectedObjects[entryType][entryIndex] & OBJECT_SELECTION_FLAG_SELECTED) {
+            auto flags = Editor::GetSelectedObjectFlags(entryType, entryIndex);
+            if (flags & OBJECT_SELECTION_FLAG_SELECTED)
+            {
                 *selectionFlags |=
                     OBJECT_SELECTION_FLAG_IN_USE |
-                        OBJECT_SELECTION_FLAG_SELECTED;
+                    OBJECT_SELECTION_FLAG_SELECTED;
             }
-            if (Editor::SelectedObjects[entryType][entryIndex] & OBJECT_SELECTION_FLAG_2) {
+            if (flags & OBJECT_SELECTION_FLAG_2)
+            {
                 *selectionFlags |= OBJECT_SELECTION_FLAG_SELECTED;
             }
         }
@@ -213,14 +215,10 @@ void setup_in_use_selection_flags()
  *
  *  rct2: 0x006AB211
  */
-bool sub_6AB211()
+void sub_6AB211()
 {
     sint32 numObjects = (sint32)object_repository_get_items_count();
-    _objectSelectionFlags = (uint8*)calloc(numObjects, sizeof(uint8));
-    if (_objectSelectionFlags == nullptr){
-        log_error("Failed to allocate memory for object flag list.");
-        return false;
-    }
+    _objectSelectionFlags = std::vector<uint8>(numObjects);
 
     for (uint8 objectType = 0; objectType < 11; objectType++) {
         _numSelectedObjectsForType[objectType] = 0;
@@ -254,7 +252,6 @@ bool sub_6AB211()
     }
 
     reset_selected_object_count_and_size();
-    return true;
 }
 
 /**
@@ -263,7 +260,8 @@ bool sub_6AB211()
  */
 void editor_object_flags_free()
 {
-    SafeFree(_objectSelectionFlags);
+    _objectSelectionFlags.clear();
+    _objectSelectionFlags.shrink_to_fit();
 }
 
 /**
@@ -492,12 +490,7 @@ bool editor_check_object_group_at_least_one_selected(sint32 checkObjectType)
 
 sint32 editor_remove_unused_objects()
 {
-    bool createSelectionFlags = (_objectSelectionFlags == nullptr);
-    if (createSelectionFlags && !sub_6AB211())
-    {
-        return 0;
-    }
-
+    sub_6AB211();
     setup_in_use_selection_flags();
 
     sint32 numObjects = (sint32)object_repository_get_items_count();
@@ -522,11 +515,7 @@ sint32 editor_remove_unused_objects()
         }
     }
     unload_unselected_objects();
-
-    if (createSelectionFlags)
-    {
-        editor_object_flags_free();
-    }
+    editor_object_flags_free();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_SCENERY);
     context_broadcast_intent(&intent);

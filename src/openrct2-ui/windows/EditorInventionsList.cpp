@@ -175,18 +175,23 @@ static void move_research_item(rct_research_item *beforeItem);
  */
 static void research_rides_setup(){
     // Reset all objects to not required
-    for (uint8 object_type = OBJECT_TYPE_RIDE; object_type < OBJECT_TYPE_COUNT; object_type++){
-        uint8* in_use = Editor::SelectedObjects[object_type];
-        for (uint8 num_objects = object_entry_group_counts[object_type]; num_objects != 0; num_objects--){
-            *in_use++ = OBJECT_SELECTION_NOT_SELECTED_OR_REQUIRED;
+    for (uint8 objectType = OBJECT_TYPE_RIDE; objectType < OBJECT_TYPE_COUNT; objectType++)
+    {
+        auto maxObjects = object_entry_group_counts[objectType];
+        for (sint32 i = 0; i < maxObjects; i++)
+        {
+            Editor::ClearSelectedObject(objectType, i, OBJECT_SELECTION_FLAG_ALL);
         }
     }
 
     // Set research required for rides in use
-    for (uint16 rideIndex = 0; rideIndex < 255; rideIndex++){
-        Ride * ride = get_ride(rideIndex);
-        if (ride->type == RIDE_TYPE_NULL)continue;
-        Editor::SelectedObjects[OBJECT_TYPE_RIDE][ride->subtype] |= OBJECT_SELECTION_FLAG_SELECTED;
+    for (uint16 rideIndex = 0; rideIndex < MAX_RIDES; rideIndex++)
+    {
+        auto ride = get_ride(rideIndex);
+        if (ride->type != RIDE_TYPE_NULL)
+        {
+            Editor::SetSelectedObject(OBJECT_TYPE_RIDE, ride->subtype, OBJECT_SELECTION_FLAG_SELECTED);
+        }
     }
 
     for (rct_research_item* research = gResearchItems; research->rawValue != RESEARCHED_ITEMS_END; research++)
@@ -216,7 +221,8 @@ static void research_rides_setup(){
                     continue;
 
                 // If master ride not in use
-                if (!(Editor::SelectedObjects[OBJECT_TYPE_RIDE][rideType] & OBJECT_SELECTION_FLAG_SELECTED))
+                auto flags = Editor::GetSelectedObjectFlags(OBJECT_TYPE_RIDE, rideType);
+                if (!(flags & OBJECT_SELECTION_FLAG_SELECTED))
                     continue;
 
                 for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
@@ -237,7 +243,8 @@ static void research_rides_setup(){
 
         if (!master_found){
             // If not in use
-            if (!(Editor::SelectedObjects[OBJECT_TYPE_RIDE][object_index] & OBJECT_SELECTION_FLAG_SELECTED)) {
+            auto flags = Editor::GetSelectedObjectFlags(OBJECT_TYPE_RIDE, object_index);
+            if (!(flags & OBJECT_SELECTION_FLAG_SELECTED)) {
                 continue;
             }
 
