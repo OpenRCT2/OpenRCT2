@@ -20,6 +20,7 @@
 #include "../object/Object.h"
 #include "ObjectList.h"
 #include "ObjectRepository.h"
+#include "ObjectManager.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 
@@ -197,10 +198,25 @@ void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_obj
 
 void * object_entry_get_chunk(sint32 objectType, size_t index)
 {
-    return object_entry_groups[objectType].chunks[index];
+    size_t objectIndex = index;
+    for (sint32 i = 0; i < objectType; i++)
+    {
+        objectIndex += object_entry_group_counts[i];
+    }
+
+    void * result = nullptr;
+    auto objectMgr = GetObjectManager();
+    auto obj = objectMgr->GetLoadedObject(objectIndex);
+    if (obj != nullptr)
+    {
+        result = obj->GetLegacyData();
+    }
+    return result;
 }
 
-rct_object_entry * object_entry_get_entry(sint32 objectType, size_t index)
+const rct_object_entry * object_entry_get_entry(sint32 objectType, size_t index)
 {
-    return &object_entry_groups[objectType].entries[index];
+    auto objectMgr = GetObjectManager();
+    auto obj = objectMgr->GetLoadedObject(objectType, index);
+    return obj->GetObjectEntry();
 }

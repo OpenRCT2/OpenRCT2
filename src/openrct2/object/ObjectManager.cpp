@@ -69,6 +69,16 @@ public:
         return _loadedObjects[index];
     }
 
+    Object * GetLoadedObject(sint32 objectType, size_t index) override
+    {
+        size_t objectIndex = index;
+        for (sint32 i = 0; i < objectType; i++)
+        {
+            objectIndex += object_entry_group_counts[i];
+        }
+        return GetLoadedObject(objectIndex);
+    }
+
     Object * GetLoadedObject(const rct_object_entry * entry) override
     {
         Object * loadedObject = nullptr;
@@ -385,16 +395,13 @@ private:
             uint8 objectType, entryIndex;
             get_type_entry_index(i, &objectType, &entryIndex);
 
-            auto legacyEntry = object_entry_get_entry(objectType, entryIndex);
             void * * legacyChunk = &object_entry_groups[objectType].chunks[entryIndex];
             if (loadedObject == nullptr)
             {
-                *legacyEntry = { 0 };
                 *legacyChunk = nullptr;
             }
             else
             {
-                *legacyEntry = *loadedObject->GetObjectEntry();
                 *legacyChunk = loadedObject->GetLegacyData();
             }
         }

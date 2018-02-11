@@ -261,7 +261,7 @@ static void track_design_save_push_tile_element(sint32 x, sint32 y, rct_tile_ele
  *
  *  rct2: 0x006D2FA7
  */
-static void track_design_save_push_tile_element_desc(rct_object_entry *entry, sint32 x, sint32 y, sint32 z, uint8 flags, uint8 primaryColour, uint8 secondaryColour)
+static void track_design_save_push_tile_element_desc(const rct_object_entry * entry, sint32 x, sint32 y, sint32 z, uint8 flags, uint8 primaryColour, uint8 secondaryColour)
 {
     rct_td6_scenery_element *item = &_trackSavedTileElementsDesc[_trackSavedTileElementsDescCount++];
     item->scenery_object = *entry;
@@ -276,7 +276,7 @@ static void track_design_save_push_tile_element_desc(rct_object_entry *entry, si
 static void track_design_save_add_scenery(sint32 x, sint32 y, rct_tile_element *tileElement)
 {
     sint32 entryType = tileElement->properties.scenery.type;
-    rct_object_entry *entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
+    auto entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
 
     uint8 flags = 0;
     flags |= tileElement->type & 3;
@@ -427,7 +427,7 @@ static void track_design_save_pop_tile_element(sint32 x, sint32 y, rct_tile_elem
  *
  *  rct2: 0x006D2FDD
  */
-static void track_design_save_pop_tile_element_desc(rct_object_entry *entry, sint32 x, sint32 y, sint32 z, uint8 flags, uint8 primaryColour, uint8 secondaryColour)
+static void track_design_save_pop_tile_element_desc(const rct_object_entry *entry, sint32 x, sint32 y, sint32 z, uint8 flags, uint8 primaryColour, uint8 secondaryColour)
 {
     size_t removeIndex = SIZE_MAX;
     for (size_t i = 0; i < _trackSavedTileElementsDescCount; i++) {
