@@ -19,9 +19,6 @@
 #include "../sprites.h"
 #include "Colour.h"
 
-extern "C"
-{
-
 rct_colour_map ColourMapA[COLOUR_COUNT] = { 0 };
 
 enum
@@ -106,4 +103,4 @@ uint8 blendColours(const uint8 paletteIndex1, const uint8 paletteIndex2)
 }
 #endif
 
-}
+

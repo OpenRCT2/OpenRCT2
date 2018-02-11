@@ -152,7 +152,7 @@ public:
             {
                 result = std::stoi(value);
             }
-            catch (std::exception)
+            catch (const std::exception &)
             {
             }
         }
@@ -169,7 +169,7 @@ public:
             {
                 result = std::stof(value);
             }
-            catch (std::exception)
+            catch (const std::exception &)
             {
             }
         }

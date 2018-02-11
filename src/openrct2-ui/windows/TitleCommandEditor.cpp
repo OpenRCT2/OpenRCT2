@@ -23,8 +23,8 @@
 #include <openrct2/Input.h>
 #include <openrct2/core/Util.hpp>
 #include <openrct2/interface/themes.h>
-#include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/localisation/Localisation.h>
@@ -141,7 +141,7 @@ static rct_window_event_list window_title_command_editor_events = {
     nullptr,
     nullptr,
     nullptr,
-	window_title_command_editor_tool_down,
+    window_title_command_editor_tool_down,
     nullptr,
     nullptr,
     nullptr,

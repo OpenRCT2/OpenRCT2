@@ -298,7 +298,7 @@ namespace Config
             model->console_small_font = reader->GetBoolean("console_small_font", false);
             model->current_theme_preset = reader->GetCString("current_theme", "*RCT2");
             model->current_title_sequence_preset = reader->GetCString("current_title_sequence", "*OPENRCT2");
-            model->object_selection_filter_flags = reader->GetSint32("object_selection_filter_flags", 0x7EF);
+            model->object_selection_filter_flags = reader->GetSint32("object_selection_filter_flags", 0x3FFF);
         }
     }
 
@@ -574,6 +574,9 @@ namespace Config
     {
         try
         {
+            auto directory = Path::GetDirectory(path);
+            Path::CreateDirectory(directory);
+
             auto fs = FileStream(path, FILE_MODE_WRITE);
             auto writer = std::unique_ptr<IIniWriter>(CreateIniWriter(&fs));
             WriteGeneral(writer.get());
@@ -644,130 +647,128 @@ namespace Config
     }
 }
 
-extern "C"
-{
-    GeneralConfiguration         gConfigGeneral;
-    InterfaceConfiguration       gConfigInterface;
-    SoundConfiguration           gConfigSound;
-    TwitchConfiguration          gConfigTwitch;
-    NetworkConfiguration         gConfigNetwork;
-    NotificationConfiguration    gConfigNotifications;
-    FontConfiguration            gConfigFonts;
+GeneralConfiguration         gConfigGeneral;
+InterfaceConfiguration       gConfigInterface;
+SoundConfiguration           gConfigSound;
+TwitchConfiguration          gConfigTwitch;
+NetworkConfiguration         gConfigNetwork;
+NotificationConfiguration    gConfigNotifications;
+FontConfiguration            gConfigFonts;
 
-    void config_set_defaults()
+void config_set_defaults()
+{
+    config_release();
+    Config::SetDefaults();
+}
+
+bool config_open(const utf8 * path)
+{
+    if (!File::Exists(path))
     {
-        config_release();
-        Config::SetDefaults();
+        return false;
     }
 
-    bool config_open(const utf8 * path)
+    config_release();
+    auto result = Config::ReadFile(path);
+    if (result)
     {
-        if (!File::Exists(path))
+        currency_load_custom_currency_config();
+    }
+    return result;
+}
+
+bool config_save(const utf8 * path)
+{
+    return Config::WriteFile(path);
+}
+
+void config_release()
+{
+    SafeFree(gConfigGeneral.rct1_path);
+    SafeFree(gConfigGeneral.rct2_path);
+    SafeFree(gConfigGeneral.custom_currency_symbol);
+    SafeFree(gConfigGeneral.last_save_game_directory);
+    SafeFree(gConfigGeneral.last_save_landscape_directory);
+    SafeFree(gConfigGeneral.last_save_scenario_directory);
+    SafeFree(gConfigGeneral.last_save_track_directory);
+    SafeFree(gConfigGeneral.last_run_version);
+    SafeFree(gConfigInterface.current_theme_preset);
+    SafeFree(gConfigInterface.current_title_sequence_preset);
+    SafeFree(gConfigSound.device);
+    SafeFree(gConfigTwitch.channel);
+    SafeFree(gConfigNetwork.player_name);
+    SafeFree(gConfigNetwork.listen_address);
+    SafeFree(gConfigNetwork.default_password);
+    SafeFree(gConfigNetwork.server_name);
+    SafeFree(gConfigNetwork.server_description);
+    SafeFree(gConfigNetwork.server_greeting);
+    SafeFree(gConfigNetwork.master_server_url);
+    SafeFree(gConfigNetwork.provider_name);
+    SafeFree(gConfigNetwork.provider_email);
+    SafeFree(gConfigNetwork.provider_website);
+    SafeFree(gConfigFonts.file_name);
+    SafeFree(gConfigFonts.font_name);
+}
+
+void config_get_default_path(utf8 * outPath, size_t size)
+{
+    platform_get_user_directory(outPath, nullptr, size);
+    Path::Append(outPath, size, "config.ini");
+}
+
+bool config_save_default()
+{
+    utf8 path[MAX_PATH];
+    config_get_default_path(path, sizeof(path));
+    return config_save(path);
+}
+
+bool config_find_or_browse_install_directory()
+{
+    std::string path = Config::FindRCT2Path();
+    if (!path.empty())
+    {
+        Memory::Free(gConfigGeneral.rct2_path);
+        gConfigGeneral.rct2_path = String::Duplicate(path.c_str());
+    }
+    else
+    {
+        if (gOpenRCT2Headless)
         {
             return false;
         }
 
-        config_release();
-        auto result = Config::ReadFile(path);
-        if (result)
+        try
         {
-            currency_load_custom_currency_config();
-        }
-        return result;
-    }
-
-    bool config_save(const utf8 * path)
-    {
-        return Config::WriteFile(path);
-    }
-
-    void config_release()
-    {
-        SafeFree(gConfigGeneral.rct1_path);
-        SafeFree(gConfigGeneral.rct2_path);
-        SafeFree(gConfigGeneral.custom_currency_symbol);
-        SafeFree(gConfigGeneral.last_save_game_directory);
-        SafeFree(gConfigGeneral.last_save_landscape_directory);
-        SafeFree(gConfigGeneral.last_save_scenario_directory);
-        SafeFree(gConfigGeneral.last_save_track_directory);
-        SafeFree(gConfigGeneral.last_run_version);
-        SafeFree(gConfigInterface.current_theme_preset);
-        SafeFree(gConfigInterface.current_title_sequence_preset);
-        SafeFree(gConfigSound.device);
-        SafeFree(gConfigTwitch.channel);
-        SafeFree(gConfigNetwork.player_name);
-        SafeFree(gConfigNetwork.listen_address);
-        SafeFree(gConfigNetwork.default_password);
-        SafeFree(gConfigNetwork.server_name);
-        SafeFree(gConfigNetwork.server_description);
-        SafeFree(gConfigNetwork.server_greeting);
-        SafeFree(gConfigNetwork.master_server_url);
-        SafeFree(gConfigNetwork.provider_name);
-        SafeFree(gConfigNetwork.provider_email);
-        SafeFree(gConfigNetwork.provider_website);
-        SafeFree(gConfigFonts.file_name);
-        SafeFree(gConfigFonts.font_name);
-    }
-
-    void config_get_default_path(utf8 * outPath, size_t size)
-    {
-        platform_get_user_directory(outPath, nullptr, size);
-        Path::Append(outPath, size, "config.ini");
-    }
-
-    bool config_save_default()
-    {
-        utf8 path[MAX_PATH];
-        config_get_default_path(path, sizeof(path));
-        return config_save(path);
-    }
-
-    bool config_find_or_browse_install_directory()
-    {
-        std::string path = Config::FindRCT2Path();
-        if (!path.empty())
-        {
-            Memory::Free(gConfigGeneral.rct2_path);
-            gConfigGeneral.rct2_path = String::Duplicate(path.c_str());
-        }
-        else
-        {
-            if (gOpenRCT2Headless)
+            while (true)
             {
-                return false;
-            }
+                IUiContext * uiContext = GetContext()->GetUiContext();
+                uiContext->ShowMessageBox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. \nPlease select the directory where you installed RollerCoaster Tycoon 2.");
 
-            try
-            {
-                while (true)
+                std::string installPath = uiContext->ShowDirectoryDialog("Please select your RCT2 directory");
+                if (installPath.empty())
                 {
-                    IUiContext * uiContext = GetContext()->GetUiContext();
-                    uiContext->ShowMessageBox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. \nPlease select the directory where you installed RollerCoaster Tycoon 2.");
-
-                    std::string installPath = uiContext->ShowDirectoryDialog("Please select your RCT2 directory");
-                    if (installPath.empty())
-                    {
-                        return false;
-                    }
-
-                    Memory::Free(gConfigGeneral.rct2_path);
-                    gConfigGeneral.rct2_path = String::Duplicate(installPath.c_str());
-
-                    if (platform_original_game_data_exists(installPath.c_str()))
-                    {
-                        return true;
-                    }
-
-                    std::string message = String::StdFormat("Could not find %s" PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat at this path", installPath.c_str());
-                    uiContext->ShowMessageBox(message);
+                    return false;
                 }
-            }
-            catch (const std::exception &ex)
-            {
-                Console::Error::WriteLine(ex.what());
-                return false;
+
+                Memory::Free(gConfigGeneral.rct2_path);
+                gConfigGeneral.rct2_path = String::Duplicate(installPath.c_str());
+
+                if (platform_original_game_data_exists(installPath.c_str()))
+                {
+                    return true;
+                }
+
+                std::string message = String::StdFormat("Could not find %s" PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat at this path", installPath.c_str());
+                uiContext->ShowMessageBox(message);
             }
         }
-        return true;
+        catch (const std::exception &ex)
+        {
+            Console::Error::WriteLine(ex.what());
+            return false;
+        }
     }
+    return true;
 }
+

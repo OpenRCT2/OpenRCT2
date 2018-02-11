@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
+#include <cstring>
 #include "Math.hpp"
 #include "Memory.hpp"
 #include "MemoryStream.h"
@@ -26,7 +28,8 @@ MemoryStream::MemoryStream(const MemoryStream &copy)
 
     if (_access & MEMORY_ACCESS::OWNER)
     {
-        _data = Memory::Duplicate(copy._data, _dataCapacity);
+        _data = Memory::Allocate<void>(_dataCapacity);
+        std::memcpy(_data, copy._data, _dataCapacity);
         _position = (void*)((uintptr_t)_data + copy.GetPosition());
     }
 }
@@ -70,7 +73,9 @@ const void * MemoryStream::GetData() const
 
 void * MemoryStream::GetDataCopy() const
 {
-    return Memory::Duplicate(_data, _dataSize);
+    auto result = Memory::Allocate<void>(_dataSize);
+    std::memcpy(result, _data, _dataSize);
+    return result;
 }
 
 void * MemoryStream::TakeData()
@@ -135,7 +140,7 @@ void MemoryStream::Read(void * buffer, uint64 length)
         throw IOException("Attempted to read past end of stream.");
     }
 
-    Memory::Copy(buffer, _position, (size_t)length);
+    std::copy_n((const uint8 *)_position, length, (uint8 *)buffer);
     _position = (void*)((uintptr_t)_position + length);
 }
 
@@ -163,7 +168,7 @@ void MemoryStream::Write(const void * buffer, uint64 length)
         }
     }
 
-    Memory::Copy(_position, buffer, (size_t)length);
+    std::copy_n((const uint8 *)buffer, length, (uint8 *)_position);
     _position = (void*)((uintptr_t)_position + length);
     _dataSize = Math::Max<size_t>(_dataSize, (size_t)nextPosition);
 }

@@ -24,8 +24,8 @@
 #include <openrct2/core/Util.hpp>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
-#include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/ride/Ride.h>

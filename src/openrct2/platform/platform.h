@@ -80,11 +80,6 @@ typedef struct file_dialog_desc {
     } filters[8];
 } file_dialog_desc;
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 // Platform shared definitions
 void platform_update_palette(const uint8 *colours, sint32 start_index, sint32 num_colours);
 void platform_toggle_windowed_mode();
@@ -95,7 +90,6 @@ void platform_get_date_local(rct2_date *out_date);
 void platform_get_time_local(rct2_time *out_time);
 
 // Platform specific definitions
-void platform_get_exe_path(utf8 *outPath, size_t outSize);
 bool platform_file_exists(const utf8 *path);
 bool platform_directory_exists(const utf8 *path);
 bool platform_original_game_data_exists(const utf8 *path);
@@ -104,12 +98,6 @@ bool platform_ensure_directory_exists(const utf8 *path);
 bool platform_directory_delete(const utf8 *path);
 utf8 * platform_get_absolute_path(const utf8 * relative_path, const utf8 * base_path);
 bool platform_lock_single_instance();
-sint32 platform_enumerate_files_begin(const utf8 *pattern);
-bool platform_enumerate_files_next(sint32 handle, file_info *outFileInfo);
-void platform_enumerate_files_end(sint32 handle);
-sint32 platform_enumerate_directories_begin(const utf8 *directory);
-bool platform_enumerate_directories_next(sint32 handle, utf8 *path);
-void platform_enumerate_directories_end(sint32 handle);
 bool platform_place_string_on_clipboard(utf8* target);
 
 // Returns the bitmask of the GetLogicalDrives function for windows, 0 for other systems
@@ -120,7 +108,6 @@ bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath);
 bool platform_file_delete(const utf8 *path);
 uint32 platform_get_ticks();
 void platform_sleep(uint32 ms);
-void platform_resolve_openrct_data_path();
 void platform_get_openrct_data_path(utf8 *outPath, size_t outSize);
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t outSize);
 utf8* platform_get_username();
@@ -133,7 +120,6 @@ uint8 platform_get_locale_measurement_format();
 uint8 platform_get_locale_temperature_format();
 uint8 platform_get_locale_date_format();
 bool platform_process_is_elevated();
-void platform_get_changelog_path(utf8 *outPath, size_t outSize);
 bool platform_get_steam_path(utf8 * outPath, size_t outSize);
 
 #ifndef NO_TTF
@@ -169,17 +155,9 @@ void core_init();
     __declspec(dllexport) sint32 StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, sint32 nCmdShow);
 #endif // _WIN32
 
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__) || defined(__ANDROID__)
-    void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size);
-#endif
-
 #if defined(__APPLE__) && defined(__MACH__)
     void macos_disallow_automatic_window_tabbing();
     utf8* macos_str_decomp_to_precomp(utf8 *input);
-#endif
-
-#ifdef __cplusplus
-}
 #endif
 
 #endif

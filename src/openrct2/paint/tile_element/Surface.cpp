@@ -1354,7 +1354,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
         if (!gTrackDesignSaveMode)
         {
-            session->Unk141E9DC = waterHeight;
+            session->WaterHeight = waterHeight;
 
             sint32 image_offset = 0;
             if (waterHeight <= localHeight)

@@ -431,7 +431,7 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
 
     // Draw repeated supports for left over space
     while (height != 0) {
-        if ((z & 16) == 0 && height >= 2 && z + 16 != session->Unk141E9DC) {
+        if ((z & 16) == 0 && height >= 2 && z + 16 != session->WaterHeight) {
             // Full support
             sint32 imageId = WoodenSupportImageIds[supportType].full | imageColourFlags;
             uint8 ah = height == 2 ? 23 : 28;
@@ -600,7 +600,7 @@ bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, 
 
     if (!skipTo663004) {
         while (heightSteps > 0) {
-            if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == session->Unk141E9DC) {
+            if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == session->WaterHeight) {
                 sub_98196C(session,
                     WoodenSupportImageIds[supportType].half | imageColourFlags,
                     0, 0,
@@ -1138,7 +1138,7 @@ bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, si
     }
 
     while (heightSteps > 0) {
-        if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == session->Unk141E9DC) {
+        if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == session->WaterHeight) {
 
             uint32 imageId = (supportType * 24) + pathEntry->bridge_image + 23;
 

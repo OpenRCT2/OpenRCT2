@@ -29,6 +29,8 @@
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "Climate.h"
+#include "../windows/Intent.h"
+#include "../Context.h"
 
 constexpr sint32 MAX_THUNDER_INSTANCES = 2;
 
@@ -74,140 +76,140 @@ static void climate_update_lightning();
 static void climate_update_thunder();
 static void climate_play_thunder(sint32 instanceIndex, sint32 soundId, sint32 volume, sint32 pan);
 
-extern "C"
+sint32 climate_celsius_to_fahrenheit(sint32 celsius)
 {
-    sint32 climate_celsius_to_fahrenheit(sint32 celsius)
+    return (celsius * 29) / 16 + 32;
+}
+
+/**
+ * Set climate and determine start weather.
+ */
+void climate_reset(sint32 climate)
+{
+    uint8 weather = WEATHER_PARTIALLY_CLOUDY;
+    sint32 month = date_get_month(gDateMonthsElapsed);
+    const WeatherTransition * transition = &ClimateTransitions[climate][month];
+    const WeatherState * weatherState = &ClimateWeatherData[weather];
+
+    gClimate = climate;
+    gClimateCurrent.Weather = weather;
+    gClimateCurrent.Temperature = transition->BaseTemperature + weatherState->TemperatureDelta;
+    gClimateCurrent.WeatherEffect = weatherState->EffectLevel;
+    gClimateCurrent.WeatherGloom = weatherState->GloomLevel;
+    gClimateCurrent.RainLevel = weatherState->RainLevel;
+
+    _lightningTimer = 0;
+    _thunderTimer = 0;
+    if (_rainVolume != 1)
     {
-        return (celsius * 29) / 16 + 32;
+        audio_stop_rain_sound();
+        _rainVolume = 1;
     }
 
-    /**
-     * Set climate and determine start weather.
-     */
-    void climate_reset(sint32 climate)
+    climate_determine_future_weather(scenario_rand());
+}
+
+/**
+ * Weather & climate update iteration.
+ * Gradually changes the weather parameters towards their determined next values.
+ */
+void climate_update()
+{
+    // Only do climate logic if playing (not in scenario editor or title screen)
+    if (gScreenFlags & (~SCREEN_FLAGS_PLAYING)) return;
+
+    if (!gCheatsFreezeClimate)
     {
-        uint8 weather = WEATHER_PARTIALLY_CLOUDY;
-        sint32 month = date_get_month(gDateMonthsElapsed);
-        const WeatherTransition * transition = &ClimateTransitions[climate][month];
-        const WeatherState * weatherState = &ClimateWeatherData[weather];
-
-        gClimate = climate;
-        gClimateCurrent.Weather = weather;
-        gClimateCurrent.Temperature = transition->BaseTemperature + weatherState->TemperatureDelta;
-        gClimateCurrent.WeatherEffect = weatherState->EffectLevel;
-        gClimateCurrent.WeatherGloom = weatherState->GloomLevel;
-        gClimateCurrent.RainLevel = weatherState->RainLevel;
-
-        _lightningTimer = 0;
-        _thunderTimer = 0;
-        if (_rainVolume != 1)
+        if (gClimateUpdateTimer)
         {
-            audio_stop_rain_sound();
-            _rainVolume = 1;
-        }
-
-        climate_determine_future_weather(scenario_rand());
-    }
-
-    /**
-     * Weather & climate update iteration.
-     * Gradually changes the weather parameters towards their determined next values.
-     */
-    void climate_update()
-    {
-        // Only do climate logic if playing (not in scenario editor or title screen)
-        if (gScreenFlags & (~SCREEN_FLAGS_PLAYING)) return;
-
-        if (!gCheatsFreezeClimate)
-        {
-            if (gClimateUpdateTimer)
+            if (gClimateUpdateTimer == 960)
             {
-                if (gClimateUpdateTimer == 960)
-                {
-                    gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
-                }
-                gClimateUpdateTimer--;
+                auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
+                context_broadcast_intent(&intent);
             }
-            else if (!(gCurrentTicks & 0x7F))
+            gClimateUpdateTimer--;
+        }
+        else if (!(gCurrentTicks & 0x7F))
+        {
+            if (gClimateCurrent.Temperature == gClimateNext.Temperature)
             {
-                if (gClimateCurrent.Temperature == gClimateNext.Temperature)
+                if (gClimateCurrent.WeatherGloom == gClimateNext.WeatherGloom)
                 {
-                    if (gClimateCurrent.WeatherGloom == gClimateNext.WeatherGloom)
-                    {
-                        gClimateCurrent.WeatherEffect = gClimateNext.WeatherEffect;
-                        _thunderTimer = 0;
-                        _lightningTimer = 0;
+                    gClimateCurrent.WeatherEffect = gClimateNext.WeatherEffect;
+                    _thunderTimer = 0;
+                    _lightningTimer = 0;
 
-                        if (gClimateCurrent.RainLevel == gClimateNext.RainLevel)
-                        {
-                            gClimateCurrent.Weather = gClimateNext.Weather;
-                            climate_determine_future_weather(scenario_rand());
-                            gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
-                        }
-                        else if (gClimateNext.RainLevel <= RAIN_LEVEL_HEAVY)
-                        {
-                            gClimateCurrent.RainLevel = climate_step_weather_level(gClimateCurrent.RainLevel, gClimateNext.RainLevel);
-                        }
-                    }
-                    else
+                    if (gClimateCurrent.RainLevel == gClimateNext.RainLevel)
                     {
-                        gClimateCurrent.WeatherGloom = climate_step_weather_level(gClimateCurrent.WeatherGloom, gClimateNext.WeatherGloom);
-                        gfx_invalidate_screen();
+                        gClimateCurrent.Weather = gClimateNext.Weather;
+                        climate_determine_future_weather(scenario_rand());
+                        auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
+                        context_broadcast_intent(&intent);
+                    }
+                    else if (gClimateNext.RainLevel <= RAIN_LEVEL_HEAVY)
+                    {
+                        gClimateCurrent.RainLevel = climate_step_weather_level(gClimateCurrent.RainLevel, gClimateNext.RainLevel);
                     }
                 }
                 else
                 {
-                    gClimateCurrent.Temperature = climate_step_weather_level(gClimateCurrent.Temperature, gClimateNext.Temperature);
-                    gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
+                    gClimateCurrent.WeatherGloom = climate_step_weather_level(gClimateCurrent.WeatherGloom, gClimateNext.WeatherGloom);
+                    gfx_invalidate_screen();
                 }
             }
-
-        }
-
-        if (_thunderTimer != 0)
-        {
-            climate_update_lightning();
-            climate_update_thunder();
-        }
-        else if (gClimateCurrent.WeatherEffect == WEATHER_EFFECT_STORM)
-        {
-            // Create new thunder and lightning
-            uint32 randomNumber = util_rand();
-            if ((randomNumber & 0xFFFF) <= 0x1B4)
+            else
             {
-                randomNumber >>= 16;
-                _thunderTimer = 43 + (randomNumber % 64);
-                _lightningTimer = randomNumber % 32;
+                gClimateCurrent.Temperature = climate_step_weather_level(gClimateCurrent.Temperature, gClimateNext.Temperature);
+                auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
+                context_broadcast_intent(&intent);
             }
         }
+
     }
 
-    void climate_force_weather(uint8 weather)
+    if (_thunderTimer != 0)
     {
-        const auto weatherState = &ClimateWeatherData[weather];
-        gClimateCurrent.Weather = weather;
-        gClimateCurrent.WeatherGloom = weatherState->GloomLevel;
-        gClimateCurrent.RainLevel = weatherState->RainLevel;
-        gClimateCurrent.WeatherEffect = weatherState->EffectLevel;
-        gClimateUpdateTimer = 1920;
-
-        climate_update();
-
-        // In case of change in gloom level force a complete redraw
-        gfx_invalidate_screen();
+        climate_update_lightning();
+        climate_update_thunder();
     }
-
-
-    void climate_update_sound()
+    else if (gClimateCurrent.WeatherEffect == WEATHER_EFFECT_STORM)
     {
-        if (gAudioCurrentDevice == -1) return;
-        if (gGameSoundsOff) return;
-        if (!gConfigSound.sound_enabled) return;
-        if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) return;
-
-        climate_update_rain_sound();
-        climate_update_thunder_sound();
+        // Create new thunder and lightning
+        uint32 randomNumber = util_rand();
+        if ((randomNumber & 0xFFFF) <= 0x1B4)
+        {
+            randomNumber >>= 16;
+            _thunderTimer = 43 + (randomNumber % 64);
+            _lightningTimer = randomNumber % 32;
+        }
     }
+}
+
+void climate_force_weather(uint8 weather)
+{
+    const auto weatherState = &ClimateWeatherData[weather];
+    gClimateCurrent.Weather = weather;
+    gClimateCurrent.WeatherGloom = weatherState->GloomLevel;
+    gClimateCurrent.RainLevel = weatherState->RainLevel;
+    gClimateCurrent.WeatherEffect = weatherState->EffectLevel;
+    gClimateUpdateTimer = 1920;
+
+    climate_update();
+
+    // In case of change in gloom level force a complete redraw
+    gfx_invalidate_screen();
+}
+
+
+void climate_update_sound()
+{
+    if (gAudioCurrentDevice == -1) return;
+    if (gGameSoundsOff) return;
+    if (!gConfigSound.sound_enabled) return;
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) return;
+
+    climate_update_rain_sound();
+    climate_update_thunder_sound();
 }
 
 bool climate_is_raining()

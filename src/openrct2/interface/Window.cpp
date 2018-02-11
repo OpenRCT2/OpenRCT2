@@ -36,9 +36,7 @@
 #include "Viewport.h"
 #include "Widget.h"
 #include "Window.h"
-
-extern "C"
-{
+#include "Window_internal.h"
 
 #define RCT2_FIRST_WINDOW       (g_window_list)
 #define RCT2_LAST_WINDOW        (gWindowNextSlot - 1)
@@ -61,7 +59,6 @@ bool gUsingWidgetTextBox = false;
 TextInputSession * gTextInput;
 
 uint16 gWindowUpdateTicks;
-uint8 gToolbarDirtyFlags;
 uint16 gWindowMapFlashingFlags;
 
 colour_t gCurrentWindowColours[4];
@@ -560,7 +557,7 @@ rct_window *window_create_auto_pos(sint32 width, sint32 height, rct_window_event
     // if (cls & 0x80) {
     //  cls &= ~0x80;
     //  rct_window *w = window_find_by_number(0, 0);
-    //  if (w != NULL) {
+    //  if (w != nullptr) {
     //      if (w->x > -60 && w->x < screenWidth - 20) {
     //          if (w->y < screenHeight - 20) {
     //              sint32 x = w->x;
@@ -821,6 +818,11 @@ void window_close_top()
  */
 void window_close_all()
 {
+    if (gWindowNextSlot == nullptr)
+    {
+        return;
+    }
+
     window_close_by_class(WC_DROPDOWN);
 
     for (rct_window * w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
@@ -983,7 +985,7 @@ void widget_invalidate(rct_window *w, rct_widgetindex widgetIndex)
 {
     rct_widget* widget;
 
-    assert(w != NULL);
+    assert(w != nullptr);
 #ifdef DEBUG
     for (sint32 i = 0; i <= widgetIndex; i++) {
         assert(w->widgets[i].type != WWT_LAST);
@@ -1083,7 +1085,7 @@ void window_update_scroll_widgets(rct_window *w)
 
     widgetIndex = 0;
     scrollIndex = 0;
-    assert(w != NULL);
+    assert(w != nullptr);
     for (widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++) {
         if (widget->type != WWT_SCROLL)
             continue;
@@ -1125,7 +1127,7 @@ sint32 window_get_scroll_data_index(rct_window *w, rct_widgetindex widget_index)
     sint32 i, result;
 
     result = 0;
-    assert(w != NULL);
+    assert(w != nullptr);
     for (i = 0; i < widget_index; i++) {
         if (w->widgets[i].type == WWT_SCROLL)
             result++;
@@ -1306,7 +1308,7 @@ void window_scroll_to_viewport(rct_window *w)
 {
     sint32 x, y, z;
     rct_window *mainWindow;
-    assert(w != NULL);
+    assert(w != nullptr);
     // In original checked to make sure x and y were not -1 as well.
     if (w->viewport == nullptr || w->viewport_focus_coordinates.y == -1)
         return;
@@ -1349,7 +1351,7 @@ void window_scroll_to_location(rct_window *w, sint32 x, sint32 y, sint32 z)
         /* .z = */ (sint16)z
     };
 
-    assert(w != NULL);
+    assert(w != nullptr);
 
     window_unfollow_sprite(w);
 
@@ -2670,11 +2672,7 @@ void window_reset_visibilities()
 
 void window_init_all()
 {
-    if (gWindowNextSlot != nullptr)
-    {
-        window_close_all();
-    }
-
+    window_close_all();
     gWindowNextSlot = g_window_list;
 }
 
@@ -2692,4 +2690,37 @@ void window_unfollow_sprite(rct_window * w)
     w->viewport_target_sprite = SPRITE_INDEX_NULL;
 }
 
+rct_viewport * window_get_viewport(rct_window * w)
+{
+    if (w == nullptr)
+    {
+        return nullptr;
+    }
+
+    return w->viewport;
 }
+
+
+rct_window * window_get_listening()
+{
+    for (rct_window * w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
+    {
+        if (w->viewport == nullptr)
+        {
+            continue;
+        }
+
+        if (w->viewport->flags & VIEWPORT_FLAG_SOUND_ON)
+        {
+            return w;
+        }
+    }
+
+    return nullptr;
+}
+
+rct_windowclass window_get_classification(rct_window * window)
+{
+    return window->classification;
+}
+

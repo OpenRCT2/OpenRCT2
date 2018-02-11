@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
+#include <cstring>
 #include <limits>
 
 #include "../core/Math.hpp"
@@ -31,6 +33,8 @@
 #include "../localisation/Localisation.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
+#include "../windows/Intent.h"
+#include "../Context.h"
 
 rct_banner gBanners[MAX_BANNERS];
 
@@ -159,11 +163,10 @@ static money32 BannerSetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 direc
             return MONEY32_UNDEFINED;
         }
 
-        rct_window* window = window_find_by_number(WC_BANNER, tileElement->properties.banner.index);
-        if (window != nullptr)
-        {
-            window_invalidate(window);
-        }
+        auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
+        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, tileElement->properties.banner.index);
+        context_broadcast_intent(&intent);
+
         gBanners[tileElement->properties.banner.index].colour = colour;
         map_invalidate_tile_zoom1(x, y, z, z + 32);
     }
@@ -305,10 +308,10 @@ static money32 BannerSetName(uint8 bannerIndex,
         return MONEY32_UNDEFINED;
     }
 
-    size_t nameChunkOffset = Math::Min<size_t>(indexToOffset[nameChunkIndex], Util::CountOf(newName) - 12);
-    Memory::Copy<uint32>((uint32*)(&newName[0 + nameChunkOffset]), &nameChunk1, sizeof(uint32));
-    Memory::Copy<uint32>((uint32*)(&newName[4 + nameChunkOffset]), &nameChunk2, sizeof(uint32));
-    Memory::Copy<uint32>((uint32*)(&newName[8 + nameChunkOffset]), &nameChunk3, sizeof(uint32));
+    size_t nameChunkOffset = std::min<size_t>(indexToOffset[nameChunkIndex], Util::CountOf(newName) - 12);
+    std::memcpy(&newName[0 + nameChunkOffset], &nameChunk1, sizeof(uint32));
+    std::memcpy(&newName[4 + nameChunkOffset], &nameChunk2, sizeof(uint32));
+    std::memcpy(&newName[8 + nameChunkOffset], &nameChunk3, sizeof(uint32));
 
     if (nameChunkIndex != 0)
     {
@@ -331,11 +334,10 @@ static money32 BannerSetName(uint8 bannerIndex,
         rct_string_id prevStringId = banner->string_idx;
         banner->string_idx = stringId;
         user_string_free(prevStringId);
-        rct_window* w = window_bring_to_front_by_number(WC_BANNER, bannerIndex);
-        if (w != nullptr)
-        {
-            window_invalidate(w);
-        }
+
+        auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
+        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, bannerIndex);
+        context_broadcast_intent(&intent);
     }
     else
     {
@@ -398,11 +400,10 @@ static money32 BannerSetStyle(uint8 bannerIndex, uint8 colour, uint8 textColour,
         rct_string_id prevStringId = banner->string_idx;
         banner->string_idx = stringId;
         user_string_free(prevStringId);
-        rct_window* w = window_bring_to_front_by_number(WC_BANNER, bannerIndex);
-        if (w != nullptr)
-        {
-            window_invalidate(w);
-        }
+
+        auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
+        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, bannerIndex);
+        context_broadcast_intent(&intent);
     }
     else
     {
@@ -425,198 +426,196 @@ static uint8 BannerGetNewIndex() {
     return BANNER_NULL;
 }
 
-extern "C"
+/**
+ *
+ *  rct2: 0x006B9CB0
+ */
+void banner_init()
 {
-    /**
-     *
-     *  rct2: 0x006B9CB0
-     */
-    void banner_init()
-    {
-        for (auto &banner : gBanners) {
-            banner.type = BANNER_NULL;
-        }
-    }
-
-    /**
-     * Creates a new banner and returns the index of the banner
-     * If the flag GAME_COMMAND_FLAG_APPLY is NOT set then returns
-     * the first unused index but does NOT mark the banner as created.
-     * returns 0xFF on failure.
-     *
-     *  rct2: 0x006BA278
-     */
-    sint32 create_new_banner(uint8 flags)
-    {
-        uint8 bannerIndex = BannerGetNewIndex();
-
-        if (bannerIndex == BANNER_NULL)
-        {
-            gGameCommandErrorText = STR_TOO_MANY_BANNERS_IN_GAME;
-            return BANNER_NULL;
-        }
-
-        if (flags & GAME_COMMAND_FLAG_APPLY)
-        {
-            rct_banner* banner = &gBanners[bannerIndex];
-
-            banner->flags = 0;
-            banner->type = 0;
-            banner->string_idx = STR_DEFAULT_SIGN;
-            banner->colour = 2;
-            banner->text_colour = 2;
-        }
-        return bannerIndex;
-    }
-
-    rct_tile_element *banner_get_tile_element(sint32 bannerIndex)
-    {
-        rct_banner *banner = &gBanners[bannerIndex];
-        rct_tile_element *tileElement = map_get_first_element_at(banner->x, banner->y);
-        do
-        {
-            if (tile_element_get_banner_index(tileElement) == bannerIndex)
-            {
-                return tileElement;
-            }
-        } while (!tile_element_is_last_for_tile(tileElement++));
-        return nullptr;
-    }
-
-    /**
-     *
-     *  rct2: 0x006B7D86
-     */
-    sint32 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z)
-    {
-        sint32 i, rideIndex;
-        Ride *ride;
-
-        static constexpr const LocationXY16 NeighbourCheckOrder[] =
-        {
-            {  32,   0 },
-            { -32,   0 },
-            {   0,  32 },
-            {   0, -32 },
-            { -32, +32 },
-            { +32, -32 },
-            { +32, +32 },
-            { -32, +32 },
-            {   0,   0 }
-        };
-
-        for (i = 0; i < (sint32)Util::CountOf(NeighbourCheckOrder); i++)
-        {
-            rideIndex = banner_get_ride_index_at(x + NeighbourCheckOrder[i].x, y + NeighbourCheckOrder[i].y, z);
-            if (rideIndex != -1)
-            {
-                return rideIndex;
-            }
-        }
-
-        rideIndex = -1;
-        sint32 resultDistance = std::numeric_limits<sint32>::max();
-        FOR_ALL_RIDES(i, ride)
-        {
-            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
-                continue;
-
-            LocationXY8 location = ride->overall_view;
-            if (location.xy == RCT_XY8_UNDEFINED)
-                continue;
-
-            sint32 rideX = location.x * 32;
-            sint32 rideY = location.y * 32;
-            sint32 distance = abs(x - rideX) + abs(y - rideY);
-            if (distance < resultDistance)
-            {
-                resultDistance = distance;
-                rideIndex = i;
-            }
-        }
-
-        return rideIndex;
-    }
-
-    void banner_reset_broken_index()
-    {
-        for (sint32 bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
-        {
-            rct_tile_element *tileElement = banner_get_tile_element(bannerIndex);
-            if (tileElement == nullptr)
-                gBanners[bannerIndex].type = BANNER_NULL;
-        }
-    }
-
-    /**
-     *
-     *  rct2: 0x006BA058
-     */
-    void game_command_remove_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
-    {
-        *ebx = BannerRemove(
-            *eax & 0xFFFF,
-            *ecx & 0xFFFF,
-            *edx & 0xFF,
-            (*edx >> 8) & 0xFF,
-            *ebx & 0xFF
-        );
-    }
-
-    /**
-     *
-     *  rct2: 0x006BA16A
-     */
-    void game_command_set_banner_colour(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
-    {
-        *ebx = BannerSetColour(
-            *eax & 0xFFFF,
-            *ecx & 0xFFFF,
-            *edx & 0xFF,
-            (*edx >> 8) & 0xFF,
-            *ebp & 0xFF,
-            *ebx & 0xFF
-        );
-    }
-
-    /**
-     *
-     *  rct2: 0x006B9E6D
-     */
-    void game_command_place_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
-    {
-        *ebx = BannerPlace(
-            *eax & 0xFFFF,
-            *ecx & 0xFFFF,
-            *edx & 0xFF,
-            (*edx >> 8) & 0xFF,
-            *ebp & 0xFF,
-            (*ebx >> 8) & 0xFF,
-            (uint8 *)edi,
-            *ebx & 0xFF
-        );
-    }
-
-    void game_command_set_banner_name(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
-    {
-        *ebx = BannerSetName(
-            *ecx & 0xFF,
-            *eax & 0xFFFF,
-            *edx,
-            *ebp,
-            *edi,
-            *ebx & 0xFF
-        );
-    }
-
-    void game_command_set_banner_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
-    {
-        *ebx = BannerSetStyle(
-            *ecx & 0xFF,
-            *edx & 0xFF,
-            *edi & 0xFF,
-            *ebp & 0xFF,
-            *ebx & 0xFF
-        );
+    for (auto &banner : gBanners) {
+        banner.type = BANNER_NULL;
     }
 }
+
+/**
+ * Creates a new banner and returns the index of the banner
+ * If the flag GAME_COMMAND_FLAG_APPLY is NOT set then returns
+ * the first unused index but does NOT mark the banner as created.
+ * returns 0xFF on failure.
+ *
+ *  rct2: 0x006BA278
+ */
+sint32 create_new_banner(uint8 flags)
+{
+    uint8 bannerIndex = BannerGetNewIndex();
+
+    if (bannerIndex == BANNER_NULL)
+    {
+        gGameCommandErrorText = STR_TOO_MANY_BANNERS_IN_GAME;
+        return BANNER_NULL;
+    }
+
+    if (flags & GAME_COMMAND_FLAG_APPLY)
+    {
+        rct_banner* banner = &gBanners[bannerIndex];
+
+        banner->flags = 0;
+        banner->type = 0;
+        banner->string_idx = STR_DEFAULT_SIGN;
+        banner->colour = 2;
+        banner->text_colour = 2;
+    }
+    return bannerIndex;
+}
+
+rct_tile_element *banner_get_tile_element(sint32 bannerIndex)
+{
+    rct_banner *banner = &gBanners[bannerIndex];
+    rct_tile_element *tileElement = map_get_first_element_at(banner->x, banner->y);
+    do
+    {
+        if (tile_element_get_banner_index(tileElement) == bannerIndex)
+        {
+            return tileElement;
+        }
+    } while (!tile_element_is_last_for_tile(tileElement++));
+    return nullptr;
+}
+
+/**
+ *
+ *  rct2: 0x006B7D86
+ */
+sint32 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z)
+{
+    sint32 i, rideIndex;
+    Ride *ride;
+
+    static constexpr const LocationXY16 NeighbourCheckOrder[] =
+    {
+        {  32,   0 },
+        { -32,   0 },
+        {   0,  32 },
+        {   0, -32 },
+        { -32, +32 },
+        { +32, -32 },
+        { +32, +32 },
+        { -32, +32 },
+        {   0,   0 }
+    };
+
+    for (i = 0; i < (sint32)Util::CountOf(NeighbourCheckOrder); i++)
+    {
+        rideIndex = banner_get_ride_index_at(x + NeighbourCheckOrder[i].x, y + NeighbourCheckOrder[i].y, z);
+        if (rideIndex != -1)
+        {
+            return rideIndex;
+        }
+    }
+
+    rideIndex = -1;
+    sint32 resultDistance = std::numeric_limits<sint32>::max();
+    FOR_ALL_RIDES(i, ride)
+    {
+        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+            continue;
+
+        LocationXY8 location = ride->overall_view;
+        if (location.xy == RCT_XY8_UNDEFINED)
+            continue;
+
+        sint32 rideX = location.x * 32;
+        sint32 rideY = location.y * 32;
+        sint32 distance = abs(x - rideX) + abs(y - rideY);
+        if (distance < resultDistance)
+        {
+            resultDistance = distance;
+            rideIndex = i;
+        }
+    }
+
+    return rideIndex;
+}
+
+void banner_reset_broken_index()
+{
+    for (sint32 bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
+    {
+        rct_tile_element *tileElement = banner_get_tile_element(bannerIndex);
+        if (tileElement == nullptr)
+            gBanners[bannerIndex].type = BANNER_NULL;
+    }
+}
+
+/**
+ *
+ *  rct2: 0x006BA058
+ */
+void game_command_remove_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+{
+    *ebx = BannerRemove(
+        *eax & 0xFFFF,
+        *ecx & 0xFFFF,
+        *edx & 0xFF,
+        (*edx >> 8) & 0xFF,
+        *ebx & 0xFF
+    );
+}
+
+/**
+ *
+ *  rct2: 0x006BA16A
+ */
+void game_command_set_banner_colour(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+{
+    *ebx = BannerSetColour(
+        *eax & 0xFFFF,
+        *ecx & 0xFFFF,
+        *edx & 0xFF,
+        (*edx >> 8) & 0xFF,
+        *ebp & 0xFF,
+        *ebx & 0xFF
+    );
+}
+
+/**
+ *
+ *  rct2: 0x006B9E6D
+ */
+void game_command_place_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+{
+    *ebx = BannerPlace(
+        *eax & 0xFFFF,
+        *ecx & 0xFFFF,
+        *edx & 0xFF,
+        (*edx >> 8) & 0xFF,
+        *ebp & 0xFF,
+        (*ebx >> 8) & 0xFF,
+        (uint8 *)edi,
+        *ebx & 0xFF
+    );
+}
+
+void game_command_set_banner_name(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+{
+    *ebx = BannerSetName(
+        *ecx & 0xFF,
+        *eax & 0xFFFF,
+        *edx,
+        *ebp,
+        *edi,
+        *ebx & 0xFF
+    );
+}
+
+void game_command_set_banner_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+{
+    *ebx = BannerSetStyle(
+        *ecx & 0xFF,
+        *edx & 0xFF,
+        *edi & 0xFF,
+        *ebp & 0xFF,
+        *ebx & 0xFF
+    );
+}
+

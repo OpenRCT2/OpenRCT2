@@ -54,8 +54,6 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
 };
 // clang-format on
 
-extern "C" {
-
 sint32 gCurrentLanguage = LANGUAGE_UNDEFINED;
 bool gUseTrueTypeFont = false;
 
@@ -268,8 +266,6 @@ rct_string_id language_get_object_override_string_id(const char * identifier, ui
         return STR_NONE;
     }
     return _languageCurrent->GetObjectOverrideStringId(identifier, index);
-}
-
 }
 
 rct_string_id language_allocate_object_string(const std::string &target)

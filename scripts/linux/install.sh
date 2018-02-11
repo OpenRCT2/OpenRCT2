@@ -9,9 +9,9 @@ fi
 
 cachedir=.cache
 if [[ $(uname -s) == "Darwin" ]]; then
-	liburl=https://openrct2.website/files/orctlibs-osx.zip
+	liburl=https://openrct2.io/files/orctlibs-osx.zip
 else
-	liburl=https://openrct2.website/files/orctlibs.zip
+	liburl=https://openrct2.io/files/orctlibs.zip
 fi
 mkdir -p "$cachedir"
 

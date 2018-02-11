@@ -21,7 +21,7 @@
 
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/Input.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/MapGen.h>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -722,9 +722,7 @@ static void window_mapgen_base_dropdown(rct_window *w, rct_widgetindex widgetInd
         if (dropdownIndex == -1)
             dropdownIndex = gDropdownHighlightedIndex;
 
-        type = (dropdownIndex == -1) ?
-            _wallTexture :
-            (uint32)gDropdownItemsArgs[dropdownIndex] - SPR_WALL_TEXTURE_ROCK;
+        type = (dropdownIndex == -1) ? _wallTexture : WallTextureOrder[dropdownIndex];
 
         if (gLandToolTerrainEdge == type) {
             gLandToolTerrainEdge = 255;
@@ -786,7 +784,7 @@ static void window_mapgen_base_invalidate(rct_window *w)
     }
 
     w->widgets[WIDX_FLOOR_TEXTURE].image = SPR_FLOOR_TEXTURE_GRASS + _floorTexture;
-    w->widgets[WIDX_WALL_TEXTURE].image = SPR_WALL_TEXTURE_ROCK + _wallTexture;
+    w->widgets[WIDX_WALL_TEXTURE].image = WallTexturePreviews[_wallTexture];
 
     window_mapgen_set_pressed_tab(w);
 }
@@ -1018,9 +1016,7 @@ static void window_mapgen_simplex_dropdown(rct_window *w, rct_widgetindex widget
         if (dropdownIndex == -1)
             dropdownIndex = gDropdownHighlightedIndex;
 
-        type = (dropdownIndex == -1) ?
-        _wallTexture :
-                     (uint32)gDropdownItemsArgs[dropdownIndex] - SPR_WALL_TEXTURE_ROCK;
+        type = (dropdownIndex == -1) ? _wallTexture : WallTextureOrder[dropdownIndex];
 
         if (gLandToolTerrainEdge == type) {
             gLandToolTerrainEdge = 255;
@@ -1050,7 +1046,7 @@ static void window_mapgen_simplex_invalidate(rct_window *w)
     }
 
     w->widgets[WIDX_SIMPLEX_FLOOR_TEXTURE].image = SPR_FLOOR_TEXTURE_GRASS + _floorTexture;
-    w->widgets[WIDX_SIMPLEX_WALL_TEXTURE].image = SPR_WALL_TEXTURE_ROCK + _wallTexture;
+    w->widgets[WIDX_SIMPLEX_WALL_TEXTURE].image = WallTexturePreviews[_wallTexture];
     
     widget_set_checkbox_value(w, WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
     widget_set_checkbox_value(w, WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _placeTrees != 0);

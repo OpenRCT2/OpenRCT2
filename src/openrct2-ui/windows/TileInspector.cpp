@@ -22,7 +22,7 @@
 #include <openrct2/core/Util.hpp>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/ride/RideData.h>
@@ -172,6 +172,7 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
     WIDX_ENTRANCE_SPINNER_HEIGHT = PAGE_WIDGETS,
     WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE,
     WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE,
+    WIDX_ENTRANCE_BUTTON_MAKE_USABLE,
 
     // Wall
     WIDX_WALL_SPINNER_HEIGHT = PAGE_WIDGETS,
@@ -361,7 +362,7 @@ static rct_widget SceneryWidgets[] = {
 };
 
 #define ENT_GBPB PADDING_BOTTOM                 // Entrance group box properties bottom
-#define ENT_GBPT (ENT_GBPB + 16 + 1 * 21)       // Entrance group box properties top
+#define ENT_GBPT (ENT_GBPB + 16 + 2 * 21)       // Entrance group box properties top
 #define ENT_GBDB (ENT_GBPT + GROUPBOX_PADDING)  // Entrance group box info bottom
 #define ENT_GBDT (ENT_GBDB + 20 + 3 * 11)       // Entrance group box info top
 static rct_widget EntranceWidgets[] = {
@@ -369,6 +370,7 @@ static rct_widget EntranceWidgets[] = {
     { WWT_SPINNER,          1,  GBS(WH - ENT_GBPT, 1, 0),   STR_NONE,                                       STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT
     { WWT_BUTTON,           1,  GBSI(WH - ENT_GBPT, 1, 0),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE
     { WWT_BUTTON,           1,  GBSD(WH - ENT_GBPT, 1, 0),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE
+    { WWT_BUTTON,           1,  GBB(WH - ENT_GBPT, 0, 1),   STR_TILE_INSPECTOR_ENTRANCE_MAKE_USABLE,        STR_TILE_INSPECTOR_ENTRANCE_MAKE_USABLE_TIP }, // WIDX_ENTRANCE_BUTTON_MAKE_USABLE
     { WIDGETS_END },
 };
 
@@ -522,7 +524,7 @@ static uint64 PageEnabledWidgets[] = {
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_SLOPED) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT),
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_N) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_E) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_S) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_W) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_N) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_E) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_S) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_W),
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE),
+    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_ENTRANCE_BUTTON_MAKE_USABLE),
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_WALL_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_WALL_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_WALL_DROPDOWN_SLOPE) | (1ULL << WIDX_WALL_DROPDOWN_SLOPE_BUTTON),
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE),
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_NE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_SE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_SW) | (1ULL << WIDX_BANNER_CHECK_BLOCK_NW),
@@ -813,6 +815,20 @@ static void window_tile_inspector_path_toggle_edge(sint32 elementIndex, sint32 c
         elementIndex,
         GAME_COMMAND_MODIFY_TILE,
         cornerIndex,
+        0
+    );
+}
+
+static void window_tile_inspector_entrance_make_usable(sint32 elementIndex)
+{
+    Guard::ArgumentInRange(elementIndex, 0, windowTileInspectorElementCount - 1);
+    game_do_command(
+        TILE_INSPECTOR_ENTRANCE_MAKE_USABLE,
+        GAME_COMMAND_FLAG_APPLY,
+        windowTileInspectorTileX | (windowTileInspectorTileY << 8),
+        elementIndex,
+        GAME_COMMAND_MODIFY_TILE,
+        0,
         0
     );
 }
@@ -1113,6 +1129,9 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
             break;
         case WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE:
             window_tile_inspector_base_height_offset(w->selected_list_item, -1);
+            break;
+        case WIDX_ENTRANCE_BUTTON_MAKE_USABLE:
+            window_tile_inspector_entrance_make_usable(w->selected_list_item);
             break;
         } // switch widget index
         break;
@@ -1561,6 +1580,9 @@ static void window_tile_inspector_invalidate(rct_window *w)
         w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 0) + 8;
         w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
         w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
+        w->widgets[WIDX_ENTRANCE_BUTTON_MAKE_USABLE].top = GBBT(propertiesAnchor, 1);
+        w->widgets[WIDX_ENTRANCE_BUTTON_MAKE_USABLE].bottom = GBBB(propertiesAnchor, 1);
+        widget_set_enabled(w, WIDX_ENTRANCE_BUTTON_MAKE_USABLE, tileElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE);
         break;
     case TILE_INSPECTOR_PAGE_WALL:
         w->widgets[WIDX_WALL_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;

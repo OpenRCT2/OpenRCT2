@@ -14,8 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _RIDE_RATINGS_H_
-#define _RIDE_RATINGS_H_
+#pragma once
 
 #include "../common.h"
 
@@ -60,17 +59,8 @@ typedef struct rct_ride_rating_calc_data {
     uint16  station_flags;
 } rct_ride_rating_calc_data;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern rct_ride_rating_calc_data gRideRatingsCalcData;
 
 void ride_ratings_update_ride(int rideIndex);
 void ride_ratings_update_all();
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif

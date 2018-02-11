@@ -24,10 +24,6 @@
 #include "StringIds.h"
 #include "../management/Marketing.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 bool utf8_is_format_code(sint32 codepoint);
 bool utf8_is_colour_code(sint32 codepoint);
 bool utf8_should_use_sprite_for_codepoint(sint32 codepoint);
@@ -58,7 +54,7 @@ sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t
 sint32 rct2_to_utf8(utf8 *dst, const char *src);
 sint32 utf8_to_rct2(char *dst, const utf8 *src);
 wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str);
-wchar_t encoding_convert_unicode_to_rct2(wchar_t unicode);
+uint32 encoding_convert_unicode_to_rct2(uint32 unicode);
 wchar_t encoding_convert_gb2312_to_unicode(wchar_t gb2312);
 wchar_t encoding_convert_big5_to_unicode(wchar_t big5);
 wchar_t encoding_convert_cp932_to_unicode(wchar_t cp932);
@@ -113,9 +109,5 @@ static inline void set_format_arg_body(uint8 *args, size_t offset, uintptr_t val
 #define set_map_tooltip_format_arg(offset, type, value) \
     do { static_assert(sizeof(type) <= sizeof(uintptr_t), "Type too large"); \
     set_format_arg_body(gMapTooltipFormatArgs, offset, (uintptr_t)value, sizeof(type)); } while (false)
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

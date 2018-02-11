@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include "../common.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
@@ -153,5 +151,3 @@ namespace OpenRCT2
         };
     }
 }
-
-#endif

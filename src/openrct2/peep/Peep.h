@@ -710,7 +710,7 @@ enum
  */
 #define FOR_ALL_PEEPS(sprite_index, peep)                                                                                      \
     for ((sprite_index) = gSpriteListHead[SPRITE_LIST_PEEP]; (sprite_index) != SPRITE_INDEX_NULL; (sprite_index) = peep->next) \
-        if (((peep) = GET_PEEP(sprite_index)) != NULL || 1)
+        if (((peep) = GET_PEEP(sprite_index)) != nullptr || 1)
 
 #define FOR_ALL_GUESTS(sprite_index, peep)                                                                                     \
     FOR_ALL_PEEPS(sprite_index, peep)                                                                                          \
@@ -719,10 +719,6 @@ enum
 #define FOR_ALL_STAFF(sprite_index, peep)                                                                                      \
     FOR_ALL_PEEPS(sprite_index, peep)                                                                                          \
     if ((peep)->type == PEEP_TYPE_STAFF)
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 // rct2: 0x00982708
 extern rct_peep_animation_entry g_peep_animation_entries[PEEP_SPRITE_TYPE_COUNT];
@@ -763,7 +759,7 @@ sint32     peep_check_easteregg_name(sint32 index, rct_peep * peep);
 sint32     peep_get_easteregg_name_id(rct_peep * peep);
 sint32     peep_is_mechanic(rct_peep * peep);
 bool       peep_has_item(rct_peep * peep, sint32 peepItem);
-sint32     peep_has_food(rct_peep * peep);
+bool       peep_has_food(rct_peep * peep);
 void       peep_pickup(rct_peep * peep);
 void       peep_pickup_abort(rct_peep * peep, sint32 old_x);
 bool       peep_pickup_place(rct_peep * peep, sint32 x, sint32 y, sint32 z, bool apply);
@@ -823,9 +819,5 @@ void increment_guests_in_park();
 void increment_guests_heading_for_park();
 void decrement_guests_in_park();
 void decrement_guests_heading_for_park();
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

@@ -91,12 +91,8 @@ enum {
     RESEARCH_CATEGORY_THRILL,
     RESEARCH_CATEGORY_WATER,
     RESEARCH_CATEGORY_SHOP,
-    RESEARCH_CATEGORY_SCENERYSET
+    RESEARCH_CATEGORY_SCENERY_GROUP
 };
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 extern uint8 gResearchFundingLevel;
 extern uint8 gResearchPriorities;
@@ -117,22 +113,23 @@ void research_update();
 void research_reset_current_item();
 void research_populate_list_random();
 void research_populate_list_researched();
+void research_process_random_items();
 
 void research_set_funding(sint32 amount);
 void research_set_priority(sint32 activeCategories);
 void game_command_set_research_funding(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void research_finish_item(rct_research_item * researchItem);
-void research_insert(sint32 researched, sint32 entryIndex, sint32 category);
+void research_insert(sint32 researched, sint32 rawValue, uint8 category);
 void research_remove(rct_research_item * researchItem);
 
 void research_insert_ride_entry(uint8 entryIndex, bool researched);
 void research_insert_scenery_group_entry(uint8 entryIndex, bool researched);
 
-void ride_type_set_invented(sint32 rideType);
+void ride_type_set_invented(uint32 rideType);
 void ride_entry_set_invented(sint32 rideEntryIndex);
 void scenery_set_invented(uint16 sceneryItem);
 void scenery_set_not_invented(uint16 sceneryItem);
-bool ride_type_is_invented(sint32 rideType);
+bool ride_type_is_invented(uint32 rideType);
 bool ride_entry_is_invented(sint32 rideEntryIndex);
 bool track_piece_is_available_for_ride_type(uint8 rideType, sint32 trackType);
 bool scenery_group_is_invented(sint32 sgIndex);
@@ -140,6 +137,7 @@ void scenery_group_set_invented(sint32 sgIndex);
 bool scenery_is_invented(uint16 sceneryItem);
 void set_all_scenery_items_invented();
 void set_all_scenery_items_not_invented();
+void set_all_scenery_groups_not_invented();
 void set_every_ride_type_invented();
 void set_every_ride_type_not_invented();
 void set_every_ride_entry_invented();
@@ -153,7 +151,3 @@ void research_items_make_all_unresearched();
 void research_items_make_all_researched();
 void research_items_shuffle();
 bool research_item_is_always_researched(rct_research_item * researchItem);
-
-#ifdef __cplusplus
-}
-#endif

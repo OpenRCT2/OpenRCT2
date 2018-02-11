@@ -17,6 +17,7 @@
 #ifndef _MAP_H_
 #define _MAP_H_
 
+#include <initializer_list>
 #include "../common.h"
 #include "Location.h"
 
@@ -374,10 +375,6 @@ enum
     CREATE_CROSSING_MODE_PATH_OVER_TRACK,
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern const LocationXY16 TileDirectionDelta[];
 extern const money32 TerrainPricing[];
 
@@ -404,8 +401,8 @@ extern bool         gMapVirtualFloorVisible;
 
 extern uint8 gMapGroundFlags;
 
-extern rct_tile_element gTileElements[];
-extern rct_tile_element *gTileElementTilePointers[];
+extern rct_tile_element gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
+extern rct_tile_element *gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 
 extern LocationXY16 gMapSelectionTiles[300];
 extern rct2_peep_spawn gPeepSpawns[MAX_PEEP_SPAWNS];
@@ -588,8 +585,7 @@ uint32 map_get_available_peep_spawn_index_list(uint32* peepSpawnIndexList);
 uint16 check_max_allowable_land_rights_for_tile(uint8 x, uint8 y, uint8 base_z);
 uint8 tile_element_get_ride_index(const rct_tile_element * tileElement);
 
-#ifdef __cplusplus
-}
-#endif
+void FixLandOwnershipTiles(std::initializer_list<LocationXY8> tiles);
+void FixLandOwnershipTilesWithOwnership(std::initializer_list<LocationXY8> tiles, uint8 ownership);
 
 #endif

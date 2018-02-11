@@ -33,7 +33,7 @@
 #include "../world/Scenery.h"
 #include "Ride.h"
 #include "RideData.h"
-#include "ride_ratings.h"
+#include "RideRatings.h"
 #include "RideGroupManager.h"
 #include "Station.h"
 #include "Track.h"
@@ -2400,6 +2400,14 @@ bool track_circuit_iterator_next(track_circuit_iterator * it)
         it->last           = it->current;
         return track_block_get_next(&it->last, &it->current, &it->currentZ, &it->currentDirection);
     }
+}
+
+bool track_circuit_iterators_match(const track_circuit_iterator * firstIt, const track_circuit_iterator * secondIt)
+{
+    return (firstIt->currentZ == secondIt->currentZ &&
+            firstIt->currentDirection == secondIt->currentDirection &&
+            firstIt->current.x == secondIt->current.x &&
+            firstIt->current.y == secondIt->current.y);
 }
 
 void track_get_back(rct_xy_element * input, rct_xy_element * output)

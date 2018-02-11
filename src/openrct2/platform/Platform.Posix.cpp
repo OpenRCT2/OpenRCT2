@@ -76,14 +76,6 @@ namespace Platform
         return path;
     }
 
-    std::string GetInstallPath()
-    {
-        utf8 path[MAX_PATH];
-        platform_resolve_openrct_data_path();
-        platform_get_openrct_data_path(path, sizeof(path));
-        return path;
-    }
-
     std::string FormatShortDate(std::time_t timestamp)
     {
         char date[20];

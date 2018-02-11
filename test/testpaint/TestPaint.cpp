@@ -127,23 +127,23 @@ namespace TestPaint
     static bool _ignoredAll;
     static std::vector<IgnoredEntry> _ignoredEntries;
 
-    static void testClearIgnore()
+    void testClearIgnore()
     {
         _ignoredAll = false;
         _ignoredEntries.clear();
     }
 
-    static void testIgnore(uint8 direction, uint8 trackSequence)
+    void testIgnore(uint8 direction, uint8 trackSequence)
     {
         _ignoredEntries.push_back({ direction, trackSequence });
     }
 
-    static void testIgnoreAll()
+    void testIgnoreAll()
     {
         _ignoredAll = true;
     }
 
-    static bool testIsIgnored(uint8 direction, uint8 trackSequence)
+    bool testIsIgnored(uint8 direction, uint8 trackSequence)
     {
         if (_ignoredAll) return true;
         for (const IgnoredEntry &entry : _ignoredEntries)
@@ -158,25 +158,22 @@ namespace TestPaint
     }
 }
 
-extern "C"
+void testpaint_clear_ignore()
 {
-    void testpaint_clear_ignore()
-    {
-        TestPaint::testClearIgnore();
-    }
+    TestPaint::testClearIgnore();
+}
 
-    void testpaint_ignore(uint8 direction, uint8 trackSequence)
-    {
-        TestPaint::testIgnore(direction, trackSequence);
-    }
+void testpaint_ignore(uint8 direction, uint8 trackSequence)
+{
+    TestPaint::testIgnore(direction, trackSequence);
+}
 
-    void testpaint_ignore_all()
-    {
-        TestPaint::testIgnoreAll();
-    }
+void testpaint_ignore_all()
+{
+    TestPaint::testIgnoreAll();
+}
 
-    bool testpaint_is_ignored(uint8 direction, uint8 trackSequence)
-    {
-        return TestPaint::testIsIgnored(direction, trackSequence);
-    }
+bool testpaint_is_ignored(uint8 direction, uint8 trackSequence)
+{
+    return TestPaint::testIsIgnored(direction, trackSequence);
 }

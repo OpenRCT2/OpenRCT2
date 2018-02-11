@@ -16,6 +16,7 @@
 
 #pragma warning(disable : 4611) // interaction between '_setjmp' and C++ object destruction is non-portable
 
+#include <algorithm>
 #include <png.h>
 #include "core/FileStream.hpp"
 #include "core/Guard.hpp"
@@ -107,7 +108,7 @@ namespace Imaging
                 Guard::Assert(rowBytes == pngWidth, GUARD_LINE);
                 for (png_uint_32 i = 0; i < pngHeight; i++)
                 {
-                    Memory::Copy(dst, rowPointers[i], rowBytes);
+                    std::copy_n(rowPointers[i], rowBytes, dst);
                     dst += rowBytes;
                 }
             }
@@ -117,7 +118,7 @@ namespace Imaging
                 Guard::Assert(rowBytes == pngWidth * 4, GUARD_LINE);
                 for (png_uint_32 i = 0; i < pngHeight; i++)
                 {
-                    Memory::Copy(dst, rowPointers[i], rowBytes);
+                    std::copy_n(rowPointers[i], rowBytes, dst);
                     dst += rowBytes;
                 }
             }
@@ -299,20 +300,18 @@ namespace Imaging
     }
 }
 
-extern "C"
+bool image_io_png_read(uint8 * * pixels, uint32 * width, uint32 * height, bool expand, const utf8 * path, sint32 * bitDepth)
 {
-    bool image_io_png_read(uint8 * * pixels, uint32 * width, uint32 * height, bool expand, const utf8 * path, sint32 * bitDepth)
-    {
-        return Imaging::PngRead(pixels, width, height, expand, path, bitDepth);
-    }
-
-    bool image_io_png_write(const rct_drawpixelinfo * dpi, const rct_palette * palette, const utf8 * path)
-    {
-        return Imaging::PngWrite(dpi, palette, path);
-    }
-
-    bool image_io_png_write_32bpp(sint32 width, sint32 height, const void * pixels, const utf8 * path)
-    {
-        return Imaging::PngWrite32bpp(width, height, pixels, path);
-    }
+    return Imaging::PngRead(pixels, width, height, expand, path, bitDepth);
 }
+
+bool image_io_png_write(const rct_drawpixelinfo * dpi, const rct_palette * palette, const utf8 * path)
+{
+    return Imaging::PngWrite(dpi, palette, path);
+}
+
+bool image_io_png_write_32bpp(sint32 width, sint32 height, const void * pixels, const utf8 * path)
+{
+    return Imaging::PngWrite32bpp(width, height, pixels, path);
+}
+

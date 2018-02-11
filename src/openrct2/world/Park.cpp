@@ -39,7 +39,8 @@
 #include "Map.h"
 #include "Park.h"
 #include "Sprite.h"
-
+#include "../windows/Intent.h"
+#include "../Context.h"
 
 rct_string_id gParkName;
 uint32 gParkNameArgs;
@@ -123,7 +124,7 @@ void park_init()
         (1 << RESEARCH_CATEGORY_THRILL) |
         (1 << RESEARCH_CATEGORY_WATER) |
         (1 << RESEARCH_CATEGORY_SHOP) |
-        (1 << RESEARCH_CATEGORY_SCENERYSET);
+        (1 << RESEARCH_CATEGORY_SCENERY_GROUP);
     gResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
     gGuestInitialCash = MONEY(50,00); // Cash per guest (average)
@@ -550,8 +551,8 @@ void park_update()
         gCompanyValue = calculate_company_value();
         window_invalidate_by_class(WC_FINANCES);
         _guestGenerationProbability = park_calculate_guest_generation_probability();
-        gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
-        window_invalidate_by_class(WC_PARK_INFORMATION);
+        auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
+        context_broadcast_intent(&intent);
     }
 
     // Generate new guests
@@ -591,7 +592,8 @@ void park_update_histories()
     sint32 guestsInPark = gNumGuestsInPark;
     sint32 lastGuestsInPark = gNumGuestsInParkLastWeek;
     gNumGuestsInParkLastWeek = guestsInPark;
-    gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+    auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
+    context_broadcast_intent(&intent);
 
     sint32 changeInGuestsInPark = guestsInPark - lastGuestsInPark;
     sint32 guestChangeModifier = 1;
@@ -768,7 +770,7 @@ void update_park_fences_around_tile(sint32 x, sint32 y)
 void park_set_name(const char *name)
 {
     // Required else the pointer arithmetic in the game commands below could cause an access violation
-    char* newName = (char *)malloc(USER_STRING_MAX_LENGTH + 1);
+    char* newName = (char *)malloc(USER_STRING_MAX_LENGTH + 5);
     strncpy(newName, name, USER_STRING_MAX_LENGTH);
 
     gGameCommandErrorTitle = STR_CANT_RENAME_PARK;
@@ -1050,8 +1052,8 @@ void set_forced_park_rating(sint32 rating)
 {
     _forcedParkRating = rating;
     gParkRating = calculate_park_rating();
-    gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
-    window_invalidate_by_class(WC_PARK_INFORMATION);
+    auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
+    context_broadcast_intent(&intent);
 }
 
 sint32 get_forced_park_rating()

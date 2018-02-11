@@ -154,114 +154,105 @@ void RideObject::Load()
 
                 image_index += b;
 
-                // Incline 25
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES)
                 {
-                    vehicleEntry->var_20 = image_index;
+                    vehicleEntry->gentle_slope_image_id = image_index;
                     b = vehicleEntry->base_num_frames * 72;
-                    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14)
+                    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES)
                     {
                         b = vehicleEntry->base_num_frames * 16;
                     }
                     image_index += b;
                 }
 
-                // Incline 60
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES)
                 {
-                    vehicleEntry->var_24 = image_index;
+                    vehicleEntry->steep_slope_image_id = image_index;
                     b = vehicleEntry->base_num_frames * 80;
                     image_index += b;
                 }
 
-                // Vertical
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
                 {
-                    vehicleEntry->var_28 = image_index;
+                    vehicleEntry->vertical_slope_image_id = image_index;
                     b = vehicleEntry->base_num_frames * 116;
                     image_index += b;
                 }
 
-                // Unknown
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES)
                 {
-                    vehicleEntry->var_2C = image_index;
+                    vehicleEntry->diagonal_slope_image_id = image_index;
                     b = vehicleEntry->base_num_frames * 24;
                     image_index += b;
                 }
 
-                // Bank
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
                 {
-                    vehicleEntry->var_30 = image_index;
+                    vehicleEntry->banked_image_id = image_index;
                     b = vehicleEntry->base_num_frames * 80;
                     image_index += b;
                 }
 
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
                 {
-                    vehicleEntry->var_34 = image_index;
+                    vehicleEntry->inline_twist_image_id = image_index;
                     b = vehicleEntry->base_num_frames * 40;
                     image_index += b;
                 }
 
-                // Track half? Up/Down
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS)
                 {
-                    vehicleEntry->var_38 = image_index;
+                    vehicleEntry->flat_to_gentle_bank_image_id = image_index;
                     b = vehicleEntry->base_num_frames * 128;
                     image_index += b;
                 }
 
-                // Unknown
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS)
                 {
-                    vehicleEntry->var_3C = image_index;
+                    vehicleEntry->diagonal_to_gentle_slope_bank_image_id = image_index;
                     b = vehicleEntry->base_num_frames * 16;
                     image_index += b;
                 }
 
-                // Unknown
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS)
                 {
-                    vehicleEntry->var_40 = image_index;
+                    vehicleEntry->gentle_slope_to_bank_image_id = image_index;
                     b = vehicleEntry->base_num_frames * 16;
                     image_index += b;
                 }
 
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS)
                 {
-                    vehicleEntry->var_44 = image_index;
+                    vehicleEntry->gentle_slope_bank_turn_image_id = image_index;
                     b = vehicleEntry->base_num_frames * 128;
                     image_index += b;
                 }
 
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS)
                 {
-                    vehicleEntry->var_48 = image_index;
+                    vehicleEntry->flat_bank_to_gentle_slope_image_id = image_index;
                     b = vehicleEntry->base_num_frames * 16;
                     image_index += b;
                 }
 
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_CORKSCREWS)
                 {
-                    vehicleEntry->var_4C = image_index;
+                    vehicleEntry->corkscrew_image_id = image_index;
                     b = vehicleEntry->base_num_frames * 80;
                     image_index += b;
                 }
 
-                // Unknown
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION)
                 {
-                    vehicleEntry->var_1C = image_index;
+                    vehicleEntry->restraint_image_id = image_index;
                     b = vehicleEntry->base_num_frames * 12;
                     image_index += b;
                 }
 
-                if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_14)
+                if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL)
                 {
-                    // Same offset as above???
-                    vehicleEntry->var_4C = image_index;
+                    // Same offset as corkscrew
+                    vehicleEntry->curved_lift_hill_image_id = image_index;
                     b = vehicleEntry->base_num_frames * 32;
                     image_index += b;
                 }
@@ -390,29 +381,29 @@ void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * strea
     vehicle->sprite_width = stream->ReadValue<uint8>();
     vehicle->sprite_height_negative = stream->ReadValue<uint8>();
     vehicle->sprite_height_positive = stream->ReadValue<uint8>();
-    vehicle->var_11 = stream->ReadValue<uint8>();
+    vehicle->animation = stream->ReadValue<uint8>();
     vehicle->flags = stream->ReadValue<uint32>();
     vehicle->base_num_frames = stream->ReadValue<uint16>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
-    vehicle->var_1C = stream->ReadValue<uint32>();
-    vehicle->var_20 = stream->ReadValue<uint32>();
-    vehicle->var_24 = stream->ReadValue<uint32>();
-    vehicle->var_28 = stream->ReadValue<uint32>();
-    vehicle->var_2C = stream->ReadValue<uint32>();
-    vehicle->var_30 = stream->ReadValue<uint32>();
-    vehicle->var_34 = stream->ReadValue<uint32>();
-    vehicle->var_38 = stream->ReadValue<uint32>();
-    vehicle->var_3C = stream->ReadValue<uint32>();
-    vehicle->var_40 = stream->ReadValue<uint32>();
-    vehicle->var_44 = stream->ReadValue<uint32>();
-    vehicle->var_48 = stream->ReadValue<uint32>();
-    vehicle->var_4C = stream->ReadValue<uint32>();
+    vehicle->restraint_image_id = stream->ReadValue<uint32>();
+    vehicle->gentle_slope_image_id = stream->ReadValue<uint32>();
+    vehicle->steep_slope_image_id = stream->ReadValue<uint32>();
+    vehicle->vertical_slope_image_id = stream->ReadValue<uint32>();
+    vehicle->diagonal_slope_image_id = stream->ReadValue<uint32>();
+    vehicle->banked_image_id = stream->ReadValue<uint32>();
+    vehicle->inline_twist_image_id = stream->ReadValue<uint32>();
+    vehicle->flat_to_gentle_bank_image_id = stream->ReadValue<uint32>();
+    vehicle->diagonal_to_gentle_slope_bank_image_id = stream->ReadValue<uint32>();
+    vehicle->gentle_slope_to_bank_image_id = stream->ReadValue<uint32>();
+    vehicle->gentle_slope_bank_turn_image_id = stream->ReadValue<uint32>();
+    vehicle->flat_bank_to_gentle_slope_image_id = stream->ReadValue<uint32>();
+    vehicle->corkscrew_image_id = stream->ReadValue<uint32>();
     vehicle->no_vehicle_images = stream->ReadValue<uint32>();
     vehicle->no_seating_rows = stream->ReadValue<uint8>();
     vehicle->spinning_inertia = stream->ReadValue<uint8>();
     vehicle->spinning_friction = stream->ReadValue<uint8>();
     vehicle->friction_sound_id = stream->ReadValue<uint8>();
-    vehicle->var_58 = stream->ReadValue<uint8>();
+    vehicle->log_flume_reverser_vehicle_type = stream->ReadValue<uint8>();
     vehicle->sound_range = stream->ReadValue<uint8>();
     vehicle->double_sound_frequency = stream->ReadValue<uint8>();
     vehicle->powered_acceleration = stream->ReadValue<uint8>();
@@ -482,11 +473,11 @@ uint8 RideObject::CalculateNumVerticalFrames(const rct_ride_entry_vehicle * vehi
     }
     else
     {
-        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14))
+        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES))
         {
-            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23 && vehicleEntry->var_11 != 6)
+            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION && vehicleEntry->animation != VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER)
             {
-                if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_7))
+                if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS))
                 {
                     numVerticalFrames = 4;
                 }
@@ -514,7 +505,7 @@ uint8 RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * ve
     uint8 numHorizontalFrames;
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SWINGING)
     {
-        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) && !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
+        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) && !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SLIDE_SWING))
         {
             if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25)
             {
@@ -525,7 +516,7 @@ uint8 RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * ve
                 numHorizontalFrames = 5;
             }
         }
-        else if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) || !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
+        else if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) || !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SLIDE_SWING))
         {
             numHorizontalFrames = 7;
         }

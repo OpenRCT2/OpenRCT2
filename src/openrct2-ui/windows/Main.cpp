@@ -17,8 +17,8 @@
 #include <openrct2/Context.h>
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/world/Footpath.h>
 

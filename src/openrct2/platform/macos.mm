@@ -16,8 +16,8 @@
 
 #if defined(__APPLE__) && defined(__MACH__)
 
-@import AppKit;
-@import Foundation;
+#import <AppKit/AppKit.h>
+#import <Foundation/Foundation.h>
 #include <mach-o/dyld.h>
 #include <pwd.h>
 #include "platform.h"
@@ -30,51 +30,6 @@ void macos_disallow_automatic_window_tabbing()
     @autoreleasepool {
         if ([NSWindow respondsToSelector:@selector(setAllowsAutomaticWindowTabbing:)]) {
             [NSWindow setAllowsAutomaticWindowTabbing:NO];
-        }
-    }
-}
-
-void platform_get_exe_path(utf8 *outPath, size_t outSize)
-{
-    if (outSize == 0) return;
-    char exePath[MAX_PATH];
-    uint32_t size = MAX_PATH;
-    int result = _NSGetExecutablePath(exePath, &size);
-    if (result != 0) {
-        log_fatal("failed to get path");
-    }
-    exePath[MAX_PATH - 1] = '\0';
-    char *exeDelimiter = strrchr(exePath, *PATH_SEPARATOR);
-    if (exeDelimiter == NULL)
-    {
-        log_error("should never happen here");
-        outPath[0] = '\0';
-        return;
-    }
-    *exeDelimiter = '\0';
-
-    safe_strcpy(outPath, exePath, outSize);
-}
-
-/**
- * Default directory fallback is:
- *   - (command line argument)
- *   - <exePath>/data
- *   - <Resources Folder>
- */
-void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size) {
-    @autoreleasepool
-    {
-        NSBundle *bundle = [NSBundle mainBundle];
-        if (bundle)
-        {
-            const utf8 *resources = bundle.resourcePath.UTF8String;
-            if (platform_directory_exists(resources))
-            {
-                out[0] = '\0';
-                safe_strcpy(out, resources, size);
-                return;
-            }
         }
     }
 }

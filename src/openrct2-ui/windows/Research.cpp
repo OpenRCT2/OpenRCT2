@@ -18,7 +18,7 @@
 
 #include <openrct2/Game.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/sprites.h>
@@ -217,7 +217,7 @@ static constexpr const rct_string_id ResearchCategoryNames[] = {
     STR_RESEARCH_CATEGORY_THRILL,
     STR_RESEARCH_CATEGORY_WATER,
     STR_RESEARCH_CATEGORY_SHOP,
-    STR_RESEARCH_CATEGORY_SCENERYSET,
+    STR_RESEARCH_CATEGORY_SCENERY_GROUP,
 };
 
 static constexpr const rct_string_id ResearchStageNames[] = {

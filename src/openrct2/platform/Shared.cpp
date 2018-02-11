@@ -46,7 +46,7 @@
 #endif
 
 #if defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
-    mach_timebase_info_data_t _mach_base_info = { 0 };
+    static mach_timebase_info_data_t _mach_base_info = { 0 };
 #endif
 
 #if !((defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700))
@@ -55,12 +55,12 @@ char * strndup(const char * src, size_t size)
     size_t len = strnlen(src, size);
     char * dst = (char *)malloc(len + 1);
 
-    if (dst == NULL)
+    if (dst == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
 
-    dst      = memcpy(dst, src, len);
+    dst      = (char *)memcpy(dst, src, len);
     dst[len] = '\0';
     return (char *)dst;
 }
@@ -190,7 +190,7 @@ void platform_sleep(uint32 ms)
 
 uint8 platform_get_currency_value(const char * currCode)
 {
-    if (currCode == NULL || strlen(currCode) < 3)
+    if (currCode == nullptr || strlen(currCode) < 3)
     {
         return CURRENCY_POUNDS;
     }

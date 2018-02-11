@@ -20,10 +20,6 @@
 #include "../common.h"
 #include "../world/Footpath.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags, bool* underground);
 bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags, bool* underground);
 bool metal_a_supports_paint_setup(paint_session * session, uint8 supportType, uint8 segment, sint32 special, sint32 height, uint32 imageColourFlags);
@@ -47,9 +43,5 @@ enum {
     METAL_SUPPORTS_TUBES_INVERTED,      // Used by inverted rcs like the flying, lay-down, compact inverted. Mostly the same as METAL_SUPPORTS_TUBES, but with a thinner crossbeam.
     METAL_SUPPORTS_BOXED_COATED         // Does not seem to be used in RCT2, but it was used in RCT1 for one of the path support types.
 };
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

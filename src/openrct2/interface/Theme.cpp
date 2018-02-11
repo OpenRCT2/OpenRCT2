@@ -37,6 +37,7 @@
 #include "../PlatformEnvironment.h"
 #include "themes.h"
 #include "Window.h"
+#include "Window_internal.h"
 
 using namespace OpenRCT2;
 
@@ -180,7 +181,7 @@ static constexpr const WindowThemeDesc WindowThemeDescriptors[] =
     { THEME_WC(WC_NETWORK_STATUS),                 STR_THEMES_WINDOW_NETWORK_STATUS,                 COLOURS_1(COLOUR_LIGHT_BLUE                                                                                                    ) },
     { THEME_WC(WC_SERVER_LIST),                    STR_SERVER_LIST,                                  COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
     { THEME_WC(WC_CHAT),                           STR_CHAT,                                         COLOURS_1(TRANSLUCENT(COLOUR_GREY)                                                                                             ) },
-    { THEME_WC(WC_CONSOLE),                        STR_CONSOLE,                                      COLOURS_1(TRANSLUCENT(COLOUR_LIGHT_BLUE)                                                                                       ) },
+    { THEME_WC(WC_CONSOLE),                        STR_CONSOLE,                                      COLOURS_2(TRANSLUCENT(COLOUR_LIGHT_BLUE),  COLOUR_WHITE                                                                                       ) },
 };
 
 #pragma endregion
@@ -657,259 +658,257 @@ namespace ThemeManager
     }
 }
 
-extern "C"
+void theme_manager_load_available_themes()
 {
-    void theme_manager_load_available_themes()
-    {
-        ThemeManager::GetAvailableThemes(&ThemeManager::AvailableThemes);
-    }
+    ThemeManager::GetAvailableThemes(&ThemeManager::AvailableThemes);
+}
 
-    size_t theme_manager_get_num_available_themes()
-    {
-        return ThemeManager::AvailableThemes.size();
-    }
+size_t theme_manager_get_num_available_themes()
+{
+    return ThemeManager::AvailableThemes.size();
+}
 
-    const utf8 * theme_manager_get_available_theme_path(size_t index)
-    {
-        return ThemeManager::AvailableThemes[index].Path.c_str();
-    }
+const utf8 * theme_manager_get_available_theme_path(size_t index)
+{
+    return ThemeManager::AvailableThemes[index].Path.c_str();
+}
 
-    const utf8 * theme_manager_get_available_theme_config_name(size_t index)
-    {
-        return ThemeManager::AvailableThemes[index].Name.c_str();
-    }
-    const utf8 * theme_manager_get_available_theme_name(size_t index)
-    {
-        if (index < ThemeManager::NumPredefinedThemes)
-            return language_get_string(PredefinedThemes[index].Name);
-        return ThemeManager::AvailableThemes[index].Name.c_str();
-    }
+const utf8 * theme_manager_get_available_theme_config_name(size_t index)
+{
+    return ThemeManager::AvailableThemes[index].Name.c_str();
+}
+const utf8 * theme_manager_get_available_theme_name(size_t index)
+{
+    if (index < ThemeManager::NumPredefinedThemes)
+        return language_get_string(PredefinedThemes[index].Name);
+    return ThemeManager::AvailableThemes[index].Name.c_str();
+}
 
-    size_t theme_manager_get_active_available_theme_index()
-    {
-        return ThemeManager::ActiveAvailableThemeIndex;
-    }
+size_t theme_manager_get_active_available_theme_index()
+{
+    return ThemeManager::ActiveAvailableThemeIndex;
+}
 
-    void theme_manager_set_active_available_theme(size_t index)
+void theme_manager_set_active_available_theme(size_t index)
+{
+    if (index < ThemeManager::NumPredefinedThemes)
     {
-        if (index < ThemeManager::NumPredefinedThemes)
+        ThemeManager::LoadTheme((UITheme *)PredefinedThemes[index].Theme);
+    }
+    else
+    {
+        auto path = ThemeManager::AvailableThemes[index].Path;
+        ThemeManager::LoadTheme(path);
+
+        // HACK Check if theme load failed and fell back to RCT2
+        if (ThemeManager::CurrentThemePath.empty())
         {
-            ThemeManager::LoadTheme((UITheme *)PredefinedThemes[index].Theme);
-        }
-        else
-        {
-            auto path = ThemeManager::AvailableThemes[index].Path;
-            ThemeManager::LoadTheme(path);
-
-            // HACK Check if theme load failed and fell back to RCT2
-            if (ThemeManager::CurrentThemePath.empty())
-            {
-                index = 1;
-            }
-        }
-        ThemeManager::ActiveAvailableThemeIndex = index;
-        String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_config_name(index));
-
-        colour_scheme_update_all();
-    }
-
-    size_t theme_get_index_for_name(const utf8 * name)
-    {
-        size_t count = ThemeManager::AvailableThemes.size();
-        for (size_t i = 0; i < count; i++)
-        {
-            const utf8 * tn = theme_manager_get_available_theme_name(i);
-            if (String::Equals(tn, name, true))
-            {
-                return i;
-            }
-        }
-        return SIZE_MAX;
-    }
-
-    uint8 theme_get_colour(rct_windowclass wc, uint8 index)
-    {
-        const UIThemeWindowEntry * entry = ThemeManager::CurrentTheme->GetEntry(wc);
-        if (entry == nullptr)
-        {
-            const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
-            if (desc == nullptr)
-            {
-                return 0;
-            }
-            return desc->DefaultTheme.Colours[index];
-        }
-        else
-        {
-            return entry->Theme.Colours[index];
+            index = 1;
         }
     }
+    ThemeManager::ActiveAvailableThemeIndex = index;
+    String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_config_name(index));
 
-    void theme_set_colour(rct_windowclass wc, uint8 index, colour_t colour)
+    colour_scheme_update_all();
+}
+
+size_t theme_get_index_for_name(const utf8 * name)
+{
+    size_t count = ThemeManager::AvailableThemes.size();
+    for (size_t i = 0; i < count; i++)
     {
-        UIThemeWindowEntry entry;
-        entry.WindowClass = wc;
-
-        auto currentEntry = (UIThemeWindowEntry *)ThemeManager::CurrentTheme->GetEntry(wc);
-        if (currentEntry != nullptr)
+        const utf8 * tn = theme_manager_get_available_theme_name(i);
+        if (String::Equals(tn, name, true))
         {
-            entry.Theme = currentEntry->Theme;
-        }
-        else
-        {
-            const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
-            if (desc == nullptr)
-            {
-                return;
-            }
-            entry.Theme = desc->DefaultTheme;
-        }
-
-        entry.Theme.Colours[index] = colour;
-        ThemeManager::CurrentTheme->SetEntry(&entry);
-
-        theme_save();
-    }
-
-    uint8 theme_get_flags()
-    {
-        return ThemeManager::CurrentTheme->Flags;
-    }
-
-    void theme_set_flags(uint8 flags)
-    {
-        ThemeManager::CurrentTheme->Flags = flags;
-        theme_save();
-    }
-
-    void theme_save()
-    {
-        ThemeManager::EnsureThemeDirectoryExists();
-        ThemeManager::CurrentTheme->WriteToFile(ThemeManager::CurrentThemePath);
-    }
-
-    void theme_rename(const utf8 * name)
-    {
-        const auto oldPath = ThemeManager::CurrentThemePath;
-
-        ThemeManager::EnsureThemeDirectoryExists();
-        auto newPath = ThemeManager::GetThemeFileName(name);
-        File::Move(oldPath, newPath);
-        ThemeManager::CurrentThemePath = newPath;
-
-        ThemeManager::CurrentTheme->Name = name;
-        ThemeManager::CurrentTheme->WriteToFile(ThemeManager::CurrentThemePath);
-
-        theme_manager_load_available_themes();
-        for (size_t i = 0; i < ThemeManager::AvailableThemes.size(); i++)
-        {
-            if (Path::Equals(newPath, ThemeManager::AvailableThemes[i].Path))
-            {
-                ThemeManager::ActiveAvailableThemeIndex = i;
-                String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_config_name(1));
-                break;
-            }
+            return i;
         }
     }
+    return SIZE_MAX;
+}
 
-    void theme_duplicate(const utf8 * name)
-    {
-        ThemeManager::EnsureThemeDirectoryExists();
-        auto newPath = ThemeManager::GetThemeFileName(name);
-
-        // Copy the theme, save it and then load it back in
-        UITheme * newTheme = new UITheme(*ThemeManager::CurrentTheme);
-        newTheme->Name = name;
-        newTheme->Flags &= ~UITHEME_FLAG_PREDEFINED;
-        newTheme->WriteToFile(newPath);
-        delete newTheme;
-
-        ThemeManager::LoadTheme(newPath);
-
-        theme_manager_load_available_themes();
-        for (size_t i = 0; i < ThemeManager::AvailableThemes.size(); i++)
-        {
-            if (Path::Equals(newPath, ThemeManager::AvailableThemes[i].Path))
-            {
-                ThemeManager::ActiveAvailableThemeIndex = i;
-                String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_config_name(i));
-                break;
-            }
-        }
-    }
-
-    void theme_delete()
-    {
-        File::Delete(ThemeManager::CurrentThemePath);
-        ThemeManager::LoadTheme((UITheme *)&PredefinedThemeRCT2);
-        ThemeManager::ActiveAvailableThemeIndex = 1;
-        String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_config_name(1));
-    }
-
-    void theme_manager_initialise()
-    {
-        ThemeManager::Initialise();
-    }
-
-    uint8 theme_desc_get_num_colours(rct_windowclass wc)
+uint8 theme_get_colour(rct_windowclass wc, uint8 index)
+{
+    const UIThemeWindowEntry * entry = ThemeManager::CurrentTheme->GetEntry(wc);
+    if (entry == nullptr)
     {
         const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
         if (desc == nullptr)
         {
             return 0;
         }
-        return desc->NumColours;
+        return desc->DefaultTheme.Colours[index];
     }
+    else
+    {
+        return entry->Theme.Colours[index];
+    }
+}
 
-    rct_string_id theme_desc_get_name(rct_windowclass wc)
+void theme_set_colour(rct_windowclass wc, uint8 index, colour_t colour)
+{
+    UIThemeWindowEntry entry;
+    entry.WindowClass = wc;
+
+    auto currentEntry = (UIThemeWindowEntry *)ThemeManager::CurrentTheme->GetEntry(wc);
+    if (currentEntry != nullptr)
+    {
+        entry.Theme = currentEntry->Theme;
+    }
+    else
     {
         const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
         if (desc == nullptr)
         {
-            return STR_EMPTY;
+            return;
         }
-        return desc->WindowName;
+        entry.Theme = desc->DefaultTheme;
     }
 
-    void colour_scheme_update_all()
+    entry.Theme.Colours[index] = colour;
+    ThemeManager::CurrentTheme->SetEntry(&entry);
+
+    theme_save();
+}
+
+uint8 theme_get_flags()
+{
+    return ThemeManager::CurrentTheme->Flags;
+}
+
+void theme_set_flags(uint8 flags)
+{
+    ThemeManager::CurrentTheme->Flags = flags;
+    theme_save();
+}
+
+void theme_save()
+{
+    ThemeManager::EnsureThemeDirectoryExists();
+    ThemeManager::CurrentTheme->WriteToFile(ThemeManager::CurrentThemePath);
+}
+
+void theme_rename(const utf8 * name)
+{
+    const auto oldPath = ThemeManager::CurrentThemePath;
+
+    ThemeManager::EnsureThemeDirectoryExists();
+    auto newPath = ThemeManager::GetThemeFileName(name);
+    File::Move(oldPath, newPath);
+    ThemeManager::CurrentThemePath = newPath;
+
+    ThemeManager::CurrentTheme->Name = name;
+    ThemeManager::CurrentTheme->WriteToFile(ThemeManager::CurrentThemePath);
+
+    theme_manager_load_available_themes();
+    for (size_t i = 0; i < ThemeManager::AvailableThemes.size(); i++)
     {
-        for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
+        if (Path::Equals(newPath, ThemeManager::AvailableThemes[i].Path))
         {
-            colour_scheme_update(w);
+            ThemeManager::ActiveAvailableThemeIndex = i;
+            String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_config_name(1));
+            break;
         }
-    }
-
-    void colour_scheme_update(rct_window * window)
-    {
-        colour_scheme_update_by_class(window, window->classification);
-    }
-
-    void colour_scheme_update_by_class(rct_window * window, rct_windowclass classification)
-    {
-        const WindowTheme *        windowTheme;
-        const UIThemeWindowEntry * entry = ThemeManager::CurrentTheme->GetEntry(classification);
-        if (entry != nullptr)
-        {
-            windowTheme = &entry->Theme;
-        }
-        else
-        {
-            const WindowThemeDesc * desc = GetWindowThemeDescriptor(classification);
-
-            // Some windows don't have a theme set (e.g. main window, title screen)
-            if (desc == nullptr)
-            {
-                return;
-            }
-
-            windowTheme = &desc->DefaultTheme;
-        }
-
-        for (sint32 i = 0; i < 6; i++) {
-            window->colours[i] = windowTheme->Colours[i];
-        }
-        // Some windows need to be transparent even if the colours aren't.
-        // There doesn't seem to be any side-effects for all windows being transparent
-        window->flags |= WF_TRANSPARENT;
     }
 }
+
+void theme_duplicate(const utf8 * name)
+{
+    ThemeManager::EnsureThemeDirectoryExists();
+    auto newPath = ThemeManager::GetThemeFileName(name);
+
+    // Copy the theme, save it and then load it back in
+    UITheme * newTheme = new UITheme(*ThemeManager::CurrentTheme);
+    newTheme->Name = name;
+    newTheme->Flags &= ~UITHEME_FLAG_PREDEFINED;
+    newTheme->WriteToFile(newPath);
+    delete newTheme;
+
+    ThemeManager::LoadTheme(newPath);
+
+    theme_manager_load_available_themes();
+    for (size_t i = 0; i < ThemeManager::AvailableThemes.size(); i++)
+    {
+        if (Path::Equals(newPath, ThemeManager::AvailableThemes[i].Path))
+        {
+            ThemeManager::ActiveAvailableThemeIndex = i;
+            String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_config_name(i));
+            break;
+        }
+    }
+}
+
+void theme_delete()
+{
+    File::Delete(ThemeManager::CurrentThemePath);
+    ThemeManager::LoadTheme((UITheme *)&PredefinedThemeRCT2);
+    ThemeManager::ActiveAvailableThemeIndex = 1;
+    String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_config_name(1));
+}
+
+void theme_manager_initialise()
+{
+    ThemeManager::Initialise();
+}
+
+uint8 theme_desc_get_num_colours(rct_windowclass wc)
+{
+    const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
+    if (desc == nullptr)
+    {
+        return 0;
+    }
+    return desc->NumColours;
+}
+
+rct_string_id theme_desc_get_name(rct_windowclass wc)
+{
+    const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
+    if (desc == nullptr)
+    {
+        return STR_EMPTY;
+    }
+    return desc->WindowName;
+}
+
+void colour_scheme_update_all()
+{
+    for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
+    {
+        colour_scheme_update(w);
+    }
+}
+
+void colour_scheme_update(rct_window * window)
+{
+    colour_scheme_update_by_class(window, window->classification);
+}
+
+void colour_scheme_update_by_class(rct_window * window, rct_windowclass classification)
+{
+    const WindowTheme *        windowTheme;
+    const UIThemeWindowEntry * entry = ThemeManager::CurrentTheme->GetEntry(classification);
+    if (entry != nullptr)
+    {
+        windowTheme = &entry->Theme;
+    }
+    else
+    {
+        const WindowThemeDesc * desc = GetWindowThemeDescriptor(classification);
+
+        // Some windows don't have a theme set (e.g. main window, title screen)
+        if (desc == nullptr)
+        {
+            return;
+        }
+
+        windowTheme = &desc->DefaultTheme;
+    }
+
+    for (sint32 i = 0; i < 6; i++) {
+        window->colours[i] = windowTheme->Colours[i];
+    }
+    // Some windows need to be transparent even if the colours aren't.
+    // There doesn't seem to be any side-effects for all windows being transparent
+    window->flags |= WF_TRANSPARENT;
+}
+

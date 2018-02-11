@@ -4510,6 +4510,25 @@ STR_6200    :날짜 초기화
 STR_6201    :{MONTH}
 STR_6202    :가상 지면 사용
 STR_6203    :{SMALLFONT}{BLACK}이 설정을 켜면, Ctrl이나 Shift 키를 누르고 있을 때 오브젝트의 수직 설치에 도움이 되는 가상 지면을 표시해줍니다.
+STR_6204    :벽돌
+STR_6205    :철
+STR_6206    :회색 절벽
+STR_6207    :노란 절벽
+STR_6208    :빨간 절벽
+STR_6209    :보라색 절벽
+STR_6210    :초록색 절벽
+STR_6211    :갈색 사암
+STR_6212    :회색 사암
+STR_6213    :마천루 A
+STR_6214    :마천루 B
+STR_6215    :건설
+STR_6216    :운영 및 운행
+STR_6217    :놀이기구 / 트랙 관련 기능
+STR_6218    :OpenRCT2 공식
+STR_6219    :보도 관련 문제 하이라이트
+STR_6220    :실제 출입구 위치 지정
+STR_6221    :{SMALLFONT}{BLACK}이 버튼을 누르면 놀이기구의 출입구 위치가 현재 선택된 칸으로 인식되도록 만듭니다. 한 정거장에는 반드시 하나의 출입구 위치만을 지정해야 합니다.
+
 
 #############
 # Scenarios #
@@ -4962,8 +4981,8 @@ STR_DESC    :부드러운 천으로 된 지붕을 가진 나무 객차와 증기
 STR_CPTY    :차량당 6명의 승객
 
 [CLIFT1]
-STR_NAME    :체어 리프트 차량
-STR_DESC    :체어 리프트를 위한 개방형 차량
+STR_NAME    :리프트 차량
+STR_DESC    :철제 리프트 차량
 STR_CPTY    :차량당 2명의 승객
 
 [CLIFT2]
@@ -5052,7 +5071,7 @@ STR_DESC    :모형 골프 게임
 STR_CPTY    :
 
 [GTC]
-STR_NAME    :고스트 트레인
+STR_NAME    :고스트 트레인 차량
 STR_DESC    :으스스한 풍경과 특별한 효과 주변을 지나며 여러 높낮이를 오르내리는 괴물 모양의 차량
 STR_CPTY    :차량당 2명의 승객
 
@@ -5132,7 +5151,7 @@ STR_DESC    :트랙을 따라 이동하는 빈티지 모양의 차량
 STR_CPTY    :차량당 2명의 승객
 
 [AMT1]
-STR_NAME    :탄광 열차 코스터
+STR_NAME    :탄광 차량
 STR_DESC    :오래된 선로 트랙처럼 보이지만 튼튼한 강철로 만든 롤러코스터 트랙을 따라 달리는, 광산 차량을 테마로 한 롤러코스터 차량
 STR_CPTY    :차량당 2명 또는 4명의 승객
 
@@ -5147,13 +5166,13 @@ STR_DESC    :차량이 코너를 돌면 자유롭게 흔들거리게 만들어�
 STR_CPTY    :차량당 4명의 승객
 
 [ARRT1]
-STR_NAME    :나선 롤러코스터
-STR_DESC    :나선 모양 트랙과 루프를 도는 구성을 지닌 강철 트랙의 롤러코스터
+STR_NAME    :나선 롤러코스터 차량
+STR_DESC    :어깨 안전바가 있는 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [ARRT2]
-STR_NAME    :하이퍼코스터
-STR_DESC    :무릎 안전바만 채운 채로, 뒤집어지지는 않지만 큰 낙하와 빠른 속도, 편안한 승차감을 자랑하는 롤러코스터
+STR_NAME    :하이퍼코스터 차량
+STR_DESC    :무릎 안전바만 있는 편안한 차량
 STR_CPTY    :차량당 6명의 승객
 
 [ARRX]
@@ -5167,12 +5186,12 @@ STR_DESC    :레일을 따라 흔들거리는 작은 차량
 STR_CPTY    :차량당 2명의 승객
 
 [BMAIR]
-STR_NAME    :플라잉 롤러코스터
+STR_NAME    :플라잉 롤러코스터 차량
 STR_DESC    :탑승객에게 정말로 나는 듯한 경험을 주기 위해, 트랙 밑에 달린 편안한 좌석에 앉아서 꼬여있는 트랙을 따라 움직이는 놀이기구
 STR_CPTY    :차량당 4명의 승객
 
 [BMFL]
-STR_NAME    :플로어리스 롤러코스터
+STR_NAME    :플로어리스 트위스터 차량
 STR_DESC    :꼬여있는 트랙과 여러 전이를 미끄러지듯 통과하면서 승객들에게 광활한 허공을 느끼게 해주는, 바닥이 없는 넓은 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
@@ -5182,23 +5201,23 @@ STR_DESC    :향상된 탑승감과 간단한 무릎 안전바를 갖고 있는 
 STR_CPTY    :차량당 4명의 승객
 
 [BMSD]
-STR_NAME    :트위스터 롤러코스터
+STR_NAME    :트위스터 열차
 STR_DESC    :여러 종류의 루프를 돌면서 부드러운 강철 트랙을 달리는 넓은 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [BMSU]
-STR_NAME    :스탠드 업 트위스터 코스터
+STR_NAME    :스탠드 업 트위스터 열차
 STR_DESC    :탑승자들이 선 자세로 낙하와 여러 특수 트랙을 즐길 수 있도록 특수하게 디자인된 안전바가 있는 넓은 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [BMVD]
-STR_NAME    :수직 낙하 롤러코스터
+STR_NAME    :6인승 트위스터 차량
 STR_DESC    :자유 낙하의 극한 경험을 선사하기 위해 완전히 수직 경사 트랙을 따라 하강하는 아주 폭이 넓은 차량
 STR_CPTY    :차량당 6명의 승객
 
 [BOB1]
-STR_NAME    :봅슬레이 코스터
-STR_DESC    :반원형 트랙의 커브와 뱅킹만을 따라 이동하는 봅슬레이 모양의 차량을 타고 이리 저리 꼬여있는 트랙을 따라 내려오는 놀이기구
+STR_NAME    :봅슬레이 차량
+STR_DESC    :2인승 열차로 구성된 연결식 열차
 STR_CPTY    :차량당 2명의 승객
 
 [GOLTR]
@@ -5207,22 +5226,22 @@ STR_DESC    :간단한 무릎 안전바를 가진 널찍한 차량
 STR_CPTY    :차량당 6명의 승객
 
 [INTBOB]
-STR_NAME    :플라잉 턴
-STR_DESC    :반원형 트랙의 커브와 뱅킹만을 따라 이동하는 봅슬레이 모양의 차량을 타고 이리 저리 꼬여있는 트랙을 따라 내려오는 놀이기구
+STR_NAME    :6인승 봅슬레이 차량
+STR_DESC    :2명씩 3줄로 앉을 수 있는 하나의 봅슬레이 차량
 STR_CPTY    :차량당 6명의 승객
 
 [INTINV]
-STR_NAME    :인버티드 임펄스 코스터
+STR_NAME    :임펄스 차량
 STR_DESC    :수직으로 솟은 트랙을 오르기 위해 역에서 급가속한 뒤, 다시 역방향으로 되돌아와 역을 통과해서 뒷쪽의 또다른 수직 트랙을 올라가는 인버티드 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [INTST]
-STR_NAME    :기가 코스터
+STR_NAME    :기가 코스터 차량
 STR_DESC    :90m 이상의 부드러운 낙하와 상승이 가능한 거대한 강철 롤러코스터
 STR_CPTY    :차량당 4명의 승객
 
 [IVMC1]
-STR_NAME    :인버티드 헤어핀 코스터
+STR_NAME    :4인승 인버티드 헤어핀 차량
 STR_DESC    :급회전과 급경사를 가진 지그재그 모양의 트랙 아래를 달리는 개별 차량
 STR_CPTY    :차량당 4명의 승객
 
@@ -5237,7 +5256,7 @@ STR_DESC    :하나의 열로 된 짧은 차량과 개방된 전면부를 가진
 STR_CPTY    :차량당 2명의 승객
 
 [NEMT]
-STR_NAME    :인버티드 롤러코스터
+STR_NAME    :4인승 인버티드 롤러코스터 차량
 STR_DESC    :거대한 루프, 트위스트와 급격한 낙하 트랙을 따라 이동하며, 탑승객이 트랙 아래에 매달린 좌석에 앉는 차량
 STR_CPTY    :차량당 4명의 승객
 
@@ -5247,7 +5266,7 @@ STR_DESC    :부드럽게 꼬인 트랙 구조를 따라 달리는 탄광 차량
 STR_CPTY    :차량당 2명 또는 4명의 승객
 
 [PREMT1]
-STR_NAME    :LIM 발진 롤러코스터
+STR_NAME    :LIM 발진 롤러코스터 차량
 STR_DESC    :역에서 선형 유도 모터에 의해 가속되어 꼬여있는 트랙을 빠른 속도로 통과하는 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
@@ -5272,7 +5291,7 @@ STR_DESC    :로켓처럼 꾸며져 있는 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [REVCAR]
-STR_NAME    :반전 롤러코스터
+STR_NAME    :반전 차량
 STR_DESC    :특수한 반전 섹션 위에서 앞뒤가 뒤집히는 나무 트랙 위를 운행하는 불안한 차량
 STR_CPTY    :차량당 6명의 승객
 
@@ -5282,7 +5301,7 @@ STR_DESC    :역방향 자유낙하 코스터를 위한 대형 코스터 차량
 STR_CPTY    :승객 8명
 
 [SBOX]
-STR_NAME    :조립 경주차 경주 레이서
+STR_NAME    :조립 경주차
 STR_DESC    :하나의 레일로 이루어진 롤러코스터 트랙을 이동하는 조립 경주차 모양의 차량
 STR_CPTY    :차량당 4명의 승객
 
@@ -5297,17 +5316,17 @@ STR_DESC    :사이드 프릭션 롤러코스터를 위한 기본 차량
 STR_CPTY    :차량당 4명의 승객
 
 [SKYTR]
-STR_NAME    :미니 서스펜디드 플라잉 코스터
+STR_NAME    :레이 다운 차량
 STR_DESC    :하나의 레일로 이루어진 트랙에 매달린 특수 차량에 얼굴을 아래로 한 자세로 타고 코너를 돌 때마다 이리 저리 자유롭게 흔들리는 차량
 STR_CPTY    :차량당 승객 1명
 
 [SLCFO]
-STR_NAME    :인버티드 셔틀 코스터
+STR_NAME    :페이스오프 차량
 STR_DESC    :앞쪽이나 뒤쪽을 보고 2명씩 마주보고 짝지어 앉아 루프와 트위스트와 급격한 전이 트랙을 지나는 차량
 STR_CPTY    :차량당 4명의 승객
 
 [SLCT]
-STR_NAME    :컴팩트 인버티드 코스터
+STR_NAME    :컴팩트 인버티드 코스터 차량
 STR_DESC    :트랙 밑에 매달린 좌석에 2명씩 마주보고 짝지어 앉아 루프와 트위스트와 급격한 전이 트랙을 지나는 차량
 STR_CPTY    :차량당 2명의 승객
 
@@ -5322,27 +5341,27 @@ STR_DESC    :나무 탄광 트럭처럼 생긴 개별 차량
 STR_CPTY    :차량당 4명의 승객
 
 [SPDRCR]
-STR_NAME    :스파이럴 롤러코스터
+STR_NAME    :스파이럴 롤러코스터 차량
 STR_DESC    :한 줄로 된 좌석과 나선형 리프트 힐이 있는 강철 트랙 롤러코스터
 STR_CPTY    :차량당 6명의 승객
 
 [STEEP1]
-STR_NAME    :스티플체이스
+STR_NAME    :말 차량
 STR_DESC    :단선 롤러코스터 트랙을 따라 달리는 말 모양의 차량에 탑승하는 놀이기구
 STR_CPTY    :차량당 2명의 승객
 
 [STEEP2]
-STR_NAME    :모터바이크 레이스
+STR_NAME    :모터바이크 차량
 STR_DESC    :단선 롤러코스터 트랙을 따라 달리는 오토바이 모양의 차량에 탑승하는 놀이기구
 STR_CPTY    :자전거당 2명의 승객
 
 [THCAR]
-STR_NAME    :에어 파워드 버티컬 코스터
+STR_NAME    :에어 파워드 버티컬 코스터 차량
 STR_DESC    :아주 짜릿한 공기 압축 방식으로 발진하여 차량이 수직 트랙을 향해 속력을 높인 뒤, 꼭대기에 다다르면 다시 수직으로 하강하며 다시 탑승장에 도착하는 놀이기구
 STR_CPTY    :차량당 2명의 승객
 
 [TOGST]
-STR_NAME    :스탠드 업 롤러코스터
+STR_NAME    :스탠드 업 롤러코스터 차량
 STR_DESC    :손님이 일어선 자세로 탑승하는 루핑 롤러코스터
 STR_CPTY    :차량당 4명의 승객
 
@@ -5357,12 +5376,12 @@ STR_DESC    :하트라인 트위스트에 적합한 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [VEKDV]
-STR_NAME    :인버티드 버티컬 셔틀
+STR_NAME    :수직 셔틀 차량
 STR_DESC    :트랙 밑에 매달린 차량에 앉아서, 수직 트랙을 따라 뒤쪽 방향으로 올라간 다음 루프와 트위스트를 향해 낙하하는 놀이기구
 STR_CPTY    :차량당 4명의 승객
 
 [VEKST]
-STR_NAME    :레이 다운 롤러코스터
+STR_NAME    :레이 다운 롤러코스터 차량
 STR_DESC    :누운 자세로 탑승하는 특수 차량에 탑승하여 꼬인 트랙과 전이를 앞이나 뒤로 누운 자세로 즐기는 놀이기구
 STR_CPTY    :차량당 4명의 승객
 
@@ -5372,7 +5391,7 @@ STR_DESC    :코너를 돌면 차량이 자유롭게 흔들리고, 체어 리프
 STR_CPTY    :차량당 2명의 승객
 
 [VREEL]
-STR_NAME    :버지니아 릴
+STR_NAME    :버지니아 릴 차량
 STR_DESC    :나무 트랙을 이리 저리 따라 이동함에 따라 빙글빙글 돌아가는 원형 차량
 STR_CPTY    :차량당 4명의 승객
 
@@ -5387,12 +5406,12 @@ STR_DESC    :지그재그 모양의 나무 트랙을 달리면서 급격한 커�
 STR_CPTY    :차량당 2명의 승객
 
 [WMOUSE]
-STR_NAME    :우든 와일드 마우스
+STR_NAME    :우든 와일드 마우스 차량
 STR_DESC    :나무 트랙 위를 달리면서 급격한 헤어핀 코너와 급등·급락을 지나면서 트랙을 벗어날 듯 위태롭게 기울어지는 작은 쥐 모양의 차량
 STR_CPTY    :차량당 2명의 승객
 
 [WMSPIN]
-STR_NAME    :회전 와일드 마우스
+STR_NAME    :회전 와일드 마우스 차량
 STR_DESC    :급격한 코너와 짧은 낙하를 지나면서 속도를 내고, 차량의 부드러운 회전이 탑승객의 방향 감각을 잃게 만드는 쥐 모양의 차량
 STR_CPTY    :차량당 4명의 승객
 
@@ -5437,7 +5456,7 @@ STR_DESC    :유압식 관절에 의해 흔들리며 움직이는 모션 시뮬�
 STR_CPTY    :승객 8명
 
 [SSC1]
-STR_NAME    :런치드 프리폴
+STR_NAME    :발진 자유낙하 차량
 STR_DESC    :압축 공기에 의해 높은 철제 탑을 향해 쏘아올려진 다음 자유 낙하하는 자유 낙하 차량
 STR_CPTY    :승객 8명
 
@@ -5482,7 +5501,7 @@ STR_DESC    :보트 모양의 롤러코스터 차량
 STR_CPTY    :보트당 6명의 승객
 
 [DING1]
-STR_NAME    :보트 슬라이드
+STR_NAME    :보트
 STR_DESC    :반원형 또는 밀폐형 원형 튜브 트랙을 따라 이동하는 공기 주입식 고무 보트
 STR_CPTY    :보트당 2명의 승객
 
@@ -5492,7 +5511,7 @@ STR_DESC    :탑승객이 스스로 운전할 수 있는 단일 좌석의 제트
 STR_CPTY    :차량당 1명의 탑승자
 
 [LFB1]
-STR_NAME    :통나무 수로
+STR_NAME    :통나무 보트
 STR_DESC    :수로를 따라 이동하다가 긴 낙하를 지나며 물을 튀겨 탑승객을 홀딱 젖게 만드는 통나무 모양의 보트
 STR_CPTY    :보트당 4명의 승객
 
@@ -5507,7 +5526,7 @@ STR_DESC    :탑승객들이 스스로 노를 저을 수 있는 보트
 STR_CPTY    :보트당 2명의 승객
 
 [RFTBOAT]
-STR_NAME    :리버 래프트
+STR_NAME    :뗏목
 STR_DESC    :구불구불한 강 모양의 트랙을 따라 얌전히 이동하는 뗏목 모양의 보트
 STR_CPTY    :래프트당 4명의 승객
 
@@ -7428,13 +7447,13 @@ STR_NAME    :오렌지색 물
 ## Wacky Worlds Objects
 ###############################################################################
 [LONDONBS]
-STR_NAME    :런던 버스 전차
-STR_DESC    :전차 모형
+STR_NAME    :런던 버스
+STR_DESC    :유명한 런던 루트마스터 버스의 모형
 STR_CPTY    :차량당 10명의 승객
 
 [MINELIFT]
-STR_NAME    :탄광 엘리베이터
-STR_DESC    :탑승객들은 수직 탑을 따라 이동하는 엘리베이터에 올라타 여러 높이를 손쉽게 이동할 수 있습니다.
+STR_NAME    :탄광 엘리베이터 차량
+STR_DESC    :탄광에서 주로 사용하는 철제 엘리베이터
 STR_CPTY    :승객 16명
 
 [SANFTRAM]
@@ -7448,7 +7467,7 @@ STR_DESC    :부드러운 천으로 된 지붕을 가진 나무 객차와 증기
 STR_CPTY    :객차당 6명의 승객
 
 [BLACKCAB]
-STR_NAME    :런던 택시 블랙 캡 라이드
+STR_NAME    :런던 택시
 STR_DESC    :런던 택시 모양의 차량
 STR_CPTY    :차량당 2명의 승객
 
@@ -7473,7 +7492,7 @@ STR_DESC    :스스로 운전하는 전기 범퍼카 차량
 STR_CPTY    :차량당 1명의 손님
 
 [HIPPORID]
-STR_NAME    :히포 라이드
+STR_NAME    :하마 잠수함
 STR_DESC    :수면 아래 코스를 이동하는 잠수함에 탑승하는 놀이기구
 STR_CPTY    :차량당 5명의 승객
 
@@ -7483,7 +7502,7 @@ STR_DESC    :트랙을 따라 이동하는 허스키 썰매 모양의 차량
 STR_CPTY    :차량당 2명의 승객
 
 [KILLWHAL]
-STR_NAME    :범고래
+STR_NAME    :범고래 잠수함
 STR_DESC    :수면 아래 코스를 이동하는 잠수함에 탑승하는 놀이기구
 STR_CPTY    :차량당 5명의 승객
 
@@ -7493,12 +7512,12 @@ STR_DESC    :스스로 운전하는 전기 범퍼카 차량
 STR_CPTY    :차량당 1명의 승객
 
 [ANACONDA]
-STR_NAME    :아나콘다 라이드
+STR_NAME    :아나콘다 차량
 STR_DESC    :간단한 안전바가 있는 널찍한 차량
 STR_CPTY    :차량당 6명의 승객
 
 [BOMERANG]
-STR_NAME    :부메랑 코스터
+STR_NAME    :부메랑 차량
 STR_DESC    :아주 짜릿한 공기 압축 방식으로 발진하여 차량이 수직 트랙을 향해 속력을 높인 뒤, 꼭대기에 다다르면 다시 수직으로 하강하며 다시 탑승장에 도착하는 놀이기구
 STR_CPTY    :차량당 2명의 승객
 
@@ -7513,13 +7532,13 @@ STR_DESC    :리무진 테마의 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [CONDORRD]
-STR_NAME    :콘도르 라이드
+STR_NAME    :콘도르 차량
 STR_DESC    :하나의 레일로 이루어진 트랙에 매달린 콘도르 모양의 차량에 얼굴을 아래로 한 자세로 타고 코너를 돌 때마다 이리 저리 자유롭게 흔들리는 차량
 STR_CPTY    :차량당 승객 4명
 
 [CONGAEEL]
-STR_NAME    :콩가 뱀장어 코스터
-STR_DESC    :뱀장어 모양의 차량이 나선과 루프를 통과하는 강철 트랙 롤러코스터
+STR_NAME    :콩가 뱀장어 차량
+STR_DESC    :어깨 안전바가 있는 뱀장어 모양의 차량
 STR_CPTY    :차량당 4명의 승객
 
 [DRAGON]
@@ -7528,18 +7547,18 @@ STR_DESC    :드래곤 테마의 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [FOOTBALL]
-STR_NAME    :풋볼 라이드
+STR_NAME    :풋볼 차량
 STR_DESC    :차량이 코너를 돌면 자유롭게 흔들거리게 만들어진 풋볼 모양의 서스펜디드 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [GORILLA]
-STR_NAME    :고릴라 라이드
+STR_NAME    :고릴라 차량
 STR_DESC    :차량이 코너를 돌면 자유롭게 흔들거리게 만들어진 고릴라 모양의 서스펜디드 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [GRATWHTE]
-STR_NAME    :대백상어 라이드
-STR_DESC    :간단한 안전바가 있는 널찍한 차량
+STR_NAME    :대백상어 차량
+STR_DESC    :어깨 안전바가 있는 대백상어 모양의 차량
 STR_CPTY    :차량당 6명의 승객
 
 [JAGUARRD]
@@ -7548,42 +7567,42 @@ STR_DESC    :개별적인 차량이 부드러운 트위스트 낙하를 짜임�
 STR_CPTY    :차량당 4명의 승객
 
 [KOLARIDE]
-STR_NAME    :코알라 라이드
+STR_NAME    :코알라 차량
 STR_DESC    :역방향 자유낙하 코스터를 위한 대형 코스터 차량
 STR_CPTY    :차량당 8명의 승객
 
 [LIONRIDE]
-STR_NAME    :사자 라이드
+STR_NAME    :사자 차량
 STR_DESC    :개별적인 차량이 부드러운 트위스트 낙하를 짜임새 있게 내려오는 롤러코스터
 STR_CPTY    :차량당 4명의 승객
 
 [MINECART]
-STR_NAME    :탄광 카트 라이드
+STR_NAME    :탄광 카트 차량
 STR_DESC    :푹신한 좌석과 무릎 안전바가 있는 나무 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [OSTRICH]
-STR_NAME    :타조 라이드
+STR_NAME    :타조 차량
 STR_DESC    :손님이 일어선 자세로 탑승하는 루핑 롤러코스터
 STR_CPTY    :차량당 4명의 승객
 
 [PENGUINB]
-STR_NAME    :펭귄 봅슬레이
+STR_NAME    :펭귄 차량
 STR_DESC    :반원형 트랙의 커브와 뱅킹만을 따라 이동하는 봅슬레이 모양의 차량을 타고 이리 저리 꼬여있는 트랙을 따라 내려오는 놀이기구
 STR_CPTY    :차량당 2명의 승객
 
 [POLARBER]
-STR_NAME    :북극곰 롤러코스터
+STR_NAME    :북극곰 차량
 STR_DESC    :앞쪽이나 뒤쪽을 보고 2명씩 마주보고 짝지어 앉아 루프와 트위스트와 급격한 전이 트랙을 지나는 차량
 STR_CPTY    :차량당 4명의 승객
 
 [RHINORID]
-STR_NAME    :코뿔소 라이드
+STR_NAME    :코뿔소 차량
 STR_DESC    :한 줄로 된 좌석과 나선형 리프트 힐이 있는 강철 트랙 롤러코스터
 STR_CPTY    :차량당 6명의 승객
 
 [ROCKET]
-STR_NAME    :1950년대 로켓 라이드
+STR_NAME    :1950년대 로켓
 STR_DESC    :수직으로 솟은 트랙을 오르기 위해 역에서 급가속한 뒤, 다시 역방향으로 되돌아와 역을 통과해서 뒷쪽의 또다른 수직 트랙을 올라가는 인버티드 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
@@ -7603,7 +7622,7 @@ STR_DESC    :차량이 코너를 돌면 자유롭게 흔들거리게 만들어�
 STR_CPTY    :차량당 4명의 승객
 
 [SPUTNIKR]
-STR_NAME    :스푸트니크 서스펜디드 플라잉 코스터
+STR_NAME    :스푸트니크 차량
 STR_DESC    :하나의 레일로 이루어진 트랙에 매달린 특수 차량에 얼굴을 아래로 한 자세로 타고 코너를 돌 때마다 이리 저리 자유롭게 흔들리는 차량
 STR_CPTY    :차량당 승객 2명
 
@@ -7613,27 +7632,27 @@ STR_DESC    :좌석이 넓고 무릎에만 안전바가 있는 우든 롤러코�
 STR_CPTY    :차량당 4명의 승객
 
 [SURFBRDC]
-STR_NAME    :서핑 코스터
+STR_NAME    :서핑 차량
 STR_DESC    :탑승자들이 선 자세로 낙하와 여러 특수 트랙을 즐길 수 있도록 특수하게 디자인된 안전바가 있는 넓은 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [TAXICSTR]
-STR_NAME    :옐로 택시 코스터
+STR_NAME    :옐로 택시 차량
 STR_DESC    :90m 이상의 부드러운 낙하와 상승이 가능한 거대한 강철 롤러코스터
 STR_CPTY    :차량당 4명의 승객
 
 [TGVTRAIN]
-STR_NAME    :TGV 트레인 롤러코스터
+STR_NAME    :TGV 차량
 STR_DESC    :역에서 선형 유도 모터에 의해 가속되어 꼬여있는 트랙을 빠른 속도로 통과하는 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [TIGRTWST]
-STR_NAME    :뱅갈 호랑이 롤러코스터
+STR_NAME    :뱅갈 호랑이 차량
 STR_DESC    :하트라인 트위스트에서 사용할 수 있는 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [WHICGRUB]
-STR_NAME    :애벌레 라이드
+STR_NAME    :애벌레 차량
 STR_DESC    :작은 유충 모양의 차량이 있는 롤러코스터 차량
 STR_CPTY    :차량당 2명의 승객
 
@@ -7673,37 +7692,37 @@ STR_DESC    :반대편에 균형추가 있는 지지대에 달려있어 완전�
 STR_CPTY    :승객 12명
 
 [CROCFLUM]
-STR_NAME    :악어 라이드
+STR_NAME    :악어 보트
 STR_DESC    :수로를 따라 이동하다가 긴 낙하를 지나며 물을 튀겨 탑승객을 홀딱 젖게 만드는 악어 모양의 보트
 STR_CPTY    :보트당 4명의 승객
 
 [DHOWWATR]
-STR_NAME    :다우 워터 라이드
+STR_NAME    :아랍식 보트
 STR_DESC    :탑승객이 스스로 페달을 밟는, 장식된 낚시 배
 STR_CPTY    :보트당 2명의 승객
 
 [DOLPHINR]
-STR_NAME    :돌고래 라이드
+STR_NAME    :돌고래 제트스키
 STR_DESC    :탑승객이 스스로 운전할 수 있는 돌고래 모양 단일 좌석의 제트 스키
 STR_CPTY    :차량당 1명의 탑승객
 
 [MANDARIN]
-STR_NAME    :원앙새 워터 라이드
-STR_DESC    :앞쪽 좌석의 탑승객이 페달을 직접 밟아 움직이는 백조 모양의 보트
+STR_NAME    :원앙새 보트
+STR_DESC    :앞쪽 좌석의 탑승객이 페달을 직접 밟아 움직이는 원앙새 모양의 보트
 STR_CPTY    :보트당 4명의 승객
 
 [MANTARAY]
-STR_NAME    :쥐가오리 라이드
-STR_DESC    :광폭형 수로를 따라 이동하며 컨베이어 벨트로 경사를 오른 다음, 급경사로 가속하여 탑승객을 커다란 물보라로 홀딱 젖게 만드는 대용량의 보트
+STR_NAME    :쥐가오리 보트
+STR_DESC    :쥐가오리 모양을 한 코스터 보트
 STR_CPTY    :보트당 16명의 승객
 
 [OUTRIGGR]
-STR_NAME    :아웃리거 라이드
+STR_NAME    :아웃리거 카누
 STR_DESC    :탑승객들이 스스로 페달을 밟는 긴 카누
 STR_CPTY    :카누당 2명의 승객
 
 [TUTLBOAT]
-STR_NAME    :거북이 워터 라이드
+STR_NAME    :거북이 보트
 STR_DESC    :중앙 모터에 의해 움직이며 탑승객이 조종할 수 있는 원형의 작은 보트
 STR_CPTY    :보트당 2명의 승객
 
@@ -8779,7 +8798,7 @@ STR_NAME    :원주민 평면 타일
 STR_NAME    :원주민 뱀 예술작품
 
 [1X2ABR03]
-STR_NAME    :원주민의 혼이 담긴 예수랒ㄱ품
+STR_NAME    :원주민의 혼이 담긴 예술 작품
 
 [1X2AZT01]
 STR_NAME    :머리가 있는 사원 벽 조각
@@ -9636,7 +9655,7 @@ STR_DESC    :노란 버스 테마의 모형 전차
 STR_CPTY    :차량당 10명의 승객
 
 [TELEPTER]
-STR_NAME    :텔레포터
+STR_NAME    :텔레포터 차량
 STR_DESC    :탑승객이 수직 탑을 따라 이동하는 엘리베이터에 올라타 여러 높이를 손쉽게 이동하는 놀이기구
 STR_CPTY    :승객 16명
 
@@ -9676,7 +9695,7 @@ STR_DESC    :보는 사람의 상을 왜곡시키는, 휘어진 거울이 있는
 STR_CPTY    :손님 5명
 
 [HOVERCAR]
-STR_NAME    :호버 카 라이드
+STR_NAME    :호버 카
 STR_DESC    :미래의 호버 차량같은 느낌을 주기 위해 자기 부상 기술이 탑재된 놀이기구
 STR_CPTY    :차량당 2명의 승객
 
@@ -9686,7 +9705,7 @@ STR_DESC    :나무로 조각된 말이 있는 전통적인 회전 목마
 STR_CPTY    :승객 32명
 
 [PEGASUSX]
-STR_NAME    :페가수스 라이드
+STR_NAME    :페가수스 차량
 STR_DESC    :트랙을 따라 이동하는 페가수스가 끄는 수레 모양의 차량
 STR_CPTY    :차량당 2명의 승객
 
@@ -9711,47 +9730,47 @@ STR_DESC    :거대한 루프, 트위스트와 급격한 낙하 트랙을 따라
 STR_CPTY    :차량당 4명의 승객
 
 [BATTRRAM]
-STR_NAME    :공성 망치 코스터
+STR_NAME    :공성 망치 차량
 STR_DESC    :한 줄로 된 좌석과 나선형 리프트 힐이 있는 강철 트랙 롤러코스터
 STR_CPTY    :차량당 6명의 승객
 
 [BLCKDETH]
-STR_NAME    :블랙 데스 라이드
+STR_NAME    :흑사병 차량
 STR_DESC    :반원형 트랙의 커브와 뱅킹만을 따라 이동하는 봅슬레이 모양의 차량을 타고 이리 저리 꼬여있는 트랙을 따라 내려오는 놀이기구
 STR_CPTY    :차량당 2명의 승객
 
 [CERBERUS]
-STR_NAME    :케르베로스 코스터
+STR_NAME    :케르베로스 차량
 STR_DESC    :탑승객들이 간단한 무릎 안전바만 있는 부드러운 열차에 타고 언덕을 넘으며, 많은 무중력 시간과 함께 크고 부드러운 낙하와 꼬여있는 트랙을 즐기는 놀이기구
 STR_CPTY    :차량당 4명의 승객
 
 [DRAGNFLY]
-STR_NAME    :잠자리 코스터
+STR_NAME    :잠자리 차량
 STR_DESC    :하나의 레일로 이루어진 트랙에 매달린 특수 차량에 타고 코너를 돌 때마다 이리 저리 자유롭게 흔들리는 차량
 STR_CPTY    :차량당 승객 2명
 
 [GANSTRCR]
-STR_NAME    :갱스터 카 코스터
+STR_NAME    :갱스터 차량
 STR_DESC    :역에서 선형 유도 모터에 의해 가속되어 꼬여있는 트랙을 빠른 속도로 통과하는 1920년대 테마의 갱스터 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [HARPIESX]
-STR_NAME    :하피 코스터
+STR_NAME    :하피 차량
 STR_DESC    :누운 자세로 탑승하는 특수 차량에 탑승하여 꼬인 트랙과 전이를 앞이나 뒤로 누운 자세로 즐기는 놀이기구
 STR_CPTY    :차량당 4명의 승객
 
 [HOTRODXX]
-STR_NAME    :개조 자동차 코스터
+STR_NAME    :개조 자동차 차량
 STR_DESC    :아주 짜릿한 공기 압축 방식으로 발진하여 차량이 수직 트랙을 향해 속력을 높인 뒤, 꼭대기에 다다르면 다시 수직으로 하강하며 다시 탑승장에 도착하는 놀이기구
 STR_CPTY    :차량당 2명의 승객
 
 [HOVERBKE]
-STR_NAME    :호버 바이크 라이드
+STR_NAME    :호버 바이크
 STR_DESC    :탑승객들이 미래에서 볼 만한 자전거 모양의 차량에 타고 단일 레일 트랙을 따라 이동하는 놀이기구
 STR_CPTY    :차량당 2명의 승객
 
 [HOVRBORD]
-STR_NAME    :호버보드 코스터
+STR_NAME    :호버보드
 STR_DESC    :탑승객이 미래에서 볼 만한 호버보드 위에 올라타 코너를 돌 때마다 이리 저리 자유롭게 흔들리는 차량
 STR_CPTY    :차량당 승객 2명
 
@@ -9761,27 +9780,27 @@ STR_DESC    :탑승객이 트랙의 수직 섹션을 따라 발사되는 차량�
 STR_CPTY    :차량당 8명의 승객
 
 [JETPLANE]
-STR_NAME    :제트여객기 코스터
+STR_NAME    :제트여객기 차량
 STR_DESC    :개별적인 차량이 부드러운 트위스트 낙하를 짜임새 있게 내려오는 롤러코스터
 STR_CPTY    :차량당 4명의 승객
 
 [JOUSTING]
-STR_NAME    :저스팅 나이트 코스터
+STR_NAME    :기사 차량
 STR_DESC    :단선 롤러코스터 트랙을 따라 달리는 말 모양의 차량에 탑승하는 놀이기구
 STR_CPTY    :차량당 2명의 승객
 
 [POLCHASE]
-STR_NAME    :폴리스 체이스 코스터
+STR_NAME    :경찰차 차량
 STR_DESC    :손님이 일어선 자세로 탑승하는 루핑 롤러코스터
 STR_CPTY    :차량당 4명의 승객
 
 [POLICECR]
-STR_NAME    :폴리스 카 코스터
+STR_NAME    :경찰차
 STR_DESC    :특수한 반전 섹션 위에서 앞뒤가 뒤집히는 나무 트랙 위를 운행하는 1960년대 테마의 경찰 차량
 STR_CPTY    :차량당 6명의 승객
 
 [PTERODAC]
-STR_NAME    :익룡 코스터
+STR_NAME    :익룡 차량
 STR_DESC    :탑승객에게 정말로 선사 시대를 나는 듯한 경험을 주기 위해, 트랙 밑에 달린 편안한 좌석에 앉아서 꼬여있는 트랙을 따라 움직이는 놀이기구
 STR_CPTY    :차량당 4명의 승객
 
@@ -9791,17 +9810,17 @@ STR_DESC    :단선 롤러코스터 트랙을 따라 달리는 랩터 모양의 
 STR_CPTY    :차량당 2명의 승객
 
 [SEAPLANE]
-STR_NAME    :수상비행기 라이드
+STR_NAME    :수상비행기 차량
 STR_DESC    :차량이 코너를 돌면 자유롭게 흔들거리게 만들어진 서스펜디드 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [STAMPHRD]
-STR_NAME    :공룡 무리 코스터
+STR_NAME    :공룡 무리 차량
 STR_DESC    :질주하는 공룡 무리 모습의 차량을 타고 가는 루핑 롤러 코스터
 STR_CPTY    :차량당 4명의 승객
 
 [VALKYRIE]
-STR_NAME    :발키리 코스터
+STR_NAME    :발키리 차량
 STR_DESC    :자유 낙하의 극한 경험을 선사하기 위해 완전히 수직 경사 트랙을 따라 하강하는 아주 폭이 넓은 차량
 STR_CPTY    :차량당 6명의 승객
 
@@ -9851,17 +9870,17 @@ STR_DESC    :승객들이 암흑 시대의 공성 병기를 기반으로 한 두
 STR_CPTY    :승객 8명
 
 [FLYGBOAT]
-STR_NAME    :플라잉 보트 라이드
+STR_NAME    :플라잉 보트
 STR_DESC    :비행정 모양의 차량이 꼬인 커브와 낙하로 구성된 롤러코스터 트랙을 따라 내려온 뒤 물보라를 일으키며 부드럽게 강 섹션으로 내려오는 놀이기구
 STR_CPTY    :보트당 16명의 승객
 
 [OAKBAREL]
-STR_NAME    :참나무 통 라이드
+STR_NAME    :참나무 통 보트
 STR_DESC    :구불구불한 광폭형 수로를 따라 이동하다가 폭포를 통과하면서 탑승객을 젖게 만들고, 거품 급류를 지나며 스릴을 선사하는 참나무 통 모양의 보트
 STR_CPTY    :보트당 8명의 승객
 
 [RIVRSTYX]
-STR_NAME    :스틱스 강
+STR_NAME    :스틱스 강 보트
 STR_DESC    :강 모양의 트랙을 따라 조용히 흘러가는 보트
 STR_CPTY    :보트당 4명의 승객
 
@@ -11780,7 +11799,7 @@ STR_DTLS    :인도의 왕에게서 국민들에게 즐길 거리를 만들어�
 <Australasia - Ayers Rock>
 STR_SCNR    :오스트레일리아 - 에어즈 록
 STR_PARK    :에어즈 어드벤처
-STR_DTLS    :오스트레일리아 원주민들을 도와 공원을 문화 인식 프로그램의 일환으로 개발하려 합니다. 원주민들의 독특한 문화유산을 알리기 위해 많은 관광객을 모아야 합니다.
+STR_DTLS    :문화 인식 프로그램의 일환으로, 오스트레일리아 원주민들을 도와서 공원을 개발하려 합니다. 원주민들의 독특한 문화유산을 알리기 위해 많은 관광객을 모아야 합니다.
 
 <Australasia - Fun at the Beach>
 STR_SCNR    :오스트레일리아 - 해변의 즐거움
@@ -11899,3 +11918,11 @@ STR_DTLS    :매년 열리는 대형 음악 축제가 당신의 땅에서 열립
 STR_SCNR    :로큰롤 - 로큰롤
 STR_PARK    :로큰롤 부흥
 STR_DTLS    :이 오래된 놀이공원은 더 나은 미래를 기대하고 있습니다. 소유자를 도와 이 공원을 복고풍의 로큰롤 공원으로 바꾸어 성공적인 장소로 변모시켜보세요.
+
+###############################################################################
+## Official Custom Content Scenarios
+###############################################################################
+<Panda World>
+STR_SCNR    :판다 월드
+STR_PARK    :판다 월드
+STR_DTLS    :이 판다 테마의 공원에 놀이기구를 더 지어서 손님들을 더 끌어모으세요.

@@ -37,7 +37,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
 
     uint8 is_exit = tile_element->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
 
-    if (gTrackDesignSaveMode) {
+    if (gTrackDesignSaveMode || (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)) {
         if (tile_element->properties.entrance.ride_index != gTrackDesignSaveRideIndex)
             return;
     }
@@ -98,6 +98,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
     else{
         image_id |= style->sprite_index + direction;
     }
+
     // Format modified to stop repeated code
 
     // Each entrance is split into 2 images for drawing
@@ -186,7 +187,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
  *  rct2: 0x006658ED
  */
 static void park_entrance_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* tile_element){
-    if (gTrackDesignSaveMode)
+    if (gTrackDesignSaveMode || (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
 
 #ifdef __ENABLE_LIGHTFX__

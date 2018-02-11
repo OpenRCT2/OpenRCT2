@@ -22,7 +22,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/interface/themes.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/NewsItem.h>
@@ -67,6 +67,8 @@ static rct_widget window_game_bottom_toolbar_widgets[] =
     { WWT_FLATBTN,  0,  500,   637,    2,   13,   0xFFFFFFFF,   STR_NONE }, // Date
     { WIDGETS_END },
 };
+
+uint8 gToolbarDirtyFlags;
 
 static void window_game_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);

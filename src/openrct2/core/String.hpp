@@ -71,16 +71,6 @@ namespace String
     utf8 * DiscardDuplicate(utf8 * * ptr, const utf8 * replacement);
 
     /**
-     * Creates a new string containing the characters between index and the end of the input string.
-     */
-    utf8 * Substring(const utf8 * buffer, size_t index);
-
-    /**
-     * Creates a new string containing the characters between index and index + size of the input string.
-     */
-    utf8 * Substring(const utf8 * buffer, size_t index, size_t size);
-
-    /**
      * Splits the given string by a delimiter and returns the values as a new string array.
      * @returns the number of values.
      */

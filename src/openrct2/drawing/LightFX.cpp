@@ -29,9 +29,6 @@
 #include "Drawing.h"
 #include "LightFX.h"
 
-extern "C"
-{
-
 static uint8 _bakedLightTexture_lantern_0[32*32];
 static uint8 _bakedLightTexture_lantern_1[64*64];
 static uint8 _bakedLightTexture_lantern_2[128*128];
@@ -456,10 +453,11 @@ void lightfx_update_viewport_settings()
 {
     rct_window *mainWindow = window_get_main();
     if (mainWindow) {
-        _current_view_x_back = mainWindow->viewport->view_x;
-        _current_view_y_back = mainWindow->viewport->view_y;
+        rct_viewport * viewport = window_get_viewport(mainWindow);
+        _current_view_x_back = viewport->view_x;
+        _current_view_y_back = viewport->view_y;
         _current_view_rotation_back = get_current_rotation();
-        _current_view_zoom_back = mainWindow->viewport->zoom;
+        _current_view_zoom_back = viewport->zoom;
     }
 }
 
@@ -1015,8 +1013,6 @@ void lightfx_render_to_texture(
             *dst++ = colour;
         }
     }
-}
-
 }
 
 #endif // __ENABLE_LIGHTFX__

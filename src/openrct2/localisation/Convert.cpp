@@ -20,7 +20,7 @@
 
 sint32 rct2_to_utf8(utf8 *dst, const char *src)
 {
-    sint32 codepoint;
+    wchar_t codepoint;
 
     utf8 *start = dst;
     const char *ch = src;
@@ -78,7 +78,7 @@ static wchar_t encoding_convert_x_to_unicode(wchar_t code, const encoding_conver
     else return entry->unicode;
 }
 
-wchar_t encoding_convert_unicode_to_rct2(wchar_t unicode)
+uint32 encoding_convert_unicode_to_rct2(uint32 unicode)
 {
     // Can't do a binary search as it's sorted by RCT2 code, not unicode
     for (uint32 i = 0; i < Util::CountOf(RCT2ToUnicodeTable); i++) {

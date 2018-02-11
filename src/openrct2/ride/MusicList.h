@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <vector>
 #include "../audio/audio.h"
 #include "../common.h"
 
@@ -69,13 +70,4 @@ enum
     TUNE_SWEAT_DREAMS,                              // 45, (sic)
 };
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
-extern uint8 * gRideMusicStyleTuneIds[];
-
-#ifdef __cplusplus
-}
-#endif
+extern std::vector<uint8> gRideMusicStyleTuneIds[];

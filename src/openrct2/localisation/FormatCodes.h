@@ -17,16 +17,8 @@
 #ifndef _FORMAT_CODES_H_
 #define _FORMAT_CODES_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 uint32 format_get_code(const char *token);
 const char *format_get_token(uint32 code);
-
-#ifdef __cplusplus
-}
-#endif
 
 enum {
     // Font format codes
@@ -107,6 +99,7 @@ enum {
     FORMAT_COLOUR_CODE_END = FORMAT_PALESILVER,
 
     // Extra non-ASCII characters
+    FORMAT_INVERTEDEXCLAMATION = 161,
     FORMAT_POUND = 163,
     FORMAT_YEN = 165,
     FORMAT_COPYRIGHT = 169,
@@ -136,11 +129,11 @@ enum {
     FORMAT_TICK = 10003,
     FORMAT_CROSS = 10005,
 
+    FORMAT_SYMBOL_RAILWAY = 128740,
+    FORMAT_SYMBOL_ROAD = 128739,
+    FORMAT_SYMBOL_FLAG = 128681,
+
     // Format codes that need suitable Unicode allocations
-    FORMAT_SYMBOL_i = 20000,
-    FORMAT_SYMBOL_RAILWAY = 20001,
-    FORMAT_SYMBOL_ROAD = 20002,
-    FORMAT_SYMBOL_FLAG = 20003,
     FORMAT_COMMA1DP16 = 20004
 };
 

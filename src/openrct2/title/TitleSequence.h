@@ -83,34 +83,24 @@ enum TITLE_SCRIPT
     TITLE_SCRIPT_LOADSC,
 };
 
-#ifdef __cplusplus
-    constexpr const utf8 *  TITLE_SEQUENCE_EXTENSION = ".parkseq";
-    constexpr uint8         SAVE_INDEX_INVALID = UINT8_MAX;
-#else
-    #define                 SAVE_INDEX_INVALID   UINT8_MAX
-#endif
+constexpr const utf8 *  TITLE_SEQUENCE_EXTENSION = ".parkseq";
+constexpr uint8         SAVE_INDEX_INVALID = UINT8_MAX;
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    TitleSequence * CreateTitleSequence();
-    TitleSequence * LoadTitleSequence(const utf8 * path);
-    void FreeTitleSequence(TitleSequence * seq);
+TitleSequence * CreateTitleSequence();
+TitleSequence * LoadTitleSequence(const utf8 * path);
+void FreeTitleSequence(TitleSequence * seq);
 
-    TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t index);
+TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t index);
 
-    /**
-     * Close a title sequence park handle.
-     * The pointer to the handle is invalid after calling this function.
-     */
-    void TitleSequenceCloseParkHandle(TitleSequenceParkHandle * handle);
-    bool TitleSequenceSave(TitleSequence * seq);
-    bool TitleSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name);
-    bool TitleSequenceRenamePark(TitleSequence * seq, size_t index, const utf8 * name);
-    bool TitleSequenceRemovePark(TitleSequence * seq, size_t index);
+/**
+ * Close a title sequence park handle.
+ * The pointer to the handle is invalid after calling this function.
+ */
+void TitleSequenceCloseParkHandle(TitleSequenceParkHandle * handle);
+bool TitleSequenceSave(TitleSequence * seq);
+bool TitleSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name);
+bool TitleSequenceRenamePark(TitleSequence * seq, size_t index, const utf8 * name);
+bool TitleSequenceRemovePark(TitleSequence * seq, size_t index);
 
-    bool TitleSequenceIsLoadCommand(const TitleCommand * command);
-#ifdef __cplusplus
-}
-#endif
+bool TitleSequenceIsLoadCommand(const TitleCommand * command);
+

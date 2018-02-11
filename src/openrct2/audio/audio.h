@@ -18,11 +18,6 @@
 
 #include "../common.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 #define AUDIO_DEVICE_NAME_SIZE      256
 #define AUDIO_MAX_RIDE_MUSIC        2
 #define AUDIO_MAX_VEHICLE_SOUNDS    14
@@ -168,7 +163,7 @@ extern void *   gTitleMusicChannel;
 extern void *   gRainSoundChannel;
 
 extern rct_ride_music           gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
-extern rct_ride_music_info *    gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS];
+extern rct_ride_music_info      gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS];
 extern rct_ride_music_params    gRideMusicParamsList[6];
 extern rct_ride_music_params *  gRideMusicParamsListEnd;
 
@@ -258,7 +253,3 @@ void audio_toggle_all_sounds();
 void audio_unpause_sounds();
 
 void audio_stop_all_music_and_sounds();
-
-#ifdef __cplusplus
-}
-#endif

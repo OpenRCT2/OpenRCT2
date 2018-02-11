@@ -14,6 +14,7 @@
 *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include <exception>
 #include <memory>
 #include <string>
@@ -38,7 +39,7 @@
 #include "object/ObjectRepository.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
-#include "platform/crash.h"
+#include "platform/Crash.h"
 #include "PlatformEnvironment.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/ScenarioRepository.h"
@@ -380,8 +381,16 @@ namespace OpenRCT2
 
         bool LoadParkFromFile(const std::string &path, bool loadTitleScreenOnFail) final override
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
-            return LoadParkFromStream(&fs, path, loadTitleScreenOnFail);
+            try
+            {
+                auto fs = FileStream(path, FILE_MODE_OPEN);
+                return LoadParkFromStream(&fs, path, loadTitleScreenOnFail);
+            }
+            catch (const std::exception &e)
+            {
+                Console::Error::WriteLine(e.what());
+            }
+            return false;
         }
 
         bool LoadParkFromStream(IStream * stream, const std::string &path, bool loadTitleScreenFirstOnFail) final override
@@ -445,7 +454,7 @@ namespace OpenRCT2
                         }
                         else
                         {
-                            handle_park_load_failure_with_title_opt(&result, path.c_str(), loadTitleScreenFirstOnFail);
+                            handle_park_load_failure_with_title_opt(&result, path, loadTitleScreenFirstOnFail);
                         }
                     }
                     catch (const std::exception &e)
@@ -492,19 +501,12 @@ namespace OpenRCT2
             return result;
         }
 
-        bool LoadBaseGraphics()
+        void LoadBaseGraphics()
         {
-            if (!gfx_load_g1(_env))
-            {
-                return false;
-            }
-            if (!gfx_load_g2())
-            {
-                return false;
-            }
+            gfx_load_g1(_env);
+            gfx_load_g2();
             gfx_load_csg();
             font_sprite_initialise_characters();
-            return true;
         }
 
         /**
@@ -757,7 +759,7 @@ namespace OpenRCT2
             uint32 currentUpdateTick = platform_get_ticks();
             gTicksSinceLastUpdate = std::min<uint32>(currentUpdateTick - _lastUpdateTick, 500);
             _lastUpdateTick = currentUpdateTick;
-            
+
             if (game_is_not_paused())
             {
                 gPaletteEffectFrame += gTicksSinceLastUpdate;
@@ -882,283 +884,293 @@ namespace OpenRCT2
     }
 }
 
-extern "C"
+void context_init()
 {
-    void context_init()
-    {
-        GetContext()->GetUiContext()->GetWindowManager()->Init();
-    }
+    GetContext()->GetUiContext()->GetWindowManager()->Init();
+}
 
-    bool context_load_park_from_file(const utf8 * path)
-    {
-        return GetContext()->LoadParkFromFile(path);
-    }
+bool context_load_park_from_file(const utf8 * path)
+{
+    return GetContext()->LoadParkFromFile(path);
+}
 
-    bool context_load_park_from_stream(void * stream)
-    {
-        return GetContext()->LoadParkFromStream((IStream*)stream, "");
-    }
+bool context_load_park_from_stream(void * stream)
+{
+    return GetContext()->LoadParkFromStream((IStream*)stream, "");
+}
 
-    void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize)
-    {
-        String::Set(buffer, bufferSize, gVersionInfoFull);
-    }
+void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize)
+{
+    String::Set(buffer, bufferSize, gVersionInfoFull);
+}
 
-    void openrct2_finish()
-    {
-        GetContext()->Finish();
-    }
+void openrct2_finish()
+{
+    GetContext()->Finish();
+}
 
-    void context_setcurrentcursor(sint32 cursor)
-    {
-        GetContext()->GetUiContext()->SetCursor((CURSOR_ID)cursor);
-    }
+void context_setcurrentcursor(sint32 cursor)
+{
+    GetContext()->GetUiContext()->SetCursor((CURSOR_ID)cursor);
+}
 
-    void context_update_cursor_scale()
-    {
-        GetContext()->GetUiContext()->SetCursorScale(static_cast<uint8>(round(gConfigGeneral.window_scale)));
-    }
+void context_update_cursor_scale()
+{
+    GetContext()->GetUiContext()->SetCursorScale(static_cast<uint8>(round(gConfigGeneral.window_scale)));
+}
 
-    void context_hide_cursor()
-    {
-        GetContext()->GetUiContext()->SetCursorVisible(false);
-    }
+void context_hide_cursor()
+{
+    GetContext()->GetUiContext()->SetCursorVisible(false);
+}
 
-    void context_show_cursor()
-    {
-        GetContext()->GetUiContext()->SetCursorVisible(true);
-    }
+void context_show_cursor()
+{
+    GetContext()->GetUiContext()->SetCursorVisible(true);
+}
 
-    void context_get_cursor_position(sint32 * x, sint32 * y)
-    {
-        GetContext()->GetUiContext()->GetCursorPosition(x, y);
-    }
+void context_get_cursor_position(sint32 * x, sint32 * y)
+{
+    GetContext()->GetUiContext()->GetCursorPosition(x, y);
+}
 
-    void context_get_cursor_position_scaled(sint32 * x, sint32 * y)
-    {
-        context_get_cursor_position(x, y);
+void context_get_cursor_position_scaled(sint32 * x, sint32 * y)
+{
+    context_get_cursor_position(x, y);
 
-        // Compensate for window scaling.
-        *x = (sint32)ceilf(*x / gConfigGeneral.window_scale);
-        *y = (sint32)ceilf(*y / gConfigGeneral.window_scale);
-    }
+    // Compensate for window scaling.
+    *x = (sint32)ceilf(*x / gConfigGeneral.window_scale);
+    *y = (sint32)ceilf(*y / gConfigGeneral.window_scale);
+}
 
-    void context_set_cursor_position(sint32 x, sint32 y)
-    {
-        GetContext()->GetUiContext()->SetCursorPosition(x, y);
-    }
+void context_set_cursor_position(sint32 x, sint32 y)
+{
+    GetContext()->GetUiContext()->SetCursorPosition(x, y);
+}
 
-    const CursorState * context_get_cursor_state()
-    {
-        return GetContext()->GetUiContext()->GetCursorState();
-    }
+const CursorState * context_get_cursor_state()
+{
+    return GetContext()->GetUiContext()->GetCursorState();
+}
 
-    const uint8 * context_get_keys_state()
-    {
-        return GetContext()->GetUiContext()->GetKeysState();
-    }
+const uint8 * context_get_keys_state()
+{
+    return GetContext()->GetUiContext()->GetKeysState();
+}
 
-    const uint8 * context_get_keys_pressed()
-    {
-        return GetContext()->GetUiContext()->GetKeysPressed();
-    }
+const uint8 * context_get_keys_pressed()
+{
+    return GetContext()->GetUiContext()->GetKeysPressed();
+}
 
-    TextInputSession * context_start_text_input(utf8 * buffer, size_t maxLength)
-    {
-        return GetContext()->GetUiContext()->StartTextInput(buffer, maxLength);
-    }
+TextInputSession * context_start_text_input(utf8 * buffer, size_t maxLength)
+{
+    return GetContext()->GetUiContext()->StartTextInput(buffer, maxLength);
+}
 
-    void context_stop_text_input()
-    {
-        GetContext()->GetUiContext()->StopTextInput();
-    }
+void context_stop_text_input()
+{
+    GetContext()->GetUiContext()->StopTextInput();
+}
 
-    bool context_is_input_active()
-    {
-        return GetContext()->GetUiContext()->IsTextInputActive();
-    }
+bool context_is_input_active()
+{
+    return GetContext()->GetUiContext()->IsTextInputActive();
+}
 
-    void context_trigger_resize()
-    {
-        return GetContext()->GetUiContext()->TriggerResize();
-    }
+void context_trigger_resize()
+{
+    return GetContext()->GetUiContext()->TriggerResize();
+}
 
-    void context_set_fullscreen_mode(sint32 mode)
-    {
-        return GetContext()->GetUiContext()->SetFullscreenMode((FULLSCREEN_MODE)mode);
-    }
+void context_set_fullscreen_mode(sint32 mode)
+{
+    return GetContext()->GetUiContext()->SetFullscreenMode((FULLSCREEN_MODE)mode);
+}
 
-    void context_recreate_window()
-    {
-        GetContext()->GetUiContext()->RecreateWindow();
-    }
+void context_recreate_window()
+{
+    GetContext()->GetUiContext()->RecreateWindow();
+}
 
-    sint32 context_get_resolutions(Resolution * * outResolutions)
-    {
-        auto resolutions = GetContext()->GetUiContext()->GetFullscreenResolutions();
-        sint32 count = (sint32)resolutions.size();
-        *outResolutions = Memory::AllocateArray<Resolution>(count);
-        Memory::CopyArray(*outResolutions, resolutions.data(), count);
-        return count;
-    }
+sint32 context_get_resolutions(Resolution * * outResolutions)
+{
+auto resolutions = GetContext()->GetUiContext()->GetFullscreenResolutions();
+sint32 count = (sint32)resolutions.size();
+*outResolutions = Memory::AllocateArray<Resolution>(count);
+std::copy_n(resolutions.begin(), count, *outResolutions);
+return count;
+}
 
-    sint32 context_get_width()
-    {
-        return GetContext()->GetUiContext()->GetWidth();
-    }
+sint32 context_get_width()
+{
+    return GetContext()->GetUiContext()->GetWidth();
+}
 
-    sint32 context_get_height()
-    {
-        return GetContext()->GetUiContext()->GetHeight();
-    }
+sint32 context_get_height()
+{
+    return GetContext()->GetUiContext()->GetHeight();
+}
 
-    bool context_has_focus()
-    {
-        return GetContext()->GetUiContext()->HasFocus();
-    }
+bool context_has_focus()
+{
+    return GetContext()->GetUiContext()->HasFocus();
+}
 
-    void context_set_cursor_trap(bool value)
-    {
-        GetContext()->GetUiContext()->SetCursorTrap(value);
-    }
+void context_set_cursor_trap(bool value)
+{
+    GetContext()->GetUiContext()->SetCursorTrap(value);
+}
 
-    rct_window * context_open_window(rct_windowclass wc)
-    {
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-        return windowManager->OpenWindow(wc);
-    }
+rct_window * context_open_window(rct_windowclass wc)
+{
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    return windowManager->OpenWindow(wc);
+}
 
-    rct_window * context_open_window_view(rct_windowclass wc)
-    {
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-        return windowManager->OpenView(wc);
-    }
+rct_window * context_open_window_view(rct_windowclass wc)
+{
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    return windowManager->OpenView(wc);
+}
 
-    rct_window * context_open_detail_window(uint8 type, sint32 id)
-    {
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-        return windowManager->OpenDetails(type, id);
-    }
+rct_window * context_open_detail_window(uint8 type, sint32 id)
+{
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    return windowManager->OpenDetails(type, id);
+}
 
-    rct_window * context_open_intent(Intent * intent)
-    {
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-        return windowManager->OpenIntent(intent);
-    }
+rct_window * context_open_intent(Intent * intent)
+{
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    return windowManager->OpenIntent(intent);
+}
 
-    void context_broadcast_intent(Intent * intent)
-    {
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-        windowManager->BroadcastIntent(*intent);
-    }
+void context_broadcast_intent(Intent * intent)
+{
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    windowManager->BroadcastIntent(*intent);
+}
 
-    void context_force_close_window_by_class(rct_windowclass windowClass)
-    {
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-        windowManager->ForceClose(windowClass);
-    }
+void context_force_close_window_by_class(rct_windowclass windowClass)
+{
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    windowManager->ForceClose(windowClass);
+}
 
-    rct_window * context_show_error(rct_string_id title, rct_string_id message)
-    {
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-        return windowManager->ShowError(title, message);
-    }
+rct_window * context_show_error(rct_string_id title, rct_string_id message)
+{
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    return windowManager->ShowError(title, message);
+}
 
-    void context_update_map_tooltip()
-    {
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-        windowManager->UpdateMapTooltip();
-    }
+void context_update_map_tooltip()
+{
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    windowManager->UpdateMapTooltip();
+}
 
-    void context_handle_input()
-    {
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-        windowManager->HandleInput();
-    }
+void context_handle_input()
+{
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    windowManager->HandleInput();
+}
 
-    void context_input_handle_keyboard(bool isTitle)
-    {
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-        windowManager->HandleKeyboard(isTitle);
-    }
+void context_input_handle_keyboard(bool isTitle)
+{
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    windowManager->HandleKeyboard(isTitle);
+}
 
-    bool context_read_bmp(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const utf8 * path)
-    {
-        return GetContext()->GetUiContext()->ReadBMP(outPixels, outWidth, outHeight, std::string(path));
-    }
+bool context_read_bmp(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const utf8 * path)
+{
+    return GetContext()->GetUiContext()->ReadBMP(outPixels, outWidth, outHeight, std::string(path));
+}
 
-    void context_quit()
-    {
-        GetContext()->Quit();
-    }
+void context_quit()
+{
+    GetContext()->Quit();
+}
 
-    const utf8 * context_get_path_legacy(sint32 pathId)
-    {
-        static utf8 result[MAX_PATH];
-        auto path = GetContext()->GetPathLegacy(pathId);
-        String::Set(result, sizeof(result), path.c_str());
-        return result;
-    }
+const utf8 * context_get_path_legacy(sint32 pathId)
+{
+    static utf8 result[MAX_PATH];
+    auto path = GetContext()->GetPathLegacy(pathId);
+    String::Set(result, sizeof(result), path.c_str());
+    return result;
+}
 
-    bool platform_open_common_file_dialog(utf8 * outFilename, file_dialog_desc * desc, size_t outSize)
+bool platform_open_common_file_dialog(utf8 * outFilename, file_dialog_desc * desc, size_t outSize)
+{
+    try
     {
-        try
+        FileDialogDesc desc2;
+        desc2.Type = (FILE_DIALOG_TYPE)desc->type;
+        desc2.Title = String::ToStd(desc->title);
+        desc2.InitialDirectory = String::ToStd(desc->initial_directory);
+        desc2.DefaultFilename = String::ToStd(desc->default_filename);
+        for (const auto &filter : desc->filters)
         {
-            FileDialogDesc desc2;
-            desc2.Type = (FILE_DIALOG_TYPE)desc->type;
-            desc2.Title = String::ToStd(desc->title);
-            desc2.InitialDirectory = String::ToStd(desc->initial_directory);
-            desc2.DefaultFilename = String::ToStd(desc->default_filename);
-            for (const auto &filter : desc->filters)
+            if (filter.name != nullptr)
             {
-                if (filter.name != nullptr)
-                {
-                    desc2.Filters.push_back({ String::ToStd(filter.name), String::ToStd(filter.pattern) });
-                }
+                desc2.Filters.push_back({ String::ToStd(filter.name), String::ToStd(filter.pattern) });
             }
-            std::string result = GetContext()->GetUiContext()->ShowFileDialog(desc2);
-            String::Set(outFilename, outSize, result.c_str());
-            return !result.empty();
         }
-        catch (const std::exception &ex)
-        {
-            log_error(ex.what());
-            outFilename[0] = '\0';
-            return false;
-        }
+        std::string result = GetContext()->GetUiContext()->ShowFileDialog(desc2);
+        String::Set(outFilename, outSize, result.c_str());
+        return !result.empty();
     }
-
-    utf8 * platform_open_directory_browser(const utf8 * title)
+    catch (const std::exception &ex)
     {
-        try
-        {
-            std::string result = GetContext()->GetUiContext()->ShowDirectoryDialog(title);
-            return String::Duplicate(result.c_str());
-        }
-        catch (const std::exception &ex)
-        {
-            log_error(ex.what());
-            return nullptr;
-        }
-    }
-
-    bool platform_place_string_on_clipboard(utf8* target)
-    {
-        return GetContext()->GetUiContext()->SetClipboardText(target);
-    }
-
-    /**
-     * This function is deprecated.
-     * Use IPlatformEnvironment instad.
-     */
-    void platform_get_user_directory(utf8 * outPath, const utf8 * subDirectory, size_t outSize)
-    {
-        auto env = GetContext()->GetPlatformEnvironment();
-        auto path = env->GetDirectoryPath(DIRBASE::USER);
-        if (!String::IsNullOrEmpty(subDirectory))
-        {
-            path = Path::Combine(path, subDirectory);
-        }
-        String::Set(outPath, outSize, path.c_str());
+        log_error(ex.what());
+        outFilename[0] = '\0';
+        return false;
     }
 }
+
+utf8 * platform_open_directory_browser(const utf8 * title)
+{
+    try
+    {
+        std::string result = GetContext()->GetUiContext()->ShowDirectoryDialog(title);
+        return String::Duplicate(result.c_str());
+    }
+    catch (const std::exception &ex)
+    {
+        log_error(ex.what());
+        return nullptr;
+    }
+}
+
+bool platform_place_string_on_clipboard(utf8* target)
+{
+    return GetContext()->GetUiContext()->SetClipboardText(target);
+}
+
+/**
+ * This function is deprecated.
+ * Use IPlatformEnvironment instad.
+ */
+void platform_get_user_directory(utf8 * outPath, const utf8 * subDirectory, size_t outSize)
+{
+    auto env = GetContext()->GetPlatformEnvironment();
+    auto path = env->GetDirectoryPath(DIRBASE::USER);
+    if (!String::IsNullOrEmpty(subDirectory))
+    {
+        path = Path::Combine(path, subDirectory);
+    }
+    String::Set(outPath, outSize, path.c_str());
+}
+
+/**
+ * This function is deprecated.
+ * Use IPlatformEnvironment instad.
+ */
+void platform_get_openrct_data_path(utf8 * outPath, size_t outSize)
+{
+    auto env = GetContext()->GetPlatformEnvironment();
+    auto path = env->GetDirectoryPath(DIRBASE::OPENRCT2);
+    String::Set(outPath, outSize, path.c_str());
+}
+
+

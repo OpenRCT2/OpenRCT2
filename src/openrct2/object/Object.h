@@ -17,13 +17,8 @@
 #pragma once
 
 #include "../common.h"
-
-#ifdef __cplusplus
-
 #include "ImageTable.h"
 #include "StringTable.h"
-
-#endif
 
 // First 0xF of rct_object_entry->flags
 typedef enum
@@ -62,6 +57,10 @@ typedef enum
     OBJECT_SOURCE_CUSTOM,
     OBJECT_SOURCE_WACKY_WORLDS,
     OBJECT_SOURCE_TIME_TWISTER,
+    OBJECT_SOURCE_OPENRCT2_OFFICIAL,
+    OBJECT_SOURCE_RCT1,
+    OBJECT_SOURCE_ADDED_ATTRACTIONS,
+    OBJECT_SOURCE_LOOPY_LANDSCAPES,
     OBJECT_SOURCE_RCT2 = 8
 } OBJECT_SOURCE_GAME;
 
@@ -77,8 +76,14 @@ typedef struct rct_object_entry {
         uint8 end_flag; // needed not to read past allocated buffer.
         uint32 flags;
     };
-    char name[8];
-    uint32 checksum;
+    union {
+        char nameWOC[12];
+        struct {
+            char name[8];
+            uint32 checksum;
+        };
+    };
+
 } rct_object_entry;
 assert_struct_size(rct_object_entry, 0x10);
 
@@ -120,8 +125,6 @@ typedef struct rct_object_filters {
 } rct_object_filters;
 assert_struct_size(rct_object_filters, 3);
 #pragma pack(pop)
-
-#ifdef __cplusplus
 
 enum OBJ_STRING_ID
 {
@@ -166,6 +169,12 @@ protected:
     std::string         GetOverrideString(uint8 index) const;
     std::string         GetString(uint8 index) const;
 
+    void                SetSourceGame(const uint8 sourceGame);
+    bool                IsRCT1Object();
+    bool                IsAAObject();
+    bool                IsLLObject();
+    bool                IsOpenRCT2OfficialObject();
+
 public:
     explicit Object(const rct_object_entry &entry);
     virtual ~Object();
@@ -206,31 +215,20 @@ enum OBJECT_ERROR : uint32
     OBJECT_ERROR_UNEXPECTED_EOF,
 };
 
-#endif
+extern sint32 object_entry_group_counts[];
+extern sint32 object_entry_group_encoding[];
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-    
-    extern sint32 object_entry_group_counts[];
-    extern sint32 object_entry_group_encoding[];
-    
-    extern const rct_object_entry_group object_entry_groups[];
-    
-    void object_list_load();
-    
-    bool object_entry_is_empty(const rct_object_entry *entry);
-    bool object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
-    sint32 object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength);
-    bool find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
-    void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
-    
-    const rct_object_entry * object_list_find_by_name(const char *name);
-    const rct_object_entry * object_list_find(rct_object_entry *entry);
-    
-    void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);
-    
-#ifdef __cplusplus
-}
-#endif
+extern const rct_object_entry_group object_entry_groups[];
 
+void object_list_load();
+
+bool object_entry_is_empty(const rct_object_entry *entry);
+bool object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
+sint32 object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength);
+bool find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
+void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
+
+const rct_object_entry * object_list_find_by_name(const char *name);
+const rct_object_entry * object_list_find(rct_object_entry *entry);
+
+void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);

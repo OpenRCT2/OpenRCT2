@@ -14,23 +14,21 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <openrct2-ui/windows/Window.h>
-
+#include <vector>
 #include <openrct2/audio/audio.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
-#include <openrct2/core/Memory.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/Editor.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/rct1/RCT1.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
-#include <vector>
+#include <openrct2-ui/windows/Window.h>
 
 enum {
     WIDX_BACKGROUND,
@@ -108,13 +106,12 @@ static rct_window_event_list window_track_list_events = {
 
 ride_list_item _window_track_list_item;
 
-static track_design_file_ref * _trackDesigns                         = nullptr;
-static size_t                  _trackDesignsCount                    = 0;
+static std::vector<track_design_file_ref> _trackDesigns;
 static utf8                    _filterString[USER_STRING_MAX_LENGTH];
 static std::vector<uint16>     _filteredTrackIds;
 static uint16                  _loadedTrackDesignIndex;
 static rct_track_td6         * _loadedTrackDesign;
-static uint8                 * _trackDesignPreviewPixels;
+static std::vector<uint8>      _trackDesignPreviewPixels;
 
 static void track_list_load_designs(ride_list_item item);
 static bool track_list_load_design_for_preview(utf8 *path);
@@ -171,7 +168,7 @@ rct_window * window_track_list_open(ride_list_item item)
 
     // Start with first track highlighted
     w->selected_list_item = 0;
-    if (_trackDesignsCount != 0 && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
+    if (_trackDesigns.size() != 0 && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
         w->selected_list_item = 1;
     }
 
@@ -179,7 +176,7 @@ rct_window * window_track_list_open(ride_list_item item)
     window_push_others_right(w);
     _currentTrackPieceDirection = 2;
 
-    _trackDesignPreviewPixels = Memory::AllocateArray<uint8>(4 * TRACK_PREVIEW_IMAGE_SIZE);
+    _trackDesignPreviewPixels.resize(4 * TRACK_PREVIEW_IMAGE_SIZE);
 
     _loadedTrackDesign = nullptr;
     _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
@@ -194,7 +191,7 @@ static void window_track_list_filter_list()
     // Nothing to filter, so fill the list with all indices
     if (String::LengthOf(_filterString) == 0)
     {
-        for (uint16 i = 0; i < _trackDesignsCount; i++)
+        for (uint16 i = 0; i < _trackDesigns.size(); i++)
             _filteredTrackIds.push_back(i);
 
         return;
@@ -207,7 +204,7 @@ static void window_track_list_filter_list()
         filterStringLower[i] = (utf8)tolower(filterStringLower[i]);
 
     // Fill the set with indices for tracks that match the filter
-    for (uint16 i = 0; i < _trackDesignsCount; i++)
+    for (uint16 i = 0; i < _trackDesigns.size(); i++)
     {
         utf8 trackNameLower[USER_STRING_MAX_LENGTH];
         String::Set(trackNameLower, sizeof(trackNameLower), _trackDesigns[i].name);
@@ -230,15 +227,16 @@ static void window_track_list_close(rct_window *w)
     // Dispose track design and preview
     track_design_dispose(_loadedTrackDesign);
     _loadedTrackDesign = nullptr;
-    SafeFree(_trackDesignPreviewPixels);
+    _trackDesignPreviewPixels.clear();
+    _trackDesignPreviewPixels.shrink_to_fit();
 
     // Dispose track list
-    for (size_t i = 0; i < _trackDesignsCount; i++) {
-        free(_trackDesigns[i].name);
-        free(_trackDesigns[i].path);
+    for (auto &trackDesign : _trackDesigns)
+    {
+        free(trackDesign.name);
+        free(trackDesign.path);
     }
-    SafeFree(_trackDesigns);
-    _trackDesignsCount = 0;
+    _trackDesigns.clear();
 
     // If gScreenAge is zero, we're already in the process
     // of loading the track manager, so we shouldn't try
@@ -501,7 +499,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     sint32 listItemIndex = w->selected_list_item;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
-        if (_trackDesignsCount == 0 || listItemIndex == -1)
+        if (_trackDesigns.size() == 0 || listItemIndex == -1)
             return;
     }
     else {
@@ -538,7 +536,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
 
     rct_g1_element g1temp = { nullptr };
-    g1temp.offset = _trackDesignPreviewPixels + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
+    g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
     g1temp.width = 370;
     g1temp.height = 217;
     g1temp.flags = G1_FLAG_BMP;
@@ -684,7 +682,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
     sint32 y = 0;
     size_t listIndex = 0;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
-        if (_trackDesignsCount == 0) {
+        if (_trackDesigns.size() == 0) {
             // No track designs
             gfx_draw_string_left(dpi, STR_NO_TRACK_DESIGNS_OF_THIS_TYPE, nullptr, COLOUR_BLACK, x, y - 1);
             return;
@@ -735,6 +733,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 static void track_list_load_designs(ride_list_item item)
 {
+    auto repo = GetTrackDesignRepository();
     if (!RideGroupManager::RideTypeHasRideGroups(item.type))
     {
         char entry[9];
@@ -747,13 +746,14 @@ static void track_list_load_designs(ride_list_item item)
                 entryPtr = entry;
             }
         }
-        _trackDesignsCount = track_repository_get_items_for_ride(&_trackDesigns, item.type, entryPtr);
+
+        _trackDesigns = repo->GetItemsForObjectEntry(item.type, String::ToStd(entryPtr));
     }
     else
     {
-        rct_ride_entry *rideEntry = get_ride_entry(item.entry_index);
-        const RideGroup * rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
-        _trackDesignsCount = track_repository_get_items_for_ride_group(&_trackDesigns, item.type, rideGroup);
+        auto rideEntry = get_ride_entry(item.entry_index);
+        auto rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
+        _trackDesigns = repo->GetItemsForRideGroup(item.type, rideGroup);
     }
 
     window_track_list_filter_list();
@@ -767,7 +767,7 @@ static bool track_list_load_design_for_preview(utf8 *path)
 
     _loadedTrackDesign = track_design_open(path);
     if (_loadedTrackDesign != nullptr && drawing_engine_get_type() != DRAWING_ENGINE_OPENGL) {
-        track_design_draw_preview(_loadedTrackDesign, _trackDesignPreviewPixels);
+        track_design_draw_preview(_loadedTrackDesign, _trackDesignPreviewPixels.data());
         return true;
     }
     return false;

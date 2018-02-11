@@ -42,22 +42,23 @@ RUN    echo "[mingw-w64]" >> /etc/pacman.conf \
 # Install MingW packages
 RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-binutils \
-        mingw-w64-crt \
-        mingw-w64-gcc \
-        mingw-w64-headers \
-        mingw-w64-winpthreads \
+        mingw-w64-boost \
         mingw-w64-cmake \
+        mingw-w64-crt \
+        mingw-w64-curl \
         mingw-w64-fontconfig \
         mingw-w64-freetype2 \
+        mingw-w64-gcc \
+        mingw-w64-headers \
         mingw-w64-libiconv \
         mingw-w64-libpng \
         mingw-w64-openssl \
         mingw-w64-pkg-config \
         mingw-w64-sdl2 \
-        mingw-w64-tools \
-        mingw-w64-zlib \
         mingw-w64-sdl2_ttf \
-        mingw-w64-curl \
+        mingw-w64-tools \
+        mingw-w64-winpthreads \
+        mingw-w64-zlib \
     && (echo -e "y\ny\n" | pacman -Scc)
 
 RUN useradd --create-home --comment "Arch Build User" build && \

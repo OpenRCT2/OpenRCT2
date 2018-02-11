@@ -1137,7 +1137,7 @@ void vehicle_visual_mini_golf_player(paint_session * session, sint32 x, sint32 i
     rct_ride_entry * rideEntry = get_ride_entry(get_ride(vehicle->ride)->subtype);
     rct_sprite *     sprite    = get_sprite(vehicle->peep[0]);
 
-    uint8  frame = mini_golf_peep_animation_frames[vehicle->mini_golf_current_animation][vehicle->var_C5];
+    uint8  frame = mini_golf_peep_animation_frames[vehicle->mini_golf_current_animation][vehicle->animation_frame];
     uint32 ebx   = (frame << 2) + (imageDirection >> 3);
 
     uint32 image_id     = rideEntry->vehicles[0].base_image_id + 1 + ebx;

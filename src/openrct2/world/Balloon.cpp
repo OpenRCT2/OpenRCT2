@@ -111,33 +111,31 @@ static money32 game_command_balloon_press(uint16 spriteIndex, uint8 flags)
     }
 }
 
-extern "C"
+void create_balloon(sint32 x, sint32 y, sint32 z, sint32 colour, bool isPopped)
 {
-    void create_balloon(sint32 x, sint32 y, sint32 z, sint32 colour, bool isPopped)
+    rct_sprite* sprite = create_sprite(2);
+    if (sprite != nullptr)
     {
-        rct_sprite* sprite = create_sprite(2);
-        if (sprite != nullptr)
-        {
-            sprite->balloon.sprite_width = 13;
-            sprite->balloon.sprite_height_negative = 22;
-            sprite->balloon.sprite_height_positive = 11;
-            sprite->balloon.sprite_identifier = SPRITE_IDENTIFIER_MISC;
-            sprite_move(x, y, z, sprite);
-            sprite->balloon.misc_identifier = SPRITE_MISC_BALLOON;
-            sprite->balloon.time_to_move = 0;
-            sprite->balloon.frame = 0;
-            sprite->balloon.colour = colour;
-            sprite->balloon.popped = (isPopped ? 1 : 0);
-        }
-    }
-
-    void balloon_update(rct_balloon * balloon)
-    {
-        balloon->Update();
-    }
-
-    void game_command_balloon_press(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
-    {
-        *ebx = game_command_balloon_press(*eax & 0xFFFF, *ebx & 0xFF);
+        sprite->balloon.sprite_width = 13;
+        sprite->balloon.sprite_height_negative = 22;
+        sprite->balloon.sprite_height_positive = 11;
+        sprite->balloon.sprite_identifier = SPRITE_IDENTIFIER_MISC;
+        sprite_move(x, y, z, sprite);
+        sprite->balloon.misc_identifier = SPRITE_MISC_BALLOON;
+        sprite->balloon.time_to_move = 0;
+        sprite->balloon.frame = 0;
+        sprite->balloon.colour = colour;
+        sprite->balloon.popped = (isPopped ? 1 : 0);
     }
 }
+
+void balloon_update(rct_balloon * balloon)
+{
+    balloon->Update();
+}
+
+void game_command_balloon_press(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+{
+    *ebx = game_command_balloon_press(*eax & 0xFFFF, *ebx & 0xFF);
+}
+

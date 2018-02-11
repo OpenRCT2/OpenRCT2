@@ -92,7 +92,7 @@ void large_scenery_paint(paint_session * session, uint8 direction, uint16 height
 Ride *get_ride(int index) {
     if (index < 0 || index >= MAX_RIDES) {
         log_error("invalid index %d for ride", index);
-        return NULL;
+        return nullptr;
     }
     return &gRideList[index];
 }
@@ -100,7 +100,7 @@ Ride *get_ride(int index) {
 rct_ride_entry *get_ride_entry(int index) {
     if (index < 0 || index >= object_entry_group_counts[OBJECT_TYPE_RIDE]) {
         log_error("invalid index %d for ride type", index);
-        return NULL;
+        return nullptr;
     }
 
     return gRideEntries[index];
@@ -108,7 +108,7 @@ rct_ride_entry *get_ride_entry(int index) {
 
 rct_ride_entry *get_ride_entry_by_ride(Ride *ride) {
     rct_ride_entry * type = get_ride_entry(ride->subtype);
-    if (type == NULL) {
+    if (type == nullptr) {
         log_error("Invalid ride subtype for ride");
     }
     return type;
@@ -138,7 +138,7 @@ int tile_element_get_direction_with_offset(const rct_tile_element *element, uint
 rct_tile_element *map_get_first_element_at(int x, int y) {
     if (x < 0 || y < 0 || x > 255 || y > 255) {
         log_error("Trying to access element outside of range");
-        return NULL;
+        return nullptr;
     }
     return gTileElementTilePointers[x + y * 256];
 }

@@ -437,168 +437,166 @@ static money32 SmallSceneryPlace(sint16 x,
     return cost;
 }
 
-extern "C"
+/**
+ *
+ *  rct2: 0x006E0E01
+ */
+void game_command_remove_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
 {
-    /**
-     *
-     *  rct2: 0x006E0E01
-     */
-    void game_command_remove_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
-    {
-        *ebx = SmallSceneryRemove(
-            *eax & 0xFFFF,
-            *ecx & 0xFFFF,
-            *edx & 0xFF,
-            ((*ebx >> 8) & 0xFF) >> 6,
-            (*edx >> 8) & 0xFF,
-            *ebx & 0xFF
-        );
-    }
-
-    /**
-     *
-     *  rct2: 0x006E0F26
-     */
-    void game_command_set_scenery_colour(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
-    {
-        *ebx = SmallScenerySetColour(
-            *eax & 0xFFFF,
-            *ecx & 0xFFFF,
-            *edx & 0xFF,
-            ((*ebx >> 8) & 0xFF) >> 6,
-            (*edx >> 8) & 0xFF,
-            *ebp & 0xFF,
-            (*ebp >> 8) & 0xFF,
-            *ebx & 0xFF
-        );
-    }
-
-    /**
-     *
-     *  rct2: 0x006E0D6E, 0x006B8D88
-     */
-    sint32 map_place_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price)
-    {
-        if (tile_element_get_type(*tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
-            return 1;
-
-        if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
-            return 1;
-
-        rct_scenery_entry* scenery = get_small_scenery_entry((*tile_element)->properties.scenery.type);
-
-        if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
-        {
-            if (scenery->small_scenery.height > 64)
-                return 1;
-        }
-
-        if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-            *price += scenery->small_scenery.removal_price * 10;
-
-        if (flags & GAME_COMMAND_FLAG_GHOST)
-            return 0;
-
-        if (!(flags & GAME_COMMAND_FLAG_APPLY))
-            return 0;
-
-        map_invalidate_tile(x, y, (*tile_element)->base_height * 8, (*tile_element)->clearance_height * 8);
-
-        tile_element_remove(*tile_element);
-
-        (*tile_element)--;
-        return 0;
-    }
-
-    /**
-     *
-     *  rct2: 0x006C5A4F, 0x006CDE57, 0x006A6733, 0x0066637E
-     */
-    sint32 map_place_non_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price)
-    {
-        if (tile_element_get_type(*tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
-            return 1;
-
-        rct_scenery_entry* scenery = get_small_scenery_entry((*tile_element)->properties.scenery.type);
-
-        if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
-        {
-            if (scenery->small_scenery.height > 64)
-                return 1;
-        }
-
-        if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-            *price += scenery->small_scenery.removal_price * 10;
-
-        if (flags & GAME_COMMAND_FLAG_GHOST)
-            return 0;
-
-        if (!(flags & GAME_COMMAND_FLAG_APPLY))
-            return 0;
-
-        map_invalidate_tile(x, y, (*tile_element)->base_height * 8, (*tile_element)->clearance_height * 8);
-
-        tile_element_remove(*tile_element);
-
-        (*tile_element)--;
-        return 0;
-    }
-
-    /**
-     *
-     *  rct2: 0x006E08F4
-     */
-    void game_command_place_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
-    {
-        *ebx = SmallSceneryPlace(
-            *eax & 0xFFFF,
-            *ecx & 0xFFFF,
-            *ebp & 0xFFFF,
-            *edx & 0xFF,
-            *edi & 0xFF,
-            (*ebx >> 8) & 0xFF,
-            (*edx >> 8) & 0xFF,
-            (*edi >> 16) & 0xFF,
-            *ebx & 0xFF
-        );
-    }
-
-    sint32 scenery_small_get_primary_colour(const rct_tile_element * tileElement)
-    {
-        return tileElement->properties.scenery.colour_1 & TILE_ELEMENT_COLOUR_MASK;
-    }
-
-    sint32 scenery_small_get_secondary_colour(const rct_tile_element * tileElement)
-    {
-        return tileElement->properties.scenery.colour_2 & TILE_ELEMENT_COLOUR_MASK;
-    }
-
-    void scenery_small_set_primary_colour(rct_tile_element * tileElement, uint32 colour)
-    {
-        assert(colour <= 31);
-        tileElement->properties.scenery.colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
-        tileElement->properties.scenery.colour_1 |= colour;
-    }
-
-    void scenery_small_set_secondary_colour(rct_tile_element * tileElement, uint32 colour)
-    {
-        assert(colour <= 31);
-        tileElement->properties.scenery.colour_2 &= ~TILE_ELEMENT_COLOUR_MASK;
-        tileElement->properties.scenery.colour_2 |= colour;
-    }
-
-    bool scenery_small_get_supports_needed(const rct_tile_element * tileElement)
-    {
-        return (bool)(tileElement->properties.scenery.colour_1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS);
-    }
-
-    void scenery_small_set_supports_needed(rct_tile_element * tileElement)
-    {
-        tileElement->properties.scenery.colour_1 |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
-    }
-
-    bool scenery_small_entry_has_flag(const rct_scenery_entry * sceneryEntry, uint32 flags)
-    {
-        return (bool)(sceneryEntry->small_scenery.flags & flags);
-    }
+    *ebx = SmallSceneryRemove(
+        *eax & 0xFFFF,
+        *ecx & 0xFFFF,
+        *edx & 0xFF,
+        ((*ebx >> 8) & 0xFF) >> 6,
+        (*edx >> 8) & 0xFF,
+        *ebx & 0xFF
+    );
 }
+
+/**
+ *
+ *  rct2: 0x006E0F26
+ */
+void game_command_set_scenery_colour(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+{
+    *ebx = SmallScenerySetColour(
+        *eax & 0xFFFF,
+        *ecx & 0xFFFF,
+        *edx & 0xFF,
+        ((*ebx >> 8) & 0xFF) >> 6,
+        (*edx >> 8) & 0xFF,
+        *ebp & 0xFF,
+        (*ebp >> 8) & 0xFF,
+        *ebx & 0xFF
+    );
+}
+
+/**
+ *
+ *  rct2: 0x006E0D6E, 0x006B8D88
+ */
+sint32 map_place_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price)
+{
+    if (tile_element_get_type(*tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+        return 1;
+
+    if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
+        return 1;
+
+    rct_scenery_entry* scenery = get_small_scenery_entry((*tile_element)->properties.scenery.type);
+
+    if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+    {
+        if (scenery->small_scenery.height > 64)
+            return 1;
+    }
+
+    if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+        *price += scenery->small_scenery.removal_price * 10;
+
+    if (flags & GAME_COMMAND_FLAG_GHOST)
+        return 0;
+
+    if (!(flags & GAME_COMMAND_FLAG_APPLY))
+        return 0;
+
+    map_invalidate_tile(x, y, (*tile_element)->base_height * 8, (*tile_element)->clearance_height * 8);
+
+    tile_element_remove(*tile_element);
+
+    (*tile_element)--;
+    return 0;
+}
+
+/**
+ *
+ *  rct2: 0x006C5A4F, 0x006CDE57, 0x006A6733, 0x0066637E
+ */
+sint32 map_place_non_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price)
+{
+    if (tile_element_get_type(*tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+        return 1;
+
+    rct_scenery_entry* scenery = get_small_scenery_entry((*tile_element)->properties.scenery.type);
+
+    if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+    {
+        if (scenery->small_scenery.height > 64)
+            return 1;
+    }
+
+    if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+        *price += scenery->small_scenery.removal_price * 10;
+
+    if (flags & GAME_COMMAND_FLAG_GHOST)
+        return 0;
+
+    if (!(flags & GAME_COMMAND_FLAG_APPLY))
+        return 0;
+
+    map_invalidate_tile(x, y, (*tile_element)->base_height * 8, (*tile_element)->clearance_height * 8);
+
+    tile_element_remove(*tile_element);
+
+    (*tile_element)--;
+    return 0;
+}
+
+/**
+ *
+ *  rct2: 0x006E08F4
+ */
+void game_command_place_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+{
+    *ebx = SmallSceneryPlace(
+        *eax & 0xFFFF,
+        *ecx & 0xFFFF,
+        *ebp & 0xFFFF,
+        *edx & 0xFF,
+        *edi & 0xFF,
+        (*ebx >> 8) & 0xFF,
+        (*edx >> 8) & 0xFF,
+        (*edi >> 16) & 0xFF,
+        *ebx & 0xFF
+    );
+}
+
+sint32 scenery_small_get_primary_colour(const rct_tile_element * tileElement)
+{
+    return tileElement->properties.scenery.colour_1 & TILE_ELEMENT_COLOUR_MASK;
+}
+
+sint32 scenery_small_get_secondary_colour(const rct_tile_element * tileElement)
+{
+    return tileElement->properties.scenery.colour_2 & TILE_ELEMENT_COLOUR_MASK;
+}
+
+void scenery_small_set_primary_colour(rct_tile_element * tileElement, uint32 colour)
+{
+    assert(colour <= 31);
+    tileElement->properties.scenery.colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
+    tileElement->properties.scenery.colour_1 |= colour;
+}
+
+void scenery_small_set_secondary_colour(rct_tile_element * tileElement, uint32 colour)
+{
+    assert(colour <= 31);
+    tileElement->properties.scenery.colour_2 &= ~TILE_ELEMENT_COLOUR_MASK;
+    tileElement->properties.scenery.colour_2 |= colour;
+}
+
+bool scenery_small_get_supports_needed(const rct_tile_element * tileElement)
+{
+    return (bool)(tileElement->properties.scenery.colour_1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS);
+}
+
+void scenery_small_set_supports_needed(rct_tile_element * tileElement)
+{
+    tileElement->properties.scenery.colour_1 |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
+}
+
+bool scenery_small_entry_has_flag(const rct_scenery_entry * sceneryEntry, uint32 flags)
+{
+    return (bool)(sceneryEntry->small_scenery.flags & flags);
+}
+

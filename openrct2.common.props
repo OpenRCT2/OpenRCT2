@@ -55,7 +55,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>/utf-8 /std:c++latest /permissive-</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /std:c++latest /permissive- /Zc:externConstexpr</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>imm32.lib;version.lib;winmm.lib;crypt32.lib;wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -73,7 +73,6 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">

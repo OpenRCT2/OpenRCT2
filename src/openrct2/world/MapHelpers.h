@@ -24,15 +24,7 @@ enum {
     SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b);
 sint32 tile_smooth(sint32 x, sint32 y);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

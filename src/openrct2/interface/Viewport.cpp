@@ -38,9 +38,7 @@
 #include "Colour.h"
 #include "Viewport.h"
 #include "Window.h"
-
-extern "C"
-{
+#include "Window_internal.h"
 
 //#define DEBUG_SHOW_DIRTY_BOX
 uint8 gShowGridLinesRefCount;
@@ -902,7 +900,8 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
 
     if (gConfigGeneral.render_weather_gloom &&
         !gTrackDesignSaveMode &&
-        !(viewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
+        !(viewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES) &&
+        !(viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     ) {
         viewport_paint_weather_gloom(dpi);
     }
@@ -1791,6 +1790,4 @@ void viewport_set_saved_view()
         gSavedViewZoom = viewport->zoom;
         gSavedViewRotation = get_current_rotation();
     }
-}
-
 }

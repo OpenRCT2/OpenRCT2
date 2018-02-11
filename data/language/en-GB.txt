@@ -4521,21 +4521,28 @@ STR_6211    :Brown sandstone
 STR_6212    :Grey sandstone
 STR_6213    :Skyscraper A
 STR_6214    :Skyscraper B
-STR_6215    :{SMALLFONT}{BLACK}Speedrunning
-STR_6216    :Enable speedrunning mode
-STR_6217    :{SMALLFONT}{BLACK}Enables speedrunning mode (see description)
-STR_6218    :Speedrunning mode disables all cheats and changes the rules of the game. Scenario objectives are considered complete at the earliest time their requirements have been met before the deadline. Scenarios are completed consecutively within their respective games/expansions. Cheats are disabled. You may choose to run with or without enabling game speed changes. Navigate back to the main menu to choose a category. The first level in each group has the option to start a run of that group. It's recommended to use the default game sorting to organize scenarios into groups.
-STR_6219    :{SMALLFONT}{BLACK}Run all levels in this group
-STR_6220    :{SMALLFONT}{BLACK}Run of this level only
-STR_6221    :Start speedrun
-STR_6222    :Start IL speedrun
-STR_6223    :Next level
-STR_6224    :Quit to menu
-STR_6225    :Cheats have been used, times will not be recorded!
-STR_6226    :{WINDOW_COLOUR_2}Days:
-STR_6227    :{WINDOW_COLOUR_2}Time:
-STR_6228    :{BLACK}{COMMA32}
-STR_6229    :{BLACK}{UINT16}m{UINT16}.{INT32}s
+STR_6215    :Construction
+STR_6216    :Operation
+STR_6217    :Ride / track availability
+STR_6218    :OpenRCT2 Official
+STR_6219    :Highlight path issues
+STR_6220    :Make Usable
+STR_6221    :{SMALLFONT}{BLACK}This will set the ride's known entrance or exit location to the currently selected tile. Only one entrance and exit location can be made usable per stations.
+STR_6222    :{SMALLFONT}{BLACK}Speedrunning
+STR_6224    :Enable speedrunning mode
+STR_6225    :{SMALLFONT}{BLACK}Enables speedrunning mode (see description)
+STR_6226    :Speedrunning mode disables all cheats and changes the rules of the game. Scenario objectives are considered complete at the earliest time their requirements have been met before the deadline. Scenarios are completed consecutively within their respective games/expansions. Cheats are disabled. You may choose to run with or without enabling game speed changes. Navigate back to the main menu to choose a category. The first level in each group has the option to start a run of that group. It's recommended to use the default game sorting to organize scenarios into groups.
+STR_6227    :{SMALLFONT}{BLACK}Run all levels in this group
+STR_6228    :{SMALLFONT}{BLACK}Run of this level only
+STR_6229    :Start speedrun
+STR_6230    :Start IL speedrun
+STR_6231    :Next level
+STR_6232    :Quit to menu
+STR_6233    :Cheats have been used, times will not be recorded!
+STR_6234    :{WINDOW_COLOUR_2}Days:
+STR_6235    :{WINDOW_COLOUR_2}Time:
+STR_6236    :{BLACK}{COMMA32}
+STR_6237    :{BLACK}{UINT16}m{UINT16}.{INT32}s
 
 #############
 # Scenarios #
@@ -4990,23 +4997,23 @@ STR_DESC    :Passengers ride in a gondola suspended by large rotating arms, rota
 STR_CPTY    :8 passengers
 
 [BMSD]
-STR_NAME    :Twister train
+STR_NAME    :Twister Trains
 STR_DESC    :A spacious train with shoulder restraints
 
 [BMSU]
-STR_NAME    :Stand-up twister train
+STR_NAME    :Stand-up Twister Trains
 STR_DESC    :A train with shoulder restraints, in which the riders stand up
 
 [BMFL]
-STR_NAME    :Floorless twister train
+STR_NAME    :Floorless Twister Trains
 STR_DESC    :A spacious train with shoulder restraints and no floor, making for a more exciting ride
 
 [WMMINE]
-STR_NAME    :Mine cars
+STR_NAME    :Mine Cars
 STR_DESC    :Cars shaped like an old mine cart
 
 [WMOUSE]
-STR_NAME    :Mouse cars
+STR_NAME    :Mouse Cars
 STR_DESC    :Indivual cars shaped like a mouse
 
 [STEEP1]
@@ -5022,45 +5029,359 @@ STR_NAME    :Soap boxes
 STR_DESC    :Single cars shaped like a soap box
 
 [BOB1]
-STR_NAME    :Bobsleigh train
+STR_NAME    :Bobsleigh Trains
 STR_DESC    :A train consisting of 2-seater cars where the riders are behind each other
 
 [INTBOB]
-STR_NAME    :6-seater bobsleighs
+STR_NAME    :6-seater Bobsleighs
 STR_DESC    :Bobsleighs with three seating rows, with room for two people on each
 
 [LIFT1]
-STR_NAME    :Lift cabin
+STR_NAME    :Lift Cabin
 STR_DESC    :Steel lift cabin
 
 [ARRT1]
-STR_NAME    :Corkscrew Roller Coaster train
+STR_NAME    :Corkscrew Roller Coaster Trains
 STR_DESC    :Roller coaster train with shoulder restraints
 
 [ARRT2]
-STR_NAME    :Hypercoaster train
+STR_NAME    :Hypercoaster Trains
 STR_DESC    :Comfortable trains with only lap bar restraints
+
+[MONBK]
+STR_NAME    :Bicycles
+
+[OBS1]
+STR_NAME    :Single-deck Cabin
+
+[OBS2]
+STR_NAME    :Double-deck Cabin
+
+[GTC]
+STR_NAME    :Ghost Train Cars
+
+[HMCAR]
+STR_NAME    :Haunted Mansion Cars
+
+[VREEL]
+STR_NAME    :Virginia Reel tubs
+
+[WMSPIN]
+STR_NAME    :Spinning Mouse Cars
+
+[AMT1]
+STR_NAME    :Mine Trains
+
+[SLCT]
+STR_NAME    :Compact Inverted Coaster Trains
+
+[SLCFO]
+STR_NAME    :Face-off Cars
+
+[VEKDV]
+STR_NAME    :Vertical Shuttle Cars
+
+[THCAR]
+STR_NAME    :Air Powered Vertical Coaster Trains
+
+[SSC1]
+STR_NAME    :Launched Freefall car
+
+[DING1]
+STR_NAME    :Dinghies
+
+[LFB1]
+STR_NAME    :Logs
+
+[RFTBOAT]
+STR_NAME    :Rafts
+
+[IVMC1]
+STR_NAME    :Four-seater Cars
+
+[SPDRCR]
+STR_NAME    :Spiral Roller Coaster Trains
+
+[TOGST]
+STR_NAME    :Stand-up Roller Coaster Trains
+
+[PREMT1]
+STR_NAME    :LIM Launched Roller Coaster Trains
+
+[PMT1]
+STR_NAME    :Powered mine train
+
+[BMAIR]
+STR_NAME    :Flying Roller Coaster Trains
+
+[INTINV]
+STR_NAME    :Impulse Trains
+
+[INTST]
+STR_NAME    :Giga Coaster Trains
+
+[NEMT]
+STR_NAME    :4-across Inverted Roller Coaster Trains
+
+[VEKST]
+STR_NAME    :Lay-down Roller Coaster Trains
+
+[REVCAR]
+STR_NAME    :Reverser Cars
+STR_DESC    :Bogied cars capable of turning around on special reversing sections
+
+[SKYTR]
+STR_NAME    :Lay-down Cars
+
+[BMVD]
+STR_NAME    :Six-seater Twister Trains
+
+[SUBMAR]
+STR_NAME    :Submarines
 
 #WW
 [CONDORRD]
-STR_NAME    :Condor train
+STR_NAME    :Condor Trains
 STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
 STR_CPTY    :4 passengers per car
 
 #WW
 [CONGAEEL]
-STR_NAME    :Conger Eel train
-STR_DESC    :A compact steel-tracked roller coaster where the Eel-shaped train travels through corkscrews and loops
-STR_CPTY    :4 passengers per car
+STR_NAME    :Conger Eel Trains
+STR_DESC    :Trains with shoulder restraints, in the shape of a Conger Eel.
 
 #WW
 [MINELIFT]
-STR_NAME    :Mine lift cabin
+STR_NAME    :Mine Lift Cabin
 STR_DESC    :A steel lift cabin commonly used in mines
 
 #WW
 [ANACONDA]
-STR_NAME    :Anaconda train
+STR_NAME    :Anaconda Trains
+
+#WW
+[CROCFLUM]
+STR_NAME    :Crocodile boats
+
+#WW
+[WHICGRUB]
+STR_NAME    :Witchity Grub Trains
+
+#WW
+[GRATWHTE]
+STR_NAME    :Great White Shark Trains
+STR_DESC    :Trains with shoulder restraints, in the shape of a Great White Shark
+
+#WW
+[BOMERANG]
+STR_NAME    :Boomerang Trains
+
+#WW
+[KOLARIDE]
+STR_NAME    :Koala car
+
+#WW
+[MANTARAY]
+STR_NAME    :Manta Ray boats
+STR_DESC    :Coaster boats in the shape of a Manta Ray
+
+#WW
+[TUTLBOAT]
+STR_NAME    :Turtle boats
+
+#WW, for the Wooden RC
+[MINECART]
+STR_NAME    :Mine Cart Trains
+
+#WW
+[LIONRIDE]
+STR_NAME    :Lion Cars
+
+#WW
+[RHINORID]
+STR_NAME    :Rhino Trains
+
+#WW
+[OSTRICH]
+STR_NAME    :Ostrich Trains
+
+#WW
+[GORILLA]
+STR_NAME    :Gorilla Trains
+
+#WW
+[FOOTBALL]
+STR_NAME    :Football Trains
+
+#WW
+[TIGRTWST]
+STR_NAME    :Bengal Tiger Cars
+
+#WW
+[TAXICSTR]
+STR_NAME    :Yellow Taxi Trains
+
+#WW
+[OUTRIGGR]
+STR_NAME    :Outrigger canoes
+
+#WW
+[SANFTRAM]
+STR_NAME    :San Francisco Trams
+
+#WW
+[PENGUINB]
+STR_NAME    :Penguin Trains
+
+#WW
+[POLARBER]
+STR_NAME    :Polar Bear Trains
+
+#WW
+[LONDONBS]
+STR_NAME    :Routemaster buses
+STR_DESC    :Replicas of the famous London Routemaster bus
+
+#WW
+[BLACKCAB]
+STR_NAME    :Black Cabs
+
+#WW
+[TGVTRAIN]
+STR_NAME    :TGV Trains
+
+#WW
+[ROCKET]
+STR_NAME    :1950's Rockets
+
+#WW
+[SPUTNIKR]
+STR_NAME    :Sputnik Cars
+
+#WW
+[DHOWWATR]
+STR_NAME    :Dhow boats
+
+#WW
+[SURFBRDC]
+STR_NAME    :Surfing Trains
+
+#WW
+[KILLWHAL]
+STR_NAME    :Killer Whale Submarines
+
+#WW
+[HIPPORID]
+STR_NAME    :Hippo Submarines
+
+#WW
+[DOLPHINR]
+STR_NAME    :Dolphin boats
+
+#WW
+[MANDARIN]
+STR_NAME    :Mandarin Duck Boats
+STR_DESC    :Duck shaped boat, propelled by the pedalling front seat passengers
+
+#TT
+[BATTRRAM]
+STR_NAME    :Battering Ram Trains
+
+#TT
+[BLCKDETH]
+STR_NAME    :Black Death Trains
+
+#TT
+[JOUSTING]
+STR_NAME    :Jousting Knights
+
+#TT
+[OAKBAREL]
+STR_NAME    :Oak Barrels
+
+#TT
+[STAMPHRD]
+STR_NAME    :Stampeding Herd Trains
+
+#TT
+[DRAGNFLY]
+STR_NAME    :Dragonfly Cars
+
+#TT
+[PTERODAC]
+STR_NAME    :Pterodactyl Trains
+
+#TT
+[PEGASUSX]
+STR_NAME    :Pegasus Cars
+
+#TT
+[CERBERUS]
+STR_NAME    :Cerberus Trains
+
+#TT
+[HARPIESX]
+STR_NAME    :Harpies Trains
+
+#TT
+[VALKYRIE]
+STR_NAME    :Valkyries Trains
+
+#TT
+[RIVRSTYX]
+STR_NAME    :River Styx boats
+
+#TT
+[TELEPTER]
+STR_NAME    :Teleporter Cabin
+
+#TT
+[HOVERCAR]
+STR_NAME    :Hover Cars
+
+#TT
+[HOVRBORD]
+STR_NAME    :Hoverboards
+
+#TT
+[HOVERBKE]
+STR_NAME    :Hover Bikes
+
+#TT, Reverser RC
+[POLICECR]
+STR_NAME    :Police Cars
+
+#TT, Looping RC
+[POLCHASE]
+STR_NAME    :Police Car Trains
+
+#TT
+[GANSTRCR]
+STR_NAME    :Gangster Cars
+
+#TT
+[SEAPLANE]
+STR_NAME    :Suspended Seaplane Cars
+
+#TT
+[BARNSTRM]
+STR_NAME    :BarnStorming Cars
+
+#TT
+[FLYGBOAT]
+STR_NAME    :Flying boats
+
+#TT
+[BMVOCTPS]
+STR_NAME    :Blob from Outer Space
+
+#TT
+[JETPLANE]
+STR_NAME    :Jet Plane Cars
+
+#TT
+[HOTRODXX]
+STR_NAME    :Hot Rod Cars
 
 ###########
 # Scenery #
@@ -5069,3 +5390,84 @@ STR_NAME    :Anaconda train
 #Bulrushes was spelt incorrectly
 [TBR]
 STR_NAME    :Bulrushes
+
+## Start OpenRCT2 Official
+[XXBBBR01]
+STR_NAME    :Base Block
+
+[TTRFTL02]
+STR_NAME    :Roof
+
+[TTRFTL03]
+STR_NAME    :Roof
+
+[TTRFTL04]
+STR_NAME    :Roof
+
+[TTRFTL07]
+STR_NAME    :Roof
+
+[TTRFTL08]
+STR_NAME    :Roof
+
+[TTPIRF02]
+STR_NAME    :Roof
+
+[TTPIRF03]
+STR_NAME    :Roof
+
+[TTPIRF04]
+STR_NAME    :Roof
+
+[TTPIRF05]
+STR_NAME    :Roof
+
+[TTPIRF07]
+STR_NAME    :Roof
+
+[TTPIRF08]
+STR_NAME    :Roof
+
+[MG-PRAR]
+STR_NAME    :Wall with Passageway
+
+[TTRFWD01]
+STR_NAME    :Roof
+
+[TTRFWD02]
+STR_NAME    :Roof
+
+[TTRFWD03]
+STR_NAME    :Roof
+
+[TTRFWD04]
+STR_NAME    :Roof
+
+[TTRFWD05]
+STR_NAME    :Roof
+
+[TTRFWD06]
+STR_NAME    :Roof
+
+[TTRFWD07]
+STR_NAME    :Roof
+
+[TTRFWD08]
+STR_NAME    :Roof
+
+[TTRFGL01]
+STR_NAME    :Glass Roof
+
+[TTRFGL02]
+STR_NAME    :Glass Roof
+
+[TTRFGL03]
+STR_NAME    :Glass Roof
+
+[ACWW33]
+STR_NAME    :Wooden Post Wall
+
+[ACWWF32]
+STR_NAME    :Wooden Post Wall
+
+## End OpenRCT2 Official

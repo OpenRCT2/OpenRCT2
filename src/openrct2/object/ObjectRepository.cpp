@@ -79,7 +79,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32 MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16 VERSION = 16;
+    static constexpr uint16 VERSION = 17;
     static constexpr auto PATTERN = "*.dat;*.pob";
 
 public:
@@ -236,7 +236,7 @@ public:
         rct_object_entry entry = { 0 };
         utf8 entryName[9] = { ' ' };
         String::Set(entryName, sizeof(entryName), name);
-        Memory::Copy<void>(entry.name, entryName, 8);
+        std::copy_n(entryName, 8, entry.name);
 
         auto kvp = _itemMap.find(entry);
         if (kvp != _itemMap.end())
@@ -464,10 +464,10 @@ private:
 
                 // Create new data blob with appended bytes
                 size_t newDataSize = dataSize + extraBytesCount;
-                void * newData = Memory::Allocate<void>(newDataSize);
-                void * newDataSaltOffset = (void *)((uintptr_t)newData + dataSize);
-                Memory::Copy(newData, data, dataSize);
-                Memory::Copy(newDataSaltOffset, extraBytes, extraBytesCount);
+                uint8 * newData = Memory::Allocate<uint8>(newDataSize);
+                uint8 * newDataSaltOffset = newData + dataSize;
+                std::copy_n((const uint8 *)data, dataSize, newData);
+                std::copy_n((const uint8 *)extraBytes, extraBytesCount, newDataSaltOffset);
 
                 try
                 {
@@ -498,7 +498,7 @@ private:
         }
 
         // Encode data
-        uint8 objectType = entry->flags & 0x0F;
+        uint8 objectType = object_entry_get_type(entry);
         sawyercoding_chunk_header chunkHeader;
         chunkHeader.encoding = object_entry_group_encoding[objectType];
         chunkHeader.length = (uint32)dataSize;
@@ -632,200 +632,198 @@ bool IsObjectCustom(const ObjectRepositoryItem * object)
     return !(object->ObjectEntry.flags & 0xF0);
 }
 
-extern "C"
+const rct_object_entry * object_list_find(rct_object_entry * entry)
 {
-    const rct_object_entry * object_list_find(rct_object_entry * entry)
+    const rct_object_entry * result = nullptr;
+    auto objRepo = GetObjectRepository();
+    auto item = objRepo->FindObject(entry);
+    if (item != nullptr)
     {
-        const rct_object_entry * result = nullptr;
-        auto objRepo = GetObjectRepository();
-        auto item = objRepo->FindObject(entry);
-        if (item != nullptr)
-        {
-            result = &item->ObjectEntry;
-        }
-        return result;
+        result = &item->ObjectEntry;
     }
+    return result;
+}
 
-    const rct_object_entry * object_list_find_by_name(const char * name)
+const rct_object_entry * object_list_find_by_name(const char * name)
+{
+    const rct_object_entry * result = nullptr;
+    auto objRepo = GetObjectRepository();
+    auto item = objRepo->FindObject(name);
+    if (item != nullptr)
     {
-        const rct_object_entry * result = nullptr;
-        auto objRepo = GetObjectRepository();
-        auto item = objRepo->FindObject(name);
-        if (item != nullptr)
-        {
-            result = &item->ObjectEntry;
-        }
-        return result;
+        result = &item->ObjectEntry;
     }
+    return result;
+}
 
-    void object_list_load()
+void object_list_load()
+{
+    IObjectRepository * objectRepository = GetObjectRepository();
+    objectRepository->LoadOrConstruct();
+
+    IObjectManager * objectManager = GetObjectManager();
+    objectManager->UnloadAll();
+}
+
+void * object_repository_load_object(const rct_object_entry * objectEntry)
+{
+    Object * object = nullptr;
+    IObjectRepository * objRepository = GetObjectRepository();
+    const ObjectRepositoryItem * ori = objRepository->FindObject(objectEntry);
+    if (ori != nullptr)
     {
-        IObjectRepository * objectRepository = GetObjectRepository();
-        objectRepository->LoadOrConstruct();
-
-        IObjectManager * objectManager = GetObjectManager();
-        objectManager->UnloadAll();
-    }
-
-    void * object_repository_load_object(const rct_object_entry * objectEntry)
-    {
-        Object * object = nullptr;
-        IObjectRepository * objRepository = GetObjectRepository();
-        const ObjectRepositoryItem * ori = objRepository->FindObject(objectEntry);
-        if (ori != nullptr)
+        object = objRepository->LoadObject(ori);
+        if (object != nullptr)
         {
-            object = objRepository->LoadObject(ori);
-            if (object != nullptr)
-            {
-                object->Load();
-            }
+            object->Load();
         }
-        return (void *)object;
     }
+    return (void *)object;
+}
 
-    void scenario_translate(scenario_index_entry * scenarioEntry, const rct_object_entry * stexObjectEntry)
+void scenario_translate(scenario_index_entry * scenarioEntry, const rct_object_entry * stexObjectEntry)
+{
+    rct_string_id localisedStringIds[3];
+    if (language_get_localised_scenario_strings(scenarioEntry->name, localisedStringIds))
     {
-        rct_string_id localisedStringIds[3];
-        if (language_get_localised_scenario_strings(scenarioEntry->name, localisedStringIds))
+        if (localisedStringIds[0] != STR_NONE)
         {
-            if (localisedStringIds[0] != STR_NONE)
-            {
-                String::Set(scenarioEntry->name, sizeof(scenarioEntry->name), language_get_string(localisedStringIds[0]));
-            }
-            if (localisedStringIds[2] != STR_NONE)
-            {
-                String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), language_get_string(localisedStringIds[2]));
-            }
+            String::Set(scenarioEntry->name, sizeof(scenarioEntry->name), language_get_string(localisedStringIds[0]));
         }
-        else
+        if (localisedStringIds[2] != STR_NONE)
         {
-            // Checks for a scenario string object (possibly for localisation)
-            if ((stexObjectEntry->flags & 0xFF) != 255)
+            String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), language_get_string(localisedStringIds[2]));
+        }
+    }
+    else
+    {
+        // Checks for a scenario string object (possibly for localisation)
+        if ((stexObjectEntry->flags & 0xFF) != 255)
+        {
+            IObjectRepository * objectRepository = GetObjectRepository();
+            const ObjectRepositoryItem * ori = objectRepository->FindObject(stexObjectEntry);
+            if (ori != nullptr)
             {
-                IObjectRepository * objectRepository = GetObjectRepository();
-                const ObjectRepositoryItem * ori = objectRepository->FindObject(stexObjectEntry);
-                if (ori != nullptr)
+                Object * object = objectRepository->LoadObject(ori);
+                if (object != nullptr)
                 {
-                    Object * object = objectRepository->LoadObject(ori);
-                    if (object != nullptr)
-                    {
-                        auto stexObject = static_cast<StexObject*>(object);
-                        auto scenarioName = stexObject->GetScenarioName();
-                        auto scenarioDetails = stexObject->GetScenarioDetails();
+                    auto stexObject = static_cast<StexObject*>(object);
+                    auto scenarioName = stexObject->GetScenarioName();
+                    auto scenarioDetails = stexObject->GetScenarioDetails();
 
-                        String::Set(scenarioEntry->name, sizeof(scenarioEntry->name), scenarioName.c_str());
-                        String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), scenarioDetails.c_str());
+                    String::Set(scenarioEntry->name, sizeof(scenarioEntry->name), scenarioName.c_str());
+                    String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), scenarioDetails.c_str());
 
-                        delete object;
-                    }
+                    delete object;
                 }
             }
         }
     }
+}
 
-    size_t object_repository_get_items_count()
+size_t object_repository_get_items_count()
+{
+    IObjectRepository * objectRepository = GetObjectRepository();
+    return objectRepository->GetNumObjects();
+}
+
+const ObjectRepositoryItem * object_repository_get_items()
+{
+    IObjectRepository * objectRepository = GetObjectRepository();
+    return objectRepository->GetObjects();
+}
+
+const ObjectRepositoryItem * object_repository_find_object_by_entry(const rct_object_entry * entry)
+{
+    IObjectRepository * objectRepository = GetObjectRepository();
+    return objectRepository->FindObject(entry);
+}
+
+const ObjectRepositoryItem * object_repository_find_object_by_name(const char * name)
+{
+    IObjectRepository * objectRepository = GetObjectRepository();
+    return objectRepository->FindObject(name);
+}
+
+void object_delete(void * object)
+{
+    if (object != nullptr)
     {
-        IObjectRepository * objectRepository = GetObjectRepository();
-        return objectRepository->GetNumObjects();
-    }
-
-    const ObjectRepositoryItem * object_repository_get_items()
-    {
-        IObjectRepository * objectRepository = GetObjectRepository();
-        return objectRepository->GetObjects();
-    }
-
-    const ObjectRepositoryItem * object_repository_find_object_by_entry(const rct_object_entry * entry)
-    {
-        IObjectRepository * objectRepository = GetObjectRepository();
-        return objectRepository->FindObject(entry);
-    }
-
-    const ObjectRepositoryItem * object_repository_find_object_by_name(const char * name)
-    {
-        IObjectRepository * objectRepository = GetObjectRepository();
-        return objectRepository->FindObject(name);
-    }
-
-    void object_delete(void * object)
-    {
-        if (object != nullptr)
-        {
-            Object * baseObject = static_cast<Object *>(object);
-            baseObject->Unload();
-            delete baseObject;
-        }
-    }
-
-    void object_draw_preview(const void * object, rct_drawpixelinfo * dpi, sint32 width, sint32 height)
-    {
-        const Object * baseObject = static_cast<const Object *>(object);
-        baseObject->DrawPreview(dpi, width, height);
-    }
-
-    bool object_entry_compare(const rct_object_entry * a, const rct_object_entry * b)
-    {
-        // If an official object don't bother checking checksum
-        if ((a->flags & 0xF0) || (b->flags & 0xF0))
-        {
-            if ((a->flags & 0x0F) != (b->flags & 0x0F))
-            {
-                return false;
-            }
-            sint32 match = memcmp(a->name, b->name, 8);
-            if (match)
-            {
-                return false;
-            }
-        }
-        else
-        {
-            if (a->flags != b->flags)
-            {
-                return false;
-            }
-            sint32 match = memcmp(a->name, b->name, 8);
-            if (match)
-            {
-                return false;
-            }
-            if (a->checksum != b->checksum)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    sint32 object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength)
-    {
-        const uint8 * entryBytePtr = (uint8 *)entry;
-
-        uint32 checksum = 0xF369A75B;
-        checksum ^= entryBytePtr[0];
-        checksum = rol32(checksum, 11);
-        for (sint32 i = 4; i < 12; i++)
-        {
-            checksum ^= entryBytePtr[i];
-            checksum = rol32(checksum, 11);
-        }
-
-        uint8 *      dataBytes    = (uint8 *)data;
-        const size_t dataLength32 = dataLength - (dataLength & 31);
-        for (size_t i = 0; i < 32; i++)
-        {
-            for (size_t j = i; j < dataLength32; j += 32)
-            {
-                checksum ^= dataBytes[j];
-            }
-            checksum = rol32(checksum, 11);
-        }
-        for (size_t i = dataLength32; i < dataLength; i++)
-        {
-            checksum ^= dataBytes[i];
-            checksum = rol32(checksum, 11);
-        }
-
-        return (sint32)checksum;
+        Object * baseObject = static_cast<Object *>(object);
+        baseObject->Unload();
+        delete baseObject;
     }
 }
+
+void object_draw_preview(const void * object, rct_drawpixelinfo * dpi, sint32 width, sint32 height)
+{
+    const Object * baseObject = static_cast<const Object *>(object);
+    baseObject->DrawPreview(dpi, width, height);
+}
+
+bool object_entry_compare(const rct_object_entry * a, const rct_object_entry * b)
+{
+    // If an official object don't bother checking checksum
+    if ((a->flags & 0xF0) || (b->flags & 0xF0))
+    {
+        if (object_entry_get_type(a) != object_entry_get_type(b))
+        {
+            return false;
+        }
+        sint32 match = memcmp(a->name, b->name, 8);
+        if (match)
+        {
+            return false;
+        }
+    }
+    else
+    {
+        if (a->flags != b->flags)
+        {
+            return false;
+        }
+        sint32 match = memcmp(a->name, b->name, 8);
+        if (match)
+        {
+            return false;
+        }
+        if (a->checksum != b->checksum)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+sint32 object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength)
+{
+    const uint8 * entryBytePtr = (uint8 *)entry;
+
+    uint32 checksum = 0xF369A75B;
+    checksum ^= entryBytePtr[0];
+    checksum = rol32(checksum, 11);
+    for (sint32 i = 4; i < 12; i++)
+    {
+        checksum ^= entryBytePtr[i];
+        checksum = rol32(checksum, 11);
+    }
+
+    uint8 *      dataBytes    = (uint8 *)data;
+    const size_t dataLength32 = dataLength - (dataLength & 31);
+    for (size_t i = 0; i < 32; i++)
+    {
+        for (size_t j = i; j < dataLength32; j += 32)
+        {
+            checksum ^= dataBytes[j];
+        }
+        checksum = rol32(checksum, 11);
+    }
+    for (size_t i = dataLength32; i < dataLength; i++)
+    {
+        checksum ^= dataBytes[i];
+        checksum = rol32(checksum, 11);
+    }
+
+    return (sint32)checksum;
+}
+

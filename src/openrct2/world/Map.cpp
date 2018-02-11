@@ -430,9 +430,8 @@ void map_init(sint32 size)
     map_remove_out_of_range_elements();
 
 
-    Intent * intent = intent_create(INTENT_ACTION_MAP);
-    context_broadcast_intent(intent);
-    intent_release(intent);
+    auto intent = Intent(INTENT_ACTION_MAP);
+    context_broadcast_intent(&intent);
 }
 
 /**
@@ -2870,7 +2869,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
             }
 
             rct_tile_element *new_tile_element = tile_element_insert(curTile.x / 32, curTile.y / 32, zLow, F43887);
-            assert(new_tile_element != NULL);
+            assert(new_tile_element != nullptr);
             map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, curTile.x, curTile.y, zLow);
 
             new_tile_element->clearance_height = zHigh;
@@ -4352,10 +4351,9 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
         }
     }
 
-    rct_window* w = window_bring_to_front_by_number(WC_BANNER, *ecx);
-    if (w) {
-        window_invalidate(w);
-    }
+    auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
+    intent.putExtra(INTENT_EXTRA_BANNER_INDEX, *ecx);
+    context_broadcast_intent(&intent);
 
     *ebx = 0;
 }
@@ -4365,7 +4363,7 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
     const sint32 flags = *ebx;
     const sint32 x = *ecx & 0xFF;
     const sint32 y = (*ecx >> 8) & 0xFF;
-    const tile_inspector_instruction instruction = (const tile_inspector_instruction)*eax;
+    const tile_inspector_instruction instruction = static_cast<tile_inspector_instruction>(*eax);
 
     switch (instruction)
     {
@@ -4444,6 +4442,12 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
         const sint32 elementIndex = *edx;
         const sint32 edgeIndex = *edi;
         *ebx = tile_inspector_path_toggle_edge(x, y, elementIndex, edgeIndex, flags);
+        break;
+    }
+    case TILE_INSPECTOR_ENTRANCE_MAKE_USABLE:
+    {
+        const sint32 elementIndex = *edx;
+        *ebx = tile_inspector_entrance_make_usable(x, y, elementIndex, flags);
         break;
     }
     case TILE_INSPECTOR_WALL_SET_SLOPE:
@@ -4893,4 +4897,20 @@ bool map_tile_is_part_of_virtual_floor(sint16 x, sint16 y)
     }
 
     return false;
+}
+
+void FixLandOwnershipTiles(std::initializer_list<LocationXY8> tiles)
+{
+    FixLandOwnershipTilesWithOwnership(tiles, OWNERSHIP_AVAILABLE);
+}
+
+void FixLandOwnershipTilesWithOwnership(std::initializer_list<LocationXY8> tiles, uint8 ownership)
+{
+    rct_tile_element * currentElement;
+    for (const LocationXY8 * tile = tiles.begin(); tile != tiles.end(); ++tile)
+    {
+        currentElement = map_get_surface_element_at((*tile).x, (*tile).y);
+        currentElement->properties.surface.ownership |= ownership;
+        update_park_fences_around_tile((*tile).x * 32, (*tile).y * 32);
+    }
 }

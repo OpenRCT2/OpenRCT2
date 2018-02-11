@@ -165,9 +165,9 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
     paint_util_set_general_support_height(session, height, 0x20);
 
     uint32 dword_141F710 = 0;
-    if (gTrackDesignSaveMode) {
+    if (gTrackDesignSaveMode || (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)) {
         if (!track_design_save_contains_tile_element(tile_element)) {
-            dword_141F710 = 0x21700000;
+            dword_141F710 = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
         }
     }
 

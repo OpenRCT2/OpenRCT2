@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include "../core/Console.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/IStream.hpp"
@@ -41,13 +42,14 @@
 #include "../OpenRCT2.h"
 #include "../peep/Staff.h"
 #include "../ride/Ride.h"
-#include "../ride/ride_ratings.h"
+#include "../ride/RideRatings.h"
 #include "../scenario/Scenario.h"
 #include "../util/SawyerCoding.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
+#include "../world/Sprite.h"
 
 class ObjectLoadException : public std::runtime_error
 {
@@ -66,7 +68,7 @@ private:
     IObjectManager * const      _objectManager;
 
     const utf8 *    _s6Path = nullptr;
-    rct_s6_data     _s6;
+    rct_s6_data     _s6 { };
     uint8           _gameVersion = 0;
 
 public:
@@ -74,7 +76,6 @@ public:
         : _objectRepository(objectRepository),
           _objectManager(objectManager)
     {
-        Memory::Set(&_s6, 0, sizeof(_s6));
     }
 
     ParkLoadResult Load(const utf8 * path) override
@@ -187,7 +188,7 @@ public:
 
     bool GetDetails(scenario_index_entry * dst) override
     {
-        Memory::Set(dst, 0, sizeof(scenario_index_entry));
+        *dst = { 0 };
         return false;
     }
 
@@ -456,27 +457,38 @@ public:
         {
             log_error("Found %d disjoint null sprites", disjoint_sprites_count);
         }
+
+        if (String::Equals(_s6.scenario_filename, "Europe - European Cultural Festival.SC6"))
+        {
+            // This scenario breaks pathfinding. Create passages between the worlds. (List is grouped by neighbouring tiles.)
+            FixLandOwnershipTilesWithOwnership({
+                { 67, 94 }, { 68, 94 }, { 69, 94 },
+                { 58, 24 }, { 58, 25 }, { 58, 26 }, { 58, 27 }, { 58, 28 }, { 58, 29 }, { 58, 30 }, { 58, 31 }, { 58, 32 },
+                { 26, 44 }, { 26, 45 },
+                { 32, 79 }, { 32, 80 }, { 32, 81 }
+            }, OWNERSHIP_OWNED);
+        }
     }
 
     void ImportRides()
     {
-        for (uint16 index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
+        for (uint8 index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
         {
             auto src = &_s6.rides[index];
             auto dst = get_ride(index);
-            Memory::Set(dst, 0, sizeof(Ride));
+            *dst = { 0 };
             if (src->type == RIDE_TYPE_NULL)
             {
                 dst->type = RIDE_TYPE_NULL;
             }
             else
             {
-                ImportRide(dst, src);
+                ImportRide(dst, src, index);
             }
         }
     }
 
-    void ImportRide(Ride * dst, const rct2_ride * src)
+    void ImportRide(Ride * dst, const rct2_ride * src, const uint8 rideIndex)
     {
         memset(dst, 0, sizeof(Ride));
 
@@ -618,7 +630,9 @@ public:
         dst->popularity = src->popularity;
         dst->popularity_time_out = src->popularity_time_out;
         dst->popularity_next = src->popularity_next;
-        dst->num_riders = src->num_riders;
+
+        ImportNumRiders(dst, rideIndex);
+
         dst->music_tune_id = src->music_tune_id;
         dst->slide_in_use = src->slide_in_use;
         // Includes maze_tiles
@@ -766,40 +780,48 @@ public:
         if (String::Equals(_s6.scenario_filename, "WW South America - Rio Carnival.SC6") ||
             String::Equals(_s6.scenario_filename, "South America - Rio Carnival.SC6"))
         {
-            gPeepSpawns[0] = { 2160, 3167, 6, 1 };
-
-            for (size_t i = 1; i < MAX_PEEP_SPAWNS; i++)
-            {
-                gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
-            }
+            _s6.peep_spawns[0] = { 2160, 3167, 6, 1 };
+            _s6.peep_spawns[1].x = PEEP_SPAWN_UNDEFINED;
         }
-        // In this park, gPeepSpawns[0] is correct. Just clear the rest.
+        // In this park, gPeepSpawns[0] is correct. Just clear the other.
         else if (String::Equals(_s6.scenario_filename, "Great Wall of China Tourism Enhancement.SC6") ||
                  String::Equals(_s6.scenario_filename, "Asia - Great Wall of China Tourism Enhancement.SC6"))
         {
-            for (size_t i = 1; i < MAX_PEEP_SPAWNS; i++)
-            {
-                gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
-            }
+            _s6.peep_spawns[1].x = PEEP_SPAWN_UNDEFINED;
+
         }
-        else
+        // Amity Airfield has peeps entering from the corner of the tile, instead of the middle.
+        else if (String::Equals(_s6.scenario_filename, "Amity Airfield.SC6"))
         {
-            // Amity Airfield has peeps entering from the corner of the tile, instead of the middle.
-            if (String::Equals(_s6.scenario_filename, "Amity Airfield.SC6"))
-                _s6.peep_spawns[0].y = 1296;
-
-            
-            for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
-            {
-                gPeepSpawns[i] = _s6.peep_spawns[i];
-            }
-            
-            for (size_t i = RCT12_MAX_PEEP_SPAWNS; i < MAX_PEEP_SPAWNS; i++)
-            {
-                gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
-            }
+            _s6.peep_spawns[0].y = 1296;
         }
 
+        for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
+        {
+            gPeepSpawns[i] = _s6.peep_spawns[i];
+        }
+
+        for (size_t i = RCT12_MAX_PEEP_SPAWNS; i < MAX_PEEP_SPAWNS; i++)
+        {
+            gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
+        }
+    }
+
+    void ImportNumRiders(Ride * dst, const uint8 rideIndex)
+    {
+        // The number of riders might have overflown or underflown. Re-calculate the value.
+        uint16 numRiders = 0;
+        for (const rct_sprite sprite : _s6.sprites)
+        {
+            if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            {
+                if (sprite.peep.state == PEEP_STATE_ON_RIDE && sprite.peep.current_ride == rideIndex)
+                {
+                    numRiders++;
+                }
+            }
+        }
+        dst->num_riders = numRiders;
     }
 };
 
@@ -808,101 +830,99 @@ IParkImporter * ParkImporter::CreateS6(IObjectRepository * objectRepository, IOb
     return new S6Importer(objectRepository, objectManager);
 }
 
-extern "C"
+ParkLoadResult * load_from_sv6(const char * path)
 {
-    ParkLoadResult * load_from_sv6(const char * path)
+    ParkLoadResult * result = nullptr;
+    auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
+    try
     {
-        ParkLoadResult * result = nullptr;
-        auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
-        try
-        {
-            result = new ParkLoadResult(s6Importer->LoadSavedGame(path));
+        result = new ParkLoadResult(s6Importer->LoadSavedGame(path));
 
-            // We mustn't import if there's something
-            // wrong with the park data
-            if (result->Error == PARK_LOAD_ERROR_OK)
-            {
-                s6Importer->Import();
-
-                game_fix_save_vars();
-                sprite_position_tween_reset();
-            }
-        }
-        catch (const ObjectLoadException &)
-        {
-            gErrorType     = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-        }
-        catch (const IOException &)
-        {
-            gErrorType     = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_GAME_SAVE_FAILED;
-        }
-        catch (const std::exception &)
-        {
-            gErrorType     = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-        }
-        delete s6Importer;
-
-        if (result == nullptr)
-        {
-            result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
-        }
+        // We mustn't import if there's something
+        // wrong with the park data
         if (result->Error == PARK_LOAD_ERROR_OK)
         {
-            gScreenAge          = 0;
-            gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-        }
-        return result;
-    }
+            s6Importer->Import();
 
-    /**
-     *
-     *  rct2: 0x00676053
-     * scenario (ebx)
-     */
-    ParkLoadResult * load_from_sc6(const char * path)
+            game_fix_save_vars();
+            sprite_position_tween_reset();
+        }
+    }
+    catch (const ObjectLoadException &)
     {
-        ParkLoadResult * result = nullptr;
-        auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
-        try
-        {
-            result = new ParkLoadResult(s6Importer->LoadScenario(path));
-            if (result->Error == PARK_LOAD_ERROR_OK)
-            {
-                s6Importer->Import();
-
-                game_fix_save_vars();
-                sprite_position_tween_reset();
-            }
-        }
-        catch (const ObjectLoadException &)
-        {
-            gErrorType     = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_GAME_SAVE_FAILED;
-        }
-        catch (const IOException &)
-        {
-            gErrorType     = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_GAME_SAVE_FAILED;
-        }
-        catch (const std::exception &)
-        {
-            gErrorType     = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-        }
-        delete s6Importer;
-
-        if (result == nullptr)
-        {
-            result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
-        }
-        if (result->Error != PARK_LOAD_ERROR_OK)
-        {
-            gScreenAge = 0;
-            gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-        }
-        return result;
+        gErrorType     = ERROR_TYPE_FILE_LOAD;
+        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
     }
+    catch (const IOException &)
+    {
+        gErrorType     = ERROR_TYPE_FILE_LOAD;
+        gErrorStringId = STR_GAME_SAVE_FAILED;
+    }
+    catch (const std::exception &)
+    {
+        gErrorType     = ERROR_TYPE_FILE_LOAD;
+        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+    }
+    delete s6Importer;
+
+    if (result == nullptr)
+    {
+        result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
+    }
+    if (result->Error == PARK_LOAD_ERROR_OK)
+    {
+        gScreenAge          = 0;
+        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+    }
+    return result;
 }
+
+/**
+ *
+ *  rct2: 0x00676053
+ * scenario (ebx)
+ */
+ParkLoadResult * load_from_sc6(const char * path)
+{
+    ParkLoadResult * result = nullptr;
+    auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
+    try
+    {
+        result = new ParkLoadResult(s6Importer->LoadScenario(path));
+        if (result->Error == PARK_LOAD_ERROR_OK)
+        {
+            s6Importer->Import();
+
+            game_fix_save_vars();
+            sprite_position_tween_reset();
+        }
+    }
+    catch (const ObjectLoadException &)
+    {
+        gErrorType     = ERROR_TYPE_FILE_LOAD;
+        gErrorStringId = STR_GAME_SAVE_FAILED;
+    }
+    catch (const IOException &)
+    {
+        gErrorType     = ERROR_TYPE_FILE_LOAD;
+        gErrorStringId = STR_GAME_SAVE_FAILED;
+    }
+    catch (const std::exception &)
+    {
+        gErrorType     = ERROR_TYPE_FILE_LOAD;
+        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+    }
+    delete s6Importer;
+
+    if (result == nullptr)
+    {
+        result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
+    }
+    if (result->Error != PARK_LOAD_ERROR_OK)
+    {
+        gScreenAge = 0;
+        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+    }
+    return result;
+}
+

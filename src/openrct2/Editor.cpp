@@ -34,6 +34,7 @@
 #include "util/Util.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
+#include "interface/Window_internal.h"
 
 namespace Editor
 {
@@ -441,7 +442,7 @@ namespace Editor
     static void FinaliseMainView()
     {
         rct_window   * w        = window_get_main();
-        rct_viewport * viewport = w->viewport;
+        rct_viewport * viewport = window_get_viewport(w);
 
         w->viewport_target_sprite = SPRITE_INDEX_NULL;
         w->saved_view_x           = gSavedViewX;
@@ -807,15 +808,13 @@ namespace Editor
     }
 }
 
-extern "C"
+void editor_open_windows_for_current_step()
 {
-    void editor_open_windows_for_current_step()
-    {
-        Editor::OpenWindowsForCurrentStep();
-    }
-
-    void game_command_edit_scenario_options(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
-    {
-        Editor::GameCommandEditScenarioOptions(eax, ebx, ecx, edx, esi, edi, ebp);
-    }
+    Editor::OpenWindowsForCurrentStep();
 }
+
+void game_command_edit_scenario_options(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+{
+    Editor::GameCommandEditScenarioOptions(eax, ebx, ecx, edx, esi, edi, ebp);
+}
+

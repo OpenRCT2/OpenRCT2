@@ -27,13 +27,7 @@ enum
     JUMPING_FOUNTAIN_TYPE_SNOW
 };
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    void jumping_fountain_begin(sint32 type, sint32 x, sint32 y, const rct_tile_element * tileElement);
-    void jumping_fountain_create(sint32 type, sint32 x, sint32 y, sint32 z, sint32 direction, sint32 flags, sint32 iteration);
-    void jumping_fountain_update(rct_jumping_fountain * jumpingFountain);
-#ifdef __cplusplus
-}
-#endif
+void jumping_fountain_begin(sint32 type, sint32 x, sint32 y, const rct_tile_element * tileElement);
+void jumping_fountain_create(sint32 type, sint32 x, sint32 y, sint32 z, sint32 direction, sint32 flags, sint32 iteration);
+void jumping_fountain_update(rct_jumping_fountain * jumpingFountain);
+

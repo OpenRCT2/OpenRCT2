@@ -411,8 +411,8 @@ public:
         for (size_t i = 0; i < _scenarios.size(); i++) {
             const scenario_index_entry * scenario = &_scenarios[i];
 
-            if (scenario->source_game == SCENARIO_SOURCE_OTHER)
-                continue;
+			if (scenario->source_game == SCENARIO_SOURCE_OTHER && scenario->sc_id == SC_UNIDENTIFIED)
+				continue;
 
             // Note: this is always case insensitive search for cross platform consistency
             if (String::Equals(name, scenario->internal_name, true)) {
@@ -963,25 +963,23 @@ IScenarioRepository * GetScenarioRepository()
     return _scenarioRepository;
 }
 
-extern "C"
+void scenario_repository_scan()
 {
-    void scenario_repository_scan()
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        repo->Scan();
-    }
+    IScenarioRepository * repo = GetScenarioRepository();
+    repo->Scan();
+}
 
-    size_t scenario_repository_get_count()
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        return repo->GetCount();
-    }
+size_t scenario_repository_get_count()
+{
+    IScenarioRepository * repo = GetScenarioRepository();
+    return repo->GetCount();
+}
 
-    const scenario_index_entry *scenario_repository_get_by_index(size_t index)
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        return repo->GetByIndex(index);
-    }
+const scenario_index_entry *scenario_repository_get_by_index(size_t index)
+{
+    IScenarioRepository * repo = GetScenarioRepository();
+    return repo->GetByIndex(index);
+}
 
     bool scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name)
     {
@@ -995,3 +993,4 @@ extern "C"
         return repo->TryRecordSpeedrunRecords(scenarioFileName, daysValue);
     }
 }
+

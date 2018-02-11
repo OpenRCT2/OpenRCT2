@@ -16,6 +16,7 @@
 
 #ifdef __ANDROID__
 
+#include "../core/Guard.hpp"
 #include "Platform2.h"
 
 namespace Platform
@@ -33,6 +34,22 @@ namespace Platform
         default:
             return std::string();
         }
+    }
+
+    std::string GetDocsPath()
+    {
+        return std::string();
+    }
+
+    std::string GetInstallPath()
+    {
+        return "/sdcard/openrct2";
+    }
+
+    std::string GetCurrentExecutablePath()
+    {
+        Guard::Assert(false, "GetCurrentExecutablePath() not implemented for Android.");
+        return std::string();
     }
 }
 

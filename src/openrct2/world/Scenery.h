@@ -231,10 +231,6 @@ enum
 
 #define SCENERY_ENTRIES_BY_TAB 1024
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern uint8 gWindowSceneryActiveTabIndex;
 extern uint16 gWindowSceneryTabSelections[20];
 extern uint8 gWindowSceneryClusterEnabled;
@@ -289,9 +285,5 @@ rct_scenery_group_entry *get_scenery_group_entry(sint32 entryIndex);
 
 sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex);
 sint32 wall_entry_get_door_sound(const rct_scenery_entry * wallEntry);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

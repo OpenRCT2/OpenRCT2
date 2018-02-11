@@ -19,7 +19,7 @@
 #include "../core/Guard.hpp"
 
 #include "../config/Config.h"
-#include "../platform/crash.h"
+#include "../platform/Crash.h"
 #include "../platform/platform.h"
 #include "../localisation/Language.h"
 
@@ -27,6 +27,7 @@
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../core/Util.hpp"
 #include "../network/network.h"
 #include "../object/ObjectRepository.h"
 #include "../OpenRCT2.h"
@@ -150,7 +151,7 @@ const CommandLineExample CommandLine::RootExamples[]
     { "./SnowyPark.sc6",                              "install and open a scenario"            },
     { "./ShuttleLoop.td6",                            "install a track"                        },
 #ifndef DISABLE_HTTP
-    { "https://openrct2.website/files/SnowyPark.sv6", "download and open a saved park"         },
+    { "https://openrct2.io/files/SnowyPark.sv6", "download and open a saved park"         },
 #endif
 #ifndef DISABLE_NETWORK
     { "host ./my_park.sv6 --port 11753 --headless",   "run a headless server for a saved park" },
@@ -197,25 +198,29 @@ exitcode_t CommandLine::HandleCommandDefault()
 
     if (_userDataPath != nullptr)
     {
-        String::Set(gCustomUserDataPath, sizeof(gCustomUserDataPath), _userDataPath);
+        utf8 absolutePath[MAX_PATH]{};
+        Path::GetAbsolute(absolutePath, Util::CountOf(absolutePath), _userDataPath);
+        String::Set(gCustomUserDataPath, Util::CountOf(gCustomUserDataPath), absolutePath);
         Memory::Free(_userDataPath);
     }
 
     if (_openrctDataPath != nullptr)
     {
-        String::Set(gCustomOpenrctDataPath, sizeof(gCustomOpenrctDataPath), _openrctDataPath);
+        utf8 absolutePath[MAX_PATH]{};
+        Path::GetAbsolute(absolutePath, Util::CountOf(absolutePath), _openrctDataPath);
+        String::Set(gCustomOpenrctDataPath, Util::CountOf(gCustomOpenrctDataPath), absolutePath);
         Memory::Free(_openrctDataPath);
     }
 
     if (_rct2DataPath != nullptr)
     {
-        String::Set(gCustomRCT2DataPath, sizeof(gCustomRCT2DataPath), _rct2DataPath);
+        String::Set(gCustomRCT2DataPath, Util::CountOf(gCustomRCT2DataPath), _rct2DataPath);
         Memory::Free(_rct2DataPath);
     }
 
     if (_password != nullptr)
     {
-        String::Set(gCustomPassword, sizeof(gCustomPassword), _password);
+        String::Set(gCustomPassword, Util::CountOf(gCustomPassword), _password);
         Memory::Free(_password);
     }
 
@@ -433,7 +438,7 @@ static void PrintAbout()
     Console::WriteLine("includes some 3rd party software under different licenses. See the file");
     Console::WriteLine("\"licence.txt\" shipped with the game for details.");
     Console::WriteLine();
-    Console::WriteLine("Website:      https://openrct2.website");
+    Console::WriteLine("Website:      https://openrct2.io");
     Console::WriteLine("GitHub:       https://github.com/OpenRCT2/OpenRCT2");
     Console::WriteLine("Contributors: https://github.com/OpenRCT2/OpenRCT2/blob/develop/contributors.md");
     Console::WriteLine();

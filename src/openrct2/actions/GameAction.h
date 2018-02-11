@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <array>
 #include <functional>
 #include <memory>
 
@@ -71,13 +72,13 @@ class GameActionResult
 public:
     typedef std::unique_ptr<GameActionResult> Ptr;
 
-    GA_ERROR        Error = GA_ERROR::OK;
-    rct_string_id   ErrorTitle = STR_NONE;
-    rct_string_id   ErrorMessage = STR_NONE;
-    uint8           ErrorMessageArgs[12] = { 0 };
-    LocationXYZ32   Position = { 0 };
-    money32         Cost = 0;
-    uint16          ExpenditureType = 0;
+    GA_ERROR                Error = GA_ERROR::OK;
+    rct_string_id           ErrorTitle = STR_NONE;
+    rct_string_id           ErrorMessage = STR_NONE;
+    std::array<uint8, 12>   ErrorMessageArgs;
+    LocationXYZ32           Position = { 0 };
+    money32                 Cost = 0;
+    uint16                  ExpenditureType = 0;
 
     GameActionResult();
     GameActionResult(GA_ERROR error, rct_string_id message);

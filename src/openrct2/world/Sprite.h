@@ -117,12 +117,9 @@ typedef struct rct_balloon {
     uint8 pad_28[4];
     uint8 colour;                   // 0x2C
 
-#ifdef __cplusplus
     void Update();
     void Pop();
     void Press();
-#endif
-
 } rct_balloon;
 assert_struct_size(rct_balloon, 0x2D);
 
@@ -151,7 +148,6 @@ typedef struct rct_duck {
     uint8 pad_34[0x14];
     uint8 state;                    // 0x48
 
-#ifdef __cplusplus
     void UpdateFlyToWater();
     void UpdateSwim();
     void UpdateDrink();
@@ -161,7 +157,6 @@ typedef struct rct_duck {
     void Invalidate();
     void Remove();
     void MoveTo(sint16 x, sint16 y, sint16 z);
-#endif
 
 } rct_duck;
 assert_struct_size(rct_duck, 0x49);
@@ -339,12 +334,10 @@ typedef union {
     rct_crash_splash crash_splash;
     rct_steam_particle steam_particle;
 
-#ifdef __cplusplus
     bool IsBalloon();
     bool IsDuck();
     rct_balloon * AsBalloon();
     rct_duck * AsDuck();
-#endif
 
 } rct_sprite;
 assert_struct_size(rct_sprite, 0x100);
@@ -384,10 +377,6 @@ enum {
     LITTER_TYPE_EMPTY_JUICE_CUP,
     LITTER_TYPE_EMPTY_BOWL_BLUE,
 };
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 rct_sprite *try_get_sprite(size_t spriteIndex);
 rct_sprite *get_sprite(size_t sprite_idx);
@@ -462,9 +451,4 @@ sint32 check_for_sprite_list_cycles(bool fix);
 sint32 check_for_spatial_index_cycles(bool fix);
 sint32 fix_disjoint_sprites();
 
-#ifdef __cplusplus
-}
 #endif
-
-#endif
-

@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #ifndef _WIN32
     #include <dirent.h>
 #endif
@@ -74,7 +75,7 @@ namespace Path
         }
 
         size_t copyLength = Math::Min(lastPathSepIndex, static_cast<ptrdiff_t>(bufferSize - 1));
-        Memory::Copy(buffer, path, copyLength);
+        std::copy_n(path, copyLength, buffer);
         buffer[copyLength] = '\0';
         return buffer;
     }
@@ -82,6 +83,11 @@ namespace Path
     void CreateDirectory(const std::string &path)
     {
         platform_ensure_directory_exists(path.c_str());
+    }
+
+    bool DirectoryExists(const std::string &path)
+    {
+        return platform_directory_exists(path.c_str());
     }
 
     std::string GetFileName(const std::string &path)
@@ -143,7 +149,7 @@ namespace Path
         }
 
         size_t truncatedLength = Math::Min<size_t>(bufferSize - 1, lastDot - path);
-        Memory::Copy(buffer, path, truncatedLength);
+        std::copy_n(path, truncatedLength, buffer);
         buffer[truncatedLength] = '\0';
         return buffer;
     }
@@ -206,6 +212,12 @@ namespace Path
             return buffer;
         }
 #endif
+    }
+
+    std::string GetAbsolute(const std::string &relative)
+    {
+        utf8 absolute[MAX_PATH];
+        return GetAbsolute(absolute, sizeof(absolute), relative.c_str());
     }
 
     bool Equals(const std::string &a, const std::string &b)

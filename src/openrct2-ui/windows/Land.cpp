@@ -18,7 +18,7 @@
 #include <openrct2/core/Math.hpp>
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
@@ -132,8 +132,8 @@ rct_window * window_land_open()
     gLandToolTerrainEdge = 255;
     gLandMountainMode = false;
     gLandPaintMode = false;
-    _selectedFloorTexture = 0;
-    _selectedWallTexture = 0;
+    _selectedFloorTexture = TERRAIN_GRASS;
+    _selectedWallTexture = TERRAIN_EDGE_ROCK;
     gLandToolRaiseCost = MONEY32_UNDEFINED;
     gLandToolLowerCost = MONEY32_UNDEFINED;
 
@@ -239,9 +239,7 @@ static void window_land_dropdown(rct_window *w, rct_widgetindex widgetIndex, sin
         if (dropdownIndex == -1)
             dropdownIndex = gDropdownHighlightedIndex;
 
-        type = (dropdownIndex == -1) ?
-            _selectedWallTexture :
-            (uint32)gDropdownItemsArgs[dropdownIndex] - SPR_WALL_TEXTURE_ROCK;
+        type = (dropdownIndex == -1) ?_selectedWallTexture : WallTextureOrder[dropdownIndex];
 
         if (gLandToolTerrainEdge == type) {
             gLandToolTerrainEdge = 255;
@@ -306,7 +304,7 @@ static void window_land_invalidate(rct_window *w)
         w->pressed_widgets |= (1 << WIDX_PAINTMODE);
 
     window_land_widgets[WIDX_FLOOR].image = SPR_FLOOR_TEXTURE_GRASS + _selectedFloorTexture;
-    window_land_widgets[WIDX_WALL].image = SPR_WALL_TEXTURE_ROCK + _selectedWallTexture;
+    window_land_widgets[WIDX_WALL].image = WallTexturePreviews[_selectedWallTexture];
     // Update the preview image (for tool sizes up to 7)
     window_land_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gLandToolSize);
 }

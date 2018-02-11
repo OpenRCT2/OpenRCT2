@@ -234,7 +234,7 @@ AudioParams audio_get_params_from_location(sint32 soundId, const LocationXYZ16 *
             sint16 vy = pos2.y - viewport->view_y;
             sint16 vx = pos2.x - viewport->view_x;
             params.pan = viewport->x + (vx >> viewport->zoom);
-            params.volume = SoundVolumeAdjust[soundId] + ((-1024 * viewport->zoom - 1) << volumeDown) + 1;
+            params.volume = SoundVolumeAdjust[soundId] + ((-1024 * viewport->zoom - 1) * (1 << volumeDown)) + 1;
 
             if (vy < 0 || vy >= viewport->view_height || vx < 0 || vx >= viewport->view_width || params.volume < -10000)
             {
@@ -347,9 +347,9 @@ void audio_init_ride_sounds_and_info()
     sint32 deviceNum = 0;
     audio_init_ride_sounds(deviceNum);
 
-    for (auto * rideMusicInfo : gRideMusicInfoList)
+    for (auto &rideMusicInfo : gRideMusicInfoList)
     {
-        const utf8 * path = context_get_path_legacy(rideMusicInfo->path_id);
+        const utf8 * path = context_get_path_legacy(rideMusicInfo.path_id);
         if (File::Exists(path))
         {
             try
@@ -358,12 +358,12 @@ void audio_init_ride_sounds_and_info()
                 uint32 head = fs.ReadValue<uint32>();
                 if (head == 0x78787878)
                 {
-                    rideMusicInfo->length = 0;
+                    rideMusicInfo.length = 0;
                 }
                 // The length used to be hardcoded, but we stopped doing that to allow replacement.
-                if (rideMusicInfo->length == 0)
+                if (rideMusicInfo.length == 0)
                 {
-                    rideMusicInfo->length = fs.GetLength();
+                    rideMusicInfo.length = fs.GetLength();
                 }
             }
             catch (const std::exception &)

@@ -20,7 +20,6 @@
 
 #include "../drawing/Drawing.h"
 
-#ifdef __cplusplus
 interface ITitleSequencePlayer;
 
 class TitleScreen final
@@ -52,24 +51,17 @@ private:
     void TitleInitialise();
     bool TryLoadSequence(bool loadPreview = false);
 };
-#endif
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    void title_load();
-    void title_create_windows();
-    void * title_get_sequence_player();
-    void title_sequence_change_preset(size_t preset);
-    bool title_should_hide_version_info();
-    void title_set_hide_version_info(bool value);
-    size_t title_get_config_sequence();
-    size_t title_get_current_sequence();
-    bool title_preview_sequence(size_t value);
-    void title_stop_previewing_sequence();
-    bool title_is_previewing_sequence();
-    void DrawOpenRCT2(rct_drawpixelinfo * dpi, sint32 x, sint32 y);
-#ifdef __cplusplus
-}
-#endif
+void title_load();
+void title_create_windows();
+void * title_get_sequence_player();
+void title_sequence_change_preset(size_t preset);
+bool title_should_hide_version_info();
+void title_set_hide_version_info(bool value);
+size_t title_get_config_sequence();
+size_t title_get_current_sequence();
+bool title_preview_sequence(size_t value);
+void title_stop_previewing_sequence();
+bool title_is_previewing_sequence();
+void DrawOpenRCT2(rct_drawpixelinfo * dpi, sint32 x, sint32 y);
+

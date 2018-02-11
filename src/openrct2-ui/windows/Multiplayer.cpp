@@ -18,7 +18,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>

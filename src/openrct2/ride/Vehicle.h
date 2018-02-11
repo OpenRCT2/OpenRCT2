@@ -42,29 +42,32 @@ typedef struct rct_ride_entry_vehicle {
     uint8 sprite_width;             // 0x0E , 0x28
     uint8 sprite_height_negative;   // 0x0F , 0x29
     uint8 sprite_height_positive;   // 0x10 , 0x2A
-    uint8 var_11;                   // 0x11 , 0x2B
+    uint8 animation;                // 0x11 , 0x2B
     uint32 flags;                   // 0x12 , 0x2C
     uint16 base_num_frames;         // 0x16 , 0x30, The number of sprites for a flat non-banked track piece.
-    uint32 base_image_id;           // 0x18 , 0x32
-    uint32 var_1C;                  // 0x1C , 0x36
-    uint32 var_20;                  // 0x20 , 0x3A
-    uint32 var_24;                  // 0x24 , 0x3E
-    uint32 var_28;                  // 0x28 , 0x42
-    uint32 var_2C;                  // 0x2C , 0x46
-    uint32 var_30;                  // 0x30 , 0x4A
-    uint32 var_34;                  // 0x34 , 0x4E
-    uint32 var_38;                  // 0x38 , 0x52
-    uint32 var_3C;                  // 0x3C , 0x56
-    uint32 var_40;                  // 0x40 , 0x5A
-    uint32 var_44;                  // 0x44 , 0x5E
-    uint32 var_48;                  // 0x48 , 0x62
-    uint32 var_4C;                  // 0x4C , 0x66
+    uint32 base_image_id;           // 0x18 , 0x32, Following image_id's populated during loading
+    uint32 restraint_image_id;                      // 0x1C , 0x36
+    uint32 gentle_slope_image_id;                   // 0x20 , 0x3A
+    uint32 steep_slope_image_id;                    // 0x24 , 0x3E
+    uint32 vertical_slope_image_id;                 // 0x28 , 0x42
+    uint32 diagonal_slope_image_id;                 // 0x2C , 0x46
+    uint32 banked_image_id;                         // 0x30 , 0x4A
+    uint32 inline_twist_image_id;                   // 0x34 , 0x4E
+    uint32 flat_to_gentle_bank_image_id;            // 0x38 , 0x52
+    uint32 diagonal_to_gentle_slope_bank_image_id;  // 0x3C , 0x56
+    uint32 gentle_slope_to_bank_image_id;           // 0x40 , 0x5A
+    uint32 gentle_slope_bank_turn_image_id;         // 0x44 , 0x5E
+    uint32 flat_bank_to_gentle_slope_image_id;      // 0x48 , 0x62
+    union {
+        uint32 curved_lift_hill_image_id;           // 0x4C , 0x66
+        uint32 corkscrew_image_id;                  // 0x4C , 0x66
+    };
     uint32 no_vehicle_images;       // 0x50 , 0x6A
     uint8 no_seating_rows;          // 0x54 , 0x6E
     uint8 spinning_inertia;         // 0x55 , 0x6F
     uint8 spinning_friction;        // 0x56 , 0x70
     uint8 friction_sound_id;        // 0x57 , 0x71
-    uint8 var_58;                   // 0x58 , 0x72
+    uint8 log_flume_reverser_vehicle_type;          // 0x58 , 0x72
     uint8 sound_range;              // 0x59 , 0x73
     uint8 double_sound_frequency;   // 0x5A , 0x74 (Doubles the velocity when working out the sound frequency {used on go karts})
     uint8 powered_acceleration;     // 0x5B , 0x75
@@ -159,11 +162,11 @@ typedef struct rct_vehicle {
     uint8 next_free_seat;           // 0xB4
     uint8 restraints_position;      // 0xB5 0 == Close, 255 == Open
     union {
-        sint16 var_B6;
+        sint16 spin_speed;          // 0xB6
         sint16 crash_x;             // 0xB6
     };
-    uint16 var_B8;
-    uint8 var_BA;
+    uint16 sound2_flags;            // 0xB8
+    uint8 spin_sprite;              // 0xBA lowest 3 bits not used for sprite selection (divide by 8 to use)
     uint8 sound1_id;                // 0xBB
     uint8 sound1_volume;            // 0xBC
     uint8 sound2_id;                // 0xBD
@@ -177,8 +180,11 @@ typedef struct rct_vehicle {
     };
     uint8 speed;                    // 0xC2
     uint8 powered_acceleration;     // 0xC3
-    uint8 var_C4;
-    uint8 var_C5;
+    union {
+        uint8 dodgems_collision_direction; // 0xC4
+        uint8 var_C4;
+    };
+    uint8 animation_frame;          // 0xC5
     uint8 pad_C6[0x2];
     uint16 var_C8;
     uint16 var_CA;
@@ -219,38 +225,51 @@ typedef struct rct_vehicle_info {
 } rct_vehicle_info;
 
 enum {
-    VEHICLE_ENTRY_FLAG_0 = 1 << 0,
+    VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY = 1 << 0, // Set on powered vehicles that do not slow down when going down a hill
     VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS = 1 << 1,
     VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH = 1 << 2,
     VEHICLE_ENTRY_FLAG_MINI_GOLF = 1 << 3,
     VEHICLE_ENTRY_FLAG_4 = 1 << 4,
     VEHICLE_ENTRY_FLAG_5 = 1 << 5,
     VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET = 1 << 6,        // Set on vehicles that support running inverted for extended periods of time, i.e. the Flying, Lay-down and Multi-dimension RCs.
-    VEHICLE_ENTRY_FLAG_7 = 1 << 7,
+    VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS = 1 << 7,            // When set the vehicle has an additional frame for when in use. Used only by dodgems.
     VEHICLE_ENTRY_FLAG_ALLOW_DOORS_DEPRECATED = 1 << 8,         // Not used any more - every vehicle will now work with doors
     VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2 = 1 << 9,
     VEHICLE_ENTRY_FLAG_10 = 1 << 10,
     VEHICLE_ENTRY_FLAG_11 = 1 << 11,
     VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES = 1 << 12,  // Setting this will cause the game to set vehicleEntry->num_vertical_frames to vehicleEntry->num_vertical_frames_override, rather than determining it itself.
     VEHICLE_ENTRY_FLAG_13 = 1 << 13,
-    VEHICLE_ENTRY_FLAG_14 = 1 << 14,
+    VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES = 1 << 14,    // 16x additional frames for vehicle. A spinning item with additional frames must always face forward to load/unload. Spinning without can load/unload at 4 rotations.
     VEHICLE_ENTRY_FLAG_15 = 1 << 15,
     VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1 = 1 << 16,
     VEHICLE_ENTRY_FLAG_SWINGING = 1 << 17,
     VEHICLE_ENTRY_FLAG_SPINNING = 1 << 18,
     VEHICLE_ENTRY_FLAG_POWERED = 1 << 19,
     VEHICLE_ENTRY_FLAG_RIDERS_SCREAM = 1 << 20,
-    VEHICLE_ENTRY_FLAG_21 = 1 << 21,
-    VEHICLE_ENTRY_FLAG_22 = 1 << 22,
-    VEHICLE_ENTRY_FLAG_23 = 1 << 23,                            // Set on animated vehicles like the Multi-dimension coaster trains, Miniature Railway locomotives and Helicycles.
-    VEHICLE_ENTRY_FLAG_24 = 1 << 24,
+    VEHICLE_ENTRY_FLAG_21 = 1 << 21,// Swinging coaster??
+    VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION = 1 << 22,
+    VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION = 1 << 23,             // Set on animated vehicles like the Multi-dimension coaster trains, Miniature Railway locomotives and Helicycles.
+    VEHICLE_ENTRY_FLAG_RIDER_ANIMATION = 1 << 24,               // Set when the animation updates rider sprite positions
     VEHICLE_ENTRY_FLAG_25 = 1 << 25,
     VEHICLE_ENTRY_FLAG_26 = 1 << 26,
-    VEHICLE_ENTRY_FLAG_27 = 1 << 27,
-    VEHICLE_ENTRY_FLAG_28 = 1 << 28,
-    VEHICLE_ENTRY_FLAG_29 = 1 << 29,
-    VEHICLE_ENTRY_FLAG_30 = 1 << 30,
-    VEHICLE_ENTRY_FLAG_31 = 1u << 31,
+    VEHICLE_ENTRY_FLAG_SLIDE_SWING = 1 << 27,                   // Set on dingy slides. They have there own swing value calculations and have a different amount of images.
+    VEHICLE_ENTRY_FLAG_CHAIRLIFT = 1 << 28,
+    VEHICLE_ENTRY_FLAG_WATER_RIDE = 1 << 29,                    // Set on rides where water would provide continuous propulsion
+    VEHICLE_ENTRY_FLAG_GO_KART = 1 << 30,
+    VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT = 1u << 31,
+};
+
+enum {
+    VEHICLE_ENTRY_ANIMATION_NONE,
+    VEHICLE_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE,
+    VEHICLE_ENTRY_ANIMATION_SWAN,
+    VEHICLE_ENTRY_ANIMATION_CANOES,
+    VEHICLE_ENTRY_ANIMATION_ROW_BOATS,
+    VEHICLE_ENTRY_ANIMATION_WATER_TRICYCLES,
+    VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER,
+    VEHICLE_ENTRY_ANIMATION_HELICARS,
+    VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES,
+    VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER
 };
 
 enum {
@@ -288,22 +307,20 @@ enum {
 };
 
 enum{
-    VEHICLE_UPDATE_FLAG_0 = (1 << 0),
+    VEHICLE_UPDATE_FLAG_ON_LIFT_HILL = (1 << 0),
     VEHICLE_UPDATE_FLAG_1 = (1 << 1),
     VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT = (1 << 2),
-    VEHICLE_UPDATE_FLAG_3 = (1 << 3),
+    VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE = (1 << 3),       // Shuttle is in reverse
     VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART = (1 << 4),
     VEHICLE_UPDATE_FLAG_TESTING = (1 << 5),
     VEHICLE_UPDATE_FLAG_6 = (1 << 6),
-    VEHICLE_UPDATE_FLAG_7 = (1 << 7),
+    VEHICLE_UPDATE_FLAG_ZERO_VELOCITY = (1 << 7),           // Used on rides when safety cutout stops them on a lift
     VEHICLE_UPDATE_FLAG_BROKEN_CAR = (1 << 8),
     VEHICLE_UPDATE_FLAG_BROKEN_TRAIN = (1 << 9),
     VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP = (1 << 10),
     VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES = (1 << 11),   // Used on rides where trains can run for extended periods of time, i.e. the Flying, Lay-down and Multi-dimension RCs.
     VEHICLE_UPDATE_FLAG_12 = (1 << 12),
-    VEHICLE_UPDATE_FLAG_13 = (1 << 13),
-    VEHICLE_UPDATE_FLAG_14 = (1 << 14),
-    VEHICLE_UPDATE_FLAG_15 = (1 << 15)
+    VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE = (1 << 13) // After passing a rotation toggle track piece this will enable
 };
 
 enum {
@@ -321,7 +338,7 @@ enum {
     VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS = (1 << 11),
     VEHICLE_SPRITE_FLAG_CORKSCREWS = (1 << 12),
     VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION = (1 << 13),
-    VEHICLE_SPRITE_FLAG_14 = (1 << 14),
+    VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL = (1 << 14),
     VEHICLE_SPRITE_FLAG_15 = (1 << 15),
 };
 
@@ -361,12 +378,12 @@ enum {
     VEHICLE_UPDATE_MOTION_TRACK_FLAG_12 = 1 << 12,
 };
 
+enum {
+    VEHICLE_SOUND2_FLAGS_LIFT_HILL = 1 << 1 // When on a lift hill generate sound
+};
+
 #define VEHICLE_SEAT_PAIR_FLAG  0x80
 #define VEHICLE_SEAT_NUM_MASK   0x7F
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 rct_vehicle * try_get_vehicle(uint16 spriteIndex);
 void vehicle_update_all();
@@ -398,10 +415,6 @@ extern uint8 _vehicleBankEndF64E37;
 extern uint8 _vehicleF64E2C;
 extern rct_vehicle * _vehicleFrontVehicle;
 extern LocationXYZ16 unk_F64E20;
-
-#ifdef __cplusplus
-}
-#endif
 
 /** Helper macro until rides are stored in this module. */
 #define GET_VEHICLE(sprite_index) &(get_sprite(sprite_index)->vehicle)

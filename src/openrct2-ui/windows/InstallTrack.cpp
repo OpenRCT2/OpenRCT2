@@ -14,15 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <string>
+#include <vector>
+
 #include <openrct2/Context.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/core/Math.hpp>
-#include <openrct2/core/Memory.hpp>
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/audio/audio.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/sprites.h>
@@ -94,10 +96,10 @@ static rct_window_event_list window_install_track_events = {
     nullptr
 };
 
-static rct_track_td6 *_trackDesign;
-static utf8 *_trackPath;
-static utf8 *_trackName;
-static uint8 *_trackDesignPreviewPixels;
+static rct_track_td6 * _trackDesign;
+static std::string _trackPath;
+static std::string _trackName;
+static std::vector<uint8> _trackDesignPreviewPixels;
 
 static void window_install_track_update_preview();
 static void window_install_track_design(rct_window *w);
@@ -142,9 +144,9 @@ rct_window * window_install_track_open(const utf8 *path)
     w->track_list.track_list_being_updated = false;
     window_push_others_right(w);
 
-    _trackPath = _strdup(path);
-    _trackName = track_repository_get_name_from_path(path);
-    _trackDesignPreviewPixels = Memory::AllocateArray<uint8>(4 * TRACK_PREVIEW_IMAGE_SIZE);
+    _trackPath = path;
+    _trackName = GetNameFromTrackPath(path);
+    _trackDesignPreviewPixels.resize(4 * TRACK_PREVIEW_IMAGE_SIZE);
 
     window_install_track_update_preview();
     window_invalidate(w);
@@ -158,9 +160,10 @@ rct_window * window_install_track_open(const utf8 *path)
 */
 static void window_install_track_close(rct_window *w)
 {
-    SafeFree(_trackPath);
-    SafeFree(_trackName);
-    SafeFree(_trackDesignPreviewPixels);
+    _trackPath.clear();
+    _trackName.clear();
+    _trackDesignPreviewPixels.clear();
+    _trackDesignPreviewPixels.shrink_to_fit();
     track_design_dispose(_trackDesign);
     _trackDesign = nullptr;
 }
@@ -229,7 +232,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_fill_rect(dpi, x, y, x + 369, y + 216, colour);
 
     rct_g1_element g1temp = { nullptr };
-    g1temp.offset = _trackDesignPreviewPixels + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
+    g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
     g1temp.width = 370;
     g1temp.height = 217;
     g1temp.flags = G1_FLAG_BMP;
@@ -400,15 +403,14 @@ static void window_install_track_text_input(rct_window *w, rct_widgetindex widge
         return;
     }
 
-    free(_trackName);
-    _trackName = _strdup(text);
+    _trackName = text;
 
     window_event_mouse_up_call(w, WIDX_INSTALL);
 }
 
 static void window_install_track_update_preview()
 {
-    track_design_draw_preview(_trackDesign, _trackDesignPreviewPixels);
+    track_design_draw_preview(_trackDesign, _trackDesignPreviewPixels.data());
 }
 
 static void window_install_track_design(rct_window *w)
@@ -422,7 +424,7 @@ static void window_install_track_design(rct_window *w)
         return;
     }
 
-    safe_strcat_path(destPath, _trackName, sizeof(destPath));
+    safe_strcat_path(destPath, _trackName.c_str(), sizeof(destPath));
     path_append_extension(destPath, ".td6", sizeof(destPath));
 
     if (platform_file_exists(destPath)) {
@@ -433,11 +435,11 @@ static void window_install_track_design(rct_window *w)
             WIDX_INSTALL,
             STR_SELECT_NEW_NAME_FOR_TRACK_DESIGN,
             STR_AN_EXISTING_TRACK_DESIGN_ALREADY_HAS_THIS_NAME,
-            _trackName,
+            _trackName.c_str(),
             255
         );
     } else {
-        if (track_repository_install(_trackPath)) {
+        if (track_repository_install(_trackPath.c_str())) {
             window_close(w);
         } else {
             context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);

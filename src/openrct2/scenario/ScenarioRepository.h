@@ -67,8 +67,6 @@ typedef struct scenario_index_entry
     utf8 details[256];
 } scenario_index_entry;
 
-#ifdef __cplusplus
-
 namespace OpenRCT2
 {
     interface IPlatformEnvironment;
@@ -99,20 +97,11 @@ interface IScenarioRepository
 IScenarioRepository * CreateScenarioRepository(OpenRCT2::IPlatformEnvironment * env);
 IScenarioRepository * GetScenarioRepository();
 
-#endif
+void    scenario_repository_scan();
+size_t  scenario_repository_get_count();
+const   scenario_index_entry *scenario_repository_get_by_index(size_t index);
+bool    scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name);
+bool    scenario_repository_try_record_speedrun_highscore(const utf8 * scenarioFileName, uint32 daysValue)
+void    scenario_translate(scenario_index_entry * scenarioEntry, const struct rct_object_entry * stexObjectEntry);
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
-    void    scenario_repository_scan();
-    size_t  scenario_repository_get_count();
-    const   scenario_index_entry *scenario_repository_get_by_index(size_t index);
-    bool    scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name);
-    bool    scenario_repository_try_record_speedrun_highscore(const utf8 * scenarioFileName, uint32 daysValue);
-    void    scenario_translate(scenario_index_entry * scenarioEntry, const struct rct_object_entry * stexObjectEntry);
-
-#ifdef __cplusplus
-}
-#endif

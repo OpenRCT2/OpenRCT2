@@ -103,7 +103,8 @@ static bool TryClassifyAsS4(IStream * stream, ClassifiedFileInfo * result)
     try
     {
         size_t dataLength = (size_t)stream->GetLength();
-        std::unique_ptr<uint8> data(stream->ReadArray<uint8>(dataLength));
+        auto deleter_lambda = [dataLength](uint8 * ptr) { Memory::FreeArray(ptr, dataLength); };
+        std::unique_ptr<uint8, decltype(deleter_lambda)> data(stream->ReadArray<uint8>(dataLength), deleter_lambda);
         stream->SetPosition(originalPosition);
         sint32 fileTypeVersion = sawyercoding_detect_file_type(data.get(), dataLength);
 
@@ -166,18 +167,16 @@ static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFileInfo * result)
     return success;
 }
 
-extern "C"
+uint32 get_file_extension_type(const utf8 * path)
 {
-    uint32 get_file_extension_type(const utf8 * path)
-    {
-        auto extension = Path::GetExtension(path);
-        if (String::Equals(extension, ".dat", true)) return FILE_EXTENSION_DAT;
-        if (String::Equals(extension, ".sc4", true)) return FILE_EXTENSION_SC4;
-        if (String::Equals(extension, ".sv4", true)) return FILE_EXTENSION_SV4;
-        if (String::Equals(extension, ".td4", true)) return FILE_EXTENSION_TD4;
-        if (String::Equals(extension, ".sc6", true)) return FILE_EXTENSION_SC6;
-        if (String::Equals(extension, ".sv6", true)) return FILE_EXTENSION_SV6;
-        if (String::Equals(extension, ".td6", true)) return FILE_EXTENSION_TD6;
-        return FILE_EXTENSION_UNKNOWN;
-    }
+    auto extension = Path::GetExtension(path);
+    if (String::Equals(extension, ".dat", true)) return FILE_EXTENSION_DAT;
+    if (String::Equals(extension, ".sc4", true)) return FILE_EXTENSION_SC4;
+    if (String::Equals(extension, ".sv4", true)) return FILE_EXTENSION_SV4;
+    if (String::Equals(extension, ".td4", true)) return FILE_EXTENSION_TD4;
+    if (String::Equals(extension, ".sc6", true)) return FILE_EXTENSION_SC6;
+    if (String::Equals(extension, ".sv6", true)) return FILE_EXTENSION_SV6;
+    if (String::Equals(extension, ".td6", true)) return FILE_EXTENSION_TD6;
+    return FILE_EXTENSION_UNKNOWN;
 }
+

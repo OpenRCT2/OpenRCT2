@@ -51,7 +51,10 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     const rct_object_entry * objectEntry = object_list_find_by_name(identifier.c_str());
     static const rct_object_entry scgPathX = Object::GetScgPathXHeader();
 
-    if (objectEntry != nullptr && object_entry_get_source_game(objectEntry) != OBJECT_SOURCE_RCT2)
+    if (objectEntry != nullptr &&
+        (object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_WACKY_WORLDS ||
+         object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_TIME_TWISTER ||
+         object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_CUSTOM))
     {
         SetPrimarySceneryGroup(&scgPathX);
     }

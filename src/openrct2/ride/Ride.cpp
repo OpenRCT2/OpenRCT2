@@ -27,6 +27,7 @@
 #include "../Game.h"
 #include "../Input.h"
 #include "../interface/Window.h"
+#include "../interface/Window_internal.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
@@ -49,7 +50,7 @@
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "CableLift.h"
-#include "music_list.h"
+#include "MusicList.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "RideGroupManager.h"
@@ -817,7 +818,7 @@ sint32 ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
     if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
         ride_construction_invalidate_current_track();
 
-    bool counter = true;
+    bool moveSlowIt = true;
     track_circuit_iterator_begin(&it, *input);
     slowIt = it;
     while (track_circuit_iterator_next(&it)) {
@@ -826,13 +827,12 @@ sint32 ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
             return 1;
         }
         //#2081: prevent an infinite loop
-        counter = !counter;
-        if (counter) {
+        moveSlowIt = !moveSlowIt;
+        if (moveSlowIt)
+        {
             track_circuit_iterator_next(&slowIt);
-            if (slowIt.currentZ == it.currentZ &&
-                slowIt.currentDirection == it.currentDirection &&
-                slowIt.current.x == it.current.x &&
-                slowIt.current.y == it.current.y) {
+            if (track_circuit_iterators_match(&it, &slowIt))
+            {
                 *output = it.current;
                 return 1;
             }
@@ -1821,9 +1821,8 @@ static sint32 ride_modify_maze(rct_tile_element *tileElement, sint32 x, sint32 y
     _currentTrackSelectionFlags = 0;
     _rideConstructionArrowPulseTime = 0;
 
-    Intent * intent = intent_create(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
-    context_broadcast_intent(intent);
-    intent_release(intent);
+    auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
+    context_broadcast_intent(&intent);
 
     return 1;
 }
@@ -2326,7 +2325,7 @@ static void ride_breakdown_update(sint32 rideIndex)
 
     // Calculate breakdown probability?
     sint32 unreliabilityAccumulator = ride->unreliability_factor + get_age_penalty(ride);
-    ride->reliability = Math::Max((uint16)0, (uint16)(ride->reliability - unreliabilityAccumulator));
+    ride->reliability = (uint16) Math::Max(0, (ride->reliability - unreliabilityAccumulator));
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
     // Random probability of a breakdown. Roughly this is 1 in
@@ -2805,8 +2804,8 @@ static void ride_music_update(sint32 rideIndex)
 
     // Select random tune from available tunes for a music style (of course only merry-go-rounds have more than one tune)
     if (ride->music_tune_id == 255) {
-        uint8 *musicStyleTunes = gRideMusicStyleTuneIds[ride->music];
-        uint8 numTunes = *musicStyleTunes++;
+        const auto &musicStyleTunes = gRideMusicStyleTuneIds[ride->music];
+        auto numTunes = musicStyleTunes.size();
         ride->music_tune_id = musicStyleTunes[util_rand() % numTunes];
         ride->music_position = 0;
         return;
@@ -3430,7 +3429,7 @@ void ride_set_map_tooltip(rct_tile_element *tileElement)
 
 static sint32 ride_music_params_update_label_51(uint32 a1, uint8 * tuneId, uint8 rideIndex, sint32 v32, sint32 pan_x, uint16 sampleRate)
 {
-    if (a1 < gRideMusicInfoList[*tuneId]->length)
+    if (a1 < gRideMusicInfoList[*tuneId].length)
     {
         rct_ride_music_params * ride_music_params = gRideMusicParamsListEnd;
         if (ride_music_params < &gRideMusicParamsList[Util::CountOf(gRideMusicParamsList)])
@@ -3455,7 +3454,7 @@ static sint32 ride_music_params_update_label_51(uint32 a1, uint8 * tuneId, uint8
 
 static sint32 ride_music_params_update_label_58(uint32 position, uint8 * tuneId)
 {
-    rct_ride_music_info * ride_music_info = gRideMusicInfoList[*tuneId];
+    rct_ride_music_info * ride_music_info = &gRideMusicInfoList[*tuneId];
     position += ride_music_info->offset;
     if (position < ride_music_info->length)
     {
@@ -3593,7 +3592,7 @@ sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, u
                 channel++;
                 if (channel >= AUDIO_MAX_RIDE_MUSIC)
                 {
-                    rct_ride_music_info * ride_music_info = gRideMusicInfoList[*tuneId];
+                    rct_ride_music_info * ride_music_info = &gRideMusicInfoList[*tuneId];
                     a1 = position + ride_music_info->offset;
 
                     return ride_music_params_update_label_51(a1, tuneId, rideIndex, v32, pan_x, sampleRate);
@@ -3701,7 +3700,7 @@ void ride_music_update_final()
                         channel2++;
                         if (channel2 >= AUDIO_MAX_RIDE_MUSIC)
                         {
-                            rct_ride_music_info * ride_music_info = gRideMusicInfoList[ride_music_params->tune_id];
+                            rct_ride_music_info * ride_music_info = &gRideMusicInfoList[ride_music_params->tune_id];
                             rct_ride_music      * ride_music_3    = &gRideMusicList[ebx];
                             ride_music_3->sound_channel = Mixer_Play_Music(ride_music_info->path_id, MIXER_LOOP_NONE, true);
                             if (ride_music_3->sound_channel)
@@ -4171,13 +4170,27 @@ static bool ride_check_track_contains_inversions(rct_xy_element *input, rct_xy_e
         ride_construction_invalidate_current_track();
     }
 
-    track_circuit_iterator it;
+    bool moveSlowIt = true;
+    track_circuit_iterator it, slowIt;
     track_circuit_iterator_begin(&it, *input);
+    slowIt = it;
+
     while (track_circuit_iterator_next(&it)) {
         sint32 trackType = track_element_get_type(it.current.element);
         if (TrackFlags[trackType] & TRACK_ELEM_FLAG_INVERSION_TO_NORMAL) {
             *output = it.current;
             return true;
+        }
+
+        // Prevents infinite loops
+        moveSlowIt = !moveSlowIt;
+        if (moveSlowIt)
+        {
+            track_circuit_iterator_next(&slowIt);
+            if (track_circuit_iterators_match(&it, &slowIt))
+            {
+                return false;
+            }
         }
     }
     return false;
@@ -4202,13 +4215,27 @@ static bool ride_check_track_contains_banked(rct_xy_element *input, rct_xy_eleme
         ride_construction_invalidate_current_track();
     }
 
-    track_circuit_iterator it;
+    bool moveSlowIt = true;
+    track_circuit_iterator it, slowIt;
     track_circuit_iterator_begin(&it, *input);
+    slowIt = it;
+
     while (track_circuit_iterator_next(&it)) {
         sint32 trackType = track_element_get_type(output->element);
         if (TrackFlags[trackType] & TRACK_ELEM_FLAG_BANKED) {
             *output = it.current;
             return true;
+        }
+
+        // Prevents infinite loops
+        moveSlowIt = !moveSlowIt;
+        if (moveSlowIt)
+        {
+            track_circuit_iterator_next(&slowIt);
+            if (track_circuit_iterators_match(&it, &slowIt))
+            {
+                return false;
+            }
         }
     }
     return false;
@@ -4490,7 +4517,7 @@ static rct_vehicle *vehicle_create_car(
     regs.edx = vehicleEntry->spacing >> 1;
     *remainingDistance -= regs.edx;
     vehicle->remaining_distance = *remainingDistance;
-    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_30)) {
+    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)) {
         *remainingDistance -= regs.edx;
     }
 
@@ -4508,14 +4535,14 @@ static rct_vehicle *vehicle_create_car(
     vehicle->swinging_car_var_0 = 0;
     vehicle->var_4E = 0;
     vehicle->restraints_position = 0;
-    vehicle->var_BA = 0;
-    vehicle->var_B6 = 0;
-    vehicle->var_B8 = 0;
+    vehicle->spin_sprite = 0;
+    vehicle->spin_speed = 0;
+    vehicle->sound2_flags = 0;
     vehicle->sound1_id = RCT12_SOUND_ID_NULL;
     vehicle->sound2_id = RCT12_SOUND_ID_NULL;
     vehicle->next_vehicle_on_train = SPRITE_INDEX_NULL;
     vehicle->var_C4 = 0;
-    vehicle->var_C5 = 0;
+    vehicle->animation_frame = 0;
     vehicle->var_C8 = 0;
     vehicle->scream_sound_id = 255;
     vehicle->vehicle_sprite_type = 0;
@@ -4526,7 +4553,7 @@ static rct_vehicle *vehicle_create_car(
         vehicle->peep[i] = SPRITE_INDEX_NULL;
     }
 
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_31) {
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT) {
         // loc_6DDCA4:
         vehicle->var_CD = 0;
         sint32 direction = tile_element_get_direction(tileElement);
@@ -4557,11 +4584,11 @@ static rct_vehicle *vehicle_create_car(
         sprite_move(chosenLoc.x, chosenLoc.y, z, (rct_sprite*)vehicle);
     } else {
         regs.dl = 0;
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_28) {
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIRLIFT) {
             regs.dl = 1;
         }
 
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_30) {
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART) {
             // Choose which lane Go Kart should start in
             regs.dl = 5;
             if (vehicleIndex & 1) {
@@ -4700,7 +4727,7 @@ static void vehicle_create_trains(sint32 rideIndex, sint32 x, sint32 y, sint32 z
         lastTrain.tail->next_vehicle_on_ride = firstTrain.head->sprite_index;
 }
 
-static void vehicle_unset_var_48_b1(rct_vehicle *head)
+static void vehicle_unset_update_flag_b1(rct_vehicle *head)
 {
     rct_vehicle *vehicle = head;
     while (true) {
@@ -4847,11 +4874,11 @@ static bool ride_create_vehicles(Ride *ride, sint32 rideIndex, rct_xy_element *e
 
                 rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
-                if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_31)) {
+                if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)) {
                     vehicle_update_track_motion(vehicle, nullptr);
                 }
 
-                vehicle_unset_var_48_b1(vehicle);
+                vehicle_unset_update_flag_b1(vehicle);
             }
         }
     }
@@ -4871,7 +4898,7 @@ void loc_6DDF9C(Ride *ride, rct_tile_element *tileElement)
         train = GET_VEHICLE(ride->vehicles[i]);
         if (i == 0) {
             vehicle_update_track_motion(train, nullptr);
-            vehicle_unset_var_48_b1(train);
+            vehicle_unset_update_flag_b1(train);
             continue;
         }
 
@@ -6853,7 +6880,7 @@ void ride_fix_breakdown(sint32 rideIndex, sint32 reliabilityIncreaseFactor)
             uint16 spriteIndex = ride->vehicles[i];
             while (spriteIndex != SPRITE_INDEX_NULL) {
                 rct_vehicle *vehicle = GET_VEHICLE(spriteIndex);
-                vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_7;
+                vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
                 vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_CAR;
                 vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
                 spriteIndex = vehicle->next_vehicle_on_train;
@@ -6990,7 +7017,7 @@ static sint32 ride_get_track_length(Ride * ride)
 {
     rct_window             * w;
     rct_tile_element        * tileElement = nullptr;
-    track_circuit_iterator   it;
+    track_circuit_iterator   it, slowIt;
     sint32                   x = 0, y = 0, z, trackType, rideIndex, result;
     bool                     foundTrack = false;
 
@@ -7032,12 +7059,24 @@ static sint32 ride_get_track_length(Ride * ride)
             ride_construction_invalidate_current_track();
         }
 
+        bool moveSlowIt = true;
         result = 0;
         track_circuit_iterator_begin(&it, {x, y, tileElement});
+        slowIt = it;
         while (track_circuit_iterator_next(&it))
         {
             trackType = track_element_get_type(it.current.element);
             result += TrackPieceLengths[trackType];
+
+            moveSlowIt = !moveSlowIt;
+            if (moveSlowIt)
+            {
+                track_circuit_iterator_next(&slowIt);
+                if (track_circuit_iterators_match(&it, &slowIt))
+                {
+                    return 0;
+                }
+            }
         }
         return result;
     }
@@ -7602,13 +7641,13 @@ void ride_crash(uint8 rideIndex, uint8 vehicleIndex)
 
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
         // Open ride window for crashed vehicle
-        Intent * intent = intent_create(WD_VEHICLE);
-        intent_set_pointer(intent, INTENT_EXTRA_VEHICLE, vehicle);
-        rct_window * w = context_open_intent(intent);
-        intent_release(intent);
+        auto intent = Intent(WD_VEHICLE);
+        intent.putExtra(INTENT_EXTRA_VEHICLE, vehicle);
+        rct_window * w = context_open_intent(&intent);
 
-        if (w != nullptr && w->viewport != nullptr) {
-            w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+        rct_viewport * viewport = window_get_viewport(w);
+        if (w != nullptr && viewport != nullptr) {
+            viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
         }
     }
 

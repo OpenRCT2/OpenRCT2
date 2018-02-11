@@ -449,256 +449,253 @@ static money32 RideEntranceExitPlaceGhost(uint8 rideIndex, sint16 x, sint16 y, u
     );
 }
 
-extern "C"
+/**
+ *
+ *  rct2: 0x00666A63
+ */
+void game_command_remove_park_entrance(sint32 *eax,
+                                       sint32 *ebx,
+                                       sint32 *ecx,
+                                       sint32 *edx,
+                                       sint32 *esi,
+                                       sint32 *edi,
+                                       sint32 *ebp)
 {
+    *ebx = ParkEntranceRemove(
+        *eax & 0xFFFF,
+        *ecx & 0xFFFF,
+        *edx & 0xFF,
+        *ebx & 0xFF);
+}
 
-    /**
-     *
-     *  rct2: 0x00666A63
-     */
-    void game_command_remove_park_entrance(sint32 *eax,
-                                           sint32 *ebx,
-                                           sint32 *ecx,
-                                           sint32 *edx,
-                                           sint32 *esi,
-                                           sint32 *edi,
-                                           sint32 *ebp)
+/**
+ *
+ *  rct2: 0x00666F9E
+ */
+void park_entrance_remove_ghost()
+{
+    if (gParkEntranceGhostExists)
     {
-        *ebx = ParkEntranceRemove(
-            *eax & 0xFFFF,
-            *ecx & 0xFFFF,
-            *edx & 0xFF,
-            *ebx & 0xFF);
-    }
-
-    /**
-     *
-     *  rct2: 0x00666F9E
-     */
-    void park_entrance_remove_ghost()
-    {
-        if (gParkEntranceGhostExists)
-        {
-            gParkEntranceGhostExists = false;
-            game_do_command(
-                gParkEntranceGhostPosition.x,
-                GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY,
-                gParkEntranceGhostPosition.y,
-                gParkEntranceGhostPosition.z,
-                GAME_COMMAND_REMOVE_PARK_ENTRANCE,
-                0,
-                0
-            );
-        }
-    }
-
-    sint32 park_entrance_get_index(sint32 x, sint32 y, sint32 z)
-    {
-        sint32 i;
-
-        for (i = 0; i < MAX_PARK_ENTRANCES; i++)
-        {
-            if (x == gParkEntrances[i].x &&
-                y == gParkEntrances[i].y &&
-                z == gParkEntrances[i].z)
-            {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    void reset_park_entrance()
-    {
-        for (auto &parkEntrance : gParkEntrances)
-        {
-            parkEntrance.x = LOCATION_NULL;
-        }
-    }
-
-
-    void ride_entrance_exit_place_provisional_ghost()
-    {
-        if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) {
-            RideEntranceExitPlaceGhost(_currentRideIndex,
-                                           gRideEntranceExitGhostPosition.x,
-                                           gRideEntranceExitGhostPosition.y,
-                                           gRideEntranceExitGhostPosition.direction,
-                                           gRideEntranceExitPlaceType,
-                                           gRideEntranceExitGhostStationIndex);
-        }
-    }
-
-    void ride_entrance_exit_remove_ghost()
-    {
-        if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) {
-            game_do_command(
-                gRideEntranceExitGhostPosition.x,
-                (GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY),
-                gRideEntranceExitGhostPosition.y,
-                _currentRideIndex,
-                GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT,
-                gRideEntranceExitGhostStationIndex,
-                0
-            );
-        }
-    }
-
-
-    /**
-     *
-     *  rct2: 0x006CA28C
-     */
-    money32 ride_entrance_exit_place_ghost(sint32 rideIndex,
-                                            sint32 x,
-                                            sint32 y,
-                                            sint32 direction,
-                                            sint32 placeType,
-                                            sint32 stationNum)
-    {
-        ride_construction_remove_ghosts();
-        money32 result = RideEntranceExitPlaceGhost(rideIndex, x, y, direction, placeType, stationNum);
-
-        if (result != MONEY32_UNDEFINED)
-        {
-            _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
-            gRideEntranceExitGhostPosition.x = x;
-            gRideEntranceExitGhostPosition.y = y;
-            gRideEntranceExitGhostPosition.direction = direction;
-            gRideEntranceExitGhostStationIndex = stationNum & 0xFF;
-        }
-        return result;
-    }
-
-    /**
-     *
-     *  rct2: 0x006660A8
-     */
-    void game_command_place_ride_entrance_or_exit(sint32 *eax,
-                                                  sint32 *ebx,
-                                                  sint32 *ecx,
-                                                  sint32 *edx,
-                                                  sint32 *esi,
-                                                  sint32 *edi,
-                                                  sint32 *ebp)
-    {
-        *ebx = RideEntranceExitPlace(
-            *eax & 0xFFFF,
-            *ecx & 0xFFFF,
-            *edx & 0xFF,
-            (*ebx >> 8) & 0xFF,
-            *ebx & 0xFF,
-            *edx & 0xFF,
-            *edi & 0xFF,
-            ((*edx >> 8) & 0xFF) != 0
-            );
-    }
-
-    /**
-     *
-     *  rct2: 0x0066640B
-     */
-    void game_command_remove_ride_entrance_or_exit(sint32 *eax,
-                                                   sint32 *ebx,
-                                                   sint32 *ecx,
-                                                   sint32 *edx,
-                                                   sint32 *esi,
-                                                   sint32 *edi,
-                                                   sint32 *ebp)
-    {
-        *ebx = RideEntranceExitRemove(
-            *eax & 0xFFFF,
-            *ecx & 0xFFFF,
-            *edx & 0xFF,
-            *edi & 0xFF,
-            *ebx & 0xFF
+        gParkEntranceGhostExists = false;
+        game_do_command(
+            gParkEntranceGhostPosition.x,
+            GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY,
+            gParkEntranceGhostPosition.y,
+            gParkEntranceGhostPosition.z,
+            GAME_COMMAND_REMOVE_PARK_ENTRANCE,
+            0,
+            0
         );
     }
+}
 
-    /**
-     * Replaces the outer hedge walls for an entrance placement removal.
-     *  rct2: 0x00666D6F
-     */
-    void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_tile_element *tileElement)
+sint32 park_entrance_get_index(sint32 x, sint32 y, sint32 z)
+{
+    sint32 i;
+
+    for (i = 0; i < MAX_PARK_ENTRANCES; i++)
     {
-        sint32 direction = tile_element_get_direction(tileElement);
-        x += TileDirectionDelta[direction].x;
-        y += TileDirectionDelta[direction].y;
-        sint32 z = tileElement->base_height;
-        sint32 rideIndex = track_element_get_ride_index(tileElement);
-
-        tileElement = map_get_first_element_at(x >> 5, y >> 5);
-        do {
-            if (tileElement->type != TILE_ELEMENT_TYPE_TRACK) continue;
-            if (track_element_get_ride_index(tileElement) != rideIndex) continue;
-            if (tileElement->base_height != z) continue;
-            if (track_element_get_type(tileElement) != TRACK_ELEM_MAZE) continue;
-
-            // Each maze element is split into 4 sections with 4 different walls
-            uint8 mazeSection = direction * 4;
-            // Add the top outer wall
-            tileElement->properties.track.maze_entry |= (1 << ((mazeSection + 9) & 0x0F));
-            // Add the bottom outer wall
-            tileElement->properties.track.maze_entry |= (1 << ((mazeSection + 12) & 0x0F));
-
-            map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
-            return;
-        } while (!tile_element_is_last_for_tile(tileElement++));
-    }
-
-    /**
-     * Removes the hedge walls for an entrance placement.
-     *  rct2: 0x00666CBE
-     */
-    void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_tile_element *tileElement)
-    {
-        sint32 direction = tile_element_get_direction(tileElement);
-        x += TileDirectionDelta[direction].x;
-        y += TileDirectionDelta[direction].y;
-        sint32 z = tileElement->base_height;
-        sint32 rideIndex = track_element_get_ride_index(tileElement);
-
-        tileElement = map_get_first_element_at(x >> 5, y >> 5);
-        do {
-            if (tileElement->type != TILE_ELEMENT_TYPE_TRACK) continue;
-            if (track_element_get_ride_index(tileElement) != rideIndex) continue;
-            if (tileElement->base_height != z) continue;
-            if (track_element_get_type(tileElement) != TRACK_ELEM_MAZE) continue;
-
-            // Each maze element is split into 4 sections with 4 different walls
-            uint8 mazeSection = direction * 4;
-            // Remove the top outer wall
-            tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 9) & 0x0F));
-            // Remove the bottom outer wall
-            tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 12) & 0x0F));
-            // Remove the intersecting wall
-            tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 10) & 0x0F));
-            // Remove the top hedge section
-            tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 11) & 0x0F));
-            // Remove the bottom hedge section
-            tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 15) & 0x0F));
-
-            map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
-            return;
-        } while (!tile_element_is_last_for_tile(tileElement++));
-    }
-
-    void fix_park_entrance_locations(void)
-    {
-        // Fix gParkEntrance locations for which the tile_element no longer exists
-        for (auto &entrance : gParkEntrances)
+        if (x == gParkEntrances[i].x &&
+            y == gParkEntrances[i].y &&
+            z == gParkEntrances[i].z)
         {
-            if (entrance.x == LOCATION_NULL)
-                continue;
+            return i;
+        }
+    }
 
-            if (map_get_park_entrance_element_at(
-                entrance.x,
-                entrance.y,
-                entrance.z >> 3, false) == nullptr)
-            {
-                entrance.x = LOCATION_NULL;
-            }
+    return -1;
+}
+
+void reset_park_entrance()
+{
+    for (auto &parkEntrance : gParkEntrances)
+    {
+        parkEntrance.x = LOCATION_NULL;
+    }
+}
+
+
+void ride_entrance_exit_place_provisional_ghost()
+{
+    if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) {
+        RideEntranceExitPlaceGhost(_currentRideIndex,
+                                       gRideEntranceExitGhostPosition.x,
+                                       gRideEntranceExitGhostPosition.y,
+                                       gRideEntranceExitGhostPosition.direction,
+                                       gRideEntranceExitPlaceType,
+                                       gRideEntranceExitGhostStationIndex);
+    }
+}
+
+void ride_entrance_exit_remove_ghost()
+{
+    if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) {
+        game_do_command(
+            gRideEntranceExitGhostPosition.x,
+            (GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY),
+            gRideEntranceExitGhostPosition.y,
+            _currentRideIndex,
+            GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT,
+            gRideEntranceExitGhostStationIndex,
+            0
+        );
+    }
+}
+
+
+/**
+ *
+ *  rct2: 0x006CA28C
+ */
+money32 ride_entrance_exit_place_ghost(sint32 rideIndex,
+                                        sint32 x,
+                                        sint32 y,
+                                        sint32 direction,
+                                        sint32 placeType,
+                                        sint32 stationNum)
+{
+    ride_construction_remove_ghosts();
+    money32 result = RideEntranceExitPlaceGhost(rideIndex, x, y, direction, placeType, stationNum);
+
+    if (result != MONEY32_UNDEFINED)
+    {
+        _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
+        gRideEntranceExitGhostPosition.x = x;
+        gRideEntranceExitGhostPosition.y = y;
+        gRideEntranceExitGhostPosition.direction = direction;
+        gRideEntranceExitGhostStationIndex = stationNum & 0xFF;
+    }
+    return result;
+}
+
+/**
+ *
+ *  rct2: 0x006660A8
+ */
+void game_command_place_ride_entrance_or_exit(sint32 *eax,
+                                              sint32 *ebx,
+                                              sint32 *ecx,
+                                              sint32 *edx,
+                                              sint32 *esi,
+                                              sint32 *edi,
+                                              sint32 *ebp)
+{
+    *ebx = RideEntranceExitPlace(
+        *eax & 0xFFFF,
+        *ecx & 0xFFFF,
+        *edx & 0xFF,
+        (*ebx >> 8) & 0xFF,
+        *ebx & 0xFF,
+        *edx & 0xFF,
+        *edi & 0xFF,
+        ((*edx >> 8) & 0xFF) != 0
+        );
+}
+
+/**
+ *
+ *  rct2: 0x0066640B
+ */
+void game_command_remove_ride_entrance_or_exit(sint32 *eax,
+                                               sint32 *ebx,
+                                               sint32 *ecx,
+                                               sint32 *edx,
+                                               sint32 *esi,
+                                               sint32 *edi,
+                                               sint32 *ebp)
+{
+    *ebx = RideEntranceExitRemove(
+        *eax & 0xFFFF,
+        *ecx & 0xFFFF,
+        *edx & 0xFF,
+        *edi & 0xFF,
+        *ebx & 0xFF
+    );
+}
+
+/**
+ * Replaces the outer hedge walls for an entrance placement removal.
+ *  rct2: 0x00666D6F
+ */
+void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_tile_element *tileElement)
+{
+    sint32 direction = tile_element_get_direction(tileElement);
+    x += TileDirectionDelta[direction].x;
+    y += TileDirectionDelta[direction].y;
+    sint32 z = tileElement->base_height;
+    sint32 rideIndex = track_element_get_ride_index(tileElement);
+
+    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    do {
+        if (tileElement->type != TILE_ELEMENT_TYPE_TRACK) continue;
+        if (track_element_get_ride_index(tileElement) != rideIndex) continue;
+        if (tileElement->base_height != z) continue;
+        if (track_element_get_type(tileElement) != TRACK_ELEM_MAZE) continue;
+
+        // Each maze element is split into 4 sections with 4 different walls
+        uint8 mazeSection = direction * 4;
+        // Add the top outer wall
+        tileElement->properties.track.maze_entry |= (1 << ((mazeSection + 9) & 0x0F));
+        // Add the bottom outer wall
+        tileElement->properties.track.maze_entry |= (1 << ((mazeSection + 12) & 0x0F));
+
+        map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
+        return;
+    } while (!tile_element_is_last_for_tile(tileElement++));
+}
+
+/**
+ * Removes the hedge walls for an entrance placement.
+ *  rct2: 0x00666CBE
+ */
+void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_tile_element *tileElement)
+{
+    sint32 direction = tile_element_get_direction(tileElement);
+    x += TileDirectionDelta[direction].x;
+    y += TileDirectionDelta[direction].y;
+    sint32 z = tileElement->base_height;
+    sint32 rideIndex = track_element_get_ride_index(tileElement);
+
+    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    do {
+        if (tileElement->type != TILE_ELEMENT_TYPE_TRACK) continue;
+        if (track_element_get_ride_index(tileElement) != rideIndex) continue;
+        if (tileElement->base_height != z) continue;
+        if (track_element_get_type(tileElement) != TRACK_ELEM_MAZE) continue;
+
+        // Each maze element is split into 4 sections with 4 different walls
+        uint8 mazeSection = direction * 4;
+        // Remove the top outer wall
+        tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 9) & 0x0F));
+        // Remove the bottom outer wall
+        tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 12) & 0x0F));
+        // Remove the intersecting wall
+        tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 10) & 0x0F));
+        // Remove the top hedge section
+        tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 11) & 0x0F));
+        // Remove the bottom hedge section
+        tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 15) & 0x0F));
+
+        map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
+        return;
+    } while (!tile_element_is_last_for_tile(tileElement++));
+}
+
+void fix_park_entrance_locations(void)
+{
+    // Fix gParkEntrance locations for which the tile_element no longer exists
+    for (auto &entrance : gParkEntrances)
+    {
+        if (entrance.x == LOCATION_NULL)
+            continue;
+
+        if (map_get_park_entrance_element_at(
+            entrance.x,
+            entrance.y,
+            entrance.z >> 3, false) == nullptr)
+        {
+            entrance.x = LOCATION_NULL;
         }
     }
 }
+

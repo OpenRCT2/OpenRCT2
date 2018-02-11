@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include <array>
 #include <memory>
 #include <unordered_set>
@@ -99,7 +100,7 @@ public:
             loadedObject = ori->LoadedObject;
             if (loadedObject == nullptr)
             {
-                uint8 objectType = entry->flags & 0x0F;
+                uint8 objectType = object_entry_get_type(entry);
                 sint32 slot = FindSpareSlot(objectType);
                 if (slot != -1)
                 {
@@ -232,15 +233,22 @@ public:
 
     static rct_string_id GetObjectSourceGameString(const rct_object_entry * entry)
     {
-        uint8 source = (entry->flags & 0xF0) >> 4;
-        switch (source)
+        switch (object_entry_get_source_game(entry))
         {
+        case OBJECT_SOURCE_RCT1:
+            return STR_SCENARIO_CATEGORY_RCT1;
+        case OBJECT_SOURCE_ADDED_ATTRACTIONS:
+            return STR_SCENARIO_CATEGORY_RCT1_AA;
+        case OBJECT_SOURCE_LOOPY_LANDSCAPES:
+            return STR_SCENARIO_CATEGORY_RCT1_LL;
         case OBJECT_SOURCE_RCT2:
             return STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
         case OBJECT_SOURCE_WACKY_WORLDS:
             return STR_OBJECT_FILTER_WW;
         case OBJECT_SOURCE_TIME_TWISTER:
             return STR_OBJECT_FILTER_TT;
+        case OBJECT_SOURCE_OPENRCT2_OFFICIAL:
+            return STR_OBJECT_FILTER_OPENRCT2_OFFICIAL;
         default:
             return STR_OBJECT_FILTER_CUSTOM;
         }
@@ -381,7 +389,7 @@ private:
             void * * legacyChunk = &object_entry_groups[objectType].chunks[entryIndex];
             if (loadedObject == nullptr)
             {
-                Memory::Set(legacyEntry, 0x00, sizeof(rct_object_entry_extended));
+                *legacyEntry = { 0 };
                 *legacyChunk = nullptr;
             }
             else
@@ -467,19 +475,28 @@ private:
         invalidEntries.reserve(OBJECT_ENTRY_COUNT);
         for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
         {
-            const rct_object_entry * entry = &entries[i];
+            auto entry = entries[i];
             const ObjectRepositoryItem * ori = nullptr;
-            if (object_entry_is_empty(entry))
+            if (object_entry_is_empty(&entry))
             {
-                Memory::Set(entry, 0, sizeof(rct_object_entry));
+                entry = { 0 };
                 continue;
             }
 
-            ori = _objectRepository->FindObject(entry);
+            ori = _objectRepository->FindObject(&entry);
             if (ori == nullptr)
             {
-                invalidEntries.push_back(*entry);
-                ReportMissingObject(entry);
+                if (object_entry_get_type(&entry) != OBJECT_TYPE_SCENARIO_TEXT)
+                {
+                    invalidEntries.push_back(entry);
+                    ReportMissingObject(&entry);
+                }
+                else
+                {
+                    log_info("Ignoring missing STEX entry.");
+                    entry = { 0 };
+                    continue;
+                }
             }
             else
             {
@@ -490,8 +507,8 @@ private:
                     loadedObject = _objectRepository->LoadObject(ori);
                     if (loadedObject == nullptr)
                     {
-                        invalidEntries.push_back(*entry);
-                        ReportObjectLoadProblem(entry);
+                        invalidEntries.push_back(entry);
+                        ReportObjectLoadProblem(&entry);
                     }
                     delete loadedObject;
                 }
@@ -513,7 +530,7 @@ private:
             if (!object_entry_is_empty(entry))
             {
                 ori = _objectRepository->FindObject(entry);
-                if (ori == nullptr)
+                if (ori == nullptr && object_entry_get_type(entry) != OBJECT_TYPE_SCENARIO_TEXT)
                 {
                     missingObjects = true;
                     ReportMissingObject(entry);
@@ -584,14 +601,14 @@ private:
     static void ReportMissingObject(const rct_object_entry * entry)
     {
         utf8 objName[DAT_NAME_LENGTH + 1] = { 0 };
-        Memory::Copy(objName, entry->name, DAT_NAME_LENGTH);
+        std::copy_n(entry->name, DAT_NAME_LENGTH, objName);
         Console::Error::WriteLine("[%s] Object not found.", objName);
     }
 
     void ReportObjectLoadProblem(const rct_object_entry * entry)
     {
         utf8 objName[DAT_NAME_LENGTH + 1] = { 0 };
-        Memory::Copy(objName, entry->name, DAT_NAME_LENGTH);
+        std::copy_n(entry->name, DAT_NAME_LENGTH, objName);
         Console::Error::WriteLine("[%s] Object could not be loaded.", objName);
     }
 
@@ -620,54 +637,52 @@ IObjectManager * GetObjectManager()
     return _objectManager;
 }
 
-extern "C"
+void * object_manager_get_loaded_object_by_index(size_t index)
 {
-    void * object_manager_get_loaded_object_by_index(size_t index)
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        Object * loadedObject = objectManager->GetLoadedObject(index);
-        return (void *)loadedObject;
-    }
+    IObjectManager * objectManager = GetObjectManager();
+    Object * loadedObject = objectManager->GetLoadedObject(index);
+    return (void *)loadedObject;
+}
 
-    void * object_manager_get_loaded_object(const rct_object_entry * entry)
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        Object * loadedObject = objectManager->GetLoadedObject(entry);
-        return (void *)loadedObject;
-    }
+void * object_manager_get_loaded_object(const rct_object_entry * entry)
+{
+    IObjectManager * objectManager = GetObjectManager();
+    Object * loadedObject = objectManager->GetLoadedObject(entry);
+    return (void *)loadedObject;
+}
 
-    uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        const Object * object = static_cast<const Object *>(loadedObject);
-        uint8 entryIndex = objectManager->GetLoadedObjectEntryIndex(object);
-        return entryIndex;
-    }
+uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
+{
+    IObjectManager * objectManager = GetObjectManager();
+    const Object * object = static_cast<const Object *>(loadedObject);
+    uint8 entryIndex = objectManager->GetLoadedObjectEntryIndex(object);
+    return entryIndex;
+}
 
-    void * object_manager_load_object(const rct_object_entry * entry)
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        Object * loadedObject = objectManager->LoadObject(entry);
-        return (void *)loadedObject;
-    }
+void * object_manager_load_object(const rct_object_entry * entry)
+{
+    IObjectManager * objectManager = GetObjectManager();
+    Object * loadedObject = objectManager->LoadObject(entry);
+    return (void *)loadedObject;
+}
 
-    void object_manager_unload_objects(const rct_object_entry * entries, size_t count)
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        objectManager->UnloadObjects(entries, count);
-    }
+void object_manager_unload_objects(const rct_object_entry * entries, size_t count)
+{
+    IObjectManager * objectManager = GetObjectManager();
+    objectManager->UnloadObjects(entries, count);
+}
 
-    void object_manager_unload_all_objects()
+void object_manager_unload_all_objects()
+{
+    IObjectManager * objectManager = GetObjectManager();
+    if (objectManager != nullptr)
     {
-        IObjectManager * objectManager = GetObjectManager();
-        if (objectManager != nullptr)
-        {
-            objectManager->UnloadAll();
-        }
-    }
-
-    rct_string_id object_manager_get_source_game_string(const rct_object_entry * entry)
-    {
-        return ObjectManager::GetObjectSourceGameString(entry);
+        objectManager->UnloadAll();
     }
 }
+
+rct_string_id object_manager_get_source_game_string(const rct_object_entry * entry)
+{
+    return ObjectManager::GetObjectSourceGameString(entry);
+}
+

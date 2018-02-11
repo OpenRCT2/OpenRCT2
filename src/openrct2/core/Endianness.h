@@ -18,8 +18,6 @@
 
 #include "../common.h"
 
-#ifdef __cplusplus
-
 template <size_t size>
 struct ByteSwapT { };
 
@@ -58,5 +56,3 @@ static T ByteSwapBE(const T& value)
 {
     return ByteSwapT<sizeof(T)>::SwapBE(value);
 }
-
-#endif

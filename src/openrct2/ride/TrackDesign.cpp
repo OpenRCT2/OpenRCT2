@@ -14,32 +14,32 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/Math.hpp"
-#include "../core/String.hpp"
-#include "../network/network.h"
-#include "../object/ObjectManager.h"
-#include "../object/ObjectRepository.h"
-#include "../OpenRCT2.h"
-#include "../rct1/Tables.h"
-#include "TrackDesignRepository.h"
-
 #include "../audio/audio.h"
 #include "../Cheats.h"
+#include "../core/Math.hpp"
+#include "../core/String.hpp"
+#include "../core/Util.hpp"
 #include "../Game.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../network/network.h"
+#include "../object/ObjectManager.h"
+#include "../object/ObjectRepository.h"
+#include "../OpenRCT2.h"
 #include "../rct1/RCT1.h"
+#include "../rct1/Tables.h"
+#include "RideData.h"
+#include "Ride.h"
+#include "TrackData.h"
+#include "TrackDesign.h"
+#include "TrackDesignRepository.h"
+#include "Track.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/Footpath.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
-#include "Ride.h"
-#include "RideData.h"
-#include "Track.h"
-#include "TrackData.h"
-#include "TrackDesign.h"
 
 typedef struct map_backup
 {
@@ -114,7 +114,7 @@ rct_track_td6 * track_design_open(const utf8 * path)
 
             if (td6 != nullptr)
             {
-                td6->name = track_repository_get_name_from_path(path);
+                td6->name = String::Duplicate(GetNameFromTrackPath(path).c_str());
                 return td6;
             }
         }
@@ -183,9 +183,8 @@ static rct_track_td6 * track_design_open_from_td4(uint8 * src, size_t srcLength)
         td6->ride_mode = RIDE_MODE_POWERED_LAUNCH;
     }
 
-    // Convert RCT1 vehicle type to RCT2 vehicle type. Intialise with an string consisting of 8 spaces (and no nul terminator).
-    rct_object_entry vehicleObject = {0x80, "", 0};
-    memset(vehicleObject.name, ' ', sizeof(vehicleObject.name));
+    // Convert RCT1 vehicle type to RCT2 vehicle type. Intialise with an string consisting of 8 spaces.
+    rct_object_entry vehicleObject = {0x80, "        "};
     if (td4->type == RIDE_TYPE_MAZE)
     {
         const char * name = RCT1::GetRideTypeObject(td4->type);
@@ -663,7 +662,9 @@ void track_design_mirror(rct_track_td6 * td6)
 static void track_design_add_selection_tile(sint16 x, sint16 y)
 {
     LocationXY16 * selectionTile = gMapSelectionTiles;
-    for (; selectionTile->x != -1; selectionTile++)
+    // Subtract 2 because the tile gets incremented later on
+    for (; (selectionTile < gMapSelectionTiles + Util::CountOf(gMapSelectionTiles) - 2) && (selectionTile->x != -1);
+         selectionTile++)
     {
         if (selectionTile->x == x && selectionTile->y == y)
         {
@@ -748,7 +749,8 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
                         new_tile = 0;
                         break;
                     }
-                    if (selectionTile + 1 >= &gMapSelectionTiles[300])
+                    // Need to subtract one because selectionTile in following block is incremented
+                    if (selectionTile + 1 >= &gMapSelectionTiles[Util::CountOf(gMapSelectionTiles) - 1])
                     {
                         new_tile = 0;
                         break;

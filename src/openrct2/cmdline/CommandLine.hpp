@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include "../common.h"
 
 /**
@@ -111,5 +109,3 @@ namespace CommandLine
     exitcode_t HandleCommandConvert(CommandLineArgEnumerator * enumerator);
     exitcode_t HandleCommandUri(CommandLineArgEnumerator * enumerator);
 }
-
-#endif

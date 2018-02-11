@@ -1,10 +1,12 @@
 0.1.2 (in development)
 ------------------------------------------------------------------------
+- Feature: [#2893] Object selection filters for items from RCT1, Added Attractions and Loopy Landscapes.
 - Feature: [#3505] Allow up to 1024 items per scenery tab.
 - Feature: [#3510] Auto-append extension if none is specified.
 - Feature: [#3994] Show bottom toolbar with map tooltip (theme option).
 - Feature: [#4184] Add command and cheat to alter the date.
 - Feature: [#4906] Add follow sprite command to title sequences.
+- Feature: [#4984] Add option to highlight path issues: full bins, vandalism & vomit.
 - Feature: [#5826] Add the show_limits command to show map data counts and limits.
 - Feature: [#6078] Game now converts mp.dat to SC21.SC4 (Mega Park) automatically.
 - Feature: [#6125] Path can now be placed in park entrances.
@@ -31,6 +33,7 @@
 - Feature: [#6731] Object indexing progress is now reported via command line output.
 - Feature: [#6779] On-ride photo segment for Splash Boats.
 - Feature: [#6838] Ability to auto-pause server when no clients are connected.
+- Feature: [#7031] Better support for displaced ride entrances and exits.
 - Feature: Add search box to track design window.
 - Feature: Allow using object files from RCT Classic.
 - Feature: Title sequences now testable in-game.
@@ -44,6 +47,7 @@
 - Fix: [#2254] Edge scrolling horizontally now has the same speed as vertical edge scrolling.
 - Fix: [#2607] Rain rendered incorrectly in additional viewport.
 - Fix: [#3171] Guests entering from the corner of the tile in Amity Airfield (original bug).
+- Fix: [#3330] Current number of passengers overflows when over 255.
 - Fix: [#4760] Asia - Great Wall of China and South America - Rio Carnival have incorrect guest entry points (original bug).
 - Fix: [#4991] Inverted helices can be built on the Lay Down RC, but are not drawn.
 - Fix: [#5190] Cannot build Wild Mouse - Flying Dutchman Gold Mine.
@@ -58,6 +62,7 @@
 - Fix: [#5741] Land rights indicators disappear when switching views.
 - Fix: [#5788] Empty scenario names cause invisible entries in scenario list.
 - Fix: [#5761] Mini coaster doesn't appear despite being selected.
+- Fix: [#5809] Support Steam RCT1 file layout when loading CSG images.
 - Fix: [#5838] Crash when saving very large track designs.
 - Fix: [#6101] Rides remain in ride list window briefly after demolition.
 - Fix: [#6114] Crash when using a non-LL CSG1.DAT.
@@ -77,6 +82,7 @@
 - Fix: [#6293] Restored interface sounds while gameplay is paused.
 - Fix: [#6301] Track list freezes after deleting track in Track Manager.
 - Fix: [#6308] Cannot create title sequence if title sequences folder does not exist.
+- Fix: [#6314] Imported SV4 files do not mark their scenarios as completed.
 - Fix: [#6318] Cannot sack staff that have not been placed
 - Fix: [#6320] Crash when CSS1.DAT is absent.
 - Fix: [#6331] Scenery costs nothing in track designs.
@@ -101,6 +107,7 @@
 - Fix: [#6904] Manually added multiplayer servers not saved.
 - Fix: [#7003] Building sloped paths through flat paths with clearance checks off causes glitches.
 - Fix: [#7011] Swinging and bobsleigh cars going backwards swing in the wrong direction (original bug).
+- Fix: [#7125] No entry signs not correctly handled in pathfinding.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
 - Fix: Clear IME buffer after committing composed text.
@@ -108,6 +115,8 @@
 - Fix: Title sequence editor now gracefully fails to preview a title sequence and lets the user know with an error message.
 - Fix: When preset title sequence fails to load, the preset will forcibly be changed to the first sequence to successfully load.
 - Fix: Remove consecutive thoughts about a ride being demolished.
+- Fix: Water raft vehicles stop spinning when going up slopes.
+- Fix: Correct spin is applied to coasters on S-bends and other turns.
 - Improved: [#5964] Use SSE 4.1 instruction set where supported, resulting in a performance boost.
 - Improved: [#6186] Transparent menu items now draw properly in OpenGL mode.
 - Improved: [#6218] Speed up game start up time by saving scenario index to file.

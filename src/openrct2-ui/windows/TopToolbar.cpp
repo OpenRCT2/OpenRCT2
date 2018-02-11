@@ -28,8 +28,8 @@
 #include <openrct2/Input.h>
 #include <openrct2/interface/Console.h>
 #include <openrct2/interface/Screenshot.h>
-#include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/network/network.h>
 #include <openrct2/network/twitch.h>
 #include <openrct2/OpenRCT2.h>
@@ -115,6 +115,7 @@ typedef enum {
     DDIDX_PATH_HEIGHTS = 12,
     // 13 is a separator
     DDIDX_VIEW_CLIPPING = 14,
+    DDIDX_HIGHLIGHT_PATH_ISSUES = 15,
 
     TOP_TOOLBAR_VIEW_MENU_COUNT
 } TOP_TOOLBAR_VIEW_MENU_DDIDX;
@@ -3178,6 +3179,7 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
     gDropdownItemsFormat[12] = STR_TOGGLE_OPTION;
     gDropdownItemsFormat[13] = DROPDOWN_SEPARATOR;
     gDropdownItemsFormat[DDIDX_VIEW_CLIPPING] = STR_TOGGLE_OPTION;
+    gDropdownItemsFormat[DDIDX_HIGHLIGHT_PATH_ISSUES] = STR_TOGGLE_OPTION;
 
     gDropdownItemsArgs[0] = STR_UNDERGROUND_VIEW;
     gDropdownItemsArgs[1] = STR_REMOVE_BASE_LAND;
@@ -3191,6 +3193,7 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
     gDropdownItemsArgs[11] = STR_HEIGHT_MARKS_ON_RIDE_TRACKS;
     gDropdownItemsArgs[12] = STR_HEIGHT_MARKS_ON_PATHS;
     gDropdownItemsArgs[DDIDX_VIEW_CLIPPING] = STR_VIEW_CLIPPING_MENU;
+    gDropdownItemsArgs[DDIDX_HIGHLIGHT_PATH_ISSUES] = STR_HIGHLIGHT_PATH_ISSUES_MENU;
 
     window_dropdown_show_text(
         w->x + widget->left,
@@ -3227,6 +3230,8 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
         dropdown_set_checked(12, true);
     if (mainViewport->flags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT)
         dropdown_set_checked(DDIDX_VIEW_CLIPPING, true);
+    if (mainViewport->flags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+        dropdown_set_checked(DDIDX_HIGHLIGHT_PATH_ISSUES, true);
 
     gDropdownDefaultIndex = DDIDX_UNDERGROUND_INSIDE;
 }
@@ -3281,6 +3286,9 @@ static void top_toolbar_view_menu_dropdown(sint16 dropdownIndex)
                 w->viewport->flags ^= VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
             }
             break;
+        case DDIDX_HIGHLIGHT_PATH_ISSUES:
+                w->viewport->flags ^= VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES;
+                break;
         default:
             return;
         }

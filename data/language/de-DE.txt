@@ -1,4 +1,4 @@
-﻿# STR_XXXX part is read and XXXX becomes the string id number.
+# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -2872,7 +2872,7 @@ STR_2862    :Musik...
 STR_2863    :Musik
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) kein Copyright
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Komponist unbekannt) Copyright Control
+STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole (Die schöne Spanierin):   (Robert Vollstedt) kein Copyright
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Traditionell)
 STR_2868    :{WINDOW_COLOUR_2}Geschichten aus dem Wiener Wald:   (Johann Strauss) kein Copyright
 STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Traditionell)
@@ -3964,7 +3964,7 @@ STR_5626    :Sonstige Parks
 STR_5627    :Szenarioliste ordnen nach:
 STR_5628    :Spielherkunft
 STR_5629    :Schwierigkeitsgrad
-STR_5630    :Freispielen der Szenarios aktivieren
+STR_5630    :Fortschreitendes Freispielen aktivieren
 STR_5631    :Originale DLC Parks
 STR_5632    :Bauen Sie Ihren eigenen...
 STR_5633    :CMD + 
@@ -4027,13 +4027,13 @@ STR_5723    :Starker Regen
 STR_5724    :Gewitter
 STR_5725    :{BLACK}Wetter erzwingen:
 STR_5726    :{SMALLFONT}{BLACK}Stellt das aktuelle Wetter im Park ein
-STR_5727    :Skalierungsmethode:
+STR_5727    :Skalierungsqualität:
 STR_5728    :Setzt Anzeige durch Hardware voraus
 STR_5729    :{SMALLFONT}{BLACK}Setzt Anzeige durch Hardware voraus
-STR_5730    :Pixelwiederholung
+STR_5730    :<removed string - do not use>
 STR_5731    :Linear
-STR_5732    :Anisotrop
-STR_5733    :Pixelwdh. bei ganzzahligem Skalierungsfaktor
+STR_5732    :<removed string - do not use>
+STR_5733    :<removed string - do not use>
 STR_5734    :{SMALLFONT}{BLACK}Darstellung
 STR_5735    :Netzwerkstatus
 STR_5736    :Spieler
@@ -4117,8 +4117,8 @@ STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5815    :{SMALLFONT}{BLACK}FPS-Zähler im Spiel anzeigen
 STR_5816    :{SMALLFONT}{BLACK}Stellt den Faktor für die Skalierung des{NEWLINE}Spiels ein. Besonders für hohe{NEWLINE}Auflösungen sinnvoll
-STR_5817    :{SMALLFONT}{BLACK}[Benötigt Anzeige durch Hardware]{NEWLINE}Stellt die Skalierungsmethode ein
-STR_5818    :{SMALLFONT}{BLACK}[Benötigt Anzeige durch Hardware]{NEWLINE}Benutzt die Pixelwiederholung, wenn der Skalierungsfaktor auf einen ganzzahligen Wert eingestellt{NEWLINE}ist (1, 2, 3 etc.)
+STR_5817    :{SMALLFONT}{BLACK}Stellt den Skalierungstyp der Benutzeroberfläche ein. Benötigt Anzeige durch Hardware.{NEWLINE}Lineares Skalieren ist flüssig, aber unscharf. Das Nächster-Nachbar-{NEWLINE}Glättungsverfahren ist scharf, kann jedoch zu geringen Leistungseinbußen führen.
+STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[Benötigt Anzeige durch Hardware]{NEWLINE}Pausiert das Spiel, wenn das Steam-Overlay geöffnet wird
 STR_5820    :{SMALLFONT}{BLACK}Minimiert das Spiel, wenn das Spiel{NEWLINE}im Vollbildmodus nicht im{NEWLINE}Vordergrund ist
 STR_5821    :<removed string - do not use>
@@ -4148,7 +4148,7 @@ STR_5844    :{SMALLFONT}{BLACK}Mit einem Mehrspielerserver verbunden bleiben, se
 STR_5845    :{SMALLFONT}{BLACK}Zeigt für die Debugging-Tools in{NEWLINE}der Symbolleiste eine gesonderte Schaltfläche an.{NEWLINE}Aktiviert das Tastenkürzel für die Entwicklerkonsole
 STR_5846    :{SMALLFONT}{BLACK}Auswählen, wie oft OpenRCT2{NEWLINE}automatisch speichert
 STR_5847    :{SMALLFONT}{BLACK}Die auf dem Titelbildschirm angezeigte Parksequenz auswählen. Titelsequenzen von RCT1/2 benötigen importierte Szenarien, um zu funktionieren
-STR_5848    :{SMALLFONT}{BLACK}Benutzerdefinierte Titelsequenzen erstellen und verwalten
+STR_5848    :{SMALLFONT}{BLACK}Benutzerdefinierte Titelsequenzen{NEWLINE}erstellen und verwalten
 STR_5849    :{SMALLFONT}{BLACK}Personal wird nach dem Einstellen automatisch platziert
 STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Stellt die für neu gebaute Attraktionen standardmäßige Inspektionszeit ein
@@ -4458,6 +4458,65 @@ STR_6155    :Weder KDialog noch Zenity sind installiert. Bitte installieren Sie 
 STR_6156    :Name ist reserviert
 STR_6157    :Konsole
 STR_6158    :Laden der Datei fehlgeschlagen...{NEWLINE}Inkompatible RCTC-Version: {COMMA16}
+STR_6159    :Nächster-Nachbar-Glättung
+STR_6160    :{WINDOW_COLOUR_2}Verfügbare Fahrzeuge: {BLACK}{STRING} 
+STR_6161    :Gitternetzlinien ein-/ausblenden
+STR_6162    :Rotierende Wilde Maus
+STR_6163    :Mausförmige Wagen rasen um enge Kurven und kurze Gefälle herunter, wobei sie sich sanft drehen, um die Fahrgäste zu desorientieren
+STR_6164    :{WHITE}{CROSS}
+STR_6165    :Vertikale Synchronisation verwenden
+STR_6166    :{SMALLFONT}{BLACK}Synchronisiert die angezeigten Frames mit der Bildwiederholrate des Monitors, dies verhindert Screen Tearing
+STR_6167    :{SMALLFONT}{BLACK}Erweitert
+STR_6168    :Titelsequenz
+STR_6169    :Szenarioauswahl
+STR_6170    :Verbesserungen
+STR_6171    :Suchen
+STR_6172    :{SMALLFONT}{BLACK}Suchen
+STR_6173    :Bitte den zu suchenden Namen eingeben:
+STR_6174    :Spielstand laden
+STR_6175    :Szenario laden
+STR_6176    :Szenario laden:
+STR_6177    :Laden{MOVE_X}{87}Kein Szenario ausgewählt
+STR_6178    :Laden{MOVE_X}{87}{RED}Szenario fehlt
+STR_6179    :Auswählen
+STR_6180    :Kein Szenario ausgewählt
+STR_6181    :{RED}Szenario fehlt
+STR_6182    :Folgen{MOVE_X}{87}{STRING}
+STR_6183    :Folgen{MOVE_X}{87}Kein Objekt ausgewählt
+STR_6184    :Objekt folgen 
+STR_6185    :Objekt auswählen
+STR_6186    :Kein Objekt ausgewählt
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :Erbrochenes
+STR_6189    :Ente
+STR_6190    :{SMALLFONT}{BLACK}Sie können kein Objekt auswählen, solange Sie sich im Hauptmenü befinden
+STR_6191    :Oberfläche
+STR_6192    :Wand
+STR_6193    :{COMMA16} Besucher
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} Besucher
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} Besucher
+STR_6196    :{BLACK}Jahr:
+STR_6197    :{BLACK}Monat:
+STR_6198    :{BLACK}Tag:
+STR_6199    :Datum setzen
+STR_6200    :Datum zurücksetzen
+STR_6201    :{MONTH}
+STR_6202    :Virtuellen Boden aktivieren
+STR_6203    :{SMALLFONT}{BLACK}Um vertikales Platzieren von Elementen zu vereinfachen, wird ein virtueller Boden eingeblendet, wenn Strg oder Shift gehalten wird
+STR_6204    :Ziegelstein
+STR_6205    :Eisen
+STR_6206    :Grauer Stuck
+STR_6207    :Gelber Stuck
+STR_6208    :Roter Stuck
+STR_6209    :Violetter Stuck
+STR_6210    :Grüner Stuck
+STR_6211    :Brauner Sandstein
+STR_6212    :Grauer Sandstein
+STR_6213    :Wolkenkratzer A
+STR_6214    :Wolkenkratzer B
+STR_6215    :Konstruktion
+STR_6216    :Betrieb
+STR_6217    :Bahn- / Streckenverfügbarkeit
 
 #############
 # Scenarios #

@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include "../common.h"
 
 #include "Math.hpp"
@@ -75,7 +76,7 @@ public:
     void Append(const utf8 * text, size_t textLength)
     {
         EnsureCapacity(_length + textLength + 1);
-        Memory::Copy(_buffer + _length, text, textLength);
+        std::copy_n(text, textLength, _buffer + _length);
         _length += textLength;
         _buffer[_length] = 0;
     }
@@ -133,7 +134,7 @@ public:
     {
         // If buffer is null, length should be 0 which will create a new one byte memory block containing a null terminator
         utf8 * result = Memory::AllocateArray<utf8>(_length + 1);
-        Memory::CopyArray(result, _buffer, _length);
+        std::copy_n(_buffer, _length, result);
         result[_length] = 0;
         return result;
     }

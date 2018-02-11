@@ -59,10 +59,6 @@ typedef struct NewsItem
 
 #define MAX_NEWS_ITEMS 61
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern const uint8 news_type_properties[10];
 
 extern NewsItem gNewsItems[MAX_NEWS_ITEMS];
@@ -90,6 +86,3 @@ bool news_item_is_valid_idx(sint32 index);
 
 void news_item_add_to_queue_custom(NewsItem * newNewsItem);
 
-#ifdef __cplusplus
-}
-#endif

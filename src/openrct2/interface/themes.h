@@ -28,10 +28,6 @@ enum {
     UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR               = 1 << 4,
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 void colour_scheme_update(rct_window *window);
 void colour_scheme_update_all();
 void colour_scheme_update_by_class(rct_window *window, rct_windowclass classification);
@@ -57,9 +53,5 @@ void     theme_delete();
 
 uint8         theme_desc_get_num_colours(rct_windowclass wc);
 rct_string_id theme_desc_get_name(rct_windowclass wc);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

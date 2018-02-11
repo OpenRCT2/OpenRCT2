@@ -1046,7 +1046,7 @@ private:
             }
         }
         WriteLine(1, "}");
-        WriteLine(1, "return NULL;");
+        WriteLine(1, "return nullptr;");
         WriteLine(0, "}");
     }
 
@@ -1098,16 +1098,14 @@ private:
     }
 };
 
-extern "C"
+int generatePaintCode(uint8 rideType)
 {
-    int generatePaintCode(uint8 rideType)
+    if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
     {
-        if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
-        {
-            fprintf(stderr, "Flat rides not supported.\n");
-        }
-
-        auto pcg = PaintCodeGenerator();
-        return pcg.Generate(rideType);
+        fprintf(stderr, "Flat rides not supported.\n");
     }
+
+    auto pcg = PaintCodeGenerator();
+    return pcg.Generate(rideType);
 }
+

@@ -234,6 +234,8 @@ public:
             const rct_object_entry * objects = (rct_object_entry *) intent->GetPointerExtra(INTENT_EXTRA_LIST);
             size_t count = intent->GetUIntExtra(INTENT_EXTRA_LIST_COUNT);
             window_object_load_error_open(const_cast<utf8 *>(path.c_str()), count, objects);
+
+            return nullptr;
         }
         case WC_RIDE:
             return window_ride_main_open(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
@@ -265,7 +267,6 @@ public:
 
             return w;
         }
-            break;
         default:
             Console::Error::WriteLine("Unhandled window class for intent (%d)", intent->GetWindowClass());
             return nullptr;
@@ -327,6 +328,16 @@ public:
             window_guest_list_refresh_list();
             break;
 
+        case INTENT_ACTION_REFRESH_STAFF_LIST:
+        {
+            auto w = window_find_by_class(WC_STAFF_LIST);
+            if (w != nullptr)
+            {
+                w->no_list_items = 0;
+            }
+            break;
+        }
+
         case INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD:
             window_tile_inspector_clear_clipboard();
             break;
@@ -344,6 +355,61 @@ public:
             window_tile_inspector_auto_set_buttons(window);
             break;
         }
+
+        case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
+        {
+            rct_vehicle * vehicle = static_cast<rct_vehicle *>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
+            sint32 viewVehicleIndex;
+            Ride * ride;
+            rct_window * w;
+
+            w = window_find_by_number(WC_RIDE, vehicle->ride);
+            if (w == nullptr)
+                return;
+
+            ride = get_ride(vehicle->ride);
+            viewVehicleIndex = w->ride.view - 1;
+            if (viewVehicleIndex < 0 || viewVehicleIndex >= ride->num_vehicles)
+                return;
+
+            if (vehicle->sprite_index != ride->vehicles[viewVehicleIndex])
+                return;
+
+            window_invalidate(w);
+            break;
+        }
+
+        case INTENT_ACTION_UPDATE_CLIMATE:
+            gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
+            window_invalidate_by_class(WC_GUEST_LIST);
+            break;
+
+        case INTENT_ACTION_UPDATE_PARK_RATING:
+            gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
+            window_invalidate_by_class(WC_PARK_INFORMATION);
+            break;
+
+        case INTENT_ACTION_UPDATE_DATE:
+            gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_DATE;
+            break;
+
+        case INTENT_ACTION_UPDATE_CASH:
+            window_invalidate_by_class(WC_FINANCES);
+            gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
+            break;
+
+        case INTENT_ACTION_UPDATE_BANNER:
+        {
+            uint8 bannerIndex = static_cast<uint8>(intent.GetUIntExtra(INTENT_EXTRA_BANNER_INDEX));
+
+            rct_window * w = window_find_by_number(WC_BANNER, bannerIndex);
+            if (w != nullptr)
+            {
+                window_invalidate(w);
+            }
+            break;
+        }
+
         }
     }
 

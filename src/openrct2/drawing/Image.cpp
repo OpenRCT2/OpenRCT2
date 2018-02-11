@@ -201,60 +201,58 @@ static void FreeImageList(uint32 baseImageId, uint32 count)
     _freeLists.push_back({ baseImageId, count });
 }
 
-extern "C"
+uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count)
 {
-    uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count)
+    if (count == 0 || gOpenRCT2NoGraphics)
     {
-        if (count == 0 || gOpenRCT2NoGraphics)
-        {
-            return INVALID_IMAGE_ID;
-        }
+        return INVALID_IMAGE_ID;
+    }
 
-        uint32 baseImageId = AllocateImageList(count);
-        if (baseImageId == INVALID_IMAGE_ID)
-        {
-            log_error("Reached maximum image limit.");
-            return INVALID_IMAGE_ID;
-        }
+    uint32 baseImageId = AllocateImageList(count);
+    if (baseImageId == INVALID_IMAGE_ID)
+    {
+        log_error("Reached maximum image limit.");
+        return INVALID_IMAGE_ID;
+    }
 
-        uint32 imageId = baseImageId;
+    uint32 imageId = baseImageId;
+    for (uint32 i = 0; i < count; i++)
+    {
+        gfx_set_g1_element(imageId, &images[i]);
+        drawing_engine_invalidate_image(imageId);
+        imageId++;
+    }
+
+    return baseImageId;
+}
+
+void gfx_object_free_images(uint32 baseImageId, uint32 count)
+{
+    if (baseImageId != 0 && baseImageId != INVALID_IMAGE_ID)
+    {
+        // Zero the G1 elements so we don't have invalid pointers
+        // and data lying about
         for (uint32 i = 0; i < count; i++)
         {
-            gfx_set_g1_element(imageId, &images[i]);
+            uint32 imageId = baseImageId + i;
+            rct_g1_element g1 = { nullptr };
+            gfx_set_g1_element(imageId, &g1);
             drawing_engine_invalidate_image(imageId);
-            imageId++;
         }
 
-        return baseImageId;
-    }
-
-    void gfx_object_free_images(uint32 baseImageId, uint32 count)
-    {
-        if (baseImageId != 0 && baseImageId != INVALID_IMAGE_ID)
-        {
-            // Zero the G1 elements so we don't have invalid pointers
-            // and data lying about
-            for (uint32 i = 0; i < count; i++)
-            {
-                uint32 imageId = baseImageId + i;
-                rct_g1_element g1 = { nullptr };
-                gfx_set_g1_element(imageId, &g1);
-                drawing_engine_invalidate_image(imageId);
-            }
-
-            FreeImageList(baseImageId, count);
-        }
-    }
-
-    void gfx_object_check_all_images_freed()
-    {
-        if (_allocatedImageCount != 0)
-        {
-#ifdef DEBUG
-            Guard::Assert(_allocatedImageCount == 0, "%u images were not freed", _allocatedImageCount);
-#else
-            Console::Error::WriteLine("%u images were not freed", _allocatedImageCount);
-#endif
-        }
+        FreeImageList(baseImageId, count);
     }
 }
+
+void gfx_object_check_all_images_freed()
+{
+    if (_allocatedImageCount != 0)
+    {
+#ifdef DEBUG
+        Guard::Assert(_allocatedImageCount == 0, "%u images were not freed", _allocatedImageCount);
+#else
+        Console::Error::WriteLine("%u images were not freed", _allocatedImageCount);
+#endif
+    }
+}
+

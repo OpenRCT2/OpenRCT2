@@ -18,7 +18,7 @@
 
 #include <openrct2/common.h>
 #include <openrct2/sprites.h>
-#include <openrct2/interface/Window.h>
+#include <openrct2-ui/interface/Window.h>
 
 #define MINIMUM_TOOL_SIZE         1
 #define MAXIMUM_TOOL_SIZE         64
@@ -32,6 +32,9 @@ extern uint8 gLandToolTerrainSurface;
 extern uint8 gLandToolTerrainEdge;
 extern money32 gWaterToolRaiseCost;
 extern money32 gWaterToolLowerCost;
+
+extern uint32 WallTextureOrder[];
+extern uint32 WallTexturePreviews[];
 
 uint32 land_tool_size_to_sprite_index(uint16 size);
 void land_tool_show_surface_style_dropdown(rct_window * w, rct_widget * widget, uint8 currentSurfaceType);

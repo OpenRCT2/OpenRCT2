@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,10 +16,13 @@
 
 #include <algorithm>
 #include <cstdarg>
+#include <deque>
+#include <string>
 
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../core/Math.hpp"
+#include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/Font.h"
@@ -27,6 +30,7 @@
 #include "../EditorObjectSelectionSession.h"
 #include "../Game.h"
 #include "../Input.h"
+#include "../interface/Colour.h"
 #include "../interface/themes.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/User.h"
@@ -35,6 +39,7 @@
 #include "../network/network.h"
 #include "../network/twitch.h"
 #include "../object/Object.h"
+#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../OpenRCT2.h"
@@ -55,38 +60,35 @@
 
 #ifndef NO_TTF
 #include "../drawing/TTF.h"
+
 #endif
 
-#define CONSOLE_BUFFER_SIZE 8192
-#define CONSOLE_BUFFER_2_SIZE 256
+#define CONSOLE_MAX_LINES 300
 #define CONSOLE_HISTORY_SIZE 64
 #define CONSOLE_INPUT_SIZE 256
-
-extern "C"
-{
+#define CONSOLE_CARET_FLASH_THRESHOLD 15
+#define CONSOLE_EDGE_PADDING 4
+#define CONSOLE_CARET_WIDTH 6
 
 bool gConsoleOpen = false;
 
-static bool _consoleInitialised = false;
-static sint32 _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
-static sint32 _lastMainViewportX, _lastMainViewportY;
-static utf8 _consoleBuffer[CONSOLE_BUFFER_SIZE] = { 0 };
-static utf8 *_consoleBufferPointer = _consoleBuffer;
-static utf8 *_consoleViewBufferStart = _consoleBuffer;
-static utf8 _consoleCurrentLine[CONSOLE_INPUT_SIZE];
-static sint32 _consoleCaretTicks;
-static utf8 _consolePrintfBuffer[CONSOLE_BUFFER_2_SIZE];
-static utf8 _consoleErrorBuffer[CONSOLE_BUFFER_2_SIZE];
-static sint32 _consoleScrollPos = 0;
-static TextInputSession * _consoleTextInputSession;
+static bool                     _consoleInitialised = false;
+static sint32                   _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
+static sint32                   _lastMainViewportX, _lastMainViewportY;
+static std::deque<std::string>  _consoleLines;
+static utf8                     _consoleCurrentLine[CONSOLE_INPUT_SIZE];
+static sint32                   _consoleCaretTicks;
+static sint32                   _consoleScrollPos = 0;
+static TextInputSession *       _consoleTextInputSession;
 
-static utf8 _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
+static utf8   _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
 static sint32 _consoleHistoryIndex = 0;
 static sint32 _consoleHistoryCount = 0;
 
 static void console_invalidate();
 static void console_write_prompt();
 static void console_clear_input();
+static void console_scroll_to_end();
 static void console_history_add(const utf8 *src);
 static void console_write_all_commands();
 static sint32 console_parse_int(const utf8 *src, bool *valid);
@@ -105,8 +107,8 @@ static sint32 console_get_num_visible_lines();
 void console_open()
 {
     gConsoleOpen = true;
+    console_scroll_to_end();
     gSpeedrunningState.speedrun_invalidated = true;
-    _consoleScrollPos = 0;
     console_refresh_caret();
     _consoleTextInputSession = context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
 }
@@ -149,7 +151,7 @@ void console_update()
         // When scrolling the map, the console pixels get copied... therefore invalidate the screen
         rct_window *mainWindow = window_get_main();
         if (mainWindow != nullptr) {
-            rct_viewport *mainViewport = mainWindow->viewport;
+            rct_viewport *mainViewport = window_get_viewport(mainWindow);
             if (mainViewport != nullptr) {
                 if (_lastMainViewportX != mainViewport->view_x || _lastMainViewportY != mainViewport->view_y) {
                     _lastMainViewportX = mainViewport->view_x;
@@ -174,96 +176,66 @@ void console_draw(rct_drawpixelinfo *dpi)
         return;
 
     // Set font
-    gCurrentFontSpriteBase = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
-    gCurrentFontFlags = 0;
-    sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    gCurrentFontSpriteBase           = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
+    gCurrentFontFlags                = 0;
+    uint8        textColour          = NOT_TRANSLUCENT(theme_get_colour(WC_CONSOLE, 1));
+    const sint32 lineHeight          = font_get_line_height(gCurrentFontSpriteBase);
+    const sint32 maxLines            = console_get_num_visible_lines();
 
-    sint32 lines = 0;
-    sint32 maxLines = console_get_num_visible_lines();
-    utf8 *ch = strchr(_consoleBuffer, 0);
-    while (ch > _consoleBuffer) {
-        ch--;
-        if (*ch == '\n')
-            lines++;
+    // This is something of a hack to ensure the text is actually black
+    // as opposed to a desaturated grey
+    std::string colourFormatStr;
+    if (textColour == COLOUR_BLACK)
+    {
+        utf8 extraTextFormatCode[4]{};
+        utf8_write_codepoint(extraTextFormatCode, FORMAT_BLACK);
+        colourFormatStr = extraTextFormatCode;
+    }
+
+    // TTF looks far better without the outlines
+    if (!gUseTrueTypeFont)
+    {
+        textColour |= COLOUR_FLAG_OUTLINE;
     }
 
     console_invalidate();
 
+    // Give console area a translucent effect.
+    gfx_filter_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, PALETTE_51);
+
+    // Make input area more opaque.
+    gfx_filter_rect(dpi, _consoleLeft, _consoleBottom - lineHeight - 10, _consoleRight, _consoleBottom - 1, PALETTE_51);
+
     // Paint background colour.
     uint8 backgroundColour = theme_get_colour(WC_CONSOLE, 0);
-    gfx_filter_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, PALETTE_51);
     gfx_fill_rect_inset(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
     gfx_fill_rect_inset(dpi, _consoleLeft + 1, _consoleTop + 1, _consoleRight - 1, _consoleBottom - 1, backgroundColour, INSET_RECT_FLAG_BORDER_INSET);
 
-    sint32 x = _consoleLeft + 4;
-    sint32 y = _consoleTop + 4;
+    std::string lineBuffer;
+    sint32      x = _consoleLeft + CONSOLE_EDGE_PADDING;
+    sint32      y = _consoleTop + CONSOLE_EDGE_PADDING;
 
-    // Draw previous lines
-    utf8 lineBuffer[2 + 256], *lineCh;
-    ch = _consoleViewBufferStart;
-    sint32 currentLine = 0;
-    sint32 drawLines = 0;
-    while (*ch != 0) {
-        // Find line break or null terminator
-        utf8 *nextLine = ch;
-        while (*nextLine != 0 && *nextLine != '\n') {
-            nextLine++;
-        }
-
-        currentLine++;
-        if (currentLine < (lines - maxLines + 4) - _consoleScrollPos) {
-            if (*nextLine == '\n') {
-                ch = nextLine + 1;
-                x = _consoleLeft + 4;
-                // y += lineHeight;
-            }
-            else {
-                break;
-            }
-            continue;
-        }
-
-        if (drawLines >= maxLines)
-            break;
-        drawLines++;
-
-        size_t lineLength = std::min(sizeof(lineBuffer) - (size_t)utf8_get_codepoint_length(FORMAT_WHITE), (size_t)(nextLine - ch));
-        lineCh = lineBuffer;
-        lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
-        memcpy(lineCh, ch, lineLength);
-        lineCh[lineLength] = 0;
-
-        gfx_draw_string(dpi, lineBuffer, COLOUR_LIGHT_PURPLE | COLOUR_FLAG_OUTLINE | COLOUR_FLAG_INSET, x, y);
-
-        x = gLastDrawStringX;
-
-        if (*nextLine == '\n') {
-            ch = nextLine + 1;
-            x = _consoleLeft + 4;
-            y += lineHeight;
-        } else {
-            break;
-        }
+    // Draw text inside console
+    for (std::size_t i = 0; i < _consoleLines.size() && i < (size_t)maxLines; i++) {
+        const size_t index = i + _consoleScrollPos;
+        lineBuffer         = colourFormatStr + _consoleLines[index];
+        gfx_draw_string(dpi, lineBuffer.c_str(), textColour, x, y);
+        y += lineHeight;
     }
 
-    x = _consoleLeft + 4;
-    y = _consoleBottom - lineHeight - 5;
+    y = _consoleBottom - lineHeight - CONSOLE_EDGE_PADDING - 1;
 
     // Draw current line
-    lineCh = lineBuffer;
-    lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
-    safe_strcpy(lineCh, _consoleCurrentLine, sizeof(lineBuffer) - (lineCh - lineBuffer));
-    gfx_draw_string(dpi, lineBuffer, TEXT_COLOUR_255, x, y);
+    lineBuffer = colourFormatStr + _consoleCurrentLine;
+    gfx_draw_string(dpi, lineBuffer.c_str(), TEXT_COLOUR_255, x, y);
 
     // Draw caret
-    if (_consoleCaretTicks < 15) {
-        memcpy(lineBuffer, _consoleCurrentLine, _consoleTextInputSession->SelectionStart);
-        lineBuffer[_consoleTextInputSession->SelectionStart] = 0;
-        sint32 caretX = x + gfx_get_string_width(lineBuffer);
+    if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD) {
+        sint32 caretX = x + gfx_get_string_width(_consoleCurrentLine);
         sint32 caretY = y + lineHeight;
 
-        uint8 caretColour = ColourMapA[BASE_COLOUR(backgroundColour)].dark;
-        gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, caretColour);
+        uint8 caretColour = ColourMapA[BASE_COLOUR(textColour)].lightest;
+        gfx_fill_rect(dpi, caretX, caretY, caretX + CONSOLE_CARET_WIDTH, caretY, caretColour);
     }
 
     // What about border colours?
@@ -287,14 +259,14 @@ void console_input(CONSOLE_INPUT input)
         console_refresh_caret();
         break;
     case CONSOLE_INPUT_LINE_EXECUTE:
-        if (_consoleCurrentLine[0] != 0) {
+        if (_consoleCurrentLine[0] != '\0') {
             console_history_add(_consoleCurrentLine);
             console_execute(_consoleCurrentLine);
             console_write_prompt();
             console_clear_input();
             console_refresh_caret();
         }
-        _consoleScrollPos = 0;
+        console_scroll_to_end();
         break;
     case CONSOLE_INPUT_HISTORY_PREVIOUS:
         if (_consoleHistoryIndex > 0) {
@@ -341,45 +313,57 @@ static void console_invalidate()
 
 static void console_write_prompt()
 {
-    console_write("> ");
+    console_writeline("> ");
 }
 
 void console_write(const utf8 *src)
 {
-    size_t charactersRemainingInBuffer = CONSOLE_BUFFER_SIZE - (_consoleBufferPointer - _consoleBuffer) - 1;
-    size_t charactersToWrite = strlen(src);
-    size_t bufferShift = charactersToWrite - charactersRemainingInBuffer;
-    if (charactersToWrite > charactersRemainingInBuffer) {
-        memmove(_consoleBuffer, _consoleBuffer + bufferShift, CONSOLE_BUFFER_SIZE - bufferShift);
-        _consoleBufferPointer -= bufferShift;
-        charactersRemainingInBuffer = CONSOLE_BUFFER_SIZE - (_consoleBufferPointer - _consoleBuffer) - 1;
-    }
-    safe_strcpy(_consoleBufferPointer, src, charactersRemainingInBuffer);
-    _consoleBufferPointer += charactersToWrite;
+    Guard::Assert(_consoleLines.size() > 0);
+    std::string & lastLine = _consoleLines.back();
+    lastLine.append(src);
 }
 
-void console_writeline(const utf8 *src)
+void console_writeline(const utf8 * src, uint32 colourFormat)
 {
-    console_write(src);
-    console_write("\n");
+    // Include text colour format only for special cases
+    // The draw function handles the default text colour differently
+    utf8 colourCodepoint[4]{};
+    if (colourFormat != FORMAT_WINDOW_COLOUR_2)
+        utf8_write_codepoint(colourCodepoint, colourFormat);
+
+    std::string input = String::ToStd(src);
+    std::string line;
+    std::size_t splitPos     = 0;
+    std::size_t stringOffset = 0;
+    while (splitPos != std::string::npos)
+    {
+        splitPos = input.find('\n', stringOffset);
+        line     = input.substr(stringOffset, splitPos - stringOffset);
+        _consoleLines.push_back(colourCodepoint + line);
+        stringOffset = splitPos + 1;
+    }
+
+    if (_consoleLines.size() > CONSOLE_MAX_LINES)
+    {
+        const std::size_t linesToErase = _consoleLines.size() - CONSOLE_MAX_LINES;
+        _consoleLines.erase(_consoleLines.begin(), _consoleLines.begin() + linesToErase);
+    }
 }
 
 void console_writeline_error(const utf8 *src)
 {
-    safe_strcpy(_consoleErrorBuffer + 1, src, CONSOLE_BUFFER_2_SIZE - 1);
-    _consoleErrorBuffer[0] = (utf8)(uint8)FORMAT_RED;
-    console_writeline(_consoleErrorBuffer);
+    console_writeline(src, FORMAT_RED);
 }
 
 void console_writeline_warning(const utf8 *src)
 {
-    safe_strcpy(_consoleErrorBuffer + 1, src, CONSOLE_BUFFER_2_SIZE - 1);
-    _consoleErrorBuffer[0] = (utf8)(uint8)FORMAT_YELLOW;
-    console_writeline(_consoleErrorBuffer);
+    console_writeline(src, FORMAT_YELLOW);
 }
 
 void console_printf(const utf8 *format, ...)
 {
+    // TODO: Try to remove buffer
+    utf8    _consolePrintfBuffer[256];
     va_list list;
     va_start(list, format);
     vsnprintf(_consolePrintfBuffer, sizeof(_consolePrintfBuffer), format, list);
@@ -403,34 +387,28 @@ double console_parse_double(const utf8 *src, bool *valid) {
 
 void console_scroll(sint32 linesToScroll)
 {
-    sint32 speed = abs(linesToScroll);
-    sint32 lines = 0;
-    sint32 maxLines = console_get_num_visible_lines();
-    utf8 *ch = strchr(_consoleBuffer, 0);
-    while (ch > _consoleBuffer) {
-        ch--;
-        if (*ch == '\n')
-            lines++;
-    }
-    if (linesToScroll > 0 && _consoleScrollPos + 1 < (lines - maxLines + 4)) {
-        _consoleScrollPos = std::min(_consoleScrollPos + speed, (lines - maxLines + 4));
-    }
-    else if (linesToScroll < 0 && _consoleScrollPos > 0) {
-        _consoleScrollPos = std::max(_consoleScrollPos - speed, 0);
+    const sint32 maxVisibleLines = console_get_num_visible_lines();
+    const sint32 numLines = (sint32)_consoleLines.size();
+    if (numLines > maxVisibleLines)
+    {
+        sint32 maxScrollValue = numLines - maxVisibleLines;
+        _consoleScrollPos     = Math::Clamp<sint32>(0, _consoleScrollPos - linesToScroll, maxScrollValue);
     }
 }
 
 // Calculates the amount of visible lines, based on the console size, excluding the input line.
 static sint32 console_get_num_visible_lines()
 {
-    return ((_consoleBottom - _consoleTop) / font_get_line_height(gCurrentFontSpriteBase)) - 1;
+    const sint32 lineHeight     = font_get_line_height(gCurrentFontSpriteBase);
+    const sint32 consoleHeight  = _consoleBottom - _consoleTop;
+    const sint32 drawableHeight = consoleHeight - 2 * lineHeight - 4; // input line, separator - padding
+    return drawableHeight / lineHeight;
 }
 
 void console_clear()
 {
-    _consoleScrollPos = 0;
-    _consoleBuffer[0] = 0;
-    _consoleBufferPointer = _consoleBuffer;
+    _consoleLines.clear();
+    console_scroll_to_end();
 }
 
 void console_clear_line()
@@ -450,6 +428,11 @@ static void console_clear_input()
     if (gConsoleOpen) {
         context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
     }
+}
+
+static void console_scroll_to_end()
+{
+    _consoleScrollPos = Math::Max<sint32>(0, (sint32)_consoleLines.size() - console_get_num_visible_lines());
 }
 
 static void console_history_add(const utf8 *src)
@@ -836,7 +819,8 @@ static sint32 cc_get(const utf8 **argv, sint32 argc)
                 sint32 interactionType;
                 rct_tile_element *tileElement;
                 LocationXY16 mapCoord = { 0 };
-                get_map_coordinates_from_pos(w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &tileElement, nullptr);
+                rct_viewport * viewport = window_get_viewport(w);
+                get_map_coordinates_from_pos(viewport->view_width / 2, viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &tileElement, nullptr);
                 mapCoord.x -= 16;
                 mapCoord.x /= 32;
                 mapCoord.y -= 16;
@@ -1170,7 +1154,7 @@ static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
         }
         sint32 groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
 
-        uint8 objectType = entry->flags & 0x0F;
+        uint8 objectType = object_entry_get_type(entry);
         if (objectType == OBJECT_TYPE_RIDE) {
             // Automatically research the ride so it's supported by the game.
             rct_ride_entry *rideEntry;
@@ -1181,7 +1165,7 @@ static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
             for (sint32 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
                 rideType = rideEntry->ride_type[j];
                 if (rideType != RIDE_TYPE_NULL)
-                    research_insert(true, 0x10000 | (rideType << 8) | groupIndex, rideEntry->category[0]);
+                    research_insert(true, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | groupIndex, rideEntry->category[0]);
             }
 
             gSilentResearch = true;
@@ -1189,7 +1173,7 @@ static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
             gSilentResearch = false;
         }
         else if (objectType == OBJECT_TYPE_SCENERY_GROUP) {
-            research_insert(true, groupIndex, RESEARCH_CATEGORY_SCENERYSET);
+            research_insert(true, groupIndex, RESEARCH_CATEGORY_SCENERY_GROUP);
 
             gSilentResearch = true;
             research_reset_current_item();
@@ -1197,9 +1181,8 @@ static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
         }
         scenery_set_default_placement_configuration();
 
-        Intent * intent = intent_create(INTENT_ACTION_REFRESH_NEW_RIDES);
-        context_broadcast_intent(intent);
-        intent_release(intent);
+        auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
+        context_broadcast_intent(&intent);
 
         gWindowUpdateTicks = 0;
         gfx_invalidate_screen();
@@ -1514,7 +1497,7 @@ static void console_write_all_commands()
 
 void console_execute(const utf8 *src)
 {
-    console_writeline(src);
+    console_write(src);
 
     console_execute_silent(src);
 }
@@ -1605,6 +1588,4 @@ static bool invalidArguments(bool *invalid, bool arguments)
         return false;
     }
     return true;
-}
-
 }

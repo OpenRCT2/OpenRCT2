@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include "Object.h"
 
 #include "../scenario/Scenario.h"
@@ -44,5 +42,3 @@ public:
     std::string GetScenarioDetails() const;
     std::string GetParkName() const;
 };
-
-#endif

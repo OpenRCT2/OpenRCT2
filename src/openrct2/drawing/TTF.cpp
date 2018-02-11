@@ -25,9 +25,6 @@
 #include "../platform/platform.h"
 #include "TTF.h"
 
-extern "C"
-{
-
 static bool _ttfInitialised = false;
 
 #define TTF_SURFACE_CACHE_SIZE 256
@@ -318,14 +315,9 @@ void ttf_free_surface(TTFSurface * surface)
     free(surface);
 }
 
-}
-
 #else
 
 #include "TTF.h"
-
-extern "C"
-{
 
 bool ttf_initialise()
 {
@@ -334,8 +326,6 @@ bool ttf_initialise()
 
 void ttf_dispose()
 {
-}
-
 }
 
 #endif // NO_TTF

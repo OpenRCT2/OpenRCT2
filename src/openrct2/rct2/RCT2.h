@@ -17,7 +17,7 @@
 #ifndef _RCT2_H_
 #define _RCT2_H_
 
-#include "../ride/ride_ratings.h"
+#include "../ride/RideRatings.h"
 #include "../ride/Vehicle.h"
 #include "../common.h"
 #include "../rct12/RCT12.h"
@@ -267,8 +267,6 @@ typedef struct rct2_ride {
 } rct2_ride;
 assert_struct_size(rct2_ride, 0x260);
 
-#ifdef __cplusplus
-
 /**
  * scores.dat file header.
  * size: 0x10
@@ -302,8 +300,6 @@ struct rct_scores_entry
     char    CompletedBy[64];
 };
 assert_struct_size(rct_scores_entry, 0x02B0);
-
-#endif // __cplusplus
 
 #pragma pack(pop)
 

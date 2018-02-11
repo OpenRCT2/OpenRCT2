@@ -27,8 +27,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/interface/themes.h>
-#include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
@@ -2915,17 +2915,16 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     // Description
     y += gfx_draw_string_left_wrapped(dpi, &rideEntry->naming.description, x, y, 300, STR_BLACK_STRING, COLOUR_BLACK);
-    y += 5;
+    y += 2;
 
     // Capacity
     gfx_draw_string_left(dpi, STR_CAPACITY, &rideEntry->capacity, COLOUR_BLACK, x, y);
-    y += 5;
 
     // Excitement Factor
     factor = rideEntry->excitement_multiplier;
     if (factor > 0)
     {
-        y += 10;
+        y += LIST_ROW_HEIGHT;
         gfx_draw_string_left(dpi, STR_EXCITEMENT_FACTOR, &factor, COLOUR_BLACK, x, y);
     }
 
@@ -2933,18 +2932,25 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
     factor = rideEntry->intensity_multiplier;
     if (factor > 0)
     {
-        y += 10;
+        sint32 lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+        if (lineHeight != 10)
+            x += 150;
+        else
+            y += LIST_ROW_HEIGHT;
+
         gfx_draw_string_left(dpi, STR_INTENSITY_FACTOR, &factor, COLOUR_BLACK, x, y);
+
+        if (lineHeight != 10)
+            x -= 150;
     }
 
     // Nausea Factor
     factor = rideEntry->nausea_multiplier;
     if (factor > 0)
     {
-        y += 10;
+        y += LIST_ROW_HEIGHT;
         gfx_draw_string_left(dpi, STR_NAUSEA_FACTOR, &factor, COLOUR_BLACK, x, y);
     }
-
 }
 
 typedef struct rct_vehichle_paintinfo {
@@ -3088,7 +3094,7 @@ static void window_ride_mode_tweak_increase(rct_window *w)
 
     uint8 increment = ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
 
-    window_ride_mode_tweak_set(w, Math::Clamp<uint8>(minValue, ride->operation_option + increment, maxValue));
+    window_ride_mode_tweak_set(w, Math::Clamp<sint16>(minValue, ride->operation_option + increment, maxValue));
 }
 
 /**
@@ -3107,7 +3113,7 @@ static void window_ride_mode_tweak_decrease(rct_window *w)
 
     uint8 decrement = ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
 
-    window_ride_mode_tweak_set(w, Math::Clamp<uint8>(minValue, ride->operation_option - decrement, maxValue));
+    window_ride_mode_tweak_set(w, Math::Clamp<sint16>(minValue, ride->operation_option - decrement, maxValue));
 }
 
 /**
@@ -3260,32 +3266,32 @@ static void window_ride_operating_mousedown(rct_window *w, rct_widgetindex widge
     case WIDX_LIFT_HILL_SPEED_INCREASE:
         upper_bound = gCheatsFastLiftHill ? 255 : RideLiftData[ride->type].maximum_speed;
         lower_bound = gCheatsFastLiftHill ? 0 : RideLiftData[ride->type].minimum_speed;
-        set_operating_setting(w->number, RIDE_SETTING_LIFT_HILL_SPEED, Math::Clamp<uint8>(lower_bound, ride->lift_hill_speed + 1, upper_bound));
+        set_operating_setting(w->number, RIDE_SETTING_LIFT_HILL_SPEED, Math::Clamp<sint16>(lower_bound, ride->lift_hill_speed + 1, upper_bound));
         break;
     case WIDX_LIFT_HILL_SPEED_DECREASE:
         upper_bound = gCheatsFastLiftHill ? 255 : RideLiftData[ride->type].maximum_speed;
         lower_bound = gCheatsFastLiftHill ? 0 : RideLiftData[ride->type].minimum_speed;
-        set_operating_setting(w->number, RIDE_SETTING_LIFT_HILL_SPEED, Math::Clamp<uint8>(lower_bound, ride->lift_hill_speed - 1, upper_bound));
+        set_operating_setting(w->number, RIDE_SETTING_LIFT_HILL_SPEED, Math::Clamp<sint16>(lower_bound, ride->lift_hill_speed - 1, upper_bound));
         break;
     case WIDX_MINIMUM_LENGTH_INCREASE:
         upper_bound = 250;
         lower_bound = 0;
-        set_operating_setting(w->number, RIDE_SETTING_MIN_WAITING_TIME, Math::Clamp<uint8>(lower_bound, ride->min_waiting_time + 1, upper_bound));
+        set_operating_setting(w->number, RIDE_SETTING_MIN_WAITING_TIME, Math::Clamp<sint16>(lower_bound, ride->min_waiting_time + 1, upper_bound));
         break;
     case WIDX_MINIMUM_LENGTH_DECREASE:
         upper_bound = 250;
         lower_bound = 0;
-        set_operating_setting(w->number, RIDE_SETTING_MIN_WAITING_TIME, Math::Clamp<uint8>(lower_bound, ride->min_waiting_time - 1, upper_bound));
+        set_operating_setting(w->number, RIDE_SETTING_MIN_WAITING_TIME, Math::Clamp<sint16>(lower_bound, ride->min_waiting_time - 1, upper_bound));
         break;
     case WIDX_MAXIMUM_LENGTH_INCREASE:
         upper_bound = 250;
         lower_bound = 0;
-        set_operating_setting(w->number, RIDE_SETTING_MAX_WAITING_TIME, Math::Clamp<uint8>(lower_bound, ride->max_waiting_time + 1, upper_bound));
+        set_operating_setting(w->number, RIDE_SETTING_MAX_WAITING_TIME, Math::Clamp<sint16>(lower_bound, ride->max_waiting_time + 1, upper_bound));
         break;
     case WIDX_MAXIMUM_LENGTH_DECREASE:
         upper_bound = 250;
         lower_bound = 0;
-        set_operating_setting(w->number, RIDE_SETTING_MAX_WAITING_TIME, Math::Clamp<uint8>(lower_bound, ride->max_waiting_time - 1, upper_bound));
+        set_operating_setting(w->number, RIDE_SETTING_MAX_WAITING_TIME, Math::Clamp<sint16>(lower_bound, ride->max_waiting_time - 1, upper_bound));
         break;
     case WIDX_MODE_DROPDOWN:
         window_ride_mode_dropdown(w, widget);
@@ -3296,12 +3302,12 @@ static void window_ride_operating_mousedown(rct_window *w, rct_widgetindex widge
     case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
         upper_bound = gCheatsFastLiftHill ? 255 : 20;
         lower_bound = 1;
-        set_operating_setting(w->number, RIDE_SETTING_NUM_CIRCUITS, Math::Clamp<uint8>(lower_bound, ride->num_circuits + 1, upper_bound));
+        set_operating_setting(w->number, RIDE_SETTING_NUM_CIRCUITS, Math::Clamp<sint16>(lower_bound, ride->num_circuits + 1, upper_bound));
         break;
     case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
         upper_bound = gCheatsFastLiftHill ? 255 : 20;
         lower_bound = 1;
-        set_operating_setting(w->number, RIDE_SETTING_NUM_CIRCUITS, Math::Clamp<uint8>(lower_bound, ride->num_circuits - 1, upper_bound));
+        set_operating_setting(w->number, RIDE_SETTING_NUM_CIRCUITS, Math::Clamp<sint16>(lower_bound, ride->num_circuits - 1, upper_bound));
         break;
     }
 }
@@ -3819,7 +3825,7 @@ static void window_ride_maintenance_dropdown(rct_window *w, rct_widgetindex widg
                         vehicle = GET_VEHICLE(spriteId);
                         vehicle->update_flags &= ~(
                             VEHICLE_UPDATE_FLAG_BROKEN_CAR |
-                            VEHICLE_UPDATE_FLAG_7 |
+                            VEHICLE_UPDATE_FLAG_ZERO_VELOCITY |
                             VEHICLE_UPDATE_FLAG_BROKEN_TRAIN
                             );
                         spriteId = vehicle->next_vehicle_on_train;
@@ -4813,9 +4819,9 @@ static void window_ride_music_mousedown(rct_window *w, rct_widgetindex widgetInd
         for (size_t n = 0; n < Util::CountOf(MusicStyleOrder); n++)
             window_ride_current_music_style_order[numItems++] = MusicStyleOrder[n];
 
-        if (gRideMusicInfoList[36]->length != 0)
+        if (gRideMusicInfoList[36].length != 0)
             window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_1;
-        if (gRideMusicInfoList[37]->length != 0)
+        if (gRideMusicInfoList[37].length != 0)
             window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_2;
     }
 

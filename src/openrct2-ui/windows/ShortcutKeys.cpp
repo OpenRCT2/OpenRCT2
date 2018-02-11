@@ -18,7 +18,7 @@
 #include <openrct2-ui/input/KeyboardShortcuts.h>
 #include "Window.h"
 
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 
 #define WW 420
@@ -86,8 +86,6 @@ static rct_window_event_list window_shortcut_events = {
     window_shortcut_scrollpaint
 };
 
-extern "C"
-{
 const rct_string_id ShortcutStringIds[SHORTCUT_COUNT] = {
     STR_SHORTCUT_CLOSE_TOP_MOST_WINDOW,
     STR_SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS,
@@ -155,7 +153,7 @@ const rct_string_id ShortcutStringIds[SHORTCUT_COUNT] = {
     STR_SHORTCUT_CLEAR_SCENERY,
     STR_SHORTCUT_GRIDLINES_DISPLAY_TOGGLE,
 };
-}
+
 
 /**
  *

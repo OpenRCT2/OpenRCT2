@@ -363,10 +363,9 @@ void news_item_open_subject(sint32 type, sint32 subject)
     {
         peep = GET_PEEP(subject);
 
-        Intent * intent = intent_create(WC_PEEP);
-        intent_set_pointer(intent, INTENT_EXTRA_PEEP, peep);
-        context_open_intent(intent);
-        intent_release(intent);
+        auto intent = Intent(WC_PEEP);
+        intent.putExtra(INTENT_EXTRA_PEEP, peep);
+        context_open_intent(&intent);
         break;
     }
     case NEWS_ITEM_MONEY:
@@ -375,11 +374,10 @@ void news_item_open_subject(sint32 type, sint32 subject)
     case NEWS_ITEM_RESEARCH:
         if (subject >= RESEARCH_ENTRY_RIDE_MASK)
         {
-            Intent * intent = intent_create(INTENT_ACTION_NEW_RIDE_OF_TYPE);
-            intent_set_sint(intent, INTENT_EXTRA_RIDE_TYPE, subject >> 8);
-            intent_set_sint(intent, INTENT_EXTRA_RIDE_ENTRY_INDEX, subject & 0xFF);
-            context_open_intent(intent);
-            intent_release(intent);
+            auto intent = Intent(INTENT_ACTION_NEW_RIDE_OF_TYPE);
+            intent.putExtra(INTENT_EXTRA_RIDE_TYPE, subject >> 8);
+            intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, subject & 0xFF);
+            context_open_intent(&intent);
             break;
         }
 
@@ -406,11 +404,10 @@ void news_item_open_subject(sint32 type, sint32 subject)
         break;
     case NEWS_ITEM_PEEPS:
     {
-        Intent * intent = intent_create(WC_GUEST_LIST);
-        intent_set_sint(intent, INTENT_EXTRA_GUEST_LIST_FILTER, GLFT_GUESTS_THINKING_X);
-        intent_set_sint(intent, INTENT_EXTRA_RIDE_ID, subject);
-        context_open_intent(intent);
-        intent_release(intent);
+        auto intent = Intent(WC_GUEST_LIST);
+        intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, GLFT_GUESTS_THINKING_X);
+        intent.putExtra(INTENT_EXTRA_RIDE_ID, subject);
+        context_open_intent(&intent);
         break;
     }
     case NEWS_ITEM_AWARD:

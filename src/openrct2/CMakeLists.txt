@@ -55,14 +55,17 @@ file(GLOB_RECURSE OPENRCT2_CORE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.c"
                                         "${CMAKE_CURRENT_LIST_DIR}/*.h"
                                         "${CMAKE_CURRENT_LIST_DIR}/*.hpp")
 if (APPLE)
-    file(GLOB_RECURSE OPENRCT2_CORE_MM_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.m")
-    set_source_files_properties(${OPENRCT2_CORE_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c -fmodules")
+    file(GLOB_RECURSE OPENRCT2_CORE_M_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.m")
+    set_source_files_properties(${OPENRCT2_CORE_M_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c -fmodules")
+
+    file(GLOB_RECURSE OPENRCT2_CORE_MM_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.mm")
+    set_source_files_properties(${OPENRCT2_CORE_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c++ -fmodules")
 endif ()
 
 # Outputs
 set(PROJECT libopenrct2)
 project(${PROJECT})
-add_library(${PROJECT} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${RCT2_SECTIONS})
+add_library(${PROJECT} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_M_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${RCT2_SECTIONS})
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 set_target_properties(${PROJECT} PROPERTIES COMPILE_FLAGS "-Wundef")
 

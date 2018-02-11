@@ -19,16 +19,8 @@
 
 #include "../common.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern bool gTwitchEnable;
 
 void twitch_update();
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

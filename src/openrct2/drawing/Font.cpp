@@ -27,9 +27,6 @@ static constexpr const sint32 SpriteFontLineHeight[] = { 6, 10, 10, 18 };
 
 static uint8 _spriteFontCharacterWidths[896];
 
-extern "C"
-{
-
 #ifndef NO_TTF
 TTFFontSetDescriptor *gCurrentTTFFontSet;
 #endif // NO_TTF
@@ -66,7 +63,7 @@ sint32 font_sprite_get_codepoint_offset(sint32 codepoint)
     case FORMAT_ENDQUOTES: return 34 - 32;
 
     case FORMAT_UP: return 160 - 32;
-    case FORMAT_SYMBOL_i: return 160 - 32;
+    case FORMAT_INVERTEDEXCLAMATION: return 160 - 32;
     case FORMAT_POUND: return 163 - 32;
 
     case FORMAT_YEN: return 165 - 32;
@@ -187,7 +184,7 @@ bool font_supports_string_sprite(const utf8 *text)
         switch (codepoint) {
         case FORMAT_ENDQUOTES:
         case FORMAT_UP:
-        case FORMAT_SYMBOL_i:
+        case FORMAT_INVERTEDEXCLAMATION:
         case FORMAT_POUND:
         case FORMAT_YEN:
         case FORMAT_COPYRIGHT:
@@ -274,6 +271,4 @@ bool font_supports_string(const utf8 *text, sint32 fontSize)
     } else {
         return font_supports_string_sprite(text);
     }
-}
-
 }

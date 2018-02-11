@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -23,9 +23,6 @@
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "TTF.h"
-
-extern "C"
-{
 
 enum {
     TEXT_DRAW_FLAG_INSET = 1 << 0,
@@ -810,7 +807,7 @@ static void ttf_process_initial_colour(sint32 colour, text_draw_info *info)
     }
 }
 
-void ttf_draw_string(rct_drawpixelinfo *dpi, char *text, sint32 colour, sint32 x, sint32 y)
+void ttf_draw_string(rct_drawpixelinfo *dpi, const_utf8string text, sint32 colour, sint32 x, sint32 y)
 {
     if (text == nullptr) return;
 
@@ -928,6 +925,4 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 avai
     }
 
     safe_strcpy(buffer, path, bufferSize);
-}
-
 }

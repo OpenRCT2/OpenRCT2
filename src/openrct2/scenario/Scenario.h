@@ -24,7 +24,7 @@
 #include "../rct12/RCT12.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
-#include "../ride/ride_ratings.h"
+#include "../ride/RideRatings.h"
 #include "../world/Banner.h"
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
@@ -361,10 +361,6 @@ enum {
 
 #define AUTOSAVE_PAUSE 0
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 extern uint32 gScenarioTicks;
@@ -415,9 +411,5 @@ void scenario_failure();
 void scenario_success();
 void scenario_success_submit_name(const char *name);
 void scenario_autosave_check();
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

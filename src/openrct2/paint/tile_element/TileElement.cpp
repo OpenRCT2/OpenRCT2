@@ -60,7 +60,7 @@ void tile_element_paint_setup(paint_session * session, sint32 x, sint32 y)
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_force_set_general_support_height(session, -1, 0);
         session->Unk141E9DB = 0;
-        session->Unk141E9DC = 0xFFFF;
+        session->WaterHeight = 0xFFFF;
 
         sub_68B3FB(session, x, y);
     } else {
@@ -82,7 +82,7 @@ void sub_68B2B7(paint_session * session, sint32 x, sint32 y)
     ) {
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_force_set_general_support_height(session, -1, 0);
-        session->Unk141E9DC = 0xFFFF;
+        session->WaterHeight = 0xFFFF;
         session->Unk141E9DB = G141E9DB_FLAG_2;
 
         sub_68B3FB(session, x, y);

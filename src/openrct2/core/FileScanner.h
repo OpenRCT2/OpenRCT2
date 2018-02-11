@@ -16,9 +16,8 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include <string>
+#include <vector>
 #include "../common.h"
 
 struct FileInfo
@@ -66,6 +65,6 @@ namespace Path
      * @returns An aggregated result of all scanned files.
      */
     void QueryDirectory(QueryDirectoryResult * result, const std::string &pattern);
-}
 
-#endif
+    std::vector<std::string> GetDirectories(const std::string &path);
+}

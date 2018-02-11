@@ -20,10 +20,6 @@
 #include "Map.h"
 #include "Scenery.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 typedef enum
 {
     SMALL_SCENERY_FLAG_FULL_TILE            = (1 << 0),  // 0x1
@@ -65,7 +61,3 @@ bool scenery_small_get_supports_needed(const rct_tile_element * tileElement);
 void scenery_small_set_supports_needed(rct_tile_element * tileElement);
 
 bool scenery_small_entry_has_flag(const rct_scenery_entry * sceneryEntry, uint32 flags);
-
-#ifdef __cplusplus
-}
-#endif

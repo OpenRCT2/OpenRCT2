@@ -16,21 +16,18 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
-#include "SceneryObject.h"
-
+#include <vector>
 #include "../world/Scenery.h"
+#include "SceneryObject.h"
 
 class SmallSceneryObject final : public SceneryObject
 {
 private:
     rct_scenery_entry   _legacyType = { 0 };
-    uint8 *             _frameOffsets = nullptr;
+    std::vector<uint8>  _frameOffsets;
 
 public:
     explicit SmallSceneryObject(const rct_object_entry &entry) : SceneryObject(entry) { }
-    ~SmallSceneryObject();
 
     void * GetLegacyData()  override { return &_legacyType; }
 
@@ -41,11 +38,9 @@ public:
     void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const override;
 
 private:
-    static uint8 * ReadFrameOffsets(IStream * stream);
+    static std::vector<uint8> ReadFrameOffsets(IStream * stream);
     void PerformFixes();
     rct_object_entry GetScgPiratHeader();
     rct_object_entry GetScgMineHeader();
     rct_object_entry GetScgAbstrHeader();
 };
-
-#endif

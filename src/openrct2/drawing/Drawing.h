@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -87,6 +87,7 @@ typedef enum {
     PALETTE_34 = 34,
 
     PALETTE_45 = 45, // Decolourise + lighten
+    PALETTE_46 = 46,
 
     PALETTE_DARKEN_3 = 47,
 
@@ -195,21 +196,6 @@ typedef struct translucent_window_palette {
 
 #pragma pack(push, 1)
 
-typedef struct rct_g1_header {
-    uint32 num_entries;
-    uint32 total_size;
-} rct_g1_header;
-assert_struct_size(rct_g1_header, 8);
-
-typedef struct rct_gx {
-    rct_g1_header header;
-    rct_g1_element *elements;
-    void *data;
-} rct_gx;
-#ifdef PLATFORM_32BIT
-assert_struct_size(rct_gx, 16);
-#endif
-
 typedef struct rct_palette_entry {
     uint8 blue;
     uint8 green;
@@ -241,10 +227,6 @@ typedef struct rct_size16
 #define INSET_RECT_F_E0 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT)
 
 #define MAX_SCROLLING_TEXT_MODES 38
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 extern sint16 gCurrentFontSpriteBase;
 extern uint16 gCurrentFontFlags;
@@ -323,7 +305,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, sint3
 void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 maskImage, sint32 colourImage);
 
 // string
-void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, uint8 colour, sint32 x, sint32 y);
+void gfx_draw_string(rct_drawpixelinfo *dpi, const_utf8string buffer, uint8 colour, sint32 x, sint32 y);
 
 void gfx_draw_string_left(rct_drawpixelinfo *dpi, rct_string_id format, void *args, uint8 colour, sint32 x, sint32 y);
 void gfx_draw_string_centred(rct_drawpixelinfo *dpi, rct_string_id format, sint32 x, sint32 y, uint8 colour, void *args);
@@ -351,7 +333,7 @@ sint32 gfx_get_string_width_new_lined(char* buffer);
 sint32 string_get_height_raw(char *buffer);
 sint32 gfx_clip_string(char* buffer, sint32 width);
 void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 availableWidth);
-void ttf_draw_string(rct_drawpixelinfo *dpi, char *text, sint32 colour, sint32 x, sint32 y);
+void ttf_draw_string(rct_drawpixelinfo *dpi, const_utf8string text, sint32 colour, sint32 x, sint32 y);
 
 typedef struct paint_session paint_session;
 
@@ -369,10 +351,6 @@ void mask_init();
 
 extern void (*mask_fn)(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
                        uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap);
-
-#ifdef __cplusplus
-}
-#endif
 
 #include "NewDrawing.h"
 

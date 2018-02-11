@@ -324,9 +324,9 @@ typedef struct rct1_vehicle {
     uint8 num_peeps;                // 0xB3
     uint8 next_free_seat;           // 0xB4
     uint8 restraints_position;      // 0xB5 0 == Close, 255 == Open
-    sint16 var_B6;
-    uint16 var_B8;
-    uint8 var_BA;
+    sint16 spin_speed;
+    uint16 sound2_flags;
+    uint8 spin_sprite;
     uint8 sound1_id;                // 0xBB
     uint8 sound1_volume;            // 0xBC
     uint8 sound2_id;                // 0xBD
@@ -340,7 +340,7 @@ typedef struct rct1_vehicle {
     uint8 speed;                    // 0xC2
     uint8 powered_acceleration;     // 0xC3
     uint8 var_C4;
-    uint8 var_C5;
+    uint8 animation_frame;
     uint8 pad_C6[0x2];
     uint16 var_C8;
     uint16 var_CA;
@@ -633,7 +633,7 @@ typedef struct rct1_s4 {
     uint8 park_rating_history[32];
     uint8 guests_in_park_history[32];
     uint8 research_priority;
-    uint8 research_progress;
+    uint8 research_progress_stage;
     uint8 last_research_item;
     uint8 last_research_ride;
     uint8 last_research_type;
@@ -643,10 +643,13 @@ typedef struct rct1_s4 {
     uint8 next_research_ride;
     uint8 next_research_type;
     uint8 next_research_flags;
-    uint16 unk_19953C;
-    uint32 unk_19953E;
-    uint16 cheat_detection_land_owned;
-    uint16 unk_199544;
+    uint16 research_progress;
+    uint8 next_research_category;
+    uint8 next_research_expected_day;
+    uint8 next_research_expected_month;
+    uint8 guest_initial_happiness;
+    uint16 park_size;
+    uint16 guest_generation_probability;
     money16 total_ride_value_for_money;
     money32 max_loan;
     money16 guest_initial_cash;
@@ -667,7 +670,7 @@ typedef struct rct1_s4 {
     money32 weekly_profit_history[RCT12_FINANCE_GRAPH_SIZE];
     money32 park_value;
     money32 park_value_history[RCT12_FINANCE_GRAPH_SIZE];
-    uint32 scenario_objective_score;
+    uint32 completed_company_value;
     uint32 num_admissions;
     money32 admission_total_income;
     money32 company_value;
@@ -1220,15 +1223,7 @@ enum {
     RCT1_WATER_ORANGE
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 ParkLoadResult * load_from_sv4(const char *path);
 ParkLoadResult * load_from_sc4(const char *path);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

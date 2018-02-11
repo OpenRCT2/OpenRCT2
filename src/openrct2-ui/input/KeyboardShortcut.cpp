@@ -24,9 +24,9 @@
 #include <openrct2/Input.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/interface/Chat.h>
-#include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/Widget.h>
-#include <openrct2/interface/Window.h>
+#include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/platform/platform.h>
@@ -592,11 +592,10 @@ static void shortcut_quick_save_game()
     }
     else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
-        Intent * intent = intent_create(WC_LOADSAVE);
-        intent_set_uint(intent, INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-        intent_set_string(intent, INTENT_EXTRA_PATH, gS6Info.name);
-        context_open_intent(intent);
-        intent_release(intent);
+        auto intent = Intent(WC_LOADSAVE);
+        intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
+        intent.putExtra(INTENT_EXTRA_PATH, std::string{gS6Info.name});
+        context_open_intent(&intent);
     }
 }
 

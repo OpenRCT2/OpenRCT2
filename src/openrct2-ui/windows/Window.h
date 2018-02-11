@@ -18,7 +18,7 @@
 
 #include <openrct2/common.h>
 
-#include <openrct2/interface/Window.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2/windows/tile_inspector.h>
 
 typedef void (*loadsave_callback)(sint32 result, const utf8 * path);
@@ -150,6 +150,7 @@ void window_scenery_set_default_placement_configuration();
 void window_scenery_init();
 void window_scenery_reset_selected_scenery_items();
 
+extern uint8 gToolbarDirtyFlags;
 rct_window * window_game_bottom_toolbar_open();
 void window_game_bottom_toolbar_invalidate_news_item();
 

@@ -187,6 +187,10 @@ static constexpr const boundbox s98E3C4[] = {
 */
 void large_scenery_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element * tileElement)
 {
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    {
+        return;
+    }
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
     uint32 sequenceNum = scenery_large_get_sequence(tileElement);
     rct_scenery_entry *entry = get_large_scenery_entry(scenery_large_get_type(tileElement));
@@ -201,7 +205,7 @@ void large_scenery_paint(paint_session * session, uint8 direction, uint16 height
     LocationXYZ16 boxoffset;
     if (gTrackDesignSaveMode) {
         if (!track_design_save_contains_tile_element(tileElement)) {
-            sequenceNum = 0x21700000;
+            sequenceNum = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
             image_id &= 0x7FFFF;
             dword_F4387C = sequenceNum;
             image_id |= dword_F4387C;

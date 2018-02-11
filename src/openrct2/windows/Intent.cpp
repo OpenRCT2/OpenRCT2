@@ -1,3 +1,19 @@
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
 #include <utility>
 #include "../core/Guard.hpp"
 #include "Intent.h"
@@ -126,37 +142,3 @@ close_callback Intent::GetCloseCallbackExtra(uint32 key) const
     openrct2_assert(data.type == IntentData::DT_CLOSE_CALLBACK, "Actual type doesn't match requested type");
     return data.closeCallbackVal;
 }
-
-extern "C" {
-    Intent *intent_create(rct_windowclass clss)
-    {
-        return new Intent(clss);
-    }
-
-    void intent_release(Intent *intent)
-    {
-        delete intent;
-    }
-
-    void intent_set_sint(Intent * intent, uint32 key, sint32 value)
-    {
-        intent->putExtra(key, value);
-    }
-
-    void intent_set_string(Intent *intent, uint32 key, utf8string value)
-    {
-        std::string str { value };
-        intent->putExtra(key, str);
-    }
-
-    void intent_set_pointer(Intent *intent, uint32 key, void *value)
-    {
-        intent->putExtra(key, value);
-    }
-
-    void intent_set_uint(Intent *intent, uint32 key, uint32 value)
-    {
-        intent->putExtra(key, value);
-    }
-}
-

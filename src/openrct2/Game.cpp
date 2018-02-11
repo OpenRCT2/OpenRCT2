@@ -14,10 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <memory>
 #include "audio/audio.h"
 #include "Cheats.h"
 #include "config/Config.h"
 #include "Context.h"
+#include "core/FileScanner.h"
 #include "core/Math.hpp"
 #include "core/Util.hpp"
 #include "Editor.h"
@@ -42,7 +44,8 @@
 #include "platform/platform.h"
 #include "rct1/RCT1.h"
 #include "ride/Ride.h"
-#include "ride/ride_ratings.h"
+#include "ride/RideRatings.h"
+#include "ride/Station.h"
 #include "ride/Track.h"
 #include "ride/TrackDesign.h"
 #include "ride/Vehicle.h"
@@ -63,6 +66,7 @@
 #include "world/Sprite.h"
 #include "world/Water.h"
 #include "object/ObjectList.h"
+#include "interface/Window_internal.h"
 
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 
@@ -1069,10 +1073,9 @@ static void game_load_or_quit(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 *
  */
 static void load_landscape()
 {
-    Intent * intent = intent_create(WC_LOADSAVE);
-    intent_set_uint(intent, INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
-    context_open_intent(intent);
-    intent_release(intent);
+    auto intent = Intent(WC_LOADSAVE);
+    intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
+    context_open_intent(&intent);
 }
 
 static void utf8_to_rct2_self(char * buffer, size_t length)
@@ -1208,6 +1211,42 @@ void game_fix_save_vars()
 
     peep_sort();
 
+    // Peeps to remove have to be cached here, as removing them from within the loop breaks iteration
+    std::vector<rct_peep *> peepsToRemove;
+
+    // Fix possibly invalid field values
+    FOR_ALL_GUESTS(spriteIndex, peep)
+    {
+        if (peep->current_ride_station >= MAX_STATIONS)
+        {
+            const uint8 srcStation = peep->current_ride_station;
+            const uint8 rideIdx = peep->current_ride;
+            if (rideIdx == RIDE_ID_NULL)
+            {
+                continue;
+            }
+            set_format_arg(0, uint32, peep->id);
+            utf8 * curName = gCommonStringFormatBuffer;
+            rct_string_id curId = peep->name_string_idx;
+            format_string(curName, 256, curId, gCommonFormatArgs);
+            log_warning("Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName, srcStation, rideIdx);
+            sint8 station = ride_get_first_valid_station_exit(get_ride(rideIdx));
+            if (station == -1)
+            {
+                log_warning("Couldn't find station, removing peep %u", spriteIndex);
+                peepsToRemove.push_back(peep);
+            } else {
+                log_warning("Amending ride station to %u.", station);
+                peep->current_ride_station = station;
+            }
+        }
+    }
+
+    for (auto ptr : peepsToRemove)
+    {
+        peep_remove(ptr);
+    }
+
     // Fixes broken saves where a surface element could be null
     // and broken saves with incorrect invisible map border tiles
     for (sint32 y = 0; y < 256; y++)
@@ -1253,7 +1292,7 @@ void game_fix_save_vars()
     fix_ride_entrance_and_exit_locations();
 }
 
-void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, const utf8 * path, bool loadTitleFirst)
+void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, const std::string & path, bool loadTitleFirst)
 {
     if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_MISSING_OBJECTS)
     {
@@ -1265,12 +1304,11 @@ void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, cons
         }
         // The path needs to be duplicated as it's a const here
         // which the window function doesn't like
-        Intent * intent = intent_create(WC_OBJECT_LOAD_ERROR);
-        intent_set_string(intent, INTENT_EXTRA_PATH, strndup(path, strnlen(path, MAX_PATH)));
-        intent_set_pointer(intent, INTENT_EXTRA_LIST, (void *) ParkLoadResult_GetMissingObjects(result));
-        intent_set_uint(intent, INTENT_EXTRA_LIST_COUNT, (uint32) ParkLoadResult_GetMissingObjectsCount(result));
-        context_open_intent(intent);
-        intent_release(intent);
+        auto intent = Intent(WC_OBJECT_LOAD_ERROR);
+        intent.putExtra(INTENT_EXTRA_PATH, path);
+        intent.putExtra(INTENT_EXTRA_LIST, (void *) ParkLoadResult_GetMissingObjects(result));
+        intent.putExtra(INTENT_EXTRA_LIST_COUNT, (uint32) ParkLoadResult_GetMissingObjectsCount(result));
+        context_open_intent(&intent);
     }
     else if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_UNSUPPORTED_RCTC_FLAG)
     {
@@ -1293,7 +1331,7 @@ void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, cons
     }
 }
 
-void handle_park_load_failure(const ParkLoadResult * result, const utf8 * path)
+void handle_park_load_failure(const ParkLoadResult * result, const std::string & path)
 {
     handle_park_load_failure_with_title_opt(result, path, false);
 }
@@ -1318,19 +1356,20 @@ void game_load_init()
 
     if (mainWindow != nullptr)
     {
+        rct_viewport * viewport = window_get_viewport(mainWindow);
         mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
         mainWindow->saved_view_x           = gSavedViewX;
         mainWindow->saved_view_y           = gSavedViewY;
-        uint8 zoomDifference = gSavedViewZoom - mainWindow->viewport->zoom;
-        mainWindow->viewport->zoom = gSavedViewZoom;
+        uint8 zoomDifference = gSavedViewZoom - viewport->zoom;
+        viewport->zoom = gSavedViewZoom;
         gCurrentRotation = gSavedViewRotation;
         if (zoomDifference != 0)
         {
-            mainWindow->viewport->view_width <<= zoomDifference;
-            mainWindow->viewport->view_height <<= zoomDifference;
+            viewport->view_width <<= zoomDifference;
+            viewport->view_height <<= zoomDifference;
         }
-        mainWindow->saved_view_x -= mainWindow->viewport->view_width >> 1;
-        mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
+        mainWindow->saved_view_x -= viewport->view_width >> 1;
+        mainWindow->saved_view_y -= viewport->view_height >> 1;
 
         // Make sure the viewport has correct coordinates set.
         viewport_update_position(mainWindow);
@@ -1345,9 +1384,8 @@ void game_load_init()
     reset_all_sprite_quadrant_placements();
     scenery_set_default_placement_configuration();
 
-    Intent * intent = intent_create(INTENT_ACTION_REFRESH_NEW_RIDES);
-    context_broadcast_intent(intent);
-    intent_release(intent);
+    auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
+    context_broadcast_intent(&intent);
 
     gWindowUpdateTicks = 0;
 
@@ -1355,9 +1393,8 @@ void game_load_init()
 
     if (!gOpenRCT2Headless)
     {
-        intent = intent_create(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
-        context_broadcast_intent(intent);
-        intent_release(intent);
+        intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
+        context_broadcast_intent(&intent);
         window_update_all();
     }
 
@@ -1409,18 +1446,18 @@ void * create_save_game_as_intent()
     safe_strcpy(name, path_get_filename(gScenarioSavePath), MAX_PATH);
     path_remove_extension(name);
 
-    Intent * intent = intent_create(WC_LOADSAVE);
-    intent_set_uint(intent, INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
-    intent_set_string(intent, INTENT_EXTRA_PATH, name);
+    Intent * intent = new Intent(WC_LOADSAVE);
+    intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
+    intent->putExtra(INTENT_EXTRA_PATH, std::string{name});
 
     return intent;
 }
 
 void save_game_as()
 {
-    Intent * intent = (Intent *) create_save_game_as_intent();
+    auto * intent = (Intent *) create_save_game_as_intent();
     context_open_intent(intent);
-    intent_release(intent);
+    delete intent;
 }
 
 static sint32 compare_autosave_file_paths(const void * a, const void * b)
@@ -1430,12 +1467,8 @@ static sint32 compare_autosave_file_paths(const void * a, const void * b)
 
 static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processLandscapeFolder)
 {
-    sint32 fileEnumHandle = 0;
-
     size_t autosavesCount       = 0;
     size_t numAutosavesToDelete = 0;
-
-    file_info fileInfo;
 
     utf8 filter[MAX_PATH];
 
@@ -1455,12 +1488,13 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
     }
 
     // At first, count how many autosaves there are
-    fileEnumHandle = platform_enumerate_files_begin(filter);
-    while (platform_enumerate_files_next(fileEnumHandle, &fileInfo))
     {
-        autosavesCount++;
+        auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, false));
+        while (scanner->Next())
+        {
+            autosavesCount++;
+        }
     }
-    platform_enumerate_files_end(fileEnumHandle);
 
     // If there are fewer autosaves than the number of files to keep we don't need to delete anything
     if (autosavesCount <= numberOfFilesToKeep)
@@ -1470,27 +1504,28 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
 
     autosaveFiles = (utf8 **) malloc(sizeof(utf8 *) * autosavesCount);
 
-    fileEnumHandle = platform_enumerate_files_begin(filter);
-    for (size_t i = 0; i < autosavesCount; i++)
     {
-        autosaveFiles[i] = (utf8 *) malloc(sizeof(utf8) * MAX_PATH);
-        memset(autosaveFiles[i], 0, sizeof(utf8) * MAX_PATH);
-
-        if (platform_enumerate_files_next(fileEnumHandle, &fileInfo))
+        auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, false));
+        for (size_t i = 0; i < autosavesCount; i++)
         {
-            if (processLandscapeFolder)
+            autosaveFiles[i] = (utf8 *)malloc(sizeof(utf8) * MAX_PATH);
+            memset(autosaveFiles[i], 0, sizeof(utf8) * MAX_PATH);
+
+            if (scanner->Next())
             {
-                platform_get_user_directory(autosaveFiles[i], "landscape", sizeof(utf8) * MAX_PATH);
+                if (processLandscapeFolder)
+                {
+                    platform_get_user_directory(autosaveFiles[i], "landscape", sizeof(utf8) * MAX_PATH);
+                }
+                else
+                {
+                    platform_get_user_directory(autosaveFiles[i], "save", sizeof(utf8) * MAX_PATH);
+                }
+                safe_strcat_path(autosaveFiles[i], "autosave", sizeof(utf8) * MAX_PATH);
+                safe_strcat_path(autosaveFiles[i], scanner->GetPathRelative(), sizeof(utf8) * MAX_PATH);
             }
-            else
-            {
-                platform_get_user_directory(autosaveFiles[i], "save", sizeof(utf8) * MAX_PATH);
-            }
-            safe_strcat_path(autosaveFiles[i], "autosave", sizeof(utf8) * MAX_PATH);
-            safe_strcat_path(autosaveFiles[i], fileInfo.path, sizeof(utf8) * MAX_PATH);
         }
     }
-    platform_enumerate_files_end(fileEnumHandle);
 
     qsort(autosaveFiles, autosavesCount, sizeof(char *), compare_autosave_file_paths);
 
@@ -1580,11 +1615,10 @@ void game_load_or_quit_no_save_prompt()
         }
         else
         {
-            Intent * intent = intent_create(WC_LOADSAVE);
-            intent_set_uint(intent, INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-            intent_set_pointer(intent, INTENT_EXTRA_CALLBACK, (void *) game_load_or_quit_no_save_prompt_callback);
-            context_open_intent(intent);
-            intent_release(intent);
+            auto intent = Intent(WC_LOADSAVE);
+            intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+            intent.putExtra(INTENT_EXTRA_CALLBACK, (void *) game_load_or_quit_no_save_prompt_callback);
+            context_open_intent(&intent);
         }
         break;
     case PM_SAVE_BEFORE_QUIT:
@@ -1631,9 +1665,8 @@ void game_init_all(sint32 mapSize)
     context_init();
     scenery_set_default_placement_configuration();
 
-    Intent * intent = intent_create(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
-    context_broadcast_intent(intent);
-    intent_release(intent);
+    auto intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
+    context_broadcast_intent(&intent);
 
     load_palette();
 }

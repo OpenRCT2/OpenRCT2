@@ -181,7 +181,7 @@ const encoding_convert_entry RCT2ToUnicodeTable[256] =
     { 158, 158 },
     { RCT2_A_OGONEK_UC, UNICODE_A_OGONEK_UC },
     { 160, FORMAT_UP },
-    { 161, FORMAT_SYMBOL_i },
+    { 161, FORMAT_INVERTEDEXCLAMATION },
     { RCT2_C_ACUTE_UC, UNICODE_C_ACUTE_UC },
     { 163, FORMAT_POUND },
     { 164, 164 },

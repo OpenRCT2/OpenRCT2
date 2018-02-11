@@ -14,17 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../core/Util.hpp"
-#include "../network/network.h"
-#include "GameAction.h"
-
-#include "../platform/platform.h"
 #include "../localisation/Localisation.h"
+#include "../network/network.h"
+#include "../platform/platform.h"
 #include "../world/Park.h"
+#include "GameAction.h"
 
 GameActionResult::GameActionResult()
 {
@@ -48,7 +48,7 @@ GameActionResult::GameActionResult(GA_ERROR error, rct_string_id title, rct_stri
     Error = error;
     ErrorTitle = title;
     ErrorMessage = message;
-    Memory::CopyArray(ErrorMessageArgs, args, Util::CountOf(ErrorMessageArgs));
+    std::copy_n(args, ErrorMessageArgs.size(), ErrorMessageArgs.begin());
 }
 
 namespace GameActions
@@ -88,6 +88,7 @@ namespace GameActions
                 result = factory();
             }
         }
+        Guard::ArgumentNotNull(result);
         return std::unique_ptr<GameAction>(result);
     }
 
@@ -129,7 +130,7 @@ namespace GameActions
             {
                 result->Error = GA_ERROR::INSUFFICIENT_FUNDS;
                 result->ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
-                set_format_arg_on(result->ErrorMessageArgs, 0, uint32, result->Cost);
+                set_format_arg_on(result->ErrorMessageArgs.data(), 0, uint32, result->Cost);
             }
         }
         return result;
@@ -214,7 +215,7 @@ namespace GameActions
         if (result->Error != GA_ERROR::OK && !(flags & GAME_COMMAND_FLAG_GHOST))
         {
             // Show the error box
-            Memory::Copy(gCommonFormatArgs, result->ErrorMessageArgs, sizeof(result->ErrorMessageArgs));
+            std::copy(result->ErrorMessageArgs.begin(), result->ErrorMessageArgs.end(), gCommonFormatArgs);
             context_show_error(result->ErrorTitle, result->ErrorMessage);
         }
         return result;
