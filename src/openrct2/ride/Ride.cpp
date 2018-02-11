@@ -6947,20 +6947,9 @@ static void ride_update_vehicle_colours(sint32 rideIndex)
  */
 void ride_entry_get_train_layout(sint32 rideEntryIndex, sint32 numCarsPerTrain, uint8 *trainLayout)
 {
-    rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
-
-    for (sint32 i = 0; i < numCarsPerTrain; i++) {
-        uint8 vehicleType = rideEntry->default_vehicle;
-        if (i == 0 && rideEntry->front_vehicle != 255) {
-            vehicleType = rideEntry->front_vehicle;
-        } else if (i == 1 && rideEntry->second_vehicle != 255) {
-            vehicleType = rideEntry->second_vehicle;
-        } else if (i == 2 && rideEntry->third_vehicle != 255) {
-            vehicleType = rideEntry->third_vehicle;
-        } else if (i == numCarsPerTrain - 1 && rideEntry->rear_vehicle != 255) {
-            vehicleType = rideEntry->rear_vehicle;
-        }
-        trainLayout[i] = vehicleType;
+    for (sint32 i = 0; i < numCarsPerTrain; i++)
+    {
+        trainLayout[i] = ride_entry_get_vehicle_at_position(rideEntryIndex, numCarsPerTrain, i);
     }
 }
 
@@ -7851,6 +7840,13 @@ void ride_delete(uint8 rideIndex)
     Ride *ride = get_ride(rideIndex);
     user_string_free(ride->name);
     ride->type = RIDE_TYPE_NULL;
+}
+
+void ride_renew(Ride * ride)
+{
+    // Set build date to current date (so the ride is brand new)
+    ride->build_date = gDateMonthsElapsed;
+    ride->reliability = RIDE_INITIAL_RELIABILITY;
 }
 
 static bool ride_is_ride(Ride * ride)

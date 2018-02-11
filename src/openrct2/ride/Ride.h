@@ -1172,6 +1172,7 @@ void window_ride_construction_do_entrance_exit_check();
 void game_command_callback_place_ride_entrance_or_exit(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
 
 void ride_delete(uint8 rideIndex);
+void ride_renew(Ride * ride);
 money16 ride_get_price(Ride * ride);
 
 rct_tile_element *get_station_platform(sint32 x, sint32 y, sint32 z, sint32 z_tolerance);
