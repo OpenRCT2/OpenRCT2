@@ -223,17 +223,17 @@ sint16 get_height_marker_offset()
     return 0;
 }
 
-bool track_element_is_lift_hill(rct_tile_element *trackElement)
+bool track_element_is_lift_hill(const rct_tile_element *trackElement)
 {
     return trackElement->type & 0x80;
 }
 
-bool track_element_is_cable_lift(rct_tile_element *trackElement)
+bool track_element_is_cable_lift(const rct_tile_element *trackElement)
 {
     return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
 
-bool track_element_is_inverted(rct_tile_element *trackElement)
+bool track_element_is_inverted(const rct_tile_element *trackElement)
 {
     return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
 }
