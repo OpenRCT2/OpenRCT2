@@ -111,7 +111,7 @@ public:
         }
         else
         {
-            return std::make_tuple(true, ObjectRepositoryItem());
+            return std::make_tuple(false, ObjectRepositoryItem());
         }
     }
 
