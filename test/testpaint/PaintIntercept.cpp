@@ -321,8 +321,8 @@ bool metal_b_supports_paint_setup(paint_session * session, uint8 supportType, ui
     return PaintIntercept::PaintMetalSupports(SUPPORTS_METAL_B, supportType, segment, special, height, imageColourFlags, gPaintSession.SupportSegments);
 }
 
-paint_struct *sub_98196C(paint_session * session, uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, uint32 rotation) {
-    return PaintIntercept::Paint6C(image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, rotation);
+paint_struct *sub_98196C(paint_session * session, uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset) {
+    return PaintIntercept::Paint6C(image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, session->CurrentRotation);
 }
 
 paint_struct *sub_98197C(
@@ -331,8 +331,7 @@ paint_struct *sub_98197C(
     sint8 x_offset, sint8 y_offset,
     sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
     sint16 z_offset,
-    sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
-    uint32 rotation
+    sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z
 ) {
     return PaintIntercept::PaintFull(
         PAINT_98197C,
@@ -341,7 +340,7 @@ paint_struct *sub_98197C(
         bound_box_length_x, bound_box_length_y, bound_box_length_z,
         z_offset,
         bound_box_offset_x, bound_box_offset_y, bound_box_offset_z,
-        rotation
+        session->CurrentRotation
     );
 }
 
@@ -351,8 +350,7 @@ paint_struct *sub_98198C(
     sint8 x_offset, sint8 y_offset,
     sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
     sint16 z_offset,
-    sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
-    uint32 rotation
+    sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z
 ) {
     return PaintIntercept::PaintFull(
         PAINT_98198C,
@@ -361,7 +359,7 @@ paint_struct *sub_98198C(
         bound_box_length_x, bound_box_length_y, bound_box_length_z,
         z_offset,
         bound_box_offset_x, bound_box_offset_y, bound_box_offset_z,
-        rotation
+        session->CurrentRotation
     );
 }
 
@@ -371,8 +369,7 @@ paint_struct *sub_98199C(
     sint8 x_offset, sint8 y_offset,
     sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
     sint16 z_offset,
-    sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
-    uint32 rotation
+    sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z
 ) {
     return PaintIntercept::PaintFull(
         PAINT_98199C,
@@ -381,7 +378,7 @@ paint_struct *sub_98199C(
         bound_box_length_x, bound_box_length_y, bound_box_length_z,
         z_offset,
         bound_box_offset_x, bound_box_offset_y, bound_box_offset_z,
-        rotation
+        session->CurrentRotation
     );
 }
 
