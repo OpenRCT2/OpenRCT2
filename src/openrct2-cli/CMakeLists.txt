@@ -18,6 +18,10 @@ add_executable(${PROJECT} ${OPENRCT2_CLI_SOURCES})
 
 target_link_libraries(${PROJECT} "libopenrct2")
 
+if (APPLE)
+    target_link_libraries(${PROJECT} "-framework Cocoa")
+endif ()
+
 # Includes
 target_include_directories(${PROJECT} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/..")
 
