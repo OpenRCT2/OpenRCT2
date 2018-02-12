@@ -50,8 +50,7 @@ static void paint_3d_cinema_structure(paint_session * session, uint8 rideIndex, 
     }
 
     uint32 imageId = (rideEntry->vehicles[0].base_image_id + direction) | imageColourFlags;
-    sub_98197C(session, imageId, xOffset, yOffset, 24, 24, 47, height + 3, xOffset + 16, yOffset + 16, height + 3,
-               get_current_rotation());
+    sub_98197C(session, imageId, xOffset, yOffset, 24, 24, 47, height + 3, xOffset + 16, yOffset + 16, height + 3);
 
     session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType    = VIEWPORT_INTERACTION_ITEM_RIDE;

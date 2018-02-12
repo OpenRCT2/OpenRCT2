@@ -73,7 +73,7 @@ static void paint_space_rings_structure(paint_session * session, Ride * ride, ui
         }
 
         uint32 imageId = (baseImageId + frameNum) | imageColourFlags;
-        sub_98197C(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height);
 
         if (vehicle != nullptr && vehicle->num_peeps > 0)
         {
@@ -116,12 +116,12 @@ static void paint_space_rings(
         if (track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, get_current_rotation()))
         {
             imageId = SPR_SPACE_RINGS_FENCE_SW | session->TrackColours[SCHEME_MISC];
-            sub_98197C(session, imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 2, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 2);
         }
         if (track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, get_current_rotation()))
         {
             imageId = SPR_SPACE_RINGS_FENCE_SE | session->TrackColours[SCHEME_MISC];
-            sub_98197C(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 2, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 2);
         }
         break;
     default:

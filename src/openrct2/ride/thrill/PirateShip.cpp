@@ -112,8 +112,9 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
     pirate_ship_bound_box bounds = pirate_ship_data[direction];
 
     imageId = pirate_ship_frame_sprites[(direction & 1)][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C(session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x,
-               bounds.offset_y, height, get_current_rotation());
+    sub_98197C(
+        session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y,
+        height);
 
     imageId = baseImageId | imageColourFlags;
     sub_98199C(session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x,

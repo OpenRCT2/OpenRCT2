@@ -382,12 +382,14 @@ static paint_struct * mini_golf_paint_util_7c(paint_session * session, uint8 dir
 {
     if (direction & 1)
     {
-        return sub_98197C(session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z,
-                          z_offset, bound_box_offset_y, bound_box_offset_x, bound_box_offset_z, rotation);
+        return sub_98197C(
+            session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset,
+            bound_box_offset_y, bound_box_offset_x, bound_box_offset_z);
     }
 
-    return sub_98197C(session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z,
-                      z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, rotation);
+    return sub_98197C(
+        session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
+        bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
 }
 
 static bool mini_golf_paint_util_should_draw_fence(paint_session * session, const rct_tile_element * tileElement)
@@ -426,13 +428,13 @@ static void paint_mini_golf_track_flat(
     if (direction & 1)
     {
         imageId = SPR_MINI_GOLF_FLAT_NW_SE | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height);
         paint_util_push_tunnel_right(session, height, TUNNEL_10);
     }
     else
     {
         imageId = SPR_MINI_GOLF_FLAT_SW_NE | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
         paint_util_push_tunnel_left(session, height, TUNNEL_10);
     }
 
@@ -445,18 +447,18 @@ static void paint_mini_golf_track_flat(
         if (direction & 1)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_NW_SE | session->TrackColours[SCHEME_MISC];
-            sub_98197C(session, imageId, 0, 0, 1, 32, 7, height, 10, 0, height + 2, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 1, 32, 7, height, 10, 0, height + 2);
 
             imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_NW_SE | session->TrackColours[SCHEME_MISC];
-            sub_98197C(session, imageId, 0, 0, 1, 32, 7, height, 22, 0, height + 2, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 1, 32, 7, height, 22, 0, height + 2);
         }
         else
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE | session->TrackColours[SCHEME_MISC];
-            sub_98197C(session, imageId, 0, 0, 32, 1, 7, height, 0, 10, height + 2, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 1, 7, height, 0, 10, height + 2);
 
             imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_SW_NE | session->TrackColours[SCHEME_MISC];
-            sub_98197C(session, imageId, 0, 0, 32, 1, 7, height, 0, 22, height + 2, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 1, 7, height, 0, 22, height + 2);
         }
     }
 
@@ -652,14 +654,14 @@ static void paint_mini_golf_station(
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_NW_SE | session->TrackColours[SCHEME_MISC];
-            sub_98197C(session, imageId, -10, 0, 1, 32, 7, height, 0, 0, height + 2, get_current_rotation());
+            sub_98197C(session, imageId, -10, 0, 1, 32, 7, height, 0, 0, height + 2);
         }
 
         bool hasSWFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, get_current_rotation());
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_NW_SE | session->TrackColours[SCHEME_MISC];
-            sub_98197C(session, imageId, 10, 0, 1, 32, 7, height, 31, 0, height + 2, get_current_rotation());
+            sub_98197C(session, imageId, 10, 0, 1, 32, 7, height, 31, 0, height + 2);
         }
 
         track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, entranceStyle, direction, height);
@@ -674,14 +676,14 @@ static void paint_mini_golf_station(
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE | session->TrackColours[SCHEME_MISC];
-            sub_98197C(session, imageId, 0, -10, 32, 1, 7, height, 0, 0, height + 2, get_current_rotation());
+            sub_98197C(session, imageId, 0, -10, 32, 1, 7, height, 0, 0, height + 2);
         }
 
         bool hasSEFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, get_current_rotation());
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_SW_NE | session->TrackColours[SCHEME_MISC];
-            sub_98197C(session, imageId, 0, 10, 32, 1, 7, height, 0, 31, height + 2, get_current_rotation());
+            sub_98197C(session, imageId, 0, 10, 32, 1, 7, height, 0, 31, height + 2);
         }
 
         track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, entranceStyle, direction, height);
@@ -768,11 +770,11 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
         {
         case 0:
             imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_INSIDE_SW_NW | session->TrackColours[SCHEME_MISC];
-            sub_98197C(session, imageId, 0, 0, 5, 5, 5, height, 24, 0, height + 2, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 5, 5, 5, height, 24, 0, height + 2);
             break;
         case 2:
             imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_INSIDE_NE_SE | session->TrackColours[SCHEME_MISC];
-            sub_98197C(session, imageId, 0, 0, 5, 5, 5, height, 0, 24, height + 2, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 5, 5, 5, height, 0, 24, height + 2);
             break;
         }
     }
@@ -825,14 +827,12 @@ static void paint_mini_golf_hole_ab(paint_session * session, uint8 trackSequence
     }
 
     imageId = sprites[direction][trackSequence][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24,
-               get_current_rotation());
+    sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24);
 
     if (drewSupports)
     {
         imageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height,
-                   get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
 
         imageId = sprites[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height,
@@ -841,8 +841,7 @@ static void paint_mini_golf_hole_ab(paint_session * session, uint8 trackSequence
     else
     {
         imageId = sprites[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height,
-                   get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
     }
 }
 
@@ -914,23 +913,21 @@ static void paint_mini_golf_hole_c(
     {
     case 0x01:
     case 0x20:
-        sub_98197C(session, imageId, 0, 0, 2, 26, 3, height, 30, 3, height + 4, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 2, 26, 3, height, 30, 3, height + 4);
         break;
     case 0x10:
     case 0x31:
-        sub_98197C(session, imageId, 0, 0, 26, 2, 3, height, 3, 30, height + 4, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 26, 2, 3, height, 3, 30, height + 4);
         break;
     default:
-        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24,
-                   get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24);
         break;
     }
 
     if (drewSupports)
     {
         imageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height,
-                   get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
 
         imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height,
@@ -939,8 +936,7 @@ static void paint_mini_golf_hole_c(
     else
     {
         imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height,
-                   get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
     }
 }
 
@@ -995,21 +991,20 @@ static void paint_mini_golf_hole_d(
     {
     case 0x01:
     case 0x32:
-        sub_98197C(session, imageId, 0, 0, 2, 26, 3, height, 30, 3, height + 4, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 2, 26, 3, height, 30, 3, height + 4);
         break;
     case 0x02:
-        sub_98197C(session, imageId, 0, 0, 23, 2, 3, height, 3, 30, height + 4, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 23, 2, 3, height, 3, 30, height + 4);
         break;
     case 0x10:
-        sub_98197C(session, imageId, 0, 0, 2, 24, 3, height, 30, 3, height + 4, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 2, 24, 3, height, 30, 3, height + 4);
         break;
     case 0x20:
     case 0x31:
-        sub_98197C(session, imageId, 0, 0, 26, 2, 3, height, 3, 30, height + 4, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 26, 2, 3, height, 3, 30, height + 4);
         break;
     default:
-        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24,
-                   get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24);
         break;
     }
 
@@ -1026,8 +1021,7 @@ static void paint_mini_golf_hole_d(
     if (drewSupports)
     {
         imageId = ((supportType & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height,
-                   get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
 
         imageId = mini_golf_track_sprites_hole_d[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height,
@@ -1036,8 +1030,7 @@ static void paint_mini_golf_hole_d(
     else
     {
         imageId = mini_golf_track_sprites_hole_d[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height,
-                   get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
     }
 }
 
@@ -1091,22 +1084,21 @@ static void paint_mini_golf_hole_e(
     switch ((direction << 4) | trackSequence)
     {
     case 0x01:
-        sub_98197C(session, imageId, 0, 0, 2, 26, 3, height, 30, 3, height + 4, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 2, 26, 3, height, 30, 3, height + 4);
         break;
     case 0x02:
     case 0x20:
     case 0x31:
-        sub_98197C(session, imageId, 0, 0, 26, 2, 3, height, 3, 30, height + 4, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 26, 2, 3, height, 3, 30, height + 4);
         break;
     case 0x10:
-        sub_98197C(session, imageId, 0, 0, 2, 24, 3, height, 30, 3, height + 4, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 2, 24, 3, height, 30, 3, height + 4);
         break;
     case 0x32:
-        sub_98197C(session, imageId, 0, 0, 2, 23, 3, height, 30, 3, height + 4, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 2, 23, 3, height, 30, 3, height + 4);
         break;
     default:
-        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24,
-                   get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24);
         break;
     }
 
@@ -1123,8 +1115,7 @@ static void paint_mini_golf_hole_e(
     if (drewSupports)
     {
         imageId = ((supportType & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height,
-                   get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
 
         imageId = mini_golf_track_sprites_hole_e[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height,
@@ -1133,8 +1124,7 @@ static void paint_mini_golf_hole_e(
     else
     {
         imageId = mini_golf_track_sprites_hole_e[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height,
-                   get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
     }
 }
 
@@ -1217,7 +1207,7 @@ void vehicle_visual_mini_golf_player(paint_session * session, sint32 x, sint32 i
 
     uint32 image_id     = rideEntry->vehicles[0].base_image_id + 1 + ebx;
     uint32 peep_palette = sprite->peep.tshirt_colour << 19 | sprite->peep.trousers_colour << 24 | 0x0A0000000;
-    sub_98197C(session, image_id | peep_palette, 0, 0, 1, 1, 11, z, 0, 0, z + 5, get_current_rotation());
+    sub_98197C(session, image_id | peep_palette, 0, 0, 1, 1, 11, z, 0, 0, z + 5);
 }
 
 /**
@@ -1246,5 +1236,5 @@ void vehicle_visual_mini_golf_ball(paint_session * session, sint32 x, sint32 ima
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
 
     uint32 image_id = rideEntry->vehicles[0].base_image_id;
-    sub_98197C(session, image_id, 0, 0, 1, 1, 0, z, 0, 0, z + 3, get_current_rotation());
+    sub_98197C(session, image_id, 0, 0, 1, 1, 0, z, 0, 0, z + 3);
 }

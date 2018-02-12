@@ -123,37 +123,37 @@ void misc_paint(paint_session * session, rct_sprite *misc, sint32 imageDirection
             if (al & 1) {
                 switch (ebx) {
                     case 0:
-                        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, -32, -3, height, get_current_rotation());
+                        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, -32, -3, height);
                         break;
 
                     case 1:
-                        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, -3, 0, height, get_current_rotation());
+                        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, -3, 0, height);
                         break;
 
                     case 2:
-                        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, 0, -3, height, get_current_rotation());
+                        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, 0, -3, height);
                         break;
 
                     case 3:
-                        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, -3, -32, height, get_current_rotation());
+                        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, -3, -32, height);
                         break;
                 }
             } else {
                 switch (ebx) {
                     case 0:
-                        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, -32, 3, height, get_current_rotation());
+                        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, -32, 3, height);
                         break;
 
                     case 1:
-                        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, 3, 0, height, get_current_rotation());
+                        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, 3, 0, height);
                         break;
 
                     case 2:
-                        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, 0, 3, height, get_current_rotation());
+                        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, 0, 3, height);
                         break;
 
                     case 3:
-                        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, 3, -32, height, get_current_rotation());
+                        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, 3, -32, height);
                         break;
                 }
             }

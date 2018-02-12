@@ -85,8 +85,9 @@ static void paint_magic_carpet_frame(paint_session * session, uint8 plane, uint8
     imageId |= session->TrackColours[SCHEME_TRACK];
     if (plane == PLANE_BACK)
     {
-        sub_98197C(session, imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x,
-                   bbOffset.y, bbOffset.z, get_current_rotation());
+        sub_98197C(
+            session, imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y,
+            bbOffset.z);
     }
     else
     {

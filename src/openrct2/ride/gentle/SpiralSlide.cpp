@@ -71,7 +71,7 @@ static void spiral_slide_paint_tile_right(
     if (direction == 3)
         image_id = SPIRAL_SLIDE_RIGHT_R3 | session->TrackColours[SCHEME_TRACK];
 
-    sub_98197C(session, image_id, 16, 16, 16, 16, 108, height, 16, 0, height + 3, get_current_rotation());
+    sub_98197C(session, image_id, 16, 16, 16, 16, 108, height, 16, 0, height + 3);
 }
 
 static void spiral_slide_paint_tile_left(
@@ -93,7 +93,7 @@ static void spiral_slide_paint_tile_left(
     if (direction == 3)
         image_id = SPIRAL_SLIDE_LEFT_R3 | session->TrackColours[SCHEME_TRACK];
 
-    sub_98197C(session, image_id, 16, 16, 16, 16, 108, height, 0, 16, height + 3, get_current_rotation());
+    sub_98197C(session, image_id, 16, 16, 16, 16, 108, height, 0, 16, height + 3);
 }
 
 static void spiral_slide_paint_tile_front(
@@ -111,33 +111,33 @@ static void spiral_slide_paint_tile_front(
     if (direction == 1)
     {
         image_id = SPIRAL_SLIDE_INSIDE_R1 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, image_id, 16, 16, 2, 16, 108, height, -12, 0, height + 3, get_current_rotation());
+        sub_98197C(session, image_id, 16, 16, 2, 16, 108, height, -12, 0, height + 3);
     }
     else if (direction == 2)
     {
         image_id = SPIRAL_SLIDE_INSIDE_R2 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, image_id, 16, 16, 16, 2, 108, height, 0, -12, height + 3, get_current_rotation());
+        sub_98197C(session, image_id, 16, 16, 16, 2, 108, height, 0, -12, height + 3);
     }
 
     if (direction == 0)
     {
         image_id = SPIRAL_SLIDE_CENTRE_R0 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, image_id, 16, 16, 16, 8, 108, height, 0, 8, height + 3, get_current_rotation());
+        sub_98197C(session, image_id, 16, 16, 16, 8, 108, height, 0, 8, height + 3);
     }
     else if (direction == 1)
     {
         image_id = SPIRAL_SLIDE_CENTRE_R1 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, image_id, 16, 16, 2, 16, 108, height, 14, 0, height + 3, get_current_rotation());
+        sub_98197C(session, image_id, 16, 16, 2, 16, 108, height, 14, 0, height + 3);
     }
     else if (direction == 2)
     {
         image_id = SPIRAL_SLIDE_CENTRE_R2 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, image_id, 16, 16, 16, 2, 108, height, 0, 14, height + 3, get_current_rotation());
+        sub_98197C(session, image_id, 16, 16, 16, 2, 108, height, 0, 14, height + 3);
     }
     else if (direction == 3)
     {
         image_id = SPIRAL_SLIDE_CENTRE_R3 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, image_id, 16, 16, 8, 16, 108, height, 8, 0, height + 3, get_current_rotation());
+        sub_98197C(session, image_id, 16, 16, 8, 16, 108, height, 8, 0, height + 3);
     }
 
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
@@ -226,7 +226,7 @@ static void paint_spiral_slide(
 
     // Base
     uint32 imageId = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | session->TrackColours[SCHEME_SUPPORTS];
-    sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
+    sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
     track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
                                   spiral_slide_fence_sprites, get_current_rotation());

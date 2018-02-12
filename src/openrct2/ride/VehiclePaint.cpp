@@ -915,8 +915,8 @@ static void vehicle_sprite_paint(paint_session * session, rct_vehicle * vehicle,
     uint32 rotation = get_current_rotation();
     sint32 image_id =
         baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
-    paint_struct * ps = sub_98197C(session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y,
-                                   bb.offset_z + z, rotation);
+    paint_struct * ps = sub_98197C(
+        session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z);
     if (ps != nullptr)
     {
         ps->tertiary_colour = vehicle->colours_extended;
@@ -3042,7 +3042,7 @@ void vehicle_paint(paint_session * session, rct_vehicle * vehicle, sint32 imageD
     if (vehicle->flags & SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE)
     {
         uint32 ebx = 22965 + vehicle->animation_frame;
-        sub_98197C(session, ebx, 0, 0, 1, 1, 0, z, 0, 0, z + 2, get_current_rotation());
+        sub_98197C(session, ebx, 0, 0, 1, 1, 0, z, 0, 0, z + 2);
         return;
     }
 

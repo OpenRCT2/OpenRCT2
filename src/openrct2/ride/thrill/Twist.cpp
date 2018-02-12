@@ -63,8 +63,7 @@ static void paint_twist_structure(paint_session * session, Ride * ride, uint8 di
 
     uint32 structureFrameNum = frameNum % 24;
     uint32 imageId           = (baseImageId + structureFrameNum) | imageColourFlags;
-    sub_98197C(session, imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height,
-               get_current_rotation());
+    sub_98197C(session, imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height);
 
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
 
@@ -114,12 +113,12 @@ static void paint_twist(
         if (track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, get_current_rotation()))
         {
             imageId = SPR_FENCE_ROPE_SW | session->TrackColours[SCHEME_MISC];
-            sub_98197C(session, imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 3, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 3);
         }
         if (track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, get_current_rotation()))
         {
             imageId = SPR_FENCE_ROPE_SE | session->TrackColours[SCHEME_MISC];
-            sub_98197C(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 3, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 3);
         }
         break;
     default:

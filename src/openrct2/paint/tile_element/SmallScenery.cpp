@@ -147,7 +147,9 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, cons
         baseImageid = (baseImageid & 0x7FFFF) | dword_F64EB0;
     }
     if (!(scenery_small_entry_has_flag(entry,  SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED))) {
-        sub_98197C(session, baseImageid, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x, boxoffset.y, boxoffset.z, rotation);
+        sub_98197C(
+            session, baseImageid, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
+            boxoffset.y, boxoffset.z);
     }
 
     if (scenery_small_entry_has_flag(entry,  SMALL_SCENERY_FLAG_HAS_GLASS)) {
@@ -270,7 +272,9 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, cons
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
                 if (scenery_small_entry_has_flag(entry,  SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)) {
-                    sub_98197C(session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x, boxoffset.y, boxoffset.z, rotation);
+                    sub_98197C(
+                        session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
+                        boxoffset.y, boxoffset.z);
                 }
                 else {
                     sub_98199C(session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x, boxoffset.y, boxoffset.z, rotation);

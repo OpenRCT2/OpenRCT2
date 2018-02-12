@@ -109,7 +109,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
     sint16 lengthY = (direction & 1) ? 28 : 2;
     sint16 lengthX = (direction & 1) ? 2 : 28;
 
-    sub_98197C(session, image_id, 0, 0, lengthX, lengthY, ah, height, 2, 2, height, get_current_rotation());
+    sub_98197C(session, image_id, 0, 0, lengthX, lengthY, ah, height, 2, 2, height);
 
     if (transparant_image_id){
         if (is_exit){
@@ -124,7 +124,8 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
 
     image_id += 4;
 
-    sub_98197C(session, image_id, 0, 0, lengthX, lengthY, ah, height, (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height, get_current_rotation());
+    sub_98197C(
+        session, image_id, 0, 0, lengthX, lengthY, ah, height, (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height);
 
     if (transparant_image_id){
         transparant_image_id += 4;
@@ -218,7 +219,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
     case 0:
         if (path_entry != nullptr) {
             image_id = (path_entry->image + 5 * (1 + (direction & 1))) | ghost_id;
-                sub_98197C(session, image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height, get_current_rotation());
+            sub_98197C(session, image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height);
         }
 
         entrance = (rct_entrance_type *)object_entry_get_chunk(OBJECT_TYPE_PARK_ENTRANCE, 0);
@@ -227,7 +228,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
             return;
         }
         image_id = (entrance->image_id + direction * 3) | ghost_id;
-            sub_98197C(session, image_id, 0, 0, 0x1C, 0x1C, 0x2F, height, 2, 2, height + 32, get_current_rotation());
+        sub_98197C(session, image_id, 0, 0, 0x1C, 0x1C, 0x2F, height, 2, 2, height + 32);
 
         if ((direction + 1) & (1 << 1))
             break;
@@ -274,7 +275,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
             return;
         }
         image_id = (entrance->image_id + part_index + direction * 3) | ghost_id;
-            sub_98197C(session, image_id, 0, 0, 0x1A, di, 0x4F, height, 3, 3, height, get_current_rotation());
+        sub_98197C(session, image_id, 0, 0, 0x1A, di, 0x4F, height, 3, 3, height);
         break;
     }
 
@@ -307,7 +308,7 @@ void entrance_paint(paint_session * session, uint8 direction, sint32 height, con
             uint32 image_id = 0x20101689 + get_height_marker_offset() + (z / 16);
             image_id -= gMapBaseZ;
 
-            sub_98197C(session, image_id, 16, 16, 1, 1, 0, height, 31, 31, z + 64, get_current_rotation());
+            sub_98197C(session, image_id, 16, 16, 1, 1, 0, height, 31, 31, z + 64);
         }
     }
 
