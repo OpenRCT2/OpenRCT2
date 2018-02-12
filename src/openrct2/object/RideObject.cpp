@@ -687,6 +687,12 @@ void RideObject::ReadJsonVehicleInfo(IReadObjectContext * context, const json_t 
         _legacyType.flags |= RIDE_ENTRY_FLAG_VEHICLE_TAB_SCALE_HALF;
     }
 
+    // 0xFF means N/A.
+    _legacyType.front_vehicle = 0xFF;
+    _legacyType.second_vehicle = 0xFF;
+    _legacyType.third_vehicle = 0xFF;
+    _legacyType.rear_vehicle = 0xFF;
+
     auto headCars = ObjectJsonHelpers::GetJsonIntegerArray(json_object_get(properties, "headCars"));
     if (headCars.size() >= 1)
     {
