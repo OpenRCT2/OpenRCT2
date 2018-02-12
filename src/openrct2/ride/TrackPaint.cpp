@@ -374,7 +374,7 @@ static void track_paint_util_draw_station_impl(
     if (direction == 0 || direction == 2)
     {
         // height += 5 (height + 5);
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, session->CurrentRotation);
 
         if (track_element_get_type(tileElement) == TRACK_ELEM_END_STATION && direction == 0)
         {
@@ -422,7 +422,7 @@ static void track_paint_util_draw_station_impl(
         sub_98196C(session, imageId, 0, 24, 32, 8, 1, height + fenceOffsetA);
         // height += 2 (height + 7)
 
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             if (track_element_get_type(tileElement) == TRACK_ELEM_BEGIN_STATION && direction == 0)
@@ -469,7 +469,7 @@ static void track_paint_util_draw_station_impl(
     else if (direction == 1 || direction == 3)
     {
         // height += 5 (height + 5);
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
 
         if (track_element_get_type(tileElement) == TRACK_ELEM_END_STATION && direction == 3)
         {
@@ -517,7 +517,7 @@ static void track_paint_util_draw_station_impl(
         sub_98196C(session, imageId, 24, 0, 8, 32, 1, height + fenceOffsetA);
         // height += 2 (height + 7)
 
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             if (track_element_get_type(tileElement) == TRACK_ELEM_BEGIN_STATION && direction == 3)
@@ -584,7 +584,7 @@ void track_paint_util_draw_station_inverted(
     if (direction == 0 || direction == 2)
     {
         // height += 5 (height + 5);
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, session->CurrentRotation);
 
         if (track_element_get_type(tileElement) == TRACK_ELEM_END_STATION && direction == 0)
         {
@@ -632,7 +632,7 @@ void track_paint_util_draw_station_inverted(
         sub_98196C(session, imageId, 0, 24, 32, 8, 1, height + 6);
         // height += 2 (height + 7)
 
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             if (track_element_get_type(tileElement) == TRACK_ELEM_BEGIN_STATION && direction == 0)
@@ -679,7 +679,7 @@ void track_paint_util_draw_station_inverted(
     else if (direction == 1 || direction == 3)
     {
         // height += 5 (height + 5);
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
 
         if (track_element_get_type(tileElement) == TRACK_ELEM_END_STATION && direction == 3)
         {
@@ -727,7 +727,7 @@ void track_paint_util_draw_station_inverted(
         sub_98196C(session, imageId, 24, 0, 8, 32, 1, height + 6);
         // height += 2 (height + 7)
 
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             if (track_element_get_type(tileElement) == TRACK_ELEM_BEGIN_STATION && direction == 3)
@@ -872,7 +872,7 @@ void track_paint_util_draw_station_platform(
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     if (direction & 1)
     {
-        bool   hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, get_current_rotation());
+        bool   hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
         uint32 imageId  = (hasFence ? SPR_STATION_NARROW_EDGE_FENCED_NE : SPR_STATION_NARROW_EDGE_NE) |
                          session->TrackColours[SCHEME_SUPPORTS];
         sub_98196C(session, imageId, 0, 0, 8, 32, 1, height + zOffset);
@@ -881,7 +881,7 @@ void track_paint_util_draw_station_platform(
         imageId = SPR_STATION_NARROW_EDGE_SW | session->TrackColours[SCHEME_SUPPORTS];
         sub_98196C(session, imageId, 24, 0, 8, 32, 1, height + zOffset);
 
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_STATION_FENCE_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
@@ -891,7 +891,7 @@ void track_paint_util_draw_station_platform(
     }
     else
     {
-        bool   hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, get_current_rotation());
+        bool   hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, session->CurrentRotation);
         uint32 imageId  = (hasFence ? SPR_STATION_NARROW_EDGE_FENCED_NW : SPR_STATION_NARROW_EDGE_NW) |
                          session->TrackColours[SCHEME_SUPPORTS];
         sub_98196C(session, imageId, 0, 0, 32, 8, 1, height + zOffset);
@@ -900,7 +900,7 @@ void track_paint_util_draw_station_platform(
         imageId = SPR_STATION_NARROW_EDGE_SE | session->TrackColours[SCHEME_SUPPORTS];
         sub_98196C(session, imageId, 0, 24, 32, 8, 1, height + zOffset);
 
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_STATION_FENCE_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
@@ -925,7 +925,7 @@ void track_paint_util_draw_pier(
 
     if (direction & 1)
     {
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
         imageId =
             (hasFence ? SPR_STATION_PIER_EDGE_NE_FENCED : SPR_STATION_PIER_EDGE_NE) | session->TrackColours[SCHEME_SUPPORTS];
         sub_98197C(session, imageId, 0, 0, 6, 32, 1, height, 2, 0, height);
@@ -934,7 +934,7 @@ void track_paint_util_draw_pier(
         imageId = SPR_STATION_PIER_EDGE_SW | session->TrackColours[SCHEME_SUPPORTS];
         sub_98196C(session, imageId, 24, 0, 8, 32, 1, height);
 
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_STATION_PIER_FENCE_SW | session->TrackColours[SCHEME_SUPPORTS];

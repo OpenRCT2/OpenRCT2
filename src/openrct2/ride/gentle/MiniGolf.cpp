@@ -477,17 +477,17 @@ static void paint_mini_golf_track_25_deg_up(
     uint32 imageId;
 
     imageId = mini_golf_track_sprites_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session->CurrentRotation);
 
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                                           0xFFFF, 0);
 
     imageId = mini_golf_track_sprites_25_deg_up[direction][1] | session->TrackColours[SCHEME_MISC];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 15, height, 0, 10, height + 2, get_current_rotation());
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 15, height, 0, 10, height + 2, session->CurrentRotation);
 
     imageId = mini_golf_track_sprites_25_deg_up[direction][2] | session->TrackColours[SCHEME_MISC];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 15, height, 0, 22, height + 2, get_current_rotation());
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 15, height, 0, 22, height + 2, session->CurrentRotation);
 
     switch (direction)
     {
@@ -520,17 +520,17 @@ static void paint_mini_golf_track_flat_to_25_deg_up(
     uint32 imageId;
 
     imageId = mini_golf_track_sprites_flat_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session->CurrentRotation);
 
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                                           0xFFFF, 0);
 
     imageId = mini_golf_track_sprites_flat_to_25_deg_up[direction][1] | session->TrackColours[SCHEME_MISC];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 10, height + 2, get_current_rotation());
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 10, height + 2, session->CurrentRotation);
 
     imageId = mini_golf_track_sprites_flat_to_25_deg_up[direction][2] | session->TrackColours[SCHEME_MISC];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 22, height + 2, get_current_rotation());
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 22, height + 2, session->CurrentRotation);
 
     switch (direction)
     {
@@ -563,17 +563,17 @@ static void paint_mini_golf_track_25_deg_up_to_flat(
     uint32 imageId;
 
     imageId = mini_golf_track_sprites_25_deg_up_to_flat[direction][0] | session->TrackColours[SCHEME_TRACK];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session->CurrentRotation);
 
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                                           0xFFFF, 0);
 
     imageId = mini_golf_track_sprites_25_deg_up_to_flat[direction][1] | session->TrackColours[SCHEME_MISC];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 10, height + 2, get_current_rotation());
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 10, height + 2, session->CurrentRotation);
 
     imageId = mini_golf_track_sprites_25_deg_up_to_flat[direction][2] | session->TrackColours[SCHEME_MISC];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 22, height + 2, get_current_rotation());
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 22, height + 2, session->CurrentRotation);
 
     switch (direction)
     {
@@ -646,18 +646,18 @@ static void paint_mini_golf_station(
     bool                                 hasFence;
 
     imageId = SPR_MINI_GOLF_STATION_FLOOR | session->TrackColours[SCHEME_TRACK];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 28, 1, height, 0, 0, height, get_current_rotation());
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 28, 1, height, 0, 0, height, session->CurrentRotation);
 
     if (direction & 1)
     {
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_NW_SE | session->TrackColours[SCHEME_MISC];
             sub_98197C(session, imageId, -10, 0, 1, 32, 7, height, 0, 0, height + 2);
         }
 
-        bool hasSWFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, get_current_rotation());
+        bool hasSWFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_NW_SE | session->TrackColours[SCHEME_MISC];
@@ -672,14 +672,14 @@ static void paint_mini_golf_station(
     }
     else
     {
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE | session->TrackColours[SCHEME_MISC];
             sub_98197C(session, imageId, 0, -10, 32, 1, 7, height, 0, 0, height + 2);
         }
 
-        bool hasSEFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, get_current_rotation());
+        bool hasSEFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_SW_NE | session->TrackColours[SCHEME_MISC];
@@ -709,8 +709,9 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
 {
     uint32 imageId;
 
-    track_paint_util_left_quarter_turn_1_tile_paint(session, 1, height, 0, direction, session->TrackColours[SCHEME_TRACK],
-                                                    mini_golf_track_sprites_quarter_turn_1_tile, get_current_rotation());
+    track_paint_util_left_quarter_turn_1_tile_paint(
+        session, 1, height, 0, direction, session->TrackColours[SCHEME_TRACK], mini_golf_track_sprites_quarter_turn_1_tile,
+        session->CurrentRotation);
 
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
@@ -762,9 +763,9 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
     if (shouldDrawFence)
     {
         // TODO: The back fence uses the same x/y offsets, but uses another paint function. See if this occurs more often.
-        track_paint_util_left_quarter_turn_1_tile_paint(session, 0, height, 24, direction, session->TrackColours[SCHEME_MISC],
-                                                        mini_golf_track_sprites_quarter_turn_1_tile_fence_front,
-                                                        get_current_rotation());
+        track_paint_util_left_quarter_turn_1_tile_paint(
+            session, 0, height, 24, direction, session->TrackColours[SCHEME_MISC],
+            mini_golf_track_sprites_quarter_turn_1_tile_fence_front, session->CurrentRotation);
 
         switch (direction)
         {

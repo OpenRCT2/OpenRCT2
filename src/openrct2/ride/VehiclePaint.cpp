@@ -2874,7 +2874,7 @@ static void vehicle_visual_splash1_effect(paint_session * session, sint32 z, rct
         return;
     }
     sint32 image_id =
-        29014 + ((((vehicle->sprite_direction / 8) + get_current_rotation()) & 3) * 8) + ((gCurrentTicks / 2) & 7);
+        29014 + ((((vehicle->sprite_direction / 8) + session->CurrentRotation) & 3) * 8) + ((gCurrentTicks / 2) & 7);
     sub_98199C(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z);
 }
 
@@ -2898,7 +2898,7 @@ static void vehicle_visual_splash2_effect(paint_session * session, sint32 z, rct
         return;
     }
     sint32 image_id =
-        29046 + ((((vehicle->sprite_direction / 8) + get_current_rotation()) & 3) * 8) + ((gCurrentTicks / 2) & 7);
+        29046 + ((((vehicle->sprite_direction / 8) + session->CurrentRotation) & 3) * 8) + ((gCurrentTicks / 2) & 7);
     sub_98199C(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z);
 }
 
@@ -2922,7 +2922,7 @@ static void vehicle_visual_splash3_effect(paint_session * session, sint32 z, rct
         return;
     }
     sint32 image_id =
-        29014 + ((((vehicle->sprite_direction / 8) + get_current_rotation()) & 3) * 8) + ((gCurrentTicks / 2) & 7);
+        29014 + ((((vehicle->sprite_direction / 8) + session->CurrentRotation) & 3) * 8) + ((gCurrentTicks / 2) & 7);
     sub_98199C(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z);
 }
 
@@ -2947,7 +2947,7 @@ static void vehicle_visual_splash4_effect(paint_session * session, sint32 z, rct
         return;
     }
     sint32 image_id =
-        29078 + ((((vehicle->sprite_direction / 8) + get_current_rotation()) & 3) * 8) + ((gCurrentTicks / 2) & 7);
+        29078 + ((((vehicle->sprite_direction / 8) + session->CurrentRotation) & 3) * 8) + ((gCurrentTicks / 2) & 7);
     sub_98199C(session, image_id, 0, 0, 1, 1, 0, z, 0, 0, z);
 }
 
@@ -2976,7 +2976,7 @@ static void vehicle_visual_splash5_effect(paint_session * session, sint32 z, rct
         return;
     }
     sint32 image_id =
-        29078 + ((((vehicle->sprite_direction / 8) + get_current_rotation()) & 3) * 8) + ((gCurrentTicks / 2) & 7);
+        29078 + ((((vehicle->sprite_direction / 8) + session->CurrentRotation) & 3) * 8) + ((gCurrentTicks / 2) & 7);
     sub_98199C(session, image_id, 0, 0, 1, 1, 0, z, 0, 0, z);
 }
 

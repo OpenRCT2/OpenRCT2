@@ -229,8 +229,9 @@ static void paint_spiral_slide(
     uint32 imageId = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
-    track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
-                                  spiral_slide_fence_sprites, get_current_rotation());
+    track_paint_util_paint_fences(
+        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height, spiral_slide_fence_sprites,
+        session->CurrentRotation);
 
     switch (trackSequence)
     {

@@ -57,7 +57,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, cons
     boxoffset.y = 0;
     boxoffset.z = height;
     sint32 baseImageid = 0;
-    const sint32 rotation = get_current_rotation();
+    const sint32 rotation = session->CurrentRotation;
     if (gTrackDesignSaveMode) {
         if (!track_design_save_contains_tile_element(tileElement)) {
             baseImageid = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);

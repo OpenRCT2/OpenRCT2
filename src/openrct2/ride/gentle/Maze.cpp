@@ -62,7 +62,7 @@ static void maze_paint_setup(
     uint16 maze_entry = track_element_get_maze_entry(tileElement);
     maze_entry        = rol16(maze_entry, direction * 4);
 
-    uint32 rotation = get_current_rotation();
+    uint32 rotation = session->CurrentRotation;
     // draw ground
     sint32 image_id = SPR_TERRAIN_DIRT | session->TrackColours[SCHEME_MISC];
     sub_98196C(session, image_id, 0, 0, 32, 32, 0, height);

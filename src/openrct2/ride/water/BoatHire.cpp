@@ -85,14 +85,14 @@ static void paint_boat_hire_station(
     if (direction & 1)
     {
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
-        track_paint_util_draw_pier(session, ride, entranceStyle, position, direction, height, tileElement,
-                                   get_current_rotation());
+        track_paint_util_draw_pier(
+            session, ride, entranceStyle, position, direction, height, tileElement, session->CurrentRotation);
     }
     else
     {
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
-        track_paint_util_draw_pier(session, ride, entranceStyle, position, direction, height, tileElement,
-                                   get_current_rotation());
+        track_paint_util_draw_pier(
+            session, ride, entranceStyle, position, direction, height, tileElement, session->CurrentRotation);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

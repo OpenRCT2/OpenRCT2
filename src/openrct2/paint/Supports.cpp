@@ -650,7 +650,7 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8 supportType, ui
     sint16 originalHeight = height;
     sint32 originalSegment = segment;
 
-    const uint8 rotation = get_current_rotation();
+    const uint8 rotation = session->CurrentRotation;
     sint16 unk9E3294 = -1;
     if (height < supportSegments[segment].height){
         unk9E3294 = height;
@@ -849,7 +849,7 @@ bool metal_b_supports_paint_setup(paint_session * session, uint8 supportType, ui
             return false; // AND
         }
 
-        uint16 baseIndex = get_current_rotation() * 2;
+        uint16 baseIndex = session->CurrentRotation * 2;
 
         uint8 ebp = _97AF32[baseIndex + segment * 8];
         if (baseHeight <= supportSegments[ebp].height) {

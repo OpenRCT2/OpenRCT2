@@ -69,11 +69,12 @@ static void paint_circus_show(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
-                                 get_current_rotation());
+    track_paint_util_paint_floor(
+        session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, session->CurrentRotation);
 
-    track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
-                                  fenceSpritesRope, get_current_rotation());
+    track_paint_util_paint_fences(
+        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_SUPPORTS], height, fenceSpritesRope,
+        session->CurrentRotation);
 
     switch (trackSequence)
     {
