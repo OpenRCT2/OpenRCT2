@@ -4529,20 +4529,21 @@ STR_6219    :Highlight path issues
 STR_6220    :Make Usable
 STR_6221    :{SMALLFONT}{BLACK}This will set the ride's known entrance or exit location to the currently selected tile. Only one entrance and exit location can be made usable per stations.
 STR_6222    :{SMALLFONT}{BLACK}Speedrunning
-STR_6224    :Enable speedrunning mode
-STR_6225    :{SMALLFONT}{BLACK}Enables speedrunning mode (see description)
-STR_6226    :Speedrunning mode disables all cheats and changes the rules of the game. Scenario objectives are considered complete at the earliest time their requirements have been met before the deadline. Scenarios are completed consecutively within their respective games/expansions. Cheats are disabled. You may choose to run with or without enabling game speed changes. Navigate back to the main menu to choose a category. The first level in each group has the option to start a run of that group. It's recommended to use the default game sorting to organize scenarios into groups.
-STR_6227    :{SMALLFONT}{BLACK}Run all levels in this group
-STR_6228    :{SMALLFONT}{BLACK}Run of this level only
-STR_6229    :Start speedrun
-STR_6230    :Start IL speedrun
-STR_6231    :Next level
-STR_6232    :Quit to menu
-STR_6233    :Cheats have been used, times will not be recorded!
-STR_6234    :{WINDOW_COLOUR_2}Days:
-STR_6235    :{WINDOW_COLOUR_2}Time:
-STR_6236    :{BLACK}{COMMA32}
-STR_6237    :{BLACK}{UINT16}m{UINT16}.{INT32}s
+STR_6223    :Enable speedrunning mode
+STR_6224    :{SMALLFONT}{BLACK}Enables speedrunning mode (see description)
+STR_6225    :Speedrunning mode disables all cheats and changes the rules of the game. Scenario objectives are considered complete at the earliest time their requirements have been met before the deadline. Scenarios are completed consecutively within their respective games/expansions. Cheats are disabled. You may choose to run with or without enabling game speed changes. Navigate back to the main menu to choose a category. The first level in each group has the option to start a run of that group. It's recommended to use the default game sorting to organize scenarios into groups.
+STR_6226    :{SMALLFONT}{BLACK}Run all levels in this group
+STR_6227    :{SMALLFONT}{BLACK}Run of this level only
+STR_6228    :Start speedrun
+STR_6229    :Start IL speedrun
+STR_6230    :Next level
+STR_6231    :Quit to menu
+STR_6232    :Cheats have been used, times will not be recorded!
+STR_6233    :{WINDOW_COLOUR_2}Days:
+STR_6234    :{WINDOW_COLOUR_2}Time:
+STR_6235    :{BLACK}{COMMA32}
+STR_6236    :{BLACK}{UINT16}m{UINT16}.{INT32}s
+
 
 #############
 # Scenarios #

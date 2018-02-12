@@ -235,7 +235,7 @@ const char * PlatformEnvironment::FileNames[] =
     "highscores.dat",           // SCORES
     "scores.dat",               // SCORES (LEGACY)
     "Saved Games" PATH_SEPARATOR "scores.dat",  // SCORES (RCT2)
-    "changelog.txt",         // CHANGELOG
+    "changelog.txt",            // CHANGELOG
     "speedrun_scores_days.dat", // SCORES_SPEEDRUN_DAYS
     "speedrun_scores_time.dat", // SCORES_SPEEDRUN_TIME
 };

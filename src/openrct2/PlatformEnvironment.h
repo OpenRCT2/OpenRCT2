@@ -68,7 +68,7 @@ namespace OpenRCT2
         SCORES,                 // Scenario scores (highscores.dat).
         SCORES_LEGACY,          // Scenario scores, legacy (scores.dat).
         SCORES_RCT2,            // Scenario scores, rct2 (\Saved Games\scores.dat).
-		CHANGELOG,				// Notable changes to the game between versions, distributed with the game.
+        CHANGELOG,              // Notable changes to the game between versions, distributed with the game.
         SCORES_SPEEDRUN_DAYS,   // Scenario speedrunning time in days (speedrun_scores_days.dat)
         SCORES_SPEEDRUN_TIME    // Scenario speedrunning time (speedrun_scores_time.dat)
     };

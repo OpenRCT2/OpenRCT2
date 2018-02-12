@@ -209,6 +209,8 @@ protected:
         item.objective_arg_2 = stream->ReadValue<sint32>();
         item.objective_arg_3 = stream->ReadValue<sint16>();
         item.highscore = nullptr;
+        item.time_record = nullptr;
+        item.days_record = nullptr;
 
         stream->Read(item.internal_name, sizeof(item.internal_name));
         stream->Read(item.name, sizeof(item.name));
@@ -286,6 +288,8 @@ private:
         entry.objective_arg_2 = s6Info->objective_arg_2;
         entry.objective_arg_3 = s6Info->objective_arg_3;
         entry.highscore = nullptr;
+        entry.days_record = nullptr;
+        entry.time_record = nullptr;
         if (String::IsNullOrEmpty(s6Info->name))
         {
             // If the scenario doesn't have a name, set it to the filename
@@ -355,6 +359,8 @@ public:
     virtual ~ScenarioRepository()
     {
         ClearHighscores();
+        ClearSpeedrunDaysHighscores();
+        ClearSpeedrunTimeHighscores();
     }
 
     void Scan() override
@@ -981,16 +987,15 @@ const scenario_index_entry *scenario_repository_get_by_index(size_t index)
     return repo->GetByIndex(index);
 }
 
-    bool scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name)
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        return repo->TryRecordHighscore(scenarioFileName, companyValue, name);
-    }
+bool scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name)
+{
+    IScenarioRepository * repo = GetScenarioRepository();
+    return repo->TryRecordHighscore(scenarioFileName, companyValue, name);
+}
 
-    bool scenario_repository_try_record_speedrun_highscore(const utf8 * scenarioFileName, uint32 daysValue)
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        return repo->TryRecordSpeedrunRecords(scenarioFileName, daysValue);
-    }
+bool scenario_repository_try_record_speedrun_highscore(const utf8 * scenarioFileName, uint32 daysValue)
+{
+    IScenarioRepository * repo = GetScenarioRepository();
+    return repo->TryRecordSpeedrunRecords(scenarioFileName, daysValue);
 }
 

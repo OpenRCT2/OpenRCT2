@@ -26,6 +26,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/Speedrunning.h>
 
 enum {
     WIDX_START_NEW_GAME,
@@ -127,6 +128,8 @@ rct_window * window_title_menu_open()
 
 static void window_title_menu_scenarioselect_callback(const utf8 *path)
 {
+    // No multi-segment runs
+    gSpeedrunningState.speedrun_invalidated = true;
     context_load_park_from_file(path);
 }
 

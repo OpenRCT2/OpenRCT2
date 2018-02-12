@@ -445,6 +445,7 @@ static void window_scenarioselect_invalidate(rct_window *w)
     window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].top = windowHeight - bottomMargin - 28;
 
     if (gConfigGeneral.enable_speedrunning_mode) {
+        window_scenarioselect_widgets[WIDX_SCENARIOLIST].tooltip = STR_START_IL_SPEEDRUN_TIP;
         widget_set_enabled(w, WIDX_IL_SPEEDRUN, true);
         widget_set_enabled(w, WIDX_FULL_SPEEDRUN, true);
         if (w->highlighted_scenario != nullptr) {

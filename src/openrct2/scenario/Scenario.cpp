@@ -234,10 +234,10 @@ void scenario_success()
         gSpeedrunningState.speedrun_active = false;
         gSpeedrunningState.speedrun_finished_time = end_time - gSpeedrunningState.speedrun_start_time;
 
-        if (!gSpeedrunningState.speedrun_invalidated) {
+        //if (!gSpeedrunningState.speedrun_invalidated) {
             // Record fastest completion
             scenario_repository_try_record_speedrun_highscore(gScenarioFileName, gSpeedrunningState.speedrunning_time_in_days);
-        }
+        //}
     }
     scenario_end();
 }
@@ -756,11 +756,13 @@ static void scenario_objective_check_guests_by()
     sint16 objectiveGuests = gScenarioObjectiveNumGuests;
     sint16 currentMonthYear = gDateMonthsElapsed;
 
-    if (currentMonthYear == 8 * objectiveYear){
-        if (parkRating >= 600 && guestsInPark >= objectiveGuests)
+    if (currentMonthYear == 8 * objectiveYear || (gConfigGeneral.enable_speedrunning_mode && gSpeedrunningState.speedrun_active)) {
+        if (parkRating >= 600 && guestsInPark >= objectiveGuests) {
             scenario_success();
-        else
+        }
+        else if (currentMonthYear == 8 * objectiveYear) {
             scenario_failure();
+        }
     }
 }
 
@@ -771,11 +773,13 @@ static void scenario_objective_check_park_value_by()
     money32 objectiveParkValue = gScenarioObjectiveCurrency;
     money32 parkValue = gParkValue;
 
-    if (currentMonthYear == 8 * objectiveYear) {
-        if (parkValue >= objectiveParkValue)
+    if (currentMonthYear == 8 * objectiveYear || (gConfigGeneral.enable_speedrunning_mode && gSpeedrunningState.speedrun_active)) {
+        if (parkValue >= objectiveParkValue) {
             scenario_success();
-        else
+        }
+        else if (currentMonthYear == 8 * objectiveYear) {
             scenario_failure();
+        }
     }
 }
 
