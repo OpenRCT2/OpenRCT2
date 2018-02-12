@@ -42,6 +42,7 @@ enum WINDOW_SIGN_WIDGET_IDX {
     WIDX_TEXT_COLOUR
 };
 
+// clang-format off
 // 0x9AEE00
 static rct_widget window_sign_widgets[] = {
         { WWT_FRAME,    0, 0,       WW - 1,     0,          WH - 1,     0xFFFFFFFF,     STR_NONE },                         // panel / background
@@ -54,6 +55,7 @@ static rct_widget window_sign_widgets[] = {
         { WWT_COLOURBTN, 1, 17,     28,         WH - 16,    WH - 5,     0xFFFFFFFF,     STR_SELECT_TEXT_COLOUR_TIP },       // Text colour
         { WIDGETS_END },
 };
+// clang-format on
 
 static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_sign_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
