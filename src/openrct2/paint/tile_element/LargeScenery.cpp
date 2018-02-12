@@ -242,7 +242,7 @@ void large_scenery_paint(paint_session * session, uint8 direction, uint16 height
     boxlength.x =  s98E3C4[esi].length.x;
     boxlength.y =  s98E3C4[esi].length.y;
     boxlength.z = ah;
-    sub_98197C(session, image_id, 0, 0, boxlength.x, boxlength.y, ah, height, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
+    sub_98197C(session, image_id, 0, 0, boxlength.x, boxlength.y, ah, height, boxoffset.x, boxoffset.y, boxoffset.z);
     if (entry->large_scenery.scrolling_mode == 0xFF || direction == 1 || direction == 2) {
         large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
         return;

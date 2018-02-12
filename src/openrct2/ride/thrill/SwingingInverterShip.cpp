@@ -105,15 +105,17 @@ static void paint_swinging_inverter_ship_structure(paint_session * session, Ride
 
     if (direction & 2)
     {
-        sub_98197C(session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height,
-                   boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
+        sub_98197C(
+            session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+            boundBox.offset_y, height);
         sub_98199C(session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height,
                    boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
     }
     else
     {
-        sub_98197C(session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height,
-                   boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
+        sub_98197C(
+            session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+            boundBox.offset_y, height);
         sub_98199C(session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height,
                    boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
     }

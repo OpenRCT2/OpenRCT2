@@ -392,9 +392,9 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
         } else {
             imageId += word_97B3C4[slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
             imageId |= imageColourFlags;
-            sub_98197C(session, imageId, 0, 0, 32, 32, 11, z, 0, 0, z + 2, rotation);
+            sub_98197C(session, imageId, 0, 0, 32, 32, 11, z, 0, 0, z + 2);
 
-            sub_98197C(session, imageId + 4, 0, 0, 32, 32, 11, z + 16, 0, 0, z + 16 + 2, rotation);
+            sub_98197C(session, imageId + 4, 0, 0, 32, 32, 11, z + 16, 0, 0, z + 16 + 2);
 
             hasSupports = true;
         }
@@ -416,7 +416,7 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
             imageId += word_97B3C4[slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
             imageId |= imageColourFlags;
 
-            sub_98197C(session, imageId, 0, 0, 32, 32, 11, z, 0, 0, z + 2, rotation);
+            sub_98197C(session, imageId, 0, 0, 32, 32, 11, z, 0, 0, z + 2);
             hasSupports = true;
         }
         z += 16;
@@ -462,7 +462,9 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
             unk_supports_desc_bound_box bBox = byte_97B23C[special].bounding_box;
 
             if (byte_97B23C[special].var_6 == 0 || session->WoodenSupportsPrependTo == nullptr) {
-                sub_98197C(session, imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation);
+                sub_98197C(
+                    session, imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y,
+                    bBox.offset.z + z);
                 hasSupports = true;
             } else {
                 hasSupports = true;
@@ -532,24 +534,10 @@ bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, 
         } else {
             imageId += word_97B3C4[session->Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
 
-            sub_98197C(session,
-                imageId | imageColourFlags,
-                0, 0,
-                32, 32, 11,
-                baseHeight,
-                0, 0, baseHeight + 2,
-                get_current_rotation()
-            );
+            sub_98197C(session, imageId | imageColourFlags, 0, 0, 32, 32, 11, baseHeight, 0, 0, baseHeight + 2);
             baseHeight += 16;
 
-            sub_98197C(session,
-                (imageId + 4) | imageColourFlags,
-                0, 0,
-                32, 32, 3,
-                baseHeight,
-                0, 0, baseHeight + 2,
-                get_current_rotation()
-            );
+            sub_98197C(session, (imageId + 4) | imageColourFlags, 0, 0, 32, 32, 3, baseHeight, 0, 0, baseHeight + 2);
             baseHeight += 16;
 
             _9E32B1 = true;
@@ -568,14 +556,7 @@ bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, 
         } else {
             imageId += word_97B3C4[session->Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
 
-            sub_98197C(session,
-                imageId | imageColourFlags,
-                0, 0,
-                32, 32, 3,
-                baseHeight,
-                0, 0, baseHeight + 2,
-                get_current_rotation()
-            );
+            sub_98197C(session, imageId | imageColourFlags, 0, 0, 32, 32, 3, baseHeight, 0, 0, baseHeight + 2);
             baseHeight += 16;
 
             _9E32B1 = true;
@@ -624,14 +605,9 @@ bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, 
             unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
 
             if (supportsDesc.var_6 == 0 || session->WoodenSupportsPrependTo == nullptr) {
-                sub_98197C(session,
-                    imageId | imageColourFlags,
-                    0, 0,
-                    boundBox.length.x, boundBox.length.y, boundBox.length.z,
-                    baseHeight,
-                    boundBox.offset.x, boundBox.offset.y, boundBox.offset.z + baseHeight,
-                    get_current_rotation()
-                );
+                sub_98197C(
+                    session, imageId | imageColourFlags, 0, 0, boundBox.length.x, boundBox.length.y, boundBox.length.z,
+                    baseHeight, boundBox.offset.x, boundBox.offset.y, boundBox.offset.z + baseHeight);
                 _9E32B1 = true;
             } else {
                 paint_struct * paintStruct = sub_98198C(session,
@@ -829,7 +805,7 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8 supportType, ui
         image_id += z - 1;
         image_id |= imageColourFlags;
 
-        sub_98197C(session, image_id, xOffset, yOffset, 0, 0, 0, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
+        sub_98197C(session, image_id, xOffset, yOffset, 0, 0, 0, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 
         height += z;
     }
@@ -991,14 +967,9 @@ bool metal_b_supports_paint_setup(paint_session * session, uint8 supportType, ui
             }
 
             uint32 imageId = _97B15C[supportType].beam_id + (beamLength - 1);
-            sub_98197C(session,
-                imageId | imageColourFlags,
-                loc_97AF20[originalSegment].x, loc_97AF20[originalSegment].y,
-                0, 0, 0,
-                baseHeight,
-                loc_97AF20[originalSegment].x, loc_97AF20[originalSegment].y, height,
-                get_current_rotation()
-            );
+            sub_98197C(
+                session, imageId | imageColourFlags, loc_97AF20[originalSegment].x, loc_97AF20[originalSegment].y, 0, 0, 0,
+                baseHeight, loc_97AF20[originalSegment].x, loc_97AF20[originalSegment].y, height);
             baseHeight += beamLength;
         }
     }
@@ -1057,24 +1028,10 @@ bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, si
 
         uint32 imageId = (supportType * 24) + word_97B3C4[session->Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK] + pathEntry->bridge_image;
 
-        sub_98197C(session,
-            imageId | imageColourFlags,
-            0, 0,
-            32, 32, 11,
-            baseHeight,
-            0, 0, baseHeight + 2,
-            get_current_rotation()
-        );
+        sub_98197C(session, imageId | imageColourFlags, 0, 0, 32, 32, 11, baseHeight, 0, 0, baseHeight + 2);
         baseHeight += 16;
 
-        sub_98197C(session,
-            (imageId + 4) | imageColourFlags,
-            0, 0,
-            32, 32, 11,
-            baseHeight,
-            0, 0, baseHeight + 2,
-            get_current_rotation()
-        );
+        sub_98197C(session, (imageId + 4) | imageColourFlags, 0, 0, 32, 32, 11, baseHeight, 0, 0, baseHeight + 2);
         baseHeight += 16;
 
         hasSupports = true;
@@ -1088,14 +1045,7 @@ bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, si
 
         uint32 ebx = (supportType * 24) + word_97B3C4[session->Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK] + pathEntry->bridge_image;
 
-        sub_98197C(session,
-            ebx | imageColourFlags,
-            0, 0,
-            32, 32, 11,
-            baseHeight,
-            0, 0, baseHeight + 2,
-            get_current_rotation()
-        );
+        sub_98197C(session, ebx | imageColourFlags, 0, 0, 32, 32, 11, baseHeight, 0, 0, baseHeight + 2);
 
         hasSupports = true;
         baseHeight += 16;
@@ -1129,14 +1079,9 @@ bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, si
         unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
 
         if (supportsDesc.var_6 == 0 || session->WoodenSupportsPrependTo == nullptr) {
-            sub_98197C(session,
-                imageId | imageColourFlags,
-                0, 0,
-                boundBox.length.y, boundBox.length.x, boundBox.length.z,
-                baseHeight,
-                boundBox.offset.x, boundBox.offset.y, baseHeight + boundBox.offset.z,
-                get_current_rotation()
-            );
+            sub_98197C(
+                session, imageId | imageColourFlags, 0, 0, boundBox.length.y, boundBox.length.x, boundBox.length.z, baseHeight,
+                boundBox.offset.x, boundBox.offset.y, baseHeight + boundBox.offset.z);
             hasSupports = true;
         } else {
             paint_struct * paintStruct = sub_98198C(session,
@@ -1284,14 +1229,9 @@ bool path_b_supports_paint_setup(paint_session * session, sint32 segment, sint32
             }
 
             uint32 imageId = pathEntry->bridge_image + 20 + (z - 1);
-            sub_98197C(session,
-                imageId | imageColourFlags,
-                loc_97AF20[segment].x, loc_97AF20[segment].y,
-                0, 0, 0,
-                baseHeight,
-                loc_97AF20[segment].x, loc_97AF20[segment].y, baseHeight,
-                get_current_rotation()
-            );
+            sub_98197C(
+                session, imageId | imageColourFlags, loc_97AF20[segment].x, loc_97AF20[segment].y, 0, 0, 0, baseHeight,
+                loc_97AF20[segment].x, loc_97AF20[segment].y, baseHeight);
 
             baseHeight += z;
         }

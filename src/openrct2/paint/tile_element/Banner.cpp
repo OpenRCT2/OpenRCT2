@@ -75,12 +75,12 @@ void banner_paint(paint_session * session, uint8 direction, sint32 height, const
             IMAGE_TYPE_REMAP;
     }
 
-    sub_98197C(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
+    sub_98197C(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
     boundBoxOffsetX = BannerBoundBoxes[direction][1].x;
     boundBoxOffsetY = BannerBoundBoxes[direction][1].y;
 
     image_id++;
-    sub_98197C(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
+    sub_98197C(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 
     // Opposite direction
     direction ^= 2;

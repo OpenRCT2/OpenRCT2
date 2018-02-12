@@ -59,7 +59,7 @@ static void paint_enterprise_structure(
     }
 
     uint32 imageId = (baseImageId + imageOffset) | imageColourFlags;
-    sub_98197C(session, imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height, get_current_rotation());
+    sub_98197C(session, imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height);
 
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
 

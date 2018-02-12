@@ -47,11 +47,11 @@ void vehicle_visual_launched_freefall(paint_session * session, sint32 x, sint32 
     const uint8 rotation = get_current_rotation();
     // Draw back:
     image_id = (baseImage_id + 2) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
-    sub_98197C(session, image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1, rotation);
+    sub_98197C(session, image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1);
 
     // Draw front:
     image_id = (baseImage_id + 1) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
-    sub_98197C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, rotation);
+    sub_98197C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
 
     // Draw peeps:
     if (session->Unk140E9A8->zoom_level < 2)
@@ -108,7 +108,7 @@ static void paint_launched_freefall_base(
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     uint32 imageId = SPR_FLOOR_METAL | session->TrackColours[SCHEME_SUPPORTS];
-    sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
+    sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
     track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
                                   launched_freefall_fence_sprites, get_current_rotation());
@@ -116,15 +116,15 @@ static void paint_launched_freefall_base(
     if (trackSequence == 0)
     {
         imageId = SPR_LAUNCHED_FREEFALL_TOWER_BASE | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 8, 8, height + 3, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 8, 8, height + 3);
 
         height += 32;
         imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
 
         height += 32;
         imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
 
         paint_util_set_vertical_tunnel(session, height + 32);
 
@@ -182,7 +182,7 @@ static void paint_launched_freefall_tower_section(
     }
 
     uint32 imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | session->TrackColours[SCHEME_TRACK];
-    sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
+    sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
 
     const rct_tile_element * nextTileElement = tileElement + 1;
     if (tile_element_is_last_for_tile(tileElement) || tileElement->clearance_height != nextTileElement->base_height)

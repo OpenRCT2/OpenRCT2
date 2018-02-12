@@ -46,10 +46,10 @@ static void paint_lift_cage(paint_session * session, sint8 index, uint32 colourF
     uint32 imageId;
 
     imageId = lift_cage_sprites[1 + index][0] | colourFlags;
-    sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 2, 2, height, get_current_rotation());
+    sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 2, 2, height);
 
     imageId = lift_cage_sprites[1 + index][1] | colourFlags;
-    sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 28, 28, height, get_current_rotation());
+    sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 28, 28, height);
 }
 
 /** rct2: 0x0076C6CC */
@@ -88,7 +88,7 @@ static void paint_lift_base(
     LocationXY16 position = session->MapPosition;
 
     uint32 imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
-    sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
+    sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
     track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
                                   fenceSpritesMetalB, get_current_rotation());

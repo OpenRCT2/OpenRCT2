@@ -82,7 +82,7 @@ void peep_paint(paint_session * session, rct_peep * peep, sint32 imageDirection)
     //  bound_box_offset_z to make sure peeps are drawn on top of railways
     uint32 baseImageId = (imageDirection >> 3) + sprite.sprite_animation[spriteType].base_image + imageOffset * 4;
     uint32 imageId = baseImageId | peep->tshirt_colour << 19 | peep->trousers_colour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
-    sub_98197C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5, get_current_rotation());
+    sub_98197C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
 
     if (baseImageId >= 10717 && baseImageId < 10749) {
         imageId = (baseImageId + 32) | peep->hat_colour << 19 | IMAGE_TYPE_REMAP;

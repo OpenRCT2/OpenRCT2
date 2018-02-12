@@ -903,17 +903,20 @@ paint_struct * sub_98196C(
 * @param bound_box_offset_x (0x009DEA52)
 * @param bound_box_offset_y (0x009DEA54)
 * @param bound_box_offset_z (0x009DEA56)
-* @param rotation (ebp)
 * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
 */
 paint_struct * sub_98197C(
-        paint_session * session,
-        uint32 image_id,
-        sint8 x_offset, sint8 y_offset,
-        sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-        sint16 z_offset,
-        sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
-        uint32 rotation)
+    paint_session * session,
+    uint32          image_id,
+    sint8           x_offset,
+    sint8           y_offset,
+    sint16          bound_box_length_x,
+    sint16          bound_box_length_y,
+    sint8           bound_box_length_z,
+    sint16          z_offset,
+    sint16          bound_box_offset_x,
+    sint16          bound_box_offset_y,
+    sint16          bound_box_offset_z)
 {
     session->UnkF1AD28 = nullptr;
     session->UnkF1AD2C = nullptr;
@@ -935,8 +938,8 @@ paint_struct * sub_98197C(
         (sint16)ps->bounds.y
     };
 
-    rotate_map_coordinates(&attach.x, &attach.y, rotation);
-    switch (rotation)
+    rotate_map_coordinates(&attach.x, &attach.y, session->CurrentRotation);
+    switch (session->CurrentRotation)
     {
     case 0:
         break;
@@ -1033,14 +1036,9 @@ paint_struct * sub_98199C(
 
     if (session->UnkF1AD28 == nullptr)
     {
-        return sub_98197C(session,
-            image_id,
-            x_offset, y_offset,
-            bound_box_length_x, bound_box_length_y, bound_box_length_z,
-            z_offset,
-            bound_box_offset_x, bound_box_offset_y, bound_box_offset_z,
-            rotation
-        );
+        return sub_98197C(
+            session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
+            bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
     }
 
     LocationXYZ16 offset = { x_offset, y_offset, z_offset };

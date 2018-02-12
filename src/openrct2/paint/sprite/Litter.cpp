@@ -87,5 +87,5 @@ void litter_paint(paint_session * session, rct_litter *litter, sint32 imageDirec
 
     // In the following call to sub_98197C, we add 4 (instead of 2) to the
     //  bound_box_offset_z to make sure litter is drawn on top of railways
-    sub_98197C(session, image_id, 0, 0, 4, 4, -1, litter->z, -4, -4, litter->z + 4, get_current_rotation());
+    sub_98197C(session, image_id, 0, 0, 4, 4, -1, litter->z, -4, -4, litter->z + 4);
 }

@@ -56,7 +56,7 @@ static void paint_flying_saucers(
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     uint32 imageId = SPR_FLYING_SAUCERS_FLOOR | session->TrackColours[SCHEME_TRACK];
-    sub_98197C(session, imageId, 0, 0, 30, 30, 1, height, 1, 1, height, get_current_rotation());
+    sub_98197C(session, imageId, 0, 0, 30, 30, 1, height, 1, 1, height);
 
     track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
                                   flying_saucers_fence_sprites, get_current_rotation());

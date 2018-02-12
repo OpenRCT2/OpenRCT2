@@ -67,19 +67,25 @@ static void fence_paint_door(paint_session * session, uint32 imageId,
     if (sceneryEntry->wall.flags & WALL_SCENERY_IS_BANNER) {
         paint_struct * ps;
 
-        ps = sub_98197C(session, imageId, (sint8) offset.x, (sint8) offset.y, boundsR1.x, boundsR1.y, (sint8) boundsR1.z, offset.z, boundsR1_.x, boundsR1_.y, boundsR1_.z, get_current_rotation());
+        ps = sub_98197C(
+            session, imageId, (sint8)offset.x, (sint8)offset.y, boundsR1.x, boundsR1.y, (sint8)boundsR1.z, offset.z,
+            boundsR1_.x, boundsR1_.y, boundsR1_.z);
         if (ps != nullptr) {
             ps->tertiary_colour = tertiaryColour;
         }
 
-        ps = sub_98197C(session, imageId + 1, (sint8) offset.x, (sint8) offset.y, boundsR2.x, boundsR2.y, (sint8) boundsR2.z, offset.z, boundsR2_.x, boundsR2_.y, boundsR2_.z, get_current_rotation());
+        ps = sub_98197C(
+            session, imageId + 1, (sint8)offset.x, (sint8)offset.y, boundsR2.x, boundsR2.y, (sint8)boundsR2.z, offset.z,
+            boundsR2_.x, boundsR2_.y, boundsR2_.z);
         if (ps != nullptr) {
             ps->tertiary_colour = tertiaryColour;
         }
     } else {
         paint_struct * ps;
 
-        ps = sub_98197C(session, imageId, (sint8) offset.x, (sint8) offset.y, boundsL1.x, boundsL1.y, (sint8) boundsL1.z, offset.z, boundsL1_.x, boundsL1_.y, boundsL1_.z, get_current_rotation());
+        ps = sub_98197C(
+            session, imageId, (sint8)offset.x, (sint8)offset.y, boundsL1.x, boundsL1.y, (sint8)boundsL1.z, offset.z,
+            boundsL1_.x, boundsL1_.y, boundsL1_.z);
         if (ps != nullptr) {
             ps->tertiary_colour = tertiaryColour;
         }
@@ -106,7 +112,9 @@ static void fence_paint_wall(paint_session * session, uint32 frameNum, const rct
             imageId = (imageId & 0x7FFFF) | dword_141F710;
         }
 
-        sub_98197C(session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
+        sub_98197C(
+            session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x,
+            boundsOffset.y, boundsOffset.z);
         if (dword_141F710 == 0) {
             imageId = baseImageId + dword_141F718;
             sub_98199C(session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
@@ -120,7 +128,9 @@ static void fence_paint_wall(paint_session * session, uint32 frameNum, const rct
             imageId = (imageId & 0x7FFFF) | dword_141F710;
         }
 
-        paint_struct * paint = sub_98197C(session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
+        paint_struct * paint = sub_98197C(
+            session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x,
+            boundsOffset.y, boundsOffset.z);
         if (paint != nullptr) {
             paint->tertiary_colour = tertiaryColour;
         }

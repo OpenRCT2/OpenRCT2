@@ -95,8 +95,9 @@ static void paint_ferris_wheel_structure(paint_session * session, uint8 rideInde
     ferris_wheel_bound_box boundBox = ferris_wheel_data[direction];
 
     imageId = (22150 + (direction & 1) * 2) | session->TrackColours[SCHEME_TRACK];
-    sub_98197C(session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
-               boundBox.offset_y, height, get_current_rotation());
+    sub_98197C(
+        session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+        boundBox.offset_y, height);
 
     imageId = (baseImageId + direction * 8 + imageOffset) | imageColourFlags;
     sub_98199C(session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
@@ -182,12 +183,12 @@ static void paint_ferris_wheel(
     {
         // Bound box is slightly different from track_paint_util_paint_fences
         imageId = SPR_FENCE_ROPE_SE | colourFlags;
-        sub_98197C(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 3, rotation);
+        sub_98197C(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 3);
     }
     if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, rotation))
     {
         imageId = SPR_FENCE_ROPE_SW | colourFlags;
-        sub_98197C(session, imageId, 0, 0, 1, 32, 7, height, 30, 0, height + 2, rotation);
+        sub_98197C(session, imageId, 0, 0, 1, 32, 7, height, 30, 0, height + 2);
     }
 
     switch (relativeTrackSequence)
