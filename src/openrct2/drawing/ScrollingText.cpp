@@ -1595,8 +1595,17 @@ static void scrolling_text_set_bitmap_for_ttf(utf8 *text, sint32 scroll, uint8 *
 
                 for (sint32 y = min_vpos; y < max_vpos; y++)
                 {
-                    if (src[y * pitch + x] > 92 || (src[y * pitch + x] != 0 && !use_hinting))
+                    uint8 src_pixel = src[y * pitch + x];
+                    if ((!use_hinting && src_pixel != 0) || src_pixel > 140)
+                    {
+                        // Centre of the glyph: use full colour.
                         *dst = colour;
+                    }
+                    else if (use_hinting && src_pixel > fontDesc->hinting_threshold)
+                    {
+                        // Simulate font hinting by shading the background colour instead.
+                        *dst = blendColours(colour, *dst);
+                    }
 
                     // Jump to next row
                     dst += 64;
