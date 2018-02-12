@@ -198,6 +198,7 @@ void paint_session_generate(paint_session * session)
     sint16 half_x = mapTile.x >> 1;
     uint16 num_vertical_quadrants = (dpi->height + 2128) >> 5;
 
+    session->CurrentRotation = get_current_rotation();
     switch (get_current_rotation())
     {
     case 0:
