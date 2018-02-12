@@ -186,10 +186,12 @@ private:
                 }
                 Console::Error::WriteLine("Unable to advertise (%d): %s", status, message);
                 // Hack for https://github.com/OpenRCT2/OpenRCT2/issues/6277
-                // Master server may not reply correctly if using IPv6, retry forcing IPv4
+                // Master server may not reply correctly if using IPv6, retry forcing IPv4,
+                // don't wait the full timeout.
                 if (!_forceIPv4 && status == 500)
                 {
                     _forceIPv4 = true;
+                    _lastAdvertiseTime = 0;
                     log_info("Retry with ipv4 only");
                 }
             }
