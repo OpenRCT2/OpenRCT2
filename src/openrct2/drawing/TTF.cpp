@@ -165,7 +165,8 @@ void ttf_toggle_hinting()
     for (sint32 i = 0; i < FONT_SIZE_COUNT; i++)
     {
         TTFFontDescriptor *fontDesc = &(gCurrentTTFFontSet->size[i]);
-        TTF_SetFontHinting(fontDesc->font, gConfigFonts.enable_hinting ? 1 : 0);
+        bool use_hinting = gConfigFonts.enable_hinting && fontDesc->hinting_threshold;
+        TTF_SetFontHinting(fontDesc->font, use_hinting ? 1 : 0);
     }
 
     if (_ttfSurfaceCacheCount)
@@ -299,7 +300,7 @@ static bool ttf_get_size(TTF_Font * font, const utf8 * text, sint32 * outWidth, 
 
 static TTFSurface * ttf_render(TTF_Font * font, const utf8 * text)
 {
-    if (gConfigFonts.enable_hinting)
+    if (TTF_GetFontHinting(font) != 0)
     {
         return TTF_RenderUTF8_Shaded(font, text, 0x000000FF, 0x000000FF);
     }

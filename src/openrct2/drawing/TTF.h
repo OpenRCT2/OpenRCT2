@@ -46,6 +46,7 @@ TTFSurface * TTF_RenderUTF8_Solid(TTF_Font *font, const char *text, uint32 colou
 TTFSurface * TTF_RenderUTF8_Shaded(TTF_Font *font, const char *text, uint32 fg, uint32 bg);
 void TTF_CloseFont(TTF_Font *font);
 void TTF_SetFontHinting(TTF_Font* font, int hinting);
+int TTF_GetFontHinting(const TTF_Font* font);
 void TTF_Quit(void);
 
 #endif // NO_TTF

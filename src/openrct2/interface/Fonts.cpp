@@ -26,6 +26,7 @@
 #include "../localisation/Language.h"
 
 #ifndef NO_TTF
+uint8 const HINTING_DISABLED         =  0;
 uint8 const HINTING_THRESHOLD_LOW    = 40;
 uint8 const HINTING_THRESHOLD_MEDIUM = 60;
 
@@ -73,14 +74,14 @@ TTFFontSetDescriptor TTFFontLiHeiPro = { {
 } };
 
 TTFFontSetDescriptor TTFFontGulim = { {
-    { "gulim.ttc", "Gulim", 10, 1, 0, 10, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "gulim.ttc", "Gulim", 10, 1, 0, 10, HINTING_DISABLED,         nullptr },
     { "gulim.ttc", "Gulim", 12, 1, 0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "gulim.ttc", "Gulim", 12, 1, 0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "gulim.ttc", "Gulim", 13, 1, 0, 16, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontNanum = { {
-    { "NanumGothic.ttc", "Nanum Gothic", 10, 1, 0, 10, HINTING_THRESHOLD_LOW, nullptr },
+    { "NanumGothic.ttc", "Nanum Gothic", 10, 1, 0, 10, HINTING_DISABLED,      nullptr },
     { "NanumGothic.ttc", "Nanum Gothic", 12, 1, 0, 15, HINTING_THRESHOLD_LOW, nullptr },
     { "NanumGothic.ttc", "Nanum Gothic", 12, 1, 0, 15, HINTING_THRESHOLD_LOW, nullptr },
     { "NanumGothic.ttc", "Nanum Gothic", 13, 1, 0, 16, HINTING_THRESHOLD_LOW, nullptr },
