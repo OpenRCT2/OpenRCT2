@@ -673,8 +673,8 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
 
 void RideObject::ReadJsonVehicleInfo(IReadObjectContext * context, const json_t * properties)
 {
-    _legacyType.min_cars_in_train = json_integer_value(json_object_get(properties, "minCarsPerTrain"));
-    _legacyType.max_cars_in_train = json_integer_value(json_object_get(properties, "maxCarsPerTrain"));
+    _legacyType.min_cars_in_train = ObjectJsonHelpers::GetInteger(properties, "minCarsPerTrain", 1);
+    _legacyType.max_cars_in_train = ObjectJsonHelpers::GetInteger(properties, "maxCarsPerTrain", 1);
     _legacyType.cars_per_flat_ride = ObjectJsonHelpers::GetInteger(properties, "carsPerFlatRide", 255);
     _legacyType.zero_cars = json_integer_value(json_object_get(properties, "numEmptyCars"));
 
