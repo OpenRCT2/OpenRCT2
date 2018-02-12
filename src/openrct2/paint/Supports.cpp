@@ -369,7 +369,6 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
 
     bool hasSupports = false;
     bool drawFlatPiece = false;
-    sint32 rotation = get_current_rotation();
 
     // Draw base support (usually shaped to the slope)
     sint32 slope = session->Support.slope;
@@ -468,7 +467,9 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
                 hasSupports = true;
             } else {
                 hasSupports = true;
-                paint_struct* ps = sub_98198C(session, imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation);
+                paint_struct * ps = sub_98198C(
+                    session, imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y,
+                    bBox.offset.z + z);
                 if (ps != nullptr) {
                     paint_struct* edi = session->WoodenSupportsPrependTo;
                     edi->var_20 = ps;
@@ -610,14 +611,9 @@ bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, 
                     baseHeight, boundBox.offset.x, boundBox.offset.y, boundBox.offset.z + baseHeight);
                 _9E32B1 = true;
             } else {
-                paint_struct * paintStruct = sub_98198C(session,
-                    imageId | imageColourFlags,
-                    0, 0,
-                    boundBox.length.x, boundBox.length.y, boundBox.length.z,
-                    baseHeight,
-                    boundBox.offset.x, boundBox.offset.y, boundBox.offset.z + baseHeight,
-                    get_current_rotation()
-                );
+                paint_struct * paintStruct = sub_98198C(
+                    session, imageId | imageColourFlags, 0, 0, boundBox.length.x, boundBox.length.y, boundBox.length.z,
+                    baseHeight, boundBox.offset.x, boundBox.offset.y, boundBox.offset.z + baseHeight);
                 _9E32B1 = true;
                 if (paintStruct != nullptr) {
                     session->WoodenSupportsPrependTo->var_20 = paintStruct;
@@ -1084,14 +1080,9 @@ bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, si
                 boundBox.offset.x, boundBox.offset.y, baseHeight + boundBox.offset.z);
             hasSupports = true;
         } else {
-            paint_struct * paintStruct = sub_98198C(session,
-                imageId | imageColourFlags,
-                0, 0,
-                boundBox.length.y, boundBox.length.x, boundBox.length.z,
-                baseHeight,
-                boundBox.offset.x, boundBox.offset.y, baseHeight + boundBox.offset.z,
-                get_current_rotation()
-            );
+            paint_struct * paintStruct = sub_98198C(
+                session, imageId | imageColourFlags, 0, 0, boundBox.length.y, boundBox.length.x, boundBox.length.z, baseHeight,
+                boundBox.offset.x, boundBox.offset.y, baseHeight + boundBox.offset.z);
             hasSupports = true;
             if (paintStruct != nullptr) {
                 session->WoodenSupportsPrependTo->var_20 = paintStruct;
