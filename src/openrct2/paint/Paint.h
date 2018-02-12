@@ -151,6 +151,7 @@ typedef struct paint_session
     paint_struct *           UnkF1AD28;
     attached_paint_struct *  UnkF1AD2C;
     uint8                    InteractionType;
+    uint8                    CurrentRotation;
     support_height           SupportSegments[9];
     support_height           Support;
     paint_string_struct *    PSStringHead;
