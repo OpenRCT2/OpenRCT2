@@ -576,8 +576,8 @@ static void wooden_wild_mouse_track_right_quarter_turn_3(
     };
     static uint8 supportType[] = { 4, 5, 2, 3 };
 
-    track_paint_util_right_quarter_turn_3_tiles_paint_4(session, height, direction, get_current_rotation(), trackSequence,
-                                                        session->TrackColours[SCHEME_TRACK], imageIds);
+    track_paint_util_right_quarter_turn_3_tiles_paint_4(
+        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence)

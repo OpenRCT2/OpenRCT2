@@ -417,7 +417,7 @@ static void paint_car_ride_track_right_quarter_turn_3_tiles(
     track_paint_util_right_quarter_turn_3_tiles_paint(
         session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         car_ride_track_pieces_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets,
-        defaultRightQuarterTurn3TilesBoundLengths, nullptr, get_current_rotation());
+        defaultRightQuarterTurn3TilesBoundLengths, nullptr, session->CurrentRotation);
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence)
@@ -526,7 +526,7 @@ static void paint_car_ride_track_spinning_tunnel(
         sub_98196C(session, imageId, 6, 0, 20, 32, 1, height);
     }
 
-    track_paint_util_spinning_tunnel_paint(session, 1, height, direction, get_current_rotation());
+    track_paint_util_spinning_tunnel_paint(session, 1, height, direction, session->CurrentRotation);
 
     if (direction == 0 || direction == 2)
     {

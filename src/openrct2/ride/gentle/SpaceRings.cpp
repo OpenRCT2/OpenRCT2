@@ -107,26 +107,27 @@ static void paint_space_rings(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
-                                 get_current_rotation());
+    track_paint_util_paint_floor(
+        session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, session->CurrentRotation);
 
     switch (trackSequence)
     {
     case 7:
-        if (track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, get_current_rotation()))
+        if (track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation))
         {
             imageId = SPR_SPACE_RINGS_FENCE_SW | session->TrackColours[SCHEME_MISC];
             sub_98197C(session, imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 2);
         }
-        if (track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, get_current_rotation()))
+        if (track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation))
         {
             imageId = SPR_SPACE_RINGS_FENCE_SE | session->TrackColours[SCHEME_MISC];
             sub_98197C(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 2);
         }
         break;
     default:
-        track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height,
-                                      space_rings_fence_sprites, get_current_rotation());
+        track_paint_util_paint_fences(
+            session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height, space_rings_fence_sprites,
+            session->CurrentRotation);
         break;
     }
 

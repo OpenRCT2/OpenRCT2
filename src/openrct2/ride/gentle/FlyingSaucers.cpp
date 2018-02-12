@@ -58,8 +58,9 @@ static void paint_flying_saucers(
     uint32 imageId = SPR_FLYING_SAUCERS_FLOOR | session->TrackColours[SCHEME_TRACK];
     sub_98197C(session, imageId, 0, 0, 30, 30, 1, height, 1, 1, height);
 
-    track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
-                                  flying_saucers_fence_sprites, get_current_rotation());
+    track_paint_util_paint_fences(
+        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height, flying_saucers_fence_sprites,
+        session->CurrentRotation);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);

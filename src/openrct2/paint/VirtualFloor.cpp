@@ -114,7 +114,7 @@ static void virtual_floor_get_tile_properties(sint16 x, sint16 y, sint16 height,
 
 void virtual_floor_paint(paint_session * session)
 {
-    uint8   direction   = get_current_rotation();
+    uint8 direction = session->CurrentRotation;
 
     // This is a virtual floor, so no interactions
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;

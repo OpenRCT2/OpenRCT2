@@ -65,11 +65,11 @@ static void paint_lift_base(
 
     if (trackSequence == 0)
     {
-        paint_lift_cage(session, direction, session->TrackColours[SCHEME_TRACK], height, get_current_rotation());
+        paint_lift_cage(session, direction, session->TrackColours[SCHEME_TRACK], height, session->CurrentRotation);
 
-        paint_lift_cage(session, -1, session->TrackColours[SCHEME_TRACK], height + 32, get_current_rotation());
+        paint_lift_cage(session, -1, session->TrackColours[SCHEME_TRACK], height + 32, session->CurrentRotation);
 
-        paint_lift_cage(session, -1, session->TrackColours[SCHEME_TRACK], height + 64, get_current_rotation());
+        paint_lift_cage(session, -1, session->TrackColours[SCHEME_TRACK], height + 64, session->CurrentRotation);
 
         paint_util_set_vertical_tunnel(session, height + 96);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -90,8 +90,9 @@ static void paint_lift_base(
     uint32 imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
-    track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
-                                  fenceSpritesMetalB, get_current_rotation());
+    track_paint_util_paint_fences(
+        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
+        session->CurrentRotation);
 
     sint32 blockedSegments = 0;
     switch (trackSequence)
@@ -140,7 +141,7 @@ static void paint_lift_tower_section(
         return;
     }
 
-    paint_lift_cage(session, -1, session->TrackColours[SCHEME_TRACK], height, get_current_rotation());
+    paint_lift_cage(session, -1, session->TrackColours[SCHEME_TRACK], height, session->CurrentRotation);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
 

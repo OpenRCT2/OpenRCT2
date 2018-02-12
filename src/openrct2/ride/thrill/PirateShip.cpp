@@ -214,7 +214,7 @@ static void paint_pirate_ship(
     {
         if (relativeTrackSequence != 1 && relativeTrackSequence != 4)
         {
-            hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, get_current_rotation());
+            hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
             if (relativeTrackSequence == 2)
             {
                 imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE) |
@@ -231,7 +231,7 @@ static void paint_pirate_ship(
                       session->TrackColours[SCHEME_TRACK];
             sub_98196C(session, imageId, 24, 0, 8, 32, 1, height + 9);
 
-            hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, get_current_rotation());
+            hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation);
             if (relativeTrackSequence == 3)
             {
                 if (hasFence)
@@ -259,7 +259,7 @@ static void paint_pirate_ship(
     {
         if (relativeTrackSequence != 1 && relativeTrackSequence != 4)
         {
-            hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, get_current_rotation());
+            hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, session->CurrentRotation);
             if (relativeTrackSequence == 2)
             {
                 imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE) |
@@ -276,7 +276,7 @@ static void paint_pirate_ship(
                       session->TrackColours[SCHEME_TRACK];
             sub_98196C(session, imageId, 0, 24, 32, 8, 1, height + 9);
 
-            hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, get_current_rotation());
+            hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation);
             if (relativeTrackSequence == 3)
             {
                 if (hasFence)

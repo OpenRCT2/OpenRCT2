@@ -174,8 +174,8 @@ static void paint_monorail_cycles_track_flat(
     const rct_tile_element * tileElement)
 {
     uint32 imageId = monorail_cycles_track_pieces_flat[(direction & 1)] | session->TrackColours[SCHEME_TRACK];
-    paint_monorail_cycles_util_7c(session, (bool)(direction & 1), imageId, 0, 0, 32, 20, 3, height, 0, 6, height,
-                                  get_current_rotation());
+    paint_monorail_cycles_util_7c(
+        session, (bool)(direction & 1), imageId, 0, 0, 32, 20, 3, height, 0, 6, height, session->CurrentRotation);
 
     if (direction & 1)
     {
@@ -247,7 +247,7 @@ static void paint_monorail_cycles_track_left_quarter_turn_3_tiles(
 {
     track_paint_util_left_quarter_turn_3_tiles_paint(
         session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        monorail_cycles_track_pieces_flat_quarter_turn_3_tiles, get_current_rotation());
+        monorail_cycles_track_pieces_flat_quarter_turn_3_tiles, session->CurrentRotation);
     track_paint_util_left_quarter_turn_3_tiles_tunnel(session, height, TUNNEL_0, direction, trackSequence);
 
     switch (trackSequence)
@@ -313,7 +313,7 @@ static void paint_monorail_cycles_track_right_quarter_turn_5_tiles(
     track_paint_util_right_quarter_turn_5_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         monorail_cycles_track_pieces_flat_quarter_turn_5_tiles, nullptr, defaultRightQuarterTurn5TilesBoundLengths,
-        defaultRightQuarterTurn5TilesBoundOffsets, get_current_rotation());
+        defaultRightQuarterTurn5TilesBoundOffsets, session->CurrentRotation);
 
     sint32 supportHeight =
         height + monorail_cycles_track_right_quarter_turn_5_tiles_support_height_offset[direction][trackSequence];
@@ -442,20 +442,20 @@ static void paint_monorail_cycles_track_s_bend_left(
     switch (trackSequence)
     {
     case 0:
-        paint_monorail_cycles_util_7c(session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height,
-                                      get_current_rotation());
+        paint_monorail_cycles_util_7c(
+            session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session->CurrentRotation);
         break;
     case 1:
-        paint_monorail_cycles_util_7c(session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 0, height,
-                                      get_current_rotation());
+        paint_monorail_cycles_util_7c(
+            session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 0, height, session->CurrentRotation);
         break;
     case 2:
-        paint_monorail_cycles_util_7c(session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 6, height,
-                                      get_current_rotation());
+        paint_monorail_cycles_util_7c(
+            session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 6, height, session->CurrentRotation);
         break;
     case 3:
-        paint_monorail_cycles_util_7c(session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height,
-                                      get_current_rotation());
+        paint_monorail_cycles_util_7c(
+            session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session->CurrentRotation);
         break;
     }
 
@@ -550,20 +550,20 @@ static void paint_monorail_cycles_track_s_bend_right(
     switch (trackSequence)
     {
     case 0:
-        paint_monorail_cycles_util_7c(session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height,
-                                      get_current_rotation());
+        paint_monorail_cycles_util_7c(
+            session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session->CurrentRotation);
         break;
     case 1:
-        paint_monorail_cycles_util_7c(session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 6, height,
-                                      get_current_rotation());
+        paint_monorail_cycles_util_7c(
+            session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 6, height, session->CurrentRotation);
         break;
     case 2:
-        paint_monorail_cycles_util_7c(session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 0, height,
-                                      get_current_rotation());
+        paint_monorail_cycles_util_7c(
+            session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 0, height, session->CurrentRotation);
         break;
     case 3:
-        paint_monorail_cycles_util_7c(session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height,
-                                      get_current_rotation());
+        paint_monorail_cycles_util_7c(
+            session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session->CurrentRotation);
         break;
     }
 

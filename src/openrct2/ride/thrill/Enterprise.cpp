@@ -45,10 +45,10 @@ static void paint_enterprise_structure(
         session->CurrentlyDrawnItem = vehicle;
     }
 
-    uint32 imageOffset = tile_element_get_direction_with_offset(tileElement, get_current_rotation());
+    uint32 imageOffset = tile_element_get_direction_with_offset(tileElement, session->CurrentRotation);
     if (vehicle != nullptr)
     {
-        imageOffset = (vehicle->vehicle_sprite_type << 2) + (((vehicle->sprite_direction >> 3) + get_current_rotation()) % 4);
+        imageOffset = (vehicle->vehicle_sprite_type << 2) + (((vehicle->sprite_direction >> 3) + session->CurrentRotation) % 4);
     }
 
     uint32 imageColourFlags = session->TrackColours[SCHEME_MISC];
@@ -100,11 +100,12 @@ static void paint_enterprise(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
-                                 get_current_rotation());
+    track_paint_util_paint_floor(
+        session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, session->CurrentRotation);
 
-    track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
-                                  fenceSpritesRope, get_current_rotation());
+    track_paint_util_paint_fences(
+        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height, fenceSpritesRope,
+        session->CurrentRotation);
 
     switch (trackSequence)
     {

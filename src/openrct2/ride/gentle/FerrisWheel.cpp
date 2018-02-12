@@ -166,11 +166,11 @@ static void paint_ferris_wheel(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
-                                 get_current_rotation());
+    track_paint_util_paint_floor(
+        session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, session->CurrentRotation);
 
     uint32 imageId;
-    uint8  rotation    = get_current_rotation();
+    uint8  rotation    = session->CurrentRotation;
     uint32 colourFlags = session->TrackColours[SCHEME_MISC];
     if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, rotation))
     {

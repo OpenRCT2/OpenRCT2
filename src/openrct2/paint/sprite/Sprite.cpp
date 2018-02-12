@@ -80,7 +80,7 @@ void sprite_paint_setup(paint_session * session, const uint16 eax, const uint16 
         if (dpi->x + dpi->width <= spr->unknown.sprite_left)continue;
         if (spr->unknown.sprite_right <= dpi->x)continue;
 
-        sint32 image_direction = get_current_rotation();
+        sint32 image_direction = session->CurrentRotation;
         image_direction <<= 3;
         image_direction += spr->unknown.sprite_direction;
         image_direction &= 0x1F;

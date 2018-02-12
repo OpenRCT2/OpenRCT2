@@ -558,7 +558,8 @@ static uint32 miniature_railway_track_to_grooved(uint32 imageId)
     return imageId - SPR_MINIATURE_RAILWAY_FLAT_SW_NE + SPR_G2_MINIATURE_RAILWAY_GROOVED_SW_NE;
 }
 
-static uint32 miniature_railway_track_to_grooved_indent(uint32 imageId, const rct_tile_element * path, uint8 direction)
+static uint32
+miniature_railway_track_to_grooved_indent(uint32 imageId, const rct_tile_element * path, uint8 direction, uint8 rotation)
 {
     if (!path)
     {
@@ -569,7 +570,7 @@ static uint32 miniature_railway_track_to_grooved_indent(uint32 imageId, const rc
 
     uint8 correctedEdges = path->properties.path.edges;
     correctedEdges |= correctedEdges << 4;
-    correctedEdges >>= 4 - get_current_rotation();
+    correctedEdges >>= 4 - rotation;
     correctedEdges &= 0x0F;
 
     if (direction & 0x1)
@@ -630,7 +631,8 @@ static void paint_miniature_railway_track_flat(
         {
             imageIdAlt = miniature_railway_track_to_grooved(imageId);
             sub_98199C_rotated(session, direction, imageIdAlt, 0, 6, 32, 20, 2, height, 0, 6, height + 2);
-            imageIdAlt = miniature_railway_track_to_grooved_indent(imageId, session->PathElementOnSameHeight, direction);
+            imageIdAlt = miniature_railway_track_to_grooved_indent(
+                imageId, session->PathElementOnSameHeight, direction, session->CurrentRotation);
             sub_98199C_rotated(session, direction, (imageIdAlt & 0x7FFFF) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | (PALETTE_DARKEN_2 << 19), 0, 6, 32, 20, 2, height, 0, 6, height + 2);
         }
     }
@@ -650,7 +652,8 @@ static void paint_miniature_railway_track_flat(
         {
             imageIdAlt = miniature_railway_track_to_grooved(imageId);
             sub_98197C_rotated(session, direction, imageIdAlt, 0, 6, 32, 20, 2, height, 0, 6, height + 2);
-            imageIdAlt = miniature_railway_track_to_grooved_indent(imageId, session->PathElementOnSameHeight, direction);
+            imageIdAlt = miniature_railway_track_to_grooved_indent(
+                imageId, session->PathElementOnSameHeight, direction, session->CurrentRotation);
             sub_98197C_rotated(session, direction, (imageIdAlt & 0x7FFFF) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | (PALETTE_DARKEN_2 << 19), 0, 6, 32, 20, 2, height, 0, 6, height + 2);
         }
     }
@@ -959,7 +962,7 @@ static void paint_miniature_railway_track_right_quarter_turn_5_tiles(
             track_paint_util_right_quarter_turn_5_tiles_paint(
                 session, 2, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                 miniature_railway_track_pieces_flat_quarter_turn_5_tiles, miniature_railway_right_quarter_turn_5_tiles_offsets,
-                miniature_railway_right_quarter_turn_5_tiles_bound_lengths, nullptr, get_current_rotation());
+                miniature_railway_right_quarter_turn_5_tiles_bound_lengths, nullptr, session->CurrentRotation);
         }
         else
         {
@@ -967,7 +970,7 @@ static void paint_miniature_railway_track_right_quarter_turn_5_tiles(
                 session, 2, height, direction, trackSequence, session->TrackColours[SCHEME_SUPPORTS],
                 miniature_railway_right_quarter_turn_5_tiles_track_floor, nullptr,
                 miniature_railway_right_quarter_turn_5_tiles_bound_lengths,
-                miniature_railway_right_quarter_turn_5_tiles_bound_offsets, get_current_rotation());
+                miniature_railway_right_quarter_turn_5_tiles_bound_offsets, session->CurrentRotation);
 
             sint32 index   = miniature_railway_right_quarter_turn_5_tiles_sprite_map[trackSequence];
             uint32 imageId = miniature_railway_track_pieces_flat_quarter_turn_5_tiles[direction][index] |
@@ -1307,7 +1310,7 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(
         track_paint_util_right_quarter_turn_3_tiles_paint(
             session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
             miniature_railway_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets,
-            defaultRightQuarterTurn3TilesBoundLengths, nullptr, get_current_rotation());
+            defaultRightQuarterTurn3TilesBoundLengths, nullptr, session->CurrentRotation);
 
         // The following piece was missing in vanilla RCT2
         if (trackSequence == 1 && direction == 0)
@@ -1321,7 +1324,7 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(
         track_paint_util_right_quarter_turn_3_tiles_paint(
             session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_SUPPORTS],
             miniature_railway_right_quarter_turn_3_tile_track_floor, nullptr, defaultRightQuarterTurn3TilesBoundLengths,
-            miniature_railway_right_quarter_turn_3_tile_bound_offsets, get_current_rotation());
+            miniature_railway_right_quarter_turn_3_tile_bound_offsets, session->CurrentRotation);
 
         static constexpr const sint8 right_quarter_turn_3_tiles_sprite_map[] = { 0, -1, 1, 2 };
 

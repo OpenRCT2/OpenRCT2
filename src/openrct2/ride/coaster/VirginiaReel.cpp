@@ -163,7 +163,7 @@ void vehicle_visual_virginia_reel(paint_session * session, sint32 x, sint32 imag
 {
     sint32      image_id;
     sint32      baseImage_id = imageDirection;
-    const uint8 rotation     = get_current_rotation();
+    const uint8 rotation     = session->CurrentRotation;
     sint32      ecx          = ((vehicle->spin_sprite / 8) + (rotation * 8)) & 31;
     sint32      j            = 0;
     if (vehicle->vehicle_sprite_type == 0)
@@ -514,7 +514,7 @@ static void paint_virginia_reel_track_left_quarter_turn_3_tiles(
 {
     track_paint_util_left_quarter_turn_3_tiles_paint(
         session, 2, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        virginia_reel_track_pieces_flat_quarter_turn_3_tiles, get_current_rotation());
+        virginia_reel_track_pieces_flat_quarter_turn_3_tiles, session->CurrentRotation);
     track_paint_util_left_quarter_turn_3_tiles_tunnel(session, height, TUNNEL_6, direction, trackSequence);
 
     switch (trackSequence)
@@ -559,9 +559,9 @@ static void paint_virginia_reel_track_left_quarter_turn_1_tile(
     sint32                   height,
     const rct_tile_element * tileElement)
 {
-    track_paint_util_left_quarter_turn_1_tile_paint(session, 2, height, 0, direction, session->TrackColours[SCHEME_TRACK],
-                                                    virginia_reel_track_pieces_flat_quarter_turn_1_tile,
-                                                    get_current_rotation());
+    track_paint_util_left_quarter_turn_1_tile_paint(
+        session, 2, height, 0, direction, session->TrackColours[SCHEME_TRACK],
+        virginia_reel_track_pieces_flat_quarter_turn_1_tile, session->CurrentRotation);
 
     switch (direction)
     {

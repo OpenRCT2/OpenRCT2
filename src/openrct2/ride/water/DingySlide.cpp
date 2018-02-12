@@ -822,10 +822,11 @@ static void dinghy_slide_track_right_quarter_turn_5(
         }
     };
 
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(session, height, direction, get_current_rotation(), trackSequence,
-                                                        session->TrackColours[SCHEME_TRACK], imageIds);
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(session, height, direction, get_current_rotation(), trackSequence,
-                                                        session->TrackColours[SCHEME_TRACK], frontImageIds);
+    track_paint_util_right_quarter_turn_5_tiles_paint_2(
+        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
+    track_paint_util_right_quarter_turn_5_tiles_paint_2(
+        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK],
+        frontImageIds);
 
     switch (trackSequence)
     {
@@ -1149,10 +1150,11 @@ static void dinghy_slide_track_right_quarter_turn_3(
         }
     };
 
-    track_paint_util_right_quarter_turn_3_tiles_paint_3(session, height, direction, get_current_rotation(), trackSequence,
-                                                        session->TrackColours[SCHEME_TRACK], imageIds);
-    track_paint_util_right_quarter_turn_3_tiles_paint_3(session, height, direction, get_current_rotation(), trackSequence,
-                                                        session->TrackColours[SCHEME_TRACK], frontImageIds);
+    track_paint_util_right_quarter_turn_3_tiles_paint_3(
+        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
+    track_paint_util_right_quarter_turn_3_tiles_paint_3(
+        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK],
+        frontImageIds);
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence)
@@ -1591,10 +1593,11 @@ static void dinghy_slide_track_right_quarter_turn_5_covered(
         }
     };
 
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(session, height, direction, get_current_rotation(), trackSequence,
-                                                        session->TrackColours[SCHEME_TRACK], imageIds);
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(session, height, direction, get_current_rotation(), trackSequence,
-                                                        session->TrackColours[SCHEME_TRACK], frontImageIds);
+    track_paint_util_right_quarter_turn_5_tiles_paint_2(
+        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
+    track_paint_util_right_quarter_turn_5_tiles_paint_2(
+        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK],
+        frontImageIds);
 
     switch (trackSequence)
     {
@@ -1907,10 +1910,11 @@ static void dinghy_slide_track_right_quarter_turn_3_covered(
         }
     };
 
-    track_paint_util_right_quarter_turn_3_tiles_paint_3(session, height, direction, get_current_rotation(), trackSequence,
-                                                        session->TrackColours[SCHEME_TRACK], imageIds);
-    track_paint_util_right_quarter_turn_3_tiles_paint_3(session, height, direction, get_current_rotation(), trackSequence,
-                                                        session->TrackColours[SCHEME_TRACK], frontImageIds);
+    track_paint_util_right_quarter_turn_3_tiles_paint_3(
+        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
+    track_paint_util_right_quarter_turn_3_tiles_paint_3(
+        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK],
+        frontImageIds);
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence)

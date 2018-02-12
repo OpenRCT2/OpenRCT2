@@ -180,7 +180,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(tileElement->properties.path.addition_status & ror8(0x3,(2 * get_current_rotation())));
+            binIsFull = !(tileElement->properties.path.addition_status & ror8(0x3, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -199,7 +199,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(tileElement->properties.path.addition_status & ror8(0xC, (2 * get_current_rotation())));
+            binIsFull = !(tileElement->properties.path.addition_status & ror8(0xC, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -219,7 +219,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(tileElement->properties.path.addition_status & ror8(0x30, (2 * get_current_rotation())));
+            binIsFull = !(tileElement->properties.path.addition_status & ror8(0x30, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -239,7 +239,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(tileElement->properties.path.addition_status & ror8(0xC0, (2 * get_current_rotation())));
+            binIsFull = !(tileElement->properties.path.addition_status & ror8(0xC0, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -346,7 +346,8 @@ static void sub_6A4101(
     if (footpath_element_is_queue(tile_element)) {
         uint8 local_ebp = ebp & 0x0F;
         if (footpath_element_is_sloped(tile_element)) {
-            switch ((footpath_element_get_slope_direction(tile_element) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
+            switch ((footpath_element_get_slope_direction(tile_element) + session->CurrentRotation) &
+                    FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
             {
                 case 0:
                     sub_98197C(session, 95 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2);
@@ -432,7 +433,7 @@ static void sub_6A4101(
             if (footpath_element_get_slope_direction(tile_element) == direction)
                 height += 16;
         }
-        direction += get_current_rotation();
+        direction += session->CurrentRotation;
         direction &= 3;
 
         LocationXYZ16 boundBoxOffsets = {
@@ -499,7 +500,8 @@ static void sub_6A4101(
     }
 
     if (footpath_element_is_sloped(tile_element)) {
-        switch ((footpath_element_get_slope_direction(tile_element) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
+        switch ((footpath_element_get_slope_direction(tile_element) + session->CurrentRotation) &
+                FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
         {
             case 0:
                 sub_98197C(session, 81 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2);
@@ -723,7 +725,8 @@ static void sub_6A3F61(
     }
 
     // This is about tunnel drawing
-    uint8 direction = (footpath_element_get_slope_direction(tile_element) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+    uint8 direction = (footpath_element_get_slope_direction(tile_element) + session->CurrentRotation) &
+                      FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
     bool  sloped    = footpath_element_is_sloped(tile_element);
 
     if (connectedEdges & EDGE_SE) {
@@ -839,7 +842,7 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, const r
             uint32 imageId = 2618;
             sint32 height2 = tile_element->base_height * 8;
             if (footpath_element_is_sloped(tile_element)) {
-                imageId = 2619 + ((footpath_element_get_slope_direction(tile_element) + get_current_rotation()) & 3);
+                imageId = 2619 + ((footpath_element_get_slope_direction(tile_element) + session->CurrentRotation) & 3);
                 height2 += 16;
             }
 
@@ -904,12 +907,11 @@ void path_paint_box_support(
     uint32                   sceneryImageFlags)
 {
     // Rol edges around rotation
-    uint8 edges = ((tileElement->properties.path.edges << get_current_rotation()) & 0xF) |
-        (((tileElement->properties.path.edges & 0xF) << get_current_rotation()) >> 4);
+    uint8 edges = ((tileElement->properties.path.edges << session->CurrentRotation) & 0xF) |
+                  (((tileElement->properties.path.edges & 0xF) << session->CurrentRotation) >> 4);
 
-    uint8 corners = (((tileElement->properties.path.edges >> 4) << get_current_rotation()) & 0xF) |
-        (((tileElement->properties.path.edges >> 4) << get_current_rotation()) >> 4);
-
+    uint8 corners = (((tileElement->properties.path.edges >> 4) << session->CurrentRotation) & 0xF) |
+                    (((tileElement->properties.path.edges >> 4) << session->CurrentRotation) >> 4);
 
     LocationXY16 boundBoxOffset = {stru_98D804[edges][0], stru_98D804[edges][1]};
     LocationXY16 boundBoxSize = {stru_98D804[edges][2], stru_98D804[edges][3]};
@@ -918,7 +920,9 @@ void path_paint_box_support(
 
     uint32 imageId;
     if (footpath_element_is_sloped(tileElement)) {
-        imageId = ((footpath_element_get_slope_direction(tileElement) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) + 16;
+        imageId = ((footpath_element_get_slope_direction(tileElement) + session->CurrentRotation) &
+                   FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) +
+                  16;
     } else {
         imageId = byte_98D6E0[edi];
     }
@@ -955,7 +959,9 @@ void path_paint_box_support(
     } else {
         uint32 image_id;
         if (footpath_element_is_sloped(tileElement)) {
-            image_id = ((footpath_element_get_slope_direction(tileElement) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) + footpathEntry->bridge_image + 51;
+            image_id = ((footpath_element_get_slope_direction(tileElement) + session->CurrentRotation) &
+                        FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) +
+                       footpathEntry->bridge_image + 51;
         } else {
             image_id = byte_98D8A4[edges] + footpathEntry->bridge_image + 49;
         }
@@ -978,7 +984,7 @@ void path_paint_box_support(
 
     uint16 ax = 0;
     if (footpath_element_is_sloped(tileElement)) {
-        ax = ((footpath_element_get_slope_direction(tileElement) + get_current_rotation()) & 0x3) + 1;
+        ax = ((footpath_element_get_slope_direction(tileElement) + session->CurrentRotation) & 0x3) + 1;
     }
 
     if (byte_98D8A4[edges] == 0) {
@@ -1035,8 +1041,8 @@ void path_paint_pole_support(
     uint32                   sceneryImageFlags)
 {
     // Rol edges around rotation
-    uint8 edges = ((tileElement->properties.path.edges << get_current_rotation()) & 0xF) |
-        (((tileElement->properties.path.edges & 0xF) << get_current_rotation()) >> 4);
+    uint8 edges = ((tileElement->properties.path.edges << session->CurrentRotation) & 0xF) |
+                  (((tileElement->properties.path.edges & 0xF) << session->CurrentRotation) >> 4);
 
     LocationXY16 boundBoxOffset = {
         stru_98D804[edges][0],
@@ -1048,14 +1054,14 @@ void path_paint_pole_support(
         stru_98D804[edges][3]
     };
 
-    uint8 corners = (((tileElement->properties.path.edges >> 4) << get_current_rotation()) & 0xF) |
-        (((tileElement->properties.path.edges >> 4) << get_current_rotation()) >> 4);
+    uint8 corners = (((tileElement->properties.path.edges >> 4) << session->CurrentRotation) & 0xF) |
+                    (((tileElement->properties.path.edges >> 4) << session->CurrentRotation) >> 4);
 
     uint16 edi = edges | (corners << 4);
 
     uint32 imageId;
     if (footpath_element_is_sloped(tileElement)) {
-        imageId = ((footpath_element_get_slope_direction(tileElement) + get_current_rotation()) & 3) + 16;
+        imageId = ((footpath_element_get_slope_direction(tileElement) + session->CurrentRotation) & 3) + 16;
     }
     else {
         imageId = byte_98D6E0[edi];
@@ -1096,7 +1102,9 @@ void path_paint_pole_support(
     else {
         uint32 bridgeImage;
         if (footpath_element_is_sloped(tileElement)) {
-            bridgeImage = ((footpath_element_get_slope_direction(tileElement) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) + footpathEntry->bridge_image + 16;
+            bridgeImage = ((footpath_element_get_slope_direction(tileElement) + session->CurrentRotation) &
+                           FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) +
+                          footpathEntry->bridge_image + 16;
         }
         else {
             bridgeImage = edges + footpathEntry->bridge_image;

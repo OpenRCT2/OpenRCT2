@@ -98,7 +98,8 @@ void sub_68B2B7(paint_session * session, sint32 x, sint32 y)
 static void blank_tiles_paint(paint_session * session, sint32 x, sint32 y)
 {
     sint32 dx = 0;
-    switch (get_current_rotation()) {
+    switch (session->CurrentRotation)
+    {
     case 0:
         dx = x + y;
         break;
@@ -151,7 +152,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     session->MapPosition.y = y;
 
     rct_tile_element* tile_element = map_get_first_element_at(x >> 5, y >> 5);
-    uint8 rotation = get_current_rotation();
+    uint8             rotation     = session->CurrentRotation;
 
     bool partOfVirtualFloor = false;
 #ifndef __TESTPAINT__

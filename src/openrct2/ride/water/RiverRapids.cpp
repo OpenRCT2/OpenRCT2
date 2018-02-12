@@ -188,7 +188,7 @@ void vehicle_visual_river_rapids(paint_session * session, sint32 x, sint32 image
 {
     sint32 image_id;
     sint32 baseImage_id = imageDirection;
-    uint32 rotation     = get_current_rotation();
+    uint32 rotation     = session->CurrentRotation;
     sint32 ecx          = ((vehicle->spin_sprite / 8) + (rotation * 8)) & 31;
     sint32 j            = 0;
     if (vehicle->vehicle_sprite_type == 0)
