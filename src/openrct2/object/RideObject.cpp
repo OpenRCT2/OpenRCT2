@@ -555,6 +555,10 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
 
     _legacyType.max_height = ObjectJsonHelpers::GetInteger(properties, "maxHeight");
 
+    // This needs to be set for both shops/facilities _and_ regular rides.
+    _legacyType.shop_item = SHOP_ITEM_NONE;
+    _legacyType.shop_item_secondary = SHOP_ITEM_NONE;
+
     if (IsRideTypeShopOrFacility(_legacyType.ride_type[0]))
     {
         // Standard car info for a shop
@@ -572,8 +576,6 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
 
         // Shop item
         auto rideSells = ObjectJsonHelpers::GetJsonStringArray(json_object_get(json_object_get(root, "properties"), "sells"));
-        _legacyType.shop_item = SHOP_ITEM_NONE;
-        _legacyType.shop_item_secondary = SHOP_ITEM_NONE;
         if (rideSells.size() >= 1)
         {
             _legacyType.shop_item = ParseShopItem(rideSells[0]);
