@@ -117,8 +117,9 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
         height);
 
     imageId = baseImageId | imageColourFlags;
-    sub_98199C(session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x,
-               bounds.offset_y, height, get_current_rotation());
+    sub_98199C(
+        session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y,
+        height);
 
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
 
@@ -137,8 +138,9 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
             imageColourFlags =
                 SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[peep], vehicle->peep_tshirt_colours[peep + 1]);
             imageId = (baseImageId + frameNum) | imageColourFlags;
-            sub_98199C(session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x,
-                       bounds.offset_y, height, get_current_rotation());
+            sub_98199C(
+                session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x,
+                bounds.offset_y, height);
 
             peep += 2;
 
@@ -151,8 +153,9 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
             imageColourFlags =
                 SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[peep], vehicle->peep_tshirt_colours[peep + 1]);
             imageId = (baseImageId + frameNum) | imageColourFlags;
-            sub_98199C(session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x,
-                       bounds.offset_y, height, get_current_rotation());
+            sub_98199C(
+                session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x,
+                bounds.offset_y, height);
 
             peep += 2;
             offset += 2;
@@ -160,8 +163,9 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
     }
 
     imageId = pirate_ship_frame_sprites[(direction & 1)][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98199C(session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x,
-               bounds.offset_y, height, get_current_rotation());
+    sub_98199C(
+        session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y,
+        height);
 
     session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType    = VIEWPORT_INTERACTION_ITEM_RIDE;
@@ -221,7 +225,7 @@ static void paint_pirate_ship(
                 imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE) |
                           session->TrackColours[SCHEME_TRACK];
             }
-            sub_98199C(session, imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height + 9, get_current_rotation());
+            sub_98199C(session, imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height + 9);
 
             imageId = (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_NW_SE : SPR_STATION_PLATFORM_NW_SE) |
                       session->TrackColours[SCHEME_TRACK];
@@ -266,7 +270,7 @@ static void paint_pirate_ship(
                 imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE) |
                           session->TrackColours[SCHEME_TRACK];
             }
-            sub_98199C(session, imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height + 9, get_current_rotation());
+            sub_98199C(session, imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height + 9);
 
             imageId = (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_SW_NE : SPR_STATION_PLATFORM_SW_NE) |
                       session->TrackColours[SCHEME_TRACK];

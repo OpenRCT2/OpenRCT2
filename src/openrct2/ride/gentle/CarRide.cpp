@@ -372,11 +372,11 @@ static void paint_car_ride_station(
     imageId = car_ride_track_pieces_flat[direction] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2)
     {
-        sub_98199C(session, imageId, 0, 6, 32, 20, 1, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 6, 32, 20, 1, height, 0, 0, height);
     }
     else
     {
-        sub_98199C(session, imageId, 6, 0, 20, 32, 1, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 6, 0, 20, 32, 1, height, 0, 0, height);
     }
 
     if (direction == 0 || direction == 2)

@@ -435,11 +435,11 @@ static void paint_ghost_train_station(
     imageId = ghost_train_track_pieces_flat[direction] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2)
     {
-        sub_98199C(session, imageId, 0, 0, 32, 20, 3, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 32, 20, 3, height, 0, 0, height);
     }
     else
     {
-        sub_98199C(session, imageId, 0, 0, 20, 32, 3, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 20, 32, 3, height, 0, 0, height);
     }
 
     if (direction == 0 || direction == 2)

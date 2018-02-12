@@ -273,12 +273,12 @@ void track_paint_util_paint_fences(
     if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, rotation))
     {
         imageId = fenceSprites[3] | colourFlags;
-        sub_98199C(session, imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2, rotation);
+        sub_98199C(session, imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2);
     }
     if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, rotation))
     {
         imageId = fenceSprites[0] | colourFlags;
-        sub_98199C(session, imageId, 0, 0, 1, 32, 7, height, 2, 0, height + 2, rotation);
+        sub_98199C(session, imageId, 0, 0, 1, 32, 7, height, 2, 0, height + 2);
     }
     if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, rotation))
     {
@@ -852,8 +852,9 @@ bool track_paint_util_draw_station_covers_2(paint_session * session, enum edge_t
 
         // weird jump
         imageId = (baseImageId | edi) + 0x3800000 + imageOffset + 12;
-        sub_98199C(session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z,
-                   boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
+        sub_98199C(
+            session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x,
+            boundsOffset.y, boundsOffset.z);
         return true;
     }
 
@@ -2048,11 +2049,11 @@ void track_paint_util_spinning_tunnel_paint(paint_session * session, sint8 thick
     uint32 imageId = trackSpritesGhostTrainSpinningTunnel[direction & 1][0][frame] | colourFlags;
     if (direction == 0 || direction == 2)
     {
-        sub_98199C(session, imageId, 0, 0, 28, 20, thickness, height, 2, 6, height, rotation);
+        sub_98199C(session, imageId, 0, 0, 28, 20, thickness, height, 2, 6, height);
     }
     else
     {
-        sub_98199C(session, imageId, 0, 0, 20, 28, thickness, height, 6, 2, height, rotation);
+        sub_98199C(session, imageId, 0, 0, 20, 28, thickness, height, 6, 2, height);
     }
 
     imageId = trackSpritesGhostTrainSpinningTunnel[direction & 1][1][frame] | colourFlags;

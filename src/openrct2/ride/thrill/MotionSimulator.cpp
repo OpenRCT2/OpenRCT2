@@ -79,7 +79,6 @@ static void paint_motionsimulator_vehicle(
 
     sint16 offsetZ = height + 2;
     uint32 imageId;
-    uint8  currentRotation = get_current_rotation();
     switch (direction)
     {
     case 0:
@@ -88,7 +87,7 @@ static void paint_motionsimulator_vehicle(
         sub_98197C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ);
         // Stairs
         imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | session->TrackColours[SCHEME_MISC];
-        sub_98199C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ, currentRotation);
+        sub_98199C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ);
         // Stairs (rail)
         imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | session->TrackColours[SCHEME_MISC];
         sub_98197C(session, imageId, offsetX, offsetY, 20, 2, 44, offsetZ, offsetX, offsetY + 32, offsetZ);
@@ -99,7 +98,7 @@ static void paint_motionsimulator_vehicle(
         sub_98197C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ);
         // Stairs
         imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | session->TrackColours[SCHEME_MISC];
-        sub_98199C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ, currentRotation);
+        sub_98199C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ);
         // Stairs (rail)
         imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | session->TrackColours[SCHEME_MISC];
         sub_98197C(session, imageId, offsetX, offsetY, 2, 20, 44, offsetZ, offsetX + 34, offsetY, offsetZ);
@@ -113,7 +112,7 @@ static void paint_motionsimulator_vehicle(
         sub_98197C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY + 5, offsetZ);
         // Simulator
         imageId = simulatorImageId;
-        sub_98199C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY + 5, offsetZ, currentRotation);
+        sub_98199C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY + 5, offsetZ);
         break;
     case 3:
         // Stairs (rail)
@@ -124,7 +123,7 @@ static void paint_motionsimulator_vehicle(
         sub_98197C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX + 5, offsetY, offsetZ);
         // Simulator
         imageId = simulatorImageId;
-        sub_98199C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX + 5, offsetY, offsetZ, currentRotation);
+        sub_98199C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX + 5, offsetY, offsetZ);
         break;
     }
 

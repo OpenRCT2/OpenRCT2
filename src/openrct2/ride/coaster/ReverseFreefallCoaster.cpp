@@ -245,7 +245,7 @@ static void paint_reverse_freefall_rc_station(
         // height += 2 (height)
 
         imageId = reverse_freefall_rc_track_pieces_station[direction] | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
 
         wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, session->TrackColours[SCHEME_SUPPORTS],
                                       nullptr);
@@ -259,7 +259,7 @@ static void paint_reverse_freefall_rc_station(
         // height += 2 (height)
 
         imageId = reverse_freefall_rc_track_pieces_station[direction] | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height);
 
         wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, session->TrackColours[SCHEME_SUPPORTS],
                                       nullptr);

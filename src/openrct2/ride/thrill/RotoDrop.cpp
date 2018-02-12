@@ -47,7 +47,6 @@ void vehicle_visual_roto_drop(paint_session * session, sint32 x, sint32 imageDir
         baseImage_id += (vehicle->restraints_position / 64);
     }
 
-    const uint8 rotation = get_current_rotation();
     // Draw back:
     image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
     sub_98197C(session, image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1);
@@ -81,7 +80,7 @@ void vehicle_visual_roto_drop(paint_session * session, sint32 x, sint32 imageDir
                 baseImage_id += vehicle->restraints_position / 64;
             }
             image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_1(riding_peep_sprites[i]);
-            sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, rotation);
+            sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
         }
     };
 
@@ -193,7 +192,7 @@ static void paint_roto_drop_tower_section(
     if (tile_element_is_last_for_tile(tileElement) || tileElement->clearance_height != nextTileElement->base_height)
     {
         imageId = SPR_ROTO_DROP_TOWER_SEGMENT_TOP | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

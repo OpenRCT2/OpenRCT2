@@ -211,7 +211,7 @@ static void paint_monorail_cycles_station(
         sub_98197C(session, imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height);
 
         imageId = SPR_MONORAIL_CYCLES_FLAT_SW_NE | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 32, 20, 1, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 32, 20, 1, height, 0, 0, height);
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -223,7 +223,7 @@ static void paint_monorail_cycles_station(
         sub_98197C(session, imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height);
 
         imageId = SPR_MONORAIL_CYCLES_FLAT_NW_SE | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 20, 32, 1, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 20, 32, 1, height, 0, 0, height);
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);

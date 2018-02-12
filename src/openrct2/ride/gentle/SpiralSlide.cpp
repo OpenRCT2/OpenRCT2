@@ -192,8 +192,9 @@ static void spiral_slide_paint_tile_front(
 
             image_id = (offset + slide_progress) | (ride->slide_peep_t_shirt_colour << 19) | (1 << 29);
 
-            sub_98199C(session, image_id, 16, 16, boundingBox.x, boundingBox.y, boundingBox.z, height, boundingBoxOffset.x,
-                       boundingBoxOffset.y, boundingBoxOffset.z, get_current_rotation());
+            sub_98199C(
+                session, image_id, 16, 16, boundingBox.x, boundingBox.y, boundingBox.z, height, boundingBoxOffset.x,
+                boundingBoxOffset.y, boundingBoxOffset.z);
         }
     }
 }

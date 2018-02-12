@@ -912,7 +912,6 @@ static void vehicle_sprite_paint(paint_session * session, rct_vehicle * vehicle,
     {
         baseImage_id += vehicle->animation_frame;
     }
-    uint32 rotation = get_current_rotation();
     sint32 image_id =
         baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
     paint_struct * ps = sub_98197C(
@@ -935,8 +934,9 @@ static void vehicle_sprite_paint(paint_session * session, rct_vehicle * vehicle,
                 {
                     image_id += (vehicleEntry->no_vehicle_images * vehicle->animation_frame);
                 }
-                sub_98199C(session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y,
-                           bb.offset_z + z, rotation);
+                sub_98199C(
+                    session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y,
+                    bb.offset_z + z);
                 baseImage_id += vehicleEntry->no_vehicle_images;
             }
         }
@@ -2875,7 +2875,7 @@ static void vehicle_visual_splash1_effect(paint_session * session, sint32 z, rct
     }
     sint32 image_id =
         29014 + ((((vehicle->sprite_direction / 8) + get_current_rotation()) & 3) * 8) + ((gCurrentTicks / 2) & 7);
-    sub_98199C(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z, get_current_rotation());
+    sub_98199C(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z);
 }
 
 /**
@@ -2899,7 +2899,7 @@ static void vehicle_visual_splash2_effect(paint_session * session, sint32 z, rct
     }
     sint32 image_id =
         29046 + ((((vehicle->sprite_direction / 8) + get_current_rotation()) & 3) * 8) + ((gCurrentTicks / 2) & 7);
-    sub_98199C(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z, get_current_rotation());
+    sub_98199C(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z);
 }
 
 /**
@@ -2923,7 +2923,7 @@ static void vehicle_visual_splash3_effect(paint_session * session, sint32 z, rct
     }
     sint32 image_id =
         29014 + ((((vehicle->sprite_direction / 8) + get_current_rotation()) & 3) * 8) + ((gCurrentTicks / 2) & 7);
-    sub_98199C(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z, get_current_rotation());
+    sub_98199C(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z);
 }
 
 /**
@@ -2948,7 +2948,7 @@ static void vehicle_visual_splash4_effect(paint_session * session, sint32 z, rct
     }
     sint32 image_id =
         29078 + ((((vehicle->sprite_direction / 8) + get_current_rotation()) & 3) * 8) + ((gCurrentTicks / 2) & 7);
-    sub_98199C(session, image_id, 0, 0, 1, 1, 0, z, 0, 0, z, get_current_rotation());
+    sub_98199C(session, image_id, 0, 0, 1, 1, 0, z, 0, 0, z);
 }
 
 /**
@@ -2977,7 +2977,7 @@ static void vehicle_visual_splash5_effect(paint_session * session, sint32 z, rct
     }
     sint32 image_id =
         29078 + ((((vehicle->sprite_direction / 8) + get_current_rotation()) & 3) * 8) + ((gCurrentTicks / 2) & 7);
-    sub_98199C(session, image_id, 0, 0, 1, 1, 0, z, 0, 0, z, get_current_rotation());
+    sub_98199C(session, image_id, 0, 0, 1, 1, 0, z, 0, 0, z);
 }
 
 void vehicle_visual_splash_effect(paint_session * session, sint32 z, rct_vehicle * vehicle,

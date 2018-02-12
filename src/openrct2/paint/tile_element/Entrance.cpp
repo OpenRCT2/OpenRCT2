@@ -119,7 +119,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
             transparant_image_id |= style->sprite_index + direction + 16;
         }
 
-        sub_98199C(session, transparant_image_id, 0, 0, lengthX, lengthY, ah, height, 2, 2, height, get_current_rotation());
+        sub_98199C(session, transparant_image_id, 0, 0, lengthX, lengthY, ah, height, 2, 2, height);
     }
 
     image_id += 4;
@@ -129,7 +129,9 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
 
     if (transparant_image_id){
         transparant_image_id += 4;
-        sub_98199C(session, transparant_image_id, 0, 0, lengthX, lengthY, ah, height, (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height, get_current_rotation());
+        sub_98199C(
+            session, transparant_image_id, 0, 0, lengthX, lengthY, ah, height, (direction & 1) ? 28 : 2,
+            (direction & 1) ? 2 : 28, height);
     }
 
     if (direction & 1) {
@@ -168,7 +170,9 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
         uint16 string_width = gfx_get_string_width(entrance_string);
         uint16 scroll = (gCurrentTicks / 2) % string_width;
 
-        sub_98199C(session, scrolling_text_setup(session, string_id, scroll, style->scrolling_mode), 0, 0, 0x1C, 0x1C, 0x33, height + style->height, 2, 2, height + style->height, get_current_rotation());
+        sub_98199C(
+            session, scrolling_text_setup(session, string_id, scroll, style->scrolling_mode), 0, 0, 0x1C, 0x1C, 0x33,
+            height + style->height, 2, 2, height + style->height);
     }
 
     image_id = _unk9E32BC;
@@ -264,7 +268,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
 
             sint32 stsetup = scrolling_text_setup(session, park_text_id, scroll, entrance->scrolling_mode + direction / 2);
             sint32 text_height = height + entrance->text_height;
-            sub_98199C(session, stsetup, 0, 0, 0x1C, 0x1C, 0x2F, text_height, 2, 2, text_height, get_current_rotation());
+            sub_98199C(session, stsetup, 0, 0, 0x1C, 0x1C, 0x2F, text_height, 2, 2, text_height);
         }
         break;
     case 1:

@@ -479,7 +479,9 @@ static void sub_6A4101(
             uint16 string_width = gfx_get_string_width(gCommonStringFormatBuffer);
             uint16 scroll = (gCurrentTicks / 2) % string_width;
 
-            sub_98199C(session, scrolling_text_setup(session, string_id, scroll, scrollingMode), 0, 0, 1, 1, 21, height + 7,  boundBoxOffsets.x,  boundBoxOffsets.y,  boundBoxOffsets.z, get_current_rotation());
+            sub_98199C(
+                session, scrolling_text_setup(session, string_id, scroll, scrollingMode), 0, 0, 1, 1, 21, height + 7,
+                boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
         }
 
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
@@ -965,7 +967,9 @@ void path_paint_box_support(
         if (!footpath_element_is_queue(tileElement) && !(footpathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE)) {
             // don't draw
         } else {
-            sub_98199C(session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset, get_current_rotation());
+            sub_98199C(
+                session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x,
+                boundBoxOffset.y, height + boundingBoxZOffset);
         }
     }
 
@@ -1104,7 +1108,9 @@ void path_paint_pole_support(
             boundBoxOffset.y, height + boundingBoxZOffset);
 
         if (footpath_element_is_queue(tileElement) || (footpathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE)) {
-            sub_98199C(session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset, get_current_rotation());
+            sub_98199C(
+                session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x,
+                boundBoxOffset.y, height + boundingBoxZOffset);
         }
     }
 

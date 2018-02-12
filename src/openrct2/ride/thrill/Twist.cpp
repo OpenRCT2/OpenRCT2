@@ -76,8 +76,7 @@ static void paint_twist_structure(paint_session * session, Ride * ride, uint8 di
 
             uint32 peepFrameNum = (frameNum + i * 12) % 216;
             imageId             = (baseImageId + 24 + peepFrameNum) | imageColourFlags;
-            sub_98199C(session, imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height,
-                       get_current_rotation());
+            sub_98199C(session, imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height);
         }
     }
 
