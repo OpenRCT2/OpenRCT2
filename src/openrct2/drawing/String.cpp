@@ -541,6 +541,7 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
         {
             dst = dst_orig;
             src = src_orig;
+            bool use_hinting = gConfigFonts.enable_hinting && fontDesc->hinting_threshold > 0;
             for (sint32 yy = 0; yy < height; yy++) {
                 for (sint32 xx = 0; xx < width; xx++) {
                     if (*src != 0) {
@@ -548,12 +549,12 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
                             *(dst + width + dstScanSkip + 1) = info->palette[3];
                         }
 
-                        if (*src > 180 || !gConfigFonts.enable_hinting)
+                        if (*src > 180 || !use_hinting)
                         {
                             // Centre of the glyph: use full colour.
                             *dst = colour;
                         }
-                        else if (*src > fontDesc->hinting_threshold)
+                        else if (use_hinting && *src > fontDesc->hinting_threshold)
                         {
                             // Simulate font hinting by shading the background colour instead.
                             if (info->flags & TEXT_DRAW_FLAG_OUTLINE)

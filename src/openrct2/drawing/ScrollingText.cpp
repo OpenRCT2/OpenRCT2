@@ -1575,6 +1575,8 @@ static void scrolling_text_set_bitmap_for_ttf(utf8 *text, sint32 scroll, uint8 *
     sint32 min_vpos = -fontDesc->offset_y;
     sint32 max_vpos = std::min(surface->h - 2, min_vpos + 7);
 
+    bool use_hinting = gConfigFonts.enable_hinting && fontDesc->hinting_threshold > 0;
+
     for (sint32 x = 0; ; x++)
     {
         if (x >= width)
@@ -1593,7 +1595,7 @@ static void scrolling_text_set_bitmap_for_ttf(utf8 *text, sint32 scroll, uint8 *
 
                 for (sint32 y = min_vpos; y < max_vpos; y++)
                 {
-                    if (src[y * pitch + x] > 92 || (src[y * pitch + x] != 0 && !gConfigFonts.enable_hinting))
+                    if (src[y * pitch + x] > 92 || (src[y * pitch + x] != 0 && !use_hinting))
                         *dst = colour;
 
                     // Jump to next row
