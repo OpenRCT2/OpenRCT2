@@ -21,6 +21,7 @@
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../object/ObjectList.h"
+#include "../object/ObjectManager.h"
 #include "../OpenRCT2.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
@@ -2273,7 +2274,17 @@ void footpath_remove_edges_at(sint32 x, sint32 y, rct_tile_element *tileElement)
 
 rct_footpath_entry *get_footpath_entry(sint32 entryIndex)
 {
-    return gFootpathEntries[entryIndex];
+    rct_footpath_entry * result = nullptr;
+    auto objMgr = GetObjectManager();
+    if (objMgr != nullptr)
+    {
+        auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex);
+        if (obj != nullptr)
+        {
+            result = (rct_footpath_entry *)obj->GetLegacyData();
+        }
+    }
+    return result;
 }
 
 uint8 footpath_get_edges(const rct_tile_element * element)

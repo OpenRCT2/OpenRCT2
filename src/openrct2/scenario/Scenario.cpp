@@ -134,7 +134,7 @@ void scenario_begin()
             }
         }
         else {
-            rct_stex_entry* stex = g_stexEntries[0];
+            auto stex = (rct_stex_entry *)object_entry_get_chunk(OBJECT_TYPE_SCENARIO_TEXT, 0);
             if (stex != nullptr) {
                 char *buffer = gCommonStringFormatBuffer;
 
@@ -332,7 +332,7 @@ static void scenario_week_update()
     ride_check_all_reachable();
     ride_update_favourited_stat();
 
-    rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
+    auto water_type = (rct_water_type *)object_entry_get_chunk(OBJECT_TYPE_WATER, 0);
 
     if (month <= MONTH_APRIL && water_type != nullptr && water_type->flags & WATER_FLAGS_ALLOW_DUCKS) {
         // 100 attempts at finding some water to create a few ducks at
@@ -643,13 +643,13 @@ bool scenario_prepare_for_save()
 {
     gS6Info.entry.flags = 255;
 
-    rct_stex_entry* stex = g_stexEntries[0];
+    auto stex = (rct_stex_entry *)object_entry_get_chunk(OBJECT_TYPE_SCENARIO_TEXT, 0);
     if (stex != nullptr) {
         char buffer[256];
         format_string(buffer, 256, stex->scenario_name, nullptr);
         safe_strcpy(gS6Info.name, buffer, sizeof(gS6Info.name));
 
-        memcpy(&gS6Info.entry, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0], sizeof(rct_object_entry));
+        memcpy(&gS6Info.entry, object_entry_get_entry(OBJECT_TYPE_SCENARIO_TEXT, 0), sizeof(rct_object_entry));
     }
 
     if (gS6Info.name[0] == 0)

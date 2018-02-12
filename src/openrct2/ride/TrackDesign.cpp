@@ -492,7 +492,7 @@ static void track_design_mirror_scenery(rct_track_td6 * td6)
             }
         }
 
-        rct_scenery_entry * scenery_entry = (rct_scenery_entry *) object_entry_groups[entry_type].chunks[entry_index];
+        rct_scenery_entry * scenery_entry = (rct_scenery_entry *)object_entry_get_chunk(entry_type, entry_index);
         switch (entry_type)
         {
         case OBJECT_TYPE_LARGE_SCENERY:

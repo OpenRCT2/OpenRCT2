@@ -269,8 +269,8 @@ static void mapgen_place_trees()
 
     for (sint32 i = 0; i < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]; i++)
     {
-        rct_scenery_entry         * sceneryEntry = get_small_scenery_entry(i);
-        rct_object_entry_extended * entry        = &object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].entries[i];
+        auto sceneryEntry = get_small_scenery_entry(i);
+        auto entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, i);
 
         if (sceneryEntry == nullptr)
             continue;

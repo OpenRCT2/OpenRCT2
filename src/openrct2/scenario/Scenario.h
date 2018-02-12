@@ -84,8 +84,6 @@ typedef struct rct_stex_entry {
 } rct_stex_entry;
 assert_struct_size(rct_stex_entry, 7);
 
-#define g_stexEntries ((rct_stex_entry**)object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].chunks)
-
 // This will be useful for backwards compatibility
 typedef struct rct_s6_data {
     // SC6[0]

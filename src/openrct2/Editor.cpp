@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <array>
+#include <vector>
 #include "Context.h"
 #include "Editor.h"
 #include "EditorObjectSelectionSession.h"
@@ -38,32 +40,7 @@
 
 namespace Editor
 {
-    static uint8 _editorSelectedRides[MAX_RIDE_OBJECTS];
-    static uint8 _editorSelectedSmallScenery[MAX_SMALL_SCENERY_OBJECTS];
-    static uint8 _editorSelectedLargeScenery[MAX_LARGE_SCENERY_OBJECTS];
-    static uint8 _editorSelectedWalls[MAX_WALL_SCENERY_OBJECTS];
-    static uint8 _editorSelectedBanners[MAX_BANNER_OBJECTS];
-    static uint8 _editorSelectedFootpaths[MAX_PATH_OBJECTS];
-    static uint8 _editorSelectedFootpathAdditions[MAX_PATH_ADDITION_OBJECTS];
-    static uint8 _editorSelectedSceneryGroups[MAX_SCENERY_GROUP_OBJECTS];
-    static uint8 _editorSelectedParkEntrances[MAX_PARK_ENTRANCE_OBJECTS];
-    static uint8 _editorSelectedWaters[MAX_WATER_OBJECTS];
-    static uint8 _editorSelectedStexs[MAX_SCENARIO_TEXT_OBJECTS];
-
-    uint8 * SelectedObjects[OBJECT_TYPE_COUNT] =
-    {
-        _editorSelectedRides,
-        _editorSelectedSmallScenery,
-        _editorSelectedLargeScenery,
-        _editorSelectedWalls,
-        _editorSelectedBanners,
-        _editorSelectedFootpaths,
-        _editorSelectedFootpathAdditions,
-        _editorSelectedSceneryGroups,
-        _editorSelectedParkEntrances,
-        _editorSelectedWaters,
-        _editorSelectedStexs,
-    };
+    static std::array<std::vector<uint8>, OBJECT_TYPE_COUNT> _editorSelectedObjectFlags;
 
     static void ConvertSaveToScenarioCallback(sint32 result, const utf8 * path);
     static void SetAllLandOwned();
@@ -805,6 +782,37 @@ namespace Editor
         }
         window_invalidate_by_class(WC_EDITOR_SCENARIO_OPTIONS);
         *ebx = 0;
+    }
+
+    uint8 GetSelectedObjectFlags(sint32 objectType, size_t index)
+    {
+        uint8 result = 0;
+        auto &list = _editorSelectedObjectFlags[objectType];
+        if (list.size() > index)
+        {
+            result = list[index];
+        }
+        return result;
+    }
+
+    void ClearSelectedObject(sint32 objectType, size_t index, uint32 flags)
+    {
+        auto &list = _editorSelectedObjectFlags[objectType];
+        if (list.size() <= index)
+        {
+            list.resize(index + 1);
+        }
+        list[index] &= ~flags;
+    }
+
+    void SetSelectedObject(sint32 objectType, size_t index, uint32 flags)
+    {
+        auto &list = _editorSelectedObjectFlags[objectType];
+        if (list.size() <= index)
+        {
+            list.resize(index + 1);
+        }
+        list[index] |= flags;
     }
 }
 

@@ -385,8 +385,7 @@ rct_window * window_editor_object_selection_open()
     if (window != nullptr)
         return window;
 
-    if (!sub_6AB211())
-        return nullptr;
+    sub_6AB211();
     reset_selected_object_count_and_size();
 
     window = window_create_centred(
@@ -1227,7 +1226,7 @@ static void window_editor_object_selection_manage_tracks()
     gS6Info.editor_step = EDITOR_STEP_TRACK_DESIGNS_MANAGER;
 
     sint32 entry_index = 0;
-    for (; (object_entry_groups[0].chunks[entry_index]) == nullptr; ++entry_index);
+    for (; object_entry_get_chunk(OBJECT_TYPE_RIDE, entry_index) == nullptr; entry_index++);
 
     rct_ride_entry* ride_entry = get_ride_entry(entry_index);
     uint8 ride_type = ride_entry_get_first_non_null_ride_type(ride_entry);
@@ -1419,7 +1418,7 @@ static bool filter_chunks(const ObjectRepositoryItem * item)
 static void filter_update_counts()
 {
     if (!_FILTER_ALL || strlen(_filter_string) > 0) {
-        uint8 *selectionFlags = _objectSelectionFlags;
+        const auto &selectionFlags = _objectSelectionFlags;
         for (sint32 i = 0; i < 11; i++) {
             _filter_object_counts[i] = 0;
         }
@@ -1431,12 +1430,11 @@ static void filter_update_counts()
             if (filter_source(item) &&
                 filter_string(item) &&
                 filter_chunks(item) &&
-                filter_selected(*selectionFlags)
+                filter_selected(selectionFlags[i])
             ) {
                 uint8 objectType = item->ObjectEntry.flags & 0xF;
                 _filter_object_counts[objectType]++;
             }
-            selectionFlags++;
         }
     }
 }

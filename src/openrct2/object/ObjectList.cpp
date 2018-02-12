@@ -20,6 +20,7 @@
 #include "../object/Object.h"
 #include "ObjectList.h"
 #include "ObjectRepository.h"
+#include "ObjectManager.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 
@@ -52,46 +53,6 @@ sint32 object_entry_group_encoding[] = {
     CHUNK_ENCODING_RLE,
     CHUNK_ENCODING_RLE,
     CHUNK_ENCODING_ROTATE
-};
-
-    rct_ride_entry              *gRideEntries[MAX_RIDE_OBJECTS];
-    rct_small_scenery_entry     *gSmallSceneryEntries[MAX_SMALL_SCENERY_OBJECTS];
-    rct_large_scenery_entry     *gLargeSceneryEntries[MAX_LARGE_SCENERY_OBJECTS];
-    rct_wall_scenery_entry      *gWallSceneryEntries[MAX_WALL_SCENERY_OBJECTS];
-    rct_banner                  *gBannerSceneryEntries[MAX_BANNER_OBJECTS];
-    rct_footpath_entry          *gFootpathEntries[MAX_PATH_OBJECTS];
-    rct_path_bit_scenery_entry  *gFootpathAdditionEntries[MAX_PATH_ADDITION_OBJECTS];
-    rct_scenery_group_entry     *gSceneryGroupEntries[MAX_SCENERY_GROUP_OBJECTS];
-    rct_entrance_type           *gParkEntranceEntries[MAX_PARK_ENTRANCE_OBJECTS];
-    rct_water_type              *gWaterEntries[MAX_WATER_OBJECTS];
-    rct_stex_entry              *gStexEntries[MAX_SCENARIO_TEXT_OBJECTS];
-
-    static rct_object_entry_extended _objectEntriesRides[MAX_RIDE_OBJECTS];
-    static rct_object_entry_extended _objectEntriesSmallScenery[MAX_SMALL_SCENERY_OBJECTS];
-    static rct_object_entry_extended _objectEntriesLargeScenery[MAX_LARGE_SCENERY_OBJECTS];
-    static rct_object_entry_extended _objectEntriesWalls[MAX_WALL_SCENERY_OBJECTS];
-    static rct_object_entry_extended _objectEntriesBanners[MAX_BANNER_OBJECTS];
-    static rct_object_entry_extended _objectEntriesFootpaths[MAX_PATH_OBJECTS];
-    static rct_object_entry_extended _objectEntriesFootpathAdditions[MAX_PATH_ADDITION_OBJECTS];
-    static rct_object_entry_extended _objectEntriesSceneryGroups[MAX_SCENERY_GROUP_OBJECTS];
-    static rct_object_entry_extended _objectEntriesParkEntrances[MAX_PARK_ENTRANCE_OBJECTS];
-    static rct_object_entry_extended _objectEntriesWaters[MAX_WATER_OBJECTS];
-    static rct_object_entry_extended _objectEntriesStexs[MAX_SCENARIO_TEXT_OBJECTS];
-
-
-// 0x98D97C chunk address', 0x98D980 object_entries
-const rct_object_entry_group object_entry_groups[] = {
-    (void**)(gRideEntries               ), _objectEntriesRides, // rides
-    (void**)(gSmallSceneryEntries       ), _objectEntriesSmallScenery,  // small scenery    0x009AD1A4, 0xF2FA3C
-    (void**)(gLargeSceneryEntries       ), _objectEntriesLargeScenery,  // large scenery    0x009AD594, 0xF40DEC
-    (void**)(gWallSceneryEntries        ), _objectEntriesWalls, // walls            0x009AD794, 0xF417EC
-    (void**)(gBannerSceneryEntries      ), _objectEntriesBanners,   // banners          0x009AD994, 0xF421EC
-    (void**)(gFootpathEntries           ), _objectEntriesFootpaths, // paths            0x009ADA14, 0xF4246C
-    (void**)(gFootpathAdditionEntries   ), _objectEntriesFootpathAdditions, // path bits        0x009ADA54, 0xF425AC
-    (void**)(gSceneryGroupEntries       ), _objectEntriesSceneryGroups, // scenery sets     0x009ADA90, 0xF426D8
-    (void**)(gParkEntranceEntries       ), _objectEntriesParkEntrances, // park entrance    0x009ADADC, 0xF42854
-    (void**)(gWaterEntries              ), _objectEntriesWaters,    // water            0x009ADAE0, 0xF42868
-    (void**)(gStexEntries               ), _objectEntriesStexs, // scenario text    0x009ADAE4, 0xF4287C
 };
 // clang-format on
 
@@ -133,26 +94,27 @@ void object_create_identifier_name(char* string_buffer, size_t size, const rct_o
  */
 bool find_object_in_entry_group(const rct_object_entry * entry, uint8 * entry_type, uint8 * entry_index)
 {
-    if ((entry->flags & 0xF) >= Util::CountOf(object_entry_groups)) {
-        return false;
-    }
-    *entry_type = entry->flags & 0xF;
-    rct_object_entry_group entry_group = object_entry_groups[*entry_type];
-    for (*entry_index = 0;
-         *entry_index < object_entry_group_counts[*entry_type];
-         ++(*entry_index), entry_group.chunks++, entry_group.entries++)
+    sint32 objectType = object_entry_get_type(entry);
+    if (objectType >= OBJECT_TYPE_COUNT)
     {
-        if (*entry_group.chunks == nullptr)
-            continue;
-
-        if (object_entry_compare((rct_object_entry*)entry_group.entries, entry))
-            break;
+        return false;
     }
 
-    if (*entry_index == object_entry_group_counts[*entry_type])
-        return false;
-
-    return true;
+    auto maxObjects = object_entry_group_counts[objectType];
+    for (sint32 i = 0; i < maxObjects; i++)
+    {
+        if (object_entry_get_chunk(objectType, i) != nullptr)
+        {
+            auto thisEntry = object_entry_get_entry(*entry_type, i);
+            if (object_entry_compare(thisEntry, entry))
+            {
+                *entry_type = objectType;
+                *entry_index = i;
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void get_type_entry_index(size_t index, uint8 * outObjectType, uint8 * outEntryIndex)
@@ -177,17 +139,14 @@ const rct_object_entry * get_loaded_object_entry(size_t index)
     uint8 objectType, entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
 
-    rct_object_entry * entry = (rct_object_entry *)&(object_entry_groups[objectType].entries[entryIndex]);
-    return entry;
+    return object_entry_get_entry(objectType, entryIndex);
 }
 
 void * get_loaded_object_chunk(size_t index)
 {
     uint8 objectType, entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
-
-    void *entry = object_entry_groups[objectType].chunks[entryIndex];
-    return entry;
+    return object_entry_get_chunk(objectType, entryIndex);
 }
 
 void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry)
@@ -195,4 +154,29 @@ void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_obj
     bufferSize = Math::Min((size_t)DAT_NAME_LENGTH + 1, bufferSize);
     memcpy(buffer, entry->name, bufferSize - 1);
     buffer[bufferSize - 1] = 0;
+}
+
+void * object_entry_get_chunk(sint32 objectType, size_t index)
+{
+    size_t objectIndex = index;
+    for (sint32 i = 0; i < objectType; i++)
+    {
+        objectIndex += object_entry_group_counts[i];
+    }
+
+    void * result = nullptr;
+    auto objectMgr = GetObjectManager();
+    auto obj = objectMgr->GetLoadedObject(objectIndex);
+    if (obj != nullptr)
+    {
+        result = obj->GetLegacyData();
+    }
+    return result;
+}
+
+const rct_object_entry * object_entry_get_entry(sint32 objectType, size_t index)
+{
+    auto objectMgr = GetObjectManager();
+    auto obj = objectMgr->GetLoadedObject(objectType, index);
+    return obj->GetObjectEntry();
 }

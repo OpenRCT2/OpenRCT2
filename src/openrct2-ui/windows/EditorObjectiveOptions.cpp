@@ -814,12 +814,7 @@ static void window_editor_objective_options_main_textinput(rct_window *w, rct_wi
  */
 static void window_editor_objective_options_main_invalidate(rct_window *w)
 {
-    rct_widget *widgets;
-    rct_stex_entry *stex;
-
-    stex = g_stexEntries[0];
-
-    widgets = window_editor_objective_options_widgets[w->page];
+    auto widgets = window_editor_objective_options_widgets[w->page];
     if (w->widgets != widgets) {
         w->widgets = widgets;
         window_init_scroll_widgets(w);
@@ -827,6 +822,7 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
 
     window_editor_objective_options_set_pressed_tab(w);
 
+    auto stex = (rct_stex_entry *)object_entry_get_chunk(OBJECT_TYPE_SCENARIO_TEXT, 0);
     if (stex == nullptr)
         w->disabled_widgets &= ~((1 << WIDX_PARK_NAME) | (1 << WIDX_SCENARIO_NAME));
     else
@@ -877,15 +873,12 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
  */
 static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    rct_stex_entry *stex;
     sint32 x, y, width;
     rct_string_id stringId;
     uint32 arg;
 
     window_draw_widgets(w, dpi);
     window_editor_objective_options_draw_tab_images(w, dpi);
-
-    stex = g_stexEntries[0];
 
     // Objective label
     x = w->x + 8;
@@ -983,6 +976,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
     y = w->y + w->widgets[WIDX_PARK_NAME].top;
     width = w->widgets[WIDX_PARK_NAME].left - 16;
 
+    auto stex = (rct_stex_entry *)object_entry_get_chunk(OBJECT_TYPE_SCENARIO_TEXT, 0);
     if (stex != nullptr) {
         set_format_arg(0, rct_string_id, stex->park_name);
     } else {

@@ -20,6 +20,7 @@
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../object/ObjectList.h"
+#include "../object/ObjectManager.h"
 #include "../scenario/Scenario.h"
 #include "Climate.h"
 #include "Footpath.h"
@@ -279,50 +280,92 @@ void scenery_remove_ghost_tool_placement(){
 
 rct_scenery_entry *get_small_scenery_entry(sint32 entryIndex)
 {
-    if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]) {
-        return nullptr;
+    rct_scenery_entry * result = nullptr;
+    auto objMgr = GetObjectManager();
+    if (objMgr != nullptr)
+    {
+        auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
+        if (obj != nullptr)
+        {
+            result = (rct_scenery_entry *)obj->GetLegacyData();
+        }
     }
-    return (rct_scenery_entry*)gSmallSceneryEntries[entryIndex];
+    return result;
 }
 
 rct_scenery_entry *get_large_scenery_entry(sint32 entryIndex)
 {
-    if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_LARGE_SCENERY]) {
-        return nullptr;
+    rct_scenery_entry * result = nullptr;
+    auto objMgr = GetObjectManager();
+    if (objMgr != nullptr)
+    {
+        auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
+        if (obj != nullptr)
+        {
+            result = (rct_scenery_entry *)obj->GetLegacyData();
+        }
     }
-    return (rct_scenery_entry*)gLargeSceneryEntries[entryIndex];
+    return result;
 }
 
 rct_scenery_entry *get_wall_entry(sint32 entryIndex)
 {
-    if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_WALLS]) {
-        return nullptr;
+    rct_scenery_entry * result = nullptr;
+    auto objMgr = GetObjectManager();
+    if (objMgr != nullptr)
+    {
+        auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_WALLS, entryIndex);
+        if (obj != nullptr)
+        {
+            result = (rct_scenery_entry *)obj->GetLegacyData();
+        }
     }
-    return (rct_scenery_entry*)gWallSceneryEntries[entryIndex];
+    return result;
 }
 
 rct_scenery_entry *get_banner_entry(sint32 entryIndex)
 {
-    if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_BANNERS]) {
-        return nullptr;
+    rct_scenery_entry * result = nullptr;
+    auto objMgr = GetObjectManager();
+    if (objMgr != nullptr)
+    {
+        auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_BANNERS, entryIndex);
+        if (obj != nullptr)
+        {
+            result = (rct_scenery_entry *)obj->GetLegacyData();
+        }
     }
-    return (rct_scenery_entry*)gBannerSceneryEntries[entryIndex];
+    return result;
 }
 
 rct_scenery_entry *get_footpath_item_entry(sint32 entryIndex)
 {
-    if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_PATH_BITS]) {
-        return nullptr;
+    rct_scenery_entry * result = nullptr;
+    auto objMgr = GetObjectManager();
+    if (objMgr != nullptr)
+    {
+        auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_PATH_BITS, entryIndex);
+        if (obj != nullptr)
+        {
+            result = (rct_scenery_entry *)obj->GetLegacyData();
+        }
     }
-    return (rct_scenery_entry*)gFootpathAdditionEntries[entryIndex];
+    return result;
 }
 
 rct_scenery_group_entry *get_scenery_group_entry(sint32 entryIndex)
 {
-    if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_SCENERY_GROUP]) {
-        return nullptr;
+    rct_scenery_group_entry * result = nullptr;
+    auto objMgr = GetObjectManager();
+    if (objMgr != nullptr)
+    {
+        auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_SCENERY_GROUP, entryIndex);
+        if (obj != nullptr)
+        {
+            result = (rct_scenery_group_entry *)obj->GetLegacyData();
+        }
     }
-    return (rct_scenery_group_entry*)gSceneryGroupEntries[entryIndex];
+    return result;
 }
 
 sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex)

@@ -48,6 +48,7 @@ typedef enum
     OBJECT_SELECTION_FLAG_6 = (1 << 5),
     OBJECT_SELECTION_FLAG_7 = (1 << 6),
     OBJECT_SELECTION_FLAG_8 = (1 << 7),
+    OBJECT_SELECTION_FLAG_ALL = 0xFF,
 } OBJECT_SELECTION_FLAGS;
 
 #define OBJECT_SELECTION_NOT_SELECTED_OR_REQUIRED 0
@@ -87,26 +88,9 @@ typedef struct rct_object_entry {
 } rct_object_entry;
 assert_struct_size(rct_object_entry, 0x10);
 
-/**
- * Object entry structure extended.
- * size: 0x14
- */
-typedef struct rct_object_entry_extended {
-    union {
-        rct_object_entry entry;
-        struct {
-            uint32 flags;
-            char name[8];
-            uint32 checksum;
-            uint32 chunk_size;
-        };
-    };
-} rct_object_entry_extended;
-assert_struct_size(rct_object_entry_extended, 0x14);
-
 typedef struct rct_object_entry_group {
     void **chunks;
-    rct_object_entry_extended *entries;
+    rct_object_entry *entries;
 } rct_object_entry_group;
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_object_entry_group, 8);
@@ -218,8 +202,6 @@ enum OBJECT_ERROR : uint32
 extern sint32 object_entry_group_counts[];
 extern sint32 object_entry_group_encoding[];
 
-extern const rct_object_entry_group object_entry_groups[];
-
 void object_list_load();
 
 bool object_entry_is_empty(const rct_object_entry *entry);
@@ -232,3 +214,6 @@ const rct_object_entry * object_list_find_by_name(const char *name);
 const rct_object_entry * object_list_find(rct_object_entry *entry);
 
 void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);
+
+void * object_entry_get_chunk(sint32 objectType, size_t index);
+const rct_object_entry * object_entry_get_entry(sint32 objectType, size_t index);

@@ -29,6 +29,7 @@ interface IObjectManager
     virtual ~IObjectManager() { }
 
     virtual Object *                        GetLoadedObject(size_t index) abstract;
+    virtual Object *                        GetLoadedObject(sint32 objectType, size_t index) abstract;
     virtual Object *                        GetLoadedObject(const rct_object_entry * entry) abstract;
     virtual uint8                           GetLoadedObjectEntryIndex(const Object * object) abstract;
     virtual std::vector<rct_object_entry>   GetInvalidObjects(const rct_object_entry * entries) abstract;
