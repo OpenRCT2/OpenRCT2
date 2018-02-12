@@ -80,7 +80,7 @@ static void paint_space_rings_structure(paint_session * session, Ride * ride, ui
             rct_peep * rider = GET_PEEP(vehicle->peep[0]);
             imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(rider->tshirt_colour, rider->trousers_colour);
             imageId          = ((baseImageId & 0x7FFFF) + 352 + frameNum) | imageColourFlags;
-            sub_98199C(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height, get_current_rotation());
+            sub_98199C(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height);
         }
     }
 

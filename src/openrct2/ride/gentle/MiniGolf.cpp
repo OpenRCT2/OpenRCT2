@@ -727,7 +727,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
             break;
 
         imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_SW_NW | session->TrackColours[SCHEME_MISC];
-        sub_98199C(session, imageId, 0, 0, 26, 24, 1, height, 6, 2, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 26, 24, 1, height, 6, 2, height);
 
         break;
 
@@ -736,7 +736,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
             break;
 
         imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_NW_NE | session->TrackColours[SCHEME_MISC];
-        sub_98199C(session, imageId, 0, 0, 26, 26, 1, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 26, 26, 1, height, 0, 0, height);
         break;
 
     case 2:
@@ -745,7 +745,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
             break;
 
         imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_NE_SE | session->TrackColours[SCHEME_MISC];
-        sub_98199C(session, imageId, 0, 0, 24, 26, 1, height, 2, 6, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 24, 26, 1, height, 2, 6, height);
         break;
 
     case 3:
@@ -755,7 +755,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
             break;
 
         imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_SE_SW | session->TrackColours[SCHEME_MISC];
-        sub_98199C(session, imageId, 0, 0, 24, 24, 1, height, 6, 6, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 24, 24, 1, height, 6, 6, height);
         break;
     }
 
@@ -835,8 +835,7 @@ static void paint_mini_golf_hole_ab(paint_session * session, uint8 trackSequence
         sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
 
         imageId = sprites[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height,
-                   get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
     }
     else
     {
@@ -930,8 +929,7 @@ static void paint_mini_golf_hole_c(
         sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
 
         imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height,
-                   get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
     }
     else
     {
@@ -1024,8 +1022,7 @@ static void paint_mini_golf_hole_d(
         sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
 
         imageId = mini_golf_track_sprites_hole_d[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height,
-                   get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
     }
     else
     {
@@ -1118,8 +1115,7 @@ static void paint_mini_golf_hole_e(
         sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
 
         imageId = mini_golf_track_sprites_hole_e[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height,
-                   get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
     }
     else
     {

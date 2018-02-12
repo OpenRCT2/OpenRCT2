@@ -59,7 +59,6 @@ static void facility_paint_setup(
     imageId |= firstVehicleEntry->base_image_id;
     imageId += (direction + 2) & 3;
 
-    sint32 rotation = get_current_rotation();
     sint32 lengthX  = (direction & 1) == 0 ? 28 : 2;
     sint32 lengthY  = (direction & 1) == 0 ? 2 : 28;
     if (hasSupports)
@@ -71,8 +70,8 @@ static void facility_paint_setup(
             height);
 
         // Door image or base
-        sub_98199C(session, imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2,
-                   height, rotation);
+        sub_98199C(
+            session, imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height);
     }
     else
     {

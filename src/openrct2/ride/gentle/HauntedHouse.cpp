@@ -80,8 +80,9 @@ static void paint_haunted_house_structure(paint_session * session, uint8 rideInd
             break;
         }
         imageId = imageId | session->TrackColours[SCHEME_MISC];
-        sub_98199C(session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
-                   boundBox.offset_y, height, get_current_rotation());
+        sub_98199C(
+            session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+            boundBox.offset_y, height);
     }
 
     session->CurrentlyDrawnItem = savedTileElement;

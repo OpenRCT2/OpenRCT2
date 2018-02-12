@@ -75,7 +75,7 @@ static void paint_enterprise_structure(
             uint32 peepFrameOffset = ((imageOffset % 4) * 4 + (i * 4) % 15) & 0x0F;
             uint32 ax              = (imageOffset & 0xFFFFFFFC) << 2;
             imageId = (baseImageId + 196 + peepFrameOffset + ax) | SPRITE_ID_PALETTE_COLOUR_1(vehicle->peep_tshirt_colours[i]);
-            sub_98199C(session, imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height, get_current_rotation());
+            sub_98199C(session, imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height);
         }
     }
 

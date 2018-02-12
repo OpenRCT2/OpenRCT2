@@ -65,9 +65,13 @@ paint_struct * sub_98199C_rotated(
     sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z)
 {
     if (direction & 1) {
-        return sub_98199C(session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset, bound_box_offset_y, bound_box_offset_x, bound_box_offset_z, get_current_rotation());
+        return sub_98199C(
+            session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset,
+            bound_box_offset_y, bound_box_offset_x, bound_box_offset_z);
     } else {
-        return sub_98199C(session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, get_current_rotation());
+        return sub_98199C(
+            session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
+            bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
     }
 }
 

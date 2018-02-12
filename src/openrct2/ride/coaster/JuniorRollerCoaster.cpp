@@ -1676,7 +1676,7 @@ void junior_rc_paint_station(
         {
             imageId = junior_rc_track_pieces_station[false][direction] | session->TrackColours[SCHEME_TRACK];
         }
-        sub_98199C(session, imageId, 0, 6, 32, 20, 1, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 6, 32, 20, 1, height, 0, 0, height);
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -1698,7 +1698,7 @@ void junior_rc_paint_station(
         {
             imageId = junior_rc_track_pieces_station[false][direction] | session->TrackColours[SCHEME_TRACK];
         }
-        sub_98199C(session, imageId, 6, 0, 20, 32, 1, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 6, 0, 20, 32, 1, height, 0, 0, height);
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
