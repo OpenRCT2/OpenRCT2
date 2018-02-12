@@ -439,11 +439,11 @@ static void paint_monorail_track_flat(
 
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, 0, 6, 32, 20, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 6, 32, 20, 3, height);
     }
     else
     {
-        sub_98196C(session, imageId, 6, 0, 20, 32, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, 6, 0, 20, 32, 3, height);
     }
 
     if (direction == 0 || direction == 2)
@@ -538,11 +538,11 @@ static void paint_monorail_track_25_deg_up(
 
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, 0, 6, 32, 20, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 6, 32, 20, 3, height);
     }
     else
     {
-        sub_98196C(session, imageId, 6, 0, 20, 32, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, 6, 0, 20, 32, 3, height);
     }
 
     switch (direction)
@@ -586,11 +586,11 @@ static void paint_monorail_track_flat_to_25_deg_up(
 
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, 0, 6, 32, 20, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 6, 32, 20, 3, height);
     }
     else
     {
-        sub_98196C(session, imageId, 6, 0, 20, 32, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, 6, 0, 20, 32, 3, height);
     }
 
     switch (direction)
@@ -634,11 +634,11 @@ static void paint_monorail_track_25_deg_up_to_flat(
 
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, 0, 6, 32, 20, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 6, 32, 20, 3, height);
     }
     else
     {
-        sub_98196C(session, imageId, 6, 0, 20, 32, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, 6, 0, 20, 32, 3, height);
     }
 
     switch (direction)
@@ -816,11 +816,11 @@ static void paint_monorail_track_s_bend_left(
     LocationXY16 bounds  = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 3, height);
     }
     else
     {
-        sub_98196C(session, imageId, (sint8)offset.y, (sint8)offset.x, bounds.y, bounds.x, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, (sint8)offset.y, (sint8)offset.x, bounds.y, bounds.x, 3, height);
     }
 
     if (direction == 0 || direction == 2)
@@ -918,11 +918,11 @@ static void paint_monorail_track_s_bend_right(
     LocationXY16 bounds  = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 3, height);
     }
     else
     {
-        sub_98196C(session, imageId, (sint8)offset.y, (sint8)offset.x, bounds.y, bounds.x, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, (sint8)offset.y, (sint8)offset.x, bounds.y, bounds.x, 3, height);
     }
 
     if (direction == 0 || direction == 2)

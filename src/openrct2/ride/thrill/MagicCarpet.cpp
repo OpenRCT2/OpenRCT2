@@ -235,7 +235,7 @@ static void paint_magic_carpet(
         }
 
         uint32 imageId = SPR_STATION_BASE_D | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98196C(session, imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 0, 32, 32, 1, height);
         break;
     }
 

@@ -212,7 +212,7 @@ static void paint_log_flume_track_station(
     {
         imageId = SPR_STATION_BASE_B_SW_NE | session->TrackColours[SCHEME_MISC];
     }
-    sub_98196C(session, imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
+    sub_98196C(session, imageId, 0, 0, 32, 32, 1, height);
 
     if (direction & 1)
     {
@@ -811,7 +811,7 @@ static void paint_log_flume_track_on_ride_photo(
     const rct_tile_element * tileElement)
 {
     uint32 imageId = SPR_STATION_BASE_D | IMAGE_TYPE_REMAP;
-    sub_98196C(session, imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
+    sub_98196C(session, imageId, 0, 0, 32, 32, 1, height);
 
     if (direction & 1)
     {

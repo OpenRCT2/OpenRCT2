@@ -2851,11 +2851,11 @@ static void junior_rc_s_bend_left_paint_setup(
     LocationXY16 bounds  = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 1, height, get_current_rotation());
+        sub_98196C(session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 1, height);
     }
     else
     {
-        sub_98196C(session, imageId, (sint8)offset.y, (sint8)offset.x, bounds.y, bounds.x, 1, height, get_current_rotation());
+        sub_98196C(session, imageId, (sint8)offset.y, (sint8)offset.x, bounds.y, bounds.x, 1, height);
     }
 
     if (direction == 0 || direction == 2)
@@ -2956,11 +2956,11 @@ static void junior_rc_s_bend_right_paint_setup(
     LocationXY16 bounds  = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 1, height, get_current_rotation());
+        sub_98196C(session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 1, height);
     }
     else
     {
-        sub_98196C(session, imageId, (sint8)offset.y, (sint8)offset.x, bounds.y, bounds.x, 1, height, get_current_rotation());
+        sub_98196C(session, imageId, (sint8)offset.y, (sint8)offset.x, bounds.y, bounds.x, 1, height);
     }
 
     if (direction == 0 || direction == 2)
@@ -3831,13 +3831,13 @@ static void junior_rc_brake_paint_setup(
     image_id = junior_rc_track_pieces_brake[direction] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
-        sub_98196C(session, image_id, 6, 0, 20, 32, 1, height, get_current_rotation());
+        sub_98196C(session, image_id, 6, 0, 20, 32, 1, height);
 
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
     else
     {
-        sub_98196C(session, image_id, 0, 6, 32, 20, 1, height, get_current_rotation());
+        sub_98196C(session, image_id, 0, 6, 32, 20, 1, height);
 
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
@@ -3872,13 +3872,13 @@ static void junior_rc_block_brake_paint_setup(
     image_id = junior_rc_track_pieces_block_brake[isBraked][direction] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
-        sub_98196C(session, image_id, 6, 0, 20, 32, 1, height, get_current_rotation());
+        sub_98196C(session, image_id, 6, 0, 20, 32, 1, height);
 
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
     else
     {
-        sub_98196C(session, image_id, 0, 6, 32, 20, 1, height, get_current_rotation());
+        sub_98196C(session, image_id, 0, 6, 32, 20, 1, height);
 
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
@@ -6083,15 +6083,17 @@ static void junior_rc_booster_paint_setup(
 
     if (direction & 1)
     {
-        sub_98196C(session, SPR_JUNIOR_RC_BOOSTER_NE_SW | session->TrackColours[SCHEME_TRACK], XoffsetNESW, YoffsetNESW, 20, 32,
-                   1, height, get_current_rotation());
+        sub_98196C(
+            session, SPR_JUNIOR_RC_BOOSTER_NE_SW | session->TrackColours[SCHEME_TRACK], XoffsetNESW, YoffsetNESW, 20, 32, 1,
+            height);
 
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
     else
     {
-        sub_98196C(session, SPR_JUNIOR_RC_BOOSTER_NW_SE | session->TrackColours[SCHEME_TRACK], XoffsetNWSE, YoffsetNWSE, 32, 20,
-                   1, height, get_current_rotation());
+        sub_98196C(
+            session, SPR_JUNIOR_RC_BOOSTER_NW_SE | session->TrackColours[SCHEME_TRACK], XoffsetNWSE, YoffsetNWSE, 32, 20, 1,
+            height);
 
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }

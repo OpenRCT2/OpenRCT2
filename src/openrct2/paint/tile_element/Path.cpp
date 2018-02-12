@@ -833,7 +833,7 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, const r
                 height2 += 16;
             }
 
-            sub_98196C(session, imageId | patrolColour << 19 | IMAGE_TYPE_REMAP, 16, 16, 1, 1, 0, height2 + 2, get_current_rotation());
+            sub_98196C(session, imageId | patrolColour << 19 | IMAGE_TYPE_REMAP, 16, 16, 1, 1, 0, height2 + 2);
         }
     }
 
@@ -846,7 +846,7 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, const r
         uint32 imageId = (SPR_HEIGHT_MARKER_BASE + height2 / 16) | COLOUR_GREY << 19 | IMAGE_TYPE_REMAP;
         imageId += get_height_marker_offset();
         imageId -= gMapBaseZ;
-        sub_98196C(session, imageId, 16, 16, 1, 1, 0, height2, get_current_rotation());
+        sub_98196C(session, imageId, 16, 16, 1, 1, 0, height2);
     }
 
     uint8 pathType = footpath_element_get_type(tile_element);
