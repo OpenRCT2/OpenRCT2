@@ -425,7 +425,7 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
     // Draw flat base support
     if (drawFlatPiece) {
         sint32 imageId = WoodenSupportImageIds[supportType].flat | imageColourFlags;
-        sub_98196C(session, imageId, 0, 0, 32, 32, 0, z - 2, rotation);
+        sub_98196C(session, imageId, 0, 0, 32, 32, 0, z - 2);
         hasSupports = true;
     }
 
@@ -435,7 +435,7 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
             // Full support
             sint32 imageId = WoodenSupportImageIds[supportType].full | imageColourFlags;
             uint8 ah = height == 2 ? 23 : 28;
-            sub_98196C(session, imageId, 0, 0, 32, 32, ah, z, rotation);
+            sub_98196C(session, imageId, 0, 0, 32, 32, ah, z);
             hasSupports = true;
             z += 32;
             height -= 2;
@@ -443,7 +443,7 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
             // Half support
             sint32 imageId = WoodenSupportImageIds[supportType].half | imageColourFlags;
             uint8 ah = height == 1 ? 7 : 12;
-            sub_98196C(session, imageId, 0, 0, 32, 32, ah, z, rotation);
+            sub_98196C(session, imageId, 0, 0, 32, 32, ah, z);
             hasSupports = true;
             z += 16;
             height -= 1;
@@ -587,13 +587,7 @@ bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, 
         if (heightSteps == 0) {
             skipTo663004 = true;
         } else {
-            sub_98196C(session,
-                WoodenSupportImageIds[supportType].flat | imageColourFlags,
-                0, 0,
-                32, 32, 0,
-                baseHeight - 2,
-                get_current_rotation()
-            );
+            sub_98196C(session, WoodenSupportImageIds[supportType].flat | imageColourFlags, 0, 0, 32, 32, 0, baseHeight - 2);
             _9E32B1 = true;
         }
     }
@@ -601,24 +595,16 @@ bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, 
     if (!skipTo663004) {
         while (heightSteps > 0) {
             if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == session->WaterHeight) {
-                sub_98196C(session,
-                    WoodenSupportImageIds[supportType].half | imageColourFlags,
-                    0, 0,
-                    32, 32, ((heightSteps == 1) ? 7 : 12),
-                    baseHeight,
-                    get_current_rotation()
-                );
+                sub_98196C(
+                    session, WoodenSupportImageIds[supportType].half | imageColourFlags, 0, 0, 32, 32,
+                    ((heightSteps == 1) ? 7 : 12), baseHeight);
                 heightSteps -= 1;
                 baseHeight += 16;
                 _9E32B1 = true;
             } else {
-                sub_98196C(session,
-                    WoodenSupportImageIds[supportType].full | imageColourFlags,
-                    0, 0,
-                    32, 32, ((heightSteps == 2) ? 23 : 28),
-                    baseHeight,
-                    get_current_rotation()
-                );
+                sub_98196C(
+                    session, WoodenSupportImageIds[supportType].full | imageColourFlags, 0, 0, 32, 32,
+                    ((heightSteps == 2) ? 23 : 28), baseHeight);
                 heightSteps -= 2;
                 baseHeight += 32;
                 _9E32B1 = true;
@@ -732,7 +718,7 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8 supportType, ui
 
         uint32 image_id = _metalSupportTypeToCrossbeamImages[supportType][ebp];
         image_id |= imageColourFlags;
-        sub_98196C(session, image_id, xOffset, yOffset, boundBoxLengthX, boundBoxLengthY, 1, height, rotation);
+        sub_98196C(session, image_id, xOffset, yOffset, boundBoxLengthX, boundBoxLengthY, 1, height);
 
         segment = newSegment;
     }
@@ -751,7 +737,7 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8 supportType, ui
         image_id += metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
         image_id |= imageColourFlags;
 
-        sub_98196C(session, image_id, xOffset, yOffset, 0, 0, 5, supportSegments[segment].height, rotation);
+        sub_98196C(session, image_id, xOffset, yOffset, 0, 0, 5, supportSegments[segment].height);
 
         height = supportSegments[segment].height + 6;
     }
@@ -774,8 +760,7 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8 supportType, ui
         image_id += heightDiff - 1;
         image_id |= imageColourFlags;
 
-
-        sub_98196C(session, image_id, xOffset, yOffset, 0, 0, heightDiff - 1, height, rotation);
+        sub_98196C(session, image_id, xOffset, yOffset, 0, 0, heightDiff - 1, height);
     }
 
     height += heightDiff;
@@ -804,7 +789,7 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8 supportType, ui
         if (count == 3 && z == 0x10)
             image_id++;
 
-        sub_98196C(session, image_id, xOffset, yOffset, 0, 0, z - 1, height, rotation);
+        sub_98196C(session, image_id, xOffset, yOffset, 0, 0, z - 1, height);
 
         height += z;
     }
@@ -917,13 +902,10 @@ bool metal_b_supports_paint_setup(paint_session * session, uint8 supportType, ui
             return true; // STC
         }
 
-        sub_98196C(session,
-            _metalSupportTypeToCrossbeamImages[supportType][ebp] | imageColourFlags,
+        sub_98196C(
+            session, _metalSupportTypeToCrossbeamImages[supportType][ebp] | imageColourFlags,
             loc_97AF20[originalSegment].x + loc_97B052[ebp].x, loc_97AF20[originalSegment].y + loc_97B052[ebp].y,
-            _97B062[ebp].x, _97B062[ebp].y, 1,
-            baseHeight,
-            get_current_rotation()
-        );
+            _97B062[ebp].x, _97B062[ebp].y, 1, baseHeight);
     }
 
     sint32 si = baseHeight;
@@ -936,13 +918,9 @@ bool metal_b_supports_paint_setup(paint_session * session, uint8 supportType, ui
         uint32 imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
         uint32 imageId = _97B15C[supportType].base_id + imageOffset;
 
-        sub_98196C(session,
-            imageId | imageColourFlags,
-            loc_97AF20[segment].x, loc_97AF20[segment].y,
-            0, 0, 5,
-            supportSegments[segment].height,
-            get_current_rotation()
-        );
+        sub_98196C(
+            session, imageId | imageColourFlags, loc_97AF20[segment].x, loc_97AF20[segment].y, 0, 0, 5,
+            supportSegments[segment].height);
 
         baseHeight = supportSegments[segment].height + 6;
     }
@@ -954,13 +932,9 @@ bool metal_b_supports_paint_setup(paint_session * session, uint8 supportType, ui
 
     heightDiff -= baseHeight;
     if (heightDiff > 0) {
-        sub_98196C(session,
-            (_97B15C[supportType].beam_id + (heightDiff - 1)) | imageColourFlags,
-            loc_97AF20[segment].x, loc_97AF20[segment].y,
-            0, 0, heightDiff - 1,
-            baseHeight,
-            get_current_rotation()
-        );
+        sub_98196C(
+            session, (_97B15C[supportType].beam_id + (heightDiff - 1)) | imageColourFlags, loc_97AF20[segment].x,
+            loc_97AF20[segment].y, 0, 0, heightDiff - 1, baseHeight);
     }
 
     baseHeight += heightDiff;
@@ -991,13 +965,9 @@ bool metal_b_supports_paint_setup(paint_session * session, uint8 supportType, ui
             }
         }
 
-        sub_98196C(session,
-            imageId | imageColourFlags,
-            loc_97AF20[segment].x, loc_97AF20[segment].y,
-            0, 0, beamLength - 1,
-            baseHeight,
-            get_current_rotation()
-        );
+        sub_98196C(
+            session, imageId | imageColourFlags, loc_97AF20[segment].x, loc_97AF20[segment].y, 0, 0, beamLength - 1,
+            baseHeight);
 
         baseHeight += beamLength;
         i++;
@@ -1076,13 +1046,7 @@ bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, si
 
     if (session->Support.slope & 0x20) {
         //save dx2
-        sub_98196C(session,
-            (pathEntry->bridge_image + 48) | imageColourFlags,
-            0, 0,
-            32, 32, 0,
-            baseHeight - 2,
-            get_current_rotation()
-        );
+        sub_98196C(session, (pathEntry->bridge_image + 48) | imageColourFlags, 0, 0, 32, 32, 0, baseHeight - 2);
         hasSupports = true;
     } else if (session->Support.slope & 0x10) {
         heightSteps -= 2;
@@ -1142,26 +1106,14 @@ bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, si
 
             uint32 imageId = (supportType * 24) + pathEntry->bridge_image + 23;
 
-            sub_98196C(session,
-                imageId | imageColourFlags,
-                0, 0,
-                32, 32, ((heightSteps == 1) ? 7 : 12),
-                baseHeight,
-                get_current_rotation()
-            );
+            sub_98196C(session, imageId | imageColourFlags, 0, 0, 32, 32, ((heightSteps == 1) ? 7 : 12), baseHeight);
             heightSteps -= 1;
             baseHeight += 16;
             hasSupports = true;
         } else {
             uint32 imageId = (supportType * 24) + pathEntry->bridge_image + 22;
 
-            sub_98196C(session,
-                imageId | imageColourFlags,
-                0, 0,
-                32, 32, ((heightSteps == 2) ? 23 : 28),
-                baseHeight,
-                get_current_rotation()
-            );
+            sub_98196C(session, imageId | imageColourFlags, 0, 0, 32, 32, ((heightSteps == 2) ? 23 : 28), baseHeight);
             heightSteps -= 2;
             baseHeight += 32;
             hasSupports = true;
@@ -1246,13 +1198,9 @@ bool path_b_supports_paint_setup(paint_session * session, sint32 segment, sint32
         uint8 imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
         baseHeight = supportSegments[segment].height;
 
-        sub_98196C(session,
-            (pathEntry->bridge_image + 37 + imageOffset) | imageColourFlags,
-            loc_97AF20[segment].x, loc_97AF20[segment].y,
-            0, 0, 5,
-            baseHeight,
-            get_current_rotation()
-        );
+        sub_98196C(
+            session, (pathEntry->bridge_image + 37 + imageOffset) | imageColourFlags, loc_97AF20[segment].x,
+            loc_97AF20[segment].y, 0, 0, 5, baseHeight);
         baseHeight += 6;
     }
 
@@ -1267,13 +1215,9 @@ bool path_b_supports_paint_setup(paint_session * session, sint32 segment, sint32
     heightDiff -= baseHeight;
 
     if (heightDiff > 0) {
-        sub_98196C(session,
-            (pathEntry->bridge_image + 20 + (heightDiff - 1)) | imageColourFlags,
-            loc_97AF20[segment].x, loc_97AF20[segment].y,
-            0, 0, heightDiff - 1,
-            baseHeight,
-            get_current_rotation()
-        );
+        sub_98196C(
+            session, (pathEntry->bridge_image + 20 + (heightDiff - 1)) | imageColourFlags, loc_97AF20[segment].x,
+            loc_97AF20[segment].y, 0, 0, heightDiff - 1, baseHeight);
     }
 
     baseHeight += heightDiff;
@@ -1299,13 +1243,9 @@ bool path_b_supports_paint_setup(paint_session * session, sint32 segment, sint32
                 break;
             }
 
-            sub_98196C(session,
-                (pathEntry->bridge_image + 20 + (z - 1)) | imageColourFlags,
-                loc_97AF20[segment].x, loc_97AF20[segment].y,
-                0, 0, (z - 1),
-                baseHeight,
-                get_current_rotation()
-            );
+            sub_98196C(
+                session, (pathEntry->bridge_image + 20 + (z - 1)) | imageColourFlags, loc_97AF20[segment].x,
+                loc_97AF20[segment].y, 0, 0, (z - 1), baseHeight);
 
             baseHeight += z;
         }
@@ -1319,13 +1259,8 @@ bool path_b_supports_paint_setup(paint_session * session, sint32 segment, sint32
             imageId += 1;
         }
 
-        sub_98196C(session,
-            imageId | imageColourFlags,
-            loc_97AF20[segment].x, loc_97AF20[segment].y,
-            0, 0, (z - 1),
-            baseHeight,
-            get_current_rotation()
-        );
+        sub_98196C(
+            session, imageId | imageColourFlags, loc_97AF20[segment].x, loc_97AF20[segment].y, 0, 0, (z - 1), baseHeight);
 
         baseHeight += z;
     }

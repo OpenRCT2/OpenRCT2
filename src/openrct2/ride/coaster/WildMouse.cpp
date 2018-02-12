@@ -658,9 +658,9 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_down(
     {
         sint32            part = trackSequence == 0 ? 0 : 1;
         const sprite_bb * sbb  = &imageIds[direction][part];
-        sub_98196C(session, sbb->sprite_id | session->TrackColours[SCHEME_TRACK], (sint8)sbb->offset.x, (sint8)sbb->offset.y,
-                   sbb->bb_size.x, sbb->bb_size.y, (sint8)sbb->bb_size.z, height + (sint8)sbb->offset.z,
-                   get_current_rotation());
+        sub_98196C(
+            session, sbb->sprite_id | session->TrackColours[SCHEME_TRACK], (sint8)sbb->offset.x, (sint8)sbb->offset.y,
+            sbb->bb_size.x, sbb->bb_size.y, (sint8)sbb->bb_size.z, height + (sint8)sbb->offset.z);
     }
 
     track_paint_util_right_quarter_turn_3_tiles_25_deg_down_tunnel(session, height, direction, trackSequence, TUNNEL_2,
@@ -734,9 +734,9 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_up(
     {
         sint32            part = trackSequence == 0 ? 0 : 1;
         const sprite_bb * sbb  = &imageIds[direction][part];
-        sub_98196C(session, sbb->sprite_id | session->TrackColours[SCHEME_TRACK], (sint8)sbb->offset.x, (sint8)sbb->offset.y,
-                   sbb->bb_size.x, sbb->bb_size.y, (sint8)sbb->bb_size.z, height + (sint8)sbb->offset.z,
-                   get_current_rotation());
+        sub_98196C(
+            session, sbb->sprite_id | session->TrackColours[SCHEME_TRACK], (sint8)sbb->offset.x, (sint8)sbb->offset.y,
+            sbb->bb_size.x, sbb->bb_size.y, (sint8)sbb->bb_size.z, height + (sint8)sbb->offset.z);
     }
 
     track_paint_util_right_quarter_turn_3_tiles_25_deg_up_tunnel(session, height, direction, trackSequence, TUNNEL_1, TUNNEL_2);
@@ -820,7 +820,7 @@ static void wild_mouse_track_left_quarter_turn_1(
         sub_98197C(session, imageId, 0, 0, 26, 24, 2, height, 6, 2, height, get_current_rotation());
         break;
     case 1:
-        sub_98196C(session, imageId, 0, 0, 26, 26, 2, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 0, 26, 26, 2, height);
         break;
     case 2:
         sub_98197C(session, imageId, 0, 0, 24, 26, 2, height, 2, 6, height, get_current_rotation());

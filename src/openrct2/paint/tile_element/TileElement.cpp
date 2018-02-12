@@ -129,7 +129,7 @@ static void blank_tiles_paint(paint_session * session, sint32 x, sint32 y)
     session->SpritePosition.x = x;
     session->SpritePosition.y = y;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-    sub_98196C(session, 3123, 0, 0, 32, 32, -1, 16, get_current_rotation());
+    sub_98196C(session, 3123, 0, 0, 32, 32, -1, 16);
 }
 
 bool gShowSupportSegmentHeights = false;
