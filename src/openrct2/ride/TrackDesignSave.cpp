@@ -22,6 +22,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../interface/Viewport.h"
+#include "../object/ObjectList.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -35,6 +36,7 @@
 #include "TrackData.h"
 #include "TrackDesign.h"
 #include "TrackDesignRepository.h"
+
 
 #define TRACK_MAX_SAVED_TILE_ELEMENTS 1500
 #define TRACK_NEARBY_SCENERY_DISTANCE 1
@@ -640,7 +642,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
     for (size_t i = 0; i < _trackSavedTileElementsDescCount; i++) {
         rct_td6_scenery_element *scenery = &td6->scenery_elements[i];
 
-        switch (scenery->scenery_object.flags & 0x0F) {
+        switch (object_entry_get_type(&scenery->scenery_object)) {
         case OBJECT_TYPE_PATHS:
         {
             uint8 slope = (scenery->flags & 0x60) >> 5;

@@ -122,7 +122,7 @@ protected:
         stream->WriteString(item.Path);
         stream->WriteString(item.Name);
 
-        switch (item.ObjectEntry.flags & 0x0F) {
+        switch (object_entry_get_type(&item.ObjectEntry)) {
         case OBJECT_TYPE_RIDE:
             stream->WriteValue<uint8>(item.RideFlags);
             for (sint32 i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
@@ -153,7 +153,7 @@ protected:
         item.Path = stream->ReadString();
         item.Name = stream->ReadString();
 
-        switch (item.ObjectEntry.flags & 0x0F) {
+        switch (object_entry_get_type(&item.ObjectEntry)) {
         case OBJECT_TYPE_RIDE:
             item.RideFlags = stream->ReadValue<uint8>();
             for (sint32 i = 0; i < 2; i++)
@@ -434,7 +434,7 @@ private:
         item->Path = nullptr;
         item->Name = nullptr;
 
-        uint8 objectType = item->ObjectEntry.flags & 0x0F;
+        uint8 objectType = object_entry_get_type(&item->ObjectEntry);
         switch (objectType) {
         case OBJECT_TYPE_SCENERY_GROUP:
             Memory::Free(item->ThemeObjects);
