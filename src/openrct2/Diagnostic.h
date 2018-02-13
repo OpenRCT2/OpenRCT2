@@ -19,7 +19,7 @@
 
 #include "common.h"
 
-enum DIAGNOSTIG_LEVEL {
+enum DIAGNOSTIC_LEVEL {
     DIAGNOSTIC_LEVEL_FATAL,
     DIAGNOSTIC_LEVEL_ERROR,
     DIAGNOSTIC_LEVEL_WARNING,
@@ -77,8 +77,8 @@ enum DIAGNOSTIG_LEVEL {
 
 extern bool _log_levels[DIAGNOSTIC_LEVEL_COUNT];
 
-void diagnostic_log(DIAGNOSTIG_LEVEL diagnosticLevel, const char *format, ...);
-void diagnostic_log_with_location(DIAGNOSTIG_LEVEL diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...);
+void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char *format, ...);
+void diagnostic_log_with_location(DIAGNOSTIC_LEVEL diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...);
 
 #ifdef _MSC_VER
 #define diagnostic_log_macro(level, format, ...)    diagnostic_log_with_location(level, __FILE__, __FUNCTION__, __LINE__, format, ## __VA_ARGS__)
