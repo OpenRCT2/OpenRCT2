@@ -49,6 +49,7 @@
 - Fix: [#3171] Guests entering from the corner of the tile in Amity Airfield (original bug).
 - Fix: [#3330] Current number of passengers overflows when over 255.
 - Fix: [#4760] Asia - Great Wall of China and South America - Rio Carnival have incorrect guest entry points (original bug).
+- Fix: [#4953, #6277] Unable to advertise to master servers over IPv6.
 - Fix: [#4991] Inverted helices can be built on the Lay Down RC, but are not drawn.
 - Fix: [#5190] Cannot build Wild Mouse - Flying Dutchman Gold Mine.
 - Fix: [#5224] Multiplayer window is not closed when server shuts down.
@@ -117,6 +118,7 @@
 - Fix: Remove consecutive thoughts about a ride being demolished.
 - Fix: Water raft vehicles stop spinning when going up slopes.
 - Fix: Correct spin is applied to coasters on S-bends and other turns.
+- Improved: [#5962] Use AVX2 instruction set where supported, resulting in a performance boost.
 - Improved: [#5964] Use SSE 4.1 instruction set where supported, resulting in a performance boost.
 - Improved: [#6186] Transparent menu items now draw properly in OpenGL mode.
 - Improved: [#6218] Speed up game start up time by saving scenario index to file.
