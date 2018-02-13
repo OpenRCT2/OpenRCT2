@@ -176,7 +176,12 @@ void * object_entry_get_chunk(sint32 objectType, size_t index)
 
 const rct_object_entry * object_entry_get_entry(sint32 objectType, size_t index)
 {
+    const rct_object_entry * result = nullptr;
     auto objectMgr = GetObjectManager();
     auto obj = objectMgr->GetLoadedObject(objectType, index);
-    return obj->GetObjectEntry();
+    if (obj != nullptr)
+    {
+        result = obj->GetObjectEntry();
+    }
+    return result;
 }
