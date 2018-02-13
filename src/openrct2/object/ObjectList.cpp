@@ -105,7 +105,7 @@ bool find_object_in_entry_group(const rct_object_entry * entry, uint8 * entry_ty
     {
         if (object_entry_get_chunk(objectType, i) != nullptr)
         {
-            auto thisEntry = object_entry_get_entry(*entry_type, i);
+            auto thisEntry = object_entry_get_entry(objectType, i);
             if (object_entry_compare(thisEntry, entry))
             {
                 *entry_type = objectType;
