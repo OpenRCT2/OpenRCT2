@@ -26,6 +26,8 @@
 #include "FootpathObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
+#include "ObjectLimits.h"
+#include "ObjectList.h"
 #include "ObjectFactory.h"
 #include "RideObject.h"
 #include "SceneryGroupObject.h"
@@ -33,9 +35,6 @@
 #include "StexObject.h"
 #include "WallObject.h"
 #include "WaterObject.h"
-
-#include "../object/Object.h"
-#include "ObjectLimits.h"
 
 class ReadObjectContext : public IReadObjectContext
 {
@@ -164,7 +163,7 @@ namespace ObjectFactory
     Object * CreateObject(const rct_object_entry &entry)
     {
         Object * result;
-        uint8 objectType = entry.flags & 0x0F;
+        uint8 objectType = object_entry_get_type(&entry);
         switch (objectType) {
         case OBJECT_TYPE_RIDE:
             result = new RideObject(entry);

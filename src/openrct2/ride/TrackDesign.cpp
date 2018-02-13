@@ -24,6 +24,7 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../OpenRCT2.h"
@@ -485,7 +486,7 @@ static void track_design_mirror_scenery(rct_track_td6 * td6)
         uint8 entry_type, entry_index;
         if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index))
         {
-            entry_type = scenery->scenery_object.flags & 0xF;
+            entry_type = object_entry_get_type(&scenery->scenery_object);
             if (entry_type != OBJECT_TYPE_PATHS)
             {
                 continue;
@@ -770,7 +771,7 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
                 uint8 entry_type, entry_index;
                 if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index))
                 {
-                    entry_type = scenery->scenery_object.flags & 0xF;
+                    entry_type = object_entry_get_type(&scenery->scenery_object);
                     if (entry_type != OBJECT_TYPE_PATHS)
                     {
                         entry_type = 0xFF;
@@ -895,7 +896,7 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
                 uint8 entry_type, entry_index;
                 if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index))
                 {
-                    entry_type = scenery->scenery_object.flags & 0xF;
+                    entry_type = object_entry_get_type(&scenery->scenery_object);
                     if (entry_type != OBJECT_TYPE_PATHS)
                     {
                         _trackDesignPlaceStateSceneryUnavailable = true;
