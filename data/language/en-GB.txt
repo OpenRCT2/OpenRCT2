@@ -4531,19 +4531,20 @@ STR_6221    :{SMALLFONT}{BLACK}This will set the ride's known entrance or exit l
 STR_6222    :{SMALLFONT}{BLACK}Speedrunning
 STR_6223    :Enable speedrunning mode
 STR_6224    :{SMALLFONT}{BLACK}Enables speedrunning mode (see description)
-STR_6225    :Speedrunning mode disables all cheats and changes the rules of the game. Scenario objectives are considered complete at the earliest time their requirements have been met before the deadline. Scenarios are completed consecutively within their respective games/expansions. Cheats are disabled. You may choose to run with or without enabling game speed changes. Navigate back to the main menu to choose a category. The first level in each group has the option to start a run of that group. It's recommended to use the default game sorting to organize scenarios into groups.
-STR_6226    :{SMALLFONT}{BLACK}Run all levels in this group
-STR_6227    :{SMALLFONT}{BLACK}Run of this level only
-STR_6228    :Start speedrun
-STR_6229    :Start IL speedrun
-STR_6230    :Next level
-STR_6231    :Quit to menu
-STR_6232    :Cheats have been used, times will not be recorded!
-STR_6233    :{WINDOW_COLOUR_2}Days:
-STR_6234    :{WINDOW_COLOUR_2}Time:
-STR_6235    :{BLACK}{COMMA32}
-STR_6236    :{BLACK}{UINT16}m{UINT16}.{INT32}s
-
+STR_6225    :Speedrunning mode disables all cheats and changes the rules of the game. Scenario objectives are considered complete at the earliest time their requirements have been met before the deadline. Scenarios are completed consecutively within their respective games/expansions. Cheats are disabled. You may choose to run with or without enabling game speed changes. Navigate back to the main menu to choose a category.
+STR_6226    :{SMALLFONT}{BLACK}Choose to run all levels in the group or run this level only
+STR_6227    :{SMALLFONT}{BLACK}Run this level only
+STR_6228    :Next scenario
+STR_6229    :Quit to menu
+STR_6230    :Cheats have been used, times will not be recorded!
+STR_6231    :{WINDOW_COLOUR_2}Days:
+STR_6232    :{WINDOW_COLOUR_2}Time:
+STR_6233    :{BLACK}{COMMA32}
+STR_6234    :{BLACK}{UINT16}m{UINT16}.{INT32}s
+STR_6235    :Run Group
+STR_6236    :Run Scenario
+STR_6237    :Do you want to run this scenario individually or run the whole group from the beginning?
+STR_6238    :Run Group or Scenario
 
 #############
 # Scenarios #

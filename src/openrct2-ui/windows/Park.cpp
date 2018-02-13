@@ -132,7 +132,7 @@ static rct_widget window_park_stats_widgets[] = {
 
 static rct_widget window_park_objective_widgets[] = {
     MAIN_PARK_WIDGETS,
-    { WWT_BUTTON,           1,  7,      222,    242,    253,    STR_SPEEDRUNNING_NEXT_LEVEL,                STR_NONE },             // Speedrunning: Move to next level in order
+    { WWT_BUTTON,           1,  7,      222,    242,    253,    STR_SPEEDRUNNING_NEXT_SCENARIO,             STR_NONE },             // Speedrunning: Move to next level in order
     { WWT_BUTTON,           1,  7,      222,    256,    267,    STR_ENTER_NAME_INTO_SCENARIO_CHART,         STR_NONE },             // enter name
     { WIDGETS_END },
 };
@@ -1598,7 +1598,7 @@ static void window_park_objective_invalidate(rct_window *w)
                 //TODO retry level or quit to menu
             }
             else {
-                window_park_objective_widgets[WIDX_NEXT_LEVEL].text = STR_SPEEDRUNNING_NEXT_LEVEL;
+                window_park_objective_widgets[WIDX_NEXT_LEVEL].text = STR_SPEEDRUNNING_NEXT_SCENARIO;
                 window_park_objective_widgets[WIDX_NEXT_LEVEL].type = WWT_BUTTON;
                 widget_set_enabled(w, WIDX_NEXT_LEVEL, true);
                 if (gSpeedrunningState.is_il_run) {

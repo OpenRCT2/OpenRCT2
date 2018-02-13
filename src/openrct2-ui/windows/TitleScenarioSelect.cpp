@@ -61,8 +61,6 @@ enum {
     WIDX_TITLEBAR,
     WIDX_CLOSE,
     WIDX_TABCONTENT,
-    WIDX_IL_SPEEDRUN,
-    WIDX_FULL_SPEEDRUN,
     WIDX_TAB1,
     WIDX_TAB2,
     WIDX_TAB3,
@@ -79,8 +77,6 @@ static rct_widget window_scenarioselect_widgets[] = {
     { WWT_CAPTION,          0,  1,      732,    1,      14,     STR_SELECT_SCENARIO,                    STR_WINDOW_TITLE_TIP },         // title bar
     { WWT_CLOSEBOX,         0,  721,    731,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },         // close x button
     { WWT_IMGBTN,           1,  0,      733,    50,     333,    0xFFFFFFFF,                             STR_NONE },                     // tab content panel
-    { WWT_BUTTON,           1,  600,    728,    317,    328,    STR_START_IL_SPEEDRUN,                  STR_START_IL_SPEEDRUN_TIP },    // start speedrun of current group
-    { WWT_BUTTON,           1,  600,    728,    301,    312,    STR_START_FULL_SPEEDRUN,                STR_START_FULL_SPEEDRUN_TIP },  // start speedrun of current scenario
     { WWT_TAB,              1,  3,      93,     17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 1
     { WWT_TAB,              1,  94,     184,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 2
     { WWT_TAB,              1,  185,    275,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 3
@@ -265,45 +261,15 @@ static void window_scenarioselect_close(rct_window *w)
 
 static void window_scenarioselect_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_IL_SPEEDRUN:
-        if (!gConfigGeneral.enable_speedrunning_mode)
-            break;
-        audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
-        gFirstTimeSaving = true;
-        gSpeedrunningState.is_il_run = true;
-        gSpeedrunningState.speedrun_active = true;
-        gSpeedrunningState.speedrunning_time_in_days = 0;
-        gSpeedrunningState.current_scenario_index = w->highlighted_scenario->source_index;
-        gSpeedrunningState.current_scenario_group = w->highlighted_scenario->category;
-        gSpeedrunningState.speedrun_invalidated = false;
-        gSpeedrunningState.speedrun_start_time = platform_get_datetime_now_utc();
-        _callback(w->highlighted_scenario->path);
-        break;
-    case WIDX_FULL_SPEEDRUN:
-        if (!gConfigGeneral.enable_speedrunning_mode)
-            break;
-        audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
-        gFirstTimeSaving = true;
-        gSpeedrunningState.is_il_run = false;
-        gSpeedrunningState.speedrun_active = true;
-        gSpeedrunningState.speedrunning_time_in_days = 0;
-        gSpeedrunningState.current_scenario_index = 0;
-        gSpeedrunningState.current_scenario_group = w->highlighted_scenario->category;
-        gSpeedrunningState.speedrun_invalidated = false;
-        gSpeedrunningState.speedrun_start_time = platform_get_datetime_now_utc();
-        _callback(w->highlighted_scenario->path);
-        break;
-    case WIDX_CLOSE:
+    if (widgetIndex == WIDX_CLOSE) {
         window_close(w);
-        break;
     }
 }
 
 static void window_scenarioselect_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     if  (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB8) {
-        w->selected_tab = widgetIndex - 6;
+        w->selected_tab = widgetIndex - 4;
         w->highlighted_scenario = nullptr;
         initialise_list_items(w);
         window_invalidate(w);
@@ -351,14 +317,26 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, sint32 scrollIn
                 audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
                 gFirstTimeSaving = true;
                 if (gConfigGeneral.enable_speedrunning_mode) {
-                    gSpeedrunningState.is_il_run = true;
+                    source_desc desc;
+                    ScenarioSources::TryGetByName(w->highlighted_scenario->name, &desc);
                     gSpeedrunningState.speedrun_active = true;
                     gSpeedrunningState.speedrunning_time_in_days = 0;
                     gSpeedrunningState.current_scenario_index = w->highlighted_scenario->source_index;
                     gSpeedrunningState.current_scenario_group = w->highlighted_scenario->category;
                     gSpeedrunningState.speedrun_invalidated = false;
                     gSpeedrunningState.speedrun_start_time = platform_get_datetime_now_utc();
+                    if (desc.first_in_category) {
+                        // TODO window returning choice?
+                        window_speedrun_option_open();
+                    }
+                    else {
+                        gSpeedrunningState.is_il_run = true;
+                    }
                 }
+
+                source_desc desc;
+                ScenarioSources::TryGetByName(w->highlighted_scenario->name, &desc);
+
                 _callback(listItem.scenario.scenario->path);
                 if (_titleEditor)
                 {
@@ -428,10 +406,6 @@ static void window_scenarioselect_invalidate(rct_window *w)
     window_scenarioselect_widgets[WIDX_CLOSE].right = windowWidth - 3;
     window_scenarioselect_widgets[WIDX_TABCONTENT].right = windowWidth - 1;
     window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = windowWidth - 179;
-    window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].right = windowWidth - 3;
-    window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].left = windowWidth - 128;
-    window_scenarioselect_widgets[WIDX_IL_SPEEDRUN].right = windowWidth - 3;
-    window_scenarioselect_widgets[WIDX_IL_SPEEDRUN].left = windowWidth - 128;
 
     sint32 windowHeight = w->height;
     window_scenarioselect_widgets[WIDX_BACKGROUND].bottom = windowHeight - 1;
@@ -439,35 +413,19 @@ static void window_scenarioselect_invalidate(rct_window *w)
 
     const sint32 bottomMargin = gConfigGeneral.debugging_tools ? 17 : 5;
     window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = windowHeight - bottomMargin;
-    window_scenarioselect_widgets[WIDX_IL_SPEEDRUN].bottom = windowHeight - bottomMargin - 3;
-    window_scenarioselect_widgets[WIDX_IL_SPEEDRUN].top = windowHeight - bottomMargin - 14;
-    window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].bottom = windowHeight - bottomMargin - 17;
-    window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].top = windowHeight - bottomMargin - 28;
 
     if (gConfigGeneral.enable_speedrunning_mode) {
-        window_scenarioselect_widgets[WIDX_SCENARIOLIST].tooltip = STR_START_IL_SPEEDRUN_TIP;
-        widget_set_enabled(w, WIDX_IL_SPEEDRUN, true);
-        widget_set_enabled(w, WIDX_FULL_SPEEDRUN, true);
         if (w->highlighted_scenario != nullptr) {
-            window_scenarioselect_widgets[WIDX_IL_SPEEDRUN].type = WWT_BUTTON;
             // Start full runs only on the first scenario in each group
             source_desc desc;
             ScenarioSources::TryGetByName(w->highlighted_scenario->name, &desc);
             if (desc.first_in_category) {
-                window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].type = WWT_BUTTON;
+                window_scenarioselect_widgets[WIDX_SCENARIOLIST].tooltip = STR_START_IL_SPEEDRUN_TIP;
             }
             else {
-                window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].type = WWT_EMPTY;
+                window_scenarioselect_widgets[WIDX_SCENARIOLIST].tooltip = STR_START_FULL_SPEEDRUN_TIP;
             }
         }
-        else {
-            window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].type = WWT_EMPTY;
-            window_scenarioselect_widgets[WIDX_IL_SPEEDRUN].type = WWT_EMPTY;
-        }
-    }
-    else {
-        window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].type = WWT_EMPTY;
-        window_scenarioselect_widgets[WIDX_IL_SPEEDRUN].type = WWT_EMPTY;
     }
 }
 
