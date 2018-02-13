@@ -30,11 +30,16 @@
 #include "../rct12/SawyerChunkReader.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
+#include <openrct2/Speedrunning.h>
 
 #include "../config/Config.h"
 #include "../localisation/Localisation.h"
 #include "../platform/platform.h"
 #include "Scenario.h"
+
+#define HIGHSCORE_FILE_VERSION 1
+#define SPEEDRUN_DAYS_RECORD_FILE_VERSION 2
+#define SPEEDRUN_TIME_RECORD_FILE_VERSION 3
 
 using namespace OpenRCT2;
 
@@ -119,6 +124,18 @@ static void scenario_highscore_free(scenario_highscore_entry * highscore)
     SafeDelete(highscore);
 }
 
+static void scenario_speedrun_highscores_days_free(scenario_speedrun_days_record_entry * days)
+{
+    SafeFree(days->fileName);
+    SafeDelete(days);
+}
+
+static void scenario_speedrun_highscores_time_free(scenario_speedrun_time_record_entry * time)
+{
+    SafeFree(time->fileName);
+    SafeDelete(time);
+}
+
 class ScenarioFileIndex final : public FileIndex<scenario_index_entry>
 {
 private:
@@ -192,6 +209,8 @@ protected:
         item.objective_arg_2 = stream->ReadValue<sint32>();
         item.objective_arg_3 = stream->ReadValue<sint16>();
         item.highscore = nullptr;
+        item.time_record = nullptr;
+        item.days_record = nullptr;
 
         stream->Read(item.internal_name, sizeof(item.internal_name));
         stream->Read(item.name, sizeof(item.name));
@@ -269,6 +288,8 @@ private:
         entry.objective_arg_2 = s6Info->objective_arg_2;
         entry.objective_arg_3 = s6Info->objective_arg_3;
         entry.highscore = nullptr;
+        entry.days_record = nullptr;
+        entry.time_record = nullptr;
         if (String::IsNullOrEmpty(s6Info->name))
         {
             // If the scenario doesn't have a name, set it to the filename
@@ -281,8 +302,8 @@ private:
             ScenarioSources::NormaliseName(entry.name, sizeof(entry.name), entry.name);
         }
 
-		// entry.name will be translated later so keep the untranslated name here
-		String::Set(entry.internal_name, sizeof(entry.internal_name), entry.name);
+        // entry.name will be translated later so keep the untranslated name here
+        String::Set(entry.internal_name, sizeof(entry.internal_name), entry.name);
 
         String::Set(entry.details, sizeof(entry.details), s6Info->details);
 
@@ -318,11 +339,15 @@ class ScenarioRepository final : public IScenarioRepository
 {
 private:
     static constexpr uint32 HighscoreFileVersion = 1;
+    static constexpr uint32 SpeedrunDaysRecordFileVersion = 2;
+    static constexpr uint32 SpeedrunTimeRecordFileVersion = 3;
 
     IPlatformEnvironment * const _env;
     ScenarioFileIndex const _fileIndex;
     std::vector<scenario_index_entry> _scenarios;
     std::vector<scenario_highscore_entry*> _highscores;
+    std::vector<scenario_speedrun_days_record_entry*> _speedrunDaysHighscores;
+    std::vector<scenario_speedrun_time_record_entry*> _speedrunTimesHighscores;
 
 public:
     explicit ScenarioRepository(IPlatformEnvironment * env)
@@ -334,6 +359,8 @@ public:
     virtual ~ScenarioRepository()
     {
         ClearHighscores();
+        ClearSpeedrunDaysHighscores();
+        ClearSpeedrunTimeHighscores();
     }
 
     void Scan() override
@@ -385,20 +412,21 @@ public:
         return nullptr;
     }
 
-	const scenario_index_entry * GetByInternalName(const utf8 * name) const override {
-		for (size_t i = 0; i < _scenarios.size(); i++) {
-			const scenario_index_entry * scenario = &_scenarios[i];
+    const scenario_index_entry * GetByInternalName(const utf8 * name) const override 
+    {
+        for (size_t i = 0; i < _scenarios.size(); i++) {
+            const scenario_index_entry * scenario = &_scenarios[i];
 
 			if (scenario->source_game == SCENARIO_SOURCE_OTHER && scenario->sc_id == SC_UNIDENTIFIED)
 				continue;
 
-			// Note: this is always case insensitive search for cross platform consistency
-			if (String::Equals(name, scenario->internal_name, true)) {
-				return &_scenarios[i];
-			}
-		}
-		return nullptr;
-	}
+            // Note: this is always case insensitive search for cross platform consistency
+            if (String::Equals(name, scenario->internal_name, true)) {
+                return &_scenarios[i];
+            }
+        }
+        return nullptr;
+    }
 
     const scenario_index_entry * GetByPath(const utf8 * path) const override
     {
@@ -445,6 +473,55 @@ public:
                 highscore->name = String::Duplicate(name);
                 highscore->company_value = companyValue;
                 SaveHighscores();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool TryRecordSpeedrunRecords(const utf8 * scenarioFileName, uint32 daysValue) override
+    {
+        // Scan the scenarios so we have a fresh list to query. This is to prevent the issue of scenario completions
+        // not getting recorded, see #4951.
+        Scan();
+
+        scenario_index_entry * scenario = GetByFilename(scenarioFileName);
+        if (scenario != nullptr)
+        {
+            // Check if time record value has been broken
+            scenario_speedrun_time_record_entry * highscore_time = scenario->time_record;
+            if (highscore_time == nullptr || gSpeedrunningState.speedrun_finished_time < highscore_time->time_record)
+            {
+                if (highscore_time == nullptr)
+                {
+                    highscore_time = InsertSpeedrunTimeHighscore();
+                    scenario->time_record = highscore_time;
+                }
+                else
+                {
+                    SafeFree(highscore_time->fileName);
+                }
+                highscore_time->fileName = String::Duplicate(Path::GetFileName(scenario->path));
+                highscore_time->time_record = gSpeedrunningState.speedrun_finished_time;
+                SaveSpeedrunTimeHighscores();
+            }
+
+            // Check if days record value has been broken
+            scenario_speedrun_days_record_entry * highscore_days = scenario->days_record;
+            if (highscore_days == nullptr || daysValue < highscore_days->days_record)
+            {
+                if (highscore_days == nullptr)
+                {
+                    highscore_days = InsertSpeedrunDaysHighscore();
+                    scenario->days_record = highscore_days;
+                }
+                else
+                {
+                    SafeFree(highscore_days->fileName);
+                }
+                highscore_days->fileName = String::Duplicate(Path::GetFileName(scenario->path));
+                highscore_days->days_record = daysValue;
+                SaveSpeedrunDaysHighscores();
                 return true;
             }
         }
@@ -566,11 +643,15 @@ private:
             return;
         }
 
+        uint32 numHighscores = 0;
+        uint32 fileVersion = 0;
+
+        // Load scenario scores
         try
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
-            uint32 fileVersion = fs.ReadValue<uint32>();
-            if (fileVersion != 1)
+            fileVersion = fs.ReadValue<uint32>();
+            if (fileVersion != HIGHSCORE_FILE_VERSION)
             {
                 Console::Error::WriteLine("Invalid or incompatible highscores file.");
                 return;
@@ -578,7 +659,7 @@ private:
 
             ClearHighscores();
 
-            uint32 numHighscores = fs.ReadValue<uint32>();
+            numHighscores = fs.ReadValue<uint32>();
             for (uint32 i = 0; i < numHighscores; i++)
             {
                 scenario_highscore_entry * highscore = InsertHighscore();
@@ -591,6 +672,63 @@ private:
         catch (const std::exception &)
         {
             Console::Error::WriteLine("Error reading highscores.");
+        }
+
+        if (gConfigGeneral.enable_speedrunning_mode) {
+            std::string path_speedrun_days = _env->GetFilePath(PATHID::SCORES_SPEEDRUN_DAYS);
+            std::string path_speedrun_time = _env->GetFilePath(PATHID::SCORES_SPEEDRUN_TIME);
+
+            // Load speedrunning scores (Days)
+            try
+            {
+                auto fs = FileStream(path_speedrun_days, FILE_MODE_OPEN);
+                fileVersion = fs.ReadValue<uint32>();
+                if (fileVersion != SPEEDRUN_DAYS_RECORD_FILE_VERSION)
+                {
+                    Console::Error::WriteLine("Invalid or incompatible highscores file.");
+                    return;
+                }
+
+                ClearSpeedrunTimeHighscores();
+
+                numHighscores = fs.ReadValue<uint32>();
+                for (uint32 i = 0; i < numHighscores; i++)
+                {
+                    scenario_speedrun_days_record_entry * highscore = InsertSpeedrunDaysHighscore();
+                    highscore->fileName = fs.ReadString();
+                    highscore->days_record = fs.ReadValue<uint32>();
+                }
+            }
+            catch (const std::exception &)
+            {
+                Console::Error::WriteLine("Error reading highscores.");
+            }
+
+            // Load speedrunning scores (Time)
+            try
+            {
+                auto fs = FileStream(path_speedrun_time, FILE_MODE_OPEN);
+                fileVersion = fs.ReadValue<uint32>();
+                if (fileVersion != SPEEDRUN_TIME_RECORD_FILE_VERSION)
+                {
+                    Console::Error::WriteLine("Invalid or incompatible highscores file.");
+                    return;
+                }
+
+                ClearSpeedrunDaysHighscores();
+
+                numHighscores = fs.ReadValue<uint32>();
+                for (uint32 i = 0; i < numHighscores; i++)
+                {
+                    scenario_speedrun_time_record_entry * highscore = InsertSpeedrunTimeHighscore();
+                    highscore->fileName = fs.ReadString();
+                    highscore->time_record = fs.ReadValue<datetime64>();
+                }
+            }
+            catch (const std::exception &)
+            {
+                Console::Error::WriteLine("Error reading highscores.");
+            }
         }
     }
 
@@ -682,6 +820,24 @@ private:
         _highscores.clear();
     }
 
+    void ClearSpeedrunDaysHighscores()
+    {
+        for (auto highscore : _speedrunDaysHighscores)
+        {
+            scenario_speedrun_highscores_days_free(highscore);
+        }
+        _speedrunDaysHighscores.clear();
+    }
+
+    void ClearSpeedrunTimeHighscores()
+    {
+        for (auto highscore : _speedrunTimesHighscores)
+        {
+            scenario_speedrun_highscores_time_free(highscore);
+        }
+        _speedrunTimesHighscores.clear();
+    }
+
     scenario_highscore_entry * InsertHighscore()
     {
         auto highscore = new scenario_highscore_entry();
@@ -690,14 +846,46 @@ private:
         return highscore;
     }
 
+    scenario_speedrun_days_record_entry * InsertSpeedrunDaysHighscore()
+    {
+        auto highscore = new scenario_speedrun_days_record_entry();
+        memset(highscore, 0, sizeof(scenario_speedrun_days_record_entry));
+        _speedrunDaysHighscores.push_back(highscore);
+        return highscore;
+    }
+
+    scenario_speedrun_time_record_entry * InsertSpeedrunTimeHighscore()
+    {
+        auto highscore = new scenario_speedrun_time_record_entry();
+        memset(highscore, 0, sizeof(scenario_speedrun_time_record_entry));
+        _speedrunTimesHighscores.push_back(highscore);
+        return highscore;
+    }
+
     void AttachHighscores()
     {
         for (auto &highscore : _highscores)
         {
-            scenario_index_entry * scenerio = GetByFilename(highscore->fileName);
-            if (scenerio != nullptr)
+            scenario_index_entry * scenario = GetByFilename(highscore->fileName);
+            if (scenario != nullptr)
             {
-                scenerio->highscore = highscore;
+                scenario->highscore = highscore;
+            }
+        }
+        for (auto &highscore : _speedrunDaysHighscores)
+        {
+            scenario_index_entry * scenario = GetByFilename(highscore->fileName);
+            if (scenario != nullptr)
+            {
+                scenario->days_record = highscore;
+            }
+        }
+        for (auto &highscore : _speedrunTimesHighscores)
+        {
+            scenario_index_entry * scenario = GetByFilename(highscore->fileName);
+            if (scenario != nullptr)
+            {
+                scenario->time_record = highscore;
             }
         }
     }
@@ -722,6 +910,48 @@ private:
         catch (const std::exception &)
         {
             Console::Error::WriteLine("Unable to save highscores to '%s'", path.c_str());
+        }
+    }
+
+    void SaveSpeedrunDaysHighscores()
+    {
+        std::string path = _env->GetFilePath(PATHID::SCORES_SPEEDRUN_DAYS);
+        try
+        {
+            auto fs = FileStream(path, FILE_MODE_WRITE);
+            fs.WriteValue<uint32>(SpeedrunDaysRecordFileVersion);
+            fs.WriteValue<uint32>((uint32)_speedrunDaysHighscores.size());
+            for (size_t i = 0; i < _speedrunDaysHighscores.size(); i++)
+            {
+                const scenario_speedrun_days_record_entry * highscore = _speedrunDaysHighscores[i];
+                fs.WriteString(highscore->fileName);
+                fs.WriteValue(highscore->days_record);
+            }
+        }
+        catch (const std::exception &)
+        {
+            Console::Error::WriteLine("Unable to save speedrun days highscores to '%s'", path.c_str());
+        }
+    }
+
+    void SaveSpeedrunTimeHighscores()
+    {
+        std::string path = _env->GetFilePath(PATHID::SCORES_SPEEDRUN_TIME);
+        try
+        {
+            auto fs = FileStream(path, FILE_MODE_WRITE);
+            fs.WriteValue<uint32>(SpeedrunTimeRecordFileVersion);
+            fs.WriteValue<uint32>((uint32)_speedrunTimesHighscores.size());
+            for (size_t i = 0; i < _speedrunTimesHighscores.size(); i++)
+            {
+                const scenario_speedrun_time_record_entry * highscore = _speedrunTimesHighscores[i];
+                fs.WriteString(highscore->fileName);
+                fs.WriteValue(highscore->time_record);
+            }
+        }
+        catch (const std::exception &)
+        {
+            Console::Error::WriteLine("Unable to save speedrun time highscores to '%s'", path.c_str());
         }
     }
 };
@@ -761,5 +991,11 @@ bool scenario_repository_try_record_highscore(const utf8 * scenarioFileName, mon
 {
     IScenarioRepository * repo = GetScenarioRepository();
     return repo->TryRecordHighscore(scenarioFileName, companyValue, name);
+}
+
+bool scenario_repository_try_record_speedrun_highscore(const utf8 * scenarioFileName, uint32 daysValue)
+{
+    IScenarioRepository * repo = GetScenarioRepository();
+    return repo->TryRecordSpeedrunRecords(scenarioFileName, daysValue);
 }
 

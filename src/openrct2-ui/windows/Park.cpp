@@ -19,6 +19,7 @@
 #include <openrct2/core/Math.hpp>
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2-ui/interface/LandTool.h>
+#include <openrct2/core/Util.hpp>
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/Game.h>
@@ -32,6 +33,9 @@
 #include <openrct2/world/Entrance.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/interface/themes.h>
+#include <openrct2/scenario/ScenarioSources.h>
+#include <openrct2/scenario/ScenarioRepository.h>
+#include <openrct2/Speedrunning.h>
 
 enum WINDOW_PARK_PAGE {
     WINDOW_PARK_PAGE_ENTRANCE,
@@ -70,7 +74,8 @@ enum WINDOW_PARK_WIDGET_IDX {
     WIDX_INCREASE_PRICE,
     WIDX_DECREASE_PRICE,
 
-    WIDX_ENTER_NAME = 11
+    WIDX_NEXT_LEVEL = 11,
+    WIDX_ENTER_NAME
 };
 
 #pragma region Widgets
@@ -80,13 +85,13 @@ enum WINDOW_PARK_WIDGET_IDX {
     { WWT_CAPTION,          0,  1,      228,    1,      14,     STR_STRINGID,                   STR_WINDOW_TITLE_TIP },         /* title bar          */    \
     { WWT_CLOSEBOX,         0,  217,    227,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP },         /* close x button     */    \
     { WWT_RESIZE,           1,  0,      229,    43,     173,    0xFFFFFFFF,                     STR_NONE },                     /* tab content panel  */    \
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_ENTRANCE_TAB_TIP },    /* tab 1              */    \
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_RATING_TAB_TIP },      /* tab 2              */    \
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_GUESTS_TAB_TIP },      /* tab 3              */    \
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_PRICE_TAB_TIP },       /* tab 4              */    \
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_STATS_TAB_TIP },       /* tab 5              */    \
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_OBJECTIVE_TAB_TIP },   /* tab 6              */    \
-    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_AWARDS_TAB_TIP }       /* tab 7              */
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_PARK_ENTRANCE_TAB_TIP },    /* tab 1              */    \
+    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_PARK_RATING_TAB_TIP },      /* tab 2              */    \
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_PARK_GUESTS_TAB_TIP },      /* tab 3              */    \
+    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_PARK_PRICE_TAB_TIP },       /* tab 4              */    \
+    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_PARK_STATS_TAB_TIP },       /* tab 5              */    \
+    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_PARK_OBJECTIVE_TAB_TIP },   /* tab 6              */    \
+    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_PARK_AWARDS_TAB_TIP }       /* tab 7              */
 
 static rct_widget window_park_entrance_widgets[] = {
     MAIN_PARK_WIDGETS,
@@ -127,7 +132,8 @@ static rct_widget window_park_stats_widgets[] = {
 
 static rct_widget window_park_objective_widgets[] = {
     MAIN_PARK_WIDGETS,
-    { WWT_BUTTON,           1,  7,      222,    209,    220,    STR_ENTER_NAME_INTO_SCENARIO_CHART,         STR_NONE },             // enter name
+    { WWT_BUTTON,           1,  7,      222,    242,    253,    STR_SPEEDRUNNING_NEXT_SCENARIO,             STR_NONE },             // Speedrunning: Move to next level in order
+    { WWT_BUTTON,           1,  7,      222,    256,    267,    STR_ENTER_NAME_INTO_SCENARIO_CHART,         STR_NONE },             // enter name
     { WIDGETS_END },
 };
 
@@ -145,6 +151,8 @@ static rct_widget *window_park_page_widgets[] = {
     window_park_objective_widgets,
     window_park_awards_widgets
 };
+
+static scenarioselect_callback _callback;
 
 #pragma endregion
 
@@ -197,6 +205,8 @@ static void window_park_awards_resize(rct_window *w);
 static void window_park_awards_update(rct_window *w);
 static void window_park_awards_invalidate(rct_window *w);
 static void window_park_awards_paint(rct_window *w, rct_drawpixelinfo *dpi);
+
+//utf8string TimeDeltaToMmSsHh(datetime64 delta);
 
 static rct_window_event_list window_park_entrance_events = {
     window_park_entrance_close,
@@ -543,6 +553,8 @@ static constexpr const window_park_award ParkAwards[] = {
     { STR_AWARD_BEST_GENTLE_RIDES,          SPR_AWARD_BEST_GENTLE_RIDES },
 };
 
+IScenarioRepository * _scenarioRepository = nullptr;
+
 static void window_park_init_viewport(rct_window *w);
 static void window_park_set_page(rct_window *w, sint32 page);
 static void window_park_anchor_border_widgets(rct_window *w);
@@ -781,6 +793,10 @@ static void window_park_entrance_invalidate(rct_window *w)
         window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_EMPTY;
     else
         window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_FLATBTN;
+
+    // Disable renaming of park while in speedrunning mode because we'll use that to advance through levels
+    if (gConfigGeneral.enable_speedrunning_mode)
+        window_park_entrance_widgets[WIDX_RENAME].type = WWT_FLATBTN;
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
     window_park_anchor_border_widgets(w);
@@ -1453,6 +1469,19 @@ rct_window * window_park_objective_open()
     window->y = context_get_height() / 2 - 87;
     window_invalidate(window);
 
+    // Prompt to quit to menu if we're at the end of a group or IL run
+    if (gConfigGeneral.enable_speedrunning_mode && !gSpeedrunningState.is_il_run) {
+        _scenarioRepository = GetScenarioRepository();
+        _scenarioRepository->Scan();
+        const scenario_index_entry * scenario = _scenarioRepository->GetByIndex(gSpeedrunningState.current_scenario_index + 1);
+        if (scenario == nullptr) {
+            window_park_objective_widgets[WIDX_NEXT_LEVEL].text = STR_QUIT_TO_MENU;
+        }
+    }
+    else {
+        window_park_objective_widgets[WIDX_NEXT_LEVEL].text = STR_QUIT_TO_MENU;
+    }
+
     return window;
 }
 
@@ -1486,6 +1515,32 @@ static void window_park_objective_mouseup(rct_window *w, rct_widgetindex widgetI
             32
         );
         break;
+    case WIDX_NEXT_LEVEL:
+        if (gConfigGeneral.enable_speedrunning_mode) {
+            // TODO Do something if objective failed
+            if (gSpeedrunningState.is_il_run) {
+                window_close_by_class(WC_MANAGE_TRACK_DESIGN);
+                window_close_by_class(WC_TRACK_DELETE_PROMPT);
+                game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
+                break;
+            }
+            else {
+                _scenarioRepository = GetScenarioRepository();
+                _scenarioRepository->Scan();
+                const scenario_index_entry * scenario = _scenarioRepository->GetByIndex(gSpeedrunningState.current_scenario_index + 1);
+                if (scenario != nullptr) {
+                    gSpeedrunningState.current_scenario_index += 1;
+                    gSpeedrunningState.speedrunning_time_in_days = 0;
+                    context_load_park_from_file(scenario->path);
+                }
+                else {
+                    window_close_by_class(WC_MANAGE_TRACK_DESIGN);
+                    window_close_by_class(WC_TRACK_DELETE_PROMPT);
+                    game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
+                    break;
+                }
+            }
+        }
     }
 }
 
@@ -1495,7 +1550,7 @@ static void window_park_objective_mouseup(rct_window *w, rct_widgetindex widgetI
  */
 static void window_park_objective_resize(rct_window *w)
 {
-    window_set_resize(w, 230, 226, 230, 226);
+    window_set_resize(w, 230, 270, 230, 270);
 }
 
 /**
@@ -1529,11 +1584,43 @@ static void window_park_objective_invalidate(rct_window *w)
     window_park_set_pressed_tab(w);
     window_park_prepare_window_title_text();
 
-    //
-    if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
+    if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT) {
         window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_BUTTON;
-    else
+    }
+    else {
         window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_EMPTY;
+    }
+
+    if (gConfigGeneral.enable_speedrunning_mode) {
+        // If scenario completed, prompt to advance to next level or quit to menu
+        if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED) {
+            if ((uint32)gScenarioCompletedCompanyValue == 0x80000001) {
+                //TODO retry level or quit to menu
+            }
+            else {
+                window_park_objective_widgets[WIDX_NEXT_LEVEL].text = STR_SPEEDRUNNING_NEXT_SCENARIO;
+                window_park_objective_widgets[WIDX_NEXT_LEVEL].type = WWT_BUTTON;
+                widget_set_enabled(w, WIDX_NEXT_LEVEL, true);
+                if (gSpeedrunningState.is_il_run) {
+                    window_park_objective_widgets[WIDX_NEXT_LEVEL].text = STR_SPEEDRUNNING_QUIT_TO_MENU;
+                }
+                else {
+                    _scenarioRepository = GetScenarioRepository();
+                    _scenarioRepository->Scan();
+                    const scenario_index_entry * scenario = _scenarioRepository->GetByIndex(gSpeedrunningState.current_scenario_index + 1);
+                    if (scenario == nullptr) {
+                        window_park_objective_widgets[WIDX_NEXT_LEVEL].text = STR_SPEEDRUNNING_QUIT_TO_MENU;
+                    }
+                }
+            }
+        }
+        else {
+            window_park_objective_widgets[WIDX_NEXT_LEVEL].type = WWT_EMPTY;
+        }
+    }
+    else {
+        window_park_objective_widgets[WIDX_NEXT_LEVEL].type = WWT_EMPTY;
+    }
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
     window_park_anchor_border_widgets(w);
@@ -1570,15 +1657,50 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
     y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 221, ObjectiveNames[gScenarioObjectiveType], COLOUR_BLACK);
     y += 5;
 
+    if (gSpeedrunningState.speedrun_invalidated) {
+        // Indicate invalid speedrun
+        y += gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 222, STR_SPEEDRUNNING_INVALID_RUN, COLOUR_SATURATED_RED);
+    }
+    y += 5;
+
     // Objective outcome
     if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED) {
         if ((uint32)gScenarioCompletedCompanyValue == 0x80000001) {
             // Objective failed
-            gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 222, STR_OBJECTIVE_FAILED, COLOUR_BLACK);
-        } else {
+            y += gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 222, STR_OBJECTIVE_FAILED, COLOUR_BLACK);
+        } 
+        else {
             // Objective completed
             set_format_arg(0, money32, gScenarioCompletedCompanyValue);
-            gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_OBJECTIVE_ACHIEVED, COLOUR_BLACK);
+            y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_OBJECTIVE_ACHIEVED, COLOUR_BLACK);
+
+            // Draw speedrun info
+            if (gConfigGeneral.enable_speedrunning_mode) {
+                y += LIST_ROW_HEIGHT;
+                sint32 x_mid_justify = w->x + window_park_objective_widgets[WIDX_PAGE_BACKGROUND].left + 110;
+
+                // Draw speedrun times
+                gfx_draw_string_left(dpi, STR_SPEEDRUNNING_DAYS_LABEL, nullptr, COLOUR_BLACK, x, y);
+                set_format_arg(0, uint32, gSpeedrunningState.speedrunning_time_in_days);
+                gfx_draw_string_left(dpi, STR_SPEEDRUNNING_DAYS_VALUE, gCommonFormatArgs, COLOUR_BLACK, x_mid_justify, y);
+
+                y += LIST_ROW_HEIGHT;
+                gfx_draw_string_left(dpi, STR_SPEEDRUNNING_TIME_LABEL, nullptr, COLOUR_BLACK, x, y);
+
+                datetime64 delta = gSpeedrunningState.speedrun_finished_time;
+                uint16 minutes = delta / (60 * 10000000);
+                delta -= ((datetime64)minutes) * 60 * 10000000;
+                // TODO Needs to be padded to 2 digits?
+                uint16 seconds = delta / 10000000;
+                delta -= ((datetime64)seconds) * 10000000;
+                // TODO This needs to be padded if fewer than 7 digits
+                sint32 fractional_seconds = delta % 10000000;
+
+                set_format_arg(0, uint16, minutes);
+                set_format_arg(2, uint16, seconds);
+                set_format_arg(4, sint32, fractional_seconds);
+                gfx_draw_string_left(dpi, STR_SPEEDRUNNING_TIME_VALUE, gCommonFormatArgs, COLOUR_BLACK, x_mid_justify, y);
+            }
         }
     }
 }

@@ -47,6 +47,7 @@
 #include "../platform/platform.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../Speedrunning.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../Version.h"
@@ -107,6 +108,7 @@ void console_open()
 {
     gConsoleOpen = true;
     console_scroll_to_end();
+    gSpeedrunningState.speedrun_invalidated = true;
     console_refresh_caret();
     _consoleTextInputSession = context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
 }

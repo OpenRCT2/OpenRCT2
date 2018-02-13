@@ -1594,6 +1594,7 @@ static void game_load_or_quit_no_save_prompt_callback(sint32 result, const utf8 
 {
     if (result == MODAL_RESULT_OK)
     {
+        // TODO what situation is this called in?  Does speedrun need to be invalidated to prevent multi-segment runs?
         context_load_park_from_file(path);
     }
 }

@@ -56,6 +56,7 @@ enum WINDOW_OPTIONS_PAGE {
     WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
     WINDOW_OPTIONS_PAGE_MISC,
     WINDOW_OPTIONS_PAGE_ADVANCED,
+    WINDOW_OPTIONS_PAGE_SPEEDRUNNING,
     WINDOW_OPTIONS_PAGE_TWITCH,
     WINDOW_OPTIONS_PAGE_COUNT
 };
@@ -75,6 +76,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_TAB_6,
     WIDX_TAB_7,
     WIDX_TAB_8,
+	WIDX_TAB_9,
 
     WIDX_PAGE_START,
 
@@ -180,6 +182,9 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_PATH_TO_RCT1_BUTTON,
     WIDX_PATH_TO_RCT1_CLEAR,
 
+    // Speedrunning
+    WIDX_SPEEDRUNNING_CHECKBOX = WIDX_PAGE_START,
+
     // Twitch
     WIDX_CHANNEL_BUTTON = WIDX_PAGE_START,
     WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX,
@@ -212,7 +217,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_CONTROLS_AND_INTERFACE_TIP }, \
     { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_MISCELLANEOUS_TIP }, \
     { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_ADVANCED }, \
-    { WWT_TAB,              TWITCH_TAB_COLOUR,  220,    250,    17,     43,     TWITCH_TAB_SPRITE,      STR_OPTIONS_TWITCH_TIP }
+    { WWT_TAB,              1,  220,    250,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_SPEEDRUNNING_TIP }, \
+    { WWT_TAB,              TWITCH_TAB_COLOUR,  251,    281,    17,     43,     TWITCH_TAB_SPRITE,      STR_OPTIONS_TWITCH_TIP }  // This should always be last because it can be disabled and break things
 
 static rct_widget window_options_display_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
@@ -221,8 +227,8 @@ static rct_widget window_options_display_widgets[] = {
     { WWT_DROPDOWN,         1,  155,    299,    68,     79,     STR_ARG_12_STRINGID,    STR_NONE },                 // Fullscreen
     { WWT_BUTTON,           1,  288,    298,    69,     78,     STR_DROPDOWN_GLYPH,     STR_FULLSCREEN_MODE_TIP },
 
-        { WWT_DROPDOWN,         1,  155,    299,    83,     94,     STR_ARG_16_RESOLUTION_X_BY_Y,   STR_NONE },             // Resolution
-        { WWT_BUTTON,           1,  288,    298,    84,     93,     STR_DROPDOWN_GLYPH,     STR_DISPLAY_RESOLUTION_TIP },
+    { WWT_DROPDOWN,         1,  155,    299,    83,     94,     STR_ARG_16_RESOLUTION_X_BY_Y,   STR_NONE },             // Resolution
+    { WWT_BUTTON,           1,  288,    298,    84,     93,     STR_DROPDOWN_GLYPH,     STR_DISPLAY_RESOLUTION_TIP },
 
     { WWT_SPINNER,          1,  155,    299,    98,     109,    STR_NONE,               STR_WINDOW_SCALE_TIP },     // Scale spinner
     { WWT_BUTTON,           1,  288,    298,    99,     103,    STR_NUMERIC_UP,         STR_NONE },                 // Scale spinner up
@@ -231,10 +237,10 @@ static rct_widget window_options_display_widgets[] = {
     { WWT_DROPDOWN,         1,  155,    299,    113,    124,    STR_NONE,               STR_NONE },
     { WWT_BUTTON,           1,  288,    298,    114,    123,    STR_DROPDOWN_GLYPH,     STR_DRAWING_ENGINE_TIP },
 
-        { WWT_DROPDOWN,         1,  155,    299,    128,    139,    STR_NONE,                       STR_NONE },                         // Scaling quality hint
-        { WWT_BUTTON,           1,  288,    298,    129,    138,    STR_DROPDOWN_GLYPH,             STR_SCALE_QUALITY_TIP },
+    { WWT_DROPDOWN,         1,  155,    299,    128,    139,    STR_NONE,                       STR_NONE },                         // Scaling quality hint
+    { WWT_BUTTON,           1,  288,    298,    129,    138,    STR_DROPDOWN_GLYPH,             STR_SCALE_QUALITY_TIP },
 
-        { WWT_CHECKBOX,         1,  25,     290,    144,    155,    STR_STEAM_OVERLAY_PAUSE,        STR_STEAM_OVERLAY_PAUSE_TIP },      // Pause on steam overlay
+    { WWT_CHECKBOX,         1,  25,     290,    144,    155,    STR_STEAM_OVERLAY_PAUSE,        STR_STEAM_OVERLAY_PAUSE_TIP },      // Pause on steam overlay
 
     { WWT_CHECKBOX,         1,  11,     153,    161,    172,    STR_UNCAP_FPS,          STR_UNCAP_FPS_TIP },        // Uncap fps
     { WWT_CHECKBOX,         1,  155,    290,    161,    172,    STR_SHOW_FPS,           STR_SHOW_FPS_TIP },         // Show fps
@@ -254,8 +260,8 @@ static rct_widget window_options_rendering_widgets[] = {
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 45,     FRAME_RENDERING_START + 56,     STR_ENABLE_VIRTUAL_FLOOR,       STR_ENABLE_VIRTUAL_FLOOR_TIP },         // Virtual floor
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 60,     FRAME_RENDERING_START + 71,     STR_CYCLE_DAY_NIGHT,            STR_CYCLE_DAY_NIGHT_TIP },              // Cycle day-night
     { WWT_CHECKBOX,         1,  25,     290,    FRAME_RENDERING_START + 75,     FRAME_RENDERING_START + 86,     STR_ENABLE_LIGHTING_EFFECTS,    STR_ENABLE_LIGHTING_EFFECTS_TIP },      // Enable light fx
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 90,     FRAME_RENDERING_START + 101,     STR_UPPERCASE_BANNERS,          STR_UPPERCASE_BANNERS_TIP },            // Uppercase banners
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 105,     FRAME_RENDERING_START + 116,    STR_RENDER_WEATHER_EFFECTS,     STR_RENDER_WEATHER_EFFECTS_TIP },       // Render weather effects
+    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 90,     FRAME_RENDERING_START + 101,    STR_UPPERCASE_BANNERS,          STR_UPPERCASE_BANNERS_TIP },            // Uppercase banners
+    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 105,    FRAME_RENDERING_START + 116,    STR_RENDER_WEATHER_EFFECTS,     STR_RENDER_WEATHER_EFFECTS_TIP },       // Render weather effects
     { WWT_CHECKBOX,         1,  25,     290,    FRAME_RENDERING_START + 120,    FRAME_RENDERING_START + 131,    STR_DISABLE_LIGHTNING_EFFECT,   STR_DISABLE_LIGHTNING_EFFECT_TIP },     // Disable lightning effect
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 135,    FRAME_RENDERING_START + 146,    STR_SHOW_GUEST_PURCHASES,       STR_SHOW_GUEST_PURCHASES_TIP },
 #undef FRAME_RENDERING_START
@@ -360,6 +366,12 @@ static rct_widget window_options_advanced_widgets[] = {
     { WIDGETS_END },
 };
 
+static rct_widget window_options_speedrunning_widgets[] = {
+    MAIN_OPTIONS_WIDGETS,
+    { WWT_CHECKBOX,         2,  10,     299,    54,     65,     STR_ENABLE_SPEEDRUNNING_MODE,           STR_ENABLE_SPEEDRUNNING_TIP },                  // Enable speedrunning mode
+    { WIDGETS_END },
+};
+
 static rct_widget window_options_twitch_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     { WWT_BUTTON,           1,  10,     299,    54,     66,     STR_TWITCH_NAME,            STR_TWITCH_NAME_TIP },              // Twitch channel name
@@ -379,6 +391,7 @@ static rct_widget *window_options_page_widgets[] = {
     window_options_controls_and_interface_widgets,
     window_options_misc_widgets,
     window_options_advanced_widgets,
+    window_options_speedrunning_widgets,
     window_options_twitch_widgets
 };
 
@@ -420,6 +433,7 @@ const sint32 window_options_tab_animation_divisor[] =
     2, // WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
     4, // WINDOW_OPTIONS_PAGE_MISC,
     2, // WINDOW_OPTIONS_PAGE_ADVANCED,
+    2, // WINDOW_OPTIONS_SPEEDRUNNING,
     1  // WINDOW_OPTIONS_PAGE_TWITCH,
 };
 const sint32 window_options_tab_animation_frames[] =
@@ -431,6 +445,7 @@ const sint32 window_options_tab_animation_frames[] =
      4, // WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
     16, // WINDOW_OPTIONS_PAGE_MISC,
     16, // WINDOW_OPTIONS_PAGE_ADVANCED,
+    16, // WINDOW_OPTIONS_SPEEDRUNNING,
      1  // WINDOW_OPTIONS_PAGE_TWITCH,
 };
 
@@ -498,7 +513,8 @@ static rct_window_event_list window_options_events = {
     (1 << WIDX_TAB_5) | \
     (1 << WIDX_TAB_6) | \
     (1 << WIDX_TAB_7) | \
-    (1 << WIDX_TAB_8)
+    (1 << WIDX_TAB_8) | \
+	(1 << WIDX_TAB_9)
 
 static uint64 window_options_page_enabled_widgets[] = {
     MAIN_OPTIONS_ENABLED_WIDGETS |
@@ -594,6 +610,9 @@ static uint64 window_options_page_enabled_widgets[] = {
     (1 << WIDX_PATH_TO_RCT1_CLEAR),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
+    (1 << WIDX_SPEEDRUNNING_CHECKBOX),
+
+    MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_CHANNEL_BUTTON) |
     (1 << WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX) |
     (1 << WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX) |
@@ -655,6 +674,7 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
     case WIDX_TAB_6:
     case WIDX_TAB_7:
     case WIDX_TAB_8:
+	case WIDX_TAB_9:
         window_options_set_page(w, widgetIndex - WIDX_TAB_1);
         break;
     }
@@ -812,6 +832,8 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             break;
         case WIDX_TOOLBAR_SHOW_CHEATS:
             gConfigInterface.toolbar_show_cheats ^= 1;
+            if (gConfigGeneral.enable_speedrunning_mode && gConfigInterface.toolbar_show_cheats)
+                gConfigGeneral.enable_speedrunning_mode = false;
             config_save_default();
             window_invalidate(w);
             window_invalidate_by_class(WC_TOP_TOOLBAR);
@@ -937,6 +959,19 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
                 SafeFree(gConfigGeneral.rct1_path);
                 config_save_default();
             }
+            window_invalidate(w);
+            break;
+        }
+        break;
+
+    case WINDOW_OPTIONS_PAGE_SPEEDRUNNING:
+        switch (widgetIndex) {
+        case WIDX_SPEEDRUNNING_CHECKBOX:
+            gConfigGeneral.enable_speedrunning_mode ^= 1;
+            if (gConfigInterface.toolbar_show_cheats && gConfigGeneral.enable_speedrunning_mode)
+                gConfigInterface.toolbar_show_cheats = false;
+            //TODO Hide/disable the allow speed changes button unless speedrunning mode is on
+            config_save_default();
             window_invalidate(w);
             break;
         }
@@ -1275,6 +1310,7 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
         }
         break;
 
+    case WINDOW_OPTIONS_PAGE_SPEEDRUNNING:
     case WINDOW_OPTIONS_PAGE_TWITCH:
         break;
     }
@@ -1496,6 +1532,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
         }
         break;
 
+    case WINDOW_OPTIONS_PAGE_SPEEDRUNNING:
     case WINDOW_OPTIONS_PAGE_TWITCH:
         break;
     }
@@ -1777,6 +1814,12 @@ static void window_options_invalidate(rct_window *w)
 
         window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON].type = WWT_BUTTON;
         window_options_advanced_widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WWT_BUTTON;
+        break;
+
+    case WINDOW_OPTIONS_PAGE_SPEEDRUNNING:
+        widget_set_checkbox_value(w, WIDX_SPEEDRUNNING_CHECKBOX, gConfigGeneral.enable_speedrunning_mode);
+
+        window_options_speedrunning_widgets[WIDX_SPEEDRUNNING_CHECKBOX].type = WWT_CHECKBOX;
         break;
 
     case WINDOW_OPTIONS_PAGE_TWITCH:
@@ -2157,6 +2200,8 @@ static void window_options_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE, SPR_TAB_GEARS_0);
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_MISC,                   SPR_TAB_RIDE_0);
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_ADVANCED,               SPR_TAB_WRENCH_0);
+    //TODO Get a sprite
+    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_SPEEDRUNNING, 	      SPR_TAB_WRENCH_0);
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_TWITCH,                 SPR_G2_TAB_TWITCH);
 }
 

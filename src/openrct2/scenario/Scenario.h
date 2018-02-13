@@ -73,7 +73,8 @@ typedef enum scenario_source {
     SCENARIO_SOURCE_RCT2_WW,
     SCENARIO_SOURCE_RCT2_TT,
     SCENARIO_SOURCE_REAL,
-    SCENARIO_SOURCE_OTHER
+    SCENARIO_SOURCE_OTHER,
+    SCENARIO_SOURCE_COUNT
 } scenario_source;
 
 typedef struct rct_stex_entry {

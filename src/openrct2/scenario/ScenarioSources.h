@@ -21,14 +21,25 @@
 typedef struct source_desc
 {
     const utf8 * title;
+    const utf8 * park_name;
     uint8        id;
     uint8        source;
     sint32       index;
     uint8        category;
+    bool         first_in_category;
 } source_desc;
 
 namespace ScenarioSources
 {
+    typedef struct ScenarioTitleDescriptor
+    {
+        const uint8  Id;
+        const utf8 * Title;
+        const utf8 * ParkName;
+        const uint8  Category;
+        const bool   FirstInCategory;
+    } ScenarioTitleDescriptor;
+
     bool TryGetByName(const utf8 * name, source_desc * outDesc);
     bool TryGetById(uint8 id, source_desc * outDesc);
     void NormaliseName(utf8 * buffer, size_t bufferSize, const utf8 * name);

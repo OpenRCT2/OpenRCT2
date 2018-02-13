@@ -27,6 +27,7 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
+#include <openrct2/Speedrunning.h>
 #include <openrct2/sprites.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/windows/tile_inspector.h>
@@ -551,6 +552,8 @@ rct_window * window_tile_inspector_open()
     window = window_bring_to_front_by_class(WC_TILE_INSPECTOR);
     if (window != nullptr)
         return window;
+
+    gSpeedrunningState.speedrun_invalidated = true;
 
     window = window_create(
         0,

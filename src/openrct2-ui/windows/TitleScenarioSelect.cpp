@@ -26,6 +26,8 @@
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Speedrunning.h>
+#include <openrct2/platform/platform.h>
 
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
 
@@ -71,19 +73,19 @@ enum {
 };
 
 static rct_widget window_scenarioselect_widgets[] = {
-    { WWT_FRAME,    0,  0,      733,    0,      333,    0xFFFFFFFF,                 STR_NONE },             // panel / background
-    { WWT_CAPTION,  0,  1,      732,    1,      14,     STR_SELECT_SCENARIO,        STR_WINDOW_TITLE_TIP }, // title bar
-    { WWT_CLOSEBOX, 0,  721,    731,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }, // close x button
-    { WWT_IMGBTN,   1,  0,      733,    50,     333,    0xFFFFFFFF,                 STR_NONE },             // tab content panel
-    { WWT_TAB,      1,  3,      93,     17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 1
-    { WWT_TAB,      1,  94,     184,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 2
-    { WWT_TAB,      1,  185,    275,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 3
-    { WWT_TAB,      1,  276,    366,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 4
-    { WWT_TAB,      1,  367,    457,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 5
-    { WWT_TAB,      1,  458,    593,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 6
-    { WWT_TAB,      1,  594,    684,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 7
-    { WWT_TAB,      1,  685,    775,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 8
-    { WWT_SCROLL,   1,  3,      555,    54,     329,    SCROLL_VERTICAL,            STR_NONE },             // level list
+    { WWT_FRAME,            0,  0,      733,    0,      333,    0xFFFFFFFF,                             STR_NONE },                     // panel / background
+    { WWT_CAPTION,          0,  1,      732,    1,      14,     STR_SELECT_SCENARIO,                    STR_WINDOW_TITLE_TIP },         // title bar
+    { WWT_CLOSEBOX,         0,  721,    731,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },         // close x button
+    { WWT_IMGBTN,           1,  0,      733,    50,     333,    0xFFFFFFFF,                             STR_NONE },                     // tab content panel
+    { WWT_TAB,              1,  3,      93,     17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 1
+    { WWT_TAB,              1,  94,     184,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 2
+    { WWT_TAB,              1,  185,    275,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 3
+    { WWT_TAB,              1,  276,    366,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 4
+    { WWT_TAB,              1,  367,    457,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 5
+    { WWT_TAB,              1,  458,    593,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 6
+    { WWT_TAB,              1,  594,    684,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 7
+    { WWT_TAB,              1,  685,    775,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 8
+    { WWT_SCROLL,           1,  3,      555,    54,     329,    SCROLL_VERTICAL,                        STR_NONE },                     // level list
     { WIDGETS_END },
 };
 
@@ -266,7 +268,7 @@ static void window_scenarioselect_mouseup(rct_window *w, rct_widgetindex widgetI
 
 static void window_scenarioselect_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB8) {
+    if  (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB8) {
         w->selected_tab = widgetIndex - 4;
         w->highlighted_scenario = nullptr;
         initialise_list_items(w);
@@ -314,6 +316,27 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, sint32 scrollIn
             if (y < 0 && !listItem.scenario.is_locked) {
                 audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
                 gFirstTimeSaving = true;
+                if (gConfigGeneral.enable_speedrunning_mode) {
+                    source_desc desc;
+                    ScenarioSources::TryGetByName(w->highlighted_scenario->name, &desc);
+                    gSpeedrunningState.speedrun_active = true;
+                    gSpeedrunningState.speedrunning_time_in_days = 0;
+                    gSpeedrunningState.current_scenario_index = w->highlighted_scenario->source_index;
+                    gSpeedrunningState.current_scenario_group = w->highlighted_scenario->category;
+                    gSpeedrunningState.speedrun_invalidated = false;
+                    gSpeedrunningState.speedrun_start_time = platform_get_datetime_now_utc();
+                    if (desc.first_in_category) {
+                        // TODO window returning choice?
+                        window_speedrun_option_open();
+                    }
+                    else {
+                        gSpeedrunningState.is_il_run = true;
+                    }
+                }
+
+                source_desc desc;
+                ScenarioSources::TryGetByName(w->highlighted_scenario->name, &desc);
+
                 _callback(listItem.scenario.scenario->path);
                 if (_titleEditor)
                 {
@@ -390,6 +413,20 @@ static void window_scenarioselect_invalidate(rct_window *w)
 
     const sint32 bottomMargin = gConfigGeneral.debugging_tools ? 17 : 5;
     window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = windowHeight - bottomMargin;
+
+    if (gConfigGeneral.enable_speedrunning_mode) {
+        if (w->highlighted_scenario != nullptr) {
+            // Start full runs only on the first scenario in each group
+            source_desc desc;
+            ScenarioSources::TryGetByName(w->highlighted_scenario->name, &desc);
+            if (desc.first_in_category) {
+                window_scenarioselect_widgets[WIDX_SCENARIOLIST].tooltip = STR_START_IL_SPEEDRUN_TIP;
+            }
+            else {
+                window_scenarioselect_widgets[WIDX_SCENARIOLIST].tooltip = STR_START_FULL_SPEEDRUN_TIP;
+            }
+        }
+    }
 }
 
 static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)

@@ -33,6 +33,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/RideGroupManager.h>
+#include <openrct2/Speedrunning.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
@@ -387,6 +388,8 @@ rct_window * window_editor_object_selection_open()
 
     sub_6AB211();
     reset_selected_object_count_and_size();
+
+    gSpeedrunningState.speedrun_invalidated = true;
 
     window = window_create_centred(
         600,

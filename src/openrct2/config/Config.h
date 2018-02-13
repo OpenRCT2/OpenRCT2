@@ -98,6 +98,9 @@ typedef struct GeneralConfiguration
     utf8 *      last_run_version;
 
     sint32      screenshot_format;
+
+    // Speedrunning
+    bool        enable_speedrunning_mode;
 } GeneralConfiguration;
 
 typedef struct InterfaceConfiguration

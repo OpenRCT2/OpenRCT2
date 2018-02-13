@@ -23,6 +23,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/Speedrunning.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
@@ -615,6 +616,8 @@ rct_window * window_cheats_open()
     window = window_bring_to_front_by_class(WC_CHEATS);
     if (window != nullptr)
         return window;
+
+    gSpeedrunningState.speedrun_invalidated = true;
 
     window = window_create(32, 32, WW, WH, &window_cheats_money_events, WC_CHEATS, 0);
     window->widgets = window_cheats_money_widgets;
