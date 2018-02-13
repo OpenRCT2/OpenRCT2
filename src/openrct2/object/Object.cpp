@@ -97,8 +97,9 @@ rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint
 
 void Object::SetSourceGame(const uint8 sourceGame)
 {
-    _objectEntry.flags &= 0x0F;
-    _objectEntry.flags |= (sourceGame << 4);
+    // FIXME: Temporary disabled because it breaks exporting to vanilla.
+    /*_objectEntry.flags &= 0x0F;
+    _objectEntry.flags |= (sourceGame << 4);*/
 }
 
 bool Object::IsRCT1Object()
