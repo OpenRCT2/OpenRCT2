@@ -436,25 +436,26 @@ static void cheat_set_staff_speed(uint8 value)
 
 static void cheat_own_all_land()
 {
-    sint32 min = 32;
-    sint32 max = gMapSizeUnits - 32;
-    for (sint32 y = min; y <= max; y += 32) {
-        for (sint32 x = min; x <= max; x += 32) {
-            rct_tile_element * surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
+    const sint32 min = 32;
+    const sint32 max = gMapSizeUnits - 32;
+
+    for (BigCoordsXY coords = {min, min}; coords.y <= max; coords.y += 32) {
+        for (; coords.x <= max; coords.x += 32) {
+            rct_tile_element * surfaceElement = map_get_surface_element_at(coords);
 
             // Ignore already owned tiles.
             if (surfaceElement->properties.surface.ownership & OWNERSHIP_OWNED)
                 continue;
 
             sint32 base_z = surfaceElement->base_height;
-            sint32 destOwnership = check_max_allowable_land_rights_for_tile(x >> 5, y >> 5, base_z);
+            sint32 destOwnership = check_max_allowable_land_rights_for_tile(coords.x >> 5, coords.y >> 5, base_z);
 
             // only own tiles that were not set to 0
             if (destOwnership != OWNERSHIP_UNOWNED) {
                 surfaceElement->properties.surface.ownership |= destOwnership;
-                update_park_fences_around_tile(x, y);
+                update_park_fences_around_tile(coords.x, coords.y);
                 uint16 baseHeight = surfaceElement->base_height * 8;
-                map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
+                map_invalidate_tile(coords.x, coords.y, baseHeight, baseHeight + 16);
             }
         }
     }
@@ -464,7 +465,7 @@ static void cheat_own_all_land()
         sint32 x = spawn.x;
         sint32 y = spawn.y;
         if (x != PEEP_SPAWN_UNDEFINED) {
-            rct_tile_element * surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
+            rct_tile_element * surfaceElement = map_get_surface_element_at((BigCoordsXY){x, y});
             surfaceElement->properties.surface.ownership = OWNERSHIP_UNOWNED;
             update_park_fences_around_tile(x, y);
             uint16 baseHeight = surfaceElement->base_height * 8;

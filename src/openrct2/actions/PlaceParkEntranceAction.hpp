@@ -158,7 +158,7 @@ public:
 
         sint8 zLow = _z * 2;
         sint8 zHigh = zLow + 12;
-        LocationXY16 entranceLoc = { _x, _y };
+        BigCoordsXY entranceLoc = { _x, _y };
         for (uint8 index = 0; index < 3; index++)
         {
             if (index == 1)
@@ -174,7 +174,7 @@ public:
 
             if (!(flags & GAME_COMMAND_FLAG_GHOST))
             {
-                rct_tile_element* surfaceElement = map_get_surface_element_at(entranceLoc.x / 32, entranceLoc.y / 32);
+                rct_tile_element* surfaceElement = map_get_surface_element_at(entranceLoc);
                 surfaceElement->properties.surface.ownership = 0;
             }
 

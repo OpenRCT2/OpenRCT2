@@ -787,7 +787,7 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, const r
 
     sint16 x = session->MapPosition.x, y = session->MapPosition.y;
 
-    rct_tile_element * surface = map_get_surface_element_at(x / 32, y / 32);
+    rct_tile_element * surface = map_get_surface_element_at((BigCoordsXY){session->MapPosition.x, session->MapPosition.y});
 
     uint16 bl = height / 8;
     if (surface == nullptr) {

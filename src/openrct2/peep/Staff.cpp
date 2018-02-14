@@ -990,7 +990,7 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep * peep, uint8 vali
     if (!(peep->next_var_29 & 0x18))
     {
 
-        rct_tile_element * tileElement = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
+        rct_tile_element * tileElement = map_get_surface_element_at({peep->next_x, peep->next_y});
 
         if (peep->next_z != tileElement->base_height)
             return 0xFF;
@@ -1014,13 +1014,13 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep * peep, uint8 vali
             continue;
         }
 
-        LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[chosenDirection].x),
-                                static_cast<sint16>(peep->next_y + TileDirectionDelta[chosenDirection].y) };
+        BigCoordsXY chosenTile = { static_cast<sint32>(peep->next_x + TileDirectionDelta[chosenDirection].x),
+                                static_cast<sint32>(peep->next_y + TileDirectionDelta[chosenDirection].y) };
 
         if (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
             continue;
 
-        rct_tile_element * tileElement = map_get_surface_element_at(chosenTile.x / 32, chosenTile.y / 32);
+        rct_tile_element * tileElement = map_get_surface_element_at(chosenTile);
 
         if (tile_element_get_terrain(tileElement) != 0)
             continue;

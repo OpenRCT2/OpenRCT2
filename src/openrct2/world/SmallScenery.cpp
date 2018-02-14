@@ -268,7 +268,7 @@ static money32 SmallSceneryPlace(sint16 x,
         }
     }
 
-    rct_tile_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+    rct_tile_element* surfaceElement = map_get_surface_element_at({x, y});
 
     if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && map_get_water_height(surfaceElement) > 0)
     {

@@ -754,7 +754,7 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
 
             // track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is for when
             // you decrease the map size.
-            openrct2_assert(map_get_surface_element_at(elemX >> 5, elemY >> 5) != nullptr, "No surface at %d,%d", elemX >> 5,
+            openrct2_assert(map_get_surface_element_at({elemX, elemY}) != nullptr, "No surface at %d,%d", elemX >> 5,
                             elemY >> 5);
 
             // Keep?
@@ -887,7 +887,7 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
 
             // track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is for when
             // you decrease the map size.
-            openrct2_assert(map_get_surface_element_at(elemX >> 5, elemY >> 5) != nullptr, "No surface at %d,%d", elemX >> 5,
+            openrct2_assert(map_get_surface_element_at({elemX, elemY}) != nullptr, "No surface at %d,%d", elemX >> 5,
                             elemY >> 5);
 
             // Keep?

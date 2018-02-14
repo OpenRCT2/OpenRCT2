@@ -350,7 +350,7 @@ static money32 WallPlace(uint8 wallType,
     uint8 edgeSlope = 0;
     if (position.z == 0)
     {
-        rct_tile_element * surfaceElement = map_get_surface_element_at(position.x / 32, position.y / 32);
+        rct_tile_element * surfaceElement = map_get_surface_element_at({position.x, position.y});
         if (surfaceElement == nullptr)
         {
             return MONEY32_UNDEFINED;
@@ -366,7 +366,7 @@ static money32 WallPlace(uint8 wallType,
         }
     }
 
-    rct_tile_element * surfaceElement = map_get_surface_element_at(position.x / 32, position.y / 32);
+    rct_tile_element * surfaceElement = map_get_surface_element_at({position.x, position.y});
     if (surfaceElement == nullptr)
     {
         return MONEY32_UNDEFINED;
