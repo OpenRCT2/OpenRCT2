@@ -157,9 +157,9 @@ static void spiral_slide_paint_tile_front(
         if (slide_progress < 46)
         {
 
-            sint32    offset            = SPIRAL_SLIDE_PEEP + 46 * direction;
-            LocationXYZ8  boundingBox       = { 0, 0, 108 };
-            LocationXYZ16 boundingBoxOffset = { 0, 0, static_cast<sint16>(height + 3) };
+            sint32       offset            = SPIRAL_SLIDE_PEEP + 46 * direction;
+            BigCoordsXYZ boundingBox       = { 0, 0, 108 };
+            BigCoordsXYZ boundingBoxOffset = { 0, 0, static_cast<sint16>(height + 3) };
 
             if (direction == 0)
             {
