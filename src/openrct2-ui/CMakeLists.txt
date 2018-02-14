@@ -32,7 +32,7 @@ endif ()
 
 # Outputs
 set (PROJECT openrct2)
-project(${PROJECT})
+project(${PROJECT} CXX)
 add_executable(${PROJECT} ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_MM_SOURCES})
 
 target_link_libraries(${PROJECT} "libopenrct2"
@@ -64,9 +64,6 @@ if (WIN32)
     # tell it that it is
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__USE_MINGW_ANSI_STDIO=1")
 endif ()
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")
 
 # Defines
 if (DISABLE_OPENGL)
