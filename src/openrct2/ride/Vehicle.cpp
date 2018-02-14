@@ -4921,7 +4921,7 @@ static void vehicle_update_rotating(rct_vehicle * vehicle)
         timeToSpriteMap = Rotation3TimeToSpriteMaps[vehicle->sub_state];
     }
 
-    sint32 time = (sint16)vehicle->current_time;
+    sint32 time = vehicle->current_time;
     if (_vehicleBreakdown == BREAKDOWN_CONTROL_FAILURE)
     {
         time += (ride->breakdown_sound_modifier >> 6) + 1;
@@ -5462,8 +5462,7 @@ static void vehicle_update_crash(rct_vehicle * vehicle)
 
         invalidate_sprite_2((rct_sprite *)curVehicle);
 
-        LocationXYZ16 curPosition = { static_cast<sint16>(curVehicle->x), static_cast<sint16>(curVehicle->y),
-                                      static_cast<sint16>(curVehicle->z) };
+        LocationXYZ16 curPosition = {(curVehicle->x), (curVehicle->y), (curVehicle->z)};
 
         curPosition.x += (sint8)(curVehicle->crash_x >> 8);
         curPosition.y += (sint8)(curVehicle->crash_y >> 8);
@@ -9446,7 +9445,7 @@ loc_6DCEFF:
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
     {
-        vehicle->spin_speed = Math::Clamp(static_cast<sint16>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE), (sint16)vehicle->spin_speed, static_cast<sint16>(VEHICLE_MAX_SPIN_SPEED_WATER_RIDE));
+        vehicle->spin_speed = Math::Clamp(static_cast<sint16>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE), vehicle->spin_speed, static_cast<sint16>(VEHICLE_MAX_SPIN_SPEED_WATER_RIDE));
     }
 
     if (vehicle->vehicle_sprite_type != 0)
@@ -9562,7 +9561,8 @@ static void vehicle_update_track_motion_powered_ride_acceleration(rct_vehicle * 
 
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
         {
-            vehicle->spin_speed = Math::Clamp(static_cast<sint16>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE), (sint16)vehicle->spin_speed, static_cast<sint16>(VEHICLE_MAX_SPIN_SPEED_WATER_RIDE));
+            vehicle->spin_speed = Math::Clamp(static_cast<sint16>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE),
+                                              vehicle->spin_speed, static_cast<sint16>(VEHICLE_MAX_SPIN_SPEED_WATER_RIDE));
         }
 
         if (vehicle->vehicle_sprite_type != 0)

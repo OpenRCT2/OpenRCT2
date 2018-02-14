@@ -9983,7 +9983,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
      * current search path ends here.
      * Return without updating the parameters (best result so far). */
     if ((_peepPathFindHistory[0].location.x == (uint8)(x >> 5)) && (_peepPathFindHistory[0].location.y == (uint8)(y >> 5)) &&
-        (_peepPathFindHistory[0].location.z == (uint8)z))
+        (_peepPathFindHistory[0].location.z == z))
     {
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
@@ -10398,7 +10398,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                     {
                         if ((_peepPathFindHistory[junctionNum].location.x == (uint8)(x >> 5)) &&
                             (_peepPathFindHistory[junctionNum].location.y == (uint8)(y >> 5)) &&
-                            (_peepPathFindHistory[junctionNum].location.z == (uint8)z))
+                            (_peepPathFindHistory[junctionNum].location.z == z))
                         {
                             pathLoop = true;
                             break;
@@ -10459,7 +10459,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                  * search path, so add the junction to the history. */
                 _peepPathFindHistory[_peepPathFindNumJunctions].location.x = (uint8)(x >> 5);
                 _peepPathFindHistory[_peepPathFindNumJunctions].location.y = (uint8)(y >> 5);
-                _peepPathFindHistory[_peepPathFindNumJunctions].location.z = (uint8)z;
+                _peepPathFindHistory[_peepPathFindNumJunctions].location.z = z;
                 // .direction take is added below.
 
                 _peepPathFindNumJunctions--;
@@ -10763,7 +10763,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
              * is placed in element 0 */
             _peepPathFindHistory[0].location.x = (uint8)(x >> 5);
             _peepPathFindHistory[0].location.y = (uint8)(y >> 5);
-            _peepPathFindHistory[0].location.z = (uint8)z;
+            _peepPathFindHistory[0].location.z = z;
             _peepPathFindHistory[0].direction  = 0xF;
 
             uint16 score = 0xFFFF;

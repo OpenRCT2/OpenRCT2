@@ -142,7 +142,7 @@ void park_importer_load_from_stream(void * stream_c, const utf8 * hintPath_c)
     bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
 
     auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
-    parkImporter->LoadFromStream((IStream *)stream, isScenario);
+    parkImporter->LoadFromStream(stream, isScenario);
     parkImporter->Import();
 }
 

@@ -62,7 +62,7 @@ char * strndup(const char * src, size_t size)
 
     dst      = (char *)memcpy(dst, src, len);
     dst[len] = '\0';
-    return (char *)dst;
+    return dst;
 }
 #endif // !((defined (_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700))
 

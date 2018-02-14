@@ -88,7 +88,7 @@ rct_duck * rct_sprite::AsDuck()
     rct_duck * result = nullptr;
     if (IsDuck())
     {
-        return (rct_duck *)result;
+        return result;
     }
     return result;
 }
