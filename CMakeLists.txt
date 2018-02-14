@@ -4,10 +4,9 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif()
 
-project(openrct2)
+project(openrct2 CXX)
 
 include(FindPkgConfig)
-include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
 include(GNUInstallDirs)
 
@@ -22,9 +21,17 @@ option(WITH_TESTS "Build tests")
 option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
 
+# Options
+option(STATIC "Create a static build.")
+option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
+
+option(DISABLE_HTTP_TWITCH "Disable HTTP and Twitch support.")
+option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
+option(DISABLE_TTF "Disable support for TTF provided by freetype2.")
+option(ENABLE_LIGHTFX "Enable lighting effects." ON)
+
 if (FORCE32)
     set(TARGET_M "-m32")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${TARGET_M}")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TARGET_M}")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${TARGET_M}")
 endif ()
@@ -52,15 +59,6 @@ execute_process(
     ERROR_QUIET
 )
 
-function (ADD_CHECK_C_COMPILER_FLAG _CFLAGS _CACHE_VAR _FLAG)
-    CHECK_C_COMPILER_FLAG("${_FLAG}" "${_CACHE_VAR}")
-    if (${_CACHE_VAR})
-        set(${_CFLAGS} "${${_CFLAGS}} ${_FLAG}" PARENT_SCOPE)
-    else ()
-        message(STATUS "Unsupported CFLAG: ${_FLAG}")
-    endif ()
-endfunction ()
-
 function (ADD_CHECK_CXX_COMPILER_FLAG _CXXFLAGS _CACHE_VAR _FLAG)
     CHECK_CXX_COMPILER_FLAG("${_FLAG}" "${_CACHE_VAR}")
     if (${_CACHE_VAR})
@@ -85,17 +83,65 @@ if (MINGW)
 endif ()
 
 # Items below are not supported by ICC
-ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_REDUNDANT_DECLS -Wredundant-decls)
-ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_IGNORED_QUALIFIERS -Wignored-qualifiers)
 ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_REDUNDANT_DECLS -Wredundant-decls)
 ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_IGNORED_QUALIFIERS -Wignored-qualifiers)
 
 # -Wstrict-overflow is only active when -fstrict-overflow is enabled, but -fstrict-overflow
 # is enabled on -O2, -O3, -Os. This should help catch bugs locally before they reach Travis
 # As of 2a435bf -Wstrict-overflow=1 passes, but higher values do not.
-set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-overflow")
-ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_STRICT_OVERFLOW -Wstrict-overflow=1)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-overflow")
 ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_STRICT_OVERFLOW -Wstrict-overflow=1)
+
+# Compiler flags
+set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in range 0–3.")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Wall -Wno-unknown-pragmas -Wno-unused-function -Wno-missing-braces ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-comment -Wshadow -Wnonnull")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
+
+if(APPLE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=objc-method-access")
+endif()
+
+# On mingw all code is already PIC, this will avoid compiler error on redefining this option
+if (NOT MINGW)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+endif ()
+
+if (APPLE AND NOT USE_MMAP)
+    set(PIE_FLAG "-fno-pie")
+else ()
+    set(PIE_FLAG "-fpie")
+endif ()
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")
+
+# Defines
+if (USE_MMAP)
+    add_definitions(-DUSE_MMAP)
+endif ()
+if (DISABLE_NETWORK)
+    add_definitions(-DDISABLE_NETWORK)
+endif ()
+if (DISABLE_HTTP_TWITCH)
+    add_definitions(-DDISABLE_HTTP)
+    add_definitions(-DDISABLE_TWITCH)
+endif ()
+if (DISABLE_TTF)
+    add_definitions(-DNO_TTF)
+endif ()
+if (ENABLE_LIGHTFX)
+    add_definitions(-D__ENABLE_LIGHTFX__)
+endif ()
+
+if (CXX_WARN_SUGGEST_FINAL_TYPES)
+    # Disable -Wsuggest-final-types via pragmas where due.
+   add_definitions(-D__WARN_SUGGEST_FINAL_TYPES__)
+endif ()
+
+if (CXX_WARN_SUGGEST_FINAL_METHODS)
+    # Disable -Wsuggest-final-methods via pragmas where due.
+   add_definitions(-D__WARN_SUGGEST_FINAL_METHODS__)
+endif ()
 
 if(EXISTS "${ROOT_DIR}/discord-rpc")
     add_subdirectory("${ROOT_DIR}/discord-rpc")

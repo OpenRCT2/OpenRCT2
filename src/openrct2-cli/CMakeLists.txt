@@ -6,14 +6,13 @@ endif ()
 
 # Sources
 file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
-    "${CMAKE_CURRENT_LIST_DIR}/*.c"
     "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/*.h"
     "${CMAKE_CURRENT_LIST_DIR}/*.hpp")
 
 # Outputs
 set (PROJECT openrct2-cli)
-project(${PROJECT})
+project(${PROJECT} CXX)
 add_executable(${PROJECT} ${OPENRCT2_CLI_SOURCES})
 
 target_link_libraries(${PROJECT} "libopenrct2")
@@ -24,7 +23,3 @@ endif ()
 
 # Includes
 target_include_directories(${PROJECT} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/..")
-
-# Compiler flags
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")

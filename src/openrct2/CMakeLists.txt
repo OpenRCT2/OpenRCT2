@@ -4,15 +4,6 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif ()
 
-# Options
-option(STATIC "Create a static build.")
-option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
-
-option(DISABLE_HTTP_TWITCH "Disable HTTP and Twitch support.")
-option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
-option(DISABLE_TTF "Disable support for TTF provided by freetype2.")
-option(ENABLE_LIGHTFX "Enable lighting effects." ON)
-
 # Needed for linking with non-broken OpenSSL on Apple platforms
 if (APPLE)
     set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/opt/openssl/lib/pkgconfig")
@@ -60,10 +51,9 @@ endif ()
 
 # Outputs
 set(PROJECT libopenrct2)
-project(${PROJECT})
+project(${PROJECT} CXX)
 add_library(${PROJECT} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${RCT2_SECTIONS})
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
-set_target_properties(${PROJECT} PROPERTIES COMPILE_FLAGS "-Wundef")
 
 # Libraries
 if (STATIC)
@@ -148,58 +138,6 @@ if (NOT DISABLE_TTF)
     if (UNIX AND NOT APPLE)
         target_include_directories(${PROJECT} PRIVATE ${FONTCONFIG_INCLUDE_DIRS})
     endif ()
-endif ()
-
-if(APPLE)
-    set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -Wno-error=objc-method-access")
-endif()
-
-# Compiler flags
-set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in range 0–3.")
-set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Wall -Wno-unknown-pragmas -Wno-unused-function -Wno-missing-braces ")
-set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -Wno-comment -Wshadow  -Wmissing-declarations -Wnonnull")
-set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -DDEBUG=${DEBUG_LEVEL}")
-
-# On mingw all code is already PIC, this will avoid compiler error on redefining this option
-if (NOT MINGW)
-    set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fPIC")
-endif ()
-
-if (APPLE AND NOT USE_MMAP)
-    set(PIE_FLAG "-fno-pie")
-else ()
-    set(PIE_FLAG "-fpie")
-endif ()
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 ${COMMON_COMPILE_OPTIONS} -Wimplicit")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 ${COMMON_COMPILE_OPTIONS}")
-
-# Defines
-if (USE_MMAP)
-    add_definitions(-DUSE_MMAP)
-endif ()
-if (DISABLE_NETWORK)
-    add_definitions(-DDISABLE_NETWORK)
-endif ()
-if (DISABLE_HTTP_TWITCH)
-    add_definitions(-DDISABLE_HTTP)
-    add_definitions(-DDISABLE_TWITCH)
-endif ()
-if (DISABLE_TTF)
-    add_definitions(-DNO_TTF)
-endif ()
-if (ENABLE_LIGHTFX)
-    add_definitions(-D__ENABLE_LIGHTFX__)
-endif ()
-
-if (CXX_WARN_SUGGEST_FINAL_TYPES)
-    # Disable -Wsuggest-final-types via pragmas where due.
-   add_definitions(-D__WARN_SUGGEST_FINAL_TYPES__)
-endif ()
-
-if (CXX_WARN_SUGGEST_FINAL_METHODS)
-    # Disable -Wsuggest-final-methods via pragmas where due.
-   add_definitions(-D__WARN_SUGGEST_FINAL_METHODS__)
 endif ()
 
 # To avoid unnecessary rebuilds set the current branch and
