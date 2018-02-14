@@ -86,8 +86,8 @@ static uint8  _peepPathFindFewestNumSteps;
  * be declared properly. */
 static struct
 {
-    LocationXYZ8 location;
-    uint8        direction;
+    SmallCoordsXYZ location;
+    uint8          direction;
 } _peepPathFindHistory[16];
 
 static uint8             _unk_F1AEF0;
@@ -9965,8 +9965,8 @@ static bool path_is_thin_junction(rct_tile_element * path, sint16 x, sint16 y, u
  */
 static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep * peep, rct_tile_element * currentTileElement,
                                            bool inPatrolArea, uint8 counter, uint16 * endScore, sint32 test_edge,
-                                           uint8 * endJunctions, LocationXYZ8 junctionList[16], uint8 directionList[16],
-                                           LocationXYZ8 * endXYZ, uint8 * endSteps)
+                                           uint8 * endJunctions, SmallCoordsXYZ junctionList[16], uint8 directionList[16],
+                                           SmallCoordsXYZ * endXYZ, uint8 * endSteps)
 {
     uint8 searchResult = PATH_SEARCH_FAILED;
 
@@ -10558,7 +10558,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
     // Used to allow walking through no entry banners
     _peepPathFindIsStaff = (peep->type == PEEP_TYPE_STAFF);
 
-    LocationXYZ8 goal = { (uint8)(gPeepPathFindGoalPosition.x >> 5),
+    SmallCoordsXYZ goal = { (uint8)(gPeepPathFindGoalPosition.x >> 5),
                       (uint8)(gPeepPathFindGoalPosition.y >> 5),
                       (uint8)(gPeepPathFindGoalPosition.z) };
 
@@ -10721,10 +10721,10 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
         uint8  best_sub   = 0xFF;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        uint8        bestJunctions         = 0;
-        LocationXYZ8 bestJunctionList[16]  = { 0 };
-        uint8        bestDirectionList[16] = { 0 };
-        LocationXYZ8 bestXYZ               = { 0, 0, 0 };
+        uint8          bestJunctions         = 0;
+        SmallCoordsXYZ bestJunctionList[16]  = { 0 };
+        uint8          bestDirectionList[16] = { 0 };
+        SmallCoordsXYZ bestXYZ               = { 0, 0, 0 };
 
         if (gPathFindDebug)
         {
@@ -10769,7 +10769,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
             uint16 score = 0xFFFF;
             /* Variable endXYZ contains the end location of the
              * search path. */
-            LocationXYZ8 endXYZ;
+            SmallCoordsXYZ endXYZ;
             endXYZ.x = 0;
             endXYZ.y = 0;
             endXYZ.z = 0;
@@ -10783,9 +10783,9 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
              * of the search path.
              * In the future these could be used to visualise the
              * pathfinding on the map. */
-            uint8        endJunctions         = 0;
-            LocationXYZ8 endJunctionList[16]  = { 0 };
-            uint8        endDirectionList[16] = { 0 };
+            uint8          endJunctions         = 0;
+            SmallCoordsXYZ endJunctionList[16]  = { 0 };
+            uint8          endDirectionList[16] = { 0 };
 
             bool inPatrolArea = false;
             if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_MECHANIC)

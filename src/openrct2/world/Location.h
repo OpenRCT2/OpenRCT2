@@ -33,11 +33,6 @@ struct LocationXY8 {
 };
 assert_struct_size(LocationXY8, 2);
 
-struct LocationXYZ8 {
-    uint8 x, y, z;
-};
-assert_struct_size(LocationXYZ8, 3);
-
 struct LocationXYZD8 {
     uint8 x, y, z, direction;
 };
