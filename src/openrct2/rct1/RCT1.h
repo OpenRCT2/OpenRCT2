@@ -485,8 +485,8 @@ struct rct1_peep {
     };
     uint8 photo1_ride_ref;          // 0xC7
     uint32 peep_flags;              // 0xC8
-    LocationXYZD8 pathfind_goal;        // 0xCC
-    LocationXYZD8 pathfind_history[4];  // 0xD0
+    rct12_xyzd8 pathfind_goal;        // 0xCC
+    rct12_xyzd8 pathfind_history[4];  // 0xD0
     uint8 no_action_frame_no;       // 0xE0
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8 litter_count;             // 0xE1

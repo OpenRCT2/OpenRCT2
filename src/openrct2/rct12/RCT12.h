@@ -68,4 +68,10 @@ struct rct12_news_item
 };
 assert_struct_size(rct12_news_item, 0x10C);
 
+struct rct12_xyzd8
+{
+    uint8 x, y, z, direction;
+};
+assert_struct_size(rct12_xyzd8, 4);
+
 #pragma pack(pop)
