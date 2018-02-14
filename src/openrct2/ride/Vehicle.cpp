@@ -5462,7 +5462,7 @@ static void vehicle_update_crash(rct_vehicle * vehicle)
 
         invalidate_sprite_2((rct_sprite *)curVehicle);
 
-        LocationXYZ16 curPosition = {(curVehicle->x), (curVehicle->y), (curVehicle->z)};
+        LocationXYZ16 curPosition = {curVehicle->x, curVehicle->y, curVehicle->z};
 
         curPosition.x += (sint8)(curVehicle->crash_x >> 8);
         curPosition.y += (sint8)(curVehicle->crash_y >> 8);
