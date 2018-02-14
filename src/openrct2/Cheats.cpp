@@ -465,7 +465,7 @@ static void cheat_own_all_land()
         sint32 x = spawn.x;
         sint32 y = spawn.y;
         if (x != PEEP_SPAWN_UNDEFINED) {
-            rct_tile_element * surfaceElement = map_get_surface_element_at((BigCoordsXY){x, y});
+            rct_tile_element * surfaceElement = map_get_surface_element_at({x, y});
             surfaceElement->properties.surface.ownership = OWNERSHIP_UNOWNED;
             update_park_fences_around_tile(x, y);
             uint16 baseHeight = surfaceElement->base_height * 8;
