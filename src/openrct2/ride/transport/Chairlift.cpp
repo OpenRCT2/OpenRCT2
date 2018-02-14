@@ -146,10 +146,10 @@ static bool chairlift_paint_util_is_first_track(uint8 rideIndex, const rct_tile_
         return false;
     }
 
-    LocationXY16 delta  = TileDirectionDelta[tile_element_get_direction(tileElement)];
-    LocationXY16 newPos = {
-        static_cast<sint16>(pos.x - delta.x),
-        static_cast<sint16>(pos.y - delta.y),
+    BigCoordsXY delta  = TileDirectionDelta[tile_element_get_direction(tileElement)];
+    BigCoordsXY newPos = {
+        static_cast<sint32>(pos.x - delta.x),
+        static_cast<sint32>(pos.y - delta.y),
     };
 
     const rct_tile_element * nextTrack =
@@ -166,10 +166,10 @@ static bool chairlift_paint_util_is_last_track(uint8 rideIndex, const rct_tile_e
         return false;
     }
 
-    LocationXY16 delta  = TileDirectionDelta[tile_element_get_direction(tileElement)];
-    LocationXY16 newPos = {
-        static_cast<sint16>(pos.x + delta.x),
-        static_cast<sint16>(pos.y + delta.y),
+    BigCoordsXY delta  = TileDirectionDelta[tile_element_get_direction(tileElement)];
+    BigCoordsXY newPos = {
+        static_cast<sint32>(pos.x + delta.x),
+        static_cast<sint32>(pos.y + delta.y),
     };
 
     const rct_tile_element * nextTrack =

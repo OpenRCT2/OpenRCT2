@@ -218,12 +218,12 @@ static void ride_ratings_update_state_2()
 
             ride_ratings_score_close_proximity(tileElement);
 
-            rct_xy_element trackElement = {
+            BigCoordsXYE trackElement = {
                 /* .x = */ gRideRatingsCalcData.proximity_x,
                 /* .y = */ gRideRatingsCalcData.proximity_y,
                 /* .element = */ tileElement
             };
-            rct_xy_element nextTrackElement;
+            BigCoordsXYE nextTrackElement;
             if (!track_block_get_next(&trackElement, &nextTrackElement, NULL, NULL)) {
                 gRideRatingsCalcData.state = RIDE_RATINGS_STATE_4;
                 return;

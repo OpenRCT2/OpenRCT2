@@ -2566,9 +2566,9 @@ static void vehicle_update_waiting_to_depart(rct_vehicle * vehicle)
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
     {
-        rct_xy_element track;
-        sint32         z;
-        sint32         direction;
+        BigCoordsXYE track;
+        sint32       z;
+        sint32       direction;
 
         if (track_block_get_next_from_zero(vehicle->track_x, vehicle->track_y, vehicle->track_z, vehicle->ride,
                                            (uint8)(vehicle->track_direction & 0x3), &track, &z, &direction))
@@ -7919,7 +7919,7 @@ static void sub_6DBF3E(rct_vehicle * vehicle)
     {
         if (vehicle->track_progress > 3 && !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
         {
-            rct_xy_element input, output;
+            BigCoordsXYE   input, output;
             sint32         outputZ, outputDirection;
 
             input.x       = vehicle->track_x;
@@ -8049,8 +8049,8 @@ loc_6DB32A:
 
 loc_6DB358:
 {
-    rct_xy_element xyElement;
-    sint32         z, direction;
+    BigCoordsXYE        xyElement;
+    sint32              z, direction;
     xyElement.x       = vehicle->track_x;
     xyElement.y       = vehicle->track_y;
     xyElement.element = tileElement;
@@ -8490,8 +8490,8 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle * ve
     else
     {
         // loc_6DBB4F:;
-        rct_xy_element input;
-        rct_xy_element output;
+        BigCoordsXYE   input;
+        BigCoordsXYE   output;
         sint32         outputZ;
 
         input.x       = x;
@@ -8881,7 +8881,7 @@ loc_6DC476:
     sint16 x, y, z;
     sint32 direction;
     {
-        rct_xy_element input, output;
+        BigCoordsXYE   input, output;
         sint32         outZ, outDirection;
         input.x       = vehicle->track_x;
         input.y       = vehicle->track_y;

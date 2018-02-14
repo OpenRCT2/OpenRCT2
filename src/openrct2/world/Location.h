@@ -67,5 +67,42 @@ struct LocationXY32 {
 struct LocationXYZ32 {
     sint32 x, y, z;
 };
-
 #pragma pack(pop)
+
+/*
+ * Small coordinates use 1 x/y increment per tile.
+ * Big coordinates use 32 x/y increments per tile.
+ * */
+struct SmallCoordsXY
+{
+    sint32 x, y;
+};
+
+struct BigCoordsXY
+{
+    sint32 x, y;
+};
+
+struct SmallCoordsXYZ
+{
+    sint32 x, y, z;
+};
+
+struct BigCoordsXYZ
+{
+    sint32 x, y, z;
+};
+
+struct SmallCoordsXYZD
+{
+    sint32 x, y, z;
+    uint8 direction;
+};
+
+struct BigCoordsXYZD
+{
+    sint32 x, y, z;
+    uint8 direction;
+};
+
+
