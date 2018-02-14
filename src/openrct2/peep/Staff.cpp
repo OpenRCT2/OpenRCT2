@@ -943,8 +943,8 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
         nextDirection = x_diff < 0 ? 0 : 2;
     }
 
-    LocationXY16 nextTile = { static_cast<sint16>((nearestLitter->x & 0xFFE0) - TileDirectionDelta[nextDirection].x),
-                          static_cast<sint16>((nearestLitter->y & 0xFFE0) - TileDirectionDelta[nextDirection].y) };
+    BigCoordsXY nextTile = { static_cast<sint32>((nearestLitter->x & 0xFFE0) - TileDirectionDelta[nextDirection].x),
+                          static_cast<sint32>((nearestLitter->y & 0xFFE0) - TileDirectionDelta[nextDirection].y) };
 
     sint16 nextZ = ((peep->z + 8) & 0xFFF0) / 8;
 
