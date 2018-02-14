@@ -144,6 +144,9 @@ if (CXX_WARN_SUGGEST_FINAL_METHODS)
 endif ()
 
 if(EXISTS "${ROOT_DIR}/discord-rpc")
+    # Don't build discord's examples, some of which are in C and do not honour
+    # the flags we set for C++. Also we don't use the provided examples.
+    set(BUILD_EXAMPLES OFF CACHE BOOL "Build example apps")
     add_subdirectory("${ROOT_DIR}/discord-rpc")
     add_definitions(-D__ENABLE_DISCORD__)
     include_directories("${ROOT_DIR}/discord-rpc/include")
