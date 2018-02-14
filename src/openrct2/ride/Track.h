@@ -510,13 +510,13 @@ enum
 
 struct track_circuit_iterator
 {
-    rct_xy_element  last;
-    rct_xy_element  current;
-    sint32          currentZ;
-    sint32          currentDirection;
+    BigCoordsXYE       last;
+    BigCoordsXYE       current;
+    sint32             currentZ;
+    sint32             currentDirection;
     rct_tile_element * first;
-    bool            firstIteration;
-    bool            looped;
+    bool               firstIteration;
+    bool               looped;
 };
 
 extern const rct_trackdefinition FlatRideTrackDefinitions[256];
@@ -530,13 +530,13 @@ const rct_preview_track * get_track_def_from_ride(Ride * ride, sint32 trackType)
 const rct_preview_track * get_track_def_from_ride_index(sint32 rideIndex, sint32 trackType);
 const rct_track_coordinates * get_track_coord_from_ride(Ride * ride, sint32 trackType);
 
-void track_circuit_iterator_begin(track_circuit_iterator * it, rct_xy_element first);
+void track_circuit_iterator_begin(track_circuit_iterator * it, BigCoordsXYE first);
 bool track_circuit_iterator_previous(track_circuit_iterator * it);
 bool track_circuit_iterator_next(track_circuit_iterator * it);
 bool track_circuit_iterators_match(const track_circuit_iterator * firstIt, const track_circuit_iterator * secondIt);
 
-void track_get_back(rct_xy_element * input, rct_xy_element * output);
-void track_get_front(rct_xy_element * input, rct_xy_element * output);
+void track_get_back(BigCoordsXYE * input, BigCoordsXYE * output);
+void track_get_front(BigCoordsXYE * input, BigCoordsXYE * output);
 
 bool track_element_is_block_start(rct_tile_element * trackElement);
 bool track_element_is_covered(sint32 trackElementType);

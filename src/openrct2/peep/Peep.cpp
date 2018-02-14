@@ -4997,7 +4997,7 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep * peep, Ride 
 
         uint8 stationZ = ride->station_heights[peep->current_ride_station];
 
-        rct_xy_element input;
+        BigCoordsXYE input;
         input.x       = stationPosition.x * 32;
         input.y       = stationPosition.y * 32;
         input.element = map_get_track_element_at_from_ride(input.x, input.y, stationZ, peep->current_ride);

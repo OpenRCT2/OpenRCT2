@@ -2325,7 +2325,7 @@ void game_command_set_brakes_speed(sint32 * eax,
     *ebx = 0;
 }
 
-void track_circuit_iterator_begin(track_circuit_iterator * it, rct_xy_element first)
+void track_circuit_iterator_begin(track_circuit_iterator * it, BigCoordsXYE first)
 {
     it->last           = first;
     it->first          = nullptr;
@@ -2410,9 +2410,9 @@ bool track_circuit_iterators_match(const track_circuit_iterator * firstIt, const
             firstIt->current.y == secondIt->current.y);
 }
 
-void track_get_back(rct_xy_element * input, rct_xy_element * output)
+void track_get_back(BigCoordsXYE * input, BigCoordsXYE * output)
 {
-    rct_xy_element  lastTrack;
+    BigCoordsXYE  lastTrack;
     track_begin_end currentTrack;
     bool            result;
 
@@ -2431,11 +2431,11 @@ void track_get_back(rct_xy_element * input, rct_xy_element * output)
     *output = lastTrack;
 }
 
-void track_get_front(rct_xy_element * input, rct_xy_element * output)
+void track_get_front(BigCoordsXYE * input, BigCoordsXYE * output)
 {
-    rct_xy_element lastTrack, currentTrack;
-    sint32         z, direction;
-    bool           result;
+    BigCoordsXYE lastTrack, currentTrack;
+    sint32       z, direction;
+    bool         result;
 
     lastTrack = *input;
     do

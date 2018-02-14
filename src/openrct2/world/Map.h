@@ -324,14 +324,6 @@ enum {
 #define TILE_UNDEFINED_TILE_ELEMENT NULL
 
 #pragma pack(push, 1)
-struct rct_xy_element {
-    sint32 x, y;
-    rct_tile_element *element;
-};
-#ifdef PLATFORM_32BIT
-assert_struct_size(rct_xy_element, 12);
-#endif
-
 struct rct2_peep_spawn {
     uint16 x;
     uint16 y;
@@ -340,6 +332,12 @@ struct rct2_peep_spawn {
 };
 assert_struct_size(rct2_peep_spawn, 6);
 #pragma pack(pop)
+
+struct BigCoordsXYE
+{
+    sint32 x, y;
+    rct_tile_element * element;
+};
 
 enum {
     MAP_SELECT_FLAG_ENABLE              = 1 << 0,
@@ -375,7 +373,7 @@ enum
     CREATE_CROSSING_MODE_PATH_OVER_TRACK,
 };
 
-extern const LocationXY16 TileDirectionDelta[];
+extern const BigCoordsXY TileDirectionDelta[];
 extern const money32 TerrainPricing[];
 
 extern uint16 gWidePathTileLoopX;
