@@ -19,14 +19,14 @@
 
 #include "common.h"
 
-typedef enum {
+enum DIAGNOSTIC_LEVEL {
     DIAGNOSTIC_LEVEL_FATAL,
     DIAGNOSTIC_LEVEL_ERROR,
     DIAGNOSTIC_LEVEL_WARNING,
     DIAGNOSTIC_LEVEL_VERBOSE,
     DIAGNOSTIC_LEVEL_INFORMATION,
     DIAGNOSTIC_LEVEL_COUNT
-} DiagnosticLevel;
+};
 
 /**
  * Compile-time debug levels.
@@ -77,8 +77,8 @@ typedef enum {
 
 extern bool _log_levels[DIAGNOSTIC_LEVEL_COUNT];
 
-void diagnostic_log(DiagnosticLevel diagnosticLevel, const char *format, ...);
-void diagnostic_log_with_location(DiagnosticLevel diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...);
+void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char *format, ...);
+void diagnostic_log_with_location(DIAGNOSTIC_LEVEL diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...);
 
 #ifdef _MSC_VER
 #define diagnostic_log_macro(level, format, ...)    diagnostic_log_with_location(level, __FILE__, __FUNCTION__, __LINE__, format, ## __VA_ARGS__)

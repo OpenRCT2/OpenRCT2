@@ -52,23 +52,23 @@ enum RAIN_LEVEL
     RAIN_LEVEL_HEAVY,
 };
 
-typedef struct WeatherState
+struct WeatherState
 {
     sint8   TemperatureDelta;
     sint8   EffectLevel;
     sint8   GloomLevel;
     sint8   RainLevel;
     uint32  SpriteId;
-} WeatherState;
+};
 
-typedef struct ClimateState
+struct ClimateState
 {
     uint8 Weather;
     sint8 Temperature;
     uint8 WeatherEffect;
     uint8 WeatherGloom;
     uint8 RainLevel;
-} ClimateState;
+};
 
 extern uint8        gClimate;
 extern ClimateState gClimateCurrent;

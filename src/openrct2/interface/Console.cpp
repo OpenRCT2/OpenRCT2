@@ -1368,14 +1368,13 @@ static sint32 cc_for_date(const utf8 **argv, sint32 argc)
     return 1;
 }
 
-
-typedef sint32 (*console_command_func)(const utf8 **argv, sint32 argc);
-typedef struct console_command {
+using console_command_func = sint32 (*)(const utf8 ** argv, sint32 argc);
+struct console_command {
     const utf8 * command;
     console_command_func func;
     const utf8 * help;
     const utf8 * usage;
-} console_command;
+};
 
 static constexpr const utf8* console_variable_table[] = {
     "park_rating",

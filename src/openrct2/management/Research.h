@@ -20,10 +20,10 @@
 #include "../object/ObjectLimits.h"
 #include "../ride/Ride.h"
 
-typedef struct rct_ride_entry rct_ride_entry;
+struct rct_ride_entry;
 
 #pragma pack(push, 1)
-typedef struct rct_research_item
+struct rct_research_item
 {
     // Bit 16 (0: scenery entry, 1: ride entry)
     union
@@ -38,7 +38,7 @@ typedef struct rct_research_item
         };
     };
     uint8 category;
-} rct_research_item;
+};
 assert_struct_size(rct_research_item, 5);
 #pragma pack(pop)
 

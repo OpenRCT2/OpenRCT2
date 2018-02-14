@@ -70,7 +70,7 @@ namespace GA_FLAGS
 class GameActionResult
 {
 public:
-    typedef std::unique_ptr<GameActionResult> Ptr;
+    using Ptr = std::unique_ptr<GameActionResult>;
 
     GA_ERROR                Error = GA_ERROR::OK;
     rct_string_id           ErrorTitle = STR_NONE;
@@ -91,8 +91,8 @@ public:
 struct GameAction
 {
 public:
-    typedef std::unique_ptr<GameAction> Ptr;
-    typedef std::function<void(const struct GameAction *, const GameActionResult *)> Callback_t;
+    using Ptr        = std::unique_ptr<GameAction>;
+    using Callback_t = std::function<void(const struct GameAction *, const GameActionResult *)>;
 
 private:
     uint32 const _type;
@@ -205,7 +205,7 @@ template<uint32 TType, typename TResultType>
 struct GameActionBase : GameAction
 {
 public:
-    typedef TResultType Result;
+    using Result = TResultType;
 
     static constexpr uint32 TYPE = TType;
 
@@ -223,7 +223,7 @@ public:
     }
 };
 
-typedef GameAction *(*GameActionFactory)();
+using GameActionFactory = GameAction *(*)();
 
 namespace GameActions
 {

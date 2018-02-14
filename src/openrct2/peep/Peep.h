@@ -468,16 +468,16 @@ enum PEEP_RIDE_DECISION
 };
 
 #pragma pack(push, 1)
-typedef struct rct_peep_thought
+struct rct_peep_thought
 {
     uint8 type;  // 0
     uint8 item;  // 1
     uint8 var_2; // 2
     uint8 var_3; // 3
-} rct_peep_thought;
+};
 assert_struct_size(rct_peep_thought, 4);
 
-typedef struct rct_peep
+struct rct_peep
 {
     uint8  sprite_identifier; // 0x00
     uint8  var_01;
@@ -649,29 +649,29 @@ typedef struct rct_peep
     uint8  favourite_ride_rating; // 0xFA
     uint8  pad_FB;
     uint32 item_standard_flags; // 0xFC
-} rct_peep;
+};
 assert_struct_size(rct_peep, 0x100);
 #pragma pack(pop)
 
-typedef struct rct_sprite_bounds
+struct rct_sprite_bounds
 {
     uint8 sprite_width;           // 0x00
     uint8 sprite_height_negative; // 0x01
     uint8 sprite_height_positive; // 0x02
-} rct_sprite_bounds;
+};
 
-typedef struct rct_peep_animation
+struct rct_peep_animation
 {
     uint32        base_image; // 0x00
     size_t        num_frames;
     const uint8 * frame_offsets;
-} rct_peep_animation;
+};
 
-typedef struct rct_peep_animation_entry
+struct rct_peep_animation_entry
 {
     const rct_peep_animation * sprite_animation; // 0x00
     const rct_sprite_bounds *  sprite_bounds;    // 0x04
-} rct_peep_animation_entry;
+};
 
 enum
 {

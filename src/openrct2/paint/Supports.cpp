@@ -134,10 +134,10 @@ static constexpr const uint8 supportTypeToHeight[] = {
     6,
 };
 
-typedef struct metal_supports_images {
+struct metal_supports_images {
     uint16 base_id;
     uint16 beam_id;
-} metal_supports_images;
+};
 
 /** rct2: 0x0097B15C */
 static constexpr const metal_supports_images _97B15C[] = {
@@ -179,12 +179,12 @@ static constexpr const uint8 metal_supports_slope_image_map[] = {
      0,  0,  0,  0,  0,  0,  0, 15,  0,  0,  0, 16,  0, 17, 18,  0,
 };
 
-typedef struct supports_id_desc {
+struct supports_id_desc {
     uint16 full;
     uint16 half;
     uint16 flat;
     uint16 slope;
-} supports_id_desc;
+};
 
 /* 0x0097B1C4 */
 static constexpr const supports_id_desc WoodenSupportImageIds[] = {
@@ -218,20 +218,20 @@ static constexpr const uint16 WoodenCurveSupportImageIds[] = {
     0,
 };
 
-typedef struct unk_supports_desc_bound_box {
+struct unk_supports_desc_bound_box {
     struct {
         uint8 x, y, z;
     } offset;
     struct {
         uint8 x, y, z;
     } length;
-} unk_supports_desc_bound_box;
+};
 
-typedef struct unk_supports_desc {
+struct unk_supports_desc {
     unk_supports_desc_bound_box bounding_box;
     uint8 var_6;
     uint8 var_7;
-} unk_supports_desc;
+};
 
 /* 0x0097B23C */
 static constexpr const unk_supports_desc byte_97B23C[] = {

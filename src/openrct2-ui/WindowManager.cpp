@@ -345,7 +345,7 @@ public:
         case INTENT_ACTION_SET_TILE_INSPECTOR_PAGE:
         {
             auto window = window_find_by_class(WC_TILE_INSPECTOR);
-            window_tile_inspector_set_page(window, static_cast<tile_inspector_page>(intent.GetUIntExtra(INTENT_EXTRA_PAGE)));
+            window_tile_inspector_set_page(window, static_cast<TILE_INSPECTOR_PAGE>(intent.GetUIntExtra(INTENT_EXTRA_PAGE)));
             break;
         }
 

@@ -45,10 +45,10 @@ enum {
     SPR_LITTER_EMPTY_BOWL_BLUE = 23129,
 };
 
-typedef struct litter_sprite {
+struct litter_sprite {
     uint16 base_id;
     uint8 direction_mask;
-} litter_sprite;
+};
 
 /** rct2: 0x0097EF6C */
 static constexpr const litter_sprite litter_sprites[] = {

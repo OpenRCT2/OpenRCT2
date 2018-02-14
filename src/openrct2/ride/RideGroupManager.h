@@ -27,13 +27,13 @@
 
 extern const uint8 gRideCategories[RIDE_TYPE_COUNT];
 
-typedef struct RideGroup
+struct RideGroup
 {
     uint8 RideType;
     uint16 MaximumHeight;
     uint64 AvailableTrackPieces;
     rct_ride_name Naming;
-} RideGroup;
+};
 
 #ifdef __cplusplus
 class RideGroupManager

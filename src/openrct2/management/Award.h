@@ -18,11 +18,11 @@
 
 #include "../common.h"
 
-typedef struct Award
+struct Award
 {
     uint16 Time;
     uint16 Type;
-} Award;
+};
 
 enum PARK_AWARD
 {

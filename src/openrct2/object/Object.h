@@ -21,7 +21,7 @@
 #include "StringTable.h"
 
 // First 0xF of rct_object_entry->flags
-typedef enum
+enum OBJECT_TYPE
 {
     OBJECT_TYPE_RIDE,
     OBJECT_TYPE_SMALL_SCENERY,
@@ -36,9 +36,9 @@ typedef enum
     OBJECT_TYPE_SCENARIO_TEXT,
     
     OBJECT_TYPE_COUNT
-} OBJECT_TYPE;
+};
 
-typedef enum
+enum OBJECT_SELECTION_FLAGS
 {
     OBJECT_SELECTION_FLAG_SELECTED = (1 << 0),
     OBJECT_SELECTION_FLAG_2 = (1 << 1),
@@ -49,11 +49,11 @@ typedef enum
     OBJECT_SELECTION_FLAG_7 = (1 << 6),
     OBJECT_SELECTION_FLAG_8 = (1 << 7),
     OBJECT_SELECTION_FLAG_ALL = 0xFF,
-} OBJECT_SELECTION_FLAGS;
+};
 
 #define OBJECT_SELECTION_NOT_SELECTED_OR_REQUIRED 0
 
-typedef enum
+enum OBJECT_SOURCE_GAME
 {
     OBJECT_SOURCE_CUSTOM,
     OBJECT_SOURCE_WACKY_WORLDS,
@@ -63,7 +63,7 @@ typedef enum
     OBJECT_SOURCE_ADDED_ATTRACTIONS,
     OBJECT_SOURCE_LOOPY_LANDSCAPES,
     OBJECT_SOURCE_RCT2 = 8
-} OBJECT_SOURCE_GAME;
+};
 
 #define OBJECT_ENTRY_COUNT 721
 
@@ -72,7 +72,7 @@ typedef enum
  * Object entry structure.
  * size: 0x10
  */
-typedef struct rct_object_entry {
+struct rct_object_entry {
     union {
         uint8 end_flag; // needed not to read past allocated buffer.
         uint32 flags;
@@ -85,28 +85,28 @@ typedef struct rct_object_entry {
         };
     };
 
-} rct_object_entry;
+};
 assert_struct_size(rct_object_entry, 0x10);
 
-typedef struct rct_object_entry_group {
+struct rct_object_entry_group {
     void **chunks;
     rct_object_entry *entries;
-} rct_object_entry_group;
+};
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_object_entry_group, 8);
 #endif
 
-typedef struct rct_ride_filters {
+struct rct_ride_filters {
     uint8 category[2];
     uint8 ride_type;
-} rct_ride_filters;
+};
 assert_struct_size(rct_ride_filters, 3);
 
-typedef struct rct_object_filters {
+struct rct_object_filters {
     union {
         rct_ride_filters ride;
     };
-} rct_object_filters;
+};
 assert_struct_size(rct_object_filters, 3);
 #pragma pack(pop)
 

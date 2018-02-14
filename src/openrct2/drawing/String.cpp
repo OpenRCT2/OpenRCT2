@@ -422,7 +422,7 @@ void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, sint32 x, s
     }
 }
 
-typedef struct text_draw_info {
+struct text_draw_info {
     sint32 startX;
     sint32 startY;
     sint32 x;
@@ -433,7 +433,7 @@ typedef struct text_draw_info {
     uint8 palette[8];
     uint16 font_sprite_base;
     const sint8 *y_offset;
-} text_draw_info;
+};
 
 static void ttf_draw_character_sprite(rct_drawpixelinfo *dpi, sint32 codepoint, text_draw_info *info)
 {

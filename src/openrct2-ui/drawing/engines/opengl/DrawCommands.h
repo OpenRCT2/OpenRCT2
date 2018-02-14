@@ -127,5 +127,5 @@ struct DrawRectCommand
     };
 };
 
-typedef CommandBatch<DrawLineCommand> LineCommandBatch;
-typedef CommandBatch<DrawRectCommand> RectCommandBatch;
+using LineCommandBatch = CommandBatch<DrawLineCommand>;
+using RectCommandBatch = CommandBatch<DrawRectCommand>;

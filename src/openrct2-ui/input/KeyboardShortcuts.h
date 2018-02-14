@@ -136,8 +136,6 @@ namespace OpenRCT2
     }
 }
 
-typedef struct rct_window rct_window;
-
 /** The current shortcut being changed. */
 extern uint8 gKeyboardShortcutChangeId;
 extern const rct_string_id ShortcutStringIds[SHORTCUT_COUNT];
@@ -154,4 +152,3 @@ void keyboard_shortcut_handle_command(sint32 shortcutIndex);
 void keyboard_shortcut_format_string(char *buffer, size_t size, uint16 shortcutKey);
 
 void get_keyboard_map_scroll(const uint8 * keysState, sint32 * x, sint32 * y);
-

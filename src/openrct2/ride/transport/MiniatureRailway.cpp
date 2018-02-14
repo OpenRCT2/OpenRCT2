@@ -1711,12 +1711,12 @@ static constexpr const sint16 monorail_diag_support_types[][4] = {
     { -1, SUPPORT_PLAIN_W, SUPPORT_PLAIN_E, SUPPORT_PLAIN_90_DEG },
 };
 
-typedef struct floor_desc
+struct floor_desc
 {
     uint32   image_id;
     LocationXY16 bound_size;
     LocationXY16 bound_offset;
-} floor_desc;
+};
 
 static constexpr const floor_desc floors[] = {
     { SPR_FLOOR_PLANKS, { 32, 32 }, { 0, 0 } },

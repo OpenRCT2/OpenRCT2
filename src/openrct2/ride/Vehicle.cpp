@@ -469,12 +469,12 @@ static constexpr const sint8 * SwingingTimeToSpriteMaps[] = {
     SwingingTimeToSpriteMap_11,
 };
 
-typedef struct
+struct unk_9a36c4
 {
     sint16 x;
     sint16 y;
     uint32 distance;
-} unk_9a36c4;
+};
 
 /** rct2: 0x009A36C4 */
 static constexpr const unk_9a36c4 Unk9A36C4[] =
@@ -2711,12 +2711,12 @@ static void vehicle_update_waiting_to_depart(rct_vehicle * vehicle)
 }
 
 #pragma pack(push, 1)
-typedef struct rct_synchronised_vehicle
+struct rct_synchronised_vehicle
 {
     uint8  ride_id;
     uint8  station_id;
     uint16 vehicle_id;
-} rct_synchronised_vehicle;
+};
 assert_struct_size(rct_synchronised_vehicle, 4);
 #pragma pack(pop)
 

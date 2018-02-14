@@ -18,7 +18,7 @@
 
 #include "../common.h"
 
-typedef fixed16_2dp ride_rating;
+using ride_rating = fixed16_2dp;
 
 // Convenience function for writing ride ratings. The result is a 16 bit signed
 // integer. To create the ride rating 3.65 type RIDE_RATING(3,65)
@@ -28,11 +28,11 @@ typedef fixed16_2dp ride_rating;
 #pragma pack(push, 1)
 
 // Used for return values, for functions that modify all three.
-typedef struct rating_tuple {
+struct rating_tuple {
     ride_rating excitement;
     ride_rating intensity;
     ride_rating nausea;
-} rating_tuple;
+};
 assert_struct_size(rating_tuple, 6);
 
 #pragma pack(pop)
@@ -41,7 +41,7 @@ enum {
     RIDE_RATING_STATION_FLAG_NO_ENTRANCE = 1 << 0
 };
 
-typedef struct rct_ride_rating_calc_data {
+struct rct_ride_rating_calc_data {
     uint16  proximity_x;
     uint16  proximity_y;
     uint16  proximity_z;
@@ -57,7 +57,7 @@ typedef struct rct_ride_rating_calc_data {
     uint16  num_brakes;
     uint16  num_reversers;
     uint16  station_flags;
-} rct_ride_rating_calc_data;
+};
 
 extern rct_ride_rating_calc_data gRideRatingsCalcData;
 

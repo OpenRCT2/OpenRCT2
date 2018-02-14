@@ -32,12 +32,12 @@
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Dropdown.h>
 
-typedef struct TITLE_COMMAND_ORDER {
+struct TITLE_COMMAND_ORDER {
     // originally a uint8, but the new millisecond wait times require a uint16.
     uint16 command;
     rct_string_id nameStringId;
     rct_string_id descStringId;
-} TITLE_COMMAND_ORDER;
+};
 
 static TITLE_COMMAND_ORDER _window_title_command_editor_orders[] = {
     { TITLE_SCRIPT_LOAD,        STR_TITLE_EDITOR_ACTION_LOAD_SAVE, STR_TITLE_EDITOR_ARGUMENT_SAVEFILE },

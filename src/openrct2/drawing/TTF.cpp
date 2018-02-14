@@ -30,21 +30,21 @@ static bool _ttfInitialised = false;
 #define TTF_SURFACE_CACHE_SIZE 256
 #define TTF_GETWIDTH_CACHE_SIZE 1024
 
-typedef struct ttf_cache_entry
+struct ttf_cache_entry
 {
     TTFSurface *    surface;
     TTF_Font *      font;
     utf8 *          text;
     uint32          lastUseTick;
-} ttf_cache_entry;
+};
 
-typedef struct ttf_getwidth_cache_entry
+struct ttf_getwidth_cache_entry
 {
     uint32      width;
     TTF_Font *  font;
     utf8 *      text;
     uint32      lastUseTick;
-} ttf_getwidth_cache_entry;
+};
 
 static ttf_cache_entry _ttfSurfaceCache[TTF_SURFACE_CACHE_SIZE] = { nullptr };
 static sint32 _ttfSurfaceCacheCount = 0;

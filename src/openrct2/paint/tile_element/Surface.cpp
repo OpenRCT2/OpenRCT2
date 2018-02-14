@@ -70,8 +70,6 @@ enum
     CORNER_LEFT
 };
 
-typedef struct corner_height corner_height;
-
 struct corner_height
 {
     uint8 top;
@@ -365,8 +363,6 @@ static constexpr const uint32 dword_97B898[][2] =
     { SPR_TERRAIN_GRASS_MOWED_90, SPR_TERRAIN_GRASS_MOWED_90_GRID },
     { SPR_TERRAIN_GRASS_MOWED,    SPR_TERRAIN_GRASS_MOWED_GRID }
 };
-
-typedef struct tile_descriptor tile_descriptor;
 
 struct tile_descriptor
 {

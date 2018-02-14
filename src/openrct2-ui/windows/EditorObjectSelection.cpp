@@ -271,16 +271,16 @@ enum {
     DDIX_FILTER_NONSELECTED,
 };
 
-typedef struct list_item {
+struct list_item {
     const ObjectRepositoryItem * repositoryItem;
     rct_object_entry *entry;
     rct_object_filters *filter;
     uint8 *flags;
-} list_item;
+};
 
 static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item);
 
-typedef bool (*sortFunc_t)(const list_item &, const list_item &);
+using sortFunc_t = bool (*)(const list_item &, const list_item &);
 
 static std::vector<list_item> _listItems;
 static sint32 _listSortType = RIDE_SORT_TYPE;

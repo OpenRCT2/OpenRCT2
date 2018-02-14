@@ -3254,7 +3254,7 @@ void map_obstruction_set_error_text(rct_tile_element *tileElement)
  *  ebp = clearFunc
  *  bl = bl
  */
-sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, CLEAR_FUNC *clearFunc, uint8 bl, uint8 flags, money32 *price, uint8 crossingMode)
+sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, CLEAR_FUNC clearFunc, uint8 bl, uint8 flags, money32 *price, uint8 crossingMode)
 {
     sint32 al, ah, bh, cl, ch, water_height;
     al = ah = bh = cl = ch = water_height = 0;
@@ -4363,7 +4363,7 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
     const sint32 flags = *ebx;
     const sint32 x = *ecx & 0xFF;
     const sint32 y = (*ecx >> 8) & 0xFF;
-    const tile_inspector_instruction instruction = static_cast<tile_inspector_instruction>(*eax);
+    const TILE_INSPECTOR_INSTRUCTION_TYPE instruction = static_cast<TILE_INSPECTOR_INSTRUCTION_TYPE>(*eax);
 
     switch (instruction)
     {

@@ -28,7 +28,7 @@
 
 #pragma pack(push, 1)
 /* Maze Element entry   size: 0x04 */
-typedef struct rct_td6_maze_element {
+struct rct_td6_maze_element {
     union {
         uint32 all;
         struct {
@@ -43,27 +43,27 @@ typedef struct rct_td6_maze_element {
             };
         };
     };
-} rct_td6_maze_element;
+};
 assert_struct_size(rct_td6_maze_element, 0x04);
 
 /* Track Element entry  size: 0x02 */
-typedef struct rct_td6_track_element {
+struct rct_td6_track_element {
     uint8 type;                         // 0x00
     uint8 flags;                        // 0x01
-} rct_td6_track_element;
+};
 assert_struct_size(rct_td6_track_element, 0x02);
 
 /* Track Entrance entry size: 0x06 */
-typedef struct rct_td6_entrance_element {
+struct rct_td6_entrance_element {
     sint8 z;                            // 0x00
     uint8 direction;                    // 0x01
     sint16 x;                           // 0x02
     sint16 y;                           // 0x04
-} rct_td6_entrance_element;
+};
 assert_struct_size(rct_td6_entrance_element, 0x06);
 
 /* Track Scenery entry  size: 0x16 */
-typedef struct rct_td6_scenery_element {
+struct rct_td6_scenery_element {
     rct_object_entry scenery_object;    // 0x00
     sint8 x;                            // 0x10
     sint8 y;                            // 0x11
@@ -71,14 +71,14 @@ typedef struct rct_td6_scenery_element {
     uint8 flags;                        // 0x13 direction quadrant tertiary colour
     uint8 primary_colour;               // 0x14
     uint8 secondary_colour;             // 0x15
-} rct_td6_scenery_element;
+};
 assert_struct_size(rct_td6_scenery_element, 0x16);
 
 /**
  * Track design structure.
  * size: 0x4E72B
  */
-typedef struct rct_track_td6 {
+struct rct_track_td6 {
     uint8 type;                                     // 0x00
     uint8 vehicle_type;
     union{
@@ -147,7 +147,7 @@ typedef struct rct_track_td6 {
     rct_td6_scenery_element     *scenery_elements;
 
     utf8 *name;
-} rct_track_td6;
+};
 //Warning: improper struct size in comment
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_track_td6, 0xbf);

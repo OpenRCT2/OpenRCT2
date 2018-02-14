@@ -506,11 +506,11 @@ static sint32 count_rows(sint32 items){
     return rows;
 }
 
-typedef struct scenery_item {
+struct scenery_item {
     sint32 allRows;
     sint32 selected_item;
     sint16 sceneryId;
-} scenery_item;
+};
 
 static scenery_item window_scenery_count_rows_with_selected_item(sint32 tabIndex)
 {

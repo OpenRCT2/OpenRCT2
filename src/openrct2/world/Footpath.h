@@ -29,14 +29,14 @@ enum
 };
 
 #pragma pack(push, 1)
-typedef struct rct_footpath_entry {
+struct rct_footpath_entry {
     rct_string_id string_idx;   // 0x00
     uint32 image;               // 0x02
     uint32 bridge_image;        // 0x06
     uint8 support_type;         // 0x0A
     uint8 flags;                // 0x0B
     uint8 scrolling_mode;       // 0x0C
-} rct_footpath_entry;
+};
 assert_struct_size(rct_footpath_entry, 13);
 #pragma pack(pop)
 

@@ -39,11 +39,11 @@ enum {
     DATE_FORMAT_YEAR_DAY_MONTH
 };
 
-typedef struct openrct_timeofday {
+struct openrct_timeofday {
     uint8 second;
     uint8 minute;
     uint8 hour;
-} openrct_timeofday;
+};
 
 extern const sint16 days_in_month[MONTH_COUNT];
 extern const rct_string_id DateFormatStringIds[];

@@ -41,7 +41,7 @@
 
 
 
-typedef struct rct2_install_info {
+struct rct2_install_info {
     uint32 installLevel;
     char title[260];
     char path[260];
@@ -49,7 +49,7 @@ typedef struct rct2_install_info {
     uint8 pad_210[256];
     char expansionPackNames[16][128];
     uint32 activeExpansionPacks;        //0xB10
-} rct2_install_info;
+};
 
 #pragma pack(push, 1)
 
@@ -57,7 +57,7 @@ typedef struct rct2_install_info {
  * Ride structure.
  * size: 0x0260
  */
-typedef struct rct2_ride {
+struct rct2_ride {
     uint8 type;                                                     // 0x000
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
@@ -264,7 +264,7 @@ typedef struct rct2_ride {
     uint16 cable_lift;                                              // 0x1FE
     uint16 queue_length[RCT12_MAX_STATIONS_PER_RIDE];               // 0x200
     uint8 pad_208[0x58];                                            // 0x208
-} rct2_ride;
+};
 assert_struct_size(rct2_ride, 0x260);
 
 /**

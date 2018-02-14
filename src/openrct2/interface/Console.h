@@ -21,7 +21,7 @@
 #include "../drawing/Drawing.h"
 #include "../localisation/FormatCodes.h"
 
-typedef enum CONSOLE_INPUT
+enum CONSOLE_INPUT
 {
     CONSOLE_INPUT_NONE,
     CONSOLE_INPUT_LINE_CLEAR,
@@ -30,7 +30,7 @@ typedef enum CONSOLE_INPUT
     CONSOLE_INPUT_HISTORY_NEXT,
     CONSOLE_INPUT_SCROLL_PREVIOUS,
     CONSOLE_INPUT_SCROLL_NEXT,
-} CONSOLE_INPUT;
+};
 
 extern bool gConsoleOpen;
 

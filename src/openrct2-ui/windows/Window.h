@@ -21,8 +21,8 @@
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/windows/tile_inspector.h>
 
-typedef void (*loadsave_callback)(sint32 result, const utf8 * path);
-typedef void (*scenarioselect_callback)(const utf8 *path);
+using loadsave_callback       = void (*)(sint32 result, const utf8 * path);
+using scenarioselect_callback = void (*)(const utf8 *path);
 
 rct_window * window_about_open();
 rct_window * window_changelog_open();
@@ -158,7 +158,7 @@ rct_window * window_editor_bottom_toolbar_open();
 
 rct_window * window_tile_inspector_open();
 void window_tile_inspector_clear_clipboard();
-void window_tile_inspector_set_page(rct_window *w, tile_inspector_page page);
+void window_tile_inspector_set_page(rct_window *w, TILE_INSPECTOR_PAGE page);
 void window_tile_inspector_auto_set_buttons(rct_window *w);
 
 rct_window * window_editor_object_selection_open();

@@ -40,8 +40,9 @@ enum {
 
 #ifndef NO_TTF
 
-typedef struct _TTF_Font TTF_Font;
-typedef struct TTFFontDescriptor {
+struct _TTF_Font;
+using TTF_Font = _TTF_Font;
+struct TTFFontDescriptor {
     const utf8 *filename;
     const utf8 *font_name;
     sint32 ptSize;
@@ -50,11 +51,11 @@ typedef struct TTFFontDescriptor {
     sint32 line_height;
     sint32 hinting_threshold;
     TTF_Font * font;
-} TTFFontDescriptor;
+};
 
-typedef struct  TTFFontSetDescriptor {
+struct TTFFontSetDescriptor {
     TTFFontDescriptor size[FONT_SIZE_COUNT];
-} TTFFontSetDescriptor;
+};
 
 extern TTFFontSetDescriptor *gCurrentTTFFontSet;
 

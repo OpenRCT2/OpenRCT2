@@ -43,7 +43,7 @@ enum {
 #include "../Version.h"
 #include "NetworkTypes.h"
 
-typedef struct GameAction GameAction;
+struct GameAction;
 
 #ifndef DISABLE_NETWORK
 

@@ -24,12 +24,12 @@
  * Animated object
  * size: 0x06
  */
-typedef struct rct_map_animation {
+struct rct_map_animation {
     uint8 baseZ;
     uint8 type;
     uint16 x;
     uint16 y;
-} rct_map_animation;
+};
 assert_struct_size(rct_map_animation, 6);
 #pragma pack(pop)
 

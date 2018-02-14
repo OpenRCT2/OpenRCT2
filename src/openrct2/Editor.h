@@ -42,7 +42,7 @@ namespace Editor
     void SetSelectedObject(sint32 objectType, size_t index, uint32 flags);
 }
 
-typedef enum
+enum RCT2_EDITOR_STEP
 {
     EDITOR_STEP_OBJECT_SELECTION,           // 0
     EDITOR_STEP_LANDSCAPE_EDITOR,           // 1
@@ -52,7 +52,7 @@ typedef enum
     EDITOR_STEP_SAVE_SCENARIO,              // 5
     EDITOR_STEP_ROLLERCOASTER_DESIGNER,     // 6
     EDITOR_STEP_TRACK_DESIGNS_MANAGER       // 7
-} RCT2_EDITOR_STEP;
+};
 
 enum
 {

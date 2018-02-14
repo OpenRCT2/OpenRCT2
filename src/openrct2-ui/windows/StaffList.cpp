@@ -134,12 +134,12 @@ static sint32 _windowStaffListSelectedTab = WINDOW_STAFF_LIST_TAB_HANDYMEN;
 
 static uint8 window_staff_list_get_random_entertainer_costume();
 
-typedef struct staff_naming_convention
+struct staff_naming_convention
 {
     rct_string_id plural;
     rct_string_id singular;
     rct_string_id action_hire;
-} staff_naming_convention;
+};
 
 static constexpr const staff_naming_convention StaffNamingConvention[] = {
     { STR_HANDYMAN_PLURAL,          STR_HANDYMAN_SINGULAR,          STR_HIRE_HANDYMAN },

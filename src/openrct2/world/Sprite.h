@@ -43,7 +43,7 @@ enum SPRITE_LIST {
 };
 
 #pragma pack(push, 1)
-typedef struct rct_unk_sprite {
+struct rct_unk_sprite {
     uint8 sprite_identifier;        // 0x00
     uint8 misc_identifier;          // 0x01
     uint16 next_in_quadrant;        // 0x02
@@ -70,10 +70,10 @@ typedef struct rct_unk_sprite {
     rct_string_id name_string_idx;  // 0x22
     uint16 pad_24;
     uint16 frame;                   // 0x26
-} rct_unk_sprite;
+};
 assert_struct_size(rct_unk_sprite, 0x28);
 
-typedef struct rct_litter {
+struct rct_litter {
     uint8 sprite_identifier;        // 0x00
     uint8 type;                     // 0x01
     uint16 next_in_quadrant;        // 0x02
@@ -92,10 +92,10 @@ typedef struct rct_litter {
     uint8 sprite_direction;         // 0x1E
     uint8 pad_1F[5];
     uint32 creationTick;            // 0x24
-} rct_litter;
+};
 assert_struct_size(rct_litter, 0x28);
 
-typedef struct rct_balloon {
+struct rct_balloon {
     uint8 sprite_identifier;        // 0x00
     uint8 misc_identifier;          // 0x01
     uint16 next_in_quadrant;        // 0x02
@@ -120,10 +120,10 @@ typedef struct rct_balloon {
     void Update();
     void Pop();
     void Press();
-} rct_balloon;
+};
 assert_struct_size(rct_balloon, 0x2D);
 
-typedef struct rct_duck {
+struct rct_duck {
     uint8 sprite_identifier;        // 0x00
     uint8 misc_identifier;          // 0x01
     uint16 next_in_quadrant;        // 0x02
@@ -158,10 +158,10 @@ typedef struct rct_duck {
     void Remove();
     void MoveTo(sint16 x, sint16 y, sint16 z);
 
-} rct_duck;
+};
 assert_struct_size(rct_duck, 0x49);
 
-typedef struct rct_jumping_fountain {
+struct rct_jumping_fountain {
     uint8 sprite_identifier;        // 0x00
     uint8 misc_identifier;          // 0x01
     uint16 next_in_quadrant;        // 0x02
@@ -187,10 +187,10 @@ typedef struct rct_jumping_fountain {
     sint16 target_y;                // 0x32
     uint8 pad_34[0x12];
     uint16 iteration;               // 0x46
-} rct_jumping_fountain;
+};
 assert_struct_size(rct_jumping_fountain, 0x48);
 
-typedef struct rct_money_effect {
+struct rct_money_effect {
     uint8 sprite_identifier;        // 0x00
     uint8 misc_identifier;          // 0x01
     uint16 next_in_quadrant;        // 0x02
@@ -213,10 +213,10 @@ typedef struct rct_money_effect {
     uint8 pad_2C[0x18];
     sint16 offset_x;                // 0x44
     uint16 wiggle;                  // 0x46
-} rct_money_effect;
+};
 assert_struct_size(rct_money_effect, 0x48);
 
-typedef struct rct_crashed_vehicle_particle {
+struct rct_crashed_vehicle_particle {
     uint8 sprite_identifier;        // 0x00
     uint8 misc_identifier;          // 0x01
     uint16 next_in_quadrant;        // 0x02
@@ -253,10 +253,10 @@ typedef struct rct_crashed_vehicle_particle {
     sint32 acceleration_x;          // 0x38
     sint32 acceleration_y;          // 0x3C
     sint32 acceleration_z;          // 0x40
-} rct_crashed_vehicle_particle;
+};
 assert_struct_size(rct_crashed_vehicle_particle, 0x44);
 
-typedef struct rct_crash_splash {
+struct rct_crash_splash {
     uint8 sprite_identifier;        // 0x00
     uint8 misc_identifier;          // 0x01
     uint16 next_in_quadrant;        // 0x02
@@ -283,10 +283,10 @@ typedef struct rct_crash_splash {
     uint16 name_string_idx;         // 0x22
     uint16 pad_24;
     uint16 frame;                   // 0x26
-} rct_crash_splash;
+};
 assert_struct_size(rct_crash_splash, 0x28);
 
-typedef struct rct_steam_particle {
+struct rct_steam_particle {
     uint8 sprite_identifier;        // 0x00
     uint8 misc_identifier;          // 0x01
     uint16 next_in_quadrant;        // 0x02
@@ -313,14 +313,14 @@ typedef struct rct_steam_particle {
     uint16 name_string_idx;         // 0x22
     uint16 time_to_move;            // 0x24 Moves +1 z every 3 ticks after intitial 4 ticks
     uint16 frame;                   // 0x26
-} rct_steam_particle;
+};
 assert_struct_size(rct_steam_particle, 0x28);
 
 /**
  * Sprite structure.
  * size: 0x0100
  */
-typedef union {
+union rct_sprite {
     uint8 pad_00[0x100];
     rct_unk_sprite unknown;
     rct_peep peep;
@@ -339,7 +339,7 @@ typedef union {
     rct_balloon * AsBalloon();
     rct_duck * AsDuck();
 
-} rct_sprite;
+};
 assert_struct_size(rct_sprite, 0x100);
 
 #pragma pack(pop)

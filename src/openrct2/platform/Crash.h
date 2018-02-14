@@ -17,7 +17,7 @@
 #ifndef _OPENRCT2_CRASH_
 #define _OPENRCT2_CRASH_
 
-typedef void * CExceptionHandler;
+using CExceptionHandler = void *;
 
 extern bool gOpenRCT2SilentBreakpad;
 CExceptionHandler crash_init();

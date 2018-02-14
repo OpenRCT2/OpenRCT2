@@ -21,10 +21,10 @@
 
 #pragma region Format codes
 
-typedef struct format_code_token {
+struct format_code_token {
     uint32 code;
     const char *token;
-} format_code_token;
+};
 
 // clang-format off
 static constexpr const format_code_token format_code_tokens[] = {

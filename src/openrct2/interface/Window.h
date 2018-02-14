@@ -33,7 +33,7 @@ union rct_window_event;
 struct track_design_file_ref;
 struct TitleSequence;
 struct TextInputSession;
-typedef struct scenario_index_entry scenario_index_entry;
+struct scenario_index_entry;
 
 #define SCROLLABLE_ROW_HEIGHT 12
 #define LIST_ROW_HEIGHT 12
@@ -50,21 +50,21 @@ extern sint32 gTextBoxFrameNo;
 extern bool gUsingWidgetTextBox;
 extern struct TextInputSession * gTextInput;
 
-typedef void wndproc(struct rct_window*, union rct_window_event*);
+using wndproc = void(struct rct_window*, union rct_window_event*);
 
-typedef uint8 rct_windowclass;
-typedef uint16 rct_windownumber;
-typedef sint16 rct_widgetindex;
+using rct_windowclass = uint8;
+using rct_windownumber = uint16;
+using rct_widgetindex = sint16;
 
-typedef struct window_identifier {
+struct window_identifier {
     rct_windowclass classification;
     rct_windownumber number;
-} window_identifier;
+};
 
-typedef struct widget_identifier {
+struct widget_identifier {
     window_identifier window;
     rct_widgetindex widget_index;
-} widget_identifier;
+};
 
 extern widget_identifier gCurrentTextBox;
 
@@ -72,7 +72,7 @@ extern widget_identifier gCurrentTextBox;
  * Widget structure
  * size: 0x10
  */
-typedef struct rct_widget {
+struct rct_widget {
     uint8 type;                     // 0x00
     uint8 colour;                   // 0x01
     sint16 left;                    // 0x02
@@ -86,12 +86,12 @@ typedef struct rct_widget {
         utf8 * string;
     };
     rct_string_id tooltip;          // 0x0E
-} rct_widget;
+};
 
 /**
  * Viewport structure
  */
-typedef struct rct_viewport {
+struct rct_viewport {
     sint16 width;                   // 0x00
     sint16 height;                  // 0x02
     sint16 x;                       // 0x04
@@ -104,13 +104,13 @@ typedef struct rct_viewport {
     uint8 zoom;                     // 0x10
     uint8 var_11;
     uint8 visibility;               // VISIBILITY_CACHE
-} rct_viewport;
+};
 
 /**
  * Scroll structure
  * size: 0x12
  */
-typedef struct rct_scroll {
+struct rct_scroll {
     uint16 flags;               // 0x00
     uint16 h_left;              // 0x02
     uint16 h_right;             // 0x04
@@ -120,14 +120,14 @@ typedef struct rct_scroll {
     uint16 v_bottom;            // 0x0C
     uint16 v_thumb_top;         // 0x0E
     uint16 v_thumb_bottom;      // 0x10
-} rct_scroll;
+};
 
 /**
  * Viewport focus structure.
  * size: 0xA
  * Use sprite.type to work out type.
  */
-typedef struct coordinate_focus {
+struct coordinate_focus {
     sint16 var_480;
     sint16 x; //0x482
     sint16 y; //0x484 & VIEWPORT_FOCUS_Y_MASK
@@ -136,10 +136,10 @@ typedef struct coordinate_focus {
     uint8 zoom;//0x489
     sint16 width;
     sint16 height;
-} coordinate_focus;
+};
 
 // Type is viewport_target_sprite_id & 0x80000000 != 0
-typedef struct sprite_focus {
+struct sprite_focus {
     sint16 var_480;
     uint16 sprite_id; //0x482
     uint8 pad_484;
@@ -147,7 +147,7 @@ typedef struct sprite_focus {
     uint16 pad_486;
     uint8 rotation; //0x488
     uint8 zoom; //0x489
-} sprite_focus;
+};
 
 #define VIEWPORT_FOCUS_TYPE_MASK 0xC0
 enum{
@@ -156,7 +156,7 @@ enum{
 };
 #define VIEWPORT_FOCUS_Y_MASK 0x3FFF
 
-typedef struct rct_window_event_list {
+struct rct_window_event_list {
     void (*close)(struct rct_window*);
     void (*mouse_up)(struct rct_window*, rct_widgetindex);
     void (*resize)(struct rct_window*);
@@ -185,65 +185,65 @@ typedef struct rct_window_event_list {
     void (*invalidate)(struct rct_window*);
     void (*paint)(struct rct_window*, rct_drawpixelinfo*);
     void (*scroll_paint)(struct rct_window*, rct_drawpixelinfo*, sint32);
-} rct_window_event_list;
+};
 
-typedef struct campaign_variables {
+struct campaign_variables {
     sint16 campaign_type;
     sint16 no_weeks; //0x482
     uint16 ride_id; //0x484
     uint32 pad_486;
-} campaign_variables;
+};
 
-typedef struct new_ride_variables {
+struct new_ride_variables {
     sint16 selected_ride_id; //0x480
     sint16 highlighted_ride_id; //0x482
     uint16 pad_484;
     uint16 pad_486;
     uint16 selected_ride_countdown; //488
-} new_ride_variables;
+};
 
-typedef struct news_variables {
+struct news_variables {
     sint16 var_480;
     sint16 var_482;
     uint16 var_484;
     uint16 var_486;
     uint16 var_488;
-} news_variables;
+};
 
-typedef struct map_variables {
+struct map_variables {
     sint16 rotation;
     sint16 var_482;
     uint16 var_484;
     uint16 var_486;
     uint16 var_488;
-} map_variables;
+};
 
-typedef struct ride_variables {
+struct ride_variables {
     sint16 view;
     sint32 var_482;
     sint32 var_486;
-} ride_variables;
+};
 
-typedef struct scenery_variables {
+struct scenery_variables {
     sint16 selected_scenery_id;
     sint16 hover_counter;
-} scenery_variables;
+};
 
-typedef struct track_list_variables {
+struct track_list_variables {
     bool track_list_being_updated;
     bool reload_track_designs;
-} track_list_variables;
+};
 
-typedef struct error_variables {
+struct error_variables {
     uint16 var_480;
-} error_variables;
+};
 
-typedef struct rct_window rct_window;
+struct rct_window;
 
 #define RCT_WINDOW_RIGHT(w) (w->x + w->width)
 #define RCT_WINDOW_BOTTOM(w) (w->y + w->height)
 
-typedef enum {
+enum WINDOW_EVENTS {
     WE_CLOSE = 0,
     WE_MOUSE_UP = 1,
     WE_RESIZE = 2,
@@ -277,9 +277,9 @@ typedef enum {
     WE_INVALIDATE = 25,
     WE_PAINT = 26,
     WE_SCROLL_PAINT = 27,
-} WINDOW_EVENTS;
+};
 
-typedef enum {
+enum WINDOW_FLAGS {
     /*
     WF_TIMEOUT_SHL = 0,
     WF_TIMEOUT_MASK = 7,
@@ -304,7 +304,7 @@ typedef enum {
     WF_WHITE_BORDER_MASK = (1 << 12) | (1 << 13),
 
     WF_NO_SNAPPING = (1 << 15)
-} WINDOW_FLAGS;
+};
 
 enum SCROLL_FLAGS {
     HSCROLLBAR_VISIBLE = (1 << 0),
@@ -482,13 +482,13 @@ enum PROMPT_MODE {
     PM_QUIT
 };
 
-typedef enum {
+enum BTM_TOOLBAR_DIRTY_FLAGS {
     BTM_TB_DIRTY_FLAG_MONEY = (1 << 0),
     BTM_TB_DIRTY_FLAG_DATE = (1 << 1),
     BTM_TB_DIRTY_FLAG_PEEP_COUNT = (1 << 2),
     BTM_TB_DIRTY_FLAG_CLIMATE = (1 << 3),
     BTM_TB_DIRTY_FLAG_PARK_RATING = (1 << 4)
-} BTM_TOOLBAR_DIRTY_FLAGS;
+};
 
 // 000N_TTTL
 enum {
@@ -523,7 +523,7 @@ enum GUEST_LIST_FILTER_TYPE
     GLFT_GUESTS_THINKING_X,
 };
 
-typedef enum {
+enum TOOL_IDX {
     TOOL_ARROW = 0,
     TOOL_UP_ARROW = 2,
     TOOL_UP_DOWN_ARROW = 3,
@@ -535,11 +535,10 @@ typedef enum {
     TOOL_WALK_DOWN = 22,
     TOOL_PAINT_DOWN = 23,
     TOOL_ENTRANCE_DOWN = 24,
-} TOOL_IDX;
+};
 
-typedef void (*modal_callback)(sint32 result);
-
-typedef void (*close_callback)();
+using modal_callback = void (*)(sint32 result);
+using close_callback = void (*)();
 
 #define WINDOW_LIMIT_MIN 4
 #define WINDOW_LIMIT_MAX 64

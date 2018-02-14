@@ -18,14 +18,14 @@
 
 #include "../common.h"
 
-typedef struct source_desc
+struct source_desc
 {
     const utf8 * title;
     uint8        id;
     uint8        source;
     sint32       index;
     uint8        category;
-} source_desc;
+};
 
 namespace ScenarioSources
 {

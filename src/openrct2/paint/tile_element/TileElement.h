@@ -20,9 +20,9 @@
 #include "../../common.h"
 #include "../../world/Map.h"
 
-typedef struct paint_session paint_session;
+struct paint_session;
 
-typedef enum edge_t
+enum edge_t
 {
     EDGE_NE = (1 << 0),
     EDGE_SE = (1 << 1),
@@ -32,7 +32,7 @@ typedef enum edge_t
     EDGE_BOTTOMRIGHT = EDGE_SE,
     EDGE_TOPLEFT = EDGE_NW,
     EDGE_TOPRIGHT = EDGE_NE
-} edge_t;
+};
 
 enum
 {

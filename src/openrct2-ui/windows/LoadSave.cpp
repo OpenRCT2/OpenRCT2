@@ -133,7 +133,7 @@ enum
     TYPE_FILE,
 };
 
-typedef struct LoadSaveListItem
+struct LoadSaveListItem
 {
     std::string name;
     std::string path;
@@ -142,7 +142,7 @@ typedef struct LoadSaveListItem
     std::string time_formatted;
     uint8 type;
     bool loaded;
-} LoadSaveListItem;
+};
 
 static loadsave_callback _loadSaveCallback;
 

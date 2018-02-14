@@ -7,8 +7,7 @@
 #include <openrct2/audio/AudioSource.h>
 
 struct SDL_RWops;
-struct SpeexResamplerState_;
-typedef struct SpeexResamplerState_ SpeexResamplerState;
+using SpeexResamplerState = struct SpeexResamplerState_;
 
 namespace OpenRCT2 { namespace Audio
 {

@@ -19,7 +19,7 @@
 #include "../common.h"
 #include "Map.h"
 
-typedef enum {
+enum TILE_INSPECTOR_ELEMENT_TYPE {
     TILE_INSPECTOR_ELEMENT_ANY = 0,
     TILE_INSPECTOR_ELEMENT_SURFACE,
     TILE_INSPECTOR_ELEMENT_PATH,
@@ -30,9 +30,9 @@ typedef enum {
     TILE_INSPECTOR_ELEMENT_SCENERYMULTIPLE,
     TILE_INSPECTOR_ELEMENT_BANNER,
     TILE_INSPECTOR_ELEMENT_CORRUPT,
-} tile_inspector_element_type;
+};
 
-typedef enum {
+enum TILE_INSPECTOR_INSTRUCTION_TYPE {
     TILE_INSPECTOR_ANY_REMOVE,
     TILE_INSPECTOR_ANY_SWAP,
     TILE_INSPECTOR_ANY_INSERT_CORRUPT,
@@ -53,7 +53,7 @@ typedef enum {
     TILE_INSPECTOR_SCENERY_SET_QUARTER_COLLISION,
     TILE_INSPECTOR_BANNER_TOGGLE_BLOCKING_EDGE,
     TILE_INSPECTOR_CORRUPT_CLAMP,
-} tile_inspector_instruction;
+};
 
 sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 elementIndex, sint32 flags);
 sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 elementIndex, sint32 flags);

@@ -18,12 +18,11 @@
 
 #include "../common.h"
 
-typedef struct encoding_convert_entry
+struct encoding_convert_entry
 {
     uint16 code;
     uint32 unicode;
-}
-encoding_convert_entry;
+};
 
 extern const encoding_convert_entry GB2312ToUnicodeTable[7445];
 extern const encoding_convert_entry Big5ToUnicodeTable[13710];
@@ -31,7 +30,7 @@ extern const encoding_convert_entry RCT2ToUnicodeTable[256];
 extern const encoding_convert_entry CP932ToUnicodeTable[7916];
 extern const encoding_convert_entry CP949ToUnicodeTable[17176];
 
-typedef enum RCT2Polish
+enum RCT2Polish
 {
     RCT2_A_OGONEK_UC = 159, // 0x9F
     RCT2_C_ACUTE_UC =  162, // 0xA2
@@ -50,10 +49,9 @@ typedef enum RCT2Polish
     RCT2_S_ACUTE =     248, // 0xF8
     RCT2_Z_DOT =       253, // 0xFD
     RCT2_Z_ACUTE =     254, // 0xFE
-}
-RCT2Polish;
+};
 
-typedef enum UnicodePolish
+enum UnicodePolish
 {
     UNICODE_A_OGONEK_UC = 260,
     UNICODE_C_ACUTE_UC = 262,
@@ -72,5 +70,4 @@ typedef enum UnicodePolish
     UNICODE_S_ACUTE = 347,
     UNICODE_Z_DOT = 380,
     UNICODE_Z_ACUTE = 378,
-}
-UnicodePolish;
+};

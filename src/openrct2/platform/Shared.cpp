@@ -71,7 +71,7 @@ static uint32        _frequency = 0;
 static LARGE_INTEGER _entryTimestamp;
 #endif
 
-typedef void (*update_palette_func)(const uint8 *, sint32, sint32);
+using update_palette_func = void (*)(const uint8 *, sint32, sint32);
 
 rct_palette_entry gPalette[256];
 

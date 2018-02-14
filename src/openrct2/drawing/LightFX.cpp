@@ -46,7 +46,7 @@ static void* _light_rendered_buffer_front = nullptr;
 static uint32   _lightPolution_back = 0;
 static uint32   _lightPolution_front = 0;
 
-typedef struct lightlist_entry {
+struct lightlist_entry {
     sint16  x, y, z;
     uint8   lightType;
     uint8   lightIntensity;
@@ -54,7 +54,7 @@ typedef struct lightlist_entry {
     uint16  lightIDqualifier;
     uint8   lightLinger;
     uint8   pad[1];
-} lightlist_entry;
+};
 
 static lightlist_entry  _LightListA[16000];
 static lightlist_entry  _LightListB[16000];

@@ -19,7 +19,7 @@
 #include "../common.h"
 #include "../interface/Window.h"
 
-typedef enum tile_inspector_page
+enum TILE_INSPECTOR_PAGE
 {
     TILE_INSPECTOR_PAGE_DEFAULT,
     TILE_INSPECTOR_PAGE_SURFACE,
@@ -31,7 +31,7 @@ typedef enum tile_inspector_page
     TILE_INSPECTOR_PAGE_LARGE_SCENERY,
     TILE_INSPECTOR_PAGE_BANNER,
     TILE_INSPECTOR_PAGE_CORRUPT
-} tile_inspector_page;
+};
 
 extern uint32 windowTileInspectorTileX;
 extern uint32 windowTileInspectorTileY;

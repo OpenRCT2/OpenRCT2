@@ -1834,12 +1834,12 @@ static void set_sprite_type(rct_peep * peep, uint8 type)
     }
 }
 
-typedef struct item_pref_t
+struct item_pref_t
 {
     uint8  type; // 0 for standard, 1 for extra
     uint32 item; // And this with the relevant flags
     uint8  sprite_type;
-} item_pref_t;
+};
 
 // clang-format off
 static item_pref_t item_order_preference[] = {
@@ -12441,7 +12441,7 @@ static bool peep_has_valid_xy(rct_peep * peep)
     return false;
 }
 
-typedef void (*easter_egg_function)(rct_peep * peep, rct_peep * otherPeep);
+using easter_egg_function = void (*)(rct_peep * peep, rct_peep * otherPeep);
 
 static void peep_apply_easter_egg_to_nearby_guests(rct_peep * peep, easter_egg_function easter_egg)
 {

@@ -46,7 +46,7 @@ enum
 /**
  * A single news item / message.
  */
-typedef struct NewsItem
+struct NewsItem
 {
     uint8  Type;
     uint8  Flags;
@@ -55,7 +55,7 @@ typedef struct NewsItem
     uint16 MonthYear;
     uint8  Day;
     utf8   Text[256];
-} NewsItem;
+};
 
 #define MAX_NEWS_ITEMS 61
 
