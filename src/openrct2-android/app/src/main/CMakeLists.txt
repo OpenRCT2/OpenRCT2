@@ -7,7 +7,6 @@ set(lib_build_DIR $ENV{HOME}/tmp)
 file(MAKE_DIRECTORY ${lib_build_DIR})
 
 set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in range 0–3.")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 
 # Copied from https://github.com/opencv/opencv/blob/dcdd6af5a856826fe62c95322145731e702e54c5/cmake/OpenCVDetectCXXCompiler.cmake#L63-L70
@@ -107,18 +106,15 @@ set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fPIC")
 
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--undefined=Java_org_libsdl_app_SDLActivity_nativeInit")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 ${COMMON_COMPILE_OPTIONS} -Wimplicit")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 ${COMMON_COMPILE_OPTIONS} -Wnon-virtual-dtor")
 get_filename_component(ORCT2_ROOT "${CMAKE_SOURCE_DIR}/../../../../../" REALPATH)
 
 file(GLOB_RECURSE LIBOPENRCT2_SOURCES
-    "${ORCT2_ROOT}/src/openrct2/*.c"
     "${ORCT2_ROOT}/src/openrct2/*.cpp"
     "${ORCT2_ROOT}/src/openrct2/*.h"
     "${ORCT2_ROOT}/src/openrct2/*.hpp")
 
 file(GLOB_RECURSE OPENRCT2_GUI_SOURCES
-    "${ORCT2_ROOT}/src/openrct2-ui/*.c"
     "${ORCT2_ROOT}/src/openrct2-ui/*.cpp"
     "${ORCT2_ROOT}/src/openrct2-ui/*.h"
     "${ORCT2_ROOT}/src/openrct2-ui/*.hpp")
