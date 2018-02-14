@@ -1194,8 +1194,10 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
     for (; maze_element->all != 0; maze_element++)
     {
         uint8    rotation = _currentTrackPieceDirection & 3;
-        LocationXY16 mapCoord = {(sint16) (maze_element->x * 32), (sint16) (maze_element->y * 32)};
-        rotate_map_coordinates(&mapCoord.x, &mapCoord.y, rotation);
+        BigCoordsXY mapCoord = {maze_element->x * 32, maze_element->y * 32};
+        sint16 tmpX = mapCoord.x;
+        sint16 tmpY = mapCoord.y;
+        rotate_map_coordinates(&tmpX, &tmpY, rotation);
         mapCoord.x += x;
         mapCoord.y += y;
 
@@ -1337,7 +1339,7 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
                 continue;
             }
 
-            rct_tile_element * tile_element = map_get_surface_element_at(mapCoord.x / 32, mapCoord.y / 32);
+            rct_tile_element * tile_element = map_get_surface_element_at(mapCoord);
             sint16          map_height    = tile_element->base_height * 8;
             if (tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
             {
@@ -1492,14 +1494,16 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
             sint32                       tempZ        = z - TrackCoordinates[trackType].z_begin;
             for (const rct_preview_track * trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
             {
-                LocationXY16 tile = {x, y};
-                map_offset_with_rotation(&tile.x, &tile.y, trackBlock->x, trackBlock->y, rotation);
+                BigCoordsXY tile = {x, y};
+                sint16 tmpX = tile.x;
+                sint16 tmpY = tile.y;
+                map_offset_with_rotation(&tmpX, &tmpY, trackBlock->x, trackBlock->y, rotation);
                 if (tile.x < 0 || tile.y < 0 || tile.x >= (256 * 32) || tile.y >= (256 * 32))
                 {
                     continue;
                 }
 
-                rct_tile_element * tileElement = map_get_surface_element_at(tile.x >> 5, tile.y >> 5);
+                rct_tile_element * tileElement = map_get_surface_element_at(tile);
                 if (tileElement == nullptr)
                 {
                     return false;
@@ -2061,7 +2065,7 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
     // Check support height
     if (!gCheatsDisableSupportLimits)
     {
-        rct_tile_element * tileElement = map_get_surface_element_at(x >> 5, y >> 5);
+        rct_tile_element * tileElement = map_get_surface_element_at({x, y});
         uint8           supportZ     = (z + 32) >> 3;
         if (supportZ > tileElement->base_height)
         {

@@ -704,7 +704,7 @@ void update_park_fences(sint32 x, sint32 y)
     if (y <= 0 || y >= gMapSizeUnits)
         return;
 
-    rct_tile_element* sufaceElement = map_get_surface_element_at(x / 32, y / 32);
+    rct_tile_element* sufaceElement = map_get_surface_element_at({x, y});
     if (sufaceElement == nullptr)return;
 
     uint8 newOwnership = sufaceElement->properties.surface.ownership & 0xF0;
@@ -859,7 +859,7 @@ void game_command_set_park_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 }
 
 static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, sint32 flags) {
-    rct_tile_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+    rct_tile_element* surfaceElement = map_get_surface_element_at({x, y});
     if (surfaceElement == nullptr)
         return MONEY32_UNDEFINED;
 

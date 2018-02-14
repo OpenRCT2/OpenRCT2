@@ -1300,7 +1300,7 @@ static money32 track_place(sint32 rideIndex,
 
         if ((rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER) && !byte_9D8150)
         {
-            tileElement = map_get_surface_element_at(x / 32, y / 32);
+            tileElement = map_get_surface_element_at({x, y});
 
             uint8 water_height = map_get_water_height(tileElement) * 2;
             if (water_height == 0)
@@ -1370,7 +1370,7 @@ static money32 track_place(sint32 rideIndex,
             }
         }
         //6c5648 12 push
-        tileElement = map_get_surface_element_at(x / 32, y / 32);
+        tileElement = map_get_surface_element_at({x, y});
         if (!gCheatsDisableSupportLimits)
         {
             sint32 ride_height = clearanceZ - tileElement->base_height;
@@ -1550,7 +1550,7 @@ static money32 track_place(sint32 rideIndex,
 
         if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER)
         {
-            rct_tile_element * surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+            rct_tile_element * surfaceElement = map_get_surface_element_at({x, y});
             surfaceElement->type |= (1 << 6);
             tileElement = surfaceElement;
         }
@@ -1810,7 +1810,7 @@ static money32 track_remove(uint8 type,
             }
         }
 
-        rct_tile_element * surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+        rct_tile_element * surfaceElement = map_get_surface_element_at({x, y});
         if (surfaceElement == nullptr)
         {
             return MONEY32_UNDEFINED;
@@ -2029,7 +2029,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
         return MONEY32_UNDEFINED;
     }
 
-    rct_tile_element * tileElement = map_get_surface_element_at(x / 32, y / 32);
+    rct_tile_element * tileElement = map_get_surface_element_at({x, y});
     if (tileElement == nullptr)
     {
         return MONEY32_UNDEFINED;

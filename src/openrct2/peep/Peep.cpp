@@ -2059,7 +2059,7 @@ bool peep_pickup_place(rct_peep * peep, sint32 x, sint32 y, sint32 z, bool apply
 
     if (!tileElement)
     {
-        tileElement = map_get_surface_element_at(x / 32, y / 32);
+        tileElement = map_get_surface_element_at({x, y});
     }
 
     if (!tileElement)
@@ -6919,7 +6919,7 @@ static sint32 peep_update_patrolling_find_grass(rct_peep * peep)
     if ((peep->next_var_29 & 0x18) != 8)
         return 0;
 
-    rct_tile_element * tile_element = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
+    rct_tile_element * tile_element = map_get_surface_element_at({peep->next_x, peep->next_y});
 
     if ((tile_element->properties.surface.terrain & TILE_ELEMENT_SURFACE_TERRAIN_MASK) != TERRAIN_GRASS)
         return 0;
@@ -6991,7 +6991,7 @@ static void peep_update_patrolling(rct_peep * peep)
 
     if ((peep->next_var_29 & 0x18) == 8)
     {
-        rct_tile_element * tile_element = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
+        rct_tile_element * tile_element = map_get_surface_element_at({peep->next_x, peep->next_y});
 
         if (tile_element != nullptr)
         {
@@ -7193,7 +7193,7 @@ static void peep_update_walking(rct_peep * peep)
 
     if ((peep->next_var_29 & 0x18) == 8)
     {
-        rct_tile_element * tile_element = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
+        rct_tile_element * tile_element = map_get_surface_element_at({peep->next_x, peep->next_y});
 
         sint32 water_height = map_get_water_height(tile_element);
         if (water_height)
@@ -11662,7 +11662,7 @@ static sint32 peep_perform_next_action(rct_peep * peep)
                 return peep_return_to_centre_of_tile(peep);
             }
 
-            tileElement = map_get_surface_element_at(x / 32, y / 32);
+            tileElement = map_get_surface_element_at({x, y});
             if (tileElement == nullptr)
                 return peep_return_to_centre_of_tile(peep);
 
@@ -12646,7 +12646,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
 {
     rct_tile_element *tileElement, *surfaceElement;
 
-    surfaceElement = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
+    surfaceElement = map_get_surface_element_at({peep->next_x, peep->next_y});
 
     tileElement = surfaceElement;
     do
@@ -12680,7 +12680,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
         return false;
     }
 
-    surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+    surfaceElement = map_get_surface_element_at({x, y});
 
     tileElement = surfaceElement;
     do
@@ -12792,7 +12792,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
         return false;
     }
 
-    surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+    surfaceElement = map_get_surface_element_at({x, y});
 
     // TODO: extract loop A
     tileElement = surfaceElement;
@@ -12904,7 +12904,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
         return false;
     }
 
-    surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+    surfaceElement = map_get_surface_element_at({x, y});
 
     // TODO: extract loop A
     tileElement = surfaceElement;

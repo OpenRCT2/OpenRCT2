@@ -957,10 +957,10 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, cons
     for (sint32 i = 0; i < 4; i++)
     {
         const LocationXY16& offset = viewport_surface_paint_data[i][rotation];
-        const LocationXY16 position =
+        const BigCoordsXY position =
         {
-            (sint16)(base.x + offset.x),
-            (sint16)(base.y + offset.y)
+            (sint32)(base.x + offset.x),
+            (sint32)(base.y + offset.y)
         };
 
         tile_descriptor& descriptor = tileDescriptors[i + 1];
@@ -971,7 +971,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, cons
             continue;
         }
 
-        rct_tile_element * surfaceElement = map_get_surface_element_at(position.x / 32, position.y / 32);
+        rct_tile_element * surfaceElement = map_get_surface_element_at(position);
         if (surfaceElement == nullptr)
         {
             continue;

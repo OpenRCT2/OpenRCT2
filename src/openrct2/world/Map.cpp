@@ -334,7 +334,7 @@ void tile_element_set_terrain_edge(rct_tile_element *element, sint32 terrain)
     element->properties.surface.slope |= (terrain & 7) << 5;
 }
 
-rct_tile_element *map_get_surface_element_at(sint32 x, sint32 y)
+rct_tile_element * map_get_surface_element_at(sint32 x, sint32 y)
 {
     rct_tile_element *tileElement = map_get_first_element_at(x, y);
 
@@ -350,6 +350,11 @@ rct_tile_element *map_get_surface_element_at(sint32 x, sint32 y)
     }
 
     return tileElement;
+}
+
+rct_tile_element * map_get_surface_element_at(BigCoordsXY coords)
+{
+    return map_get_surface_element_at(coords.x / 32, coords.y / 32);
 }
 
 rct_tile_element* map_get_path_element_at(sint32 x, sint32 y, sint32 z){
@@ -536,7 +541,7 @@ sint32 tile_element_height(sint32 x, sint32 y)
     sint32 y_tile = y & 0xFFFFFFE0;
 
     // Get the surface element for the tile
-    tileElement = map_get_surface_element_at(x_tile / 32, y_tile / 32);
+    tileElement = map_get_surface_element_at({x_tile, y_tile});
 
     if (tileElement == nullptr) {
         return 16;
@@ -832,7 +837,7 @@ bool map_is_location_owned(sint32 x, sint32 y, sint32 z)
 {
     // This check is to avoid throwing lots of messages in logs.
     if (map_is_location_valid(x, y)) {
-        rct_tile_element *tileElement = map_get_surface_element_at(x / 32, y / 32);
+        rct_tile_element *tileElement = map_get_surface_element_at({x, y});
         if (tileElement != nullptr) {
             if (tileElement->properties.surface.ownership & OWNERSHIP_OWNED)
                 return true;
@@ -856,7 +861,7 @@ bool map_is_location_owned(sint32 x, sint32 y, sint32 z)
 bool map_is_location_in_park(sint32 x, sint32 y)
 {
     if (map_is_location_valid(x, y)) {
-        rct_tile_element *tileElement = map_get_surface_element_at(x / 32, y / 32);
+        rct_tile_element *tileElement = map_get_surface_element_at({x, y});
         if (tileElement == nullptr)
             return false;
         if (tileElement->properties.surface.ownership & OWNERSHIP_OWNED)
@@ -870,7 +875,7 @@ bool map_is_location_in_park(sint32 x, sint32 y)
 bool map_is_location_owned_or_has_rights(sint32 x, sint32 y)
 {
     if (map_is_location_valid(x, y)) {
-        rct_tile_element *tileElement = map_get_surface_element_at(x / 32, y / 32);
+        rct_tile_element *tileElement = map_get_surface_element_at({x, y});
         if (tileElement == nullptr) {
             return false;
         }
@@ -1342,7 +1347,7 @@ static money32 map_change_surface_style(sint32 x0, sint32 y0, sint32 x1, sint32 
                 if (!map_is_location_in_park(x, y)) continue;
             }
 
-            rct_tile_element* tileElement = map_get_surface_element_at(x / 32, y / 32);
+            rct_tile_element* tileElement = map_get_surface_element_at({x, y});
 
             if (surfaceStyle != 0xFF){
                 uint8 cur_terrain = (
@@ -1629,7 +1634,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
     }
 
     uint8 zCorner = height; //z position of highest corner of tile
-    rct_tile_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+    rct_tile_element *surfaceElement = map_get_surface_element_at({x, y});
     if(surfaceElement->type & TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT)
     {
         sint32 waterHeight = map_get_water_height(surfaceElement);
@@ -1714,7 +1719,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
 
-        surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+        surfaceElement = map_get_surface_element_at({x, y});
         surfaceElement->base_height = height;
         surfaceElement->clearance_height = height;
         surfaceElement->properties.surface.slope &= TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
@@ -1801,7 +1806,7 @@ static uint8 map_get_lowest_land_height(sint32 xMin, sint32 xMax, sint32 yMin, s
     uint8 min_height = 0xFF;
     for (sint32 yi = yMin; yi <= yMax; yi += 32) {
         for (sint32 xi = xMin; xi <= xMax; xi += 32) {
-            rct_tile_element *tile_element = map_get_surface_element_at(xi / 32, yi / 32);
+            rct_tile_element *tile_element = map_get_surface_element_at({xi, yi});
             if (tile_element != nullptr && min_height > tile_element->base_height) {
                 min_height = tile_element->base_height;
             }
@@ -1820,7 +1825,7 @@ static uint8 map_get_highest_land_height(sint32 xMin, sint32 xMax, sint32 yMin, 
     uint8 max_height = 0;
     for (sint32 yi = yMin; yi <= yMax; yi += 32) {
         for (sint32 xi = xMin; xi <= xMax; xi += 32) {
-            rct_tile_element *tile_element = map_get_surface_element_at(xi / 32, yi / 32);
+            rct_tile_element *tile_element = map_get_surface_element_at({xi, yi});
             if (tile_element != nullptr) {
                 uint8 base_height = tile_element->base_height;
                 if (tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
@@ -1853,7 +1858,7 @@ static money32 raise_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax,
 
     for (sint32 yi = ay; yi <= by; yi += 32) {
         for (sint32 xi = ax; xi <= bx; xi += 32) {
-            rct_tile_element *tile_element = map_get_surface_element_at(xi / 32, yi / 32);
+            rct_tile_element *tile_element = map_get_surface_element_at({xi, yi});
             if (tile_element != nullptr) {
                 uint8 height = tile_element->base_height;
                 if (height <= min_height){
@@ -1900,7 +1905,7 @@ static money32 lower_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax,
 
     for (sint32 yi = ay; yi <= by; yi += 32) {
         for (sint32 xi = ax; xi <= bx; xi += 32) {
-            rct_tile_element *tile_element = map_get_surface_element_at(xi / 32, yi / 32);
+            rct_tile_element *tile_element = map_get_surface_element_at({xi, yi});
             if (tile_element != nullptr) {
                 uint8 height = tile_element->base_height;
                 if (tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
@@ -1953,7 +1958,7 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 
     for (sint32 yi = y0; yi <= y1; yi += 32) {
         for (sint32 xi = x0; xi <= x1; xi += 32) {
-            rct_tile_element* tile_element = map_get_surface_element_at(xi / 32, yi / 32);
+            rct_tile_element* tile_element = map_get_surface_element_at({xi, yi});
             if (tile_element != nullptr) {
                 uint8 height = tile_element->base_height;
                 if (map_get_water_height(tile_element) > 0)
@@ -1966,7 +1971,7 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 
     for (sint32 yi = y0; yi <= y1; yi += 32) {
         for (sint32 xi = x0; xi <= x1; xi += 32) {
-            rct_tile_element* tile_element = map_get_surface_element_at(xi / 32, yi / 32);
+            rct_tile_element* tile_element = map_get_surface_element_at({xi, yi});
             if (tile_element != nullptr) {
                 if (tile_element->base_height <= max_height){
                     uint8 height = map_get_water_height(tile_element);
@@ -2034,7 +2039,7 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 
     for (sint32 yi = y0; yi <= y1; yi += 32){
         for (sint32 xi = x0; xi <= x1; xi += 32){
-            rct_tile_element* tile_element = map_get_surface_element_at(xi / 32, yi / 32);
+            rct_tile_element* tile_element = map_get_surface_element_at({xi, yi});
             if (tile_element != nullptr) {
                 uint8 height = map_get_water_height(tile_element);
                 if (height != 0) {
@@ -2048,7 +2053,7 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 
     for (sint32 yi = y0; yi <= y1; yi += 32) {
         for (sint32 xi = x0; xi <= x1; xi += 32) {
-            rct_tile_element* tile_element = map_get_surface_element_at(xi / 32, yi / 32);
+            rct_tile_element* tile_element = map_get_surface_element_at({xi, yi});
             if (tile_element != nullptr) {
                 uint8 height = map_get_water_height(tile_element);
                 if (height != 0) {
@@ -2167,8 +2172,8 @@ static money32 smooth_land_row_by_edge(sint32 flags, sint32 x, sint32 y, sint32 
     if (!map_is_location_valid(x, y) || !map_is_location_valid(x + stepX, y + stepY)) {
         return 0;
     }
-    tileElement = map_get_surface_element_at(x >> 5, y >> 5);
-    nextTileElement = map_get_surface_element_at((x + stepX) >> 5, (y + stepY) >> 5);
+    tileElement = map_get_surface_element_at({x, y});
+    nextTileElement = map_get_surface_element_at({x + stepX, y + stepY});
     if (tileElement == nullptr || nextTileElement == nullptr) {
         return 0;
     }
@@ -2197,7 +2202,7 @@ static money32 smooth_land_row_by_edge(sint32 flags, sint32 x, sint32 y, sint32 
         else
         {
             tileElement = nextTileElement;
-            nextTileElement = map_get_surface_element_at((x + stepX) >> 5, (y + stepY) >> 5);
+            nextTileElement = map_get_surface_element_at({x + stepX, y + stepY});
             if (nextTileElement == nullptr) {
                 shouldContinue &= ~0x3;
             }
@@ -2287,7 +2292,7 @@ static money32 smooth_land_row_by_corner(sint32 flags, sint32 x, sint32 y, sint3
     if (!map_is_location_valid(x, y) || !map_is_location_valid(x + stepX, y + stepY)) {
         return 0;
     }
-    tileElement = map_get_surface_element_at(x >> 5, y >> 5);
+    tileElement = map_get_surface_element_at({x, y});
     nextTileElement = map_get_surface_element_at((x + stepX) >> 5, (y + stepY) >> 5);
     if (tileElement == nullptr || nextTileElement == nullptr) {
         return 0;
@@ -2359,7 +2364,7 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
     money32 totalCost = 0;
     money32 result;
 
-    rct_tile_element *tileElement = map_get_surface_element_at(mapLeft >> 5, mapTop >> 5);
+    rct_tile_element *tileElement = map_get_surface_element_at({mapLeft, mapTop});
     if (tileElement == nullptr)
     {
         log_warning("Invalid coordinates for land smoothing, x = %d, y = %d", mapLeft, mapTop);
@@ -2435,7 +2440,7 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
         sint32 y, z2;
         for (y = mapTop; y <= mapBottom; y += 32)
         {
-            tileElement = map_get_surface_element_at(x >> 5, y >> 5);
+            tileElement = map_get_surface_element_at({x, y});
             z = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 3), maxHeight);
             z2 = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 2), maxHeight);
             totalCost += smooth_land_row_by_edge(flags, x, y, z, z2, -32, 0, 0, 1, 3, 2, raiseLand);
@@ -2443,7 +2448,7 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
         x = mapRight;
         for (y = mapTop; y <= mapBottom; y += 32)
         {
-            tileElement = map_get_surface_element_at(x >> 5, y >> 5);
+            tileElement = map_get_surface_element_at({x, y});
             z = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 1), maxHeight);
             z2 = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 0), maxHeight);
             totalCost += smooth_land_row_by_edge(flags, x, y, z, z2, 32, 0, 2, 3, 1, 0, raiseLand);
@@ -2451,7 +2456,7 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
         y = mapTop;
         for (x = mapLeft; x <= mapRight; x += 32)
         {
-            tileElement = map_get_surface_element_at(x >> 5, y >> 5);
+            tileElement = map_get_surface_element_at({x, y});
             z = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 1), maxHeight);
             z2 = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 2), maxHeight);
             totalCost += smooth_land_row_by_edge(flags, x, y, z, z2, 0, -32, 0, 3, 1, 2, raiseLand);
@@ -2459,7 +2464,7 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
         y = mapBottom;
         for (x = mapLeft; x <= mapRight; x += 32)
         {
-            tileElement = map_get_surface_element_at(x >> 5, y >> 5);
+            tileElement = map_get_surface_element_at({x, y});
             z = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 0), maxHeight);
             z2 = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 3), maxHeight);
             totalCost += smooth_land_row_by_edge(flags, x, y, z, z2, 0, 32, 1, 2, 0, 3, raiseLand);
@@ -2635,7 +2640,7 @@ void game_command_set_water_height(sint32* eax, sint32* ebx, sint32* ecx, sint32
             wall_remove_at_z(x, y, element_height);
     }
 
-    rct_tile_element* tile_element = map_get_surface_element_at(x / 32, y / 32);
+    rct_tile_element* tile_element = map_get_surface_element_at({x, y});
     sint32 zHigh = tile_element->base_height;
     sint32 zLow = base_height;
     if (map_get_water_height(tile_element) > 0)
@@ -2763,7 +2768,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
             continue;
         }
 
-        rct_tile_element * tile_element = map_get_surface_element_at(curTile.x / 32, curTile.y / 32);
+        rct_tile_element * tile_element = map_get_surface_element_at({curTile.x, curTile.y});
         if(tile_element != nullptr)
         {
             sint32 height = tile_element->base_height * 8;
@@ -4160,7 +4165,7 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
     if (x >= 8192 || y >= 8192)
         return true;
 
-    tileElement = map_get_surface_element_at(x / 32, y / 32);
+    tileElement = map_get_surface_element_at({x, y});
 
     if (tileElement == nullptr) {
         return true;
@@ -4899,15 +4904,15 @@ bool map_tile_is_part_of_virtual_floor(sint16 x, sint16 y)
     return false;
 }
 
-void FixLandOwnershipTiles(std::initializer_list<LocationXY8> tiles)
+void FixLandOwnershipTiles(std::initializer_list<SmallCoordsXY> tiles)
 {
     FixLandOwnershipTilesWithOwnership(tiles, OWNERSHIP_AVAILABLE);
 }
 
-void FixLandOwnershipTilesWithOwnership(std::initializer_list<LocationXY8> tiles, uint8 ownership)
+void FixLandOwnershipTilesWithOwnership(std::initializer_list<SmallCoordsXY> tiles, uint8 ownership)
 {
     rct_tile_element * currentElement;
-    for (const LocationXY8 * tile = tiles.begin(); tile != tiles.end(); ++tile)
+    for (const SmallCoordsXY * tile = tiles.begin(); tile != tiles.end(); ++tile)
     {
         currentElement = map_get_surface_element_at((*tile).x, (*tile).y);
         currentElement->properties.surface.ownership |= ownership;

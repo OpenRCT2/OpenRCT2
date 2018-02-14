@@ -222,7 +222,7 @@ static money32 footpath_element_insert(sint32 type, sint32 x, sint32 y, sint32 z
         return MONEY32_UNDEFINED;
     }
 
-    tileElement = map_get_surface_element_at((x / 32), (y / 32));
+    tileElement = map_get_surface_element_at({x, y});
 
     sint32 supportHeight = z - tileElement->base_height;
     gFootpathPrice += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
@@ -631,7 +631,7 @@ static money32 footpath_place_from_track(sint32 type, sint32 x, sint32 y, sint32
         return MONEY32_UNDEFINED;
     }
 
-    tileElement = map_get_surface_element_at((x / 32), (y / 32));
+    tileElement = map_get_surface_element_at({x, y});
 
     sint32 supportHeight = z - tileElement->base_height;
     gFootpathPrice += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
@@ -1636,7 +1636,7 @@ void footpath_update_queue_chains()
  */
 static void footpath_fix_ownership(sint32 x, sint32 y, rct_tile_element *pathElement)
 {
-    const rct_tile_element * surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
+    const rct_tile_element * surfaceElement = map_get_surface_element_at({x, y});
     uint16 ownership;
 
     // Unlikely to be NULL unless deliberate.
