@@ -510,8 +510,8 @@ enum
 
 struct track_circuit_iterator
 {
-    BigCoordsXYE       last;
-    BigCoordsXYE       current;
+    CoordsXYE       last;
+    CoordsXYE       current;
     sint32             currentZ;
     sint32             currentDirection;
     rct_tile_element * first;
@@ -530,13 +530,13 @@ const rct_preview_track * get_track_def_from_ride(Ride * ride, sint32 trackType)
 const rct_preview_track * get_track_def_from_ride_index(sint32 rideIndex, sint32 trackType);
 const rct_track_coordinates * get_track_coord_from_ride(Ride * ride, sint32 trackType);
 
-void track_circuit_iterator_begin(track_circuit_iterator * it, BigCoordsXYE first);
+void track_circuit_iterator_begin(track_circuit_iterator * it, CoordsXYE first);
 bool track_circuit_iterator_previous(track_circuit_iterator * it);
 bool track_circuit_iterator_next(track_circuit_iterator * it);
 bool track_circuit_iterators_match(const track_circuit_iterator * firstIt, const track_circuit_iterator * secondIt);
 
-void track_get_back(BigCoordsXYE * input, BigCoordsXYE * output);
-void track_get_front(BigCoordsXYE * input, BigCoordsXYE * output);
+void track_get_back(CoordsXYE * input, CoordsXYE * output);
+void track_get_front(CoordsXYE * input, CoordsXYE * output);
 
 bool track_element_is_block_start(rct_tile_element * trackElement);
 bool track_element_is_covered(sint32 trackElementType);

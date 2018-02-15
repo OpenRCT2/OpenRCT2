@@ -943,7 +943,7 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
         nextDirection = x_diff < 0 ? 0 : 2;
     }
 
-    BigCoordsXY nextTile = { static_cast<sint32>((nearestLitter->x & 0xFFE0) - TileDirectionDelta[nextDirection].x),
+    CoordsXY nextTile = { static_cast<sint32>((nearestLitter->x & 0xFFE0) - TileDirectionDelta[nextDirection].x),
                           static_cast<sint32>((nearestLitter->y & 0xFFE0) - TileDirectionDelta[nextDirection].y) };
 
     sint16 nextZ = ((peep->z + 8) & 0xFFF0) / 8;
@@ -1014,7 +1014,7 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep * peep, uint8 vali
             continue;
         }
 
-        BigCoordsXY chosenTile = { static_cast<sint32>(peep->next_x + TileDirectionDelta[chosenDirection].x),
+        CoordsXY chosenTile = { static_cast<sint32>(peep->next_x + TileDirectionDelta[chosenDirection].x),
                                 static_cast<sint32>(peep->next_y + TileDirectionDelta[chosenDirection].y) };
 
         if (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)

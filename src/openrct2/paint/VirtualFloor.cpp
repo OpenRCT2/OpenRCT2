@@ -22,7 +22,7 @@
 #include "tile_element/TileElement.h"
 #include "VirtualFloor.h"
 
-static constexpr const BigCoordsXY offsets[4] =
+static constexpr const CoordsXY offsets[4] =
 {
     { -32,   0 },
     {   0,  32 },

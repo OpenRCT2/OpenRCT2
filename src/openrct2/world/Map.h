@@ -333,7 +333,7 @@ struct rct2_peep_spawn {
 assert_struct_size(rct2_peep_spawn, 6);
 #pragma pack(pop)
 
-struct BigCoordsXYE
+struct CoordsXYE
 {
     sint32 x, y;
     rct_tile_element * element;
@@ -373,7 +373,7 @@ enum
     CREATE_CROSSING_MODE_PATH_OVER_TRACK,
 };
 
-extern const BigCoordsXY TileDirectionDelta[];
+extern const CoordsXY TileDirectionDelta[];
 extern const money32 TerrainPricing[];
 
 extern uint16 gWidePathTileLoopX;
@@ -444,7 +444,7 @@ void tile_element_set_terrain_edge(rct_tile_element *element, sint32 terrain);
 sint32 map_height_from_slope(sint32 x, sint32 y, sint32 slope);
 rct_tile_element* map_get_banner_element_at(sint32 x, sint32 y, sint32 z, uint8 direction);
 rct_tile_element *map_get_surface_element_at(sint32 x, sint32 y);
-rct_tile_element * map_get_surface_element_at(BigCoordsXY coords);
+rct_tile_element * map_get_surface_element_at(CoordsXY coords);
 rct_tile_element* map_get_path_element_at(sint32 x, sint32 y, sint32 z);
 rct_tile_element *map_get_wall_element_at(sint32 x, sint32 y, sint32 z, sint32 direction);
 rct_tile_element *map_get_small_scenery_element_at(sint32 x, sint32 y, sint32 z, sint32 type, uint8 quadrant);
@@ -585,7 +585,7 @@ uint32 map_get_available_peep_spawn_index_list(uint32* peepSpawnIndexList);
 uint16 check_max_allowable_land_rights_for_tile(uint8 x, uint8 y, uint8 base_z);
 uint8 tile_element_get_ride_index(const rct_tile_element * tileElement);
 
-void FixLandOwnershipTiles(std::initializer_list<SmallCoordsXY> tiles);
-void FixLandOwnershipTilesWithOwnership(std::initializer_list<SmallCoordsXY> tiles, uint8 ownership);
+void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles);
+void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tiles, uint8 ownership);
 
 #endif

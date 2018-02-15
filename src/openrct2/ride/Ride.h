@@ -1019,11 +1019,11 @@ money32 get_shop_item_cost(sint32 shopItem);
 money16 get_shop_base_value(sint32 shopItem);
 money16 get_shop_hot_value(sint32 shopItem);
 money16 get_shop_cold_value(sint32 shopItem);
-bool ride_try_get_origin_element(sint32 rideIndex, BigCoordsXYE *output);
-sint32 ride_find_track_gap(BigCoordsXYE *input, BigCoordsXYE *output);
+bool ride_try_get_origin_element(sint32 rideIndex, CoordsXYE *output);
+sint32 ride_find_track_gap(CoordsXYE *input, CoordsXYE *output);
 void ride_construct_new(ride_list_item listItem);
 void ride_construct(sint32 rideIndex);
-sint32 ride_modify(BigCoordsXYE *input);
+sint32 ride_modify(CoordsXYE *input);
 void ride_remove_peeps(sint32 rideIndex);
 void ride_get_status(sint32 rideIndex, rct_string_id *formatSecondary, sint32 *argument);
 rct_peep *ride_get_assigned_mechanic(Ride *ride);
@@ -1114,8 +1114,8 @@ void ride_all_has_any_track_elements(bool *rideIndexArray);
 
 void ride_construction_set_default_next_piece();
 
-bool track_block_get_next(BigCoordsXYE *input, BigCoordsXYE *output, sint32 *z, sint32 *direction);
-bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 rideIndex, uint8 direction_start, BigCoordsXYE *output, sint32 *z, sint32 *direction);
+bool track_block_get_next(CoordsXYE *input, CoordsXYE *output, sint32 *z, sint32 *direction);
+bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 rideIndex, uint8 direction_start, CoordsXYE *output, sint32 *z, sint32 *direction);
 
 bool track_block_get_previous(sint32 x, sint32 y, rct_tile_element *tileElement, track_begin_end *outTrackBeginEnd);
 bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8 direction, track_begin_end *outTrackBeginEnd);

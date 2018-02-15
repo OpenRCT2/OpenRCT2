@@ -86,7 +86,7 @@ static uint8  _peepPathFindFewestNumSteps;
  * be declared properly. */
 static struct
 {
-    SmallCoordsXYZ location;
+    TileCoordsXYZ location;
     uint8          direction;
 } _peepPathFindHistory[16];
 
@@ -455,7 +455,7 @@ static constexpr const ride_rating NauseaMaximumThresholds[] = {
 // Locations of the spiral slide platform that a peep walks from the entrance of the ride to the
 // entrance of the slide. Up to 4 locations for each 4 sides that an ride entrance can be located
 // and 4 different rotations of the ride. 4 * 4 * 4 = 64 locations.
-static constexpr const BigCoordsXY SpiralSlideWalkingPath[64] = {
+static constexpr const CoordsXY SpiralSlideWalkingPath[64] = {
     {  56,   8 },
     {   8,   8 },
     {   8,  32 },
@@ -2962,7 +2962,7 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
         y *= 32;
 
         assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
-        const BigCoordsXY slidePlatformDestination = SpiralSlideWalkingPath[peep->var_37];
+        const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[peep->var_37];
 
         x += slidePlatformDestination.x;
         y += slidePlatformDestination.y;
@@ -3962,7 +3962,7 @@ static void peep_update_ride_sub_state_14(rct_peep * peep)
             x *= 32;
             y *= 32;
             assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
-            const BigCoordsXY slidePlatformDestination = SpiralSlideWalkingPath[peep->var_37];
+            const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[peep->var_37];
 
             x += slidePlatformDestination.x;
             y += slidePlatformDestination.y;
@@ -3982,7 +3982,7 @@ static void peep_update_ride_sub_state_14(rct_peep * peep)
     y *= 32;
 
     assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
-    const BigCoordsXY slidePlatformDestination = SpiralSlideWalkingPath[peep->var_37];
+    const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[peep->var_37];
 
     x += slidePlatformDestination.x;
     y += slidePlatformDestination.y;
@@ -3992,7 +3992,7 @@ static void peep_update_ride_sub_state_14(rct_peep * peep)
 }
 
 /** rct2: 0x00981F0C, 0x00981F0E */
-static constexpr const BigCoordsXY _981F0C[] = {
+static constexpr const CoordsXY _981F0C[] = {
     { 25, 56 },
     { 56, 7 },
     { 7, -24 },
@@ -4000,7 +4000,7 @@ static constexpr const BigCoordsXY _981F0C[] = {
 };
 
 /** rct2: 0x00981F1C, 0x00981F1E */
-static constexpr const BigCoordsXY _981F1C[] = {
+static constexpr const CoordsXY _981F1C[] = {
     { 8, 56 },
     { 56, 24 },
     { 24, -24 },
@@ -4090,7 +4090,7 @@ static void peep_update_ride_sub_state_15(rct_peep * peep)
     y *= 32;
 
     assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
-    const BigCoordsXY slidePlatformDestination = SpiralSlideWalkingPath[peep->var_37];
+    const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[peep->var_37];
 
     x += slidePlatformDestination.x;
     y += slidePlatformDestination.y;
@@ -4134,7 +4134,7 @@ static void peep_update_ride_sub_state_16(rct_peep * peep)
         y *= 32;
 
         assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
-        const BigCoordsXY slidePlatformDestination = SpiralSlideWalkingPath[peep->var_37];
+        const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[peep->var_37];
 
         x += slidePlatformDestination.x;
         y += slidePlatformDestination.y;
@@ -4877,7 +4877,7 @@ static bool peep_update_fixing_sub_state_6(bool firstRun, rct_peep * peep, Ride 
 }
 
 /** rct2: 0x00992A3C */
-static constexpr const BigCoordsXY _992A3C[] = {
+static constexpr const CoordsXY _992A3C[] = {
     { -12, 0 },
     { 0, 12 },
     { 12, 0 },
@@ -4916,7 +4916,7 @@ static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep * peep, Ride 
         }
 
         sint32      direction = tile_element_get_direction(tileElement);
-        BigCoordsXY offset    = _992A3C[direction];
+        CoordsXY offset    = _992A3C[direction];
 
         stationX += 16 + offset.x;
         if (offset.x == 0)
@@ -4997,7 +4997,7 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep * peep, Ride 
 
         uint8 stationZ = ride->station_heights[peep->current_ride_station];
 
-        BigCoordsXYE input;
+        CoordsXYE input;
         input.x       = stationPosition.x * 32;
         input.y       = stationPosition.y * 32;
         input.element = map_get_track_element_at_from_ride(input.x, input.y, stationZ, peep->current_ride);
@@ -5027,7 +5027,7 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep * peep, Ride 
         uint16 destinationX = input.x + 16;
         uint16 destinationY = input.y + 16;
 
-        BigCoordsXY offset = _992A3C[direction];
+        CoordsXY offset = _992A3C[direction];
 
         destinationX -= offset.x;
         if (offset.x == 0)
@@ -9965,8 +9965,8 @@ static bool path_is_thin_junction(rct_tile_element * path, sint16 x, sint16 y, u
  */
 static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep * peep, rct_tile_element * currentTileElement,
                                            bool inPatrolArea, uint8 counter, uint16 * endScore, sint32 test_edge,
-                                           uint8 * endJunctions, SmallCoordsXYZ junctionList[16], uint8 directionList[16],
-                                           SmallCoordsXYZ * endXYZ, uint8 * endSteps)
+                                           uint8 * endJunctions, TileCoordsXYZ junctionList[16], uint8 directionList[16],
+                                           TileCoordsXYZ * endXYZ, uint8 * endSteps)
 {
     uint8 searchResult = PATH_SEARCH_FAILED;
 
@@ -10558,7 +10558,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
     // Used to allow walking through no entry banners
     _peepPathFindIsStaff = (peep->type == PEEP_TYPE_STAFF);
 
-    SmallCoordsXYZ goal = { (uint8)(gPeepPathFindGoalPosition.x >> 5),
+    TileCoordsXYZ goal = { (uint8)(gPeepPathFindGoalPosition.x >> 5),
                       (uint8)(gPeepPathFindGoalPosition.y >> 5),
                       (uint8)(gPeepPathFindGoalPosition.z) };
 
@@ -10722,9 +10722,9 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         uint8          bestJunctions         = 0;
-        SmallCoordsXYZ bestJunctionList[16]  = { 0 };
+        TileCoordsXYZ bestJunctionList[16]  = { 0 };
         uint8          bestDirectionList[16] = { 0 };
-        SmallCoordsXYZ bestXYZ               = { 0, 0, 0 };
+        TileCoordsXYZ bestXYZ               = { 0, 0, 0 };
 
         if (gPathFindDebug)
         {
@@ -10769,7 +10769,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
             uint16 score = 0xFFFF;
             /* Variable endXYZ contains the end location of the
              * search path. */
-            SmallCoordsXYZ endXYZ;
+            TileCoordsXYZ endXYZ;
             endXYZ.x = 0;
             endXYZ.y = 0;
             endXYZ.z = 0;
@@ -10784,7 +10784,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
              * In the future these could be used to visualise the
              * pathfinding on the map. */
             uint8          endJunctions         = 0;
-            SmallCoordsXYZ endJunctionList[16]  = { 0 };
+            TileCoordsXYZ endJunctionList[16]  = { 0 };
             uint8          endDirectionList[16] = { 0 };
 
             bool inPatrolArea = false;

@@ -957,7 +957,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, cons
     for (sint32 i = 0; i < 4; i++)
     {
         const LocationXY16& offset = viewport_surface_paint_data[i][rotation];
-        const BigCoordsXY position =
+        const CoordsXY position =
         {
             (sint32)(base.x + offset.x),
             (sint32)(base.y + offset.y)
