@@ -612,7 +612,7 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
     lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
     char* ptrtext = lineCh;
     safe_strcpy(lineCh, text, 800);
-    utf8_remove_format_codes((utf8*)ptrtext, true);
+    utf8_remove_format_codes(ptrtext, true);
     return formatted;
 }
 
@@ -1070,7 +1070,7 @@ void Network::Server_Send_AUTH(NetworkConnection& connection)
         new_playerid = connection.Player->Id;
     }
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.AuthStatus << (uint8)new_playerid;
+    *packet << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.AuthStatus << new_playerid;
     if (connection.AuthStatus == NETWORK_AUTH_BADVERSION) {
         packet->WriteString(NETWORK_STREAM_ID);
     }
@@ -1180,7 +1180,7 @@ void Network::Server_Send_CHAT(const char* text)
 void Network::Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback)
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED)
+    *packet << (uint32)NETWORK_COMMAND_GAMECMD << gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED)
             << ecx << edx << esi << edi << ebp << callback;
     server_connection->QueuePacket(std::move(packet));
 }
@@ -1188,7 +1188,7 @@ void Network::Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx
 void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback)
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED)
+    *packet << (uint32)NETWORK_COMMAND_GAMECMD << gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED)
             << ecx << edx << esi << edi << ebp << playerid << callback;
     SendPacketToClients(*packet, false, true);
 }
@@ -1210,7 +1210,7 @@ void Network::Client_Send_GAME_ACTION(const GameAction *action)
     DataSerialiser stream(true);
     action->Serialise(stream);
 
-    *packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << action->GetType() << stream;
+    *packet << (uint32)NETWORK_COMMAND_GAME_ACTION << gCurrentTicks << action->GetType() << stream;
 
     server_connection->QueuePacket(std::move(packet));
 }
@@ -1222,7 +1222,7 @@ void Network::Server_Send_GAME_ACTION(const GameAction *action)
     DataSerialiser stream(true);
     action->Serialise(stream);
 
-    *packet << (uint32)NETWORK_COMMAND_GAME_ACTION << (uint32)gCurrentTicks << action->GetType() << stream;
+    *packet << (uint32)NETWORK_COMMAND_GAME_ACTION << gCurrentTicks << action->GetType() << stream;
 
     SendPacketToClients(*packet);
 }
@@ -1238,7 +1238,7 @@ void Network::Server_Send_TICK()
     last_tick_sent_time = ticks;
 
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << (uint32)NETWORK_COMMAND_TICK << (uint32)gCurrentTicks << (uint32)gScenarioSrand0;
+    *packet << (uint32)NETWORK_COMMAND_TICK << gCurrentTicks << gScenarioSrand0;
     uint32 flags = 0;
     // Simple counter which limits how often a sprite checksum gets sent.
     // This can get somewhat expensive, so we don't want to push it every tick in release,
@@ -1877,7 +1877,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
         const char* gameversion = packet.ReadString();
         const char* name = packet.ReadString();
         const char* password = packet.ReadString();
-        const char *pubkey = (const char *)packet.ReadString();
+        const char *pubkey = packet.ReadString();
         uint32 sigsize;
         packet >> sigsize;
         if (pubkey == nullptr) {
@@ -2737,7 +2737,7 @@ void network_chat_show_server_greeting()
         lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
         char* ptrtext = lineCh;
         safe_strcpy(lineCh, greeting, CHAT_INPUT_SIZE - 24); // Limit to 1000 characters so we don't overflow the buffer
-        utf8_remove_format_codes((utf8*)ptrtext, true);
+        utf8_remove_format_codes(ptrtext, true);
         chat_history_add(greeting_formatted);
     }
 }

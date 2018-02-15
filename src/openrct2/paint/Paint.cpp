@@ -979,8 +979,8 @@ paint_struct * sub_98198C(
         sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
         uint32 rotation)
 {
-    assert((uint16)bound_box_length_x == (sint16)bound_box_length_x);
-    assert((uint16)bound_box_length_y == (sint16)bound_box_length_y);
+    assert((uint16)bound_box_length_x == bound_box_length_x);
+    assert((uint16)bound_box_length_y == bound_box_length_y);
 
     session->UnkF1AD28 = nullptr;
     session->UnkF1AD2C = nullptr;

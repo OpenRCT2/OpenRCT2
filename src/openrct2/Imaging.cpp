@@ -127,7 +127,7 @@ namespace Imaging
             png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
 
             // Return the output data
-            *pixels = (uint8*)pngPixels;
+            *pixels = pngPixels;
             if (width != nullptr) *width = pngWidth;
             if (height != nullptr) *height = pngHeight;
 

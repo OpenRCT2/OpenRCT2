@@ -700,7 +700,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, sint3
 
     dest_start_x >>= zoom_level;
 
-    uint8* dest_pointer = (uint8*)dpi->bits;
+    uint8* dest_pointer = dpi->bits;
     // Move the pointer to the start point of the destination
     dest_pointer += ((dpi->width >> zoom_level) + dpi->pitch) * dest_start_y + dest_start_x;
 

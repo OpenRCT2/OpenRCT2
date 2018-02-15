@@ -138,8 +138,6 @@ static void window_track_place_clear_mini_preview()
     std::fill(_window_track_place_mini_preview.begin(), _window_track_place_mini_preview.end(), PALETTE_INDEX_TRANSPARENT);
 }
 
-#define swap(x, y) x = x ^ y; y = x ^ y; x = x ^ y;
-
 /**
  *
  *  rct2: 0x006CFCA0

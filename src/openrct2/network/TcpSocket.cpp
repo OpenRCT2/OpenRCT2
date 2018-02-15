@@ -363,7 +363,7 @@ public:
         {
             const char * bufferStart = (const char *)buffer + totalSent;
             size_t remainingSize = size - totalSent;
-            sint32 sentBytes = send(_socket, (const char *)bufferStart, (sint32)remainingSize, FLAG_NO_PIPE);
+            sint32 sentBytes = send(_socket, bufferStart, (sint32)remainingSize, FLAG_NO_PIPE);
             if (sentBytes == SOCKET_ERROR)
             {
                 return totalSent;

@@ -438,10 +438,10 @@ void X8DrawingEngine::DrawDirtyBlocks(uint32 x, uint32 y, uint32 columns, uint32
     uint8 * screenDirtyBlocks = _dirtyGrid.Blocks;
 
     // Unset dirty blocks
-    for (uint32 top = y; top < y + (uint32)rows; top++)
+    for (uint32 top = y; top < y + rows; top++)
     {
         uint32 topOffset = top * dirtyBlockColumns;
-        for (uint32 left = x; left < x + (uint32)columns; left++)
+        for (uint32 left = x; left < x + columns; left++)
         {
             screenDirtyBlocks[topOffset + left] = 0;
         }

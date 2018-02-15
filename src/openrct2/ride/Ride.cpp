@@ -3781,7 +3781,7 @@ static bool ride_is_valid_lift_hill_speed(Ride *ride, sint32 speed)
     return speed >= minSpeed && speed <= maxSpeed;
 }
 
-static bool ride_is_valid_num_circuits(Ride *ride, sint32 numCircuits)
+static bool ride_is_valid_num_circuits(sint32 numCircuits)
 {
     sint32 minNumCircuits = 1;
     sint32 maxNumCircuits = gCheatsFastLiftHill ? 255 : 20;
@@ -3924,7 +3924,7 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
             return MONEY32_UNDEFINED;
         }
 
-        if (!ride_is_valid_num_circuits(ride, value)) {
+        if (!ride_is_valid_num_circuits(value)) {
             log_warning("Invalid number of circuits.");
             return MONEY32_UNDEFINED;
         }
