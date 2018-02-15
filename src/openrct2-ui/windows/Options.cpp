@@ -336,7 +336,7 @@ static rct_widget window_options_misc_widgets[] = {
     { WWT_CHECKBOX,         2,  25,     299,    SCENARIO_START + 30,       SCENARIO_START + 45,        STR_OPTIONS_SCENARIO_UNLOCKING,   STR_SCENARIO_UNLOCKING_TIP },           // Unlocking of scenarios
 #undef SCENARIO_START
 #define TWEAKS_START 162
-    { WWT_GROUPBOX,         1,  5,      304,    TWEAKS_START + 0,          TWEAKS_START + 80,          STR_OPTIONS_TWEAKS,               STR_NONE },
+    { WWT_GROUPBOX,         1,  5,      304,    TWEAKS_START + 0,          TWEAKS_START + 95,          STR_OPTIONS_TWEAKS,               STR_NONE },
     { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 15,         TWEAKS_START + 29,          STR_REAL_NAME,                    STR_REAL_NAME_TIP },                    // Show 'real' names of guests
     { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 30,         TWEAKS_START + 44,          STR_AUTO_STAFF_PLACEMENT,         STR_AUTO_STAFF_PLACEMENT_TIP },         // Auto staff placement
     { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 45,         TWEAKS_START + 59,          STR_AUTO_OPEN_SHOPS,              STR_AUTO_OPEN_SHOPS_TIP },              // Automatically open shops & stalls
