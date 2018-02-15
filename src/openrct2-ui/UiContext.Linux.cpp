@@ -29,7 +29,7 @@
 
 #include <SDL.h>
 
-namespace OpenRCT2 { namespace Ui
+namespace OpenRCT2::Ui
 {
     enum class DIALOG_TYPE
     {
@@ -385,6 +385,6 @@ namespace OpenRCT2 { namespace Ui
     {
         return new LinuxContext();
     }
-} }
+}
 
 #endif // __linux__ || __OpenBSD__

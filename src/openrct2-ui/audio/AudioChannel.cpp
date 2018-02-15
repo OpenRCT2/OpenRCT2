@@ -24,7 +24,7 @@
 #include "AudioContext.h"
 #include "AudioFormat.h"
 
-namespace OpenRCT2 { namespace Audio
+namespace OpenRCT2::Audio
 {
     class AudioChannelImpl : public ISDLAudioChannel
     {
@@ -295,4 +295,4 @@ namespace OpenRCT2 { namespace Audio
     {
         return new (std::nothrow) AudioChannelImpl();
     }
-} }
+}

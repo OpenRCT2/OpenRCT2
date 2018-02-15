@@ -16,7 +16,7 @@
 
 #include "WindowManager.h"
 
-namespace OpenRCT2 { namespace Ui
+namespace OpenRCT2::Ui
 {
     class DummyWindowManager final : public IWindowManager
     {
@@ -38,4 +38,4 @@ namespace OpenRCT2 { namespace Ui
     {
         return new DummyWindowManager();
     }
-} }
+}

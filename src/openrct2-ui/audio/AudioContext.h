@@ -9,7 +9,7 @@
 struct SDL_RWops;
 using SpeexResamplerState = struct SpeexResamplerState_;
 
-namespace OpenRCT2 { namespace Audio
+namespace OpenRCT2::Audio
 {
     struct      AudioFormat;
     interface   IAudioContext;
@@ -70,4 +70,4 @@ namespace OpenRCT2 { namespace Audio
     }
 
     IAudioContext * CreateAudioContext();
-} }
+}

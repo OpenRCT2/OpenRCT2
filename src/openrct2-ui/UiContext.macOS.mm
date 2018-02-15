@@ -27,7 +27,7 @@
 
 #include <SDL.h>
 
-namespace OpenRCT2 { namespace Ui
+namespace OpenRCT2::Ui
 {
     class macOSContext final : public IPlatformUiContext
     {
@@ -182,6 +182,6 @@ namespace OpenRCT2 { namespace Ui
     {
         return new macOSContext();
     }
-} }
+}
 
 #endif // __APPLE__ && __MACH__

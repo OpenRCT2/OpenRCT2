@@ -36,7 +36,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/platform/platform.h>
 
-namespace OpenRCT2 { namespace Audio
+namespace OpenRCT2::Audio
 {
     class AudioMixerImpl final : public IAudioMixer
     {
@@ -513,4 +513,4 @@ namespace OpenRCT2 { namespace Audio
     {
         return new AudioMixerImpl();
     }
-} }
+}

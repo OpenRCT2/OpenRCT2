@@ -16,7 +16,7 @@
 
 #include "AudioContext.h"
 
-namespace OpenRCT2 { namespace Audio
+namespace OpenRCT2::Audio
 {
     class DummyAudioContext final : public IAudioContext
     {
@@ -49,4 +49,4 @@ namespace OpenRCT2 { namespace Audio
     {
         return new DummyAudioContext();
     }
-} }
+}

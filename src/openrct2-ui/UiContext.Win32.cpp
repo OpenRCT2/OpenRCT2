@@ -54,7 +54,7 @@ static std::wstring SHGetPathFromIDListLongPath(LPCITEMIDLIST pidl)
     return pszPath;
 }
 
-namespace OpenRCT2 { namespace Ui
+namespace OpenRCT2::Ui
 {
     class Win32Context : public IPlatformUiContext
     {
@@ -224,6 +224,6 @@ namespace OpenRCT2 { namespace Ui
     {
         return new Win32Context();
     }
-} }
+}
 
 #endif // _WIN32

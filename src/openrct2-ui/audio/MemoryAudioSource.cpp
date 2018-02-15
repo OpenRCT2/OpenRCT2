@@ -24,7 +24,7 @@
 #include "AudioContext.h"
 #include "AudioFormat.h"
 
-namespace OpenRCT2 { namespace Audio
+namespace OpenRCT2::Audio
 {
     /**
      * An audio source where raw PCM data is initially loaded into RAM from
@@ -243,4 +243,4 @@ namespace OpenRCT2 { namespace Audio
         }
         return source;
     }
-} }
+}

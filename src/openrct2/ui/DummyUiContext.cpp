@@ -20,7 +20,7 @@
 
 using namespace OpenRCT2::Drawing;
 
-namespace OpenRCT2 { namespace Ui
+namespace OpenRCT2::Ui
 {
     /**
     * Represents the window or screen that OpenRCT2 is presented on.
@@ -96,4 +96,4 @@ namespace OpenRCT2 { namespace Ui
     {
         return new DummyUiContext();
     }
-} }
+}

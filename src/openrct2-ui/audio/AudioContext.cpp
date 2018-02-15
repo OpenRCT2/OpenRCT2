@@ -21,7 +21,7 @@
 #include "../SDLException.h"
 #include "AudioContext.h"
 
-namespace OpenRCT2 { namespace Audio
+namespace OpenRCT2::Audio
 {
     class AudioContext : public IAudioContext
     {
@@ -98,4 +98,4 @@ namespace OpenRCT2 { namespace Audio
     {
         return new AudioContext();
     }
-} }
+}
