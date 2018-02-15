@@ -165,6 +165,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_REAL_NAME_CHECKBOX,
     WIDX_AUTO_STAFF_PLACEMENT,
     WIDX_AUTO_OPEN_SHOPS,
+    WIDX_ALLOW_EARLY_COMPLETION,
     WIDX_DEFAULT_INSPECTION_INTERVAL,
     WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN,
 
@@ -254,8 +255,8 @@ static rct_widget window_options_rendering_widgets[] = {
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 45,     FRAME_RENDERING_START + 56,     STR_ENABLE_VIRTUAL_FLOOR,       STR_ENABLE_VIRTUAL_FLOOR_TIP },         // Virtual floor
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 60,     FRAME_RENDERING_START + 71,     STR_CYCLE_DAY_NIGHT,            STR_CYCLE_DAY_NIGHT_TIP },              // Cycle day-night
     { WWT_CHECKBOX,         1,  25,     290,    FRAME_RENDERING_START + 75,     FRAME_RENDERING_START + 86,     STR_ENABLE_LIGHTING_EFFECTS,    STR_ENABLE_LIGHTING_EFFECTS_TIP },      // Enable light fx
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 90,     FRAME_RENDERING_START + 101,     STR_UPPERCASE_BANNERS,          STR_UPPERCASE_BANNERS_TIP },            // Uppercase banners
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 105,     FRAME_RENDERING_START + 116,    STR_RENDER_WEATHER_EFFECTS,     STR_RENDER_WEATHER_EFFECTS_TIP },       // Render weather effects
+    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 90,     FRAME_RENDERING_START + 101,    STR_UPPERCASE_BANNERS,          STR_UPPERCASE_BANNERS_TIP },            // Uppercase banners
+    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 105,    FRAME_RENDERING_START + 116,    STR_RENDER_WEATHER_EFFECTS,     STR_RENDER_WEATHER_EFFECTS_TIP },       // Render weather effects
     { WWT_CHECKBOX,         1,  25,     290,    FRAME_RENDERING_START + 120,    FRAME_RENDERING_START + 131,    STR_DISABLE_LIGHTNING_EFFECT,   STR_DISABLE_LIGHTNING_EFFECT_TIP },     // Disable lightning effect
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 135,    FRAME_RENDERING_START + 146,    STR_SHOW_GUEST_PURCHASES,       STR_SHOW_GUEST_PURCHASES_TIP },
 #undef FRAME_RENDERING_START
@@ -339,8 +340,9 @@ static rct_widget window_options_misc_widgets[] = {
     { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 15,         TWEAKS_START + 29,          STR_REAL_NAME,                    STR_REAL_NAME_TIP },                    // Show 'real' names of guests
     { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 30,         TWEAKS_START + 44,          STR_AUTO_STAFF_PLACEMENT,         STR_AUTO_STAFF_PLACEMENT_TIP },         // Auto staff placement
     { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 45,         TWEAKS_START + 59,          STR_AUTO_OPEN_SHOPS,              STR_AUTO_OPEN_SHOPS_TIP },              // Automatically open shops & stalls
-    { WWT_DROPDOWN,         1,  175,    299,    TWEAKS_START + 61,         TWEAKS_START + 72,          STR_NONE,                         STR_NONE },                             // Default inspection time dropdown
-    { WWT_BUTTON,           1,  288,    298,    TWEAKS_START + 62,         TWEAKS_START + 71,          STR_DROPDOWN_GLYPH,               STR_DEFAULT_INSPECTION_INTERVAL_TIP },  // Default inspection time dropdown button
+    { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 60,         TWEAKS_START + 75,          STR_ALLOW_EARLY_COMPLETION,       STR_EARLY_COMPLETION_TIP },             // Allow early scenario completion
+    { WWT_DROPDOWN,         1,  175,    299,    TWEAKS_START + 76,         TWEAKS_START + 87,          STR_NONE,                         STR_NONE },                             // Default inspection time dropdown
+    { WWT_BUTTON,           1,  288,    298,    TWEAKS_START + 77,         TWEAKS_START + 86,          STR_DROPDOWN_GLYPH,               STR_DEFAULT_INSPECTION_INTERVAL_TIP },  // Default inspection time dropdown button
 #undef TWEAKS_START
     { WIDGETS_END },
 };
@@ -354,7 +356,7 @@ static rct_widget window_options_advanced_widgets[] = {
     { WWT_CHECKBOX,         2,  10,     299,    114,    125,    STR_STAY_CONNECTED_AFTER_DESYNC,            STR_STAY_CONNECTED_AFTER_DESYNC_TIP },              // Do not disconnect after the client desynchronises with the server
     { WWT_DROPDOWN,         1,  165,    299,    130,    141,    STR_NONE,                                   STR_NONE },                                         // Autosave dropdown
     { WWT_BUTTON,           1,  288,    298,    131,    140,    STR_DROPDOWN_GLYPH,                         STR_AUTOSAVE_FREQUENCY_TIP },                       // Autosave dropdown button
-    { WWT_LABEL,           1,  23,     298,    148,    159,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
+    { WWT_LABEL,            1,  23,     298,    148,    159,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
     { WWT_BUTTON,           1,  24,     289,    163,    176,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
     { WWT_BUTTON,           1,  289,    299,    163,    176,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
     { WIDGETS_END },
@@ -863,6 +865,11 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             break;
         case WIDX_AUTO_OPEN_SHOPS:
             gConfigGeneral.auto_open_shops = !gConfigGeneral.auto_open_shops;
+            config_save_default();
+            window_invalidate(w);
+            break;
+        case WIDX_ALLOW_EARLY_COMPLETION:
+            gConfigGeneral.allow_early_completion ^= 1;
             config_save_default();
             window_invalidate(w);
             break;
@@ -1735,10 +1742,12 @@ static void window_options_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
         widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
         widget_set_checkbox_value(w, WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
+        widget_set_checkbox_value(w, WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.allow_early_completion);
 
         window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].type = WWT_CHECKBOX;
         window_options_misc_widgets[WIDX_AUTO_STAFF_PLACEMENT].type = WWT_CHECKBOX;
         window_options_misc_widgets[WIDX_AUTO_OPEN_SHOPS].type = WWT_CHECKBOX;
+        window_options_misc_widgets[WIDX_ALLOW_EARLY_COMPLETION].type = WWT_CHECKBOX;
 
         window_options_misc_widgets[WIDX_TITLE_SEQUENCE].type = WWT_DROPDOWN;
         window_options_misc_widgets[WIDX_TITLE_SEQUENCE_DROPDOWN].type = WWT_BUTTON;
