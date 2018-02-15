@@ -944,7 +944,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track_td6 *td6)
 {
     Ride *ride = get_ride(rideIndex);
-    BigCoordsXYE trackElement;
+    CoordsXYE trackElement;
     track_begin_end trackBeginEnd;
 
     if (!ride_try_get_origin_element(rideIndex, &trackElement)) {
@@ -958,7 +958,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
     if (track_block_get_previous(trackElement.x, trackElement.y, trackElement.element, &trackBeginEnd)) {
         rct_tile_element* initial_map = trackElement.element;
         do {
-            BigCoordsXYE lastGood = {
+            CoordsXYE lastGood = {
                 /* .x = */ trackBeginEnd.begin_x,
                 /* .y = */ trackBeginEnd.begin_y,
                 /* .element = */ trackBeginEnd.begin_element

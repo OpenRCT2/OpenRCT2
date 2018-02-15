@@ -260,8 +260,8 @@ static bool sub_6DF01A_loop(rct_vehicle * vehicle)
                 0
             );
 
-            BigCoordsXYE   input;
-            BigCoordsXYE   output;
+            CoordsXYE   input;
+            CoordsXYE   output;
             sint32         outputZ;
             sint32         outputDirection;
 
@@ -344,7 +344,7 @@ static bool sub_6DF21B_loop(rct_vehicle * vehicle)
                 0
             );
 
-            BigCoordsXYE    input;
+            CoordsXYE    input;
 
             input.x       = vehicle->track_x;
             input.y       = vehicle->track_y;

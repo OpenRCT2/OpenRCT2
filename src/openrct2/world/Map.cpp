@@ -52,7 +52,7 @@
 /**
  * Replaces 0x00993CCC, 0x00993CCE
  */
-const BigCoordsXY TileDirectionDelta[] = {
+const CoordsXY TileDirectionDelta[] = {
     { -32,   0 },
     {   0, +32 },
     { +32,   0 },
@@ -352,7 +352,7 @@ rct_tile_element * map_get_surface_element_at(sint32 x, sint32 y)
     return tileElement;
 }
 
-rct_tile_element * map_get_surface_element_at(BigCoordsXY coords)
+rct_tile_element * map_get_surface_element_at(CoordsXY coords)
 {
     return map_get_surface_element_at(coords.x / 32, coords.y / 32);
 }
@@ -4904,15 +4904,15 @@ bool map_tile_is_part_of_virtual_floor(sint16 x, sint16 y)
     return false;
 }
 
-void FixLandOwnershipTiles(std::initializer_list<SmallCoordsXY> tiles)
+void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles)
 {
     FixLandOwnershipTilesWithOwnership(tiles, OWNERSHIP_AVAILABLE);
 }
 
-void FixLandOwnershipTilesWithOwnership(std::initializer_list<SmallCoordsXY> tiles, uint8 ownership)
+void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tiles, uint8 ownership)
 {
     rct_tile_element * currentElement;
-    for (const SmallCoordsXY * tile = tiles.begin(); tile != tiles.end(); ++tile)
+    for (const TileCoordsXY * tile = tiles.begin(); tile != tiles.end(); ++tile)
     {
         currentElement = map_get_surface_element_at((*tile).x, (*tile).y);
         currentElement->properties.surface.ownership |= ownership;

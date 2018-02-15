@@ -158,7 +158,7 @@ public:
 
         sint8 zLow = _z * 2;
         sint8 zHigh = zLow + 12;
-        BigCoordsXY entranceLoc = { _x, _y };
+        CoordsXY entranceLoc = { _x, _y };
         for (uint8 index = 0; index < 3; index++)
         {
             if (index == 1)

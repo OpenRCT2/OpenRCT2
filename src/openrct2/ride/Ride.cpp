@@ -488,7 +488,7 @@ static money32 ride_calculate_income_per_hour(Ride *ride)
  * dl ride index
  * esi result map element
  */
-bool ride_try_get_origin_element(sint32 rideIndex, BigCoordsXYE *output)
+bool ride_try_get_origin_element(sint32 rideIndex, CoordsXYE *output)
 {
     rct_tile_element *resultTileElement = nullptr;
 
@@ -536,7 +536,7 @@ bool ride_try_get_origin_element(sint32 rideIndex, BigCoordsXYE *output)
 * Use track_block_get_next if you are unsure if you are
 * on the first element of a track block
 */
-bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 rideIndex, uint8 direction_start, BigCoordsXYE *output, sint32 *z, sint32 *direction)
+bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 rideIndex, uint8 direction_start, CoordsXYE *output, sint32 *z, sint32 *direction)
 {
     Ride* ride = get_ride(rideIndex);
 
@@ -596,7 +596,7 @@ bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 ri
  *
  *  rct2: 0x006C60C2
  */
-bool track_block_get_next(BigCoordsXYE *input, BigCoordsXYE *output, sint32 *z, sint32 *direction)
+bool track_block_get_next(CoordsXYE *input, CoordsXYE *output, sint32 *z, sint32 *direction)
 {
     uint8 rideIndex = track_element_get_ride_index(input->element);
     Ride* ride = get_ride(rideIndex);
@@ -805,7 +805,7 @@ bool track_block_get_previous(sint32 x, sint32 y, rct_tile_element *tileElement,
  * bx result y
  * esi input / output map element
  */
-sint32 ride_find_track_gap(BigCoordsXYE *input, BigCoordsXYE *output)
+sint32 ride_find_track_gap(CoordsXYE *input, CoordsXYE *output)
 {
     rct_window *w;
     Ride *ride;
@@ -1029,7 +1029,7 @@ static rct_window *ride_create_or_find_construction_window(sint32 rideIndex)
  */
 void ride_construct(sint32 rideIndex)
 {
-    BigCoordsXYE trackElement;
+    CoordsXYE trackElement;
 
     if (ride_try_get_origin_element(rideIndex, &trackElement)) {
         ride_find_track_gap(&trackElement, &trackElement);
@@ -1390,7 +1390,7 @@ void ride_remove_provisional_track_piece()
             x -= TileDirectionDelta[direction].x;
             y -= TileDirectionDelta[direction].y;
         }
-        BigCoordsXYE next_track;
+        CoordsXYE next_track;
         if (track_block_get_next_from_zero(x, y, z, rideIndex, direction, &next_track, &z, &direction)) {
             sint32 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST;
             game_do_command(
@@ -1502,7 +1502,7 @@ void ride_construction_set_default_next_piece()
     sint32 x, y, z, direction, rideIndex, trackType, curve, bank, slope;
     Ride *ride;
     track_begin_end trackBeginEnd;
-    BigCoordsXYE xyElement;
+    CoordsXYE xyElement;
     rct_tile_element *tileElement;
 
     _currentTrackPrice = MONEY32_UNDEFINED;
@@ -1653,7 +1653,7 @@ void ride_select_next_section()
             window_ride_construction_update_active_elements();
             return;
         }
-        BigCoordsXYE inputElement, outputElement;
+        CoordsXYE inputElement, outputElement;
         inputElement.x = x;
         inputElement.y = y;
         inputElement.element = tileElement;
@@ -1836,10 +1836,10 @@ static sint32 ride_modify_maze(rct_tile_element *tileElement, sint32 x, sint32 y
  *
  *  rct2: 0x006CC056
  */
-sint32 ride_modify(BigCoordsXYE *input)
+sint32 ride_modify(CoordsXYE *input)
 {
     sint32 rideIndex, x, y, z, direction, type;
-    BigCoordsXYE tileElement, endOfTrackElement;
+    CoordsXYE tileElement, endOfTrackElement;
     Ride *ride;
     rct_ride_entry *rideEntry;
 
@@ -4114,7 +4114,7 @@ static void sub_6B5952(sint32 rideIndex)
  *
  *  rct2: 0x006D3319
  */
-static sint32 ride_check_block_brakes(BigCoordsXYE *input, BigCoordsXYE *output)
+static sint32 ride_check_block_brakes(CoordsXYE *input, CoordsXYE *output)
 {
     rct_window *w;
     track_circuit_iterator it;
@@ -4163,7 +4163,7 @@ static sint32 ride_check_block_brakes(BigCoordsXYE *input, BigCoordsXYE *output)
  * @returns true if an inversion track piece is found, otherwise false.
  *  rct2: 0x006CB149
  */
-static bool ride_check_track_contains_inversions(BigCoordsXYE *input, BigCoordsXYE *output)
+static bool ride_check_track_contains_inversions(CoordsXYE *input, CoordsXYE *output)
 {
     sint32 rideIndex = track_element_get_ride_index(input->element);
     Ride *ride = get_ride(rideIndex);
@@ -4208,7 +4208,7 @@ static bool ride_check_track_contains_inversions(BigCoordsXYE *input, BigCoordsX
  * @returns true if a banked track piece is found, otherwise false.
  *  rct2: 0x006CB1D3
  */
-static bool ride_check_track_contains_banked(BigCoordsXYE *input, BigCoordsXYE *output)
+static bool ride_check_track_contains_banked(CoordsXYE *input, CoordsXYE *output)
 {
     sint32 rideIndex = track_element_get_ride_index(input->element);
     Ride *ride = get_ride(rideIndex);
@@ -4250,7 +4250,7 @@ static bool ride_check_track_contains_banked(BigCoordsXYE *input, BigCoordsXYE *
  *
  *  rct2: 0x006CB25D
  */
-static sint32 ride_check_station_length(BigCoordsXYE *input, BigCoordsXYE *output)
+static sint32 ride_check_station_length(CoordsXYE *input, CoordsXYE *output)
 {
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
     if (w != nullptr &&
@@ -4271,7 +4271,7 @@ static sint32 ride_check_station_length(BigCoordsXYE *input, BigCoordsXYE *outpu
     }
 
     sint32 num_station_elements = 0;
-    BigCoordsXYE last_good_station = *output;
+    CoordsXYE last_good_station = *output;
 
     do{
         if (TrackSequenceProperties[track_element_get_type(output->element)][0] & TRACK_SEQUENCE_FLAG_ORIGIN){
@@ -4300,12 +4300,12 @@ static sint32 ride_check_station_length(BigCoordsXYE *input, BigCoordsXYE *outpu
  *
  *  rct2: 0x006CB2DA
  */
-static bool ride_check_start_and_end_is_station(BigCoordsXYE * input, BigCoordsXYE * output)
+static bool ride_check_start_and_end_is_station(CoordsXYE * input, CoordsXYE * output)
 {
     rct_window *w;
     Ride *ride;
     sint32 rideIndex, trackType;
-    BigCoordsXYE trackBack, trackFront;
+    CoordsXYE trackBack, trackFront;
 
     rideIndex = track_element_get_ride_index(input->element);
     ride = get_ride(rideIndex);
@@ -4342,7 +4342,7 @@ static bool ride_check_start_and_end_is_station(BigCoordsXYE * input, BigCoordsX
  * station or the last track piece from the end of the direction.
  *  rct2: 0x006B4D39
  */
-static void ride_set_boat_hire_return_point(Ride * ride, BigCoordsXYE * startElement)
+static void ride_set_boat_hire_return_point(Ride * ride, CoordsXYE * startElement)
 {
     sint32 trackType = -1;
     sint32 returnX = startElement->x;
@@ -4419,9 +4419,9 @@ static void ride_set_maze_entrance_exit_points(Ride *ride)
  * Sets a flag on all the track elements that can be the start of a circuit block. i.e. where a train can start.
  *  rct2: 0x006B4E6B
  */
-static void ride_set_block_points(BigCoordsXYE *startElement)
+static void ride_set_block_points(CoordsXYE *startElement)
 {
-    BigCoordsXYE currentElement = *startElement;
+    CoordsXYE currentElement = *startElement;
     do {
         sint32 trackType = track_element_get_type(currentElement.element);
         switch (trackType) {
@@ -4442,7 +4442,7 @@ static void ride_set_block_points(BigCoordsXYE *startElement)
  *
  *  rct2: 0x006B4D26
  */
-static void ride_set_start_finish_points(sint32 rideIndex, BigCoordsXYE *startElement)
+static void ride_set_start_finish_points(sint32 rideIndex, CoordsXYE *startElement)
 {
     Ride *ride = get_ride(rideIndex);
 
@@ -4749,7 +4749,7 @@ static void vehicle_unset_update_flag_b1(rct_vehicle *head)
  *
  *  rct2: 0x006DDE9E
  */
-static void ride_create_vehicles_find_first_block(Ride *ride, BigCoordsXYE *outXYElement)
+static void ride_create_vehicles_find_first_block(Ride *ride, CoordsXYE *outXYElement)
 {
     rct_vehicle *vehicle = GET_VEHICLE(ride->vehicles[0]);
     sint32 firstX = vehicle->track_x;
@@ -4817,7 +4817,7 @@ static void ride_create_vehicles_find_first_block(Ride *ride, BigCoordsXYE *outX
  *
  *  rct2: 0x006DD84C
  */
-static bool ride_create_vehicles(Ride *ride, sint32 rideIndex, BigCoordsXYE *element, sint32 isApplying)
+static bool ride_create_vehicles(Ride *ride, sint32 rideIndex, CoordsXYE *element, sint32 isApplying)
 {
     ride_update_max_vehicles(rideIndex);
     if (ride->subtype == RIDE_ENTRY_INDEX_NULL) {
@@ -4870,7 +4870,7 @@ static bool ride_create_vehicles(Ride *ride, sint32 rideIndex, BigCoordsXYE *ele
     //
     if (ride->type != RIDE_TYPE_SPACE_RINGS && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_16)) {
         if (ride_is_block_sectioned(ride)) {
-            BigCoordsXYE firstBlock;
+            CoordsXYE firstBlock;
             ride_create_vehicles_find_first_block(ride, &firstBlock);
             loc_6DDF9C(ride, firstBlock.element);
         } else {
@@ -5153,7 +5153,7 @@ static void loc_6B51C0(sint32 rideIndex)
         sint32 z = ride->station_heights[i] * 8;
         window_scroll_to_location(w, x, y, z);
 
-        BigCoordsXYE trackElement;
+        CoordsXYE trackElement;
         ride_try_get_origin_element(rideIndex, &trackElement);
         ride_find_track_gap(&trackElement, &trackElement);
         sint32 ok = ride_modify(&trackElement);
@@ -5171,7 +5171,7 @@ static void loc_6B51C0(sint32 rideIndex)
  *
  *  rct2: 0x006B528A
  */
-static void ride_scroll_to_track_error(BigCoordsXYE *trackElement)
+static void ride_scroll_to_track_error(CoordsXYE *trackElement)
 {
     if (!gGameCommandIsNetworked && gUnk141F568 == gUnk13CA740) {
         rct_window *w = window_get_main();
@@ -5213,7 +5213,7 @@ sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
 {
     sint32 stationIndex;
     Ride *ride;
-    BigCoordsXYE trackElement, problematicTrackElement = { 0 };
+    CoordsXYE trackElement, problematicTrackElement = { 0 };
 
     ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_NULL)
@@ -5342,7 +5342,7 @@ sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
 {
     sint32 stationIndex;
     Ride *ride;
-    BigCoordsXYE trackElement, problematicTrackElement = { 0 };
+    CoordsXYE trackElement, problematicTrackElement = { 0 };
 
     ride = get_ride(rideIndex);
 
@@ -5903,7 +5903,7 @@ void game_command_callback_ride_construct_placed_front(sint32 eax, sint32 ebx, s
         y -= TileDirectionDelta[trackDirection].y;
     }
 
-    BigCoordsXYE next_track;
+    CoordsXYE next_track;
     if (track_block_get_next_from_zero(x, y, z, _currentRideIndex, trackDirection, &next_track, &z, &trackDirection)) {
         _currentTrackBeginX = next_track.x;
         _currentTrackBeginY = next_track.y;
@@ -6787,7 +6787,7 @@ bool ride_select_forwards_from_back()
     y = _currentTrackBeginY;
     z = _currentTrackBeginZ;
     direction = _currentTrackPieceDirection ^ 2;
-    BigCoordsXYE next_track;
+    CoordsXYE next_track;
 
     if (track_block_get_next_from_zero(x, y, z, _currentRideIndex, direction, &next_track, &z, &direction)) {
         _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;

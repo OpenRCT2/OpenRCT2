@@ -1731,7 +1731,7 @@ static void window_ride_construction_construct(rct_window *w)
             y -= TileDirectionDelta[trackDirection].y;
         }
 
-        BigCoordsXYE next_track;
+        CoordsXYE next_track;
         if (track_block_get_next_from_zero(x, y, z, _currentRideIndex, trackDirection, &next_track, &z, &trackDirection)) {
             _currentTrackBeginX = next_track.x;
             _currentTrackBeginY = next_track.y;
@@ -1764,7 +1764,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 {
     sint32 x, y, z, direction, type;
     rct_tile_element *tileElement;
-    BigCoordsXYE inputElement, outputElement;
+    CoordsXYE inputElement, outputElement;
     track_begin_end trackBeginEnd;
     //bool gotoStartPlacementMode;
 

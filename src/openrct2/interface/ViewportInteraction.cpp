@@ -370,7 +370,7 @@ sint32 viewport_interaction_right_over(sint32 x, sint32 y)
  */
 sint32 viewport_interaction_right_click(sint32 x, sint32 y)
 {
-    BigCoordsXYE tileElement;
+    CoordsXYE tileElement;
     viewport_interaction_info info;
 
     switch (viewport_interaction_get_item_right(x, y, &info)) {

@@ -39,7 +39,7 @@ uint32 gCurrentViewportFlags;
 uint32 gScenarioTicks;
 uint8 gCurrentRotation;
 
-const BigCoordsXY TileDirectionDelta[] = {
+const CoordsXY TileDirectionDelta[] = {
     {-32, 0},
     {0,   +32},
     {+32, 0},
