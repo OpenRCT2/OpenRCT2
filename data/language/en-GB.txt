@@ -4533,7 +4533,7 @@ STR_6223    :Must be outside park boundaries!
 STR_6224    :{STRING} placed a guest entry point.
 STR_6225    :Not supported with OpenGL renderer
 STR_6226    :Enable early scenario completion
-STR_6227    :Triggers scenario completion when all scenario goals are met before the target date.
+STR_6227    :{SMALLFONT}{BLACK}Triggers scenario completion when all scenario goals are met before the target date.
 
 #############
 # Scenarios #
