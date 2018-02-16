@@ -193,7 +193,7 @@ uint8 _currentSeatRotationAngle;
 LocationXYZ16 _unkF44188;
 
 
-LocationXYZD16 _unkF440C5;
+CoordsXYZD _unkF440C5;
 
 uint8 gRideEntranceExitPlaceType;
 uint8 gRideEntranceExitPlaceRideIndex;
