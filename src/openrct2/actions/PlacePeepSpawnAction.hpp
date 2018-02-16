@@ -47,7 +47,7 @@ public:
 
     uint16 GetActionFlags() const override
     {
-        return GameActionBase::GetActionFlags() | GA_FLAGS::EDITOR_ONLY;
+        return GameActionBase::GetActionFlags() | GA_FLAGS::EDITOR_ONLY | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
 
     void Serialise(DataSerialiser& stream) override
