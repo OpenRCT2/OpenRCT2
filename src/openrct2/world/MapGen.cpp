@@ -310,9 +310,9 @@ static void mapgen_place_trees()
         }
     }
 
-    LocationXY32 tmp, pos;
+    CoordsXY tmp, pos;
 
-    std::vector<LocationXY32> availablePositions;
+    std::vector<CoordsXY> availablePositions;
 
     // Create list of available tiles
     for (sint32 y = 1; y < gMapSize - 1; y++)

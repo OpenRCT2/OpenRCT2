@@ -567,7 +567,7 @@ bool map_large_scenery_get_origin(
 );
 
 void map_offset_with_rotation(sint16 *x, sint16 *y, sint16 offsetX, sint16 offsetY, uint8 rotation);
-LocationXY32 translate_3d_to_2d_with_z(sint32 rotation, CoordsXYZ pos);
+CoordsXY translate_3d_to_2d_with_z(sint32 rotation, CoordsXYZ pos);
 
 rct_tile_element *map_get_track_element_at(sint32 x, sint32 y, sint32 z);
 rct_tile_element *map_get_track_element_at_of_type(sint32 x, sint32 y, sint32 z, sint32 trackType);
