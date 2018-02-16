@@ -984,7 +984,7 @@ extern uint8 _currentSeatRotationAngle;
 
 extern LocationXYZ16 _unkF44188;
 
-extern LocationXYZD16 _unkF440C5;
+extern CoordsXYZD _unkF440C5;
 
 extern uint8 gRideEntranceExitPlaceType;
 extern uint8 gRideEntranceExitPlaceRideIndex;

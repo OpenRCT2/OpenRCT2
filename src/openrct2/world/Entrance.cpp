@@ -30,9 +30,9 @@
 bool gParkEntranceGhostExists = false;
 LocationXYZ16 gParkEntranceGhostPosition = { 0, 0, 0 };
 uint8 gParkEntranceGhostDirection = 0;
-LocationXYZD16 gParkEntrances[MAX_PARK_ENTRANCES];
+CoordsXYZD gParkEntrances[MAX_PARK_ENTRANCES];
 
-LocationXYZD16 gRideEntranceExitGhostPosition;
+CoordsXYZD gRideEntranceExitGhostPosition;
 uint8 gRideEntranceExitGhostStationIndex;
 
 static void ParkEntranceRemoveSegment(sint32 x, sint32 y, sint32 z)

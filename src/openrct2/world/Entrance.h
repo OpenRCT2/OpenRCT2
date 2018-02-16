@@ -18,6 +18,7 @@
 #define _ENTRANCE_H_
 
 #include "../common.h"
+#include "Location.h"
 
 #pragma pack(push, 1)
 struct rct_entrance_type {
@@ -31,8 +32,6 @@ assert_struct_size(rct_entrance_type, 8);
 
 void game_command_remove_park_entrance(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 
-struct LocationXYZ16;
-struct LocationXYZD16;
 struct rct_tile_element;
 
 extern bool gParkEntranceGhostExists;
@@ -41,9 +40,9 @@ extern uint8 gParkEntranceGhostDirection;
 
 #define MAX_PARK_ENTRANCES 4
 
-extern LocationXYZD16 gParkEntrances[MAX_PARK_ENTRANCES];
+extern CoordsXYZD gParkEntrances[MAX_PARK_ENTRANCES];
 
-extern LocationXYZD16 gRideEntranceExitGhostPosition;
+extern CoordsXYZD gRideEntranceExitGhostPosition;
 extern uint8 gRideEntranceExitGhostStationIndex;
 
 void park_entrance_remove_ghost();

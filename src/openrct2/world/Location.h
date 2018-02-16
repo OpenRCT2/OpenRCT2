@@ -43,12 +43,6 @@ struct LocationXYZ16 {
     sint16 x, y, z;
 };
 assert_struct_size(LocationXYZ16, 6);
-
-struct LocationXYZD16 {
-    sint16 x, y, z;
-    uint8 direction;
-};
-assert_struct_size(LocationXYZD16, 7);
 #pragma pack(pop)
 
 /*
