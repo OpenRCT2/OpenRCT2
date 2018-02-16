@@ -2225,7 +2225,7 @@ void track_design_draw_preview(rct_track_td6 * td6, uint8 * pixels)
     td6->cost        = cost;
     td6->track_flags = flags & 7;
 
-    LocationXYZ32 centre;
+    CoordsXYZ centre;
     centre.x = (gTrackPreviewMin.x + gTrackPreviewMax.x) / 2 + 16;
     centre.y = (gTrackPreviewMin.y + gTrackPreviewMax.y) / 2 + 16;
     centre.z = (gTrackPreviewMin.z + gTrackPreviewMax.z) / 2;
