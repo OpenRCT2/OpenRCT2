@@ -115,7 +115,7 @@ static void automatically_set_peep_spawn(sint32 x, sint32 y, sint32 z)
         }
     }
 
-    rct2_peep_spawn *peepSpawn = &gPeepSpawns[0];
+    PeepSpawn * peepSpawn = &gPeepSpawns[0];
     peepSpawn->x = x + (word_981D6C[direction].x * 15) + 16;
     peepSpawn->y = y + (word_981D6C[direction].y * 15) + 16;
     peepSpawn->direction = direction;

@@ -74,4 +74,13 @@ struct rct12_xyzd8
 };
 assert_struct_size(rct12_xyzd8, 4);
 
+struct rct12_peep_spawn
+{
+    uint16 x;
+    uint16 y;
+    uint8 z;
+    uint8 direction;
+};
+assert_struct_size(rct12_peep_spawn, 6);
+
 #pragma pack(pop)

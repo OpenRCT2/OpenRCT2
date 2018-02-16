@@ -53,4 +53,5 @@ private:
     void ExportResearchedRideEntries();
     void ExportResearchedSceneryItems();
     void ExportResearchList();
+    void ExportPeepSpawns();
 };

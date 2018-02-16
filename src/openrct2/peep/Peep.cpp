@@ -11011,7 +11011,7 @@ static sint32 guest_path_find_leaving_park(rct_peep * peep, rct_tile_element * t
     if (chosenSpawn == 0xFF)
         return guest_path_find_aimless(peep, edges);
 
-    rct2_peep_spawn * peepSpawn = &gPeepSpawns[chosenSpawn];
+    PeepSpawn * peepSpawn = &gPeepSpawns[chosenSpawn];
 
     sint16 x         = peepSpawn->x & 0xFFE0;
     sint16 y         = peepSpawn->y & 0xFFE0;

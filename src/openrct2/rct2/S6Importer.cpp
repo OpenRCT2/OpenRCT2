@@ -776,14 +776,14 @@ public:
         // Many WW and TT have scenario_filename fields containing an incorrect filename. Check for both this filename
         // and the corrected filename.
 
-        // In this park, gPeepSpawns[0] is incorrect, and gPeepSpawns[1] is correct.
+        // In this park, peep_spawns[0] is incorrect, and peep_spawns[1] is correct.
         if (String::Equals(_s6.scenario_filename, "WW South America - Rio Carnival.SC6") ||
             String::Equals(_s6.scenario_filename, "South America - Rio Carnival.SC6"))
         {
             _s6.peep_spawns[0] = { 2160, 3167, 6, 1 };
             _s6.peep_spawns[1].x = PEEP_SPAWN_UNDEFINED;
         }
-        // In this park, gPeepSpawns[0] is correct. Just clear the other.
+        // In this park, peep_spawns[0] is correct. Just clear the other.
         else if (String::Equals(_s6.scenario_filename, "Great Wall of China Tourism Enhancement.SC6") ||
                  String::Equals(_s6.scenario_filename, "Asia - Great Wall of China Tourism Enhancement.SC6"))
         {
@@ -798,7 +798,9 @@ public:
 
         for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
         {
-            gPeepSpawns[i] = _s6.peep_spawns[i];
+            gPeepSpawns[i] = {
+                _s6.peep_spawns[i].x, _s6.peep_spawns[i].y, _s6.peep_spawns[i].z, _s6.peep_spawns[i].direction
+            };
         }
 
         for (size_t i = RCT12_MAX_PEEP_SPAWNS; i < MAX_PEEP_SPAWNS; i++)
