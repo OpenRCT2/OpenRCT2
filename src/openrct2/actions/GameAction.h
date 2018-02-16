@@ -76,7 +76,7 @@ public:
     rct_string_id           ErrorTitle = STR_NONE;
     rct_string_id           ErrorMessage = STR_NONE;
     std::array<uint8, 12>   ErrorMessageArgs;
-    LocationXYZ32           Position = { 0 };
+    CoordsXYZ               Position = { 0 };
     money32                 Cost = 0;
     uint16                  ExpenditureType = 0;
 

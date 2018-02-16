@@ -53,10 +53,6 @@ assert_struct_size(LocationXYZD16, 7);
 struct LocationXY32 {
     sint32 x, y;
 };
-
-struct LocationXYZ32 {
-    sint32 x, y, z;
-};
 #pragma pack(pop)
 
 /*
