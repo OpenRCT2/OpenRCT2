@@ -2273,12 +2273,12 @@ void track_design_draw_preview(rct_track_td6 * td6, uint8 * pixels)
     dpi.pitch      = 0;
     dpi.bits       = pixels;
 
-    LocationXY32    offset = {size_x / 2, size_y / 2};
-    for (sint32 i      = 0; i < 4; i++)
+    CoordsXY offset = {size_x / 2, size_y / 2};
+    for (uint8 i = 0; i < 4; i++)
     {
         gCurrentRotation = i;
 
-        LocationXY32 pos2d = translate_3d_to_2d_with_z(i, centre);
+        CoordsXY pos2d = translate_3d_to_2d_with_z(i, centre);
         pos2d.x -= offset.x;
         pos2d.y -= offset.y;
 
