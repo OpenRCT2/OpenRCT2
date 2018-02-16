@@ -609,7 +609,7 @@ struct rct1_s4 {
     money16 park_entrance_fee;
     rct1_entrance park_entrance;
     uint8 unk_198849;
-    rct2_peep_spawn peep_spawn[RCT12_MAX_PEEP_SPAWNS];
+    rct12_peep_spawn peep_spawn[RCT12_MAX_PEEP_SPAWNS];
     uint8 unk_198856;
     uint8 research_level;
     uint32 unk_198858;

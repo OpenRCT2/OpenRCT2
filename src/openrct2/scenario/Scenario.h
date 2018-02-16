@@ -125,7 +125,7 @@ struct rct_s6_data {
     uint8 pad_013573EE[2];
     uint8 rct1_park_entrance_z;
     uint8 pad_013573F1;
-    rct2_peep_spawn peep_spawns[RCT12_MAX_PEEP_SPAWNS];
+    rct12_peep_spawn peep_spawns[RCT12_MAX_PEEP_SPAWNS];
     uint8 guest_count_change_modifier;
     uint8 current_research_level;
     uint8 pad_01357400[4];

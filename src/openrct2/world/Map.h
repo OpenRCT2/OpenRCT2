@@ -323,15 +323,7 @@ enum {
 
 #define TILE_UNDEFINED_TILE_ELEMENT NULL
 
-#pragma pack(push, 1)
-struct rct2_peep_spawn {
-    uint16 x;
-    uint16 y;
-    uint8 z;
-    uint8 direction;
-};
-assert_struct_size(rct2_peep_spawn, 6);
-#pragma pack(pop)
+typedef CoordsXYZD PeepSpawn;
 
 struct CoordsXYE
 {
@@ -403,7 +395,7 @@ extern rct_tile_element gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
 extern rct_tile_element *gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 
 extern LocationXY16 gMapSelectionTiles[300];
-extern rct2_peep_spawn gPeepSpawns[MAX_PEEP_SPAWNS];
+extern PeepSpawn gPeepSpawns[MAX_PEEP_SPAWNS];
 
 extern rct_tile_element *gNextFreeTileElement;
 extern uint32 gNextFreeTileElementPointerIndex;

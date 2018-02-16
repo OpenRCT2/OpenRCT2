@@ -214,7 +214,7 @@ void S6Exporter::Export()
     // rct1_park_entrance_y
     // pad_013573EE
     // rct1_park_entrance_z
-    memcpy(_s6.peep_spawns, gPeepSpawns, sizeof(_s6.peep_spawns));
+    ExportPeepSpawns();
     _s6.guest_count_change_modifier = gGuestChangeModifier;
     _s6.current_research_level      = gResearchFundingLevel;
     // pad_01357400
@@ -414,6 +414,16 @@ void S6Exporter::Export()
 
     scenario_fix_ghosts(&_s6);
     game_convert_strings_to_rct2(&_s6);
+}
+
+void S6Exporter::ExportPeepSpawns()
+{
+    for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
+    {
+        _s6.peep_spawns[i] = {
+            (uint16)gPeepSpawns[i].x, (uint16)gPeepSpawns[i].y, (uint8)gPeepSpawns[i].z, gPeepSpawns[i].direction
+        };
+    }
 }
 
 uint32 S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32 maxBankLoan)

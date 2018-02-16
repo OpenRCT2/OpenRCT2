@@ -484,7 +484,7 @@ static uint32 get_random_peep_spawn_index()
 rct_peep *park_generate_new_guest()
 {
     rct_peep *peep = nullptr;
-    rct2_peep_spawn spawn = gPeepSpawns[get_random_peep_spawn_index()];
+    PeepSpawn spawn = gPeepSpawns[get_random_peep_spawn_index()];
 
     if (spawn.x != 0xFFFF) {
         spawn.direction ^= 2;
@@ -963,7 +963,7 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
             }
 
             if ((newOwnership & 0xF0) != 0) {
-                rct2_peep_spawn *peepSpawns = gPeepSpawns;
+                PeepSpawn *peepSpawns = gPeepSpawns;
 
                 for (uint8 i = 0; i < MAX_PEEP_SPAWNS; ++i) {
                     if (x == (peepSpawns[i].x & 0xFFE0)) {
