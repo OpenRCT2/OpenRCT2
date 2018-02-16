@@ -11832,8 +11832,8 @@ STR_PARK    :롤러코스터 천국
 STR_DTLS    :당신은 긴 휴식기를 가지는 동안 이 도시 공원을 롤러코스터 천국으로 바꾸고자 하는 성공한 사업 거물입니다. 돈은 문제가 되지 않는군요!
 
 <South America - Inca Lost City>
-STR_SCNR    :남 아메리카 - 잃어버린 도시 잉카
-STR_PARK    :잃어버린 도시를 세운 자
+STR_SCNR    :남 아메리카 - 잉카의 잊혀진 도시
+STR_PARK    :잊혀진 도시의 발견자
 STR_DTLS    :이 지역의 관광산업을 보다 활기차게 만들기 위해서는 주변 환경과 잘 어울리는 공원을 지어야 합니다. 높이 제한이 있습니다.
 
 <South America - Rain Forest Plateau>
