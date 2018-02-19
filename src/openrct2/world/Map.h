@@ -582,4 +582,6 @@ void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tile
 
 bool place_peep_spawn(CoordsXYZD location);
 
+uint8 entrance_element_get_type(const rct_tile_element * tileElement);
+
 #endif

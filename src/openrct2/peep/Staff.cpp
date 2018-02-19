@@ -27,6 +27,7 @@
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/ObjectList.h"
+#include "../ride/Station.h"
 #include "../paint/tile_element/TileElement.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
@@ -1303,46 +1304,23 @@ static uint8 staff_mechanic_direction_path(rct_peep * peep, uint8 validDirection
     // Mechanic is heading to ride (either broken down or for inspection).
     if (peep->state == PEEP_STATE_ANSWERING || peep->state == PEEP_STATE_HEADING_TO_INSPECTION)
     {
-        Ride * ride                 = get_ride(peep->current_ride);
-        uint8  z                    = ride->station_heights[peep->current_ride_station];
-        gPeepPathFindGoalPosition.z = z;
-
         /* Find location of the exit for the target ride station
          * or if the ride has no exit, the entrance. */
-        LocationXY8 location = ride->exits[peep->current_ride_station];
-        if (location.xy == RCT_XY8_UNDEFINED)
+        TileCoordsXYZD location = ride_get_exit_location_of_station(peep->current_ride, peep->current_ride_station);
+        if (location.x == LOCATION_NULL)
         {
-            location = ride->entrances[peep->current_ride_station];
+            location = ride_get_entrance_location_of_station(peep->current_ride, peep->current_ride_station);
+
+            // If no entrance is present either. This is an incorrect state.
+            if (location.x == LOCATION_NULL)
+            {
+                return staff_mechanic_direction_path_rand(peep, pathDirections);
+            }
         }
 
-        LocationXY16 chosenTile = { static_cast<sint16>(location.x * 32), static_cast<sint16>(location.y * 32) };
-
-        gPeepPathFindGoalPosition.x = chosenTile.x;
-        gPeepPathFindGoalPosition.y = chosenTile.y;
-
-        // Find the exit/entrance tile_element
-        bool              entranceFound = false;
-        rct_tile_element * tileElement    = map_get_first_element_at(chosenTile.x / 32, chosenTile.y / 32);
-        do
-        {
-            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
-                continue;
-
-            if (tileElement->base_height != z)
-                continue;
-
-            if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE &&
-                tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_EXIT)
-                continue;
-
-            entranceFound = true;
-            break;
-        } while (!tile_element_is_last_for_tile(tileElement++));
-
-        if (entranceFound == false)
-        {
-            return staff_mechanic_direction_path_rand(peep, pathDirections);
-        }
+        gPeepPathFindGoalPosition.x = (sint16)(location.x * 32);
+        gPeepPathFindGoalPosition.y = (sint16)(location.y * 32);
+        gPeepPathFindGoalPosition.z = (sint16)location.z;
 
         gPeepPathFindIgnoreForeignQueues = false;
         gPeepPathFindQueueRideIndex      = 255;

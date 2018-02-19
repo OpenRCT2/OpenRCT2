@@ -377,3 +377,55 @@ sint8 ride_get_first_empty_station_start(const Ride * ride)
     }
     return -1;
 }
+
+static TileCoordsXYZD ride_get_entrance_or_exit_location_of_station(
+        const uint8 rideIndex,
+        const uint8 stationIndex,
+        const uint8 entranceType)
+{
+    const Ride * ride = get_ride(rideIndex);
+    LocationXY8 tileLocation = {};
+
+    if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
+    {
+        tileLocation = ride->entrances[stationIndex];
+    }
+    else
+    {
+        tileLocation = ride->exits[stationIndex];
+    }
+
+    rct_tile_element * tileElement = map_get_first_element_at(tileLocation.x, tileLocation.y);
+    TileCoordsXYZD retVal = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL, 0 };
+
+    if (tileElement != nullptr && tileLocation.xy != RCT_XY8_UNDEFINED)
+    {
+        do
+        {
+            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+                continue;
+            if (entrance_element_get_type(tileElement) != entranceType)
+                continue;
+            if (tile_element_get_ride_index(tileElement) != rideIndex)
+                continue;
+            if (tile_element_get_station(tileElement) != stationIndex)
+                continue;
+
+            retVal = { tileLocation.x, tileLocation.y, tileElement->base_height, (uint8)tile_element_get_direction(tileElement) };
+            break;
+        }
+        while (!tile_element_is_last_for_tile(tileElement++));
+    }
+
+    return retVal;
+}
+
+TileCoordsXYZD ride_get_entrance_location_of_station(const uint8 rideIndex, const uint8 stationIndex)
+{
+    return ride_get_entrance_or_exit_location_of_station(rideIndex, stationIndex, ENTRANCE_TYPE_RIDE_ENTRANCE);
+}
+
+TileCoordsXYZD ride_get_exit_location_of_station(const uint8 rideIndex, const uint8 stationIndex)
+{
+    return ride_get_entrance_or_exit_location_of_station(rideIndex, stationIndex, ENTRANCE_TYPE_RIDE_EXIT);
+}
