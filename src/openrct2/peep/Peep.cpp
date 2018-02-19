@@ -2617,13 +2617,12 @@ static void peep_choose_seat_from_car(rct_peep * peep, Ride * ride, rct_vehicle 
  */
 static void peep_go_to_ride_entrance(rct_peep * peep, Ride * ride)
 {
-    sint32 x = ride->entrances[peep->current_ride_station].x;
-    sint32 y = ride->entrances[peep->current_ride_station].y;
-    sint32 z = ride->station_heights[peep->current_ride_station];
+    TileCoordsXYZD location = ride_get_entrance_location_of_station(peep->current_ride, peep->current_ride_station);
+    Guard::Assert(location.x != LOCATION_NULL);
+    sint32 x = location.x;
+    sint32 y = location.y;
 
-    rct_tile_element * tile_element = ride_get_station_exit_element(ride, x, y, z);
-
-    uint8 direction = (tile_element == nullptr ? 0 : tile_element_get_direction(tile_element));
+    uint8 direction = location.direction;
 
     x *= 32;
     y *= 32;
@@ -2907,13 +2906,12 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
     {
-        x = ride->entrances[peep->current_ride_station].x;
-        y = ride->entrances[peep->current_ride_station].y;
-        z = ride->station_heights[peep->current_ride_station];
+        TileCoordsXYZD entranceLocation = ride_get_entrance_location_of_station(peep->current_ride, peep->current_ride_station);
+        Guard::Assert(entranceLocation.x != LOCATION_NULL);
+        x = entranceLocation.x;
+        y = entranceLocation.y;
 
-        rct_tile_element * tile_element = ride_get_station_exit_element(ride, x, y, z);
-
-        uint8 direction_entrance = (tile_element == nullptr ? 0 : tile_element_get_direction(tile_element));
+        uint8 direction_entrance = entranceLocation.direction;
 
         if (ride->type == RIDE_TYPE_MAZE)
         {
@@ -2952,7 +2950,7 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
         x = ride->station_starts[peep->current_ride_station].x;
         y = ride->station_starts[peep->current_ride_station].y;
 
-        tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
+        rct_tile_element * tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
         uint8 direction_track = (tile_element == nullptr ? 0 : tile_element_get_direction(tile_element));
 
@@ -2993,18 +2991,13 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
 
     if (vehicle_type->flags & VEHICLE_ENTRY_FLAG_26)
     {
-        x = ride->entrances[peep->current_ride_station].x;
-        y = ride->entrances[peep->current_ride_station].y;
-        z = ride->station_heights[peep->current_ride_station];
-
-        rct_tile_element * tile_element = ride_get_station_exit_element(ride, x, y, z);
-
-        uint8 direction_entrance = (tile_element == nullptr ? 0 : tile_element_get_direction(tile_element));
+        TileCoordsXYZD entranceLocation = ride_get_entrance_location_of_station(peep->current_ride, peep->current_ride_station);
+        uint8 direction_entrance = entranceLocation.direction;
 
         x = ride->station_starts[peep->current_ride_station].x;
         y = ride->station_starts[peep->current_ride_station].y;
 
-        tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
+        rct_tile_element * tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
         uint8 direction_track = (tile_element == nullptr ? 0 : tile_element_get_direction(tile_element));
 
@@ -3209,19 +3202,12 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep * peep, Ride * ride
  */
 static void peep_update_ride_sub_state_2_rejoin_queue(rct_peep * peep, Ride * ride)
 {
-    sint16 x, y, z;
-    x = ride->entrances[peep->current_ride_station].x;
-    y = ride->entrances[peep->current_ride_station].y;
-    z = ride->station_heights[peep->current_ride_station];
+    TileCoordsXYZD entranceLocation = ride_get_entrance_location_of_station(peep->current_ride, peep->current_ride_station);
 
-    rct_tile_element * tile_element = ride_get_station_exit_element(ride, x, y, z);
-
-    uint8 direction_entrance = (tile_element == nullptr ? 0 : tile_element_get_direction(tile_element));
-
-    x *= 32;
-    y *= 32;
-    x += 16 - word_981D6C[direction_entrance].x * 20;
-    y += 16 - word_981D6C[direction_entrance].y * 20;
+    sint32 x = entranceLocation.x * 32;
+    sint32 y = entranceLocation.y * 32;
+    x += 16 - word_981D6C[entranceLocation.direction].x * 20;
+    y += 16 - word_981D6C[entranceLocation.direction].y * 20;
 
     peep->destination_x         = x;
     peep->destination_y         = y;
@@ -3448,15 +3434,12 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
 
     if (!(vehicle_entry->flags & VEHICLE_ENTRY_FLAG_26))
     {
-        sint16 x, y, z;
         assert(peep->current_ride_station < MAX_STATIONS);
-        x = ride->exits[peep->current_ride_station].x;
-        y = ride->exits[peep->current_ride_station].y;
-        z = ride->station_heights[peep->current_ride_station];
+        TileCoordsXYZD exitLocation = ride_get_exit_location_of_station(peep->current_ride, peep->current_ride_station);
+        sint32 x, y;
+        sint32 z = ride->station_heights[peep->current_ride_station];
 
-        rct_tile_element * tile_element = ride_get_station_exit_element(ride, x, y, z);
-
-        uint8 exit_direction = (tile_element == nullptr ? 0 : tile_element_get_direction(tile_element));
+        uint8 exit_direction = exitLocation.direction;
         exit_direction ^= (1 << 1);
 
         if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_16))
@@ -3544,19 +3527,16 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
         return;
     }
 
-    sint16 x, y, z;
-    x = ride->exits[peep->current_ride_station].x;
-    y = ride->exits[peep->current_ride_station].y;
-    z = ride->station_heights[peep->current_ride_station];
+    TileCoordsXYZD exitLocation = ride_get_exit_location_of_station(peep->current_ride, peep->current_ride_station);
+    Guard::Assert(exitLocation.x != LOCATION_NULL);
+    sint16 z = (sint16)exitLocation.z;
 
-    rct_tile_element * tile_element = ride_get_station_exit_element(ride, x, y, z);
+    uint8 exit_direction = exitLocation.direction;
 
-    uint8 exit_direction = (tile_element == nullptr ? 0 : tile_element_get_direction(tile_element));
+    sint16 x = ride->station_starts[peep->current_ride_station].x;
+    sint16 y = ride->station_starts[peep->current_ride_station].y;
 
-    x = ride->station_starts[peep->current_ride_station].x;
-    y = ride->station_starts[peep->current_ride_station].y;
-
-    tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
+    rct_tile_element * tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
     uint8 station_direction = (tile_element == nullptr ? 0 : tile_element_get_direction(tile_element));
 

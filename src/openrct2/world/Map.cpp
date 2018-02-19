@@ -4919,3 +4919,8 @@ void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tile
         update_park_fences_around_tile((*tile).x * 32, (*tile).y * 32);
     }
 }
+
+uint8 entrance_element_get_type(const rct_tile_element * tileElement)
+{
+    return (tileElement->properties.entrance.type);
+}

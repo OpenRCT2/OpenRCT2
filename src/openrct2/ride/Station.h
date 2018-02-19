@@ -25,3 +25,6 @@ sint8 ride_get_first_valid_station_exit(Ride * ride);
 sint8 ride_get_first_valid_station_start(const Ride * ride);
 sint8 ride_get_first_empty_station_start(const Ride * ride);
 
+TileCoordsXYZD ride_get_entrance_location_of_station(const uint8 rideIndex, const uint8 stationIndex);
+TileCoordsXYZD ride_get_exit_location_of_station(const uint8 rideIndex, const uint8 stationIndex);
+
