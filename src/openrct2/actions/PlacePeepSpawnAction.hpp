@@ -77,13 +77,13 @@ public:
         rct_tile_element *mapElement, *surfaceMapElement;
         // Verify footpath exists at location, and retrieve coordinates
         mapElement = map_get_path_element_at(_location.x >> 5, _location.y >> 5, _location.z * 2);
-        if (mapElement == NULL) {
+        if (mapElement == nullptr) {
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
         }
 
         // Verify location is unowned
         surfaceMapElement = map_get_surface_element_at(_location.x >> 5, _location.y >> 5);
-        if (surfaceMapElement == NULL) {
+        if (surfaceMapElement == nullptr) {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
         }
         if (surfaceMapElement->properties.surface.ownership & 0xF0) {
