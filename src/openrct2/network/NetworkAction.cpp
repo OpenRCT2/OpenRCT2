@@ -176,7 +176,8 @@ const std::vector<NetworkAction> NetworkActions::Actions =
             GAME_COMMAND_SET_LAND_OWNERSHIP,
             GAME_COMMAND_BUY_LAND_RIGHTS,
             GAME_COMMAND_PLACE_PARK_ENTRANCE,
-            GAME_COMMAND_REMOVE_PARK_ENTRANCE
+            GAME_COMMAND_REMOVE_PARK_ENTRANCE,
+            GAME_COMMAND_PLACE_PEEP_SPAWN,
         }
     }, {
         STR_ACTION_PARK_FUNDING, "PERMISSION_PARK_FUNDING",

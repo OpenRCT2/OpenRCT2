@@ -23,6 +23,7 @@
 #include "RideSetStatus.hpp"
 #include "RideSetName.hpp"
 #include "RideDemolishAction.hpp"
+#include "PlacePeepSpawnAction.hpp"
 
 #pragma region PlaceParkEntranceAction
     money32 place_park_entrance(sint16 x, sint16 y, sint16 z, uint8 direction)
@@ -232,5 +233,20 @@
     {
         Guard::Assert(false, "GAME_COMMAND_SET_STAFF_NAME DEPRECATED");
     }
+#pragma endregion
 
+#pragma region PlacePeepSpawn
+    bool place_peep_spawn(CoordsXYZD location)
+    {
+        auto gameAction = PlacePeepSpawnAction(location);
+        auto result = GameActions::Execute(&gameAction);
+        if (result->Error == GA_ERROR::OK)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 #pragma endregion

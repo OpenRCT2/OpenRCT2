@@ -23,6 +23,7 @@
 #include "RideSetStatus.hpp"
 #include "RideSetName.hpp"
 #include "RideDemolishAction.hpp"
+#include "PlacePeepSpawnAction.hpp"
 
 namespace GameActions
 {
@@ -36,5 +37,6 @@ namespace GameActions
         Register<RideDemolishAction>();
         Register<GuestSetNameAction>();
         Register<StaffSetNameAction>();
+        Register<PlacePeepSpawnAction>();
     }
 }

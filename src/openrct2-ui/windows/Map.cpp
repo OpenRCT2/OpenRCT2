@@ -177,8 +177,6 @@ static uint32 _currentLine;
 /** rct2: 0x00F1AD68 */
 static std::vector<uint8> _mapImageData;
 
-static sint32 _nextPeepSpawnIndex = 0;
-
 static void window_map_init_map();
 static void window_map_centre_on_view_point();
 static void window_map_show_default_scenario_editor_buttons(rct_window *w);
@@ -1360,41 +1358,25 @@ static void window_map_place_park_entrance_tool_down(sint32 x, sint32 y)
  */
 static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
 {
-    rct_tile_element *tileElement, *surfaceTileElement;
+    rct_tile_element *tileElement;
     sint32 mapX, mapY, mapZ, direction;
 
+    // Verify footpath exists at location, and retrieve coordinates
     footpath_get_coordinates_from_pos(x, y, &mapX, &mapY, &direction, &tileElement);
     if (mapX == 0x8000)
         return;
 
-    surfaceTileElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
-    if (surfaceTileElement == nullptr) {
-        return;
-    }
-    if (surfaceTileElement->properties.surface.ownership & 0xF0) {
-        return;
-    }
-
-    mapX = mapX + 16 + (word_981D6C[direction].x * 15);
-    mapY = mapY + 16 + (word_981D6C[direction].y * 15);
     mapZ = tileElement->base_height / 2;
 
-    sint32 peepSpawnIndex = -1;
-    for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
-        if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED) {
-            peepSpawnIndex = i;
-            break;
-        }
+    bool result = place_peep_spawn({mapX, mapY, mapZ, (uint8)direction});
+    if (result) {
+        audio_play_sound_at_location(
+            SOUND_PLACE_ITEM,
+            gCommandPosition.x,
+            gCommandPosition.y,
+            gCommandPosition.z
+        );
     }
-    if (peepSpawnIndex == -1) {
-        peepSpawnIndex = _nextPeepSpawnIndex;
-        _nextPeepSpawnIndex = (peepSpawnIndex + 1) % MAX_PEEP_SPAWNS;
-    }
-    gPeepSpawns[peepSpawnIndex].x = mapX;
-    gPeepSpawns[peepSpawnIndex].y = mapY;
-    gPeepSpawns[peepSpawnIndex].z = mapZ;
-    gPeepSpawns[peepSpawnIndex].direction = direction;
-    gfx_invalidate_screen();
 }
 
 /**
