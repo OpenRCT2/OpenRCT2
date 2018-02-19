@@ -93,7 +93,7 @@ enum GAME_COMMAND
     GAME_COMMAND_BALLOON_PRESS,
     GAME_COMMAND_MODIFY_TILE,
     GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-    GAME_COMMAND_PLACE_PEEP_SPAWN, // TODO refactor to seperate array for just game actions 
+    GAME_COMMAND_PLACE_PEEP_SPAWN, // GA, TODO: refactor to separate array for just game actions
     GAME_COMMAND_COUNT
 };
 

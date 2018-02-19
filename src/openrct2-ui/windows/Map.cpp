@@ -1368,7 +1368,7 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
 
     mapZ = tileElement->base_height / 2;
 
-    bool result = place_peep_spawn(mapX, mapY, mapZ, direction);
+    bool result = place_peep_spawn({mapX, mapY, mapZ, (uint8)direction});
     if (result) {
         audio_play_sound_at_location(
             SOUND_PLACE_ITEM,

@@ -236,9 +236,9 @@
 #pragma endregion
 
 #pragma region PlacePeepSpawn
-    bool place_peep_spawn(sint16 x, sint16 y, sint32 z, sint32 direction)
+    bool place_peep_spawn(CoordsXYZD location)
     {
-        auto gameAction = PlacePeepSpawnAction(x, y, z, direction);
+        auto gameAction = PlacePeepSpawnAction(location);
         auto result = GameActions::Execute(&gameAction);
         if (result->Error == GA_ERROR::OK)
         {
