@@ -47,12 +47,6 @@ struct GameAction;
 
 #ifndef DISABLE_NETWORK
 
-// This define specifies which version of network stream current build uses.
-// It is used for making sure only compatible builds get connected, even within
-// single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "33"
-#define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
-
 #include <array>
 #include <list>
 #include <set>
@@ -293,8 +287,6 @@ private:
     std::ofstream _server_log_fs;
 };
 
-#else /* DISABLE_NETWORK */
-#define NETWORK_STREAM_ID "Multiplayer disabled"
 #endif /* DISABLE_NETWORK */
 
 void network_set_env(void * env);
@@ -365,3 +357,5 @@ const utf8 * network_get_server_greeting();
 const utf8 * network_get_server_provider_name();
 const utf8 * network_get_server_provider_email();
 const utf8 * network_get_server_provider_website();
+
+std::string network_get_version();
