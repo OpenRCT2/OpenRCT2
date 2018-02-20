@@ -192,3 +192,19 @@ You can translate the game into other languages by editing the language files in
 - [Facebook](https://www.facebook.com/OpenRCT2)
 - [RCT subreddit](http://www.reddit.com/r/rct/)
 - [OpenRCT2 subreddit](http://www.reddit.com/r/openrct2/)
+
+## Similar Projects
+
+- [openage](https://github.com/SFTtech/openage)
+- [OpenLoco](https://github.com/OpenRCT2/OpenLoco)
+- [OpenRA](https://github.com/OpenRA/OpenRA)
+- [OpenTTD](https://www.openttd.org)
+
+# 7 Sponsors
+
+People that kindly allow us to use their stuff:
+
+[![do_logo_horizontal_blue](https://user-images.githubusercontent.com/550290/36412943-8e3e5058-161c-11e8-9a55-e862432caba9.png)
+](https://www.digitalocean.com/)
+
+[![jetbrains](https://user-images.githubusercontent.com/550290/36413299-0e0985ea-161e-11e8-8a01-3ef523b5905b.png)](https://www.jetbrains.com/)
