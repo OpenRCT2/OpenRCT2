@@ -1140,11 +1140,11 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, cons
         {
             if ((spawn.x & 0xFFE0) == pos.x && (spawn.y & 0xFFE0) == pos.y)
             {
-                sub_98196C(session, SPR_TERRAIN_SELECTION_SQUARE_SIMPLE, 0, 0, 32, 32, 16, spawn.z * 16);
+                sub_98196C(session, SPR_TERRAIN_SELECTION_SQUARE_SIMPLE, 0, 0, 32, 32, 16, spawn.z);
 
                 const sint32 offset = ((spawn.direction ^ 2) + rotation) & 3;
                 const uint32 image_id = (PEEP_SPAWN_ARROW_0 + offset) | 0x20380000;
-                sub_98196C(session, image_id, 0, 0, 32, 32, 19, spawn.z * 16);
+                sub_98196C(session, image_id, 0, 0, 32, 32, 19, spawn.z);
             }
         }
     }

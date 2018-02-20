@@ -62,7 +62,7 @@ public:
 
         gCommandPosition.x = _location.x;
         gCommandPosition.y = _location.y;
-        gCommandPosition.z = _location.z * 2;
+        gCommandPosition.z = _location.z / 8;
 
         if (!map_check_free_elements_and_reorganise(3))
         {
@@ -76,7 +76,7 @@ public:
 
         rct_tile_element *mapElement, *surfaceMapElement;
         // Verify footpath exists at location, and retrieve coordinates
-        mapElement = map_get_path_element_at(_location.x >> 5, _location.y >> 5, _location.z * 2);
+        mapElement = map_get_path_element_at(_location.x >> 5, _location.y >> 5, _location.z / 8);
         if (mapElement == nullptr) {
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
         }
@@ -99,7 +99,7 @@ public:
 
         gCommandPosition.x = _location.x;
         gCommandPosition.y = _location.y;
-        gCommandPosition.z = _location.z * 2;
+        gCommandPosition.z = _location.z / 8;
 
         // Find empty or next appropriate peep spawn to use
         sint32 peepSpawnIndex = -1;
@@ -111,7 +111,8 @@ public:
         }
 
         // If no empty peep spawns exist, use peep spawn next to last one set.
-        if (peepSpawnIndex == -1) {
+        if (peepSpawnIndex == -1)
+        {
             peepSpawnIndex = _nextPeepSpawnIndex;
             _nextPeepSpawnIndex = (peepSpawnIndex + 1) % MAX_PEEP_SPAWNS;
 

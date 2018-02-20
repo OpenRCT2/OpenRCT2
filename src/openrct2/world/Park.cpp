@@ -115,8 +115,12 @@ void park_init()
     set_all_scenery_items_invented();
 
     gParkEntranceFee = MONEY(10, 00);
-    gPeepSpawns[0].x = PEEP_SPAWN_UNDEFINED;
-    gPeepSpawns[1].x = PEEP_SPAWN_UNDEFINED;
+
+    for (auto &peepSpawn : gPeepSpawns)
+    {
+        peepSpawn.x = PEEP_SPAWN_UNDEFINED;
+    }
+
     gResearchPriorities =
         (1 << RESEARCH_CATEGORY_TRANSPORT) |
         (1 << RESEARCH_CATEGORY_GENTLE) |
@@ -488,7 +492,7 @@ rct_peep *park_generate_new_guest()
 
     if (spawn.x != 0xFFFF) {
         spawn.direction ^= 2;
-        peep = peep_generate(spawn.x, spawn.y, spawn.z * 16);
+        peep = peep_generate(spawn.x, spawn.y, spawn.z);
         if (peep != nullptr) {
             peep->sprite_direction = spawn.direction << 3;
 

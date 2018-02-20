@@ -1754,7 +1754,7 @@ private:
         for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
         {
             gPeepSpawns[i] = {
-                _s4.peep_spawn[i].x, _s4.peep_spawn[i].y, _s4.peep_spawn[i].z, _s4.peep_spawn[i].direction
+                _s4.peep_spawn[i].x, _s4.peep_spawn[i].y, _s4.peep_spawn[i].z * 16, _s4.peep_spawn[i].direction
             };
         }
 

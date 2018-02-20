@@ -11015,7 +11015,7 @@ static sint32 guest_path_find_leaving_park(rct_peep * peep, rct_tile_element * t
 
     sint16 x         = peepSpawn->x & 0xFFE0;
     sint16 y         = peepSpawn->y & 0xFFE0;
-    uint8  z         = peepSpawn->z * 2;
+    uint8  z         = peepSpawn->z / 8;
     uint8  direction = peepSpawn->direction;
 
     gPeepPathFindGoalPosition = { x, y, z };
