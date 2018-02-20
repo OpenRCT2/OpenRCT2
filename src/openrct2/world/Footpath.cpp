@@ -100,26 +100,26 @@ static bool entrance_has_direction(rct_tile_element *tileElement, sint32 directi
  *
  *  rct2: 0x006A65AD
  */
-static void automatically_set_peep_spawn(sint32 x, sint32 y, sint32 z)
+static void automatically_set_peep_spawn(CoordsXYZ location)
 {
-    sint32 direction = 0;
-    if (x != 32) {
+    uint8 direction = 0;
+    if (location.x != 32) {
         direction++;
-        if (y != gMapSizeUnits - 32) {
+        if (location.y != gMapSizeUnits - 32) {
             direction++;
-            if (x != gMapSizeUnits - 32) {
+            if (location.x != gMapSizeUnits - 32) {
                 direction++;
-                if (y != 32)
+                if (location.y != 32)
                     return;
             }
         }
     }
 
     PeepSpawn * peepSpawn = &gPeepSpawns[0];
-    peepSpawn->x = x + (word_981D6C[direction].x * 15) + 16;
-    peepSpawn->y = y + (word_981D6C[direction].y * 15) + 16;
+    peepSpawn->x = location.x + (word_981D6C[direction].x * 15) + 16;
+    peepSpawn->y = location.y + (word_981D6C[direction].y * 15) + 16;
     peepSpawn->direction = direction;
-    peepSpawn->z = z;
+    peepSpawn->z = location.z;
 }
 
 static rct_tile_element *map_get_footpath_element(sint32 x, sint32 y, sint32 z)
@@ -258,7 +258,7 @@ static money32 footpath_element_insert(sint32 type, sint32 x, sint32 y, sint32 z
                 footpath_remove_edges_at(x, y, tileElement);
 
             if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & GAME_COMMAND_FLAG_GHOST))
-                automatically_set_peep_spawn(x, y, tileElement->base_height / 2);
+                automatically_set_peep_spawn({x, y, tileElement->base_height * 8});
 
             loc_6A6620(flags, x, y, tileElement);
         }
