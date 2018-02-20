@@ -4586,16 +4586,23 @@ static void peep_update_ride(rct_peep * peep)
     }
 }
 
-static constexpr const uint32 loc_992A18[9] = {
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 7),
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 2) | (1 << 1),
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 4) | (1 << 1),
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 3) | (1 << 1),
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 5) | (1 << 1),
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 6) | (1 << 1),
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 11) | (1 << 9),
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 7),
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 7),
+/**
+ * peep_fixing_sub_state_mask[] defines the applicable peep sub_states for
+ * mechanics fixing a ride. The array is indexed by breakdown_reason:
+ * - indexes 0-7 are the 8 breakdown reasons (see BREAKDOWN_* in Ride.h)
+ *   when fixing a broken down ride;
+ * - index 8 is for inspecting a ride.
+ */
+static constexpr const uint32 peep_fixing_sub_state_mask[9] = {
+    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 7), // BREAKDOWN_SAFETY_CUT_OUT
+    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 2) | (1 << 1), // BREAKDOWN_RESTRAINTS_STUCK_CLOSED
+    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 4) | (1 << 1), // BREAKDOWN_RESTRAINTS_STUCK_OPEN
+    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 3) | (1 << 1), // BREAKDOWN_DOORS_STUCK_CLOSED
+    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 5) | (1 << 1), // BREAKDOWN_DOORS_STUCK_OPEN
+    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 6) | (1 << 1), // BREAKDOWN_VEHICLE_MALFUNCTION
+    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 11) | (1 << 9), // BREAKDOWN_BRAKES_FAILURE
+    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 7), // BREAKDOWN_CONTROL_FAILURE
+    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 7), // INSPECTION
 };
 
 /**
@@ -4617,6 +4624,14 @@ static void peep_update_fixing(sint32 steps, rct_peep * peep)
 
     bool progressToNextSubstate = true;
     bool firstRun               = true;
+
+    if ((peep->state == PEEP_STATE_INSPECTING) &&
+        (ride->lifecycle_flags & ( RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
+    {
+	// Ride has broken down since Mechanic was called to inspect it.
+	// Mechanic identifies the breakdown and switches to fixing it.
+        peep->state     = PEEP_STATE_FIXING;
+    }
 
     while (progressToNextSubstate)
     {
@@ -4686,11 +4701,11 @@ static void peep_update_fixing(sint32 steps, rct_peep * peep)
         }
 
         sint32 subState = peep->sub_state;
-        uint32 ebp      = loc_992A18[8];
+        uint32 ebp      = peep_fixing_sub_state_mask[8];
 
         if (peep->state != PEEP_STATE_INSPECTING)
         {
-            ebp = loc_992A18[ride->breakdown_reason_pending];
+            ebp = peep_fixing_sub_state_mask[ride->breakdown_reason_pending];
         }
 
         do
@@ -4704,6 +4719,7 @@ static void peep_update_fixing(sint32 steps, rct_peep * peep)
 
 /**
  * rct2: 0x006C0EEC
+ * sub_state_0 applies to fixing all break down reasons and ride inspections.
  */
 static bool peep_update_fixing_sub_state_0(Ride * ride)
 {
@@ -4715,6 +4731,8 @@ static bool peep_update_fixing_sub_state_0(Ride * ride)
 
 /**
  * rct2: 0x006C0F09
+ * sub_state_1: applies to fixing all vehicle specific breakdown reasons
+ * - see peep_fixing_sub_state_mask[]
  */
 static bool peep_update_fixing_sub_state_1(bool firstRun, rct_peep * peep, Ride * ride)
 {
@@ -4773,6 +4791,11 @@ static bool peep_update_fixing_sub_state_1(bool firstRun, rct_peep * peep, Ride 
 
 /**
  * rct2: 0x006C0FD3
+ * sub_state_2:  applies to fixing vehicle restraints stuck closed.
+ * sub_state_3:  applies to fixing vehicle doors stuck closed.
+ * sub_state_4:  applies to fixing vehicle restrains stuck open.
+ * sub_state_5:  applies to fixing vehicle doors stuck open.
+ * - see peep_fixing_sub_state_mask[]
  */
 static bool peep_update_fixing_sub_state_2345(bool firstRun, rct_peep * peep, Ride * ride)
 {
@@ -4815,6 +4838,8 @@ static bool peep_update_fixing_sub_state_2345(bool firstRun, rct_peep * peep, Ri
 
 /**
  * rct2: 0x006C107B
+ * sub_state_6:  applies fixing to vehicle malfunction.
+ * - see peep_fixing_sub_state_mask[]
  */
 static bool peep_update_fixing_sub_state_6(bool firstRun, rct_peep * peep, Ride * ride)
 {
@@ -4863,6 +4888,8 @@ static constexpr const CoordsXY _992A3C[] = {
 
 /**
  * rct2: 0x006C1114
+ * sub_state_7: applies to fixing station specific breakdowns: safety cut-out, control failure, inspection.
+ * - see peep_fixing_sub_state_mask[]
  */
 static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep * peep, Ride * ride)
 {
@@ -4926,6 +4953,8 @@ static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep * peep, Ride 
 
 /**
  * rct2: 0x006C11F5
+ * sub_state_8: applies to fixing station specific breakdowns: safety cut-out, control failure, inspection.
+ * - see peep_fixing_sub_state_mask[]
  */
 static bool peep_update_fixing_sub_state_8(bool firstRun, rct_peep * peep)
 {
@@ -4954,6 +4983,9 @@ static bool peep_update_fixing_sub_state_8(bool firstRun, rct_peep * peep)
 
 /**
  * rct2: 0x006C1239
+ * sub_state_9: applies to fixing station specific breakdowns: safety cut-out, control failure, inspection.
+ *              applies to fixing brake failure
+ * - see peep_fixing_sub_state_mask[]
  */
 static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep * peep, Ride * ride)
 {
@@ -5038,6 +5070,8 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep * peep, Ride 
 
 /**
  * rct2: 0x006C1368
+ * sub_state_10: applies to fixing station specific breakdowns: safety cut-out, control failure, inspection.
+ * - see peep_fixing_sub_state_mask[]
  */
 static bool peep_update_fixing_sub_state_10(bool firstRun, rct_peep * peep, Ride * ride)
 {
@@ -5072,6 +5106,8 @@ static bool peep_update_fixing_sub_state_10(bool firstRun, rct_peep * peep, Ride
 
 /**
  * rct2: 0x006C13CE
+ * sub_state_11: applies to fixing brake failure
+ * - see peep_fixing_sub_state_mask[]
  */
 static bool peep_update_fixing_sub_state_11(bool firstRun, rct_peep * peep, Ride * ride)
 {
@@ -5112,6 +5148,8 @@ static bool peep_update_fixing_sub_state_11(bool firstRun, rct_peep * peep, Ride
 
 /**
  * rct2: 0x006C1474
+ * sub_state_12: applies to fixing all failures & inspections
+ * - see peep_fixing_sub_state_mask[]
  */
 static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep * peep, Ride * ride)
 {
@@ -5162,6 +5200,8 @@ static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep * peep, Ride
 
 /**
  * rct2: 0x006C1504
+ * sub_state_13: applies to fixing all failures & inspections
+ * - see peep_fixing_sub_state_mask[]
  */
 static bool peep_update_fixing_sub_state_13(bool firstRun, sint32 steps, rct_peep * peep, Ride * ride)
 {
@@ -5204,6 +5244,8 @@ static bool peep_update_fixing_sub_state_13(bool firstRun, sint32 steps, rct_pee
 
 /**
  * rct2: 0x006C157E
+ * sub_state_14: applies to fixing all failures & inspections
+ * - see peep_fixing_sub_state_mask[]
  */
 static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep * peep, Ride * ride)
 {
