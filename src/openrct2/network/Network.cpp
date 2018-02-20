@@ -30,6 +30,12 @@
 #define ACTION_COOLDOWN_TIME_PLACE_SCENERY  20
 #define ACTION_COOLDOWN_TIME_DEMOLISH_RIDE  1000
 
+// This string specifies which version of network stream current build uses.
+// It is used for making sure only compatible builds get connected, even within
+// single OpenRCT2 version.
+#define NETWORK_STREAM_VERSION "33"
+#define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
+
 static rct_peep* _pickup_peep = nullptr;
 static sint32 _pickup_peep_old_x = LOCATION_NULL;
 
@@ -1018,7 +1024,7 @@ void Network::Client_Send_AUTH(const char* name, const char* password, const cha
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32)NETWORK_COMMAND_AUTH;
-    packet->WriteString(NETWORK_STREAM_ID);
+    packet->WriteString(network_get_version().c_str());
     packet->WriteString(name);
     packet->WriteString(password);
     packet->WriteString(pubkey);
@@ -1072,7 +1078,7 @@ void Network::Server_Send_AUTH(NetworkConnection& connection)
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.AuthStatus << new_playerid;
     if (connection.AuthStatus == NETWORK_AUTH_BADVERSION) {
-        packet->WriteString(NETWORK_STREAM_ID);
+        packet->WriteString(network_get_version().c_str());
     }
     connection.QueuePacket(std::move(packet));
     if (connection.AuthStatus != NETWORK_AUTH_OK && connection.AuthStatus != NETWORK_AUTH_REQUIREPASSWORD) {
@@ -1313,7 +1319,7 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
     json_t* obj = json_object();
     json_object_set_new(obj, "name", json_string(gConfigNetwork.server_name));
     json_object_set_new(obj, "requiresPassword", json_boolean(_password.size() > 0));
-    json_object_set_new(obj, "version", json_string(NETWORK_STREAM_ID));
+    json_object_set_new(obj, "version", json_string(network_get_version().c_str()));
     json_object_set_new(obj, "players", json_integer(player_list.size()));
     json_object_set_new(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
     json_object_set_new(obj, "description", json_string(gConfigNetwork.server_description));
@@ -1930,7 +1936,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
             const NetworkGroup * group = GetGroupByID(GetGroupIDByHash(connection.Key.PublicKeyHash()));
             passwordless = group->CanPerformCommand(MISC_COMMAND_PASSWORDLESS_LOGIN);
         }
-        if (!gameversion || strcmp(gameversion, NETWORK_STREAM_ID) != 0) {
+        if (!gameversion || network_get_version() != gameversion) {
             connection.AuthStatus = NETWORK_AUTH_BADVERSION;
         } else
         if (!name) {
@@ -3238,6 +3244,11 @@ const utf8 * network_get_server_provider_name() { return gNetwork.ServerProvider
 const utf8 * network_get_server_provider_email() { return gNetwork.ServerProviderEmail.c_str(); }
 const utf8 * network_get_server_provider_website() { return gNetwork.ServerProviderWebsite.c_str(); }
 
+std::string network_get_version()
+{
+    return NETWORK_STREAM_ID;
+}
+
 #else
 sint32 network_get_mode() { return NETWORK_MODE_NONE; }
 sint32 network_get_status() { return NETWORK_STATUS_NONE; }
@@ -3301,4 +3312,5 @@ const utf8 * network_get_server_greeting() { return nullptr; }
 const utf8 * network_get_server_provider_name() { return nullptr; }
 const utf8 * network_get_server_provider_email() { return nullptr; }
 const utf8 * network_get_server_provider_website() { return nullptr; }
+std::string network_get_version() { return "Multiplayer disabled"; }
 #endif /* DISABLE_NETWORK */

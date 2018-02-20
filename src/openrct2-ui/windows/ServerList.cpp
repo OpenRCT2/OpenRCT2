@@ -405,8 +405,9 @@ static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_draw_widgets(w, dpi);
 
     gfx_draw_string_left(dpi, STR_PLAYER_NAME, nullptr, COLOUR_WHITE, w->x + 6, w->y + w->widgets[WIDX_PLAYER_NAME_INPUT].top);
-    const char * version = NETWORK_STREAM_ID;
-    gfx_draw_string_left(dpi, STR_NETWORK_VERSION, (void*)&version, COLOUR_WHITE, w->x + 324, w->y + w->widgets[WIDX_START_SERVER].top);
+    std::string version = network_get_version();
+    const char * versionCStr = version.c_str();
+    gfx_draw_string_left(dpi, STR_NETWORK_VERSION, (void*)&versionCStr, COLOUR_WHITE, w->x + 324, w->y + w->widgets[WIDX_START_SERVER].top);
 
     gfx_draw_string_left(dpi, status_text, (void *)&_numPlayersOnline, COLOUR_WHITE, w->x + 8, w->y + w->height - 15);
 }
@@ -458,7 +459,7 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
             compatibilitySpriteId = SPR_G2_RCT1_CLOSE_BUTTON_0;
         } else {
             // Server online... check version
-            bool correctVersion = serverDetails->version == NETWORK_STREAM_ID;
+            bool correctVersion = serverDetails->version == network_get_version();
             compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
         }
         gfx_draw_sprite(dpi, compatibilitySpriteId, right, y + 1, 0);
@@ -552,8 +553,8 @@ static bool server_compare(const server_entry &a, const server_entry &b)
     }
 
     // Then by version
-    bool serverACompatible = a.version == NETWORK_STREAM_ID;
-    bool serverBCompatible = b.version == NETWORK_STREAM_ID;
+    bool serverACompatible = a.version == network_get_version();
+    bool serverBCompatible = b.version == network_get_version();
     if (serverACompatible != serverBCompatible)
     {
         return serverACompatible;
@@ -733,5 +734,5 @@ static void fetch_servers_callback(http_response_t* response)
 
 static bool is_version_valid(const std::string &version)
 {
-    return version.empty() || version == NETWORK_STREAM_ID;
+    return version.empty() || version == network_get_version();
 }
