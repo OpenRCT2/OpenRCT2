@@ -395,8 +395,15 @@ static TileCoordsXYZD ride_get_entrance_or_exit_location_of_station(
         tileLocation = ride->exits[stationIndex];
     }
 
+    // Normally, a station has at most one entrance and one exit, which are at the same height
+    // as the station. But in hacked parks, neither can be taken for granted. Import code ensures
+    // that the ride->entrances and ride->exits arrays will point to one of them. There is, however,
+    // an ever-so-slight chance two entrances/exits for the same station reside on the same tile.
+    // In cases like this, the one at station height will be considered the "true" one.
+    // If none exists at that height, newer ones take precedence.
     rct_tile_element * tileElement = map_get_first_element_at(tileLocation.x, tileLocation.y);
     TileCoordsXYZD retVal = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL, 0 };
+    const uint8 expectedHeight = ride->station_heights[stationIndex];
 
     if (tileElement != nullptr && tileLocation.xy != RCT_XY8_UNDEFINED)
     {
@@ -412,7 +419,8 @@ static TileCoordsXYZD ride_get_entrance_or_exit_location_of_station(
                 continue;
 
             retVal = { tileLocation.x, tileLocation.y, tileElement->base_height, (uint8)tile_element_get_direction(tileElement) };
-            break;
+            if (tileElement->base_height == expectedHeight)
+                break;
         }
         while (!tile_element_is_last_for_tile(tileElement++));
     }
