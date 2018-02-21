@@ -56,7 +56,7 @@ public:
         {
             return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_NONE);
         }
-        if (_fee < MONEY_FREE || _fee > MONEY(100,00))
+        if (_fee < MONEY_FREE || _fee > MAX_ENTRANCE_FEE)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }

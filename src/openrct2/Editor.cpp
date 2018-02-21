@@ -333,7 +333,7 @@ namespace Editor
 
             gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
-            gGuestInitialCash = Math::Clamp((money16)MONEY(10, 00), gGuestInitialCash, (money16)MONEY(100, 00));
+            gGuestInitialCash = Math::Clamp((money16)MONEY(10, 00), gGuestInitialCash, (money16)MAX_ENTRANCE_FEE);
 
             gInitialCash = Math::Min(gInitialCash, 100000);
             finance_reset_cash_to_initial();
@@ -726,7 +726,7 @@ namespace Editor
             }
             break;
         case EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE:
-            gParkEntranceFee = Math::Clamp(MONEY(0, 00), *edx, MONEY(100, 00));
+            gParkEntranceFee = Math::Clamp(MONEY(0, 00), *edx, MAX_ENTRANCE_FEE);
             window_invalidate_by_class(WC_PARK_INFORMATION);
             break;
         case EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL:
