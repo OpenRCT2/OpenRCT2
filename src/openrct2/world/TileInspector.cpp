@@ -20,11 +20,14 @@
 #include "../core/Guard.hpp"
 #include "../interface/Window.h"
 #include "../interface/Window_internal.h"
+#include "../localisation/Localisation.h"
 #include "../ride/Track.h"
 #include "../windows/Intent.h"
 #include "../windows/tile_inspector.h"
 #include "Footpath.h"
+#include "LargeScenery.h"
 #include "Map.h"
+#include "Scenery.h"
 #include "TileInspector.h"
 #include "../ride/Station.h"
 
@@ -311,6 +314,68 @@ sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_tile_element elem
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
+        // Check if the element to be pasted refers to a banner index
+        uint8                     bannerIndex = BANNER_NULL;
+        const rct_scenery_entry * entry;
+        switch (tile_element_get_type(&element))
+        {
+        case TILE_ELEMENT_TYPE_WALL:
+            entry          = get_wall_entry(element.properties.wall.type);
+            if (entry->wall.flags & WALL_SCENERY_IS_BANNER)
+                bannerIndex = element.properties.wall.banner_index;
+            break;
+        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            entry          = get_large_scenery_entry(scenery_large_get_type(&element));
+            if (entry->large_scenery.scrolling_mode != 0xFF)
+                bannerIndex = scenery_large_get_banner_id(&element);
+            break;
+        case TILE_ELEMENT_TYPE_BANNER:
+            bannerIndex = element.properties.banner.index;
+            break;
+        }
+
+        if (bannerIndex != BANNER_NULL)
+        {
+            // The element to be pasted refers to a banner index - make a copy of it
+            uint8 newBannerIndex = (uint8)create_new_banner(flags);
+            if (newBannerIndex == BANNER_NULL)
+            {
+                return MONEY32_UNDEFINED;
+            }
+            rct_banner & newBanner = gBanners[newBannerIndex];
+            newBanner              = gBanners[bannerIndex];
+            newBanner.x            = x;
+            newBanner.y            = y;
+
+            // Use the new banner index
+            switch (tile_element_get_type(&element))
+            {
+            case TILE_ELEMENT_TYPE_WALL:
+                element.properties.wall.banner_index = newBannerIndex;
+                break;
+            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                scenery_large_set_banner_id(&element, newBannerIndex);
+                break;
+            case TILE_ELEMENT_TYPE_BANNER:
+                element.properties.banner.index = newBannerIndex;
+                break;
+            }
+
+            // Duplicate user string if needed
+            rct_string_id stringIdx = newBanner.string_idx;
+            if (is_user_string_id(stringIdx))
+            {
+                utf8 buffer[USER_STRING_MAX_LENGTH];
+                format_string(buffer, USER_STRING_MAX_LENGTH, stringIdx, nullptr);
+                rct_string_id newStringIdx = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, buffer);
+                if (newStringIdx == 0)
+                {
+                    return MONEY32_UNDEFINED;
+                }
+                gBanners[newBannerIndex].string_idx = newStringIdx;
+            }
+        }
+
         rct_tile_element * const pastedElement = tile_element_insert(x, y, element.base_height, 0);
 
         bool lastForTile = tile_element_is_last_for_tile(pastedElement);
