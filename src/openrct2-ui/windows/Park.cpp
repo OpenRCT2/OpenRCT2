@@ -1215,7 +1215,7 @@ static void window_park_price_mousedown(rct_window *w, rct_widgetindex widgetInd
         window_park_set_page(w, widgetIndex - WIDX_TAB_1);
         break;
     case WIDX_INCREASE_PRICE:
-        newFee = Math::Min(MONEY(200,00), gParkEntranceFee + MONEY(1,00));
+        newFee = Math::Min(MAX_ENTRANCE_FEE, gParkEntranceFee + MONEY(1,00));
         park_set_entrance_fee(newFee);
         break;
     case WIDX_DECREASE_PRICE:

@@ -1288,7 +1288,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window *w, rct_wid
         window_invalidate(w);
         break;
     case WIDX_ENTRY_PRICE_INCREASE:
-        if (gParkEntranceFee < MONEY(100,00)) {
+        if (gParkEntranceFee < MAX_ENTRANCE_FEE) {
             game_do_command(
                 0,
                 GAME_COMMAND_FLAG_APPLY,
