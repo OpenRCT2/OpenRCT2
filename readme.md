@@ -196,7 +196,7 @@ You can translate the game into other languages by editing the language files in
 ## Similar Projects
 
 | [OpenRA](https://github.com/OpenRA/OpenRA) | [OpenLoco](https://github.com/OpenRCT2/OpenLoco) | [openage](https://github.com/SFTtech/openage) | [OpenTTD](https://github.com/OpenTTD/OpenTTD) |
-|---------------------------------------------------------------------------------------------------------------|--------------------------------------------------|---------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+|:-------------------------------------------------------------------------------------------------------------:|:------------------------------------------------:|:-------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------:|
 | ![](https://raw.githubusercontent.com/OpenRA/OpenRA/bleed/packaging/linux/hicolor/128x128/apps/openra-ra.png) |  | ![](https://user-images.githubusercontent.com/550290/36507534-4693f354-175a-11e8-93a7-faa0481474fb.png) | ![](https://github.com/OpenTTD/OpenTTD/raw/850d05d24d4768c81d97765204ef2a487dd4972c/media/openttd.128.png) |
 | Red Alert | Chris Sawyer's Locomotion | Age of Empires 2 | Transport Tycoon Deluxe |
 
