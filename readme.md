@@ -195,16 +195,17 @@ You can translate the game into other languages by editing the language files in
 
 ## Similar Projects
 
-- [openage](https://github.com/SFTtech/openage)
-- [OpenLoco](https://github.com/OpenRCT2/OpenLoco)
-- [OpenRA](https://github.com/OpenRA/OpenRA)
-- [OpenTTD](https://www.openttd.org)
+| OpenRA                                                                                                        | OpenLoco                             | openage                                                                                                 | OpenTTD                                                                                                    |
+|---------------------------------------------------------------------------------------------------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| ![](https://raw.githubusercontent.com/OpenRA/OpenRA/bleed/packaging/linux/hicolor/128x128/apps/openra-ra.png) |                                      | ![](https://user-images.githubusercontent.com/550290/36507534-4693f354-175a-11e8-93a7-faa0481474fb.png) | ![](https://github.com/OpenTTD/OpenTTD/raw/850d05d24d4768c81d97765204ef2a487dd4972c/media/openttd.128.png) |
+| Red Alert                                                                                                     | Chris Sawyer's Locomotion            | Age of Empires 2                                                                                        | Transport Tycoon Deluxe                                                                                    |
+| https://github.com/OpenRA/OpenRA                                                                              | https://github.com/OpenRCT2/OpenLoco | https://github.com/SFTtech/openage                                                                      | https://github.com/OpenTTD/OpenTTD                                                                         |
 
 # 7 Sponsors
 
-People that kindly allow us to use their stuff:
+Companies that kindly allow us to use their stuff:
 
-[![do_logo_horizontal_blue](https://user-images.githubusercontent.com/550290/36412943-8e3e5058-161c-11e8-9a55-e862432caba9.png)
-](https://www.digitalocean.com/)
-
-[![jetbrains](https://user-images.githubusercontent.com/550290/36413299-0e0985ea-161e-11e8-8a01-3ef523b5905b.png)](https://www.jetbrains.com/)
+| DigitalOcean                                                                                                                                                    | JetBrains                                                                                                                                      | AppVeyor                                                                                                                                     | Travis-CI                                                                                                                                                                   |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [![do_logo_vertical_blue svg](https://user-images.githubusercontent.com/550290/36508276-8b572f0e-175c-11e8-8622-9febbce756b2.png)](https://www.digitalocean.com/) | [![jetbrains](https://user-images.githubusercontent.com/550290/36413299-0e0985ea-161e-11e8-8a01-3ef523b5905b.png)](https://www.jetbrains.com/) | [![AppVeyor](https://user-images.githubusercontent.com/550290/36508339-be413216-175c-11e8-97d8-760ced0931e8.png)](https://www.appveyor.com/) | [![Travis](https://raw.githubusercontent.com/travis-ci/docs-travis-ci-com/4b14eeab25ce8ca9164e177bfb60782a8535a822/images/travis-mascot-200px.png)](https://travis-ci.org/) |
+| Hosting of various services                                                                                                                                     | CLion and other products                                                                                                                       | MSVC CI                                                                                                                                      | Linux + macOS CI                                                                                                                                                            |
