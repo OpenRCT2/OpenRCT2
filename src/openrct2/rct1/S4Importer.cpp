@@ -791,9 +791,9 @@ private:
             dst->station_depart[i] = src->station_light[i];
 
             dst->train_at_station[i] = src->station_depart[i];
-
-            ride_set_entrance_location_of_station(dst, i, { src->entrance[i].x, src->entrance[i].y, src->station_height[i] / 2});
-            ride_set_exit_location_of_station(dst, i, { src->exit[i].x, src->exit[i].y, src->station_height[i] / 2});
+            // Direction is fixed later.
+            ride_set_entrance_location_of_station(dst, i, { src->entrance[i].x, src->entrance[i].y, src->station_height[i] / 2, 0});
+            ride_set_exit_location_of_station(dst, i, { src->exit[i].x, src->exit[i].y, src->station_height[i] / 2, 0});
             dst->queue_time[i] = src->queue_time[i];
             dst->last_peep_in_queue[i] = src->last_peep_in_queue[i];
             dst->queue_length[i] = src->num_peeps_in_queue[i];

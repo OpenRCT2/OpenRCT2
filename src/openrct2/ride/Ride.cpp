@@ -7599,14 +7599,16 @@ void sub_6CB945(sint32 rideIndex)
                     if (ride_get_exit_location_of_station(ride, stationId).x != LOCATION_NULL)
                         break;
 
-                    ride_set_exit_location_of_station(ride, stationId, { location.x / 32, location.y / 32, ride->station_heights[stationId] });
+                    ride_set_exit_location_of_station(ride, stationId,
+                        { location.x / 32, location.y / 32, ride->station_heights[stationId], (uint8)tile_element_get_direction(tileElement) });
                 }
                 else
                 {
                     if (ride_get_entrance_location_of_station(ride, stationId).x != LOCATION_NULL)
                         break;
 
-                    ride_set_entrance_location_of_station(ride, stationId, { location.x / 32, location.y / 32, ride->station_heights[stationId] });
+                    ride_set_entrance_location_of_station(ride, stationId,
+                        { location.x / 32, location.y / 32, ride->station_heights[stationId], (uint8)tile_element_get_direction(tileElement) });
                 }
 
                 tileElement->properties.entrance.index &= 0x8F;
@@ -8253,6 +8255,12 @@ LocationXY16 ride_get_rotated_coords(sint16 x, sint16 y, sint16 z)
     return rotatedCoords;
 }
 
+// Normally, a station has at most one entrance and one exit, which are at the same height
+// as the station. But in hacked parks, neither can be taken for granted. This code ensures
+// that the ride->entrances and ride->exits arrays will point to one of them. There is
+// an ever-so-slight chance two entrances/exits for the same station reside on the same tile.
+// In cases like this, the one at station height will be considered the "true" one.
+// If none exists at that height, newer and higher placed ones take precedence.
 void fix_ride_entrance_and_exit_locations()
 {
     sint32 rideIndex;
@@ -8262,31 +8270,38 @@ void fix_ride_entrance_and_exit_locations()
     {
         for (sint32 stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
         {
-            const LocationXY8       entranceLoc        = ride->entrances[stationIndex];
-            const LocationXY8       exitLoc            = ride->exits[stationIndex];
-            uint8                   entranceExitHeight = ride->station_heights[stationIndex];
+            TileCoordsXYZD          entranceLoc        = ride->entrances[stationIndex];
+            TileCoordsXYZD          exitLoc            = ride->exits[stationIndex];
             bool                    fixEntrance        = false;
             bool                    fixExit            = false;
             const rct_tile_element * tileElement;
 
             // Skip if the station has no entrance
-            if (entranceLoc.xy != RCT_XY8_UNDEFINED)
+            if (entranceLoc.x != LOCATION_NULL)
             {
-                tileElement = map_get_ride_entrance_element_at(entranceLoc.x * 32, entranceLoc.y * 32, entranceExitHeight, false);
+                tileElement = map_get_ride_entrance_element_at(entranceLoc.x * 32, entranceLoc.y * 32, entranceLoc.z, false);
 
                 if (tileElement == nullptr || tileElement->properties.entrance.ride_index != rideIndex || tile_element_get_station(tileElement) != stationIndex)
                 {
                     fixEntrance = true;
                 }
+                else
+                {
+                    entranceLoc.direction = (uint8)tile_element_get_direction(tileElement);
+                }
             }
 
-            if (exitLoc.xy != RCT_XY8_UNDEFINED)
+            if (exitLoc.x != LOCATION_NULL)
             {
-                tileElement = map_get_ride_exit_element_at(exitLoc.x * 32, exitLoc.y * 32, entranceExitHeight, false);
+                tileElement = map_get_ride_exit_element_at(exitLoc.x * 32, exitLoc.y * 32, entranceLoc.z, false);
 
                 if (tileElement == nullptr || tileElement->properties.entrance.ride_index != rideIndex || tile_element_get_station(tileElement) != stationIndex)
                 {
                     fixExit = true;
+                }
+                else
+                {
+                    exitLoc.direction = (uint8)tile_element_get_direction(tileElement);
                 }
             }
 
@@ -8322,30 +8337,37 @@ void fix_ride_entrance_and_exit_locations()
                                 continue;
                             }
 
+                            // The expected height is where entrances and exit reside in non-hacked parks.
+                            const uint8 expectedHeight = ride->station_heights[stationIndex];
+
                             if (fixEntrance && tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE)
                             {
-                                // There are some cases (like Belmont Shores), where there is both a sunk and a disconnected entrance.
-                                // Not sure why, but in this case, pick the highest one.
-                                if (alreadyFoundEntrance && ride->station_heights[stationIndex] > tileElement->base_height)
+                                if (alreadyFoundEntrance)
                                 {
-                                    continue;
+                                    if (ride->entrances[stationIndex].z == expectedHeight)
+                                        continue;
+                                    if (ride->entrances[stationIndex].z > tileElement->base_height)
+                                        continue;
                                 }
 
                                 // Found our entrance
-                                ride_set_entrance_location_of_station(ride, stationIndex, { x, y, tileElement->base_height });
+                                ride_set_entrance_location_of_station(ride, stationIndex, { x, y, tileElement->base_height, (uint8)tile_element_get_direction(tileElement) });
                                 alreadyFoundEntrance = true;
 
                                 log_info("Fixed disconnected entrance of ride %d, station %d to x = %d, y = %d and z = %d.", rideIndex, stationIndex, x, y, tileElement->base_height);
                             }
                             else if (fixExit && tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT)
                             {
-                                if (alreadyFoundExit && ride->station_heights[stationIndex] > tileElement->base_height)
+                                if (alreadyFoundExit)
                                 {
-                                    continue;
+                                    if (ride->exits[stationIndex].z == expectedHeight)
+                                        continue;
+                                    if (ride->exits[stationIndex].z > tileElement->base_height)
+                                        continue;;
                                 }
 
                                 // Found our exit
-                                ride_set_exit_location_of_station(ride, stationIndex, { x, y, tileElement->base_height });
+                                ride_set_exit_location_of_station(ride, stationIndex, { x, y, tileElement->base_height, (uint8)tile_element_get_direction(tileElement) });
                                 alreadyFoundExit = true;
 
                                 log_info("Fixed disconnected exit of ride %d, station %d to x = %d, y = %d and z = %d.", rideIndex, stationIndex, x, y, tileElement->base_height);

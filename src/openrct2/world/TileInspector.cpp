@@ -601,10 +601,10 @@ sint32 tile_inspector_entrance_make_usable(sint32 x, sint32 y, sint32 elementInd
         switch (entranceElement->properties.entrance.type)
         {
         case ENTRANCE_TYPE_RIDE_ENTRANCE:
-            ride_set_entrance_location_of_station(ride, stationIndex, { x, y });
+            ride_set_entrance_location_of_station(ride, stationIndex, { x, y, entranceElement->base_height, (uint8)tile_element_get_direction(entranceElement) });
             break;
         case ENTRANCE_TYPE_RIDE_EXIT:
-            ride_set_exit_location_of_station(ride, stationIndex, { x, y, entranceElement->base_height });
+            ride_set_exit_location_of_station(ride, stationIndex, { x, y, entranceElement->base_height, (uint8)tile_element_get_direction(entranceElement) });
             break;
         }
 

@@ -33,5 +33,5 @@ TileCoordsXYZD ride_get_exit_location_of_station(const Ride * ride, const sint32
 void ride_clear_entrance_location_of_station(Ride * ride, const sint32 stationIndex);
 void ride_clear_exit_location_of_station(Ride * ride, const sint32 stationIndex);
 
-void ride_set_entrance_location_of_station(Ride * ride, const sint32 stationIndex, const TileCoordsXYZ location);
-void ride_set_exit_location_of_station(Ride * ride, const sint32 stationIndex, const TileCoordsXYZ location);
+void ride_set_entrance_location_of_station(Ride * ride, const sint32 stationIndex, const TileCoordsXYZD location);
+void ride_set_exit_location_of_station(Ride * ride, const sint32 stationIndex, const TileCoordsXYZD location);
