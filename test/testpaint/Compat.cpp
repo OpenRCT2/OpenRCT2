@@ -50,6 +50,9 @@ const CoordsXY TileDirectionDelta[] = {
     {-32, -32}
 };
 
+TileCoordsXYZD ride_get_entrance_location_of_station(const Ride * ride, const sint32 stationIndex);
+TileCoordsXYZD ride_get_exit_location_of_station(const Ride * ride, const sint32 stationIndex);
+
 uint8 get_current_rotation() {
     return gCurrentRotation & 3;
 }
