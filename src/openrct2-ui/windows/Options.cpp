@@ -161,11 +161,12 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_SCENARIO_GROUPING,
     WIDX_SCENARIO_GROUPING_DROPDOWN,
     WIDX_SCENARIO_UNLOCKING,
+    WIDX_SCENARIO_OPTIONS_GROUP,
+    WIDX_ALLOW_EARLY_COMPLETION,
     WIDX_TWEAKS_GROUP,
     WIDX_REAL_NAME_CHECKBOX,
     WIDX_AUTO_STAFF_PLACEMENT,
     WIDX_AUTO_OPEN_SHOPS,
-    WIDX_ALLOW_EARLY_COMPLETION,
     WIDX_DEFAULT_INSPECTION_INTERVAL,
     WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN,
 
@@ -324,25 +325,28 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
 static rct_widget window_options_misc_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define TITLE_SEQUENCE_START 53
-    { WWT_GROUPBOX,         1,  5,      304,    TITLE_SEQUENCE_START + 0,  TITLE_SEQUENCE_START + 49,  STR_OPTIONS_TITLE_SEQUENCE,       STR_NONE },
-    { WWT_DROPDOWN,         1,  135,    299,    TITLE_SEQUENCE_START + 15, TITLE_SEQUENCE_START + 26,  STR_NONE,                         STR_NONE },                             // Title sequence dropdown
-    { WWT_BUTTON,           1,  288,    298,    TITLE_SEQUENCE_START + 16, TITLE_SEQUENCE_START + 25,  STR_DROPDOWN_GLYPH,               STR_TITLE_SEQUENCE_TIP },               // Title sequence dropdown button
-    { WWT_BUTTON,           1,  135,    299,    TITLE_SEQUENCE_START + 30, TITLE_SEQUENCE_START + 42,  STR_EDIT_TITLE_SEQUENCES_BUTTON,  STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP },  // Edit title sequences button
+    { WWT_GROUPBOX,         1,  5,      304,    TITLE_SEQUENCE_START + 0,       TITLE_SEQUENCE_START + 49,      STR_OPTIONS_TITLE_SEQUENCE,       STR_NONE },
+    { WWT_DROPDOWN,         1,  135,    299,    TITLE_SEQUENCE_START + 15,      TITLE_SEQUENCE_START + 26,      STR_NONE,                         STR_NONE },                             // Title sequence dropdown
+    { WWT_BUTTON,           1,  288,    298,    TITLE_SEQUENCE_START + 16,      TITLE_SEQUENCE_START + 25,      STR_DROPDOWN_GLYPH,               STR_TITLE_SEQUENCE_TIP },               // Title sequence dropdown button
+    { WWT_BUTTON,           1,  135,    299,    TITLE_SEQUENCE_START + 30,      TITLE_SEQUENCE_START + 42,      STR_EDIT_TITLE_SEQUENCES_BUTTON,  STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP },  // Edit title sequences button
 #undef TITLE_SEQUENCE_START
 #define SCENARIO_START 107
-    { WWT_GROUPBOX,         1,  5,      304,    SCENARIO_START + 0,        SCENARIO_START + 50,        STR_OPTIONS_SCENARIO_SELECTION,   STR_NONE },
-    { WWT_DROPDOWN,         1,  175,    299,    SCENARIO_START + 15,       SCENARIO_START + 26,        STR_NONE,                         STR_NONE },                             // Scenario select mode
-    { WWT_BUTTON,           1,  288,    298,    SCENARIO_START + 16,       SCENARIO_START + 25,        STR_DROPDOWN_GLYPH,               STR_SCENARIO_GROUPING_TIP },
-    { WWT_CHECKBOX,         2,  25,     299,    SCENARIO_START + 30,       SCENARIO_START + 45,        STR_OPTIONS_SCENARIO_UNLOCKING,   STR_SCENARIO_UNLOCKING_TIP },           // Unlocking of scenarios
+    { WWT_GROUPBOX,         1,  5,      304,    SCENARIO_START + 0,             SCENARIO_START + 50,            STR_OPTIONS_SCENARIO_SELECTION,   STR_NONE },
+    { WWT_DROPDOWN,         1,  175,    299,    SCENARIO_START + 15,            SCENARIO_START + 26,            STR_NONE,                         STR_NONE },                             // Scenario select mode
+    { WWT_BUTTON,           1,  288,    298,    SCENARIO_START + 16,            SCENARIO_START + 25,            STR_DROPDOWN_GLYPH,               STR_SCENARIO_GROUPING_TIP },
+    { WWT_CHECKBOX,         2,  25,     299,    SCENARIO_START + 30,            SCENARIO_START + 45,            STR_OPTIONS_SCENARIO_UNLOCKING,   STR_SCENARIO_UNLOCKING_TIP },           // Unlocking of scenarios
 #undef SCENARIO_START
-#define TWEAKS_START 162
-    { WWT_GROUPBOX,         1,  5,      304,    TWEAKS_START + 0,          TWEAKS_START + 95,          STR_OPTIONS_TWEAKS,               STR_NONE },
-    { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 15,         TWEAKS_START + 29,          STR_REAL_NAME,                    STR_REAL_NAME_TIP },                    // Show 'real' names of guests
-    { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 30,         TWEAKS_START + 44,          STR_AUTO_STAFF_PLACEMENT,         STR_AUTO_STAFF_PLACEMENT_TIP },         // Auto staff placement
-    { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 45,         TWEAKS_START + 59,          STR_AUTO_OPEN_SHOPS,              STR_AUTO_OPEN_SHOPS_TIP },              // Automatically open shops & stalls
-    { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 60,         TWEAKS_START + 75,          STR_ALLOW_EARLY_COMPLETION,       STR_EARLY_COMPLETION_TIP },             // Allow early scenario completion
-    { WWT_DROPDOWN,         1,  175,    299,    TWEAKS_START + 76,         TWEAKS_START + 87,          STR_NONE,                         STR_NONE },                             // Default inspection time dropdown
-    { WWT_BUTTON,           1,  288,    298,    TWEAKS_START + 77,         TWEAKS_START + 86,          STR_DROPDOWN_GLYPH,               STR_DEFAULT_INSPECTION_INTERVAL_TIP },  // Default inspection time dropdown button
+#define SCENARIO_OPTIONS_START 162
+    { WWT_GROUPBOX,         1,  5,      304,    SCENARIO_OPTIONS_START + 0,     SCENARIO_OPTIONS_START + 34,    STR_SCENARIO_OPTIONS,             STR_NONE },
+    { WWT_CHECKBOX,         2,  10,     299,    SCENARIO_OPTIONS_START + 15,    SCENARIO_OPTIONS_START + 29,    STR_ALLOW_EARLY_COMPLETION,       STR_EARLY_COMPLETION_TIP },             // Allow early scenario completion
+#undef SCENARIO_OPTIONS_START
+#define TWEAKS_START 201
+    { WWT_GROUPBOX,         1,  5,      304,    TWEAKS_START + 0,               TWEAKS_START + 80,              STR_OPTIONS_TWEAKS,               STR_NONE },
+    { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 15,              TWEAKS_START + 29,              STR_REAL_NAME,                    STR_REAL_NAME_TIP },                    // Show 'real' names of guests
+    { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 30,              TWEAKS_START + 44,              STR_AUTO_STAFF_PLACEMENT,         STR_AUTO_STAFF_PLACEMENT_TIP },         // Auto staff placement
+    { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 45,              TWEAKS_START + 59,              STR_AUTO_OPEN_SHOPS,              STR_AUTO_OPEN_SHOPS_TIP },              // Automatically open shops & stalls
+    { WWT_DROPDOWN,         1,  175,    299,    TWEAKS_START + 61,              TWEAKS_START + 72,              STR_NONE,                         STR_NONE },                             // Default inspection time dropdown
+    { WWT_BUTTON,           1,  288,    298,    TWEAKS_START + 62,              TWEAKS_START + 71,              STR_DROPDOWN_GLYPH,               STR_DEFAULT_INSPECTION_INTERVAL_TIP },  // Default inspection time dropdown button
 #undef TWEAKS_START
     { WIDGETS_END },
 };
@@ -579,8 +583,8 @@ static uint64 window_options_page_enabled_widgets[] = {
     (1 << WIDX_SCENARIO_GROUPING) |
     (1 << WIDX_SCENARIO_GROUPING_DROPDOWN) |
     (1 << WIDX_SCENARIO_UNLOCKING) |
-    (1 << WIDX_AUTO_OPEN_SHOPS) |
     (1 << WIDX_ALLOW_EARLY_COMPLETION) |
+    (1 << WIDX_AUTO_OPEN_SHOPS) |
     (1 << WIDX_DEFAULT_INSPECTION_INTERVAL) |
     (1 << WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN),
 
