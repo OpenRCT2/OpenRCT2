@@ -26,6 +26,7 @@
 #include "Footpath.h"
 #include "Map.h"
 #include "TileInspector.h"
+#include "../ride/Station.h"
 
 uint32 windowTileInspectorTileX;
 uint32 windowTileInspectorTileY;
@@ -600,15 +601,10 @@ sint32 tile_inspector_entrance_make_usable(sint32 x, sint32 y, sint32 elementInd
         switch (entranceElement->properties.entrance.type)
         {
         case ENTRANCE_TYPE_RIDE_ENTRANCE:
-            ride->entrances[stationIndex].x = x;
-            ride->entrances[stationIndex].y = y;
+            ride_set_entrance_location_of_station(ride, stationIndex, { x, y });
             break;
         case ENTRANCE_TYPE_RIDE_EXIT:
-            ride->exits[stationIndex].x = x;
-            ride->exits[stationIndex].y = y;
-
-            // TODO: Remove once mechanics don't assume exits always match the station heights
-            ride->station_heights[stationIndex] = entranceElement->base_height;
+            ride_set_exit_location_of_station(ride, stationIndex, { x, y, entranceElement->base_height });
             break;
         }
 

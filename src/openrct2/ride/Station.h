@@ -27,4 +27,11 @@ sint8 ride_get_first_empty_station_start(const Ride * ride);
 
 TileCoordsXYZD ride_get_entrance_location_of_station(const sint32 rideIndex, const sint32 stationIndex);
 TileCoordsXYZD ride_get_exit_location_of_station(const sint32 rideIndex, const sint32 stationIndex);
+TileCoordsXYZD ride_get_entrance_location_of_station(const Ride * ride, const sint32 stationIndex);
+TileCoordsXYZD ride_get_exit_location_of_station(const Ride * ride, const sint32 stationIndex);
 
+void ride_clear_entrance_location_of_station(Ride * ride, const sint32 stationIndex);
+void ride_clear_exit_location_of_station(Ride * ride, const sint32 stationIndex);
+
+void ride_set_entrance_location_of_station(Ride * ride, const sint32 stationIndex, const TileCoordsXYZ location);
+void ride_set_exit_location_of_station(Ride * ride, const sint32 stationIndex, const TileCoordsXYZ location);

@@ -186,7 +186,8 @@ static void ride_ratings_update_state_1()
  */
 static void ride_ratings_update_state_2()
 {
-    Ride *ride = get_ride(gRideRatingsCalcData.current_ride);
+    const sint32 rideIndex = gRideRatingsCalcData.current_ride;
+    Ride *ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED) {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -211,7 +212,8 @@ static void ride_ratings_update_state_2()
             if (trackType == TRACK_ELEM_END_STATION) {
                 sint32 entranceIndex = tile_element_get_station(tileElement);
                 gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-                if (ride->entrances[entranceIndex].xy == RCT_XY8_UNDEFINED) {
+                if (ride_get_entrance_location_of_station(rideIndex, entranceIndex).x == LOCATION_NULL)
+                {
                     gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                 }
             }
@@ -336,7 +338,8 @@ static void ride_ratings_update_state_5()
  */
 static void ride_ratings_begin_proximity_loop()
 {
-    Ride *ride = get_ride(gRideRatingsCalcData.current_ride);
+    const sint32 rideIndex = gRideRatingsCalcData.current_ride;
+    Ride *ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED) {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -350,7 +353,8 @@ static void ride_ratings_begin_proximity_loop()
     for (sint32 i = 0; i < MAX_STATIONS; i++) {
         if (ride->station_starts[i].xy != RCT_XY8_UNDEFINED) {
             gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-            if (ride->entrances[i].xy == RCT_XY8_UNDEFINED) {
+            if (ride_get_entrance_location_of_station(rideIndex, i).x == LOCATION_NULL)
+            {
                 gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             }
 
@@ -1264,7 +1268,7 @@ static rating_tuple ride_ratings_get_drop_ratings(Ride *ride)
 static sint32 ride_ratings_get_scenery_score(Ride *ride)
 {
     sint8 i = ride_get_first_valid_station_start(ride);
-    LocationXY8 location;
+    sint32 x, y;
 
     if (i == -1)
     {
@@ -1273,15 +1277,17 @@ static sint32 ride_ratings_get_scenery_score(Ride *ride)
 
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        location = ride->entrances[0];
+        TileCoordsXYZD location = ride_get_entrance_location_of_station(ride, 0);
+        x = location.x;
+        y = location.y;
     }
     else
     {
-        location = ride->station_starts[i];
+        LocationXY8 location = ride->station_starts[i];
+        x = location.x;
+        y = location.y;
     }
 
-    sint32 x = location.x;
-    sint32 y = location.y;
     sint32 z = tile_element_height(x * 32, y * 32) & 0xFFFF;
 
     // Check if station is underground, returns a fixed mediocre score since you can't have scenery underground

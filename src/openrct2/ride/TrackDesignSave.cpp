@@ -36,6 +36,7 @@
 #include "TrackData.h"
 #include "TrackDesign.h"
 #include "TrackDesignRepository.h"
+#include "Station.h"
 
 
 #define TRACK_MAX_SAVED_TILE_ELEMENTS 1500
@@ -860,10 +861,10 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
         x = 0;
     }
 
-    Ride *ride = get_ride(rideIndex);
-    LocationXY8 location = ride->entrances[0];
+    TileCoordsXYZD location = ride_get_entrance_location_of_station(rideIndex, 0);
 
-    if (location.xy == RCT_XY8_UNDEFINED) {
+    if (location.x == LOCATION_NULL)
+    {
         gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         SafeFree(td6->maze_elements);
         return false;
@@ -888,11 +889,12 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     maze++;
     numMazeElements++;
 
-    location = ride->exits[0];
-    if (location.xy == RCT_XY8_UNDEFINED) {
+    location = ride_get_entrance_location_of_station(rideIndex, 0);
+    if (location.x == LOCATION_NULL)
+    {
         gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         SafeFree(td6->maze_elements);
-        return 0;
+        return false;
     }
 
     x = location.x * 32;
@@ -1059,14 +1061,14 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
         for (sint32 station_index = 0; station_index < RCT12_MAX_STATIONS_PER_RIDE; station_index++) {
             z = ride->station_heights[station_index];
 
-            LocationXY8 location;
+            TileCoordsXYZD location;
             if (i == 0) {
-                location = ride->entrances[station_index];
+                location = ride_get_entrance_location_of_station(rideIndex, station_index);
             } else {
-                location = ride->exits[station_index];
+                location = ride_get_exit_location_of_station(rideIndex, station_index);
             }
 
-            if (location.xy == RCT_XY8_UNDEFINED) {
+            if (location.x == LOCATION_NULL) {
                 continue;
             }
 

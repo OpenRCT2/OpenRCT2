@@ -437,3 +437,46 @@ TileCoordsXYZD ride_get_exit_location_of_station(const sint32 rideIndex, const s
 {
     return ride_get_entrance_or_exit_location_of_station(rideIndex, stationIndex, ENTRANCE_TYPE_RIDE_EXIT);
 }
+
+TileCoordsXYZD ride_get_entrance_location_of_station(const Ride * ride, const sint32 stationIndex)
+{
+    const auto entrance = ride->entrances[stationIndex];
+    if (entrance.xy == RCT_XY8_UNDEFINED)
+        return { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL, 0 };
+    else
+        return { entrance.x, entrance.y, ride->station_heights[stationIndex], 0 };
+}
+
+TileCoordsXYZD ride_get_exit_location_of_station(const Ride * ride, const sint32 stationIndex)
+{
+    const auto exit = ride->exits[stationIndex];
+    if (exit.xy == RCT_XY8_UNDEFINED)
+        return { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL, 0 };
+    else
+        return { exit.x, exit.y, ride->station_heights[stationIndex], 0 };
+}
+
+void ride_clear_entrance_location_of_station(
+        Ride * ride,
+        const sint32 stationIndex)
+{
+    ride->entrances[stationIndex].xy = RCT_XY8_UNDEFINED;
+}
+
+void ride_clear_exit_location_of_station(
+        Ride * ride,
+        const sint32 stationIndex)
+{
+    ride->exits[stationIndex].xy = RCT_XY8_UNDEFINED;
+}
+
+void ride_set_entrance_location_of_station(Ride * ride, const sint32 stationIndex, const TileCoordsXYZ location)
+{
+    ride->entrances[stationIndex] = { (uint8)location.x, (uint8)location.y };
+}
+
+void ride_set_exit_location_of_station(Ride * ride, const sint32 stationIndex, const TileCoordsXYZ location)
+{
+    ride->exits[stationIndex] = { (uint8)location.x, (uint8)location.y };
+    ride->station_heights[stationIndex] = (uint8)location.z;
+}

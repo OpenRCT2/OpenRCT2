@@ -28,6 +28,7 @@
 #include "TrackData.h"
 #include "RideData.h"
 #include "TrackPaint.h"
+#include "Station.h"
 
 // clang-format off
 /* rct2: 0x007667AC */
@@ -225,11 +226,15 @@ bool track_paint_util_has_fence(
         break;
     }
 
-    uint16 entranceLoc = ((position.x / 32) + offset.x) | (((position.y / 32) + offset.y) * (1 << 8));
+    sint32 entranceX = (position.x / 32) + offset.x;
+    sint32 entranceY = (position.y / 32) + offset.y;
 
     sint32 entranceId = tile_element_get_station(tileElement);
+    const TileCoordsXYZD entrance = ride_get_entrance_location_of_station(ride, entranceId);
+    const TileCoordsXYZD exit = ride_get_exit_location_of_station(ride, entranceId);
 
-    return (ride->entrances[entranceId].xy != entranceLoc && ride->exits[entranceId].xy != entranceLoc);
+    return ((entrance.x != entranceX && entrance.y != entranceY) &&
+            (exit.x != entranceX && exit.y != entranceY));
 }
 
 void track_paint_util_paint_floor(paint_session * session, uint8 edges, uint32 colourFlags, uint16 height,

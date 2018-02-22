@@ -52,6 +52,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Sprite.h"
+#include "../ride/Station.h"
 
 S6Exporter::S6Exporter()
 {
@@ -485,8 +486,10 @@ void S6Exporter::ExportRide(rct2_ride * dst, const Ride * src)
         dst->station_length[i] = src->station_length[i];
         dst->station_depart[i] = src->station_depart[i];
         dst->train_at_station[i] = src->train_at_station[i];
-        dst->entrances[i] = src->entrances[i];
-        dst->exits[i] = src->exits[i];
+        TileCoordsXYZD entrance = ride_get_entrance_location_of_station(src, i);
+        TileCoordsXYZD exit = ride_get_exit_location_of_station(src, i);
+        dst->entrances[i] = { (uint8)entrance.x, (uint8)entrance.y };
+        dst->exits[i] = { (uint8)exit.x, (uint8)exit.y };
         dst->last_peep_in_queue[i] = src->last_peep_in_queue[i];
 
         dst->length[i] = src->length[i];

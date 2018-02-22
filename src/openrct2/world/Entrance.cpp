@@ -26,6 +26,7 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/Track.h"
+#include "../ride/Station.h"
 
 bool gParkEntranceGhostExists = false;
 LocationXYZ16 gParkEntranceGhostPosition = { 0, 0, 0 };
@@ -193,7 +194,8 @@ static money32 RideEntranceExitPlace(sint16 x,
 
         if (isExit)
         {
-            if (ride->exits[stationNum].xy != RCT_XY8_UNDEFINED)
+            const auto exit = ride_get_exit_location_of_station(rideIndex, stationNum);
+            if (exit.x != LOCATION_NULL)
             {
                 if (flags & GAME_COMMAND_FLAG_GHOST)
                 {
@@ -201,22 +203,26 @@ static money32 RideEntranceExitPlace(sint16 x,
                     return MONEY32_UNDEFINED;
                 }
 
-                removeCoord.x = ride->exits[stationNum].x * 32;
-                removeCoord.y = ride->exits[stationNum].y * 32;
+                removeCoord.x = exit.x * 32;
+                removeCoord.y = exit.y * 32;
                 requiresRemove = true;
             }
         }
-        else if (ride->entrances[stationNum].xy != RCT_XY8_UNDEFINED)
+        else
         {
-            if (flags & GAME_COMMAND_FLAG_GHOST)
+            const auto entrance = ride_get_entrance_location_of_station(rideIndex, stationNum);
+            if (entrance.x != LOCATION_NULL)
             {
-                gGameCommandErrorText = 0;
-                return MONEY32_UNDEFINED;
-            }
+                if (flags & GAME_COMMAND_FLAG_GHOST)
+                {
+                    gGameCommandErrorText = 0;
+                    return MONEY32_UNDEFINED;
+                }
 
-            removeCoord.x = ride->entrances[stationNum].x * 32;
-            removeCoord.y = ride->entrances[stationNum].y * 32;
-            requiresRemove = true;
+                removeCoord.x = entrance.x * 32;
+                removeCoord.y = entrance.y * 32;
+                requiresRemove = true;
+            }
         }
 
         if (requiresRemove)
@@ -296,13 +302,11 @@ static money32 RideEntranceExitPlace(sint16 x,
 
             if (isExit)
             {
-                ride->exits[stationNum].x = x / 32;
-                ride->exits[stationNum].y = y / 32;
+                ride_set_exit_location_of_station(ride, stationNum, { x / 32, y / 32, z / 8});
             }
             else
             {
-                ride->entrances[stationNum].x = x / 32;
-                ride->entrances[stationNum].y = y / 32;
+                ride_set_entrance_location_of_station(ride, stationNum, { x / 32, y / 32, z / 8});
                 ride->last_peep_in_queue[stationNum] = SPRITE_INDEX_NULL;
                 ride->queue_length[stationNum] = 0;
 
@@ -416,11 +420,11 @@ static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8
 
         if (isExit)
         {
-            ride->exits[stationNum].xy = RCT_XY8_UNDEFINED;
+            ride_clear_exit_location_of_station(ride, stationNum);
         }
         else
         {
-            ride->entrances[stationNum].xy = RCT_XY8_UNDEFINED;
+            ride_clear_entrance_location_of_station(ride, stationNum);
         }
 
         footpath_update_queue_chains();

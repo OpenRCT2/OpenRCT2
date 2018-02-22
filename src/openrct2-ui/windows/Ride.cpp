@@ -45,6 +45,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/windows/Intent.h>
+#include <openrct2/ride/Station.h>
 
 enum {
     WINDOW_RIDE_PAGE_MAIN,
@@ -2535,12 +2536,12 @@ static rct_string_id window_ride_get_status_station(rct_window *w, void *argumen
 
     // Entrance / exit
     if (ride->status == RIDE_STATUS_CLOSED) {
-        if (ride->entrances[stationIndex].xy == RCT_XY8_UNDEFINED)
+        if (ride_get_entrance_location_of_station((uint8)w->number, (uint8)stationIndex).x == LOCATION_NULL)
             stringId = STR_NO_ENTRANCE;
-        else if (ride->exits[stationIndex].xy == RCT_XY8_UNDEFINED)
+        else if (ride_get_exit_location_of_station((uint8)w->number, (uint8)stationIndex).x == LOCATION_NULL)
             stringId = STR_NO_EXIT;
     } else {
-        if (ride->entrances[stationIndex].xy == RCT_XY8_UNDEFINED)
+        if (ride_get_entrance_location_of_station((uint8)w->number, (uint8)stationIndex).x == LOCATION_NULL)
             stringId = STR_EXIT_ONLY;
     }
 

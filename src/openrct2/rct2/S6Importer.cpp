@@ -517,8 +517,8 @@ public:
             dst->station_length[i] = src->station_length[i];
             dst->station_depart[i] = src->station_depart[i];
             dst->train_at_station[i] = src->train_at_station[i];
-            dst->entrances[i] = src->entrances[i];
-            dst->exits[i] = src->exits[i];
+            ride_set_entrance_location_of_station(dst, i, { src->entrances[i].x, src->entrances[i].y, src->station_heights[i] });
+            ride_set_exit_location_of_station(dst, i, { src->entrances[i].x, src->entrances[i].y, src->station_heights[i] });
             dst->last_peep_in_queue[i] = src->last_peep_in_queue[i];
 
             dst->length[i] = src->length[i];
@@ -533,8 +533,8 @@ public:
         {
             dst->station_starts[i].xy = RCT_XY8_UNDEFINED;
             dst->train_at_station[i] = 255;
-            dst->entrances[i].xy = RCT_XY8_UNDEFINED;
-            dst->exits[i].xy = RCT_XY8_UNDEFINED;
+            ride_clear_entrance_location_of_station(dst, i);
+            ride_clear_exit_location_of_station(dst, i);
             dst->last_peep_in_queue[i] = SPRITE_INDEX_NULL;
         }
 
