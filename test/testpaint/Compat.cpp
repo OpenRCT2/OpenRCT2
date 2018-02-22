@@ -294,3 +294,13 @@ void track_element_clear_cable_lift(rct_tile_element * trackElement)
 {
     trackElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
+
+TileCoordsXYZD ride_get_entrance_location_of_station(const Ride * ride, const sint32 stationIndex)
+{
+    return ride->entrances[stationIndex];
+}
+
+TileCoordsXYZD ride_get_exit_location_of_station(const Ride * ride, const sint32 stationIndex)
+{
+    return ride->exits[stationIndex];
+}
