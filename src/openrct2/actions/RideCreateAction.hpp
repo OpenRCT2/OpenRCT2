@@ -145,7 +145,7 @@ public:
             ride_set_name_to_default(ride, rideEntry);
         }
 
-        for (size_t i = 0; i < MAX_STATIONS; i++)
+        for (sint32 i = 0; i < MAX_STATIONS; i++)
         {
             ride->station_starts[i].xy = RCT_XY8_UNDEFINED;
             ride_clear_entrance_location_of_station(ride, i);
