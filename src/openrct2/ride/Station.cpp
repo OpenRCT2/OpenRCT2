@@ -379,8 +379,8 @@ sint8 ride_get_first_empty_station_start(const Ride * ride)
 }
 
 static TileCoordsXYZD ride_get_entrance_or_exit_location_of_station(
-        const uint8 rideIndex,
-        const uint8 stationIndex,
+        const sint32 rideIndex,
+        const sint32 stationIndex,
         const uint8 entranceType)
 {
     const Ride * ride = get_ride(rideIndex);
@@ -428,12 +428,12 @@ static TileCoordsXYZD ride_get_entrance_or_exit_location_of_station(
     return retVal;
 }
 
-TileCoordsXYZD ride_get_entrance_location_of_station(const uint8 rideIndex, const uint8 stationIndex)
+TileCoordsXYZD ride_get_entrance_location_of_station(const sint32 rideIndex, const sint32 stationIndex)
 {
     return ride_get_entrance_or_exit_location_of_station(rideIndex, stationIndex, ENTRANCE_TYPE_RIDE_ENTRANCE);
 }
 
-TileCoordsXYZD ride_get_exit_location_of_station(const uint8 rideIndex, const uint8 stationIndex)
+TileCoordsXYZD ride_get_exit_location_of_station(const sint32 rideIndex, const sint32 stationIndex)
 {
     return ride_get_entrance_or_exit_location_of_station(rideIndex, stationIndex, ENTRANCE_TYPE_RIDE_EXIT);
 }
