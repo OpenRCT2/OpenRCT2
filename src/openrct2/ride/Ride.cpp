@@ -4087,8 +4087,6 @@ static sint32 ride_check_for_entrance_exit(sint32 rideIndex)
  */
 static void sub_6B5952(sint32 rideIndex)
 {
-    Ride *ride = get_ride(rideIndex);
-
     for (sint32 i = 0; i < MAX_STATIONS; i++)
     {
         TileCoordsXYZD location = ride_get_entrance_location_of_station(rideIndex, i);
