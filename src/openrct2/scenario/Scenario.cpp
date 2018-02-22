@@ -683,8 +683,8 @@ void scenario_fix_ghosts(rct_s6_data *s6)
     // Remove all ghost elements
     rct_tile_element *destinationElement = s6->tile_elements;
 
-    for (sint32 y = 0; y < 256; y++) {
-        for (sint32 x = 0; x < 256; x++) {
+    for (sint32 y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++) {
+        for (sint32 x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++) {
             rct_tile_element *originalElement = map_get_first_element_at(x, y);
             do {
                 if (originalElement->flags & TILE_ELEMENT_FLAG_GHOST) {

@@ -102,8 +102,8 @@ void track_design_save_select_nearby_scenery(sint32 rideIndex)
 {
     rct_tile_element *tileElement;
 
-    for (sint32 y = 0; y < 256; y++) {
-        for (sint32 x = 0; x < 256; x++) {
+    for (sint32 y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++) {
+        for (sint32 x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++) {
             tileElement = map_get_first_element_at(x, y);
             do {
                 if (track_design_save_should_select_scenery_around(rideIndex, tileElement)) {

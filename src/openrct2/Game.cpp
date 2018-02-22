@@ -1258,9 +1258,9 @@ void game_fix_save_vars()
 
     // Fixes broken saves where a surface element could be null
     // and broken saves with incorrect invisible map border tiles
-    for (sint32 y = 0; y < 256; y++)
+    for (sint32 y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
-        for (sint32 x = 0; x < 256; x++)
+        for (sint32 x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
             rct_tile_element * tileElement = map_get_surface_element_at(x, y);
 

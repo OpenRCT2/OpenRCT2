@@ -65,8 +65,8 @@ static void cheat_set_grass_length(sint32 length)
     sint32 x, y;
     rct_tile_element *tileElement;
 
-    for (y = 0; y < 256; y++) {
-        for (x = 0; x < 256; x++) {
+    for (y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++) {
+        for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++) {
             tileElement = map_get_surface_element_at(x, y);
             if (!(tileElement->properties.surface.ownership & OWNERSHIP_OWNED))
                 continue;
