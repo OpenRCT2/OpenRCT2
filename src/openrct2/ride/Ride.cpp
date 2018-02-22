@@ -3188,26 +3188,17 @@ void ride_check_all_reachable()
  *  rct2: 0x006B7C59
  * @return 1 if the coordinate is reachable or has no entrance, 0 otherwise
  */
-static sint32 ride_entrance_exit_is_reachable(LocationXY8 coordinates, Ride* ride, sint32 index)
+static sint32 ride_entrance_exit_is_reachable(TileCoordsXYZD coordinates)
 {
     sint32 x, y, z;
-    rct_tile_element *tileElement;
+
+    if (coordinates.x == LOCATION_NULL)
+        return 1;
 
     x = coordinates.x;
     y = coordinates.y;
-    z = ride->station_heights[index];
-    tileElement = map_get_first_element_at(x, y);
-
-    for (;;) {
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE && z == tileElement->base_height) {
-            break;
-        } else if (tile_element_is_last_for_tile(tileElement)) {
-            return 1;
-        }
-        tileElement++;
-    }
-
-    uint8 face_direction = tile_element_get_direction(tileElement);
+    z = coordinates.z;
+    uint8 face_direction = coordinates.direction;
 
     x *= 32;
     y *= 32;
@@ -3229,7 +3220,8 @@ static void ride_entrance_exit_connected(Ride* ride, sint32 ride_idx)
 
         if (station_start.xy == RCT_XY8_UNDEFINED )
             continue;
-        if (entrance.x != LOCATION_NULL && !ride_entrance_exit_is_reachable({ (uint8)entrance.x, (uint8)entrance.y }, ride, i)) {
+        if (entrance.x != LOCATION_NULL && !ride_entrance_exit_is_reachable(entrance))
+        {
             // name of ride is parameter of the format string
             set_format_arg(0, rct_string_id, ride->name);
             set_format_arg(2, uint32, ride->name_arguments);
@@ -3239,7 +3231,8 @@ static void ride_entrance_exit_connected(Ride* ride, sint32 ride_idx)
             ride->connected_message_throttle = 3;
         }
 
-        if (exit.x != LOCATION_NULL && !ride_entrance_exit_is_reachable({ (uint8)exit.x, (uint8)exit.y }, ride, i)) {
+        if (exit.x != LOCATION_NULL && !ride_entrance_exit_is_reachable(exit))
+        {
             // name of ride is parameter of the format string
             set_format_arg(0, rct_string_id, ride->name);
             set_format_arg(2, uint32, ride->name_arguments);
@@ -7546,7 +7539,7 @@ void sub_6CB945(sint32 rideIndex)
             ride_clear_exit_location_of_station(ride, stationId);
         }
     }
-    *locationList++ = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL, 0 };
+    (*locationList++).x = LOCATION_NULL;
 
     locationList = locations;
     for (; (*locationList).x != LOCATION_NULL; locationList++) {

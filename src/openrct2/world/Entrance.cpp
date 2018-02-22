@@ -388,7 +388,10 @@ static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8
             if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
-            if (tileElement->base_height != ride->station_heights[stationNum])
+            if (tile_element_get_ride_index(tileElement) != rideIndex)
+                continue;
+
+            if (tile_element_get_station(tileElement) != stationNum)
                 continue;
 
             if (flags & GAME_COMMAND_FLAG_5 && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
