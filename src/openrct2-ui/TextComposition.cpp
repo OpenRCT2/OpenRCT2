@@ -194,7 +194,15 @@ void TextComposition::CursorHome()
 
 void TextComposition::CursorEnd()
 {
-    _session.SelectionStart = _session.SelectionSize;
+    size_t selectionOffset = _session.Size;
+    const utf8 * ch = _session.Buffer + _session.SelectionStart;
+    while (!utf8_is_codepoint_start(ch) && selectionOffset > 0)
+    {
+        ch--;
+        selectionOffset--;
+    }
+
+    _session.SelectionStart = selectionOffset;
 }
 
 void TextComposition::CursorLeft()
