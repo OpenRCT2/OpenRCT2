@@ -16,7 +16,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 ## Long term contributors
 The following people are not part of the project team, but have been contributing for a long time.
 * Matte Andersson (Nubbie)
-* Kenton Boadway (PFCKrutonium)
+* Kenton Boadway (Krutonium)
 * Joe Minor Jr (wolfreak99)
 
 ## Implementation (RCT2)
