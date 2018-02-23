@@ -233,8 +233,8 @@ bool track_paint_util_has_fence(
     const TileCoordsXYZD entrance = ride_get_entrance_location_of_station(ride, entranceId);
     const TileCoordsXYZD exit = ride_get_exit_location_of_station(ride, entranceId);
 
-    return ((entrance.x != entranceX && entrance.y != entranceY) &&
-            (exit.x != entranceX && exit.y != entranceY));
+    return ((entrance.x != entranceX || entrance.y != entranceY) &&
+            (exit.x != entranceX || exit.y != entranceY));
 }
 
 void track_paint_util_paint_floor(paint_session * session, uint8 edges, uint32 colourFlags, uint16 height,
