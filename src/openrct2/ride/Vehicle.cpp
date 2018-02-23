@@ -1539,7 +1539,7 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
     }
 
     uint8 stationId = ride->current_test_station;
-    if (ride_get_entrance_location_of_station(vehicle->ride, stationId).x != LOCATION_NULL)
+    if (ride_get_entrance_location_of_station(ride, stationId).x != LOCATION_NULL)
     {
         uint8 test_segment = ride->current_test_segment;
 
@@ -1603,7 +1603,7 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
         ride->cur_test_track_z           = vehicle->track_z / 8;
         ride->cur_test_track_location.xy = map_location;
 
-        if (ride_get_entrance_location_of_station(vehicle->ride, ride->current_test_station).x == LOCATION_NULL)
+        if (ride_get_entrance_location_of_station(ride, ride->current_test_station).x == LOCATION_NULL)
             return;
 
         uint16 track_elem_type = vehicle->track_type / 4;
@@ -1813,7 +1813,7 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
         }
     }
 
-    if (ride_get_entrance_location_of_station(vehicle->ride, ride->current_test_station).x == LOCATION_NULL)
+    if (ride_get_entrance_location_of_station(ride, ride->current_test_station).x == LOCATION_NULL)
         return;
 
     sint16 x, y;
@@ -2235,7 +2235,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle * vehicle)
         if (!vehicle_open_restraints(vehicle))
             return;
 
-        if (ride_get_entrance_location_of_station(vehicle->ride, vehicle->current_station).x == LOCATION_NULL)
+        if (ride_get_entrance_location_of_station(ride, vehicle->current_station).x == LOCATION_NULL)
         {
             ride->train_at_station[vehicle->current_station] = 0xFF;
             vehicle->sub_state                               = 2;

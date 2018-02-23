@@ -1136,7 +1136,7 @@ void ride_remove_peeps(sint32 rideIndex)
     sint32 exitZ = 0;
     sint32 exitDirection = 255;
     if (stationIndex != -1) {
-        TileCoordsXYZD location = ride_get_exit_location_of_station(rideIndex, stationIndex);
+        TileCoordsXYZD location = ride_get_exit_location_of_station(ride, stationIndex);
         if (location.x != LOCATION_NULL) {
             exitX = location.x;
             exitY = location.y;
@@ -3382,7 +3382,7 @@ static void ride_entrance_set_map_tooltip(rct_tile_element *tileElement)
     if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
         // Get the queue length
         sint32 queueLength = 0;
-        if (ride_get_entrance_location_of_station(rideIndex, stationIndex).x != LOCATION_NULL)
+        if (ride_get_entrance_location_of_station(ride, stationIndex).x != LOCATION_NULL)
             queueLength = ride->queue_length[stationIndex];
 
         set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
@@ -4050,18 +4050,18 @@ static sint32 ride_check_for_entrance_exit(sint32 rideIndex)
         if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
             continue;
 
-        if (ride_get_entrance_location_of_station(rideIndex, i).x != LOCATION_NULL) {
+        if (ride_get_entrance_location_of_station(ride, i).x != LOCATION_NULL) {
             entrance = 1;
         }
 
-        if (ride_get_exit_location_of_station(rideIndex, i).x != LOCATION_NULL) {
+        if (ride_get_exit_location_of_station(ride, i).x != LOCATION_NULL) {
             exit = 1;
         }
 
         // If station start and no entrance/exit
         // Sets same error message as no entrance
-        if (ride_get_exit_location_of_station(rideIndex, i).x == LOCATION_NULL &&
-            ride_get_entrance_location_of_station(rideIndex, i).x == LOCATION_NULL)
+        if (ride_get_exit_location_of_station(ride, i).x == LOCATION_NULL &&
+            ride_get_entrance_location_of_station(ride, i).x == LOCATION_NULL)
         {
             entrance = 0;
             break;

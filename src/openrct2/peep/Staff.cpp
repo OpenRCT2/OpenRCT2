@@ -1212,7 +1212,7 @@ static uint8 staff_mechanic_direction_surface(rct_peep * peep)
         TileCoordsXYZD location = ride_get_exit_location_of_station(peep->current_ride, peep->current_ride_station);
         if (location.x == LOCATION_NULL)
         {
-            ride_get_entrance_location_of_station(peep->current_ride, peep->current_ride_station);
+            location = ride_get_entrance_location_of_station(peep->current_ride, peep->current_ride_station);
         }
 
         LocationXY16 chosenTile = { static_cast<sint16>(location.x * 32), static_cast<sint16>(location.y * 32) };
