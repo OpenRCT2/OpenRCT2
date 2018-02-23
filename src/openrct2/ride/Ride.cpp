@@ -8285,7 +8285,7 @@ void fix_ride_entrance_and_exit_locations()
                 }
                 else
                 {
-                    entranceLoc.direction = (uint8)tile_element_get_direction(tileElement);
+                    ride->entrances[stationIndex].direction = (uint8)tile_element_get_direction(tileElement);
                 }
             }
 
@@ -8299,7 +8299,7 @@ void fix_ride_entrance_and_exit_locations()
                 }
                 else
                 {
-                    exitLoc.direction = (uint8)tile_element_get_direction(tileElement);
+                    ride->exits[stationIndex].direction = (uint8)tile_element_get_direction(tileElement);
                 }
             }
 
