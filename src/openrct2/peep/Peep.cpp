@@ -2618,7 +2618,7 @@ static void peep_choose_seat_from_car(rct_peep * peep, Ride * ride, rct_vehicle 
 static void peep_go_to_ride_entrance(rct_peep * peep, Ride * ride)
 {
     TileCoordsXYZD location = ride_get_entrance_location_of_station(peep->current_ride, peep->current_ride_station);
-    Guard::Assert(location.x != LOCATION_NULL);
+    Guard::Assert(!location.isNull());
     sint32 x = location.x;
     sint32 y = location.y;
 
@@ -2907,7 +2907,7 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
     {
         TileCoordsXYZD entranceLocation = ride_get_entrance_location_of_station(peep->current_ride, peep->current_ride_station);
-        Guard::Assert(entranceLocation.x != LOCATION_NULL);
+        Guard::Assert(!entranceLocation.isNull());
         x = entranceLocation.x;
         y = entranceLocation.y;
 
@@ -3094,9 +3094,9 @@ static void peep_go_to_ride_exit(rct_peep * peep, Ride * ride, sint16 x, sint16 
     sprite_move(x, y, z, (rct_sprite *)peep);
     invalidate_sprite_2((rct_sprite *)peep);
 
-    assert(peep->current_ride_station < MAX_STATIONS);
+    Guard::Assert(peep->current_ride_station < MAX_STATIONS);
     auto exit = ride_get_exit_location_of_station(ride, peep->current_ride_station);
-    assert(exit.x != LOCATION_NULL);
+    Guard::Assert(!exit.isNull());
     x = exit.x;
     y = exit.y;
     x *= 32;
@@ -3530,7 +3530,7 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
     }
 
     TileCoordsXYZD exitLocation = ride_get_exit_location_of_station(peep->current_ride, peep->current_ride_station);
-    Guard::Assert(exitLocation.x != LOCATION_NULL);
+    Guard::Assert(!exitLocation.isNull());
     sint16 z = (sint16)exitLocation.z;
 
     uint8 exit_direction = exitLocation.direction;
@@ -5110,11 +5110,11 @@ static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep * peep, Ride
     if (!firstRun)
     {
         TileCoordsXYZD stationPosition = ride_get_exit_location_of_station(ride, peep->current_ride_station);
-        if (stationPosition.x == LOCATION_NULL)
+        if (stationPosition.isNull())
         {
             stationPosition = ride_get_entrance_location_of_station(ride, peep->current_ride_station);
 
-            if (stationPosition.x == LOCATION_NULL)
+            if (stationPosition.isNull())
             {
                 return true;
             }
@@ -5202,11 +5202,11 @@ static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep * peep, Ride
     if (!firstRun)
     {
         TileCoordsXYZD exitPosition = ride_get_exit_location_of_station(ride, peep->current_ride_station);
-        if (exitPosition.x == LOCATION_NULL)
+        if (exitPosition.isNull())
         {
             exitPosition = ride_get_entrance_location_of_station(ride, peep->current_ride_station);
 
-            if (exitPosition.x == LOCATION_NULL)
+            if (exitPosition.isNull())
             {
                 peep_decrement_num_riders(peep);
                 peep->state = 0;
@@ -6491,7 +6491,7 @@ static void peep_update_heading_to_inspect(rct_peep * peep)
         return;
     }
 
-    if (ride_get_exit_location_of_station(ride, peep->current_ride_station).x == LOCATION_NULL)
+    if (ride_get_exit_location_of_station(ride, peep->current_ride_station).isNull())
     {
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
         peep_decrement_num_riders(peep);
@@ -6552,7 +6552,7 @@ static void peep_update_heading_to_inspect(rct_peep * peep)
 
         if (_unk_F1EE18 & F1EE18_RIDE_ENTRANCE)
         {
-            if (ride_get_exit_location_of_station(ride, exit_index).x != LOCATION_NULL)
+            if (!ride_get_exit_location_of_station(ride, exit_index).isNull())
             {
                 return;
             }
@@ -6678,7 +6678,7 @@ static void peep_update_answering(rct_peep * peep)
 
         if (_unk_F1EE18 & F1EE18_RIDE_ENTRANCE)
         {
-            if (ride_get_exit_location_of_station(ride, exit_index).x != LOCATION_NULL)
+            if (!ride_get_exit_location_of_station(ride, exit_index).isNull())
             {
                 return;
             }
@@ -11431,7 +11431,7 @@ static sint32 guest_path_finding(rct_peep * peep)
     for (uint8 stationNum = 0; stationNum < MAX_STATIONS; ++stationNum)
     {
         // Skip if stationNum has no entrance (so presumably an exit only station)
-        if (ride_get_entrance_location_of_station(rideIndex, stationNum).x == LOCATION_NULL)
+        if (ride_get_entrance_location_of_station(rideIndex, stationNum).isNull())
             continue;
 
         numEntranceStations++;

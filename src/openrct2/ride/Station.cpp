@@ -346,7 +346,7 @@ sint8 ride_get_first_valid_station_exit(Ride * ride)
 {
     for (sint32 i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->exits[i].x != LOCATION_NULL)
+        if (ride->exits[i].x != COORDS_NULL)
         {
             return i;
         }
@@ -404,14 +404,14 @@ void ride_clear_entrance_location_of_station(
         Ride * ride,
         const sint32 stationIndex)
 {
-    ride->entrances[stationIndex].x = LOCATION_NULL;
+    ride->entrances[stationIndex].x = COORDS_NULL;
 }
 
 void ride_clear_exit_location_of_station(
         Ride * ride,
         const sint32 stationIndex)
 {
-    ride->exits[stationIndex].x = LOCATION_NULL;
+    ride->exits[stationIndex].x = COORDS_NULL;
 }
 
 void ride_set_entrance_location_of_station(Ride * ride, const sint32 stationIndex, const TileCoordsXYZD location)

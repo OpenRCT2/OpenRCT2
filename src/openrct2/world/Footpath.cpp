@@ -1610,7 +1610,7 @@ void footpath_update_queue_chains()
         for (sint32 i = 0; i < MAX_STATIONS; i++)
         {
             TileCoordsXYZD location = ride_get_entrance_location_of_station(rideIndex, i);
-            if (location.x == LOCATION_NULL)
+            if (location.isNull())
                 continue;
 
             rct_tile_element * tileElement = map_get_first_element_at(location.x, location.y);

@@ -1210,7 +1210,7 @@ static uint8 staff_mechanic_direction_surface(rct_peep * peep)
     if ((peep->state == PEEP_STATE_ANSWERING || peep->state == PEEP_STATE_HEADING_TO_INSPECTION) && scenario_rand() & 1)
     {
         TileCoordsXYZD location = ride_get_exit_location_of_station(peep->current_ride, peep->current_ride_station);
-        if (location.x == LOCATION_NULL)
+        if (location.isNull())
         {
             location = ride_get_entrance_location_of_station(peep->current_ride, peep->current_ride_station);
         }
@@ -1304,12 +1304,12 @@ static uint8 staff_mechanic_direction_path(rct_peep * peep, uint8 validDirection
         /* Find location of the exit for the target ride station
          * or if the ride has no exit, the entrance. */
         TileCoordsXYZD location = ride_get_exit_location_of_station(peep->current_ride, peep->current_ride_station);
-        if (location.x == LOCATION_NULL)
+        if (location.isNull())
         {
             location = ride_get_entrance_location_of_station(peep->current_ride, peep->current_ride_station);
 
             // If no entrance is present either. This is an incorrect state.
-            if (location.x == LOCATION_NULL)
+            if (location.isNull())
             {
                 return staff_mechanic_direction_path_rand(peep, pathDirections);
             }

@@ -45,6 +45,9 @@ struct LocationXYZ16 {
 assert_struct_size(LocationXYZ16, 6);
 #pragma pack(pop)
 
+constexpr sint32 COORDS_NULL = -1;
+
+
 /*
  * Tile coordinates use 1 x/y increment per tile.
  * Regular ('big', 'sprite') coordinates use 32 x/y increments per tile.
@@ -73,12 +76,16 @@ struct TileCoordsXYZD
 {
     sint32 x, y, z;
     uint8 direction;
+
+    bool isNull() const { return x == COORDS_NULL; };
 };
 
 struct CoordsXYZD
 {
     sint32 x, y, z;
     uint8 direction;
+
+    bool isNull() const { return x == COORDS_NULL; };
 };
 
 

@@ -486,10 +486,19 @@ void S6Exporter::ExportRide(rct2_ride * dst, const Ride * src)
         dst->station_length[i] = src->station_length[i];
         dst->station_depart[i] = src->station_depart[i];
         dst->train_at_station[i] = src->train_at_station[i];
+
         TileCoordsXYZD entrance = ride_get_entrance_location_of_station(src, i);
+        if (entrance.isNull())
+            dst->entrances[i].xy = RCT_XY8_UNDEFINED;
+        else
+            dst->entrances[i] = { (uint8)entrance.x, (uint8)entrance.y };
+
         TileCoordsXYZD exit = ride_get_exit_location_of_station(src, i);
-        dst->entrances[i] = { (uint8)entrance.x, (uint8)entrance.y };
-        dst->exits[i] = { (uint8)exit.x, (uint8)exit.y };
+        if (exit.isNull())
+            dst->exits[i].xy = RCT_XY8_UNDEFINED;
+        else
+            dst->exits[i] = { (uint8)exit.x, (uint8)exit.y };
+
         dst->last_peep_in_queue[i] = src->last_peep_in_queue[i];
 
         dst->length[i] = src->length[i];

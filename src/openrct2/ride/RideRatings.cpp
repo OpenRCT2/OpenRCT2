@@ -212,7 +212,7 @@ static void ride_ratings_update_state_2()
             if (trackType == TRACK_ELEM_END_STATION) {
                 sint32 entranceIndex = tile_element_get_station(tileElement);
                 gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-                if (ride_get_entrance_location_of_station(rideIndex, entranceIndex).x == LOCATION_NULL)
+                if (ride_get_entrance_location_of_station(rideIndex, entranceIndex).isNull())
                 {
                     gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                 }
@@ -353,7 +353,7 @@ static void ride_ratings_begin_proximity_loop()
     for (sint32 i = 0; i < MAX_STATIONS; i++) {
         if (ride->station_starts[i].xy != RCT_XY8_UNDEFINED) {
             gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-            if (ride_get_entrance_location_of_station(rideIndex, i).x == LOCATION_NULL)
+            if (ride_get_entrance_location_of_station(rideIndex, i).isNull())
             {
                 gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             }

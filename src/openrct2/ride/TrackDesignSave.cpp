@@ -863,7 +863,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 
     TileCoordsXYZD location = ride_get_entrance_location_of_station(rideIndex, 0);
 
-    if (location.x == LOCATION_NULL)
+    if (location.isNull())
     {
         gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         SafeFree(td6->maze_elements);
@@ -890,7 +890,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     numMazeElements++;
 
     location = ride_get_entrance_location_of_station(rideIndex, 0);
-    if (location.x == LOCATION_NULL)
+    if (location.isNull())
     {
         gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         SafeFree(td6->maze_elements);
@@ -1068,7 +1068,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
                 location = ride_get_exit_location_of_station(rideIndex, station_index);
             }
 
-            if (location.x == LOCATION_NULL) {
+            if (location.isNull()) {
                 continue;
             }
 
