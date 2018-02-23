@@ -291,12 +291,25 @@ void TextComposition::Clear()
 
 void TextComposition::Delete()
 {
+    size_t selectionOffset = _session.SelectionStart;
+    size_t selectionMaxOffset = _session.Size;
+
+    // Find out how many bytes to delete.
+    const utf8 * ch = _session.Buffer + _session.SelectionStart;
+    do
+    {
+        ch++;
+        selectionOffset++;
+    }
+    while (!utf8_is_codepoint_start(ch) && selectionOffset < selectionMaxOffset);
+
     utf8 * buffer = _session.Buffer;
     utf8 * targetShiftPtr = buffer + _session.SelectionStart;
     utf8 * sourceShiftPtr = targetShiftPtr + _session.SelectionSize;
+    size_t bytesToSkip = selectionOffset - _session.SelectionStart;
 
     // std::min() is used to ensure that shiftSize doesn't underflow; it should be between 0 and _session.Size
-    size_t shiftSize = _session.Size - std::min(_session.Size, (_session.SelectionStart - _session.SelectionSize + 1));
+    size_t shiftSize = _session.Size - std::min(_session.Size, (_session.SelectionStart - _session.SelectionSize + bytesToSkip));
     memmove(targetShiftPtr, sourceShiftPtr, shiftSize);
     _session.SelectionSize = 0;
     RecalculateLength();
