@@ -547,6 +547,70 @@ void banner_reset_broken_index()
     }
 }
 
+void fix_duplicated_banners()
+{
+    // For each banner in the map, check if the banner index is in use already, and if so, create a new entry for it
+    bool               activeBanners[Util::CountOf(gBanners)]{};
+    rct_tile_element * tileElement;
+    for (int y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    {
+        for (int x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            tileElement = map_get_first_element_at(x, y);
+            do
+            {
+                // TODO: Handle walls and large-scenery that use banner indices too. Large scenery can be tricky, as they occupy
+                // multiple tiles that should both refer to the same banner index.
+                if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_BANNER)
+                {
+                    uint8 bannerIndex = tileElement->properties.banner.index;
+                    if (activeBanners[bannerIndex])
+                    {
+                        log_info(
+                            "Duplicated banner with index %d found at x = %d, y = %d and z = %d.", bannerIndex, x, y,
+                            tileElement->base_height);
+
+                        // Banner index is already in use by another banner, so duplicate it
+                        uint8 newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
+                        if (newBannerIndex == BANNER_NULL)
+                        {
+                            log_error("Failed to create new banner.");
+                            continue;
+                        }
+                        Guard::Assert(activeBanners[newBannerIndex] == false);
+
+                        // Copy over the original banner, but update the location
+                        rct_banner & newBanner = gBanners[newBannerIndex];
+                        newBanner              = gBanners[bannerIndex];
+                        newBanner.x            = x;
+                        newBanner.y            = y;
+
+                        // Duplicate user string too
+                        rct_string_id stringIdx = newBanner.string_idx;
+                        if (is_user_string_id(stringIdx))
+                        {
+                            utf8 buffer[USER_STRING_MAX_LENGTH];
+                            format_string(buffer, USER_STRING_MAX_LENGTH, stringIdx, nullptr);
+                            rct_string_id newStringIdx = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, buffer);
+                            if (newStringIdx == 0)
+                            {
+                                log_error("Failed to allocate user string for banner");
+                                continue;
+                            }
+                            newBanner.string_idx = newStringIdx;
+                        }
+
+                        tileElement->properties.banner.index = newBannerIndex;
+                    }
+
+                    // Mark banner index as in-use
+                    activeBanners[bannerIndex] = true;
+                }
+            } while (!tile_element_is_last_for_tile(tileElement++));
+        }
+    }
+}
+
 /**
  *
  *  rct2: 0x006BA058
