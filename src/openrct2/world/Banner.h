@@ -50,6 +50,7 @@ sint32 create_new_banner(uint8 flags);
 rct_tile_element *banner_get_tile_element(sint32 bannerIndex);
 sint32 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z);
 void banner_reset_broken_index();
+void fix_duplicated_banners();
 void game_command_callback_place_banner(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
 
 #endif
