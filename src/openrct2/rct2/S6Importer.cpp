@@ -447,6 +447,7 @@ public:
         map_update_tile_pointers();
         game_convert_strings_to_utf8();
         map_count_remaining_land_rights();
+        determine_ride_entrance_and_exit_locations();
 
         // We try to fix the cycles on import, hence the 'true' parameter
         check_for_sprite_list_cycles(true);

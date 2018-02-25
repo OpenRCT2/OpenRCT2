@@ -8259,7 +8259,7 @@ LocationXY16 ride_get_rotated_coords(sint16 x, sint16 y, sint16 z)
 // an ever-so-slight chance two entrances/exits for the same station reside on the same tile.
 // In cases like this, the one at station height will be considered the "true" one.
 // If none exists at that height, newer and higher placed ones take precedence.
-void fix_ride_entrance_and_exit_locations()
+void determine_ride_entrance_and_exit_locations()
 {
     sint32 rideIndex;
     Ride * ride;

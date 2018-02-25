@@ -234,6 +234,7 @@ public:
         ImportSavedView();
         FixLandOwnership();
         CountBlockSections();
+        determine_ride_entrance_and_exit_locations();
 
         // Importing the strings is done later on, although that approach needs looking at.
         //game_convert_strings_to_utf8();
