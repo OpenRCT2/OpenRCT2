@@ -206,7 +206,7 @@ namespace OpenRCT2 { namespace Audio
         auto source = new MemoryAudioSource();
         if (source->LoadCSS1(path.c_str(), index))
         {
-            if (targetFormat != nullptr)
+            if (targetFormat != nullptr && source->GetFormat() != *targetFormat)
             {
                 if (!source->Convert(targetFormat))
                 {
@@ -228,7 +228,7 @@ namespace OpenRCT2 { namespace Audio
         auto source = new MemoryAudioSource();
         if (source->LoadWAV(path.c_str()))
         {
-            if (targetFormat != nullptr)
+            if (targetFormat != nullptr && source->GetFormat() != *targetFormat)
             {
                 if (!source->Convert(targetFormat))
                 {
