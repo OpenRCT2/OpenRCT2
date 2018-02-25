@@ -249,9 +249,32 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex,
             tileElement->properties.path.edges |= ((pathEdges << 1) | (pathEdges >> 3)) & 0x0F;
             tileElement->properties.path.edges |= ((pathCorners << 1) | (pathCorners >> 3)) & 0xF0;
             break;
+        case TILE_ELEMENT_TYPE_ENTRANCE:
+        {
+            // Update element rotation
+            newRotation = tile_element_get_direction_with_offset(tileElement, 1);
+            tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
+            tileElement->type |= newRotation;
+
+            // Update ride's known entrance/exit rotataion
+            Ride * ride = get_ride(tileElement->properties.entrance.ride_index);
+            uint8  stationIndex = tileElement->properties.entrance.index;
+            if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE)
+            {
+                auto entrance = ride_get_entrance_location_of_station(ride, stationIndex);
+                entrance.direction = newRotation;
+                ride_set_entrance_location_of_station(ride, stationIndex, entrance);
+            }
+            else if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT)
+            {
+                auto exit = ride_get_exit_location_of_station(ride, stationIndex);
+                exit.direction = newRotation;
+                ride_set_exit_location_of_station(ride, stationIndex, exit);
+            }
+            break;
+        }
         case TILE_ELEMENT_TYPE_TRACK:
         case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-        case TILE_ELEMENT_TYPE_ENTRANCE:
         case TILE_ELEMENT_TYPE_WALL:
             newRotation = tile_element_get_direction_with_offset(tileElement, 1);
             tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
@@ -390,6 +413,28 @@ sint32 tile_inspector_any_base_height_offset(sint32 x, sint32 y, sint16 elementI
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE)
+        {
+            uint8 entranceType = tileElement->properties.entrance.type;
+            if (entranceType != ENTRANCE_TYPE_PARK_ENTRANCE)
+            {
+                // Update the ride's known entrance or exit height
+                Ride * ride          = get_ride(tileElement->properties.entrance.ride_index);
+                uint8  entranceIndex = tileElement->properties.entrance.index;
+                auto   entrance      = ride_get_entrance_location_of_station(ride, entranceIndex);
+                auto   exit          = ride_get_exit_location_of_station(ride, entranceIndex);
+                uint8 z = tileElement->base_height;
+
+                // Make sure this is the correct entrance or exit, in case there are multiple on the same tile
+                if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == x && entrance.y == y && entrance.z == z)
+                    ride_set_entrance_location_of_station(
+                        ride, entranceIndex, { entrance.x, entrance.y, z + heightOffset, entrance.direction });
+                else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == x && exit.y == y && exit.z == z)
+                    ride_set_exit_location_of_station(
+                        ride, entranceIndex, { exit.x, exit.y, z + heightOffset, exit.direction });
+            }
+        }
+
         tileElement->base_height += heightOffset;
         tileElement->clearance_height += heightOffset;
 
