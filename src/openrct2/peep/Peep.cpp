@@ -2425,7 +2425,7 @@ static constexpr const LocationXY16 _981F2C[] = {
  */
 static void peep_update_sitting(rct_peep * peep)
 {
-    if (peep->sub_state == 0)
+    if (peep->sub_state == PEEP_SITTING_TRYING_TO_SIT)
     {
         if (!checkForPath(peep))
             return;
@@ -2449,12 +2449,12 @@ static void peep_update_sitting(rct_peep * peep)
         peep->next_action_sprite_type = 7;
         peep_switch_to_next_action_sprite_type(peep);
 
-        peep->sub_state++;
+        peep->sub_state = PEEP_SITTING_SAT_DOWN;
 
         // Sets time to sit on seat
         peep->time_to_sitdown = (129 - peep->energy) * 16 + 50;
     }
-    else if (peep->sub_state == 1)
+    else if (peep->sub_state == PEEP_SITTING_SAT_DOWN)
     {
         if (peep->action < 0xFE)
         {
@@ -2673,14 +2673,141 @@ static void peep_go_to_ride_entrance(rct_peep * peep, Ride * ride)
     remove_peep_from_queue(peep);
 }
 
+static bool peep_find_vehicle_to_enter(rct_peep * peep, Ride * ride, uint8 * car_array, uint8 * car_array_size)
+{
+    uint8 chosen_train = 0xFF;
+
+    if (ride->mode == RIDE_MODE_BUMPERCAR || ride->mode == RIDE_MODE_RACE)
+    {
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+            return false;
+
+        for (sint32 i = 0; i < ride->num_vehicles; ++i)
+        {
+            rct_vehicle * vehicle = GET_VEHICLE(ride->vehicles[i]);
+
+            if (vehicle->next_free_seat >= vehicle->num_seats)
+                continue;
+
+            if (vehicle->status != VEHICLE_STATUS_WAITING_FOR_PASSENGERS)
+                continue;
+            chosen_train = i;
+            break;
+        }
+    }
+    else
+    {
+        chosen_train = ride->train_at_station[peep->current_ride_station];
+    }
+    if (chosen_train == 0xFF)
+    {
+        return false;
+    }
+
+    peep->current_train = chosen_train;
+    uint8 * car_array_pointer = car_array;
+
+    sint32 i = 0;
+
+    uint16        vehicle_id = ride->vehicles[chosen_train];
+    rct_vehicle * vehicle = GET_VEHICLE(vehicle_id);
+
+    for (; vehicle_id != SPRITE_INDEX_NULL; vehicle_id = vehicle->next_vehicle_on_train, i++)
+    {
+        vehicle = GET_VEHICLE(vehicle_id);
+
+        uint8 num_seats = vehicle->num_seats;
+        if (vehicle_is_used_in_pairs(vehicle))
+        {
+            num_seats &= VEHICLE_SEAT_NUM_MASK;
+            if (vehicle->next_free_seat & 1)
+            {
+                peep->current_car = i;
+                peep_choose_seat_from_car(peep, ride, vehicle);
+                peep_go_to_ride_entrance(peep, ride);
+                return false;
+            }
+        }
+        if (num_seats == vehicle->next_free_seat)
+            continue;
+
+        if (ride->mode == RIDE_MODE_FORWARD_ROTATION || ride->mode == RIDE_MODE_BACKWARD_ROTATION)
+        {
+            uint8 position = (((~vehicle->vehicle_sprite_type + 1) >> 3) & 0xF) * 2;
+            if (vehicle->peep[position] != SPRITE_INDEX_NULL)
+                continue;
+        }
+
+        *car_array_pointer++ = i;
+    }
+
+    *car_array_size = (uint8)(car_array_pointer - car_array);
+
+    if (*car_array_size == 0)
+        return false;
+
+    return true;
+}
+
+static void peep_update_ride_ss_at_entrance_try_leave(rct_peep * peep)
+{
+    // Destination Tolerance is zero when peep has completely
+    // entered entrance
+    if (peep->destination_tolerance == 0)
+    {
+        remove_peep_from_queue(peep);
+        peep_decrement_num_riders(peep);
+        peep->state = PEEP_STATE_FALLING;
+        peep_window_state_update(peep);
+    }
+}
+
+static bool peep_check_ride_price_at_entrance(rct_peep * peep, Ride * ride, money32 ridePrice)
+{
+    if ((peep->item_standard_flags & PEEP_ITEM_VOUCHER) &&
+        peep->voucher_type == VOUCHER_TYPE_RIDE_FREE &&
+        peep->voucher_arguments == peep->current_ride)
+        return true;
+    
+    if (peep->cash_in_pocket <= 0)
+    {
+        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
+        peep_update_ride_ss_at_entrance_try_leave(peep);
+        return false;
+    }
+
+    if (ridePrice > peep->cash_in_pocket)
+    {
+        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_AFFORD_0, peep->current_ride);
+        peep_update_ride_ss_at_entrance_try_leave(peep);
+        return false;
+    }
+
+    uint16 value = ride->value;
+    if (value != RIDE_VALUE_UNDEFINED)
+    {
+        if (value * 2 < ridePrice)
+        {
+            peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_VALUE, peep->current_ride);
+            peep_update_ride_ss_at_entrance_try_leave(peep);
+            return false;
+        }
+    }
+    return true;
+}
+
 /**
  *
  *  rct2: 0x00691A3B
  */
-static void peep_update_ride_sub_state_0(rct_peep * peep)
+static void peep_update_ride_ss_at_entrance(rct_peep * peep)
 {
     Ride * ride = get_ride(peep->current_ride);
 
+    // The peep will keep advancing in the entranceway
+    // whilst in this state. When it has reached the very
+    // front of the queue destination tolerance is set to 
+    // zero to indicate it is final decision time (try_leave will pass).
     if (peep->destination_tolerance != 0)
     {
         invalidate_sprite_2((rct_sprite *)peep);
@@ -2705,8 +2832,8 @@ static void peep_update_ride_sub_state_0(rct_peep * peep)
         }
     }
 
-    uint8 car_array_size = 0xFF;
-    uint8 car_array[255];
+    uint8 carArraySize = 0xFF;
+    uint8 carArray[255];
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
     {
@@ -2715,87 +2842,13 @@ static void peep_update_ride_sub_state_0(rct_peep * peep)
     }
     else
     {
-        uint8 chosen_train = 0xFF;
-
-        if (ride->mode == RIDE_MODE_BUMPERCAR || ride->mode == RIDE_MODE_RACE)
-        {
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
-                return;
-
-            for (sint32 i = 0; i < ride->num_vehicles; ++i)
-            {
-                rct_vehicle * vehicle = GET_VEHICLE(ride->vehicles[i]);
-
-                if (vehicle->next_free_seat >= vehicle->num_seats)
-                    continue;
-
-                if (vehicle->status != VEHICLE_STATUS_WAITING_FOR_PASSENGERS)
-                    continue;
-                chosen_train = i;
-                break;
-            }
-        }
-        else
-        {
-            chosen_train = ride->train_at_station[peep->current_ride_station];
-        }
-        if (chosen_train == 0xFF)
-        {
-            return;
-        }
-
-        peep->current_train       = chosen_train;
-        uint8 * car_array_pointer = car_array;
-
-        sint32 i = 0;
-
-        uint16        vehicle_id = ride->vehicles[chosen_train];
-        rct_vehicle * vehicle    = GET_VEHICLE(vehicle_id);
-
-        for (; vehicle_id != SPRITE_INDEX_NULL; vehicle_id = vehicle->next_vehicle_on_train, i++)
-        {
-            vehicle = GET_VEHICLE(vehicle_id);
-
-            uint8 num_seats = vehicle->num_seats;
-            if (vehicle_is_used_in_pairs(vehicle))
-            {
-                num_seats &= VEHICLE_SEAT_NUM_MASK;
-                if (vehicle->next_free_seat & 1)
-                {
-                    peep->current_car = i;
-                    peep_choose_seat_from_car(peep, ride, vehicle);
-                    peep_go_to_ride_entrance(peep, ride);
-                    return;
-                }
-            }
-            if (num_seats == vehicle->next_free_seat)
-                continue;
-
-            if (ride->mode == RIDE_MODE_FORWARD_ROTATION || ride->mode == RIDE_MODE_BACKWARD_ROTATION)
-            {
-                uint8 position = (((~vehicle->vehicle_sprite_type + 1) >> 3) & 0xF) * 2;
-                if (vehicle->peep[position] != SPRITE_INDEX_NULL)
-                    continue;
-            }
-
-            *car_array_pointer++ = i;
-        }
-
-        car_array_size = (uint8)(car_array_pointer - car_array);
-
-        if (car_array_size == 0)
+        if (!peep_find_vehicle_to_enter(peep, ride, carArray, &carArraySize))
             return;
     }
 
     if (ride->status != RIDE_STATUS_OPEN || ride->vehicle_change_timeout != 0)
     {
-        if (peep->destination_tolerance == 0)
-        {
-            remove_peep_from_queue(peep);
-            peep_decrement_num_riders(peep);
-            peep->state = PEEP_STATE_FALLING;
-            peep_window_state_update(peep);
-        }
+        peep_update_ride_ss_at_entrance_try_leave(peep);
         return;
     }
 
@@ -2805,58 +2858,13 @@ static void peep_update_ride_sub_state_0(rct_peep * peep)
     money16 ridePrice = ride_get_price(ride);
     if (ridePrice != 0)
     {
-        if (!(peep->item_standard_flags & PEEP_ITEM_VOUCHER) ||
-            peep->voucher_type != VOUCHER_TYPE_RIDE_FREE ||
-            peep->voucher_arguments != peep->current_ride)
-        {
-            if (peep->cash_in_pocket <= 0)
-            {
-                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
-                if (peep->destination_tolerance == 0)
-                {
-                    remove_peep_from_queue(peep);
-                    peep_decrement_num_riders(peep);
-                    peep->state = PEEP_STATE_FALLING;
-                    peep_window_state_update(peep);
-                }
-                return;
-            }
-
-            if (ridePrice > peep->cash_in_pocket)
-            {
-                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_AFFORD_0, peep->current_ride);
-                if (peep->destination_tolerance == 0)
-                {
-                    remove_peep_from_queue(peep);
-                    peep_decrement_num_riders(peep);
-                    peep->state = PEEP_STATE_FALLING;
-                    peep_window_state_update(peep);
-                }
-                return;
-            }
-
-            uint16 value = ride->value;
-            if (value != RIDE_VALUE_UNDEFINED)
-            {
-                if (value * 2 < ridePrice)
-                {
-                    peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_VALUE, peep->current_ride);
-                    if (peep->destination_tolerance == 0)
-                    {
-                        remove_peep_from_queue(peep);
-                        peep_decrement_num_riders(peep);
-                        peep->state = PEEP_STATE_FALLING;
-                        peep_window_state_update(peep);
-                    }
-                    return;
-                }
-            }
-        }
+        if (!peep_check_ride_price_at_entrance(peep, ride, ridePrice))
+            return;
     }
 
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
     {
-        rct_vehicle * vehicle = peep_choose_car_from_ride(peep, ride, car_array, car_array_size);
+        rct_vehicle * vehicle = peep_choose_car_from_ride(peep, ride, carArray, carArraySize);
         peep_choose_seat_from_car(peep, ride, vehicle);
     }
     peep_go_to_ride_entrance(peep, ride);
@@ -3227,7 +3235,7 @@ static void peep_update_ride_sub_state_2_rejoin_queue(rct_peep * peep, Ride * ri
 
     peep_decrement_num_riders(peep);
     peep->state     = PEEP_STATE_QUEUING_FRONT;
-    peep->sub_state = 0;
+    peep->sub_state = PEEP_RIDE_SS_AT_ENTRANCE;
     peep_window_state_update(peep);
 
     ride_queue_insert_guest_at_front(ride, peep->current_ride_station, peep);
@@ -4504,8 +4512,8 @@ static void peep_update_ride(rct_peep * peep)
 {
     switch (peep->sub_state)
     {
-    case 0:
-        peep_update_ride_sub_state_0(peep);
+    case PEEP_RIDE_SS_AT_ENTRANCE:
+        peep_update_ride_ss_at_entrance(peep);
         break;
     case 1:
         peep_update_ride_sub_state_1(peep);
@@ -5447,7 +5455,7 @@ static void peep_update_queuing(rct_peep * peep)
             peep_decrement_num_riders(peep);
             peep->state = PEEP_STATE_QUEUING_FRONT;
             peep_window_state_update(peep);
-            peep->sub_state = 0;
+            peep->sub_state = PEEP_RIDE_SS_AT_ENTRANCE;
             return;
         }
         // Give up queueing for the ride
@@ -6080,7 +6088,7 @@ static sint32 peep_update_walking_find_bench(rct_peep * peep)
     peep->state = PEEP_STATE_SITTING;
     peep_window_state_update(peep);
 
-    peep->sub_state = 0;
+    peep->sub_state = PEEP_SITTING_TRYING_TO_SIT;
 
     sint32 ebx = peep->var_37 & 0x7;
     sint32 x   = (peep->x & 0xFFE0) + _981F2C[ebx].x;

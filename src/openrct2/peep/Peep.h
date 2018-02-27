@@ -218,6 +218,20 @@ enum PEEP_STATE
     PEEP_STATE_INSPECTING            = 23
 };
 
+enum PEEP_SITTING_SUB_STATE
+{
+    PEEP_SITTING_TRYING_TO_SIT = 0,
+    PEEP_SITTING_SAT_DOWN
+};
+
+enum PEEP_RIDE_SUB_STATE
+{
+    PEEP_RIDE_SS_AT_ENTRANCE = 0,
+    PEEP_RIDE_SS_IN_ENTRANCE = 1,
+    PEEP_RIDE_SS_WAIT_AT_ENTRANCE_BACK = 2,
+    PEEP_RIDE_SS_LEAVE_ENTRANCE = 3, // Calculate what direction and where to go after commiting to entering vehicle
+};
+
 enum PEEP_ACTION_EVENTS
 {
     PEEP_ACTION_CHECK_TIME = 0,
