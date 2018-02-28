@@ -4460,7 +4460,7 @@ STR_6150    :Neplatná odpověď master serveru (chybí JSON číslo)
 STR_6151    :Master server neposlal seznam herních serverů
 STR_6152    :Neplatná odpověď master serveru (chybí JSON pole)
 STR_6153    :Zpoplatněné vstupné / Zpoplatněné atrakce
-STR_6154    :Není doporučeno spouštět OpenRCT2 v řežimu zvýšených oprávnění.
+STR_6154    :Z bezpečnostních důvodů se nedoporučuje spouštět OpenRCT2 v řežimu zvýšených oprávnění.
 STR_6155    :Není nainstalován KDialog ani Zenity. Jeden z nich prosím nainstalujte, nebo konfigurujte z příkazové řádky.
 STR_6156    :Tento název je rezervován a nelze jej použít.
 STR_6157    :Konzole
