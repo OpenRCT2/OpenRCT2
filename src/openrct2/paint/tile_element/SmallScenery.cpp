@@ -25,13 +25,6 @@
 #include "../../world/Scenery.h"
 #include "../../world/SmallScenery.h"
 
-static constexpr const LocationXY16 offsets[] = {
-    {  3,  3 },
-    {  3, 17 },
-    { 17,  3 },
-    {  3,  3 }
-};
-
 static constexpr const LocationXY16 lengths[] = {
     { 12, 26 },
     { 26, 12 },
@@ -85,8 +78,14 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, cons
     {
         if (scenery_small_entry_has_flag(entry,  SMALL_SCENERY_FLAG_HALF_SPACE)) {
             // 6DFFE3:
-            boxoffset.x = offsets[direction].x;
-            boxoffset.y = offsets[direction].y;
+            static constexpr const LocationXY16 scenery_half_tile_offsets[] = {
+                {  3,  3 },
+                {  3, 17 },
+                { 17,  3 },
+                {  3,  3 }
+            };
+            boxoffset.x = scenery_half_tile_offsets[direction].x;
+            boxoffset.y = scenery_half_tile_offsets[direction].y;
             boxlength.x = lengths[direction].x;
             boxlength.y = lengths[direction].y;
             x_offset = 3;

@@ -37,14 +37,6 @@ enum VirtualFloorFlags
     VIRTUAL_FLOOR_FORCE_INVALIDATION = (1 << 2),
 };
 
-static constexpr const CoordsXY offsets[4] =
-{
-    { -32,   0 },
-    {   0,  32 },
-    {  32,   0 },
-    {   0, -32 }
-};
-
 bool virtual_floor_is_enabled()
 {
     return (_virtualFloorFlags & VIRTUAL_FLOOR_FLAG_ENABLED) != 0;
@@ -304,6 +296,14 @@ static void virtual_floor_get_tile_properties(sint16 x, sint16 y, sint16 height,
 
 void virtual_floor_paint(paint_session * session)
 {
+    static constexpr const CoordsXY scenery_half_tile_offsets[4] =
+    {
+        { -32,   0 },
+        {   0,  32 },
+        {  32,   0 },
+        {   0, -32 }
+    };
+
     uint8 direction = session->CurrentRotation;
 
     // This is a virtual floor, so no interactions
@@ -330,8 +330,8 @@ void virtual_floor_paint(paint_session * session)
     for (uint8 i = 0; i < 4; i++)
     {
         uint8 effectiveRotation = (4 + i - direction) % 4;
-        sint16 theirLocationX = session->MapPosition.x + offsets[effectiveRotation].x;
-        sint16 theirLocationY = session->MapPosition.y + offsets[effectiveRotation].y;
+        sint16 theirLocationX = session->MapPosition.x + scenery_half_tile_offsets[effectiveRotation].x;
+        sint16 theirLocationY = session->MapPosition.y + scenery_half_tile_offsets[effectiveRotation].y;
 
         bool    theyAreOccupied;
         uint8   theirOccupiedEdges;
