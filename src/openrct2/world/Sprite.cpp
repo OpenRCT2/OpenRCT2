@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cmath>
 #include "../audio/audio.h"
 #include "../Cheats.h"
 #include "../core/Math.hpp"
