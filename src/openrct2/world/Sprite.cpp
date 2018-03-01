@@ -782,9 +782,9 @@ void sprite_position_tween_all(float alpha)
                 continue;
             }
             sprite_set_coordinates(
-                posB.x * alpha + posA.x * inv,
-                posB.y * alpha + posA.y * inv,
-                posB.z * alpha + posA.z * inv,
+                std::round(posB.x * alpha + posA.x * inv),
+                std::round(posB.y * alpha + posA.y * inv),
+                std::round(posB.z * alpha + posA.z * inv),
                 sprite
             );
             invalidate_sprite_2(sprite);
