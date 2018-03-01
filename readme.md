@@ -46,7 +46,7 @@ If you want to help translate the game to your language, please stop by the Loca
 
 ---
 
-# 1 Introduction
+# 1. Introduction
 
 **OpenRCT2** is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2). The gameplay revolves around building and maintaining an amusement park containing attractions, shops and facilities. The player must try to make a profit and maintain a good park reputation whilst keeping the guests happy. OpenRCT2 allows for both scenario and sandbox play. Scenarios require the player to complete a certain objective in a set time limit whilst sandbox allows the player to build a more flexible park with optionally no restrictions or finance.
 
@@ -54,7 +54,7 @@ RollerCoaster Tycoon 2 was originally written by Chris Sawyer in x86 assembly an
 
 ---
 
-# 2 Downloading the game (pre-built)
+# 2. Downloading the game (pre-built)
 
 OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](http://store.steampowered.com/app/285330/) or [GOG.com](http://www.gog.com/game/rollercoaster_tycoon_2). If you have the original RollerCoaster Tycoon and its expansion packs, you can [point OpenRCT2 to these](https://github.com/OpenRCT2/OpenRCT2/wiki/Loading-RCT1-scenarios-and-data) in order to play the original scenarios.
 
@@ -72,7 +72,7 @@ Some \*BSD operating systems offer native packages. These packages are usually t
 
 ---
 
-# 3 Building the game
+# 3. Building the game
 
 ## 3.1 Building prerequisites
 
@@ -164,7 +164,7 @@ Detailed instructions can be found on our [wiki](https://github.com/OpenRCT2/Ope
 
 ---
 
-# 4 Contributing
+# 4. Contributing
 OpenRCT2 uses the [gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#gitflow-workflow). If you are implementing a new feature or logic from the original game, please branch off and perform pull requests to ```develop```. If you are fixing a bug for the next release, please branch off and perform pull requests to the correct release branch. ```master``` only contains tagged releases, you should never branch off this.
 
 Please read our [contributing guidelines](https://github.com/OpenRCT2/OpenRCT2/blob/develop/CONTRIBUTING.md) for information.
@@ -180,12 +180,12 @@ You can translate the game into other languages by editing the language files in
 
 ---
 
-# 5 Licence
+# 5. Licence
 **OpenRCT2** is licensed under the GNU General Public License version 3.
 
 ---
 
-# 6 More information
+# 6. More information
 - [GitHub](https://github.com/OpenRCT2/OpenRCT2)
 - [OpenRCT2.org](https://openrct2.org)
 - [Forums](https://openrct2.org/forums/)
@@ -200,7 +200,7 @@ You can translate the game into other languages by editing the language files in
 | [![art128_wide](https://user-images.githubusercontent.com/550290/36566955-4833c9a2-1825-11e8-84b8-b4320888c322.png)](https://user-images.githubusercontent.com/550290/36566661-6a541128-1824-11e8-9633-8521d1a67d7e.png) | ![](https://github.com/OpenTTD/OpenTTD/raw/850d05d24d4768c81d97765204ef2a487dd4972c/media/openttd.128.png) | ![](https://user-images.githubusercontent.com/550290/36507534-4693f354-175a-11e8-93a7-faa0481474fb.png) | ![](https://raw.githubusercontent.com/OpenRA/OpenRA/bleed/packaging/linux/hicolor/128x128/apps/openra-ra.png) |
 | Chris Sawyer's Locomotion | Transport Tycoon Deluxe | Age of Empires 2 | Red Alert |
 
-# 7 Sponsors
+# 7. Sponsors
 
 Companies that kindly allow us to use their stuff:
 
