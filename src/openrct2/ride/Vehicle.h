@@ -265,7 +265,7 @@ enum {
     VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION = 1 << 23,             // Set on animated vehicles like the Multi-dimension coaster trains, Miniature Railway locomotives and Helicycles.
     VEHICLE_ENTRY_FLAG_RIDER_ANIMATION = 1 << 24,               // Set when the animation updates rider sprite positions
     VEHICLE_ENTRY_FLAG_25 = 1 << 25,
-    VEHICLE_ENTRY_FLAG_26 = 1 << 26,
+    VEHICLE_ENTRY_FLAG_XY_LOADING_POSITIONS = 1 << 26,
     VEHICLE_ENTRY_FLAG_SLIDE_SWING = 1 << 27,                   // Set on dingy slides. They have there own swing value calculations and have a different amount of images.
     VEHICLE_ENTRY_FLAG_CHAIRLIFT = 1 << 28,
     VEHICLE_ENTRY_FLAG_WATER_RIDE = 1 << 29,                    // Set on rides where water would provide continuous propulsion

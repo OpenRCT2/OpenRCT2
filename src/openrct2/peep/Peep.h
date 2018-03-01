@@ -228,7 +228,7 @@ enum PEEP_RIDE_SUB_STATE
 {
     PEEP_RIDE_SS_AT_ENTRANCE = 0,
     PEEP_RIDE_SS_IN_ENTRANCE = 1,
-    PEEP_RIDE_SS_WAIT_AT_ENTRANCE_BACK = 2,
+    PEEP_RIDE_SS_FREE_VEHICLE_CHECK = 2, //Spend money on ride
     PEEP_RIDE_SS_LEAVE_ENTRANCE = 3, // Calculate what direction and where to go after commiting to entering vehicle
 };
 
