@@ -43,6 +43,7 @@ If you want to help translate the game to your language, please stop by the Loca
   - 4.3 - [Translation](#43-translation)
 - 5 - [Licence](#5-licence)
 - 6 - [More information](#6-more-information)
+- 7 - [Sponsors](#7-sponsors)
 
 ---
 
