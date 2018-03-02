@@ -8361,7 +8361,7 @@ void determine_ride_entrance_and_exit_locations()
                                     if (ride->exits[stationIndex].z == expectedHeight)
                                         continue;
                                     if (ride->exits[stationIndex].z > tileElement->base_height)
-                                        continue;;
+                                        continue;
                                 }
 
                                 // Found our exit

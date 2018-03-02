@@ -2683,7 +2683,8 @@ static void peep_update_ride_sub_state_0(rct_peep * peep)
             sint16 z = peep->z;
             if (xy_distance < 16)
             {
-                z = ride->station_heights[peep->current_ride_station] * 8 + 2;
+                auto entrance = ride_get_entrance_location_of_station(ride, peep->current_ride_station);
+                z = entrance.z * 8 + 2;
             }
             sprite_move(x, y, z, (rct_sprite *)peep);
             invalidate_sprite_2((rct_sprite *)peep);
