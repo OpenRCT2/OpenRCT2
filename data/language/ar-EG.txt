@@ -514,7 +514,7 @@ STR_0509    :
 STR_0510    :
 STR_0511    :
 STR_0512    :أفعوانية دوارة مدمجة مع مرتفع حلزوني و إنخفاضات ملتفه ناعمة.
-STR_0513    :A looping roller coaster where the riders ride in a standing position
+STR_0513    :أفعوانية دوارة للأعلي حيث يبقي الركب في مسار أفقي.
 STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
 STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
 STR_0516    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
@@ -535,7 +535,7 @@ STR_0530    :Cars hang from a steel cable which runs continuously from one end o
 STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_0532    :Maze is constructed from 6-foot tall hedges or walls, and guests wander around the maze leaving only when they find the exit
 STR_0533    :Wooden building with an internal staircase and an external spiral slide for use with slide mats
-STR_0534    :Self-drive petrol-engined go karts
+STR_0534    :سيارات الكارتينج ذاتية القيادة بمحرك يعمل بالبنزين
 STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
 STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
 STR_0537    :سيارات قيادة ذاتية تعمل بالكهرباء
@@ -857,7 +857,7 @@ STR_0851    :{WINDOW_COLOUR_2}تم تصميمها وبرمجتها من خلال
 STR_0852    :{WINDOW_COLOUR_2}الجرافيك بواسطة سايمون بوستر
 STR_0853    :{WINDOW_COLOUR_2}الصوت والموسيقي بواسطة أليستر بريمبل
 STR_0854    :{WINDOW_COLOUR_2}أصوات إضافية سُجلت بواسطة ديفيد إليس
-STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
+STR_0855    :{WINDOW_COLOUR_2}إعادة التقديم بواسطة Jacqui Lyons في Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}شكراً إلي:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
 STR_0858    :<removed string - do not use>
@@ -910,15 +910,15 @@ STR_0904    :{SMALLFONT}{BLACK}Left-hand curve (large radius)
 STR_0905    :{SMALLFONT}{BLACK}Right-hand curve (large radius)
 STR_0906    :{SMALLFONT}{BLACK}Straight
 STR_0907    :إنحدار
-STR_0908    :Roll/Banking
-STR_0909    :Seat Rot.
+STR_0908    :لفة/صرف
+STR_0909    :دوران الكرسي.
 STR_0910    :{SMALLFONT}{BLACK}Roll for left-hand curve
 STR_0911    :{SMALLFONT}{BLACK}Roll for right-hand curve
-STR_0912    :{SMALLFONT}{BLACK}No roll
-STR_0913    :{SMALLFONT}{BLACK}Move to previous section
-STR_0914    :{SMALLFONT}{BLACK}Move to next section
-STR_0915    :{SMALLFONT}{BLACK}Construct the selected section
-STR_0916    :{SMALLFONT}{BLACK}Remove the highlighted section
+STR_0912    :{SMALLFONT}{BLACK}لا إلتفاف
+STR_0913    :{SMALLFONT}{BLACK}تحرك إلي الموضع السابق
+STR_0914    :{SMALLFONT}{BLACK}تحرك إلي الموضع التالي
+STR_0915    :{SMALLFONT}{BLACK}بناء الموضع الحالي
+STR_0916    :{SMALLFONT}{BLACK}حذف الموضع المُحدد
 STR_0917    :{SMALLFONT}{BLACK}Vertical drop
 STR_0918    :{SMALLFONT}{BLACK}Steep slope down
 STR_0919    :{SMALLFONT}{BLACK}Slope down
@@ -933,8 +933,8 @@ STR_0927    :لا يمكن بناء هذا هنا...
 STR_0928    :{SMALLFONT}{BLACK}Chain lift, to pull cars up slopes
 STR_0929    :'S' Bend (left)
 STR_0930    :'S' Bend (right)
-STR_0931    :Vertical Loop (left)
-STR_0932    :Vertical Loop (right)
+STR_0931    :دوران رأسي (للشمال)
+STR_0932    :دوران رأسي (لليمين)
 STR_0933    :علي أو خفض الأرض أولاً
 STR_0934    :مدخل الرحلة في الطريق
 STR_0935    :مخرج الرحلة في الطريق
@@ -944,8 +944,8 @@ STR_0938    :{SMALLFONT}{BLACK}تعديل إرتفاع الأرض والإنحد
 STR_0939    :Underground/Inside View
 STR_0940    :Hide Base Land
 STR_0941    :Hide Vertical Faces
-STR_0942    :See-Through Rides
-STR_0943    :See-Through Scenery
+STR_0942    :شاهد من خلال الرحلات
+STR_0943    :شاهد من خلال المشاهد
 STR_0944    :حفظ
 STR_0945    :لا تحفظ
 STR_0946    :إلغاء
@@ -957,7 +957,7 @@ STR_0951    :أخرج من اللعبة
 STR_0952    :أخرج من اللعبة
 STR_0953    :تحميل صورة طبيعية
 STR_0954    :
-STR_0955    :{SMALLFONT}{BLACK}Select seat rotation angle for this track section
+STR_0955    :{SMALLFONT}{BLACK}تحديد زاوية دوران مقعد في قسم المسار هذا
 STR_0956    :-180{DEGREE}
 STR_0957    :-135{DEGREE}
 STR_0958    :-90{DEGREE}
@@ -978,11 +978,11 @@ STR_0972    :إلغاء
 STR_0973    :حسناً
 STR_0974    :الرحلات
 STR_0975    :المتاجر والأكشاك
-STR_0976    :Toilets and Information Kiosks
+STR_0976    :أكشاك الحمامات والمعلومات
 STR_0977    :New Transport Rides
 STR_0978    :New Gentle Rides
-STR_0979    :New Roller Coasters
-STR_0980    :New Thrill Rides
+STR_0979    :أفعوانيات جديدة
+STR_0980    :رحلات تشوقية جديدة
 STR_0981    :رحلات مائية جديدة
 STR_0982    :متاجر و إكشاك جديدة
 STR_0983    :البحث والتطوير
@@ -997,7 +997,7 @@ STR_0991    :Station platform
 STR_0992    :{SMALLFONT}{BLACK}Demolish entire ride/attraction
 STR_0993    :Demolish ride/attraction
 STR_0994    :تدمير
-STR_0995    :{WINDOW_COLOUR_1}Are you sure you want to completely demolish {STRINGID}?
+STR_0995    :{WINDOW_COLOUR_1}هل أنت متأكد من تدمير {STRINGID}?
 STR_0996    :نظرة عامة
 STR_0997    :{SMALLFONT}{BLACK}أظهر التحديد
 STR_0998    :No more stations allowed on this ride
@@ -1035,13 +1035,13 @@ STR_1029    :Cannot build partly above and partly below water!
 STR_1030    :Can only build this underwater!
 STR_1031    :لا يمكن بناء هذا تحت الماء!
 STR_1032    :يمكن بناء هذا فقط فوق الماء!
-STR_1033    :Can only build this above ground!
-STR_1034    :Can only build this on land!
-STR_1035    :Local authority won't allow construction above tree-height!
+STR_1033    :يمكن بناء هذا فقط فوق الأرض!
+STR_1034    :يمكن بناء هذا فقط علي الأرض!
+STR_1035    :الحكومة المحلية لا تسمح بالبناء فوف مستوي إرتفاع الأشجار!
 STR_1036    :تحميل اللعبة
 STR_1037    :تحميل مشهد
 STR_1038    :تحويل اللعبة المحفوظة إلي مشهد
-STR_1039    :Install new track design
+STR_1039    :تثبيت تصميم المسار الجديد
 STR_1040    :إحفظ اللعبة
 STR_1041    :حفظ السيناريو
 STR_1042    :إحفظ المشهد
@@ -4462,7 +4462,7 @@ STR_6150    :رد خاطئ من السرفر الأساسي (JSON لا رقم)
 STR_6151    :السرفر الأساسي فشل في إرجاع السرفرات
 STR_6152    :رد خاطئ من السرفر الأساسي(JSON لا طبقات)
 STR_6153    :دُفع لدخول الحديقة / دُفع لكل رحلة
-STR_6154    :لا يٌفضل تشغيل اللعبة مع هذه الأذون المرتفعة
+STR_6154    :لا يٌفضل تشغيل اللعبة مع هذه الأذون المرتفعة. لأسباب  أمنية لا يُفضل هذا.
 STR_6155    :ليس هناك KDialog أو Zenity مثبت. الرجاء تثبيت إحداهما، أو إعداده من سطر الأوامر.
 STR_6156    :الأسم محجوز
 STR_6157    :وحدة التحكم
@@ -4501,6 +4501,35 @@ STR_6189    :إدخال
 STR_6190    :{SMALLFONT}{BLACK}لا يمكنك تحديد نقطة في حين أن القائمة الرئيسية مفعلة.
 STR_6191    :السطح
 STR_6192    :الحائط
+STR_6193    :{COMMA16} ضيف
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} ضيف
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} ضيف
+STR_6196    :{BLACK}سنة:
+STR_6197    :{BLACK}شهر:
+STR_6198    :{BLACK}يوم:
+STR_6199    :حدد التاريخ
+STR_6200    :إسترجاع التاريخ
+STR_6201    :{MONTH}
+STR_6202    :تفعيل اللأرض الإفتراضية
+STR_6203    :{SMALLFONT}{BLACK}حينما يتم تفعيلة، سوف يتم إظهار أرضية إفتراضية لكل تساعدك في وضع الأشكال عمودياً بشكل صحيح.
+STR_6204    :حجر
+STR_6205    :حديد
+STR_6206    :جص رمادي
+STR_6207    :جص أصفر
+STR_6208    :جص أحمر
+STR_6209    :جص بنفسجي
+STR_6210    :جص أخضر
+STR_6211    :حجر رملي بني
+STR_6212    :حجر رملي رمادي
+STR_6213    :ناطحة السحاب أ
+STR_6214    :ناطحة السحاب ب
+STR_6215    :الإنشاء
+STR_6216    :العملية
+STR_6217    :توافرية المسار \الرحلة
+STR_6218    :الرسمية OpenRCT2
+STR_6219    :تعليم مشاكل المسار
+STR_6220    :أجعله مُستخدم
+STR_6221    :{SMALLFONT}{BLACK هذا سوف يحدد المدخل والمخرج المعروف للرحلة للمنطقة هذه. فقط مدخل ومخرج واحد يمكن إسخدامة لكل  محطة.
 #############
 # Scenarios #
 #############
@@ -4953,17 +4982,391 @@ STR_NAME    :اللفة العالية
 STR_DESC    :Passengers ride in a gondola suspended by large rotating arms, rotating forwards and backwards head-over-heels
 STR_CPTY    :8 راكبين
 
-#WW
-[CONDORRD]
-STR_NAME    :ركوب الكندور
-STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
-STR_CPTY    :4 راكبين لكل عربة
+[BMSD]
+STR_NAME    :Twister Trains
+STR_DESC    :A spacious train with shoulder restraints
+
+[BMSU]
+STR_NAME    :Stand-up Twister Trains
+STR_DESC    :A train with shoulder restraints, in which the riders stand up
+
+[BMFL]
+STR_NAME    :Floorless Twister Trains
+STR_DESC    :A spacious train with shoulder restraints and no floor, making for a more exciting ride
+
+[WMMINE]
+STR_NAME    :Mine Cars
+STR_DESC    :Cars shaped like an old mine cart
+
+[WMOUSE]
+STR_NAME    :Mouse Cars
+STR_DESC    :Indivual cars shaped like a mouse
+
+[STEEP1]
+STR_NAME    :Horses
+STR_DESC    :Single cars shaped like a horse
+
+[STEEP2]
+STR_NAME    :Motorbikes
+STR_DESC    :Single cars shaped like a motorbike
+
+[SBOX]
+STR_NAME    :Soap boxes
+STR_DESC    :Single cars shaped like a soap box
+
+[BOB1]
+STR_NAME    :Bobsleigh Trains
+STR_DESC    :A train consisting of 2-seater cars where the riders are behind each other
+
+[INTBOB]
+STR_NAME    :6-seater Bobsleighs
+STR_DESC    :Bobsleighs with three seating rows, with room for two people on each
+
+[LIFT1]
+STR_NAME    :Lift Cabin
+STR_DESC    :Steel lift cabin
+
+[ARRT1]
+STR_NAME    :Corkscrew Roller Coaster Trains
+STR_DESC    :Roller coaster train with shoulder restraints
+
+[ARRT2]
+STR_NAME    :Hypercoaster Trains
+STR_DESC    :Comfortable trains with only lap bar restraints
+
+[MONBK]
+STR_NAME    :Bicycles
+
+[OBS1]
+STR_NAME    :Single-deck Cabin
+
+[OBS2]
+STR_NAME    :Double-deck Cabin
+
+[GTC]
+STR_NAME    :Ghost Train Cars
+
+[HMCAR]
+STR_NAME    :Haunted Mansion Cars
+
+[VREEL]
+STR_NAME    :Virginia Reel tubs
+
+[WMSPIN]
+STR_NAME    :Spinning Mouse Cars
+
+[AMT1]
+STR_NAME    :Mine Trains
+
+[SLCT]
+STR_NAME    :Compact Inverted Coaster Trains
+
+[SLCFO]
+STR_NAME    :Face-off Cars
+
+[VEKDV]
+STR_NAME    :Vertical Shuttle Cars
+
+[THCAR]
+STR_NAME    :Air Powered Vertical Coaster Trains
+
+[SSC1]
+STR_NAME    :Launched Freefall car
+
+[DING1]
+STR_NAME    :Dinghies
+
+[LFB1]
+STR_NAME    :Logs
+
+[RFTBOAT]
+STR_NAME    :Rafts
+
+[IVMC1]
+STR_NAME    :Four-seater Cars
+
+[SPDRCR]
+STR_NAME    :Spiral Roller Coaster Trains
+
+[TOGST]
+STR_NAME    :Stand-up Roller Coaster Trains
+
+[PREMT1]
+STR_NAME    :LIM Launched Roller Coaster Trains
+
+[PMT1]
+STR_NAME    :Powered mine train
+
+[BMAIR]
+STR_NAME    :Flying Roller Coaster Trains
+
+[INTINV]
+STR_NAME    :Impulse Trains
+
+[INTST]
+STR_NAME    :Giga Coaster Trains
+
+[NEMT]
+STR_NAME    :4-across Inverted Roller Coaster Trains
+
+[VEKST]
+STR_NAME    :Lay-down Roller Coaster Trains
+
+[REVCAR]
+STR_NAME    :Reverser Cars
+STR_DESC    :Bogied cars capable of turning around on special reversing sections
+
+[SKYTR]
+STR_NAME    :Lay-down Cars
+
+[BMVD]
+STR_NAME    :Six-seater Twister Trains
+
+[SUBMAR]
+STR_NAME    :Submarines
 
 #WW
-[CONGAEEL]
-STR_NAME    :Conger Eel Coaster
-STR_DESC    :A compact steel-tracked roller coaster where the Eel-shaped train travels through corkscrews and loops
+[CONDORRD]
+STR_NAME    :Condor Trains
+STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
 STR_CPTY    :4 راكبين لكل عربة
+#WW
+[CONGAEEL]
+STR_NAME    :Conger Eel Trains
+STR_DESC    :Trains with shoulder restraints, in the shape of a Conger Eel.
+STR_CPTY    :4 راكبين لكل عربة
+#WW
+[MINELIFT]
+STR_NAME    :Mine Lift Cabin
+STR_DESC    :A steel lift cabin commonly used in mines
+
+#WW
+[ANACONDA]
+STR_NAME    :Anaconda Trains
+
+#WW
+[CROCFLUM]
+STR_NAME    :Crocodile boats
+
+#WW
+[WHICGRUB]
+STR_NAME    :Witchity Grub Trains
+
+#WW
+[GRATWHTE]
+STR_NAME    :Great White Shark Trains
+STR_DESC    :Trains with shoulder restraints, in the shape of a Great White Shark
+
+#WW
+[BOMERANG]
+STR_NAME    :Boomerang Trains
+
+#WW
+[KOLARIDE]
+STR_NAME    :Koala car
+
+#WW
+[MANTARAY]
+STR_NAME    :Manta Ray boats
+STR_DESC    :Coaster boats in the shape of a Manta Ray
+
+#WW
+[TUTLBOAT]
+STR_NAME    :Turtle boats
+
+#WW, for the Wooden RC
+[MINECART]
+STR_NAME    :Mine Cart Trains
+
+#WW
+[LIONRIDE]
+STR_NAME    :سيارات الأسد
+
+#WW
+[RHINORID]
+STR_NAME    :قطارات وحيد القرن
+
+#WW
+[OSTRICH]
+STR_NAME    :Ostrich Trains
+
+#WW
+[GORILLA]
+STR_NAME    :Gorilla Trains
+
+#WW
+[FOOTBALL]
+STR_NAME    :قطارات كرة القدم
+
+#WW
+[TIGRTWST]
+STR_NAME    :Bengal Tiger Cars
+
+#WW
+[TAXICSTR]
+STR_NAME    :قطارات سيارات التاكسي الصفراء
+
+#WW
+[OUTRIGGR]
+STR_NAME    :Outrigger canoes
+
+#WW
+[SANFTRAM]
+STR_NAME    :مترو سان فرنسيسكو
+
+#WW
+[PENGUINB]
+STR_NAME    :قطارات البطريق
+
+#WW
+[POLARBER]
+STR_NAME    :Polar Bear Trains
+
+#WW
+[LONDONBS]
+STR_NAME    :Routemaster buses
+STR_DESC    :Replicas of the famous London Routemaster bus
+
+#WW
+[BLACKCAB]
+STR_NAME    :Black Cabs
+
+#WW
+[TGVTRAIN]
+STR_NAME    :TGV Trains
+
+#WW
+[ROCKET]
+STR_NAME    :صواريخ 1950
+
+#WW
+[SPUTNIKR]
+STR_NAME    :Sputnik Cars
+
+#WW
+[DHOWWATR]
+STR_NAME    :Dhow boats
+
+#WW
+[SURFBRDC]
+STR_NAME    :Surfing Trains
+
+#WW
+[KILLWHAL]
+STR_NAME    :غواصات الحوت القاتل
+
+#WW
+[HIPPORID]
+STR_NAME    :غواصات الهيبو
+
+#WW
+[DOLPHINR]
+STR_NAME    :قوارب الدلوفين
+
+#WW
+[MANDARIN]
+STR_NAME    :Mandarin Duck Boats
+STR_DESC    :Duck shaped boat, propelled by the pedalling front seat passengers
+
+#TT
+[BATTRRAM]
+STR_NAME    :Battering Ram Trains
+
+#TT
+[BLCKDETH]
+STR_NAME    :قطارات الموت الأسود
+
+#TT
+[JOUSTING]
+STR_NAME    :Jousting Knights
+
+#TT
+[OAKBAREL]
+STR_NAME    :براميل السنديان
+
+#TT
+[STAMPHRD]
+STR_NAME    :Stampeding Herd Trains
+
+#TT
+[DRAGNFLY]
+STR_NAME    :سيارات التانين الطائرة
+
+#TT
+[PTERODAC]
+STR_NAME    :Pterodactyl Trains
+
+#TT
+[PEGASUSX]
+STR_NAME    :سيارات بيجسوس
+
+#TT
+[CERBERUS]
+STR_NAME    :Cerberus Trains
+
+#TT
+[HARPIESX]
+STR_NAME    :Harpies Trains
+
+#TT
+[VALKYRIE]
+STR_NAME    :Valkyries Trains
+
+#TT
+[RIVRSTYX]
+STR_NAME    :River Styx boats
+
+#TT
+[TELEPTER]
+STR_NAME    :المقصورة المتنقلة
+
+#TT
+[HOVERCAR]
+STR_NAME    :السيارات الحوامة
+
+#TT
+[HOVRBORD]
+STR_NAME    :الألواح الحوامة
+
+#TT
+[HOVERBKE]
+STR_NAME    :العجلات الحوامة
+
+#TT, Reverser RC
+[POLICECR]
+STR_NAME    :سيارات الشرطة
+
+#TT, Looping RC
+[POLCHASE]
+STR_NAME    :قطار سيارات الشرطة
+
+#TT
+[GANSTRCR]
+STR_NAME    :سيارات العصابات
+
+#TT
+[SEAPLANE]
+STR_NAME    :سيارات الطائرة المائية المُعلقة
+
+#TT
+[BARNSTRM]
+STR_NAME    :سيارات بارنستورمينغ
+
+#TT
+[FLYGBOAT]
+STR_NAME    :القوارب الطائرة
+
+#TT
+[BMVOCTPS]
+STR_NAME    :سائل من الفضاء الخارجي
+
+#TT
+[JETPLANE]
+STR_NAME    :سيارات الطائرات النفاثة
+
+#TT
+[HOTRODXX]
+STR_NAME    :سيارات الطرق السريعة
 
 ###########
 # Scenery #
