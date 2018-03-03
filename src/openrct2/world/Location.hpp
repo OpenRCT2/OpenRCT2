@@ -33,6 +33,11 @@ struct LocationXY8 {
 };
 assert_struct_size(LocationXY8, 2);
 
+struct sLocationXY8 {
+    sint8 x, y;
+};
+assert_struct_size(sLocationXY8, 2);
+
 struct LocationXY16 {
     sint16 x, y;
 };

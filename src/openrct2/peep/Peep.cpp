@@ -3035,7 +3035,7 @@ static void peep_update_ride_ss_advance_through_entrance(rct_peep * peep)
         if (ride->type != RIDE_TYPE_ENTERPRISE)
             direction_track *= 2;
 
-        if (vehicle_type->peep_loading_positions[0] == 0)
+        if (vehicle_type->peep_loading_xy_type == peep_loading_type::xy_1)
         {
             direction_track /= 2;
             cl = 0;
@@ -3056,9 +3056,9 @@ static void peep_update_ride_ss_advance_through_entrance(rct_peep * peep)
             x = vehicle->x;
             y = vehicle->y;
         }
-        Guard::Assert(vehicle_type->peep_loading_positions_count >= (peep->var_37 * 2 + 2));
-        x += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 1];
-        y += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 2];
+        Guard::Assert(vehicle_type->peep_loading_xy_positions.size() >= (size_t)(peep->var_37/4));
+        x += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].entrance.x;
+        y += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].entrance.y;
 
         peep->destination_x = x;
         peep->destination_y = y;
@@ -3577,7 +3577,7 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
     if (ride->type != RIDE_TYPE_ENTERPRISE)
         station_direction *= 2;
 
-    if (vehicle_type->peep_loading_positions[0] == 0)
+    if (vehicle_type->peep_loading_xy_type == peep_loading_type::xy_1)
     {
         station_direction /= 2;
         cl = 0;
@@ -3599,8 +3599,9 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
         y = vehicle->y;
     }
 
-    sint16 exit_x = x + vehicle_type->peep_loading_positions[(peep->var_37 + 1) * 2 + 1];
-    sint16 exit_y = y + vehicle_type->peep_loading_positions[(peep->var_37 + 1) * 2 + 2];
+    Guard::Assert(vehicle_type->peep_loading_xy_positions.size() >= (size_t)(peep->var_37 / 4));
+    sint16 exit_x = x + vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit.x;
+    sint16 exit_y = y + vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit.y;
 
     z *= 8;
     z += RideData5[ride->type].z;
@@ -3611,8 +3612,8 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
     sprite_move(exit_x, exit_y, z, (rct_sprite *)peep);
     invalidate_sprite_2((rct_sprite *)peep);
 
-    x += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 1];
-    y += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 2];
+    x += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit_waypoint.x;
+    y += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit_waypoint.x;
 
     peep->destination_x         = x;
     peep->destination_y         = y;
@@ -3792,9 +3793,20 @@ static void peep_update_ride_sub_state_12(rct_peep * peep)
     }
 
     rct_ride_entry_vehicle * vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
-
-    x += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 1];
-    y += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 2];
+    if ((peep->var_37 & 3) == 1)
+    {
+        x += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit_waypoint.x;
+        y += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit_waypoint.y;
+    }
+    else if ((peep->var_37 & 3) == 2)
+    {
+        x += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit.x;
+        y += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit.y;
+    }
+    else
+    {
+        assert(false);
+    }
 
     peep->destination_x = x;
     peep->destination_y = y;
@@ -3863,8 +3875,25 @@ static void peep_update_ride_sub_state_13(rct_peep * peep)
         rct_ride_entry *         ride_entry   = get_ride_entry(vehicle->ride_subtype);
         rct_ride_entry_vehicle * vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
-        x += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 1];
-        y += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 2];
+        if ((peep->var_37 & 3) == 1)
+        {
+            x += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit_waypoint.x;
+            y += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit_waypoint.y;
+        }
+        else if ((peep->var_37 & 3) == 2)
+        {
+            x += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit.x;
+            y += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit.y;
+        }
+        else if ((peep->var_37 & 3) == 0)
+        {
+            x += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].entrance.x;
+            y += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].entrance.y;
+        }
+        else
+        {
+            assert(false);
+        }
 
         peep->destination_x = x;
         peep->destination_y = y;
