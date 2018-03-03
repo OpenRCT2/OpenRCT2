@@ -3264,7 +3264,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
     sint32 al, ah, bh, cl, ch, water_height;
     al = ah = bh = cl = ch = water_height = 0;
     uint8 slope = 0;
-    
+
     gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
     bool canBuildCrossing = false;
     if (x >= gMapSizeUnits || y >= gMapSizeUnits || x < 32 || y < 32) {
@@ -4818,11 +4818,6 @@ void map_invalidate_virtual_floor_tiles()
             max_position.y = std::max(max_position.y, tile->y);
         }
     }
-
-    // Do not invalidate if we're between ticks.
-    if (min_position.x == std::numeric_limits<sint16>::max()    || min_position.y == std::numeric_limits<sint16>::max() ||
-        max_position.x == std::numeric_limits<sint16>::lowest() || max_position.y == std::numeric_limits<sint16>::lowest())
-        return;
 
     // Apply the virtual floor size to the computed invalidation area.
     min_position.x  -= gMapVirtualFloorBaseSize + 1;
