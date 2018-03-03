@@ -74,7 +74,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>bz2d.lib;discord-rpc.lib;freetyped.lib;jansson_d.lib;libcurl.lib;libeay32.lib;libpng16d.lib;libspeexdsp.lib;SDL2d.lib;ssleay32.lib;zip.lib;zlibd.lib</AdditionalDependencies>
+      <AdditionalDependencies>bz2d.lib;discord-rpc.lib;freetyped.lib;jansson_d.lib;libcurl.lib;libeay32.lib;libpng16d.lib;libspeexdsp.lib;SDL2d.lib;ssleay32.lib;zip.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
@@ -92,7 +92,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>bz2.lib;discord-rpc.lib;freetype.lib;jansson.lib;libcurl.lib;libeay32.lib;libpng16.lib;libspeexdsp.lib;SDL2.lib;ssleay32.lib;zip.lib;zlib.lib</AdditionalDependencies>
+      <AdditionalDependencies>bz2.lib;discord-rpc.lib;freetype.lib;jansson.lib;libcurl.lib;libeay32.lib;libpng16.lib;libspeexdsp.lib;SDL2.lib;ssleay32.lib;zip.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
 
