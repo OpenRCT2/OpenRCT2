@@ -21,7 +21,7 @@
     <Version>0.1.2</Version>
     <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
     <VersionExtra Condition="'$(GIT_TAG)'!=''"></VersionExtra>
-    <TargetLibsVersion>14</TargetLibsVersion>
+    <TargetLibsVersion>15</TargetLibsVersion>
 
     <!-- Set dynamic OpenRCT2 #defines -->
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(BUILD_SERVER)'!=''">/D "OPENRCT2_BUILD_SERVER=\"$(BUILD_SERVER)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
@@ -62,8 +62,10 @@
   <!-- 3rd party libraries / dependencies -->
   <PropertyGroup>
     <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
-    <LibsUrl>https://github.com/OpenRCT2/Dependencies/releases/download/v$(TargetLibsVersion)/openrct2-libs-vs2017.zip</LibsUrl>
-    <LibsSha1>f9bee9fa8ae8c5f12ca3c603ef2aa3fc179e48fc</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='x86'">https://ci.appveyor.com/api/buildjobs/a920w9mx7jeykp7t/artifacts/vcpkg%2Finstalled%2Fx86-windows-static-winssl%2Fopenrct2-libs-x86-windows-static-winssl.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='x86'">97c968398147fd95060ed4c0e1da5135bf63844b</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='x64'">https://ci.appveyor.com/api/buildjobs/m4wprt56o0e97gqf/artifacts/vcpkg%2Finstalled%2Fx64-windows-static-winssl%2Fopenrct2-libs-x64-windows-static-winssl.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='x64'">02a1d43b0431b662562b91e1e12e8c2229622b42</LibsSha1>
     <GtestVersion>1.8.0</GtestVersion>
     <GtestUrl>https://github.com/google/googletest/archive/release-1.8.0.zip</GtestUrl>
     <GtestSha1>667f873ab7a4d246062565fad32fb6d8e203ee73</GtestSha1>
@@ -121,7 +123,7 @@
                         Url="$(LibsUrl)"
                         Sha1="$(LibsSha1)"
                         CheckFile="$(DependenciesCheckFile)"
-                        OutputDirectory="$(RootDir)lib" />
+                        OutputDirectory="$(RootDir)lib\$(Platform)" />
 
     <!-- googletest -->
     <DownloadDependency Name="googletest"

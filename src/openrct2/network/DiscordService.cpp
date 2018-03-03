@@ -16,7 +16,7 @@
 
 #ifdef __ENABLE_DISCORD__
 
-#include <discord-rpc.h>
+#include <discord_rpc.h>
 #include "../Context.h"
 #include "../core/Console.hpp"
 #include "../core/String.hpp"
