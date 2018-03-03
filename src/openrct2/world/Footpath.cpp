@@ -746,11 +746,11 @@ money32 footpath_provisional_set(sint32 type, sint32 x, sint32 y, sint32 z, sint
         }
     }
 
+    // Invalidate previous footpath piece.
+    map_invalidate_virtual_floor_tiles();
+
     if (!scenery_tool_is_active())
     {
-        // Invalidate previous footpath piece.
-        map_invalidate_virtual_floor_tiles();
-
         if (cost == MONEY32_UNDEFINED)
         {
             // If we can't build this, don't show a virtual floor.
