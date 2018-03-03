@@ -62,8 +62,8 @@
   <!-- 3rd party libraries / dependencies -->
   <PropertyGroup>
     <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
-    <LibsUrl Condition="'$(Platform)'=='x86'">https://ci.appveyor.com/api/buildjobs/a920w9mx7jeykp7t/artifacts/vcpkg%2Finstalled%2Fx86-windows-static-winssl%2Fopenrct2-libs-x86-windows-static-winssl.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='x86'">97c968398147fd95060ed4c0e1da5135bf63844b</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='Win32'">https://ci.appveyor.com/api/buildjobs/a920w9mx7jeykp7t/artifacts/vcpkg%2Finstalled%2Fx86-windows-static-winssl%2Fopenrct2-libs-x86-windows-static-winssl.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='Win32'">97c968398147fd95060ed4c0e1da5135bf63844b</LibsSha1>
     <LibsUrl Condition="'$(Platform)'=='x64'">https://ci.appveyor.com/api/buildjobs/m4wprt56o0e97gqf/artifacts/vcpkg%2Finstalled%2Fx64-windows-static-winssl%2Fopenrct2-libs-x64-windows-static-winssl.zip</LibsUrl>
     <LibsSha1 Condition="'$(Platform)'=='x64'">02a1d43b0431b662562b91e1e12e8c2229622b42</LibsSha1>
     <GtestVersion>1.8.0</GtestVersion>
