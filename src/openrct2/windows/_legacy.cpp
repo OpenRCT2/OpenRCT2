@@ -150,11 +150,11 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
         if (_currentTrackSlopeEnd != 0)
             viewport_set_visibility(2);
 
+        // Invalidate previous track piece (we may not be changing height!)
+        virtual_floor_invalidate();
+
         if (!scenery_tool_is_active())
         {
-            // Invalidate previous track piece (we may not be changing height!)
-            virtual_floor_invalidate();
-
             // Set new virtual floor height.
             virtual_floor_set_height(z);
         }
@@ -188,11 +188,11 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
         if (_currentTrackSlopeEnd != 0)
             viewport_set_visibility(2);
 
+        // Invalidate previous track piece (we may not be changing height!)
+        virtual_floor_invalidate();
+
         if (!scenery_tool_is_active())
         {
-            // Invalidate previous track piece (we may not be changing height!)
-            virtual_floor_invalidate();
-
             // Set height to where the next track piece would begin
             virtual_floor_set_height(z - z_begin + z_end);
         }
