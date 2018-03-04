@@ -23,6 +23,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../OpenRCT2.h"
+#include "../paint/VirtualFloor.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
@@ -747,25 +748,25 @@ money32 footpath_provisional_set(sint32 type, sint32 x, sint32 y, sint32 z, sint
     }
 
     // Invalidate previous footpath piece.
-    map_invalidate_virtual_floor_tiles();
+    virtual_floor_invalidate();
 
     if (!scenery_tool_is_active())
     {
         if (cost == MONEY32_UNDEFINED)
         {
             // If we can't build this, don't show a virtual floor.
-            map_set_virtual_floor_height(0);
+            virtual_floor_set_height(0);
         }
         else if (gFootpathConstructSlope == TILE_ELEMENT_SLOPE_FLAT
              || gFootpathProvisionalPosition.z * 8 < gFootpathConstructFromPosition.z)
         {
             // Going either straight on, or down.
-            map_set_virtual_floor_height(gFootpathProvisionalPosition.z * 8);
+            virtual_floor_set_height(gFootpathProvisionalPosition.z * 8);
         }
         else
         {
             // Going up in the world!
-            map_set_virtual_floor_height((gFootpathProvisionalPosition.z + 2) * 8);
+            virtual_floor_set_height((gFootpathProvisionalPosition.z + 2) * 8);
         }
     }
 

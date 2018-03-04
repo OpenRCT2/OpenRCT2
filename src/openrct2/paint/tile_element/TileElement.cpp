@@ -158,7 +158,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
 #ifndef __TESTPAINT__
     if (gConfigGeneral.use_virtual_floor)
     {
-        partOfVirtualFloor = map_tile_is_part_of_virtual_floor(session->MapPosition.x, session->MapPosition.y);
+        partOfVirtualFloor = virtual_floor_tile_is_floor(session->MapPosition.x, session->MapPosition.y);
     }
 #endif // __TESTPAINT__
 
@@ -236,7 +236,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     if (partOfVirtualFloor)
     {
         // We must pretend this tile is at least as tall as the virtual floor
-        max_height = Math::Max(max_height, gMapVirtualFloorHeight);
+        max_height = std::max(max_height, virtual_floor_get_height());
     }
 #endif // __TESTPAINT__
 

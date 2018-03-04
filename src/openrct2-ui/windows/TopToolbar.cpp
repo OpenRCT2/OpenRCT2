@@ -34,6 +34,7 @@
 #include <openrct2/network/twitch.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -1288,7 +1289,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
             if (gConfigGeneral.use_virtual_floor)
             {
-                map_set_virtual_floor_height(gSceneryPlaceZ);
+                virtual_floor_set_height(gSceneryPlaceZ);
             }
 
             return;
@@ -1544,7 +1545,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
     if (gConfigGeneral.use_virtual_floor)
     {
-        map_set_virtual_floor_height(gSceneryPlaceZ);
+        virtual_floor_set_height(gSceneryPlaceZ);
     }
 }
 
@@ -2378,7 +2379,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
     if (gConfigGeneral.use_virtual_floor)
     {
-        map_invalidate_virtual_floor_tiles();
+        virtual_floor_invalidate();
     }
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;

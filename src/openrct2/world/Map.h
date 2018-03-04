@@ -385,10 +385,6 @@ extern LocationXY16     gMapSelectPositionB;
 extern LocationXYZ16    gMapSelectArrowPosition;
 extern uint8        gMapSelectArrowDirection;
 
-extern uint16       gMapVirtualFloorHeight;
-extern uint16       gMapVirtualFloorBaseSize;
-extern bool         gMapVirtualFloorVisible;
-
 extern uint8 gMapGroundFlags;
 
 extern rct_tile_element gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
@@ -458,16 +454,12 @@ bool map_surface_is_blocked(sint16 x, sint16 y);
 void tile_element_remove(rct_tile_element *tileElement);
 void map_remove_all_rides();
 void map_invalidate_map_selection_tiles();
+void map_get_bounding_box(sint32 ax, sint32 ay, sint32 bx, sint32 by, sint32 *left, sint32 *top, sint32 *right, sint32 *bottom);
 void map_invalidate_selection_rect();
 void map_reorganise_elements();
 bool map_check_free_elements_and_reorganise(sint32 num_elements);
 rct_tile_element *tile_element_insert(sint32 x, sint32 y, sint32 z, sint32 flags);
 bool tile_element_check_address(const rct_tile_element * const element);
-void map_set_virtual_floor_height(sint16 height);
-void map_enable_virtual_floor();
-void map_remove_virtual_floor();
-void map_invalidate_virtual_floor_tiles();
-bool map_tile_is_part_of_virtual_floor(sint16 x, sint16 y);
 
 using CLEAR_FUNC = sint32(*)(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price);
 
