@@ -37,6 +37,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../OpenRCT2.h"
+#include "../paint/VirtualFloor.h"
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
 #include "../rct1/RCT1.h"
@@ -1655,7 +1656,7 @@ void ride_select_next_section()
         }
 
         // Invalidate previous track piece (we may not be changing height!)
-        map_invalidate_virtual_floor_tiles();
+        virtual_floor_invalidate();
 
         CoordsXYE inputElement, outputElement;
         inputElement.x = x;
@@ -1668,7 +1669,7 @@ void ride_select_next_section()
             if (!scenery_tool_is_active())
             {
                 // Set next element's height.
-                map_set_virtual_floor_height(tileElement->base_height << 3);
+                virtual_floor_set_height(tileElement->base_height << 3);
             }
         } else {
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
@@ -1720,7 +1721,7 @@ void ride_select_previous_section()
         }
 
         // Invalidate previous track piece (we may not be changing height!)
-        map_invalidate_virtual_floor_tiles();
+        virtual_floor_invalidate();
 
         track_begin_end trackBeginEnd;
         if (track_block_get_previous(x, y, tileElement, &trackBeginEnd)) {
@@ -1734,7 +1735,7 @@ void ride_select_previous_section()
             if (!scenery_tool_is_active())
             {
                 // Set previous element's height.
-                map_set_virtual_floor_height(trackBeginEnd.begin_element->base_height << 3);
+                virtual_floor_set_height(trackBeginEnd.begin_element->base_height << 3);
             }
             window_ride_construction_update_active_elements();
         } else {

@@ -23,6 +23,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Console.h>
+#include <openrct2/paint/VirtualFloor.h>
 #include <openrct2-ui/windows/Window.h>
 #include "KeyboardShortcuts.h"
 #include "Input.h"
@@ -172,9 +173,9 @@ void input_handle_keyboard(bool isTitle)
     if (gConfigGeneral.use_virtual_floor)
     {
         if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
-            map_enable_virtual_floor();
+            virtual_floor_enable();
         else
-            map_remove_virtual_floor();
+            virtual_floor_disable();
     }
 
     // Handle key input

@@ -17,5 +17,17 @@
 #ifndef _VIRTUAL_FLOOR_H
 #define _VIRTUAL_FLOOR_H
 
+uint16 virtual_floor_get_height();
+
+bool virtual_floor_is_enabled();
+void virtual_floor_set_height(sint16 height);
+
+void virtual_floor_enable();
+void virtual_floor_disable();
+void virtual_floor_invalidate();
+
+bool virtual_floor_tile_is_floor(sint16 x, sint16 y);
+
 void virtual_floor_paint(paint_session * session);
+
 #endif

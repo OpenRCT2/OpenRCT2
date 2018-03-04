@@ -47,8 +47,6 @@
 #include "TileInspector.h"
 #include "Wall.h"
 
-#include <limits>
-
 /**
  * Replaces 0x00993CCC, 0x00993CCE
  */
@@ -88,10 +86,6 @@ LocationXY16        gMapSelectPositionB;
 LocationXYZ16       gMapSelectArrowPosition;
 uint8           gMapSelectArrowDirection;
 
-uint16          gMapVirtualFloorBaseSize = 5*32;
-uint16          gMapVirtualFloorHeight;
-bool            gMapVirtualFloorVisible = false;
-
 uint8 gMapGroundFlags;
 
 uint16 gWidePathTileLoopX;
@@ -107,8 +101,6 @@ sint16 gMapBaseZ;
 rct_tile_element gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
 rct_tile_element *gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 LocationXY16 gMapSelectionTiles[300];
-static LocationXYZ16 gVirtualFloorLastMinLocation;
-static LocationXYZ16 gVirtualFloorLastMaxLocation;
 PeepSpawn gPeepSpawns[MAX_PEEP_SPAWNS];
 
 rct_tile_element *gNextFreeTileElement;
@@ -2988,7 +2980,7 @@ void map_invalidate_map_selection_tiles()
         map_invalidate_tile_full(position->x, position->y);
 }
 
-static void map_get_bounding_box(sint32 ax, sint32 ay, sint32 bx, sint32 by, sint32 *left, sint32 *top, sint32 *right, sint32 *bottom)
+void map_get_bounding_box(sint32 ax, sint32 ay, sint32 bx, sint32 by, sint32 *left, sint32 *top, sint32 *right, sint32 *bottom)
 {
     sint32 x, y;
     x = ax;
@@ -4746,157 +4738,6 @@ uint8 tile_element_get_ride_index(const rct_tile_element * tileElement)
     default:
         return 0xFF;
     }
-}
-
-void map_set_virtual_floor_height(sint16 height)
-{
-    if (!gMapVirtualFloorVisible)
-    {
-        // If the modifiers are not set we do not actually care as the floor is invisible.
-        return;
-    }
-
-    if (gMapVirtualFloorHeight != height)
-    {
-        map_invalidate_virtual_floor_tiles();
-        gMapVirtualFloorHeight = height;
-    }
-}
-
-void map_enable_virtual_floor()
-{
-    if (gMapVirtualFloorVisible)
-    {
-        return;
-    }
-
-    // Force invalidation on the next draw.
-    gVirtualFloorLastMinLocation.z = std::numeric_limits<sint16>::max();
-    gVirtualFloorLastMaxLocation.z = std::numeric_limits<sint16>::lowest();
-    gMapVirtualFloorVisible = true;
-}
-
-void map_remove_virtual_floor()
-{
-    if (!gMapVirtualFloorVisible)
-    {
-        return;
-    }
-
-    // Force invalidation, even if the position hasn't changed.
-    gVirtualFloorLastMinLocation.z = std::numeric_limits<sint16>::max();
-    gVirtualFloorLastMaxLocation.z = std::numeric_limits<sint16>::lowest();
-    map_invalidate_virtual_floor_tiles();
-
-    gMapVirtualFloorHeight = 0;
-    gMapVirtualFloorVisible = false;
-}
-
-void map_invalidate_virtual_floor_tiles()
-{
-    if (!gMapVirtualFloorVisible)
-    {
-        return;
-    }
-
-    // First, let's figure out how big our selection is.
-    LocationXY16 min_position = { std::numeric_limits<sint16>::max(),    std::numeric_limits<sint16>::max()    };
-    LocationXY16 max_position = { std::numeric_limits<sint16>::lowest(), std::numeric_limits<sint16>::lowest() };
-
-    if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
-    {
-        min_position   = gMapSelectPositionA;
-        max_position   = gMapSelectPositionB;
-    }
-    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
-    {
-        for (LocationXY16 * tile = gMapSelectionTiles; tile->x != -1; tile++)
-        {
-            min_position.x = std::min(min_position.x, tile->x);
-            min_position.y = std::min(min_position.y, tile->y);
-            max_position.x = std::max(max_position.x, tile->x);
-            max_position.y = std::max(max_position.y, tile->y);
-        }
-    }
-
-    // Apply the virtual floor size to the computed invalidation area.
-    min_position.x  -= gMapVirtualFloorBaseSize + 1;
-    min_position.y  -= gMapVirtualFloorBaseSize + 1;
-    max_position.x  += gMapVirtualFloorBaseSize + 1;
-    max_position.y  += gMapVirtualFloorBaseSize + 1;
-
-    // Do not invalidate if floor hasn't moved.
-    if (gVirtualFloorLastMinLocation.x == min_position.x &&
-        gVirtualFloorLastMinLocation.y == min_position.y &&
-        gVirtualFloorLastMinLocation.z == gMapVirtualFloorHeight)
-    {
-        return;
-    }
-
-    LocationXY16 corr_min_position = min_position;
-    LocationXY16 corr_max_position = max_position;
-
-    // Invalidate previous locations, too, if appropriate.
-    if (gVirtualFloorLastMinLocation.z != std::numeric_limits<sint16>::max() &&
-        gVirtualFloorLastMaxLocation.z != std::numeric_limits<sint16>::lowest())
-    {
-        corr_min_position.x = std::min(min_position.x, gVirtualFloorLastMinLocation.x);
-        corr_min_position.y = std::min(min_position.y, gVirtualFloorLastMinLocation.y);
-        corr_max_position.x = std::max(max_position.x, gVirtualFloorLastMaxLocation.x);
-        corr_max_position.y = std::max(max_position.y, gVirtualFloorLastMaxLocation.y);
-    }
-
-    for (sint16 x = corr_min_position.x; x < corr_max_position.x; x++)
-    {
-        for (sint16 y = corr_min_position.y; y < corr_max_position.y; y++)
-        {
-            map_invalidate_tile_full(x, y);
-        }
-    }
-
-    // Save minimal and maximal positions. Note: not their corrected positions!
-    gVirtualFloorLastMinLocation.x = min_position.x;
-    gVirtualFloorLastMinLocation.y = min_position.y;
-    gVirtualFloorLastMinLocation.z = gMapVirtualFloorHeight;
-
-    gVirtualFloorLastMaxLocation.x = max_position.x;
-    gVirtualFloorLastMaxLocation.y = max_position.y;
-    gVirtualFloorLastMaxLocation.z = gMapVirtualFloorHeight;
-}
-
-bool map_tile_is_part_of_virtual_floor(sint16 x, sint16 y)
-{
-    if (!gMapVirtualFloorVisible)
-    {
-        return false;
-    }
-
-    // Check if map selection (usually single tiles) are enabled
-    //  and if the current tile is near or on them
-    if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) &&
-        x >= gMapSelectPositionA.x - gMapVirtualFloorBaseSize &&
-        y >= gMapSelectPositionA.y - gMapVirtualFloorBaseSize &&
-        x <= gMapSelectPositionB.x + gMapVirtualFloorBaseSize &&
-        y <= gMapSelectPositionB.y + gMapVirtualFloorBaseSize)
-    {
-        return true;
-    }
-    else if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
-    {
-        // Check if we are anywhere near the selection tiles (larger scenery / rides)
-        for (LocationXY16 * tile = gMapSelectionTiles; tile->x != -1; tile++)
-        {
-            if (x >= tile->x - gMapVirtualFloorBaseSize &&
-                y >= tile->y - gMapVirtualFloorBaseSize &&
-                x <= tile->x + gMapVirtualFloorBaseSize &&
-                y <= tile->y + gMapVirtualFloorBaseSize)
-            {
-                return true;
-            }
-        }
-    }
-
-    return false;
 }
 
 void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles)

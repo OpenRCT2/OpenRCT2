@@ -22,6 +22,7 @@
 #include "../Input.h"
 #include "../interface/Viewport.h"
 #include "../network/network.h"
+#include "../paint/VirtualFloor.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../world/Scenery.h"
@@ -152,10 +153,10 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
         if (!scenery_tool_is_active())
         {
             // Invalidate previous track piece (we may not be changing height!)
-            map_invalidate_virtual_floor_tiles();
+            virtual_floor_invalidate();
 
             // Set new virtual floor height.
-            map_set_virtual_floor_height(z);
+            virtual_floor_set_height(z);
         }
 
         return result;
@@ -190,10 +191,10 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
         if (!scenery_tool_is_active())
         {
             // Invalidate previous track piece (we may not be changing height!)
-            map_invalidate_virtual_floor_tiles();
+            virtual_floor_invalidate();
 
             // Set height to where the next track piece would begin
-            map_set_virtual_floor_height(z - z_begin + z_end);
+            virtual_floor_set_height(z - z_begin + z_end);
         }
 
         return result;
