@@ -52,7 +52,7 @@ bool virtual_floor_is_enabled()
 
 void virtual_floor_set_height(sint16 height)
 {
-    if (virtual_floor_is_enabled())
+    if (!virtual_floor_is_enabled())
     {
         return;
     }
