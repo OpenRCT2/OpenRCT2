@@ -538,6 +538,7 @@ void map_invalidate_tile_zoom1(sint32 x, sint32 y, sint32 z0, sint32 z1);
 void map_invalidate_tile_zoom0(sint32 x, sint32 y, sint32 z0, sint32 z1);
 void map_invalidate_tile_full(sint32 x, sint32 y);
 void map_invalidate_element(sint32 x, sint32 y, rct_tile_element *tileElement);
+void map_invalidate_region(const LocationXY16& mins, const LocationXY16& maxs);
 
 sint32 map_get_tile_side(sint32 mapX, sint32 mapY);
 sint32 map_get_tile_quadrant(sint32 mapX, sint32 mapY);

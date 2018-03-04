@@ -4130,6 +4130,33 @@ void map_invalidate_element(sint32 x, sint32 y, rct_tile_element *tileElement)
     map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
 }
 
+void map_invalidate_region(const LocationXY16& mins, const LocationXY16& maxs)
+{
+    sint32 x0, y0, x1, y1, left, right, top, bottom;
+
+    x0 = mins.x + 16;
+    y0 = mins.y + 16;
+
+    x1 = maxs.x + 16;
+    y1 = maxs.y + 16;
+
+    map_get_bounding_box(x0, y0, x1, y1, &left, &top, &right, &bottom);
+
+    left -= 32;
+    right += 32;
+    bottom += 32;
+    top -= 32 + 2080;
+
+    for (sint32 i = 0; i < MAX_VIEWPORT_COUNT; i++)
+    {
+        rct_viewport *viewport = &g_viewport_list[i];
+        if (viewport->width != 0)
+        {
+            viewport_invalidate(viewport, left, top, right, bottom);
+        }
+    }
+}
+
 sint32 map_get_tile_side(sint32 mapX, sint32 mapY)
 {
     sint32 subMapX = mapX & (32 - 1);

@@ -28,7 +28,14 @@ static uint16        _virtualFloorBaseSize = 5 * 32;
 static uint16        _virtualFloorHeight = 0;
 static LocationXYZ16 _virtualFloorLastMinPos;
 static LocationXYZ16 _virtualFloorLastMaxPos;
-static bool          _virtualFloorVisible = false;
+static uint32        _virtualFloorFlags = 0;
+
+enum VirtualFloorFlags
+{
+    VIRTUAL_FLOOR_FLAG_NONE = 0,
+    VIRTUAL_FLOOR_FLAG_ENABLED = (1 << 1),
+    VIRTUAL_FLOOR_FORCE_INVALIDATION = (1 << 2),
+};
 
 static constexpr const CoordsXY offsets[4] =
 {
@@ -38,11 +45,15 @@ static constexpr const CoordsXY offsets[4] =
     {   0, -32 }
 };
 
+bool virtual_floor_is_enabled()
+{
+    return (_virtualFloorFlags & VIRTUAL_FLOOR_FLAG_ENABLED) != 0;
+}
+
 void virtual_floor_set_height(sint16 height)
 {
-    if (!_virtualFloorVisible)
+    if (virtual_floor_is_enabled())
     {
-        // If the modifiers are not set we do not actually care as the floor is invisible.
         return;
     }
 
@@ -53,51 +64,55 @@ void virtual_floor_set_height(sint16 height)
     }
 }
 
+static void virtual_floor_reset()
+{
+    _virtualFloorLastMinPos.x = std::numeric_limits<sint16>::max();
+    _virtualFloorLastMinPos.y = std::numeric_limits<sint16>::max();
+    _virtualFloorLastMaxPos.x = std::numeric_limits<sint16>::lowest();
+    _virtualFloorLastMaxPos.y = std::numeric_limits<sint16>::lowest();
+    _virtualFloorHeight = 0;
+}
+
 void virtual_floor_enable()
 {
-    if (_virtualFloorVisible)
+    if (virtual_floor_is_enabled())
     {
         return;
     }
 
-    // Force invalidation on the next draw.
-    _virtualFloorLastMinPos.z = std::numeric_limits<sint16>::max();
-    _virtualFloorLastMaxPos.z = std::numeric_limits<sint16>::lowest();
-    _virtualFloorVisible = true;
+    virtual_floor_reset();
+    _virtualFloorFlags |= VIRTUAL_FLOOR_FLAG_ENABLED;
 }
 
 void virtual_floor_disable()
 {
-    if (!_virtualFloorVisible)
+    if (!virtual_floor_is_enabled())
     {
         return;
     }
 
-    // Force invalidation, even if the position hasn't changed.
-    _virtualFloorLastMinPos.z = std::numeric_limits<sint16>::max();
-    _virtualFloorLastMaxPos.z = std::numeric_limits<sint16>::lowest();
-    virtual_floor_invalidate();
+    _virtualFloorFlags &= ~VIRTUAL_FLOOR_FLAG_ENABLED;
 
-    _virtualFloorHeight = 0;
-    _virtualFloorVisible = false;
+    // Force invalidation, even if the position hasn't changed.
+    _virtualFloorFlags |= VIRTUAL_FLOOR_FORCE_INVALIDATION;
+    virtual_floor_invalidate();
+    _virtualFloorFlags &= ~VIRTUAL_FLOOR_FORCE_INVALIDATION;
+
+    virtual_floor_reset();
 }
 
 void virtual_floor_invalidate()
 {
-    if (!_virtualFloorVisible)
-    {
-        return;
-    }
-
     // First, let's figure out how big our selection is.
-    LocationXY16 min_position = { std::numeric_limits<sint16>::max(),    std::numeric_limits<sint16>::max()    };
+    LocationXY16 min_position = { std::numeric_limits<sint16>::max(),    std::numeric_limits<sint16>::max() };
     LocationXY16 max_position = { std::numeric_limits<sint16>::lowest(), std::numeric_limits<sint16>::lowest() };
 
-    if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
     {
-        min_position   = gMapSelectPositionA;
-        max_position   = gMapSelectPositionB;
+        min_position = gMapSelectPositionA;
+        max_position = gMapSelectPositionB;
     }
+
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
     {
         for (LocationXY16 * tile = gMapSelectionTiles; tile->x != -1; tile++)
@@ -110,12 +125,33 @@ void virtual_floor_invalidate()
     }
 
     // Apply the virtual floor size to the computed invalidation area.
-    min_position.x  -= _virtualFloorBaseSize + 1;
-    min_position.y  -= _virtualFloorBaseSize + 1;
-    max_position.x  += _virtualFloorBaseSize + 1;
-    max_position.y  += _virtualFloorBaseSize + 1;
+    min_position.x -= _virtualFloorBaseSize + 16;
+    min_position.y -= _virtualFloorBaseSize + 16;
+    max_position.x += _virtualFloorBaseSize + 16;
+    max_position.y += _virtualFloorBaseSize + 16;
 
-    // Do not invalidate if floor hasn't moved.
+    // Invalidate previous region if appropriate.
+    if (_virtualFloorLastMinPos.x != std::numeric_limits<sint16>::max() &&
+        _virtualFloorLastMinPos.y != std::numeric_limits<sint16>::max() &&
+        _virtualFloorLastMaxPos.x != std::numeric_limits<sint16>::lowest() &&
+        _virtualFloorLastMaxPos.y != std::numeric_limits<sint16>::lowest())
+    {
+        LocationXY16 prevMins = { _virtualFloorLastMinPos.x, _virtualFloorLastMinPos.y };
+        LocationXY16 prevMaxs = { _virtualFloorLastMaxPos.x, _virtualFloorLastMaxPos.y };
+
+        if (prevMins.x != min_position.x ||
+            prevMins.y != min_position.y ||
+            prevMaxs.x != max_position.x ||
+            prevMaxs.y != max_position.y ||
+            (_virtualFloorFlags & VIRTUAL_FLOOR_FORCE_INVALIDATION) != 0)
+        {
+            log_verbose("Invalidating previous region, Min: %d %d, Max: %d %d",
+                prevMins.x, prevMins.y, prevMaxs.x, prevMaxs.y);
+            map_invalidate_region(prevMins, prevMaxs);
+        }
+    }
+
+    // Do not invalidate new region if floor hasn't moved.
     if (_virtualFloorLastMinPos.x == min_position.x &&
         _virtualFloorLastMinPos.y == min_position.y &&
         _virtualFloorLastMinPos.z == _virtualFloorHeight)
@@ -123,40 +159,35 @@ void virtual_floor_invalidate()
         return;
     }
 
-    LocationXY16 corr_min_position = min_position;
-    LocationXY16 corr_max_position = max_position;
-
-    // Invalidate previous locations, too, if appropriate.
-    if (_virtualFloorLastMinPos.z != std::numeric_limits<sint16>::max() &&
-        _virtualFloorLastMaxPos.z != std::numeric_limits<sint16>::lowest())
+    if (!(_virtualFloorFlags & VIRTUAL_FLOOR_FLAG_ENABLED))
     {
-        corr_min_position.x = std::min(min_position.x, _virtualFloorLastMinPos.x);
-        corr_min_position.y = std::min(min_position.y, _virtualFloorLastMinPos.y);
-        corr_max_position.x = std::max(max_position.x, _virtualFloorLastMaxPos.x);
-        corr_max_position.y = std::max(max_position.y, _virtualFloorLastMaxPos.y);
+        return;
     }
 
-    for (sint16 x = corr_min_position.x; x < corr_max_position.x; x++)
+    log_verbose("Min: %d %d, Max: %d %d\n", min_position.x, min_position.y, max_position.x, max_position.y);
+
+    // Invalidate new region if coordinates are set.
+    if (min_position.x != std::numeric_limits<sint16>::max() &&
+        min_position.y != std::numeric_limits<sint16>::max() &&
+        max_position.x != std::numeric_limits<sint16>::lowest() &&
+        max_position.y != std::numeric_limits<sint16>::lowest())
     {
-        for (sint16 y = corr_min_position.y; y < corr_max_position.y; y++)
-        {
-            map_invalidate_tile_full(x, y);
-        }
+        map_invalidate_region(min_position, max_position);
+
+        // Save minimal and maximal positions.
+        _virtualFloorLastMinPos.x = min_position.x;
+        _virtualFloorLastMinPos.y = min_position.y;
+        _virtualFloorLastMinPos.z = _virtualFloorHeight;
+
+        _virtualFloorLastMaxPos.x = max_position.x;
+        _virtualFloorLastMaxPos.y = max_position.y;
+        _virtualFloorLastMaxPos.z = _virtualFloorHeight;
     }
-
-    // Save minimal and maximal positions. Note: not their corrected positions!
-    _virtualFloorLastMinPos.x = min_position.x;
-    _virtualFloorLastMinPos.y = min_position.y;
-    _virtualFloorLastMinPos.z = _virtualFloorHeight;
-
-    _virtualFloorLastMaxPos.x = max_position.x;
-    _virtualFloorLastMaxPos.y = max_position.y;
-    _virtualFloorLastMaxPos.z = _virtualFloorHeight;
 }
 
 bool virtual_floor_tile_is_floor(sint16 x, sint16 y)
 {
-    if (!_virtualFloorVisible)
+    if (!virtual_floor_is_enabled())
     {
         return false;
     }
