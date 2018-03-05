@@ -256,7 +256,7 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex,
             tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
             tileElement->type |= newRotation;
 
-            // Update ride's known entrance/exit rotataion
+            // Update ride's known entrance/exit rotation
             Ride * ride         = get_ride(tileElement->properties.entrance.ride_index);
             uint8  stationIndex = tileElement->properties.entrance.index;
             auto   entrance     = ride_get_entrance_location_of_station(ride, stationIndex);
@@ -264,7 +264,7 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex,
             uint8  entranceType = entrance_element_get_type(tileElement);
             uint8  z            = tileElement->base_height;
 
-            // Make sure this is the correct entrance or exit, in case there are multiple on the same tile
+            // Make sure this is the correct entrance or exit
             if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == x && entrance.y == y && entrance.z == z)
             {
                 ride_set_entrance_location_of_station(ride, stationIndex, { entrance.x, entrance.y, entrance.z, newRotation });
@@ -427,7 +427,7 @@ sint32 tile_inspector_any_base_height_offset(sint32 x, sint32 y, sint16 elementI
                 auto   exit          = ride_get_exit_location_of_station(ride, entranceIndex);
                 uint8 z = tileElement->base_height;
 
-                // Make sure this is the correct entrance or exit, in case there are multiple on the same tile
+                // Make sure this is the correct entrance or exit
                 if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == x && entrance.y == y && entrance.z == z)
                     ride_set_entrance_location_of_station(
                         ride, entranceIndex, { entrance.x, entrance.y, z + heightOffset, entrance.direction });
