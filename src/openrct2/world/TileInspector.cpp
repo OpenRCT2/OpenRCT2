@@ -257,19 +257,21 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex,
             tileElement->type |= newRotation;
 
             // Update ride's known entrance/exit rotataion
-            Ride * ride = get_ride(tileElement->properties.entrance.ride_index);
+            Ride * ride         = get_ride(tileElement->properties.entrance.ride_index);
             uint8  stationIndex = tileElement->properties.entrance.index;
-            if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE)
+            auto   entrance     = ride_get_entrance_location_of_station(ride, stationIndex);
+            auto   exit         = ride_get_exit_location_of_station(ride, stationIndex);
+            uint8  entranceType = entrance_element_get_type(tileElement);
+            uint8  z            = tileElement->base_height;
+
+            // Make sure this is the correct entrance or exit, in case there are multiple on the same tile
+            if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == x && entrance.y == y && entrance.z == z)
             {
-                auto entrance = ride_get_entrance_location_of_station(ride, stationIndex);
-                entrance.direction = newRotation;
-                ride_set_entrance_location_of_station(ride, stationIndex, entrance);
+                ride_set_entrance_location_of_station(ride, stationIndex, { entrance.x, entrance.y, entrance.z, newRotation });
             }
-            else if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT)
+            else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == x && exit.y == y && exit.z == z)
             {
-                auto exit = ride_get_exit_location_of_station(ride, stationIndex);
-                exit.direction = newRotation;
-                ride_set_exit_location_of_station(ride, stationIndex, exit);
+                ride_set_exit_location_of_station(ride, stationIndex, { exit.x, exit.y, exit.z, newRotation });
             }
             break;
         }
