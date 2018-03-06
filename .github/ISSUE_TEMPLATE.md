@@ -10,7 +10,7 @@
 
 
 - [ ] Reproducible in RCT2 (vanilla)?
-- [ ] Multiplayer?
+- [ ] Specific to multiplayer?
 
 **Steps to reproduce:**
 1. 
