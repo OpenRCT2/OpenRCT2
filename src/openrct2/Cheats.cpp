@@ -361,7 +361,7 @@ static void cheat_remove_all_guests()
     FOR_ALL_RIDES(rideIndex, ride)
     {
         ride->num_riders = 0;
- 
+
         for (size_t stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
         {
             ride->queue_length[stationIndex] = 0;
