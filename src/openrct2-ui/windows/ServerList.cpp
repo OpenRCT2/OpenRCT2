@@ -567,7 +567,7 @@ static bool server_compare(const server_entry &a, const server_entry &b)
     }
 
     // Then by name
-    return String::Compare(a.name, b.name, true) <= 0;
+    return String::Compare(a.name, b.name, true) < 0;
 }
 
 static void sort_servers()

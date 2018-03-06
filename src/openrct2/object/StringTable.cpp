@@ -44,7 +44,7 @@ static bool StringIsBlank(const utf8 * str)
 {
     for (auto ch = str; *ch != '\0'; ch++)
     {
-        if (!isblank(*ch))
+        if (!isblank((uint8)*ch))
         {
             return false;
         }
