@@ -1609,7 +1609,7 @@ void footpath_update_queue_chains()
 
         for (sint32 i = 0; i < MAX_STATIONS; i++)
         {
-            TileCoordsXYZD location = ride_get_entrance_location_of_station(rideIndex, i);
+            TileCoordsXYZD location = ride_get_entrance_location(rideIndex, i);
             if (location.isNull())
                 continue;
 

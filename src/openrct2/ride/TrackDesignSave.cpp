@@ -861,7 +861,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
         x = 0;
     }
 
-    TileCoordsXYZD location = ride_get_entrance_location_of_station(rideIndex, 0);
+    TileCoordsXYZD location = ride_get_entrance_location(rideIndex, 0);
 
     if (location.isNull())
     {
@@ -889,7 +889,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     maze++;
     numMazeElements++;
 
-    location = ride_get_entrance_location_of_station(rideIndex, 0);
+    location = ride_get_entrance_location(rideIndex, 0);
     if (location.isNull())
     {
         gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
@@ -1063,9 +1063,9 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 
             TileCoordsXYZD location;
             if (i == 0) {
-                location = ride_get_entrance_location_of_station(rideIndex, station_index);
+                location = ride_get_entrance_location(rideIndex, station_index);
             } else {
-                location = ride_get_exit_location_of_station(rideIndex, station_index);
+                location = ride_get_exit_location(rideIndex, station_index);
             }
 
             if (location.isNull()) {

@@ -212,7 +212,7 @@ static void ride_ratings_update_state_2()
             if (trackType == TRACK_ELEM_END_STATION) {
                 sint32 entranceIndex = tile_element_get_station(tileElement);
                 gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-                if (ride_get_entrance_location_of_station(rideIndex, entranceIndex).isNull())
+                if (ride_get_entrance_location(rideIndex, entranceIndex).isNull())
                 {
                     gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                 }
@@ -353,7 +353,7 @@ static void ride_ratings_begin_proximity_loop()
     for (sint32 i = 0; i < MAX_STATIONS; i++) {
         if (ride->station_starts[i].xy != RCT_XY8_UNDEFINED) {
             gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-            if (ride_get_entrance_location_of_station(rideIndex, i).isNull())
+            if (ride_get_entrance_location(rideIndex, i).isNull())
             {
                 gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             }
@@ -1277,7 +1277,7 @@ static sint32 ride_ratings_get_scenery_score(Ride *ride)
 
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        TileCoordsXYZD location = ride_get_entrance_location_of_station(ride, 0);
+        TileCoordsXYZD location = ride_get_entrance_location(ride, 0);
         x = location.x;
         y = location.y;
     }

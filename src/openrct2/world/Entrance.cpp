@@ -194,7 +194,7 @@ static money32 RideEntranceExitPlace(sint16 x,
 
         if (isExit)
         {
-            const auto exit = ride_get_exit_location_of_station(rideIndex, stationNum);
+            const auto exit = ride_get_exit_location(rideIndex, stationNum);
             if (!exit.isNull())
             {
                 if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -210,7 +210,7 @@ static money32 RideEntranceExitPlace(sint16 x,
         }
         else
         {
-            const auto entrance = ride_get_entrance_location_of_station(rideIndex, stationNum);
+            const auto entrance = ride_get_entrance_location(rideIndex, stationNum);
             if (!entrance.isNull())
             {
                 if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -302,11 +302,11 @@ static money32 RideEntranceExitPlace(sint16 x,
 
             if (isExit)
             {
-                ride_set_exit_location_of_station(ride, stationNum, { x / 32, y / 32, z / 8, (uint8)tile_element_get_direction(tileElement)});
+                ride_set_exit_location(ride, stationNum, { x / 32, y / 32, z / 8, (uint8)tile_element_get_direction(tileElement)});
             }
             else
             {
-                ride_set_entrance_location_of_station(ride, stationNum, { x / 32, y / 32, z / 8, (uint8)tile_element_get_direction(tileElement)});
+                ride_set_entrance_location(ride, stationNum, { x / 32, y / 32, z / 8, (uint8)tile_element_get_direction(tileElement)});
                 ride->last_peep_in_queue[stationNum] = SPRITE_INDEX_NULL;
                 ride->queue_length[stationNum] = 0;
 
@@ -423,11 +423,11 @@ static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8
 
         if (isExit)
         {
-            ride_clear_exit_location_of_station(ride, stationNum);
+            ride_clear_exit_location(ride, stationNum);
         }
         else
         {
-            ride_clear_entrance_location_of_station(ride, stationNum);
+            ride_clear_entrance_location(ride, stationNum);
         }
 
         footpath_update_queue_chains();

@@ -148,8 +148,8 @@ public:
         for (sint32 i = 0; i < MAX_STATIONS; i++)
         {
             ride->station_starts[i].xy = RCT_XY8_UNDEFINED;
-            ride_clear_entrance_location_of_station(ride, i);
-            ride_clear_exit_location_of_station(ride, i);
+            ride_clear_entrance_location(ride, i);
+            ride_clear_exit_location(ride, i);
             ride->train_at_station[i] = 255;
             ride->queue_time[i] = 0;
         }

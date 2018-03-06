@@ -521,14 +521,14 @@ public:
             // Direction is fixed later.
 
             if (src->entrances[i].xy == RCT_XY8_UNDEFINED)
-                ride_clear_entrance_location_of_station(dst, i);
+                ride_clear_entrance_location(dst, i);
             else
-                ride_set_entrance_location_of_station(dst, i, { src->entrances[i].x, src->entrances[i].y, src->station_heights[i], 0 });
+                ride_set_entrance_location(dst, i, { src->entrances[i].x, src->entrances[i].y, src->station_heights[i], 0 });
 
             if (src->exits[i].xy == RCT_XY8_UNDEFINED)
-                ride_clear_exit_location_of_station(dst, i);
+                ride_clear_exit_location(dst, i);
             else
-                ride_set_exit_location_of_station(dst, i, { src->entrances[i].x, src->entrances[i].y, src->station_heights[i], 0 });
+                ride_set_exit_location(dst, i, { src->entrances[i].x, src->entrances[i].y, src->station_heights[i], 0 });
 
             dst->last_peep_in_queue[i] = src->last_peep_in_queue[i];
 
@@ -544,8 +544,8 @@ public:
         {
             dst->station_starts[i].xy = RCT_XY8_UNDEFINED;
             dst->train_at_station[i] = 255;
-            ride_clear_entrance_location_of_station(dst, i);
-            ride_clear_exit_location_of_station(dst, i);
+            ride_clear_entrance_location(dst, i);
+            ride_clear_exit_location(dst, i);
             dst->last_peep_in_queue[i] = SPRITE_INDEX_NULL;
         }
 

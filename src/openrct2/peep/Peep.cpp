@@ -2617,7 +2617,7 @@ static void peep_choose_seat_from_car(rct_peep * peep, Ride * ride, rct_vehicle 
  */
 static void peep_go_to_ride_entrance(rct_peep * peep, Ride * ride)
 {
-    TileCoordsXYZD location = ride_get_entrance_location_of_station(peep->current_ride, peep->current_ride_station);
+    TileCoordsXYZD location = ride_get_entrance_location(peep->current_ride, peep->current_ride_station);
     Guard::Assert(!location.isNull());
     sint32 x = location.x;
     sint32 y = location.y;
@@ -2683,7 +2683,7 @@ static void peep_update_ride_sub_state_0(rct_peep * peep)
             sint16 z = peep->z;
             if (xy_distance < 16)
             {
-                auto entrance = ride_get_entrance_location_of_station(ride, peep->current_ride_station);
+                auto entrance = ride_get_entrance_location(ride, peep->current_ride_station);
                 z = entrance.z * 8 + 2;
             }
             sprite_move(x, y, z, (rct_sprite *)peep);
@@ -2907,7 +2907,7 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
     {
-        TileCoordsXYZD entranceLocation = ride_get_entrance_location_of_station(peep->current_ride, peep->current_ride_station);
+        TileCoordsXYZD entranceLocation = ride_get_entrance_location(peep->current_ride, peep->current_ride_station);
         Guard::Assert(!entranceLocation.isNull());
         x = entranceLocation.x;
         y = entranceLocation.y;
@@ -2992,7 +2992,7 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
 
     if (vehicle_type->flags & VEHICLE_ENTRY_FLAG_26)
     {
-        TileCoordsXYZD entranceLocation = ride_get_entrance_location_of_station(peep->current_ride, peep->current_ride_station);
+        TileCoordsXYZD entranceLocation = ride_get_entrance_location(peep->current_ride, peep->current_ride_station);
         uint8 direction_entrance = entranceLocation.direction;
 
         x = ride->station_starts[peep->current_ride_station].x;
@@ -3096,7 +3096,7 @@ static void peep_go_to_ride_exit(rct_peep * peep, Ride * ride, sint16 x, sint16 
     invalidate_sprite_2((rct_sprite *)peep);
 
     Guard::Assert(peep->current_ride_station < MAX_STATIONS);
-    auto exit = ride_get_exit_location_of_station(ride, peep->current_ride_station);
+    auto exit = ride_get_exit_location(ride, peep->current_ride_station);
     Guard::Assert(!exit.isNull());
     x = exit.x;
     y = exit.y;
@@ -3205,7 +3205,7 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep * peep, Ride * ride
  */
 static void peep_update_ride_sub_state_2_rejoin_queue(rct_peep * peep, Ride * ride)
 {
-    TileCoordsXYZD entranceLocation = ride_get_entrance_location_of_station(peep->current_ride, peep->current_ride_station);
+    TileCoordsXYZD entranceLocation = ride_get_entrance_location(peep->current_ride, peep->current_ride_station);
 
     sint32 x = entranceLocation.x * 32;
     sint32 y = entranceLocation.y * 32;
@@ -3438,7 +3438,7 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
     if (!(vehicle_entry->flags & VEHICLE_ENTRY_FLAG_26))
     {
         assert(peep->current_ride_station < MAX_STATIONS);
-        TileCoordsXYZD exitLocation = ride_get_exit_location_of_station(peep->current_ride, peep->current_ride_station);
+        TileCoordsXYZD exitLocation = ride_get_exit_location(peep->current_ride, peep->current_ride_station);
         sint32 x, y;
         sint32 z = ride->station_heights[peep->current_ride_station];
 
@@ -3530,7 +3530,7 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
         return;
     }
 
-    TileCoordsXYZD exitLocation = ride_get_exit_location_of_station(peep->current_ride, peep->current_ride_station);
+    TileCoordsXYZD exitLocation = ride_get_exit_location(peep->current_ride, peep->current_ride_station);
     Guard::Assert(!exitLocation.isNull());
     sint16 z = (sint16)exitLocation.z;
 
@@ -3606,7 +3606,7 @@ static void peep_update_ride_prepare_for_state_9(rct_peep * peep)
     Ride * ride = get_ride(peep->current_ride);
 
     Guard::Assert(peep->current_ride_station < Util::CountOf(ride->exits), GUARD_LINE);
-    auto exit = ride_get_exit_location_of_station(peep->current_ride, peep->current_ride_station);
+    auto exit = ride_get_exit_location(peep->current_ride, peep->current_ride_station);
     sint16 x = exit.x;
     sint16 y = exit.y;
     uint8 exit_direction = exit.direction;
@@ -3850,7 +3850,7 @@ static void peep_update_ride_sub_state_13(rct_peep * peep)
 
     peep->var_37 |= 3;
 
-    auto exit = ride_get_exit_location_of_station(peep->current_ride, peep->current_ride_station);
+    auto exit = ride_get_exit_location(peep->current_ride, peep->current_ride_station);
     x = exit.x;
     y = exit.y;
     uint8 exit_direction = exit.direction ^ 2;
@@ -3923,7 +3923,7 @@ static void peep_update_ride_sub_state_14(rct_peep * peep)
 
         if (last_ride)
         {
-            auto exit = ride_get_exit_location_of_station(peep->current_ride, peep->current_ride_station);
+            auto exit = ride_get_exit_location(peep->current_ride, peep->current_ride_station);
             uint8 exit_direction = exit.direction;
 
             peep->var_37 = (exit_direction * 4) | (peep->var_37 & 0x30) | 1;
@@ -4117,7 +4117,7 @@ static void peep_update_ride_sub_state_16(rct_peep * peep)
 
     peep->var_37 |= 3;
 
-    auto exit = ride_get_exit_location_of_station(peep->current_ride, peep->current_ride_station);
+    auto exit = ride_get_exit_location(peep->current_ride, peep->current_ride_station);
     x         = exit.x;
     y         = exit.y;
 
@@ -5110,10 +5110,10 @@ static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep * peep, Ride
 
     if (!firstRun)
     {
-        TileCoordsXYZD stationPosition = ride_get_exit_location_of_station(ride, peep->current_ride_station);
+        TileCoordsXYZD stationPosition = ride_get_exit_location(ride, peep->current_ride_station);
         if (stationPosition.isNull())
         {
-            stationPosition = ride_get_entrance_location_of_station(ride, peep->current_ride_station);
+            stationPosition = ride_get_entrance_location(ride, peep->current_ride_station);
 
             if (stationPosition.isNull())
             {
@@ -5202,10 +5202,10 @@ static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep * peep, Ride
 
     if (!firstRun)
     {
-        TileCoordsXYZD exitPosition = ride_get_exit_location_of_station(ride, peep->current_ride_station);
+        TileCoordsXYZD exitPosition = ride_get_exit_location(ride, peep->current_ride_station);
         if (exitPosition.isNull())
         {
-            exitPosition = ride_get_entrance_location_of_station(ride, peep->current_ride_station);
+            exitPosition = ride_get_entrance_location(ride, peep->current_ride_station);
 
             if (exitPosition.isNull())
             {
@@ -6492,7 +6492,7 @@ static void peep_update_heading_to_inspect(rct_peep * peep)
         return;
     }
 
-    if (ride_get_exit_location_of_station(ride, peep->current_ride_station).isNull())
+    if (ride_get_exit_location(ride, peep->current_ride_station).isNull())
     {
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
         peep_decrement_num_riders(peep);
@@ -6553,7 +6553,7 @@ static void peep_update_heading_to_inspect(rct_peep * peep)
 
         if (_unk_F1EE18 & F1EE18_RIDE_ENTRANCE)
         {
-            if (!ride_get_exit_location_of_station(ride, exit_index).isNull())
+            if (!ride_get_exit_location(ride, exit_index).isNull())
             {
                 return;
             }
@@ -6679,7 +6679,7 @@ static void peep_update_answering(rct_peep * peep)
 
         if (_unk_F1EE18 & F1EE18_RIDE_ENTRANCE)
         {
-            if (!ride_get_exit_location_of_station(ride, exit_index).isNull())
+            if (!ride_get_exit_location(ride, exit_index).isNull())
             {
                 return;
             }
@@ -11432,13 +11432,13 @@ static sint32 guest_path_finding(rct_peep * peep)
     for (uint8 stationNum = 0; stationNum < MAX_STATIONS; ++stationNum)
     {
         // Skip if stationNum has no entrance (so presumably an exit only station)
-        if (ride_get_entrance_location_of_station(rideIndex, stationNum).isNull())
+        if (ride_get_entrance_location(rideIndex, stationNum).isNull())
             continue;
 
         numEntranceStations++;
         entranceStations |= (1 << stationNum);
 
-        TileCoordsXYZD entranceLocation = ride_get_entrance_location_of_station(rideIndex, stationNum);
+        TileCoordsXYZD entranceLocation = ride_get_entrance_location(rideIndex, stationNum);
 
         sint16 stationX = (sint16)(entranceLocation.x * 32);
         sint16 stationY = (sint16)(entranceLocation.y * 32);
@@ -11488,7 +11488,7 @@ static sint32 guest_path_finding(rct_peep * peep)
     }
     else
     {
-        TileCoordsXYZD entranceXYZD = ride_get_entrance_location_of_station(rideIndex, closestStationNum);
+        TileCoordsXYZD entranceXYZD = ride_get_entrance_location(rideIndex, closestStationNum);
         x = entranceXYZD.x * 32;
         y = entranceXYZD.y * 32;
         z = entranceXYZD.z;

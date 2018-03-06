@@ -2536,12 +2536,12 @@ static rct_string_id window_ride_get_status_station(rct_window *w, void *argumen
 
     // Entrance / exit
     if (ride->status == RIDE_STATUS_CLOSED) {
-        if (ride_get_entrance_location_of_station((uint8)w->number, (uint8)stationIndex).isNull())
+        if (ride_get_entrance_location((uint8)w->number, (uint8)stationIndex).isNull())
             stringId = STR_NO_ENTRANCE;
-        else if (ride_get_exit_location_of_station((uint8)w->number, (uint8)stationIndex).isNull())
+        else if (ride_get_exit_location((uint8)w->number, (uint8)stationIndex).isNull())
             stringId = STR_NO_EXIT;
     } else {
-        if (ride_get_entrance_location_of_station((uint8)w->number, (uint8)stationIndex).isNull())
+        if (ride_get_entrance_location((uint8)w->number, (uint8)stationIndex).isNull())
             stringId = STR_EXIT_ONLY;
     }
 

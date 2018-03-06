@@ -25,13 +25,13 @@ sint8 ride_get_first_valid_station_exit(Ride * ride);
 sint8 ride_get_first_valid_station_start(const Ride * ride);
 sint8 ride_get_first_empty_station_start(const Ride * ride);
 
-TileCoordsXYZD ride_get_entrance_location_of_station(const sint32 rideIndex, const sint32 stationIndex);
-TileCoordsXYZD ride_get_exit_location_of_station(const sint32 rideIndex, const sint32 stationIndex);
-TileCoordsXYZD ride_get_entrance_location_of_station(const Ride * ride, const sint32 stationIndex);
-TileCoordsXYZD ride_get_exit_location_of_station(const Ride * ride, const sint32 stationIndex);
+TileCoordsXYZD ride_get_entrance_location(const sint32 rideIndex, const sint32 stationIndex);
+TileCoordsXYZD ride_get_exit_location(const sint32 rideIndex, const sint32 stationIndex);
+TileCoordsXYZD ride_get_entrance_location(const Ride * ride, const sint32 stationIndex);
+TileCoordsXYZD ride_get_exit_location(const Ride * ride, const sint32 stationIndex);
 
-void ride_clear_entrance_location_of_station(Ride * ride, const sint32 stationIndex);
-void ride_clear_exit_location_of_station(Ride * ride, const sint32 stationIndex);
+void ride_clear_entrance_location(Ride * ride, const sint32 stationIndex);
+void ride_clear_exit_location(Ride * ride, const sint32 stationIndex);
 
-void ride_set_entrance_location_of_station(Ride * ride, const sint32 stationIndex, const TileCoordsXYZD location);
-void ride_set_exit_location_of_station(Ride * ride, const sint32 stationIndex, const TileCoordsXYZD location);
+void ride_set_entrance_location(Ride * ride, const sint32 stationIndex, const TileCoordsXYZD location);
+void ride_set_exit_location(Ride * ride, const sint32 stationIndex, const TileCoordsXYZD location);

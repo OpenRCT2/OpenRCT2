@@ -378,48 +378,48 @@ sint8 ride_get_first_empty_station_start(const Ride * ride)
     return -1;
 }
 
-TileCoordsXYZD ride_get_entrance_location_of_station(const sint32 rideIndex, const sint32 stationIndex)
+TileCoordsXYZD ride_get_entrance_location(const sint32 rideIndex, const sint32 stationIndex)
 {
     const Ride * ride = get_ride(rideIndex);
     return ride->entrances[stationIndex];
 }
 
-TileCoordsXYZD ride_get_exit_location_of_station(const sint32 rideIndex, const sint32 stationIndex)
+TileCoordsXYZD ride_get_exit_location(const sint32 rideIndex, const sint32 stationIndex)
 {
     const Ride * ride = get_ride(rideIndex);
     return ride->exits[stationIndex];
 }
 
-TileCoordsXYZD ride_get_entrance_location_of_station(const Ride * ride, const sint32 stationIndex)
+TileCoordsXYZD ride_get_entrance_location(const Ride * ride, const sint32 stationIndex)
 {
     return ride->entrances[stationIndex];
 }
 
-TileCoordsXYZD ride_get_exit_location_of_station(const Ride * ride, const sint32 stationIndex)
+TileCoordsXYZD ride_get_exit_location(const Ride * ride, const sint32 stationIndex)
 {
     return ride->exits[stationIndex];
 }
 
-void ride_clear_entrance_location_of_station(
+void ride_clear_entrance_location(
         Ride * ride,
         const sint32 stationIndex)
 {
     ride->entrances[stationIndex].x = COORDS_NULL;
 }
 
-void ride_clear_exit_location_of_station(
+void ride_clear_exit_location(
         Ride * ride,
         const sint32 stationIndex)
 {
     ride->exits[stationIndex].x = COORDS_NULL;
 }
 
-void ride_set_entrance_location_of_station(Ride * ride, const sint32 stationIndex, const TileCoordsXYZD location)
+void ride_set_entrance_location(Ride * ride, const sint32 stationIndex, const TileCoordsXYZD location)
 {
     ride->entrances[stationIndex] = location;
 }
 
-void ride_set_exit_location_of_station(Ride * ride, const sint32 stationIndex, const TileCoordsXYZD location)
+void ride_set_exit_location(Ride * ride, const sint32 stationIndex, const TileCoordsXYZD location)
 {
     ride->exits[stationIndex] = location;
 }

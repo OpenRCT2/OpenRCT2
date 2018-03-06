@@ -230,8 +230,8 @@ bool track_paint_util_has_fence(
     sint32 entranceY = (position.y / 32) + offset.y;
 
     sint32 entranceId = tile_element_get_station(tileElement);
-    const TileCoordsXYZD entrance = ride_get_entrance_location_of_station(ride, entranceId);
-    const TileCoordsXYZD exit = ride_get_exit_location_of_station(ride, entranceId);
+    const TileCoordsXYZD entrance = ride_get_entrance_location(ride, entranceId);
+    const TileCoordsXYZD exit = ride_get_exit_location(ride, entranceId);
 
     return ((entrance.x != entranceX || entrance.y != entranceY) &&
             (exit.x != entranceX || exit.y != entranceY));

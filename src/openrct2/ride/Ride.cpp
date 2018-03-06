@@ -343,7 +343,7 @@ sint32 ride_get_total_queue_length(Ride *ride)
 {
     sint32 i, queueLength = 0;
     for (i = 0; i < MAX_STATIONS; i++)
-        if (!ride_get_entrance_location_of_station(ride, i).isNull())
+        if (!ride_get_entrance_location(ride, i).isNull())
             queueLength += ride->queue_length[i];
     return queueLength;
 }
@@ -352,7 +352,7 @@ sint32 ride_get_max_queue_time(Ride *ride)
 {
     uint8 i, queueTime = 0;
     for (i = 0; i < MAX_STATIONS; i++)
-        if (!ride_get_entrance_location_of_station(ride, i).isNull())
+        if (!ride_get_entrance_location(ride, i).isNull())
             queueTime = Math::Max(queueTime, ride->queue_time[i]);
     return (sint32)queueTime;
 }
@@ -1136,7 +1136,7 @@ void ride_remove_peeps(sint32 rideIndex)
     sint32 exitZ = 0;
     sint32 exitDirection = 255;
     if (stationIndex != -1) {
-        TileCoordsXYZD location = ride_get_exit_location_of_station(ride, stationIndex);
+        TileCoordsXYZD location = ride_get_exit_location(ride, stationIndex);
         if (!location.isNull()) {
             exitX = location.x;
             exitY = location.y;
@@ -2666,9 +2666,9 @@ rct_peep *ride_find_closest_mechanic(Ride *ride, sint32 forInspection)
 
     // Get either exit position or entrance position if there is no exit
     stationIndex = ride->inspection_station;
-    location = ride_get_exit_location_of_station(ride, stationIndex);
+    location = ride_get_exit_location(ride, stationIndex);
     if (location.isNull()) {
-        location = ride_get_entrance_location_of_station(ride, stationIndex);
+        location = ride_get_entrance_location(ride, stationIndex);
         if (location.isNull())
             return nullptr;
     }
@@ -3215,8 +3215,8 @@ static void ride_entrance_exit_connected(Ride* ride, sint32 ride_idx)
     for (sint32 i = 0; i < MAX_STATIONS; ++i)
     {
         LocationXY8 station_start = ride->station_starts[i];
-        TileCoordsXYZD entrance = ride_get_entrance_location_of_station(ride_idx, i);
-        TileCoordsXYZD exit = ride_get_exit_location_of_station(ride_idx, i);
+        TileCoordsXYZD entrance = ride_get_entrance_location(ride_idx, i);
+        TileCoordsXYZD exit = ride_get_exit_location(ride_idx, i);
 
         if (station_start.xy == RCT_XY8_UNDEFINED )
             continue;
@@ -3382,7 +3382,7 @@ static void ride_entrance_set_map_tooltip(rct_tile_element *tileElement)
     if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
         // Get the queue length
         sint32 queueLength = 0;
-        if (!ride_get_entrance_location_of_station(ride, stationIndex).isNull())
+        if (!ride_get_entrance_location(ride, stationIndex).isNull())
             queueLength = ride->queue_length[stationIndex];
 
         set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
@@ -4050,18 +4050,18 @@ static sint32 ride_check_for_entrance_exit(sint32 rideIndex)
         if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
             continue;
 
-        if (!ride_get_entrance_location_of_station(ride, i).isNull()) {
+        if (!ride_get_entrance_location(ride, i).isNull()) {
             entrance = 1;
         }
 
-        if (!ride_get_exit_location_of_station(ride, i).isNull()) {
+        if (!ride_get_exit_location(ride, i).isNull()) {
             exit = 1;
         }
 
         // If station start and no entrance/exit
         // Sets same error message as no entrance
-        if (ride_get_exit_location_of_station(ride, i).isNull() &&
-            ride_get_entrance_location_of_station(ride, i).isNull())
+        if (ride_get_exit_location(ride, i).isNull() &&
+            ride_get_entrance_location(ride, i).isNull())
         {
             entrance = 0;
             break;
@@ -4089,7 +4089,7 @@ static void sub_6B5952(sint32 rideIndex)
 {
     for (sint32 i = 0; i < MAX_STATIONS; i++)
     {
-        TileCoordsXYZD location = ride_get_entrance_location_of_station(rideIndex, i);
+        TileCoordsXYZD location = ride_get_entrance_location(rideIndex, i);
         if (location.isNull())
             continue;
 
@@ -4387,8 +4387,8 @@ static void ride_set_maze_entrance_exit_points(Ride *ride)
     TileCoordsXYZD * position = positions;
     for (sint32 i = 0; i < MAX_STATIONS; i++)
     {
-        const auto entrance = ride_get_entrance_location_of_station(ride, i);
-        const auto exit = ride_get_exit_location_of_station(ride, i);
+        const auto entrance = ride_get_entrance_location(ride, i);
+        const auto exit = ride_get_exit_location(ride, i);
 
         if (!entrance.isNull()) {
             *position++ = entrance;
@@ -5140,12 +5140,12 @@ static void loc_6B51C0(sint32 rideIndex)
         if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
             continue;
 
-        if (ride_get_entrance_location_of_station(rideIndex, i).isNull()) {
+        if (ride_get_entrance_location(rideIndex, i).isNull()) {
             entranceOrExit = 0;
             break;
         }
 
-        if (ride_get_exit_location_of_station(rideIndex, i).isNull()) {
+        if (ride_get_exit_location(rideIndex, i).isNull()) {
             entranceOrExit = 1;
             break;
         }
@@ -6835,12 +6835,12 @@ bool ride_are_all_possible_entrances_and_exits_built(Ride *ride)
         {
             continue;
         }
-        if (ride_get_entrance_location_of_station(ride, i).isNull())
+        if (ride_get_entrance_location(ride, i).isNull())
         {
             gGameCommandErrorText = STR_ENTRANCE_NOT_YET_BUILT;
             return false;
         }
-        if (ride_get_exit_location_of_station(ride, i).isNull()) {
+        if (ride_get_exit_location(ride, i).isNull()) {
             gGameCommandErrorText = STR_EXIT_NOT_YET_BUILT;
             return false;
         }
@@ -7523,18 +7523,18 @@ void sub_6CB945(sint32 rideIndex)
     TileCoordsXYZD *locationList = locations;
     for (uint8 stationId = 0; stationId < MAX_STATIONS; ++stationId)
     {
-        TileCoordsXYZD entrance = ride_get_entrance_location_of_station(rideIndex, stationId);
+        TileCoordsXYZD entrance = ride_get_entrance_location(rideIndex, stationId);
         if (!entrance.isNull())
         {
             *locationList++ = entrance;
-            ride_clear_entrance_location_of_station(ride, stationId);
+            ride_clear_entrance_location(ride, stationId);
         }
 
-        TileCoordsXYZD exit = ride_get_exit_location_of_station(rideIndex, stationId);
+        TileCoordsXYZD exit = ride_get_exit_location(rideIndex, stationId);
         if (!exit.isNull())
         {
             *locationList++ = exit;
-            ride_clear_exit_location_of_station(ride, stationId);
+            ride_clear_exit_location(ride, stationId);
         }
     }
     (*locationList++).x = COORDS_NULL;
@@ -7594,18 +7594,18 @@ void sub_6CB945(sint32 rideIndex)
 
                 if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT)
                 {
-                    if (!ride_get_exit_location_of_station(ride, stationId).isNull())
+                    if (!ride_get_exit_location(ride, stationId).isNull())
                         break;
 
-                    ride_set_exit_location_of_station(ride, stationId,
+                    ride_set_exit_location(ride, stationId,
                         { location.x / 32, location.y / 32, ride->station_heights[stationId], (uint8)tile_element_get_direction(tileElement) });
                 }
                 else
                 {
-                    if (!ride_get_entrance_location_of_station(ride, stationId).isNull())
+                    if (!ride_get_entrance_location(ride, stationId).isNull())
                         break;
 
-                    ride_set_entrance_location_of_station(ride, stationId,
+                    ride_set_entrance_location(ride, stationId,
                         { location.x / 32, location.y / 32, ride->station_heights[stationId], (uint8)tile_element_get_direction(tileElement) });
                 }
 
@@ -8349,7 +8349,7 @@ void determine_ride_entrance_and_exit_locations()
                                 }
 
                                 // Found our entrance
-                                ride_set_entrance_location_of_station(ride, stationIndex, { x, y, tileElement->base_height, (uint8)tile_element_get_direction(tileElement) });
+                                ride_set_entrance_location(ride, stationIndex, { x, y, tileElement->base_height, (uint8)tile_element_get_direction(tileElement) });
                                 alreadyFoundEntrance = true;
 
                                 log_info("Fixed disconnected entrance of ride %d, station %d to x = %d, y = %d and z = %d.", rideIndex, stationIndex, x, y, tileElement->base_height);
@@ -8365,7 +8365,7 @@ void determine_ride_entrance_and_exit_locations()
                                 }
 
                                 // Found our exit
-                                ride_set_exit_location_of_station(ride, stationIndex, { x, y, tileElement->base_height, (uint8)tile_element_get_direction(tileElement) });
+                                ride_set_exit_location(ride, stationIndex, { x, y, tileElement->base_height, (uint8)tile_element_get_direction(tileElement) });
                                 alreadyFoundExit = true;
 
                                 log_info("Fixed disconnected exit of ride %d, station %d to x = %d, y = %d and z = %d.", rideIndex, stationIndex, x, y, tileElement->base_height);
@@ -8378,13 +8378,13 @@ void determine_ride_entrance_and_exit_locations()
 
             if (fixEntrance && !alreadyFoundEntrance)
             {
-                ride_clear_entrance_location_of_station(ride, stationIndex);
+                ride_clear_entrance_location(ride, stationIndex);
                 log_info("Cleared disconnected entrance of ride %d, station %d.", rideIndex, stationIndex);
 
             }
             if (fixExit && !alreadyFoundExit)
             {
-                ride_clear_exit_location_of_station(ride, stationIndex);
+                ride_clear_exit_location(ride, stationIndex);
                 log_info("Cleared disconnected exit of ride %d, station %d.", rideIndex, stationIndex);
             }
         }
