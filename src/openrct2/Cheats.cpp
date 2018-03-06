@@ -355,22 +355,13 @@ static void cheat_remove_all_guests()
     rct_peep *peep;
     rct_vehicle *vehicle;
     uint16 spriteIndex, nextSpriteIndex;
-
-    for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
-        peep = &(get_sprite(spriteIndex)->peep);
-        nextSpriteIndex = peep->next;
-        if (peep->type == PEEP_TYPE_GUEST) {
-            peep_remove(peep);
-        }
-    }
-
     sint32 rideIndex;
     Ride *ride;
 
     FOR_ALL_RIDES(rideIndex, ride)
     {
         ride->num_riders = 0;
-
+ 
         for (size_t stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
         {
             ride->queue_length[stationIndex] = 0;
@@ -384,16 +375,29 @@ static void cheat_remove_all_guests()
             {
                 vehicle = GET_VEHICLE(spriteIndex);
 
-                vehicle->num_peeps = 0;
-                vehicle->next_free_seat = 0;
+                for (int i = 0; i < vehicle->num_peeps; i++) {
+                    peep = GET_PEEP(vehicle->peep[i]);
+                    vehicle->mass -= peep->mass;
+                }
 
                 for (auto &peepInTrainIndex : vehicle->peep)
                 {
                     peepInTrainIndex = SPRITE_INDEX_NULL;
                 }
 
+                vehicle->num_peeps = 0;
+                vehicle->next_free_seat = 0;
+
                 spriteIndex = vehicle->next_vehicle_on_train;
             }
+        }
+    }
+
+    for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
+        peep = &(get_sprite(spriteIndex)->peep);
+        nextSpriteIndex = peep->next;
+        if (peep->type == PEEP_TYPE_GUEST) {
+            peep_remove(peep);
         }
     }
 
