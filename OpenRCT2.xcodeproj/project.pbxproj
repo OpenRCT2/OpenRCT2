@@ -702,7 +702,6 @@
 		4C7B54282007646A00A52E21 /* Fountain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fountain.h; sourceTree = "<group>"; };
 		4C7B54292007646A00A52E21 /* LargeScenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LargeScenery.cpp; sourceTree = "<group>"; };
 		4C7B542A2007646A00A52E21 /* LargeScenery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LargeScenery.h; sourceTree = "<group>"; };
-		4C7B542B2007646A00A52E21 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		4C7B542C2007646A00A52E21 /* Map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Map.cpp; sourceTree = "<group>"; };
 		4C7B542D2007646A00A52E21 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
 		4C7B542E2007646A00A52E21 /* MapAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapAnimation.cpp; sourceTree = "<group>"; };
@@ -738,6 +737,7 @@
 		4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = X8DrawingEngine.cpp; sourceTree = "<group>"; };
 		4C8B426F1EEB1ABD00F015CA /* X8DrawingEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = X8DrawingEngine.h; sourceTree = "<group>"; };
 		4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HardwareDisplayDrawingEngine.cpp; sourceTree = "<group>"; };
+		4C9196ED204FF3E000869A24 /* Location.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Location.hpp; sourceTree = "<group>"; };
 		4C93F1181F8B744400A9330D /* AirPoweredVerticalCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AirPoweredVerticalCoaster.cpp; sourceTree = "<group>"; };
 		4C93F1191F8B744400A9330D /* BobsleighCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BobsleighCoaster.cpp; sourceTree = "<group>"; };
 		4C93F11A1F8B744400A9330D /* BolligerMabillardTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BolligerMabillardTrack.h; sourceTree = "<group>"; };
@@ -2444,7 +2444,7 @@
 				4C7B54282007646A00A52E21 /* Fountain.h */,
 				4C7B54292007646A00A52E21 /* LargeScenery.cpp */,
 				4C7B542A2007646A00A52E21 /* LargeScenery.h */,
-				4C7B542B2007646A00A52E21 /* Location.h */,
+				4C9196ED204FF3E000869A24 /* Location.hpp */,
 				4C7B542C2007646A00A52E21 /* Map.cpp */,
 				4C7B542D2007646A00A52E21 /* Map.h */,
 				4C7B542E2007646A00A52E21 /* MapAnimation.cpp */,
@@ -2983,7 +2983,6 @@
 				C68313C81FDB4ED4006DB3D8 /* MouseInput.cpp in Sources */,
 				C68878C920289B710084B384 /* TextureCache.cpp in Sources */,
 				C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */,
-				F7C44AF72030E74B007E099F /* AVX2Drawing.cpp in Sources */,
 				F76C887B1EC5324E00FA49E2 /* FileAudioSource.cpp in Sources */,
 				C68878CA20289B710084B384 /* TransparencyDepth.cpp in Sources */,
 				C64644FD1F3FA4120026AC2D /* Land.cpp in Sources */,
