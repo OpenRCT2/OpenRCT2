@@ -234,6 +234,7 @@ public:
         ImportSavedView();
         FixLandOwnership();
         CountBlockSections();
+        determine_ride_entrance_and_exit_locations();
 
         // Importing the strings is done later on, although that approach needs looking at.
         //game_convert_strings_to_utf8();
@@ -792,8 +793,17 @@ private:
 
             dst->train_at_station[i] = src->station_depart[i];
 
-            dst->entrances[i] = src->entrance[i];
-            dst->exits[i] = src->exit[i];
+            // Direction is fixed later.
+            if (src->entrance[i].xy == RCT_XY8_UNDEFINED)
+                ride_clear_entrance_location(dst, i);
+            else
+                ride_set_entrance_location(dst, i, { src->entrance[i].x, src->entrance[i].y, src->station_height[i] / 2, 0});
+
+            if (src->exit[i].xy == RCT_XY8_UNDEFINED)
+                ride_clear_exit_location(dst, i);
+            else
+                ride_set_exit_location(dst, i, { src->exit[i].x, src->exit[i].y, src->station_height[i] / 2, 0});
+
             dst->queue_time[i] = src->queue_time[i];
             dst->last_peep_in_queue[i] = src->last_peep_in_queue[i];
             dst->queue_length[i] = src->num_peeps_in_queue[i];
@@ -806,8 +816,8 @@ private:
         {
             dst->station_starts[i].xy = RCT_XY8_UNDEFINED;
             dst->train_at_station[i] = 255;
-            dst->entrances[i].xy = RCT_XY8_UNDEFINED;
-            dst->exits[i].xy = RCT_XY8_UNDEFINED;
+            ride_clear_entrance_location(dst, i);
+            ride_clear_exit_location(dst, i);
             dst->last_peep_in_queue[i] = SPRITE_INDEX_NULL;
         }
 

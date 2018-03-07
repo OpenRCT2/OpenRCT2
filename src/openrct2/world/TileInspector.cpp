@@ -26,6 +26,7 @@
 #include "Footpath.h"
 #include "Map.h"
 #include "TileInspector.h"
+#include "../ride/Station.h"
 
 uint32 windowTileInspectorTileX;
 uint32 windowTileInspectorTileY;
@@ -248,9 +249,34 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex,
             tileElement->properties.path.edges |= ((pathEdges << 1) | (pathEdges >> 3)) & 0x0F;
             tileElement->properties.path.edges |= ((pathCorners << 1) | (pathCorners >> 3)) & 0xF0;
             break;
+        case TILE_ELEMENT_TYPE_ENTRANCE:
+        {
+            // Update element rotation
+            newRotation = tile_element_get_direction_with_offset(tileElement, 1);
+            tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
+            tileElement->type |= newRotation;
+
+            // Update ride's known entrance/exit rotation
+            Ride * ride         = get_ride(tileElement->properties.entrance.ride_index);
+            uint8  stationIndex = tileElement->properties.entrance.index;
+            auto   entrance     = ride_get_entrance_location(ride, stationIndex);
+            auto   exit         = ride_get_exit_location(ride, stationIndex);
+            uint8  entranceType = entrance_element_get_type(tileElement);
+            uint8  z            = tileElement->base_height;
+
+            // Make sure this is the correct entrance or exit
+            if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == x && entrance.y == y && entrance.z == z)
+            {
+                ride_set_entrance_location(ride, stationIndex, { entrance.x, entrance.y, entrance.z, newRotation });
+            }
+            else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == x && exit.y == y && exit.z == z)
+            {
+                ride_set_exit_location(ride, stationIndex, { exit.x, exit.y, exit.z, newRotation });
+            }
+            break;
+        }
         case TILE_ELEMENT_TYPE_TRACK:
         case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-        case TILE_ELEMENT_TYPE_ENTRANCE:
         case TILE_ELEMENT_TYPE_WALL:
             newRotation = tile_element_get_direction_with_offset(tileElement, 1);
             tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
@@ -389,6 +415,28 @@ sint32 tile_inspector_any_base_height_offset(sint32 x, sint32 y, sint16 elementI
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE)
+        {
+            uint8 entranceType = tileElement->properties.entrance.type;
+            if (entranceType != ENTRANCE_TYPE_PARK_ENTRANCE)
+            {
+                // Update the ride's known entrance or exit height
+                Ride * ride          = get_ride(tileElement->properties.entrance.ride_index);
+                uint8  entranceIndex = tileElement->properties.entrance.index;
+                auto   entrance      = ride_get_entrance_location(ride, entranceIndex);
+                auto   exit          = ride_get_exit_location(ride, entranceIndex);
+                uint8 z = tileElement->base_height;
+
+                // Make sure this is the correct entrance or exit
+                if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == x && entrance.y == y && entrance.z == z)
+                    ride_set_entrance_location(
+                        ride, entranceIndex, { entrance.x, entrance.y, z + heightOffset, entrance.direction });
+                else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == x && exit.y == y && exit.z == z)
+                    ride_set_exit_location(
+                        ride, entranceIndex, { exit.x, exit.y, z + heightOffset, exit.direction });
+            }
+        }
+
         tileElement->base_height += heightOffset;
         tileElement->clearance_height += heightOffset;
 
@@ -600,15 +648,10 @@ sint32 tile_inspector_entrance_make_usable(sint32 x, sint32 y, sint32 elementInd
         switch (entranceElement->properties.entrance.type)
         {
         case ENTRANCE_TYPE_RIDE_ENTRANCE:
-            ride->entrances[stationIndex].x = x;
-            ride->entrances[stationIndex].y = y;
+            ride_set_entrance_location(ride, stationIndex, { x, y, entranceElement->base_height, (uint8)tile_element_get_direction(entranceElement) });
             break;
         case ENTRANCE_TYPE_RIDE_EXIT:
-            ride->exits[stationIndex].x = x;
-            ride->exits[stationIndex].y = y;
-
-            // TODO: Remove once mechanics don't assume exits always match the station heights
-            ride->station_heights[stationIndex] = entranceElement->base_height;
+            ride_set_exit_location(ride, stationIndex, { x, y, entranceElement->base_height, (uint8)tile_element_get_direction(entranceElement) });
             break;
         }
 

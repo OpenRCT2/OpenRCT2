@@ -1209,13 +1209,10 @@ static uint8 staff_mechanic_direction_surface(rct_peep * peep)
 
     if ((peep->state == PEEP_STATE_ANSWERING || peep->state == PEEP_STATE_HEADING_TO_INSPECTION) && scenario_rand() & 1)
     {
-
-        Ride * ride = get_ride(peep->current_ride);
-
-        LocationXY8 location = ride->exits[peep->current_ride_station];
-        if (location.xy == RCT_XY8_UNDEFINED)
+        TileCoordsXYZD location = ride_get_exit_location(peep->current_ride, peep->current_ride_station);
+        if (location.isNull())
         {
-            location = ride->entrances[peep->current_ride_station];
+            location = ride_get_entrance_location(peep->current_ride, peep->current_ride_station);
         }
 
         LocationXY16 chosenTile = { static_cast<sint16>(location.x * 32), static_cast<sint16>(location.y * 32) };
@@ -1306,13 +1303,13 @@ static uint8 staff_mechanic_direction_path(rct_peep * peep, uint8 validDirection
     {
         /* Find location of the exit for the target ride station
          * or if the ride has no exit, the entrance. */
-        TileCoordsXYZD location = ride_get_exit_location_of_station(peep->current_ride, peep->current_ride_station);
-        if (location.x == LOCATION_NULL)
+        TileCoordsXYZD location = ride_get_exit_location(peep->current_ride, peep->current_ride_station);
+        if (location.isNull())
         {
-            location = ride_get_entrance_location_of_station(peep->current_ride, peep->current_ride_station);
+            location = ride_get_entrance_location(peep->current_ride, peep->current_ride_station);
 
             // If no entrance is present either. This is an incorrect state.
-            if (location.x == LOCATION_NULL)
+            if (location.isNull())
             {
                 return staff_mechanic_direction_path_rand(peep, pathDirections);
             }

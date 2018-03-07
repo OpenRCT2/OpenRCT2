@@ -18,7 +18,7 @@
 #define _ENTRANCE_H_
 
 #include "../common.h"
-#include "Location.h"
+#include "Location.hpp"
 
 #pragma pack(push, 1)
 struct rct_entrance_type {

@@ -163,8 +163,8 @@ struct Ride
     // ride->vehicle index for current train waiting for passengers
     // at station
     uint8 train_at_station[MAX_STATIONS];
-    LocationXY8 entrances[MAX_STATIONS];
-    LocationXY8 exits[MAX_STATIONS];
+    TileCoordsXYZD entrances[MAX_STATIONS];
+    TileCoordsXYZD exits[MAX_STATIONS];
     uint16 last_peep_in_queue[MAX_STATIONS];
     uint16 vehicles[MAX_VEHICLES_PER_RIDE];                         // Points to the first car in the train
     uint8 depart_flags;
@@ -1194,6 +1194,6 @@ void ride_stop_peeps_queuing(sint32 rideIndex);
 
 LocationXY16 ride_get_rotated_coords(sint16 x, sint16 y, sint16 z);
 
-void fix_ride_entrance_and_exit_locations();
+void determine_ride_entrance_and_exit_locations();
 
 #endif

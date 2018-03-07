@@ -447,6 +447,7 @@ public:
         map_update_tile_pointers();
         game_convert_strings_to_utf8();
         map_count_remaining_land_rights();
+        determine_ride_entrance_and_exit_locations();
 
         // We try to fix the cycles on import, hence the 'true' parameter
         check_for_sprite_list_cycles(true);
@@ -517,8 +518,18 @@ public:
             dst->station_length[i] = src->station_length[i];
             dst->station_depart[i] = src->station_depart[i];
             dst->train_at_station[i] = src->train_at_station[i];
-            dst->entrances[i] = src->entrances[i];
-            dst->exits[i] = src->exits[i];
+            // Direction is fixed later.
+
+            if (src->entrances[i].xy == RCT_XY8_UNDEFINED)
+                ride_clear_entrance_location(dst, i);
+            else
+                ride_set_entrance_location(dst, i, { src->entrances[i].x, src->entrances[i].y, src->station_heights[i], 0 });
+
+            if (src->exits[i].xy == RCT_XY8_UNDEFINED)
+                ride_clear_exit_location(dst, i);
+            else
+                ride_set_exit_location(dst, i, { src->entrances[i].x, src->entrances[i].y, src->station_heights[i], 0 });
+
             dst->last_peep_in_queue[i] = src->last_peep_in_queue[i];
 
             dst->length[i] = src->length[i];
@@ -533,8 +544,8 @@ public:
         {
             dst->station_starts[i].xy = RCT_XY8_UNDEFINED;
             dst->train_at_station[i] = 255;
-            dst->entrances[i].xy = RCT_XY8_UNDEFINED;
-            dst->exits[i].xy = RCT_XY8_UNDEFINED;
+            ride_clear_entrance_location(dst, i);
+            ride_clear_exit_location(dst, i);
             dst->last_peep_in_queue[i] = SPRITE_INDEX_NULL;
         }
 

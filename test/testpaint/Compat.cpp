@@ -50,6 +50,9 @@ const CoordsXY TileDirectionDelta[] = {
     {-32, -32}
 };
 
+TileCoordsXYZD ride_get_entrance_location(const Ride * ride, const sint32 stationIndex);
+TileCoordsXYZD ride_get_exit_location(const Ride * ride, const sint32 stationIndex);
+
 uint8 get_current_rotation() {
     return gCurrentRotation & 3;
 }
@@ -293,4 +296,14 @@ void track_element_set_cable_lift(rct_tile_element * trackElement)
 void track_element_clear_cable_lift(rct_tile_element * trackElement)
 {
     trackElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+TileCoordsXYZD ride_get_entrance_location(const Ride * ride, const sint32 stationIndex)
+{
+    return ride->entrances[stationIndex];
+}
+
+TileCoordsXYZD ride_get_exit_location(const Ride * ride, const sint32 stationIndex)
+{
+    return ride->exits[stationIndex];
 }

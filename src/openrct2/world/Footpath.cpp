@@ -1609,12 +1609,11 @@ void footpath_update_queue_chains()
 
         for (sint32 i = 0; i < MAX_STATIONS; i++)
         {
-            if (ride->entrances[i].xy == RCT_XY8_UNDEFINED)
+            TileCoordsXYZD location = ride_get_entrance_location(rideIndex, i);
+            if (location.isNull())
                 continue;
 
-            uint8              x           = ride->entrances[i].x;
-            uint8              y           = ride->entrances[i].y;
-            rct_tile_element * tileElement = map_get_first_element_at(x, y);
+            rct_tile_element * tileElement = map_get_first_element_at(location.x, location.y);
             do
             {
                 if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
@@ -1625,7 +1624,7 @@ void footpath_update_queue_chains()
                     continue;
 
                 uint8 direction = tile_element_get_direction_with_offset(tileElement, 2);
-                footpath_chain_ride_queue(rideIndex, i, x << 5, y << 5, tileElement, direction);
+                footpath_chain_ride_queue(rideIndex, i, location.x << 5, location.y << 5, tileElement, direction);
             } while (!tile_element_is_last_for_tile(tileElement++));
         }
     }

@@ -19,7 +19,7 @@
 
 #include <initializer_list>
 #include "../common.h"
-#include "Location.h"
+#include "Location.hpp"
 
 #pragma pack(push, 1)
 struct rct_tile_element_surface_properties {

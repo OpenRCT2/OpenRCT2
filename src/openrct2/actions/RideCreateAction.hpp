@@ -145,11 +145,11 @@ public:
             ride_set_name_to_default(ride, rideEntry);
         }
 
-        for (size_t i = 0; i < MAX_STATIONS; i++)
+        for (sint32 i = 0; i < MAX_STATIONS; i++)
         {
             ride->station_starts[i].xy = RCT_XY8_UNDEFINED;
-            ride->entrances[i].xy = RCT_XY8_UNDEFINED;
-            ride->exits[i].xy = RCT_XY8_UNDEFINED;
+            ride_clear_entrance_location(ride, i);
+            ride_clear_exit_location(ride, i);
             ride->train_at_station[i] = 255;
             ride->queue_time[i] = 0;
         }

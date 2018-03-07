@@ -1296,9 +1296,6 @@ void game_fix_save_vars()
 
     // Fix gParkEntrance locations for which the tile_element no longer exists
     fix_park_entrance_locations();
-
-    // Fix ride entrances and exits that were moved without updating ride->entrances[] / ride->exits[]
-    fix_ride_entrance_and_exit_locations();
 }
 
 void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, const std::string & path, bool loadTitleFirst)
