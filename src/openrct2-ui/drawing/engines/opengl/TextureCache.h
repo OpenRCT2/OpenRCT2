@@ -20,7 +20,7 @@
 #include <unordered_map>
 #include <vector>
 #include <array>
-#include <SDL_pixels.h>
+#include <SDL2/SDL_pixels.h>
 #include <openrct2/common.h>
 #include "OpenGLAPI.h"
 #include "GLSLTypes.h"

@@ -24,7 +24,7 @@
 #include "OpenGLAPIProc.h"
 #undef OPENGL_PROC
 
-#include <SDL_video.h>
+#include <SDL2/SDL_video.h>
 
 #include <openrct2/core/Console.hpp>
 

@@ -19,7 +19,7 @@
 #include <algorithm>
 #include <memory>
 #include <openrct2/common.h>
-#include <SDL_video.h>
+#include <SDL2/SDL_video.h>
 #include "OpenGLFramebuffer.h"
 
 constexpr GLuint BACKBUFFER_ID = 0;

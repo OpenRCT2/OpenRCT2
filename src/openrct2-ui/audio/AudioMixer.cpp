@@ -18,7 +18,7 @@
 #include <list>
 #include <vector>
 #include <openrct2/common.h>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <speex/speex_resampler.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Guard.hpp>

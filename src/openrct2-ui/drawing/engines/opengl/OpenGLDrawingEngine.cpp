@@ -19,7 +19,7 @@
 #include <algorithm>
 #include <cmath>
 #include <unordered_map>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/drawing/Drawing.h>

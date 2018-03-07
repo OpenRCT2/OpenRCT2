@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include <openrct2/common.h>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/core/String.hpp>
 #include "../SDLException.h"

@@ -17,7 +17,7 @@
 #include <map>
 #include <functional>
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #include <openrct2/interface/Cursors.h>
 

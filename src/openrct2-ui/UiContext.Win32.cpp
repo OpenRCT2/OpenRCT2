@@ -33,8 +33,8 @@
 #undef interface
 #include <windows.h>
 #include <shlobj.h>
-#include <SDL.h>
-#include <SDL_syswm.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_syswm.h>
 
 // Native resource IDs
 #include "../../resources/resource.h"
