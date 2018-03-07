@@ -110,6 +110,7 @@
 - Fix: [#7003] Building sloped paths through flat paths with clearance checks off causes glitches.
 - Fix: [#7011] Swinging and bobsleigh cars going backwards swing in the wrong direction (original bug).
 - Fix: [#7125] No entry signs not correctly handled in pathfinding.
+- Fix: [#7223] Vehicle mass not correctly recalculated when using remove all guests cheat.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
 - Fix: Clear IME buffer after committing composed text.
