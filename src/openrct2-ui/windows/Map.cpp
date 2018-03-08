@@ -1553,13 +1553,10 @@ static constexpr const uint8 RideColourKey[] = {
     COLOUR_KEY_RIDE,                //
 };
 
-static uint16 map_window_get_pixel_colour_peep(sint32 x, sint32 y)
+static uint16 map_window_get_pixel_colour_peep(CoordsXY c)
 {
-    rct_tile_element *tileElement;
-    uint16 colour;
-
-    tileElement = map_get_surface_element_at(x >> 5, y >> 5);
-    colour = TerrainColour[tile_element_get_terrain(tileElement)];
+    rct_tile_element * tileElement = map_get_surface_element_at(c);
+    uint16 colour = TerrainColour[tile_element_get_terrain(tileElement)];
     if (map_get_water_height(tileElement) > 0)
         colour = WaterColour;
 
@@ -1579,14 +1576,14 @@ static uint16 map_window_get_pixel_colour_peep(sint32 x, sint32 y)
     return colour;
 }
 
-static uint16 map_window_get_pixel_colour_ride(sint32 x, sint32 y)
+static uint16 map_window_get_pixel_colour_ride(CoordsXY c)
 {
     Ride *ride;
     uint16 colourA = 0;                            // highlight colour
     uint16 colourB = MAP_COLOUR(PALETTE_INDEX_13); // surface colour (dark grey)
     
     // as an improvement we could use first_element to show underground stuff?
-    rct_tile_element * tileElement = map_get_surface_element_at(x >> 5, y >> 5);
+    rct_tile_element * tileElement = map_get_surface_element_at(c);
     do {
         switch (tile_element_get_type(tileElement)) {
         case TILE_ELEMENT_TYPE_SURFACE:
@@ -1660,10 +1657,10 @@ static void map_window_set_pixels(rct_window *w)
         ) {
             switch (w->selected_tab) {
             case PAGE_PEEPS:
-                colour = map_window_get_pixel_colour_peep(x, y);
+                colour = map_window_get_pixel_colour_peep({x, y});
                 break;
             case PAGE_RIDES:
-                colour = map_window_get_pixel_colour_ride(x, y);
+                colour = map_window_get_pixel_colour_ride({x, y});
                 break;
             }
             destination[0] = (colour >> 8) & 0xFF;
