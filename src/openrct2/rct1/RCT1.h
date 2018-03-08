@@ -1222,6 +1222,17 @@ enum {
     RCT1_WATER_ORANGE
 };
 
+enum {
+    RCT1_SCENERY_TULIPS_1 = 65,
+    RCT1_SCENERY_TULIPS_2 = 68,
+
+    RCT1_SCENERY_GEOMETRIC_SCULPTURE_1 = 157, // TGE1
+    RCT1_SCENERY_GEOMETRIC_SCULPTURE_2 = 162, // TGE2
+    RCT1_SCENERY_GEOMETRIC_SCULPTURE_3 = 168, // TGE3
+    RCT1_SCENERY_GEOMETRIC_SCULPTURE_4 = 170, // TGE4
+    RCT1_SCENERY_GEOMETRIC_SCULPTURE_5 = 171, // TGE5
+};
+
 ParkLoadResult * load_from_sv4(const char *path);
 ParkLoadResult * load_from_sc4(const char *path);
 

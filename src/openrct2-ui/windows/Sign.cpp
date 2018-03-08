@@ -247,7 +247,7 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         }
         game_do_command(
             x,
-            1 | ((tile_element->type&0x3) << 8),
+            1 | ((tile_element->type & TILE_ELEMENT_DIRECTION_MASK) << 8),
             y,
             tile_element->base_height | (scenery_large_get_sequence(tile_element) << 8),
             GAME_COMMAND_REMOVE_LARGE_SCENERY,
@@ -510,9 +510,9 @@ static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
         game_do_command(
             x,
-            1 | ((tile_element->type & 0x3) << 8),
+            1 | ((tile_element->type & TILE_ELEMENT_DIRECTION_MASK) << 8),
             y,
-            (tile_element->base_height << 8) | (tile_element->type & 0x3),
+            (tile_element->base_height << 8) | (tile_element->type & TILE_ELEMENT_DIRECTION_MASK),
             GAME_COMMAND_REMOVE_WALL,
             0,
             0);
