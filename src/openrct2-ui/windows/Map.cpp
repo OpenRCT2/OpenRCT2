@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -34,9 +34,9 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 
-#define MAP_COLOUR_2(colourA, colourB) ((colourA << 8) | colourB)
+#define MAP_COLOUR_2(colourA, colourB) (((colourA) << 8) | (colourB))
 #define MAP_COLOUR(colour) MAP_COLOUR_2(colour, colour)
-#define FALLBACK_COLOUR(colour) ((colour << 24) | colour << 16)
+#define MAP_COLOUR_UNOWNED(colour) (PALETTE_INDEX_10 | ((colour) & 0xFF00))
 
 #define MAP_WINDOW_MAP_SIZE (MAXIMUM_MAP_SIZE_TECHNICAL * 2)
 
@@ -1582,7 +1582,7 @@ static uint16 map_window_get_pixel_colour_peep(sint32 x, sint32 y)
         colour = WaterColour;
 
     if (!(tileElement->properties.surface.ownership & OWNERSHIP_OWNED))
-        colour = PALETTE_INDEX_10 | (colour & 0xFF00);
+        colour = MAP_COLOUR_UNOWNED(colour);
 
     const sint32 maxSupportedTileElementType = (sint32)Util::CountOf(ElementTypeAddColour);
     while (!tile_element_is_last_for_tile(tileElement++)) {
@@ -1599,26 +1599,23 @@ static uint16 map_window_get_pixel_colour_peep(sint32 x, sint32 y)
 
 static uint16 map_window_get_pixel_colour_ride(sint32 x, sint32 y)
 {
-    rct_tile_element *tileElement;
     Ride *ride;
-    uint32 colour;
-
-    colour = FALLBACK_COLOUR(PALETTE_INDEX_13);
-    tileElement = map_get_surface_element_at(x >> 5, y >> 5);
+    uint16 colourA = 0;                            // highlight colour
+    uint16 colourB = MAP_COLOUR(PALETTE_INDEX_13); // surface colour (dark grey)
+    
+    // as an improvement we could use first_element to show underground stuff?
+    rct_tile_element * tileElement = map_get_surface_element_at(x >> 5, y >> 5);
     do {
         switch (tile_element_get_type(tileElement)) {
         case TILE_ELEMENT_TYPE_SURFACE:
-            if (map_get_water_height(tileElement) > 0) {
-                colour &= 0xFFFF;
-                colour |= FALLBACK_COLOUR(PALETTE_INDEX_194);
-            }
-            if (!(tileElement->properties.surface.ownership & OWNERSHIP_OWNED)) {
-                colour &= 0xFF00FFFF;
-                colour |= PALETTE_INDEX_10 << 16;
-            }
+            if (map_get_water_height(tileElement) > 0)
+                // Why is this a different water colour as above (195)?
+                colourB = MAP_COLOUR(PALETTE_INDEX_194);
+            if (!(tileElement->properties.surface.ownership & OWNERSHIP_OWNED))
+                colourB = MAP_COLOUR_UNOWNED(colourB);
             break;
         case TILE_ELEMENT_TYPE_PATH:
-            colour = MAP_COLOUR(PALETTE_INDEX_14);
+            colourA = MAP_COLOUR(PALETTE_INDEX_14); // lighter grey
             break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
             if (tileElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)
@@ -1626,15 +1623,15 @@ static uint16 map_window_get_pixel_colour_ride(sint32 x, sint32 y)
             // fall-through
         case TILE_ELEMENT_TYPE_TRACK:
             ride = get_ride(track_element_get_ride_index(tileElement));
-            colour = RideKeyColours[RideColourKey[ride->type]];
+            colourA = RideKeyColours[RideColourKey[ride->type]];
             break;
         }
     } while (!tile_element_is_last_for_tile(tileElement++));
 
-    if ((colour & 0xFFFF) == 0)
-        colour >>= 16;
+    if (colourA != 0)
+        return colourA;
 
-    return colour & 0xFFFF;
+    return colourB;
 }
 
 static void map_window_set_pixels(rct_window *w)
