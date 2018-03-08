@@ -40,6 +40,10 @@
 
 #define MAP_WINDOW_MAP_SIZE (MAXIMUM_MAP_SIZE_TECHNICAL * 2)
 
+// Some functions manipulate coordinates on the map. These are the coordinates of the pixels in the
+// minimap. In order to distinguish those from actual coordinates, we use a separate name.
+using MapCoordsXY = TileCoordsXY;
+
 enum {
     PAGE_PEEPS,
     PAGE_RIDES
@@ -197,7 +201,7 @@ static void map_window_increase_map_size();
 static void map_window_decrease_map_size();
 static void map_window_set_pixels(rct_window *w);
 
-static void map_window_screen_to_map(sint32 screenX, sint32 screenY, sint32 *mapX, sint32 *mapY);
+static CoordsXY map_window_screen_to_map(sint32 screenX, sint32 screenY);
 
 /**
 *
@@ -572,15 +576,12 @@ static void window_map_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *
  */
 static void window_map_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-    sint32 mapX = 0, mapY = 0, mapZ = 0;
-    rct_window *mainWindow;
+    CoordsXY c = map_window_screen_to_map(x, y);
+    sint32 mapX = Math::Clamp(0, c.x, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
+    sint32 mapY = Math::Clamp(0, c.y, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
+    sint32 mapZ = tile_element_height(x, y);
 
-    map_window_screen_to_map(x, y, &mapX, &mapY);
-    mapX = Math::Clamp(0, mapX, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
-    mapY = Math::Clamp(0, mapY, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
-    mapZ = tile_element_height(x, y);
-
-    mainWindow = window_get_main();
+    rct_window * mainWindow = window_get_main();
     if (mainWindow != nullptr) {
         window_scroll_to_location(mainWindow, mapX, mapY, mapZ);
     }
@@ -1029,16 +1030,13 @@ static void window_map_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi)
  *
  * part of window_map_paint_peep_overlay and window_map_paint_train_overlay
  */
-static void window_map_transform_to_map_coords(sint16 *left, sint16 *top)
+static MapCoordsXY window_map_transform_to_map_coords(CoordsXY c)
 {
-    sint16 x = *left, y = *top;
-    sint16 temp;
+    sint32 x = c.x, y = c.y;
 
     switch (get_current_rotation()) {
     case 3:
-        temp = x;
-        x = y;
-        y = temp;
+        std::swap(x, y);
         x = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - x;
         break;
     case 2:
@@ -1046,19 +1044,16 @@ static void window_map_transform_to_map_coords(sint16 *left, sint16 *top)
         y = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - y;
         break;
     case 1:
-        temp = x;
-        x = y;
-        y = temp;
+        std::swap(x, y);
         y = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - y;
         break;
     case 0:
         break;
     }
-    x >>= 5;
-    y >>= 5;
+    x /= 32;
+    y /= 32;
 
-    *left = -x + y + MAXIMUM_MAP_SIZE_TECHNICAL - 8;
-    *top = x + y - 8;
+    return {-x + y + MAXIMUM_MAP_SIZE_TECHNICAL - 8, x + y - 8};
 }
 
 /**
@@ -1070,22 +1065,18 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
     rct_peep *peep;
     uint16 spriteIndex;
 
-    sint16 left, right, bottom, top;
-    sint16 colour;
-
     FOR_ALL_PEEPS(spriteIndex, peep) {
-        left = peep->x;
-        top = peep->y;
-
-        if (left == LOCATION_NULL)
+        if (peep->x == LOCATION_NULL)
             continue;
 
-        window_map_transform_to_map_coords(&left, &top);
+        MapCoordsXY c = window_map_transform_to_map_coords({peep->x, peep->y});
+        sint16 left = c.x;
+        sint16 top = c.y;
 
-        right = left;
-        bottom = top;
+        sint16 right = left;
+        sint16 bottom = top;
 
-        colour = PALETTE_INDEX_20;
+        sint16 colour = PALETTE_INDEX_20;
 
         if (sprite_get_flashing((rct_sprite*)peep)) {
             if (peep->type == PEEP_TYPE_STAFF) {
@@ -1117,25 +1108,16 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
     rct_vehicle *train, *vehicle;
     uint16 train_index, vehicle_index;
 
-    sint16 left, top, right, bottom;
-
     for (train_index = gSpriteListHead[SPRITE_LIST_TRAIN]; train_index != SPRITE_INDEX_NULL; train_index = train->next) {
         train = GET_VEHICLE(train_index);
         for (vehicle_index = train_index; vehicle_index != SPRITE_INDEX_NULL; vehicle_index = vehicle->next_vehicle_on_train) {
             vehicle = GET_VEHICLE(vehicle_index);
-
-            left = vehicle->x;
-            top = vehicle->y;
-
-            if (left == LOCATION_NULL)
+            if (vehicle->x == LOCATION_NULL)
                 continue;
 
-            window_map_transform_to_map_coords(&left, &top);
+            MapCoordsXY c = window_map_transform_to_map_coords({vehicle->x, vehicle->y});
 
-            right = left;
-            bottom = top;
-
-            gfx_fill_rect(dpi, left, top, right, bottom, PALETTE_INDEX_171);
+            gfx_fill_rect(dpi, c.x, c.y, c.x, c.y, PALETTE_INDEX_171);
         }
     }
 }
@@ -1699,30 +1681,19 @@ static void map_window_set_pixels(rct_window *w)
         _currentLine = 0;
 }
 
-static void map_window_screen_to_map(sint32 screenX, sint32 screenY, sint32 *mapX, sint32 *mapY)
+static CoordsXY map_window_screen_to_map(sint32 screenX, sint32 screenY)
 {
-    sint32 x, y;
-
     screenX = ((screenX + 8) - MAXIMUM_MAP_SIZE_TECHNICAL) / 2;
     screenY = ((screenY + 8)) / 2;
-    x = (screenY - screenX) * 32;
-    y = (screenX + screenY) * 32;
+    sint32 x = (screenY - screenX) * 32;
+    sint32 y = (screenX + screenY) * 32;
+    
     switch (get_current_rotation()) {
-    case 0:
-        *mapX = x;
-        *mapY = y;
-        break;
-    case 1:
-        *mapX = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - y;
-        *mapY = x;
-        break;
-    case 2:
-        *mapX = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - x;
-        *mapY = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - y;
-        break;
-    case 3:
-        *mapX = y;
-        *mapY = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - x;
-        break;
+    case 0: return {x, y};
+    case 1: return {MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - y, x};
+    case 2: return {MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - x, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - y};
+    case 3: return {y, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - x};
     }
+    
+    return {0, 0}; // unreachable
 }
