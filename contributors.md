@@ -71,6 +71,7 @@ The following people are not part of the project team, but have been contributin
 * Jens Heuseveldt (jensj12) - Mountain tool improvements, misc.
 * Park Joon-Kyu (segfault87) - Misc.
 * Harrison Gentry (hgentry) - Date-changing command, misc.
+* Joshua Moerman (Jaxan) - Misc.
 
 ## Bug fixes
 * (halfbro)
