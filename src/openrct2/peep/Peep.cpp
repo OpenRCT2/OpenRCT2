@@ -2913,17 +2913,14 @@ static void peep_update_ride_ss_leave_entrance_maze(rct_peep * peep, Ride * ride
 
 static void peep_update_ride_ss_leave_entrance_spiral_slide(rct_peep * peep, Ride * ride, TileCoordsXYZD &entrance_loc)
 {
-    entrance_loc.x = ride->station_starts[peep->current_ride_station].x;
-    entrance_loc.y = ride->station_starts[peep->current_ride_station].y;
+    entrance_loc.x = ride->station_starts[peep->current_ride_station].x * 32;
+    entrance_loc.y = ride->station_starts[peep->current_ride_station].y * 32;
 
     rct_tile_element * tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
     uint8 direction_track = (tile_element == nullptr ? 0 : tile_element_get_direction(tile_element));
 
     peep->var_37 = (entrance_loc.direction << 2) | (direction_track << 4);
-
-    entrance_loc.x *= 32;
-    entrance_loc.y *= 32;
 
     const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[peep->var_37];
 
@@ -2938,6 +2935,57 @@ static void peep_update_ride_ss_leave_entrance_spiral_slide(rct_peep * peep, Rid
     peep_on_enter_or_exit_ride(peep, peep->current_ride, 0);
     peep->sub_state = 14;
 }
+
+static void peep_update_ride_ss_leave_entrance_waypoints(rct_peep * peep, Ride * ride)
+{
+    TileCoordsXYZD entranceLocation = ride_get_entrance_location(peep->current_ride, peep->current_ride_station);
+    Guard::Assert(!entranceLocation.isNull());
+    uint8 direction_entrance = entranceLocation.direction;
+
+    LocationXY16 waypoint;
+    waypoint.x = ride->station_starts[peep->current_ride_station].x * 32 + 16;
+    waypoint.y = ride->station_starts[peep->current_ride_station].y * 32 + 16;
+
+    rct_tile_element * tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
+
+    uint8 direction_track = (tile_element == nullptr ? 0 : tile_element_get_direction(tile_element));
+
+    auto vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+    auto ride_entry = get_ride_entry(vehicle->ride_subtype);
+    auto vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
+
+    uint8 cl = peep->current_seat;
+    uint8 ch = peep->current_seat & 0xF8;
+
+    if (ride->type != RIDE_TYPE_ENTERPRISE)
+        direction_track *= 2;
+
+    if (vehicle_type->peep_loading_xy_type == peep_loading_type::xy_1)
+    {
+        direction_track /= 2;
+        cl = 0;
+        ch = 0;
+    }
+    cl += direction_track;
+    cl &= 0x7;
+    cl += ch;
+    peep->var_37 = (direction_entrance | cl * 4) * 4;
+
+    if (ride->type == RIDE_TYPE_ENTERPRISE)
+    {
+        waypoint.x = vehicle->x;
+        waypoint.y = vehicle->y;
+    }
+
+    Guard::Assert(vehicle_type->peep_loading_waypoints.size() >= (size_t)(peep->var_37 / 4));
+    waypoint.x += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][0].x;
+    waypoint.y += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][0].y;
+
+    peep->destination_x = waypoint.x;
+    peep->destination_y = waypoint.y;
+    peep->sub_state = 12;
+}
+
 /**
  *
  *  rct2: 0x006921D3
@@ -3013,56 +3061,9 @@ static void peep_update_ride_ss_advance_through_entrance(rct_peep * peep)
 
     rct_ride_entry_vehicle * vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
-    if (vehicle_type->flags & VEHICLE_ENTRY_FLAG_XY_LOADING_POSITIONS)
+    if (vehicle_type->flags & VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS)
     {
-        TileCoordsXYZD entranceLocation = ride_get_entrance_location(peep->current_ride, peep->current_ride_station);
-        uint8 direction_entrance = entranceLocation.direction;
-
-        x = ride->station_starts[peep->current_ride_station].x;
-        y = ride->station_starts[peep->current_ride_station].y;
-
-        rct_tile_element * tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
-
-        uint8 direction_track = (tile_element == nullptr ? 0 : tile_element_get_direction(tile_element));
-
-        vehicle      = GET_VEHICLE(ride->vehicles[peep->current_train]);
-        ride_entry   = get_ride_entry(vehicle->ride_subtype);
-        vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
-
-        uint8 cl = peep->current_seat;
-        uint8 ch = peep->current_seat & 0xF8;
-
-        if (ride->type != RIDE_TYPE_ENTERPRISE)
-            direction_track *= 2;
-
-        if (vehicle_type->peep_loading_xy_type == peep_loading_type::xy_1)
-        {
-            direction_track /= 2;
-            cl = 0;
-            ch = 0;
-        }
-        cl += direction_track;
-        cl &= 0x7;
-        cl += ch;
-        peep->var_37 = (direction_entrance | cl * 4) * 4;
-
-        x *= 32;
-        y *= 32;
-        x += 16;
-        y += 16;
-
-        if (ride->type == RIDE_TYPE_ENTERPRISE)
-        {
-            x = vehicle->x;
-            y = vehicle->y;
-        }
-        Guard::Assert(vehicle_type->peep_loading_xy_positions.size() >= (size_t)(peep->var_37/4));
-        x += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].entrance.x;
-        y += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].entrance.y;
-
-        peep->destination_x = x;
-        peep->destination_y = y;
-        peep->sub_state     = 12;
+        peep_update_ride_ss_leave_entrance_waypoints(peep, ride);
         return;
     }
 
@@ -3458,7 +3459,7 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
 
     rct_ride_entry_vehicle * vehicle_entry = &ride_entry->vehicles[vehicle->vehicle_type];
 
-    if (!(vehicle_entry->flags & VEHICLE_ENTRY_FLAG_XY_LOADING_POSITIONS))
+    if (!(vehicle_entry->flags & VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS))
     {
         assert(peep->current_ride_station < MAX_STATIONS);
         TileCoordsXYZD exitLocation = ride_get_exit_location(peep->current_ride, peep->current_ride_station);
@@ -3599,9 +3600,9 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
         y = vehicle->y;
     }
 
-    Guard::Assert(vehicle_type->peep_loading_xy_positions.size() >= (size_t)(peep->var_37 / 4));
-    sint16 exit_x = x + vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit.x;
-    sint16 exit_y = y + vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit.y;
+    Guard::Assert(vehicle_type->peep_loading_waypoints.size() >= (size_t)(peep->var_37 / 4));
+    sint16 exit_x = x + vehicle_type->peep_loading_waypoints[peep->var_37 / 4][2].x;
+    sint16 exit_y = y + vehicle_type->peep_loading_waypoints[peep->var_37 / 4][2].y;
 
     z *= 8;
     z += RideData5[ride->type].z;
@@ -3612,8 +3613,8 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
     sprite_move(exit_x, exit_y, z, (rct_sprite *)peep);
     invalidate_sprite_2((rct_sprite *)peep);
 
-    x += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit_waypoint.x;
-    y += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit_waypoint.x;
+    x += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][1].x;
+    y += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][1].x;
 
     peep->destination_x         = x;
     peep->destination_y         = y;
@@ -3793,20 +3794,9 @@ static void peep_update_ride_sub_state_12(rct_peep * peep)
     }
 
     rct_ride_entry_vehicle * vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
-    if ((peep->var_37 & 3) == 1)
-    {
-        x += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit_waypoint.x;
-        y += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit_waypoint.y;
-    }
-    else if ((peep->var_37 & 3) == 2)
-    {
-        x += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit.x;
-        y += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit.y;
-    }
-    else
-    {
-        assert(false);
-    }
+    Guard::Assert((peep->var_37 & 3) < 3);
+    x += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][peep->var_37 & 3].x;
+    y += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][peep->var_37 & 3].y;
 
     peep->destination_x = x;
     peep->destination_y = y;
@@ -3875,25 +3865,9 @@ static void peep_update_ride_sub_state_13(rct_peep * peep)
         rct_ride_entry *         ride_entry   = get_ride_entry(vehicle->ride_subtype);
         rct_ride_entry_vehicle * vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
-        if ((peep->var_37 & 3) == 1)
-        {
-            x += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit_waypoint.x;
-            y += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit_waypoint.y;
-        }
-        else if ((peep->var_37 & 3) == 2)
-        {
-            x += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit.x;
-            y += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].exit.y;
-        }
-        else if ((peep->var_37 & 3) == 0)
-        {
-            x += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].entrance.x;
-            y += vehicle_type->peep_loading_xy_positions[peep->var_37 / 4].entrance.y;
-        }
-        else
-        {
-            assert(false);
-        }
+        Guard::Assert((peep->var_37 & 3) < 3);
+        x += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][peep->var_37 & 3].x;
+        y += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][peep->var_37 & 3].y;
 
         peep->destination_x = x;
         peep->destination_y = y;

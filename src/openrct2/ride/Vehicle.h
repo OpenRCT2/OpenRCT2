@@ -19,19 +19,13 @@
 
 #include <cstddef>
 #include <vector>
+#include <array>
 #include "../common.h"
 #include "../world/Location.hpp"
 
 struct rct_vehicle_colour {
     uint8 body_colour;
     uint8 trim_colour;
-};
-
-
-struct peep_loading_xy_entry {
-    sLocationXY8 entrance;
-    sLocationXY8 exit_waypoint;
-    sLocationXY8 exit;
 };
 
 enum class peep_loading_type {
@@ -94,8 +88,8 @@ struct rct_ride_entry_vehicle {
     uint8 draw_order;
     uint8 num_vertical_frames_override; // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine it. Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
     uint8 pad_61[7];                // 0x61 , 0x7B
-    std::vector<peep_loading_xy_entry> peep_loading_xy_positions;
-    std::vector<sint8> peep_loading_positions;
+    std::vector<std::array<sLocationXY8, 3> > peep_loading_waypoints;
+    std::vector<sint8> peep_loading_positions; // previously 0x61 , 0x7B
     peep_loading_type peep_loading_xy_type;
 };
 #ifdef __TESTPAINT__
@@ -279,7 +273,7 @@ enum {
     VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION = 1 << 23,             // Set on animated vehicles like the Multi-dimension coaster trains, Miniature Railway locomotives and Helicycles.
     VEHICLE_ENTRY_FLAG_RIDER_ANIMATION = 1 << 24,               // Set when the animation updates rider sprite positions
     VEHICLE_ENTRY_FLAG_25 = 1 << 25,
-    VEHICLE_ENTRY_FLAG_XY_LOADING_POSITIONS = 1 << 26,          // Peep loading positions have x and y coordinates. Normal rides just have offsets
+    VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS = 1 << 26,          // Peep loading positions have x and y coordinates. Normal rides just have offsets
     VEHICLE_ENTRY_FLAG_SLIDE_SWING = 1 << 27,                   // Set on dingy slides. They have there own swing value calculations and have a different amount of images.
     VEHICLE_ENTRY_FLAG_CHAIRLIFT = 1 << 28,
     VEHICLE_ENTRY_FLAG_WATER_RIDE = 1 << 29,                    // Set on rides where water would provide continuous propulsion
