@@ -1354,7 +1354,7 @@ void ride_restore_provisional_track_piece()
 {
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK) {
         sint32 x, y, z, direction, type, rideIndex, liftHillAndAlternativeState;
-        if (sub_6CA2DF(&type, &direction, &rideIndex, &liftHillAndAlternativeState, &x, &y, &z, nullptr)) {
+        if (window_ride_construction_update_state(&type, &direction, &rideIndex, &liftHillAndAlternativeState, &x, &y, &z, nullptr)) {
             ride_construction_remove_ghosts();
         } else {
             _currentTrackPrice = place_provisional_track_piece(rideIndex, type, direction, liftHillAndAlternativeState, x, y, z);

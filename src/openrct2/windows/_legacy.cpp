@@ -205,7 +205,7 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
     }
 }
 
-static bool sub_6CA2DF_get_track_element(uint8 *trackElement) {
+static bool window_ride_construction_update_state_get_track_element(uint8 *trackElement) {
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES);
     context_broadcast_intent(&intent);
 
@@ -304,11 +304,11 @@ static bool sub_6CA2DF_get_track_element(uint8 *trackElement) {
  * @param[out] _properties (edirs16)
  * @return (CF)
  */
-bool sub_6CA2DF(sint32 *_trackType, sint32 *_trackDirection, sint32 *_rideIndex, sint32 *_liftHillAndAlternativeState, sint32 *_x, sint32 *_y, sint32 *_z, sint32 *_properties) {
+bool window_ride_construction_update_state(sint32 *_trackType, sint32 *_trackDirection, sint32 *_rideIndex, sint32 *_liftHillAndAlternativeState, sint32 *_x, sint32 *_y, sint32 *_z, sint32 *_properties) {
     uint8 trackType, trackDirection, rideIndex;
     uint16 z, x, y, liftHillAndAlternativeState, properties;
 
-    if (!sub_6CA2DF_get_track_element(&trackType)) {
+    if (!window_ride_construction_update_state_get_track_element(&trackType)) {
         return true;
     }
 
