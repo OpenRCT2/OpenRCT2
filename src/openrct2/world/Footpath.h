@@ -28,6 +28,8 @@ enum
     PROVISIONAL_PATH_FLAG_2          = (1 << 2),
 };
 
+#define FOOTPATH_ELEMENT_INSERT_QUEUE 0x80
+
 #pragma pack(push, 1)
 struct rct_footpath_entry {
     rct_string_id string_idx;   // 0x00
@@ -150,6 +152,8 @@ bool footpath_element_is_sloped(const rct_tile_element * tileElement);
 void footpath_element_set_sloped(rct_tile_element * tileElement, bool isSloped);
 uint8 footpath_element_get_slope_direction(const rct_tile_element * tileElement);
 bool footpath_element_is_queue(const rct_tile_element * tileElement);
+void footpath_element_set_queue(rct_tile_element * tileElement);
+void footpath_element_clear_queue(rct_tile_element * tileElement);
 bool footpath_element_has_queue_banner(const rct_tile_element * tileElement);
 bool footpath_element_is_wide(const rct_tile_element * tileElement);
 uint8 footpath_element_get_type(const rct_tile_element * tileElement);

@@ -213,7 +213,7 @@ static money32 footpath_element_insert(sint32 type, sint32 x, sint32 y, sint32 z
     }
 
     // Do not attempt to build a crossing with a queue or a sloped.
-    uint8 crossingMode = (type & 0x80) || (slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
+    uint8 crossingMode = (type & FOOTPATH_ELEMENT_INSERT_QUEUE) || (slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     if (!entrancePath && !gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice, crossingMode))
         return MONEY32_UNDEFINED;
 
@@ -246,7 +246,8 @@ static money32 footpath_element_insert(sint32 type, sint32 x, sint32 y, sint32 z
             tileElement->clearance_height = z + 4 + ((slope & TILE_ELEMENT_SLOPE_NE_SIDE_UP) ? 2 : 0);
             footpath_element_set_type(tileElement, type);
             tileElement->properties.path.type |= (slope & TILE_ELEMENT_SLOPE_W_CORNER_DN);
-            tileElement->type |= type >> 7;
+            if (type & FOOTPATH_ELEMENT_INSERT_QUEUE)
+                footpath_element_set_queue(tileElement);
             tileElement->properties.path.additions = pathItemType;
             tileElement->properties.path.addition_status = 255;
             tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
@@ -622,7 +623,7 @@ static money32 footpath_place_from_track(sint32 type, sint32 x, sint32 y, sint32
     }
 
     // Do not attempt to build a crossing with a queue or a sloped.
-    uint8 crossingMode = (type & 0x80) || (slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
+    uint8 crossingMode = (type & FOOTPATH_ELEMENT_INSERT_QUEUE) || (slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     if (!entrancePath && !gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice, crossingMode))
         return MONEY32_UNDEFINED;
 
@@ -1381,7 +1382,7 @@ static void loc_6A6C85(
         return;
 
     if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE) {
-        if (!entrance_has_direction(tileElement, (direction - tileElement->type) & 3)) {
+        if (!entrance_has_direction(tileElement, (direction - tile_element_get_direction(tileElement)) & 3)) {
             return;
         }
     }
@@ -1561,7 +1562,7 @@ void footpath_chain_ride_queue(sint32 rideIndex, sint32 entranceIndex, sint32 x,
 
     if (rideIndex != 255 && lastPathElement != nullptr) {
         if (footpath_element_is_queue(lastPathElement)) {
-            lastPathElement->properties.path.type |= (1 << 3); // Set the ride sign flag
+            lastPathElement->properties.path.type |= FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER;
             lastPathElement->type &= 0x3F; // Clear the ride sign direction
             footpath_element_set_direction(lastPathElement, lastPathDirection); // set the ride sign direction
 
@@ -1818,6 +1819,16 @@ uint8 footpath_element_get_slope_direction(const rct_tile_element * tileElement)
 bool footpath_element_is_queue(const rct_tile_element * tileElement)
 {
     return (tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) != 0;
+}
+
+void footpath_element_set_queue(rct_tile_element * tileElement)
+{
+    tileElement->type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE;
+}
+
+void footpath_element_clear_queue(rct_tile_element * tileElement)
+{
+    tileElement->type &= ~FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE;
 }
 
 bool footpath_element_has_queue_banner(const rct_tile_element * tileElement)
