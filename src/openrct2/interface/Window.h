@@ -713,7 +713,7 @@ void window_ride_construction_keyboard_shortcut_demolish_current();
 void window_follow_sprite(rct_window * w, size_t spriteIndex);
 void window_unfollow_sprite(rct_window * w);
 
-bool sub_6CA2DF(sint32 *trackType, sint32 *trackDirection, sint32 *rideIndex, sint32 *_liftHillAndAlternativeState, sint32 *x, sint32 *y, sint32 *z, sint32 *properties);
+bool window_ride_construction_update_state(sint32 *trackType, sint32 *trackDirection, sint32 *rideIndex, sint32 *_liftHillAndAlternativeState, sint32 *x, sint32 *y, sint32 *z, sint32 *properties);
 money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 liftHillAndAlternativeState, sint32 x, sint32 y, sint32 z);
 
 extern uint64 _enabledRidePieces;
