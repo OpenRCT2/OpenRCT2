@@ -102,10 +102,10 @@ static rct_widget window_map_widgets[] = {
 // used in transforming viewport view coordinates to minimap coordinates
 // rct2: 0x00981BBC
 static constexpr const LocationXY16 MiniMapOffsets[] = {
-    { 256 - 8,   0 },
-    { 512 - 8, 256 },
-    { 256 - 8, 512 },
-    {   0 - 8, 256 }
+    {     MAXIMUM_MAP_SIZE_TECHNICAL - 8,                              0 },
+    { 2 * MAXIMUM_MAP_SIZE_TECHNICAL - 8,     MAXIMUM_MAP_SIZE_TECHNICAL },
+    {     MAXIMUM_MAP_SIZE_TECHNICAL - 8, 2 * MAXIMUM_MAP_SIZE_TECHNICAL },
+    {                              0 - 8,     MAXIMUM_MAP_SIZE_TECHNICAL }
 };
 
 /** rct2: 0x00981BCC */
@@ -562,8 +562,8 @@ static void window_map_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *
 {
     window_map_invalidate(w);
 
-    *width = 512;
-    *height = 512;
+    *width = MAP_WINDOW_MAP_SIZE;
+    *height = MAP_WINDOW_MAP_SIZE;
 }
 
 /**
@@ -576,8 +576,8 @@ static void window_map_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32
     rct_window *mainWindow;
 
     map_window_screen_to_map(x, y, &mapX, &mapY);
-    mapX = Math::Clamp(0, mapX, 8191);
-    mapY = Math::Clamp(0, mapY, 8191);
+    mapX = Math::Clamp(0, mapX, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
+    mapY = Math::Clamp(0, mapY, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
     mapZ = tile_element_height(x, y);
 
     mainWindow = window_get_main();
@@ -1039,17 +1039,17 @@ static void window_map_transform_to_map_coords(sint16 *left, sint16 *top)
         temp = x;
         x = y;
         y = temp;
-        x = 0x1FFF - x;
+        x = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - x;
         break;
     case 2:
-        x = 0x1FFF - x;
-        y = 0x1FFF - y;
+        x = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - x;
+        y = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - y;
         break;
     case 1:
         temp = x;
         x = y;
         y = temp;
-        y = 0x1FFF - y;
+        y = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - y;
         break;
     case 0:
         break;
@@ -1057,7 +1057,7 @@ static void window_map_transform_to_map_coords(sint16 *left, sint16 *top)
     x >>= 5;
     y >>= 5;
 
-    *left = -x + y + 0xF8;
+    *left = -x + y + MAXIMUM_MAP_SIZE_TECHNICAL - 8;
     *top = x + y - 8;
 }
 
@@ -1650,14 +1650,14 @@ static void map_window_set_pixels(rct_window *w)
         dy = 32;
         break;
     case 1:
-        x = 8192 - 32;
+        x = (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32;
         y = _currentLine * 32;
         dx = -32;
         dy = 0;
         break;
     case 2:
         x = ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) - _currentLine) * 32;
-        y = 8192 - 32;
+        y = (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32;
         dx = 0;
         dy = -32;
         break;
@@ -1713,16 +1713,16 @@ static void map_window_screen_to_map(sint32 screenX, sint32 screenY, sint32 *map
         *mapY = y;
         break;
     case 1:
-        *mapX = 8191 - y;
+        *mapX = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - y;
         *mapY = x;
         break;
     case 2:
-        *mapX = 8191 - x;
-        *mapY = 8191 - y;
+        *mapX = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - x;
+        *mapY = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - y;
         break;
     case 3:
         *mapX = y;
-        *mapY = 8191 - x;
+        *mapY = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - x;
         break;
     }
 }
