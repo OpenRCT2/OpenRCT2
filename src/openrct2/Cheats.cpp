@@ -374,10 +374,13 @@ static void cheat_remove_all_guests()
             while (spriteIndex != SPRITE_INDEX_NULL)
             {
                 vehicle = GET_VEHICLE(spriteIndex);
-
-                for (size_t i = 0; i < vehicle->num_peeps; i++) 
+                for (size_t i = 0, offset = 0; i < vehicle->num_peeps; i++) 
                 {
-                    peep = GET_PEEP(vehicle->peep[i]);
+                    while (vehicle->peep[i + offset] == SPRITE_INDEX_NULL)
+                    {
+                        offset++;
+                    }
+                    peep = GET_PEEP(vehicle->peep[i + offset]);
                     vehicle->mass -= peep->mass;
                 }
 
