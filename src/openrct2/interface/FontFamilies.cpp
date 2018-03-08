@@ -20,13 +20,13 @@
 
 TTFontFamily const TTFFamilyChineseSimplified =
 {
-    &TTFFontMingLiu,
+    &TTFFontSimSun,
     &TTFFontHeiti,
 };
 
 TTFontFamily const TTFFamilyChineseTraditional =
 {
-    &TTFFontSimSun,
+    &TTFFontMingLiu,
     &TTFFontLiHeiPro,
 };
 
