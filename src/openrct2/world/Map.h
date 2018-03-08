@@ -459,7 +459,6 @@ void map_invalidate_selection_rect();
 void map_reorganise_elements();
 bool map_check_free_elements_and_reorganise(sint32 num_elements);
 rct_tile_element *tile_element_insert(sint32 x, sint32 y, sint32 z, sint32 flags);
-bool tile_element_check_address(const rct_tile_element * const element);
 
 using CLEAR_FUNC = sint32(*)(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price);
 

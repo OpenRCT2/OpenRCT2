@@ -3168,23 +3168,6 @@ rct_tile_element *tile_element_insert(sint32 x, sint32 y, sint32 z, sint32 flags
 }
 
 /**
- * This function will validate element address. It will only check if element lies within
- * the user-accessible part of map elements, there is some scratch space behind that is not
- * considered valid here.
- */
-bool tile_element_check_address(const rct_tile_element * const element)
-{
-    if (element >= gTileElements
-        && element < gTileElements + MAX_TILE_ELEMENTS
-        // condition below checks alignment
-        && gTileElements + (((uintptr_t)element - (uintptr_t)gTileElements) / sizeof(rct_tile_element)) == element)
-    {
-        return true;
-    }
-    return false;
-}
-
-/**
  *
  *  rct2: 0x0068BB18
  */
