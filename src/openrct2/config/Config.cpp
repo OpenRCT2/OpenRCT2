@@ -211,6 +211,7 @@ namespace Config
             model->show_guest_purchases = reader->GetBoolean("show_guest_purchases", false);
             model->show_real_names_of_guests = reader->GetBoolean("show_real_names_of_guests", true);
             model->allow_early_completion = reader->GetBoolean("allow_early_completion", false);
+            model->balloons_explode = reader->GetBoolean("balloons_explode", false);
         }
     }
 
@@ -283,6 +284,7 @@ namespace Config
         writer->WriteBoolean("show_real_names_of_guests", model->show_real_names_of_guests);
         writer->WriteBoolean("use_virtual_floor", model->use_virtual_floor);
         writer->WriteBoolean("allow_early_completion", model->allow_early_completion);
+        writer->WriteBoolean("balloons_explode", model->balloons_explode);
     }
 
     static void ReadInterface(IIniReader * reader)
