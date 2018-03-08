@@ -1442,7 +1442,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
 static bool sub_679023(rct_drawpixelinfo *dpi, sint32 imageId, sint32 x, sint32 y)
 {
     const uint8 * palette = nullptr;
-    imageId &= 0xBFFFFFFF;
+    imageId &= ~IMAGE_TYPE_TRANSPARENT;
     if (imageId & IMAGE_TYPE_REMAP) {
         _currentImageType = IMAGE_TYPE_REMAP;
         sint32 index = (imageId >> 19) & 0x7F;

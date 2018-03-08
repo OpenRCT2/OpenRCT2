@@ -848,7 +848,7 @@ bool track_paint_util_draw_station_covers_2(paint_session * session, enum edge_t
 
     if (baseImageId & IMAGE_TYPE_TRANSPARENT)
     {
-        imageId = (baseImageId & 0xBFFFFFFF) + imageOffset;
+        imageId = (baseImageId & ~IMAGE_TYPE_TRANSPARENT) + imageOffset;
         sub_98197C(
             session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x,
             boundsOffset.y, boundsOffset.z);
@@ -856,7 +856,7 @@ bool track_paint_util_draw_station_covers_2(paint_session * session, enum edge_t
         uint32 edi = session->TrackColours[SCHEME_TRACK] & (0b11111 << 19);
 
         // weird jump
-        imageId = (baseImageId | edi) + 0x3800000 + imageOffset + 12;
+        imageId = (baseImageId | edi) + ((1 << 23) | (1 << 24) | (1 << 25)) + imageOffset + 12;
         sub_98199C(
             session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x,
             boundsOffset.y, boundsOffset.z);
