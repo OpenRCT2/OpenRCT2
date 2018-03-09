@@ -174,7 +174,7 @@ public:
         size_t dataSize = stream->GetLength() - stream->GetPosition();
         auto deleter_lambda = [dataSize](uint8 * ptr) { Memory::FreeArray(ptr, dataSize); };
         auto data = std::unique_ptr<uint8, decltype(deleter_lambda)>(stream->ReadArray<uint8>(dataSize), deleter_lambda);
-        auto decodedData = std::unique_ptr<uint8, void(*)(uint8*)>(Memory::Allocate<uint8>(sizeof(rct1_s4)), Memory::Free);
+        auto decodedData = std::unique_ptr<uint8, decltype(&Memory::Free<uint8>)>(Memory::Allocate<uint8>(sizeof(rct1_s4)), &Memory::Free<uint8>);
 
         size_t decodedSize;
         sint32 fileType = sawyercoding_detect_file_type(data.get(), dataSize);
