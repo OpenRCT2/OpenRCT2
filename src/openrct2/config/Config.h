@@ -96,8 +96,6 @@ struct GeneralConfiguration
     utf8 *      last_save_scenario_directory;
     utf8 *      last_save_track_directory;
     utf8 *      last_run_version;
-
-    sint32      screenshot_format;
 };
 
 struct InterfaceConfiguration
