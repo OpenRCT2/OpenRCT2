@@ -100,6 +100,8 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
     WIDX_THEMES_MISC_TAB,
     WIDX_THEMES_PROMPTS_TAB,
     WIDX_THEMES_FEATURES_TAB,
+    WIDX_THEMES_HEADER_WINDOW,
+    WIDX_THEMES_HEADER_PALETTE,
     WIDX_THEMES_PRESETS,
     WIDX_THEMES_PRESETS_DROPDOWN,
     WIDX_THEMES_DUPLICATE_BUTTON,
@@ -127,6 +129,8 @@ static rct_widget window_themes_widgets[] = {
     { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_MISC_TIP },              // misc tab
     { WWT_TAB,              1,  220,    250,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_PROMPTS_TIP },           // prompts tab
     { WWT_TAB,              1,  251,    281,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_FEATURES_TIP },          // features tab
+    { WWT_TABLE_HEADER,     1,  5,      218,    46,     60,     STR_THEMES_HEADER_WINDOW,                       STR_NONE },                             // Window header
+    { WWT_TABLE_HEADER,     1,  219,    315,    46,     60,     STR_THEMES_HEADER_PALETTE,                      STR_NONE },                             // Palette header
     { WWT_DROPDOWN,         1,  125,    299,    60,     71,     STR_NONE,                                       STR_NONE },                             // Preset colour schemes
     { WWT_BUTTON,           1,  288,    298,    61,     70,     STR_DROPDOWN_GLYPH,                             STR_NONE },
     { WWT_BUTTON,           1,  10,     100,    82,     93,     STR_TITLE_EDITOR_ACTION_DUPLICATE,              STR_THEMES_ACTION_DUPLICATE_TIP },      // Duplicate button
@@ -716,20 +720,9 @@ void window_themes_invalidate(rct_window *w)
     window_themes_widgets[WIDX_THEMES_LIST].right = w->width - 4;
     window_themes_widgets[WIDX_THEMES_LIST].bottom = w->height - 0x0F;
 
-
-    window_themes_widgets[WIDX_THEMES_LIST].type = WWT_EMPTY;
-    window_themes_widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WWT_EMPTY;
-    window_themes_widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WWT_EMPTY;
-    window_themes_widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WWT_EMPTY;
-    window_themes_widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WWT_EMPTY;
-    window_themes_widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WWT_EMPTY;
-    window_themes_widgets[WIDX_THEMES_DELETE_BUTTON].type = WWT_EMPTY;
-    window_themes_widgets[WIDX_THEMES_RENAME_BUTTON].type = WWT_EMPTY;
-    window_themes_widgets[WIDX_THEMES_PRESETS].type = WWT_EMPTY;
-    window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WWT_EMPTY;
-    window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].type = WWT_EMPTY;
-
     if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS) {
+        window_themes_widgets[WIDX_THEMES_HEADER_WINDOW].type = WWT_EMPTY;
+        window_themes_widgets[WIDX_THEMES_HEADER_PALETTE].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_LIST].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WWT_EMPTY;
@@ -740,8 +733,11 @@ void window_themes_invalidate(rct_window *w)
         window_themes_widgets[WIDX_THEMES_RENAME_BUTTON].type = WWT_BUTTON;
         window_themes_widgets[WIDX_THEMES_PRESETS].type = WWT_DROPDOWN;
         window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WWT_BUTTON;
+        window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].type = WWT_EMPTY;
     }
     else if (_selected_tab == WINDOW_THEMES_TAB_FEATURES) {
+        window_themes_widgets[WIDX_THEMES_HEADER_WINDOW].type = WWT_EMPTY;
+        window_themes_widgets[WIDX_THEMES_HEADER_PALETTE].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_LIST].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WWT_CHECKBOX;
         window_themes_widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WWT_CHECKBOX;
@@ -752,6 +748,7 @@ void window_themes_invalidate(rct_window *w)
         window_themes_widgets[WIDX_THEMES_RENAME_BUTTON].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_PRESETS].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WWT_EMPTY;
+        window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].type = WWT_EMPTY;
 
         widget_set_checkbox_value(w, WIDX_THEMES_RCT1_RIDE_LIGHTS, theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
         widget_set_checkbox_value(w, WIDX_THEMES_RCT1_PARK_LIGHTS, theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_PARK);
@@ -759,15 +756,19 @@ void window_themes_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
     }
     else {
+        window_themes_widgets[WIDX_THEMES_HEADER_WINDOW].type = WWT_TABLE_HEADER;
+        window_themes_widgets[WIDX_THEMES_HEADER_PALETTE].type = WWT_TABLE_HEADER;
         window_themes_widgets[WIDX_THEMES_LIST].type = WWT_SCROLL;
         window_themes_widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WWT_EMPTY;
+        window_themes_widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_DELETE_BUTTON].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_RENAME_BUTTON].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_PRESETS].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WWT_EMPTY;
+        window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].type = WWT_EMPTY;
     }
 }
 
@@ -791,13 +792,6 @@ void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi)
             w->y + window_themes_widgets[WIDX_THEMES_PRESETS].top,
             w->x + window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].left - window_themes_widgets[WIDX_THEMES_PRESETS].left - 4
         );
-    }
-    else if (_selected_tab == WINDOW_THEMES_TAB_FEATURES) {
-
-    }
-    else {
-        gfx_draw_string_left(dpi, STR_THEMES_HEADER_WINDOW, w, w->colours[1], w->x + 6, 58 - 12 + w->y + 1);
-        gfx_draw_string_left(dpi, STR_THEMES_HEADER_PALETTE, w, w->colours[1], w->x + 220, 58 - 12 + w->y + 1);
     }
 }
 
