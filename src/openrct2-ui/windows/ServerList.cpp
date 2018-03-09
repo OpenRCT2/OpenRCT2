@@ -60,14 +60,14 @@ enum {
 };
 
 static rct_widget window_server_list_widgets[] = {
-    { WWT_FRAME,            0,  0,      340,    0,      90,     0xFFFFFFFF,                 STR_NONE },                 // panel / background
+    { WWT_FRAME,            0,  0,      340,    0,      90,     STR_NONE,                   STR_NONE },                 // panel / background
     { WWT_CAPTION,          0,  1,      338,    1,      14,     STR_SERVER_LIST,            STR_WINDOW_TITLE_TIP },     // title bar
     { WWT_CLOSEBOX,         0,  327,    337,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },     // close x button
     { WWT_TEXT_BOX,         1,  100,    344,    20,     31,     STR_NONE,                   STR_NONE },                 // player name text box
     { WWT_SCROLL,           1,  6,      337,    37,     50,     STR_NONE,                   STR_NONE },                 // server list
-    { WWT_BUTTON,           1,  6,      106,    53,     64,     STR_FETCH_SERVERS,          STR_NONE },                 // fetch servers button
-    { WWT_BUTTON,           1,  112,    212,    53,     64,     STR_ADD_SERVER,             STR_NONE },                 // add server button
-    { WWT_BUTTON,           1,  218,    318,    53,     64,     STR_START_SERVER,           STR_NONE },                 // start server button
+    { WWT_BUTTON,           1,  6,      106,    53,     66,     STR_FETCH_SERVERS,          STR_NONE },                 // fetch servers button
+    { WWT_BUTTON,           1,  112,    212,    53,     66,     STR_ADD_SERVER,             STR_NONE },                 // add server button
+    { WWT_BUTTON,           1,  218,    318,    53,     66,     STR_START_SERVER,           STR_NONE },                 // start server button
     { WIDGETS_END },
 };
 
@@ -381,7 +381,7 @@ static void window_server_list_invalidate(rct_window *w)
     window_server_list_widgets[WIDX_CLOSE].right = w->width - 2 - 11 + 10;
 
     sint32 margin = 6;
-    sint32 buttonHeight = 11;
+    sint32 buttonHeight = 13;
     sint32 buttonTop = w->height - margin - buttonHeight - 13;
     sint32 buttonBottom = buttonTop + buttonHeight;
     sint32 listBottom = buttonTop - margin;
@@ -405,9 +405,11 @@ static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_draw_widgets(w, dpi);
 
     gfx_draw_string_left(dpi, STR_PLAYER_NAME, nullptr, COLOUR_WHITE, w->x + 6, w->y + w->widgets[WIDX_PLAYER_NAME_INPUT].top);
+
+    // Draw version number
     std::string version = network_get_version();
     const char * versionCStr = version.c_str();
-    gfx_draw_string_left(dpi, STR_NETWORK_VERSION, (void*)&versionCStr, COLOUR_WHITE, w->x + 324, w->y + w->widgets[WIDX_START_SERVER].top);
+    gfx_draw_string_left(dpi, STR_NETWORK_VERSION, (void*)&versionCStr, COLOUR_WHITE, w->x + 324, w->y + w->widgets[WIDX_START_SERVER].top + 1);
 
     gfx_draw_string_left(dpi, status_text, (void *)&_numPlayersOnline, COLOUR_WHITE, w->x + 8, w->y + w->height - 15);
 }
