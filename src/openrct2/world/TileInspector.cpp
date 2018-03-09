@@ -315,29 +315,12 @@ sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_tile_element elem
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         // Check if the element to be pasted refers to a banner index
-        uint8                     bannerIndex = BANNER_NULL;
-        const rct_scenery_entry * entry;
-        switch (tile_element_get_type(&element))
-        {
-        case TILE_ELEMENT_TYPE_WALL:
-            entry          = get_wall_entry(element.properties.wall.type);
-            if (entry->wall.flags & WALL_SCENERY_IS_BANNER)
-                bannerIndex = element.properties.wall.banner_index;
-            break;
-        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            entry          = get_large_scenery_entry(scenery_large_get_type(&element));
-            if (entry->large_scenery.scrolling_mode != 0xFF)
-                bannerIndex = scenery_large_get_banner_id(&element);
-            break;
-        case TILE_ELEMENT_TYPE_BANNER:
-            bannerIndex = element.properties.banner.index;
-            break;
-        }
+        sint32 bannerIndex = tile_element_get_banner_index(&element);
 
         if (bannerIndex != BANNER_NULL)
         {
             // The element to be pasted refers to a banner index - make a copy of it
-            uint8 newBannerIndex = (uint8)create_new_banner(flags);
+            sint32 newBannerIndex = create_new_banner(flags);
             if (newBannerIndex == BANNER_NULL)
             {
                 return MONEY32_UNDEFINED;
@@ -348,18 +331,7 @@ sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_tile_element elem
             newBanner.y            = y;
 
             // Use the new banner index
-            switch (tile_element_get_type(&element))
-            {
-            case TILE_ELEMENT_TYPE_WALL:
-                element.properties.wall.banner_index = newBannerIndex;
-                break;
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                scenery_large_set_banner_id(&element, newBannerIndex);
-                break;
-            case TILE_ELEMENT_TYPE_BANNER:
-                element.properties.banner.index = newBannerIndex;
-                break;
-            }
+            tile_element_set_banner_index(&element, newBannerIndex);
 
             // Duplicate user string if needed
             rct_string_id stringIdx = newBanner.string_idx;

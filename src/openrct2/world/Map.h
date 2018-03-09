@@ -521,6 +521,7 @@ void map_update_tiles();
 sint32 map_get_highest_z(sint32 tileX, sint32 tileY);
 
 sint32 tile_element_get_banner_index(rct_tile_element *tileElement);
+void tile_element_set_banner_index(rct_tile_element * tileElement, sint32 bannerIndex);
 void tile_element_remove_banner_entry(rct_tile_element *tileElement);
 
 bool tile_element_is_underground(rct_tile_element *tileElement);
