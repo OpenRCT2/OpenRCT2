@@ -400,16 +400,17 @@ static LocationXY16 window_multiplayer_information_get_size()
     }
 
     sint32 width = 450;
-    sint32 height = 110;
-    sint32 numLines, fontSpriteBase;
+    sint32 height = 60;
+    sint32 minNumLines = 5;
+    sint32 descNumLines, fontSpriteBase;
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     utf8 * buffer = _strdup(network_get_server_description());
-    gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
+    gfx_wrap_string(buffer, width, &descNumLines, &fontSpriteBase);
     free(buffer);
 
     sint32 lineHeight = font_get_line_height(fontSpriteBase);
-    height += (numLines + 1) * lineHeight;
+    height += (minNumLines + descNumLines) * lineHeight;
 
     _windowInformationSizeDirty = false;
     _windowInformationSize = { (sint16)width, (sint16)height };
@@ -451,27 +452,26 @@ static void window_multiplayer_information_paint(rct_window *w, rct_drawpixelinf
         const utf8 * name = network_get_server_name();
         {
             gfx_draw_string_left_wrapped(dpi, (void*)&name, x, y, width, STR_STRING, w->colours[1]);
-            y += 11;
+            y += LIST_ROW_HEIGHT;
         }
-        y += 3;
+        y += LIST_ROW_HEIGHT / 2;
 
         const utf8 * description = network_get_server_description();
         if (!str_is_null_or_empty(description)) {
-            gfx_draw_string_left_wrapped(dpi, (void*)&description, x, y, width, STR_STRING, w->colours[1]);
-            y += 11;
+            y += gfx_draw_string_left_wrapped(dpi, (void*)&description, x, y, width, STR_STRING, w->colours[1]);
+            y += LIST_ROW_HEIGHT / 2;
         }
-        y += 8;
 
         const utf8 * providerName = network_get_server_provider_name();
         if (!str_is_null_or_empty(providerName)) {
             gfx_draw_string_left(dpi, STR_PROVIDER_NAME, (void*)&providerName, COLOUR_BLACK, x, y);
-            y += 11;
+            y += LIST_ROW_HEIGHT;
         }
 
         const utf8 * providerEmail = network_get_server_provider_email();
         if (!str_is_null_or_empty(providerEmail)) {
             gfx_draw_string_left(dpi, STR_PROVIDER_EMAIL, (void*)&providerEmail, COLOUR_BLACK, x, y);
-            y += 11;
+            y += LIST_ROW_HEIGHT;
         }
 
         const utf8 * providerWebsite = network_get_server_provider_website();
