@@ -3553,19 +3553,19 @@ sint32 tile_element_get_banner_index(rct_tile_element *tileElement)
     case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
         if (sceneryEntry->large_scenery.scrolling_mode == 0xFF)
-            return -1;
+            return BANNER_INDEX_NULL;
 
         return scenery_large_get_banner_id(tileElement);
     case TILE_ELEMENT_TYPE_WALL:
         sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
         if (sceneryEntry == nullptr || sceneryEntry->wall.scrolling_mode == 0xFF)
-            return -1;
+            return BANNER_INDEX_NULL;
 
         return tileElement->properties.wall.banner_index;
     case TILE_ELEMENT_TYPE_BANNER:
         return tileElement->properties.banner.index;
     default:
-        return -1;
+        return BANNER_INDEX_NULL;
     }
 }
 
@@ -3591,7 +3591,7 @@ void tile_element_set_banner_index(rct_tile_element * tileElement, sint32 banner
 void tile_element_remove_banner_entry(rct_tile_element *tileElement)
 {
     sint32 bannerIndex = tile_element_get_banner_index(tileElement);
-    if (bannerIndex == -1)
+    if (bannerIndex == BANNER_INDEX_NULL)
         return;
 
     rct_banner* banner = &gBanners[bannerIndex];

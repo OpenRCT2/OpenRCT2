@@ -316,8 +316,7 @@ sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_tile_element elem
     {
         // Check if the element to be pasted refers to a banner index
         sint32 bannerIndex = tile_element_get_banner_index(&element);
-
-        if (bannerIndex != BANNER_NULL)
+        if (bannerIndex != BANNER_INDEX_NULL)
         {
             // The element to be pasted refers to a banner index - make a copy of it
             sint32 newBannerIndex = create_new_banner(flags);

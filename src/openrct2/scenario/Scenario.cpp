@@ -689,7 +689,7 @@ void scenario_fix_ghosts(rct_s6_data *s6)
             do {
                 if (originalElement->flags & TILE_ELEMENT_FLAG_GHOST) {
                     sint32 bannerIndex = tile_element_get_banner_index(originalElement);
-                    if (bannerIndex != -1) {
+                    if (bannerIndex != BANNER_INDEX_NULL) {
                         rct_banner *banner = &s6->banners[bannerIndex];
                         if (banner->type != BANNER_NULL)
                         {
