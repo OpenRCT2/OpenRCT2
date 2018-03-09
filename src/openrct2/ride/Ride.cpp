@@ -2074,7 +2074,11 @@ static void ride_update(sint32 rideIndex)
 
     if (ride->status == RIDE_STATUS_TESTING && gConfigGeneral.no_test_crashes) {
         for (sint32 i = 0; i < ride->num_vehicles; i++) {
-            rct_vehicle *vehicle = GET_VEHICLE(ride->vehicles[i]);
+            uint16 spriteIndex = ride->vehicles[i];
+            if (spriteIndex == SPRITE_INDEX_NULL)
+                continue;
+
+            rct_vehicle *vehicle = GET_VEHICLE(spriteIndex);
 
             if (vehicle->status == VEHICLE_STATUS_CRASHED || vehicle->status == VEHICLE_STATUS_CRASHING) {
                 ride_set_status(rideIndex, RIDE_STATUS_CLOSED);
