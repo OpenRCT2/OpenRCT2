@@ -22,6 +22,7 @@
 
 #define BANNER_NULL 255
 #define MAX_BANNERS 250
+#define BANNER_INDEX_NULL -1
 
 #pragma pack(push, 1)
 struct rct_banner {
