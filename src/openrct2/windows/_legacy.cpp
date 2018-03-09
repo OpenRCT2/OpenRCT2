@@ -28,6 +28,8 @@
 #include "../world/Scenery.h"
 #include "Intent.h"
 
+#include <tuple>
+
 bool gDisableErrorWindowSound = false;
 
 void game_command_callback_pickup_guest(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
@@ -205,7 +207,7 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
     }
 }
 
-static bool window_ride_construction_update_state_get_track_element(uint8 *trackElement) {
+static std::tuple<bool, uint8> window_ride_construction_update_state_get_track_element() {
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES);
     context_broadcast_intent(&intent);
 
@@ -223,7 +225,7 @@ static bool window_ride_construction_update_state_get_track_element(uint8 *track
 
     uint16 curve = _currentTrackCurve;
     if (curve == 0xFFFF) {
-        return false;
+        return std::make_tuple(false, 0);
     }
 
     bool startsDiagonal = (_currentTrackPieceDirection & (1 << 2)) != 0;
@@ -246,48 +248,46 @@ static bool window_ride_construction_update_state_get_track_element(uint8 *track
             if (trackDescriptor->bank_start != startBank) continue;
             if (trackDescriptor->bank_end != endBank) continue;
 
-            *trackElement = trackDescriptor->track_element;
-            return true;
+            return std::make_tuple(true, trackDescriptor->track_element);
         }
 
-        return false;
+        return std::make_tuple(false, 0);
     }
 
-    *trackElement = curve & 0xFF;
-    switch (*trackElement) {
+    switch (curve & 0xFF) {
     case TRACK_ELEM_END_STATION:
     case TRACK_ELEM_S_BEND_LEFT:
     case TRACK_ELEM_S_BEND_RIGHT:
         if (startSlope != TRACK_SLOPE_NONE || endSlope != TRACK_SLOPE_NONE) {
-            return false;
+            return std::make_tuple(false, 0);
         }
 
         if (startBank != TRACK_BANK_NONE || endBank != TRACK_BANK_NONE) {
-            return false;
+            return std::make_tuple(false, 0);
         }
 
-        return true;
+        return std::make_tuple(true, curve & 0xFF);
 
     case TRACK_ELEM_LEFT_VERTICAL_LOOP:
     case TRACK_ELEM_RIGHT_VERTICAL_LOOP:
         if (startBank != TRACK_BANK_NONE || endBank != TRACK_BANK_NONE) {
-            return false;
+            return std::make_tuple(false, 0);
         }
 
         if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
             if (endSlope != TRACK_SLOPE_DOWN_25) {
-                return false;
+                return std::make_tuple(false, 0);
             }
         } else {
             if (startSlope != TRACK_SLOPE_UP_25) {
-                return false;
+                return std::make_tuple(false, 0);
             }
         }
 
-        return true;
+        return std::make_tuple(true, curve & 0xFF);
 
     default:
-        return true;
+        return std::make_tuple(true, curve & 0xFF);
     }
 }
 
@@ -308,10 +308,12 @@ bool window_ride_construction_update_state(sint32 *_trackType, sint32 *_trackDir
     uint8 trackType, trackDirection, rideIndex;
     uint16 z, x, y, liftHillAndAlternativeState, properties;
 
-    if (!window_ride_construction_update_state_get_track_element(&trackType)) {
+    auto updated_element = window_ride_construction_update_state_get_track_element();
+    if (!std::get<0>(updated_element)) {
         return true;
     }
 
+    trackType = std::get<1>(updated_element);
     liftHillAndAlternativeState = 0;
     rideIndex = _currentRideIndex;
     if (_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED) {
