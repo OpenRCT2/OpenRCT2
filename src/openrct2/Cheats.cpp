@@ -448,7 +448,7 @@ static void cheat_own_all_land()
     const sint32 max = gMapSizeUnits - 32;
 
     for (CoordsXY coords = {min, min}; coords.y <= max; coords.y += 32) {
-        for (; coords.x <= max; coords.x += 32) {
+        for (coords.x = min; coords.x <= max; coords.x += 32) {
             rct_tile_element * surfaceElement = map_get_surface_element_at(coords);
 
             // Ignore already owned tiles.
