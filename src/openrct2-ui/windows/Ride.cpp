@@ -2954,14 +2954,14 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
 }
 
-struct rct_vehichle_paintinfo {
+struct rct_vehicle_paintinfo {
     sint16 x;
     sint16 y;
     sint32 sprite_index;
     sint32 tertiary_colour;
 };
 
-static rct_vehichle_paintinfo _sprites_to_draw[144];
+static rct_vehicle_paintinfo _sprites_to_draw[144];
 
 /**
  *
@@ -2984,7 +2984,7 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
 
     // For each train
     for (sint32 i = 0; i < ride->num_vehicles; i++) {
-        rct_vehichle_paintinfo *nextSpriteToDraw = _sprites_to_draw;
+        rct_vehicle_paintinfo *nextSpriteToDraw = _sprites_to_draw;
         sint32 x = startX;
         sint32 y = startY;
 
@@ -3030,12 +3030,12 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
         }
 
         if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER) {
-            rct_vehichle_paintinfo tmp = *(nextSpriteToDraw - 1);
+            rct_vehicle_paintinfo tmp = *(nextSpriteToDraw - 1);
             *(nextSpriteToDraw - 1) = *(nextSpriteToDraw - 2);
             *(nextSpriteToDraw - 2) = tmp;
         }
 
-        rct_vehichle_paintinfo *current = nextSpriteToDraw;
+        rct_vehicle_paintinfo *current = nextSpriteToDraw;
         while (--current >= _sprites_to_draw)
             gfx_draw_sprite(dpi, current->sprite_index, current->x, current->y, current->tertiary_colour);
 

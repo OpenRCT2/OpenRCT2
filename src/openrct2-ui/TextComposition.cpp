@@ -130,7 +130,7 @@ void TextComposition::HandleMessage(const SDL_Event * e)
 
         switch (key) {
         case SDLK_BACKSPACE:
-            // If backspace and we have input text with a cursor position none zero
+            // If backspace and we have input text with a cursor position nonzero
             if (_session.SelectionStart > 0)
             {
                 size_t endOffset = _session.SelectionStart;

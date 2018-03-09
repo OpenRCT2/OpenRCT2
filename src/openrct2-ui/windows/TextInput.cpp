@@ -184,7 +184,7 @@ static void window_text_input_mouseup(rct_window *w, rct_widgetindex widgetIndex
     case WIDX_OKAY:
         context_stop_text_input();
         // Pass back the text that has been entered.
-        // ecx when none zero means text input success
+        // ecx when nonzero means text input success
         if (calling_w != nullptr)
             window_event_textinput_call(calling_w, calling_widget, text_input);
         window_close(w);
@@ -286,7 +286,7 @@ void window_text_input_key(rct_window* w, char keychar)
         window_close(w);
         rct_window* calling_w = window_find_by_number(calling_class, calling_number);
         // Pass back the text that has been entered.
-        // ecx when none zero means text input success
+        // ecx when nonzero means text input success
         if (calling_w)
             window_event_textinput_call(calling_w, calling_widget, text_input);
     }
