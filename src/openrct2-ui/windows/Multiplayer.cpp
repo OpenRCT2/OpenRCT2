@@ -41,7 +41,11 @@ enum WINDOW_MULTIPLAYER_WIDGET_IDX {
     WIDX_TAB3,
     WIDX_TAB4,
 
-    WIDX_LIST = 8,
+    WIDX_HEADER_PLAYER = 8,
+    WIDX_HEADER_GROUP,
+    WIDX_HEADER_LAST_ACTION,
+    WIDX_HEADER_PING,
+    WIDX_LIST,
 
     WIDX_DEFAULT_GROUP = 8,
     WIDX_DEFAULT_GROUP_DROPDOWN,
@@ -74,6 +78,10 @@ static rct_widget window_multiplayer_information_widgets[] = {
 
 static rct_widget window_multiplayer_players_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
+    { WWT_TABLE_HEADER,     0,  3,      175,    46,      60,    STR_PLAYER,                 STR_NONE },                 // Player name
+    { WWT_TABLE_HEADER,     0,  176,    258,    46,      60,    STR_GROUP,                  STR_NONE },                 // Player name
+    { WWT_TABLE_HEADER,     0,  259,    358,    46,      60,    STR_LAST_ACTION,            STR_NONE },                 // Player name
+    { WWT_TABLE_HEADER,     0,  359,    400,    46,      60,    STR_PING,                   STR_NONE },                 // Player name
     { WWT_SCROLL,           1,  3,      336,    60,     236,    SCROLL_VERTICAL,            STR_NONE },                 // list
     { WIDGETS_END }
 };
@@ -509,6 +517,8 @@ static void window_multiplayer_players_resize(rct_window *w)
     w->no_list_items = network_get_num_players();
     w->list_item_positions[0] = 0;
 
+    w->widgets[WIDX_HEADER_PING].right = w->width - 5;
+
     w->selected_list_item = -1;
     window_invalidate(w);
 }
@@ -580,12 +590,6 @@ static void window_multiplayer_players_paint(rct_window *w, rct_drawpixelinfo *d
 
     window_draw_widgets(w, dpi);
     window_multiplayer_draw_tab_images(w, dpi);
-
-    // Columns
-    gfx_draw_string_left(dpi, STR_PLAYER, nullptr, w->colours[2], w->x + 6, 58 - 12 + w->y + 1);
-    gfx_draw_string_left(dpi, STR_GROUP, nullptr, w->colours[2], w->x + 180, 58 - 12 + w->y + 1);
-    gfx_draw_string_left(dpi, STR_LAST_ACTION, nullptr, w->colours[2], w->x + 263, 58 - 12 + w->y + 1);
-    gfx_draw_string_left(dpi, STR_PING, nullptr, w->colours[2], w->x + 363, 58 - 12 + w->y + 1);
 
     // Number of players
     stringId = w->no_list_items == 1 ? STR_MULTIPLAYER_PLAYER_COUNT : STR_MULTIPLAYER_PLAYER_COUNT_PLURAL;
