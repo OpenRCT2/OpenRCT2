@@ -444,6 +444,7 @@ uint8 platform_get_locale_date_format()
     return DATE_FORMAT_DAY_MONTH_YEAR;
 }
 
+#ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 {
 #if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
@@ -472,6 +473,7 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
     return true;
 #endif
 }
+#endif // NO_TTF
 
 utf8 * platform_get_absolute_path(const utf8 * relativePath, const utf8 * basePath)
 {

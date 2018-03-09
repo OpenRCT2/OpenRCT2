@@ -47,6 +47,7 @@ utf8* macos_str_decomp_to_precomp(utf8 *input)
     }
 }
 
+#ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 {
     @autoreleasepool
@@ -62,6 +63,7 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
         }
     }
 }
+#endif // NO_TTF
 
 bool platform_has_matching_language(NSString *preferredLocale, uint16* languageIdentifier)
 {
