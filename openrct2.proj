@@ -21,7 +21,7 @@
     <Version>0.1.2</Version>
     <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
     <VersionExtra Condition="'$(GIT_TAG)'!=''"></VersionExtra>
-    <TargetLibsVersion>15</TargetLibsVersion>
+    <TargetLibsVersion>16</TargetLibsVersion>
 
     <!-- Set dynamic OpenRCT2 #defines -->
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(BUILD_SERVER)'!=''">/D "OPENRCT2_BUILD_SERVER=\"$(BUILD_SERVER)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
@@ -62,10 +62,10 @@
   <!-- 3rd party libraries / dependencies -->
   <PropertyGroup>
     <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
-    <LibsUrl Condition="'$(Platform)'=='Win32'">https://ci.appveyor.com/api/buildjobs/a920w9mx7jeykp7t/artifacts/vcpkg%2Finstalled%2Fx86-windows-static-winssl%2Fopenrct2-libs-x86-windows-static-winssl.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='Win32'">97c968398147fd95060ed4c0e1da5135bf63844b</LibsSha1>
-    <LibsUrl Condition="'$(Platform)'=='x64'">https://ci.appveyor.com/api/buildjobs/m4wprt56o0e97gqf/artifacts/vcpkg%2Finstalled%2Fx64-windows-static-winssl%2Fopenrct2-libs-x64-windows-static-winssl.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='x64'">02a1d43b0431b662562b91e1e12e8c2229622b42</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v16/openrct2-libs-v16-x86-windows-static-winssl.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='Win32'">827d86c1571bb73504b23929746b20d8094aae40</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v16/openrct2-libs-v16-x64-windows-static-winssl.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='x64'">5904b7e0562ace419b7c87d618e5ad00ba664b36</LibsSha1>
     <GtestVersion>1.8.0</GtestVersion>
     <GtestUrl>https://github.com/google/googletest/archive/release-1.8.0.zip</GtestUrl>
     <GtestSha1>667f873ab7a4d246062565fad32fb6d8e203ee73</GtestSha1>
