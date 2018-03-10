@@ -1169,7 +1169,7 @@ void ride_remove_peeps(sint32 rideIndex)
                 continue;
 
             peep_decrement_num_riders(peep);
-            if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->sub_state == PEEP_RIDE_SS_AT_ENTRANCE)
+            if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->sub_state == PEEP_RIDE_AT_ENTRANCE)
                 remove_peep_from_queue(peep);
 
             invalidate_sprite_2((rct_sprite*)peep);
