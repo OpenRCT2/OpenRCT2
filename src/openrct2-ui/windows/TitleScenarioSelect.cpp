@@ -690,7 +690,7 @@ static void initialise_list_items(rct_window *w)
                         (it + 1)->type == LIST_ITEM_TYPE::HEADING)
                     {
                         _listItems.erase(it);
-                        it--;
+                        it = _listItems.begin();
                     }
                 }
             }
