@@ -730,10 +730,9 @@ bool map_coord_is_connected(sint32 x, sint32 y, sint32 z, uint8 faceDirection)
             continue;
 
         rct_tile_element_path_properties props = tileElement->properties.path;
-        uint8 pathType = props.type >> 2;
         uint8 pathDirection = props.type & 3;
 
-        if (pathType & 1) {
+        if (footpath_element_is_sloped(tileElement)) {
             if (pathDirection == faceDirection) {
                 if (z == tileElement->base_height + 2)
                     return true;

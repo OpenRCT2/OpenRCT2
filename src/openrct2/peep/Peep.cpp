@@ -5916,6 +5916,7 @@ static sint32 peep_update_walking_find_bench(rct_peep * peep)
     uint16 sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);
     uint8  free_edge = 3;
 
+    // Check if there is no peep sitting in chosen_edge
     for (rct_sprite * sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant)
     {
         sprite = get_sprite(sprite_id);
@@ -7236,7 +7237,7 @@ static void peep_update_walking(rct_peep * peep)
         }
     }
 
-    sint32 ebp = 15;
+    sint32 positions_free = 15;
 
     if (footpath_element_has_path_scenery(tile_element))
     {
@@ -7249,7 +7250,7 @@ static void peep_update_walking(rct_peep * peep)
             }
 
             if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH))
-                ebp = 9;
+                positions_free = 9;
         }
     }
 
@@ -7266,6 +7267,7 @@ static void peep_update_walking(rct_peep * peep)
     if (!peep_find_ride_to_look_at(peep, chosen_edge, &ride_to_view, &ride_seat_to_view))
         return;
 
+    // Check if there is a peep watching (and if there is place for us)
     uint16 sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);
     for (rct_sprite * sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant)
     {
@@ -7283,15 +7285,15 @@ static void peep_update_walking(rct_peep * peep)
         if ((sprite->peep.var_37 & 0x3) != chosen_edge)
             continue;
 
-        ebp &= ~(1 << ((sprite->peep.var_37 & 0x1C) >> 2));
+        positions_free &= ~(1 << ((sprite->peep.var_37 & 0x1C) >> 2));
     }
 
-    if (!ebp)
+    if (!positions_free)
         return;
 
     uint8 chosen_position = peep_rand() & 0x3;
 
-    for (; !(ebp & (1 << chosen_position));)
+    for (; !(positions_free & (1 << chosen_position));)
         chosen_position = (chosen_position + 1) & 3;
 
     peep->current_ride = ride_to_view;
