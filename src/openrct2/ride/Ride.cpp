@@ -8265,9 +8265,10 @@ LocationXY16 ride_get_rotated_coords(sint16 x, sint16 y, sint16 z)
 // If none exists at that height, newer and higher placed ones take precedence.
 void determine_ride_entrance_and_exit_locations()
 {
+    log_verbose("Inspecting ride entrance / exit locations");
+
     sint32 rideIndex;
     Ride * ride;
-
     FOR_ALL_RIDES(rideIndex, ride)
     {
         for (sint32 stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
@@ -8356,7 +8357,7 @@ void determine_ride_entrance_and_exit_locations()
                                 ride_set_entrance_location(ride, stationIndex, { x, y, tileElement->base_height, (uint8)tile_element_get_direction(tileElement) });
                                 alreadyFoundEntrance = true;
 
-                                log_info("Fixed disconnected entrance of ride %d, station %d to x = %d, y = %d and z = %d.", rideIndex, stationIndex, x, y, tileElement->base_height);
+                                log_verbose("Fixed disconnected entrance of ride %d, station %d to x = %d, y = %d and z = %d.", rideIndex, stationIndex, x, y, tileElement->base_height);
                             }
                             else if (fixExit && tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT)
                             {
@@ -8372,7 +8373,7 @@ void determine_ride_entrance_and_exit_locations()
                                 ride_set_exit_location(ride, stationIndex, { x, y, tileElement->base_height, (uint8)tile_element_get_direction(tileElement) });
                                 alreadyFoundExit = true;
 
-                                log_info("Fixed disconnected exit of ride %d, station %d to x = %d, y = %d and z = %d.", rideIndex, stationIndex, x, y, tileElement->base_height);
+                                log_verbose("Fixed disconnected exit of ride %d, station %d to x = %d, y = %d and z = %d.", rideIndex, stationIndex, x, y, tileElement->base_height);
                             }
                         }
                         while (!tile_element_is_last_for_tile(tileElement++));
@@ -8383,13 +8384,12 @@ void determine_ride_entrance_and_exit_locations()
             if (fixEntrance && !alreadyFoundEntrance)
             {
                 ride_clear_entrance_location(ride, stationIndex);
-                log_info("Cleared disconnected entrance of ride %d, station %d.", rideIndex, stationIndex);
-
+                log_verbose("Cleared disconnected entrance of ride %d, station %d.", rideIndex, stationIndex);
             }
             if (fixExit && !alreadyFoundExit)
             {
                 ride_clear_exit_location(ride, stationIndex);
-                log_info("Cleared disconnected exit of ride %d, station %d.", rideIndex, stationIndex);
+                log_verbose("Cleared disconnected exit of ride %d, station %d.", rideIndex, stationIndex);
             }
         }
     }
