@@ -10762,7 +10762,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
              * In the future these could be used to visualise the
              * pathfinding on the map. */
             uint8          endJunctions         = 0;
-            TileCoordsXYZ endJunctionList[16]  = { 0 };
+            TileCoordsXYZ endJunctionList[16];
             uint8          endDirectionList[16] = { 0 };
 
             bool inPatrolArea = false;

@@ -52,24 +52,30 @@ constexpr sint32 COORDS_NULL = -1;
  * Tile coordinates use 1 x/y increment per tile.
  * Regular ('big', 'sprite') coordinates use 32 x/y increments per tile.
  * */
-struct TileCoordsXY
-{
-    sint32 x, y;
-};
-
 struct CoordsXY
 {
     sint32 x, y;
 };
 
-struct TileCoordsXYZ
+struct TileCoordsXY
 {
-    sint32 x, y, z;
+    TileCoordsXY() = default;
+    TileCoordsXY(sint32 x_, sint32 y_) : x(x_), y(y_) {}
+    explicit TileCoordsXY(CoordsXY c) : x(c.x / 32), y(c.y / 32) {}
+    sint32 x = 0, y = 0;
 };
 
 struct CoordsXYZ
 {
     sint32 x, y, z;
+};
+
+struct TileCoordsXYZ
+{
+    TileCoordsXYZ() = default;
+    TileCoordsXYZ(sint32 x_, sint32 y_, sint32 z_) : x(x_), y(y_), z(z_) {}
+    explicit TileCoordsXYZ(CoordsXYZ c) : x(c.x / 32), y(c.y / 32), z(c.z / 8) {}
+    sint32 x = 0, y = 0, z = 0;
 };
 
 struct TileCoordsXYZD
