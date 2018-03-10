@@ -681,16 +681,16 @@ static void initialise_list_items(rct_window *w)
             _listItems.pop_back();
 
             // Remove empty headings
-            for (auto it = _listItems.begin(); it != _listItems.end(); it++)
+            for (size_t i = 0; i < _listItems.size(); i++)
             {
-                const auto &listItem = *it;
+                const auto &listItem = _listItems[i];
                 if (listItem.type == LIST_ITEM_TYPE::HEADING)
                 {
-                    if ((it + 1) == _listItems.end() ||
-                        (it + 1)->type == LIST_ITEM_TYPE::HEADING)
+                    if (i + 1 == _listItems.size() ||
+                        _listItems[i + 1].type == LIST_ITEM_TYPE::HEADING)
                     {
-                        _listItems.erase(it);
-                        it--;
+                        _listItems.erase(_listItems.begin() + i);
+                        i--;
                     }
                 }
             }
