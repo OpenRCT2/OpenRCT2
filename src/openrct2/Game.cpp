@@ -1251,6 +1251,12 @@ void game_fix_save_vars()
         }
     }
 
+    if (peepsToRemove.size() > 0)
+    {
+        // Some broken saves have broken spatial indexes
+        reset_sprite_spatial_index();
+    }
+
     for (auto ptr : peepsToRemove)
     {
         peep_remove(ptr);
