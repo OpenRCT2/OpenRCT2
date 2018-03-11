@@ -322,11 +322,6 @@ void console_open()
     _inGameConsole.Open();
 }
 
-void console_close()
-{
-    _inGameConsole.Close();
-}
-
 void console_toggle()
 {
     _inGameConsole.Toggle();

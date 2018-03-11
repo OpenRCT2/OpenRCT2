@@ -123,7 +123,6 @@ public:
 // Old pass-through functions for in-game console
 bool console_is_open();
 void console_open();
-void console_close();
 void console_toggle();
 void console_update();
 void console_draw(rct_drawpixelinfo *dpi);

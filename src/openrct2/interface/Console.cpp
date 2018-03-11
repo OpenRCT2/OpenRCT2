@@ -94,7 +94,7 @@ static sint32 cc_clear(InteractiveConsole &console, const utf8 **argv, sint32 ar
 
 static sint32 cc_hide(InteractiveConsole &console, const utf8 **argv, sint32 argc)
 {
-    console_close();
+    console.Close();
     return 0;
 }
 
