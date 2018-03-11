@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <deque>
 #include <future>
 #include <queue>
 #include <string>
@@ -24,6 +25,7 @@
 #include "../localisation/FormatCodes.h"
 
 struct rct_drawpixelinfo;
+struct TextInputSession;
 
 enum CONSOLE_INPUT
 {
@@ -56,6 +58,25 @@ public:
 
 class InGameConsole : public InteractiveConsole
 {
+private:
+    static constexpr sint32 CONSOLE_MAX_LINES = 300;
+    static constexpr sint32 CONSOLE_HISTORY_SIZE = 64;
+    static constexpr sint32 CONSOLE_INPUT_SIZE = 256;
+    static constexpr sint32 CONSOLE_CARET_FLASH_THRESHOLD = 15;
+    static constexpr sint32 CONSOLE_EDGE_PADDING = 4;
+    static constexpr sint32 CONSOLE_CARET_WIDTH = 6;
+
+    sint32                   _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
+    sint32                   _lastMainViewportX, _lastMainViewportY;
+    std::deque<std::string>  _consoleLines;
+    utf8                     _consoleCurrentLine[CONSOLE_INPUT_SIZE];
+    sint32                   _consoleCaretTicks;
+    sint32                   _consoleScrollPos = 0;
+    TextInputSession *       _consoleTextInputSession;  
+    utf8   _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
+    sint32 _consoleHistoryIndex = 0;
+    sint32 _consoleHistoryCount = 0;
+
 public:
     InGameConsole();
 

@@ -9,26 +9,7 @@
 #include "../localisation/Language.h"
 #include "../Version.h"
 
-#define CONSOLE_MAX_LINES 300
-#define CONSOLE_HISTORY_SIZE 64
-#define CONSOLE_INPUT_SIZE 256
-#define CONSOLE_CARET_FLASH_THRESHOLD 15
-#define CONSOLE_EDGE_PADDING 4
-#define CONSOLE_CARET_WIDTH 6
-
 bool gConsoleOpen = false;
-
-static sint32                   _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
-static sint32                   _lastMainViewportX, _lastMainViewportY;
-static std::deque<std::string>  _consoleLines;
-static utf8                     _consoleCurrentLine[CONSOLE_INPUT_SIZE];
-static sint32                   _consoleCaretTicks;
-static sint32                   _consoleScrollPos = 0;
-static TextInputSession *       _consoleTextInputSession;
-
-static utf8   _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
-static sint32 _consoleHistoryIndex = 0;
-static sint32 _consoleHistoryCount = 0;
 
 static InGameConsole _inGameConsole;
 
@@ -162,6 +143,7 @@ void InGameConsole::Open()
 
 void InGameConsole::Close()
 {
+    _consoleTextInputSession = nullptr;
     gConsoleOpen = false;
     Invalidate();
     context_stop_text_input();
