@@ -140,12 +140,13 @@ static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFileInfo * result)
     try
     {
         size_t dataLength = (size_t)stream->GetLength();
-        std::unique_ptr<uint8> data(stream->ReadArray<uint8>(dataLength));
+        auto deleter_lambda = [dataLength](uint8 * ptr) { Memory::FreeArray(ptr, dataLength); };
+        std::unique_ptr<uint8, decltype(deleter_lambda)> data(stream->ReadArray<uint8>(dataLength), deleter_lambda);
         stream->SetPosition(originalPosition);
 
         if (sawyercoding_validate_track_checksum(data.get(), dataLength))
         {
-            std::unique_ptr<uint8>td6data(Memory::Allocate<uint8>(0x10000));
+            std::unique_ptr<uint8, decltype(&Memory::Free<uint8>)> td6data(Memory::Allocate<uint8>(0x10000), &Memory::Free<uint8>);
             size_t td6len = sawyercoding_decode_td6(data.get(), td6data.get(), dataLength);
             if (td6data != nullptr && td6len >= 8)
             {
