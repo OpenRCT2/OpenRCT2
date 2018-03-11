@@ -71,7 +71,6 @@
 
 bool gConsoleOpen = false;
 
-static bool                     _consoleInitialised = false;
 static sint32                   _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
 static sint32                   _lastMainViewportX, _lastMainViewportY;
 static std::deque<std::string>  _consoleLines;
@@ -84,18 +83,15 @@ static utf8   _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
 static sint32 _consoleHistoryIndex = 0;
 static sint32 _consoleHistoryCount = 0;
 
-static void console_invalidate();
-static void console_write_prompt();
-static void console_clear_input();
-static void console_scroll_to_end();
-static void console_history_add(const utf8 *src);
-static void console_write_all_commands();
+static InGameConsole _inGameConsole;
+
+static void console_write_all_commands(InteractiveConsole &console);
 static sint32 console_parse_int(const utf8 *src, bool *valid);
 static double console_parse_double(const utf8 *src, bool *valid);
 
-static sint32 cc_variables(const utf8 **argv, sint32 argc);
-static sint32 cc_windows(const utf8 **argv, sint32 argc);
-static sint32 cc_help(const utf8 **argv, sint32 argc);
+static sint32 cc_variables(InteractiveConsole &console, const utf8 **argv, sint32 argc);
+static sint32 cc_windows(InteractiveConsole &console, const utf8 **argv, sint32 argc);
+static sint32 cc_help(InteractiveConsole &console, const utf8 **argv, sint32 argc);
 
 static bool invalidArguments(bool *invalid, bool arguments);
 
@@ -105,270 +101,42 @@ static sint32 console_get_num_visible_lines();
 
 void console_open()
 {
-    gConsoleOpen = true;
-    console_scroll_to_end();
-    console_refresh_caret();
-    _consoleTextInputSession = context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
+    _inGameConsole.Open();
 }
 
 void console_close()
 {
-    gConsoleOpen = false;
-    console_invalidate();
-    context_stop_text_input();
+    _inGameConsole.Close();
 }
 
 void console_toggle()
 {
-    if (gConsoleOpen)
-        console_close();
-    else
-        console_open();
-}
-
-static void console_init()
-{
-    _consoleInitialised = true;
-    console_writeline(OPENRCT2_NAME " " OPENRCT2_VERSION);
-    console_writeline("Type 'help' for a list of available commands. Type 'hide' to hide the console.");
-    console_writeline("");
-    console_write_prompt();
+    _inGameConsole.Toggle();
 }
 
 void console_update()
 {
-    if (!_consoleInitialised)
-        console_init();
-
-    _consoleLeft = 0;
-    _consoleTop = 0;
-    _consoleRight = context_get_width();
-    _consoleBottom = 322;
-
-    if (gConsoleOpen) {
-        // When scrolling the map, the console pixels get copied... therefore invalidate the screen
-        rct_window *mainWindow = window_get_main();
-        if (mainWindow != nullptr) {
-            rct_viewport *mainViewport = window_get_viewport(mainWindow);
-            if (mainViewport != nullptr) {
-                if (_lastMainViewportX != mainViewport->view_x || _lastMainViewportY != mainViewport->view_y) {
-                    _lastMainViewportX = mainViewport->view_x;
-                    _lastMainViewportY = mainViewport->view_y;
-
-                    gfx_invalidate_screen();
-                }
-            }
-        }
-
-        // Remove unwanted characters in console input
-        utf8_remove_format_codes(_consoleCurrentLine, false);
-    }
-
-    // Flash the caret
-    _consoleCaretTicks = (_consoleCaretTicks + 1) % 30;
+    _inGameConsole.Update();
 }
 
 void console_draw(rct_drawpixelinfo *dpi)
 {
-    if (!gConsoleOpen)
-        return;
-
-    // Set font
-    gCurrentFontSpriteBase           = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
-    gCurrentFontFlags                = 0;
-    uint8        textColour          = NOT_TRANSLUCENT(theme_get_colour(WC_CONSOLE, 1));
-    const sint32 lineHeight          = font_get_line_height(gCurrentFontSpriteBase);
-    const sint32 maxLines            = console_get_num_visible_lines();
-
-    // This is something of a hack to ensure the text is actually black
-    // as opposed to a desaturated grey
-    std::string colourFormatStr;
-    if (textColour == COLOUR_BLACK)
-    {
-        utf8 extraTextFormatCode[4]{};
-        utf8_write_codepoint(extraTextFormatCode, FORMAT_BLACK);
-        colourFormatStr = extraTextFormatCode;
-    }
-
-    // TTF looks far better without the outlines
-    if (!gUseTrueTypeFont)
-    {
-        textColour |= COLOUR_FLAG_OUTLINE;
-    }
-
-    console_invalidate();
-
-    // Give console area a translucent effect.
-    gfx_filter_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, PALETTE_51);
-
-    // Make input area more opaque.
-    gfx_filter_rect(dpi, _consoleLeft, _consoleBottom - lineHeight - 10, _consoleRight, _consoleBottom - 1, PALETTE_51);
-
-    // Paint background colour.
-    uint8 backgroundColour = theme_get_colour(WC_CONSOLE, 0);
-    gfx_fill_rect_inset(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
-    gfx_fill_rect_inset(dpi, _consoleLeft + 1, _consoleTop + 1, _consoleRight - 1, _consoleBottom - 1, backgroundColour, INSET_RECT_FLAG_BORDER_INSET);
-
-    std::string lineBuffer;
-    sint32      x = _consoleLeft + CONSOLE_EDGE_PADDING;
-    sint32      y = _consoleTop + CONSOLE_EDGE_PADDING;
-
-    // Draw text inside console
-    for (std::size_t i = 0; i < _consoleLines.size() && i < (size_t)maxLines; i++) {
-        const size_t index = i + _consoleScrollPos;
-        lineBuffer         = colourFormatStr + _consoleLines[index];
-        gfx_draw_string(dpi, lineBuffer.c_str(), textColour, x, y);
-        y += lineHeight;
-    }
-
-    y = _consoleBottom - lineHeight - CONSOLE_EDGE_PADDING - 1;
-
-    // Draw current line
-    lineBuffer = colourFormatStr + _consoleCurrentLine;
-    gfx_draw_string(dpi, lineBuffer.c_str(), TEXT_COLOUR_255, x, y);
-
-    // Draw caret
-    if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD) {
-        sint32 caretX = x + gfx_get_string_width(_consoleCurrentLine);
-        sint32 caretY = y + lineHeight;
-
-        uint8 caretColour = ColourMapA[BASE_COLOUR(textColour)].lightest;
-        gfx_fill_rect(dpi, caretX, caretY, caretX + CONSOLE_CARET_WIDTH, caretY, caretColour);
-    }
-
-    // What about border colours?
-    uint8 borderColour1 = ColourMapA[BASE_COLOUR(backgroundColour)].light;
-    uint8 borderColour2 = ColourMapA[BASE_COLOUR(backgroundColour)].mid_dark;
-
-    // Input area top border
-    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - lineHeight - 11, _consoleRight, _consoleBottom - lineHeight - 11, borderColour1);
-    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - lineHeight - 10, _consoleRight, _consoleBottom - lineHeight - 10, borderColour2);
-
-    // Input area bottom border
-    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 1, _consoleRight, _consoleBottom - 1, borderColour1);
-    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 0, _consoleRight, _consoleBottom - 0, borderColour2);
+    _inGameConsole.Draw(dpi);
 }
 
 void console_input(CONSOLE_INPUT input)
 {
-    switch (input) {
-    case CONSOLE_INPUT_LINE_CLEAR:
-        console_clear_input();
-        console_refresh_caret();
-        break;
-    case CONSOLE_INPUT_LINE_EXECUTE:
-        if (_consoleCurrentLine[0] != '\0') {
-            console_history_add(_consoleCurrentLine);
-            console_execute(_consoleCurrentLine);
-            console_write_prompt();
-            console_clear_input();
-            console_refresh_caret();
-        }
-        console_scroll_to_end();
-        break;
-    case CONSOLE_INPUT_HISTORY_PREVIOUS:
-        if (_consoleHistoryIndex > 0) {
-            _consoleHistoryIndex--;
-            memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], 256);
-        }
-        _consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
-        _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
-        _consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
-        break;
-    case CONSOLE_INPUT_HISTORY_NEXT:
-        if (_consoleHistoryIndex < _consoleHistoryCount - 1) {
-            _consoleHistoryIndex++;
-            memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], 256);
-            _consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
-            _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
-            _consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
-        } else {
-            _consoleHistoryIndex = _consoleHistoryCount;
-            console_clear_input();
-        }
-        break;
-    case CONSOLE_INPUT_SCROLL_PREVIOUS:
-    {
-        sint32 scrollAmt = console_get_num_visible_lines() - 1;
-        console_scroll(scrollAmt);
-        break;
-    }
-    case CONSOLE_INPUT_SCROLL_NEXT:
-    {
-        sint32 scrollAmt = console_get_num_visible_lines() - 1;
-        console_scroll(-scrollAmt);
-        break;
-    }
-    default:
-        break;
-    }
-}
-
-static void console_invalidate()
-{
-    gfx_set_dirty_blocks(_consoleLeft, _consoleTop, _consoleRight, _consoleBottom);
-}
-
-static void console_write_prompt()
-{
-    console_writeline("> ");
-}
-
-void console_write(const utf8 *src)
-{
-    Guard::Assert(_consoleLines.size() > 0);
-    std::string & lastLine = _consoleLines.back();
-    lastLine.append(src);
+    _inGameConsole.Input(input);
 }
 
 void console_writeline(const utf8 * src, uint32 colourFormat)
 {
-    // Include text colour format only for special cases
-    // The draw function handles the default text colour differently
-    utf8 colourCodepoint[4]{};
-    if (colourFormat != FORMAT_WINDOW_COLOUR_2)
-        utf8_write_codepoint(colourCodepoint, colourFormat);
-
-    std::string input = String::ToStd(src);
-    std::string line;
-    std::size_t splitPos     = 0;
-    std::size_t stringOffset = 0;
-    while (splitPos != std::string::npos)
-    {
-        splitPos = input.find('\n', stringOffset);
-        line     = input.substr(stringOffset, splitPos - stringOffset);
-        _consoleLines.push_back(colourCodepoint + line);
-        stringOffset = splitPos + 1;
-    }
-
-    if (_consoleLines.size() > CONSOLE_MAX_LINES)
-    {
-        const std::size_t linesToErase = _consoleLines.size() - CONSOLE_MAX_LINES;
-        _consoleLines.erase(_consoleLines.begin(), _consoleLines.begin() + linesToErase);
-    }
-
-    std::printf("%s\n", src);
+    _inGameConsole.WriteLine(src, colourFormat);
 }
 
-void console_writeline_error(const utf8 *src)
+void console_scroll(sint32 linesToScroll)
 {
-    console_writeline(src, FORMAT_RED);
-}
-
-void console_writeline_warning(const utf8 *src)
-{
-    console_writeline(src, FORMAT_YELLOW);
-}
-
-void console_printf(const utf8 *format, ...)
-{
-    // TODO: Try to remove buffer
-    utf8    _consolePrintfBuffer[256];
-    va_list list;
-    va_start(list, format);
-    vsnprintf(_consolePrintfBuffer, sizeof(_consolePrintfBuffer), format, list);
-    va_end(list);
-    console_writeline(_consolePrintfBuffer);
+    _inGameConsole.Scroll(linesToScroll);
 }
 
 sint32 console_parse_int(const utf8 *src, bool *valid) {
@@ -385,17 +153,6 @@ double console_parse_double(const utf8 *src, bool *valid) {
     return value;
 }
 
-void console_scroll(sint32 linesToScroll)
-{
-    const sint32 maxVisibleLines = console_get_num_visible_lines();
-    const sint32 numLines = (sint32)_consoleLines.size();
-    if (numLines > maxVisibleLines)
-    {
-        sint32 maxScrollValue = numLines - maxVisibleLines;
-        _consoleScrollPos     = Math::Clamp<sint32>(0, _consoleScrollPos - linesToScroll, maxScrollValue);
-    }
-}
-
 // Calculates the amount of visible lines, based on the console size, excluding the input line.
 static sint32 console_get_num_visible_lines()
 {
@@ -405,67 +162,31 @@ static sint32 console_get_num_visible_lines()
     return drawableHeight / lineHeight;
 }
 
-void console_clear()
-{
-    _consoleLines.clear();
-    console_scroll_to_end();
-}
-
-void console_clear_line()
-{
-    _consoleCurrentLine[0] = 0;
-    console_refresh_caret();
-}
-
 void console_refresh_caret()
 {
-    _consoleCaretTicks = 0;
+    _inGameConsole.RefreshCaret();
 }
 
-static void console_clear_input()
+static sint32 cc_clear(InteractiveConsole &console, const utf8 **argv, sint32 argc)
 {
-    _consoleCurrentLine[0] = 0;
-    if (gConsoleOpen) {
-        context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
-    }
-}
-
-static void console_scroll_to_end()
-{
-    _consoleScrollPos = Math::Max<sint32>(0, (sint32)_consoleLines.size() - console_get_num_visible_lines());
-}
-
-static void console_history_add(const utf8 *src)
-{
-    if (_consoleHistoryCount >= CONSOLE_HISTORY_SIZE) {
-        for (sint32 i = 0; i < _consoleHistoryCount - 1; i++)
-            memcpy(_consoleHistory[i], _consoleHistory[i + 1], CONSOLE_INPUT_SIZE);
-        _consoleHistoryCount--;
-    }
-    memcpy(_consoleHistory[_consoleHistoryCount++], src, CONSOLE_INPUT_SIZE);
-    _consoleHistoryIndex = _consoleHistoryCount;
-}
-
-static sint32 cc_clear(const utf8 **argv, sint32 argc)
-{
-    console_clear();
+    console.Clear();
     return 0;
 }
 
-static sint32 cc_hide(const utf8 **argv, sint32 argc)
+static sint32 cc_hide(InteractiveConsole &console, const utf8 **argv, sint32 argc)
 {
     console_close();
     return 0;
 }
 
-static sint32 cc_echo(const utf8 **argv, sint32 argc)
+static sint32 cc_echo(InteractiveConsole &console, const utf8 **argv, sint32 argc)
 {
     if (argc > 0)
-        console_writeline(argv[0]);
+        console.WriteLine(argv[0]);
     return 0;
 }
 
-static sint32 cc_rides(const utf8 **argv, sint32 argc)
+static sint32 cc_rides(InteractiveConsole &console, const utf8 **argv, sint32 argc)
 {
     if (argc > 0) {
         if (strcmp(argv[0], "list") == 0) {
@@ -474,26 +195,26 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
             FOR_ALL_RIDES(i, ride) {
                 char name[128];
                 format_string(name, 128, ride->name, &ride->name_arguments);
-                console_printf("ride: %03d type: %02u subtype %03u operating mode: %02u name: %s", i, ride->type, ride->subtype, ride->mode, name);
+                console.WriteFormatLine("ride: %03d type: %02u subtype %03u operating mode: %02u name: %s", i, ride->type, ride->subtype, ride->mode, name);
             }
         } else if (strcmp(argv[0], "set") == 0) {
             if (argc < 4) {
                 if (argc > 1 && strcmp(argv[1], "mode") == 0){
-                    console_printf("Ride modes are specified using integer IDs as given below:");
+                    console.WriteFormatLine("Ride modes are specified using integer IDs as given below:");
                     for (sint32 i = 0; i < RIDE_MODE_COUNT; i++) {
                         char mode_name[128] = { 0 };
                         rct_string_id mode_string_id = RideModeNames[i];
                         format_string(mode_name, 128, mode_string_id, nullptr);
-                        console_printf("%02d - %s", i, mode_name);
+                        console.WriteFormatLine("%02d - %s", i, mode_name);
                     }
 
                 } else {
-                    console_printf("rides set type <ride id> <ride type>");
-                    console_printf("rides set mode [<ride id> <operating mode>]");
-                    console_printf("rides set mass <ride id> <mass value>");
-                    console_printf("rides set excitement <ride id> <excitement value>");
-                    console_printf("rides set intensity <ride id> <intensity value>");
-                    console_printf("rides set nausea <ride id> <nausea value>");
+                    console.WriteFormatLine("rides set type <ride id> <ride type>");
+                    console.WriteFormatLine("rides set mode [<ride id> <operating mode>]");
+                    console.WriteFormatLine("rides set mass <ride id> <mass value>");
+                    console.WriteFormatLine("rides set excitement <ride id> <excitement value>");
+                    console.WriteFormatLine("rides set intensity <ride id> <intensity value>");
+                    console.WriteFormatLine("rides set nausea <ride id> <nausea value>");
                 }
                 return 0;
             }
@@ -502,14 +223,14 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                 sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
                 sint32 type = console_parse_int(argv[3], &int_valid[1]);
                 if (!int_valid[0] || !int_valid[1]) {
-                    console_printf("This command expects integer arguments");
+                    console.WriteFormatLine("This command expects integer arguments");
                 } else if (ride_index < 0) {
-                    console_printf("Ride index must not be negative");
+                    console.WriteFormatLine("Ride index must not be negative");
                 } else {
                     gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
                     sint32 res = game_do_command(0, (type << 8) | 1, 0, (RIDE_SETTING_RIDE_TYPE << 8) | ride_index, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
                     if (res == MONEY32_UNDEFINED) {
-                        console_printf("That didn't work");
+                        console.WriteFormatLine("That didn't work");
                     }
                 }
             }
@@ -518,16 +239,16 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                 sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
                 sint32 mode = console_parse_int(argv[3], &int_valid[1]);
                 if (!int_valid[0] || !int_valid[1]) {
-                    console_printf("This command expects integer arguments");
+                    console.WriteFormatLine("This command expects integer arguments");
                 } else if (ride_index < 0) {
-                    console_printf("Ride index must not be negative");
+                    console.WriteFormatLine("Ride index must not be negative");
                 } else {
                     Ride *ride = get_ride(ride_index);
                     if (mode <= 0 || mode > (RIDE_MODE_COUNT - 1)) {
-                        console_printf("Invalid ride mode.");
+                        console.WriteFormatLine("Invalid ride mode.");
                     }
                     else if (ride == nullptr || ride->type == RIDE_TYPE_NULL) {
-                        console_printf("No ride found with index %d", ride_index);
+                        console.WriteFormatLine("No ride found with index %d", ride_index);
                     }
                     else {
                         ride->mode = mode;
@@ -541,18 +262,18 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                 sint32 mass = console_parse_int(argv[3], &int_valid[1]);
 
                 if (ride_index < 0) {
-                    console_printf("Ride index must not be negative");
+                    console.WriteFormatLine("Ride index must not be negative");
                 }
                 else if (!int_valid[0] || !int_valid[1]) {
-                    console_printf("This command expects integer arguments");
+                    console.WriteFormatLine("This command expects integer arguments");
                 }
                 else {
                     Ride *ride = get_ride(ride_index);
                     if (mass <= 0) {
-                        console_printf("Friction value must be strictly positive");
+                        console.WriteFormatLine("Friction value must be strictly positive");
                     }
                     else if (ride->type == RIDE_TYPE_NULL) {
-                        console_printf("No ride found with index %d", ride_index);
+                        console.WriteFormatLine("No ride found with index %d", ride_index);
                     }
                     else {
                         for (sint32 i = 0; i < ride->num_vehicles; i++) {
@@ -572,18 +293,18 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                 ride_rating excitement = console_parse_int(argv[3], &int_valid[1]);
 
                 if (ride_index < 0) {
-                    console_printf("Ride index must not be negative");
+                    console.WriteFormatLine("Ride index must not be negative");
                 }
                 else if (!int_valid[0] || !int_valid[1]) {
-                    console_printf("This command expects integer arguments");
+                    console.WriteFormatLine("This command expects integer arguments");
                 }
                 else {
                     Ride *ride = get_ride(ride_index);
                     if (excitement <= 0) {
-                        console_printf("Excitement value must be strictly positive");
+                        console.WriteFormatLine("Excitement value must be strictly positive");
                     }
                     else if (ride->type == RIDE_TYPE_NULL) {
-                        console_printf("No ride found with index %d", ride_index);
+                        console.WriteFormatLine("No ride found with index %d", ride_index);
                     }
                     else {
                         ride->excitement = excitement;
@@ -596,18 +317,18 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                 ride_rating intensity = console_parse_int(argv[3], &int_valid[1]);
 
                 if (ride_index < 0) {
-                    console_printf("Ride index must not be negative");
+                    console.WriteFormatLine("Ride index must not be negative");
                 }
                 else if (!int_valid[0] || !int_valid[1]) {
-                    console_printf("This command expects integer arguments");
+                    console.WriteFormatLine("This command expects integer arguments");
                 }
                 else {
                     Ride *ride = get_ride(ride_index);
                     if (intensity <= 0) {
-                        console_printf("Intensity value must be strictly positive");
+                        console.WriteFormatLine("Intensity value must be strictly positive");
                     }
                     else if (ride->type == RIDE_TYPE_NULL) {
-                        console_printf("No ride found with index %d", ride_index);
+                        console.WriteFormatLine("No ride found with index %d", ride_index);
                     }
                     else {
                         ride->intensity = intensity;
@@ -620,18 +341,18 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                 ride_rating nausea = console_parse_int(argv[3], &int_valid[1]);
 
                 if (ride_index < 0) {
-                    console_printf("Ride index must not be negative");
+                    console.WriteFormatLine("Ride index must not be negative");
                 }
                 else if (!int_valid[0] || !int_valid[1]) {
-                    console_printf("This command expects integer arguments");
+                    console.WriteFormatLine("This command expects integer arguments");
                 }
                 else {
                     Ride *ride = get_ride(ride_index);
                     if (nausea <= 0) {
-                        console_printf("Nausea value must be strictly positive");
+                        console.WriteFormatLine("Nausea value must be strictly positive");
                     }
                     else if (ride->type == RIDE_TYPE_NULL) {
-                        console_printf("No ride found with index %d", ride_index);
+                        console.WriteFormatLine("No ride found with index %d", ride_index);
                     }
                     else {
                         ride->nausea = nausea;
@@ -640,12 +361,12 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
             }
         }
     } else {
-        console_printf("subcommands: list, set");
+        console.WriteFormatLine("subcommands: list, set");
     }
     return 0;
 }
 
-static sint32 cc_staff(const utf8 **argv, sint32 argc)
+static sint32 cc_staff(InteractiveConsole &console, const utf8 **argv, sint32 argc)
 {
     if (argc > 0) {
         if (strcmp(argv[0], "list") == 0) {
@@ -654,19 +375,19 @@ static sint32 cc_staff(const utf8 **argv, sint32 argc)
             FOR_ALL_STAFF(i, peep) {
                 char name[128];
                 format_string(name, 128, peep->name_string_idx, &peep->id);
-                console_printf("staff id %03d type: %02u energy %03u name %s", i, peep->staff_type, peep->energy, name);
+                console.WriteFormatLine("staff id %03d type: %02u energy %03u name %s", i, peep->staff_type, peep->energy, name);
             }
         } else if (strcmp(argv[0], "set") == 0) {
             if (argc < 4) {
-                console_printf("staff set energy <staff id> <value 0-255>");
-                console_printf("staff set costume <staff id> <costume id>");
+                console.WriteFormatLine("staff set energy <staff id> <value 0-255>");
+                console.WriteFormatLine("staff set costume <staff id> <costume id>");
                 for (sint32 i = 0; i < ENTERTAINER_COSTUME_COUNT; i++) {
                     char costume_name[128] = { 0 };
                     rct_string_id costume = StaffCostumeNames[i];
                     format_string(costume_name, 128, STR_DROPDOWN_MENU_LABEL, &costume);
                     // That's a terrible hack here. Costume names include inline sprites
                     // that don't work well with the console, so manually skip past them.
-                    console_printf("        costume %i: %s", i, costume_name + 7);
+                    console.WriteFormatLine("        costume %i: %s", i, costume_name + 7);
                 }
                 return 0;
             }
@@ -689,17 +410,17 @@ static sint32 cc_staff(const utf8 **argv, sint32 argc)
                 int_val[1] = console_parse_int(argv[3], &int_valid[1]);
                 rct_peep *peep = nullptr;
                 if (!int_valid[0]) {
-                    console_writeline_error("Invalid staff ID");
+                    console.WriteLineError("Invalid staff ID");
                     return 1;
                 }
                 peep = GET_PEEP(int_val[0]);
                 bool is_entertainer = peep != nullptr && peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER;
                 if (!is_entertainer) {
-                    console_writeline_error("Specified staff is not entertainer");
+                    console.WriteLineError("Specified staff is not entertainer");
                     return 1;
                 }
                 if (!int_valid[1] || int_val[1] < 0 || int_val[1] >= ENTERTAINER_COSTUME_COUNT) {
-                    console_writeline_error("Invalid costume ID");
+                    console.WriteLineError("Invalid costume ID");
                     return 1;
                 }
 
@@ -708,110 +429,110 @@ static sint32 cc_staff(const utf8 **argv, sint32 argc)
             }
         }
     } else {
-        console_printf("subcommands: list, set");
+        console.WriteFormatLine("subcommands: list, set");
     }
     return 0;
 }
 
-static sint32 cc_get(const utf8 **argv, sint32 argc)
+static sint32 cc_get(InteractiveConsole &console, const utf8 **argv, sint32 argc)
 {
     if (argc > 0) {
         if (strcmp(argv[0], "park_rating") == 0) {
-            console_printf("park_rating %d", gParkRating);
+            console.WriteFormatLine("park_rating %d", gParkRating);
         }
         else if (strcmp(argv[0], "park_value") == 0) {
-            console_printf("park_value %d", gParkValue / 10);
+            console.WriteFormatLine("park_value %d", gParkValue / 10);
         }
         else if (strcmp(argv[0], "company_value") == 0) {
-            console_printf("company_value %d", gCompanyValue / 10);
+            console.WriteFormatLine("company_value %d", gCompanyValue / 10);
         }
         else if (strcmp(argv[0], "money") == 0) {
-            console_printf("money %d.%d0", gCash / 10, gCash % 10);
+            console.WriteFormatLine("money %d.%d0", gCash / 10, gCash % 10);
         }
         else if (strcmp(argv[0], "scenario_initial_cash") == 0) {
-            console_printf("scenario_initial_cash %d", gInitialCash / 10);
+            console.WriteFormatLine("scenario_initial_cash %d", gInitialCash / 10);
         }
         else if (strcmp(argv[0], "current_loan") == 0) {
-            console_printf("current_loan %d", gBankLoan / 10);
+            console.WriteFormatLine("current_loan %d", gBankLoan / 10);
         }
         else if (strcmp(argv[0], "max_loan") == 0) {
-            console_printf("max_loan %d", gMaxBankLoan / 10);
+            console.WriteFormatLine("max_loan %d", gMaxBankLoan / 10);
         }
         else if (strcmp(argv[0], "guest_initial_cash") == 0) {
-            console_printf("guest_initial_cash %d.%d0", gGuestInitialCash / 10, gGuestInitialCash % 10);
+            console.WriteFormatLine("guest_initial_cash %d.%d0", gGuestInitialCash / 10, gGuestInitialCash % 10);
         }
         else if (strcmp(argv[0], "guest_initial_happiness") == 0) {
             uint32 current_happiness = gGuestInitialHappiness;
             for (sint32 i = 15; i <= 99; i++) {
                 if (i == 99) {
-                    console_printf("guest_initial_happiness %d%%  (%d)", 15, gGuestInitialHappiness);
+                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", 15, gGuestInitialHappiness);
                 }
                 else if (current_happiness == calculate_guest_initial_happiness(i)) {
-                    console_printf("guest_initial_happiness %d%%  (%d)", i, gGuestInitialHappiness);
+                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", i, gGuestInitialHappiness);
                     break;
                 }
             }
         }
         else if (strcmp(argv[0], "guest_initial_hunger") == 0) {
-            console_printf("guest_initial_hunger %d%%  (%d)", ((255 - gGuestInitialHunger) * 100) / 255, gGuestInitialHunger);
+            console.WriteFormatLine("guest_initial_hunger %d%%  (%d)", ((255 - gGuestInitialHunger) * 100) / 255, gGuestInitialHunger);
         }
         else if (strcmp(argv[0], "guest_initial_thirst") == 0) {
-            console_printf("guest_initial_thirst %d%%  (%d)", ((255 - gGuestInitialThirst) * 100) / 255, gGuestInitialThirst);
+            console.WriteFormatLine("guest_initial_thirst %d%%  (%d)", ((255 - gGuestInitialThirst) * 100) / 255, gGuestInitialThirst);
         }
         else if (strcmp(argv[0], "guest_prefer_less_intense_rides") == 0) {
-            console_printf("guest_prefer_less_intense_rides %d", (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) != 0);
+            console.WriteFormatLine("guest_prefer_less_intense_rides %d", (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) != 0);
         }
         else if (strcmp(argv[0], "guest_prefer_more_intense_rides") == 0) {
-            console_printf("guest_prefer_more_intense_rides %d", (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) != 0);
+            console.WriteFormatLine("guest_prefer_more_intense_rides %d", (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) != 0);
         }
         else if (strcmp(argv[0], "forbid_marketing_campagns") == 0) {
-            console_printf("forbid_marketing_campagns %d", (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
+            console.WriteFormatLine("forbid_marketing_campagns %d", (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
         }
         else if (strcmp(argv[0], "forbid_landscape_changes") == 0) {
-            console_printf("forbid_landscape_changes %d", (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) != 0);
+            console.WriteFormatLine("forbid_landscape_changes %d", (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) != 0);
         }
         else if (strcmp(argv[0], "forbid_tree_removal") == 0) {
-            console_printf("forbid_tree_removal %d", (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL) != 0);
+            console.WriteFormatLine("forbid_tree_removal %d", (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL) != 0);
         }
         else if (strcmp(argv[0], "forbid_high_construction") == 0) {
-            console_printf("forbid_high_construction %d", (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) != 0);
+            console.WriteFormatLine("forbid_high_construction %d", (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) != 0);
         }
         else if (strcmp(argv[0], "pay_for_rides") == 0) {
-            console_printf("pay_for_rides %d", (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) != 0);
+            console.WriteFormatLine("pay_for_rides %d", (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) != 0);
         }
         else if (strcmp(argv[0], "no_money") == 0) {
-            console_printf("no_money %d", (gParkFlags & PARK_FLAGS_NO_MONEY) != 0);
+            console.WriteFormatLine("no_money %d", (gParkFlags & PARK_FLAGS_NO_MONEY) != 0);
         }
         else if (strcmp(argv[0], "difficult_park_rating") == 0) {
-            console_printf("difficult_park_rating %d", (gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING) != 0);
+            console.WriteFormatLine("difficult_park_rating %d", (gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING) != 0);
         }
         else if (strcmp(argv[0], "difficult_guest_generation") == 0) {
-            console_printf("difficult_guest_generation %d", (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0);
+            console.WriteFormatLine("difficult_guest_generation %d", (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0);
         }
         else if (strcmp(argv[0], "park_open") == 0) {
-            console_printf("park_open %d", (gParkFlags & PARK_FLAGS_PARK_OPEN) != 0);
+            console.WriteFormatLine("park_open %d", (gParkFlags & PARK_FLAGS_PARK_OPEN) != 0);
         }
         else if (strcmp(argv[0], "land_rights_cost") == 0) {
-            console_printf("land_rights_cost %d.%d0", gLandPrice / 10, gLandPrice % 10);
+            console.WriteFormatLine("land_rights_cost %d.%d0", gLandPrice / 10, gLandPrice % 10);
         }
         else if (strcmp(argv[0], "construction_rights_cost") == 0) {
-            console_printf("construction_rights_cost %d.%d0", gConstructionRightsPrice / 10, gConstructionRightsPrice % 10);
+            console.WriteFormatLine("construction_rights_cost %d.%d0", gConstructionRightsPrice / 10, gConstructionRightsPrice % 10);
         }
         else if (strcmp(argv[0], "climate") == 0) {
             const utf8* climate_names[] = { "cool_and_wet", "warm", "hot_and_dry", "cold" };
-            console_printf("climate %s  (%d)", climate_names[gClimate], gClimate);
+            console.WriteFormatLine("climate %s  (%d)", climate_names[gClimate], gClimate);
         }
         else if (strcmp(argv[0], "game_speed") == 0) {
-            console_printf("game_speed %d", gGameSpeed);
+            console.WriteFormatLine("game_speed %d", gGameSpeed);
         }
         else if (strcmp(argv[0], "console_small_font") == 0) {
-            console_printf("console_small_font %d", gConfigInterface.console_small_font);
+            console.WriteFormatLine("console_small_font %d", gConfigInterface.console_small_font);
         }
         else if (strcmp(argv[0], "test_unfinished_tracks") == 0) {
-            console_printf("test_unfinished_tracks %d", gConfigGeneral.test_unfinished_tracks);
+            console.WriteFormatLine("test_unfinished_tracks %d", gConfigGeneral.test_unfinished_tracks);
         }
         else if (strcmp(argv[0], "no_test_crashes") == 0) {
-            console_printf("no_test_crashes %d", gConfigGeneral.no_test_crashes);
+            console.WriteFormatLine("no_test_crashes %d", gConfigGeneral.no_test_crashes);
         }
         else if (strcmp(argv[0], "location") == 0) {
             rct_window *w = window_get_main();
@@ -827,42 +548,42 @@ static sint32 cc_get(const utf8 **argv, sint32 argc)
                 mapCoord.y /= 32;
                 mapCoord.x++;
                 mapCoord.y++;
-                console_printf("location %d %d", mapCoord.x, mapCoord.y);
+                console.WriteFormatLine("location %d %d", mapCoord.x, mapCoord.y);
             }
         }
         else if (strcmp(argv[0], "window_scale") == 0) {
-            console_printf("window_scale %.3f", gConfigGeneral.window_scale);
+            console.WriteFormatLine("window_scale %.3f", gConfigGeneral.window_scale);
         }
         else if (strcmp(argv[0], "window_limit") == 0) {
-            console_printf("window_limit %d", gConfigGeneral.window_limit);
+            console.WriteFormatLine("window_limit %d", gConfigGeneral.window_limit);
         }
         else if (strcmp(argv[0], "render_weather_effects") == 0) {
-            console_printf("render_weather_effects %d", gConfigGeneral.render_weather_effects);
+            console.WriteFormatLine("render_weather_effects %d", gConfigGeneral.render_weather_effects);
         }
         else if (strcmp(argv[0], "render_weather_gloom") == 0) {
-            console_printf("render_weather_gloom %d", gConfigGeneral.render_weather_gloom);
+            console.WriteFormatLine("render_weather_gloom %d", gConfigGeneral.render_weather_gloom);
         }
         else if (strcmp(argv[0], "cheat_sandbox_mode") == 0) {
-            console_printf("cheat_sandbox_mode %d", gCheatsSandboxMode);
+            console.WriteFormatLine("cheat_sandbox_mode %d", gCheatsSandboxMode);
         }
         else if (strcmp(argv[0], "cheat_disable_clearance_checks") == 0) {
-            console_printf("cheat_disable_clearance_checks %d", gCheatsDisableClearanceChecks);
+            console.WriteFormatLine("cheat_disable_clearance_checks %d", gCheatsDisableClearanceChecks);
         }
         else if (strcmp(argv[0], "cheat_disable_support_limits") == 0) {
-            console_printf("cheat_disable_support_limits %d", gCheatsDisableSupportLimits);
+            console.WriteFormatLine("cheat_disable_support_limits %d", gCheatsDisableSupportLimits);
         }
 #ifndef NO_TTF
         else if (strcmp(argv[0], "enable_hinting") == 0) {
-            console_printf("enable_hinting %d", gConfigFonts.enable_hinting);
+            console.WriteFormatLine("enable_hinting %d", gConfigFonts.enable_hinting);
         }
 #endif
         else {
-            console_writeline_warning("Invalid variable.");
+            console.WriteLineWarning("Invalid variable.");
         }
     }
     return 0;
 }
-static sint32 cc_set(const utf8 **argv, sint32 argc)
+static sint32 cc_set(InteractiveConsole &console, const utf8 **argv, sint32 argc)
 {
     sint32 i;
     if (argc > 1) {
@@ -888,100 +609,100 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
             bool run_get_money = true;
             if (gCash != money) {
                 if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETMONEY, money, GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
-                    // When in networked client mode, console_execute_silent("get money")
+                    // When in networked client mode, console.Execute("get money")
                     // does not print value accurately. Instead, print the argument.
                     if (network_get_mode() == NETWORK_MODE_CLIENT) {
                         run_get_money = false;
-                        console_printf("money %d.%d0", money / 10, money % 10);
+                        console.WriteFormatLine("money %d.%d0", money / 10, money % 10);
                     }
                 }
                 else {
-                    console_writeline_error("Network error: Permission denied!");
+                    console.WriteLineError("Network error: Permission denied!");
                 }
             }
             if (run_get_money) {
-                console_execute_silent("get money");
+                console.Execute("get money");
             }
         }
         else if (strcmp(argv[0], "scenario_initial_cash") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             gInitialCash = Math::Clamp(MONEY(0, 0), MONEY(int_val[0], 0), MONEY(1000000, 00));
-            console_execute_silent("get scenario_initial_cash");
+            console.Execute("get scenario_initial_cash");
         }
         else if (strcmp(argv[0], "current_loan") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             gBankLoan = Math::Clamp(MONEY(0, 0), MONEY(int_val[0] - (int_val[0] % 1000), 0), gMaxBankLoan);
-            console_execute_silent("get current_loan");
+            console.Execute("get current_loan");
         }
         else if (strcmp(argv[0], "max_loan") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             gMaxBankLoan = Math::Clamp(MONEY(0, 0), MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(5000000, 0));
-            console_execute_silent("get max_loan");
+            console.Execute("get max_loan");
         }
         else if (strcmp(argv[0], "guest_initial_cash") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
             gGuestInitialCash = Math::Clamp(MONEY(0, 0), MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100), MONEY(1000, 0));
-            console_execute_silent("get guest_initial_cash");
+            console.Execute("get guest_initial_cash");
         }
         else if (strcmp(argv[0], "guest_initial_happiness") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             gGuestInitialHappiness = calculate_guest_initial_happiness((uint8)int_val[0]);
-            console_execute_silent("get guest_initial_happiness");
+            console.Execute("get guest_initial_happiness");
         }
         else if (strcmp(argv[0], "guest_initial_hunger") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             gGuestInitialHunger = (Math::Clamp(1, int_val[0], 84) * 255 / 100 - 255) * -1;
-            console_execute_silent("get guest_initial_hunger");
+            console.Execute("get guest_initial_hunger");
         }
         else if (strcmp(argv[0], "guest_initial_thirst") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             gGuestInitialThirst = (Math::Clamp(1, int_val[0], 84) * 255 / 100 - 255) * -1;
-            console_execute_silent("get guest_initial_thirst");
+            console.Execute("get guest_initial_thirst");
         }
         else if (strcmp(argv[0], "guest_prefer_less_intense_rides") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             SET_FLAG(gParkFlags, PARK_FLAGS_PREF_LESS_INTENSE_RIDES, int_val[0]);
-            console_execute_silent("get guest_prefer_less_intense_rides");
+            console.Execute("get guest_prefer_less_intense_rides");
         }
         else if (strcmp(argv[0], "guest_prefer_more_intense_rides") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             SET_FLAG(gParkFlags, PARK_FLAGS_PREF_MORE_INTENSE_RIDES, int_val[0]);
-            console_execute_silent("get guest_prefer_more_intense_rides");
+            console.Execute("get guest_prefer_more_intense_rides");
         }
         else if (strcmp(argv[0], "forbid_marketing_campagns") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             SET_FLAG(gParkFlags, PARK_FLAGS_FORBID_MARKETING_CAMPAIGN, int_val[0]);
-            console_execute_silent("get forbid_marketing_campagns");
+            console.Execute("get forbid_marketing_campagns");
         }
         else if (strcmp(argv[0], "forbid_landscape_changes") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             SET_FLAG(gParkFlags, PARK_FLAGS_FORBID_LANDSCAPE_CHANGES, int_val[0]);
-            console_execute_silent("get forbid_landscape_changes");
+            console.Execute("get forbid_landscape_changes");
         }
         else if (strcmp(argv[0], "forbid_tree_removal") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             SET_FLAG(gParkFlags, PARK_FLAGS_FORBID_TREE_REMOVAL, int_val[0]);
-            console_execute_silent("get forbid_tree_removal");
+            console.Execute("get forbid_tree_removal");
         }
         else if (strcmp(argv[0], "forbid_high_construction") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             SET_FLAG(gParkFlags, PARK_FLAGS_FORBID_HIGH_CONSTRUCTION, int_val[0]);
-            console_execute_silent("get forbid_high_construction");
+            console.Execute("get forbid_high_construction");
         }
         else if (strcmp(argv[0], "pay_for_rides") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             SET_FLAG(gParkFlags, PARK_FLAGS_PARK_FREE_ENTRY, int_val[0]);
-            console_execute_silent("get pay_for_rides");
+            console.Execute("get pay_for_rides");
         }
         else if (strcmp(argv[0], "no_money") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             SET_FLAG(gParkFlags, PARK_FLAGS_NO_MONEY, int_val[0]);
-            console_execute_silent("get no_money");
+            console.Execute("get no_money");
         }
         else if (strcmp(argv[0], "difficult_park_rating") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             SET_FLAG(gParkFlags, PARK_FLAGS_DIFFICULT_PARK_RATING, int_val[0]);
-            console_execute_silent("get difficult_park_rating");
+            console.Execute("get difficult_park_rating");
         }
         else if (strcmp(argv[0], "difficult_guest_generation") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             SET_FLAG(gParkFlags, PARK_FLAGS_DIFFICULT_GUEST_GENERATION, int_val[0]);
-            console_execute_silent("get difficult_guest_generation");
+            console.Execute("get difficult_guest_generation");
         }
         else if (strcmp(argv[0], "park_open") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             SET_FLAG(gParkFlags, PARK_FLAGS_PARK_OPEN, int_val[0]);
-            console_execute_silent("get park_open");
+            console.Execute("get park_open");
         }
         else if (strcmp(argv[0], "land_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
             gLandPrice = Math::Clamp(MONEY(0, 0), MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100), MONEY(200, 0));
-            console_execute_silent("get land_rights_cost");
+            console.Execute("get land_rights_cost");
         }
         else if (strcmp(argv[0], "construction_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
             gConstructionRightsPrice = Math::Clamp(MONEY(0, 0), MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100), MONEY(200, 0));
-            console_execute_silent("get construction_rights_cost");
+            console.Execute("get construction_rights_cost");
         }
         else if (strcmp(argv[0], "climate") == 0) {
             if (int_valid[0]) {
@@ -999,26 +720,26 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
             if (i == 4)
                 invalidArgs = true;
             else
-            console_execute_silent("get climate");
+            console.Execute("get climate");
         }
         else if (strcmp(argv[0], "game_speed") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             gGameSpeed = Math::Clamp(1, int_val[0], 8);
-            console_execute_silent("get game_speed");
+            console.Execute("get game_speed");
         }
         else if (strcmp(argv[0], "console_small_font") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             gConfigInterface.console_small_font = (int_val[0] != 0);
             config_save_default();
-            console_execute_silent("get console_small_font");
+            console.Execute("get console_small_font");
         }
         else if (strcmp(argv[0], "test_unfinished_tracks") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             gConfigGeneral.test_unfinished_tracks = (int_val[0] != 0);
             config_save_default();
-            console_execute_silent("get test_unfinished_tracks");
+            console.Execute("get test_unfinished_tracks");
         }
         else if (strcmp(argv[0], "no_test_crashes") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             gConfigGeneral.no_test_crashes = (int_val[0] != 0);
             config_save_default();
-            console_execute_silent("get no_test_crashes");
+            console.Execute("get no_test_crashes");
         }
         else if (strcmp(argv[0], "location") == 0 && invalidArguments(&invalidArgs, int_valid[0] && int_valid[1])) {
             rct_window *w = window_get_main();
@@ -1028,7 +749,7 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
                 sint32 z = tile_element_height(x, y);
                 window_set_location(w, x, y, z);
                 viewport_update_position(w);
-                console_execute_silent("get location");
+                console.Execute("get location");
             }
         }
         else if (strcmp(argv[0], "window_scale") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
@@ -1038,94 +759,94 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
             gfx_invalidate_screen();
             context_trigger_resize();
             context_update_cursor_scale();
-            console_execute_silent("get window_scale");
+            console.Execute("get window_scale");
         }
         else if (strcmp(argv[0], "window_limit") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             window_set_window_limit(int_val[0]);
-            console_execute_silent("get window_limit");
+            console.Execute("get window_limit");
         }
         else if (strcmp(argv[0], "render_weather_effects") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             gConfigGeneral.render_weather_effects = (int_val[0] != 0);
             config_save_default();
-            console_execute_silent("get render_weather_effects");
+            console.Execute("get render_weather_effects");
         }
         else if (strcmp(argv[0], "render_weather_gloom") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             gConfigGeneral.render_weather_gloom = (int_val[0] != 0);
             config_save_default();
-            console_execute_silent("get render_weather_gloom");
+            console.Execute("get render_weather_gloom");
         }
         else if (strcmp(argv[0], "cheat_sandbox_mode") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             if (gCheatsSandboxMode != (int_val[0] != 0)) {
                 if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
                     // Change it locally so it shows the accurate value in the
-                    // "console_execute_silent("get cheat_sandbox_mode")" line when in networked client mode
+                    // "console.Execute("get cheat_sandbox_mode")" line when in networked client mode
                     gCheatsSandboxMode = (int_val[0] != 0);
                 }
                 else {
-                    console_writeline_error("Network error: Permission denied!");
+                    console.WriteLineError("Network error: Permission denied!");
                 }
             }
-            console_execute_silent("get cheat_sandbox_mode");
+            console.Execute("get cheat_sandbox_mode");
         }
         else if (strcmp(argv[0], "cheat_disable_clearance_checks") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             if (gCheatsDisableClearanceChecks != (int_val[0] != 0)) {
                 if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
                     // Change it locally so it shows the accurate value in the
-                    // "console_execute_silent("get cheat_disable_clearance_checks")" line when in networked client mode
+                    // "console.Execute("get cheat_disable_clearance_checks")" line when in networked client mode
                     gCheatsDisableClearanceChecks = (int_val[0] != 0);
                 }
                 else {
-                    console_writeline_error("Network error: Permission denied!");
+                    console.WriteLineError("Network error: Permission denied!");
                 }
             }
-            console_execute_silent("get cheat_disable_clearance_checks");
+            console.Execute("get cheat_disable_clearance_checks");
         }
         else if (strcmp(argv[0], "cheat_disable_support_limits") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             if (gCheatsDisableSupportLimits != (int_val[0] != 0)) {
                 if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
                     // Change it locally so it shows the accurate value in the
-                    // "console_execute_silent("get cheat_disable_support_limits")" line when in networked client mode
+                    // "console.Execute("get cheat_disable_support_limits")" line when in networked client mode
                     gCheatsDisableSupportLimits = (int_val[0] != 0);
                 }
                 else {
-                    console_writeline_error("Network error: Permission denied!");
+                    console.WriteLineError("Network error: Permission denied!");
                 }
             }
-            console_execute_silent("get cheat_disable_support_limits");
+            console.Execute("get cheat_disable_support_limits");
         }
 #ifndef NO_TTF
         else if (strcmp(argv[0], "enable_hinting") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
             gConfigFonts.enable_hinting = (int_val[0] != 0);
             config_save_default();
-            console_execute_silent("get enable_hinting");
+            console.Execute("get enable_hinting");
             ttf_toggle_hinting();
         }
 #endif
         else if (invalidArgs) {
-            console_writeline_error("Invalid arguments.");
+            console.WriteLineError("Invalid arguments.");
         }
         else {
-            console_writeline_error("Invalid variable.");
+            console.WriteLineError("Invalid variable.");
         }
 
         gfx_invalidate_screen();
     }
     else {
-        console_writeline_error("Value required.");
+        console.WriteLineError("Value required.");
     }
     return 0;
 }
-static sint32 cc_twitch(const utf8 **argv, sint32 argc)
+static sint32 cc_twitch(InteractiveConsole &console, const utf8 **argv, sint32 argc)
 {
 #ifdef DISABLE_TWITCH
-    console_writeline_error("OpenRCT2 build not compiled with Twitch integration.");
+    console.WriteLineError("OpenRCT2 build not compiled with Twitch integration.");
 #else
     // TODO: Add some twitch commands
 #endif
     return 0;
 }
 
-static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
+static sint32 cc_load_object(InteractiveConsole &console, const utf8 **argv, sint32 argc) {
     if (argc > 0) {
         char name[9] = { 0 };
         memset(name, ' ', 8);
@@ -1136,20 +857,20 @@ static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
 
         const ObjectRepositoryItem * ori = object_repository_find_object_by_name(name);
         if (ori == nullptr) {
-            console_writeline_error("Could not find the object.");
+            console.WriteLineError("Could not find the object.");
             return 1;
         }
 
         const rct_object_entry * entry = &ori->ObjectEntry;
         void * loadedObject = object_manager_get_loaded_object(entry);
         if (loadedObject != nullptr) {
-            console_writeline_error("Object is already in scenario.");
+            console.WriteLineError("Object is already in scenario.");
             return 1;
         }
 
         loadedObject = object_manager_load_object(entry);
         if (loadedObject == nullptr) {
-            console_writeline_error("Unable to load object.");
+            console.WriteLineError("Unable to load object.");
             return 1;
         }
         sint32 groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
@@ -1186,13 +907,13 @@ static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
 
         gWindowUpdateTicks = 0;
         gfx_invalidate_screen();
-        console_writeline("Object file loaded.");
+        console.WriteLine("Object file loaded.");
     }
 
     return 0;
 }
 
-static sint32 cc_object_count(const utf8 **argv, sint32 argc) {
+static sint32 cc_object_count(InteractiveConsole &console, const utf8 **argv, sint32 argc) {
     const utf8* object_type_names[] = { "Rides", "Small scenery", "Large scenery", "Walls", "Banners", "Paths", "Path Additions", "Scenery groups", "Park entrances", "Water" };
     for (sint32 i = 0; i < 10; i++) {
 
@@ -1203,19 +924,19 @@ static sint32 cc_object_count(const utf8 **argv, sint32 argc) {
                 break;
             }
         }
-        console_printf("%s: %d/%d", object_type_names[i], entryGroupIndex, object_entry_group_counts[i]);
+        console.WriteFormatLine("%s: %d/%d", object_type_names[i], entryGroupIndex, object_entry_group_counts[i]);
     }
 
     return 0;
 }
 
-static sint32 cc_reset_user_strings(const utf8 **argv, sint32 argc)
+static sint32 cc_reset_user_strings(InteractiveConsole &console, const utf8 **argv, sint32 argc)
 {
     reset_user_strings();
     return 0;
 }
 
-static sint32 cc_open(const utf8 **argv, sint32 argc) {
+static sint32 cc_open(InteractiveConsole &console, const utf8 **argv, sint32 argc) {
     if (argc > 0) {
         bool title = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) != 0;
         bool invalidTitle = false;
@@ -1234,22 +955,22 @@ static sint32 cc_open(const utf8 **argv, sint32 argc) {
         } else if (strcmp(argv[0], "title_sequences") == 0) {
             context_open_window(WC_TITLE_EDITOR);
         } else if (invalidTitle) {
-            console_writeline_error("Cannot open this window in the title screen.");
+            console.WriteLineError("Cannot open this window in the title screen.");
         } else {
-            console_writeline_error("Invalid window.");
+            console.WriteLineError("Invalid window.");
         }
     }
     return 0;
 }
 
-static sint32 cc_remove_unused_objects(const utf8 **argv, sint32 argc) 
+static sint32 cc_remove_unused_objects(InteractiveConsole &console, const utf8 **argv, sint32 argc) 
 {
     sint32 result = editor_remove_unused_objects();
-    console_printf("%d unused object entries have been removed.", result);
+    console.WriteFormatLine("%d unused object entries have been removed.", result);
     return 0;
 }
 
-static sint32 cc_remove_park_fences(const utf8 **argv, sint32 argc)
+static sint32 cc_remove_park_fences(InteractiveConsole &console, const utf8 **argv, sint32 argc)
 {
     tile_element_iterator it;
     tile_element_iterator_begin(&it);
@@ -1263,11 +984,11 @@ static sint32 cc_remove_park_fences(const utf8 **argv, sint32 argc)
     }
     while (tile_element_iterator_next(&it));
 
-    console_printf("Park fences have been removed.");
+    console.WriteFormatLine("Park fences have been removed.");
     return 0;
 }
 
-static sint32 cc_show_limits(const utf8 ** argv, sint32 argc)
+static sint32 cc_show_limits(InteractiveConsole &console, const utf8 ** argv, sint32 argc)
 {
     map_reorganise_elements();
     sint32 tileElementCount = gNextFreeTileElement - gTileElements - 1;
@@ -1306,15 +1027,15 @@ static sint32 cc_show_limits(const utf8 ** argv, sint32 argc)
         }
     }
 
-    console_printf("Sprites: %d/%d", spriteCount, MAX_SPRITES);
-    console_printf("Map Elements: %d/%d", tileElementCount, MAX_TILE_ELEMENTS);
-    console_printf("Banners: %d/%d", bannerCount, MAX_BANNERS);
-    console_printf("Rides: %d/%d", rideCount, MAX_RIDES);
-    console_printf("Staff: %d/%d", staffCount, STAFF_MAX_COUNT);
+    console.WriteFormatLine("Sprites: %d/%d", spriteCount, MAX_SPRITES);
+    console.WriteFormatLine("Map Elements: %d/%d", tileElementCount, MAX_TILE_ELEMENTS);
+    console.WriteFormatLine("Banners: %d/%d", bannerCount, MAX_BANNERS);
+    console.WriteFormatLine("Rides: %d/%d", rideCount, MAX_RIDES);
+    console.WriteFormatLine("Staff: %d/%d", staffCount, STAFF_MAX_COUNT);
     return 0;
 }
 
-static sint32 cc_for_date(const utf8 **argv, sint32 argc)
+static sint32 cc_for_date(InteractiveConsole &console, const utf8 **argv, sint32 argc)
 {
     sint32 year = 0;
     sint32 month = 0;
@@ -1370,7 +1091,7 @@ static sint32 cc_for_date(const utf8 **argv, sint32 argc)
     return 1;
 }
 
-using console_command_func = sint32 (*)(const utf8 ** argv, sint32 argc);
+using console_command_func = sint32 (*)(InteractiveConsole &console, const utf8 ** argv, sint32 argc);
 struct console_command {
     const utf8 * command;
     console_command_func func;
@@ -1451,23 +1172,23 @@ static constexpr const console_command console_command_table[] = {
     { "date", cc_for_date, "Sets the date to a given date.", "Format <year>[ <month>[ <day>]]."}
 };
 
-static sint32 cc_windows(const utf8 **argv, sint32 argc) {
+static sint32 cc_windows(InteractiveConsole &console, const utf8 **argv, sint32 argc) {
     for (auto s : console_window_table)
     {
-        console_writeline(s);
+        console.WriteLine(s);
     }
     return 0;
 }
-static sint32 cc_variables(const utf8 **argv, sint32 argc)
+static sint32 cc_variables(InteractiveConsole &console, const utf8 **argv, sint32 argc)
 {
     for (auto s : console_variable_table)
     {
-        console_writeline(s);
+        console.WriteLine(s);
     }
     return 0;
 }
 
-static sint32 cc_help(const utf8 **argv, sint32 argc)
+static sint32 cc_help(InteractiveConsole &console, const utf8 **argv, sint32 argc)
 {
     if (argc > 0)
     {
@@ -1475,39 +1196,41 @@ static sint32 cc_help(const utf8 **argv, sint32 argc)
         {
             if (strcmp(c.command, argv[0]) == 0)
             {
-                console_writeline(c.help);
-                console_printf("\nUsage:   %s", c.usage);
+                console.WriteLine(c.help);
+                console.WriteFormatLine("\nUsage:   %s", c.usage);
             }
         }
     }
     else
     {
-        console_write_all_commands();
+        console_write_all_commands(console);
     }
     return 0;
 }
 
-static void console_write_all_commands()
+static void console_write_all_commands(InteractiveConsole &console)
 {
     for (const auto &c : console_command_table)
     {
-        console_writeline(c.command);
+        console.WriteLine(c.command);
     }
 }
 
-void console_execute(const utf8 *src)
+static bool invalidArguments(bool *invalid, bool arguments)
 {
-    console_write(src);
-
-    console_execute_silent(src);
+    if (!arguments) {
+        *invalid = true;
+        return false;
+    }
+    return true;
 }
 
-void console_execute_silent(const utf8 *src)
+void InteractiveConsole::Execute(const std::string &s)
 {
     sint32 argc = 0;
     sint32 argvCapacity = 8;
     utf8 **argv = (utf8 * *)malloc(argvCapacity * sizeof(utf8*));
-    const utf8 *start = src;
+    const utf8 *start = s.c_str();
     const utf8 *end;
     bool inQuotes = false;
     do {
@@ -1562,7 +1285,7 @@ void console_execute_silent(const utf8 *src)
     {
         if (strcmp(argv[0], c.command) == 0)
         {
-            c.func((const utf8 **)(argv + 1), argc - 1);
+            c.func(*this, (const utf8 **)(argv + 1), argc - 1);
             validCommand = true;
             break;
         }
@@ -1573,21 +1296,320 @@ void console_execute_silent(const utf8 *src)
     free(argv);
 
     if (!validCommand) {
-        utf8 output[128];
-        utf8 *dst = output;
-        dst = utf8_write_codepoint(dst, FORMAT_TOPAZ);
-        safe_strcpy(dst, "Unknown command. Type help to list available commands.", sizeof(output) - (dst - output));
-        console_writeline(output);
+        WriteLineError("Unknown command. Type help to list available commands.");
     }
 }
 
-static bool invalidArguments(bool *invalid, bool arguments)
+void InteractiveConsole::WriteLine(const std::string &s)
 {
-    if (!arguments) {
-        *invalid = true;
-        return false;
+    WriteLine(s, FORMAT_WINDOW_COLOUR_2);
+}
+
+void InteractiveConsole::WriteLineError(const std::string &s)
+{
+    WriteLine(s, FORMAT_RED);
+}
+
+void InteractiveConsole::WriteLineWarning(const std::string &s)
+{
+    WriteLine(s, FORMAT_YELLOW);
+}
+
+void InteractiveConsole::WriteFormatLine(const std::string &format, ...)
+{
+    va_list list;
+    va_start(list, format);
+    auto buffer = String::Format_VA(format.c_str(), list);
+    va_end(list);
+
+    auto s = std::string(buffer);
+    std::free(buffer);
+    WriteLine(s);
+}
+
+InGameConsole::InGameConsole()
+{
+    InteractiveConsole::WriteLine(OPENRCT2_NAME " " OPENRCT2_VERSION);
+    InteractiveConsole::WriteLine("Type 'help' for a list of available commands. Type 'hide' to hide the console.");
+    InteractiveConsole::WriteLine("");
+    WritePrompt();
+}
+
+void InGameConsole::WritePrompt()
+{
+    InteractiveConsole::WriteLine("> ");
+}
+
+void InGameConsole::Input(CONSOLE_INPUT input)
+{
+    switch (input) {
+    case CONSOLE_INPUT_LINE_CLEAR:
+        ClearInput();
+        RefreshCaret();
+        break;
+    case CONSOLE_INPUT_LINE_EXECUTE:
+        if (_consoleCurrentLine[0] != '\0') {
+            HistoryAdd(_consoleCurrentLine);
+            Execute(_consoleCurrentLine);
+            WritePrompt();
+            ClearInput();
+            RefreshCaret();
+        }
+        ScrollToEnd();
+        break;
+    case CONSOLE_INPUT_HISTORY_PREVIOUS:
+        if (_consoleHistoryIndex > 0) {
+            _consoleHistoryIndex--;
+            memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], 256);
+        }
+        _consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
+        _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
+        _consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
+        break;
+    case CONSOLE_INPUT_HISTORY_NEXT:
+        if (_consoleHistoryIndex < _consoleHistoryCount - 1) {
+            _consoleHistoryIndex++;
+            memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], 256);
+            _consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
+            _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
+            _consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
+        } else {
+            _consoleHistoryIndex = _consoleHistoryCount;
+            ClearInput();
+        }
+        break;
+    case CONSOLE_INPUT_SCROLL_PREVIOUS:
+    {
+        sint32 scrollAmt = console_get_num_visible_lines() - 1;
+        Scroll(scrollAmt);
+        break;
     }
-    return true;
+    case CONSOLE_INPUT_SCROLL_NEXT:
+    {
+        sint32 scrollAmt = console_get_num_visible_lines() - 1;
+        Scroll(-scrollAmt);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void InGameConsole::ClearInput()
+{
+    _consoleCurrentLine[0] = 0;
+    if (gConsoleOpen) {
+        context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
+    }
+}
+
+void InGameConsole::HistoryAdd(const utf8 * src)
+{
+    if (_consoleHistoryCount >= CONSOLE_HISTORY_SIZE) {
+        for (sint32 i = 0; i < _consoleHistoryCount - 1; i++)
+            memcpy(_consoleHistory[i], _consoleHistory[i + 1], CONSOLE_INPUT_SIZE);
+        _consoleHistoryCount--;
+    }
+    memcpy(_consoleHistory[_consoleHistoryCount++], src, CONSOLE_INPUT_SIZE);
+    _consoleHistoryIndex = _consoleHistoryCount;
+}
+
+void InGameConsole::ScrollToEnd()
+{
+    _consoleScrollPos = Math::Max<sint32>(0, (sint32)_consoleLines.size() - console_get_num_visible_lines());
+}
+
+void InGameConsole::RefreshCaret()
+{
+    _consoleCaretTicks = 0;
+}
+
+void InGameConsole::Scroll(sint32 linesToScroll)
+{
+    const sint32 maxVisibleLines = console_get_num_visible_lines();
+    const sint32 numLines = (sint32)_consoleLines.size();
+    if (numLines > maxVisibleLines)
+    {
+        sint32 maxScrollValue = numLines - maxVisibleLines;
+        _consoleScrollPos     = Math::Clamp<sint32>(0, _consoleScrollPos - linesToScroll, maxScrollValue);
+    }
+}
+
+void InGameConsole::Clear()
+{
+    _consoleLines.clear();
+    ScrollToEnd();
+}
+
+void InGameConsole::ClearLine()
+{
+    _consoleCurrentLine[0] = 0;
+    RefreshCaret();
+}
+
+void InGameConsole::Open()
+{
+    gConsoleOpen = true;
+    ScrollToEnd();
+    RefreshCaret();
+    _consoleTextInputSession = context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
+}
+
+void InGameConsole::Close()
+{
+    gConsoleOpen = false;
+    Invalidate();
+    context_stop_text_input();
+}
+
+void InGameConsole::Toggle()
+{
+    if (gConsoleOpen)
+        console_close();
+    else
+        console_open();
+}
+
+void InGameConsole::WriteLine(const std::string &input, uint32 colourFormat)
+{
+    // Include text colour format only for special cases
+    // The draw function handles the default text colour differently
+    utf8 colourCodepoint[4]{};
+    if (colourFormat != FORMAT_WINDOW_COLOUR_2)
+        utf8_write_codepoint(colourCodepoint, colourFormat);
+
+    std::string line;
+    std::size_t splitPos     = 0;
+    std::size_t stringOffset = 0;
+    while (splitPos != std::string::npos)
+    {
+        splitPos = input.find('\n', stringOffset);
+        line     = input.substr(stringOffset, splitPos - stringOffset);
+        _consoleLines.push_back(colourCodepoint + line);
+        stringOffset = splitPos + 1;
+    }
+
+    if (_consoleLines.size() > CONSOLE_MAX_LINES)
+    {
+        const std::size_t linesToErase = _consoleLines.size() - CONSOLE_MAX_LINES;
+        _consoleLines.erase(_consoleLines.begin(), _consoleLines.begin() + linesToErase);
+    }
+}
+
+void InGameConsole::Invalidate()
+{
+    gfx_set_dirty_blocks(_consoleLeft, _consoleTop, _consoleRight, _consoleBottom);
+}
+
+void InGameConsole::Update()
+{
+    _consoleLeft = 0;
+    _consoleTop = 0;
+    _consoleRight = context_get_width();
+    _consoleBottom = 322;
+
+    if (gConsoleOpen) {
+        // When scrolling the map, the console pixels get copied... therefore invalidate the screen
+        rct_window *mainWindow = window_get_main();
+        if (mainWindow != nullptr) {
+            rct_viewport *mainViewport = window_get_viewport(mainWindow);
+            if (mainViewport != nullptr) {
+                if (_lastMainViewportX != mainViewport->view_x || _lastMainViewportY != mainViewport->view_y) {
+                    _lastMainViewportX = mainViewport->view_x;
+                    _lastMainViewportY = mainViewport->view_y;
+
+                    gfx_invalidate_screen();
+                }
+            }
+        }
+
+        // Remove unwanted characters in console input
+        utf8_remove_format_codes(_consoleCurrentLine, false);
+    }
+
+    // Flash the caret
+    _consoleCaretTicks = (_consoleCaretTicks + 1) % 30;
+}
+
+void InGameConsole::Draw(rct_drawpixelinfo * dpi)
+{
+    if (!gConsoleOpen)
+        return;
+
+    // Set font
+    gCurrentFontSpriteBase           = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
+    gCurrentFontFlags                = 0;
+    uint8        textColour          = NOT_TRANSLUCENT(theme_get_colour(WC_CONSOLE, 1));
+    const sint32 lineHeight          = font_get_line_height(gCurrentFontSpriteBase);
+    const sint32 maxLines            = console_get_num_visible_lines();
+
+    // This is something of a hack to ensure the text is actually black
+    // as opposed to a desaturated grey
+    std::string colourFormatStr;
+    if (textColour == COLOUR_BLACK)
+    {
+        utf8 extraTextFormatCode[4]{};
+        utf8_write_codepoint(extraTextFormatCode, FORMAT_BLACK);
+        colourFormatStr = extraTextFormatCode;
+    }
+
+    // TTF looks far better without the outlines
+    if (!gUseTrueTypeFont)
+    {
+        textColour |= COLOUR_FLAG_OUTLINE;
+    }
+
+    Invalidate();
+
+    // Give console area a translucent effect.
+    gfx_filter_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, PALETTE_51);
+
+    // Make input area more opaque.
+    gfx_filter_rect(dpi, _consoleLeft, _consoleBottom - lineHeight - 10, _consoleRight, _consoleBottom - 1, PALETTE_51);
+
+    // Paint background colour.
+    uint8 backgroundColour = theme_get_colour(WC_CONSOLE, 0);
+    gfx_fill_rect_inset(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
+    gfx_fill_rect_inset(dpi, _consoleLeft + 1, _consoleTop + 1, _consoleRight - 1, _consoleBottom - 1, backgroundColour, INSET_RECT_FLAG_BORDER_INSET);
+
+    std::string lineBuffer;
+    sint32      x = _consoleLeft + CONSOLE_EDGE_PADDING;
+    sint32      y = _consoleTop + CONSOLE_EDGE_PADDING;
+
+    // Draw text inside console
+    for (std::size_t i = 0; i < _consoleLines.size() && i < (size_t)maxLines; i++) {
+        const size_t index = i + _consoleScrollPos;
+        lineBuffer         = colourFormatStr + _consoleLines[index];
+        gfx_draw_string(dpi, lineBuffer.c_str(), textColour, x, y);
+        y += lineHeight;
+    }
+
+    y = _consoleBottom - lineHeight - CONSOLE_EDGE_PADDING - 1;
+
+    // Draw current line
+    lineBuffer = colourFormatStr + _consoleCurrentLine;
+    gfx_draw_string(dpi, lineBuffer.c_str(), TEXT_COLOUR_255, x, y);
+
+    // Draw caret
+    if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD) {
+        sint32 caretX = x + gfx_get_string_width(_consoleCurrentLine);
+        sint32 caretY = y + lineHeight;
+
+        uint8 caretColour = ColourMapA[BASE_COLOUR(textColour)].lightest;
+        gfx_fill_rect(dpi, caretX, caretY, caretX + CONSOLE_CARET_WIDTH, caretY, caretColour);
+    }
+
+    // What about border colours?
+    uint8 borderColour1 = ColourMapA[BASE_COLOUR(backgroundColour)].light;
+    uint8 borderColour2 = ColourMapA[BASE_COLOUR(backgroundColour)].mid_dark;
+
+    // Input area top border
+    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - lineHeight - 11, _consoleRight, _consoleBottom - lineHeight - 11, borderColour1);
+    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - lineHeight - 10, _consoleRight, _consoleBottom - lineHeight - 10, borderColour2);
+
+    // Input area bottom border
+    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 1, _consoleRight, _consoleBottom - 1, borderColour1);
+    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 0, _consoleRight, _consoleBottom - 0, borderColour2);
 }
 
 void StdInOutConsole::Start()
@@ -1635,9 +1657,45 @@ void StdInOutConsole::ProcessEvalQueue()
         auto promise = std::move(std::get<0>(item));
         auto command = std::move(std::get<1>(item));
 
-        console_execute_silent(command.c_str());
+        Execute(command);
 
         // Signal the promise so caller can continue
         promise.set_value();
+    }
+}
+
+void StdInOutConsole::Clear()
+{
+    linenoise::linenoiseClearScreen();
+}
+
+void StdInOutConsole::Close()
+{
+    openrct2_finish();
+}
+
+void StdInOutConsole::WriteLine(const std::string &s, uint32 colourFormat)
+{
+    std::string formatBegin;
+    if (colourFormat != FORMAT_WINDOW_COLOUR_2)
+    {
+        switch (colourFormat)
+        {
+            case FORMAT_RED:
+                formatBegin = "\033[31m";
+                break;
+            case FORMAT_YELLOW:
+                formatBegin = "\033[33m";
+                break;
+        }
+    }
+
+    if (formatBegin.empty())
+    {
+        std::printf("%s\n", s.c_str());
+    }
+    else
+    {
+        std::printf("%s%s%s\n", formatBegin.c_str(), s.c_str(), "\x1b[0m");
     }
 }
