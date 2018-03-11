@@ -22,6 +22,8 @@
 #include "../Context.h"
 #include "../interface/Cursors.h"
 
+struct rct_drawpixelinfo;
+
 namespace OpenRCT2
 {
     namespace Drawing
@@ -90,6 +92,9 @@ namespace OpenRCT2
         interface IUiContext
         {
             virtual ~IUiContext() = default;
+
+            virtual void    Update() abstract;
+            virtual void    Draw(rct_drawpixelinfo * dpi) abstract;
 
             // Window
             virtual void    CreateWindow() abstract;

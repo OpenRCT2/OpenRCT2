@@ -27,6 +27,7 @@
 #endif
 
 #include <vector>
+#include "../Context.h"
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
 #include "../OpenRCT2.h"
@@ -43,6 +44,8 @@
 #include "../world/Sprite.h"
 #include "http.h"
 #include "twitch.h"
+
+using namespace OpenRCT2;
 
 bool gTwitchEnable = false;
 
@@ -201,10 +204,11 @@ namespace Twitch
         request.type = HTTP_DATA_JSON;
         http_request_async(&request, [](http_response_t *jsonResponse) -> void
         {
+            auto context = GetContext();
             if (jsonResponse == nullptr)
             {
                 _twitchState = TWITCH_STATE_LEFT;
-                console_writeline("Unable to connect to twitch channel.");
+                context->WriteLine("Unable to connect to twitch channel.");
             }
             else
             {
@@ -221,7 +225,7 @@ namespace Twitch
                 http_request_dispose(jsonResponse);
 
                 _twitchLastPulseTick = 0;
-                console_writeline("Connected to twitch channel.");
+                context->WriteLine("Connected to twitch channel.");
             }
             _twitchIdle = true;
         });
@@ -238,7 +242,7 @@ namespace Twitch
             _twitchJsonResponse = nullptr;
         }
 
-        console_writeline("Left twitch channel.");
+        GetContext()->WriteLine("Left twitch channel.");
         _twitchState = TWITCH_STATE_LEFT;
         _twitchLastPulseTick = 0;
         gTwitchEnable = false;
@@ -256,7 +260,7 @@ namespace Twitch
         //     _twitchState = TWITCH_STATE_LEFT;
         //     _twitchIdle = true;
         //
-        //     console_writeline("Left twitch channel.");
+        //     GetContext()->WriteLine("Left twitch channel.");
         // });
     }
 

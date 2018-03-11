@@ -24,6 +24,8 @@
 #include <openrct2/interface/Console.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/localisation/Localisation.h>
+#include "interface/InGameConsole.h"
+#include "UiContext.h"
 
 #ifdef __MACOSX__
     // macOS uses COMMAND rather than CTRL for many keyboard shortcuts
@@ -69,6 +71,8 @@ void TextComposition::Stop()
 
 void TextComposition::HandleMessage(const SDL_Event * e)
 {
+    auto& console = GetInGameConsole();
+
     switch (e->type) {
     case SDL_TEXTEDITING:
         // When inputting Korean characters, `edit.length` is always zero
@@ -84,7 +88,7 @@ void TextComposition::HandleMessage(const SDL_Event * e)
         if (_session.Buffer != nullptr)
         {
             // HACK ` will close console, so don't input any text
-            if (e->text.text[0] == '`' && console_is_open()) {
+            if (e->text.text[0] == '`' && console.IsOpen()) {
                 break;
             }
 
@@ -93,7 +97,7 @@ void TextComposition::HandleMessage(const SDL_Event * e)
             Insert(newText);
             Memory::Free(newText);
 
-            console_refresh_caret();
+            console.RefreshCaret();
             window_update_textbox();
         }
         break;
@@ -124,7 +128,7 @@ void TextComposition::HandleMessage(const SDL_Event * e)
         if (key == SDLK_BACKSPACE && (modifier & KEYBOARD_PRIMARY_MODIFIER))
         {
             Clear();
-            console_refresh_caret();
+            console.RefreshCaret();
             window_update_textbox();
         }
 
@@ -138,17 +142,17 @@ void TextComposition::HandleMessage(const SDL_Event * e)
                 _session.SelectionSize = endOffset - _session.SelectionStart;
                 Delete();
 
-                console_refresh_caret();
+                console.RefreshCaret();
                 window_update_textbox();
             }
             break;
         case SDLK_HOME:
             CursorHome();
-            console_refresh_caret();
+            console.RefreshCaret();
             break;
         case SDLK_END:
             CursorEnd();
-            console_refresh_caret();
+            console.RefreshCaret();
             break;
         case SDLK_DELETE:
         {
@@ -157,7 +161,7 @@ void TextComposition::HandleMessage(const SDL_Event * e)
             _session.SelectionSize = _session.SelectionStart - startOffset;
             _session.SelectionStart = startOffset;
             Delete();
-            console_refresh_caret();
+            console.RefreshCaret();
             window_update_textbox();
             break;
         }
@@ -166,11 +170,11 @@ void TextComposition::HandleMessage(const SDL_Event * e)
             break;
         case SDLK_LEFT:
             CursorLeft();
-            console_refresh_caret();
+            console.RefreshCaret();
             break;
         case SDLK_RIGHT:
             CursorRight();
-            console_refresh_caret();
+            console.RefreshCaret();
             break;
         case SDLK_v:
             if ((modifier & KEYBOARD_PRIMARY_MODIFIER) && SDL_HasClipboardText())

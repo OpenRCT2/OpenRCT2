@@ -1,13 +1,15 @@
 #include <algorithm>
-#include "Colour.h"
-#include "Console.h"
-#include "themes.h"
-#include "Window.h"
-#include "../config/Config.h"
-#include "../Context.h"
-#include "../core/Math.hpp"
-#include "../localisation/Language.h"
-#include "../Version.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/Context.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/interface/Colour.h>
+#include <openrct2/interface/themes.h>
+#include <openrct2/interface/Window.h>
+#include <openrct2/localisation/Language.h>
+#include <openrct2/Version.h>
+#include "InGameConsole.h"
+
+using namespace OpenRCT2::Ui;
 
 static InGameConsole _inGameConsole;
 
@@ -308,51 +310,4 @@ sint32 InGameConsole::GetNumVisibleLines() const
     const sint32 consoleHeight  = _consoleBottom - _consoleTop;
     const sint32 drawableHeight = consoleHeight - 2 * lineHeight - 4; // input line, separator - padding
     return drawableHeight / lineHeight;
-}
-
-// Old pass-through functions
-
-bool console_is_open()
-{
-    return _inGameConsole.IsOpen();
-}
-
-void console_open()
-{
-    _inGameConsole.Open();
-}
-
-void console_toggle()
-{
-    _inGameConsole.Toggle();
-}
-
-void console_update()
-{
-    _inGameConsole.Update();
-}
-
-void console_draw(rct_drawpixelinfo *dpi)
-{
-    _inGameConsole.Draw(dpi);
-}
-
-void console_input(CONSOLE_INPUT input)
-{
-    _inGameConsole.Input(input);
-}
-
-void console_writeline(const utf8 * src, uint32 colourFormat)
-{
-    _inGameConsole.WriteLine(src, colourFormat);
-}
-
-void console_scroll(sint32 linesToScroll)
-{
-    _inGameConsole.Scroll(linesToScroll);
-}
-
-void console_refresh_caret()
-{
-    _inGameConsole.RefreshCaret();
 }
