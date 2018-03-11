@@ -93,6 +93,7 @@ namespace OpenRCT2
 #ifdef __ENABLE_DISCORD__
         DiscordService *            _discordService = nullptr;
 #endif
+        StdInOutConsole             _stdInOutConsole;
 
         // Game states
         TitleScreen * _titleScreen = nullptr;
@@ -624,6 +625,7 @@ namespace OpenRCT2
             }
 #endif // DISABLE_NETWORK
 
+            _stdInOutConsole.Start();
             RunGameLoop();
         }
 
@@ -792,6 +794,7 @@ namespace OpenRCT2
             twitch_update();
             chat_update();
             console_update();
+            _stdInOutConsole.ProcessEvalQueue();
         }
 
         /**

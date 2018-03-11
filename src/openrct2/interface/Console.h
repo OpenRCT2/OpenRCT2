@@ -14,13 +14,26 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _CONSOLE_H_
-#define _CONSOLE_H_
+#pragma once
 
+#include <future>
+#include <queue>
+#include <string>
+#include <tuple>
 #include "../common.h"
 #include "../localisation/FormatCodes.h"
 
 struct rct_drawpixelinfo;
+
+class StdInOutConsole
+{
+private:
+    std::queue<std::tuple<std::promise<void>, std::string>> _evalQueue;
+public:
+    void Start();
+    std::future<void> Eval(const std::string &s);
+    void ProcessEvalQueue();
+};
 
 enum CONSOLE_INPUT
 {
@@ -54,5 +67,3 @@ void console_clear();
 void console_clear_line();
 void console_refresh_caret();
 void console_scroll(sint32 delta);
-
-#endif

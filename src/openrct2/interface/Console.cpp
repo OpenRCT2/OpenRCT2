@@ -19,6 +19,9 @@
 #include <cstdarg>
 #include <deque>
 #include <string>
+#include <thread>
+
+#include "../thirdparty/linenoise.hpp"
 
 #include "../config/Config.h"
 #include "../Context.h"
@@ -343,6 +346,8 @@ void console_writeline(const utf8 * src, uint32 colourFormat)
         const std::size_t linesToErase = _consoleLines.size() - CONSOLE_MAX_LINES;
         _consoleLines.erase(_consoleLines.begin(), _consoleLines.begin() + linesToErase);
     }
+
+    std::printf("%s\n", src);
 }
 
 void console_writeline_error(const utf8 *src)
@@ -1583,4 +1588,56 @@ static bool invalidArguments(bool *invalid, bool arguments)
         return false;
     }
     return true;
+}
+
+void StdInOutConsole::Start()
+{
+    std::thread replThread ([this]() -> void
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+        linenoise::SetMultiLine(true);
+        linenoise::SetHistoryMaxLen(32);
+
+        std::string prompt = "\033[32mopenrct2 $\x1b[0m ";
+        while (true)
+        {
+            std::string line;
+            std::string left = prompt;
+            auto quit = linenoise::Readline(left.c_str(), line);
+            if (quit) {
+                openrct2_finish();
+                break;
+            }
+            linenoise::AddHistory(line.c_str());
+            Eval(line).wait();
+        }
+    });
+    replThread.detach();
+}
+
+std::future<void> StdInOutConsole::Eval(const std::string &s)
+{
+    // Push on-demand evaluations onto a queue so that it can be processed deterministically
+    // on the main thead at the right time.
+    std::promise<void> barrier;
+    auto future = barrier.get_future();
+    _evalQueue.emplace(std::move(barrier), s);
+    return future;
+}
+
+void StdInOutConsole::ProcessEvalQueue()
+{
+    while (_evalQueue.size() > 0)
+    {
+        auto item = std::move(_evalQueue.front());
+        _evalQueue.pop();
+        auto promise = std::move(std::get<0>(item));
+        auto command = std::move(std::get<1>(item));
+
+        console_execute_silent(command.c_str());
+
+        // Signal the promise so caller can continue
+        promise.set_value();
+    }
 }
