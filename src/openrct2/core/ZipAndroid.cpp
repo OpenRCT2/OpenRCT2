@@ -154,9 +154,11 @@ namespace Zip {
     }
 }
 
+extern "C" {
 JNIEXPORT jlong JNICALL
 Java_website_openrct2_ZipArchive_allocBytes(JNIEnv *env, jclass, jbyteArray input,
                                                 jint numBytes);
+}
 
 JNIEXPORT jlong JNICALL
 Java_website_openrct2_ZipArchive_allocBytes(JNIEnv *env, jclass, jbyteArray input,
