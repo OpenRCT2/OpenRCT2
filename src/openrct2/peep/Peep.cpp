@@ -989,13 +989,20 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
 
         if (peep->peep_flags & PEEP_FLAGS_EXPLODE && peep->x != LOCATION_NULL)
         {
-            audio_play_sound_at_location(SOUND_CRASH, peep->x, peep->y, peep->z);
+            if (peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_SITTING)
+            {
+                audio_play_sound_at_location(SOUND_CRASH, peep->x, peep->y, peep->z);
 
-            sprite_misc_explosion_cloud_create(peep->x, peep->y, peep->z + 16);
-            sprite_misc_explosion_flare_create(peep->x, peep->y, peep->z + 16);
+                sprite_misc_explosion_cloud_create(peep->x, peep->y, peep->z + 16);
+                sprite_misc_explosion_flare_create(peep->x, peep->y, peep->z + 16);
 
-            peep_remove(peep);
-            return;
+                peep_remove(peep);
+                return;
+            }
+            else
+            {
+                peep->peep_flags &= ~PEEP_FLAGS_EXPLODE;
+            }
         }
 
         if (peep->peep_flags & PEEP_FLAGS_HUNGER)
