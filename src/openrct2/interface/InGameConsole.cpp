@@ -9,8 +9,6 @@
 #include "../localisation/Language.h"
 #include "../Version.h"
 
-bool gConsoleOpen = false;
-
 static InGameConsole _inGameConsole;
 
 InGameConsole::InGameConsole()
@@ -84,7 +82,7 @@ void InGameConsole::Input(CONSOLE_INPUT input)
 void InGameConsole::ClearInput()
 {
     _consoleCurrentLine[0] = 0;
-    if (gConsoleOpen) {
+    if (_isOpen) {
         context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
     }
 }
@@ -135,7 +133,7 @@ void InGameConsole::ClearLine()
 
 void InGameConsole::Open()
 {
-    gConsoleOpen = true;
+    _isOpen = true;
     ScrollToEnd();
     RefreshCaret();
     _consoleTextInputSession = context_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
@@ -144,17 +142,21 @@ void InGameConsole::Open()
 void InGameConsole::Close()
 {
     _consoleTextInputSession = nullptr;
-    gConsoleOpen = false;
+    _isOpen = false;
     Invalidate();
     context_stop_text_input();
 }
 
 void InGameConsole::Toggle()
 {
-    if (gConsoleOpen)
-        console_close();
+    if (_isOpen)
+    {
+        Close();
+    }
     else
-        console_open();
+    {
+        Open();
+    }
 }
 
 void InGameConsole::WriteLine(const std::string &input, uint32 colourFormat)
@@ -183,7 +185,7 @@ void InGameConsole::WriteLine(const std::string &input, uint32 colourFormat)
     }
 }
 
-void InGameConsole::Invalidate()
+void InGameConsole::Invalidate() const
 {
     gfx_set_dirty_blocks(_consoleLeft, _consoleTop, _consoleRight, _consoleBottom);
 }
@@ -195,7 +197,7 @@ void InGameConsole::Update()
     _consoleRight = context_get_width();
     _consoleBottom = 322;
 
-    if (gConsoleOpen) {
+    if (_isOpen) {
         // When scrolling the map, the console pixels get copied... therefore invalidate the screen
         rct_window *mainWindow = window_get_main();
         if (mainWindow != nullptr) {
@@ -218,9 +220,9 @@ void InGameConsole::Update()
     _consoleCaretTicks = (_consoleCaretTicks + 1) % 30;
 }
 
-void InGameConsole::Draw(rct_drawpixelinfo * dpi)
+void InGameConsole::Draw(rct_drawpixelinfo * dpi) const
 {
-    if (!gConsoleOpen)
+    if (!_isOpen)
         return;
 
     // Set font
@@ -300,7 +302,7 @@ void InGameConsole::Draw(rct_drawpixelinfo * dpi)
 }
 
 // Calculates the amount of visible lines, based on the console size, excluding the input line.
-sint32 InGameConsole::GetNumVisibleLines()
+sint32 InGameConsole::GetNumVisibleLines() const
 {
     const sint32 lineHeight     = font_get_line_height(gCurrentFontSpriteBase);
     const sint32 consoleHeight  = _consoleBottom - _consoleTop;
@@ -309,6 +311,11 @@ sint32 InGameConsole::GetNumVisibleLines()
 }
 
 // Old pass-through functions
+
+bool console_is_open()
+{
+    return _inGameConsole.IsOpen();
+}
 
 void console_open()
 {

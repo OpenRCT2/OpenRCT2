@@ -129,7 +129,7 @@ void input_handle_keyboard(bool isTitle)
         return;
     }
 
-    if (!gConsoleOpen)
+    if (!console_is_open())
     {
         if (!isTitle)
         {
@@ -188,14 +188,14 @@ void input_handle_keyboard(bool isTitle)
         // Reserve backtick for console
         if (key == SDL_SCANCODE_GRAVE)
         {
-            if ((gConfigGeneral.debugging_tools && !context_is_input_active()) || gConsoleOpen)
+            if ((gConfigGeneral.debugging_tools && !context_is_input_active()) || console_is_open())
             {
                 window_cancel_textbox();
                 console_toggle();
             }
             continue;
         }
-        else if (gConsoleOpen)
+        else if (console_is_open())
         {
             input_handle_console(key);
             continue;

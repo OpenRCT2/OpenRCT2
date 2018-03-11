@@ -66,19 +66,22 @@ private:
     static constexpr sint32 CONSOLE_EDGE_PADDING = 4;
     static constexpr sint32 CONSOLE_CARET_WIDTH = 6;
 
-    sint32                   _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
-    sint32                   _lastMainViewportX, _lastMainViewportY;
-    std::deque<std::string>  _consoleLines;
-    utf8                     _consoleCurrentLine[CONSOLE_INPUT_SIZE];
-    sint32                   _consoleCaretTicks;
-    sint32                   _consoleScrollPos = 0;
-    TextInputSession *       _consoleTextInputSession;  
-    utf8   _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
-    sint32 _consoleHistoryIndex = 0;
-    sint32 _consoleHistoryCount = 0;
+    bool                    _isOpen;
+    sint32                  _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
+    sint32                  _lastMainViewportX, _lastMainViewportY;
+    std::deque<std::string> _consoleLines;
+    utf8                    _consoleCurrentLine[CONSOLE_INPUT_SIZE];
+    sint32                  _consoleCaretTicks;
+    sint32                  _consoleScrollPos = 0;
+    TextInputSession *      _consoleTextInputSession;  
+    utf8                    _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
+    sint32                  _consoleHistoryIndex = 0;
+    sint32                  _consoleHistoryCount = 0;
 
 public:
     InGameConsole();
+
+    bool IsOpen() const { return _isOpen; }
 
     void Clear() override;
     void Open();
@@ -91,7 +94,7 @@ public:
     void Scroll(sint32 linesToScroll);
 
     void Update();
-    void Draw(rct_drawpixelinfo * dpi);
+    void Draw(rct_drawpixelinfo * dpi) const;
 
 private:
     void ClearInput();
@@ -99,8 +102,8 @@ private:
     void HistoryAdd(const utf8 * src);
     void WritePrompt();
     void ScrollToEnd();
-    void Invalidate();
-    sint32 GetNumVisibleLines();
+    void Invalidate() const;
+    sint32 GetNumVisibleLines() const;
 };
 
 class StdInOutConsole : public InteractiveConsole
@@ -118,8 +121,7 @@ public:
 };
 
 // Old pass-through functions for in-game console
-extern bool gConsoleOpen;
-
+bool console_is_open();
 void console_open();
 void console_close();
 void console_toggle();

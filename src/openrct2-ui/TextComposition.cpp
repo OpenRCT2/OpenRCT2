@@ -84,7 +84,7 @@ void TextComposition::HandleMessage(const SDL_Event * e)
         if (_session.Buffer != nullptr)
         {
             // HACK ` will close console, so don't input any text
-            if (e->text.text[0] == '`' && gConsoleOpen) {
+            if (e->text.text[0] == '`' && console_is_open()) {
                 break;
             }
 

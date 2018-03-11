@@ -350,7 +350,7 @@ public:
                 _cursorState.y = (sint32)(e.motion.y / gConfigGeneral.window_scale);
                 break;
             case SDL_MOUSEWHEEL:
-                if (gConsoleOpen)
+                if (console_is_open())
                 {
                     console_scroll(e.wheel.y * 3); // Scroll 3 lines at a time
                     break;
