@@ -79,6 +79,7 @@ private:
     void WritePrompt();
     void ScrollToEnd();
     void Invalidate();
+    sint32 GetNumVisibleLines();
 };
 
 class StdInOutConsole : public InteractiveConsole
