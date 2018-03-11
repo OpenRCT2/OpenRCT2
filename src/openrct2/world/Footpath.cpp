@@ -94,7 +94,7 @@ sint32 entrance_get_directions(const rct_tile_element * tileElement)
 
 static bool entrance_has_direction(rct_tile_element *tileElement, sint32 direction)
 {
-    return entrance_get_directions(tileElement) & (1 << direction);
+    return entrance_get_directions(tileElement) & (1 << (direction & 3));
 }
 
 /**
@@ -1119,7 +1119,7 @@ struct rct_neighbour {
 
 struct rct_neighbour_list {
     rct_neighbour items[8];
-    sint32 count;
+    size_t count;
 };
 
 static sint32 rct_neighbour_compare(const void *a, const void *b)
@@ -1144,6 +1144,7 @@ static void neighbour_list_init(rct_neighbour_list *neighbourList)
 
 static void neighbour_list_push(rct_neighbour_list *neighbourList, sint32 order, sint32 direction, uint8 rideIndex, uint8 entrance_index)
 {
+    Guard::Assert(neighbourList->count < Util::CountOf(neighbourList->items));
     neighbourList->items[neighbourList->count].order = order;
     neighbourList->items[neighbourList->count].direction = direction;
     neighbourList->items[neighbourList->count].ride_index = rideIndex;
@@ -1163,9 +1164,10 @@ static bool neighbour_list_pop(rct_neighbour_list *neighbourList, rct_neighbour 
     return true;
 }
 
-static void neighbour_list_remove(rct_neighbour_list *neighbourList, sint32 index)
+static void neighbour_list_remove(rct_neighbour_list *neighbourList, size_t index)
 {
-    sint32 itemsRemaining = neighbourList->count - index - 1;
+    Guard::ArgumentInRange<size_t>(index, 0, neighbourList->count - 1);
+    sint32 itemsRemaining = (sint32)(neighbourList->count - index) - 1;
     if (itemsRemaining > 0) {
         memmove(&neighbourList->items[index], &neighbourList->items[index + 1], sizeof(rct_neighbour) * itemsRemaining);
     }
@@ -1317,7 +1319,7 @@ static void loc_6A6D7E(
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
                 if (z == tileElement->base_height) {
-                    if (entrance_has_direction(tileElement, ((direction - tile_element_get_direction(tileElement)) & TILE_ELEMENT_DIRECTION_MASK) ^ 2)) {
+                    if (entrance_has_direction(tileElement, (direction - tile_element_get_direction(tileElement)) ^ 2)) {
                         if (query) {
                             neighbour_list_push(neighbourList, 8, direction, tileElement->properties.entrance.ride_index,  tileElement->properties.entrance.index);
                         } else {
@@ -1382,7 +1384,7 @@ static void loc_6A6C85(
         return;
 
     if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE) {
-        if (!entrance_has_direction(tileElement, (direction - tile_element_get_direction(tileElement)) & 3)) {
+        if (!entrance_has_direction(tileElement, direction - tile_element_get_direction(tileElement))) {
             return;
         }
     }
@@ -1456,7 +1458,7 @@ void footpath_connect_edges(sint32 x, sint32 y, rct_tile_element *tileElement, s
             }
         }
 
-        neighbourList.count = std::min(neighbourList.count, 2);
+        neighbourList.count = std::min<size_t>(neighbourList.count, 2);
     }
 
     while (neighbour_list_pop(&neighbourList, &neighbour)) {
@@ -2246,6 +2248,68 @@ static void footpath_remove_edges_towards(sint32 x, sint32 y, sint32 z0, sint32 
     } while (!tile_element_is_last_for_tile(tileElement++));
 }
 
+// Returns true when there is an element at the given coordinates that want to connect to a path with the given direction (ride
+// entrances and exits, shops, paths).
+static bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords)
+{
+    rct_tile_element * tileElement = map_get_first_element_at(coords.x, coords.y);
+    do
+    {
+        if (tile_element_is_ghost(tileElement))
+            continue;
+
+        switch (tile_element_get_type(tileElement))
+        {
+        case TILE_ELEMENT_TYPE_PATH:
+            if (tileElement->base_height == coords.z)
+            {
+                if (!footpath_element_is_sloped(tileElement))
+                    // The footpath is flat, it can be connected to from any direction
+                    return true;
+                else if (footpath_element_get_slope_direction(tileElement) == (coords.direction ^ 2))
+                    // The footpath is sloped and its lowest point matches the edge connection
+                    return true;
+            }
+            else if (tileElement->base_height + 2 == coords.z)
+            {
+                if (footpath_element_is_sloped(tileElement) &&
+                    footpath_element_get_slope_direction(tileElement) == coords.direction)
+                    // The footpath is sloped and its higher point matches the edge connection
+                    return true;
+            }
+            break;
+        case TILE_ELEMENT_TYPE_TRACK:
+            if (tileElement->base_height == coords.z)
+            {
+                Ride * ride = get_ride(track_element_get_ride_index(tileElement));
+                if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+                    break;
+
+                const uint8 trackType     = track_element_get_type(tileElement);
+                const uint8 trackSequence = tile_element_get_track_sequence(tileElement);
+                if (FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
+                {
+                    uint16 dx = ((coords.direction - tile_element_get_direction(tileElement)) & TILE_ELEMENT_DIRECTION_MASK);
+                    if (FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx))
+                    {
+                        // Track element has the flags required for
+                        return true;
+                    }
+                }
+            }
+            break;
+        case TILE_ELEMENT_TYPE_ENTRANCE:
+            if (entrance_has_direction(tileElement, coords.direction - tile_element_get_direction(tileElement)))
+                return true;
+            break;
+        default:
+            break;
+        }
+    } while (!tile_element_is_last_for_tile(tileElement++));
+
+    return false;
+}
+
 /**
  *
  *  rct2: 0x006A6AA7
@@ -2263,20 +2327,30 @@ void footpath_remove_edges_at(sint32 x, sint32 y, rct_tile_element *tileElement)
 
     footpath_update_queue_entrance_banner(x, y, tileElement);
 
-    for (sint32 direction = 0; direction < 4; direction++) {
+    for (uint8 direction = 0; direction < 4; direction++) {
         sint32 z1 = tileElement->base_height;
         if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH) {
             if (footpath_element_is_sloped(tileElement)) {
                 sint32 slope = footpath_element_get_slope_direction(tileElement);
+                // Sloped footpaths don't connect sideways
                 if ((slope - direction) & 1)
                     continue;
 
-                z1 += slope == direction ? 2 : 0;
+                // When a path is sloped, the higher point of the path is 2 units higher
+                z1 += (slope == direction) ? 2 : 0;
             }
         }
-        sint32 z0 = z1 - 2;
-        footpath_remove_edges_towards(x + TileDirectionDelta[direction].x, y + TileDirectionDelta[direction].y,
-            z0, z1, direction, footpath_element_is_queue(tileElement));
+
+        // When clearance checks were disabled a neighbouring path can be connected to both the path-ghost and to something
+        // else, so before removing edges from neighbouring paths we have to make sure there is nothing else they are connected
+        // to.
+        if (!tile_element_wants_path_connection_towards({ x / 32, y / 32, z1, direction }))
+        {
+            sint32 z0 = z1 - 2;
+            footpath_remove_edges_towards(
+                x + TileDirectionDelta[direction].x, y + TileDirectionDelta[direction].y, z0, z1, direction,
+                footpath_element_is_queue(tileElement));
+        }
     }
 
     if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH)
