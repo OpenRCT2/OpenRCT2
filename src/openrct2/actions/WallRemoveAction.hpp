@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
 #include "GameAction.h"
@@ -62,9 +63,7 @@ public:
 
         if (!map_is_location_valid(_x, _y))
         {
-            res->Error = GA_ERROR::INVALID_PARAMETERS;
-            res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
-            return res;
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
@@ -73,19 +72,13 @@ public:
             !gCheatsSandboxMode &&
             !map_is_location_owned(_x, _y, _baseHeight * 8))
         {
-            res->Error = GA_ERROR::NOT_OWNED;
-            res->ErrorMessage = STR_CANT_REMOVE_THIS;
-            return res;
+            return std::make_unique<GameActionResult>(GA_ERROR::NOT_OWNED, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         rct_tile_element * wallElement = GetFirstWallElementAt(_x, _y, _baseHeight, _direction, isGhost);
         if (wallElement == nullptr)
         {
-            // NOTE: There seems to be some oddities with calling code currently trying to
-            // delete the same thing multiple times.
-            res->Error = GA_ERROR::INVALID_PARAMETERS;
-            res->ErrorMessage = STR_NONE;
-            return res;
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         res->Cost = 0;
@@ -103,9 +96,7 @@ public:
         rct_tile_element * wallElement = GetFirstWallElementAt(_x, _y, _baseHeight, _direction, isGhost);
         if (wallElement == nullptr)
         {
-            res->Error = GA_ERROR::INVALID_PARAMETERS;
-            res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
-            return res;
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         res->Position.x = _x + 16;

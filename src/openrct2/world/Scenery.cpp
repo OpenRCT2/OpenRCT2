@@ -23,6 +23,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../scenario/Scenario.h"
+#include "../actions/WallRemoveAction.hpp"
 #include "Climate.h"
 #include "Footpath.h"
 #include "Fountain.h"
@@ -243,10 +244,13 @@ void scenery_remove_ghost_tool_placement(){
         } while (!tile_element_is_last_for_tile(tile_element++));
     }
 
-    if (gSceneryGhostType & SCENERY_ENTRY_FLAG_2){
+    if (gSceneryGhostType & SCENERY_ENTRY_FLAG_2)
+    {
         gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_2;
-        const sint32 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_PATH_SCENERY;
-        wall_remove(x, y, gSceneryGhostWallRotation, z, flags);
+
+        auto wallRemoveAction = WallRemoveAction(x, y, z, gSceneryGhostWallRotation);
+        wallRemoveAction.SetFlags(GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_PATH_SCENERY);
+        wallRemoveAction.Execute();
     }
 
     if (gSceneryGhostType & SCENERY_ENTRY_FLAG_3){

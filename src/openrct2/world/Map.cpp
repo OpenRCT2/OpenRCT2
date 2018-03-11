@@ -37,6 +37,7 @@
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
+#include "../actions/WallRemoveAction.hpp"
 #include "Banner.h"
 #include "Climate.h"
 #include "Footpath.h"
@@ -1123,22 +1124,18 @@ restart_from_beginning:
 
             } break;
         case TILE_ELEMENT_TYPE_WALL:
-            if (clear & (1 << 0)) {
-                cost = wall_remove(x * 32, y * 32, tileElement->base_height, tile_element_get_direction(tileElement), flags);
-                if (cost == MONEY32_UNDEFINED)
-                    return MONEY32_UNDEFINED;
-
-                totalCost += cost;
-
-                // NOTE (12/10/2017): This will get us stuck in an infinite loop because game actions are queued
-                // it seems to be trying to remove the same thing over and over.
-                // Leaving this here for reference.
-                /*
-                if (flags & 1)
-                    goto restart_from_beginning;
-                */
-
-            } break;
+            if (clear & (1 << 0))
+            {
+                // NOTE: We execute the game action directly as this function is already called from such.
+                auto wallRemoveAction = WallRemoveAction(x * 32, y * 32, tileElement->base_height, tile_element_get_direction(tileElement));
+                wallRemoveAction.SetFlags(flags);
+                auto res = ((flags & GAME_COMMAND_FLAG_APPLY) ? wallRemoveAction.Execute() : wallRemoveAction.Query());
+                if (res->Error == GA_ERROR::OK)
+                {
+                    totalCost += res->Cost;
+                }
+            }
+            break;
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             if (clear & (1 << 1)) {
                 sint32 eax = x * 32;
