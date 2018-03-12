@@ -18,6 +18,9 @@
 
 #include "common.h"
 
+#include <string>
+
+interface IStream;
 class Intent;
 struct rct_window;
 using rct_windowclass = uint8;
@@ -58,10 +61,6 @@ enum
     CURSOR_RELEASED = CURSOR_UP | CURSOR_CHANGED,
     CURSOR_PRESSED = CURSOR_DOWN | CURSOR_CHANGED,
 };
-
-#include <string>
-
-interface IStream;
 
 namespace OpenRCT2
 {

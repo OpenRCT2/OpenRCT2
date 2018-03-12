@@ -17,7 +17,6 @@
 #include "Cheats.h"
 #include "config/Config.h"
 #include "localisation/Localisation.h"
-#include "management/Finance.h"
 #include "network/network.h"
 #include "util/Util.h"
 #include "world/Climate.h"
