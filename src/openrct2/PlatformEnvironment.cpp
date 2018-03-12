@@ -15,15 +15,12 @@
 #pragma endregion
 
 #include "config/Config.h"
-#include "core/Console.hpp"
-#include "core/Guard.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "OpenRCT2.h"
 #include "platform/platform.h"
 #include "platform/Platform2.h"
 #include "PlatformEnvironment.h"
-#include "Version.h"
 
 using namespace OpenRCT2;
 
