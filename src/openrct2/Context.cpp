@@ -57,6 +57,7 @@
 #include "interface/Chat.h"
 #include "interface/Console.h"
 #include "interface/themes.h"
+#include "interface/Viewport.h"
 #include "Intro.h"
 #include "localisation/Date.h"
 #include "localisation/Language.h"
@@ -64,9 +65,7 @@
 #include "network/http.h"
 #include "network/network.h"
 #include "network/twitch.h"
-#include "object/ObjectList.h"
 #include "platform/platform.h"
-#include "rct1/RCT1.h"
 #include "util/Util.h"
 
 using namespace OpenRCT2;

@@ -59,8 +59,6 @@ enum
     CURSOR_PRESSED = CURSOR_DOWN | CURSOR_CHANGED,
 };
 
-#ifdef __cplusplus
-
 #include <string>
 
 interface IStream;
@@ -108,8 +106,6 @@ namespace OpenRCT2
     IContext * CreateContext(IPlatformEnvironment * env, Audio::IAudioContext * audioContext, Ui::IUiContext * uiContext);
     IContext * GetContext();
 }
-
-#endif // __cplusplus
 
 enum
 {
