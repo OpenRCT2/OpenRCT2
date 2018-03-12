@@ -25,6 +25,8 @@
 
 #define MAX_ENTRANCE_FEE MONEY(200,00)
 
+struct rct_peep;
+
 enum {
     PARK_FLAGS_PARK_OPEN = (1 << 0),
     PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT = (1 << 1),

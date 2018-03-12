@@ -18,12 +18,8 @@
 #define _WINDOW_H_
 
 #include "../common.h"
-#include "../drawing/Drawing.h"
-#include "../management/Research.h"
-#include "../peep/Peep.h"
 #include "../ride/Ride.h"
 #include "../ride/TrackDesign.h"
-#include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "../world/Park.h"
 #include "Colour.h"
