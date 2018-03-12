@@ -927,9 +927,6 @@ static void window_loadsave_select(rct_window *w, const char *path)
     switch (_type & 0x0F) {
     case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME):
         save_path(&gConfigGeneral.last_save_game_directory, pathBuffer);
-        safe_strcpy(gScenarioSavePath, pathBuffer, MAX_PATH);
-        safe_strcpy(gCurrentLoadedPath, pathBuffer, MAX_PATH);
-        gFirstTimeSaving = true;
         window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
         window_close_by_class(WC_LOADSAVE);
         gfx_invalidate_screen();
