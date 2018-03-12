@@ -1,5 +1,5 @@
-#include "../OpenRCT2.h"
 #include "../thirdparty/linenoise.hpp"
+#include "../OpenRCT2.h"
 #include "Console.h"
 
 void StdInOutConsole::Start()

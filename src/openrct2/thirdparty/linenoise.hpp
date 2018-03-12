@@ -333,7 +333,7 @@ inline void PushBuffer(WCHAR c)
 // Send the string to the input buffer.
 //-----------------------------------------------------------------------------
 
-inline void SendSequence(LPWSTR seq)
+inline void SendSequence(LPCWSTR seq)
 {
     DWORD out;
     INPUT_RECORD in;
@@ -776,14 +776,14 @@ inline void InterpretEscSeq(void)
                     if (es_argv[0] == 21)   // ESC[21t Report xterm window's title
                         {
                         WCHAR buf[MAX_PATH * 2];
-                        DWORD len = GetConsoleTitleW(buf + 3, lenof(buf) - 3 - 2);
+                        DWORD len2 = GetConsoleTitleW(buf + 3, lenof(buf) - 3 - 2);
                         // Too bad if it's too big or fails.
                         buf[0] = ESC;
                         buf[1] = ']';
                         buf[2] = 'l';
-                        buf[3 + len] = ESC;
-                        buf[3 + len + 1] = '\\';
-                        buf[3 + len + 2] = '\0';
+                        buf[3 + len2] = ESC;
+                        buf[3 + len2 + 1] = '\\';
+                        buf[3 + len2 + 2] = '\0';
                         SendSequence(buf);
                         }
                     return;

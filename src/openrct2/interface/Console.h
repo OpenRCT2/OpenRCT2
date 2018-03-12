@@ -43,20 +43,18 @@ class InteractiveConsole
 public:
     virtual ~InteractiveConsole() { }
 
-    sint32 cc_clear(const utf8 **argv, sint32 argc);
-
     void Execute(const std::string &s);
     void WriteLine(const std::string &s);
     void WriteLineError(const std::string &s);
     void WriteLineWarning(const std::string &s);
-    void WriteFormatLine(const std::string &format, ...);
+    void WriteFormatLine(const char * format, ...);
 
     virtual void Clear() abstract;
     virtual void Close() abstract;
     virtual void WriteLine(const std::string &s, uint32 colourFormat) abstract;
 };
 
-class StdInOutConsole : public InteractiveConsole
+class StdInOutConsole final : public InteractiveConsole
 {
 private:
     std::queue<std::tuple<std::promise<void>, std::string>> _evalQueue;

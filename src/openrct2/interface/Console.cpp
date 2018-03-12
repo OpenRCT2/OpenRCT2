@@ -1234,11 +1234,11 @@ void InteractiveConsole::WriteLineWarning(const std::string &s)
     WriteLine(s, FORMAT_YELLOW);
 }
 
-void InteractiveConsole::WriteFormatLine(const std::string &format, ...)
+void InteractiveConsole::WriteFormatLine(const char * format, ...)
 {
     va_list list;
     va_start(list, format);
-    auto buffer = String::Format_VA(format.c_str(), list);
+    auto buffer = String::Format_VA(format, list);
     va_end(list);
 
     auto s = std::string(buffer);

@@ -2,7 +2,7 @@
 
 namespace OpenRCT2 { namespace Ui
 {
-    class InGameConsole : public InteractiveConsole
+    class InGameConsole final : public InteractiveConsole
     {
     private:
         static constexpr sint32 CONSOLE_MAX_LINES = 300;
