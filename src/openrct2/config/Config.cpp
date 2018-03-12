@@ -28,6 +28,7 @@
 #include "../OpenRCT2.h"
 #include "../ui/UiContext.h"
 #include "Config.h"
+#include "ConfigEnum.hpp"
 #include "IniReader.hpp"
 #include "IniWriter.hpp"
 
