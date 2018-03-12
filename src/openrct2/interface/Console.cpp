@@ -21,6 +21,7 @@
 
 #include "../config/Config.h"
 #include "../Context.h"
+#include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"

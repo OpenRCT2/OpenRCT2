@@ -44,6 +44,8 @@ enum {
 #include "NetworkTypes.h"
 
 struct GameAction;
+struct rct_peep;
+struct LocationXYZ16;
 
 #ifndef DISABLE_NETWORK
 
