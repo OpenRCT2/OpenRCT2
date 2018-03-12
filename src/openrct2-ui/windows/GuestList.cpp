@@ -856,7 +856,7 @@ static void window_guest_list_textinput(rct_window *w, rct_widgetindex widgetInd
 {
     if (text != nullptr && text[0] != '\0')
     {
-        strncpy(_window_guest_list_filter_name, text, sizeof(_window_guest_list_filter_name));
+        safe_strcpy(_window_guest_list_filter_name, text, sizeof(_window_guest_list_filter_name));
         w->pressed_widgets |= (1 << WIDX_FILTER_BY_NAME);
     }
 }
