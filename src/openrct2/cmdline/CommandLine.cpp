@@ -14,11 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/Guard.hpp"
-
-#include "../platform/platform.h"
-#include "../OpenRCT2.h"
-
 #include "../core/Console.hpp"
 #include "../core/Math.hpp"
 #include "../core/String.hpp"

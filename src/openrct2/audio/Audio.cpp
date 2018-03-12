@@ -20,7 +20,6 @@
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
-#include "../core/Util.hpp"
 #include "../localisation/StringIds.h"
 #include "../OpenRCT2.h"
 #include "../ui/UiContext.h"
