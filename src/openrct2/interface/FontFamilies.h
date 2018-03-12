@@ -22,7 +22,8 @@
 #ifndef NO_TTF
 
 #include <vector>
-#include "Fonts.h"
+
+struct TTFFontSetDescriptor;
 
 using TTFontFamily = std::vector<TTFFontSetDescriptor *>;
 

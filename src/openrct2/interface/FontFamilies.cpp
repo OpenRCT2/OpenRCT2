@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "Fonts.h"
 #include "FontFamilies.h"
 
 #ifndef NO_TTF
