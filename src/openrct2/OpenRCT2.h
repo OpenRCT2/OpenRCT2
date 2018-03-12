@@ -17,8 +17,6 @@
 #pragma once
 
 #include "common.h"
-#include "core/Guard.hpp"
-
 
 #ifndef DISABLE_NETWORK
     #include <openssl/evp.h>

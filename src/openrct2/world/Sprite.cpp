@@ -17,6 +17,7 @@
 #include <cmath>
 #include "../audio/audio.h"
 #include "../Cheats.h"
+#include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../Game.h"
 #include "../interface/Viewport.h"
