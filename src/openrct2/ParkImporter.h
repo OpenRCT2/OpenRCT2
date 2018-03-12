@@ -31,12 +31,12 @@ enum PARK_LOAD_ERROR
 
 #include <string>
 #include <vector>
-#include "scenario/ScenarioRepository.h"
 #include "core/String.hpp"
 
 interface IObjectManager;
 interface IObjectRepository;
 interface IStream;
+struct scenario_index_entry;
 
 struct ParkLoadResult final
 {
