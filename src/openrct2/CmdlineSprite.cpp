@@ -20,11 +20,9 @@
 #include "CmdlineSprite.h"
 #include "drawing/Drawing.h"
 #include "Imaging.h"
-#include "localisation/Localisation.h"
 #include "OpenRCT2.h"
 #include "platform/platform.h"
 #include "util/Util.h"
-#include "png.h"
 
 #define MODE_DEFAULT 0
 #define MODE_CLOSEST 1

@@ -16,13 +16,9 @@
 
 #include "Cheats.h"
 #include "config/Config.h"
-#include "Editor.h"
-#include "Game.h"
-#include "interface/Window.h"
 #include "localisation/Localisation.h"
 #include "management/Finance.h"
 #include "network/network.h"
-#include "ride/Station.h"
 #include "util/Util.h"
 #include "world/Climate.h"
 #include "world/Footpath.h"
