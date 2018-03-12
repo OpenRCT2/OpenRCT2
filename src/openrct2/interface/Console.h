@@ -18,8 +18,9 @@
 #define _CONSOLE_H_
 
 #include "../common.h"
-#include "../drawing/Drawing.h"
 #include "../localisation/FormatCodes.h"
+
+struct rct_drawpixelinfo;
 
 enum CONSOLE_INPUT
 {
