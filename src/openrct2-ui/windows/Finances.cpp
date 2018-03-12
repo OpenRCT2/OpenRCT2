@@ -494,6 +494,8 @@ static constexpr const sint32 WindowFinancesTabAnimationLoops[] =
 
 static constexpr const sint32 EXPENDITURE_COLUMN_WIDTH = 80;
 
+static sint32 _lastPaintedMonth;
+
 static constexpr const rct_string_id window_finances_summary_row_labels[RCT_EXPENDITURE_TYPE_COUNT] = {
     STR_FINANCES_SUMMARY_RIDE_CONSTRUCTION,
     STR_FINANCES_SUMMARY_RIDE_RUNNING_COSTS,
@@ -647,6 +649,10 @@ static void window_finances_summary_invalidate(rct_window *w)
         window_init_scroll_widgets(w);
     }
 
+    // Keep up with new months being added in the first two years.
+    if (gDateMonthsElapsed != _lastPaintedMonth)
+        window_finances_summary_invertscroll(w);
+
     window_finances_set_pressed_tab(w);
     set_format_arg(6, money32, gBankLoan);
 }
@@ -777,6 +783,8 @@ static void window_finances_summary_scrollpaint(rct_window *w, rct_drawpixelinfo
 
         x += EXPENDITURE_COLUMN_WIDTH;
     }
+
+    _lastPaintedMonth = currentMonthYear;
 }
 
 #pragma endregion
