@@ -17,7 +17,9 @@
 #ifndef _INTRO_H_
 #define _INTRO_H_
 
-#include "drawing/Drawing.h"
+#include "common.h"
+
+struct rct_drawpixelinfo;
 
 enum INTRO_STATE {
     INTRO_STATE_NONE,
