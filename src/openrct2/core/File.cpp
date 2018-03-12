@@ -24,6 +24,7 @@
 #include "File.h"
 #include "FileStream.hpp"
 #include "String.hpp"
+#include "../util/Util.h"
 
 #include "../platform/platform.h"
 

@@ -18,6 +18,7 @@
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
 #include "CommandLine.hpp"
+#include "../OpenRCT2.h"
 
 #pragma region CommandLineArgEnumerator
 
