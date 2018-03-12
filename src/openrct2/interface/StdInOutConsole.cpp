@@ -1,5 +1,6 @@
 #include "../thirdparty/linenoise.hpp"
 #include "../OpenRCT2.h"
+#include "../platform/Platform2.h"
 #include "Console.h"
 
 void StdInOutConsole::Start()
@@ -80,7 +81,7 @@ void StdInOutConsole::WriteLine(const std::string &s, uint32 colourFormat)
         }
     }
 
-    if (formatBegin.empty())
+    if (formatBegin.empty() || !Platform::IsColourTerminalSupported())
     {
         std::printf("%s\n", s.c_str());
     }

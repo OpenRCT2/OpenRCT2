@@ -17,8 +17,6 @@
 #ifdef _WIN32
 
 #include <memory>
-
-#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <datetimeapi.h>
 #include <shlobj.h>
@@ -197,7 +195,75 @@ namespace Platform
         return result;
     }
 
-#ifdef __USE_SHGETKNOWNFOLDERPATH__
+    /**
+     * Checks if the current version of Windows supports ANSI colour codes.
+     * From Windows 10, build 10586 ANSI escape colour codes can be used on stdout.
+     */
+    static bool HasANSIColourSupport()
+    {
+        const DWORD MINV_MAJOR = 10, MINV_MINOR = 0, MINV_BUILD = 10586;
+        bool result = false;
+        HMODULE hModule = GetModuleHandleA("ntdll.dll");
+        if (hModule != nullptr)
+        {
+            using RtlGetVersionPtr = NTSTATUS(WINAPI *)(PRTL_OSVERSIONINFOW);
+            auto fn = (RtlGetVersionPtr)GetProcAddress(hModule, "RtlGetVersion");
+            if (fn != nullptr)
+            {
+                RTL_OSVERSIONINFOW rovi{};
+                rovi.dwOSVersionInfoSize = sizeof(rovi);
+                if (fn(&rovi) == 0)
+                {
+                    if (rovi.dwMajorVersion > MINV_MAJOR ||
+                        (rovi.dwMajorVersion == MINV_MAJOR &&
+                        (rovi.dwMinorVersion > MINV_MINOR ||
+                            (rovi.dwMinorVersion == MINV_MINOR &&
+                                rovi.dwBuildNumber >= MINV_BUILD))))
+                    {
+                        result = true;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    static void EnableANSIConsole()
+    {
+        if (HasANSIColourSupport())
+        {
+            auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
+            DWORD mode;
+            GetConsoleMode(handle, &mode);
+            if (!(mode & ENABLE_VIRTUAL_TERMINAL_PROCESSING))
+            {
+                mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+                SetConsoleMode(handle, mode);
+            }
+        }
+    }
+
+    bool IsColourTerminalSupported()
+    {
+        static bool hasChecked = false;
+        static bool isSupported = false;
+        if (!hasChecked)
+        {
+            if (HasANSIColourSupport())
+            {
+                EnableANSIConsole();
+                isSupported = true;
+            }
+            else
+            {
+                isSupported = false;
+            }
+            hasChecked = true;
+        }
+        return isSupported;
+    }
+
+ #ifdef __USE_SHGETKNOWNFOLDERPATH__
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid)
     {
         std::string path;
