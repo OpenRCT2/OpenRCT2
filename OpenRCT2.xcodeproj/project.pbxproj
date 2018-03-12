@@ -583,6 +583,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4C04D69F2056AA9600F82EBA /* linenoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = linenoise.hpp; sourceTree = "<group>"; };
 		4C4C1E971F58226500560300 /* TrackDesign.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesign.cpp; sourceTree = "<group>"; };
 		4C4C1E991F5832AA00560300 /* TrackDesign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackDesign.h; sourceTree = "<group>"; };
 		4C5DFF401FAC69D200CB093A /* Date.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Date.cpp; sourceTree = "<group>"; };
@@ -1418,6 +1419,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4C04D69E2056AA5C00F82EBA /* thirdparty */ = {
+			isa = PBXGroup;
+			children = (
+				4C04D69F2056AA9600F82EBA /* linenoise.hpp */,
+			);
+			path = thirdparty;
+			sourceTree = "<group>";
+		};
 		C6352B871F477032006CCEE3 /* actions */ = {
 			isa = PBXGroup;
 			children = (
@@ -1766,6 +1775,7 @@
 				F76C84761EC4E7CC00FA49E2 /* rct2 */,
 				F76C84831EC4E7CC00FA49E2 /* ride */,
 				F76C84F31EC4E7CD00FA49E2 /* scenario */,
+				4C04D69E2056AA5C00F82EBA /* thirdparty */,
 				F76C84FB1EC4E7CD00FA49E2 /* title */,
 				F76C85041EC4E7CD00FA49E2 /* ui */,
 				F76C85061EC4E7CD00FA49E2 /* util */,
