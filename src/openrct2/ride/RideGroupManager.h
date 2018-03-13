@@ -16,10 +16,8 @@
 
 #pragma once
 
-#ifdef __cplusplus
 #include <vector>
 
-#endif
 #include "../common.h"
 #include "RideData.h"
 
@@ -35,7 +33,6 @@ struct RideGroup
     rct_ride_name Naming;
 };
 
-#ifdef __cplusplus
 class RideGroupManager
 {
     public:
@@ -49,4 +46,3 @@ class RideGroupManager
     static sint32 VehiclePreferenceCompare(const uint8 rideType, const char * a, const char * b);
     static bool RideTypeIsIndependent(const uint8 rideType);
 };
-#endif

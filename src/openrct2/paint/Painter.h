@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include <ctime>
 #include "../common.h"
 
@@ -56,5 +54,3 @@ namespace OpenRCT2
         };
     }
 }
-
-#endif

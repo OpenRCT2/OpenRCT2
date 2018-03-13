@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include "../common.h"
 #include "AudioMixer.h"
 
@@ -40,5 +38,3 @@ namespace OpenRCT2 { namespace Audio
         IAudioSource * CreateNull();
     }
 } }
-
-#endif
