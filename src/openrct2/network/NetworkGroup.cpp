@@ -92,7 +92,7 @@ void NetworkGroup::Read(NetworkPacket &packet)
 {
     packet >> Id;
     SetName(packet.ReadString());
-    for (auto action : ActionsAllowed)
+    for (auto &action : ActionsAllowed)
     {
         packet >> action;
     }
