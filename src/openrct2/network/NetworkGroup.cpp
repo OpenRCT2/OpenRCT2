@@ -102,9 +102,9 @@ void NetworkGroup::Write(NetworkPacket &packet)
 {
     packet << Id;
     packet.WriteString(GetName().c_str());
-    for (size_t i = 0; i < ActionsAllowed.size(); i++)
+    for (const auto &action : ActionsAllowed)
     {
-        packet << ActionsAllowed[i];
+        packet << action;
     }
 }
 
