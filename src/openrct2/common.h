@@ -71,20 +71,6 @@ using colour_t = uint8;
 #define rol64(x, shift)     (((uint64)(x) << (shift)) | ((uint32)(x) >> (64 - (shift))))
 #define ror64(x, shift)     (((uint64)(x) >> (shift)) | ((uint32)(x) << (64 - (shift))))
 
-#ifndef __cplusplus
-// in C++ you should be using Math::Min and Math::Max
-#ifndef min
-#define min(a,b)            (((a) < (b)) ? (a) : (b))
-#endif
-#ifndef max
-#define max(a,b)            (((a) > (b)) ? (a) : (b))
-#endif
-
-#define sgn(x)              ((x > 0) ? 1 : ((x < 0) ? -1 : 0))
-#define clamp(l, x, h)      (min(h, max(l, x)))
-
-#endif // __cplusplus
-
 // Rounds an integer down to the given power of 2. y must be a power of 2.
 #define floor2(x, y)        ((x) & (~((y) - 1)))
 
@@ -191,21 +177,10 @@ using rct_string_id           = uint16;
 // will be the only way to access a given memory region. In other words: there is no other pointer
 // aliasing the same memory area. Using it lets compiler generate better code. If your compiler
 // does not support it, feel free to drop it, at some performance hit.
-#ifdef __cplusplus
-    #ifdef _MSC_VER
-        #define RESTRICT __restrict
-    #else
-        #define RESTRICT __restrict__
-    #endif
+#ifdef _MSC_VER
+    #define RESTRICT __restrict
 #else
-    #ifdef _MSC_VER
-        #define RESTRICT __restrict
-    #else
-        #define RESTRICT restrict
-    #endif
-#endif
-#ifndef RESTRICT
-    #define RESTRICT
+    #define RESTRICT __restrict__
 #endif
 
 #define assert_struct_size(x, y) static_assert(sizeof(x) == (y), "Improper struct size")
