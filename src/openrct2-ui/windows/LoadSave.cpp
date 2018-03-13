@@ -792,7 +792,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
     utf8 absoluteDirectory[MAX_PATH];
     Path::GetAbsolute(absoluteDirectory, Util::CountOf(absoluteDirectory), directory);
     safe_strcpy(_directory, absoluteDirectory, Util::CountOf(_directory));
-    if (_extension != extension)
+    if (_extension != extension) // Note: This compares the pointers, not values
     {
         safe_strcpy(_extension, extension, Util::CountOf(_extension));
     }
@@ -922,6 +922,8 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
 
         window_loadsave_sort_list();
     }
+
+    window_invalidate(w);
 }
 
 static void window_loadsave_invoke_callback(sint32 result, const utf8 * path)
