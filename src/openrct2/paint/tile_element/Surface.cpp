@@ -559,7 +559,7 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
     if (!is_csg_loaded() && edgeStyle >= TERRAIN_EDGE_RCT2_COUNT)
         edgeStyle = TERRAIN_EDGE_ROCK;
 
-    registers regs{};
+    sint16 al, ah, cl, ch, dl, dh;
 
     LocationXY8 offset = { 0, 0 };
     LocationXY8 bounds = { 0, 0 };
@@ -570,11 +570,11 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
     switch (edge)
     {
     case EDGE_BOTTOMLEFT:
-        regs.al = self.corner_heights.left;
-        regs.cl = self.corner_heights.bottom;
+        al = self.corner_heights.left;
+        cl = self.corner_heights.bottom;
 
-        regs.ah = neighbour.corner_heights.top;
-        regs.ch = neighbour.corner_heights.right;
+        ah = neighbour.corner_heights.top;
+        ch = neighbour.corner_heights.right;
 
         offset.x = 30;
         bounds.y = 30;
@@ -585,11 +585,11 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
         break;
 
     case EDGE_BOTTOMRIGHT:
-        regs.al = self.corner_heights.right;
-        regs.cl = self.corner_heights.bottom;
+        al = self.corner_heights.right;
+        cl = self.corner_heights.bottom;
 
-        regs.ah = neighbour.corner_heights.top;
-        regs.ch = neighbour.corner_heights.left;
+        ah = neighbour.corner_heights.top;
+        ch = neighbour.corner_heights.left;
 
         offset.y = 30;
         bounds.x = 30;
@@ -604,29 +604,29 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
     }
 
     if (isWater)
-        regs.dl = height;
+        dl = height;
 
     if (neighbour.tile_element == nullptr)
     {
-        regs.ch = 1;
-        regs.ah = 1;
+        ch = 1;
+        ah = 1;
     }
     else
     {
         if (isWater)
         {
-            regs.dh = map_get_water_height(neighbour.tile_element);
-            if (regs.dl == regs.dh)
+            dh = map_get_water_height(neighbour.tile_element);
+            if (dl == dh)
             {
                 return;
             }
 
-            regs.al = regs.dl;
-            regs.cl = regs.dl;
+            al = dl;
+            cl = dl;
         }
     }
 
-    if (regs.al <= regs.ah && regs.cl <= regs.ch)
+    if (al <= ah && cl <= ch)
     {
         return;
     }
@@ -645,18 +645,18 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
         base_image_id += 5;
     }
 
-    uint8 curHeight = Math::Min(regs.ah, regs.ch);
-    if (regs.ch != regs.ah)
+    uint8 curHeight = Math::Min(ah, ch);
+    if (ch != ah)
     {
         // If bottom part of edge isn't straight, add a filler
         uint32 image_offset = 3;
 
-        if (regs.ch >= regs.ah)
+        if (ch >= ah)
         {
             image_offset = 4;
         }
 
-        if (curHeight != regs.al && curHeight != regs.cl)
+        if (curHeight != al && curHeight != cl)
         {
             uint32 image_id = base_image_id + image_offset;
             sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16);
@@ -664,19 +664,19 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
         }
     }
 
-    regs.ah = regs.cl;
+    ah = cl;
 
     for(uint32 tunnelIndex = 0; tunnelIndex < TUNNEL_MAX_COUNT;)
     {
-        if (curHeight >= regs.al || curHeight >= regs.cl)
+        if (curHeight >= al || curHeight >= cl)
         {
             // If top of edge isn't straight, add a filler
             uint32 image_offset = 1;
-            if (curHeight >= regs.al)
+            if (curHeight >= al)
             {
                 image_offset = 2;
 
-                if (curHeight >= regs.cl)
+                if (curHeight >= cl)
                 {
                     return;
                 }
@@ -710,7 +710,7 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
         uint8 tunnelHeight = stru_97B570[tunnelType][0];
         sint16 zOffset = curHeight;
 
-        if ((zOffset + tunnelHeight) > regs.ah || (zOffset + tunnelHeight) > regs.al)
+        if ((zOffset + tunnelHeight) > ah || (zOffset + tunnelHeight) > al)
         {
             tunnelType = byte_97B5B0[tunnelType];
         }
@@ -770,7 +770,7 @@ static void viewport_surface_draw_tile_side_top(paint_session * session, enum ed
     if (!is_csg_loaded() && terrain >= TERRAIN_EDGE_RCT2_COUNT)
         terrain = TERRAIN_EDGE_ROCK;
 
-    registers regs{};
+    sint16 al, ah, cl, ch, dl = 0, dh;
 
     LocationXY8 offset = { 0, 0 };
     LocationXY8 bounds = { 0, 0 };
@@ -778,22 +778,22 @@ static void viewport_surface_draw_tile_side_top(paint_session * session, enum ed
     switch (edge)
     {
     case EDGE_TOPLEFT:
-        regs.al = self.corner_heights.top;
-        regs.cl = self.corner_heights.left;
+        al = self.corner_heights.top;
+        cl = self.corner_heights.left;
 
-        regs.ah = neighbour.corner_heights.right;
-        regs.ch = neighbour.corner_heights.bottom;
+        ah = neighbour.corner_heights.right;
+        ch = neighbour.corner_heights.bottom;
 
         offset.y = -2;
         bounds.x = 30;
         break;
 
     case EDGE_TOPRIGHT:
-        regs.al = self.corner_heights.top;
-        regs.cl = self.corner_heights.right;
+        al = self.corner_heights.top;
+        cl = self.corner_heights.right;
 
-        regs.ah = neighbour.corner_heights.left;
-        regs.ch = neighbour.corner_heights.bottom;
+        ah = neighbour.corner_heights.left;
+        ch = neighbour.corner_heights.bottom;
 
         offset.x = -2;
         bounds.y = 30;
@@ -804,31 +804,31 @@ static void viewport_surface_draw_tile_side_top(paint_session * session, enum ed
     }
 
     if(isWater == false)
-        regs.dl = height;
+        dl = height;
 
     // save ecx
     if (neighbour.tile_element == nullptr)
     {
-        regs.ah = 1;
-        regs.ch = 1;
+        ah = 1;
+        ch = 1;
     }
     else
     {
         if (isWater)
         {
-            regs.dh = map_get_water_height(neighbour.tile_element);
-            if (regs.dl == regs.dh)
+            dh = map_get_water_height(neighbour.tile_element);
+            if (dl == dh)
             {
                 return;
             }
 
-            regs.al = regs.dl;
-            regs.cl = regs.dl;
+            al = dl;
+            cl = dl;
         }
     }
 
     // al + cl probably are self tile corners, while ah/ch are neighbour tile corners
-    if (regs.al <= regs.ah && regs.cl <= regs.ch)
+    if (al <= ah && cl <= ch)
     {
         return;
     }
@@ -848,26 +848,26 @@ static void viewport_surface_draw_tile_side_top(paint_session * session, enum ed
     {
         if (!(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
         {
-            const uint8 incline = (regs.cl - regs.al) + 1;
+            const uint8 incline = (cl - al) + 1;
             const uint32 image_id = _terrainEdgeSpriteIds[terrain][3] + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
-            const sint16 y = (regs.dl - regs.al) * 16;
+            const sint16 y = (dl - al) * 16;
             paint_attach_to_previous_ps(session, image_id, 0, y);
             return;
         }
         base_image_id = _terrainEdgeSpriteIds[terrain][1] + (edge == EDGE_TOPLEFT ? 5 : 0); // var_04
     }
 
-    uint8 cur_height = Math::Min(regs.ch, regs.ah);
-    if (regs.ch != regs.ah)
+    uint8 cur_height = Math::Min(ch, ah);
+    if (ch != ah)
     {
         // neighbour tile corners aren't level
         uint32 image_offset = 3;
-        if (regs.ch > regs.ah)
+        if (ch > ah)
         {
             image_offset = 4;
         }
 
-        if (cur_height != regs.al && cur_height != regs.cl)
+        if (cur_height != al && cur_height != cl)
         {
             const uint32 image_id = base_image_id + image_offset;
             sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16);
@@ -875,25 +875,25 @@ static void viewport_surface_draw_tile_side_top(paint_session * session, enum ed
         }
     }
 
-    regs.ah = regs.cl;
+    ah = cl;
 
     if (isWater)
     {
         offset.xy = 0;
     }
 
-    while (cur_height < regs.al && cur_height < regs.ah)
+    while (cur_height < al && cur_height < ah)
     {
         sub_98196C(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16);
         cur_height++;
     }
 
     uint32 image_offset = 1;
-    if (cur_height >= regs.al)
+    if (cur_height >= al)
     {
         image_offset = 2;
 
-        if (cur_height >= regs.ah)
+        if (cur_height >= ah)
         {
             return;
         }
@@ -1248,11 +1248,11 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, cons
                         }
                         else
                         {
-                            registers regs = { 0 };
+                            sint16 bl, bh;
 
-                            regs.bl = (surfaceShape ^ 0xF) << 2;
-                            regs.bh = regs.bl >> 4;
-                            local_surfaceShape = (regs.bh & 0x3) | (regs.bl & 0xC);
+                            bl = (surfaceShape ^ 0xF) << 2;
+                            bh = bl >> 4;
+                            local_surfaceShape = (bh & 0x3) | (bl & 0xC);
                         }
                     }
                 }

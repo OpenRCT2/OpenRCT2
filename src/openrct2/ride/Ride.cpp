@@ -4516,11 +4516,10 @@ static rct_vehicle *vehicle_create_car(
     sint32 *remainingDistance,
     rct_tile_element *tileElement
 ) {
-    registers regs = { 0 };
-
     Ride *ride = get_ride(rideIndex);
     rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
     rct_ride_entry_vehicle *vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
+    sint32 edx;
 
     rct_vehicle *vehicle = (rct_vehicle*)create_sprite(1);
     vehicle->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
@@ -4530,11 +4529,11 @@ static rct_vehicle *vehicle_create_car(
     vehicle->vehicle_type = vehicleEntryIndex;
     vehicle->is_child = carIndex == 0 ? 0 : 1;
     vehicle->var_44 = ror32(vehicleEntry->spacing, 10) & 0xFFFF;
-    regs.edx = vehicleEntry->spacing >> 1;
-    *remainingDistance -= regs.edx;
+    edx = vehicleEntry->spacing >> 1;
+    *remainingDistance -= edx;
     vehicle->remaining_distance = *remainingDistance;
     if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)) {
-        *remainingDistance -= regs.edx;
+        *remainingDistance -= edx;
     }
 
     // loc_6DD9A5:
@@ -4599,33 +4598,33 @@ static rct_vehicle *vehicle_create_car(
 
         sprite_move(chosenLoc.x, chosenLoc.y, z, (rct_sprite*)vehicle);
     } else {
-        regs.dl = 0;
+        sint16 dl = 0;
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIRLIFT) {
-            regs.dl = 1;
+            dl = 1;
         }
 
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART) {
             // Choose which lane Go Kart should start in
-            regs.dl = 5;
+            dl = 5;
             if (vehicleIndex & 1) {
-                regs.dl = 6;
+                dl = 6;
             }
         }
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_MINI_GOLF) {
-            regs.dl = 9;
+            dl = 9;
             vehicle->var_D3 = 0;
             vehicle->mini_golf_current_animation = 0;
             vehicle->mini_golf_flags = 0;
         }
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_4) {
             if (!vehicle->is_child) {
-                regs.dl = 15;
+                dl = 15;
             }
         }
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_5) {
-            regs.dl = 16;
+            dl = 16;
         }
-        vehicle->var_CD = regs.dl;
+        vehicle->var_CD = dl;
 
         vehicle->track_x = x;
         vehicle->track_y = y;
