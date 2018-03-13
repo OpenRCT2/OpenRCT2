@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <cassert>
 #include <cstdarg>
 #include <cstdio>
 #include "Diagnostic.h"

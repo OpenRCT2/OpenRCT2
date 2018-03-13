@@ -17,14 +17,12 @@
 #include <memory>
 #include "../common.h"
 #include "../core/Console.hpp"
-#include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../FileClassifier.h"
 #include "../ParkImporter.h"
 #include "../rct2/S6Exporter.h"
 #include "CommandLine.hpp"
 
-#include "../Game.h"
 #include "../interface/Window.h"
 #include "../OpenRCT2.h"
 

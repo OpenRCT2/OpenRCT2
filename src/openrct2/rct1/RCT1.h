@@ -23,7 +23,6 @@
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
 #include "../world/Banner.h"
-#include "../world/Map.h"
 #include "../world/Sprite.h"
 #include "../world/MapAnimation.h"
 

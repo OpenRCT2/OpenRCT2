@@ -17,6 +17,8 @@
 #ifndef _WINDOW2_H_
 #define _WINDOW2_H_
 
+struct rct_research_item;
+
 /**
  * Window structure
  * size: 0x4C0

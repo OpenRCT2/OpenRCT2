@@ -19,6 +19,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/scenario/ScenarioSources.h>
+#include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/title/TitleScreen.h>
 #include <openrct2/title/TitleSequence.h>
 #include <openrct2/title/TitleSequenceManager.h>

@@ -19,7 +19,7 @@
 
 #include "../common.h"
 #include "../rct12/RCT12.h"
-#include "../world/Map.h"
+#include "../world/Location.hpp"
 
 #define PEEP_MAX_THOUGHTS 5
 #define PEEP_THOUGHT_ITEM_NONE 255
@@ -37,6 +37,8 @@
 #define PEEP_MIN_ENERGY 32
 #define PEEP_MAX_ENERGY 128
 #define PEEP_MAX_ENERGY_TARGET 255 // Oddly, this differs from max energy!
+
+struct rct_tile_element;
 
 enum PEEP_TYPE
 {

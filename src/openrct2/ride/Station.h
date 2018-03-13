@@ -17,7 +17,6 @@
 #pragma once
 
 #include "../common.h"
-#include "../world/Map.h"
 #include "Ride.h"
 
 void ride_update_station(Ride * ride, sint32 stationIndex);

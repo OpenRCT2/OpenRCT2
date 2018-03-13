@@ -23,6 +23,7 @@
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
+#include "../scenario/Scenario.h"
 #include "../world/Park.h"
 #include "GameAction.h"
 

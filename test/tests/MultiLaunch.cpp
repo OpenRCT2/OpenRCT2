@@ -7,6 +7,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/ride/Ride.h>
 #include "TestData.h"
 
 #include <openrct2/platform/platform.h>

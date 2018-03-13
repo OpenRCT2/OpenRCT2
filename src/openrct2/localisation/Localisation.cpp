@@ -30,13 +30,14 @@
 
 #include "../common.h"
 #include "../config/Config.h"
-#include "../core/Util.hpp"
-#include "../management/Marketing.h"
-#include "../Game.h"
-#include "../util/Util.h"
-#include "Date.h"
-#include "Localisation.h"
 #include "../core/Math.hpp"
+#include "../core/Util.hpp"
+#include "Date.h"
+#include "../Game.h"
+#include "Localisation.h"
+#include "../management/Marketing.h"
+#include "../ride/Ride.h"
+#include "../util/Util.h"
 
 char gCommonStringFormatBuffer[256];
 uint8 gCommonFormatArgs[80];

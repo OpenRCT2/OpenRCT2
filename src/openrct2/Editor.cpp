@@ -29,13 +29,14 @@
 #include "localisation/Localisation.h"
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"
-#include "object/ObjectRepository.h"
-#include "object/ObjectList.h"
 #include "peep/Staff.h"
 #include "rct1/RCT1.h"
 #include "util/Util.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
+#include "world/Entrance.h"
+#include "world/Footpath.h"
+#include "world/Scenery.h"
 #include "interface/Window_internal.h"
 
 namespace Editor

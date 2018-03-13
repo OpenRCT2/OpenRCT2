@@ -26,9 +26,9 @@
 #include "../interface/Window.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
-#include "../PlatformEnvironment.h"
 #include "../ui/UiContext.h"
 #include "Config.h"
+#include "ConfigEnum.hpp"
 #include "IniReader.hpp"
 #include "IniWriter.hpp"
 

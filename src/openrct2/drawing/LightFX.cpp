@@ -23,7 +23,6 @@
 #include "../Game.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
-#include "../paint/tile_element/TileElement.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
 #include "Drawing.h"

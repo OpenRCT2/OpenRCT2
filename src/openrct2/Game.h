@@ -16,8 +16,13 @@
 
 #pragma once
 
+// TODO: only used by handle_park_load_failure, extract to separate header
+#include <string>
+
 #include "common.h"
-#include "scenario/Scenario.h"
+
+struct ParkLoadResult;
+struct rct_s6_data;
 
 enum GAME_COMMAND
 {

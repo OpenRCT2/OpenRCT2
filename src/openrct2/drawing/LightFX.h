@@ -20,8 +20,10 @@
 #ifdef __ENABLE_LIGHTFX__
 
 #include "../common.h"
-#include "../world/Map.h"
-#include "Drawing.h"
+
+struct LocationXY16;
+struct rct_drawpixelinfo;
+struct rct_palette;
 
 enum LIGHTFX_LIGHT_TYPE {
     LIGHTFX_LIGHT_TYPE_NONE             = 0,

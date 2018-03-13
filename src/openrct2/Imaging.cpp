@@ -21,6 +21,7 @@
 #include "core/FileStream.hpp"
 #include "core/Guard.hpp"
 #include "core/Memory.hpp"
+#include "drawing/Drawing.h"
 
 #include "Imaging.h"
 

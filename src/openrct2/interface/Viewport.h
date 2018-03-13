@@ -17,10 +17,17 @@
 #ifndef _VIEWPORT_H_
 #define _VIEWPORT_H_
 
-#include "../world/Map.h"
-#include "../world/Sprite.h"
-#include "../paint/Paint.h"
 #include "Window.h"
+
+struct paint_session;
+struct paint_struct;
+struct rct_drawpixelinfo;
+struct rct_peep;
+struct rct_tile_element;
+struct rct_vehicle;
+struct rct_window;
+union paint_entry;
+union rct_sprite;
 
 enum {
     VIEWPORT_FLAG_UNDERGROUND_INSIDE = (1 << 0),

@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "Drawing.h"
 #include "Text.h"
 
 #include "../localisation/Localisation.h"

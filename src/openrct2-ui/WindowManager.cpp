@@ -22,6 +22,7 @@
 #include "input/Input.h"
 #include "input/KeyboardShortcuts.h"
 #include "WindowManager.h"
+#include "windows/Window.h"
 
 using namespace OpenRCT2::Ui;
 

@@ -17,6 +17,8 @@
 #include "../Game.h"
 #include "Station.h"
 #include "Track.h"
+#include "../scenario/Scenario.h"
+#include "../world/Sprite.h"
 
 static void ride_update_station_blocksection(Ride * ride, sint32 stationIndex);
 static void ride_update_station_bumpercar(Ride * ride, sint32 stationIndex);

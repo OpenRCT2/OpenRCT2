@@ -14,10 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/Guard.hpp"
 #include "../core/Util.hpp"
 #include "../localisation/ConversionTables.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/FormatCodes.h"
+#include "../localisation/Language.h"
 #include "../sprites.h"
 #include "Drawing.h"
 #include "Font.h"

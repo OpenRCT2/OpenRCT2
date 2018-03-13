@@ -19,7 +19,6 @@
 
 #include "../common.h"
 #include "../interface/Colour.h"
-#include "Font.h"
 
 struct rct_g1_element {
     uint8* offset;          // 0x00

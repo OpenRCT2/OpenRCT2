@@ -18,6 +18,9 @@
 
 #include "common.h"
 
+#include <string>
+
+interface IStream;
 class Intent;
 struct rct_window;
 using rct_windowclass = uint8;
@@ -58,12 +61,6 @@ enum
     CURSOR_RELEASED = CURSOR_UP | CURSOR_CHANGED,
     CURSOR_PRESSED = CURSOR_DOWN | CURSOR_CHANGED,
 };
-
-#ifdef __cplusplus
-
-#include <string>
-
-interface IStream;
 
 namespace OpenRCT2
 {
@@ -108,8 +105,6 @@ namespace OpenRCT2
     IContext * CreateContext(IPlatformEnvironment * env, Audio::IAudioContext * audioContext, Ui::IUiContext * uiContext);
     IContext * GetContext();
 }
-
-#endif // __cplusplus
 
 enum
 {

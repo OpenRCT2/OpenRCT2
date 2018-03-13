@@ -18,10 +18,6 @@
 #define _EDITOR_H_
 
 #include "common.h"
-#include "object/Object.h"
-
-#ifdef __cplusplus
-#include "object/Object.h"
 
 namespace Editor
 {
@@ -82,7 +78,5 @@ enum
 void editor_open_windows_for_current_step();
 
 void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
-
-#endif
 
 #endif
