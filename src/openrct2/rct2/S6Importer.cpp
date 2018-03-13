@@ -828,7 +828,8 @@ public:
         {
             if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
-                if (sprite.peep.state == PEEP_STATE_ON_RIDE && sprite.peep.current_ride == rideIndex)
+                if (sprite.peep.current_ride == rideIndex &&
+                    (sprite.peep.state == PEEP_STATE_ON_RIDE || sprite.peep.state == PEEP_STATE_ENTERING_RIDE))
                 {
                     numRiders++;
                 }
