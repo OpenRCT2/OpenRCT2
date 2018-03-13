@@ -131,7 +131,7 @@
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
-#include <Windows.h>
+#include <windows.h>
 #include <io.h>
 #ifndef STDIN_FILENO
 #define STDIN_FILENO (_fileno(stdin))
@@ -911,7 +911,7 @@ inline BOOL ParseAndPrintANSIString(HANDLE hDev, LPCVOID lpBuffer, DWORD nNumber
                 InterpretEscSeq();
                 state = 1;
                 }
-            else if (Pt_len < lenof(Pt_arg) - 1)
+            else if (Pt_len < (int)lenof(Pt_arg) - 1)
                 Pt_arg[Pt_len++] = *s;
             }
         else if (state == 6)
@@ -1061,7 +1061,9 @@ inline int win32_write(int fd, const void *buffer, unsigned int count) {
 
 #define LINENOISE_DEFAULT_HISTORY_MAX_LEN 100
 #define LINENOISE_MAX_LINE 4096
+#ifndef _WIN32
 static const char *unsupported_term[] = {"dumb","cons25","emacs",NULL};
+#endif
 static CompletionCallback completionCallback;
 
 #ifndef _WIN32
