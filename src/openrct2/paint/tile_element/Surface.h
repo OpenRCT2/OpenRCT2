@@ -19,7 +19,6 @@
 
 #include "../../common.h"
 #include "../../sprites.h"
-#include "../../world/Map.h"
 
 enum
 {

@@ -17,9 +17,11 @@
 #pragma once
 
 #include "../common.h"
-#include "../world/Map.h"
 #include "../interface/Colour.h"
 #include "../drawing/Drawing.h"
+#include "../world/Location.hpp"
+
+struct rct_tile_element;
 
 #pragma pack(push, 1)
 /* size 0x12 */
