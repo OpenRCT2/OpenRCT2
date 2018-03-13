@@ -201,7 +201,7 @@ using rct_string_id           = uint16;
 #endif // PLATFORM_X86
 
 // C++17 or later
-#if defined(__cplusplus) && __cplusplus > 201402L
+#if __cplusplus > 201402L
     #define UNUSED_ATTR [[maybe_unused]]
 #else
     #ifdef __GNUC__

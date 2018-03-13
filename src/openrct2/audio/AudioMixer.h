@@ -29,8 +29,6 @@ enum MIXER_GROUP
     MIXER_GROUP_TITLE_MUSIC,
 };
 
-#ifdef __cplusplus
-
 namespace OpenRCT2 { namespace Audio
 {
     interface IAudioSource;
@@ -56,8 +54,6 @@ namespace OpenRCT2 { namespace Audio
         virtual IAudioSource * GetMusicSource(sint32 id) abstract;
     };
 } }
-
-#endif
 
 #ifndef DSBPAN_LEFT
 #define DSBPAN_LEFT -10000

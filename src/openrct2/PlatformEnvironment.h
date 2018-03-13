@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include <string>
 #include "common.h"
 
@@ -87,5 +85,3 @@ namespace OpenRCT2
     IPlatformEnvironment * CreatePlatformEnvironment(DIRBASE_VALUES basePaths);
     IPlatformEnvironment * CreatePlatformEnvironment();
 }
-
-#endif

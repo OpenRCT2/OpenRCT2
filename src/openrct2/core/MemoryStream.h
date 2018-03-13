@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 #include "../common.h"
 #include "IStream.hpp"
 
@@ -71,5 +69,3 @@ public:
 private:
     void EnsureCapacity(size_t capacity);
 };
-
-#endif
