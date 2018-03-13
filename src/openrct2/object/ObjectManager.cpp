@@ -76,7 +76,7 @@ public:
         if (index >= (size_t)object_entry_group_counts[objectType])
         {
 #ifdef DEBUG
-            log_warning("Object index %u exceeds maximum for type type %d.", index, objectType);
+            log_warning("Object index %u exceeds maximum for type %d.", index, objectType);
 #endif
             return nullptr;
         }
