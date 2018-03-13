@@ -23,17 +23,16 @@
 #undef M_PI
 
 #ifdef _MSC_VER
-#include <time.h>
+#include <ctime>
 #endif
 
-#include <assert.h>
-#include <math.h>
-#include <stddef.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
+#include <cassert>
+#include <cmath>
+#include <cstddef>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 using sint8 = int8_t;
 using sint16 = int16_t;
@@ -91,31 +90,6 @@ using colour_t = uint8;
 
 // Rounds an integer up to the given power of 2. y must be a power of 2.
 #define ceil2(x, y)         (((x) + (y) - 1) & (~((y) - 1)))
-
-
-#ifndef __cplusplus
-// in C++ you should be using Util::CountOf
-#ifdef __GNUC__
-/**
- * Force a compilation error if condition is true, but also produce a
- * result (of value 0 and type size_t), so the expression can be used
- * e.g. in a structure initializer (or where-ever else comma expressions
- * aren't permitted).
- */
-#define BUILD_BUG_ON_ZERO(e) (sizeof(struct { sint32:-!!(e); }))
-
-/* &a[0] degrades to a pointer: a different type from an array */
-#define __must_be_array(a) \
-        BUILD_BUG_ON_ZERO(__builtin_types_compatible_p(typeof(a), typeof(&a[0])))
-
-// based on http://lxr.free-electrons.com/source/include/linux/kernel.h#L54
-#define countof(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
-#elif defined (_MSC_VER)
-#define countof(arr)            _countof(arr)
-#else
-#define countof(arr)            (sizeof(arr) / sizeof((arr)[0]))
-#endif // __GNUC__
-#endif // __cplusplus
 
 // Gets the name of a symbol as a C string
 #define nameof(symbol) #symbol
