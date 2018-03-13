@@ -1148,7 +1148,7 @@ bool platform_place_string_on_clipboard(utf8* target)
 
 /**
  * This function is deprecated.
- * Use IPlatformEnvironment instad.
+ * Use IPlatformEnvironment instead.
  */
 void platform_get_user_directory(utf8 * outPath, const utf8 * subDirectory, size_t outSize)
 {
@@ -1163,7 +1163,7 @@ void platform_get_user_directory(utf8 * outPath, const utf8 * subDirectory, size
 
 /**
  * This function is deprecated.
- * Use IPlatformEnvironment instad.
+ * Use IPlatformEnvironment instead.
  */
 void platform_get_openrct_data_path(utf8 * outPath, size_t outSize)
 {
@@ -1171,5 +1171,3 @@ void platform_get_openrct_data_path(utf8 * outPath, size_t outSize)
     auto path = env->GetDirectoryPath(DIRBASE::OPENRCT2);
     String::Set(outPath, outSize, path.c_str());
 }
-
-
