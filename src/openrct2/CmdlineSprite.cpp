@@ -16,6 +16,7 @@
 
 #pragma warning(disable : 4706) // assignment within conditional expression
 
+#include <cmath>
 #include <cstring>
 #include <jansson.h>
 #include "CmdlineSprite.h"
@@ -614,7 +615,7 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
         }
 
         sint32 maxIndex = (sint32)spriteFileHeader.num_entries;
-        sint32 numbers = (sint32)floor(log(maxIndex));
+        sint32 numbers = (sint32)floor(std::log(maxIndex));
         size_t pathLen = strlen(outputPath);
 
         if (pathLen >= (size_t)(MAX_PATH - numbers - 5)) {

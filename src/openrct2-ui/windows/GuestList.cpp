@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cmath>
+
 #include <openrct2/config/Config.h>
 #include <openrct2-ui/windows/Window.h>
 
@@ -508,7 +510,7 @@ static void window_guest_list_scrollgetsize(rct_window *w, sint32 scrollIndex, s
         }
         w->var_492 = numGuests;
         y = numGuests * SCROLLABLE_ROW_HEIGHT;
-        _window_guest_list_num_pages = (sint32) ceilf((float)numGuests / 3173);
+        _window_guest_list_num_pages = (sint32) std::ceil((float)numGuests / 3173);
         if (_window_guest_list_num_pages == 0)
             _window_guest_list_selected_page = 0;
         else if (_window_guest_list_selected_page >= _window_guest_list_num_pages)

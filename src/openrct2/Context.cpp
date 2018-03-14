@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <algorithm>
+#include <cmath>
 #include <exception>
 #include <memory>
 #include <string>
@@ -915,7 +916,7 @@ void context_setcurrentcursor(sint32 cursor)
 
 void context_update_cursor_scale()
 {
-    GetContext()->GetUiContext()->SetCursorScale(static_cast<uint8>(round(gConfigGeneral.window_scale)));
+    GetContext()->GetUiContext()->SetCursorScale(static_cast<uint8>(std::round(gConfigGeneral.window_scale)));
 }
 
 void context_hide_cursor()
@@ -938,8 +939,8 @@ void context_get_cursor_position_scaled(sint32 * x, sint32 * y)
     context_get_cursor_position(x, y);
 
     // Compensate for window scaling.
-    *x = (sint32)ceilf(*x / gConfigGeneral.window_scale);
-    *y = (sint32)ceilf(*y / gConfigGeneral.window_scale);
+    *x = (sint32)std::ceil(*x / gConfigGeneral.window_scale);
+    *y = (sint32)std::ceil(*y / gConfigGeneral.window_scale);
 }
 
 void context_set_cursor_position(sint32 x, sint32 y)
