@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4C3B4236205914F7000C5BB7 /* InGameConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B4234205914F7000C5BB7 /* InGameConsole.cpp */; };
+		4C3B423820591513000C5BB7 /* StdInOutConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B423720591513000C5BB7 /* StdInOutConsole.cpp */; };
 		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
 		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
 		C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */; };
@@ -584,6 +586,9 @@
 
 /* Begin PBXFileReference section */
 		4C04D69F2056AA9600F82EBA /* linenoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = linenoise.hpp; sourceTree = "<group>"; };
+		4C3B4234205914F7000C5BB7 /* InGameConsole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InGameConsole.cpp; sourceTree = "<group>"; };
+		4C3B4235205914F7000C5BB7 /* InGameConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InGameConsole.h; sourceTree = "<group>"; };
+		4C3B423720591513000C5BB7 /* StdInOutConsole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StdInOutConsole.cpp; sourceTree = "<group>"; };
 		4C4C1E971F58226500560300 /* TrackDesign.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesign.cpp; sourceTree = "<group>"; };
 		4C4C1E991F5832AA00560300 /* TrackDesign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackDesign.h; sourceTree = "<group>"; };
 		4C5DFF401FAC69D200CB093A /* Date.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Date.cpp; sourceTree = "<group>"; };
@@ -1448,6 +1453,8 @@
 				C68313D01FDB4F4C006DB3D8 /* Dropdown.h */,
 				C68313D11FDB4F4C006DB3D8 /* Graph.cpp */,
 				C68313D21FDB4F4C006DB3D8 /* Graph.h */,
+				4C3B4234205914F7000C5BB7 /* InGameConsole.cpp */,
+				4C3B4235205914F7000C5BB7 /* InGameConsole.h */,
 				C68313D31FDB4F4C006DB3D8 /* LandTool.cpp */,
 				C68313D41FDB4F4C006DB3D8 /* LandTool.h */,
 				C67B28142002D67900109C93 /* Viewport.h */,
@@ -1959,6 +1966,7 @@
 				4C7B53E7200143C200A52E21 /* Fonts.h */,
 				4C7B53E8200143C200A52E21 /* Screenshot.cpp */,
 				4C7B53E9200143C200A52E21 /* Screenshot.h */,
+				4C3B423720591513000C5BB7 /* StdInOutConsole.cpp */,
 				4C7B53EA200143C200A52E21 /* Theme.cpp */,
 				4C7B53EB200143C200A52E21 /* themes.h */,
 				4C7B53EC200143C200A52E21 /* Viewport.cpp */,
@@ -3022,6 +3030,7 @@
 				C68878C520289B710084B384 /* OpenGLDrawingEngine.cpp in Sources */,
 				C6D2BEE71F9BAACE008B557C /* MapTooltip.cpp in Sources */,
 				C666EE7B1F37ACB10061AA04 /* TitleExit.cpp in Sources */,
+				4C3B423820591513000C5BB7 /* StdInOutConsole.cpp in Sources */,
 				F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */,
 				F76C887E1EC5324E00FA49E2 /* CursorRepository.cpp in Sources */,
 				C654DF331F69C0430040F43D /* LoadSave.cpp in Sources */,
@@ -3041,6 +3050,7 @@
 				C654DF391F69C0430040F43D /* TitleCommandEditor.cpp in Sources */,
 				C61FB2731FA3E25D0095FB9D /* TextInput.cpp in Sources */,
 				C62D83871FCC7D1A008C04F1 /* EditorObjectSelection.cpp in Sources */,
+				4C3B4236205914F7000C5BB7 /* InGameConsole.cpp in Sources */,
 				C68878C820289B710084B384 /* SwapFramebuffer.cpp in Sources */,
 				C67CCD661FBBCFDB004FAE4C /* EditorBottomToolbar.cpp in Sources */,
 				C666EE731F37ACB10061AA04 /* MusicCredits.cpp in Sources */,
