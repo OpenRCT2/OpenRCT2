@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <cmath>
+#include <cstdlib>
 
 #include "Drawing.h"
 
