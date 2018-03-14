@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cstddef>
+
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Util.hpp>
 #include <openrct2-ui/windows/Window.h>
