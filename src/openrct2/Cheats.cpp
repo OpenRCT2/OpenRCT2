@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "actions/ParkSetLoanAction.hpp"
 #include "Cheats.h"
 #include "config/Config.h"
 #include "localisation/Localisation.h"
@@ -259,9 +260,8 @@ static void cheat_clear_loan()
     cheat_add_money(gBankLoan);
 
     // Then pay the loan
-    money32 newLoan;
-    newLoan = MONEY(0, 00);
-    game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, newLoan, GAME_COMMAND_SET_CURRENT_LOAN, 0, 0);
+    auto gameAction = ParkSetLoanAction(MONEY(0, 00));
+    GameActions::Execute(&gameAction);
 }
 
 static void cheat_generate_guests(sint32 count)

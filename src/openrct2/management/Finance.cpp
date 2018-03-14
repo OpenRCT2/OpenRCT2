@@ -284,11 +284,6 @@ void finance_update_daily_profit()
     window_invalidate_by_class(WC_FINANCES);
 }
 
-void finance_set_loan(money32 loan)
-{
-    game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, loan, GAME_COMMAND_SET_CURRENT_LOAN, 0, 0);
-}
-
 money32 finance_get_initial_cash()
 {
     return gInitialCash;
@@ -307,51 +302,6 @@ money32 finance_get_maximum_loan()
 money32 finance_get_current_cash()
 {
     return gCash;
-}
-
-/**
- *
- *  rct2: 0x0069DFB3
- */
-void game_command_set_current_loan(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
-{
-    money32 loanDifference, currentLoan;
-    money32 newLoan = *edx;
-
-    currentLoan    = gBankLoan;
-    loanDifference = currentLoan - newLoan;
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_INTEREST;
-    if (newLoan > currentLoan)
-    {
-        if (newLoan > gMaxBankLoan)
-        {
-            gGameCommandErrorText = STR_BANK_REFUSES_TO_INCREASE_LOAN;
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-    }
-    else
-    {
-        if (loanDifference > gCash)
-        {
-            gGameCommandErrorText = STR_NOT_ENOUGH_CASH_AVAILABLE;
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-    }
-
-    if (*ebx & GAME_COMMAND_FLAG_APPLY)
-    {
-        gCash       -= loanDifference;
-        gBankLoan    = newLoan;
-        gInitialCash = gCash;
-
-        auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
-        context_broadcast_intent(&intent);
-    }
-
-    *ebx = 0;
 }
 
 /**

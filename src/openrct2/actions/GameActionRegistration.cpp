@@ -16,6 +16,7 @@
 
 #include "GameAction.h"
 #include "GuestSetNameAction.hpp"
+#include "ParkSetLoanAction.hpp"
 #include "PlaceParkEntranceAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
 #include "StaffSetNameAction.hpp"
@@ -31,6 +32,7 @@ namespace GameActions
     void Register()
     {
         Register<SetParkEntranceFeeAction>();
+        Register<ParkSetLoanAction>();
         Register<PlaceParkEntranceAction>();
         Register<RideCreateAction>();
         Register<RideSetStatusAction>();

@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <openrct2/actions/ParkSetLoanAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2-ui/windows/Window.h>
@@ -594,19 +595,21 @@ static void window_finances_summary_mouseup(rct_window *w, rct_widgetindex widge
  */
 static void window_finances_summary_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    money32 newLoan;
-
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_LOAN_INCREASE:
-        newLoan = gBankLoan + MONEY(1000, 00);
-        gGameCommandErrorTitle = STR_CANT_BORROW_ANY_MORE_MONEY;
-        finance_set_loan(newLoan);
-        break;
+        {
+            auto newLoan = gBankLoan + MONEY(1000, 00);
+            auto gameAction = ParkSetLoanAction(newLoan);
+            GameActions::Execute(&gameAction);
+            break;
+        }
     case WIDX_LOAN_DECREASE:
-        if (gBankLoan > 0) {
-            newLoan = gBankLoan - MONEY(1000, 00);
-            gGameCommandErrorTitle = STR_CANT_PAY_BACK_LOAN;
-            finance_set_loan(newLoan);
+        if (gBankLoan > 0)
+        {
+            auto newLoan = gBankLoan - MONEY(1000, 00);
+            auto gameAction = ParkSetLoanAction(newLoan);
+            GameActions::Execute(&gameAction);
         }
         break;
     }
