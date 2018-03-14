@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstring>
 #include "../common.h"
 #include "../config/Config.h"
 #include "../Game.h"

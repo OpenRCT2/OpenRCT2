@@ -30,7 +30,6 @@
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
-#include <cstring>
 
 using sint8 = int8_t;
 using sint16 = int16_t;

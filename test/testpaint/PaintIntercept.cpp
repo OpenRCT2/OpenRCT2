@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cstring>
 
 #include "Hook.h"
 #include "PaintIntercept.hpp"

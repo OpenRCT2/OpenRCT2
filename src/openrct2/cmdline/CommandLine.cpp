@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cstring>
+
 #include "../core/Console.hpp"
 #include "../core/Math.hpp"
 #include "../core/String.hpp"

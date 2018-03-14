@@ -16,6 +16,7 @@
 
 #pragma warning(disable : 4706) // assignment within conditional expression
 
+#include <cstring>
 #include <jansson.h>
 #include "CmdlineSprite.h"
 #include "drawing/Drawing.h"

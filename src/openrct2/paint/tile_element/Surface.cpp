@@ -14,6 +14,8 @@
 *****************************************************************************/
 #pragma endregion
 
+#include <cstring>
+
 #include "../../OpenRCT2.h"
 #include "../../Cheats.h"
 #include "../../config/Config.h"

@@ -17,6 +17,8 @@
 #ifndef LOCALISATION_H
 #define LOCALISATION_H
 
+#include <cstring>
+
 #include "Currency.h"
 #include "Date.h"
 #include "FormatCodes.h"

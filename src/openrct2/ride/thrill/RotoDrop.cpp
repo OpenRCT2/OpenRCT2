@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cstring>
+
 #include "../../common.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
