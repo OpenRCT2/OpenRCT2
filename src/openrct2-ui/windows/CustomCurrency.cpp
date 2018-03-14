@@ -42,7 +42,7 @@ static rct_widget window_custom_currency_widgets[] = {
     { WWT_BUTTON,           1,  189,    199,    31,     35, STR_NUMERIC_UP,                     STR_NONE },
     { WWT_BUTTON,           1,  189,    199,    36,     40, STR_NUMERIC_DOWN,                   STR_NONE },
     { WWT_BUTTON,           1,  120,    200,    50,     60, 0,                                  STR_NONE },
-    { WWT_DROPDOWN,         1,  220,    350,    50,     60, STR_STRINGID,                       STR_NONE },
+    { WWT_DROPDOWN,         1,  220,    350,    50,     60, STR_NONE,                           STR_NONE },
     { WWT_BUTTON,           1,  339,    349,    51,     59, STR_DROPDOWN_GLYPH,                 STR_NONE },
     { WIDGETS_END },
 };
