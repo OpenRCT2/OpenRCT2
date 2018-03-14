@@ -559,7 +559,7 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
     if (!is_csg_loaded() && edgeStyle >= TERRAIN_EDGE_RCT2_COUNT)
         edgeStyle = TERRAIN_EDGE_ROCK;
 
-    sint16 al, ah, cl, ch, dl, dh;
+    sint16 al, ah, cl, ch, dl = 0, dh;
 
     LocationXY8 offset = { 0, 0 };
     LocationXY8 bounds = { 0, 0 };
