@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cstdio>
+#include <cstdlib>
 #include <openrct2/common.h>
 
 #ifndef NO_RCT2
