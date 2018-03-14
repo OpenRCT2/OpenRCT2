@@ -16,6 +16,7 @@
 
 #include <algorithm>
 #include <cstdarg>
+#include <cstring>
 #include <string>
 #include <vector>
 

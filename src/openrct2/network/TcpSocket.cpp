@@ -18,6 +18,7 @@
 
 #include <cmath>
 #include <chrono>
+#include <cstring>
 #include <future>
 #include <string>
 #include <thread>

@@ -16,6 +16,7 @@
 
 #include "../common.h"
 #include <cmath>
+#include <cstring>
 #include <vector>
 
 #include "../Context.h"

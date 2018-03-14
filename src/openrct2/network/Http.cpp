@@ -14,8 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <thread>
-
 #include "http.h"
 
 #ifdef DISABLE_HTTP
@@ -24,6 +22,9 @@ void http_init() { }
 void http_dispose() { }
 
 #else
+
+#include <cstring>
+#include <thread>
 
 #include "../core/Console.hpp"
 #include "../core/Math.hpp"

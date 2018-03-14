@@ -26,6 +26,7 @@
 
 #define OPENRCT2_MAX_COMMAND_LENGTH (2 * MAX_PATH)
 
+#include <cstring>
 #include <ctype.h>
 #include <dlfcn.h>
 #include <errno.h>

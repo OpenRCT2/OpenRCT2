@@ -16,6 +16,7 @@
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 
+#include <cstring>
 #include <ctype.h>
 #include <dirent.h>
 #include <errno.h>
