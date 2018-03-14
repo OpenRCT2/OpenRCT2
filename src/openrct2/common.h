@@ -27,7 +27,6 @@
 #endif
 
 #include <cassert>
-#include <cmath>
 #include <cstdint>
 
 using sint8 = int8_t;

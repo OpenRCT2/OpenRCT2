@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cmath>
 #include <limits>
 
 #include <openrct2-ui/windows/Window.h>
@@ -1483,13 +1484,13 @@ static void window_ride_update_overall_view(uint8 ride_index) {
     sint32 dy = maxy - miny;
     sint32 dz = maxz - minz;
 
-    sint32 size = (sint32) sqrt(dx*dx + dy*dy + dz*dz);
+    sint32 size = (sint32) std::sqrt(dx*dx + dy*dy + dz*dz);
 
     if (size >= 80)
     {
         // Each farther zoom level shows twice as many tiles (log)
         // Appropriate zoom is lowered by one to fill the entire view with the ride
-        view->zoom = Math::Clamp(0, (sint32) ceil(log(size / 80)) - 1, 3);
+        view->zoom = Math::Clamp(0, (sint32) std::ceil(std::log(size / 80)) - 1, 3);
     }
     else
     {

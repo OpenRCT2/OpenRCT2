@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <algorithm>
+#include <cmath>
 #include <cstdarg>
 #include <deque>
 #include <string>
@@ -1031,7 +1032,7 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
             }
         }
         else if (strcmp(argv[0], "window_scale") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-            float newScale = (float)(0.001*trunc(1000*double_val[0]));
+            float newScale = (float)(0.001*std::trunc(1000*double_val[0]));
             gConfigGeneral.window_scale = Math::Clamp(0.5f, newScale, 5.0f);
             config_save_default();
             gfx_invalidate_screen();

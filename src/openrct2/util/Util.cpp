@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <cctype>
+#include <cmath>
 #include <ctime>
 #include "../common.h"
 #include "../core/Guard.hpp"
@@ -655,7 +656,7 @@ uint8 soft_light(uint8 a, uint8 b)
     }
     else
     {
-        fr = (2 * fa * (1 - fb)) + (sqrtf(fa) * ((2 * fb) - 1));
+        fr = (2 * fa * (1 - fb)) + (std::sqrt(fa) * ((2 * fb) - 1));
     }
     return (uint8)(Math::Clamp(0.0f, fr, 1.0f) * 255.0f);
 }

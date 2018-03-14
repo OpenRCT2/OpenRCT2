@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <algorithm>
+#include <cmath>
 #include "../drawing/Drawing.h"
 #include "../sprites.h"
 #include "Colour.h"
@@ -72,7 +73,7 @@ static uint8 findClosestPaletteIndex(uint8 red, uint8 green, uint8 blue)
     for (int i = PALETTE_INDEX_0; i < PALETTE_INDEX_230; i++)
     {
         const sint32 distance =
-            pow(gPalette[i].red - red, 2) + pow(gPalette[i].green - green, 2) + pow(gPalette[i].blue - blue, 2);
+            std::pow(gPalette[i].red - red, 2) + std::pow(gPalette[i].green - green, 2) + std::pow(gPalette[i].blue - blue, 2);
 
         if (distance < closestDistance)
         {

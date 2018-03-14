@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cmath>
+
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -242,8 +244,8 @@ static void input_scroll_drag_continue(sint32 x, sint32 y, rct_window * w)
     widget_scroll_update_thumbs(w, widgetIndex);
     window_invalidate_by_number(w->classification, w->number);
 
-    sint32 fixedCursorPositionX = (sint32)ceilf(gInputDragLastX * gConfigGeneral.window_scale);
-    sint32 fixedCursorPositionY = (sint32)ceilf(gInputDragLastY * gConfigGeneral.window_scale);
+    sint32 fixedCursorPositionX = (sint32)std::ceil(gInputDragLastX * gConfigGeneral.window_scale);
+    sint32 fixedCursorPositionY = (sint32)std::ceil(gInputDragLastY * gConfigGeneral.window_scale);
 
     context_set_cursor_position(fixedCursorPositionX, fixedCursorPositionY);
 }
