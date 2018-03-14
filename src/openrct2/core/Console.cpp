@@ -14,9 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../platform/platform.h"
+#include <cstdio>
 
 #include "Console.hpp"
+#include "../platform/platform.h"
 
 namespace Console
 {

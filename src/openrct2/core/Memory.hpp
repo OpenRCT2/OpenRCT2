@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <cstdlib>
 #include <cstring>
 #include <typeinfo>
 #include "../common.h"
