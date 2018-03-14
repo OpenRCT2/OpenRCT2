@@ -244,9 +244,9 @@ struct rct_s6_data {
     uint8 current_interest_rate;
     uint8 pad_0135934B;
     uint32 same_price_throughout_extended;
-    uint16 park_entrance_x[RCT12_MAX_PARK_ENTRANCES];
-    uint16 park_entrance_y[RCT12_MAX_PARK_ENTRANCES];
-    uint16 park_entrance_z[RCT12_MAX_PARK_ENTRANCES];
+    sint16 park_entrance_x[RCT12_MAX_PARK_ENTRANCES];
+    sint16 park_entrance_y[RCT12_MAX_PARK_ENTRANCES];
+    sint16 park_entrance_z[RCT12_MAX_PARK_ENTRANCES];
     uint8 park_entrance_direction[RCT12_MAX_PARK_ENTRANCES];
     char scenario_filename[256];
     uint8 saved_expansion_pack_names[3256];
