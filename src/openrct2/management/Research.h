@@ -115,9 +115,6 @@ void research_populate_list_random();
 void research_populate_list_researched();
 void research_process_random_items();
 
-void research_set_funding(sint32 amount);
-void research_set_priority(sint32 activeCategories);
-void game_command_set_research_funding(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void research_finish_item(rct_research_item * researchItem);
 void research_insert(sint32 researched, sint32 rawValue, uint8 category);
 void research_remove(rct_research_item * researchItem);

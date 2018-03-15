@@ -1734,7 +1734,7 @@ GAME_COMMAND_POINTER * new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_place_large_scenery,
     game_command_remove_large_scenery,
     nullptr,
-    game_command_set_research_funding,
+    nullptr,
     game_command_place_track_design,
     game_command_start_campaign,
     game_command_place_maze_design,

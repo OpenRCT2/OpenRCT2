@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <algorithm>
+#include "../actions/ParkSetResearchFundingAction.hpp"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/Util.hpp"
@@ -161,7 +162,8 @@ static void research_next_design()
                 gResearchProgressStage = RESEARCH_STAGE_FINISHED_ALL;
                 research_invalidate_related_windows();
                 // Reset funding to 0 if no more rides.
-                research_set_funding(0);
+                auto gameAction = ParkSetResearchFundingAction(gResearchPriorities, 0);
+                GameActions::Execute(&gameAction);
                 return;
             }
         }
@@ -603,52 +605,6 @@ void research_populate_list_researched()
 
         research_insert(true, i, RESEARCH_CATEGORY_SCENERY_GROUP);
     }
-}
-
-void research_set_funding(sint32 amount)
-{
-    game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, amount, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);
-
-}
-
-void research_set_priority(sint32 activeCategories)
-{
-    game_do_command(0, (1 << 8) | GAME_COMMAND_FLAG_APPLY, 0, activeCategories, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);
-}
-
-/**
- *
- *  rct2: 0x00684A7F
- */
-void game_command_set_research_funding(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
-{
-    sint32 setPriorities    = (*ebx & (1 << 8)) != 0;
-    uint32 fundingAmount    = *edx;
-    sint32 activeCategories = *edx;
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RESEARCH;
-    if (*ebx & GAME_COMMAND_FLAG_APPLY)
-    {
-        if (!setPriorities)
-        {
-            if (fundingAmount >= Util::CountOf(_researchRate))
-            {
-                *ebx = MONEY32_UNDEFINED;
-                log_warning("Invalid research rate %d", fundingAmount);
-                return;
-            }
-            gResearchFundingLevel = fundingAmount;
-        }
-        else
-        {
-            gResearchPriorities = activeCategories;
-        }
-
-        window_invalidate_by_class(WC_FINANCES);
-        window_invalidate_by_class(WC_RESEARCH);
-    }
-
-    *ebx = 0;
 }
 
 void research_insert_ride_entry(uint8 entryIndex, bool researched)

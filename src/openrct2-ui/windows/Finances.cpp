@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <openrct2/actions/ParkSetLoanAction.hpp>
+#include <openrct2/actions/ParkSetResearchFundingAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2-ui/windows/Window.h>
@@ -1265,8 +1266,6 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
  */
 static void window_finances_research_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    sint32 activeResearchTypes;
-
     switch (widgetIndex) {
     case WIDX_CLOSE:
         window_close(w);
@@ -1286,10 +1285,14 @@ static void window_finances_research_mouseup(rct_window *w, rct_widgetindex widg
     case WIDX_WATER_RIDES:
     case WIDX_SHOPS_AND_STALLS:
     case WIDX_SCENERY_AND_THEMING:
-        activeResearchTypes = gResearchPriorities;
-        activeResearchTypes ^= 1ULL << (widgetIndex - WIDX_TRANSPORT_RIDES);
-        research_set_priority(activeResearchTypes);
-        break;
+        {
+            auto activeResearchTypes = gResearchPriorities;
+            activeResearchTypes ^= 1ULL << (widgetIndex - WIDX_TRANSPORT_RIDES);
+
+            auto gameAction = ParkSetResearchFundingAction(activeResearchTypes, gResearchFundingLevel);
+            GameActions::Execute(&gameAction);
+            break;
+        }
     }
 }
 
@@ -1335,7 +1338,8 @@ static void window_finances_research_dropdown(rct_window *w, rct_widgetindex wid
     if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || dropdownIndex == -1)
         return;
 
-    research_set_funding(dropdownIndex);
+    auto gameAction = ParkSetResearchFundingAction(gResearchPriorities, dropdownIndex);
+    GameActions::Execute(&gameAction);
 }
 
 /**
