@@ -4455,7 +4455,7 @@ STR_6150    :Ongeldig antwoord van de hoofdserver (geen JSON-getal)
 STR_6151    :De hoofdserver heeft geen serverlijst gestuurd
 STR_6152    :Ongeldig antwoord van de hoofdserver (geen JSON-array)
 STR_6153    :Betaalde entree / per rit betalen
-STR_6154    :Het wordt afgeraden om OpenRCT2 te gebruiken met verhoogde privileges.
+STR_6154    :Om veiligheidsredenen wordt het afgeraden om OpenRCT2 te gebruiken met verhoogde privileges.
 STR_6155    :KDialog en Zenity zijn geen beide geïnstalleerd. Je moet minstens één van de twee installeren, of het pad naar de RCT2-bestanden handmatig toevoegen in config.ini.
 STR_6156    :Deze naam is gereserveerd
 STR_6157    :Console
@@ -4519,6 +4519,10 @@ STR_6214    :Wolkenkrabber B
 STR_6215    :Bouw
 STR_6216    :Bedrijf
 STR_6217    :Beschikbaarheid attr./baanonderdelen
+STR_6218    :OpenRCT2 (officieel)
+STR_6219    :Paden inspecteren
+STR_6220    :Actief maken
+STR_6221    :{SMALLFONT}{BLACK}Hiermee maak je dit de officiële ingang/uitgang van de attractie. Er kan per station slechts één actieve ingang en één actieve uitgang zijn.
 
 #############
 # Scenarios #
