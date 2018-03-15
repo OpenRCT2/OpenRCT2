@@ -98,8 +98,7 @@ static GAME_COMMAND_CALLBACK_POINTER * const game_command_callback_table[] = {
     game_command_callback_place_ride_entrance_or_exit,
     game_command_callback_hire_new_staff_member,
     game_command_callback_pickup_guest,
-    game_command_callback_pickup_staff,
-    game_command_callback_marketing_start_campaign,
+    game_command_callback_pickup_staff
 };
 sint32 game_command_playerid = -1;
 
@@ -1736,7 +1735,7 @@ GAME_COMMAND_POINTER * new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     nullptr,
     game_command_place_track_design,
-    game_command_start_campaign,
+    nullptr,
     game_command_place_maze_design,
     game_command_place_banner,
     game_command_remove_banner,

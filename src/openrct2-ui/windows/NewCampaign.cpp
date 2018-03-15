@@ -18,6 +18,7 @@
 #include <openrct2/core/Math.hpp>
 #include <openrct2-ui/windows/Window.h>
 
+#include <openrct2/actions/ParkMarketingAction.hpp>
 #include <openrct2/Game.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -236,13 +237,25 @@ static void window_new_campaign_get_shop_items()
  */
 static void window_new_campaign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_CLOSE:
         window_close(w);
         break;
     case WIDX_START_BUTTON:
-        marketing_start_campaign(w->campaign.campaign_type, w->campaign.ride_id, w->campaign.no_weeks);
-        break;
+        {
+            auto gameAction = ParkMarketingAction(w->campaign.campaign_type, w->campaign.ride_id, w->campaign.no_weeks);
+            gameAction.SetCallback(
+                [](const GameAction *ga, const GameActionResult * result)
+                {
+                    if (result->Error == GA_ERROR::OK)
+                    {
+                        window_close_by_class(WC_NEW_CAMPAIGN);
+                    }
+                });
+            GameActions::Execute(&gameAction);
+            break;
+        }
     }
 }
 
