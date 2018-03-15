@@ -1194,10 +1194,10 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
     for (; maze_element->all != 0; maze_element++)
     {
         uint8    rotation = _currentTrackPieceDirection & 3;
-        CoordsXY mapCoord = {maze_element->x * 32, maze_element->y * 32};
-        sint16 tmpX = mapCoord.x;
-        sint16 tmpY = mapCoord.y;
+        sint16 tmpX = maze_element->x * 32;
+        sint16 tmpY = maze_element->y * 32;
         rotate_map_coordinates(&tmpX, &tmpY, rotation);
+        CoordsXY mapCoord = { tmpX, tmpY };
         mapCoord.x += x;
         mapCoord.y += y;
 
@@ -1494,10 +1494,10 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
             sint32                       tempZ        = z - TrackCoordinates[trackType].z_begin;
             for (const rct_preview_track * trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
             {
-                CoordsXY tile = {x, y};
-                sint16 tmpX = tile.x;
-                sint16 tmpY = tile.y;
+                sint16 tmpX = x;
+                sint16 tmpY = y;
                 map_offset_with_rotation(&tmpX, &tmpY, trackBlock->x, trackBlock->y, rotation);
+                CoordsXY tile = { tmpX, tmpY };
                 if (tile.x < 0 || tile.y < 0 || tile.x >= (256 * 32) || tile.y >= (256 * 32))
                 {
                     continue;
