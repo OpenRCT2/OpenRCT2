@@ -2250,12 +2250,13 @@ static void footpath_remove_edges_towards(sint32 x, sint32 y, sint32 z0, sint32 
 
 // Returns true when there is an element at the given coordinates that want to connect to a path with the given direction (ride
 // entrances and exits, shops, paths).
-static bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords)
+static bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const rct_tile_element * const elementToBeRemoved)
 {
     rct_tile_element * tileElement = map_get_first_element_at(coords.x, coords.y);
     do
     {
-        if (tile_element_is_ghost(tileElement))
+        // Don't check the element that gets removed
+        if (tileElement == elementToBeRemoved)
             continue;
 
         switch (tile_element_get_type(tileElement))
@@ -2385,7 +2386,7 @@ void footpath_remove_edges_at(sint32 x, sint32 y, rct_tile_element *tileElement)
         // When clearance checks were disabled a neighbouring path can be connected to both the path-ghost and to something
         // else, so before removing edges from neighbouring paths we have to make sure there is nothing else they are connected
         // to.
-        if (!tile_element_wants_path_connection_towards({ x / 32, y / 32, z1, direction }))
+        if (!tile_element_wants_path_connection_towards({ x / 32, y / 32, z1, direction }, tileElement))
         {
             sint32 z0 = z1 - 2;
             footpath_remove_edges_towards(
