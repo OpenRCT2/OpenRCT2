@@ -110,6 +110,7 @@
 - Fix: [#6904] Manually added multiplayer servers not saved.
 - Fix: [#7003] Building sloped paths through flat paths with clearance checks off causes glitches.
 - Fix: [#7011] Swinging and bobsleigh cars going backwards swing in the wrong direction (original bug).
+- Fix: [#7042, #7077] Paths sometimes disconnect when building them with clearance checks off.
 - Fix: [#7125] No entry signs not correctly handled in pathfinding.
 - Fix: [#7223] Vehicle mass not correctly recalculated when using remove all guests cheat.
 - Fix: [#7229] Exploding guests cheat causes rides to get stuck and freezes game.
