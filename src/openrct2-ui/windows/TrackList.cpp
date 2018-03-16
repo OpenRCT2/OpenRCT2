@@ -526,7 +526,6 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
             _loadedTrackDesignIndex = trackIndex;
         } else {
             _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
-            return;
         }
     }
 
@@ -535,15 +534,24 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
         return;
     }
 
-    rct_g1_element g1temp = { nullptr };
-    g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
-    g1temp.width = 370;
-    g1temp.height = 217;
-    g1temp.flags = G1_FLAG_BMP;
-    gfx_set_g1_element(SPR_TEMP, &g1temp);
-    gfx_draw_sprite(dpi, SPR_TEMP, x, y, 0);
-
+    sint32 trackPreviewX = x, trackPreviewY = y;
     x = w->x + (widget->left + widget->right) / 2;
+    y = w->y + (widget->top + widget->bottom) / 2;
+
+    if (drawing_engine_get_type() != DRAWING_ENGINE_OPENGL) {
+        rct_g1_element g1temp = { nullptr };
+        g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
+        g1temp.width = 370;
+        g1temp.height = 217;
+        g1temp.flags = G1_FLAG_BMP;
+        gfx_set_g1_element(SPR_TEMP, &g1temp);
+        gfx_draw_sprite(dpi, SPR_TEMP, trackPreviewX, trackPreviewY, 0);
+    }
+    else
+    {
+        gfx_draw_string_centred_clipped(dpi, STR_NOT_SUPPPORTED_IN_OPENGL, nullptr, COLOUR_BLACK, x, y, 368);
+    }
+
     y = w->y + widget->bottom - 12;
 
     // Warnings
@@ -766,8 +774,10 @@ static bool track_list_load_design_for_preview(utf8 *path)
     _loadedTrackDesign = nullptr;
 
     _loadedTrackDesign = track_design_open(path);
-    if (_loadedTrackDesign != nullptr && drawing_engine_get_type() != DRAWING_ENGINE_OPENGL) {
-        track_design_draw_preview(_loadedTrackDesign, _trackDesignPreviewPixels.data());
+    if (_loadedTrackDesign != nullptr) {
+        if (drawing_engine_get_type() != DRAWING_ENGINE_OPENGL) {
+            track_design_draw_preview(_loadedTrackDesign, _trackDesignPreviewPixels.data());
+        }
         return true;
     }
     return false;

@@ -4531,6 +4531,7 @@ STR_6221    :{SMALLFONT}{BLACK}This will set the ride's known entrance or exit l
 STR_6222    :Can't place peep spawn here...
 STR_6223    :Must be outside park boundaries!
 STR_6224    :{STRING} placed a peep spawn.
+STR_6225    :Not supported with OpenGL renderer
 
 #############
 # Scenarios #
