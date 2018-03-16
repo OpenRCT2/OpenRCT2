@@ -58,17 +58,17 @@ public:
         {
             if (_value > gMaxBankLoan)
             {
-                return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
+                return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
             }
         }
         else
         {
             if (loanDifference > gCash)
             {
-                return std::make_unique<GameActionResult>(GA_ERROR::INSUFFICIENT_FUNDS, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
+                return MakeResult(GA_ERROR::INSUFFICIENT_FUNDS, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
             }
         }
-        return std::make_unique<GameActionResult>();
+        return MakeResult();
     }
 
     GameActionResult::Ptr Execute() const override
@@ -78,6 +78,6 @@ public:
 
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));
-        return std::make_unique<GameActionResult>();
+        return MakeResult();
     }
 };

@@ -61,11 +61,11 @@ public:
         if ((size_t)_type >= Util::CountOf(AdvertisingCampaignPricePerWeek) ||
             _numWeeks >= 256)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_START_MARKETING_CAMPAIGN);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_START_MARKETING_CAMPAIGN);
         }
         if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_CANT_START_MARKETING_CAMPAIGN, STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);
+            return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_START_MARKETING_CAMPAIGN, STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);
         }
 
         return CreateResult();
@@ -86,7 +86,7 @@ public:
 private:
     GameActionResult::Ptr CreateResult() const
     {
-        auto result = std::make_unique<GameActionResult>();
+        auto result = MakeResult();
         result->ErrorTitle = STR_CANT_START_MARKETING_CAMPAIGN;
         result->ExpenditureType = RCT_EXPENDITURE_TYPE_MARKETING;
         result->Cost = CalculatePrice();

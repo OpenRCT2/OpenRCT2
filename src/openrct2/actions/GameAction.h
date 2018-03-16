@@ -19,6 +19,7 @@
 #include <array>
 #include <functional>
 #include <memory>
+#include <utility>
 
 #include "../common.h"
 #include "../core/DataSerialiser.h"
@@ -220,6 +221,13 @@ public:
         {
             typedCallback(ga, static_cast<const TResultType *>(result));
         });
+    }
+
+protected:
+    template<class... TTypes>
+    static constexpr std::unique_ptr<TResultType> MakeResult(TTypes&&... args)
+    {
+        return std::make_unique<TResultType>(std::forward<TTypes>(args)...);
     }
 };
 

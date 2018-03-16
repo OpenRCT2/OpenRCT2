@@ -57,9 +57,9 @@ public:
     {
         if (_fundingAmount >= RESEARCH_FUNDING_COUNT)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
-        return std::make_unique<GameActionResult>();
+        return MakeResult();
     }
 
     GameActionResult::Ptr Execute() const override
@@ -69,6 +69,6 @@ public:
 
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_RESEARCH));
-        return std::make_unique<GameActionResult>();
+        return MakeResult();
     }
 };
