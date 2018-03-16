@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../Cheats.h"
+#include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../Game.h"
