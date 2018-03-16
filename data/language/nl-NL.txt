@@ -4523,6 +4523,10 @@ STR_6218    :OpenRCT2 (officieel)
 STR_6219    :Paden inspecteren
 STR_6220    :Actief maken
 STR_6221    :{SMALLFONT}{BLACK}Hiermee maak je dit de officiële ingang/uitgang van de attractie. Er kan per station slechts één actieve ingang en één actieve uitgang zijn.
+STR_6222    :Kan hier geen toegangspunt plaatsen...
+STR_6223    :Locatie moet buiten het park liggen!
+STR_6224    :{STRING} heeft een bezoekerstoegangspunt geplaatst.
+STR_6225    :Niet ondersteund in de OpenGL-renderer.
 
 #############
 # Scenarios #
