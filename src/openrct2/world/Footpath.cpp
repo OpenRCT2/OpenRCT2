@@ -1159,8 +1159,8 @@ static bool neighbour_list_pop(rct_neighbour_list *neighbourList, rct_neighbour 
         return false;
 
     *outNeighbour = neighbourList->items[0];
-    for (sint32 i = 0; i < neighbourList->count - 1; i++)
-        neighbourList->items[i] = neighbourList->items[i + 1];
+    const size_t bytesToMove = (neighbourList->count - 1) * sizeof(neighbourList->items[0]);
+    memmove(&neighbourList->items[0], &neighbourList->items[1], bytesToMove);
     neighbourList->count--;
     return true;
 }
@@ -1444,7 +1444,7 @@ void footpath_connect_edges(sint32 x, sint32 y, rct_tile_element *tileElement, s
     if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH && footpath_element_is_queue(tileElement)) {
         sint32 rideIndex = -1;
         uint8 entranceIndex = 255;
-        for (sint32 i = 0; i < neighbourList.count; i++) {
+        for (size_t i = 0; i < neighbourList.count; i++) {
             if (neighbourList.items[i].ride_index != 255) {
                 if (rideIndex == -1) {
                     rideIndex = neighbourList.items[i].ride_index;
