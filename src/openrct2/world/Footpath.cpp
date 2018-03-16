@@ -2310,6 +2310,46 @@ static bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords)
     return false;
 }
 
+// fix up the corners around the given path element that gets removed
+static void footpath_fix_corners_around(sint32 x, sint32 y, rct_tile_element * pathElement)
+{
+    // A mask for the paths' corners of each possible neighbour
+    static constexpr uint8 cornersTouchingTile[3][3] = {
+        { 0b0010, 0b0011, 0b0001 },
+        { 0b0110, 0b0000, 0b1001 },
+        { 0b0100, 0b1100, 0b1000 },
+    };
+
+    // Sloped paths don't create filled corners, so no need to remove any
+    if (footpath_element_is_sloped(pathElement))
+        return;
+
+    for (sint32 xOffset = -1; xOffset <= 1; xOffset++)
+    {
+        for (sint32 yOffset = -1; yOffset <= 1; yOffset++)
+        {
+            // Skip self
+            if (xOffset == 0 && yOffset == 0)
+                continue;
+
+            rct_tile_element * tileElement = map_get_first_element_at(x + xOffset, y + yOffset);
+            do
+            {
+                if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_PATH)
+                    continue;
+                if (footpath_element_is_sloped(tileElement))
+                    continue;
+                if (tileElement->base_height != pathElement->base_height)
+                    continue;
+
+                const sint32 ix = xOffset + 1;
+                const sint32 iy = yOffset + 1;
+                tileElement->properties.path.edges &= ~(cornersTouchingTile[iy][ix] << 4);
+            } while (!tile_element_is_last_for_tile(tileElement++));
+        }
+    }
+}
+
 /**
  *
  *  rct2: 0x006A6AA7
@@ -2327,6 +2367,7 @@ void footpath_remove_edges_at(sint32 x, sint32 y, rct_tile_element *tileElement)
 
     footpath_update_queue_entrance_banner(x, y, tileElement);
 
+    bool fixCorners = false;
     for (uint8 direction = 0; direction < 4; direction++) {
         sint32 z1 = tileElement->base_height;
         if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH) {
@@ -2351,6 +2392,17 @@ void footpath_remove_edges_at(sint32 x, sint32 y, rct_tile_element *tileElement)
                 x + TileDirectionDelta[direction].x, y + TileDirectionDelta[direction].y, z0, z1, direction,
                 footpath_element_is_queue(tileElement));
         }
+        else
+        {
+            // A footpath may stay connected, but its edges must be fixed later on when another edge does get removed.
+            fixCorners = true;
+        }
+    }
+
+    // Only fix corners when needed, to avoid changing corners that have been set for its looks.
+    if (fixCorners && tile_element_is_ghost(tileElement))
+    {
+        footpath_fix_corners_around(x / 32, y / 32, tileElement);
     }
 
     if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH)
