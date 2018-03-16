@@ -21,6 +21,7 @@
 #include "ParkMarketingAction.hpp"
 #include "PlaceParkEntranceAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
+#include "StaffSetColourAction.hpp"
 #include "StaffSetNameAction.hpp"
 #include "RideCreateAction.hpp"
 #include "RideSetStatus.hpp"
@@ -43,6 +44,7 @@ namespace GameActions
         Register<RideSetNameAction>();
         Register<RideDemolishAction>();
         Register<GuestSetNameAction>();
+        Register<StaffSetColourAction>();
         Register<StaffSetNameAction>();
         Register<PlacePeepSpawnAction>();
         Register<MazeSetTrackAction>();

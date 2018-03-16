@@ -1727,7 +1727,7 @@ GAME_COMMAND_POINTER * new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_remove_park_entrance,
     game_command_set_maze_track,
     game_command_set_park_entrance_fee,
-    game_command_update_staff_colour,
+    nullptr,
     game_command_place_wall,
     game_command_remove_wall,
     game_command_place_large_scenery,
