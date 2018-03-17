@@ -9,8 +9,12 @@
 
 #include "ScriptEngine.h"
 #include "../interface/InteractiveConsole.h"
+#include <dukglue/dukglue.h>
 #include <duktape.h>
+#include <iostream>
 #include <stdexcept>
+
+#include "ScConsole.hpp"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
@@ -21,11 +25,6 @@ ScriptEngine::ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& en
     _console(console),
     _env(env)
 {
-    _context = duk_create_heap_default();
-    if (_context == nullptr)
-    {
-        throw std::runtime_error("Unable to initialise duktape context.");
-    }
 }
 
 ScriptEngine::~ScriptEngine()
@@ -33,8 +32,28 @@ ScriptEngine::~ScriptEngine()
     duk_destroy_heap(_context);
 }
 
+void ScriptEngine::Initialise()
+{
+    _context = duk_create_heap_default();
+    if (_context == nullptr)
+    {
+        throw std::runtime_error("Unable to initialise duktape context.");
+    }
+
+    auto ctx = _context;
+    ScConsole::Register(ctx);
+
+    auto scConsole = std::make_shared<ScConsole>(_console);
+    dukglue_register_global(ctx, scConsole, "console");
+}
+
 void ScriptEngine::Update()
 {
+    if (!_initialised)
+    {
+        Initialise();
+        _initialised = true;
+    }
     while (_evalQueue.size() > 0)
     {
         auto item = std::move(_evalQueue.front());
