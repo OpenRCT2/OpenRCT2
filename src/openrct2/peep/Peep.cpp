@@ -11975,7 +11975,7 @@ static bool peep_should_go_on_ride_again(rct_peep * peep, Ride * ride)
         return false;
     if (peep->thirst < 20)
         return false;
-    if (peep->balloon_colour > 170)
+    if (peep->toilet > 170)
         return false;
 
     uint8 r = (peep_rand() & 0xFF);

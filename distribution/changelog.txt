@@ -113,6 +113,7 @@
 - Fix: [#7125] No entry signs not correctly handled in pathfinding.
 - Fix: [#7223] Vehicle mass not correctly recalculated when using remove all guests cheat.
 - Fix: [#7229] Exploding guests cheat causes rides to get stuck and freezes game.
+- Fix: [#7295] peep_should_go_on_ride_again() checked balloon colour instead of toilet need.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
 - Fix: Clear IME buffer after committing composed text.
