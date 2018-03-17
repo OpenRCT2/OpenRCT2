@@ -7,10 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../platform/Platform2.h"
+#include "../scripting/ScriptEngine.h"
 #include "../thirdparty/linenoise.hpp"
 #include "InteractiveConsole.h"
+
+using namespace OpenRCT2;
 
 void StdInOutConsole::Start()
 {
@@ -51,28 +55,8 @@ void StdInOutConsole::Start()
 
 std::future<void> StdInOutConsole::Eval(const std::string& s)
 {
-    // Push on-demand evaluations onto a queue so that it can be processed deterministically
-    // on the main thead at the right time.
-    std::promise<void> barrier;
-    auto future = barrier.get_future();
-    _evalQueue.emplace(std::move(barrier), s);
-    return future;
-}
-
-void StdInOutConsole::ProcessEvalQueue()
-{
-    while (_evalQueue.size() > 0)
-    {
-        auto item = std::move(_evalQueue.front());
-        _evalQueue.pop();
-        auto promise = std::move(std::get<0>(item));
-        auto command = std::move(std::get<1>(item));
-
-        Execute(command);
-
-        // Signal the promise so caller can continue
-        promise.set_value();
-    }
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    return scriptEngine.Eval(s);
 }
 
 void StdInOutConsole::Clear()

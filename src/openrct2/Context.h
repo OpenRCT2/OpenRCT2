@@ -85,6 +85,11 @@ namespace OpenRCT2
         class LocalisationService;
     }
 
+    namespace Scripting
+    {
+        class ScriptEngine;
+    }
+
     namespace Ui
     {
         interface IUiContext;
@@ -109,6 +114,7 @@ namespace OpenRCT2
         virtual Localisation::LocalisationService& GetLocalisationService() abstract;
         virtual IObjectManager& GetObjectManager() abstract;
         virtual IObjectRepository& GetObjectRepository() abstract;
+        virtual Scripting::ScriptEngine& GetScriptEngine() abstract;
         virtual ITrackDesignRepository* GetTrackDesignRepository() abstract;
         virtual IScenarioRepository* GetScenarioRepository() abstract;
         virtual IReplayManager* GetReplayManager() abstract;

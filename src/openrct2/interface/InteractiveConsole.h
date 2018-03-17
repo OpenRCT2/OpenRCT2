@@ -12,11 +12,8 @@
 #include "../common.h"
 #include "../localisation/FormatCodes.h"
 
-#include <deque>
 #include <future>
-#include <queue>
 #include <string>
-#include <tuple>
 
 struct rct_drawpixelinfo;
 struct TextInputSession;
@@ -53,13 +50,9 @@ public:
 
 class StdInOutConsole final : public InteractiveConsole
 {
-private:
-    std::queue<std::tuple<std::promise<void>, std::string>> _evalQueue;
-
 public:
     void Start();
     std::future<void> Eval(const std::string& s);
-    void ProcessEvalQueue();
 
     void Clear() override;
     void Close() override;
