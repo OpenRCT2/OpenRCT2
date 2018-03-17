@@ -4453,7 +4453,7 @@ STR_6150    :Ungültige Antwort vom Hauptserver (keine JSON-Nummer)
 STR_6151    :Hauptserver antwortete nicht mit gültigen Servern
 STR_6152    :Ungültige Antwort vom Hauptserver (kein JSON-Array)
 STR_6153    :Für Eintritt bezahlen/Pro Fahrt bezahlen
-STR_6154    :Es wird nicht empfohlen, OpenRCT2 mit erweiterten Benutzerrechten zu starten.
+STR_6154    :Aus Sicherheitsgründen wird nicht empfohlen, OpenRCT2 mit erweiterten Benutzerrechten zu starten.
 STR_6155    :Weder KDialog noch Zenity sind installiert. Bitte installieren Sie eins oder konfigurieren Sie es über die Kommandozeile.
 STR_6156    :Name ist reserviert
 STR_6157    :Konsole
@@ -4517,6 +4517,14 @@ STR_6214    :Wolkenkratzer B
 STR_6215    :Konstruktion
 STR_6216    :Betrieb
 STR_6217    :Bahn- / Streckenverfügbarkeit
+STR_6218    :OpenRCT2 (offiziell)
+STR_6219    :Probleme auf Fußwegen hervorheben
+STR_6220    :Nutzbar machen
+STR_6221    :{SMALLFONT}{BLACK}Dadurch wird der von der Attraktion bekannte Eingang oder Ausgang auf die ausgewählte Kachel festgelegt. Es kann pro Station nur ein Eingang und Ausgang nutzbar gemacht werden.
+STR_6222    :Kann Eingangspunkt für Besucher hier nicht platzieren...
+STR_6223    :Muss außerhalb der Parkgrenzen liegen!
+STR_6224    :{STRING} hat einen Eingangspunkt für Besucher platziert.
+STR_6225    :Wird von OpenGL nicht unterstützt
 
 #############
 # Scenarios #
