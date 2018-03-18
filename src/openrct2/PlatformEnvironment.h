@@ -38,6 +38,7 @@ namespace OpenRCT2
         LOG_SERVER,  // Contains server logs.
         NETWORK_KEY, // Contains the user's public and private keys.
         OBJECT,      // Contains objects.
+        PLUGIN,      // Contains plugins (.js).
         SAVE,        // Contains saved games (SV6).
         SCENARIO,    // Contains scenarios (SC6).
         SCREENSHOT,  // Contains screenshots.

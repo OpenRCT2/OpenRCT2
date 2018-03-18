@@ -595,4 +595,34 @@ public:
 		duk_get_prop_string(mContext, -1, key.c_str());
 		return DukValue::take_from_stack(mContext);
 	}
+
+	bool is_array() const
+	{
+		push();
+		bool result = duk_is_array(mContext, -1);
+		duk_pop(mContext);
+		return result;
+	}
+
+	std::vector<DukValue> as_array() const
+	{
+		push();
+		if (!duk_is_array(mContext, -1))
+		{
+			duk_pop(mContext);
+			throw DukException() << "Expected array, got " << type_name();
+		}
+
+		auto arrayLength = duk_get_length(mContext, -1);
+		std::vector<DukValue> result;
+		result.reserve(arrayLength);
+		for (size_t i = 0; i < arrayLength; i++)
+		{
+			duk_get_prop_index(mContext, -1, i);
+			result.push_back(take_from_stack(mContext));
+		}
+
+		duk_pop(mContext);
+		return result;
+	}
 };

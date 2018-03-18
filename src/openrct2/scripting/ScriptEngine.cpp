@@ -8,7 +8,10 @@
  *****************************************************************************/
 
 #include "ScriptEngine.h"
+#include "../core/FileScanner.h"
+#include "../core/Path.hpp"
 #include "../interface/InteractiveConsole.h"
+#include "../PlatformEnvironment.h"
 #include <dukglue/dukglue.h>
 #include <duktape.h>
 #include <iostream>
@@ -47,6 +50,38 @@ void ScriptEngine::Initialise()
 
     dukglue_register_global(ctx, std::make_shared<ScConsole>(_console), "console");
     dukglue_register_global(ctx, std::make_shared<ScPark>(), "park");
+
+    LoadPlugins();
+    StartPlugins();
+}
+
+void ScriptEngine::LoadPlugins()
+{
+    auto base = _env.GetDirectoryPath(DIRBASE::USER, DIRID::PLUGIN);
+    auto pattern = Path::Combine(base, "*.js");
+    auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(pattern, true));
+    while (scanner->Next())
+    {
+        auto path = std::string(scanner->GetPath());
+        try
+        {
+            Plugin p(_context, path);
+            p.Load();
+            _plugins.push_back(std::move(p));
+        }
+        catch (const std::exception &e)
+        {
+            _console.WriteLineError(e.what());
+        }
+    }
+}
+
+void ScriptEngine::StartPlugins()
+{
+    for (auto& plugin : _plugins)
+    {
+        plugin.Start();
+    }
 }
 
 void ScriptEngine::Update()

@@ -194,6 +194,7 @@ const char * PlatformEnvironment::DirectoryNamesRCT2[] =
     nullptr,                // LOG_SERVER
     nullptr,                // NETWORK_KEY
     "ObjData",              // OBJECT
+    nullptr,                // PLUGIN
     "Saved Games",          // SAVE
     "Scenarios",            // SCENARIO
     nullptr,                // SCREENSHOT
@@ -212,6 +213,7 @@ const char * PlatformEnvironment::DirectoryNamesOpenRCT2[] =
     "serverlogs",           // LOG_SERVER
     "keys",                 // NETWORK_KEY
     "object",               // OBJECT
+    "plugin",               // PLUGIN
     "save",                 // SAVE
     "scenario",             // SCENARIO
     "screenshot",           // SCREENSHOT

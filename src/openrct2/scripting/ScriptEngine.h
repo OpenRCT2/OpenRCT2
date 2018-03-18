@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "Plugin.h"
 #include <future>
 #include <queue>
 #include <string>
@@ -34,14 +35,19 @@ namespace OpenRCT2::Scripting
         bool _initialised{};
         duk_context * _context{};
         std::queue<std::tuple<std::promise<void>, std::string>> _evalQueue;
+        std::vector<Plugin> _plugins;
 
     public:
         ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env);
-        ScriptEngine(ScriptEngine&&) = delete;
+        ScriptEngine(ScriptEngine&) = delete;
         ~ScriptEngine();
 
-        void Initialise();
         void Update();
         std::future<void> Eval(const std::string &s);
+
+    private:
+        void Initialise();
+        void LoadPlugins();
+        void StartPlugins();
     };
 }
