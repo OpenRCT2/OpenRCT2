@@ -18,14 +18,9 @@
 
 #include <string>
 #include <vector>
-
 #include "../common.h"
-
-extern "C"
-{
-    #include "../scenario/scenario.h"
-    #include "../object_list.h"
-}
+#include "../object/ObjectList.h"
+#include "../scenario/Scenario.h"
 
 interface   IStream;
 struct      ObjectRepositoryItem;
@@ -46,10 +41,17 @@ public:
     void SaveScenario(const utf8 * path);
     void SaveScenario(IStream * stream);
     void Export();
+    void ExportRides();
+    void ExportRide(rct2_ride * dst, const Ride * src);
 
 private:
     rct_s6_data _s6;
 
     void Save(IStream * stream, bool isScenario);
     static uint32 GetLoanHash(money32 initialCash, money32 bankLoan, uint32 maxBankLoan);
+    void ExportResearchedRideTypes();
+    void ExportResearchedRideEntries();
+    void ExportResearchedSceneryItems();
+    void ExportResearchList();
+    void ExportPeepSpawns();
 };

@@ -16,53 +16,51 @@
 
 #ifndef DISABLE_OPENGL
 
-#include "CopyFramebufferShader.h"
 #include "OpenGLFramebuffer.h"
 #include "SwapFramebuffer.h"
 
-SwapFramebuffer::SwapFramebuffer(sint32 width, sint32 height)
-{
-    _width = width;
-    _height = height;
-    _targetFramebufferIndex = 0;
-    _framebuffer[0] = new OpenGLFramebuffer(width, height);
-    _framebuffer[1] = new OpenGLFramebuffer(width, height);
-    _targetFramebuffer = _framebuffer[0];
+constexpr GLfloat depthValue[1] = { 1.0f };
+constexpr GLfloat depthValueTransparent[1] = { 0.0f };
+constexpr GLuint indexValue[4] = { 0, 0, 0, 0 };
 
-    _copyFramebufferShader = new CopyFramebufferShader();
-    _copyFramebufferShader->Use();
-    _copyFramebufferShader->SetScreenSize(_width, _height);
-    _copyFramebufferShader->SetBounds(0, 0, _width, _height);
-    _copyFramebufferShader->SetTextureCoordinates(0, 1, 1, 0);
+SwapFramebuffer::SwapFramebuffer(sint32 width, sint32 height) :
+_opaqueFramebuffer(width, height), _transparentFramebuffer(width, height),
+_mixFramebuffer(width, height, false), _backDepth(OpenGLFramebuffer::CreateDepthTexture(width, height))
+{
+    _transparentFramebuffer.Bind();
+    glClearBufferfv(GL_DEPTH, 0, depthValueTransparent);
 }
 
-SwapFramebuffer::~SwapFramebuffer()
+void SwapFramebuffer::ApplyTransparency(ApplyTransparencyShader &shader, GLuint paletteTex)
 {
-    delete _framebuffer[0];
-    delete _framebuffer[1];
-    delete _copyFramebufferShader;
+    _mixFramebuffer.Bind();
+    glDisable(GL_DEPTH_TEST);
+    shader.Use();
+    shader.SetTextures(
+        _opaqueFramebuffer.GetTexture(),
+        _opaqueFramebuffer.GetDepthTexture(),
+        _transparentFramebuffer.GetTexture(),
+        _transparentFramebuffer.GetDepthTexture(),
+        paletteTex
+    );
+    shader.Draw();
+
+    _backDepth = _transparentFramebuffer.SwapDepthTexture(_backDepth);
+
+    // Clear transparency buffers
+    _transparentFramebuffer.Bind();
+    glClearBufferuiv(GL_COLOR, 0, indexValue);
+    glClearBufferfv(GL_DEPTH, 0, depthValueTransparent);
+
+    _opaqueFramebuffer.SwapColourBuffer(_mixFramebuffer);
+    //Change binding to guaruntee no undefined behavior
+    _opaqueFramebuffer.Bind();
 }
 
-GLuint SwapFramebuffer::GetSourceTexture() const
+void SwapFramebuffer::Clear()
 {
-    return _sourceFramebuffer->GetTexture();
-}
-
-void SwapFramebuffer::SwapCopy()
-{
-    _sourceFramebuffer = _targetFramebuffer;
-    _targetFramebufferIndex = (_targetFramebufferIndex + 1) & 1;
-    _targetFramebuffer = _framebuffer[_targetFramebufferIndex];
-    _targetFramebuffer->Bind();
-
-    _copyFramebufferShader->Use();
-    _copyFramebufferShader->SetTexture(GetSourceTexture());
-    _copyFramebufferShader->Draw();
-}
-
-void SwapFramebuffer::Bind()
-{
-    _targetFramebuffer->Bind();
+    _opaqueFramebuffer.Bind();
+    glClearBufferfv(GL_DEPTH, 0, depthValue);
 }
 
 #endif /* DISABLE_OPENGL */

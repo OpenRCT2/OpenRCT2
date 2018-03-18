@@ -26,11 +26,8 @@
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 
-extern "C"
-{
-    #include "../localisation/localisation.h"
-    #include "../platform/platform.h"
-}
+#include "../localisation/Localisation.h"
+#include "../platform/platform.h"
 
 namespace TitleSequenceManager
 {
@@ -50,7 +47,7 @@ namespace TitleSequenceManager
         { "*OPENRCT2",  "openrct2.parkseq",     STR_TITLE_SEQUENCE_OPENRCT2 },
     };
 
-    std::vector<TitleSequenceManagerItem> _items;
+    static std::vector<TitleSequenceManagerItem> _items;
 
     static std::string GetNewTitleSequencePath(const std::string &name, bool isZip);
     static size_t FindItemIndexByPath(const utf8 * path);
@@ -60,6 +57,7 @@ namespace TitleSequenceManager
     static std::string GetNameFromSequencePath(const std::string &path);
     static void GetDataSequencesPath(utf8 * buffer, size_t bufferSize);
     static void GetUserSequencesPath(utf8 * buffer, size_t bufferSize);
+    static bool IsNameReserved(const std::string &name);
 
     size_t GetCount()
     {
@@ -154,7 +152,7 @@ namespace TitleSequenceManager
         seq->Path = String::Duplicate(path.c_str());
         seq->IsZip = true;
 
-        bool success = TileSequenceSave(seq);
+        bool success = TitleSequenceSave(seq);
         FreeTitleSequence(seq);
 
         size_t index = SIZE_MAX;
@@ -179,10 +177,10 @@ namespace TitleSequenceManager
         return std::string(path);
     }
 
-    static uint16 GetPredefinedIndex(const std::string &path)
+    static size_t GetPredefinedIndex(const std::string &path)
     {
         const utf8 * filename = Path::GetFileName(path.c_str());
-        for (uint16 i = 0; i < Util::CountOf(PredefinedSequences); i++)
+        for (size_t i = 0; i < Util::CountOf(PredefinedSequences); i++)
         {
             if (String::Equals(filename, PredefinedSequences[i].Filename, true))
             {
@@ -270,6 +268,12 @@ namespace TitleSequenceManager
             rct_string_id stringId = PredefinedSequences[item.PredefinedIndex].StringId;
             item.Name = language_get_string(stringId);
         }
+        else if (IsNameReserved(item.Name))
+        {
+            // Reserved names are not allowed because they map to the
+            // actual predefined names and also prevent editing
+            return;
+        }
         item.IsZip = isZip;
         _items.push_back(item);
     }
@@ -291,115 +295,133 @@ namespace TitleSequenceManager
     static void GetUserSequencesPath(utf8 * buffer, size_t bufferSize)
     {
         platform_get_user_directory(buffer, "title sequences", bufferSize);
+        platform_ensure_directory_exists(buffer);
+    }
+
+    static bool IsNameReserved(const std::string &name)
+    {
+        for (const auto &pseq : TitleSequenceManager::PredefinedSequences)
+        {
+            const utf8 * predefinedName = Path::GetFileNameWithoutExtension(pseq.Filename);
+            std::string reservedName = std::string(predefinedName);
+            Memory::Free(predefinedName);
+            if (String::Equals(name, reservedName, true))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
-extern "C"
+size_t title_sequence_manager_get_count()
 {
-    size_t title_sequence_manager_get_count()
-    {
-        return TitleSequenceManager::GetCount();
-    }
+    return TitleSequenceManager::GetCount();
+}
 
-    const utf8 * title_sequence_manager_get_name(size_t index)
+const utf8 * title_sequence_manager_get_name(size_t index)
+{
+    auto item = TitleSequenceManager::GetItem(index);
+    if (item == nullptr)
     {
-        auto item = TitleSequenceManager::GetItem(index);
-        if (item == nullptr)
+        return nullptr;
+    }
+    const utf8 * name = item->Name.c_str();
+    return name;
+}
+
+const utf8 * title_sequence_manager_get_path(size_t index)
+{
+    auto item = TitleSequenceManager::GetItem(index);
+    if (item == nullptr) {
+        return nullptr;
+    }
+    const utf8 * name = item->Path.c_str();
+    return name;
+}
+
+const utf8 * title_sequence_manager_get_config_id(size_t index)
+{
+    auto item = TitleSequenceManager::GetItem(index);
+    if (item == nullptr) {
+        return nullptr;
+    }
+    const utf8 * name = item->Name.c_str();
+    const utf8 * filename = Path::GetFileName(item->Path.c_str());
+    for (const auto &pseq : TitleSequenceManager::PredefinedSequences)
+    {
+        if (String::Equals(filename, pseq.Filename, true))
         {
-            return nullptr;
+            return pseq.ConfigId;
         }
-        const utf8 * name = item->Name.c_str();
-        return name;
     }
+    return name;
+}
 
-    const utf8 * title_sequence_manager_get_path(size_t index)
-    {
-        auto item = TitleSequenceManager::GetItem(index);
-        if (item == nullptr) {
-            return nullptr;
-        }
-        const utf8 * name = item->Path.c_str();
-        return name;
+size_t title_sequence_manager_get_predefined_index(size_t index)
+{
+    auto item = TitleSequenceManager::GetItem(index);
+    if (item == nullptr) {
+        return 0;
     }
+    size_t predefinedIndex = item->PredefinedIndex;
+    return predefinedIndex;
+}
 
-    const utf8 * title_sequence_manager_get_config_id(size_t index)
+size_t title_sequence_manager_get_index_for_config_id(const utf8 * configId)
+{
+    size_t count = TitleSequenceManager::GetCount();
+    for (size_t i = 0; i < count; i++)
     {
-        auto item = TitleSequenceManager::GetItem(index);
-        if (item == nullptr) {
-            return nullptr;
-        }
-        const utf8 * name = item->Name.c_str();
-        const utf8 * filename = Path::GetFileName(item->Path.c_str());
-        for (const auto &pseq : TitleSequenceManager::PredefinedSequences)
+        const utf8 * cid = title_sequence_manager_get_config_id(i);
+        if (String::Equals(cid, configId))
         {
-            if (String::Equals(filename, pseq.Filename, true))
-            {
-                return pseq.ConfigId;
-            }
+            return i;
         }
-        return name;
     }
+    return SIZE_MAX;
+}
 
-    uint16 title_sequence_manager_get_predefined_index(size_t index)
+size_t title_sequence_manager_get_index_for_name(const utf8 * name)
+{
+    size_t count = TitleSequenceManager::GetCount();
+    for (size_t i = 0; i < count; i++)
     {
-        auto item = TitleSequenceManager::GetItem(index);
-        if (item == nullptr) {
-            return 0;
-        }
-        uint16 predefinedIndex = item->PredefinedIndex;
-        return predefinedIndex;
-    }
-
-    size_t title_sequence_manager_get_index_for_config_id(const utf8 * configId)
-    {
-        size_t count = TitleSequenceManager::GetCount();
-        for (size_t i = 0; i < count; i++)
+        const utf8 * tn = title_sequence_manager_get_name(i);
+        if (String::Equals(tn, name))
         {
-            const utf8 * cid = title_sequence_manager_get_config_id(i);
-            if (String::Equals(cid, configId))
-            {
-                return i;
-            }
+            return i;
         }
-        return SIZE_MAX;
     }
+    return SIZE_MAX;
+}
 
-    size_t title_sequence_manager_get_index_for_name(const utf8 * name)
-    {
-        size_t count = TitleSequenceManager::GetCount();
-        for (size_t i = 0; i < count; i++)
-        {
-            const utf8 * tn = title_sequence_manager_get_name(i);
-            if (String::Equals(tn, name))
-            {
-                return i;
-            }
-        }
-        return SIZE_MAX;
-    }
+bool title_sequence_manager_is_name_reserved(const utf8 * name)
+{
+    return TitleSequenceManager::IsNameReserved(name);
+}
 
-    void title_sequence_manager_scan()
-    {
-        TitleSequenceManager::Scan();
-    }
+void title_sequence_manager_scan()
+{
+    TitleSequenceManager::Scan();
+}
 
-    void title_sequence_manager_delete(size_t i)
-    {
-        TitleSequenceManager::DeleteItem(i);
-    }
+void title_sequence_manager_delete(size_t i)
+{
+    TitleSequenceManager::DeleteItem(i);
+}
 
-    size_t title_sequence_manager_rename(size_t i, const utf8 * name)
-    {
-        return TitleSequenceManager::RenameItem(i, name);
-    }
+size_t title_sequence_manager_rename(size_t i, const utf8 * name)
+{
+    return TitleSequenceManager::RenameItem(i, name);
+}
 
-    size_t title_sequence_manager_duplicate(size_t i, const utf8 * name)
-    {
-        return TitleSequenceManager::DuplicateItem(i, name);
-    }
+size_t title_sequence_manager_duplicate(size_t i, const utf8 * name)
+{
+    return TitleSequenceManager::DuplicateItem(i, name);
+}
 
-    size_t title_sequence_manager_create(const utf8 * name)
-    {
-        return TitleSequenceManager::CreateItem(name);
-    }
+size_t title_sequence_manager_create(const utf8 * name)
+{
+    return TitleSequenceManager::CreateItem(name);
 }

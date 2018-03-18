@@ -17,15 +17,23 @@
 #ifndef OPENRCT2_FONTS_H
 #define OPENRCT2_FONTS_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "../drawing/Font.h"
 
-#include "../drawing/font.h"
-
-#ifdef __cplusplus
-}
-#endif
+#ifndef NO_TTF
+extern TTFFontSetDescriptor TTFFontMSGothic;
+extern TTFFontSetDescriptor TTFFontHiragano;
+extern TTFFontSetDescriptor TTFFontMingLiu;
+extern TTFFontSetDescriptor TTFFontHeiti;
+extern TTFFontSetDescriptor TTFFontSimSun;
+extern TTFFontSetDescriptor TTFFontLiHeiPro;
+extern TTFFontSetDescriptor TTFFontGulim;
+extern TTFFontSetDescriptor TTFFontNanum;
+extern TTFFontSetDescriptor TTFFontArial;
+extern TTFFontSetDescriptor TTFFontArialUnicode;
+#define FONT(x) x
+#else
+#define FONT(x) FONT_OPENRCT2_SPRITE
+#endif // NO_TTF
 
 void TryLoadFonts();
 

@@ -14,14 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <openrct2/common.h>
-#include <SDL.h>
-#include <speex/speex_resampler.h>
+#include <algorithm>
 #include <list>
+#include <vector>
+#include <openrct2/common.h>
+#include <SDL2/SDL.h>
+#include <speex/speex_resampler.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Math.hpp>
-#include <openrct2/core/Memory.hpp>
 #include <openrct2/core/Util.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/audio/AudioChannel.h>
@@ -30,48 +31,13 @@
 #include "AudioContext.h"
 #include "AudioFormat.h"
 
-extern "C"
-{
-    #include <openrct2/config/Config.h>
-    #include <openrct2/localisation/localisation.h>
-    #include <openrct2/OpenRCT2.h>
-    #include <openrct2/platform/platform.h>
-}
+#include <openrct2/config/Config.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/platform/platform.h>
 
 namespace OpenRCT2 { namespace Audio
 {
-    struct Buffer
-    {
-    private:
-        void * _data = nullptr;
-        size_t _capacity = 0;
-
-    public:
-        void * GetData() const { return _data; }
-        void * GetData() { return _data; }
-        size_t GetCapacity() const { return _capacity; }
-
-        ~Buffer()
-        {
-            Free();
-        }
-
-        void Free()
-        {
-            SafeFree(_data);
-            _capacity = 0;
-        }
-
-        void EnsureCapacity(size_t capacity)
-        {
-            if (_capacity < capacity)
-            {
-                _capacity = capacity;
-                _data = Memory::Reallocate(_data, capacity);
-            }
-        }
-    };
-
     class AudioMixerImpl final : public IAudioMixer
     {
     private:
@@ -89,9 +55,9 @@ namespace OpenRCT2 { namespace Audio
         IAudioSource * _css1Sources[SOUND_MAXID] = { nullptr };
         IAudioSource * _musicSources[PATH_ID_END] = { nullptr };
 
-        Buffer _channelBuffer;
-        Buffer _convertBuffer;
-        Buffer _effectBuffer;
+        std::vector<uint8> _channelBuffer;
+        std::vector<uint8> _convertBuffer;
+        std::vector<uint8> _effectBuffer;
 
     public:
         AudioMixerImpl()
@@ -110,10 +76,10 @@ namespace OpenRCT2 { namespace Audio
             Close();
 
             SDL_AudioSpec want = { 0 };
-            want.freq = 44100;
+            want.freq = 22050;
             want.format = AUDIO_S16SYS;
             want.channels = 2;
-            want.samples = 1024;
+            want.samples = 2048;
             want.callback = [](void * arg, uint8 * dst, sint32 length) -> void
             {
                 auto mixer = static_cast<AudioMixerImpl *>(arg);
@@ -162,9 +128,12 @@ namespace OpenRCT2 { namespace Audio
             }
 
             // Free buffers
-            _channelBuffer.Free();
-            _convertBuffer.Free();
-            _effectBuffer.Free();
+            _channelBuffer.clear();
+            _channelBuffer.shrink_to_fit();
+            _convertBuffer.clear();
+            _convertBuffer.shrink_to_fit();
+            _effectBuffer.clear();
+            _effectBuffer.shrink_to_fit();
         }
 
         void Lock() override
@@ -255,7 +224,7 @@ namespace OpenRCT2 { namespace Audio
             UpdateAdjustedSound();
 
             // Zero the output buffer
-            Memory::Set(dst, 0, length);
+            std::fill_n(dst, length, 0);
 
             // Mix channels onto output buffer
             auto it = _channels.begin();
@@ -321,15 +290,15 @@ namespace OpenRCT2 { namespace Audio
             // Read raw PCM from channel
             sint32 readSamples = (sint32)(numSamples * rate);
             size_t readLength = (size_t)(readSamples / cvt.len_ratio) * byteRate;
-            _channelBuffer.EnsureCapacity(readLength);
-            size_t bytesRead = channel->Read(_channelBuffer.GetData(), readLength);
+            _channelBuffer.resize(readLength);
+            size_t bytesRead = channel->Read(_channelBuffer.data(), readLength);
 
             // Convert data to required format if necessary
             void * buffer = nullptr;
             size_t bufferLen = 0;
             if (mustConvert)
             {
-                if (Convert(&cvt, _channelBuffer.GetData(), bytesRead))
+                if (Convert(&cvt, _channelBuffer.data(), bytesRead))
                 {
                     buffer = cvt.buf;
                     bufferLen = cvt.len_cvt;
@@ -341,7 +310,7 @@ namespace OpenRCT2 { namespace Audio
             }
             else
             {
-                buffer = _channelBuffer.GetData();
+                buffer = _channelBuffer.data();
                 bufferLen = bytesRead;
             }
 
@@ -355,9 +324,9 @@ namespace OpenRCT2 { namespace Audio
                     inRate = _format.freq;
                     outRate = _format.freq * (1 / rate);
                 }
-                _effectBuffer.EnsureCapacity(length);
+                _effectBuffer.resize(length);
                 bufferLen = ApplyResample(channel, buffer, (sint32)(bufferLen / byteRate), numSamples, inRate, outRate);
-                buffer = _effectBuffer.GetData();
+                buffer = _effectBuffer.data();
             }
 
             // Apply panning and volume
@@ -383,7 +352,7 @@ namespace OpenRCT2 { namespace Audio
             SpeexResamplerState * resampler = channel->GetResampler();
             if (resampler == nullptr)
             {
-                resampler = speex_resampler_init(_format.channels, _format.freq, _format.freq, 0, 0);
+                resampler = speex_resampler_init(_format.channels, _format.freq, _format.freq, 0, nullptr);
                 channel->SetResampler(resampler);
             }
             speex_resampler_set_rate(resampler, inRate, outRate);
@@ -394,7 +363,7 @@ namespace OpenRCT2 { namespace Audio
                 resampler,
                 (const spx_int16_t *)srcBuffer,
                 &inLen,
-                (spx_int16_t *)_effectBuffer.GetData(),
+                (spx_int16_t *)_effectBuffer.data(),
                 &outLen);
 
             return outLen * byteRate;
@@ -526,11 +495,11 @@ namespace OpenRCT2 { namespace Audio
             if (len != 0 && cvt->len_mult != 0)
             {
                 size_t reqConvertBufferCapacity = len * cvt->len_mult;
-                _convertBuffer.EnsureCapacity(reqConvertBufferCapacity);
-                Memory::Copy(_convertBuffer.GetData(), src, len);
+                _convertBuffer.resize(reqConvertBufferCapacity);
+                std::copy_n((const uint8 *)src, len, _convertBuffer.data());
 
                 cvt->len = (sint32)len;
-                cvt->buf = (uint8 *)_convertBuffer.GetData();
+                cvt->buf = (uint8 *)_convertBuffer.data();
                 if (SDL_ConvertAudio(cvt) >= 0)
                 {
                     result = true;

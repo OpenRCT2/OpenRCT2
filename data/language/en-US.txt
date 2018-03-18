@@ -1,6 +1,8 @@
 # STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
+#
+# Vanilla strings. Only change strings that differ from UK English!
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :Spiral Roller Coaster
@@ -604,170 +606,7 @@ STR_0599    :A compact roller coaster with individual cars and smooth twisting d
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0601    :
 STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
-STR_0603    :Guest {INT32}
-STR_0604    :Guest {INT32}
-STR_0605    :Guest {INT32}
-STR_0606    :Guest {INT32}
-STR_0607    :Guest {INT32}
-STR_0608    :Guest {INT32}
-STR_0609    :Guest {INT32}
-STR_0610    :Guest {INT32}
-STR_0611    :Guest {INT32}
-STR_0612    :Guest {INT32}
-STR_0613    :Guest {INT32}
-STR_0614    :Guest {INT32}
-STR_0615    :Guest {INT32}
-STR_0616    :Guest {INT32}
-STR_0617    :Guest {INT32}
-STR_0618    :Guest {INT32}
-STR_0619    :Guest {INT32}
-STR_0620    :Guest {INT32}
-STR_0621    :Guest {INT32}
-STR_0622    :Guest {INT32}
-STR_0623    :Guest {INT32}
-STR_0624    :Guest {INT32}
-STR_0625    :Guest {INT32}
-STR_0626    :Guest {INT32}
-STR_0627    :Guest {INT32}
-STR_0628    :Guest {INT32}
-STR_0629    :Guest {INT32}
-STR_0630    :Guest {INT32}
-STR_0631    :Guest {INT32}
-STR_0632    :Guest {INT32}
-STR_0633    :Guest {INT32}
-STR_0634    :Guest {INT32}
-STR_0635    :Guest {INT32}
-STR_0636    :Guest {INT32}
-STR_0637    :Guest {INT32}
-STR_0638    :Guest {INT32}
-STR_0639    :Guest {INT32}
-STR_0640    :Guest {INT32}
-STR_0641    :Guest {INT32}
-STR_0642    :Guest {INT32}
-STR_0643    :Guest {INT32}
-STR_0644    :Guest {INT32}
-STR_0645    :Guest {INT32}
-STR_0646    :Guest {INT32}
-STR_0647    :Guest {INT32}
-STR_0648    :Guest {INT32}
-STR_0649    :Guest {INT32}
-STR_0650    :Guest {INT32}
-STR_0651    :Guest {INT32}
-STR_0652    :Guest {INT32}
-STR_0653    :Guest {INT32}
-STR_0654    :Guest {INT32}
-STR_0655    :Guest {INT32}
-STR_0656    :Guest {INT32}
-STR_0657    :Guest {INT32}
-STR_0658    :Guest {INT32}
-STR_0659    :Guest {INT32}
-STR_0660    :Guest {INT32}
-STR_0661    :Guest {INT32}
-STR_0662    :Guest {INT32}
-STR_0663    :Guest {INT32}
-STR_0664    :Guest {INT32}
-STR_0665    :Guest {INT32}
-STR_0666    :Guest {INT32}
-STR_0667    :Guest {INT32}
-STR_0668    :Guest {INT32}
-STR_0669    :Guest {INT32}
-STR_0670    :Guest {INT32}
-STR_0671    :Guest {INT32}
-STR_0672    :Guest {INT32}
-STR_0673    :Guest {INT32}
-STR_0674    :Guest {INT32}
-STR_0675    :Guest {INT32}
-STR_0676    :Guest {INT32}
-STR_0677    :Guest {INT32}
-STR_0678    :Guest {INT32}
-STR_0679    :Guest {INT32}
-STR_0680    :Guest {INT32}
-STR_0681    :Guest {INT32}
-STR_0682    :Guest {INT32}
-STR_0683    :Guest {INT32}
-STR_0684    :Guest {INT32}
-STR_0685    :Guest {INT32}
-STR_0686    :Guest {INT32}
-STR_0687    :Guest {INT32}
-STR_0688    :Guest {INT32}
-STR_0689    :Guest {INT32}
-STR_0690    :Guest {INT32}
-STR_0691    :Guest {INT32}
-STR_0692    :Guest {INT32}
-STR_0693    :Guest {INT32}
-STR_0694    :Guest {INT32}
-STR_0695    :Guest {INT32}
-STR_0696    :Guest {INT32}
-STR_0697    :Guest {INT32}
-STR_0698    :Guest {INT32}
-STR_0699    :Guest {INT32}
-STR_0700    :Guest {INT32}
-STR_0701    :Guest {INT32}
-STR_0702    :Guest {INT32}
-STR_0703    :Guest {INT32}
-STR_0704    :Guest {INT32}
-STR_0705    :Guest {INT32}
-STR_0706    :Guest {INT32}
-STR_0707    :Guest {INT32}
-STR_0708    :Guest {INT32}
-STR_0709    :Guest {INT32}
-STR_0710    :Guest {INT32}
-STR_0711    :Guest {INT32}
-STR_0712    :Guest {INT32}
-STR_0713    :Guest {INT32}
-STR_0714    :Guest {INT32}
-STR_0715    :Guest {INT32}
-STR_0716    :Guest {INT32}
-STR_0717    :Guest {INT32}
-STR_0718    :Guest {INT32}
-STR_0719    :Guest {INT32}
-STR_0720    :Guest {INT32}
-STR_0721    :Guest {INT32}
-STR_0722    :Guest {INT32}
-STR_0723    :Guest {INT32}
-STR_0724    :Guest {INT32}
-STR_0725    :Guest {INT32}
-STR_0726    :Guest {INT32}
-STR_0727    :Guest {INT32}
-STR_0728    :Guest {INT32}
-STR_0729    :Guest {INT32}
-STR_0730    :Guest {INT32}
-STR_0731    :Guest {INT32}
-STR_0732    :Guest {INT32}
-STR_0733    :Guest {INT32}
-STR_0734    :Guest {INT32}
-STR_0735    :Guest {INT32}
-STR_0736    :Guest {INT32}
-STR_0737    :Guest {INT32}
-STR_0738    :Guest {INT32}
-STR_0739    :Guest {INT32}
-STR_0740    :Guest {INT32}
-STR_0741    :Guest {INT32}
-STR_0742    :Guest {INT32}
-STR_0743    :Guest {INT32}
-STR_0744    :Guest {INT32}
-STR_0745    :Guest {INT32}
-STR_0746    :Guest {INT32}
-STR_0747    :Guest {INT32}
-STR_0748    :Guest {INT32}
-STR_0749    :Guest {INT32}
-STR_0750    :Guest {INT32}
-STR_0751    :Guest {INT32}
-STR_0752    :Guest {INT32}
-STR_0753    :Guest {INT32}
-STR_0754    :Guest {INT32}
-STR_0755    :Guest {INT32}
-STR_0756    :Guest {INT32}
-STR_0757    :Guest {INT32}
-STR_0758    :Guest {INT32}
-STR_0759    :Guest {INT32}
-STR_0760    :Guest {INT32}
-STR_0761    :Guest {INT32}
-STR_0762    :Guest {INT32}
-STR_0763    :Guest {INT32}
-STR_0764    :Guest {INT32}
-STR_0765    :Guest {INT32}
-STR_0766    :Guest {INT32}
+
 STR_0767    :Guest {INT32}
 STR_0768    :Handyman {INT32}
 STR_0769    :Mechanic {INT32}
@@ -1913,7 +1752,7 @@ STR_1919    :Not enough cash available!
 STR_1920    :Can't pay back loan!
 STR_1921    :{SMALLFONT}{BLACK}Start a new game
 STR_1922    :{SMALLFONT}{BLACK}Continue playing a saved game
-STR_1923    :{SMALLFONT}{BLACK}Show tutorial
+
 STR_1924    :{SMALLFONT}{BLACK}Exit
 STR_1925    :Can't place person here...
 STR_1926    :{SMALLFONT}
@@ -2245,13 +2084,14 @@ STR_5557    :Stay connected after desynchronization (Multiplayer)
 STR_5572    :Add To Favorites
 STR_5573    :Remove From Favorites
 STR_5620    :Corkscrew Follies
-STR_5730    :Nearest neighbor
-STR_5818    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Use nearest neighbor scaling{NEWLINE}when window scaling factor set{NEWLINE}to integer values (1, 2, 3, etc)
-STR_5821    :{SMALLFONT}{BLACK}Changes the color of the construction marker when building rides,{NEWLINE}paths, shops, scenery, etc.
+STR_5817    :{SMALLFONT}{BLACK}Sets UI scaling type. Requires hardware display to be used.{NEWLINE}Linear scaling is smooth, but blurry. Smooth Nearest Neighbor scaling is sharp, but can cause a minor performance hit.
 STR_5827    :{SMALLFONT}{BLACK}Sets the color scheme used for the GUI
+STR_5843    :{SMALLFONT}{BLACK}Enables progressive unlocking of scenarios (RCT1 behavior)
 STR_5907    :{SMALLFONT}{BLACK}When enabled, zooming in will center around the cursor, as opposed to the screen center.
 STR_6046    :Normalize height map
 STR_6053    :The heightmap cannot be normalized
+STR_6159    :Smooth Nearest Neighbor
+STR_6166    :{SMALLFONT}{BLACK}Synchronizes each frame displayed to the monitor's refresh rate, preventing screen tearing.
 
 #############
 # Scenarios #
@@ -2704,14 +2544,691 @@ STR_NAME    :Top Spin
 STR_DESC    :Passengers ride in a gondola suspended by large rotating arms, rotating forwards and backwards head-over-heels
 STR_CPTY    :8 passengers
 
+[BMSD]
+STR_NAME    :Twister Trains
+STR_DESC    :A spacious train with shoulder restraints
+
+[BMSU]
+STR_NAME    :Stand-up Twister Trains
+STR_DESC    :A train with shoulder restraints, in which the riders stand up
+
+[BMFL]
+STR_NAME    :Floorless Twister Trains
+STR_DESC    :A spacious train with shoulder restraints and no floor, making for a more exciting ride
+
+[WMMINE]
+STR_NAME    :Mine Cars
+STR_DESC    :Cars shaped like an old mine cart
+
+[WMOUSE]
+STR_NAME    :Mouse Cars
+STR_DESC    :Indivual cars shaped like a mouse
+
+[STEEP1]
+STR_NAME    :Horses
+STR_DESC    :Single cars shaped like a horse
+
+[STEEP2]
+STR_NAME    :Motorbikes
+STR_DESC    :Single cars shaped like a motorbike
+
+[SBOX]
+STR_NAME    :Soap boxes
+STR_DESC    :Single cars shaped like a soap box
+
+[BOB1]
+STR_NAME    :Bobsleigh Trains
+STR_DESC    :A train consisting of 2-seater cars where the riders are behind each other
+
+[INTBOB]
+STR_NAME    :6-seater Bobsleighs
+STR_DESC    :Bobsleighs with three seating rows, with room for two people on each
+
+[LIFT1]
+STR_NAME    :Lift Cabin
+STR_DESC    :Steel lift cabin
+
+[ARRT1]
+STR_NAME    :Corkscrew Roller Coaster Trains
+STR_DESC    :Roller coaster train with shoulder restraints
+
+[ARRT2]
+STR_NAME    :Hypercoaster Trains
+STR_DESC    :Comfortable trains with only lap bar restraints
+
+[MONBK]
+STR_NAME    :Bicycles
+
+[OBS1]
+STR_NAME    :Single-deck Cabin
+
+[OBS2]
+STR_NAME    :Double-deck Cabin
+
+[GTC]
+STR_NAME    :Ghost Train Cars
+
+[HMCAR]
+STR_NAME    :Haunted Mansion Cars
+
+[VREEL]
+STR_NAME    :Virginia Reel tubs
+
+[WMSPIN]
+STR_NAME    :Spinning Mouse Cars
+
+[AMT1]
+STR_NAME    :Mine Trains
+
+[SLCT]
+STR_NAME    :Compact Inverted Coaster Trains
+
+[SLCFO]
+STR_NAME    :Face-off Cars
+
+[VEKDV]
+STR_NAME    :Vertical Shuttle Cars
+
+[THCAR]
+STR_NAME    :Air Powered Vertical Coaster Trains
+
+[SSC1]
+STR_NAME    :Launched Freefall car
+
+[DING1]
+STR_NAME    :Dinghies
+
+[LFB1]
+STR_NAME    :Logs
+
+[RFTBOAT]
+STR_NAME    :Rafts
+
+[IVMC1]
+STR_NAME    :Four-seater Cars
+
+[SPDRCR]
+STR_NAME    :Spiral Roller Coaster Trains
+
+[TOGST]
+STR_NAME    :Stand-up Roller Coaster Trains
+
+[PREMT1]
+STR_NAME    :LIM Launched Roller Coaster Trains
+
+[PMT1]
+STR_NAME    :Powered mine train
+
+[BMAIR]
+STR_NAME    :Flying Roller Coaster Trains
+
+[INTINV]
+STR_NAME    :Impulse Trains
+
+[INTST]
+STR_NAME    :Giga Coaster Trains
+
+[NEMT]
+STR_NAME    :4-across Inverted Roller Coaster Trains
+
+[VEKST]
+STR_NAME    :Lay-down Roller Coaster Trains
+
+[REVCAR]
+STR_NAME    :Reverser Cars
+STR_DESC    :Bogied cars capable of turning around on special reversing sections
+
+[SKYTR]
+STR_NAME    :Lay-down Cars
+
+[BMVD]
+STR_NAME    :Six-seater Twister Trains
+
+[SUBMAR]
+STR_NAME    :Submarines
+
 #WW
 [CONDORRD]
-STR_NAME    :Condor Ride
+STR_NAME    :Condor Trains
 STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
 STR_CPTY    :4 passengers per car
 
 #WW
 [CONGAEEL]
-STR_NAME    :Conger Eel Coaster
-STR_DESC    :A compact steel-tracked roller coaster where the Eel-shaped train travels through corkscrews and loops
-STR_CPTY    :4 passengers per car
+STR_NAME    :Conger Eel Trains
+STR_DESC    :Trains with shoulder restraints, in the shape of a Conger Eel.
+
+#WW
+[MINELIFT]
+STR_NAME    :Mine Lift Cabin
+STR_DESC    :A steel lift cabin commonly used in mines
+
+#WW
+[ANACONDA]
+STR_NAME    :Anaconda Trains
+
+#WW
+[CROCFLUM]
+STR_NAME    :Crocodile boats
+
+#WW
+[WHICGRUB]
+STR_NAME    :Witchity Grub Trains
+
+#WW
+[GRATWHTE]
+STR_NAME    :Great White Shark Trains
+STR_DESC    :Trains with shoulder restraints, in the shape of a Great White Shark
+
+#WW
+[BOMERANG]
+STR_NAME    :Boomerang Trains
+
+#WW
+[KOLARIDE]
+STR_NAME    :Koala car
+
+#WW
+[MANTARAY]
+STR_NAME    :Manta Ray boats
+STR_DESC    :Coaster boats in the shape of a Manta Ray
+
+#WW
+[TUTLBOAT]
+STR_NAME    :Turtle boats
+
+#WW, for the Wooden RC
+[MINECART]
+STR_NAME    :Mine Cart Trains
+
+#WW
+[LIONRIDE]
+STR_NAME    :Lion Cars
+
+#WW
+[RHINORID]
+STR_NAME    :Rhino Trains
+
+#WW
+[OSTRICH]
+STR_NAME    :Ostrich Trains
+
+#WW
+[GORILLA]
+STR_NAME    :Gorilla Trains
+
+#WW
+[FOOTBALL]
+STR_NAME    :Football Trains
+
+#WW
+[TIGRTWST]
+STR_NAME    :Bengal Tiger Cars
+
+#WW
+[TAXICSTR]
+STR_NAME    :Yellow Taxi Trains
+
+#WW
+[OUTRIGGR]
+STR_NAME    :Outrigger canoes
+
+#WW
+[SANFTRAM]
+STR_NAME    :San Francisco Trams
+
+#WW
+[PENGUINB]
+STR_NAME    :Penguin Trains
+
+#WW
+[POLARBER]
+STR_NAME    :Polar Bear Trains
+
+#WW
+[LONDONBS]
+STR_NAME    :Routemaster buses
+STR_DESC    :Replicas of the famous London Routemaster bus
+
+#WW
+[BLACKCAB]
+STR_NAME    :Black Cabs
+
+#WW
+[TGVTRAIN]
+STR_NAME    :TGV Trains
+
+#WW
+[ROCKET]
+STR_NAME    :1950's Rockets
+
+#WW
+[SPUTNIKR]
+STR_NAME    :Sputnik Cars
+
+#WW
+[DHOWWATR]
+STR_NAME    :Dhow boats
+
+#WW
+[SURFBRDC]
+STR_NAME    :Surfing Trains
+
+#WW
+[KILLWHAL]
+STR_NAME    :Killer Whale Submarines
+
+#WW
+[HIPPORID]
+STR_NAME    :Hippo Submarines
+
+#WW
+[DOLPHINR]
+STR_NAME    :Dolphin boats
+
+#WW
+[MANDARIN]
+STR_NAME    :Mandarin Duck Boats
+STR_DESC    :Duck shaped boat, propelled by the pedalling front seat passengers
+
+#TT
+[BATTRRAM]
+STR_NAME    :Battering Ram Trains
+
+#TT
+[BLCKDETH]
+STR_NAME    :Black Death Trains
+
+#TT
+[JOUSTING]
+STR_NAME    :Jousting Knights
+
+#TT
+[OAKBAREL]
+STR_NAME    :Oak Barrels
+
+#TT
+[STAMPHRD]
+STR_NAME    :Stampeding Herd Trains
+
+#TT
+[DRAGNFLY]
+STR_NAME    :Dragonfly Cars
+
+#TT
+[PTERODAC]
+STR_NAME    :Pterodactyl Trains
+
+#TT
+[PEGASUSX]
+STR_NAME    :Pegasus Cars
+
+#TT
+[CERBERUS]
+STR_NAME    :Cerberus Trains
+
+#TT
+[HARPIESX]
+STR_NAME    :Harpies Trains
+
+#TT
+[VALKYRIE]
+STR_NAME    :Valkyries Trains
+
+#TT
+[RIVRSTYX]
+STR_NAME    :River Styx boats
+
+#TT
+[TELEPTER]
+STR_NAME    :Teleporter Cabin
+
+#TT
+[HOVERCAR]
+STR_NAME    :Hover Cars
+
+#TT
+[HOVRBORD]
+STR_NAME    :Hoverboards
+
+#TT
+[HOVERBKE]
+STR_NAME    :Hover Bikes
+
+#TT, Reverser RC
+[POLICECR]
+STR_NAME    :Police Cars
+
+#TT, Looping RC
+[POLCHASE]
+STR_NAME    :Police Car Trains
+
+#TT
+[GANSTRCR]
+STR_NAME    :Gangster Cars
+
+#TT
+[SEAPLANE]
+STR_NAME    :Suspended Seaplane Cars
+
+#TT
+[BARNSTRM]
+STR_NAME    :BarnStorming Cars
+
+#TT
+[FLYGBOAT]
+STR_NAME    :Flying boats
+
+#TT
+[BMVOCTPS]
+STR_NAME    :Blob from Outer Space
+
+#TT
+[JETPLANE]
+STR_NAME    :Jet Plane Cars
+
+#TT
+[HOTRODXX]
+STR_NAME    :Hot Rod Cars
+
+###########
+# Scenery #
+###########
+
+#Bulrushes
+[TBR]
+STR_NAME    :Cattails
+
+###############################################################################
+## RCT2 Scenarios
+###############################################################################
+<Alpine Adventures>
+STR_SCNR    :Alpine Adventures
+STR_PARK    :Alpine Adventures
+STR_DTLS    :Convert a small mountain ski resort into a snow-themed amusement park
+
+<Amity Airfield>
+STR_SCNR    :Amity Airfield
+STR_PARK    :Amity Airfield
+STR_DTLS    :Build a flying-themed amusement park in this abandoned airport
+
+<Botany Breakers>
+STR_SCNR    :Botany Breakers
+STR_PARK    :Botany Breakers
+STR_DTLS    :Your challenge is to build a high-profit park on this paradise island
+
+<Build your own Six Flags Belgium>
+STR_SCNR    :Build your own Six Flags Belgium
+STR_PARK    :Six Flags Belgium
+STR_DTLS    :Build your own version of this European Six Flags park
+
+<Build your own Six Flags Great Adventure>
+STR_SCNR    :Build your own Six Flags Great Adventure
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :Use your design skills to recreate this Six Flags park
+
+<Build your own Six Flags Holland>
+STR_SCNR    :Build your own Six Flags Holland
+STR_PARK    :Six Flags Holland
+STR_DTLS    :Build this European Six Flags park the way you want to
+
+<Build your own Six Flags Magic Mountain>
+STR_SCNR    :Build your own Six Flags Magic Mountain
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :Create your own version of this massive Six Flags park
+
+<Build your own Six Flags over Texas>
+STR_SCNR    :Build your own Six Flags over Texas
+STR_PARK    :Six Flags over Texas
+STR_DTLS    :Starting from scratch, build the rides in this Six Flags park
+
+<Build your own Six Flags Park>
+STR_SCNR    :Build your own Six Flags Park
+STR_PARK    :Six Flags
+STR_DTLS    :Build your own design of Six Flags park - Either build rides from other Six Flags parks or design and build your own rides
+
+<Bumbly Bazaar>
+STR_SCNR    :Bumbly Bazaar
+STR_PARK    :Bumbly Bazaar
+STR_DTLS    :Starting with a small market bazaar, your challenge is to increase the profit from shops and stalls by building rides and roller coasters to attract more customers
+
+<Crazy Castle>
+STR_SCNR    :Crazy Castle
+STR_PARK    :Crazy Castle
+STR_DTLS    :You have inherited a large castle - Your job is to convert it into a small theme park.
+
+<Dusty Greens>
+STR_SCNR    :Dusty Greens
+STR_PARK    :Dusty Greens
+STR_DTLS    :Situated near a highway junction in the desert, Dusty Greens is an opportunity to develop a small golf resort into a thriving theme park
+
+<Electric Fields>
+STR_SCNR    :Electric Fields
+STR_PARK    :Electric Fields
+STR_DTLS    :You have inherited a small farm, and your challenge is to build a small theme park amongst the fields and farm buildings
+
+<Extreme Heights>
+STR_SCNR    :Extreme Heights
+STR_PARK    :Extreme Heights
+STR_DTLS    :Free of financial restrictions, your challenge is to expand this desert park to attract people seeking the ultimate thrills
+
+<Factory Capers>
+STR_SCNR    :Factory Capers
+STR_PARK    :Factory Capers
+STR_DTLS    :An abandoned factory complex is an opportunity to build a mechanical-themed amusement park
+
+<Fungus Woods>
+STR_SCNR    :Fungus Woods
+STR_PARK    :Fungus Woods
+STR_DTLS    :Restricted to only older-style wooden rides, your challenge is to build a thriving theme park in Fungus Woods
+
+<Ghost Town>
+STR_SCNR    :Ghost Town
+STR_PARK    :Ghost Town
+STR_DTLS    :Hired by a large amusement park chain, your task is to build them a giant roller coaster park around an abandoned mining town
+
+<Gravity Gardens>
+STR_SCNR    :Gravity Gardens
+STR_PARK    :Gravity Gardens
+STR_DTLS    :Your challenge is to build a roller coaster park in the beautiful Gravity Gardens - No other rides, just roller coasters!
+
+<Infernal Views>
+STR_SCNR    :Infernal Views
+STR_PARK    :Infernal Views
+STR_DTLS    :A park nestled precariously on lava rock with streams of magma
+
+<Lucky Lake>
+STR_SCNR    :Lucky Lake
+STR_PARK    :Lucky Lake
+STR_DTLS    :With unlimited funds but a challenging lake location, this park will be a challenge to expand and manage
+
+<Rainbow Summit>
+STR_SCNR    :Rainbow Summit
+STR_PARK    :Rainbow Summit
+STR_DTLS    :Built on a hillside, this park is forbidden from building anything tall. Can you expand the park and make it successful?
+
+<Six Flags Belgium>
+STR_SCNR    :Six Flags Belgium
+STR_PARK    :Six Flags Belgium
+STR_DTLS    :Try your hand at running and improving this Six Flags park
+
+<Six Flags Great Adventure>
+STR_SCNR    :Six Flags Great Adventure
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To attract more guests to the park!
+
+<Six Flags Holland>
+STR_SCNR    :Six Flags Holland
+STR_PARK    :Six Flags Holland
+STR_DTLS    :Try your hand at running and improving this Six Flags park
+
+<Six Flags Magic Mountain>
+STR_SCNR    :Six Flags Magic Mountain
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To repay your loan while keeping the park value up!
+
+<Six Flags over Texas>
+STR_SCNR    :Six Flags over Texas
+STR_PARK    :Six Flags over Texas
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To attract more guests to the park!
+
+###############################################################################
+## Wacky Worlds Scenarios
+###############################################################################
+<Africa - African Diamond Mine>
+STR_SCNR    :Africa - African Diamond Mine
+STR_PARK    :Mines of Africa
+STR_DTLS    :You inherited a disused diamond mine, and find a valuable diamond.  You decide to invest that money to build a world-famous theme park.
+
+<Africa - Oasis>
+STR_SCNR    :Africa - Oasis
+STR_PARK    :Mirage Madness
+STR_DTLS    :A desert Oasis has been discovered and would provide a beautiful location for a park. Transport to the oasis has been provided.
+
+<Africa - Victoria Falls>
+STR_SCNR    :Africa - Victoria Falls
+STR_PARK    :Over The Edge
+STR_DTLS    :A dam has been built offering abundant, cheap hydroelectric power with which to run a park. You need to reach a high park value to help repay the loan for the dam.
+
+<Antarctic - Ecological Salvage>
+STR_SCNR    :Antarctic - Ecological Salvage
+STR_PARK    :Icy Adventures
+STR_DTLS    :The environment agency has turned to you to transform an old oil refinery ecological eyesore into a top tourist attraction. Land is cheap but loan interest is high. You can sell the old buildings for salvage.
+
+<Asia - Great Wall of China Tourism Enhancement>
+STR_SCNR    :Asia - Great Wall of China Tourism Enhancement
+STR_PARK    :Great Wall of China
+STR_DTLS    :The authorities have decided to enhance tourism around the Great Wall by building a theme park on the adjacent land. Money is no object!
+
+<Asia - Japanese Coastal Reclaim>
+STR_SCNR    :Asia - Japanese Coastal Reclaim
+STR_PARK    :Okinawa Coast
+STR_DTLS    :An existing park has run out of space. Your only option is to build out into the sea, and so you have taken out a loan. Height restrictions on your building are enforced due to foundations and earthquake risk.
+
+<Asia - Maharaja Palace>
+STR_SCNR    :Asia - Maharaja Palace
+STR_PARK    :Park Maharaja
+STR_DTLS    :You have been commissioned by the Maharaja to bring entertainment to the large local population. Build a park inspired by the Maharaja's palace.
+
+<Australasia - Ayers Rock>
+STR_SCNR    :Australasia - Ayers Rock
+STR_PARK    :Ayers Adventure
+STR_DTLS    :You are helping Aboriginal people to build a park as part of a cultural awareness program. You need to get a large number of guests to educate them in the unique heritage of the Aboriginal people.
+
+<Australasia - Fun at the Beach>
+STR_SCNR    :Australasia - Fun at the Beach
+STR_PARK    :Beach Barbecue Blast
+STR_DTLS    :A local entrepreneur's sealife park has gone bust. You already operate a small park and buy the other park from the construction company. Develop a big combined park.
+
+<Europe - European Cultural Festival>
+STR_SCNR    :Europe - European Cultural Festival
+STR_PARK    :European Extravaganza
+STR_DTLS    :You have been brought in to take over a European Cultural Visitor Attraction and must increase the number of guests in order to pay back the EU subsidy by the end of the current European parliament term.
+
+<Europe - Renovation>
+STR_SCNR    :Europe - Renovation
+STR_PARK    :From The Ashes
+STR_DTLS    :An old park has fallen into disrepair. You gain a European Union grant to return this deprived area to its former glory! You need to renovate the park and repay the grant.
+
+<N America - Extreme Hawaiian Island>
+STR_SCNR    :N. America - Extreme Hawaiian Island
+STR_PARK    :Wacky Waikiki
+STR_DTLS    :The people of Hawaii are bored of surfing and are looking for something more intense. You need to build a park with this in mind to keep the area's tourist attraction rating high.
+
+<North America - Grand Canyon>
+STR_SCNR    :North America - Grand Canyon
+STR_PARK    :Canyon Calamities
+STR_DTLS    :You have to build a park on limited land either side of this natural treasure - you do have the opportunity to buy neighbouring land from the Native American Indians. You need to complete the objective to sustain the local town's population.
+
+<North America - Rollercoaster Heaven>
+STR_SCNR    :North America - Rollercoaster Heaven
+STR_PARK    :Rollercoaster Heaven
+STR_DTLS    :You are a successful business tycoon on long sabbatical who desires to use this time transforming the city park into Rollercoaster Heaven. Money is no object!
+
+<South America - Inca Lost City>
+STR_SCNR    :South America - Inca Lost City
+STR_PARK    :Lost City Founder
+STR_DTLS    :To further boost local tourism you must construct a park that is in tune with its surroundings, and has height restrictions.
+
+<South America - Rain Forest Plateau>
+STR_SCNR    :South America - Rain Forest Plateau
+STR_PARK    :Rainforest Romp
+STR_DTLS    :Space is limited in the precious rainforest - you must cram as much as possible into the existing clearing, in order to provide a viable alternative to the local timber industry.
+
+<South America - Rio Carnival>
+STR_SCNR    :South America - Rio Carnival
+STR_PARK    :Sugarloaf Shores
+STR_DTLS    :You run a small park near Rio but the bank has called in your loan. You need to quickly increase your earning capacity to repay this unexpected debt.
+
+###############################################################################
+## Time Twister Scenarios
+###############################################################################
+<Dark Age - Castle>
+STR_SCNR    :Dark Age - Castle
+STR_PARK    :Cliffside Castle
+STR_DTLS    :Local members of the battle re-enactment society are rather serious about their hobby. They've entrusted you with the job of constructing a Dark Age theme park on the grounds of Cliffside Castle.
+
+<Dark Age - Robin Hood>
+STR_SCNR    :Dark Age - Robin Hood
+STR_PARK    :Sherwood Forest
+STR_DTLS    :To liberate wealth from the rich and distribute it to the needy, you and your Merry Men have decided to build a theme park in Sherwood Forest.
+
+<Future - First Encounters>
+STR_SCNR    :Future - First Encounters
+STR_PARK    :Extraterrestrial Extravaganza
+STR_DTLS    :Life has been discovered on a distant planet Build an alien theme park to cash in on the unprecedented wave of interest.
+
+<Future - Future World>
+STR_SCNR    :Future - Future World
+STR_PARK    :Gemini City
+STR_DTLS    :Show off your inventive, utopian vision of the future - come up with a futuristic park design that incorporates state-of-the-art attractions.
+
+<Mythological - Animatronic Film Set>
+STR_SCNR    :Mythological - Animatronic Film Set
+STR_PARK    :Animatronic Antics
+STR_DTLS    :You have been given the task of running and improving an existing theme park, which has been built on an old film set. Build a tribute to the pioneering stop-motion animators who first brought mythical creatures to life on the silver screen.
+
+<Mythological - Cradle of Civilisation>
+STR_SCNR    :Mythological - Cradle of Civilization
+STR_PARK    :Mythological Madness
+STR_DTLS    :You own an island of particular archaeological value. You've decided to fund its preservation by constructing a theme park based on the area's rich Mythological heritage.
+
+<Prehistoric - After the Asteroid>
+STR_SCNR    :Prehistoric - After the Asteroid
+STR_PARK    :Crater Carnage
+STR_DTLS    :You own a dusty old meteor crater. In the true entrepreneurial spirit, you've decided to construct an asteroid theme park and convert your seemingly worthless land into a sizeable fortune.
+
+<Prehistoric - Jurassic Safari>
+STR_SCNR    :Prehistoric - Jurassic Safari
+STR_PARK    :Coastersaurus
+STR_DTLS    :You've been given the task of constructing a Jurassic era theme park. To optimize your visitors' access to the exotic plant and animal exhibits, you will need to build rides going over and into the valley.
+
+<Prehistoric - Stone Age>
+STR_SCNR    :Prehistoric - Stone Age
+STR_PARK    :Rocky Rambles
+STR_DTLS    :To thwart the highway developers and preserve the mysterious ancient stone circles, you will need to construct a Stone Age theme park and turn a profit. However, attracting visitors may pose a challenge, as the terrain is a tad inhospitable.
+
+<Roaring Twenties - Prison Island>
+STR_SCNR    :Roaring Twenties - Prison Island
+STR_PARK    :Alcatraz
+STR_DTLS    :The infamous Prison Island - whose population once swelled with bootleggers and racketeers - is now up for sale. You've decided to convert it into a top tourist attraction, and money is no object
+
+<Roaring Twenties - Schneider Cup>
+STR_SCNR    :Roaring Twenties - Schneider Cup
+STR_PARK    :Schneider Shores
+STR_DTLS    :The 75th anniversary of your grandfather's Schneider Cup victory is coming up in a few years. You're going to honour his achievement by building a theme park based on the famous seaplane race.
+
+<Roaring Twenties - Skyscrapers>
+STR_SCNR    :Roaring Twenties - Skyscrapers
+STR_PARK    :Metropolis
+STR_DTLS    :You own an empty lot near the low-rise part of town. To squeeze the most out of your urban property, build a skyscraper theme park inspired by the soaring art deco architecture of the twenties.
+
+<Rock 'n' Roll - Flower Power>
+STR_SCNR    :Rock 'n' Roll - Flower Power
+STR_PARK    :Woodstock
+STR_DTLS    :A large annual music festival takes place on your land. Build a hip theme park to keep the free-spirited audience entertained.
+
+<Rock 'n' Roll - Rock 'n' Roll>
+STR_SCNR    :Rock 'n' Roll - Rock 'n' Roll
+STR_PARK    :Rock 'n' Roll Revival
+STR_DTLS    :This aging theme park has seen better days. Help the owner give it a retro rock 'n' roll makeover and turn the place into a successful venue.

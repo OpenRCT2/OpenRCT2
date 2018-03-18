@@ -18,10 +18,7 @@
 
 #include "Object.h"
 
-extern "C"
-{
-    #include "../ride/ride.h"
-}
+#include "../ride/Ride.h"
 
 class RideObject final : public Object
 {
@@ -43,12 +40,15 @@ public:
 
     void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const override;
 
-    const utf8 * GetDescription() const;
-    const utf8 * GetCapacity() const;
+    std::string GetDescription() const;
+    std::string GetCapacity() const;
 
     void SetRepositoryItem(ObjectRepositoryItem * item) const override;
 
 private:
     void ReadLegacyVehicle(IReadObjectContext * context, IStream * stream, rct_ride_entry_vehicle * vehicle);
     void PerformFixes();
+
+    static uint8 CalculateNumVerticalFrames(const rct_ride_entry_vehicle * vehicleEntry);
+    static uint8 CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * vehicleEntry);
 };

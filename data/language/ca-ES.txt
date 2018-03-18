@@ -604,170 +604,170 @@ STR_0599    :Muntanya russa que compta amb vagons individuals i caigudes i girs 
 STR_0600    :Trens d'estil miner autopropulsats per un recorregut amb girs suaus.
 STR_0601    :<removed string - do not use>
 STR_0602    :Els vagons d'aquesta muntanya russa s'acceleren fora de l'andana per motors d'inducció lineal per accelerar durant les inversions tortuoses.
-STR_0603    :Visitant {INT32}
-STR_0604    :Visitant {INT32}
-STR_0605    :Visitant {INT32}
-STR_0606    :Visitant {INT32}
-STR_0607    :Visitant {INT32}
-STR_0608    :Visitant {INT32}
-STR_0609    :Visitant {INT32}
-STR_0610    :Visitant {INT32}
-STR_0611    :Visitant {INT32}
-STR_0612    :Visitant {INT32}
-STR_0613    :Visitant {INT32}
-STR_0614    :Visitant {INT32}
-STR_0615    :Visitant {INT32}
-STR_0616    :Visitant {INT32}
-STR_0617    :Visitant {INT32}
-STR_0618    :Visitant {INT32}
-STR_0619    :Visitant {INT32}
-STR_0620    :Visitant {INT32}
-STR_0621    :Visitant {INT32}
-STR_0622    :Visitant {INT32}
-STR_0623    :Visitant {INT32}
-STR_0624    :Visitant {INT32}
-STR_0625    :Visitant {INT32}
-STR_0626    :Visitant {INT32}
-STR_0627    :Visitant {INT32}
-STR_0628    :Visitant {INT32}
-STR_0629    :Visitant {INT32}
-STR_0630    :Visitant {INT32}
-STR_0631    :Visitant {INT32}
-STR_0632    :Visitant {INT32}
-STR_0633    :Visitant {INT32}
-STR_0634    :Visitant {INT32}
-STR_0635    :Visitant {INT32}
-STR_0636    :Visitant {INT32}
-STR_0637    :Visitant {INT32}
-STR_0638    :Visitant {INT32}
-STR_0639    :Visitant {INT32}
-STR_0640    :Visitant {INT32}
-STR_0641    :Visitant {INT32}
-STR_0642    :Visitant {INT32}
-STR_0643    :Visitant {INT32}
-STR_0644    :Visitant {INT32}
-STR_0645    :Visitant {INT32}
-STR_0646    :Visitant {INT32}
-STR_0647    :Visitant {INT32}
-STR_0648    :Visitant {INT32}
-STR_0649    :Visitant {INT32}
-STR_0650    :Visitant {INT32}
-STR_0651    :Visitant {INT32}
-STR_0652    :Visitant {INT32}
-STR_0653    :Visitant {INT32}
-STR_0654    :Visitant {INT32}
-STR_0655    :Visitant {INT32}
-STR_0656    :Visitant {INT32}
-STR_0657    :Visitant {INT32}
-STR_0658    :Visitant {INT32}
-STR_0659    :Visitant {INT32}
-STR_0660    :Visitant {INT32}
-STR_0661    :Visitant {INT32}
-STR_0662    :Visitant {INT32}
-STR_0663    :Visitant {INT32}
-STR_0664    :Visitant {INT32}
-STR_0665    :Visitant {INT32}
-STR_0666    :Visitant {INT32}
-STR_0667    :Visitant {INT32}
-STR_0668    :Visitant {INT32}
-STR_0669    :Visitant {INT32}
-STR_0670    :Visitant {INT32}
-STR_0671    :Visitant {INT32}
-STR_0672    :Visitant {INT32}
-STR_0673    :Visitant {INT32}
-STR_0674    :Visitant {INT32}
-STR_0675    :Visitant {INT32}
-STR_0676    :Visitant {INT32}
-STR_0677    :Visitant {INT32}
-STR_0678    :Visitant {INT32}
-STR_0679    :Visitant {INT32}
-STR_0680    :Visitant {INT32}
-STR_0681    :Visitant {INT32}
-STR_0682    :Visitant {INT32}
-STR_0683    :Visitant {INT32}
-STR_0684    :Visitant {INT32}
-STR_0685    :Visitant {INT32}
-STR_0686    :Visitant {INT32}
-STR_0687    :Visitant {INT32}
-STR_0688    :Visitant {INT32}
-STR_0689    :Visitant {INT32}
-STR_0690    :Visitant {INT32}
-STR_0691    :Visitant {INT32}
-STR_0692    :Visitant {INT32}
-STR_0693    :Visitant {INT32}
-STR_0694    :Visitant {INT32}
-STR_0695    :Visitant {INT32}
-STR_0696    :Visitant {INT32}
-STR_0697    :Visitant {INT32}
-STR_0698    :Visitant {INT32}
-STR_0699    :Visitant {INT32}
-STR_0700    :Visitant {INT32}
-STR_0701    :Visitant {INT32}
-STR_0702    :Visitant {INT32}
-STR_0703    :Visitant {INT32}
-STR_0704    :Visitant {INT32}
-STR_0705    :Visitant {INT32}
-STR_0706    :Visitant {INT32}
-STR_0707    :Visitant {INT32}
-STR_0708    :Visitant {INT32}
-STR_0709    :Visitant {INT32}
-STR_0710    :Visitant {INT32}
-STR_0711    :Visitant {INT32}
-STR_0712    :Visitant {INT32}
-STR_0713    :Visitant {INT32}
-STR_0714    :Visitant {INT32}
-STR_0715    :Visitant {INT32}
-STR_0716    :Visitant {INT32}
-STR_0717    :Visitant {INT32}
-STR_0718    :Visitant {INT32}
-STR_0719    :Visitant {INT32}
-STR_0720    :Visitant {INT32}
-STR_0721    :Visitant {INT32}
-STR_0722    :Visitant {INT32}
-STR_0723    :Visitant {INT32}
-STR_0724    :Visitant {INT32}
-STR_0725    :Visitant {INT32}
-STR_0726    :Visitant {INT32}
-STR_0727    :Visitant {INT32}
-STR_0728    :Visitant {INT32}
-STR_0729    :Visitant {INT32}
-STR_0730    :Visitant {INT32}
-STR_0731    :Visitant {INT32}
-STR_0732    :Visitant {INT32}
-STR_0733    :Visitant {INT32}
-STR_0734    :Visitant {INT32}
-STR_0735    :Visitant {INT32}
-STR_0736    :Visitant {INT32}
-STR_0737    :Visitant {INT32}
-STR_0738    :Visitant {INT32}
-STR_0739    :Visitant {INT32}
-STR_0740    :Visitant {INT32}
-STR_0741    :Visitant {INT32}
-STR_0742    :Visitant {INT32}
-STR_0743    :Visitant {INT32}
-STR_0744    :Visitant {INT32}
-STR_0745    :Visitant {INT32}
-STR_0746    :Visitant {INT32}
-STR_0747    :Visitant {INT32}
-STR_0748    :Visitant {INT32}
-STR_0749    :Visitant {INT32}
-STR_0750    :Visitant {INT32}
-STR_0751    :Visitant {INT32}
-STR_0752    :Visitant {INT32}
-STR_0753    :Visitant {INT32}
-STR_0754    :Visitant {INT32}
-STR_0755    :Visitant {INT32}
-STR_0756    :Visitant {INT32}
-STR_0757    :Visitant {INT32}
-STR_0758    :Visitant {INT32}
-STR_0759    :Visitant {INT32}
-STR_0760    :Visitant {INT32}
-STR_0761    :Visitant {INT32}
-STR_0762    :Visitant {INT32}
-STR_0763    :Visitant {INT32}
-STR_0764    :Visitant {INT32}
-STR_0765    :Visitant {INT32}
-STR_0766    :Visitant {INT32}
+STR_0603    :<removed string - do not use>
+STR_0604    :<removed string - do not use>
+STR_0605    :<removed string - do not use>
+STR_0606    :<removed string - do not use>
+STR_0607    :<removed string - do not use>
+STR_0608    :<removed string - do not use>
+STR_0609    :<removed string - do not use>
+STR_0610    :<removed string - do not use>
+STR_0611    :<removed string - do not use>
+STR_0612    :<removed string - do not use>
+STR_0613    :<removed string - do not use>
+STR_0614    :<removed string - do not use>
+STR_0615    :<removed string - do not use>
+STR_0616    :<removed string - do not use>
+STR_0617    :<removed string - do not use>
+STR_0618    :<removed string - do not use>
+STR_0619    :<removed string - do not use>
+STR_0620    :<removed string - do not use>
+STR_0621    :<removed string - do not use>
+STR_0622    :<removed string - do not use>
+STR_0623    :<removed string - do not use>
+STR_0624    :<removed string - do not use>
+STR_0625    :<removed string - do not use>
+STR_0626    :<removed string - do not use>
+STR_0627    :<removed string - do not use>
+STR_0628    :<removed string - do not use>
+STR_0629    :<removed string - do not use>
+STR_0630    :<removed string - do not use>
+STR_0631    :<removed string - do not use>
+STR_0632    :<removed string - do not use>
+STR_0633    :<removed string - do not use>
+STR_0634    :<removed string - do not use>
+STR_0635    :<removed string - do not use>
+STR_0636    :<removed string - do not use>
+STR_0637    :<removed string - do not use>
+STR_0638    :<removed string - do not use>
+STR_0639    :<removed string - do not use>
+STR_0640    :<removed string - do not use>
+STR_0641    :<removed string - do not use>
+STR_0642    :<removed string - do not use>
+STR_0643    :<removed string - do not use>
+STR_0644    :<removed string - do not use>
+STR_0645    :<removed string - do not use>
+STR_0646    :<removed string - do not use>
+STR_0647    :<removed string - do not use>
+STR_0648    :<removed string - do not use>
+STR_0649    :<removed string - do not use>
+STR_0650    :<removed string - do not use>
+STR_0651    :<removed string - do not use>
+STR_0652    :<removed string - do not use>
+STR_0653    :<removed string - do not use>
+STR_0654    :<removed string - do not use>
+STR_0655    :<removed string - do not use>
+STR_0656    :<removed string - do not use>
+STR_0657    :<removed string - do not use>
+STR_0658    :<removed string - do not use>
+STR_0659    :<removed string - do not use>
+STR_0660    :<removed string - do not use>
+STR_0661    :<removed string - do not use>
+STR_0662    :<removed string - do not use>
+STR_0663    :<removed string - do not use>
+STR_0664    :<removed string - do not use>
+STR_0665    :<removed string - do not use>
+STR_0666    :<removed string - do not use>
+STR_0667    :<removed string - do not use>
+STR_0668    :<removed string - do not use>
+STR_0669    :<removed string - do not use>
+STR_0670    :<removed string - do not use>
+STR_0671    :<removed string - do not use>
+STR_0672    :<removed string - do not use>
+STR_0673    :<removed string - do not use>
+STR_0674    :<removed string - do not use>
+STR_0675    :<removed string - do not use>
+STR_0676    :<removed string - do not use>
+STR_0677    :<removed string - do not use>
+STR_0678    :<removed string - do not use>
+STR_0679    :<removed string - do not use>
+STR_0680    :<removed string - do not use>
+STR_0681    :<removed string - do not use>
+STR_0682    :<removed string - do not use>
+STR_0683    :<removed string - do not use>
+STR_0684    :<removed string - do not use>
+STR_0685    :<removed string - do not use>
+STR_0686    :<removed string - do not use>
+STR_0687    :<removed string - do not use>
+STR_0688    :<removed string - do not use>
+STR_0689    :<removed string - do not use>
+STR_0690    :<removed string - do not use>
+STR_0691    :<removed string - do not use>
+STR_0692    :<removed string - do not use>
+STR_0693    :<removed string - do not use>
+STR_0694    :<removed string - do not use>
+STR_0695    :<removed string - do not use>
+STR_0696    :<removed string - do not use>
+STR_0697    :<removed string - do not use>
+STR_0698    :<removed string - do not use>
+STR_0699    :<removed string - do not use>
+STR_0700    :<removed string - do not use>
+STR_0701    :<removed string - do not use>
+STR_0702    :<removed string - do not use>
+STR_0703    :<removed string - do not use>
+STR_0704    :<removed string - do not use>
+STR_0705    :<removed string - do not use>
+STR_0706    :<removed string - do not use>
+STR_0707    :<removed string - do not use>
+STR_0708    :<removed string - do not use>
+STR_0709    :<removed string - do not use>
+STR_0710    :<removed string - do not use>
+STR_0711    :<removed string - do not use>
+STR_0712    :<removed string - do not use>
+STR_0713    :<removed string - do not use>
+STR_0714    :<removed string - do not use>
+STR_0715    :<removed string - do not use>
+STR_0716    :<removed string - do not use>
+STR_0717    :<removed string - do not use>
+STR_0718    :<removed string - do not use>
+STR_0719    :<removed string - do not use>
+STR_0720    :<removed string - do not use>
+STR_0721    :<removed string - do not use>
+STR_0722    :<removed string - do not use>
+STR_0723    :<removed string - do not use>
+STR_0724    :<removed string - do not use>
+STR_0725    :<removed string - do not use>
+STR_0726    :<removed string - do not use>
+STR_0727    :<removed string - do not use>
+STR_0728    :<removed string - do not use>
+STR_0729    :<removed string - do not use>
+STR_0730    :<removed string - do not use>
+STR_0731    :<removed string - do not use>
+STR_0732    :<removed string - do not use>
+STR_0733    :<removed string - do not use>
+STR_0734    :<removed string - do not use>
+STR_0735    :<removed string - do not use>
+STR_0736    :<removed string - do not use>
+STR_0737    :<removed string - do not use>
+STR_0738    :<removed string - do not use>
+STR_0739    :<removed string - do not use>
+STR_0740    :<removed string - do not use>
+STR_0741    :<removed string - do not use>
+STR_0742    :<removed string - do not use>
+STR_0743    :<removed string - do not use>
+STR_0744    :<removed string - do not use>
+STR_0745    :<removed string - do not use>
+STR_0746    :<removed string - do not use>
+STR_0747    :<removed string - do not use>
+STR_0748    :<removed string - do not use>
+STR_0749    :<removed string - do not use>
+STR_0750    :<removed string - do not use>
+STR_0751    :<removed string - do not use>
+STR_0752    :<removed string - do not use>
+STR_0753    :<removed string - do not use>
+STR_0754    :<removed string - do not use>
+STR_0755    :<removed string - do not use>
+STR_0756    :<removed string - do not use>
+STR_0757    :<removed string - do not use>
+STR_0758    :<removed string - do not use>
+STR_0759    :<removed string - do not use>
+STR_0760    :<removed string - do not use>
+STR_0761    :<removed string - do not use>
+STR_0762    :<removed string - do not use>
+STR_0763    :<removed string - do not use>
+STR_0764    :<removed string - do not use>
+STR_0765    :<removed string - do not use>
+STR_0766    :<removed string - do not use>
 STR_0767    :Visitant {INT32}
 STR_0768    :Encarregat de neteja {INT32}
 STR_0769    :Mecànic {INT32}
@@ -851,7 +851,7 @@ STR_0845    :<removed string - do not use>
 STR_0846    :<removed string - do not use>
 STR_0847    :Quant a l'{LEFTGUILLEMET}OpenRCT2{RIGHTGUILLEMET}
 STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :{WINDOW_COLOUR_2}Versió 2.01.028
+STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer. Tots els drets reservats.
 STR_0851    :{WINDOW_COLOUR_2}Dissenyat i programat per en Chris Sawyer.
 STR_0852    :{WINDOW_COLOUR_2}Gràfics d'en Simon Foster.
@@ -860,13 +860,13 @@ STR_0854    :{WINDOW_COLOUR_2}Sons addicionals gravats pel David Ellis.
 STR_0855    :{WINDOW_COLOUR_2}Representació per la Jacqui Lyons de Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Agraïments:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth i John Wardley.
-STR_0858    :{WINDOW_COLOUR_2}
-STR_0859    :{WINDOW_COLOUR_2}
-STR_0860    :{WINDOW_COLOUR_2}
-STR_0861    :
-STR_0862    :
-STR_0863    :
-STR_0864    :
+STR_0858    :<removed string - do not use>
+STR_0859    :<removed string - do not use>
+STR_0860    :<removed string - do not use>
+STR_0861    :<removed string - do not use>
+STR_0862    :<removed string - do not use>
+STR_0863    :<removed string - do not use>
+STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -890,8 +890,8 @@ STR_0884    :Carrega un paisatge
 STR_0885    :Desa un paisatge
 STR_0886    :<removed string - do not use>
 STR_0887    :Surt de l'editor d'escenaris
-STR_0888    :Surt de l'editor de muntanyes russes
-STR_0889    :Surt de l'administrador de dissenys de vies
+STR_0888    :Surt de l'editor de circuits
+STR_0889    :Surt de l'administrador de circuits
 STR_0890    :<removed string - do not use>
 STR_0891    :Captura de pantalla
 STR_0892    :S'ha desat la captura de pantalla com a {LEFTGUILLEMET}{STRINGID}{RIGHTGUILLEMET}.
@@ -1927,7 +1927,7 @@ STR_1919    :No teniu prou diners!
 STR_1920    :No podeu tornar el préstec!
 STR_1921    :{SMALLFONT}{BLACK}Comença una nova partida
 STR_1922    :{SMALLFONT}{BLACK}Continua una partida desada
-STR_1923    :{SMALLFONT}{BLACK}Mostra el tutorial
+STR_1923    :<removed string - do not use>
 STR_1924    :{SMALLFONT}{BLACK}Surt
 STR_1925    :Aquesta persona aquí no es pot col·locar...
 STR_1926    :{SMALLFONT}
@@ -2863,11 +2863,11 @@ STR_2852    :El disseny de via ja està instal·lat.
 STR_2853    :Les autoritats competents no ho permeten!
 STR_2854    :{RED}Els visitants no troben l'entrada de {STRINGID}!{NEWLINE}Construïu-hi un camí fins a l'entrada.
 STR_2855    :{RED}{STRINGID} no disposa de camí a la sortida!{NEWLINE}Construïu-hi un camí de sortida.
-STR_2856    :{WINDOW_COLOUR_2}Tutorial
-STR_2857    :{WINDOW_COLOUR_2}(Premeu una tecla o feu clic per prendre'n el control)
+STR_2856    :<removed string - do not use>
+STR_2857    :<removed string - do not use>
 STR_2858    :No es pot començar la campanya de màrqueting...
 STR_2859    :Ja s'està executant una altra instància de l'OpenRCT2.
-STR_2860    :Crèdits d'Infogrames Interactive...
+STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Sota llicència d'Infogrames Interactive Inc.
 STR_2862    :Agraïments per la música...
 STR_2863    :Agraïments per la música
@@ -2915,29 +2915,29 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {CO
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
-STR_2909    :{WINDOW_COLOUR_2}Productor:  Thomas J. Zahorik
-STR_2910    :{WINDOW_COLOUR_2}Productor executiu:  Bill Levay
-STR_2911    :{WINDOW_COLOUR_2}Director de màrqueting de productes:  Scott Triola
-STR_2912    :{WINDOW_COLOUR_2}VP de desenvolupament de productes:  Scott Walker
-STR_2913    :{WINDOW_COLOUR_2}Director general:  John Hurlbut
-STR_2914    :{WINDOW_COLOUR_2}Mànager de qualitat:  Michael Craighead
-STR_2915    :{WINDOW_COLOUR_2}Cap de certificació Q.A.:  Kurt Boutin
-STR_2916    :{WINDOW_COLOUR_2}Cap de certificació Q.A.:  Mark Huggins
-STR_2917    :{WINDOW_COLOUR_2}Equip de proves:  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
-STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
-STR_2919    :{WINDOW_COLOUR_2}Director de màrqueting:  Ann Marie Bland
-STR_2920    :{WINDOW_COLOUR_2}Mànager de serveis creatius:  Steve Martin
-STR_2921    :{WINDOW_COLOUR_2}Mànager de serveis editorials i creatius:  Elizabeth Mackney
-STR_2922    :{WINDOW_COLOUR_2}Dissenyador gràfic:  Paul Anselmi
-STR_2923    :{WINDOW_COLOUR_2}Redactor creatiu:  Kurt Carlson
-STR_2924    :{WINDOW_COLOUR_2}Agraïments especials:  Peter Matiss
-STR_2925    :{WINDOW_COLOUR_2}Especialista en enginyeria:  Ken Edwards
-STR_2926    :{WINDOW_COLOUR_2}Mànager del servei d'enginyeria:  Luis Rivas
-STR_2927    :{WINDOW_COLOUR_2}Analista de compatibilitat en cap:  Geoffrey Smith
-STR_2928    :{WINDOW_COLOUR_2}Analistes de compatibilitat:  Jason Cordero, Burke McQuinn, Kim Jardin 
-STR_2929    :{WINDOW_COLOUR_2}Cap de proves:  Daniel Frisoli
-STR_2930    :{WINDOW_COLOUR_2}Director de proves:  Matt Pantaleoni
+STR_2908    :<removed string - do not use>
+STR_2909    :<removed string - do not use>
+STR_2910    :<removed string - do not use>
+STR_2911    :<removed string - do not use>
+STR_2912    :<removed string - do not use>
+STR_2913    :<removed string - do not use>
+STR_2914    :<removed string - do not use>
+STR_2915    :<removed string - do not use>
+STR_2916    :<removed string - do not use>
+STR_2917    :<removed string - do not use>
+STR_2918    :<removed string - do not use>
+STR_2919    :<removed string - do not use>
+STR_2920    :<removed string - do not use>
+STR_2921    :<removed string - do not use>
+STR_2922    :<removed string - do not use>
+STR_2923    :<removed string - do not use>
+STR_2924    :<removed string - do not use>
+STR_2925    :<removed string - do not use>
+STR_2926    :<removed string - do not use>
+STR_2927    :<removed string - do not use>
+STR_2928    :<removed string - do not use>
+STR_2929    :<removed string - do not use>
+STR_2930    :<removed string - do not use>
 STR_2931    :{WINDOW_COLOUR_2}
 STR_2932    :{WINDOW_COLOUR_2}
 STR_2933    :{WINDOW_COLOUR_2}
@@ -3062,9 +3062,9 @@ STR_3051    :Forat C
 STR_3052    :Forat D
 STR_3053    :Forat E
 STR_3054    :S'està carregant...
-STR_3055    :Blanca
-STR_3056    :Translúcida
-STR_3057    :{WINDOW_COLOUR_2}Marca de construcció:
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :Parets de maó
 STR_3059    :Bardisses
 STR_3060    :Blocs de gel
@@ -3214,7 +3214,7 @@ STR_3203    :Configuració de recerques
 STR_3204    :Opcions
 STR_3205    :Selecció dels objectius
 STR_3206    :Desa l'escenari
-STR_3207    :Dissenyador de muntanyes russes
+STR_3207    :Dissenyador de circuits
 STR_3208    :Gestor dels dissenys de via
 STR_3209    :Torna al pas anterior:
 STR_3210    :Avança al pas següent:
@@ -3342,7 +3342,7 @@ STR_3331    :El camí de l'entrada al parc a la vora del mapa no els connecta o 
 STR_3332    :L'entrada al parc està a l'inrevés o bé no disposa de camí fins a la vora del mapa.
 STR_3333    :Exporta els complements a les desades
 STR_3334    :{SMALLFONT}{BLACK}Seleccioneu si cal desar els complements addicionals (els que no s'inclouen al producte principal) a les partides o escenaris desats, permetent que puguin ser carregats per algú que no disposi de les dades addicionals.
-STR_3335    :Dissenyador de muntanyes russes - Seleccioneu els vehicles i tipus d'atracció
+STR_3335    :Dissenyador de circuits - Seleccioneu els vehicles i tipus d'atracció
 STR_3336    :Gestor dels dissenys de vies - Seleccioneu el tipus d'atracció
 STR_3337    :<removed string - do not use>
 STR_3338    :{BLACK}Recorregut personalitzat
@@ -3351,7 +3351,7 @@ STR_3340    :{BLACK}{COMMA16} dissenys disponibles o recorreguts personalitzats
 STR_3341    :{SMALLFONT}{BLACK}Eines del joc
 STR_3342    :Editor d'escenaris
 STR_3343    :Conversió de partides a escenaris
-STR_3344    :Dissenyador de muntanyes russes
+STR_3344    :Dissenyador de circuits
 STR_3345    :Gestor de dissenys de via
 STR_3346    :El disseny de via no es pot desar...
 STR_3347    :L'atracció és massa gran, conté massa elements o bé el decorat està massa dispers.
@@ -3383,7 +3383,7 @@ STR_3372    :{BLACK}Caixers automàtics
 STR_3373    :{BLACK}Lavabos
 STR_3374    :Avís: S'han seleccionat massa objectes!
 STR_3375    :No s'han pogut seleccionar tots els objectes d'aquest grup de decoracions.
-STR_3376    :Instal·la un disseny de via nou...
+STR_3376    :Instal·la un nou...
 STR_3377    :{SMALLFONT}{BLACK}Instal·la un disseny de via nou.
 STR_3378    :Instal·la
 STR_3379    :Cancel·la
@@ -3392,59 +3392,59 @@ STR_3381    :L'arxiu no és compatible o bé conté dades no vàlides.
 STR_3382    :Ha fallat la còpia de l'arxiu.
 STR_3383    :Seleccioneu un nom per al disseny de via.
 STR_3384    :Ja existeix un disseny de via amb aquest nom. Si us plau, seleccioneu un nom nou per aquest disseny:
-STR_3385    :Tutorial per principiants
-STR_3386    :Tutorial d'atraccions personalitzades
-STR_3387    :Tutorial de construcció de muntanyes russes
+STR_3385    :<removed string - do not use>
+STR_3386    :<removed string - do not use>
+STR_3387    :<removed string - do not use>
 STR_3388    :No s'ha pogut canviar al mode seleccionat.
 STR_3389    :No es pot seleccionar l'element addicional de l'escenari...
 STR_3390    :S'han seleccionat massa elements.
 # Start of tutorial strings. Not used at the moment, so not necessary to translate.
-STR_3391    :{SMALLFONT}{BLACK}Aquí teniu el vostre parc. Fem-hi un cop d'ull...
-STR_3392    :{SMALLFONT}{BLACK}La manera més ràpida de moure la vista és prement el botó dret i movent el ratolí...
-STR_3393    :{SMALLFONT}{BLACK}Per veure millor el parc, podeu allunyar-vos usant la icona que hi ha a la part superior de la pantalla...
-STR_3394    :{SMALLFONT}{BLACK}També podeu girar la vista en passos de 90{DEGREE}...
-STR_3395    :{SMALLFONT}{BLACK}La construcció d'atraccions a aquesta escala és un pèl difícil, aixó que apropem-nos al parc un altre cop...
-STR_3396    :{SMALLFONT}{BLACK}Ara construirem una atracció senzilla per començar el parc...
-STR_3397    :{SMALLFONT}{BLACK}La imatge {LEFTGUILLEMET}fantasma{RIGHTGUILLEMET} blanca mostra on es construirà l'atracció. Mourem el punter per triar la posició correcta i llavors farem clic amb el ratolí per construir-ho...
-STR_3398    :{SMALLFONT}{BLACK}Les atraccions necessiten una entrada i una sortida. Mourem el punter a una casella a la vora de l'atracció i fem dos clics: primer per construir l'entrada i després per construir la sortida...
-STR_3399    :{SMALLFONT}{BLACK}Cal que construïm camins per permetre que els visitants puguin accedir a l'atracció...
-STR_3400    :{SMALLFONT}{BLACK}Per al camí d'entrada emprarem un camí especial per tal que la gent hi faci cua...
-STR_3401    :{SMALLFONT}{BLACK}Per al camí de sortida, només cal un camí normal...
-STR_3402    :{SMALLFONT}{BLACK}Bé! Obrim l'atracció! Per obrir-la, fem clic a la icona amb una bandera de la finestra de l'atracció i escollim {LEFTGUILLEMET}Obre{RIGHTGUILLEMET}...
-STR_3403    :{SMALLFONT}{BLACK}Però on estan els visitants?
-STR_3404    :{SMALLFONT}{BLACK}Ah! El parc encara està tancat!Bé, ara l'obrirem...
-STR_3405    :{SMALLFONT}{BLACK}Mentre esperem als nostres primers visitants, desenvoluparem més el parc...
-STR_3406    :{SMALLFONT}{BLACK}Aquí tenim el parc. Construirem una atracció senzilla però amb un disseny personalitzat...
-STR_3407    :{SMALLFONT}{BLACK}Primer cal escollir la posició inicial...
-STR_3408    :{SMALLFONT}{BLACK}La secció de via que acabem de construir és una {LEFTGUILLEMET}andana{RIGHTGUILLEMET}, que permet als visitants pujar i baixar de l'atracció...
-STR_3409    :{SMALLFONT}{BLACK}Ampliarem la plataforma una mica més afegint-hi un parell de seccions d'andana més...
-STR_3410    :{SMALLFONT}{BLACK}Les icones de la part superior de la finestra de construcció us permeten escollir les diferents peces de via que voleu afegir...
-STR_3411    :{SMALLFONT}{BLACK}Escollirem un gir a l'esquerra...
-STR_3412    :{SMALLFONT}{BLACK}El revolt encara no s'ha construït, però la imatge fantasma blanca ens mostra on es construirà. Quan feu clic a la icona gran de {LEFTGUILLEMET}Construeix-ho{RIGHTGUILLEMET}, el construirà definitivament...
-STR_3413    :{SMALLFONT}{BLACK}Ara volem continuar amb una secció de via recta, així que farem clic a la icona de via recta...
-STR_3414    :{SMALLFONT}{BLACK}Ara que hem completat el circuit, necessitem construir l'entrada i la sortida de l'atracció...
-STR_3415    :{SMALLFONT}{BLACK}Fem ara una prova de com funciona l'atracció...
-STR_3416    :{SMALLFONT}{BLACK}Mentre s'està provant, construirem el camí per fer cua i el camí de sortida...
-STR_3417    :{SMALLFONT}{BLACK}D'acord. Obrim el parc i l'atracció...
-STR_3418    :{SMALLFONT}{BLACK}La nostra nova atracció no és gaire emocionant. Potser caldria que hi afegim elements decoratius?
-STR_3419    :{SMALLFONT}{BLACK}Per construir decoracions damunt d'altres elements decoratius o aixecades a l'aire, manteniu premuda la tecla {LEFTGUILLEMET}Maj{RIGHTGUILLEMET} i moveu el ratolí per escollir-ne l'alçada...
-STR_3420    :{SMALLFONT}{BLACK}Alguns elements decoratius es poden repintar un cop s'han construit...
-STR_3421    :{SMALLFONT}{BLACK}Afegim una mica de música a l'atracció...
-STR_3422    :{SMALLFONT}{BLACK}Construïm una muntanya russa!
-STR_3423    :{SMALLFONT}{BLACK}Hi ha molts recorreguts de muntanyes russes predissenyats, però nosaltres construirem el nostre disseny personalitzat...
-STR_3424    :{SMALLFONT}{BLACK}Aquesta és l'andana. Ara necessitem una pujada...
-STR_3425    :{SMALLFONT}{BLACK}Els trens de les muntanyes russes no tenen prou potència. Caldrà usar una cadena elevadora per empènyer el tren durant la primera pujada...
-STR_3426    :{SMALLFONT}{BLACK}Ja hem acabat la pujada. Ara, a per la primera baixada...
-STR_3427    :{SMALLFONT}{BLACK}Aquests revolts són una mala idea. Les forces laterals tiraran fora als passatgers quan el tren vagi a tota velocitat...
-STR_3428    :{SMALLFONT}{BLACK}Una bona idea és peraltar els revolts. Així els passatgers es mantindran als seus seients en lloc de ser llançats cap a les bandes...
-STR_3429    :{SMALLFONT}{BLACK}No. Això no funciona! Mireu les marques d'alçada. La segona pujada és més alta que la pujada d'arrencada...
-STR_3430    :{SMALLFONT}{BLACK}Per assegurar-nos que el tren és capaç de fer la volta sencera, cada pujada hauria de ser una mica menys alta que l'anterior...
-STR_3431    :{SMALLFONT}{BLACK}Molt millor! El nostre tren hauria d'aconseguir passar la pujada. Provem ara una via més embolicada...
-STR_3432    :{SMALLFONT}{BLACK}Necessitem baixar la velocitat del tren abans de l'últim revolt i que arribi a l'andana. Afegim-hi uns frens...
-STR_3433    :{SMALLFONT}{BLACK}I finalment, afegirem uns {LEFTGUILLEMET}frens de bloc{RIGHTGUILLEMET}, que permeten que dos trens circulin pel mateix circuit de manera segura...
-STR_3434    :{SMALLFONT}{BLACK}Provem l'atracció i comprovem si funciona!
-STR_3435    :{SMALLFONT}{BLACK}Bé! Funciona! Afegim-hi els camins d'entrada i sortida i obrim la muntanya russa per als nostres visitants...
-STR_3436    :{SMALLFONT}{BLACK}Mentre esperem els primers passatgers, podem decorar l'atracció...
+STR_3391    :<removed string - do not use>
+STR_3392    :<removed string - do not use>
+STR_3393    :<removed string - do not use>
+STR_3394    :<removed string - do not use>
+STR_3395    :<removed string - do not use>
+STR_3396    :<removed string - do not use>
+STR_3397    :<removed string - do not use>
+STR_3398    :<removed string - do not use>
+STR_3399    :<removed string - do not use>
+STR_3400    :<removed string - do not use>
+STR_3401    :<removed string - do not use>
+STR_3402    :<removed string - do not use>
+STR_3403    :<removed string - do not use>
+STR_3404    :<removed string - do not use>
+STR_3405    :<removed string - do not use>
+STR_3406    :<removed string - do not use>
+STR_3407    :<removed string - do not use>
+STR_3408    :<removed string - do not use>
+STR_3409    :<removed string - do not use>
+STR_3410    :<removed string - do not use>
+STR_3411    :<removed string - do not use>
+STR_3412    :<removed string - do not use>
+STR_3413    :<removed string - do not use>
+STR_3414    :<removed string - do not use>
+STR_3415    :<removed string - do not use>
+STR_3416    :<removed string - do not use>
+STR_3417    :<removed string - do not use>
+STR_3418    :<removed string - do not use>
+STR_3419    :<removed string - do not use>
+STR_3420    :<removed string - do not use>
+STR_3421    :<removed string - do not use>
+STR_3422    :<removed string - do not use>
+STR_3423    :<removed string - do not use>
+STR_3424    :<removed string - do not use>
+STR_3425    :<removed string - do not use>
+STR_3426    :<removed string - do not use>
+STR_3427    :<removed string - do not use>
+STR_3428    :<removed string - do not use>
+STR_3429    :<removed string - do not use>
+STR_3430    :<removed string - do not use>
+STR_3431    :<removed string - do not use>
+STR_3432    :<removed string - do not use>
+STR_3433    :<removed string - do not use>
+STR_3434    :<removed string - do not use>
+STR_3435    :<removed string - do not use>
+STR_3436    :<removed string - do not use>
 # End of tutorial strings
 STR_3437    :{SMALLFONT}{BLACK}Treu les decoracions d'una àrea del terreny.
 STR_3438    :No es poden treure totes les decoracions d'aquí...
@@ -3462,7 +3462,7 @@ STR_5120    :Finances
 STR_5121    :Recerca
 STR_5122    :Seleccioneu atraccions per tipus de via (com al RCT1)
 STR_5123    :Renova les atraccions
-STR_5124    :<not used anymore>
+STR_5124    :<removed string - do not use>
 STR_5125    :Tot editable
 STR_5126    :Música d'entrada aleatòria
 STR_5127    :{SMALLFONT}{BLACK}Mentre s'arrossega el ratolí, pinta el paisatge en lloc de canviar l'elevació.
@@ -3495,7 +3495,7 @@ STR_5153    :Edita temes...
 STR_5154    :Renderitzat per maquinari
 STR_5155    :Permet provar atraccions per acabar
 STR_5156    :{SMALLFONT}{BLACK}Permet provar la majoria d'atraccions fins i tot si la via no està acabada. No s'aplica als modes de bloc de seccions.
-STR_5157    :Desbloca preus
+STR_5157    :<removed string - do not use>
 STR_5158    :Surt al menú principal
 STR_5159    :Surt de l'OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, any {POP16}{COMMA16}
@@ -3832,7 +3832,7 @@ STR_5490    :Desactiva sons i música si es perd el focus
 STR_5491    :Llistat de recerques
 STR_5492    :Opcions d'escenari
 STR_5493    :Envia missatge
-STR_5494    :<ja no s'usa>
+STR_5494    :<removed string - do not use>
 STR_5495    :Llista de jugadors
 STR_5496    :Jugador:
 STR_5497    :Ping:
@@ -3845,7 +3845,7 @@ STR_5503    :Escriviu el nom de l'hoste o de l'adreça IP:
 STR_5504    :{SMALLFONT}{BLACK}Mostra l'estat multijugador
 STR_5505    :No s'ha pogut connectar al servidor.
 STR_5506    :Els visitants ignoren les intensitats
-STR_5507    :Els encarregats de neteja per defecte tallen la gespa
+STR_5507    :<removed string - do not use>
 STR_5508    :Permet carregar arxius danyats
 STR_5509    :{SMALLFONT}{BLACK}Permet carregar escenaris i partides desades{NEWLINE}que tenen una suma de comprovació no vàlida,{NEWLINE}com els escenaris de la demostració{NEWLINE}o partides danyades.
 STR_5510    :Dispositiu de so predeterminat
@@ -4035,7 +4035,7 @@ STR_5726    :{SMALLFONT}{BLACK}Escolliu el temps que farà al parc.
 STR_5727    :Qualitat d'escalat
 STR_5728    :Requereix l'opció de renderitzat amb maquinari
 STR_5729    :{SMALLFONT}{BLACK}Requereix que s'activi l'opció per realitzar el renderitzat via maquinari gràfic.
-STR_5730    :Pròxim
+STR_5730    :{LEFTGUILLEMET}Nearest Neighbour{RIGHTGUILLEMET}
 STR_5731    :Lineal
 STR_5732    :Anisotròpic
 STR_5733    :Empra l'escalat pròxim per escales enteres
@@ -4125,11 +4125,11 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Mostra el comptador de FPS del joc.
 STR_5816    :{SMALLFONT}{BLACK}Estableix la relació d'escala del joc.{NEWLINE}Sol ser útil quan es juga amb{NEWLINE}pantalles d'alta resolució.
-STR_5817    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Estableix el tipus d'escalat de la interfície gràfica.
-STR_5818    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Usa el mètode {LEFTGUILLEMET}nearest neighbour{RIGHTGUILLEMET}{NEWLINE}quan s'estableix l'escalat de finestres{NEWLINE}a valors enters (1, 2, 3...).
+STR_5817    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Estableix el tipus d'escalat de la interfície gràfica.{NEWLINE}{NEWLINE}El mètode {LEFTGUILLEMET}Nearest Neighbour{RIGHTGUILLEMET} crea imatges nítides però les distorsiona  en escales no enteres.{NEWLINE}Lineal i anisotròpic són més suaus però la imatge pot semblar borrosa.{NEWLINE}{LEFTGUILLEMET}Nearest Neighbour{RIGHTGUILLEMET} suau genera imatges nítides, fins i tot amb escales no enteres (pot causar problemes de rendiment).
+STR_5818    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Usa el mètode {LEFTGUILLEMET}Nearest Neighbour{RIGHTGUILLEMET}{NEWLINE}quan s'estableix l'escalat de finestres{NEWLINE}a valors enters (1, 2, 3...).
 STR_5819    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Posa la partida en pausa{NEWLINE}si s'activa l'Steam.
 STR_5820    :{SMALLFONT}{BLACK}Minimitza el joc si es perd el focus{NEWLINE}mentre s'està en mode de pantalla completa.
-STR_5821    :{SMALLFONT}{BLACK}Canvia el color del marcador de construcció quan s'estan construint{NEWLINE}atraccions, camins, botigues, estands, decoracions...
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Mostra el cicle dia/nit.{NEWLINE}El cicle sencer equival a un mes a la partida.
 STR_5823    :{SMALLFONT}{BLACK}Mostra els textos dels cartells en majúscula (com al RCT1).
 STR_5824    :{SMALLFONT}{BLACK}No mostris llampecs{NEWLINE}durant les tempestes.
@@ -4158,7 +4158,7 @@ STR_5846    :{SMALLFONT}{BLACK}Estableix el període de desades automàtiques de
 STR_5847    :{SMALLFONT}{BLACK}Seleccioneu la seqüència de parcs que s'usarà al menú principal.{NEWLINE}Les seqüències del RCT1/2 necessitaran que s'importin els escenaris corresponents.
 STR_5848    :{SMALLFONT}{BLACK}Crea i organitza les seqüències del menú principal.
 STR_5849    :{SMALLFONT}{BLACK}Coloca automàticament{NEWLINE}els empleats acabats de contractar.
-STR_5850    :{SMALLFONT}{BLACK}Els encarregats de la neteja nous segaran{NEWLINE}la gespa per defecte (com al RCT1).
+STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Estableix l'interval de revisió per defecte{NEWLINE}per a les atraccions noves.
 STR_5852    :{SMALLFONT}{BLACK}Estableix el nom del canal TwitchTV que s'ha d'usar per la integració del Twitch.
 STR_5853    :{SMALLFONT}{BLACK}Activa/Desactiva els efectes de so.
@@ -4205,7 +4205,7 @@ STR_5893    :Canvi de tipus
 STR_5894    :Escriviu el canvi de tipus
 STR_5895    :Desa el disseny de via
 STR_5896    :Ha fallat la desada del disseny de via!
-STR_5897    :Límit de finestres:
+STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}No es pot carregar el disseny de via:{NEWLINE}L'arxiu està corromput, danyat o bé no existeix.
 STR_5899    :Alterna finestra de depuració del pintat
 STR_5900    :Usa el codi de pintat original
@@ -4442,6 +4442,37 @@ STR_6130    :Copia la llista sencera al porta-retalls
 STR_6131    :Origen de l'objecte
 STR_6132    :Ignora recerques pendents
 STR_6133    :{SMALLFONT}{BLACK}Permet l'accés a atraccions i decoracions que encara no s'han recercat.
+STR_6134    :Neteja les decoracions
+STR_6135    :El client ha enviat una sol·licitud no vàlida.
+STR_6136    :El servidor ha enviat una sol·licitud no vàlida.
+STR_6137    :OpenRCT2, un clon de codi obert del Roller Coaster Tycoon 2.
+STR_6138    :L'OpenRCT2 és obra de molts autors. En trobareu una llista completa en {OPENQUOTES}contributors.md{ENDQUOTES}. Per més informació, visiteu http://github.com/OpenRCT2/OpenRCT2
+STR_6139    :Tots els noms de productes i de noms de companyies pertanyen als seus propietaris. L'ús d'aquests noms no n'implica cap tipus d'afiliació o promoció.
+STR_6140    :Registre de canvis...
+STR_6141    :Barra d'eines inferior del RCT1
+STR_6142    :{WINDOW_COLOUR_2}Nom de la via: {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}Tipus d'atracció: {BLACK}{STRINGID}
+STR_6144    :Mostra el redibuixat
+STR_6145    :{SMALLFONT}{BLACK}Estableix la velocitat límit pels acceleradors.
+STR_6146    :Activa totes les seccions de via dibuixables
+STR_6147    :{SMALLFONT}{BLACK}Activa totes les peces de via que permet construir aquest tipus d'atracció a la finestra de construcció, sense importar si el vehicle les admet.
+STR_6148    :S'està connectant amb el servidor mestre...
+STR_6149    :No s'ha pogut connectar amb el servidor mestre.
+STR_6150    :Resposta del servidor mestre no vàlida (sense número JSON)
+STR_6151    :El servidor mestre no ha retornat una llista de servidors
+STR_6152    :Resposta del servidor mestre no vàlida (sense taula JSON)
+STR_6153    :Paga per entrar al parc / Paga per atracció
+STR_6154    :No es recomana executar l'OpenRCT2 amb privilegis elevats.
+STR_6155    :Ni el KDialog ni el Zenity estan instal·lats. Si us plau, instal·leu-ne un o configureu-los des de la línia d'ordres.
+STR_6156    :El nom està reservat.
+STR_6157    :Consola
+STR_6158    :Aquest arxiu no s'ha pogut carregar...{NEWLINE}Versió RCTC incompatible: {COMMA16}
+STR_6159    :{LEFTGUILLEMET}Nearest Neighbour{RIGHTGUILLEMET} suau
+STR_6160    :{WINDOW_COLOUR_2}Vehicles disponibles: {BLACK}{STRING}
+STR_6161    :Mostra les línies de la quadrícula
+STR_6162    :{LEFTGUILLEMET}Wild Mouse{RIGHTGUILLEMET} giratori
+STR_6163    :Vagons amb forma de ratolí que es mouen a tota velocitat per giravolts i petits descensos, girant suaument per desorientar els passatgers.
+STR_6164    :{WHITE}{CROSS}
 
 #############
 # Scenarios #

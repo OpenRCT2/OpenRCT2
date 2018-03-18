@@ -19,19 +19,16 @@
 #include <algorithm>
 #include "NetworkAction.h"
 
-extern "C"
-{
-    #include "../game.h"
-    #include "../localisation/string_ids.h"
-}
+#include "../Game.h"
+#include "../localisation/StringIds.h"
 
 sint32 NetworkActions::FindCommand(sint32 command)
 {
     auto it = std::find_if(Actions.begin(), Actions.end(), [&command](NetworkAction const &action)
     {
-        for (auto it2 = action.Commands.begin(); it2 != action.Commands.end(); it2++)
+        for (int currentCommand : action.Commands)
         {
-            if ((*it2) == command)
+            if (currentCommand == command)
             {
                 return true;
             }
@@ -49,11 +46,7 @@ sint32 NetworkActions::FindCommandByPermissionName(const std::string &permission
 {
     auto it = std::find_if(Actions.begin(), Actions.end(), [&permission_name](NetworkAction const &action)
     {
-        if (action.PermissionName == permission_name)
-        {
-            return true;
-        }
-        return false;
+        return action.PermissionName == permission_name;
     });
     if (it != Actions.end())
     {
@@ -62,6 +55,7 @@ sint32 NetworkActions::FindCommandByPermissionName(const std::string &permission
     return -1;
 }
 
+// clang-format off
 const std::vector<NetworkAction> NetworkActions::Actions =
 {
     {
@@ -182,7 +176,8 @@ const std::vector<NetworkAction> NetworkActions::Actions =
             GAME_COMMAND_SET_LAND_OWNERSHIP,
             GAME_COMMAND_BUY_LAND_RIGHTS,
             GAME_COMMAND_PLACE_PARK_ENTRANCE,
-            GAME_COMMAND_REMOVE_PARK_ENTRANCE
+            GAME_COMMAND_REMOVE_PARK_ENTRANCE,
+            GAME_COMMAND_PLACE_PEEP_SPAWN,
         }
     }, {
         STR_ACTION_PARK_FUNDING, "PERMISSION_PARK_FUNDING",
@@ -233,5 +228,6 @@ const std::vector<NetworkAction> NetworkActions::Actions =
         }
     }
 };
+// clang-format on
 
 #endif

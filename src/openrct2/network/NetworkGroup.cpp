@@ -19,7 +19,6 @@
 #include "NetworkTypes.h"
 #include "NetworkAction.h"
 #include "NetworkGroup.h"
-#include "../core/Exception.hpp"
 
 NetworkGroup::NetworkGroup()
 {
@@ -33,19 +32,21 @@ NetworkGroup::~NetworkGroup()
 NetworkGroup NetworkGroup::FromJson(const json_t * json)
 {
     NetworkGroup group;
-    json_t * jsonId = json_object_get(json, "id");
-    json_t * jsonName = json_object_get(json, "name");
+    json_t * jsonId          = json_object_get(json, "id");
+    json_t * jsonName        = json_object_get(json, "name");
     json_t * jsonPermissions = json_object_get(json, "permissions");
+
     if (jsonId == nullptr || jsonName == nullptr || jsonPermissions == nullptr)
     {
-        throw Exception("Missing group data");
+        throw std::runtime_error("Missing group data");
     }
-    group.Id = (uint8)json_integer_value(jsonId);
+
+    group.Id    = (uint8)json_integer_value(jsonId);
     group._name = std::string(json_string_value(jsonName));
-    for (size_t i = 0; i < group.ActionsAllowed.size(); i++) {
-        group.ActionsAllowed[i] = 0;
-    }
-    for (size_t i = 0; i < json_array_size(jsonPermissions); i++) {
+    std::fill(group.ActionsAllowed.begin(), group.ActionsAllowed.end(), 0);
+
+    for (size_t i = 0; i < json_array_size(jsonPermissions); i++)
+    {
         json_t * jsonPermissionValue = json_array_get(jsonPermissions, i);
         const char * perm_name = json_string_value(jsonPermissionValue);
         if (perm_name == nullptr) {
@@ -91,9 +92,9 @@ void NetworkGroup::Read(NetworkPacket &packet)
 {
     packet >> Id;
     SetName(packet.ReadString());
-    for (size_t i = 0; i < ActionsAllowed.size(); i++)
+    for (auto &action : ActionsAllowed)
     {
-        packet >> ActionsAllowed[i];
+        packet >> action;
     }
 }
 
@@ -101,9 +102,9 @@ void NetworkGroup::Write(NetworkPacket &packet)
 {
     packet << Id;
     packet.WriteString(GetName().c_str());
-    for (size_t i = 0; i < ActionsAllowed.size(); i++)
+    for (const auto &action : ActionsAllowed)
     {
-        packet << ActionsAllowed[i];
+        packet << action;
     }
 }
 
@@ -126,7 +127,7 @@ bool NetworkGroup::CanPerformAction(size_t index) const
     {
         return false;
     }
-    return (ActionsAllowed[byte] & (1 << bit)) ? true : false;
+    return (ActionsAllowed[byte] & (1 << bit)) != 0;
 }
 
 bool NetworkGroup::CanPerformCommand(sint32 command) const

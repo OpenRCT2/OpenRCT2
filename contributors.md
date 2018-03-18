@@ -10,12 +10,13 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Marijn van der Werf (marijnvdwerf) - Developer
 * (zsilencer) - Developer
 * Richard Jenkins (rwjuk) - Developer, issue management
+* Hielke Morsink (Broxzier)
+* Aaron van Geffen (AaronVanGeffen)
 
 ## Long term contributors
 The following people are not part of the project team, but have been contributing for a long time.
-* Hielke Morsink (Broxzier)
 * Matte Andersson (Nubbie)
-* Kenton Boadway (PFCKrutonium)
+* Kenton Boadway (Krutonium)
 * Joe Minor Jr (wolfreak99)
 
 ## Implementation (RCT2)
@@ -36,7 +37,7 @@ The following people are not part of the project team, but have been contributin
 * Ben Pye (benpye) - Misc.
 * (JeroenSack) - Misc.
 * Sijmen Schoon (SijmenSchoon) - Misc.
-* (wolfreak99) - Misc.
+* Joe Minor Jr (wolfreak99) - Misc.
 * Inseok Lee (dlunch) - Original command line
 * Lewis Fox (LRFLEW) - Misc.
 * Marijn van der Werf (marijnvdwerf) - Drawing, misc.
@@ -57,16 +58,20 @@ The following people are not part of the project team, but have been contributin
 * Robert Jordan (trigger-death) - UI theming, title sequence editor, misc.
 * Aaron van Geffen (AaronVanGeffen) - scenario select screen, font detection, misc.
 * Michał Janiszewski (janisozaur) - Linux port, crash handling, security, misc.
-* Kelson Blakewood (spacek531) - title sequences for 0.0.4, 0.0.5/0.0.6/0.0.7, and 0.1.0; title sequences using milliseconds
+* Kelson Blakewood (spacek531) - title sequences for release versions 0.0.4, 0.0.5/0.0.6/0.0.7, 0.1.0/0.1.1, and 0.1.2, title sequences using milliseconds
 * Hugo Wallenburg (Goddesen) - Misc.
 * Matte Andersson (Nubbie) - Misc, UX
 * Daniel Trujillo Viedma (gDanix) - Custom currency.
 * Niels NTG Poldervaart (Niels-NTG) - Misc.
 * (zaxcav) - Improvements to original pathfinding algorithm.
+* Jeroen D. Stout (JeroenDStout) - Light effects, train crossings, virtual floor.
 * Joël Troch (JoelTroch) - Keyboard shortcuts for ride construction.
 * Thomas Delebo (delebota) - Misc.
 * Brian Callahan (ibara) - OpenBSD port.
 * Jens Heuseveldt (jensj12) - Mountain tool improvements, misc.
+* Park Joon-Kyu (segfault87) - Misc.
+* Harrison Gentry (hgentry) - Date-changing command, misc.
+* Joshua Moerman (Jaxan) - Misc.
 
 ## Bug fixes
 * (halfbro)
@@ -91,6 +96,15 @@ The following people are not part of the project team, but have been contributin
 * Matthias Moninger (Zeh Matt)
 * Tomas Dittmann (Chaosmeister)
 * William Wallace (Willox)
+* Christian Friedrich Coors (ccoors)
+* Robbin Voortman (rvoortman)
+* (telk5093)
+* Ethan Smith (ethanhs) - Refactoring.
+* Robert Lewicki (rlewicki)
+* Tyler Ruckinger (TyPR124)
+* Justin Gottula (jgottula)
+* Seongsik Park (pss9205)
+* (Deurklink)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -112,7 +126,7 @@ The following people are not part of the project team, but have been contributin
 
 ## Translation
 * Extracting from original files: Ted John (IntelOrca)
-* Reviewing and merging: Michael Steenbeek (Gymnasiast), Matte Andersson (Nubbie), Rune Laenen (runelaenen)
+* Reviewing and merging: Michael Steenbeek (Gymnasiast), Matte Andersson (Nubbie), Rune Laenen (runelaenen) (formerly)
 * Fixing unmaintained languages: Michael Steenbeek (Gymnasiast)
 * Miscellaneous fixes: Alexander Overvoorde (Overv), Ed Foley (e-foley)
 * English (UK) - Ted John (IntelOrca), (Tinytimrob)
@@ -125,7 +139,7 @@ The following people are not part of the project team, but have been contributin
 * German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)
 * Italian - Luca Andrea Rossi (LucaRed)
 * Japanese - Aaron van Geffen (AaronVanGeffen), Nick Hall (nickhall), (jhako), Harry Lam (daihakken)
-* Korean - "TELK" (telk5093), (NeverDruid); small fixes: (kexplo)
+* Korean - (telk5093), (NeverDruid); small fixes: (kexplo)
 * Polish - Adrian Wielgosik (adrian17), (lopezloo), Michał Janiszewski (janisozaur)
 * Portuguese (BR) - (kaudy), (renansimoes)
 * Russian - (Soosisya)
@@ -143,7 +157,7 @@ Design and programming by Chris Sawyer
 Graphics by Simon Foster
 Sound and music by Allister Brimble
 Additional sounds recorded by David Ellis
-Representation by Jacqui Lyons at Mar jacq Ltd.
+Representation by Jacqui Lyons at Marjacq Ltd.
 
 Thanks to: Peter James Adcock, Joe Booth, and John Wardley
 

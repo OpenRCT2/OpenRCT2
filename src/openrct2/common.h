@@ -23,40 +23,44 @@
 #undef M_PI
 
 #ifdef _MSC_VER
-#include <time.h>
+#include <ctime>
 #endif
 
-#include <assert.h>
-#include <limits.h>
-#include <math.h>
-#include <stddef.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
+#include <cassert>
+#include <cmath>
+#include <cstddef>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
-typedef int8_t sint8;
-typedef int16_t sint16;
-typedef int32_t sint32;
-typedef int64_t sint64;
-typedef uint8_t uint8;
-typedef uint16_t uint16;
-typedef uint32_t uint32;
-typedef uint64_t uint64;
+using sint8 = int8_t;
+using sint16 = int16_t;
+using sint32 = int32_t;
+using sint64 = int64_t;
+using uint8 = uint8_t;
+using uint16 = uint16_t;
+using uint32 = uint32_t;
+using uint64 = uint64_t;
 
-#include "diagnostic.h"
+#include "Diagnostic.h"
 
-typedef char utf8;
-typedef utf8* utf8string;
-typedef const utf8* const_utf8string;
+using utf8             = char;
+using utf8string       = utf8 *;
+using const_utf8string = const utf8 *;
 #ifdef _WIN32
-typedef wchar_t utf16;
-typedef utf16* utf16string;
+using utf16 = wchar_t;
+using utf16string = utf16*;
 #endif
 
-typedef uint32 codepoint_t;
-typedef uint8 colour_t;
+// Define MAX_PATH for various headers that don't want to include system headers
+// just for MAX_PATH
+#ifndef MAX_PATH
+#define MAX_PATH 260
+#endif
+
+using codepoint_t = uint32;
+using colour_t = uint8;
 
 #define rol8(x, shift)      (((uint8)(x) << (shift)) | ((uint8)(x) >> (8 - (shift))))
 #define ror8(x, shift)      (((uint8)(x) >> (shift)) | ((uint8)(x) << (8 - (shift))))
@@ -67,50 +71,11 @@ typedef uint8 colour_t;
 #define rol64(x, shift)     (((uint64)(x) << (shift)) | ((uint32)(x) >> (64 - (shift))))
 #define ror64(x, shift)     (((uint64)(x) >> (shift)) | ((uint32)(x) << (64 - (shift))))
 
-#ifndef __cplusplus
-// in C++ you should be using Math::Min and Math::Max
-#ifndef min
-#define min(a,b)            (((a) < (b)) ? (a) : (b))
-#endif
-#ifndef max
-#define max(a,b)            (((a) > (b)) ? (a) : (b))
-#endif
-
-#define sgn(x)              ((x > 0) ? 1 : ((x < 0) ? -1 : 0))
-#define clamp(l, x, h)      (min(h, max(l, x)))
-
-#endif // __cplusplus
-
 // Rounds an integer down to the given power of 2. y must be a power of 2.
 #define floor2(x, y)        ((x) & (~((y) - 1)))
 
 // Rounds an integer up to the given power of 2. y must be a power of 2.
 #define ceil2(x, y)         (((x) + (y) - 1) & (~((y) - 1)))
-
-
-#ifndef __cplusplus
-// in C++ you should be using Util::CountOf
-#ifdef __GNUC__
-/**
- * Force a compilation error if condition is true, but also produce a
- * result (of value 0 and type size_t), so the expression can be used
- * e.g. in a structure initializer (or where-ever else comma expressions
- * aren't permitted).
- */
-#define BUILD_BUG_ON_ZERO(e) (sizeof(struct { sint32:-!!(e); }))
-
-/* &a[0] degrades to a pointer: a different type from an array */
-#define __must_be_array(a) \
-        BUILD_BUG_ON_ZERO(__builtin_types_compatible_p(typeof(a), typeof(&a[0])))
-
-// based on http://lxr.free-electrons.com/source/include/linux/kernel.h#L54
-#define countof(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
-#elif defined (_MSC_VER)
-#define countof(arr)            _countof(arr)
-#else
-#define countof(arr)            (sizeof(arr) / sizeof((arr)[0]))
-#endif // __GNUC__
-#endif // __cplusplus
 
 // Gets the name of a symbol as a C string
 #define nameof(symbol) #symbol
@@ -144,27 +109,27 @@ char *strndup(const char *src, size_t size);
 #define MAP_ANONYMOUS MAP_ANON
 #endif
 
-#define OPENRCT2_MASTER_SERVER_URL  "https://servers.openrct2.website"
+#define OPENRCT2_MASTER_SERVER_URL  "https://servers.openrct2.io"
 
 // Time (represented as number of 100-nanosecond intervals since 0001-01-01T00:00:00Z)
-typedef uint64 datetime64;
+using datetime64 = uint64;
 
 #define DATETIME64_MIN ((datetime64)0)
 
 // Represent fixed point numbers. dp = decimal point
-typedef uint8 fixed8_1dp;
-typedef uint8 fixed8_2dp;
-typedef sint16 fixed16_1dp;
-typedef sint16 fixed16_2dp;
-typedef sint32 fixed32_1dp;
-typedef sint32 fixed32_2dp;
-typedef sint64 fixed64_1dp;
+using fixed8_1dp = uint8;
+using fixed8_2dp = uint8;
+using fixed16_1dp = sint16;
+using fixed16_2dp = sint16;
+using fixed32_1dp = sint32;
+using fixed32_2dp = sint32;
+using fixed64_1dp = sint64;
 
 // Money is stored as a multiple of 0.10.
-typedef fixed8_1dp money8;
-typedef fixed16_1dp money16;
-typedef fixed32_1dp money32;
-typedef fixed64_1dp money64;
+using money8 = fixed8_1dp;
+using money16 = fixed16_1dp;
+using money32 = fixed32_1dp;
+using money64 = fixed64_1dp;
 
 // Construct a fixed point number. For example, to create the value 3.65 you
 // would write FIXED_2DP(3,65)
@@ -176,25 +141,30 @@ typedef fixed64_1dp money64;
 #define MONEY(whole, fraction)          ((whole) * 10 + ((fraction) / 10))
 
 #define MONEY_FREE                      MONEY(0,00)
+#define MONEY16_UNDEFINED               (money16)(uint16)0xFFFF
 #define MONEY32_UNDEFINED               ((money32)0x80000000)
 
-typedef void (EMPTY_ARGS_VOID_POINTER)();
-typedef uint16 rct_string_id;
+using EMPTY_ARGS_VOID_POINTER = void();
+using rct_string_id           = uint16;
 
-#define SafeFree(x) do { free(x); (x) = NULL; } while (0)
+#define SafeFree(x) do { free(x); (x) = nullptr; } while (false)
 
-#define SafeDelete(x) do { delete (x); (x) = nullptr; } while (0)
-#define SafeDeleteArray(x) do { delete[] (x); (x) = nullptr; } while (0)
+#define SafeDelete(x) do { delete (x); (x) = nullptr; } while (false)
+#define SafeDeleteArray(x) do { delete[] (x); (x) = nullptr; } while (false)
 
 #ifndef interface
     #define interface struct
 #endif
 #define abstract = 0
 
+#if defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))
+    #define OPENRCT2_X86
+#elif defined(_MSC_VER) && (_MSC_VER >= 1500) && (defined(_M_X64) || defined(_M_IX86)) // VS2008
+    #define OPENRCT2_X86
+#endif
+
 #if defined(__i386__) || defined(_M_IX86)
 #define PLATFORM_X86
-#else
-#define NO_RCT2 1
 #endif
 
 #if defined(__LP64__) || defined(_WIN64)
@@ -207,21 +177,10 @@ typedef uint16 rct_string_id;
 // will be the only way to access a given memory region. In other words: there is no other pointer
 // aliasing the same memory area. Using it lets compiler generate better code. If your compiler
 // does not support it, feel free to drop it, at some performance hit.
-#ifdef __cplusplus
-    #ifdef _MSC_VER
-        #define RESTRICT __restrict
-    #else
-        #define RESTRICT __restrict__
-    #endif
+#ifdef _MSC_VER
+    #define RESTRICT __restrict
 #else
-    #ifdef _MSC_VER
-        #define RESTRICT __restrict
-    #else
-        #define RESTRICT restrict
-    #endif
-#endif
-#ifndef RESTRICT
-    #define RESTRICT
+    #define RESTRICT __restrict__
 #endif
 
 #define assert_struct_size(x, y) static_assert(sizeof(x) == (y), "Improper struct size")
@@ -241,11 +200,22 @@ typedef uint16 rct_string_id;
     #define FASTCALL
 #endif // PLATFORM_X86
 
+// C++17 or later
+#if __cplusplus > 201402L
+    #define UNUSED_ATTR [[maybe_unused]]
+#else
+    #ifdef __GNUC__
+        #define UNUSED_ATTR [[gnu::unused]]
+    #else
+        #define UNUSED_ATTR
+    #endif
+#endif
+
 /**
  * x86 register structure, only used for easy interop to RCT2 code.
  */
 #pragma pack(push, 1)
-typedef struct registers {
+struct registers {
     union {
         sint32 eax;
         sint16 ax;
@@ -290,7 +260,7 @@ typedef struct registers {
         sint32 ebp;
         sint16 bp;
     };
-} registers;
+};
 assert_struct_size(registers, 7 * 4);
 #pragma pack(pop)
 

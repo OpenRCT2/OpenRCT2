@@ -16,10 +16,7 @@
 
 #pragma warning(disable : 4127) // conditional expression is constant
 
-extern "C"
-{
-    #include "drawing.h"
-}
+#include "Drawing.h"
 
 template<sint32 image_type, sint32 zoom_level>
 static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
@@ -176,41 +173,39 @@ static void FASTCALL DrawRLESprite1(const uint8* source_bits_pointer,
 #define DrawRLESpriteHelper1(image_type) \
     DrawRLESprite1<image_type>(source_bits_pointer, dest_bits_pointer, palette_pointer, dpi, source_y_start, height, source_x_start, width)
 
-extern "C"
+/**
+ * Transfers readied images onto buffers
+ * This function copies the sprite data onto the screen
+ *  rct2: 0x0067AA18
+ */
+void FASTCALL gfx_rle_sprite_to_buffer(const uint8* RESTRICT source_bits_pointer,
+                                         uint8* RESTRICT dest_bits_pointer,
+                                         const uint8* RESTRICT palette_pointer,
+                                         const rct_drawpixelinfo * RESTRICT dpi,
+                                         sint32 image_type,
+                                         sint32 source_y_start,
+                                         sint32 height,
+                                         sint32 source_x_start,
+                                         sint32 width)
 {
-    /**
-     * Transfers readied images onto buffers
-     * This function copies the sprite data onto the screen
-     *  rct2: 0x0067AA18
-     */
-    void FASTCALL gfx_rle_sprite_to_buffer(const uint8* RESTRICT source_bits_pointer,
-                                             uint8* RESTRICT dest_bits_pointer,
-                                             const uint8* RESTRICT palette_pointer,
-                                             const rct_drawpixelinfo * RESTRICT dpi,
-                                             sint32 image_type,
-                                             sint32 source_y_start,
-                                             sint32 height,
-                                             sint32 source_x_start,
-                                             sint32 width)
+    if (image_type & IMAGE_TYPE_REMAP)
     {
-        if (image_type & IMAGE_TYPE_REMAP)
+        if (image_type & IMAGE_TYPE_TRANSPARENT)
         {
-            if (image_type & IMAGE_TYPE_TRANSPARENT)
-            {
-                DrawRLESpriteHelper1(IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT);
-            }
-            else
-            {
-                DrawRLESpriteHelper1(IMAGE_TYPE_REMAP);
-            }
-        }
-        else if (image_type & IMAGE_TYPE_TRANSPARENT)
-        {
-            DrawRLESpriteHelper1(IMAGE_TYPE_TRANSPARENT);
+            DrawRLESpriteHelper1(IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT);
         }
         else
         {
-            DrawRLESpriteHelper1(IMAGE_TYPE_DEFAULT);
+            DrawRLESpriteHelper1(IMAGE_TYPE_REMAP);
         }
     }
+    else if (image_type & IMAGE_TYPE_TRANSPARENT)
+    {
+        DrawRLESpriteHelper1(IMAGE_TYPE_TRANSPARENT);
+    }
+    else
+    {
+        DrawRLESpriteHelper1(IMAGE_TYPE_DEFAULT);
+    }
 }
+

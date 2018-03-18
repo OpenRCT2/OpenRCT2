@@ -18,15 +18,18 @@
 
 #include "../common.h"
 
-#ifdef __cplusplus
+#include "../drawing/Drawing.h"
+
 interface ITitleSequencePlayer;
 
 class TitleScreen final
 {
 public:
     ITitleSequencePlayer *  GetSequencePlayer();
-    uint16                  GetCurrentSequence();
-    void                    SetCurrentSequence(uint16 value);
+    size_t                  GetCurrentSequence();
+    bool                    PreviewSequence(size_t value);
+    void                    StopPreviewingSequence();
+    bool                    IsPreviewingSequence();
     bool                    ShouldHideVersionInfo();
     void                    SetHideVersionInfo(bool value);
 
@@ -36,32 +39,29 @@ public:
     void Load();
     void Update();
     void CreateWindows();
-    void ChangeSequence(sint32 preset);
+    void ChangePresetSequence(size_t preset);
 
 private:
     ITitleSequencePlayer *  _sequencePlayer = nullptr;
-    uint16                  _loadedTitleSequenceId = UINT16_MAX;
-    uint16                  _currentSequence = UINT16_MAX;
+    size_t                  _loadedTitleSequenceId = SIZE_MAX;
+    size_t                  _currentSequence = SIZE_MAX;
     bool                    _hideVersionInfo = false;
+    bool                    _previewingSequence = false;
 
     void TitleInitialise();
-    void TryLoadSequence();
+    bool TryLoadSequence(bool loadPreview = false);
 };
-#endif
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    void title_load();
-    void title_create_windows();
-    void * title_get_sequence_player();
-    void title_sequence_change_preset(sint32 preset);
-    bool title_should_hide_version_info();
-    void title_set_hide_version_info(bool value);
-    uint16 title_get_current_sequence();
-    void title_set_current_sequence(uint16 value);
-    void DrawOpenRCT2(rct_drawpixelinfo *dpi, sint32 x, sint32 y);
-#ifdef __cplusplus
-}
-#endif
+void title_load();
+void title_create_windows();
+void * title_get_sequence_player();
+void title_sequence_change_preset(size_t preset);
+bool title_should_hide_version_info();
+void title_set_hide_version_info(bool value);
+size_t title_get_config_sequence();
+size_t title_get_current_sequence();
+bool title_preview_sequence(size_t value);
+void title_stop_previewing_sequence();
+bool title_is_previewing_sequence();
+void DrawOpenRCT2(rct_drawpixelinfo * dpi, sint32 x, sint32 y);
+

@@ -277,5 +277,162 @@
     },
     {
         "path": "track/mini/booster_2.png"
+    },
+    {
+        "path": "track/railway/quarter_turn_3_tiles_sw_se_part_3.png",
+		"x_offset": -8,
+		"y_offset": 1
+    },
+    {
+        "path": "track/railway/gravel_sw_ne.png",
+		"x_offset": -33,
+		"y_offset": -2
+    },
+    {
+        "path": "track/railway/gravel_nw_se.png",
+		"x_offset": -21,
+		"y_offset": -2
+    },
+    {
+        "path": "track/railway/grooved_sw_ne.png",
+		"x_offset": -28,
+		"y_offset": -1
+    },
+    {
+        "path": "track/railway/grooved_nw_se.png",
+		"x_offset": -14,
+		"y_offset": -2
+    },
+    {
+        "path": "track/railway/grooved_sw_ne_trans.png",
+		"x_offset": -28,
+		"y_offset": -1,
+		"palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_nw_se_trans.png",
+		"x_offset": -14,
+		"y_offset": -2,
+		"palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_end_ne_trans.png",
+		"x_offset": -28,
+		"y_offset": -1,
+		"palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_end_se_trans.png",
+		"x_offset": -14,
+		"y_offset": -2,
+		"palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_end_nw_trans.png",
+		"x_offset": -14,
+		"y_offset": -2,
+		"palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_end_sw_trans.png",
+		"x_offset": -26,
+		"y_offset": -2,
+		"palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_end_sw_ne_trans.png",
+		"x_offset": -28,
+		"y_offset": -1,
+		"palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_end_nw_se_trans.png",
+		"x_offset": -14,
+		"y_offset": -2,
+		"palette": "keep"
+    },
+    {
+        "path": "icons/search.png"
+    },
+    {
+        "path": "surface/glassy_recolourable.png",
+        "x_offset": -32,
+        "y_offset": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "surface/selection_edge_nw.png",
+        "x_offset": -32,
+        "y_offset": -1
+    },
+    {
+        "path": "surface/selection_edge_ne.png",
+        "x_offset": 0,
+        "y_offset": -1
+    },
+    {
+        "path": "surface/selection_edge_sw.png",
+        "x_offset": -32,
+        "y_offset": 15
+    },
+    {
+        "path": "surface/selection_edge_se.png",
+        "x_offset": 0,
+        "y_offset": 15
+    },
+    {
+        "path": "edge/brick.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/rust.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/white_stucco.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/yellow_stucco.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/red_stucco.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/purple_stucco.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/green_stucco.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/brown_sandstone.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/grey_sandstone.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/skyscraper_a.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/skyscraper_b.png",
+        "x_offset": 2,
+        "y_offset": 2
     }
 ]

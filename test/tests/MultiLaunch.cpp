@@ -7,13 +7,11 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/ride/Ride.h>
 #include "TestData.h"
 
-extern "C"
-{
-    #include <openrct2/platform/platform.h>
-    #include <openrct2/game.h>
-}
+#include <openrct2/platform/platform.h>
+#include <openrct2/Game.h>
 
 using namespace OpenRCT2;
 
@@ -30,7 +28,7 @@ TEST(MultiLaunchTest, all)
         bool initialised = context->Initialise();
         ASSERT_TRUE(initialised);
 
-        ParkLoadResult * plr = game_load_sv6_path(path.c_str());
+        ParkLoadResult * plr = load_from_sv6(path.c_str());
 
         ASSERT_EQ(ParkLoadResult_GetError(plr), PARK_LOAD_ERROR_OK);
         ParkLoadResult_Delete(plr);

@@ -18,7 +18,6 @@
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
-#include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../rct12/SawyerChunkReader.h"
 #include "BannerObject.h"
@@ -27,6 +26,8 @@
 #include "FootpathObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
+#include "ObjectLimits.h"
+#include "ObjectList.h"
 #include "ObjectFactory.h"
 #include "RideObject.h"
 #include "SceneryGroupObject.h"
@@ -34,12 +35,6 @@
 #include "StexObject.h"
 #include "WallObject.h"
 #include "WaterObject.h"
-
-extern "C"
-{
-    #include "../object.h"
-    #include "../util/sawyercoding.h"
-}
 
 class ReadObjectContext : public IReadObjectContext
 {
@@ -97,7 +92,7 @@ namespace ObjectFactory
             // TODO check that ex is really EOF and not some other error
             context->LogError(OBJECT_ERROR_UNEXPECTED_EOF, "Unexpectedly reached end of file.");
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             context->LogError(OBJECT_ERROR_UNKNOWN, nullptr);
         }
@@ -116,7 +111,7 @@ namespace ObjectFactory
             rct_object_entry entry = fs.ReadValue<rct_object_entry>();
             result = CreateObject(entry);
 
-            utf8 objectName[9] = { 0 };
+            utf8 objectName[DAT_NAME_LENGTH + 1] = { 0 };
             object_entry_get_name_fixed(objectName, sizeof(objectName), &entry);
             log_verbose("  entry: { 0x%08X, \"%s\", 0x%08X }", entry.flags, objectName, entry.checksum);
 
@@ -128,10 +123,10 @@ namespace ObjectFactory
             ReadObjectLegacy(result, &readContext, &chunkStream);
             if (readContext.WasError())
             {
-                throw Exception("Object has errors");
+                throw std::runtime_error("Object has errors");
             }
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             Console::Error::WriteLine("Unable to open or read '%s'", path);
 
@@ -149,7 +144,7 @@ namespace ObjectFactory
         Object * result = CreateObject(*entry);
         if (result != nullptr)
         {
-            utf8 objectName[9];
+            utf8 objectName[DAT_NAME_LENGTH + 1];
             object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
 
             auto readContext = ReadObjectContext(objectName);
@@ -168,7 +163,7 @@ namespace ObjectFactory
     Object * CreateObject(const rct_object_entry &entry)
     {
         Object * result;
-        uint8 objectType = entry.flags & 0x0F;
+        uint8 objectType = object_entry_get_type(&entry);
         switch (objectType) {
         case OBJECT_TYPE_RIDE:
             result = new RideObject(entry);
@@ -191,7 +186,7 @@ namespace ObjectFactory
         case OBJECT_TYPE_PATH_BITS:
             result = new FootpathItemObject(entry);
             break;
-        case OBJECT_TYPE_SCENERY_SETS:
+        case OBJECT_TYPE_SCENERY_GROUP:
             result = new SceneryGroupObject(entry);
             break;
         case OBJECT_TYPE_PARK_ENTRANCE:
@@ -204,7 +199,7 @@ namespace ObjectFactory
             result = new StexObject(entry);
             break;
         default:
-            throw Exception("Invalid object type");
+            throw std::runtime_error("Invalid object type");
         }
         return result;
     }

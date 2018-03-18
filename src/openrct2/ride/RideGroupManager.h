@@ -16,51 +16,33 @@
 
 #pragma once
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    #include "../common.h"
-    #include "ride_data.h"
-#ifdef __cplusplus
-}
-#endif
+#include <vector>
+
+#include "../common.h"
+#include "RideData.h"
 
 #define MAX_RIDE_GROUPS_PER_RIDE_TYPE 2
 
-typedef struct ride_group {
-    uint8 ride_type;
-    uint16 maximum_height;
-    uint64 available_track_pieces;
-    rct_ride_name naming;
-} ride_group;
+extern const uint8 gRideCategories[RIDE_TYPE_COUNT];
 
-#ifdef __cplusplus
-interface IRideGroupManager
+struct RideGroup
 {
-    virtual ~IRideGroupManager() { }
-
-    virtual const ride_group * GetRideGroup(uint8 trackType, rct_ride_entry * rideEntry) const abstract;
-    virtual bool RideTypeHasRideGroups(uint8 trackType) const abstract;
-    virtual ride_group * RideGroupFind(uint8 rideType, uint8 index) const abstract;
-    virtual bool RideGroupsAreEqual(const ride_group * a, const ride_group * b) const abstract;
-    virtual bool RideGroupIsInvented(const ride_group * rideGroup) const abstract;
-
-    virtual const std::vector<const char *> GetPreferedRideEntryOrder(uint8 rideType) const abstract;
+    uint8 RideType;
+    uint16 MaximumHeight;
+    uint64 AvailableTrackPieces;
+    rct_ride_name Naming;
 };
 
-
-IRideGroupManager * GetRideGroupManager();
-
-extern "C"
+class RideGroupManager
 {
-#endif
-    const ride_group * get_ride_group(uint8 rideType, rct_ride_entry * rideEntry);
-    bool ride_type_has_ride_groups(uint8 rideType);
-    ride_group * ride_group_find(uint8 rideType, uint8 index);
-    bool ride_groups_are_equal(const ride_group * a, const ride_group * b);
-    bool ride_group_is_invented(const ride_group * rideGroup);
-    sint32 vehicle_preference_compare(uint8 rideType, const char * a, const char * b);
-#ifdef __cplusplus
-}
-#endif
+    public:
+    static const RideGroup * GetRideGroup(const uint8 trackType, const rct_ride_entry * rideEntry);
+    static bool RideTypeHasRideGroups(const uint8 trackType);
+    static const RideGroup * RideGroupFind(const uint8 rideType, const uint8 index);
+    static bool RideGroupsAreEqual(const RideGroup * a, const RideGroup * b);
+    static bool RideGroupIsInvented(const RideGroup * rideGroup);
+
+    static const std::vector<const char *> GetPreferredRideEntryOrder(const uint8 rideType);
+    static sint32 VehiclePreferenceCompare(const uint8 rideType, const char * a, const char * b);
+    static bool RideTypeIsIndependent(const uint8 rideType);
+};

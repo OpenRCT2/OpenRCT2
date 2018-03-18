@@ -19,10 +19,7 @@
 #include <vector>
 #include "../common.h"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-}
+#include "../drawing/Drawing.h"
 
 interface IReadObjectContext;
 interface IStream;

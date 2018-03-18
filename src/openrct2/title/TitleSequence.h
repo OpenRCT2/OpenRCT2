@@ -17,8 +17,11 @@
 #pragma once
 
 #include "../common.h"
+#include "../localisation/Localisation.h"
 
-typedef struct TitleCommand
+#define TITLE_COMMAND_SCENARIO_LENGTH 64
+
+struct TitleCommand
 {
     uint8 Type;
     union {
@@ -28,14 +31,20 @@ typedef struct TitleCommand
             uint8 X;
             uint8 Y;
         };
-        uint8 Rotations;    // ROTATE (counter-clockwise)
-        uint8 Zoom;         // ZOOM
-        uint8 Speed;        // SPEED
-        uint16 Milliseconds;      // WAIT
+        uint8  Rotations;                                // ROTATE (counter-clockwise)
+        uint8  Zoom;                                     // ZOOM
+        struct                                           // FOLLOW
+        {
+            uint16 SpriteIndex;
+            utf8 SpriteName[USER_STRING_MAX_LENGTH];
+        };
+        uint8  Speed;                                    // SPEED
+        uint16 Milliseconds;                             // WAIT
+        utf8   Scenario[TITLE_COMMAND_SCENARIO_LENGTH];  // LOADSC
     };
-} TitleCommand;
+};
 
-typedef struct TitleSequence
+struct TitleSequence
 {
     const utf8 * Name;
     const utf8 * Path;
@@ -47,13 +56,13 @@ typedef struct TitleSequence
     utf8 * * Saves;
 
     bool IsZip;
-} TitleSequence;
+};
 
-typedef struct TitleSequenceParkHandle
+struct TitleSequenceParkHandle
 {
     const utf8 *    HintPath;
     void *          Stream;
-} TitleSequenceParkHandle;
+};
 
 enum TITLE_SCRIPT
 {
@@ -63,6 +72,7 @@ enum TITLE_SCRIPT
     TITLE_SCRIPT_LOCATION,
     TITLE_SCRIPT_ROTATE,
     TITLE_SCRIPT_ZOOM,
+    TITLE_SCRIPT_FOLLOW,
     TITLE_SCRIPT_RESTART,
     TITLE_SCRIPT_LOAD,
     TITLE_SCRIPT_END,
@@ -70,36 +80,27 @@ enum TITLE_SCRIPT
     TITLE_SCRIPT_LOOP,
     TITLE_SCRIPT_ENDLOOP,
     TITLE_SCRIPT_LOADRCT1,
+    TITLE_SCRIPT_LOADSC,
 };
 
-#ifdef __cplusplus
-    constexpr const utf8 *  TITLE_SEQUENCE_EXTENSION = ".parkseq";
-    constexpr uint8         SAVE_INDEX_INVALID = UINT8_MAX;
-#else
-    #define                 SAVE_INDEX_INVALID   UINT8_MAX
-#endif
+constexpr const utf8 *  TITLE_SEQUENCE_EXTENSION = ".parkseq";
+constexpr uint8         SAVE_INDEX_INVALID = UINT8_MAX;
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    TitleSequence * CreateTitleSequence();
-    TitleSequence * LoadTitleSequence(const utf8 * path);
-    void FreeTitleSequence(TitleSequence * seq);
+TitleSequence * CreateTitleSequence();
+TitleSequence * LoadTitleSequence(const utf8 * path);
+void FreeTitleSequence(TitleSequence * seq);
 
-    TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t index);
+TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t index);
 
-    /**
-     * Close a title sequence park handle.
-     * The pointer to the handle is invalid after calling this function.
-     */
-    void TitleSequenceCloseParkHandle(TitleSequenceParkHandle * handle);
-    bool TileSequenceSave(TitleSequence * seq);
-    bool TileSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name);
-    bool TileSequenceRenamePark(TitleSequence * seq, size_t index, const utf8 * name);
-    bool TitleSequenceRemovePark(TitleSequence * seq, size_t index);
+/**
+ * Close a title sequence park handle.
+ * The pointer to the handle is invalid after calling this function.
+ */
+void TitleSequenceCloseParkHandle(TitleSequenceParkHandle * handle);
+bool TitleSequenceSave(TitleSequence * seq);
+bool TitleSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name);
+bool TitleSequenceRenamePark(TitleSequence * seq, size_t index, const utf8 * name);
+bool TitleSequenceRemovePark(TitleSequence * seq, size_t index);
 
-    bool TitleSequenceIsLoadCommand(const TitleCommand * command);
-#ifdef __cplusplus
-}
-#endif
+bool TitleSequenceIsLoadCommand(const TitleCommand * command);
+

@@ -17,7 +17,6 @@
 #include <cctype>
 #include <initializer_list>
 #include <string>
-#include <tuple>
 #include <unordered_map>
 #include <vector>
 #include "../common.h"
@@ -62,7 +61,7 @@ struct StringIHash
 {
     std::size_t operator()(const std::string &s) const
     {
-        typedef std::char_traits<char> Traits;
+        using Traits = std::char_traits<char>;
         std::size_t seed = 0;
         for (const char &c : s)
         {
@@ -78,7 +77,7 @@ struct StringICmp
 {
     bool operator()(const std::string &a, const std::string &b) const
     {
-        typedef std::char_traits<char> Traits;
+        using Traits = std::char_traits<char>;
         if (a.size() != b.size()) return false;
         const char *s1 = a.data(), *s2 = b.data();
         for (std::size_t i = a.size(); i > 0; --i, ++s1, ++s2)
@@ -100,7 +99,7 @@ private:
     std::unordered_map<std::string, std::string, StringIHash, StringICmp>   _values;
 
 public:
-    IniReader(IStream * stream)
+    explicit IniReader(IStream * stream)
     {
         uint64 length = stream->GetLength() - stream->GetPosition();
         _buffer.resize(length);
@@ -152,7 +151,7 @@ public:
             {
                 result = std::stoi(value);
             }
-            catch (std::exception)
+            catch (const std::exception &)
             {
             }
         }
@@ -169,7 +168,7 @@ public:
             {
                 result = std::stof(value);
             }
-            catch (std::exception)
+            catch (const std::exception &)
             {
             }
         }

@@ -18,18 +18,18 @@
 
 #include "../common.h"
 
-enum ADVERTISE_STATUS
+enum class ADVERTISE_STATUS
 {
-    ADVERTISE_STATUS_DISABLED,
-    ADVERTISE_STATUS_UNREGISTERED,
-    ADVERTISE_STATUS_REGISTERED,
+    DISABLED,
+    UNREGISTERED,
+    REGISTERED,
 };
 
 interface INetworkServerAdvertiser
 {
     virtual ~INetworkServerAdvertiser() { }
 
-    virtual ADVERTISE_STATUS    GetStatus() abstract;
+    virtual ADVERTISE_STATUS    GetStatus() const abstract;
     virtual void                Update() abstract;
 };
 

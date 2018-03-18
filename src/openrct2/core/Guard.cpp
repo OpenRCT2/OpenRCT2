@@ -15,15 +15,14 @@
 #pragma endregion
 
 #include <cassert>
-#include <stdarg.h>
-#include <stdio.h>
+#include <cstdarg>
+#include <cstdio>
 
 #include "../common.h"
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#undef GetMessage
 #endif
 
 #include "../Version.h"
@@ -32,16 +31,14 @@
 #include "Guard.hpp"
 #include "String.hpp"
 
-extern "C"
+void openrct2_assert_fwd(bool expression, const char * message, ...)
 {
-    void openrct2_assert_fwd(bool expression, const char * message, ...)
-    {
-        va_list va;
-        va_start(va, message);
-        Guard::Assert_VA(expression, message, va);
-        va_end(va);
-    }
+    va_list va;
+    va_start(va, message);
+    Guard::Assert_VA(expression, message, va);
+    va_end(va);
 }
+
 
 namespace Guard
 {

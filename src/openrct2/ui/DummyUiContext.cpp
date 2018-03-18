@@ -37,6 +37,7 @@ namespace OpenRCT2 { namespace Ui
         void * GetWindow() override { return nullptr; }
         sint32 GetWidth() override { return 0; }
         sint32 GetHeight() override { return 0; }
+        sint32 GetScaleQuality() override { return 0; }
         void SetFullscreenMode(FULLSCREEN_MODE mode) override { }
         std::vector<Resolution> GetFullscreenResolutions() override { return std::vector<Resolution>(); }
         bool HasFocus() override { return false; }
@@ -53,6 +54,7 @@ namespace OpenRCT2 { namespace Ui
         const CursorState * GetCursorState() override { return nullptr; }
         CURSOR_ID GetCursor() override { return CURSOR_ARROW; }
         void SetCursor(CURSOR_ID cursor) override { }
+        void SetCursorScale(uint8 scale) override  { }
         void SetCursorVisible(bool value) override { }
         void GetCursorPosition(sint32 * x, sint32 * y) override { }
         void SetCursorPosition(sint32 x, sint32 y) override { }

@@ -1,4 +1,4 @@
-version: 0.1.1.{build}
+version: 0.1.2.{build}
 image:
 #  - Visual Studio 2015
   - Visual Studio 2017

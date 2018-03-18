@@ -20,14 +20,14 @@
 #include <cmath>
 #include <memory>
 #include <vector>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
-#include <openrct2/localisation/string_ids.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform2.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
@@ -40,13 +40,9 @@
 #include "UiContext.h"
 #include "WindowManager.h"
 
-extern "C"
-{
-    #include <openrct2/input.h>
-    #include <openrct2/interface/console.h>
-    #include <openrct2/interface/window.h>
-    #include <openrct2/windows/error.h>
-}
+#include <openrct2/Input.h>
+#include <openrct2/interface/Console.h>
+#include <openrct2-ui/interface/Window.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -73,6 +69,7 @@ private:
     SDL_Window *    _window = nullptr;
     sint32          _width  = 0;
     sint32          _height = 0;
+    sint32          _scaleQuality = 0;
 
     bool _resolutionsAllowAnyAspectRatio = false;
     std::vector<Resolution> _fsResolutions;
@@ -90,7 +87,7 @@ private:
     float               _gestureRadius          = 0;
 
 public:
-    UiContext(IPlatformEnvironment * env)
+    explicit UiContext(IPlatformEnvironment * env)
         : _platformUiContext(CreatePlatformUiContext()),
           _windowManager(CreateWindowManager()),
           _keyboardShortcuts(env)
@@ -128,9 +125,14 @@ public:
         return _height;
     }
 
+    sint32 GetScaleQuality() override
+    {
+        return _scaleQuality;
+    }
+
     void SetFullscreenMode(FULLSCREEN_MODE mode) override
     {
-        static const sint32 SDLFSFlags[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
+        static constexpr const sint32 SDLFSFlags[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
         uint32 windowFlags = SDLFSFlags[(sint32)mode];
 
         // HACK Changing window size when in fullscreen usually has no effect
@@ -208,6 +210,11 @@ public:
     void SetCursor(CURSOR_ID cursor) override
     {
         _cursorRepository.SetCurrentCursor(cursor);
+    }
+
+    void SetCursorScale(uint8 scale) override
+    {
+        _cursorRepository.SetCursorScale(scale);
     }
 
     void SetCursorVisible(bool value) override
@@ -344,10 +351,10 @@ public:
             case SDL_MOUSEWHEEL:
                 if (gConsoleOpen)
                 {
-                    console_scroll(e.wheel.y);
+                    console_scroll(e.wheel.y * 3); // Scroll 3 lines at a time
                     break;
                 }
-                _cursorState.wheel += e.wheel.y * 128;
+                _cursorState.wheel -= e.wheel.y;
                 break;
             case SDL_MOUSEBUTTONDOWN:
             {
@@ -489,11 +496,16 @@ public:
     void TriggerResize() override
     {
         char scaleQualityBuffer[4];
-        uint8 scaleQuality = gConfigGeneral.scale_quality;
-        if (gConfigGeneral.use_nn_at_integer_scales &&
-            gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+        _scaleQuality = gConfigGeneral.scale_quality;
+        if (gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
         {
-            scaleQuality = 0;
+            _scaleQuality = SCALE_QUALITY_NN;
+        }
+
+        sint32 scaleQuality = _scaleQuality;
+        if (_scaleQuality == SCALE_QUALITY_SMOOTH_NN)
+        {
+            scaleQuality = SCALE_QUALITY_LINEAR;
         }
         snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", scaleQuality);
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
@@ -506,10 +518,6 @@ public:
     void CreateWindow() override
     {
         SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
-
-        // TODO This should probably be called somewhere else. It has nothing to do with window creation and can be done as soon as
-        // g1.dat is loaded.
-        // sub_68371D();
 
         // Set window position to default display
         sint32 defaultDisplay = Math::Clamp(0, gConfigGeneral.default_display, 0xFFFF);
@@ -568,7 +576,7 @@ public:
             sint32 numChannels = bitmap->format->BytesPerPixel;
             if (numChannels < 3 || bitmap->format->BitsPerPixel < 24)
             {
-                window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_24_BIT_BITMAP);
+                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_24_BIT_BITMAP);
                 SDL_FreeSurface(bitmap);
                 return false;
             }
@@ -618,7 +626,7 @@ public:
         else
         {
             log_warning("Failed to load bitmap: %s", SDL_GetError());
-            window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP);
+            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP);
             return false;
         }
     }

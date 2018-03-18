@@ -14,18 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/Guard.hpp"
-
-extern "C"
-{
-    #include "../platform/platform.h"
-    #include "../OpenRCT2.h"
-}
-
 #include "../core/Console.hpp"
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
 #include "CommandLine.hpp"
+#include "../OpenRCT2.h"
 
 #pragma region CommandLineArgEnumerator
 
@@ -558,38 +551,36 @@ namespace CommandLine
     }
 }
 
-extern "C"
+sint32 cmdline_run(const char * * argv, sint32 argc)
 {
-    sint32 cmdline_run(const char * * argv, sint32 argc)
+    auto argEnumerator = CommandLineArgEnumerator(argv, argc);
+
+    // Pop process path
+    argEnumerator.TryPop();
+
+    const CommandLineCommand * command = CommandLine::FindCommandFor(CommandLine::RootCommands, &argEnumerator);
+
+    if (command == nullptr)
     {
-        auto argEnumerator = CommandLineArgEnumerator(argv, argc);
+        return EXITCODE_FAIL;
+    }
 
-        // Pop process path
-        argEnumerator.TryPop();
-
-        const CommandLineCommand * command = CommandLine::FindCommandFor(CommandLine::RootCommands, &argEnumerator);
-
-        if (command == nullptr)
+    if (command->Options != nullptr)
+    {
+        auto argEnumeratorForOptions = CommandLineArgEnumerator(argEnumerator);
+        if (!CommandLine::ParseOptions(command->Options, &argEnumeratorForOptions))
         {
             return EXITCODE_FAIL;
         }
+    }
 
-        if (command->Options != nullptr)
-        {
-            auto argEnumeratorForOptions = CommandLineArgEnumerator(argEnumerator);
-            if (!CommandLine::ParseOptions(command->Options, &argEnumeratorForOptions))
-            {
-                return EXITCODE_FAIL;
-            }
-        }
-
-        if (command == CommandLine::RootCommands && command->Func == nullptr)
-        {
-            return CommandLine::HandleCommandDefault();
-        }
-        else
-        {
-            return command->Func(&argEnumerator);
-        }
+    if (command == CommandLine::RootCommands && command->Func == nullptr)
+    {
+        return CommandLine::HandleCommandDefault();
+    }
+    else
+    {
+        return command->Func(&argEnumerator);
     }
 }
+

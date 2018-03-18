@@ -16,22 +16,9 @@
 
 #pragma once
 
-#ifdef __cplusplus
-    #include <vector>
-#endif
-
+#include <vector>
 #include "../common.h"
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    #include "../object.h"
-#ifdef __cplusplus
-}
-#endif
-
-#ifdef __cplusplus
+#include "../object/Object.h"
 
 interface   IObjectRepository;
 class       Object;
@@ -42,6 +29,7 @@ interface IObjectManager
     virtual ~IObjectManager() { }
 
     virtual Object *                        GetLoadedObject(size_t index) abstract;
+    virtual Object *                        GetLoadedObject(sint32 objectType, size_t index) abstract;
     virtual Object *                        GetLoadedObject(const rct_object_entry * entry) abstract;
     virtual uint8                           GetLoadedObjectEntryIndex(const Object * object) abstract;
     virtual std::vector<rct_object_entry>   GetInvalidObjects(const rct_object_entry * entries) abstract;
@@ -59,13 +47,6 @@ interface IObjectManager
 IObjectManager * CreateObjectManager(IObjectRepository * objectRepository);
 IObjectManager * GetObjectManager();
 
-#endif
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 void *        object_manager_get_loaded_object_by_index(size_t index);
 void *        object_manager_get_loaded_object(const rct_object_entry * entry);
 uint8         object_manager_get_loaded_object_entry_index(const void * loadedObject);
@@ -73,7 +54,3 @@ void *        object_manager_load_object(const rct_object_entry * entry);
 void          object_manager_unload_objects(const rct_object_entry * entries, size_t count);
 void          object_manager_unload_all_objects();
 rct_string_id object_manager_get_source_game_string(const rct_object_entry * entry);
-
-#ifdef __cplusplus
-}
-#endif

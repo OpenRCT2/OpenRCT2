@@ -34,16 +34,16 @@ enum
     SET_SEGMENT_HEIGHT,
 };
 
-typedef struct
+struct function_call
 {
     uint8 function;
     struct paint
     {
         uint32 image_id;
-        rct_xy16 offset;
-        rct_xyz16 bound_box_length;
+        LocationXY16 offset;
+        LocationXYZ16 bound_box_length;
         sint16 z_offset;
-        rct_xyz16 bound_box_offset;
+        LocationXYZ16 bound_box_offset;
         uint32 rotation;
         paint_struct output_struct;
     } paint;
@@ -56,7 +56,7 @@ typedef struct
         uint32 colour_flags;
         sint32 prepend_to;
     } supports;
-} function_call;
+};
 
 class FunctionCall {
 public:

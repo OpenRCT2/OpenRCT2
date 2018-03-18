@@ -19,20 +19,16 @@
 #include "../core/Util.hpp"
 #include "Tables.h"
 
-extern "C"
-{
-    #include "../interface/colour.h"
-    #include "../rct1.h"
-    #include "../ride/ride.h"
-}
+#include "../interface/Colour.h"
+#include "RCT1.h"
+#include "../ride/Ride.h"
 
+// clang-format off
 namespace RCT1
 {
-    const char * DefaultParkEntranceObject = "PKENT1  ";
-
     colour_t GetColour(colour_t colour)
     {
-        static const uint8 map[] =
+        static constexpr const uint8 map[] =
         {
             COLOUR_BLACK,
             COLOUR_GREY,
@@ -67,7 +63,7 @@ namespace RCT1
             COLOUR_BRIGHT_YELLOW,
             COLOUR_ICY_BLUE
         };
-        if (colour < 0 || colour >= Util::CountOf(map))
+        if (colour >= Util::CountOf(map))
         {
             log_warning("Unsupported RCT1 colour.");
             return COLOUR_BLACK;
@@ -77,7 +73,7 @@ namespace RCT1
 
     uint8 GetPeepSpriteType(uint8 rct1SpriteType)
     {
-        static const uint8 map[] =
+        static constexpr const uint8 map[] =
         {
             PEEP_SPRITE_TYPE_NORMAL, // 0x00
             PEEP_SPRITE_TYPE_HANDYMAN, // 0x01
@@ -110,12 +106,12 @@ namespace RCT1
             PEEP_SPRITE_TYPE_HOT_DOG, // 0x1C
             PEEP_SPRITE_TYPE_TENTACLE, // 0x1D
             PEEP_SPRITE_TYPE_TOFFEE_APPLE, // 0x1E
-            PEEP_SPRITE_TYPE_DONUT, // 0x1F
+            PEEP_SPRITE_TYPE_DOUGHNUT, // 0x1F
             PEEP_SPRITE_TYPE_COFFEE, // 0x20
             PEEP_SPRITE_TYPE_CHICKEN, // 0x21
             PEEP_SPRITE_TYPE_LEMONADE, // 0x22
         };
-        if (rct1SpriteType < 0 || rct1SpriteType >= Util::CountOf(map))
+        if (rct1SpriteType >= Util::CountOf(map))
         {
             log_warning("Unsupported RCT1 peep sprite type: %d.", rct1SpriteType);
             return PEEP_SPRITE_TYPE_NORMAL;
@@ -125,7 +121,7 @@ namespace RCT1
 
     uint8 GetTerrain(uint8 terrain)
     {
-        static const uint8 map[] =
+        static constexpr const uint8 map[] =
         {
             TERRAIN_GRASS,
             TERRAIN_SAND,
@@ -150,23 +146,23 @@ namespace RCT1
 
     uint8 GetTerrainEdge(uint8 terrainEdge)
     {
-        static const uint8 map[] =
+        static constexpr const uint8 map[] =
         {
             TERRAIN_EDGE_ROCK,
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_BRICK
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_IRON
+            TERRAIN_EDGE_BRICK,
+            TERRAIN_EDGE_IRON,
             TERRAIN_EDGE_WOOD_RED,
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_GREY
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_YELLOW
+            TERRAIN_EDGE_GREY,
+            TERRAIN_EDGE_YELLOW,
             TERRAIN_EDGE_WOOD_BLACK,
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_RED
+            TERRAIN_EDGE_RED,
             TERRAIN_EDGE_ICE,
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_PURPLE
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_GREEN
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_STONE_BROWN
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_STONE_GREY
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_SKYSCRAPER_A
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_SKYSCRAPER_B
+            TERRAIN_EDGE_PURPLE,
+            TERRAIN_EDGE_GREEN,
+            TERRAIN_EDGE_STONE_BROWN,
+            TERRAIN_EDGE_STONE_GREY,
+            TERRAIN_EDGE_SKYSCRAPER_A,
+            TERRAIN_EDGE_SKYSCRAPER_B,
             TERRAIN_EDGE_ROCK             // Unused
         };
         Guard::ArgumentInRange<size_t>(terrainEdge, 0, Util::CountOf(map), "Unsupported RCT1 terrain edge.");
@@ -185,7 +181,7 @@ namespace RCT1
             RIDE_TYPE_MINIATURE_RAILWAY,
             RIDE_TYPE_MONORAIL,
             RIDE_TYPE_MINI_SUSPENDED_COASTER,
-            RIDE_TYPE_BOAT_RIDE,
+            RIDE_TYPE_BOAT_HIRE,
             RIDE_TYPE_WOODEN_WILD_MOUSE,
             RIDE_TYPE_STEEPLECHASE,
             RIDE_TYPE_CAR_RIDE,
@@ -203,7 +199,7 @@ namespace RCT1
             RIDE_TYPE_LOG_FLUME,
             RIDE_TYPE_RIVER_RAPIDS,
             RIDE_TYPE_DODGEMS,
-            RIDE_TYPE_PIRATE_SHIP,
+            RIDE_TYPE_SWINGING_SHIP,
             RIDE_TYPE_SWINGING_INVERTER_SHIP,
             RIDE_TYPE_FOOD_STALL,
             RIDE_TYPE_FOOD_STALL,
@@ -226,12 +222,12 @@ namespace RCT1
             RIDE_TYPE_TWIST,
             RIDE_TYPE_HAUNTED_HOUSE,
             RIDE_TYPE_FOOD_STALL,
-            RIDE_TYPE_CIRCUS_SHOW,
+            RIDE_TYPE_CIRCUS,
             RIDE_TYPE_GHOST_TRAIN,
             RIDE_TYPE_TWISTER_ROLLER_COASTER,
             RIDE_TYPE_WOODEN_ROLLER_COASTER,
             RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER,
-            RIDE_TYPE_WILD_MOUSE,
+            RIDE_TYPE_STEEL_WILD_MOUSE,
             RIDE_TYPE_FOOD_STALL,
             RIDE_TYPE_FOOD_STALL,
             RIDE_TYPE_SHOP,
@@ -254,7 +250,7 @@ namespace RCT1
             RIDE_TYPE_WATER_COASTER,
             RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER,
             RIDE_TYPE_INVERTED_HAIRPIN_COASTER,
-            RIDE_TYPE_BOAT_RIDE,
+            RIDE_TYPE_BOAT_HIRE,
             RIDE_TYPE_SHOP,
             RIDE_TYPE_RIVER_RAFTS,
             RIDE_TYPE_FOOD_STALL,
@@ -275,7 +271,7 @@ namespace RCT1
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN = 0,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN_BACKWARDS,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_WOODEN_ROLLER_COASTER_TRAIN,
-            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_INVERTED_COASTER_TRAIN, // Not in RCT2
+            { COPY_COLOUR_1, COPY_COLOUR_2, COPY_COLOUR_2 }, // RCT1_VEHICLE_TYPE_INVERTED_COASTER_TRAIN, // Not in RCT2
             { COPY_COLOUR_1, COPY_COLOUR_2, COPY_COLOUR_2 }, // RCT1_VEHICLE_TYPE_SUSPENDED_SWINGING_CARS,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_LADYBIRD_CARS,
             { COPY_COLOUR_1, COPY_COLOUR_1, COPY_COLOUR_2 }, // RCT1_VEHICLE_TYPE_STANDUP_ROLLER_COASTER_CARS,
@@ -330,7 +326,7 @@ namespace RCT1
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_STEEL_TWISTER_ROLLER_COASTER_TRAIN,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_WOODEN_TWISTER_ROLLER_COASTER_TRAIN,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_WOODEN_SIDE_FRICTION_CARS,
-            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_VINTAGE_CARS,
+            { COPY_COLOUR_1, COPY_COLOUR_1, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_VINTAGE_CARS,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_STEAM_TRAIN_COVERED_CARS,
             { COPY_COLOUR_1, COLOUR_BLACK, COPY_COLOUR_2 }, // RCT1_VEHICLE_TYPE_STAND_UP_STEEL_TWISTER_ROLLER_COASTER_TRAIN,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_FLOORLESS_STEEL_TWISTER_ROLLER_COASTER_TRAIN,
@@ -386,7 +382,7 @@ namespace RCT1
         case RCT1_RIDE_TYPE_HOT_DOG_STALL:
         case RCT1_RIDE_TYPE_EXOTIC_SEA_FOOD_STALL:
         case RCT1_RIDE_TYPE_HAT_STALL:
-        case RCT1_RIDE_TYPE_CANDY_APPLE_STAND:
+        case RCT1_RIDE_TYPE_TOFFEE_APPLE_STALL:
         case RCT1_RIDE_TYPE_40:
         case RCT1_RIDE_TYPE_44:
         case RCT1_RIDE_TYPE_T_SHIRT_STALL:
@@ -427,7 +423,7 @@ namespace RCT1
 
     uint8 GetVehicleSubEntryIndex(uint8 vehicleSubEntry)
     {
-        static const uint8 map[] =
+        static constexpr const uint8 map[] =
         {
             0, // STEEL_RC_FRONT
             1, // STEEL_RC_CARRIAGE
@@ -691,14 +687,14 @@ namespace RCT1
 
     const char * GetRideTypeObject(uint8 rideType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "PTCT1   ",  // RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER
             "TOGST   ",  // RCT1_RIDE_TYPE_STAND_UP_STEEL_ROLLER_COASTER
             "ARRSW1  ",  // RCT1_RIDE_TYPE_SUSPENDED_ROLLER_COASTER
             "NEMT    ",  // RCT1_RIDE_TYPE_INVERTED_ROLLER_COASTER
             "ZLDB    ",  // RCT1_RIDE_TYPE_STEEL_MINI_ROLLER_COASTER
-            "NRL     ",  // RCT1_RIDE_TYPE_MINIATURE_RAILROAD
+            "NRL     ",  // RCT1_RIDE_TYPE_MINIATURE_RAILWAY
             "MONO2   ",  // RCT1_RIDE_TYPE_MONORAIL
             "BATFL   ",  // RCT1_RIDE_TYPE_SUSPENDED_SINGLE_RAIL_ROLLER_COASTER
             "RBOAT   ",  // RCT1_RIDE_TYPE_BOAT_HIRE
@@ -733,16 +729,16 @@ namespace RCT1
             "FWH1    ",  // RCT1_RIDE_TYPE_FERRIS_WHEEL
             "SIMPOD  ",  // RCT1_RIDE_TYPE_MOTION_SIMULATOR
             "C3D     ",  // RCT1_RIDE_TYPE_3D_CINEMA
-            "TOPSP1  ",  // RCT1_RIDE_TYPE_GRAVITRON
+            "TOPSP1  ",  // RCT1_RIDE_TYPE_TOP_SPIN
             "SRINGS  ",  // RCT1_RIDE_TYPE_SPACE_RINGS
             "REVF1   ",  // RCT1_RIDE_TYPE_REVERSE_FREEFALL_ROLLER_COASTER
             "SOUVS   ",  // RCT1_RIDE_TYPE_SOUVENIR_STALL
             "BMVD    ",  // RCT1_RIDE_TYPE_VERTICAL_ROLLER_COASTER
             "PIZZS   ",  // RCT1_RIDE_TYPE_PIZZA_STALL
-            "TWIST1  ",  // RCT1_RIDE_TYPE_SCRAMBLED_EGGS
+            "TWIST1  ",  // RCT1_RIDE_TYPE_TWIST
             "HHBUILD ",  // RCT1_RIDE_TYPE_HAUNTED_HOUSE
             "POPCS   ",  // RCT1_RIDE_TYPE_POPCORN_STALL
-            "CIRCUS1 ",  // RCT1_RIDE_TYPE_CIRCUS_SHOW
+            "CIRCUS1 ",  // RCT1_RIDE_TYPE_CIRCUS
             "GTC     ",  // RCT1_RIDE_TYPE_GHOST_TRAIN
             "BMSD    ",  // RCT1_RIDE_TYPE_STEEL_TWISTER_ROLLER_COASTER
             "MFT     ",  // RCT1_RIDE_TYPE_WOODEN_TWISTER_ROLLER_COASTER
@@ -751,7 +747,7 @@ namespace RCT1
             "HOTDS   ",  // RCT1_RIDE_TYPE_HOT_DOG_STALL
             "SQDST   ",  // RCT1_RIDE_TYPE_EXOTIC_SEA_FOOD_STALL
             "HATST   ",  // RCT1_RIDE_TYPE_HAT_STALL
-            "TOFFS   ",  // RCT1_RIDE_TYPE_CANDY_APPLE_STAND
+            "TOFFS   ",  // RCT1_RIDE_TYPE_TOFFEE_APPLE_STALL
             "VREEL   ",  // RCT1_RIDE_TYPE_VIRGINIA_REEL
             "SPBOAT  ",  // RCT1_RIDE_TYPE_RIVER_RIDE
             "MONBK   ",  // RCT1_RIDE_TYPE_CYCLE_MONORAIL
@@ -786,7 +782,7 @@ namespace RCT1
 
     const char * GetVehicleObject(uint8 vehicleType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "SCHT1   ",  // RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN
             "SCHT1   ",  // RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN_BACKWARDS
@@ -885,7 +881,7 @@ namespace RCT1
 
     const char * GetSmallSceneryObject(uint8 smallSceneryType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "TL0     ",
             "TL1     ",
@@ -1137,7 +1133,7 @@ namespace RCT1
 
     const char * GetLargeSceneryObject(uint8 largeSceneryType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "SCOL    ",
             "SHS1    ",
@@ -1184,7 +1180,7 @@ namespace RCT1
 
     const char * GetWallObject(uint8 wallType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "WMF     ",
             "WMFG    ",
@@ -1288,7 +1284,7 @@ namespace RCT1
 
     const char * GetPathObject(uint8 pathType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "TARMAC  ",  // RCT1_FOOTPATH_TYPE_QUEUE_BLUE
             "PATHSPCE",  // RCT1_FOOTPATH_TYPE_QUEUE_RED
@@ -1325,7 +1321,7 @@ namespace RCT1
 
     const char * GetPathAddtionObject(uint8 pathAdditionType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "        ",  // RCT1_PATH_ADDITION_NONE
             "LAMP1   ",  // RCT1_PATH_ADDITION_LAMP_1
@@ -1348,7 +1344,7 @@ namespace RCT1
 
     const char * GetSceneryGroupObject(uint8 sceneryGroupType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "        ", // RCT1_SCENERY_THEME_GENERAL
             "SCGMINE ", // RCT1_SCENERY_THEME_MINE
@@ -1374,7 +1370,7 @@ namespace RCT1
 
     const char * GetWaterObject(uint8 waterType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "WTRCYAN ",
             "WTRORNG ",
@@ -1431,21 +1427,4 @@ namespace RCT1
         return map[sceneryType];
     }
 }
-
-extern "C"
-{
-    uint8 rct1_get_ride_type(uint8 rideType)
-    {
-        return RCT1::GetRideType(rideType);
-    }
-
-    const char * rct1_get_ride_type_object(uint8 rideType)
-    {
-        return RCT1::GetRideTypeObject(rideType);
-    }
-
-    const char * rct1_get_vehicle_object(uint8 vehicleType)
-    {
-        return RCT1::GetVehicleObject(vehicleType);
-    }
-}
+// clang-format on

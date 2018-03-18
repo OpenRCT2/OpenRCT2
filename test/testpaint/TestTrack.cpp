@@ -29,13 +29,11 @@
 #include "Utils.hpp"
 #include "VerticalTunnelCall.hpp"
 
-extern "C" {
-#include <openrct2/paint/map_element/map_element.h>
-#include <openrct2/paint/supports.h>
-#include <openrct2/ride/ride.h>
-#include <openrct2/ride/track.h>
-#include <openrct2/ride/track_data.h>
-}
+#include <openrct2/paint/tile_element/TileElement.h>
+#include <openrct2/paint/Supports.h>
+#include <openrct2/ride/Ride.h>
+#include <openrct2/ride/Track.h>
+#include <openrct2/ride/TrackData.h>
 
 interface ITestTrackFilter {
 public:
@@ -48,8 +46,8 @@ public:
     virtual std::string VariantName(uint8 rideType, uint8 trackType, int variant) abstract;
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
-                         rct_map_element *mapElement, rct_map_element *surfaceElement,
-                         rct_ride *ride, rct_ride_entry *rideEntry
+                         rct_tile_element *tileElement, rct_tile_element *surfaceElement,
+                         Ride *ride, rct_ride_entry *rideEntry
     ) abstract;
 };
 
@@ -68,13 +66,16 @@ public:
     }
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
-                         rct_map_element *mapElement, rct_map_element *surfaceElement,
-                         rct_ride *ride, rct_ride_entry *rideEntry
+                         rct_tile_element *tileElement, rct_tile_element *surfaceElement,
+                         Ride *ride, rct_ride_entry *rideEntry
     ) override {
-        if (variant == 0) {
-            mapElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
-        } else {
-            mapElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+        if (variant == 0)
+        {
+            track_element_clear_cable_lift(tileElement);
+        }
+        else
+        {
+            track_element_set_cable_lift(tileElement);
         }
     }
 };
@@ -94,13 +95,13 @@ public:
     }
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
-                         rct_map_element *mapElement, rct_map_element *surfaceElement,
-                         rct_ride *ride, rct_ride_entry *rideEntry
+                         rct_tile_element *tileElement, rct_tile_element *surfaceElement,
+                         Ride *ride, rct_ride_entry *rideEntry
     ) override {
         if (variant == 0) {
-            mapElement->type &= ~TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+            tileElement->type &= ~TRACK_ELEMENT_FLAG_CHAIN_LIFT;
         } else {
-            mapElement->type |= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+            tileElement->type |= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
         }
     }
 };
@@ -126,13 +127,16 @@ public:
     }
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
-                         rct_map_element *mapElement, rct_map_element *surfaceElement,
-                         rct_ride *ride, rct_ride_entry *rideEntry
+                         rct_tile_element *tileElement, rct_tile_element *surfaceElement,
+                         Ride *ride, rct_ride_entry *rideEntry
     ) override {
-        if (variant == 0) {
-            mapElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
-        } else {
-            mapElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+        if (variant == 0)
+        {
+            track_element_clear_cable_lift(tileElement);
+        }
+        else
+        {
+            track_element_set_cable_lift(tileElement);
         }
     }
 };
@@ -158,10 +162,11 @@ public:
     }
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
-                         rct_map_element *mapElement, rct_map_element *surfaceElement,
-                         rct_ride *ride, rct_ride_entry *rideEntry
+                         rct_tile_element *tileElement, rct_tile_element *surfaceElement,
+                         Ride *ride, rct_ride_entry *rideEntry
     ) override {
         ride->entrance_style = variant;
+        RCT2_Rides[0].entrance_style = variant;
     }
 };
 
@@ -173,7 +178,7 @@ static void CallOriginal(
     uint8 direction,
     uint8 trackSequence,
     uint16 height,
-    rct_map_element *mapElement
+    rct_tile_element *tileElement
 ) {
     uint32 *trackDirectionList = (uint32 *) RideTypeTrackPaintFunctionsOld[rideType][trackType];
     const uint8 rideIndex = 0;
@@ -185,8 +190,8 @@ static void CallOriginal(
         (int) trackDirectionList,
         direction,
         height,
-        (int) mapElement,
-        rideIndex * sizeof(rct_ride),
+        (int) tileElement,
+        rideIndex * sizeof(Ride),
         trackSequence
     );
 }
@@ -197,15 +202,15 @@ static void CallNew(
     uint8 direction,
     uint8 trackSequence,
     uint16 height,
-    rct_map_element *mapElement
+    rct_tile_element *tileElement
 ) {
     TRACK_PAINT_FUNCTION_GETTER newPaintFunctionGetter = RideTypeTrackPaintFunctions[rideType];
     TRACK_PAINT_FUNCTION newPaintFunction = newPaintFunctionGetter(trackType, direction);
 
-    newPaintFunction(0, trackSequence, direction, height, mapElement);
+    newPaintFunction(&gPaintSession, 0, trackSequence, direction, height, tileElement);
 }
 
-typedef uint8 (*TestFunction)(uint8, uint8, uint8, std::string *);
+using TestFunction = uint8 (*)(uint8, uint8, uint8, std::string *);
 
 static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error);
 
@@ -260,17 +265,21 @@ uint8 TestTrack::TestPaintTrackElement(uint8 rideType, uint8 trackType, std::str
 static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
     uint16 height = 3 * 16;
 
-    rct_map_element mapElement = {0};
-    mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
-    mapElement.properties.track.type = trackType;
-    mapElement.base_height = height / 16;
-    g_currently_drawn_item = &mapElement;
+    rct_tile_element tileElement = {0};
+    tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+    track_element_set_type(&tileElement, trackType);
+    tileElement.base_height = height / 16;
+    g_currently_drawn_item = &tileElement;
 
-    rct_map_element surfaceElement = {0};
-    surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+    rct_tile_element surfaceElement = {0};
+    surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
+
+    gPaintSession.CurrentlyDrawnItem = &tileElement;
+    gPaintSession.SurfaceElement = &surfaceElement;
+    gPaintSession.DidPassSurface = true;
 
     TestPaint::ResetEnvironment();
     TestPaint::ResetTunnels();
@@ -331,12 +340,14 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
             baseCaseName += activeFilters[filterIndex]->VariantName(rideType, trackType, variant);
             baseCaseName += " ";
 
-            activeFilters[filterIndex]->ApplyTo(rideType, trackType, variant, &mapElement, &surfaceElement, &(gRideList[0]), gRideEntries[0]);
+            activeFilters[filterIndex]->ApplyTo(rideType, trackType, variant, &tileElement, &surfaceElement, &(gRideList[0]), gRideEntries[0]);
         }
 
 
         for (int currentRotation = 0; currentRotation < 4; currentRotation++) {
             gCurrentRotation = currentRotation;
+            RCT2_CurrentRotation = currentRotation;
+            gPaintSession.CurrentRotation = currentRotation;
             for (int direction = 0; direction < 4; direction++) {
                 RCT2_GLOBAL(0x009DE56A, sint16) = 64; // x
                 RCT2_GLOBAL(0x009DE56E, sint16) = 64; // y
@@ -350,20 +361,20 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
                 TestPaint::ResetSupportHeights();
                 gWoodenSupportsPrependTo = nullptr;
 
-                CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
+                CallOriginal(rideType, trackType, direction, trackSequence, height, &tileElement);
 
                 callCount = PaintIntercept::GetCalls(callBuffer);
                 std::vector<function_call> oldCalls;
                 oldCalls.insert(oldCalls.begin(), callBuffer, callBuffer + callCount);
 
                 PaintIntercept::ClearCalls();
-                testpaint_clear_ignore();
+                TestPaint::testClearIgnore();
                 TestPaint::ResetSupportHeights();
-                gWoodenSupportsPrependTo = nullptr;
+                gPaintSession.WoodenSupportsPrependTo = nullptr;
 
-                CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
+                CallNew(rideType, trackType, direction, trackSequence, height, &tileElement);
 
-                if (testpaint_is_ignored(direction, trackSequence)) {
+                if (TestPaint::testIsIgnored(direction, trackSequence)) {
                     *error += String::Format("[  IGNORED ]   %s\n", caseName.c_str());
                     continue;
                 }
@@ -402,17 +413,21 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
 static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
     uint16 height = 3 * 16;
 
-    rct_map_element mapElement = {0};
-    mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
-    mapElement.properties.track.type = trackType;
-    mapElement.base_height = height / 16;
-    g_currently_drawn_item = &mapElement;
-
-    rct_map_element surfaceElement = {0};
-    surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+    rct_tile_element tileElement = {0};
+    tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+    track_element_set_type(&tileElement, trackType);
+    tileElement.base_height = height / 16;
+    g_currently_drawn_item = &tileElement;
+    
+    rct_tile_element surfaceElement = {0};
+    surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
+
+    gPaintSession.CurrentlyDrawnItem = &tileElement;
+    gPaintSession.SurfaceElement = &surfaceElement;
+    gPaintSession.DidPassSurface = true;
 
     TestPaint::ResetEnvironment();
     TestPaint::ResetTunnels();
@@ -428,7 +443,7 @@ static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackTyp
     for (int direction = 0; direction < 4; direction++) {
         TestPaint::ResetSupportHeights();
 
-        CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
+        CallOriginal(rideType, trackType, direction, trackSequence, height, &tileElement);
 
         tileSegmentSupportCalls[direction] = SegmentSupportHeightCall::getSegmentCalls(gSupportSegments, direction);
     }
@@ -450,14 +465,13 @@ static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackTyp
     for (int direction = 0; direction < 4; direction++) {
         TestPaint::ResetSupportHeights();
 
-        testpaint_clear_ignore();
-        CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
-        if (testpaint_is_ignored(direction, trackSequence)) {
+        TestPaint::testClearIgnore();
+        CallNew(rideType, trackType, direction, trackSequence, height, &tileElement);
+        if (TestPaint::testIsIgnored(direction, trackSequence)) {
             continue;
         }
 
-        std::vector<SegmentSupportCall> newCalls = SegmentSupportHeightCall::getSegmentCalls(gSupportSegments,
-                                                                                             direction);
+        std::vector<SegmentSupportCall> newCalls = SegmentSupportHeightCall::getSegmentCalls(gPaintSession.SupportSegments, direction);
         if (!SegmentSupportHeightCall::CallsEqual(referenceCalls, newCalls)) {
             *error += String::Format(
                 "Segment support heights didn't match. [direction:%d] %s\n",
@@ -478,17 +492,21 @@ static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackTyp
 static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
     uint16 height = 3 * 16;
 
-    rct_map_element mapElement = {0};
-    mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
-    mapElement.properties.track.type = trackType;
-    mapElement.base_height = height / 16;
-    g_currently_drawn_item = &mapElement;
+    rct_tile_element tileElement = {0};
+    tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+    track_element_set_type(&tileElement, trackType);
+    tileElement.base_height = height / 16;
+    g_currently_drawn_item = &tileElement;
 
-    rct_map_element surfaceElement = {0};
-    surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+    rct_tile_element surfaceElement = {0};
+    surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
+
+    gPaintSession.CurrentlyDrawnItem = &tileElement;
+    gPaintSession.SurfaceElement = &surfaceElement;
+    gPaintSession.DidPassSurface = true;
 
     TestPaint::ResetEnvironment();
     TestPaint::ResetTunnels();
@@ -503,7 +521,7 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
     for (int direction = 0; direction < 4; direction++) {
         TestPaint::ResetSupportHeights();
 
-        CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
+        CallOriginal(rideType, trackType, direction, trackSequence, height, &tileElement);
 
         tileGeneralSupportCalls[direction].height = -1;
         tileGeneralSupportCalls[direction].slope = -1;
@@ -531,19 +549,19 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
     for (int direction = 0; direction < 4; direction++) {
         TestPaint::ResetSupportHeights();
 
-        testpaint_clear_ignore();
-        CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
-        if (testpaint_is_ignored(direction, trackSequence)) {
+        TestPaint::testClearIgnore();
+        CallNew(rideType, trackType, direction, trackSequence, height, &tileElement);
+        if (TestPaint::testIsIgnored(direction, trackSequence)) {
             continue;
         }
 
 
         if (referenceCall.height != -1) {
-            if (gSupport.height != referenceCall.height) {
+            if (gPaintSession.Support.height != referenceCall.height) {
                 *error += String::Format(
                     "General support heights didn't match. (expected height + %d, actual: height + %d) [direction:%d] %s\n",
                     referenceCall.height - height,
-                    gSupport.height - height,
+                    gPaintSession.Support.height - height,
                     direction,
                     state.c_str()
                 );
@@ -551,11 +569,11 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
             }
         }
         if (referenceCall.slope != -1) {
-            if (gSupport.slope != referenceCall.slope) {
+            if (gPaintSession.Support.slope != referenceCall.slope) {
                 *error += String::Format(
                     "General support slopes didn't match. (expected 0x%02X, actual: 0x%02X) [direction:%d] %s\n",
                     referenceCall.slope,
-                    gSupport.slope,
+                    gPaintSession.Support.slope,
                     direction,
                     state.c_str()
                 );
@@ -570,17 +588,21 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
 static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
     uint16 height = 3 * 16;
 
-    rct_map_element mapElement = {0};
-    mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
-    mapElement.properties.track.type = trackType;
-    mapElement.base_height = height / 16;
-    g_currently_drawn_item = &mapElement;
+    rct_tile_element tileElement = {0};
+    tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+    track_element_set_type(&tileElement, trackType);
+    tileElement.base_height = height / 16;
+    g_currently_drawn_item = &tileElement;
 
-    rct_map_element surfaceElement = {0};
-    surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+    rct_tile_element surfaceElement = {0};
+    surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
+
+    gPaintSession.CurrentlyDrawnItem = &tileElement;
+    gPaintSession.SurfaceElement = &surfaceElement;
+    gPaintSession.DidPassSurface = true;
 
     TestPaint::ResetEnvironment();
     TestPaint::ResetTunnels();
@@ -593,7 +615,7 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
         TestPaint::ResetTunnels();
 
         for (sint8 offset = -8; offset <= 8; offset += 8) {
-            CallOriginal(rideType, trackType, direction, trackSequence, height + offset, &mapElement);
+            CallOriginal(rideType, trackType, direction, trackSequence, height + offset, &tileElement);
         }
 
         uint8 rightIndex = (direction + 1) % 4;
@@ -620,11 +642,11 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
     for (int direction = 0; direction < 4; direction++) {
         TestPaint::ResetTunnels();
 
-        testpaint_clear_ignore();
+        TestPaint::testClearIgnore();
 
         for (sint8 offset = -8; offset <= 8; offset += 8) {
             // TODO: move tunnel pushing to interface so we don't have to check the output 3 times
-            CallNew(rideType, trackType, direction, trackSequence, height + offset, &mapElement);
+            CallNew(rideType, trackType, direction, trackSequence, height + offset, &tileElement);
         }
 
         uint8 rightIndex = (direction + 1) % 4;
@@ -635,12 +657,8 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
         }
 
         bool err = false;
-        newTileTunnelCalls[direction][rightIndex] = SideTunnelCall::ExtractTunnelCalls(gRightTunnels, gRightTunnelCount, height,
-                                                                                       &err);
-
-        newTileTunnelCalls[direction][leftIndex] = SideTunnelCall::ExtractTunnelCalls(gLeftTunnels, gLeftTunnelCount, height,
-                                                                                      &err);
-
+        newTileTunnelCalls[direction][rightIndex] = SideTunnelCall::ExtractTunnelCalls(gPaintSession.RightTunnels, gPaintSession.RightTunnelCount, height, &err);
+        newTileTunnelCalls[direction][leftIndex] = SideTunnelCall::ExtractTunnelCalls(gPaintSession.LeftTunnels, gPaintSession.LeftTunnelCount, height, &err);
         if (err) {
             *error += "Multiple tunnels on one side aren't supported.\n";
             return TEST_FAILED;
@@ -686,17 +704,21 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
 static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
     uint16 height = 3 * 16;
 
-    rct_map_element mapElement = {0};
-    mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
-    mapElement.properties.track.type = trackType;
-    mapElement.base_height = height / 16;
-    g_currently_drawn_item = &mapElement;
+    rct_tile_element tileElement = {0};
+    tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+    track_element_set_type(&tileElement, trackType);
+    tileElement.base_height = height / 16;
+    g_currently_drawn_item = &tileElement;
 
-    rct_map_element surfaceElement = {0};
-    surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+    rct_tile_element surfaceElement = {0};
+    surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
+
+    gPaintSession.CurrentlyDrawnItem = &tileElement;
+    gPaintSession.SurfaceElement = &surfaceElement;
+    gPaintSession.DidPassSurface = true;
 
     TestPaint::ResetEnvironment();
     TestPaint::ResetTunnels();
@@ -708,7 +730,7 @@ static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, ui
 
         for (uint8 i = 0; i < 3; i++) {
             gVerticalTunnelHeight = 0;
-            CallOriginal(rideType, trackType, direction, trackSequence, height - 8 + i * 8, &mapElement);
+            CallOriginal(rideType, trackType, direction, trackSequence, height - 8 + i * 8, &tileElement);
             tunnelHeights[i] = gVerticalTunnelHeight;
         }
 
@@ -727,12 +749,12 @@ static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, ui
 
     for (int direction = 0; direction < 4; direction++) {
 
-        testpaint_clear_ignore();
+        TestPaint::testClearIgnore();
 
         testPaintVerticalTunnelHeight = 0;
-        CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
+        CallNew(rideType, trackType, direction, trackSequence, height, &tileElement);
 
-        if (testpaint_is_ignored(direction, trackSequence)) {
+        if (TestPaint::testIsIgnored(direction, trackSequence)) {
             continue;
         }
 

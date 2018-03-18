@@ -18,7 +18,8 @@
 #include <memory>
 #include <vector>
 #include "../core/Console.hpp"
-#include "../core/FileScanner.h"
+#include "../core/File.h"
+#include "../core/FileIndex.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/Math.hpp"
 #include "../core/Path.hpp"
@@ -30,13 +31,10 @@
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
 
-extern "C"
-{
-    #include "../config/Config.h"
-    #include "../localisation/localisation.h"
-    #include "../platform/platform.h"
-    #include "scenario.h"
-}
+#include "../config/Config.h"
+#include "../localisation/Localisation.h"
+#include "../platform/platform.h"
+#include "Scenario.h"
 
 using namespace OpenRCT2;
 
@@ -121,19 +119,216 @@ static void scenario_highscore_free(scenario_highscore_entry * highscore)
     SafeDelete(highscore);
 }
 
+class ScenarioFileIndex final : public FileIndex<scenario_index_entry>
+{
+private:
+    static constexpr uint32 MAGIC_NUMBER = 0x58444953; // SIDX
+    static constexpr uint16 VERSION = 3;
+    static constexpr auto PATTERN = "*.sc4;*.sc6";
+    
+public:
+    explicit ScenarioFileIndex(IPlatformEnvironment * env) :
+        FileIndex("scenario index",
+                  MAGIC_NUMBER,
+                  VERSION,
+                  env->GetFilePath(PATHID::CACHE_SCENARIOS),
+                  std::string(PATTERN),
+                  std::vector<std::string>({
+                      env->GetDirectoryPath(DIRBASE::RCT1, DIRID::SCENARIO),
+                      env->GetDirectoryPath(DIRBASE::RCT2, DIRID::SCENARIO),
+                      env->GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO) }))
+    {
+    }
+
+protected:
+    std::tuple<bool, scenario_index_entry> Create(const std::string &path) const override
+    {
+        scenario_index_entry entry;
+        auto timestamp = File::GetLastModified(path);
+        if (GetScenarioInfo(path, timestamp, &entry))
+        {
+            return std::make_tuple(true, entry);
+        }
+        else
+        {
+            return std::make_tuple(true, scenario_index_entry());
+        }
+    }
+
+    void Serialise(IStream * stream, const scenario_index_entry &item) const override
+    {
+        stream->Write(item.path, sizeof(item.path));
+        stream->WriteValue(item.timestamp);
+
+        stream->WriteValue(item.category);
+        stream->WriteValue(item.source_game);
+        stream->WriteValue(item.source_index);
+        stream->WriteValue(item.sc_id);
+
+        stream->WriteValue(item.objective_type);
+        stream->WriteValue(item.objective_arg_1);
+        stream->WriteValue(item.objective_arg_2);
+        stream->WriteValue(item.objective_arg_3);
+
+        stream->Write(item.internal_name, sizeof(item.internal_name));
+        stream->Write(item.name, sizeof(item.name));
+        stream->Write(item.details, sizeof(item.details));
+    }
+
+    scenario_index_entry Deserialise(IStream * stream) const override
+    {
+        scenario_index_entry item;
+
+        stream->Read(item.path, sizeof(item.path));
+        item.timestamp = stream->ReadValue<uint64>();
+
+        item.category = stream->ReadValue<uint8>();
+        item.source_game = stream->ReadValue<uint8>();
+        item.source_index = stream->ReadValue<sint16>();
+        item.sc_id = stream->ReadValue<uint16>();
+
+        item.objective_type = stream->ReadValue<uint8>();
+        item.objective_arg_1 = stream->ReadValue<uint8>();
+        item.objective_arg_2 = stream->ReadValue<sint32>();
+        item.objective_arg_3 = stream->ReadValue<sint16>();
+        item.highscore = nullptr;
+
+        stream->Read(item.internal_name, sizeof(item.internal_name));
+        stream->Read(item.name, sizeof(item.name));
+        stream->Read(item.details, sizeof(item.details));
+
+        return item;
+    }
+
+private:
+    /**
+     * Reads basic information from a scenario file.
+     */
+    static bool GetScenarioInfo(const std::string &path, uint64 timestamp, scenario_index_entry * entry)
+    {
+        log_verbose("GetScenarioInfo(%s, %d, ...)", path.c_str(), timestamp);
+        try
+        {
+            std::string extension = Path::GetExtension(path);
+            if (String::Equals(extension, ".sc4", true))
+            {
+                // RCT1 scenario
+                bool result = false;
+                try
+                {
+                    auto s4Importer = std::unique_ptr<IParkImporter>(ParkImporter::CreateS4());
+                    s4Importer->LoadScenario(path.c_str(), true);
+                    if (s4Importer->GetDetails(entry))
+                    {
+                        String::Set(entry->path, sizeof(entry->path), path.c_str());
+                        entry->timestamp = timestamp;
+                        result = true;
+                    }
+                }
+                catch (const std::exception &)
+                {
+                }
+                return result;
+            }
+            else
+            {
+                // RCT2 scenario
+                auto fs = FileStream(path, FILE_MODE_OPEN);
+                auto chunkReader = SawyerChunkReader(&fs);
+ 
+                rct_s6_header header = chunkReader.ReadChunkAs<rct_s6_header>();
+                if (header.type == S6_TYPE_SCENARIO)
+                {
+                    rct_s6_info info = chunkReader.ReadChunkAs<rct_s6_info>();
+                    *entry = CreateNewScenarioEntry(path, timestamp, &info);
+                    return true;
+                }
+                else
+                {
+                    log_verbose("%s is not a scenario", path.c_str());
+                }
+            }
+        }
+        catch (const std::exception &)
+        {
+            Console::Error::WriteLine("Unable to read scenario: '%s'", path.c_str());
+        }
+        return false;
+    }
+
+    static scenario_index_entry CreateNewScenarioEntry(const std::string &path, uint64 timestamp, rct_s6_info * s6Info)
+    {
+        scenario_index_entry entry = { 0 };
+
+        // Set new entry
+        String::Set(entry.path, sizeof(entry.path), path.c_str());
+        entry.timestamp = timestamp;
+        entry.category = s6Info->category;
+        entry.objective_type = s6Info->objective_type;
+        entry.objective_arg_1 = s6Info->objective_arg_1;
+        entry.objective_arg_2 = s6Info->objective_arg_2;
+        entry.objective_arg_3 = s6Info->objective_arg_3;
+        entry.highscore = nullptr;
+        if (String::IsNullOrEmpty(s6Info->name))
+        {
+            // If the scenario doesn't have a name, set it to the filename
+            String::Set(entry.name, sizeof(entry.name), Path::GetFileNameWithoutExtension(entry.path));
+        }
+        else
+        {
+            String::Set(entry.name, sizeof(entry.name), s6Info->name);
+            // Normalise the name to make the scenario as recognisable as possible.
+            ScenarioSources::NormaliseName(entry.name, sizeof(entry.name), entry.name);
+        }
+
+		// entry.name will be translated later so keep the untranslated name here
+		String::Set(entry.internal_name, sizeof(entry.internal_name), entry.name);
+
+        String::Set(entry.details, sizeof(entry.details), s6Info->details);
+
+        // Look up and store information regarding the origins of this scenario.
+        source_desc desc;
+        if (ScenarioSources::TryGetByName(entry.name, &desc))
+        {
+            entry.sc_id = desc.id;
+            entry.source_index = desc.index;
+            entry.source_game = desc.source;
+            entry.category = desc.category;
+        }
+        else
+        {
+            entry.sc_id = SC_UNIDENTIFIED;
+            entry.source_index = -1;
+            if (entry.category == SCENARIO_CATEGORY_REAL)
+            {
+                entry.source_game = SCENARIO_SOURCE_REAL;
+            }
+            else
+            {
+                entry.source_game = SCENARIO_SOURCE_OTHER;
+            }
+        }
+
+        scenario_translate(&entry, &s6Info->entry);
+        return entry;
+    }
+};
+
 class ScenarioRepository final : public IScenarioRepository
 {
 private:
     static constexpr uint32 HighscoreFileVersion = 1;
 
-    IPlatformEnvironment * _env;
+    IPlatformEnvironment * const _env;
+    ScenarioFileIndex const _fileIndex;
     std::vector<scenario_index_entry> _scenarios;
     std::vector<scenario_highscore_entry*> _highscores;
 
 public:
-    ScenarioRepository(IPlatformEnvironment * env)
+    explicit ScenarioRepository(IPlatformEnvironment * env)
+        : _env(env),
+          _fileIndex(env)
     {
-        _env = env;
     }
 
     virtual ~ScenarioRepository()
@@ -143,16 +338,17 @@ public:
 
     void Scan() override
     {
+        ImportMegaPark();
+
+        // Reload scenarios from index
         _scenarios.clear();
+        auto scenarios = _fileIndex.LoadOrBuild();
+        for (auto scenario : scenarios)
+        {
+            AddScenario(scenario);
+        }
 
-        // Scan RCT2 directory
-        std::string rct1dir = _env->GetDirectoryPath(DIRBASE::RCT1, DIRID::SCENARIO);
-        std::string rct2dir = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::SCENARIO);
-        std::string openrct2dir = _env->GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO);
-        Scan(rct1dir);
-        Scan(rct2dir);
-        Scan(openrct2dir);
-
+        // Sort the scenarios and load the highscores
         Sort();
         LoadScores();
         LoadLegacyScores();
@@ -176,28 +372,41 @@ public:
 
     const scenario_index_entry * GetByFilename(const utf8 * filename) const override
     {
-        for (size_t i = 0; i < _scenarios.size(); i++)
+        for (const auto &scenario : _scenarios)
         {
-            const scenario_index_entry * scenario = &_scenarios[i];
-            const utf8 * scenarioFilename = Path::GetFileName(scenario->path);
+            const utf8 * scenarioFilename = Path::GetFileName(scenario.path);
 
             // Note: this is always case insensitive search for cross platform consistency
             if (String::Equals(filename, scenarioFilename, true))
             {
-                return &_scenarios[i];
+                return &scenario;
             }
         }
         return nullptr;
     }
 
+	const scenario_index_entry * GetByInternalName(const utf8 * name) const override {
+		for (size_t i = 0; i < _scenarios.size(); i++) {
+			const scenario_index_entry * scenario = &_scenarios[i];
+
+			if (scenario->source_game == SCENARIO_SOURCE_OTHER && scenario->sc_id == SC_UNIDENTIFIED)
+				continue;
+
+			// Note: this is always case insensitive search for cross platform consistency
+			if (String::Equals(name, scenario->internal_name, true)) {
+				return &_scenarios[i];
+			}
+		}
+		return nullptr;
+	}
+
     const scenario_index_entry * GetByPath(const utf8 * path) const override
     {
-        for (size_t i = 0; i < _scenarios.size(); i++)
+        for (const auto &scenario : _scenarios)
         {
-            const scenario_index_entry * scenario = &_scenarios[i];
-            if (Path::Equals(path, scenario->path))
+            if (Path::Equals(path, scenario.path))
             {
-                return scenario;
+                return &scenario;
             }
         }
         return nullptr;
@@ -255,155 +464,78 @@ private:
         return (scenario_index_entry *)repo->GetByPath(path);
     }
 
-    void Scan(const std::string &directory)
+    /**
+     * Mega Park from RollerCoaster Tycoon 1 is stored in an encrypted hidden file: mp.dat.
+     * Decrypt the file and save it as sc21.sc4 in the user's scenario directory.
+     */
+    void ImportMegaPark()
     {
-        utf8 pattern[MAX_PATH];
-        String::Set(pattern, sizeof(pattern), directory.c_str());
-        Path::Append(pattern, sizeof(pattern), "*.sc4;*.sc6");
-
-        IFileScanner * scanner = Path::ScanDirectory(pattern, true);
-        while (scanner->Next())
+        auto mpdatPath = _env->GetFilePath(PATHID::MP_DAT);
+        auto scenarioDirectory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO);
+        auto sc21Path = Path::Combine(scenarioDirectory, "sc21.sc4");
+        if (File::Exists(mpdatPath) && !File::Exists(sc21Path))
         {
-            auto path = scanner->GetPath();
-            auto fileInfo = scanner->GetFileInfo();
-            AddScenario(path, fileInfo->LastModified);
-        }
-        delete scanner;
-    }
-
-    void AddScenario(const std::string &path, uint64 timestamp)
-    {
-        scenario_index_entry entry;
-        if (!GetScenarioInfo(path, timestamp, &entry))
-        {
-            return;
-        }
-
-        const std::string filename = Path::GetFileName(path);
-        scenario_index_entry * existingEntry = GetByFilename(filename.c_str());
-        if (existingEntry != nullptr)
-        {
-            std::string conflictPath;
-            if (existingEntry->timestamp > timestamp)
-            {
-                // Existing entry is more recent
-                conflictPath = String::ToStd(existingEntry->path);
-
-                // Overwrite existing entry with this one
-                *existingEntry = entry;
-            }
-            else
-            {
-                // This entry is more recent
-                conflictPath = path;
-            }
-            Console::WriteLine("Scenario conflict: '%s' ignored because it is newer.", conflictPath.c_str());
-        }
-        else
-        {
-            _scenarios.push_back(entry);
+            ConvertMegaPark(mpdatPath, sc21Path);
         }
     }
 
     /**
-     * Reads basic information from a scenario file.
+     * Converts Mega Park to normalised file location (mp.dat to sc21.sc4)
+     * @param Full path to mp.dat
+     * @param Full path to sc21.dat
      */
-    bool GetScenarioInfo(const std::string &path, uint64 timestamp, scenario_index_entry * entry)
+    void ConvertMegaPark(const std::string &srcPath, const std::string &dstPath)
     {
-        log_verbose("GetScenarioInfo(%s, %d, ...)", path.c_str(), timestamp);
-        try
-        {
-            std::string extension = Path::GetExtension(path);
-            if (String::Equals(extension, ".sc4", true))
-            {
-                // RCT1 scenario
-                bool result = false;
-                try
-                {
-                    auto s4Importer = std::unique_ptr<IParkImporter>(ParkImporter::CreateS4());
-                    s4Importer->LoadScenario(path.c_str(), true);
-                    if (s4Importer->GetDetails(entry))
-                    {
-                        String::Set(entry->path, sizeof(entry->path), path.c_str());
-                        entry->timestamp = timestamp;
-                        result = true;
-                    }
-                }
-                catch (Exception)
-                {
-                }
-                return result;
-            }
-            else
-            {
-                // RCT2 scenario
-                auto fs = FileStream(path, FILE_MODE_OPEN);
-                auto chunkReader = SawyerChunkReader(&fs);
+        auto directory = Path::GetDirectory(dstPath);
+        platform_ensure_directory_exists(directory.c_str());
 
-                rct_s6_header header = chunkReader.ReadChunkAs<rct_s6_header>();
-                if (header.type == S6_TYPE_SCENARIO)
+        size_t length;
+        auto mpdat = (uint8 *)(File::ReadAllBytes(srcPath, &length));
+
+        // Rotate each byte of mp.dat left by 4 bits to convert
+        for (size_t i = 0; i < length; i++)
+        {
+            mpdat[i] = rol8(mpdat[i], 4);
+        }
+
+        File::WriteAllBytes(dstPath, mpdat, length);
+        Memory::FreeArray(mpdat, length);
+    }
+
+    void AddScenario(const scenario_index_entry &entry)
+    {
+        auto filename = Path::GetFileName(entry.path);
+
+        if (!String::Equals(filename, ""))
+        {
+            auto existingEntry = GetByFilename(filename);
+            if (existingEntry != nullptr)
+            {
+                std::string conflictPath;
+                if (existingEntry->timestamp > entry.timestamp)
                 {
-                    rct_s6_info info = chunkReader.ReadChunkAs<rct_s6_info>();
-                    *entry = CreateNewScenarioEntry(path, timestamp, &info);
-                    return true;
+                    // Existing entry is more recent
+                    conflictPath = String::ToStd(existingEntry->path);
+
+                    // Overwrite existing entry with this one
+                    *existingEntry = entry;
                 }
                 else
                 {
-                    log_verbose("%s is not a scenario", path.c_str());
+                    // This entry is more recent
+                    conflictPath = entry.path;
                 }
-            }
-        }
-        catch (Exception)
-        {
-            Console::Error::WriteLine("Unable to read scenario: '%s'", path.c_str());
-        }
-        return false;
-    }
-
-    scenario_index_entry CreateNewScenarioEntry(const std::string &path, uint64 timestamp, rct_s6_info * s6Info)
-    {
-        scenario_index_entry entry = { 0 };
-
-        // Set new entry
-        String::Set(entry.path, sizeof(entry.path), path.c_str());
-        entry.timestamp = timestamp;
-        entry.category = s6Info->category;
-        entry.objective_type = s6Info->objective_type;
-        entry.objective_arg_1 = s6Info->objective_arg_1;
-        entry.objective_arg_2 = s6Info->objective_arg_2;
-        entry.objective_arg_3 = s6Info->objective_arg_3;
-        entry.highscore = nullptr;
-        String::Set(entry.name, sizeof(entry.name), s6Info->name);
-        String::Set(entry.details, sizeof(entry.details), s6Info->details);
-
-        // Normalise the name to make the scenario as recognisable as possible.
-        ScenarioSources::NormaliseName(entry.name, sizeof(entry.name), entry.name);
-
-        // Look up and store information regarding the origins of this scenario.
-        source_desc desc;
-        if (ScenarioSources::TryGetByName(entry.name, &desc))
-        {
-            entry.sc_id = desc.id;
-            entry.source_index = desc.index;
-            entry.source_game = desc.source;
-            entry.category = desc.category;
-        }
-        else
-        {
-            entry.sc_id = SC_UNIDENTIFIED;
-            entry.source_index = -1;
-            if (entry.category == SCENARIO_CATEGORY_REAL)
-            {
-                entry.source_game = SCENARIO_SOURCE_REAL;
+                Console::WriteLine("Scenario conflict: '%s' ignored because it is newer.", conflictPath.c_str());
             }
             else
             {
-                entry.source_game = SCENARIO_SOURCE_OTHER;
+                _scenarios.push_back(entry);
             }
         }
-
-        scenario_translate(&entry, &s6Info->entry);
-        return entry;
+        else
+        {
+            log_error("Tried to add scenario with an empty filename!");
+        }
     }
 
     void Sort()
@@ -456,7 +588,7 @@ private:
                 highscore->timestamp = fs.ReadValue<datetime64>();
             }
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             Console::Error::WriteLine("Error reading highscores.");
         }
@@ -502,9 +634,8 @@ private:
                 if (scBasic.Flags & SCENARIO_FLAGS_COMPLETED)
                 {
                     bool notFound = true;
-                    for (size_t j = 0; j < _highscores.size(); j++)
+                    for (auto &highscore : _highscores)
                     {
-                        scenario_highscore_entry * highscore = _highscores[j];
                         if (String::Equals(scBasic.Path, highscore->fileName, true))
                         {
                             notFound = false;
@@ -531,7 +662,7 @@ private:
                 }
             }
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             Console::Error::WriteLine("Error reading legacy scenario scores file: '%s'", path.c_str());
         }
@@ -561,9 +692,8 @@ private:
 
     void AttachHighscores()
     {
-        for (size_t i = 0; i < _highscores.size(); i++)
+        for (auto &highscore : _highscores)
         {
-            scenario_highscore_entry * highscore = _highscores[i];
             scenario_index_entry * scenerio = GetByFilename(highscore->fileName);
             if (scenerio != nullptr)
             {
@@ -589,7 +719,7 @@ private:
                 fs.WriteValue(highscore->timestamp);
             }
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             Console::Error::WriteLine("Unable to save highscores to '%s'", path.c_str());
         }
@@ -609,29 +739,27 @@ IScenarioRepository * GetScenarioRepository()
     return _scenarioRepository;
 }
 
-extern "C"
+void scenario_repository_scan()
 {
-    void scenario_repository_scan()
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        repo->Scan();
-    }
-
-    size_t scenario_repository_get_count()
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        return repo->GetCount();
-    }
-
-    const scenario_index_entry *scenario_repository_get_by_index(size_t index)
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        return repo->GetByIndex(index);
-    }
-
-    bool scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name)
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        return repo->TryRecordHighscore(scenarioFileName, companyValue, name);
-    }
+    IScenarioRepository * repo = GetScenarioRepository();
+    repo->Scan();
 }
+
+size_t scenario_repository_get_count()
+{
+    IScenarioRepository * repo = GetScenarioRepository();
+    return repo->GetCount();
+}
+
+const scenario_index_entry *scenario_repository_get_by_index(size_t index)
+{
+    IScenarioRepository * repo = GetScenarioRepository();
+    return repo->GetByIndex(index);
+}
+
+bool scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name)
+{
+    IScenarioRepository * repo = GetScenarioRepository();
+    return repo->TryRecordHighscore(scenarioFileName, companyValue, name);
+}
+

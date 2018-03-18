@@ -1,5 +1,5 @@
-Last updated:    2017-08-09
-Release version: 0.1.1
+Last updated:    2017-11-28
+Release version: 0.1.2
 ------------------------------------------------------------------------
 
 
@@ -45,8 +45,7 @@ When you are sure it is not already reported you should:
    tracker for that fork which is most likely another GitHub repository.
  * Make it reproducible for the developers. In other words, create a savegame
    in which you can reproduce the issue once loaded. It is very useful to give
-   us the crash.dmp, crash.sav, crash.log and crash screenshot which are
-   created on crashes.
+   us the dump file as well, and a screenshot.
  * Check whether the bug is already reported on our bug tracker. This includes
    searching for recently closed bug reports as the bug might already be fixed.
 
@@ -67,7 +66,7 @@ following information in your bug report:
 
 3.0) Supported platforms
 ---- -------------------
-OpenRCT2 is currently supported on Windows Vista and above, many distributions of
+OpenRCT2 is currently supported on Windows 7 and above, many distributions of
 Linux, macOS 10.9 or higher, Android, FreeBSD and OpenBSD. OpenRCT2 will only work on
 little-endian architectures.
 Further instructions can be found on GitHub.
@@ -105,15 +104,7 @@ the directory. Alternatively after running OpenRCT2 for the first time, you can
 edit openrct2.cfg in the OpenRCT2 sub directory of your documents folder to set
 the RCT2 install path.
 
-If you are running Windows and have set a DPI scale, OpenRCT2 might look blury.
-This is because OpenRCT2 currently uses the original RollerCoaster Tycoon 2
-binary as an application host. However you can manually configure this binary to
-not be scaled. This will make the game more crisp, but may result in the
-interface being too small to see clearly and less ergonomic to use. To stop DPI
-scaling, right click the binary itself (openrct2.exe) in the install directory
-or the OpenRCT2 shortcut either in your start menu or on your desktop and then
-select properties. Select the compatibility tab, check
-"Disable display scaling on high DPI settings" and then click OK.
+OpenRCT2 supports setting a DPI scale in increments of .25. To set it, open the Options menu.
 
 If you wish to use Steam Overlay or capture game for video recording or
 streaming, you might have to enable hardware display in the options window.

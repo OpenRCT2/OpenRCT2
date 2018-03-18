@@ -16,7 +16,7 @@
 
 #include <openrct2/common.h>
 #include <cmath>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <speex/speex_resampler.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/audio/AudioChannel.h>
@@ -248,7 +248,8 @@ namespace OpenRCT2 { namespace Audio
         AudioFormat GetFormat() const override
         {
             AudioFormat result = { 0 };
-            if (_source != nullptr)
+            // The second check is there because NullAudioSource does not implement GetFormat. Avoid calling it.
+            if (_source != nullptr && _source->GetLength() > 0)
             {
                 result = _source->GetFormat();
             }

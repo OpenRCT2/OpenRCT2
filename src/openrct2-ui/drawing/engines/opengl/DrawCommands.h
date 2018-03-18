@@ -17,22 +17,115 @@
 #pragma once
 
 #include <openrct2/common.h>
+#include <vector>
 #include "OpenGLAPI.h"
 #include "GLSLTypes.h"
 #include "TextureCache.h"
 
-struct DrawRectCommand {
-    uint32 flags;
-    GLuint sourceFramebuffer;
-    vec4f colours[2];
-    sint32 clip[4];
-    sint32 bounds[4];
+template<typename T>
+class CommandBatch
+{
+private:
+    std::vector<T> _instances;
+    size_t _numInstances;
+
+public:
+    CommandBatch()
+        : _numInstances(0)
+    {
+    }
+    bool empty() const
+    {
+        return _numInstances == 0;
+    }
+    void clear()
+    {
+        _numInstances = 0;
+    }
+    T& allocate()
+    {
+        if (_numInstances + 1 > _instances.size())
+        {
+            _instances.resize((_numInstances + 1) << 1);
+        }
+        return _instances[_numInstances++];
+    }
+    T& insert(const T &value)
+    {
+        if (_numInstances + 1 > _instances.size())
+        {
+            _instances.resize((_numInstances + 1) << 1);
+        }
+        return _instances[_numInstances++] = value;
+    }
+    size_t size() const
+    {
+        return _numInstances;
+    }
+    const T* data() const
+    {
+        return _instances.data();
+    }
+    const T& operator[](size_t idx) const
+    {
+        return _instances.at(idx);
+    }
+
+    typename std::vector<T>::iterator begin()
+    {
+        return _instances.begin();
+    }
+    typename std::vector<T>::const_iterator begin() const
+    {
+        return _instances.cbegin();
+    }
+    typename std::vector<T>::const_iterator cbegin() const
+    {
+        return _instances.cbegin();
+    }
+    typename std::vector<T>::iterator end()
+    {
+        return _instances.begin() + _numInstances;
+    }
+    typename std::vector<T>::const_iterator end() const
+    {
+        return _instances.cbegin() + _numInstances;
+    }
+    typename std::vector<T>::const_iterator cend() const
+    {
+        return _instances.cbegin() + _numInstances;
+    }
 };
 
-struct DrawLineCommand {
-    vec4f colour;
-    sint32 clip[4];
-    sint32 pos[4];
+struct DrawLineCommand
+{
+    ivec4 clip;
+    ivec4 bounds;
+    GLuint colour;
+    GLint depth;
 };
 
-typedef DrawImageInstance DrawImageCommand;
+// Per-instance data for images
+struct DrawRectCommand
+{
+    ivec4 clip;
+    GLint texColourAtlas;
+    vec4 texColourBounds;
+    GLint texMaskAtlas;
+    vec4 texMaskBounds;
+    ivec3 palettes;
+    GLint flags;
+    GLuint colour;
+    ivec4 bounds;
+    GLint depth;
+
+    enum
+    {
+        FLAG_NO_TEXTURE = (1 << 2),
+        FLAG_MASK = (1 << 3),
+        FLAG_CROSS_HATCH = (1 << 4),
+    };
+};
+
+using LineCommandBatch = CommandBatch<DrawLineCommand>;
+using RectCommandBatch = CommandBatch<DrawRectCommand>;

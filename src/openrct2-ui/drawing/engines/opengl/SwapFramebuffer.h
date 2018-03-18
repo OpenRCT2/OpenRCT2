@@ -18,6 +18,7 @@
 
 #include <openrct2/common.h>
 #include "OpenGLAPI.h"
+#include "ApplyTransparencyShader.h"
 
 class CopyFramebufferShader;
 class OpenGLFramebuffer;
@@ -33,38 +34,19 @@ class OpenGLFramebuffer;
 class SwapFramebuffer final
 {
 private:
-    sint32              _width                  = 0;
-    sint32              _height                 = 0;
-    uint8               _targetFramebufferIndex = 0;
-    OpenGLFramebuffer * _targetFramebuffer      = nullptr;
-    OpenGLFramebuffer * _sourceFramebuffer      = nullptr;
-    OpenGLFramebuffer * _framebuffer[2]         = { 0 };
-
-    CopyFramebufferShader * _copyFramebufferShader = nullptr;
+    OpenGLFramebuffer   _opaqueFramebuffer;
+    OpenGLFramebuffer   _transparentFramebuffer;
+    OpenGLFramebuffer   _mixFramebuffer;
+    GLuint              _backDepth;
 
 public:
     SwapFramebuffer(sint32 width, sint32 height);
-    ~SwapFramebuffer();
 
-    /**
-     * Gets the current target framebuffer.
-     */
-    const OpenGLFramebuffer * GetTargetFramebuffer() const { return _targetFramebuffer; }
+    const OpenGLFramebuffer &GetFinalFramebuffer() const { return _opaqueFramebuffer; }
+    GLuint GetBackDepthTexture() const { return _backDepth; }
+    void BindOpaque() { _opaqueFramebuffer.Bind(); }
+    void BindTransparent() { _transparentFramebuffer.Bind(); }
 
-    /**
-     * Gets the texture ID for the source framebuffer.
-     */
-    GLuint GetSourceTexture() const;
-
-    /**
-     * Swaps the target framebuffer, binds it and then draws the previous
-     * framebuffer resulting in the two buffers matching and ready for
-     * pre-processing.
-     */
-    void SwapCopy();
-
-    /**
-     * Binds the current target framebuffer.
-     */
-    void Bind();
+    void ApplyTransparency(ApplyTransparencyShader &shader, GLuint paletteTex);
+    void Clear();
 };

@@ -16,8 +16,6 @@
 
 #pragma once
 
-#ifdef __cplusplus
-
 interface IScenarioRepository;
 
 interface ITitleSequencePlayer
@@ -26,7 +24,7 @@ interface ITitleSequencePlayer
 
     virtual sint32 GetCurrentPosition() const abstract;
 
-    virtual bool Begin(uint32 titleSequenceId) abstract;
+    virtual bool Begin(size_t titleSequenceId) abstract;
     virtual void Reset() abstract;
     virtual bool Update() abstract;
     virtual void Seek(sint32 position) abstract;
@@ -35,21 +33,11 @@ interface ITitleSequencePlayer
 
 ITitleSequencePlayer * CreateTitleSequencePlayer(IScenarioRepository * scenarioRepository);
 
-#else
+// When testing title sequences within a normal game
+extern bool gPreviewingTitleSequenceInGame;
 
-typedef struct ITitleSequencePlayer ITitleSequencePlayer;
-
-#endif
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    sint32 title_sequence_player_get_current_position(ITitleSequencePlayer * player);
-    bool title_sequence_player_begin(ITitleSequencePlayer * player, uint32 titleSequenceId);
-    void title_sequence_player_reset(ITitleSequencePlayer * player);
-    bool title_sequence_player_update(ITitleSequencePlayer * player);
-    void title_sequence_player_seek(ITitleSequencePlayer * player, uint32 position);
-#ifdef __cplusplus
-}
-#endif
+sint32 title_sequence_player_get_current_position(ITitleSequencePlayer * player);
+bool title_sequence_player_begin(ITitleSequencePlayer * player, uint32 titleSequenceId);
+void title_sequence_player_reset(ITitleSequencePlayer * player);
+bool title_sequence_player_update(ITitleSequencePlayer * player);
+void title_sequence_player_seek(ITitleSequencePlayer * player, uint32 position);

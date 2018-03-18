@@ -19,7 +19,7 @@
 #include "common.h"
 
 #define OPENRCT2_NAME               "OpenRCT2"
-#define OPENRCT2_VERSION            "0.1.1"
+#define OPENRCT2_VERSION            "0.1.2"
 
 #if defined(__amd64__) || defined(_M_AMD64)
     #define OPENRCT2_ARCHITECTURE       "x86-64"
@@ -39,6 +39,9 @@
     #define OPENRCT2_ARCHITECTURE       "mips64"
 #elif defined(__mips__)
     #define OPENRCT2_ARCHITECTURE       "mips"
+#endif
+#ifdef __EMSCRIPTEN__
+    #define OPENRCT2_ARCHITECTURE       "Emscripten"
 #endif
 
 #ifndef OPENRCT2_ARCHITECTURE
@@ -64,17 +67,15 @@
 #ifdef __OpenBSD__
     #define OPENRCT2_PLATFORM       "OpenBSD"
 #endif
+#ifdef __EMSCRIPTEN__
+    #define OPENRCT2_PLATFORM       "Emscripten"
+#endif
 #ifndef OPENRCT2_PLATFORM
     #error Unknown platform!
 #endif
 
-#define OPENRCT2_TIMESTAMP          __DATE__ " " __TIME__
+#ifndef OPENRCT2_CUSTOM_INFO
+#define OPENRCT2_CUSTOM_INFO ""
+#endif
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    extern const char gVersionInfoFull[];
-#ifdef __cplusplus
-}
-#endif
+extern const char gVersionInfoFull[];

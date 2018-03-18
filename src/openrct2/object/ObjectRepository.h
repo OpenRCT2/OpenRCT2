@@ -16,34 +16,21 @@
 
 #pragma once
 
-#ifdef __cplusplus
-    #include <vector>
-#endif
-
+#include <vector>
 #include "../common.h"
+#include "../object/Object.h"
+#include "../ride/Ride.h"
 
-#ifdef __cplusplus
-extern "C"
+interface   IStream;
+class       Object;
+namespace OpenRCT2
 {
-#endif
-    #include "../object.h"
-    #include "../ride/ride.h"
-#ifdef __cplusplus
+    interface IPlatformEnvironment;
 }
-#endif
 
-#ifdef __cplusplus
-    interface   IStream;
-    class       Object;
-    namespace OpenRCT2
-    {
-        interface IPlatformEnvironment;
-    }
-#else
-    typedef struct Object Object;
-#endif
+struct rct_drawpixelinfo;
 
-typedef struct ObjectRepositoryItem
+struct ObjectRepositoryItem
 {
     size_t             Id;
     rct_object_entry   ObjectEntry;
@@ -65,9 +52,7 @@ typedef struct ObjectRepositoryItem
             rct_object_entry * ThemeObjects;
         };
     };
-} ObjectRepositoryItem;
-
-#ifdef __cplusplus
+};
 
 interface IObjectRepository
 {
@@ -97,13 +82,6 @@ IObjectRepository * GetObjectRepository();
 
 bool IsObjectCustom(const ObjectRepositoryItem * object);
 
-#endif
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 size_t                          object_repository_get_items_count();
 const ObjectRepositoryItem *    object_repository_get_items();
 const ObjectRepositoryItem *    object_repository_find_object_by_entry(const rct_object_entry * entry);
@@ -111,15 +89,4 @@ const ObjectRepositoryItem *    object_repository_find_object_by_name(const char
 void *                          object_repository_load_object(const rct_object_entry * objectEntry);
 
 void            object_delete(void * object);
-const utf8 *    object_get_description(const void * object);
-const utf8 *    object_get_capacity(const void * object);
 void            object_draw_preview(const void * object, rct_drawpixelinfo * dpi, sint32 width, sint32 height);
-
-#ifdef __cplusplus
-}
-#endif
-
-enum ORI_RIDE_FLAG
-{
-    ORI_RIDE_FLAG_SEPARATE = 1 << 0,
-};

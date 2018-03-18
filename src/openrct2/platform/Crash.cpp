@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "crash.h"
+#include "Crash.h"
 
 #ifdef USE_BREAKPAD
 #include <memory>
@@ -28,17 +28,12 @@
     #error Breakpad support not implemented yet for this platform
 #endif
 
-extern "C"
-{
-    #include "../localisation/language.h"
-    #include "../scenario/scenario.h"
-    #include "platform.h"
-}
-
 #include "../core/Console.hpp"
-#include "../core/Exception.hpp"
+#include "../localisation/Language.h"
 #include "../rct2/S6Exporter.h"
+#include "../scenario/Scenario.h"
 #include "../Version.h"
+#include "platform.h"
 
 #define WSZ(x) L"" x
 
@@ -64,7 +59,7 @@ static bool OnCrash(const wchar_t * dumpPath,
         printf("%s\n", DumpFailedMessage);
         if (!gOpenRCT2SilentBreakpad)
         {
-            MessageBoxA(NULL, DumpFailedMessage, OPENRCT2_NAME, MB_OK | MB_ICONERROR);
+            MessageBoxA(nullptr, DumpFailedMessage, OPENRCT2_NAME, MB_OK | MB_ICONERROR);
         }
         return succeeded;
     }
@@ -99,7 +94,7 @@ static bool OnCrash(const wchar_t * dumpPath,
         exporter->SaveGame(saveFilePathUTF8);
         savedGameDumped = true;
     }
-    catch (const Exception &)
+    catch (const std::exception &)
     {
     }
     free(saveFilePathUTF8);
@@ -118,8 +113,8 @@ static bool OnCrash(const wchar_t * dumpPath,
                _wszCommitSha1Short);
 
     // Cannot use platform_show_messagebox here, it tries to set parent window already dead.
-    MessageBoxW(NULL, message, WSZ(OPENRCT2_NAME), MB_OK | MB_ICONERROR);
-    HRESULT coInitializeResult = CoInitialize(NULL);
+    MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_OK | MB_ICONERROR);
+    HRESULT coInitializeResult = CoInitialize(nullptr);
     if (SUCCEEDED(coInitializeResult))
     {
         LPITEMIDLIST pidl = ILCreateFromPathW(dumpPath);
@@ -149,7 +144,7 @@ static bool OnCrash(const wchar_t * dumpPath,
 static std::wstring GetDumpDirectory()
 {
     char userDirectory[MAX_PATH];
-    platform_get_user_directory(userDirectory, NULL, sizeof(userDirectory));
+    platform_get_user_directory(userDirectory, nullptr, sizeof(userDirectory));
 
     wchar_t * userDirectoryW = utf8_to_widechar(userDirectory);
     auto result = std::wstring(userDirectoryW);
@@ -163,7 +158,7 @@ constexpr const wchar_t * PipeName = L"openrct2-bpad";
 
 #endif // USE_BREAKPAD
 
-extern "C" CExceptionHandler crash_init()
+CExceptionHandler crash_init()
 {
 #ifdef USE_BREAKPAD
     // Path must exist and be RW!

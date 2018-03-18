@@ -18,10 +18,7 @@
 #include "../core/FileStream.hpp"
 #include "IniWriter.hpp"
 
-extern "C"
-{
-    #include "../platform/platform.h"
-}
+#include "../platform/platform.h"
 
 class IniWriter final : public IIniWriter
 {
@@ -30,7 +27,7 @@ private:
     bool        _firstSection = true;
 
 public:
-    IniWriter(IStream * stream)
+    explicit IniWriter(IStream * stream)
         : _stream(stream)
     {
     }

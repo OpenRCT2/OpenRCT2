@@ -18,10 +18,7 @@
 
 #include "SceneryObject.h"
 
-extern "C"
-{
-    #include "../world/scenery.h"
-}
+#include "../world/Scenery.h"
 
 class BannerObject final : public SceneryObject
 {

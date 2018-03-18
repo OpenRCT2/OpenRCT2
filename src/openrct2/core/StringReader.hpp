@@ -17,8 +17,8 @@
 #pragma once
 
 #include "../common.h"
-#include "../localisation/localisation.h"
-#include "../util/util.h"
+#include "../localisation/Localisation.h"
+#include "../util/Util.h"
 #include "String.hpp"
 
 interface IStringReader

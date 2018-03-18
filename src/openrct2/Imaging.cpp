@@ -16,11 +16,12 @@
 
 #pragma warning(disable : 4611) // interaction between '_setjmp' and C++ object destruction is non-portable
 
+#include <algorithm>
 #include <png.h>
-#include "core/Exception.hpp"
 #include "core/FileStream.hpp"
 #include "core/Guard.hpp"
 #include "core/Memory.hpp"
+#include "drawing/Drawing.h"
 
 #include "Imaging.h"
 
@@ -32,7 +33,7 @@ namespace Imaging
     static void PngWarning(png_structp png_ptr, const char * b);
     static void PngError(png_structp png_ptr, const char * b);
 
-    bool PngRead(uint8 * * pixels, uint32 * width, uint32 * height, const utf8 * path)
+    bool PngRead(uint8 * * pixels, uint32 * width, uint32 * height, bool expand, const utf8 * path, sint32 * bitDepth)
     {
         png_structp png_ptr;
         png_infop info_ptr;
@@ -68,13 +69,18 @@ namespace Imaging
             png_set_read_fn(png_ptr, &fs, PngReadData);
             png_set_sig_bytes(png_ptr, sig_read);
 
-            // To simplify the reading process, convert 4-16 bit data to 24-32 bit data
-            png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND | PNG_TRANSFORM_GRAY_TO_RGB, nullptr);
+            uint32 readFlags = PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING;
+            if (expand)
+            {
+                // If we expand the resulting image always be full RGBA
+                readFlags |= PNG_TRANSFORM_GRAY_TO_RGB | PNG_TRANSFORM_EXPAND;
+            }
+            png_read_png(png_ptr, info_ptr, readFlags, nullptr);
 
             // Read header
             png_uint_32 pngWidth, pngHeight;
-            int bitDepth, colourType, interlaceType;
-            png_get_IHDR(png_ptr, info_ptr, &pngWidth, &pngHeight, &bitDepth, &colourType, &interlaceType, nullptr, nullptr);
+            int colourType, interlaceType;
+            png_get_IHDR(png_ptr, info_ptr, &pngWidth, &pngHeight, bitDepth, &colourType, &interlaceType, nullptr, nullptr);
 
             // Read pixels as 32bpp RGBA data
             png_size_t rowBytes = png_get_rowbytes(png_ptr, info_ptr);
@@ -97,13 +103,23 @@ namespace Imaging
                     }
                 }
             }
+            else if (*bitDepth == 8 && !expand)
+            {
+                // 8-bit paletted or grayscale
+                Guard::Assert(rowBytes == pngWidth, GUARD_LINE);
+                for (png_uint_32 i = 0; i < pngHeight; i++)
+                {
+                    std::copy_n(rowPointers[i], rowBytes, dst);
+                    dst += rowBytes;
+                }
+            }
             else
             {
                 // 32-bit PNG (with alpha)
                 Guard::Assert(rowBytes == pngWidth * 4, GUARD_LINE);
                 for (png_uint_32 i = 0; i < pngHeight; i++)
                 {
-                    Memory::Copy(dst, rowPointers[i], rowBytes);
+                    std::copy_n(rowPointers[i], rowBytes, dst);
                     dst += rowBytes;
                 }
             }
@@ -112,13 +128,13 @@ namespace Imaging
             png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
 
             // Return the output data
-            *pixels = (uint8*)pngPixels;
+            *pixels = pngPixels;
             if (width != nullptr) *width = pngWidth;
             if (height != nullptr) *height = pngHeight;
 
             return true;
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             *pixels = nullptr;
             if (width != nullptr) *width = 0;
@@ -168,7 +184,7 @@ namespace Imaging
             // Set error handler
             if (setjmp(png_jmpbuf(png_ptr)))
             {
-                throw Exception("PNG ERROR");
+                throw std::runtime_error("PNG ERROR");
             }
 
             // Write header
@@ -192,7 +208,7 @@ namespace Imaging
             png_write_end(png_ptr, nullptr);
             result = true;
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
         }
 
@@ -228,7 +244,7 @@ namespace Imaging
             // Set error handler
             if (setjmp(png_jmpbuf(png_ptr)))
             {
-                throw Exception("PNG ERROR");
+                throw std::runtime_error("PNG ERROR");
             }
 
             // Write header
@@ -250,7 +266,7 @@ namespace Imaging
             png_write_end(png_ptr, nullptr);
             result = true;
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
         }
 
@@ -285,20 +301,18 @@ namespace Imaging
     }
 }
 
-extern "C"
+bool image_io_png_read(uint8 * * pixels, uint32 * width, uint32 * height, bool expand, const utf8 * path, sint32 * bitDepth)
 {
-    bool image_io_png_read(uint8 * * pixels, uint32 * width, uint32 * height, const utf8 * path)
-    {
-        return Imaging::PngRead(pixels, width, height, path);
-    }
-
-    bool image_io_png_write(const rct_drawpixelinfo * dpi, const rct_palette * palette, const utf8 * path)
-    {
-        return Imaging::PngWrite(dpi, palette, path);
-    }
-
-    bool image_io_png_write_32bpp(sint32 width, sint32 height, const void * pixels, const utf8 * path)
-    {
-        return Imaging::PngWrite32bpp(width, height, pixels, path);
-    }
+    return Imaging::PngRead(pixels, width, height, expand, path, bitDepth);
 }
+
+bool image_io_png_write(const rct_drawpixelinfo * dpi, const rct_palette * palette, const utf8 * path)
+{
+    return Imaging::PngWrite(dpi, palette, path);
+}
+
+bool image_io_png_write_32bpp(sint32 width, sint32 height, const void * pixels, const utf8 * path)
+{
+    return Imaging::PngWrite32bpp(width, height, pixels, path);
+}
+

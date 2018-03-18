@@ -14,16 +14,19 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "Console.hpp"
+#ifdef _WIN32
+    #define WIN32_LEAN_AND_MEAN
+    #include <windows.h>
+#else
+    #include <sys/stat.h>
+#endif
+
 #include "File.h"
 #include "FileStream.hpp"
 #include "String.hpp"
+#include "../util/Util.h"
 
-extern "C"
-{
-    #include "../platform/platform.h"
-    #include "../util/util.h"
-}
+#include "../platform/platform.h"
 
 namespace File
 {
@@ -103,33 +106,57 @@ namespace File
         Memory::Free(data);
         return lines;
     }
+
+    uint64 GetLastModified(const std::string &path)
+    {
+        uint64 lastModified = 0;
+#ifdef _WIN32
+        auto pathW = utf8_to_widechar(path.c_str());
+        auto hFile = CreateFileW(pathW, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
+        if (hFile != INVALID_HANDLE_VALUE)
+        {
+            FILETIME ftCreate, ftAccess, ftWrite;
+            if (GetFileTime(hFile, &ftCreate, &ftAccess, &ftWrite))
+            {
+                lastModified = ((uint64)ftWrite.dwHighDateTime << 32ULL) | (uint64)ftWrite.dwLowDateTime;
+            }
+            CloseHandle(hFile);
+        }
+        free(pathW);
+#else
+        struct stat statInfo;
+        if (stat(path.c_str(), &statInfo) == 0)
+        {
+            lastModified = statInfo.st_mtime;
+        }
+#endif
+        return lastModified; 
+    }
 }
 
-extern "C"
+bool readentirefile(const utf8 * path, void * * outBuffer, size_t * outLength)
 {
-    bool readentirefile(const utf8 * path, void * * outBuffer, size_t * outLength)
+    try
     {
-        try
-        {
-            *outBuffer = File::ReadAllBytes(String::ToStd(path), outLength);
-            return true;
-        }
-        catch (const Exception &)
-        {
-            return false;
-        }
+        *outBuffer = File::ReadAllBytes(String::ToStd(path), outLength);
+        return true;
     }
-
-    bool writeentirefile(const utf8 * path, const void * buffer, size_t length)
+    catch (const std::exception &)
     {
-        try
-        {
-            File::WriteAllBytes(String::ToStd(path), buffer, length);
-            return true;
-        }
-        catch (const Exception &)
-        {
-            return false;
-        }
+        return false;
     }
 }
+
+bool writeentirefile(const utf8 * path, const void * buffer, size_t length)
+{
+    try
+    {
+        File::WriteAllBytes(String::ToStd(path), buffer, length);
+        return true;
+    }
+    catch (const std::exception &)
+    {
+        return false;
+    }
+}
+

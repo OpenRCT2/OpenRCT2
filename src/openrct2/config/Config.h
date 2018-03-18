@@ -18,7 +18,7 @@
 
 #include "../common.h"
 
-typedef struct GeneralConfiguration
+struct GeneralConfiguration
 {
     // Paths
     utf8 *      rct1_path;
@@ -34,15 +34,15 @@ typedef struct GeneralConfiguration
     float       window_scale;
     sint32      drawing_engine;
     sint32      scale_quality;
-    bool        use_nn_at_integer_scales;
     bool        uncap_fps;
+    bool        use_vsync;
     bool        show_fps;
     bool        minimize_fullscreen_focus_loss;
 
     // Map rendering
     bool        landscape_smoothing;
     bool        always_show_gridlines;
-    bool        construction_marker_colour;
+    bool        use_virtual_floor;
     bool        day_night_cycle;
     bool        enable_light_fx;
     bool        upper_case_banners;
@@ -64,6 +64,7 @@ typedef struct GeneralConfiguration
 
     // Controls
     bool        edge_scrolling;
+    sint32      edge_scrolling_speed;
     bool        trap_cursor;
     bool        invert_viewport_drag;
     bool        zoom_to_cursor;
@@ -95,25 +96,22 @@ typedef struct GeneralConfiguration
     utf8 *      last_save_scenario_directory;
     utf8 *      last_save_track_directory;
     utf8 *      last_run_version;
+};
 
-    sint32      screenshot_format;
-} GeneralConfiguration;
-
-typedef struct InterfaceConfiguration
+struct InterfaceConfiguration
 {
     bool        toolbar_show_finances;
     bool        toolbar_show_research;
     bool        toolbar_show_cheats;
     bool        toolbar_show_news;
     bool        toolbar_show_mute;
-    bool        select_by_track_type;
     bool        console_small_font;
     utf8 *      current_theme_preset;
     utf8 *      current_title_sequence_preset;
     sint32      object_selection_filter_flags;
-} InterfaceConfiguration;
+};
 
-typedef struct SoundConfiguration
+struct SoundConfiguration
 {
     utf8 *      device;
     uint8       master_volume;
@@ -123,9 +121,9 @@ typedef struct SoundConfiguration
     bool        ride_music_enabled;
     uint8       ride_music_volume;
     bool        audio_focus;
-} SoundConfiguration;
+};
 
-typedef struct TwitchConfiguration
+struct TwitchConfiguration
 {
     utf8 *      channel;
     bool        enable_follower_peep_names;
@@ -133,9 +131,9 @@ typedef struct TwitchConfiguration
     bool        enable_chat_peep_names;
     bool        enable_chat_peep_tracking;
     bool        enable_news;
-} TwitchConfiguration;
+};
 
-typedef struct NetworkConfiguration
+struct NetworkConfiguration
 {
     utf8 *      player_name;
     sint32      default_port;
@@ -154,9 +152,10 @@ typedef struct NetworkConfiguration
     bool        known_keys_only;
     bool        log_chat;
     bool        log_server_actions;
-} NetworkConfiguration;
+    bool        pause_server_if_no_clients;
+};
 
-typedef struct NotificationConfiguration
+struct NotificationConfiguration
 {
     bool        park_award;
     bool        park_marketing_campaign_finished;
@@ -175,9 +174,9 @@ typedef struct NotificationConfiguration
     bool        guest_bought_item;
     bool        guest_used_facility;
     bool        guest_died;
-} NotificationConfiguration;
+};
 
-typedef struct FontConfiguration
+struct FontConfiguration
 {
     utf8 *      file_name;
     utf8 *      font_name;
@@ -191,7 +190,9 @@ typedef struct FontConfiguration
     sint32      height_small;
     sint32      height_medium;
     sint32      height_big;
-} FontConfiguration;
+    bool        enable_hinting;
+    sint32      hinting_threshold;
+};
 
 enum SORT
 {
@@ -207,6 +208,13 @@ enum TEMPERATURE_FORMAT
     TEMPERATURE_FORMAT_F
 };
 
+enum SCALE_QUALITY
+{
+    SCALE_QUALITY_NN,
+    SCALE_QUALITY_LINEAR,
+    SCALE_QUALITY_SMOOTH_NN
+};
+
 enum MEASUREMENT_FORMAT
 {
     MEASUREMENT_FORMAT_IMPERIAL,
@@ -214,36 +222,18 @@ enum MEASUREMENT_FORMAT
     MEASUREMENT_FORMAT_SI
 };
 
-#ifndef __cplusplus
-// This is only for C files, C++ files should use FULLSCREEN_MODE in UiContext.h
-enum
-{
-    FULLSCREEN_MODE_WINDOWED,
-    FULLSCREEN_MODE_FULLSCREEN,
-    FULLSCREEN_MODE_FULLSCREEN_DESKTOP,
-};
-#endif
+extern GeneralConfiguration         gConfigGeneral;
+extern InterfaceConfiguration       gConfigInterface;
+extern SoundConfiguration           gConfigSound;
+extern TwitchConfiguration          gConfigTwitch;
+extern NetworkConfiguration         gConfigNetwork;
+extern NotificationConfiguration    gConfigNotifications;
+extern FontConfiguration            gConfigFonts;
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    extern GeneralConfiguration         gConfigGeneral;
-    extern InterfaceConfiguration       gConfigInterface;
-    extern SoundConfiguration           gConfigSound;
-    extern TwitchConfiguration          gConfigTwitch;
-    extern NetworkConfiguration         gConfigNetwork;
-    extern NotificationConfiguration    gConfigNotifications;
-    extern FontConfiguration            gConfigFonts;
-
-    bool config_open(const utf8 * path);
-    bool config_save(const utf8 * path);
-    void config_get_default_path(utf8 *outPath, size_t size);
-    void config_set_defaults();
-    void config_release();
-    bool config_open_default();
-    bool config_save_default();
-    bool config_find_or_browse_install_directory();
-#ifdef __cplusplus
-}
-#endif
+bool config_open(const utf8 * path);
+bool config_save(const utf8 * path);
+void config_get_default_path(utf8 *outPath, size_t size);
+void config_set_defaults();
+void config_release();
+bool config_save_default();
+bool config_find_or_browse_install_directory();

@@ -14,15 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include <cwctype>
 #include <stdexcept>
 #include <vector>
 
-extern "C"
-{
-    #include "../localisation/localisation.h"
-    #include "../util/util.h"
-}
+#include "../localisation/Localisation.h"
+#include "../util/Util.h"
 
 #include "Math.hpp"
 #include "Memory.hpp"
@@ -142,6 +140,11 @@ namespace String
         }
     }
 
+    bool StartsWith(const std::string &str, const std::string &match, bool ignoreCase)
+    {
+        return StartsWith(str.c_str(), match.c_str(), ignoreCase);
+    }
+
     size_t IndexOf(const utf8 * str, utf8 match, size_t startIndex)
     {
         const utf8 * ch = str + startIndex;
@@ -155,7 +158,7 @@ namespace String
         return SIZE_MAX;
     }
 
-    size_t LastIndexOf(const utf8 * str, utf8 match)
+    ptrdiff_t LastIndexOf(const utf8 * str, utf8 match)
     {
         const utf8 * lastOccurance = nullptr;
         const utf8 * ch = str;
@@ -169,11 +172,11 @@ namespace String
 
         if (lastOccurance == nullptr)
         {
-            return SIZE_MAX;
+            return -1;
         }
         else
         {
-            return (size_t)(lastOccurance - str);
+            return lastOccurance - str;
         }
     }
 
@@ -321,8 +324,9 @@ namespace String
         utf8 * result = nullptr;
         if (src != nullptr)
         {
-            size_t srcSize = SizeOf(src);
-            result = Memory::DuplicateArray(src, srcSize + 1);
+            size_t srcSize = SizeOf(src) + 1;
+            result = Memory::Allocate<utf8>(srcSize);
+            memcpy(result, src, srcSize);
         }
         return result;
     }
@@ -337,46 +341,6 @@ namespace String
     utf8 * DiscardDuplicate(utf8 * * ptr, const utf8 * replacement)
     {
         return DiscardUse(ptr, String::Duplicate(replacement));
-    }
-
-    utf8 * Substring(const utf8 * buffer, size_t index)
-    {
-        size_t bufferSize = String::SizeOf(buffer);
-        bool goodSubstring = index <= bufferSize;
-        Guard::Assert(goodSubstring, "Substring past end of input string.");
-
-        // If assertion continues, return empty string to avoid crash
-        if (!goodSubstring)
-        {
-            return String::Duplicate("");
-        }
-
-        return String::Duplicate(buffer + index);
-    }
-
-    utf8 * Substring(const utf8 * buffer, size_t index, size_t size)
-    {
-        size_t bufferSize = String::SizeOf(buffer);
-        bool goodSubstring = index + size <= bufferSize;
-        Guard::Assert(goodSubstring, "Substring past end of input string.");
-
-        // If assertion continues, cap the substring to avoid crash
-        if (!goodSubstring)
-        {
-            if (index >= bufferSize)
-            {
-                size = 0;
-            }
-            else
-            {
-                size = bufferSize - index;
-            }
-        }
-
-        utf8 * result = Memory::Allocate<utf8>(size + 1);
-        Memory::Copy(result, buffer + index, size);
-        result[size] = '\0';
-        return result;
     }
 
     std::vector<std::string> Split(const std::string &s, const std::string &delimiter)
@@ -445,6 +409,12 @@ namespace String
         return utf8_write_codepoint(dst, codepoint);
     }
 
+    bool IsWhiteSpace(codepoint_t codepoint)
+    {
+        // 0x3000 is the 'ideographic space', a 'fullwidth' character used in CJK languages.
+        return iswspace((wchar_t)codepoint) || codepoint == 0x3000;
+    }
+
     utf8 * Trim(utf8 * str)
     {
         utf8 * firstNonWhitespace = nullptr;
@@ -454,7 +424,7 @@ namespace String
         utf8 * nextCh;
         while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
         {
-            if (codepoint <= WCHAR_MAX && !iswspace((wchar_t)codepoint))
+            if (codepoint <= WCHAR_MAX && !IsWhiteSpace(codepoint))
             {
                 if (firstNonWhitespace == nullptr)
                 {
@@ -467,13 +437,16 @@ namespace String
         if (firstNonWhitespace != nullptr &&
             firstNonWhitespace != str)
         {
-            size_t newStringSize = ch - firstNonWhitespace;
+            // Take multibyte characters into account: use the last byte of the
+            // current character.
+            size_t newStringSize = (nextCh - 1) - firstNonWhitespace;
+
 #ifdef DEBUG
             size_t currentStringSize = String::SizeOf(str);
             Guard::Assert(newStringSize < currentStringSize, GUARD_LINE);
 #endif
 
-            Memory::Move(str, firstNonWhitespace, newStringSize);
+            std::memmove(str, firstNonWhitespace, newStringSize);
             str[newStringSize] = '\0';
         }
         else
@@ -491,18 +464,25 @@ namespace String
         const utf8 * nextCh;
         while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
         {
-            if (codepoint <= WCHAR_MAX && !iswspace((wchar_t)codepoint))
+            if (codepoint <= WCHAR_MAX && !IsWhiteSpace(codepoint))
             {
                 return ch;
             }
             ch = nextCh;
         }
-        return str;
+        // String is all whitespace
+        return ch;
     }
 
     utf8 * TrimStart(utf8 * buffer, size_t bufferSize, const utf8 * src)
     {
         return String::Set(buffer, bufferSize, TrimStart(src));
+    }
+
+    std::string TrimStart(const std::string &s)
+    {
+        const utf8 * trimmed = TrimStart(s.c_str());
+        return std::string(trimmed);
     }
 
     std::string Trim(const std::string &s)
@@ -514,14 +494,17 @@ namespace String
         const utf8 * endSubstr = nullptr;
         while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
         {
-            bool isWhiteSpace = codepoint <= WCHAR_MAX && iswspace((wchar_t)codepoint);
+            bool isWhiteSpace = codepoint <= WCHAR_MAX && IsWhiteSpace(codepoint);
             if (!isWhiteSpace)
             {
                 if (startSubstr == nullptr)
                 {
                     startSubstr = ch;
                 }
-                endSubstr = ch;
+
+                // Take multibyte characters into account: move pointer towards
+                // the last byte of the current character.
+                endSubstr = nextCh - 1;
             }
             ch = nextCh;
         }

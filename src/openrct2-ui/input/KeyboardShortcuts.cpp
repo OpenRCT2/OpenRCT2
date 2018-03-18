@@ -15,20 +15,16 @@
 #pragma endregion
 
 #include <openrct2/common.h>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/File.h>
 #include <openrct2/core/FileStream.hpp>
-#include <openrct2/core/Memory.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/PlatformEnvironment.h>
 #include "KeyboardShortcuts.h"
 
-extern "C"
-{
-    #include <openrct2/localisation/localisation.h>
-}
+#include <openrct2/localisation/Localisation.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Input;
@@ -73,9 +69,9 @@ bool KeyboardShortcuts::Load()
             }
         }
     }
-    catch (const Exception &ex)
+    catch (const std::exception &ex)
     {
-        Console::WriteLine("Error reading shortcut keys: %s", ex.GetMessage());
+        Console::WriteLine("Error reading shortcut keys: %s", ex.what());
     }
     return result;
 }
@@ -94,9 +90,9 @@ bool KeyboardShortcuts::Save()
         }
         result = true;
     }
-    catch (const Exception &ex)
+    catch (const std::exception &ex)
     {
-        Console::WriteLine("Error writing shortcut keys: %s", ex.GetMessage());
+        Console::WriteLine("Error writing shortcut keys: %s", ex.what());
     }
     return result;
 }
@@ -135,26 +131,26 @@ std::string KeyboardShortcuts::GetShortcutString(sint32 shortcut) const
     if (shortcutKey == SHORTCUT_UNDEFINED) return std::string();
     if (shortcutKey & SHIFT)
     {
-        format_string(formatBuffer, sizeof(formatBuffer), STR_SHIFT_PLUS, NULL);
+        format_string(formatBuffer, sizeof(formatBuffer), STR_SHIFT_PLUS, nullptr);
         String::Append(buffer, sizeof(buffer), formatBuffer);
     }
     if (shortcutKey & CTRL)
     {
-        format_string(formatBuffer, sizeof(formatBuffer), STR_CTRL_PLUS, NULL);
+        format_string(formatBuffer, sizeof(formatBuffer), STR_CTRL_PLUS, nullptr);
         String::Append(buffer, sizeof(buffer), formatBuffer);
     }
     if (shortcutKey & ALT)
     {
 #ifdef __MACOSX__
-        format_string(formatBuffer, sizeof(formatBuffer), STR_OPTION_PLUS, NULL);
+        format_string(formatBuffer, sizeof(formatBuffer), STR_OPTION_PLUS, nullptr);
 #else
-        format_string(formatBuffer, sizeof(formatBuffer), STR_ALT_PLUS, NULL);
+        format_string(formatBuffer, sizeof(formatBuffer), STR_ALT_PLUS, nullptr);
 #endif
         String::Append(buffer, sizeof(buffer), formatBuffer);
     }
     if (shortcutKey & CMD)
     {
-        format_string(formatBuffer, sizeof(formatBuffer), STR_CMD_PLUS, NULL);
+        format_string(formatBuffer, sizeof(formatBuffer), STR_CMD_PLUS, nullptr);
         String::Append(buffer, sizeof(buffer), formatBuffer);
     }
     String::Append(buffer, sizeof(buffer), SDL_GetScancodeName((SDL_Scancode)(shortcutKey & 0xFF)));
@@ -204,44 +200,42 @@ void KeyboardShortcuts::GetKeyboardMapScroll(const uint8 * keysState, sint32 * x
     }
 }
 
-extern "C"
+void keyboard_shortcuts_reset()
 {
-    void keyboard_shortcuts_reset()
-    {
-        _instance->Reset();
-    }
-
-    bool keyboard_shortcuts_load()
-    {
-        return _instance->Load();
-    }
-
-    bool keyboard_shortcuts_save()
-    {
-        return _instance->Save();
-    }
-
-    void keyboard_shortcuts_set(sint32 key)
-    {
-        return _instance->Set(key);
-    }
-
-    sint32 keyboard_shortcuts_get_from_key(sint32 key)
-    {
-        return _instance->GetFromKey(key);
-    }
-
-    void keyboard_shortcuts_format_string(char * buffer, size_t bufferSize, sint32 shortcut)
-    {
-        auto str = _instance->GetShortcutString(shortcut);
-        String::Set(buffer, bufferSize, str.c_str());
-    }
-
-    void get_keyboard_map_scroll(const uint8 * keysState, sint32 * x, sint32 * y)
-    {
-        _instance->GetKeyboardMapScroll(keysState, x, y);
-    }
+    _instance->Reset();
 }
+
+bool keyboard_shortcuts_load()
+{
+    return _instance->Load();
+}
+
+bool keyboard_shortcuts_save()
+{
+    return _instance->Save();
+}
+
+void keyboard_shortcuts_set(sint32 key)
+{
+    return _instance->Set(key);
+}
+
+sint32 keyboard_shortcuts_get_from_key(sint32 key)
+{
+    return _instance->GetFromKey(key);
+}
+
+void keyboard_shortcuts_format_string(char * buffer, size_t bufferSize, sint32 shortcut)
+{
+    auto str = _instance->GetShortcutString(shortcut);
+    String::Set(buffer, bufferSize, str.c_str());
+}
+
+void get_keyboard_map_scroll(const uint8 * keysState, sint32 * x, sint32 * y)
+{
+    _instance->GetKeyboardMapScroll(keysState, x, y);
+}
+
 
 // Default keyboard shortcuts
 const uint16 KeyboardShortcuts::DefaultKeys[SHORTCUT_COUNT] =
@@ -310,4 +304,5 @@ const uint16 KeyboardShortcuts::DefaultKeys[SHORTCUT_COUNT] =
     SDL_SCANCODE_KP_MINUS,                      // SHORTCUT_RIDE_CONSTRUCTION_DEMOLISH_CURRENT
     PLATFORM_MODIFIER | SDL_SCANCODE_L,         // SHORTCUT_LOAD_GAME
     SDL_SCANCODE_B,                             // SHORTCUT_CLEAR_SCENERY
+    SDL_SCANCODE_7,                             // SHORTCUT_GRIDLINES_DISPLAY_TOGGLE
 };

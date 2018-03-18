@@ -18,16 +18,14 @@
 
 #include "../common.h"
 
-typedef struct source_desc
+struct source_desc
 {
     const utf8 * title;
     uint8        id;
     uint8        source;
     sint32       index;
     uint8        category;
-} source_desc;
-
-#ifdef __cplusplus
+};
 
 namespace ScenarioSources
 {
@@ -36,20 +34,10 @@ namespace ScenarioSources
     void NormaliseName(utf8 * buffer, size_t bufferSize, const utf8 * name);
 }
 
-#endif
+bool scenario_get_source_desc(const utf8 *name, source_desc *outDesc);
+bool scenario_get_source_desc_by_id(uint8 id, source_desc *outDesc);
+void scenario_normalise_name(utf8 *buffer, size_t bufferSize, utf8 *name);
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
-    bool scenario_get_source_desc(const utf8 *name, source_desc *outDesc);
-    bool scenario_get_source_desc_by_id(uint8 id, source_desc *outDesc);
-    void scenario_normalise_name(utf8 *buffer, size_t bufferSize, utf8 *name);
-
-#ifdef __cplusplus
-}
-#endif
 
 // RCT1 scenario index map
 enum

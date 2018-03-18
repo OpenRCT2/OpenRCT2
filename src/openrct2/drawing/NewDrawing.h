@@ -16,12 +16,9 @@
 
 #pragma once
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+#include "../common.h"
 
-#include "drawing.h"
+struct rct_drawpixelinfo;
 
 extern rct_string_id DrawingEngineStringIds[3];
 
@@ -37,8 +34,4 @@ void drawing_engine_dispose();
 rct_drawpixelinfo * drawing_engine_get_dpi();
 bool drawing_engine_has_dirty_optimisations();
 void drawing_engine_invalidate_image(uint32 image);
-void drawing_engine_set_fps_uncapped(bool uncapped);
-
-#ifdef __cplusplus
-}
-#endif
+void drawing_engine_set_vsync(bool vsync);

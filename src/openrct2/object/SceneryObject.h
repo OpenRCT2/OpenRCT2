@@ -25,7 +25,7 @@ private:
 
 public:
     explicit SceneryObject(const rct_object_entry &entry) : Object(entry) { }
-    virtual ~SceneryObject() { }
+    virtual ~SceneryObject() = default;
 
     const rct_object_entry * GetPrimarySceneryGroup() { return &_primarySceneryGroupEntry; }
 

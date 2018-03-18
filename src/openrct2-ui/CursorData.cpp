@@ -19,12 +19,12 @@
 
 namespace OpenRCT2 { namespace Ui
 {
-    static const CursorData BlankCursorData =
+    static constexpr const CursorData BlankCursorData =
     {
         { 0, 0 }, { 0 }, { 0 }
     };
 
-    static const CursorData UpArrowCursorData =
+    static constexpr const CursorData UpArrowCursorData =
     {
         { 15, 0 },
         {
@@ -49,7 +49,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData UpDownArrowCursorData =
+    static constexpr const CursorData UpDownArrowCursorData =
     {
         { 7, 31 },
         {
@@ -74,7 +74,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData ZZZCursorData =
+    static constexpr const CursorData ZZZCursorData =
     {
         { 0, 0 },
         {
@@ -99,7 +99,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData DiagonalArrowCursorData =
+    static constexpr const CursorData DiagonalArrowCursorData =
     {
         { 0, 0 },
         {
@@ -124,7 +124,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData PickerArrowCursorData =
+    static constexpr const CursorData PickerArrowCursorData =
     {
         { 15, 31 },
         {
@@ -149,7 +149,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData TreeDownCursorData =
+    static constexpr const CursorData TreeDownCursorData =
     {
         { 7, 31 },
         {
@@ -174,7 +174,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData FountainDownCursorData =
+    static constexpr const CursorData FountainDownCursorData =
     {
         { 7, 31 },
         {
@@ -199,7 +199,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData StatueDownCursorData =
+    static constexpr const CursorData StatueDownCursorData =
     {
         { 7, 31 },
         {
@@ -224,7 +224,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData BenchDownCursorData =
+    static constexpr const CursorData BenchDownCursorData =
     {
         { 7, 31 },
         {
@@ -249,7 +249,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData CrossHairCursorData =
+    static constexpr const CursorData CrossHairCursorData =
     {
         { 15, 15 },
         {
@@ -274,7 +274,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData BinDownCursorData =
+    static constexpr const CursorData BinDownCursorData =
     {
         { 7, 31 },
         {
@@ -299,7 +299,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData LampPostDownCursorData =
+    static constexpr const CursorData LampPostDownCursorData =
     {
         { 7, 31 },
         {
@@ -324,7 +324,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData FenceDownCursorData =
+    static constexpr const CursorData FenceDownCursorData =
     {
         { 7, 31 },
         {
@@ -349,7 +349,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData FlowerDownCursorData =
+    static constexpr const CursorData FlowerDownCursorData =
     {
         { 7, 31 },
         {
@@ -374,7 +374,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData FootpathDownCursorData =
+    static constexpr const CursorData FootpathDownCursorData =
     {
         { 7, 31 },
         {
@@ -399,7 +399,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData DigDownCursorData =
+    static constexpr const CursorData DigDownCursorData =
     {
         { 7, 31 },
         {
@@ -424,7 +424,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData WaterDownCursorData =
+    static constexpr const CursorData WaterDownCursorData =
     {
         { 7, 31 },
         {
@@ -449,7 +449,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData HouseDownCursorData =
+    static constexpr const CursorData HouseDownCursorData =
     {
         { 7, 31 },
         {
@@ -474,7 +474,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData VolcanoDownCursorData =
+    static constexpr const CursorData VolcanoDownCursorData =
     {
         { 7, 31 },
         {
@@ -499,7 +499,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData WalkDownCursorData =
+    static constexpr const CursorData WalkDownCursorData =
     {
         { 7, 31 },
         {
@@ -524,7 +524,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData PaintDownCursorData =
+    static constexpr const CursorData PaintDownCursorData =
     {
         { 8, 30 },
         {
@@ -549,7 +549,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData EntranceDownCursorData =
+    static constexpr const CursorData EntranceDownCursorData =
     {
         { 7, 31 },
         {
@@ -574,7 +574,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData HandOpenDownCursorData =
+    static constexpr const CursorData HandOpenDownCursorData =
     {
         { 5, 1 },
         {
@@ -599,7 +599,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData HandClosedDownCursorData =
+    static constexpr const CursorData HandClosedDownCursorData =
     {
         { 5, 1 },
         {
@@ -624,7 +624,7 @@ namespace OpenRCT2 { namespace Ui
         }
     };
 
-    static const CursorData * RawCursorData[] =
+    static constexpr const CursorData * RawCursorData[] =
     {
         nullptr,                    // CURSOR_ARROW
         &BlankCursorData,           // CURSOR_BLANK

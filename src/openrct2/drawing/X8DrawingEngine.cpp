@@ -14,28 +14,23 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../ui/UiContext.h"
-#include "../core/Guard.hpp"
 #include "../core/Math.hpp"
-#include "../core/Memory.hpp"
 #include "../interface/Screenshot.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 #include "Rain.h"
 #include "X8DrawingEngine.h"
 
-extern "C"
-{
-    #include "../game.h"
-    #include "../interface/viewport.h"
-    #include "../interface/window.h"
-    #include "../intro.h"
-    #include "../platform/platform.h"
-    #include "drawing.h"
-    #include "lightfx.h"
-}
+#include "../Game.h"
+#include "../interface/Viewport.h"
+#include "../interface/Window.h"
+#include "../Intro.h"
+#include "Drawing.h"
+#include "LightFX.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -58,7 +53,7 @@ void X8RainDrawer::SetDPI(rct_drawpixelinfo * dpi)
 
 void X8RainDrawer::Draw(sint32 x, sint32 y, sint32 width, sint32 height, sint32 xStart, sint32 yStart)
 {
-    static const uint8 RainPattern[] =
+    static constexpr const uint8 RainPattern[] =
     {
         32, 32, 0, 12, 0, 14, 0, 16, 255, 0, 255, 0, 255, 0, 255, 0, 255,
         0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
@@ -141,6 +136,7 @@ X8DrawingEngine::X8DrawingEngine(Ui::IUiContext * uiContext)
 {
     _drawingContext = new X8DrawingContext(this);
 #ifdef __ENABLE_LIGHTFX__
+    lightfx_set_available(true);
     _lastLightFXenabled = (gConfigGeneral.enable_light_fx != 0);
 #endif
 }
@@ -166,7 +162,7 @@ void X8DrawingEngine::SetPalette(const rct_palette_entry * palette)
 {
 }
 
-void X8DrawingEngine::SetUncappedFrameRate(bool uncapped)
+void X8DrawingEngine::SetVSync(bool vsync)
 {
     // Not applicable for this engine
 }
@@ -223,7 +219,7 @@ void X8DrawingEngine::EndDraw()
 
 void X8DrawingEngine::PaintWindows()
 {
-    ResetWindowVisbilities();
+    window_reset_visibilities();
 
     // Redraw dirty regions before updating the viewports, otherwise
     // when viewports get panned, they copy dirty pixels
@@ -316,13 +312,13 @@ void X8DrawingEngine::ConfigureBits(uint32 width, uint32 height, uint32 pitch)
     uint8 * newBits = new uint8[newBitsSize];
     if (_bits == nullptr)
     {
-        Memory::Set(newBits, 0, newBitsSize);
+        std::fill_n(newBits, newBitsSize, 0);
     }
     else
     {
         if (_pitch == pitch)
         {
-            Memory::Copy(newBits, _bits, Math::Min(_bitsSize, newBitsSize));
+            std::copy_n(_bits, std::min(_bitsSize, newBitsSize), newBits);
         }
         else
         {
@@ -333,10 +329,10 @@ void X8DrawingEngine::ConfigureBits(uint32 width, uint32 height, uint32 pitch)
             uint32 minHeight = Math::Min(_height, height);
             for (uint32 y = 0; y < minHeight; y++)
             {
-                Memory::Copy(dst, src, minWidth);
+                std::copy_n(src, minWidth, dst);
                 if (pitch - minWidth > 0)
                 {
-                    Memory::Set(dst + minWidth, 0, pitch - minWidth);
+                    std::fill_n(dst + minWidth, pitch - minWidth, 0);
                 }
                 src += _pitch;
                 dst += pitch;
@@ -362,11 +358,15 @@ void X8DrawingEngine::ConfigureBits(uint32 width, uint32 height, uint32 pitch)
     ConfigureDirtyGrid();
 
 #ifdef __ENABLE_LIGHTFX__
-        if (gConfigGeneral.enable_light_fx)
+        if (lightfx_is_available())
         {
             lightfx_update_buffers(dpi);
         }
 #endif
+}
+
+void X8DrawingEngine::OnDrawDirtyBlock(uint32 x, uint32 y, uint32 columns, uint32 rows)
+{
 }
 
 void X8DrawingEngine::ConfigureDirtyGrid()
@@ -380,16 +380,6 @@ void X8DrawingEngine::ConfigureDirtyGrid()
 
     delete [] _dirtyGrid.Blocks;
     _dirtyGrid.Blocks = new uint8[_dirtyGrid.BlockColumns * _dirtyGrid.BlockRows];
-}
-
-void X8DrawingEngine::ResetWindowVisbilities()
-{
-    // reset window visibility status to unknown
-    for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
-    {
-        w->visibility = VC_UNKNOWN;
-        if (w->viewport != NULL) w->viewport->visibility = VC_UNKNOWN;
-    }
 }
 
 void X8DrawingEngine::DrawAllDirtyBlocks()
@@ -446,10 +436,10 @@ void X8DrawingEngine::DrawDirtyBlocks(uint32 x, uint32 y, uint32 columns, uint32
     uint8 * screenDirtyBlocks = _dirtyGrid.Blocks;
 
     // Unset dirty blocks
-    for (uint32 top = y; top < y + (uint32)rows; top++)
+    for (uint32 top = y; top < y + rows; top++)
     {
         uint32 topOffset = top * dirtyBlockColumns;
-        for (uint32 left = x; left < x + (uint32)columns; left++)
+        for (uint32 left = x; left < x + columns; left++)
         {
             screenDirtyBlocks[topOffset + left] = 0;
         }
@@ -466,6 +456,7 @@ void X8DrawingEngine::DrawDirtyBlocks(uint32 x, uint32 y, uint32 columns, uint32
     }
 
     // Draw region
+    OnDrawDirtyBlock(x, y, columns, rows);
     window_draw_all(&_bitsDPI, left, top, right, bottom);
 }
 
@@ -498,13 +489,14 @@ void X8DrawingContext::Clear(uint8 paletteIndex)
 
     for (sint32 y = 0; y < h; y++)
     {
-        Memory::Set(ptr, paletteIndex, w);
+        std::fill_n(ptr, w, paletteIndex);
         ptr += w + dpi->pitch;
     }
 }
 
 /** rct2: 0x0097FF04 */
-static const uint16 Pattern[] = {
+// clang-format off
+static constexpr const uint16 Pattern[] = {
     0b0111111110000000,
     0b0011111111000000,
     0b0001111111100000,
@@ -524,7 +516,7 @@ static const uint16 Pattern[] = {
 };
 
 /** rct2: 0x0097FF14 */
-static const uint16 PatternInverse[] = {
+static constexpr const uint16 PatternInverse[] = {
     0b1000000001111111,
     0b1100000000111111,
     0b1110000000011111,
@@ -544,10 +536,11 @@ static const uint16 PatternInverse[] = {
 };
 
 /** rct2: 0x0097FEFC */
-static const uint16 * Patterns[] = {
+static constexpr const uint16 * Patterns[] = {
     Pattern,
     PatternInverse
 };
+// clang-format on
 
 void X8DrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
@@ -658,7 +651,7 @@ void X8DrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 r
         uint8 * dst = startY * (dpi->width + dpi->pitch) + startX + dpi->bits;
         for (sint32 i = 0; i < height; i++)
         {
-            Memory::Set(dst, colour & 0xFF, width);
+            std::fill_n(dst, width, colour & 0xFF);
             dst += dpi->width + dpi->pitch;
         }
     }
@@ -709,20 +702,22 @@ void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32
     uint8 * dst = dpi->bits + (uint32)((startY >> (dpi->zoom_level)) * ((dpi->width >> dpi->zoom_level) + dpi->pitch) + (startX >> dpi->zoom_level));
 
     // Find colour in colour table?
-    uint16           g1Index = palette_to_g1_offset[palette];
-    rct_g1_element * g1Element = &g1Elements[g1Index];
-    uint8 *          g1Bits = g1Element->offset;
-
-    const sint32 scaled_width = width >> dpi->zoom_level;
-    const sint32 step = ((dpi->width >> dpi->zoom_level) + dpi->pitch);
-
-    // Fill the rectangle with the colours from the colour table
-    for (sint32 i = 0; i < height >> dpi->zoom_level; i++)
+    uint16 g1Index = palette_to_g1_offset[palette];
+    auto g1Element = gfx_get_g1_element(g1Index);
+    if (g1Element != nullptr)
     {
-        uint8 * nextdst = dst + step * i;
-        for (sint32 j = 0; j < scaled_width; j++)
+        auto g1Bits = g1Element->offset;
+        const sint32 scaled_width = width >> dpi->zoom_level;
+        const sint32 step = ((dpi->width >> dpi->zoom_level) + dpi->pitch);
+
+        // Fill the rectangle with the colours from the colour table
+        for (sint32 i = 0; i < height >> dpi->zoom_level; i++)
         {
-            *(nextdst + j) = g1Bits[*(nextdst + j)];
+            uint8 * nextdst = dst + step * i;
+            for (sint32 j = 0; j < scaled_width; j++)
+            {
+                *(nextdst + j) = g1Bits[*(nextdst + j)];
+            }
         }
     }
 }

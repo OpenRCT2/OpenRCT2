@@ -20,11 +20,8 @@
 #include "NetworkConnection.h"
 #include "../core/String.hpp"
 
-extern "C"
-{
-    #include "../localisation/localisation.h"
-    #include "../platform/platform.h"
-}
+#include "../localisation/Localisation.h"
+#include "../platform/platform.h"
 
 constexpr size_t NETWORK_DISCONNECT_REASON_BUFFER_SIZE = 256;
 
@@ -36,10 +33,7 @@ NetworkConnection::NetworkConnection()
 NetworkConnection::~NetworkConnection()
 {
     delete Socket;
-    if (_lastDisconnectReason)
-    {
-        delete[] _lastDisconnectReason;
-    }
+    delete[] _lastDisconnectReason;
 }
 
 sint32 NetworkConnection::ReadPacket()
@@ -107,11 +101,7 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
     {
         packet.BytesTransferred += sent;
     }
-    if (packet.BytesTransferred == tosend.size())
-    {
-        return true;
-    }
-    return false;
+    return packet.BytesTransferred == tosend.size();
 }
 
 void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet, bool front)
@@ -122,7 +112,7 @@ void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet, bool 
         if (front)
         {
             // If the first packet was already partially sent add new packet to second position
-            if (_outboundPackets.size() > 0 && _outboundPackets.front()->BytesTransferred > 0)
+            if (!_outboundPackets.empty() && _outboundPackets.front()->BytesTransferred > 0)
             {
                 auto it = _outboundPackets.begin();
                 it++; // Second position
@@ -142,7 +132,7 @@ void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet, bool 
 
 void NetworkConnection::SendQueuedPackets()
 {
-    while (_outboundPackets.size() > 0 && SendPacket(*(_outboundPackets.front()).get()))
+    while (!_outboundPackets.empty() && SendPacket(*_outboundPackets.front()))
     {
         _outboundPackets.remove(_outboundPackets.front());
     }

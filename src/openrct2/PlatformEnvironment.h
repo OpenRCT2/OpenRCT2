@@ -27,8 +27,11 @@ namespace OpenRCT2
         RCT2,               // Base directory for original RollerCoaster Tycoon 2 content.
         OPENRCT2,           // Base directory for OpenRCT2 installation.
         USER,               // Base directory for OpenRCT2 user content.
+        CONFIG,             // Base directory for OpenRCT2 configuration.
+        CACHE,              // Base directory for OpenRCT2 cache files.
+        DOCUMENTATION,      // Base directory for OpenRCT2 doc files.
     };
-    constexpr sint32 DIRBASE_COUNT = 4;
+    constexpr sint32 DIRBASE_COUNT = 7;
     using DIRBASE_VALUES = std::string[DIRBASE_COUNT];
 
     enum class DIRID
@@ -55,12 +58,15 @@ namespace OpenRCT2
         CONFIG_KEYBOARD,    // Keyboard shortcuts. (hotkeys.cfg)
         CACHE_OBJECTS,      // Object repository cache (objects.idx).
         CACHE_TRACKS,       // Track repository cache (tracks.idx).
+        CACHE_SCENARIOS,    // Scenario repository cache (scenarios.idx).
+        MP_DAT,             // Mega Park data, Steam RCT1 only (\RCTdeluxe_install\Data\mp.dat)
         NETWORK_GROUPS,     // Server groups with permissions (groups.json).
         NETWORK_SERVERS,    // Saved servers (servers.cfg).
         NETWORK_USERS,      // Users and their groups (users.json).
         SCORES,             // Scenario scores (highscores.dat).
         SCORES_LEGACY,      // Scenario scores, legacy (scores.dat).
         SCORES_RCT2,        // Scenario scores, rct2 (\Saved Games\scores.dat).
+        CHANGELOG,          // Notable changes to the game between versions, distributed with the game.
     };
 
     /**

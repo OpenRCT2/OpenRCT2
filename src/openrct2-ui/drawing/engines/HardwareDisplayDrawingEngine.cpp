@@ -14,19 +14,19 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cmath>
+#include <vector>
 #include <openrct2/common.h>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/X8DrawingEngine.h>
 #include <openrct2/ui/UiContext.h>
 #include "DrawingEngines.h"
 
-extern "C"
-{
-    #include <openrct2/drawing/lightfx.h>
-    #include <openrct2/game.h>
-}
+#include <openrct2/drawing/LightFX.h>
+#include <openrct2/Game.h>
+#include <openrct2/paint/Paint.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -35,10 +35,13 @@ using namespace OpenRCT2::Ui;
 class HardwareDisplayDrawingEngine final : public X8DrawingEngine
 {
 private:
+    constexpr static uint32 DIRTY_VISUAL_TIME = 32;
+
     IUiContext * const  _uiContext;
     SDL_Window *        _window                     = nullptr;
     SDL_Renderer *      _sdlRenderer                = nullptr;
     SDL_Texture *       _screenTexture              = nullptr;
+    SDL_Texture *       _scaledScreenTexture        = nullptr;
     SDL_PixelFormat *   _screenTextureFormat        = nullptr;
     uint32              _paletteHWMapped[256]       = { 0 };
 #ifdef __ENABLE_LIGHTFX__
@@ -50,6 +53,11 @@ private:
     uint32  _pixelAfterOverlay      = 0;
     bool    _overlayActive          = false;
     bool    _pausedBeforeOverlay    = false;
+    bool    _useVsync               = true;
+
+    std::vector<uint32> _dirtyVisualsTime;
+    
+    bool    smoothNN = false;
 
 public:
     explicit HardwareDisplayDrawingEngine(IUiContext * uiContext)
@@ -61,19 +69,40 @@ public:
 
     ~HardwareDisplayDrawingEngine() override
     {
-        SDL_DestroyTexture(_screenTexture);
+        if (_screenTexture != nullptr)
+        {
+            SDL_DestroyTexture(_screenTexture);
+        }
+        if (_scaledScreenTexture != nullptr)
+        {
+            SDL_DestroyTexture(_scaledScreenTexture);
+        }
         SDL_FreeFormat(_screenTextureFormat);
         SDL_DestroyRenderer(_sdlRenderer);
     }
 
     void Initialise() override
     {
-        _sdlRenderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        _sdlRenderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | (_useVsync ? SDL_RENDERER_PRESENTVSYNC : 0));
+    }
+
+    void SetVSync(bool vsync) override
+    {
+        if (_useVsync != vsync)
+        {
+            _useVsync = vsync;
+            SDL_DestroyRenderer(_sdlRenderer);
+            Initialise();
+            Resize(_uiContext->GetWidth(), _uiContext->GetHeight());
+        }
     }
 
     void Resize(uint32 width, uint32 height) override
     {
-        SDL_DestroyTexture(_screenTexture);
+        if (_screenTexture != nullptr)
+        {
+            SDL_DestroyTexture(_screenTexture);
+        }
         SDL_FreeFormat(_screenTextureFormat);
 
         SDL_RendererInfo rendererInfo = {};
@@ -95,10 +124,41 @@ public:
             }
         }
 
-        _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
+        sint32 scaleQuality = GetContext()->GetUiContext()->GetScaleQuality();
+        if (scaleQuality == SCALE_QUALITY_SMOOTH_NN)
+        {
+            scaleQuality = SCALE_QUALITY_LINEAR;
+            smoothNN = true;
+        }
+        else
+        {
+            smoothNN = false;
+        }
+
+        if (smoothNN)
+        {
+            if (_scaledScreenTexture != nullptr)
+            {
+                SDL_DestroyTexture(_scaledScreenTexture);
+            }
+
+            char scaleQualityBuffer[4];
+            snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", scaleQuality);
+            SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+            _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
+            SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
+
+            uint32 scale = std::ceil(gConfigGeneral.window_scale);
+            _scaledScreenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_TARGET,
+                                                     width * scale, height * scale);
+        }
+        else
+        {
+            _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING,width, height);
+        }        
 
         uint32 format;
-        SDL_QueryTexture(_screenTexture, &format, 0, 0, 0);
+        SDL_QueryTexture(_screenTexture, &format, nullptr, nullptr, nullptr);
         _screenTextureFormat = SDL_AllocFormat(format);
 
         ConfigureBits(width, height, width);
@@ -130,6 +190,27 @@ public:
     void EndDraw() override
     {
         Display();
+        if (gShowDirtyVisuals)
+        {
+            UpdateDirtyVisuals();
+        }
+    }
+
+protected:
+    void OnDrawDirtyBlock(uint32 left, uint32 top, uint32 columns, uint32 rows) override
+    {
+        if (gShowDirtyVisuals)
+        {
+            uint32 right = left + columns;
+            uint32 bottom = top + rows;
+            for (uint32 x = left; x < right; x++)
+            {
+                for (uint32 y = top; y < bottom; y++)
+                {
+                    SetDirtyVisualTime(x, y, DIRTY_VISUAL_TIME);
+                }
+            }
+        }
     }
 
 private:
@@ -140,7 +221,7 @@ private:
         {
             void * pixels;
             sint32 pitch;
-            if (SDL_LockTexture(_screenTexture, NULL, &pixels, &pitch) == 0)
+            if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
             {
                 lightfx_render_to_texture(pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
                 SDL_UnlockTexture(_screenTexture);
@@ -151,7 +232,23 @@ private:
         {
             CopyBitsToTexture(_screenTexture, _bits, (sint32)_width, (sint32)_height, _paletteHWMapped);
         }
-        SDL_RenderCopy(_sdlRenderer, _screenTexture, nullptr, nullptr);
+        if (smoothNN)
+        {
+            SDL_SetRenderTarget(_sdlRenderer, _scaledScreenTexture);
+            SDL_RenderCopy(_sdlRenderer, _screenTexture, nullptr, nullptr);
+            
+            SDL_SetRenderTarget(_sdlRenderer, nullptr);
+            SDL_RenderCopy(_sdlRenderer, _scaledScreenTexture, nullptr, nullptr);
+        }
+        else
+        {
+            SDL_RenderCopy(_sdlRenderer, _screenTexture, nullptr, nullptr);
+        }
+
+        if (gShowDirtyVisuals)
+        {
+            RenderDirtyVisuals();
+        }
 
         bool isSteamOverlayActive = GetContext()->GetUiContext()->IsSteamOverlayActive();
         if (isSteamOverlayActive && gConfigGeneral.steam_overlay_pause)
@@ -167,7 +264,7 @@ private:
         }
     }
 
-    void CopyBitsToTexture(SDL_Texture * texture, uint8 * src, sint32 width, sint32 height, uint32 * palette)
+    void CopyBitsToTexture(SDL_Texture * texture, uint8 * src, sint32 width, sint32 height, const uint32 * palette)
     {
         void *  pixels;
         sint32     pitch;
@@ -212,6 +309,70 @@ private:
                 }
             }
             SDL_UnlockTexture(texture);
+        }
+    }
+
+    uint32 GetDirtyVisualTime(uint32 x, uint32 y)
+    {
+        uint32 result = 0;
+        uint32 i = y * _dirtyGrid.BlockColumns + x;
+        if (_dirtyVisualsTime.size() > i)
+        {
+            result = _dirtyVisualsTime[i];
+        }
+        return result;
+    }
+
+    void SetDirtyVisualTime(uint32 x, uint32 y, uint32 value)
+    {
+        uint32 i = y * _dirtyGrid.BlockColumns + x;
+        if (_dirtyVisualsTime.size() > i)
+        {
+            _dirtyVisualsTime[i] = value;
+        }
+    }
+
+    void UpdateDirtyVisuals()
+    {
+        _dirtyVisualsTime.resize(_dirtyGrid.BlockRows * _dirtyGrid.BlockColumns);
+        for (uint32 y = 0; y < _dirtyGrid.BlockRows; y++)
+        {
+            for (uint32 x = 0; x < _dirtyGrid.BlockColumns; x++)
+            {
+                auto timeLeft = GetDirtyVisualTime(x, y);
+                if (timeLeft > 0)
+                {
+                    SetDirtyVisualTime(x, y, timeLeft - 1);
+                }
+            }
+        }
+    }
+
+    void RenderDirtyVisuals()
+    {
+        float scaleX = gConfigGeneral.window_scale;
+        float scaleY = gConfigGeneral.window_scale;
+
+        SDL_SetRenderDrawBlendMode(_sdlRenderer, SDL_BLENDMODE_BLEND);
+        for (uint32 y = 0; y < _dirtyGrid.BlockRows; y++)
+        {
+            for (uint32 x = 0; x < _dirtyGrid.BlockColumns; x++)
+            {
+                auto timeLeft = GetDirtyVisualTime(x, y);
+                if (timeLeft > 0)
+                {
+                    uint8 alpha = (uint8)(timeLeft * 5 / 2);
+
+                    SDL_Rect ddRect;
+                    ddRect.x = (sint32)(x * _dirtyGrid.BlockWidth * scaleX);
+                    ddRect.y = (sint32)(y * _dirtyGrid.BlockHeight * scaleY);
+                    ddRect.w = (sint32)(_dirtyGrid.BlockWidth * scaleX);
+                    ddRect.h = (sint32)(_dirtyGrid.BlockHeight * scaleY);
+
+                    SDL_SetRenderDrawColor(_sdlRenderer, 255, 255, 255, alpha);
+                    SDL_RenderFillRect(_sdlRenderer, &ddRect);
+                }
+            }
         }
     }
 

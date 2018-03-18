@@ -37,8 +37,6 @@ enum DRAWING_ENGINE_FLAGS
     DEF_DIRTY_OPTIMISATIONS = 1 << 0,
 };
 
-#ifdef __cplusplus
-
 struct rct_drawpixelinfo;
 struct rct_palette_entry;
 
@@ -54,7 +52,7 @@ namespace OpenRCT2 { namespace Drawing
         virtual void Resize(uint32 width, uint32 height)            abstract;
         virtual void SetPalette(const rct_palette_entry * colours)  abstract;
 
-        virtual void SetUncappedFrameRate(bool uncapped) abstract;
+        virtual void SetVSync(bool vsync) abstract;
 
         virtual void    Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
         virtual void    BeginDraw() abstract;
@@ -83,5 +81,3 @@ namespace OpenRCT2 { namespace Drawing
             sint32 yStart) abstract;
     };
 } }
-
-#endif

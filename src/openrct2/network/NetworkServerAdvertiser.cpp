@@ -23,18 +23,17 @@
 #include "network.h"
 #include "NetworkServerAdvertiser.h"
 
-extern "C"
-{
-    #include "../config/Config.h"
-    #include "../localisation/date.h"
-    #include "../management/finance.h"
-    #include "../peep/peep.h"
-    #include "../platform/platform.h"
-    #include "../util/util.h"
-    #include "../world/map.h"
-    #include "../world/park.h"
-    #include "http.h"
-}
+#include "../config/Config.h"
+#include "../localisation/Date.h"
+#include "../management/Finance.h"
+#include "../peep/Peep.h"
+#include "../platform/platform.h"
+#include "../util/Util.h"
+#include "../world/Map.h"
+#include "../world/Park.h"
+#include "http.h"
+
+#ifndef DISABLE_HTTP
 
 enum MASTER_SERVER_STATUS
 {
@@ -47,12 +46,12 @@ enum MASTER_SERVER_STATUS
 constexpr sint32 MASTER_SERVER_REGISTER_TIME = 120 * 1000; // 2 minutes
 constexpr sint32 MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000; // 1 minute
 
-class NetworkServerAdvertiser : public INetworkServerAdvertiser
+class NetworkServerAdvertiser final : public INetworkServerAdvertiser
 {
 private:
     uint16 _port;
 
-    ADVERTISE_STATUS    _status = ADVERTISE_STATUS_UNREGISTERED;
+    ADVERTISE_STATUS    _status = ADVERTISE_STATUS::UNREGISTERED;
     uint32              _lastAdvertiseTime = 0;
     uint32              _lastHeartbeatTime = 0;
 
@@ -62,6 +61,9 @@ private:
     // Key received from the master server
     std::string         _key;
 
+    // See https://github.com/OpenRCT2/OpenRCT2/issues/6277 and 4953
+    bool                _forceIPv4 = false;
+
 public:
     explicit NetworkServerAdvertiser(uint16 port)
     {
@@ -69,7 +71,7 @@ public:
         _key = GenerateAdvertiseKey();
     }
 
-    ADVERTISE_STATUS GetStatus() override
+    ADVERTISE_STATUS GetStatus() const override
     {
         return _status;
     }
@@ -77,26 +79,26 @@ public:
     void Update() override
     {
         switch (_status) {
-        case ADVERTISE_STATUS_UNREGISTERED:
+        case ADVERTISE_STATUS::UNREGISTERED:
             if (_lastAdvertiseTime == 0 || platform_get_ticks() > _lastAdvertiseTime + MASTER_SERVER_REGISTER_TIME)
             {
-                SendRegistration();
+                SendRegistration(_forceIPv4);
             }
             break;
-        case ADVERTISE_STATUS_REGISTERED:
+        case ADVERTISE_STATUS::REGISTERED:
             if (platform_get_ticks() > _lastHeartbeatTime + MASTER_SERVER_HEARTBEAT_TIME)
             {
                 SendHeartbeat();
             }
             break;
         // exhaust enum values to satisfy clang
-        case ADVERTISE_STATUS_DISABLED:
+        case ADVERTISE_STATUS::DISABLED:
             break;
         }
     }
 
 private:
-    void SendRegistration()
+    void SendRegistration(bool forceIPv4)
     {
         _lastAdvertiseTime = platform_get_ticks();
 
@@ -105,6 +107,7 @@ private:
         request.tag = this;
         request.url = GetMasterServerUrl();
         request.method = HTTP_METHOD_POST;
+        request.forceIPv4 = forceIPv4;
 
         json_t *body = json_object();
         json_object_set_new(body, "key", json_string(_key.c_str()));
@@ -170,7 +173,7 @@ private:
                 if (json_is_string(jsonToken))
                 {
                     _token = std::string(json_string_value(jsonToken));
-                    _status = ADVERTISE_STATUS_REGISTERED;
+                    _status = ADVERTISE_STATUS::REGISTERED;
                 }
             }
             else
@@ -181,7 +184,16 @@ private:
                 {
                     message = json_string_value(jsonMessage);
                 }
-                Console::Error::WriteLine("Unable to advertise: %s", message);
+                Console::Error::WriteLine("Unable to advertise (%d): %s", status, message);
+                // Hack for https://github.com/OpenRCT2/OpenRCT2/issues/6277
+                // Master server may not reply correctly if using IPv6, retry forcing IPv4,
+                // don't wait the full timeout.
+                if (!_forceIPv4 && status == 500)
+                {
+                    _forceIPv4 = true;
+                    _lastAdvertiseTime = 0;
+                    log_info("Retry with ipv4 only");
+                }
             }
         }
     }
@@ -198,7 +210,7 @@ private:
             }
             else if (status == MASTER_SERVER_STATUS_INVALID_TOKEN)
             {
-                _status = ADVERTISE_STATUS_UNREGISTERED;
+                _status = ADVERTISE_STATUS::UNREGISTERED;
                 Console::WriteLine("Master server heartbeat failed: Invalid Token");
             }
         }
@@ -220,8 +232,7 @@ private:
         json_object_set_new(gameInfo, "parkValue", json_integer(gParkValue));
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            money32 cash = DECRYPT_MONEY(gCashEncrypted);
-            json_object_set_new(gameInfo, "cash", json_integer(cash));
+            json_object_set_new(gameInfo, "cash", json_integer(gCash));
         }
         json_object_set_new(root, "gameInfo", gameInfo);
 
@@ -231,7 +242,7 @@ private:
     static std::string GenerateAdvertiseKey()
     {
         // Generate a string of 16 random hex characters (64-integer key as a hex formatted string)
-        static const char hexChars[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+        static constexpr const char hexChars[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
         char key[17];
         for (sint32 i = 0; i < 16; i++)
         {
@@ -257,5 +268,21 @@ INetworkServerAdvertiser * CreateServerAdvertiser(uint16 port)
 {
     return new NetworkServerAdvertiser(port);
 }
+
+#else // DISABLE_HTTP
+
+class DummyNetworkServerAdvertiser final : public INetworkServerAdvertiser
+{
+public:
+    virtual ADVERTISE_STATUS    GetStatus() const override { return ADVERTISE_STATUS::DISABLED; };
+    virtual void                Update() override {};
+};
+
+INetworkServerAdvertiser * CreateServerAdvertiser(uint16 port)
+{
+    return new DummyNetworkServerAdvertiser();
+}
+
+#endif // DISABLE_HTTP
 
 #endif // DISABLE_NETWORK

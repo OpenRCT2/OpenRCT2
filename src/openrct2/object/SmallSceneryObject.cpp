@@ -17,18 +17,13 @@
 #include "../core/IStream.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
+#include "../core/String.hpp"
 #include "SmallSceneryObject.h"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-    #include "../localisation/localisation.h"
-}
-
-SmallSceneryObject::~SmallSceneryObject()
-{
-    Memory::Free(_frameOffsets);
-}
+#include "../drawing/Drawing.h"
+#include "../localisation/Language.h"
+#include "../world/Scenery.h"
+#include "../world/SmallScenery.h"
 
 void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
@@ -49,7 +44,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
     SetPrimarySceneryGroup(&sgEntry);
 
-    if (_legacyType.small_scenery.flags & SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS)
+    if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
     {
         _frameOffsets = ReadFrameOffsets(stream);
     }
@@ -80,10 +75,12 @@ void SmallSceneryObject::Load()
 
     _legacyType.small_scenery.scenery_tab_id = 0xFF;
 
-    if (_legacyType.small_scenery.flags & SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS)
+    if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
     {
-        _legacyType.small_scenery.frame_offsets = _frameOffsets;
+        _legacyType.small_scenery.frame_offsets = _frameOffsets.data();
     }
+
+    PerformFixes();
 }
 
 void SmallSceneryObject::Unload()
@@ -97,12 +94,11 @@ void SmallSceneryObject::Unload()
 
 void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
 {
-    uint32 flags = _legacyType.small_scenery.flags;
     uint32 imageId = _legacyType.image;
-    if (flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+    if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
     {
         imageId |= 0x20D00000;
-        if (flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+        if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
         {
             imageId |= 0x92000000;
         }
@@ -112,28 +108,28 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint
     sint32 y = (height / 2) + (_legacyType.small_scenery.height / 2);
     y = Math::Min(y, height - 16);
 
-    if ((flags & SMALL_SCENERY_FLAG_FULL_TILE) &&
-        (flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+    if ((scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_FULL_TILE)) &&
+        (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_VOFFSET_CENTRE)))
     {
         y -= 12;
     }
 
     gfx_draw_sprite(dpi, imageId, x, y, 0);
 
-    if (_legacyType.small_scenery.flags & SMALL_SCENERY_FLAG_HAS_GLASS)
+    if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_GLASS))
     {
         imageId = _legacyType.image + 0x44500004;
-        if (flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+        if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
         {
             imageId |= 0x92000000;
         }
         gfx_draw_sprite(dpi, imageId, x, y, 0);
     }
 
-    if (flags & SMALL_SCENERY_FLAG_ANIMATED_FG)
+    if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_ANIMATED_FG))
     {
         imageId = _legacyType.image + 4;
-        if (flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+        if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
         {
             imageId |= 0x92000000;
         }
@@ -141,7 +137,7 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint
     }
 }
 
-uint8 * SmallSceneryObject::ReadFrameOffsets(IStream * stream)
+std::vector<uint8> SmallSceneryObject::ReadFrameOffsets(IStream * stream)
 {
     uint8 frameOffset;
     auto data = std::vector<uint8>();
@@ -151,5 +147,87 @@ uint8 * SmallSceneryObject::ReadFrameOffsets(IStream * stream)
         data.push_back(frameOffset);
     }
     data.push_back(frameOffset);
-    return Memory::Duplicate(data.data(), data.size());
+    return data;
+}
+
+// clang-format off
+void SmallSceneryObject::PerformFixes()
+{
+    std::string identifier = GetIdentifier();
+    static const rct_object_entry scgWalls = Object::GetScgWallsHeader();
+
+    // ToonTowner's base blocks. Make them allow supports on top and put them in the Walls and Roofs group.
+    if (String::Equals(identifier, "XXBBCL01") ||
+        String::Equals(identifier, "XXBBMD01") ||
+        String::Equals(identifier, "XXBBBR01") ||
+        String::Equals(identifier, "ARBASE2 "))
+    {
+        SetPrimarySceneryGroup(&scgWalls);
+
+        _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP;
+    }
+
+    // ToonTowner's regular roofs. Put them in the Walls and Roofs group.
+    if (String::Equals(identifier, "TTRFTL02") ||
+        String::Equals(identifier, "TTRFTL03") ||
+        String::Equals(identifier, "TTRFTL04") ||
+        String::Equals(identifier, "TTRFTL07") ||
+        String::Equals(identifier, "TTRFTL08"))
+    {
+        SetPrimarySceneryGroup(&scgWalls);
+    }
+
+    // ToonTowner's Pirate roofs. Make them show up in the Pirate Theming.
+    if (String::Equals(identifier, "TTPIRF02") ||
+        String::Equals(identifier, "TTPIRF03") ||
+        String::Equals(identifier, "TTPIRF04") ||
+        String::Equals(identifier, "TTPIRF05") ||
+        String::Equals(identifier, "TTPIRF07") ||
+        String::Equals(identifier, "TTPIRF08") ||
+        String::Equals(identifier, "TTPRF09 ") ||
+        String::Equals(identifier, "TTPRF10 ") ||
+        String::Equals(identifier, "TTPRF11 "))
+    {
+        static const rct_object_entry scgPirat = GetScgPiratHeader();
+        SetPrimarySceneryGroup(&scgPirat);
+    }
+
+    // ToonTowner's wooden roofs. Make them show up in the Mine Theming.
+    if (String::Equals(identifier, "TTRFWD01") ||
+        String::Equals(identifier, "TTRFWD02") ||
+        String::Equals(identifier, "TTRFWD03") ||
+        String::Equals(identifier, "TTRFWD04") ||
+        String::Equals(identifier, "TTRFWD05") ||
+        String::Equals(identifier, "TTRFWD06") ||
+        String::Equals(identifier, "TTRFWD07") ||
+        String::Equals(identifier, "TTRFWD08"))
+    {
+        static const rct_object_entry scgMine = GetScgMineHeader();
+        SetPrimarySceneryGroup(&scgMine);
+    }
+
+    // ToonTowner's glass roofs. Make them show up in the Abstract Theming.
+    if (String::Equals(identifier, "TTRFGL01") ||
+        String::Equals(identifier, "TTRFGL02") ||
+        String::Equals(identifier, "TTRFGL03"))
+    {
+        static const rct_object_entry scgAbstr = GetScgAbstrHeader();
+        SetPrimarySceneryGroup(&scgAbstr);
+    }
+}
+// clang-format on
+
+rct_object_entry SmallSceneryObject::GetScgPiratHeader()
+{
+    return Object::CreateHeader("SCGPIRAT", 169381767, 132382977);
+}
+
+rct_object_entry SmallSceneryObject::GetScgMineHeader()
+{
+    return Object::CreateHeader("SCGMINE ", 207140231, 3638141733);
+}
+
+rct_object_entry SmallSceneryObject::GetScgAbstrHeader()
+{
+    return Object::CreateHeader("SCGABSTR", 207140231, 932253451);
 }

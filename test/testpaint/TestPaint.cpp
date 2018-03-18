@@ -17,62 +17,90 @@
 #include <algorithm>
 #include <vector>
 
+#include "Hook.h"
 #include "GeneralSupportHeightCall.hpp"
 #include "Printer.hpp"
 #include "SegmentSupportHeightCall.hpp"
 #include "TestPaint.hpp"
 #include "Utils.hpp"
 
-extern "C" {
-    #include <openrct2/paint/paint.h>
-    #include <openrct2/paint/supports.h>
-    #include <openrct2/ride/track_data.h>
-    #include <openrct2/interface/viewport.h>
-    #include <openrct2/rct2/hook.h>
-}
+#include <openrct2/paint/Paint.h>
+#include <openrct2/paint/Supports.h>
+#include <openrct2/ride/TrackData.h>
+#include <openrct2/interface/Viewport.h>
 
 namespace TestPaint
 {
     void ResetEnvironment() {
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+
         gTrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
         gTrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
         gTrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
         gTrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
 
+        gPaintSession.TrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
+        gPaintSession.TrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
+        gPaintSession.TrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
+        gPaintSession.TrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
+
         rct_drawpixelinfo dpi = { 0 };
         dpi.zoom_level = 1;
-        unk_140E9A8 = &dpi;
+        RCT2_Unk140E9A8 = &dpi;
+        gPaintSession.Unk140E9A8 = &dpi;
 
-        rct_ride ride = {0};
-        ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
-
-        rct_ride_entry rideEntry = {0};
-        rct_ride_entry_vehicle vehicleEntry { 0 };
-        vehicleEntry.base_image_id = 0x70000;
-        rideEntry.vehicles[0] = vehicleEntry;
-
-        gRideList[0] = ride;
-        gRideEntries[0] = &rideEntry;
+        {
+            Ride ride = {0};
+            ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
+            static rct_ride_entry rideEntry = {0};
+            rct_ride_entry_vehicle vehicleEntry { 0 };
+            vehicleEntry.base_image_id = 0x70000;
+            rideEntry.vehicles[0] = vehicleEntry;
+            gRideList[0] = ride;
+            gRideEntries[0] = &rideEntry;
+        }
+        {
+            rct2_ride ride = {0};
+            ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
+            RCT2_Rides[0] = ride;
+        }
 
         g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
+        gPaintSession.Unk141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
+
+        gCurrentViewportFlags = 0;
+        RCT2_CurrentViewportFlags = 0;
+
+        gScenarioTicks = 0;
+        RCT2_ScenarioTicks = 0;
     }
 
     void ResetTunnels() {
         gLeftTunnelCount = 0;
         gRightTunnelCount = 0;
+        gPaintSession.LeftTunnelCount = 0;
+        gPaintSession.RightTunnelCount = 0;
 
         for (int i = 0; i < TUNNEL_MAX_COUNT; i++) {
             gLeftTunnels[i].height = 0;
             gLeftTunnels[i].type = 0;
             gRightTunnels[i].height = 0;
             gRightTunnels[i].type = 0;
+            gPaintSession.LeftTunnels[i].height = 0;
+            gPaintSession.LeftTunnels[i].type = 0;
+            gPaintSession.RightTunnels[i].height = 0;
+            gPaintSession.RightTunnels[i].type = 0;
         }
 
         gLeftTunnels[0].height = 0xFF;
         gLeftTunnels[0].type = 0xFF;
         gRightTunnels[0].height = 0xFF;
         gRightTunnels[0].type = 0xFF;
+        gPaintSession.LeftTunnels[0].height = 0xFF;
+        gPaintSession.LeftTunnels[0].type = 0xFF;
+        gPaintSession.RightTunnels[0].height = 0xFF;
+        gPaintSession.RightTunnels[0].type = 0xFF;
     }
 
     void ResetSupportHeights() {
@@ -80,10 +108,14 @@ namespace TestPaint
         {
             gSupportSegments[s].height = 0;
             gSupportSegments[s].slope = 0xFF;
+            gPaintSession.SupportSegments[s].height = 0;
+            gPaintSession.SupportSegments[s].slope = 0xFF;
         }
 
         gSupport.height = 0;
         gSupport.slope = 0xFF;
+        gPaintSession.Support.height = 0;
+        gPaintSession.Support.slope = 0xFF;
     }
 
     struct IgnoredEntry
@@ -95,23 +127,23 @@ namespace TestPaint
     static bool _ignoredAll;
     static std::vector<IgnoredEntry> _ignoredEntries;
 
-    static void testClearIgnore()
+    void testClearIgnore()
     {
         _ignoredAll = false;
         _ignoredEntries.clear();
     }
 
-    static void testIgnore(uint8 direction, uint8 trackSequence)
+    void testIgnore(uint8 direction, uint8 trackSequence)
     {
         _ignoredEntries.push_back({ direction, trackSequence });
     }
 
-    static void testIgnoreAll()
+    void testIgnoreAll()
     {
         _ignoredAll = true;
     }
 
-    static bool testIsIgnored(uint8 direction, uint8 trackSequence)
+    bool testIsIgnored(uint8 direction, uint8 trackSequence)
     {
         if (_ignoredAll) return true;
         for (const IgnoredEntry &entry : _ignoredEntries)
@@ -126,25 +158,22 @@ namespace TestPaint
     }
 }
 
-extern "C"
+void testpaint_clear_ignore()
 {
-    void testpaint_clear_ignore()
-    {
-        TestPaint::testClearIgnore();
-    }
+    TestPaint::testClearIgnore();
+}
 
-    void testpaint_ignore(uint8 direction, uint8 trackSequence)
-    {
-        TestPaint::testIgnore(direction, trackSequence);
-    }
+void testpaint_ignore(uint8 direction, uint8 trackSequence)
+{
+    TestPaint::testIgnore(direction, trackSequence);
+}
 
-    void testpaint_ignore_all()
-    {
-        TestPaint::testIgnoreAll();
-    }
+void testpaint_ignore_all()
+{
+    TestPaint::testIgnoreAll();
+}
 
-    bool testpaint_is_ignored(uint8 direction, uint8 trackSequence)
-    {
-        return TestPaint::testIsIgnored(direction, trackSequence);
-    }
+bool testpaint_is_ignored(uint8 direction, uint8 trackSequence)
+{
+    return TestPaint::testIsIgnored(direction, trackSequence);
 }

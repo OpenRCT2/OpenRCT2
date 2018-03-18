@@ -19,80 +19,89 @@
 #include "../core/String.hpp"
 #include "../localisation/LanguagePack.h"
 #include "Fonts.h"
+#include "FontFamilies.h"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-    #include "../drawing/ttf.h"
-    #include "../localisation/language.h"
-}
+#include "../drawing/Drawing.h"
+#include "../drawing/TTF.h"
+#include "../localisation/Language.h"
 
 #ifndef NO_TTF
-static TTFFontSetDescriptor TTFFontMSGothic = { {
-    { "msgothic.ttc", "MS PGothic", 9, 1, 0, 15, nullptr },
-    { "msgothic.ttc", "MS PGothic", 12, 1, 0, 17, nullptr },
-    { "msgothic.ttc", "MS PGothic", 12, 1, 0, 17, nullptr },
-    { "msgothic.ttc", "MS PGothic", 13, 1, 0, 20, nullptr },
+uint8 const HINTING_DISABLED         =  0;
+uint8 const HINTING_THRESHOLD_LOW    = 40;
+uint8 const HINTING_THRESHOLD_MEDIUM = 60;
+
+// clang-format off
+TTFFontSetDescriptor TTFFontMSGothic = { {
+    { "msgothic.ttc", "MS PGothic",  9, 1,  1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "msgothic.ttc", "MS PGothic", 12, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "msgothic.ttc", "MS PGothic", 12, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "msgothic.ttc", "MS PGothic", 13, 1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
-static TTFFontSetDescriptor TTFFontMingLiu = { {
-    { "msjh.ttc", "JhengHei", 9, -1, -3, 6, nullptr },
-    { "mingliu.ttc", "MingLiU", 11, 1, 1, 12, nullptr },
-    { "mingliu.ttc", "MingLiU", 12, 1, 0, 12, nullptr },
-    { "mingliu.ttc", "MingLiU", 13, 1, 0, 20, nullptr },
+TTFFontSetDescriptor TTFFontHiragano = { {
+    { u8"ヒラギノ丸ゴ ProN W4.ttc", "Hiragino Maru Gothic ProN",  9, 1,  1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"ヒラギノ丸ゴ ProN W4.ttc", "Hiragino Maru Gothic ProN", 11, 1,  0, 13, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"ヒラギノ丸ゴ ProN W4.ttc", "Hiragino Maru Gothic ProN", 11, 1,  0, 13, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"ヒラギノ丸ゴ ProN W4.ttc", "Hiragino Maru Gothic ProN", 12, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
-static TTFFontSetDescriptor TTFFontSimSun = { {
-    { "msyh.ttc", "YaHei", 9, -1, -3, 6, nullptr },
-    { "simsun.ttc", "SimSun", 11, 1, -1, 14, nullptr },
-    { "simsun.ttc", "SimSun", 12, 1, -2, 14, nullptr },
-    { "simsun.ttc", "SimSun", 13, 1, 0, 20, nullptr },
+TTFFontSetDescriptor TTFFontMingLiu = { {
+    {    "msjh.ttc", "JhengHei",  9, -1, -1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "mingliu.ttc",  "MingLiU", 11,  1,  1, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "mingliu.ttc",  "MingLiU", 12,  1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "mingliu.ttc",  "MingLiU", 13,  1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
-static TTFFontSetDescriptor TTFFontGulim = { {
-    { "gulim.ttc", "Gulim", 11, 1, 0, 15, nullptr },
-    { "gulim.ttc", "Gulim", 12, 1, 0, 17, nullptr },
-    { "gulim.ttc", "Gulim", 12, 1, 0, 17, nullptr },
-    { "gulim.ttc", "Gulim", 13, 1, 0, 20, nullptr },
+TTFFontSetDescriptor TTFFontHeiti = { {
+    { u8"华文黑体.ttf", "STHeiti",  9, -1, -1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"华文黑体.ttf", "STHeiti", 11,  1,  1, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"华文黑体.ttf", "STHeiti", 12,  1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"华文黑体.ttf", "STHeiti", 13,  1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
-static TTFFontSetDescriptor TTFFontArial = { {
-    { "arial.ttf", "Arial", 8, 0, -1, 6, nullptr },
-    { "arial.ttf", "Arial", 10, 0, -1, 12, nullptr },
-    { "arial.ttf", "Arial", 11, 0, -1, 12, nullptr },
-    { "arial.ttf", "Arial", 12, 0, -1, 20, nullptr },
+TTFFontSetDescriptor TTFFontSimSun = { {
+    {   "msyh.ttc",  "YaHei",  9, -1, -1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "simsun.ttc", "SimSun", 11,  1, -1, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "simsun.ttc", "SimSun", 12,  1, -2, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "simsun.ttc", "SimSun", 13,  1,  0, 16, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
-#define FONT(x) x
-#else
-#define FONT(x) FONT_OPENRCT2_SPRITE
+
+TTFFontSetDescriptor TTFFontLiHeiPro = { {
+    { u8"儷黑 Pro.ttf", "LiHei Pro",  9, 1, -1,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"儷黑 Pro.ttf", "LiHei Pro", 11, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"儷黑 Pro.ttf", "LiHei Pro", 12, 1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"儷黑 Pro.ttf", "LiHei Pro", 13, 1,  0, 16, HINTING_THRESHOLD_MEDIUM, nullptr },
+} };
+
+TTFFontSetDescriptor TTFFontGulim = { {
+    { "gulim.ttc", "Gulim", 10, 1, 0, 10, HINTING_DISABLED,         nullptr },
+    { "gulim.ttc", "Gulim", 12, 1, 0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "gulim.ttc", "Gulim", 12, 1, 0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "gulim.ttc", "Gulim", 13, 1, 0, 16, HINTING_THRESHOLD_MEDIUM, nullptr },
+} };
+
+TTFFontSetDescriptor TTFFontNanum = { {
+    { "NanumGothic.ttc", "Nanum Gothic", 10, 1, 0, 10, HINTING_DISABLED,      nullptr },
+    { "NanumGothic.ttc", "Nanum Gothic", 12, 1, 0, 15, HINTING_THRESHOLD_LOW, nullptr },
+    { "NanumGothic.ttc", "Nanum Gothic", 12, 1, 0, 15, HINTING_THRESHOLD_LOW, nullptr },
+    { "NanumGothic.ttc", "Nanum Gothic", 13, 1, 0, 16, HINTING_THRESHOLD_LOW, nullptr },
+} };
+
+TTFFontSetDescriptor TTFFontArial = { {
+    { "arial.ttf", "Arial",  9, 0, -1,  9, HINTING_THRESHOLD_LOW, nullptr },
+    { "arial.ttf", "Arial", 10, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+    { "arial.ttf", "Arial", 11, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+    { "arial.ttf", "Arial", 12, 0, -1, 14, HINTING_THRESHOLD_LOW, nullptr },
+} };
+
+TTFFontSetDescriptor TTFFontArialUnicode = { {
+    { "arialuni.ttf", "Arial Unicode MS",  9, 0, -1,  9, HINTING_THRESHOLD_LOW, nullptr },
+    { "arialuni.ttf", "Arial Unicode MS", 10, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+    { "arialuni.ttf", "Arial Unicode MS", 11, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+    { "arialuni.ttf", "Arial Unicode MS", 12, 0, -1, 14, HINTING_THRESHOLD_LOW, nullptr },
+} };
+// clang-format on
 #endif // NO_TTF
-
-const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
-    { "", "", "", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK },                              // LANGUAGE_UNDEFINED
-    { "en-GB", "English (UK)", "English (UK)", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK }, // LANGUAGE_ENGLISH_UK
-    { "en-US", "English (US)", "English (US)", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_US }, // LANGUAGE_ENGLISH_US
-    { "de-DE", "German", "Deutsch", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_GERMAN },                // LANGUAGE_GERMAN
-    { "nl-NL", "Dutch", "Nederlands", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_DUTCH },               // LANGUAGE_DUTCH
-    { "fr-FR", "French", u8"Français", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_FRENCH },             // LANGUAGE_FRENCH
-    { "hu-HU", "Hungarian", "Magyar", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_HUNGARIAN
-    { "pl-PL", "Polish", "Polski", FONT(&TTFFontArial), RCT2_LANGUAGE_ID_ENGLISH_UK },              // LANGUAGE_POLISH
-    { "es-ES", "Spanish", u8"Español", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_SPANISH },            // LANGUAGE_SPANISH
-    { "sv-SE", "Swedish", "Svenska", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_SWEDISH },              // LANGUAGE_SWEDISH
-    { "it-IT", "Italian", "Italiano", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ITALIAN },             // LANGUAGE_ITALIAN
-    { "pt-BR", "Portuguese (BR)", u8"Português (BR)", FONT_OPENRCT2_SPRITE,
-      RCT2_LANGUAGE_ID_PORTUGUESE }, // LANGUAGE_PORTUGUESE_BR
-    { "zh-TW", "Chinese (Traditional)", "Chinese (Traditional)", FONT(&TTFFontMingLiu),
-      RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL }, // LANGUAGE_CHINESE_TRADITIONAL
-    { "zh-CN", "Chinese (Simplified)", "Chinese (Simplified)", FONT(&TTFFontSimSun),
-      RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED },                                                  // LANGUAGE_CHINESE_SIMPLIFIED
-    { "fi-FI", "Finnish", "Suomi", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK },       // LANGUAGE_FINNISH
-    { "ko-KR", "Korean", "Korean", FONT(&TTFFontGulim), RCT2_LANGUAGE_ID_KOREAN },            // LANGUAGE_KOREAN
-    { "ru-RU", "Russian", "Russian", FONT(&TTFFontArial), RCT2_LANGUAGE_ID_ENGLISH_UK },      // LANGUAGE_RUSSIAN
-    { "cs-CZ", "Czech", "Czech", FONT(&TTFFontArial), RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_CZECH
-    { "ja-JP", "Japanese", "Japanese", FONT(&TTFFontMSGothic), RCT2_LANGUAGE_ID_ENGLISH_UK }, // LANGUAGE_JAPANESE
-    { "nb-NO", "Norwegian", "Norsk", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK },     // LANGUAGE_NORWEGIAN
-    { "ca-ES", "Catalan", u8"Català", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_SPANISH },       // LANGUAGE_CATALAN
-};
 
 static void LoadSpriteFont()
 {
@@ -118,13 +127,13 @@ static bool LoadCustomConfigFont()
 {
     static TTFFontSetDescriptor TTFFontCustom = { {
         { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_tiny, gConfigFonts.x_offset, gConfigFonts.y_offset,
-          gConfigFonts.height_tiny, nullptr },
+          gConfigFonts.height_tiny, gConfigFonts.hinting_threshold, nullptr },
         { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_small, gConfigFonts.x_offset, gConfigFonts.y_offset,
-          gConfigFonts.height_small, nullptr },
+          gConfigFonts.height_small, gConfigFonts.hinting_threshold, nullptr },
         { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_medium, gConfigFonts.x_offset,
-          gConfigFonts.y_offset, gConfigFonts.height_medium, nullptr },
+          gConfigFonts.y_offset, gConfigFonts.height_medium, gConfigFonts.hinting_threshold, nullptr },
         { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_big, gConfigFonts.x_offset, gConfigFonts.y_offset,
-          gConfigFonts.height_big, nullptr },
+          gConfigFonts.height_big, gConfigFonts.hinting_threshold, nullptr },
     } };
 
     ttf_dispose();
@@ -139,8 +148,9 @@ static bool LoadCustomConfigFont()
 void TryLoadFonts()
 {
 #ifndef NO_TTF
-    TTFFontSetDescriptor * font = LanguagesDescriptors[gCurrentLanguage].font;
-    if (font != FONT_OPENRCT2_SPRITE)
+    TTFontFamily const * fontFamily = LanguagesDescriptors[gCurrentLanguage].font_family;
+
+    if (fontFamily != FAMILY_OPENRCT2_SPRITE)
     {
         if (!String::IsNullOrEmpty(gConfigFonts.file_name))
         {
@@ -148,20 +158,37 @@ void TryLoadFonts()
             {
                 return;
             }
-            Console::Error::WriteLine("Unable to initialise configured TrueType font -- falling back to Language default.");
+            log_verbose("Unable to initialise configured TrueType font -- falling back to the language's default.");
         }
 
-        if (LoadFont(font))
+        for (auto &font : *fontFamily)
         {
-            return;
-        }
-        Console::Error::WriteLine("Unable to initialise preferred TrueType font -- falling back to Arial.");
+            if (LoadFont(font))
+            {
+                return;
+            }
 
-        if (LoadFont(&TTFFontArial))
-        {
-            return;
+            TTFFontDescriptor smallFont = font->size[FONT_SIZE_SMALL];
+            log_verbose("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
         }
-        Console::Error::WriteLine("Unable to initialise preferred TrueType font -- Falling back to sprite font.");
+
+        if (fontFamily != &TTFFamilySansSerif)
+        {
+            log_verbose("Unable to initialise any of the preferred TrueType fonts -- falling back to sans serif fonts.");
+
+            for (auto &font : TTFFamilySansSerif)
+            {
+                if (LoadFont(font))
+                {
+                    return;
+                }
+
+                TTFFontDescriptor smallFont = font->size[FONT_SIZE_SMALL];
+                log_verbose("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
+            }
+
+            log_verbose("Unable to initialise any of the preferred TrueType fonts -- falling back to sprite font.");
+        }
     }
 #endif // NO_TTF
     LoadSpriteFont();

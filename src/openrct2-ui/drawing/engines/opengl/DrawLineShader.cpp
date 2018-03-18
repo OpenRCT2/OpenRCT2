@@ -19,20 +19,57 @@
 #include "DrawLineShader.h"
 #include "OpenGLFramebuffer.h"
 
+namespace
+{
+    struct VDStruct
+    {
+        GLfloat mat[4][2];
+    };
+}
+
+constexpr VDStruct VertexData[2] =
+{
+    { 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+};
+
 DrawLineShader::DrawLineShader() : OpenGLShaderProgram("drawline")
 {
     GetLocations();
 
     glGenBuffers(1, &_vbo);
+    glGenBuffers(1, &_vboInstances);
     glGenVertexArrays(1, &_vao);
 
-    GLuint vertices[] = { 0, 1 };
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData, GL_STATIC_DRAW);
 
     glBindVertexArray(_vao);
-    glEnableVertexAttribArray(vIndex);
-    glVertexAttribIPointer(vIndex, 1, GL_INT, 0, nullptr);
+    glVertexAttribPointer(vVertMat+0, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*) offsetof(VDStruct, mat[0]));
+    glVertexAttribPointer(vVertMat+1, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*) offsetof(VDStruct, mat[1]));
+    glVertexAttribPointer(vVertMat+2, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*) offsetof(VDStruct, mat[2]));
+    glVertexAttribPointer(vVertMat+3, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*) offsetof(VDStruct, mat[3]));
+
+    glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
+    glVertexAttribIPointer(vClip, 4, GL_INT, sizeof(DrawLineCommand), (void*) offsetof(DrawLineCommand, clip));
+    glVertexAttribIPointer(vBounds, 4, GL_INT, sizeof(DrawLineCommand), (void*) offsetof(DrawLineCommand, bounds));
+    glVertexAttribIPointer(vColour, 1, GL_UNSIGNED_INT, sizeof(DrawLineCommand), (void*) offsetof(DrawLineCommand, colour));
+    glVertexAttribIPointer(vDepth, 1, GL_INT, sizeof(DrawLineCommand), (void*) offsetof(DrawLineCommand, depth));
+
+    glEnableVertexAttribArray(vVertMat+0);
+    glEnableVertexAttribArray(vVertMat+1);
+    glEnableVertexAttribArray(vVertMat+2);
+    glEnableVertexAttribArray(vVertMat+3);
+
+    glEnableVertexAttribArray(vClip);
+    glEnableVertexAttribArray(vBounds);
+    glEnableVertexAttribArray(vColour);
+    glEnableVertexAttribArray(vDepth);
+
+    glVertexAttribDivisor(vClip, 1);
+    glVertexAttribDivisor(vBounds, 1);
+    glVertexAttribDivisor(vColour, 1);
+    glVertexAttribDivisor(vDepth, 1);
 
     Use();
 }
@@ -46,11 +83,13 @@ DrawLineShader::~DrawLineShader()
 void DrawLineShader::GetLocations()
 {
     uScreenSize = GetUniformLocation("uScreenSize");
-    uClip       = GetUniformLocation("uClip");
-    uBounds     = GetUniformLocation("uBounds");
-    uColour     = GetUniformLocation("uColour");
 
-    vIndex      = GetAttributeLocation("vIndex");
+    vClip       = GetAttributeLocation("vClip");
+    vBounds     = GetAttributeLocation("vBounds");
+    vColour     = GetAttributeLocation("vColour");
+    vDepth      = GetAttributeLocation("vDepth");
+
+    vVertMat    = GetAttributeLocation("vVertMat");
 }
 
 void DrawLineShader::SetScreenSize(sint32 width, sint32 height)
@@ -58,27 +97,14 @@ void DrawLineShader::SetScreenSize(sint32 width, sint32 height)
     glUniform2i(uScreenSize, width, height);
 }
 
-void DrawLineShader::SetClip(sint32 left, sint32 top, sint32 right, sint32 bottom)
+void DrawLineShader::DrawInstances(const LineCommandBatch& instances)
 {
-    glUniform4i(uClip, left, top, right, bottom);
-}
-
-void DrawLineShader::SetBounds(sint32 x0, sint32 y0, sint32 x1, sint32 y1)
-{
-    glUniform4i(uBounds, x0, y0, x1, y1);
-}
-
-void DrawLineShader::SetColour(vec4f colour)
-{
-    glUniform4f(uColour, colour.r, colour.g, colour.b, colour.a);
-}
-
-void DrawLineShader::Draw(sint32 x0, sint32 y0, sint32 x1, sint32 y1)
-{
-    SetBounds(x0, y0, x1, y1);
-
     glBindVertexArray(_vao);
-    glDrawArrays(GL_LINES, 0, 2);
+
+    glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(DrawLineCommand) * instances.size(), instances.data(), GL_STREAM_DRAW);
+
+    glDrawArraysInstanced(GL_LINES, 0, 2, (GLsizei)instances.size());
 }
 
 #endif /* DISABLE_OPENGL */

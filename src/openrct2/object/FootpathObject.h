@@ -18,10 +18,7 @@
 
 #include "Object.h"
 
-extern "C"
-{
-    #include "../world/footpath.h"
-}
+#include "../world/Footpath.h"
 
 class FootpathObject final : public Object
 {

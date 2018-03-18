@@ -1,13 +1,9 @@
-// Make MSVC shut up about M_PI
-#include <cmath>
-
-extern "C" {
-#include "openrct2/util/sawyercoding.h"
-}
-
 #include <gtest/gtest.h>
+#include <openrct2/core/MemoryStream.h>
+#include <openrct2/rct12/SawyerChunkReader.h>
+#include <openrct2/util/SawyerCoding.h>
 
-#define BUFFER_SIZE 0x600000
+constexpr size_t BUFFER_SIZE = 0x600000;
 
 class SawyerCodingTest : public testing::Test
 {
@@ -20,36 +16,39 @@ protected:
 
     void test_encode_decode(uint8 encoding_type)
     {
-        sawyercoding_chunk_header chdr_in, chdr_out;
+        // Encode
+        sawyercoding_chunk_header chdr_in;
         chdr_in.encoding          = encoding_type;
         chdr_in.length            = sizeof(randomdata);
         uint8 * encodedDataBuffer = new uint8[BUFFER_SIZE];
         size_t  encodedDataSize   = sawyercoding_write_chunk_buffer(encodedDataBuffer, (const uint8 *)randomdata, chdr_in);
         ASSERT_GT(encodedDataSize, sizeof(sawyercoding_chunk_header));
-        memcpy(&chdr_out, encodedDataBuffer, sizeof(sawyercoding_chunk_header));
-        ASSERT_EQ(chdr_out.encoding, encoding_type);
-        uint8 * decodeBuffer    = new uint8[BUFFER_SIZE];
-        size_t  decodedDataSize = sawyercoding_read_chunk_buffer(
-            decodeBuffer, encodedDataBuffer + sizeof(sawyercoding_chunk_header), chdr_out, BUFFER_SIZE);
-        ASSERT_EQ(decodedDataSize, sizeof(randomdata));
-        int result = memcmp(decodeBuffer, randomdata, sizeof(randomdata));
+
+        // Decode
+        MemoryStream ms(encodedDataBuffer, encodedDataSize);
+        SawyerChunkReader reader(&ms);
+        auto chunk = reader.ReadChunk();
+        ASSERT_EQ((uint8)chunk->GetEncoding(), chdr_in.encoding);
+        ASSERT_EQ(chunk->GetLength(), chdr_in.length);
+        auto result = memcmp(chunk->GetData(), randomdata, sizeof(randomdata));
         ASSERT_EQ(result, 0);
-        delete[] decodeBuffer;
+
         delete[] encodedDataBuffer;
     }
 
     void test_decode(const uint8 * data, size_t size)
     {
-        sawyercoding_chunk_header chdr_in;
-        memcpy(&chdr_in, data, sizeof(sawyercoding_chunk_header));
-        ASSERT_EQ(chdr_in.length, size - sizeof(sawyercoding_chunk_header));
-        uint8 * decodeBuffer = new uint8[BUFFER_SIZE];
-        size_t  decodedDataSize =
-            sawyercoding_read_chunk_buffer(decodeBuffer, data + sizeof(sawyercoding_chunk_header), chdr_in, BUFFER_SIZE);
-        ASSERT_EQ(decodedDataSize, sizeof(randomdata));
-        int result = memcmp(decodeBuffer, randomdata, sizeof(randomdata));
+        auto expectedLength = size - sizeof(sawyercoding_chunk_header);
+        auto chdr_in = reinterpret_cast<const sawyercoding_chunk_header *>(data);
+        ASSERT_EQ(chdr_in->length, expectedLength);
+
+        MemoryStream ms(data, size);
+        SawyerChunkReader reader(&ms);
+        auto chunk = reader.ReadChunk();
+        ASSERT_EQ((uint8)chunk->GetEncoding(), chdr_in->encoding);
+        ASSERT_EQ(chunk->GetLength(), sizeof(randomdata));
+        auto result = memcmp(chunk->GetData(), randomdata, sizeof(randomdata));
         ASSERT_EQ(result, 0);
-        delete[] decodeBuffer;
     }
 };
 

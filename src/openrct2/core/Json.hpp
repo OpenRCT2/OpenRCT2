@@ -16,10 +16,11 @@
 
 #pragma once
 
+#include <stdexcept>
+#include <string>
 #include <jansson.h>
 
 #include "../common.h"
-#include "Exception.hpp"
 
 namespace Json
 {
@@ -30,15 +31,15 @@ namespace Json
     void     WriteToFile(const utf8 * path, const json_t * json, size_t flags = 0);
 }
 
-class JsonException final : public Exception
+class JsonException final : public std::runtime_error
 {
 private:
     json_error_t _jsonError = { 0 };
 
 public:
-    explicit JsonException(const char * message) : Exception(message) { }
+    explicit JsonException(const std::string &message) : std::runtime_error(message) { }
 
-    explicit JsonException(const json_error_t * jsonError) : JsonException(jsonError->text)
+    explicit JsonException(const json_error_t * jsonError) : JsonException(std::string(jsonError->text))
     {
         _jsonError = *jsonError;
     }

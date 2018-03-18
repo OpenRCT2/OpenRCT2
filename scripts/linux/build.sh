@@ -19,43 +19,28 @@ if [[ ! -d build ]]; then
 	mkdir -p build
 fi
 
+PARENT=$(readlink -f ./)
+chmod -R a+rwX "$(pwd)"
+chmod -R g+s "$(pwd)"
+
 pushd build
 	echo OPENRCT2_CMAKE_OPTS = "$OPENRCT2_CMAKE_OPTS"
-	if [[ $TARGET == "docker32" ]]
+	if [[ $TARGET == "docker64" ]]
 	then
-		PARENT=$(readlink -f ../)
-		chmod a+rwx "$(pwd)"
-		chmod g+s "$(pwd)"
 		# CMAKE and MAKE opts from environment
-		docker run -u travis -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:32bit-only bash -c "cmake ../ -DFORCE32=on $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS"
-	elif [[ $TARGET == "docker64" ]]
-	then
-		PARENT=$(readlink -f ../)
-		chmod a+rwx "$(pwd)"
-		chmod g+s "$(pwd)"
-		# CMAKE and MAKE opts from environment
-		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:64bit-only bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS && make test ARGS=\"-V\""
+		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:64bit-only bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT_MAKE_OPTS && ctest --output-on-failure"
 	elif [[ $TARGET == "ubuntu_i686" ]]
 	then
-		PARENT=$(readlink -f ../)
-		chmod a+rwx "$(pwd)"
-		chmod g+s "$(pwd)"
 		# CMAKE and MAKE opts from environment
-		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_i686 bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && make all testpaint install $OPENRCT_MAKE_OPTS && make test ARGS=\"-V\" && ( ./testpaint --quiet ||  if [[ \$? -eq 1 ]] ; then echo Allowing failed tests to pass ; else echo here ; false; fi )"
+		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_i686 bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja all testpaint install $OPENRCT_MAKE_OPTS && ctest --output-on-failure && ( ./testpaint --quiet ||  if [[ \$? -eq 1 ]] ; then echo Allowing failed tests to pass ; else echo here ; false; fi )"
 	elif [[ $TARGET == "ubuntu_amd64" ]]
 	then
-		PARENT=$(readlink -f ../)
-		chmod a+rwx "$(pwd)"
-		chmod g+s "$(pwd)"
 		# CMAKE and MAKE opts from environment
-		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_amd64 bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS install && make test ARGS=\"-V\""
+		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_amd64 bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT_MAKE_OPTS install && ctest --output-on-failure"
 	elif [[ $TARGET == "windows" ]]
 	then
-		PARENT=$(readlink -f ../)
-		chmod a+rwx "$(pwd)"
-		chmod g+s "$(pwd)"
 		# CMAKE and MAKE opts from environment
-		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:mingw-arch bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS"
+		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:mingw-arch bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT_MAKE_OPTS"
 	else
 		echo "Unkown target $TARGET"
 		exit 1
@@ -72,7 +57,7 @@ if [[ ! -h build/data ]]; then
 	ln -s ../data build/data
 fi
 
-if [[ $TARGET == "ubuntu_i686" ]] || [[ $TARGET == "docker32" ]]; then
+if [[ $TARGET == "ubuntu_i686" ]]; then
 	if [[ ! -h openrct2 ]]; then
 		ln -s build/openrct2 openrct2
 	fi
@@ -81,7 +66,7 @@ fi
 if [[ -z "$DISABLE_G2_BUILD" ]]; then
     echo Building: g2.dat
 	pushd build
-	    make g2
+	    ninja g2
 	popd
 fi
 

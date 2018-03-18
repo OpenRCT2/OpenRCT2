@@ -16,11 +16,9 @@
 
 #include "Utils.hpp"
 
-extern "C" {
-    #include <openrct2/ride/ride.h>
-    #include <openrct2/ride/track.h>
-    #include <openrct2/ride/track_data.h>
-}
+#include <openrct2/ride/Ride.h>
+#include <openrct2/ride/Track.h>
+#include <openrct2/ride/TrackData.h>
 
 namespace Utils {
     int getTrackSequenceCount(uint8 rideType, uint8 trackType) {
@@ -47,11 +45,11 @@ namespace Utils {
     bool rideSupportsTrackType(uint8 rideType, uint8 trackType) {
         TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
 
-        if (newPaintGetter == NULL) {
+        if (newPaintGetter == nullptr) {
             return false;
         }
 
-        if (newPaintGetter(trackType, 0) == NULL) {
+        if (newPaintGetter(trackType, 0) == nullptr) {
             return false;
         }
 

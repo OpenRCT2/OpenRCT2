@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../CmdlineSprite.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "CommandLine.hpp"
@@ -22,14 +23,12 @@
 #define SZ_CLOSEST   "closest"
 #define SZ_DITHERING "dithering"
 
-extern "C"
-{
-    sint32 gSpriteMode = 0;
-}
+sint32 gSpriteMode = 0;
 
 static const char * _mode;
 
-static const CommandLineOptionDefinition SpriteOptions[]
+// clang-format off
+static constexpr const CommandLineOptionDefinition SpriteOptions[]
 {
     { CMDLINE_TYPE_STRING, &_mode, 'm', "mode", "the type of sprite conversion <" SZ_DEFAULT "|" SZ_CLOSEST "|" SZ_DITHERING ">" },
     OptionTableEnd
@@ -48,6 +47,7 @@ const CommandLineCommand CommandLine::SpriteCommands[]
     DefineCommand("exportall", "<spritefile> <output directory>",          SpriteOptions, HandleSprite),
     CommandTableEnd
 };
+// clang-format on
 
 static exitcode_t HandleSprite(CommandLineArgEnumerator *argEnumerator)
 {

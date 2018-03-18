@@ -14,11 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma once
+
 #include <string>
 #include "../common.h"
-#include "ConfigEnum.hpp"
 
 interface IStream;
+template <typename T> struct IConfigEnum;
 
 interface IIniReader
 {

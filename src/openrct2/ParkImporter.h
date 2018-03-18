@@ -18,47 +18,43 @@
 
 #include "common.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    #include "object.h"
-#ifdef __cplusplus
-}
-#endif
+#include "object/Object.h"
 
-typedef enum PARK_LOAD_ERROR
+enum PARK_LOAD_ERROR
 {
     PARK_LOAD_ERROR_OK,
     PARK_LOAD_ERROR_MISSING_OBJECTS,
     PARK_LOAD_ERROR_INVALID_EXTENSION,
+    PARK_LOAD_ERROR_UNSUPPORTED_RCTC_FLAG,
     PARK_LOAD_ERROR_UNKNOWN = 255
-} PARK_LOAD_ERROR;
-
-#ifdef __cplusplus
+};
 
 #include <string>
 #include <vector>
-#include "scenario/ScenarioRepository.h"
+#include "core/String.hpp"
 
 interface IObjectManager;
 interface IObjectRepository;
 interface IStream;
+struct scenario_index_entry;
 
 struct ParkLoadResult final
 {
 public:
     const PARK_LOAD_ERROR               Error;
     const std::vector<rct_object_entry> MissingObjects;
+    const uint8                         Flag;
 
     static ParkLoadResult CreateOK();
     static ParkLoadResult CreateInvalidExtension();
     static ParkLoadResult CreateMissingObjects(const std::vector<rct_object_entry> &missingObjects);
     static ParkLoadResult CreateUnknown();
+    static ParkLoadResult CreateUnsupportedRCTCflag(uint8 classic_flag);
 
 private:
-    ParkLoadResult(PARK_LOAD_ERROR error);
+    explicit ParkLoadResult(PARK_LOAD_ERROR error);
     ParkLoadResult(PARK_LOAD_ERROR error, const std::vector<rct_object_entry> &missingObjects);
+    ParkLoadResult(PARK_LOAD_ERROR error, const uint8 flag);
 };
 
 /**
@@ -72,7 +68,10 @@ public:
     virtual ParkLoadResult  Load(const utf8 * path) abstract;
     virtual ParkLoadResult  LoadSavedGame(const utf8 * path, bool skipObjectCheck = false) abstract;
     virtual ParkLoadResult  LoadScenario(const utf8 * path, bool skipObjectCheck = false) abstract;
-    virtual ParkLoadResult  LoadFromStream(IStream * stream, bool isScenario, bool skipObjectCheck = false) abstract;
+    virtual ParkLoadResult  LoadFromStream(IStream * stream,
+                                           bool isScenario,
+                                           bool skipObjectCheck = false,
+                                           const utf8 * path = String::Empty) abstract;
 
     virtual void Import() abstract;
     virtual bool GetDetails(scenario_index_entry * dst) abstract;
@@ -88,24 +87,12 @@ namespace ParkImporter
     bool ExtensionIsScenario(const std::string &extension);
 }
 
-#else
+void park_importer_load_from_stream(void * stream, const utf8 * hintPath);
+bool park_importer_extension_is_scenario(const utf8 * extension);
 
-typedef struct ParkLoadResult ParkLoadResult;
-
-#endif
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    void park_importer_load_from_stream(void * stream, const utf8 * hintPath);
-    bool park_importer_extension_is_scenario(const utf8 * extension);
-
-    PARK_LOAD_ERROR             ParkLoadResult_GetError(const ParkLoadResult * t);
-    size_t                      ParkLoadResult_GetMissingObjectsCount(const ParkLoadResult * t);
-    const rct_object_entry *    ParkLoadResult_GetMissingObjects(const ParkLoadResult * t);
-    void                        ParkLoadResult_Delete(ParkLoadResult * t);
-    ParkLoadResult *            ParkLoadResult_CreateInvalidExtension();
-#ifdef __cplusplus
-}
-#endif
+PARK_LOAD_ERROR             ParkLoadResult_GetError(const ParkLoadResult * t);
+size_t                      ParkLoadResult_GetMissingObjectsCount(const ParkLoadResult * t);
+const rct_object_entry *    ParkLoadResult_GetMissingObjects(const ParkLoadResult * t);
+uint8                       ParkLoadResult_GetFlag(const ParkLoadResult * t);
+void                        ParkLoadResult_Delete(ParkLoadResult * t);
+ParkLoadResult *            ParkLoadResult_CreateInvalidExtension();

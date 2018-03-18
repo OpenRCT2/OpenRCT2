@@ -28,19 +28,17 @@
 #include "TestTrack.hpp"
 #include "Utils.hpp"
 
-extern "C" {
-#include "data.h"
-#include <openrct2/rct2.h>
-#include <openrct2/ride/ride.h>
-#include <openrct2/ride/ride_data.h>
-#include <openrct2/ride/track.h>
-#include <openrct2/ride/track_data.h>
-}
+#include "Data.h"
+#include <openrct2/rct2/RCT2.h>
+#include <openrct2/ride/Ride.h>
+#include <openrct2/ride/RideData.h>
+#include <openrct2/ride/Track.h>
+#include <openrct2/ride/TrackData.h>
 
-typedef struct {
+struct TestCase {
     uint8 rideType;
     std::vector<uint8> trackTypes;
-} TestCase;
+};
 
 enum CLIColour {
     DEFAULT,
@@ -53,9 +51,9 @@ bool gTestColor = true;
 Verbosity _verbosity = NORMAL;
 
 static bool CStringEquals(const char *lhs, const char *rhs) {
-    if (lhs == NULL) return rhs == NULL;
+    if (lhs == nullptr) return rhs == nullptr;
 
-    if (rhs == NULL) return false;
+    if (rhs == nullptr) return false;
 
     return strcmp(lhs, rhs) == 0;
 }
@@ -103,7 +101,7 @@ static const char* GetAnsiColorCode(CLIColour color) {
         case GREEN:   return "2";
         case YELLOW:
             return "3";
-        default:            return NULL;
+        default:            return nullptr;
     };
 }
 
@@ -191,7 +189,7 @@ int main(int argc, char *argv[]);
 
 #define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
 
-static HMODULE _dllModule = NULL;
+static HMODULE _dllModule = nullptr;
 
 utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint)
 {
@@ -258,7 +256,7 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 
-    if (_dllModule == NULL) {
+    if (_dllModule == nullptr) {
         _dllModule = GetModuleHandleA(OPENRCT2_DLL_MODULE_NAME);
     }
 

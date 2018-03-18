@@ -24,10 +24,7 @@
 #include "../core/String.hpp"
 #include "NetworkUser.h"
 
-extern "C"
-{
-    #include "../platform/platform.h"
-}
+#include "../platform/platform.h"
 
 constexpr const utf8 * USER_STORE_FILENAME = "users.json";
 
@@ -110,9 +107,9 @@ void NetworkUserManager::Load()
             }
             json_decref(jsonUsers);
         }
-        catch (const Exception &ex)
+        catch (const std::exception &ex)
         {
-            Console::Error::WriteLine("Failed to read %s as JSON. %s", path, ex.GetMessage());
+            Console::Error::WriteLine("Failed to read %s as JSON. %s", path, ex.what());
         }
     }
 }
@@ -130,7 +127,7 @@ void NetworkUserManager::Save()
             jsonUsers = Json::ReadFromFile(path);
         }
     }
-    catch (const Exception &)
+    catch (const std::exception &)
     {
     }
 

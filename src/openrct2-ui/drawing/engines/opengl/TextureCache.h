@@ -16,10 +16,10 @@
 
 #pragma once
 
-#include <algorithm>
 #include <unordered_map>
 #include <vector>
-#include <SDL_pixels.h>
+#include <array>
+#include <SDL2/SDL_pixels.h>
 #include <openrct2/common.h>
 #include "OpenGLAPI.h"
 #include "GLSLTypes.h"
@@ -60,13 +60,18 @@ constexpr sint32 TEXTURE_CACHE_MAX_ATLAS_SIZE = 2048;
 // Must be a power of 2!
 constexpr sint32 TEXTURE_CACHE_SMALLEST_SLOT = 32;
 
-// Location of an image (texture atlas index, slot and normalized coordinates)
-struct CachedTextureInfo
+struct BasicTextureInfo
 {
     GLuint index;
+    vec4 normalizedBounds;
+};
+
+// Location of an image (texture atlas index, slot and normalized coordinates)
+struct AtlasTextureInfo : public BasicTextureInfo
+{
     GLuint slot;
-    vec4i bounds;
-    vec4f normalizedBounds;
+    ivec4 bounds;
+    uint32 image;
 };
 
 // Represents a texture atlas that images of a given maximum size can be allocated from
@@ -106,7 +111,7 @@ public:
         }
     }
 
-    CachedTextureInfo Allocate(sint32 actualWidth, sint32 actualHeight)
+    AtlasTextureInfo Allocate(sint32 actualWidth, sint32 actualHeight)
     {
         assert(_freeSlots.size() > 0);
 
@@ -115,16 +120,16 @@ public:
 
         auto bounds = GetSlotCoordinates(slot, actualWidth, actualHeight);
 
-        return
-        {
-            _index,
-            slot,
-            bounds,
-            NormalizeCoordinates(bounds)
-        };
+        AtlasTextureInfo info;
+        info.index = _index;
+        info.slot = slot;
+        info.bounds = bounds;
+        info.normalizedBounds = NormalizeCoordinates(bounds);
+
+        return info;
     }
 
-    void Free(const CachedTextureInfo& info)
+    void Free(const AtlasTextureInfo& info)
     {
         assert(_index == info.index);
 
@@ -158,12 +163,12 @@ public:
     }
 
 private:
-    vec4i GetSlotCoordinates(GLuint slot, sint32 actualWidth, sint32 actualHeight) const
+    ivec4 GetSlotCoordinates(GLuint slot, sint32 actualWidth, sint32 actualHeight) const
     {
         sint32 row = slot / _cols;
         sint32 col = slot % _cols;
 
-        return vec4i
+        return ivec4
         {
             _imageSize * col,
             _imageSize * row,
@@ -172,14 +177,14 @@ private:
         };
     }
 
-    vec4f NormalizeCoordinates(const vec4i& coords) const
+    vec4 NormalizeCoordinates(const ivec4& coords) const
     {
-        return vec4f
+        return vec4
         {
             coords.x / (float) _atlasWidth,
             coords.y / (float) _atlasHeight,
             coords.z / (float) _atlasWidth,
-            coords.w / (float) _atlasHeight
+            coords.w / (float) _atlasHeight,
         };
     }
 };
@@ -187,45 +192,41 @@ private:
 class TextureCache final
 {
 private:
-    bool _atlasesTextureInitialised = false;
+    bool _initialized                 = false;
 
     GLuint _atlasesTexture            = 0;
     GLint _atlasesTextureDimensions   = 0;
     GLuint _atlasesTextureIndices     = 0;
     GLint _atlasesTextureIndicesLimit = 0;
     std::vector<Atlas> _atlases;
+    std::unordered_map<GlyphId, AtlasTextureInfo, GlyphId::Hash, GlyphId::Equal> _glyphTextureMap;
+    std::vector<AtlasTextureInfo> _textureCache;
+    std::array<uint32, 0x7FFFF> _indexMap;
 
-    std::unordered_map<uint32, CachedTextureInfo> _imageTextureMap;
-    std::unordered_map<GlyphId, CachedTextureInfo, GlyphId::Hash, GlyphId::Equal> _glyphTextureMap;
-    std::unordered_map<uint32, CachedTextureInfo> _paletteTextureMap;
-
-    SDL_Color _palette[256];
+    GLuint _paletteTexture            = 0;
 
 public:
-    TextureCache() = default;
+    TextureCache();
     ~TextureCache();
-    void SetPalette(const SDL_Color * palette);
     void InvalidateImage(uint32 image);
-    CachedTextureInfo GetOrLoadImageTexture(uint32 image);
-    CachedTextureInfo GetOrLoadGlyphTexture(uint32 image, uint8 * palette);
-    CachedTextureInfo GetOrLoadPaletteTexture(uint32 image, uint32 tertiaryColour, bool special);
+    BasicTextureInfo GetOrLoadImageTexture(uint32 image);
+    BasicTextureInfo GetOrLoadGlyphTexture(uint32 image, uint8 * palette);
 
     GLuint GetAtlasesTexture();
+    GLuint GetPaletteTexture();
+    static GLint PaletteToY(uint32 palette);
 
 private:
-    void CreateAtlasesTexture();
+    void CreateTextures();
+    void GeneratePaletteTexture();
     void EnlargeAtlasesTexture(GLuint newEntries);
-    CachedTextureInfo LoadImageTexture(uint32 image);
-    CachedTextureInfo LoadGlyphTexture(uint32 image, uint8 * palette);
-    CachedTextureInfo LoadPaletteTexture(uint32 image, uint32 tertiaryColour, bool special);
-    CachedTextureInfo AllocateImage(sint32 imageWidth, sint32 imageHeight);
-    void * GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 * outWidth, uint32 * outHeight);
-    rct_drawpixelinfo * GetImageAsDPI(uint32 image, uint32 tertiaryColour);
-    void * GetGlyphAsARGB(uint32 image, uint8 * palette, uint32 * outWidth, uint32 * outHeight);
-    rct_drawpixelinfo * GetGlyphAsDPI(uint32 image, uint8 * palette);
-    void * ConvertDPIto32bpp(const rct_drawpixelinfo * dpi);
+    AtlasTextureInfo LoadImageTexture(uint32 image);
+    AtlasTextureInfo LoadGlyphTexture(uint32 image, uint8 * palette);
+    AtlasTextureInfo AllocateImage(sint32 imageWidth, sint32 imageHeight);
+    rct_drawpixelinfo GetImageAsDPI(uint32 image, uint32 tertiaryColour);
+    rct_drawpixelinfo GetGlyphAsDPI(uint32 image, uint8 * palette);
     void FreeTextures();
 
-    static rct_drawpixelinfo * CreateDPI(sint32 width, sint32 height);
-    static void DeleteDPI(rct_drawpixelinfo * dpi);
+    static rct_drawpixelinfo CreateDPI(sint32 width, sint32 height);
+    static void DeleteDPI(rct_drawpixelinfo dpi);
 };

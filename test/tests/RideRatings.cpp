@@ -6,13 +6,11 @@
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/ride/Ride.h>
 #include "TestData.h"
 
-extern "C"
-{
-    #include <openrct2/platform/platform.h>
-    #include <openrct2/game.h>
-}
+#include <openrct2/platform/platform.h>
+#include <openrct2/Game.h>
 
 using namespace OpenRCT2;
 
@@ -23,7 +21,7 @@ protected:
     {
         for (int rideId = 0; rideId < MAX_RIDES; rideId++)
         {
-            rct_ride * ride = get_ride(rideId);
+            Ride * ride = get_ride(rideId);
             if (ride->type != RIDE_TYPE_NULL)
             {
                 ride_ratings_update_ride(rideId);
@@ -35,7 +33,7 @@ protected:
     {
         for (int rideId = 0; rideId < MAX_RIDES; rideId++)
         {
-            rct_ride * ride = get_ride(rideId);
+            Ride * ride = get_ride(rideId);
             if (ride->type != RIDE_TYPE_NULL)
             {
                 std::string line = FormatRatings(ride);
@@ -44,7 +42,7 @@ protected:
         }
     }
 
-    std::string FormatRatings(rct_ride * ride)
+    std::string FormatRatings(Ride * ride)
     {
         rating_tuple ratings = ride->ratings;
         std::string line = String::StdFormat("%s: (%d, %d, %d)",
@@ -67,7 +65,7 @@ TEST_F(RideRatings, all)
     bool initialised = context->Initialise();
     ASSERT_TRUE(initialised);
 
-    game_load_sv6_path(path.c_str());
+    load_from_sv6(path.c_str());
 
     // Check ride count to check load was successful
     ASSERT_EQ(gRideCount, 134);
@@ -82,7 +80,7 @@ TEST_F(RideRatings, all)
     int expI = 0;
     for (int rideId = 0; rideId < MAX_RIDES; rideId++)
     {
-        rct_ride * ride = get_ride(rideId);
+        Ride * ride = get_ride(rideId);
         if (ride->type != RIDE_TYPE_NULL)
         {
             std::string actual = FormatRatings(ride);

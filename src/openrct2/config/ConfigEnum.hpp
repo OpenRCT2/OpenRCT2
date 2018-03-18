@@ -17,6 +17,7 @@
 #pragma once
 
 #include <initializer_list>
+#include <utility>
 #include <vector>
 #include "../core/String.hpp"
 
@@ -26,8 +27,8 @@ struct ConfigEnumEntry
     std::string Key;
     T           Value;
 
-    ConfigEnumEntry(const std::string &key, T value)
-        : Key(key),
+    ConfigEnumEntry(std::string key, T value)
+        : Key(std::move(key)),
           Value(value)
     {
     }
@@ -45,12 +46,12 @@ template<typename T>
 class ConfigEnum final : public IConfigEnum<T>
 {
 private:
-    std::vector<ConfigEnumEntry<T>> _entries;
+    const std::vector<ConfigEnumEntry<T>> _entries;
 
 public:
-    ConfigEnum(std::initializer_list<ConfigEnumEntry<T>> entries)
+    ConfigEnum(const std::initializer_list<ConfigEnumEntry<T>>& entries)
+        : _entries(entries)
     {
-        _entries = entries;
     }
 
     std::string GetName(T value) const override

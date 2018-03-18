@@ -16,6 +16,7 @@
 
 #pragma once
 
+#ifndef DISABLE_NETWORK
 #include <list>
 #include <memory>
 #include <vector>
@@ -25,8 +26,8 @@
 #include "NetworkTypes.h"
 #include "NetworkKey.h"
 #include "NetworkPacket.h"
-#include "TcpSocket.h"
 
+interface ITcpSocket;
 class NetworkPlayer;
 struct ObjectRepositoryItem;
 
@@ -62,3 +63,5 @@ private:
 
     bool SendPacket(NetworkPacket &packet);
 };
+
+#endif // DISABLE_NETWORK

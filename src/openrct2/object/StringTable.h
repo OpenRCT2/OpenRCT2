@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <string>
 #include <vector>
 #include "../common.h"
 
@@ -24,9 +25,9 @@ interface IStream;
 
 struct StringTableEntry
 {
-    uint8   Id;
-    uint8   LanguageId;
-    utf8 *  Text;
+    uint8       Id;
+    uint8       LanguageId;
+    std::string Text;
 };
 
 class StringTable
@@ -35,9 +36,8 @@ private:
     std::vector<StringTableEntry> _strings;
 
 public:
-    ~StringTable();
-
     void            Read(IReadObjectContext * context, IStream * stream, uint8 id);
     void            Sort();
-    const utf8 *    GetString(uint8 id) const;
+    std::string     GetString(uint8 id) const;
+    void            SetString(uint8 id, uint8 language, const std::string &text);
 };

@@ -44,6 +44,14 @@ if (${env:OPENRCT2_ORG_TOKEN} -and -not $testing)
         7z x nsisxtra.zip > $null
         Check-ExitCode
         cp FindProcDLL.dll "C:\ProgramData\chocolatey\lib\nsis.portable\tools\nsis-3.0b1\Plugins\x86-ansi"
+
+        Write-Host "Downloading UAC plugin for NSIS..."   -ForegroundColor Cyan
+        curl "http://nsis.sourceforge.net/mediawiki/images/8/8f/UAC.zip" -OutFile uac.zip
+        Check-ExitCode
+        7z x uac.zip > $null
+        Check-ExitCode
+        cp UAC.nsh "C:\ProgramData\chocolatey\lib\nsis.portable\tools\nsis-3.0b1\Include"
+        cp Plugins "C:\ProgramData\chocolatey\lib\nsis.portable\tools\nsis-3.0b1" -Recurse -Force
     }
 }
 else

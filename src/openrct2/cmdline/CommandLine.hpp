@@ -16,11 +16,7 @@
 
 #pragma once
 
-extern "C"
-{
-    #include "../common.h"
-    #include "../cmdline_sprite.h"
-}
+#include "../common.h"
 
 /**
  * Class for enumerating and retrieving values for a set of command line arguments.
@@ -47,8 +43,8 @@ public:
     bool TryPopString(const char * * result);
 };
 
-typedef sint32 exitcode_t;
-typedef exitcode_t (*CommandLineFunc)(CommandLineArgEnumerator *);
+using exitcode_t      = sint32;
+using CommandLineFunc = exitcode_t (*)(CommandLineArgEnumerator *);
 
 enum
 {

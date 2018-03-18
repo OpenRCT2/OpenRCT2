@@ -14,7 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <time.h>
+#pragma once
+
+#include <ctime>
 #include "../common.h"
 
 struct rct_drawpixelinfo;
@@ -43,7 +45,7 @@ namespace OpenRCT2
             sint32  _frames     = 0;
 
         public:
-            Painter(Ui::IUiContext * uiContext);
+            explicit Painter(Ui::IUiContext * uiContext);
             void Paint(Drawing::IDrawingEngine * de);
 
         private:

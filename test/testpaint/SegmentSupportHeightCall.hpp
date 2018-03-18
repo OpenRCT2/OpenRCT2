@@ -19,10 +19,7 @@
 #include <vector>
 
 #include <openrct2/common.h>
-
-extern "C" {
-    #include <openrct2/paint/paint.h>
-}
+#include <openrct2/paint/Paint.h>
 
 struct SegmentSupportCall
 {

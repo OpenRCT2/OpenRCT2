@@ -14,15 +14,17 @@
 *****************************************************************************/
 #pragma endregion
 
-#if (defined(__linux__) || defined(__OpenBSD__) || defined(__FreeBSD__)) && !defined(__ANDROID__)
+#if (defined(__linux__) || defined(__OpenBSD__) || defined(__FreeBSD__) || defined(__EMSCRIPTEN__)) && !defined(__ANDROID__)
 
 #include <dlfcn.h>
 #include <sstream>
 #include <stdexcept>
 #include <openrct2/common.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/ui/UiContext.h>
 #include "UiContext.h"
+
 
 #include <SDL.h>
 
@@ -160,7 +162,28 @@ namespace OpenRCT2 { namespace Ui
                 std::string output;
                 if (Execute(cmd, &output) == 0)
                 {
-                    result = output;
+                    if (desc.Type == FILE_DIALOG_TYPE::SAVE)
+                    {
+                        // The default file extension is taken from the **first** available filter, since
+                        // we cannot obtain it from zenity's output. This means that the FileDialogDesc::Filters
+                        // array must be carefully populated, at least the first element.
+                        std::string pattern = desc.Filters[0].Pattern;
+                        std::string defaultExtension = pattern.substr(pattern.find_last_of('.'));
+                        int dotPosition = output.size() - defaultExtension.size();
+                        // Add the default extension if no extension is specified
+                        if (output.substr(dotPosition, defaultExtension.size()).compare(defaultExtension) == 0)
+                        {
+                            result = output;
+                        }
+                        else
+                        {
+                            result = output.append(defaultExtension);
+                        }
+                    }
+                    else
+                    {
+                        result = output;
+                    }
                 }
                 break;
             }
@@ -240,6 +263,7 @@ namespace OpenRCT2 { namespace Ui
 
         static sint32 Execute(const std::string &command, std::string * output = nullptr)
         {
+#ifndef __EMSCRIPTEN__
             log_verbose("executing \"%s\"...\n", command.c_str());
             FILE * fpipe = popen(command.c_str(), "r");
             if (fpipe == nullptr)
@@ -282,6 +306,10 @@ namespace OpenRCT2 { namespace Ui
 
             // Return exit code
             return pclose(fpipe);
+#else
+            log_warning("Emscripten cannot execute processes. The commandline was '%s'.", command.c_str());
+            return -1;
+#endif // __EMSCRIPTEN__
         }
 
         static std::string GetKDialogFilterString(const std::vector<FileDialogDesc::Filter> filters)
@@ -345,7 +373,10 @@ namespace OpenRCT2 { namespace Ui
 
         static void ThrowMissingDialogApp()
         {
-            throw std::runtime_error("KDialog or Zenity not installed.");
+            IUiContext * uiContext = GetContext()->GetUiContext();
+            std::string dialogMissingWarning = language_get_string(STR_MISSING_DIALOG_APPLICATION_ERROR);
+            uiContext->ShowMessageBox(dialogMissingWarning);
+            throw std::runtime_error(dialogMissingWarning);
         }
     };
 

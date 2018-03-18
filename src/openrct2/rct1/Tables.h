@@ -16,11 +16,8 @@
 
 #pragma once
 
-#include "../common.h"
-
-#ifdef __cplusplus
-
 #include <vector>
+#include "../common.h"
 
 namespace RCT1
 {
@@ -52,14 +49,3 @@ namespace RCT1
 
     const std::vector<const char *> GetSceneryObjects(uint8 sceneryType);
 }
-
-extern "C" {
-#endif
-
-    uint8 rct1_get_ride_type(uint8 rideType);
-    const char * rct1_get_ride_type_object(uint8 rideType);
-    const char * rct1_get_vehicle_object(uint8 vehicleType);
-
-#ifdef __cplusplus
-}
-#endif

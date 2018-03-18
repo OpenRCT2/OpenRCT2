@@ -18,21 +18,17 @@
 
 #include "../common.h"
 
-#ifndef MAX_PATH
-    #define MAX_PATH 260
-#endif
-
 struct rct_object_entry;
 
-typedef struct scenario_highscore_entry
+struct scenario_highscore_entry
 {
     utf8 *      fileName;
     utf8 *      name;
     money32     company_value;
     datetime64  timestamp;
-} scenario_highscore_entry;
+};
 
-typedef struct scenario_index_entry
+struct scenario_index_entry
 {
     utf8    path[MAX_PATH];
     uint64  timestamp;
@@ -49,12 +45,11 @@ typedef struct scenario_index_entry
     sint32  objective_arg_2;
     sint16  objective_arg_3;
     scenario_highscore_entry * highscore;
-
-    utf8 name[64];
+    
+    utf8 internal_name[64]; // Untranslated name
+    utf8 name[64];          // Translated name
     utf8 details[256];
-} scenario_index_entry;
-
-#ifdef __cplusplus
+};
 
 namespace OpenRCT2
 {
@@ -73,6 +68,10 @@ interface IScenarioRepository
     virtual size_t GetCount() const abstract;
     virtual const scenario_index_entry * GetByIndex(size_t index) const  abstract;
     virtual const scenario_index_entry * GetByFilename(const utf8 * filename) const abstract;
+	/**
+	    * Does not return custom scenarios due to the fact that they may have the same name.
+	    */
+    virtual const scenario_index_entry * GetByInternalName(const utf8 * name) const abstract;
     virtual const scenario_index_entry * GetByPath(const utf8 * path) const abstract;
 
     virtual bool TryRecordHighscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) abstract;
@@ -81,19 +80,9 @@ interface IScenarioRepository
 IScenarioRepository * CreateScenarioRepository(OpenRCT2::IPlatformEnvironment * env);
 IScenarioRepository * GetScenarioRepository();
 
-#endif
+void    scenario_repository_scan();
+size_t  scenario_repository_get_count();
+const   scenario_index_entry *scenario_repository_get_by_index(size_t index);
+bool    scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name);
+void    scenario_translate(scenario_index_entry * scenarioEntry, const struct rct_object_entry * stexObjectEntry);
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
-    void    scenario_repository_scan();
-    size_t  scenario_repository_get_count();
-    const   scenario_index_entry *scenario_repository_get_by_index(size_t index);
-    bool    scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name);
-    void    scenario_translate(scenario_index_entry * scenarioEntry, const struct rct_object_entry * stexObjectEntry);
-
-#ifdef __cplusplus
-}
-#endif
