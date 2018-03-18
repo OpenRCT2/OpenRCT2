@@ -4234,7 +4234,7 @@ STR_6150    :Risposta non valida da parte del server principale (il JSON non è 
 STR_6151    :Il server principale non ha inviato la lista dei server
 STR_6152    :Risposta non valida da parte del server principale (il JSON non è un array)
 STR_6153    :Biglietto di ingresso / Attrazioni a pagamento
-STR_6154    :È sconsigliato eseguire OpenRCT2 con permessi di amministratore.
+STR_6154    :Per motivi di sicurezza si sconsiglia l'esecuzione di OpenRCT2 con privilegi di amministratore.
 STR_6155    :Né KDialog né Zenity sono installati. Installarne uno o configurare attraverso la linea di comando.
 STR_6156    :Il nome è riservato
 STR_6157    :Console
@@ -4302,6 +4302,10 @@ STR_6218    :Ufficiale OpenRCT2
 STR_6219    :Evidenzia problemi sentiero
 STR_6220    :Rendi utilizzabile
 STR_6221    :{SMALLFONT}{BLACK}Questo comando posiziona sulla cella attualmente selezionata l'ingresso o l'uscita dell'attrazione. Solo un ingresso e un'uscita possono essere resi utilizzabili per ogni stazione.
+STR_6222    :Impossibile piazzare qui il punto di apparizione dei visitatori...
+STR_6223    :Deve trovarsi all'esterno del confine del parco!
+STR_6224    :{STRING} ha piazzato un punto di apparizione dei visitatori.
+STR_6225    :Non supportato con il rendering OpenGL
 
 #############
 # Scenarios #
