@@ -9,7 +9,14 @@
 
 // OpenRCT2 Scripting API definition file
 
+// To enable IntelliSense for your scripts in Visual Studio or Visual Studio Code,
+// add the following line to the top of your script and change the path appropriately.
+//
+//   /// <reference path="/path/to/openrct2.d.ts" />
+//
+
 export interface Console {
+    clear(): void;
     log(message?: any, ...optionalParams: any[]): void;
 }
 
@@ -83,12 +90,15 @@ export interface WindowDesc {
 
 export interface Ui {
     openWindow(desc: WindowDesc): Window;
-    closeWindow(window: Window);
+    closeWindow(window: Window): void;
     closeWindows(classification: string, id?: number): void;
     closeAllWindows(): void;
 }
 
-declare var context: Context;
-declare var map: Map;
-declare var park: Park;
-declare var ui: Ui;
+declare global {
+    var console: Console;
+    var context: Context;
+    var map: Map;
+    var park: Park;
+    var ui: Ui;
+}
