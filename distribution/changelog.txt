@@ -47,14 +47,14 @@
 - Fix: [#2254] Edge scrolling horizontally now has the same speed as vertical edge scrolling.
 - Fix: [#2607] Rain rendered incorrectly in additional viewport.
 - Fix: [#3171] Guests entering from the corner of the tile in Amity Airfield (original bug).
-- Fix: [#3330] Current number of passengers overflows when over 255.
+- Fix: [#3330] Current number of passengers overflows when over 255 (original bug).
 - Fix: [#4760] Asia - Great Wall of China and South America - Rio Carnival have incorrect guest entry points (original bug).
 - Fix: [#4953, #6277] Unable to advertise to master servers over IPv6.
 - Fix: [#4991] Inverted helices can be built on the Lay Down RC, but are not drawn.
 - Fix: [#5190] Cannot build Wild Mouse - Flying Dutchman Gold Mine.
 - Fix: [#5224] Multiplayer window is not closed when server shuts down.
 - Fix: [#5228] Top toolbar disappears when opening SC4 file.
-- Fix: [#5261] Deleting the sign after copy/pasting it will crash the game.
+- Fix: [#5261] Deleting a banner sign after copy/pasting it will crash the game.
 - Fix: [#5398] Attempting to place Mini Maze.TD4 results in weird behaviour and crashes.
 - Fix: [#5417] Hacked Crooked House tracked rides do not dispatch vehicles.
 - Fix: [#5445] Patrol area not imported from RCT1 saves and scenarios.
@@ -91,7 +91,7 @@
 - Fix: [#6331] Scenery costs nothing in track designs.
 - Fix: [#6358] HTTP requests can point to invalid URL string.
 - Fix: [#6360] Off-by-one filenames when exporting all sprites.
-- Fix: [#6388] Construction rights tool erroneously enabled in some RCT1 scenarios even when no rights available.
+- Fix: [#6388] Construction rights tool erroneously enabled in some RCT1 scenarios even when no rights are available.
 - Fix: [#6413] Maze previews only showing scenery.
 - Fix: [#6423] Importing parks containing names with Polish characters.
 - Fix: [#6423] Polish characters now correctly drawn when using the sprite font.
