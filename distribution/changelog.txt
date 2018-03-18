@@ -1,4 +1,4 @@
-0.1.2 (in development)
+0.1.2 (2018-03-18)
 ------------------------------------------------------------------------
 - Feature: [#2893] Object selection filters for items from RCT1, Added Attractions and Loopy Landscapes.
 - Feature: [#3505] Allow up to 1024 items per scenery tab.
