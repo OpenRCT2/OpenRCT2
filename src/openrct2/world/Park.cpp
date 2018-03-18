@@ -240,7 +240,7 @@ sint32 calculate_park_rating()
     {
         sint32 i;
         sint32 total_ride_uptime = 0, total_ride_intensity = 0, total_ride_excitement = 0;
-        size_t num_rides, num_exciting_rides = 0;
+        sint32 num_rides, num_exciting_rides = 0;
         Ride* ride;
 
         num_rides = 0;
@@ -262,7 +262,7 @@ sint32 calculate_park_rating()
 
         result -= 100;
 
-        if (num_exciting_rides>0)
+        if (num_exciting_rides > 0)
         {
             sint32 average_excitement = total_ride_excitement / num_exciting_rides;
             sint32 average_intensity = total_ride_intensity / num_exciting_rides;
