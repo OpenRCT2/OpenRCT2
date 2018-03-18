@@ -26,6 +26,7 @@
 #include "peep/Staff.h"
 #include "platform/Platform2.h"
 #include "scenario/Scenario.h"
+#include "scripting/ScriptEngine.h"
 #include "title/TitleScreen.h"
 #include "title/TitleSequencePlayer.h"
 #include "ui/UiContext.h"
@@ -38,6 +39,7 @@
 #include <algorithm>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Scripting;
 
 GameState::GameState()
 {
@@ -266,6 +268,9 @@ void GameState::UpdateLogic()
             }
         }
     }
+
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    hookEngine.Call(HOOK_TYPE::INTERVAL_TICK);
 
     date_update();
     _date = Date(gDateMonthTicks, gDateMonthTicks);

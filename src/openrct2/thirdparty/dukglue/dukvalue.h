@@ -625,4 +625,12 @@ public:
 		duk_pop(mContext);
 		return result;
 	}
+
+	bool is_function() const
+	{
+		push();
+		bool result = duk_is_function(mContext, -1);
+		duk_pop(mContext);
+		return result;
+	}
 };

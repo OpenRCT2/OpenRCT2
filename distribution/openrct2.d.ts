@@ -36,7 +36,11 @@ export interface Context {
     /**
      * Subscribes to the given hook.
      */
-    subscribe: (hook: string, callback: Function) => void;
+    subscribe(hook: string, callback: Function): IDisposable;
+}
+
+export interface IDisposable {
+    dispose(): void;
 }
 
 export interface Ride {

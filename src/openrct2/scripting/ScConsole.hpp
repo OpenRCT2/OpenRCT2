@@ -1,3 +1,5 @@
+#pragma once
+
 #include <dukglue/dukglue.h>
 #include "../interface/Console.h"
 

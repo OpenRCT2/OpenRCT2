@@ -1,3 +1,5 @@
+#pragma once
+
 #include <algorithm>
 #include <dukglue/dukglue.h>
 #include "../common.h"
