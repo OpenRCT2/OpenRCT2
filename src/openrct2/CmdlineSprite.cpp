@@ -418,7 +418,7 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
 
                             if (x + 1 < width)
                             {
-                                if (!is_transparent_pixel(rgbaSrc + 4 * (width - 1)) && is_changable_pixel(get_palette_index(rgbaSrc + 4 * (width + 1))))
+                                if (!is_transparent_pixel(rgbaSrc + 4 * (width + 1)) && is_changable_pixel(get_palette_index(rgbaSrc + 4 * (width + 1))))
                                 {
                                     // Bottom right
                                     rgbaSrc[4 * (width + 1)] += dr * 1 / 16;
