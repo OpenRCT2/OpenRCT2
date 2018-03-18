@@ -83,7 +83,7 @@ android.applicationVariants.all { variant ->
             dest "$variant.mergeAssets.outputDir/data"
         }
         download {
-            src 'https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.0/title-sequence-v0.1.0.zip'
+            src 'https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2/title-sequence-v0.1.2.zip'
             dest new File(buildDir, 'title-sequence.zip')
         }
         copy {
