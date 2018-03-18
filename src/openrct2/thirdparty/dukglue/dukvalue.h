@@ -587,4 +587,12 @@ private:
 
 	std::string mString;  // if it's a string, we store it with std::string
 	int* mRefCount;  // if mType == OBJECT and we're sharing, this will point to our ref counter
+
+public:
+	DukValue operator [](const std::string &key) const
+	{
+		push();
+		duk_get_prop_string(mContext, -1, key.c_str());
+		return DukValue::take_from_stack(mContext);
+	}
 };
