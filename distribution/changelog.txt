@@ -124,6 +124,7 @@
 - Fix: Remove consecutive thoughts about a ride being demolished.
 - Fix: Water raft vehicles stop spinning when going up slopes.
 - Fix: Incorrect spin is applied to coasters on S-bends and other turns.
+- Fix: Sprite compiler dithering checks transparency of wrong pixel
 - Improved: [#5962] Use AVX2 instruction set where supported, resulting in a performance boost.
 - Improved: [#5964] Use SSE 4.1 instruction set where supported, resulting in a performance boost.
 - Improved: [#6186] Transparent menu items now draw properly in OpenGL mode.
