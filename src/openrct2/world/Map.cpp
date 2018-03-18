@@ -1846,6 +1846,12 @@ static money32 raise_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax,
         audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
     }
 
+    // Keep big coordinates within map boundaries
+    ax = std::max<decltype(ax)>(32, ax);
+    bx = std::min<decltype(bx)>(gMapSizeMaxXY, bx);
+    ay = std::max<decltype(bx)>(32, ay);
+    by = std::min<decltype(by)>(gMapSizeMaxXY, by);
+
     uint8 min_height = map_get_lowest_land_height(ax, bx, ay, by);
 
     for (sint32 yi = ay; yi <= by; yi += 32) {
@@ -1892,6 +1898,12 @@ static money32 lower_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax,
         log_warning("Improper selection type %d", selectionType);
         return MONEY32_UNDEFINED;
     }
+
+    // Keep big coordinates within map boundaries
+    ax = std::max<decltype(ax)>(32, ax);
+    bx = std::min<decltype(bx)>(gMapSizeMaxXY, bx);
+    ay = std::max<decltype(bx)>(32, ay);
+    by = std::min<decltype(by)>(gMapSizeMaxXY, by);
 
     uint8 max_height = map_get_highest_land_height(ax, bx, ay, by);
 
