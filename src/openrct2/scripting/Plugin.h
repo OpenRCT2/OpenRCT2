@@ -34,17 +34,32 @@ namespace OpenRCT2::Scripting
     class Plugin
     {
     private:
-        duk_context * const _context;
-        std::string const _path;
+        struct HotReloadData
+        {
+            int FileDesc{};
+            int WatchDesc{};
+        };
+
+        duk_context * _context;
+        std::string _path;
         PluginMetadata _metadata;
+        HotReloadData _hotReloadData;
+        bool _hotReloadEnabled{};
 
     public:
+        Plugin() { }
         Plugin(duk_context * context, const std::string &path);
         Plugin(const Plugin&) = delete;
-        Plugin(const Plugin&&);
+        Plugin(Plugin&&);
+        ~Plugin();
 
         void Load();
         void Start();
+        void Update();
+
+        void EnableHotReload();
+        bool ShouldHotReload();
+        void DisableHotReload();
 
     private:
         static PluginMetadata GetMetadata(const DukValue& dukMetadata);

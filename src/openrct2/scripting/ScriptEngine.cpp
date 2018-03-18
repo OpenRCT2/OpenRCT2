@@ -11,6 +11,7 @@
 #include "../core/FileScanner.h"
 #include "../core/Path.hpp"
 #include "../interface/InteractiveConsole.h"
+#include "../platform/Platform2.h"
 #include "../PlatformEnvironment.h"
 #include <dukglue/dukglue.h>
 #include <duktape.h>
@@ -67,11 +68,31 @@ void ScriptEngine::LoadPlugins()
         {
             Plugin p(_context, path);
             p.Load();
+            p.EnableHotReload();
             _plugins.push_back(std::move(p));
         }
         catch (const std::exception &e)
         {
             _console.WriteLineError(e.what());
+        }
+    }
+}
+
+void ScriptEngine::AutoReloadPlugins()
+{
+    for (auto& plugin : _plugins)
+    {
+        if (plugin.ShouldHotReload())
+        {
+            try
+            {
+                plugin.Load();
+                plugin.Start();
+            }
+            catch (const std::exception &e)
+            {
+                _console.WriteLineError(e.what());
+            }
         }
     }
 }
@@ -110,6 +131,13 @@ void ScriptEngine::Update()
         duk_pop(_context);
         // Signal the promise so caller can continue
         promise.set_value();
+    }
+
+    auto tick = Platform::GetTicks();
+    if (tick - _lastHotReloadCheckTick > 1000)
+    {
+        AutoReloadPlugins();
+        _lastHotReloadCheckTick = tick;
     }
 }
 

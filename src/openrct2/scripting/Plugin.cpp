@@ -21,6 +21,11 @@
 #include <fstream>
 #include <memory>
 
+#include <fcntl.h>
+#include <sys/inotify.h>
+#include <sys/types.h>
+#include <unistd.h>
+
 using namespace OpenRCT2::Scripting;
 
 Plugin::Plugin(duk_context * context, const std::string &path)
@@ -29,11 +34,23 @@ Plugin::Plugin(duk_context * context, const std::string &path)
 {
 }
 
-Plugin::Plugin(const Plugin&& src)
+Plugin::Plugin(Plugin&& src)
     : _context(src._context),
       _path(src._path),
-      _metadata(src._metadata)
+      _metadata(src._metadata),
+      _hotReloadData(src._hotReloadData),
+      _hotReloadEnabled(src._hotReloadEnabled)
 {
+    src._context = nullptr;
+    src._path = std::string();
+    src._metadata = PluginMetadata();
+    src._hotReloadData = HotReloadData();
+    src._hotReloadEnabled = false;
+}
+
+Plugin::~Plugin()
+{
+    DisableHotReload();
 }
 
 void Plugin::Load()
@@ -70,6 +87,11 @@ void Plugin::Load()
 void Plugin::Start()
 {
     const auto& mainFunc = _metadata.Main;
+    if (mainFunc.context() == nullptr)
+    {
+        throw std::runtime_error("No main function specified.");
+    }
+
     mainFunc.push();
     auto result = duk_pcall(_context, 0);
     if (result != DUK_ERR_NONE)
@@ -79,6 +101,66 @@ void Plugin::Start()
         throw std::runtime_error("[" + _metadata.Name + "] " + val);
     }
     duk_pop(_context);
+}
+
+void Plugin::Update()
+{
+}
+
+void Plugin::EnableHotReload()
+{
+    auto fd = inotify_init();
+    if (fd >= 0)
+    {
+        // Mark file as non-blocking
+        int flags = fcntl(fd, F_GETFL, 0);
+        fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+
+        auto wd = inotify_add_watch(fd, _path.c_str(), IN_CLOSE_WRITE);
+        if (wd >= 0)
+        {
+            _hotReloadData.FileDesc = fd;
+            _hotReloadData.WatchDesc = wd;
+            _hotReloadEnabled = true;
+        }
+        else
+        {
+            close(fd);
+        }
+    }
+}
+
+bool Plugin::ShouldHotReload()
+{
+    if (_hotReloadEnabled)
+    {
+        std::vector<char> eventData;
+        eventData.resize(1024);
+
+        auto length = read(_hotReloadData.FileDesc, eventData.data(), eventData.size());
+        int offset = 0;
+        while (offset < length)
+        {
+            auto e = (inotify_event*)&eventData[offset];
+            if ((e->mask & IN_CLOSE_WRITE) && !(e->mask & IN_ISDIR))
+            {
+                return true;
+            }
+            offset += sizeof(inotify_event) + e->len;
+        }
+    }
+    return false;
+}
+
+void Plugin::DisableHotReload()
+{
+    if (_hotReloadEnabled)
+    {
+        inotify_rm_watch(_hotReloadData.FileDesc, _hotReloadData.WatchDesc);
+        close(_hotReloadData.FileDesc);
+        _hotReloadData = HotReloadData();
+        _hotReloadEnabled = false;
+    }
 }
 
 PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
