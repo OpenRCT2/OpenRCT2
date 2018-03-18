@@ -123,7 +123,7 @@
 - Fix: When preset title sequence fails to load, the preset will forcibly be changed to the first sequence to successfully load.
 - Fix: Remove consecutive thoughts about a ride being demolished.
 - Fix: Water raft vehicles stop spinning when going up slopes.
-- Fix: Correct spin is applied to coasters on S-bends and other turns.
+- Fix: Incorrect spin is applied to coasters on S-bends and other turns.
 - Improved: [#5962] Use AVX2 instruction set where supported, resulting in a performance boost.
 - Improved: [#5964] Use SSE 4.1 instruction set where supported, resulting in a performance boost.
 - Improved: [#6186] Transparent menu items now draw properly in OpenGL mode.
