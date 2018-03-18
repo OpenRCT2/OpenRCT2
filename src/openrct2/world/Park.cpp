@@ -239,15 +239,17 @@ sint32 calculate_park_rating()
     // Rides
     {
         sint32 i;
-        sint16 total_ride_uptime = 0, total_ride_intensity = 0, total_ride_excitement = 0;
+        sint32 total_ride_uptime = 0, total_ride_intensity = 0, total_ride_excitement = 0;
         sint32 num_rides, num_exciting_rides = 0;
         Ride* ride;
 
         num_rides = 0;
-        FOR_ALL_RIDES(i, ride) {
+        FOR_ALL_RIDES(i, ride)
+        {
             total_ride_uptime += 100 - ride->downtime;
 
-            if (ride->excitement != RIDE_RATING_UNDEFINED){
+            if (ride->excitement != RIDE_RATING_UNDEFINED)
+            {
                 total_ride_excitement += ride->excitement / 8;
                 total_ride_intensity += ride->intensity / 8;
                 num_exciting_rides++;
@@ -260,27 +262,30 @@ sint32 calculate_park_rating()
 
         result -= 100;
 
-        if (num_exciting_rides>0){
-            sint16 average_excitement = total_ride_excitement / num_exciting_rides;
-            sint16 average_intensity = total_ride_intensity / num_exciting_rides;
+        if (num_exciting_rides > 0)
+        {
+            sint32 average_excitement = total_ride_excitement / num_exciting_rides;
+            sint32 average_intensity = total_ride_intensity / num_exciting_rides;
 
             average_excitement -= 46;
-            if (average_excitement < 0){
+            if (average_excitement < 0)
+            {
                 average_excitement = -average_excitement;
             }
 
             average_intensity -= 65;
-            if (average_intensity < 0){
+            if (average_intensity < 0)
+            {
                 average_intensity = -average_intensity;
             }
 
-            average_excitement = Math::Min((sint16)(average_excitement / 2), (sint16)50);
-            average_intensity = Math::Min((sint16)(average_intensity / 2), (sint16)50);
+            average_excitement = Math::Min((average_excitement / 2), 50);
+            average_intensity = Math::Min((average_intensity / 2), 50);
             result += 100 - average_excitement - average_intensity;
         }
 
-        total_ride_excitement = Math::Min((sint16)1000, total_ride_excitement);
-        total_ride_intensity = Math::Min((sint16)1000, total_ride_intensity);
+        total_ride_excitement = Math::Min(1000, total_ride_excitement);
+        total_ride_intensity = Math::Min(1000, total_ride_intensity);
         result -= 200 - ((total_ride_excitement + total_ride_intensity) / 10);
     }
 
