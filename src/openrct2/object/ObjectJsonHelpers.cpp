@@ -360,6 +360,7 @@ namespace ObjectJsonHelpers
                 }
             }
         }
+        stringTable.Sort();
     }
 
     void LoadImages(IReadObjectContext * context, const json_t * root, ImageTable &imageTable)
