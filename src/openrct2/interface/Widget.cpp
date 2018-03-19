@@ -16,6 +16,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include "../drawing/Drawing.h"
 #include "../Input.h"
 #include "../sprites.h"
 #include "../localisation/Localisation.h"

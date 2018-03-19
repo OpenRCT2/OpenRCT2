@@ -20,6 +20,7 @@
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/drawing/Drawing.h>
 
 #define WW 420
 #define WH 280

@@ -70,6 +70,7 @@ static sint32 _pickup_peep_old_x = LOCATION_NULL;
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../Cheats.h"
+#include "../world/Park.h"
 
 #include "NetworkAction.h"
 

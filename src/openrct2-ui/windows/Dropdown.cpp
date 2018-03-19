@@ -22,6 +22,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/drawing/Drawing.h>
 
 // The maximum number of rows to list before items overflow into new columns
 #define DROPDOWN_TEXT_MAX_ROWS 32

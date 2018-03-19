@@ -20,6 +20,8 @@
 
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2/interface/Colour.h>
+#include <openrct2/drawing/Drawing.h>
 
 enum WINDOW_MUSIC_CREDITS_WIDGET_IDX {
     WIDX_BACKGROUND,

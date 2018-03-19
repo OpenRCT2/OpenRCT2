@@ -20,6 +20,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/Input.h>
+#include <openrct2/drawing/Drawing.h>
 
 static uint16 toolSizeSpriteIndices[] =
 {

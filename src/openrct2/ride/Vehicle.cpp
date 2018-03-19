@@ -32,6 +32,7 @@
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../world/MapAnimation.h"
+#include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Sprite.h"

@@ -20,6 +20,8 @@
 #include "Drawing.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
+#include "../ride/TrackDesign.h"
+#include "../scenario/Scenario.h"
 
 #include "IDrawingEngine.h"
 #include "Rain.h"

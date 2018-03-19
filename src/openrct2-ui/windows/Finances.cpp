@@ -26,6 +26,9 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/sprites.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/management/Finance.h>
+#include <openrct2/scenario/Scenario.h>
+#include <openrct2/world/Park.h>
 
 enum
 {

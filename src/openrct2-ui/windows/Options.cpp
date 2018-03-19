@@ -47,6 +47,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/scenario/Scenario.h>
 
 enum WINDOW_OPTIONS_PAGE {
     WINDOW_OPTIONS_PAGE_DISPLAY,

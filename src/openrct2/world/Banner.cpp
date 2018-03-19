@@ -26,11 +26,13 @@
 
 #include "Banner.h"
 #include "Map.h"
+#include "MapAnimation.h"
 #include "Park.h"
 #include "Scenery.h"
 #include "../Game.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
 #include "../windows/Intent.h"

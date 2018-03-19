@@ -30,6 +30,9 @@
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Climate.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/world/Sprite.h>
+#include <openrct2/management/Finance.h>
 
 enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX
 {

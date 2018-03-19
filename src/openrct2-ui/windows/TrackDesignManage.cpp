@@ -22,6 +22,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
+#include <openrct2/drawing/Drawing.h>
 
 #pragma region Widgets
 

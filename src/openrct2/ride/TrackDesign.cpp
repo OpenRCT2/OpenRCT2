@@ -39,6 +39,7 @@
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/Footpath.h"
+#include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 

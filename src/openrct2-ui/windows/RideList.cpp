@@ -27,6 +27,9 @@
 #include <openrct2/sprites.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/windows/Intent.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/interface/Colour.h>
+#include <openrct2/drawing/Drawing.h>
 
 enum {
     PAGE_RIDES,

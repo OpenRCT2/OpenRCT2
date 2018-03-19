@@ -21,9 +21,10 @@
 
 #include <openrct2/Game.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/world/Scenery.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/sprites.h>
+#include <openrct2/world/Banner.h>
+#include <openrct2/world/Scenery.h>
 
 #define WW 113
 #define WH 96

@@ -21,6 +21,8 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/interface/Colour.h>
+#include <openrct2/drawing/Drawing.h>
 
 enum WINDOW_CUSTOM_CURRENCY_WIDGET_IDX {
     WIDX_BACKGROUND,

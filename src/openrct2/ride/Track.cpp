@@ -38,6 +38,7 @@
 #include "Station.h"
 #include "Track.h"
 #include "TrackData.h"
+#include "TrackDesign.h"
 
 uint8 gTrackGroundFlags;
 

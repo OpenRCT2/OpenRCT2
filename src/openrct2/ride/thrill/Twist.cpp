@@ -20,6 +20,7 @@
 #include "../../paint/Supports.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../../world/Sprite.h"
 
 /** rct2: 0x0076E5C9 */
 static void paint_twist_structure(paint_session * session, Ride * ride, uint8 direction, sint8 xOffset, sint8 yOffset,

@@ -26,6 +26,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/interface/themes.h>
 #include <openrct2/util/Util.h>
+#include <openrct2/drawing/Drawing.h>
 
 enum {
     WINDOW_THEMES_TAB_SETTINGS,

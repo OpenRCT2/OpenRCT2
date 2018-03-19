@@ -21,6 +21,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
+#include "../management/Research.h"
 #include "../OpenRCT2.h"
 #include "../ride/Ride.h"
 #include "../util/Util.h"

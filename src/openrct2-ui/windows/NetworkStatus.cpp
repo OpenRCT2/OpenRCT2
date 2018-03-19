@@ -20,6 +20,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/util/Util.h>
+#include <openrct2/drawing/Drawing.h>
 
 static char _password[33];
 

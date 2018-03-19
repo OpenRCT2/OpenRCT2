@@ -17,6 +17,7 @@
 #include "../../config/Config.h"
 #include "../../Game.h"
 #include "../../interface/Viewport.h"
+#include "../../scenario/Scenario.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../world/Map.h"

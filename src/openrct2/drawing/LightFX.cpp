@@ -24,8 +24,11 @@
 #include "../Game.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
+#include "../ride/Ride.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
+#include "../world/Map.h"
+#include "../world/Sprite.h"
 #include "Drawing.h"
 #include "LightFX.h"
 

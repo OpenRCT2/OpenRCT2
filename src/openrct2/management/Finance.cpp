@@ -21,6 +21,7 @@
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
 #include "../ride/Ride.h"
+#include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../world/Park.h"
 #include "../world/Sprite.h"

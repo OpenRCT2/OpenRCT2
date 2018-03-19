@@ -23,8 +23,10 @@
 #include "../interface/Viewport.h"
 #include "../network/network.h"
 #include "../paint/VirtualFloor.h"
+#include "../peep/Staff.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "../world/Banner.h"
 #include "../world/Scenery.h"
 #include "Intent.h"
 

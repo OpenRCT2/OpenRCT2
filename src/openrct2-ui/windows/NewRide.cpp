@@ -38,6 +38,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
+#include <openrct2/world/Park.h>
 
 #define AVAILABILITY_STRING_SIZE 256
 #define WH 382

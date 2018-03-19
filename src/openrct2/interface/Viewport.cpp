@@ -26,6 +26,8 @@
 #include "../OpenRCT2.h"
 #include "../paint/Paint.h"
 #include "../peep/Staff.h"
+#include "../ride/Ride.h"
+#include "../ride/TrackDesign.h"
 #include "../world/Climate.h"
 #include "../world/Map.h"
 #include "../world/Sprite.h"

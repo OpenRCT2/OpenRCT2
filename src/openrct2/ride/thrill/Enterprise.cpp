@@ -20,6 +20,7 @@
 #include "../../paint/Supports.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../../world/Sprite.h"
 
 /** rct2: 0x008A2ABC */
 static void paint_enterprise_structure(

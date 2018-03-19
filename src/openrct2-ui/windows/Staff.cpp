@@ -30,6 +30,9 @@
 #include <openrct2/Input.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/interface/themes.h>
+#include <openrct2/world/Sprite.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/management/Finance.h>
 
 #define WW 190
 #define WH 180

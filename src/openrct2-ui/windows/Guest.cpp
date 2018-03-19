@@ -32,6 +32,8 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
+#include <openrct2/scenario/Scenario.h>
+#include <openrct2/world/Park.h>
 
 enum WINDOW_GUEST_PAGE {
     WINDOW_GUEST_OVERVIEW,

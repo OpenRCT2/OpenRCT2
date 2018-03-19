@@ -19,6 +19,7 @@
 #include "../../paint/Supports.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../../world/Sprite.h"
 
 /** rct2: 0x0142805C */
 static constexpr const uint32 merry_go_round_rider_offsets[] = { 0, 32, 64, 96, 16, 48, 80, 112 };

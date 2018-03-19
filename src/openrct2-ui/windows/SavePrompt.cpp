@@ -25,6 +25,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2/scenario/Scenario.h>
 
 enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
     WIDX_BACKGROUND,

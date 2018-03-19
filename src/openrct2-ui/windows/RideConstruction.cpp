@@ -38,6 +38,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Footpath.h>
+#include <openrct2/world/Park.h>
 
 #pragma region Widgets
 

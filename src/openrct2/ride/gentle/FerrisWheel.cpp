@@ -19,6 +19,7 @@
 #include "../../paint/Supports.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../../world/Sprite.h"
 
 static constexpr const uint8 edges_1x4_ne_sw[] = {
     EDGE_NW | EDGE_SE,

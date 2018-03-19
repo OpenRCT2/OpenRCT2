@@ -24,6 +24,8 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/management/Finance.h>
 
 enum {
     WINDOW_RESEARCH_PAGE_DEVELOPMENT,

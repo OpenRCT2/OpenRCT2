@@ -24,6 +24,7 @@
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/drawing/Drawing.h>
 
 #define SELECTED_RIDE_UNDEFINED ((uint16)0xFFFF)
 

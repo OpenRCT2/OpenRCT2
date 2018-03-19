@@ -23,6 +23,7 @@
 #include "../Cheats.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../management/Finance.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../world/Park.h"

@@ -27,6 +27,8 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Climate.h>
+#include <openrct2/scenario/Scenario.h>
+#include <openrct2/world/Park.h>
 
 #pragma region Widgets
 

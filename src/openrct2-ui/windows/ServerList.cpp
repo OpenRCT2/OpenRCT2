@@ -30,6 +30,8 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/interface/Colour.h>
+#include <openrct2/drawing/Drawing.h>
 
 #define WWIDTH_MIN 500
 #define WHEIGHT_MIN 300
