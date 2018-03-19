@@ -72,6 +72,7 @@ The following people are not part of the project team, but have been contributin
 * Park Joon-Kyu (segfault87) - Misc.
 * Harrison Gentry (hgentry) - Date-changing command, misc.
 * Joshua Moerman (Jaxan) - Misc.
+* Nicolas Hawrysh (xp4xbox) - Misc.
 
 ## Bug fixes
 * (halfbro)
@@ -135,7 +136,7 @@ The following people are not part of the project team, but have been contributin
 * Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap)
 * Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van der Werf (marijnvdwerf), Tom Kroes (ThePsionic); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (SijmenSchoon).
 * Finnish - (DJHasis), (Zode), (TheWing)
-* French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rvgr),  (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum)
+* French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rvgr),  (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum), Nicolas Hawrysh (xp4xbox)
 * German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)
 * Italian - Luca Andrea Rossi (LucaRed)
 * Japanese - Aaron van Geffen (AaronVanGeffen), Nick Hall (nickhall), (jhako), Harry Lam (daihakken)
@@ -151,6 +152,7 @@ The following people are not part of the project team, but have been contributin
 
 ## Graphics
 * OpenRCT2 Logo - Yannic Geurts (xzbobzx)
+* Booster Sprites - Nicolas Hawrysh (xp4xbox)
 
 ## RollerCoaster Tycoon 2 credits
 Design and programming by Chris Sawyer
