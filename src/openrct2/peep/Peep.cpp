@@ -10700,10 +10700,10 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
         uint8  best_sub   = 0xFF;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        uint8          bestJunctions         = 0;
-        TileCoordsXYZ bestJunctionList[16]  = { 0 };
-        uint8          bestDirectionList[16] = { 0 };
-        TileCoordsXYZ bestXYZ               = { 0, 0, 0 };
+        uint8         bestJunctions = 0;
+        TileCoordsXYZ bestJunctionList[16];
+        uint8         bestDirectionList[16];
+        TileCoordsXYZ bestXYZ;
 
         if (gPathFindDebug)
         {
