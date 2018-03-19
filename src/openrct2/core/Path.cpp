@@ -20,7 +20,6 @@
 #endif
 
 #include "../platform/platform.h"
-#include "../localisation/Localisation.h"
 #include "../util/Util.h"
 
 #include "File.h"
@@ -28,7 +27,6 @@
 #include "Memory.hpp"
 #include "Path.hpp"
 #include "String.hpp"
-#include "Util.hpp"
 
 namespace Path
 {

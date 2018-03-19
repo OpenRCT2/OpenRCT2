@@ -16,8 +16,6 @@
 
 #include <ctime>
 
-#include "../core/Guard.hpp"
-
 #include "../config/Config.h"
 #include "../platform/Crash.h"
 #include "../platform/platform.h"

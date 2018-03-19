@@ -15,7 +15,8 @@
 #pragma endregion
 
 #include <sstream>
-#include "../core/FileStream.hpp"
+#include "../core/IStream.hpp"
+#include "../core/String.hpp"
 #include "IniWriter.hpp"
 
 #include "../platform/platform.h"

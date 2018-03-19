@@ -15,13 +15,10 @@
 #pragma endregion
 
 #include "../config/Config.h"
-#include "../core/Console.hpp"
 #include "../core/String.hpp"
-#include "../localisation/LanguagePack.h"
 #include "Fonts.h"
 #include "FontFamilies.h"
 
-#include "../drawing/Drawing.h"
 #include "../drawing/TTF.h"
 #include "../localisation/Language.h"
 
