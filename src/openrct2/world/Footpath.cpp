@@ -32,6 +32,7 @@
 #include "../util/Util.h"
 #include "Map.h"
 #include "Park.h"
+#include "Sprite.h"
 #include "MapAnimation.h"
 
 void footpath_interrupt_peeps(sint32 x, sint32 y, sint32 z);
