@@ -15,25 +15,19 @@
 #pragma endregion
 
 #include <algorithm>
+#include <cstring>
+
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../core/Math.hpp"
 #include "../drawing/Drawing.h"
 #include "../Game.h"
 #include "../Input.h"
-#include "../localisation/Localisation.h"
 #include "../OpenRCT2.h"
 #include "../paint/Paint.h"
-#include "../paint/Supports.h"
 #include "../peep/Staff.h"
-#include "../ride/RideData.h"
-#include "../ride/TrackData.h"
-#include "../world/Banner.h"
 #include "../world/Climate.h"
-#include "../world/Entrance.h"
-#include "../world/Footpath.h"
 #include "../world/Map.h"
-#include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "Colour.h"
 #include "Viewport.h"

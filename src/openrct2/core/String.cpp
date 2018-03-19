@@ -14,12 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <algorithm>
 #include <cwctype>
 #include <stdexcept>
 #include <vector>
 
-#include "../localisation/Localisation.h"
+#include "../localisation/Language.h"
 #include "../util/Util.h"
 
 #include "Math.hpp"

@@ -22,7 +22,6 @@
 #include "CmdlineSprite.h"
 #include "drawing/Drawing.h"
 #include "Imaging.h"
-#include "localisation/Language.h"
 #include "OpenRCT2.h"
 #include "platform/platform.h"
 #include "util/Util.h"

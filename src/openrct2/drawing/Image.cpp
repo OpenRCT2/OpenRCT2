@@ -16,7 +16,6 @@
 
 #include <algorithm>
 #include <list>
-#include "../core/Console.hpp"
 #include "../core/Guard.hpp"
 #include "../OpenRCT2.h"
 

@@ -40,8 +40,6 @@
 #include "Path.hpp"
 #include "String.hpp"
 
-#include "../platform/platform.h"
-
 enum class DIRECTORY_CHILD_TYPE
 {
     DC_DIRECTORY,

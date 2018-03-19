@@ -14,13 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "core/Console.hpp"
-#include "core/File.h"
-#include "core/FileStream.hpp"
 #include "OpenRCT2.h"
-
-#include "audio/audio.h"
-#include "platform/platform.h"
 
 sint32 gExitCode;
 sint32 gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
@@ -46,4 +40,3 @@ uint32 gCurrentDrawCount = 0;
 uint8 gScreenFlags;
 uint32 gScreenAge;
 uint8 gSavePromptMode;
-
