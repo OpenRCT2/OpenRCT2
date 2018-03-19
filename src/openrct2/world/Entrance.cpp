@@ -22,6 +22,7 @@
 #include "Map.h"
 #include "MapAnimation.h"
 #include "Park.h"
+#include "Sprite.h"
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../localisation/StringIds.h"

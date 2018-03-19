@@ -24,6 +24,7 @@
 
 #include "../platform/platform.h"
 #include "../util/SawyerCoding.h"
+#include "../world/Location.hpp"
 
 #include "network.h"
 

@@ -21,11 +21,13 @@
 
 #include "../platform/platform.h"
 #include "../util/Util.h"
+#include "../localisation/Language.h"
 
 #include "File.h"
 #include "Math.hpp"
 #include "Memory.hpp"
 #include "Path.hpp"
+#include "Util.hpp"
 #include "String.hpp"
 
 namespace Path
