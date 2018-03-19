@@ -20,6 +20,7 @@
 #include "Entrance.h"
 #include "Footpath.h"
 #include "Map.h"
+#include "MapAnimation.h"
 #include "Park.h"
 #include "../Cheats.h"
 #include "../Game.h"

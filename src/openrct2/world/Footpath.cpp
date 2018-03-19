@@ -20,6 +20,7 @@
 #include "../core/Util.hpp"
 #include "../Game.h"
 #include "../localisation/Localisation.h"
+#include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
@@ -30,6 +31,8 @@
 #include "../ride/TrackData.h"
 #include "../util/Util.h"
 #include "Map.h"
+#include "Park.h"
+#include "MapAnimation.h"
 
 void footpath_interrupt_peeps(sint32 x, sint32 y, sint32 z);
 void footpath_update_queue_entrance_banner(sint32 x, sint32 y, rct_tile_element *tileElement);

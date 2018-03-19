@@ -18,13 +18,8 @@
 #define _WINDOW_H_
 
 #include "../common.h"
-#include "../ride/Ride.h"
-#include "../ride/TrackDesign.h"
-#include "../scenario/Scenario.h"
-#include "../world/Park.h"
-#include "../paint/Paint.h"
-#include "Colour.h"
 
+struct rct_drawpixelinfo;
 struct rct_window;
 union rct_window_event;
 struct track_design_file_ref;

@@ -26,6 +26,9 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/management/Finance.h>
 
 #pragma region Widgets
 

@@ -24,6 +24,8 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2-ui/interface/LandTool.h>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/world/Park.h>
 
 enum WINDOW_WATER_WIDGET_IDX {
     WIDX_BACKGROUND,

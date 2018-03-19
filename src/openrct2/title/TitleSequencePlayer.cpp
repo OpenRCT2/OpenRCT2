@@ -38,6 +38,7 @@
 #include "../management/NewsItem.h"
 #include "../windows/Intent.h"
 #include "../world/Scenery.h"
+#include "../world/Sprite.h"
 
 using namespace OpenRCT2;
 

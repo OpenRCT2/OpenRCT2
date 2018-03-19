@@ -21,6 +21,7 @@
 #include "../peep/Peep.h"
 #include "../ride/Ride.h"
 #include "../scenario/Scenario.h"
+#include "../world/Park.h"
 #include "Award.h"
 #include "NewsItem.h"
 

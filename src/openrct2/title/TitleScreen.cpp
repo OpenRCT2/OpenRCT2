@@ -20,6 +20,7 @@
 #include "../interface/Screenshot.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
+#include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "TitleScreen.h"
 #include "TitleSequence.h"

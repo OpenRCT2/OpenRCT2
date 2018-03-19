@@ -31,6 +31,8 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/world/Sprite.h>
+#include <openrct2/drawing/Drawing.h>
 
 struct TITLE_COMMAND_ORDER {
     // originally a uint8, but the new millisecond wait times require a uint16.

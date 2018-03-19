@@ -31,6 +31,7 @@
 #include "../world/Scenery.h"
 #include "../world/LargeScenery.h"
 #include "../world/Sprite.h"
+#include "../world/Park.h"
 #include "Viewport.h"
 #include "Window_internal.h"
 #include "../Context.h"

@@ -20,6 +20,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/Context.h>
+#include <openrct2/drawing/Drawing.h>
 
 #define WW 200
 #define WH 100

@@ -35,6 +35,8 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
 #include <openrct2/world/TileInspector.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/world/Banner.h>
 
 static constexpr const rct_string_id TerrainTypeStringIds[] = {
     STR_TILE_INSPECTOR_TERRAIN_GRASS,

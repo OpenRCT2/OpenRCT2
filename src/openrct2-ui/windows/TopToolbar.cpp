@@ -45,6 +45,8 @@
 #include <openrct2/world/SmallScenery.h>
 #include <openrct2/world/Wall.h>
 #include <openrct2-ui/interface/LandTool.h>
+#include <openrct2/scenario/Scenario.h>
+#include <openrct2/world/Park.h>
 
 enum {
     WIDX_PAUSE,

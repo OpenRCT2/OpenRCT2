@@ -49,6 +49,7 @@
 #include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
+#include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "CableLift.h"

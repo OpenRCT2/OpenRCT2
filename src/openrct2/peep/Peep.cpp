@@ -45,6 +45,7 @@
 #include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/LargeScenery.h"
+#include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Sprite.h"

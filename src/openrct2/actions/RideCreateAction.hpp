@@ -30,6 +30,7 @@
 #include "../ride/RideData.h"
 #include "../ride/Ride.h"
 #include "../ride/Station.h"
+#include "../scenario/Scenario.h"
 
 class RideCreateGameActionResult final : public GameActionResult
 {

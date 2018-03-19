@@ -31,6 +31,7 @@
 #include "../localisation/StringIds.h"
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
+#include "../scenario/Scenario.h"
 #include "../world/Map.h"
 #include "../world/Sprite.h"
 #include "Viewport.h"

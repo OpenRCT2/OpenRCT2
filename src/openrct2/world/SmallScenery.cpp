@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../Cheats.h"
+#include "../management/Finance.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "../ride/TrackDesign.h"
@@ -23,6 +24,7 @@
 #include "Park.h"
 #include "Scenery.h"
 #include "SmallScenery.h"
+#include "MapAnimation.h"
 
 static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 flags)
 {

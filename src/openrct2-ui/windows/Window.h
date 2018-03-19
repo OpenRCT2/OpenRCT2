@@ -20,9 +20,13 @@
 
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/windows/tile_inspector.h>
+#include <openrct2/ride/Ride.h>
 
 using loadsave_callback       = void (*)(sint32 result, const utf8 * path);
 using scenarioselect_callback = void (*)(const utf8 *path);
+struct rct_peep;
+struct rct_tile_element;
+struct rct_vehicle;
 
 rct_window * window_about_open();
 rct_window * window_changelog_open();

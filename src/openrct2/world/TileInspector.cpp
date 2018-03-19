@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "Banner.h"
 #include "../common.h"
 #include "../Context.h"
 #include "../Game.h"
@@ -30,6 +31,7 @@
 #include "Scenery.h"
 #include "TileInspector.h"
 #include "../ride/Station.h"
+#include "Park.h"
 
 uint32 windowTileInspectorTileX;
 uint32 windowTileInspectorTileY;

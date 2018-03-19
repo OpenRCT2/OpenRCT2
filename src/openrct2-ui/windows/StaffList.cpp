@@ -31,6 +31,9 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/world/Sprite.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/management/Finance.h>
 
 enum {
     WINDOW_STAFF_LIST_TAB_HANDYMEN,

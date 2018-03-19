@@ -22,6 +22,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/paint/Paint.h>
 
 enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
     WIDX_BACKGROUND,

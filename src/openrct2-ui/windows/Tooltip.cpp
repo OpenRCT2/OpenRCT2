@@ -20,6 +20,7 @@
 #include <openrct2/Input.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/drawing/Drawing.h>
 
 enum {
     WIDX_BACKGROUND

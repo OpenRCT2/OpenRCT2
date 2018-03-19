@@ -31,6 +31,7 @@
 #include "../object/ObjectRepository.h"
 #include "../ParkImporter.h"
 #include "../ride/Station.h"
+#include "../scenario/Scenario.h"
 #include "../scenario/ScenarioSources.h"
 #include "../scenario/ScenarioRepository.h"
 #include "Tables.h"

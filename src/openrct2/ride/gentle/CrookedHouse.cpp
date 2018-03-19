@@ -19,6 +19,7 @@
 #include "../../paint/Supports.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../../world/Sprite.h"
 
 struct rct_crooked_house_bound_box
 {

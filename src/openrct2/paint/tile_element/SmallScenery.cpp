@@ -20,6 +20,7 @@
 #include "../../interface/Viewport.h"
 #include "../../localisation/Date.h"
 #include "../Paint.h"
+#include "../../ride/TrackDesign.h"
 #include "../Supports.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"

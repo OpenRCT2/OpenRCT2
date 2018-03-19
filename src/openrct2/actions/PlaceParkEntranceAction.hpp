@@ -22,9 +22,12 @@
 #include "GameAction.h"
 
 #include "../Cheats.h"
+#include "../management/Finance.h"
 #include "../world/Entrance.h"
 #include "../world/Park.h"
 #include "../world/Footpath.h"
+#include "../world/MapAnimation.h"
+#include "../world/Sprite.h"
 
 struct PlaceParkEntranceAction : public GameActionBase<GAME_COMMAND_PLACE_PARK_ENTRANCE, GameActionResult>
 {

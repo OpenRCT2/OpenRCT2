@@ -31,6 +31,8 @@
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/ride/TrackDesign.h>
+#include <openrct2/world/Park.h>
 
 #define TRACK_MINI_PREVIEW_WIDTH    168
 #define TRACK_MINI_PREVIEW_HEIGHT   78
@@ -39,6 +41,8 @@
 #define PALETTE_INDEX_TRANSPARENT (0)
 #define PALETTE_INDEX_PRIMARY_MID_DARK (248)
 #define PALETTE_INDEX_PRIMARY_LIGHTEST (252)
+
+struct rct_track_td6;
 
 enum {
     WIDX_BACKGROUND,

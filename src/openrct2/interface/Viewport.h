@@ -18,6 +18,7 @@
 #define _VIEWPORT_H_
 
 #include "Window.h"
+#include "../world/Location.hpp"
 
 struct paint_session;
 struct paint_struct;

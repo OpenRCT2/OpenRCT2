@@ -23,6 +23,7 @@
 #include <openrct2/drawing/Font.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/drawing/Drawing.h>
 
 enum {
     WIDX_BACKGROUND

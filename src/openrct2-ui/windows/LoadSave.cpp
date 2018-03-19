@@ -36,6 +36,9 @@
 #include <openrct2/windows/Intent.h>
 #include <string>
 #include <vector>
+#include <openrct2/scenario/Scenario.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/ride/TrackDesign.h>
 
 #pragma region Widgets
 

@@ -20,7 +20,9 @@
 #include "../../world/Sprite.h"
 #include "../../ride/RideData.h"
 #include "../../interface/Viewport.h"
+#include "../../peep/Staff.h"
 #include "../../ride/VehiclePaint.h"
+#include "../../ride/TrackDesign.h"
 
 /**
  * Paint Quadrant

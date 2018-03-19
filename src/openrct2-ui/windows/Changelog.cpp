@@ -26,6 +26,7 @@
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2/drawing/Drawing.h>
 
 using namespace OpenRCT2;
 

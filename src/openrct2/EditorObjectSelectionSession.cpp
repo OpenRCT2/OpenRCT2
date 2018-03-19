@@ -21,6 +21,7 @@
 #include "EditorObjectSelectionSession.h"
 #include "Game.h"
 #include "localisation/Localisation.h"
+#include "management/Research.h"
 #include "object/DefaultObjects.h"
 #include "object/ObjectList.h"
 #include "object/ObjectManager.h"

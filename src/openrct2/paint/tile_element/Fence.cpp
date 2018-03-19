@@ -22,6 +22,8 @@
 #include "../../interface/Colour.h"
 #include "../../interface/Viewport.h"
 #include "../../ride/Track.h"
+#include "../../ride/TrackDesign.h"
+#include "../../world/Banner.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/Wall.h"

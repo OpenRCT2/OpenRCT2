@@ -26,6 +26,9 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/Context.h>
 #include <openrct2/util/Util.h>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/world/Sprite.h>
+#include <openrct2/scenario/Scenario.h>
 
 enum {
     PAGE_INDIVIDUAL,

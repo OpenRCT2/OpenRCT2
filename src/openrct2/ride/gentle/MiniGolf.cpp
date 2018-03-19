@@ -24,6 +24,7 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 #include "../VehiclePaint.h"
+#include "../../world/Sprite.h"
 
 enum
 {

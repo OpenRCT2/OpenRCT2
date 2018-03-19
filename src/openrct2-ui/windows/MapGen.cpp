@@ -26,6 +26,7 @@
 #include <openrct2/world/MapGen.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
+#include <openrct2/drawing/Drawing.h>
 
 enum {
     WINDOW_MAPGEN_PAGE_BASE,

@@ -26,6 +26,8 @@
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/scenario/Scenario.h>
 
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
 

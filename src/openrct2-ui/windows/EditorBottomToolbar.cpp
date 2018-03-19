@@ -30,6 +30,9 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Scenery.h>
+#include <openrct2/management/Research.h>
+#include <openrct2/scenario/Scenario.h>
+#include <openrct2/world/Park.h>
 
 enum {
     WIDX_PREVIOUS_IMAGE,        // 1

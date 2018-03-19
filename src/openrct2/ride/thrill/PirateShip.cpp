@@ -19,6 +19,7 @@
 #include "../../paint/Supports.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../../world/Sprite.h"
 
 // 1 2 0 3 4
 static constexpr const uint8 track_map_1x5[][5] = {

@@ -29,6 +29,8 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/management/Research.h>
 
 #define WINDOW_SCENERY_WIDTH    634
 #define WINDOW_SCENERY_HEIGHT   180

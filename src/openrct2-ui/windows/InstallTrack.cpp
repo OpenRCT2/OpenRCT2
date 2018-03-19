@@ -29,6 +29,7 @@
 #include <openrct2/platform/platform.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
+#include <openrct2/ride/TrackDesign.h>
 
 enum {
     WIDX_BACKGROUND,

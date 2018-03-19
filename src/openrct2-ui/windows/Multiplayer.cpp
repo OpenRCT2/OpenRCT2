@@ -23,6 +23,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/drawing/Drawing.h>
 
 enum {
     WINDOW_MULTIPLAYER_PAGE_INFORMATION,

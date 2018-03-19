@@ -27,6 +27,7 @@
 #include <openrct2/world/Wall.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/sprites.h>
+#include <openrct2/world/Banner.h>
 
 #define WW 113
 #define WH 96

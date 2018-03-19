@@ -47,6 +47,8 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/ride/Station.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/ride/TrackDesign.h>
 
 enum {
     WINDOW_RIDE_PAGE_MAIN,

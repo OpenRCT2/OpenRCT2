@@ -18,6 +18,7 @@
 #define _WINDOW2_H_
 
 struct rct_research_item;
+struct rct_object_entry;
 
 /**
  * Window structure
