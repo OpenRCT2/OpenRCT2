@@ -150,14 +150,7 @@ namespace Platform
         {
             log_fatal("failed to read /proc/self/exe");
         }
-#elif defined(__FreeBSD__)
-        const sint32 mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
-        auto exeLen = sizeof(exePath);
-        if (sysctl(mib, 4, exePath, &exeLen, nullptr, 0) == -1)
-        {
-            log_fatal("failed to get process path");
-        }
-#elif defined(__OpenBSD__)
+#elif defined(__OpenBSD__) || defined(__FreeBSD__)
         // There is no way to get the path name of a running executable.
         // If you are not using the port or package, you may have to change this line!
         strlcpy(exePath, "/usr/local/bin/", sizeof(exePath));
