@@ -632,17 +632,6 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
             if (numPositions > 0 && numPositions <= std::numeric_limits<uint16>::max())
             {
                 std::vector<sint8> positionData;
-                if (numPositions < 255)
-                {
-                    positionData.push_back(static_cast<sint8>(numPositions));
-                }
-                else
-                {
-                    positionData.push_back(-1);
-                    positionData.push_back(static_cast<sint8>(numPositions & 0xFF));
-                    positionData.push_back(static_cast<sint8>(numPositions >> 8));
-                }
-
                 for (size_t j = 0; j < numPositions; j++)
                 {
                     auto pos = json_integer_value(json_array_get(positions, j));
