@@ -48,7 +48,7 @@ void InGameConsole::Input(CONSOLE_INPUT input)
     case CONSOLE_INPUT_HISTORY_PREVIOUS:
         if (_consoleHistoryIndex > 0) {
             _consoleHistoryIndex--;
-            memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], 256);
+            memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], CONSOLE_INPUT_SIZE);
         }
         _consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
         _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
@@ -57,7 +57,7 @@ void InGameConsole::Input(CONSOLE_INPUT input)
     case CONSOLE_INPUT_HISTORY_NEXT:
         if (_consoleHistoryIndex < _consoleHistoryCount - 1) {
             _consoleHistoryIndex++;
-            memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], 256);
+            memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], CONSOLE_INPUT_SIZE);
             _consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
             _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
             _consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
