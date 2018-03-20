@@ -4706,8 +4706,8 @@ static void peep_update_fixing(sint32 steps, rct_peep * peep)
     if ((peep->state == PEEP_STATE_INSPECTING) &&
         (ride->lifecycle_flags & ( RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
     {
-	// Ride has broken down since Mechanic was called to inspect it.
-	// Mechanic identifies the breakdown and switches to fixing it.
+        // Ride has broken down since Mechanic was called to inspect it.
+        // Mechanic identifies the breakdown and switches to fixing it.
         peep->state     = PEEP_STATE_FIXING;
     }
 
@@ -5292,7 +5292,7 @@ static bool peep_update_fixing_finish_fix_or_inspect(bool firstRun, sint32 steps
 
     if (!firstRun)
     {
-	ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
+        ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
 
         if (peep->state == PEEP_STATE_INSPECTING)
         {

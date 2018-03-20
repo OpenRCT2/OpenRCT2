@@ -2568,8 +2568,8 @@ static void ride_mechanic_status_update(sint32 rideIndex, sint32 mechanicStatus)
     if ((mechanicStatus == RIDE_MECHANIC_STATUS_UNDEFINED ||
         mechanicStatus == RIDE_MECHANIC_STATUS_CALLING ||
         mechanicStatus == RIDE_MECHANIC_STATUS_HEADING) &&
-	(ride->lifecycle_flags & RIDE_LIFECYCLE_BREAKDOWN_PENDING) &&
-	!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+        (ride->lifecycle_flags & RIDE_LIFECYCLE_BREAKDOWN_PENDING) &&
+        !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
         breakdownReason = ride->breakdown_reason_pending;
         if (
@@ -2585,7 +2585,7 @@ static void ride_mechanic_status_update(sint32 rideIndex, sint32 mechanicStatus)
     }
     switch (mechanicStatus) {
     case RIDE_MECHANIC_STATUS_UNDEFINED:
-	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
         {
             ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
         }
