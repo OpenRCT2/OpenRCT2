@@ -218,15 +218,19 @@ namespace dukglue {
 
 			template <typename FullT>
 			static void push(duk_context* ctx, const std::shared_ptr<T>& value) {
-				dukglue::detail::ProtoManager::make_script_object(ctx, value.get());
+				if (value == nullptr) {
+					duk_push_null(ctx);
+				} else {
+					dukglue::detail::ProtoManager::make_script_object(ctx, value.get());
 
-				// create + set shared_ptr
-				duk_push_pointer(ctx, new std::shared_ptr<T>(value));
-				duk_put_prop_string(ctx, -2, "\xFF" "shared_ptr");
+					// create + set shared_ptr
+					duk_push_pointer(ctx, new std::shared_ptr<T>(value));
+					duk_put_prop_string(ctx, -2, "\xFF" "shared_ptr");
 
-				// set shared_ptr finalizer
-				duk_push_c_function(ctx, &shared_ptr_finalizer, 1);
-				duk_set_finalizer(ctx, -2);
+					// set shared_ptr finalizer
+					duk_push_c_function(ctx, &shared_ptr_finalizer, 1);
+					duk_set_finalizer(ctx, -2);
+				}
 			}
 		};
 

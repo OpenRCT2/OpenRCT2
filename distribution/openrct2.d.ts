@@ -33,14 +33,47 @@ export interface Context {
      * The user's current configuration.
      */
     configuration: Configuration;
+
+    /**
+     * Registers a new intent (command) that can be mapped to a shortcut.
+     */
+    registerIntent(desc: IntentDesc);
+
     /**
      * Subscribes to the given hook.
      */
     subscribe(hook: string, callback: Function): IDisposable;
 }
 
+export interface IntentDesc
+{
+    key: string;
+    title?: string;
+    shortcut?: string;
+    action: Function;
+}
+
 export interface IDisposable {
     dispose(): void;
+}
+
+export type TileElementType =
+    "surface" | "footpath-item";
+
+export interface TileElement {
+    type: TileElementType;
+    zBase: number;
+    zClearance: number;
+
+    // footpath-item:
+    broken: boolean;
+}
+
+export interface Tile {
+    x: number;
+    y: number;
+    type: TileType;
+    elements: TileElement[];
 }
 
 export interface Ride {
@@ -51,8 +84,28 @@ export interface Ride {
     totalCustomers: number;
 }
 
+export type TileElementType =
+    "car" | "duck" | "peep";
+
+export interface Thing {
+    type: ThingType;
+    x: number;
+    y: number;
+    z: number;
+
+    // Peep
+    tshirt: number;
+    trousers: number;
+}
+
 export interface Map {
+    size: { x: number; y: number; };
+    rides: number;
+    things: number;
+
     getRide(id: number): Ride;
+    getTile(x: number, y: number): Tile;
+    getThing(id: number): Thing;
 }
 
 export type ParkMessageType =

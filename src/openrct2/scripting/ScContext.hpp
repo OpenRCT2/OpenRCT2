@@ -22,6 +22,10 @@ namespace OpenRCT2::Scripting
         {
         }
 
+        void registerIntent(const DukValue& desc)
+        {
+        }
+
         std::shared_ptr<ScDisposable> subscribe(const std::string &hook, const DukValue &callback)
         {
             auto hookType = GetHookType(hook);
@@ -51,6 +55,7 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context * ctx)
         {
+            dukglue_register_method(ctx, &ScContext::registerIntent, "registerIntent");
             dukglue_register_method(ctx, &ScContext::subscribe, "subscribe");
         }
     };
