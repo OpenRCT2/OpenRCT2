@@ -12,7 +12,7 @@ namespace OpenRCT2 { namespace Ui
         static constexpr sint32 CONSOLE_EDGE_PADDING = 4;
         static constexpr sint32 CONSOLE_CARET_WIDTH = 6;
 
-        bool                    _isOpen;
+        bool                    _isOpen = false;
         sint32                  _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
         sint32                  _lastMainViewportX, _lastMainViewportY;
         std::deque<std::string> _consoleLines;
