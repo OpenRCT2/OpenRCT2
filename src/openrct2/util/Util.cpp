@@ -223,7 +223,7 @@ bool avx2_available()
 // https://github.com/gcc-mirror/gcc/commit/132fa33ce998df69a9f793d63785785f4b93e6f1
 // which causes it to ignore subleafs, but the new function is unavailable on Ubuntu's
 // prehistoric toolchains
-#if defined(OpenRCT2_CPUID_GNUC_X86)
+#if defined(OpenRCT2_CPUID_GNUC_X86) && !defined(__FreeBSD__)
     return __builtin_cpu_supports("avx2");
 #else
     // AVX2 support is declared as the 5th bit of EBX with CPUID(EAX = 7, ECX = 0).
