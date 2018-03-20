@@ -1,5 +1,6 @@
 0.1.3 (in development)
 ------------------------------------------------------------------------
+- Feature: [#7187] Option for early scenario completion.
 - Feature: [#7267] Leverage more historical data in Finances window.
 - Improved: Raising land near the map edge makes the affected area smaller instead of showing an 'off edge map' error.
 
