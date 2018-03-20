@@ -4476,7 +4476,7 @@ STR_6166    :{SMALLFONT}{BLACK}Synchronises each frame displayed to the monitor'
 STR_6167    :{SMALLFONT}{BLACK}Advanced
 STR_6168    :Title Sequence
 STR_6169    :Scenario selection
-STR_6170    :Tweaks
+STR_6170    :Interface Tweaks
 STR_6171    :Search
 STR_6172    :{SMALLFONT}{BLACK}Search
 STR_6173    :Please provide the name to search:
@@ -4532,6 +4532,9 @@ STR_6222    :Can't place guest entry point here...
 STR_6223    :Must be outside park boundaries!
 STR_6224    :{STRING} placed a guest entry point.
 STR_6225    :Not supported with OpenGL renderer
+STR_6226    :Enable early scenario completion
+STR_6227    :{SMALLFONT}{BLACK}Triggers scenario completion when all scenario goals are met before the target date.
+STR_6228    :Scenario Options
 
 #############
 # Scenarios #

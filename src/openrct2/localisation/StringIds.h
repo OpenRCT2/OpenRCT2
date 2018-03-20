@@ -3887,6 +3887,10 @@ enum {
 
     STR_NOT_SUPPPORTED_IN_OPENGL = 6225,
 
+    STR_ALLOW_EARLY_COMPLETION = 6226,
+    STR_EARLY_COMPLETION_TIP = 6227,
+    STR_SCENARIO_OPTIONS = 6228,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

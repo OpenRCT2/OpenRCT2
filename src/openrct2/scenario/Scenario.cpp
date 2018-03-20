@@ -310,6 +310,10 @@ static void scenario_day_update()
     case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
         scenario_objective_check();
         break;
+    default:
+        if (gConfigGeneral.allow_early_completion)
+            scenario_objective_check();
+        break;
     }
 
     // Lower the casualty penalty
@@ -736,11 +740,13 @@ static void scenario_objective_check_guests_by()
     sint16 objectiveGuests = gScenarioObjectiveNumGuests;
     sint16 currentMonthYear = gDateMonthsElapsed;
 
-    if (currentMonthYear == 8 * objectiveYear){
-        if (parkRating >= 600 && guestsInPark >= objectiveGuests)
+    if (currentMonthYear == 8 * objectiveYear || gConfigGeneral.allow_early_completion) {
+        if (parkRating >= 600 && guestsInPark >= objectiveGuests) {
             scenario_success();
-        else
+        }
+        else if (currentMonthYear == 8 * objectiveYear) {
             scenario_failure();
+        }
     }
 }
 
@@ -751,11 +757,13 @@ static void scenario_objective_check_park_value_by()
     money32 objectiveParkValue = gScenarioObjectiveCurrency;
     money32 parkValue = gParkValue;
 
-    if (currentMonthYear == 8 * objectiveYear) {
-        if (parkValue >= objectiveParkValue)
+    if (currentMonthYear == 8 * objectiveYear || gConfigGeneral.allow_early_completion) {
+        if (parkValue >= objectiveParkValue) {
             scenario_success();
-        else
+        }
+        else if (currentMonthYear == 8 * objectiveYear) {
             scenario_failure();
+        }
     }
 }
 
