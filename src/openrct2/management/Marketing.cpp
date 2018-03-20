@@ -148,57 +148,6 @@ void marketing_set_guest_campaign(rct_peep * peep, sint32 campaign)
     }
 }
 
-void game_command_callback_marketing_start_campaign(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
-{
-    if (ebx != MONEY32_UNDEFINED)
-    {
-        window_close_by_class(WC_NEW_CAMPAIGN);
-    }
-}
-
-void marketing_start_campaign(sint32 type, sint32 rideOrItem, sint32 numWeeks)
-{
-    gGameCommandErrorTitle = STR_CANT_START_MARKETING_CAMPAIGN;
-    game_command_callback  = game_command_callback_marketing_start_campaign;
-    game_do_command(0, (numWeeks << 8) | GAME_COMMAND_FLAG_APPLY, 0, (rideOrItem << 8) | type, GAME_COMMAND_START_MARKETING_CAMPAIGN, 0, 0);
-}
-
-/**
- *
- *  rct2: 0x0069E73C
- */
-void game_command_start_campaign(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
-{
-    uint8 type       = *edx & 0xFF;
-    sint32 rideOrItem = (*edx >> 8) & 0xFF;
-    sint32 numWeeks   = (*ebx >> 8) & 0xFF;
-
-    if (type >= Util::CountOf(AdvertisingCampaignPricePerWeek))
-    {
-        log_warning("Invalid game command, type = %d", type);
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_MARKETING;
-    if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
-    {
-        gGameCommandErrorText = STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY;
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    if (*ebx & GAME_COMMAND_FLAG_APPLY)
-    {
-        gMarketingCampaignDaysLeft[type]  = numWeeks | CAMPAIGN_ACTIVE_FLAG;
-        gMarketingCampaignRideIndex[type] = rideOrItem;
-
-        window_invalidate_by_class(WC_FINANCES);
-    }
-
-    *ebx = numWeeks * AdvertisingCampaignPricePerWeek[type];
-}
-
 bool marketing_is_campaign_type_applicable(sint32 campaignType)
 {
     sint32         i;

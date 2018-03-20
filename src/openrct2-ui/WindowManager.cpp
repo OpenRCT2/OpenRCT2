@@ -410,7 +410,10 @@ public:
             }
             break;
         }
-
+        case INTENT_ACTION_UPDATE_RESEARCH:
+            window_invalidate_by_class(WC_FINANCES);
+            window_invalidate_by_class(WC_RESEARCH);
+            break;
         }
     }
 

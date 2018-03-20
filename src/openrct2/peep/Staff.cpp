@@ -78,42 +78,6 @@ void staff_reset_modes()
     staff_update_greyed_patrol_areas();
 }
 
-/**
- *
- *  rct2: 0x00669E55
- */
-void game_command_update_staff_colour(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                      sint32 * ebp)
-{
-    if (*ebx & GAME_COMMAND_FLAG_APPLY)
-    {
-        uint8 staffType = (*ebx >> 8) & 0xFF;
-        uint8 colour    = (*edx >> 8) & 0xFF;
-
-        // Client may send invalid data
-        bool ok = staff_set_colour(staffType, colour);
-        if (!ok)
-        {
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-
-        sint32     spriteIndex;
-        rct_peep * peep;
-        FOR_ALL_PEEPS(spriteIndex, peep)
-        {
-            if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == staffType)
-            {
-                peep->tshirt_colour   = colour;
-                peep->trousers_colour = colour;
-            }
-        }
-    }
-
-    gfx_invalidate_screen();
-    *ebx = 0;
-}
-
 static inline void staff_autoposition_new_staff_member(rct_peep * newPeep)
 {
     // Find a location to place new staff member
@@ -553,14 +517,6 @@ void game_command_fire_staff_member(sint32 * eax, sint32 * ebx, sint32 * ecx, si
         peep_sprite_remove(peep);
     }
     *ebx = 0;
-}
-
-/**
- * Updates the colour of the given staff type.
- */
-void update_staff_colour(uint8 staffType, uint16 colour)
-{
-    game_do_command(0, (staffType << 8) | GAME_COMMAND_FLAG_APPLY, 0, (colour << 8) | 4, GAME_COMMAND_SET_STAFF_COLOUR, 0, 0);
 }
 
 /**
