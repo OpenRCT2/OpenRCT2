@@ -2444,11 +2444,9 @@ void ride_prepare_breakdown(sint32 rideIndex, sint32 breakdownReason)
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         return;
 
-    ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_BREAKDOWN_PENDING;
 
     ride->breakdown_reason_pending = breakdownReason;
-    ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
     ride->breakdown_sound_modifier = 0;
     ride->not_fixed_timeout = 0;
 
@@ -2565,8 +2563,14 @@ static void ride_mechanic_status_update(sint32 rideIndex, sint32 mechanicStatus)
     rct_peep *mechanic;
 
     ride = get_ride(rideIndex);
-    switch (mechanicStatus) {
-    case RIDE_MECHANIC_STATUS_UNDEFINED:
+
+    // Turn a pending breakdown into a breakdown.
+    if ((mechanicStatus == RIDE_MECHANIC_STATUS_UNDEFINED ||
+        mechanicStatus == RIDE_MECHANIC_STATUS_CALLING ||
+        mechanicStatus == RIDE_MECHANIC_STATUS_HEADING) &&
+        (ride->lifecycle_flags & RIDE_LIFECYCLE_BREAKDOWN_PENDING) &&
+        !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+    {
         breakdownReason = ride->breakdown_reason_pending;
         if (
             breakdownReason == BREAKDOWN_SAFETY_CUT_OUT ||
@@ -2575,9 +2579,15 @@ static void ride_mechanic_status_update(sint32 rideIndex, sint32 mechanicStatus)
         ) {
             ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_LIST | RIDE_INVALIDATE_RIDE_MAIN;
-            ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
             ride->breakdown_reason = breakdownReason;
             ride_breakdown_add_news_item(rideIndex);
+        }
+    }
+    switch (mechanicStatus) {
+    case RIDE_MECHANIC_STATUS_UNDEFINED:
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+        {
+            ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
         }
         break;
     case RIDE_MECHANIC_STATUS_CALLING:

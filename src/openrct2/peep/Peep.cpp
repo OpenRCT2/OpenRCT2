@@ -163,18 +163,18 @@ static void   peep_give_real_name(rct_peep * peep);
 static sint32 guest_surface_path_finding(rct_peep * peep);
 static void   peep_read_map(rct_peep * peep);
 static bool   peep_heading_for_ride_or_park_exit(rct_peep * peep);
-static bool   peep_update_fixing_sub_state_0(Ride * ride);
-static bool   peep_update_fixing_sub_state_1(bool firstRun, rct_peep * peep, Ride * ride);
-static bool   peep_update_fixing_sub_state_2345(bool firstRun, rct_peep * peep, Ride * ride);
-static bool   peep_update_fixing_sub_state_6(bool firstRun, rct_peep * peep, Ride * ride);
-static bool   peep_update_fixing_sub_state_7(bool firstRun, rct_peep * peep, Ride * ride);
-static bool   peep_update_fixing_sub_state_8(bool firstRun, rct_peep * peep);
-static bool   peep_update_fixing_sub_state_9(bool firstRun, rct_peep * peep, Ride * ride);
-static bool   peep_update_fixing_sub_state_10(bool firstRun, rct_peep * peep, Ride * ride);
-static bool   peep_update_fixing_sub_state_11(bool firstRun, rct_peep * peep, Ride * ride);
-static bool   peep_update_fixing_sub_state_12(bool firstRun, rct_peep * peep, Ride * ride);
-static bool   peep_update_fixing_sub_state_13(bool firstRun, sint32 steps, rct_peep * peep, Ride * ride);
-static bool   peep_update_fixing_sub_state_14(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_enter_station(Ride * ride);
+static bool   peep_update_fixing_move_to_broken_down_vehicle(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_fix_vehicle(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_fix_vehicle_malfunction(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_move_to_station_end(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_fix_station_end(bool firstRun, rct_peep * peep);
+static bool   peep_update_fixing_move_to_station_start(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_fix_station_start(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_fix_station_brakes(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_move_to_station_exit(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_finish_fix_or_inspect(bool firstRun, sint32 steps, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_leave_by_entrance_exit(bool firstRun, rct_peep * peep, Ride * ride);
 static void   peep_update_ride_inspected(sint32 rideIndex);
 static void   peep_release_balloon(rct_peep * peep, sint16 spawn_height);
 
@@ -4586,16 +4586,101 @@ static void peep_update_ride(rct_peep * peep)
     }
 }
 
-static constexpr const uint32 loc_992A18[9] = {
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 7),
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 2) | (1 << 1),
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 4) | (1 << 1),
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 3) | (1 << 1),
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 5) | (1 << 1),
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 6) | (1 << 1),
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 11) | (1 << 9),
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 7),
-    (1 << 14) | (1 << 13) | (1 << 12) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 7),
+enum {
+  PEEP_FIXING_ENTER_STATION = 1 << 0,
+  PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE  = 1 << 1,
+  PEEP_FIXING_FIX_VEHICLE_CLOSED_RESTRAINTS = 1 << 2,
+  PEEP_FIXING_FIX_VEHICLE_CLOSED_DOORS = 1 << 3,
+  PEEP_FIXING_FIX_VEHICLE_OPEN_RESTRAINTS = 1 << 4,
+  PEEP_FIXING_FIX_VEHICLE_OPEN_DOORS = 1 << 5,
+  PEEP_FIXING_FIX_VEHICLE_MALFUNCTION = 1 << 6,
+  PEEP_FIXING_MOVE_TO_STATION_END = 1 << 7,
+  PEEP_FIXING_FIX_STATION_END = 1 << 8,
+  PEEP_FIXING_MOVE_TO_STATION_START = 1 << 9,
+  PEEP_FIXING_FIX_STATION_START = 1 << 10,
+  PEEP_FIXING_FIX_STATION_BRAKES = 1 << 11,
+  PEEP_FIXING_MOVE_TO_STATION_EXIT  = 1 << 12,
+  PEEP_FIXING_FINISH_FIX_OR_INSPECT = 1 << 13,
+  PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT = 1 << 14,
+};
+
+/**
+ * peep_fixing_sub_state_mask[] defines the applicable peep sub_states for
+ * mechanics fixing a ride. The array is indexed by breakdown_reason:
+ * - indexes 0-7 are the 8 breakdown reasons (see BREAKDOWN_* in Ride.h)
+ *   when fixing a broken down ride;
+ * - index 8 is for inspecting a ride.
+ */
+static constexpr const uint32 peep_fixing_sub_state_mask[9] = {
+  ( // BREAKDOWN_SAFETY_CUT_OUT
+      PEEP_FIXING_MOVE_TO_STATION_END |
+      PEEP_FIXING_FIX_STATION_END |
+      PEEP_FIXING_MOVE_TO_STATION_START |
+      PEEP_FIXING_FIX_STATION_START |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  ),
+  ( // BREAKDOWN_RESTRAINTS_STUCK_CLOSED
+      PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE |
+      PEEP_FIXING_FIX_VEHICLE_CLOSED_RESTRAINTS |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  ),
+  ( // BREAKDOWN_RESTRAINTS_STUCK_OPEN
+      PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE |
+      PEEP_FIXING_FIX_VEHICLE_OPEN_RESTRAINTS |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  ),
+  ( // BREAKDOWN_DOORS_STUCK_CLOSED
+      PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE |
+      PEEP_FIXING_FIX_VEHICLE_CLOSED_DOORS |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  ),
+  ( // BREAKDOWN_DOORS_STUCK_OPEN
+      PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE |
+      PEEP_FIXING_FIX_VEHICLE_OPEN_DOORS |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  ),
+  ( // BREAKDOWN_VEHICLE_MALFUNCTION
+      PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE |
+      PEEP_FIXING_FIX_VEHICLE_MALFUNCTION |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  ),
+  ( // BREAKDOWN_BRAKES_FAILURE
+      PEEP_FIXING_MOVE_TO_STATION_START |
+      PEEP_FIXING_FIX_STATION_BRAKES |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  ),
+  ( // BREAKDOWN_CONTROL_FAILURE
+      PEEP_FIXING_MOVE_TO_STATION_END |
+      PEEP_FIXING_FIX_STATION_END |
+      PEEP_FIXING_MOVE_TO_STATION_START |
+      PEEP_FIXING_FIX_STATION_START |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  ),
+  ( // INSPECTION
+      PEEP_FIXING_MOVE_TO_STATION_END |
+      PEEP_FIXING_FIX_STATION_END |
+      PEEP_FIXING_MOVE_TO_STATION_START |
+      PEEP_FIXING_FIX_STATION_START |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  )
 };
 
 /**
@@ -4618,59 +4703,67 @@ static void peep_update_fixing(sint32 steps, rct_peep * peep)
     bool progressToNextSubstate = true;
     bool firstRun               = true;
 
+    if ((peep->state == PEEP_STATE_INSPECTING) &&
+        (ride->lifecycle_flags & ( RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
+    {
+        // Ride has broken down since Mechanic was called to inspect it.
+        // Mechanic identifies the breakdown and switches to fixing it.
+        peep->state     = PEEP_STATE_FIXING;
+    }
+
     while (progressToNextSubstate)
     {
         switch (peep->sub_state)
         {
         case 0:
-            progressToNextSubstate = peep_update_fixing_sub_state_0(ride);
+            progressToNextSubstate = peep_update_fixing_enter_station(ride);
             break;
 
         case 1:
-            progressToNextSubstate = peep_update_fixing_sub_state_1(firstRun, peep, ride);
+            progressToNextSubstate = peep_update_fixing_move_to_broken_down_vehicle(firstRun, peep, ride);
             break;
 
         case 2:
         case 3:
         case 4:
         case 5:
-            progressToNextSubstate = peep_update_fixing_sub_state_2345(firstRun, peep, ride);
+            progressToNextSubstate = peep_update_fixing_fix_vehicle(firstRun, peep, ride);
             break;
 
         case 6:
-            progressToNextSubstate = peep_update_fixing_sub_state_6(firstRun, peep, ride);
+            progressToNextSubstate = peep_update_fixing_fix_vehicle_malfunction(firstRun, peep, ride);
             break;
 
         case 7:
-            progressToNextSubstate = peep_update_fixing_sub_state_7(firstRun, peep, ride);
+            progressToNextSubstate = peep_update_fixing_move_to_station_end(firstRun, peep, ride);
             break;
 
         case 8:
-            progressToNextSubstate = peep_update_fixing_sub_state_8(firstRun, peep);
+            progressToNextSubstate = peep_update_fixing_fix_station_end(firstRun, peep);
             break;
 
         case 9:
-            progressToNextSubstate = peep_update_fixing_sub_state_9(firstRun, peep, ride);
+            progressToNextSubstate = peep_update_fixing_move_to_station_start(firstRun, peep, ride);
             break;
 
         case 10:
-            progressToNextSubstate = peep_update_fixing_sub_state_10(firstRun, peep, ride);
+            progressToNextSubstate = peep_update_fixing_fix_station_start(firstRun, peep, ride);
             break;
 
         case 11:
-            progressToNextSubstate = peep_update_fixing_sub_state_11(firstRun, peep, ride);
+            progressToNextSubstate = peep_update_fixing_fix_station_brakes(firstRun, peep, ride);
             break;
 
         case 12:
-            progressToNextSubstate = peep_update_fixing_sub_state_12(firstRun, peep, ride);
+            progressToNextSubstate = peep_update_fixing_move_to_station_exit(firstRun, peep, ride);
             break;
 
         case 13:
-            progressToNextSubstate = peep_update_fixing_sub_state_13(firstRun, steps, peep, ride);
+            progressToNextSubstate = peep_update_fixing_finish_fix_or_inspect(firstRun, steps, peep, ride);
             break;
 
         case 14:
-            progressToNextSubstate = peep_update_fixing_sub_state_14(firstRun, peep, ride);
+            progressToNextSubstate = peep_update_fixing_leave_by_entrance_exit(firstRun, peep, ride);
             break;
 
         default:
@@ -4686,17 +4779,17 @@ static void peep_update_fixing(sint32 steps, rct_peep * peep)
         }
 
         sint32 subState = peep->sub_state;
-        uint32 ebp      = loc_992A18[8];
+        uint32 sub_state_sequence_mask      = peep_fixing_sub_state_mask[8];
 
         if (peep->state != PEEP_STATE_INSPECTING)
         {
-            ebp = loc_992A18[ride->breakdown_reason_pending];
+            sub_state_sequence_mask = peep_fixing_sub_state_mask[ride->breakdown_reason_pending];
         }
 
         do
         {
             subState++;
-        } while ((ebp & (1 << subState)) == 0);
+        } while ((sub_state_sequence_mask & (1 << subState)) == 0);
 
         peep->sub_state = subState & 0xFF;
     }
@@ -4704,8 +4797,9 @@ static void peep_update_fixing(sint32 steps, rct_peep * peep)
 
 /**
  * rct2: 0x006C0EEC
+ * fixing sub_state: enter_station - applies to fixing all break down reasons and ride inspections.
  */
-static bool peep_update_fixing_sub_state_0(Ride * ride)
+static bool peep_update_fixing_enter_station(Ride * ride)
 {
     ride->mechanic_status = RIDE_MECHANIC_STATUS_FIXING;
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -4715,8 +4809,10 @@ static bool peep_update_fixing_sub_state_0(Ride * ride)
 
 /**
  * rct2: 0x006C0F09
+ * fixing sub_state: move_to_broken_down_vehicle - applies to fixing all vehicle specific breakdown reasons
+ * - see peep_fixing_sub_state_mask[]
  */
-static bool peep_update_fixing_sub_state_1(bool firstRun, rct_peep * peep, Ride * ride)
+static bool peep_update_fixing_move_to_broken_down_vehicle(bool firstRun, rct_peep * peep, Ride * ride)
 {
     sint16 x, y, tmp_xy_distance;
 
@@ -4773,8 +4869,14 @@ static bool peep_update_fixing_sub_state_1(bool firstRun, rct_peep * peep, Ride 
 
 /**
  * rct2: 0x006C0FD3
+ * fixing sub_state: fix_vehicle - applies to fixing vehicle with:
+ * 1. restraints stuck closed,
+ * 2. doors stuck closed,
+ * 3. restrains stuck open,
+ * 4. doors stuck open.
+ * - see peep_fixing_sub_state_mask[]
  */
-static bool peep_update_fixing_sub_state_2345(bool firstRun, rct_peep * peep, Ride * ride)
+static bool peep_update_fixing_fix_vehicle(bool firstRun, rct_peep * peep, Ride * ride)
 {
     sint16 tmp_x, tmp_y, tmp_distance;
 
@@ -4815,8 +4917,10 @@ static bool peep_update_fixing_sub_state_2345(bool firstRun, rct_peep * peep, Ri
 
 /**
  * rct2: 0x006C107B
+ * fixing sub_state: fix_vehicle_malfunction - applies fixing to vehicle malfunction.
+ * - see peep_fixing_sub_state_mask[]
  */
-static bool peep_update_fixing_sub_state_6(bool firstRun, rct_peep * peep, Ride * ride)
+static bool peep_update_fixing_fix_vehicle_malfunction(bool firstRun, rct_peep * peep, Ride * ride)
 {
     sint16 tmp_x, tmp_y, tmp_distance;
 
@@ -4863,8 +4967,10 @@ static constexpr const CoordsXY _992A3C[] = {
 
 /**
  * rct2: 0x006C1114
+ * fixing sub_state: move_to_station_end - applies to fixing station specific breakdowns: safety cut-out, control failure, inspection.
+ * - see peep_fixing_sub_state_mask[]
  */
-static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep * peep, Ride * ride)
+static bool peep_update_fixing_move_to_station_end(bool firstRun, rct_peep * peep, Ride * ride)
 {
     sint16 x, y, tmp_distance;
 
@@ -4926,8 +5032,10 @@ static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep * peep, Ride 
 
 /**
  * rct2: 0x006C11F5
+ * fixing sub_state: fix_station_end - applies to fixing station specific breakdowns: safety cut-out, control failure, inspection.
+ * - see peep_fixing_sub_state_mask[]
  */
-static bool peep_update_fixing_sub_state_8(bool firstRun, rct_peep * peep)
+static bool peep_update_fixing_fix_station_end(bool firstRun, rct_peep * peep)
 {
     sint16 tmp_x, tmp_y, tmp_xy_distance;
 
@@ -4954,8 +5062,13 @@ static bool peep_update_fixing_sub_state_8(bool firstRun, rct_peep * peep)
 
 /**
  * rct2: 0x006C1239
+ * fixing sub_state: move_to_station_start
+ * 1. applies to fixing station specific breakdowns: safety cut-out, control failure,
+ * 2. applies to fixing brake failure,
+ * 3. applies to inspection.
+ * - see peep_fixing_sub_state_mask[]
  */
-static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep * peep, Ride * ride)
+static bool peep_update_fixing_move_to_station_start(bool firstRun, rct_peep * peep, Ride * ride)
 {
     sint16 x, y, tmp_xy_distance;
 
@@ -5038,8 +5151,12 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep * peep, Ride 
 
 /**
  * rct2: 0x006C1368
+ * fixing sub_state: fix_station_start
+ * 1. applies to fixing station specific breakdowns: safety cut-out, control failure,
+ * 2. applies to inspection.
+ * - see peep_fixing_sub_state_mask[]
  */
-static bool peep_update_fixing_sub_state_10(bool firstRun, rct_peep * peep, Ride * ride)
+static bool peep_update_fixing_fix_station_start(bool firstRun, rct_peep * peep, Ride * ride)
 {
     sint16 tmp_x, tmp_y, tmp_xy_distance;
 
@@ -5072,8 +5189,10 @@ static bool peep_update_fixing_sub_state_10(bool firstRun, rct_peep * peep, Ride
 
 /**
  * rct2: 0x006C13CE
+ * fixing sub_state: fix_station_brakes - applies to fixing brake failure
+ * - see peep_fixing_sub_state_mask[]
  */
-static bool peep_update_fixing_sub_state_11(bool firstRun, rct_peep * peep, Ride * ride)
+static bool peep_update_fixing_fix_station_brakes(bool firstRun, rct_peep * peep, Ride * ride)
 {
     sint16 tmp_x, tmp_y, tmp_xy_distance;
 
@@ -5112,8 +5231,10 @@ static bool peep_update_fixing_sub_state_11(bool firstRun, rct_peep * peep, Ride
 
 /**
  * rct2: 0x006C1474
+ * fixing sub_state: move_to_station_exit - applies to fixing all failures & inspections
+ * - see peep_fixing_sub_state_mask[]
  */
-static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep * peep, Ride * ride)
+static bool peep_update_fixing_move_to_station_exit(bool firstRun, rct_peep * peep, Ride * ride)
 {
     sint16 x, y, tmp_xy_distance;
 
@@ -5162,13 +5283,17 @@ static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep * peep, Ride
 
 /**
  * rct2: 0x006C1504
+ * fixing sub_state: finish_fix_or_inspect - applies to fixing all failures & inspections
+ * - see peep_fixing_sub_state_mask[]
  */
-static bool peep_update_fixing_sub_state_13(bool firstRun, sint32 steps, rct_peep * peep, Ride * ride)
+static bool peep_update_fixing_finish_fix_or_inspect(bool firstRun, sint32 steps, rct_peep * peep, Ride * ride)
 {
     sint16 tmp_x, tmp_y, tmp_xy_distance;
 
     if (!firstRun)
     {
+        ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
+
         if (peep->state == PEEP_STATE_INSPECTING)
         {
             peep_update_ride_inspected(peep->current_ride);
@@ -5204,8 +5329,10 @@ static bool peep_update_fixing_sub_state_13(bool firstRun, sint32 steps, rct_pee
 
 /**
  * rct2: 0x006C157E
+ * fixing sub_state: leave_by_entrance_exit - applies to fixing all failures & inspections
+ * - see peep_fixing_sub_state_mask[]
  */
-static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep * peep, Ride * ride)
+static bool peep_update_fixing_leave_by_entrance_exit(bool firstRun, rct_peep * peep, Ride * ride)
 {
     sint16 x, y, xy_distance;
 
