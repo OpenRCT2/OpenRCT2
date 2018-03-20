@@ -20,6 +20,7 @@
 #include "../core/MemoryStream.h"
 #include "../core/Util.hpp"
 #include "../localisation/StringIds.h"
+#include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"

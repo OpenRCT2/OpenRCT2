@@ -18,11 +18,13 @@
 
 #include "../Context.h"
 #include "../core/MemoryStream.h"
+#include "../drawing/Drawing.h"
 #include "../localisation/StringIds.h"
 #include "../peep/Staff.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
+#include "../world/Sprite.h"
 #include "GameAction.h"
 
 using namespace OpenRCT2;
