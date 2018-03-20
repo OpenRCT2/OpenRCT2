@@ -1,4 +1,11 @@
 FROM ubuntu:16.04
+RUN \
+  apt-get update && \
+  apt-get install -y software-properties-common && \
+  add-apt-repository ppa:ubuntu-toolchain-r/test && \
+  apt-get update && \
+  apt-get install -y g++-7 && \
+  update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 60
 # based on sstrakh/xenial-boost-clang but imported as source,
 # due to upstream image being obsolete and we don't need boost.
 RUN apt-get update \
@@ -8,8 +15,6 @@ RUN apt-get update \
 	&& apt-get update \
 	&& apt-get install -y \
 	clang-4.0 \
-	gcc \
-	g++ \
 	git-core \
 	&& ln -s /usr/bin/clang-4.0 /usr/bin/clang \
 	&& ln -s /usr/bin/clang++-4.0 /usr/bin/clang++
