@@ -18,6 +18,10 @@
 
 #include <limits.h>
 #include <pwd.h>
+#if defined(__linux__)
+// for PATH_MAX
+#include <linux/limits.h>
+#endif // __linux__
 #include "../core/Path.hpp"
 #include "../core/Util.hpp"
 #include "../OpenRCT2.h"
