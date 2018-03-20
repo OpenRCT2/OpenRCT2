@@ -1,7 +1,9 @@
 #include <algorithm>
+#include <cstring>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/interface/themes.h>
 #include <openrct2/interface/Window.h>
