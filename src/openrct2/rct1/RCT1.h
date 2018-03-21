@@ -416,7 +416,7 @@ struct rct1_peep {
     uint8 thirst;                   // 0x3F
     uint8 toilet;                   // 0x40
     uint8 mass;                     // 0x41
-    uint8 var_42;
+    uint8 time_to_consume;
     uint8 intensity;                // 0x43 The max intensity is stored in the first 4 bits, and the min intensity in the second 4 bits
     uint8 nausea_tolerance;         // 0x44
     uint8 window_invalidate_flags;  // 0x45
@@ -491,7 +491,7 @@ struct rct1_peep {
     uint8 litter_count;             // 0xE1
     union{
         uint8 time_on_ride;         // 0xE2
-        uint8 var_E2;               // 0xE2
+        uint8 staff_mowing_timeout;               // 0xE2
     };
     // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8 disgusting_count;         // 0xE3
@@ -502,7 +502,7 @@ struct rct1_peep {
     uint8 no_of_food;               // 0xEC
     uint8 no_of_drinks;             // 0xED
     uint8 no_of_souvenirs;          // 0xEE
-    uint8 var_EF;
+    uint8 vandalism_seen;           // 0xEF
     uint8 voucher_type;             // 0xF0
     uint8 voucher_arguments;        // 0xF1 ride_id or string_offset_id
     uint8 surroundings_thought_timeout; // 0xF2

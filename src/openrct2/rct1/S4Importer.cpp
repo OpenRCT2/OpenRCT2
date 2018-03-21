@@ -1420,9 +1420,9 @@ private:
         dst->next_z = src->next_z / 2;
         dst->next_var_29 = src->next_var_29;
         dst->var_37 = src->var_37;
-        dst->var_42 = src->var_42;
+        dst->time_to_consume = src->time_to_consume;
         dst->var_73 = src->var_73;
-        dst->var_EF = src->var_EF;
+        dst->vandalism_seen = src->vandalism_seen;
 
         dst->type = src->type;
 

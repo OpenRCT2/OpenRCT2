@@ -125,7 +125,7 @@ enum
 
 static void * _crowdSoundChannel = nullptr;
 
-static void   sub_68F41A(rct_peep * peep, sint32 index);
+static void   peep_128_tick_update(rct_peep * peep, sint32 index);
 static void   peep_update(rct_peep * peep);
 static bool   peep_has_empty_container(rct_peep * peep);
 static bool   peep_has_drink(rct_peep * peep);
@@ -575,7 +575,7 @@ void peep_update_all()
         }
         else
         {
-            sub_68F41A(peep, i);
+            peep_128_tick_update(peep, i);
             if (peep->linked_list_type_offset == SPRITE_LIST_PEEP * 2)
             {
                 peep_update(peep);
@@ -803,7 +803,7 @@ static void peep_decide_whether_to_leave_park(rct_peep * peep)
 
 // clang-format off
 /** rct2: 0x009822F4, 0x00982310 */
-static constexpr const uint8 byte_9822F4[] = {
+static constexpr const uint8 item_consumption_time[] = {
     0,      // SHOP_ITEM_BALLOON
     0,      // SHOP_ITEM_TOY
     0,      // SHOP_ITEM_MAP
@@ -942,8 +942,9 @@ static constexpr const uint8 peep_extra_item_containers[] = {
 /**
  *
  *  rct2: 0x0068F41A
+ *  Called every 128 ticks
  */
-static void sub_68F41A(rct_peep * peep, sint32 index)
+static void peep_128_tick_update(rct_peep * peep, sint32 index)
 {
     if (peep->type == PEEP_TYPE_STAFF)
     {
@@ -1337,15 +1338,15 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
     // Remaining content is executed every call.
 
     // 68FA89
-    if (peep->var_42 == 0 && peep_has_food(peep))
+    if (peep->time_to_consume == 0 && peep_has_food(peep))
     {
-        peep->var_42 += 3;
+        peep->time_to_consume += 3;
     }
 
-    if (peep->var_42 != 0 && peep->state != PEEP_STATE_ON_RIDE)
+    if (peep->time_to_consume != 0 && peep->state != PEEP_STATE_ON_RIDE)
     {
 
-        peep->var_42 = Math::Max(peep->var_42 - 3, 0);
+        peep->time_to_consume = Math::Max(peep->time_to_consume - 3, 0);
 
         if (peep_has_drink(peep))
         {
@@ -1358,7 +1359,7 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
             peep->toilet = Math::Min(peep->toilet + 2, 255);
         }
 
-        if (peep->var_42 == 0)
+        if (peep->time_to_consume == 0)
         {
             sint32 chosen_food = bitscanforward(peep_has_food_standard_flag(peep));
             if (chosen_food != -1)
@@ -1610,10 +1611,10 @@ static void peep_check_if_lost(rct_peep * peep)
         if (!(peep->peep_flags & PEEP_FLAGS_21))
             return;
 
-        peep->var_F4++;
-        if (peep->var_F4 != 254)
+        peep->time_lost++;
+        if (peep->time_lost != 254)
             return;
-        peep->var_F4 = 230;
+        peep->time_lost = 230;
     }
     peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_LOST, PEEP_THOUGHT_ITEM_NONE);
 
@@ -5617,7 +5618,7 @@ static void peep_update_mowing(rct_peep * peep)
  */
 static void peep_update_watering(rct_peep * peep)
 {
-    peep->var_E2 = 0;
+    peep->staff_mowing_timeout = 0;
     if (peep->sub_state == 0)
     {
         if (!checkForPath(peep))
@@ -5679,7 +5680,7 @@ static void peep_update_watering(rct_peep * peep)
  */
 static void peep_update_emptying_bin(rct_peep * peep)
 {
-    peep->var_E2 = 0;
+    peep->staff_mowing_timeout = 0;
 
     if (peep->sub_state == 0)
     {
@@ -5759,7 +5760,7 @@ static void peep_update_emptying_bin(rct_peep * peep)
  */
 static void peep_update_sweeping(rct_peep * peep)
 {
-    peep->var_E2 = 0;
+    peep->staff_mowing_timeout = 0;
     if (!checkForPath(peep))
         return;
 
@@ -7035,7 +7036,7 @@ static sint32 peep_update_patrolling_find_grass(rct_peep * peep)
     if (!(peep->staff_orders & STAFF_ORDERS_MOWING))
         return 0;
 
-    if (peep->var_E2 < 12)
+    if (peep->staff_mowing_timeout < 12)
         return 0;
 
     if ((peep->next_var_29 & 0x18) != 8)
@@ -8141,7 +8142,7 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     peep->thirst = Math::Clamp(0, peep->thirst + thirst_delta, 0xFF);
 
     peep->toilet = 0;
-    peep->var_42   = 0;
+    peep->time_to_consume   = 0;
     memset(&peep->rides_been_on, 0, 32);
 
     peep->no_of_rides = 0;
@@ -8180,7 +8181,7 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     peep->guest_heading_to_ride_id = 0xFF;
     peep->litter_count             = 0;
     peep->disgusting_count         = 0;
-    peep->var_EF                   = 0;
+    peep->vandalism_seen                   = 0;
     peep->paid_to_enter            = 0;
     peep->paid_on_rides            = 0;
     peep->paid_on_food             = 0;
@@ -8191,7 +8192,7 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     peep->no_of_souvenirs          = 0;
     peep->surroundings_thought_timeout = 0;
     peep->angriness                = 0;
-    peep->var_F4                   = 0;
+    peep->time_lost                   = 0;
 
     uint8 tshirt_colour = static_cast<uint8>(peep_rand() % Util::CountOf(tshirt_colours));
     peep->tshirt_colour = tshirt_colours[tshirt_colour];
@@ -8956,7 +8957,7 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
             // peeps previous decision not to go on the ride.
             return peep_return_to_centre_of_tile(peep);
 
-        peep->var_F4     = 0;
+        peep->time_lost     = 0;
         uint8 stationNum = (tile_element->properties.entrance.index >> 4) & 0x7;
         // Guest walks up to the ride for the first time since entering
         // the path tile or since considering another ride attached to
@@ -9200,14 +9201,16 @@ static sint32 peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rc
         return 1;
     }
 
-    uint8 var_EF = (peep->var_EF * 2) & 0x3F;
-    peep->var_EF &= 0xC0;
-    peep->var_EF |= var_EF;
+    uint8 vandalThoughtTimeout = (peep->vandalism_seen & 0xC0) >> 6;
+    // Advance the vandalised tiles by 1
+    uint8 vandalisedTiles = (peep->vandalism_seen * 2) & 0x3F;
 
     if (vandalism == true)
     {
-        peep->var_EF |= 1;
-        if (peep->var_EF & 0x3E && !(peep->var_EF & 0xC0))
+        // Add one more to the vandalised tiles
+        vandalisedTiles |= 1;
+        // If there has been 2 vandalised tiles in the last 6
+        if (vandalisedTiles & 0x3E && (vandalThoughtTimeout == 0))
         {
 
             if ((peep_rand() & 0xFFFF) <= 10922)
@@ -9215,15 +9218,16 @@ static sint32 peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rc
                 peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_VANDALISM, PEEP_THOUGHT_ITEM_NONE);
                 peep->happiness_target = Math::Max(0, peep->happiness_target - 17);
             }
-            peep->var_EF |= 0xC0;
+            vandalThoughtTimeout = 3;
         }
     }
 
-    if (peep->var_EF & 0xC0 && (peep_rand() & 0xFFFF) <= 4369)
+    if (vandalThoughtTimeout && (peep_rand() & 0xFFFF) <= 4369)
     {
-        peep->var_EF -= 0x40;
+        vandalThoughtTimeout--;
     }
 
+    peep->vandalism_seen = (vandalThoughtTimeout << 6) | vandalisedTiles;
     uint16 crowded      = 0;
     uint8  litter_count = 0;
     uint8  sick_count   = 0;
@@ -9376,7 +9380,7 @@ static sint32 peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_t
         }
 
         // Peep is not queuing.
-        peep->var_F4     = 0;
+        peep->time_lost     = 0;
         uint8 stationNum = (tile_element->properties.path.additions & 0x70) >> 4;
 
         if ((tile_element->properties.path.type & (1 << 3)) // Queue has the ride sign on it
@@ -9462,7 +9466,7 @@ static sint32 peep_interact_with_shop(rct_peep * peep, sint16 x, sint16 y, rct_t
     if (peep->type == PEEP_TYPE_STAFF)
         return peep_return_to_centre_of_tile(peep);
 
-    peep->var_F4 = 0;
+    peep->time_lost = 0;
 
     if (ride->status != RIDE_STATUS_OPEN)
         return peep_return_to_centre_of_tile(peep);
@@ -9475,7 +9479,7 @@ static sint32 peep_interact_with_shop(rct_peep * peep, sint16 x, sint16 y, rct_t
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY))
     {
-        peep->var_F4 = 0;
+        peep->time_lost = 0;
         if (!peep_should_go_on_ride(peep, rideIndex, 0, 0))
             return peep_return_to_centre_of_tile(peep);
 
@@ -12439,8 +12443,8 @@ loc_69B221:
     if (shopItem == SHOP_ITEM_MAP)
         peep_reset_pathfind_goal(peep);
 
-    uint16 dl    = byte_9822F4[shopItem];
-    peep->var_42 = Math::Min((peep->var_42 + dl), 255);
+    uint16 consumptionTime    = item_consumption_time[shopItem];
+    peep->time_to_consume = Math::Min((peep->time_to_consume + consumptionTime), 255);
 
     if (shopItem == SHOP_ITEM_PHOTO)
         peep->photo1_ride_ref = rideIndex;
@@ -13866,7 +13870,7 @@ static void peep_head_for_nearest_ride_type(rct_peep * peep, sint32 rideType)
         widget_invalidate(w, WC_PEEP__WIDX_ACTION_LBL);
     }
 
-    peep->var_F4 = 0;
+    peep->time_lost = 0;
 }
 
 /**
@@ -13998,7 +14002,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep * peep, sint32 rideTy
         window_invalidate(w);
     }
 
-    peep->var_F4 = 0;
+    peep->time_lost = 0;
 }
 
 /**

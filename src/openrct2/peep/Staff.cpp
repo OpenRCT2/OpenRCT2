@@ -333,7 +333,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
             // Staff energy determines their walking speed
             newPeep->energy        = 0x60;
             newPeep->energy_target = 0x60;
-            newPeep->var_E2        = 0;
+            newPeep->staff_mowing_timeout        = 0;
 
             peep_update_name_sort(newPeep);
 
@@ -1027,7 +1027,7 @@ static sint32 staff_handyman_direction_rand_surface(rct_peep * peep, uint8 valid
  */
 static bool staff_path_finding_handyman(rct_peep * peep)
 {
-    peep->var_E2++;
+    peep->staff_mowing_timeout++;
 
     uint8 litterDirection = 0xFF;
     uint8 validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
@@ -1038,7 +1038,7 @@ static bool staff_path_finding_handyman(rct_peep * peep)
     }
 
     uint8 direction = 0xFF;
-    if (litterDirection == 0xFF && (peep->staff_orders & STAFF_ORDERS_MOWING) && peep->var_E2 >= 12)
+    if (litterDirection == 0xFF && (peep->staff_orders & STAFF_ORDERS_MOWING) && peep->staff_mowing_timeout >= 12)
     {
         direction = staff_handyman_direction_to_uncut_grass(peep, validDirections);
     }
