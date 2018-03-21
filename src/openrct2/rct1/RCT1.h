@@ -507,7 +507,7 @@ struct rct1_peep {
     uint8 voucher_arguments;        // 0xF1 ride_id or string_offset_id
     uint8 surroundings_thought_timeout; // 0xF2
     uint8 angriness;                // 0xF3
-    uint8 var_F4;
+    uint8 time_lost;
     uint8 days_in_queue;            // 0xF5
     uint8 balloon_colour;           // 0xF6
     uint8 umbrella_colour;          // 0xF7
