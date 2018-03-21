@@ -7676,7 +7676,7 @@ static bool vehicle_update_motion_collision_detection(rct_vehicle * vehicle, sin
 
     if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
     {
-        vehicle->var_C4 = 0;
+        vehicle->path_check_optimisation = 0;
 
         // If hacking boat hire rides you can end up here
         if (otherVehicleIndex == nullptr)
@@ -7799,12 +7799,12 @@ static bool vehicle_update_motion_collision_detection(rct_vehicle * vehicle, sin
 
     if (mayCollide == false)
     {
-        vehicle->var_C4 = 0;
+        vehicle->path_check_optimisation = 0;
         return false;
     }
 
-    vehicle->var_C4++;
-    if (vehicle->var_C4 < 200)
+    vehicle->path_check_optimisation++;
+    if (vehicle->path_check_optimisation < 200)
     {
         vehicle->update_flags |= VEHICLE_UPDATE_FLAG_6;
         if (otherVehicleIndex != nullptr)

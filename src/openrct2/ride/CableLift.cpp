@@ -70,7 +70,7 @@ rct_vehicle * cable_lift_segment_create(sint32 rideIndex,
     current->sound2_flags           = 0;
     current->sound1_id              = RCT12_SOUND_ID_NULL;
     current->sound2_id              = RCT12_SOUND_ID_NULL;
-    current->var_C4                 = 0;
+    current->path_check_optimisation                 = 0;
     current->animation_frame        = 0;
     current->var_C8                 = 0;
     current->var_CA                 = 0;

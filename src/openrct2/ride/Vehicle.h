@@ -204,7 +204,7 @@ struct rct_vehicle {
     uint8 powered_acceleration;     // 0xC3
     union {
         uint8 dodgems_collision_direction; // 0xC4
-        uint8 var_C4;
+        uint8 path_check_optimisation;
     };
     uint8 animation_frame;          // 0xC5
     uint8 pad_C6[0x2];
