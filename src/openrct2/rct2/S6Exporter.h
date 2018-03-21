@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <string>
 #include <vector>
 #include "../common.h"
 #include "../object/ObjectList.h"

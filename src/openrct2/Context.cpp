@@ -35,6 +35,7 @@
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "FileClassifier.h"
+#include "HandleParkLoad.h"
 #include "network/network.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
