@@ -4100,7 +4100,7 @@ static void vehicle_update_unloading_passengers(rct_vehicle * vehicle)
             vehicle->peep[seat * 2] = SPRITE_INDEX_NULL;
 
             peep_decrement_num_riders(peep);
-            peep->sub_state = PEEP_RIDE_SS_LEAVE_VEHICLE;
+            peep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
             peep->state     = PEEP_STATE_LEAVING_RIDE;
             peep_window_state_update(peep);
 
@@ -4108,7 +4108,7 @@ static void vehicle_update_unloading_passengers(rct_vehicle * vehicle)
             vehicle->peep[seat * 2 + 1] = SPRITE_INDEX_NULL;
 
             peep_decrement_num_riders(peep);
-            peep->sub_state = PEEP_RIDE_SS_LEAVE_VEHICLE;
+            peep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
             peep->state     = PEEP_STATE_LEAVING_RIDE;
             peep_window_state_update(peep);
         }
@@ -4146,7 +4146,7 @@ static void vehicle_update_unloading_passengers(rct_vehicle * vehicle)
             {
                 rct_peep * peep = GET_PEEP(train->peep[peepIndex]);
                 peep_decrement_num_riders(peep);
-                peep->sub_state = PEEP_RIDE_SS_LEAVE_VEHICLE;
+                peep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
                 peep->state     = PEEP_STATE_LEAVING_RIDE;
                 peep_window_state_update(peep);
             }
