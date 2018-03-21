@@ -3569,8 +3569,8 @@ STR_5232    :{SMALLFONT}{BLACK}Editors
 STR_5233    :{SMALLFONT}{BLACK}Overigs
 STR_5234    :{SMALLFONT}{BLACK}Dialoogvensters
 STR_5235    :{SMALLFONT}{BLACK}Instellingen
-STR_5236    :Venster:
-STR_5237    :Palet:
+STR_5236    :Venster
+STR_5237    :Palet
 STR_5238    :Huidig thema:
 STR_5239    :Kopiëren
 STR_5240    :Voer een naam in voor dit thema
@@ -3829,8 +3829,8 @@ STR_5492    :Scenario-opties
 STR_5493    :Bericht verzenden
 STR_5494    :<removed string - do not use>
 STR_5495    :Spelerslijst
-STR_5496    :Speler:
-STR_5497    :Ping:
+STR_5496    :Speler
+STR_5497    :Ping
 STR_5498    :Serverlijst
 STR_5499    :Spelersnaam:
 STR_5500    :Server toevoegen
@@ -3975,7 +3975,7 @@ STR_5638    :Geen toestemming
 STR_5639    :{SMALLFONT}{BLACK}Spelerslijst tonen
 STR_5640    :{SMALLFONT}{BLACK}Groepen beheren
 STR_5641    :Standaardgroep:
-STR_5642    :Groep:
+STR_5642    :Groep
 STR_5643    :Groep toevoegen
 STR_5644    :Groep verwijderen
 STR_5645    :Chatten
@@ -4003,7 +4003,7 @@ STR_5666    :Inloggen zonder wachtwoord
 STR_5701    :{WINDOW_COLOUR_2}Laatste actie: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Laatste actie van deze speler localiseren
 STR_5703    :De host kan niet worden verwijderd
-STR_5704    :Laatste actie:
+STR_5704    :Laatste actie
 STR_5705    :Kan de speler niet aan deze groep toewijzen
 STR_5706    :Kan geen groepen verwijderen waarin spelers zijn toegewezen
 STR_5707    :Deze groep kan niet worden aangepast
