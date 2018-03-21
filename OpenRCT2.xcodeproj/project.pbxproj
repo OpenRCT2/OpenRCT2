@@ -732,6 +732,7 @@
 		4C7B54792010DF4C00A52E21 /* Shared.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shared.cpp; sourceTree = "<group>"; };
 		4C7B547A2010DF4C00A52E21 /* Windows.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Windows.cpp; sourceTree = "<group>"; };
 		4C7B547E2010DFF700A52E21 /* Crash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crash.h; sourceTree = "<group>"; };
+		4C80798D2062AFE400C5850B /* HandleParkLoad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HandleParkLoad.h; sourceTree = "<group>"; };
 		4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideGroupManager.cpp; sourceTree = "<group>"; };
 		4C8667811EEFDCDF0024AAB8 /* RideGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideGroupManager.h; sourceTree = "<group>"; };
 		4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = X8DrawingEngine.cpp; sourceTree = "<group>"; };
@@ -1789,6 +1790,7 @@
 				F76C83B41EC4E7CC00FA49E2 /* FileClassifier.h */,
 				4CE4623F1FD0710E0001CD98 /* Game.cpp */,
 				4CE462401FD0710E0001CD98 /* Game.h */,
+				4C80798D2062AFE400C5850B /* HandleParkLoad.h */,
 				F76C83B71EC4E7CC00FA49E2 /* Imaging.cpp */,
 				F76C83B81EC4E7CC00FA49E2 /* Imaging.h */,
 				4CC4B8E81FE00C5D00660D62 /* Input.cpp */,
