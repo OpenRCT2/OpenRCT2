@@ -25,6 +25,7 @@
 #include "Editor.h"
 #include "FileClassifier.h"
 #include "Game.h"
+#include "HandleParkLoad.h"
 #include "Input.h"
 #include "interface/Screenshot.h"
 #include "interface/Viewport.h"

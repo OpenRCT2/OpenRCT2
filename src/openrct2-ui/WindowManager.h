@@ -14,7 +14,6 @@
 *****************************************************************************/
 #pragma endregion
 
-#include <string>
 #include <openrct2/common.h>
 
 namespace OpenRCT2 { namespace Ui

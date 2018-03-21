@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <string>
+
 enum {
     NETWORK_MODE_NONE,
     NETWORK_MODE_CLIENT,
@@ -53,7 +55,6 @@ struct LocationXYZ16;
 #include <list>
 #include <set>
 #include <memory>
-#include <string>
 #include <vector>
 #include <functional>
 #include <fstream>
