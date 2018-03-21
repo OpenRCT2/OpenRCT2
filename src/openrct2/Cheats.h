@@ -116,6 +116,7 @@ enum {
 #define CHEATS_TRAM_INCREMENT 250
 #define CHEATS_STAFF_FAST_SPEED 0xFF
 #define CHEATS_STAFF_NORMAL_SPEED 0x60
+#define CHEATS_STAFF_FREEZE_SPEED 0
 
 extern sint32 park_rating_spinner_value;
 extern sint32 year_spinner_value;

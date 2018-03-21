@@ -3895,6 +3895,8 @@ enum {
     STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME = 6230,
     STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME_DRAG = 6231,
 
+    STR_FROZEN = 6232,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

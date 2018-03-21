@@ -15,23 +15,25 @@
 #pragma endregion
 
 #include <openrct2/config/Config.h>
-#include <openrct2/network/network.h>
-#include <openrct2/world/Climate.h>
-#include <openrct2/core/Math.hpp>
-#include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
-#include <openrct2-ui/interface/Widget.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/core/Util.hpp>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
+#include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
 
 #define CHEATS_MONEY_DEFAULT MONEY(10000,00)
 #define CHEATS_MONEY_INCREMENT_DIV MONEY(5000,00)
 static utf8 _moneySpinnerText[MONEY_STRING_MAXLENGTH];
 static money32 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
+static sint32 _selectedStaffSpeed = 1;
 
 enum
 {
@@ -39,6 +41,13 @@ enum
     WINDOW_CHEATS_PAGE_GUESTS,
     WINDOW_CHEATS_PAGE_MISC,
     WINDOW_CHEATS_PAGE_RIDES,
+};
+
+static rct_string_id _staffSpeedNames[] =
+{
+    STR_FROZEN,
+    STR_NORMAL,
+    STR_FAST,
 };
 
 static constexpr const rct_string_id WeatherTypes[] =
@@ -137,8 +146,8 @@ enum WINDOW_CHEATS_WIDGET_IDX
     WIDX_FIX_VANDALISM,
     WIDX_REMOVE_LITTER,
     WIDX_DISABLE_PLANT_AGING,
-    WIDX_FAST_STAFF,
-    WIDX_NORMAL_STAFF,
+    WIDX_STAFF_SPEED,
+    WIDX_STAFF_SPEED_DROPDOWN_BUTTON,
 
     WIDX_FIX_ALL = WIDX_TAB_CONTENT,
     WIDX_RENEW_RIDES,
@@ -289,9 +298,9 @@ static rct_widget window_cheats_misc_widgets[] =
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(14),        HPL(14),        STR_CHEAT_WATER_PLANTS,             STR_NONE },                             // Water plants
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(14),        HPL(14),        STR_CHEAT_FIX_VANDALISM,            STR_NONE },                             // Fix vandalism
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(15),        HPL(15),        STR_CHEAT_REMOVE_LITTER,            STR_NONE },                             // Remove litter
-    { WWT_CHECKBOX,         1,      XPL(0),                 WPL(0),                 YPL(16),        HPL(16),        STR_CHEAT_DISABLE_PLANT_AGING,      STR_CHEAT_DISABLE_PLANT_AGING_TIP },    // Disable plant ageing
-    { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(17),        HPL(17),        STR_FAST,                           STR_NONE },                             // Fast staff
-    { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(17),        HPL(17),        STR_NORMAL,                         STR_NONE },                             // Normal staff
+    { WWT_CHECKBOX,         1,      XPL(0),                 WPL(1),                 YPL(16),        HPL(16),        STR_CHEAT_DISABLE_PLANT_AGING,      STR_CHEAT_DISABLE_PLANT_AGING_TIP },    // Disable plant ageing
+    { WWT_DROPDOWN,         1,      XPL(1),                 WPL(1),                 YPL(17) + 2,    YPL(17) + 13,   STR_NONE,                           STR_NONE },                             // Staff speed
+    { WWT_BUTTON,           1,      WPL(1) - 11,            WPL(1) - 1,             YPL(17) + 3,    YPL(17) + 12,   STR_DROPDOWN_GLYPH,                 STR_NONE },                             // Staff speed
     { WIDGETS_END },
 };
 static rct_widget window_cheats_rides_widgets[] =
@@ -552,8 +561,8 @@ static uint64 window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_NEVERENDING_MARKETING) |
     (1ULL << WIDX_SANDBOX_MODE) |
     (1ULL << WIDX_RESET_DATE) |
-    (1ULL << WIDX_FAST_STAFF) |
-    (1ULL << WIDX_NORMAL_STAFF) |
+    (1ULL << WIDX_STAFF_SPEED) |
+    (1ULL << WIDX_STAFF_SPEED_DROPDOWN_BUTTON) |
     (1ULL << WIDX_PARK_PARAMETERS) |
     (1ULL << WIDX_FORCE_PARK_RATING) |
     (1ULL << WIDX_INCREASE_PARK_RATING) |
@@ -706,7 +715,8 @@ static void window_cheats_misc_mousedown(rct_window *w, rct_widgetindex widgetIn
         if (get_forced_park_rating() >= 0)
             game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETFORCEDPARKRATING, park_rating_spinner_value, GAME_COMMAND_CHEAT, 0, 0);
         break;
-    case WIDX_WEATHER_DROPDOWN_BUTTON:{
+    case WIDX_WEATHER_DROPDOWN_BUTTON:
+        {
         rct_widget *dropdownWidget;
         int i, currentWeather;
 
@@ -729,17 +739,61 @@ static void window_cheats_misc_mousedown(rct_window *w, rct_widgetindex widgetIn
 
         currentWeather = gClimateCurrent.Weather;
         dropdown_set_checked(currentWeather, true);
-    }
-    break;
+        }
+        break;
+    case WIDX_STAFF_SPEED_DROPDOWN_BUTTON:
+        {
+            rct_widget * dropdownWidget;
+
+            dropdownWidget = widget - 1;
+
+            for (size_t i = 0; i < Util::CountOf(_staffSpeedNames); i++)
+            {
+                gDropdownItemsArgs[i] = _staffSpeedNames[i];
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+            }
+
+            window_dropdown_show_text_custom_width(
+                w->x + dropdownWidget->left,
+                w->y + dropdownWidget->top,
+                dropdownWidget->bottom - dropdownWidget->top + 1,
+                w->colours[1],
+                0,
+                DROPDOWN_FLAG_STAY_OPEN,
+                3,
+                dropdownWidget->right - dropdownWidget->left - 3
+            );
+            dropdown_set_checked(_selectedStaffSpeed, true);
+        }
     }
 }
 
 static void window_cheats_misc_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
-    if (widgetIndex != WIDX_WEATHER_DROPDOWN_BUTTON || dropdownIndex == -1)
+    if (dropdownIndex == -1)
+    {
         return;
+    }
+    else if (widgetIndex == WIDX_WEATHER_DROPDOWN_BUTTON)
+    {
+        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_FORCEWEATHER, dropdownIndex, GAME_COMMAND_CHEAT, 0, 0);
 
-    game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_FORCEWEATHER, dropdownIndex, GAME_COMMAND_CHEAT, 0, 0);
+    }
+    else if (widgetIndex == WIDX_STAFF_SPEED_DROPDOWN_BUTTON)
+    {
+        sint32 speed = CHEATS_STAFF_FAST_SPEED;
+        switch (dropdownIndex)
+        {
+        case 0:
+            speed = CHEATS_STAFF_FREEZE_SPEED;
+            break;
+        case 1:
+            speed = CHEATS_STAFF_NORMAL_SPEED;
+        }
+
+       game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETSTAFFSPEED, speed, GAME_COMMAND_CHEAT, 0, 0);
+        _selectedStaffSpeed = dropdownIndex;
+    }
 }
 
 static void window_cheats_money_mouseup(rct_window *w, rct_widgetindex widgetIndex)
@@ -921,12 +975,6 @@ static void window_cheats_misc_mouseup(rct_window *w, rct_widgetindex widgetInde
         break;
     case WIDX_RESET_DATE:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_RESETDATE, 0, GAME_COMMAND_CHEAT, 0, 0);
-        break;
-    case WIDX_FAST_STAFF:
-        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETSTAFFSPEED, CHEATS_STAFF_FAST_SPEED, GAME_COMMAND_CHEAT, 0, 0);
-        break;
-    case WIDX_NORMAL_STAFF:
-        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETSTAFFSPEED, CHEATS_STAFF_NORMAL_SPEED, GAME_COMMAND_CHEAT, 0, 0);
         break;
     case WIDX_PARK_PARAMETERS:
         context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
@@ -1118,6 +1166,8 @@ static void window_cheats_invalidate(rct_window *w)
 
     // Current weather
     window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[gClimateCurrent.Weather];
+    // Staff speed
+    window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[_selectedStaffSpeed];
 }
 
 static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
