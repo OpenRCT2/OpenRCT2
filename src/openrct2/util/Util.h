@@ -51,7 +51,7 @@ char *safe_strcpy(char * destination, const char * source, size_t num);
 char *safe_strcat(char *destination, const char *source, size_t size);
 char *safe_strcat_path(char *destination, const char *source, size_t size);
 char *safe_strtrimleft(char *destination, const char *source, size_t size);
-#if !defined(_GNU_SOURCE)
+#if !(defined(_GNU_SOURCE) || (defined(__DARWIN_C_LEVEL) && __DARWIN_C_LEVEL >= 200809L))
 char * strcasestr(const char * haystack, const char * needle);
 #endif
 
