@@ -3891,6 +3891,10 @@ enum {
     STR_EARLY_COMPLETION_TIP = 6227,
     STR_SCENARIO_OPTIONS = 6228,
 
+    STR_WINDOW_COLOUR_2_STRINGID_STRINGID = 6229,
+    STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME = 6230,
+    STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME_DRAG = 6231,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

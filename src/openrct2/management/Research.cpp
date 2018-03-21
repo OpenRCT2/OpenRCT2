@@ -775,7 +775,7 @@ void set_every_ride_entry_not_invented()
  *
  *  rct2: 0x0068563D
  */
-rct_string_id research_item_get_name(rct_research_item * researchItem)
+rct_string_id research_item_get_name(const rct_research_item * researchItem)
 {
 
     if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE)

@@ -139,7 +139,7 @@ void set_every_ride_type_invented();
 void set_every_ride_type_not_invented();
 void set_every_ride_entry_invented();
 void set_every_ride_entry_not_invented();
-rct_string_id research_item_get_name(rct_research_item * researchItem);
+rct_string_id research_item_get_name(const rct_research_item * researchItem);
 rct_string_id research_get_friendly_base_ride_type_name(uint8 trackType, rct_ride_entry * rideEntry);
 void research_remove_flags();
 void research_fix();
