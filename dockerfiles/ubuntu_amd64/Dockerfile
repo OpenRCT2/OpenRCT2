@@ -11,13 +11,13 @@ RUN \
 RUN apt-get update \
 	&& apt-get install -y curl sudo \
 	&& curl http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add - \
-	&& echo "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-4.0 main" > /etc/apt/sources.list.d/clang4.list \
+	&& echo "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-5.0 main" > /etc/apt/sources.list.d/clang5.list \
 	&& apt-get update \
 	&& apt-get install -y \
-	clang-4.0 \
+	clang-5.0 \
 	git-core \
-	&& ln -s /usr/bin/clang-4.0 /usr/bin/clang \
-	&& ln -s /usr/bin/clang++-4.0 /usr/bin/clang++
+	&& ln -s /usr/bin/clang-5.0 /usr/bin/clang \
+	&& ln -s /usr/bin/clang++-5.0 /usr/bin/clang++
 RUN curl https://cmake.org/files/v3.9/cmake-3.9.4-Linux-x86_64.sh -o cmake.sh && sh cmake.sh --skip-license --exclude-subdir --prefix=/usr/local
 RUN apt-get -y upgrade
 # clang and gcc already installed
