@@ -2572,16 +2572,16 @@ void remove_peep_from_queue(rct_peep * peep)
  *
  *  rct2: 0x00691C6E
  */
-static rct_vehicle * peep_choose_car_from_ride(rct_peep * peep, Ride * ride, const uint8 * car_array, uint8 car_array_size)
+static rct_vehicle * peep_choose_car_from_ride(rct_peep * peep, Ride * ride, std::vector<uint8> &car_array)
 {
     uint8 chosen_car = peep_rand();
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES) && ((chosen_car & 0xC) != 0xC))
     {
-        chosen_car = (peep_rand() & 1) ? 0 : car_array_size - 1;
+        chosen_car = (peep_rand() & 1) ? 0 : (uint8)car_array.size() - 1;
     }
     else
     {
-        chosen_car = (chosen_car * (uint16)car_array_size) >> 8;
+        chosen_car = (chosen_car * (uint16)car_array.size()) >> 8;
     }
 
     peep->current_car = car_array[chosen_car];
@@ -2673,7 +2673,7 @@ static void peep_go_to_ride_entrance(rct_peep * peep, Ride * ride)
     remove_peep_from_queue(peep);
 }
 
-static bool peep_find_vehicle_to_enter(rct_peep * peep, Ride * ride, uint8 * car_array, uint8 * car_array_size)
+static bool peep_find_vehicle_to_enter(rct_peep * peep, Ride * ride, std::vector<uint8> &car_array)
 {
     uint8 chosen_train = 0xFF;
 
@@ -2705,7 +2705,6 @@ static bool peep_find_vehicle_to_enter(rct_peep * peep, Ride * ride, uint8 * car
     }
 
     peep->current_train = chosen_train;
-    uint8 * car_array_pointer = car_array;
 
     sint32 i = 0;
 
@@ -2737,16 +2736,10 @@ static bool peep_find_vehicle_to_enter(rct_peep * peep, Ride * ride, uint8 * car
             if (vehicle->peep[position] != SPRITE_INDEX_NULL)
                 continue;
         }
-
-        *car_array_pointer++ = i;
+        car_array.push_back(i);
     }
 
-    *car_array_size = (uint8)(car_array_pointer - car_array);
-
-    if (*car_array_size == 0)
-        return false;
-
-    return true;
+    return !car_array.empty();
 }
 
 static void peep_update_ride_at_entrance_try_leave(rct_peep * peep)
@@ -2834,8 +2827,7 @@ static void peep_update_ride_at_entrance(rct_peep * peep)
         }
     }
 
-    uint8 carArraySize = 0xFF;
-    uint8 carArray[255];
+    std::vector<uint8> carArray;
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
     {
@@ -2844,7 +2836,7 @@ static void peep_update_ride_at_entrance(rct_peep * peep)
     }
     else
     {
-        if (!peep_find_vehicle_to_enter(peep, ride, carArray, &carArraySize))
+        if (!peep_find_vehicle_to_enter(peep, ride, carArray))
             return;
     }
 
@@ -2866,7 +2858,7 @@ static void peep_update_ride_at_entrance(rct_peep * peep)
 
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
     {
-        rct_vehicle * vehicle = peep_choose_car_from_ride(peep, ride, carArray, carArraySize);
+        rct_vehicle * vehicle = peep_choose_car_from_ride(peep, ride, carArray);
         peep_choose_seat_from_car(peep, ride, vehicle);
     }
     peep_go_to_ride_entrance(peep, ride);
