@@ -4535,6 +4535,10 @@ STR_6225    :Not supported with OpenGL renderer
 STR_6226    :Enable early scenario completion
 STR_6227    :{SMALLFONT}{BLACK}Triggers scenario completion when all scenario goals are met before the target date.
 STR_6228    :Scenario Options
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+
 
 #############
 # Scenarios #

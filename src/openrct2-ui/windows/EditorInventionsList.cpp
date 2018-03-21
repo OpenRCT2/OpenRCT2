@@ -30,6 +30,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Scenery.h>
+#include <openrct2/ride/RideGroupManager.h>
 
 #pragma region Widgets
 
@@ -86,6 +87,8 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
 static void window_editor_inventions_list_drag_cursor(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y, sint32 *cursorId);
 static void window_editor_inventions_list_drag_moved(rct_window* w, sint32 x, sint32 y);
 static void window_editor_inventions_list_drag_paint(rct_window *w, rct_drawpixelinfo *dpi);
+
+static rct_string_id window_editor_inventions_list_prepare_name(const rct_research_item * researchItem, bool withGap);
 
 // 0x0098177C
 static rct_window_event_list window_editor_inventions_list_events = {
@@ -711,8 +714,9 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
     x = w->x + ((widget->left + widget->right) / 2) + 1;
     y = w->y + widget->bottom + 3;
     width = w->width - w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right - 6;
-    stringId = research_item_get_name(researchItem);
-    gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, x, y, width);
+
+    rct_string_id drawString = window_editor_inventions_list_prepare_name(researchItem, false);
+    gfx_draw_string_centred_clipped(dpi, drawString, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
     y += 15;
 
     // Item category
@@ -780,6 +784,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
             continue;
 
         disableItemMovement = research_item_is_always_researched(researchItem);
+
         stringId = research_item_get_name(researchItem);
 
         ptr = buffer;
@@ -787,7 +792,19 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
             ptr = utf8_write_codepoint(ptr, colour);
         }
 
-        format_string(ptr, 256, stringId, nullptr);
+        if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
+        {
+            const rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
+            rct_string_id args[] = {
+                rideGroupName,
+                stringId
+            };
+            format_string(ptr, 256, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, &args);
+        }
+        else
+        {
+            format_string(ptr, 256, stringId, nullptr);
+        }
 
         if (disableItemMovement) {
             gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
@@ -814,16 +831,29 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
  */
 static void window_editor_inventions_list_drag_open(rct_research_item *researchItem)
 {
-    char buffer[256];
+    char buffer[256], *ptr;
     sint32 stringWidth;
-    rct_string_id stringId;
     rct_window *w;
 
     window_close_by_class(WC_EDITOR_INVENTION_LIST_DRAG);
     _editorInventionsListDraggedItem = researchItem;
+    rct_string_id stringId = research_item_get_name(researchItem);
 
-    stringId = research_item_get_name(researchItem);
-    format_string(buffer, 256, stringId, nullptr);
+    ptr = buffer;
+    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
+    {
+        const rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
+        rct_string_id args[] = {
+                rideGroupName,
+                stringId
+        };
+        format_string(ptr, 256, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, &args);
+    }
+    else
+    {
+        format_string(ptr, 256, stringId, nullptr);
+    }
+
     stringWidth = gfx_get_string_width(buffer);
     window_editor_inventions_list_drag_widgets[0].right = stringWidth;
 
@@ -882,13 +912,34 @@ static void window_editor_inventions_list_drag_moved(rct_window* w, sint32 x, si
  */
 static void window_editor_inventions_list_drag_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    rct_string_id stringId;
+    rct_string_id drawString;
     sint32 x, y;
 
     x = w->x;
     y = w->y + 2;
-    stringId = research_item_get_name(_editorInventionsListDraggedItem);
-    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK | COLOUR_FLAG_OUTLINE, x, y);
+    drawString = window_editor_inventions_list_prepare_name(_editorInventionsListDraggedItem, true);
+    gfx_draw_string_left(dpi, drawString, gCommonFormatArgs, COLOUR_BLACK | COLOUR_FLAG_OUTLINE, x, y);
+}
+
+static rct_string_id window_editor_inventions_list_prepare_name(const rct_research_item * researchItem, bool withGap)
+{
+    rct_string_id drawString;
+    rct_string_id stringId = research_item_get_name(researchItem);
+
+    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
+    {
+        drawString = withGap ? STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME_DRAG : STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
+        rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
+        set_format_arg(0, rct_string_id, rideGroupName);
+        set_format_arg(2, rct_string_id, stringId);
+    }
+    else
+    {
+        drawString = STR_WINDOW_COLOUR_2_STRINGID;
+        set_format_arg(0, rct_string_id, stringId);
+    }
+
+    return drawString;
 }
 
 #pragma endregion
