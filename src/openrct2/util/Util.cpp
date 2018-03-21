@@ -448,7 +448,7 @@ char *safe_strtrimleft(char *destination, const char *source, size_t size)
     return safe_strcpy(destination, source, size);
 }
 
-#if !defined(_GNU_SOURCE)
+#if !(defined(_GNU_SOURCE) || (defined(__DARWIN_C_LEVEL) && __DARWIN_C_LEVEL >= 200809L))
 char * strcasestr(const char * haystack, const char * needle)
 {
     const char * p1 = haystack;

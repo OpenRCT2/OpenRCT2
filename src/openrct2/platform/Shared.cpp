@@ -49,7 +49,7 @@
     static mach_timebase_info_data_t _mach_base_info = { 0 };
 #endif
 
-#if !((defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700))
+#if !((defined (_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700) || (defined(__APPLE__) && defined(__MACH__)))
 char * strndup(const char * src, size_t size)
 {
     size_t len = strnlen(src, size);
@@ -64,7 +64,7 @@ char * strndup(const char * src, size_t size)
     dst[len] = '\0';
     return dst;
 }
-#endif // !((defined (_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700))
+#endif // !((defined (_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700) || (defined(__APPLE__) && defined(__MACH__)))
 
 #ifdef _WIN32
 static uint32        _frequency = 0;
