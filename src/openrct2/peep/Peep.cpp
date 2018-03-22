@@ -2932,6 +2932,31 @@ static void peep_update_ride_leave_entrance_spiral_slide(rct_peep * peep, Ride *
     peep->sub_state = PEEP_RIDE_APPROACH_SPIRAL_SLIDE;
 }
 
+static uint8 peep_get_waypointed_seat_location(rct_peep * peep, Ride * ride, rct_ride_entry_vehicle * vehicle_type, uint8 track_direction)
+{
+    // The seatlocation can be split into segments around the ride base
+    // to decide the segment first split off the segmentable seat location
+    // from the fixed section
+    uint8 seatLocationSegment = peep->current_seat & 0x7;
+    uint8 seatLocationFixed = peep->current_seat & 0xF8;
+
+    // Enterprise has more segments (8) compared to the normal (4)
+    if (ride->type != RIDE_TYPE_ENTERPRISE)
+        track_direction *= 2;
+
+    // Type 1 loading doesn't do segments and all peeps go to the same
+    // location on the ride
+    if (vehicle_type->peep_loading_xy_type == peep_loading_type::xy_1)
+    {
+        track_direction /= 2;
+        seatLocationSegment = 0;
+        seatLocationFixed = 0;
+    }
+    seatLocationSegment += track_direction;
+    seatLocationSegment &= 0x7;
+    return seatLocationSegment + seatLocationFixed;
+}
+
 static void peep_update_ride_leave_entrance_waypoints(rct_peep * peep, Ride * ride)
 {
     TileCoordsXYZD entranceLocation = ride_get_entrance_location(peep->current_ride, peep->current_ride_station);
@@ -2950,22 +2975,7 @@ static void peep_update_ride_leave_entrance_waypoints(rct_peep * peep, Ride * ri
     auto ride_entry = get_ride_entry(vehicle->ride_subtype);
     auto vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
-    uint8 cl = peep->current_seat;
-    uint8 ch = peep->current_seat & 0xF8;
-
-    if (ride->type != RIDE_TYPE_ENTERPRISE)
-        direction_track *= 2;
-
-    if (vehicle_type->peep_loading_xy_type == peep_loading_type::xy_1)
-    {
-        direction_track /= 2;
-        cl = 0;
-        ch = 0;
-    }
-    cl += direction_track;
-    cl &= 0x7;
-    cl += ch;
-    peep->var_37 = (direction_entrance | cl * 4) * 4;
+    peep->var_37 = (direction_entrance | peep_get_waypointed_seat_location(peep, ride, vehicle_type, direction_track) * 4) * 4;
 
     if (ride->type == RIDE_TYPE_ENTERPRISE)
     {
@@ -3566,12 +3576,12 @@ static void peep_update_ride_leave_vehicle(rct_peep * peep)
 
     TileCoordsXYZD exitLocation = ride_get_exit_location(peep->current_ride, peep->current_ride_station);
     Guard::Assert(!exitLocation.isNull());
-    sint16 z = (sint16)exitLocation.z;
+    sint16 z = (sint16)exitLocation.z * 8 + RideData5[ride->type].z;
 
     uint8 exit_direction = exitLocation.direction;
 
-    sint16 x = ride->station_starts[peep->current_ride_station].x;
-    sint16 y = ride->station_starts[peep->current_ride_station].y;
+    sint16 x = ride->station_starts[peep->current_ride_station].x * 32 + 16;
+    sint16 y = ride->station_starts[peep->current_ride_station].y * 32 + 16;
 
     rct_tile_element * tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
@@ -3582,27 +3592,7 @@ static void peep_update_ride_leave_vehicle(rct_peep * peep)
     ride_entry                            = get_ride_entry(vehicle->ride_subtype);
     rct_ride_entry_vehicle * vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
-    uint8 cl = peep->current_seat;
-    uint8 ch = peep->current_seat & 0xF8;
-
-    if (ride->type != RIDE_TYPE_ENTERPRISE)
-        station_direction *= 2;
-
-    if (vehicle_type->peep_loading_xy_type == peep_loading_type::xy_1)
-    {
-        station_direction /= 2;
-        cl = 0;
-        ch = 0;
-    }
-    cl += station_direction;
-    cl &= 0x7;
-    cl += ch;
-    peep->var_37 = ((exit_direction | cl * 4) * 4) | 1;
-
-    x *= 32;
-    y *= 32;
-    x += 16;
-    y += 16;
+    peep->var_37 = ((exit_direction | peep_get_waypointed_seat_location(peep, ride, vehicle_type, station_direction) * 4) * 4) | 1;
 
     if (ride->type == RIDE_TYPE_ENTERPRISE)
     {
@@ -3613,9 +3603,6 @@ static void peep_update_ride_leave_vehicle(rct_peep * peep)
     Guard::Assert(vehicle_type->peep_loading_waypoints.size() >= (size_t)(peep->var_37 / 4));
     sint16 exit_x = x + vehicle_type->peep_loading_waypoints[peep->var_37 / 4][2].x;
     sint16 exit_y = y + vehicle_type->peep_loading_waypoints[peep->var_37 / 4][2].y;
-
-    z *= 8;
-    z += RideData5[ride->type].z;
 
     if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
         z += 15;
