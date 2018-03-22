@@ -16,7 +16,7 @@ namespace OpenRCT2 { namespace Ui
         sint32                  _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
         sint32                  _lastMainViewportX, _lastMainViewportY;
         std::deque<std::string> _consoleLines;
-        utf8                    _consoleCurrentLine[CONSOLE_INPUT_SIZE];
+        utf8                    _consoleCurrentLine[CONSOLE_INPUT_SIZE] = {};
         sint32                  _consoleCaretTicks;
         sint32                  _consoleScrollPos = 0;
         TextInputSession *      _consoleTextInputSession;  
