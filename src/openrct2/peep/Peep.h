@@ -506,15 +506,15 @@ struct rct_peep_thought
 {
     uint8 type;  // 0
     uint8 item;  // 1
-    uint8 var_2; // 2
-    uint8 var_3; // 3
+    uint8 freshness; // 2 larger is less fresh
+    uint8 fresh_timeout; // 3 updates every tick
 };
 assert_struct_size(rct_peep_thought, 4);
 
 struct rct_peep
 {
     uint8  sprite_identifier; // 0x00
-    uint8  var_01;
+    uint8  misc_identifier;         // 0x01
     uint16 next_in_quadrant;        // 0x02
     uint16 next;                    // 0x04
     uint16 previous;                // 0x06
@@ -602,12 +602,12 @@ struct rct_peep
     uint8 action_sprite_image_offset; // 0x70
     uint8 action;                     // 0x71
     uint8 action_frame;               // 0x72
-    uint8 var_73;
+    uint8 step_progress;              // 0x73
     union {
         uint16 mechanic_time_since_call;  // time getting to ride to fix
         uint16 next_in_queue; // 0x74
     };
-    uint8 var_76;
+    uint8 pad_76; // Previously this was set to 0 but never used.
     uint8 pad_77;
     union {
         uint8 maze_last_edge; // 0x78
@@ -622,11 +622,11 @@ struct rct_peep
     money32          cash_in_pocket;              // 0xA0
     money32          cash_spent;                  // 0xA4
     sint32           time_in_park;                // 0xA8
-    sint8            var_AC;                      // 0xAC
+    sint8            rejoin_queue_timeout;        // 0xAC whilst waiting for a free vehicle (or pair) in the entrance
     uint8            previous_ride;               // 0xAD
     uint16           previous_ride_time_out;      // 0xAE
     rct_peep_thought thoughts[PEEP_MAX_THOUGHTS]; // 0xB0
-    uint8            var_C4;                      // 0xC4 has something to do with peep falling, see peep.checkForPath
+    uint8            path_check_optimisation;     // 0xC4 see peep.checkForPath
     union {
         uint8 staff_id;                 // 0xC5
         uint8 guest_heading_to_ride_id; // 0xC5

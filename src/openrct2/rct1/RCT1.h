@@ -338,7 +338,7 @@ struct rct1_vehicle {
     };
     uint8 speed;                    // 0xC2
     uint8 powered_acceleration;     // 0xC3
-    uint8 var_C4;
+    uint8 path_check_optimisation;
     uint8 animation_frame;
     uint8 pad_C6[0x2];
     uint16 var_C8;
@@ -449,12 +449,12 @@ struct rct1_peep {
     uint8 action_sprite_image_offset; // 0x70
     uint8 action;                   // 0x71
     uint8 action_frame;             // 0x72
-    uint8 var_73;
+    uint8 step_progress;
     union {
         uint16 mechanic_time_since_call; // time getting to ride to fix
         uint16 next_in_queue;       // 0x74
     };
-    uint8 var_76;
+    uint8 pad_76;
     uint8 pad_77;
     union{
         uint8 maze_last_edge;       // 0x78
@@ -469,7 +469,7 @@ struct rct1_peep {
     money32 cash_in_pocket;         // 0xA0
     money32 cash_spent;             // 0xA4
     sint32 time_in_park;            // 0xA8
-    sint8 var_AC;                   // 0xAC
+    sint8 rejoin_queue_timeout;                   // 0xAC
     uint8 previous_ride;            // 0xAD
     uint16 previous_ride_time_out;  // 0xAE
     rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];   // 0xB0

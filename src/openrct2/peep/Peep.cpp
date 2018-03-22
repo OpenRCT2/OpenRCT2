@@ -1473,10 +1473,11 @@ static void peep_128_tick_update(rct_peep * peep, sint32 index)
  */
 static bool checkForPath(rct_peep * peep)
 {
-    peep->var_C4++;
-    if ((peep->var_C4 & 0xF) != (peep->sprite_index & 0xF))
+    peep->path_check_optimisation++;
+    if ((peep->path_check_optimisation & 0xF) != (peep->sprite_index & 0xF))
     {
-        // This condition makes the check happen less often so the peeps hover for a short,
+        // This condition makes the check happen less often 
+        // As a side effect peeps hover for a short,
         // random time when a path below them has been deleted
         return true;
     }
@@ -2054,7 +2055,7 @@ void peep_pickup_abort(rct_peep * peep, sint32 old_x)
         peep->special_sprite             = 0;
         peep->action_sprite_image_offset = 0;
         peep->action_sprite_type         = 0;
-        peep->var_C4                     = 0;
+        peep->path_check_optimisation                     = 0;
     }
 
     gPickupPeepImage = UINT32_MAX;
@@ -2117,7 +2118,7 @@ bool peep_pickup_place(rct_peep * peep, sint32 x, sint32 y, sint32 z, bool apply
         peep->special_sprite             = 0;
         peep->action_sprite_image_offset = 0;
         peep->action_sprite_type         = 0;
-        peep->var_C4                     = 0;
+        peep->path_check_optimisation                     = 0;
         sprite_position_tween_reset();
 
         if (peep->type == PEEP_TYPE_GUEST)
@@ -2668,7 +2669,7 @@ static void peep_go_to_ride_entrance(rct_peep * peep, Ride * ride)
     peep->sub_state = PEEP_RIDE_IN_ENTRANCE;
     peep_window_state_update(peep);
 
-    peep->var_AC       = 0;
+    peep->rejoin_queue_timeout       = 0;
     peep->time_on_ride = 0;
 
     remove_peep_from_queue(peep);
@@ -3258,7 +3259,7 @@ static void peep_update_ride_free_vehicle_check(rct_peep * peep)
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
     {
-        if (ride->status != RIDE_STATUS_OPEN || ride->vehicle_change_timeout != 0 || (++peep->var_AC) == 0)
+        if (ride->status != RIDE_STATUS_OPEN || ride->vehicle_change_timeout != 0 || (++peep->rejoin_queue_timeout) == 0)
         {
 
             peep_update_ride_no_free_vehicle_rejoin_queue(peep, ride);
@@ -3328,7 +3329,7 @@ static void peep_update_ride_free_vehicle_check(rct_peep * peep)
     }
 
     rct_vehicle * currentTrain = GET_VEHICLE(ride->vehicles[peep->current_train]);
-    if (ride->status == RIDE_STATUS_OPEN && ++peep->var_AC != 0 &&
+    if (ride->status == RIDE_STATUS_OPEN && ++peep->rejoin_queue_timeout != 0 &&
         !(currentTrain->update_flags & VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
     {
         return;
@@ -5818,7 +5819,6 @@ static void peep_update_1(rct_peep * peep)
     peep->destination_x         = peep->x;
     peep->destination_y         = peep->y;
     peep->destination_tolerance = 10;
-    peep->var_76                = 0;
     peep->direction             = peep->sprite_direction >> 3;
 }
 
@@ -7484,25 +7484,25 @@ static void peep_update_thoughts(rct_peep * peep)
         if (peep->thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
             break;
 
-        if (peep->thoughts[i].var_2 == 1)
+        if (peep->thoughts[i].freshness == 1)
         {
             add_fresh = 0;
             // If thought is fresh we wait 220 ticks
             // before allowing a new thought to become fresh.
-            if (++peep->thoughts[i].var_3 >= 220)
+            if (++peep->thoughts[i].fresh_timeout >= 220)
             {
-                peep->thoughts[i].var_3 = 0;
+                peep->thoughts[i].fresh_timeout = 0;
                 // Thought is no longer fresh
-                peep->thoughts[i].var_2++;
+                peep->thoughts[i].freshness++;
                 add_fresh = 1;
             }
         }
-        else if (peep->thoughts[i].var_2 > 1)
+        else if (peep->thoughts[i].freshness > 1)
         {
-            if (++peep->thoughts[i].var_3 == 0)
+            if (++peep->thoughts[i].fresh_timeout == 0)
             {
                 // When thought is older than ~6900 ticks remove it
-                if (++peep->thoughts[i].var_2 >= 28)
+                if (++peep->thoughts[i].freshness >= 28)
                 {
                     peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
 
@@ -7526,7 +7526,7 @@ static void peep_update_thoughts(rct_peep * peep)
     // fresh.
     if (add_fresh && fresh_thought != -1)
     {
-        peep->thoughts[fresh_thought].var_2 = 1;
+        peep->thoughts[fresh_thought].freshness = 1;
         peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
     }
 }
@@ -7559,8 +7559,8 @@ static void peep_update(rct_peep * peep)
             stepsToTake += stepsToTake / 2;
     }
 
-    uint32 carryCheck = peep->var_73 + stepsToTake;
-    peep->var_73      = carryCheck;
+    uint32 carryCheck = peep->step_progress + stepsToTake;
+    peep->step_progress      = carryCheck;
     if (carryCheck <= 255)
     {
         peep_easter_egg_peep_interactions(peep);
@@ -7668,7 +7668,7 @@ void peep_problem_warnings_update()
 
     FOR_ALL_GUESTS(spriteIndex, peep)
     {
-        if (peep->outside_of_park != 0 || peep->thoughts[0].var_2 > 5)
+        if (peep->outside_of_park != 0 || peep->thoughts[0].freshness > 5)
             continue;
 
         switch (peep->thoughts[0].type)
@@ -8072,7 +8072,7 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     invalidate_sprite_2((rct_sprite *)peep);
 
     peep->mass                  = (peep_rand() & 0x1F) + 45;
-    peep->var_C4                  = 0;
+    peep->path_check_optimisation                  = 0;
     peep->interaction_ride_index  = 0xFF;
     peep->type                    = PEEP_TYPE_GUEST;
     peep->previous_ride           = 0xFF;
@@ -8709,8 +8709,8 @@ void peep_insert_new_thought(rct_peep * peep, uint8 thought_type, uint8 thought_
 
     peep->thoughts[0].type  = thought_type;
     peep->thoughts[0].item  = thought_arguments;
-    peep->thoughts[0].var_2 = 0;
-    peep->thoughts[0].var_3 = 0;
+    peep->thoughts[0].freshness = 0;
+    peep->thoughts[0].fresh_timeout = 0;
 
     peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
 }

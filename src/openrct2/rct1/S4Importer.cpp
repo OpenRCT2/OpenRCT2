@@ -1183,7 +1183,7 @@ private:
         dst->sound1_id = RCT12_SOUND_ID_NULL;
         dst->sound2_id = RCT12_SOUND_ID_NULL;
         dst->var_C0 = src->var_C0;
-        dst->var_C4 = src->var_C4;
+        dst->path_check_optimisation = src->path_check_optimisation;
         dst->animation_frame = src->animation_frame;
         dst->var_C8 = src->var_C8;
         dst->var_CA = src->var_CA;
@@ -1421,7 +1421,7 @@ private:
         dst->next_var_29 = src->next_var_29;
         dst->var_37 = src->var_37;
         dst->time_to_consume = src->time_to_consume;
-        dst->var_73 = src->var_73;
+        dst->step_progress = src->step_progress;
         dst->vandalism_seen = src->vandalism_seen;
 
         dst->type = src->type;
@@ -1518,7 +1518,7 @@ private:
         dst->previous_ride = src->previous_ride;
         dst->previous_ride_time_out = src->previous_ride_time_out;
 
-        dst->var_C4 = 0;
+        dst->path_check_optimisation = 0;
         dst->guest_heading_to_ride_id = src->guest_heading_to_ride_id;
         // Doubles as staff orders
         dst->peep_is_lost_countdown = src->peep_is_lost_countdown;

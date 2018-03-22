@@ -1014,7 +1014,7 @@ void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
             w->list_information_type = 0;
             return;
         }
-        if (peep->thoughts[i].var_2 == 1){ // If a fresh thought
+        if (peep->thoughts[i].freshness == 1){ // If a fresh thought
             break;
         }
     }
@@ -1931,7 +1931,7 @@ void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi)
     y += 10;
     for (rct_peep_thought* thought = peep->thoughts; thought < &peep->thoughts[PEEP_MAX_THOUGHTS]; ++thought){
         if (thought->type == PEEP_THOUGHT_TYPE_NONE) return;
-        if (thought->var_2 == 0) continue;
+        if (thought->freshness == 0) continue;
 
         sint32 width = window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].right
             - window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left

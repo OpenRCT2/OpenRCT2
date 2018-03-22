@@ -235,7 +235,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
             newPeep->action_sprite_image_offset = 0;
             newPeep->no_action_frame_no         = 0;
             newPeep->action_sprite_type         = 0;
-            newPeep->var_C4                     = 0;
+            newPeep->path_check_optimisation                     = 0;
             newPeep->type                       = PEEP_TYPE_STAFF;
             newPeep->outside_of_park            = 0;
             newPeep->peep_flags                 = 0;
