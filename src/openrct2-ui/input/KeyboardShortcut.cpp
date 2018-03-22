@@ -835,8 +835,8 @@ namespace
         shortcut_load_game,
         shortcut_clear_scenery,
         shortcut_gridlines_toggle,
-		shortcut_view_clipping,
-		shortcut_highlight_path_issues_toggle,
+        shortcut_view_clipping,
+        shortcut_highlight_path_issues_toggle,
     };
 }
 
