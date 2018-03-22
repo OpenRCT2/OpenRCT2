@@ -33,6 +33,7 @@ namespace OpenRCT2 { namespace Ui
         void Clear() override;
         void Open();
         void Close() override;
+        void Hide() override;
         void Toggle();
         void WriteLine(const std::string &s, uint32 colourFormat) override;
 

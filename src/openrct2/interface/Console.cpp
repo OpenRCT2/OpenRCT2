@@ -92,9 +92,15 @@ static sint32 cc_clear(InteractiveConsole &console, const utf8 **argv, sint32 ar
     return 0;
 }
 
-static sint32 cc_hide(InteractiveConsole &console, const utf8 **argv, sint32 argc)
+static sint32 cc_close(InteractiveConsole &console, const utf8 **argv, sint32 argc)
 {
     console.Close();
+    return 0;
+}
+
+static sint32 cc_hide(InteractiveConsole &console, const utf8 **argv, sint32 argc)
+{
+    console.Hide();
     return 0;
 }
 
@@ -1068,6 +1074,9 @@ static constexpr const utf8* console_window_table[] = {
 
 static constexpr const console_command console_command_table[] = {
     { "clear", cc_clear, "Clears the console.", "clear"},
+    { "close", cc_close, "Closes the console.", "close"},
+    { "exit", cc_close, "Closes the console.", "exit"},
+    { "quit", cc_close, "Closes the console.", "quit"},
     { "hide", cc_hide, "Hides the console.", "hide"},
     { "echo", cc_echo, "Echoes the text to the console.", "echo <text>" },
     { "help", cc_help, "Lists commands or info about a command.", "help [command]" },
@@ -1192,12 +1201,6 @@ void InteractiveConsole::Execute(const std::string &s)
 
     if (argc == 0)
         return;
-
-    // Aliases for hiding the console
-    if(strcmp(argv[0],"quit") == 0 || strcmp(argv[0],"exit") == 0) {
-        free(argv[0]);
-        argv[0] = _strdup("hide");
-    }
 
     bool validCommand = false;
     for (const auto &c : console_command_table)

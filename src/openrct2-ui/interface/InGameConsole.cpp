@@ -151,6 +151,11 @@ void InGameConsole::Close()
     context_stop_text_input();
 }
 
+void InGameConsole::Hide()
+{
+    Close();
+}
+
 void InGameConsole::Toggle()
 {
     if (_isOpen)

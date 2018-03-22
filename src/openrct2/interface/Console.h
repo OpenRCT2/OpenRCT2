@@ -51,6 +51,7 @@ public:
 
     virtual void Clear() abstract;
     virtual void Close() abstract;
+    virtual void Hide() abstract;
     virtual void WriteLine(const std::string &s, uint32 colourFormat) abstract;
 };
 
@@ -65,6 +66,7 @@ public:
 
     void Clear() override;
     void Close() override;
+    void Hide() override { }
     void WriteLine(const std::string &s) { InteractiveConsole::WriteLine(s); }
     void WriteLine(const std::string &s, uint32 colourFormat) override;
 };
