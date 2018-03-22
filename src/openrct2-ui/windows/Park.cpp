@@ -1565,8 +1565,15 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
             gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 222, STR_OBJECTIVE_FAILED, COLOUR_BLACK);
         } else {
             // Objective completed
-            set_format_arg(0, money32, gScenarioCompletedCompanyValue);
-            gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_OBJECTIVE_ACHIEVED, COLOUR_BLACK);
+            if (gConfigGeneral.allow_early_completion) {
+                set_format_arg(0, uint16, gScenarioDaysElapsed);
+                set_format_arg(2, money32, gScenarioCompletedCompanyValue);
+                gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_OBJECTIVE_ACHIEVED_WITH_DAYS, COLOUR_BLACK);
+            }
+            else {
+                set_format_arg(0, money32, gScenarioCompletedCompanyValue);
+                gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_OBJECTIVE_ACHIEVED, COLOUR_BLACK);
+            }
         }
     }
 }
