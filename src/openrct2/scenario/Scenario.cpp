@@ -79,7 +79,7 @@ uint16_t gScenarioParkRatingWarningDays;
 money32 gScenarioCompletedCompanyValue;
 money32 gScenarioCompanyValueRecord;
 
-bool gScenarioEnded;
+static bool gScenarioEnded;
 uint16 gScenarioDaysElapsed;
 
 char gScenarioFileName[MAX_PATH];
