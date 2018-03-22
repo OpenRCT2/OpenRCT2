@@ -38,6 +38,10 @@ void InGameConsole::Input(CONSOLE_INPUT input)
     case CONSOLE_INPUT_LINE_EXECUTE:
         if (_consoleCurrentLine[0] != '\0') {
             HistoryAdd(_consoleCurrentLine);
+
+            // Append text we are executing to prompt line
+            _consoleLines.back().append(_consoleCurrentLine);
+
             Execute(_consoleCurrentLine);
             WritePrompt();
             ClearInput();
