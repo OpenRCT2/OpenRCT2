@@ -7,23 +7,35 @@ void StdInOutConsole::Start()
 {
     std::thread replThread ([this]() -> void
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-
         linenoise::SetMultiLine(true);
         linenoise::SetHistoryMaxLen(32);
 
         std::string prompt = "\033[32mopenrct2 $\x1b[0m ";
+        bool lastPromptQuit = false;
         while (true)
         {
             std::string line;
             std::string left = prompt;
             auto quit = linenoise::Readline(left.c_str(), line);
-            if (quit) {
-                openrct2_finish();
-                break;
+            if (quit)
+            {
+                if (lastPromptQuit)
+                {
+                    openrct2_finish();
+                    break;
+                }
+                else
+                {
+                    lastPromptQuit = true;
+                    std::puts("(To exit, press ^C again or type exit)");
+                }
             }
-            linenoise::AddHistory(line.c_str());
-            Eval(line).wait();
+            else
+            {
+                lastPromptQuit = false;
+                linenoise::AddHistory(line.c_str());
+                Eval(line).wait();
+            }
         }
     });
     replThread.detach();
