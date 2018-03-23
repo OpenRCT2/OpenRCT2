@@ -4510,12 +4510,16 @@ STR_6201    :{MONTH}
 STR_6202    :Aktivera virtuella golv
 STR_6203    :{SMALLFONT}{BLACK}När aktiverad, kommer ett rutnät att ritas i samma höjd som elementen är på när du håller in Ctrl eller Shift vilket förenklar vertikala placeringar.
 
-
 STR_6215    :Konstruktion
 STR_6216    :Manövrering
 STR_6217    :Åktur-/spårtillgänglighet
 STR_6218    :Officiella OpenRCT2
 STR_6219    :Visa problem på gångvägar
+
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+
 
 #############
 # Scenarion #

@@ -4476,7 +4476,7 @@ STR_6166    :{SMALLFONT}{BLACK}게임에 표시되는 각 프레임을 모니터
 STR_6167    :{SMALLFONT}{BLACK}고급
 STR_6168    :타이틀 시퀀스
 STR_6169    :시나리오 선택
-STR_6170    :기타
+STR_6170    :인터페이스 변경
 STR_6171    :검색
 STR_6172    :{SMALLFONT}{BLACK}검색
 STR_6173    :검색할 이름을 입력하세요:
@@ -4535,6 +4535,10 @@ STR_6225    :OpenGL 렌더러에서는 미리보기 불가
 STR_6226    :시나리오 조기 클리어 활성화
 STR_6227    :{SMALLFONT}{BLACK}주어진 기간이 되기 전에 모든 시나리오 목표가 달성되면 시나리오를 조기에 클리어합니다.
 STR_6228    :시나리오 설정
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :얼리기
 
 
 #############
