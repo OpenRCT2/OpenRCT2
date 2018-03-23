@@ -45,7 +45,6 @@ interface IObjectManager
 };
 
 IObjectManager * CreateObjectManager(IObjectRepository * objectRepository);
-IObjectManager * GetObjectManager();
 
 void *        object_manager_get_loaded_object_by_index(size_t index);
 void *        object_manager_get_loaded_object(const rct_object_entry * entry);

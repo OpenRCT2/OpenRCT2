@@ -20,6 +20,7 @@
 #include <vector>
 
 #include "../common.h"
+#include "../Context.h"
 #include "../core/Console.hpp"
 #include "../core/FileIndex.hpp"
 #include "../core/FileStream.hpp"
@@ -633,17 +634,9 @@ private:
     }
 };
 
-static ObjectRepository * _objectRepository = nullptr;
-
 IObjectRepository * CreateObjectRepository(IPlatformEnvironment * env)
 {
-    _objectRepository = new ObjectRepository(env);
-    return _objectRepository;
-}
-
-IObjectRepository * GetObjectRepository()
-{
-    return _objectRepository;
+    return new ObjectRepository(env);
 }
 
 bool IsObjectCustom(const ObjectRepositoryItem * object)
@@ -657,7 +650,7 @@ bool IsObjectCustom(const ObjectRepositoryItem * object)
 const rct_object_entry * object_list_find(rct_object_entry * entry)
 {
     const rct_object_entry * result = nullptr;
-    auto objRepo = GetObjectRepository();
+    auto objRepo = GetContext()->GetObjectRepository();
     auto item = objRepo->FindObject(entry);
     if (item != nullptr)
     {
@@ -669,7 +662,7 @@ const rct_object_entry * object_list_find(rct_object_entry * entry)
 const rct_object_entry * object_list_find_by_name(const char * name)
 {
     const rct_object_entry * result = nullptr;
-    auto objRepo = GetObjectRepository();
+    auto objRepo = GetContext()->GetObjectRepository();
     auto item = objRepo->FindObject(name);
     if (item != nullptr)
     {
@@ -680,17 +673,18 @@ const rct_object_entry * object_list_find_by_name(const char * name)
 
 void object_list_load()
 {
-    IObjectRepository * objectRepository = GetObjectRepository();
+    auto context = GetContext();
+    IObjectRepository * objectRepository = context->GetObjectRepository();
     objectRepository->LoadOrConstruct();
 
-    IObjectManager * objectManager = GetObjectManager();
+    IObjectManager * objectManager = context->GetObjectManager();
     objectManager->UnloadAll();
 }
 
 void * object_repository_load_object(const rct_object_entry * objectEntry)
 {
     Object * object = nullptr;
-    IObjectRepository * objRepository = GetObjectRepository();
+    IObjectRepository * objRepository = GetContext()->GetObjectRepository();
     const ObjectRepositoryItem * ori = objRepository->FindObject(objectEntry);
     if (ori != nullptr)
     {
@@ -722,7 +716,7 @@ void scenario_translate(scenario_index_entry * scenarioEntry, const rct_object_e
         // Checks for a scenario string object (possibly for localisation)
         if ((stexObjectEntry->flags & 0xFF) != 255)
         {
-            IObjectRepository * objectRepository = GetObjectRepository();
+            IObjectRepository * objectRepository = GetContext()->GetObjectRepository();
             const ObjectRepositoryItem * ori = objectRepository->FindObject(stexObjectEntry);
             if (ori != nullptr)
             {
@@ -745,25 +739,25 @@ void scenario_translate(scenario_index_entry * scenarioEntry, const rct_object_e
 
 size_t object_repository_get_items_count()
 {
-    IObjectRepository * objectRepository = GetObjectRepository();
+    IObjectRepository * objectRepository = GetContext()->GetObjectRepository();
     return objectRepository->GetNumObjects();
 }
 
 const ObjectRepositoryItem * object_repository_get_items()
 {
-    IObjectRepository * objectRepository = GetObjectRepository();
+    IObjectRepository * objectRepository = GetContext()->GetObjectRepository();
     return objectRepository->GetObjects();
 }
 
 const ObjectRepositoryItem * object_repository_find_object_by_entry(const rct_object_entry * entry)
 {
-    IObjectRepository * objectRepository = GetObjectRepository();
+    IObjectRepository * objectRepository = GetContext()->GetObjectRepository();
     return objectRepository->FindObject(entry);
 }
 
 const ObjectRepositoryItem * object_repository_find_object_by_name(const char * name)
 {
-    IObjectRepository * objectRepository = GetObjectRepository();
+    IObjectRepository * objectRepository = GetContext()->GetObjectRepository();
     return objectRepository->FindObject(name);
 }
 
@@ -848,4 +842,3 @@ sint32 object_calculate_checksum(const rct_object_entry * entry, const void * da
 
     return (sint32)checksum;
 }
-

@@ -237,7 +237,7 @@ Ride *get_ride(sint32 index)
 rct_ride_entry * get_ride_entry(sint32 index)
 {
     rct_ride_entry * result = nullptr;
-    auto objMgr =  GetObjectManager();
+    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (objMgr != nullptr)
     {
         auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_RIDE, index);

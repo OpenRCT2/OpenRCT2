@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include "../Context.h"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
 #include "../core/FileStream.hpp"
@@ -340,7 +341,7 @@ private:
         String::Set(gScenarioFileName, sizeof(gScenarioFileName), GetRCT1ScenarioName().c_str());
 
         // Do map initialisation, same kind of stuff done when loading scenario editor
-        GetObjectManager()->UnloadAll();
+        OpenRCT2::GetContext()->GetObjectManager()->UnloadAll();
         game_init_all(mapSize);
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -1860,7 +1861,7 @@ private:
 
     void LoadObjects(uint8 objectType, const std::vector<const char *> &entries)
     {
-        IObjectManager * objectManager = GetObjectManager();
+        IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
 
         uint32 entryIndex = 0;
         for (const char * objectName : entries)
@@ -1909,7 +1910,7 @@ private:
 
     void GetInvalidObjects(uint8 objectType, const std::vector<const char *> &entries, std::vector<rct_object_entry> &missingObjects)
     {
-        IObjectRepository * objectRepository = GetObjectRepository();
+        IObjectRepository * objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
         for (const char * objectName : entries)
         {
             rct_object_entry entry;
