@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#7187] Option for early scenario completion.
 - Feature: [#7267] Leverage more historical data in Finances window.
+- Feature: [#7332] Keyboard shortcuts for view path issues and cutaway view.
 - Improved: Raising land near the map edge makes the affected area smaller instead of showing an 'off edge map' error.
 
 0.1.2 (2018-03-18)

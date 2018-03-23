@@ -746,6 +746,22 @@ static void shortcut_load_game()
     }
 }
 
+static void shortcut_view_clipping()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        return;
+
+    context_open_window(WC_VIEW_CLIPPING);
+}
+
+static void shortcut_highlight_path_issues_toggle()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        return;
+
+    toggle_view_flag(VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
+}
+
 namespace
 {
     const shortcut_action shortcut_table[SHORTCUT_COUNT] =
@@ -817,6 +833,8 @@ namespace
         shortcut_load_game,
         shortcut_clear_scenery,
         shortcut_gridlines_toggle,
+        shortcut_view_clipping,
+        shortcut_highlight_path_issues_toggle,
     };
 }
 

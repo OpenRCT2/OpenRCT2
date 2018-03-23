@@ -305,4 +305,6 @@ const uint16 KeyboardShortcuts::DefaultKeys[SHORTCUT_COUNT] =
     PLATFORM_MODIFIER | SDL_SCANCODE_L,         // SHORTCUT_LOAD_GAME
     SDL_SCANCODE_B,                             // SHORTCUT_CLEAR_SCENERY
     SDL_SCANCODE_7,                             // SHORTCUT_GRIDLINES_DISPLAY_TOGGLE
+    SHORTCUT_UNDEFINED,                         // SHORTCUT_VIEW_CLIPPING
+    SDL_SCANCODE_I,                             // SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE
 };
