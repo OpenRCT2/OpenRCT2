@@ -81,7 +81,7 @@ void ScriptEngine::LoadPlugins()
         try
         {
             auto plugin = std::make_shared<Plugin>(_context, path);
-            _execInfo.SetCurrentPlugin(plugin);
+            ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
             plugin->Load();
             plugin->EnableHotReload();
             _plugins.push_back(std::move(plugin));
@@ -91,7 +91,6 @@ void ScriptEngine::LoadPlugins()
             _console.WriteLineError(e.what());
         }
     }
-    _execInfo.SetCurrentPlugin(nullptr);
 }
 
 void ScriptEngine::AutoReloadPlugins()
@@ -103,7 +102,8 @@ void ScriptEngine::AutoReloadPlugins()
             try
             {
                 _hookEngine.UnsubscribeAll(plugin);
-                _execInfo.SetCurrentPlugin(plugin);
+
+                ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
                 plugin->Load();
                 plugin->Start();
             }
@@ -113,14 +113,13 @@ void ScriptEngine::AutoReloadPlugins()
             }
         }
     }
-    _execInfo.SetCurrentPlugin(nullptr);
 }
 
 void ScriptEngine::StartPlugins()
 {
     for (auto& plugin : _plugins)
     {
-        _execInfo.SetCurrentPlugin(plugin);
+        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
         try
         {
             plugin->Start();
@@ -130,7 +129,6 @@ void ScriptEngine::StartPlugins()
             _console.WriteLineError(e.what());
         }
     }
-    _execInfo.SetCurrentPlugin(nullptr);
 }
 
 void ScriptEngine::Update()

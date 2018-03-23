@@ -13,6 +13,7 @@
 #include "HookEngine.h"
 #include "Plugin.h"
 #include <future>
+#include <memory>
 #include <queue>
 #include <string>
 
@@ -34,8 +35,27 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<Plugin> _plugin;
 
     public:
+        class PluginScope
+        {
+        private:
+            ScriptExecutionInfo& _execInfo;
+            std::shared_ptr<Plugin> _plugin;
+
+        public:
+            PluginScope(ScriptExecutionInfo& execInfo, std::shared_ptr<Plugin> plugin)
+                : _execInfo(execInfo),
+                  _plugin(plugin)
+            {
+                _execInfo._plugin = plugin;
+            }
+            PluginScope(const PluginScope&) = delete;
+            ~PluginScope()
+            {
+                _execInfo._plugin = nullptr;
+            }
+        };
+
         std::shared_ptr<Plugin> GetCurrentPlugin() { return _plugin; }
-        void SetCurrentPlugin(std::shared_ptr<Plugin> value) { _plugin = value; }
     };
 
     class ScriptEngine

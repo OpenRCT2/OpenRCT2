@@ -82,14 +82,13 @@ void HookEngine::Call(HOOK_TYPE type)
     auto& hookList = GetHookList(type);
     for (auto& hook : hookList.Hooks)
     {
-        _execInfo.SetCurrentPlugin(hook.Owner);
+        ScriptExecutionInfo::PluginScope scope(_execInfo, hook.Owner);
 
         const auto& function = hook.Function;
         function.push();
         duk_pcall(function.context(), 0);
         duk_pop(function.context());
     }
-    _execInfo.SetCurrentPlugin(nullptr);
 }
 
 HookList& HookEngine::GetHookList(HOOK_TYPE type)
