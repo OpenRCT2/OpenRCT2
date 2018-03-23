@@ -229,31 +229,39 @@ void research_finish_item(rct_research_item * researchItem)
 
             ride_entry_set_invented(rideEntryIndex);
 
-            if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE))
+            bool seenRideEntry[MAX_RIDE_OBJECTS];
+
+            rct_research_item * researchItem2 = gResearchItems;
+            for (; researchItem2->rawValue != RESEARCHED_ITEMS_END; researchItem2++)
             {
-                for (sint32 i = 0; i < MAX_RESEARCHED_TRACK_TYPES; i++)
+                if (researchItem2->rawValue != RESEARCHED_ITEMS_SEPARATOR &&
+                    researchItem2->type == RESEARCH_ENTRY_TYPE_RIDE)
+                {
+                    uint8 index = researchItem2->entryIndex;
+                    seenRideEntry[index] = true;
+                }
+            }
+
+            // RCT2 made non-separated vehicles available at once, by removing all but one from research.
+            // To ensure old files keep working, look for ride entries not in research, and make them available as well.
+            for (sint32 i = 0; i < MAX_RIDE_OBJECTS; i++)
+            {
+                if (!seenRideEntry[i])
                 {
                     rct_ride_entry * rideEntry2 = get_ride_entry(i);
-                    if (rideEntry2 == nullptr)
+                    if (rideEntry2 != nullptr)
                     {
-                        continue;
-                    }
-                    if ((rideEntry2->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE))
-                    {
-                        continue;
-                    }
-
-                    for (auto rideType : rideEntry2->ride_type)
-                    {
-                        if (rideType == base_ride_type)
+                        for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
                         {
-                            ride_entry_set_invented(i);
-                            break;
+                            if (rideEntry2->ride_type[j] == base_ride_type)
+                            {
+                                ride_entry_set_invented(i);
+                                break;
+                            }
                         }
                     }
                 }
             }
-
 
             // If a vehicle should be listed separately (maze, mini golf, flat rides, shops)
             if (RideGroupManager::RideTypeIsIndependent(base_ride_type))

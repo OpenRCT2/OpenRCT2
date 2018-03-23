@@ -431,7 +431,7 @@ enum {
     RIDE_ENTRY_FLAG_COVERED_RIDE                    = 1 << 10,
     RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS             = 1 << 11,
     RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME_DEPRECATED   = 1 << 12, // Always set with SEPARATE_RIDE, and deprecated in favour of it.
-    RIDE_ENTRY_FLAG_SEPARATE_RIDE                   = 1 << 13,
+    RIDE_ENTRY_FLAG_SEPARATE_RIDE_DEPRECATED        = 1 << 13, // Made redundant by ride groups
     RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN               = 1 << 14,
     RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE          = 1 << 15,
     RIDE_ENTRY_FLAG_16                              = 1 << 16,
