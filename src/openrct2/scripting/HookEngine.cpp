@@ -35,7 +35,7 @@ HookEngine::HookEngine(ScriptExecutionInfo& execInfo) :
     }
 }
 
-uint32 HookEngine::Subscribe(HOOK_TYPE type, Plugin& owner, const DukValue &function)
+uint32 HookEngine::Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, const DukValue &function)
 {
     auto& hookList = GetHookList(type);
     auto cookie = _nextCookie++;
@@ -58,14 +58,14 @@ void HookEngine::Unsubscribe(HOOK_TYPE type, uint32 cookie)
     }
 }
 
-void HookEngine::UnsubscribeAll(const Plugin& owner)
+void HookEngine::UnsubscribeAll(std::shared_ptr<const Plugin> owner)
 {
     for (auto& hookList : _hookMap)
     {
         auto& hooks = hookList.Hooks;
         for (auto it = hooks.begin(); it != hooks.end();)
         {
-            if (it->Owner == &owner)
+            if (it->Owner == owner)
             {
                 it = hooks.erase(it);
             }

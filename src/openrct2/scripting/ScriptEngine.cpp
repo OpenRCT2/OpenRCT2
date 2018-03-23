@@ -80,11 +80,11 @@ void ScriptEngine::LoadPlugins()
         auto path = std::string(scanner->GetPath());
         try
         {
-            Plugin p(_context, path);
-            _execInfo.SetCurrentPlugin(&p);
-            p.Load();
-            p.EnableHotReload();
-            _plugins.push_back(std::move(p));
+            auto plugin = std::make_shared<Plugin>(_context, path);
+            _execInfo.SetCurrentPlugin(plugin);
+            plugin->Load();
+            plugin->EnableHotReload();
+            _plugins.push_back(std::move(plugin));
         }
         catch (const std::exception &e)
         {
@@ -98,14 +98,14 @@ void ScriptEngine::AutoReloadPlugins()
 {
     for (auto& plugin : _plugins)
     {
-        if (plugin.ShouldHotReload())
+        if (plugin->ShouldHotReload())
         {
             try
             {
                 _hookEngine.UnsubscribeAll(plugin);
-                _execInfo.SetCurrentPlugin(&plugin);
-                plugin.Load();
-                plugin.Start();
+                _execInfo.SetCurrentPlugin(plugin);
+                plugin->Load();
+                plugin->Start();
             }
             catch (const std::exception &e)
             {
@@ -120,10 +120,10 @@ void ScriptEngine::StartPlugins()
 {
     for (auto& plugin : _plugins)
     {
-        _execInfo.SetCurrentPlugin(&plugin);
+        _execInfo.SetCurrentPlugin(plugin);
         try
         {
-            plugin.Start();
+            plugin->Start();
         }
         catch (const std::exception &e)
         {

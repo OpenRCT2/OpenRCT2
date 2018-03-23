@@ -31,11 +31,11 @@ namespace OpenRCT2::Scripting
     class ScriptExecutionInfo
     {
     private:
-        Plugin * _plugin;
+        std::shared_ptr<Plugin> _plugin;
 
     public:
-        Plugin * GetCurrentPlugin() { return _plugin; }
-        void SetCurrentPlugin(Plugin * value) { _plugin = value; }
+        std::shared_ptr<Plugin> GetCurrentPlugin() { return _plugin; }
+        void SetCurrentPlugin(std::shared_ptr<Plugin> value) { _plugin = value; }
     };
 
     class ScriptEngine
@@ -46,7 +46,7 @@ namespace OpenRCT2::Scripting
         bool _initialised{};
         duk_context * _context{};
         std::queue<std::tuple<std::promise<void>, std::string>> _evalQueue;
-        std::vector<Plugin> _plugins;
+        std::vector<std::shared_ptr<Plugin>> _plugins;
         uint32 _lastHotReloadCheckTick{};
         HookEngine _hookEngine;
         ScriptExecutionInfo _execInfo;

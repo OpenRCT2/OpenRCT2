@@ -33,13 +33,13 @@ namespace OpenRCT2::Scripting
     struct Hook
     {
         uint32 Cookie;
-        Plugin * Owner;
+        std::shared_ptr<Plugin> Owner;
         DukValue Function;
 
         Hook();
-        Hook(uint32 cookie, Plugin& owner, const DukValue &function)
+        Hook(uint32 cookie, std::shared_ptr<Plugin> owner, const DukValue &function)
             : Cookie(cookie),
-              Owner(&owner),
+              Owner(owner),
               Function(function)
         {
         }
@@ -70,9 +70,9 @@ namespace OpenRCT2::Scripting
     public:
         HookEngine(ScriptExecutionInfo& execInfo);
         HookEngine(const HookEngine&) = delete;
-        uint32 Subscribe(HOOK_TYPE type, Plugin& owner, const DukValue &function);
+        uint32 Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, const DukValue &function);
         void Unsubscribe(HOOK_TYPE type, uint32 cookie);
-        void UnsubscribeAll(const Plugin& owner);
+        void UnsubscribeAll(std::shared_ptr<const Plugin> owner);
         void Call(HOOK_TYPE type);
 
     private:

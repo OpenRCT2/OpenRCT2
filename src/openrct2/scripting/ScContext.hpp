@@ -45,7 +45,7 @@ namespace OpenRCT2::Scripting
                 throw DukException() << "Not in a plugin context";
             }
 
-            auto cookie = _hookEngine.Subscribe(hookType, *owner, callback);
+            auto cookie = _hookEngine.Subscribe(hookType, owner, callback);
             return std::make_shared<ScDisposable>(
                 [this, hookType, cookie]()
                 {

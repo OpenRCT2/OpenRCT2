@@ -50,7 +50,7 @@ namespace OpenRCT2::Scripting
         Plugin() { }
         Plugin(duk_context * context, const std::string &path);
         Plugin(const Plugin&) = delete;
-        Plugin(Plugin&&);
+        Plugin(Plugin&&) = delete;
         ~Plugin();
 
         void Load();

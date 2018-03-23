@@ -34,20 +34,6 @@ Plugin::Plugin(duk_context * context, const std::string &path)
 {
 }
 
-Plugin::Plugin(Plugin&& src)
-    : _context(src._context),
-      _path(src._path),
-      _metadata(src._metadata),
-      _hotReloadData(src._hotReloadData),
-      _hotReloadEnabled(src._hotReloadEnabled)
-{
-    src._context = nullptr;
-    src._path = std::string();
-    src._metadata = PluginMetadata();
-    src._hotReloadData = HotReloadData();
-    src._hotReloadEnabled = false;
-}
-
 Plugin::~Plugin()
 {
     DisableHotReload();
