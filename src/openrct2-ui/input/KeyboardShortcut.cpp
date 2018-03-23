@@ -752,7 +752,6 @@ static void shortcut_view_clipping()
         return;
 
     context_open_window(WC_VIEW_CLIPPING);
-    
 }
 
 static void shortcut_highlight_path_issues_toggle()
@@ -761,7 +760,6 @@ static void shortcut_highlight_path_issues_toggle()
         return;
 
     toggle_view_flag(VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
-    
 }
 
 namespace

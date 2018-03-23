@@ -1956,8 +1956,6 @@ enum {
     STR_SHORTCUT_SHOW_MAP = 2523,
     STR_SHORTCUT_SCREENSHOT = 2524,
     STR_SHORTCUT_KEY_UNKNOWN = 2525,
-    STR_SHORTCUT_VIEW_CLIPPING = 6005,
-    STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE = 6233,
 
 // STR_2525    :???
 // STR_2526    :???
@@ -3898,6 +3896,9 @@ enum {
     STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME_DRAG = 6231,
 
     STR_FROZEN = 6232,
+
+    STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE = 6233,
+    STR_SHORTCUT_VIEW_CLIPPING = 6234,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
