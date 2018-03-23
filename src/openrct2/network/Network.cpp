@@ -137,7 +137,9 @@ Network::Network()
 
 Network::~Network()
 {
-    Close();
+    CloseChatLog();
+    CloseServerLog();
+    CloseConnection();
 }
 
 void Network::SetEnvironment(IPlatformEnvironment * env)
@@ -165,52 +167,59 @@ bool Network::Init()
 
 void Network::Close()
 {
-    if (status == NETWORK_STATUS_NONE)
+    if (status != NETWORK_STATUS_NONE)
     {
-        // Already closed. This prevents a call in ~Network() to gfx_invalidate_screen()
-        // which may no longer be valid on Linux and would cause a segfault.
-        return;
-    }
+        // HACK Because Close() is closed all over the place, it sometimes gets called inside an Update
+        //      call. This then causes disposed data to be accessed. Therefore, save closing until the
+        //      end of the update loop.
+        if (_closeLock)
+        {
+            _requireClose = true;
+            return;
+        }
 
-    // HACK Because Close() is closed all over the place, it sometimes gets called inside an Update
-    //      call. This then causes disposed data to be accessed. Therefore, save closing until the
-    //      end of the update loop.
-    if (_closeLock) {
-        _requireClose = true;
-        return;
-    }
+        CloseChatLog();
+        CloseServerLog();
+        CloseConnection();
 
-    if (mode == NETWORK_MODE_CLIENT) {
+        client_connection_list.clear();
+        game_command_queue.clear();
+        player_list.clear();
+        group_list.clear();
+
+        gfx_invalidate_screen();
+
+        _requireClose = false;
+    }
+}
+
+void Network::CloseConnection()
+{
+    if (mode == NETWORK_MODE_CLIENT)
+    {
         delete server_connection->Socket;
         server_connection->Socket = nullptr;
-    } else if (mode == NETWORK_MODE_SERVER) {
+    }
+    else if (mode == NETWORK_MODE_SERVER)
+    {
         delete listening_socket;
         listening_socket = nullptr;
         delete _advertiser;
         _advertiser = nullptr;
     }
 
-    CloseChatLog();
-    CloseServerLog();
-
     mode = NETWORK_MODE_NONE;
     status = NETWORK_STATUS_NONE;
     _lastConnectStatus = SOCKET_STATUS_CLOSED;
-    server_connection->AuthStatus = NETWORK_AUTH_NONE;
-    server_connection->InboundPacket.Clear();
-    server_connection->SetLastDisconnectReason(nullptr);
-    SafeDelete(server_connection);
-
-    client_connection_list.clear();
-    game_command_queue.clear();
-    player_list.clear();
-    group_list.clear();
+    if (server_connection != nullptr)
+    {
+        server_connection->AuthStatus = NETWORK_AUTH_NONE;
+        server_connection->InboundPacket.Clear();
+        server_connection->SetLastDisconnectReason(nullptr);
+        delete server_connection;
+    }
 
     DisposeWSA();
-
-    gfx_invalidate_screen();
-
-    _requireClose = false;
 }
 
 bool Network::BeginClient(const char* host, uint16 port)
