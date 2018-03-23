@@ -162,7 +162,7 @@ namespace Path
     const utf8 * GetExtension(const utf8 * path)
     {
         const utf8 * lastDot = nullptr;
-        const utf8 * ch = path;
+        const utf8 * ch = GetFileName(path);
         for (; *ch != '\0'; ch++)
         {
             if (*ch == '.')
