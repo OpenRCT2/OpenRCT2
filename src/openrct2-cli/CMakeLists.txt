@@ -17,6 +17,11 @@ add_executable(${PROJECT} ${OPENRCT2_CLI_SOURCES})
 
 target_link_libraries(${PROJECT} "libopenrct2")
 
+# Needed for interactive console
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(${PROJECT} Threads::Threads)
+
 if (APPLE)
     target_link_libraries(${PROJECT} "-framework Cocoa")
 endif ()

@@ -47,6 +47,10 @@
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/Park.h>
+#include "../interface/InGameConsole.h"
+#include "../UiContext.h"
+
+using namespace OpenRCT2::Ui;
 
 enum {
     WIDX_PAUSE,
@@ -3124,8 +3128,11 @@ static void top_toolbar_debug_menu_dropdown(sint16 dropdownIndex)
     if (w) {
         switch (dropdownIndex) {
         case DDIDX_CONSOLE:
-            console_open();
+        {
+            auto& console = GetInGameConsole();
+            console.Open();
             break;
+        }
         case DDIDX_TILE_INSPECTOR:
             context_open_window(WC_TILE_INSPECTOR);
             break;

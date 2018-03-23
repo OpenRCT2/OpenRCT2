@@ -31,6 +31,9 @@ namespace OpenRCT2 { namespace Ui
         IWindowManager * const _windowManager = CreateDummyWindowManager();
 
     public:
+        void Update() override { }
+        void Draw(rct_drawpixelinfo * dpi) override { }
+
         void CreateWindow() override { }
         void CloseWindow() override { }
         void RecreateWindow() override { }

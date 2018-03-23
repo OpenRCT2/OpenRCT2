@@ -14,13 +14,18 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _CONSOLE_H_
-#define _CONSOLE_H_
+#pragma once
 
+#include <deque>
+#include <future>
+#include <queue>
+#include <string>
+#include <tuple>
 #include "../common.h"
 #include "../localisation/FormatCodes.h"
 
 struct rct_drawpixelinfo;
+struct TextInputSession;
 
 enum CONSOLE_INPUT
 {
@@ -33,26 +38,35 @@ enum CONSOLE_INPUT
     CONSOLE_INPUT_SCROLL_NEXT,
 };
 
-extern bool gConsoleOpen;
+class InteractiveConsole
+{
+public:
+    virtual ~InteractiveConsole() { }
 
-void console_open();
-void console_close();
-void console_toggle();
+    void Execute(const std::string &s);
+    void WriteLine(const std::string &s);
+    void WriteLineError(const std::string &s);
+    void WriteLineWarning(const std::string &s);
+    void WriteFormatLine(const char * format, ...);
 
-void console_update();
-void console_draw(rct_drawpixelinfo *dpi);
+    virtual void Clear() abstract;
+    virtual void Close() abstract;
+    virtual void Hide() abstract;
+    virtual void WriteLine(const std::string &s, uint32 colourFormat) abstract;
+};
 
-void console_input(CONSOLE_INPUT input);
-void console_write(const utf8 *src);
-void console_writeline(const utf8 * src, uint32 colourFormat = FORMAT_WINDOW_COLOUR_2);
-void console_writeline_error(const utf8 *src);
-void console_writeline_warning(const utf8 *src);
-void console_printf(const utf8 *format, ...);
-void console_execute(const utf8 *src);
-void console_execute_silent(const utf8 *src);
-void console_clear();
-void console_clear_line();
-void console_refresh_caret();
-void console_scroll(sint32 delta);
+class StdInOutConsole final : public InteractiveConsole
+{
+private:
+    std::queue<std::tuple<std::promise<void>, std::string>> _evalQueue;
+public:
+    void Start();
+    std::future<void> Eval(const std::string &s);
+    void ProcessEvalQueue();
 
-#endif
+    void Clear() override;
+    void Close() override;
+    void Hide() override { }
+    void WriteLine(const std::string &s) { InteractiveConsole::WriteLine(s); }
+    void WriteLine(const std::string &s, uint32 colourFormat) override;
+};

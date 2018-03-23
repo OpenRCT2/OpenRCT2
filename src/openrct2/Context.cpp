@@ -93,6 +93,7 @@ namespace OpenRCT2
 #ifdef __ENABLE_DISCORD__
         DiscordService *            _discordService = nullptr;
 #endif
+        StdInOutConsole             _stdInOutConsole;
 
         // Game states
         TitleScreen * _titleScreen = nullptr;
@@ -125,7 +126,6 @@ namespace OpenRCT2
         ~Context() override
         {
             window_close_all();
-            network_close();
             http_dispose();
             language_close_all();
             object_manager_unload_all_objects();
@@ -172,6 +172,11 @@ namespace OpenRCT2
                 Launch();
             }
             return gExitCode;
+        }
+
+        void WriteLine(const std::string &s) override
+        {
+            _stdInOutConsole.WriteLine(s);
         }
 
         /**
@@ -624,6 +629,11 @@ namespace OpenRCT2
             }
 #endif // DISABLE_NETWORK
 
+            // For now, only allow interactive console in headless mode
+            if (gOpenRCT2Headless)
+            {
+                _stdInOutConsole.Start();
+            }
             RunGameLoop();
         }
 
@@ -791,7 +801,8 @@ namespace OpenRCT2
 
             twitch_update();
             chat_update();
-            console_update();
+            _stdInOutConsole.ProcessEvalQueue();
+            _uiContext->Update();
         }
 
         /**

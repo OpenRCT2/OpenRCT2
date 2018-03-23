@@ -174,6 +174,8 @@ public:
     std::string ServerProviderWebsite;
 
 private:
+    void CloseConnection();
+
     bool ProcessConnection(NetworkConnection& connection);
     void ProcessPacket(NetworkConnection& connection, NetworkPacket& packet);
     void AddClient(ITcpSocket * socket);

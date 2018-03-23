@@ -44,4 +44,6 @@ namespace Platform
 
     std::string FormatShortDate(std::time_t timestamp);
     std::string FormatTime(std::time_t timestamp);
+
+    bool IsColourTerminalSupported();
 }

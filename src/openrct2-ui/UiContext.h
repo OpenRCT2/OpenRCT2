@@ -29,6 +29,7 @@ namespace OpenRCT2
     namespace Ui
     {
         struct      FileDialogDesc;
+        class       InGameConsole;
         interface   IUiContext;
 
         interface IPlatformUiContext
@@ -44,5 +45,7 @@ namespace OpenRCT2
 
         IUiContext * CreateUiContext(IPlatformEnvironment * env);
         IPlatformUiContext * CreatePlatformUiContext();
+
+        InGameConsole& GetInGameConsole();
     }
 }
