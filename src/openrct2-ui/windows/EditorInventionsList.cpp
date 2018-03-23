@@ -176,7 +176,8 @@ static void move_research_item(rct_research_item *beforeItem);
  *  rct2: 0x0068596F
  * Sets rides that are in use to be always researched
  */
-static void research_rides_setup(){
+static void research_rides_setup()
+{
     // Reset all objects to not required
     for (uint8 objectType = OBJECT_TYPE_RIDE; objectType < OBJECT_TYPE_COUNT; objectType++)
     {
@@ -195,79 +196,6 @@ static void research_rides_setup(){
         {
             Editor::SetSelectedObject(OBJECT_TYPE_RIDE, ride->subtype, OBJECT_SELECTION_FLAG_SELECTED);
         }
-    }
-
-    for (rct_research_item* research = gResearchItems; research->rawValue != RESEARCHED_ITEMS_END; research++)
-    {
-        if (research->flags & RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED)
-            continue;
-
-        // If not a ride
-        if (research->type != RESEARCH_ENTRY_TYPE_RIDE)
-            continue;
-
-        uint8 ride_base_type = research->baseRideType;
-
-        uint8 object_index = research->entryIndex;
-        rct_ride_entry* ride_entry = get_ride_entry(object_index);
-
-        bool master_found = false;
-        if (!(ride_entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE))
-        {
-            for (uint8 rideType = 0; rideType < object_entry_group_counts[OBJECT_TYPE_RIDE]; rideType++)
-            {
-                rct_ride_entry * master_ride = get_ride_entry(rideType);
-                if (master_ride == nullptr)
-                    continue;
-
-                if (master_ride->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)
-                    continue;
-
-                // If master ride not in use
-                auto flags = Editor::GetSelectedObjectFlags(OBJECT_TYPE_RIDE, rideType);
-                if (!(flags & OBJECT_SELECTION_FLAG_SELECTED))
-                    continue;
-
-                for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
-                {
-                    if (master_ride->ride_type[j] == ride_base_type)
-                    {
-                        master_found = true;
-                        break;
-                    }
-                }
-
-                if (master_found)
-                {
-                    break;
-                }
-            }
-        }
-
-        if (!master_found){
-            // If not in use
-            auto flags = Editor::GetSelectedObjectFlags(OBJECT_TYPE_RIDE, object_index);
-            if (!(flags & OBJECT_SELECTION_FLAG_SELECTED)) {
-                continue;
-            }
-
-            bool foundBaseType = false;
-            for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
-                if (ride_entry->ride_type[j] == ride_base_type) {
-                    foundBaseType = true;
-                }
-            }
-
-            if (!foundBaseType) {
-                continue;
-            }
-        }
-
-        research->flags |= RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED;
-        _editorInventionsListDraggedItem = research;
-        move_research_item(gResearchItems);
-        _editorInventionsListDraggedItem = nullptr;
-        research--;
     }
 }
 
