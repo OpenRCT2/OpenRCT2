@@ -58,13 +58,30 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<Plugin> GetCurrentPlugin() { return _plugin; }
     };
 
+    class DukContext
+    {
+    private:
+        duk_context * _context{};
+
+    public:
+        DukContext();
+        DukContext(DukContext&) = delete;
+        DukContext(DukContext&& src)
+            : _context(std::move(src._context))
+        {
+        }
+        ~DukContext();
+
+        operator duk_context*() { return _context; }
+    };
+
     class ScriptEngine
     {
     private:
         InteractiveConsole& _console;
         IPlatformEnvironment& _env;
+        DukContext _context;
         bool _initialised{};
-        duk_context * _context{};
         std::queue<std::tuple<std::promise<void>, std::string>> _evalQueue;
         std::vector<std::shared_ptr<Plugin>> _plugins;
         uint32 _lastHotReloadCheckTick{};
@@ -74,7 +91,6 @@ namespace OpenRCT2::Scripting
     public:
         ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env);
         ScriptEngine(ScriptEngine&) = delete;
-        ~ScriptEngine();
 
         HookEngine& GetHookEngine() { return _hookEngine; }
 

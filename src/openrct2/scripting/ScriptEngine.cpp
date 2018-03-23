@@ -31,6 +31,20 @@ using namespace OpenRCT2::Scripting;
 
 static std::string Stringify(duk_context * ctx, duk_idx_t idx);
 
+DukContext::DukContext()
+{
+    _context = duk_create_heap_default();
+    if (_context == nullptr)
+    {
+        throw std::runtime_error("Unable to initialise duktape context.");
+    }
+}
+
+DukContext::~DukContext()
+{
+    duk_destroy_heap(_context);
+}
+
 ScriptEngine::ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env) :
     _console(console),
     _env(env),
@@ -38,20 +52,9 @@ ScriptEngine::ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& en
 {
 }
 
-ScriptEngine::~ScriptEngine()
-{
-    duk_destroy_heap(_context);
-}
-
 void ScriptEngine::Initialise()
 {
-    _context = duk_create_heap_default();
-    if (_context == nullptr)
-    {
-        throw std::runtime_error("Unable to initialise duktape context.");
-    }
-
-    auto ctx = _context;
+    auto ctx = (duk_context*)_context;
     ScConsole::Register(ctx);
     ScContext::Register(ctx);
     ScDisposable::Register(ctx);
