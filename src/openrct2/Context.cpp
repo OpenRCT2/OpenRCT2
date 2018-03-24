@@ -34,6 +34,7 @@
 #include "core/MemoryStream.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
+#include "core/Util.hpp"
 #include "FileClassifier.h"
 #include "HandleParkLoad.h"
 #include "network/network.h"
@@ -426,6 +427,9 @@ namespace OpenRCT2
                         if (result.Error == PARK_LOAD_ERROR_OK)
                         {
                             parkImporter->Import();
+                            String::Set(gScenarioSavePath, Util::CountOf(gScenarioSavePath), path.c_str());
+                            String::Set(gCurrentLoadedPath, Util::CountOf(gCurrentLoadedPath), path.c_str());
+                            gFirstTimeSaving = true;
                             game_fix_save_vars();
                             sprite_position_tween_reset();
                             gScreenAge = 0;

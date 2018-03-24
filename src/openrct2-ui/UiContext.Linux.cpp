@@ -20,6 +20,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <openrct2/common.h>
+#include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ui/UiContext.h>
@@ -169,13 +170,13 @@ namespace OpenRCT2 { namespace Ui
                         // array must be carefully populated, at least the first element.
                         std::string pattern = desc.Filters[0].Pattern;
                         std::string defaultExtension = pattern.substr(pattern.find_last_of('.'));
-                        int dotPosition = output.size() - defaultExtension.size();
-                        // Add the default extension if no extension is specified
-                        if (output.substr(dotPosition, defaultExtension.size()).compare(defaultExtension) == 0)
-                        {
-                            result = output;
-                        }
-                        else
+
+                        const utf8 * filename = Path::GetFileName(output.c_str());
+
+                        // If there is no extension, append the pattern
+                        const utf8 * extension = Path::GetExtension(filename);
+                        result = output;
+                        if (extension[0] == '\0' && !defaultExtension.empty())
                         {
                             result = output.append(defaultExtension);
                         }
