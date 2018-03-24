@@ -1721,7 +1721,7 @@ GAME_COMMAND_POINTER * new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_set_staff_patrol,
     game_command_fire_staff_member,
     game_command_set_staff_order,
-    game_command_set_park_name,
+    nullptr,
     game_command_set_park_open,
     game_command_buy_land_rights,
     game_command_place_park_entrance,

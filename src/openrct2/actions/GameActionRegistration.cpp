@@ -30,6 +30,7 @@
 #include "PlacePeepSpawnAction.hpp"
 #include "MazeSetTrackAction.hpp"
 #include "SignSetNameAction.hpp"
+#include "ParkSetNameAction.hpp"
 
 namespace GameActions
 {
@@ -50,5 +51,6 @@ namespace GameActions
         Register<PlacePeepSpawnAction>();
         Register<MazeSetTrackAction>();
         Register<SignSetNameAction>();
+        Register<ParkSetNameAction>();
     }
 }
