@@ -188,25 +188,29 @@ static rct_widget window_cheats_money_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     { WWT_CHECKBOX,    1,     11,    120,     48,     64,    STR_MAKE_PARK_NO_MONEY,    STR_NONE },    // No money
-    { WWT_GROUPBOX,    1,      5,    242,     69,    137,    STR_ADD_SET_MONEY,         STR_NONE },    // add / set money group frame
-    {  WWT_SPINNER,    1,     11,    236,     92,    103,    STR_NONE,                  STR_NONE },    // money value
-    {   WWT_BUTTON,    1,    226,    236,     93,     97,    STR_NUMERIC_UP,            STR_NONE },    // increase money
-    {   WWT_BUTTON,    1,    226,    236,     98,    102,    STR_NUMERIC_DOWN,          STR_NONE },    // decrease money
-    {   WWT_BUTTON,    1,     11,    120,    111,    127,    STR_ADD_MONEY,             STR_NONE },    // add money
-    {   WWT_BUTTON,    1,    126,    236,    111,    127,    STR_SET_MONEY,             STR_NONE },    // set money
-    {   WWT_BUTTON,    1,     11,    120,    153,    169,    STR_CHEAT_CLEAR_LOAN,      STR_NONE },    // Clear loan
-    { WWT_GROUPBOX,    1,      5,    242,    184,    284,    STR_DATE_SET,              STR_NONE },    // Date group
-    {  WWT_SPINNER,    1,    120,    236,    197,    208,    STR_NONE,                  STR_NONE },    // Year box
-    {   WWT_BUTTON,    1,    226,    236,    198,    202,    STR_NUMERIC_UP,            STR_NONE },    // increase year
-    {   WWT_BUTTON,    1,    226,    236,    203,    207,    STR_NUMERIC_DOWN,          STR_NONE },    // decrease year
-    {  WWT_SPINNER,    1,    120,    236,    218,    229,    STR_NONE,                  STR_NONE },    // Month box
-    {   WWT_BUTTON,    1,    226,    236,    219,    223,    STR_NUMERIC_UP,            STR_NONE },    // increase month
-    {   WWT_BUTTON,    1,    226,    236,    224,    228,    STR_NUMERIC_DOWN,          STR_NONE },    // decrease month
-    {  WWT_SPINNER,    1,    120,    236,    239,    250,    STR_NONE,                  STR_NONE },    // Day box
-    {   WWT_BUTTON,    1,    226,    236,    240,    244,    STR_NUMERIC_UP,            STR_NONE },    // increase day
-    {   WWT_BUTTON,    1,    226,    236,    245,    249,    STR_NUMERIC_DOWN,          STR_NONE },    // decrease day
-    {   WWT_BUTTON,    1,     11,    120,    258,    274,    STR_DATE_SET,              STR_NONE },    // Set Date
-    {   WWT_BUTTON,    1,    126,    236,    258,    274,    STR_DATE_RESET,            STR_NONE },    // Reset Date
+#define FRAME_MONEY_START 69
+    { WWT_GROUPBOX,    1,      5,    242,    FRAME_MONEY_START +  0,   FRAME_MONEY_START +  68,    STR_ADD_SET_MONEY,         STR_NONE },    // add / set money group frame
+    {  WWT_SPINNER,    1,     11,    236,    FRAME_MONEY_START + 23,   FRAME_MONEY_START +  34,    STR_NONE,                  STR_NONE },    // money value
+    {   WWT_BUTTON,    1,    226,    236,    FRAME_MONEY_START + 24,   FRAME_MONEY_START +  28,    STR_NUMERIC_UP,            STR_NONE },    // increase money
+    {   WWT_BUTTON,    1,    226,    236,    FRAME_MONEY_START + 29,   FRAME_MONEY_START +  33,    STR_NUMERIC_DOWN,          STR_NONE },    // decrease money
+    {   WWT_BUTTON,    1,     11,    120,    FRAME_MONEY_START + 42,   FRAME_MONEY_START +  58,    STR_ADD_MONEY,             STR_NONE },    // add money
+    {   WWT_BUTTON,    1,    126,    236,    FRAME_MONEY_START + 42,   FRAME_MONEY_START +  58,    STR_SET_MONEY,             STR_NONE },    // set money
+    {   WWT_BUTTON,    1,     11,    120,    FRAME_MONEY_START + 84,   FRAME_MONEY_START + 100,    STR_CHEAT_CLEAR_LOAN,      STR_NONE },    // Clear loan
+#undef FRAME_MONEY_START
+#define FRAME_DATE_START 184
+    { WWT_GROUPBOX,    1,      5,    242,    FRAME_DATE_START +   0,   FRAME_DATE_START + 100,    STR_DATE_SET,              STR_NONE },    // Date group
+    {  WWT_SPINNER,    1,    120,    236,    FRAME_DATE_START +  13,   FRAME_DATE_START +  24,    STR_NONE,                  STR_NONE },    // Year box
+    {   WWT_BUTTON,    1,    226,    236,    FRAME_DATE_START +  14,   FRAME_DATE_START +  18,    STR_NUMERIC_UP,            STR_NONE },    // increase year
+    {   WWT_BUTTON,    1,    226,    236,    FRAME_DATE_START +  19,   FRAME_DATE_START +  23,    STR_NUMERIC_DOWN,          STR_NONE },    // decrease year
+    {  WWT_SPINNER,    1,    120,    236,    FRAME_DATE_START +  34,   FRAME_DATE_START +  45,    STR_NONE,                  STR_NONE },    // Month box
+    {   WWT_BUTTON,    1,    226,    236,    FRAME_DATE_START +  35,   FRAME_DATE_START +  39,    STR_NUMERIC_UP,            STR_NONE },    // increase month
+    {   WWT_BUTTON,    1,    226,    236,    FRAME_DATE_START +  40,   FRAME_DATE_START +  44,    STR_NUMERIC_DOWN,          STR_NONE },    // decrease month
+    {  WWT_SPINNER,    1,    120,    236,    FRAME_DATE_START +  55,   FRAME_DATE_START +  66,    STR_NONE,                  STR_NONE },    // Day box
+    {   WWT_BUTTON,    1,    226,    236,    FRAME_DATE_START +  56,   FRAME_DATE_START +  60,    STR_NUMERIC_UP,            STR_NONE },    // increase day
+    {   WWT_BUTTON,    1,    226,    236,    FRAME_DATE_START +  61,   FRAME_DATE_START +  65,    STR_NUMERIC_DOWN,          STR_NONE },    // decrease day
+    {   WWT_BUTTON,    1,     11,    120,    FRAME_DATE_START +  74,   FRAME_DATE_START +  90,    STR_DATE_SET,              STR_NONE },    // Set Date
+    {   WWT_BUTTON,    1,    126,    236,    FRAME_DATE_START +  74,   FRAME_DATE_START +  90,    STR_DATE_RESET,            STR_NONE },    // Reset Date
+#undef FRAME_DATE_START
     {  WIDGETS_END },
 };
 
