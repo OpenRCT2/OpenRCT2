@@ -1746,7 +1746,7 @@ GAME_COMMAND_POINTER * new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_set_banner_colour,
     game_command_set_land_ownership,
     game_command_clear_scenery,
-    game_command_set_banner_name,
+    nullptr,
     nullptr,
     game_command_set_banner_style,
     game_command_set_sign_style,

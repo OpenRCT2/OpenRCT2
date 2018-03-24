@@ -31,6 +31,7 @@
 #include "MazeSetTrackAction.hpp"
 #include "SignSetNameAction.hpp"
 #include "ParkSetNameAction.hpp"
+#include "BannerSetNameAction.hpp"
 
 namespace GameActions
 {
@@ -52,5 +53,6 @@ namespace GameActions
         Register<MazeSetTrackAction>();
         Register<SignSetNameAction>();
         Register<ParkSetNameAction>();
+        Register<BannerSetNameAction>();
     }
 }

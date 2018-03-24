@@ -285,71 +285,6 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
     return bannerEntry->banner.price;
 }
 
-static money32 BannerSetName(uint8 bannerIndex,
-    uint16 nameChunkIndex,
-    uint32 nameChunk1,
-    uint32 nameChunk2,
-    uint32 nameChunk3,
-    uint8 flags)
-{
-    static char newName[128];
-
-    if (bannerIndex >= MAX_BANNERS)
-    {
-        log_warning("Invalid game command for setting banner name, banner id = %d", bannerIndex);
-        return MONEY32_UNDEFINED;
-    }
-    rct_banner* banner = &gBanners[bannerIndex];
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
-    size_t indexToOffset[3] = { 24, 0, 12 };
-
-    if (nameChunkIndex > Util::CountOf(indexToOffset))
-    {
-        log_warning("Invalid chunk index for setting banner name, banner id = %d, index = %d", bannerIndex, nameChunkIndex);
-        return MONEY32_UNDEFINED;
-    }
-
-    size_t nameChunkOffset = std::min<size_t>(indexToOffset[nameChunkIndex], Util::CountOf(newName) - 12);
-    std::memcpy(&newName[0 + nameChunkOffset], &nameChunk1, sizeof(uint32));
-    std::memcpy(&newName[4 + nameChunkOffset], &nameChunk2, sizeof(uint32));
-    std::memcpy(&newName[8 + nameChunkOffset], &nameChunk3, sizeof(uint32));
-
-    if (nameChunkIndex != 0)
-    {
-        return 0;
-    }
-
-    if (!(flags & GAME_COMMAND_FLAG_APPLY))
-    {
-        return 0;
-    }
-
-    utf8 *buffer = gCommonStringFormatBuffer;
-    utf8 *dst = buffer;
-    dst = utf8_write_codepoint(dst, FORMAT_COLOUR_CODE_START + banner->text_colour);
-    String::Set(dst, 256, newName, 32);
-
-    rct_string_id stringId = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, buffer);
-    if (stringId != 0)
-    {
-        rct_string_id prevStringId = banner->string_idx;
-        banner->string_idx = stringId;
-        user_string_free(prevStringId);
-
-        auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
-        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, bannerIndex);
-        context_broadcast_intent(&intent);
-    }
-    else
-    {
-        gGameCommandErrorText = STR_ERR_CANT_SET_BANNER_TEXT;
-        return MONEY32_UNDEFINED;
-    }
-
-    return 0;
-}
-
 static money32 BannerSetStyle(uint8 bannerIndex, uint8 colour, uint8 textColour, uint8 bannerFlags, uint8 flags)
 {
     if (bannerIndex >= MAX_BANNERS)
@@ -658,18 +593,6 @@ void game_command_place_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* ed
         *ebp & 0xFF,
         (*ebx >> 8) & 0xFF,
         (uint8 *)edi,
-        *ebx & 0xFF
-    );
-}
-
-void game_command_set_banner_name(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
-{
-    *ebx = BannerSetName(
-        *ecx & 0xFF,
-        *eax & 0xFFFF,
-        *edx,
-        *ebp,
-        *edi,
         *ebx & 0xFF
     );
 }
