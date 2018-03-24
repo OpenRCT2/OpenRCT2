@@ -25,6 +25,7 @@
 #include "ScPark.hpp"
 #include "ScTile.hpp"
 #include "ScThing.hpp"
+#include "ScUi.hpp"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
@@ -63,11 +64,14 @@ void ScriptEngine::Initialise()
     ScTile::Register(ctx);
     ScTileElement::Register(ctx);
     ScThing::Register(ctx);
+    ScUi::Register(ctx);
+    ScWindow::Register(ctx);
 
     dukglue_register_global(ctx, std::make_shared<ScConsole>(_console), "console");
     dukglue_register_global(ctx, std::make_shared<ScContext>(_execInfo, _hookEngine), "context");
     dukglue_register_global(ctx, std::make_shared<ScMap>(ctx), "map");
     dukglue_register_global(ctx, std::make_shared<ScPark>(), "park");
+    dukglue_register_global(ctx, std::make_shared<ScUi>(), "ui");
 
     LoadPlugins();
     StartPlugins();

@@ -133,6 +133,9 @@ export interface Window {
     width: number;
     height: number;
     title: string;
+    isSticky: boolean;
+
+    close(): void;
 }
 
 export interface WindowDesc {
@@ -146,8 +149,13 @@ export interface WindowDesc {
 }
 
 export interface Ui {
+    width: number;
+    height: number;
+    windows: number;
+
+    getWindow(id: number): Window;
+    getWindow(classification: string, id?: number): Window;
     openWindow(desc: WindowDesc): Window;
-    closeWindow(window: Window): void;
     closeWindows(classification: string, id?: number): void;
     closeAllWindows(): void;
 }

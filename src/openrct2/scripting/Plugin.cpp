@@ -41,7 +41,7 @@ Plugin::~Plugin()
 
 void Plugin::Load()
 {
-    std::string projectedVariables = "console,context,map,park";
+    std::string projectedVariables = "console,context,map,park,ui";
     std::string code;
     {
         std::ifstream fs(_path);
