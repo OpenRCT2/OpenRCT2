@@ -34,7 +34,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "1"
+#define NETWORK_STREAM_VERSION "2"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static rct_peep* _pickup_peep = nullptr;
@@ -2093,7 +2093,7 @@ bool Network::LoadMap(IStream * stream)
         gCheatsDisableRideValueAging = stream->ReadValue<uint8>() != 0;
         gConfigGeneral.show_real_names_of_guests = stream->ReadValue<uint8>() != 0;
         gCheatsIgnoreResearchStatus = stream->ReadValue<uint8>() != 0;
-        
+
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         result = true;
     }
@@ -2206,7 +2206,7 @@ void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 
     if (player_id == action->GetPlayer())
     {
-        // Only execute callbacks that belong to us, 
+        // Only execute callbacks that belong to us,
         // clients can have identical network ids assigned.
         auto itr = _gameActionCallbacks.find(action->GetNetworkId());
         if (itr != _gameActionCallbacks.end())
