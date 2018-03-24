@@ -285,8 +285,11 @@ void RideObject::Load()
                     set_vehicle_type_image_max_sizes(vehicleEntry, num_images);
                 }
             }
-            vehicleEntry->peep_loading_positions = _peepLoadingPositions[i].data();
-            vehicleEntry->peep_loading_positions_count = (uint16)_peepLoadingPositions[i].size();
+
+            if (!_peepLoadingPositions[i].empty())
+            {
+                vehicleEntry->peep_loading_positions = std::move(_peepLoadingPositions[i]);
+            }
         }
     }
 }
@@ -620,27 +623,6 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
 
         auto availableTrackPieces = ObjectJsonHelpers::GetJsonStringArray(json_object_get(properties, "availableTrackPieces"));
         _presetColours = ReadJsonCarColours(json_object_get(properties, "carColours"));
-
-
-        // Get loading positions
-        auto loadingPositions = json_object_get(properties, "loadingPositions");
-        auto numLoadingPositions = std::min<size_t>(json_array_size(loadingPositions), 4);
-        for (size_t i = 0; i < numLoadingPositions; i++)
-        {
-            auto positions = json_array_get(loadingPositions, i);
-            auto numPositions = json_array_size(positions);
-            if (numPositions > 0 && numPositions <= std::numeric_limits<uint16>::max())
-            {
-                std::vector<sint8> positionData;
-                for (size_t j = 0; j < numPositions; j++)
-                {
-                    auto pos = json_integer_value(json_array_get(positions, j));
-                    pos = Math::Clamp<sint64>(std::numeric_limits<sint8>::min(), pos, std::numeric_limits<sint8>::max());
-                    positionData.push_back(pos);
-                }
-                _peepLoadingPositions[i] = std::move(positionData);
-            }
-        }
     }
 
     _legacyType.flags |= ObjectJsonHelpers::GetFlags<uint32>(properties, {
@@ -770,6 +752,61 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
     car.draw_order = ObjectJsonHelpers::GetInteger(jCar, "drawOrder");
     car.num_vertical_frames_override = ObjectJsonHelpers::GetInteger(jCar, "numVerticalFramesOverride");
 
+    auto& peepLoadingPositions = car.peep_loading_positions;
+    auto jLoadingPositions = json_object_get(jCar, "loadingPositions");
+    if (json_is_array(jLoadingPositions))
+    {
+        auto arr = ObjectJsonHelpers::GetJsonIntegerArray(jLoadingPositions);
+        for (auto x : arr)
+        {
+            peepLoadingPositions.push_back(x);
+        }
+    }
+    else
+    {
+        auto jLoadingWaypoints = json_object_get(jCar, "loadingWaypoints");
+        if (json_is_array(jLoadingWaypoints))
+        {
+            auto numSegments = ObjectJsonHelpers::GetInteger(jCar, "numSegments");
+            if (numSegments == 8)
+            {
+                car.flags |= VEHICLE_ENTRY_FLAG_26;
+                peepLoadingPositions.push_back(0);
+            }
+            else if (numSegments == 4)
+            {
+                peepLoadingPositions.push_back(1);
+            }
+            else
+            {
+                peepLoadingPositions.push_back(0);
+            }
+
+            size_t i;
+            json_t * route;
+            json_array_foreach(jLoadingWaypoints, i, route)
+            {
+                if (json_is_array(route))
+                {
+                    size_t j;
+                    json_t * waypoint;
+                    json_array_foreach(route, j, waypoint)
+                    {
+                        if (json_is_array(waypoint) && json_array_size(waypoint) >= 2)
+                        {
+                            auto x = json_integer_value(json_array_get(waypoint, 0));
+                            auto y = json_integer_value(json_array_get(waypoint, 1));
+                            peepLoadingPositions.push_back(x);
+                            peepLoadingPositions.push_back(y);
+                        }
+                    }
+                    peepLoadingPositions.push_back(0);
+                    peepLoadingPositions.push_back(0);
+                }
+            }
+        }
+    }
+
     auto jFrames = json_object_get(jCar, "frames");
     car.sprite_flags = ObjectJsonHelpers::GetFlags<uint16>(jFrames, {
         { "flat", VEHICLE_SPRITE_FLAG_FLAT },
@@ -816,7 +853,6 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
         { "VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION", VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION },
         { "VEHICLE_ENTRY_FLAG_RIDER_ANIMATION", VEHICLE_ENTRY_FLAG_RIDER_ANIMATION },
         { "VEHICLE_ENTRY_FLAG_25", VEHICLE_ENTRY_FLAG_25 },
-        { "VEHICLE_ENTRY_FLAG_26", VEHICLE_ENTRY_FLAG_26 },
         { "VEHICLE_ENTRY_FLAG_SLIDE_SWING", VEHICLE_ENTRY_FLAG_SLIDE_SWING },
         { "VEHICLE_ENTRY_FLAG_CHAIRLIFT", VEHICLE_ENTRY_FLAG_CHAIRLIFT },
         { "VEHICLE_ENTRY_FLAG_WATER_RIDE", VEHICLE_ENTRY_FLAG_WATER_RIDE },

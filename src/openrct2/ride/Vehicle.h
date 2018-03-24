@@ -17,6 +17,7 @@
 #ifndef _VEHICLE_H_
 #define _VEHICLE_H_
 
+#include <vector>
 #include "../common.h"
 #include "../world/Location.hpp"
 
@@ -76,8 +77,9 @@ struct rct_ride_entry_vehicle {
     uint8 effect_visual;
     uint8 draw_order;
     uint8 num_vertical_frames_override; // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine it. Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
-    sint8* peep_loading_positions;  // 0x61 , 0x7B
-    uint16 peep_loading_positions_count;
+    uint8 pad_61[7];                // 0x61 , 0x7B
+
+    std::vector<sint8> peep_loading_positions;
 };
 #pragma pack(pop)
 

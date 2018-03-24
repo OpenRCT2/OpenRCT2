@@ -3021,7 +3021,7 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
         if (ride->type != RIDE_TYPE_ENTERPRISE)
             direction_track *= 2;
 
-        if (*vehicle_type->peep_loading_positions == 0)
+        if (vehicle_type->peep_loading_positions[0] == 0)
         {
             direction_track /= 2;
             cl = 0;
@@ -3063,7 +3063,7 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
 
     sint8 load_position = 0;
     // Safe, in case current seat > number of loading positions
-    uint16 numSeatPositions = vehicle_type->peep_loading_positions_count;
+    auto numSeatPositions = vehicle_type->peep_loading_positions.size();
     if (numSeatPositions != 0)
     {
         size_t loadPositionIndex = numSeatPositions - 1;
@@ -3563,7 +3563,7 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
     if (ride->type != RIDE_TYPE_ENTERPRISE)
         station_direction *= 2;
 
-    if (*vehicle_type->peep_loading_positions == 0)
+    if (vehicle_type->peep_loading_positions[0] == 0)
     {
         station_direction /= 2;
         cl = 0;

@@ -1629,7 +1629,7 @@ const rct_ride_entry_vehicle CableLiftVehicle = {
     /* .effect_visual = */ 1,
     /* .draw_order = */ 14,
     /* .num_vertical_frames_override = */ 0,
-    /* .peep_loading_positions = */ nullptr
+    /* .peep_loading_positions = */
 };
 
 /* rct2: 0x009A0AA0 */
