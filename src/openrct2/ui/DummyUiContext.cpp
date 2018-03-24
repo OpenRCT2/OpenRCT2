@@ -24,6 +24,9 @@ namespace OpenRCT2::Ui
         IWindowManager* const _windowManager = CreateDummyWindowManager();
 
     public:
+        void Initialise() override
+        {
+        }
         void Update() override
         {
         }

@@ -92,6 +92,7 @@ namespace OpenRCT2::Scripting
         ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env);
         ScriptEngine(ScriptEngine&) = delete;
 
+        duk_context * GetContext() { return _context; }
         HookEngine& GetHookEngine() { return _hookEngine; }
 
         void Update();
