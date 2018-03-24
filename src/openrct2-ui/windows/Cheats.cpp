@@ -217,31 +217,36 @@ static rct_widget window_cheats_money_widgets[] =
 static rct_widget window_cheats_guests_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
-    { WWT_GROUPBOX,    1,      5,    242,     48,    326,    STR_CHEAT_SET_GUESTS_PARAMETERS,    STR_NONE },                          // Guests parameters group frame
-    {   WWT_BUTTON,    1,    183,    236,     69,     85,    STR_MAX,                            STR_NONE },                          // happiness max
-    {   WWT_BUTTON,    1,    126,    181,     69,     85,    STR_MIN,                            STR_NONE },                          // happiness min
-    {   WWT_BUTTON,    1,    183,    236,     90,    106,    STR_MAX,                            STR_NONE },                          // energy max
-    {   WWT_BUTTON,    1,    126,    181,     90,    106,    STR_MIN,                            STR_NONE },                          // energy min
-    {   WWT_BUTTON,    1,    183,    236,    111,    127,    STR_MAX,                            STR_NONE },                          // hunger max
-    {   WWT_BUTTON,    1,    126,    181,    111,    127,    STR_MIN,                            STR_NONE },                          // hunger min
-    {   WWT_BUTTON,    1,    183,    236,    132,    148,    STR_MAX,                            STR_NONE },                          // thirst max
-    {   WWT_BUTTON,    1,    126,    181,    132,    148,    STR_MIN,                            STR_NONE },                          // thirst min
-    {   WWT_BUTTON,    1,    183,    236,    153,    169,    STR_MAX,                            STR_NONE },                          // nausea max
-    {   WWT_BUTTON,    1,    126,    181,    153,    169,    STR_MIN,                            STR_NONE },                          // nausea min
-    {   WWT_BUTTON,    1,    183,    236,    174,    190,    STR_MAX,                            STR_NONE },                          // nausea tolerance max
-    {   WWT_BUTTON,    1,    126,    181,    174,    190,    STR_MIN,                            STR_NONE },                          // nausea tolerance min
-    {   WWT_BUTTON,    1,    183,    236,    195,    211,    STR_MAX,                            STR_NONE },                          // bathroom max
-    {   WWT_BUTTON,    1,    126,    181,    195,    211,    STR_MIN,                            STR_NONE },                          // bathroom min
-    {   WWT_BUTTON,    1,    126,    236,    237,    253,    STR_CHEAT_MORE_THAN_1,              STR_NONE },                          // ride intensity > 1
-    {   WWT_BUTTON,    1,     11,    120,    237,    253,    STR_CHEAT_LESS_THAN_15,             STR_NONE },                          // ride intensity < 15
-    { WWT_CHECKBOX,    1,     11,    231,    258,    268,    STR_CHEAT_IGNORE_INTENSITY,         STR_CHEAT_IGNORE_INTENSITY_TIP },    // guests ignore intensity
-    { WWT_CHECKBOX,    1,     11,    231,    279,    289,    STR_CHEAT_DISABLE_VANDALISM,        STR_CHEAT_DISABLE_VANDALISM_TIP },   // disable vandalism
-    { WWT_CHECKBOX,    1,     11,    231,    300,    310,    STR_CHEAT_DISABLE_LITTERING,        STR_CHEAT_DISABLE_LITTERING_TIP },   // disable littering
-    { WWT_GROUPBOX,    1,      5,    242,    342,    410,    STR_CHEAT_GIVE_ALL_GUESTS,          STR_NONE },                          // Guests parameters group frame
-    {   WWT_BUTTON,    1,     11,    120,    363,    379,    STR_CHEAT_CURRENCY_FORMAT,          STR_NONE },                          // give guests money
-    {   WWT_BUTTON,    1,    126,    236,    363,    379,    STR_SHOP_ITEM_PLURAL_PARK_MAP,      STR_NONE },                          // give guests park maps
-    {   WWT_BUTTON,    1,     11,    120,    384,    400,    STR_SHOP_ITEM_PLURAL_BALLOON,       STR_NONE },                          // give guests balloons
-    {   WWT_BUTTON,    1,    126,    236,    384,    400,    STR_SHOP_ITEM_PLURAL_UMBRELLA,      STR_NONE },                          // give guests umbrellas
+#define FRAME_PARAMS_START 48
+    { WWT_GROUPBOX,    1,      5,    242,   FRAME_PARAMS_START +   0,   FRAME_PARAMS_START + 278,    STR_CHEAT_SET_GUESTS_PARAMETERS,    STR_NONE },                          // Guests parameters group frame
+    {   WWT_BUTTON,    1,    183,    236,   FRAME_PARAMS_START +  21,   FRAME_PARAMS_START +  37,    STR_MAX,                            STR_NONE },                          // happiness max
+    {   WWT_BUTTON,    1,    126,    181,   FRAME_PARAMS_START +  21,   FRAME_PARAMS_START +  37,    STR_MIN,                            STR_NONE },                          // happiness min
+
+    {   WWT_BUTTON,    1,    183,    236,   FRAME_PARAMS_START +  42,   FRAME_PARAMS_START +  58,    STR_MAX,                            STR_NONE },                          // energy max
+    {   WWT_BUTTON,    1,    126,    181,   FRAME_PARAMS_START +  42,   FRAME_PARAMS_START +  58,    STR_MIN,                            STR_NONE },                          // energy min
+    {   WWT_BUTTON,    1,    183,    236,   FRAME_PARAMS_START +  63,   FRAME_PARAMS_START +  79,    STR_MAX,                            STR_NONE },                          // hunger max
+    {   WWT_BUTTON,    1,    126,    181,   FRAME_PARAMS_START +  63,   FRAME_PARAMS_START +  79,    STR_MIN,                            STR_NONE },                          // hunger min
+    {   WWT_BUTTON,    1,    183,    236,   FRAME_PARAMS_START +  84,   FRAME_PARAMS_START + 100,    STR_MAX,                            STR_NONE },                          // thirst max
+    {   WWT_BUTTON,    1,    126,    181,   FRAME_PARAMS_START +  84,   FRAME_PARAMS_START + 100,    STR_MIN,                            STR_NONE },                          // thirst min
+    {   WWT_BUTTON,    1,    183,    236,   FRAME_PARAMS_START + 105,   FRAME_PARAMS_START + 121,    STR_MAX,                            STR_NONE },                          // nausea max
+    {   WWT_BUTTON,    1,    126,    181,   FRAME_PARAMS_START + 105,   FRAME_PARAMS_START + 121,    STR_MIN,                            STR_NONE },                          // nausea min
+    {   WWT_BUTTON,    1,    183,    236,   FRAME_PARAMS_START + 126,   FRAME_PARAMS_START + 142,    STR_MAX,                            STR_NONE },                          // nausea tolerance max
+    {   WWT_BUTTON,    1,    126,    181,   FRAME_PARAMS_START + 126,   FRAME_PARAMS_START + 142,    STR_MIN,                            STR_NONE },                          // nausea tolerance min
+    {   WWT_BUTTON,    1,    183,    236,   FRAME_PARAMS_START + 147,   FRAME_PARAMS_START + 163,    STR_MAX,                            STR_NONE },                          // bathroom max
+    {   WWT_BUTTON,    1,    126,    181,   FRAME_PARAMS_START + 147,   FRAME_PARAMS_START + 163,    STR_MIN,                            STR_NONE },                          // bathroom min
+    {   WWT_BUTTON,    1,    126,    236,   FRAME_PARAMS_START + 189,   FRAME_PARAMS_START + 205,    STR_CHEAT_MORE_THAN_1,              STR_NONE },                          // ride intensity > 1
+    {   WWT_BUTTON,    1,     11,    120,   FRAME_PARAMS_START + 189,   FRAME_PARAMS_START + 205,    STR_CHEAT_LESS_THAN_15,             STR_NONE },                          // ride intensity < 15
+    { WWT_CHECKBOX,    1,     11,    231,   FRAME_PARAMS_START + 210,   FRAME_PARAMS_START + 220,    STR_CHEAT_IGNORE_INTENSITY,         STR_CHEAT_IGNORE_INTENSITY_TIP },    // guests ignore intensity
+    { WWT_CHECKBOX,    1,     11,    231,   FRAME_PARAMS_START + 231,   FRAME_PARAMS_START + 241,    STR_CHEAT_DISABLE_VANDALISM,        STR_CHEAT_DISABLE_VANDALISM_TIP },   // disable vandalism
+    { WWT_CHECKBOX,    1,     11,    231,   FRAME_PARAMS_START + 252,   FRAME_PARAMS_START + 262,    STR_CHEAT_DISABLE_LITTERING,        STR_CHEAT_DISABLE_LITTERING_TIP },   // disable littering
+#undef FRAME_PARAM_START
+#define FRAME_GIVE_START 342
+    { WWT_GROUPBOX,    1,      5,    242,   FRAME_GIVE_START +   0,     FRAME_GIVE_START +  68,      STR_CHEAT_GIVE_ALL_GUESTS,          STR_NONE },                          // Guests parameters group frame
+    {   WWT_BUTTON,    1,     11,    120,   FRAME_GIVE_START +  21,     FRAME_GIVE_START +  37,      STR_CHEAT_CURRENCY_FORMAT,          STR_NONE },                          // give guests money
+    {   WWT_BUTTON,    1,    126,    236,   FRAME_GIVE_START +  21,     FRAME_GIVE_START +  37,      STR_SHOP_ITEM_PLURAL_PARK_MAP,      STR_NONE },                          // give guests park maps
+    {   WWT_BUTTON,    1,     11,    120,   FRAME_GIVE_START +  42,     FRAME_GIVE_START +  58,      STR_SHOP_ITEM_PLURAL_BALLOON,       STR_NONE },                          // give guests balloons
+    {   WWT_BUTTON,    1,    126,    236,   FRAME_GIVE_START +  42,     FRAME_GIVE_START +  58,      STR_SHOP_ITEM_PLURAL_UMBRELLA,      STR_NONE },                          // give guests umbrellas
+#undef FRAME_GIVE_START
     {   WWT_BUTTON,    1,     11,    120,    426,    442,    STR_CHEAT_LARGE_TRAM_GUESTS,        STR_CHEAT_LARGE_TRAM_GUESTS_TIP },   // large tram
     {   WWT_BUTTON,    1,    126,    236,    426,    442,    STR_CHEAT_REMOVE_ALL_GUESTS,        STR_CHEAT_REMOVE_ALL_GUESTS_TIP },   // remove all guests
     {   WWT_BUTTON,    1,     11,    120,    447,    463,    STR_CHEAT_EXPLODE,                  STR_CHEAT_EXPLODE_TIP },             // explode guests
