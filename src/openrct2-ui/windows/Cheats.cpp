@@ -257,34 +257,41 @@ static rct_widget window_cheats_guests_widgets[] =
 static rct_widget window_cheats_misc_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
-    { WWT_GROUPBOX,    1,      5,    242,     48,    216,    STR_CHEAT_GENERAL_GROUP,            STR_NONE },                              // General group
-    {   WWT_BUTTON,    1,     11,    120,     69,     85,    STR_CHEAT_OPEN_PARK,                STR_CHEAT_OPEN_PARK_TIP },               // open / close park
-    {   WWT_BUTTON,    1,    126,    236,     69,     85,    STR_CHEAT_PARK_PARAMETERS,          STR_CHEAT_PARK_PARAMETERS_TIP },         // Park parameters
-    {   WWT_BUTTON,    1,     11,    120,     90,    106,    STR_CHEAT_SANDBOX_MODE,             STR_CHEAT_SANDBOX_MODE_TIP },            // Sandbox mode (edit land ownership in-game)
-    {   WWT_BUTTON,    1,    126,    236,     90,    106,    STR_CHEAT_RESET_DATE,               STR_NONE },                              // Reset date
-    {   WWT_BUTTON,    1,     11,    120,    111,    127,    STR_CHEAT_OWN_ALL_LAND,             STR_CHEAT_OWN_ALL_LAND_TIP },            // Own all land
-    { WWT_CHECKBOX,    1,     11,    120,    153,    169,    STR_FORCE_PARK_RATING,              STR_NONE },                              // Force park rating
-    {  WWT_SPINNER,    1,    126,    236,    155,    166,    STR_NONE,                           STR_NONE },                              // park rating
-    {   WWT_BUTTON,    1,    226,    236,    156,    160,    STR_NUMERIC_UP,                     STR_NONE },                              // increase rating
-    {   WWT_BUTTON,    1,    226,    236,    161,    165,    STR_NUMERIC_DOWN,                   STR_NONE },                              // decrease rating
-    {   WWT_BUTTON,    1,     11,    120,    174,    190,    STR_CHEAT_WIN_SCENARIO,             STR_NONE },                              // Win scenario
-    {   WWT_BUTTON,    1,    126,    236,    174,    190,    STR_CHEAT_HAVE_FUN,                 STR_NONE },                              // Have fun!
-    { WWT_CHECKBOX,    1,     11,    231,    195,    211,    STR_CHEAT_NEVERENDING_MARKETING,    STR_CHEAT_NEVERENDING_MARKETING_TIP },   // never ending marketing campaigns
-    { WWT_GROUPBOX,    1,      5,    242,    221,    284,    STR_CHEAT_CLIMATE_GROUP,            STR_NONE },                              // Climate group
-    {   WWT_BUTTON,    1,     11,    120,    237,    253,    STR_CHEAT_FREEZE_CLIMATE,           STR_CHEAT_FREEZE_CLIMATE_TIP },          // Freeze climate
-    { WWT_DROPDOWN,    1,    126,    236,    260,    271,    STR_NONE,                           STR_FORCE_WEATHER_TOOLTIP },             // Force weather
-    {   WWT_BUTTON,    1,    225,    235,    261,    270,    STR_DROPDOWN_GLYPH,                 STR_FORCE_WEATHER_TOOLTIP },             // Force weather
-    { WWT_GROUPBOX,    1,      5,    242,    300,    431,    STR_CHEAT_STAFF_GROUP,              STR_NONE },                              // Staff group
-    {   WWT_BUTTON,    1,     11,    120,    321,    337,    STR_CHEAT_CLEAR_GRASS,              STR_NONE },                              // Clear grass
-    {   WWT_BUTTON,    1,    126,    236,    321,    337,    STR_CHEAT_MOWED_GRASS,              STR_NONE },                              // Mowed grass
-    {   WWT_BUTTON,    1,     11,    120,    342,    358,    STR_CHEAT_WATER_PLANTS,             STR_NONE },                              // Water plants
-    {   WWT_BUTTON,    1,    126,    236,    342,    358,    STR_CHEAT_FIX_VANDALISM,            STR_NONE },                              // Fix vandalism
-    {   WWT_BUTTON,    1,     11,    120,    363,    379,    STR_CHEAT_REMOVE_LITTER,            STR_NONE },                              // Remove litter
-    { WWT_CHECKBOX,    1,     11,    120,    384,    400,    STR_CHEAT_DISABLE_PLANT_AGING,      STR_CHEAT_DISABLE_PLANT_AGING_TIP },     // Disable plant ageing
-    { WWT_DROPDOWN,    1,    126,    236,    407,    418,    STR_NONE,                           STR_NONE },                             // Staff speed
-    {   WWT_BUTTON,    1,    225,    235,    408,    417,    STR_DROPDOWN_GLYPH,                 STR_NONE },                             // Staff speed
+#define FRAME_GENERAL_START 48
+    { WWT_GROUPBOX,    1,      5,    242,   FRAME_GENERAL_START +   0,   FRAME_GENERAL_START + 168,    STR_CHEAT_GENERAL_GROUP,            STR_NONE },                              // General group
+    {   WWT_BUTTON,    1,     11,    120,   FRAME_GENERAL_START +  21,   FRAME_GENERAL_START +  37,    STR_CHEAT_OPEN_PARK,                STR_CHEAT_OPEN_PARK_TIP },               // open / close park
+    {   WWT_BUTTON,    1,    126,    236,   FRAME_GENERAL_START +  21,   FRAME_GENERAL_START +  37,    STR_CHEAT_PARK_PARAMETERS,          STR_CHEAT_PARK_PARAMETERS_TIP },         // Park parameters
+    {   WWT_BUTTON,    1,     11,    120,   FRAME_GENERAL_START +  42,   FRAME_GENERAL_START +  58,    STR_CHEAT_SANDBOX_MODE,             STR_CHEAT_SANDBOX_MODE_TIP },            // Sandbox mode (edit land ownership in-game)
+    {   WWT_BUTTON,    1,    126,    236,   FRAME_GENERAL_START +  42,   FRAME_GENERAL_START +  58,    STR_CHEAT_RESET_DATE,               STR_NONE },                              // Reset date
+    {   WWT_BUTTON,    1,     11,    120,   FRAME_GENERAL_START +  63,   FRAME_GENERAL_START +  79,    STR_CHEAT_OWN_ALL_LAND,             STR_CHEAT_OWN_ALL_LAND_TIP },            // Own all land
+    { WWT_CHECKBOX,    1,     11,    120,   FRAME_GENERAL_START + 105,   FRAME_GENERAL_START + 121,    STR_FORCE_PARK_RATING,              STR_NONE },                              // Force park rating
+    {  WWT_SPINNER,    1,    126,    236,   FRAME_GENERAL_START + 107,   FRAME_GENERAL_START + 118,    STR_NONE,                           STR_NONE },                              // park rating
+    {   WWT_BUTTON,    1,    226,    236,   FRAME_GENERAL_START + 108,   FRAME_GENERAL_START + 112,    STR_NUMERIC_UP,                     STR_NONE },                              // increase rating
+    {   WWT_BUTTON,    1,    226,    236,   FRAME_GENERAL_START + 113,   FRAME_GENERAL_START + 117,    STR_NUMERIC_DOWN,                   STR_NONE },                              // decrease rating
+    {   WWT_BUTTON,    1,     11,    120,   FRAME_GENERAL_START + 126,   FRAME_GENERAL_START + 142,    STR_CHEAT_WIN_SCENARIO,             STR_NONE },                              // Win scenario
+    {   WWT_BUTTON,    1,    126,    236,   FRAME_GENERAL_START + 126,   FRAME_GENERAL_START + 142,    STR_CHEAT_HAVE_FUN,                 STR_NONE },                              // Have fun!
+    { WWT_CHECKBOX,    1,     11,    231,   FRAME_GENERAL_START + 147,   FRAME_GENERAL_START + 163,    STR_CHEAT_NEVERENDING_MARKETING,    STR_CHEAT_NEVERENDING_MARKETING_TIP },   // never ending marketing campaigns
+#undef FRAME_GENERAL_START
+#define FRAME_CLIMATE_START 221
+    { WWT_GROUPBOX,    1,      5,    242,   FRAME_CLIMATE_START +   0,   FRAME_CLIMATE_START +  63,    STR_CHEAT_CLIMATE_GROUP,            STR_NONE },                              // Climate group
+    {   WWT_BUTTON,    1,     11,    120,   FRAME_CLIMATE_START +  16,   FRAME_CLIMATE_START +  32,    STR_CHEAT_FREEZE_CLIMATE,           STR_CHEAT_FREEZE_CLIMATE_TIP },          // Freeze climate
+    { WWT_DROPDOWN,    1,    126,    236,   FRAME_CLIMATE_START +  39,   FRAME_CLIMATE_START +  50,    STR_NONE,                           STR_FORCE_WEATHER_TOOLTIP },             // Force weather
+    {   WWT_BUTTON,    1,    225,    235,   FRAME_CLIMATE_START +  40,   FRAME_CLIMATE_START +  49,    STR_DROPDOWN_GLYPH,                 STR_FORCE_WEATHER_TOOLTIP },             // Force weather
+#undef FRAME_CLIMATE_START
+#define FRAME_STAFF_START 300
+    { WWT_GROUPBOX,    1,      5,    242,   FRAME_STAFF_START +   0,     FRAME_STAFF_START + 131,      STR_CHEAT_STAFF_GROUP,              STR_NONE },                              // Staff group
+    {   WWT_BUTTON,    1,     11,    120,   FRAME_STAFF_START +  21,     FRAME_STAFF_START +  37,      STR_CHEAT_CLEAR_GRASS,              STR_NONE },                              // Clear grass
+    {   WWT_BUTTON,    1,    126,    236,   FRAME_STAFF_START +  21,     FRAME_STAFF_START +  37,      STR_CHEAT_MOWED_GRASS,              STR_NONE },                              // Mowed grass
+    {   WWT_BUTTON,    1,     11,    120,   FRAME_STAFF_START +  42,     FRAME_STAFF_START +  58,      STR_CHEAT_WATER_PLANTS,             STR_NONE },                              // Water plants
+    {   WWT_BUTTON,    1,    126,    236,   FRAME_STAFF_START +  42,     FRAME_STAFF_START +  58,      STR_CHEAT_FIX_VANDALISM,            STR_NONE },                              // Fix vandalism
+    {   WWT_BUTTON,    1,     11,    120,   FRAME_STAFF_START +  63,     FRAME_STAFF_START +  79,      STR_CHEAT_REMOVE_LITTER,            STR_NONE },                              // Remove litter
+    { WWT_CHECKBOX,    1,     11,    120,   FRAME_STAFF_START +  84,     FRAME_STAFF_START + 100,      STR_CHEAT_DISABLE_PLANT_AGING,      STR_CHEAT_DISABLE_PLANT_AGING_TIP },     // Disable plant ageing
+    { WWT_DROPDOWN,    1,    126,    236,   FRAME_STAFF_START + 107,     FRAME_STAFF_START + 118,      STR_NONE,                           STR_NONE },                             // Staff speed
+    {   WWT_BUTTON,    1,    225,    235,   FRAME_STAFF_START + 108,     FRAME_STAFF_START + 117,      STR_DROPDOWN_GLYPH,                 STR_NONE },                             // Staff speed
+#undef FRAME_STAFF_START
     { WIDGETS_END },
 };
+
 static rct_widget window_cheats_rides_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
