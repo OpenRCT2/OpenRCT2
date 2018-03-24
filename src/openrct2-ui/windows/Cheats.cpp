@@ -300,23 +300,30 @@ static rct_widget window_cheats_rides_widgets[] =
     {   WWT_BUTTON,    1,     11,    120,     69,     85,    STR_CHEAT_MAKE_DESTRUCTABLE,                      STR_CHEAT_MAKE_DESTRUCTABLE_TIP },                   // All destructible
     {   WWT_BUTTON,    1,    126,    236,     69,     85,    STR_CHEAT_RESET_CRASH_STATUS,                     STR_CHEAT_RESET_CRASH_STATUS_TIP },                  // Reset crash status
     {   WWT_BUTTON,    1,     11,    120,     90,    106,    STR_CHEAT_10_MINUTE_INSPECTIONS,                  STR_CHEAT_10_MINUTE_INSPECTIONS_TIP },               // 10 minute inspections
-    { WWT_GROUPBOX,    1,      5,    242,    116,    185,    STR_CHEAT_GROUP_CONSTRUCTION,                     STR_NONE },                                          // Construction group
-    { WWT_CHECKBOX,    1,     11,    231,    132,    142,    STR_CHEAT_BUILD_IN_PAUSE_MODE,                    STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP },                 // Build in pause mode
-    { WWT_CHECKBOX,    1,     11,    231,    148,    158,    STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES,       STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES_TIP },    // Show all drawable track pieces
-    { WWT_CHECKBOX,    1,     11,    231,    164,    174,    STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,         STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP },      // Enable chain lift on all track
-    { WWT_GROUPBOX,    1,      5,    242,    190,    291,    STR_CHEAT_GROUP_OPERATION,                        STR_NONE },                                          // Construction group
-    { WWT_CHECKBOX,    1,     11,    231,    206,    216,    STR_CHEAT_SHOW_ALL_OPERATING_MODES,               STR_NONE },                                          // Show all operating modes
-    { WWT_CHECKBOX,    1,     11,    231,    222,    232,    STR_CHEAT_UNLOCK_OPERATING_LIMITS,                STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP },             // 410 km/h lift hill etc.
-    { WWT_CHECKBOX,    1,     11,    231,    238,    248,    STR_CHEAT_DISABLE_BRAKES_FAILURE,                 STR_CHEAT_DISABLE_BRAKES_FAILURE_TIP },              // Disable brakes failure
-    { WWT_CHECKBOX,    1,     11,    231,    254,    264,    STR_CHEAT_DISABLE_BREAKDOWNS,                     STR_CHEAT_DISABLE_BREAKDOWNS_TIP },                  // Disable all breakdowns
-    { WWT_CHECKBOX,    1,     11,    231,    270,    280,    STR_CHEAT_DISABLE_RIDE_VALUE_AGING,               STR_CHEAT_DISABLE_RIDE_VALUE_AGING_TIP },            // Disable ride ageing
-    { WWT_GROUPBOX,    1,      5,    242,    296,    381,    STR_CHEAT_GROUP_AVAILABILITY,                     STR_NONE },                                          // Construction group
-    { WWT_CHECKBOX,    1,     11,    231,    312,    322,    STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,      STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP },   // Allow arbitrary ride type changes
-    { WWT_CHECKBOX,    1,     11,    231,    329,    339,    STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES,   STR_NONE },                                          // Show vehicles from other track types
-    { WWT_CHECKBOX,    1,     11,    231,    344,    354,    STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,             STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP },          // Disable train length limits
-    { WWT_CHECKBOX,    1,     11,    231,    360,    370,    STR_CHEAT_IGNORE_RESEARCH_STATUS,                 STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP },              // Ignore Research Status
+#define FRAME_CONSTRUCTION_START 116
+    { WWT_GROUPBOX,    1,      5,    242,   FRAME_CONSTRUCTION_START +  0,   FRAME_CONSTRUCTION_START + 69,    STR_CHEAT_GROUP_CONSTRUCTION,                     STR_NONE },                                          // Construction group
+    { WWT_CHECKBOX,    1,     11,    231,   FRAME_CONSTRUCTION_START + 16,   FRAME_CONSTRUCTION_START + 26,    STR_CHEAT_BUILD_IN_PAUSE_MODE,                    STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP },                 // Build in pause mode
+    { WWT_CHECKBOX,    1,     11,    231,   FRAME_CONSTRUCTION_START + 28,   FRAME_CONSTRUCTION_START + 42,    STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES,       STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES_TIP },    // Show all drawable track pieces
+    { WWT_CHECKBOX,    1,     11,    231,   FRAME_CONSTRUCTION_START + 48,   FRAME_CONSTRUCTION_START + 58,    STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,         STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP },      // Enable chain lift on all track
+#undef FRAME_CONSTRUCTION_START
+#define FRAME_OPERATION_START 190
+    { WWT_GROUPBOX,    1,      5,    242,   FRAME_OPERATION_START +   0,     FRAME_OPERATION_START + 101,      STR_CHEAT_GROUP_OPERATION,                        STR_NONE },                                          // Construction group
+    { WWT_CHECKBOX,    1,     11,    231,   FRAME_OPERATION_START +  16,     FRAME_OPERATION_START +  26,      STR_CHEAT_SHOW_ALL_OPERATING_MODES,               STR_NONE },                                          // Show all operating modes
+    { WWT_CHECKBOX,    1,     11,    231,   FRAME_OPERATION_START +  32,     FRAME_OPERATION_START +  42,      STR_CHEAT_UNLOCK_OPERATING_LIMITS,                STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP },             // 410 km/h lift hill etc.
+    { WWT_CHECKBOX,    1,     11,    231,   FRAME_OPERATION_START +  48,     FRAME_OPERATION_START +  58,      STR_CHEAT_DISABLE_BRAKES_FAILURE,                 STR_CHEAT_DISABLE_BRAKES_FAILURE_TIP },              // Disable brakes failure
+    { WWT_CHECKBOX,    1,     11,    231,   FRAME_OPERATION_START +  64,     FRAME_OPERATION_START +  74,      STR_CHEAT_DISABLE_BREAKDOWNS,                     STR_CHEAT_DISABLE_BREAKDOWNS_TIP },                  // Disable all breakdowns
+    { WWT_CHECKBOX,    1,     11,    231,   FRAME_OPERATION_START +  80,     FRAME_OPERATION_START +  90,      STR_CHEAT_DISABLE_RIDE_VALUE_AGING,               STR_CHEAT_DISABLE_RIDE_VALUE_AGING_TIP },            // Disable ride ageing
+#undef FRAME_OPERATION_START
+#define FRAME_AVAIL_START 296
+    { WWT_GROUPBOX,    1,      5,    242,   FRAME_AVAIL_START +  0,          FRAME_AVAIL_START + 85,           STR_CHEAT_GROUP_AVAILABILITY,                     STR_NONE },                                          // Construction group
+    { WWT_CHECKBOX,    1,     11,    231,   FRAME_AVAIL_START + 16,          FRAME_AVAIL_START + 26,           STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,      STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP },   // Allow arbitrary ride type changes
+    { WWT_CHECKBOX,    1,     11,    231,   FRAME_AVAIL_START + 33,          FRAME_AVAIL_START + 43,           STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES,   STR_NONE },                                          // Show vehicles from other track types
+    { WWT_CHECKBOX,    1,     11,    231,   FRAME_AVAIL_START + 48,          FRAME_AVAIL_START + 58,           STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,             STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP },          // Disable train length limits
+    { WWT_CHECKBOX,    1,     11,    231,   FRAME_AVAIL_START + 64,          FRAME_AVAIL_START + 74,           STR_CHEAT_IGNORE_RESEARCH_STATUS,                 STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP },              // Ignore Research Status
+#undef FRAME_AVAIL_START
     { WIDGETS_END },
 };
+
 static rct_widget *window_cheats_page_widgets[] =
 {
     window_cheats_money_widgets,
