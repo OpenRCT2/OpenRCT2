@@ -9,7 +9,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
 {
     auto ctx = scriptEngine.GetContext();
 
-    dukglue_register_global(ctx, std::make_shared<ScUi>(), "ui");
+    dukglue_register_global(ctx, std::make_shared<ScUi>(scriptEngine), "ui");
 
     ScUi::Register(ctx);
     ScWindow::Register(ctx);

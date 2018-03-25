@@ -443,6 +443,7 @@ enum
     WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR = 222,
     WC_CHAT = 223,
     WC_CONSOLE = 224,
+    WC_CUSTOM = 225,
 
     WC_NULL = 255,
 };

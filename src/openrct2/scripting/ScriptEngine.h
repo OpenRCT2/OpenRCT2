@@ -94,6 +94,7 @@ namespace OpenRCT2::Scripting
 
         duk_context * GetContext() { return _context; }
         HookEngine& GetHookEngine() { return _hookEngine; }
+        ScriptExecutionInfo& GetExecInfo() { return _execInfo; }
 
         void Update();
         std::future<void> Eval(const std::string &s);

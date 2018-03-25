@@ -146,6 +146,8 @@ export interface WindowDesc {
     height: number;
     title: string;
     id?: number;
+    minWidth?: number;
+    minHeight?: number;
 }
 
 export interface Ui {

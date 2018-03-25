@@ -1,17 +1,35 @@
 #pragma once
 
-#include <algorithm>
 #include <dukglue/dukglue.h>
+#include <memory>
 #include <string>
+#include <openrct2/scripting/ScriptEngine.h>
 #include "../common.h"
 #include "../Context.h"
 #include "ScWindow.hpp"
 
 namespace OpenRCT2::Scripting
 {
+    class Plugin;
+}
+
+namespace OpenRCT2::Ui::Windows
+{
+    rct_window * window_custom_open(std::shared_ptr<OpenRCT2::Scripting::Plugin> owner, DukValue dukDesc);
+}
+
+namespace OpenRCT2::Scripting
+{
     class ScUi
     {
+    private:
+        ScriptEngine& _scriptEngine;
     public:
+        ScUi(ScriptEngine& scriptEngine)
+            : _scriptEngine(scriptEngine)
+        {
+        }
+
         sint32 width_get() { return context_get_width(); }
         sint32 height_get() { return context_get_height(); }
         sint32 windows_get()
@@ -21,7 +39,18 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScWindow> openWindow(DukValue desc)
         {
-            return nullptr;
+            using namespace OpenRCT2::Ui::Windows;
+
+            auto& execInfo = _scriptEngine.GetExecInfo();
+            auto owner = execInfo.GetCurrentPlugin();
+
+            std::shared_ptr<ScWindow> scWindow = nullptr;
+            auto w = window_custom_open(owner, desc);
+            if (w != nullptr)
+            {
+                scWindow = std::make_shared<ScWindow>(w);
+            }
+            return scWindow;
         }
 
         void closeWindows(std::string classification, DukValue id)
@@ -53,7 +82,7 @@ namespace OpenRCT2::Scripting
             {
                 if (i == index)
                 {
-                    return std::make_shared<ScWindow>(w->classification, w->number);
+                    return std::make_shared<ScWindow>(w);
                 }
                 i++;
             }

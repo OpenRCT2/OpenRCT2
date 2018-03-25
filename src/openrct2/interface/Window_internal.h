@@ -55,6 +55,7 @@ struct rct_window
         scenery_variables scenery;
         track_list_variables track_list;
         error_variables error;
+        void * custom_info;
     };
     int16_t page;
     union
