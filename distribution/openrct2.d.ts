@@ -122,6 +122,7 @@ export interface Park {
     bankLoan: number;
     maxBankLoan: number;
 
+    postMessage(message: string): void;
     postMessage(message: ParkMessage): void;
 }
 
@@ -138,6 +139,28 @@ export interface Window {
     close(): void;
 }
 
+export type WidgetType =
+    "button" | "dropdown";
+
+export interface Widget {
+    type: WidgetType;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+export interface ButtonWidget extends Widget {
+    text: string;
+    onClick: () => void;
+}
+
+export interface DropdownWidget extends Widget {
+    items: string[];
+    selectedIndex: number;
+    onChanged: (index: number) => void;
+}
+
 export interface WindowDesc {
     classification: string;
     x?: number;
@@ -148,6 +171,7 @@ export interface WindowDesc {
     id?: number;
     minWidth?: number;
     minHeight?: number;
+    widgets?: Widget[];
 }
 
 export interface Ui {

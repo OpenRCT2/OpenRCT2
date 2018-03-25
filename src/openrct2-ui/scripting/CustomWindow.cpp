@@ -9,6 +9,8 @@
 
 #include <limits>
 #include <optional>
+#include <string>
+#include <vector>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
@@ -29,14 +31,14 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TITLE,
         WIDX_CLOSE,
         WIDX_CONTENT_PANEL,
+        WIDX_CUSTOM_BEGIN,
     };
 
-    static rct_widget window_custom_widgets[] = {
+    static rct_widget CustomDefaultWidgets[] = {
         { WWT_FRAME,    0, 0, 0, 0,  0,  0xFFFFFFFF,            STR_NONE             }, // panel / background
         { WWT_CAPTION,  0, 1, 0, 1,  14, STR_STRING,            STR_WINDOW_TITLE_TIP }, // title bar
         { WWT_CLOSEBOX, 0, 0, 0, 2,  13, STR_CLOSE_X,           STR_CLOSE_WINDOW_TIP }, // close x button
         { WWT_RESIZE,   1, 0, 0, 14, 0,  0xFFFFFFFF,            STR_NONE             }, // content panel
-        { WIDGETS_END },
     };
 
     static void window_custom_close(rct_window *w);
@@ -79,6 +81,33 @@ namespace OpenRCT2::Ui::Windows
         nullptr
     };
 
+    struct CustomWidgetDesc
+    {
+        // Properties
+        std::string Type;
+        sint32 X;
+        sint32 Y;
+        sint32 Width;
+        sint32 Height;
+        std::string Text;
+
+        // Event handlers
+        DukValue OnClick;
+
+        static CustomWidgetDesc FromDukValue(DukValue desc)
+        {
+            CustomWidgetDesc result;
+            result.Type = desc["type"].as_string();
+            result.X = desc["x"].as_int();
+            result.Y = desc["y"].as_int();
+            result.Width = desc["width"].as_int();
+            result.Height = desc["height"].as_int();
+            result.Text = desc["text"].as_string();
+            result.OnClick = desc["onClick"];
+            return result;
+        }
+    };
+
     struct CustomWindowDesc
     {
         std::string Classification;
@@ -92,6 +121,7 @@ namespace OpenRCT2::Ui::Windows
         std::optional<sint32> MaxHeight;
         std::string Title;
         std::optional<sint32> Id;
+        std::vector<CustomWidgetDesc> Widgets;
 
         CustomWindowDesc() = default;
 
@@ -114,6 +144,14 @@ namespace OpenRCT2::Ui::Windows
             result.MaxHeight = GetOptionalInt(desc["maxHeight"]);
             result.Title = desc["title"].as_string();
             result.Id = GetOptionalInt(desc["id"]);
+
+            if (desc["widgets"].is_array())
+            {
+                auto dukWidgets = desc["widgets"].as_array();
+                std::transform(dukWidgets.begin(), dukWidgets.end(), std::back_inserter(result.Widgets),
+                    [](const DukValue& w) { return CustomWidgetDesc::FromDukValue(w); });
+            }
+
             return std::move(result);
         }
 
@@ -134,6 +172,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         std::shared_ptr<Plugin> Owner;
         CustomWindowDesc Desc;
+        std::vector<rct_widget> Widgets;
 
         CustomWindowInfo(
             rct_windowclass cls,
@@ -154,6 +193,8 @@ namespace OpenRCT2::Ui::Windows
 
     static CustomWindowInfo& GetInfo(rct_window * w);
     static rct_windownumber GetNewWindowNumber();
+    static void RefreshWidgets(rct_window * w);
+    static void InvokeEventHandler(std::shared_ptr<Plugin> owner, const DukValue& dukHandler);
 
     rct_window * window_custom_open(std::shared_ptr<Plugin> owner, DukValue dukDesc)
     {
@@ -189,7 +230,6 @@ namespace OpenRCT2::Ui::Windows
 
         window->number = GetNewWindowNumber();
         window->custom_info = new CustomWindowInfo(window->classification, window->number, owner, desc);
-        window->widgets = window_custom_widgets;
         window->enabled_widgets = (1 << WIDX_CLOSE);
         window->colours[0] = COLOUR_GREY;
         window->colours[1] = COLOUR_GREY;
@@ -201,7 +241,7 @@ namespace OpenRCT2::Ui::Windows
             window->max_width = desc.MaxWidth.value_or(std::numeric_limits<uint16>::max());
             window->max_height = desc.MaxHeight.value_or(std::numeric_limits<uint16>::max());
         }
-
+        RefreshWidgets(window);
         window_init_scroll_widgets(window);
         return window;
     }
@@ -218,6 +258,13 @@ namespace OpenRCT2::Ui::Windows
         case WIDX_CLOSE:
             window_close(w);
             break;
+        default:
+            {
+                const auto& info = GetInfo(w);
+                const auto& widgetDesc = info.Desc.Widgets[widgetIndex - WIDX_CUSTOM_BEGIN];
+                InvokeEventHandler(info.Owner, widgetDesc.OnClick);
+                break;
+            }
         }
     }
 
@@ -241,13 +288,13 @@ namespace OpenRCT2::Ui::Windows
 
     static void window_custom_invalidate(rct_window * w)
     {
-        window_custom_widgets[WIDX_BACKGROUND].right = w->width - 1;
-        window_custom_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-        window_custom_widgets[WIDX_TITLE].right = w->width - 2;
-        window_custom_widgets[WIDX_CLOSE].left = w->width - 13;
-        window_custom_widgets[WIDX_CLOSE].right = w->width - 3;
-        window_custom_widgets[WIDX_CONTENT_PANEL].right = w->width - 1;
-        window_custom_widgets[WIDX_CONTENT_PANEL].bottom = w->height - 1;
+        w->widgets[WIDX_BACKGROUND].right = w->width - 1;
+        w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+        w->widgets[WIDX_TITLE].right = w->width - 2;
+        w->widgets[WIDX_CLOSE].left = w->width - 13;
+        w->widgets[WIDX_CLOSE].right = w->width - 3;
+        w->widgets[WIDX_CONTENT_PANEL].right = w->width - 1;
+        w->widgets[WIDX_CONTENT_PANEL].bottom = w->height - 1;
 
         const auto& desc = GetInfo(w).Desc;
         set_format_arg(0, void *, desc.Title.c_str());
@@ -271,5 +318,56 @@ namespace OpenRCT2::Ui::Windows
             result++;
         }
         return result;
+    }
+
+    static void RefreshWidgets(rct_window * w)
+    {
+        auto& info = GetInfo(w);
+        auto& widgets = info.Widgets;
+
+        widgets.clear();
+
+        // Add default widgets (window shim)
+        widgets.insert(widgets.begin(), std::begin(CustomDefaultWidgets), std::end(CustomDefaultWidgets));
+        w->enabled_widgets = 1ULL << WIDX_CLOSE;
+
+        // Add custom widgets
+        for (const auto& widgetDesc : info.Desc.Widgets)
+        {
+            rct_widget widget{};
+            widget.type = WWT_BUTTON;
+            widget.left = widgetDesc.X;
+            widget.top = widgetDesc.Y;
+            widget.right = widgetDesc.X + widgetDesc.Width;
+            widget.bottom = widgetDesc.Y + widgetDesc.Height;
+            widget.string = (utf8*)widgetDesc.Text.c_str();
+            widget.tooltip = STR_NONE;
+            widget.flags = WIDGET_FLAGS::TEXT_IS_STRING;
+            widgets.push_back(widget);
+
+            auto widgetIndex = widgets.size() - 1;
+            if (widgetIndex < 64)
+            {
+                w->enabled_widgets |= 1ULL << widgetIndex;
+            }
+        }
+
+        widgets.push_back({ WIDGETS_END });
+        w->widgets = widgets.data();
+    }
+
+    static void InvokeEventHandler(std::shared_ptr<Plugin> owner, const DukValue& dukHandler)
+    {
+        if (dukHandler.is_function())
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto& execInfo = scriptEngine.GetExecInfo();
+            {
+                ScriptExecutionInfo::PluginScope scope(execInfo, owner);
+                dukHandler.push();
+                duk_pcall(dukHandler.context(), 0);
+                duk_pop(dukHandler.context());
+            }
+        }
     }
 }

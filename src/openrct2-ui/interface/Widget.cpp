@@ -361,8 +361,15 @@ static void widget_text_centred(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
     else
         t = w->windowPos.y + widget->top;
 
+    auto stringId = widget->text;
+    void * formatArgs = gCommonFormatArgs;
+    if (widget->flags & WIDGET_FLAGS::TEXT_IS_STRING)
+    {
+        stringId = STR_STRING;
+        formatArgs = &widget->string;
+    }
     gfx_draw_string_centred_clipped(
-        dpi, widget->text, gCommonFormatArgs, colour, (l + r + 1) / 2 - 1, t, widget->right - widget->left - 2);
+        dpi, stringId, formatArgs, colour, (l + r + 1) / 2 - 1, t, widget->right - widget->left - 2);
 }
 
 /**
@@ -399,7 +406,14 @@ static void widget_text(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex w
     else
         t = w->windowPos.y + widget->top;
 
-    gfx_draw_string_left_clipped(dpi, widget->text, gCommonFormatArgs, colour, l + 1, t, r - l);
+    auto stringId = widget->text;
+    void * formatArgs = gCommonFormatArgs;
+    if (widget->flags & WIDGET_FLAGS::TEXT_IS_STRING)
+    {
+        stringId = STR_STRING;
+        formatArgs = &widget->string;
+    }
+    gfx_draw_string_left_clipped(dpi, stringId, formatArgs, colour, l + 1, t, r - l);
 }
 
 /**

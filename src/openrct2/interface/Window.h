@@ -64,6 +64,12 @@ struct widget_identifier
 
 extern widget_identifier gCurrentTextBox;
 
+using WidgetFlags = uint32;
+namespace WIDGET_FLAGS
+{
+    const uint32 TEXT_IS_STRING = 1 << 0;
+}
+
 /**
  * Widget structure
  * size: 0x10
@@ -84,6 +90,9 @@ struct rct_widget
         utf8* string;
     };
     rct_string_id tooltip; // 0x0E
+
+    // New properties
+    WidgetFlags flags;
 };
 
 /**
