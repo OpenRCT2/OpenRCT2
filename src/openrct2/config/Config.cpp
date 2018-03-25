@@ -209,6 +209,7 @@ namespace Config
             model->render_weather_effects = reader->GetBoolean("render_weather_effects", true);
             model->render_weather_gloom = reader->GetBoolean("render_weather_gloom", true);
             model->show_guest_purchases = reader->GetBoolean("show_guest_purchases", false);
+            model->outside_map_surface_style = reader->GetSint32("outside_map_surface_style", TERRAIN_BLANK);
             model->show_real_names_of_guests = reader->GetBoolean("show_real_names_of_guests", true);
             model->allow_early_completion = reader->GetBoolean("allow_early_completion", false);
         }
@@ -280,6 +281,7 @@ namespace Config
         writer->WriteBoolean("render_weather_effects", model->render_weather_effects);
         writer->WriteBoolean("render_weather_gloom", model->render_weather_gloom);
         writer->WriteBoolean("show_guest_purchases", model->show_guest_purchases);
+        writer->WriteSint32("outside_map_surface_style", model->outside_map_surface_style);
         writer->WriteBoolean("show_real_names_of_guests", model->show_real_names_of_guests);
         writer->WriteBoolean("use_virtual_floor", model->use_virtual_floor);
         writer->WriteBoolean("allow_early_completion", model->allow_early_completion);

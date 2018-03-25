@@ -187,7 +187,7 @@ static void window_land_mousedown(rct_window *w, rct_widgetindex widgetIndex, rc
 {
     switch (widgetIndex) {
     case WIDX_FLOOR:
-        land_tool_show_surface_style_dropdown(w, widget, _selectedFloorTexture);
+        land_tool_show_surface_style_dropdown(w, widget, _selectedFloorTexture, false);
         break;
     case WIDX_WALL:
         land_tool_show_edge_style_dropdown(w, widget, _selectedWallTexture);
@@ -305,7 +305,7 @@ static void window_land_invalidate(rct_window *w)
     if (gLandPaintMode)
         w->pressed_widgets |= (1 << WIDX_PAINTMODE);
 
-    window_land_widgets[WIDX_FLOOR].image = SPR_FLOOR_TEXTURE_GRASS + _selectedFloorTexture;
+    window_land_widgets[WIDX_FLOOR].image = FloorTexturePreviews[_selectedFloorTexture];
     window_land_widgets[WIDX_WALL].image = WallTexturePreviews[_selectedWallTexture];
     // Update the preview image (for tool sizes up to 7)
     window_land_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gLandToolSize);

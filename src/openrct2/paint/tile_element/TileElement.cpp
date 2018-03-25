@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -130,7 +130,9 @@ static void blank_tiles_paint(paint_session * session, sint32 x, sint32 y)
     session->SpritePosition.x = x;
     session->SpritePosition.y = y;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-    sub_98196C(session, 3123, 0, 0, 32, 32, -1, 16);
+    const bool showGridlines = (gCurrentViewportFlags & VIEWPORT_FLAG_GRIDLINES);
+    const uint32 surfaceStyle = gConfigGeneral.outside_map_surface_style;
+    sub_98196C(session, gSurfaceSpriteBases[surfaceStyle][showGridlines ? 1 : 0], 0, 0, 32, 32, -1, 16);
 }
 
 bool gShowSupportSegmentHeights = false;

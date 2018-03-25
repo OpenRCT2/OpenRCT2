@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -881,9 +881,9 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
     gCurrentViewportFlags = viewFlags;
 
     if (viewFlags & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT)) {
-        uint8 colour = 10;
+        uint8 colour = COLOUR_AQUAMARINE;
         if (viewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES) {
-            colour = 0;
+            colour = COLOUR_BLACK;
         }
         gfx_clear(dpi, colour);
     }

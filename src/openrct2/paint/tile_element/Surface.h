@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,10 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _PAINT_SURFACE_H
-#define _PAINT_SURFACE_H
+#pragma once
 
-#include "../../common.h"
 #include "../../sprites.h"
 
 enum
@@ -128,4 +126,4 @@ enum
     SPR_CSG_TERRAIN_ROCK = SPR_CSG_BEGIN + 42717,
 };
 
-#endif //_PAINT_SURFACE_H
+extern const uint32 gSurfaceSpriteBases[][2];

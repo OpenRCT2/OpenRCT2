@@ -190,6 +190,7 @@ enum {
     TERRAIN_COUNT_REGULAR = 14, // The amount of surface types the user can actually select - what follows are technical types
     TERRAIN_CHECKERBOARD_INVERTED = 14,
     TERRAIN_UNDERGROUND_VIEW,
+    TERRAIN_BLANK,
 };
 
 enum {

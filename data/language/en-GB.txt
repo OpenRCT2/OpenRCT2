@@ -4541,6 +4541,8 @@ STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :Frozen
 STR_6233    :Cut-away view
 STR_6234    :Highlight path issues
+STR_6235    :Land style to draw outside of the map:
+STR_6236    :{SMALLFONT}{BLACK}Select the land style to be drawn outside of the map. The default is black.
 
 #############
 # Scenarios #

@@ -47,6 +47,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/LandTool.h>
 #include <openrct2/scenario/Scenario.h>
 
 enum WINDOW_OPTIONS_PAGE {
@@ -109,6 +110,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
     WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX,
     WIDX_SHOW_GUEST_PURCHASES_CHECKBOX,
+    WIDX_OUTSIDE_MAP_SURFACE_BUTTON,
 
     // Culture / Units
     WIDX_LANGUAGE = WIDX_PAGE_START,
@@ -251,7 +253,7 @@ static rct_widget window_options_display_widgets[] = {
 static rct_widget window_options_rendering_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define FRAME_RENDERING_START 53
-    { WWT_GROUPBOX,         1,  5,      304,    FRAME_RENDERING_START + 0,      FRAME_RENDERING_START + 151,    STR_RENDERING_GROUP,            STR_NONE },                             // Rendering group
+    { WWT_GROUPBOX,         1,  5,      304,    FRAME_RENDERING_START + 0,      FRAME_RENDERING_START + 186,    STR_RENDERING_GROUP,            STR_NONE },                             // Rendering group
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 15,     FRAME_RENDERING_START + 26,     STR_TILE_SMOOTHING,             STR_TILE_SMOOTHING_TIP },               // Landscape smoothing
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 30,     FRAME_RENDERING_START + 41,     STR_GRIDLINES,                  STR_GRIDLINES_TIP },                    // Gridlines
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 45,     FRAME_RENDERING_START + 56,     STR_ENABLE_VIRTUAL_FLOOR,       STR_ENABLE_VIRTUAL_FLOOR_TIP },         // Virtual floor
@@ -260,7 +262,8 @@ static rct_widget window_options_rendering_widgets[] = {
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 90,     FRAME_RENDERING_START + 101,    STR_UPPERCASE_BANNERS,          STR_UPPERCASE_BANNERS_TIP },            // Uppercase banners
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 105,    FRAME_RENDERING_START + 116,    STR_RENDER_WEATHER_EFFECTS,     STR_RENDER_WEATHER_EFFECTS_TIP },       // Render weather effects
     { WWT_CHECKBOX,         1,  25,     290,    FRAME_RENDERING_START + 120,    FRAME_RENDERING_START + 131,    STR_DISABLE_LIGHTNING_EFFECT,   STR_DISABLE_LIGHTNING_EFFECT_TIP },     // Disable lightning effect
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 135,    FRAME_RENDERING_START + 146,    STR_SHOW_GUEST_PURCHASES,       STR_SHOW_GUEST_PURCHASES_TIP },
+    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 135,    FRAME_RENDERING_START + 146,    STR_SHOW_GUEST_PURCHASES,       STR_SHOW_GUEST_PURCHASES_TIP },         // Show guest purchases
+    { WWT_FLATBTN,          1,  251,    297,    FRAME_RENDERING_START + 145,    FRAME_RENDERING_START + 180,    (uint32)SPR_NONE,               STR_LAND_STYLE_OUTSIDE_MAP_TIP },       // Outside-map floor texture
 #undef FRAME_RENDERING_START
     { WIDGETS_END },
 };
@@ -535,7 +538,8 @@ static uint64 window_options_page_enabled_widgets[] = {
     (1 << WIDX_UPPER_CASE_BANNERS_CHECKBOX) |
     (1 << WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX) |
     (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX) |
-    (1 << WIDX_SHOW_GUEST_PURCHASES_CHECKBOX),
+    (1 << WIDX_SHOW_GUEST_PURCHASES_CHECKBOX) |
+    (1 << WIDX_OUTSIDE_MAP_SURFACE_BUTTON),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_LANGUAGE) |
@@ -1086,6 +1090,15 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
         }
         break;
 
+    case WINDOW_OPTIONS_PAGE_RENDERING:
+        switch (widgetIndex)
+        {
+        case WIDX_OUTSIDE_MAP_SURFACE_BUTTON:
+            land_tool_show_surface_style_dropdown(w, &w->widgets[widgetIndex], gConfigGeneral.outside_map_surface_style, true);
+            break;
+        }
+        break;
+
     case WINDOW_OPTIONS_PAGE_CULTURE:
         switch (widgetIndex) {
         case WIDX_HEIGHT_LABELS_DROPDOWN:
@@ -1350,6 +1363,17 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
                 gfx_invalidate_screen();
                 context_trigger_resize();
             }
+            break;
+        }
+        break;
+
+    case WINDOW_OPTIONS_PAGE_RENDERING:
+        switch (widgetIndex)
+        {
+        case WIDX_OUTSIDE_MAP_SURFACE_BUTTON:
+            gConfigGeneral.outside_map_surface_style = FloorTextureOrder[dropdownIndex];
+            config_save_default();
+            gfx_invalidate_screen();
             break;
         }
         break;
@@ -1645,6 +1669,7 @@ static void window_options_invalidate(rct_window *w)
         window_options_rendering_widgets[WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX].type = WWT_CHECKBOX;
         window_options_rendering_widgets[WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX].type = WWT_CHECKBOX;
         window_options_rendering_widgets[WIDX_SHOW_GUEST_PURCHASES_CHECKBOX].type = WWT_CHECKBOX;
+        window_options_rendering_widgets[WIDX_OUTSIDE_MAP_SURFACE_BUTTON].image = FloorTexturePreviews[gConfigGeneral.outside_map_surface_style];
         break;
     }
 
@@ -1891,6 +1916,9 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(dpi, STR_SCALING_QUALITY, w, colour, w->x + 25, w->y + window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1);
         break;
     }
+    case WINDOW_OPTIONS_PAGE_RENDERING:
+        gfx_draw_string_left(dpi, STR_LAND_STYLE_OUTSIDE_MAP, nullptr, w->colours[1], w->x + 10, w->y + w->widgets[WIDX_OUTSIDE_MAP_SURFACE_BUTTON].top + 7);
+        break;
     case WINDOW_OPTIONS_PAGE_CULTURE:
         gfx_draw_string_left(dpi, STR_OPTIONS_LANGUAGE, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_LANGUAGE].top + 1);
 

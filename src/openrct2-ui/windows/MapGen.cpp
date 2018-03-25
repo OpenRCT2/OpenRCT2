@@ -690,7 +690,7 @@ static void window_mapgen_base_mousedown(rct_window *w, rct_widgetindex widgetIn
         window_invalidate(w);
         break;
     case WIDX_FLOOR_TEXTURE:
-        land_tool_show_surface_style_dropdown(w, widget, _floorTexture);
+        land_tool_show_surface_style_dropdown(w, widget, _floorTexture, false);
         break;
     case WIDX_WALL_TEXTURE:
         land_tool_show_edge_style_dropdown(w, widget, _wallTexture);
@@ -979,7 +979,7 @@ static void window_mapgen_simplex_mousedown(rct_window *w, rct_widgetindex widge
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_FLOOR_TEXTURE:
-        land_tool_show_surface_style_dropdown(w, widget, _floorTexture);
+        land_tool_show_surface_style_dropdown(w, widget, _floorTexture, false);
         break;
     case WIDX_SIMPLEX_WALL_TEXTURE:
         land_tool_show_edge_style_dropdown(w, widget, _wallTexture);
