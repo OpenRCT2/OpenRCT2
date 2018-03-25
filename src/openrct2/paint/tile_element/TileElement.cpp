@@ -130,8 +130,10 @@ static void blank_tiles_paint(paint_session * session, sint32 x, sint32 y)
     session->SpritePosition.x = x;
     session->SpritePosition.y = y;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-    const bool showGridlines = (gCurrentViewportFlags & VIEWPORT_FLAG_GRIDLINES);
-    const uint32 surfaceStyle = gConfigGeneral.outside_map_surface_style;
+    bool showGridlines = (gCurrentViewportFlags & VIEWPORT_FLAG_GRIDLINES);
+    uint32 surfaceStyle = gConfigGeneral.outside_map_surface_style;
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_BASE)
+        surfaceStyle = SPR_BLANK_TILE;
     sub_98196C(session, gSurfaceSpriteBases[surfaceStyle][showGridlines ? 1 : 0], 0, 0, 32, 32, -1, 16);
 }
 
