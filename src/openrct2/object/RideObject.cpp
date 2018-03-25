@@ -732,6 +732,11 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
     car.car_mass = ObjectJsonHelpers::GetInteger(jCar, "mass");
     car.tab_height = ObjectJsonHelpers::GetInteger(jCar, "tabOffset");
     car.num_seats = ObjectJsonHelpers::GetInteger(jCar, "numSeats");
+    if (ObjectJsonHelpers::GetBoolean(jCar, "seatsInPairs"))
+    {
+        car.num_seats |= 0x80;
+    }
+
     car.sprite_width = ObjectJsonHelpers::GetInteger(jCar, "spriteWidth");
     car.sprite_height_negative = ObjectJsonHelpers::GetInteger(jCar, "spriteHeightNegative");
     car.sprite_height_positive = ObjectJsonHelpers::GetInteger(jCar, "spriteHeightPositive");
@@ -767,11 +772,12 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
         auto jLoadingWaypoints = json_object_get(jCar, "loadingWaypoints");
         if (json_is_array(jLoadingWaypoints))
         {
+            car.flags |= VEHICLE_ENTRY_FLAG_26;
+
             auto numSegments = ObjectJsonHelpers::GetInteger(jCar, "numSegments");
             if (numSegments == 8)
             {
-                car.flags |= VEHICLE_ENTRY_FLAG_26;
-                peepLoadingPositions.push_back(0);
+                peepLoadingPositions.push_back(1);
             }
             else if (numSegments == 4)
             {
