@@ -67,7 +67,8 @@ extern widget_identifier gCurrentTextBox;
 using WidgetFlags = uint32;
 namespace WIDGET_FLAGS
 {
-    const uint32 TEXT_IS_STRING = 1 << 0;
+    const WidgetFlags TEXT_IS_STRING = 1 << 0;
+    const WidgetFlags IS_ENABLED = 1 << 1;
 }
 
 /**

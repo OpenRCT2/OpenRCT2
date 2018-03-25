@@ -17,6 +17,7 @@
 #include <openrct2/scripting/Plugin.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include "../interface/Dropdown.h"
 #include "ScUi.hpp"
 #include "ScWindow.hpp"
 
@@ -41,21 +42,21 @@ namespace OpenRCT2::Ui::Windows
         { WWT_RESIZE,   1, 0, 0, 14, 0,  0xFFFFFFFF,            STR_NONE             }, // content panel
     };
 
-    static void window_custom_close(rct_window *w);
-    static void window_custom_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-    static void window_custom_resize(rct_window *w);
-    static void window_custom_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-    static void window_custom_invalidate(rct_window *w);
-    static void window_custom_paint(rct_window *w, rct_drawpixelinfo *dpi);
-    static void window_custom_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+    static void window_custom_close(rct_window * w);
+    static void window_custom_mouseup(rct_window * w, rct_widgetindex widgetIndex);
+    static void window_custom_mousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget);
+    static void window_custom_resize(rct_window * w);
+    static void window_custom_dropdown(rct_window * w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+    static void window_custom_invalidate(rct_window * w);
+    static void window_custom_paint(rct_window * w, rct_drawpixelinfo * dpi);
 
     static rct_window_event_list window_custom_events =
     {
         window_custom_close,
         window_custom_mouseup,
         window_custom_resize,
-        nullptr,
-        nullptr,
+        window_custom_mousedown,
+        window_custom_dropdown,
         nullptr,
         nullptr,
         nullptr,
@@ -85,14 +86,17 @@ namespace OpenRCT2::Ui::Windows
     {
         // Properties
         std::string Type;
-        sint32 X;
-        sint32 Y;
-        sint32 Width;
-        sint32 Height;
+        sint32 X{};
+        sint32 Y{};
+        sint32 Width{};
+        sint32 Height{};
         std::string Text;
+        std::vector<std::string> Items;
+        sint32 SelectedIndex{};
 
         // Event handlers
         DukValue OnClick;
+        DukValue OnChange;
 
         static CustomWidgetDesc FromDukValue(DukValue desc)
         {
@@ -102,8 +106,21 @@ namespace OpenRCT2::Ui::Windows
             result.Y = desc["y"].as_int();
             result.Width = desc["width"].as_int();
             result.Height = desc["height"].as_int();
-            result.Text = desc["text"].as_string();
-            result.OnClick = desc["onClick"];
+            if (result.Type == "button")
+            {
+                result.Text = desc["text"].as_string();
+                result.OnClick = desc["onClick"];
+            }
+            else if (result.Type == "dropdown")
+            {
+                auto dukItems = desc["items"].as_array();
+                for (const auto& dukItem : dukItems)
+                {
+                    result.Items.push_back(dukItem.as_string());
+                }
+                result.SelectedIndex = desc["selectedIndex"].as_int();
+                result.OnChange = desc["onChange"];
+            }
             return result;
         }
     };
@@ -173,6 +190,7 @@ namespace OpenRCT2::Ui::Windows
         std::shared_ptr<Plugin> Owner;
         CustomWindowDesc Desc;
         std::vector<rct_widget> Widgets;
+        std::vector<size_t> WidgetIndexMap;
 
         CustomWindowInfo(
             rct_windowclass cls,
@@ -187,6 +205,19 @@ namespace OpenRCT2::Ui::Windows
         }
 
         CustomWindowInfo(const CustomWindowInfo&) = delete;
+
+        const CustomWidgetDesc * GetCustomWidgetDesc(size_t widgetIndex) const
+        {
+            if (widgetIndex < WidgetIndexMap.size())
+            {
+                auto widgetDescIndex = WidgetIndexMap[widgetIndex];
+                if (widgetDescIndex < Desc.Widgets.size())
+                {
+                    return &Desc.Widgets[widgetDescIndex];
+                }
+            }
+            return nullptr;
+        }
     };
 
     static rct_windownumber _nextWindowNumber;
@@ -195,6 +226,7 @@ namespace OpenRCT2::Ui::Windows
     static rct_windownumber GetNewWindowNumber();
     static void RefreshWidgets(rct_window * w);
     static void InvokeEventHandler(std::shared_ptr<Plugin> owner, const DukValue& dukHandler);
+    static void InvokeEventHandler(std::shared_ptr<Plugin> owner, const DukValue& dukHandler, const std::vector<DukValue>& args);
 
     rct_window * window_custom_open(std::shared_ptr<Plugin> owner, DukValue dukDesc)
     {
@@ -261,8 +293,14 @@ namespace OpenRCT2::Ui::Windows
         default:
             {
                 const auto& info = GetInfo(w);
-                const auto& widgetDesc = info.Desc.Widgets[widgetIndex - WIDX_CUSTOM_BEGIN];
-                InvokeEventHandler(info.Owner, widgetDesc.OnClick);
+                const auto widgetDesc = info.GetCustomWidgetDesc(widgetIndex);
+                if (widgetDesc != nullptr)
+                {
+                    if (widgetDesc->Type == "button")
+                    {
+                        InvokeEventHandler(info.Owner, widgetDesc->OnClick);
+                    }
+                }
                 break;
             }
         }
@@ -282,6 +320,61 @@ namespace OpenRCT2::Ui::Windows
             {
                 window_invalidate(w);
                 w->height = w->min_height;
+            }
+        }
+    }
+
+    static void window_custom_mousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget)
+    {
+        const auto& info = GetInfo(w);
+        const auto widgetDesc = info.GetCustomWidgetDesc(widgetIndex);
+        if (widgetDesc != nullptr)
+        {
+            if (widgetDesc->Type == "dropdown")
+            {
+                widget--;
+                const auto& items = widgetDesc->Items;
+                const auto numItems = std::min<size_t>(items.size(), DROPDOWN_ITEMS_MAX_SIZE);
+                for (size_t i = 0; i < numItems; i++)
+                {
+                    gDropdownItemsFormat[i] = STR_STRING;
+                    set_format_arg_on((uint8*)&gDropdownItemsArgs[i], 0, const char *, items[i].c_str());
+                }
+                window_dropdown_show_text_custom_width(
+                    w->x + widget->left,
+                    w->y + widget->top,
+                    widget->bottom - widget->top + 1,
+                    w->colours[widget->colour],
+                    0,
+                    DROPDOWN_FLAG_STAY_OPEN,
+                    numItems,
+                    widget->right - widget->left - 3);
+            }
+        }
+    }
+
+    static void window_custom_dropdown(rct_window * w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+    {
+        if (dropdownIndex == -1)
+            return;
+
+        const auto& info = GetInfo(w);
+        const auto widgetDesc = info.GetCustomWidgetDesc(widgetIndex);
+        if (widgetDesc != nullptr)
+        {
+            if (widgetDesc->Type == "dropdown")
+            {
+                if (dropdownIndex >= 0 && (size_t)dropdownIndex < widgetDesc->Items.size())
+                {
+                    std::vector<DukValue> args;
+                    auto ctx = widgetDesc->OnChange.context();
+                    duk_push_int(ctx, dropdownIndex);
+                    args.push_back(DukValue::take_from_stack(ctx));
+                    InvokeEventHandler(info.Owner, widgetDesc->OnChange, args);
+
+                    auto& widget = w->widgets[widgetIndex - 1];
+                    widget.string = (utf8*)widgetDesc->Items[dropdownIndex].c_str();
+                }
             }
         }
     }
@@ -320,6 +413,49 @@ namespace OpenRCT2::Ui::Windows
         return result;
     }
 
+    static void CreateWidget(std::vector<rct_widget>& widgetList, const CustomWidgetDesc &desc)
+    {
+        rct_widget widget{};
+        widget.colour = 1;
+        widget.left = desc.X;
+        widget.top = desc.Y;
+        widget.right = desc.X + desc.Width;
+        widget.bottom = desc.Y + desc.Height;
+        widget.tooltip = STR_NONE;
+        widget.flags = WIDGET_FLAGS::IS_ENABLED;
+
+        if (desc.Type == "button")
+        {
+            widget.type = WWT_BUTTON;
+            widget.string = (utf8*)desc.Text.c_str();
+            widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+            widgetList.push_back(widget);
+        }
+        else if (desc.Type == "dropdown")
+        {
+            widget.type = WWT_DROPDOWN;
+            if (desc.SelectedIndex >= 0 && (size_t)desc.SelectedIndex < desc.Items.size())
+            {
+                widget.string = (utf8*)desc.Items[desc.SelectedIndex].c_str();
+            }
+            widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+            widgetList.push_back(widget);
+
+            // Add the dropdown button
+            widget = {};
+            widget.type = WWT_BUTTON;
+            widget.colour = 1;
+            widget.left = desc.X + desc.Width - 11;
+            widget.right = desc.X + desc.Width - 1;
+            widget.top = desc.Y + 1;
+            widget.bottom = desc.Y + desc.Height - 1;
+            widget.text = STR_DROPDOWN_GLYPH;
+            widget.tooltip = STR_NONE;
+            widget.flags |= WIDGET_FLAGS::IS_ENABLED;
+            widgetList.push_back(widget);
+        }
+    }
+
     static void RefreshWidgets(rct_window * w)
     {
         auto& info = GetInfo(w);
@@ -329,34 +465,45 @@ namespace OpenRCT2::Ui::Windows
 
         // Add default widgets (window shim)
         widgets.insert(widgets.begin(), std::begin(CustomDefaultWidgets), std::end(CustomDefaultWidgets));
-        w->enabled_widgets = 1ULL << WIDX_CLOSE;
+        for (size_t i = 0; i < widgets.size(); i++)
+        {
+            info.WidgetIndexMap.push_back(std::numeric_limits<size_t>::max());
+        }
 
         // Add custom widgets
-        for (const auto& widgetDesc : info.Desc.Widgets)
+        for (size_t widgetDescIndex = 0; widgetDescIndex < info.Desc.Widgets.size(); widgetDescIndex++)
         {
-            rct_widget widget{};
-            widget.type = WWT_BUTTON;
-            widget.left = widgetDesc.X;
-            widget.top = widgetDesc.Y;
-            widget.right = widgetDesc.X + widgetDesc.Width;
-            widget.bottom = widgetDesc.Y + widgetDesc.Height;
-            widget.string = (utf8*)widgetDesc.Text.c_str();
-            widget.tooltip = STR_NONE;
-            widget.flags = WIDGET_FLAGS::TEXT_IS_STRING;
-            widgets.push_back(widget);
-
-            auto widgetIndex = widgets.size() - 1;
-            if (widgetIndex < 64)
+            const auto& widgetDesc = info.Desc.Widgets[widgetDescIndex];
+            auto preWidgetSize = widgets.size();
+            CreateWidget(widgets, widgetDesc);
+            auto numWidetsAdded = widgets.size() - preWidgetSize;
+            for (size_t i = 0; i < numWidetsAdded; i++)
             {
-                w->enabled_widgets |= 1ULL << widgetIndex;
+                info.WidgetIndexMap.push_back(widgetDescIndex);
             }
         }
 
         widgets.push_back({ WIDGETS_END });
         w->widgets = widgets.data();
+
+        // Enable widgets
+        w->enabled_widgets = 1ULL << WIDX_CLOSE;
+        for (size_t i = 0; i < std::min<size_t>(widgets.size(), 64); i++)
+        {
+            if (widgets[i].flags & WIDGET_FLAGS::IS_ENABLED)
+            {
+                w->enabled_widgets |= 1ULL << i;
+            }
+        }
     }
 
     static void InvokeEventHandler(std::shared_ptr<Plugin> owner, const DukValue& dukHandler)
+    {
+        std::vector<DukValue> args;
+        InvokeEventHandler(owner, dukHandler, args);
+    }
+
+    static void InvokeEventHandler(std::shared_ptr<Plugin> owner, const DukValue& dukHandler, const std::vector<DukValue>& args)
     {
         if (dukHandler.is_function())
         {
@@ -365,7 +512,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 ScriptExecutionInfo::PluginScope scope(execInfo, owner);
                 dukHandler.push();
-                duk_pcall(dukHandler.context(), 0);
+                for (const auto& arg : args)
+                {
+                    arg.push();
+                }
+                duk_pcall(dukHandler.context(), (duk_idx_t)args.size());
                 duk_pop(dukHandler.context());
             }
         }

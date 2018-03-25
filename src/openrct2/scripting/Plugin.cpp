@@ -21,10 +21,14 @@
 #include <fstream>
 #include <memory>
 
-#include <fcntl.h>
-#include <sys/inotify.h>
-#include <sys/types.h>
-#include <unistd.h>
+#ifdef _WIN32
+    
+#else
+    #include <fcntl.h>
+    #include <sys/inotify.h>
+    #include <sys/types.h>
+    #include <unistd.h>
+#endif
 
 using namespace OpenRCT2::Scripting;
 
@@ -95,6 +99,8 @@ void Plugin::Update()
 
 void Plugin::EnableHotReload()
 {
+#ifdef _WIN32
+#else
     auto fd = inotify_init();
     if (fd >= 0)
     {
@@ -114,12 +120,15 @@ void Plugin::EnableHotReload()
             close(fd);
         }
     }
+#endif
 }
 
 bool Plugin::ShouldHotReload()
 {
     if (_hotReloadEnabled)
     {
+#ifdef _WIN32
+#else
         std::vector<char> eventData;
         eventData.resize(1024);
 
@@ -134,6 +143,7 @@ bool Plugin::ShouldHotReload()
             }
             offset += sizeof(inotify_event) + e->len;
         }
+#endif
     }
     return false;
 }
@@ -142,8 +152,11 @@ void Plugin::DisableHotReload()
 {
     if (_hotReloadEnabled)
     {
+#ifdef _WIN32
+#else
         inotify_rm_watch(_hotReloadData.FileDesc, _hotReloadData.WatchDesc);
         close(_hotReloadData.FileDesc);
+#endif
         _hotReloadData = HotReloadData();
         _hotReloadEnabled = false;
     }

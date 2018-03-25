@@ -34,7 +34,7 @@ namespace OpenRCT2::Scripting
         sint32 height_get() { return context_get_height(); }
         sint32 windows_get()
         {
-            return gWindowNextSlot - g_window_list;
+            return static_cast<sint32>(g_window_list.size());
         }
 
         std::shared_ptr<ScWindow> openWindow(DukValue desc)
@@ -76,12 +76,11 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScWindow> getWindow(sint32 index)
         {
-            auto windowEnd = gWindowNextSlot;
-            auto i = 0;
-            for (auto w = g_window_list; w < windowEnd; w++)
+            for (sint32 i = 0; i < g_window_list.size(); i++)
             {
                 if (i == index)
                 {
+                    auto w = g_window_list[i].get();
                     return std::make_shared<ScWindow>(w);
                 }
                 i++;

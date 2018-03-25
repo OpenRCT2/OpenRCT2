@@ -20,7 +20,7 @@ namespace OpenRCT2::Scripting
 
         std::string type_get()
         {
-            if (tile_element_get_type(_element) == TILE_ELEMENT_TYPE_PATH)
+            if (_element->GetType() == TILE_ELEMENT_TYPE_PATH)
             {
                 return "footpath";
             }
@@ -65,7 +65,7 @@ namespace OpenRCT2::Scripting
                 {
                     _count++;
                 }
-                while (!tile_element_is_last_for_tile(element++));
+                while (!(element++)->IsLastForTile());
             }
         }
 

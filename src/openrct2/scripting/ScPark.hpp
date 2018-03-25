@@ -61,7 +61,7 @@ namespace OpenRCT2::Scripting
                     type = GetParkMessageType(message["type"].as_string());
                     text = message["text"].as_string();
                 }
-                news_item_add_to_queue_raw(type, text.c_str(), -1);
+                news_item_add_to_queue_raw(type, text.c_str(), static_cast<uint32>(-1));
             }
             catch (const std::exception&)
             {
@@ -80,7 +80,7 @@ namespace OpenRCT2::Scripting
     private:
         uint8 GetParkMessageType(const std::string& key)
         {
-            static constexpr auto keys = {
+            static auto keys = {
                 "attraction",
                 "peep_on_attraction",
                 "peep",
