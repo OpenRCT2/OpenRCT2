@@ -7,6 +7,7 @@
 - Feature: [#7348] Add large half loops to the Vertical Drop Roller Coaster.
 - Fix: [#3596] Saving parks, landscapes and tracks with a period in the filenames don't get their extension.
 - Fix: [#5210] Default system dialog not accessible from saving landscape window.
+- Fix: [#7327] Abstract scenery and stations don't get fully See-Through when hiding them (original bug).
 - Improved: Raising land near the map edge makes the affected area smaller instead of showing an 'off edge map' error.
 
 0.1.2 (2018-03-18)
