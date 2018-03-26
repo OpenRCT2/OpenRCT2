@@ -659,26 +659,24 @@ static void paint_ps_image(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 im
 
 static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 viewFlags)
 {
+    constexpr uint32 primaryColour   = COLOUR_BRIGHT_YELLOW;
+    constexpr uint32 secondaryColour = COLOUR_GREY;
+    constexpr uint32 seeThoughFlags  = IMAGE_TYPE_TRANSPARENT | (primaryColour << 19) | (secondaryColour << 24);
+
     if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
     {
         if (spriteType == VIEWPORT_INTERACTION_ITEM_RIDE)
         {
-            if (!(imageId & IMAGE_TYPE_TRANSPARENT))
-            {
-                imageId &= 0x7FFFF;
-                imageId |= 0x41880000;
-            }
+            imageId &= 0x7FFFF;
+            imageId |= seeThoughFlags;
         }
     }
     if (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
     {
         if (spriteType == VIEWPORT_INTERACTION_ITEM_WALL)
         {
-            if (!(imageId & IMAGE_TYPE_TRANSPARENT))
-            {
-                imageId &= 0x7FFFF;
-                imageId |= 0x41880000;
-            }
+            imageId &= 0x7FFFF;
+            imageId |= seeThoughFlags;
         }
     }
     if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
@@ -688,11 +686,8 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
         case VIEWPORT_INTERACTION_ITEM_BANNER:
-            if (!(imageId & IMAGE_TYPE_TRANSPARENT))
-            {
-                imageId &= 0x7FFFF;
-                imageId |= 0x41880000;
-            }
+            imageId &= 0x7FFFF;
+            imageId |= seeThoughFlags;
             break;
         }
     }
@@ -703,11 +698,8 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_WALL:
-            if (!(imageId & IMAGE_TYPE_TRANSPARENT))
-            {
-                imageId &= 0x7FFFF;
-                imageId |= 0x41880000;
-            }
+            imageId &= 0x7FFFF;
+            imageId |= seeThoughFlags;
             break;
         }
     }
