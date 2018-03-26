@@ -491,7 +491,17 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
         set_format_arg(0, rct_string_id, STR_STRING);
         set_format_arg(2, const char *, completedByName);
         set_format_arg(2 + sizeof(const char *), money32, scenario->highscore->company_value);
-        y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, COLOUR_BLACK);
+        if (gConfigGeneral.allow_early_completion || scenario->objective_type == OBJECTIVE_10_ROLLERCOASTERS ||
+            scenario->objective_type == OBJECTIVE_GUESTS_AND_RATING || scenario->objective_type == OBJECTIVE_MONTHLY_RIDE_INCOME ||
+            scenario->objective_type == OBJECTIVE_10_ROLLERCOASTERS_LENGTH || scenario->objective_type == OBJECTIVE_FINISH_5_ROLLERCOASTERS ||
+            scenario->objective_type == OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE || scenario->objective_type == OBJECTIVE_MONTHLY_FOOD_INCOME)
+        {
+            set_format_arg(6 + sizeof(const char *), money32, scenario->highscore->days_record);
+            y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE_AND_DAYS, COLOUR_BLACK);
+        }
+        else {
+            y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, COLOUR_BLACK);
+        }
     }
 }
 
