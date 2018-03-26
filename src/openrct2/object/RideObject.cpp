@@ -634,7 +634,6 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
         { "playSplashSoundSlide", RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE },
         { "hasShelter", RIDE_ENTRY_FLAG_COVERED_RIDE },
         { "limitAirTimeBonus", RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS },
-        { "separateRide", RIDE_ENTRY_FLAG_SEPARATE_RIDE },
         { "disableBreakdown", RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN },
         { "RIDE_ENTRY_FLAG_16", RIDE_ENTRY_FLAG_16 },
         { "RIDE_ENTRY_FLAG_18", RIDE_ENTRY_FLAG_18 },
