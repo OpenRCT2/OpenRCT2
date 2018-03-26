@@ -1154,6 +1154,8 @@ void game_load_init()
 
     audio_stop_title_music();
     gGameSpeed = 1;
+
+    gScenarioEndedInSession = false;
 }
 
 /**

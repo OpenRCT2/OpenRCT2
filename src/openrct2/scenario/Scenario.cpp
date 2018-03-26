@@ -79,8 +79,8 @@ uint16_t gScenarioParkRatingWarningDays;
 money32 gScenarioCompletedCompanyValue;
 money32 gScenarioCompanyValueRecord;
 
-static bool gScenarioEnded;
-uint16 gScenarioDaysElapsed;
+bool gScenarioEndedInSession = false;
+sint16 gScenarioDaysToComplete;
 
 char gScenarioFileName[MAX_PATH];
 
@@ -168,8 +168,7 @@ void scenario_begin()
     gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
     gTotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
-    gScenarioDaysElapsed = 0;
-    gScenarioEnded = false;
+    gScenarioEndedInSession = false;
     safe_strcpy(gScenarioCompletedBy, "?", sizeof(gScenarioCompletedBy));
     park.ResetHistories();
     finance_reset_history();
@@ -197,7 +196,8 @@ void scenario_begin()
 
 static void scenario_end()
 {
-    gScenarioEnded = true;
+    gScenarioEndedInSession = true;
+    gScenarioDaysToComplete = date_get_elapsed_days(gDateMonthsElapsed, date_get_day_of_month(gDateMonthsElapsed & 7));
     window_close_by_class(WC_DROPDOWN);
     window_close_all_except_flags(WF_STICK_TO_BACK | WF_STICK_TO_FRONT);
     context_open_window_view(WV_PARK_OBJECTIVE);
@@ -305,10 +305,6 @@ static void scenario_day_update()
 {
     finance_update_daily_profit();
     peep_update_days_in_queue();
-
-    if (!gScenarioEnded) {
-        gScenarioDaysElapsed++;
-    }
 
     switch (gScenarioObjectiveType) {
     case OBJECTIVE_10_ROLLERCOASTERS:
