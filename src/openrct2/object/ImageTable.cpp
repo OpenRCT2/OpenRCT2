@@ -28,7 +28,7 @@ ImageTable::~ImageTable()
     {
         for (auto &entry : _entries)
         {
-            delete entry.offset;
+            delete [] entry.offset;
         }
     }
 }
