@@ -3,10 +3,12 @@
 - Feature: [#7187] Option for early scenario completion.
 - Feature: [#7266] Make headless instances use an interactive terminal with access to the in-game console API.
 - Feature: [#7267] Leverage more historical data in Finances window.
+- Feature: [#7316] Cheat to allow freezing all staff
 - Feature: [#7332] Keyboard shortcuts for view path issues and cutaway view.
 - Feature: [#7348] Add large half loops to the Vertical Drop Roller Coaster.
 - Fix: [#3596] Saving parks, landscapes and tracks with a period in the filenames don't get their extension.
 - Fix: [#5210] Default system dialog not accessible from saving landscape window.
+- Fix: [#7176] Mechanics sometimes fall down from rides.
 - Fix: [#7327] Abstract scenery and stations don't get fully See-Through when hiding them (original bug).
 - Improved: Raising land near the map edge makes the affected area smaller instead of showing an 'off edge map' error.
 
@@ -124,6 +126,7 @@
 - Fix: [#7011] Swinging and bobsleigh cars going backwards swing in the wrong direction (original bug).
 - Fix: [#7042, #7077] Paths sometimes disconnect when building them with clearance checks off.
 - Fix: [#7125] No entry signs not correctly handled in pathfinding.
+- Fix: [#7153] Sign text cut off when using TTF Fonts.
 - Fix: [#7223] Vehicle mass not correctly recalculated when using remove all guests cheat.
 - Fix: [#7229] Exploding guests cheat causes rides to get stuck and freezes game.
 - Fix: [#7295] peep_should_go_on_ride_again() checked balloon colour instead of toilet need.
