@@ -29,6 +29,9 @@
 #include "RideDemolishAction.hpp"
 #include "PlacePeepSpawnAction.hpp"
 #include "MazeSetTrackAction.hpp"
+#include "SignSetNameAction.hpp"
+#include "ParkSetNameAction.hpp"
+#include "BannerSetNameAction.hpp"
 
 namespace GameActions
 {
@@ -48,5 +51,8 @@ namespace GameActions
         Register<StaffSetNameAction>();
         Register<PlacePeepSpawnAction>();
         Register<MazeSetTrackAction>();
+        Register<SignSetNameAction>();
+        Register<ParkSetNameAction>();
+        Register<BannerSetNameAction>();
     }
 }

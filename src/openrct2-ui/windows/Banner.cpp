@@ -25,6 +25,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
+#include <openrct2/actions/BannerSetNameAction.hpp>
 
 #define WW 113
 #define WH 96
@@ -286,10 +287,10 @@ static void window_banner_dropdown(rct_window *w, rct_widgetindex widgetIndex, s
  */
 static void window_banner_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
-    if (widgetIndex == WIDX_BANNER_TEXT && text != nullptr) {
-        game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 0)), GAME_COMMAND_SET_BANNER_NAME, *((sint32*)(text + 8)), *((sint32*)(text + 4)));
-        game_do_command(2, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 12)), GAME_COMMAND_SET_BANNER_NAME, *((sint32*)(text + 20)), *((sint32*)(text + 16)));
-        game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 24)), GAME_COMMAND_SET_BANNER_NAME, *((sint32*)(text + 32)), *((sint32*)(text + 28)));
+    if (widgetIndex == WIDX_BANNER_TEXT && text != nullptr)
+    {
+        auto bannerSetNameAction = BannerSetNameAction(w->number, text);
+        GameActions::Execute(&bannerSetNameAction);
     }
 }
 

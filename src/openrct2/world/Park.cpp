@@ -41,6 +41,7 @@
 #include "Sprite.h"
 #include "../windows/Intent.h"
 #include "../Context.h"
+#include "../actions/ParkSetNameAction.hpp"
 
 rct_string_id gParkName;
 uint32 gParkNameArgs;
@@ -778,93 +779,8 @@ void update_park_fences_around_tile(sint32 x, sint32 y)
 
 void park_set_name(const char *name)
 {
-    // Required else the pointer arithmetic in the game commands below could cause an access violation
-    char* newName = (char *)malloc(USER_STRING_MAX_LENGTH + 5);
-    strncpy(newName, name, USER_STRING_MAX_LENGTH);
-
-    gGameCommandErrorTitle = STR_CANT_RENAME_PARK;
-    game_do_command(1, GAME_COMMAND_FLAG_APPLY, 0, *((sint32*)(newName + 0)), GAME_COMMAND_SET_PARK_NAME, *((sint32*)(newName + 8)), *((sint32*)(newName + 4)));
-    game_do_command(2, GAME_COMMAND_FLAG_APPLY, 0, *((sint32*)(newName + 12)), GAME_COMMAND_SET_PARK_NAME, *((sint32*)(newName + 20)), *((sint32*)(newName + 16)));
-    game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, *((sint32*)(newName + 24)), GAME_COMMAND_SET_PARK_NAME, *((sint32*)(newName + 32)), *((sint32*)(newName + 28)));
-
-    free(newName);
-}
-
-/**
- *
- *  rct2: 0x00669C6D
- */
-void game_command_set_park_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
-{
-    rct_string_id newUserStringId;
-    char oldName[128];
-    static char newName[128];
-
-    sint32 nameChunkIndex = *eax & 0xFFFF;
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    //if (*ebx & GAME_COMMAND_FLAG_APPLY) { // this check seems to be useless and causes problems in multiplayer
-        sint32 nameChunkOffset = nameChunkIndex - 1;
-        if (nameChunkOffset < 0)
-            nameChunkOffset = 2;
-        nameChunkOffset *= 12;
-        nameChunkOffset = Math::Min(nameChunkOffset, (sint32)Util::CountOf(newName) - 12);
-        memcpy(newName + nameChunkOffset + 0, edx, 4);
-        memcpy(newName + nameChunkOffset + 4, ebp, 4);
-        memcpy(newName + nameChunkOffset + 8, edi, 4);
-    //}
-
-    if (nameChunkIndex != 0) {
-        *ebx = 0;
-        return;
-    }
-
-    format_string(oldName, 128, gParkName, &gParkNameArgs);
-    if (strcmp(oldName, newName) == 0) {
-        *ebx = 0;
-        return;
-    }
-
-    if (newName[0] == 0) {
-        gGameCommandErrorText = STR_INVALID_RIDE_ATTRACTION_NAME;
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, newName);
-    if (newUserStringId == 0) {
-        gGameCommandErrorText = STR_INVALID_NAME_FOR_PARK;
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-        // Log park rename command if we are in multiplayer and logging is enabled
-        if ((network_get_mode() == NETWORK_MODE_CLIENT || network_get_mode() == NETWORK_MODE_SERVER) && gConfigNetwork.log_server_actions) {
-            // Get player name
-            int player_index = network_get_player_index(game_command_playerid);
-            const char* player_name = network_get_player_name(player_index);
-
-            char log_msg[256];
-            char* args[3] = {
-                (char *) player_name,
-                oldName,
-                newName
-            };
-            format_string(log_msg, 256, STR_LOG_PARK_NAME, args);
-            network_append_server_log(log_msg);
-        }
-
-        // Free the old ride name
-        user_string_free(gParkName);
-        gParkName = newUserStringId;
-
-        gfx_invalidate_screen();
-    } else {
-        user_string_free(newUserStringId);
-    }
-
-    *ebx = 0;
+    auto parkSetNameAction = ParkSetNameAction(name);
+    GameActions::Execute(&parkSetNameAction);
 }
 
 static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, sint32 flags) {
