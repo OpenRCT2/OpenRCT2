@@ -683,6 +683,53 @@ struct rct_peep
     uint8  favourite_ride_rating; // 0xFA
     uint8  pad_FB;
     uint32 item_standard_flags; // 0xFC
+    void Update();
+    void SetState(uint8 new_state);
+    void Remove();
+private:
+    void UpdateFalling();
+    void Update1();
+    void UpdateRide();
+    void UpdateOnRide() {};
+    void UpdateWalking();
+    void UpdateQueuing();
+    void UpdateSitting();
+    void UpdatePicked();
+    void UpdatePatrolling();
+    void UpdateMowing();
+    void UpdateSweeping();
+    void UpdateEnteringPark();
+    void UpdateLeavingPark();
+    void UpdateAnswering();
+    void UpdateFixing(sint32 steps);
+    void UpdateBuying();
+    void UpdateWatching();
+    void UpdateEmptyingBin();
+    void UpdateUsingBin();
+    void UpdateWatering();
+    void UpdateHeadingToInspect();
+
+    void UpdateRideAtEntrance();
+    void UpdateRideAdvanceThroughEntrance();
+    void UpdateRideFreeVehicleCheck();
+    void UpdateRideApproachVehicle();
+    void UpdateRideEnterVehicle();
+    void UpdateRideLeaveVehicle();
+    void UpdateRideApproachExit();
+    void UpdateRideInExit();
+    void UpdateRideApproachVehicleWaypoints();
+    void UpdateRideApproachExitWaypoints();
+    void UpdateRideApproachSpiralSlide();
+    void UpdateRideOnSpiralSlide();
+    void UpdateRideLeaveSpiralSlide();
+    void UpdateRideMazePathfinding();
+    void UpdateRideLeaveExit();
+    void UpdateRideShopApproach();
+    void UpdateRideShopInteract();
+    void UpdateRideShopLeave();
+
+    bool CheckForPath();
+    sint32 PerformNextAction(uint8 & pathing_result);
 };
 assert_struct_size(rct_peep, 0x100);
 #pragma pack(pop)
@@ -733,6 +780,14 @@ enum
     EASTEREGG_PEEP_NAME_EILIDH_BELL,
     EASTEREGG_PEEP_NAME_NANCY_STILLWAGON,
     EASTEREGG_PEEP_NAME_DAVID_ELLIS
+};
+
+enum
+{
+    PATHING_DESTINATION_REACHED = 1 << 0,
+    PATHING_OUTSIDE_PARK = 1 << 1,
+    PATHING_RIDE_EXIT = 1 << 2,
+    PATHING_RIDE_ENTRANCE = 1 << 3,
 };
 
 /** Helper macro until rides are stored in this module. */
@@ -801,7 +856,6 @@ bool       peep_pickup_command(uint32 peepnum, sint32 x, sint32 y, sint32 z, sin
 void       game_command_pickup_guest(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
                                      sint32 * ebp);
 void       peep_sprite_remove(rct_peep * peep);
-void       peep_remove(rct_peep * peep);
 void       peep_update_sprite_type(rct_peep * peep);
 
 void peep_window_state_update(rct_peep * peep);
