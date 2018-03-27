@@ -17,7 +17,6 @@
 #pragma once
 
 #include "../Context.h"
-#include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../localisation/StringIds.h"
 #include "../ui/UiContext.h"
