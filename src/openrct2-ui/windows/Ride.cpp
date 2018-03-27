@@ -3397,8 +3397,8 @@ static void window_ride_operating_invalidate(rct_window *w)
         );
 
     // Lift hill speed
-    if ((rideEntry->enabledTrackPieces & (1ULL << TRACK_LIFT_HILL)) &&
-            track_piece_is_available_for_ride_type(ride->type, TRACK_LIFT_HILL)) {
+    if (track_piece_is_available_for_ride_type(ride->type, TRACK_LIFT_HILL))
+    {
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WWT_LABEL;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED].type = WWT_SPINNER;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_INCREASE].type = WWT_BUTTON;

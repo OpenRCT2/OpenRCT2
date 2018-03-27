@@ -108,7 +108,7 @@ const RideGroup * RideGroupManager::GetRideGroup(const uint8 rideType, const rct
     switch (rideType)
     {
     case RIDE_TYPE_CORKSCREW_ROLLER_COASTER:
-        if (rideEntry->enabledTrackPieces & (1ULL << TRACK_VERTICAL_LOOP))
+        if (ride_entry_get_supported_track_pieces(rideEntry) & (1ULL << TRACK_VERTICAL_LOOP))
             return &ride_group_corkscrew_rc;
         else
             return &ride_group_hypercoaster;
@@ -118,17 +118,17 @@ const RideGroup * RideGroupManager::GetRideGroup(const uint8 rideType, const rct
         else
             return &ride_group_junior_rc;
     case RIDE_TYPE_CAR_RIDE:
-        if (rideEntry->enabledTrackPieces & (1ULL << TRACK_SLOPE_STEEP))
+        if (ride_entry_get_supported_track_pieces(rideEntry) & (1ULL << TRACK_SLOPE_STEEP))
             return &ride_group_monster_trucks;
         else
             return &ride_group_car_ride;
     case RIDE_TYPE_TWISTER_ROLLER_COASTER:
-        if (rideEntry->enabledTrackPieces & (1ULL << TRACK_VERTICAL_LOOP))
+        if (!(rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS))
             return &ride_group_steel_twister_rc;
         else
             return &ride_group_hyper_twister;
     case RIDE_TYPE_STEEL_WILD_MOUSE:
-        if (rideEntry->enabledTrackPieces & (1ULL << TRACK_SLOPE_STEEP))
+        if (ride_entry_get_supported_track_pieces(rideEntry) & (1ULL << TRACK_SLOPE_STEEP))
             return &ride_group_steel_wild_mouse;
         else
             return &ride_group_spinning_wild_mouse;
