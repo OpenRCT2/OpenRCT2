@@ -579,13 +579,26 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
 
         // Shop item
         auto rideSells = ObjectJsonHelpers::GetJsonStringArray(json_object_get(json_object_get(root, "properties"), "sells"));
-        if (rideSells.size() >= 1)
+        for (size_t i = 0; i < rideSells.size(); i++)
         {
-            _legacyType.shop_item = ParseShopItem(rideSells[0]);
-        }
-        if (rideSells.size() >= 2)
-        {
-            _legacyType.shop_item_secondary = ParseShopItem(rideSells[1]);
+            auto shopItem = ParseShopItem(rideSells[i]);
+            if (shopItem == SHOP_ITEM_NONE)
+            {
+                context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, "Unknown shop item");
+            }
+
+            if (i == 0)
+            {
+                _legacyType.shop_item = ParseShopItem(rideSells[0]);
+            }
+            else if (i == 1)
+            {
+                _legacyType.shop_item_secondary = ParseShopItem(rideSells[1]);
+            }
+            else
+            {
+                // More than 2 shop items not supported yet!
+            }
         }
     }
     else
@@ -1036,9 +1049,6 @@ uint8 RideObject::ParseRideType(const std::string &s)
         { "mini_rc",                    RIDE_TYPE_MINI_ROLLER_COASTER },
         { "mine_ride",                  RIDE_TYPE_MINE_RIDE },
         { "lim_launched_rc",            RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER },
-
-        // TEMPORARY:
-        { "restroom",                   RIDE_TYPE_TOILETS },
     };
     auto result = LookupTable.find(s);
     return (result != LookupTable.end()) ?
@@ -1067,43 +1077,43 @@ uint8 RideObject::ParseShopItem(const std::string &s)
 {
     static const std::unordered_map<std::string, uint8> LookupTable
     {
-        { "burger",         SHOP_ITEM_BURGER },
-        { "fries",          SHOP_ITEM_CHIPS },
-        { "icecream",       SHOP_ITEM_ICE_CREAM },
-        { "cottoncandy",    SHOP_ITEM_CANDYFLOSS },
-        { "pizza",          SHOP_ITEM_PIZZA },
-        { "popcorn",        SHOP_ITEM_POPCORN },
-        { "hotdog",         SHOP_ITEM_HOT_DOG },
-        { "seafood",        SHOP_ITEM_TENTACLE },
-        { "candyapple",     SHOP_ITEM_TOFFEE_APPLE },
-        { "donut",          SHOP_ITEM_DOUGHNUT },
-        { "chicken",        SHOP_ITEM_CHICKEN },
-        { "pretzel",        SHOP_ITEM_PRETZEL },
-        { "funnelcake",     SHOP_ITEM_FUNNEL_CAKE },
-        { "beefnoodles",    SHOP_ITEM_BEEF_NOODLES },
-        { "friednoodles",   SHOP_ITEM_FRIED_RICE_NOODLES },
-        { "wontonsoup",     SHOP_ITEM_WONTON_SOUP },
-        { "meatballsoup",   SHOP_ITEM_MEATBALL_SOUP },
-        { "subsandwich",    SHOP_ITEM_SUB_SANDWICH },
-        { "cookies",        SHOP_ITEM_COOKIE },
-        { "roastsausage",   SHOP_ITEM_ROAST_SAUSAGE },
-        { "cola",           SHOP_ITEM_DRINK },
-        { "coffee",         SHOP_ITEM_COFFEE },
-        { "lemonade",       SHOP_ITEM_LEMONADE },
-        { "hotchocolate",   SHOP_ITEM_CHOCOLATE },
-        { "icedtea",        SHOP_ITEM_ICED_TEA },
-        { "fruitjuice",     SHOP_ITEM_FRUIT_JUICE },
-        { "soybeanmilk",    SHOP_ITEM_SOYBEAN_MILK },
-        { "sujongkwa",      SHOP_ITEM_SU_JONGKWA },
-        { "balloon",        SHOP_ITEM_BALLOON },
-        { "plushtoy",       SHOP_ITEM_TOY },
-        { "map",            SHOP_ITEM_MAP },
-        { "onridephoto",    SHOP_ITEM_PHOTO },
-        { "umbrella",       SHOP_ITEM_UMBRELLA },
-        { "voucher",        SHOP_ITEM_VOUCHER },
-        { "hat",            SHOP_ITEM_HAT },
-        { "tshirt",         SHOP_ITEM_TSHIRT },
-        { "sunglasses",     SHOP_ITEM_SUNGLASSES },
+        { "burger",             SHOP_ITEM_BURGER },
+        { "chips",              SHOP_ITEM_CHIPS },
+        { "ice_cream",          SHOP_ITEM_ICE_CREAM },
+        { "candyfloss",         SHOP_ITEM_CANDYFLOSS },
+        { "pizza",              SHOP_ITEM_PIZZA },
+        { "popcorn",            SHOP_ITEM_POPCORN },
+        { "hot_dog",            SHOP_ITEM_HOT_DOG },
+        { "tentacle",           SHOP_ITEM_TENTACLE },
+        { "toffee_apple",       SHOP_ITEM_TOFFEE_APPLE },
+        { "doughnut",           SHOP_ITEM_DOUGHNUT },
+        { "chicken",            SHOP_ITEM_CHICKEN },
+        { "pretzel",            SHOP_ITEM_PRETZEL },
+        { "funnel_cake",        SHOP_ITEM_FUNNEL_CAKE },
+        { "beef_noodles",       SHOP_ITEM_BEEF_NOODLES },
+        { "fried_rice_noodles", SHOP_ITEM_FRIED_RICE_NOODLES },
+        { "wonton_soup",        SHOP_ITEM_WONTON_SOUP },
+        { "meatball_soup",      SHOP_ITEM_MEATBALL_SOUP },
+        { "sub_sandwich",       SHOP_ITEM_SUB_SANDWICH },
+        { "cookies",            SHOP_ITEM_COOKIE },
+        { "roast_sausage",      SHOP_ITEM_ROAST_SAUSAGE },
+        { "drink",              SHOP_ITEM_DRINK },
+        { "coffee",             SHOP_ITEM_COFFEE },
+        { "lemonade",           SHOP_ITEM_LEMONADE },
+        { "chocolate",          SHOP_ITEM_CHOCOLATE },
+        { "iced_tea",           SHOP_ITEM_ICED_TEA },
+        { "fruit_juice",        SHOP_ITEM_FRUIT_JUICE },
+        { "soybean_milk",       SHOP_ITEM_SOYBEAN_MILK },
+        { "su_jongkwa",         SHOP_ITEM_SU_JONGKWA },
+        { "balloon",            SHOP_ITEM_BALLOON },
+        { "toy",                SHOP_ITEM_TOY },
+        { "map",                SHOP_ITEM_MAP },
+        { "photo",              SHOP_ITEM_PHOTO },
+        { "umbrella",           SHOP_ITEM_UMBRELLA },
+        { "voucher",            SHOP_ITEM_VOUCHER },
+        { "hat",                SHOP_ITEM_HAT },
+        { "tshirt",             SHOP_ITEM_TSHIRT },
+        { "sunglasses",         SHOP_ITEM_SUNGLASSES },
     };
     auto result = LookupTable.find(s);
     return (result != LookupTable.end()) ?
