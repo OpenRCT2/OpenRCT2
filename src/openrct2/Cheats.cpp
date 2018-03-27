@@ -398,7 +398,7 @@ static void cheat_remove_all_guests()
         peep = &(get_sprite(spriteIndex)->peep);
         nextSpriteIndex = peep->next;
         if (peep->type == PEEP_TYPE_GUEST) {
-            peep_remove(peep);
+            peep->Remove();
         }
     }
 

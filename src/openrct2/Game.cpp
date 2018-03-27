@@ -1259,7 +1259,7 @@ void game_fix_save_vars()
 
     for (auto ptr : peepsToRemove)
     {
-        peep_remove(ptr);
+        ptr->Remove();
     }
 
     // Fixes broken saves where a surface element could be null
