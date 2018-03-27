@@ -844,7 +844,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
         { "curvedLiftHill", VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL },
         { "VEHICLE_SPRITE_FLAG_15", VEHICLE_SPRITE_FLAG_15 } });
 
-    car.flags = ObjectJsonHelpers::GetFlags<uint32>(jCar, {
+    car.flags |= ObjectJsonHelpers::GetFlags<uint32>(jCar, {
         { "VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY", VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY },
         { "VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS", VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS },
         { "VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH", VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH },
