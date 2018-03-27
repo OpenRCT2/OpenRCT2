@@ -259,9 +259,9 @@ namespace ObjectFactory
             }
             json_decref(jRoot);
         }
-        catch (std::runtime_error)
+        catch (const std::runtime_error &err)
         {
-            Console::Error::WriteLine("Unable to open or read '%s'", path.c_str());
+            Console::Error::WriteLine("Unable to open or read '%s': %s", path.c_str(), err.what());
 
             delete result;
             result = nullptr;
