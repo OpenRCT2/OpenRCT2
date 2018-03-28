@@ -233,7 +233,7 @@ namespace ObjectJsonHelpers
         return objectPath;
     }
 
-    static std::vector<rct_g1_element> LoadObjectImages(IReadObjectContext * context, const std::string &name, uint32 start, uint32 end)
+    static std::vector<rct_g1_element> LoadObjectImages(IReadObjectContext * context, const std::string &name, const std::vector<sint32> &range)
     {
         std::vector<rct_g1_element> result;
         auto objectPath = FindLegacyObject(name);
@@ -241,35 +241,41 @@ namespace ObjectJsonHelpers
         if (obj != nullptr)
         {
             auto &imgTable = static_cast<const Object *>(obj)->GetImageTable();
-            auto numImages = imgTable.GetCount();
+            auto numImages = (sint32)imgTable.GetCount();
             auto images = imgTable.GetImages();
-            for (uint32 i = start; i < Math::Min(numImages, end); i++)
+            size_t placeHoldersAdded = 0;
+            for (auto i : range)
             {
-                auto &objg1 = images[i];
-                auto length = g1_calculate_data_size(&objg1);
-                auto g1 = objg1;
-                g1.offset = (uint8 *)std::malloc(length);
-                std::memcpy(g1.offset, objg1.offset, length);
-                result.push_back(g1);
+                if (i >= 0 && i < numImages)
+                {
+                    auto &objg1 = images[i];
+                    auto length = g1_calculate_data_size(&objg1);
+                    auto g1 = objg1;
+                    g1.offset = (uint8 *)std::malloc(length);
+                    std::memcpy(g1.offset, objg1.offset, length);
+                    result.push_back(g1);
+                }
+                else
+                {
+                    auto g1 = rct_g1_element{};
+                    result.push_back(g1);
+                    placeHoldersAdded++;
+                }
             }
             delete obj;
+
+            // Log place holder information
+            if (placeHoldersAdded > 0)
+            {
+                std::string msg = "Adding " + std::to_string(placeHoldersAdded) + " placeholders";
+                context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, msg.c_str());
+            }
         }
         else
         {
             std::string msg = "Unable to open '" + objectPath + "'";
             context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, msg.c_str());
-        }
-
-        // Add place holders
-        auto placeHolders = (size_t)(end - start) - result.size();
-        if (placeHolders > 0)
-        {
-            if (obj != nullptr)
-            {
-                std::string msg = "Adding " + std::to_string(placeHolders) + " placeholders";
-                context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, msg.c_str());
-            }
-            for (size_t i = 0; i < placeHolders; i++)
+            for (size_t i = 0; i < range.size(); i++)
             {
                 auto g1 = rct_g1_element{};
                 result.push_back(g1);
@@ -309,21 +315,13 @@ namespace ObjectJsonHelpers
         {
             auto name = s.substr(14);
             auto rangeStart = name.find('[');
-            auto imgStart = 0;
-            auto imgEnd = INT16_MAX;
             if (rangeStart != std::string::npos)
             {
                 auto rangeString = name.substr(rangeStart);
                 auto range = ParseRange(name.substr(rangeStart));
                 name = name.substr(0, rangeStart);
-
-                if (range.size() > 0)
-                {
-                    imgStart = range.front();
-                    imgEnd = range.back();
-                }
+                result = LoadObjectImages(context, name, range);
             }
-            return LoadObjectImages(context, name, imgStart, imgEnd);
         }
         return result;
     }
