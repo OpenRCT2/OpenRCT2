@@ -1095,7 +1095,7 @@ uint8 RideObject::ParseShopItem(const std::string &s)
         { "wonton_soup",        SHOP_ITEM_WONTON_SOUP },
         { "meatball_soup",      SHOP_ITEM_MEATBALL_SOUP },
         { "sub_sandwich",       SHOP_ITEM_SUB_SANDWICH },
-        { "cookies",            SHOP_ITEM_COOKIE },
+        { "cookie",             SHOP_ITEM_COOKIE },
         { "roast_sausage",      SHOP_ITEM_ROAST_SAUSAGE },
         { "drink",              SHOP_ITEM_DRINK },
         { "coffee",             SHOP_ITEM_COFFEE },
