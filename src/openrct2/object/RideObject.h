@@ -46,7 +46,6 @@ public:
 
 private:
     void ReadLegacyVehicle(IReadObjectContext * context, IStream * stream, rct_ride_entry_vehicle * vehicle);
-    void PerformFixes();
 
     void ReadJsonVehicleInfo(IReadObjectContext * context, const json_t * properties);
     std::vector<rct_ride_entry_vehicle> ReadJsonCars(const json_t * jCars);

@@ -119,8 +119,6 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     {
         context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Nausea multiplier too high.");
     }
-
-    PerformFixes();
 }
 
 void RideObject::Load()
@@ -405,54 +403,6 @@ void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * strea
     vehicle->draw_order = stream->ReadValue<uint8>();
     vehicle->num_vertical_frames_override = stream->ReadValue<uint8>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
-}
-
-void RideObject::PerformFixes()
-{
-    std::string identifier = GetIdentifier();
-    
-    // Add boosters if the track type is eligible
-    for (auto rideType : _legacyType.ride_type)
-    {
-        if (ride_type_supports_boosters(rideType))
-        {
-            _legacyType.enabledTrackPieces |= (1ULL << TRACK_BOOSTER);
-        }
-    }
-    
-    // The rocket cars could take 3 cars per train in RCT1. Restore this.
-    if (String::Equals(identifier, "RCKC    "))
-    {
-        _legacyType.max_cars_in_train = 3 + _legacyType.zero_cars;
-    }
-    // The Wooden Roller Coaster could take 7 cars per train in RCT1.
-    else if (String::Equals(identifier, "PTCT1   "))
-    {
-        _legacyType.max_cars_in_train = 7 + _legacyType.zero_cars;
-    }
-    // The Looping Roller Coaster could take 8 cars per train in RCT1.
-    else if (String::Equals(identifier, "SCHT1   "))
-    {
-        _legacyType.max_cars_in_train = 8 + _legacyType.zero_cars;
-    }
-    // The Steel Twister could take 8 cars per train in RCT1. (The other two vehicles are already correct.)
-    else if (String::Equals(identifier, "BMSD    ") || String::Equals(identifier, "BMSU    "))
-    {
-        _legacyType.max_cars_in_train = 8 + _legacyType.zero_cars;
-    }
-    // Wacky Worlds' Crocodile Ride (a log flume vehicle) is incorrectly locked to 5 cars.
-    else if (String::Equals(identifier, "CROCFLUM"))
-    {
-        _legacyType.cars_per_flat_ride = 0xFF;
-    }
-    // All vanilla/WW/OCC Junior RC vehicles incorrectly have this flag set
-    else if (String::Equals(identifier, "ZLDB    ") ||
-             String::Equals(identifier, "ZLOG    ") ||
-             String::Equals(identifier, "ZPANDA  ") ||
-             String::Equals(identifier, "WHICGRUB"))
-    {
-        _legacyType.enabledTrackPieces &= ~(1ULL << TRACK_SLOPE_STEEP);
-    }
 }
 
 uint8 RideObject::CalculateNumVerticalFrames(const rct_ride_entry_vehicle * vehicleEntry)
