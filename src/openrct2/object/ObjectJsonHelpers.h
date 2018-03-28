@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -42,7 +42,7 @@ namespace ObjectJsonHelpers
     void LoadImages(IReadObjectContext * context, const json_t * root, ImageTable &imageTable);
 
     template<typename T>
-    T GetFlags(const json_t * obj, std::initializer_list<std::pair<std::string, T>> list)
+    static T GetFlags(const json_t * obj, std::initializer_list<std::pair<std::string, T>> list)
     {
         T flags = 0;
         for (const auto &item : list)
