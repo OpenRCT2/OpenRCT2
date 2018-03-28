@@ -10,6 +10,7 @@
 - Fix: [#5210] Default system dialog not accessible from saving landscape window.
 - Fix: [#7176] Mechanics sometimes fall down from rides.
 - Fix: [#7327] Abstract scenery and stations don't get fully See-Through when hiding them (original bug).
+- Fix: Cut-away view does not draw tile elements that have been moved down on the list.
 - Improved: Raising land near the map edge makes the affected area smaller instead of showing an 'off edge map' error.
 
 0.1.2 (2018-03-18)

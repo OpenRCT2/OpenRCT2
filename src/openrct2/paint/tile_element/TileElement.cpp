@@ -162,13 +162,6 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     }
 #endif // __TESTPAINT__
 
-    /* Check if the first (lowest) tile_element is below the clip
-     * height. */
-    if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (tile_element->base_height > gClipHeight)) {
-        blank_tiles_paint(session, x, y);
-        return;
-    }
-
     sint32 dx = 0;
     switch (rotation) {
     case 0:
@@ -253,7 +246,8 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     sint32 previousHeight = 0;
     do {
         // Only paint tile_elements below the clip height.
-        if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (tile_element->base_height > gClipHeight)) break;
+        if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (tile_element->base_height > gClipHeight))
+            continue;
 
         sint32 direction = tile_element_get_direction_with_offset(tile_element, rotation);
         sint32 height = tile_element->base_height * 8;
