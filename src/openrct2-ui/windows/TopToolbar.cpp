@@ -18,6 +18,7 @@
 
 #include <string>
 
+#include <openrct2/actions/ClearAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/Cheats.h>
 #include <openrct2/config/Config.h>
@@ -294,6 +295,8 @@ static void toggle_water_window(rct_window *topToolbar, rct_widgetindex widgetIn
 
 static money32 selection_lower_land(uint8 flags);
 static money32 selection_raise_land(uint8 flags);
+
+static ClearAction GetClearAction();
 
 static bool     _menuDropdownIncludesTwitch;
 static uint8    _unkF64F0E;
@@ -1843,18 +1846,7 @@ static void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
     if (!state_changed)
         return;
 
-    sint32 eax = gMapSelectPositionA.x;
-    sint32 ecx = gMapSelectPositionA.y;
-    sint32 edi = gMapSelectPositionB.x;
-    sint32 ebp = gMapSelectPositionB.y;
-    sint32 clear = (gClearSmallScenery << 0) | (gClearLargeScenery << 1) | (gClearFootpath << 2);
-    money32 cost = game_do_command(eax, 0, ecx, clear, GAME_COMMAND_CLEAR_SCENERY, edi, ebp);
 
-    if (gClearSceneryCost != cost) {
-        gClearSceneryCost = cost;
-        window_invalidate_by_class(WC_CLEAR_SCENERY);
-        return;
-    }
 }
 
 static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y)
@@ -1928,6 +1920,15 @@ static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y)
     map_invalidate_selection_rect();
     if (!state_changed)
         return;
+
+    auto action = GetClearAction();
+    auto result = GameActions::Query(&action);
+    auto cost = (result->Error == GA_ERROR::OK ? result->Cost : MONEY32_UNDEFINED);
+    if (gClearSceneryCost != cost)
+    {
+        gClearSceneryCost = cost;
+        window_invalidate_by_class(WC_CLEAR_SCENERY);
+    }
 }
 
 /**
@@ -2765,21 +2766,12 @@ static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIn
 {
     switch (widgetIndex){
     case WIDX_CLEAR_SCENERY:
-        if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
-            break;
-
-        gGameCommandErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
-
-        game_do_command(
-            gMapSelectPositionA.x,
-            1,
-            gMapSelectPositionA.y,
-            ((gClearSmallScenery ? 1 : 0) | (gClearLargeScenery ? 1 : 0) << 1 | (gClearFootpath ? 1 : 0) << 2),
-            GAME_COMMAND_CLEAR_SCENERY,
-            gMapSelectPositionB.x,
-            gMapSelectPositionB.y
-            );
-        gCurrentToolId = TOOL_CROSSHAIR;
+        if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+        {
+            auto action = GetClearAction();
+            GameActions::Execute(&action);
+            gCurrentToolId = TOOL_CROSSHAIR;
+        }
         break;
     case WIDX_LAND:
         if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) {
@@ -2966,24 +2958,12 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
 {
     switch (widgetIndex){
     case WIDX_CLEAR_SCENERY:
-        if (window_find_by_class(WC_ERROR) != nullptr)
-            break;
-
-        if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
-            break;
-
-        gGameCommandErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
-
-        game_do_command(
-            gMapSelectPositionA.x,
-            1,
-            gMapSelectPositionA.y,
-            ((gClearSmallScenery ? 1 : 0) | (gClearLargeScenery ? 1 : 0) << 1 | (gClearFootpath ? 1 : 0) << 2),
-            GAME_COMMAND_CLEAR_SCENERY,
-            gMapSelectPositionB.x,
-            gMapSelectPositionB.y
-        );
-        gCurrentToolId = TOOL_CROSSHAIR;
+        if (window_find_by_class(WC_ERROR) == nullptr && (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+        {
+            auto action = GetClearAction();
+            GameActions::Execute(&action);
+            gCurrentToolId = TOOL_CROSSHAIR;
+        }
         break;
     case WIDX_LAND:
         // Custom setting to only change land style instead of raising or lowering land
@@ -3488,4 +3468,18 @@ bool water_tool_is_active()
     if (gCurrentToolWidget.widget_index != WIDX_WATER)
         return false;
     return true;
+}
+
+static ClearAction GetClearAction()
+{
+    auto range = MapRange(
+        gMapSelectPositionA.x,
+        gMapSelectPositionA.y,
+        gMapSelectPositionB.x,
+        gMapSelectPositionB.y);
+    auto itemsToClear =
+        gClearSmallScenery ? CLEARABLE_ITEMS::SCENERY_SMALL : 0 |
+        gClearLargeScenery ? CLEARABLE_ITEMS::SCENERY_LARGE : 0 |
+        gClearFootpath ? CLEARABLE_ITEMS::SCENERY_FOOTPATH : 0;
+    return ClearAction(range, itemsToClear);
 }

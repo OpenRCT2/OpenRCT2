@@ -1233,23 +1233,6 @@ money32 map_clear_scenery(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 cle
 
 /**
  *
- *  rct2: 0x0068DF91
- */
-void game_command_clear_scenery(
-    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
-{
-    *ebx = map_clear_scenery(
-        (sint16)(*eax & 0xFFFF),
-        (sint16)(*ecx & 0xFFFF),
-        (sint16)(*edi & 0xFFFF),
-        (sint16)(*ebp & 0xFFFF),
-        *edx,
-        *ebx & 0xFF
-    );
-}
-
-/**
- *
  *  rct2: 0x00663CCD
  */
 static money32 map_change_surface_style(sint32 x0, sint32 y0, sint32 x1, sint32 y1, uint8 surfaceStyle, uint8 edgeStyle, uint8 flags)
@@ -1827,7 +1810,7 @@ static money32 raise_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 poi
     if (selectionType >= MAP_SELECT_TYPE_EDGE_0 && selectionType <= MAP_SELECT_TYPE_EDGE_3)
         tableRow -= MAP_SELECT_TYPE_EDGE_0 - MAP_SELECT_TYPE_FULL - 1;
 
-    if ((flags & GAME_COMMAND_FLAG_APPLY) && gGameCommandNestLevel == 1) 
+    if ((flags & GAME_COMMAND_FLAG_APPLY) && gGameCommandNestLevel == 1)
     {
         audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
     }
@@ -1893,7 +1876,7 @@ static money32 lower_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 poi
     point_a_y = std::max<decltype(point_a_y)>(32, point_a_y);
     point_b_y = std::min<decltype(point_b_y)>(gMapSizeMaxXY, point_b_y);
 
-    if ((flags & GAME_COMMAND_FLAG_APPLY) && gGameCommandNestLevel == 1) 
+    if ((flags & GAME_COMMAND_FLAG_APPLY) && gGameCommandNestLevel == 1)
     {
         audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
     }

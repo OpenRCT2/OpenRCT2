@@ -17,6 +17,7 @@
 #pragma once
 
 #include "../common.h"
+#include <algorithm>
 
 #define LOCATION_NULL     ((sint16)(uint16)0x8000)
 #define RCT_XY8_UNDEFINED 0xFFFF
@@ -59,6 +60,13 @@ constexpr sint32 COORDS_NULL = -1;
 struct CoordsXY
 {
     sint32 x, y;
+
+    CoordsXY() { }
+    CoordsXY(sint32 _x, sint32 _y) :
+        x(_x),
+        y(_y)
+    {
+    }
 };
 
 struct TileCoordsXY
@@ -108,4 +116,35 @@ struct TileCoordsXYZD
     uint8 direction;
 
     bool isNull() const { return x == COORDS_NULL; };
+};
+
+/**
+ * Represents a rectangular range of the map using regular coordinates (32 per tile).
+ */
+struct MapRange
+{
+    CoordsXY LeftTop;
+    CoordsXY RightBottom;
+
+    sint32 GetLeft() const { return LeftTop.x; }
+    sint32 GetTop() const { return LeftTop.y; }
+    sint32 GetRight() const { return RightBottom.x; }
+    sint32 GetBottom() const { return RightBottom.y; }
+
+    MapRange() : MapRange(0, 0, 0, 0) { }
+    MapRange(sint32 left, sint32 top, sint32 right, sint32 bottom)
+        : LeftTop(left, top),
+          RightBottom(right, bottom)
+    {
+    }
+
+    MapRange Normalise() const
+    {
+        auto result = MapRange(
+            std::min(GetLeft(), GetRight()),
+            std::min(GetTop(), GetBottom()),
+            std::max(GetLeft(), GetRight()),
+            std::max(GetTop(), GetBottom()));
+        return result;
+    }
 };
