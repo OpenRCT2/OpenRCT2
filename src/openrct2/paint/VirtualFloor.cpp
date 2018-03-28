@@ -304,6 +304,9 @@ void virtual_floor_paint(paint_session * session)
         {   0, -32 }
     };
 
+    if (_virtualFloorHeight < MINIMUM_LAND_HEIGHT)
+        return;
+
     uint8 direction = session->CurrentRotation;
 
     // This is a virtual floor, so no interactions
