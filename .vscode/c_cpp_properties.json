@@ -5,7 +5,8 @@
             "includePath": [
                 "/usr/include",
                 "/usr/local/include",
-                "${workspaceRoot}"
+                "${workspaceRoot}",
+                "${workspaceRoot}/src"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",
@@ -36,7 +37,8 @@
                 "path": [
                     "/usr/include",
                     "/usr/local/include",
-                    "${workspaceRoot}"
+                    "${workspaceRoot}",
+                    "${workspaceRoot}/src"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
@@ -52,6 +54,7 @@
                 "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/shared",
                 "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/winrt",
                 "${workspaceRoot}",
+                "${workspaceRoot}/src",
                 "${workspaceRoot}/lib/x86/include",
                 "${workspaceRoot}/lib/x64/include"
             ],
