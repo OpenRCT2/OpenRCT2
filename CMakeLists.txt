@@ -16,8 +16,8 @@ set(CMAKE_MACOSX_RPATH 1)
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2/title-sequence-v0.1.2.zip")
 set(TITLE_SEQUENCE_SHA1 "1136ef92bfb05cd1cba9831ba6dc4a653d87a246")
 
-set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v1.0-beta.4/objects.zip")
-set(OBJECTS_SHA1 "10c32779b1bd78e97b90fc8cac11950a3abf982b")
+set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v1.0/objects.zip")
+set(OBJECTS_SHA1 "5b9dc88b9f42a76d05d1584f10db845247a9b198")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
