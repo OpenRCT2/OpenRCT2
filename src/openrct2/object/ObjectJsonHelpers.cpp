@@ -275,11 +275,7 @@ namespace ObjectJsonHelpers
         {
             std::string msg = "Unable to open '" + objectPath + "'";
             context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, msg.c_str());
-            for (size_t i = 0; i < range.size(); i++)
-            {
-                auto g1 = rct_g1_element{};
-                result.push_back(g1);
-            }
+            result.resize(range.size());
         }
         return result;
     }
