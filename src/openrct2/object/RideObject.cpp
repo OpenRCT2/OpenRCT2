@@ -1054,7 +1054,6 @@ uint8 RideObject::ParseShopItem(const std::string &s)
         { "iced_tea",           SHOP_ITEM_ICED_TEA },
         { "fruit_juice",        SHOP_ITEM_FRUIT_JUICE },
         { "soybean_milk",       SHOP_ITEM_SOYBEAN_MILK },
-        { "su_jongkwa",         SHOP_ITEM_SUJEONGGWA },
         { "sujeonggwa",         SHOP_ITEM_SUJEONGGWA },
         { "balloon",            SHOP_ITEM_BALLOON },
         { "toy",                SHOP_ITEM_TOY },
