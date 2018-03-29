@@ -850,7 +850,7 @@ static constexpr const uint8 byte_9822F4[] = {
     110,    // SHOP_ITEM_MEATBALL_SOUP
     110,    // SHOP_ITEM_FRUIT_JUICE
     90,     // SHOP_ITEM_SOYBEAN_MILK
-    100,    // SHOP_ITEM_SU_JONGKWA
+    100,    // SHOP_ITEM_SUJEONGGWA
     130,    // SHOP_ITEM_SUB_SANDWICH
     75,     // SHOP_ITEM_COOKIE
     0,      // SHOP_ITEM_EMPTY_BOWL_RED
