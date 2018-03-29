@@ -179,6 +179,8 @@ public:
             return window_banner_open(id);
         case WD_DEMOLISH_RIDE:
             return window_ride_demolish_prompt_open(id);
+        case WD_REFURBISH_RIDE:
+            return window_ride_refurbish_prompt_open(id);
         case WD_NEW_CAMPAIGN:
             return window_new_campaign_open(id);
         case WD_SIGN:

@@ -844,6 +844,11 @@ enum {
     TRACK_SELECTION_FLAG_RECHECK          = 1 << 3,
 };
 
+enum {
+    RIDE_MODIFY_DEMOLISH,
+    RIDE_MODIFY_RENEW
+};
+
 struct rct_ride_properties {
     uint32 flags;
     uint8 min_value;
@@ -1125,6 +1130,7 @@ bool ride_entry_has_category(const rct_ride_entry * rideEntry, uint8 category);
 sint32 ride_get_entry_index(sint32 rideType, sint32 rideSubType);
 
 void ride_demolish(sint32 rideIndex, sint32 flags);
+void ride_action_modify(sint32 rideIndex, sint32 modifyType, sint32 flags);
 void ride_stop_peeps_queuing(sint32 rideIndex);
 
 LocationXY16 ride_get_rotated_coords(sint16 x, sint16 y, sint16 z);

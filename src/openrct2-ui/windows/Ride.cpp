@@ -142,6 +142,7 @@ enum {
     WIDX_INSPECTION_INTERVAL = 14,
     WIDX_INSPECTION_INTERVAL_DROPDOWN,
     WIDX_LOCATE_MECHANIC,
+    WIDX_REFURBISH_RIDE,
     WIDX_FORCE_BREAKDOWN,
 
     WIDX_TRACK_PREVIEW = 14,
@@ -293,7 +294,8 @@ static rct_widget window_ride_maintenance_widgets[] = {
     { WWT_DROPDOWN,         1,  107,    308,    71,     82,     0,                              STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE      },
     { WWT_BUTTON,           1,  297,    307,    72,     81,     STR_DROPDOWN_GLYPH,             STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE      },
     { WWT_FLATBTN,          1,  289,    312,    108,    131,    0xFFFFFFFF,                     STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP                   },
-    { WWT_FLATBTN,          1,  265,    288,    108,    131,    SPR_NO_ENTRY,                   STR_DEBUG_FORCE_BREAKDOWN_TIP                               },
+    { WWT_FLATBTN,          1,  265,    288,    108,    131,    SPR_CONSTRUCTION,               STR_REFURBISH_RIDE_TIP                                      },
+    { WWT_FLATBTN,          1,  241,    264,    108,    131,    SPR_NO_ENTRY,                   STR_DEBUG_FORCE_BREAKDOWN_TIP                               },
     { WIDGETS_END },
 };
 
@@ -454,6 +456,7 @@ static constexpr const uint64 window_ride_page_enabled_widgets[] = {
         (1ULL << WIDX_INSPECTION_INTERVAL) |
         (1ULL << WIDX_INSPECTION_INTERVAL_DROPDOWN) |
         (1ULL << WIDX_LOCATE_MECHANIC) |
+        (1ULL << WIDX_REFURBISH_RIDE) |
         (1ULL << WIDX_FORCE_BREAKDOWN),
     MAIN_RIDE_ENABLED_WIDGETS |
         (1ULL << WIDX_TRACK_COLOUR_SCHEME_DROPDOWN) |
@@ -3688,6 +3691,9 @@ static void window_ride_maintenance_mouseup(rct_window *w, rct_widgetindex widge
     case WIDX_LOCATE_MECHANIC:
         window_ride_locate_mechanic(w);
         break;
+    case WIDX_REFURBISH_RIDE:
+        context_open_detail_window(WD_REFURBISH_RIDE, w->number);
+        break;
     }
 }
 
@@ -3930,12 +3936,24 @@ static void window_ride_maintenance_invalidate(rct_window *w)
     window_ride_anchor_border_widgets(w);
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
 
-    if (gConfigGeneral.debugging_tools && network_get_mode() == NETWORK_MODE_NONE) {
+    if (gConfigGeneral.debugging_tools && network_get_mode() == NETWORK_MODE_NONE)
+    {
         window_ride_maintenance_widgets[WIDX_FORCE_BREAKDOWN].type = WWT_FLATBTN;
     }
-    else {
+    else
+    {
         window_ride_maintenance_widgets[WIDX_FORCE_BREAKDOWN].type = WWT_EMPTY;
+    }
 
+    if (RideAvailableBreakdowns[ride->type] == 0 || !(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
+    {
+        w->disabled_widgets |= (1 << WIDX_REFURBISH_RIDE);
+        window_ride_maintenance_widgets[WIDX_REFURBISH_RIDE].tooltip = STR_CANT_REFURBISH_NOT_NEEDED;
+    }
+    else
+    {
+        w->disabled_widgets &= ~(1 << WIDX_REFURBISH_RIDE);
+        window_ride_maintenance_widgets[WIDX_REFURBISH_RIDE].tooltip = STR_REFURBISH_RIDE_TIP;
     }
 }
 

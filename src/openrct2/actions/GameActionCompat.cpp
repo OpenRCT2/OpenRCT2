@@ -214,10 +214,16 @@
     }
 #pragma endregion
 
-#pragma region RideDemolishAction
+#pragma region RideModifyAction
+    // For easy compatibility, should be removed
     void ride_demolish(sint32 rideIndex, sint32 flags)
     {
-        auto gameAction = RideDemolishAction(rideIndex);
+        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, flags);
+    }
+
+    void ride_action_modify(sint32 rideIndex, sint32 modifyType, sint32 flags)
+    {
+        auto gameAction = RideDemolishAction(rideIndex, modifyType);
         gameAction.SetFlags(flags);
 
         GameActions::Execute(&gameAction);

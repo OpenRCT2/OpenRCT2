@@ -3910,6 +3910,16 @@ enum {
     STR_VIEW_CLIPPING_SELECT_AREA = 6241,
     STR_VIEW_CLIPPING_CLEAR_SELECTION = 6242,
 
+    STR_REFURBISH_RIDE_TIP = 6243,
+    STR_CANT_REFURBISH_RIDE = 6244,
+    STR_CANT_REFURBISH_NOT_NEEDED = 6245,
+    STR_REFURBISH = 6246,
+    STR_REFURBISH_RIDE = 6247,
+    STR_REFURBISH_RIDE_ID_MONEY = 6248,
+    STR_REFURBISH_RIDE_ID_NO_MONEY = 6249,
+    STR_DEMOLISH_RIDE_ID_MONEY = 6250,
+    STR_RIDE_NOT_YET_EMPTY = 6251,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
