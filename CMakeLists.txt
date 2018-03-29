@@ -17,7 +17,7 @@ set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/do
 set(TITLE_SEQUENCE_SHA1 "1136ef92bfb05cd1cba9831ba6dc4a653d87a246")
 
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v1.0/objects.zip")
-set(OBJECTS_SHA1 "5b9dc88b9f42a76d05d1584f10db845247a9b198")
+set(OBJECTS_SHA1 "4f670859b5f37f85e0c3d755b1cb75e839c989a6")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")

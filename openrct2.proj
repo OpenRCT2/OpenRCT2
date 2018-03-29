@@ -72,7 +72,7 @@
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2/title-sequence-v0.1.2.zip</TitleSequencesUrl>
     <TitleSequencesSha1>1136ef92bfb05cd1cba9831ba6dc4a653d87a246</TitleSequencesSha1>
     <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.0/objects.zip</ObjectsUrl>
-    <ObjectsSha1>5b9dc88b9f42a76d05d1584f10db845247a9b198</ObjectsSha1>
+    <ObjectsSha1>4f670859b5f37f85e0c3d755b1cb75e839c989a6</ObjectsSha1>
   </PropertyGroup>
 
   <ItemGroup>
