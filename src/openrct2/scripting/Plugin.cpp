@@ -38,11 +38,6 @@ Plugin::Plugin(duk_context * context, const std::string &path)
 {
 }
 
-Plugin::~Plugin()
-{
-    DisableHotReload();
-}
-
 void Plugin::Load()
 {
     std::string projectedVariables = "console,context,map,park,ui";
@@ -95,71 +90,6 @@ void Plugin::Start()
 
 void Plugin::Update()
 {
-}
-
-void Plugin::EnableHotReload()
-{
-#ifdef _WIN32
-#else
-    auto fd = inotify_init();
-    if (fd >= 0)
-    {
-        // Mark file as non-blocking
-        int flags = fcntl(fd, F_GETFL, 0);
-        fcntl(fd, F_SETFL, flags | O_NONBLOCK);
-
-        auto wd = inotify_add_watch(fd, _path.c_str(), IN_CLOSE_WRITE);
-        if (wd >= 0)
-        {
-            _hotReloadData.FileDesc = fd;
-            _hotReloadData.WatchDesc = wd;
-            _hotReloadEnabled = true;
-        }
-        else
-        {
-            close(fd);
-        }
-    }
-#endif
-}
-
-bool Plugin::ShouldHotReload()
-{
-    if (_hotReloadEnabled)
-    {
-#ifdef _WIN32
-#else
-        std::vector<char> eventData;
-        eventData.resize(1024);
-
-        auto length = read(_hotReloadData.FileDesc, eventData.data(), eventData.size());
-        int offset = 0;
-        while (offset < length)
-        {
-            auto e = (inotify_event*)&eventData[offset];
-            if ((e->mask & IN_CLOSE_WRITE) && !(e->mask & IN_ISDIR))
-            {
-                return true;
-            }
-            offset += sizeof(inotify_event) + e->len;
-        }
-#endif
-    }
-    return false;
-}
-
-void Plugin::DisableHotReload()
-{
-    if (_hotReloadEnabled)
-    {
-#ifdef _WIN32
-#else
-        inotify_rm_watch(_hotReloadData.FileDesc, _hotReloadData.WatchDesc);
-        close(_hotReloadData.FileDesc);
-#endif
-        _hotReloadData = HotReloadData();
-        _hotReloadEnabled = false;
-    }
 }
 
 PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
