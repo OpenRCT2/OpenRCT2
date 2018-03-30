@@ -25,8 +25,6 @@
 #include "../windows/Intent.h"
 #include "GameAction.h"
 
-using namespace OpenRCT2;
-
 struct ParkSetResearchFundingAction : public GameActionBase<GAME_COMMAND_SET_RESEARCH_FUNDING, GameActionResult>
 {
 private:
@@ -67,7 +65,7 @@ public:
         gResearchPriorities = _priorities;
         gResearchFundingLevel = _fundingAmount;
 
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_RESEARCH));
         return MakeResult();
     }

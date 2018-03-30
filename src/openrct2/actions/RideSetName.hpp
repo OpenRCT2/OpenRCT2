@@ -27,8 +27,6 @@
 #include "../world/Park.h"
 #include "GameAction.h"
 
-using namespace OpenRCT2;
-
 struct RideSetNameAction : public GameActionBase<GAME_COMMAND_SET_RIDE_NAME, GameActionResult>
 {
 private:
@@ -97,7 +95,7 @@ public:
         gfx_invalidate_screen();
 
         // Refresh windows that display ride name
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 

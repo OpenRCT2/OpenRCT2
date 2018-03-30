@@ -24,8 +24,6 @@
 #include "../world/Banner.h"
 #include "GameAction.h"
 
-using namespace OpenRCT2;
-
 struct SignSetNameAction : public GameActionBase<GAME_COMMAND_SET_SIGN_NAME, GameActionResult>
 {
 private:

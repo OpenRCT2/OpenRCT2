@@ -24,8 +24,6 @@
 #include "../world/Park.h"
 #include "GameAction.h"
 
-using namespace OpenRCT2;
-
 struct ParkSetNameAction : public GameActionBase<GAME_COMMAND_SET_PARK_NAME, GameActionResult>
 {
 private:

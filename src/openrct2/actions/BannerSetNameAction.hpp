@@ -26,8 +26,6 @@
 #include "../windows/Intent.h"
 #include "GameAction.h"
 
-using namespace OpenRCT2;
-
 struct BannerSetNameAction : public GameActionBase<GAME_COMMAND_SET_BANNER_NAME, GameActionResult>
 {
 private:
