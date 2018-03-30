@@ -17,6 +17,7 @@
 #ifndef _VEHICLE_H_
 #define _VEHICLE_H_
 
+#include <cstddef>
 #include <vector>
 #include "../common.h"
 #include "../world/Location.hpp"
@@ -82,6 +83,7 @@ struct rct_ride_entry_vehicle {
     std::vector<sint8> peep_loading_positions;
 };
 #pragma pack(pop)
+static_assert(offsetof(rct_ride_entry_vehicle, peep_loading_positions) % 8 == 0);
 
 struct rct_vehicle {
     uint8 sprite_identifier;        // 0x00
