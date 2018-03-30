@@ -64,7 +64,7 @@ enum WINDOW_MULTIPLAYER_WIDGET_IDX {
 
 #define MAIN_MULTIPLAYER_WIDGETS \
     { WWT_FRAME,            0,  0,      339,    0,      239,    0xFFFFFFFF,                 STR_NONE },                 /* panel / background   */  \
-    { WWT_CAPTION,          0,  1,      338,    1,      14,     STR_MULTIPLAYER,            STR_WINDOW_TITLE_TIP },     /* title bar            */  \
+    { WWT_CAPTION,          0,  1,      338,    1,      14,     0xFFFFFFFF,                 STR_WINDOW_TITLE_TIP },     /* title bar            */  \
     { WWT_CLOSEBOX,         0,  327,    337,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },     /* close x button       */  \
     { WWT_RESIZE,           1,  0,      339,    43,     239,    0xFFFFFFFF,                 STR_NONE },                 /* content panel        */  \
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_SHOW_SERVER_INFO_TIP }, /* tab                  */  \
@@ -120,6 +120,13 @@ static constexpr const uint64 window_multiplayer_page_enabled_widgets[] = {
     (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4),
     (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_DEFAULT_GROUP) | (1 << WIDX_DEFAULT_GROUP_DROPDOWN) | (1 << WIDX_ADD_GROUP) | (1 << WIDX_REMOVE_GROUP) | (1 << WIDX_RENAME_GROUP) | (1 << WIDX_SELECTED_GROUP) | (1 << WIDX_SELECTED_GROUP_DROPDOWN),
     (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_LOG_CHAT_CHECKBOX) | (1 << WIDX_LOG_SERVER_ACTIONS_CHECKBOX) | (1 << WIDX_KNOWN_KEYS_ONLY_CHECKBOX),
+};
+
+static constexpr rct_string_id window_multiplayer_page_titles[] = {
+    STR_MULTIPLAYER_INFORMATION_TITLE,
+    STR_MULTIPLAYER_PLAYERS_TITLE,
+    STR_MULTIPLAYER_GROUPS_TITLE,
+    STR_MULTIPLAYER_OPTIONS_TITLE,
 };
 
 static uint8 _selectedGroup = 0;
@@ -325,6 +332,7 @@ static void window_multiplayer_set_page(rct_window* w, sint32 page)
     w->event_handlers = window_multiplayer_page_events[page];
     w->pressed_widgets = 0;
     w->widgets = window_multiplayer_page_widgets[page];
+    w->widgets[WIDX_TITLE].text = window_multiplayer_page_titles[page];
 
     window_event_resize_call(w);
     window_event_invalidate_call(w);
