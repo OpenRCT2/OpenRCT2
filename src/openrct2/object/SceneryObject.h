@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <cstring>
+#include <string>
 #include "Object.h"
 
 class SceneryObject : public Object
