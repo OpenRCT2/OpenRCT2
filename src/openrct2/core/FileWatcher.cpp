@@ -1,5 +1,6 @@
 #include <array>
 #include <stdexcept>
+#include <experimental/filesystem>
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -14,6 +15,65 @@
 #include "../core/String.hpp"
 #include "FileWatcher.h"
 
+namespace fs = std::experimental::filesystem;
+
+#ifndef _WIN32
+FileWatcher::FileDescriptor::~FileDescriptor()
+{
+    Close();
+}
+
+void FileWatcher::FileDescriptor::Initialise()
+{
+    int fd = inotify_init();
+    if (fd >= 0)
+    {
+        // Mark file as non-blocking
+        int flags = fcntl(fd, F_GETFL, 0);
+        fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+
+        Fd = fd;
+        log_verbose("FileWatcher: inotify_init succeeded");
+    }
+    else
+    {
+        log_verbose("FileWatcher: inotify_init failed");
+        throw std::runtime_error("inotify_init failed");
+    }
+}
+
+void FileWatcher::FileDescriptor::Close()
+{
+    if (Fd != -1)
+    {
+        close(Fd);
+        Fd = -1;
+    }
+}
+
+FileWatcher::WatchDescriptor::WatchDescriptor(int fd, const std::string& path)
+    : Fd(fd),
+      Wd(inotify_add_watch(fd, path.c_str(), IN_CLOSE_WRITE)),
+      Path(path)
+{
+    if (Wd >= 0)
+    {
+        log_verbose("FileWatcher: inotify watch added for %s", path.c_str());
+    }
+    else
+    {
+        log_verbose("FileWatcher: inotify_add_watch failed for %s", path.c_str());
+        throw std::runtime_error("inotify_add_watch failed for '" + path + "'");
+    }
+}
+
+FileWatcher::WatchDescriptor::~WatchDescriptor()
+{
+    inotify_rm_watch(Fd, Wd);
+    log_verbose("FileWatcher: inotify watch removed");
+}
+#endif
+
 FileWatcher::FileWatcher(const std::string &directoryPath)
 {
 #ifdef _WIN32
@@ -23,19 +83,13 @@ FileWatcher::FileWatcher(const std::string &directoryPath)
         throw std::runtime_error("Unable to open directory '" + directoryPath + "'");
     }
 #else
-    auto fd = inotify_init();
-    if (fd >= 0)
+    _fileDesc.Initialise();
+    _watchDescs.emplace_back(_fileDesc.Fd, directoryPath);
+    for (auto& p : fs::recursive_directory_iterator(directoryPath))
     {
-        auto wd = inotify_add_watch(fd, directoryPath.c_str(), IN_CLOSE_WRITE);
-        if (wd >= 0)
+        if (p.status().type() == fs::file_type::directory)
         {
-            _fileDesc = fd;
-            _watchDesc = wd;
-        }
-        else
-        {
-            close(fd);
-            throw std::runtime_error("Unable to watch directory '" + directoryPath + "'");
+            _watchDescs.emplace_back(_fileDesc.Fd, p.path().string());
         }
     }
 #endif
@@ -48,8 +102,8 @@ FileWatcher::~FileWatcher()
     CancelIoEx(_directoryHandle, nullptr);
     CloseHandle(_directoryHandle);
 #else
-    inotify_rm_watch(_fileDesc, _watchDesc);
-    close(_fileDesc);
+    _finished = true;
+    _fileDesc.Close();
 #endif
     _watchThread.join();
 }
@@ -79,24 +133,46 @@ void FileWatcher::WatchDirectory()
         }
     }
 #else
+    log_verbose("FileWatcher: reading event data...");
     std::array<char, 1024> eventData;
-    auto length = read(_fileDesc, eventData.data(), eventData.size());
-    if (length >= 0)
+    while (!_finished)
     {
-        auto onFileChanged = OnFileChanged;
-        if (onFileChanged)
+        int length = read(_fileDesc.Fd, eventData.data(), eventData.size());
+        if (length >= 0)
         {
-            int offset = 0;
-            while (offset < length)
+            log_verbose("FileWatcher: inotify event data received");
+            auto onFileChanged = OnFileChanged;
+            if (onFileChanged)
             {
-                auto e = (inotify_event*)(eventData.data() + offset);
-                if ((e->mask & IN_CLOSE_WRITE) && !(e->mask & IN_ISDIR))
+                int offset = 0;
+                while (offset < length)
                 {
-                    onFileChanged(e->name);
+                    auto e = (inotify_event*)(eventData.data() + offset);
+                    if ((e->mask & IN_CLOSE_WRITE) && !(e->mask & IN_ISDIR))
+                    {
+                        log_verbose("FileWatcher: inotify event received for %s", e->name);
+
+                        // Find watch descriptor
+                        int wd = e->wd;
+                        auto findResult = std::find_if(_watchDescs.begin(), _watchDescs.end(),
+                            [wd](const WatchDescriptor& watchDesc)
+                            {
+                                return wd == watchDesc.Wd;
+                            });
+                        if (findResult != _watchDescs.end())
+                        {
+                            auto directory = findResult->Path;
+                            auto path = fs::path(directory) / fs::path(e->name);
+                            onFileChanged(path);
+                        }
+                    }
+                    offset += sizeof(inotify_event) + e->len;
                 }
-                offset += sizeof(inotify_event) + e->len;
             }
         }
+
+        // Sleep for 1/2 second
+        usleep(500000);
     }
 #endif
 }

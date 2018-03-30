@@ -3,6 +3,7 @@
 #include <functional>
 #include <string>
 #include <thread>
+#include <vector>
 
 #ifdef _WIN32
 typedef void * HANDLE;
@@ -18,8 +19,27 @@ private:
 #ifdef _WIN32
     HANDLE _directoryHandle{};
 #else
-    int _fileDesc{};
-    int _watchDesc{};
+    struct FileDescriptor
+    {
+        int Fd = -1;
+
+        ~FileDescriptor();
+        void Initialise();
+        void Close();
+    };
+
+    struct WatchDescriptor
+    {
+        int const Fd;
+        int const Wd;
+        std::string const Path;
+
+        WatchDescriptor(int fd, const std::string& path);
+        ~WatchDescriptor();
+    };
+
+    FileDescriptor _fileDesc;
+    std::vector<WatchDescriptor> _watchDescs;
 #endif
 
 public:
@@ -29,5 +49,7 @@ public:
     ~FileWatcher();
 
 private:
+    bool _finished{};
+
     void WatchDirectory();
 };

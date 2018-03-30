@@ -10,16 +10,20 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/FileWatcher.h"
 #include "HookEngine.h"
 #include "Plugin.h"
 #include <future>
 #include <memory>
+#include <mutex>
 #include <queue>
 #include <string>
+#include <vector>
 
 struct duk_hthread;
 typedef struct duk_hthread duk_context;
 
+class FileWatcher;
 class InteractiveConsole;
 
 namespace OpenRCT2
@@ -87,6 +91,10 @@ namespace OpenRCT2::Scripting
         uint32 _lastHotReloadCheckTick{};
         HookEngine _hookEngine;
         ScriptExecutionInfo _execInfo;
+
+        std::unique_ptr<FileWatcher> _pluginFileWatcher;
+        std::vector<std::string> _changedPluginFiles;
+        std::mutex _changedPluginFilesMutex;
 
     public:
         ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env);

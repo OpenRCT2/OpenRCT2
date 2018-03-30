@@ -47,6 +47,8 @@ namespace OpenRCT2::Scripting
         bool _hotReloadEnabled{};
 
     public:
+        std::string GetPath() const { return _path; };
+
         Plugin() { }
         Plugin(duk_context * context, const std::string &path);
         Plugin(const Plugin&) = delete;

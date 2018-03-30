@@ -86,7 +86,6 @@ void ScriptEngine::LoadPlugins()
             auto plugin = std::make_shared<Plugin>(_context, path);
             ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
             plugin->Load();
-            plugin->EnableHotReload();
             _plugins.push_back(std::move(plugin));
         }
         catch (const std::exception &e)
@@ -94,27 +93,47 @@ void ScriptEngine::LoadPlugins()
             _console.WriteLineError(e.what());
         }
     }
+
+    // Enable hot reloading
+    _pluginFileWatcher = std::make_unique<FileWatcher>(base);
+    _pluginFileWatcher->OnFileChanged =
+        [this](const std::string &path)
+        {
+            std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
+            _changedPluginFiles.push_back(path);
+        };
 }
 
 void ScriptEngine::AutoReloadPlugins()
 {
-    for (auto& plugin : _plugins)
+    if (_changedPluginFiles.size() > 0)
     {
-        if (plugin->ShouldHotReload())
+        std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
+        for (auto& path : _changedPluginFiles)
         {
-            try
+            auto findResult = std::find_if(_plugins.begin(), _plugins.end(),
+                [&path](const std::shared_ptr<Plugin>& plugin)
+                {
+                    return path == plugin->GetPath();
+                });
+            if (findResult != _plugins.end())
             {
-                _hookEngine.UnsubscribeAll(plugin);
+                auto& plugin = *findResult;
+                try
+                {
+                    _hookEngine.UnsubscribeAll(plugin);
 
-                ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
-                plugin->Load();
-                plugin->Start();
-            }
-            catch (const std::exception &e)
-            {
-                _console.WriteLineError(e.what());
+                    ScriptExecutionInfo::PluginScope scope(_execInfo, plugin);
+                    plugin->Load();
+                    plugin->Start();
+                }
+                catch (const std::exception &e)
+                {
+                    _console.WriteLineError(e.what());
+                }
             }
         }
+        _changedPluginFiles.clear();
     }
 }
 
