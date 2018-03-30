@@ -488,7 +488,7 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
             rideType = ParseRideType(rideTypes[i]);
             if (rideType == RIDE_TYPE_NULL)
             {
-                context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, "Unknown ride type");
+                context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Unknown ride type");
             }
         }
 
