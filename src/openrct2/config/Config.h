@@ -50,6 +50,7 @@ struct GeneralConfiguration
     bool        render_weather_gloom;
     bool        disable_lightning_effect;
     bool        show_guest_purchases;
+    sint32      outside_map_surface_style;
 
     // Localisation
     sint32      language;

@@ -3900,6 +3900,9 @@ enum {
     STR_SHORTCUT_VIEW_CLIPPING = 6233,
     STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE = 6234,
 
+    STR_LAND_STYLE_OUTSIDE_MAP = 6235,
+    STR_LAND_STYLE_OUTSIDE_MAP_TIP = 6236,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

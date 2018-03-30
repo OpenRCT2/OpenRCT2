@@ -439,5 +439,10 @@
         "path": "icons/eyedropper.png",
         "x_offset": 5,
         "y_offset": 5
-    }
+    },
+	{
+		"path": "surface/terrain_blank.png",
+        "x_offset": 2,
+        "y_offset": 2
+	}
 ]

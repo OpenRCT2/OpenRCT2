@@ -43,6 +43,8 @@ enum {
     PEEP_SPAWN_ARROW_2 = 3113,
     PEEP_SPAWN_ARROW_3 = 3114,
 
+    SPR_BLANK_TILE = 3123,
+
     // This is the start of every character there are
     // 224 characters per font (first 32 are control codes hence why it doesn't go to 255)
     // 4 fonts
@@ -844,6 +846,8 @@ enum {
     SPR_G2_WALL_TEXTURE_SKYSCRAPER_B = SPR_G2_BEGIN + 122,
     
     SPR_G2_EYEDROPPER = SPR_G2_BEGIN + 123,
+
+    SPR_G2_FLOOR_TEXTURE_BLANK = SPR_G2_BEGIN + 124,
 
     // 0x60000, chosen because it's a round hex number
     // of the last possible range of image ID values that is large enough to fit all csg1 sprites.

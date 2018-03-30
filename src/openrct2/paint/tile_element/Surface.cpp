@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
 * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
 *
@@ -261,7 +261,8 @@ static constexpr const uint8 byte_97B740[] =
     0, 3, 0, 1, 4, 0
 };
 
-static constexpr const uint32 dword_97B750[][2] =
+/* rct2: 0x0097B750 */
+const uint32 gSurfaceSpriteBases[][2] =
 {
     { SPR_TERRAIN_GRASS,                                          SPR_TERRAIN_GRASS_GRID },
     { SPR_TERRAIN_SAND_YELLOW,                                    SPR_TERRAIN_SAND_YELLOW_GRID },
@@ -278,6 +279,8 @@ static constexpr const uint32 dword_97B750[][2] =
     { SPR_TERRAIN_SAND_RED,                                       SPR_TERRAIN_SAND_RED_GRID },
     { SPR_TERRAIN_SAND,                                           SPR_TERRAIN_SAND_GRID },
     { SPR_TERRAIN_CHECKERBOARD_INVERTED,                          SPR_TERRAIN_CHECKERBOARD_INVERTED_GRID },
+    { (uint32)SPR_NONE,                                           (uint32)SPR_NONE },
+    { SPR_BLANK_TILE,                                             SPR_BLANK_TILE },
 };
 
 static constexpr const uint32 dword_97B7C8[] =
@@ -1065,8 +1068,8 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, cons
                 assert(ebp < Util::CountOf(byte_97B84A));
                 ebp = byte_97B84A[ebp];
             }
-            assert(ebp < Util::CountOf(dword_97B750));
-            image_id = dword_97B750[ebp][showGridlines ? 1 : 0] + image_offset;
+            assert(ebp < Util::CountOf(gSurfaceSpriteBases) && gSurfaceSpriteBases[ebp][0] != (uint32)SPR_NONE);
+            image_id = gSurfaceSpriteBases[ebp][showGridlines ? 1 : 0] + image_offset;
 
             if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
             {
