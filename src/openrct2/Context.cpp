@@ -372,7 +372,10 @@ namespace OpenRCT2
 
             if (!gOpenRCT2NoGraphics)
             {
-                LoadBaseGraphics();
+                if (!LoadBaseGraphics())
+                {
+                    return false;
+                }
 #ifdef __ENABLE_LIGHTFX__
                 lightfx_init();
 #endif
@@ -512,12 +515,16 @@ namespace OpenRCT2
             return result;
         }
 
-        void LoadBaseGraphics()
+        bool LoadBaseGraphics()
         {
-            gfx_load_g1(_env);
+            if (!gfx_load_g1(_env))
+            {
+                return false;
+            }
             gfx_load_g2();
             gfx_load_csg();
             font_sprite_initialise_characters();
+            return true;
         }
 
         /**
