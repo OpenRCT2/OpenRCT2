@@ -83,7 +83,8 @@ struct rct_ride_entry_vehicle {
     std::vector<sint8> peep_loading_positions;
 };
 #pragma pack(pop)
-static_assert(offsetof(rct_ride_entry_vehicle, peep_loading_positions) % 8 == 0);
+static_assert(offsetof(rct_ride_entry_vehicle, peep_loading_positions) % 8 == 0, "Invalid struct layout");
+static_assert(sizeof(rct_ride_entry_vehicle) % 8 == 0, "Invalid struct size");
 
 struct rct_vehicle {
     uint8 sprite_identifier;        // 0x00
