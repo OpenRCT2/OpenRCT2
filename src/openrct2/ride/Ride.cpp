@@ -1189,7 +1189,7 @@ void ride_remove_peeps(sint32 rideIndex)
 
             invalidate_sprite_2((rct_sprite*)peep);
             peep->state = PEEP_STATE_FALLING;
-            peep_switch_to_special_sprite(peep, 0);
+            peep->SwitchToSpecialSprite(0);
 
             peep->happiness = Math::Min(peep->happiness, peep->happiness_target) / 2;
             peep->happiness_target = peep->happiness;

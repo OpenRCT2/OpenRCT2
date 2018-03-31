@@ -39,6 +39,7 @@
 #define PEEP_MAX_ENERGY_TARGET 255 // Oddly, this differs from max energy!
 
 struct rct_tile_element;
+struct Ride;
 
 enum PEEP_TYPE
 {
@@ -596,7 +597,7 @@ struct rct_peep
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
     uint8 special_sprite;     // 0x6D
     uint8 action_sprite_type; // 0x6E
-    // Seems to be used like a local variable, as it's always set before calling peep_switch_to_next_action_sprite_type, which
+    // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which
     // reads this again
     uint8 next_action_sprite_type;    // 0x6F
     uint8 action_sprite_image_offset; // 0x70
@@ -639,7 +640,7 @@ struct rct_peep
     uint32    peep_flags;          // 0xC8
     rct12_xyzd8 pathfind_goal;       // 0xCC
     rct12_xyzd8 pathfind_history[4]; // 0xD0
-    uint8     no_action_frame_no;  // 0xE0
+    uint8     no_action_frame_num;  // 0xE0
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8 litter_count; // 0xE1
     union {
@@ -686,6 +687,8 @@ struct rct_peep
     void Update();
     void SetState(uint8 new_state);
     void Remove();
+    void Invalidate();
+    void UpdateCurrentActionSpriteType();
 private:
     void UpdateFalling();
     void Update1();
@@ -712,6 +715,7 @@ private:
     void UpdateRideAtEntrance();
     void UpdateRideAdvanceThroughEntrance();
     void UpdateRideFreeVehicleCheck();
+    void UpdateRideFreeVehicleEnterRide(Ride * ride);
     void UpdateRideApproachVehicle();
     void UpdateRideEnterVehicle();
     void UpdateRideLeaveVehicle();
@@ -728,8 +732,18 @@ private:
     void UpdateRideShopInteract();
     void UpdateRideShopLeave();
 
+    void TryGetUpFromSitting();
+
     bool CheckForPath();
     sint32 PerformNextAction(uint8 & pathing_result);
+    bool UpdateAction(sint16 * actionX, sint16 * actionY, sint16 * xy_distance);
+    bool UpdateAction();
+    void SwitchNextActionSpriteType();
+    uint8 GetActionSpriteType();
+    void OnEnterRide(uint8 rideIndex);
+    void OnExitRide(uint8 rideIndex);
+    void SpendMoney(money16 & peep_expend_type, money32 amount);
+    void SpendMoney(money32 amount);
 };
 assert_struct_size(rct_peep, 0x100);
 #pragma pack(pop)
@@ -869,7 +883,7 @@ void peep_decrement_num_riders(rct_peep * peep);
 void peep_insert_new_thought(rct_peep * peep, uint8 thought_type, uint8 thought_arguments);
 
 void peep_set_map_tooltip(rct_peep * peep);
-void peep_update_current_action_sprite_type(rct_peep * peep);
+void UpdateCurrentActionSpriteType(rct_peep * peep);
 void remove_peep_from_ride(rct_peep * peep);
 void remove_peep_from_queue(rct_peep * peep);
 
