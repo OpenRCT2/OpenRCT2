@@ -20,6 +20,7 @@ option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
 option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
+option(CHECK_HEADERS "Verify all the headers compile correctly" OFF)
 
 # Options
 option(STATIC "Create a static build.")
@@ -152,7 +153,7 @@ if(EXISTS "${ROOT_DIR}/discord-rpc")
     set(HAVE_DISCORD_RPC TRUE)
     message("Building with discord-rpc support")
 else()
-	message("No discord-rpc detected, to enable clone discord-rpc to root directory: ${ROOT_DIR}")
+    message("No discord-rpc detected, to enable clone discord-rpc to root directory: ${ROOT_DIR}")
 endif()
 
 # Copied from https://github.com/opencv/opencv/blob/dcdd6af5a856826fe62c95322145731e702e54c5/cmake/OpenCVDetectCXXCompiler.cmake#L63-L70
@@ -208,6 +209,38 @@ if (DOWNLOAD_TITLE_SEQUENCES)
             file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/title-sequences.zip)\n\
         endif ()")
 endif ()
+
+if(CHECK_HEADERS)
+    # CMake 3.12 is poised to add JOIN to string and list:
+    # https://github.com/Kitware/CMake/commit/a58158727be4585f9fd71449e9cc9e801c59a009
+    # https://github.com/Kitware/CMake/commit/689eeb67cb87a9ed1d91a4971806488d00e68f42
+    function(JOIN VALUES GLUE OUTPUT)
+    string (REPLACE ";" "${GLUE}" _TMP_STR "${VALUES}")
+    set (${OUTPUT} "${_TMP_STR}" PARENT_SCOPE)
+    endfunction()
+
+    # Get include flags
+    get_target_property(LIB_INCLUDE_DIRS libopenrct2 INCLUDE_DIRECTORIES)
+    get_target_property(BIN_INCLUDE_DIRS    openrct2 INCLUDE_DIRECTORIES)
+    list(APPEND INCLUDE_DIRS "${LIB_INCLUDE_DIRS}" "${BIN_INCLUDE_DIRS}" "${CMAKE_SOURCE_DIR}/src/openrct2")
+    JOIN("${INCLUDE_DIRS}" " -I" INCLUDE_FLAGS)
+
+    get_directory_property( DirDefs DIRECTORY ${CMAKE_SOURCE_DIR} COMPILE_DEFINITIONS )
+
+    set(HEADERS_NINJA "rule header_check\n  command = ${CMAKE_CXX_COMPILER} ${INCLUDE_FLAGS} -c $out -o /dev/null\n  description = Checking header $out\n")
+
+    foreach( h ${OPENRCT2_CORE_HEADERS} ${OPENRCT2_CLI_HEADERS} ${OPENRCT2_UI_HEADERS})
+        string(REPLACE "/" "_" FILENAME ${h})
+        string(APPEND FILENAME ".cpp")
+        list(APPEND HEADERS_SOURCES "${FILENAME}")
+        file(WRITE "${CMAKE_BINARY_DIR}/${FILENAME}" "#include \"${h}\" \n int main() { return 0; }")
+        string(APPEND HEADERS_NINJA "build ${FILENAME}: header_check\n")
+    endforeach()
+    JOIN("${HEADERS_SOURCES}" " " HEADERS_LIST)
+    string(APPEND HEADERS_NINJA "build check_headers: phony | ${HEADERS_LIST}\n")
+    file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/headers.ninja" "${HEADERS_NINJA}")
+endif()
+
 install(TARGETS "libopenrct2" LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
                               ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 install(TARGETS "openrct2" RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
