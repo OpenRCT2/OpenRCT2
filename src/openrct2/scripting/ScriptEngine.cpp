@@ -114,7 +114,7 @@ void ScriptEngine::AutoReloadPlugins()
             auto findResult = std::find_if(_plugins.begin(), _plugins.end(),
                 [&path](const std::shared_ptr<Plugin>& plugin)
                 {
-                    return path == plugin->GetPath();
+                    return Path::Equals(path, plugin->GetPath());
                 });
             if (findResult != _plugins.end())
             {

@@ -77,6 +77,7 @@ FileWatcher::WatchDescriptor::~WatchDescriptor()
 FileWatcher::FileWatcher(const std::string &directoryPath)
 {
 #ifdef _WIN32
+    _path = directoryPath;
     _directoryHandle = CreateFileA(directoryPath.c_str(), FILE_LIST_DIRECTORY, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, nullptr);
     if (_directoryHandle == INVALID_HANDLE_VALUE)
     {
@@ -127,7 +128,8 @@ void FileWatcher::WatchDirectory()
 
                 std::wstring fileNameW(notifyInfo->FileName, notifyInfo->FileNameLength / sizeof(wchar_t));
                 auto fileName = String::ToUtf8(fileNameW);
-                onFileChanged(fileName);
+                auto path = fs::path(_path) / fs::path(fileName);
+                onFileChanged(path.u8string());
             }
             while (notifyInfo->NextEntryOffset != 0);
         }

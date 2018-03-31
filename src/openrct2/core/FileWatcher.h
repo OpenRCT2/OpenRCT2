@@ -17,6 +17,7 @@ class FileWatcher
 private:
     std::thread _watchThread;
 #ifdef _WIN32
+    std::string _path;
     HANDLE _directoryHandle{};
 #else
     struct FileDescriptor
