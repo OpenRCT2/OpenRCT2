@@ -227,7 +227,7 @@ if(CHECK_HEADERS)
 
     get_directory_property( DirDefs DIRECTORY ${CMAKE_SOURCE_DIR} COMPILE_DEFINITIONS )
 
-    set(HEADERS_NINJA "rule header_check\n  command = ${CMAKE_CXX_COMPILER} ${INCLUDE_FLAGS} -c $out -o /dev/null\n  description = Checking header $out\n")
+    set(HEADERS_NINJA "rule header_check\n  command = ${CMAKE_CXX_COMPILER} ${INCLUDE_FLAGS} ${CMAKE_CXX_FLAGS} -c $out -o /dev/null\n  description = Checking header $out\n")
 
     foreach( h ${OPENRCT2_CORE_HEADERS} ${OPENRCT2_CLI_HEADERS} ${OPENRCT2_UI_HEADERS})
         string(REPLACE "/" "_" FILENAME ${h})
