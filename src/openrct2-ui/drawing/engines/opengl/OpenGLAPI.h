@@ -104,7 +104,7 @@ typedef void   (APIENTRYP PFNGLGETINTERGERVPROC  )(GLenum pname, GLint * data);
 typedef void   (APIENTRYP PFNGLGETTEXIMAGEPROC   )(GLenum target, GLint level, GLenum format, GLenum type, GLvoid * img);
 
 #define OPENGL_PROC(TYPE, PROC) extern TYPE PROC;
-#include "OpenGLAPIProc.h"
+#include "OpenGLAPIProc.inc"
 #undef OPENGL_PROC
 
 #endif /* OPENGL_NO_LINK */

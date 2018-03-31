@@ -21,7 +21,7 @@
 #if OPENGL_NO_LINK
 
 #define OPENGL_PROC(TYPE, PROC) TYPE PROC = nullptr;
-#include "OpenGLAPIProc.h"
+#include "OpenGLAPIProc.inc"
 #undef OPENGL_PROC
 
 #include <SDL2/SDL_video.h>
@@ -38,7 +38,7 @@ static const char * TryLoadAllProcAddresses()
             return #PROC;                           \
         }                                           \
     }
-#include "OpenGLAPIProc.h"
+#include "OpenGLAPIProc.inc"
 #undef OPENGL_PROC
 
     return nullptr;
