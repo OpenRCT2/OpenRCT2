@@ -27,6 +27,8 @@ namespace OpenRCT2
 
     namespace Ui
     {
+        interface IUiContext;
+
         Drawing::IDrawingEngine * CreateSoftwareDrawingEngine(IUiContext * uiContext);
         Drawing::IDrawingEngine * CreateHardwareDisplayDrawingEngine(IUiContext * uiContext);
 #ifndef DISABLE_OPENGL
