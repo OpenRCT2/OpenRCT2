@@ -22,11 +22,13 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../drawing/Drawing.h"
 #include "../peep/Staff.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
+#include "../world/Sprite.h"
 
 struct StaffSetNameAction : public GameActionBase<GAME_COMMAND_SET_STAFF_NAME, GameActionResult>
 {

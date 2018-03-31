@@ -17,7 +17,11 @@
 #ifndef _VEHICLE_PAINT_H
 #define _VEHICLE_PAINT_H
 
-#include "Vehicle.h"
+#include "../common.h"
+
+struct paint_session;
+struct rct_ride_entry_vehicle;
+struct rct_vehicle;
 
 struct vehicle_boundbox {
     sint8 offset_x;

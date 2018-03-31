@@ -16,6 +16,11 @@
 
 #pragma once
 
+#include "../../common.h"
+
+struct paint_session;
+struct rct_tile_element;
+
 void bolliger_mabillard_track_flat(
     paint_session *          session,
     uint8                    rideIndex,

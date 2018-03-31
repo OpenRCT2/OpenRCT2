@@ -22,6 +22,7 @@
 #include "GameAction.h"
 
 #include "../Cheats.h"
+#include "../management/Finance.h"
 #include "../world/Park.h"
 #include "../world/Footpath.h"
 

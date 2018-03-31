@@ -17,6 +17,8 @@
 #ifndef _WINDOW2_H_
 #define _WINDOW2_H_
 
+#include "Window.h"
+
 struct rct_research_item;
 struct rct_object_entry;
 

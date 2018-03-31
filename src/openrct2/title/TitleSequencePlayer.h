@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include "../common.h"
+
 interface IScenarioRepository;
 
 interface ITitleSequencePlayer
