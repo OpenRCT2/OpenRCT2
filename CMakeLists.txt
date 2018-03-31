@@ -227,7 +227,9 @@ if(CHECK_HEADERS)
 
     get_directory_property( DirDefs DIRECTORY ${CMAKE_SOURCE_DIR} COMPILE_DEFINITIONS )
 
-    set(HEADERS_NINJA "rule header_check\n  command = ${CMAKE_CXX_COMPILER} ${INCLUDE_FLAGS} ${CMAKE_CXX_FLAGS} -Wno-unused-command-line-argument -c $out -o /dev/null\n  description = Checking header $out\n")
+    # We need the seemingly spurious -I before include flags to handle the case where the first path is not properly prepended,
+    # as join() will only insert glue between two values. Compilers can handle "-I -I -I /path" case correctly.
+    set(HEADERS_NINJA "rule header_check\n  command = ${CMAKE_CXX_COMPILER} -I ${INCLUDE_FLAGS} ${CMAKE_CXX_FLAGS} -Wno-unused-command-line-argument -c $out -o /dev/null\n  description = Checking header $out\n")
 
     foreach( h ${OPENRCT2_CORE_HEADERS} ${OPENRCT2_CLI_HEADERS} ${OPENRCT2_UI_HEADERS})
         string(REPLACE "/" "_" FILENAME ${h})
