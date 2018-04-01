@@ -158,7 +158,7 @@ static void cheat_fix_rides()
             mechanic = ride_get_assigned_mechanic(ride);
 
             if (mechanic != nullptr){
-                remove_peep_from_ride(mechanic);
+                mechanic->RemoveFromRide();
             }
 
             ride_fix_breakdown(rideIndex, 0);
