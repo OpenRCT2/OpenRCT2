@@ -742,6 +742,8 @@ private:
 
     bool CheckForPath();
     sint32 PerformNextAction(uint8 & pathing_result);
+    void StopPurchaseThought(uint8 ride_type);
+
 public: // TODO: Make these private again when done refactoring - they need to be public since they are called from non-member
         // peep functions
     bool UpdateAction(sint16 * actionX, sint16 * actionY, sint16 * xy_distance);
@@ -891,7 +893,6 @@ void peep_decrement_num_riders(rct_peep * peep);
 void peep_insert_new_thought(rct_peep * peep, uint8 thought_type, uint8 thought_arguments);
 
 void peep_set_map_tooltip(rct_peep * peep);
-void UpdateCurrentActionSpriteType(rct_peep * peep);
 void remove_peep_from_ride(rct_peep * peep);
 void remove_peep_from_queue(rct_peep * peep);
 

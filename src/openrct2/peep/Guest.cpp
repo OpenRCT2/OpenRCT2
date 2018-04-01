@@ -1805,14 +1805,14 @@ void rct_peep::UpdateRideApproachExitWaypoints()
  */
 void rct_peep::UpdateRideApproachSpiralSlide()
 {
+    sint16 actionX, actionY, xy_distance;
     Ride * ride = get_ride(current_ride);
 
-    sint16 actionX, actionY, xy_distance;
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         sprite_move(actionX, actionY, z, (rct_sprite *)this);
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         return;
     }
 
@@ -1829,26 +1829,24 @@ void rct_peep::UpdateRideApproachSpiralSlide()
     }
     else if (waypoint == 2)
     {
-        uint8 last_ride = 0;
+        bool lastRide = false;
         if (ride->status != RIDE_STATUS_OPEN)
-            last_ride = 1;
+            lastRide = true;
         else if (current_car++ != 0)
         {
             if (ride->mode == RIDE_MODE_SINGLE_RIDE_PER_ADMISSION)
-                last_ride = 1;
+                lastRide = true;
             if ((uint8)(current_car - 1) > (scenario_rand() & 0xF))
-                last_ride = 1;
+                lastRide = true;
         }
 
-        if (last_ride)
+        if (lastRide)
         {
             auto exit = ride_get_exit_location(current_ride, current_ride_station);
-            uint8 exit_direction = exit.direction;
-
             waypoint = 1;
-            var_37   = (exit_direction * 4) | (var_37 & 0x30) | waypoint;
-            actionX  = ride->station_starts[current_ride_station].x * 32;
-            actionY  = ride->station_starts[current_ride_station].y * 32;
+            var_37 = (exit.direction * 4) | (var_37 & 0x30) | waypoint;
+            actionX            = ride->station_starts[current_ride_station].x * 32;
+            actionY            = ride->station_starts[current_ride_station].y * 32;
 
             assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
             const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[var_37];
@@ -1866,11 +1864,8 @@ void rct_peep::UpdateRideApproachSpiralSlide()
     // Actually increment the real peep waypoint
     var_37++;
 
-    actionX = ride->station_starts[current_ride_station].x;
-    actionY = ride->station_starts[current_ride_station].y;
-
-    actionX *= 32;
-    actionY *= 32;
+    actionX = ride->station_starts[current_ride_station].x * 32;
+    actionY = ride->station_starts[current_ride_station].y * 32;
 
     assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
     const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[var_37];
@@ -1949,6 +1944,7 @@ void rct_peep::UpdateRideOnSpiralSlide()
             sprite_direction = (var_37 & 0xC) * 2;
 
             invalidate_sprite_2((rct_sprite *)this);
+            Invalidate();
 
             var_37++;
             return;
@@ -1959,21 +1955,19 @@ void rct_peep::UpdateRideOnSpiralSlide()
     }
 
     sint16 actionX, actionY, xy_distance;
+
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         sprite_move(actionX, actionY, z, (rct_sprite *)this);
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         return;
     }
     uint8 waypoint = 2;
     var_37 = (var_37 * 4 & 0x30) + waypoint;
 
-    actionX = ride->station_starts[current_ride_station].x;
-    actionY = ride->station_starts[current_ride_station].y;
-
-    actionX *= 32;
-    actionY *= 32;
+    actionX = ride->station_starts[current_ride_station].x * 32;
+    actionY = ride->station_starts[current_ride_station].y * 32;
 
     assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
     const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[var_37];
@@ -1994,12 +1988,13 @@ void rct_peep::UpdateRideLeaveSpiralSlide()
 {
     // Iterates through the spiral slide waypoints until it reaches 
     // waypoint 0. Then it readies to leave the ride by the entrance.
-    sint16 actionX, acitonY, xy_distance;
-    if (UpdateAction(&actionX, &acitonY, &xy_distance))
+    sint16 actionX, actionY, xy_distance;
+
+    if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        invalidate_sprite_2((rct_sprite *)this);
-        sprite_move(actionX, acitonY, z, (rct_sprite *)this);
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
+        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        Invalidate();
         return;
     }
 
@@ -2019,16 +2014,16 @@ void rct_peep::UpdateRideLeaveSpiralSlide()
         // Actually decrement the peep waypoint
         var_37--;
         actionX = ride->station_starts[current_ride_station].x * 32;
-        acitonY = ride->station_starts[current_ride_station].y * 32;
+        actionY = ride->station_starts[current_ride_station].y * 32;
 
         assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
         const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[var_37];
 
         actionX += slidePlatformDestination.x;
-        acitonY += slidePlatformDestination.y;
+        actionY += slidePlatformDestination.y;
 
         destination_x = actionX;
-        destination_y = acitonY;
+        destination_y = actionY;
         return;
     }
     waypoint = 3;
@@ -2037,23 +2032,23 @@ void rct_peep::UpdateRideLeaveSpiralSlide()
 
     auto exit = ride_get_exit_location(current_ride, current_ride_station);
     actionX         = exit.x * 32 + 16;
-    acitonY         = exit.y * 32 + 16;
+    actionY         = exit.y * 32 + 16;
 
-    uint8 exit_direction = exit.direction ^ 2;
+    exit.direction ^= 2;
 
-    sint16 x_shift = word_981D6C[exit_direction].x;
-    sint16 y_shift = word_981D6C[exit_direction].y;
+    sint16 xShift = word_981D6C[exit.direction].x;
+    sint16 yShift = word_981D6C[exit.direction].y;
 
-    sint16 shift_multiplier = 20;
+    sint16 shiftMultiplier = 20;
 
-    x_shift *= shift_multiplier;
-    y_shift *= shift_multiplier;
+    xShift *= shiftMultiplier;
+    yShift *= shiftMultiplier;
 
-    actionX -= x_shift;
-    acitonY -= y_shift;
+    actionX -= xShift;
+    actionY -= yShift;
 
     destination_x = actionX;
-    destination_y = acitonY;
+    destination_y = actionY;
 }
 
 /** rct2: 0x00981FE4 */
@@ -2081,9 +2076,9 @@ void rct_peep::UpdateRideMazePathfinding()
     sint16 actionX, actionY, xy_distance;
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         sprite_move(actionX, actionY, z, (rct_sprite *)this);
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         return;
     }
 
@@ -2103,7 +2098,7 @@ void rct_peep::UpdateRideMazePathfinding()
             action_frame               = 0;
             action_sprite_image_offset = 0;
             UpdateCurrentActionSpriteType();
-            invalidate_sprite_2((rct_sprite *)this);
+            Invalidate();
         }
     }
 
@@ -2120,52 +2115,58 @@ void rct_peep::UpdateRideMazePathfinding()
 
     } while (!tile_element_is_last_for_tile(tileElement++));
 
-    uint16 maze_entry  = track_element_get_maze_entry(tileElement);
-    uint16 open_hedges = 0;
+    uint16 mazeEntry  = track_element_get_maze_entry(tileElement);
+    uint16 openHedges = 0;
     // var_37 is 3, 7, 11 or 15
 
-    if (maze_entry & (1 << _981FF4[var_37 / 4][3]))
+    if (mazeEntry & (1 << _981FF4[var_37 / 4][3]))
     {
-        open_hedges = 1;
+        openHedges = 1;
     }
-    open_hedges <<= 1;
-    if (maze_entry & (1 << _981FF4[var_37 / 4][2]))
+    openHedges <<= 1;
+    if (mazeEntry & (1 << _981FF4[var_37 / 4][2]))
     {
-        open_hedges |= 1;
+        openHedges |= 1;
     }
-    open_hedges <<= 1;
-    if (maze_entry & (1 << _981FF4[var_37 / 4][1]))
+    openHedges <<= 1;
+    if (mazeEntry & (1 << _981FF4[var_37 / 4][1]))
     {
-        open_hedges |= 1;
+        openHedges |= 1;
     }
-    open_hedges <<= 1;
-    if (maze_entry & (1 << _981FF4[var_37 / 4][0]))
+    openHedges <<= 1;
+    if (mazeEntry & (1 << _981FF4[var_37 / 4][0]))
     {
-        open_hedges |= 1;
+        openHedges |= 1;
     }
 
-    open_hedges ^= 0xF;
-    if (open_hedges == 0)
+    openHedges ^= 0xF;
+    if (openHedges == 0)
         return;
 
-    uint8 mazeLastEdgeTmp = maze_last_edge ^ (1 << 1);
-    open_hedges &= ~(1 << mazeLastEdgeTmp);
-    if (open_hedges == 0)
-        open_hedges |= (1 << mazeLastEdgeTmp);
+    uint8 mazeLastEdge = mazeLastEdge ^ (1 << 1);
+    openHedges &= ~(1 << mazeLastEdge);
+    if (openHedges == 0)
+        openHedges |= (1 << mazeLastEdge);
 
-    uint8 chosen_edge = scenario_rand() & 0x3;
-    while (!(open_hedges & (1 << chosen_edge)))
+    uint8 chosenEdge = scenario_rand() & 0x3;
+    while (!(openHedges & (1 << chosenEdge)))
     {
-        chosen_edge = (chosen_edge + 1) & 3;
+        chosenEdge = (chosenEdge + 1) & 3;
     }
 
-    actionX = TileDirectionDelta[chosen_edge].x / 2;
-    actionY = TileDirectionDelta[chosen_edge].y / 2;
+    actionX = TileDirectionDelta[chosenEdge].x / 2;
+    actionY = TileDirectionDelta[chosenEdge].y / 2;
 
     actionX += destination_x;
     actionY += destination_y;
 
-    uint8 edgeType = 0;
+    enum class maze_type
+    {
+        invalid,
+        hedge,
+        entrance_or_exit
+    };
+    maze_type mazeType = maze_type::invalid;
 
     tileElement = map_get_first_element_at(actionX / 32, actionY / 32);
     do
@@ -2175,35 +2176,35 @@ void rct_peep::UpdateRideMazePathfinding()
 
         if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK)
         {
-            edgeType = 1;
+            mazeType = maze_type::hedge;
             break;
         }
 
         if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE &&
             tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT)
         {
-            edgeType = 2;
+            mazeType = maze_type::entrance_or_exit;
             break;
         }
     } while (!tile_element_is_last_for_tile(tileElement++));
 
-    switch (edgeType)
+    switch (mazeType)
     {
-    case 0:
+    case maze_type::invalid:
         maze_last_edge++;
         maze_last_edge &= 3;
         return;
-    case 1:
+    case maze_type::hedge:
         destination_x = actionX;
         destination_y = actionY;
 
-        var_37         = _981FE4[var_37 / 4][chosen_edge];
-        maze_last_edge = chosen_edge;
+        var_37         = _981FE4[var_37 / 4][chosenEdge];
+        maze_last_edge = chosenEdge;
         break;
-    case 2:
+    case maze_type::entrance_or_exit:
         actionX = destination_x;
         actionY = destination_y;
-        if (chosen_edge & 1)
+        if (chosenEdge & 1)
         {
             actionX &= 0xFFE0;
             actionX += 16;
@@ -2216,15 +2217,15 @@ void rct_peep::UpdateRideMazePathfinding()
         destination_x  = actionX;
         destination_y  = actionY;
         var_37         = 16;
-        maze_last_edge = chosen_edge;
+        maze_last_edge = chosenEdge;
         break;
     }
 
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         sprite_move(actionX, actionY, z, (rct_sprite *)this);
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         return;
     }
 }
@@ -2294,11 +2295,12 @@ void rct_peep::UpdateRideLeaveExit()
 void rct_peep::UpdateRideShopApproach()
 {
     sint16 actionX, actionY, xy_distance;
+
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         sprite_move(actionX, actionY, z, (rct_sprite *)this);
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         return;
     }
 
@@ -2355,8 +2357,7 @@ void rct_peep::UpdateRideShopInteract()
 
     happiness_target = Math::Min(happiness_target + 30, PEEP_MAX_HAPPINESS);
     happiness        = happiness_target;
-
-    peep_stop_purchase_thought(this, ride->type);
+    StopPurchaseThought(ride->type);
 }
 
 /**
@@ -2366,29 +2367,28 @@ void rct_peep::UpdateRideShopInteract()
 void rct_peep::UpdateRideShopLeave()
 {
     sint16 actionX, actionY, xy_distance;
+
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        invalidate_sprite_2((rct_sprite *)this);
-        sprite_move(actionX, actionY, this->z, (rct_sprite *)this);
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
+        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        Invalidate();
 
-        actionX = this->x & 0xFFE0;
-        actionY = this->y & 0xFFE0;
-        if (actionX != this->next_x)
+        actionX = x & 0xFFE0;
+        actionY = y & 0xFFE0;
+        if (actionX != next_x)
             return;
-        if (actionY != this->next_y)
+        if (actionY != next_y)
             return;
     }
 
-    peep_decrement_num_riders(this);
-    this->state = PEEP_STATE_WALKING;
-    peep_window_state_update(this);
+    SetState(PEEP_STATE_WALKING);
 
-    Ride * ride = get_ride(this->current_ride);
+    Ride * ride = get_ride(current_ride);
     ride->total_customers++;
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 
-    ride_update_satisfaction(ride, this->happiness / 64);
+    ride_update_satisfaction(ride, happiness / 64);
 }
 
 /**
