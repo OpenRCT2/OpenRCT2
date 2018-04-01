@@ -444,7 +444,7 @@ struct rct1_peep {
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
     uint8 special_sprite;           // 0x6D
     uint8 action_sprite_type;       // 0x6E
-    // Seems to be used like a local variable, as it's always set before calling peep_switch_to_next_action_sprite_type, which reads this again
+    // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which reads this again
     uint8 next_action_sprite_type;  // 0x6F
     uint8 action_sprite_image_offset; // 0x70
     uint8 action;                   // 0x71
@@ -486,7 +486,7 @@ struct rct1_peep {
     uint32 peep_flags;              // 0xC8
     rct12_xyzd8 pathfind_goal;        // 0xCC
     rct12_xyzd8 pathfind_history[4];  // 0xD0
-    uint8 no_action_frame_no;       // 0xE0
+    uint8 no_action_frame_num;       // 0xE0
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8 litter_count;             // 0xE1
     union{
