@@ -233,7 +233,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
             newPeep->action                     = PEEP_ACTION_NONE_2;
             newPeep->special_sprite             = 0;
             newPeep->action_sprite_image_offset = 0;
-            newPeep->no_action_frame_no         = 0;
+            newPeep->no_action_frame_num         = 0;
             newPeep->action_sprite_type         = 0;
             newPeep->path_check_optimisation                     = 0;
             newPeep->type                       = PEEP_TYPE_STAFF;
@@ -419,7 +419,7 @@ void game_command_set_staff_order(sint32 * eax, sint32 * ebx, sint32 * ecx, sint
                 peep->peep_flags |= PEEP_FLAGS_SLOW_WALK;
             }
             peep->action_frame = 0;
-            peep_update_current_action_sprite_type(peep);
+            UpdateCurrentActionSpriteType(peep);
             invalidate_sprite_2((rct_sprite *)peep);
             window_invalidate_by_number(WC_PEEP, sprite_id);
             window_invalidate_by_class(WC_STAFF_LIST);
@@ -1494,7 +1494,7 @@ static sint32 staff_path_finding_entertainer(rct_peep * peep)
         peep->action_frame               = 0;
         peep->action_sprite_image_offset = 0;
 
-        peep_update_current_action_sprite_type(peep);
+        UpdateCurrentActionSpriteType(peep);
         invalidate_sprite_2((rct_sprite *)peep);
         staff_entertainer_update_nearby_peeps(peep);
     }

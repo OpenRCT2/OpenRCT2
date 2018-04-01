@@ -689,6 +689,10 @@ struct rct_peep
     void Remove();
     void Invalidate();
     void UpdateCurrentActionSpriteType();
+    void SwitchToSpecialSprite(uint8 special_sprite_id);
+    void OnEnterRide(uint8 rideIndex);
+    void OnExitRide(uint8 rideIndex);
+
 private:
     void UpdateFalling();
     void Update1();
@@ -740,10 +744,9 @@ private:
     bool UpdateAction();
     void SwitchNextActionSpriteType();
     uint8 GetActionSpriteType();
-    void OnEnterRide(uint8 rideIndex);
-    void OnExitRide(uint8 rideIndex);
     void SpendMoney(money16 & peep_expend_type, money32 amount);
     void SpendMoney(money32 amount);
+    bool DecideAndBuyItem(uint8 rideIndex, sint32 shopItem, money32 price);
 };
 assert_struct_size(rct_peep, 0x100);
 #pragma pack(pop)
@@ -887,7 +890,7 @@ void UpdateCurrentActionSpriteType(rct_peep * peep);
 void remove_peep_from_ride(rct_peep * peep);
 void remove_peep_from_queue(rct_peep * peep);
 
-void peep_switch_to_special_sprite(rct_peep * peep, uint8 special_sprite_id);
+void SwitchToSpecialSprite(rct_peep * peep, uint8 special_sprite_id);
 void peep_update_name_sort(rct_peep * peep);
 void peep_sort();
 void peep_update_names(bool realNames);

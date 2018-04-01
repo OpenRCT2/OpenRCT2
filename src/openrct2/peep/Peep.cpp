@@ -135,7 +135,7 @@ static void   peep_on_enter_or_exit_ride(rct_peep * peep, sint32 rideIndex, sint
 static void   peep_update_favourite_ride(rct_peep * peep, Ride * ride);
 static sint16 peep_calculate_ride_satisfaction(rct_peep * peep, Ride * ride);
 static void   peep_update_ride_nausea_growth(rct_peep * peep, Ride * ride);
-static bool   peep_decide_and_buy_item(rct_peep * peep, sint32 rideIndex, sint32 shopItem, money32 price);
+static bool   DecideAndBuyItem(rct_peep * peep, sint32 rideIndex, sint32 shopItem, money32 price);
 static bool   peep_should_use_cash_machine(rct_peep * peep, sint32 rideIndex);
 static bool   peep_should_go_on_ride(rct_peep * peep, sint32 rideIndex, sint32 entranceNum, sint32 flags);
 static void   peep_ride_is_too_intense(rct_peep * peep, sint32 rideIndex, bool peepAtRide);
@@ -4082,7 +4082,7 @@ void rct_peep::UpdateBuying()
         return;
     }
 
-    uint8 item_bought = 0;
+    bool item_bought = false;
 
     if (peep->current_ride != peep->previous_ride)
     {
@@ -4117,7 +4117,7 @@ void rct_peep::UpdateBuying()
             {
                 money16 price = ride->price_secondary;
 
-                item_bought = peep_decide_and_buy_item(peep, peep->current_ride, ride_type->shop_item_secondary, price);
+                item_bought = DecideAndBuyItem(peep, peep->current_ride, ride_type->shop_item_secondary, price);
                 if (item_bought)
                 {
                     ride->no_secondary_items_sold++;
@@ -4128,7 +4128,7 @@ void rct_peep::UpdateBuying()
             {
                 money16 price = ride->price;
 
-                item_bought = peep_decide_and_buy_item(peep, peep->current_ride, ride_type->shop_item, price);
+                item_bought = DecideAndBuyItem(peep, peep->current_ride, ride_type->shop_item, price);
                 if (item_bought)
                 {
                     ride->no_primary_items_sold++;
@@ -9991,39 +9991,39 @@ static void peep_on_enter_or_exit_ridebrk(rct_peep * peep, sint32 rideIndex, sin
  *
  *  rct2: 0x0069AF1E
  */
-static bool peep_decide_and_buy_item(rct_peep * peep, sint32 rideIndex, sint32 shopItem, money32 price)
+bool rct_peep::DecideAndBuyItem(uint8 rideIndex, sint32 shopItem, money32 price)
 {
     Ride *  ride = get_ride(rideIndex);
-    money32 value;
+    money32 itemValue;
 
-    bool has_voucher = false;
+    bool hasVoucher = false;
 
-    if ((peep->item_standard_flags & PEEP_ITEM_VOUCHER) && (peep->voucher_type == VOUCHER_TYPE_FOOD_OR_DRINK_FREE) &&
-        (peep->voucher_arguments == shopItem))
+    if ((item_standard_flags & PEEP_ITEM_VOUCHER) && (voucher_type == VOUCHER_TYPE_FOOD_OR_DRINK_FREE) &&
+        (voucher_arguments == shopItem))
     {
-        has_voucher = true;
+        hasVoucher = true;
     }
 
-    if (peep_has_item(peep, shopItem))
+    if (peep_has_item(this, shopItem))
     {
-        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_ALREADY_GOT, shopItem);
+        peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_ALREADY_GOT, shopItem);
         return false;
     }
 
     if (shop_item_is_food_or_drink(shopItem))
     {
         sint32 food = -1;
-        if ((food = peep_has_food_standard_flag(peep)) != 0)
+        if ((food = peep_has_food_standard_flag(this)) != 0)
         {
-            peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food));
+            peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food));
             return false;
         }
-        else if ((food = peep_has_food_extra_flag(peep)) != 0)
+        else if ((food = peep_has_food_extra_flag(this)) != 0)
         {
-            peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food) + 32);
+            peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food) + 32);
             return false;
         }
-        else if (peep->nausea >= 145)
+        else if (nausea >= 145)
             return false;
     }
 
@@ -10040,119 +10040,119 @@ static bool peep_decide_and_buy_item(rct_peep * peep, sint32 rideIndex, sint32 s
             return false;
     }
 
-    if (shop_item_is_food(shopItem) && (peep->hunger > 75))
+    if (shop_item_is_food(shopItem) && (hunger > 75))
     {
-        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_HUNGRY, PEEP_THOUGHT_ITEM_NONE);
+        peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_NOT_HUNGRY, PEEP_THOUGHT_ITEM_NONE);
         return false;
     }
 
-    if (shop_item_is_drink(shopItem) && (peep->thirst > 75))
+    if (shop_item_is_drink(shopItem) && (thirst > 75))
     {
-        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_THIRSTY, PEEP_THOUGHT_ITEM_NONE);
+        peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_NOT_THIRSTY, PEEP_THOUGHT_ITEM_NONE);
         return false;
     }
 
     if (shopItem == SHOP_ITEM_UMBRELLA && climate_is_raining())
         goto loc_69B119;
 
-    if ((shopItem != SHOP_ITEM_MAP) && shop_item_is_souvenir(shopItem) && !has_voucher)
+    if ((shopItem != SHOP_ITEM_MAP) && shop_item_is_souvenir(shopItem) && !hasVoucher)
     {
-        if (((scenario_rand() & 0x7F) + 0x73) > peep->happiness)
+        if (((scenario_rand() & 0x7F) + 0x73) > happiness)
             return false;
-        else if (peep->no_of_rides < 3)
+        else if (no_of_rides < 3)
             return false;
     }
 
 loc_69B119:
-    if (!has_voucher)
+    if (!hasVoucher)
     {
         if (price != 0)
         {
-            if (peep->cash_in_pocket == 0)
+            if (cash_in_pocket == 0)
             {
-                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
+                peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
                 return false;
             }
-            if (price > peep->cash_in_pocket)
+            if (price > cash_in_pocket)
             {
-                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_AFFORD, shopItem);
+                peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_CANT_AFFORD, shopItem);
                 return false;
             }
         }
 
         if (gClimateCurrent.Temperature >= 21)
-            value = get_shop_hot_value(shopItem);
+            itemValue = get_shop_hot_value(shopItem);
         else if (gClimateCurrent.Temperature <= 11)
-            value = get_shop_cold_value(shopItem);
+            itemValue = get_shop_cold_value(shopItem);
         else
-            value = get_shop_base_value(shopItem);
+            itemValue = get_shop_base_value(shopItem);
 
-        if (value < price)
+        if (itemValue < price)
         {
-            value -= price;
+            itemValue -= price;
             if (shopItem == SHOP_ITEM_UMBRELLA)
             {
                 if (climate_is_raining())
                     goto loc_69B221;
             }
 
-            value = -value;
-            if (peep->happiness >= 128)
-                value /= 2;
+            itemValue = -itemValue;
+            if (happiness >= 128)
+                itemValue /= 2;
 
-            if (peep->happiness >= 180)
-                value /= 2;
+            if (happiness >= 180)
+                itemValue /= 2;
 
-            if (value > ((money16)(scenario_rand() & 0x07)))
+            if (itemValue > ((money16)(scenario_rand() & 0x07)))
             {
                 // "I'm not paying that much for x"
                 uint8 thought_type = (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2_MUCH + (shopItem - 32))
                                                      : (PEEP_THOUGHT_TYPE_BALLOON_MUCH + shopItem));
-                peep_insert_new_thought(peep, thought_type, rideIndex);
+                peep_insert_new_thought(this, thought_type, rideIndex);
                 return false;
             }
         }
         else
         {
-            value -= price;
-            value = Math::Max(8, value);
+            itemValue -= price;
+            itemValue = Math::Max(8, itemValue);
 
             if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
             {
-                if (value >= (money32)(scenario_rand() & 0x07))
+                if (itemValue >= (money32)(scenario_rand() & 0x07))
                 {
                     // "This x is a really good value"
                     uint8 thought_item = (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2 + (shopItem - 32))
                                                          : (PEEP_THOUGHT_TYPE_BALLOON + shopItem));
-                    peep_insert_new_thought(peep, thought_item, rideIndex);
+                    peep_insert_new_thought(this, thought_item, rideIndex);
                 }
             }
 
-            sint32 happinessGrowth = value * 4;
-            peep->happiness_target = Math::Min((peep->happiness_target + happinessGrowth), PEEP_MAX_HAPPINESS);
-            peep->happiness        = Math::Min((peep->happiness + happinessGrowth), PEEP_MAX_HAPPINESS);
+            sint32 happinessGrowth = itemValue * 4;
+            happiness_target = Math::Min((happiness_target + happinessGrowth), PEEP_MAX_HAPPINESS);
+            happiness        = Math::Min((happiness + happinessGrowth), PEEP_MAX_HAPPINESS);
         }
     }
 
 loc_69B221:
-    if (!has_voucher)
+    if (!hasVoucher)
     {
         if (gClimateCurrent.Temperature >= 21)
-            value = get_shop_hot_value(shopItem);
+            itemValue = get_shop_hot_value(shopItem);
         else if (gClimateCurrent.Temperature <= 11)
-            value = get_shop_cold_value(shopItem);
+            itemValue = get_shop_cold_value(shopItem);
         else
-            value = get_shop_base_value(shopItem);
+            itemValue = get_shop_base_value(shopItem);
 
-        value -= price;
+        itemValue -= price;
         uint8 satisfaction = 0;
-        if (value > -8)
+        if (itemValue > -8)
         {
             satisfaction++;
-            if (value > -3)
+            if (itemValue > -3)
             {
                 satisfaction++;
-                if (value > 3)
+                if (itemValue > 3)
                     satisfaction++;
             }
         }
@@ -10163,74 +10163,74 @@ loc_69B221:
     // The peep has now decided to buy the item (or, specifically, has not been
     // dissuaded so far).
     if (shopItem >= 32)
-        peep->item_extra_flags |= (1u << (shopItem - 32));
+        item_extra_flags |= (1u << (shopItem - 32));
     else
-        peep->item_standard_flags |= (1u << shopItem);
+        item_standard_flags |= (1u << shopItem);
 
     if (shopItem == SHOP_ITEM_TSHIRT)
-        peep->tshirt_colour = ride->track_colour_main[0];
+        tshirt_colour = ride->track_colour_main[0];
 
     if (shopItem == SHOP_ITEM_HAT)
-        peep->hat_colour = ride->track_colour_main[0];
+        hat_colour = ride->track_colour_main[0];
 
     if (shopItem == SHOP_ITEM_BALLOON)
-        peep->balloon_colour = ride->track_colour_main[0];
+        balloon_colour = ride->track_colour_main[0];
 
     if (shopItem == SHOP_ITEM_UMBRELLA)
-        peep->umbrella_colour = ride->track_colour_main[0];
+        umbrella_colour = ride->track_colour_main[0];
 
     if (shopItem == SHOP_ITEM_MAP)
-        peep_reset_pathfind_goal(peep);
+        peep_reset_pathfind_goal(this);
 
     uint16 consumptionTime    = item_consumption_time[shopItem];
-    peep->time_to_consume = Math::Min((peep->time_to_consume + consumptionTime), 255);
+    time_to_consume = Math::Min((time_to_consume + consumptionTime), 255);
 
     if (shopItem == SHOP_ITEM_PHOTO)
-        peep->photo1_ride_ref = rideIndex;
+        photo1_ride_ref = rideIndex;
 
     if (shopItem == SHOP_ITEM_PHOTO2)
-        peep->photo2_ride_ref = rideIndex;
+        photo2_ride_ref = rideIndex;
 
     if (shopItem == SHOP_ITEM_PHOTO3)
-        peep->photo3_ride_ref = rideIndex;
+        photo3_ride_ref = rideIndex;
 
     if (shopItem == SHOP_ITEM_PHOTO4)
-        peep->photo4_ride_ref = rideIndex;
+        photo4_ride_ref = rideIndex;
 
-    peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-    peep_update_sprite_type(peep);
-    if (peep->peep_flags & PEEP_FLAGS_TRACKING)
+    window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+    peep_update_sprite_type(this);
+    if (peep_flags & PEEP_FLAGS_TRACKING)
     {
-        set_format_arg(0, rct_string_id, peep->name_string_idx);
-        set_format_arg(2, uint32, peep->id);
+        set_format_arg(0, rct_string_id, name_string_idx);
+        set_format_arg(2, uint32, id);
         set_format_arg(6, rct_string_id, ShopItemStringIds[shopItem].indefinite);
         if (gConfigNotifications.guest_bought_item)
         {
-            news_item_add_to_queue(2, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, peep->sprite_index);
+            news_item_add_to_queue(2, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index);
         }
     }
 
     if (shop_item_is_food(shopItem))
-        peep->no_of_food++;
+        no_of_food++;
 
     if (shop_item_is_drink(shopItem))
-        peep->no_of_drinks++;
+        no_of_drinks++;
 
     if (shop_item_is_souvenir(shopItem))
-        peep->no_of_souvenirs++;
+        no_of_souvenirs++;
 
-    money16 * expend_type   = &peep->paid_on_souvenirs;
+    money16 * expend_type   = &paid_on_souvenirs;
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_SHOP_STOCK;
 
     if (shop_item_is_food(shopItem))
     {
-        expend_type             = &peep->paid_on_food;
+        expend_type             = &paid_on_food;
         gCommandExpenditureType = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK;
     }
 
     if (shop_item_is_drink(shopItem))
     {
-        expend_type             = &peep->paid_on_drink;
+        expend_type             = &paid_on_drink;
         gCommandExpenditureType = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK;
     }
 
@@ -10239,14 +10239,14 @@ loc_69B221:
 
     // Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
     gCommandExpenditureType--;
-    if (has_voucher)
+    if (hasVoucher)
     {
-        peep->item_standard_flags &= ~PEEP_ITEM_VOUCHER;
-        peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+        item_standard_flags &= ~PEEP_ITEM_VOUCHER;
+        window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
     else if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        SpendMoney(peep, expend_type, price);
+        SpendMoney(*expend_type, price);
     }
     ride->total_profit += (price - get_shop_item_cost(shopItem));
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;

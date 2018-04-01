@@ -207,7 +207,7 @@ static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 ba
                     peep->action = PEEP_ACTION_CHECK_TIME;
                     peep->action_frame = 0;
                     peep->action_sprite_image_offset = 0;
-                    peep_update_current_action_sprite_type(peep);
+                    UpdateCurrentActionSpriteType(peep);
                     invalidate_sprite_1((rct_sprite*)peep);
                     break;
                 }
