@@ -125,17 +125,14 @@ static sint32 peep_has_food_extra_flag(rct_peep * peep);
 static sint32 peep_empty_container_standard_flag(rct_peep * peep);
 static sint32 peep_empty_container_extra_flag(rct_peep * peep);
 static bool   peep_should_find_bench(rct_peep * peep);
-static void   peep_stop_purchase_thought(rct_peep * peep, uint8 ride_type);
 static void   peep_set_has_ridden(rct_peep * peep, sint32 rideIndex);
 static bool   peep_has_ridden(rct_peep * peep, sint32 rideIndex);
 static void   peep_set_has_ridden_ride_type(rct_peep * peep, sint32 rideType);
 static bool   peep_has_ridden_ride_type(rct_peep * peep, sint32 rideType);
-static void   peep_on_enter_or_exit_ride(rct_peep * peep, sint32 rideIndex, sint32 flags);
 static void   peep_update_favourite_ride(rct_peep * peep, Ride * ride);
 static sint16 peep_calculate_ride_satisfaction(rct_peep * peep, Ride * ride);
 static void   peep_update_ride_nausea_growth(rct_peep * peep, Ride * ride);
 static bool   DecideAndBuyItem(rct_peep * peep, sint32 rideIndex, sint32 shopItem, money32 price);
-static bool   peep_should_use_cash_machine(rct_peep * peep, sint32 rideIndex);
 static bool   peep_should_go_on_ride(rct_peep * peep, sint32 rideIndex, sint32 entranceNum, sint32 flags);
 static void   peep_ride_is_too_intense(rct_peep * peep, sint32 rideIndex, bool peepAtRide);
 static void   peep_chose_not_to_go_on_ride(rct_peep * peep, sint32 rideIndex, bool peepAtRide, bool updateLastRide);
@@ -4055,122 +4052,6 @@ static void peep_update_walking_break_scenery(rct_peep * peep)
     peep->angriness = 16;
 }
 
-/**
- *
- *  rct2: 0x006912A3
- */
-void rct_peep::UpdateBuying()
-{
-    if (!CheckForPath())
-        return;
-
-    Ride * ride = get_ride(current_ride);
-    if (ride->type == RIDE_TYPE_NULL || ride->status != RIDE_STATUS_OPEN)
-    {
-        peep_decrement_num_riders(this);
-        state = PEEP_STATE_FALLING;
-        peep_window_state_update(this);
-        return;
-    }
-
-    if (sub_state == 1)
-    {
-        if (action != 0xFF)
-        {
-            sint16 actionX;
-            sint16 actionY;
-            sint16 xy_distance;
-            UpdateAction(&actionX, &actionY, &xy_distance);
-            return;
-        }
-
-        if (ride->type == RIDE_TYPE_CASH_MACHINE)
-        {
-            if (current_ride != previous_ride)
-            {
-                cash_in_pocket += MONEY(50, 00);
-            }
-            window_invalidate_by_number(WC_PEEP, sprite_index);
-        }
-        sprite_direction ^= 0x10;
-        destination_x = next_x + 16;
-        destination_y = next_y + 16;
-        direction ^= 2;
-
-        peep_decrement_num_riders(this);
-        state = PEEP_STATE_WALKING;
-        peep_window_state_update(this);
-        return;
-    }
-
-    bool item_bought = false;
-
-    if (current_ride != previous_ride)
-    {
-        if (ride->type == RIDE_TYPE_CASH_MACHINE)
-        {
-            item_bought = peep_should_use_cash_machine(this, current_ride);
-            if (!item_bought)
-            {
-                previous_ride          = current_ride;
-                previous_ride_time_out = 0;
-            }
-            else
-            {
-                action                     = PEEP_ACTION_WITHDRAW_MONEY;
-                action_frame               = 0;
-                action_sprite_image_offset = 0;
-
-                UpdateCurrentActionSpriteType();
-                invalidate_sprite_2((rct_sprite *)this);
-
-                ride->no_primary_items_sold++;
-            }
-        }
-        else
-        {
-            rct_ride_entry * ride_type = get_ride_entry(ride->subtype);
-            if (ride_type == nullptr)
-            {
-                return;
-            }
-            if (ride_type->shop_item_secondary != SHOP_ITEM_NONE)
-            {
-                money16 price = ride->price_secondary;
-
-                item_bought = DecideAndBuyItem(current_ride, ride_type->shop_item_secondary, price);
-                if (item_bought)
-                {
-                    ride->no_secondary_items_sold++;
-                }
-            }
-
-            if (!item_bought && ride_type->shop_item != SHOP_ITEM_NONE)
-            {
-                money16 price = ride->price;
-
-                item_bought = DecideAndBuyItem(current_ride, ride_type->shop_item, price);
-                if (item_bought)
-                {
-                    ride->no_primary_items_sold++;
-                }
-            }
-        }
-    }
-
-    if (item_bought)
-    {
-        ride_update_popularity(ride, 1);
-
-        peep_stop_purchase_thought(this, ride->type);
-    }
-    else
-    {
-        ride_update_popularity(ride, 0);
-    }
-    sub_state = 1;
-}
-
 /** rct2: 0x0097EFCC */
 static constexpr const uint8 item_standard_litter[32] = {
     LITTER_TYPE_RUBBISH,          // PEEP_ITEM_BALLOON
@@ -6465,58 +6346,6 @@ void peep_insert_new_thought(rct_peep * peep, uint8 thought_type, uint8 thought_
     peep->thoughts[0].fresh_timeout = 0;
 
     peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
-}
-
-/**
- *
- *  rct2: 0x00699FE3
- * Stops peeps that are having thoughts
- * such as "I'm hungry" after visiting a food shop.
- * Works for Thirst/Hungry/Low Money/Bathroom
- */
-static void peep_stop_purchase_thought(rct_peep * peep, uint8 ride_type)
-{
-
-    uint8 thought_type = PEEP_THOUGHT_TYPE_HUNGRY;
-
-    if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_SELLS_FOOD))
-    {
-        thought_type = PEEP_THOUGHT_TYPE_THIRSTY;
-        if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_SELLS_DRINKS))
-        {
-            thought_type = PEEP_THOUGHT_TYPE_RUNNING_OUT;
-            if (ride_type != RIDE_TYPE_CASH_MACHINE)
-            {
-                thought_type = PEEP_THOUGHT_TYPE_BATHROOM;
-                if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_IS_BATHROOM))
-                {
-                    return;
-                }
-            }
-        }
-    }
-
-    // Remove the related thought
-    for (sint32 i = 0; i < PEEP_MAX_THOUGHTS; ++i)
-    {
-        rct_peep_thought * thought = &peep->thoughts[i];
-
-        if (thought->type == PEEP_THOUGHT_TYPE_NONE)
-            break;
-
-        if (thought->type != thought_type)
-            continue;
-
-        if (i < PEEP_MAX_THOUGHTS - 1)
-        {
-            memmove(thought, thought + 1, sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
-        }
-
-        peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
-
-        peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
-        i--;
-    }
 }
 
 void peep_set_map_tooltip(rct_peep * peep)
@@ -10257,31 +10086,6 @@ loc_69B221:
     ride->total_customers++;
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 
-    return true;
-}
-
-/**
- *
- *  rct2: 0x0069AEB7
- */
-static bool peep_should_use_cash_machine(rct_peep * peep, sint32 rideIndex)
-{
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
-        return false;
-    if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
-        return false;
-    if (peep->cash_in_pocket > MONEY(20, 00))
-        return false;
-    if (115 + (scenario_rand() % 128) > peep->happiness)
-        return false;
-    if (peep->energy < 80)
-        return false;
-
-    Ride * ride = get_ride(rideIndex);
-    ride_update_satisfaction(ride, peep->happiness >> 6);
-    ride->cur_num_customers++;
-    ride->total_customers++;
-    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
     return true;
 }
 
