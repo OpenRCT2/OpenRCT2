@@ -384,7 +384,7 @@ static void peep_go_to_ride_entrance(rct_peep * peep, Ride * ride)
     peep->rejoin_queue_timeout       = 0;
     peep->time_on_ride = 0;
 
-    remove_peep_from_queue(peep);
+    peep->RemoveFromQueue();
 }
 
 static bool peep_find_vehicle_to_enter(rct_peep * peep, Ride * ride, std::vector<uint8> &car_array)
@@ -462,10 +462,8 @@ static void peep_update_ride_at_entrance_try_leave(rct_peep * peep)
     // entered entrance
     if (peep->destination_tolerance == 0)
     {
-        remove_peep_from_queue(peep);
-        peep_decrement_num_riders(peep);
-        peep->state = PEEP_STATE_FALLING;
-        peep_window_state_update(peep);
+        peep->RemoveFromQueue();
+        peep->SetState(PEEP_STATE_FALLING);
     }
 }
 

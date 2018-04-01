@@ -1963,7 +1963,7 @@ void peep_window_state_update(rct_peep * peep)
 
 void peep_pickup(rct_peep * peep)
 {
-    remove_peep_from_ride(peep);
+    peep->RemoveFromRide();
     invalidate_sprite_2((rct_sprite *)peep);
 
     sprite_move(LOCATION_NULL, peep->y, peep->z, (rct_sprite *)peep);
@@ -2160,7 +2160,7 @@ void game_command_pickup_guest(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 
  */
 void peep_sprite_remove(rct_peep * peep)
 {
-    remove_peep_from_ride(peep);
+    peep->RemoveFromRide();
     invalidate_sprite_2((rct_sprite *)peep);
 
     window_close_by_number(WC_PEEP, peep->sprite_index);
@@ -3197,10 +3197,8 @@ void rct_peep::UpdateQueuing()
         // Give up queueing for the ride
         sprite_direction ^= (1 << 4);
         invalidate_sprite_2((rct_sprite *)this);
-        remove_peep_from_queue(this);
-        peep_decrement_num_riders(this);
-        state = PEEP_STATE_1;
-        peep_window_state_update(this);
+        RemoveFromQueue();
+        SetState(PEEP_STATE_1);
         return;
     }
 
@@ -3271,10 +3269,8 @@ void rct_peep::UpdateQueuing()
         // Give up queueing for the ride
         sprite_direction ^= (1 << 4);
         invalidate_sprite_2((rct_sprite *)this);
-        remove_peep_from_queue(this);
-        peep_decrement_num_riders(this);
-        state = PEEP_STATE_1;
-        peep_window_state_update(this);
+        RemoveFromQueue();
+        SetState(PEEP_STATE_1);
     }
 }
 
@@ -6951,7 +6947,7 @@ static sint32 peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_t
             }
             // Queue got disconnected from the original ride.
             peep->interaction_ride_index = 0xFF;
-            remove_peep_from_queue(peep);
+            peep->RemoveFromRide();
             peep_decrement_num_riders(peep);
             peep->state = PEEP_STATE_1;
             peep_window_state_update(peep);
@@ -7021,10 +7017,8 @@ static sint32 peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_t
         peep->interaction_ride_index = 0xFF;
         if (peep->state == PEEP_STATE_QUEUING)
         {
-            remove_peep_from_queue(peep);
-            peep_decrement_num_riders(peep);
-            peep->state = PEEP_STATE_1;
-            peep_window_state_update(peep);
+            peep->RemoveFromRide();
+            peep->SetState(PEEP_STATE_1);
         }
         return peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
     }
@@ -9368,7 +9362,7 @@ sint32 rct_peep::PerformNextAction(uint8 & pathing_result)
             interaction_ride_index = 0xFF;
             if (state == PEEP_STATE_QUEUING)
             {
-                remove_peep_from_queue(this);
+                RemoveFromQueue();
                 SetState(PEEP_STATE_1);
             }
 
