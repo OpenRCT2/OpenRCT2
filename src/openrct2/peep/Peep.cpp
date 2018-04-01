@@ -906,7 +906,7 @@ static void peep_128_tick_update(rct_peep * peep, sint32 index)
         }
 
         peep->action_sprite_type = 0xFF;
-        UpdateCurrentActionSpriteType(peep);
+        peep->UpdateCurrentActionSpriteType();
         return;
     }
 
@@ -1263,7 +1263,7 @@ static void peep_128_tick_update(rct_peep * peep, sint32 index)
                     peep->action                     = PEEP_ACTION_THROW_UP;
                     peep->action_frame               = 0;
                     peep->action_sprite_image_offset = 0;
-                    UpdateCurrentActionSpriteType(peep);
+                    peep->UpdateCurrentActionSpriteType();
                     invalidate_sprite_2((rct_sprite *)peep);
                 }
             }
@@ -1768,7 +1768,7 @@ static void set_sprite_type(rct_peep * peep, uint8 type)
     }
 
     peep->action_sprite_type = 0xFF;
-    UpdateCurrentActionSpriteType(peep);
+    peep->UpdateCurrentActionSpriteType();
 
     if (peep->state == PEEP_STATE_SITTING)
     {
@@ -2064,7 +2064,7 @@ bool peep_pickup_place(rct_peep * peep, sint32 x, sint32 y, sint32 z, bool apply
         {
             peep->action_sprite_type = 0xFF;
             peep->happiness_target   = Math::Max(peep->happiness_target - 10, 0);
-            UpdateCurrentActionSpriteType(peep);
+            peep->UpdateCurrentActionSpriteType();
         }
 
         network_set_pickup_peep(game_command_playerid, nullptr);
@@ -2630,7 +2630,7 @@ static bool peep_update_fixing_fix_vehicle(bool firstRun, rct_peep * peep, Ride 
         peep->action                     = (scenario_rand() & 1) ? PEEP_ACTION_STAFF_FIX_2 : PEEP_ACTION_STAFF_FIX;
         peep->action_sprite_image_offset = 0;
         peep->action_frame               = 0;
-        UpdateCurrentActionSpriteType(peep);
+        peep->UpdateCurrentActionSpriteType();
         invalidate_sprite_2((rct_sprite *)peep);
     }
 
@@ -2674,7 +2674,7 @@ static bool peep_update_fixing_fix_vehicle_malfunction(bool firstRun, rct_peep *
         peep->action_sprite_image_offset = 0;
         peep->action_frame               = 0;
 
-        UpdateCurrentActionSpriteType(peep);
+        peep->UpdateCurrentActionSpriteType();
         invalidate_sprite_2((rct_sprite *)peep);
     }
 
@@ -2789,7 +2789,7 @@ static bool peep_update_fixing_fix_station_end(bool firstRun, rct_peep * peep)
         peep->action_frame               = 0;
         peep->action_sprite_image_offset = 0;
 
-        UpdateCurrentActionSpriteType(peep);
+        peep->UpdateCurrentActionSpriteType();
         invalidate_sprite_2((rct_sprite *)peep);
     }
 
@@ -2916,7 +2916,7 @@ static bool peep_update_fixing_fix_station_start(bool firstRun, rct_peep * peep,
         peep->action_frame               = 0;
         peep->action_sprite_image_offset = 0;
 
-        UpdateCurrentActionSpriteType(peep);
+        peep->UpdateCurrentActionSpriteType();
         invalidate_sprite_2((rct_sprite *)peep);
     }
 
@@ -2947,7 +2947,7 @@ static bool peep_update_fixing_fix_station_brakes(bool firstRun, rct_peep * peep
         peep->action_frame               = 0;
         peep->action_sprite_image_offset = 0;
 
-        UpdateCurrentActionSpriteType(peep);
+        peep->UpdateCurrentActionSpriteType();
         invalidate_sprite_2((rct_sprite *)peep);
     }
 
@@ -3055,7 +3055,7 @@ static bool peep_update_fixing_finish_fix_or_inspect(bool firstRun, sint32 steps
         peep->action_frame               = 0;
         peep->action_sprite_image_offset = 0;
 
-        UpdateCurrentActionSpriteType(peep);
+        peep->UpdateCurrentActionSpriteType();
         invalidate_sprite_2((rct_sprite *)peep);
     }
 
@@ -5562,7 +5562,7 @@ void peep_applause()
             peep->action                     = PEEP_ACTION_CLAP;
             peep->action_frame               = 0;
             peep->action_sprite_image_offset = 0;
-            UpdateCurrentActionSpriteType(peep);
+            peep->UpdateCurrentActionSpriteType();
             invalidate_sprite_2((rct_sprite *)peep);
         }
     }
@@ -6314,7 +6314,7 @@ void peep_insert_new_thought(rct_peep * peep, uint8 thought_type, uint8 thought_
         peep->action                     = action;
         peep->action_frame               = 0;
         peep->action_sprite_image_offset = 0;
-        UpdateCurrentActionSpriteType(peep);
+        peep->UpdateCurrentActionSpriteType();
         invalidate_sprite_2((rct_sprite *)peep);
     }
 
@@ -10176,7 +10176,7 @@ static void peep_give_passing_peeps_pizza(rct_peep * peep, rct_peep * otherPeep)
             otherPeep->action                     = PEEP_ACTION_WAVE_2;
             otherPeep->action_frame               = 0;
             otherPeep->action_sprite_image_offset = 0;
-            UpdateCurrentActionSpriteType(otherPeep);
+            otherPeep->UpdateCurrentActionSpriteType();
             invalidate_sprite_2((rct_sprite *)otherPeep);
         }
     }
@@ -10195,7 +10195,7 @@ static void peep_make_passing_peeps_sick(rct_peep * peep, rct_peep * otherPeep)
         otherPeep->action                     = PEEP_ACTION_THROW_UP;
         otherPeep->action_frame               = 0;
         otherPeep->action_sprite_image_offset = 0;
-        UpdateCurrentActionSpriteType(otherPeep);
+        otherPeep->UpdateCurrentActionSpriteType();
         invalidate_sprite_2((rct_sprite *)otherPeep);
     }
 }
@@ -10241,7 +10241,7 @@ static void peep_easter_egg_peep_interactions(rct_peep * peep)
                 peep->action                     = PEEP_ACTION_JOY;
                 peep->action_frame               = 0;
                 peep->action_sprite_image_offset = 0;
-                UpdateCurrentActionSpriteType(peep);
+                peep->UpdateCurrentActionSpriteType();
                 invalidate_sprite_2((rct_sprite *)peep);
             }
         }
@@ -11798,7 +11798,7 @@ static void peep_read_map(rct_peep * peep)
         peep->action                     = PEEP_ACTION_READ_MAP;
         peep->action_frame               = 0;
         peep->action_sprite_image_offset = 0;
-        UpdateCurrentActionSpriteType(peep);
+        peep->UpdateCurrentActionSpriteType();
         invalidate_sprite_2((rct_sprite *)peep);
     }
 }
