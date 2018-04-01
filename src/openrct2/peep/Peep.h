@@ -691,9 +691,9 @@ struct rct_peep
     void UpdateCurrentActionSpriteType();
     void SwitchToSpecialSprite(uint8 special_sprite_id);
     void RemoveFromRide();
+    void RemoveFromQueue();
     void OnEnterRide(uint8 rideIndex);
     void OnExitRide(uint8 rideIndex);
-
 private:
     void UpdateFalling();
     void Update1();
@@ -738,7 +738,7 @@ private:
     void UpdateRideShopLeave();
 
     void TryGetUpFromSitting();
-    void RemoveFromQueue();
+
 
     bool CheckForPath();
     sint32 PerformNextAction(uint8 & pathing_result);
@@ -893,8 +893,6 @@ void peep_decrement_num_riders(rct_peep * peep);
 void peep_insert_new_thought(rct_peep * peep, uint8 thought_type, uint8 thought_arguments);
 
 void peep_set_map_tooltip(rct_peep * peep);
-void remove_peep_from_ride(rct_peep * peep);
-void remove_peep_from_queue(rct_peep * peep);
 
 void SwitchToSpecialSprite(rct_peep * peep, uint8 special_sprite_id);
 void peep_update_name_sort(rct_peep * peep);
