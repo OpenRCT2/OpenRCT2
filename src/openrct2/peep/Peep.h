@@ -739,7 +739,6 @@ private:
 
     void TryGetUpFromSitting();
 
-
     bool CheckForPath();
     sint32 PerformNextAction(uint8 & pathing_result);
     void StopPurchaseThought(uint8 ride_type);
@@ -748,10 +747,19 @@ public: // TODO: Make these private again when done refactoring - they need to b
         // peep functions
     bool UpdateAction(sint16 * actionX, sint16 * actionY, sint16 * xy_distance);
     bool UpdateAction();
+    void ChoseNotToGoOnRide(sint32 rideIndex, bool peepAtRide, bool updateLastRide);
+    void PickRideToGoOn();
+    void ReadMap();
+    bool ShouldGoOnRide(sint32 rideIndex, sint32 entranceNum, bool atQueue, bool thinking);
+    bool ShouldGoToShop(sint32 rideIndex, bool peepAtShop);
     void SwitchNextActionSpriteType();
     uint8 GetActionSpriteType();
     void SpendMoney(money16 & peep_expend_type, money32 amount);
     void SpendMoney(money32 amount);
+    void SetHasRidden(sint32 rideIndex);
+    bool HasRidden(sint32 rideIndex) const;
+    void SetHasRiddenRideType(sint32 rideType);
+    bool HasRiddenRideType(sint32 rideType) const;
 private:
     bool DecideAndBuyItem(uint8 rideIndex, sint32 shopItem, money32 price);
 };
