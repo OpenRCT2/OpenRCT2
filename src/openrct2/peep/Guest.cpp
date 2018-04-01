@@ -21,6 +21,7 @@
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../core/Guard.hpp"
+#include "../core/Util.hpp"
 #include "../world/Footpath.h"
 #include "../management/Marketing.h"
 #include "../management/Finance.h"
@@ -1373,16 +1374,16 @@ static void peep_update_ride_prepare_for_exit(rct_peep * peep)
  */
 void rct_peep::UpdateRideApproachExit()
 {
-    sint16 x, y, xy_distance;
-    if (UpdateAction(&x, &y, &xy_distance, peep))
+    sint16 actionX, actionY, xy_distance;
+    if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        invalidate_sprite_2((rct_sprite *)peep);
-        sprite_move(x, y, peep->z, (rct_sprite *)peep);
-        invalidate_sprite_2((rct_sprite *)peep);
+        Invalidate();
+        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        Invalidate();
         return;
     }
 
-    peep_update_ride_prepare_for_exit(peep);
+    peep_update_ride_prepare_for_exit(this);
 }
 
 /**
@@ -1391,37 +1392,37 @@ void rct_peep::UpdateRideApproachExit()
  */
 void rct_peep::UpdateRideInExit()
 {
-    sint16 x, y, xy_distance;
-    Ride * ride = get_ride(peep->current_ride);
+    sint16 actionX, actionY, xy_distance;
+    Ride * ride = get_ride(current_ride);
 
-    if (UpdateAction(&x, &y, &xy_distance, peep))
+    if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        invalidate_sprite_2((rct_sprite *)peep);
+        Invalidate();
 
         if (xy_distance >= 16)
         {
-            sint16 z = ride->station_heights[peep->current_ride_station] * 8;
+            sint16 actionZ = ride->station_heights[current_ride_station] * 8;
 
-            z += RideData5[ride->type].z;
-            sprite_move(x, y, z, (rct_sprite *)peep);
-            invalidate_sprite_2((rct_sprite *)peep);
+            actionZ += RideData5[ride->type].z;
+            sprite_move(actionX, actionY, actionZ, (rct_sprite *)this);
+            Invalidate();
             return;
         }
 
-        SwitchToSpecialSprite(peep, 0);
-        sprite_move(x, y, peep->z, (rct_sprite *)peep);
-        invalidate_sprite_2((rct_sprite *)peep);
+        SwitchToSpecialSprite(0);
+        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        Invalidate();
     }
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
     {
         uint8 secondaryItem = RidePhotoItems[ride->type];
-        if (peep_decide_and_buy_item(peep, peep->current_ride, secondaryItem, ride->price_secondary))
+        if (DecideAndBuyItem(current_ride, secondaryItem, ride->price_secondary))
         {
             ride->no_secondary_items_sold++;
         }
     }
-    peep->sub_state = PEEP_RIDE_LEAVE_EXIT;
+    sub_state = PEEP_RIDE_LEAVE_EXIT;
 }
 
 /**
@@ -1430,17 +1431,17 @@ void rct_peep::UpdateRideInExit()
  */
 void rct_peep::UpdateRideApproachVehicleWaypoints()
 {
-    sint16 x, y, xy_distance;
-    Ride * ride = get_ride(peep->current_ride);
-    uint8 waypoint = peep->var_37 & 3;
+    sint16 actionX, actionY, xy_distance;
+    Ride * ride = get_ride(current_ride);
+    uint8 waypoint = var_37 & 3;
 
-    if (UpdateAction(&x, &y, &xy_distance, peep))
+    if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        sint16 z;
+        sint16 actionZ;
         // Motion simulators have steps this moves the peeps up the steps
         if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
         {
-            z = ride->station_heights[peep->current_ride_station] * 8 + 2;
+            actionZ = ride->station_heights[current_ride_station] * 8 + 2;
 
             if (waypoint == 2)
             {
@@ -1450,39 +1451,39 @@ void rct_peep::UpdateRideApproachVehicleWaypoints()
 
                 if (xy_distance <= 15)
                 {
-                    z += 15 - xy_distance;
+                    actionZ += 15 - xy_distance;
                 }
             }
         }
         else
         {
-            z = peep->z;
+            actionZ = z;
         }
-        invalidate_sprite_2((rct_sprite *)peep);
-        sprite_move(x, y, z, (rct_sprite *)peep);
-        invalidate_sprite_2((rct_sprite *)peep);
+        Invalidate();
+        sprite_move(actionX, actionY, actionZ, (rct_sprite *)this);
+        Invalidate();
         return;
     }
 
     if (waypoint == 2)
     {
-        peep->sub_state = PEEP_RIDE_ENTER_VEHICLE;
+        sub_state = PEEP_RIDE_ENTER_VEHICLE;
         return;
     }
 
     waypoint++;
     // This is incrementing the actual peep waypoint
-    peep->var_37++;
+    var_37++;
 
-    rct_vehicle * vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+    rct_vehicle * vehicle = GET_VEHICLE(ride->vehicles[current_train]);
 
-    x = ride->station_starts[peep->current_ride_station].x * 32 + 16;
-    y = ride->station_starts[peep->current_ride_station].y * 32 + 16;
+    actionX = ride->station_starts[current_ride_station].x * 32 + 16;
+    actionY = ride->station_starts[current_ride_station].y * 32 + 16;
 
     if (ride->type == RIDE_TYPE_ENTERPRISE)
     {
-        x = vehicle->x;
-        y = vehicle->y;
+        actionX = vehicle->x;
+        actionY = vehicle->y;
     }
 
     rct_ride_entry * ride_entry = get_ride_entry(vehicle->ride_subtype);
@@ -1493,11 +1494,11 @@ void rct_peep::UpdateRideApproachVehicleWaypoints()
 
     rct_ride_entry_vehicle * vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
     Guard::Assert(waypoint < 3);
-    x += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][waypoint].x;
-    y += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][waypoint].y;
+    actionX += vehicle_type->peep_loading_waypoints[var_37 / 4][waypoint].x;
+    actionY += vehicle_type->peep_loading_waypoints[var_37 / 4][waypoint].y;
 
-    peep->destination_x = x;
-    peep->destination_y = y;
+    destination_x = actionX;
+    destination_y = actionY;
 }
 
 /**
@@ -1506,83 +1507,78 @@ void rct_peep::UpdateRideApproachVehicleWaypoints()
  */
 void rct_peep::UpdateRideApproachExitWaypoints()
 {
-    sint16 x, y, xy_distance;
-    Ride * ride = get_ride(peep->current_ride);
+    sint16 actionX, actionY, xy_distance;
+    Ride * ride = get_ride(current_ride);
 
-    if (UpdateAction(&x, &y, &xy_distance, peep))
+    if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        sint16 z;
+        sint16 actionZ;
         if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
         {
-            z = ride->station_heights[peep->current_ride_station] * 8 + 2;
+            actionZ = ride->station_heights[current_ride_station] * 8 + 2;
 
-            if ((peep->var_37 & 3) == 1)
+            if ((var_37 & 3) == 1)
             {
 
                 if (xy_distance > 15)
                     xy_distance = 15;
 
-                z += xy_distance;
+                actionZ += xy_distance;
             }
         }
         else
         {
-            z = peep->z;
+            actionZ = z;
         }
-        invalidate_sprite_2((rct_sprite *)peep);
-        sprite_move(x, y, z, (rct_sprite *)peep);
-        invalidate_sprite_2((rct_sprite *)peep);
+        Invalidate();
+        sprite_move(actionX, actionY, actionZ, (rct_sprite *)this);
+        Invalidate();
         return;
     }
 
-    if ((peep->var_37 & 3) != 0)
+    if ((var_37 & 3) != 0)
     {
-        if ((peep->var_37 & 3) == 3)
+        if ((var_37 & 3) == 3)
         {
-            peep_update_ride_prepare_for_exit(peep);
+            peep_update_ride_prepare_for_exit(this);
             return;
         }
 
-        peep->var_37--;
-        rct_vehicle * vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+        var_37--;
+        rct_vehicle * vehicle = GET_VEHICLE(ride->vehicles[current_train]);
 
-        x = ride->station_starts[peep->current_ride_station].x;
-        y = ride->station_starts[peep->current_ride_station].y;
-
-        x *= 32;
-        y *= 32;
-        x += 16;
-        y += 16;
+        actionX = ride->station_starts[current_ride_station].x * 32 + 16;
+        actionY = ride->station_starts[current_ride_station].y * 32 + 16;
 
         if (ride->type == RIDE_TYPE_ENTERPRISE)
         {
-            x = vehicle->x;
-            y = vehicle->y;
+            actionX = vehicle->x;
+            actionY = vehicle->y;
         }
 
-        rct_ride_entry *         ride_entry   = get_ride_entry(vehicle->ride_subtype);
-        rct_ride_entry_vehicle * vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
+        rct_ride_entry *         rideEntry   = get_ride_entry(vehicle->ride_subtype);
+        rct_ride_entry_vehicle * vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
-        Guard::Assert((peep->var_37 & 3) < 3);
-        x += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][peep->var_37 & 3].x;
-        y += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][peep->var_37 & 3].y;
+        Guard::Assert((var_37 & 3) < 3);
+        actionX += vehicleEntry->peep_loading_waypoints[var_37 / 4][var_37 & 3].x;
+        actionY += vehicleEntry->peep_loading_waypoints[var_37 / 4][var_37 & 3].y;
 
-        peep->destination_x = x;
-        peep->destination_y = y;
+        destination_x = actionX;
+        destination_y = actionY;
         return;
     }
 
-    peep->var_37 |= 3;
+    var_37 |= 3;
 
-    auto exit = ride_get_exit_location(peep->current_ride, peep->current_ride_station);
-    x = exit.x;
-    y = exit.y;
+    auto exit = ride_get_exit_location(current_ride, current_ride_station);
+    actionX = exit.x;
+    actionY = exit.y;
     uint8 exit_direction = exit.direction ^ 2;
 
-    x *= 32;
-    y *= 32;
-    x += 16;
-    y += 16;
+    actionX *= 32;
+    actionY *= 32;
+    actionX += 16;
+    actionY += 16;
 
     sint16 x_shift = word_981D6C[exit_direction].x;
     sint16 y_shift = word_981D6C[exit_direction].y;
@@ -1599,11 +1595,11 @@ void rct_peep::UpdateRideApproachExitWaypoints()
     x_shift *= shift_multiplier;
     y_shift *= shift_multiplier;
 
-    x -= x_shift;
-    y -= y_shift;
+    actionX -= x_shift;
+    actionY -= y_shift;
 
-    peep->destination_x = x;
-    peep->destination_y = y;
+    destination_x = actionX;
+    destination_y = actionY;
 }
 
 /**

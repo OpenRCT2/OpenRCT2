@@ -1384,7 +1384,7 @@ private:
         dst->special_sprite = src->special_sprite;
         dst->next_action_sprite_type = src->next_action_sprite_type;
         dst->action_sprite_image_offset = src->action_sprite_image_offset;
-        dst->no_action_frame_no = src->no_action_frame_no;
+        dst->no_action_frame_num = src->no_action_frame_num;
         dst->action_sprite_type = src->action_sprite_type;
         dst->action_frame = src->action_frame;
 
