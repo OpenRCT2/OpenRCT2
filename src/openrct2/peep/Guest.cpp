@@ -510,20 +510,20 @@ static bool peep_check_ride_price_at_entrance(rct_peep * peep, Ride * ride, mone
  * such as "I'm hungry" after visiting a food shop.
  * Works for Thirst/Hungry/Low Money/Bathroom
  */
-static void peep_stop_purchase_thought(rct_peep * peep, uint8 ride_type)
+void rct_peep::StopPurchaseThought(uint8 ride_type)
 {
 
-    uint8 thought_type = PEEP_THOUGHT_TYPE_HUNGRY;
+    uint8 thoughtType = PEEP_THOUGHT_TYPE_HUNGRY;
 
     if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_SELLS_FOOD))
     {
-        thought_type = PEEP_THOUGHT_TYPE_THIRSTY;
+        thoughtType = PEEP_THOUGHT_TYPE_THIRSTY;
         if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_SELLS_DRINKS))
         {
-            thought_type = PEEP_THOUGHT_TYPE_RUNNING_OUT;
+            thoughtType = PEEP_THOUGHT_TYPE_RUNNING_OUT;
             if (ride_type != RIDE_TYPE_CASH_MACHINE)
             {
-                thought_type = PEEP_THOUGHT_TYPE_BATHROOM;
+                thoughtType = PEEP_THOUGHT_TYPE_BATHROOM;
                 if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_IS_BATHROOM))
                 {
                     return;
@@ -535,12 +535,12 @@ static void peep_stop_purchase_thought(rct_peep * peep, uint8 ride_type)
     // Remove the related thought
     for (sint32 i = 0; i < PEEP_MAX_THOUGHTS; ++i)
     {
-        rct_peep_thought * thought = &peep->thoughts[i];
+        rct_peep_thought * thought = &thoughts[i];
 
         if (thought->type == PEEP_THOUGHT_TYPE_NONE)
             break;
 
-        if (thought->type != thought_type)
+        if (thought->type != thoughtType)
             continue;
 
         if (i < PEEP_MAX_THOUGHTS - 1)
@@ -548,9 +548,9 @@ static void peep_stop_purchase_thought(rct_peep * peep, uint8 ride_type)
             memmove(thought, thought + 1, sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
         }
 
-        peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
+        thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
 
-        peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
+        window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
         i--;
     }
 }
@@ -687,7 +687,7 @@ void rct_peep::UpdateBuying()
     {
         ride_update_popularity(ride, 1);
 
-        peep_stop_purchase_thought(this, ride->type);
+        StopPurchaseThought(ride->type);
     }
     else
     {
@@ -1942,8 +1942,6 @@ void rct_peep::UpdateRideOnSpiralSlide()
             sprite_move(newX, newY, z, (rct_sprite *)this);
 
             sprite_direction = (var_37 & 0xC) * 2;
-
-            invalidate_sprite_2((rct_sprite *)this);
             Invalidate();
 
             var_37++;
