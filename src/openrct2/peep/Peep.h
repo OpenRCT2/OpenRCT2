@@ -690,6 +690,7 @@ struct rct_peep
     void Invalidate();
     void UpdateCurrentActionSpriteType();
     void SwitchToSpecialSprite(uint8 special_sprite_id);
+    void RemoveFromRide();
     void OnEnterRide(uint8 rideIndex);
     void OnExitRide(uint8 rideIndex);
 
@@ -737,15 +738,19 @@ private:
     void UpdateRideShopLeave();
 
     void TryGetUpFromSitting();
+    void RemoveFromQueue();
 
     bool CheckForPath();
     sint32 PerformNextAction(uint8 & pathing_result);
+public: // TODO: Make these private again when done refactoring - they need to be public since they are called from non-member
+        // peep functions
     bool UpdateAction(sint16 * actionX, sint16 * actionY, sint16 * xy_distance);
     bool UpdateAction();
     void SwitchNextActionSpriteType();
     uint8 GetActionSpriteType();
     void SpendMoney(money16 & peep_expend_type, money32 amount);
     void SpendMoney(money32 amount);
+private:
     bool DecideAndBuyItem(uint8 rideIndex, sint32 shopItem, money32 price);
 };
 assert_struct_size(rct_peep, 0x100);

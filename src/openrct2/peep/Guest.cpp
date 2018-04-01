@@ -1323,6 +1323,22 @@ void rct_peep::UpdateRideLeaveVehicle()
 }
 
 /**
+*
+*  rct2: 0x00695444
+*/
+static void peep_on_enter_or_exit_ridebrk(rct_peep * peep, sint32 rideIndex, sint32 flags)
+{
+    if (flags & 1)
+    {
+        peep->OnExitRide(rideIndex);
+    }
+    else
+    {
+        peep->OnEnterRide(rideIndex);
+    }
+}
+
+/**
  *
  *  rct2: 0x0069376A
  */
