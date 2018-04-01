@@ -132,7 +132,6 @@ static bool   peep_has_ridden_ride_type(rct_peep * peep, sint32 rideType);
 static void   peep_update_favourite_ride(rct_peep * peep, Ride * ride);
 static sint16 peep_calculate_ride_satisfaction(rct_peep * peep, Ride * ride);
 static void   peep_update_ride_nausea_growth(rct_peep * peep, Ride * ride);
-static bool   DecideAndBuyItem(rct_peep * peep, sint32 rideIndex, sint32 shopItem, money32 price);
 static bool   peep_should_go_on_ride(rct_peep * peep, sint32 rideIndex, sint32 entranceNum, sint32 flags);
 static void   peep_ride_is_too_intense(rct_peep * peep, sint32 rideIndex, bool peepAtRide);
 static void   peep_chose_not_to_go_on_ride(rct_peep * peep, sint32 rideIndex, bool peepAtRide, bool updateLastRide);
