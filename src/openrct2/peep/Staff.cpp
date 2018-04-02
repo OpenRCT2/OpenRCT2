@@ -28,12 +28,14 @@
 #include "../network/network.h"
 #include "../object/ObjectList.h"
 #include "../ride/Station.h"
+#include "../ride/RideData.h"
 #include "../paint/tile_element/TileElement.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/Scenery.h"
+#include "../world/SmallScenery.h"
 #include "../world/Sprite.h"
 #include "Peep.h"
 #include "Staff.h"
@@ -1612,4 +1614,747 @@ sint32 staff_get_available_entertainer_costume_list(uint8 * costumeList)
         }
     }
     return numCostumes;
+}
+
+/** rct2: 0x009929C8 */
+static constexpr const LocationXY16 _9929C8[] = {
+    { 28, 28 }, { 28, 4 }, { 20, 4 }, { 20, 28 }, { 12, 28 }, { 12, 4 }, { 4, 4 }, { 4, 28 },
+};
+
+/**
+ *
+ *  rct2: 0x006BF567
+ */
+void rct_peep::UpdateMowing()
+{
+    if (!CheckForPath())
+        return;
+
+    invalidate_sprite_2((rct_sprite *)this);
+    while (true)
+    {
+        sint16 actionX = 0;
+        sint16 actionY = 0;
+        sint16 xy_distance;
+        if (UpdateAction(&actionX, &actionY, &xy_distance))
+        {
+            sint16 checkZ = tile_element_height(actionX, actionY) & 0xFFFF;
+            sprite_move(actionX, actionY, checkZ, (rct_sprite *)this);
+            invalidate_sprite_2((rct_sprite *)this);
+            return;
+        }
+
+        var_37++;
+
+        if (var_37 == 1)
+        {
+            SwitchToSpecialSprite(2);
+        }
+
+        if (var_37 == Util::CountOf(_9929C8))
+        {
+            peep_state_reset(this);
+            return;
+        }
+
+        destination_x = _9929C8[var_37].x + next_x;
+        destination_y = _9929C8[var_37].y + next_y;
+
+        if (var_37 != 7)
+            continue;
+
+        rct_tile_element * tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
+
+        for (; (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SURFACE); tile_element++)
+            ;
+
+        if ((tile_element->properties.surface.terrain & TILE_ELEMENT_SURFACE_TERRAIN_MASK) == (TERRAIN_GRASS << 5))
+        {
+            tile_element->properties.surface.grass_length = GRASS_LENGTH_MOWED;
+            map_invalidate_tile_zoom0(next_x, next_y, tile_element->base_height * 8,
+                                      tile_element->base_height * 8 + 16);
+        }
+        staff_lawns_mown++;
+        window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
+    }
+}
+
+/**
+ *
+ *  rct2: 0x006BF7E6
+ */
+void rct_peep::UpdateWatering()
+{
+    staff_mowing_timeout = 0;
+    if (sub_state == 0)
+    {
+        if (!CheckForPath())
+            return;
+
+        uint8 pathingResult;
+        PerformNextAction(pathingResult);
+        if (!(pathingResult & PATHING_DESTINATION_REACHED))
+            return;
+
+        sprite_direction           = (var_37 & 3) << 3;
+        action                     = PEEP_ACTION_STAFF_WATERING;
+        action_frame               = 0;
+        action_sprite_image_offset = 0;
+        UpdateCurrentActionSpriteType();
+        invalidate_sprite_2((rct_sprite *)this);
+
+        sub_state = 1;
+    }
+    else if (sub_state == 1)
+    {
+        if (action != PEEP_ACTION_NONE_2)
+        {
+            sint16 actionX, actionY, xy_distance;
+            UpdateAction(&actionX, &actionY, &xy_distance);
+            return;
+        }
+
+        sint32 actionX = next_x + TileDirectionDelta[var_37].x;
+        sint32 actionY = next_y + TileDirectionDelta[var_37].y;
+
+        rct_tile_element * tile_element = map_get_first_element_at(actionX / 32, actionY / 32);
+
+        do
+        {
+            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+                continue;
+
+            if (abs(((sint32)next_z) - tile_element->base_height) > 4)
+                continue;
+
+            rct_scenery_entry * scenery_entry = get_small_scenery_entry(tile_element->properties.scenery.type);
+
+            if (!scenery_small_entry_has_flag(scenery_entry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+                continue;
+
+            tile_element->properties.scenery.age = 0;
+            map_invalidate_tile_zoom0(actionX, actionY, tile_element->base_height * 8, tile_element->clearance_height * 8);
+            staff_gardens_watered++;
+            window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
+        } while (!tile_element_is_last_for_tile(tile_element++));
+
+        peep_state_reset(this);
+    }
+}
+
+/**
+ *
+ *  rct2: 0x006BF6C9
+ */
+void rct_peep::UpdateEmptyingBin()
+{
+    staff_mowing_timeout = 0;
+
+    if (sub_state == 0)
+    {
+        if (!CheckForPath())
+            return;
+        uint8 pathingResult;
+        PerformNextAction(pathingResult);
+        if (!(pathingResult & PATHING_DESTINATION_REACHED))
+            return;
+
+        sprite_direction           = (var_37 & 3) << 3;
+        action                     = PEEP_ACTION_STAFF_EMPTY_BIN;
+        action_frame               = 0;
+        action_sprite_image_offset = 0;
+        UpdateCurrentActionSpriteType();
+        invalidate_sprite_2((rct_sprite *)this);
+
+        sub_state = 1;
+    }
+    else if (sub_state == 1)
+    {
+
+        if (action == PEEP_ACTION_NONE_2)
+        {
+            peep_state_reset(this);
+            return;
+        }
+
+        sint16 actionX = 0;
+        sint16 actionY = 0;
+        sint16 xy_distance;
+        UpdateAction(&actionX, &actionY, &xy_distance);
+
+        if (action_frame != 11)
+            return;
+
+        rct_tile_element * tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
+
+        for (;; tile_element++)
+        {
+            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_PATH)
+            {
+                if (next_z == tile_element->base_height)
+                    break;
+            }
+            if (tile_element_is_last_for_tile(tile_element))
+            {
+                peep_state_reset(this);
+                return;
+            }
+        }
+
+        if (!footpath_element_has_path_scenery(tile_element))
+        {
+            peep_state_reset(this);
+            return;
+        }
+
+        rct_scenery_entry * scenery_entry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
+        if (!(scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN) || tile_element->flags & (1 << 5) ||
+            footpath_element_path_scenery_is_ghost(tile_element))
+        {
+            peep_state_reset(this);
+            return;
+        }
+
+        tile_element->properties.path.addition_status |= ((3 << var_37) << var_37);
+
+        map_invalidate_tile_zoom0(next_x, next_y, tile_element->base_height * 8, tile_element->clearance_height * 8);
+
+        staff_bins_emptied++;
+        window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
+    }
+}
+
+/**
+ *
+ *  rct2: 0x6BF641
+ */
+void rct_peep::UpdateSweeping()
+{
+    staff_mowing_timeout = 0;
+    if (!CheckForPath())
+        return;
+
+    invalidate_sprite_2((rct_sprite *)this);
+
+    if (action == PEEP_ACTION_STAFF_SWEEP && action_frame == 8)
+    {
+        // Remove sick at this location
+        litter_remove_at(x, y, z);
+        staff_litter_swept++;
+        window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
+    }
+    sint16 actionX = 0;
+    sint16 actionY = 0;
+    sint16 xy_distance;
+    if (UpdateAction(&actionX, &actionY, &xy_distance))
+    {
+        sint16 actionZ = peep_get_height_on_slope(this, actionX, actionY);
+        sprite_move(actionX, actionY, actionZ, (rct_sprite *)this);
+        invalidate_sprite_2((rct_sprite *)this);
+        return;
+    }
+
+    var_37++;
+    if (var_37 != 2)
+    {
+        action                     = PEEP_ACTION_STAFF_SWEEP;
+        action_frame               = 0;
+        action_sprite_image_offset = 0;
+        UpdateCurrentActionSpriteType();
+        invalidate_sprite_2((rct_sprite *)this);
+        return;
+    }
+    peep_state_reset(this);
+}
+
+/**
+ *
+ *  rct2: 0x006C16D7
+ */
+void rct_peep::UpdateHeadingToInspect()
+{
+    Ride * ride = get_ride(current_ride);
+
+    if (ride->type == RIDE_TYPE_NULL)
+    {
+        SetState(PEEP_STATE_FALLING);
+        return;
+    }
+
+    if (ride_get_exit_location(ride, current_ride_station).isNull())
+    {
+        ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
+        SetState(PEEP_STATE_FALLING);
+        return;
+    }
+
+    if (ride->mechanic_status != RIDE_MECHANIC_STATUS_HEADING || !(ride->lifecycle_flags & RIDE_LIFECYCLE_DUE_INSPECTION))
+    {
+        SetState(PEEP_STATE_FALLING);
+        return;
+    }
+
+    if (sub_state == 0)
+    {
+        mechanic_time_since_call = 0;
+        peep_reset_pathfind_goal(this);
+        sub_state = 2;
+    }
+
+    if (sub_state <= 3)
+    {
+        mechanic_time_since_call++;
+        if (mechanic_time_since_call > 2500)
+        {
+            if (ride->lifecycle_flags & RIDE_LIFECYCLE_DUE_INSPECTION && ride->mechanic_status == RIDE_MECHANIC_STATUS_HEADING)
+            {
+                ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
+            }
+            SetState(PEEP_STATE_FALLING);
+            return;
+        }
+
+        if (!CheckForPath())
+            return;
+
+        uint8 pathingResult;
+        PerformNextAction(pathingResult);
+
+        if (!(pathingResult & PATHING_RIDE_EXIT) && !(pathingResult & PATHING_RIDE_ENTRANCE))
+        {
+            return;
+        }
+
+        rct_tile_element * tile_element = _peepRideEntranceExitElement;
+
+        if (current_ride != tile_element->properties.entrance.ride_index)
+            return;
+
+        uint8 exit_index = ((tile_element->properties.entrance.index & 0x70) >> 4);
+
+        if (current_ride_station != exit_index)
+            return;
+
+        if (pathingResult & PATHING_RIDE_ENTRANCE)
+        {
+            if (!ride_get_exit_location(ride, exit_index).isNull())
+            {
+                return;
+            }
+        }
+
+        direction = tile_element_get_direction(tile_element);
+
+        sint32 destX = next_x + 16 + word_981D6C[direction].x * 53;
+        sint32 destY = next_y + 16 + word_981D6C[direction].y * 53;
+
+        destination_x         = destX;
+        destination_y         = destY;
+        destination_tolerance = 2;
+        sprite_direction      = direction << 3;
+
+        z         = tile_element->base_height * 4;
+        sub_state = 4;
+        // Falls through into sub_state 4
+    }
+
+    invalidate_sprite_2((rct_sprite *)this);
+
+    sint16 delta_y = abs(y - destination_y);
+
+    sint16 actionX, actionY, xy_distance;
+    if (!UpdateAction(&actionX, &actionY, &xy_distance))
+    {
+        SetState(PEEP_STATE_INSPECTING);
+        sub_state = 0;
+        return;
+    }
+
+    sint32 newZ = ride->station_heights[current_ride_station] * 8;
+
+    if (delta_y < 20)
+    {
+        newZ += RideData5[ride->type].z;
+    }
+
+    sprite_move(actionX, actionY, newZ, (rct_sprite *)this);
+    invalidate_sprite_2((rct_sprite *)this);
+}
+
+/**
+ *
+ *  rct2: 0x006C0CB8
+ */
+void rct_peep::UpdateAnswering()
+{
+    Ride * ride = get_ride(current_ride);
+
+    if (ride->type == RIDE_TYPE_NULL || ride->mechanic_status != RIDE_MECHANIC_STATUS_HEADING)
+    {
+
+        SetState(PEEP_STATE_FALLING);
+        return;
+    }
+
+    if (sub_state == 0)
+    {
+        action                     = PEEP_ACTION_STAFF_ANSWER_CALL;
+        action_frame               = 0;
+        action_sprite_image_offset = 0;
+
+        UpdateCurrentActionSpriteType();
+        invalidate_sprite_2((rct_sprite *)this);
+
+        sub_state = 1;
+        peep_window_state_update(this);
+        return;
+    }
+    else if (sub_state == 1)
+    {
+        if (action == PEEP_ACTION_NONE_2)
+        {
+            sub_state = 2;
+            peep_window_state_update(this);
+            mechanic_time_since_call = 0;
+            peep_reset_pathfind_goal(this);
+            return;
+        }
+        sint16 actionX, actionY, xy_distance;
+        UpdateAction(&actionX, &actionY, &xy_distance);
+        return;
+    }
+    else if (sub_state <= 3)
+    {
+        mechanic_time_since_call++;
+        if (mechanic_time_since_call > 2500)
+        {
+            ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
+            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+            SetState(PEEP_STATE_FALLING);
+            return;
+        }
+
+        if (!CheckForPath())
+            return;
+
+        uint8 pathingResult;
+        PerformNextAction(pathingResult);
+
+        if (!(pathingResult & PATHING_RIDE_EXIT) && !(pathingResult & PATHING_RIDE_ENTRANCE))
+        {
+            return;
+        }
+
+        rct_tile_element * tile_element = _peepRideEntranceExitElement;
+
+        if (current_ride != tile_element->properties.entrance.ride_index)
+            return;
+
+        uint8 exit_index = ((tile_element->properties.entrance.index & 0x70) >> 4);
+
+        if (current_ride_station != exit_index)
+            return;
+
+        if (pathingResult & PATHING_RIDE_ENTRANCE)
+        {
+            if (!ride_get_exit_location(ride, exit_index).isNull())
+            {
+                return;
+            }
+        }
+
+        direction = tile_element_get_direction(tile_element);
+
+        sint32 destX = next_x + 16 + word_981D6C[direction].x * 53;
+        sint32 destY = next_y + 16 + word_981D6C[direction].y * 53;
+
+        destination_x         = destX;
+        destination_y         = destY;
+        destination_tolerance = 2;
+        sprite_direction      = direction << 3;
+
+        z         = tile_element->base_height * 4;
+        sub_state = 4;
+        // Falls through into sub_state 4
+    }
+
+    invalidate_sprite_2((rct_sprite *)this);
+
+    sint16 delta_y = abs(y - destination_y);
+
+    sint16 actionX, actionY, xy_distance;
+    if (!UpdateAction(&actionX, &actionY, &xy_distance))
+    {
+        SetState(PEEP_STATE_FIXING);
+        sub_state = 0;
+        return;
+    }
+
+    sint32 newZ = ride->station_heights[current_ride_station] * 8;
+
+    if (delta_y < 20)
+    {
+        newZ += RideData5[ride->type].z;
+    }
+
+    sprite_move(actionX, actionY, newZ, (rct_sprite *)this);
+    invalidate_sprite_2((rct_sprite *)this);
+}
+
+/** rct2: 0x00992A5C */
+static constexpr const LocationXY16 _992A5C[] = {
+    { 3, 16 }, { 16, 29 }, { 29, 16 }, { 16, 3 }, { 3, 29 }, { 29, 29 }, { 29, 3 }, { 3, 3 },
+};
+
+/**
+ *
+ *  rct2: 0x006BF483
+ */
+static sint32 peep_update_patrolling_find_watering(rct_peep * peep)
+{
+    if (!(peep->staff_orders & STAFF_ORDERS_WATER_FLOWERS))
+        return 0;
+
+    uint8 chosen_position = scenario_rand() & 7;
+    for (sint32 i = 0; i < 8; ++i, ++chosen_position)
+    {
+        chosen_position &= 7;
+
+        sint32 x = peep->next_x + TileDirectionDelta[chosen_position].x;
+        sint32 y = peep->next_y + TileDirectionDelta[chosen_position].y;
+
+        rct_tile_element * tile_element = map_get_first_element_at(x / 32, y / 32);
+
+        // This seems to happen in some SV4 files.
+        if (tile_element == nullptr)
+        {
+            continue;
+        }
+
+        do
+        {
+            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+            {
+                continue;
+            }
+
+            uint8 z_diff = abs(peep->next_z - tile_element->base_height);
+
+            if (z_diff >= 4)
+            {
+                continue;
+            }
+
+            rct_scenery_entry * sceneryEntry = get_small_scenery_entry(tile_element->properties.scenery.type);
+
+            if (sceneryEntry == nullptr || !scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+            {
+                continue;
+            }
+
+            if (tile_element->properties.scenery.age < SCENERY_WITHER_AGE_THRESHOLD_2)
+            {
+                if (chosen_position >= 4)
+                {
+                    continue;
+                }
+
+                if (tile_element->properties.scenery.age < SCENERY_WITHER_AGE_THRESHOLD_1)
+                {
+                    continue;
+                }
+            }
+
+            peep->SetState(PEEP_STATE_WATERING);
+            peep->var_37 = chosen_position;
+
+            peep->sub_state             = 0;
+            peep->destination_x         = (peep->x & 0xFFE0) + _992A5C[chosen_position].x;
+            peep->destination_y         = (peep->y & 0xFFE0) + _992A5C[chosen_position].y;
+            peep->destination_tolerance = 3;
+
+            return 1;
+        } while (!tile_element_is_last_for_tile(tile_element++));
+    }
+    return 0;
+}
+
+/**
+ *
+ *  rct2: 0x006BF3A1
+ */
+static sint32 peep_update_patrolling_find_bin(rct_peep * peep)
+{
+    if (!(peep->staff_orders & STAFF_ORDERS_EMPTY_BINS))
+        return 0;
+
+    if ((peep->next_var_29 & 0x18) != 0)
+        return 0;
+
+    rct_tile_element * tile_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+    if (tile_element == nullptr)
+        return 0;
+
+    for (;; tile_element++)
+    {
+
+        if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_PATH && (tile_element->base_height == peep->next_z))
+            break;
+
+        if (tile_element_is_last_for_tile(tile_element))
+            return 0;
+    }
+
+    if (!footpath_element_has_path_scenery(tile_element))
+        return 0;
+    rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
+
+    if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
+        return 0;
+
+    if (tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)
+        return 0;
+
+    if (footpath_element_path_scenery_is_ghost(tile_element))
+        return 0;
+
+    uint8 bin_positions   = tile_element->properties.path.edges & 0xF;
+    uint8 bin_quantity    = tile_element->properties.path.addition_status;
+    uint8 chosen_position = 0;
+
+    for (; chosen_position < 4; ++chosen_position)
+    {
+        if (!(bin_positions & 1) && !(bin_quantity & 3))
+            break;
+        bin_positions >>= 1;
+        bin_quantity >>= 2;
+    }
+
+    if (chosen_position == 4)
+        return 0;
+
+    peep->var_37 = chosen_position;
+    peep->SetState(PEEP_STATE_EMPTYING_BIN);
+
+    peep->sub_state             = 0;
+    peep->destination_x         = (peep->x & 0xFFE0) + BinUseOffsets[chosen_position].x;
+    peep->destination_y         = (peep->y & 0xFFE0) + BinUseOffsets[chosen_position].y;
+    peep->destination_tolerance = 3;
+    return 1;
+}
+
+/**
+ *
+ *  rct2: 0x006BF322
+ */
+static sint32 peep_update_patrolling_find_grass(rct_peep * peep)
+{
+    if (!(peep->staff_orders & STAFF_ORDERS_MOWING))
+        return 0;
+
+    if (peep->staff_mowing_timeout < 12)
+        return 0;
+
+    if ((peep->next_var_29 & 0x18) != 8)
+        return 0;
+
+    rct_tile_element * tile_element = map_get_surface_element_at({peep->next_x, peep->next_y});
+
+    if ((tile_element->properties.surface.terrain & TILE_ELEMENT_SURFACE_TERRAIN_MASK) != TERRAIN_GRASS)
+        return 0;
+
+    if ((tile_element->properties.surface.grass_length & 0x7) < GRASS_LENGTH_CLEAR_1)
+        return 0;
+
+    peep->SetState(PEEP_STATE_MOWING);
+    peep->var_37 = 0;
+    // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
+    peep->destination_x         = peep->next_x + _9929C8[0].x;
+    peep->destination_y         = peep->next_y + _9929C8[0].y;
+    peep->destination_tolerance = 3;
+    return 1;
+}
+
+/**
+ *
+ *  rct2: 0x006BF295
+ */
+static sint32 peep_update_patrolling_find_sweeping(rct_peep * peep)
+{
+    if (!(peep->staff_orders & STAFF_ORDERS_SWEEPING))
+        return 0;
+
+    uint16 sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);
+
+    for (rct_sprite * sprite = nullptr; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant)
+    {
+
+        sprite = get_sprite(sprite_id);
+
+        if (sprite->unknown.linked_list_type_offset != SPRITE_LIST_LITTER * 2)
+            continue;
+
+        uint16 z_diff = abs(peep->z - sprite->litter.z);
+
+        if (z_diff >= 16)
+            continue;
+
+        peep->SetState(PEEP_STATE_SWEEPING);
+        peep->var_37                = 0;
+        peep->destination_x         = sprite->litter.x;
+        peep->destination_y         = sprite->litter.y;
+        peep->destination_tolerance = 5;
+        return 1;
+    }
+
+    return 0;
+}
+
+/**
+ *
+ *  rct2: 0x006BF1FD
+ */
+void rct_peep::UpdatePatrolling()
+{
+    if (!CheckForPath())
+        return;
+
+    uint8 pathingResult;
+    PerformNextAction(pathingResult);
+    if (!(pathingResult & PATHING_DESTINATION_REACHED))
+        return;
+
+    if ((next_var_29 & 0x18) == 8)
+    {
+        rct_tile_element * tile_element = map_get_surface_element_at({next_x, next_y});
+
+        if (tile_element != nullptr)
+        {
+            sint32 water_height = map_get_water_height(tile_element);
+            if (water_height)
+            {
+                invalidate_sprite_2((rct_sprite *)this);
+                water_height *= 16;
+                sprite_move(x, y, water_height, (rct_sprite *)this);
+                invalidate_sprite_2((rct_sprite *)this);
+
+                SetState(PEEP_STATE_FALLING);
+                return;
+            }
+        }
+    }
+
+    if (staff_type != STAFF_TYPE_HANDYMAN)
+        return;
+
+    if (peep_update_patrolling_find_sweeping(this))
+        return;
+
+    if (peep_update_patrolling_find_grass(this))
+        return;
+
+    if (peep_update_patrolling_find_bin(this))
+        return;
+
+    peep_update_patrolling_find_watering(this);
 }

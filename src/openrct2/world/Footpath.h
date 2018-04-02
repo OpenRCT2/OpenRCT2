@@ -127,6 +127,7 @@ extern money32 gFootpathPrice;
 extern uint8 gFootpathGroundFlags;
 
 extern const LocationXY16 word_981D6C[4];
+extern const LocationXY16 BinUseOffsets[4];
 
 rct_tile_element *map_get_footpath_element(sint32 x, sint32 y, sint32 z);
 money32 footpath_remove_real(sint32 x, sint32 y, sint32 z, sint32 flags);
