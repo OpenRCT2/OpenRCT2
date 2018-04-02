@@ -1503,18 +1503,13 @@ void rct_peep::RemoveFromRide()
     {
         RemoveFromQueue();
     }
-    peep_decrement_num_riders(this);
-    state = PEEP_STATE_1;
-    peep_window_state_update(this);
+    SetState(PEEP_STATE_1);
     SwitchToSpecialSprite(0);
 }
 
 static void peep_state_reset(rct_peep * peep)
 {
-    peep_decrement_num_riders(peep);
-    peep->state = PEEP_STATE_1;
-    peep_window_state_update(peep);
-
+    peep->SetState(PEEP_STATE_1);
     peep->SwitchToSpecialSprite(0);
 }
 
@@ -1957,10 +1952,8 @@ void peep_pickup(rct_peep * peep)
     invalidate_sprite_2((rct_sprite *)peep);
 
     sprite_move(LOCATION_NULL, peep->y, peep->z, (rct_sprite *)peep);
-    peep_decrement_num_riders(peep);
-    peep->state     = PEEP_STATE_PICKED;
+    peep->SetState(PEEP_STATE_PICKED);
     peep->sub_state = 0;
-    peep_window_state_update(peep);
 }
 
 void peep_pickup_abort(rct_peep * peep, sint32 old_x)
@@ -1976,9 +1969,7 @@ void peep_pickup_abort(rct_peep * peep, sint32 old_x)
 
     if (peep->x != (sint16)LOCATION_NULL)
     {
-        peep_decrement_num_riders(peep);
-        peep->state = PEEP_STATE_FALLING;
-        peep_window_state_update(peep);
+        peep->SetState(PEEP_STATE_FALLING);
         peep->action                     = 0xFF;
         peep->special_sprite             = 0;
         peep->action_sprite_image_offset = 0;
@@ -2039,9 +2030,7 @@ bool peep_pickup_place(rct_peep * peep, sint32 x, sint32 y, sint32 z, bool apply
     {
         sprite_move(dest_x, dest_y, dest_z, (rct_sprite *)peep);
         invalidate_sprite_2((rct_sprite *)peep);
-        peep_decrement_num_riders(peep);
-        peep->state = 0;
-        peep_window_state_update(peep);
+        peep->SetState(PEEP_STATE_FALLING);
         peep->action                     = 0xFF;
         peep->special_sprite             = 0;
         peep->action_sprite_image_offset = 0;
@@ -2426,9 +2415,7 @@ void rct_peep::UpdateFixing(sint32 steps)
 
     if (ride->type == RIDE_TYPE_NULL)
     {
-        peep_decrement_num_riders(this);
-        state = PEEP_STATE_FALLING;
-        peep_window_state_update(this);
+        SetState(PEEP_STATE_FALLING);
         return;
     }
 
@@ -2610,8 +2597,6 @@ static bool peep_update_fixing_move_to_broken_down_vehicle(bool firstRun, rct_pe
  */
 static bool peep_update_fixing_fix_vehicle(bool firstRun, rct_peep * peep, Ride * ride)
 {
-    sint16 tmp_x, tmp_y, tmp_distance;
-
     if (!firstRun)
     {
         peep->sprite_direction = peep->direction << 3;
@@ -2628,7 +2613,7 @@ static bool peep_update_fixing_fix_vehicle(bool firstRun, rct_peep * peep, Ride 
         return true;
     }
 
-    peep->UpdateAction(&tmp_x, &tmp_y, &tmp_distance);
+    peep->UpdateAction();
 
     uint8 actionFrame = (peep->action == PEEP_ACTION_STAFF_FIX) ? 0x25 : 0x50;
     if (peep->action_frame != actionFrame)
@@ -2654,8 +2639,6 @@ static bool peep_update_fixing_fix_vehicle(bool firstRun, rct_peep * peep, Ride 
  */
 static bool peep_update_fixing_fix_vehicle_malfunction(bool firstRun, rct_peep * peep, Ride * ride)
 {
-    sint16 tmp_x, tmp_y, tmp_distance;
-
     if (!firstRun)
     {
         peep->sprite_direction           = peep->direction << 3;
@@ -2672,7 +2655,7 @@ static bool peep_update_fixing_fix_vehicle_malfunction(bool firstRun, rct_peep *
         return true;
     }
 
-    peep->UpdateAction(&tmp_x, &tmp_y, &tmp_distance);
+    peep->UpdateAction();
     if (peep->action_frame != 0x65)
     {
         return false;
@@ -2769,8 +2752,6 @@ static bool peep_update_fixing_move_to_station_end(bool firstRun, rct_peep * pee
  */
 static bool peep_update_fixing_fix_station_end(bool firstRun, rct_peep * peep)
 {
-    sint16 tmp_x, tmp_y, tmp_xy_distance;
-
     if (!firstRun)
     {
         peep->sprite_direction           = peep->direction << 3;
@@ -2787,7 +2768,7 @@ static bool peep_update_fixing_fix_station_end(bool firstRun, rct_peep * peep)
         return true;
     }
 
-    peep->UpdateAction(&tmp_x, &tmp_y, &tmp_xy_distance);
+    peep->UpdateAction();
 
     return false;
 }
@@ -2890,8 +2871,6 @@ static bool peep_update_fixing_move_to_station_start(bool firstRun, rct_peep * p
  */
 static bool peep_update_fixing_fix_station_start(bool firstRun, rct_peep * peep, Ride * ride)
 {
-    sint16 tmp_x, tmp_y, tmp_xy_distance;
-
     if (!firstRun)
     {
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_HAS_NO_TRACK))
@@ -2914,7 +2893,7 @@ static bool peep_update_fixing_fix_station_start(bool firstRun, rct_peep * peep,
         return true;
     }
 
-    peep->UpdateAction(&tmp_x, &tmp_y, &tmp_xy_distance);
+    peep->UpdateAction();
 
     return false;
 }
@@ -2926,8 +2905,6 @@ static bool peep_update_fixing_fix_station_start(bool firstRun, rct_peep * peep,
  */
 static bool peep_update_fixing_fix_station_brakes(bool firstRun, rct_peep * peep, Ride * ride)
 {
-    sint16 tmp_x, tmp_y, tmp_xy_distance;
-
     if (!firstRun)
     {
         peep->sprite_direction = peep->direction << 3;
@@ -2945,7 +2922,7 @@ static bool peep_update_fixing_fix_station_brakes(bool firstRun, rct_peep * peep
         return true;
     }
 
-    peep->UpdateAction(&tmp_x, &tmp_y, &tmp_xy_distance);
+    peep->UpdateAction();
     if (peep->action_frame == 0x28)
     {
         ride->mechanic_status = RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES;
@@ -3020,8 +2997,6 @@ static bool peep_update_fixing_move_to_station_exit(bool firstRun, rct_peep * pe
  */
 static bool peep_update_fixing_finish_fix_or_inspect(bool firstRun, sint32 steps, rct_peep * peep, Ride * ride)
 {
-    sint16 tmp_x, tmp_y, tmp_xy_distance;
-
     if (!firstRun)
     {
         ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
@@ -3050,7 +3025,7 @@ static bool peep_update_fixing_finish_fix_or_inspect(bool firstRun, sint32 steps
 
     if (peep->action != 0xFF)
     {
-        peep->UpdateAction(&tmp_x, &tmp_y, &tmp_xy_distance);
+        peep->UpdateAction();
         return false;
     }
 
@@ -3077,9 +3052,7 @@ static bool peep_update_fixing_leave_by_entrance_exit(bool firstRun, rct_peep * 
 
             if (exitPosition.isNull())
             {
-                peep_decrement_num_riders(peep);
-                peep->state = 0;
-                peep_window_state_update(peep);
+                peep->SetState(PEEP_STATE_FALLING);
                 return false;
             }
         }
@@ -3102,10 +3075,7 @@ static bool peep_update_fixing_leave_by_entrance_exit(bool firstRun, rct_peep * 
     invalidate_sprite_2((rct_sprite *)peep);
     if (!peep->UpdateAction(&x, &y, &xy_distance))
     {
-        peep_decrement_num_riders(peep);
-        peep->state = 0;
-        peep_window_state_update(peep);
-
+        peep->SetState(PEEP_STATE_FALLING);
         return false;
     }
 
@@ -3150,9 +3120,7 @@ void rct_peep::UpdateQueuing()
     if (ride->status == RIDE_STATUS_CLOSED || ride->status == RIDE_STATUS_TESTING)
     {
         RemoveFromQueue();
-        peep_decrement_num_riders(this);
-        state = PEEP_STATE_1;
-        peep_window_state_update(this);
+        SetState(PEEP_STATE_1);
         return;
     }
 
@@ -3177,9 +3145,7 @@ void rct_peep::UpdateQueuing()
         {
             // Happens every time peep goes onto ride.
             destination_tolerance = 0;
-            peep_decrement_num_riders(this);
-            state = PEEP_STATE_QUEUING_FRONT;
-            peep_window_state_update(this);
+            SetState(PEEP_STATE_QUEUING_FRONT);
             sub_state = PEEP_RIDE_AT_ENTRANCE;
             return;
         }
@@ -3695,9 +3661,7 @@ void rct_peep::UpdateWatching()
         if (time_to_stand != 0)
             return;
 
-        peep_decrement_num_riders(this);
-        state = PEEP_STATE_WALKING;
-        peep_window_state_update(this);
+        SetState(PEEP_STATE_WALKING);
         peep_update_sprite_type(this);
         // Send peep to the centre of current tile.
         destination_x         = (x & 0xFFE0) + 16;
@@ -3726,16 +3690,14 @@ void rct_peep::UpdateEnteringPark()
     sint16 actionX = 0;
     sint16 actionY = 0;
     sint16 xy_distance;
-    if (UpdateAction(&actionX, &y, &xy_distance))
+    if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
         invalidate_sprite_2((rct_sprite *)this);
         sprite_move(actionX, actionY, z, (rct_sprite *)this);
         invalidate_sprite_2((rct_sprite *)this);
         return;
     }
-    peep_decrement_num_riders(this);
-    state = PEEP_STATE_FALLING;
-    peep_window_state_update(this);
+    SetState(PEEP_STATE_FALLING);
 
     outside_of_park = 0;
     time_in_park    = gScenarioTicks;
@@ -3826,9 +3788,7 @@ static sint32 peep_update_walking_find_bench(rct_peep * peep)
 
     peep->var_37 = ((free_edge & 1) << 2) | chosen_edge;
 
-    peep_decrement_num_riders(peep);
-    peep->state = PEEP_STATE_SITTING;
-    peep_window_state_update(peep);
+    peep->SetState(PEEP_STATE_SITTING);
 
     peep->sub_state = PEEP_SITTING_TRYING_TO_SIT;
 
@@ -3919,10 +3879,7 @@ static sint32 peep_update_walking_find_bin(rct_peep * peep)
 
     peep->var_37 = chosen_edge;
 
-    peep_decrement_num_riders(peep);
-    peep->state = PEEP_STATE_USING_BIN;
-    peep_window_state_update(peep);
-
+    peep->SetState(PEEP_STATE_USING_BIN);
     peep->sub_state = 0;
 
     sint32 ebx = peep->var_37 & 0x3;
@@ -4258,26 +4215,20 @@ void rct_peep::UpdateHeadingToInspect()
 
     if (ride->type == RIDE_TYPE_NULL)
     {
-        peep_decrement_num_riders(this);
-        state = PEEP_STATE_FALLING;
-        peep_window_state_update(this);
+        SetState(PEEP_STATE_FALLING);
         return;
     }
 
     if (ride_get_exit_location(ride, current_ride_station).isNull())
     {
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
-        peep_decrement_num_riders(this);
-        state = PEEP_STATE_FALLING;
-        peep_window_state_update(this);
+        SetState(PEEP_STATE_FALLING);
         return;
     }
 
     if (ride->mechanic_status != RIDE_MECHANIC_STATUS_HEADING || !(ride->lifecycle_flags & RIDE_LIFECYCLE_DUE_INSPECTION))
     {
-        peep_decrement_num_riders(this);
-        state = PEEP_STATE_FALLING;
-        peep_window_state_update(this);
+        SetState(PEEP_STATE_FALLING);
         return;
     }
 
@@ -4297,9 +4248,7 @@ void rct_peep::UpdateHeadingToInspect()
             {
                 ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
             }
-            peep_decrement_num_riders(this);
-            state = PEEP_STATE_FALLING;
-            peep_window_state_update(this);
+            SetState(PEEP_STATE_FALLING);
             return;
         }
 
@@ -4354,10 +4303,8 @@ void rct_peep::UpdateHeadingToInspect()
     sint16 actionX, actionY, xy_distance;
     if (!UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        peep_decrement_num_riders(this);
-        state     = PEEP_STATE_INSPECTING;
+        SetState(PEEP_STATE_INSPECTING);
         sub_state = 0;
-        peep_window_state_update(this);
         return;
     }
 
@@ -4383,9 +4330,7 @@ void rct_peep::UpdateAnswering()
     if (ride->type == RIDE_TYPE_NULL || ride->mechanic_status != RIDE_MECHANIC_STATUS_HEADING)
     {
 
-        peep_decrement_num_riders(this);
-        state = PEEP_STATE_FALLING;
-        peep_window_state_update(this);
+        SetState(PEEP_STATE_FALLING);
         return;
     }
 
@@ -4423,9 +4368,7 @@ void rct_peep::UpdateAnswering()
         {
             ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
-            peep_decrement_num_riders(this);
-            state = PEEP_STATE_FALLING;
-            peep_window_state_update(this);
+            SetState(PEEP_STATE_FALLING);
             return;
         }
 
@@ -4480,10 +4423,8 @@ void rct_peep::UpdateAnswering()
     sint16 actionX, actionY, xy_distance;
     if (!UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        peep_decrement_num_riders(this);
-        state     = PEEP_STATE_FIXING;
+        SetState(PEEP_STATE_FIXING);
         sub_state = 0;
-        peep_window_state_update(this);
         return;
     }
 
@@ -4562,10 +4503,8 @@ static sint32 peep_update_patrolling_find_watering(rct_peep * peep)
                 }
             }
 
-            peep_decrement_num_riders(peep);
-            peep->state  = PEEP_STATE_WATERING;
+            peep->SetState(PEEP_STATE_WATERING);
             peep->var_37 = chosen_position;
-            peep_window_state_update(peep);
 
             peep->sub_state             = 0;
             peep->destination_x         = (peep->x & 0xFFE0) + _992A5C[chosen_position].x;
@@ -4633,9 +4572,7 @@ static sint32 peep_update_patrolling_find_bin(rct_peep * peep)
         return 0;
 
     peep->var_37 = chosen_position;
-    peep_decrement_num_riders(peep);
-    peep->state = PEEP_STATE_EMPTYING_BIN;
-    peep_window_state_update(peep);
+    peep->SetState(PEEP_STATE_EMPTYING_BIN);
 
     peep->sub_state             = 0;
     peep->destination_x         = (peep->x & 0xFFE0) + _992A4C[chosen_position].x;
