@@ -694,6 +694,8 @@ struct rct_peep
     void RemoveFromQueue();
     void OnEnterRide(uint8 rideIndex);
     void OnExitRide(uint8 rideIndex);
+    void StateReset();
+
 private:
     void UpdateFalling();
     void Update1();
@@ -741,10 +743,11 @@ private:
 
     bool CheckForPath();
     sint32 PerformNextAction(uint8 & pathing_result);
+    sint32 PerformNextAction(uint8 & pathing_result, rct_tile_element * & tile_result);
     void StopPurchaseThought(uint8 ride_type);
-
 public: // TODO: Make these private again when done refactoring - they need to be public since they are called from non-member
         // peep functions
+    sint32 GetZOnSlope(sint32 tile_x, sint32 tile_y);
     bool UpdateAction(sint16 * actionX, sint16 * actionY, sint16 * xy_distance);
     bool UpdateAction();
     void ChoseNotToGoOnRide(sint32 rideIndex, bool peepAtRide, bool updateLastRide);
