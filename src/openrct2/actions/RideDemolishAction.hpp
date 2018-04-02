@@ -96,6 +96,7 @@ public:
                     STR_CANT_REFURBISH_NOT_NEEDED);
             }
 
+            result->ErrorTitle = STR_CANT_REFURBISH_RIDE;
             result->Cost = GetRefurbishPrice();
         }
 
