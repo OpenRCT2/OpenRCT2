@@ -57,6 +57,16 @@ uint8 gFootpathGroundFlags;
 static uint8 *_footpathQueueChainNext;
 static uint8 _footpathQueueChain[64];
 
+// This is the coordinates that a user of the bin should move to
+// rct2: 0x00992A4C
+const LocationXY16 BinUseOffsets[4] = {
+    { 11, 16 },
+    { 16, 21 },
+    { 21, 16 },
+    { 16, 11 },
+};
+
+
 /** rct2: 0x00981D6C, 0x00981D6E */
 const LocationXY16 word_981D6C[4] = {
     { -1,  0 },
