@@ -215,12 +215,6 @@
 #pragma endregion
 
 #pragma region RideModifyAction
-    // For easy compatibility, should be removed
-    void ride_demolish(sint32 rideIndex, sint32 flags)
-    {
-        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, flags);
-    }
-
     void ride_action_modify(sint32 rideIndex, sint32 modifyType, sint32 flags)
     {
         auto gameAction = RideDemolishAction(rideIndex, modifyType);

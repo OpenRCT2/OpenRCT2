@@ -188,7 +188,7 @@ static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIn
     switch (widgetIndex) {
     case WIDX_DEMOLISH:
     {
-        ride_demolish(w->number, GAME_COMMAND_FLAG_APPLY);
+        ride_action_modify(w->number, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
         break;
     }
     case WIDX_CANCEL:

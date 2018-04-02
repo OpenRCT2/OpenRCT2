@@ -1377,7 +1377,7 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
 
     if (_trackDesignPlaceOperation == PTD_OPERATION_CLEAR_OUTLINES)
     {
-        ride_demolish(rideIndex, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
     }
 
     gTrackPreviewOrigin.x = x;
@@ -1974,7 +1974,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
     if (cost == MONEY32_UNDEFINED || !(flags & GAME_COMMAND_FLAG_APPLY))
     {
         rct_string_id error_reason = gGameCommandErrorText;
-        ride_demolish(rideIndex, GAME_COMMAND_FLAG_APPLY);
+        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
         gGameCommandErrorText   = error_reason;
         gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         *outRideIndex = rideIndex;
