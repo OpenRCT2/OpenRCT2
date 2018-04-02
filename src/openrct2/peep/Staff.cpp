@@ -1654,7 +1654,7 @@ void rct_peep::UpdateMowing()
 
         if (var_37 == Util::CountOf(_9929C8))
         {
-            peep_state_reset(this);
+            StateReset();
             return;
         }
 
@@ -1666,7 +1666,7 @@ void rct_peep::UpdateMowing()
 
         rct_tile_element * tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
 
-        for (; (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SURFACE); tile_element++)
+        for (; (tile_element->GetType() != TILE_ELEMENT_TYPE_SURFACE); tile_element++)
             ;
 
         if ((tile_element->properties.surface.terrain & TILE_ELEMENT_SURFACE_TERRAIN_MASK) == (TERRAIN_GRASS << 5))
@@ -1722,7 +1722,7 @@ void rct_peep::UpdateWatering()
 
         do
         {
-            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+            if (tile_element->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
 
             if (abs(((sint32)next_z) - tile_element->base_height) > 4)
@@ -1739,7 +1739,7 @@ void rct_peep::UpdateWatering()
             window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
         } while (!tile_element_is_last_for_tile(tile_element++));
 
-        peep_state_reset(this);
+        StateReset();
     }
 }
 
@@ -1774,7 +1774,7 @@ void rct_peep::UpdateEmptyingBin()
 
         if (action == PEEP_ACTION_NONE_2)
         {
-            peep_state_reset(this);
+            StateReset();
             return;
         }
 
@@ -1790,21 +1790,21 @@ void rct_peep::UpdateEmptyingBin()
 
         for (;; tile_element++)
         {
-            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_PATH)
+            if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
             {
                 if (next_z == tile_element->base_height)
                     break;
             }
             if (tile_element_is_last_for_tile(tile_element))
             {
-                peep_state_reset(this);
+                StateReset();
                 return;
             }
         }
 
         if (!footpath_element_has_path_scenery(tile_element))
         {
-            peep_state_reset(this);
+            StateReset();
             return;
         }
 
@@ -1812,7 +1812,7 @@ void rct_peep::UpdateEmptyingBin()
         if (!(scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN) || tile_element->flags & (1 << 5) ||
             footpath_element_path_scenery_is_ghost(tile_element))
         {
-            peep_state_reset(this);
+            StateReset();
             return;
         }
 
@@ -1849,7 +1849,7 @@ void rct_peep::UpdateSweeping()
     sint16 xy_distance;
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        sint16 actionZ = peep_get_height_on_slope(this, actionX, actionY);
+        sint16 actionZ = GetZOnSlope(actionX, actionY);
         sprite_move(actionX, actionY, actionZ, (rct_sprite *)this);
         invalidate_sprite_2((rct_sprite *)this);
         return;
@@ -1865,7 +1865,7 @@ void rct_peep::UpdateSweeping()
         invalidate_sprite_2((rct_sprite *)this);
         return;
     }
-    peep_state_reset(this);
+    StateReset();
 }
 
 /**
@@ -1919,19 +1919,18 @@ void rct_peep::UpdateHeadingToInspect()
             return;
 
         uint8 pathingResult;
-        PerformNextAction(pathingResult);
+        rct_tile_element * rideEntranceExitElement;
+        PerformNextAction(pathingResult, rideEntranceExitElement);
 
         if (!(pathingResult & PATHING_RIDE_EXIT) && !(pathingResult & PATHING_RIDE_ENTRANCE))
         {
             return;
         }
 
-        rct_tile_element * tile_element = _peepRideEntranceExitElement;
-
-        if (current_ride != tile_element->properties.entrance.ride_index)
+        if (current_ride != rideEntranceExitElement->properties.entrance.ride_index)
             return;
 
-        uint8 exit_index = ((tile_element->properties.entrance.index & 0x70) >> 4);
+        uint8 exit_index = ((rideEntranceExitElement->properties.entrance.index & 0x70) >> 4);
 
         if (current_ride_station != exit_index)
             return;
@@ -1944,7 +1943,7 @@ void rct_peep::UpdateHeadingToInspect()
             }
         }
 
-        direction = tile_element_get_direction(tile_element);
+        direction = tile_element_get_direction(rideEntranceExitElement);
 
         sint32 destX = next_x + 16 + word_981D6C[direction].x * 53;
         sint32 destY = next_y + 16 + word_981D6C[direction].y * 53;
@@ -1954,7 +1953,7 @@ void rct_peep::UpdateHeadingToInspect()
         destination_tolerance = 2;
         sprite_direction      = direction << 3;
 
-        z         = tile_element->base_height * 4;
+        z         = rideEntranceExitElement->base_height * 4;
         sub_state = 4;
         // Falls through into sub_state 4
     }
@@ -2039,19 +2038,18 @@ void rct_peep::UpdateAnswering()
             return;
 
         uint8 pathingResult;
-        PerformNextAction(pathingResult);
+        rct_tile_element * rideEntranceExitElement;
+        PerformNextAction(pathingResult, rideEntranceExitElement);
 
         if (!(pathingResult & PATHING_RIDE_EXIT) && !(pathingResult & PATHING_RIDE_ENTRANCE))
         {
             return;
         }
-
-        rct_tile_element * tile_element = _peepRideEntranceExitElement;
-
-        if (current_ride != tile_element->properties.entrance.ride_index)
+        
+        if (current_ride != rideEntranceExitElement->properties.entrance.ride_index)
             return;
 
-        uint8 exit_index = ((tile_element->properties.entrance.index & 0x70) >> 4);
+        uint8 exit_index = ((rideEntranceExitElement->properties.entrance.index & 0x70) >> 4);
 
         if (current_ride_station != exit_index)
             return;
@@ -2064,7 +2062,7 @@ void rct_peep::UpdateAnswering()
             }
         }
 
-        direction = tile_element_get_direction(tile_element);
+        direction = tile_element_get_direction(rideEntranceExitElement);
 
         sint32 destX = next_x + 16 + word_981D6C[direction].x * 53;
         sint32 destY = next_y + 16 + word_981D6C[direction].y * 53;
@@ -2074,7 +2072,7 @@ void rct_peep::UpdateAnswering()
         destination_tolerance = 2;
         sprite_direction      = direction << 3;
 
-        z         = tile_element->base_height * 4;
+        z         = rideEntranceExitElement->base_height * 4;
         sub_state = 4;
         // Falls through into sub_state 4
     }
@@ -2134,7 +2132,7 @@ static sint32 peep_update_patrolling_find_watering(rct_peep * peep)
 
         do
         {
-            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+            if (tile_element->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             {
                 continue;
             }
@@ -2199,7 +2197,7 @@ static sint32 peep_update_patrolling_find_bin(rct_peep * peep)
     for (;; tile_element++)
     {
 
-        if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_PATH && (tile_element->base_height == peep->next_z))
+        if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH && (tile_element->base_height == peep->next_z))
             break;
 
         if (tile_element_is_last_for_tile(tile_element))
@@ -2331,7 +2329,7 @@ void rct_peep::UpdatePatrolling()
 
         if (tile_element != nullptr)
         {
-            sint32 water_height = map_get_water_height(tile_element);
+            sint32 water_height = surface_get_water_height(tile_element);
             if (water_height)
             {
                 invalidate_sprite_2((rct_sprite *)this);
