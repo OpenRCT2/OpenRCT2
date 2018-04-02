@@ -8421,7 +8421,7 @@ static sint32 guest_path_finding(rct_peep * peep)
 sint32 rct_peep::PerformNextAction(uint8 & pathing_result)
 {
     rct_tile_element * tmpTile;
-    PerformNextAction(pathing_result, tmpTile);
+    return PerformNextAction(pathing_result, tmpTile);
 }
 
 /**
