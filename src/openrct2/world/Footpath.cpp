@@ -995,9 +995,7 @@ void footpath_interrupt_peeps(sint32 x, sint32 y, sint32 z)
         if (peep->linked_list_type_offset == SPRITE_LIST_PEEP * 2) {
             if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING) {
                 if (peep->z == z) {
-                    peep_decrement_num_riders(peep);
-                    peep->state = PEEP_STATE_WALKING;
-                    peep_window_state_update(peep);
+                    peep->SetState(PEEP_STATE_WALKING);
                     peep->destination_x = (peep->x & 0xFFE0) + 16;
                     peep->destination_y = (peep->y & 0xFFE0) + 16;
                     peep->destination_tolerance = 5;

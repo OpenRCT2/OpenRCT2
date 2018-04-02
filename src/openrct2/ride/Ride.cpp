@@ -2644,9 +2644,7 @@ static void ride_call_mechanic(sint32 rideIndex, rct_peep *mechanic, sint32 forI
     Ride *ride;
 
     ride = get_ride(rideIndex);
-    peep_decrement_num_riders(mechanic);
-    mechanic->state = forInspection ? PEEP_STATE_HEADING_TO_INSPECTION : PEEP_STATE_ANSWERING;
-    peep_window_state_update(mechanic);
+    mechanic->SetState(forInspection ? PEEP_STATE_HEADING_TO_INSPECTION : PEEP_STATE_ANSWERING);
     mechanic->sub_state = 0;
     ride->mechanic_status = RIDE_MECHANIC_STATUS_HEADING;
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;

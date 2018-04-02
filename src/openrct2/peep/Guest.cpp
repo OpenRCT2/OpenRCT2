@@ -973,10 +973,8 @@ static void peep_go_to_ride_entrance(rct_peep * peep, Ride * ride)
     peep->destination_y         = y;
     peep->destination_tolerance = 2;
 
-    peep_decrement_num_riders(peep);
-    peep->state     = PEEP_STATE_ENTERING_RIDE;
+    peep->SetState(PEEP_STATE_ENTERING_RIDE);
     peep->sub_state = PEEP_RIDE_IN_ENTRANCE;
-    peep_window_state_update(peep);
 
     peep->rejoin_queue_timeout       = 0;
     peep->time_on_ride = 0;
@@ -1187,9 +1185,7 @@ void rct_peep::UpdateBuying()
     Ride * ride = get_ride(current_ride);
     if (ride->type == RIDE_TYPE_NULL || ride->status != RIDE_STATUS_OPEN)
     {
-        peep_decrement_num_riders(this);
-        state = PEEP_STATE_FALLING;
-        peep_window_state_update(this);
+        SetState(PEEP_STATE_FALLING);
         return;
     }
 
@@ -1217,9 +1213,7 @@ void rct_peep::UpdateBuying()
         destination_y = next_y + 16;
         direction ^= 2;
 
-        peep_decrement_num_riders(this);
-        state = PEEP_STATE_WALKING;
-        peep_window_state_update(this);
+        SetState(PEEP_STATE_WALKING);
         return;
     }
 
@@ -1746,10 +1740,8 @@ static void peep_update_ride_no_free_vehicle_rejoin_queue(rct_peep * peep, Ride 
     peep->destination_y         = y;
     peep->destination_tolerance = 2;
 
-    peep_decrement_num_riders(peep);
-    peep->state     = PEEP_STATE_QUEUING_FRONT;
+    peep->SetState(PEEP_STATE_QUEUING_FRONT);
     peep->sub_state = PEEP_RIDE_AT_ENTRANCE;
-    peep_window_state_update(peep);
 
     ride_queue_insert_guest_at_front(ride, peep->current_ride_station, peep);
 }
