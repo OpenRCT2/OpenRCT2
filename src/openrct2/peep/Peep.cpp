@@ -4603,9 +4603,7 @@ static sint32 peep_update_patrolling_find_grass(rct_peep * peep)
     if ((tile_element->properties.surface.grass_length & 0x7) < GRASS_LENGTH_CLEAR_1)
         return 0;
 
-    peep_decrement_num_riders(peep);
-    peep->state = PEEP_STATE_MOWING;
-    peep_window_state_update(peep);
+    peep->SetState(PEEP_STATE_MOWING);
     peep->var_37 = 0;
     // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
     peep->destination_x         = peep->next_x + _9929C8[0].x;
@@ -4638,9 +4636,7 @@ static sint32 peep_update_patrolling_find_sweeping(rct_peep * peep)
         if (z_diff >= 16)
             continue;
 
-        peep_decrement_num_riders(peep);
-        peep->state = PEEP_STATE_SWEEPING;
-        peep_window_state_update(peep);
+        peep->SetState(PEEP_STATE_SWEEPING);
         peep->var_37                = 0;
         peep->destination_x         = sprite->litter.x;
         peep->destination_y         = sprite->litter.y;
@@ -4679,9 +4675,7 @@ void rct_peep::UpdatePatrolling()
                 sprite_move(x, y, water_height, (rct_sprite *)this);
                 invalidate_sprite_2((rct_sprite *)this);
 
-                peep_decrement_num_riders(this);
-                state = PEEP_STATE_FALLING;
-                peep_window_state_update(this);
+                SetState(PEEP_STATE_FALLING);
                 return;
             }
         }
@@ -4880,9 +4874,7 @@ void rct_peep::UpdateWalking()
             sprite_move(x, y, water_height, (rct_sprite *)this);
             invalidate_sprite_2((rct_sprite *)this);
 
-            peep_decrement_num_riders(this);
-            state = PEEP_STATE_FALLING;
-            peep_window_state_update(this);
+            SetState(PEEP_STATE_FALLING);
             return;
         }
     }
@@ -5000,10 +4992,7 @@ void rct_peep::UpdateWalking()
     current_seat = ride_seat_to_view;
     var_37       = chosen_edge | (chosen_position << 2);
 
-    peep_decrement_num_riders(this);
-    state = PEEP_STATE_WATCHING;
-    peep_window_state_update(this);
-
+    SetState(PEEP_STATE_WATCHING);
     sub_state = 0;
 
     sint32 ebx = var_37 & 0x1F;
@@ -6481,12 +6470,10 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
         peep->next_in_queue                  = previous_last;
         ride->queue_length[stationNum]++;
 
-        peep_decrement_num_riders(peep);
         peep->current_ride         = rideIndex;
         peep->current_ride_station = stationNum;
-        peep->state                = PEEP_STATE_QUEUING;
         peep->days_in_queue        = 0;
-        peep_window_state_update(peep);
+        peep->SetState(PEEP_STATE_QUEUING);
         peep->sub_state     = 11;
         peep->time_in_queue = 0;
         if (peep->peep_flags & PEEP_FLAGS_TRACKING)
@@ -6536,9 +6523,7 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
             sprite_move(x, y, peep->z, (rct_sprite *)peep);
             invalidate_sprite_2((rct_sprite *)peep);
 
-            peep_decrement_num_riders(peep);
-            peep->state = PEEP_STATE_LEAVING_PARK;
-            peep_window_state_update(peep);
+            peep->SetState(PEEP_STATE_LEAVING_PARK);
 
             peep->var_37 = 0;
             if (peep->peep_flags & PEEP_FLAGS_TRACKING)
@@ -6874,9 +6859,7 @@ static sint32 peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_t
             // Queue got disconnected from the original ride.
             peep->interaction_ride_index = 0xFF;
             peep->RemoveFromRide();
-            peep_decrement_num_riders(peep);
-            peep->state = PEEP_STATE_1;
-            peep_window_state_update(peep);
+            peep->SetState(PEEP_STATE_1);
             return peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
         }
 
@@ -6997,11 +6980,9 @@ static sint32 peep_interact_with_shop(rct_peep * peep, sint16 x, sint16 y, rct_t
         peep->destination_y         = (y & 0xFFE0) + 16;
         peep->destination_tolerance = 3;
 
-        peep_decrement_num_riders(peep);
         peep->current_ride = rideIndex;
-        peep->state        = PEEP_STATE_ENTERING_RIDE;
+        peep->SetState(PEEP_STATE_ENTERING_RIDE);
         peep->sub_state    = PEEP_SHOP_APPROACH;
-        peep_window_state_update(peep);
 
         peep->time_on_ride = 0;
         ride->cur_num_customers++;
@@ -7025,11 +7006,9 @@ static sint32 peep_interact_with_shop(rct_peep * peep, sint16 x, sint16 y, rct_t
         if (peep->guest_heading_to_ride_id == rideIndex)
             peep->guest_heading_to_ride_id = 0xFF;
         peep->action_sprite_image_offset = _unk_F1AEF0;
-        peep_decrement_num_riders(peep);
+        peep->SetState(PEEP_STATE_BUYING);
         peep->current_ride = rideIndex;
-        peep->state        = PEEP_STATE_BUYING;
         peep->sub_state    = 0;
-        peep_window_state_update(peep);
         return 1;
     }
 }
