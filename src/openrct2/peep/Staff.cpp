@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../audio/audio.h"
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../Context.h"
@@ -29,6 +30,7 @@
 #include "../object/ObjectList.h"
 #include "../ride/Station.h"
 #include "../ride/RideData.h"
+#include "../ride/Track.h"
 #include "../paint/tile_element/TileElement.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
@@ -64,6 +66,20 @@ uint16   gStaffDrawPatrolAreas;
 colour_t gStaffHandymanColour;
 colour_t gStaffMechanicColour;
 colour_t gStaffSecurityColour;
+
+static bool   peep_update_fixing_enter_station(Ride * ride);
+static bool   peep_update_fixing_move_to_broken_down_vehicle(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_fix_vehicle(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_fix_vehicle_malfunction(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_move_to_station_end(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_fix_station_end(bool firstRun, rct_peep * peep);
+static bool   peep_update_fixing_move_to_station_start(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_fix_station_start(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_fix_station_brakes(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_move_to_station_exit(bool firstRun, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_finish_fix_or_inspect(bool firstRun, sint32 steps, rct_peep * peep, Ride * ride);
+static bool   peep_update_fixing_leave_by_entrance_exit(bool firstRun, rct_peep * peep, Ride * ride);
+static void   peep_update_ride_inspected(sint32 rideIndex);
 
 /**
  *
