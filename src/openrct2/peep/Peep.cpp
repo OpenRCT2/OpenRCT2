@@ -394,6 +394,11 @@ void rct_peep::Invalidate()
     invalidate_sprite_2((rct_sprite*)this);
 }
 
+void rct_peep::MoveTo(sint16 destX, sint16 destY, sint16 destZ)
+{
+    sprite_move(destX, destY, destZ, (rct_sprite*)this);
+}
+
 rct_peep * try_get_guest(uint16 spriteIndex)
 {
     rct_sprite * sprite = try_get_sprite(spriteIndex);
@@ -2191,7 +2196,7 @@ void rct_peep::UpdateFalling()
                     {
                         // Looks like we are drowning!
                         Invalidate();
-                        sprite_move(x, y, height, (rct_sprite *)this);
+                        MoveTo(x, y, height);
                         // Drop balloon if held
                         peep_release_balloon(this, height);
 
@@ -2228,13 +2233,13 @@ void rct_peep::UpdateFalling()
             Remove();
             return;
         }
-        sprite_move(x, y, z - 2, (rct_sprite *)this);
+        MoveTo(x, y, z - 2);
         Invalidate();
         return;
     }
 
     Invalidate();
-    sprite_move(x, y, saved_height, (rct_sprite *)this);
+    MoveTo(x, y, saved_height);
     Invalidate();
 
     next_x = x & 0xFFE0;
@@ -4344,7 +4349,7 @@ sint32 rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & 
     {
         sint16 height = GetZOnSlope(actionX, actionY);
         Invalidate();
-        sprite_move(actionX, actionY, height, (rct_sprite *)this);
+        MoveTo(actionX, actionY, height);
         Invalidate();
         return 1;
     }
@@ -4430,7 +4435,7 @@ sint32 rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & 
 
             height = GetZOnSlope(actionX, actionY);
             Invalidate();
-            sprite_move(actionX, actionY, height, (rct_sprite *)this);
+            MoveTo(actionX, actionY, height);
             Invalidate();
             return 1;
         }

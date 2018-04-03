@@ -1655,7 +1655,7 @@ void rct_peep::UpdateMowing()
         if (UpdateAction(&actionX, &actionY, &xy_distance))
         {
             sint16 checkZ = tile_element_height(actionX, actionY) & 0xFFFF;
-            sprite_move(actionX, actionY, checkZ, (rct_sprite *)this);
+            MoveTo(actionX, actionY, checkZ);
             Invalidate();
             return;
         }
@@ -1865,7 +1865,7 @@ void rct_peep::UpdateSweeping()
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
         sint16 actionZ = GetZOnSlope(actionX, actionY);
-        sprite_move(actionX, actionY, actionZ, (rct_sprite *)this);
+        MoveTo(actionX, actionY, actionZ);
         Invalidate();
         return;
     }
@@ -1992,7 +1992,7 @@ void rct_peep::UpdateHeadingToInspect()
         newZ += RideData5[ride->type].z;
     }
 
-    sprite_move(actionX, actionY, newZ, (rct_sprite *)this);
+    MoveTo(actionX, actionY, newZ);
     Invalidate();
 }
 
@@ -2111,7 +2111,7 @@ void rct_peep::UpdateAnswering()
         newZ += RideData5[ride->type].z;
     }
 
-    sprite_move(actionX, actionY, newZ, (rct_sprite *)this);
+    MoveTo(actionX, actionY, newZ);
     Invalidate();
 }
 
@@ -2349,7 +2349,7 @@ void rct_peep::UpdatePatrolling()
             {
                 Invalidate();
                 water_height *= 16;
-                sprite_move(x, y, water_height, (rct_sprite *)this);
+                MoveTo(x, y, water_height);
                 Invalidate();
 
                 SetState(PEEP_STATE_FALLING);

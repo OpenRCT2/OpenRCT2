@@ -701,6 +701,7 @@ struct rct_peep
     bool HasDrink() const;
     bool HasEmptyContainer() const;
     bool HeadingForRideOrParkExit() const;
+    void MoveTo(sint16 destX, sint16 destY, sint16 destZ);
 private:
     void UpdateFalling();
     void Update1();
