@@ -685,46 +685,43 @@ struct rct_peep
     uint8  pad_FB;
     uint32 item_standard_flags; // 0xFC
 
+public: // Peep
     void Update();
+    bool UpdateAction(sint16 * actionX, sint16 * actionY, sint16 * xy_distance);
+    bool UpdateAction();
     void SetState(uint8 new_state);
     void Remove();
     void Invalidate();
     void UpdateCurrentActionSpriteType();
     void SwitchToSpecialSprite(uint8 special_sprite_id);
-    void RemoveFromRide();
-    void RemoveFromQueue();
-    void OnEnterRide(uint8 rideIndex);
-    void OnExitRide(uint8 rideIndex);
     void StateReset();
+    void MoveTo(sint16 destX, sint16 destY, sint16 destZ);
+public: // Guest
+    void RemoveFromQueue();
     bool HasItem(sint32 peepItem) const;
     bool HasFood() const;
     bool HasDrink() const;
     bool HasEmptyContainer() const;
+    void OnEnterRide(uint8 rideIndex);
+    void OnExitRide(uint8 rideIndex);
+    void RemoveFromRide();
     bool HeadingForRideOrParkExit() const;
-    void MoveTo(sint16 destX, sint16 destY, sint16 destZ);
-private:
+
+private: // Peep update
     void UpdateFalling();
     void Update1();
+    void UpdatePicked();
+private: // Guest update
     void UpdateRide();
-    void UpdateOnRide() {};
+    void UpdateOnRide() {}; // TODO
     void UpdateWalking();
     void UpdateQueuing();
     void UpdateSitting();
-    void UpdatePicked();
-    void UpdatePatrolling();
-    void UpdateMowing();
-    void UpdateSweeping();
     void UpdateEnteringPark();
     void UpdateLeavingPark();
-    void UpdateAnswering();
-    void UpdateFixing(sint32 steps);
     void UpdateBuying();
     void UpdateWatching();
-    void UpdateEmptyingBin();
     void UpdateUsingBin();
-    void UpdateWatering();
-    void UpdateHeadingToInspect();
-
     void UpdateRideAtEntrance();
     void UpdateRideAdvanceThroughEntrance();
     void UpdateRideFreeVehicleCheck();
@@ -744,42 +741,49 @@ private:
     void UpdateRideShopApproach();
     void UpdateRideShopInteract();
     void UpdateRideShopLeave();
+private: // Staff update
+    void UpdatePatrolling();
+    void UpdateMowing();
+    void UpdateSweeping();
+    void UpdateEmptyingBin();
+    void UpdateWatering();
+    void UpdateAnswering();
+    void UpdateFixing(sint32 steps);
+    void UpdateHeadingToInspect();
 
-    void TryGetUpFromSitting();
-
-    bool CheckForPath();
+    // TODO: Make these private again when done refactoring
+public: // Peep
+    bool   CheckForPath();
     sint32 PerformNextAction(uint8 & pathing_result);
-    sint32 PerformNextAction(uint8 & pathing_result, rct_tile_element * & tile_result);
-    void StopPurchaseThought(uint8 ride_type);
-public: // TODO: Make these private again when done refactoring - they need to be public since they are called from non-member
-        // peep functions
+    sint32 PerformNextAction(uint8 & pathing_result, rct_tile_element *& tile_result);
     sint32 GetZOnSlope(sint32 tile_x, sint32 tile_y);
-    bool UpdateAction(sint16 * actionX, sint16 * actionY, sint16 * xy_distance);
-    bool UpdateAction();
-    void ChoseNotToGoOnRide(sint32 rideIndex, bool peepAtRide, bool updateLastRide);
-    void PickRideToGoOn();
-    void ReadMap();
-    bool ShouldGoOnRide(sint32 rideIndex, sint32 entranceNum, bool atQueue, bool thinking);
-    bool ShouldGoToShop(sint32 rideIndex, bool peepAtShop);
-    void SwitchNextActionSpriteType();
-    uint8 GetActionSpriteType();
-    void SpendMoney(money16 & peep_expend_type, money32 amount);
-    void SpendMoney(money32 amount);
-    void SetHasRidden(sint32 rideIndex);
-    bool HasRidden(sint32 rideIndex) const;
-    void SetHasRiddenRideType(sint32 rideType);
-    bool HasRiddenRideType(sint32 rideType) const;
+    void   SwitchNextActionSpriteType();
+    uint8  GetActionSpriteType();
+
+public: // Guest
+    void   StopPurchaseThought(uint8 ride_type);
+    void   TryGetUpFromSitting();
+    void   ChoseNotToGoOnRide(sint32 rideIndex, bool peepAtRide, bool updateLastRide);
+    void   PickRideToGoOn();
+    void   ReadMap();
+    bool   ShouldGoOnRide(sint32 rideIndex, sint32 entranceNum, bool atQueue, bool thinking);
+    bool   ShouldGoToShop(sint32 rideIndex, bool peepAtShop);
+    void   SpendMoney(money16 & peep_expend_type, money32 amount);
+    void   SpendMoney(money32 amount);
+    void   SetHasRidden(sint32 rideIndex);
+    bool   HasRidden(sint32 rideIndex) const;
+    void   SetHasRiddenRideType(sint32 rideType);
+    bool   HasRiddenRideType(sint32 rideType) const;
     sint32 HasFoodStandardFlag() const;
     sint32 HasFoodExtraFlag() const;
-    bool HasDrinkStandardFlag() const;
-    bool HasDrinkExtraFlag() const;
+    bool   HasDrinkStandardFlag() const;
+    bool   HasDrinkExtraFlag() const;
     sint32 HasEmptyContainerStandardFlag() const;
     sint32 HasEmptyContainerExtraFlag() const;
-    void CheckIfLost();
-    void CheckCantFindRide();
-    void CheckCantFindExit();
-private:
-    bool DecideAndBuyItem(uint8 rideIndex, sint32 shopItem, money32 price);
+    void   CheckIfLost();
+    void   CheckCantFindRide();
+    void   CheckCantFindExit();
+    bool   DecideAndBuyItem(uint8 rideIndex, sint32 shopItem, money32 price);
 };
 assert_struct_size(rct_peep, 0x100);
 #pragma pack(pop)
