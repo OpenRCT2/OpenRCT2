@@ -697,6 +697,7 @@ public: // Peep
     void StateReset();
     void MoveTo(sint16 destX, sint16 destY, sint16 destZ);
 public: // Guest
+    void Tick128UpdateGuest(sint32 index);
     void RemoveFromQueue();
     bool HasItem(sint32 peepItem) const;
     bool HasFood() const;
@@ -706,6 +707,8 @@ public: // Guest
     void OnExitRide(uint8 rideIndex);
     void RemoveFromRide();
     bool HeadingForRideOrParkExit() const;
+public: // Staff
+    void Tick128UpdateStaff();
 
 private: // Peep update
     void UpdateFalling();
@@ -865,6 +868,7 @@ enum
 
 // rct2: 0x00982708
 extern rct_peep_animation_entry g_peep_animation_entries[PEEP_SPRITE_TYPE_COUNT];
+extern const bool gSpriteTypeToSlowWalkMap[];
 
 extern uint8  gGuestChangeModifier;
 extern uint16 gNumGuestsInPark;
