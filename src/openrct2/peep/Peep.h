@@ -699,6 +699,7 @@ struct rct_peep
     bool HasItem(sint32 peepItem) const;
     bool HasFood() const;
     bool HasDrink() const;
+    bool HasEmptyContainer() const;
 
 private:
     void UpdateFalling();
@@ -771,6 +772,11 @@ public: // TODO: Make these private again when done refactoring - they need to b
     sint32 HasFoodExtraFlag() const;
     bool HasDrinkStandardFlag() const;
     bool HasDrinkExtraFlag() const;
+    sint32 HasEmptyContainerStandardFlag() const;
+    sint32 HasEmptyContainerExtraFlag() const;
+    void CheckIfLost();
+    void CheckCantFindRide();
+    void CheckCantFindExit();
 private:
     bool DecideAndBuyItem(uint8 rideIndex, sint32 shopItem, money32 price);
 };
