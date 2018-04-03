@@ -2380,7 +2380,7 @@ static void peep_update_falling(rct_peep * peep)
     peep->next_y = peep->y & 0xFFE0;
     peep->next_z = saved_map->base_height;
 
-    sint32 edx = saved_map->properties.surface.slope & TILE_ELEMENT_SLOPE_W_CORNER_DN;
+    sint32 edx = saved_map->properties.path.type & 0x7;
     if (tile_element_get_type(saved_map) != TILE_ELEMENT_TYPE_PATH)
     {
         edx = 8;
