@@ -2324,6 +2324,34 @@ static sint32 peep_update_patrolling_find_sweeping(rct_peep * peep)
     return 0;
 }
 
+void rct_peep::Tick128UpdateStaff()
+{
+    if (staff_type != STAFF_TYPE_SECURITY)
+        return;
+
+    uint8 newSpriteType = PEEP_SPRITE_TYPE_SECURITY_ALT;
+    if (state != PEEP_STATE_PATROLLING)
+        newSpriteType = PEEP_SPRITE_TYPE_SECURITY;
+
+    if (sprite_type == newSpriteType)
+        return;
+
+    sprite_type                = newSpriteType;
+    action_sprite_image_offset = 0;
+    no_action_frame_num        = 0;
+    if (action < PEEP_ACTION_NONE_1)
+        action = PEEP_ACTION_NONE_2;
+
+    peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
+    if (gSpriteTypeToSlowWalkMap[newSpriteType])
+    {
+        peep_flags |= PEEP_FLAGS_SLOW_WALK;
+    }
+
+    action_sprite_type = 0xFF;
+    UpdateCurrentActionSpriteType();
+}
+
 /**
  *
  *  rct2: 0x006BF1FD
