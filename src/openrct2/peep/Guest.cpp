@@ -1337,7 +1337,7 @@ void rct_peep::UpdateBuying()
                 action_sprite_image_offset = 0;
 
                 UpdateCurrentActionSpriteType();
-                invalidate_sprite_2((rct_sprite *)this);
+                Invalidate();
 
                 ride->no_primary_items_sold++;
             }
@@ -1718,7 +1718,7 @@ static void peep_go_to_ride_exit(rct_peep * peep, Ride * ride, sint16 x, sint16 
     z += RideData5[ride->type].z;
 
     sprite_move(x, y, z, (rct_sprite *)peep);
-    invalidate_sprite_2((rct_sprite *)peep);
+    peep->Invalidate();
 
     Guard::Assert(peep->current_ride_station < MAX_STATIONS);
     auto exit = ride_get_exit_location(ride, peep->current_ride_station);
@@ -3172,14 +3172,14 @@ void rct_peep::UpdateWalking()
         {
             if ((0xFFFF & scenario_rand()) < 936)
             {
-                invalidate_sprite_2((rct_sprite *)this);
+                Invalidate();
 
                 action                     = PEEP_ACTION_WAVE_2;
                 action_frame               = 0;
                 action_sprite_image_offset = 0;
 
                 UpdateCurrentActionSpriteType();
-                invalidate_sprite_2((rct_sprite *)this);
+                Invalidate();
             }
         }
     }
@@ -3190,14 +3190,14 @@ void rct_peep::UpdateWalking()
         {
             if ((0xFFFF & scenario_rand()) < 936)
             {
-                invalidate_sprite_2((rct_sprite *)this);
+                Invalidate();
 
                 action                     = PEEP_ACTION_TAKE_PHOTO;
                 action_frame               = 0;
                 action_sprite_image_offset = 0;
 
                 UpdateCurrentActionSpriteType();
-                invalidate_sprite_2((rct_sprite *)this);
+                Invalidate();
             }
         }
     }
@@ -3208,14 +3208,14 @@ void rct_peep::UpdateWalking()
         {
             if ((0xFFFF & scenario_rand()) < 936)
             {
-                invalidate_sprite_2((rct_sprite *)this);
+                Invalidate();
 
                 action                     = PEEP_ACTION_DRAW_PICTURE;
                 action_frame               = 0;
                 action_sprite_image_offset = 0;
 
                 UpdateCurrentActionSpriteType();
-                invalidate_sprite_2((rct_sprite *)this);
+                Invalidate();
             }
         }
     }
@@ -3292,10 +3292,10 @@ void rct_peep::UpdateWalking()
         sint32 water_height = surface_get_water_height(tile_element);
         if (water_height)
         {
-            invalidate_sprite_2((rct_sprite *)this);
+            Invalidate();
             water_height *= 16;
             sprite_move(x, y, water_height, (rct_sprite *)this);
-            invalidate_sprite_2((rct_sprite *)this);
+            Invalidate();
 
             SetState(PEEP_STATE_FALLING);
             return;
@@ -3483,7 +3483,7 @@ void rct_peep::UpdateQueuing()
 
         // Give up queueing for the ride
         sprite_direction ^= (1 << 4);
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         RemoveFromQueue();
         SetState(PEEP_STATE_1);
         return;
@@ -3502,7 +3502,7 @@ void rct_peep::UpdateQueuing()
             action_frame               = 0;
             action_sprite_image_offset = 0;
             UpdateCurrentActionSpriteType();
-            invalidate_sprite_2((rct_sprite *)this);
+            Invalidate();
         }
         if (time_in_queue >= 3500 && (0xFFFF & scenario_rand()) <= 93)
         {
@@ -3543,7 +3543,7 @@ void rct_peep::UpdateQueuing()
                 action_frame               = 0;
                 action_sprite_image_offset = 0;
                 UpdateCurrentActionSpriteType();
-                invalidate_sprite_2((rct_sprite *)this);
+                Invalidate();
                 break;
             }
         }
@@ -3555,7 +3555,7 @@ void rct_peep::UpdateQueuing()
     {
         // Give up queueing for the ride
         sprite_direction ^= (1 << 4);
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         RemoveFromQueue();
         SetState(PEEP_STATE_1);
     }
@@ -3582,9 +3582,9 @@ void rct_peep::UpdateEnteringPark()
     sint16 xy_distance;
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         sprite_move(actionX, actionY, z, (rct_sprite *)this);
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         return;
     }
     SetState(PEEP_STATE_FALLING);
@@ -3618,9 +3618,9 @@ void rct_peep::UpdateLeavingPark()
     sint16 xy_distance;
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         sprite_move(actionX, actionY, z, (rct_sprite *)this);
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         return;
     }
 
@@ -3658,7 +3658,7 @@ void rct_peep::UpdateWatching()
         destination_y = y;
 
         sprite_direction = (var_37 & 3) * 8;
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
 
         action                  = 0xFE;
         next_action_sprite_type = 2;
@@ -3694,7 +3694,7 @@ void rct_peep::UpdateWatching()
                     action_frame               = 0;
                     action_sprite_image_offset = 0;
                     UpdateCurrentActionSpriteType();
-                    invalidate_sprite_2((rct_sprite *)this);
+                    Invalidate();
                     return;
                 }
             }
@@ -3705,7 +3705,7 @@ void rct_peep::UpdateWatching()
                 action_frame               = 0;
                 action_sprite_image_offset = 0;
                 UpdateCurrentActionSpriteType();
-                invalidate_sprite_2((rct_sprite *)this);
+                Invalidate();
                 return;
             }
 
@@ -3717,7 +3717,7 @@ void rct_peep::UpdateWatching()
                     action_frame               = 0;
                     action_sprite_image_offset = 0;
                     UpdateCurrentActionSpriteType();
-                    invalidate_sprite_2((rct_sprite *)this);
+                    Invalidate();
                     return;
                 }
             }

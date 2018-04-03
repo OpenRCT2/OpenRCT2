@@ -1199,7 +1199,7 @@ static void peep_128_tick_update(rct_peep * peep, sint32 index)
                     peep->action_frame               = 0;
                     peep->action_sprite_image_offset = 0;
                     peep->UpdateCurrentActionSpriteType();
-                    invalidate_sprite_2((rct_sprite *)peep);
+                    peep->Invalidate();
                 }
             }
         }
@@ -1621,7 +1621,7 @@ bool rct_peep::UpdateAction(sint16 * actionX, sint16 * actionY, sint16 * xy_dist
         action_sprite_image_offset = 0;
         action                     = 0xFF;
         UpdateCurrentActionSpriteType();
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         *actionX = x;
         *actionY = y;
         return true;
@@ -1631,7 +1631,7 @@ bool rct_peep::UpdateAction(sint16 * actionX, sint16 * actionY, sint16 * xy_dist
     // If not throwing up and not at the frame where sick appears.
     if (action != PEEP_ACTION_THROW_UP || action_frame != 15)
     {
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         *actionX = x;
         *actionY = y;
         return true;
@@ -1655,7 +1655,7 @@ bool rct_peep::UpdateAction(sint16 * actionX, sint16 * actionY, sint16 * xy_dist
     sint32 sound_id = SOUND_COUGH_1 + (scenario_rand() & 3);
     audio_play_sound_at_location(sound_id, x, y, z);
 
-    invalidate_sprite_2((rct_sprite *)this);
+    Invalidate();
     *actionX = x;
     *actionY = y;
     return true;
@@ -1894,7 +1894,7 @@ void peep_window_state_update(rct_peep * peep)
 void peep_pickup(rct_peep * peep)
 {
     peep->RemoveFromRide();
-    invalidate_sprite_2((rct_sprite *)peep);
+    peep->Invalidate();
 
     sprite_move(LOCATION_NULL, peep->y, peep->z, (rct_sprite *)peep);
     peep->SetState(PEEP_STATE_PICKED);
@@ -1910,7 +1910,7 @@ void peep_pickup_abort(rct_peep * peep, sint32 old_x)
         return;
 
     sprite_move(old_x, peep->y, peep->z + 8, (rct_sprite *)peep);
-    invalidate_sprite_2((rct_sprite *)peep);
+    peep->Invalidate();
 
     if (peep->x != (sint16)LOCATION_NULL)
     {
@@ -1974,7 +1974,7 @@ bool peep_pickup_place(rct_peep * peep, sint32 x, sint32 y, sint32 z, bool apply
     if (apply)
     {
         sprite_move(dest_x, dest_y, dest_z, (rct_sprite *)peep);
-        invalidate_sprite_2((rct_sprite *)peep);
+        peep->Invalidate();
         peep->SetState(PEEP_STATE_FALLING);
         peep->action                     = 0xFF;
         peep->special_sprite             = 0;
@@ -2085,7 +2085,7 @@ void game_command_pickup_guest(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 
 void peep_sprite_remove(rct_peep * peep)
 {
     peep->RemoveFromRide();
-    invalidate_sprite_2((rct_sprite *)peep);
+    peep->Invalidate();
 
     window_close_by_number(WC_PEEP, peep->sprite_index);
 
@@ -2191,7 +2191,7 @@ void rct_peep::UpdateFalling()
                     if (height - 4 >= z && height < z + 20)
                     {
                         // Looks like we are drowning!
-                        invalidate_sprite_2((rct_sprite *)this);
+                        Invalidate();
                         sprite_move(x, y, height, (rct_sprite *)this);
                         // Drop balloon if held
                         peep_release_balloon(this, height);
@@ -2203,7 +2203,7 @@ void rct_peep::UpdateFalling()
                         action_sprite_image_offset = 0;
 
                         UpdateCurrentActionSpriteType();
-                        invalidate_sprite_2((rct_sprite *)this);
+                        Invalidate();
                         peep_window_state_update(this);
                         return;
                     }
@@ -2222,7 +2222,7 @@ void rct_peep::UpdateFalling()
     // This will be null if peep is falling
     if (saved_map == nullptr)
     {
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         if (z <= 1)
         {
             // Remove peep if it has gone to the void
@@ -2230,13 +2230,13 @@ void rct_peep::UpdateFalling()
             return;
         }
         sprite_move(x, y, z - 2, (rct_sprite *)this);
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         return;
     }
 
-    invalidate_sprite_2((rct_sprite *)this);
+    Invalidate();
     sprite_move(x, y, saved_height, (rct_sprite *)this);
-    invalidate_sprite_2((rct_sprite *)this);
+    Invalidate();
 
     next_x = x & 0xFFE0;
     next_y = y & 0xFFE0;
@@ -2757,7 +2757,7 @@ void peep_applause()
             peep->action_frame               = 0;
             peep->action_sprite_image_offset = 0;
             peep->UpdateCurrentActionSpriteType();
-            invalidate_sprite_2((rct_sprite *)peep);
+            peep->Invalidate();
         }
     }
 
@@ -2896,7 +2896,7 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     peep->sprite_direction = 0;
 
     sprite_move(x, y, z, (rct_sprite *)peep);
-    invalidate_sprite_2((rct_sprite *)peep);
+    peep->Invalidate();
 
     peep->mass                  = (scenario_rand() & 0x1F) + 45;
     peep->path_check_optimisation                  = 0;
@@ -3481,7 +3481,7 @@ void peep_insert_new_thought(rct_peep * peep, uint8 thought_type, uint8 thought_
         peep->action_frame               = 0;
         peep->action_sprite_image_offset = 0;
         peep->UpdateCurrentActionSpriteType();
-        invalidate_sprite_2((rct_sprite *)peep);
+        peep->Invalidate();
     }
 
     for (sint32 i = 0; i < PEEP_MAX_THOUGHTS; ++i)
@@ -3550,13 +3550,13 @@ void rct_peep::SwitchNextActionSpriteType()
     // TBD: Add nextActionSpriteType as function parameter and make peep->next_action_sprite_type obsolete?
     if (next_action_sprite_type != action_sprite_type)
     {
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         action_sprite_type               = next_action_sprite_type;
         const rct_sprite_bounds * spriteBounds = g_peep_animation_entries[sprite_type].sprite_bounds;
         sprite_width                     = spriteBounds[next_action_sprite_type].sprite_width;
         sprite_height_negative           = spriteBounds[next_action_sprite_type].sprite_height_negative;
         sprite_height_positive           = spriteBounds[next_action_sprite_type].sprite_height_positive;
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
     }
 }
 
@@ -3629,7 +3629,7 @@ static sint32 peep_update_queue_position(rct_peep * peep, uint8 previous_action)
     peep->action                  = PEEP_ACTION_NONE_1;
     peep->next_action_sprite_type = 2;
     if (previous_action != PEEP_ACTION_NONE_1)
-        invalidate_sprite_2((rct_sprite *)peep);
+        peep->Invalidate();
     return 1;
 }
 
@@ -3775,9 +3775,9 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
             peep->destination_x += TileDirectionDelta[peep->direction].x;
             peep->destination_y += TileDirectionDelta[peep->direction].y;
             peep->destination_tolerance = 9;
-            invalidate_sprite_2((rct_sprite *)peep);
+            peep->Invalidate();
             sprite_move(x, y, peep->z, (rct_sprite *)peep);
-            invalidate_sprite_2((rct_sprite *)peep);
+            peep->Invalidate();
 
             peep->SetState(PEEP_STATE_LEAVING_PARK);
 
@@ -3914,9 +3914,9 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
         peep->destination_y += TileDirectionDelta[peep->direction].y;
         peep->destination_tolerance = 7;
 
-        invalidate_sprite_2((rct_sprite *)peep);
+        peep->Invalidate();
         sprite_move(x, y, peep->z, (rct_sprite *)peep);
-        invalidate_sprite_2((rct_sprite *)peep);
+        peep->Invalidate();
 
         return 1;
     }
@@ -3937,9 +3937,9 @@ static sint32 peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rc
 
     if (peep->type == PEEP_TYPE_STAFF)
     {
-        invalidate_sprite_2((rct_sprite *)peep);
+        peep->Invalidate();
         sprite_move(x, y, z, (rct_sprite *)peep);
-        invalidate_sprite_2((rct_sprite *)peep);
+        peep->Invalidate();
         return 1;
     }
 
@@ -4065,9 +4065,9 @@ static sint32 peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rc
         }
     }
 
-    invalidate_sprite_2((rct_sprite *)peep);
+    peep->Invalidate();
     sprite_move(x, y, z, (rct_sprite *)peep);
-    invalidate_sprite_2((rct_sprite *)peep);
+    peep->Invalidate();
     return 1;
 }
 
@@ -4344,9 +4344,9 @@ sint32 rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & 
     if ((actionX & 0xFFE0) == next_x && (actionY & 0xFFE0) == next_y)
     {
         sint16 height = GetZOnSlope(actionX, actionY);
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         sprite_move(actionX, actionY, height, (rct_sprite *)this);
-        invalidate_sprite_2((rct_sprite *)this);
+        Invalidate();
         return 1;
     }
 
@@ -4430,9 +4430,9 @@ sint32 rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & 
             next_var_29 = 8;
 
             height = GetZOnSlope(actionX, actionY);
-            invalidate_sprite_2((rct_sprite *)this);
+            Invalidate();
             sprite_move(actionX, actionY, height, (rct_sprite *)this);
-            invalidate_sprite_2((rct_sprite *)this);
+            Invalidate();
             return 1;
         }
     }
@@ -5210,7 +5210,7 @@ static void peep_give_passing_peeps_pizza(rct_peep * peep, rct_peep * otherPeep)
     {
         if (otherPeep->action == PEEP_ACTION_NONE_1 || otherPeep->action == PEEP_ACTION_NONE_2)
         {
-            invalidate_sprite_2((rct_sprite *)peep);
+            peep->Invalidate();
             otherPeep->action                     = PEEP_ACTION_WAVE_2;
             otherPeep->action_frame               = 0;
             otherPeep->action_sprite_image_offset = 0;
@@ -5280,7 +5280,7 @@ static void peep_easter_egg_peep_interactions(rct_peep * peep)
                 peep->action_frame               = 0;
                 peep->action_sprite_image_offset = 0;
                 peep->UpdateCurrentActionSpriteType();
-                invalidate_sprite_2((rct_sprite *)peep);
+                peep->Invalidate();
             }
         }
     }

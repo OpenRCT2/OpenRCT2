@@ -1172,7 +1172,7 @@ void ride_remove_peeps(sint32 rideIndex)
             if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->sub_state == PEEP_RIDE_AT_ENTRANCE)
                 peep->RemoveFromRide();
 
-            invalidate_sprite_2((rct_sprite*)peep);
+            peep->Invalidate();
 
             if (exitDirection == 255) {
                 sint32 x = peep->next_x + 16;
@@ -1187,7 +1187,7 @@ void ride_remove_peeps(sint32 rideIndex)
                 peep->sprite_direction = exitDirection;
             }
 
-            invalidate_sprite_2((rct_sprite*)peep);
+            peep->Invalidate();
             peep->state = PEEP_STATE_FALLING;
             peep->SwitchToSpecialSprite(0);
 
