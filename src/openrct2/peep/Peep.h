@@ -684,6 +684,7 @@ struct rct_peep
     uint8  favourite_ride_rating; // 0xFA
     uint8  pad_FB;
     uint32 item_standard_flags; // 0xFC
+
     void Update();
     void SetState(uint8 new_state);
     void Remove();
@@ -695,6 +696,9 @@ struct rct_peep
     void OnEnterRide(uint8 rideIndex);
     void OnExitRide(uint8 rideIndex);
     void StateReset();
+    bool HasItem(sint32 peepItem) const;
+    bool HasFood() const;
+    bool HasDrink() const;
 
 private:
     void UpdateFalling();
@@ -763,6 +767,10 @@ public: // TODO: Make these private again when done refactoring - they need to b
     bool HasRidden(sint32 rideIndex) const;
     void SetHasRiddenRideType(sint32 rideType);
     bool HasRiddenRideType(sint32 rideType) const;
+    sint32 HasFoodStandardFlag() const;
+    sint32 HasFoodExtraFlag() const;
+    bool HasDrinkStandardFlag() const;
+    bool HasDrinkExtraFlag() const;
 private:
     bool DecideAndBuyItem(uint8 rideIndex, sint32 shopItem, money32 price);
 };
@@ -882,8 +890,6 @@ sint32     get_peep_face_sprite_large(rct_peep * peep);
 sint32     peep_check_easteregg_name(sint32 index, rct_peep * peep);
 sint32     peep_get_easteregg_name_id(rct_peep * peep);
 sint32     peep_is_mechanic(rct_peep * peep);
-bool       peep_has_item(rct_peep * peep, sint32 peepItem);
-bool       peep_has_food(rct_peep * peep);
 void       peep_pickup(rct_peep * peep);
 void       peep_pickup_abort(rct_peep * peep, sint32 old_x);
 bool       peep_pickup_place(rct_peep * peep, sint32 x, sint32 y, sint32 z, bool apply);

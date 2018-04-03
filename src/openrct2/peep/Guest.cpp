@@ -124,7 +124,7 @@ static void peep_tried_to_enter_full_queue(rct_peep * peep, sint32 rideIndex);
 void rct_peep::TryGetUpFromSitting()
 {
     // Eats all food first
-    if (peep_has_food(this))
+    if (HasFood())
         return;
 
     time_to_sitdown--;
@@ -215,7 +215,7 @@ void rct_peep::UpdateSitting()
             return;
         }
 
-        if (peep_has_food(this))
+        if (HasFood())
         {
             if ((scenario_rand() & 0xFFFF) > 1310)
             {
@@ -309,7 +309,7 @@ void rct_peep::PickRideToGoOn()
         return;
     if (this->peep_flags & PEEP_FLAGS_LEAVING_PARK)
         return;
-    if (peep_has_food(this))
+    if (HasFood())
         return;
     if (this->x == LOCATION_NULL)
         return;

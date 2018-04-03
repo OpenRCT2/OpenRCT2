@@ -117,9 +117,6 @@ static void * _crowdSoundChannel = nullptr;
 
 static void   peep_128_tick_update(rct_peep * peep, sint32 index);
 static bool   peep_has_empty_container(rct_peep * peep);
-static bool   peep_has_drink(rct_peep * peep);
-static sint32 peep_has_food_standard_flag(rct_peep * peep);
-static sint32 peep_has_food_extra_flag(rct_peep * peep);
 static sint32 peep_empty_container_standard_flag(rct_peep * peep);
 static sint32 peep_empty_container_extra_flag(rct_peep * peep);
 static bool   peep_should_find_bench(rct_peep * peep);
@@ -1055,12 +1052,12 @@ static void peep_128_tick_update(rct_peep * peep, sint32 index)
                         possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_TIRED;
                     }
 
-                    if (peep->hunger <= 10 && !peep_has_food(peep))
+                    if (peep->hunger <= 10 && !peep->HasFood())
                     {
                         possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_HUNGRY;
                     }
 
-                    if (peep->thirst <= 25 && !peep_has_food(peep))
+                    if (peep->thirst <= 25 && !peep->HasFood())
                     {
                         possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_THIRSTY;
                     }
@@ -1260,7 +1257,7 @@ static void peep_128_tick_update(rct_peep * peep, sint32 index)
     // Remaining content is executed every call.
 
     // 68FA89
-    if (peep->time_to_consume == 0 && peep_has_food(peep))
+    if (peep->time_to_consume == 0 && peep->HasFood())
     {
         peep->time_to_consume += 3;
     }
@@ -1270,7 +1267,7 @@ static void peep_128_tick_update(rct_peep * peep, sint32 index)
 
         peep->time_to_consume = Math::Max(peep->time_to_consume - 3, 0);
 
-        if (peep_has_drink(peep))
+        if (peep->HasDrink())
         {
             peep->thirst = Math::Min(peep->thirst + 7, 255);
         }
@@ -1283,7 +1280,7 @@ static void peep_128_tick_update(rct_peep * peep, sint32 index)
 
         if (peep->time_to_consume == 0)
         {
-            sint32 chosen_food = bitscanforward(peep_has_food_standard_flag(peep));
+            sint32 chosen_food = bitscanforward(peep->HasFoodStandardFlag());
             if (chosen_food != -1)
             {
                 peep->item_standard_flags &= ~(1 << chosen_food);
@@ -1299,7 +1296,7 @@ static void peep_128_tick_update(rct_peep * peep, sint32 index)
             }
             else
             {
-                chosen_food = bitscanforward(peep_has_food_extra_flag(peep));
+                chosen_food = bitscanforward(peep->HasFoodExtraFlag());
                 if (chosen_food != -1)
                 {
                     peep->item_extra_flags &= ~(1 << chosen_food);
@@ -3362,7 +3359,7 @@ void rct_peep::UpdateWatching()
         }
         else
         {
-            if (peep_has_food(this))
+            if (HasFood())
             {
                 if ((scenario_rand() & 0xFFFF) <= 1310)
                 {
@@ -4153,7 +4150,7 @@ void rct_peep::UpdateWalking()
     if (toilet > 140)
         return;
 
-    uint16 chance = peep_has_food(this) ? 13107 : 2849;
+    uint16 chance = HasFoodExtraFlag() ? 13107 : 2849;
 
     if ((scenario_rand() & 0xFFFF) > chance)
         return;
@@ -5353,29 +5350,29 @@ sint32 peep_is_mechanic(rct_peep * peep)
             peep->staff_type == STAFF_TYPE_MECHANIC);
 }
 
-bool peep_has_item(rct_peep * peep, sint32 peepItem)
+bool rct_peep::HasItem(sint32 peepItem) const
 {
     if (peepItem < 32)
     {
-        return peep->item_standard_flags & (1u << peepItem);
+        return item_standard_flags & (1u << peepItem);
     }
     else
     {
-        return peep->item_extra_flags & (1u << (peepItem - 32));
+        return item_extra_flags & (1u << (peepItem - 32));
     }
 }
 
-static sint32 peep_has_food_standard_flag(rct_peep * peep)
+sint32 rct_peep::HasFoodStandardFlag() const
 {
-    return peep->item_standard_flags &
+    return item_standard_flags &
            (PEEP_ITEM_DRINK | PEEP_ITEM_BURGER | PEEP_ITEM_CHIPS | PEEP_ITEM_ICE_CREAM | PEEP_ITEM_CANDYFLOSS |
             PEEP_ITEM_PIZZA | PEEP_ITEM_POPCORN | PEEP_ITEM_HOT_DOG | PEEP_ITEM_TENTACLE | PEEP_ITEM_TOFFEE_APPLE |
             PEEP_ITEM_DOUGHNUT | PEEP_ITEM_COFFEE | PEEP_ITEM_CHICKEN | PEEP_ITEM_LEMONADE);
 }
 
-static sint32 peep_has_food_extra_flag(rct_peep * peep)
+sint32 rct_peep::HasFoodExtraFlag() const
 {
-    return peep->item_extra_flags &
+    return item_extra_flags &
            (PEEP_ITEM_PRETZEL | PEEP_ITEM_CHOCOLATE | PEEP_ITEM_ICED_TEA | PEEP_ITEM_FUNNEL_CAKE | PEEP_ITEM_BEEF_NOODLES |
             PEEP_ITEM_FRIED_RICE_NOODLES | PEEP_ITEM_WONTON_SOUP | PEEP_ITEM_MEATBALL_SOUP | PEEP_ITEM_FRUIT_JUICE |
             PEEP_ITEM_SOYBEAN_MILK | PEEP_ITEM_SU_JONGKWA | PEEP_ITEM_SUB_SANDWICH | PEEP_ITEM_COOKIE |
@@ -5386,19 +5383,19 @@ static sint32 peep_has_food_extra_flag(rct_peep * peep)
  * To simplify check of 0x36BA3E0 and 0x11FF78
  * returns false on no food.
  */
-bool peep_has_food(rct_peep * peep)
+bool rct_peep::HasFood() const
 {
-    return peep_has_food_standard_flag(peep) || peep_has_food_extra_flag(peep);
+    return HasFoodStandardFlag() || HasFoodExtraFlag();
 }
 
-static bool peep_has_drink_standard_flag(rct_peep * peep)
+bool rct_peep::HasDrinkStandardFlag() const
 {
-    return peep->item_standard_flags & (PEEP_ITEM_DRINK | PEEP_ITEM_COFFEE | PEEP_ITEM_LEMONADE);
+    return item_standard_flags & (PEEP_ITEM_DRINK | PEEP_ITEM_COFFEE | PEEP_ITEM_LEMONADE);
 }
 
-static bool peep_has_drink_extra_flag(rct_peep * peep)
+bool rct_peep::HasDrinkExtraFlag() const
 {
-    return peep->item_extra_flags &
+    return item_extra_flags &
            (PEEP_ITEM_CHOCOLATE | PEEP_ITEM_ICED_TEA | PEEP_ITEM_FRUIT_JUICE | PEEP_ITEM_SOYBEAN_MILK | PEEP_ITEM_SU_JONGKWA);
 }
 
@@ -5406,9 +5403,9 @@ static bool peep_has_drink_extra_flag(rct_peep * peep)
  * To simplify check of NOT(0x12BA3C0 and 0x118F48)
  * returns 0 on no food.
  */
-static bool peep_has_drink(rct_peep * peep)
+bool rct_peep::HasDrink() const
 {
-    return peep_has_drink_standard_flag(peep) || peep_has_drink_extra_flag(peep);
+    return HasDrinkStandardFlag() || HasDrinkExtraFlag();
 }
 
 static sint32 peep_empty_container_standard_flag(rct_peep * peep)
@@ -5433,7 +5430,7 @@ static bool peep_should_find_bench(rct_peep * peep)
 {
     if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
     {
-        if (peep_has_food(peep))
+        if (peep->HasFood())
         {
             if (peep->hunger < 128 || peep->happiness < 128)
             {
@@ -8218,7 +8215,7 @@ static sint32 guest_path_finding(rct_peep * peep)
      * In principle, peeps with food are not paying as much attention to
      * where they are going and are consequently more like to walk up
      * dead end paths, paths to ride exits, etc. */
-    if (!peep_has_food(peep) && (scenario_rand() & 0xFFFF) >= 2184)
+    if (!peep->HasFood() && (scenario_rand() & 0xFFFF) >= 2184)
     {
         uint8 adjustedEdges = edges;
         for (sint32 chosenDirection = 0; chosenDirection < 4; chosenDirection++)
@@ -8996,7 +8993,7 @@ bool rct_peep::DecideAndBuyItem(uint8 rideIndex, sint32 shopItem, money32 price)
         hasVoucher = true;
     }
 
-    if (peep_has_item(this, shopItem))
+    if (HasItem(shopItem))
     {
         peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_ALREADY_GOT, shopItem);
         return false;
@@ -9005,12 +9002,12 @@ bool rct_peep::DecideAndBuyItem(uint8 rideIndex, sint32 shopItem, money32 price)
     if (shop_item_is_food_or_drink(shopItem))
     {
         sint32 food = -1;
-        if ((food = peep_has_food_standard_flag(this)) != 0)
+        if ((food = HasFoodStandardFlag()) != 0)
         {
             peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food));
             return false;
         }
-        else if ((food = peep_has_food_extra_flag(this)) != 0)
+        else if ((food = HasFoodExtraFlag()) != 0)
         {
             peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food) + 32);
             return false;
@@ -10024,7 +10021,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep * peep, sint32 rideTy
         }
     }
 
-    if ((rideTypeFlags & RIDE_TYPE_FLAG_IS_BATHROOM) && peep_has_food(peep))
+    if ((rideTypeFlags & RIDE_TYPE_FLAG_IS_BATHROOM) && peep->HasFood())
     {
         return;
     }

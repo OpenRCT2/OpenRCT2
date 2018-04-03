@@ -2107,7 +2107,7 @@ void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     for (sint32 item = 0; item < SHOP_ITEM_COUNT; item++) {
         if (y >= maxY) break;
-        if (!peep_has_item(peep, item)) continue;
+        if (!peep->HasItem(item)) continue;
 
         rct_string_id stringId = window_guest_inventory_format_item(peep, item);
         y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, itemNameWidth, stringId, COLOUR_BLACK);
