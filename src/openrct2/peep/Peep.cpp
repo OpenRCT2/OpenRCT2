@@ -97,8 +97,6 @@ static void   peep_head_for_nearest_ride_with_flags(rct_peep * peep, sint32 ride
 static void   peep_give_real_name(rct_peep * peep);
 static void   peep_release_balloon(rct_peep * peep, sint16 spawn_height);
 
-bool loc_690FD0(rct_peep * peep, uint8 * rideToView, uint8 * rideSeatToView, rct_tile_element * tileElement);
-
 // clang-format off
 static constexpr const char *gPeepEasterEggNames[] = {
     "MICHAEL SCHUMACHER",

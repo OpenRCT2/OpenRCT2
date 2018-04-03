@@ -265,8 +265,8 @@ void rct_peep::UpdateSitting()
         sint32 ebx = var_37 & 0x7;
         LocationXYZ16 loc = 
         {
-            (x & 0xFFE0) + _981F2C[ebx].x,
-            (y & 0xFFE0) + _981F2C[ebx].y,
+            (sint16)((x & 0xFFE0) + _981F2C[ebx].x),
+            (sint16)((y & 0xFFE0) + _981F2C[ebx].y),
             z
         };
 
@@ -2828,7 +2828,7 @@ void rct_peep::UpdateRideMazePathfinding()
     if (openHedges == 0)
         return;
 
-    uint8 mazeLastEdge = mazeLastEdge ^ (1 << 1);
+    uint8 mazeLastEdge = maze_last_edge ^ (1 << 1);
     openHedges &= ~(1 << mazeLastEdge);
     if (openHedges == 0)
         openHedges |= (1 << mazeLastEdge);
