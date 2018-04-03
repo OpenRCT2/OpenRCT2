@@ -2356,3 +2356,801 @@ void rct_peep::UpdatePatrolling()
 
     peep_update_patrolling_find_watering(this);
 }
+
+enum {
+  PEEP_FIXING_ENTER_STATION = 1 << 0,
+  PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE  = 1 << 1,
+  PEEP_FIXING_FIX_VEHICLE_CLOSED_RESTRAINTS = 1 << 2,
+  PEEP_FIXING_FIX_VEHICLE_CLOSED_DOORS = 1 << 3,
+  PEEP_FIXING_FIX_VEHICLE_OPEN_RESTRAINTS = 1 << 4,
+  PEEP_FIXING_FIX_VEHICLE_OPEN_DOORS = 1 << 5,
+  PEEP_FIXING_FIX_VEHICLE_MALFUNCTION = 1 << 6,
+  PEEP_FIXING_MOVE_TO_STATION_END = 1 << 7,
+  PEEP_FIXING_FIX_STATION_END = 1 << 8,
+  PEEP_FIXING_MOVE_TO_STATION_START = 1 << 9,
+  PEEP_FIXING_FIX_STATION_START = 1 << 10,
+  PEEP_FIXING_FIX_STATION_BRAKES = 1 << 11,
+  PEEP_FIXING_MOVE_TO_STATION_EXIT  = 1 << 12,
+  PEEP_FIXING_FINISH_FIX_OR_INSPECT = 1 << 13,
+  PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT = 1 << 14,
+};
+
+/**
+ * peep_fixing_sub_state_mask[] defines the applicable peep sub_states for
+ * mechanics fixing a ride. The array is indexed by breakdown_reason:
+ * - indexes 0-7 are the 8 breakdown reasons (see BREAKDOWN_* in Ride.h)
+ *   when fixing a broken down ride;
+ * - index 8 is for inspecting a ride.
+ */
+static constexpr const uint32 peep_fixing_sub_state_mask[9] = {
+  ( // BREAKDOWN_SAFETY_CUT_OUT
+      PEEP_FIXING_MOVE_TO_STATION_END |
+      PEEP_FIXING_FIX_STATION_END |
+      PEEP_FIXING_MOVE_TO_STATION_START |
+      PEEP_FIXING_FIX_STATION_START |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  ),
+  ( // BREAKDOWN_RESTRAINTS_STUCK_CLOSED
+      PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE |
+      PEEP_FIXING_FIX_VEHICLE_CLOSED_RESTRAINTS |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  ),
+  ( // BREAKDOWN_RESTRAINTS_STUCK_OPEN
+      PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE |
+      PEEP_FIXING_FIX_VEHICLE_OPEN_RESTRAINTS |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  ),
+  ( // BREAKDOWN_DOORS_STUCK_CLOSED
+      PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE |
+      PEEP_FIXING_FIX_VEHICLE_CLOSED_DOORS |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  ),
+  ( // BREAKDOWN_DOORS_STUCK_OPEN
+      PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE |
+      PEEP_FIXING_FIX_VEHICLE_OPEN_DOORS |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  ),
+  ( // BREAKDOWN_VEHICLE_MALFUNCTION
+      PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE |
+      PEEP_FIXING_FIX_VEHICLE_MALFUNCTION |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  ),
+  ( // BREAKDOWN_BRAKES_FAILURE
+      PEEP_FIXING_MOVE_TO_STATION_START |
+      PEEP_FIXING_FIX_STATION_BRAKES |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  ),
+  ( // BREAKDOWN_CONTROL_FAILURE
+      PEEP_FIXING_MOVE_TO_STATION_END |
+      PEEP_FIXING_FIX_STATION_END |
+      PEEP_FIXING_MOVE_TO_STATION_START |
+      PEEP_FIXING_FIX_STATION_START |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  ),
+  ( // INSPECTION
+      PEEP_FIXING_MOVE_TO_STATION_END |
+      PEEP_FIXING_FIX_STATION_END |
+      PEEP_FIXING_MOVE_TO_STATION_START |
+      PEEP_FIXING_FIX_STATION_START |
+      PEEP_FIXING_MOVE_TO_STATION_EXIT |
+      PEEP_FIXING_FINISH_FIX_OR_INSPECT |
+      PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT
+  )
+};
+
+/**
+ *
+ *  rct2: 0x006C0E8B
+ * Also used by inspecting.
+ */
+void rct_peep::UpdateFixing(sint32 steps)
+{
+    Ride * ride = get_ride(current_ride);
+
+    if (ride->type == RIDE_TYPE_NULL)
+    {
+        SetState(PEEP_STATE_FALLING);
+        return;
+    }
+
+    bool progressToNextSubstate = true;
+    bool firstRun               = true;
+
+    if ((state == PEEP_STATE_INSPECTING) &&
+        (ride->lifecycle_flags & ( RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
+    {
+        // Ride has broken down since Mechanic was called to inspect it.
+        // Mechanic identifies the breakdown and switches to fixing it.
+        state = PEEP_STATE_FIXING;
+    }
+
+    while (progressToNextSubstate)
+    {
+        switch (sub_state)
+        {
+        case 0:
+            progressToNextSubstate = peep_update_fixing_enter_station(ride);
+            break;
+
+        case 1:
+            progressToNextSubstate = peep_update_fixing_move_to_broken_down_vehicle(firstRun, this, ride);
+            break;
+
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+            progressToNextSubstate = peep_update_fixing_fix_vehicle(firstRun, this, ride);
+            break;
+
+        case 6:
+            progressToNextSubstate = peep_update_fixing_fix_vehicle_malfunction(firstRun, this, ride);
+            break;
+
+        case 7:
+            progressToNextSubstate = peep_update_fixing_move_to_station_end(firstRun, this, ride);
+            break;
+
+        case 8:
+            progressToNextSubstate = peep_update_fixing_fix_station_end(firstRun, this);
+            break;
+
+        case 9:
+            progressToNextSubstate = peep_update_fixing_move_to_station_start(firstRun, this, ride);
+            break;
+
+        case 10:
+            progressToNextSubstate = peep_update_fixing_fix_station_start(firstRun, this, ride);
+            break;
+
+        case 11:
+            progressToNextSubstate = peep_update_fixing_fix_station_brakes(firstRun, this, ride);
+            break;
+
+        case 12:
+            progressToNextSubstate = peep_update_fixing_move_to_station_exit(firstRun, this, ride);
+            break;
+
+        case 13:
+            progressToNextSubstate = peep_update_fixing_finish_fix_or_inspect(firstRun, steps, this, ride);
+            break;
+
+        case 14:
+            progressToNextSubstate = peep_update_fixing_leave_by_entrance_exit(firstRun, this, ride);
+            break;
+
+        default:
+            log_error("Invalid substate");
+            progressToNextSubstate = false;
+        }
+
+        firstRun = false;
+
+        if (!progressToNextSubstate)
+        {
+            break;
+        }
+
+        sint32 subState                = sub_state;
+        uint32 sub_state_sequence_mask = peep_fixing_sub_state_mask[8];
+
+        if (state != PEEP_STATE_INSPECTING)
+        {
+            sub_state_sequence_mask = peep_fixing_sub_state_mask[ride->breakdown_reason_pending];
+        }
+
+        do
+        {
+            subState++;
+        } while ((sub_state_sequence_mask & (1 << subState)) == 0);
+
+        sub_state = subState & 0xFF;
+    }
+}
+
+/**
+ * rct2: 0x006C0EEC
+ * fixing sub_state: enter_station - applies to fixing all break down reasons and ride inspections.
+ */
+static bool peep_update_fixing_enter_station(Ride * ride)
+{
+    ride->mechanic_status = RIDE_MECHANIC_STATUS_FIXING;
+    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+
+    return true;
+}
+
+/**
+ * rct2: 0x006C0F09
+ * fixing sub_state: move_to_broken_down_vehicle - applies to fixing all vehicle specific breakdown reasons
+ * - see peep_fixing_sub_state_mask[]
+ */
+static bool peep_update_fixing_move_to_broken_down_vehicle(bool firstRun, rct_peep * peep, Ride * ride)
+{
+    sint16 x, y, tmp_xy_distance;
+
+    if (!firstRun)
+    {
+        rct_vehicle * vehicle = ride_get_broken_vehicle(ride);
+        if (vehicle == nullptr)
+        {
+            return true;
+        }
+
+        while (true)
+        {
+            if (vehicle->is_child == 0)
+            {
+                break;
+            }
+
+            uint8 trackType = vehicle->track_type >> 2;
+            if (trackType == TRACK_ELEM_END_STATION)
+            {
+                break;
+            }
+
+            if (trackType == TRACK_ELEM_BEGIN_STATION)
+            {
+                break;
+            }
+
+            if (trackType == TRACK_ELEM_MIDDLE_STATION)
+            {
+                break;
+            }
+
+            vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+        }
+
+        LocationXY16 offset         = word_981D6C[peep->direction];
+        peep->destination_x         = (offset.x * -12) + vehicle->x;
+        peep->destination_y         = (offset.y * -12) + vehicle->y;
+        peep->destination_tolerance = 2;
+    }
+
+    invalidate_sprite_2((rct_sprite *)peep);
+    if (peep->UpdateAction(&x, &y, &tmp_xy_distance))
+    {
+        sprite_move(x, y, peep->z, (rct_sprite *)peep);
+        invalidate_sprite_2((rct_sprite *)peep);
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * rct2: 0x006C0FD3
+ * fixing sub_state: fix_vehicle - applies to fixing vehicle with:
+ * 1. restraints stuck closed,
+ * 2. doors stuck closed,
+ * 3. restrains stuck open,
+ * 4. doors stuck open.
+ * - see peep_fixing_sub_state_mask[]
+ */
+static bool peep_update_fixing_fix_vehicle(bool firstRun, rct_peep * peep, Ride * ride)
+{
+    if (!firstRun)
+    {
+        peep->sprite_direction = peep->direction << 3;
+
+        peep->action                     = (scenario_rand() & 1) ? PEEP_ACTION_STAFF_FIX_2 : PEEP_ACTION_STAFF_FIX;
+        peep->action_sprite_image_offset = 0;
+        peep->action_frame               = 0;
+        peep->UpdateCurrentActionSpriteType();
+        invalidate_sprite_2((rct_sprite *)peep);
+    }
+
+    if (peep->action == PEEP_ACTION_NONE_2)
+    {
+        return true;
+    }
+
+    peep->UpdateAction();
+
+    uint8 actionFrame = (peep->action == PEEP_ACTION_STAFF_FIX) ? 0x25 : 0x50;
+    if (peep->action_frame != actionFrame)
+    {
+        return false;
+    }
+
+    rct_vehicle * vehicle = ride_get_broken_vehicle(ride);
+    if (vehicle == nullptr)
+    {
+        return true;
+    }
+
+    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_CAR;
+
+    return false;
+}
+
+/**
+ * rct2: 0x006C107B
+ * fixing sub_state: fix_vehicle_malfunction - applies fixing to vehicle malfunction.
+ * - see peep_fixing_sub_state_mask[]
+ */
+static bool peep_update_fixing_fix_vehicle_malfunction(bool firstRun, rct_peep * peep, Ride * ride)
+{
+    if (!firstRun)
+    {
+        peep->sprite_direction           = peep->direction << 3;
+        peep->action                     = PEEP_ACTION_STAFF_FIX_3;
+        peep->action_sprite_image_offset = 0;
+        peep->action_frame               = 0;
+
+        peep->UpdateCurrentActionSpriteType();
+        invalidate_sprite_2((rct_sprite *)peep);
+    }
+
+    if (peep->action == PEEP_ACTION_NONE_2)
+    {
+        return true;
+    }
+
+    peep->UpdateAction();
+    if (peep->action_frame != 0x65)
+    {
+        return false;
+    }
+
+    rct_vehicle * vehicle = ride_get_broken_vehicle(ride);
+    if (vehicle == nullptr)
+    {
+        return true;
+    }
+
+    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
+
+    return false;
+}
+
+/** rct2: 0x00992A3C */
+static constexpr const CoordsXY _992A3C[] = {
+    { -12, 0 },
+    { 0, 12 },
+    { 12, 0 },
+    { 0, -12 },
+};
+
+/**
+ * rct2: 0x006C1114
+ * fixing sub_state: move_to_station_end - applies to fixing station specific breakdowns: safety cut-out, control failure, inspection.
+ * - see peep_fixing_sub_state_mask[]
+ */
+static bool peep_update_fixing_move_to_station_end(bool firstRun, rct_peep * peep, Ride * ride)
+{
+    sint16 x, y, tmp_distance;
+
+    if (!firstRun)
+    {
+        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        {
+            return true;
+        }
+
+        LocationXY8 stationPosition = ride->station_starts[peep->current_ride_station];
+        if (stationPosition.xy == RCT_XY8_UNDEFINED)
+        {
+            return true;
+        }
+
+        uint8  stationZ = ride->station_heights[peep->current_ride_station];
+        uint16 stationX = stationPosition.x * 32;
+        uint16 stationY = stationPosition.y * 32;
+
+        rct_tile_element * tileElement = map_get_track_element_at(stationX, stationY, stationZ);
+        if (tileElement == nullptr)
+        {
+            log_error("Couldn't find tile_element");
+            return false;
+        }
+
+        sint32      direction = tile_element_get_direction(tileElement);
+        CoordsXY offset    = _992A3C[direction];
+
+        stationX += 16 + offset.x;
+        if (offset.x == 0)
+        {
+            stationX = peep->destination_x;
+        }
+
+        stationY += 16 + offset.y;
+        if (offset.y == 0)
+        {
+            stationY = peep->destination_y;
+        }
+
+        peep->destination_x         = stationX;
+        peep->destination_y         = stationY;
+        peep->destination_tolerance = 2;
+    }
+
+    invalidate_sprite_2((rct_sprite *)peep);
+    if (!peep->UpdateAction(&x, &y, &tmp_distance))
+    {
+        return true;
+    }
+
+    sprite_move(x, y, peep->z, (rct_sprite *)peep);
+    invalidate_sprite_2((rct_sprite *)peep);
+
+    return false;
+}
+
+/**
+ * rct2: 0x006C11F5
+ * fixing sub_state: fix_station_end - applies to fixing station specific breakdowns: safety cut-out, control failure, inspection.
+ * - see peep_fixing_sub_state_mask[]
+ */
+static bool peep_update_fixing_fix_station_end(bool firstRun, rct_peep * peep)
+{
+    if (!firstRun)
+    {
+        peep->sprite_direction           = peep->direction << 3;
+        peep->action                     = PEEP_ACTION_STAFF_CHECKBOARD;
+        peep->action_frame               = 0;
+        peep->action_sprite_image_offset = 0;
+
+        peep->UpdateCurrentActionSpriteType();
+        invalidate_sprite_2((rct_sprite *)peep);
+    }
+
+    if (peep->action == PEEP_ACTION_NONE_2)
+    {
+        return true;
+    }
+
+    peep->UpdateAction();
+
+    return false;
+}
+
+/**
+ * rct2: 0x006C1239
+ * fixing sub_state: move_to_station_start
+ * 1. applies to fixing station specific breakdowns: safety cut-out, control failure,
+ * 2. applies to fixing brake failure,
+ * 3. applies to inspection.
+ * - see peep_fixing_sub_state_mask[]
+ */
+static bool peep_update_fixing_move_to_station_start(bool firstRun, rct_peep * peep, Ride * ride)
+{
+    sint16 x, y, tmp_xy_distance;
+
+    if (!firstRun)
+    {
+        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        {
+            return true;
+        }
+
+        LocationXY8 stationPosition = ride->station_starts[peep->current_ride_station];
+        if (stationPosition.xy == RCT_XY8_UNDEFINED)
+        {
+            return true;
+        }
+
+        uint8 stationZ = ride->station_heights[peep->current_ride_station];
+
+        CoordsXYE input;
+        input.x       = stationPosition.x * 32;
+        input.y       = stationPosition.y * 32;
+        input.element = map_get_track_element_at_from_ride(input.x, input.y, stationZ, peep->current_ride);
+        if (input.element == nullptr)
+        {
+            return true;
+        }
+
+        uint8           direction = 0;
+        track_begin_end trackBeginEnd;
+        while (track_block_get_previous(input.x, input.y, input.element, &trackBeginEnd))
+        {
+            if (track_element_is_station(trackBeginEnd.begin_element))
+            {
+                input.x       = trackBeginEnd.begin_x;
+                input.y       = trackBeginEnd.begin_y;
+                input.element = trackBeginEnd.begin_element;
+
+                direction = tile_element_get_direction(trackBeginEnd.begin_element);
+                continue;
+            }
+
+            break;
+        }
+
+        // loc_6C12ED:
+        uint16 destinationX = input.x + 16;
+        uint16 destinationY = input.y + 16;
+
+        CoordsXY offset = _992A3C[direction];
+
+        destinationX -= offset.x;
+        if (offset.x == 0)
+        {
+            destinationX = peep->destination_x;
+        }
+
+        destinationY -= offset.y;
+        if (offset.y == 0)
+        {
+            destinationY = peep->destination_y;
+        }
+
+        peep->destination_x         = destinationX;
+        peep->destination_y         = destinationY;
+        peep->destination_tolerance = 2;
+    }
+
+    invalidate_sprite_2((rct_sprite *)peep);
+
+    if (!peep->UpdateAction(&x, &y, &tmp_xy_distance))
+    {
+        return true;
+    }
+
+    sprite_move(x, y, peep->z, (rct_sprite *)peep);
+    invalidate_sprite_2((rct_sprite *)peep);
+
+    return false;
+}
+
+/**
+ * rct2: 0x006C1368
+ * fixing sub_state: fix_station_start
+ * 1. applies to fixing station specific breakdowns: safety cut-out, control failure,
+ * 2. applies to inspection.
+ * - see peep_fixing_sub_state_mask[]
+ */
+static bool peep_update_fixing_fix_station_start(bool firstRun, rct_peep * peep, Ride * ride)
+{
+    if (!firstRun)
+    {
+        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        {
+            return true;
+        }
+
+        peep->sprite_direction = peep->direction << 3;
+
+        peep->action                     = PEEP_ACTION_STAFF_FIX;
+        peep->action_frame               = 0;
+        peep->action_sprite_image_offset = 0;
+
+        peep->UpdateCurrentActionSpriteType();
+        invalidate_sprite_2((rct_sprite *)peep);
+    }
+
+    if (peep->action == PEEP_ACTION_NONE_2)
+    {
+        return true;
+    }
+
+    peep->UpdateAction();
+
+    return false;
+}
+
+/**
+ * rct2: 0x006C13CE
+ * fixing sub_state: fix_station_brakes - applies to fixing brake failure
+ * - see peep_fixing_sub_state_mask[]
+ */
+static bool peep_update_fixing_fix_station_brakes(bool firstRun, rct_peep * peep, Ride * ride)
+{
+    if (!firstRun)
+    {
+        peep->sprite_direction = peep->direction << 3;
+
+        peep->action                     = PEEP_ACTION_STAFF_FIX_GROUND;
+        peep->action_frame               = 0;
+        peep->action_sprite_image_offset = 0;
+
+        peep->UpdateCurrentActionSpriteType();
+        invalidate_sprite_2((rct_sprite *)peep);
+    }
+
+    if (peep->action == PEEP_ACTION_NONE_2)
+    {
+        return true;
+    }
+
+    peep->UpdateAction();
+    if (peep->action_frame == 0x28)
+    {
+        ride->mechanic_status = RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES;
+        ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+    }
+
+    if (peep->action_frame == 0x13 || peep->action_frame == 0x19 || peep->action_frame == 0x1F || peep->action_frame == 0x25 ||
+        peep->action_frame == 0x2B)
+    {
+        audio_play_sound_at_location(SOUND_MECHANIC_FIX, peep->x, peep->y, peep->z);
+    }
+
+    return false;
+}
+
+/**
+ * rct2: 0x006C1474
+ * fixing sub_state: move_to_station_exit - applies to fixing all failures & inspections
+ * - see peep_fixing_sub_state_mask[]
+ */
+static bool peep_update_fixing_move_to_station_exit(bool firstRun, rct_peep * peep, Ride * ride)
+{
+    sint16 x, y, tmp_xy_distance;
+
+    if (!firstRun)
+    {
+        TileCoordsXYZD stationPosition = ride_get_exit_location(ride, peep->current_ride_station);
+        if (stationPosition.isNull())
+        {
+            stationPosition = ride_get_entrance_location(ride, peep->current_ride_station);
+
+            if (stationPosition.isNull())
+            {
+                return true;
+            }
+        }
+
+        uint16 stationX = stationPosition.x * 32;
+        uint16 stationY = stationPosition.y * 32;
+
+        stationX += 16;
+        stationY += 16;
+
+        LocationXY16 direction = word_981D6C[peep->direction];
+
+        stationX += direction.x * 20;
+        stationY += direction.y * 20;
+
+        peep->destination_x         = stationX;
+        peep->destination_y         = stationY;
+        peep->destination_tolerance = 2;
+    }
+
+    invalidate_sprite_2((rct_sprite *)peep);
+    if (!peep->UpdateAction(&x, &y, &tmp_xy_distance))
+    {
+        return true;
+    }
+    else
+    {
+        sprite_move(x, y, peep->z, (rct_sprite *)peep);
+        invalidate_sprite_2((rct_sprite *)peep);
+    }
+
+    return false;
+}
+
+/**
+ * rct2: 0x006C1504
+ * fixing sub_state: finish_fix_or_inspect - applies to fixing all failures & inspections
+ * - see peep_fixing_sub_state_mask[]
+ */
+static bool peep_update_fixing_finish_fix_or_inspect(bool firstRun, sint32 steps, rct_peep * peep, Ride * ride)
+{
+    if (!firstRun)
+    {
+        ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
+
+        if (peep->state == PEEP_STATE_INSPECTING)
+        {
+            peep_update_ride_inspected(peep->current_ride);
+
+            peep->staff_rides_inspected++;
+            peep->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
+
+            return true;
+        }
+
+        peep->staff_rides_fixed++;
+        peep->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
+
+        peep->sprite_direction           = peep->direction << 3;
+        peep->action                     = PEEP_ACTION_STAFF_ANSWER_CALL_2;
+        peep->action_frame               = 0;
+        peep->action_sprite_image_offset = 0;
+
+        peep->UpdateCurrentActionSpriteType();
+        invalidate_sprite_2((rct_sprite *)peep);
+    }
+
+    if (peep->action != 0xFF)
+    {
+        peep->UpdateAction();
+        return false;
+    }
+
+    ride_fix_breakdown(peep->current_ride, steps);
+
+    return true;
+}
+
+/**
+ * rct2: 0x006C157E
+ * fixing sub_state: leave_by_entrance_exit - applies to fixing all failures & inspections
+ * - see peep_fixing_sub_state_mask[]
+ */
+static bool peep_update_fixing_leave_by_entrance_exit(bool firstRun, rct_peep * peep, Ride * ride)
+{
+    sint16 x, y, xy_distance;
+
+    if (!firstRun)
+    {
+        TileCoordsXYZD exitPosition = ride_get_exit_location(ride, peep->current_ride_station);
+        if (exitPosition.isNull())
+        {
+            exitPosition = ride_get_entrance_location(ride, peep->current_ride_station);
+
+            if (exitPosition.isNull())
+            {
+                peep->SetState(PEEP_STATE_FALLING);
+                return false;
+            }
+        }
+
+        uint16 exitX = exitPosition.x * 32;
+        uint16 exitY = exitPosition.y * 32;
+
+        exitX += 16;
+        exitY += 16;
+
+        LocationXY16 ebx_direction = word_981D6C[peep->direction];
+        exitX -= ebx_direction.x * 19;
+        exitY -= ebx_direction.y * 19;
+
+        peep->destination_x         = exitX;
+        peep->destination_y         = exitY;
+        peep->destination_tolerance = 2;
+    }
+
+    invalidate_sprite_2((rct_sprite *)peep);
+    if (!peep->UpdateAction(&x, &y, &xy_distance))
+    {
+        peep->SetState(PEEP_STATE_FALLING);
+        return false;
+    }
+
+    uint16 z = ride->station_heights[peep->current_ride_station] * 8;
+
+    if (xy_distance >= 16)
+    {
+        z += RideData5[ride->type].z;
+    }
+
+    sprite_move(x, y, z, (rct_sprite *)peep);
+    invalidate_sprite_2((rct_sprite *)peep);
+
+    return false;
+}
+
+/**
+ * rct2: 0x6B7588
+ */
+static void peep_update_ride_inspected(sint32 rideIndex)
+{
+    Ride * ride = get_ride(rideIndex);
+    ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
+
+    ride->reliability += ((100 - ride->reliability_percentage) / 4) * (scenario_rand() & 0xFF);
+    ride->last_inspection = 0;
+    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+}
