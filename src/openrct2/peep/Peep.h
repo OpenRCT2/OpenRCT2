@@ -700,7 +700,7 @@ struct rct_peep
     bool HasFood() const;
     bool HasDrink() const;
     bool HasEmptyContainer() const;
-
+    bool HeadingForRideOrParkExit() const;
 private:
     void UpdateFalling();
     void Update1();
@@ -931,6 +931,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
 void   peep_reset_pathfind_goal(rct_peep * peep);
 
 bool is_valid_path_z_and_direction(rct_tile_element * tileElement, sint32 currentZ, sint32 currentDirection);
+sint32 guest_path_finding(rct_peep * peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 #define PATHFIND_DEBUG 0 // Set to 0 to disable pathfinding debugging;

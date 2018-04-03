@@ -15,7 +15,124 @@
 #pragma endregion
 
 #include "Peep.h"
+#include "../scenario/Scenario.h"
+#include "../world/Footpath.h"
+#include "../world/Entrance.h"
+#include "../ride/Station.h"
+#include "../ride/Track.h"
+#include "../util/Util.h"
 
+static bool   _peepPathFindIsStaff;
+static sint8  _peepPathFindNumJunctions;
+static sint8  _peepPathFindMaxJunctions;
+static sint32 _peepPathFindTilesChecked;
+static uint8  _peepPathFindFewestNumSteps;
+
+static sint32 guest_surface_path_finding(rct_peep * peep);
+
+/* A junction history for the peep pathfinding heuristic search
+* The magic number 16 is the largest value returned by
+* peep_pathfind_get_max_number_junctions() which should eventually
+* be declared properly. */
+static struct
+{
+    TileCoordsXYZ location;
+    uint8          direction;
+} _peepPathFindHistory[16];
+
+enum
+{
+    PATH_SEARCH_DEAD_END,
+    PATH_SEARCH_WIDE,
+    PATH_SEARCH_THIN,
+    PATH_SEARCH_JUNCTION,
+    PATH_SEARCH_RIDE_QUEUE,
+    PATH_SEARCH_RIDE_ENTRANCE,
+    PATH_SEARCH_RIDE_EXIT,
+    PATH_SEARCH_PARK_EXIT,
+    PATH_SEARCH_SHOP_ENTRANCE,
+    PATH_SEARCH_LIMIT_REACHED,
+    PATH_SEARCH_LOOP,
+    PATH_SEARCH_OTHER,
+    PATH_SEARCH_FAILED
+};
+
+static rct_tile_element * get_banner_on_path(rct_tile_element * path_element)
+{
+    // This is an improved version of original.
+    // That only checked for one fence in the way.
+    if (tile_element_is_last_for_tile(path_element))
+        return nullptr;
+
+    rct_tile_element * bannerElement = path_element + 1;
+    do
+    {
+        // Path on top, so no banners
+        if (tile_element_get_type(bannerElement) == TILE_ELEMENT_TYPE_PATH)
+            return nullptr;
+        // Found a banner
+        if (tile_element_get_type(bannerElement) == TILE_ELEMENT_TYPE_BANNER)
+            return bannerElement;
+        // Last element so there cant be any other banners
+        if (tile_element_is_last_for_tile(bannerElement))
+            return nullptr;
+
+    } while (bannerElement++);
+
+    return nullptr;
+}
+
+static sint32 banner_clear_path_edges(rct_tile_element * tileElement, sint32 edges)
+{
+    if (_peepPathFindIsStaff)
+        return edges;
+    rct_tile_element * bannerElement = get_banner_on_path(tileElement);
+    if (bannerElement != nullptr)
+    {
+        do
+        {
+            edges &= bannerElement->properties.banner.flags;
+        } while ((bannerElement = get_banner_on_path(bannerElement)) != nullptr);
+    }
+    return edges;
+}
+
+/**
+ * Gets the connected edges of a path that are permitted (i.e. no 'no entry' signs)
+ */
+static sint32 path_get_permitted_edges(rct_tile_element * tileElement)
+{
+    return banner_clear_path_edges(tileElement, tileElement->properties.path.edges) & 0x0F;
+}
+
+/**
+ *
+ *  rct2: 0x0069524E
+ */
+static sint32 peep_move_one_tile(uint8 direction, rct_peep * peep)
+{
+    assert(direction <= 3);
+    sint16 x = peep->next_x;
+    sint16 y = peep->next_y;
+    x += TileDirectionDelta[direction].x;
+    y += TileDirectionDelta[direction].y;
+
+    if (x >= 8192 || y >= 8192)
+    {
+        // This could loop!
+        return guest_surface_path_finding(peep);
+    }
+
+    peep->direction             = direction;
+    peep->destination_x         = x + 16;
+    peep->destination_y         = y + 16;
+    peep->destination_tolerance = 2;
+    if (peep->state != PEEP_STATE_QUEUING)
+    {
+        peep->destination_tolerance = (scenario_rand() & 7) + 2;
+    }
+    return 0;
+}
 
 /**
  *
@@ -1752,7 +1869,7 @@ static void get_ride_queue_end(sint16 * x, sint16 * y, sint16 * z)
  *
  *  rct2: 0x00694C35
  */
-static sint32 guest_path_finding(rct_peep * peep)
+sint32 guest_path_finding(rct_peep * peep)
 {
     sint16 x, y, z;
 
@@ -1787,7 +1904,7 @@ static sint32 guest_path_finding(rct_peep * peep)
         return guest_surface_path_finding(peep);
     }
 
-    if (peep->outside_of_park == 0 && peep_heading_for_ride_or_park_exit(peep))
+    if (peep->outside_of_park == 0 && peep->HeadingForRideOrParkExit())
     {
         /* If this tileElement is adjacent to any non-wide paths,
          * remove all of the edges to wide paths. */
@@ -1905,7 +2022,7 @@ static sint32 guest_path_finding(rct_peep * peep)
         if (bitcount(edges) >= 2)
         {
             uint16 probability = 1638;
-            if (peep_heading_for_ride_or_park_exit(peep))
+            if (peep->HeadingForRideOrParkExit())
             {
                 probability = 9362;
             }

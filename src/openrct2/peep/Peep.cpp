@@ -76,41 +76,10 @@ LocationXYZ16 gPeepPathFindGoalPosition;
 bool          gPeepPathFindIgnoreForeignQueues;
 uint8         gPeepPathFindQueueRideIndex;
 // uint32 gPeepPathFindAltStationNum;
-static bool   _peepPathFindIsStaff;
-static sint8  _peepPathFindNumJunctions;
-static sint8  _peepPathFindMaxJunctions;
-static sint32 _peepPathFindTilesChecked;
-static uint8  _peepPathFindFewestNumSteps;
 
-/* A junction history for the peep pathfinding heuristic search
- * The magic number 16 is the largest value returned by
- * peep_pathfind_get_max_number_junctions() which should eventually
- * be declared properly. */
-static struct
-{
-    TileCoordsXYZ location;
-    uint8          direction;
-} _peepPathFindHistory[16];
 
 static uint8             _unk_F1AEF0;
 static rct_tile_element * _peepRideEntranceExitElement;
-
-enum
-{
-    PATH_SEARCH_DEAD_END,
-    PATH_SEARCH_WIDE,
-    PATH_SEARCH_THIN,
-    PATH_SEARCH_JUNCTION,
-    PATH_SEARCH_RIDE_QUEUE,
-    PATH_SEARCH_RIDE_ENTRANCE,
-    PATH_SEARCH_RIDE_EXIT,
-    PATH_SEARCH_PARK_EXIT,
-    PATH_SEARCH_SHOP_ENTRANCE,
-    PATH_SEARCH_LIMIT_REACHED,
-    PATH_SEARCH_LOOP,
-    PATH_SEARCH_OTHER,
-    PATH_SEARCH_FAILED
-};
 
 static void * _crowdSoundChannel = nullptr;
 
@@ -126,8 +95,6 @@ static void   peep_easter_egg_peep_interactions(rct_peep * peep);
 static void   peep_head_for_nearest_ride_type(rct_peep * peep, sint32 rideType);
 static void   peep_head_for_nearest_ride_with_flags(rct_peep * peep, sint32 rideTypeFlags);
 static void   peep_give_real_name(rct_peep * peep);
-static sint32 guest_surface_path_finding(rct_peep * peep);
-static bool   peep_heading_for_ride_or_park_exit(rct_peep * peep);
 static void   peep_release_balloon(rct_peep * peep, sint16 spawn_height);
 
 bool loc_690FD0(rct_peep * peep, uint8 * rideToView, uint8 * rideSeatToView, rct_tile_element * tileElement);
@@ -4301,83 +4268,6 @@ static sint32 peep_interact_with_shop(rct_peep * peep, sint16 x, sint16 y, rct_t
     }
 }
 
-/**
- *
- *  rct2: 0x0069524E
- */
-static sint32 peep_move_one_tile(uint8 direction, rct_peep * peep)
-{
-    assert(direction <= 3);
-    sint16 x = peep->next_x;
-    sint16 y = peep->next_y;
-    x += TileDirectionDelta[direction].x;
-    y += TileDirectionDelta[direction].y;
-
-    if (x >= 8192 || y >= 8192)
-    {
-        // This could loop!
-        return guest_surface_path_finding(peep);
-    }
-
-    peep->direction             = direction;
-    peep->destination_x         = x + 16;
-    peep->destination_y         = y + 16;
-    peep->destination_tolerance = 2;
-    if (peep->state != PEEP_STATE_QUEUING)
-    {
-        peep->destination_tolerance = (scenario_rand() & 7) + 2;
-    }
-    return 0;
-}
-
-static rct_tile_element * get_banner_on_path(rct_tile_element * path_element)
-{
-    // This is an improved version of original.
-    // That only checked for one fence in the way.
-    if (tile_element_is_last_for_tile(path_element))
-        return nullptr;
-
-    rct_tile_element * bannerElement = path_element + 1;
-    do
-    {
-        // Path on top, so no banners
-        if (tile_element_get_type(bannerElement) == TILE_ELEMENT_TYPE_PATH)
-            return nullptr;
-        // Found a banner
-        if (tile_element_get_type(bannerElement) == TILE_ELEMENT_TYPE_BANNER)
-            return bannerElement;
-        // Last element so there cant be any other banners
-        if (tile_element_is_last_for_tile(bannerElement))
-            return nullptr;
-
-    } while (bannerElement++);
-
-    return nullptr;
-}
-
-static sint32 banner_clear_path_edges(rct_tile_element * tileElement, sint32 edges)
-{
-    if (_peepPathFindIsStaff)
-        return edges;
-    rct_tile_element * bannerElement = get_banner_on_path(tileElement);
-    if (bannerElement != nullptr)
-    {
-        do
-        {
-            edges &= bannerElement->properties.banner.flags;
-        } while ((bannerElement = get_banner_on_path(bannerElement)) != nullptr);
-    }
-    return edges;
-}
-
-/**
- * Gets the connected edges of a path that are permitted (i.e. no 'no entry' signs)
- */
-static sint32 path_get_permitted_edges(rct_tile_element * tileElement)
-{
-    return banner_clear_path_edges(tileElement, tileElement->properties.path.edges) & 0x0F;
-}
-
 bool is_valid_path_z_and_direction(rct_tile_element * tileElement, sint32 currentZ, sint32 currentDirection)
 {
     if (footpath_element_is_sloped(tileElement))
@@ -5912,9 +5802,9 @@ void peep_update_names(bool realNames)
     gfx_invalidate_screen();
 }
 
-static bool peep_heading_for_ride_or_park_exit(rct_peep * peep)
+bool rct_peep::HeadingForRideOrParkExit() const
 {
-    return (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) || peep->guest_heading_to_ride_id != 0xFF;
+    return (peep_flags & PEEP_FLAGS_LEAVING_PARK) || (guest_heading_to_ride_id != 0xFF);
 }
 
 void peep_handle_easteregg_name(rct_peep * peep)
