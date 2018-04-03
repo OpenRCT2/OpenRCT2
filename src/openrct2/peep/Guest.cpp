@@ -272,7 +272,7 @@ void rct_peep::UpdateSitting()
         };
 
         Invalidate();
-        sprite_move(loc.x, loc.y, loc.z, (rct_sprite *)this);
+        MoveTo(loc.x, loc.y, loc.z);
 
         sprite_direction = ((var_37 + 2) & 3) * 8;
         Invalidate();
@@ -1414,7 +1414,7 @@ void rct_peep::UpdateRideAtEntrance()
                 auto entrance = ride_get_entrance_location(ride, current_ride_station);
                 actionZ = entrance.z * 8 + 2;
             }
-            sprite_move(actionX, actionY, actionZ, (rct_sprite *)this);
+            MoveTo(actionX, actionY, actionZ);
             Invalidate();
         }
         else
@@ -1626,7 +1626,7 @@ void rct_peep::UpdateRideAdvanceThroughEntrance()
             actionZ += RideData5[ride->type].z;
         }
 
-        sprite_move(actionX, actionY, actionZ, (rct_sprite *)this);
+        MoveTo(actionX, actionY, actionZ);
         Invalidate();
         return;
     }
@@ -1960,7 +1960,7 @@ void rct_peep::UpdateRideApproachVehicle()
     }
 
     Invalidate();
-    sprite_move(actionX, actionY, z, (rct_sprite *)this);
+    MoveTo(actionX, actionY, z);
     Invalidate();
 }
 
@@ -2006,7 +2006,7 @@ void rct_peep::UpdateRideEnterVehicle()
     invalidate_sprite_2((rct_sprite *)vehicle);
 
     Invalidate();
-    sprite_move(LOCATION_NULL, 0, 0, (rct_sprite *)this);
+    MoveTo(LOCATION_NULL, 0, 0);
 
     SetState(PEEP_STATE_ON_RIDE);
 
@@ -2195,7 +2195,7 @@ void rct_peep::UpdateRideLeaveVehicle()
     if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
         exitWaypointLoc.z += 15;
 
-    sprite_move(exitWaypointLoc.x, exitWaypointLoc.y, exitWaypointLoc.z, (rct_sprite *)this);
+    MoveTo(exitWaypointLoc.x, exitWaypointLoc.y, exitWaypointLoc.z);
     Invalidate();
 
     waypointLoc.x += vehicleEntry->peep_loading_waypoints[var_37 / 4][1].x;
@@ -2263,7 +2263,7 @@ void rct_peep::UpdateRideApproachExit()
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
         Invalidate();
-        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        MoveTo(actionX, actionY, z);
         Invalidate();
         return;
     }
@@ -2289,13 +2289,13 @@ void rct_peep::UpdateRideInExit()
             sint16 actionZ = ride->station_heights[current_ride_station] * 8;
 
             actionZ += RideData5[ride->type].z;
-            sprite_move(actionX, actionY, actionZ, (rct_sprite *)this);
+            MoveTo(actionX, actionY, actionZ);
             Invalidate();
             return;
         }
 
         SwitchToSpecialSprite(0);
-        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        MoveTo(actionX, actionY, z);
         Invalidate();
     }
 
@@ -2345,7 +2345,7 @@ void rct_peep::UpdateRideApproachVehicleWaypoints()
             actionZ = z;
         }
         Invalidate();
-        sprite_move(actionX, actionY, actionZ, (rct_sprite *)this);
+        MoveTo(actionX, actionY, actionZ);
         Invalidate();
         return;
     }
@@ -2416,7 +2416,7 @@ void rct_peep::UpdateRideApproachExitWaypoints()
             actionZ = z;
         }
         Invalidate();
-        sprite_move(actionX, actionY, actionZ, (rct_sprite *)this);
+        MoveTo(actionX, actionY, actionZ);
         Invalidate();
         return;
     }
@@ -2499,7 +2499,7 @@ void rct_peep::UpdateRideApproachSpiralSlide()
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
         Invalidate();
-        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        MoveTo(actionX, actionY, z);
         Invalidate();
         return;
     }
@@ -2512,7 +2512,7 @@ void rct_peep::UpdateRideApproachSpiralSlide()
         destination_x = 0;
         destination_y = 0;
         var_37        = (var_37 / 4) & 0xC;
-        sprite_move(LOCATION_NULL, actionY, z, (rct_sprite *)this);
+        MoveTo(LOCATION_NULL, actionY, z);
         return;
     }
     else if (waypoint == 2)
@@ -2627,7 +2627,7 @@ void rct_peep::UpdateRideOnSpiralSlide()
             newX += _981F0C[dir].x;
             newY += _981F0C[dir].y;
 
-            sprite_move(newX, newY, z, (rct_sprite *)this);
+            MoveTo(newX, newY, z);
 
             sprite_direction = (var_37 & 0xC) * 2;
             Invalidate();
@@ -2645,7 +2645,7 @@ void rct_peep::UpdateRideOnSpiralSlide()
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
         Invalidate();
-        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        MoveTo(actionX, actionY, z);
         Invalidate();
         return;
     }
@@ -2679,7 +2679,7 @@ void rct_peep::UpdateRideLeaveSpiralSlide()
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
         Invalidate();
-        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        MoveTo(actionX, actionY, z);
         Invalidate();
         return;
     }
@@ -2763,7 +2763,7 @@ void rct_peep::UpdateRideMazePathfinding()
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
         Invalidate();
-        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        MoveTo(actionX, actionY, z);
         Invalidate();
         return;
     }
@@ -2910,7 +2910,7 @@ void rct_peep::UpdateRideMazePathfinding()
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
         Invalidate();
-        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        MoveTo(actionX, actionY, z);
         Invalidate();
         return;
     }
@@ -2928,7 +2928,7 @@ void rct_peep::UpdateRideLeaveExit()
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
         Invalidate();
-        sprite_move(actionX, actionY, ride->station_heights[current_ride_station] * 8, (rct_sprite *)this);
+        MoveTo(actionX, actionY, ride->station_heights[current_ride_station] * 8);
         Invalidate();
         return;
     }
@@ -2968,7 +2968,7 @@ void rct_peep::UpdateRideLeaveExit()
         if (z_diff > 0 || z_diff < -16)
             continue;
 
-        sprite_move(x, y, height, (rct_sprite *)this);
+        MoveTo(x, y, height);
         Invalidate();
         return;
     } while (!tile_element_is_last_for_tile(tileElement++));
@@ -2985,7 +2985,7 @@ void rct_peep::UpdateRideShopApproach()
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
         Invalidate();
-        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        MoveTo(actionX, actionY, z);
         Invalidate();
         return;
     }
@@ -3057,7 +3057,7 @@ void rct_peep::UpdateRideShopLeave()
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
         Invalidate();
-        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        MoveTo(actionX, actionY, z);
         Invalidate();
 
         actionX = x & 0xFFE0;
@@ -3294,7 +3294,7 @@ void rct_peep::UpdateWalking()
         {
             Invalidate();
             water_height *= 16;
-            sprite_move(x, y, water_height, (rct_sprite *)this);
+            MoveTo(x, y, water_height);
             Invalidate();
 
             SetState(PEEP_STATE_FALLING);
@@ -3583,7 +3583,7 @@ void rct_peep::UpdateEnteringPark()
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
         Invalidate();
-        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        MoveTo(actionX, actionY, z);
         Invalidate();
         return;
     }
@@ -3619,7 +3619,7 @@ void rct_peep::UpdateLeavingPark()
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
         Invalidate();
-        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        MoveTo(actionX, actionY, z);
         Invalidate();
         return;
     }
