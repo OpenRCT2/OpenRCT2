@@ -935,33 +935,15 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 {
     Ride *ride = get_ride(rideIndex);
     CoordsXYE trackElement;
-    track_begin_end trackBeginEnd;
 
     if (!ride_try_get_origin_element(rideIndex, &trackElement)) {
         gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         return false;
     }
 
-    sint32 z = 0;
-    // Find the start of the track.
-    // It has to do this as a backwards loop in case this is an incomplete track.
-    if (track_block_get_previous(trackElement.x, trackElement.y, trackElement.element, &trackBeginEnd)) {
-        rct_tile_element* initial_map = trackElement.element;
-        do {
-            CoordsXYE lastGood = {
-                /* .x = */ trackBeginEnd.begin_x,
-                /* .y = */ trackBeginEnd.begin_y,
-                /* .element = */ trackBeginEnd.begin_element
-            };
+    ride_get_start_of_track(&trackElement);
 
-            if (!track_block_get_previous(trackBeginEnd.end_x, trackBeginEnd.end_y, trackBeginEnd.begin_element, &trackBeginEnd)) {
-                trackElement = lastGood;
-                break;
-            }
-        } while (initial_map != trackBeginEnd.begin_element);
-    }
-
-    z = trackElement.element->base_height * 8;
+    sint32 z = trackElement.element->base_height * 8;
     uint8 track_type = track_element_get_type(trackElement.element);
     uint8 direction = tile_element_get_direction(trackElement.element);
     _trackSaveDirection = direction;

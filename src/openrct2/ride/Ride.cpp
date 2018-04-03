@@ -5476,6 +5476,10 @@ sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
     return 1;
 }
 
+/**
+ * Given a track element of the ride, find the start of the track.
+ * It has to do this as a backwards loop in case this is an incomplete track.
+ */
 void ride_get_start_of_track(CoordsXYE * output)
 {
     track_begin_end trackBeginEnd;
@@ -5515,8 +5519,6 @@ sint32 ride_get_refund_price(sint32 ride_id)
     // Find the start in case it is not a complete circuit
     ride_get_start_of_track(&trackElement);
 
-    int z = trackElement.element->base_height * 8;
-    uint8 track_type = track_element_get_type(trackElement.element);
     uint8 direction = tile_element_get_direction(trackElement.element);
 
     // Used in the following loop to know when we have
@@ -5540,9 +5542,7 @@ sint32 ride_get_refund_price(sint32 ride_id)
         if (!track_block_get_next(&trackElement, &trackElement, NULL, NULL))
             break;
 
-        z = trackElement.element->base_height * 8;
         direction = tile_element_get_direction(trackElement.element);
-        track_type = track_element_get_type(trackElement.element);
 
     } while (trackElement.element != initial_map);
 
