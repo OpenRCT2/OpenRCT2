@@ -784,6 +784,9 @@ public: // Guest
     void   ReadMap();
     bool   ShouldGoOnRide(sint32 rideIndex, sint32 entranceNum, bool atQueue, bool thinking);
     bool   ShouldGoToShop(sint32 rideIndex, bool peepAtShop);
+    bool   ShouldFindBench();
+    bool   UpdateWalkingFindBench();
+    bool   UpdateWalkingFindBin();
     void   SpendMoney(money16 & peep_expend_type, money32 amount);
     void   SpendMoney(money32 amount);
     void   SetHasRidden(sint32 rideIndex);
