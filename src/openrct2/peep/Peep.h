@@ -776,8 +776,8 @@ private: // Staff update
     // TODO: Make these private again when done refactoring
 public: // Peep
     bool   CheckForPath();
-    sint32 PerformNextAction(uint8 & pathing_result);
-    sint32 PerformNextAction(uint8 & pathing_result, rct_tile_element *& tile_result);
+    void   PerformNextAction(uint8 & pathing_result);
+    void   PerformNextAction(uint8 & pathing_result, rct_tile_element *& tile_result);
     sint32 GetZOnSlope(sint32 tile_x, sint32 tile_y);
     void   SwitchNextActionSpriteType();
     uint8  GetActionSpriteType();
@@ -913,7 +913,7 @@ extern uint8     gPeepPathFindQueueRideIndex;
 
 rct_peep * try_get_guest(uint16 spriteIndex);
 sint32     peep_get_staff_count();
-sint32     peep_can_be_picked_up(rct_peep * peep);
+bool       peep_can_be_picked_up(rct_peep * peep);
 void       peep_update_all();
 void       peep_problem_warnings_update();
 void       peep_stop_crowd_noise();
