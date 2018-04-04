@@ -490,7 +490,7 @@ bool rct_peep::CheckForPath()
     path_check_optimisation++;
     if ((path_check_optimisation & 0xF) != (sprite_index & 0xF))
     {
-        // This condition makes the check happen less often 
+        // This condition makes the check happen less often
         // As a side effect peeps hover for a short,
         // random time when a path below them has been deleted
         return true;
@@ -1781,7 +1781,7 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     if (intensityHighest >= 7)
         intensityHighest = 15;
 
-    /* Check which intensity boxes are enabled 
+    /* Check which intensity boxes are enabled
      * and apply the appropriate intensity settings. */
     if (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
     {
@@ -1790,7 +1790,7 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
             intensityLowest = 0;
             intensityHighest = 15;
         }
-        else 
+        else
         {
             intensityLowest = 0;
             intensityHighest = 4;

@@ -2532,6 +2532,7 @@ void rct_peep::UpdateFixing(sint32 steps)
         switch (sub_state)
         {
         case PEEP_FIXING_ENTER_STATION:
+            next_flags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
             progressToNextSubstate = UpdateFixingEnterStation(ride);
             break;
 
