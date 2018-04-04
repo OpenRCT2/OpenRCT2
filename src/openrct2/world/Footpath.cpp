@@ -65,6 +65,18 @@ const LocationXY16 BinUseOffsets[4] = {
     { 16, 11 },
 };
 
+// These are the offsets for bench positions on footpaths, 2 for each edge
+// rct2: 0x00981F2C, 0x00981F2E
+const LocationXY16 BenchUseOffsets[8] = {
+    {  7, 12 },
+    { 12, 25 },
+    { 25, 20 },
+    { 20,  7 },
+    {  7, 20 },
+    { 20, 25 },
+    { 25, 12 },
+    { 12,  7 },
+};
 
 /** rct2: 0x00981D6C, 0x00981D6E */
 const LocationXY16 word_981D6C[4] = {

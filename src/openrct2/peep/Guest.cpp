@@ -890,11 +890,6 @@ void rct_peep::TryGetUpFromSitting()
     UpdateCurrentActionSpriteType();
 }
 
-/** rct2: 0x00981F2C, 0x00981F2E */
-static constexpr const LocationXY16 _981F2C[] = {
-    { 7, 12 }, { 12, 25 }, { 25, 20 }, { 20, 7 }, { 7, 20 }, { 20, 25 }, { 25, 12 }, { 12, 7 },
-};
-
 /**
  *
  *  rct2: 0x0069152B
@@ -915,8 +910,8 @@ void rct_peep::UpdateSitting()
         sint32 ebx = var_37 & 0x7;
         LocationXYZ16 loc = 
         {
-            (sint16)((x & 0xFFE0) + _981F2C[ebx].x),
-            (sint16)((y & 0xFFE0) + _981F2C[ebx].y),
+            (sint16)((x & 0xFFE0) + BenchUseOffsets[ebx].x),
+            (sint16)((y & 0xFFE0) + BenchUseOffsets[ebx].y),
             z
         };
 
@@ -5128,8 +5123,6 @@ void rct_peep::UpdateRide()
     }
 }
 
-static sint32 peep_update_walking_find_bench(rct_peep * peep);
-static sint32 peep_update_walking_find_bin(rct_peep * peep);
 static void peep_update_walking_break_scenery(rct_peep * peep);
 static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideToView, uint8 * rideSeatToView);
 
@@ -5282,10 +5275,10 @@ void rct_peep::UpdateWalking()
     CheckCantFindRide();
     CheckCantFindExit();
 
-    if (peep_update_walking_find_bench(this))
+    if (UpdateWalkingFindBench())
         return;
 
-    if (peep_update_walking_find_bin(this))
+    if (UpdateWalkingFindBin())
         return;
 
     peep_update_walking_break_scenery(this);
@@ -5870,27 +5863,27 @@ void rct_peep::UpdateUsingBin()
     }
 }
 
-/* Simplifies 0x690582. Returns 1 if should find bench*/
-static bool peep_should_find_bench(rct_peep * peep)
+/* Simplifies 0x690582. Returns true if should find bench*/
+bool rct_peep::ShouldFindBench()
 {
-    if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
+    if (!(peep_flags & PEEP_FLAGS_LEAVING_PARK))
     {
-        if (peep->HasFood())
+        if (HasFood())
         {
-            if (peep->hunger < 128 || peep->happiness < 128)
+            if (hunger < 128 || happiness < 128)
             {
-                if (!peep->GetNextIsSurface() && !peep->GetNextIsSloped())
+                if (!GetNextIsSurface() && !GetNextIsSloped())
                 {
                     return true;
                 }
             }
         }
-        if (peep->nausea <= 170 && peep->energy > 50)
+        if (nausea <= 170 && energy > 50)
         {
             return false;
         }
 
-        if (!peep->GetNextIsSurface() && !peep->GetNextIsSloped())
+        if (!GetNextIsSurface() && !GetNextIsSloped())
         {
             return true;
         }
@@ -5901,50 +5894,51 @@ static bool peep_should_find_bench(rct_peep * peep)
 /**
  *
  *  rct2: 0x00690582
+ * Returns true when the guest wants to sit down and has found a bench to sit on
  */
-static sint32 peep_update_walking_find_bench(rct_peep * peep)
+bool rct_peep::UpdateWalkingFindBench()
 {
-    if (!peep_should_find_bench(peep))
-        return 0;
+    if (!ShouldFindBench())
+        return false;
 
-    rct_tile_element * tile_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+    rct_tile_element * tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
 
     for (;; tile_element++)
     {
         if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_PATH)
         {
-            if (peep->next_z == tile_element->base_height)
+            if (next_z == tile_element->base_height)
                 break;
         }
         if (tile_element_is_last_for_tile(tile_element))
         {
-            return 0;
+            return false;
         }
     }
 
     if (!footpath_element_has_path_scenery(tile_element))
-        return 0;
+        return false;
     rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
 
     if (sceneryEntry == nullptr || !(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH))
-        return 0;
+        return false;
 
     if (tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)
-        return 0;
+        return false;
 
     if (footpath_element_path_scenery_is_ghost(tile_element))
-        return 0;
+        return false;
 
     sint32 edges = (tile_element->properties.path.edges & 0xF) ^ 0xF;
     if (edges == 0)
-        return 0;
+        return false;
 
     uint8 chosen_edge = scenario_rand() & 0x3;
 
     for (; !(edges & (1 << chosen_edge));)
         chosen_edge = (chosen_edge + 1) & 0x3;
 
-    uint16 sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);
+    uint16 sprite_id = sprite_get_first_in_quadrant(x, y);
     uint8  free_edge = 3;
 
     // Check if there is no peep sitting in chosen_edge
@@ -5958,7 +5952,7 @@ static sint32 peep_update_walking_find_bench(rct_peep * peep)
         if (sprite->peep.state != PEEP_STATE_SITTING)
             continue;
 
-        if (peep->z != sprite->peep.z)
+        if (z != sprite->peep.z)
             continue;
 
         if ((sprite->peep.var_37 & 0x3) != chosen_edge)
@@ -5968,7 +5962,7 @@ static sint32 peep_update_walking_find_bench(rct_peep * peep)
     }
 
     if (!free_edge)
-        return 0;
+        return false;
 
     free_edge ^= 0x3;
     if (!free_edge)
@@ -5977,30 +5971,31 @@ static sint32 peep_update_walking_find_bench(rct_peep * peep)
             free_edge = 1;
     }
 
-    peep->var_37 = ((free_edge & 1) << 2) | chosen_edge;
+    var_37 = ((free_edge & 1) << 2) | chosen_edge;
 
-    peep->SetState(PEEP_STATE_SITTING);
+    SetState(PEEP_STATE_SITTING);
 
-    peep->sub_state = PEEP_SITTING_TRYING_TO_SIT;
+    sub_state = PEEP_SITTING_TRYING_TO_SIT;
 
-    sint32 ebx = peep->var_37 & 0x7;
-    sint32 x   = (peep->x & 0xFFE0) + _981F2C[ebx].x;
-    sint32 y   = (peep->y & 0xFFE0) + _981F2C[ebx].y;
+    sint32 ebx    = var_37 & 0x7;
+    sint32 benchX = (x & 0xFFE0) + BenchUseOffsets[ebx].x;
+    sint32 benchY = (y & 0xFFE0) + BenchUseOffsets[ebx].y;
 
-    peep->destination_x         = x;
-    peep->destination_y         = y;
-    peep->destination_tolerance = 3;
+    destination_x         = benchX;
+    destination_y         = benchY;
+    destination_tolerance = 3;
 
-    return 1;
+    return true;
 }
 
-static sint32 peep_update_walking_find_bin(rct_peep * peep)
+bool rct_peep::UpdateWalkingFindBin()
 {
+    auto peep = this;
     if (!peep->HasEmptyContainer())
-        return 0;
+        return false;
 
     if (peep->GetNextIsSurface())
-        return 0;
+        return false;
 
     rct_tile_element * tile_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 
@@ -6013,30 +6008,30 @@ static sint32 peep_update_walking_find_bin(rct_peep * peep)
         }
         if (tile_element_is_last_for_tile(tile_element))
         {
-            return 0;
+            return false;
         }
     }
 
     if (!footpath_element_has_path_scenery(tile_element))
-        return 0;
+        return false;
     rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
     if (sceneryEntry == nullptr)
     {
-        return 0;
+        return false;
     }
 
     if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
-        return 0;
+        return false;
 
     if (tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)
-        return 0;
+        return false;
 
     if (footpath_element_path_scenery_is_ghost(tile_element))
-        return 0;
+        return false;
 
     sint32 edges = (tile_element->properties.path.edges & 0xF) ^ 0xF;
     if (edges == 0)
-        return 0;
+        return false;
 
     uint8 chosen_edge = scenario_rand() & 0x3;
 
@@ -6065,15 +6060,15 @@ static sint32 peep_update_walking_find_bin(rct_peep * peep)
     peep->SetState(PEEP_STATE_USING_BIN);
     peep->sub_state = 0;
 
-    sint32 ebx = peep->var_37 & 0x3;
-    sint32 x   = (peep->x & 0xFFE0) + BinUseOffsets[ebx].x;
-    sint32 y   = (peep->y & 0xFFE0) + BinUseOffsets[ebx].y;
+    sint32 ebx  = peep->var_37 & 0x3;
+    sint32 binX = (peep->x & 0xFFE0) + BinUseOffsets[ebx].x;
+    sint32 binY = (peep->y & 0xFFE0) + BinUseOffsets[ebx].y;
 
-    peep->destination_x         = x;
-    peep->destination_y         = y;
+    peep->destination_x         = binX;
+    peep->destination_y         = binY;
     peep->destination_tolerance = 3;
 
-    return 1;
+    return true;
 }
 
 /**

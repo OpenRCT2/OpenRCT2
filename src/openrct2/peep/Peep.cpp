@@ -303,11 +303,6 @@ static struct
     { PEEP_ACTION_NONE_2, 1 },
 };
 
-/** rct2: 0x00981F2C, 0x00981F2E */
-static constexpr const LocationXY16 _981F2C[] = {
-    { 7, 12 }, { 12, 25 }, { 25, 20 }, { 20, 7 }, { 7, 20 }, { 20, 25 }, { 25, 12 }, { 12, 7 },
-};
-
 static uint8 PeepSpecialSpriteToSpriteTypeMap[] = {
     PEEP_ACTION_SPRITE_TYPE_NONE,
     PEEP_ACTION_SPRITE_TYPE_HOLD_MAT,
