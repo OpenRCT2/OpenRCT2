@@ -1881,7 +1881,7 @@ sint32 guest_path_finding(rct_peep * peep)
     }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-    if (peep->next_var_29 & 0x18)
+    if (peep->GetNextIsSurface())
     {
         return guest_surface_path_finding(peep);
     }
