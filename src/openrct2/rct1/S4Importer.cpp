@@ -1420,7 +1420,7 @@ private:
         dst->next_x = src->next_x;
         dst->next_y = src->next_y;
         dst->next_z = src->next_z / 2;
-        dst->next_var_29 = src->next_var_29;
+        dst->next_flags = src->next_flags;
         dst->var_37 = src->var_37;
         dst->time_to_consume = src->time_to_consume;
         dst->step_progress = src->step_progress;
