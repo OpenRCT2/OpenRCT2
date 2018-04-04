@@ -718,6 +718,7 @@ public: // Guest
     void OnEnterRide(uint8 rideIndex);
     void OnExitRide(uint8 rideIndex);
     void RemoveFromRide();
+    void UpdateSpriteType();
     bool HeadingForRideOrParkExit() const;
 public: // Staff
     void Tick128UpdateStaff();
@@ -799,6 +800,7 @@ public: // Guest
     void   CheckCantFindRide();
     void   CheckCantFindExit();
     bool   DecideAndBuyItem(uint8 rideIndex, sint32 shopItem, money32 price);
+    void   SetSpriteType(uint8 new_sprite_type);
 };
 assert_struct_size(rct_peep, 0x100);
 #pragma pack(pop)
@@ -924,7 +926,6 @@ bool       peep_pickup_command(uint32 peepnum, sint32 x, sint32 y, sint32 z, sin
 void       game_command_pickup_guest(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
                                      sint32 * ebp);
 void       peep_sprite_remove(rct_peep * peep);
-void       peep_update_sprite_type(rct_peep * peep);
 
 void peep_window_state_update(rct_peep * peep);
 void peep_decrement_num_riders(rct_peep * peep);

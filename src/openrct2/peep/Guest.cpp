@@ -455,7 +455,7 @@ void rct_peep::Tick128UpdateGuest(sint32 index)
             }
         }
 
-        peep_update_sprite_type(this);
+        UpdateSpriteType();
 
         if (state == PEEP_STATE_ON_RIDE || state == PEEP_STATE_ENTERING_RIDE)
         {
@@ -773,7 +773,7 @@ void rct_peep::Tick128UpdateGuest(sint32 index)
                 }
 
                 window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                peep_update_sprite_type(this);
+                UpdateSpriteType();
             }
             else
             {
@@ -791,7 +791,7 @@ void rct_peep::Tick128UpdateGuest(sint32 index)
                     }
 
                     window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                    peep_update_sprite_type(this);
+                    UpdateSpriteType();
                 }
             }
         }
@@ -1411,7 +1411,7 @@ loc_69B221:
         photo4_ride_ref = rideIndex;
 
     window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-    peep_update_sprite_type(this);
+    UpdateSpriteType();
     if (peep_flags & PEEP_FLAGS_TRACKING)
     {
         set_format_arg(0, rct_string_id, name_string_idx);
@@ -5246,7 +5246,7 @@ void rct_peep::UpdateWalking()
             }
 
             window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-            peep_update_sprite_type(this);
+            UpdateSpriteType();
 
             sint32 litterX   = x + (scenario_rand() & 0x7) - 3;
             sint32 litterY   = y + (scenario_rand() & 0x7) - 3;
@@ -5644,7 +5644,7 @@ void rct_peep::UpdateWatching()
         sub_state++;
 
         time_to_stand = Math::Clamp(0, ((129 - energy) * 16 + 50) / 2, 255);
-        peep_update_sprite_type(this);
+        UpdateSpriteType();
     }
     else if (sub_state == 1)
     {
@@ -5708,7 +5708,7 @@ void rct_peep::UpdateWatching()
             return;
 
         SetState(PEEP_STATE_WALKING);
-        peep_update_sprite_type(this);
+        UpdateSpriteType();
         // Send peep to the centre of current tile.
         destination_x         = (x & 0xFFE0) + 16;
         destination_y         = (y & 0xFFE0) + 16;
@@ -5810,7 +5810,7 @@ void rct_peep::UpdateUsingBin()
                     space_left_in_bin--;
                 item_standard_flags &= ~(1 << cur_container);
                 window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                peep_update_sprite_type(this);
+                UpdateSpriteType();
                 continue;
             }
             uint8 bp = item_standard_litter[cur_container];
@@ -5822,7 +5822,7 @@ void rct_peep::UpdateUsingBin()
             item_standard_flags &= ~(1 << cur_container);
             window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
-            peep_update_sprite_type(this);
+            UpdateSpriteType();
         }
 
         // Original bug: This would clear any rubbish placed by the previous function
@@ -5844,7 +5844,7 @@ void rct_peep::UpdateUsingBin()
                 item_extra_flags &= ~(1 << cur_container);
                 window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
-                peep_update_sprite_type(this);
+                UpdateSpriteType();
                 continue;
             }
             uint8 bp = item_extra_litter[cur_container];
@@ -5856,7 +5856,7 @@ void rct_peep::UpdateUsingBin()
             item_extra_flags &= ~(1 << cur_container);
             window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
-            peep_update_sprite_type(this);
+            UpdateSpriteType();
         }
 
         // Place new amount in bin by first clearing the value

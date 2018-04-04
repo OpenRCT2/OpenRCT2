@@ -313,7 +313,7 @@ static void cheat_set_guest_parameter(sint32 parameter, sint32 value)
             peep->intensity = (15 << 4) | value;
             break;
         }
-        peep_update_sprite_type(peep);
+        peep->UpdateSpriteType();
     }
 
 }
@@ -335,12 +335,12 @@ static void cheat_give_all_guests(sint32 object)
             case OBJECT_BALLOON:
                 peep->item_standard_flags |= PEEP_ITEM_BALLOON;
                 peep->balloon_colour = scenario_rand_max(COLOUR_COUNT - 1);
-                peep_update_sprite_type(peep);
+                peep->UpdateSpriteType();
                 break;
             case OBJECT_UMBRELLA:
                 peep->item_standard_flags |= PEEP_ITEM_UMBRELLA;
                 peep->umbrella_colour = scenario_rand_max(COLOUR_COUNT - 1);
-                peep_update_sprite_type(peep);
+                peep->UpdateSpriteType();
                 break;
         }
     }
