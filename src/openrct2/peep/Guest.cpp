@@ -5716,21 +5716,23 @@ void rct_peep::UpdateWatching()
  */
 void rct_peep::UpdateUsingBin()
 {
-    if (sub_state == 0)
+    switch (sub_state)
+    {
+    case PEEP_USING_BIN_WALKING_TO_BIN:
     {
         if (!CheckForPath())
             return;
 
         uint8 pathingResult;
         PerformNextAction(pathingResult);
-        if (!(pathingResult & PATHING_DESTINATION_REACHED))
-            return;
-
-        sub_state = 1;
+        if (pathingResult & PATHING_DESTINATION_REACHED)
+        {
+            sub_state = PEEP_USING_BIN_GOING_BACK;
+        }
+        break;
     }
-    else if (sub_state == 1)
+    case PEEP_USING_BIN_GOING_BACK:
     {
-
         if (action != PEEP_ACTION_NONE_2)
         {
             sint16 actionX, actionY, xy_distance;
@@ -5857,37 +5859,45 @@ void rct_peep::UpdateUsingBin()
         // Then placing the new value.
         tile_element->properties.path.addition_status |= space_left_in_bin << selected_bin;
 
-        map_invalidate_tile_zoom0(next_x, next_y, tile_element->base_height << 3,
-                                  tile_element->clearance_height << 3);
+        map_invalidate_tile_zoom0(next_x, next_y, tile_element->base_height << 3, tile_element->clearance_height << 3);
         StateReset();
+        break;
+    }
+    default:
+        Guard::Assert(false, "Invalid sub state");
+        break;
     }
 }
 
 /* Simplifies 0x690582. Returns true if should find bench*/
 bool rct_peep::ShouldFindBench()
 {
-    if (!(peep_flags & PEEP_FLAGS_LEAVING_PARK))
+    if (peep_flags & PEEP_FLAGS_LEAVING_PARK)
     {
-        if (HasFood())
+        return false;
+    }
+
+    if (HasFood())
+    {
+        if (hunger < 128 || happiness < 128)
         {
-            if (hunger < 128 || happiness < 128)
+            if (!GetNextIsSurface() && !GetNextIsSloped())
             {
-                if (!GetNextIsSurface() && !GetNextIsSloped())
-                {
-                    return true;
-                }
+                return true;
             }
         }
-        if (nausea <= 170 && energy > 50)
-        {
-            return false;
-        }
-
-        if (!GetNextIsSurface() && !GetNextIsSloped())
-        {
-            return true;
-        }
     }
+
+    if (nausea <= 170 && energy > 50)
+    {
+        return false;
+    }
+
+    if (!GetNextIsSurface() && !GetNextIsSloped())
+    {
+        return true;
+    }
+
     return false;
 }
 
@@ -6058,7 +6068,7 @@ bool rct_peep::UpdateWalkingFindBin()
     peep->var_37 = chosen_edge;
 
     peep->SetState(PEEP_STATE_USING_BIN);
-    peep->sub_state = 0;
+    peep->sub_state = PEEP_USING_BIN_WALKING_TO_BIN;
 
     sint32 ebx  = peep->var_37 & 0x3;
     sint32 binX = (peep->x & 0xFFE0) + BinUseOffsets[ebx].x;
