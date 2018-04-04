@@ -882,7 +882,7 @@ enum
 
 // rct2: 0x00982708
 extern rct_peep_animation_entry g_peep_animation_entries[PEEP_SPRITE_TYPE_COUNT];
-extern const bool gSpriteTypeToSlowWalkMap[];
+extern const bool gSpriteTypeToSlowWalkMap[48];
 
 extern uint8  gGuestChangeModifier;
 extern uint16 gNumGuestsInPark;
