@@ -2118,7 +2118,7 @@ static constexpr const bool peep_allow_pick_up[] = {
  *  rct2: 0x00698827
  * returns 1 on pickup (CF not set)
  */
-sint32 peep_can_be_picked_up(rct_peep * peep)
+bool peep_can_be_picked_up(rct_peep * peep)
 {
     return peep_allow_pick_up[peep->state];
 }
@@ -2360,11 +2360,11 @@ void rct_peep::SwitchNextActionSpriteType()
  *
  *  rct2: 0x00693CBB
  */
-static sint32 peep_update_queue_position(rct_peep * peep, uint8 previous_action)
+static bool peep_update_queue_position(rct_peep * peep, uint8 previous_action)
 {
     peep->time_in_queue++;
     if (peep->next_in_queue == SPRITE_INDEX_NULL)
-        return 0;
+        return false;
 
     rct_peep * peep_next = GET_PEEP(peep->next_in_queue);
 
@@ -2373,7 +2373,7 @@ static sint32 peep_update_queue_position(rct_peep * peep, uint8 previous_action)
     sint16 z_diff = abs(peep_next->z - peep->z);
 
     if (z_diff > 10)
-        return 0;
+        return false;
 
     if (x_diff < y_diff)
     {
@@ -2388,29 +2388,29 @@ static sint32 peep_update_queue_position(rct_peep * peep, uint8 previous_action)
         if (x_diff > 13)
         {
             if ((peep->x & 0xFFE0) != (peep_next->x & 0xFFE0) || (peep->y & 0xFFE0) != (peep_next->y & 0xFFE0))
-                return 0;
+                return false;
         }
 
         if (peep->sprite_direction != peep_next->sprite_direction)
-            return 0;
+            return false;
 
         switch (peep_next->sprite_direction / 8)
         {
         case 0:
             if (peep->x >= peep_next->x)
-                return 0;
+                return false;
             break;
         case 1:
             if (peep->y <= peep_next->y)
-                return 0;
+                return false;
             break;
         case 2:
             if (peep->x <= peep_next->x)
-                return 0;
+                return false;
             break;
         case 3:
             if (peep->y >= peep_next->y)
-                return 0;
+                return false;
             break;
         }
     }
@@ -2420,33 +2420,32 @@ static sint32 peep_update_queue_position(rct_peep * peep, uint8 previous_action)
         peep->UpdateAction(&x, &y, &xy_dist);
 
     if (peep->action != PEEP_ACTION_NONE_2)
-        return 1;
+        return true;
 
     peep->action                  = PEEP_ACTION_NONE_1;
     peep->next_action_sprite_type = 2;
     if (previous_action != PEEP_ACTION_NONE_1)
         peep->Invalidate();
-    return 1;
+    return true;
 }
 
 /**
  *
  *  rct2: 0x00693EF2
  */
-static sint32 peep_return_to_centre_of_tile(rct_peep * peep)
+static void peep_return_to_centre_of_tile(rct_peep * peep)
 {
     peep->direction ^= (1 << 1);
     peep->destination_x         = (peep->x & 0xFFE0) + 16;
     peep->destination_y         = (peep->y & 0xFFE0) + 16;
     peep->destination_tolerance = 5;
-    return 1;
 }
 
 /**
  *
  *  rct2: 0x00693f2C
  */
-static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, rct_tile_element * tile_element, uint8 & pathing_result)
+static void peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, rct_tile_element * tile_element, uint8 & pathing_result)
 {
     uint8 entranceType = tile_element->properties.entrance.type;
     uint8 rideIndex    = tile_element->properties.entrance.ride_index;
@@ -2470,7 +2469,8 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
         // Default guest/staff behaviour attempting to enter a
         // ride exit is to turn around.
         peep->interaction_ride_index = 0xFF;
-        return peep_return_to_centre_of_tile(peep);
+        peep_return_to_centre_of_tile(peep);
+        return;
     }
 
     if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
@@ -2480,7 +2480,8 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
             // Default staff behaviour attempting to enter a
             // ride entrance is to turn around.
             peep->interaction_ride_index = 0xFF;
-            return peep_return_to_centre_of_tile(peep);
+            peep_return_to_centre_of_tile(peep);
+            return;
         }
 
         if (peep->state == PEEP_STATE_QUEUING)
@@ -2488,18 +2489,21 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
             // Guest is in the ride queue.
             peep->sub_state                  = 11;
             peep->action_sprite_image_offset = _unk_F1AEF0;
-            return 1;
+            return;
         }
 
         // Guest is on a normal path, i.e. ride has no queue.
         if (peep->interaction_ride_index == rideIndex)
+        {
             // Peep is retrying the ride entrance without leaving
             // the path tile and without trying any other ride
             // attached to this path tile. i.e. stick with the
             // peeps previous decision not to go on the ride.
-            return peep_return_to_centre_of_tile(peep);
+            peep_return_to_centre_of_tile(peep);
+            return;
+        }
 
-        peep->time_lost     = 0;
+        peep->time_lost  = 0;
         uint8 stationNum = (tile_element->properties.entrance.index >> 4) & 0x7;
         // Guest walks up to the ride for the first time since entering
         // the path tile or since considering another ride attached to
@@ -2509,7 +2513,8 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
             // Peep remembers that this is the last ride they
             // considered while on this path tile.
             peep->interaction_ride_index = rideIndex;
-            return peep_return_to_centre_of_tile(peep);
+            peep_return_to_centre_of_tile(peep);
+            return;
         }
 
         // Guest has decided to go on the ride.
@@ -2539,33 +2544,48 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
                 news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
             }
         }
-        return 1;
     }
     else
     {
         // PARK_ENTRANCE
         if (peep->type == PEEP_TYPE_STAFF)
+        {
             // Staff cannot leave the park, so go back.
-            return peep_return_to_centre_of_tile(peep);
+            peep_return_to_centre_of_tile(peep);
+            return;
+        }
 
         // If not the centre of the entrance arch
         if (tile_element->properties.entrance.index & 0xF)
-            return peep_return_to_centre_of_tile(peep);
+        {
+            peep_return_to_centre_of_tile(peep);
+            return;
+        }
 
         uint8 entranceDirection = tile_element_get_direction(tile_element);
         if (entranceDirection != peep->direction)
         {
             if ((entranceDirection ^ (1 << 1)) != peep->direction)
-                return peep_return_to_centre_of_tile(peep);
+            {
+                peep_return_to_centre_of_tile(peep);
+                return;
+            }
+
             // Peep is leaving the park.
             if (peep->state != PEEP_STATE_WALKING)
-                return peep_return_to_centre_of_tile(peep);
+            {
+                peep_return_to_centre_of_tile(peep);
+                return;
+            }
 
             if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
             {
                 // If the park is open and leaving flag isn't set return to centre
                 if (gParkFlags & PARK_FLAGS_PARK_OPEN)
-                    return peep_return_to_centre_of_tile(peep);
+                {
+                    peep_return_to_centre_of_tile(peep);
+                    return;
+                }
             }
 
             peep->destination_x += TileDirectionDelta[peep->direction].x;
@@ -2587,13 +2607,16 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
                     news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_LEFT_PARK, peep->sprite_index);
                 }
             }
-            return 1;
+            return;
         }
 
         // Peep is entering the park.
 
         if (peep->state != PEEP_STATE_ENTERING_PARK)
-            return peep_return_to_centre_of_tile(peep);
+        {
+            peep_return_to_centre_of_tile(peep);
+            return;
+        }
 
         if (!(gParkFlags & PARK_FLAGS_PARK_OPEN))
         {
@@ -2601,7 +2624,8 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
             peep->var_37 = 1;
             decrement_guests_heading_for_park();
             peep_window_state_update(peep);
-            return peep_return_to_centre_of_tile(peep);
+            peep_return_to_centre_of_tile(peep);
+            return;
         }
 
         uint8 entranceIndex = 0;
@@ -2666,7 +2690,8 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
             peep->var_37 = 1;
             decrement_guests_heading_for_park();
             peep_window_state_update(peep);
-            return peep_return_to_centre_of_tile(peep);
+            peep_return_to_centre_of_tile(peep);
+            return;
         }
 
         money16 entranceFee = park_get_entrance_fee();
@@ -2693,7 +2718,8 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
                 peep->var_37 = 1;
                 decrement_guests_heading_for_park();
                 peep_window_state_update(peep);
-                return peep_return_to_centre_of_tile(peep);
+                peep_return_to_centre_of_tile(peep);
+                return;
             }
 
             gTotalIncomeFromAdmissions += entranceFee;
@@ -2713,8 +2739,6 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
         peep->Invalidate();
         sprite_move(x, y, peep->z, (rct_sprite *)peep);
         peep->Invalidate();
-
-        return 1;
     }
 }
 
@@ -2722,7 +2746,7 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
  *
  *  rct2: 0x006946D8
  */
-static sint32 peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rct_tile_element * tile_element, bool vandalism)
+static void peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rct_tile_element * tile_element, bool vandalism)
 {
     peep->next_x      = (x & 0xFFE0);
     peep->next_y      = (y & 0xFFE0);
@@ -2736,7 +2760,7 @@ static sint32 peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rc
         peep->Invalidate();
         sprite_move(x, y, z, (rct_sprite *)peep);
         peep->Invalidate();
-        return 1;
+        return;
     }
 
     uint8 vandalThoughtTimeout = (peep->vandalism_seen & 0xC0) >> 6;
@@ -2864,16 +2888,14 @@ static sint32 peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rc
     peep->Invalidate();
     sprite_move(x, y, z, (rct_sprite *)peep);
     peep->Invalidate();
-    return 1;
 }
 
 /**
  *
  *  rct2: 0x0069455E
  */
-static sint32 peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_tile_element * tile_element)
+static void peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_tile_element * tile_element)
 {
-
     // 0x00F1AEE2
     bool vandalism_present = false;
     if (footpath_element_has_path_scenery(tile_element) && (tile_element->flags & TILE_ELEMENT_FLAG_BROKEN) &&
@@ -2886,12 +2908,18 @@ static sint32 peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_t
     if (!map_is_location_owned(x, y, z))
     {
         if (peep->outside_of_park == 0)
-            return peep_return_to_centre_of_tile(peep);
+        {
+            peep_return_to_centre_of_tile(peep);
+            return;
+        }
     }
     else
     {
         if (peep->outside_of_park == 1)
-            return peep_return_to_centre_of_tile(peep);
+        {
+            peep_return_to_centre_of_tile(peep);
+            return;
+        }
     }
 
     if (peep->type == PEEP_TYPE_GUEST && footpath_element_is_queue(tile_element))
@@ -2906,13 +2934,15 @@ static sint32 peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_t
             // the queue, rebuilt the ride, etc.
             if (peep->current_ride == rideIndex)
             {
-                return peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
+                peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
+                return;
             }
             // Queue got disconnected from the original ride.
             peep->interaction_ride_index = 0xFF;
             peep->RemoveFromRide();
             peep->SetState(PEEP_STATE_1);
-            return peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
+            peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
+            return;
         }
 
         // Peep is not queuing.
@@ -2929,14 +2959,16 @@ static sint32 peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_t
             if (!peep->ShouldGoOnRide(rideIndex, stationNum, true, false))
             {
                 // Peep has decided not to go on the ride.
-                return peep_return_to_centre_of_tile(peep);
+                peep_return_to_centre_of_tile(peep);
+                return;
             }
         }
         else
         {
             /* Peep is approaching a queue tile without a ride
              * sign facing the peep. */
-            return peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
+            peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
+            return;
         }
 
         // Peep has decided to go on the ride at the queue.
@@ -2971,7 +3003,7 @@ static sint32 peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_t
             }
         }
 
-        return peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
+        peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
     }
     else
     {
@@ -2981,7 +3013,7 @@ static sint32 peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_t
             peep->RemoveFromRide();
             peep->SetState(PEEP_STATE_1);
         }
-        return peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
+        peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
     }
 }
 
@@ -2989,33 +3021,48 @@ static sint32 peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_t
  *
  *  rct2: 0x00693F70
  */
-static sint32 peep_interact_with_shop(rct_peep * peep, sint16 x, sint16 y, rct_tile_element * tile_element)
+static bool peep_interact_with_shop(rct_peep * peep, sint16 x, sint16 y, rct_tile_element * tile_element)
 {
     uint8  rideIndex = track_element_get_ride_index(tile_element);
     Ride * ride      = get_ride(rideIndex);
 
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
-        return 0;
+        return false;
 
     if (peep->type == PEEP_TYPE_STAFF)
-        return peep_return_to_centre_of_tile(peep);
+    {
+        peep_return_to_centre_of_tile(peep);
+        return true;
+    }
 
     peep->time_lost = 0;
 
     if (ride->status != RIDE_STATUS_OPEN)
-        return peep_return_to_centre_of_tile(peep);
+    {
+        peep_return_to_centre_of_tile(peep);
+        return true;
+    }
 
     if (peep->interaction_ride_index == rideIndex)
-        return peep_return_to_centre_of_tile(peep);
+    {
+        peep_return_to_centre_of_tile(peep);
+        return true;
+    }
 
     if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
-        return peep_return_to_centre_of_tile(peep);
+    {
+        peep_return_to_centre_of_tile(peep);
+        return true;
+    }
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY))
     {
         peep->time_lost = 0;
         if (!peep->ShouldGoOnRide(rideIndex, 0, false, false))
-            return peep_return_to_centre_of_tile(peep);
+        {
+            peep_return_to_centre_of_tile(peep);
+            return true;
+        }
 
         money16 cost = ride->price;
         if (cost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -3051,7 +3098,6 @@ static sint32 peep_interact_with_shop(rct_peep * peep, sint16 x, sint16 y, rct_t
                 news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, string_id, peep->sprite_index);
             }
         }
-        return 1;
     }
     else
     {
@@ -3061,8 +3107,9 @@ static sint32 peep_interact_with_shop(rct_peep * peep, sint16 x, sint16 y, rct_t
         peep->SetState(PEEP_STATE_BUYING);
         peep->current_ride = rideIndex;
         peep->sub_state    = 0;
-        return 1;
     }
+
+    return true;
 }
 
 bool is_valid_path_z_and_direction(rct_tile_element * tileElement, sint32 currentZ, sint32 currentDirection)
@@ -3092,17 +3139,17 @@ bool is_valid_path_z_and_direction(rct_tile_element * tileElement, sint32 curren
     return true;
 }
 
-sint32 rct_peep::PerformNextAction(uint8 & pathing_result)
+void rct_peep::PerformNextAction(uint8 & pathing_result)
 {
     rct_tile_element * tmpTile;
-    return PerformNextAction(pathing_result, tmpTile);
+    PerformNextAction(pathing_result, tmpTile);
 }
 
 /**
  *
  *  rct2: 0x00693C9E
  */
-sint32 rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & tile_result)
+void rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & tile_result)
 {
     pathing_result = 0;
     uint8 previousAction = action;
@@ -3113,7 +3160,7 @@ sint32 rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & 
     if (state == PEEP_STATE_QUEUING)
     {
         if (peep_update_queue_position(this, previousAction))
-            return 1;
+            return;
     }
 
     sint16 actionX, actionY, xy_dist;
@@ -3131,10 +3178,10 @@ sint32 rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & 
         }
 
         if (result != 0)
-            return 1;
+            return;
 
         if (!UpdateAction(&actionX, &actionY, &xy_dist))
-            return 1;
+            return;
     }
 
     if ((actionX & 0xFFE0) == next_x && (actionY & 0xFFE0) == next_y)
@@ -3143,7 +3190,7 @@ sint32 rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & 
         Invalidate();
         MoveTo(actionX, actionY, height);
         Invalidate();
-        return 1;
+        return;
     }
 
     if (actionX < 32 || actionY < 32 || actionX >= gMapSizeUnits || actionY >= gMapSizeUnits)
@@ -3152,7 +3199,8 @@ sint32 rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & 
         {
             pathing_result |= PATHING_OUTSIDE_PARK;
         }
-        return peep_return_to_centre_of_tile(this);
+        peep_return_to_centre_of_tile(this);
+        return;
     }
 
     rct_tile_element * tileElement = map_get_first_element_at(actionX / 32, actionY / 32);
@@ -3170,27 +3218,23 @@ sint32 rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & 
 
         if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH)
         {
-            if (peep_interact_with_path(this, actionX, actionY, tileElement))
-            {
-                tile_result = tileElement;
-                return 1;
-            }
+            peep_interact_with_path(this, actionX, actionY, tileElement);
+            tile_result = tileElement;
+            return;
         }
         else if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK)
         {
             if (peep_interact_with_shop(this, actionX, actionY, tileElement))
             {
                 tile_result = tileElement;
-                return 1;
+                return;
             }
         }
         else if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE)
         {
-            if (peep_interact_with_entrance(this, actionX, actionY, tileElement, pathing_result))
-            {
-                tile_result = tileElement;
-                return 1;
-            }
+            peep_interact_with_entrance(this, actionX, actionY, tileElement, pathing_result);
+            tile_result = tileElement;
+            return;
         }
     } while (!tile_element_is_last_for_tile(tileElement++));
 
@@ -3209,16 +3253,23 @@ sint32 rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & 
 
             if (!map_is_location_in_park(actionX & 0xFFE0, actionY & 0xFFE0))
             {
-                return peep_return_to_centre_of_tile(this);
+                peep_return_to_centre_of_tile(this);
+                return;
             }
 
             tileElement = map_get_surface_element_at({ actionX, actionY });
             if (tileElement == nullptr)
-                return peep_return_to_centre_of_tile(this);
+            {
+                peep_return_to_centre_of_tile(this);
+                return;
+            }
 
             sint16 water_height = map_get_water_height(tileElement);
             if (water_height)
-                return peep_return_to_centre_of_tile(this);
+            {
+                peep_return_to_centre_of_tile(this);
+                return;
+            }
 
             next_x      = actionX & 0xFFE0;
             next_y      = actionY & 0xFFE0;
@@ -3229,10 +3280,11 @@ sint32 rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & 
             Invalidate();
             MoveTo(actionX, actionY, height);
             Invalidate();
-            return 1;
+            return;
         }
     }
-    return peep_return_to_centre_of_tile(this);
+
+    peep_return_to_centre_of_tile(this);
 }
 
 /**
