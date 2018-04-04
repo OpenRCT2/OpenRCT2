@@ -367,6 +367,14 @@ enum PEEP_FLAGS
     PEEP_FLAGS_TWITCH      = (1u << 31) // Added for twitch integration
 };
 
+enum PEEP_NEXT_FLAGS
+{
+    PEEP_NEXT_FLAG_DIRECTION_MASK = 0x3,
+    PEEP_NEXT_FLAG_IS_SLOPED = (1 << 2),
+    PEEP_NEXT_FLAG_IS_SURFACE = (1 << 3),
+    PEEP_NEXT_FLAG_UNUSED = (1 << 4)
+};
+
 enum PEEP_NAUSEA_TOLERANCE
 {
     PEEP_NAUSEA_TOLERANCE_NONE,
@@ -541,7 +549,7 @@ struct rct_peep
     uint16        next_x;          // 0x24
     uint16        next_y;          // 0x26
     uint8         next_z;          // 0x28
-    uint8         next_var_29;     // 0x29
+    uint8         next_flags;     // 0x29
     uint8         outside_of_park; // 0x2A
     uint8         state;           // 0x2B
     uint8         sub_state;       // 0x2C
@@ -696,6 +704,10 @@ public: // Peep
     void SwitchToSpecialSprite(uint8 special_sprite_id);
     void StateReset();
     void MoveTo(sint16 destX, sint16 destY, sint16 destZ);
+    uint8 GetNextDirection() const;
+    bool GetNextIsSloped() const;
+    bool GetNextIsSurface() const;
+    void SetNextFlags(uint8 next_direction, bool is_sloped, bool is_surface);
 public: // Guest
     void Tick128UpdateGuest(sint32 index);
     void RemoveFromQueue();

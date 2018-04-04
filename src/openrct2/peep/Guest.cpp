@@ -5198,7 +5198,7 @@ void rct_peep::UpdateWalking()
 
     if (peep_flags & PEEP_FLAGS_LITTER)
     {
-        if (!(next_var_29 & 0x18))
+        if (!GetNextIsSurface())
         {
             if ((0xFFFF & scenario_rand()) <= 4096)
             {
@@ -5219,7 +5219,7 @@ void rct_peep::UpdateWalking()
     }
     else if (HasEmptyContainer())
     {
-        if ((!(next_var_29 & 0x18)) && ((uint32)(sprite_index & 0x1FF) == (gCurrentTicks & 0x1FF)) &&
+        if ((!GetNextIsSurface()) && ((uint32)(sprite_index & 0x1FF) == (gCurrentTicks & 0x1FF)) &&
             ((0xFFFF & scenario_rand()) <= 4096))
         {
 
@@ -5261,7 +5261,7 @@ void rct_peep::UpdateWalking()
     if (!(pathingResult & PATHING_DESTINATION_REACHED))
         return;
 
-    if ((next_var_29 & 0x18) == 8)
+    if (GetNextIsSurface())
     {
         rct_tile_element * tile_element = map_get_surface_element_at({next_x, next_y});
 
@@ -5310,7 +5310,7 @@ void rct_peep::UpdateWalking()
     if ((scenario_rand() & 0xFFFF) > chance)
         return;
 
-    if (next_var_29 & 0x1C)
+    if (GetNextIsSurface() || GetNextIsSloped())
         return;
 
     rct_tile_element * tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
@@ -5879,7 +5879,7 @@ static bool peep_should_find_bench(rct_peep * peep)
         {
             if (peep->hunger < 128 || peep->happiness < 128)
             {
-                if (!(peep->next_var_29 & 0x1C))
+                if (!peep->GetNextIsSurface() && !peep->GetNextIsSloped())
                 {
                     return true;
                 }
@@ -5890,7 +5890,7 @@ static bool peep_should_find_bench(rct_peep * peep)
             return false;
         }
 
-        if (!(peep->next_var_29 & 0x1C))
+        if (!peep->GetNextIsSurface() && !peep->GetNextIsSloped())
         {
             return true;
         }
@@ -5999,7 +5999,7 @@ static sint32 peep_update_walking_find_bin(rct_peep * peep)
     if (!peep->HasEmptyContainer())
         return 0;
 
-    if (peep->next_var_29 & 0x18)
+    if (peep->GetNextIsSurface())
         return 0;
 
     rct_tile_element * tile_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
@@ -6101,7 +6101,7 @@ static void peep_update_walking_break_scenery(rct_peep * peep)
             return;
     }
 
-    if (peep->next_var_29 & 0x18)
+    if (peep->GetNextIsSurface())
         return;
 
     rct_tile_element * tile_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);

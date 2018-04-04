@@ -1178,7 +1178,7 @@ void ride_remove_peeps(sint32 rideIndex)
                 sint32 x = peep->next_x + 16;
                 sint32 y = peep->next_y + 16;
                 sint32 z = peep->next_z * 8;
-                if (peep->next_var_29 & 4)
+                if (peep->GetNextIsSloped())
                     z += 8;
                 z++;
                 sprite_move(x, y, z, (rct_sprite*)peep);

@@ -388,6 +388,28 @@ void rct_peep::MoveTo(sint16 destX, sint16 destY, sint16 destZ)
     sprite_move(destX, destY, destZ, (rct_sprite*)this);
 }
 
+uint8 rct_peep::GetNextDirection() const
+{
+    return next_flags & PEEP_NEXT_FLAG_DIRECTION_MASK;
+}
+
+bool rct_peep::GetNextIsSloped() const
+{
+    return next_flags & PEEP_NEXT_FLAG_IS_SLOPED;
+}
+
+bool rct_peep::GetNextIsSurface() const
+{
+    return next_flags & PEEP_NEXT_FLAG_IS_SURFACE;
+}
+
+void rct_peep::SetNextFlags(uint8 next_direction, bool is_sloped, bool is_surface)
+{
+    next_flags = next_direction & PEEP_NEXT_FLAG_DIRECTION_MASK;
+    next_flags |= is_sloped ? PEEP_NEXT_FLAG_IS_SLOPED : 0;
+    next_flags |= is_surface ? PEEP_NEXT_FLAG_IS_SURFACE : 0;
+}
+
 rct_peep * try_get_guest(uint16 spriteIndex)
 {
     rct_sprite * sprite = try_get_sprite(spriteIndex);
@@ -484,7 +506,7 @@ bool rct_peep::CheckForPath()
     rct_tile_element * tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
 
     uint8 map_type = TILE_ELEMENT_TYPE_PATH;
-    if (next_var_29 & ((1 << 4) | (1 << 3)))
+    if (GetNextIsSurface())
     {
         map_type = TILE_ELEMENT_TYPE_SURFACE;
     }
@@ -1279,12 +1301,14 @@ void rct_peep::UpdateFalling()
     next_y = y & 0xFFE0;
     next_z = saved_map->base_height;
 
-    sint32 edx = saved_map->properties.surface.slope & TILE_ELEMENT_SLOPE_W_CORNER_DN;
     if (tile_element_get_type(saved_map) != TILE_ELEMENT_TYPE_PATH)
     {
-        edx = 8;
+        SetNextFlags(0, false, true);
     }
-    next_var_29 = edx;
+    else
+    {
+        SetNextFlags(saved_map->properties.path.type & 0x3, saved_map->properties.path.type & 0x4, false);
+    }
     SetState(PEEP_STATE_1);
 }
 
@@ -1416,7 +1440,7 @@ void rct_peep::Update()
         stepsToTake = 95;
     if ((peep_flags & PEEP_FLAGS_SLOW_WALK) && state != PEEP_STATE_QUEUING)
         stepsToTake /= 2;
-    if (action == 255 && (next_var_29 & 4))
+    if (action == 255 && (GetNextIsSloped()))
     {
         stepsToTake /= 2;
         if (state == PEEP_STATE_QUEUING)
@@ -2893,7 +2917,7 @@ static sint32 peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rc
     peep->next_x      = (x & 0xFFE0);
     peep->next_y      = (y & 0xFFE0);
     peep->next_z      = tile_element->base_height;
-    peep->next_var_29 = tile_element->properties.path.type & 7;
+    peep->SetNextFlags(tile_element->properties.path.type & 3, tile_element->properties.path.type & 4, false);
 
     sint16 z = peep->GetZOnSlope(x, y);
 
@@ -3360,7 +3384,7 @@ sint32 rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & 
         }
     } while (!tile_element_is_last_for_tile(tileElement++));
 
-    if (type == PEEP_TYPE_STAFF || (next_var_29 & 0x18))
+    if (type == PEEP_TYPE_STAFF || (GetNextIsSurface()))
     {
         sint16 height = abs(tile_element_height(actionX, actionY) - z);
 
@@ -3389,7 +3413,7 @@ sint32 rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & 
             next_x      = actionX & 0xFFE0;
             next_y      = actionY & 0xFFE0;
             next_z      = tileElement->base_height;
-            next_var_29 = 8;
+            SetNextFlags(0, false, true);
 
             height = GetZOnSlope(actionX, actionY);
             Invalidate();
@@ -3575,14 +3599,15 @@ sint32 rct_peep::GetZOnSlope(sint32 tile_x, sint32 tile_y)
     if (tile_x == LOCATION_NULL)
         return 0;
 
-    if (next_var_29 & 0x18)
+    if (GetNextIsSurface())
     {
         return tile_element_height(tile_x, tile_y) & 0xFFFF;
     }
 
     sint32 height = next_z * 8;
-
-    return height + map_height_from_slope(tile_x, tile_y, next_var_29);
+    uint8 slope = GetNextDirection();
+    slope |= GetNextIsSloped() ? (1 << 2) : 0;
+    return height + map_height_from_slope(tile_x, tile_y, slope);
 }
 
 /**

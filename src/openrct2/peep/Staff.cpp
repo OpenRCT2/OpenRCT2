@@ -962,7 +962,7 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
  */
 static uint8 staff_handyman_direction_to_uncut_grass(rct_peep * peep, uint8 valid_directions)
 {
-    if (!(peep->next_var_29 & 0x18))
+    if (!(peep->GetNextIsSurface()))
     {
 
         rct_tile_element * tileElement = map_get_surface_element_at({peep->next_x, peep->next_y});
@@ -970,9 +970,9 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep * peep, uint8 vali
         if (peep->next_z != tileElement->base_height)
             return 0xFF;
 
-        if (peep->next_var_29 & 0x4)
+        if (peep->GetNextIsSloped())
         {
-            if ((tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK) != byte_98D800[peep->next_var_29 & 0x3])
+            if ((tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK) != byte_98D800[peep->GetNextDirection()])
                 return 0xFF;
         }
         else if ((tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK) != 0)
@@ -1063,7 +1063,7 @@ static bool staff_path_finding_handyman(rct_peep * peep)
 
     if (direction == 0xFF)
     {
-        if (peep->next_var_29 & 0x18)
+        if (peep->GetNextIsSurface())
         {
             direction = staff_handyman_direction_rand_surface(peep, validDirections);
         }
@@ -1331,7 +1331,7 @@ static bool staff_path_finding_mechanic(rct_peep * peep)
 {
     uint8 validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
     uint8 direction       = 0xFF;
-    if (peep->next_var_29 & 0x18)
+    if (peep->GetNextIsSurface())
     {
         direction = staff_mechanic_direction_surface(peep);
     }
@@ -1419,7 +1419,7 @@ static bool staff_path_finding_misc(rct_peep * peep)
     uint8 validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
 
     uint8 direction = 0xFF;
-    if (peep->next_var_29 & 0x18)
+    if (peep->GetNextIsSurface())
     {
         direction = staff_direction_surface(peep, scenario_rand() & 3);
     }
@@ -2202,7 +2202,7 @@ static sint32 peep_update_patrolling_find_bin(rct_peep * peep)
     if (!(peep->staff_orders & STAFF_ORDERS_EMPTY_BINS))
         return 0;
 
-    if ((peep->next_var_29 & 0x18) != 0)
+    if (peep->GetNextIsSurface())
         return 0;
 
     rct_tile_element * tile_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
@@ -2269,7 +2269,7 @@ static sint32 peep_update_patrolling_find_grass(rct_peep * peep)
     if (peep->staff_mowing_timeout < 12)
         return 0;
 
-    if ((peep->next_var_29 & 0x18) != 8)
+    if (!(peep->GetNextIsSurface()))
         return 0;
 
     rct_tile_element * tile_element = map_get_surface_element_at({peep->next_x, peep->next_y});
@@ -2366,7 +2366,7 @@ void rct_peep::UpdatePatrolling()
     if (!(pathingResult & PATHING_DESTINATION_REACHED))
         return;
 
-    if ((next_var_29 & 0x18) == 8)
+    if (GetNextIsSurface())
     {
         rct_tile_element * tile_element = map_get_surface_element_at({next_x, next_y});
 
