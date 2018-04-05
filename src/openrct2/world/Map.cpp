@@ -4050,7 +4050,7 @@ static void translate_3d_to_2d(sint32 rotation, sint32 *x, sint32 *y)
 
 CoordsXY translate_3d_to_2d_with_z(sint32 rotation, CoordsXYZ pos)
 {
-    CoordsXY result = { 0 };
+    CoordsXY result;
     switch (rotation & 3) {
     default:
     case 0:

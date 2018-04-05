@@ -60,10 +60,11 @@ constexpr sint32 COORDS_NULL = -1;
  */
 struct CoordsXY
 {
-    sint32 x, y;
+    sint32 x = 0;
+    sint32 y = 0;
 
-    CoordsXY() { }
-    CoordsXY(sint32 _x, sint32 _y) :
+    CoordsXY() = default;
+    constexpr CoordsXY(sint32 _x, sint32 _y) :
         x(_x),
         y(_y)
     {
