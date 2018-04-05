@@ -763,6 +763,14 @@ bool map_can_build_at(sint32 x, sint32 y, sint32 z)
     return false;
 }
 
+bool map_can_clear_at(sint32 x, sint32 y)
+{
+    return
+        (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ||
+        gCheatsSandboxMode ||
+        map_is_location_owned_or_has_rights(x, y);
+}
+
 /**
  *
  *  rct2: 0x00664F72
@@ -1065,170 +1073,6 @@ void game_command_set_large_scenery_colour(
         }
     }
     *ebx = 0;
-}
-
-// This will cause clear scenery to remove paths
-// This should be a flag for the game command which can be set via a checkbox on the clear scenery window.
-// #define CLEAR_SCENERY_REMOVES_PATHS
-
-/**
- *
- *  rct2: 0x0068DFE4
- */
-static money32 map_clear_scenery_from_tile(sint32 x, sint32 y, sint32 clear, sint32 flags)
-{
-    sint32 type;
-    money32 cost, totalCost;
-    rct_tile_element *tileElement;
-
-    totalCost = 0;
-
-restart_from_beginning:
-    tileElement = map_get_first_element_at(x, y);
-    do {
-        type = tileElement->GetType();
-        switch (type) {
-        case TILE_ELEMENT_TYPE_PATH:
-            if (clear & (1 << 2)) {
-                sint32 eax = x * 32;
-                sint32 ebx = flags;
-                sint32 ecx = y * 32;
-                sint32 edx = tileElement->base_height;
-                sint32 edi = 0, ebp = 0;
-                cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_PATH, edi, ebp);
-
-                if (cost == MONEY32_UNDEFINED)
-                    return MONEY32_UNDEFINED;
-
-                totalCost += cost;
-
-                if (flags & 1)
-                    goto restart_from_beginning;
-            } break;
-        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-            if (clear & (1 << 0)) {
-                sint32 eax = x * 32;
-                sint32 ebx = (tileElement->type << 8) | flags;
-                sint32 ecx = y * 32;
-                sint32 edx = (tileElement->properties.scenery.type << 8) | (tileElement->base_height);
-                sint32 edi = 0, ebp = 0;
-                cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_SCENERY, edi, ebp);
-
-                if (cost == MONEY32_UNDEFINED)
-                    return MONEY32_UNDEFINED;
-
-                totalCost += cost;
-
-                if (flags & 1)
-                    goto restart_from_beginning;
-
-            } break;
-        case TILE_ELEMENT_TYPE_WALL:
-            if (clear & (1 << 0))
-            {
-                // NOTE: We execute the game action directly as this function is already called from such.
-                TileCoordsXYZD wallLocation = { x, y, tileElement->base_height, tileElement->GetDirection() };
-                auto wallRemoveAction = WallRemoveAction(wallLocation);
-                wallRemoveAction.SetFlags(flags);
-                auto res = ((flags & GAME_COMMAND_FLAG_APPLY) ? wallRemoveAction.Execute() : wallRemoveAction.Query());
-                if (res->Error == GA_ERROR::OK)
-                {
-                    totalCost += res->Cost;
-                }
-            }
-            break;
-        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            if (clear & (1 << 1)) {
-                sint32 eax = x * 32;
-                sint32 ebx = flags | ((tile_element_get_direction(tileElement)) << 8);
-                sint32 ecx = y * 32;
-                sint32 edx = tileElement->base_height | (scenery_large_get_sequence(tileElement) << 8);
-                sint32 edi = 0, ebp = 0;
-                cost = game_do_command(eax, ebx | (1 << 7), ecx, edx, GAME_COMMAND_REMOVE_LARGE_SCENERY, edi, ebp);
-
-                if (cost == MONEY32_UNDEFINED)
-                    return MONEY32_UNDEFINED;
-
-                totalCost += cost;
-
-                if (flags & 1)
-                    goto restart_from_beginning;
-
-            } break;
-        }
-    } while (!tile_element_is_last_for_tile(tileElement++));
-
-    return totalCost;
-}
-
-/**
- * Function to clear the flag that is set to prevent cost duplication
- * when using the clear scenery tool with large scenery.
- */
-static void map_reset_clear_large_scenery_flag(){
-    rct_tile_element* tileElement;
-    // TODO: Improve efficiency of this
-    for (sint32 y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++) {
-        for (sint32 x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++) {
-            tileElement = map_get_first_element_at(x, y);
-            do {
-                if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY) {
-                    tileElement->flags &= ~(1 << 6);
-                }
-            } while (!tile_element_is_last_for_tile(tileElement++));
-        }
-    }
-}
-
-money32 map_clear_scenery(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 clear, sint32 flags)
-{
-    sint32 x, y, z;
-    money32 totalCost, cost;
-    bool noValidTiles;
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-
-    x = (x0 + x1) / 2 + 16;
-    y = (y0 + y1) / 2 + 16;
-    z = tile_element_height(x, y);
-    gCommandPosition.x = x;
-    gCommandPosition.y = y;
-    gCommandPosition.z = z;
-
-    x0 = std::max(x0, 32);
-    y0 = std::max(y0, 32);
-    x1 = std::min(x1, (sint32)gMapSizeMaxXY);
-    y1 = std::min(y1, (sint32)gMapSizeMaxXY);
-
-    noValidTiles = true;
-    totalCost = 0;
-    for (y = y0; y <= y1; y += 32) {
-        for (x = x0; x <= x1; x += 32) {
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode || map_is_location_owned_or_has_rights(x, y)) {
-                cost = map_clear_scenery_from_tile(x / 32, y / 32, clear, flags);
-                if (cost != MONEY32_UNDEFINED) {
-                    noValidTiles = false;
-                    totalCost += cost;
-                }
-            } else {
-                gGameCommandErrorText = STR_LAND_NOT_OWNED_BY_PARK;
-            }
-        }
-    }
-
-    if (gGameCommandNestLevel == 1 && flags & GAME_COMMAND_FLAG_APPLY) {
-        LocationXYZ16 coord;
-        coord.x = ((x0 + x1) / 2) + 16;
-        coord.y = ((y0 + y1) / 2) + 16;
-        coord.z = tile_element_height(coord.x, coord.y);
-        network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-    }
-
-    if (clear & (1 << 1)) {
-        map_reset_clear_large_scenery_flag();
-    }
-
-    return noValidTiles ? MONEY32_UNDEFINED : totalCost;
 }
 
 /**

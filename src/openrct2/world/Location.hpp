@@ -87,7 +87,17 @@ struct TileCoordsXY
 
 struct CoordsXYZ
 {
-    sint32 x, y, z;
+    sint32 x = 0;
+    sint32 y = 0;
+    sint32 z = 0;
+
+    CoordsXYZ() = default;
+    constexpr CoordsXYZ(sint32 _x, sint32 _y, sint32 _z)
+        : x(_x),
+          y(_y),
+          z(_z)
+    {
+    }
 };
 
 struct TileCoordsXYZ
