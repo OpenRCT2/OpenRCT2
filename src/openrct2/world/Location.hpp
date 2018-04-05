@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include "../common.h"
 #include <algorithm>
 
