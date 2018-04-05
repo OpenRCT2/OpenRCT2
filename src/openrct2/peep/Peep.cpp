@@ -3481,20 +3481,11 @@ static void peep_give_real_name(rct_peep * peep)
     // Generate a name_string_idx from the peep id using bit twiddling
     uint16 ax = (uint16)(peep->id + 0xF0B);
     uint16 dx = 0;
-    dx |= ((ax & 0x400) ? 1 : 0) << 13;
-    dx |= ((ax & 0x2000) ? 1 : 0) << 12;
-    dx |= ((ax & 0x800) ? 1 : 0) << 11;
-    dx |= ((ax & 0x400) ? 1 : 0) << 10;
-    dx |= ((ax & 0x1) ? 1 : 0) << 9;
-    dx |= ((ax & 0x40) ? 1 : 0) << 8;
-    dx |= ((ax & 0x2) ? 1 : 0) << 7;
-    dx |= ((ax & 0x4) ? 1 : 0) << 6;
-    dx |= ((ax & 0x100) ? 1 : 0) << 5;
-    dx |= ((ax & 0x20) ? 1 : 0) << 4;
-    dx |= ((ax & 0x80) ? 1 : 0) << 3;
-    dx |= ((ax & 0x8) ? 1 : 0) << 2;
-    dx |= ((ax & 0x200) ? 1 : 0) << 1;
-    dx |= ((ax & 0x10) ? 1 : 0) << 0;
+    static constexpr uint16 twiddlingBitOrder[] = { 4, 9, 3, 7, 5, 8, 2, 1, 6, 0, 12, 11, 13, 10 };
+    for (size_t i = 0; i < Util::CountOf(twiddlingBitOrder); i++)
+    {
+        dx |= (ax & (1 << twiddlingBitOrder[i]) ? 1 : 0) << i;
+    }
     ax = dx & 0xF;
     dx *= 4;
     ax *= 4096;
