@@ -771,6 +771,19 @@ private: // Staff update
     void UpdateWatering();
     void UpdateAnswering();
     void UpdateFixing(sint32 steps);
+    bool UpdateFixingEnterStation(Ride * ride);
+    bool UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride * ride);
+    bool UpdateFixingFixVehicle(bool firstRun, Ride * ride);
+    bool UpdateFixingFixVehicleMalfunction(bool firstRun, Ride * ride);
+    bool UpdateFixingMoveToStationEnd(bool firstRun, Ride * ride);
+    bool UpdateFixingFixStationEnd(bool firstRun);
+    bool UpdateFixingMoveToStationStart(bool firstRun, Ride * ride);
+    bool UpdateFixingFixStationStart(bool firstRun, Ride * ride);
+    bool UpdateFixingFixStationBrakes(bool firstRun, Ride * ride);
+    bool UpdateFixingMoveToStationExit(bool firstRun, Ride * ride);
+    bool UpdateFixingFinishFixOrInspect(bool firstRun, sint32 steps, Ride * ride);
+    bool UpdateFixingLeaveByEntranceExit(bool firstRun, Ride * ride);
+    void UpdateRideInspected(sint32 rideIndex);
     void UpdateHeadingToInspect();
 
     // TODO: Make these private again when done refactoring
