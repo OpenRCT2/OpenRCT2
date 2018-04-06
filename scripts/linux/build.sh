@@ -28,19 +28,19 @@ pushd build
 	if [[ $TARGET == "docker64" ]]
 	then
 		# CMAKE and MAKE opts from environment
-		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:64bit-only bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT_MAKE_OPTS && ctest --output-on-failure"
+		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:64bit-only bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT_MAKE_OPTS && ninja -f headers.ninja -k0 && ctest --output-on-failure"
 	elif [[ $TARGET == "ubuntu_i686" ]]
 	then
 		# CMAKE and MAKE opts from environment
-		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_i686 bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja all testpaint install $OPENRCT_MAKE_OPTS && ctest --output-on-failure && ( ./testpaint --quiet ||  if [[ \$? -eq 1 ]] ; then echo Allowing failed tests to pass ; else echo here ; false; fi )"
+		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_i686 bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja all testpaint install $OPENRCT_MAKE_OPTS && ninja -f headers.ninja -k0 && ctest --output-on-failure && ( ./testpaint --quiet ||  if [[ \$? -eq 1 ]] ; then echo Allowing failed tests to pass ; else echo here ; false; fi )"
 	elif [[ $TARGET == "ubuntu_amd64" ]]
 	then
 		# CMAKE and MAKE opts from environment
-		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_amd64 bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT_MAKE_OPTS install && ctest --output-on-failure"
+		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_amd64 bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT_MAKE_OPTS install && ninja -f headers.ninja -k0 && ctest --output-on-failure"
 	elif [[ $TARGET == "windows" ]]
 	then
 		# CMAKE and MAKE opts from environment
-		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:mingw-arch bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT_MAKE_OPTS"
+		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:mingw-arch bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT_MAKE_OPTS && ninja -f headers.ninja -k0"
 	else
 		echo "Unkown target $TARGET"
 		exit 1
