@@ -1619,7 +1619,7 @@ sint32 staff_get_available_entertainer_costume_list(uint8 * costumeList)
 }
 
 /** rct2: 0x009929C8 */
-static constexpr const LocationXY16 _9929C8[] = {
+static constexpr const LocationXY16 _MowingWaypoints[] = {
     { 28, 28 }, { 28, 4 }, { 20, 4 }, { 20, 28 }, { 12, 28 }, { 12, 4 }, { 4, 4 }, { 4, 28 },
 };
 
@@ -1653,14 +1653,14 @@ void rct_peep::UpdateMowing()
             SwitchToSpecialSprite(2);
         }
 
-        if (var_37 == Util::CountOf(_9929C8))
+        if (var_37 == Util::CountOf(_MowingWaypoints))
         {
             StateReset();
             return;
         }
 
-        destination_x = _9929C8[var_37].x + next_x;
-        destination_y = _9929C8[var_37].y + next_y;
+        destination_x = _MowingWaypoints[var_37].x + next_x;
+        destination_y = _MowingWaypoints[var_37].y + next_y;
 
         if (var_37 != 7)
             continue;
@@ -2102,7 +2102,7 @@ void rct_peep::UpdateAnswering()
 }
 
 /** rct2: 0x00992A5C */
-static constexpr const LocationXY16 _992A5C[] = {
+static constexpr const LocationXY16 _WateringUseOffsets[] = {
     { 3, 16 }, { 16, 29 }, { 29, 16 }, { 16, 3 }, { 3, 29 }, { 29, 29 }, { 29, 3 }, { 3, 3 },
 };
 
@@ -2169,8 +2169,8 @@ static sint32 peep_update_patrolling_find_watering(rct_peep * peep)
             peep->var_37 = chosen_position;
 
             peep->sub_state             = 0;
-            peep->destination_x         = (peep->x & 0xFFE0) + _992A5C[chosen_position].x;
-            peep->destination_y         = (peep->y & 0xFFE0) + _992A5C[chosen_position].y;
+            peep->destination_x         = (peep->x & 0xFFE0) + _WateringUseOffsets[chosen_position].x;
+            peep->destination_y         = (peep->y & 0xFFE0) + _WateringUseOffsets[chosen_position].y;
             peep->destination_tolerance = 3;
 
             return 1;
@@ -2269,8 +2269,8 @@ static sint32 peep_update_patrolling_find_grass(rct_peep * peep)
     peep->SetState(PEEP_STATE_MOWING);
     peep->var_37 = 0;
     // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
-    peep->destination_x         = peep->next_x + _9929C8[0].x;
-    peep->destination_y         = peep->next_y + _9929C8[0].y;
+    peep->destination_x         = peep->next_x + _MowingWaypoints[0].x;
+    peep->destination_y         = peep->next_y + _MowingWaypoints[0].y;
     peep->destination_tolerance = 3;
     return 1;
 }
@@ -2753,7 +2753,7 @@ bool rct_peep::UpdateFixingFixVehicleMalfunction(bool firstRun, Ride * ride)
 }
 
 /** rct2: 0x00992A3C */
-static constexpr const CoordsXY _992A3C[] = {
+static constexpr const CoordsXY _StationFixingOffsets[] = {
     { -12, 0 },
     { 0, 12 },
     { 12, 0 },
@@ -2792,7 +2792,7 @@ bool rct_peep::UpdateFixingMoveToStationEnd(bool firstRun, Ride * ride)
         }
 
         sint32   trackDirection = tile_element_get_direction(tileElement);
-        CoordsXY offset         = _992A3C[trackDirection];
+        CoordsXY offset         = _StationFixingOffsets[trackDirection];
 
         stationX += 16 + offset.x;
         if (offset.x == 0)
@@ -2907,7 +2907,7 @@ bool rct_peep::UpdateFixingMoveToStationStart(bool firstRun, Ride * ride)
         uint16 destinationX = input.x + 16;
         uint16 destinationY = input.y + 16;
 
-        CoordsXY offset = _992A3C[stationDirection];
+        CoordsXY offset = _StationFixingOffsets[stationDirection];
 
         destinationX -= offset.x;
         if (offset.x == 0)
