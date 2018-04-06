@@ -90,6 +90,14 @@ android.applicationVariants.all { variant ->
             from zipTree(new File(buildDir, 'title-sequence.zip'))
             into "$variant.mergeAssets.outputDir/data/title"
         }
+        download {
+            src 'https://github.com/OpenRCT2/objects/releases/download/v1.0/objects.zip'
+            dest new File(buildDir, 'objects.zip')
+        }
+        copy {
+            from zipTree(new File(buildDir, 'objects.zip'))
+            into "$variant.mergeAssets.outputDir/data/object"
+        }
     }
 }
 
