@@ -114,7 +114,7 @@ static constexpr const CoordsXY SpiralSlideWalkingPath[64] = {
 };
 
 /** rct2: 0x00981F4C, 0x00981F4E */
-static constexpr const LocationXY16 _981F4C[] = {
+static constexpr const LocationXY16 _WatchingPositionOffsets[] = {
     {  7,  5 },
     {  5, 25 },
     { 25,  5 },
@@ -372,6 +372,7 @@ static void   peep_decide_whether_to_leave_park(rct_peep * peep);
 static void   peep_leave_park(rct_peep * peep);
 static void   peep_head_for_nearest_ride_type(rct_peep * peep, sint32 rideType);
 static void   peep_head_for_nearest_ride_with_flags(rct_peep * peep, sint32 rideTypeFlags);
+bool loc_690FD0(rct_peep * peep, uint8 * rideToView, uint8 * rideSeatToView, rct_tile_element * tileElement);
 
 void rct_peep::Tick128UpdateGuest(sint32 index)
 {
@@ -907,11 +908,10 @@ void rct_peep::UpdateSitting()
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        sint32 ebx = var_37 & 0x7;
         LocationXYZ16 loc = 
         {
-            (sint16)((x & 0xFFE0) + BenchUseOffsets[ebx].x),
-            (sint16)((y & 0xFFE0) + BenchUseOffsets[ebx].y),
+            (sint16)((x & 0xFFE0) + BenchUseOffsets[var_37 & 0x7].x),
+            (sint16)((y & 0xFFE0) + BenchUseOffsets[var_37 & 0x7].y),
             z
         };
 
@@ -3429,7 +3429,7 @@ void rct_peep::UpdateRideAtEntrance()
 }
 
 /** rct2: 0x00981FD4, 0x00981FD6 */
-static constexpr const LocationXY16 _981FD4[] = {
+static constexpr const LocationXY16 _MazeEntranceStart[] = {
     { 8, 8 },
     { 8, 24 },
     { 24, 24 },
@@ -3457,8 +3457,8 @@ static void peep_update_ride_leave_entrance_maze(rct_peep * peep, Ride * ride, T
     peep->var_37 = direction;
     peep->maze_last_edge &= 3;
 
-    entrance_loc.x += _981FD4[direction / 4].x;
-    entrance_loc.y += _981FD4[direction / 4].y;
+    entrance_loc.x += _MazeEntranceStart[direction / 4].x;
+    entrance_loc.y += _MazeEntranceStart[direction / 4].y;
 
     peep->destination_x = entrance_loc.x;
     peep->destination_y = entrance_loc.y;
@@ -4533,7 +4533,7 @@ void rct_peep::UpdateRideApproachSpiralSlide()
 }
 
 /** rct2: 0x00981F0C, 0x00981F0E */
-static constexpr const CoordsXY _981F0C[] = {
+static constexpr const CoordsXY _SpiralSlideEnd[] = {
     { 25, 56 },
     { 56, 7 },
     { 7, -24 },
@@ -4541,7 +4541,7 @@ static constexpr const CoordsXY _981F0C[] = {
 };
 
 /** rct2: 0x00981F1C, 0x00981F1E */
-static constexpr const CoordsXY _981F1C[] = {
+static constexpr const CoordsXY _SpiralSlideEndWaypoint[] = {
     { 8, 56 },
     { 56, 24 },
     { 24, -24 },
@@ -4585,14 +4585,14 @@ void rct_peep::UpdateRideOnSpiralSlide()
             sint16 newX  = ride->station_starts[current_ride_station].x * 32;
             sint16 newY  = ride->station_starts[current_ride_station].y * 32;
             uint8  dir   = (var_37 / 4) & 3;
-            sint16 destX = newX + _981F1C[dir].x;
-            sint16 destY = newY + _981F1C[dir].y;
 
-            destination_x = destX;
-            destination_y = destY;
+            // Set the location that the peep walks to go on slide again
+            destination_x = newX + _SpiralSlideEndWaypoint[dir].x;
+            destination_y = newY + _SpiralSlideEndWaypoint[dir].y;
 
-            newX += _981F0C[dir].x;
-            newY += _981F0C[dir].y;
+            // Move the peep sprite to just at the end of the slide
+            newX += _SpiralSlideEnd[dir].x;
+            newY += _SpiralSlideEnd[dir].y;
 
             MoveTo(newX, newY, z);
 
@@ -4705,7 +4705,7 @@ void rct_peep::UpdateRideLeaveSpiralSlide()
 }
 
 /** rct2: 0x00981FE4 */
-static constexpr const uint8 _981FE4[][4] = {
+static constexpr const uint8 _MazeGetNewDirectionFromEdge[][4] = {
     { 15, 7, 15, 7 },
     { 11, 3, 11, 3 },
     { 7, 15, 7, 15 },
@@ -4713,7 +4713,7 @@ static constexpr const uint8 _981FE4[][4] = {
 };
 
 /** rct2: 0x00981FF4 */
-static constexpr const uint8 _981FF4[][4] = {
+static constexpr const uint8 _MazeCurrentDirectionToOpenHedge[][4] = {
     { 1, 2, 14, 0 },
     { 4, 5, 6, 2 },
     { 6, 8, 9, 10 },
@@ -4772,22 +4772,22 @@ void rct_peep::UpdateRideMazePathfinding()
     uint16 openHedges = 0;
     // var_37 is 3, 7, 11 or 15
 
-    if (mazeEntry & (1 << _981FF4[var_37 / 4][3]))
+    if (mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[var_37 / 4][3]))
     {
         openHedges = 1;
     }
     openHedges <<= 1;
-    if (mazeEntry & (1 << _981FF4[var_37 / 4][2]))
+    if (mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[var_37 / 4][2]))
     {
         openHedges |= 1;
     }
     openHedges <<= 1;
-    if (mazeEntry & (1 << _981FF4[var_37 / 4][1]))
+    if (mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[var_37 / 4][1]))
     {
         openHedges |= 1;
     }
     openHedges <<= 1;
-    if (mazeEntry & (1 << _981FF4[var_37 / 4][0]))
+    if (mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[var_37 / 4][0]))
     {
         openHedges |= 1;
     }
@@ -4851,7 +4851,7 @@ void rct_peep::UpdateRideMazePathfinding()
         destination_x = actionX;
         destination_y = actionY;
 
-        var_37         = _981FE4[var_37 / 4][chosenEdge];
+        var_37         = _MazeGetNewDirectionFromEdge[var_37 / 4][chosenEdge];
         maze_last_edge = chosenEdge;
         break;
     case maze_type::entrance_or_exit:
@@ -5387,9 +5387,8 @@ void rct_peep::UpdateWalking()
     SetState(PEEP_STATE_WATCHING);
     sub_state = 0;
 
-    sint32 ebx = var_37 & 0x1F;
-    sint32 destX = (x & 0xFFE0) + _981F4C[ebx].x;
-    sint32 destY = (y & 0xFFE0) + _981F4C[ebx].y;
+    sint32 destX = (x & 0xFFE0) + _WatchingPositionOffsets[var_37 & 0x1F].x;
+    sint32 destY = (y & 0xFFE0) + _WatchingPositionOffsets[var_37 & 0x1F].y;
 
     destination_x         = destX;
     destination_y         = destY;
@@ -5987,9 +5986,8 @@ bool rct_peep::UpdateWalkingFindBench()
 
     sub_state = PEEP_SITTING_TRYING_TO_SIT;
 
-    sint32 ebx    = var_37 & 0x7;
-    sint32 benchX = (x & 0xFFE0) + BenchUseOffsets[ebx].x;
-    sint32 benchY = (y & 0xFFE0) + BenchUseOffsets[ebx].y;
+    sint32 benchX = (x & 0xFFE0) + BenchUseOffsets[var_37 & 0x7].x;
+    sint32 benchY = (y & 0xFFE0) + BenchUseOffsets[var_37 & 0x7].y;
 
     destination_x         = benchX;
     destination_y         = benchY;
@@ -6070,9 +6068,8 @@ bool rct_peep::UpdateWalkingFindBin()
     peep->SetState(PEEP_STATE_USING_BIN);
     peep->sub_state = PEEP_USING_BIN_WALKING_TO_BIN;
 
-    sint32 ebx  = peep->var_37 & 0x3;
-    sint32 binX = (peep->x & 0xFFE0) + BinUseOffsets[ebx].x;
-    sint32 binY = (peep->y & 0xFFE0) + BinUseOffsets[ebx].y;
+    sint32 binX = (peep->x & 0xFFE0) + BinUseOffsets[peep->var_37 & 0x3].x;
+    sint32 binY = (peep->y & 0xFFE0) + BinUseOffsets[peep->var_37 & 0x3].y;
 
     peep->destination_x         = binX;
     peep->destination_y         = binY;

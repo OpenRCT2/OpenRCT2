@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "Peep.h"
+#include <cstring>
 #include "../scenario/Scenario.h"
 #include "../world/Footpath.h"
 #include "../world/Entrance.h"
