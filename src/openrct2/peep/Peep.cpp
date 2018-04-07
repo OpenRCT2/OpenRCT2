@@ -1802,8 +1802,6 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
         ah = 9;
         al = 15;
     }
-    
-    
 
     peep->intensity = (al << 4) | ah;
 
