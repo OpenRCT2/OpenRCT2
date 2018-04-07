@@ -26,7 +26,7 @@
 #define WW 200
 #define WH 100
 
-money32 gDemolishRideCost;
+static money32 _demolishRideCost;
 
 // clang-format off
 enum WINDOW_RIDE_DEMOLISH_WIDGET_IDX {
@@ -148,7 +148,7 @@ rct_window * window_ride_demolish_prompt_open(sint32 rideIndex)
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_DEMOLISH);
     window_init_scroll_widgets(w);
     w->number = rideIndex;
-    gDemolishRideCost = -ride_get_refund_price(rideIndex);
+    _demolishRideCost = -ride_get_refund_price(rideIndex);
 
     return w;
 }
@@ -174,7 +174,7 @@ rct_window * window_ride_refurbish_prompt_open(sint32 rideIndex)
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_REFURBISH);
     window_init_scroll_widgets(w);
     w->number = rideIndex;
-    gDemolishRideCost = -ride_get_refund_price(rideIndex);
+    _demolishRideCost = -ride_get_refund_price(rideIndex);
 
     return w;
 }
@@ -229,7 +229,7 @@ static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     set_format_arg(0, rct_string_id, ride->name);
     set_format_arg(2, uint32, ride->name_arguments);
-    set_format_arg(6, money32, gDemolishRideCost);
+    set_format_arg(6, money32, _demolishRideCost);
 
     sint32 x = w->x + WW / 2;
     sint32 y = w->y + (WH / 2) - 3;
@@ -252,7 +252,7 @@ static void window_ride_refurbish_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     set_format_arg(0, rct_string_id, ride->name);
     set_format_arg(2, uint32, ride->name_arguments);
-    set_format_arg(6, money32, gDemolishRideCost / 2);
+    set_format_arg(6, money32, _demolishRideCost / 2);
 
     sint32 x = w->x + WW / 2;
     sint32 y = w->y + (WH / 2) - 3;
