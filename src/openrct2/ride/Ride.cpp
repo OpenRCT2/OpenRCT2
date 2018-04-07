@@ -5529,7 +5529,7 @@ sint32 ride_get_refund_price(sint32 ride_id)
     do {
         addedcost = game_do_command(
             trackElement.x,
-            (direction << 8),
+            GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | (direction << 8),
             trackElement.y,
             trackElement.element->properties.track.type | ((trackElement.element->properties.track.sequence & 0xF) << 8),
             GAME_COMMAND_REMOVE_TRACK,
