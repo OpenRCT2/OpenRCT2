@@ -28,12 +28,6 @@ struct rct_vehicle_colour {
     uint8 trim_colour;
 };
 
-enum class peep_loading_type {
-    normal,
-    xy_1,
-    xy_2
-};
-
 #ifdef __TESTPAINT__
 #pragma pack(push, 1)
 #endif // __TESTPAINT__
@@ -90,7 +84,7 @@ struct rct_ride_entry_vehicle {
     uint8 pad_61[7];                // 0x61 , 0x7B
     std::vector<std::array<sLocationXY8, 3> > peep_loading_waypoints;
     std::vector<sint8> peep_loading_positions; // previously 0x61 , 0x7B
-    peep_loading_type peep_loading_xy_type;
+    uint8 peep_loading_waypoint_segments;
 };
 #ifdef __TESTPAINT__
 #pragma pack(pop)
