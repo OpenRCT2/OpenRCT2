@@ -113,9 +113,18 @@ void FootpathItemObject::ReadJson(IReadObjectContext * context, const json_t * r
         { "isLamp", PATH_BIT_FLAG_LAMP },
         { "isJumpingFountainWater", PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER },
         { "isJumpingFountainSnow", PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW },
-        { "isAllowedOnQueue", PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE },
-        { "isAllowedOnSlope", PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE },
         { "isTelevision", PATH_BIT_FLAG_IS_QUEUE_SCREEN }});
+
+    // HACK To avoid 'negated' properties in JSON, handle these separately until
+    //      flags are inverted in this code base.
+    if (!ObjectJsonHelpers::GetBoolean(properties, "isAllowedOnQueue", false))
+    {
+        _legacyType.path_bit.flags |= PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE;
+    }
+    if (!ObjectJsonHelpers::GetBoolean(properties, "isAllowedOnSlope", false))
+    {
+        _legacyType.path_bit.flags |= PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE;
+    }
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
     ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
