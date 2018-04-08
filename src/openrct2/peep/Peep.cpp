@@ -2946,7 +2946,7 @@ static uint8 peep_get_waypointed_seat_location(rct_peep * peep, Ride * ride, rct
 
     // Type 1 loading doesn't do segments and all peeps go to the same
     // location on the ride
-    if (vehicle_type->peep_loading_xy_type == peep_loading_type::xy_1)
+    if (vehicle_type->peep_loading_waypoint_segments == 0)
     {
         track_direction /= 2;
         seatLocationSegment = 0;
