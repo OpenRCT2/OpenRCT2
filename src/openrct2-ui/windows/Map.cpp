@@ -182,6 +182,8 @@ static uint32 _currentLine;
 /** rct2: 0x00F1AD68 */
 static std::vector<uint8> _mapImageData;
 
+static uint16 _landRightsToolSize;
+
 static void window_map_init_map();
 static void window_map_centre_on_view_point();
 static void window_map_show_default_scenario_editor_buttons(rct_window *w);
@@ -265,8 +267,8 @@ rct_window * window_map_open()
     gWindowSceneryRotation = 0;
     window_map_centre_on_view_point();
 
-    // Reset land tool size
-    gLandToolSize = 1;
+    // Reset land rights tool size
+    _landRightsToolSize = 1;
 
     return w;
 }
@@ -316,7 +318,7 @@ static void window_map_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             break;
         _activeTool = 2;
         // Prevent mountain tool size.
-        gLandToolSize = Math::Max<uint16>(MINIMUM_TOOL_SIZE, gLandToolSize);
+        _landRightsToolSize = Math::Max<uint16>(MINIMUM_TOOL_SIZE, _landRightsToolSize);
         show_gridlines();
         show_land_rights();
         show_construction_rights();
@@ -424,14 +426,14 @@ static void window_map_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct
         map_window_decrease_map_size();
         break;
     case WIDX_LAND_TOOL_SMALLER:
-        // Decrement land ownership tool size
-        gLandToolSize = Math::Max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
+        // Decrement land rights tool size
+        _landRightsToolSize = Math::Max(MINIMUM_TOOL_SIZE, _landRightsToolSize - 1);
 
         window_invalidate(w);
         break;
     case WIDX_LAND_TOOL_LARGER:
-        // Increment land ownership tool size
-        gLandToolSize = Math::Min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
+        // Increment land rights tool size
+        _landRightsToolSize = Math::Min(MAXIMUM_TOOL_SIZE, _landRightsToolSize + 1);
 
         window_invalidate(w);
         break;
@@ -616,9 +618,9 @@ static void window_map_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32
         );
     } else if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS)) {
         // Set land rights
-        sint32 landToolSize = Math::Max<sint32>(1, gLandToolSize);
-        sint32 size = (landToolSize * 32) - 32;
-        sint32 radius = (landToolSize * 16) - 16;
+        sint32 landRightsToolSize = Math::Max<sint32>(1, _landRightsToolSize);
+        sint32 size = (landRightsToolSize * 32) - 32;
+        sint32 radius = (landRightsToolSize * 16) - 16;
         mapX = (mapX - radius) & 0xFFE0;
         mapY = (mapY - radius) & 0xFFE0;
 
@@ -657,7 +659,7 @@ static void window_map_textinput(rct_window *w, rct_widgetindex widgetIndex, cha
         size = strtol(text, &end, 10);
         if (*end == '\0') {
             size = Math::Clamp(MINIMUM_TOOL_SIZE, size, MAXIMUM_TOOL_SIZE);
-            gLandToolSize = size;
+            _landRightsToolSize = size;
             window_invalidate(w);
         }
         break;
@@ -814,7 +816,7 @@ static void window_map_invalidate(rct_window *w)
                 for (i = 0; i < 4; i++)
                     w->widgets[WIDX_LAND_OWNED_CHECKBOX + i].type = WWT_CHECKBOX;
 
-                w->widgets[WIDX_LAND_TOOL].image = land_tool_size_to_sprite_index(gLandToolSize);
+                w->widgets[WIDX_LAND_TOOL].image = land_tool_size_to_sprite_index(_landRightsToolSize);
             }
         } else {
             // if no tool is active: show the default scenario editor buttons
@@ -836,8 +838,8 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
     sint32 y = w->y + (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2;
 
     // Draw land tool size
-    if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE) {
-        gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
+    if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE) {
+        gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &_landRightsToolSize);
     }
     y = w->y + window_map_widgets[WIDX_LAND_TOOL].bottom + 5;
 
@@ -1180,12 +1182,12 @@ static void window_map_set_land_rights_tool_update(sint32 x, sint32 y)
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
     gMapSelectType = MAP_SELECT_TYPE_FULL;
 
-    sint32 landToolSize = gLandToolSize;
-    if (landToolSize == 0)
-        landToolSize = 1;
+    sint32 landRightsToolSize = _landRightsToolSize;
+    if (landRightsToolSize == 0)
+        landRightsToolSize = 1;
 
-    sint32 size = (landToolSize * 32) - 32;
-    sint32 radius = (landToolSize * 16) - 16;
+    sint32 size = (landRightsToolSize * 32) - 32;
+    sint32 radius = (landRightsToolSize * 16) - 16;
     mapX = (mapX - radius) & 0xFFE0;
     mapY = (mapY - radius) & 0xFFE0;
     gMapSelectPositionA.x = mapX;
