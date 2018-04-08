@@ -80,9 +80,9 @@ namespace String
 
     sint32 Compare(const utf8 * a, const utf8 * b, bool ignoreCase)
     {
-        if (a == b) return true;
-        if (a == nullptr || b == nullptr) return false;
-
+        if (a == b) return 0;
+        if (a == nullptr) a = "";
+        if (b == nullptr) b = "";
         if (ignoreCase)
         {
             return _stricmp(a, b);

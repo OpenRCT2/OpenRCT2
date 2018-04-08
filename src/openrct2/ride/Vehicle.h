@@ -17,6 +17,8 @@
 #ifndef _VEHICLE_H_
 #define _VEHICLE_H_
 
+#include <cstddef>
+#include <vector>
 #include "../common.h"
 #include "../world/Location.hpp"
 
@@ -25,7 +27,9 @@ struct rct_vehicle_colour {
     uint8 trim_colour;
 };
 
+#ifdef __TESTPAINT__
 #pragma pack(push, 1)
+#endif // __TESTPAINT__
 /**
  * Ride type vehicle structure.
  * size: 0x65
@@ -76,10 +80,20 @@ struct rct_ride_entry_vehicle {
     uint8 effect_visual;
     uint8 draw_order;
     uint8 num_vertical_frames_override; // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine it. Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
-    sint8* peep_loading_positions;  // 0x61 , 0x7B
-    uint16 peep_loading_positions_count;
+    uint8 pad_61[7];                // 0x61 , 0x7B
+
+    std::vector<sint8> peep_loading_positions;
 };
+#ifdef __TESTPAINT__
 #pragma pack(pop)
+#endif // __TESTPAINT__
+#ifdef PLATFORM_32BIT
+static_assert(offsetof(rct_ride_entry_vehicle, peep_loading_positions) % 4 == 0, "Invalid struct layout");
+static_assert(sizeof(rct_ride_entry_vehicle) % 4 == 0, "Invalid struct size");
+#else
+static_assert(offsetof(rct_ride_entry_vehicle, peep_loading_positions) % 8 == 0, "Invalid struct layout");
+static_assert(sizeof(rct_ride_entry_vehicle) % 8 == 0, "Invalid struct size");
+#endif
 
 struct rct_vehicle {
     uint8 sprite_identifier;        // 0x00

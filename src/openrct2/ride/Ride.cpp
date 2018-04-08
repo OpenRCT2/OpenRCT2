@@ -7709,7 +7709,7 @@ bool shop_item_is_food_or_drink(sint32 shopItem)
     case SHOP_ITEM_MEATBALL_SOUP:
     case SHOP_ITEM_FRUIT_JUICE:
     case SHOP_ITEM_SOYBEAN_MILK:
-    case SHOP_ITEM_SU_JONGKWA:
+    case SHOP_ITEM_SUJEONGGWA:
     case SHOP_ITEM_SUB_SANDWICH:
     case SHOP_ITEM_COOKIE:
     case SHOP_ITEM_ROAST_SAUSAGE:
@@ -7758,7 +7758,7 @@ bool shop_item_is_drink(sint32 shopItem)
     case SHOP_ITEM_ICED_TEA:
     case SHOP_ITEM_FRUIT_JUICE:
     case SHOP_ITEM_SOYBEAN_MILK:
-    case SHOP_ITEM_SU_JONGKWA:
+    case SHOP_ITEM_SUJEONGGWA:
         return true;
     default:
         return false;

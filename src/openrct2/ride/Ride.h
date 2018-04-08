@@ -126,6 +126,7 @@ struct rct_ride_entry {
     uint8 shop_item;                                    // 0x1C0
     uint8 shop_item_secondary;                          // 0x1C1
     rct_string_id capacity;
+    void * obj;
 };
 
 #pragma pack(pop)
@@ -856,7 +857,7 @@ enum {
     SHOP_ITEM_MEATBALL_SOUP,
     SHOP_ITEM_FRUIT_JUICE,
     SHOP_ITEM_SOYBEAN_MILK,
-    SHOP_ITEM_SU_JONGKWA,
+    SHOP_ITEM_SUJEONGGWA,
     SHOP_ITEM_SUB_SANDWICH,
     SHOP_ITEM_COOKIE,
     SHOP_ITEM_EMPTY_BOWL_RED,

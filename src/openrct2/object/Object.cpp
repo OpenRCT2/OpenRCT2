@@ -71,7 +71,7 @@ std::string Object::GetString(uint8 index) const
     auto sz = GetOverrideString(index);
     if (sz.empty())
     {
-        sz = GetStringTable()->GetString(index);
+        sz = GetStringTable().GetString(index);
     }
     return sz;
 }

@@ -97,7 +97,7 @@ std::string StringTable::GetString(uint8 id) const
             return string.Text;
         }
     }
-    return nullptr;
+    return std::string();
 }
 
 void StringTable::SetString(uint8 id, uint8 language, const std::string &text)

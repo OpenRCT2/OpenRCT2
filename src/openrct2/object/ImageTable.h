@@ -16,9 +16,9 @@
 
 #pragma once
 
+#include <memory>
 #include <vector>
 #include "../common.h"
-
 #include "../drawing/Drawing.h"
 
 interface IReadObjectContext;
@@ -27,14 +27,17 @@ interface IStream;
 class ImageTable
 {
 private:
+    std::unique_ptr<uint8[]>    _data;
     std::vector<rct_g1_element> _entries;
-    void *                      _data       = nullptr;
-    size_t                      _dataSize   = 0;
 
 public:
+    ImageTable() = default;
+    ImageTable(const ImageTable &) = delete;
+    ImageTable & operator=(const ImageTable &) = delete;
     ~ImageTable();
 
     void                    Read(IReadObjectContext * context, IStream * stream);
     const rct_g1_element *  GetImages() const { return _entries.data(); }
     uint32                  GetCount() const { return (uint32)_entries.size(); }
+    void                    AddImage(const rct_g1_element * g1);
 };
