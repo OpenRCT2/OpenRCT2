@@ -212,24 +212,21 @@ namespace ObjectJsonHelpers
         const auto env = GetContext()->GetPlatformEnvironment();
         auto objectsPath = env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
         auto objectPath = Path::Combine(objectsPath, name);
-#ifndef _WIN32
         if (!File::Exists(objectPath))
         {
-            // UNIX based systems need to search for any files with the same name
-            // due to case sensitivity.
+            // Search recursively for any file with the target name (case insensitive)
             auto filter = Path::Combine(objectsPath, "*.dat");
-            auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, false));
+            auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, true));
             while (scanner->Next())
             {
-                auto relativePath = scanner->GetPathRelative();
-                if (String::Equals(relativePath, name, true))
+                auto currentName = Path::GetFileName(scanner->GetPathRelative());
+                if (String::Equals(currentName, name, true))
                 {
                     objectPath = scanner->GetPath();
                     break;
                 }
             }
         }
-#endif
         return objectPath;
     }
 
