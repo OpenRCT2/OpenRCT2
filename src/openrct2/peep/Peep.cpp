@@ -1783,21 +1783,22 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     if (al >= 7)
         al = 15;
 
+    /* Check which intensity boxes are enabled 
+     * and apply the appropriate intensity settings. */
     if (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
     {
-		if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) //if both checkboxes are toggled
-		{
-			ah = 0;
-			al = 15;
-		}
-		else // if only less intense is checked
-		{
-			ah = 0;
-			al = 4;
-		}
+        if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
+        {
+            ah = 0;
+            al = 15;
+        }
+        else 
+        {
+            ah = 0;
+            al = 4;
+        }
     }
-
-    else if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) // if only more intense is checked
+    else if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
     {
         ah = 9;
         al = 15;
