@@ -769,10 +769,10 @@ static void window_editor_object_selection_scroll_mouseover(rct_window *w, sint3
         object_delete(_loadedObject);
         _loadedObject = nullptr;
 
-        list_item * listItem = &_listItems[selectedObject];
         if (selectedObject == -1) {
             w->object_entry = nullptr;
         } else {
+            auto listItem = &_listItems[selectedObject];
             w->object_entry = listItem->entry;
             _loadedObject = object_repository_load_object(listItem->entry);
         }
