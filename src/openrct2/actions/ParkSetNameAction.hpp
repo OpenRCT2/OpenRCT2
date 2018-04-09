@@ -17,11 +17,15 @@
 #pragma once
 
 #include "../Context.h"
+#include "../config/Config.h"
+#include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
-#include "../localisation/StringIds.h"
+#include "../management/Finance.h"
+#include "../network/network.h"
 #include "../ui/UiContext.h"
-#include "../world/Sprite.h"
+#include "../ui/WindowManager.h"
+#include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "GameAction.h"
 
@@ -52,37 +56,72 @@ public:
     {
         if (_name.empty())
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_ATTRACTION_NAME);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
         }
 
-        // Ensure user string space.
-        rct_string_id stringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, _name.c_str());
-        if (stringId != 0)
+        // TODO create a version of user_string_allocate that only tests so we do not have to free it straight afterwards
+        auto stringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, _name.c_str());
+        if (stringId == 0)
         {
-            user_string_free(stringId);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
         }
-        else
-        {
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_INVALID_NAME_FOR_PARK);
-        }
+        user_string_free(stringId);
 
         return MakeResult();
     }
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_string_id stringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, _name.c_str());
-        if (stringId == 0)
+        // Do a no-op if new name is the same as the current name is the same
+        std::string oldName = GetCurrentParkName();
+        if (_name == oldName)
         {
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_INVALID_NAME_FOR_PARK);
+            return MakeResult();
         }
 
-        // Free the old park name.
+        // Allocate new string for park name
+        auto newNameId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, _name.c_str());
+        if (newNameId == 0)
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
+        }
+
+        // Replace park name with new string id
         user_string_free(gParkName);
-        gParkName = stringId;
+        gParkName = newNameId;
+
+        // Log park rename command if we are in multiplayer and logging is enabled
+        if ((network_get_mode() == NETWORK_MODE_CLIENT ||
+             network_get_mode() == NETWORK_MODE_SERVER) && gConfigNetwork.log_server_actions)
+        {
+            LogAction(oldName);
+        }
 
         gfx_invalidate_screen();
-
         return MakeResult();
+    }
+
+private:
+    std::string GetCurrentParkName() const
+    {
+        char buffer[128];
+        format_string(buffer, sizeof(buffer), gParkName, &gParkNameArgs);
+        return buffer;
+    }
+
+    void LogAction(const std::string &oldName) const
+    {
+        // Get player name
+        auto playerIndex = network_get_player_index(game_command_playerid);
+        auto playerName = network_get_player_name(playerIndex);
+
+        char logMessage[256];
+        const char * args[3] = {
+            playerName,
+            oldName.c_str(),
+            _name.c_str()
+        };
+        format_string(logMessage, sizeof(logMessage), STR_LOG_PARK_NAME, (void *)args);
+        network_append_server_log(logMessage);
     }
 };
