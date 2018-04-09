@@ -1428,7 +1428,7 @@ STR_1594    :{SMALLFONT}{OPENQUOTES}This wonton soup from {STRINGID} is really g
 STR_1595    :{SMALLFONT}{OPENQUOTES}This meatball soup from {STRINGID} is really good value{ENDQUOTES}
 STR_1596    :{SMALLFONT}{OPENQUOTES}This fruit juice from {STRINGID} is really good value{ENDQUOTES}
 STR_1597    :{SMALLFONT}{OPENQUOTES}This soybean milk from {STRINGID} is really good value{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}This sujongkwa from {STRINGID} is really good value{ENDQUOTES}
+STR_1598    :{SMALLFONT}{OPENQUOTES}This sujeonggwa from {STRINGID} is really good value{ENDQUOTES}
 STR_1599    :{SMALLFONT}{OPENQUOTES}This sub sandwich from {STRINGID} is really good value{ENDQUOTES}
 STR_1600    :{SMALLFONT}{OPENQUOTES}This cookie from {STRINGID} is really good value{ENDQUOTES}
 STR_1601    :
@@ -1460,7 +1460,7 @@ STR_1626    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for wonton soup fro
 STR_1627    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for meatball soup from {STRINGID}{ENDQUOTES}
 STR_1628    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fruit juice from {STRINGID}{ENDQUOTES}
 STR_1629    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for soybean milk from {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sujongkwa from {STRINGID}{ENDQUOTES}
+STR_1630    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sujeonggwa from {STRINGID}{ENDQUOTES}
 STR_1631    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a sub sandwich from {STRINGID}{ENDQUOTES}
 STR_1632    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cookie from {STRINGID}{ENDQUOTES}
 STR_1633    :
@@ -1943,7 +1943,7 @@ STR_2110    :{WINDOW_COLOUR_2}Wonton Soup price:
 STR_2111    :{WINDOW_COLOUR_2}Meatball Soup price:
 STR_2112    :{WINDOW_COLOUR_2}Fruit Juice price:
 STR_2113    :{WINDOW_COLOUR_2}Soybean Milk price:
-STR_2114    :{WINDOW_COLOUR_2}Sujongkwa price:
+STR_2114    :{WINDOW_COLOUR_2}Sujeonggwa price:
 STR_2115    :{WINDOW_COLOUR_2}Sub Sandwich price:
 STR_2116    :{WINDOW_COLOUR_2}Cookie price:
 STR_2117    :{WINDOW_COLOUR_2}
@@ -1965,7 +1965,7 @@ STR_2132    :Wonton Soup
 STR_2133    :Meatball Soup
 STR_2134    :Fruit Juice
 STR_2135    :Soybean Milk
-STR_2136    :Sujongkwa
+STR_2136    :Sujeonggwa
 STR_2137    :Sub Sandwich
 STR_2138    :Cookie
 STR_2139    :Empty Bowl
@@ -1987,7 +1987,7 @@ STR_2154    :Wonton Soups
 STR_2155    :Meatball Soups
 STR_2156    :Fruit Juices
 STR_2157    :Soybean Milks
-STR_2158    :Sujongkwa
+STR_2158    :Sujeonggwa
 STR_2159    :Sub Sandwiches
 STR_2160    :Cookies
 STR_2161    :Empty Bowls
@@ -2009,7 +2009,7 @@ STR_2176    :some Wonton Soup
 STR_2177    :some Meatball Soup
 STR_2178    :a Fruit Juice
 STR_2179    :some Soybean Milk
-STR_2180    :some Sujongkwa
+STR_2180    :some Sujeonggwa
 STR_2181    :a Sub Sandwich
 STR_2182    :a Cookie
 STR_2183    :an Empty Bowl
@@ -2031,7 +2031,7 @@ STR_2198    :Wonton Soup
 STR_2199    :Meatball Soup
 STR_2200    :Fruit Juice
 STR_2201    :Soybean Milk
-STR_2202    :Sujongkwa
+STR_2202    :Sujeonggwa
 STR_2203    :Sub Sandwich
 STR_2204    :Cookie
 STR_2205    :Empty Bowl
