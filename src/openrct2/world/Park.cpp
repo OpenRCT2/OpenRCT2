@@ -779,6 +779,17 @@ void update_park_fences_around_tile(sint32 x, sint32 y)
 
 void park_set_name(const char *name)
 {
+    // Check if the park name is identical before actually executing the action.
+    if (gParkName != 0)
+    {
+        utf8 parkName[128] = {};
+        format_string(parkName, sizeof(parkName), gParkName, &gParkNameArgs);
+        if (strcmp(parkName, name) == 0)
+        {
+            // Identical name, nothing required to do.
+            return;
+        }
+    }
     auto parkSetNameAction = ParkSetNameAction(name);
     GameActions::Execute(&parkSetNameAction);
 }
