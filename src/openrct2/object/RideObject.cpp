@@ -694,9 +694,9 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
     car.car_mass = ObjectJsonHelpers::GetInteger(jCar, "mass");
     car.tab_height = ObjectJsonHelpers::GetInteger(jCar, "tabOffset");
     car.num_seats = ObjectJsonHelpers::GetInteger(jCar, "numSeats");
-    if (ObjectJsonHelpers::GetBoolean(jCar, "seatsInPairs"))
+    if (ObjectJsonHelpers::GetBoolean(jCar, "seatsInPairs", true) && car.num_seats > 1)
     {
-        car.num_seats |= 0x80;
+        car.num_seats |= VEHICLE_SEAT_PAIR_FLAG;
     }
 
     car.sprite_width = ObjectJsonHelpers::GetInteger(jCar, "spriteWidth");
