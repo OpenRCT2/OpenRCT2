@@ -59,6 +59,7 @@ TEST_F(RideRatings, all)
     std::string path = TestData::GetParkPath("bpb.sv6");
 
     gOpenRCT2Headless = true;
+    gOpenRCT2NoGraphics = true;
 
     core_init();
     auto context = CreateContext();
