@@ -59,7 +59,8 @@
                 "${workspaceRoot}",
                 "${workspaceRoot}/src",
                 "${workspaceRoot}/lib/x86/include",
-                "${workspaceRoot}/lib/x64/include"
+                "${workspaceRoot}/lib/x64/include",
+                "${workspaceRoot}/lib/googletest/googletest/include"
             ],
             "defines": [
                 "_DEBUG",
