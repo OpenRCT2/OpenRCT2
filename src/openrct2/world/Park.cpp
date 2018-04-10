@@ -41,7 +41,6 @@
 #include "Sprite.h"
 #include "../windows/Intent.h"
 #include "../Context.h"
-#include "../actions/ParkSetNameAction.hpp"
 
 rct_string_id gParkName;
 uint32 gParkNameArgs;
@@ -779,8 +778,12 @@ void update_park_fences_around_tile(sint32 x, sint32 y)
 
 void park_set_name(const char *name)
 {
-    auto parkSetNameAction = ParkSetNameAction(name);
-    GameActions::Execute(&parkSetNameAction);
+    auto nameId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, name);
+    if (nameId != 0)
+    {
+        user_string_free(gParkName);
+        gParkName = nameId;
+    }
 }
 
 static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, sint32 flags) {
