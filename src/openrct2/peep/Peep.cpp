@@ -4436,7 +4436,7 @@ static void peep_update_ride_shop_interact(rct_peep * peep)
     {
         if (peep->nausea <= 35)
         {
-            peep->sub_state = 21;
+            peep->sub_state = PEEP_SHOP_LEAVE;
 
             x                           = peep->next_x + 16;
             y                           = peep->next_y + 16;
@@ -4550,10 +4550,6 @@ static void peep_update_ride(rct_peep * peep)
         break;
     case PEEP_RIDE_IN_EXIT:
         peep_update_ride_in_exit(peep);
-        break;
-    case 10:
-    case 11:
-        assert(false);
         break;
     case PEEP_RIDE_APPROACH_VEHICLE_WAYPOINTS:
         peep_update_ride_approach_vehicle_waypoints(peep);
