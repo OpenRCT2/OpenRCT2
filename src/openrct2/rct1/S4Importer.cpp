@@ -271,7 +271,10 @@ public:
             dst->objective_arg_2 = _s4.scenario_objective_currency;
         dst->objective_arg_3 = _s4.scenario_objective_num_guests;
 
-        std::string name = std::string(_s4.scenario_name, sizeof(_s4.scenario_name));
+        utf8 utf8name[256];
+        rct2_to_utf8(utf8name, _s4.scenario_name);
+
+        std::string name = std::string(utf8name, sizeof(utf8name));
         std::string details;
 
         // TryGetById won't set this property if the scenario is not recognised,
