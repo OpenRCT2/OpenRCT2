@@ -163,6 +163,8 @@ void S6Exporter::Export()
         log_error("Found %d disjoint null sprites", disjoint_sprites_count);
     }
     _s6.info = gS6Info;
+    utf8_to_rct2(_s6.info.name, gS6Info.name);
+    utf8_to_rct2(_s6.info.details, gS6Info.details);
     uint32 researchedTrackPiecesA[128];
     uint32 researchedTrackPiecesB[128];
 

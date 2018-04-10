@@ -200,6 +200,8 @@ public:
 
         // _s6.header
         gS6Info = _s6.info;
+        rct2_to_utf8(gS6Info.name, _s6.info.name);
+        rct2_to_utf8(gS6Info.details, _s6.info.details);
 
         gDateMonthsElapsed = _s6.elapsed_months;
         gDateMonthTicks    = _s6.current_day;
