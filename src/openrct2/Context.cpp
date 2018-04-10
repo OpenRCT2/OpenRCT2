@@ -166,6 +166,26 @@ namespace OpenRCT2
             return _env;
         }
 
+        IObjectManager * GetObjectManager() override
+        {
+            return _objectManager;
+        }
+
+        IObjectRepository * GetObjectRepository() override
+        {
+            return _objectRepository;
+        }
+
+        ITrackDesignRepository * GetTrackDesignRepository() override
+        {
+            return _trackDesignRepository;
+        }
+
+        IScenarioRepository * GetScenarioRepository() override
+        {
+            return _scenarioRepository;
+        }
+
         sint32 RunOpenRCT2(int argc, const char * * argv) override
         {
             if (Initialise())

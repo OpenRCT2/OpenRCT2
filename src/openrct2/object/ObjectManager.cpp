@@ -18,6 +18,7 @@
 #include <array>
 #include <memory>
 #include <unordered_set>
+#include "../Context.h"
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
@@ -571,36 +572,28 @@ private:
     }
 };
 
-static ObjectManager * _objectManager = nullptr;
-
 IObjectManager * CreateObjectManager(IObjectRepository * objectRepository)
 {
-    _objectManager = new ObjectManager(objectRepository);
-    return _objectManager;
-}
-
-IObjectManager * GetObjectManager()
-{
-    return _objectManager;
+    return new ObjectManager(objectRepository);
 }
 
 void * object_manager_get_loaded_object_by_index(size_t index)
 {
-    IObjectManager * objectManager = GetObjectManager();
+    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object * loadedObject = objectManager->GetLoadedObject(index);
     return (void *)loadedObject;
 }
 
 void * object_manager_get_loaded_object(const rct_object_entry * entry)
 {
-    IObjectManager * objectManager = GetObjectManager();
+    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object * loadedObject = objectManager->GetLoadedObject(entry);
     return (void *)loadedObject;
 }
 
 uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
 {
-    IObjectManager * objectManager = GetObjectManager();
+    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
     const Object * object = static_cast<const Object *>(loadedObject);
     uint8 entryIndex = objectManager->GetLoadedObjectEntryIndex(object);
     return entryIndex;
@@ -608,20 +601,20 @@ uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
 
 void * object_manager_load_object(const rct_object_entry * entry)
 {
-    IObjectManager * objectManager = GetObjectManager();
+    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object * loadedObject = objectManager->LoadObject(entry);
     return (void *)loadedObject;
 }
 
 void object_manager_unload_objects(const rct_object_entry * entries, size_t count)
 {
-    IObjectManager * objectManager = GetObjectManager();
+    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
     objectManager->UnloadObjects(entries, count);
 }
 
 void object_manager_unload_all_objects()
 {
-    IObjectManager * objectManager = GetObjectManager();
+    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
     if (objectManager != nullptr)
     {
         objectManager->UnloadAll();
@@ -632,4 +625,3 @@ rct_string_id object_manager_get_source_game_string(const rct_object_entry * ent
 {
     return ObjectManager::GetObjectSourceGameString(entry);
 }
-

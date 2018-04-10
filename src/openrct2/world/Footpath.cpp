@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../Cheats.h"
+#include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
@@ -2418,7 +2419,7 @@ void footpath_remove_edges_at(sint32 x, sint32 y, rct_tile_element *tileElement)
 rct_footpath_entry *get_footpath_entry(sint32 entryIndex)
 {
     rct_footpath_entry * result = nullptr;
-    auto objMgr = GetObjectManager();
+    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (objMgr != nullptr)
     {
         auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex);

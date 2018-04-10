@@ -17,6 +17,7 @@
 #pragma warning(disable : 4706) // assignment within conditional expression
 
 #include <unordered_map>
+#include "../Context.h"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
@@ -27,6 +28,8 @@
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
 #include "SceneryGroupObject.h"
+
+using namespace OpenRCT2;
 
 void SceneryGroupObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
@@ -71,8 +74,9 @@ void SceneryGroupObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint
 
 void SceneryGroupObject::UpdateEntryIndexes()
 {
-    IObjectRepository * objectRepository = GetObjectRepository();
-    IObjectManager * objectManager = GetObjectManager();
+    auto context = GetContext();
+    IObjectRepository * objectRepository = context->GetObjectRepository();
+    IObjectManager * objectManager = context->GetObjectManager();
 
     _legacyType.entry_count = 0;
     for (const auto &objectEntry : _items)

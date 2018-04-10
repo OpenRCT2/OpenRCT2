@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <stack>
+#include "../Context.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
@@ -157,7 +158,8 @@ bool language_open(sint32 id)
         TryLoadFonts();
 
         // Objects and their localised strings need to be refreshed
-        GetObjectManager()->ResetObjects();
+        auto context = OpenRCT2::GetContext();
+        context->GetObjectManager()->ResetObjects();
         return true;
     }
 
