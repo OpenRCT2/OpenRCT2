@@ -68,23 +68,23 @@ matrix:
               fi
         - os: linux
           if: type != cron
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUILD_SHARED_LIBS=ON" TARGET=ubuntu_amd64
+          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=ubuntu_amd64
         - os: linux
           if: type != cron
           env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DFORCE32=on -DBUILD_SHARED_LIBS=ON" TARGET=windows
         - os: linux
           if: type != cron
-          env: TARGET=docker64 OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_TTF=ON -DCMAKE_BUILD_TYPE=release -DBUILD_SHARED_LIBS=ON"
+          env: TARGET=docker64 OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_TTF=ON -DCMAKE_BUILD_TYPE=release -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2"
           services:
             - docker
         - os: linux
           if: type != cron
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DBUILD_SHARED_LIBS=ON" TARGET=docker64
+          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=docker64
           services:
             - docker
         - os: linux
           if: type != cron
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_OPENGL=ON -DBUILD_SHARED_LIBS=ON" TARGET=docker64
+          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_OPENGL=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=docker64
           services:
             - docker
         - os: osx
