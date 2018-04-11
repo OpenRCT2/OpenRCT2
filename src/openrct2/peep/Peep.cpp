@@ -3611,7 +3611,7 @@ static void peep_update_ride_leave_vehicle(rct_peep * peep)
     invalidate_sprite_2((rct_sprite *)peep);
 
     x += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][1].x;
-    y += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][1].x;
+    y += vehicle_type->peep_loading_waypoints[peep->var_37 / 4][1].y;
 
     peep->destination_x         = x;
     peep->destination_y         = y;
