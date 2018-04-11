@@ -218,6 +218,37 @@ enum PEEP_STATE
     PEEP_STATE_INSPECTING            = 23
 };
 
+enum PEEP_SITTING_SUB_STATE
+{
+    PEEP_SITTING_TRYING_TO_SIT = 0,
+    PEEP_SITTING_SAT_DOWN
+};
+
+enum PEEP_RIDE_SUB_STATE
+{
+    PEEP_RIDE_AT_ENTRANCE = 0,
+    PEEP_RIDE_IN_ENTRANCE = 1,
+    PEEP_RIDE_FREE_VEHICLE_CHECK = 2, //Spend money on ride
+    PEEP_RIDE_LEAVE_ENTRANCE = 3, // Calculate what direction and where to go after commiting to entering vehicle
+    PEEP_RIDE_APPROACH_VEHICLE = 4,
+    PEEP_RIDE_ENTER_VEHICLE = 5,
+    PEEP_RIDE_ON_RIDE = 6,
+    PEEP_RIDE_LEAVE_VEHICLE = 7,
+    PEEP_RIDE_APPROACH_EXIT = 8,
+    PEEP_RIDE_IN_EXIT = 9,
+    // 10, 11 not used
+    PEEP_RIDE_APPROACH_VEHICLE_WAYPOINTS = 12,
+    PEEP_RIDE_APPROACH_EXIT_WAYPOINTS = 13,
+    PEEP_RIDE_APPROACH_SPIRAL_SLIDE = 14,
+    PEEP_RIDE_ON_SPIRAL_SLIDE = 15,
+    PEEP_RIDE_LEAVE_SPIRAL_SLIDE = 16,
+    PEEP_RIDE_MAZE_PATHFINDING = 17,
+    PEEP_RIDE_LEAVE_EXIT = 18,
+    PEEP_SHOP_APPROACH = 19,
+    PEEP_SHOP_INTERACT = 20,
+    PEEP_SHOP_LEAVE = 21
+};
+
 enum PEEP_ACTION_EVENTS
 {
     PEEP_ACTION_CHECK_TIME = 0,
@@ -475,15 +506,15 @@ struct rct_peep_thought
 {
     uint8 type;  // 0
     uint8 item;  // 1
-    uint8 var_2; // 2
-    uint8 var_3; // 3
+    uint8 freshness; // 2 larger is less fresh
+    uint8 fresh_timeout; // 3 updates every tick
 };
 assert_struct_size(rct_peep_thought, 4);
 
 struct rct_peep
 {
     uint8  sprite_identifier; // 0x00
-    uint8  var_01;
+    uint8  misc_identifier;         // 0x01
     uint16 next_in_quadrant;        // 0x02
     uint16 next;                    // 0x04
     uint16 previous;                // 0x06
@@ -534,8 +565,8 @@ struct rct_peep
     uint8   hunger;           // 0x3E
     uint8   thirst;           // 0x3F
     uint8   toilet;           // 0x40
-    uint8   mass;
-    uint8   var_42;
+    uint8   mass;             // 0x41
+    uint8   time_to_consume;  // 0x42
     uint8   intensity; // 0x43 The max intensity is stored in the first 4 bits, and the min intensity in the second 4 bits
     uint8   nausea_tolerance;        // 0x44
     uint8   window_invalidate_flags; // 0x45
@@ -571,12 +602,12 @@ struct rct_peep
     uint8 action_sprite_image_offset; // 0x70
     uint8 action;                     // 0x71
     uint8 action_frame;               // 0x72
-    uint8 var_73;
+    uint8 step_progress;              // 0x73
     union {
         uint16 mechanic_time_since_call;  // time getting to ride to fix
         uint16 next_in_queue; // 0x74
     };
-    uint8 var_76;
+    uint8 pad_76; // Previously this was set to 0 but never used.
     uint8 pad_77;
     union {
         uint8 maze_last_edge; // 0x78
@@ -591,11 +622,11 @@ struct rct_peep
     money32          cash_in_pocket;              // 0xA0
     money32          cash_spent;                  // 0xA4
     sint32           time_in_park;                // 0xA8
-    sint8            var_AC;                      // 0xAC
+    sint8            rejoin_queue_timeout;        // 0xAC whilst waiting for a free vehicle (or pair) in the entrance
     uint8            previous_ride;               // 0xAD
     uint16           previous_ride_time_out;      // 0xAE
     rct_peep_thought thoughts[PEEP_MAX_THOUGHTS]; // 0xB0
-    uint8            var_C4;                      // 0xC4 has something to do with peep falling, see peep.checkForPath
+    uint8            path_check_optimisation;     // 0xC4 see peep.checkForPath
     union {
         uint8 staff_id;                 // 0xC5
         uint8 guest_heading_to_ride_id; // 0xC5
@@ -613,7 +644,7 @@ struct rct_peep
     uint8 litter_count; // 0xE1
     union {
         uint8 time_on_ride; // 0xE2
-        uint8 var_E2;       // 0xE2
+        uint8 staff_mowing_timeout;       // 0xE2
     };
     // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8 disgusting_count; // 0xE3
@@ -638,12 +669,12 @@ struct rct_peep
     uint8  no_of_food;      // 0xEC
     uint8  no_of_drinks;    // 0xED
     uint8  no_of_souvenirs; // 0xEE
-    uint8  var_EF;
+    uint8  vandalism_seen;  // 0xEF 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
     uint8  voucher_type;      // 0xF0
     uint8  voucher_arguments; // 0xF1 ride_id or string_offset_id
     uint8  surroundings_thought_timeout; // 0xF2
     uint8  angriness;             // 0xF3
-    uint8  var_F4;
+    uint8  time_lost;             // 0xF4 the time the peep has been lost when it reaches 254 generates the lost thought
     uint8  days_in_queue;         // 0xF5
     uint8  balloon_colour;        // 0xF6
     uint8  umbrella_colour;       // 0xF7

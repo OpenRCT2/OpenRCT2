@@ -93,15 +93,47 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     // Read peep loading positions
     for (sint32 i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE_ENTRY; i++)
     {
+        _peepLoadingWaypoints[i].clear();
+        _peepLoadingPositions[i].clear();
+
         uint16 numPeepLoadingPositions = stream->ReadValue<uint8>();
         if (numPeepLoadingPositions == 255)
         {
             numPeepLoadingPositions = stream->ReadValue<uint16>();
         }
+        
+        if (_legacyType.vehicles[i].flags & VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS)
+        {
+            _legacyType.vehicles[i].peep_loading_waypoint_segments = stream->ReadValue<sint8>() == 0 ? 0 : 4;
+            if (_legacyType.ride_type[0] == RIDE_TYPE_ENTERPRISE)
+            {
+                _legacyType.vehicles[i].peep_loading_waypoint_segments = 8;
+            }
 
-        auto data = stream->ReadArray<sint8>(numPeepLoadingPositions);
-        _peepLoadingPositions[i] = std::vector<sint8>(data, data + numPeepLoadingPositions);
-        Memory::Free(data);
+            Guard::Assert(((numPeepLoadingPositions - 1) % 8) == 0, "Malformed peep loading positions");
+
+            for (sint32 j = 1; j < numPeepLoadingPositions; j += 4 * 2)
+            {
+                std::array<sLocationXY8, 3> entry;
+                entry[0].x = stream->ReadValue<sint8>();
+                entry[0].y = stream->ReadValue<sint8>();
+                entry[1].x = stream->ReadValue<sint8>();
+                entry[1].y = stream->ReadValue<sint8>();
+                entry[2].x = stream->ReadValue<sint8>();
+                entry[2].y = stream->ReadValue<sint8>();
+                stream->ReadValue<uint16>(); // Skip blanks
+
+                _peepLoadingWaypoints[i].push_back(entry);
+            }
+        }
+        else
+        {
+            _legacyType.vehicles[i].peep_loading_waypoint_segments = 0;
+
+            auto data = stream->ReadArray<sint8>(numPeepLoadingPositions);
+            _peepLoadingPositions[i] = std::vector<sint8>(data, data + numPeepLoadingPositions);
+            Memory::Free(data);
+        }
     }
 
     GetImageTable().Read(context, stream);
@@ -287,6 +319,11 @@ void RideObject::Load()
             if (!_peepLoadingPositions[i].empty())
             {
                 vehicleEntry->peep_loading_positions = std::move(_peepLoadingPositions[i]);
+            }
+
+            if (!_peepLoadingWaypoints[i].empty())
+            {
+                vehicleEntry->peep_loading_waypoints = std::move(_peepLoadingWaypoints[i]);
             }
         }
     }
@@ -731,25 +768,15 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
     }
     else
     {
+        auto& peepLoadingWaypoints = car.peep_loading_waypoints;
         auto jLoadingWaypoints = json_object_get(jCar, "loadingWaypoints");
         if (json_is_array(jLoadingWaypoints))
         {
-            car.flags |= VEHICLE_ENTRY_FLAG_26;
+            car.flags |= VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS;
 
             auto numSegments = ObjectJsonHelpers::GetInteger(jCar, "numSegments");
-            if (numSegments == 8)
-            {
-                peepLoadingPositions.push_back(1);
-            }
-            else if (numSegments == 4)
-            {
-                peepLoadingPositions.push_back(1);
-            }
-            else
-            {
-                peepLoadingPositions.push_back(0);
-            }
-
+            car.peep_loading_waypoint_segments = numSegments;
+            
             size_t i;
             json_t * route;
             json_array_foreach(jLoadingWaypoints, i, route)
@@ -758,18 +785,17 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
                 {
                     size_t j;
                     json_t * waypoint;
+                    std::array<sLocationXY8, 3> entry;
                     json_array_foreach(route, j, waypoint)
                     {
                         if (json_is_array(waypoint) && json_array_size(waypoint) >= 2)
                         {
-                            auto x = json_integer_value(json_array_get(waypoint, 0));
-                            auto y = json_integer_value(json_array_get(waypoint, 1));
-                            peepLoadingPositions.push_back(x);
-                            peepLoadingPositions.push_back(y);
+                            auto x = (sint8)json_integer_value(json_array_get(waypoint, 0));
+                            auto y = (sint8)json_integer_value(json_array_get(waypoint, 1));
+                            entry[j] = { x, y };
                         }
                     }
-                    peepLoadingPositions.push_back(0);
-                    peepLoadingPositions.push_back(0);
+                    peepLoadingWaypoints.push_back(entry);
                 }
             }
         }

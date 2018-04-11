@@ -99,7 +99,7 @@ static bool award_is_deserved_most_untidy(sint32 awardType, sint32 activeAwardTy
         if (peep->outside_of_park != 0)
             continue;
 
-        if (peep->thoughts[0].var_2 > 5)
+        if (peep->thoughts[0].freshness > 5)
             continue;
 
         if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER ||
@@ -133,7 +133,7 @@ static bool award_is_deserved_most_tidy(sint32 awardType, sint32 activeAwardType
         if (peep->outside_of_park != 0)
             continue;
 
-        if (peep->thoughts[0].var_2 > 5)
+        if (peep->thoughts[0].freshness > 5)
             continue;
 
         if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VERY_CLEAN)
@@ -224,7 +224,7 @@ static bool award_is_deserved_most_beautiful(sint32 awardType, sint32 activeAwar
         if (peep->outside_of_park != 0)
             continue;
 
-        if (peep->thoughts[0].var_2 > 5)
+        if (peep->thoughts[0].freshness > 5)
             continue;
 
         if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_SCENERY)
@@ -270,7 +270,7 @@ static bool award_is_deserved_safest(sint32 awardType, sint32 activeAwardTypes)
     {
         if (peep->outside_of_park != 0)
             continue;
-        if (peep->thoughts[0].var_2 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
+        if (peep->thoughts[0].freshness <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
             peepsWhoDislikeVandalism++;
     }
 
@@ -364,7 +364,7 @@ static bool award_is_deserved_best_food(sint32 awardType, sint32 activeAwardType
         if (peep->outside_of_park != 0)
             continue;
 
-        if (peep->thoughts[0].var_2 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
+        if (peep->thoughts[0].freshness <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
             hungryPeeps++;
     }
 
@@ -417,7 +417,7 @@ static bool award_is_deserved_worst_food(sint32 awardType, sint32 activeAwardTyp
         if (peep->outside_of_park != 0)
             continue;
 
-        if (peep->thoughts[0].var_2 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
+        if (peep->thoughts[0].freshness <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
             hungryPeeps++;
     }
 
@@ -455,7 +455,7 @@ static bool award_is_deserved_best_restrooms(sint32 awardType, sint32 activeAwar
         if (peep->outside_of_park != 0)
             continue;
 
-        if (peep->thoughts[0].var_2 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BATHROOM)
+        if (peep->thoughts[0].freshness <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BATHROOM)
             guestsWhoNeedRestroom++;
     }
 
@@ -602,7 +602,7 @@ static bool award_is_deserved_most_confusing_layout(sint32 awardType, sint32 act
             continue;
 
         peepsCounted++;
-        if (peep->thoughts[0].var_2 <= 5 && (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_LOST || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_CANT_FIND))
+        if (peep->thoughts[0].freshness <= 5 && (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_LOST || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_CANT_FIND))
             peepsLost++;
     }
 
