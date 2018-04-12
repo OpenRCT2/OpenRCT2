@@ -12,7 +12,11 @@ if (MSVC)
     find_package(jansson REQUIRED)
 
     find_path(SDL2_INCLUDE_DIRS SDL2/SDL.h)
-    find_library(SDL2_LDFLAGS sdl2)
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        find_library(SDL2_LDFLAGS sdl2d)
+    else ()
+        find_library(SDL2_LDFLAGS sdl2)
+    endif ()
 
     find_library(SPEEX_LDFLAGS libspeexdsp)
 else ()
