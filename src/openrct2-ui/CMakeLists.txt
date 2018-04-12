@@ -8,8 +8,18 @@ endif ()
 option(DISABLE_OPENGL "Disable OpenGL support.")
 
 # Third party libraries
-PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
-PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
+if (MSVC)
+    find_package(jansson REQUIRED)
+
+    find_path(SDL2_INCLUDE_DIRS SDL2/SDL.h)
+    find_library(SDL2_LDFLAGS sdl2)
+
+    find_library(SPEEX_LDFLAGS libspeexdsp)
+else ()
+    PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
+    PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
+endif ()
+
 if (NOT DISABLE_OPENGL)
     # GL doesn't work nicely with macOS, while find_package doesn't work with multiarch on Ubuntu.
     if (APPLE)
@@ -64,6 +74,14 @@ if (WIN32)
     # tell it that it is
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__USE_MINGW_ANSI_STDIO=1")
 endif ()
+if (MSVC)
+    # Add DPI-aware manifest
+    # HACK Add /MANIFEST:NO first to prevent cmake from adding its own manifest arguments
+    if (NOT $ENV{VCToolsInstallDir} STREQUAL "")
+        set(MANIFEST_DPI "$ENV{VCToolsInstallDir}\\Include\\Manifest\\PerMonitorHighDPIAware.manifest")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /MANIFEST:NO /MANIFEST /manifest:embed /manifestinput:\"${MANIFEST_DPI}\"")
+    endif ()
+endif ()
 
 # Defines
 if (DISABLE_OPENGL)
@@ -71,4 +89,7 @@ if (DISABLE_OPENGL)
 else ()
     # Makes OpenGL function get queried in run-time rather than linked-in
     add_definitions(-DOPENGL_NO_LINK)
+endif ()
+if (MSVC)
+    add_definitions(-D__DISABLE_DLL_PROXY__)
 endif ()

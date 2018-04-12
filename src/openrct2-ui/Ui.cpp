@@ -32,7 +32,7 @@ using namespace OpenRCT2::Ui;
 /**
  * Main entry point for non-Windows systems. Windows instead uses its own DLL proxy.
  */
-#ifdef _MSC_VER
+#if defined(_MSC_VER) && !defined(__DISABLE_DLL_PROXY__)
 int NormalisedMain(int argc, const char * * argv)
 #else
 int main(int argc, const char * * argv)
