@@ -186,10 +186,8 @@
   </Target>
 
   <Target Name="Test" DependsOnTargets="Build">
-    <Exec Command="$(TargetDir)tests\tests.exe &quot;--gtest_output=xml:$(ArtifactsDir)test-results.xml&quot;" />
-  </Target>
-  <Target Name="TestNoRCT2" DependsOnTargets="Build">
-    <Exec Command="$(TargetDir)tests\tests.exe &quot;--gtest_filter=-RideRatings*:MultiLaunch*&quot; &quot;--gtest_output=xml:$(ArtifactsDir)test-results.xml&quot;" />
+    <Exec Command="$(TargetDir)tests.exe &quot;--gtest_output=xml:$(ArtifactsDir)test-results.xml&quot;"
+          WorkingDirectory="$(TargetDir)" />
   </Target>
 
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
