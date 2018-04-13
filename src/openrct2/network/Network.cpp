@@ -34,7 +34,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "2"
+#define NETWORK_STREAM_VERSION "4"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static rct_peep* _pickup_peep = nullptr;
@@ -1106,7 +1106,8 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
     } else {
         // This will send all custom objects to connected clients
         // TODO: fix it so custom objects negotiation is performed even in this case.
-        IObjectManager * objManager = GetObjectManager();
+        auto context = GetContext();
+        IObjectManager * objManager = context->GetObjectManager();
         objects = objManager->GetPackableObjects();
     }
 
@@ -1792,7 +1793,8 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
         format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
         chat_history_add(text);
 
-        IObjectManager * objManager = GetObjectManager();
+        auto context = GetContext();
+        IObjectManager * objManager = context->GetObjectManager();
         auto objects = objManager->GetPackableObjects();
         Server_Send_OBJECTS(connection, objects);
 
@@ -1813,7 +1815,7 @@ void Network::Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 
 void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet)
 {
-    IObjectRepository * repo = GetObjectRepository();
+    IObjectRepository * repo = GetContext()->GetObjectRepository();
     uint32 size;
     packet >> size;
     log_verbose("client received object list, it has %u entries", size);
@@ -1866,7 +1868,7 @@ void Network::Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
         return;
     }
     log_verbose("Client requested %u objects", size);
-    IObjectRepository * repo = GetObjectRepository();
+    IObjectRepository * repo = GetContext()->GetObjectRepository();
     for (uint32 i = 0; i < size; i++)
     {
         const char * name = (const char *)packet.Read(8);
@@ -2056,8 +2058,9 @@ bool Network::LoadMap(IStream * stream)
     bool result = false;
     try
     {
+        auto context = GetContext();
         auto importer = std::unique_ptr<IParkImporter>(
-            ParkImporter::CreateS6(GetObjectRepository(), GetObjectManager()));
+            ParkImporter::CreateS6(GetContext()->GetObjectRepository(), context->GetObjectManager()));
         importer->LoadFromStream(stream, false);
         importer->Import();
 

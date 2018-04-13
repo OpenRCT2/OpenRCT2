@@ -20,7 +20,12 @@
 
 #include <string>
 
+interface IObjectManager;
+interface IObjectRepository;
+interface IScenarioRepository;
 interface IStream;
+interface ITrackDesignRepository;
+
 class Intent;
 struct rct_window;
 using rct_windowclass = uint8;
@@ -83,9 +88,13 @@ namespace OpenRCT2
     {
         virtual ~IContext() = default;
 
-        virtual Audio::IAudioContext *  GetAudioContext() abstract;
-        virtual Ui::IUiContext *        GetUiContext() abstract;
-        virtual IPlatformEnvironment *  GetPlatformEnvironment() abstract;
+        virtual Audio::IAudioContext *   GetAudioContext() abstract;
+        virtual Ui::IUiContext *         GetUiContext() abstract;
+        virtual IPlatformEnvironment *   GetPlatformEnvironment() abstract;
+        virtual IObjectManager *         GetObjectManager() abstract;
+        virtual IObjectRepository *      GetObjectRepository() abstract;
+        virtual ITrackDesignRepository * GetTrackDesignRepository() abstract;
+        virtual IScenarioRepository *    GetScenarioRepository() abstract;
 
         virtual sint32 RunOpenRCT2(int argc, const char * * argv) abstract;
 
@@ -109,7 +118,7 @@ namespace OpenRCT2
 
 enum
 {
-    // The game update inverval in milliseconds, (1000 / 40fps) = 25ms
+    // The game update interval in milliseconds, (1000 / 40fps) = 25ms
     GAME_UPDATE_TIME_MS = 25,
     // The number of logical update / ticks per second.
     GAME_UPDATE_FPS = 40,
@@ -216,4 +225,3 @@ void context_quit();
 const utf8 * context_get_path_legacy(sint32 pathId);
 bool context_load_park_from_file(const utf8 * path);
 bool context_load_park_from_stream(void * stream);
-

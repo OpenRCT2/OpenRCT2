@@ -39,7 +39,7 @@ static void large_scenery_paint_supports(
     uint32                   dword_F4387C,
     rct_large_scenery_tile * tile)
 {
-    if (tile->var_7 & 0x20) {
+    if (tile->flags & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS) {
         return;
     }
 
@@ -61,7 +61,7 @@ static void large_scenery_paint_supports(
 
     sint32 clearanceHeight = ceil2(tileElement->clearance_height * 8 + 15, 16);
 
-    if (tile->var_7 & 0x40) {
+    if (tile->flags & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE) {
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, clearanceHeight, 0x20);
     } else {
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -232,7 +232,7 @@ void large_scenery_paint(paint_session * session, uint8 direction, uint16 height
         ah = 0x80;
     }
     ah -= 3;
-    uint16 edi = tile->var_7;
+    uint16 edi = tile->flags;
     sint32 esi = 16;
     if (edi & 0xF00) {
         edi &= 0xF000;

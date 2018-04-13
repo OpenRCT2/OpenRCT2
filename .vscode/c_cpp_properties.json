@@ -42,7 +42,10 @@
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
-            }
+            },
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
         },
         {
             "name": "Win32",
@@ -56,7 +59,8 @@
                 "${workspaceRoot}",
                 "${workspaceRoot}/src",
                 "${workspaceRoot}/lib/x86/include",
-                "${workspaceRoot}/lib/x64/include"
+                "${workspaceRoot}/lib/x64/include",
+                "${workspaceRoot}/lib/googletest/googletest/include"
             ],
             "defines": [
                 "_DEBUG",
@@ -76,7 +80,9 @@
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
-            }
+            },
+            "cStandard": "c11",
+            "cppStandard": "c++17"
         }
     ],
     "version": 3

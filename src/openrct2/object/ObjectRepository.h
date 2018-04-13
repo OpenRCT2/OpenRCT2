@@ -56,7 +56,7 @@ struct ObjectRepositoryItem
 
 interface IObjectRepository
 {
-    virtual ~IObjectRepository() { }
+    virtual ~IObjectRepository() = default;
 
     virtual void                            LoadOrConstruct() abstract;
     virtual void                            Construct() abstract;
@@ -78,7 +78,6 @@ interface IObjectRepository
 };
 
 IObjectRepository * CreateObjectRepository(OpenRCT2::IPlatformEnvironment * env);
-IObjectRepository * GetObjectRepository();
 
 bool IsObjectCustom(const ObjectRepositoryItem * object);
 

@@ -25,14 +25,14 @@ void StexObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     _legacyType.var_06 = stream->ReadValue<uint8>();
     stream->Seek(1, STREAM_SEEK_CURRENT);
 
-    GetStringTable()->Read(context, stream, OBJ_STRING_ID_SCENARIO_NAME);
-    GetStringTable()->Read(context, stream, OBJ_STRING_ID_PARK_NAME);
-    GetStringTable()->Read(context, stream, OBJ_STRING_ID_SCENARIO_DETAILS);
+    GetStringTable().Read(context, stream, OBJ_STRING_ID_SCENARIO_NAME);
+    GetStringTable().Read(context, stream, OBJ_STRING_ID_PARK_NAME);
+    GetStringTable().Read(context, stream, OBJ_STRING_ID_SCENARIO_DETAILS);
 }
 
 void StexObject::Load()
 {
-    GetStringTable()->Sort();
+    GetStringTable().Sort();
     _legacyType.scenario_name = language_allocate_object_string(GetScenarioName());
     _legacyType.park_name = language_allocate_object_string(GetParkName());
     _legacyType.details = language_allocate_object_string(GetScenarioDetails());
@@ -64,15 +64,15 @@ std::string StexObject::GetName() const
 
 std::string StexObject::GetScenarioName() const
 {
-    return GetStringTable()->GetString(OBJ_STRING_ID_SCENARIO_NAME);
+    return GetStringTable().GetString(OBJ_STRING_ID_SCENARIO_NAME);
 }
 
 std::string StexObject::GetScenarioDetails() const
 {
-    return GetStringTable()->GetString(OBJ_STRING_ID_SCENARIO_DETAILS);
+    return GetStringTable().GetString(OBJ_STRING_ID_SCENARIO_DETAILS);
 }
 
 std::string StexObject::GetParkName() const
 {
-    return GetStringTable()->GetString(OBJ_STRING_ID_PARK_NAME);
+    return GetStringTable().GetString(OBJ_STRING_ID_PARK_NAME);
 }

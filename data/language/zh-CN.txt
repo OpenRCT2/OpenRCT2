@@ -889,9 +889,9 @@ STR_0878    :太高!
 STR_0879    :不能在这里降低土地...
 STR_0880    :不能在这里抬升土地...
 STR_0881    :有物体挡住去路
-STR_0882    :载入游戏
+STR_0882    :加载游戏
 STR_0883    :保存游戏
-STR_0884    :载入地形
+STR_0884    :加载地形
 STR_0885    :保存地形
 STR_0886    :退出游戏
 STR_0887    :退出场景编辑器
@@ -954,13 +954,13 @@ STR_0943    :半透明景观
 STR_0944    :保存
 STR_0945    :不保存
 STR_0946    :取消
-STR_0947    :是否在载入其他存档之前保存游戏 ?
+STR_0947    :是否在加载其他存档之前保存游戏 ?
 STR_0948    :是否在退出之前保存游戏 ?
 STR_0949    :是否在退出之前保存游戏 ?
 STR_0950    :加载游戏
 STR_0951    :退出游戏
 STR_0952    :退出游戏
-STR_0953    :载入地形
+STR_0953    :加载地形
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}选择此轨道的座位旋转角度
 STR_0956    :-180{DEGREE}
@@ -1043,8 +1043,8 @@ STR_1032    :Can only build this on water!
 STR_1033    :Can only build this above ground!
 STR_1034    :Can only build this on land!
 STR_1035    :Local authority won't allow construction above tree-height!
-STR_1036    :载入游戏
-STR_1037    :载入存档
+STR_1036    :加载游戏
+STR_1037    :加载地形
 STR_1038    :将存档转换为关卡
 STR_1039    :添加新的轨道设计
 STR_1040    :保存游戏
@@ -1057,7 +1057,7 @@ STR_1046    :OpenRCT2 轨道设计文件
 STR_1047    :存储游戏失败!
 STR_1048    :存储关卡失败!
 STR_1049    :存储地形失败!
-STR_1050    :载入失败...{NEWLINE}文件中含有不可读取的数据!
+STR_1050    :加载失败...{NEWLINE}文件中含有不可读取的数据!
 STR_1051    :隐藏支撑物
 STR_1052    :隐藏游客
 STR_1053    :{SMALLFONT}{BLACK}游乐园内的游乐设施
@@ -2879,7 +2879,7 @@ STR_2862    :音乐鸣谢列表...
 STR_2863    :音乐鸣谢列表
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) non copyright
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Composer unknown) Copyright Control
+STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) Copyright Control
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Traditional)
 STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) non copyright
 STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Traditional)
@@ -2913,7 +2913,7 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYR
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2900    :{WINDOW_COLOUR_2}
+STR_2900    :<removed string - do not use>
 STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
 STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
@@ -3580,8 +3580,8 @@ STR_5232    :{SMALLFONT}{BLACK}编辑器
 STR_5233    :{SMALLFONT}{BLACK}杂项
 STR_5234    :{SMALLFONT}{BLACK}Prompts
 STR_5235    :{SMALLFONT}{BLACK}设置
-STR_5236    :Window:
-STR_5237    :调色板:
+STR_5236    :Window
+STR_5237    :调色板
 STR_5238    :当前主题:
 STR_5239    :Duplicate
 STR_5240    :Enter a name for the theme
@@ -3840,8 +3840,8 @@ STR_5492    :剧情选项
 STR_5493    :发送信息
 STR_5494    :<removed string - do not use>
 STR_5495    :玩家列表
-STR_5496    :玩家:
-STR_5497    :延迟值(Ping):
+STR_5496    :玩家
+STR_5497    :延迟值(Ping)
 STR_5498    :服务器列表
 STR_5499    :玩家名称:
 STR_5500    :新增服务器
@@ -3974,7 +3974,7 @@ STR_5626    :其他游乐园
 STR_5627    :剧情列表排序方法:
 STR_5628    :游戏出处
 STR_5629    :困难度
-STR_5630    :允许剧情解锁
+STR_5630    :允许逐步解锁
 STR_5631    :原版DLC游乐园
 STR_5632    :修建你自己的...
 STR_5633    :CMD + 
@@ -3986,7 +3986,7 @@ STR_5638    :权限不够
 STR_5639    :{SMALLFONT}{BLACK}显示玩家列表
 STR_5640    :{SMALLFONT}{BLACK}组管理
 STR_5641    :默认组:
-STR_5642    :组:
+STR_5642    :组
 STR_5643    :添加组
 STR_5644    :删除组
 STR_5645    :聊天
@@ -4015,7 +4015,7 @@ STR_5666    :无密码登录
 STR_5701    :{WINDOW_COLOUR_2}最近的行为: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
 STR_5703    :不能踢出创建者
-STR_5704    :最近的行为:
+STR_5704    :最近的行为
 STR_5705    :不能将此玩家分配到该组
 STR_5706    :不能删除有玩家在内的组
 STR_5707    :不能修改此组
@@ -4042,10 +4042,10 @@ STR_5726    :{SMALLFONT}{BLACK}设定游乐园当前的天气
 STR_5727    :缩放质量
 STR_5728    :需要开启硬件渲染
 STR_5729    :{SMALLFONT}{BLACK}需要开启硬件渲染选项
-STR_5730    :最近相邻
+STR_5730    :<removed string - do not use>
 STR_5731    :线性
-STR_5732    :各向异性
-STR_5733    :以整数比例调整最近相邻缩放
+STR_5732    :<removed string - do not use>
+STR_5733    :<removed string - do not use>
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}渲染
 STR_5735    :网络状态
@@ -4131,8 +4131,8 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}游戏内显示FPS帧数
 STR_5816    :{SMALLFONT}{BLACK}设置比例去缩放游戏.{NEWLINE}高分辨率时很有用
-STR_5817    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}设置UI缩放类型{NEWLINE}{NEWLINE}如果窗口缩放因子不是整数倍, 则最近邻像素是高锐度但失真的.{NEWLINE}线性和各向异性是平滑但模糊的.{NEWLINE}即使是非整数的缩放因子Smooth NN也是锐利的, 只是会导致轻微的性能下降.
-STR_5818    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}使用最近相邻缩放{NEWLINE}当窗口缩放比例设置为{NEWLINE}整数值时 (例如1, 2, 3等等)
+STR_5817    :{SMALLFONT}{BLACK}设置UI缩放类型.需要开启硬件渲染{NEWLINE}线性缩放是平滑但模糊的.平滑最近邻缩放是锐利的, 但会导致轻微的性能下降.
+STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}暂停游戏当游戏内{NEWLINE}Steam overlay打开时
 STR_5820    :{SMALLFONT}{BLACK}全屏模式时若游戏失焦{NEWLINE}则最小化游戏
 STR_5821    :<removed string - do not use>
@@ -4156,8 +4156,8 @@ STR_5838    :{SMALLFONT}{BLACK}在工具栏上为财务窗口显示一个单独�
 STR_5839    :{SMALLFONT}{BLACK}在工具栏上为研发窗口显示一个单独的按钮
 STR_5840    :{SMALLFONT}{BLACK}在工具栏上为作弊窗口显示一个单独的按钮
 STR_5841    :{SMALLFONT}{BLACK}在工具栏上为最近消息窗口显示一个单独的按钮
-STR_5842    :{SMALLFONT}{BLACK}对剧情排序是根据困难度(过山车大亨2行为)还是游戏出处(过山车大亨1行为)
-STR_5843    :{SMALLFONT}{BLACK}允许剧情解锁 (过山车大亨1行为)
+STR_5842    :{SMALLFONT}{BLACK}对剧情排序是根据困难度(过山车大亨2特色)还是游戏出处(过山车大亨1特色)
+STR_5843    :{SMALLFONT}{BLACK}允许剧情逐步解锁 (过山车大亨1特色)
 STR_5844    :{SMALLFONT}{BLACK}即使发生不同步或错误{NEWLINE}依然保持和多人服务器的连接
 STR_5845    :{SMALLFONT}{BLACK}在工具栏上为调试工具增加一个按钮.{NEWLINE}允许在调试控制台使用快捷键
 STR_5846    :{SMALLFONT}{BLACK}设置自动保存的频率
@@ -4356,7 +4356,7 @@ STR_6038    :{SMALLFONT}{BLACK}如果你安装了过山车大亨1, 设置此选�
 STR_6039    :{SMALLFONT}{BLACK}快速拆除游乐设施
 STR_6040    :编辑剧情选项
 STR_6041    :{BLACK}没有雇佣机械师! 
-STR_6042    :载入高度图
+STR_6042    :加载高度图
 STR_6043    :选择高度图
 STR_6044    :平滑高度图
 STR_6045    :强度
@@ -4469,7 +4469,7 @@ STR_6150    :主服务器返回不正确的响应信息 (没有 JSON 数字)
 STR_6151    :主服务器没能返回服务
 STR_6152    :主服务器返回不正确的响应信息 (没有 JSON 数组)
 STR_6153    :付费进入游乐园 / 为每一个游乐设施付费
-STR_6154    :不推荐用高权限来运行OpenRCT2.
+STR_6154    :因为安全原因, 不推荐提高权限来运行OpenRCT2.
 STR_6155    :KDialog和Zenity库均没有安装. 请至少安装其一, 或者在命令行配置它们.
 STR_6156    :名称已被使用
 STR_6157    :控制台
@@ -4477,6 +4477,84 @@ STR_6158    :不能读取此文件...{NEWLINE}不兼容的RCT版本: {COMMA16}
 STR_6159    :平滑最近相邻
 STR_6160    :{WINDOW_COLOUR_2}可用车辆: {BLACK}{STRING}
 STR_6161    :网格显示切换
+STR_6162    :旋转野鼠
+STR_6163    :老鼠外形的车辆加速通过急弯和短下落, 温柔地旋转使乘客迷失方向
+STR_6164    :{WHITE}{CROSS}
+STR_6165    :使用垂直同步
+STR_6166    :{SMALLFONT}{BLACK}将每帧图像与显示器刷新率同步, 以避免画面撕裂.
+STR_6167    :{SMALLFONT}{BLACK}高级
+STR_6168    :主菜单动画
+STR_6169    :剧情选项
+STR_6170    :界面设定
+STR_6171    :查找
+STR_6172    :{SMALLFONT}{BLACK}查找
+STR_6173    :请输入名字来查找:
+STR_6174    :加载存档
+STR_6175    :加载剧情
+STR_6176    :准备加载的剧情:
+STR_6177    :加载{MOVE_X}{87}没有选择剧情
+STR_6178    :加载{MOVE_X}{87}{RED}剧情缺失
+STR_6179    :选择
+STR_6180    :没有选择剧情
+STR_6181    :{RED}剧情缺失
+STR_6182    :跟随{MOVE_X}{87}{STRING}
+STR_6183    :跟随{MOVE_X}{87}没有选择sprite
+STR_6184    :跟随Sprite
+STR_6185    :选择Sprite
+STR_6186    :没有选择sprite
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :呕吐物
+STR_6189    :样子
+STR_6190    :{SMALLFONT}{BLACK}当主界面激活时你无法选择一个sprite.
+STR_6191    :表面
+STR_6192    :墙
+STR_6193    :{COMMA16}位游客
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16}位游客
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16}位游客
+STR_6196    :{BLACK}年:
+STR_6197    :{BLACK}月:
+STR_6198    :{BLACK}日:
+STR_6199    :设置日期
+STR_6200    :重置日期
+STR_6201    :{MONTH}
+STR_6202    :启用虚拟楼层
+STR_6203    :{SMALLFONT}{BLACK}启用后, 当按住Ctrl或Shift键时将会绘制一层虚拟楼层以便轻松地垂直放置元素.
+STR_6204    :砖墙
+STR_6205    :钢铁
+STR_6206    :灰色粉饰灰泥
+STR_6207    :黄色粉饰灰泥
+STR_6208    :红色粉饰灰泥
+STR_6209    :紫色粉饰灰泥
+STR_6210    :绿色粉饰灰泥
+STR_6211    :棕色砂岩
+STR_6212    :灰色砂岩
+STR_6213    :摩天大楼A
+STR_6214    :摩天大楼B
+STR_6215    :建造
+STR_6216    :运营
+STR_6217    :游乐设施 / 轨道可用性
+STR_6218    :OpenRCT2官方
+STR_6219    :高亮道路相关物
+STR_6220    :使之可用
+STR_6221    :{SMALLFONT}{BLACK}This will set the ride's known entrance or exit location to the currently selected tile. 每个站台只能有一个入口或出口使之可用.
+STR_6222    :无法在此放置游客入口...
+STR_6223    :必须在游乐园边界外!
+STR_6224    :{STRING}放置一个游客入口.
+STR_6225    :不支持OpenGL渲染
+STR_6226    :允许剧情提前完成
+STR_6227    :{SMALLFONT}{BLACK}当所有剧情目标在预定时间之前达成时将触发剧情完成.
+STR_6228    :剧情选项
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :一动不动
+STR_6233    :剖视图视角
+STR_6234    :高亮道路相关物
+STR_6235    :服务器信息
+STR_6236    :玩家
+STR_6237    :组
+STR_6238    :多人选项
+
 
 #############
 # Scenarios #

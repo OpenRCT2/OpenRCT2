@@ -26,6 +26,7 @@
 #include "../management/Finance.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "../world/Footpath.h"
 #include "../world/Park.h"
 
 /** rct2: 0x00993CE9 */

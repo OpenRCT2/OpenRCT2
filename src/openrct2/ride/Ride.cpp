@@ -237,7 +237,7 @@ Ride *get_ride(sint32 index)
 rct_ride_entry * get_ride_entry(sint32 index)
 {
     rct_ride_entry * result = nullptr;
-    auto objMgr =  GetObjectManager();
+    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (objMgr != nullptr)
     {
         auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_RIDE, index);
@@ -1169,7 +1169,7 @@ void ride_remove_peeps(sint32 rideIndex)
                 continue;
 
             peep_decrement_num_riders(peep);
-            if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->sub_state == 0)
+            if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->sub_state == PEEP_RIDE_AT_ENTRANCE)
                 remove_peep_from_queue(peep);
 
             invalidate_sprite_2((rct_sprite*)peep);
@@ -7709,7 +7709,7 @@ bool shop_item_is_food_or_drink(sint32 shopItem)
     case SHOP_ITEM_MEATBALL_SOUP:
     case SHOP_ITEM_FRUIT_JUICE:
     case SHOP_ITEM_SOYBEAN_MILK:
-    case SHOP_ITEM_SU_JONGKWA:
+    case SHOP_ITEM_SUJEONGGWA:
     case SHOP_ITEM_SUB_SANDWICH:
     case SHOP_ITEM_COOKIE:
     case SHOP_ITEM_ROAST_SAUSAGE:
@@ -7758,7 +7758,7 @@ bool shop_item_is_drink(sint32 shopItem)
     case SHOP_ITEM_ICED_TEA:
     case SHOP_ITEM_FRUIT_JUICE:
     case SHOP_ITEM_SOYBEAN_MILK:
-    case SHOP_ITEM_SU_JONGKWA:
+    case SHOP_ITEM_SUJEONGGWA:
         return true;
     default:
         return false;

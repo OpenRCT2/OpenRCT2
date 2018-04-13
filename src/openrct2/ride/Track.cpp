@@ -1004,7 +1004,6 @@ static money32 track_place(sint32 rideIndex,
     direction &= 3;
     gTrackGroundFlags  = 0;
 
-    uint64 enabledTrackPieces = rideEntry->enabledTrackPieces & RideTypePossibleTrackConfigurations[ride->type];
     uint32 rideTypeFlags      = RideProperties[ride->type].flags;
 
     if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && type == TRACK_ELEM_END_STATION)
@@ -1047,7 +1046,7 @@ static money32 track_place(sint32 rideIndex,
         }
         // Backwards steep lift hills are allowed, even on roller coasters that do not support forwards steep lift hills.
         if ((liftHillAndAlternativeState & CONSTRUCTION_LIFT_HILL_SELECTED) &&
-            !(enabledTrackPieces & (1ULL << TRACK_LIFT_HILL_STEEP)) &&
+            !(RideTypePossibleTrackConfigurations[ride->type] & (1ULL << TRACK_LIFT_HILL_STEEP)) &&
             !gCheatsEnableChainLiftOnAllTrack)
         {
             if (TrackFlags[type] & TRACK_ELEM_FLAG_IS_STEEP_UP)

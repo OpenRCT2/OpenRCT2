@@ -19,6 +19,7 @@
 #include "../common.h"
 
 struct rct_drawpixelinfo;
+struct rct_palette_entry;
 
 extern rct_string_id DrawingEngineStringIds[3];
 

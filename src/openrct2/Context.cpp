@@ -166,6 +166,26 @@ namespace OpenRCT2
             return _env;
         }
 
+        IObjectManager * GetObjectManager() override
+        {
+            return _objectManager;
+        }
+
+        IObjectRepository * GetObjectRepository() override
+        {
+            return _objectRepository;
+        }
+
+        ITrackDesignRepository * GetTrackDesignRepository() override
+        {
+            return _trackDesignRepository;
+        }
+
+        IScenarioRepository * GetScenarioRepository() override
+        {
+            return _scenarioRepository;
+        }
+
         sint32 RunOpenRCT2(int argc, const char * * argv) override
         {
             if (Initialise())
@@ -309,12 +329,15 @@ namespace OpenRCT2
             //  return false;
             // } //This comment was relocated so it would stay where it was in relation to the following lines of code.
 
-            auto rct2InstallPath = GetOrPromptRCT2Path();
-            if (rct2InstallPath.empty())
+            if (!gOpenRCT2Headless)
             {
-                return false;
+                auto rct2InstallPath = GetOrPromptRCT2Path();
+                if (rct2InstallPath.empty())
+                {
+                    return false;
+                }
+                _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
-            _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
 
             _objectRepository = CreateObjectRepository(_env);
             _objectManager = CreateObjectManager(_objectRepository);
@@ -380,7 +403,10 @@ namespace OpenRCT2
 
             if (!gOpenRCT2NoGraphics)
             {
-                LoadBaseGraphics();
+                if (!LoadBaseGraphics())
+                {
+                    return false;
+                }
 #ifdef __ENABLE_LIGHTFX__
                 lightfx_init();
 #endif
@@ -520,12 +546,16 @@ namespace OpenRCT2
             return result;
         }
 
-        void LoadBaseGraphics()
+        bool LoadBaseGraphics()
         {
-            gfx_load_g1(_env);
+            if (!gfx_load_g1(_env))
+            {
+                return false;
+            }
             gfx_load_g2();
             gfx_load_csg();
             font_sprite_initialise_characters();
+            return true;
         }
 
         /**

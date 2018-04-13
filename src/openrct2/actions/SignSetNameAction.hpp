@@ -18,13 +18,12 @@
 
 #include "../Context.h"
 #include "../drawing/Drawing.h"
+#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../ui/UiContext.h"
 #include "../world/Sprite.h"
 #include "../world/Banner.h"
 #include "GameAction.h"
-
-using namespace OpenRCT2;
 
 struct SignSetNameAction : public GameActionBase<GAME_COMMAND_SET_SIGN_NAME, GameActionResult>
 {

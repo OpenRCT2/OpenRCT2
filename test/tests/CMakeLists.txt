@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 2.6)
 
-option(DISABLE_RCT2_TESTS "Disable tests that require RollerCoaster Tycoon 2 assets.")
 option(SYSTEM_GTEST "Use the googletest library provided by the system.")
 
 if (SYSTEM_GTEST)
@@ -87,14 +86,8 @@ set(COMMON_TEST_SOURCES
 add_library(test-common STATIC ${COMMON_TEST_SOURCES})
 
 # Setup testdata. It should be fine here, as the only way to reach here is by explicitly requesting tests.
-if (NOT "z$ENV{CI}" STREQUAL "z")
-    message("Detected CI environment. Disabling ride rating test.")
-    set(DISABLE_RCT2_TESTS ON)
-endif ()
-
-if (NOT DISABLE_RCT2_TESTS)
-    execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_LIST_DIR}/testdata" "${CMAKE_CURRENT_BINARY_DIR}/testdata")
-endif ()
+execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_LIST_DIR}/testdata" "${CMAKE_CURRENT_BINARY_DIR}/testdata")
+install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E create_symlink \"\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/openrct2\" \"${CMAKE_CURRENT_BINARY_DIR}/data\")")
 
 # Start of our tests
 
@@ -152,14 +145,11 @@ set(RIDE_RATINGS_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/RideRatings.cpp"
                               "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
 add_executable(test_ride_ratings ${RIDE_RATINGS_TEST_SOURCES})
 target_link_libraries(test_ride_ratings ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+add_test(NAME ride_ratings COMMAND test_ride_ratings)
 
 # Multi-launch test
 set(MULTILAUNCH_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/MultiLaunch.cpp"
                              "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
 add_executable(test_multilaunch ${MULTILAUNCH_TEST_SOURCES})
 target_link_libraries(test_multilaunch ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
-    
-if (NOT DISABLE_RCT2_TESTS)
-    add_test(NAME ride_ratings COMMAND test_ride_ratings)
-    add_test(NAME multilaunch COMMAND test_multilaunch)
-endif ()
+add_test(NAME multilaunch COMMAND test_multilaunch)

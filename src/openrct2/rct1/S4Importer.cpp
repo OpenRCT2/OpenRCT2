@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include "../Context.h"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
 #include "../core/FileStream.hpp"
@@ -270,7 +271,10 @@ public:
             dst->objective_arg_2 = _s4.scenario_objective_currency;
         dst->objective_arg_3 = _s4.scenario_objective_num_guests;
 
-        std::string name = std::string(_s4.scenario_name, sizeof(_s4.scenario_name));
+        utf8 utf8name[256];
+        rct2_to_utf8(utf8name, _s4.scenario_name);
+
+        std::string name = std::string(utf8name, sizeof(utf8name));
         std::string details;
 
         // TryGetById won't set this property if the scenario is not recognised,
@@ -340,7 +344,7 @@ private:
         String::Set(gScenarioFileName, sizeof(gScenarioFileName), GetRCT1ScenarioName().c_str());
 
         // Do map initialisation, same kind of stuff done when loading scenario editor
-        GetObjectManager()->UnloadAll();
+        OpenRCT2::GetContext()->GetObjectManager()->UnloadAll();
         game_init_all(mapSize);
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -1419,9 +1423,9 @@ private:
         dst->next_z = src->next_z / 2;
         dst->next_var_29 = src->next_var_29;
         dst->var_37 = src->var_37;
-        dst->var_42 = src->var_42;
-        dst->var_73 = src->var_73;
-        dst->var_EF = src->var_EF;
+        dst->time_to_consume = src->time_to_consume;
+        dst->step_progress = src->step_progress;
+        dst->vandalism_seen = src->vandalism_seen;
 
         dst->type = src->type;
 
@@ -1496,7 +1500,7 @@ private:
 
         dst->surroundings_thought_timeout = src->surroundings_thought_timeout;
         dst->angriness = src->angriness;
-        dst->var_F4 = src->var_F4;
+        dst->time_lost = src->time_lost;
 
         for (size_t i = 0; i < 32; i++)
         {
@@ -1517,7 +1521,7 @@ private:
         dst->previous_ride = src->previous_ride;
         dst->previous_ride_time_out = src->previous_ride_time_out;
 
-        dst->var_C4 = 0;
+        dst->path_check_optimisation = 0;
         dst->guest_heading_to_ride_id = src->guest_heading_to_ride_id;
         // Doubles as staff orders
         dst->peep_is_lost_countdown = src->peep_is_lost_countdown;
@@ -1860,7 +1864,7 @@ private:
 
     void LoadObjects(uint8 objectType, const std::vector<const char *> &entries)
     {
-        IObjectManager * objectManager = GetObjectManager();
+        IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
 
         uint32 entryIndex = 0;
         for (const char * objectName : entries)
@@ -1909,7 +1913,7 @@ private:
 
     void GetInvalidObjects(uint8 objectType, const std::vector<const char *> &entries, std::vector<rct_object_entry> &missingObjects)
     {
-        IObjectRepository * objectRepository = GetObjectRepository();
+        IObjectRepository * objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
         for (const char * objectName : entries)
         {
             rct_object_entry entry;

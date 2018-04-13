@@ -27,8 +27,6 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-using namespace OpenRCT2;
-
 struct StaffSetColourAction : public GameActionBase<GAME_COMMAND_SET_STAFF_COLOUR, GameActionResult>
 {
 private:

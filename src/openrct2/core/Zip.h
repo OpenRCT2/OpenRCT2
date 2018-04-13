@@ -18,6 +18,8 @@
 
 #include "../common.h"
 
+interface IStream;
+
 /**
  * Represents a zip file.
  */

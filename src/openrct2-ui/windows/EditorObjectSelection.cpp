@@ -21,6 +21,7 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/Editor.h>
 #include <openrct2/EditorObjectSelectionSession.h>
 #include <openrct2/Game.h>
@@ -304,7 +305,7 @@ static bool visible_list_sort_ride_type(const list_item &a, const list_item &b)
 {
     auto rideTypeA = language_get_string(get_ride_type_string_id(a.repositoryItem));
     auto rideTypeB = language_get_string(get_ride_type_string_id(b.repositoryItem));
-    sint32 result = strcmp(rideTypeA, rideTypeB);
+    sint32 result = String::Compare(rideTypeA, rideTypeB);
     return result != 0 ?
         result < 0 :
         visible_list_sort_ride_name(a, b);
@@ -768,10 +769,10 @@ static void window_editor_object_selection_scroll_mouseover(rct_window *w, sint3
         object_delete(_loadedObject);
         _loadedObject = nullptr;
 
-        list_item * listItem = &_listItems[selectedObject];
         if (selectedObject == -1) {
             w->object_entry = nullptr;
         } else {
+            auto listItem = &_listItems[selectedObject];
             w->object_entry = listItem->entry;
             _loadedObject = object_repository_load_object(listItem->entry);
         }

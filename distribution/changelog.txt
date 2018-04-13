@@ -6,12 +6,15 @@
 - Feature: [#7316] Cheat to allow freezing all staff
 - Feature: [#7332] Keyboard shortcuts for view path issues and cutaway view.
 - Feature: [#7348] Add large half loops to the Vertical Drop Roller Coaster.
+- Fix: [#2611] Some objects show (undefined string) instead of a description in Korean.
 - Fix: [#3596] Saving parks, landscapes and tracks with a period in the filenames don't get their extension.
 - Fix: [#5210] Default system dialog not accessible from saving landscape window.
+- Fix: [#6134] Scenarios incorrectly categorised when using Polish version of RCT2.
 - Fix: [#6141] CSS50.dat is never loaded.
 - Fix: [#7176] Mechanics sometimes fall down from rides.
 - Fix: [#7303] Visual glitch with virtual floor near map edges.
 - Fix: [#7327] Abstract scenery and stations don't get fully See-Through when hiding them (original bug).
+- Fix: [#7382] Opening the mini-map reverts the size of the land tool to 1x1, regardless of what was selected before. 
 - Fix: Cut-away view does not draw tile elements that have been moved down on the list.
 - Improved: Raising land near the map edge makes the affected area smaller instead of showing an 'off edge map' error.
 

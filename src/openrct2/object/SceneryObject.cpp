@@ -14,25 +14,14 @@
 *****************************************************************************/
 #pragma endregion
 
-#pragma once
+#include "ObjectJsonHelpers.h"
+#include "SceneryObject.h"
 
-#include <openrct2/common.h>
-
-namespace OpenRCT2
+void SceneryObject::SetPrimarySceneryGroup(const std::string &s)
 {
-    namespace Drawing
+    if (!s.empty())
     {
-        interface IDrawingEngine;
-    }
-
-    namespace Ui
-    {
-        interface IUiContext;
-
-        Drawing::IDrawingEngine * CreateSoftwareDrawingEngine(IUiContext * uiContext);
-        Drawing::IDrawingEngine * CreateHardwareDisplayDrawingEngine(IUiContext * uiContext);
-#ifndef DISABLE_OPENGL
-        Drawing::IDrawingEngine * CreateOpenGLDrawingEngine(IUiContext * uiContext);
-#endif
+        auto sgEntry = ObjectJsonHelpers::ParseObjectEntry(s);
+        SetPrimarySceneryGroup(&sgEntry);
     }
 }

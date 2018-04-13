@@ -16,6 +16,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include "../Context.h"
 #include "../core/FileStream.hpp"
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
@@ -105,7 +106,7 @@ void S6Exporter::Save(IStream * stream, bool isScenario)
     // 2: Write packed objects
     if (_s6.header.num_packed_objects > 0)
     {
-        IObjectRepository * objRepo = GetObjectRepository();
+        IObjectRepository * objRepo = OpenRCT2::GetContext()->GetObjectRepository();
         objRepo->WritePackedObjects(stream, ExportObjectsList);
     }
 
@@ -162,6 +163,8 @@ void S6Exporter::Export()
         log_error("Found %d disjoint null sprites", disjoint_sprites_count);
     }
     _s6.info = gS6Info;
+    utf8_to_rct2(_s6.info.name, gS6Info.name);
+    utf8_to_rct2(_s6.info.details, gS6Info.details);
     uint32 researchedTrackPiecesA[128];
     uint32 researchedTrackPiecesB[128];
 
@@ -772,7 +775,7 @@ sint32 scenario_save(const utf8 * path, sint32 flags)
     {
         if (flags & S6_SAVE_FLAG_EXPORT)
         {
-            IObjectManager * objManager   = GetObjectManager();
+            IObjectManager * objManager   = OpenRCT2::GetContext()->GetObjectManager();
             s6exporter->ExportObjectsList = objManager->GetPackableObjects();
         }
         s6exporter->RemoveTracklessRides = true;
@@ -800,4 +803,3 @@ sint32 scenario_save(const utf8 * path, sint32 flags)
     }
     return result;
 }
-

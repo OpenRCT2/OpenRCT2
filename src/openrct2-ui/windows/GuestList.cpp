@@ -800,9 +800,9 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
                         thought = &peep->thoughts[j];
                         if (thought->type == PEEP_THOUGHT_TYPE_NONE)
                             break;
-                        if (thought->var_2 == 0)
+                        if (thought->freshness == 0)
                             continue;
-                        if (thought->var_2 > 5)
+                        if (thought->freshness > 5)
                             break;
 
                         peep_thought_set_format_args(&peep->thoughts[j]);
@@ -908,7 +908,7 @@ static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* 
     case VIEW_THOUGHTS:
     {
         rct_peep_thought *thought = &peep->thoughts[0];
-        if (thought->var_2 <= 5 && thought->type != PEEP_THOUGHT_TYPE_NONE) {
+        if (thought->freshness <= 5 && thought->type != PEEP_THOUGHT_TYPE_NONE) {
             // HACK The out arguments here are used to draw the group text so we just return
             //      gCommonFormatArgs as two uint32s.
             memset(gCommonFormatArgs, 0, sizeof(*argument_1) + sizeof(*argument_2));

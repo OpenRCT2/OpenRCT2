@@ -1,19 +1,22 @@
 {
     "version": "0.2.0",
     "configurations": [
+        
         {
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/bin/openrct2",
+            "program": "${workspaceFolder}/bin/openrct2",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceRoot}/bin",
+            "cwd": "${workspaceFolder}/bin",
             "environment": [],
             "externalConsole": true,
             "setupCommands": [
                 {
-                    "text": "-enable-pretty-printing"
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
                 }
             ],
             "linux": {
@@ -30,7 +33,7 @@
             "name": "C++ Attach",
             "type": "cppdbg",
             "request": "attach",
-            "program": "${workspaceRoot}/bin/openrct2",
+            "program": "${workspaceFolder}/bin/openrct2",
             "processId": "${command:pickProcess}",
             "setupCommands": [
                 {

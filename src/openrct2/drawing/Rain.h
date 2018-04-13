@@ -18,6 +18,8 @@
 
 #include "../common.h"
 
+struct rct_drawpixelinfo;
+
 namespace OpenRCT2 { namespace Drawing
 {
     interface IRainDrawer;

@@ -32,6 +32,7 @@ public:
     explicit SceneryGroupObject(const rct_object_entry &entry) : Object(entry) { }
 
     void * GetLegacyData()  override { return &_legacyType; }
+    void ReadJson(IReadObjectContext * context, const json_t * root) override;
 
     void ReadLegacy(IReadObjectContext * context, IStream * stream) override;
     void Load() override;
@@ -44,4 +45,7 @@ public:
 
 private:
     static std::vector<rct_object_entry> ReadItems(IStream * stream);
+    static uint32 ReadJsonEntertainerCostumes(const json_t * jCostumes);
+    static uint32 ParseEntertainerCostume(const std::string &s);
+    static std::vector<rct_object_entry> ReadJsonEntries(const json_t * jEntries);
 };

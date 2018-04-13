@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../common.h"
+#include "../Context.h"
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../localisation/Localisation.h"
@@ -281,7 +282,7 @@ void scenery_remove_ghost_tool_placement(){
 rct_scenery_entry *get_small_scenery_entry(sint32 entryIndex)
 {
     rct_scenery_entry * result = nullptr;
-    auto objMgr = GetObjectManager();
+    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (objMgr != nullptr)
     {
         auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
@@ -296,7 +297,7 @@ rct_scenery_entry *get_small_scenery_entry(sint32 entryIndex)
 rct_scenery_entry *get_large_scenery_entry(sint32 entryIndex)
 {
     rct_scenery_entry * result = nullptr;
-    auto objMgr = GetObjectManager();
+    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (objMgr != nullptr)
     {
         auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
@@ -311,7 +312,7 @@ rct_scenery_entry *get_large_scenery_entry(sint32 entryIndex)
 rct_scenery_entry *get_wall_entry(sint32 entryIndex)
 {
     rct_scenery_entry * result = nullptr;
-    auto objMgr = GetObjectManager();
+    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (objMgr != nullptr)
     {
         auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_WALLS, entryIndex);
@@ -326,7 +327,7 @@ rct_scenery_entry *get_wall_entry(sint32 entryIndex)
 rct_scenery_entry *get_banner_entry(sint32 entryIndex)
 {
     rct_scenery_entry * result = nullptr;
-    auto objMgr = GetObjectManager();
+    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (objMgr != nullptr)
     {
         auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_BANNERS, entryIndex);
@@ -341,7 +342,7 @@ rct_scenery_entry *get_banner_entry(sint32 entryIndex)
 rct_scenery_entry *get_footpath_item_entry(sint32 entryIndex)
 {
     rct_scenery_entry * result = nullptr;
-    auto objMgr = GetObjectManager();
+    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (objMgr != nullptr)
     {
         auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_PATH_BITS, entryIndex);
@@ -356,7 +357,7 @@ rct_scenery_entry *get_footpath_item_entry(sint32 entryIndex)
 rct_scenery_group_entry *get_scenery_group_entry(sint32 entryIndex)
 {
     rct_scenery_group_entry * result = nullptr;
-    auto objMgr = GetObjectManager();
+    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (objMgr != nullptr)
     {
         auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_SCENERY_GROUP, entryIndex);

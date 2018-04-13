@@ -21,10 +21,13 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4C1A53ED205FD1A0000F8EF5 /* SceneryObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */; };
 		4C3B4236205914F7000C5BB7 /* InGameConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B4234205914F7000C5BB7 /* InGameConsole.cpp */; };
 		4C3B423820591513000C5BB7 /* StdInOutConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B423720591513000C5BB7 /* StdInOutConsole.cpp */; };
 		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
 		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
+		4CE9AAAD1FDA7B14004093C6 /* ObjectJsonHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */; };
+		4CF67197206B7E720034ADDD /* object in Resources */ = {isa = PBXBuildFile; fileRef = 4CF67196206B7E720034ADDD /* object */; };
 		C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */; };
 		C61ADB211FB7DC060024F2EF /* Scenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB201FB7DC060024F2EF /* Scenery.cpp */; };
 		C61ADB231FBBCB8B0024F2EF /* GameBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */; };
@@ -586,6 +589,7 @@
 
 /* Begin PBXFileReference section */
 		4C04D69F2056AA9600F82EBA /* linenoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = linenoise.hpp; sourceTree = "<group>"; };
+		4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryObject.cpp; sourceTree = "<group>"; };
 		4C3B4234205914F7000C5BB7 /* InGameConsole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InGameConsole.cpp; sourceTree = "<group>"; };
 		4C3B4235205914F7000C5BB7 /* InGameConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InGameConsole.h; sourceTree = "<group>"; };
 		4C3B423720591513000C5BB7 /* StdInOutConsole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StdInOutConsole.cpp; sourceTree = "<group>"; };
@@ -847,6 +851,9 @@
 		4CE462461FD1613D0001CD98 /* Platform.Linux.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Linux.cpp; sourceTree = "<group>"; };
 		4CE462481FD1613D0001CD98 /* Platform.Posix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Posix.cpp; sourceTree = "<group>"; };
 		4CE462491FD1613D0001CD98 /* Platform.Win32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Win32.cpp; sourceTree = "<group>"; };
+		4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectJsonHelpers.cpp; sourceTree = "<group>"; };
+		4CE9AAAC1FDA7B14004093C6 /* ObjectJsonHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectJsonHelpers.h; sourceTree = "<group>"; };
+		4CF67196206B7E720034ADDD /* object */ = {isa = PBXFileReference; lastKnownFileType = folder; name = object; path = data/object; sourceTree = "<group>"; };
 		4CFE4E7B1F90A3F1005243C2 /* Peep.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Peep.cpp; sourceTree = "<group>"; };
 		4CFE4E7C1F90A3F1005243C2 /* Peep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Peep.h; sourceTree = "<group>"; };
 		4CFE4E7D1F90A3F1005243C2 /* PeepData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PeepData.cpp; sourceTree = "<group>"; };
@@ -1676,6 +1683,7 @@
 		D497D06F1C20FD52002BF46A = {
 			isa = PBXGroup;
 			children = (
+				4CF67196206B7E720034ADDD /* object */,
 				D41B72431C21015A0080A7B9 /* Sources */,
 				D497D07A1C20FD52002BF46A /* Resources */,
 				D41B73ED1C21017D0080A7B9 /* Libraries */,
@@ -2083,6 +2091,8 @@
 				4C7B53A21FFC15ED00A52E21 /* ObjectLimits.h */,
 				4C7B53A31FFC180400A52E21 /* ObjectList.cpp */,
 				4C7B53A41FFC180400A52E21 /* ObjectList.h */,
+				4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */,
+				4CE9AAAC1FDA7B14004093C6 /* ObjectJsonHelpers.h */,
 				F76C84221EC4E7CC00FA49E2 /* ObjectManager.cpp */,
 				F76C84231EC4E7CC00FA49E2 /* ObjectManager.h */,
 				F76C84241EC4E7CC00FA49E2 /* ObjectRepository.cpp */,
@@ -2091,6 +2101,7 @@
 				F76C84271EC4E7CC00FA49E2 /* RideObject.h */,
 				F76C84281EC4E7CC00FA49E2 /* SceneryGroupObject.cpp */,
 				F76C84291EC4E7CC00FA49E2 /* SceneryGroupObject.h */,
+				4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */,
 				F76C842A1EC4E7CC00FA49E2 /* SceneryObject.h */,
 				F76C842B1EC4E7CC00FA49E2 /* SmallSceneryObject.cpp */,
 				F76C842C1EC4E7CC00FA49E2 /* SmallSceneryObject.h */,
@@ -2717,6 +2728,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D497D0891C20FD53002BF46A /* Build configuration list for PBXNativeTarget "OpenRCT2" */;
 			buildPhases = (
+				4CF67195206B7BEF0034ADDD /* Download JSON objects */,
 				D4E09E831E049C0600F53CE3 /* Download Title Sequences */,
 				D4EC012A1C25532B00DAFE69 /* Setup AppIcon */,
 				D4CA88671D4E962100060C11 /* Get Git Variables */,
@@ -2828,6 +2840,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CF67197206B7E720034ADDD /* object in Resources */,
 				D41B74731C2125E50080A7B9 /* Assets.xcassets in Resources */,
 				D4EC48E61C2637710024B507 /* g2.dat in Resources */,
 				D4EC48E71C2637710024B507 /* language in Resources */,
@@ -2847,6 +2860,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4CF67195206B7BEF0034ADDD /* Download JSON objects */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Download JSON objects";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "version=\"1.0\"\nzipname=\"objects.zip\"\nliburl=\"https://github.com/OpenRCT2/objects/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/object\" || ! -e \"${SRCROOT}/objectsversion\" || $(head -n 1 \"${SRCROOT}/objectsversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/object\" ]]; then rm -r \"${SRCROOT}/data/object\"; fi\nmkdir -p \"${SRCROOT}/data/object\"\n\ncurl -L -o \"${SRCROOT}/data/object/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/object\" \"${SRCROOT}/data/object/$zipname\"\nrm \"${SRCROOT}/data/object/$zipname\"\n\necho $version > \"${SRCROOT}/objectsversion\"\nfi";
+		};
 		C68B2D471EC790710020651C /* Download Libraries */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3003,6 +3030,7 @@
 				C68313C81FDB4ED4006DB3D8 /* MouseInput.cpp in Sources */,
 				C68878C920289B710084B384 /* TextureCache.cpp in Sources */,
 				C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */,
+				4C1A53ED205FD1A0000F8EF5 /* SceneryObject.cpp in Sources */,
 				F76C887B1EC5324E00FA49E2 /* FileAudioSource.cpp in Sources */,
 				C68878CA20289B710084B384 /* TransparencyDepth.cpp in Sources */,
 				C64644FD1F3FA4120026AC2D /* Land.cpp in Sources */,
@@ -3043,6 +3071,7 @@
 				C68313D51FDB4F4C006DB3D8 /* Graph.cpp in Sources */,
 				C685E51D1F8907850090598F /* Research.cpp in Sources */,
 				C64644FB1F3FA4120026AC2D /* EditorScenarioOptions.cpp in Sources */,
+				4CE9AAAD1FDA7B14004093C6 /* ObjectJsonHelpers.cpp in Sources */,
 				C654DF321F69C0430040F43D /* InstallTrack.cpp in Sources */,
 				C64644FF1F3FA4120026AC2D /* StaffList.cpp in Sources */,
 				C6D2BEE81F9BAACE008B557C /* MazeConstruction.cpp in Sources */,

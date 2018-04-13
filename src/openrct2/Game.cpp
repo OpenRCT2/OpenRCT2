@@ -1087,7 +1087,7 @@ static void load_landscape()
     context_open_intent(&intent);
 }
 
-static void utf8_to_rct2_self(char * buffer, size_t length)
+void utf8_to_rct2_self(char * buffer, size_t length)
 {
     char tempBuffer[512];
     utf8_to_rct2(tempBuffer, buffer);
@@ -1125,7 +1125,7 @@ static void utf8_to_rct2_self(char * buffer, size_t length)
     while (i < length);
 }
 
-static void rct2_to_utf8_self(char * buffer, size_t length)
+void rct2_to_utf8_self(char * buffer, size_t length)
 {
     if (length > 0)
     {

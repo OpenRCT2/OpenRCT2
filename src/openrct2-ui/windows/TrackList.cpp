@@ -742,7 +742,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 static void track_list_load_designs(ride_list_item item)
 {
-    auto repo = GetTrackDesignRepository();
+    auto repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
     if (!RideGroupManager::RideTypeHasRideGroups(item.type))
     {
         char entry[9];

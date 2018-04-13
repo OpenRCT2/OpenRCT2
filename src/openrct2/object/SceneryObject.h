@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <string>
 #include "Object.h"
 
 class SceneryObject : public Object
@@ -31,4 +32,5 @@ public:
 
 protected:
     void SetPrimarySceneryGroup(const rct_object_entry * entry) { _primarySceneryGroupEntry = *entry; }
+    void SetPrimarySceneryGroup(const std::string &s);
 };

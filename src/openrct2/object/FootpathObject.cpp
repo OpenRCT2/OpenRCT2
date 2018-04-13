@@ -15,11 +15,11 @@
 #pragma endregion
 
 #include "../core/IStream.hpp"
-#include "FootpathObject.h"
-
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 #include "../world/Footpath.h"
+#include "FootpathObject.h"
+#include "ObjectJsonHelpers.h"
 
 void FootpathObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
@@ -29,8 +29,8 @@ void FootpathObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     _legacyType.scrolling_mode = stream->ReadValue<uint8>();
     stream->Seek(1, STREAM_SEEK_CURRENT);
 
-    GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
-    GetImageTable()->Read(context, stream);
+    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
+    GetImageTable().Read(context, stream);
 
     // Validate properties
     if (_legacyType.support_type >= FOOTPATH_ENTRY_SUPPORT_TYPE_COUNT)
@@ -41,16 +41,16 @@ void FootpathObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 
 void FootpathObject::Load()
 {
-    GetStringTable()->Sort();
+    GetStringTable().Sort();
     _legacyType.string_idx = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
+    _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.bridge_image = _legacyType.image + 109;
 }
 
 void FootpathObject::Unload()
 {
     language_free_object_string(_legacyType.string_idx);
-    gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
+    gfx_object_free_images(_legacyType.image, GetImageTable().GetCount());
 
     _legacyType.string_idx = 0;
     _legacyType.image = 0;
@@ -62,4 +62,26 @@ void FootpathObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 h
     sint32 y = height / 2;
     gfx_draw_sprite(dpi, _legacyType.image + 71, x - 49, y - 17, 0);
     gfx_draw_sprite(dpi, _legacyType.image + 72, x + 4, y - 17, 0);
+}
+
+static uint8 ParseSupportType(const std::string &s)
+{
+    if (s == "pole") return FOOTPATH_ENTRY_SUPPORT_TYPE_POLE;
+    else /* if (s == "box") */ return FOOTPATH_ENTRY_SUPPORT_TYPE_BOX;
+}
+
+void FootpathObject::ReadJson(IReadObjectContext * context, const json_t * root)
+{
+    auto properties = json_object_get(root, "properties");
+    _legacyType.support_type = ParseSupportType(ObjectJsonHelpers::GetString(json_object_get(properties, "supportType")));
+    _legacyType.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
+
+    // Flags
+    _legacyType.flags = ObjectJsonHelpers::GetFlags<uint8>(properties, {
+        { "hasSupportImages", FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE },
+        { "hasElevatedPathImages", FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE },
+        { "editorOnly", FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR } });
+
+    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
+    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }

@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include "../Context.h"
 #include "../config/Config.h"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
@@ -164,7 +165,7 @@ public:
     size_t GetCountForObjectEntry(uint8 rideType, const std::string &entry) const override
     {
         size_t count = 0;
-        const IObjectRepository * repo = GetObjectRepository();
+        const IObjectRepository * repo = GetContext()->GetObjectRepository();
 
         for (const auto &item : _items)
         {
@@ -193,7 +194,7 @@ public:
     size_t GetCountForRideGroup(uint8 rideType, const RideGroup * rideGroup) const override
     {
         size_t count = 0;
-        const IObjectRepository * repo = GetObjectRepository();
+        const IObjectRepository * repo = GetContext()->GetObjectRepository();
 
         for (const auto &item : _items)
         {
@@ -225,7 +226,7 @@ public:
     std::vector<track_design_file_ref> GetItemsForObjectEntry(uint8 rideType, const std::string &entry) const override
     {
         std::vector<track_design_file_ref> refs;
-        const IObjectRepository * repo = GetObjectRepository();
+        const IObjectRepository * repo = GetContext()->GetObjectRepository();
 
         for (const auto &item : _items)
         {
@@ -258,7 +259,7 @@ public:
     std::vector<track_design_file_ref> GetItemsForRideGroup(uint8 rideType, const RideGroup * rideGroup) const override
     {
         std::vector<track_design_file_ref> refs;
-        const IObjectRepository * repo = GetObjectRepository();
+        const IObjectRepository * repo = GetContext()->GetObjectRepository();
 
         for (const auto &item : _items)
         {
@@ -395,42 +396,33 @@ private:
     }
 };
 
-static TrackDesignRepository * _trackDesignRepository = nullptr;
-
 ITrackDesignRepository * CreateTrackDesignRepository(IPlatformEnvironment * env)
 {
-    _trackDesignRepository = new TrackDesignRepository(env);
-    return _trackDesignRepository;
-}
-
-ITrackDesignRepository * GetTrackDesignRepository()
-{
-    return _trackDesignRepository;
+    return new TrackDesignRepository(env);
 }
 
 void track_repository_scan()
 {
-    ITrackDesignRepository * repo = GetTrackDesignRepository();
+    ITrackDesignRepository * repo = GetContext()->GetTrackDesignRepository();
     repo->Scan();
 }
 
 bool track_repository_delete(const utf8 * path)
 {
-    ITrackDesignRepository * repo = GetTrackDesignRepository();
+    ITrackDesignRepository * repo = GetContext()->GetTrackDesignRepository();
     return repo->Delete(path);
 }
 
 bool track_repository_rename(const utf8 * path, const utf8 * newName)
 {
-    ITrackDesignRepository * repo = GetTrackDesignRepository();
+    ITrackDesignRepository * repo = GetContext()->GetTrackDesignRepository();
     std::string newPath = repo->Rename(path, newName);
     return !newPath.empty();
 }
 
 bool track_repository_install(const utf8 * srcPath)
 {
-    ITrackDesignRepository * repo = GetTrackDesignRepository();
+    ITrackDesignRepository * repo = GetContext()->GetTrackDesignRepository();
     std::string newPath = repo->Install(srcPath);
     return !newPath.empty();
 }
-

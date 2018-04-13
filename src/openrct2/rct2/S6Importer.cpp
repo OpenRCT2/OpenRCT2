@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <algorithm>
+#include "../Context.h"
 #include "../core/Console.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/IStream.hpp"
@@ -199,6 +200,8 @@ public:
 
         // _s6.header
         gS6Info = _s6.info;
+        rct2_to_utf8(gS6Info.name, _s6.info.name);
+        rct2_to_utf8(gS6Info.details, _s6.info.details);
 
         gDateMonthsElapsed = _s6.elapsed_months;
         gDateMonthTicks    = _s6.current_day;
@@ -848,7 +851,8 @@ IParkImporter * ParkImporter::CreateS6(IObjectRepository * objectRepository, IOb
 ParkLoadResult * load_from_sv6(const char * path)
 {
     ParkLoadResult * result = nullptr;
-    auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
+    auto context = OpenRCT2::GetContext();
+    auto s6Importer = new S6Importer(context->GetObjectRepository(), context->GetObjectManager());
     try
     {
         result = new ParkLoadResult(s6Importer->LoadSavedGame(path));
@@ -900,7 +904,8 @@ ParkLoadResult * load_from_sv6(const char * path)
 ParkLoadResult * load_from_sc6(const char * path)
 {
     ParkLoadResult * result = nullptr;
-    auto s6Importer = new S6Importer(GetObjectRepository(), GetObjectManager());
+    auto context = OpenRCT2::GetContext();
+    auto s6Importer = new S6Importer(context->GetObjectRepository(), context->GetObjectManager());
     try
     {
         result = new ParkLoadResult(s6Importer->LoadScenario(path));
@@ -940,4 +945,3 @@ ParkLoadResult * load_from_sc6(const char * path)
     }
     return result;
 }
-

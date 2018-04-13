@@ -21,6 +21,7 @@
 #include <tuple>
 #include <vector>
 #include "../common.h"
+#include "Console.hpp"
 #include "File.h"
 #include "FileScanner.h"
 #include "FileStream.hpp"

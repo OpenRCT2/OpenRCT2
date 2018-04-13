@@ -28,8 +28,6 @@
 #include "../world/Park.h"
 #include "GameAction.h"
 
-using namespace OpenRCT2;
-
 struct ParkMarketingAction : public GameActionBase<GAME_COMMAND_START_MARKETING_CAMPAIGN, GameActionResult>
 {
 private:
@@ -78,7 +76,7 @@ public:
         gMarketingCampaignRideIndex[_type] = _item;
 
         // We are only interested in invalidating the finances (marketing) window
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));
 
         return CreateResult();

@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <stack>
+#include "../Context.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
@@ -83,6 +84,20 @@ void utf8_remove_format_codes(utf8 * text, bool allowcolours)
     *dstCh = 0;
 }
 
+uint8 language_get_id_from_locale(const char * locale)
+{
+    uint8 i = 0;
+    for (const auto &langDesc : LanguagesDescriptors)
+    {
+        if (String::Equals(locale, langDesc.locale))
+        {
+            return i;
+        }
+        i++;
+    }
+    return LANGUAGE_UNDEFINED;
+}
+
 const char * language_get_string(rct_string_id id)
 {
     const char * result = nullptr;
@@ -143,7 +158,8 @@ bool language_open(sint32 id)
         TryLoadFonts();
 
         // Objects and their localised strings need to be refreshed
-        GetObjectManager()->ResetObjects();
+        auto context = OpenRCT2::GetContext();
+        context->GetObjectManager()->ResetObjects();
         return true;
     }
 

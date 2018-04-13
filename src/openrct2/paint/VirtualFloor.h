@@ -17,6 +17,8 @@
 #ifndef _VIRTUAL_FLOOR_H
 #define _VIRTUAL_FLOOR_H
 
+#include "../common.h"
+
 struct paint_session;
 
 uint16 virtual_floor_get_height();

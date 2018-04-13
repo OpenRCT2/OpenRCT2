@@ -3370,7 +3370,6 @@ static void window_ride_operating_invalidate(rct_window *w)
 {
     rct_widget *widgets;
     Ride *ride;
-    rct_ride_entry *rideEntry;
     rct_string_id format, caption, tooltip;
 
     widgets = window_ride_page_widgets[w->page];
@@ -3382,7 +3381,6 @@ static void window_ride_operating_invalidate(rct_window *w)
     window_ride_set_pressed_tab(w);
 
     ride = get_ride(w->number);
-    rideEntry = get_ride_entry_by_ride(ride);
 
     set_format_arg(0, rct_string_id, ride->name);
     set_format_arg(2, uint32, ride->name_arguments);
@@ -3397,8 +3395,8 @@ static void window_ride_operating_invalidate(rct_window *w)
         );
 
     // Lift hill speed
-    if ((rideEntry->enabledTrackPieces & (1ULL << TRACK_LIFT_HILL)) &&
-            track_piece_is_available_for_ride_type(ride->type, TRACK_LIFT_HILL)) {
+    if (track_piece_is_available_for_ride_type(ride->type, TRACK_LIFT_HILL))
+    {
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WWT_LABEL;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED].type = WWT_SPINNER;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_INCREASE].type = WWT_BUTTON;

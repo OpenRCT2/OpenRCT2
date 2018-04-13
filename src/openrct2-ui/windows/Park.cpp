@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <openrct2/actions/ParkSetNameAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
@@ -747,7 +748,10 @@ static void window_park_entrance_update(rct_window *w)
 static void window_park_entrance_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
     if (widgetIndex == WIDX_RENAME && text != nullptr)
-        park_set_name(text);
+    {
+        auto action = ParkSetNameAction(text);
+        GameActions::Execute(&action);
+    }
 }
 
 /**

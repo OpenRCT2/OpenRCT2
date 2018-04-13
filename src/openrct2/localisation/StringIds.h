@@ -3900,6 +3900,11 @@ enum {
     STR_SHORTCUT_VIEW_CLIPPING = 6233,
     STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE = 6234,
 
+    STR_MULTIPLAYER_INFORMATION_TITLE = 6235,
+    STR_MULTIPLAYER_PLAYERS_TITLE = 6236,
+    STR_MULTIPLAYER_GROUPS_TITLE = 6237,
+    STR_MULTIPLAYER_OPTIONS_TITLE = 6238,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

@@ -17,6 +17,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/windows/Window.h>
 
+#include <openrct2/actions/ParkSetNameAction.hpp>
 #include <openrct2/Context.h>
 #include <openrct2/core/Util.hpp>
 #include <openrct2/Game.h>
@@ -794,11 +795,14 @@ static void window_editor_objective_options_main_textinput(rct_window *w, rct_wi
 
     switch (widgetIndex) {
     case WIDX_PARK_NAME:
-        park_set_name(text);
+        {
+            auto action = ParkSetNameAction(text);
+            GameActions::Execute(&action);
 
-        if (gS6Info.name[0] == '\0')
-            format_string(gS6Info.name, 64, gParkName, &gParkNameArgs);
-        break;
+            if (gS6Info.name[0] == '\0')
+                format_string(gS6Info.name, 64, gParkName, &gParkNameArgs);
+            break;
+        }
     case WIDX_SCENARIO_NAME:
         safe_strcpy(gS6Info.name, text, Util::CountOf(gS6Info.name));
         window_invalidate(w);

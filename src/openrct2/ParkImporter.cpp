@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <memory>
+#include "Context.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "object/ObjectManager.h"
@@ -108,7 +109,8 @@ namespace ParkImporter
         }
         else
         {
-            parkImporter = CreateS6(GetObjectRepository(), GetObjectManager());
+            auto context = OpenRCT2::GetContext();
+            parkImporter = CreateS6(context->GetObjectRepository(), context->GetObjectManager());
         }
         return parkImporter;
     }
@@ -150,4 +152,3 @@ bool park_importer_extension_is_scenario(const utf8 * extension)
 {
     return ParkImporter::ExtensionIsScenario(String::ToStd(extension));
 }
-

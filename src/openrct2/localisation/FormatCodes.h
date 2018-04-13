@@ -17,6 +17,8 @@
 #ifndef _FORMAT_CODES_H_
 #define _FORMAT_CODES_H_
 
+#include "../common.h"
+
 uint32 format_get_code(const char *token);
 const char *format_get_token(uint32 code);
 

@@ -21,6 +21,7 @@
 
 #include "../common.h"
 #include <string>
+#include <openssl/evp.h>
 
 using EVP_PKEY     = evp_pkey_st;
 using EVP_PKEY_CTX = evp_pkey_ctx_st;

@@ -41,7 +41,6 @@
 #include "Sprite.h"
 #include "../windows/Intent.h"
 #include "../Context.h"
-#include "../actions/ParkSetNameAction.hpp"
 
 rct_string_id gParkName;
 uint32 gParkNameArgs;
@@ -507,7 +506,6 @@ rct_peep *park_generate_new_guest()
             peep->destination_y = (peep->y & 0xFFE0) + 16;
 
             peep->destination_tolerance = 5;
-            peep->var_76 = 0;
             peep->direction = spawn.direction;
             peep->var_37 = 0;
             peep->state = PEEP_STATE_ENTERING_PARK;
@@ -779,8 +777,12 @@ void update_park_fences_around_tile(sint32 x, sint32 y)
 
 void park_set_name(const char *name)
 {
-    auto parkSetNameAction = ParkSetNameAction(name);
-    GameActions::Execute(&parkSetNameAction);
+    auto nameId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, name);
+    if (nameId != 0)
+    {
+        user_string_free(gParkName);
+        gParkName = nameId;
+    }
 }
 
 static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, sint32 flags) {

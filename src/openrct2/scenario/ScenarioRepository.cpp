@@ -35,6 +35,7 @@
 #include "../localisation/Localisation.h"
 #include "../platform/platform.h"
 #include "Scenario.h"
+#include "../Game.h"
 
 using namespace OpenRCT2;
 
@@ -240,6 +241,8 @@ private:
                 if (header.type == S6_TYPE_SCENARIO)
                 {
                     rct_s6_info info = chunkReader.ReadChunkAs<rct_s6_info>();
+                    rct2_to_utf8_self(info.name, sizeof(info.name));
+                    rct2_to_utf8_self(info.details, sizeof(info.details));
                     *entry = CreateNewScenarioEntry(path, timestamp, &info);
                     return true;
                 }
