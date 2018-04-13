@@ -217,7 +217,14 @@ private:
         uint8 callback = 0;
         uint32 commandIndex = 0;
         bool operator<(const GameCommand& comp) const {
-            return tick < comp.tick && commandIndex < comp.commandIndex;
+            // First sort by tick
+            if (tick < comp.tick)
+                return true;
+            if (tick > comp.tick)
+                return false;
+
+            // If the ticks are equal sort by commandIndex
+            return commandIndex < comp.commandIndex;
         }
     };
 
