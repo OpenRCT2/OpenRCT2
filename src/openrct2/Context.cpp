@@ -274,8 +274,16 @@ namespace OpenRCT2
             std::string result;
             if (pathId == PATH_ID_CSS50)
             {
-                auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT1, DIRID::DATA);
-                result = Path::Combine(dataPath, "css17.dat");
+                if (!(_env->GetDirectoryPath(DIRBASE::RCT1).empty()))
+                {
+                    auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT1, DIRID::DATA);
+                    result = Path::Combine(dataPath, "css17.dat");
+                }
+                else
+                {
+                    auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
+                    result = Path::Combine(dataPath, "css50.dat");
+                }
             }
             else if (pathId >= 0 && pathId < PATH_ID_END)
             {
