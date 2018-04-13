@@ -129,7 +129,7 @@ static void automatically_set_peep_spawn(CoordsXYZ location)
     peepSpawn->z = location.z;
 }
 
-static rct_tile_element *map_get_footpath_element(sint32 x, sint32 y, sint32 z)
+rct_tile_element *map_get_footpath_element(sint32 x, sint32 y, sint32 z)
 {
     rct_tile_element *tileElement;
 

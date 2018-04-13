@@ -459,6 +459,8 @@ static bool     _boosterTrackSelected;
 
 static uint32   _currentDisabledSpecialTrackPieces;
 
+static std::pair<sint32, sint32> _lastRotAt;
+
 static void window_ride_construction_construct(rct_window *w);
 static void window_ride_construction_mouseup_demolish(rct_window* w);
 static void window_ride_construction_rotate(rct_window *w);
@@ -613,6 +615,7 @@ rct_window *window_ride_construction_open()
     _currentTrackSelectionFlags = 0;
     _rideConstructionArrowPulseTime = 0;
     _autoOpeningShop = false;
+    _lastRotAt = {0, 0};
     _trackPlaceCtrlState = false;
     _trackPlaceShiftState = false;
     return w;
@@ -1866,6 +1869,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
  */
 static void window_ride_construction_rotate(rct_window *w)
 {
+    _lastRotAt = {_currentTrackBeginX, _currentTrackBeginY};
     _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
     ride_construction_invalidate_current_track();
     _currentTrackPrice = MONEY32_UNDEFINED;
@@ -3423,6 +3427,30 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
 
         if (bx >= 0)
             _currentTrackBeginZ += 16;
+    }
+
+    if (gConfigGeneral.auto_rotate_shops &&
+        _rideConstructionState == RIDE_CONSTRUCTION_STATE_PLACE &&
+        (_lastRotAt.first != _currentTrackBeginX || _lastRotAt.second != _currentTrackBeginY) &&
+        ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+    {
+        _lastRotAt = {0, 0};
+        if (map_get_footpath_element((x >> 5) + 1, y >> 5, z >> 3))
+        {
+            _currentTrackPieceDirection = 2;
+        }
+        else if (map_get_footpath_element((x >> 5) - 1, y >> 5, z >> 3))
+        {
+            _currentTrackPieceDirection = 0;
+        }
+        else if (map_get_footpath_element(x >> 5, (y >> 5) + 1, z >> 3))
+        {
+            _currentTrackPieceDirection = 1;
+        }
+        else if (map_get_footpath_element(x >> 5, (y >> 5) - 1, z >> 3))
+        {
+            _currentTrackPieceDirection = 3;
+        }
     }
 
     window_ride_construction_update_active_elements();
