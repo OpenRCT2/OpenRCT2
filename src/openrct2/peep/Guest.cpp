@@ -149,7 +149,6 @@ static constexpr const LocationXY16 _WatchingPositionOffsets[] = {
     {  0,  7 },
 };
 
-// TODO: Remove duplicate (there's one in peep.cpp too)
 static constexpr const ride_rating NauseaMaximumThresholds[] = {
     300, 600, 800, 1000
 };

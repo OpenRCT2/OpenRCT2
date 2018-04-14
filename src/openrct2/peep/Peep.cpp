@@ -352,10 +352,6 @@ const bool gSpriteTypeToSlowWalkMap[] = {
     false, true,  true,  true,  true,  true,  true,  true,
 };
 
-static constexpr const ride_rating NauseaMaximumThresholds[] = {
-    300, 600, 800, 1000
-};
-
 // clang-format on
 
 bool rct_sprite::IsPeep()
