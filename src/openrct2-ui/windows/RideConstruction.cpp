@@ -3434,22 +3434,64 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
         (_lastRotAt.first != _currentTrackBeginX || _lastRotAt.second != _currentTrackBeginY) &&
         ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
     {
+        rct_tile_element *pathsByDir[4];
+        constexpr std::pair<sint8, sint8> DirOffsets[4] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
         _lastRotAt = {0, 0};
-        if (map_get_footpath_element((x >> 5) + 1, y >> 5, z >> 3))
+
+        bool keepOrientation = false;
+        for (sint8 i = 0; i < 4; i++)
         {
-            _currentTrackPieceDirection = 2;
+            pathsByDir[i] = map_get_footpath_element(
+                (x >> 5) + DirOffsets[i].first,
+                (y >> 5) + DirOffsets[i].second,
+                z >> 3
+                );
+
+            if (pathsByDir[i] &&
+                (pathsByDir[i]->properties.path.type & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) != 0 &&
+                (pathsByDir[i]->properties.path.type & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) != i)
+            {
+                pathsByDir[i] = nullptr;
+            }
+
+            // Sloped path on the level below
+            if (!pathsByDir[i])
+            {
+                pathsByDir[i] = map_get_footpath_element(
+                    (x >> 5) + DirOffsets[i].first,
+                    (y >> 5) + DirOffsets[i].second,
+                    (z >> 3) - 2
+                    );
+
+                if (pathsByDir[i] &&
+                    ((pathsByDir[i]->properties.path.type & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) == 0 ||
+                     (pathsByDir[i]->properties.path.type & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) != (i + 2) % 4))
+                {
+                    pathsByDir[i] = nullptr;
+                }
+            }
+
+            if (pathsByDir[i] && i == _currentTrackPieceDirection)
+            {
+                keepOrientation = true;
+                break;
+            }
         }
-        else if (map_get_footpath_element((x >> 5) - 1, y >> 5, z >> 3))
+
+        if (!keepOrientation)
         {
-            _currentTrackPieceDirection = 0;
-        }
-        else if (map_get_footpath_element(x >> 5, (y >> 5) + 1, z >> 3))
-        {
-            _currentTrackPieceDirection = 1;
-        }
-        else if (map_get_footpath_element(x >> 5, (y >> 5) - 1, z >> 3))
-        {
-            _currentTrackPieceDirection = 3;
+            for (sint8 i = 0; i < 4; i++)
+            {
+                if (pathsByDir[i])
+                {
+                    _currentTrackPieceDirection = i;
+
+                    window_ride_construction_update_state(&trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &x, &y, &z, nullptr);
+                    place_provisional_track_piece(rideIndex, trackType, trackDirection, liftHillAndAlternativeState, x, y, z);
+                    gMapSelectArrowDirection = _currentTrackPieceDirection;
+                    break;
+                }
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 0.1.3 (in development)
 ------------------------------------------------------------------------
+- Feature: [#1675] Option for auto-rotation of shops to face footpaths.
 - Feature: [#7187] Option for early scenario completion.
 - Feature: [#7266] Make headless instances use an interactive terminal with access to the in-game console API.
 - Feature: [#7267] Leverage more historical data in Finances window.
