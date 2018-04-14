@@ -4545,8 +4545,6 @@ STR_6235    :Server Information
 STR_6236    :Players
 STR_6237    :Groups
 STR_6238    :Multiplayer Options
-STR_6239    :Auto-rotate shops
-STR_6240    :{SMALLFONT}{BLACK}When enabled, shops will automatically rotate to face footpaths.
 
 #############
 # Scenarios #

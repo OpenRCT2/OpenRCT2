@@ -141,7 +141,6 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_TRAP_CURSOR,
     WIDX_INVERT_DRAG,
     WIDX_ZOOM_TO_CURSOR,
-    WIDX_AUTO_ROTATE_SHOPS,
     WIDX_HOTKEY_DROPDOWN,
     WIDX_THEMES_GROUP,
     WIDX_THEMES,
@@ -300,21 +299,20 @@ static rct_widget window_options_audio_widgets[] = {
 static rct_widget window_options_controls_and_interface_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define CONTROLS_GROUP_START 53
-    { WWT_GROUPBOX,         1,  5,      304,    CONTROLS_GROUP_START + 0,    CONTROLS_GROUP_START + 106,  STR_CONTROLS_GROUP,                     STR_NONE },                                 // Controls group
+    { WWT_GROUPBOX,         1,  5,      304,    CONTROLS_GROUP_START + 0,    CONTROLS_GROUP_START + 91,   STR_CONTROLS_GROUP,                     STR_NONE },                                 // Controls group
     { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 13,   CONTROLS_GROUP_START + 26,   STR_SCREEN_EDGE_SCROLLING,              STR_SCREEN_EDGE_SCROLLING_TIP },            // Edge scrolling
     { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 30,   CONTROLS_GROUP_START + 41,   STR_TRAP_MOUSE,                         STR_TRAP_MOUSE_TIP },                       // Trap mouse
     { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 45,   CONTROLS_GROUP_START + 56,   STR_INVERT_RIGHT_MOUSE_DRAG,            STR_INVERT_RIGHT_MOUSE_DRAG_TIP },          // Invert right mouse dragging
     { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 60,   CONTROLS_GROUP_START + 71,   STR_ZOOM_TO_CURSOR,                     STR_ZOOM_TO_CURSOR_TIP },                   // Zoom to cursor
-    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 75,   CONTROLS_GROUP_START + 86,   STR_AUTO_ROTATE_SHOPS,                  STR_AUTO_ROTATE_SHOPS_TIP },                // Auto rotate shops
-    { WWT_BUTTON,           1,  155,    299,    CONTROLS_GROUP_START + 90,   CONTROLS_GROUP_START + 102,  STR_HOTKEY,                             STR_HOTKEY_TIP },                           // Set hotkeys buttons
+    { WWT_BUTTON,           1,  155,    299,    CONTROLS_GROUP_START + 75,   CONTROLS_GROUP_START + 87,   STR_HOTKEY,                             STR_HOTKEY_TIP },                           // Set hotkeys buttons
 #undef CONTROLS_GROUP_START
-#define THEMES_GROUP_START 163
+#define THEMES_GROUP_START 148
     { WWT_GROUPBOX,         1,  5,      304,    THEMES_GROUP_START + 0,      THEMES_GROUP_START + 47,     STR_THEMES_GROUP,                       STR_NONE },                                 // Toolbar buttons group
     { WWT_DROPDOWN,         1,  155,    299,    THEMES_GROUP_START + 14,     THEMES_GROUP_START + 25,     STR_NONE,                               STR_NONE },                                 // Themes
     { WWT_BUTTON,           1,  288,    298,    THEMES_GROUP_START + 15,     THEMES_GROUP_START + 24,     STR_DROPDOWN_GLYPH,                     STR_CURRENT_THEME_TIP },
     { WWT_BUTTON,           1,  155,    299,    THEMES_GROUP_START + 30,     THEMES_GROUP_START + 42,     STR_EDIT_THEMES_BUTTON,                 STR_EDIT_THEMES_BUTTON_TIP },               // Themes button
 #undef THEMES_GROUP_START
-#define TOOLBAR_GROUP_START 215
+#define TOOLBAR_GROUP_START 200
     { WWT_GROUPBOX,         1,  5,      304,    TOOLBAR_GROUP_START + 0,     TOOLBAR_GROUP_START + 75,    STR_TOOLBAR_BUTTONS_GROUP,              STR_NONE },                                 // Toolbar buttons group
     { WWT_CHECKBOX,         2,  24,     145,    TOOLBAR_GROUP_START + 31,    TOOLBAR_GROUP_START + 42,    STR_FINANCES_BUTTON_ON_TOOLBAR,         STR_FINANCES_BUTTON_ON_TOOLBAR_TIP },       // Finances
     { WWT_CHECKBOX,         2,  24,     145,    TOOLBAR_GROUP_START + 46,    TOOLBAR_GROUP_START + 57,    STR_RESEARCH_BUTTON_ON_TOOLBAR,         STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP },       // Research
@@ -567,7 +565,6 @@ static uint64 window_options_page_enabled_widgets[] = {
     (1 << WIDX_TRAP_CURSOR) |
     (1 << WIDX_INVERT_DRAG) |
     (1 << WIDX_ZOOM_TO_CURSOR) |
-    (1 << WIDX_AUTO_ROTATE_SHOPS) |
     (1 << WIDX_HOTKEY_DROPDOWN) |
     (1 << WIDX_TOOLBAR_SHOW_FINANCES) |
     (1 << WIDX_TOOLBAR_SHOW_RESEARCH) |
@@ -806,11 +803,6 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             break;
         case WIDX_ZOOM_TO_CURSOR:
             gConfigGeneral.zoom_to_cursor ^= 1;
-            config_save_default();
-            window_invalidate(w);
-            break;
-        case WIDX_AUTO_ROTATE_SHOPS:
-            gConfigGeneral.auto_rotate_shops ^= 1;
             config_save_default();
             window_invalidate(w);
             break;
@@ -1726,7 +1718,6 @@ static void window_options_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
         widget_set_checkbox_value(w, WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
         widget_set_checkbox_value(w, WIDX_ZOOM_TO_CURSOR, gConfigGeneral.zoom_to_cursor);
-        widget_set_checkbox_value(w, WIDX_AUTO_ROTATE_SHOPS, gConfigGeneral.auto_rotate_shops);
         widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
         widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
         widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);

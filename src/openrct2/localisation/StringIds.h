@@ -3905,9 +3905,6 @@ enum {
     STR_MULTIPLAYER_GROUPS_TITLE = 6237,
     STR_MULTIPLAYER_OPTIONS_TITLE = 6238,
 
-    STR_AUTO_ROTATE_SHOPS = 6239,
-    STR_AUTO_ROTATE_SHOPS_TIP = 6240,
-
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

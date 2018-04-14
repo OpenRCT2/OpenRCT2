@@ -454,12 +454,11 @@ static sint32   _trackPlaceShiftZ;
 static sint32   _trackPlaceZ;
 static money32  _trackPlaceCost;
 static bool     _autoOpeningShop;
+static bool     _shopManualRotation;
 static uint8    _currentlyShowingBrakeOrBoosterSpeed;
 static bool     _boosterTrackSelected;
 
 static uint32   _currentDisabledSpecialTrackPieces;
-
-static std::pair<sint32, sint32> _lastRotAt;
 
 static void window_ride_construction_construct(rct_window *w);
 static void window_ride_construction_mouseup_demolish(rct_window* w);
@@ -615,7 +614,7 @@ rct_window *window_ride_construction_open()
     _currentTrackSelectionFlags = 0;
     _rideConstructionArrowPulseTime = 0;
     _autoOpeningShop = false;
-    _lastRotAt = {0, 0};
+    _shopManualRotation = false;
     _trackPlaceCtrlState = false;
     _trackPlaceShiftState = false;
     return w;
@@ -1869,7 +1868,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
  */
 static void window_ride_construction_rotate(rct_window *w)
 {
-    _lastRotAt = {_currentTrackBeginX, _currentTrackBeginY};
+    _shopManualRotation = true;
     _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
     ride_construction_invalidate_current_track();
     _currentTrackPrice = MONEY32_UNDEFINED;
@@ -3429,14 +3428,12 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
             _currentTrackBeginZ += 16;
     }
 
-    if (gConfigGeneral.auto_rotate_shops &&
+    if (!_shopManualRotation &&
         _rideConstructionState == RIDE_CONSTRUCTION_STATE_PLACE &&
-        (_lastRotAt.first != _currentTrackBeginX || _lastRotAt.second != _currentTrackBeginY) &&
         ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
     {
         rct_tile_element *pathsByDir[4];
         constexpr std::pair<sint8, sint8> DirOffsets[4] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
-        _lastRotAt = {0, 0};
 
         bool keepOrientation = false;
         for (sint8 i = 0; i < 4; i++)
