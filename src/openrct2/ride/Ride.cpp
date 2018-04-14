@@ -1170,7 +1170,7 @@ void ride_remove_peeps(sint32 rideIndex)
 
             peep_decrement_num_riders(peep);
             if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->sub_state == PEEP_RIDE_AT_ENTRANCE)
-                peep->RemoveFromRide();
+                peep->RemoveFromQueue();
 
             peep->Invalidate();
 
@@ -5617,7 +5617,7 @@ void ride_stop_peeps_queuing(sint32 rideIndex)
         if (peep->current_ride != rideIndex)
             continue;
 
-        peep->RemoveFromRide();
+        peep->RemoveFromQueue();
         peep->SetState(PEEP_STATE_FALLING);
     }
 }
