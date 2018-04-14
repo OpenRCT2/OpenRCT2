@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include "../core/Util.hpp"
-#include "../localisation/ConversionTables.h"
 #include "../localisation/FormatCodes.h"
 #include "../localisation/Language.h"
 #include "../sprites.h"

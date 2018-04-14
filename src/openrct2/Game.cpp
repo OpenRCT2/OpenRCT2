@@ -1089,11 +1089,10 @@ static void load_landscape()
 
 void utf8_to_rct2_self(char * buffer, size_t length)
 {
-    char tempBuffer[512];
-    utf8_to_rct2(tempBuffer, buffer);
+    auto temp = utf8_to_rct2(buffer);
 
     size_t       i   = 0;
-    const char * src = tempBuffer;
+    const char * src = temp.data();
     char       * dst = buffer;
     while (*src != 0 && i < length - 1)
     {
@@ -1129,9 +1128,8 @@ void rct2_to_utf8_self(char * buffer, size_t length)
 {
     if (length > 0)
     {
-        char tempBuffer[512];
-        rct2_to_utf8(tempBuffer, buffer);
-        safe_strcpy(buffer, tempBuffer, length);
+        auto temp = rct2_to_utf8(buffer, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        safe_strcpy(buffer, temp.data(), length);
     }
 }
 

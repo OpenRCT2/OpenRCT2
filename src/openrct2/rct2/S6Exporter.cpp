@@ -163,8 +163,14 @@ void S6Exporter::Export()
         log_error("Found %d disjoint null sprites", disjoint_sprites_count);
     }
     _s6.info = gS6Info;
-    utf8_to_rct2(_s6.info.name, gS6Info.name);
-    utf8_to_rct2(_s6.info.details, gS6Info.details);
+    {
+        auto temp = utf8_to_rct2(gS6Info.name);
+        safe_strcpy(_s6.info.name, temp.data(), sizeof(_s6.info.name));
+    }
+    {
+        auto temp = utf8_to_rct2(gS6Info.details);
+        safe_strcpy(_s6.info.details, temp.data(), sizeof(_s6.info.details));
+    }
     uint32 researchedTrackPiecesA[128];
     uint32 researchedTrackPiecesB[128];
 

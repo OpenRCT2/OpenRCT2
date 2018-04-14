@@ -271,10 +271,7 @@ public:
             dst->objective_arg_2 = _s4.scenario_objective_currency;
         dst->objective_arg_3 = _s4.scenario_objective_num_guests;
 
-        utf8 utf8name[256];
-        rct2_to_utf8(utf8name, _s4.scenario_name);
-
-        std::string name = std::string(utf8name, sizeof(utf8name));
+        auto name = rct2_to_utf8(_s4.scenario_name, RCT2_LANGUAGE_ID_ENGLISH_UK);
         std::string details;
 
         // TryGetById won't set this property if the scenario is not recognised,
@@ -2758,10 +2755,8 @@ private:
 
     std::string GetUserString(rct_string_id stringId)
     {
-        utf8 buffer[128] = { 0 };
         const char * originalString = _s4.string_table[(stringId - USER_STRING_START) % 1024];
-        rct2_to_utf8(buffer, originalString);
-        return std::string(buffer);
+        return rct2_to_utf8(originalString, RCT2_LANGUAGE_ID_ENGLISH_UK);
     }
 
     void FixLandOwnership()

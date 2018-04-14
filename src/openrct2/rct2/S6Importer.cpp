@@ -47,6 +47,7 @@
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../util/SawyerCoding.h"
+#include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/MapAnimation.h"
@@ -200,8 +201,15 @@ public:
 
         // _s6.header
         gS6Info = _s6.info;
-        rct2_to_utf8(gS6Info.name, _s6.info.name);
-        rct2_to_utf8(gS6Info.details, _s6.info.details);
+
+        {
+            auto temp = rct2_to_utf8(_s6.info.name, RCT2_LANGUAGE_ID_ENGLISH_UK);
+            safe_strcpy(gS6Info.name, temp.data(), sizeof(gS6Info.name));
+        }
+        {
+            auto temp = rct2_to_utf8(_s6.info.details, RCT2_LANGUAGE_ID_ENGLISH_UK);
+            safe_strcpy(gS6Info.details, temp.data(), sizeof(gS6Info.details));
+        }
 
         gDateMonthsElapsed = _s6.elapsed_months;
         gDateMonthTicks    = _s6.current_day;
