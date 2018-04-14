@@ -2940,7 +2940,7 @@ static void peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_til
             }
             // Queue got disconnected from the original ride.
             peep->interaction_ride_index = 0xFF;
-            peep->RemoveFromRide();
+            peep->RemoveFromQueue();
             peep->SetState(PEEP_STATE_1);
             peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
             return;
@@ -3011,7 +3011,7 @@ static void peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_til
         peep->interaction_ride_index = 0xFF;
         if (peep->state == PEEP_STATE_QUEUING)
         {
-            peep->RemoveFromRide();
+            peep->RemoveFromQueue();
             peep->SetState(PEEP_STATE_1);
         }
         peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
