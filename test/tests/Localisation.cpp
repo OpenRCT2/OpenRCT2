@@ -20,7 +20,7 @@ TEST_F(Localisation, RCT2_to_UTF8_UK)
 
 TEST_F(Localisation, RCT2_to_UTF8_JP)
 {
-    auto input = StringFromHex("83748340835883678375838983458393837483488362834e8358");
+    auto input = StringFromHex("ff8374ff8340ff8358ff8367ff8375ff8389ff8345ff8393ff8374ff8348ff8362ff834eff8358");
     auto expected = u8"ファストブラウンフォックス";
     auto actual = rct2_to_utf8(input, RCT2_LANGUAGE_ID_JAPANESE);
     ASSERT_EQ(expected, actual);
@@ -28,7 +28,7 @@ TEST_F(Localisation, RCT2_to_UTF8_JP)
 
 TEST_F(Localisation, RCT2_to_UTF8_ZH_TW)
 {
-    auto input = StringFromHex("a7d6b374aabab4c4a6e2aab0af57");
+    auto input = StringFromHex("ffa7d6ffb374ffaabaffb4c4ffa6e2ffaab0ffaf57");
     auto expected = u8"快速的棕色狐狸";
     auto actual = rct2_to_utf8(input, RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL);
     ASSERT_EQ(expected, actual);
