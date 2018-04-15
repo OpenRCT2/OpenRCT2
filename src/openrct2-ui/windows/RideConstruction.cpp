@@ -454,7 +454,7 @@ static sint32   _trackPlaceShiftZ;
 static sint32   _trackPlaceZ;
 static money32  _trackPlaceCost;
 static bool     _autoOpeningShop;
-static bool     _shopManualRotation;
+static bool     _autoRotatingShop;
 static uint8    _currentlyShowingBrakeOrBoosterSpeed;
 static bool     _boosterTrackSelected;
 
@@ -614,7 +614,7 @@ rct_window *window_ride_construction_open()
     _currentTrackSelectionFlags = 0;
     _rideConstructionArrowPulseTime = 0;
     _autoOpeningShop = false;
-    _shopManualRotation = false;
+    _autoRotatingShop = true;
     _trackPlaceCtrlState = false;
     _trackPlaceShiftState = false;
     return w;
@@ -1868,7 +1868,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
  */
 static void window_ride_construction_rotate(rct_window *w)
 {
-    _shopManualRotation = true;
+    _autoRotatingShop = false;
     _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
     ride_construction_invalidate_current_track();
     _currentTrackPrice = MONEY32_UNDEFINED;
@@ -3428,25 +3428,25 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
             _currentTrackBeginZ += 16;
     }
 
-    if (!_shopManualRotation &&
+    if (_autoRotatingShop &&
         _rideConstructionState == RIDE_CONSTRUCTION_STATE_PLACE &&
         ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
     {
         rct_tile_element *pathsByDir[4];
-        constexpr std::pair<sint8, sint8> DirOffsets[4] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+        constexpr sLocationXY8 DirOffsets[4] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
         bool keepOrientation = false;
         for (sint8 i = 0; i < 4; i++)
         {
             pathsByDir[i] = map_get_footpath_element(
-                (x >> 5) + DirOffsets[i].first,
-                (y >> 5) + DirOffsets[i].second,
+                (x >> 5) + DirOffsets[i].x,
+                (y >> 5) + DirOffsets[i].y,
                 z >> 3
                 );
 
             if (pathsByDir[i] &&
-                (pathsByDir[i]->properties.path.type & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) != 0 &&
-                (pathsByDir[i]->properties.path.type & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) != i)
+                footpath_element_is_sloped(pathsByDir[i]) &&
+                footpath_element_get_slope_direction(pathsByDir[i]) != i)
             {
                 pathsByDir[i] = nullptr;
             }
@@ -3455,14 +3455,14 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
             if (!pathsByDir[i])
             {
                 pathsByDir[i] = map_get_footpath_element(
-                    (x >> 5) + DirOffsets[i].first,
-                    (y >> 5) + DirOffsets[i].second,
+                    (x >> 5) + DirOffsets[i].x,
+                    (y >> 5) + DirOffsets[i].y,
                     (z >> 3) - 2
                     );
 
                 if (pathsByDir[i] &&
-                    ((pathsByDir[i]->properties.path.type & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) == 0 ||
-                     (pathsByDir[i]->properties.path.type & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) != (i + 2) % 4))
+                    (!footpath_element_is_sloped(pathsByDir[i]) ||
+                     footpath_element_get_slope_direction(pathsByDir[i]) != (i ^ 2)))
                 {
                     pathsByDir[i] = nullptr;
                 }
