@@ -73,6 +73,7 @@ The following people are not part of the project team, but have been contributin
 * Harrison Gentry (hgentry) - Date-changing command, misc.
 * Joshua Moerman (Jaxan) - Misc.
 * Nicolas Hawrysh (xp4xbox) - Misc.
+* Albert Morgese (Fusxfaranto) - Misc.
 
 ## Bug fixes
 * (halfbro)
