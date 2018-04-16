@@ -2299,15 +2299,21 @@ static bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, co
                     uint16 dx = ((coords.direction - tile_element_get_direction(tileElement)) & TILE_ELEMENT_DIRECTION_MASK);
                     if (FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx))
                     {
-                        // Track element has the flags required for
+                        // Track element has the flags required for the given direction
                         return true;
                     }
                 }
             }
             break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
-            if (entrance_has_direction(tileElement, coords.direction - tile_element_get_direction(tileElement)))
-                return true;
+            if (tileElement->base_height == coords.z)
+            {
+                if (entrance_has_direction(tileElement, coords.direction - tile_element_get_direction(tileElement)))
+                {
+                    // Entrance wants to be connected towards the given direction
+                    return true;
+                }
+            }
             break;
         default:
             break;
