@@ -2256,7 +2256,7 @@ static void footpath_remove_edges_towards(sint32 x, sint32 y, sint32 z0, sint32 
 
 // Returns true when there is an element at the given coordinates that want to connect to a path with the given direction (ride
 // entrances and exits, shops, paths).
-static bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const rct_tile_element * const elementToBeRemoved)
+bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const rct_tile_element * const elementToBeRemoved)
 {
     rct_tile_element * tileElement = map_get_first_element_at(coords.x, coords.y);
     do

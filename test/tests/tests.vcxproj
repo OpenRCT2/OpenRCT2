@@ -65,6 +65,7 @@
     <ClCompile Include="TestData.cpp" />
     <ClCompile Include="tests.cpp" />
     <ClCompile Include="StringTest.cpp" />
+    <ClCompile Include="TileElements.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
