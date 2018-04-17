@@ -882,7 +882,14 @@ bool map_is_location_owned_or_has_rights(sint32 x, sint32 y)
  *
  *  rct2: 0x006B8E1B
  */
-void game_command_remove_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_remove_large_scenery(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     uint8 base_height = *edx;
     uint8 tileIndex = *edx >> 8;
@@ -1034,7 +1041,14 @@ void game_command_remove_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, si
  *
  *  rct2: 0x006B909A
  */
-void game_command_set_large_scenery_colour(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_set_large_scenery_colour(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    sint32 *                  ebp)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
     sint32 x = *eax;
@@ -1280,7 +1294,8 @@ money32 map_clear_scenery(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 cle
  *
  *  rct2: 0x0068DF91
  */
-void game_command_clear_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_clear_scenery(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     *ebx = map_clear_scenery(
         (sint16)(*eax & 0xFFFF),
@@ -1426,7 +1441,8 @@ static money32 map_change_surface_style(sint32 x0, sint32 y0, sint32 x1, sint32 
  *
  *  rct2: 0x00663CCD
  */
-void game_command_change_surface_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_change_surface_style(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     *ebx = map_change_surface_style(
         (sint16)(*eax & 0xFFFF),
@@ -1461,7 +1477,13 @@ static constexpr const uint8 tile_element_lower_styles[5][32] = {
  *
  *  rct2: 0x00663CB9
  */
-static sint32 map_set_land_height_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price) {
+static sint32 map_set_land_height_clear_func(
+    rct_tile_element **        tile_element,
+    [[maybe_unused]] sint32    x,
+    [[maybe_unused]] sint32    y,
+    [[maybe_unused]] uint8     flags,
+    [[maybe_unused]] money32 * price)
+{
     if (tile_element_get_type(*tile_element) == TILE_ELEMENT_TYPE_SURFACE)
         return 0;
 
@@ -1517,7 +1539,7 @@ static sint32 tile_element_get_corner_height(rct_tile_element *tileElement, sint
     return map_get_corner_height(z, slope, direction);
 }
 
-static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 height, sint32 style, sint32 selectionType)
+static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 height, sint32 style)
 {
     rct_tile_element *tileElement;
 
@@ -1727,15 +1749,21 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
     return cost;
 }
 
-void game_command_set_land_height(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+void game_command_set_land_height(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     *ebx = map_set_land_height(
         *ebx & 0xFF,
         *eax & 0xFFFF,
         *ecx & 0xFFFF,
         *edx & 0xFF,
-        (*edx >> 8) & 0xFF,
-        *edi >> 5
+        (*edx >> 8) & 0xFF
     );
 }
 
@@ -1771,7 +1799,8 @@ static money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 
  *
  *  rct2: 0x006648E3
  */
-void game_command_set_land_ownership(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+void game_command_set_land_ownership(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     sint32 flags = *ebx & 0xFF;
 
@@ -1866,7 +1895,7 @@ static money32 raise_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax,
                         height += 2;
                         newStyle &= ~0x20;
                     }
-                    money32 tileCost = map_set_land_height(flags, xi, yi, height, newStyle, selectionType);
+                    money32 tileCost = map_set_land_height(flags, xi, yi, height, newStyle);
                     if (tileCost == MONEY32_UNDEFINED)
                         return MONEY32_UNDEFINED;
 
@@ -1924,7 +1953,7 @@ static money32 lower_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax,
                         height -= 2;
                         newStyle &= ~0x20;
                     }
-                    money32 tileCost = map_set_land_height(flags, xi, yi, height, newStyle, selectionType);
+                    money32 tileCost = map_set_land_height(flags, xi, yi, height, newStyle);
                     if (tileCost == MONEY32_UNDEFINED)
                         return MONEY32_UNDEFINED;
 
@@ -2110,7 +2139,8 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
  *
  *  rct2: 0x0068C542
  */
-void game_command_raise_land(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_raise_land(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     *ebx = raise_land(
         *ebx,
@@ -2129,7 +2159,8 @@ void game_command_raise_land(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx,
  *
  *  rct2: 0x0068C6D1
  */
-void game_command_lower_land(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_lower_land(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     *ebx = lower_land(
         *ebx,
@@ -2548,7 +2579,8 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
  *
  *  rct2: 0x0068BC01
  */
-void game_command_smooth_land(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_smooth_land(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     sint32 flags = *ebx & 0xFF;
     sint32 centreX = *eax & 0xFFFF;
@@ -2565,7 +2597,14 @@ void game_command_smooth_land(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
  *
  *  rct2: 0x006E66A0
  */
-void game_command_raise_water(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_raise_water(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    [[maybe_unused]] sint32 * edx,
+    [[maybe_unused]] sint32 * esi,
+    sint32 *                  edi,
+    sint32 *                  ebp)
 {
     *ebx = raise_water(
         (sint16)(*eax & 0xFFFF),
@@ -2580,7 +2619,14 @@ void game_command_raise_water(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
  *
  *  rct2: 0x006E6878
  */
-void game_command_lower_water(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_lower_water(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    [[maybe_unused]] sint32 * edx,
+    [[maybe_unused]] sint32 * esi,
+    sint32 *                  edi,
+    sint32 *                  ebp)
 {
     *ebx = lower_water(
         (sint16)(*eax & 0xFFFF),
@@ -2595,7 +2641,14 @@ void game_command_lower_water(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
  *
  *  rct2: 0x006E650F
  */
-void game_command_set_water_height(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_set_water_height(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     sint32 x = *eax;
     sint32 y = *ecx;
@@ -2690,7 +2743,8 @@ bool map_is_location_at_edge(sint32 x, sint32 y)
  *
  *  rct2: 0x006B893C
  */
-void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_place_large_scenery(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
     sint32 x = (sint16)*eax;
@@ -4250,7 +4304,15 @@ void map_clear_all_elements()
     }
 }
 
-void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp) {
+void game_command_set_sign_style(
+    [[maybe_unused]] sint32 * eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    sint32 *                  edi,
+    sint32 *                  ebp)
+{
     uint8 bannerId = *ecx & 0xFF;
     if (bannerId > Util::CountOf(gBanners)) {
         log_warning("Invalid game command for setting sign style, banner id = %d", bannerId);
@@ -4265,7 +4327,6 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
     uint8 textColour = (uint8)*edi;
 
     if (*ebp == 0) { // small sign
-
         rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
         bool wall_found = false;
         do{
@@ -4328,7 +4389,8 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
     *ebx = 0;
 }
 
-void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_modify_tile(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     const sint32 flags = *ebx;
     const sint32 x = *ecx & 0xFF;

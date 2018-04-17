@@ -2563,7 +2563,7 @@ private:
                                 sint32 colourA = RCT1::GetColour(GetWallColour(&originalTileElement));
                                 sint32 colourB = 0;
                                 sint32 colourC = 0;
-                                ConvertWall(&type, &colourA, &colourB, &colourC);
+                                ConvertWall(&type, &colourA, &colourB);
 
                                 type = _wallTypeToEntryMap[type];
                                 const uint8 flags =
@@ -2585,7 +2585,7 @@ private:
         gCheatsBuildInPauseMode = oldCheatValue;
     }
 
-    void ConvertWall(sint32 * type, sint32 * colourA, sint32 * colourB, sint32 * colourC)
+    void ConvertWall(sint32 * type, sint32 * colourA, sint32 * colourB)
     {
         switch (*type) {
         case RCT1_WALL_TYPE_WOODEN_PANEL_FENCE:

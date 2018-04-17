@@ -385,7 +385,7 @@ static bool map_animation_invalidate_track_spinningtunnel(sint32 x, sint32 y, si
  *
  *  rct2: 0x0068DF8F
  */
-static bool map_animation_invalidate_remove(sint32 x, sint32 y, sint32 baseZ)
+static bool map_animation_invalidate_remove([[maybe_unused]] sint32 x, [[maybe_unused]] sint32 y, [[maybe_unused]] sint32 baseZ)
 {
     return true;
 }

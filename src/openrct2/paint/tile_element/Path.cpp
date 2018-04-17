@@ -310,9 +310,7 @@ static void path_bit_benches_paint(
 static void path_bit_jumping_fountains_paint(
     paint_session *          session,
     rct_scenery_entry *      pathBitEntry,
-    const rct_tile_element * tileElement,
     sint32                   height,
-    uint8                    edges,
     uint32                   pathBitImageFlags,
     rct_drawpixelinfo *      dpi)
 {
@@ -709,7 +707,7 @@ static void sub_6A3F61(
                     path_bit_benches_paint(session, sceneryEntry, tile_element, height, (uint8)connectedEdges, sceneryImageFlags);
                     break;
                 case PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS:
-                    path_bit_jumping_fountains_paint(session, sceneryEntry, tile_element, height, (uint8)connectedEdges, sceneryImageFlags, dpi);
+                    path_bit_jumping_fountains_paint(session, sceneryEntry, height, sceneryImageFlags, dpi);
                     break;
                 }
 
@@ -765,7 +763,7 @@ static void sub_6A3F61(
 /**
  * rct2: 0x0006A3590
  */
-void path_paint(paint_session * session, uint8 direction, uint16 height, const rct_tile_element * tile_element)
+void path_paint(paint_session * session, uint16 height, const rct_tile_element * tile_element)
 {
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
 

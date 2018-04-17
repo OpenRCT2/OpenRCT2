@@ -27,7 +27,7 @@ DLLIMPORT int LaunchOpenRCT2(int argc, wchar_t * * argv);
 /**
  * Windows entry point to OpenRCT2 with a console window using a traditional C main function.
  */
-int wmain(int argc, wchar_t * * argvW, wchar_t * envp)
+int wmain(int argc, wchar_t * * argvW, [[maybe_unused]] wchar_t * envp)
 {
     return LaunchOpenRCT2(argc, argvW);
 }

@@ -296,7 +296,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
             surface_paint(session, direction, height, tile_element);
             break;
         case TILE_ELEMENT_TYPE_PATH:
-            path_paint(session, direction, height, tile_element);
+            path_paint(session, height, tile_element);
             break;
         case TILE_ELEMENT_TYPE_TRACK:
             track_paint(session, direction, height, tile_element);

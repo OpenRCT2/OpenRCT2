@@ -235,7 +235,7 @@ bool platform_get_steam_path(utf8 * outPath, size_t outSize)
  *
  *  rct2: 0x00407978
  */
-sint32 windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset)
+sint32 windows_get_registry_install_info(rct2_install_info *installInfo, char *source)
 {
     char subkeyInfogrames[MAX_PATH], subkeyFishTechGroup[MAX_PATH], keyName[100];
     HKEY hKey;
@@ -565,7 +565,7 @@ static bool windows_setup_file_association(
     wchar_t exePathW[MAX_PATH];
     wchar_t dllPathW[MAX_PATH];
 
-    sint32 printResult;
+    [[maybe_unused]] sint32 printResult;
 
     GetModuleFileNameW(NULL, exePathW, sizeof(exePathW));
     GetModuleFileNameW(plaform_get_dll_module(), dllPathW, sizeof(dllPathW));
@@ -604,7 +604,6 @@ static bool windows_setup_file_association(
     wchar_t szIconW[MAX_PATH];
     printResult = swprintf_s(szIconW, MAX_PATH, L"\"%s\",%d", dllPathW, iconIndex);
     assert(printResult >= 0);
-    UNUSED(printResult);
     if (RegSetValueW(hKey, L"DefaultIcon", REG_SZ, szIconW, 0) != ERROR_SUCCESS) {
         goto fail;
     }
@@ -622,7 +621,6 @@ static bool windows_setup_file_association(
     // [hRootKey\OpenRCT2.sv6\shell\open\command]
     wchar_t szCommandW[MAX_PATH];
     printResult = swprintf_s(szCommandW, MAX_PATH, L"\"%s\" %s", exePathW, commandArgsW);
-    UNUSED(printResult);
     assert(printResult >= 0);
     if (RegSetValueW(hKey, L"shell\\open\\command", REG_SZ, szCommandW, 0) != ERROR_SUCCESS) {
         goto fail;

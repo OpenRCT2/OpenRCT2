@@ -22,7 +22,7 @@
 #include <android/log.h>
 #endif
 
-static bool _log_location_enabled = true;
+[[maybe_unused]] static bool _log_location_enabled = true;
 bool _log_levels[DIAGNOSTIC_LEVEL_COUNT] = { true, true, true, false, true };
 
 static FILE * diagnostic_get_stream(DIAGNOSTIC_LEVEL level)
@@ -60,7 +60,6 @@ void diagnostic_log_with_location(DIAGNOSTIC_LEVEL diagnosticLevel, const char *
     if (!_log_levels[diagnosticLevel])
         return;
 
-    UNUSED(_log_location_enabled);
     snprintf(buf, 1024, "[%s:%d (%s)]: ", file, line, function);
 
     va_start(args, format);

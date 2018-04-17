@@ -269,8 +269,7 @@ static void paint_top_spin(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    track_paint_util_paint_floor(
-        session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, session->CurrentRotation);
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
 
     track_paint_util_paint_fences(
         session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,

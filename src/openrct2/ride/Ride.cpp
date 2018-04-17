@@ -2692,7 +2692,7 @@ rct_peep *ride_find_closest_mechanic(Ride *ride, sint32 forInspection)
     x = location.x;
     y = location.y;
     z = location.z;
-    tileElement = ride_get_station_exit_element(ride, x, y, z);
+    tileElement = ride_get_station_exit_element(x, y, z);
     if (tileElement == nullptr)
         return nullptr;
 
@@ -3114,7 +3114,7 @@ static bool ride_does_vehicle_colour_exist(uint8 ride_sub_type, vehicle_colour *
     return true;
 }
 
-sint32 ride_get_unused_preset_vehicle_colour(uint8 ride_type, uint8 ride_sub_type)
+sint32 ride_get_unused_preset_vehicle_colour(uint8 ride_sub_type)
 {
     if (ride_sub_type >= 128)
     {
@@ -3979,7 +3979,14 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
  *
  *  rct2: 0x006B5559
  */
-void game_command_set_ride_setting(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+void game_command_set_ride_setting(
+    [[maybe_unused]] sint32 * eax,
+    sint32 *                  ebx,
+    [[maybe_unused]] sint32 * ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     uint8 rideIndex = *edx & 0xFF;
     uint8 setting = (*edx >> 8) & 0xFF;
@@ -4317,7 +4324,7 @@ static sint32 ride_check_station_length(CoordsXYE *input, CoordsXYE *output)
  *
  *  rct2: 0x006CB2DA
  */
-static bool ride_check_start_and_end_is_station(CoordsXYE * input, CoordsXYE * output)
+static bool ride_check_start_and_end_is_station(CoordsXYE * input)
 {
     rct_window *w;
     Ride *ride;
@@ -5326,7 +5333,7 @@ sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
         }
 
         gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
-        if (!ride_check_start_and_end_is_station(&trackElement, &problematicTrackElement)) {
+        if (!ride_check_start_and_end_is_station(&trackElement)) {
             ride_scroll_to_track_error(&problematicTrackElement);
             return 0;
         }
@@ -5457,7 +5464,7 @@ sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
         }
 
         gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
-        if (!ride_check_start_and_end_is_station(&trackElement, &problematicTrackElement)) {
+        if (!ride_check_start_and_end_is_station(&trackElement)) {
             ride_scroll_to_track_error(&problematicTrackElement);
             return 0;
         }
@@ -5878,7 +5885,14 @@ rct_ride_name get_ride_naming(const uint8 rideType, rct_ride_entry * rideEntry)
  * Only uses part that deals with construction state
  */
 
-void game_command_callback_ride_construct_placed_back(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
+void game_command_callback_ride_construct_placed_back(
+    [[maybe_unused]] sint32 eax,
+    [[maybe_unused]] sint32 ebx,
+    [[maybe_unused]] sint32 ecx,
+    [[maybe_unused]] sint32 edx,
+    [[maybe_unused]] sint32 esi,
+    [[maybe_unused]] sint32 edi,
+    [[maybe_unused]] sint32 ebp)
 {
     sint32 trackDirection, x, y, z;
     track_begin_end trackBeginEnd;
@@ -5911,7 +5925,14 @@ void game_command_callback_ride_construct_placed_back(sint32 eax, sint32 ebx, si
     window_ride_construction_update_active_elements();
 }
 
-void game_command_callback_ride_construct_placed_front(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
+void game_command_callback_ride_construct_placed_front(
+    [[maybe_unused]] sint32 eax,
+    [[maybe_unused]] sint32 ebx,
+    [[maybe_unused]] sint32 ecx,
+    [[maybe_unused]] sint32 edx,
+    [[maybe_unused]] sint32 esi,
+    [[maybe_unused]] sint32 edi,
+    [[maybe_unused]] sint32 ebp)
 {
     sint32 trackDirection, x, y, z;
 
@@ -5953,7 +5974,14 @@ void game_command_callback_ride_construct_placed_front(sint32 eax, sint32 ebx, s
 * Only uses part that deals with construction state
 */
 
-void game_command_callback_ride_remove_track_piece(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
+void game_command_callback_ride_remove_track_piece(
+    [[maybe_unused]] sint32 eax,
+    [[maybe_unused]] sint32 ebx,
+    [[maybe_unused]] sint32 ecx,
+    [[maybe_unused]] sint32 edx,
+    [[maybe_unused]] sint32 esi,
+    [[maybe_unused]] sint32 edi,
+    [[maybe_unused]] sint32 ebp)
 {
     sint32 x, y, z, direction, type;
 
@@ -5970,7 +5998,14 @@ void game_command_callback_ride_remove_track_piece(sint32 eax, sint32 ebx, sint3
  *
  *  rct2: 0x006B2FC5
  */
-void game_command_set_ride_appearance(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+void game_command_set_ride_appearance(
+    [[maybe_unused]] sint32 * eax,
+    sint32 *                  ebx,
+    [[maybe_unused]] sint32 * ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    sint32 *                  edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     bool apply = (*ebx & GAME_COMMAND_FLAG_APPLY);
 
@@ -6103,7 +6138,14 @@ void game_command_set_ride_appearance(sint32 *eax, sint32 *ebx, sint32 *ecx, sin
  *
  *  rct2: 0x006B53E9
  */
-void game_command_set_ride_price(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+void game_command_set_ride_price(
+    [[maybe_unused]] sint32 * eax,
+    sint32 *                  ebx,
+    [[maybe_unused]] sint32 * ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    sint32 *                  edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     uint32 flags = *ebx;
     uint8 ride_number = (*edx & 0xFF);
@@ -7390,7 +7432,7 @@ static money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, ui
 
             uint8 preset = ex;
             if (!(flags & GAME_COMMAND_FLAG_NETWORKED)) {
-                preset = ride_get_unused_preset_vehicle_colour(ride->type, ride->subtype);
+                preset = ride_get_unused_preset_vehicle_colour(ride->subtype);
             }
 
             // Validate preset
@@ -7439,7 +7481,14 @@ static money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, ui
  *
  *  rct2: 0x006B52D4
  */
-void game_command_set_ride_vehicles(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+void game_command_set_ride_vehicles(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    [[maybe_unused]] sint32 * ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     uint8 rideIndex = *edx & 0xFF;
     uint8 setting = (*ebx >> 8) & 0xFF;

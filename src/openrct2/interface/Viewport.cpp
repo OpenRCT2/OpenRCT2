@@ -649,8 +649,7 @@ void viewport_update_smart_sprite_follow(rct_window * window)
     }
     else if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
     {
-        rct_vehicle * vehicle = GET_VEHICLE(window->viewport_smart_follow_sprite);
-        viewport_update_smart_vehicle_follow(window, vehicle);
+        viewport_update_smart_vehicle_follow(window);
     }
     else if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_MISC ||
              sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
@@ -751,7 +750,7 @@ void viewport_update_smart_staff_follow(rct_window * window, rct_peep * peep)
     window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
 }
 
-void viewport_update_smart_vehicle_follow(rct_window * window, rct_vehicle * vehicle)
+void viewport_update_smart_vehicle_follow(rct_window * window)
 {
     // Can be expanded in the future if needed
     sprite_focus focus = { 0 };

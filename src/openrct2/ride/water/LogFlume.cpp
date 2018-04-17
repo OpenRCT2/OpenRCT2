@@ -196,7 +196,7 @@ static void paint_log_flume_track_flat(
 static void paint_log_flume_track_station(
     paint_session *          session,
     uint8                    rideIndex,
-    uint8                    trackSequence,
+    [[maybe_unused]] uint8   trackSequence,
     uint8                    direction,
     sint32                   height,
     const rct_tile_element * tileElement)
@@ -225,7 +225,7 @@ static void paint_log_flume_track_station(
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
-    track_paint_util_draw_station_3(session, rideIndex, trackSequence, direction, height + 2, height, tileElement);
+    track_paint_util_draw_station_3(session, rideIndex, direction, height + 2, height, tileElement);
     // Covers shouldn't be offset by +2
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
@@ -685,10 +685,9 @@ static void paint_log_flume_track_left_quarter_turn_3_tiles(
     };
 
     track_paint_util_left_quarter_turn_3_tiles_paint(
-        session, 2, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds, session->CurrentRotation);
+        session, 2, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
     track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
-        session, 0, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIdsFront,
-        session->CurrentRotation, 27);
+        session, 0, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIdsFront, 27);
 
     if (trackSequence != 1 && trackSequence != 2)
     {
@@ -757,10 +756,9 @@ static void paint_log_flume_track_right_quarter_turn_3_tiles(
     };
 
     track_paint_util_right_quarter_turn_3_tiles_paint_2(
-        session, 2, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds, session->CurrentRotation);
+        session, 2, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
     track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
-        session, 0, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIdsFront,
-        session->CurrentRotation, 27);
+        session, 0, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIdsFront, 27);
 
     if (trackSequence != 1 && trackSequence != 2)
     {

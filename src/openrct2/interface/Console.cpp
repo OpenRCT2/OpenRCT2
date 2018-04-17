@@ -86,19 +86,19 @@ double console_parse_double(const utf8 *src, bool *valid) {
     return value;
 }
 
-static sint32 cc_clear(InteractiveConsole &console, const utf8 **argv, sint32 argc)
+static sint32 cc_clear(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
 {
     console.Clear();
     return 0;
 }
 
-static sint32 cc_close(InteractiveConsole &console, const utf8 **argv, sint32 argc)
+static sint32 cc_close(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
 {
     console.Close();
     return 0;
 }
 
-static sint32 cc_hide(InteractiveConsole &console, const utf8 **argv, sint32 argc)
+static sint32 cc_hide(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
 {
     console.Hide();
     return 0;
@@ -761,7 +761,9 @@ static sint32 cc_set(InteractiveConsole &console, const utf8 **argv, sint32 argc
     }
     return 0;
 }
-static sint32 cc_twitch(InteractiveConsole &console, const utf8 **argv, sint32 argc)
+
+static sint32
+    cc_twitch([[maybe_unused]] InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
 {
 #ifdef DISABLE_TWITCH
     console.WriteLineError("OpenRCT2 build not compiled with Twitch integration.");
@@ -838,7 +840,8 @@ static sint32 cc_load_object(InteractiveConsole &console, const utf8 **argv, sin
     return 0;
 }
 
-static sint32 cc_object_count(InteractiveConsole &console, const utf8 **argv, sint32 argc) {
+static sint32 cc_object_count(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
+{
     const utf8* object_type_names[] = { "Rides", "Small scenery", "Large scenery", "Walls", "Banners", "Paths", "Path Additions", "Scenery groups", "Park entrances", "Water" };
     for (sint32 i = 0; i < 10; i++) {
 
@@ -855,7 +858,8 @@ static sint32 cc_object_count(InteractiveConsole &console, const utf8 **argv, si
     return 0;
 }
 
-static sint32 cc_reset_user_strings(InteractiveConsole &console, const utf8 **argv, sint32 argc)
+static sint32 cc_reset_user_strings(
+    [[maybe_unused]] InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
 {
     reset_user_strings();
     return 0;
@@ -888,14 +892,16 @@ static sint32 cc_open(InteractiveConsole &console, const utf8 **argv, sint32 arg
     return 0;
 }
 
-static sint32 cc_remove_unused_objects(InteractiveConsole &console, const utf8 **argv, sint32 argc) 
+static sint32
+cc_remove_unused_objects(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
 {
     sint32 result = editor_remove_unused_objects();
     console.WriteFormatLine("%d unused object entries have been removed.", result);
     return 0;
 }
 
-static sint32 cc_remove_park_fences(InteractiveConsole &console, const utf8 **argv, sint32 argc)
+static sint32
+cc_remove_park_fences(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
 {
     tile_element_iterator it;
     tile_element_iterator_begin(&it);
@@ -913,7 +919,7 @@ static sint32 cc_remove_park_fences(InteractiveConsole &console, const utf8 **ar
     return 0;
 }
 
-static sint32 cc_show_limits(InteractiveConsole &console, const utf8 ** argv, sint32 argc)
+static sint32 cc_show_limits(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
 {
     map_reorganise_elements();
     sint32 tileElementCount = gNextFreeTileElement - gTileElements - 1;
@@ -960,7 +966,7 @@ static sint32 cc_show_limits(InteractiveConsole &console, const utf8 ** argv, si
     return 0;
 }
 
-static sint32 cc_for_date(InteractiveConsole &console, const utf8 **argv, sint32 argc)
+static sint32 cc_for_date(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
 {
     sint32 year = 0;
     sint32 month = 0;
@@ -1100,14 +1106,16 @@ static constexpr const console_command console_command_table[] = {
     { "date", cc_for_date, "Sets the date to a given date.", "Format <year>[ <month>[ <day>]]."}
 };
 
-static sint32 cc_windows(InteractiveConsole &console, const utf8 **argv, sint32 argc) {
+static sint32 cc_windows(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
+{
     for (auto s : console_window_table)
     {
         console.WriteLine(s);
     }
     return 0;
 }
-static sint32 cc_variables(InteractiveConsole &console, const utf8 **argv, sint32 argc)
+
+static sint32 cc_variables(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
 {
     for (auto s : console_variable_table)
     {

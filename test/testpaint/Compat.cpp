@@ -87,7 +87,7 @@ uint8 gMapSelectArrowDirection;
 void entrance_paint(paint_session * session, uint8 direction, int height, const rct_tile_element * tile_element) {}
 void banner_paint(paint_session * session, uint8 direction, int height, const rct_tile_element * tile_element) {}
 void surface_paint(paint_session * session, uint8 direction, uint16 height, const rct_tile_element * tileElement) {}
-void path_paint(paint_session * session, uint8 direction, uint16 height, const rct_tile_element * tileElement) {}
+void path_paint(paint_session * session, uint16 height, const rct_tile_element * tileElement) {}
 void scenery_paint(paint_session * session, uint8 direction, int height, const rct_tile_element * tileElement) {}
 void fence_paint(paint_session * session, uint8 direction, int height, const rct_tile_element * tileElement) {}
 void large_scenery_paint(paint_session * session, uint8 direction, uint16 height, const rct_tile_element * tileElement) {}

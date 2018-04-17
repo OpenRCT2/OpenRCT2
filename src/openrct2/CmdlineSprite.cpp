@@ -230,7 +230,7 @@ static bool sprite_file_export(sint32 spriteIndex, const char *outPath)
     if (spriteHeader->flags & G1_FLAG_RLE_COMPRESSION) {
         gfx_rle_sprite_to_buffer(spriteHeader->offset, pixels, (uint8*)spriteFilePalette, &dpi, IMAGE_TYPE_DEFAULT, 0, spriteHeader->height, 0, spriteHeader->width);
     } else {
-        gfx_bmp_sprite_to_buffer((uint8*)spriteFilePalette, nullptr, spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height, spriteHeader->width, IMAGE_TYPE_DEFAULT);
+        gfx_bmp_sprite_to_buffer((uint8*)spriteFilePalette, spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height, spriteHeader->width, IMAGE_TYPE_DEFAULT);
     }
 
     if (image_io_png_write(&dpi, (rct_palette*)spriteFilePalette, outPath)) {

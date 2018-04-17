@@ -2067,8 +2067,7 @@ bool Network::LoadMap(IStream * stream)
         sprite_position_tween_reset();
 
         // Read checksum
-        uint32 checksum = stream->ReadValue<uint32>();
-        UNUSED(checksum);
+        [[maybe_unused]] uint32 checksum = stream->ReadValue<uint32>();
 
         // Read other data not in normal save files
         stream->Read(gSpriteSpatialIndex, 0x10001 * sizeof(uint16));
@@ -2762,7 +2761,14 @@ void network_chat_show_server_greeting()
     }
 }
 
-void game_command_set_player_group(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_set_player_group(
+    [[maybe_unused]] sint32 * eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     uint8 playerid = (uint8)*ecx;
     uint8 groupid = (uint8)*edx;
@@ -2821,7 +2827,8 @@ void game_command_set_player_group(sint32* eax, sint32* ebx, sint32* ecx, sint32
     *ebx = 0;
 }
 
-void game_command_modify_groups(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+void game_command_modify_groups(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     uint8 action = (uint8)*eax;
     uint8 groupid = (uint8)(*eax >> 8);
@@ -3009,7 +3016,14 @@ void game_command_modify_groups(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
     *ebx = 0;
 }
 
-void game_command_kick_player(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+void game_command_kick_player(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    [[maybe_unused]] sint32 * ecx,
+    [[maybe_unused]] sint32 * edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     uint8 playerid = (uint8)*eax;
     NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);

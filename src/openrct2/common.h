@@ -195,17 +195,6 @@ using rct_string_id           = uint16;
     #define FASTCALL
 #endif // PLATFORM_X86
 
-// C++17 or later
-#if __cplusplus > 201402L
-    #define UNUSED_ATTR [[maybe_unused]]
-#else
-    #ifdef __GNUC__
-        #define UNUSED_ATTR [[gnu::unused]]
-    #else
-        #define UNUSED_ATTR
-    #endif
-#endif
-
 /**
  * x86 register structure, only used for easy interop to RCT2 code.
  */
@@ -258,7 +247,5 @@ struct registers {
 };
 assert_struct_size(registers, 7 * 4);
 #pragma pack(pop)
-
-#define UNUSED(x)  ((void)(x))
 
 #endif

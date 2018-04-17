@@ -401,7 +401,7 @@ static void dinghy_slide_track_flat(
 static void dinghy_slide_track_station(
     paint_session *          session,
     uint8                    rideIndex,
-    uint8                    trackSequence,
+    [[maybe_unused]] uint8   trackSequence,
     uint8                    direction,
     sint32                   height,
     const rct_tile_element * tileElement)
@@ -423,7 +423,7 @@ static void dinghy_slide_track_station(
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8 - (direction & 1), 0, height,
                                  session->TrackColours[SCHEME_SUPPORTS]);
 
-    track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, tileElement);
+    track_paint_util_draw_station(session, rideIndex, direction, height, tileElement);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
@@ -823,10 +823,9 @@ static void dinghy_slide_track_right_quarter_turn_5(
     };
 
     track_paint_util_right_quarter_turn_5_tiles_paint_2(
-        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
+        session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
     track_paint_util_right_quarter_turn_5_tiles_paint_2(
-        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK],
-        frontImageIds);
+        session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], frontImageIds);
 
     switch (trackSequence)
     {
@@ -1151,10 +1150,9 @@ static void dinghy_slide_track_right_quarter_turn_3(
     };
 
     track_paint_util_right_quarter_turn_3_tiles_paint_3(
-        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
+        session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
     track_paint_util_right_quarter_turn_3_tiles_paint_3(
-        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK],
-        frontImageIds);
+        session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], frontImageIds);
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence)
@@ -1594,10 +1592,9 @@ static void dinghy_slide_track_right_quarter_turn_5_covered(
     };
 
     track_paint_util_right_quarter_turn_5_tiles_paint_2(
-        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
+        session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
     track_paint_util_right_quarter_turn_5_tiles_paint_2(
-        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK],
-        frontImageIds);
+        session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], frontImageIds);
 
     switch (trackSequence)
     {
@@ -1911,10 +1908,9 @@ static void dinghy_slide_track_right_quarter_turn_3_covered(
     };
 
     track_paint_util_right_quarter_turn_3_tiles_paint_3(
-        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
+        session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
     track_paint_util_right_quarter_turn_3_tiles_paint_3(
-        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK],
-        frontImageIds);
+        session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], frontImageIds);
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence)

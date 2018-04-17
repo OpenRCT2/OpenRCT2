@@ -665,8 +665,8 @@ static void paint_mini_golf_station(
             sub_98197C(session, imageId, 10, 0, 1, 32, 7, height, 31, 0, height + 2);
         }
 
-        track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, entranceStyle, direction, height);
-        track_paint_util_draw_station_covers(session, EDGE_SW, hasSWFence, entranceStyle, direction, height);
+        track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, entranceStyle, height);
+        track_paint_util_draw_station_covers(session, EDGE_SW, hasSWFence, entranceStyle, height);
 
         // Was leftwards tunnel in game, seems odd
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
@@ -687,8 +687,8 @@ static void paint_mini_golf_station(
             sub_98197C(session, imageId, 0, 10, 32, 1, 7, height, 0, 31, height + 2);
         }
 
-        track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, entranceStyle, direction, height);
-        track_paint_util_draw_station_covers(session, EDGE_SE, hasSEFence, entranceStyle, direction, height);
+        track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, entranceStyle, height);
+        track_paint_util_draw_station_covers(session, EDGE_SE, hasSEFence, entranceStyle, height);
 
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
@@ -711,8 +711,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
     uint32 imageId;
 
     track_paint_util_left_quarter_turn_1_tile_paint(
-        session, 1, height, 0, direction, session->TrackColours[SCHEME_TRACK], mini_golf_track_sprites_quarter_turn_1_tile,
-        session->CurrentRotation);
+        session, 1, height, 0, direction, session->TrackColours[SCHEME_TRACK], mini_golf_track_sprites_quarter_turn_1_tile);
 
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
@@ -766,7 +765,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
         // TODO: The back fence uses the same x/y offsets, but uses another paint function. See if this occurs more often.
         track_paint_util_left_quarter_turn_1_tile_paint(
             session, 0, height, 24, direction, session->TrackColours[SCHEME_MISC],
-            mini_golf_track_sprites_quarter_turn_1_tile_fence_front, session->CurrentRotation);
+            mini_golf_track_sprites_quarter_turn_1_tile_fence_front);
 
         switch (direction)
         {

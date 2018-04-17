@@ -1043,7 +1043,14 @@ bool game_is_not_paused()
  *
  *  rct2: 0x00667C15
  */
-void game_pause_toggle(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+void game_pause_toggle(
+    [[maybe_unused]] sint32 * eax,
+    sint32 *                  ebx,
+    [[maybe_unused]] sint32 * ecx,
+    [[maybe_unused]] sint32 * edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
         pause_toggle();
@@ -1055,7 +1062,14 @@ void game_pause_toggle(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, s
  *
  *  rct2: 0x0066DB5F
  */
-static void game_load_or_quit(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+static void game_load_or_quit(
+    [[maybe_unused]] sint32 * eax,
+    sint32 *                  ebx,
+    [[maybe_unused]] sint32 * ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    sint32 *                  edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
     {

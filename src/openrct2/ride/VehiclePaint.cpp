@@ -2859,8 +2859,7 @@ static constexpr const vehicle_sprite_func vehicle_sprite_funcs[] = {
  *
  *  rct2: 0x006D5600
  */
-static void vehicle_visual_splash1_effect(paint_session * session, sint32 z, rct_vehicle * vehicle,
-                                          const rct_ride_entry_vehicle * vehicleEntry)
+static void vehicle_visual_splash1_effect(paint_session * session, sint32 z, rct_vehicle * vehicle)
 {
     if ((vehicle->track_type >> 2) != TRACK_ELEM_WATER_SPLASH)
     {
@@ -2887,8 +2886,7 @@ static void vehicle_visual_splash1_effect(paint_session * session, sint32 z, rct
  *
  *  rct2: 0x006D5696
  */
-static void vehicle_visual_splash2_effect(paint_session * session, sint32 z, rct_vehicle * vehicle,
-                                          const rct_ride_entry_vehicle * vehicleEntry)
+static void vehicle_visual_splash2_effect(paint_session * session, sint32 z, rct_vehicle * vehicle)
 {
     if (vehicle->sprite_direction & 7)
     {
@@ -2911,8 +2909,7 @@ static void vehicle_visual_splash2_effect(paint_session * session, sint32 z, rct
  *
  *  rct2: 0x006D57EE
  */
-static void vehicle_visual_splash3_effect(paint_session * session, sint32 z, rct_vehicle * vehicle,
-                                          const rct_ride_entry_vehicle * vehicleEntry)
+static void vehicle_visual_splash3_effect(paint_session * session, sint32 z, rct_vehicle * vehicle)
 {
     if (vehicle->sprite_direction & 7)
     {
@@ -2935,8 +2932,7 @@ static void vehicle_visual_splash3_effect(paint_session * session, sint32 z, rct
  *
  *  rct2: 0x006D5783
  */
-static void vehicle_visual_splash4_effect(paint_session * session, sint32 z, rct_vehicle * vehicle,
-                                          const rct_ride_entry_vehicle * vehicleEntry)
+static void vehicle_visual_splash4_effect(paint_session * session, sint32 z, rct_vehicle * vehicle)
 {
     rct_vehicle * vehicle2 = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
     if (vehicle2->velocity <= 0x50000)
@@ -2960,8 +2956,7 @@ static void vehicle_visual_splash4_effect(paint_session * session, sint32 z, rct
  *
  *  rct2: 0x006D5701
  */
-static void vehicle_visual_splash5_effect(paint_session * session, sint32 z, rct_vehicle * vehicle,
-                                          const rct_ride_entry_vehicle * vehicleEntry)
+static void vehicle_visual_splash5_effect(paint_session * session, sint32 z, rct_vehicle * vehicle)
 {
     rct_vehicle * vehicle2 = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
     if (vehicle2->velocity <= 0x50000)
@@ -2993,19 +2988,19 @@ void vehicle_visual_splash_effect(paint_session * session, sint32 z, rct_vehicle
     case 1: /* nullsub */
         break;
     case VEHICLE_VISUAL_SPLASH1_EFFECT:
-        vehicle_visual_splash1_effect(session, z, vehicle, vehicleEntry);
+        vehicle_visual_splash1_effect(session, z, vehicle);
         break;
     case VEHICLE_VISUAL_SPLASH2_EFFECT:
-        vehicle_visual_splash2_effect(session, z, vehicle, vehicleEntry);
+        vehicle_visual_splash2_effect(session, z, vehicle);
         break;
     case VEHICLE_VISUAL_SPLASH3_EFFECT:
-        vehicle_visual_splash3_effect(session, z, vehicle, vehicleEntry);
+        vehicle_visual_splash3_effect(session, z, vehicle);
         break;
     case VEHICLE_VISUAL_SPLASH4_EFFECT:
-        vehicle_visual_splash4_effect(session, z, vehicle, vehicleEntry);
+        vehicle_visual_splash4_effect(session, z, vehicle);
         break;
     case VEHICLE_VISUAL_SPLASH5_EFFECT:
-        vehicle_visual_splash5_effect(session, z, vehicle, vehicleEntry);
+        vehicle_visual_splash5_effect(session, z, vehicle);
         break;
     default:
         assert(false);
@@ -3017,7 +3012,7 @@ void vehicle_visual_splash_effect(paint_session * session, sint32 z, rct_vehicle
  *
  *  rct2: 0x006D45F8
  */
-void vehicle_visual_default(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle * vehicle,
+void vehicle_visual_default(paint_session * session, sint32 imageDirection, sint32 z, rct_vehicle * vehicle,
                             const rct_ride_entry_vehicle * vehicleEntry)
 {
     if (vehicle->vehicle_sprite_type < Util::CountOf(vehicle_sprite_funcs))
@@ -3069,7 +3064,7 @@ void vehicle_paint(paint_session * session, rct_vehicle * vehicle, sint32 imageD
     switch (vehicleEntry->car_visual)
     {
     case VEHICLE_VISUAL_DEFAULT:
-        vehicle_visual_default(session, x, imageDirection, y, z, vehicle, vehicleEntry);
+        vehicle_visual_default(session, imageDirection, z, vehicle, vehicleEntry);
         break;
     case VEHICLE_VISUAL_LAUNCHED_FREEFALL:
         vehicle_visual_launched_freefall(session, x, imageDirection, y, z, vehicle, vehicleEntry);

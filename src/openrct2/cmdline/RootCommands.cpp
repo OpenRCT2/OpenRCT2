@@ -263,7 +263,7 @@ exitcode_t HandleCommandEdit(CommandLineArgEnumerator * enumerator)
     return EXITCODE_CONTINUE;
 }
 
-exitcode_t HandleCommandIntro(CommandLineArgEnumerator * enumerator)
+exitcode_t HandleCommandIntro([[maybe_unused]] CommandLineArgEnumerator * enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
     if (result != EXITCODE_CONTINUE)
@@ -386,7 +386,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
     }
 }
 
-static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator)
+static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumerator * enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
     if (result != EXITCODE_CONTINUE)
@@ -405,7 +405,7 @@ static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator
 }
 
 #if defined(_WIN32) && !defined(__MINGW32__)
-static exitcode_t HandleCommandRegisterShell(CommandLineArgEnumerator * enumerator)
+static exitcode_t HandleCommandRegisterShell([[maybe_unused]] CommandLineArgEnumerator * enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
     if (result != EXITCODE_CONTINUE)

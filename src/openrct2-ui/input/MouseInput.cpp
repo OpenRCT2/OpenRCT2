@@ -91,11 +91,11 @@ static void input_window_position_end(rct_window * w, sint32 x, sint32 y);
 static void input_window_resize_begin(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void input_window_resize_continue(rct_window * w, sint32 x, sint32 y);
 static void input_window_resize_end();
-static void input_viewport_drag_begin(rct_window * w, sint32 x, sint32 y);
+static void input_viewport_drag_begin(rct_window * w);
 static void input_viewport_drag_continue();
 static void input_viewport_drag_end();
 static void input_scroll_begin(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void input_scroll_continue(rct_window * w, rct_widgetindex widgetIndex, sint32 state, sint32 x, sint32 y);
+static void input_scroll_continue(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void input_scroll_end();
 static void input_scroll_part_update_hthumb(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 scroll_id);
 static void input_scroll_part_update_hleft(rct_window * w, rct_widgetindex widgetIndex, sint32 scroll_id);
@@ -193,7 +193,7 @@ static rct_mouse_data * get_mouse_input()
  *
  *  rct2: 0x006E957F
  */
-static void input_scroll_drag_begin(sint32 x, sint32 y, rct_window * w, rct_widget * widget, rct_widgetindex widgetIndex)
+static void input_scroll_drag_begin(sint32 x, sint32 y, rct_window * w, rct_widgetindex widgetIndex)
 {
     _inputState = INPUT_STATE_SCROLL_RIGHT;
     gInputDragLastX = x;
@@ -325,11 +325,11 @@ static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state)
                 case WWT_VIEWPORT:
                     if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO)))
                     {
-                        input_viewport_drag_begin(w, x, y);
+                        input_viewport_drag_begin(w);
                     }
                     break;
                 case WWT_SCROLL:
-                    input_scroll_drag_begin(x, y, w, widget, widgetIndex);
+                    input_scroll_drag_begin(x, y, w, widgetIndex);
                     break;
                 }
             }
@@ -427,7 +427,7 @@ static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state)
         switch (state)
         {
         case MOUSE_STATE_RELEASED:
-            input_scroll_continue(w, widgetIndex, state, x, y);
+            input_scroll_continue(w, widgetIndex, x, y);
             break;
         case MOUSE_STATE_LEFT_RELEASE:
             input_scroll_end();
@@ -523,7 +523,7 @@ static void input_window_resize_end()
 
 #pragma region Viewport dragging
 
-static void input_viewport_drag_begin(rct_window * w, sint32 x, sint32 y)
+static void input_viewport_drag_begin(rct_window * w)
 {
     w->flags &= ~WF_SCROLLING_TO_LOCATION;
     _inputState = INPUT_STATE_VIEWPORT_RIGHT;
@@ -674,7 +674,7 @@ static void input_scroll_begin(rct_window * w, rct_widgetindex widgetIndex, sint
     window_invalidate_by_number(widgetIndex, w->classification);
 }
 
-static void input_scroll_continue(rct_window * w, rct_widgetindex widgetIndex, sint32 state, sint32 x, sint32 y)
+static void input_scroll_continue(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
     rct_widget * widget;
     sint32 scroll_part, scroll_id;

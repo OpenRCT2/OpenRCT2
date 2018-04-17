@@ -473,7 +473,14 @@ static void cheat_own_all_land()
 
 #pragma endregion
 
-void game_command_cheat(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_cheat(
+    [[maybe_unused]] sint32 * eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    sint32 *                  edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     sint32 cheat = *ecx;
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
