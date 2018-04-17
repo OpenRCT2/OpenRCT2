@@ -98,7 +98,8 @@ if [[ "$(uname)" == "Darwin" ]]; then
 	fi
 elif [[ $(uname) == "Linux" ]]; then
 	# Clone discord-rpc for Discord's Rich Presence support
-	git clone https://github.com/discordapp/discord-rpc
+    # Use tagged release to prevent upstream changes from breaking our code
+	git clone https://github.com/discordapp/discord-rpc -b v3.2.0
 	# prevent build.sh from re-doing all the steps again
 	case "$TARGET" in
 		"ubuntu_i686")
