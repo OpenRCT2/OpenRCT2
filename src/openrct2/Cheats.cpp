@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+﻿#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -525,7 +525,7 @@ void game_command_cheat(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint
         case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES: gCheatsAllowArbitraryRideTypeChanges = *edx != 0; window_invalidate_by_class(WC_RIDE); break;
         case CHEAT_OWNALLLAND: cheat_own_all_land(); break;
         case CHEAT_DISABLERIDEVALUEAGING: gCheatsDisableRideValueAging = *edx != 0; break;
-        case CHEAT_IGNORERESEARCHSTATUS: gCheatsIgnoreResearchStatus = *edx != 0; break;
+        case CHEAT_IGNORERESEARCHSTATUS: gCheatsIgnoreResearchStatus = *edx != 0; window_invalidate_by_class(WC_SCENERY); break;
         case CHEAT_ENABLEALLDRAWABLETRACKPIECES: gCheatsEnableAllDrawableTrackPieces = *edx != 0; break;
         }
         if (network_get_mode() == NETWORK_MODE_NONE) {
