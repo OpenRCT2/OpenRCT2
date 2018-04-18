@@ -85,6 +85,11 @@ struct TileCoordsXYZ
     TileCoordsXYZ() = default;
     TileCoordsXYZ(sint32 x_, sint32 y_, sint32 z_) : x(x_), y(y_), z(z_) {}
     explicit TileCoordsXYZ(CoordsXYZ c) : x(c.x / 32), y(c.y / 32), z(c.z / 8) {}
+    TileCoordsXYZ& operator+=(const TileCoordsXY rhs)
+    {
+        x += rhs.x;
+        y += rhs.y;
+    }
     sint32 x = 0, y = 0, z = 0;
 };
 
