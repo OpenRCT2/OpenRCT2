@@ -228,7 +228,7 @@ static sint32 guest_surface_path_finding(rct_peep * peep)
  * Returns the type of the next footpath tile a peep can get to from x,y,z /
  * inputTileElement in the given direction.
  */
-static uint8 footpath_element_next_in_direction(sint16 x, sint16 y, sint16 z, rct_tile_element * tileElement,
+static uint8 footpath_element_next_in_direction(TileCoordsXYZ loc, rct_tile_element * tileElement,
                                                 uint8 chosenDirection)
 {
     rct_tile_element * nextTileElement;
@@ -237,20 +237,19 @@ static uint8 footpath_element_next_in_direction(sint16 x, sint16 y, sint16 z, rc
     {
         if (footpath_element_get_slope_direction(tileElement) == chosenDirection)
         {
-            z += 2;
+            loc.z += 2;
         }
     }
 
-    x += CoordsDirectionDelta[chosenDirection].x;
-    y += CoordsDirectionDelta[chosenDirection].y;
-    nextTileElement = map_get_first_element_at(x / 32, y / 32);
+    loc += TileDirectionDelta[chosenDirection];
+    nextTileElement = map_get_first_element_at(loc.x, loc.y);
     do
     {
         if (nextTileElement->flags & TILE_ELEMENT_FLAG_GHOST)
             continue;
         if (tile_element_get_type(nextTileElement) != TILE_ELEMENT_TYPE_PATH)
             continue;
-        if (!is_valid_path_z_and_direction(nextTileElement, z, chosenDirection))
+        if (!is_valid_path_z_and_direction(nextTileElement, loc.z, chosenDirection))
             continue;
         if (footpath_element_is_wide(nextTileElement))
             return PATH_SEARCH_WIDE;
@@ -282,7 +281,7 @@ static uint8 footpath_element_next_in_direction(sint16 x, sint16 y, sint16 z, rc
  *
  * This is the recursive portion of footpath_element_destination_in_direction().
  */
-static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_tile_element * inputTileElement,
+static uint8 footpath_element_dest_in_dir(TileCoordsXYZ loc, rct_tile_element * inputTileElement,
                                           uint8 chosenDirection, uint8 * outRideIndex, sint32 level)
 {
     rct_tile_element * tileElement;
@@ -291,9 +290,8 @@ static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_tile
     if (level > 25)
         return PATH_SEARCH_LIMIT_REACHED;
 
-    x += CoordsDirectionDelta[chosenDirection].x;
-    y += CoordsDirectionDelta[chosenDirection].y;
-    tileElement = map_get_first_element_at(x / 32, y / 32);
+    loc += TileDirectionDelta[chosenDirection];
+    tileElement = map_get_first_element_at(loc.x, loc.y);
     if (tileElement == nullptr)
     {
         return PATH_SEARCH_FAILED;
@@ -307,7 +305,7 @@ static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_tile
         {
         case TILE_ELEMENT_TYPE_TRACK:
         {
-            if (z != tileElement->base_height)
+            if (loc.z != tileElement->base_height)
                 continue;
             sint32 rideIndex = track_element_get_ride_index(tileElement);
             Ride * ride      = get_ride(rideIndex);
@@ -319,7 +317,7 @@ static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_tile
         }
         break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
-            if (z != tileElement->base_height)
+            if (loc.z != tileElement->base_height)
                 continue;
             switch (tileElement->properties.entrance.type)
             {
@@ -344,14 +342,14 @@ static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_tile
             }
             break;
         case TILE_ELEMENT_TYPE_PATH:
-            if (!is_valid_path_z_and_direction(tileElement, z, chosenDirection))
+            if (!is_valid_path_z_and_direction(tileElement, loc.z, chosenDirection))
                 continue;
             if (footpath_element_is_wide(tileElement))
                 return PATH_SEARCH_WIDE;
 
             uint8 edges = path_get_permitted_edges(tileElement);
             edges &= ~(1 << (chosenDirection ^ 2));
-            z = tileElement->base_height;
+            loc.z = tileElement->base_height;
 
             for (direction = 0; direction < 4; direction++)
             {
@@ -366,10 +364,10 @@ static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_tile
                 {
                     if (footpath_element_get_slope_direction(tileElement) == direction)
                     {
-                        z += 2;
+                        loc.z += 2;
                     }
                 }
-                return footpath_element_dest_in_dir(x, y, z, tileElement, direction, outRideIndex, level + 1);
+                return footpath_element_dest_in_dir(loc, tileElement, direction, outRideIndex, level + 1);
             }
             return PATH_SEARCH_DEAD_END;
         }
@@ -401,18 +399,18 @@ static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_tile
  * This is useful for finding out what is at the end of a short single
  * width path, for example that leads from a ride exit back to the main path.
  */
-static uint8 footpath_element_destination_in_direction(sint16 x, sint16 y, sint16 z, rct_tile_element * inputTileElement,
+static uint8 footpath_element_destination_in_direction(TileCoordsXYZ loc, rct_tile_element * inputTileElement,
                                                        uint8 chosenDirection, uint8 * outRideIndex)
 {
     if (footpath_element_is_sloped(inputTileElement))
     {
         if (footpath_element_get_slope_direction(inputTileElement) == chosenDirection)
         {
-            z += 2;
+            loc.z += 2;
         }
     }
 
-    return footpath_element_dest_in_dir(x, y, z, inputTileElement, chosenDirection, outRideIndex, 0);
+    return footpath_element_dest_in_dir(loc, inputTileElement, chosenDirection, outRideIndex, 0);
 }
 
 /**
@@ -493,7 +491,7 @@ static bool path_is_thin_junction(rct_tile_element * path, sint16 x, sint16 y, u
     sint32 thin_count    = 0;
     do
     {
-        sint32 fp_result = footpath_element_next_in_direction(x, y, z, path, test_edge);
+        sint32 fp_result = footpath_element_next_in_direction({ x / 32, y / 32, z }, path, test_edge);
 
         /* Ignore non-paths (e.g. ride entrances, shops), wide paths
          * and ride queues (per ignoreQueues) when counting
@@ -1915,7 +1913,7 @@ sint32 guest_path_finding(rct_peep * peep)
 
             /* If there is a wide path in that direction,
                 remove that edge and try another */
-            if (footpath_element_next_in_direction(peep->next_x, peep->next_y, peep->next_z, tileElement, chosenDirection) ==
+            if (footpath_element_next_in_direction(loc, tileElement, chosenDirection) ==
                 PATH_SEARCH_WIDE)
             {
                 adjustedEdges &= ~(1 << chosenDirection);
@@ -1996,7 +1994,7 @@ sint32 guest_path_finding(rct_peep * peep)
                 continue;
 
             uint8 rideIndex, pathSearchResult;
-            pathSearchResult = footpath_element_destination_in_direction(peep->next_x, peep->next_y, peep->next_z, tileElement,
+            pathSearchResult = footpath_element_destination_in_direction(loc, tileElement,
                                                                          chosenDirection, &rideIndex);
             switch (pathSearchResult)
             {
