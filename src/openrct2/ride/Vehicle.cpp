@@ -69,7 +69,7 @@ static void   vehicle_update_crash(rct_vehicle * vehicle);
 static void   vehicle_update_travelling_boat(rct_vehicle * vehicle);
 static void   vehicle_update_motion_boat_hire(rct_vehicle * vehicle);
 static void   vehicle_update_boat_location(rct_vehicle * vehicle);
-static bool   vehicle_boat_is_location_accessible(rct_vehicle *vehicle, int x, int y);
+static bool   vehicle_boat_is_location_accessible(const TileCoordsXYZ &location);
 static void   vehicle_update_arriving(rct_vehicle * vehicle);
 static void   vehicle_update_unloading_passengers(rct_vehicle * vehicle);
 static void   vehicle_update_waiting_for_cable_lift(rct_vehicle * vehicle);
@@ -4469,7 +4469,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle * vehicle)
             sint32 flooredY = floor2(y, 32);
             if (flooredX != vehicle->track_x || flooredY != vehicle->track_y)
             {
-                if (!vehicle_boat_is_location_accessible(vehicle, x, y))
+                if (!vehicle_boat_is_location_accessible(TileCoordsXYZ(CoordsXYZ{x, y, vehicle->track_z})))
                 {
                     // loc_6DA939:
                     Ride * ride = get_ride(vehicle->ride);
@@ -4658,7 +4658,7 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
         sint16 x = vehicle->track_x + TileDirectionDelta[(randDirection + rotation) & 3].x;
         sint16 y = vehicle->track_y + TileDirectionDelta[(randDirection + rotation) & 3].y;
 
-        if (!vehicle_boat_is_location_accessible(vehicle, x, y))
+        if (!vehicle_boat_is_location_accessible(TileCoordsXYZ(CoordsXYZ{x, y, vehicle->track_z})))
         {
             continue;
         }
@@ -4677,23 +4677,22 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
  *
  *  rct2: 0x006DA22A
  */
-static bool vehicle_boat_is_location_accessible(rct_vehicle *vehicle, sint32 x, sint32 y)
+static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ &location)
 {
-    sint32            z          = vehicle->track_z >> 3;
-    rct_tile_element * tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    rct_tile_element * tileElement = map_get_first_element_at(location.x, location.y);
     do
     {
         if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SURFACE)
         {
             sint32 waterZ = map_get_water_height(tileElement) * 2;
-            if (z != waterZ)
+            if (location.z != waterZ)
             {
                 return false;
             }
         }
         else
         {
-            if (z > tileElement->base_height - 2 && z < tileElement->clearance_height + 2)
+            if (location.z > tileElement->base_height - 2 && location.z < tileElement->clearance_height + 2)
             {
                 return false;
             }
