@@ -446,28 +446,6 @@
 		F76C873C1EC4E88400FA49E2 /* TitleSequenceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85001EC4E7CD00FA49E2 /* TitleSequenceManager.cpp */; };
 		F76C873E1EC4E88400FA49E2 /* TitleSequencePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85021EC4E7CD00FA49E2 /* TitleSequencePlayer.cpp */; };
 		F76C87451EC4E88400FA49E2 /* Version.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C850B1EC4E7CD00FA49E2 /* Version.cpp */; };
-		F76C87511EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C87521EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C87531EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C87541EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C87551EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C87561EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C87571EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C87841EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C87851EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C87861EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C87871EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C87881EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C87891EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C878A1EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C878B1EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C878D1EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C878E1EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C878F1EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C87901EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C87911EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C87921EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F76C87931EC4E88400FA49E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		F76C88781EC5324E00FA49E2 /* AudioChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85821EC4E82600FA49E2 /* AudioChannel.cpp */; };
 		F76C88791EC5324E00FA49E2 /* AudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85831EC4E82600FA49E2 /* AudioContext.cpp */; };
 		F76C887A1EC5324E00FA49E2 /* AudioMixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85861EC4E82600FA49E2 /* AudioMixer.cpp */; };
@@ -3403,54 +3381,32 @@
 				C68878EA20289B9B0084B384 /* Shared.cpp in Sources */,
 				F76C873E1EC4E88400FA49E2 /* TitleSequencePlayer.cpp in Sources */,
 				F76C87451EC4E88400FA49E2 /* Version.cpp in Sources */,
-				F76C87511EC4E88400FA49E2 /* (null) in Sources */,
 				C688789C20289B200084B384 /* Currency.cpp in Sources */,
 				C68879A420289C060084B384 /* Platform.macOS.mm in Sources */,
 				C688787420289A780084B384 /* TrackDesignSave.cpp in Sources */,
 				C688790F20289B9B0084B384 /* Dodgems.cpp in Sources */,
-				F76C87521EC4E88400FA49E2 /* (null) in Sources */,
-				F76C87531EC4E88400FA49E2 /* (null) in Sources */,
 				C688791E20289B9B0084B384 /* 3dCinema.cpp in Sources */,
 				C688786420289A0A0084B384 /* MoneyEffect.cpp in Sources */,
-				F76C87541EC4E88400FA49E2 /* (null) in Sources */,
-				F76C87551EC4E88400FA49E2 /* (null) in Sources */,
-				F76C87561EC4E88400FA49E2 /* (null) in Sources */,
 				C68878A420289B200084B384 /* UTF8.cpp in Sources */,
 				C688786D20289A6F0084B384 /* TrackPaint.cpp in Sources */,
-				F76C87571EC4E88400FA49E2 /* (null) in Sources */,
 				C68878D120289B9B0084B384 /* Peep.cpp in Sources */,
 				C688792120289B9B0084B384 /* LaunchedFreefall.cpp in Sources */,
 				C688791920289B9B0084B384 /* ObservationTower.cpp in Sources */,
 				C6352B901F477032006CCEE3 /* GameAction.cpp in Sources */,
-				F76C87841EC4E88400FA49E2 /* (null) in Sources */,
-				F76C87851EC4E88400FA49E2 /* (null) in Sources */,
 				C6887853202899F00084B384 /* Sprite.cpp in Sources */,
 				C688786F20289A6F0084B384 /* VehicleData.cpp in Sources */,
-				F76C87861EC4E88400FA49E2 /* (null) in Sources */,
-				F76C87871EC4E88400FA49E2 /* (null) in Sources */,
-				F76C87881EC4E88400FA49E2 /* (null) in Sources */,
 				C688786520289A400084B384 /* _legacy.cpp in Sources */,
 				C688785F20289A0A0084B384 /* LargeScenery.cpp in Sources */,
 				C688792C20289B9B0084B384 /* Monorail.cpp in Sources */,
-				F76C87891EC4E88400FA49E2 /* (null) in Sources */,
 				C688792220289B9B0084B384 /* MagicCarpet.cpp in Sources */,
-				F76C878A1EC4E88400FA49E2 /* (null) in Sources */,
 				C688786B20289A6F0084B384 /* TrackDataOld.cpp in Sources */,
-				F76C878B1EC4E88400FA49E2 /* (null) in Sources */,
-				F76C878D1EC4E88400FA49E2 /* (null) in Sources */,
 				C688790720289B9B0084B384 /* VerticalDropRollerCoaster.cpp in Sources */,
-				F76C878E1EC4E88400FA49E2 /* (null) in Sources */,
-				F76C878F1EC4E88400FA49E2 /* (null) in Sources */,
 				C688789D20289B200084B384 /* Date.cpp in Sources */,
 				C688787520289A780084B384 /* RideData.cpp in Sources */,
-				F76C87901EC4E88400FA49E2 /* (null) in Sources */,
-				F76C87911EC4E88400FA49E2 /* (null) in Sources */,
 				C688789B20289B200084B384 /* Convert.cpp in Sources */,
 				C688791F20289B9B0084B384 /* Enterprise.cpp in Sources */,
 				C688789320289B140084B384 /* Fonts.cpp in Sources */,
 				C688792F20289B9B0084B384 /* DingySlide.cpp in Sources */,
-				F76C87921EC4E88400FA49E2 /* (null) in Sources */,
-				F76C87931EC4E88400FA49E2 /* (null) in Sources */,
 				C688787920289A780084B384 /* TrackData.cpp in Sources */,
 				C68878F020289B9B0084B384 /* CorkscrewRollerCoaster.cpp in Sources */,
 				C688791820289B9B0084B384 /* MonorailCycles.cpp in Sources */,
