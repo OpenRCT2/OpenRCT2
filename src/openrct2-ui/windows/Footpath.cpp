@@ -1098,8 +1098,8 @@ static void footpath_remove_tile_element(rct_tile_element * tileElement)
 
     // Move selection
     edge ^= 2;
-    x                      = gFootpathConstructFromPosition.x - TileDirectionDelta[edge].x;
-    y                      = gFootpathConstructFromPosition.y - TileDirectionDelta[edge].y;
+    x                      = gFootpathConstructFromPosition.x - CoordsDirectionDelta[edge].x;
+    y                      = gFootpathConstructFromPosition.y - CoordsDirectionDelta[edge].y;
     gFootpathConstructFromPosition.x = x;
     gFootpathConstructFromPosition.y = y;
     gFootpathConstructFromPosition.z = z << 3;
@@ -1201,8 +1201,8 @@ static void window_footpath_set_enabled_and_pressed_widgets()
         gMapSelectFlags |= MAP_SELECT_FLAG_GREEN;
 
         sint32 direction = gFootpathConstructDirection;
-        gMapSelectionTiles[0].x = gFootpathConstructFromPosition.x + TileDirectionDelta[direction].x;
-        gMapSelectionTiles[0].y = gFootpathConstructFromPosition.y + TileDirectionDelta[direction].y;
+        gMapSelectionTiles[0].x = gFootpathConstructFromPosition.x + CoordsDirectionDelta[direction].x;
+        gMapSelectionTiles[0].y = gFootpathConstructFromPosition.y + CoordsDirectionDelta[direction].y;
         gMapSelectionTiles[1].x = -1;
         map_invalidate_map_selection_tiles();
     }
@@ -1284,8 +1284,8 @@ static void footpath_get_next_path_info(sint32 * type, sint32 * x, sint32 * y, s
     sint32 direction;
 
     direction = gFootpathConstructDirection;
-    *x     = gFootpathConstructFromPosition.x + TileDirectionDelta[direction].x;
-    *y     = gFootpathConstructFromPosition.y + TileDirectionDelta[direction].y;
+    *x     = gFootpathConstructFromPosition.x + CoordsDirectionDelta[direction].x;
+    *y     = gFootpathConstructFromPosition.y + CoordsDirectionDelta[direction].y;
     *z     = gFootpathConstructFromPosition.z / 8;
     *type  = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
     *slope = TILE_ELEMENT_SLOPE_FLAT;

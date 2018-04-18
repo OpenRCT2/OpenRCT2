@@ -3441,8 +3441,8 @@ static void peep_update_ride_leave_entrance_maze(rct_peep * peep, Ride * ride, T
     entrance_loc.x *= 32;
     entrance_loc.y *= 32;
 
-    entrance_loc.x += TileDirectionDelta[entrance_loc.direction].x;
-    entrance_loc.y += TileDirectionDelta[entrance_loc.direction].y;
+    entrance_loc.x += CoordsDirectionDelta[entrance_loc.direction].x;
+    entrance_loc.y += CoordsDirectionDelta[entrance_loc.direction].y;
 
     uint8 direction = entrance_loc.direction * 4 + 11;
     if (scenario_rand() & 0x40)
@@ -4806,8 +4806,8 @@ void rct_peep::UpdateRideMazePathfinding()
         chosenEdge = (chosenEdge + 1) & 3;
     }
 
-    actionX = TileDirectionDelta[chosenEdge].x / 2;
-    actionY = TileDirectionDelta[chosenEdge].y / 2;
+    actionX = CoordsDirectionDelta[chosenEdge].x / 2;
+    actionY = CoordsDirectionDelta[chosenEdge].y / 2;
 
     actionX += destination_x;
     actionY += destination_y;
@@ -6310,8 +6310,8 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
         return false;
     } while (!tile_element_is_last_for_tile(tileElement++));
 
-    uint16 x = peep->next_x + TileDirectionDelta[edge].x;
-    uint16 y = peep->next_y + TileDirectionDelta[edge].y;
+    uint16 x = peep->next_x + CoordsDirectionDelta[edge].x;
+    uint16 y = peep->next_y + CoordsDirectionDelta[edge].y;
     if (x > 255 * 32 || y > 255 * 32)
     {
         return false;
@@ -6422,8 +6422,8 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
         return false;
     } while (!tile_element_is_last_for_tile(tileElement++));
 
-    x += TileDirectionDelta[edge].x;
-    y += TileDirectionDelta[edge].y;
+    x += CoordsDirectionDelta[edge].x;
+    y += CoordsDirectionDelta[edge].y;
     if (x > 255 * 32 || y > 255 * 32)
     {
         return false;
@@ -6534,8 +6534,8 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
         return false;
     } while (!tile_element_is_last_for_tile(tileElement++));
 
-    x += TileDirectionDelta[edge].x;
-    y += TileDirectionDelta[edge].y;
+    x += CoordsDirectionDelta[edge].x;
+    y += CoordsDirectionDelta[edge].y;
     if (x > 255 * 32 || y > 255 * 32)
     {
         return false;

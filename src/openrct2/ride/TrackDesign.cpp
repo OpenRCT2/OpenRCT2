@@ -1546,8 +1546,8 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
         }
         else
         {
-            x += TileDirectionDelta[rotation].x;
-            y += TileDirectionDelta[rotation].y;
+            x += CoordsDirectionDelta[rotation].x;
+            y += CoordsDirectionDelta[rotation].y;
         }
     }
 
@@ -1584,8 +1584,8 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
             if (_trackDesignPlaceOperation != PTD_OPERATION_1)
             {
                 LocationXY16        tile          = {
-                    (sint16) (x + TileDirectionDelta[rotation].x),
-                    (sint16) (y + TileDirectionDelta[rotation].y)
+                    (sint16) (x + CoordsDirectionDelta[rotation].x),
+                    (sint16) (y + CoordsDirectionDelta[rotation].y)
                 };
                 rct_tile_element * tile_element = map_get_first_element_at(tile.x >> 5, tile.y >> 5);
                 z = gTrackPreviewOrigin.z / 8;

@@ -249,8 +249,8 @@ static void jumping_fountain_continue(rct_jumping_fountain * jumpingFountain)
 {
     sint32 type = jumping_fountain_get_type(jumpingFountain);
     sint32 direction = (jumpingFountain->sprite_direction >> 3) & 7;
-    sint32 x = jumpingFountain->x + TileDirectionDelta[direction].x;
-    sint32 y = jumpingFountain->y + TileDirectionDelta[direction].y;
+    sint32 x = jumpingFountain->x + CoordsDirectionDelta[direction].x;
+    sint32 y = jumpingFountain->y + CoordsDirectionDelta[direction].y;
     sint32 z = jumpingFountain->z;
 
     sint32 availableDirections = 0;

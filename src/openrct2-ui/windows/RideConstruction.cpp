@@ -1707,8 +1707,8 @@ static void window_ride_construction_construct(rct_window *w)
         y = _currentTrackBeginY;
         z = _currentTrackBeginZ;
         if (!(trackDirection & 4)) {
-            x += TileDirectionDelta[trackDirection].x;
-            y += TileDirectionDelta[trackDirection].y;
+            x += CoordsDirectionDelta[trackDirection].x;
+            y += CoordsDirectionDelta[trackDirection].y;
         }
 
         if (track_block_get_previous_from_zero(x, y, z, _currentRideIndex, trackDirection, &trackBeginEnd)) {
@@ -1730,8 +1730,8 @@ static void window_ride_construction_construct(rct_window *w)
         y = _currentTrackBeginY;
         z = _currentTrackBeginZ;
         if (!(trackDirection & 4)) {
-            x -= TileDirectionDelta[trackDirection].x;
-            y -= TileDirectionDelta[trackDirection].y;
+            x -= CoordsDirectionDelta[trackDirection].x;
+            y -= CoordsDirectionDelta[trackDirection].y;
         }
 
         CoordsXYE next_track;

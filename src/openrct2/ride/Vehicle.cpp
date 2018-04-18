@@ -2862,8 +2862,8 @@ static bool vehicle_can_depart_synchronised(rct_vehicle * vehicle)
     spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
     {
-        x += TileDirectionDelta[direction].x;
-        y += TileDirectionDelta[direction].y;
+        x += CoordsDirectionDelta[direction].x;
+        y += CoordsDirectionDelta[direction].y;
         if (try_add_synchronised_station(x, y, z))
         {
             spaceBetween = maxCheckDistance;
@@ -2884,8 +2884,8 @@ static bool vehicle_can_depart_synchronised(rct_vehicle * vehicle)
     spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
     {
-        x += TileDirectionDelta[direction].x;
-        y += TileDirectionDelta[direction].y;
+        x += CoordsDirectionDelta[direction].x;
+        y += CoordsDirectionDelta[direction].y;
         if (try_add_synchronised_station(x, y, z))
         {
             spaceBetween = maxCheckDistance;
@@ -3168,8 +3168,8 @@ static void vehicle_update_travelling_boat_hire_setup(rct_vehicle * vehicle)
     vehicle->track_x = vehicle->x & 0xFFE0;
     vehicle->track_y = vehicle->y & 0xFFE0;
 
-    LocationXY8 location = { static_cast<uint8>((vehicle->track_x + TileDirectionDelta[vehicle->sprite_direction >> 3].x) / 32),
-                             static_cast<uint8>((vehicle->track_y + TileDirectionDelta[vehicle->sprite_direction >> 3].y) /
+    LocationXY8 location = { static_cast<uint8>((vehicle->track_x + CoordsDirectionDelta[vehicle->sprite_direction >> 3].x) / 32),
+                             static_cast<uint8>((vehicle->track_y + CoordsDirectionDelta[vehicle->sprite_direction >> 3].y) /
                                                 32) };
 
     vehicle->boat_location = location;
@@ -4603,8 +4603,8 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
     LocationXY8 returnPosition  = ride->boat_hire_return_position;
     uint8       returnDirection = ride->boat_hire_return_direction & 3;
 
-    LocationXY8 location = { static_cast<uint8>((vehicle->x + TileDirectionDelta[returnDirection].x) / 32),
-                             static_cast<uint8>((vehicle->y + TileDirectionDelta[returnDirection].y) / 32) };
+    LocationXY8 location = { static_cast<uint8>((vehicle->x + CoordsDirectionDelta[returnDirection].x) / 32),
+                             static_cast<uint8>((vehicle->y + CoordsDirectionDelta[returnDirection].y) / 32) };
 
     if (location.xy == returnPosition.xy)
     {
@@ -4623,8 +4623,8 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
         if (scenario_rand() & 1)
         {
             LocationXY16 destLocation = {
-                static_cast<sint16>(returnPosition.x * 32 - TileDirectionDelta[returnDirection].x + 16),
-                static_cast<sint16>(returnPosition.y * 32 - TileDirectionDelta[returnDirection].y + 16)
+                static_cast<sint16>(returnPosition.x * 32 - CoordsDirectionDelta[returnDirection].x + 16),
+                static_cast<sint16>(returnPosition.y * 32 - CoordsDirectionDelta[returnDirection].y + 16)
             };
 
             destLocation.x -= vehicle->x;
@@ -4649,8 +4649,8 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
             continue;
         }
 
-        sint16 x = vehicle->track_x + TileDirectionDelta[(randDirection + rotation) & 3].x;
-        sint16 y = vehicle->track_y + TileDirectionDelta[(randDirection + rotation) & 3].y;
+        sint16 x = vehicle->track_x + CoordsDirectionDelta[(randDirection + rotation) & 3].x;
+        sint16 y = vehicle->track_y + CoordsDirectionDelta[(randDirection + rotation) & 3].y;
 
         if (!vehicle_boat_is_location_accessible(TileCoordsXYZ(CoordsXYZ{x, y, vehicle->track_z})))
         {
@@ -4661,8 +4661,8 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
         return;
     }
 
-    sint16 x                 = vehicle->track_x + TileDirectionDelta[curDirection & 3].x;
-    sint16 y                 = vehicle->track_y + TileDirectionDelta[curDirection & 3].y;
+    sint16 x                 = vehicle->track_x + CoordsDirectionDelta[curDirection & 3].x;
+    sint16 y                 = vehicle->track_y + CoordsDirectionDelta[curDirection & 3].y;
     vehicle->boat_location.x = x / 32;
     vehicle->boat_location.y = y / 32;
 }

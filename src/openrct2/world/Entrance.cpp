@@ -86,15 +86,15 @@ static money32 ParkEntranceRemove(sint16 x, sint16 y, uint8 z, uint8 flags)
 
     // Left post
     ParkEntranceRemoveSegment(
-        x + TileDirectionDelta[direction].x,
-        y + TileDirectionDelta[direction].y,
+        x + CoordsDirectionDelta[direction].x,
+        y + CoordsDirectionDelta[direction].y,
         z * 2
     );
 
     // Right post
     ParkEntranceRemoveSegment(
-        x - TileDirectionDelta[direction].x,
-        y - TileDirectionDelta[direction].y,
+        x - CoordsDirectionDelta[direction].x,
+        y - CoordsDirectionDelta[direction].y,
         z * 2
     );
 
@@ -632,8 +632,8 @@ void game_command_remove_ride_entrance_or_exit(
 void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_tile_element *tileElement)
 {
     sint32 direction = tile_element_get_direction(tileElement);
-    x += TileDirectionDelta[direction].x;
-    y += TileDirectionDelta[direction].y;
+    x += CoordsDirectionDelta[direction].x;
+    y += CoordsDirectionDelta[direction].y;
     sint32 z = tileElement->base_height;
     sint32 rideIndex = track_element_get_ride_index(tileElement);
 
@@ -663,8 +663,8 @@ void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_tile_element *tileE
 void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_tile_element *tileElement)
 {
     sint32 direction = tile_element_get_direction(tileElement);
-    x += TileDirectionDelta[direction].x;
-    y += TileDirectionDelta[direction].y;
+    x += CoordsDirectionDelta[direction].x;
+    y += CoordsDirectionDelta[direction].y;
     sint32 z = tileElement->base_height;
     sint32 rideIndex = track_element_get_ride_index(tileElement);
 

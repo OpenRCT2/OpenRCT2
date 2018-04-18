@@ -685,8 +685,8 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
     y = stationY0;
     do
     {
-        x -= TileDirectionDelta[direction].x;
-        y -= TileDirectionDelta[direction].y;
+        x -= CoordsDirectionDelta[direction].x;
+        y -= CoordsDirectionDelta[direction].y;
 
         stationElement = find_station_element(x, y, z, direction, rideIndex);
         if (stationElement != nullptr)
@@ -711,8 +711,8 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
     y = stationY1;
     do
     {
-        x += TileDirectionDelta[direction].x;
-        y += TileDirectionDelta[direction].y;
+        x += CoordsDirectionDelta[direction].x;
+        y += CoordsDirectionDelta[direction].y;
 
         stationElement = find_station_element(x, y, z, direction, rideIndex);
         if (stationElement != nullptr)
@@ -786,8 +786,8 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
 
                 if (x != stationX0 || y != stationY0)
                 {
-                    x -= TileDirectionDelta[direction].x;
-                    y -= TileDirectionDelta[direction].y;
+                    x -= CoordsDirectionDelta[direction].x;
+                    y -= CoordsDirectionDelta[direction].y;
                     finaliseStationDone = false;
                 }
             }
@@ -845,8 +845,8 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
         stationY0 = y;
         byte_F441D1++;
 
-        x -= TileDirectionDelta[direction].x;
-        y -= TileDirectionDelta[direction].y;
+        x -= CoordsDirectionDelta[direction].x;
+        y -= CoordsDirectionDelta[direction].y;
     }
 
     // Search forwards for more station
@@ -854,8 +854,8 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
     y = stationY1;
     do
     {
-        x += TileDirectionDelta[direction].x;
-        y += TileDirectionDelta[direction].y;
+        x += CoordsDirectionDelta[direction].x;
+        y += CoordsDirectionDelta[direction].y;
 
         stationElement = find_station_element(x, y, z, direction, rideIndex);
         if (stationElement != nullptr)
@@ -922,15 +922,15 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
                 }
                 else
                 {
-                    if (x + TileDirectionDelta[direction].x == removeX &&
-                        y + TileDirectionDelta[direction].y == removeY)
+                    if (x + CoordsDirectionDelta[direction].x == removeX &&
+                        y + CoordsDirectionDelta[direction].y == removeY)
                     {
                         goto loc_6C4BF5;
                     }
                     else
                     {
-                        if (x - TileDirectionDelta[direction].x == removeX &&
-                            y - TileDirectionDelta[direction].y == removeY)
+                        if (x - CoordsDirectionDelta[direction].x == removeX &&
+                            y - CoordsDirectionDelta[direction].y == removeY)
                         {
                             targetTrackType = TRACK_ELEM_BEGIN_STATION;
                         }
@@ -955,8 +955,8 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
 
         if (x != stationX0 || y != stationY0)
         {
-            x -= TileDirectionDelta[direction].x;
-            y -= TileDirectionDelta[direction].y;
+            x -= CoordsDirectionDelta[direction].x;
+            y -= CoordsDirectionDelta[direction].y;
             finaliseStationDone = false;
         }
     }
@@ -1361,8 +1361,8 @@ static money32 track_place(sint32 rideIndex,
                         _bl &= ~(1 << dl);
                         sint32 temp_x         = x, temp_y = y;
                         sint32 temp_direction = (direction + dl) & 3;
-                        temp_x += TileDirectionDelta[temp_direction].x;
-                        temp_y += TileDirectionDelta[temp_direction].y;
+                        temp_x += CoordsDirectionDelta[temp_direction].x;
+                        temp_y += CoordsDirectionDelta[temp_direction].y;
                         temp_direction ^= (1 << 1);
                         wall_remove_intersecting_walls(temp_x, temp_y, baseZ, clearanceZ, temp_direction & 3);
                     }

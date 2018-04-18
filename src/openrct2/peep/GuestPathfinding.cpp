@@ -115,8 +115,8 @@ static sint32 peep_move_one_tile(uint8 direction, rct_peep * peep)
     assert(direction <= 3);
     sint16 x = peep->next_x;
     sint16 y = peep->next_y;
-    x += TileDirectionDelta[direction].x;
-    y += TileDirectionDelta[direction].y;
+    x += CoordsDirectionDelta[direction].x;
+    y += CoordsDirectionDelta[direction].y;
 
     if (x >= 8192 || y >= 8192)
     {
@@ -148,8 +148,8 @@ static sint32 guest_surface_path_finding(rct_peep * peep)
 
     if (!fence_in_the_way(x, y, z, z + 4, randDirection))
     {
-        x += TileDirectionDelta[randDirection].x;
-        y += TileDirectionDelta[randDirection].y;
+        x += CoordsDirectionDelta[randDirection].x;
+        y += CoordsDirectionDelta[randDirection].y;
         uint8 backwardsDirection = randDirection ^ (1 << 1);
 
         if (!fence_in_the_way(x, y, z, z + 4, backwardsDirection))
@@ -173,8 +173,8 @@ static sint32 guest_surface_path_finding(rct_peep * peep)
     y = peep->next_y;
     if (!fence_in_the_way(x, y, z, z + 4, randDirection))
     {
-        x += TileDirectionDelta[randDirection].x;
-        y += TileDirectionDelta[randDirection].y;
+        x += CoordsDirectionDelta[randDirection].x;
+        y += CoordsDirectionDelta[randDirection].y;
         uint8 backwardsDirection = randDirection ^ (1 << 1);
 
         if (!fence_in_the_way(x, y, z, z + 4, backwardsDirection))
@@ -193,8 +193,8 @@ static sint32 guest_surface_path_finding(rct_peep * peep)
     y = peep->next_y;
     if (!fence_in_the_way(x, y, z, z + 4, randDirection))
     {
-        x += TileDirectionDelta[randDirection].x;
-        y += TileDirectionDelta[randDirection].y;
+        x += CoordsDirectionDelta[randDirection].x;
+        y += CoordsDirectionDelta[randDirection].y;
         uint8 backwardsDirection = randDirection ^ (1 << 1);
 
         if (!fence_in_the_way(x, y, z, z + 4, backwardsDirection))
@@ -241,8 +241,8 @@ static uint8 footpath_element_next_in_direction(sint16 x, sint16 y, sint16 z, rc
         }
     }
 
-    x += TileDirectionDelta[chosenDirection].x;
-    y += TileDirectionDelta[chosenDirection].y;
+    x += CoordsDirectionDelta[chosenDirection].x;
+    y += CoordsDirectionDelta[chosenDirection].y;
     nextTileElement = map_get_first_element_at(x / 32, y / 32);
     do
     {
@@ -291,8 +291,8 @@ static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_tile
     if (level > 25)
         return PATH_SEARCH_LIMIT_REACHED;
 
-    x += TileDirectionDelta[chosenDirection].x;
-    y += TileDirectionDelta[chosenDirection].y;
+    x += CoordsDirectionDelta[chosenDirection].x;
+    y += CoordsDirectionDelta[chosenDirection].y;
     tileElement = map_get_first_element_at(x / 32, y / 32);
     if (tileElement == nullptr)
     {
@@ -478,7 +478,7 @@ static uint8 peep_pathfind_get_max_number_junctions(rct_peep * peep)
  * A junction is considered 'thin' if it has more than 2 edges
  * leading to/from non-wide path elements; edges leading to/from non-path
  * elements (e.g. ride/shop entrances) or ride queues are not counted,
- * since entrances and ride queues coming off a path should not result in
+ * since entrances and ride queues coming off a path should not queueEnd in
  * the path being considered a junction.
  */
 static bool path_is_thin_junction(rct_tile_element * path, sint16 x, sint16 y, uint8 z)
@@ -526,7 +526,7 @@ static bool path_is_thin_junction(rct_tile_element * path, sint16 x, sint16 y, u
  * steps as possible.
  *
  * Each tile is checked to determine if the goal is reached.
- * When the goal is not reached the search result is only updated at the END
+ * When the goal is not reached the search queueEnd is only updated at the END
  * of each search path (some map element that is not a path or a path at which
  * a search limit is reached), NOT at each step along the way.
  * This means that the search ignores thin paths that are "no through paths"
@@ -537,13 +537,13 @@ static bool path_is_thin_junction(rct_tile_element * path, sint16 x, sint16 y, u
  * according to the search limits.
  * Unlike an A* search, which tracks for each tile a heuristic score (a
  * function of the xyz distances to the goal) and cost of reaching that tile
- * (steps to the tile), a single best result "so far" (best heuristic score
+ * (steps to the tile), a single best queueEnd "so far" (best heuristic score
  * with least cost) is tracked via the score parameter.
  * With this approach, explicit loop detection is necessary to limit the
  * search space, and each alternate route through the same tile can be
- * returned as the best result, rather than only the shortest route with A*.
+ * returned as the best queueEnd, rather than only the shortest route with A*.
  *
- * The parameters that hold the best search result so far are:
+ * The parameters that hold the best search queueEnd so far are:
  *   - score - the least heuristic distance from the goal
  *   - endSteps - the least number of steps that achieve the score.
  *
@@ -578,13 +578,13 @@ static bool path_is_thin_junction(rct_tile_element * path, sint16 x, sint16 y, u
  *
  * The score is only updated when:
  *   - the goal is reached;
- *   - a wide tile is encountered with a better search result - the goal may
+ *   - a wide tile is encountered with a better search queueEnd - the goal may
  *     still be reachable from here (only if the current tile is also wide);
- *   - a junction is encountered with a better search result and
+ *   - a junction is encountered with a better search queueEnd and
  *     maxNumJunctions is exceeded - the goal may still be reachable from here;
  *   - returning from a recursive call if a search limit (i.e. either
  *     maxNumStep or maxTilesChecked) was reached and the current tile has a
- *     better search result and the goal may still be reachable from here
+ *     better search queueEnd and the goal may still be reachable from here
  *     (i.e. not a dead end path tile).
  *
  *  rct2: 0x0069A997
@@ -599,15 +599,15 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
     bool currentElementIsWide =
         (footpath_element_is_wide(currentTileElement) && !staff_can_ignore_wide_flag(peep, x, y, z, currentTileElement));
 
-    x += TileDirectionDelta[test_edge].x;
-    y += TileDirectionDelta[test_edge].y;
+    x += CoordsDirectionDelta[test_edge].x;
+    y += CoordsDirectionDelta[test_edge].y;
 
     ++counter;
     _peepPathFindTilesChecked--;
 
     /* If this is where the search started this is a search loop and the
      * current search path ends here.
-     * Return without updating the parameters (best result so far). */
+     * Return without updating the parameters (best queueEnd so far). */
     if ((_peepPathFindHistory[0].location.x == (uint8)(x >> 5)) && (_peepPathFindHistory[0].location.y == (uint8)(y >> 5)) &&
         (_peepPathFindHistory[0].location.z == z))
     {
@@ -628,7 +628,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         {
 /* The mechanic will leave his patrol area by taking
  * the test_edge so the current search path ends here.
- * Return without updating the parameters (best result so far). */
+ * Return without updating the parameters (best queueEnd so far). */
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
@@ -809,7 +809,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         /* If this map element is the search goal the current search path ends here. */
         if (new_score == 0)
         {
-            /* If the search result is better than the best so far (in the parameters),
+            /* If the search queueEnd is better than the best so far (in the parameters),
              * then update the parameters with this search before continuing to the next map element. */
             if (new_score < *endScore || (new_score == *endScore && counter < *endSteps))
             {
@@ -843,7 +843,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         /* At this point the map element tile is not the goal. */
 
         /* If this map element is not a path, the search cannot be continued.
-         * Continue to the next map element without updating the parameters (best result so far). */
+         * Continue to the next map element without updating the parameters (best queueEnd so far). */
         if (searchResult != PATH_SEARCH_DEAD_END && searchResult != PATH_SEARCH_THIN && searchResult != PATH_SEARCH_JUNCTION &&
             searchResult != PATH_SEARCH_WIDE)
         {
@@ -868,7 +868,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
              *
              * So, if the current path is also wide the goal could
              * still be reachable from here.
-             * If the search result is better than the best so far
+             * If the search queueEnd is better than the best so far
              * (in the parameters), then update the parameters with
              * this search before continuing to the next map element. */
             if (currentElementIsWide && (new_score < *endScore || (new_score == *endScore && counter < *endSteps)))
@@ -919,7 +919,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         sint32 next_test_edge = bitscanforward(edges);
 
         /* If there are no other edges the current search ends here.
-         * Continue to the next map element without updating the parameters (best result so far). */
+         * Continue to the next map element without updating the parameters (best queueEnd so far). */
         if (next_test_edge == -1)
         {
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -937,7 +937,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         {
             /* The current search ends here.
              * The path continues, so the goal could still be reachable from here.
-             * If the search result is better than the best so far (in the parameters),
+             * If the search queueEnd is better than the best so far (in the parameters),
              * then update the parameters with this search before continuing to the next map element. */
             if (new_score < *endScore || (new_score == *endScore && counter < *endSteps))
             {
@@ -1034,7 +1034,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                 if (pathLoop)
                 {
 /* Loop detected.  The current search path ends here.
- * Continue to the next map element without updating the parameters (best result so far). */
+ * Continue to the next map element without updating the parameters (best queueEnd so far). */
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                     if (gPathFindDebug)
                     {
@@ -1047,7 +1047,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                 /* If the junction search limit is reached, the
                  * current search path ends here. The goal may still
                  * be reachable from here.
-                 * If the search result is better than the best so far (in the parameters),
+                 * If the search queueEnd is better than the best so far (in the parameters),
                  * then update the parameters with this search before continuing to the next map element. */
                 if (_peepPathFindNumJunctions <= 0)
                 {
@@ -1147,7 +1147,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
     if (!found)
     {
 /* No map element could be found.
- * Return without updating the parameters (best result so far). */
+ * Return without updating the parameters (best queueEnd so far). */
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
         {
@@ -1732,10 +1732,10 @@ static sint32 guest_path_find_park_entrance(rct_peep * peep, rct_tile_element * 
  * In case where the map element at (x, y) is invalid or there is no entrance
  * or queue leading to it the function will not update its arguments.
  */
-static void get_ride_queue_end(sint16 * x, sint16 * y, sint16 * z)
+static void get_ride_queue_end(TileCoordsXYZ &loc)
 {
-    LocationXY16      result     = { 0, 0 };
-    rct_tile_element * tileElement = map_get_first_element_at(*x / 32, *y / 32);
+    TileCoordsXY      queueEnd     = { 0, 0 };
+    rct_tile_element * tileElement = map_get_first_element_at(loc.x, loc.y);
 
     if (tileElement == nullptr)
     {
@@ -1748,7 +1748,7 @@ static void get_ride_queue_end(sint16 * x, sint16 * y, sint16 * z)
         if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
 
-        if (*z != tileElement->base_height)
+        if (loc.z != tileElement->base_height)
             continue;
 
         found = true;
@@ -1763,16 +1763,16 @@ static void get_ride_queue_end(sint16 * x, sint16 * y, sint16 * z)
     rct_tile_element * firstPathElement = nullptr;
 
     sint16 baseZ = tileElement->base_height;
-    sint16 nextX = *x;
-    sint16 nextY = *y;
+    TileCoordsXY nextTile = { loc.x, loc.y };
+
     while (true)
     {
         if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH)
         {
             lastPathElement = tileElement;
-            result.x        = nextX;
-            result.y        = nextY;
-            // result.direction = direction;
+            // Update the current queue end
+            queueEnd        = nextTile;
+            // queueEnd.direction = direction;
             if (footpath_element_is_sloped(tileElement))
             {
                 if (footpath_element_get_slope_direction(tileElement) == direction)
@@ -1781,10 +1781,9 @@ static void get_ride_queue_end(sint16 * x, sint16 * y, sint16 * z)
                 }
             }
         }
-        nextX += TileDirectionDelta[direction].x;
-        nextY += TileDirectionDelta[direction].y;
+        nextTile += TileDirectionDelta[direction];
 
-        tileElement = map_get_first_element_at(nextX / 32, nextY / 32);
+        tileElement = map_get_first_element_at(nextTile.x, nextTile.y);
         found      = false;
         do
         {
@@ -1851,7 +1850,7 @@ static void get_ride_queue_end(sint16 * x, sint16 * y, sint16 * z)
         break;
     }
 
-    if ((uint8)*z == 0xFF)
+    if (loc.z == 0xFF)
         return;
 
     tileElement = lastPathElement;
@@ -1861,9 +1860,9 @@ static void get_ride_queue_end(sint16 * x, sint16 * y, sint16 * z)
     if (!footpath_element_is_queue(tileElement))
         return;
 
-    *x = result.x;
-    *y = result.y;
-    *z = tileElement->base_height;
+    loc.x = queueEnd.x;
+    loc.y = queueEnd.y;
+    loc.z = tileElement->base_height;
 }
 
 /**
@@ -1872,7 +1871,7 @@ static void get_ride_queue_end(sint16 * x, sint16 * y, sint16 * z)
  */
 sint32 guest_path_finding(rct_peep * peep)
 {
-    sint16 x, y, z;
+    //sint16 x, y, z;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     pathfind_logging_enable(peep);
@@ -1887,11 +1886,9 @@ sint32 guest_path_finding(rct_peep * peep)
         return guest_surface_path_finding(peep);
     }
 
-    x = peep->next_x;
-    y = peep->next_y;
-    z = peep->next_z;
+    TileCoordsXYZ loc = { peep->next_x / 32, peep->next_y / 32, peep->next_z / 8};
 
-    rct_tile_element * tileElement = map_get_path_element_at(x / 32, y / 32, z);
+    rct_tile_element * tileElement = map_get_path_element_at(loc.x, loc.y, loc.z);
     if (tileElement == nullptr)
     {
         return 1;
@@ -2140,21 +2137,21 @@ sint32 guest_path_finding(rct_peep * peep)
     {
         // closestStationNum is always 0 here.
         LocationXY8 entranceXY = ride->station_starts[closestStationNum];
-        x = entranceXY.x * 32;
-        y = entranceXY.y * 32;
-        z = ride->station_heights[closestStationNum];
+        loc.x = entranceXY.x;
+        loc.y = entranceXY.y;
+        loc.z = ride->station_heights[closestStationNum];
     }
     else
     {
         TileCoordsXYZD entranceXYZD = ride_get_entrance_location(rideIndex, closestStationNum);
-        x = entranceXYZD.x * 32;
-        y = entranceXYZD.y * 32;
-        z = entranceXYZD.z;
+        loc.x = entranceXYZD.x;
+        loc.y = entranceXYZD.y;
+        loc.z = entranceXYZD.z;
     }
 
-    get_ride_queue_end(&x, &y, &z);
+    get_ride_queue_end(loc);
 
-    gPeepPathFindGoalPosition        = { x, y, z };
+    gPeepPathFindGoalPosition        = { loc.x * 32, loc.y * 32, loc.z };
     gPeepPathFindIgnoreForeignQueues = true;
 
     direction = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);

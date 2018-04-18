@@ -566,8 +566,8 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint3
             rotation |= 4;
         }
         if (!(rotation & 4)) {
-            origin.x += TileDirectionDelta[rotation].x;
-            origin.y += TileDirectionDelta[rotation].y;
+            origin.x += CoordsDirectionDelta[rotation].x;
+            origin.y += CoordsDirectionDelta[rotation].y;
         }
         trackElement++;
     }
