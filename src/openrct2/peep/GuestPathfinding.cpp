@@ -1171,7 +1171,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
  *
  *  rct2: 0x0069A5F0
  */
-sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * peep)
+sint32 peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep * peep)
 {
     // The max number of thin junctions searched - a per-search-path limit.
     _peepPathFindMaxJunctions = peep_pathfind_get_max_number_junctions(peep);
@@ -1190,12 +1190,12 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
     if (gPathFindDebug)
     {
         log_verbose("Choose direction for %s for goal %d,%d,%d from %d,%d,%d", gPathFindDebugPeepName, goal.x, goal.y, goal.z,
-                    x >> 5, y >> 5, z);
+            loc.x, loc.y, loc.z);
     }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
     // Get the path element at this location
-    rct_tile_element * dest_tile_element = map_get_first_element_at(x / 32, y / 32);
+    rct_tile_element * dest_tile_element = map_get_first_element_at(loc.x, loc.y);
     /* Where there are multiple matching map elements placed with zero
      * clearance, save the first one for later use to determine the path
      * slope - this maintains the original behaviour (which only processes
@@ -1218,7 +1218,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
     bool  isThin          = false;
     do
     {
-        if (dest_tile_element->base_height != z)
+        if (dest_tile_element->base_height != loc.z)
             continue;
         if (tile_element_get_type(dest_tile_element) != TILE_ELEMENT_TYPE_PATH)
             continue;
@@ -1234,7 +1234,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
          * check if the combination is 'thin'!
          * The junction is considered 'thin' simply if any of the
          * overlaid path elements there is a 'thin junction'. */
-        isThin = isThin || path_is_thin_junction(dest_tile_element, x, y, z);
+        isThin = isThin || path_is_thin_junction(dest_tile_element, loc.x * 32, loc.y * 32, loc.z);
 
         // Collect the permitted edges of ALL matching path elements at this location.
         permitted_edges |= path_get_permitted_edges(dest_tile_element);
@@ -1264,8 +1264,8 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
          * directions it has not yet tried. */
         for (auto &pathfindHistory : peep->pathfind_history)
         {
-            if (pathfindHistory.x == x / 32 && pathfindHistory.y == y / 32 &&
-                pathfindHistory.z == z)
+            if (pathfindHistory.x == loc.x && pathfindHistory.y == loc.y &&
+                pathfindHistory.z == loc.z)
             {
 
                 /* Fix broken pathfind_history[i].direction
@@ -1281,7 +1281,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 if (gPathFindDebug)
                 {
-                    log_verbose("Getting untried edges from pf_history for %d,%d,%d:  %s,%s,%s,%s", x >> 5, y >> 5, z,
+                    log_verbose("Getting untried edges from pf_history for %d,%d,%d:  %s,%s,%s,%s", loc.x, loc.y, loc.z,
                                 (edges & 1) ? "0" : "-", (edges & 2) ? "1" : "-", (edges & 4) ? "2" : "-",
                                 (edges & 8) ? "3" : "-");
                 }
@@ -1303,7 +1303,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                     if (gPathFindDebug)
                     {
-                        log_verbose("All edges tried for %d,%d,%d - resetting to all untried", x >> 5, y >> 5, z);
+                        log_verbose("All edges tried for %d,%d,%d - resetting to all untried", loc.x, loc.y, loc.z);
                     }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 }
@@ -1352,7 +1352,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
 
         if (gPathFindDebug)
         {
-            log_verbose("Pathfind start for goal %d,%d,%d from %d,%d,%d", goal.x, goal.y, goal.z, x >> 5, y >> 5, z);
+            log_verbose("Pathfind start for goal %d,%d,%d from %d,%d,%d", goal.x, goal.y, goal.z, loc.x, loc.y, loc.z);
         }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
@@ -1364,7 +1364,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
         for (sint32 test_edge = chosen_edge; test_edge != -1; test_edge = bitscanforward(edges))
         {
             edges &= ~(1 << test_edge);
-            uint8 height = z;
+            uint8 height = loc.z;
 
             if (footpath_element_is_sloped(first_tile_element) &&
                 footpath_element_get_slope_direction(first_tile_element) == test_edge)
@@ -1385,9 +1385,9 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
             /* The pathfinding will only use elements
              * 1.._peepPathFindMaxJunctions, so the starting point
              * is placed in element 0 */
-            _peepPathFindHistory[0].location.x = (uint8)(x >> 5);
-            _peepPathFindHistory[0].location.y = (uint8)(y >> 5);
-            _peepPathFindHistory[0].location.z = z;
+            _peepPathFindHistory[0].location.x = (uint8)(loc.x);
+            _peepPathFindHistory[0].location.y = (uint8)(loc.y);
+            _peepPathFindHistory[0].location.z = loc.z;
             _peepPathFindHistory[0].direction  = 0xF;
 
             uint16 score = 0xFFFF;
@@ -1427,7 +1427,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
-            peep_pathfind_heuristic_search(x, y, height, peep, first_tile_element, inPatrolArea, 0, &score, test_edge,
+            peep_pathfind_heuristic_search(loc.x * 32, loc.y * 32, height, peep, first_tile_element, inPatrolArea, 0, &score, test_edge,
                                            &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -1495,8 +1495,8 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
     {
         for (sint32 i = 0; i < 4; ++i)
         {
-            if (peep->pathfind_history[i].x == x >> 5 && peep->pathfind_history[i].y == y >> 5 &&
-                peep->pathfind_history[i].z == z)
+            if (peep->pathfind_history[i].x == loc.x && peep->pathfind_history[i].y == loc.y &&
+                peep->pathfind_history[i].z == loc.z)
             {
                 /* Peep remembers this junction, so remove the
                  * chosen_edge from those left to try. */
@@ -1509,7 +1509,7 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
                 {
                     log_verbose(
                         "Updating existing pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i,
-                        x >> 5, y >> 5, z, peep->direction ^ 2, chosen_edge);
+                        loc.x, loc.y, loc.z, peep->direction ^ 2, chosen_edge);
                 }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 return chosen_edge;
@@ -1520,9 +1520,9 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
          * and remember this junction. */
         sint32 i = peep->pathfind_goal.direction++;
         peep->pathfind_goal.direction &= 3;
-        peep->pathfind_history[i].x         = x >> 5;
-        peep->pathfind_history[i].y         = y >> 5;
-        peep->pathfind_history[i].z         = z;
+        peep->pathfind_history[i].x         = (uint8)loc.x;
+        peep->pathfind_history[i].y         = (uint8)loc.y;
+        peep->pathfind_history[i].z         = loc.z;
         peep->pathfind_history[i].direction = permitted_edges;
         /* Remove the chosen_edge from those left to try. */
         peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
@@ -1532,8 +1532,8 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (gPathFindDebug)
         {
-            log_verbose("Storing new pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i, x >> 5,
-                        y >> 5, z, peep->direction ^ 2, chosen_edge);
+            log_verbose("Storing new pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i, loc.x,
+                loc.y, loc.z, peep->direction ^ 2, chosen_edge);
         }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     }
@@ -1588,7 +1588,7 @@ static sint32 guest_path_find_entering_park(rct_peep * peep, rct_tile_element * 
     gPeepPathFindIgnoreForeignQueues = true;
     gPeepPathFindQueueRideIndex      = 255;
 
-    sint32 chosenDirection = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
+    sint32 chosenDirection = peep_pathfind_choose_direction({ peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);
 
     if (chosenDirection == -1)
         return guest_path_find_aimless(peep, edges);
@@ -1650,7 +1650,7 @@ static sint32 guest_path_find_leaving_park(rct_peep * peep, rct_tile_element * t
 
     gPeepPathFindIgnoreForeignQueues = true;
     gPeepPathFindQueueRideIndex      = 255;
-    direction                        = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
+    direction                        = peep_pathfind_choose_direction({ peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);
     if (direction == 0xFF)
         return guest_path_find_aimless(peep, edges);
     else
@@ -1710,7 +1710,7 @@ static sint32 guest_path_find_park_entrance(rct_peep * peep, rct_tile_element * 
     pathfind_logging_enable(peep);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-    sint32 chosenDirection = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
+    sint32 chosenDirection = peep_pathfind_choose_direction({ peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     pathfind_logging_disable();
@@ -2149,10 +2149,10 @@ sint32 guest_path_finding(rct_peep * peep)
 
     get_ride_queue_end(loc);
 
-    gPeepPathFindGoalPosition        = { loc.x * 32, loc.y * 32, loc.z };
+    gPeepPathFindGoalPosition        = { (sint16) loc.x * 32, (sint16) loc.y * 32, (sint16) loc.z };
     gPeepPathFindIgnoreForeignQueues = true;
 
-    direction = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
+    direction = peep_pathfind_choose_direction({ peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);
 
     if (direction == -1)
     {

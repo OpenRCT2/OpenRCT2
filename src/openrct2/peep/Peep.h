@@ -971,7 +971,7 @@ void peep_handle_easteregg_name(rct_peep * peep);
 void game_command_set_guest_name(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
                                  sint32 * ebp);
 
-sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * peep);
+sint32 peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep * peep);
 void   peep_reset_pathfind_goal(rct_peep * peep);
 
 bool is_valid_path_z_and_direction(rct_tile_element * tileElement, sint32 currentZ, sint32 currentDirection);

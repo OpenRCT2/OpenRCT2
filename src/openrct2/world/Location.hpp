@@ -71,6 +71,7 @@ struct TileCoordsXY
     {
         x += rhs.x;
         y += rhs.y;
+        return *this;
     }
     sint32 x = 0, y = 0;
 };
@@ -89,6 +90,7 @@ struct TileCoordsXYZ
     {
         x += rhs.x;
         y += rhs.y;
+        return *this;
     }
     sint32 x = 0, y = 0, z = 0;
 };
