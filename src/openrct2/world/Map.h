@@ -83,7 +83,8 @@ enum
     CREATE_CROSSING_MODE_PATH_OVER_TRACK,
 };
 
-extern const CoordsXY TileDirectionDelta[];
+extern const CoordsXY CoordsDirectionDelta[];
+extern const TileCoordsXY TileDirectionDelta[];
 extern const money32 TerrainPricing[];
 
 extern uint16 gWidePathTileLoopX;

@@ -188,8 +188,8 @@ static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 ba
             // Peep, looking at scenery
             if (!(gCurrentTicks & 0x3FF) && game_is_not_paused()) {
                 sint32 direction = tile_element_get_direction(tileElement);
-                sint32 x2 = x - TileDirectionDelta[direction].x;
-                sint32 y2 = y - TileDirectionDelta[direction].y;
+                sint32 x2 = x - CoordsDirectionDelta[direction].x;
+                sint32 y2 = y - CoordsDirectionDelta[direction].y;
 
                 uint16 spriteIdx = sprite_get_first_in_quadrant(x2, y2);
                 for (; spriteIdx != SPRITE_INDEX_NULL; spriteIdx = sprite->unknown.next_in_quadrant) {

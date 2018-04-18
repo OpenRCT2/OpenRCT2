@@ -673,8 +673,8 @@ void litter_create(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 type)
     if (gCheatsDisableLittering)
         return;
 
-    x += TileDirectionDelta[direction >> 3].x / 8;
-    y += TileDirectionDelta[direction >> 3].y / 8;
+    x += CoordsDirectionDelta[direction >> 3].x / 8;
+    y += CoordsDirectionDelta[direction >> 3].y / 8;
 
     if (!litter_can_be_at(x, y, z))
         return;

@@ -1247,10 +1247,10 @@ static void window_map_place_park_entrance_tool_update(sint32 x, sint32 y)
     sideDirection = (direction + 1) & 3;
     gMapSelectionTiles[0].x = mapX;
     gMapSelectionTiles[0].y = mapY;
-    gMapSelectionTiles[1].x = mapX + TileDirectionDelta[sideDirection].x;
-    gMapSelectionTiles[1].y = mapY + TileDirectionDelta[sideDirection].y;
-    gMapSelectionTiles[2].x = mapX - TileDirectionDelta[sideDirection].x;
-    gMapSelectionTiles[2].y = mapY - TileDirectionDelta[sideDirection].y;
+    gMapSelectionTiles[1].x = mapX + CoordsDirectionDelta[sideDirection].x;
+    gMapSelectionTiles[1].y = mapY + CoordsDirectionDelta[sideDirection].y;
+    gMapSelectionTiles[2].x = mapX - CoordsDirectionDelta[sideDirection].x;
+    gMapSelectionTiles[2].y = mapY - CoordsDirectionDelta[sideDirection].y;
     gMapSelectionTiles[3].x = -1;
     gMapSelectionTiles[3].y = -1;
 

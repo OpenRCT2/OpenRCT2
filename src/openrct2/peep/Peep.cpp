@@ -2585,8 +2585,8 @@ static void peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, rct
                 }
             }
 
-            peep->destination_x += TileDirectionDelta[peep->direction].x;
-            peep->destination_y += TileDirectionDelta[peep->direction].y;
+            peep->destination_x += CoordsDirectionDelta[peep->direction].x;
+            peep->destination_y += CoordsDirectionDelta[peep->direction].y;
             peep->destination_tolerance = 9;
             peep->Invalidate();
             sprite_move(x, y, peep->z, (rct_sprite *)peep);
@@ -2635,8 +2635,8 @@ static void peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, rct
         sint16 z          = gParkEntrances[entranceIndex].z / 8;
         entranceDirection = gParkEntrances[entranceIndex].direction;
 
-        sint16 next_x = (x & 0xFFE0) + TileDirectionDelta[entranceDirection].x;
-        sint16 next_y = (y & 0xFFE0) + TileDirectionDelta[entranceDirection].y;
+        sint16 next_x = (x & 0xFFE0) + CoordsDirectionDelta[entranceDirection].x;
+        sint16 next_y = (y & 0xFFE0) + CoordsDirectionDelta[entranceDirection].y;
 
         // Make sure there is a path right behind the entrance, otherwise turn around
         bool               found           = false;
@@ -2729,8 +2729,8 @@ static void peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, rct
         window_invalidate_by_number(WC_PARK_INFORMATION, 0);
 
         peep->var_37 = 1;
-        peep->destination_x += TileDirectionDelta[peep->direction].x;
-        peep->destination_y += TileDirectionDelta[peep->direction].y;
+        peep->destination_x += CoordsDirectionDelta[peep->direction].x;
+        peep->destination_y += CoordsDirectionDelta[peep->direction].y;
         peep->destination_tolerance = 7;
 
         peep->Invalidate();

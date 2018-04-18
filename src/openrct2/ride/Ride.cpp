@@ -543,8 +543,8 @@ bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 ri
     Ride* ride = get_ride(rideIndex);
 
     if (!(direction_start & (1 << 2))){
-        x += TileDirectionDelta[direction_start].x;
-        y += TileDirectionDelta[direction_start].y;
+        x += CoordsDirectionDelta[direction_start].x;
+        y += CoordsDirectionDelta[direction_start].y;
     }
 
     rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
@@ -665,8 +665,8 @@ bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 ride
     direction ^= (1 << 1);
 
     if (!(direction & (1 << 2))){
-        x += TileDirectionDelta[direction].x;
-        y += TileDirectionDelta[direction].y;
+        x += CoordsDirectionDelta[direction].x;
+        y += CoordsDirectionDelta[direction].y;
     }
 
     rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
@@ -1391,8 +1391,8 @@ void ride_remove_provisional_track_piece()
     {
         direction = _unkF440C5.direction;
         if (!(direction & 4)) {
-            x -= TileDirectionDelta[direction].x;
-            y -= TileDirectionDelta[direction].y;
+            x -= CoordsDirectionDelta[direction].x;
+            y -= CoordsDirectionDelta[direction].y;
         }
         CoordsXYE next_track;
         if (track_block_get_next_from_zero(x, y, z, rideIndex, direction, &next_track, &z, &direction)) {
@@ -3215,8 +3215,8 @@ static sint32 ride_entrance_exit_is_reachable(TileCoordsXYZD coordinates)
 
     x *= 32;
     y *= 32;
-    x -= TileDirectionDelta[face_direction].x;
-    y -= TileDirectionDelta[face_direction].y;
+    x -= CoordsDirectionDelta[face_direction].x;
+    y -= CoordsDirectionDelta[face_direction].y;
     x /= 32;
     y /= 32;
 
@@ -3311,8 +3311,8 @@ static void ride_shop_connected(Ride* ride, sint32 ride_idx)
         // Flip direction north<->south, east<->west
         uint8 face_direction = count ^ 2;
 
-        sint32 y2 = y - TileDirectionDelta[face_direction].y;
-        sint32 x2 = x - TileDirectionDelta[face_direction].x;
+        sint32 y2 = y - CoordsDirectionDelta[face_direction].y;
+        sint32 x2 = x - CoordsDirectionDelta[face_direction].x;
 
         if (map_coord_is_connected(x2 / 32, y2 / 32, tileElement->base_height, face_direction))
             return;
@@ -4869,8 +4869,8 @@ static bool ride_create_vehicles(Ride *ride, sint32 rideIndex, CoordsXYE *elemen
 
     //
     if (ride->mode == RIDE_MODE_STATION_TO_STATION) {
-        x = element->x - TileDirectionDelta[direction].x;
-        y = element->y - TileDirectionDelta[direction].y;
+        x = element->x - CoordsDirectionDelta[direction].x;
+        y = element->y - CoordsDirectionDelta[direction].y;
 
         tileElement = map_get_first_element_at(x >> 5, y >> 5);
         do {
@@ -5896,8 +5896,8 @@ void game_command_callback_ride_construct_placed_back(
     y = _currentTrackBeginY;
     z = _currentTrackBeginZ;
     if (!(trackDirection & 4)) {
-        x += TileDirectionDelta[trackDirection].x;
-        y += TileDirectionDelta[trackDirection].y;
+        x += CoordsDirectionDelta[trackDirection].x;
+        y += CoordsDirectionDelta[trackDirection].y;
     }
 
     if (track_block_get_previous_from_zero(x, y, z, _currentRideIndex, trackDirection, &trackBeginEnd)) {
@@ -5935,8 +5935,8 @@ void game_command_callback_ride_construct_placed_front(
     y = _currentTrackBeginY;
     z = _currentTrackBeginZ;
     if (!(trackDirection & 4)) {
-        x -= TileDirectionDelta[trackDirection].x;
-        y -= TileDirectionDelta[trackDirection].y;
+        x -= CoordsDirectionDelta[trackDirection].x;
+        y -= CoordsDirectionDelta[trackDirection].y;
     }
 
     CoordsXYE next_track;
@@ -6706,8 +6706,8 @@ void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sin
 
         for (sint32 i = 0; i < MAX_STATIONS; i++)
         {
-            mapX = _unkF44188.x + TileDirectionDelta[direction].x;
-            mapY = _unkF44188.y + TileDirectionDelta[direction].y;
+            mapX = _unkF44188.x + CoordsDirectionDelta[direction].x;
+            mapY = _unkF44188.y + CoordsDirectionDelta[direction].y;
             if (mapX >= 0 && mapY >= 0 && mapX < (256 * 32) && mapY < (256 * 32))
             {
                 tileElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
@@ -6762,8 +6762,8 @@ void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sin
         {
             entranceMaxX = mapX;
             entranceMaxY = mapY;
-            mapX -= TileDirectionDelta[direction].x;
-            mapY -= TileDirectionDelta[direction].y;
+            mapX -= CoordsDirectionDelta[direction].x;
+            mapY -= CoordsDirectionDelta[direction].y;
             tileElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
             bool goToNextTile = false;
 
@@ -7516,8 +7516,8 @@ void sub_6CB945(sint32 rideIndex)
 
             while (true) {
                 if (direction != 0xFF) {
-                    location.x -= TileDirectionDelta[direction].x;
-                    location.y -= TileDirectionDelta[direction].y;
+                    location.x -= CoordsDirectionDelta[direction].x;
+                    location.y -= CoordsDirectionDelta[direction].y;
                 }
                 tileElement = map_get_first_element_at(location.x >> 5, location.y >> 5);
 
@@ -7625,8 +7625,8 @@ void sub_6CB945(sint32 rideIndex)
             if (tileElement->properties.entrance.type > ENTRANCE_TYPE_RIDE_EXIT) continue;
 
             CoordsXY nextLocation = location;
-            nextLocation.x += TileDirectionDelta[tile_element_get_direction(tileElement)].x;
-            nextLocation.y += TileDirectionDelta[tile_element_get_direction(tileElement)].y;
+            nextLocation.x += CoordsDirectionDelta[tile_element_get_direction(tileElement)].x;
+            nextLocation.y += CoordsDirectionDelta[tile_element_get_direction(tileElement)].y;
 
             bool shouldRemove = true;
             rct_tile_element *trackElement = map_get_first_element_at(nextLocation.x >> 5, nextLocation.y >> 5);
@@ -7994,8 +7994,8 @@ static bool check_for_adjacent_station(sint32 x, sint32 y, sint32 z, uint8 direc
     sint32 adjY = y;
     for (uint32 i = 0; i <= RIDE_ADJACENCY_CHECK_DISTANCE; i++)
     {
-        adjX += TileDirectionDelta[direction].x;
-        adjY += TileDirectionDelta[direction].y;
+        adjX += CoordsDirectionDelta[direction].x;
+        adjY += CoordsDirectionDelta[direction].y;
         rct_tile_element * stationElement = get_station_platform(adjX, adjY, z, 2);
         if (stationElement != nullptr)
         {

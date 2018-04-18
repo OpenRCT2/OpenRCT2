@@ -491,12 +491,12 @@ void viewport_interaction_remove_park_entrance(rct_tile_element *tileElement, si
     sint32 rotation = tile_element_get_direction_with_offset(tileElement, 1);
     switch (tileElement->properties.entrance.index & 0x0F) {
     case 1:
-        x += TileDirectionDelta[rotation].x;
-        y += TileDirectionDelta[rotation].y;
+        x += CoordsDirectionDelta[rotation].x;
+        y += CoordsDirectionDelta[rotation].y;
         break;
     case 2:
-        x -= TileDirectionDelta[rotation].x;
-        y -= TileDirectionDelta[rotation].y;
+        x -= CoordsDirectionDelta[rotation].x;
+        y -= CoordsDirectionDelta[rotation].y;
         break;
     }
     gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;

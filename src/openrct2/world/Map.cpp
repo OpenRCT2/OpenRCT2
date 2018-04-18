@@ -53,7 +53,7 @@
 /**
  * Replaces 0x00993CCC, 0x00993CCE
  */
-const CoordsXY TileDirectionDelta[] = {
+const CoordsXY CoordsDirectionDelta[] = {
     { -32,   0 },
     {   0, +32 },
     { +32,   0 },
@@ -62,6 +62,17 @@ const CoordsXY TileDirectionDelta[] = {
     { +32, +32 },
     { +32, -32 },
     { -32, -32 }
+};
+
+const TileCoordsXY TileDirectionDelta[] = {
+    { -1,  0 },
+    {  0, +1 },
+    { +1,  0 },
+    {  0, -1 },
+    { -1, +1 },
+    { +1, +1 },
+    { +1, -1 },
+    { -1, -1 }
 };
 
 /** rct2: 0x0097B8B8 */

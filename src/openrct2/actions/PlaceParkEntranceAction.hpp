@@ -104,13 +104,13 @@ public:
         {
             if (index == 1)
             {
-                entranceLoc.x += TileDirectionDelta[(_direction - 1) & 0x3].x;
-                entranceLoc.y += TileDirectionDelta[(_direction - 1) & 0x3].y;
+                entranceLoc.x += CoordsDirectionDelta[(_direction - 1) & 0x3].x;
+                entranceLoc.y += CoordsDirectionDelta[(_direction - 1) & 0x3].y;
             }
             else if (index == 2)
             {
-                entranceLoc.x += TileDirectionDelta[(_direction + 1) & 0x3].x * 2;
-                entranceLoc.y += TileDirectionDelta[(_direction + 1) & 0x3].y * 2;
+                entranceLoc.x += CoordsDirectionDelta[(_direction + 1) & 0x3].x * 2;
+                entranceLoc.y += CoordsDirectionDelta[(_direction + 1) & 0x3].y * 2;
             }
 
             if (!gCheatsDisableClearanceChecks)
@@ -166,13 +166,13 @@ public:
         {
             if (index == 1)
             {
-                entranceLoc.x += TileDirectionDelta[(_direction - 1) & 0x3].x;
-                entranceLoc.y += TileDirectionDelta[(_direction - 1) & 0x3].y;
+                entranceLoc.x += CoordsDirectionDelta[(_direction - 1) & 0x3].x;
+                entranceLoc.y += CoordsDirectionDelta[(_direction - 1) & 0x3].y;
             }
             else if (index == 2)
             {
-                entranceLoc.x += TileDirectionDelta[(_direction + 1) & 0x3].x * 2;
-                entranceLoc.y += TileDirectionDelta[(_direction + 1) & 0x3].y * 2;
+                entranceLoc.x += CoordsDirectionDelta[(_direction + 1) & 0x3].x * 2;
+                entranceLoc.y += CoordsDirectionDelta[(_direction + 1) & 0x3].y * 2;
             }
 
             if (!(flags & GAME_COMMAND_FLAG_GHOST))

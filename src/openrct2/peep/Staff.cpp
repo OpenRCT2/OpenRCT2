@@ -628,8 +628,8 @@ bool staff_is_location_on_patrol_edge(rct_peep * mechanic, sint32 x, sint32 y)
     sint32 neighbourDir = 0;
     while (!onZoneEdge && neighbourDir <= 7)
     {
-        sint32 neighbourX = x + TileDirectionDelta[neighbourDir].x;
-        sint32 neighbourY = y + TileDirectionDelta[neighbourDir].y;
+        sint32 neighbourX = x + CoordsDirectionDelta[neighbourDir].x;
+        sint32 neighbourY = y + CoordsDirectionDelta[neighbourDir].y;
         onZoneEdge        = !staff_is_location_in_patrol(mechanic, neighbourX, neighbourY);
         neighbourDir++;
     }
@@ -674,8 +674,8 @@ bool staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z, r
     uint8 widecount = 0;
     for (sint32 adjac_dir = 0; adjac_dir <= 3; adjac_dir++)
     {
-        sint32 adjac_x = x + TileDirectionDelta[adjac_dir].x;
-        sint32 adjac_y = y + TileDirectionDelta[adjac_dir].y;
+        sint32 adjac_x = x + CoordsDirectionDelta[adjac_dir].x;
+        sint32 adjac_y = y + CoordsDirectionDelta[adjac_dir].y;
         uint8  adjac_z = z;
 
         /* Ignore adjacent tiles outside the patrol zone. */
@@ -905,8 +905,8 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
         nextDirection = x_diff < 0 ? 0 : 2;
     }
 
-    CoordsXY nextTile = { static_cast<sint32>((nearestLitter->x & 0xFFE0) - TileDirectionDelta[nextDirection].x),
-                          static_cast<sint32>((nearestLitter->y & 0xFFE0) - TileDirectionDelta[nextDirection].y) };
+    CoordsXY nextTile = { static_cast<sint32>((nearestLitter->x & 0xFFE0) - CoordsDirectionDelta[nextDirection].x),
+                          static_cast<sint32>((nearestLitter->y & 0xFFE0) - CoordsDirectionDelta[nextDirection].y) };
 
     sint16 nextZ = ((peep->z + 8) & 0xFFF0) / 8;
 
@@ -923,8 +923,8 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
         }
     } while (!tile_element_is_last_for_tile(tileElement++));
 
-    nextTile.x = (peep->x & 0xFFE0) + TileDirectionDelta[nextDirection].x;
-    nextTile.y = (peep->y & 0xFFE0) + TileDirectionDelta[nextDirection].y;
+    nextTile.x = (peep->x & 0xFFE0) + CoordsDirectionDelta[nextDirection].x;
+    nextTile.y = (peep->y & 0xFFE0) + CoordsDirectionDelta[nextDirection].y;
 
     tileElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
 
@@ -976,8 +976,8 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep * peep, uint8 vali
             continue;
         }
 
-        CoordsXY chosenTile = { static_cast<sint32>(peep->next_x + TileDirectionDelta[chosenDirection].x),
-                                static_cast<sint32>(peep->next_y + TileDirectionDelta[chosenDirection].y) };
+        CoordsXY chosenTile = { static_cast<sint32>(peep->next_x + CoordsDirectionDelta[chosenDirection].x),
+                                static_cast<sint32>(peep->next_y + CoordsDirectionDelta[chosenDirection].y) };
 
         if (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
             continue;
@@ -1011,8 +1011,8 @@ static sint32 staff_handyman_direction_rand_surface(rct_peep * peep, uint8 valid
         if (!(validDirections & (1 << direction)))
             continue;
 
-        LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
-                                static_cast<sint16>(peep->next_y + TileDirectionDelta[direction].y) };
+        LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + CoordsDirectionDelta[direction].x),
+                                static_cast<sint16>(peep->next_y + CoordsDirectionDelta[direction].y) };
 
         if (map_surface_is_blocked(chosenTile.x, chosenTile.y))
             continue;
@@ -1097,17 +1097,17 @@ static bool staff_path_finding_handyman(rct_peep * peep)
         }
     }
 
-    // countof(TileDirectionDelta)
+    // countof(CoordsDirectionDelta)
     assert(direction < 8);
 
-    LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
-                            static_cast<sint16>(peep->next_y + TileDirectionDelta[direction].y) };
+    LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + CoordsDirectionDelta[direction].x),
+                            static_cast<sint16>(peep->next_y + CoordsDirectionDelta[direction].y) };
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
     {
         direction    = staff_handyman_direction_rand_surface(peep, validDirections);
-        chosenTile.x = peep->next_x + TileDirectionDelta[direction].x;
-        chosenTile.y = peep->next_y + TileDirectionDelta[direction].y;
+        chosenTile.x = peep->next_x + CoordsDirectionDelta[direction].x;
+        chosenTile.y = peep->next_y + CoordsDirectionDelta[direction].y;
     }
 
     peep->direction             = direction;
@@ -1149,8 +1149,8 @@ static uint8 staff_direction_surface(rct_peep * peep, uint8 initialDirection)
         if (fence_in_the_way(peep->next_x, peep->next_y, peep->next_z, peep->next_z + 4, direction ^ (1 << 1)) == true)
             continue;
 
-        LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
-                                static_cast<sint16>(peep->next_y + TileDirectionDelta[direction].y) };
+        LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + CoordsDirectionDelta[direction].x),
+                                static_cast<sint16>(peep->next_y + CoordsDirectionDelta[direction].y) };
 
         if (map_surface_is_blocked(chosenTile.x, chosenTile.y) == false)
         {
@@ -1331,17 +1331,17 @@ static bool staff_path_finding_mechanic(rct_peep * peep)
         direction = staff_mechanic_direction_path(peep, validDirections, pathElement);
     }
 
-    // countof(TileDirectionDelta)
+    // countof(CoordsDirectionDelta)
     assert(direction < 8);
 
-    LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
-                            static_cast<sint16>(peep->next_y + TileDirectionDelta[direction].y) };
+    LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + CoordsDirectionDelta[direction].x),
+                            static_cast<sint16>(peep->next_y + CoordsDirectionDelta[direction].y) };
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
     {
         direction    = staff_mechanic_direction_surface(peep);
-        chosenTile.x = peep->next_x + TileDirectionDelta[direction].x;
-        chosenTile.y = peep->next_y + TileDirectionDelta[direction].y;
+        chosenTile.x = peep->next_x + CoordsDirectionDelta[direction].x;
+        chosenTile.y = peep->next_y + CoordsDirectionDelta[direction].y;
     }
 
     peep->direction             = direction;
@@ -1419,14 +1419,14 @@ static bool staff_path_finding_misc(rct_peep * peep)
         direction = staff_direction_path(peep, validDirections, pathElement);
     }
 
-    LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
-                            static_cast<sint16>(peep->next_y + TileDirectionDelta[direction].y) };
+    LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + CoordsDirectionDelta[direction].x),
+                            static_cast<sint16>(peep->next_y + CoordsDirectionDelta[direction].y) };
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
     {
         direction    = staff_direction_surface(peep, scenario_rand() & 3);
-        chosenTile.x = peep->next_x + TileDirectionDelta[direction].x;
-        chosenTile.y = peep->next_y + TileDirectionDelta[direction].y;
+        chosenTile.x = peep->next_x + CoordsDirectionDelta[direction].x;
+        chosenTile.y = peep->next_y + CoordsDirectionDelta[direction].y;
     }
 
     peep->direction             = direction;
@@ -1717,8 +1717,8 @@ void rct_peep::UpdateWatering()
             return;
         }
 
-        sint32 actionX = next_x + TileDirectionDelta[var_37].x;
-        sint32 actionY = next_y + TileDirectionDelta[var_37].y;
+        sint32 actionX = next_x + CoordsDirectionDelta[var_37].x;
+        sint32 actionY = next_y + CoordsDirectionDelta[var_37].y;
 
         rct_tile_element * tile_element = map_get_first_element_at(actionX / 32, actionY / 32);
 
@@ -2121,8 +2121,8 @@ static sint32 peep_update_patrolling_find_watering(rct_peep * peep)
     {
         chosen_position &= 7;
 
-        sint32 x = peep->next_x + TileDirectionDelta[chosen_position].x;
-        sint32 y = peep->next_y + TileDirectionDelta[chosen_position].y;
+        sint32 x = peep->next_x + CoordsDirectionDelta[chosen_position].x;
+        sint32 y = peep->next_y + CoordsDirectionDelta[chosen_position].y;
 
         rct_tile_element * tile_element = map_get_first_element_at(x / 32, y / 32);
 
