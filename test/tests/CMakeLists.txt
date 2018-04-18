@@ -153,3 +153,10 @@ set(MULTILAUNCH_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/MultiLaunch.cpp"
 add_executable(test_multilaunch ${MULTILAUNCH_TEST_SOURCES})
 target_link_libraries(test_multilaunch ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
 add_test(NAME multilaunch COMMAND test_multilaunch)
+
+# Tile element test
+set(TILE_ELEMENT_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/TileElements.cpp"
+                              "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+add_executable(test_tile_elements ${TILE_ELEMENT_TEST_SOURCES})
+target_link_libraries(test_tile_elements ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+add_test(NAME tile_elements COMMAND test_tile_elements)

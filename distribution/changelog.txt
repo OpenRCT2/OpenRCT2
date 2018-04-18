@@ -15,7 +15,8 @@
 - Fix: [#7176] Mechanics sometimes fall down from rides.
 - Fix: [#7303] Visual glitch with virtual floor near map edges.
 - Fix: [#7327] Abstract scenery and stations don't get fully See-Through when hiding them (original bug).
-- Fix: [#7382] Opening the mini-map reverts the size of the land tool to 1x1, regardless of what was selected before. 
+- Fix: [#7382] Opening the mini-map reverts the size of the land tool to 1x1, regardless of what was selected before.
+- Fix: [#7402] Edges of neigbouring footpaths stay connected after removing a path that's underneath a ride entrance.
 - Fix: Cut-away view does not draw tile elements that have been moved down on the list.
 - Improved: [#2989] Multiplayer window now changes title when tab changes.
 - Improved: [#5339] Change eyedropper icon to actual eyedropper and change cursor to crosshair.

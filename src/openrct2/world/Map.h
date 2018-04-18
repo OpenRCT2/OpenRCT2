@@ -524,6 +524,7 @@ void tile_element_set_banner_index(rct_tile_element * tileElement, sint32 banner
 void tile_element_remove_banner_entry(rct_tile_element *tileElement);
 
 bool tile_element_is_underground(rct_tile_element *tileElement);
+bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const rct_tile_element * const elementToBeRemoved);
 
 void map_remove_out_of_range_elements();
 void map_extend_boundary_surface();

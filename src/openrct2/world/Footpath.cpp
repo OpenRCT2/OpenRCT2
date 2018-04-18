@@ -2256,7 +2256,7 @@ static void footpath_remove_edges_towards(sint32 x, sint32 y, sint32 z0, sint32 
 
 // Returns true when there is an element at the given coordinates that want to connect to a path with the given direction (ride
 // entrances and exits, shops, paths).
-static bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const rct_tile_element * const elementToBeRemoved)
+bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const rct_tile_element * const elementToBeRemoved)
 {
     rct_tile_element * tileElement = map_get_first_element_at(coords.x, coords.y);
     do
@@ -2299,15 +2299,21 @@ static bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, co
                     uint16 dx = ((coords.direction - tile_element_get_direction(tileElement)) & TILE_ELEMENT_DIRECTION_MASK);
                     if (FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx))
                     {
-                        // Track element has the flags required for
+                        // Track element has the flags required for the given direction
                         return true;
                     }
                 }
             }
             break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
-            if (entrance_has_direction(tileElement, coords.direction - tile_element_get_direction(tileElement)))
-                return true;
+            if (tileElement->base_height == coords.z)
+            {
+                if (entrance_has_direction(tileElement, coords.direction - tile_element_get_direction(tileElement)))
+                {
+                    // Entrance wants to be connected towards the given direction
+                    return true;
+                }
+            }
             break;
         default:
             break;
