@@ -185,7 +185,13 @@
     <MSBuild Projects="openrct2.sln" Targets="Rebuild" Properties="$(SlnProperties)" />
   </Target>
 
-  <Target Name="Test" DependsOnTargets="Build">
+  <Target Name="Test">
+    <!-- Scan repositories prior to running tests as it can take a while -->
+    <Message Text="Building OpenRCT2 repository indexes..." Importance="high" />
+    <Exec Command="$(TargetDir)openrct2.exe scan-objects"
+          WorkingDirectory="$(TargetDir)" />
+
+    <Message Text="Running tests..." Importance="high" />
     <Exec Command="$(TargetDir)tests.exe &quot;--gtest_output=xml:$(ArtifactsDir)test-results.xml&quot;"
           WorkingDirectory="$(TargetDir)" />
   </Target>
