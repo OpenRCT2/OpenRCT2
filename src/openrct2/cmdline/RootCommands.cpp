@@ -397,12 +397,13 @@ static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator
 
     gOpenRCT2Headless = true;
 
-    // HACK: set gCurrentLanguage otherwise it be wrong for the index file
-    gCurrentLanguage = gConfigGeneral.language;
-
     auto context = std::unique_ptr<OpenRCT2::IContext>(OpenRCT2::CreateContext());
     auto env = context->GetPlatformEnvironment();
     auto objectRepository = std::unique_ptr<IObjectRepository>(CreateObjectRepository(env));
+
+    // HACK: set gCurrentLanguage otherwise it be wrong for the index file
+    gCurrentLanguage = gConfigGeneral.language;
+
     objectRepository->Construct();
     return EXITCODE_OK;
 }
