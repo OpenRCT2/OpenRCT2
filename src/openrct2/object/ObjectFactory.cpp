@@ -41,6 +41,8 @@
 class ReadObjectContext : public IReadObjectContext
 {
 private:
+    IObjectRepository& _objectRepository;
+
     std::string _objectName;
     bool        _loadImages;
     bool        _wasWarning = false;
@@ -50,10 +52,16 @@ public:
     bool WasWarning() const { return _wasWarning; }
     bool WasError() const { return _wasError; }
 
-    ReadObjectContext(const std::string &objectName, bool loadImages)
-        : _objectName(objectName),
+    ReadObjectContext(IObjectRepository& objectRepository, const std::string &objectName, bool loadImages)
+        : _objectRepository(objectRepository),
+          _objectName(objectName),
           _loadImages(loadImages)
     {
+    }
+
+    IObjectRepository& GetObjectRepository() override
+    {
+        return _objectRepository;
     }
 
     bool ShouldLoadImages() override
@@ -101,9 +109,9 @@ namespace ObjectFactory
         }
     }
 
-    Object * CreateObjectFromLegacyFile(const utf8 * path)
+    Object * CreateObjectFromLegacyFile(IObjectRepository& objectRepository, const utf8 * path)
     {
-        log_verbose("CreateObjectFromLegacyFile(\"%s\")", path);
+        log_verbose("CreateObjectFromLegacyFile(..., \"%s\")", path);
 
         Object * result = nullptr;
         try
@@ -122,7 +130,7 @@ namespace ObjectFactory
             log_verbose("  size: %zu", chunk->GetLength());
 
             auto chunkStream = MemoryStream(chunk->GetData(), chunk->GetLength());
-            auto readContext = ReadObjectContext(objectName, !gOpenRCT2Headless);
+            auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2Headless);
             ReadObjectLegacy(result, &readContext, &chunkStream);
             if (readContext.WasError())
             {
@@ -137,7 +145,7 @@ namespace ObjectFactory
         return result;
     }
 
-    Object * CreateObjectFromLegacyData(const rct_object_entry * entry, const void * data, size_t dataSize)
+    Object * CreateObjectFromLegacyData(IObjectRepository& objectRepository, const rct_object_entry * entry, const void * data, size_t dataSize)
     {
         Guard::ArgumentNotNull(entry, GUARD_LINE);
         Guard::ArgumentNotNull(data, GUARD_LINE);
@@ -148,7 +156,7 @@ namespace ObjectFactory
             utf8 objectName[DAT_NAME_LENGTH + 1];
             object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
 
-            auto readContext = ReadObjectContext(objectName, !gOpenRCT2Headless);
+            auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2Headless);
             auto chunkStream = MemoryStream(data, dataSize);
             ReadObjectLegacy(result, &readContext, &chunkStream);
 
@@ -220,7 +228,7 @@ namespace ObjectFactory
         return 0xFF;
     }
 
-    Object * CreateObjectFromJsonFile(const std::string &path)
+    Object * CreateObjectFromJsonFile(IObjectRepository& objectRepository, const std::string &path)
     {
         log_verbose("CreateObjectFromJsonFile(\"%s\")", path.c_str());
 
@@ -249,7 +257,7 @@ namespace ObjectFactory
                     memcpy(entry.name, originalName.c_str(), minLength);
 
                     result = CreateObject(entry);
-                    auto readContext = ReadObjectContext(id, !gOpenRCT2Headless);
+                    auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2Headless);
                     result->ReadJson(&readContext, jRoot);
                     if (readContext.WasError())
                     {

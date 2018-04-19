@@ -18,6 +18,7 @@
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 #include "../object/Object.h"
+#include "../object/ObjectRepository.h"
 #include "BannerObject.h"
 #include "ObjectJsonHelpers.h"
 #include "ObjectList.h"
@@ -46,16 +47,20 @@ void BannerObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 
     // Add banners to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
     // Since this is already done the other way round for original items, avoid adding those to prevent duplicates.
-    const std::string identifier = GetIdentifier();
-    const rct_object_entry * objectEntry = object_list_find_by_name(identifier.c_str());
-    static const rct_object_entry scgPathX = Object::GetScgPathXHeader();
+    auto identifier = GetIdentifier();
 
-    if (objectEntry != nullptr &&
-            (object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_WACKY_WORLDS ||
-             object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_TIME_TWISTER ||
-             object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_CUSTOM))
+    auto& objectRepository = context->GetObjectRepository();
+    auto item = objectRepository.FindObject(identifier);
+    if (item != nullptr)
     {
-        SetPrimarySceneryGroup(&scgPathX);
+        auto objectEntry = &item->ObjectEntry;
+        if (object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_WACKY_WORLDS ||
+            object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_TIME_TWISTER ||
+            object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_CUSTOM)
+        {
+            auto scgPathX = Object::GetScgPathXHeader();
+            SetPrimarySceneryGroup(&scgPathX);
+        }
     }
 }
 
