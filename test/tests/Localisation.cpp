@@ -42,6 +42,15 @@ TEST_F(Localisation, RCT2_to_UTF8_PL)
     ASSERT_EQ(expected, actual);
 }
 
+TEST_F(Localisation, RCT2_to_UTF8_ZH_TW_PREMATURE_END)
+{
+    // This string can be found in BATFL.DAT, the last double byte character is missing its second byte.
+    auto input = StringFromHex("ffa470ffabacffa8aeffbdf8ffa662ffc54bffb944ffa457ffaeb6ffb0caffb76effc2");
+    auto expected = u8"小型車輛在鐵道上振動搖";
+    auto actual = rct2_to_utf8(input, RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL);
+    ASSERT_EQ(expected, actual);
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Tests for utf8_to_rct2
 ///////////////////////////////////////////////////////////////////////////////

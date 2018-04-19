@@ -29,21 +29,31 @@ static std::wstring DecodeToWideChar(const std::string_view& src)
 {
     std::wstring decoded;
     decoded.reserve(src.size());
-    for (auto it = src.begin(); it != src.end(); it++)
+    for (auto it = src.begin(); it != src.end(); )
     {
-        uint8_t c = *it;
+        uint8_t c = *it++;
         if (c == 255)
         {
             // Push next two characters
             uint8 a = 0;
             uint8 b = 0;
-            if (++it != src.end())
+            if (it != src.end())
             {
-                a = *it;
-                if (++it != src.end())
+                a = *it++;
+                if (it != src.end())
                 {
-                    b = *it;
+                    b = *it++;
                 }
+                else
+                {
+                    // 2nd byte for double byte character is missing
+                    break;
+                }
+            }
+            else
+            {
+                // 1st byte for double byte character is missing
+                break;
             }
 
             wchar_t cp = (a << 8) | b;
