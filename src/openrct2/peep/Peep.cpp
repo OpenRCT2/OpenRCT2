@@ -72,7 +72,7 @@ uint32 gNextGuestNumber;
 
 uint8 gPeepWarningThrottle[16];
 
-LocationXYZ16 gPeepPathFindGoalPosition;
+TileCoordsXYZ gPeepPathFindGoalPosition;
 bool          gPeepPathFindIgnoreForeignQueues;
 uint8         gPeepPathFindQueueRideIndex;
 // uint32 gPeepPathFindAltStationNum;

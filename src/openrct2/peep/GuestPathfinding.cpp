@@ -793,8 +793,8 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
          * Ignore for now. */
 
         // Calculate the heuristic score of this map element.
-        uint16 x_delta = abs(gPeepPathFindGoalPosition.x - x);
-        uint16 y_delta = abs(gPeepPathFindGoalPosition.y - y);
+        uint16 x_delta = abs(gPeepPathFindGoalPosition.x * 32 - x);
+        uint16 y_delta = abs(gPeepPathFindGoalPosition.y * 32 - y);
         if (x_delta < y_delta)
             x_delta >>= 4;
         else
@@ -1182,9 +1182,7 @@ sint32 peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep * peep)
     // Used to allow walking through no entry banners
     _peepPathFindIsStaff = (peep->type == PEEP_TYPE_STAFF);
 
-    TileCoordsXYZ goal = { (uint8)(gPeepPathFindGoalPosition.x >> 5),
-                      (uint8)(gPeepPathFindGoalPosition.y >> 5),
-                      (uint8)(gPeepPathFindGoalPosition.z) };
+    TileCoordsXYZ goal = gPeepPathFindGoalPosition;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     if (gPathFindDebug)
@@ -1584,7 +1582,7 @@ static sint32 guest_path_find_entering_park(rct_peep * peep, rct_tile_element * 
     sint16 y = gParkEntrances[chosenEntrance].y;
     sint16 z = gParkEntrances[chosenEntrance].z;
 
-    gPeepPathFindGoalPosition        = { x, y, static_cast<sint16>(z >> 3) };
+    gPeepPathFindGoalPosition        = { x / 32, y / 32, z >> 3 };
     gPeepPathFindIgnoreForeignQueues = true;
     gPeepPathFindQueueRideIndex      = 255;
 
@@ -1642,7 +1640,7 @@ static sint32 guest_path_find_leaving_park(rct_peep * peep, rct_tile_element * t
     uint8  z         = peepSpawn->z / 8;
     uint8  direction = peepSpawn->direction;
 
-    gPeepPathFindGoalPosition = { x, y, z };
+    gPeepPathFindGoalPosition = { x / 32, y / 32, z };
     if (x == peep->next_x && y == peep->next_y)
     {
         return peep_move_one_tile(direction, peep);
@@ -1702,7 +1700,7 @@ static sint32 guest_path_find_park_entrance(rct_peep * peep, rct_tile_element * 
     sint16 y    = gParkEntrances[entranceNum].y;
     sint16 z    = gParkEntrances[entranceNum].z;
 
-    gPeepPathFindGoalPosition        = { x, y, static_cast<sint16>(z >> 3) };
+    gPeepPathFindGoalPosition        = { x / 32, y / 32, z >> 3 };
     gPeepPathFindIgnoreForeignQueues = true;
     gPeepPathFindQueueRideIndex      = 255;
 
@@ -2149,7 +2147,7 @@ sint32 guest_path_finding(rct_peep * peep)
 
     get_ride_queue_end(loc);
 
-    gPeepPathFindGoalPosition        = { (sint16) loc.x * 32, (sint16) loc.y * 32, (sint16) loc.z };
+    gPeepPathFindGoalPosition        = loc;
     gPeepPathFindIgnoreForeignQueues = true;
 
     direction = peep_pathfind_choose_direction({ peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);

@@ -1275,9 +1275,9 @@ static uint8 staff_mechanic_direction_path(rct_peep * peep, uint8 validDirection
             }
         }
 
-        gPeepPathFindGoalPosition.x = (sint16)(location.x * 32);
-        gPeepPathFindGoalPosition.y = (sint16)(location.y * 32);
-        gPeepPathFindGoalPosition.z = (sint16)location.z;
+        gPeepPathFindGoalPosition.x = location.x;
+        gPeepPathFindGoalPosition.y = location.y;
+        gPeepPathFindGoalPosition.z = location.z;
 
         gPeepPathFindIgnoreForeignQueues = false;
         gPeepPathFindQueueRideIndex      = 255;
