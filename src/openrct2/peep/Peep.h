@@ -920,7 +920,7 @@ extern uint32 gNextGuestNumber;
 
 extern uint8 gPeepWarningThrottle[16];
 
-extern LocationXYZ16 gPeepPathFindGoalPosition;
+extern TileCoordsXYZ gPeepPathFindGoalPosition;
 extern bool      gPeepPathFindIgnoreForeignQueues;
 extern uint8     gPeepPathFindQueueRideIndex;
 
