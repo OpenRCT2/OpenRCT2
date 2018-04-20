@@ -99,9 +99,9 @@ ParkLoadResult * ParkLoadResult_CreateInvalidExtension()
 
 namespace ParkImporter
 {
-    IParkImporter * Create(const std::string &hintPath)
+    std::unique_ptr<IParkImporter> Create(const std::string &hintPath)
     {
-        IParkImporter * parkImporter = nullptr;
+        std::unique_ptr<IParkImporter> parkImporter;
         std::string extension = Path::GetExtension(hintPath);
         if (ExtensionIsRCT1(extension))
         {

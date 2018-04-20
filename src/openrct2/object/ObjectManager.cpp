@@ -36,15 +36,15 @@
 class ObjectManager final : public IObjectManager
 {
 private:
-    IObjectRepository *     _objectRepository;
-    std::vector<Object *>   _loadedObjects;
+    std::shared_ptr<IObjectRepository> _objectRepository;
+    std::vector<Object *> _loadedObjects;
 
 public:
-    explicit ObjectManager(IObjectRepository * objectRepository)
+    explicit ObjectManager(std::shared_ptr<IObjectRepository> objectRepository)
+        : _objectRepository(objectRepository)
     {
         Guard::ArgumentNotNull(objectRepository);
 
-        _objectRepository = objectRepository;
         _loadedObjects.resize(OBJECT_ENTRY_COUNT);
 
         UpdateSceneryGroupIndexes();
@@ -572,28 +572,28 @@ private:
     }
 };
 
-IObjectManager * CreateObjectManager(IObjectRepository * objectRepository)
+std::unique_ptr<IObjectManager> CreateObjectManager(std::shared_ptr<IObjectRepository> objectRepository)
 {
-    return new ObjectManager(objectRepository);
+    return std::make_unique<ObjectManager>(objectRepository);
 }
 
 void * object_manager_get_loaded_object_by_index(size_t index)
 {
-    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object * loadedObject = objectManager->GetLoadedObject(index);
     return (void *)loadedObject;
 }
 
 void * object_manager_get_loaded_object(const rct_object_entry * entry)
 {
-    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object * loadedObject = objectManager->GetLoadedObject(entry);
     return (void *)loadedObject;
 }
 
 uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
 {
-    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     const Object * object = static_cast<const Object *>(loadedObject);
     uint8 entryIndex = objectManager->GetLoadedObjectEntryIndex(object);
     return entryIndex;
@@ -601,20 +601,20 @@ uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
 
 void * object_manager_load_object(const rct_object_entry * entry)
 {
-    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object * loadedObject = objectManager->LoadObject(entry);
     return (void *)loadedObject;
 }
 
 void object_manager_unload_objects(const rct_object_entry * entries, size_t count)
 {
-    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     objectManager->UnloadObjects(entries, count);
 }
 
 void object_manager_unload_all_objects()
 {
-    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     if (objectManager != nullptr)
     {
         objectManager->UnloadAll();

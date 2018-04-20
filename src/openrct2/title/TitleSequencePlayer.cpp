@@ -416,7 +416,7 @@ private:
             }
             else
             {
-                auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(path));
+                auto parkImporter = ParkImporter::Create(path);
                 parkImporter->Load(path);
                 parkImporter->Import();
             }
@@ -451,7 +451,7 @@ private:
             {
                 std::string extension = Path::GetExtension(hintPath);
                 bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
-                auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
+                auto parkImporter = ParkImporter::Create(hintPath);
                 parkImporter->LoadFromStream(stream, isScenario);
                 parkImporter->Import();
             }

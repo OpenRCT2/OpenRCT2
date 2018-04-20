@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include "../Context.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/FileIndex.hpp"
@@ -218,7 +219,7 @@ private:
                 bool result = false;
                 try
                 {
-                    auto s4Importer = std::unique_ptr<IParkImporter>(ParkImporter::CreateS4());
+                    auto s4Importer = ParkImporter::CreateS4();
                     s4Importer->LoadScenario(path.c_str(), true);
                     if (s4Importer->GetDetails(entry))
                     {
@@ -728,17 +729,14 @@ private:
     }
 };
 
-static ScenarioRepository * _scenarioRepository;
-
-IScenarioRepository * CreateScenarioRepository(const std::shared_ptr<IPlatformEnvironment>& env)
+std::unique_ptr<IScenarioRepository> CreateScenarioRepository(const std::shared_ptr<IPlatformEnvironment>& env)
 {
-    _scenarioRepository = new ScenarioRepository(env);
-    return _scenarioRepository;
+    return std::make_unique<ScenarioRepository>(env);
 }
 
 IScenarioRepository * GetScenarioRepository()
 {
-    return _scenarioRepository;
+    return GetContext()->GetScenarioRepository();
 }
 
 void scenario_repository_scan()

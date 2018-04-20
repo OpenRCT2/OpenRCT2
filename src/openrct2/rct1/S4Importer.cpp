@@ -1863,7 +1863,7 @@ private:
 
     void LoadObjects(uint8 objectType, const std::vector<const char *> &entries)
     {
-        IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
 
         uint32 entryIndex = 0;
         for (const char * objectName : entries)
@@ -1912,7 +1912,7 @@ private:
 
     void GetInvalidObjects(uint8 objectType, const std::vector<const char *> &entries, std::vector<rct_object_entry> &missingObjects)
     {
-        IObjectRepository * objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
+        auto objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
         for (const char * objectName : entries)
         {
             rct_object_entry entry;
@@ -2832,9 +2832,9 @@ private:
     }
 };
 
-IParkImporter * ParkImporter::CreateS4()
+std::unique_ptr<IParkImporter> ParkImporter::CreateS4()
 {
-    return new S4Importer();
+    return std::unique_ptr<S4Importer>();
 }
 
 ParkLoadResult * load_from_sv4(const utf8 * path)

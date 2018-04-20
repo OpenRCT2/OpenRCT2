@@ -639,9 +639,9 @@ private:
     }
 };
 
-IObjectRepository * CreateObjectRepository(const std::shared_ptr<IPlatformEnvironment>& env)
+std::unique_ptr<IObjectRepository> CreateObjectRepository(const std::shared_ptr<IPlatformEnvironment>& env)
 {
-    return new ObjectRepository(env);
+    return std::make_unique<ObjectRepository>(env);
 }
 
 bool IsObjectCustom(const ObjectRepositoryItem * object)
@@ -671,14 +671,14 @@ void object_list_load()
     auto objectRepository = context->GetObjectRepository();
     objectRepository->LoadOrConstruct(localisationService.GetCurrentLanguage());
 
-    IObjectManager * objectManager = context->GetObjectManager();
+    auto objectManager = context->GetObjectManager();
     objectManager->UnloadAll();
 }
 
 void * object_repository_load_object(const rct_object_entry * objectEntry)
 {
     Object * object = nullptr;
-    IObjectRepository * objRepository = GetContext()->GetObjectRepository();
+    auto objRepository = GetContext()->GetObjectRepository();
     const ObjectRepositoryItem * ori = objRepository->FindObject(objectEntry);
     if (ori != nullptr)
     {
@@ -710,7 +710,7 @@ void scenario_translate(scenario_index_entry * scenarioEntry, const rct_object_e
         // Checks for a scenario string object (possibly for localisation)
         if ((stexObjectEntry->flags & 0xFF) != 255)
         {
-            IObjectRepository * objectRepository = GetContext()->GetObjectRepository();
+            auto objectRepository = GetContext()->GetObjectRepository();
             const ObjectRepositoryItem * ori = objectRepository->FindObject(stexObjectEntry);
             if (ori != nullptr)
             {
@@ -733,25 +733,25 @@ void scenario_translate(scenario_index_entry * scenarioEntry, const rct_object_e
 
 size_t object_repository_get_items_count()
 {
-    IObjectRepository * objectRepository = GetContext()->GetObjectRepository();
+    auto objectRepository = GetContext()->GetObjectRepository();
     return objectRepository->GetNumObjects();
 }
 
 const ObjectRepositoryItem * object_repository_get_items()
 {
-    IObjectRepository * objectRepository = GetContext()->GetObjectRepository();
+    auto objectRepository = GetContext()->GetObjectRepository();
     return objectRepository->GetObjects();
 }
 
 const ObjectRepositoryItem * object_repository_find_object_by_entry(const rct_object_entry * entry)
 {
-    IObjectRepository * objectRepository = GetContext()->GetObjectRepository();
+    auto objectRepository = GetContext()->GetObjectRepository();
     return objectRepository->FindObject(entry);
 }
 
 const ObjectRepositoryItem * object_repository_find_object_by_name(const char * name)
 {
-    IObjectRepository * objectRepository = GetContext()->GetObjectRepository();
+    auto objectRepository = GetContext()->GetObjectRepository();
     return objectRepository->FindObject(name);
 }
 

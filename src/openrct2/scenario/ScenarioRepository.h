@@ -78,7 +78,7 @@ interface IScenarioRepository
     virtual bool TryRecordHighscore(sint32 language, const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) abstract;
 };
 
-IScenarioRepository * CreateScenarioRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
+std::unique_ptr<IScenarioRepository> CreateScenarioRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 IScenarioRepository * GetScenarioRepository();
 
 void    scenario_repository_scan();

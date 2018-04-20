@@ -1107,7 +1107,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
         // This will send all custom objects to connected clients
         // TODO: fix it so custom objects negotiation is performed even in this case.
         auto context = GetContext();
-        IObjectManager * objManager = context->GetObjectManager();
+        auto objManager = context->GetObjectManager();
         objects = objManager->GetPackableObjects();
     }
 
@@ -1794,7 +1794,7 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
         chat_history_add(text);
 
         auto context = GetContext();
-        IObjectManager * objManager = context->GetObjectManager();
+        auto objManager = context->GetObjectManager();
         auto objects = objManager->GetPackableObjects();
         Server_Send_OBJECTS(connection, objects);
 
@@ -1815,7 +1815,7 @@ void Network::Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 
 void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet)
 {
-    IObjectRepository * repo = GetContext()->GetObjectRepository();
+    auto repo = GetContext()->GetObjectRepository();
     uint32 size;
     packet >> size;
     log_verbose("client received object list, it has %u entries", size);
@@ -1868,7 +1868,7 @@ void Network::Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
         return;
     }
     log_verbose("Client requested %u objects", size);
-    IObjectRepository * repo = GetContext()->GetObjectRepository();
+    auto repo = GetContext()->GetObjectRepository();
     for (uint32 i = 0; i < size; i++)
     {
         const char * name = (const char *)packet.Read(8);
@@ -2059,8 +2059,7 @@ bool Network::LoadMap(IStream * stream)
     try
     {
         auto context = GetContext();
-        auto importer = std::unique_ptr<IParkImporter>(
-            ParkImporter::CreateS6(GetContext()->GetObjectRepository(), context->GetObjectManager()));
+        auto importer = ParkImporter::CreateS6(context->GetObjectRepository(), context->GetObjectManager());
         importer->LoadFromStream(stream, false);
         importer->Import();
 
