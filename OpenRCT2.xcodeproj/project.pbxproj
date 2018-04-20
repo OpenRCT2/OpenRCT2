@@ -28,6 +28,12 @@
 		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
 		4CE9AAAD1FDA7B14004093C6 /* ObjectJsonHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */; };
 		4CF67197206B7E720034ADDD /* object in Resources */ = {isa = PBXBuildFile; fileRef = 4CF67196206B7E720034ADDD /* object */; };
+		9346F9D8208A191900C77D91 /* Guest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D6208A191900C77D91 /* Guest.cpp */; };
+		9346F9D9208A191900C77D91 /* Guest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D6208A191900C77D91 /* Guest.cpp */; };
+		9346F9DA208A191900C77D91 /* Guest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D6208A191900C77D91 /* Guest.cpp */; };
+		9346F9DB208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
+		9346F9DC208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
+		9346F9DD208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
 		C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */; };
 		C61ADB211FB7DC060024F2EF /* Scenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB201FB7DC060024F2EF /* Scenery.cpp */; };
 		C61ADB231FBBCB8B0024F2EF /* GameBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */; };
@@ -844,6 +850,8 @@
 		4CFE4E881F950164005243C2 /* TrackDataOld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDataOld.cpp; sourceTree = "<group>"; };
 		4CFE4E8E1F9625B0005243C2 /* Track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Track.cpp; sourceTree = "<group>"; };
 		4CFE4E8F1F9625B0005243C2 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
+		9346F9D6208A191900C77D91 /* Guest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Guest.cpp; sourceTree = "<group>"; };
+		9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuestPathfinding.cpp; sourceTree = "<group>"; };
 		C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TopToolbar.cpp; sourceTree = "<group>"; };
 		C61ADB201FB7DC060024F2EF /* Scenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scenery.cpp; sourceTree = "<group>"; };
 		C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameBottomToolbar.cpp; sourceTree = "<group>"; };
@@ -2144,6 +2152,8 @@
 		F76C84531EC4E7CC00FA49E2 /* peep */ = {
 			isa = PBXGroup;
 			children = (
+				9346F9D6208A191900C77D91 /* Guest.cpp */,
+				9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */,
 				4CFE4E7B1F90A3F1005243C2 /* Peep.cpp */,
 				4CFE4E7C1F90A3F1005243C2 /* Peep.h */,
 				4CFE4E7D1F90A3F1005243C2 /* PeepData.cpp */,
@@ -2991,6 +3001,7 @@
 				F76C88781EC5324E00FA49E2 /* AudioChannel.cpp in Sources */,
 				C666EE6D1F37ACB10061AA04 /* Cheats.cpp in Sources */,
 				C685E5191F8907850090598F /* NewRide.cpp in Sources */,
+				9346F9DB208A191900C77D91 /* GuestPathfinding.cpp in Sources */,
 				C654DF361F69C0430040F43D /* Player.cpp in Sources */,
 				F76C88791EC5324E00FA49E2 /* AudioContext.cpp in Sources */,
 				C666EE7A1F37ACB10061AA04 /* Themes.cpp in Sources */,
@@ -3091,6 +3102,7 @@
 				F76C888C1EC5324E00FA49E2 /* UiContext.cpp in Sources */,
 				C666EE7D1F37ACB10061AA04 /* TitleMenu.cpp in Sources */,
 				F76C888D1EC5324E00FA49E2 /* UiContext.Linux.cpp in Sources */,
+				9346F9D8208A191900C77D91 /* Guest.cpp in Sources */,
 				F76C888E1EC5324E00FA49E2 /* UiContext.Win32.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3303,6 +3315,7 @@
 				F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */,
 				F76C86A61EC4E88400FA49E2 /* macos.mm in Sources */,
 				C688789420289B140084B384 /* Screenshot.cpp in Sources */,
+				9346F9DC208A191900C77D91 /* GuestPathfinding.cpp in Sources */,
 				C688790620289B9B0084B384 /* TwisterRollerCoaster.cpp in Sources */,
 				C688786720289A4A0084B384 /* SawyerCoding.cpp in Sources */,
 				F76C86A61EC4E88400FA49E2 /* macos.mm in Sources */,
@@ -3359,6 +3372,7 @@
 				C68878EA20289B9B0084B384 /* Shared.cpp in Sources */,
 				F76C873E1EC4E88400FA49E2 /* TitleSequencePlayer.cpp in Sources */,
 				F76C87451EC4E88400FA49E2 /* Version.cpp in Sources */,
+				9346F9D9208A191900C77D91 /* Guest.cpp in Sources */,
 				C688789C20289B200084B384 /* Currency.cpp in Sources */,
 				C68879A420289C060084B384 /* Platform.macOS.mm in Sources */,
 				C688787420289A780084B384 /* TrackDesignSave.cpp in Sources */,
@@ -3395,6 +3409,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9346F9DD208A191900C77D91 /* GuestPathfinding.cpp in Sources */,
+				9346F9DA208A191900C77D91 /* Guest.cpp in Sources */,
 				F7D7749E1EC6713200BE6EBC /* Cli.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
