@@ -209,7 +209,7 @@ static void custom_currency_window_mouseup(rct_window *w, rct_widgetindex widget
     }
 }
 
-static void custom_currency_window_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void custom_currency_window_dropdown([[maybe_unused]] rct_window * w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
     if(dropdownIndex == -1)
         return;
@@ -233,7 +233,7 @@ static void custom_currency_window_dropdown(rct_window *w, rct_widgetindex widge
     }
 }
 
-static void custom_currency_window_text_input(struct rct_window *w, rct_widgetindex widgetIndex, char *text)
+static void custom_currency_window_text_input([[maybe_unused]] struct rct_window * w, rct_widgetindex widgetIndex, char * text)
 {
     if (text == nullptr)
         return;

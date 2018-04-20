@@ -113,7 +113,7 @@ rct_window * window_debug_paint_open()
     return window;
 }
 
-static void window_debug_paint_mouseup(rct_window * w, rct_widgetindex widgetIndex)
+static void window_debug_paint_mouseup([[maybe_unused]] rct_window * w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex) {
         case WIDX_TOGGLE_OLD_DRAWING:

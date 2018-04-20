@@ -576,7 +576,14 @@ namespace Editor
         return true;
     }
 
-    void GameCommandEditScenarioOptions(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+    void GameCommandEditScenarioOptions(
+        [[maybe_unused]] sint32 * eax,
+        sint32 *                  ebx,
+        sint32 *                  ecx,
+        sint32 *                  edx,
+        [[maybe_unused]] sint32 * esi,
+        [[maybe_unused]] sint32 * edi,
+        [[maybe_unused]] sint32 * ebp)
     {
         if (!(*ebx & GAME_COMMAND_FLAG_APPLY))
         {

@@ -310,7 +310,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 *
 *  rct2: 0x0066F5AE
 */
-static void window_editor_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_editor_bottom_toolbar_mouseup([[maybe_unused]] rct_window * w, rct_widgetindex widgetIndex)
 {
     if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON) {
         if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) ||

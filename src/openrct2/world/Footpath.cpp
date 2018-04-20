@@ -549,7 +549,8 @@ money32 footpath_remove_real(sint32 x, sint32 y, sint32 z, sint32 flags)
  *
  *  rct2: 0x006A61DE
  */
-void game_command_place_footpath(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+void game_command_place_footpath(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     *ebx = footpath_place_real(
         (*edx >> 8) & 0xFF,
@@ -691,7 +692,14 @@ static money32 footpath_place_from_track(sint32 type, sint32 x, sint32 y, sint32
  *
  *  rct2: 0x006A68AE
  */
-void game_command_place_footpath_from_track(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+void game_command_place_footpath_from_track(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     *ebx = footpath_place_from_track(
         (*edx >> 8) & 0xFF,
@@ -708,7 +716,14 @@ void game_command_place_footpath_from_track(sint32 *eax, sint32 *ebx, sint32 *ec
  *
  *  rct2: 0x006A67C0
  */
-void game_command_remove_footpath(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+void game_command_remove_footpath(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     *ebx = footpath_remove_real((*eax & 0xFFFF), (*ecx & 0xFFFF), (*edx & 0xFF), (*ebx & 0xFF));
 }
@@ -1643,7 +1658,7 @@ void footpath_update_queue_chains()
  *
  *  rct2: 0x0069ADBD
  */
-static void footpath_fix_ownership(sint32 x, sint32 y, rct_tile_element *pathElement)
+static void footpath_fix_ownership(sint32 x, sint32 y)
 {
     const rct_tile_element * surfaceElement = map_get_surface_element_at({x, y});
     uint16 ownership;
@@ -1732,7 +1747,7 @@ static sint32 footpath_is_connected_to_map_edge_recurse(
         }
 
         if (flags & (1 << 5)) {
-            footpath_fix_ownership(x, y, tileElement);
+            footpath_fix_ownership(x, y);
         }
         edges = tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
         direction ^= 2;

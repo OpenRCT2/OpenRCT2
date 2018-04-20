@@ -552,7 +552,14 @@ void fix_duplicated_banners()
  *
  *  rct2: 0x006BA058
  */
-void game_command_remove_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_remove_banner(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     *ebx = BannerRemove(
         *eax & 0xFFFF,
@@ -567,7 +574,14 @@ void game_command_remove_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
  *
  *  rct2: 0x006BA16A
  */
-void game_command_set_banner_colour(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_set_banner_colour(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    sint32 *                  ebp)
 {
     *ebx = BannerSetColour(
         *eax & 0xFFFF,
@@ -583,7 +597,8 @@ void game_command_set_banner_colour(sint32* eax, sint32* ebx, sint32* ecx, sint3
  *
  *  rct2: 0x006B9E6D
  */
-void game_command_place_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_place_banner(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     *ebx = BannerPlace(
         *eax & 0xFFFF,
@@ -597,7 +612,14 @@ void game_command_place_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* ed
     );
 }
 
-void game_command_set_banner_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_set_banner_style(
+    [[maybe_unused]] sint32 * eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    sint32 *                  edi,
+    sint32 *                  ebp)
 {
     *ebx = BannerSetStyle(
         *ecx & 0xFF,
@@ -607,4 +629,3 @@ void game_command_set_banner_style(sint32* eax, sint32* ebx, sint32* ecx, sint32
         *ebx & 0xFF
     );
 }
-

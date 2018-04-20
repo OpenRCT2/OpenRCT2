@@ -330,7 +330,7 @@ rct_tile_element * ride_get_station_start_track_element(Ride * ride, sint32 stat
     return nullptr;
 }
 
-rct_tile_element * ride_get_station_exit_element(Ride * ride, sint32 x, sint32 y, sint32 z)
+rct_tile_element * ride_get_station_exit_element(sint32 x, sint32 y, sint32 z)
 {
     // Find the station track element
     rct_tile_element * tileElement = map_get_first_element_at(x, y);

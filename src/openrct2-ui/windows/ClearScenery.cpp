@@ -125,7 +125,7 @@ rct_window * window_clear_scenery_open()
  *
  *  rct2: 0x006E6B65
  */
-static void window_clear_scenery_close(rct_window *w)
+static void window_clear_scenery_close([[maybe_unused]] rct_window * w)
 {
     // If the tool wasn't changed, turn tool off
     if (clear_scenery_tool_is_active())
@@ -160,7 +160,7 @@ static void window_clear_scenery_mouseup(rct_window *w, rct_widgetindex widgetIn
     }
 }
 
-static void window_clear_scenery_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
+static void window_clear_scenery_mousedown(rct_window * w, rct_widgetindex widgetIndex, [[maybe_unused]] rct_widget * widget)
 {
     switch (widgetIndex) {
     case WIDX_DECREMENT:

@@ -163,7 +163,7 @@ static void submarine_ride_paint_track_left_quarter_turn_3_tiles(
 {
     track_paint_util_left_quarter_turn_3_tiles_paint(
         session, 3, height - 16, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles, session->CurrentRotation);
+        trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles);
     track_paint_util_left_quarter_turn_3_tiles_tunnel(session, height - 16, TUNNEL_0, direction, trackSequence);
 
     switch (trackSequence)
@@ -211,7 +211,7 @@ static void submarine_ride_paint_track_left_quarter_turn_1_tile(
 {
     track_paint_util_left_quarter_turn_1_tile_paint(
         session, 1, height - 16, 0, direction, session->TrackColours[SCHEME_TRACK],
-        trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile, session->CurrentRotation);
+        trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile);
     track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height - 16, 0, TUNNEL_0, 0, TUNNEL_0);
 
     paint_util_set_segment_support_height(

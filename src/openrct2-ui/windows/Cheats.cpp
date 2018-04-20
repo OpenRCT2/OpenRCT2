@@ -636,7 +636,7 @@ rct_window * window_cheats_open()
     return window;
 }
 
-static void window_cheats_money_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void window_cheats_money_mousedown(rct_window * w, rct_widgetindex widgetIndex, [[maybe_unused]] rct_widget * widget)
 {
     switch (widgetIndex)
     {
@@ -768,7 +768,7 @@ static void window_cheats_misc_mousedown(rct_window *w, rct_widgetindex widgetIn
     }
 }
 
-static void window_cheats_misc_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_cheats_misc_dropdown([[maybe_unused]] rct_window * w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
     if (dropdownIndex == -1)
     {

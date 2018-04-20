@@ -1033,7 +1033,7 @@ sint32 ride_get_total_time(Ride *ride);
 sint32 ride_can_have_multiple_circuits(Ride *ride);
 track_colour ride_get_track_colour(Ride *ride, sint32 colourScheme);
 vehicle_colour ride_get_vehicle_colour(Ride *ride, sint32 vehicleIndex);
-sint32 ride_get_unused_preset_vehicle_colour(uint8 ride_type, uint8 ride_sub_type);
+sint32 ride_get_unused_preset_vehicle_colour(uint8 ride_sub_type);
 void ride_set_vehicle_colours_to_random_preset(Ride *ride, uint8 preset_index);
 rct_ride_entry *get_ride_entry_by_ride(Ride *ride);
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
@@ -1053,7 +1053,7 @@ sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, u
 void ride_music_update_final();
 void ride_prepare_breakdown(sint32 rideIndex, sint32 breakdownReason);
 rct_tile_element *ride_get_station_start_track_element(Ride *ride, sint32 stationIndex);
-rct_tile_element *ride_get_station_exit_element(Ride *ride, sint32 x, sint32 y, sint32 z);
+rct_tile_element *ride_get_station_exit_element(sint32 x, sint32 y, sint32 z);
 void ride_set_status(sint32 rideIndex, sint32 status);
 void game_command_set_ride_status(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void ride_set_name(sint32 rideIndex, const char *name);

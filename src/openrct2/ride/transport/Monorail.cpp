@@ -469,7 +469,7 @@ static void paint_monorail_track_flat(
 static void paint_monorail_station(
     paint_session *          session,
     uint8                    rideIndex,
-    uint8                    trackSequence,
+    [[maybe_unused]] uint8   trackSequence,
     uint8                    direction,
     sint32                   height,
     const rct_tile_element * tileElement)
@@ -517,7 +517,7 @@ static void paint_monorail_station(
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
-    track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, tileElement);
+    track_paint_util_draw_station(session, rideIndex, direction, height, tileElement);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -715,7 +715,7 @@ static void paint_monorail_track_right_quarter_turn_5_tiles(
     track_paint_util_right_quarter_turn_5_tiles_paint(
         session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         monorail_track_pieces_flat_quarter_turn_5_tiles, defaultRightQuarterTurn5TilesOffsets,
-        defaultRightQuarterTurn5TilesBoundLengths, nullptr, session->CurrentRotation);
+        defaultRightQuarterTurn5TilesBoundLengths, nullptr);
 
     switch (trackSequence)
     {
@@ -999,7 +999,7 @@ static void paint_monorail_track_right_quarter_turn_3_tiles(
     track_paint_util_right_quarter_turn_3_tiles_paint(
         session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         monorail_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets,
-        defaultRightQuarterTurn3TilesBoundLengths, nullptr, session->CurrentRotation);
+        defaultRightQuarterTurn3TilesBoundLengths, nullptr);
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_6);
 
     switch (trackSequence)

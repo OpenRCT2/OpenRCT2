@@ -698,8 +698,7 @@ static void track_design_update_max_min_coordinates(sint16 x, sint16 y, sint16 z
  *  rct2: 0x006D0964
  */
 static sint32
-track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIndex, sint32 originX, sint32 originY,
-                           sint32 originZ)
+track_design_place_scenery(rct_td6_scenery_element * scenery_start, sint32 originX, sint32 originY, sint32 originZ)
 {
     for (uint8 mode = 0; mode <= 1; mode++)
     {
@@ -1721,7 +1720,6 @@ sint32 place_virtual_track(rct_track_td6 * td6, uint8 ptdOperation, bool placeSc
     {
         if (!track_design_place_scenery(
             scenery,
-            rideIndex,
             gTrackPreviewOrigin.x,
             gTrackPreviewOrigin.y,
             gTrackPreviewOrigin.z
@@ -2164,8 +2162,14 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
  *
  *  rct2: 0x006D13FE
  */
-void game_command_place_track_design(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                     sint32 * ebp)
+void game_command_place_track_design(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    [[maybe_unused]] sint32 * edx,
+    [[maybe_unused]] sint32 * esi,
+    sint32 *                  edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     sint16 x     = *eax & 0xFFFF;
     sint16 y     = *ecx & 0xFFFF;
@@ -2180,8 +2184,8 @@ void game_command_place_track_design(sint32 * eax, sint32 * ebx, sint32 * ecx, s
  *
  *  rct2: 0x006CDEE4
  */
-void game_command_place_maze_design(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                    sint32 * ebp)
+void game_command_place_maze_design(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, [[maybe_unused]] sint32 * ebp)
 {
     *ebx = place_maze_design(
         *ebx & 0xFF,

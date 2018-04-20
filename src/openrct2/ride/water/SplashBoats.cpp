@@ -885,11 +885,9 @@ static void paint_splash_boats_track_left_quarter_turn_5_tiles(
     const rct_tile_element * tileElement)
 {
     track_paint_util_right_quarter_turn_5_tiles_paint_2(
-        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK],
-        RiverRaftsLeftQuarterTurn5_Top);
+        session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Top);
     track_paint_util_right_quarter_turn_5_tiles_paint_2(
-        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK],
-        RiverRaftsLeftQuarterTurn5_Side);
+        session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Side);
 
     if (trackSequence != 1 && trackSequence != 4)
     {
@@ -969,11 +967,9 @@ static void paint_splash_boats_track_right_quarter_turn_5_tiles(
     const rct_tile_element * tileElement)
 {
     track_paint_util_right_quarter_turn_5_tiles_paint_2(
-        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK],
-        RiverRaftsRightQuarterTurn5_Top);
+        session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Top);
     track_paint_util_right_quarter_turn_5_tiles_paint_2(
-        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK],
-        RiverRaftsRightQuarterTurn5_Side);
+        session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Side);
 
     if (trackSequence != 1 && trackSequence != 4)
     {

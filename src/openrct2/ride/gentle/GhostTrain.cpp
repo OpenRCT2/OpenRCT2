@@ -414,7 +414,7 @@ static void paint_ghost_train_track_25_deg_down_to_flat(
 static void paint_ghost_train_station(
     paint_session *          session,
     uint8                    rideIndex,
-    uint8                    trackSequence,
+    [[maybe_unused]] uint8   trackSequence,
     uint8                    direction,
     sint32                   height,
     const rct_tile_element * tileElement)
@@ -462,7 +462,7 @@ static void paint_ghost_train_station(
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
-    track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, tileElement);
+    track_paint_util_draw_station(session, rideIndex, direction, height, tileElement);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -480,7 +480,7 @@ static void paint_ghost_train_track_right_quarter_turn_3_tiles(
     track_paint_util_right_quarter_turn_3_tiles_paint(
         session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         ghost_train_track_pieces_quarter_turn_3_tiles, nullptr, defaultRightQuarterTurn3TilesBoundLengths,
-        defaultRightQuarterTurn3TilesBoundOffsets, session->CurrentRotation);
+        defaultRightQuarterTurn3TilesBoundOffsets);
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence)
@@ -533,8 +533,7 @@ static void paint_ghost_train_track_left_quarter_turn_1_tile(
     const rct_tile_element * tileElement)
 {
     track_paint_util_left_quarter_turn_1_tile_paint(
-        session, 3, height, 0, direction, session->TrackColours[SCHEME_TRACK], ghost_train_track_pieces_quarter_turn_1_tile,
-        session->CurrentRotation);
+        session, 3, height, 0, direction, session->TrackColours[SCHEME_TRACK], ghost_train_track_pieces_quarter_turn_1_tile);
     track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
 
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -575,7 +574,7 @@ static void paint_ghost_train_track_spinning_tunnel(
         sub_98197C(session, imageId, 0, 0, 20, 28, 3, height, 6, 2, height);
     }
 
-    track_paint_util_spinning_tunnel_paint(session, 3, height, direction, session->CurrentRotation);
+    track_paint_util_spinning_tunnel_paint(session, 3, height, direction);
 
     if (direction == 0 || direction == 2)
     {

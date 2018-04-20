@@ -512,7 +512,7 @@ namespace CommandLine
         }
     }
 
-    static bool HandleSpecialArgument(const char * argument)
+    static bool HandleSpecialArgument([[maybe_unused]] const char * argument)
     {
 #ifdef __APPLE__
         if (String::Equals(argument, "-NSDocumentRevisionsDebugMode"))
@@ -526,7 +526,6 @@ namespace CommandLine
 #endif
         return false;
     }
-
 
     const CommandLineOptionDefinition * FindOption(const CommandLineOptionDefinition * options, char shortName)
     {

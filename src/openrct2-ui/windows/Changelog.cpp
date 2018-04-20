@@ -130,7 +130,7 @@ rct_window * window_changelog_open()
     return window;
 }
 
-static void window_changelog_close(rct_window *w)
+static void window_changelog_close([[maybe_unused]] rct_window * w)
 {
     window_changelog_dispose_file();
 }
@@ -164,7 +164,8 @@ static void window_changelog_resize(rct_window *w)
     }
 }
 
-static void window_changelog_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+static void window_changelog_scrollgetsize(
+    [[maybe_unused]] rct_window * w, [[maybe_unused]] sint32 scrollIndex, sint32 * width, sint32 * height)
 {
     *width = _changelogLongestLineWidth + 4;
     *height = (sint32)(_changelogLines.size() * 11);
@@ -188,7 +189,7 @@ static void window_changelog_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_draw_widgets(w, dpi);
 }
 
-static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+static void window_changelog_scrollpaint(rct_window * w, rct_drawpixelinfo * dpi, [[maybe_unused]] sint32 scrollIndex)
 {
     gCurrentFontFlags = 0;
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;

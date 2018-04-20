@@ -402,7 +402,7 @@ bool gfx_load_csg()
  * image.
  *  rct2: 0x0067A690
  */
-void FASTCALL gfx_bmp_sprite_to_buffer(const uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, const rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, sint32 height, sint32 width, sint32 image_type)
+void FASTCALL gfx_bmp_sprite_to_buffer(const uint8* palette_pointer, uint8* source_pointer, uint8* dest_pointer, const rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, sint32 height, sint32 width, sint32 image_type)
 {
     uint16 zoom_level = dest_dpi->zoom_level;
     uint8 zoom_amount = 1 << zoom_level;
@@ -718,7 +718,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, sint3
     source_pointer += g1->width*source_start_y + source_start_x;
 
     if (!(g1->flags & G1_FLAG_1)) {
-        gfx_bmp_sprite_to_buffer(palette_pointer, unknown_pointer, source_pointer, dest_pointer, g1, dpi, height, width, image_type);
+        gfx_bmp_sprite_to_buffer(palette_pointer, source_pointer, dest_pointer, g1, dpi, height, width, image_type);
     }
 }
 

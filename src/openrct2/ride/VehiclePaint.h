@@ -36,7 +36,7 @@ extern const vehicle_boundbox VehicleBoundboxes[16][224];
 
 void vehicle_paint(paint_session * session, rct_vehicle *vehicle, sint32 imageDirection);
 
-void vehicle_visual_default(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
+void vehicle_visual_default(paint_session * session, sint32 imageDirection, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
 void vehicle_visual_roto_drop(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
 void vehicle_visual_observation_tower(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
 void vehicle_visual_river_rapids(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);

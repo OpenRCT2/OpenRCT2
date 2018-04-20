@@ -659,7 +659,14 @@ void park_set_open(sint32 open)
  *
  *  rct2: 0x00669D4A
  */
-void game_command_set_park_open(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_set_park_open(
+    [[maybe_unused]] sint32 * eax,
+    sint32 *                  ebx,
+    [[maybe_unused]] sint32 * ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    sint32 *                  edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
         *ebx = 0;
@@ -953,7 +960,8 @@ sint32 map_buy_land_rights(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 se
 *
 *  rct2: 0x006649BD
 */
-void game_command_buy_land_rights(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+void game_command_buy_land_rights(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     sint32 flags = *ebx & 0xFFFF;
 

@@ -290,12 +290,12 @@ namespace Imaging
     {
     }
 
-    static void PngWarning(png_structp png_ptr, const char * b)
+    static void PngWarning([[maybe_unused]] png_structp png_ptr, const char * b)
     {
         log_warning(b);
     }
 
-    static void PngError(png_structp png_ptr, const char * b)
+    static void PngError([[maybe_unused]] png_structp png_ptr, const char * b)
     {
         log_error(b);
     }

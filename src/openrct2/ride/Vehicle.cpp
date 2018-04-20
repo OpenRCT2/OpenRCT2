@@ -8412,7 +8412,7 @@ loc_6DB967:
  *  rct2: 0x006DBAA6
  */
 static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle * vehicle, uint16 trackType, Ride * ride,
-                                                                rct_ride_entry * rideEntry, uint16 * progress)
+                                                                uint16 * progress)
 {
     _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_start;
     _vehicleBankEndF64E37   = TrackDefinitions[trackType].bank_start;
@@ -8617,7 +8617,7 @@ loc_6DBA33:;
     regs.ax = vehicle->track_progress - 1;
     if (regs.ax == -1)
     {
-        if (!vehicle_update_track_motion_backwards_get_new_track(vehicle, trackType, ride, rideEntry, (uint16 *)&regs.ax))
+        if (!vehicle_update_track_motion_backwards_get_new_track(vehicle, trackType, ride, (uint16 *)&regs.ax))
         {
             goto loc_6DBE5E;
         }

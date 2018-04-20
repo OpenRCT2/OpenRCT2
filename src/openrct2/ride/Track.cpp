@@ -1593,13 +1593,14 @@ static money32 track_place(sint32 rideIndex,
  *
  *  rct2: 0x006C511D
  */
-void game_command_place_track(sint32 * eax,
-                              sint32 * ebx,
-                              sint32 * ecx,
-                              sint32 * edx,
-                              sint32 * esi,
-                              sint32 * edi,
-                              sint32 * ebp)
+void game_command_place_track(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    sint32 *                  edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     *ebx = track_place(
         *edx & 0xFF,
@@ -1928,13 +1929,8 @@ static money32 track_remove(uint8 type,
  *
  *  rct2: 0x006C5B69
  */
-void game_command_remove_track(sint32 * eax,
-                               sint32 * ebx,
-                               sint32 * ecx,
-                               sint32 * edx,
-                               sint32 * esi,
-                               sint32 * edi,
-                               sint32 * ebp)
+void game_command_remove_track(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, [[maybe_unused]] sint32 * ebp)
 {
     *ebx = track_remove(
         *edx & 0xFF,
@@ -1951,13 +1947,14 @@ void game_command_remove_track(sint32 * eax,
  *
  *  rct2: 0x006C5AE9
  */
-void game_command_set_brakes_speed(sint32 * eax,
-                                   sint32 * ebx,
-                                   sint32 * ecx,
-                                   sint32 * edx,
-                                   sint32 * esi,
-                                   sint32 * edi,
-                                   sint32 * ebp)
+void game_command_set_brakes_speed(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    sint32 *                  edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     sint32 x           = (*eax & 0xFFFF);
     sint32 y           = (*ecx & 0xFFFF);
