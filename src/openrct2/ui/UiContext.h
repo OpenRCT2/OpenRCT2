@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
 #include "../common.h"
@@ -28,8 +29,7 @@ namespace OpenRCT2
 {
     namespace Drawing
     {
-        enum class  DRAWING_ENGINE_TYPE;
-        interface   IDrawingEngine;
+        interface IDrawingEngineFactory;
     } // namespace Drawing
 
     namespace Ui
@@ -130,7 +130,7 @@ namespace OpenRCT2
             virtual void                SetKeysPressed(uint32 keysym, uint8 scancode) abstract;
 
             // Drawing
-            virtual Drawing::IDrawingEngine *   CreateDrawingEngine(Drawing::DRAWING_ENGINE_TYPE type) abstract;
+            virtual std::shared_ptr<Drawing::IDrawingEngineFactory> GetDrawingEngineFactory() abstract;
 
             // Text input
             virtual bool                IsTextInputActive() abstract;

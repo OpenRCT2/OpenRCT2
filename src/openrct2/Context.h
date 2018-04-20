@@ -89,9 +89,9 @@ namespace OpenRCT2
     {
         virtual ~IContext() = default;
 
-        virtual Audio::IAudioContext *   GetAudioContext() abstract;
-        virtual Ui::IUiContext *         GetUiContext() abstract;
-        virtual IPlatformEnvironment *   GetPlatformEnvironment() abstract;
+        virtual std::shared_ptr<Audio::IAudioContext> GetAudioContext() abstract;
+        virtual std::shared_ptr<Ui::IUiContext> GetUiContext() abstract;
+        virtual std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() abstract;
         virtual IObjectManager *         GetObjectManager() abstract;
         virtual IObjectRepository *      GetObjectRepository() abstract;
         virtual ITrackDesignRepository * GetTrackDesignRepository() abstract;

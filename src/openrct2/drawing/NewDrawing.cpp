@@ -71,7 +71,8 @@ void drawing_engine_init()
 
     auto context = GetContext();
     auto uiContext = context->GetUiContext();
-    auto drawingEngine = uiContext->CreateDrawingEngine((DRAWING_ENGINE_TYPE)_drawingEngineType);
+    auto drawingEngineFactory = uiContext->GetDrawingEngineFactory();
+    auto drawingEngine = drawingEngineFactory->Create((DRAWING_ENGINE_TYPE)_drawingEngineType, uiContext);
 
     if (drawingEngine == nullptr)
     {
@@ -131,7 +132,7 @@ void drawing_engine_resize()
 {
     if (_drawingEngine != nullptr)
     {
-        IUiContext * uiContext = GetContext()->GetUiContext();
+        auto uiContext = GetContext()->GetUiContext();
         _drawingEngine->Resize(uiContext->GetWidth(), uiContext->GetHeight());
     }
 }

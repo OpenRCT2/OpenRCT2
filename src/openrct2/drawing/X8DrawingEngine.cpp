@@ -133,7 +133,7 @@ void X8RainDrawer::Restore()
 #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 #endif
 
-X8DrawingEngine::X8DrawingEngine(Ui::IUiContext * uiContext)
+X8DrawingEngine::X8DrawingEngine(std::shared_ptr<Ui::IUiContext> uiContext)
 {
     _drawingContext = new X8DrawingContext(this);
 #ifdef __ENABLE_LIGHTFX__

@@ -66,10 +66,18 @@ namespace OpenRCT2::Ui
         const uint8 * GetKeysPressed() override { return nullptr; }
         void SetKeysPressed(uint32 keysym, uint8 scancode) override { }
 
-        // Drawing
-        Drawing::IDrawingEngine * CreateDrawingEngine(Drawing::DRAWING_ENGINE_TYPE type) override
+        class X8DrawingEngineFactory final : public IDrawingEngineFactory
         {
-            return new X8DrawingEngine(this);
+            IDrawingEngine * Create(DRAWING_ENGINE_TYPE type, std::shared_ptr<IUiContext> uiContext) override
+            {
+                return new X8DrawingEngine(uiContext);
+            }
+        };
+
+        // Drawing
+        std::shared_ptr<IDrawingEngineFactory> GetDrawingEngineFactory() override
+        {
+            return std::make_shared<X8DrawingEngineFactory>();
         }
 
         // Text input

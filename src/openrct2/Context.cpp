@@ -154,19 +154,19 @@ namespace OpenRCT2
             Instance = nullptr;
         }
 
-        IAudioContext * GetAudioContext() override
+        std::shared_ptr<IAudioContext> GetAudioContext() override
         {
-            return _audioContext.get();
+            return _audioContext;
         }
 
-        IUiContext * GetUiContext() override
+        std::shared_ptr<IUiContext> GetUiContext() override
         {
-            return _uiContext.get();
+            return _uiContext;
         }
 
-        IPlatformEnvironment * GetPlatformEnvironment() override
+        std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() override
         {
-            return _env.get();
+            return _env;
         }
 
         IObjectManager * GetObjectManager() override

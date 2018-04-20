@@ -742,7 +742,7 @@ bool config_find_or_browse_install_directory()
         {
             while (true)
             {
-                IUiContext * uiContext = GetContext()->GetUiContext();
+                auto uiContext = GetContext()->GetUiContext();
                 uiContext->ShowMessageBox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. \nPlease select the directory where you installed RollerCoaster Tycoon 2.");
 
                 std::string installPath = uiContext->ShowDirectoryDialog("Please select your RCT2 directory");

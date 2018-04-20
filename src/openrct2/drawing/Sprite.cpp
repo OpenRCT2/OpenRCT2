@@ -267,7 +267,7 @@ bool gfx_load_g1(const IPlatformEnvironment& env)
         log_fatal("Unable to load g1 graphics");
         if (!gOpenRCT2Headless)
         {
-            IUiContext * uiContext = GetContext()->GetUiContext();
+            auto uiContext = GetContext()->GetUiContext();
             uiContext->ShowMessageBox("Unable to load g1.dat. Your RollerCoaster Tycoon 2 path may be incorrectly set.");
         }
         return false;
@@ -330,7 +330,7 @@ bool gfx_load_g2()
         log_fatal("Unable to load g2 graphics");
         if (!gOpenRCT2Headless)
         {
-            IUiContext * uiContext = GetContext()->GetUiContext();
+            auto uiContext = GetContext()->GetUiContext();
             uiContext->ShowMessageBox("Unable to load g2.dat");
         }
     }

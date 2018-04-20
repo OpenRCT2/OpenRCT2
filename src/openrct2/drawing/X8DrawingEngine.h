@@ -91,7 +91,7 @@ namespace OpenRCT2
             X8DrawingContext *  _drawingContext;
 
         public:
-            explicit X8DrawingEngine(Ui::IUiContext * uiContext);
+            explicit X8DrawingEngine(std::shared_ptr<Ui::IUiContext> uiContext);
             ~X8DrawingEngine() override;
 
             void Initialise() override;
