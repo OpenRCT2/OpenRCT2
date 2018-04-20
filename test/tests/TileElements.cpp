@@ -28,18 +28,11 @@ protected:
         SUCCEED();
     }
 
-    static void TearDownTestCase()
-    {
-        delete _context;
-        _context = nullptr;
-        SUCCEED();
-    }
-
 private:
-    static IContext * _context;
+    static std::shared_ptr<IContext> _context;
 };
 
-IContext * TileElementWantsFootpathConnection::_context = nullptr;
+std::shared_ptr<IContext> TileElementWantsFootpathConnection::_context;
 
 TEST_F(TileElementWantsFootpathConnection, FlatPath)
 {

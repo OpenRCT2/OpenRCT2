@@ -86,15 +86,15 @@ private:
     IObjectRepository& _objectRepository;
 
 public:
-    explicit ObjectFileIndex(IObjectRepository& objectRepository, IPlatformEnvironment * env) :
+    explicit ObjectFileIndex(IObjectRepository& objectRepository, const IPlatformEnvironment& env) :
         FileIndex("object index",
             MAGIC_NUMBER,
             VERSION,
-            env->GetFilePath(PATHID::CACHE_OBJECTS),
+            env.GetFilePath(PATHID::CACHE_OBJECTS),
             std::string(PATTERN),
             std::vector<std::string>({
-                env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT),
-                env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT) })),
+                env.GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT),
+                env.GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT) })),
         _objectRepository(objectRepository)
     {
     }
@@ -208,15 +208,15 @@ private:
 
 class ObjectRepository final : public IObjectRepository
 {
-    IPlatformEnvironment * const        _env = nullptr;
-    ObjectFileIndex const               _fileIndex;
-    std::vector<ObjectRepositoryItem>   _items;
-    ObjectEntryMap                      _itemMap;
+    std::shared_ptr<IPlatformEnvironment> const _env;
+    ObjectFileIndex const _fileIndex;
+    std::vector<ObjectRepositoryItem> _items;
+    ObjectEntryMap _itemMap;
 
 public:
-    explicit ObjectRepository(IPlatformEnvironment * env)
+    explicit ObjectRepository(std::shared_ptr<IPlatformEnvironment> env)
         : _env(env),
-          _fileIndex(*this, env)
+          _fileIndex(*this, *env)
     {
     }
 
@@ -637,7 +637,7 @@ private:
     }
 };
 
-IObjectRepository * CreateObjectRepository(IPlatformEnvironment * env)
+IObjectRepository * CreateObjectRepository(std::shared_ptr<IPlatformEnvironment> env)
 {
     return new ObjectRepository(env);
 }

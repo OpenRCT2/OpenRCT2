@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include "../common.h"
 
 struct rct_object_entry;
@@ -77,7 +78,7 @@ interface IScenarioRepository
     virtual bool TryRecordHighscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) abstract;
 };
 
-IScenarioRepository * CreateScenarioRepository(OpenRCT2::IPlatformEnvironment * env);
+IScenarioRepository * CreateScenarioRepository(std::shared_ptr<OpenRCT2::IPlatformEnvironment> env);
 IScenarioRepository * GetScenarioRepository();
 
 void    scenario_repository_scan();

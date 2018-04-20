@@ -82,9 +82,9 @@ namespace OpenRCT2
     {
     private:
         // Dependencies
-        IPlatformEnvironment * const    _env = nullptr;
-        IAudioContext * const           _audioContext = nullptr;
-        IUiContext * const              _uiContext = nullptr;
+        std::shared_ptr<IPlatformEnvironment> const _env;
+        std::shared_ptr<IAudioContext> const _audioContext;
+        std::shared_ptr<IUiContext> const _uiContext;
 
         // Services
         IObjectRepository *         _objectRepository = nullptr;
@@ -116,7 +116,10 @@ namespace OpenRCT2
         static Context * Instance;
 
     public:
-        Context(IPlatformEnvironment * env, IAudioContext * audioContext, IUiContext * uiContext)
+        Context(
+            std::shared_ptr<IPlatformEnvironment> env,
+            std::shared_ptr<IAudioContext> audioContext,
+            std::shared_ptr<IUiContext> uiContext)
             : _env(env),
               _audioContext(audioContext),
               _uiContext(uiContext)
@@ -153,17 +156,17 @@ namespace OpenRCT2
 
         IAudioContext * GetAudioContext() override
         {
-            return _audioContext;
+            return _audioContext.get();
         }
 
         IUiContext * GetUiContext() override
         {
-            return _uiContext;
+            return _uiContext.get();
         }
 
         IPlatformEnvironment * GetPlatformEnvironment() override
         {
-            return _env;
+            return _env.get();
         }
 
         IObjectManager * GetObjectManager() override
@@ -548,7 +551,7 @@ namespace OpenRCT2
 
         bool LoadBaseGraphics()
         {
-            if (!gfx_load_g1(_env))
+            if (!gfx_load_g1(*_env))
             {
                 return false;
             }
@@ -902,9 +905,9 @@ namespace OpenRCT2
 
     class PlainContext final : public Context
     {
-        std::unique_ptr<IPlatformEnvironment>   _env;
-        std::unique_ptr<IAudioContext>          _audioContext;
-        std::unique_ptr<IUiContext>             _uiContext;
+        std::shared_ptr<IPlatformEnvironment> _env;
+        std::shared_ptr<IAudioContext> _audioContext;
+        std::shared_ptr<IUiContext> _uiContext;
 
     public:
         PlainContext()
@@ -912,25 +915,31 @@ namespace OpenRCT2
         {
         }
 
-        PlainContext(IPlatformEnvironment * env, IAudioContext * audioContext, IUiContext * uiContext)
-            : Context(env, audioContext, uiContext)
+        PlainContext(
+            std::shared_ptr<IPlatformEnvironment> env,
+            std::shared_ptr<IAudioContext> audioContext,
+            std::shared_ptr<IUiContext> uiContext)
+            : Context(env, audioContext, uiContext),
+              _env(env),
+              _audioContext(audioContext),
+              _uiContext(uiContext)
         {
-            _env = std::unique_ptr<IPlatformEnvironment>(env);
-            _audioContext = std::unique_ptr<IAudioContext>(audioContext);
-            _uiContext = std::unique_ptr<IUiContext>(uiContext);
         }
     };
 
     Context * Context::Instance = nullptr;
 
-    IContext * CreateContext()
+    std::unique_ptr<IContext> CreateContext()
     {
-        return new PlainContext();
+        return std::make_unique<PlainContext>();
     }
 
-    IContext * CreateContext(IPlatformEnvironment * env, Audio::IAudioContext * audioContext, IUiContext * uiContext)
+    std::unique_ptr<IContext> CreateContext(
+        std::shared_ptr<IPlatformEnvironment> env,
+        std::shared_ptr<Audio::IAudioContext> audioContext,
+        std::shared_ptr<IUiContext> uiContext)
     {
-        return new Context(env, audioContext, uiContext);
+        return std::make_unique<Context>(env, audioContext, uiContext);
     }
 
     IContext * GetContext()

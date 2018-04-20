@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include <vector>
 #include "../common.h"
 #include "../object/Object.h"
@@ -77,7 +78,7 @@ interface IObjectRepository
     virtual void                            WritePackedObjects(IStream * stream, std::vector<const ObjectRepositoryItem *> &objects) abstract;
 };
 
-IObjectRepository * CreateObjectRepository(OpenRCT2::IPlatformEnvironment * env);
+IObjectRepository * CreateObjectRepository(std::shared_ptr<OpenRCT2::IPlatformEnvironment> env);
 
 bool IsObjectCustom(const ObjectRepositoryItem * object);
 

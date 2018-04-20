@@ -45,8 +45,8 @@ namespace OpenRCT2::Audio
         void StopVehicleSounds() override { }
     };
 
-    IAudioContext * CreateDummyAudioContext()
+    std::unique_ptr<IAudioContext> CreateDummyAudioContext()
     {
-        return new DummyAudioContext();
+        return std::make_unique<DummyAudioContext>();
     }
 } // namespace OpenRCT2::Audio

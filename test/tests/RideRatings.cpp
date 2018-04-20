@@ -91,6 +91,4 @@ TEST_F(RideRatings, all)
             expI++;
         }
     }
-
-    delete context;
 }

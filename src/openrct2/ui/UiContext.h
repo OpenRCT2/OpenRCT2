@@ -149,6 +149,6 @@ namespace OpenRCT2
             virtual bool              SetClipboardText(const utf8* target) abstract;
         };
 
-        IUiContext * CreateDummyUiContext();
+        std::shared_ptr<IUiContext> CreateDummyUiContext();
     } // namespace Ui
 } // namespace OpenRCT2

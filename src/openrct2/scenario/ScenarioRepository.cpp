@@ -128,16 +128,16 @@ private:
     static constexpr auto PATTERN = "*.sc4;*.sc6";
     
 public:
-    explicit ScenarioFileIndex(IPlatformEnvironment * env) :
+    explicit ScenarioFileIndex(const IPlatformEnvironment& env) :
         FileIndex("scenario index",
                   MAGIC_NUMBER,
                   VERSION,
-                  env->GetFilePath(PATHID::CACHE_SCENARIOS),
+                  env.GetFilePath(PATHID::CACHE_SCENARIOS),
                   std::string(PATTERN),
                   std::vector<std::string>({
-                      env->GetDirectoryPath(DIRBASE::RCT1, DIRID::SCENARIO),
-                      env->GetDirectoryPath(DIRBASE::RCT2, DIRID::SCENARIO),
-                      env->GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO) }))
+                      env.GetDirectoryPath(DIRBASE::RCT1, DIRID::SCENARIO),
+                      env.GetDirectoryPath(DIRBASE::RCT2, DIRID::SCENARIO),
+                      env.GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO) }))
     {
     }
 
@@ -322,15 +322,15 @@ class ScenarioRepository final : public IScenarioRepository
 private:
     static constexpr uint32 HighscoreFileVersion = 1;
 
-    IPlatformEnvironment * const _env;
+    std::shared_ptr<IPlatformEnvironment> const _env;
     ScenarioFileIndex const _fileIndex;
     std::vector<scenario_index_entry> _scenarios;
     std::vector<scenario_highscore_entry*> _highscores;
 
 public:
-    explicit ScenarioRepository(IPlatformEnvironment * env)
+    explicit ScenarioRepository(std::shared_ptr<IPlatformEnvironment> env)
         : _env(env),
-          _fileIndex(env)
+          _fileIndex(*env)
     {
     }
 
@@ -729,7 +729,7 @@ private:
 
 static ScenarioRepository * _scenarioRepository;
 
-IScenarioRepository * CreateScenarioRepository(IPlatformEnvironment * env)
+IScenarioRepository * CreateScenarioRepository(std::shared_ptr<IPlatformEnvironment> env)
 {
     _scenarioRepository = new ScenarioRepository(env);
     return _scenarioRepository;

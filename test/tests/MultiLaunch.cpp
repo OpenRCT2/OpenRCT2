@@ -46,8 +46,6 @@ TEST(MultiLaunchTest, all)
 
         // Check ride count again
         ASSERT_EQ(gRideCount, 134);
-
-        delete context;
     }
     SUCCEED();
 }

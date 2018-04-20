@@ -94,7 +94,7 @@ private:
 public:
     InGameConsole& GetInGameConsole() { return _inGameConsole; }
 
-    explicit UiContext(IPlatformEnvironment * env)
+    explicit UiContext(std::shared_ptr<IPlatformEnvironment> env)
         : _platformUiContext(CreatePlatformUiContext()),
           _windowManager(CreateWindowManager()),
           _keyboardShortcuts(env)
@@ -814,9 +814,9 @@ private:
     }
 };
 
-IUiContext * OpenRCT2::Ui::CreateUiContext(IPlatformEnvironment * env)
+std::unique_ptr<IUiContext> OpenRCT2::Ui::CreateUiContext(std::shared_ptr<IPlatformEnvironment> env)
 {
-    return new UiContext(env);
+    return std::make_unique<UiContext>(env);
 }
 
 InGameConsole& OpenRCT2::Ui::GetInGameConsole()

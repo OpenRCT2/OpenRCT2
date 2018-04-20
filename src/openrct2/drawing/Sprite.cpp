@@ -227,14 +227,12 @@ bool gTinyFontAntiAliased = false;
  *
  *  rct2: 0x00678998
  */
-bool gfx_load_g1(void * platformEnvironment)
+bool gfx_load_g1(const IPlatformEnvironment& env)
 {
-    auto env = (IPlatformEnvironment *)platformEnvironment;
-
     log_verbose("gfx_load_g1(...)");
     try
     {
-        auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA), "g1.dat");
+        auto path = Path::Combine(env.GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA), "g1.dat");
         auto fs = FileStream(path, FILE_MODE_OPEN);
         _g1.header = fs.ReadValue<rct_g1_header>();
 

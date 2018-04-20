@@ -92,8 +92,8 @@ namespace OpenRCT2::Ui
         ~DummyUiContext() { delete _windowManager; }
     };
 
-    IUiContext * CreateDummyUiContext()
+    std::shared_ptr<IUiContext> CreateDummyUiContext()
     {
-        return new DummyUiContext();
+        return std::make_unique<DummyUiContext>();
     }
 } // namespace OpenRCT2::Ui

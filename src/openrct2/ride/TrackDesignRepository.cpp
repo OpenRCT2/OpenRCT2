@@ -66,16 +66,16 @@ private:
     static constexpr auto PATTERN = "*.td4;*.td6";
 
 public:
-    explicit TrackDesignFileIndex(IPlatformEnvironment * env) :
+    explicit TrackDesignFileIndex(const IPlatformEnvironment &env) :
         FileIndex("track design index",
             MAGIC_NUMBER,
             VERSION,
-            env->GetFilePath(PATHID::CACHE_TRACKS),
+            env.GetFilePath(PATHID::CACHE_TRACKS),
             std::string(PATTERN),
             std::vector<std::string>({
-                env->GetDirectoryPath(DIRBASE::RCT1, DIRID::TRACK),
-                env->GetDirectoryPath(DIRBASE::RCT2, DIRID::TRACK),
-                env->GetDirectoryPath(DIRBASE::USER, DIRID::TRACK) }))
+                env.GetDirectoryPath(DIRBASE::RCT1, DIRID::TRACK),
+                env.GetDirectoryPath(DIRBASE::RCT2, DIRID::TRACK),
+                env.GetDirectoryPath(DIRBASE::USER, DIRID::TRACK) }))
     {
     }
 
@@ -137,14 +137,14 @@ private:
 class TrackDesignRepository final : public ITrackDesignRepository
 {
 private:
-    IPlatformEnvironment * const _env;
+    std::shared_ptr<IPlatformEnvironment> const _env;
     TrackDesignFileIndex const _fileIndex;
     std::vector<TrackRepositoryItem> _items;
 
 public:
-    explicit TrackDesignRepository(IPlatformEnvironment * env)
+    explicit TrackDesignRepository(std::shared_ptr<IPlatformEnvironment> env)
         : _env(env),
-          _fileIndex(env)
+          _fileIndex(*env)
     {
         Guard::ArgumentNotNull(env);
     }
@@ -396,7 +396,7 @@ private:
     }
 };
 
-ITrackDesignRepository * CreateTrackDesignRepository(IPlatformEnvironment * env)
+ITrackDesignRepository * CreateTrackDesignRepository(std::shared_ptr<IPlatformEnvironment> env)
 {
     return new TrackDesignRepository(env);
 }

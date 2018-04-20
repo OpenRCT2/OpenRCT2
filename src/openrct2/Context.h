@@ -18,6 +18,7 @@
 
 #include "common.h"
 
+#include <memory>
 #include <string>
 
 interface IObjectManager;
@@ -111,8 +112,11 @@ namespace OpenRCT2
         virtual std::string GetPathLegacy(sint32 pathId) abstract;
     };
 
-    IContext * CreateContext();
-    IContext * CreateContext(IPlatformEnvironment * env, Audio::IAudioContext * audioContext, Ui::IUiContext * uiContext);
+    std::unique_ptr<IContext> CreateContext();
+    std::unique_ptr<IContext> CreateContext(
+        std::shared_ptr<IPlatformEnvironment> env,
+        std::shared_ptr<Audio::IAudioContext> audioContext,
+        std::shared_ptr<Ui::IUiContext> uiContext);
     IContext * GetContext();
 } // namespace OpenRCT2
 
