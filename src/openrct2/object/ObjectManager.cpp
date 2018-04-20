@@ -48,7 +48,7 @@ public:
         _loadedObjects.resize(OBJECT_ENTRY_COUNT);
 
         UpdateSceneryGroupIndexes();
-        reset_type_to_ride_entry_index_map();
+        ResetTypeToRideEntryIndexMap();
     }
 
     ~ObjectManager() override
@@ -134,7 +134,7 @@ public:
                         }
                         _loadedObjects[slot] = loadedObject;
                         UpdateSceneryGroupIndexes();
-                        reset_type_to_ride_entry_index_map();
+                        ResetTypeToRideEntryIndexMap();
                     }
                 }
             }
@@ -165,7 +165,7 @@ public:
         {
             SetNewLoadedObjectList(std::get<1>(loadedObjects));
             UpdateSceneryGroupIndexes();
-            reset_type_to_ride_entry_index_map();
+            ResetTypeToRideEntryIndexMap();
             log_verbose("%u / %u new objects loaded", numNewLoadedObjects, requiredObjects.size());
             return true;
         }
@@ -196,7 +196,7 @@ public:
         if (numObjectsUnloaded > 0)
         {
             UpdateSceneryGroupIndexes();
-            reset_type_to_ride_entry_index_map();
+            ResetTypeToRideEntryIndexMap();
         }
     }
 
@@ -207,7 +207,7 @@ public:
             UnloadObject(object);
         }
         UpdateSceneryGroupIndexes();
-        reset_type_to_ride_entry_index_map();
+        ResetTypeToRideEntryIndexMap();
     }
 
     void ResetObjects() override
@@ -221,7 +221,7 @@ public:
             }
         }
         UpdateSceneryGroupIndexes();
-        reset_type_to_ride_entry_index_map();
+        ResetTypeToRideEntryIndexMap();
     }
 
     std::vector<const ObjectRepositoryItem *> GetPackableObjects() override
@@ -544,6 +544,11 @@ private:
             }
         }
         return loadedObject;
+    }
+
+    void ResetTypeToRideEntryIndexMap()
+    {
+        reset_type_to_ride_entry_index_map(*this);
     }
 
     static void ReportMissingObject(const rct_object_entry * entry)
