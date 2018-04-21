@@ -46,7 +46,7 @@ namespace OpenRCT2
 
         public:
             explicit Painter(std::shared_ptr<Ui::IUiContext> uiContext);
-            void Paint(Drawing::IDrawingEngine * de);
+            void Paint(Drawing::IDrawingEngine& de);
 
         private:
             void PaintFPS(rct_drawpixelinfo * dpi);

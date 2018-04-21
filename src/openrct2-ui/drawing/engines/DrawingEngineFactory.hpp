@@ -28,16 +28,16 @@ namespace OpenRCT2
 
         interface IUiContext;
 
-        Drawing::IDrawingEngine * CreateSoftwareDrawingEngine(std::shared_ptr<IUiContext> uiContext);
-        Drawing::IDrawingEngine * CreateHardwareDisplayDrawingEngine(std::shared_ptr<IUiContext> uiContext);
+        std::unique_ptr<IDrawingEngine> CreateSoftwareDrawingEngine(std::shared_ptr<IUiContext> uiContext);
+        std::unique_ptr<IDrawingEngine> CreateHardwareDisplayDrawingEngine(std::shared_ptr<IUiContext> uiContext);
 #ifndef DISABLE_OPENGL
-        Drawing::IDrawingEngine * CreateOpenGLDrawingEngine(std::shared_ptr<IUiContext> uiContext);
+        std::unique_ptr<IDrawingEngine> CreateOpenGLDrawingEngine(std::shared_ptr<IUiContext> uiContext);
 #endif
 
         class DrawingEngineFactory final : public IDrawingEngineFactory
         {
         public:
-            IDrawingEngine * Create(DRAWING_ENGINE_TYPE type, std::shared_ptr<IUiContext> uiContext) override
+            std::unique_ptr<IDrawingEngine> Create(DRAWING_ENGINE_TYPE type, std::shared_ptr<IUiContext> uiContext) override
             {
                 switch ((sint32)type) {
                 case DRAWING_ENGINE_SOFTWARE:

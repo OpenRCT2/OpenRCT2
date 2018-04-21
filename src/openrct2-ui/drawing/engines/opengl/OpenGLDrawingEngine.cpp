@@ -419,9 +419,9 @@ private:
     }
 };
 
-IDrawingEngine * OpenRCT2::Ui::CreateOpenGLDrawingEngine(std::shared_ptr<IUiContext> uiContext)
+std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateOpenGLDrawingEngine(std::shared_ptr<IUiContext> uiContext)
 {
-    return new OpenGLDrawingEngine(uiContext);
+    return std::make_unique<OpenGLDrawingEngine>(uiContext);
 }
 
 OpenGLDrawingContext::OpenGLDrawingContext(OpenGLDrawingEngine * engine)

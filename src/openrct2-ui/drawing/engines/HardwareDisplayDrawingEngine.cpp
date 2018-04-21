@@ -415,7 +415,7 @@ private:
     }
 };
 
-IDrawingEngine * OpenRCT2::Ui::CreateHardwareDisplayDrawingEngine(std::shared_ptr<IUiContext> uiContext)
+std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateHardwareDisplayDrawingEngine(std::shared_ptr<IUiContext> uiContext)
 {
-    return new HardwareDisplayDrawingEngine(uiContext);
+    return std::make_unique<HardwareDisplayDrawingEngine>(uiContext);
 }

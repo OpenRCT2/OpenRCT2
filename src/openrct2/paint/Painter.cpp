@@ -39,16 +39,16 @@ Painter::Painter(std::shared_ptr<IUiContext> uiContext)
 {
 }
 
-void Painter::Paint(IDrawingEngine * de)
+void Painter::Paint(IDrawingEngine& de)
 {
-    auto dpi = de->GetDrawingPixelInfo();
+    auto dpi = de.GetDrawingPixelInfo();
     if (gIntroState != INTRO_STATE_NONE)
     {
         intro_draw(dpi);
     }
     else
     {
-        de->PaintWindows();
+        de.PaintWindows();
 
         update_palette_effects();
         chat_draw(dpi);
@@ -62,7 +62,7 @@ void Painter::Paint(IDrawingEngine * de)
         gfx_draw_pickedup_peep(dpi);
         gfx_invalidate_pickedup_peep();
 
-        de->PaintRain();
+        de.PaintRain();
     }
 
     if (gConfigGeneral.show_fps)

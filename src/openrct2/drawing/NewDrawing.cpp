@@ -31,8 +31,8 @@ using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Ui;
 
-static sint32                   _drawingEngineType  = DRAWING_ENGINE_SOFTWARE;
-static IDrawingEngine *         _drawingEngine      = nullptr;
+static sint32 _drawingEngineType = DRAWING_ENGINE_SOFTWARE;
+static std::shared_ptr<IDrawingEngine> _drawingEngine;
 // TODO move this to Context
 static Painter *                _painter            = nullptr;
 
@@ -99,14 +99,12 @@ void drawing_engine_init()
         {
             drawingEngine->Initialise();
             drawingEngine->SetVSync(gConfigGeneral.use_vsync);
-            _drawingEngine = drawingEngine;
+            _drawingEngine = std::shared_ptr<IDrawingEngine>(std::move(drawingEngine));
         }
         catch (const std::exception &ex)
         {
             delete _painter;
             _painter = nullptr;
-            delete drawingEngine;
-            drawingEngine = nullptr;
             if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
             {
                 _drawingEngineType = DRAWING_ENGINE_NONE;
@@ -150,7 +148,7 @@ void drawing_engine_draw()
     if (_drawingEngine != nullptr && _painter != nullptr)
     {
         _drawingEngine->BeginDraw();
-        _painter->Paint(_drawingEngine);
+        _painter->Paint(*_drawingEngine);
         _drawingEngine->EndDraw();
     }
 }
@@ -165,7 +163,6 @@ void drawing_engine_copy_rect(sint32 x, sint32 y, sint32 width, sint32 height, s
 
 void drawing_engine_dispose()
 {
-    delete _drawingEngine;
     delete _painter;
     _drawingEngine = nullptr;
     _painter = nullptr;
