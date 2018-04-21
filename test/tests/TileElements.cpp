@@ -28,6 +28,22 @@ protected:
         SUCCEED();
     }
 
+    static void TearDownTestCase()
+    {
+        // FIXME: If this is not reset here, the context will outlive
+        // _availableObjectStringIds from Language.cpp, but upon its destruction
+        //    OpenRCT2::Context::~Context() ../src/openrct2/Context.cpp:135
+        //    object_manager_unload_all_objects() ../src/openrct2/object/ObjectManager.cpp:620
+        //    ObjectManager::UnloadAll() ../src/openrct2/object/ObjectManager.cpp:207
+        //    ObjectManager::UnloadObject(Object*) ../src/openrct2/object/ObjectManager.cpp:329
+        //    RideObject::Unload() ../src/openrct2/object/RideObject.cpp:334
+        //    language_free_object_string(unsigned short) ../src/openrct2/localisation/Language.cpp:274
+        // wants to access _availableObjectStringIds, which is already gone.
+        //
+        // This hack evicts context and ensures _availableObjectStringIds is
+        // available for the time we want to use it, until a better solution is implemented.
+        _context.reset();
+    }
 private:
     static std::shared_ptr<IContext> _context;
 };
