@@ -345,14 +345,3 @@
         Guard::Assert(false, "GAME_COMMAND_SET_MAZE_TRACK DEPRECATED");
     }
 #pragma endregion
-
-#pragma region RemoveWall
-    /**
-    *
-    *  rct2: 0x006E5597
-    */
-    void game_command_remove_wall(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
-    {
-        Guard::Assert(false, "GAME_COMMAND_REMOVE_WALL DEPRECATED");
-    }
-#pragma endregion
