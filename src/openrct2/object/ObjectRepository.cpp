@@ -83,8 +83,10 @@ private:
     static constexpr uint16 VERSION = 17;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json";
 
+    IObjectRepository& _objectRepository;
+
 public:
-    explicit ObjectFileIndex(IPlatformEnvironment * env) :
+    explicit ObjectFileIndex(IObjectRepository& objectRepository, IPlatformEnvironment * env) :
         FileIndex("object index",
             MAGIC_NUMBER,
             VERSION,
@@ -92,7 +94,8 @@ public:
             std::string(PATTERN),
             std::vector<std::string>({
                 env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT),
-                env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT) }))
+                env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT) })),
+        _objectRepository(objectRepository)
     {
     }
 
@@ -102,7 +105,7 @@ public:
         auto extension = Path::GetExtension(path);
         if (String::Equals(extension, ".json", true))
         {
-            auto object = ObjectFactory::CreateObjectFromJsonFile(path);
+            auto object = ObjectFactory::CreateObjectFromJsonFile(_objectRepository, path);
             if (object != nullptr)
             {
                 ObjectRepositoryItem item = { 0 };
@@ -116,7 +119,7 @@ public:
         }
         else
         {
-            auto object = ObjectFactory::CreateObjectFromLegacyFile(path.c_str());
+            auto object = ObjectFactory::CreateObjectFromLegacyFile(_objectRepository, path.c_str());
             if (object != nullptr)
             {
                 ObjectRepositoryItem item = { 0 };
@@ -213,7 +216,7 @@ class ObjectRepository final : public IObjectRepository
 public:
     explicit ObjectRepository(IPlatformEnvironment * env)
         : _env(env),
-          _fileIndex(env)
+          _fileIndex(*this, env)
     {
     }
 
@@ -279,11 +282,11 @@ public:
         auto extension = Path::GetExtension(ori->Path);
         if (String::Equals(extension, ".json", true))
         {
-            return ObjectFactory::CreateObjectFromJsonFile(ori->Path);
+            return ObjectFactory::CreateObjectFromJsonFile(*this, ori->Path);
         }
         else
         {
-            return ObjectFactory::CreateObjectFromLegacyFile(ori->Path);
+            return ObjectFactory::CreateObjectFromLegacyFile(*this, ori->Path);
         }
     }
 
@@ -310,7 +313,7 @@ public:
         object_entry_get_name_fixed(objectName, sizeof(objectName), objectEntry);
 
         // Check that the object is loadable before writing it
-        Object * object = ObjectFactory::CreateObjectFromLegacyData(objectEntry, data, dataSize);
+        Object * object = ObjectFactory::CreateObjectFromLegacyData(*this, objectEntry, data, dataSize);
         if (object == nullptr)
         {
             Console::Error::WriteLine("[%s] Unable to export object.", objectName);
@@ -652,18 +655,6 @@ const rct_object_entry * object_list_find(rct_object_entry * entry)
     const rct_object_entry * result = nullptr;
     auto objRepo = GetContext()->GetObjectRepository();
     auto item = objRepo->FindObject(entry);
-    if (item != nullptr)
-    {
-        result = &item->ObjectEntry;
-    }
-    return result;
-}
-
-const rct_object_entry * object_list_find_by_name(const char * name)
-{
-    const rct_object_entry * result = nullptr;
-    auto objRepo = GetContext()->GetObjectRepository();
-    auto item = objRepo->FindObject(name);
     if (item != nullptr)
     {
         result = &item->ObjectEntry;

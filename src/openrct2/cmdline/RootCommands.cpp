@@ -15,12 +15,13 @@
 #pragma endregion
 
 #include <ctime>
+#include <memory>
 
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../platform/Crash.h"
 #include "../platform/platform.h"
 #include "../localisation/Language.h"
-
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
@@ -394,12 +395,15 @@ static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumer
         return result;
     }
 
-    auto env = OpenRCT2::CreatePlatformEnvironment();
+    gOpenRCT2Headless = true;
+
+    auto context = std::unique_ptr<OpenRCT2::IContext>(OpenRCT2::CreateContext());
+    auto env = context->GetPlatformEnvironment();
+    auto objectRepository = std::unique_ptr<IObjectRepository>(CreateObjectRepository(env));
 
     // HACK: set gCurrentLanguage otherwise it be wrong for the index file
     gCurrentLanguage = gConfigGeneral.language;
 
-    auto objectRepository = CreateObjectRepository(env);
     objectRepository->Construct();
     return EXITCODE_OK;
 }

@@ -234,7 +234,7 @@ namespace ObjectJsonHelpers
     {
         std::vector<rct_g1_element> result;
         auto objectPath = FindLegacyObject(name);
-        auto obj = ObjectFactory::CreateObjectFromLegacyFile(objectPath.c_str());
+        auto obj = ObjectFactory::CreateObjectFromLegacyFile(context->GetObjectRepository(), objectPath.c_str());
         if (obj != nullptr)
         {
             auto &imgTable = static_cast<const Object *>(obj)->GetImageTable();

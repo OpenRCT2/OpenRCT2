@@ -551,10 +551,11 @@ private:
             std::vector<const char *> objects = RCT1::GetSceneryObjects(sceneryTheme);
             for (const char * objectName : objects)
             {
-                const rct_object_entry * foundEntry = object_list_find_by_name(objectName);
-                if (foundEntry != nullptr)
+                auto objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
+                auto foundObject = objectRepository->FindObject(objectName);
+                if (foundObject != nullptr)
                 {
-                    uint8 objectType = object_entry_get_type(foundEntry);
+                    uint8 objectType = object_entry_get_type(&foundObject->ObjectEntry);
                     switch (objectType) {
                     case OBJECT_TYPE_SMALL_SCENERY:
                     case OBJECT_TYPE_LARGE_SCENERY:
