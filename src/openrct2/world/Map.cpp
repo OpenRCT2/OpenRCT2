@@ -3761,8 +3761,10 @@ static void clear_element_at(sint32 x, sint32 y, rct_tile_element **elementPtr)
         viewport_interaction_remove_park_entrance(element, x, y);
         break;
     case TILE_ELEMENT_TYPE_WALL:
-        gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-        wall_remove(x, y, tile_element_get_direction(element), element->base_height, GAME_COMMAND_FLAG_APPLY);
+        {
+            auto wallRemoveAction = WallRemoveAction(x, y, element->base_height, tile_element_get_direction(element));
+            GameActions::Execute(&wallRemoveAction);
+        }
         break;
     case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;

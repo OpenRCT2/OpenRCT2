@@ -45,6 +45,7 @@
 #include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
+#include "../actions/WallRemoveAction.hpp"
 
 struct map_backup
 {
@@ -859,8 +860,16 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, sint32 origi
                         0);
                     break;
                 case OBJECT_TYPE_WALLS:
-                    z = (scenery->z * 8 + originZ) / 8;
-                    wall_remove(mapCoord.x, mapCoord.y, z, (rotation + scenery->flags) & TILE_ELEMENT_DIRECTION_MASK, flags);
+                    {
+                        z = (scenery->z * 8 + originZ) / 8;
+
+                        uint8_t direction = (rotation + scenery->flags) & TILE_ELEMENT_DIRECTION_MASK;
+
+                        auto wallRemoveAction = WallRemoveAction(mapCoord.x, mapCoord.y, z, direction);
+                        wallRemoveAction.SetFlags(flags);
+
+                        GameActions::Execute(&wallRemoveAction);
+                    }
                     break;
                 case OBJECT_TYPE_PATHS:
                     z = (scenery->z * 8 + originZ) / 8;

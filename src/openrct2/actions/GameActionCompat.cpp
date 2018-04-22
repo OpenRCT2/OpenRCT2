@@ -347,28 +347,6 @@
 #pragma endregion
 
 #pragma region RemoveWall
-    money32 wall_remove(sint16 x, sint16 y, uint8 baseHeight, uint8 direction, uint8 flags)
-    {
-        auto gameAction = WallRemoveAction(x, y, baseHeight, direction);
-        gameAction.SetFlags(flags);
-
-        // FIXME: The callee should probably use the game action directly
-        // once everything is compiled as cpp.
-        money32 cost = 0;
-        if (flags & GAME_COMMAND_FLAG_APPLY)
-        {
-            auto res = GameActions::Execute(&gameAction);
-            cost = res->Cost;
-        }
-        else
-        {
-            auto res = GameActions::Query(&gameAction);
-            cost = res->Cost;
-        }
-
-        return cost;
-    }
-
     /**
     *
     *  rct2: 0x006E5597

@@ -19,6 +19,7 @@
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
+#include "../management/Finance.h"
 #include "GameAction.h"
 
 #include "../Cheats.h"

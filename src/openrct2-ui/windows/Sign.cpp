@@ -29,6 +29,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/actions/SignSetNameAction.hpp>
+#include <openrct2/actions/WallRemoveAction.hpp>
 
 #define WW 113
 #define WH 96
@@ -499,18 +500,23 @@ static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex
         window_close(w);
         break;
     case WIDX_SIGN_DEMOLISH:
-        while (1){
-            if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL) {
-                rct_scenery_entry* scenery_entry = get_wall_entry(tile_element->properties.wall.type);
-                if (scenery_entry->wall.scrolling_mode != 0xFF){
-                    if (tile_element->properties.wall.banner_index == w->number)
-                        break;
+        {
+            while (1)
+            {
+                if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_WALL)
+                {
+                    rct_scenery_entry* scenery_entry = get_wall_entry(tile_element->properties.wall.type);
+                    if (scenery_entry->wall.scrolling_mode != 0xFF)
+                    {
+                        if (tile_element->properties.wall.banner_index == w->number)
+                            break;
+                    }
                 }
+                tile_element++;
             }
-            tile_element++;
+            auto wallRemoveAction = WallRemoveAction(x, y, tile_element->base_height, tile_element_get_direction(tile_element));
+            GameActions::Execute(&wallRemoveAction);
         }
-        gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-        wall_remove(x, y, tile_element->base_height, tile_element_get_direction(tile_element), GAME_COMMAND_FLAG_APPLY);
         break;
     case WIDX_SIGN_TEXT:
         if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE){

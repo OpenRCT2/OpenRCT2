@@ -37,6 +37,7 @@
 #include "Viewport.h"
 #include "Window_internal.h"
 #include "../Context.h"
+#include "../actions/WallRemoveAction.hpp"
 
 static void viewport_interaction_remove_scenery(rct_tile_element *tileElement, sint32 x, sint32 y);
 static void viewport_interaction_remove_footpath(rct_tile_element *tileElement, sint32 x, sint32 y);
@@ -511,11 +512,14 @@ void viewport_interaction_remove_park_entrance(rct_tile_element *tileElement, si
 static void viewport_interaction_remove_park_wall(rct_tile_element *tileElement, sint32 x, sint32 y)
 {
     rct_scenery_entry *sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
-    if (sceneryEntry->wall.scrolling_mode != 0xFF){
+    if (sceneryEntry->wall.scrolling_mode != 0xFF)
+    {
         context_open_detail_window(WD_SIGN_SMALL, tileElement->properties.wall.banner_index);
-    } else {
-        gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-        wall_remove(x, y, tileElement->base_height, tile_element_get_direction(tileElement), GAME_COMMAND_FLAG_APPLY);
+    }
+    else
+    {
+        auto wallRemoveAction = WallRemoveAction(x, y, tileElement->base_height, tile_element_get_direction(tileElement));
+        GameActions::Execute(&wallRemoveAction);
     }
 }
 
