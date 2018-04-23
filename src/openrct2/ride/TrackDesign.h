@@ -155,7 +155,8 @@ assert_struct_size(rct_track_td6, 0xbf);
 #pragma pack(pop)
 
 // Only written to in RCT2, not used in OpenRCT2. All of these are elements that had to be invented in RCT1.
-enum {
+enum : uint32
+{
     TRACK_FLAGS_CONTAINS_VERTICAL_LOOP = (1 << 7),
     TRACK_FLAGS_CONTAINS_INLINE_TWIST = (1 << 17),
     TRACK_FLAGS_CONTAINS_HALF_LOOP = (1 << 18),
@@ -166,16 +167,19 @@ enum {
     TRACK_FLAGS_CONTAINS_LARGE_HALF_LOOP = (1u << 31),
 };
 
-enum {
+enum : uint32
+{
     TRACK_FLAGS2_CONTAINS_LOG_FLUME_REVERSER = (1 << 1),
     TRACK_FLAGS2_SIX_FLAGS_RIDE_DEPRECATED = (1u << 31)     // Not used anymore.
 };
 
-enum {
+enum
+{
     TDPF_PLACE_SCENERY = 1 << 0,
 };
 
-enum {
+enum
+{
     TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE = (1 << 0),
     TRACK_DESIGN_FLAG_HAS_SCENERY = (1 << 1),
     TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE = (1 << 2),

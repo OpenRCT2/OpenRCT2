@@ -26,7 +26,8 @@
 
 struct rct_peep;
 
-enum {
+enum : uint32
+{
     PARK_FLAGS_PARK_OPEN = (1 << 0),
     PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT = (1 << 1),
     PARK_FLAGS_FORBID_LANDSCAPE_CHANGES = (1 << 2),

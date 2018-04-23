@@ -99,7 +99,7 @@ enum GAME_COMMAND
     GAME_COMMAND_COUNT
 };
 
-enum
+enum : uint32
 {
     GAME_COMMAND_FLAG_APPLY               = (1 << 0), // If this flag is set, the command is applied, otherwise only the cost is retrieved
     GAME_COMMAND_FLAG_2                   = (1 << 2),
