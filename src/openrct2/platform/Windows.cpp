@@ -231,49 +231,6 @@ bool platform_get_steam_path(utf8 * outPath, size_t outSize)
     return result == ERROR_SUCCESS;
 }
 
-/**
- *
- *  rct2: 0x00407978
- */
-sint32 windows_get_registry_install_info(rct2_install_info *installInfo, char *source)
-{
-    char subkeyInfogrames[MAX_PATH], subkeyFishTechGroup[MAX_PATH], keyName[100];
-    HKEY hKey;
-    DWORD type, size;
-
-    safe_strcpy(subkeyInfogrames, "Software\\Infogrames\\", sizeof(subkeyInfogrames));
-    safe_strcat(subkeyInfogrames, source, sizeof(subkeyInfogrames));
-    safe_strcpy(subkeyFishTechGroup, "Software\\Fish Technology Group\\", sizeof(subkeyFishTechGroup));
-    safe_strcat(subkeyFishTechGroup, source, sizeof(subkeyFishTechGroup));
-
-    if (RegOpenKeyA(HKEY_LOCAL_MACHINE, subkeyInfogrames, &hKey) != ERROR_SUCCESS)
-        return 0;
-
-    if (RegOpenKeyA(HKEY_LOCAL_MACHINE, subkeyFishTechGroup, &hKey) != ERROR_SUCCESS)
-        return 0;
-
-
-    size = 260;
-    RegQueryValueExA(hKey, "Title", 0, &type, (LPBYTE)installInfo->title, &size);
-
-    size = 260;
-    RegQueryValueExA(hKey, "Path", 0, &type, (LPBYTE)installInfo->path, &size);
-
-    installInfo->var_20C = 235960;
-
-    size = 4;
-    RegQueryValueExA(hKey, "InstallLevel", 0, &type, (LPBYTE)&installInfo->installLevel, &size);
-    for (sint32 i = 0; i <= 15; i++) {
-        snprintf(keyName, 100, "AddonPack%d", i);
-        size = sizeof(installInfo->expansionPackNames[i]);
-        if (RegQueryValueExA(hKey, keyName, 0, &type, (LPBYTE)installInfo->expansionPackNames[i], &size) == ERROR_SUCCESS)
-            installInfo->activeExpansionPacks |= (1 << i);
-    }
-
-    RegCloseKey(hKey);
-    return 1;
-}
-
 uint16 platform_get_locale_language()
 {
     CHAR langCode[4];
