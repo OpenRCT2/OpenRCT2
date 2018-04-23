@@ -523,7 +523,7 @@ STR_0521    :Een intense, snelle en kronkelende achtbaan met scherpe bochten en 
 STR_0522    :Een kleinere achtbaan waar de passagiers boven de baan en op het karretje zitten.
 STR_0523    :Bezoekers rijden langzaam over een baan in aangedreven karretjes.
 STR_0524    :Een vrijevalwagen wordt pneumatisch langs een hoge stalen toren gelanceerd en gaat daarna in een vrije val weer naar beneden.
-STR_0525    :Passagiers rijden over een kronkelende baan, waarbij ze enkel worden geleid door de ronding en banking van de halfronde baan.
+STR_0525    :Passagiers rijden over een kronkelende baan, waarbij ze enkel worden geleid door de ronding en verkanting van de halfronde baan.
 STR_0526    :Bezoekers gaan in een roterende observatiecabine langs een toren omhoog
 STR_0527    :Een soepele stalen achtbaan die verticale loopings kan maken.
 STR_0528    :Passagiers glijden in opblaasboten door een kronkelende halfopen of compleet gesloten glijbaan.
@@ -907,11 +907,11 @@ STR_0904    :{SMALLFONT}{BLACK}Bocht naar links (grote straal)
 STR_0905    :{SMALLFONT}{BLACK}Bocht naar rechts (grote straal)
 STR_0906    :{SMALLFONT}{BLACK}Recht stuk
 STR_0907    :Helling
-STR_0908    :Roll/Banking
+STR_0908    :Verkanting
 STR_0909    :Stoelrot.
-STR_0910    :{SMALLFONT}{BLACK}Roll voor bocht naar links
-STR_0911    :{SMALLFONT}{BLACK}Roll voor bocht naar rechts
-STR_0912    :{SMALLFONT}{BLACK}Geen roll
+STR_0910    :{SMALLFONT}{BLACK}Verkanting voor bocht naar links
+STR_0911    :{SMALLFONT}{BLACK}Verkanting voor bocht naar rechts
+STR_0912    :{SMALLFONT}{BLACK}Geen verkanting
 STR_0913    :{SMALLFONT}{BLACK}Ga naar vorig gedeelte
 STR_0914    :{SMALLFONT}{BLACK}Ga naar volgend gedeelte
 STR_0915    :{SMALLFONT}{BLACK}Bouw het geselecteerde gedeelte
@@ -4325,8 +4325,8 @@ STR_6020    :Attractiebouw: standaardbaanstuk
 STR_6021    :Attractiebouw: helling naar beneden
 STR_6022    :Attractiebouw: helling naar boven
 STR_6023    :Attractiebouw: kettinglift aan/uit
-STR_6024    :Attractiebouw: banking (links)
-STR_6025    :Attractiebouw: banking (rechts)
+STR_6024    :Attractiebouw: verkanting (links)
+STR_6025    :Attractiebouw: verkanting (rechts)
 STR_6026    :Attractiebouw: vorig baanstuk
 STR_6027    :Attractiebouw: volgend baanstuk
 STR_6028    :Attractiebouw: onderdeel bouwen
