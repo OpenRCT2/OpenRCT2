@@ -234,7 +234,7 @@
        This requires the project parameter SIGN_PASSWORD to be set -->
   <Target Name="Sign" AfterTargets="Build" Inputs="@(SignItems)" Outputs="%(SignItems.Identity).signed"
           Condition="'$(TestConfig)'!='true'">
-    <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of %(SignItems.Filename)%(SignItems.Extension)." />
+    <!-- <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of %(SignItems.Filename)%(SignItems.Extension)." /> -->
     <Message Condition="'$(SIGN_PASSWORD)'!=''" Text="Signing %(SignItems.Filename)%(SignItems.Extension)"
              Importance="high" />
     <Exec EchoOff="true" Condition="'$(SIGN_PASSWORD)'!=''"
@@ -283,7 +283,7 @@
           StandardOutputImportance="normal" />
 
     <!-- Sign the installer -->
-    <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of $(PublishInstallerExeName)." />
+    <!-- <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of $(PublishInstallerExeName)." /> -->
     <Message Condition="'$(SIGN_PASSWORD)'!=''" Text="Signing $(PublishInstallerExeName)"
              Importance="high" />
     <Exec EchoOff="true" Condition="'$(SIGN_PASSWORD)'!=''"
