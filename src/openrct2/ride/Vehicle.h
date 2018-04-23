@@ -240,7 +240,8 @@ struct rct_vehicle_info {
     uint8 bank_rotation;    // 0x08
 };
 
-enum {
+enum : uint32
+{
     VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY = 1 << 0, // Set on powered vehicles that do not slow down when going down a hill
     VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS = 1 << 1,
     VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH = 1 << 2,
@@ -322,7 +323,8 @@ enum {
     VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES
 };
 
-enum{
+enum : uint32
+{
     VEHICLE_UPDATE_FLAG_ON_LIFT_HILL = (1 << 0),
     VEHICLE_UPDATE_FLAG_1 = (1 << 1),
     VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT = (1 << 2),
@@ -339,7 +341,8 @@ enum{
     VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE = (1 << 13) // After passing a rotation toggle track piece this will enable
 };
 
-enum {
+enum : uint32
+{
     VEHICLE_SPRITE_FLAG_FLAT = (1 << 0),
     VEHICLE_SPRITE_FLAG_GENTLE_SLOPES = (1 << 1),
     VEHICLE_SPRITE_FLAG_STEEP_SLOPES = (1 << 2),
@@ -378,7 +381,8 @@ enum {
     VEHICLE_VISUAL_SUBMARINE
 };
 
-enum {
+enum : uint32
+{
     VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION = 1 << 0,
     VEHICLE_UPDATE_MOTION_TRACK_FLAG_1 = 1 << 1,
     VEHICLE_UPDATE_MOTION_TRACK_FLAG_2 = 1 << 2,

@@ -752,7 +752,8 @@ enum {
     RIDE_ELEMENT_WHIRLPOOL               = 1 << 7
 };
 
-enum ride_type_flags {
+enum ride_type_flags : uint32
+{
     RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN = 1 << 0,
     RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL = 1 << 1,
     RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS = 1 << 2,

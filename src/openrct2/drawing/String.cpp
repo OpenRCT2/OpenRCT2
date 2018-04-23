@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <algorithm>
+#include "../common.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
@@ -24,7 +25,8 @@
 #include "../util/Util.h"
 #include "TTF.h"
 
-enum {
+enum : uint32
+{
     TEXT_DRAW_FLAG_INSET = 1 << 0,
     TEXT_DRAW_FLAG_OUTLINE = 1 << 1,
     TEXT_DRAW_FLAG_DARK = 1 << 2,

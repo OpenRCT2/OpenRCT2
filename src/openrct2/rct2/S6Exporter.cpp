@@ -16,6 +16,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include "../common.h"
 #include "../Context.h"
 #include "../core/FileStream.hpp"
 #include "../core/IStream.hpp"
@@ -739,7 +740,8 @@ void S6Exporter::ExportResearchList()
     memcpy(_s6.research_items, gResearchItems, sizeof(_s6.research_items));
 }
 
-enum {
+enum : uint32
+{
     S6_SAVE_FLAG_EXPORT    = 1 << 0,
     S6_SAVE_FLAG_SCENARIO  = 1 << 1,
     S6_SAVE_FLAG_AUTOMATIC = 1u << 31,
