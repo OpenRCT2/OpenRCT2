@@ -41,6 +41,14 @@ namespace String
         else return std::string(str);
     }
 
+    std::string StdFormat_VA(const utf8 * format, va_list args)
+    {
+        auto buffer = Format_VA(format, args);
+        auto returnValue = ToStd(buffer);
+        Memory::Free(buffer);
+        return returnValue;
+    }
+
     std::string StdFormat(const utf8 * format, ...)
     {
         va_list args;
