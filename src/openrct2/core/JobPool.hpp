@@ -31,13 +31,13 @@ private:
         const std::function<void()> completionFn;
     };
 
+    std::atomic_bool _shouldStop;
+    std::atomic<size_t> _processing;
     std::vector<std::thread> _threads;
     std::deque<TaskData_t> _pending;
     std::deque<TaskData_t> _completed;
     std::condition_variable _condPending;
     std::condition_variable _condComplete;
-    std::atomic<size_t> _processing;
-    std::atomic_bool _shouldStop;
     std::mutex _mutex;
 
     typedef std::unique_lock<std::mutex> unique_lock;
