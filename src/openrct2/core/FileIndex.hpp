@@ -28,6 +28,7 @@
 #include "FileScanner.h"
 #include "FileStream.hpp"
 #include "Path.hpp"
+#include "JobPool.hpp"
 
 template<typename TItem>
 class FileIndex
@@ -215,36 +216,35 @@ private:
         const size_t totalCount = scanResult.Files.size();
         if (totalCount > 0)
         {
-            const size_t numThreads = std::thread::hardware_concurrency();
-
-            size_t stepSize = totalCount / numThreads;
-
-            std::vector<std::thread> threads;
-            std::vector<std::vector<TItem>> containers;
+            JobPool jobPool;
             std::mutex printLock; // For verbose prints.
-            containers.resize(numThreads + (totalCount % stepSize == 0 ? 0 : 1));
 
-            for (size_t rangeStart = 0; rangeStart < totalCount; rangeStart += stepSize)
+            std::vector<std::vector<TItem>> containers;
+
+            size_t stepSize = std::thread::hardware_concurrency();
+            size_t numTasks = totalCount / stepSize;
+            size_t taskGroup = 0;
+            numTasks += (totalCount % stepSize == 0 ? 0 : 1);
+
+            containers.resize(numTasks);
+
+            for (size_t rangeStart = 0; rangeStart < totalCount; rangeStart += stepSize, taskGroup++)
             {
                 if (rangeStart + stepSize > totalCount)
                     stepSize = totalCount - rangeStart;
 
-                auto& items = containers[threads.size()];
+                auto& items = containers[taskGroup];
 
-                threads.emplace_back(&FileIndex<TItem>::BuildRange,
+                jobPool.addTask(std::bind(&FileIndex<TItem>::BuildRange,
                     this,
                     std::cref(scanResult),
                     rangeStart,
                     rangeStart + stepSize,
                     std::ref(items),
-                    std::ref(printLock));
+                    std::ref(printLock)));
             }
 
-            for (auto&& itr : threads)
-            {
-                if (itr.joinable())
-                    itr.join();
-            }
+            jobPool.join();
 
             for (auto&& itr : containers)
             {
