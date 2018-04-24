@@ -20,6 +20,7 @@
 #include <deque>
 #include <functional>
 #include <atomic>
+#include <vector>
 
 class JobPool
 {
