@@ -245,7 +245,7 @@ private:
             jobPool.join([&]()
             {
                 size_t completed = totalCount - jobPool.countPending();
-                Console::WriteFormat("File %5d of %d, done %3d%%\r", completed, totalCount, completed / totalCount);
+                Console::WriteFormat("File %5d of %d, done %3d%%\r", completed, totalCount, completed * 100 / totalCount);
             });
 
             for (auto&& itr : containers)

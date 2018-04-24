@@ -23,6 +23,7 @@
 #include <functional>
 #include <atomic>
 #include <vector>
+#include <cassert>
 
 class JobPool
 {
@@ -65,8 +66,8 @@ public:
 
         for (auto&& th : _threads)
         {
-            if (th.joinable())
-                th.join();
+            assert(th.joinable() != false);
+            th.join();
         }
     }
 
@@ -87,27 +88,18 @@ public:
 
     void join(std::function<void()> reportFn = nullptr)
     {
+        unique_lock lock(_mutex);
         while (true)
         {
-            unique_lock lock(_mutex);
+            // Wait for the queue to become empty or having completed tasks.
             _condComplete.wait(lock, [this]()
             {
-                return (_pending.empty() && _processing == 0) || !_completed.empty();
+                return (_pending.empty() && _processing == 0) ||
+                        !_completed.empty();
             });
 
-            if (reportFn)
-            {
-                reportFn();
-            }
-
-            if (_completed.empty() &&
-                _pending.empty() &&
-                _processing == 0)
-            {
-                break;
-            }
-
-            if (!_completed.empty())
+            // Dispatch all completion callbacks if there are any.
+            while (!_completed.empty())
             {
                 auto taskData = _completed.front();
                 _completed.pop_front();
@@ -121,6 +113,23 @@ public:
                     lock.lock();
                 }
             }
+
+            if (reportFn)
+            {
+                lock.unlock();
+
+                reportFn();
+
+                lock.lock();
+            }
+
+            // If everything is empty and no more work has to be done we can stop waiting.
+            if (_completed.empty() &&
+                _pending.empty() &&
+                _processing == 0)
+            {
+                break;
+            }
         }
     }
 
@@ -132,12 +141,15 @@ public:
 private:
     void processQueue()
     {
-        while (true)
+        unique_lock lock(_mutex);
+        do
         {
-            unique_lock lock(_mutex);
-            _condPending.wait(lock, [this]() {
+            // Wait for work or cancelation.
+            _condPending.wait(lock, [this]()
+            {
                 return _shouldStop || !_pending.empty();
             });
+
             if (!_pending.empty())
             {
                 _processing++;
@@ -156,8 +168,7 @@ private:
                 _processing--;
                 _condComplete.notify_one();
             }
-            if (_shouldStop)
-                break;
         }
+        while(!_shouldStop);
     }
 };
