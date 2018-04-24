@@ -64,7 +64,7 @@
 #include "interface/Viewport.h"
 #include "Intro.h"
 #include "localisation/Date.h"
-#include "localisation/Language.h"
+#include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
 #include "network/http.h"
 #include "network/network.h"
@@ -74,6 +74,7 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
+using namespace OpenRCT2::Localisation;
 using namespace OpenRCT2::Ui;
 
 namespace OpenRCT2
@@ -87,6 +88,7 @@ namespace OpenRCT2
         std::shared_ptr<IUiContext> const _uiContext;
 
         // Services
+        std::shared_ptr<LocalisationService> _localisationService;
         IObjectRepository *         _objectRepository = nullptr;
         IObjectManager *            _objectManager = nullptr;
         ITrackDesignRepository *    _trackDesignRepository = nullptr;
@@ -131,7 +133,6 @@ namespace OpenRCT2
         {
             window_close_all();
             http_dispose();
-            language_close_all();
             object_manager_unload_all_objects();
             gfx_object_check_all_images_freed();
             gfx_unload_g2();
@@ -167,6 +168,11 @@ namespace OpenRCT2
         std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() override
         {
             return _env;
+        }
+
+        std::shared_ptr<LocalisationService> GetLocalisationService() override
+        {
+            return _localisationService;
         }
 
         IObjectManager * GetObjectManager() override
@@ -350,19 +356,27 @@ namespace OpenRCT2
             _discordService = new DiscordService();
 #endif
 
-            if (!language_open(gConfigGeneral.language))
+            try
             {
-                log_error("Failed to open configured language...");
-                if (!language_open(LANGUAGE_ENGLISH_UK))
+                _localisationService->OpenLanguage(gConfigGeneral.language, *_objectManager);
+            }
+            catch (const std::exception& e)
+            {
+                log_error("Failed to open configured language: %s", e.what());
+                try
                 {
-                    log_fatal("Failed to open fallback language...");
+                    _localisationService->OpenLanguage(LANGUAGE_ENGLISH_UK, *_objectManager);
+                }
+                catch (const std::exception&)
+                {
+                    log_fatal("Failed to open fallback language: %s", e.what());
                     return false;
                 }
             }
 
             if (platform_process_is_elevated())
             {
-                std::string elevationWarning = language_get_string(STR_ADMIN_NOT_RECOMMENDED);
+                std::string elevationWarning = _localisationService->GetString(STR_ADMIN_NOT_RECOMMENDED);
                 if (gOpenRCT2Headless)
                 {
                     Console::Error::WriteLine(elevationWarning.c_str());

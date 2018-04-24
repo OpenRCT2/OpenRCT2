@@ -22,10 +22,10 @@
 #include "../interface/Fonts.h"
 #include "../interface/FontFamilies.h"
 #include "../object/ObjectManager.h"
-#include "LanguagePack.h"
-
 #include "../platform/platform.h"
+#include "LanguagePack.h"
 #include "Localisation.h"
+#include "LocalisationService.h"
 
 // clang-format off
 const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
@@ -54,12 +54,6 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
     { "sv-SE", "Swedish",               "Svenska",               FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_SWEDISH },             // LANGUAGE_SWEDISH
 };
 // clang-format on
-
-sint32 gCurrentLanguage = LANGUAGE_UNDEFINED;
-bool gUseTrueTypeFont = false;
-
-static ILanguagePack * _languageFallback = nullptr;
-static ILanguagePack * _languageCurrent = nullptr;
 
 // clang-format off
 const utf8 BlackUpArrowString[] =       { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x96, (utf8)(uint8)0xB2, (utf8)(uint8)0x00 };
@@ -100,130 +94,53 @@ uint8 language_get_id_from_locale(const char * locale)
 
 const char * language_get_string(rct_string_id id)
 {
-    const char * result = nullptr;
-    if (id == STR_EMPTY)
-    {
-        result = "";
-    }
-    else if (id != STR_NONE)
-    {
-        if (_languageCurrent != nullptr)
-        {
-            result = _languageCurrent->GetString(id);
-        }
-        if (result == nullptr && _languageFallback != nullptr)
-        {
-            result = _languageFallback->GetString(id);
-        }
-        if (result == nullptr)
-        {
-            result = "(undefined string)";
-        }
-    }
-    return result;
-}
-
-static utf8 * GetLanguagePath(utf8 * buffer, size_t bufferSize, uint32 languageId)
-{
-    const char * locale = LanguagesDescriptors[languageId].locale;
-
-    platform_get_openrct_data_path(buffer, bufferSize);
-    Path::Append(buffer, bufferSize, "language");
-    Path::Append(buffer, bufferSize, locale);
-    String::Append(buffer, bufferSize, ".txt");
-    return buffer;
+    const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
+    return localisationService->GetString(id);
 }
 
 bool language_open(sint32 id)
 {
-    char filename[MAX_PATH];
-
-    language_close_all();
-    if (id == LANGUAGE_UNDEFINED)
+    auto context = OpenRCT2::GetContext();
+    const auto& localisationService = context->GetLocalisationService();
+    auto objectManager = context->GetObjectManager();
+    try
+    {
+        localisationService->OpenLanguage(id, *objectManager);
+        return true;
+    }
+    catch (const std::exception&)
     {
         return false;
     }
-
-    if (id != LANGUAGE_ENGLISH_UK)
-    {
-        GetLanguagePath(filename, sizeof(filename), LANGUAGE_ENGLISH_UK);
-        _languageFallback = LanguagePackFactory::FromFile(LANGUAGE_ENGLISH_UK, filename);
-    }
-
-    GetLanguagePath(filename, sizeof(filename), id);
-    _languageCurrent = LanguagePackFactory::FromFile(id, filename);
-    if (_languageCurrent != nullptr)
-    {
-        gCurrentLanguage = id;
-        TryLoadFonts();
-
-        // Objects and their localised strings need to be refreshed
-        auto context = OpenRCT2::GetContext();
-        context->GetObjectManager()->ResetObjects();
-        return true;
-    }
-
-    return false;
 }
-
-void language_close_all()
-{
-    SafeDelete(_languageFallback);
-    SafeDelete(_languageCurrent);
-    gCurrentLanguage = LANGUAGE_UNDEFINED;
-}
-
-constexpr rct_string_id NONSTEX_BASE_STRING_ID = 3463;
-constexpr uint16        MAX_OBJECT_CACHED_STRINGS = 2048;
 
 bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds)
 {
-    outStringIds[0] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 0);
-    outStringIds[1] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 1);
-    outStringIds[2] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 2);
+    const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
+    auto result = localisationService->GetLocalisedScenarioStrings(scenarioFilename);
+    outStringIds[0] = std::get<0>(result);
+    outStringIds[1] = std::get<1>(result);
+    outStringIds[2] = std::get<2>(result);
     return
         outStringIds[0] != STR_NONE ||
         outStringIds[1] != STR_NONE ||
         outStringIds[2] != STR_NONE;
 }
 
-static bool                         _availableObjectStringIdsInitialised = false;
-static std::stack<rct_string_id>    _availableObjectStringIds;
-
 void language_free_object_string(rct_string_id stringId)
 {
-    if (stringId != 0)
-    {
-        if (_languageCurrent != nullptr)
-        {
-            _languageCurrent->RemoveString(stringId);
-        }
-        _availableObjectStringIds.push(stringId);
-    }
+    const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
+    localisationService->FreeObjectString(stringId);
 }
 
 rct_string_id language_get_object_override_string_id(const char * identifier, uint8 index)
 {
-    if (_languageCurrent == nullptr)
-    {
-        return STR_NONE;
-    }
-    return _languageCurrent->GetObjectOverrideStringId(identifier, index);
+    const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
+    return localisationService->GetObjectOverrideStringId(identifier, index);
 }
 
 rct_string_id language_allocate_object_string(const std::string &target)
 {
-    if (!_availableObjectStringIdsInitialised)
-    {
-        _availableObjectStringIdsInitialised = true;
-        for (rct_string_id stringId = NONSTEX_BASE_STRING_ID + MAX_OBJECT_CACHED_STRINGS; stringId >= NONSTEX_BASE_STRING_ID; stringId--)
-        {
-            _availableObjectStringIds.push(stringId);
-        }
-    }
-
-    rct_string_id stringId = _availableObjectStringIds.top();
-    _availableObjectStringIds.pop();
-    _languageCurrent->SetString(stringId, target);
-    return stringId;
+    const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
+    return localisationService->AllocateObjectString(target);
 }

@@ -98,7 +98,6 @@ extern const utf8 CheckBoxMarkString[];
 uint8 language_get_id_from_locale(const char * locale);
 const char *language_get_string(rct_string_id id);
 bool language_open(sint32 id);
-void language_close_all();
 
 uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr);
 utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint);
