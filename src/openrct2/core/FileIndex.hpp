@@ -20,6 +20,7 @@
 #include <string>
 #include <tuple>
 #include <vector>
+#include <list>
 #include "../common.h"
 #include "Console.hpp"
 #include "File.h"
@@ -192,7 +193,7 @@ private:
 
             if (_log_levels[DIAGNOSTIC_LEVEL_VERBOSE])
             {
-                std::unique_lock<std::mutex> lock(printLock);
+                std::lock_guard<std::mutex> lock(printLock);
                 log_verbose("FileIndex:Indexing '%s'", filePath.c_str());
             }
 
@@ -217,21 +218,17 @@ private:
             JobPool jobPool;
             std::mutex printLock; // For verbose prints.
 
-            std::vector<std::vector<TItem>> containers;
+            std::list<std::vector<TItem>> containers;
 
-            size_t stepSize = std::thread::hardware_concurrency();
-            size_t numTasks = totalCount / stepSize;
-            size_t taskGroup = 0;
-            numTasks += (totalCount % stepSize == 0 ? 0 : 1);
+            size_t stepSize = 100; // Handpicked, seems to work well with 4/8 cores.
 
-            containers.resize(numTasks);
-
-            for (size_t rangeStart = 0; rangeStart < totalCount; rangeStart += stepSize, taskGroup++)
+            for (size_t rangeStart = 0; rangeStart < totalCount; rangeStart += stepSize)
             {
                 if (rangeStart + stepSize > totalCount)
                     stepSize = totalCount - rangeStart;
 
-                auto& items = containers[taskGroup];
+                containers.emplace_back();
+                auto& items = containers.back();
 
                 jobPool.addTask(std::bind(&FileIndex<TItem>::BuildRange,
                     this,
