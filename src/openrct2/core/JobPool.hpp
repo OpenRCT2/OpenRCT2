@@ -16,29 +16,35 @@
 
 #pragma once
 
-#include <thread>
+#include <atomic>
+#include <cassert>
 #include <condition_variable>
-#include <mutex>
 #include <deque>
 #include <functional>
-#include <atomic>
+#include <mutex>
+#include <thread>
 #include <vector>
-#include <cassert>
 
 class JobPool
 {
 private:
-    struct TaskData_t
+    struct TaskData
     {
-        const std::function<void()> workFn;
-        const std::function<void()> completionFn;
+        const std::function<void()> WorkFn;
+        const std::function<void()> CompletionFn;
+
+        TaskData(std::function<void()> workFn, std::function<void()> completionFn)
+            : WorkFn(workFn),
+              CompletionFn(completionFn)
+        {
+        }
     };
 
     std::atomic_bool _shouldStop;
     std::atomic<size_t> _processing;
     std::vector<std::thread> _threads;
-    std::deque<TaskData_t> _pending;
-    std::deque<TaskData_t> _completed;
+    std::deque<TaskData> _pending;
+    std::deque<TaskData> _completed;
     std::condition_variable _condPending;
     std::condition_variable _condComplete;
     std::mutex _mutex;
@@ -48,8 +54,6 @@ private:
 public:
     JobPool()
     {
-        _shouldStop = false;
-        _processing = 0;
         for (size_t n = 0; n < std::thread::hardware_concurrency(); n++)
         {
             _threads.emplace_back(&JobPool::ProcessQueue, this);
@@ -71,14 +75,11 @@ public:
         }
     }
 
-    void AddTask(std::function<void()> workFn,
-        std::function<void()> completionFn)
+    void AddTask(std::function<void()> workFn, std::function<void()> completionFn)
     {
-        {
-            unique_lock lock(_mutex);
-            _pending.push_back(TaskData_t{ workFn, completionFn });
-            _condPending.notify_one();
-        }
+        unique_lock lock(_mutex);
+        _pending.emplace_back(workFn, completionFn);
+        _condPending.notify_one();
     }
 
     void AddTask(std::function<void()> workFn)
@@ -104,11 +105,11 @@ public:
                 auto taskData = _completed.front();
                 _completed.pop_front();
 
-                if (taskData.completionFn)
+                if (taskData.CompletionFn)
                 {
                     lock.unlock();
 
-                    taskData.completionFn();
+                    taskData.CompletionFn();
 
                     lock.lock();
                 }
@@ -145,10 +146,11 @@ private:
         do
         {
             // Wait for work or cancelation.
-            _condPending.wait(lock, [this]()
-            {
-                return _shouldStop || !_pending.empty();
-            });
+            _condPending.wait(lock,
+                [this]()
+                {
+                    return _shouldStop || !_pending.empty();
+                });
 
             if (!_pending.empty())
             {
@@ -159,7 +161,7 @@ private:
 
                 lock.unlock();
 
-                taskData.workFn();
+                taskData.WorkFn();
 
                 lock.lock();
 

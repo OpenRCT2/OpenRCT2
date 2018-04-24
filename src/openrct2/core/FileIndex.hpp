@@ -26,8 +26,8 @@
 #include "File.h"
 #include "FileScanner.h"
 #include "FileStream.hpp"
-#include "Path.hpp"
 #include "JobPool.hpp"
+#include "Path.hpp"
 
 template<typename TItem>
 class FileIndex
@@ -227,16 +227,19 @@ private:
 
             std::atomic<size_t> processed = ATOMIC_VAR_INIT(0);
 
-            auto reportProgress = [&]()
-            {
-                const size_t completed = processed;
-                Console::WriteFormat("File %5d of %d, done %3d%%\r", completed, totalCount, completed * 100 / totalCount);
-            };
+            auto reportProgress =
+                [&]()
+                {
+                    const size_t completed = processed;
+                    Console::WriteFormat("File %5d of %d, done %3d%%\r", completed, totalCount, completed * 100 / totalCount);
+                };
 
             for (size_t rangeStart = 0; rangeStart < totalCount; rangeStart += stepSize)
             {
                 if (rangeStart + stepSize > totalCount)
+                {
                     stepSize = totalCount - rangeStart;
+                }
 
                 // TODO: change to auto& items = containers.emplace_back() in C++17
                 containers.emplace_back();
