@@ -184,6 +184,7 @@ private:
                     size_t rangeStart,
                     size_t rangeEnd,
                     std::vector<TItem>& items,
+                    std::atomic<size_t>& processed,
                     std::mutex& printLock) const
     {
         items.reserve(rangeEnd - rangeStart);
@@ -202,6 +203,8 @@ private:
             {
                 items.push_back(std::get<1>(item));
             }
+
+            processed++;
         }
     }
 
@@ -222,28 +225,36 @@ private:
 
             size_t stepSize = 100; // Handpicked, seems to work well with 4/8 cores.
 
+            std::atomic<size_t> processed = ATOMIC_VAR_INIT(0);
+
+            auto reportProgress = [&]()
+            {
+                const size_t completed = processed;
+                Console::WriteFormat("File %5d of %d, done %3d%%\r", completed, totalCount, completed * 100 / totalCount);
+            };
+
             for (size_t rangeStart = 0; rangeStart < totalCount; rangeStart += stepSize)
             {
                 if (rangeStart + stepSize > totalCount)
                     stepSize = totalCount - rangeStart;
 
+                // TODO: change to auto& items = containers.emplace_back() in C++17
                 containers.emplace_back();
                 auto& items = containers.back();
 
-                jobPool.addTask(std::bind(&FileIndex<TItem>::BuildRange,
+                jobPool.AddTask(std::bind(&FileIndex<TItem>::BuildRange,
                     this,
                     std::cref(scanResult),
                     rangeStart,
                     rangeStart + stepSize,
                     std::ref(items),
+                    std::ref(processed),
                     std::ref(printLock)));
+
+                reportProgress();
             }
 
-            jobPool.join([&]()
-            {
-                size_t completed = totalCount - jobPool.countPending();
-                Console::WriteFormat("File %5d of %d, done %3d%%\r", completed, totalCount, completed * 100 / totalCount);
-            });
+            jobPool.Join(reportProgress);
 
             for (auto&& itr : containers)
             {
