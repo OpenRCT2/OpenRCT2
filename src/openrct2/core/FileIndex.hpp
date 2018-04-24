@@ -242,7 +242,11 @@ private:
                     std::ref(printLock)));
             }
 
-            jobPool.join();
+            jobPool.join([&]()
+            {
+                size_t completed = totalCount - jobPool.countPending();
+                Console::WriteFormat("File %5d of %d, done %3d%%\r", completed, totalCount, completed / totalCount);
+            });
 
             for (auto&& itr : containers)
             {

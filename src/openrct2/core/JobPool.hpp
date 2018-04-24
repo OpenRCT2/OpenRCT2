@@ -33,8 +33,8 @@ private:
         const std::function<void()> completionFn;
     };
 
-    std::atomic_bool _shouldStop = false;
-    std::atomic<size_t> _processing = 0;
+    std::atomic_bool _shouldStop;
+    std::atomic<size_t> _processing;
     std::vector<std::thread> _threads;
     std::deque<TaskData_t> _pending;
     std::deque<TaskData_t> _completed;
@@ -47,6 +47,8 @@ private:
 public:
     JobPool()
     {
+        _shouldStop = false;
+        _processing = 0;
         for (size_t n = 0; n < std::thread::hardware_concurrency(); n++)
         {
             _threads.emplace_back(&JobPool::processQueue, this);
@@ -83,16 +85,20 @@ public:
         return addTask(workFn, nullptr);
     }
 
-    void join()
+    void join(std::function<void()> reportFn = nullptr)
     {
         while (true)
         {
             unique_lock lock(_mutex);
             _condComplete.wait(lock, [this]()
             {
-                return (_pending.empty() && _processing == 0) ||
-                    (_completed.empty() == false);
+                return (_pending.empty() && _processing == 0) || !_completed.empty();
             });
+
+            if (reportFn)
+            {
+                reportFn();
+            }
 
             if (_completed.empty() &&
                 _pending.empty() &&
@@ -106,13 +112,21 @@ public:
                 auto taskData = _completed.front();
                 _completed.pop_front();
 
-                lock.unlock();
+                if (taskData.completionFn)
+                {
+                    lock.unlock();
 
-                taskData.completionFn();
+                    taskData.completionFn();
 
-                lock.lock();
+                    lock.lock();
+                }
             }
         }
+    }
+
+    size_t countPending()
+    {
+        return _pending.size();
     }
 
 private:
@@ -137,10 +151,7 @@ private:
 
                 lock.lock();
 
-                if (taskData.completionFn)
-                {
-                    _completed.push_back(taskData);
-                }
+                _completed.push_back(taskData);
 
                 _processing--;
                 _condComplete.notify_one();
