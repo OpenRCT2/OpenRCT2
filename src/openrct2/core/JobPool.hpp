@@ -52,7 +52,7 @@ public:
         _processing = 0;
         for (size_t n = 0; n < std::thread::hardware_concurrency(); n++)
         {
-            _threads.emplace_back(&JobPool::processQueue, this);
+            _threads.emplace_back(&JobPool::ProcessQueue, this);
         }
     }
 
@@ -71,7 +71,7 @@ public:
         }
     }
 
-    void addTask(std::function<void()> workFn,
+    void AddTask(std::function<void()> workFn,
         std::function<void()> completionFn)
     {
         {
@@ -81,12 +81,12 @@ public:
         }
     }
 
-    void addTask(std::function<void()> workFn)
+    void AddTask(std::function<void()> workFn)
     {
-        return addTask(workFn, nullptr);
+        return AddTask(workFn, nullptr);
     }
 
-    void join(std::function<void()> reportFn = nullptr)
+    void Join(std::function<void()> reportFn = nullptr)
     {
         unique_lock lock(_mutex);
         while (true)
@@ -133,13 +133,13 @@ public:
         }
     }
 
-    size_t countPending()
+    size_t CountPending()
     {
         return _pending.size();
     }
 
 private:
-    void processQueue()
+    void ProcessQueue()
     {
         unique_lock lock(_mutex);
         do
