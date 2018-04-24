@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma once
+
 #include <thread>
 #include <condition_variable>
 #include <mutex>
@@ -31,8 +33,8 @@ private:
         const std::function<void()> completionFn;
     };
 
-    std::atomic_bool _shouldStop;
-    std::atomic<size_t> _processing;
+    std::atomic_bool _shouldStop = false;
+    std::atomic<size_t> _processing = 0;
     std::vector<std::thread> _threads;
     std::deque<TaskData_t> _pending;
     std::deque<TaskData_t> _completed;
@@ -43,16 +45,108 @@ private:
     typedef std::unique_lock<std::mutex> unique_lock;
 
 public:
-    JobPool();
-    ~JobPool();
+    JobPool()
+    {
+        for (size_t n = 0; n < std::thread::hardware_concurrency(); n++)
+        {
+            _threads.emplace_back(&JobPool::processQueue, this);
+        }
+    }
+
+    ~JobPool()
+    {
+        {
+            unique_lock lock(_mutex);
+            _shouldStop = true;
+            _condPending.notify_all();
+        }
+
+        for (auto&& th : _threads)
+        {
+            if (th.joinable())
+                th.join();
+        }
+    }
 
     void addTask(std::function<void()> workFn,
-                 std::function<void()> completionFn);
+        std::function<void()> completionFn)
+    {
+        {
+            unique_lock lock(_mutex);
+            _pending.push_back(TaskData_t{ workFn, completionFn });
+            _condPending.notify_one();
+        }
+    }
 
-    void addTask(std::function<void()> workFn);
+    void addTask(std::function<void()> workFn)
+    {
+        return addTask(workFn, nullptr);
+    }
 
-    void join();
+    void join()
+    {
+        while (true)
+        {
+            unique_lock lock(_mutex);
+            _condComplete.wait(lock, [this]()
+            {
+                return (_pending.empty() && _processing == 0) ||
+                    (_completed.empty() == false);
+            });
+
+            if (_completed.empty() &&
+                _pending.empty() &&
+                _processing == 0)
+            {
+                break;
+            }
+
+            if (!_completed.empty())
+            {
+                auto taskData = _completed.front();
+                _completed.pop_front();
+
+                lock.unlock();
+
+                taskData.completionFn();
+
+                lock.lock();
+            }
+        }
+    }
 
 private:
-    void processQueue();
+    void processQueue()
+    {
+        while (true)
+        {
+            unique_lock lock(_mutex);
+            _condPending.wait(lock, [this]() {
+                return _shouldStop || !_pending.empty();
+            });
+            if (!_pending.empty())
+            {
+                _processing++;
+
+                auto taskData = _pending.front();
+                _pending.pop_front();
+
+                lock.unlock();
+
+                taskData.workFn();
+
+                lock.lock();
+
+                if (taskData.completionFn)
+                {
+                    _completed.push_back(taskData);
+                }
+
+                _processing--;
+                _condComplete.notify_one();
+            }
+            if (_shouldStop)
+                break;
+        }
+    }
 };
