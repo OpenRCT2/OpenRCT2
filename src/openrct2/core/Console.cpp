@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <cstdio>
+#include <string>
 
 #include "Console.hpp"
 #include "../platform/platform.h"
@@ -33,10 +34,8 @@ namespace Console
 
     void WriteSpace(size_t count)
     {
-        for (size_t i = 0; i < count; i++)
-        {
-            Write(' ');
-        }
+        std::string sz(count, ' ');
+        Write(sz.c_str());
     }
 
     void WriteFormat(const utf8 * format, ...)
@@ -58,8 +57,8 @@ namespace Console
         va_list args;
 
         va_start(args, format);
-        vfprintf(stdout, format, args);
-        puts("");
+        auto formatLn = std::string(format) + "\n";
+        vfprintf(stdout, formatLn.c_str(), args);
         va_end(args);
     }
 
@@ -99,8 +98,8 @@ namespace Console
 
         void WriteLine_VA(const utf8 * format, va_list args)
         {
-            vfprintf(stdout, format, args);
-            puts("");
+            auto formatLn = std::string(format) + "\n";
+            vfprintf(stdout, formatLn.c_str(), args);
         }
     }
 }
