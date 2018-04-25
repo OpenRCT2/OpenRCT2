@@ -35,7 +35,7 @@
 #define MAX_CATEGORIES_PER_RIDE         2
 #define DOWNTIME_HISTORY_SIZE           8
 #define CUSTOMER_HISTORY_SIZE           10
-#define MAX_CARS_PER_TRAIN              32
+#define MAX_CARS_PER_TRAIN              255
 #define MAX_STATIONS                    4
 #define RIDE_MEASUREMENT_MAX_ITEMS      4800
 #define MAX_RIDES                       255

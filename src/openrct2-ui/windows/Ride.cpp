@@ -4280,7 +4280,7 @@ static void window_ride_colour_mousedown(rct_window *w, rct_widgetindex widgetIn
             numItems = ride->num_cars_per_train;
 
         stringId = (ride->colour_scheme_type & 3) == VEHICLE_COLOUR_SCHEME_PER_TRAIN ? STR_RIDE_COLOUR_TRAIN_OPTION : STR_RIDE_COLOUR_VEHICLE_OPTION;
-        for (i = 0; i < 32; i++) {
+        for (i = 0; i < std::min(numItems, (sint32)DROPDOWN_ITEMS_MAX_SIZE); i++) {
             gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[i] = ((sint64)(i + 1) << 32) | ((RideComponentNames[RideNameConvention[ride->type].vehicle].capitalised) << 16) | stringId;
         }
