@@ -62,7 +62,7 @@ sint32 font_sprite_get_codepoint_offset(sint32 codepoint)
     case FORMAT_ENDQUOTES: return 34 - 32;
 
     case FORMAT_UP: return 160 - 32;
-    case FORMAT_INVERTEDEXCLAMATION: return 160 - 32;
+    case FORMAT_INVERTEDEXCLAMATION: return 161 - 32;
     case FORMAT_POUND: return 163 - 32;
 
     case FORMAT_YEN: return 165 - 32;
