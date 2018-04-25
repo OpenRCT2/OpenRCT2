@@ -14,11 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include <cmath>
 #include "../audio/audio.h"
 #include "../Cheats.h"
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"
+#include "../core/Util.hpp"
 #include "../Game.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
@@ -176,7 +178,7 @@ void reset_sprite_list()
  */
 void reset_sprite_spatial_index()
 {
-    memset(gSpriteSpatialIndex, SPRITE_INDEX_NULL, sizeof(gSpriteSpatialIndex));
+    std::fill_n(gSpriteSpatialIndex, Util::CountOf(gSpriteSpatialIndex), SPRITE_INDEX_NULL);
     for (size_t i = 0; i < MAX_SPRITES; i++) {
         rct_sprite *spr = get_sprite(i);
         if (spr->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL) {
