@@ -14,8 +14,16 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "ConversionTables.h"
+#include <cstdlib>
+#include "../core/Util.hpp"
 #include "FormatCodes.h"
+#include "Localisation.h"
+
+struct encoding_convert_entry
+{
+    uint16 code;
+    uint32 unicode;
+};
 
 // clang-format off
 const encoding_convert_entry RCT2ToUnicodeTable[256] =
@@ -277,7 +285,44 @@ const encoding_convert_entry RCT2ToUnicodeTable[256] =
     { RCT2_Z_ACUTE, UNICODE_Z_ACUTE },
     { 255, 255 }
 };
-    
+
+static sint32 encoding_search_compare(const void *pKey, const void *pEntry)
+{
+    uint16 key = *((uint16*)pKey);
+    encoding_convert_entry *entry = (encoding_convert_entry*)pEntry;
+    if (key < entry->code) return -1;
+    if (key > entry->code) return 1;
+    return 0;
+}
+
+static wchar_t encoding_convert_x_to_unicode(wchar_t code, const encoding_convert_entry *table, size_t count)
+{
+    encoding_convert_entry * entry = (encoding_convert_entry *)std::bsearch(&code, table, count, sizeof(encoding_convert_entry), encoding_search_compare);
+    if (entry == nullptr) return code;
+    else return entry->unicode;
+}
+
+wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str)
+{
+    return encoding_convert_x_to_unicode(rct2str, RCT2ToUnicodeTable, Util::CountOf(RCT2ToUnicodeTable));
+}
+
+uint32 encoding_convert_unicode_to_rct2(uint32 unicode)
+{
+    // Can't do a binary search as it's sorted by RCT2 code, not unicode
+    for (const auto& entry : RCT2ToUnicodeTable)
+    {
+        if (entry.unicode == unicode)
+        {
+            return entry.code;
+        }
+    }
+    return unicode;
+}
+
+ 
+#ifndef _WIN32
+
 const encoding_convert_entry GB2312ToUnicodeTable[7445] =
 {
     { 8481, 12288 },
@@ -46295,3 +46340,25 @@ const encoding_convert_entry CP949ToUnicodeTable[17176] =
     { 0xFDFE, 0x8A70 }, // CJK UNIFIED IDEOGRAPH
 };
 //clang-format on
+
+wchar_t encoding_convert_gb2312_to_unicode(wchar_t gb2312)
+{
+    return encoding_convert_x_to_unicode(gb2312 - 0x8080, GB2312ToUnicodeTable, Util::CountOf(GB2312ToUnicodeTable));
+}
+
+wchar_t encoding_convert_big5_to_unicode(wchar_t big5)
+{
+    return encoding_convert_x_to_unicode(big5, Big5ToUnicodeTable, Util::CountOf(Big5ToUnicodeTable));
+}
+
+wchar_t encoding_convert_cp932_to_unicode(wchar_t cp932)
+{
+    return encoding_convert_x_to_unicode(cp932, CP932ToUnicodeTable, Util::CountOf(CP932ToUnicodeTable));
+}
+
+wchar_t encoding_convert_cp949_to_unicode(wchar_t cp949)
+{
+    return encoding_convert_x_to_unicode(cp949, CP949ToUnicodeTable, Util::CountOf(CP949ToUnicodeTable));
+}
+
+#endif

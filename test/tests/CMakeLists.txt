@@ -76,6 +76,8 @@ set(COMMON_TEST_SOURCES
     "${ROOT_DIR}/src/openrct2/core/Guard.cpp"
     "${ROOT_DIR}/src/openrct2/core/String.cpp"
     "${ROOT_DIR}/src/openrct2/Diagnostic.cpp"
+    "${ROOT_DIR}/src/openrct2/localisation/ConversionTables.cpp"
+    "${ROOT_DIR}/src/openrct2/localisation/Convert.cpp"
     "${ROOT_DIR}/src/openrct2/localisation/FormatCodes.cpp"
     "${ROOT_DIR}/src/openrct2/localisation/UTF8.cpp"
     "${ROOT_DIR}/src/openrct2/util/Util.cpp"
@@ -139,6 +141,11 @@ add_executable(test_string ${STRING_TEST_SOURCES})
 target_link_libraries(test_string ${GTEST_LIBRARIES} test-common ${LDL} z)
 add_test(NAME string COMMAND test_string)
 
+# Localisation test
+set(STRING_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/Localisation.cpp")
+add_executable(test_localisation ${STRING_TEST_SOURCES})
+target_link_libraries(test_localisation ${GTEST_LIBRARIES} test-common ${LDL} z)
+add_test(NAME localisation COMMAND test_localisation)
 
 # Ride ratings test
 set(RIDE_RATINGS_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/RideRatings.cpp"

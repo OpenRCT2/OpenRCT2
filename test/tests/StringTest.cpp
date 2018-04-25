@@ -4,12 +4,17 @@
 #include <gtest/gtest.h>
 #include <openrct2/core/String.hpp>
 #include "AssertHelpers.hpp"
+#include "helpers/StringHelpers.hpp"
 
 using TCase = std::tuple<std::string, std::string, std::string>;
 
 class StringTest : public testing::TestWithParam<TCase>
 {
 };
+
+///////////////////////////////////////////////////////////////////////////////
+// Tests for String::Trim
+///////////////////////////////////////////////////////////////////////////////
 
 INSTANTIATE_TEST_CASE_P(TrimData, StringTest, testing::Values(
     // input                      after Trim       after TrimStart
@@ -45,6 +50,10 @@ TEST_P(StringTest, TrimStart)
     ASSERT_EQ(expected, actual);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// Tests for String::Split
+///////////////////////////////////////////////////////////////////////////////
+
 TEST_F(StringTest, Split_ByComma)
 {
     auto actual = String::Split("a,bb,ccc,dd", ",");
@@ -64,3 +73,44 @@ TEST_F(StringTest, Split_ByEmpty)
 {
     EXPECT_THROW(String::Split("string", ""), std::invalid_argument);
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Tests for String::Convert
+///////////////////////////////////////////////////////////////////////////////
+
+// TODO Remove when String::Convert is implemented for non-Windows platforms
+#ifdef _WIN32
+
+TEST_F(StringTest, Convert_950_to_UTF8)
+{
+    auto input = StringFromHex("a7d6b374aabab4c4a6e2aab0af57");
+    auto expected = u8"快速的棕色狐狸";
+    auto actual = String::Convert(input, CODE_PAGE::CP_950, CODE_PAGE::CP_UTF8);
+    ASSERT_EQ(expected, actual);
+}
+
+TEST_F(StringTest, Convert_UTF8_to_932)
+{
+    auto input = u8"ファストブラウンフォックス";
+    auto expected = StringFromHex("83748340835883678375838983458393837483488362834e8358");
+    auto actual = String::Convert(input, CODE_PAGE::CP_UTF8, CODE_PAGE::CP_932);
+    ASSERT_EQ(expected, actual);
+}
+
+TEST_F(StringTest, Convert_UTF8_to_UTF8)
+{
+    auto input = u8"سريع|brown|ثعلب";
+    auto expected = input;
+    auto actual = String::Convert(input, CODE_PAGE::CP_UTF8, CODE_PAGE::CP_UTF8);
+    ASSERT_EQ(expected, actual);
+}
+
+TEST_F(StringTest, Convert_Empty)
+{
+    auto input = "";
+    auto expected = input;
+    auto actual = String::Convert(input, CODE_PAGE::CP_1252, CODE_PAGE::CP_UTF8);
+    ASSERT_EQ(expected, actual);
+}
+
+#endif
