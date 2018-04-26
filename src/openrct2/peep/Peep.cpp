@@ -1804,7 +1804,7 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
         intensity_highest = 15;
     }
 
-    peep->intensity = (intensity_lowest << 4) | intensity_highest;
+    peep->intensity = (intensity_highest << 4) | intensity_lowest;
 
     uint8 nausea_tolerance = scenario_rand() & 0x7;
     if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
