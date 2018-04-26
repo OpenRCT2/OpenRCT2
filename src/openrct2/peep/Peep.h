@@ -337,7 +337,7 @@ enum PEEP_ACTION_SPRITE_TYPE
     PEEP_ACTION_SPRITE_TYPE_WITHDRAW_MONEY            = 36
 };
 
-enum PEEP_FLAGS
+enum PEEP_FLAGS : uint32
 {
     PEEP_FLAGS_LEAVING_PARK                       = (1 << 0),
     PEEP_FLAGS_SLOW_WALK                          = (1 << 1),
@@ -989,8 +989,6 @@ extern utf8 gPathFindDebugPeepName[256]; // Use to put the peep name in the log 
 void pathfind_logging_enable(rct_peep * peep);
 void pathfind_logging_disable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-
-void peep_autoposition(rct_peep * newPeep);
 
 void increment_guests_in_park();
 void increment_guests_heading_for_park();
