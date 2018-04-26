@@ -154,12 +154,10 @@ void SceneryGroupObject::ReadJson(IReadObjectContext * context, const json_t * r
 uint32 SceneryGroupObject::ReadJsonEntertainerCostumes(const json_t * jCostumes)
 {
     uint32 costumes = 0;
-    size_t index;
-    json_t * jCostume;
-    json_array_foreach(jCostumes, index, jCostume)
+    auto szCostumes = ObjectJsonHelpers::GetJsonStringArray(jCostumes);
+    for (const auto& szCostume : szCostumes)
     {
-        auto costume = ObjectJsonHelpers::GetString(jCostume);
-        auto entertainer = ParseEntertainerCostume(costume);
+        auto entertainer = ParseEntertainerCostume(szCostume);
 
         // For some reason the flags are +4 from the actual costume IDs
         // See staff_get_available_entertainer_costumes
