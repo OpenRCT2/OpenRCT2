@@ -1777,8 +1777,8 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     peep->thoughts->type          = PEEP_THOUGHT_TYPE_NONE;
     peep->window_invalidate_flags = 0;
 
-    uint8 intensity_lowest = (scenario_rand() & 0x7) + 3;
-    uint8 intensity_highest = Math::Min(al, static_cast<uint8>(7)) - 3;
+    uint8 intensity_highest = (scenario_rand() & 0x7) + 3;
+    uint8 intensity_lowest = Math::Min(al, static_cast<uint8>(7)) - 3;
 
     if (intensity_highest >= 7)
         intensity_highest = 15;
