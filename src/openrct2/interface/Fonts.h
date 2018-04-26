@@ -17,6 +17,11 @@
 #ifndef OPENRCT2_FONTS_H
 #define OPENRCT2_FONTS_H
 
+namespace OpenRCT2::Localisation
+{
+    class LocalisationService;
+}
+
 #include "../drawing/Font.h"
 
 #ifndef NO_TTF
@@ -35,6 +40,6 @@ extern TTFFontSetDescriptor TTFFontArialUnicode;
 #define FONT(x) FONT_OPENRCT2_SPRITE
 #endif // NO_TTF
 
-void TryLoadFonts();
+void TryLoadFonts(OpenRCT2::Localisation::LocalisationService& localisationService);
 
 #endif // OPENRCT2_FONTS_H

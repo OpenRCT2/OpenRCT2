@@ -20,6 +20,7 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Localisation.h"
+#include "../localisation/LocalisationService.h"
 #include "Paint.h"
 #include "sprite/Sprite.h"
 #include "tile_element/TileElement.h"
@@ -1201,7 +1202,7 @@ void paint_draw_money_structs(rct_drawpixelinfo * dpi, paint_string_struct * ps)
         // Use sprite font unless the currency contains characters unsupported by the sprite font
         bool forceSpriteFont = false;
         const currency_descriptor& currencyDesc = CurrencyDescriptors[gConfigGeneral.currency_format];
-        if (gUseTrueTypeFont && font_supports_string_sprite(currencyDesc.symbol_unicode))
+        if (LocalisationService_UseTrueTypeFont() && font_supports_string_sprite(currencyDesc.symbol_unicode))
         {
             forceSpriteFont = true;
         }

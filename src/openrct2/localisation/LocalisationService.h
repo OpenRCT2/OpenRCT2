@@ -42,7 +42,8 @@ namespace OpenRCT2::Localisation
 
     public:
         sint32 GetCurrentLanguage() const { return _currentLanguage; }
-        sint32 UseTrueTypeFont() const { return _useTrueTypeFont; }
+        bool UseTrueTypeFont() const { return _useTrueTypeFont; }
+        void UseTrueTypeFont(bool value) { _useTrueTypeFont = value; }
 
         LocalisationService(const std::shared_ptr<IPlatformEnvironment>& env);
 

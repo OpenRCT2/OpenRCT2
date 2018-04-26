@@ -8,6 +8,7 @@
 #include <openrct2/interface/themes.h>
 #include <openrct2/interface/Window.h>
 #include <openrct2/localisation/Language.h>
+#include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/Version.h>
 #include "InGameConsole.h"
 
@@ -256,7 +257,7 @@ void InGameConsole::Draw(rct_drawpixelinfo * dpi) const
     }
 
     // TTF looks far better without the outlines
-    if (!gUseTrueTypeFont)
+    if (!LocalisationService_UseTrueTypeFont())
     {
         textColour |= COLOUR_FLAG_OUTLINE;
     }

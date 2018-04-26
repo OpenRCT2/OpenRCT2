@@ -93,7 +93,7 @@ void LocalisationService::OpenLanguage(sint32 id, IObjectManager& objectManager)
     if (_languageCurrent != nullptr)
     {
         _currentLanguage = id;
-        TryLoadFonts();
+        TryLoadFonts(*this);
 
         // Objects and their localised strings need to be refreshed
         objectManager.ResetObjects();
