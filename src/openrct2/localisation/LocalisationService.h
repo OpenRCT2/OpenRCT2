@@ -46,6 +46,7 @@ namespace OpenRCT2::Localisation
         void UseTrueTypeFont(bool value) { _useTrueTypeFont = value; }
 
         LocalisationService(const std::shared_ptr<IPlatformEnvironment>& env);
+        ~LocalisationService();
 
         const char * GetString(rct_string_id id) const;
         std::tuple<rct_string_id, rct_string_id, rct_string_id> GetLocalisedScenarioStrings(const std::string& scenarioFilename) const;

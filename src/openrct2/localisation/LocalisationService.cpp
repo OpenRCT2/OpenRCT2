@@ -40,6 +40,11 @@ LocalisationService::LocalisationService(const std::shared_ptr<IPlatformEnvironm
     }
 }
 
+// Define implementation here to avoid including LanguagePack.h in header
+LocalisationService::~LocalisationService()
+{
+}
+
 const char * LocalisationService::GetString(rct_string_id id) const
 {
     const char * result = nullptr;
@@ -69,7 +74,7 @@ std::string LocalisationService::GetLanguagePath(uint32 languageId) const
 {
     auto locale = std::string(LanguagesDescriptors[languageId].locale);
     auto languageDirectory = _env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::LANGUAGE);
-    auto languagePath = Path::Combine(languageDirectory, locale + "txt");
+    auto languagePath = Path::Combine(languageDirectory, locale + ".txt");
     return languagePath;
 }
 
@@ -98,8 +103,10 @@ void LocalisationService::OpenLanguage(sint32 id, IObjectManager& objectManager)
         // Objects and their localised strings need to be refreshed
         objectManager.ResetObjects();
     }
-
-    throw std::runtime_error("Unable to open language " + std::to_string(id));
+    else
+    {
+        throw std::runtime_error("Unable to open language " + std::to_string(id));
+    }
 }
 
 void LocalisationService::CloseLanguages()

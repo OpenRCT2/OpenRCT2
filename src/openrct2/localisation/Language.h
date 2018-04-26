@@ -86,8 +86,6 @@ struct language_descriptor {
 
 extern const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT];
 
-extern sint32 gCurrentLanguage;
-
 extern const utf8 BlackUpArrowString[];
 extern const utf8 BlackDownArrowString[];
 extern const utf8 BlackLeftArrowString[];

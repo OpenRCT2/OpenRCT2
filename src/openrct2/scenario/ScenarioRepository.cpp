@@ -33,6 +33,7 @@
 
 #include "../config/Config.h"
 #include "../localisation/Localisation.h"
+#include "../localisation/LocalisationService.h"
 #include "../platform/platform.h"
 #include "Scenario.h"
 #include "../Game.h"
@@ -339,13 +340,13 @@ public:
         ClearHighscores();
     }
 
-    void Scan() override
+    void Scan(sint32 language) override
     {
         ImportMegaPark();
 
         // Reload scenarios from index
         _scenarios.clear();
-        auto scenarios = _fileIndex.LoadOrBuild();
+        auto scenarios = _fileIndex.LoadOrBuild(language);
         for (auto scenario : scenarios)
         {
             AddScenario(scenario);
@@ -415,11 +416,11 @@ public:
         return nullptr;
     }
 
-    bool TryRecordHighscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) override
+    bool TryRecordHighscore(sint32 language, const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) override
     {
         // Scan the scenarios so we have a fresh list to query. This is to prevent the issue of scenario completions
         // not getting recorded, see #4951.
-        Scan();
+        Scan(language);
 
         scenario_index_entry * scenario = GetByFilename(scenarioFileName);
         if (scenario != nullptr)
@@ -743,7 +744,7 @@ IScenarioRepository * GetScenarioRepository()
 void scenario_repository_scan()
 {
     IScenarioRepository * repo = GetScenarioRepository();
-    repo->Scan();
+    repo->Scan(LocalisationService_GetCurrentLanguage());
 }
 
 size_t scenario_repository_get_count()
@@ -761,6 +762,6 @@ const scenario_index_entry *scenario_repository_get_by_index(size_t index)
 bool scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name)
 {
     IScenarioRepository * repo = GetScenarioRepository();
-    return repo->TryRecordHighscore(scenarioFileName, companyValue, name);
+    return repo->TryRecordHighscore(LocalisationService_GetCurrentLanguage(), scenarioFileName, companyValue, name);
 }
 

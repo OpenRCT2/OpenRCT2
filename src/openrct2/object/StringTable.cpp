@@ -19,6 +19,7 @@
 #include "../core/String.hpp"
 #include "../localisation/Language.h"
 #include "../localisation/LanguagePack.h"
+#include "../localisation/LocalisationService.h"
 #include "Object.h"
 #include "StringTable.h"
 
@@ -111,7 +112,8 @@ void StringTable::SetString(uint8 id, uint8 language, const std::string &text)
 
 void StringTable::Sort()
 {
-    std::sort(_strings.begin(), _strings.end(), [](const StringTableEntry &a, const StringTableEntry &b) -> bool
+    auto targetLanguage = LocalisationService_GetCurrentLanguage();
+    std::sort(_strings.begin(), _strings.end(), [targetLanguage](const StringTableEntry &a, const StringTableEntry &b) -> bool
     {
         if (a.Id == b.Id)
         {
@@ -120,11 +122,11 @@ void StringTable::Sort()
                 return String::Compare(a.Text, b.Text, true) < 0;
             }
 
-            if (a.LanguageId == gCurrentLanguage)
+            if (a.LanguageId == targetLanguage)
             {
                 return true;
             }
-            if (b.LanguageId == gCurrentLanguage)
+            if (b.LanguageId == targetLanguage)
             {
                 return false;
             }

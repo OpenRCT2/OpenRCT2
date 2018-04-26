@@ -43,6 +43,7 @@
 
 #include "../config/Config.h"
 #include "../localisation/Localisation.h"
+#include "../localisation/LocalisationService.h"
 #include "../object/Object.h"
 #include "ObjectList.h"
 #include "../platform/platform.h"
@@ -225,17 +226,17 @@ public:
         ClearItems();
     }
 
-    void LoadOrConstruct() override
+    void LoadOrConstruct(sint32 language) override
     {
         ClearItems();
-        auto items = _fileIndex.LoadOrBuild();
+        auto items = _fileIndex.LoadOrBuild(language);
         AddItems(items);
         SortItems();
     }
 
-    void Construct() override
+    void Construct(sint32 language) override
     {
-        auto items = _fileIndex.Rebuild();
+        auto items = _fileIndex.Rebuild(language);
         AddItems(items);
         SortItems();
     }
@@ -665,8 +666,9 @@ const rct_object_entry * object_list_find(rct_object_entry * entry)
 void object_list_load()
 {
     auto context = GetContext();
-    IObjectRepository * objectRepository = context->GetObjectRepository();
-    objectRepository->LoadOrConstruct();
+    const auto localisationService = context->GetLocalisationService();
+    auto objectRepository = context->GetObjectRepository();
+    objectRepository->LoadOrConstruct(localisationService->GetCurrentLanguage());
 
     IObjectManager * objectManager = context->GetObjectManager();
     objectManager->UnloadAll();

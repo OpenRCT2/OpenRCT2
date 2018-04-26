@@ -148,7 +148,8 @@ static bool LoadCustomConfigFont(LocalisationService& localisationService)
 void TryLoadFonts(LocalisationService& localisationService)
 {
 #ifndef NO_TTF
-    TTFontFamily const * fontFamily = LanguagesDescriptors[gCurrentLanguage].font_family;
+    auto currentLanguage = localisationService.GetCurrentLanguage();
+    TTFontFamily const * fontFamily = LanguagesDescriptors[currentLanguage].font_family;
 
     if (fontFamily != FAMILY_OPENRCT2_SPRITE)
     {

@@ -46,7 +46,7 @@ interface ITrackDesignRepository
     virtual std::vector<track_design_file_ref> GetItemsForRideGroup(uint8 rideType,
                                                                     const RideGroup * rideGroup) const abstract;
 
-    virtual void Scan() abstract;
+    virtual void Scan(sint32 language) abstract;
     virtual bool Delete(const std::string &path) abstract;
     virtual std::string Rename(const std::string &path, const std::string &newName) abstract;
     virtual std::string Install(const std::string &path) abstract;

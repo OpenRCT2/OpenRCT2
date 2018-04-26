@@ -124,7 +124,8 @@ namespace OpenRCT2
             std::shared_ptr<IUiContext> uiContext)
             : _env(env),
               _audioContext(audioContext),
-              _uiContext(uiContext)
+              _uiContext(uiContext),
+              _localisationService(std::make_shared<LocalisationService>(env))
         {
             Instance = this;
         }
@@ -395,14 +396,14 @@ namespace OpenRCT2
             // TODO Ideally we want to delay this until we show the title so that we can
             //      still open the game window and draw a progress screen for the creation
             //      of the object cache.
-            _objectRepository->LoadOrConstruct();
+            _objectRepository->LoadOrConstruct(_localisationService->GetCurrentLanguage());
 
             // TODO Like objects, this can take a while if there are a lot of track designs
             //      its also really something really we might want to do in the background
             //      as its not required until the player wants to place a new ride.
-            _trackDesignRepository->Scan();
+            _trackDesignRepository->Scan(_localisationService->GetCurrentLanguage());
 
-            _scenarioRepository->Scan();
+            _scenarioRepository->Scan(_localisationService->GetCurrentLanguage());
             TitleSequenceManager::Scan();
 
             if (!gOpenRCT2Headless)

@@ -26,6 +26,7 @@
 #include "../core/FileStream.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../localisation/LocalisationService.h"
 #include "../object/ObjectRepository.h"
 #include "../object/RideObject.h"
 #include "../PlatformEnvironment.h"
@@ -284,10 +285,10 @@ public:
         return refs;
     }
 
-    void Scan() override
+    void Scan(sint32 language) override
     {
         _items.clear();
-        auto trackDesigns = _fileIndex.LoadOrBuild();
+        auto trackDesigns = _fileIndex.LoadOrBuild(language);
         for (const auto &td : trackDesigns)
         {
             _items.push_back(td);
@@ -404,7 +405,7 @@ ITrackDesignRepository * CreateTrackDesignRepository(std::shared_ptr<IPlatformEn
 void track_repository_scan()
 {
     ITrackDesignRepository * repo = GetContext()->GetTrackDesignRepository();
-    repo->Scan();
+    repo->Scan(LocalisationService_GetCurrentLanguage());
 }
 
 bool track_repository_delete(const utf8 * path)

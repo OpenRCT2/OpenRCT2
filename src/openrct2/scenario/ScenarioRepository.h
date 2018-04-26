@@ -64,7 +64,7 @@ interface IScenarioRepository
     /**
      * Scans the scenario directories and grabs the metadata for all the scenarios.
      */
-    virtual void Scan() abstract;
+    virtual void Scan(sint32 language) abstract;
 
     virtual size_t GetCount() const abstract;
     virtual const scenario_index_entry * GetByIndex(size_t index) const  abstract;
@@ -75,7 +75,7 @@ interface IScenarioRepository
     virtual const scenario_index_entry * GetByInternalName(const utf8 * name) const abstract;
     virtual const scenario_index_entry * GetByPath(const utf8 * path) const abstract;
 
-    virtual bool TryRecordHighscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) abstract;
+    virtual bool TryRecordHighscore(sint32 language, const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) abstract;
 };
 
 IScenarioRepository * CreateScenarioRepository(std::shared_ptr<OpenRCT2::IPlatformEnvironment> env);

@@ -29,6 +29,11 @@ namespace OpenRCT2
     interface IPlatformEnvironment;
 }
 
+namespace OpenRCT2::Localisation
+{
+    class LocalisationService;
+}
+
 struct rct_drawpixelinfo;
 
 struct ObjectRepositoryItem
@@ -59,8 +64,8 @@ interface IObjectRepository
 {
     virtual ~IObjectRepository() = default;
 
-    virtual void                            LoadOrConstruct() abstract;
-    virtual void                            Construct() abstract;
+    virtual void                            LoadOrConstruct(sint32 language) abstract;
+    virtual void                            Construct(sint32 language) abstract;
     virtual size_t                          GetNumObjects() const abstract;
     virtual const ObjectRepositoryItem *    GetObjects() const abstract;
     virtual const ObjectRepositoryItem *    FindObject(const utf8 * name) const abstract;
