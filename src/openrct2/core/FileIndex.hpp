@@ -241,9 +241,7 @@ private:
                     stepSize = totalCount - rangeStart;
                 }
 
-                // TODO: change to auto& items = containers.emplace_back() in C++17
-                containers.emplace_back();
-                auto& items = containers.back();
+                auto& items = containers.emplace_back();
 
                 jobPool.AddTask(std::bind(&FileIndex<TItem>::BuildRange,
                     this,
