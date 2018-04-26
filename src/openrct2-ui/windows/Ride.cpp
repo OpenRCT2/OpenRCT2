@@ -4033,7 +4033,8 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 gfx_draw_string_left_wrapped(dpi, nullptr, x + 4, y, 280, stringId, COLOUR_BLACK);
             } else {
                 rct_peep *mechanicSprite = &(get_sprite(ride->mechanic)->peep);
-                if (peep_is_mechanic(mechanicSprite)) {
+                if (mechanicSprite->IsMechanic())
+                {
                     set_format_arg(0, rct_string_id, mechanicSprite->name_string_idx);
                     set_format_arg(2, uint32, mechanicSprite->id);
                     gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x + 4, y, 280, stringId, COLOUR_BLACK);

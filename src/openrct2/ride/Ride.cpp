@@ -2604,7 +2604,7 @@ static void ride_mechanic_status_update(sint32 rideIndex, sint32 mechanicStatus)
             mechanic = &(get_sprite(ride->mechanic)->peep);
         }
         if (mechanic == nullptr ||
-            !peep_is_mechanic(mechanic) ||
+            !mechanic->IsMechanic() ||
             (mechanic->state != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->state != PEEP_STATE_ANSWERING) ||
             mechanic->current_ride != rideIndex
         ) {
@@ -2619,7 +2619,7 @@ static void ride_mechanic_status_update(sint32 rideIndex, sint32 mechanicStatus)
             mechanic = &(get_sprite(ride->mechanic)->peep);
         }
         if (mechanic == nullptr ||
-            !peep_is_mechanic(mechanic) ||
+            !mechanic->IsMechanic() ||
             (
                 mechanic->state != PEEP_STATE_HEADING_TO_INSPECTION &&
                 mechanic->state != PEEP_STATE_FIXING &&
@@ -2762,7 +2762,7 @@ rct_peep *ride_get_assigned_mechanic(Ride *ride)
             ride->mechanic_status == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES
         ) {
             rct_peep *peep = &(get_sprite(ride->mechanic)->peep);
-            if (peep_is_mechanic(peep))
+            if (peep->IsMechanic())
                 return peep;
         }
     }

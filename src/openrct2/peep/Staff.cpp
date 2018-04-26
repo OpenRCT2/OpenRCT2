@@ -2339,6 +2339,11 @@ void rct_peep::Tick128UpdateStaff()
     UpdateCurrentActionSpriteType();
 }
 
+bool rct_peep::IsMechanic() const
+{
+    return (sprite_identifier == SPRITE_IDENTIFIER_PEEP && type == PEEP_TYPE_STAFF && staff_type == STAFF_TYPE_MECHANIC);
+}
+
 /**
  *
  *  rct2: 0x006BF1FD

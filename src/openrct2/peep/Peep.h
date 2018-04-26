@@ -714,6 +714,9 @@ public: // Peep
     bool GetNextIsSloped() const;
     bool GetNextIsSurface() const;
     void SetNextFlags(uint8 next_direction, bool is_sloped, bool is_surface);
+    void Pickup();
+    void PickupAbort(sint32 old_x);
+    bool Place(sint32 x, sint32 y, sint32 z, bool apply);
 public: // Guest
     void Tick128UpdateGuest(sint32 index);
     void RemoveFromQueue();
@@ -728,6 +731,7 @@ public: // Guest
     bool HeadingForRideOrParkExit() const;
 public: // Staff
     void Tick128UpdateStaff();
+    bool IsMechanic() const;
 
 private: // Peep update
     void UpdateFalling();
@@ -940,10 +944,6 @@ sint32     get_peep_face_sprite_small(rct_peep * peep);
 sint32     get_peep_face_sprite_large(rct_peep * peep);
 sint32     peep_check_easteregg_name(sint32 index, rct_peep * peep);
 sint32     peep_get_easteregg_name_id(rct_peep * peep);
-sint32     peep_is_mechanic(rct_peep * peep);
-void       peep_pickup(rct_peep * peep);
-void       peep_pickup_abort(rct_peep * peep, sint32 old_x);
-bool       peep_pickup_place(rct_peep * peep, sint32 x, sint32 y, sint32 z, bool apply);
 bool       peep_pickup_command(uint32 peepnum, sint32 x, sint32 y, sint32 z, sint32 action, bool apply);
 void       game_command_pickup_guest(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
                                      sint32 * ebp);
