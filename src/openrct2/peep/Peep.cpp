@@ -756,57 +756,51 @@ void peep_window_state_update(rct_peep * peep)
     }
 }
 
-void peep_pickup(rct_peep * peep)
+void rct_peep::Pickup()
 {
-    peep->RemoveFromRide();
-    peep->Invalidate();
+    RemoveFromRide();
+    Invalidate();
 
-    sprite_move(LOCATION_NULL, peep->y, peep->z, (rct_sprite *)peep);
-    peep->SetState(PEEP_STATE_PICKED);
-    peep->sub_state = 0;
+    sprite_move(LOCATION_NULL, y, z, (rct_sprite *)this);
+    SetState(PEEP_STATE_PICKED);
+    sub_state = 0;
 }
 
-void peep_pickup_abort(rct_peep * peep, sint32 old_x)
+void rct_peep::PickupAbort(sint32 old_x)
 {
-    if (!peep)
+    if (state != PEEP_STATE_PICKED)
         return;
 
-    if (peep->state != PEEP_STATE_PICKED)
-        return;
+    sprite_move(old_x, y, z + 8, (rct_sprite *)this);
+    Invalidate();
 
-    sprite_move(old_x, peep->y, peep->z + 8, (rct_sprite *)peep);
-    peep->Invalidate();
-
-    if (peep->x != (sint16)LOCATION_NULL)
+    if (x != (sint16)LOCATION_NULL)
     {
-        peep->SetState(PEEP_STATE_FALLING);
-        peep->action                     = 0xFF;
-        peep->special_sprite             = 0;
-        peep->action_sprite_image_offset = 0;
-        peep->action_sprite_type         = 0;
-        peep->path_check_optimisation                     = 0;
+        SetState(PEEP_STATE_FALLING);
+        action                     = 0xFF;
+        special_sprite             = 0;
+        action_sprite_image_offset = 0;
+        action_sprite_type         = 0;
+        path_check_optimisation    = 0;
     }
 
     gPickupPeepImage = UINT32_MAX;
 }
 
-bool peep_pickup_place(rct_peep * peep, sint32 x, sint32 y, sint32 z, bool apply)
+bool rct_peep::Place(sint32 posX, sint32 posY, sint32 posZ, bool apply)
 {
-    if (!peep)
-        return false;
-
-    rct_tile_element * tileElement = map_get_path_element_at(x / 32, y / 32, z);
+    rct_tile_element * tileElement = map_get_path_element_at(posX / 32, posY / 32, posZ);
 
     if (!tileElement)
     {
-        tileElement = map_get_surface_element_at({x, y});
+        tileElement = map_get_surface_element_at({ posX, posY });
     }
 
     if (!tileElement)
         return false;
 
-    sint32 dest_x = x & 0xFFE0;
-    sint32 dest_y = y & 0xFFE0;
+    sint32 dest_x = posX & 0xFFE0;
+    sint32 dest_y = posY & 0xFFE0;
 
     // Set the coordinate of destination to be exactly
     // in the middle of a tile.
@@ -838,21 +832,21 @@ bool peep_pickup_place(rct_peep * peep, sint32 x, sint32 y, sint32 z, bool apply
 
     if (apply)
     {
-        sprite_move(dest_x, dest_y, dest_z, (rct_sprite *)peep);
-        peep->Invalidate();
-        peep->SetState(PEEP_STATE_FALLING);
-        peep->action                     = 0xFF;
-        peep->special_sprite             = 0;
-        peep->action_sprite_image_offset = 0;
-        peep->action_sprite_type         = 0;
-        peep->path_check_optimisation                     = 0;
+        sprite_move(dest_x, dest_y, dest_z, (rct_sprite *)this);
+        Invalidate();
+        SetState(PEEP_STATE_FALLING);
+        action                     = 0xFF;
+        special_sprite             = 0;
+        action_sprite_image_offset = 0;
+        action_sprite_type         = 0;
+        path_check_optimisation    = 0;
         sprite_position_tween_reset();
 
-        if (peep->type == PEEP_TYPE_GUEST)
+        if (type == PEEP_TYPE_GUEST)
         {
-            peep->action_sprite_type = 0xFF;
-            peep->happiness_target   = Math::Max(peep->happiness_target - 10, 0);
-            peep->UpdateCurrentActionSpriteType();
+            action_sprite_type = 0xFF;
+            happiness_target   = Math::Max(happiness_target - 10, 0);
+            UpdateCurrentActionSpriteType();
         }
 
         network_set_pickup_peep(game_command_playerid, nullptr);
@@ -868,11 +862,13 @@ bool peep_pickup_command(uint32 peepnum, sint32 x, sint32 y, sint32 z, sint32 ac
         log_error("Failed to pick up peep for sprite %d", peepnum);
         return false;
     }
-    rct_peep * peep = GET_PEEP(peepnum);
+
+    rct_peep * const peep = GET_PEEP(peepnum);
     if (!peep || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP)
     {
         return false;
     }
+
     switch (action)
     {
     case 0: // pickup
@@ -897,18 +893,25 @@ bool peep_pickup_command(uint32 peepnum, sint32 x, sint32 y, sint32 z, sint32 ac
                 input_set_flag(INPUT_FLAG_TOOL_ACTIVE, false);
             }
         }
+
         if (apply)
         {
             network_set_pickup_peep(game_command_playerid, peep);
             network_set_pickup_peep_old_x(game_command_playerid, peep->x);
-            peep_pickup(peep);
+            peep->Pickup();
         }
     }
     break;
     case 1: // cancel
         if (apply)
         {
-            peep_pickup_abort(network_get_pickup_peep(game_command_playerid), x);
+            // TODO: Verify if this is really needed or that we can use `peep` instead
+            rct_peep * const pickedUpPeep = network_get_pickup_peep(game_command_playerid);
+            if (pickedUpPeep)
+            {
+                pickedUpPeep->PickupAbort(x);
+            }
+
             network_set_pickup_peep(game_command_playerid, nullptr);
         }
         break;
@@ -917,7 +920,8 @@ bool peep_pickup_command(uint32 peepnum, sint32 x, sint32 y, sint32 z, sint32 ac
         {
             return false;
         }
-        if (!peep_pickup_place(peep, x, y, z, apply))
+
+        if (!peep->Place(x, y, z, apply))
         {
             return false;
         }
@@ -2249,12 +2253,6 @@ sint32 peep_get_easteregg_name_id(rct_peep * peep)
             return static_cast<sint32>(i);
 
     return -1;
-}
-
-sint32 peep_is_mechanic(rct_peep * peep)
-{
-    return (peep->sprite_identifier == SPRITE_IDENTIFIER_PEEP && peep->type == PEEP_TYPE_STAFF &&
-            peep->staff_type == STAFF_TYPE_MECHANIC);
 }
 
 /**
