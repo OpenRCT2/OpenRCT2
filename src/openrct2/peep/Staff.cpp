@@ -524,8 +524,8 @@ void game_command_fire_staff_member(sint32 * eax, sint32 * ebx, sint32 * ecx, si
 }
 
 /**
- * Hires a new staff member of the given type. If the hire cannot be completed (eg. the maximum
- * number of staff is reached or there are too many people in the game) it returns 0xFFFF.
+ * Hires a new staff member of the given type. If the hire cannot be completed (eg. the maximum number of staff is reached or
+ * there are too many peeps) it returns SPRITE_INDEX_NULL.
  */
 uint16 hire_new_staff_member(uint8 staffType)
 {
