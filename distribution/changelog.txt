@@ -21,7 +21,8 @@
 - Fix: Cut-away view does not draw tile elements that have been moved down on the list.
 - Improved: [#2989] Multiplayer window now changes title when tab changes.
 - Improved: [#5339] Change eyedropper icon to actual eyedropper and change cursor to crosshair.
-- Improved: Raising land near the map edge makes the affected area smaller instead of showing an 'off edge map' error.
+- Improved: [#7302] Raising land near the map edge makes the affected area smaller instead of showing an 'off edge map' error.
+- Improved: [#7435] Object indexing now supports multi-threading.
 
 0.1.2 (2018-03-18)
 ------------------------------------------------------------------------
