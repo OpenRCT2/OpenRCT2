@@ -97,7 +97,7 @@ namespace OpenRCT2
         virtual std::shared_ptr<Audio::IAudioContext> GetAudioContext() abstract;
         virtual std::shared_ptr<Ui::IUiContext> GetUiContext() abstract;
         virtual std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() abstract;
-        virtual std::shared_ptr<Localisation::LocalisationService> GetLocalisationService() abstract;
+        virtual Localisation::LocalisationService& GetLocalisationService() abstract;
         virtual IObjectManager *         GetObjectManager() abstract;
         virtual IObjectRepository *      GetObjectRepository() abstract;
         virtual ITrackDesignRepository * GetTrackDesignRepository() abstract;

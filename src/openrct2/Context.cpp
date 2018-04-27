@@ -171,9 +171,9 @@ namespace OpenRCT2
             return _env;
         }
 
-        std::shared_ptr<LocalisationService> GetLocalisationService() override
+        Localisation::LocalisationService& GetLocalisationService() override
         {
-            return _localisationService;
+            return *_localisationService;
         }
 
         IObjectManager * GetObjectManager() override

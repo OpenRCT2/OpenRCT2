@@ -667,9 +667,9 @@ const rct_object_entry * object_list_find(rct_object_entry * entry)
 void object_list_load()
 {
     auto context = GetContext();
-    const auto localisationService = context->GetLocalisationService();
+    const auto& localisationService = context->GetLocalisationService();
     auto objectRepository = context->GetObjectRepository();
-    objectRepository->LoadOrConstruct(localisationService->GetCurrentLanguage());
+    objectRepository->LoadOrConstruct(localisationService.GetCurrentLanguage());
 
     IObjectManager * objectManager = context->GetObjectManager();
     objectManager->UnloadAll();

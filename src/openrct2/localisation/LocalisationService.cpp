@@ -156,11 +156,11 @@ void LocalisationService::FreeObjectString(rct_string_id stringId)
 sint32 LocalisationService_GetCurrentLanguage()
 {
     const auto& localisationService = GetContext()->GetLocalisationService();
-    return localisationService->GetCurrentLanguage();
+    return localisationService.GetCurrentLanguage();
 }
 
 bool LocalisationService_UseTrueTypeFont()
 {
     const auto& localisationService = GetContext()->GetLocalisationService();
-    return localisationService->UseTrueTypeFont();
+    return localisationService.UseTrueTypeFont();
 }
