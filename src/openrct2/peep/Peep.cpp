@@ -787,38 +787,34 @@ void rct_peep::PickupAbort(sint32 old_x)
     gPickupPeepImage = UINT32_MAX;
 }
 
-bool rct_peep::Place(sint32 posX, sint32 posY, sint32 posZ, bool apply)
+// Returns true when a peep can be dropped at the given location. When apply is set to true the peep gets dropped.
+bool rct_peep::Place(TileCoordsXYZ location, bool apply)
 {
-    rct_tile_element * tileElement = map_get_path_element_at(posX / 32, posY / 32, posZ);
+    rct_tile_element * tileElement = map_get_path_element_at(location.x, location.y, location.z);
 
     if (!tileElement)
     {
-        tileElement = map_get_surface_element_at({ posX, posY });
+        tileElement = map_get_surface_element_at(location.x, location.y);
     }
 
     if (!tileElement)
         return false;
 
-    sint32 dest_x = posX & 0xFFE0;
-    sint32 dest_y = posY & 0xFFE0;
+    CoordsXYZ destination = { location.x * 32, location.y * 32, location.z * 8 };
 
     // Set the coordinate of destination to be exactly
     // in the middle of a tile.
-    dest_x += 16;
-    dest_y += 16;
-    // Set the tile coordinate to top left of tile
-    sint32 tile_y = dest_y & 0xFFE0;
-    sint32 tile_x = dest_x & 0xFFE0;
+    destination.x += 16;
+    destination.y += 16;
+    destination.z = tileElement->base_height * 8 + 16;
 
-    sint32 dest_z = tileElement->base_height * 8 + 16;
-
-    if (!map_is_location_owned(tile_x, tile_y, dest_z))
+    if (!map_is_location_owned(location.x * 32, location.y * 32, destination.z))
     {
         gGameCommandErrorTitle = STR_ERR_CANT_PLACE_PERSON_HERE;
         return false;
     }
 
-    if (!map_can_construct_at(tile_x, tile_y, dest_z / 8, (dest_z / 8) + 1, 15))
+    if (!map_can_construct_at(destination.x, destination.y, destination.z / 8, (destination.z / 8) + 1, 15))
     {
         if (gGameCommandErrorText != STR_RAISE_OR_LOWER_LAND_FIRST)
         {
@@ -832,7 +828,7 @@ bool rct_peep::Place(sint32 posX, sint32 posY, sint32 posZ, bool apply)
 
     if (apply)
     {
-        sprite_move(dest_x, dest_y, dest_z, (rct_sprite *)this);
+        sprite_move(destination.x, destination.y, destination.z, (rct_sprite *)this);
         Invalidate();
         SetState(PEEP_STATE_FALLING);
         action                     = 0xFF;
@@ -921,7 +917,7 @@ bool peep_pickup_command(uint32 peepnum, sint32 x, sint32 y, sint32 z, sint32 ac
             return false;
         }
 
-        if (!peep->Place(x, y, z, apply))
+        if (!peep->Place({ x / 32, y / 32, z }, apply))
         {
             return false;
         }

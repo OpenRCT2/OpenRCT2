@@ -716,7 +716,7 @@ public: // Peep
     void SetNextFlags(uint8 next_direction, bool is_sloped, bool is_surface);
     void Pickup();
     void PickupAbort(sint32 old_x);
-    bool Place(sint32 x, sint32 y, sint32 z, bool apply);
+    bool Place(TileCoordsXYZ location, bool apply);
 public: // Guest
     void Tick128UpdateGuest(sint32 index);
     void RemoveFromQueue();
