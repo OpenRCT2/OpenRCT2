@@ -89,7 +89,7 @@ class Network
 public:
     Network();
     ~Network();
-    void SetEnvironment(std::shared_ptr<OpenRCT2::IPlatformEnvironment> env);
+    void SetEnvironment(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
     bool Init();
     void Close();
     bool BeginClient(const char* host, uint16 port);
@@ -301,7 +301,7 @@ private:
 
 #endif /* DISABLE_NETWORK */
 
-void network_set_env(std::shared_ptr<OpenRCT2::IPlatformEnvironment> env);
+void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 void network_close();
 void network_shutdown_client();
 sint32 network_begin_client(const char *host, sint32 port);

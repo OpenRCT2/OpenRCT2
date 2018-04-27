@@ -119,9 +119,9 @@ namespace OpenRCT2
 
     public:
         Context(
-            std::shared_ptr<IPlatformEnvironment> env,
-            std::shared_ptr<IAudioContext> audioContext,
-            std::shared_ptr<IUiContext> uiContext)
+            const std::shared_ptr<IPlatformEnvironment>& env,
+            const std::shared_ptr<IAudioContext>& audioContext,
+            const std::shared_ptr<IUiContext>& uiContext)
             : _env(env),
               _audioContext(audioContext),
               _uiContext(uiContext),
@@ -931,9 +931,9 @@ namespace OpenRCT2
         }
 
         PlainContext(
-            std::shared_ptr<IPlatformEnvironment> env,
-            std::shared_ptr<IAudioContext> audioContext,
-            std::shared_ptr<IUiContext> uiContext)
+            const std::shared_ptr<IPlatformEnvironment>& env,
+            const std::shared_ptr<IAudioContext>& audioContext,
+            const std::shared_ptr<IUiContext>& uiContext)
             : Context(env, audioContext, uiContext),
               _env(env),
               _audioContext(audioContext),
@@ -950,9 +950,9 @@ namespace OpenRCT2
     }
 
     std::unique_ptr<IContext> CreateContext(
-        std::shared_ptr<IPlatformEnvironment> env,
-        std::shared_ptr<Audio::IAudioContext> audioContext,
-        std::shared_ptr<IUiContext> uiContext)
+        const std::shared_ptr<IPlatformEnvironment>& env,
+        const std::shared_ptr<Audio::IAudioContext>& audioContext,
+        const std::shared_ptr<IUiContext>& uiContext)
     {
         return std::make_unique<Context>(env, audioContext, uiContext);
     }

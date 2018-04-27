@@ -215,7 +215,7 @@ class ObjectRepository final : public IObjectRepository
     ObjectEntryMap _itemMap;
 
 public:
-    explicit ObjectRepository(std::shared_ptr<IPlatformEnvironment> env)
+    explicit ObjectRepository(const std::shared_ptr<IPlatformEnvironment>& env)
         : _env(env),
           _fileIndex(*this, *env)
     {
@@ -639,7 +639,7 @@ private:
     }
 };
 
-IObjectRepository * CreateObjectRepository(std::shared_ptr<IPlatformEnvironment> env)
+IObjectRepository * CreateObjectRepository(const std::shared_ptr<IPlatformEnvironment>& env)
 {
     return new ObjectRepository(env);
 }

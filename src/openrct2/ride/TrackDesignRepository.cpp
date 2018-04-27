@@ -143,7 +143,7 @@ private:
     std::vector<TrackRepositoryItem> _items;
 
 public:
-    explicit TrackDesignRepository(std::shared_ptr<IPlatformEnvironment> env)
+    explicit TrackDesignRepository(const std::shared_ptr<IPlatformEnvironment>& env)
         : _env(env),
           _fileIndex(*env)
     {
@@ -398,7 +398,7 @@ private:
     }
 };
 
-ITrackDesignRepository * CreateTrackDesignRepository(std::shared_ptr<IPlatformEnvironment> env)
+ITrackDesignRepository * CreateTrackDesignRepository(const std::shared_ptr<IPlatformEnvironment>& env)
 {
     return new TrackDesignRepository(env);
 }

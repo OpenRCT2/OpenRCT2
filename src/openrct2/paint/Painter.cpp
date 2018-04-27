@@ -34,7 +34,7 @@ using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Ui;
 
-Painter::Painter(std::shared_ptr<IUiContext> uiContext)
+Painter::Painter(const std::shared_ptr<IUiContext>& uiContext)
     : _uiContext(uiContext)
 {
 }

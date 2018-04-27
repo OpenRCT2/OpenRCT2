@@ -329,7 +329,7 @@ private:
     std::vector<scenario_highscore_entry*> _highscores;
 
 public:
-    explicit ScenarioRepository(std::shared_ptr<IPlatformEnvironment> env)
+    explicit ScenarioRepository(const std::shared_ptr<IPlatformEnvironment>& env)
         : _env(env),
           _fileIndex(*env)
     {
@@ -730,7 +730,7 @@ private:
 
 static ScenarioRepository * _scenarioRepository;
 
-IScenarioRepository * CreateScenarioRepository(std::shared_ptr<IPlatformEnvironment> env)
+IScenarioRepository * CreateScenarioRepository(const std::shared_ptr<IPlatformEnvironment>& env)
 {
     _scenarioRepository = new ScenarioRepository(env);
     return _scenarioRepository;

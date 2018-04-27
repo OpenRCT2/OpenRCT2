@@ -39,7 +39,7 @@ private:
     SDL_Palette *       _palette        = nullptr;
 
 public:
-    explicit SoftwareDrawingEngine(std::shared_ptr<IUiContext> uiContext)
+    explicit SoftwareDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
         : X8DrawingEngine(uiContext),
           _uiContext(uiContext)
     {
@@ -163,7 +163,7 @@ private:
     }
 };
 
-std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateSoftwareDrawingEngine(std::shared_ptr<IUiContext> uiContext)
+std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateSoftwareDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
 {
     return std::make_unique<SoftwareDrawingEngine>(uiContext);
 }

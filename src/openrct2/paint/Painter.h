@@ -45,7 +45,7 @@ namespace OpenRCT2
             sint32  _frames     = 0;
 
         public:
-            explicit Painter(std::shared_ptr<Ui::IUiContext> uiContext);
+            explicit Painter(const std::shared_ptr<Ui::IUiContext>& uiContext);
             void Paint(Drawing::IDrawingEngine& de);
 
         private:

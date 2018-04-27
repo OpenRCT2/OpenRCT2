@@ -52,7 +52,7 @@ interface ITrackDesignRepository
     virtual std::string Install(const std::string &path) abstract;
 };
 
-ITrackDesignRepository * CreateTrackDesignRepository(std::shared_ptr<OpenRCT2::IPlatformEnvironment> env);
+ITrackDesignRepository * CreateTrackDesignRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 std::string GetNameFromTrackPath(const std::string &path);
 
 void    track_repository_scan();

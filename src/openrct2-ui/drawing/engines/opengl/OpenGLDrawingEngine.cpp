@@ -144,7 +144,7 @@ public:
     SDL_Color Palette[256];
     vec4      GLPalette[256];
 
-    explicit OpenGLDrawingEngine(std::shared_ptr<IUiContext> uiContext)
+    explicit OpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
         : _uiContext(uiContext)
     {
         _window = (SDL_Window *)_uiContext->GetWindow();
@@ -419,7 +419,7 @@ private:
     }
 };
 
-std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateOpenGLDrawingEngine(std::shared_ptr<IUiContext> uiContext)
+std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateOpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
 {
     return std::make_unique<OpenGLDrawingEngine>(uiContext);
 }

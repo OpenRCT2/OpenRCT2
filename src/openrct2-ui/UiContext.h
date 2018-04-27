@@ -44,7 +44,7 @@ namespace OpenRCT2
             virtual std::string ShowDirectoryDialog(SDL_Window * window, const std::string &title) abstract;
         };
 
-        std::unique_ptr<IUiContext> CreateUiContext(std::shared_ptr<IPlatformEnvironment> env);
+        std::unique_ptr<IUiContext> CreateUiContext(const std::shared_ptr<IPlatformEnvironment>& env);
         IPlatformUiContext * CreatePlatformUiContext();
 
         InGameConsole& GetInGameConsole();

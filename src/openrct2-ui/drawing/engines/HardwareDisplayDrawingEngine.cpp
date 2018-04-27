@@ -60,7 +60,7 @@ private:
     bool    smoothNN = false;
 
 public:
-    explicit HardwareDisplayDrawingEngine(std::shared_ptr<IUiContext> uiContext)
+    explicit HardwareDisplayDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
         : X8DrawingEngine(uiContext),
           _uiContext(uiContext)
     {
@@ -415,7 +415,7 @@ private:
     }
 };
 
-std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateHardwareDisplayDrawingEngine(std::shared_ptr<IUiContext> uiContext)
+std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateHardwareDisplayDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
 {
     return std::make_unique<HardwareDisplayDrawingEngine>(uiContext);
 }
