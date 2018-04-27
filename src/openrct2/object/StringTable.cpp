@@ -101,6 +101,18 @@ std::string StringTable::GetString(uint8 id) const
     return std::string();
 }
 
+std::string StringTable::GetString(uint8 language, uint8 id) const
+{
+    for (auto &string : _strings)
+    {
+        if (string.LanguageId == language && string.Id == id)
+        {
+            return string.Text;
+        }
+    }
+    return std::string();
+}
+
 void StringTable::SetString(uint8 id, uint8 language, const std::string &text)
 {
     StringTableEntry entry;

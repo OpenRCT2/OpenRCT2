@@ -137,7 +137,7 @@ protected:
      * Loads the given file and creates the item representing the data to store in the index.
      * TODO Use std::optional when C++17 is available.
      */
-    virtual std::tuple<bool, TItem> Create(const std::string &path) const abstract;
+    virtual std::tuple<bool, TItem> Create(sint32 language, const std::string &path) const abstract;
 
     /**
      * Serialises an index item to the given stream.
@@ -180,7 +180,8 @@ private:
         return ScanResult(stats, files);
     }
 
-    void BuildRange(const ScanResult &scanResult,
+    void BuildRange(sint32 language,
+                    const ScanResult &scanResult,
                     size_t rangeStart,
                     size_t rangeEnd,
                     std::vector<TItem>& items,
@@ -198,7 +199,7 @@ private:
                 log_verbose("FileIndex:Indexing '%s'", filePath.c_str());
             }
 
-            auto item = Create(filePath);
+            auto item = Create(language, filePath);
             if (std::get<0>(item))
             {
                 items.push_back(std::get<1>(item));
@@ -245,6 +246,7 @@ private:
 
                 jobPool.AddTask(std::bind(&FileIndex<TItem>::BuildRange,
                     this,
+                    language,
                     std::cref(scanResult),
                     rangeStart,
                     rangeStart + stepSize,

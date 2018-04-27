@@ -143,7 +143,7 @@ public:
     }
 
 protected:
-    std::tuple<bool, scenario_index_entry> Create(const std::string &path) const override
+    std::tuple<bool, scenario_index_entry> Create(sint32, const std::string &path) const override
     {
         scenario_index_entry entry;
         auto timestamp = File::GetLastModified(path);

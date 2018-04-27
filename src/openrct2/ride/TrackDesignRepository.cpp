@@ -81,7 +81,7 @@ public:
     }
 
 public:
-    std::tuple<bool, TrackRepositoryItem> Create(const std::string &path) const override
+    std::tuple<bool, TrackRepositoryItem> Create(sint32, const std::string &path) const override
     {
         auto td6 = track_design_open(path.c_str());
         if (td6 != nullptr)
@@ -348,7 +348,8 @@ public:
         std::string newPath = Path::Combine(installDir, fileName);
         if (File::Copy(path, newPath, false))
         {
-            auto td = _fileIndex.Create(path);
+            auto language = LocalisationService_GetCurrentLanguage();
+            auto td = _fileIndex.Create(language, path);
             if (std::get<0>(td))
             {
                 _items.push_back(std::get<1>(td));

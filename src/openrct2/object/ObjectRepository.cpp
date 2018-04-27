@@ -101,7 +101,7 @@ public:
     }
 
 public:
-    std::tuple<bool, ObjectRepositoryItem> Create(const std::string &path) const override
+    std::tuple<bool, ObjectRepositoryItem> Create(sint32 language, const std::string &path) const override
     {
         auto extension = Path::GetExtension(path);
         if (String::Equals(extension, ".json", true))
@@ -112,7 +112,7 @@ public:
                 ObjectRepositoryItem item = { 0 };
                 item.ObjectEntry = *object->GetObjectEntry();
                 item.Path = String::Duplicate(path);
-                item.Name = String::Duplicate(object->GetName());
+                item.Name = String::Duplicate(object->GetName(language));
                 object->SetRepositoryItem(&item);
                 delete object;
                 return std::make_tuple(true, item);
@@ -446,7 +446,8 @@ private:
 
     void ScanObject(const std::string &path)
     {
-        auto result = _fileIndex.Create(path);
+        auto language = LocalisationService_GetCurrentLanguage();
+        auto result = _fileIndex.Create(language, path);
         if (std::get<0>(result))
         {
             auto ori = std::get<1>(result);

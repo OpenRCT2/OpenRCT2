@@ -76,6 +76,11 @@ std::string Object::GetString(uint8 index) const
     return sz;
 }
 
+std::string Object::GetString(sint32 language, uint8 index) const
+{
+    return GetStringTable().GetString(language, index);
+}
+
 rct_object_entry Object::GetScgWallsHeader()
 {
     return Object::CreateHeader("SCGWALLS", 207140231, 3518650219);
@@ -709,6 +714,11 @@ bool Object::IsOpenRCT2OfficialObject()
 std::string Object::GetName() const
 {
     return GetString(OBJ_STRING_ID_NAME);
+}
+
+std::string Object::GetName(sint32 language) const
+{
+    return GetString(language, OBJ_STRING_ID_NAME);
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
