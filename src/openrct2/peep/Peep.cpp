@@ -1777,11 +1777,11 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     peep->thoughts->type          = PEEP_THOUGHT_TYPE_NONE;
     peep->window_invalidate_flags = 0;
 
-    uint8 intensity_highest = (scenario_rand() & 0x7) + 3;
-    uint8 intensity_lowest = Math::Min(al, static_cast<uint8>(7)) - 3;
+    uint8 intensityHighest = (scenario_rand() & 0x7) + 3;
+    uint8 intensityLowest = Math::Min(intensityHighest, static_cast<uint8>(7)) - 3;
 
-    if (intensity_highest >= 7)
-        intensity_highest = 15;
+    if (intensityHighest >= 7)
+        intensityHighest = 15;
 
     /* Check which intensity boxes are enabled 
      * and apply the appropriate intensity settings. */
@@ -1789,22 +1789,22 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     {
         if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
         {
-            intensity_lowest = 0;
-            intensity_highest = 15;
+            intensityLowest = 0;
+            intensityHighest = 15;
         }
         else 
         {
-            intensity_lowest = 0;
-            intensity_highest = 4;
+            intensityLowest = 0;
+            intensityHighest = 4;
         }
     }
     else if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
     {
-        intensity_lowest = 9;
-        intensity_highest = 15;
+        intensityLowest = 9;
+        intensityHighest = 15;
     }
 
-    peep->intensity = (intensity_highest << 4) | intensity_lowest;
+    peep->intensity = (intensityHighest << 4) | intensityLowest;
 
     uint8 nausea_tolerance = scenario_rand() & 0x7;
     if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
