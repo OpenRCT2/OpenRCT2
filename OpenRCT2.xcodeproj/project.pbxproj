@@ -42,6 +42,10 @@
 		9346F9DB208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
 		9346F9DC208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
 		9346F9DD208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
+		933F2CB720935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
+		933F2CB820935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
+		933F2CB920935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
+		933F2CBB20935668001B33FD /* LocalisationService.h in Headers */ = {isa = PBXBuildFile; fileRef = 933F2CBA20935668001B33FD /* LocalisationService.h */; };
 		C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */; };
 		C61ADB211FB7DC060024F2EF /* Scenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB201FB7DC060024F2EF /* Scenery.cpp */; };
 		C61ADB231FBBCB8B0024F2EF /* GameBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */; };
@@ -645,7 +649,6 @@
 		4C7B53BA1FFF935B00A52E21 /* user.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user.h; sourceTree = "<group>"; };
 		4C7B53BB1FFF935B00A52E21 /* UTF8.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UTF8.cpp; sourceTree = "<group>"; };
 		4C7B53C61FFF94F900A52E21 /* ConversionTables.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConversionTables.cpp; sourceTree = "<group>"; };
-		4C7B53C71FFF94F900A52E21 /* ConversionTables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversionTables.h; sourceTree = "<group>"; };
 		4C7B53C91FFF991000A52E21 /* Language.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Language.h; sourceTree = "<group>"; };
 		4C7B53CB1FFF995100A52E21 /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Font.h; sourceTree = "<group>"; };
 		4C7B53CD200029CE00A52E21 /* Line.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Line.cpp; sourceTree = "<group>"; };
@@ -864,6 +867,8 @@
 		9308D9FD209908090079EE96 /* Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Surface.h; sourceTree = "<group>"; };
 		9346F9D6208A191900C77D91 /* Guest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Guest.cpp; sourceTree = "<group>"; };
 		9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuestPathfinding.cpp; sourceTree = "<group>"; };
+		933F2CB620935653001B33FD /* LocalisationService.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LocalisationService.cpp; sourceTree = "<group>"; };
+		933F2CBA20935668001B33FD /* LocalisationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalisationService.h; sourceTree = "<group>"; };
 		C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TopToolbar.cpp; sourceTree = "<group>"; };
 		C61ADB201FB7DC060024F2EF /* Scenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scenery.cpp; sourceTree = "<group>"; };
 		C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameBottomToolbar.cpp; sourceTree = "<group>"; };
@@ -1991,7 +1996,6 @@
 			isa = PBXGroup;
 			children = (
 				4C7B53C61FFF94F900A52E21 /* ConversionTables.cpp */,
-				4C7B53C71FFF94F900A52E21 /* ConversionTables.h */,
 				4C7B53AA1FFF935B00A52E21 /* Convert.cpp */,
 				4C7B53AB1FFF935B00A52E21 /* Currency.cpp */,
 				4C7B53AC1FFF935B00A52E21 /* Currency.h */,
@@ -2001,6 +2005,8 @@
 				4C7B53B01FFF935B00A52E21 /* FormatCodes.h */,
 				4C7B53B11FFF935B00A52E21 /* Language.cpp */,
 				4C7B53C91FFF991000A52E21 /* Language.h */,
+				933F2CB620935653001B33FD /* LocalisationService.cpp */,
+				933F2CBA20935668001B33FD /* LocalisationService.h */,
 				4C7B53B31FFF935B00A52E21 /* LanguagePack.cpp */,
 				4C7B53B41FFF935B00A52E21 /* LanguagePack.h */,
 				4C7B53B51FFF935B00A52E21 /* Localisation.cpp */,
@@ -2716,6 +2722,7 @@
 				C6352B851F477022006CCEE3 /* DataSerialiserTraits.h in Headers */,
 				C67B28192002D7F200109C93 /* Window_internal.h in Headers */,
 				C6352B971F477032006CCEE3 /* SetParkEntranceFeeAction.hpp in Headers */,
+				933F2CBB20935668001B33FD /* LocalisationService.h in Headers */,
 				C6352B861F477022006CCEE3 /* Endianness.h in Headers */,
 				C6352B941F477032006CCEE3 /* PlaceParkEntranceAction.hpp in Headers */,
 				C6352B911F477032006CCEE3 /* GameAction.h in Headers */,
@@ -3021,6 +3028,7 @@
 				C685E5191F8907850090598F /* NewRide.cpp in Sources */,
 				9346F9DB208A191900C77D91 /* GuestPathfinding.cpp in Sources */,
 				C654DF361F69C0430040F43D /* Player.cpp in Sources */,
+				933F2CB720935653001B33FD /* LocalisationService.cpp in Sources */,
 				F76C88791EC5324E00FA49E2 /* AudioContext.cpp in Sources */,
 				C666EE7A1F37ACB10061AA04 /* Themes.cpp in Sources */,
 				C666EE7F1F37ACB10061AA04 /* Viewport.cpp in Sources */,
@@ -3174,6 +3182,7 @@
 				F76C85C01EC4E88300FA49E2 /* UriHandler.cpp in Sources */,
 				C688786220289A0A0084B384 /* MapGen.cpp in Sources */,
 				C68878A820289B2A0084B384 /* NewsItem.cpp in Sources */,
+				933F2CB820935653001B33FD /* LocalisationService.cpp in Sources */,
 				F76C85C41EC4E88300FA49E2 /* Config.cpp in Sources */,
 				C688789120289B140084B384 /* Console.cpp in Sources */,
 				C688792920289B9B0084B384 /* Chairlift.cpp in Sources */,
@@ -3436,6 +3445,7 @@
 				9346F9DA208A191900C77D91 /* Guest.cpp in Sources */,
 				F7D7749E1EC6713200BE6EBC /* Cli.cpp in Sources */,
 				9308DA03209908090079EE96 /* Surface.cpp in Sources */,
+				933F2CB920935653001B33FD /* LocalisationService.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
