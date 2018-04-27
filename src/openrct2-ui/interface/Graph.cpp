@@ -30,7 +30,7 @@ static void graph_draw_months_uint8(rct_drawpixelinfo *dpi, const uint8 *history
     for (i = count - 1; i >= 0; i--) {
         if (history[i] != 0 && history[i] != 255 && yearOver32 % 4 == 0) {
             // Draw month text
-            set_format_arg(0, uint32, DateGameShortMonthNames[((yearOver32 / 4) + 8) % 8]);
+            set_format_arg(0, uint32, DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)]);
             gfx_draw_string_centred(dpi, STR_GRAPH_LABEL, x, y - 10, COLOUR_BLACK, gCommonFormatArgs);
 
             // Draw month mark
@@ -108,7 +108,7 @@ static void graph_draw_months_money32(rct_drawpixelinfo *dpi, const money32 *his
     for (i = count - 1; i >= 0; i--) {
         if (history[i] != MONEY32_UNDEFINED && yearOver32 % 4 == 0) {
             // Draw month text
-            sint32 monthFormat = DateGameShortMonthNames[((yearOver32 / 4) + 8) % 8];
+            sint32 monthFormat = DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)];
             gfx_draw_string_centred(dpi, STR_GRAPH_LABEL, x, y - 10, COLOUR_BLACK, &monthFormat);
 
             // Draw month mark
