@@ -1905,7 +1905,7 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
 
     /* It looks like 80 is about 50% energy level: (128+32) / 2 = 80, so this initialises
      * a peep with approx 50%-100% energy (0x30 = 48, 48 + 80 = 128). */
-    uint8 energy        = (scenario_rand() & 0x30) + 80;
+    uint8 energy        = (scenario_rand() % 0x30) + 80;
     peep->energy        = energy;
     peep->energy_target = energy;
 
