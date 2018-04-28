@@ -19,6 +19,7 @@
 - Fix: [#7402] Edges of neigbouring footpaths stay connected after removing a path that's underneath a ride entrance.
 - Fix: [#7436] Only the first 32 vehicles of a train can be painted.
 - Fix: Cut-away view does not draw tile elements that have been moved down on the list.
+- Fix: Guests staying in the park when the park is closed.
 - Improved: [#2989] Multiplayer window now changes title when tab changes.
 - Improved: [#5339] Change eyedropper icon to actual eyedropper and change cursor to crosshair.
 - Improved: Raising land near the map edge makes the affected area smaller instead of showing an 'off edge map' error.
