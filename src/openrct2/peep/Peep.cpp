@@ -770,6 +770,13 @@ static void peep_decide_whether_to_leave_park(rct_peep * peep)
         return;
     }
 
+    // Leave the park if the park is closed.
+    if (!park_is_open())
+    {
+        peep_leave_park(peep);
+        return;
+    }
+
     /* Peeps that are happy enough, have enough energy and
      * (if appropriate) have enough money will always stay
      * in the park. */
