@@ -3451,12 +3451,6 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
                 pathsByDir[i] = nullptr;
             }
 
-            if (pathsByDir[i] &&
-                footpath_element_is_queue(pathsByDir[i]))
-            {
-                pathsByDir[i] = nullptr;
-            }
-
             // Sloped path on the level below
             if (!pathsByDir[i])
             {
@@ -3472,6 +3466,12 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
                 {
                     pathsByDir[i] = nullptr;
                 }
+            }
+
+            if (pathsByDir[i] &&
+                footpath_element_is_queue(pathsByDir[i]))
+            {
+                pathsByDir[i] = nullptr;
             }
 
             if (pathsByDir[i] && i == _currentTrackPieceDirection)
