@@ -18,7 +18,6 @@
 - Fix: [#7382] Opening the mini-map reverts the size of the land tool to 1x1, regardless of what was selected before.
 - Fix: [#7402] Edges of neigbouring footpaths stay connected after removing a path that's underneath a ride entrance.
 - Fix: [#7436] Only the first 32 vehicles of a train can be painted.
-- Fix: [#7424] Auto-rotate shops ignore queue lines
 - Fix: Cut-away view does not draw tile elements that have been moved down on the list.
 - Improved: [#2989] Multiplayer window now changes title when tab changes.
 - Improved: [#5339] Change eyedropper icon to actual eyedropper and change cursor to crosshair.
