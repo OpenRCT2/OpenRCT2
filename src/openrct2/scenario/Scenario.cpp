@@ -326,7 +326,7 @@ static void scenario_day_update()
 
 static void scenario_week_update()
 {
-    sint32 month = gDateMonthsElapsed & 7;
+    sint32 month = date_get_month(gDateMonthsElapsed);
 
     finance_pay_wages();
     finance_pay_research();
@@ -740,11 +740,11 @@ static void scenario_objective_check_guests_by()
     sint16 objectiveGuests = gScenarioObjectiveNumGuests;
     sint16 currentMonthYear = gDateMonthsElapsed;
 
-    if (currentMonthYear == 8 * objectiveYear || gConfigGeneral.allow_early_completion) {
+    if (currentMonthYear == MONTH_COUNT * objectiveYear || gConfigGeneral.allow_early_completion) {
         if (parkRating >= 600 && guestsInPark >= objectiveGuests) {
             scenario_success();
         }
-        else if (currentMonthYear == 8 * objectiveYear) {
+        else if (currentMonthYear == MONTH_COUNT * objectiveYear) {
             scenario_failure();
         }
     }
@@ -757,11 +757,11 @@ static void scenario_objective_check_park_value_by()
     money32 objectiveParkValue = gScenarioObjectiveCurrency;
     money32 parkValue = gParkValue;
 
-    if (currentMonthYear == 8 * objectiveYear || gConfigGeneral.allow_early_completion) {
+    if (currentMonthYear == MONTH_COUNT * objectiveYear || gConfigGeneral.allow_early_completion) {
         if (parkValue >= objectiveParkValue) {
             scenario_success();
         }
-        else if (currentMonthYear == 8 * objectiveYear) {
+        else if (currentMonthYear == MONTH_COUNT * objectiveYear) {
             scenario_failure();
         }
     }
