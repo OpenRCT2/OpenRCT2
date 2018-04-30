@@ -20,11 +20,13 @@
 #include <string>
 #include <tuple>
 #include <vector>
+#include <list>
 #include "../common.h"
 #include "Console.hpp"
 #include "File.h"
 #include "FileScanner.h"
 #include "FileStream.hpp"
+#include "JobPool.hpp"
 #include "Path.hpp"
 
 template<typename TItem>
@@ -178,32 +180,96 @@ private:
         return ScanResult(stats, files);
     }
 
-    std::vector<TItem> Build(const ScanResult &scanResult) const
+    void BuildRange(const ScanResult &scanResult,
+                    size_t rangeStart,
+                    size_t rangeEnd,
+                    std::vector<TItem>& items,
+                    std::atomic<size_t>& processed,
+                    std::mutex& printLock) const
     {
-        std::vector<TItem> items;
-        Console::WriteLine("Building %s (%zu items)", _name.c_str(), scanResult.Files.size());
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-        // Start at 1, so that we can reach 100% completion status
-        size_t i = 1;
-        for (auto filePath : scanResult.Files)
+        items.reserve(rangeEnd - rangeStart);
+        for (size_t i = rangeStart; i < rangeEnd; i++)
         {
-            Console::WriteFormat("File %5d of %d, done %3d%%\r", i, scanResult.Files.size(), i * 100 / scanResult.Files.size());
-            i++;
-            log_verbose("FileIndex:Indexing '%s'", filePath.c_str());
+            const auto& filePath = scanResult.Files.at(i);
+
+            if (_log_levels[DIAGNOSTIC_LEVEL_VERBOSE])
+            {
+                std::lock_guard<std::mutex> lock(printLock);
+                log_verbose("FileIndex:Indexing '%s'", filePath.c_str());
+            }
+
             auto item = Create(filePath);
             if (std::get<0>(item))
             {
                 items.push_back(std::get<1>(item));
             }
-        }
 
-        WriteIndexFile(scanResult.Stats, items);
+            processed++;
+        }
+    }
+
+    std::vector<TItem> Build(const ScanResult &scanResult) const
+    {
+        std::vector<TItem> allItems;
+        Console::WriteLine("Building %s (%zu items)", _name.c_str(), scanResult.Files.size());
+
+        auto startTime = std::chrono::high_resolution_clock::now();
+
+        const size_t totalCount = scanResult.Files.size();
+        if (totalCount > 0)
+        {
+            JobPool jobPool;
+            std::mutex printLock; // For verbose prints.
+
+            std::list<std::vector<TItem>> containers;
+
+            size_t stepSize = 100; // Handpicked, seems to work well with 4/8 cores.
+
+            std::atomic<size_t> processed = ATOMIC_VAR_INIT(0);
+
+            auto reportProgress =
+                [&]()
+                {
+                    const size_t completed = processed;
+                    Console::WriteFormat("File %5d of %d, done %3d%%\r", completed, totalCount, completed * 100 / totalCount);
+                };
+
+            for (size_t rangeStart = 0; rangeStart < totalCount; rangeStart += stepSize)
+            {
+                if (rangeStart + stepSize > totalCount)
+                {
+                    stepSize = totalCount - rangeStart;
+                }
+
+                auto& items = containers.emplace_back();
+
+                jobPool.AddTask(std::bind(&FileIndex<TItem>::BuildRange,
+                    this,
+                    std::cref(scanResult),
+                    rangeStart,
+                    rangeStart + stepSize,
+                    std::ref(items),
+                    std::ref(processed),
+                    std::ref(printLock)));
+
+                reportProgress();
+            }
+
+            jobPool.Join(reportProgress);
+
+            for (auto&& itr : containers)
+            {
+                allItems.insert(allItems.end(), itr.begin(), itr.end());
+            }
+
+            WriteIndexFile(scanResult.Stats, allItems);
+        }
 
         auto endTime = std::chrono::high_resolution_clock::now();
         auto duration = (std::chrono::duration<float>)(endTime - startTime);
         Console::WriteLine("Finished building %s in %.2f seconds.", _name.c_str(), duration.count());
-        return items;
+
+        return allItems;
     }
 
     std::tuple<bool, std::vector<TItem>> ReadIndexFile(const DirectoryStats &stats) const
@@ -229,6 +295,7 @@ private:
                     header.Stats.FileDateModifiedChecksum == stats.FileDateModifiedChecksum &&
                     header.Stats.PathChecksum == stats.PathChecksum)
                 {
+                    items.reserve(header.NumItems);
                     // Directory is the same, just read the saved items
                     for (uint32 i = 0; i < header.NumItems; i++)
                     {
@@ -258,7 +325,7 @@ private:
             log_verbose("FileIndex:Writing index: '%s'", _indexPath.c_str());
             Path::CreateDirectory(Path::GetDirectory(_indexPath));
             auto fs = FileStream(_indexPath, FILE_MODE_WRITE);
-    
+
             // Write header
             FileIndexHeader header;
             header.MagicNumber = _magicNumber;
@@ -268,7 +335,7 @@ private:
             header.Stats = stats;
             header.NumItems = (uint32)items.size();
             fs.WriteValue(header);
-    
+
             // Write items
             for (const auto item : items)
             {

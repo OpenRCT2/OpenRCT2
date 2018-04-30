@@ -40,6 +40,7 @@ namespace String
     constexpr const utf8 * Empty = "";
 
     std::string     ToStd(const utf8 * str);
+    std::string     StdFormat_VA(const utf8 * format, va_list args);
     std::string     StdFormat(const utf8 * format, ...);
     std::string     ToUtf8(const std::wstring &s);
     std::wstring    ToUtf16(const std::string &s);
