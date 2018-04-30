@@ -3468,6 +3468,12 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
                 }
             }
 
+            if (pathsByDir[i] &&
+                footpath_element_is_queue(pathsByDir[i]))
+            {
+                pathsByDir[i] = nullptr;
+            }
+
             if (pathsByDir[i] && i == _currentTrackPieceDirection)
             {
                 keepOrientation = true;

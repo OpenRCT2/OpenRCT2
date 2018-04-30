@@ -108,6 +108,7 @@ The following people are not part of the project team, but have been contributin
 * Seongsik Park (pss9205)
 * (Deurklink)
 * Nathan Zabriskie (NathanZabriskie)
+* Toby Hinloopen (tobyhinloopen)
 
 ## Toolchain
 * (Balletie) - macOS
