@@ -74,7 +74,6 @@ The following people are not part of the project team, but have been contributin
 * Joshua Moerman (Jaxan) - Misc.
 * Nicolas Hawrysh (xp4xbox) - Misc.
 * Albert Morgese (Fusxfaranto) - Misc.
-* Toby Hinloopen (tobyhinloopen) - Improvements to auto-rotate of shops
 
 ## Bug fixes
 * (halfbro)
@@ -109,6 +108,7 @@ The following people are not part of the project team, but have been contributin
 * Seongsik Park (pss9205)
 * (Deurklink)
 * Nathan Zabriskie (NathanZabriskie)
+* Toby Hinloopen (tobyhinloopen)
 
 ## Toolchain
 * (Balletie) - macOS
