@@ -1370,7 +1370,7 @@ const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT] = {
     {   12,     128,    3,      255,    2,      1,      39,     0   },  // RIDE_TYPE_CIRCUS
     {   8,      24,     6,      2,      7,      30,     50,     0   },  // RIDE_TYPE_GHOST_TRAIN
     {   54,     24,     8,      31,     9,      55,     120,    0   },  // RIDE_TYPE_TWISTER_ROLLER_COASTER
-    {   41,     24,     8,      15,     11,     50,     105,    0   },  // RIDE_TYPE_WOODEN_ROLLER_COASTER
+    {   41,     24,     8,      19,     11,     50,     105,    0   },  // RIDE_TYPE_WOODEN_ROLLER_COASTER
     {   15,     24,     4,      15,     11,     37,     65,     0   },  // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
     {   16,     24,     4,      4,      7,      40,     55,     0   },  // RIDE_TYPE_STEEL_WILD_MOUSE
     {   40,     24,     8,      78,     11,     50,     100,    0   },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
