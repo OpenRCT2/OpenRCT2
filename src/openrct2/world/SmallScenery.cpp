@@ -25,6 +25,7 @@
 #include "Scenery.h"
 #include "SmallScenery.h"
 #include "MapAnimation.h"
+#include "Surface.h"
 
 static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 flags)
 {
@@ -272,9 +273,9 @@ static money32 SmallSceneryPlace(sint16 x,
 
     rct_tile_element* surfaceElement = map_get_surface_element_at({x, y});
 
-    if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && map_get_water_height(surfaceElement) > 0)
+    if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surface_get_water_height(surfaceElement) > 0)
     {
-        sint32 water_height = (map_get_water_height(surfaceElement) * 16) - 1;
+        sint32 water_height = (surface_get_water_height(surfaceElement) * 16) - 1;
         if (water_height > targetHeight)
         {
             gGameCommandErrorText = STR_CANT_BUILD_THIS_UNDERWATER;
@@ -290,9 +291,9 @@ static money32 SmallSceneryPlace(sint16 x,
             return MONEY32_UNDEFINED;
         }
 
-        if (surfaceElement != nullptr && map_get_water_height(surfaceElement) > 0)
+        if (surfaceElement != nullptr && surface_get_water_height(surfaceElement) > 0)
         {
-            if ((map_get_water_height(surfaceElement) * 16) > targetHeight)
+            if ((surface_get_water_height(surfaceElement) * 16) > targetHeight)
             {
                 gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ON_LAND;
                 return MONEY32_UNDEFINED;
@@ -321,7 +322,7 @@ static money32 SmallSceneryPlace(sint16 x,
         {
             if (surfaceElement != nullptr)
             {
-                if (map_get_water_height(surfaceElement) ||
+                if (surface_get_water_height(surfaceElement) ||
                     (surfaceElement->base_height * 8) != targetHeight)
                 {
 

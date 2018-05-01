@@ -25,6 +25,7 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/world/Surface.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>

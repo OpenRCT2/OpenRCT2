@@ -36,6 +36,7 @@
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Sprite.h"
+#include "../world/Surface.h"
 #include "Vehicle.h"
 #include "CableLift.h"
 #include "Ride.h"
@@ -4684,7 +4685,7 @@ static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ &location)
     {
         if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SURFACE)
         {
-            sint32 waterZ = map_get_water_height(tileElement) * 2;
+            sint32 waterZ = surface_get_water_height(tileElement) * 2;
             if (location.z != waterZ)
             {
                 return false;

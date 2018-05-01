@@ -34,6 +34,7 @@
 #include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
+#include <openrct2/world/Surface.h>
 #include <openrct2/world/TileInspector.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Banner.h>
@@ -1681,13 +1682,13 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
         case TILE_INSPECTOR_PAGE_SURFACE: {
             // Details
             // Terrain texture name
-            rct_string_id terrainNameId = TerrainTypeStringIds[tile_element_get_terrain(tileElement)];
+            rct_string_id terrainNameId = TerrainTypeStringIds[surface_get_terrain(tileElement)];
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_TERAIN, &terrainNameId, COLOUR_DARK_GREEN, x, y);
 
             // Edge texture name
-            sint32 idx = tile_element_get_terrain_edge(tileElement);
+            sint32 idx = surface_get_terrain_edge(tileElement);
             openrct2_assert((uint32)idx < Util::CountOf(TerrainEdgeTypeStringIds), "Tried accessing invalid entry %d in terrainEdgeTypeStringIds", idx);
-            rct_string_id terrainEdgeNameId = TerrainEdgeTypeStringIds[tile_element_get_terrain_edge(tileElement)];
+            rct_string_id terrainEdgeNameId = TerrainEdgeTypeStringIds[surface_get_terrain_edge(tileElement)];
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_EDGE, &terrainEdgeNameId, COLOUR_DARK_GREEN, x, y + 11);
 
             // Land ownership
@@ -1700,7 +1701,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_OWNERSHIP, &landOwnership, COLOUR_DARK_GREEN, x, y + 22);
 
             // Water level
-            sint32 waterLevel = map_get_water_height(tileElement);
+            sint32 waterLevel = surface_get_water_height(tileElement);
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, &waterLevel, COLOUR_DARK_GREEN, x, y + 33);
 
             // Properties

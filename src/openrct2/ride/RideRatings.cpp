@@ -23,6 +23,7 @@
 #include "../OpenRCT2.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
+#include "../world/Surface.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "RideRatings.h"
@@ -505,7 +506,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElemen
             if (tileElement->base_height * 8 == gRideRatingsCalcData.proximity_z) {
                 proximity_score_increment(PROXIMITY_SURFACE_TOUCH);
             }
-            waterHeight = map_get_water_height(tileElement);
+            waterHeight = surface_get_water_height(tileElement);
             if (waterHeight != 0) {
                 sint32 z = waterHeight * 16;
                 if (z <= gRideRatingsCalcData.proximity_z) {

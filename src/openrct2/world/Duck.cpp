@@ -22,6 +22,7 @@
 #include "../Game.h"
 #include "../localisation/Date.h"
 #include "../scenario/Scenario.h"
+#include "../world/Surface.h"
 #include "Sprite.h"
 
 enum DUCK_STATE
@@ -126,7 +127,7 @@ void rct_duck::UpdateFlyToWater()
     sint32 manhattanDistanceN = abs(target_x - newX) + abs(target_y - newY);
 
     rct_tile_element * tileElement = map_get_surface_element_at({target_x, target_y});
-    sint32 waterHeight = map_get_water_height(tileElement);
+    sint32 waterHeight = surface_get_water_height(tileElement);
     if (waterHeight == 0)
     {
         state = DUCK_STATE::FLY_AWAY;

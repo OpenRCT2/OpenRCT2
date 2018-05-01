@@ -31,6 +31,7 @@
 #include "Park.h"
 #include "Scenery.h"
 #include "SmallScenery.h"
+#include "Surface.h"
 #include "Wall.h"
 
 /**
@@ -372,9 +373,9 @@ static money32 WallPlace(uint8 wallType,
         return MONEY32_UNDEFINED;
     }
 
-    if (map_get_water_height(surfaceElement) > 0)
+    if (surface_get_water_height(surfaceElement) > 0)
     {
-        uint16 waterHeight = map_get_water_height(surfaceElement) * 16;
+        uint16 waterHeight = surface_get_water_height(surfaceElement) * 16;
 
         if (position.z < waterHeight && !gCheatsDisableClearanceChecks)
         {

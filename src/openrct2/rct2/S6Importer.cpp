@@ -53,6 +53,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Sprite.h"
+#include "../world/Surface.h"
 
 class ObjectLoadException : public std::runtime_error
 {

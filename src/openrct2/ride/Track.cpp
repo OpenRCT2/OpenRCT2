@@ -31,6 +31,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
+#include "../world/Surface.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "RideRatings.h"
@@ -1302,7 +1303,7 @@ static money32 track_place(sint32 rideIndex,
         {
             tileElement = map_get_surface_element_at({x, y});
 
-            uint8 water_height = map_get_water_height(tileElement) * 2;
+            uint8 water_height = surface_get_water_height(tileElement) * 2;
             if (water_height == 0)
             {
                 gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ON_WATER;

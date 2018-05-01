@@ -35,6 +35,7 @@
 #include "MapGen.h"
 #include "Scenery.h"
 #include "SmallScenery.h"
+#include "Surface.h"
 
 #pragma region Height map struct
 
@@ -130,8 +131,8 @@ void mapgen_generate_blank(mapgen_settings * settings)
         for (x = 1; x < settings->mapSize - 1; x++)
         {
             tileElement = map_get_surface_element_at(x, y);
-            tile_element_set_terrain(tileElement, settings->floor);
-            tile_element_set_terrain_edge(tileElement, settings->wall);
+            surface_set_terrain(tileElement, settings->floor);
+            surface_set_terrain_edge(tileElement, settings->wall);
             tileElement->base_height      = settings->height;
             tileElement->clearance_height = settings->height;
         }
@@ -181,8 +182,8 @@ void mapgen_generate(mapgen_settings * settings)
         for (x = 1; x < mapSize - 1; x++)
         {
             tileElement = map_get_surface_element_at(x, y);
-            tile_element_set_terrain(tileElement, floorTexture);
-            tile_element_set_terrain_edge(tileElement, wallTexture);
+            surface_set_terrain(tileElement, floorTexture);
+            surface_set_terrain_edge(tileElement, wallTexture);
             tileElement->base_height      = settings->height;
             tileElement->clearance_height = settings->height;
         }
@@ -227,7 +228,7 @@ void mapgen_generate(mapgen_settings * settings)
             tileElement = map_get_surface_element_at(x, y);
 
             if (tileElement->base_height < waterLevel + 6)
-                tile_element_set_terrain(tileElement, beachTexture);
+                surface_set_terrain(tileElement, beachTexture);
         }
     }
 
@@ -323,7 +324,7 @@ static void mapgen_place_trees()
             rct_tile_element * tileElement = map_get_surface_element_at(x, y);
 
             // Exclude water tiles
-            if (map_get_water_height(tileElement) > 0)
+            if (surface_get_water_height(tileElement) > 0)
                 continue;
 
             pos.x = x;
@@ -355,7 +356,7 @@ static void mapgen_place_trees()
 
         sint32 type = -1;
         rct_tile_element * tileElement = map_get_surface_element_at(pos.x, pos.y);
-        switch (tile_element_get_terrain(tileElement))
+        switch (surface_get_terrain(tileElement))
         {
         case TERRAIN_GRASS:
         case TERRAIN_DIRT:

@@ -28,6 +28,7 @@
 #include "world/Park.h"
 #include "world/Scenery.h"
 #include "world/Sprite.h"
+#include "world/Surface.h"
 
 bool gCheatsSandboxMode = false;
 bool gCheatsDisableClearanceChecks = false;
@@ -69,10 +70,10 @@ static void cheat_set_grass_length(sint32 length)
             if (!(tileElement->properties.surface.ownership & OWNERSHIP_OWNED))
                 continue;
 
-            if (tile_element_get_terrain(tileElement) != TERRAIN_GRASS)
+            if (surface_get_terrain(tileElement) != TERRAIN_GRASS)
                 continue;
 
-            if (map_get_water_height(tileElement) > 0)
+            if (surface_get_water_height(tileElement) > 0)
                 continue;
 
             tileElement->properties.surface.grass_length = length;

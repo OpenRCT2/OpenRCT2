@@ -42,6 +42,7 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
+#include "../world/Surface.h"
 
 struct map_backup
 {
@@ -1350,9 +1351,9 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
                 }
             }
 
-            if (map_get_water_height(tile_element) > 0)
+            if (surface_get_water_height(tile_element) > 0)
             {
-                sint16 water_height = map_get_water_height(tile_element);
+                sint16 water_height = surface_get_water_height(tile_element);
                 water_height *= 16;
                 if (water_height > map_height)
                 {
@@ -1519,7 +1520,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
                     }
                 }
 
-                uint8 water_height = map_get_water_height(tileElement) * 16;
+                uint8 water_height = surface_get_water_height(tileElement) * 16;
                 if (water_height > 0 && water_height > height)
                 {
                     height = water_height;

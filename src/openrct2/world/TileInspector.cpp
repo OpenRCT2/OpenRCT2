@@ -29,6 +29,7 @@
 #include "LargeScenery.h"
 #include "Map.h"
 #include "Scenery.h"
+#include "Surface.h"
 #include "TileInspector.h"
 #include "../ride/Station.h"
 #include "Park.h"

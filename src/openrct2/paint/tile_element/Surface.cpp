@@ -29,6 +29,7 @@
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"
 #include "../../world/Sprite.h"
+#include "../../world/Surface.h"
 #include "Surface.h"
 #include "TileElement.h"
 
@@ -622,7 +623,7 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
     {
         if (isWater)
         {
-            dh = map_get_water_height(neighbour.tile_element);
+            dh = surface_get_water_height(neighbour.tile_element);
             if (dl == dh)
             {
                 return;
@@ -823,7 +824,7 @@ static void viewport_surface_draw_tile_side_top(paint_session * session, enum ed
     {
         if (isWater)
         {
-            dh = map_get_water_height(neighbour.tile_element);
+            dh = surface_get_water_height(neighbour.tile_element);
             if (dl == dh)
             {
                 return;
@@ -942,7 +943,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, cons
 
     const uint16 zoomLevel = dpi->zoom_level;
     const uint8 rotation = session->CurrentRotation;
-    const uint32 terrain_type = tile_element_get_terrain(tileElement);
+    const uint32 terrain_type = surface_get_terrain(tileElement);
     const uint8 surfaceShape = viewport_surface_paint_setup_get_relative_slope(tileElement, rotation);
     const LocationXY16& base = session->SpritePosition;
     const corner_height& cornerHeights = corner_heights[surfaceShape];
@@ -991,7 +992,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, cons
         const corner_height& ch = corner_heights[surfaceSlope];
 
         descriptor.tile_element = surfaceElement;
-        descriptor.terrain = tile_element_get_terrain(surfaceElement);
+        descriptor.terrain = surface_get_terrain(surfaceElement);
         descriptor.slope = surfaceSlope;
         descriptor.corner_heights.top = baseHeight + ch.top;
         descriptor.corner_heights.right = baseHeight + ch.right;
@@ -1240,9 +1241,9 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, cons
                 sint32 local_surfaceShape = surfaceShape;
                 sint32 local_height = height;
                 // Water tool
-                if (map_get_water_height(tileElement) > 0)
+                if (surface_get_water_height(tileElement) > 0)
                 {
-                    sint32 waterHeight = map_get_water_height(tileElement) * 16;
+                    sint32 waterHeight = surface_get_water_height(tileElement) * 16;
                     if (waterHeight > height)
                     {
                         local_height += 16;
@@ -1349,13 +1350,13 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, cons
         memcpy(session->RightTunnels, backupRightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
     }
 
-    if (map_get_water_height(tileElement) > 0)
+    if (surface_get_water_height(tileElement) > 0)
     {
         // loc_6615A9: (water height)
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_WATER;
 
         const uint16 localHeight = height + 16;
-        const uint16 waterHeight = map_get_water_height(tileElement) * 16;
+        const uint16 waterHeight = surface_get_water_height(tileElement) * 16;
 
         if (!gTrackDesignSaveMode)
         {

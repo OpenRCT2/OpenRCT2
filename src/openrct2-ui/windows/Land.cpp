@@ -24,6 +24,7 @@
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/world/Surface.h>
 
 enum WINDOW_LAND_WIDGET_IDX {
     WIDX_BACKGROUND,

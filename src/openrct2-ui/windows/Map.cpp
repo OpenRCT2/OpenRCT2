@@ -30,6 +30,7 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Sprite.h>
+#include <openrct2/world/Surface.h>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -1210,7 +1211,7 @@ static void place_park_entrance_get_map_position(sint32 x, sint32 y, sint16 *map
         return;
 
     tileElement = map_get_surface_element_at(*mapX >> 5, *mapY >> 5);
-    *mapZ = map_get_water_height(tileElement);
+    *mapZ = surface_get_water_height(tileElement);
     if (*mapZ == 0) {
         *mapZ = tileElement->base_height / 2;
         if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0) {
@@ -1559,8 +1560,8 @@ static constexpr const uint8 RideColourKey[] = {
 static uint16 map_window_get_pixel_colour_peep(CoordsXY c)
 {
     rct_tile_element * tileElement = map_get_surface_element_at(c);
-    uint16 colour = TerrainColour[tile_element_get_terrain(tileElement)];
-    if (map_get_water_height(tileElement) > 0)
+    uint16 colour = TerrainColour[surface_get_terrain(tileElement)];
+    if (surface_get_water_height(tileElement) > 0)
         colour = WaterColour;
 
     if (!(tileElement->properties.surface.ownership & OWNERSHIP_OWNED))
@@ -1590,7 +1591,7 @@ static uint16 map_window_get_pixel_colour_ride(CoordsXY c)
     do {
         switch (tile_element_get_type(tileElement)) {
         case TILE_ELEMENT_TYPE_SURFACE:
-            if (map_get_water_height(tileElement) > 0)
+            if (surface_get_water_height(tileElement) > 0)
                 // Why is this a different water colour as above (195)?
                 colourB = MAP_COLOUR(PALETTE_INDEX_194);
             if (!(tileElement->properties.surface.ownership & OWNERSHIP_OWNED))

@@ -35,6 +35,7 @@
 #include "../world/Footpath.h"
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
+#include "../world/Surface.h"
 #include "Peep.h"
 #include "Staff.h"
 
@@ -979,7 +980,7 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep * peep, uint8 vali
 
         rct_tile_element * tileElement = map_get_surface_element_at(chosenTile);
 
-        if (tile_element_get_terrain(tileElement) != 0)
+        if (surface_get_terrain(tileElement) != 0)
             continue;
 
         if (abs(tileElement->base_height - peep->next_z) > 2)

@@ -45,6 +45,7 @@
 #include "MapAnimation.h"
 #include "Park.h"
 #include "Scenery.h"
+#include "Surface.h"
 #include "SmallScenery.h"
 #include "TileInspector.h"
 #include "Wall.h"
@@ -371,8 +372,8 @@ void map_init(sint32 size)
         tile_element->properties.surface.ownership = 0;
         tile_element->properties.surface.terrain = 0;
 
-        tile_element_set_terrain(tile_element, TERRAIN_GRASS);
-        tile_element_set_terrain_edge(tile_element, TERRAIN_EDGE_ROCK);
+        surface_set_terrain(tile_element, TERRAIN_GRASS);
+        surface_set_terrain_edge(tile_element, TERRAIN_EDGE_ROCK);
     }
 
     gGrassSceneryTileLoopPosition = 0;
@@ -500,7 +501,7 @@ sint32 tile_element_height(sint32 x, sint32 y)
     }
 
     uint32 height =
-        (map_get_water_height(tileElement) << 20) |
+        (surface_get_water_height(tileElement) << 20) |
         (tileElement->base_height << 3);
 
     uint32 slope = (tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
@@ -1610,7 +1611,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
     rct_tile_element *surfaceElement = map_get_surface_element_at({x, y});
     if(surfaceElement->type & TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT)
     {
-        sint32 waterHeight = map_get_water_height(surfaceElement);
+        sint32 waterHeight = surface_get_water_height(surfaceElement);
         if(waterHeight != 0)
         {
             if(style & 0x1F)
@@ -1948,8 +1949,8 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
             rct_tile_element* tile_element = map_get_surface_element_at({xi, yi});
             if (tile_element != nullptr) {
                 uint8 height = tile_element->base_height;
-                if (map_get_water_height(tile_element) > 0)
-                    height = map_get_water_height(tile_element) * 2;
+                if (surface_get_water_height(tile_element) > 0)
+                    height = surface_get_water_height(tile_element) * 2;
                 if (max_height > height)
                     max_height = height;
             }
@@ -1961,7 +1962,7 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
             rct_tile_element* tile_element = map_get_surface_element_at({xi, yi});
             if (tile_element != nullptr) {
                 if (tile_element->base_height <= max_height){
-                    uint8 height = map_get_water_height(tile_element);
+                    uint8 height = surface_get_water_height(tile_element);
                     if (height != 0) {
                         height *= 2;
                         if (height > max_height)
@@ -2028,7 +2029,7 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
         for (sint32 xi = x0; xi <= x1; xi += 32){
             rct_tile_element* tile_element = map_get_surface_element_at({xi, yi});
             if (tile_element != nullptr) {
-                uint8 height = map_get_water_height(tile_element);
+                uint8 height = surface_get_water_height(tile_element);
                 if (height != 0) {
                     height *= 2;
                     if (height > min_height)
@@ -2042,7 +2043,7 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
         for (sint32 xi = x0; xi <= x1; xi += 32) {
             rct_tile_element* tile_element = map_get_surface_element_at({xi, yi});
             if (tile_element != nullptr) {
-                uint8 height = map_get_water_height(tile_element);
+                uint8 height = surface_get_water_height(tile_element);
                 if (height != 0) {
                     height *= 2;
                     if (height < min_height)
@@ -2654,9 +2655,9 @@ void game_command_set_water_height(
     rct_tile_element* tile_element = map_get_surface_element_at({x, y});
     sint32 zHigh = tile_element->base_height;
     sint32 zLow = base_height;
-    if (map_get_water_height(tile_element) > 0)
+    if (surface_get_water_height(tile_element) > 0)
     {
-        zHigh = map_get_water_height(tile_element) * 2;
+        zHigh = surface_get_water_height(tile_element) * 2;
     }
     if(zLow > zHigh){
         sint32 temp = zHigh;
@@ -3276,7 +3277,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
             }
             continue;
         }
-        water_height = map_get_water_height(tile_element) * 2;
+        water_height = surface_get_water_height(tile_element) * 2;
         if (water_height && water_height > zLow && tile_element->base_height < zHigh && !gCheatsDisableClearanceChecks) {
             gMapGroundFlags |= ELEMENT_IS_UNDERWATER;
             if (water_height < zHigh) {
@@ -3451,7 +3452,7 @@ static void map_update_grass_length(sint32 x, sint32 y, rct_tile_element *tileEl
     sint32 grassLength = tileElement->properties.surface.grass_length & 7;
 
     // Check if grass is underwater or outside park
-    sint32 waterHeight = map_get_water_height(tileElement) * 2;
+    sint32 waterHeight = surface_get_water_height(tileElement) * 2;
     if (waterHeight > tileElement->base_height || !map_is_location_in_park(x, y)) {
         if (grassLength != GRASS_LENGTH_CLEAR_0)
             map_set_grass_length(x, y, tileElement, GRASS_LENGTH_CLEAR_0);
@@ -3827,7 +3828,7 @@ sint32 map_get_highest_z(sint32 tileX, sint32 tileY)
     if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) != 0)
         z += 16;
 
-    z = std::max(z, map_get_water_height(tileElement) * 16);
+    z = std::max(z, surface_get_water_height(tileElement) * 16);
     return z;
 }
 
@@ -4212,7 +4213,7 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
         return true;
     }
 
-    sint16 water_height = map_get_water_height(tileElement);
+    sint16 water_height = surface_get_water_height(tileElement);
     water_height *= 2;
     if (water_height > tileElement->base_height)
         return true;
