@@ -215,8 +215,9 @@ sint32 tile_element_get_direction_with_offset(const rct_tile_element * element, 
 sint32 tile_element_get_banner_index(rct_tile_element * tileElement);
 bool tile_element_is_ghost(const rct_tile_element * element);
 bool tile_element_is_underground(rct_tile_element * tileElement);
+bool tile_element_is_last_for_tile(const rct_tile_element *element);
 
-// ~Oli414: The banner functions should be part of banner.
+// ~Oli414: The banner functions should probably be part of banner.
 void tile_element_set_banner_index(rct_tile_element * tileElement, sint32 bannerIndex);
 void tile_element_remove_banner_entry(rct_tile_element *tileElement);
 

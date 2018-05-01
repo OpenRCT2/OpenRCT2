@@ -257,11 +257,6 @@ void map_set_tile_elements(sint32 x, sint32 y, rct_tile_element *elements)
     gTileElementTilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL] = elements;
 }
 
-bool tile_element_is_last_for_tile(const rct_tile_element *element)
-{
-    return (element->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
-}
-
 rct_tile_element * map_get_surface_element_at(sint32 x, sint32 y)
 {
     rct_tile_element *tileElement = map_get_first_element_at(x, y);

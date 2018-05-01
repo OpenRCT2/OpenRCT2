@@ -137,7 +137,6 @@ void map_update_tile_pointers();
 rct_tile_element *map_get_first_element_at(sint32 x, sint32 y);
 rct_tile_element *map_get_nth_element_at(sint32 x, sint32 y, sint32 n);
 void map_set_tile_elements(sint32 x, sint32 y, rct_tile_element *elements);
-bool tile_element_is_last_for_tile(const rct_tile_element *element);
 sint32 map_height_from_slope(sint32 x, sint32 y, sint32 slope);
 rct_tile_element* map_get_banner_element_at(sint32 x, sint32 y, sint32 z, uint8 direction);
 rct_tile_element *map_get_surface_element_at(sint32 x, sint32 y);

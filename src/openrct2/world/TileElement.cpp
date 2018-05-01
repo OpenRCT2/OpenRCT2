@@ -58,6 +58,11 @@ bool tile_element_is_underground(rct_tile_element * tileElement)
     return true;
 }
 
+bool tile_element_is_last_for_tile(const rct_tile_element *element)
+{
+    return (element->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
+}
+
 sint32 tile_element_get_banner_index(rct_tile_element * tileElement)
 {
     rct_scenery_entry* sceneryEntry;
