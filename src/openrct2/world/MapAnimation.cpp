@@ -21,6 +21,7 @@
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../interface/Viewport.h"
+#include "../world/Wall.h"
 #include "MapAnimation.h"
 #include "Map.h"
 #include "Scenery.h"
@@ -471,7 +472,7 @@ static bool map_animation_invalidate_wall_door(sint32 x, sint32 y, sint32 baseZ)
 
         bool invalidate = false;
 
-        uint8 currentFrame = wall_element_get_animation_frame(tileElement);
+        uint8 currentFrame = wall_get_animation_frame(tileElement);
         if (currentFrame != 0) {
             if (currentFrame == 15) {
                 currentFrame = 0;
@@ -486,7 +487,7 @@ static bool map_animation_invalidate_wall_door(sint32 x, sint32 y, sint32 baseZ)
                 }
             }
         }
-        wall_element_set_animation_frame(tileElement, currentFrame);
+        wall_set_animation_frame(tileElement, currentFrame);
         if (invalidate) {
             sint32 z = tileElement->base_height * 8;
             map_invalidate_tile_zoom1(x, y, z, z + 32);
