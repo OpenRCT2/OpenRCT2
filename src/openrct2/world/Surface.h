@@ -17,7 +17,7 @@
 #pragma once
 
 #include "../common.h"
-#include "Map.h"
+#include "TileElement.h"
 
 enum {
     TERRAIN_GRASS,

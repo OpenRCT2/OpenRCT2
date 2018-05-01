@@ -16,7 +16,7 @@
 
 #include "../common.h"
 #include "LargeScenery.h"
-#include "Map.h"
+#include "TileElement.h"
 
 colour_t scenery_large_get_primary_colour(const rct_tile_element * tileElement)
 {
@@ -77,5 +77,3 @@ void scenery_large_set_sequence(rct_tile_element * tileElement, uint16 sequence)
     tileElement->properties.scenerymultiple.type &= TILE_ELEMENT_LARGE_TYPE_MASK;
     tileElement->properties.scenerymultiple.type |= (sequence << 10);
 }
-
-

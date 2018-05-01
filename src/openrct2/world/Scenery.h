@@ -19,7 +19,8 @@
 
 #include "../common.h"
 #include "../object/Object.h"
-#include "Map.h"
+#include "../world/Location.hpp"
+#include "TileElement.h"
 
 #define SCENERY_SMALL_SCENERY_ID_MIN    0x0
 #define SCENERY_SMALL_SCENERY_ID_MAX    0xFC
