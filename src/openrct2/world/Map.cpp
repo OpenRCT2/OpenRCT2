@@ -286,48 +286,6 @@ sint32 tile_element_get_direction_with_offset(const rct_tile_element *element, u
     return ((element->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
 }
 
-sint32 tile_element_get_terrain(const rct_tile_element *element)
-{
-    sint32 terrain = (element->properties.surface.terrain >> 5) & 7;
-    if (element->type & 1)
-        terrain |= (1 << 3);
-    return terrain;
-}
-
-sint32 tile_element_get_terrain_edge(const rct_tile_element *element)
-{
-    sint32 terrain_edge = (element->properties.surface.slope >> 5) & 7;
-    if (element->type & 128)
-        terrain_edge |= (1 << 3);
-    return terrain_edge;
-}
-
-void tile_element_set_terrain(rct_tile_element *element, sint32 terrain)
-{
-    // Bit 3 for terrain is stored in element.type bit 0
-    if (terrain & 8)
-        element->type |= 1;
-    else
-        element->type &= ~1;
-
-    // Bits 0, 1, 2 for terrain are stored in element.terrain bit 5, 6, 7
-    element->properties.surface.terrain &= ~0xE0;
-    element->properties.surface.terrain |= (terrain & 7) << 5;
-}
-
-void tile_element_set_terrain_edge(rct_tile_element *element, sint32 terrain)
-{
-    // Bit 3 for terrain is stored in element.type bit 7
-    if (terrain & 8)
-        element->type |= 128;
-    else
-        element->type &= ~128;
-
-    // Bits 0, 1, 2 for terrain are stored in element.slope bit 5, 6, 7
-    element->properties.surface.slope &= ~TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
-    element->properties.surface.slope |= (terrain & 7) << 5;
-}
-
 rct_tile_element * map_get_surface_element_at(sint32 x, sint32 y)
 {
     rct_tile_element *tileElement = map_get_first_element_at(x, y);
@@ -1971,11 +1929,6 @@ static money32 lower_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax,
     gCommandPosition.y = y;
     gCommandPosition.z = z;
     return cost;
-}
-
-sint32 map_get_water_height(const rct_tile_element * tileElement)
-{
-    return tileElement->properties.surface.terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
 }
 
 money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)

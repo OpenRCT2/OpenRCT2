@@ -20,6 +20,7 @@
 #include <initializer_list>
 #include "../common.h"
 #include "Location.hpp"
+#include "Surface.h"
 
 #pragma pack(push, 1)
 struct rct_tile_element_surface_properties {
@@ -173,67 +174,6 @@ enum {
 };
 
 enum {
-    TERRAIN_GRASS,
-    TERRAIN_SAND,
-    TERRAIN_DIRT,
-    TERRAIN_ROCK,
-    TERRAIN_MARTIAN,
-    TERRAIN_CHECKERBOARD,
-    TERRAIN_GRASS_CLUMPS,
-    TERRAIN_ICE,
-    TERRAIN_GRID_RED,
-    TERRAIN_GRID_YELLOW,
-    TERRAIN_GRID_BLUE,
-    TERRAIN_GRID_GREEN,
-    TERRAIN_SAND_DARK,
-    TERRAIN_SAND_LIGHT,
-    TERRAIN_COUNT_REGULAR = 14, // The amount of surface types the user can actually select - what follows are technical types
-    TERRAIN_CHECKERBOARD_INVERTED = 14,
-    TERRAIN_UNDERGROUND_VIEW,
-};
-
-enum {
-    TERRAIN_EDGE_ROCK,
-    TERRAIN_EDGE_WOOD_RED,
-    TERRAIN_EDGE_WOOD_BLACK,
-    TERRAIN_EDGE_ICE,
-
-    TERRAIN_EDGE_RCT2_COUNT,
-
-    TERRAIN_EDGE_BRICK = TERRAIN_EDGE_RCT2_COUNT,
-    TERRAIN_EDGE_IRON,
-    TERRAIN_EDGE_GREY,
-    TERRAIN_EDGE_YELLOW,
-    TERRAIN_EDGE_RED,
-    TERRAIN_EDGE_PURPLE,
-    TERRAIN_EDGE_GREEN,
-    TERRAIN_EDGE_STONE_BROWN,
-    TERRAIN_EDGE_STONE_GREY,
-    TERRAIN_EDGE_SKYSCRAPER_A,
-    TERRAIN_EDGE_SKYSCRAPER_B,
-
-    TERRAIN_EDGE_COUNT
-};
-
-enum {
-    GRASS_LENGTH_MOWED,
-    GRASS_LENGTH_CLEAR_0,
-    GRASS_LENGTH_CLEAR_1,
-    GRASS_LENGTH_CLEAR_2,
-    GRASS_LENGTH_CLUMPS_0,
-    GRASS_LENGTH_CLUMPS_1,
-    GRASS_LENGTH_CLUMPS_2
-};
-
-enum {
-    OWNERSHIP_UNOWNED = 0,
-    OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED = (1 << 4),
-    OWNERSHIP_OWNED = (1 << 5),
-    OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE = (1 << 6),
-    OWNERSHIP_AVAILABLE = (1 << 7)
-};
-
-enum {
     WALL_ANIMATION_FLAG_ACROSS_TRACK = (1 << 2),
     // 3 - 6 animation frame number
     WALL_ANIMATION_FLAG_DIRECTION_BACKWARD = (1 << 7),
@@ -262,43 +202,11 @@ enum
     MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS = (1 << 5),
 };
 
-enum {
-    TILE_ELEMENT_SLOPE_FLAT = 0x00,
-    TILE_ELEMENT_SLOPE_ALL_CORNERS_UP = 0x0F,
-
-    TILE_ELEMENT_SLOPE_N_CORNER_UP = (1 << 0),
-    TILE_ELEMENT_SLOPE_E_CORNER_UP = (1 << 1),
-    TILE_ELEMENT_SLOPE_S_CORNER_UP = (1 << 2),
-    TILE_ELEMENT_SLOPE_W_CORNER_UP = (1 << 3),
-    TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT = (1 << 4),
-
-    TILE_ELEMENT_SLOPE_W_CORNER_DN = TILE_ELEMENT_SLOPE_ALL_CORNERS_UP & ~TILE_ELEMENT_SLOPE_W_CORNER_UP,
-    TILE_ELEMENT_SLOPE_S_CORNER_DN = TILE_ELEMENT_SLOPE_ALL_CORNERS_UP & ~TILE_ELEMENT_SLOPE_S_CORNER_UP,
-    TILE_ELEMENT_SLOPE_E_CORNER_DN = TILE_ELEMENT_SLOPE_ALL_CORNERS_UP & ~TILE_ELEMENT_SLOPE_E_CORNER_UP,
-    TILE_ELEMENT_SLOPE_N_CORNER_DN = TILE_ELEMENT_SLOPE_ALL_CORNERS_UP & ~TILE_ELEMENT_SLOPE_N_CORNER_UP,
-
-    TILE_ELEMENT_SLOPE_NE_SIDE_UP = TILE_ELEMENT_SLOPE_N_CORNER_UP | TILE_ELEMENT_SLOPE_E_CORNER_UP,
-    TILE_ELEMENT_SLOPE_SE_SIDE_UP = TILE_ELEMENT_SLOPE_E_CORNER_UP | TILE_ELEMENT_SLOPE_S_CORNER_UP,
-    TILE_ELEMENT_SLOPE_NW_SIDE_UP = TILE_ELEMENT_SLOPE_N_CORNER_UP | TILE_ELEMENT_SLOPE_W_CORNER_UP,
-    TILE_ELEMENT_SLOPE_SW_SIDE_UP = TILE_ELEMENT_SLOPE_S_CORNER_UP | TILE_ELEMENT_SLOPE_W_CORNER_UP,
-
-    TILE_ELEMENT_SLOPE_W_E_VALLEY = TILE_ELEMENT_SLOPE_E_CORNER_UP | TILE_ELEMENT_SLOPE_W_CORNER_UP,
-    TILE_ELEMENT_SLOPE_N_S_VALLEY = TILE_ELEMENT_SLOPE_N_CORNER_UP | TILE_ELEMENT_SLOPE_S_CORNER_UP
-};
-
 #define TILE_ELEMENT_QUADRANT_MASK 0xC0
 #define TILE_ELEMENT_TYPE_MASK 0x3C
 #define TILE_ELEMENT_DIRECTION_MASK 0x03
 
 #define TILE_ELEMENT_COLOUR_MASK 0x1F
-
-// Surface
-#define TILE_ELEMENT_SURFACE_DIAGONAL_FLAG       0x10 // in rct_tile_element.properties.surface.slope
-#define TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK 0x0F // in rct_tile_element.properties.surface.slope
-#define TILE_ELEMENT_SURFACE_SLOPE_MASK          (TILE_ELEMENT_SURFACE_DIAGONAL_FLAG | TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) // in rct_tile_element.properties.surface.slope
-#define TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK     0xE0 // in rct_tile_element.properties.surface.slope
-#define TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK   0x1F // in rct_tile_element.properties.surface.terrain
-#define TILE_ELEMENT_SURFACE_TERRAIN_MASK        0xE0 // in rct_tile_element.properties.surface.terrain
 
 #define MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK 0x70
 #define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0x0F
@@ -425,10 +333,6 @@ uint8 tile_element_get_scenery_quadrant(const rct_tile_element *element);
 sint32 tile_element_get_type(const rct_tile_element *element);
 sint32 tile_element_get_direction(const rct_tile_element *element);
 sint32 tile_element_get_direction_with_offset(const rct_tile_element *element, uint8 offset);
-sint32 tile_element_get_terrain(const rct_tile_element *element);
-sint32 tile_element_get_terrain_edge(const rct_tile_element *element);
-void tile_element_set_terrain(rct_tile_element *element, sint32 terrain);
-void tile_element_set_terrain_edge(rct_tile_element *element, sint32 terrain);
 sint32 map_height_from_slope(sint32 x, sint32 y, sint32 slope);
 rct_tile_element* map_get_banner_element_at(sint32 x, sint32 y, sint32 z, uint8 direction);
 rct_tile_element *map_get_surface_element_at(sint32 x, sint32 y);
@@ -469,7 +373,6 @@ sint32 map_can_construct_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, uint8
 void rotate_map_coordinates(sint16 *x, sint16 *y, sint32 rotation);
 LocationXY16 coordinate_3d_to_2d(const LocationXYZ16* coordinate_3d, sint32 rotation);
 money32 map_clear_scenery(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 clear, sint32 flags);
-sint32 map_get_water_height(const rct_tile_element * tileElement);
 money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags);
 money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags);
 money32 wall_place(sint32 type, sint32 x, sint32 y, sint32 z, sint32 edge, sint32 primaryColour, sint32 secondaryColour, sint32 tertiaryColour, sint32 flags);
