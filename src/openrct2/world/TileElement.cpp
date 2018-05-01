@@ -23,32 +23,32 @@
 #include "TileElement.h"
 #include "Scenery.h"
 
-uint8 tile_element_get_scenery_quadrant(const rct_tile_element *element)
+uint8 tile_element_get_scenery_quadrant(const rct_tile_element * element)
 {
     return (element->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
-sint32 tile_element_get_type(const rct_tile_element *element)
+sint32 tile_element_get_type(const rct_tile_element * element)
 {
     return element->type & TILE_ELEMENT_TYPE_MASK;
 }
 
-sint32 tile_element_get_direction(const rct_tile_element *element)
+sint32 tile_element_get_direction(const rct_tile_element * element)
 {
     return element->type & TILE_ELEMENT_DIRECTION_MASK;
 }
 
-sint32 tile_element_get_direction_with_offset(const rct_tile_element *element, uint8 offset)
+sint32 tile_element_get_direction_with_offset(const rct_tile_element * element, uint8 offset)
 {
     return ((element->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
 }
 
-bool tile_element_is_ghost(const rct_tile_element *element)
+bool tile_element_is_ghost(const rct_tile_element * element)
 {
     return element->flags & TILE_ELEMENT_FLAG_GHOST;
 }
 
-bool tile_element_is_underground(rct_tile_element *tileElement)
+bool tile_element_is_underground(rct_tile_element * tileElement)
 {
     do {
         tileElement++;
@@ -58,7 +58,7 @@ bool tile_element_is_underground(rct_tile_element *tileElement)
     return true;
 }
 
-sint32 tile_element_get_banner_index(rct_tile_element *tileElement)
+sint32 tile_element_get_banner_index(rct_tile_element * tileElement)
 {
     rct_scenery_entry* sceneryEntry;
 
@@ -101,7 +101,7 @@ void tile_element_set_banner_index(rct_tile_element * tileElement, sint32 banner
     }
 }
 
-void tile_element_remove_banner_entry(rct_tile_element *tileElement)
+void tile_element_remove_banner_entry(rct_tile_element * tileElement)
 {
     sint32 bannerIndex = tile_element_get_banner_index(tileElement);
     if (bannerIndex == BANNER_INDEX_NULL)

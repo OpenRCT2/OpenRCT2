@@ -16,7 +16,7 @@
 
 #include "Surface.h"
 
-sint32 surface_get_terrain(const rct_tile_element *element)
+sint32 surface_get_terrain(const rct_tile_element * element)
 {
     sint32 terrain = (element->properties.surface.terrain >> 5) & 7;
     if (element->type & 1)
@@ -24,7 +24,7 @@ sint32 surface_get_terrain(const rct_tile_element *element)
     return terrain;
 }
 
-sint32 surface_get_terrain_edge(const rct_tile_element *element)
+sint32 surface_get_terrain_edge(const rct_tile_element * element)
 {
     sint32 terrain_edge = (element->properties.surface.slope >> 5) & 7;
     if (element->type & 128)
@@ -32,7 +32,7 @@ sint32 surface_get_terrain_edge(const rct_tile_element *element)
     return terrain_edge;
 }
 
-void surface_set_terrain(rct_tile_element *element, sint32 terrain)
+void surface_set_terrain(rct_tile_element * element, sint32 terrain)
 {
     // Bit 3 for terrain is stored in element.type bit 0
     if (terrain & 8)
@@ -45,7 +45,7 @@ void surface_set_terrain(rct_tile_element *element, sint32 terrain)
     element->properties.surface.terrain |= (terrain & 7) << 5;
 }
 
-void surface_set_terrain_edge(rct_tile_element *element, sint32 terrain)
+void surface_set_terrain_edge(rct_tile_element * element, sint32 terrain)
 {
     // Bit 3 for terrain is stored in element.type bit 7
     if (terrain & 8)

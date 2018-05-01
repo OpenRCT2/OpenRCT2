@@ -208,13 +208,13 @@ enum
 #define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0x0F
 #define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK 0xF0
 
-uint8 tile_element_get_scenery_quadrant(const rct_tile_element *element);
-sint32 tile_element_get_type(const rct_tile_element *element);
-sint32 tile_element_get_direction(const rct_tile_element *element);
-sint32 tile_element_get_direction_with_offset(const rct_tile_element *element, uint8 offset);
-sint32 tile_element_get_banner_index(rct_tile_element *tileElement);
-bool tile_element_is_ghost(const rct_tile_element *element);
-bool tile_element_is_underground(rct_tile_element *tileElement);
+uint8 tile_element_get_scenery_quadrant(const rct_tile_element * element);
+sint32 tile_element_get_type(const rct_tile_element * element);
+sint32 tile_element_get_direction(const rct_tile_element * element);
+sint32 tile_element_get_direction_with_offset(const rct_tile_element * element, uint8 offset);
+sint32 tile_element_get_banner_index(rct_tile_element * tileElement);
+bool tile_element_is_ghost(const rct_tile_element * element);
+bool tile_element_is_underground(rct_tile_element * tileElement);
 
 // ~Oli414: The banner functions should be part of banner.
 void tile_element_set_banner_index(rct_tile_element * tileElement, sint32 bannerIndex);
