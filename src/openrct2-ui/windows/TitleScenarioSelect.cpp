@@ -280,8 +280,24 @@ static void window_scenarioselect_mousedown(rct_window *w, rct_widgetindex widge
     }
 }
 
+static sint32 get_scenario_list_item_size()
+{
+    if (!gUseTrueTypeFont)
+        return 24;
+
+    // Scenario title
+    sint32 lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+
+    // 'Completed by' line
+    lineHeight += font_get_line_height(FONT_SPRITE_BASE_SMALL);
+
+    return lineHeight;
+}
+
 static void window_scenarioselect_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
+    const sint32 scenarioItemHeight = get_scenario_list_item_size();
+
     sint32 y = 0;
     for (const auto &listItem : _listItems)
     {
@@ -291,7 +307,7 @@ static void window_scenarioselect_scrollgetsize(rct_window *w, sint32 scrollInde
             y += 18;
             break;
         case LIST_ITEM_TYPE::SCENARIO:
-            y += 24;
+            y += scenarioItemHeight;
             break;
         }
     }
@@ -304,6 +320,8 @@ static void window_scenarioselect_scrollgetsize(rct_window *w, sint32 scrollInde
  */
 static void window_scenarioselect_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
+    const sint32 scenarioItemHeight = get_scenario_list_item_size();
+
     for (const auto &listItem : _listItems)
     {
         switch (listItem.type)
@@ -312,7 +330,7 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, sint32 scrollIn
             y -= 18;
             break;
         case LIST_ITEM_TYPE::SCENARIO:
-            y -= 24;
+            y -= scenarioItemHeight;
             if (y < 0 && !listItem.scenario.is_locked) {
                 audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
                 gFirstTimeSaving = true;
@@ -336,6 +354,8 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, sint32 scrollIn
  */
 static void window_scenarioselect_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
+    const sint32 scenarioItemHeight = get_scenario_list_item_size();
+
     bool originalShowLockedInformation = _showLockedInformation;
     _showLockedInformation = false;
     const scenario_index_entry *selected = nullptr;
@@ -347,7 +367,7 @@ static void window_scenarioselect_scrollmouseover(rct_window *w, sint32 scrollIn
             y -= 18;
             break;
         case LIST_ITEM_TYPE::SCENARIO:
-            y -= 24;
+            y -= scenarioItemHeight;
             if (y < 0) {
                 if (listItem.scenario.is_locked) {
                     _showLockedInformation = true;
@@ -494,6 +514,11 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
     rct_widget *listWidget = &w->widgets[WIDX_SCENARIOLIST];
     sint32 listWidth = listWidget->right - listWidget->left - 12;
 
+    const sint32 scenarioItemHeight = get_scenario_list_item_size();
+
+    // Scenario title
+    sint32 scenarioTitleHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+
     sint32 y = 0;
     for (const auto &listItem : _listItems)
     {
@@ -516,7 +541,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
             const scenario_index_entry *scenario = listItem.scenario.scenario;
             bool isHighlighted = w->highlighted_scenario == scenario;
             if (isHighlighted) {
-                gfx_filter_rect(dpi, 0, y, w->width, y + 23, PALETTE_DARKEN_1);
+                gfx_filter_rect(dpi, 0, y, w->width, y + scenarioItemHeight - 1, PALETTE_DARKEN_1);
             }
 
             bool isCompleted = scenario->highscore != nullptr;
@@ -535,23 +560,25 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
             gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, colour, gCommonFormatArgs);
 
             // Check if scenario is completed
-            if (isCompleted) {
+            if (isCompleted)
+            {
                 // Draw completion tick
                 gfx_draw_sprite(dpi, SPR_MENU_CHECKMARK, wide ? 500 : 395, y + 1, 0);
 
                 // Draw completion score
                 const utf8 *completedByName = "???";
-                if (!str_is_null_or_empty(scenario->highscore->name)) {
+                if (!str_is_null_or_empty(scenario->highscore->name))
+                {
                     completedByName = scenario->highscore->name;
                 }
                 safe_strcpy(buffer, completedByName, 64);
                 set_format_arg(0, rct_string_id, STR_COMPLETED_BY);
                 set_format_arg(2, rct_string_id, STR_STRING);
                 set_format_arg(4, char *, buffer);
-                gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, COLOUR_BLACK, gCommonFormatArgs);
+                gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + scenarioTitleHeight + 1, COLOUR_BLACK, gCommonFormatArgs);
             }
 
-            y += 24;
+            y += scenarioItemHeight;
             break;
         }
         }
