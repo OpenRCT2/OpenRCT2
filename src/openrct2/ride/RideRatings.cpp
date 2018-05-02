@@ -446,8 +446,8 @@ static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element *in
 
         case TILE_ELEMENT_TYPE_TRACK:
         {
-            sint32 elementsAreAt90DegAngle = (tileElement->GetDirection() ^ inputTileElement->GetDirection()) & 1;
-            if (elementsAreAt90DegAngle != 0)
+            bool elementsAreAt90DegAngle = ((tileElement->GetDirection() ^ inputTileElement->GetDirection()) & 1) != 0;
+            if (elementsAreAt90DegAngle)
             {
                 sint32 zDiff = (sint32)tileElement->base_height - (sint32)inputTileElement->base_height;
                 if (zDiff >= 0 && zDiff <= 16)
