@@ -174,7 +174,7 @@ sint32 park_calculate_size()
     tiles = 0;
     tile_element_iterator_begin(&it);
     do {
-        if (tile_element_get_type(it.element) == TILE_ELEMENT_TYPE_SURFACE) {
+        if (it.element->GetType() == TILE_ELEMENT_TYPE_SURFACE) {
             if (it.element->properties.surface.ownership & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED)) {
                 tiles++;
             }
@@ -730,7 +730,7 @@ void update_park_fences(sint32 x, sint32 y)
         rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
         // If an entrance element do not place flags around surface
         do {
-            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+            if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
             if (tileElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
@@ -879,7 +879,7 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
 
             rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
             do {
-                if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE) {
+                if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE) {
                     // Do not allow ownership of park entrance.
                     if (newOwnership == OWNERSHIP_OWNED || newOwnership == OWNERSHIP_AVAILABLE)
                         return 0;

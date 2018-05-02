@@ -614,7 +614,7 @@ static rct_tile_element * find_station_element(sint32 x, sint32 y, sint32 z, sin
     {
         if (z != tileElement->base_height)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
         if (tile_element_get_direction(tileElement) != direction)
             continue;
@@ -1658,7 +1658,7 @@ static money32 track_remove(uint8 type,
         if (tileElement->base_height * 8 != originZ)
             continue;
 
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         if ((tile_element_get_direction(tileElement)) != rotation)
@@ -1771,7 +1771,7 @@ static money32 track_remove(uint8 type,
             if (tileElement->base_height != z / 8)
                 continue;
 
-            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+            if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                 continue;
 
             if ((tile_element_get_direction(tileElement)) != rotation)
@@ -1985,7 +1985,7 @@ void game_command_set_brakes_speed(
     {
         if (tileElement->base_height * 8 != z)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
         if (track_element_get_type(tileElement) != trackType)
             continue;

@@ -706,7 +706,7 @@ bool staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z, r
         bool              widefound    = false;
         do
         {
-            if (tile_element_get_type(test_element) != TILE_ELEMENT_TYPE_PATH)
+            if (test_element->GetType() != TILE_ELEMENT_TYPE_PATH)
             {
                 continue;
             }
@@ -912,8 +912,8 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
     {
         if (tileElement->base_height != nextZ)
             continue;
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE ||
-            tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE ||
+            tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
             return 0xFF;
         }
@@ -928,8 +928,8 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
     {
         if (tileElement->base_height != nextZ)
             continue;
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE ||
-            tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE ||
+            tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
             return 0xFF;
         }

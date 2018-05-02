@@ -605,7 +605,7 @@ static void window_tile_inspector_select_element_from_list(rct_window *w, sint32
 
         // Get type of selected map element to select the correct page
         rct_tile_element *const tileElement = window_tile_inspector_get_selected_element(w);
-        page = (Math::Min<uint32>(tile_element_get_type(tileElement), TILE_ELEMENT_TYPE_CORRUPT) >> 2) + 1;
+        page = (Math::Min<uint32>(tileElement->GetType(), TILE_ELEMENT_TYPE_CORRUPT) >> 2) + 1;
     }
 
     window_tile_inspector_set_page(w, (TILE_INSPECTOR_PAGE)page);
@@ -1264,7 +1264,7 @@ static void window_tile_inspector_dropdown(rct_window *w, rct_widgetindex widget
 
     switch (w->page) {
     case TILE_INSPECTOR_PAGE_WALL:
-        openrct2_assert(tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_WALL, "Element is not a wall");
+        openrct2_assert(tileElement->GetType() == TILE_ELEMENT_TYPE_WALL, "Element is not a wall");
 
         switch (widgetIndex) {
         case WIDX_WALL_DROPDOWN_SLOPE_BUTTON:
@@ -2005,7 +2005,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     do {
-        sint32 type = tile_element_get_type(tileElement);
+        sint32 type = tileElement->GetType();
         const char * typeName = "";
         sint32 baseHeight = tileElement->base_height;
         sint32 clearanceHeight = tileElement->clearance_height;

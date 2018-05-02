@@ -240,7 +240,7 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex,
         {
             return MONEY32_UNDEFINED;
         }
-        switch (tile_element_get_type(tileElement))
+        switch (tileElement->GetType())
         {
         case TILE_ELEMENT_TYPE_PATH:
             if (footpath_element_is_sloped(tileElement))
@@ -454,7 +454,7 @@ sint32 tile_inspector_any_base_height_offset(sint32 x, sint32 y, sint16 elementI
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
         {
             uint8 entranceType = tileElement->properties.entrance.type;
             if (entranceType != ENTRANCE_TYPE_PARK_ENTRANCE)
@@ -622,7 +622,7 @@ sint32 tile_inspector_path_set_sloped(sint32 x, sint32 y, sint32 elementIndex, b
 {
     rct_tile_element * const pathElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (pathElement == nullptr || tile_element_get_type(pathElement) != TILE_ELEMENT_TYPE_PATH)
+    if (pathElement == nullptr || pathElement->GetType() != TILE_ELEMENT_TYPE_PATH)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -649,7 +649,7 @@ sint32 tile_inspector_path_toggle_edge(sint32 x, sint32 y, sint32 elementIndex, 
 {
     rct_tile_element * const pathElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (pathElement == nullptr || tile_element_get_type(pathElement) != TILE_ELEMENT_TYPE_PATH)
+    if (pathElement == nullptr || pathElement->GetType() != TILE_ELEMENT_TYPE_PATH)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -672,7 +672,7 @@ sint32 tile_inspector_entrance_make_usable(sint32 x, sint32 y, sint32 elementInd
 {
     rct_tile_element * const entranceElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (entranceElement == nullptr || tile_element_get_type(entranceElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+    if (entranceElement == nullptr || entranceElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
         return MONEY32_UNDEFINED;
 
     Ride * ride = get_ride(entranceElement->properties.entrance.ride_index);
@@ -708,7 +708,7 @@ sint32 tile_inspector_wall_set_slope(sint32 x, sint32 y, sint32 elementIndex, si
 {
     rct_tile_element * const wallElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (wallElement == nullptr || tile_element_get_type(wallElement) != TILE_ELEMENT_TYPE_WALL)
+    if (wallElement == nullptr || wallElement->GetType() != TILE_ELEMENT_TYPE_WALL)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -738,7 +738,7 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
     if (offset == 0)
         return 0;
 
-    if (trackElement == nullptr || tile_element_get_type(trackElement) != TILE_ELEMENT_TYPE_TRACK)
+    if (trackElement == nullptr || trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -812,7 +812,7 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
                 if (tileElement->base_height != elemZ / 8)
                     continue;
 
-                if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+                if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
 
                 if ((tile_element_get_direction(tileElement)) != rotation)
@@ -860,7 +860,7 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
 {
     rct_tile_element * const trackElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (trackElement == nullptr || tile_element_get_type(trackElement) != TILE_ELEMENT_TYPE_TRACK)
+    if (trackElement == nullptr || trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -945,7 +945,7 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
                 if (tileElement->base_height != elemZ / 8)
                     continue;
 
-                if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+                if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
 
                 if ((tile_element_get_direction(tileElement)) != rotation)
@@ -992,7 +992,7 @@ sint32 tile_inspector_scenery_set_quarter_location(sint32 x, sint32 y, sint32 el
 {
     rct_tile_element * const tileElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (tileElement == nullptr || tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+    if (tileElement == nullptr || tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -1019,7 +1019,7 @@ sint32 tile_inspector_scenery_set_quarter_collision(sint32 x, sint32 y, sint32 e
 {
     rct_tile_element * const tileElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (tileElement == nullptr || tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+    if (tileElement == nullptr || tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -1040,7 +1040,7 @@ sint32 tile_inspector_banner_toggle_blocking_edge(sint32 x, sint32 y, sint32 ele
 {
     rct_tile_element * const bannerElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (bannerElement == nullptr || tile_element_get_type(bannerElement) != TILE_ELEMENT_TYPE_BANNER)
+    if (bannerElement == nullptr || bannerElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -1060,7 +1060,7 @@ sint32 tile_inspector_corrupt_clamp(sint32 x, sint32 y, sint32 elementIndex, sin
 {
     rct_tile_element * const corruptElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (corruptElement == nullptr || tile_element_get_type(corruptElement) != TILE_ELEMENT_TYPE_CORRUPT)
+    if (corruptElement == nullptr || corruptElement->GetType() != TILE_ELEMENT_TYPE_CORRUPT)
         return MONEY32_UNDEFINED;
 
     if (tile_element_is_last_for_tile(corruptElement))

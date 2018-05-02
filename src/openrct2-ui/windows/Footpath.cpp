@@ -860,7 +860,7 @@ static void window_footpath_set_selection_start_bridge_at_point(sint32 screenX, 
 
     sint32 z = tileElement->base_height;
 
-    if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SURFACE)
+    if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
     {
         uint8 slope = tileElement->properties.surface.slope;
         if (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
@@ -949,7 +949,7 @@ static void window_footpath_start_bridge_at_point(sint32 screenX, sint32 screenY
         return;
     }
 
-    if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SURFACE)
+    if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
     {
         // If we start the path on a slope, the arrow is slightly raised, so we
         // expect the path to be slightly raised as well.
@@ -969,7 +969,7 @@ static void window_footpath_start_bridge_at_point(sint32 screenX, sint32 screenY
     else
     {
         z = tileElement->base_height;
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
             if (tileElement->properties.path.type & 4)
             {
@@ -1130,7 +1130,7 @@ static rct_tile_element * footpath_get_tile_element_to_remove()
     tileElement = map_get_first_element_at(x, y);
     do
     {
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
             if (tileElement->base_height == z)
             {

@@ -252,7 +252,7 @@ static void virtual_floor_get_tile_properties(sint16 x, sint16 y, sint16 height,
     rct_tile_element * tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
-        sint32 elementType = tile_element_get_type(tileElement);
+        sint32 elementType = tileElement->GetType();
 
         if (elementType == TILE_ELEMENT_TYPE_SURFACE)
         {

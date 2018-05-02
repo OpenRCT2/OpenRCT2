@@ -254,7 +254,7 @@ private:
         tile_element_iterator_begin(&it);
         while (tile_element_iterator_next(&it))
         {
-            if (tile_element_get_type(it.element) != TILE_ELEMENT_TYPE_TRACK)
+            if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
                 continue;
 
             if (track_element_get_ride_index(it.element) != _rideIndex)

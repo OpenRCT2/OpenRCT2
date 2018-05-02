@@ -486,7 +486,7 @@ private:
 
         while (tileIndex < maxTiles)
         {
-            switch (tile_element_get_type(tileElement)) {
+            switch (tileElement->GetType()) {
             case TILE_ELEMENT_TYPE_PATH:
             {
                 uint8 pathType = GetPathType(tileElement);
@@ -2430,7 +2430,7 @@ private:
             if (tileElement->base_height != 255)
             {
                 // This skips walls, which are fixed later.
-                switch (tile_element_get_type(tileElement))
+                switch (tileElement->GetType())
                 {
                 case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                     colour = RCT1::GetColour(scenery_small_get_primary_colour(tileElement));
@@ -2485,7 +2485,7 @@ private:
         rct_tile_element * tileElement = gTileElements;
         while (tileElement < gNextFreeTileElement)
         {
-            switch (tile_element_get_type(tileElement)) {
+            switch (tileElement->GetType()) {
             case TILE_ELEMENT_TYPE_PATH:
             {
                 // Type
@@ -2548,7 +2548,7 @@ private:
                 rct_tile_element * tileElement = map_get_first_element_at(x, y);
                 do
                 {
-                    if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_WALL)
+                    if (tileElement->GetType() == TILE_ELEMENT_TYPE_WALL)
                     {
                         rct_tile_element originalTileElement = *tileElement;
                         tile_element_remove(tileElement);
@@ -2629,7 +2629,7 @@ private:
                 rct_tile_element * tileElement = map_get_first_element_at(x, y);
                 do
                 {
-                    if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_BANNER)
+                    if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
                     {
                         uint8 index = tileElement->properties.banner.index;
                         rct_banner * src = &_s4.banners[index];
@@ -2669,7 +2669,7 @@ private:
         while (tile_element_iterator_next(&it))
         {
             rct_tile_element * element = it.element;
-            if (tile_element_get_type(element) == TILE_ELEMENT_TYPE_SURFACE)
+            if (element->GetType() == TILE_ELEMENT_TYPE_SURFACE)
             {
                 surface_set_terrain(element, RCT1::GetTerrain(surface_get_terrain(element)));
                 surface_set_terrain_edge(element, RCT1::GetTerrainEdge(surface_get_terrain_edge(element)));
@@ -2692,7 +2692,7 @@ private:
         {
             rct_tile_element * element = it.element;
 
-            if (tile_element_get_type(element) != TILE_ELEMENT_TYPE_ENTRANCE) continue;
+            if (element->GetType() != TILE_ELEMENT_TYPE_ENTRANCE) continue;
             if (element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) continue;
             if ((element->properties.entrance.index & 0x0F) != 0) continue;
 
@@ -2711,7 +2711,7 @@ private:
         while (tile_element_iterator_next(&it))
         {
             rct_tile_element * tileElement = it.element;
-            switch (tile_element_get_type(tileElement)) {
+            switch (tileElement->GetType()) {
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 tileElement->properties.scenery.type = _smallSceneryTypeToEntryMap[tileElement->properties.scenery.type];
                 break;
@@ -2804,7 +2804,7 @@ private:
                 rct_tile_element * tileElement = map_get_first_element_at(x, y);
                 do
                 {
-                    if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK)
+                    if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
                     {
                         // Lift hill tops are the only pieces present in RCT1 that can count as a block brake.
                         if (!track_element_is_lift_hill(tileElement))

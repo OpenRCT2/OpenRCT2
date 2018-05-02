@@ -304,7 +304,7 @@ static bool is_jumping_fountain(sint32 type, sint32 x, sint32 y, sint32 z)
     rct_tile_element * tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_PATH) continue;
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH) continue;
         if (tileElement->base_height != z) continue;
         if (footpath_element_path_scenery_is_ghost(tileElement)) continue;
         if (!footpath_element_has_path_scenery(tileElement)) continue;

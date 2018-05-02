@@ -168,7 +168,7 @@ rct_window * window_sign_open(rct_windownumber number)
 
     while (1)
     {
-        if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+        if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
             rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
             if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
@@ -235,7 +235,7 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
     case WIDX_SIGN_DEMOLISH:
         while (1)
         {
-            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+            if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
             {
                 rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
                 if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
@@ -437,7 +437,7 @@ rct_window * window_sign_small_open(rct_windownumber number){
     rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
     while (1){
-        if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_WALL) {
+        if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL) {
             rct_scenery_entry* scenery_entry = get_wall_entry(tile_element->properties.wall.type);
             if (scenery_entry->wall.scrolling_mode != 0xFF){
                 if (tile_element->properties.wall.banner_index == w->number)
@@ -500,7 +500,7 @@ static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex
         break;
     case WIDX_SIGN_DEMOLISH:
         while (1){
-            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_WALL) {
+            if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL) {
                 rct_scenery_entry* scenery_entry = get_wall_entry(tile_element->properties.wall.type);
                 if (scenery_entry->wall.scrolling_mode != 0xFF){
                     if (tile_element->properties.wall.banner_index == w->number)

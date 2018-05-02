@@ -65,11 +65,6 @@ uint8 rct_tile_element::GetSceneryQuadrant() const
     return (this->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
-sint32 tile_element_get_type(const rct_tile_element * element)
-{
-    return element->GetType();
-}
-
 sint32 tile_element_get_direction(const rct_tile_element * element)
 {
     return element->GetDirection();
@@ -91,7 +86,7 @@ bool tile_element_is_underground(rct_tile_element * tileElement)
         tileElement++;
         if (tile_element_is_last_for_tile(tileElement - 1))
             return false;
-    } while (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SURFACE);
+    } while (tileElement->GetType() != TILE_ELEMENT_TYPE_SURFACE);
     return true;
 }
 
@@ -104,7 +99,7 @@ sint32 tile_element_get_banner_index(rct_tile_element * tileElement)
 {
     rct_scenery_entry* sceneryEntry;
 
-    switch (tile_element_get_type(tileElement)) {
+    switch (tileElement->GetType()) {
     case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
         if (sceneryEntry->large_scenery.scrolling_mode == 0xFF)
@@ -126,7 +121,7 @@ sint32 tile_element_get_banner_index(rct_tile_element * tileElement)
 
 void tile_element_set_banner_index(rct_tile_element * tileElement, sint32 bannerIndex)
 {
-    switch (tile_element_get_type(tileElement))
+    switch (tileElement->GetType())
     {
     case TILE_ELEMENT_TYPE_WALL:
         tileElement->properties.wall.banner_index = (uint8)bannerIndex;
@@ -159,7 +154,7 @@ void tile_element_remove_banner_entry(rct_tile_element * tileElement)
 
 uint8 tile_element_get_ride_index(const rct_tile_element * tileElement)
 {
-    switch (tile_element_get_type(tileElement))
+    switch (tileElement->GetType())
     {
     case TILE_ELEMENT_TYPE_TRACK:
         return track_element_get_ride_index(tileElement);

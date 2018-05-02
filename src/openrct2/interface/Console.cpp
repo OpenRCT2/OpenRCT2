@@ -907,7 +907,7 @@ cc_remove_park_fences(InteractiveConsole & console, [[maybe_unused]] const utf8 
     tile_element_iterator_begin(&it);
     do
     {
-        if (tile_element_get_type(it.element) == TILE_ELEMENT_TYPE_SURFACE)
+        if (it.element->GetType() == TILE_ELEMENT_TYPE_SURFACE)
         {
             // Remove all park fence flags
             it.element->properties.surface.ownership &= 0xF0;

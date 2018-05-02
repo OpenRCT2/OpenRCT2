@@ -321,7 +321,7 @@ rct_tile_element * ride_get_station_start_track_element(Ride * ride, sint32 stat
     rct_tile_element * tileElement = map_get_first_element_at(x, y);
     do
     {
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK && z == tileElement->base_height)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK && z == tileElement->base_height)
             return tileElement;
 
     }
@@ -336,7 +336,7 @@ rct_tile_element * ride_get_station_exit_element(sint32 x, sint32 y, sint32 z)
     rct_tile_element * tileElement = map_get_first_element_at(x, y);
     do
     {
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE && z == tileElement->base_height)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE && z == tileElement->base_height)
             return tileElement;
     }
     while (!tile_element_is_last_for_tile(tileElement++));

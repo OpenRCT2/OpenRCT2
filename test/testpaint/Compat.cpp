@@ -127,8 +127,9 @@ bool tile_element_is_last_for_tile(const rct_tile_element *element) {
     return (element->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
-int tile_element_get_type(const rct_tile_element *element) {
-    return element->type & TILE_ELEMENT_TYPE_MASK;
+uint8 rct_tile_element::GetType() const
+{
+    return this->type & TILE_ELEMENT_TYPE_MASK;
 }
 
 int tile_element_get_direction(const rct_tile_element *element) {
