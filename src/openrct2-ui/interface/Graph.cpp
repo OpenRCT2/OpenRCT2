@@ -28,7 +28,7 @@ static void graph_draw_months_uint8(rct_drawpixelinfo *dpi, const uint8 *history
     x = baseX;
     y = baseY;
     for (i = count - 1; i >= 0; i--) {
-        if (history[i] != 0 && history[i] != 255 && yearOver32 % 4 == 0) {
+        if (history[i] != 255 && yearOver32 % 4 == 0) {
             // Draw month text
             set_format_arg(0, uint32, DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)]);
             gfx_draw_string_centred(dpi, STR_GRAPH_LABEL, x, y - 10, COLOUR_BLACK, gCommonFormatArgs);
@@ -49,7 +49,7 @@ static void graph_draw_line_a_uint8(rct_drawpixelinfo *dpi, const uint8 *history
     lastY = -1;
     x = baseX;
     for (i = count - 1; i >= 0; i--) {
-        if (history[i] != 0 && history[i] != 255) {
+        if (history[i] != 255) {
             y = baseY + ((255 - history[i]) * 100) / 256;
 
             if (lastX != -1) {
@@ -74,7 +74,7 @@ static void graph_draw_line_b_uint8(rct_drawpixelinfo *dpi, const uint8 *history
     lastY = -1;
     x = baseX;
     for (i = count - 1; i >= 0; i--) {
-        if (history[i] != 0 && history[i] != 255) {
+        if (history[i] != 255) {
             y = baseY + ((255 - history[i]) * 100) / 256;
 
             if (lastX != -1)
