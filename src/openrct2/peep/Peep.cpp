@@ -3270,6 +3270,17 @@ void rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & ti
                 return;
             }
 
+            if (type == PEEP_TYPE_STAFF && !GetNextIsSurface())
+            {
+                // Prevent staff from leaving the path on their own unless they're allowed to mow.
+                if (!((this->staff_orders & STAFF_ORDERS_MOWING) && this->staff_mowing_timeout >= 12))
+                {
+                    peep_return_to_centre_of_tile(this);
+                    return;
+                }
+            }
+
+            // The peep is on a surface and not on a path
             next_x      = actionX & 0xFFE0;
             next_y      = actionY & 0xFFE0;
             next_z      = tileElement->base_height;
