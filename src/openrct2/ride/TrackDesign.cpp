@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,6 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../Cheats.h"
+#include "../core/File.h"
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
@@ -90,21 +91,18 @@ rct_track_td6 * track_design_open(const utf8 * path)
 {
     log_verbose("track_design_open(\"%s\")", path);
 
-    uint8  * buffer;
-    size_t bufferLength;
-    if (readentirefile(path, (void **) &buffer, &bufferLength))
+    try
     {
-        if (!sawyercoding_validate_track_checksum(buffer, bufferLength))
+        auto buffer = File::ReadAllBytes(path);
+        if (!sawyercoding_validate_track_checksum(buffer.data(), buffer.size()))
         {
             log_error("Track checksum failed. %s", path);
-            free(buffer);
             return nullptr;
         }
 
         // Decode the track data
         uint8 * decoded = (uint8 *) malloc(0x10000);
-        size_t decodedLength = sawyercoding_decode_td6(buffer, decoded, bufferLength);
-        free(buffer);
+        size_t decodedLength = sawyercoding_decode_td6(buffer.data(), decoded, buffer.size());
         decoded = (uint8 *) realloc(decoded, decodedLength);
         if (decoded == nullptr)
         {
@@ -121,6 +119,10 @@ rct_track_td6 * track_design_open(const utf8 * path)
                 return td6;
             }
         }
+    }
+    catch (const std::exception& e)
+    {
+        log_error("Unable to load track design: %s", e.what());
     }
     return nullptr;
 }

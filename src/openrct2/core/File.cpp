@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -21,6 +21,7 @@
     #include <sys/stat.h>
 #endif
 
+#include <fstream>
 #include "File.h"
 #include "FileStream.hpp"
 #include "String.hpp"
@@ -50,12 +51,23 @@ namespace File
         return platform_file_move(srcPath.c_str(), dstPath.c_str());
     }
 
-    void * ReadAllBytes(const std::string &path, size_t * length)
+    std::vector<uint8> ReadAllBytes(const std::string_view& path)
     {
-        void * result = nullptr;
+        std::vector<uint8> result;
 
-        FileStream fs = FileStream(path, FILE_MODE_OPEN);
-        uint64 fsize = fs.GetLength();
+#if defined(_WIN32) && !defined(__MINGW32__)
+        auto pathW = String::ToUtf16(path.data());
+        std::ifstream fs(pathW, std::ios::in | std::ios::binary);
+#else
+        std::ifstream fs(path.data(), std::ios::in | std::ios::binary);
+#endif
+        if (!fs.is_open())
+        {
+            throw IOException("Unable to open " + std::string(path.data()));
+        }
+
+        fs.seekg(0, std::ios::end);
+        auto fsize = (size_t)fs.tellg();
         if (fsize > SIZE_MAX)
         {
             std::string message = String::StdFormat("'%s' exceeds maximum length of %lld bytes.", SIZE_MAX);
@@ -63,9 +75,11 @@ namespace File
         }
         else
         {
-            result = fs.ReadArray<uint8>((size_t)fsize);
+            result.resize(fsize);
+            fs.seekg(0);
+            fs.read((char *)result.data(), result.size());
+            fs.exceptions(fs.failbit);
         }
-        *length = (size_t)fsize;
         return result;
     }
 
@@ -78,12 +92,11 @@ namespace File
     std::vector<std::string> ReadAllLines(const std::string &path)
     {
         std::vector<std::string> lines;
-        size_t length;
-        char * data = (char *)ReadAllBytes(path, &length);
-        char * lineStart = data;
-        char * ch = data;
+        auto data = ReadAllBytes(path);
+        auto lineStart = (const char *)data.data();
+        auto ch = lineStart;
         char lastC = 0;
-        for (size_t i = 0; i < length; i++)
+        for (size_t i = 0; i < data.size(); i++)
         {
             char c = *ch;
             if (c == '\n' && lastC == '\r')
@@ -102,8 +115,6 @@ namespace File
 
         // Last line
         lines.emplace_back(lineStart, ch - lineStart);
-
-        Memory::Free(data);
         return lines;
     }
 
@@ -133,19 +144,6 @@ namespace File
         return lastModified; 
     }
 } // namespace File
-
-bool readentirefile(const utf8 * path, void * * outBuffer, size_t * outLength)
-{
-    try
-    {
-        *outBuffer = File::ReadAllBytes(String::ToStd(path), outLength);
-        return true;
-    }
-    catch (const std::exception &)
-    {
-        return false;
-    }
-}
 
 bool writeentirefile(const utf8 * path, const void * buffer, size_t length)
 {
