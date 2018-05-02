@@ -1836,19 +1836,19 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
         bool cover_found = false;
         do
         {
-            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+            if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
             {
                 cover_found = true;
                 break;
             }
 
-            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_PATH)
+            if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
             {
                 cover_found = true;
                 break;
             }
 
-            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+            if (tile_element->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
 
             rct_scenery_entry * scenery = get_small_scenery_entry(tile_element->properties.scenery.type);
@@ -4684,7 +4684,7 @@ static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ &location)
     rct_tile_element * tileElement = map_get_first_element_at(location.x, location.y);
     do
     {
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SURFACE)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
         {
             sint32 waterZ = surface_get_water_height(tileElement) * 2;
             if (location.z != waterZ)

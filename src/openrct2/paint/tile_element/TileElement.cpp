@@ -218,7 +218,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
 
     element--;
 
-    if (tile_element_get_type(element) == TILE_ELEMENT_TYPE_SURFACE &&
+    if (element->GetType() == TILE_ELEMENT_TYPE_SURFACE &&
         (surface_get_water_height(element) > 0))
     {
         max_height = surface_get_water_height(element) * 2;
@@ -267,7 +267,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
                 {
                     break;
                 }
-                switch (tile_element_get_type(tile_element_sub_iterator))
+                switch (tile_element_sub_iterator->GetType())
                 {
                 case TILE_ELEMENT_TYPE_PATH:
                     session->PathElementOnSameHeight = tile_element_sub_iterator;
@@ -291,7 +291,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
         LocationXY16 dword_9DE574 = session->MapPosition;
         session->CurrentlyDrawnItem = tile_element;
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
-        switch (tile_element_get_type(tile_element))
+        switch (tile_element->GetType())
         {
         case TILE_ELEMENT_TYPE_SURFACE:
             surface_paint(session, direction, height, tile_element);
@@ -341,7 +341,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
         return;
     }
 
-    if (tile_element_get_type(tile_element - 1) == TILE_ELEMENT_TYPE_SURFACE) {
+    if ((tile_element - 1)->GetType() == TILE_ELEMENT_TYPE_SURFACE) {
         return;
     }
 

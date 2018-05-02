@@ -80,7 +80,7 @@ static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 qu
     bool sceneryFound = false;
     rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             continue;
         if ((tileElement->type >> 6) != quadrant)
             continue;
@@ -494,7 +494,7 @@ void game_command_set_scenery_colour(
  */
 sint32 map_place_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price)
 {
-    if (tile_element_get_type(*tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+    if ((*tile_element)->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return 1;
 
     if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
@@ -531,7 +531,7 @@ sint32 map_place_scenery_clear_func(rct_tile_element** tile_element, sint32 x, s
  */
 sint32 map_place_non_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price)
 {
-    if (tile_element_get_type(*tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+    if ((*tile_element)->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return 1;
 
     rct_scenery_entry* scenery = get_small_scenery_entry((*tile_element)->properties.scenery.type);

@@ -186,7 +186,7 @@ static bool WallCheckObstruction(rct_scenery_entry * wall,
     rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
     do
     {
-        sint32 elementType = tile_element_get_type(tileElement);
+        sint32 elementType = tileElement->GetType();
         if (elementType == TILE_ELEMENT_TYPE_SURFACE) continue;
         if (z0 >= tileElement->clearance_height) continue;
         if (z1 <= tileElement->base_height) continue;
@@ -582,7 +582,7 @@ static rct_tile_element * GetFirstWallElementAt(sint32 x, sint32 y, uint8 baseZ,
     rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
     do
     {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL) continue;
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL) continue;
         if (tileElement->base_height != baseZ) continue;
         if ((tile_element_get_direction(tileElement)) != direction) continue;
         if (tile_element_is_ghost(tileElement) != isGhost) continue;
@@ -753,7 +753,7 @@ repeat:
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
         if (z0 >= tileElement->clearance_height)
             continue;
@@ -788,7 +788,7 @@ void wall_remove_intersecting_walls(sint32 x, sint32 y, sint32 z0, sint32 z1, si
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
 
         if (tileElement->clearance_height <= z0 || tileElement->base_height >= z1)

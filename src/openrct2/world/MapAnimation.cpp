@@ -110,7 +110,7 @@ static bool map_animation_invalidate_ride_entrance(sint32 x, sint32 y, sint32 ba
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
         if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
             continue;
@@ -138,7 +138,7 @@ static bool map_animation_invalidate_queue_banner(sint32 x, sint32 y, sint32 bas
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
         if (!(tileElement->flags & 1))
             continue;
@@ -171,7 +171,7 @@ static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 ba
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             continue;
         if (tileElement->flags & (1 << 4))
             continue;
@@ -233,7 +233,7 @@ static bool map_animation_invalidate_park_entrance(sint32 x, sint32 y, sint32 ba
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
         if (tileElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
             continue;
@@ -260,7 +260,7 @@ static bool map_animation_invalidate_track_waterfall(sint32 x, sint32 y, sint32 
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         if (track_element_get_type(tileElement) == TRACK_ELEM_WATERFALL) {
@@ -285,7 +285,7 @@ static bool map_animation_invalidate_track_rapids(sint32 x, sint32 y, sint32 bas
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         if (track_element_get_type(tileElement) == TRACK_ELEM_RAPIDS) {
@@ -312,7 +312,7 @@ static bool map_animation_invalidate_track_onridephoto(sint32 x, sint32 y, sint3
             break;
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         if (track_element_get_type(tileElement) == TRACK_ELEM_ON_RIDE_PHOTO) {
@@ -344,7 +344,7 @@ static bool map_animation_invalidate_track_whirlpool(sint32 x, sint32 y, sint32 
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         if (track_element_get_type(tileElement) == TRACK_ELEM_WHIRLPOOL) {
@@ -369,7 +369,7 @@ static bool map_animation_invalidate_track_spinningtunnel(sint32 x, sint32 y, si
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         if (track_element_get_type(tileElement) == TRACK_ELEM_SPINNING_TUNNEL) {
@@ -403,7 +403,7 @@ static bool map_animation_invalidate_banner(sint32 x, sint32 y, sint32 baseZ)
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_BANNER)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
             continue;
 
         baseZ = tileElement->base_height * 8;
@@ -428,7 +428,7 @@ static bool map_animation_invalidate_large_scenery(sint32 x, sint32 y, sint32 ba
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_LARGE_SCENERY)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
             continue;
 
         sceneryEntry = get_large_scenery_entry(tileElement->properties.scenery.type & 0x3FF);
@@ -459,7 +459,7 @@ static bool map_animation_invalidate_wall_door(sint32 x, sint32 y, sint32 baseZ)
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
 
         sceneryEntry = get_wall_entry(tileElement->properties.scenery.type);
@@ -511,7 +511,7 @@ static bool map_animation_invalidate_wall(sint32 x, sint32 y, sint32 baseZ)
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
 
         sceneryEntry = get_wall_entry(tileElement->properties.scenery.type);

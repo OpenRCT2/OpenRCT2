@@ -1594,7 +1594,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
 
                 do
                 {
-                    if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_TRACK)
+                    if (tile_element->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     {
                         continue;
                     }

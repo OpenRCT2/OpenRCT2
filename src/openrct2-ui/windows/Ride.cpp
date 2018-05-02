@@ -1456,7 +1456,7 @@ static void window_ride_update_overall_view(uint8 ride_index) {
     sint32 maxx = std::numeric_limits<sint32>::min(), maxy = std::numeric_limits<sint32>::min(), maxz = std::numeric_limits<sint32>::min();
 
     while (tile_element_iterator_next(&it)) {
-        if (tile_element_get_type(it.element) != TILE_ELEMENT_TYPE_TRACK)
+        if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         if (track_element_get_ride_index(it.element) != ride_index)
@@ -1629,7 +1629,7 @@ rct_window *window_ride_open_track(rct_tile_element *tileElement)
 {
     sint32 rideIndex = track_element_get_ride_index(tileElement);
     if (
-        (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE) ||
+        (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE) ||
         (TrackSequenceProperties[track_element_get_type(tileElement)][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
     ) {
         // Open ride window in station view

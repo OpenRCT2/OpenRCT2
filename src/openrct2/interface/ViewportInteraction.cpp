@@ -218,7 +218,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
     case VIEWPORT_INTERACTION_ITEM_RIDE:
         if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
             return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
             return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
         ride = get_ride(tile_element_get_ride_index(tileElement));
@@ -227,7 +227,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
 
         set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
 
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE) {
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE) {
             rct_string_id stringId;
             if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
                 if (ride->num_stations > 1) {
@@ -335,7 +335,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             break;
 
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             break;
 
         set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
@@ -450,7 +450,7 @@ static void viewport_interaction_remove_footpath(rct_tile_element *tileElement, 
 
     tileElement2 = map_get_first_element_at(x / 32, y / 32);
     do {
-        if (tile_element_get_type(tileElement2) == TILE_ELEMENT_TYPE_PATH && tileElement2->base_height == z) {
+        if (tileElement2->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement2->base_height == z) {
             gGameCommandErrorTitle = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
             footpath_remove(x, y, z, GAME_COMMAND_FLAG_APPLY);
             break;

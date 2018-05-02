@@ -649,7 +649,7 @@ static bool litter_can_be_at(sint32 x, sint32 y, sint32 z)
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
         sint32 pathZ = tileElement->base_height * 8;

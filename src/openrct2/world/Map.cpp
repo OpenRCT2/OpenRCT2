@@ -265,7 +265,7 @@ rct_tile_element * map_get_surface_element_at(sint32 x, sint32 y)
         return nullptr;
 
     // Find the first surface element
-    while (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SURFACE) {
+    while (tileElement->GetType() != TILE_ELEMENT_TYPE_SURFACE) {
         if (tile_element_is_last_for_tile(tileElement))
             return nullptr;
 
@@ -290,7 +290,7 @@ rct_tile_element* map_get_path_element_at(sint32 x, sint32 y, sint32 z){
     do {
         if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
         if (tileElement->base_height != z)
             continue;
@@ -309,7 +309,7 @@ rct_tile_element* map_get_banner_element_at(sint32 x, sint32 y, sint32 z, uint8 
 
     // Find the banner element at known z and position
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_BANNER)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
             continue;
         if (tileElement->base_height != z)
             continue;
@@ -656,7 +656,7 @@ bool map_coord_is_connected(sint32 x, sint32 y, sint32 z, uint8 faceDirection)
     rct_tile_element *tileElement = map_get_first_element_at(x, y);
 
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
         rct_tile_element_path_properties props = tileElement->properties.path;
@@ -847,7 +847,7 @@ void game_command_remove_large_scenery(
         return;
     }
     do {
-        if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_LARGE_SCENERY)
+        if (tile_element->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
             continue;
 
         if (tile_element->base_height != base_height)
@@ -924,7 +924,7 @@ void game_command_remove_large_scenery(
         element_found = false;
         do
         {
-            if (tile_element_get_type(sceneryElement) != TILE_ELEMENT_TYPE_LARGE_SCENERY)
+            if (sceneryElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
                 continue;
 
             if (tile_element_get_direction(sceneryElement) != tile_element_direction)
@@ -1074,7 +1074,7 @@ static money32 map_clear_scenery_from_tile(sint32 x, sint32 y, sint32 clear, sin
 restart_from_beginning:
     tileElement = map_get_first_element_at(x, y);
     do {
-        type = tile_element_get_type(tileElement);
+        type = tileElement->GetType();
         switch (type) {
         case TILE_ELEMENT_TYPE_PATH:
             if (clear & (1 << 2)) {
@@ -1160,7 +1160,7 @@ static void map_reset_clear_large_scenery_flag(){
         for (sint32 x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++) {
             tileElement = map_get_first_element_at(x, y);
             do {
-                if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_LARGE_SCENERY) {
+                if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY) {
                     tileElement->flags &= ~(1 << 6);
                 }
             } while (!tile_element_is_last_for_tile(tileElement++));
@@ -1413,10 +1413,10 @@ static sint32 map_set_land_height_clear_func(
     [[maybe_unused]] uint8     flags,
     [[maybe_unused]] money32 * price)
 {
-    if (tile_element_get_type(*tile_element) == TILE_ELEMENT_TYPE_SURFACE)
+    if ((*tile_element)->GetType() == TILE_ELEMENT_TYPE_SURFACE)
         return 0;
 
-    if (tile_element_get_type(*tile_element) == TILE_ELEMENT_TYPE_SMALL_SCENERY)
+    if ((*tile_element)->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return 0;
 
     return 1;
@@ -1526,7 +1526,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
         //Check for obstructing scenery
         tileElement = map_get_first_element_at(x / 32, y / 32);
         do {
-            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+            if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
             if (height > tileElement->clearance_height)
                 continue;
@@ -1550,7 +1550,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
         tileElement = map_get_first_element_at(x / 32, y / 32);
         do
         {
-            if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK)
+            if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
             {
                 sint32 rideIndex = track_element_get_ride_index(tileElement);
                 Ride * ride = get_ride(rideIndex);
@@ -1620,7 +1620,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
     if (!gCheatsDisableClearanceChecks) {
         tileElement = map_get_first_element_at(x / 32, y / 32);
         do {
-            sint32 elementType = tile_element_get_type(tileElement);
+            sint32 elementType = tileElement->GetType();
 
             if (elementType == TILE_ELEMENT_TYPE_WALL)
                 continue;
@@ -2933,7 +2933,7 @@ void map_remove_all_rides()
 
     tile_element_iterator_begin(&it);
     do {
-        switch (tile_element_get_type(it.element)) {
+        switch (it.element->GetType()) {
         case TILE_ELEMENT_TYPE_PATH:
             if (footpath_element_is_queue(it.element))
             {
@@ -3169,7 +3169,7 @@ void map_obstruction_set_error_text(rct_tile_element *tileElement)
     rct_scenery_entry *sceneryEntry;
 
     errorStringId = STR_OBJECT_IN_THE_WAY;
-    switch (tile_element_get_type(tileElement)) {
+    switch (tileElement->GetType()) {
     case TILE_ELEMENT_TYPE_SURFACE:
         errorStringId = STR_RAISE_OR_LOWER_LAND_FIRST;
         break;
@@ -3239,7 +3239,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
     }
     rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
     do {
-        if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SURFACE) {
+        if (tile_element->GetType() != TILE_ELEMENT_TYPE_SURFACE) {
             if (zLow < tile_element->clearance_height && zHigh > tile_element->base_height && !(tile_element->flags & TILE_ELEMENT_FLAG_GHOST)) {
                 if (tile_element->flags & (bl & 0x0F)) {
                     goto loc_68BABC;
@@ -3266,7 +3266,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
         }
 
         // Only allow building crossings directly on a flat surface tile.
-        if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_SURFACE &&
+        if (tile_element->GetType() == TILE_ELEMENT_TYPE_SURFACE &&
             (tile_element->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK) == TILE_ELEMENT_SLOPE_FLAT &&
             tile_element->base_height == zLow)
         {
@@ -3321,7 +3321,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
                 // Crossing mode 1: building track over path
                 if (crossingMode == 1 &&
                     canBuildCrossing &&
-                    tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_PATH &&
+                    tile_element->GetType() == TILE_ELEMENT_TYPE_PATH &&
                     tile_element->base_height == zLow &&
                     !footpath_element_is_queue(tile_element) &&
                     !footpath_element_is_sloped(tile_element))
@@ -3331,7 +3331,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
                 // Crossing mode 2: building path over track
                 else if (crossingMode == 2 &&
                      canBuildCrossing &&
-                     tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_TRACK &&
+                     tile_element->GetType() == TILE_ELEMENT_TYPE_TRACK &&
                      tile_element->base_height == zLow &&
                      track_element_get_type(tile_element) == TRACK_ELEM_FLAT)
                 {
@@ -3463,7 +3463,7 @@ static void map_update_grass_length(sint32 x, sint32 y, rct_tile_element *tileEl
             }
         } else {
             tileElementAbove++;
-            if (tile_element_get_type(tileElementAbove) == TILE_ELEMENT_TYPE_WALL)
+            if (tileElementAbove->GetType() == TILE_ELEMENT_TYPE_WALL)
                 continue;
             // Grass should not be affected by ghost elements.
             if (tile_element_is_ghost(tileElementAbove))
@@ -3643,7 +3643,7 @@ void map_extend_boundary_surface()
 static void clear_element_at(sint32 x, sint32 y, rct_tile_element **elementPtr)
 {
     rct_tile_element *element = *elementPtr;
-    switch (tile_element_get_type(element)) {
+    switch (element->GetType()) {
     case TILE_ELEMENT_TYPE_SURFACE:
         element->base_height = 2;
         element->clearance_height = 2;
@@ -3753,7 +3753,7 @@ rct_tile_element *map_get_large_scenery_segment(sint32 x, sint32 y, sint32 z, si
         return nullptr;
     }
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_LARGE_SCENERY)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
             continue;
         if (tileElement->base_height != z)
             continue;
@@ -3774,7 +3774,7 @@ rct_tile_element * map_get_park_entrance_element_at(sint32 x, sint32 y, sint32 z
     {
         do
         {
-            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+            if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
             if (tileElement->base_height != z)
@@ -3800,7 +3800,7 @@ rct_tile_element * map_get_ride_entrance_element_at(sint32 x, sint32 y, sint32 z
     {
         do
         {
-            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+            if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
             if (tileElement->base_height != z)
@@ -3826,7 +3826,7 @@ rct_tile_element * map_get_ride_exit_element_at(sint32 x, sint32 y, sint32 z, bo
     {
         do
         {
-            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+            if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
             if (tileElement->base_height != z)
@@ -3852,7 +3852,7 @@ rct_tile_element *map_get_small_scenery_element_at(sint32 x, sint32 y, sint32 z,
     {
         do
         {
-            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+            if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
             if (tileElement->type >> 6 != quadrant)
                 continue;
@@ -4133,11 +4133,11 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
         if (base_z < tileElement->base_height)
             continue;
 
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH ||
-            tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH ||
+            tileElement->GetType() == TILE_ELEMENT_TYPE_WALL)
             continue;
 
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             return true;
 
         rct_scenery_entry* scenery = get_small_scenery_entry(tileElement->properties.scenery.type);
@@ -4187,7 +4187,7 @@ void game_command_set_sign_style(
         rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
         bool wall_found = false;
         do{
-            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_WALL)
+            if (tile_element->GetType() != TILE_ELEMENT_TYPE_WALL)
                 continue;
 
             rct_scenery_entry* scenery_entry = get_wall_entry(tile_element->properties.wall.type);
@@ -4214,7 +4214,7 @@ void game_command_set_sign_style(
         map_invalidate_tile(x, y, tile_element->base_height * 8, tile_element->clearance_height * 8);
     } else { // large sign
         rct_tile_element *tileElement = banner_get_tile_element(bannerId);
-        if (tileElement == nullptr || tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_LARGE_SCENERY) {
+        if (tileElement == nullptr || tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY) {
             gGameCommandErrorText = STR_ERR_CANT_SET_BANNER_TEXT;
             *ebx = MONEY32_UNDEFINED;
             return;
@@ -4417,7 +4417,7 @@ rct_tile_element *map_get_track_element_at(sint32 x, sint32 y, sint32 z)
 {
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK) continue;
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK) continue;
         if (tileElement->base_height != z) continue;
 
         return tileElement;
@@ -4437,7 +4437,7 @@ rct_tile_element *map_get_track_element_at_of_type(sint32 x, sint32 y, sint32 z,
 {
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK) continue;
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK) continue;
         if (tileElement->base_height != z) continue;
         if (track_element_get_type(tileElement) != trackType) continue;
 
@@ -4460,7 +4460,7 @@ rct_tile_element *map_get_track_element_at_of_type_seq(sint32 x, sint32 y, sint3
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
         if (tileElement == nullptr) break;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK) continue;
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK) continue;
         if (tileElement->base_height != z) continue;
         if (track_element_get_type(tileElement) != trackType) continue;
         if (tile_element_get_track_sequence(tileElement) != sequence) continue;
@@ -4482,7 +4482,7 @@ rct_tile_element *map_get_track_element_at_of_type_seq(sint32 x, sint32 y, sint3
 rct_tile_element *map_get_track_element_at_of_type_from_ride(sint32 x, sint32 y, sint32 z, sint32 trackType, sint32 rideIndex) {
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK) continue;
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK) continue;
         if (tileElement->base_height != z) continue;
         if (track_element_get_ride_index(tileElement) != rideIndex) continue;
         if (track_element_get_type(tileElement) != trackType) continue;
@@ -4503,7 +4503,7 @@ rct_tile_element *map_get_track_element_at_of_type_from_ride(sint32 x, sint32 y,
 rct_tile_element *map_get_track_element_at_from_ride(sint32 x, sint32 y, sint32 z, sint32 rideIndex) {
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK) continue;
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK) continue;
         if (tileElement->base_height != z) continue;
         if (track_element_get_ride_index(tileElement) != rideIndex) continue;
 
@@ -4525,7 +4525,7 @@ rct_tile_element *map_get_track_element_at_with_direction_from_ride(sint32 x, si
 {
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK) continue;
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK) continue;
         if (tileElement->base_height != z) continue;
         if (track_element_get_ride_index(tileElement) != rideIndex) continue;
         if (tile_element_get_direction(tileElement) != direction) continue;
@@ -4562,7 +4562,7 @@ rct_tile_element *map_get_wall_element_at(sint32 x, sint32 y, sint32 z, sint32 d
 {
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
         if (tileElement->base_height != z)
             continue;
@@ -4598,7 +4598,7 @@ uint16 check_max_allowable_land_rights_for_tile(uint8 x, uint8 y, uint8 base_z)
 
     do
     {
-        sint32 type = tile_element_get_type(tileElement);
+        sint32 type = tileElement->GetType();
         if (type == TILE_ELEMENT_TYPE_PATH ||
             (type == TILE_ELEMENT_TYPE_ENTRANCE && tileElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE))
         {

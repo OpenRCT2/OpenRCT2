@@ -1291,7 +1291,7 @@ static void window_map_set_peep_spawn_tool_update(sint32 x, sint32 y)
         return;
 
     mapZ = tileElement->base_height * 8;
-    if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SURFACE) {
+    if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE) {
         if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
             mapZ += 16;
         if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
@@ -1569,7 +1569,7 @@ static uint16 map_window_get_pixel_colour_peep(CoordsXY c)
 
     const sint32 maxSupportedTileElementType = (sint32)Util::CountOf(ElementTypeAddColour);
     while (!tile_element_is_last_for_tile(tileElement++)) {
-        sint32 tileElementType = tile_element_get_type(tileElement) >> 2;
+        sint32 tileElementType = tileElement->GetType() >> 2;
         if (tileElementType >= maxSupportedTileElementType) {
             tileElementType = TILE_ELEMENT_TYPE_CORRUPT >> 2;
         }
@@ -1589,7 +1589,7 @@ static uint16 map_window_get_pixel_colour_ride(CoordsXY c)
     // as an improvement we could use first_element to show underground stuff?
     rct_tile_element * tileElement = map_get_surface_element_at(c);
     do {
-        switch (tile_element_get_type(tileElement)) {
+        switch (tileElement->GetType()) {
         case TILE_ELEMENT_TYPE_SURFACE:
             if (surface_get_water_height(tileElement) > 0)
                 // Why is this a different water colour as above (195)?

@@ -89,7 +89,7 @@ static void cheat_water_plants()
 
     tile_element_iterator_begin(&it);
     do {
-        if (tile_element_get_type(it.element) == TILE_ELEMENT_TYPE_SMALL_SCENERY) {
+        if (it.element->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY) {
             it.element->properties.scenery.age = 0;
         }
     } while (tile_element_iterator_next(&it));
@@ -103,7 +103,7 @@ static void cheat_fix_vandalism()
 
     tile_element_iterator_begin(&it);
     do {
-        if (tile_element_get_type(it.element) != TILE_ELEMENT_TYPE_PATH)
+        if (it.element->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
         if (!footpath_element_has_path_scenery(it.element))
@@ -131,7 +131,7 @@ static void cheat_remove_litter()
 
     tile_element_iterator_begin(&it);
     do {
-        if (tile_element_get_type(it.element) != TILE_ELEMENT_TYPE_PATH)
+        if (it.element->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
         if (!footpath_element_has_path_scenery(it.element))

@@ -201,7 +201,7 @@ static void ride_ratings_update_state_2()
 
     rct_tile_element *tileElement = map_get_first_element_at(x, y);
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
         if (tileElement->base_height != z)
             continue;
@@ -299,7 +299,7 @@ static void ride_ratings_update_state_5()
 
     rct_tile_element *tileElement = map_get_first_element_at(x, y);
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
         if (tileElement->base_height != z)
             continue;
@@ -395,7 +395,7 @@ static void ride_ratings_score_close_proximity_in_direction(rct_tile_element *in
 
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        switch (tile_element_get_type(tileElement)) {
+        switch (tileElement->GetType()) {
         case TILE_ELEMENT_TYPE_SURFACE:
             if (gRideRatingsCalcData.proximity_base_height <= inputTileElement->base_height) {
                 if (inputTileElement->clearance_height <= tileElement->base_height) {
@@ -434,7 +434,7 @@ static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element *in
 {
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        switch (tile_element_get_type(tileElement)) {
+        switch (tileElement->GetType()) {
         case TILE_ELEMENT_TYPE_PATH:
         {
             sint32 zDiff = (sint32)tileElement->base_height - (sint32)inputTileElement->base_height;
@@ -500,7 +500,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElemen
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
         sint32 waterHeight;
-        switch (tile_element_get_type(tileElement)) {
+        switch (tileElement->GetType()) {
         case TILE_ELEMENT_TYPE_SURFACE:
             gRideRatingsCalcData.proximity_base_height = tileElement->base_height;
             if (tileElement->base_height * 8 == gRideRatingsCalcData.proximity_z) {
@@ -614,7 +614,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElemen
                 }
             }
         } break;
-        } // switch tile_element_get_type
+        } // switch tileElement->GetType
     } while (!tile_element_is_last_for_tile(tileElement++));
 
     uint8 direction = tile_element_get_direction(inputTileElement);
@@ -1307,7 +1307,7 @@ static sint32 ride_ratings_get_scenery_score(Ride *ride)
                 if (tileElement->flags & (1 << 4))
                     continue;
 
-                sint32 type = tile_element_get_type(tileElement);
+                sint32 type = tileElement->GetType();
                 if (type == TILE_ELEMENT_TYPE_SMALL_SCENERY || type == TILE_ELEMENT_TYPE_LARGE_SCENERY)
                     numSceneryItems++;
             } while (!tile_element_is_last_for_tile(tileElement++));

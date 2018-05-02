@@ -206,7 +206,7 @@ static sint32 tile_element_get_total_element_count(rct_tile_element *tileElement
     rct_scenery_entry *sceneryEntry;
     rct_large_scenery_tile *tile;
 
-    switch (tile_element_get_type(tileElement)) {
+    switch (tileElement->GetType()) {
     case TILE_ELEMENT_TYPE_PATH:
     case TILE_ELEMENT_TYPE_SMALL_SCENERY:
     case TILE_ELEMENT_TYPE_WALL:
@@ -563,7 +563,7 @@ static void track_design_save_remove_tile_element(sint32 interactionType, sint32
 
 static bool track_design_save_should_select_scenery_around(sint32 rideIndex, rct_tile_element *tileElement)
 {
-    switch (tile_element_get_type(tileElement)) {
+    switch (tileElement->GetType()) {
     case TILE_ELEMENT_TYPE_PATH:
         if ((tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) && tileElement->properties.path.addition_status == rideIndex)
             return true;
@@ -593,7 +593,7 @@ static void track_design_save_select_nearby_scenery_for_tile(sint32 rideIndex, s
             tileElement = map_get_first_element_at(x, y);
             do {
                 sint32 interactionType = VIEWPORT_INTERACTION_ITEM_NONE;
-                switch (tile_element_get_type(tileElement)) {
+                switch (tileElement->GetType()) {
                 case TILE_ELEMENT_TYPE_PATH:
                     if (!(tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE))
                         interactionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
@@ -798,7 +798,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
         for (startX = 0; startX < 8192; startX += 32) {
             tileElement = map_get_first_element_at(startX >> 5, startY >> 5);
             do {
-                if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+                if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
                 if (track_element_get_ride_index(tileElement) == rideIndex){
                     mapFound = true;
@@ -832,7 +832,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
         for (; x < 8192; x += 32) {
             tileElement = map_get_first_element_at(x / 32, y / 32);
             do {
-                if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK) continue;
+                if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK) continue;
                 if (track_element_get_ride_index(tileElement) != rideIndex) continue;
 
                 maze->maze_entry = track_element_get_maze_entry(tileElement);
@@ -866,7 +866,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 
     tileElement = map_get_first_element_at(location.x, location.y);
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE) continue;
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE) continue;
         if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE) continue;
         if (tileElement->properties.entrance.ride_index == rideIndex) break;
     } while (!tile_element_is_last_for_tile(tileElement++));
@@ -892,7 +892,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     y = location.y * 32;
     tileElement = map_get_first_element_at(location.x, location.y);
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE) continue;
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE) continue;
         if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_EXIT) continue;
         if (tileElement->properties.entrance.ride_index == rideIndex) break;
     } while (!tile_element_is_last_for_tile(tileElement++));
@@ -1068,7 +1068,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 
             rct_tile_element *tile_element = map_get_first_element_at(x >> 5, y >> 5);
             do {
-                if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_ENTRANCE) continue;
+                if (tile_element->GetType() != TILE_ELEMENT_TYPE_ENTRANCE) continue;
                 if (tile_element->base_height == z) break;
             } while (!tile_element_is_last_for_tile(tile_element++));
             // Add something that stops this from walking off the end

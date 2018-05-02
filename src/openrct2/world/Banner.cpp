@@ -54,7 +54,7 @@ static sint32 banner_get_ride_index_at(sint32 x, sint32 y, sint32 z)
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         rideIndex = track_element_get_ride_index(tileElement);
@@ -150,7 +150,7 @@ static money32 BannerSetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 direc
         bool found = false;
         do
         {
-            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_BANNER)
+            if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
                 continue;
 
             if (tileElement->properties.banner.position != direction)
@@ -203,7 +203,7 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
     bool pathFound = false;
     do
     {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
         if (tileElement->base_height != pathBaseHeight * 2 && tileElement->base_height != (pathBaseHeight - 1) * 2)
@@ -498,7 +498,7 @@ void fix_duplicated_banners()
             {
                 // TODO: Handle walls and large-scenery that use banner indices too. Large scenery can be tricky, as they occupy
                 // multiple tiles that should both refer to the same banner index.
-                if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_BANNER)
+                if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
                 {
                     uint8 bannerIndex = tileElement->properties.banner.index;
                     if (activeBanners[bannerIndex])

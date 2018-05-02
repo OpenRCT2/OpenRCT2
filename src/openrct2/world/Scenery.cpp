@@ -92,9 +92,9 @@ void scenery_update_tile(sint32 x, sint32 y)
                 continue;
         }
 
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SMALL_SCENERY) {
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY) {
             scenery_update_age(x, y, tileElement);
-        } else if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH) {
+        } else if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH) {
             if (footpath_element_has_path_scenery(tileElement) && !footpath_element_path_scenery_is_ghost(tileElement)) {
                 rct_scenery_entry *sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
                 if (sceneryEntry != nullptr) {
@@ -150,7 +150,7 @@ void scenery_update_age(sint32 x, sint32 y, rct_tile_element *tileElement)
         if (tile_element_is_ghost(tileElementAbove))
             continue;
 
-        switch (tile_element_get_type(tileElementAbove)) {
+        switch (tileElementAbove->GetType()) {
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         case TILE_ELEMENT_TYPE_ENTRANCE:
         case TILE_ELEMENT_TYPE_PATH:
@@ -224,7 +224,7 @@ void scenery_remove_ghost_tool_placement(){
 
         do
         {
-            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_PATH)
+            if (tile_element->GetType() != TILE_ELEMENT_TYPE_PATH)
                 continue;
 
             if (tile_element->base_height != z)

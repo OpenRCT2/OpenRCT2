@@ -129,7 +129,7 @@ void setup_in_use_selection_flags()
         uint16 type;
         rct_banner* banner;
 
-        switch (tile_element_get_type(iter.element)) {
+        switch (iter.element->GetType()) {
         default:
         case TILE_ELEMENT_TYPE_SURFACE:
         case TILE_ELEMENT_TYPE_TRACK:
