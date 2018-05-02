@@ -11781,6 +11781,10 @@ static sint32 peep_perform_next_action(rct_peep * peep)
                 return peep_return_to_centre_of_tile(peep);
             }
 
+            tileElement = map_get_surface_element_at({ x, y });
+            if (tileElement == nullptr)
+                return peep_return_to_centre_of_tile(peep);
+
             sint16 water_height = surface_get_water_height(tileElement);
             if (water_height)
                 return peep_return_to_centre_of_tile(peep);
