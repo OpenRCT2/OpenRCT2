@@ -1903,9 +1903,9 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     uint8 trousers_colour = static_cast<uint8>(scenario_rand() % Util::CountOf(trouser_colours));
     peep->trousers_colour = trouser_colours[trousers_colour];
 
-    /* It looks like 65 is about 50% energy level, so this initialises
-     * a peep with approx 50%-100% energy (0x3F = 63, 63 + 65 = 128). */
-    uint8 energy        = (scenario_rand() & 0x3F) + 65;
+    /* Minimum energy is capped at 32 and maximum at 128, so this initialises
+     * a peep with approx 34%-100% energy. (65 - 32) / (128 - 32) ≈ 34% */
+    uint8 energy        = (scenario_rand() % 64) + 65;
     peep->energy        = energy;
     peep->energy_target = energy;
 
