@@ -190,8 +190,8 @@ public:
                 newElement->flags |= TILE_ELEMENT_FLAG_GHOST;
             }
 
-            newElement->setType(TILE_ELEMENT_TYPE_ENTRANCE);
-            newElement->setDirection(_direction);
+            newElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
+            newElement->SetDirection(_direction);
             newElement->properties.entrance.index = index;
             newElement->properties.entrance.type = ENTRANCE_TYPE_PARK_ENTRANCE;
             newElement->properties.entrance.path_type = gFootpathSelectedId;

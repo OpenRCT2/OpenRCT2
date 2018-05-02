@@ -126,14 +126,14 @@ struct rct_tile_element {
     uint8 clearance_height; //3
     rct_tile_element_properties properties;
 
-    uint8 getType() const;
-    void  setType(uint8 newType);
-    uint8 getDirection() const;
-    void  setDirection(uint8 direction);
-    uint8 getDirectionWithOffset(uint8 offset) const;
-    bool  isLastForTile() const;
-    bool  isGhost() const;
-    uint8 getSceneryQuadrant() const;
+    uint8 GetType() const;
+    void  SetType(uint8 newType);
+    uint8 GetDirection() const;
+    void  SetDirection(uint8 direction);
+    uint8 GetDirectionWithOffset(uint8 offset) const;
+    bool  IsLastForTile() const;
+    bool  IsGhost() const;
+    uint8 GetSceneryQuadrant() const;
 };
 assert_struct_size(rct_tile_element, 8);
 #pragma pack(pop)

@@ -4391,7 +4391,7 @@ static void ride_set_boat_hire_return_point(Ride * ride, CoordsXYE * startElemen
 
     trackType = track_element_get_type(returnTrackElement);
     sint32 elementReturnDirection = TrackCoordinates[trackType].rotation_begin;
-    ride->boat_hire_return_direction = returnTrackElement->getDirectionWithOffset(elementReturnDirection);
+    ride->boat_hire_return_direction = returnTrackElement->GetDirectionWithOffset(elementReturnDirection);
     ride->boat_hire_return_position.x = returnX >> 5;
     ride->boat_hire_return_position.y = returnY >> 5;
 }

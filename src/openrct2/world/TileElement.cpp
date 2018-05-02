@@ -23,64 +23,64 @@
 #include "TileElement.h"
 #include "Scenery.h"
 
-uint8 rct_tile_element::getType() const
+uint8 rct_tile_element::GetType() const
 {
     return this->type & TILE_ELEMENT_TYPE_MASK;
 }
 
-void rct_tile_element::setType(uint8 newType)
+void rct_tile_element::SetType(uint8 newType)
 {
     this->type |= (newType & TILE_ELEMENT_TYPE_MASK);
 }
 
-uint8 rct_tile_element::getDirection() const
+uint8 rct_tile_element::GetDirection() const
 {
     return this->type & TILE_ELEMENT_DIRECTION_MASK;
 }
 
-void rct_tile_element::setDirection(uint8 direction)
+void rct_tile_element::SetDirection(uint8 direction)
 {
     this->type |= (direction & TILE_ELEMENT_DIRECTION_MASK);
 }
 
-uint8 rct_tile_element::getDirectionWithOffset(uint8 offset) const
+uint8 rct_tile_element::GetDirectionWithOffset(uint8 offset) const
 {
     return ((this->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
 }
 
-bool rct_tile_element::isLastForTile() const
+bool rct_tile_element::IsLastForTile() const
 {
     return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
-bool rct_tile_element::isGhost() const
+bool rct_tile_element::IsGhost() const
 {
     return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
 }
 
-uint8 rct_tile_element::getSceneryQuadrant() const
+uint8 rct_tile_element::GetSceneryQuadrant() const
 {
     return (this->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
 sint32 tile_element_get_type(const rct_tile_element * element)
 {
-    return element->getType();
+    return element->GetType();
 }
 
 sint32 tile_element_get_direction(const rct_tile_element * element)
 {
-    return element->getDirection();
+    return element->GetDirection();
 }
 
 sint32 tile_element_get_direction_with_offset(const rct_tile_element * element, uint8 offset)
 {
-    return element->getDirectionWithOffset(offset);
+    return element->GetDirectionWithOffset(offset);
 }
 
 bool tile_element_is_ghost(const rct_tile_element * element)
 {
-    return element->isGhost();
+    return element->IsGhost();
 }
 
 bool tile_element_is_underground(rct_tile_element * tileElement)
@@ -95,7 +95,7 @@ bool tile_element_is_underground(rct_tile_element * tileElement)
 
 bool tile_element_is_last_for_tile(const rct_tile_element * element)
 {
-    return element->isLastForTile();
+    return element->IsLastForTile();
 }
 
 sint32 tile_element_get_banner_index(rct_tile_element * tileElement)

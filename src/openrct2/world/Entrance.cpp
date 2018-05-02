@@ -291,8 +291,8 @@ static money32 RideEntranceExitPlace(sint16 x,
 
             rct_tile_element* tileElement = tile_element_insert(x / 32, y / 32, z / 8, 0xF);
             assert(tileElement != nullptr);
-            tileElement->setType(TILE_ELEMENT_TYPE_ENTRANCE);
-            tileElement->setDirection(direction);
+            tileElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
+            tileElement->SetDirection(direction);
             tileElement->clearance_height = clear_z;
             tileElement->properties.entrance.type = isExit;
             tileElement->properties.entrance.index = stationNum << 4;
@@ -640,7 +640,7 @@ void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_tile_element *tileE
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        if (tileElement->getType() != TILE_ELEMENT_TYPE_TRACK) continue;
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK) continue;
         if (track_element_get_ride_index(tileElement) != rideIndex) continue;
         if (tileElement->base_height != z) continue;
         if (track_element_get_type(tileElement) != TRACK_ELEM_MAZE) continue;
@@ -671,7 +671,7 @@ void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_tile_element *tileEleme
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        if (tileElement->getType() != TILE_ELEMENT_TYPE_TRACK) continue;
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK) continue;
         if (track_element_get_ride_index(tileElement) != rideIndex) continue;
         if (tileElement->base_height != z) continue;
         if (track_element_get_type(tileElement) != TRACK_ELEM_MAZE) continue;
