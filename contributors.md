@@ -74,6 +74,7 @@ The following people are not part of the project team, but have been contributin
 * Joshua Moerman (Jaxan) - Misc.
 * Nicolas Hawrysh (xp4xbox) - Misc.
 * Albert Morgese (Fusxfaranto) - Misc.
+* Olivier Wervers (oli414) - Misc.
 
 ## Bug fixes
 * (halfbro)

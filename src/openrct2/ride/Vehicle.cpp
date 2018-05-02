@@ -36,6 +36,8 @@
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Sprite.h"
+#include "../world/Surface.h"
+#include "../world/Wall.h"
 #include "Vehicle.h"
 #include "CableLift.h"
 #include "Ride.h"
@@ -4684,7 +4686,7 @@ static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ &location)
     {
         if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SURFACE)
         {
-            sint32 waterZ = map_get_water_height(tileElement) * 2;
+            sint32 waterZ = surface_get_water_height(tileElement) * 2;
             if (location.z != waterZ)
             {
                 return false;
@@ -7480,14 +7482,14 @@ static void vehicle_update_scenery_door(rct_vehicle * vehicle)
     if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL)
     {
         tileElement->properties.wall.animation &= ~(WALL_ANIMATION_FLAG_DIRECTION_BACKWARD);
-        wall_element_set_animation_frame(tileElement, 1);
+        wall_set_animation_frame(tileElement, 1);
         map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, x, y, z);
         vehicle_play_scenery_door_open_sound(vehicle, tileElement);
     }
     else
     {
         tileElement->properties.wall.animation &= ~(WALL_ANIMATION_FLAG_DIRECTION_BACKWARD);
-        wall_element_set_animation_frame(tileElement, 6);
+        wall_set_animation_frame(tileElement, 6);
         vehicle_play_scenery_door_close_sound(vehicle, tileElement);
     }
 }
@@ -7565,14 +7567,14 @@ static void vehicle_update_handle_scenery_door(rct_vehicle * vehicle)
     if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL)
     {
         tileElement->properties.wall.animation |= WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
-        wall_element_set_animation_frame(tileElement, 1);
+        wall_set_animation_frame(tileElement, 1);
         map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, x, y, z);
         vehicle_play_scenery_door_open_sound(vehicle, tileElement);
     }
     else
     {
         tileElement->properties.wall.animation &= ~(WALL_ANIMATION_FLAG_DIRECTION_BACKWARD);
-        wall_element_set_animation_frame(tileElement, 6);
+        wall_set_animation_frame(tileElement, 6);
         vehicle_play_scenery_door_close_sound(vehicle, tileElement);
     }
 }

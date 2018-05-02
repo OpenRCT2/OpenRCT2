@@ -45,6 +45,7 @@
 #include "MapAnimation.h"
 #include "Park.h"
 #include "Scenery.h"
+#include "Surface.h"
 #include "SmallScenery.h"
 #include "TileInspector.h"
 #include "Wall.h"
@@ -256,78 +257,6 @@ void map_set_tile_elements(sint32 x, sint32 y, rct_tile_element *elements)
     gTileElementTilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL] = elements;
 }
 
-bool tile_element_is_last_for_tile(const rct_tile_element *element)
-{
-    return (element->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
-}
-
-bool tile_element_is_ghost(const rct_tile_element *element)
-{
-    return element->flags & TILE_ELEMENT_FLAG_GHOST;
-}
-
-uint8 tile_element_get_scenery_quadrant(const rct_tile_element *element)
-{
-    return (element->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
-}
-
-sint32 tile_element_get_type(const rct_tile_element *element)
-{
-    return element->type & TILE_ELEMENT_TYPE_MASK;
-}
-
-sint32 tile_element_get_direction(const rct_tile_element *element)
-{
-    return element->type & TILE_ELEMENT_DIRECTION_MASK;
-}
-
-sint32 tile_element_get_direction_with_offset(const rct_tile_element *element, uint8 offset)
-{
-    return ((element->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
-}
-
-sint32 tile_element_get_terrain(const rct_tile_element *element)
-{
-    sint32 terrain = (element->properties.surface.terrain >> 5) & 7;
-    if (element->type & 1)
-        terrain |= (1 << 3);
-    return terrain;
-}
-
-sint32 tile_element_get_terrain_edge(const rct_tile_element *element)
-{
-    sint32 terrain_edge = (element->properties.surface.slope >> 5) & 7;
-    if (element->type & 128)
-        terrain_edge |= (1 << 3);
-    return terrain_edge;
-}
-
-void tile_element_set_terrain(rct_tile_element *element, sint32 terrain)
-{
-    // Bit 3 for terrain is stored in element.type bit 0
-    if (terrain & 8)
-        element->type |= 1;
-    else
-        element->type &= ~1;
-
-    // Bits 0, 1, 2 for terrain are stored in element.terrain bit 5, 6, 7
-    element->properties.surface.terrain &= ~0xE0;
-    element->properties.surface.terrain |= (terrain & 7) << 5;
-}
-
-void tile_element_set_terrain_edge(rct_tile_element *element, sint32 terrain)
-{
-    // Bit 3 for terrain is stored in element.type bit 7
-    if (terrain & 8)
-        element->type |= 128;
-    else
-        element->type &= ~128;
-
-    // Bits 0, 1, 2 for terrain are stored in element.slope bit 5, 6, 7
-    element->properties.surface.slope &= ~TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
-    element->properties.surface.slope |= (terrain & 7) << 5;
-}
-
 rct_tile_element * map_get_surface_element_at(sint32 x, sint32 y)
 {
     rct_tile_element *tileElement = map_get_first_element_at(x, y);
@@ -413,8 +342,8 @@ void map_init(sint32 size)
         tile_element->properties.surface.ownership = 0;
         tile_element->properties.surface.terrain = 0;
 
-        tile_element_set_terrain(tile_element, TERRAIN_GRASS);
-        tile_element_set_terrain_edge(tile_element, TERRAIN_EDGE_ROCK);
+        surface_set_terrain(tile_element, TERRAIN_GRASS);
+        surface_set_terrain_edge(tile_element, TERRAIN_EDGE_ROCK);
     }
 
     gGrassSceneryTileLoopPosition = 0;
@@ -542,7 +471,7 @@ sint32 tile_element_height(sint32 x, sint32 y)
     }
 
     uint32 height =
-        (map_get_water_height(tileElement) << 20) |
+        (surface_get_water_height(tileElement) << 20) |
         (tileElement->base_height << 3);
 
     uint32 slope = (tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
@@ -1652,7 +1581,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
     rct_tile_element *surfaceElement = map_get_surface_element_at({x, y});
     if(surfaceElement->type & TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT)
     {
-        sint32 waterHeight = map_get_water_height(surfaceElement);
+        sint32 waterHeight = surface_get_water_height(surfaceElement);
         if(waterHeight != 0)
         {
             if(style & 0x1F)
@@ -1973,11 +1902,6 @@ static money32 lower_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax,
     return cost;
 }
 
-sint32 map_get_water_height(const rct_tile_element * tileElement)
-{
-    return tileElement->properties.surface.terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
-}
-
 money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 {
     money32 cost = 0;
@@ -1995,8 +1919,8 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
             rct_tile_element* tile_element = map_get_surface_element_at({xi, yi});
             if (tile_element != nullptr) {
                 uint8 height = tile_element->base_height;
-                if (map_get_water_height(tile_element) > 0)
-                    height = map_get_water_height(tile_element) * 2;
+                if (surface_get_water_height(tile_element) > 0)
+                    height = surface_get_water_height(tile_element) * 2;
                 if (max_height > height)
                     max_height = height;
             }
@@ -2008,7 +1932,7 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
             rct_tile_element* tile_element = map_get_surface_element_at({xi, yi});
             if (tile_element != nullptr) {
                 if (tile_element->base_height <= max_height){
-                    uint8 height = map_get_water_height(tile_element);
+                    uint8 height = surface_get_water_height(tile_element);
                     if (height != 0) {
                         height *= 2;
                         if (height > max_height)
@@ -2075,7 +1999,7 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
         for (sint32 xi = x0; xi <= x1; xi += 32){
             rct_tile_element* tile_element = map_get_surface_element_at({xi, yi});
             if (tile_element != nullptr) {
-                uint8 height = map_get_water_height(tile_element);
+                uint8 height = surface_get_water_height(tile_element);
                 if (height != 0) {
                     height *= 2;
                     if (height > min_height)
@@ -2089,7 +2013,7 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
         for (sint32 xi = x0; xi <= x1; xi += 32) {
             rct_tile_element* tile_element = map_get_surface_element_at({xi, yi});
             if (tile_element != nullptr) {
-                uint8 height = map_get_water_height(tile_element);
+                uint8 height = surface_get_water_height(tile_element);
                 if (height != 0) {
                     height *= 2;
                     if (height < min_height)
@@ -2701,9 +2625,9 @@ void game_command_set_water_height(
     rct_tile_element* tile_element = map_get_surface_element_at({x, y});
     sint32 zHigh = tile_element->base_height;
     sint32 zLow = base_height;
-    if (map_get_water_height(tile_element) > 0)
+    if (surface_get_water_height(tile_element) > 0)
     {
-        zHigh = map_get_water_height(tile_element) * 2;
+        zHigh = surface_get_water_height(tile_element) * 2;
     }
     if(zLow > zHigh){
         sint32 temp = zHigh;
@@ -3323,7 +3247,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
             }
             continue;
         }
-        water_height = map_get_water_height(tile_element) * 2;
+        water_height = surface_get_water_height(tile_element) * 2;
         if (water_height && water_height > zLow && tile_element->base_height < zHigh && !gCheatsDisableClearanceChecks) {
             gMapGroundFlags |= ELEMENT_IS_UNDERWATER;
             if (water_height < zHigh) {
@@ -3498,7 +3422,7 @@ static void map_update_grass_length(sint32 x, sint32 y, rct_tile_element *tileEl
     sint32 grassLength = tileElement->properties.surface.grass_length & 7;
 
     // Check if grass is underwater or outside park
-    sint32 waterHeight = map_get_water_height(tileElement) * 2;
+    sint32 waterHeight = surface_get_water_height(tileElement) * 2;
     if (waterHeight > tileElement->base_height || !map_is_location_in_park(x, y)) {
         if (grassLength != GRASS_LENGTH_CLEAR_0)
             map_set_grass_length(x, y, tileElement, GRASS_LENGTH_CLEAR_0);
@@ -3609,63 +3533,6 @@ void map_restore_provisional_elements()
     {
         ride_restore_provisional_track_piece();
         ride_entrance_exit_place_provisional_ghost();
-    }
-}
-
-sint32 tile_element_get_banner_index(rct_tile_element *tileElement)
-{
-    rct_scenery_entry* sceneryEntry;
-
-    switch (tile_element_get_type(tileElement)) {
-    case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-        sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
-        if (sceneryEntry->large_scenery.scrolling_mode == 0xFF)
-            return BANNER_INDEX_NULL;
-
-        return scenery_large_get_banner_id(tileElement);
-    case TILE_ELEMENT_TYPE_WALL:
-        sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
-        if (sceneryEntry == nullptr || sceneryEntry->wall.scrolling_mode == 0xFF)
-            return BANNER_INDEX_NULL;
-
-        return tileElement->properties.wall.banner_index;
-    case TILE_ELEMENT_TYPE_BANNER:
-        return tileElement->properties.banner.index;
-    default:
-        return BANNER_INDEX_NULL;
-    }
-}
-
-void tile_element_set_banner_index(rct_tile_element * tileElement, sint32 bannerIndex)
-{
-    switch (tile_element_get_type(tileElement))
-    {
-        case TILE_ELEMENT_TYPE_WALL:
-            tileElement->properties.wall.banner_index = (uint8)bannerIndex;
-            break;
-        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            scenery_large_set_banner_id(tileElement, (uint8)bannerIndex);
-            break;
-        case TILE_ELEMENT_TYPE_BANNER:
-            tileElement->properties.banner.index = (uint8)bannerIndex;
-            break;
-        default:
-            log_error("Tried to set banner index on unsuitable tile element!");
-            Guard::Assert(false);
-    }
-}
-
-void tile_element_remove_banner_entry(rct_tile_element *tileElement)
-{
-    sint32 bannerIndex = tile_element_get_banner_index(tileElement);
-    if (bannerIndex == BANNER_INDEX_NULL)
-        return;
-
-    rct_banner* banner = &gBanners[bannerIndex];
-    if (banner->type != BANNER_NULL) {
-        window_close_by_number(WC_BANNER, bannerIndex);
-        banner->type = BANNER_NULL;
-        user_string_free(banner->string_idx);
     }
 }
 
@@ -3874,18 +3741,8 @@ sint32 map_get_highest_z(sint32 tileX, sint32 tileY)
     if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) != 0)
         z += 16;
 
-    z = std::max(z, map_get_water_height(tileElement) * 16);
+    z = std::max(z, surface_get_water_height(tileElement) * 16);
     return z;
-}
-
-bool tile_element_is_underground(rct_tile_element *tileElement)
-{
-    do {
-        tileElement++;
-        if (tile_element_is_last_for_tile(tileElement - 1))
-            return false;
-    } while (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SURFACE);
-    return true;
 }
 
 rct_tile_element *map_get_large_scenery_segment(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 sequence)
@@ -4259,7 +4116,7 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
         return true;
     }
 
-    sint16 water_height = map_get_water_height(tileElement);
+    sint16 water_height = surface_get_water_height(tileElement);
     water_height *= 2;
     if (water_height > tileElement->base_height)
         return true;
@@ -4758,21 +4615,6 @@ uint16 check_max_allowable_land_rights_for_tile(uint8 x, uint8 y, uint8 base_z)
     while (!tile_element_is_last_for_tile(tileElement++));
 
     return destOwnership;
-}
-
-uint8 tile_element_get_ride_index(const rct_tile_element * tileElement)
-{
-    switch (tile_element_get_type(tileElement))
-    {
-    case TILE_ELEMENT_TYPE_TRACK:
-        return track_element_get_ride_index(tileElement);
-    case TILE_ELEMENT_TYPE_ENTRANCE:
-        return tileElement->properties.entrance.ride_index;
-    case TILE_ELEMENT_TYPE_PATH:
-        return tileElement->properties.path.ride_index;
-    default:
-        return 0xFF;
-    }
 }
 
 void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles)

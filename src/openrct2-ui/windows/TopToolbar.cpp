@@ -47,6 +47,7 @@
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/world/Surface.h>
 #include "../interface/InGameConsole.h"
 #include "../UiContext.h"
 
@@ -1320,7 +1321,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             }
 
             gSceneryPlaceZ = 0;
-            uint16 water_height = map_get_water_height(tile_element);
+            uint16 water_height = surface_get_water_height(tile_element);
             if (water_height != 0) {
                 gSceneryPlaceZ = water_height * 16;
             }

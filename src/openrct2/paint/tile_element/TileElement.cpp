@@ -29,6 +29,7 @@
 #include "../../world/Entrance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Scenery.h"
+#include "../../world/Surface.h"
 #include "../../sprites.h"
 #include "../Paint.h"
 #include "../Supports.h"
@@ -218,9 +219,9 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     element--;
 
     if (tile_element_get_type(element) == TILE_ELEMENT_TYPE_SURFACE &&
-        (map_get_water_height(element) > 0))
+        (surface_get_water_height(element) > 0))
     {
-        max_height = map_get_water_height(element) * 2;
+        max_height = surface_get_water_height(element) * 2;
     }
 
     max_height *= 8;

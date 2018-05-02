@@ -65,6 +65,7 @@
 #include "world/Park.h"
 #include "world/Scenery.h"
 #include "world/Sprite.h"
+#include "world/Surface.h"
 #include "world/Water.h"
 #include "object/ObjectList.h"
 #include "interface/Window_internal.h"

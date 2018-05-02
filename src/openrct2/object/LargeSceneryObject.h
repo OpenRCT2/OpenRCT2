@@ -18,6 +18,7 @@
 
 #include <memory>
 #include <vector>
+#include "../world/Location.hpp"
 #include "../world/Scenery.h"
 #include "SceneryObject.h"
 

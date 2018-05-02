@@ -39,6 +39,7 @@
 #include "Map.h"
 #include "Park.h"
 #include "Sprite.h"
+#include "Surface.h"
 #include "../windows/Intent.h"
 #include "../Context.h"
 

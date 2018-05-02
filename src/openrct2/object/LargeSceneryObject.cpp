@@ -23,6 +23,7 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
+#include "../world/Location.hpp"
 #include "LargeSceneryObject.h"
 #include "ObjectJsonHelpers.h"
 

@@ -200,7 +200,7 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, const 
     if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR) {
         LocationXYZ16 offset;
         LocationXYZ16 boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
-        uint8 animationFrame = wall_element_get_animation_frame(tile_element);
+        uint8 animationFrame = wall_get_animation_frame(tile_element);
         // Add the direction as well
         animationFrame |= (tile_element->properties.wall.animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) >> 3;
         uint32 imageId;

@@ -49,6 +49,7 @@
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Sprite.h"
+#include "../world/Surface.h"
 #include "Peep.h"
 #include "Staff.h"
 #include "../windows/Intent.h"
@@ -2322,9 +2323,9 @@ static void peep_update_falling(rct_peep * peep)
             else if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_SURFACE)
             {
                 // If the surface is water check to see if we could be drowning
-                if (map_get_water_height(tile_element) > 0)
+                if (surface_get_water_height(tile_element) > 0)
                 {
-                    sint32 height = map_get_water_height(tile_element) * 16;
+                    sint32 height = surface_get_water_height(tile_element) * 16;
 
                     if (height - 4 >= peep->z && height < peep->z + 20)
                     {
@@ -7101,7 +7102,7 @@ static void peep_update_patrolling(rct_peep * peep)
 
         if (tile_element != nullptr)
         {
-            sint32 water_height = map_get_water_height(tile_element);
+            sint32 water_height = surface_get_water_height(tile_element);
             if (water_height)
             {
                 invalidate_sprite_2((rct_sprite *)peep);
@@ -7301,7 +7302,7 @@ static void peep_update_walking(rct_peep * peep)
     {
         rct_tile_element * tile_element = map_get_surface_element_at({peep->next_x, peep->next_y});
 
-        sint32 water_height = map_get_water_height(tile_element);
+        sint32 water_height = surface_get_water_height(tile_element);
         if (water_height)
         {
             invalidate_sprite_2((rct_sprite *)peep);
@@ -11784,7 +11785,7 @@ static sint32 peep_perform_next_action(rct_peep * peep)
             if (tileElement == nullptr)
                 return peep_return_to_centre_of_tile(peep);
 
-            sint16 water_height = map_get_water_height(tileElement);
+            sint16 water_height = surface_get_water_height(tileElement);
             if (water_height)
                 return peep_return_to_centre_of_tile(peep);
 

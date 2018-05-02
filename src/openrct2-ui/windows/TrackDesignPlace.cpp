@@ -33,6 +33,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/world/Surface.h>
 
 #define TRACK_MINI_PREVIEW_WIDTH    168
 #define TRACK_MINI_PREVIEW_HEIGHT   78
@@ -433,8 +434,8 @@ static sint32 window_track_place_get_base_z(sint32 x, sint32 y)
     }
 
     // Increase Z above water
-    if (map_get_water_height(tileElement) > 0)
-        z = Math::Max(z, map_get_water_height(tileElement) << 4);
+    if (surface_get_water_height(tileElement) > 0)
+        z = Math::Max(z, surface_get_water_height(tileElement) << 4);
 
     return z + place_virtual_track(_trackDesign, PTD_OPERATION_GET_PLACE_Z, true, 0, x, y, z);
 }

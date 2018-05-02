@@ -37,6 +37,7 @@
 #include "../interface/Window_internal.h"
 #include "../management/NewsItem.h"
 #include "../windows/Intent.h"
+#include "../world/Map.h"
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 

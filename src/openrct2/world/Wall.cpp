@@ -31,6 +31,7 @@
 #include "Park.h"
 #include "Scenery.h"
 #include "SmallScenery.h"
+#include "Surface.h"
 #include "Wall.h"
 
 /**
@@ -372,9 +373,9 @@ static money32 WallPlace(uint8 wallType,
         return MONEY32_UNDEFINED;
     }
 
-    if (map_get_water_height(surfaceElement) > 0)
+    if (surface_get_water_height(surfaceElement) > 0)
     {
-        uint16 waterHeight = map_get_water_height(surfaceElement) * 16;
+        uint16 waterHeight = surface_get_water_height(surfaceElement) * 16;
 
         if (position.z < waterHeight && !gCheatsDisableClearanceChecks)
         {
@@ -688,12 +689,12 @@ static money32 WallSetColour(sint16 x,
     return 0;
 }
 
-uint8 wall_element_get_animation_frame(const rct_tile_element * wallElement)
+uint8 wall_get_animation_frame(const rct_tile_element * wallElement)
 {
     return (wallElement->properties.wall.animation >> 3) & 0xF;
 }
 
-void wall_element_set_animation_frame(rct_tile_element * wallElement, uint8 frameNum)
+void wall_set_animation_frame(rct_tile_element * wallElement, uint8 frameNum)
 {
     wallElement->properties.wall.animation &= WALL_ANIMATION_FLAG_ALL_FLAGS;
     wallElement->properties.wall.animation |= (frameNum & 0xF) << 3;

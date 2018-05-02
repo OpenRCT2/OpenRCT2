@@ -34,6 +34,7 @@
 #include "../world/Climate.h"
 #include "../world/Map.h"
 #include "../world/Park.h"
+#include "../world/Surface.h"
 #include "Viewport.h"
 
 using namespace OpenRCT2;

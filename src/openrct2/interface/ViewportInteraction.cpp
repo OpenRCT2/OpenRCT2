@@ -31,6 +31,7 @@
 #include "../world/Scenery.h"
 #include "../world/LargeScenery.h"
 #include "../world/Sprite.h"
+#include "../world/Surface.h"
 #include "../world/Park.h"
 #include "Viewport.h"
 #include "Window_internal.h"
@@ -610,7 +611,7 @@ void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *di
 
     sint16 originalZ = 0;
     if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER) {
-        originalZ = map_get_water_height(myTileElement) << 4;
+        originalZ = surface_get_water_height(myTileElement) << 4;
     }
 
     LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);

@@ -23,6 +23,7 @@
 #include <openrct2/world/Sprite.h>
 #include <openrct2/paint/tile_element/TileElement.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/world/Surface.h>
 #include "Addresses.h"
 
 #define gRideEntries                RCT2_ADDRESS(0x009ACFA4, rct_ride_entry *)
@@ -211,7 +212,7 @@ void tile_element_decrement_onride_photo_timout(rct_tile_element * tileElement)
     }
 }
 
-sint32 map_get_water_height(const rct_tile_element * tileElement)
+sint32 surface_get_water_height(const rct_tile_element * tileElement)
 {
     return tileElement->properties.surface.terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
 }

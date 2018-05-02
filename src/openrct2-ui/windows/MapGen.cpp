@@ -24,6 +24,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/MapGen.h>
+#include <openrct2/world/Surface.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2/drawing/Drawing.h>

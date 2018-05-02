@@ -64,6 +64,7 @@
 #include "../world/LargeScenery.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
+#include "../world/Surface.h"
 
 static uint8 GetPathType(rct_tile_element * tileElement);
 static sint32 GetWallType(rct_tile_element * tileElement, sint32 edge);
@@ -2670,8 +2671,8 @@ private:
             rct_tile_element * element = it.element;
             if (tile_element_get_type(element) == TILE_ELEMENT_TYPE_SURFACE)
             {
-                tile_element_set_terrain(element, RCT1::GetTerrain(tile_element_get_terrain(element)));
-                tile_element_set_terrain_edge(element, RCT1::GetTerrainEdge(tile_element_get_terrain_edge(element)));
+                surface_set_terrain(element, RCT1::GetTerrain(surface_get_terrain(element)));
+                surface_set_terrain_edge(element, RCT1::GetTerrainEdge(surface_get_terrain_edge(element)));
             }
         }
     }
