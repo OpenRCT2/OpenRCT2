@@ -63,7 +63,11 @@ enum
 {
     TRACK_ELEMENT_FLAG_TERMINAL_STATION = 1 << 3,
     TRACK_ELEMENT_FLAG_INVERTED         = 1 << 6,
-    TRACK_ELEMENT_FLAG_CHAIN_LIFT       = 1 << 7,
+};
+
+enum
+{
+    TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT  = 1 << 7,
 };
 
 enum
@@ -72,10 +76,10 @@ enum
     // that field in the map element
 
     // Used for multi-dimension coaster
-        TRACK_ELEMENT_COLOUR_FLAG_INVERTED = (1 << 2),
+    TRACK_ELEMENT_COLOUR_FLAG_INVERTED = (1 << 2),
 
     // Used for giga coaster
-        TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT = (1 << 3),
+    TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT = (1 << 3),
 };
 
 #define TRACK_ELEMENT_FLAG_MAGNITUDE_MASK 0x0F

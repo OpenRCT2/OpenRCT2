@@ -1014,7 +1014,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
         gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
         game_do_command(
             grid_x,
-            1 | ((tile_element->type & TILE_ELEMENT_DIRECTION_MASK) << 8),
+            1 | (tile_element->GetDirection() << 8),
             grid_y,
             tile_element->base_height | (scenery_large_get_sequence(tile_element) << 8),
             GAME_COMMAND_SET_LARGE_SCENERY_COLOUR,

@@ -1454,7 +1454,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
                        (tempZ & 0xFFFF);
 
             sint32 edx = _currentRideIndex | (trackType << 8);
-            if (track->flags & TRACK_ELEMENT_FLAG_CHAIN_LIFT)
+            if (track->flags & TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT)
             {
                 edx |= 0x10000;
             }

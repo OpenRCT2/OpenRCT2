@@ -19,6 +19,13 @@
 #include "../common.h"
 #include "TileElement.h"
 
+enum {
+    WALL_ANIMATION_FLAG_ACROSS_TRACK = (1 << 2),
+    // 3 - 6 animation frame number
+    WALL_ANIMATION_FLAG_DIRECTION_BACKWARD = (1 << 7),
+    WALL_ANIMATION_FLAG_ALL_FLAGS = WALL_ANIMATION_FLAG_ACROSS_TRACK | WALL_ANIMATION_FLAG_DIRECTION_BACKWARD
+};
+
 colour_t wall_get_primary_colour(const rct_tile_element * tileElement);
 colour_t wall_get_secondary_colour(const rct_tile_element * wallElement);
 colour_t wall_get_tertiary_colour(const rct_tile_element * tileElement);
