@@ -1571,7 +1571,7 @@ void ride_construction_set_default_next_piece()
         // Set track slope and lift hill
         _currentTrackSlopeEnd = slope;
         _previousTrackSlopeEnd = slope;
-        _currentTrackLiftHill = ((tileElement->type & 0x80) && slope != TRACK_SLOPE_DOWN_25 && slope != TRACK_SLOPE_DOWN_60) != 0;
+        _currentTrackLiftHill = track_element_is_lift_hill(tileElement) && slope != TRACK_SLOPE_DOWN_25 && slope != TRACK_SLOPE_DOWN_60;
         break;
     case RIDE_CONSTRUCTION_STATE_BACK:
         rideIndex = _currentRideIndex;
@@ -4163,7 +4163,7 @@ static sint32 ride_check_block_brakes(CoordsXYE *input, CoordsXYE *output)
                 *output = it.current;
                 return 0;
             }
-            if ((it.last.element->type & 0x80) && type != TRACK_ELEM_LEFT_CURVED_LIFT_HILL && type != TRACK_ELEM_RIGHT_CURVED_LIFT_HILL) {
+            if (track_element_is_lift_hill(it.last.element) && type != TRACK_ELEM_LEFT_CURVED_LIFT_HILL && type != TRACK_ELEM_RIGHT_CURVED_LIFT_HILL) {
                 gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_THE_TOP_OF_THIS_LIFT_HILL;
                 *output = it.current;
                 return 0;
@@ -4391,7 +4391,7 @@ static void ride_set_boat_hire_return_point(Ride * ride, CoordsXYE * startElemen
 
     trackType = track_element_get_type(returnTrackElement);
     sint32 elementReturnDirection = TrackCoordinates[trackType].rotation_begin;
-    ride->boat_hire_return_direction = (returnTrackElement->type + elementReturnDirection) & 3;
+    ride->boat_hire_return_direction = returnTrackElement->getDirectionWithOffset(elementReturnDirection);
     ride->boat_hire_return_position.x = returnX >> 5;
     ride->boat_hire_return_position.y = returnY >> 5;
 }

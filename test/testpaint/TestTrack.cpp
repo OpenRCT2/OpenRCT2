@@ -99,9 +99,9 @@ public:
                          Ride *ride, rct_ride_entry *rideEntry
     ) override {
         if (variant == 0) {
-            tileElement->type &= ~TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+            tileElement->type &= ~TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
         } else {
-            tileElement->type |= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+            tileElement->type |= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
         }
     }
 };

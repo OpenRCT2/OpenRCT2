@@ -125,6 +125,15 @@ struct rct_tile_element {
     uint8 base_height; //2
     uint8 clearance_height; //3
     rct_tile_element_properties properties;
+
+    uint8 getType() const;
+    void  setType(uint8 newType);
+    uint8 getDirection() const;
+    void  setDirection(uint8 direction);
+    uint8 getDirectionWithOffset(uint8 offset) const;
+    bool  isLastForTile() const;
+    bool  isGhost() const;
+    uint8 getSceneryQuadrant() const;
 };
 assert_struct_size(rct_tile_element, 8);
 #pragma pack(pop)
@@ -170,13 +179,6 @@ enum {
 };
 
 enum {
-    WALL_ANIMATION_FLAG_ACROSS_TRACK = (1 << 2),
-    // 3 - 6 animation frame number
-    WALL_ANIMATION_FLAG_DIRECTION_BACKWARD = (1 << 7),
-    WALL_ANIMATION_FLAG_ALL_FLAGS = WALL_ANIMATION_FLAG_ACROSS_TRACK | WALL_ANIMATION_FLAG_DIRECTION_BACKWARD
-};
-
-enum {
     ENTRANCE_TYPE_RIDE_ENTRANCE,
     ENTRANCE_TYPE_RIDE_EXIT,
     ENTRANCE_TYPE_PARK_ENTRANCE
@@ -193,14 +195,11 @@ enum
     MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT = (1 << 7),
 };
 
-enum
-{
-    MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS = (1 << 5),
-};
 
-#define TILE_ELEMENT_QUADRANT_MASK 0xC0
-#define TILE_ELEMENT_TYPE_MASK 0x3C
-#define TILE_ELEMENT_DIRECTION_MASK 0x03
+
+#define TILE_ELEMENT_QUADRANT_MASK 0xC0 // bits 6 + 7
+#define TILE_ELEMENT_TYPE_MASK 0x3C     // bits 2 + 3 + 4 + 5
+#define TILE_ELEMENT_DIRECTION_MASK 0x03 // bits 0 + 1
 
 #define TILE_ELEMENT_COLOUR_MASK 0x1F
 
@@ -208,7 +207,6 @@ enum
 #define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0x0F
 #define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK 0xF0
 
-uint8 tile_element_get_scenery_quadrant(const rct_tile_element * element);
 sint32 tile_element_get_type(const rct_tile_element * element);
 sint32 tile_element_get_direction(const rct_tile_element * element);
 sint32 tile_element_get_direction_with_offset(const rct_tile_element * element, uint8 offset);

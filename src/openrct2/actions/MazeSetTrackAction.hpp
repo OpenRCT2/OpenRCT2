@@ -234,7 +234,7 @@ public:
             assert(tileElement != nullptr);
 
             tileElement->clearance_height = clearanceHeight;
-            tileElement->type = TILE_ELEMENT_TYPE_TRACK;
+            tileElement->setType(TILE_ELEMENT_TYPE_TRACK);
 
             track_element_set_type(tileElement, TRACK_ELEM_MAZE);
             track_element_set_ride_index(tileElement, _rideIndex);

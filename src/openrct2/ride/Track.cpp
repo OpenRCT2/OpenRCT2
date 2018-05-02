@@ -2126,18 +2126,18 @@ void track_get_front(CoordsXYE * input, CoordsXYE * output)
 
 bool track_element_is_lift_hill(const rct_tile_element * trackElement)
 {
-    return trackElement->type & TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+    return trackElement->type & TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
 }
 
 void track_element_set_lift_hill(rct_tile_element * trackElement, bool on)
 {
     if (on)
     {
-        trackElement->type |= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+        trackElement->type |= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
     }
     else
     {
-        trackElement->type &= ~TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+        trackElement->type &= ~TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
     }
 }
 

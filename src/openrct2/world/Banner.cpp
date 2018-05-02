@@ -258,7 +258,7 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
         gBanners[*bannerIndex].colour = colour;
         gBanners[*bannerIndex].x = x / 32;
         gBanners[*bannerIndex].y = y / 32;
-        newTileElement->type = TILE_ELEMENT_TYPE_BANNER;
+        newTileElement->setType(TILE_ELEMENT_TYPE_BANNER);
         newTileElement->clearance_height = newTileElement->base_height + 2;
         newTileElement->properties.banner.position = direction;
         newTileElement->properties.banner.flags = 0xFF;

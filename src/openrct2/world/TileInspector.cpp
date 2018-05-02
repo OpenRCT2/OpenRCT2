@@ -870,7 +870,7 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
             // Set chain for only the selected piece
             if (track_element_is_lift_hill(trackElement) != setChain)
             {
-                trackElement->type ^= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+                trackElement->type ^= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
             }
 
             return 0;
@@ -977,7 +977,7 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
 
             if (track_element_is_lift_hill(tileElement) != setChain)
             {
-                tileElement->type ^= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+                tileElement->type ^= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
             }
         }
     }

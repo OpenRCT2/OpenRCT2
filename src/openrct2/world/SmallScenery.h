@@ -52,6 +52,11 @@ enum SMALL_SCENERY_FLAGS
     SMALL_SCENERY_FLAG27                    = (1 << 27), // 0x8000000
 };
 
+enum
+{
+    MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS = (1 << 5),
+};
+
 sint32 scenery_small_get_primary_colour(const rct_tile_element * tileElement);
 sint32 scenery_small_get_secondary_colour(const rct_tile_element * tileElement);
 void scenery_small_set_primary_colour(rct_tile_element * tileElement, uint32 colour);

@@ -2329,7 +2329,8 @@ static void sub_6CBCE2(
         map_set_tile_elements(tileX + 0, tileY - 1, &_tempSideTrackTileElement);
 
         // Set the temporary track element
-        _tempTrackTileElement.type = trackDirection | TILE_ELEMENT_TYPE_TRACK;
+        _tempTrackTileElement.setType(TILE_ELEMENT_TYPE_TRACK);
+        _tempTrackTileElement.setDirection(trackDirection);
         track_element_set_lift_hill(&_tempTrackTileElement, (edx & 0x10000) ? true : false);
         _tempTrackTileElement.flags = (bl & 0x0F) | TILE_ELEMENT_FLAG_LAST_TILE;
         _tempTrackTileElement.base_height = baseZ;
