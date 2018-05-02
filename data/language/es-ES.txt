@@ -4907,21 +4907,3 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
-
-######################
-# Juegos/Atracciones #
-######################
-
-#WW
-[CONDORRD]
-STR_NAME    :Atracción Condor
-STR_DESC    :Los pasajeros viajan boca abajo y acostados, suspendidos del arnés debajo de la pista en un vagón con forma de Cóndor que se balancea libremente de un lado a otro al pasar por las curvas.
-STR_CPTY    :4 pasajeros por vagón
-
-###################
-# Tiendas/Puestos #
-###################
-
-[INFOK]
-STR_NAME    :Quiosco de información
-STR_DESC    :Puesto en el que los visitantes obtienen mapas del parque y compran paraguas.

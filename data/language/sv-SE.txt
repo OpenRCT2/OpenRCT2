@@ -4963,25 +4963,5 @@ STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
 
-#####################
-# Rides/attractions #
-#####################
-
-#WW
-[CONDORRD]
-STR_NAME    :Kondorhjulet
-STR_DESC    :Åkandes i speciella byglar under spåret känner passagerarna känslan av flygning när de sveper genom luften i kondorformade vagnar
-STR_CPTY    :4 passagerare per vagn
-
-##############
-# RCT Object #
-##############
-
-[SCGWWEST]
-STR_NAME    :Vilda västern-tema
-
-[SCGGIANT]
-STR_NAME    :Jätte trädgårds-tema
-
 #Maintainer: Nubbie
 #Everyone is allowed to edit this document

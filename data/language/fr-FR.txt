@@ -4967,13 +4967,3 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronisme
 STR_PARK    :Fort Anachronisme
 STR_DTLS    :
-
-#####################
-# Rides/attractions #
-#####################
-
-#WW
-[CONDORRD]
-STR_NAME    :Le condor
-STR_DESC    :Les passagers sont couchés à plat ventre dans une voiture en forme de condor se déplaçant sur un monorail et se balançant d'un côté à l'autre dans les virages
-STR_CPTY    :4 passagers par voiture

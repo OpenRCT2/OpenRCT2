@@ -4748,13 +4748,3 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
-
-#####################
-# Rides/attractions #
-#####################
-
-#WW
-[CONDORRD]
-STR_NAME    :Condor Ride
-STR_DESC    :Guidando in speciali carrelli sotto la pista, i piloti sperimentano la sensazione di volo mentre prendono aria nei treni Condor
-STR_CPTY    :4 passeggeri per carrozza

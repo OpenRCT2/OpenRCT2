@@ -4967,13 +4967,3 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
-
-#######################
-# Bahnen/Attraktionen # 
-#######################
-
-#WW
-[CONDORRD]
-STR_NAME    :Kondorbahn
-STR_DESC    :Die Passagiere fahren, in speziellen Gurten hängend, unterhalb der Strecke. In den kondorförmigen Wagen erleben sie dabei ein Gefühl des Fliegens.
-STR_CPTY    :4 Fahrgäste pro Wagen
