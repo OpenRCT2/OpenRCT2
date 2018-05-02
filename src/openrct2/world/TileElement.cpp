@@ -30,6 +30,7 @@ uint8 rct_tile_element::GetType() const
 
 void rct_tile_element::SetType(uint8 newType)
 {
+    this->type &= ~TILE_ELEMENT_TYPE_MASK;
     this->type |= (newType & TILE_ELEMENT_TYPE_MASK);
 }
 
@@ -40,6 +41,7 @@ uint8 rct_tile_element::GetDirection() const
 
 void rct_tile_element::SetDirection(uint8 direction)
 {
+    this->type &= ~TILE_ELEMENT_DIRECTION_MASK;
     this->type |= (direction & TILE_ELEMENT_DIRECTION_MASK);
 }
 
