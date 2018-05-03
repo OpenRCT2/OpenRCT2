@@ -20,6 +20,7 @@
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../core/String.hpp"
+#include "../core/Zip.h"
 #include "../OpenRCT2.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "BannerObject.h"
@@ -92,6 +93,8 @@ public:
 
 namespace ObjectFactory
 {
+    static Object * CreateObjectFromJson(IObjectRepository& objectRepository, const json_t * jRoot);
+
     static void ReadObjectLegacy(Object * object, IReadObjectContext * context, IStream * stream)
     {
         try
@@ -228,6 +231,37 @@ namespace ObjectFactory
         return 0xFF;
     }
 
+    Object * CreateObjectFromZipFile(IObjectRepository& objectRepository, const std::string &path)
+    {
+        Object * result = nullptr;
+        try
+        {
+            auto archive = Zip::Open(path.c_str(), ZIP_ACCESS::READ);
+            auto jsonBytes = archive->GetFileData("object.json");
+            if (jsonBytes.empty())
+            {
+                throw std::runtime_error("Unable to open object.json.");
+            }
+
+            json_error_t jsonLoadError;
+            auto jRoot = json_loads((const char *)jsonBytes.data(), 0, &jsonLoadError);
+            if (jRoot == nullptr)
+            {
+                throw JsonException(&jsonLoadError);
+            }
+
+            return CreateObjectFromJson(objectRepository, jRoot);
+        }
+        catch (const std::exception& e)
+        {
+            Console::Error::WriteLine("Unable to open or read '%s': %s", path.c_str(), e.what());
+
+            delete result;
+            result = nullptr;
+        }
+        return result;
+    }
+
     Object * CreateObjectFromJsonFile(IObjectRepository& objectRepository, const std::string &path)
     {
         log_verbose("CreateObjectFromJsonFile(\"%s\")", path.c_str());
@@ -236,35 +270,7 @@ namespace ObjectFactory
         try
         {
             auto jRoot = Json::ReadFromFile(path.c_str());
-            auto jObjectType = json_object_get(jRoot, "objectType");
-            if (json_is_string(jObjectType))
-            {
-                auto objectType = ParseObjectType(json_string_value(jObjectType));
-                if (objectType != 0xFF)
-                {
-                    auto id = json_string_value(json_object_get(jRoot, "id"));
-
-                    rct_object_entry entry = { 0 };
-                    auto originalId = String::ToStd(json_string_value(json_object_get(jRoot, "originalId")));
-                    auto originalName = originalId;
-                    if (originalId.length() == 8 + 1 + 8 + 1 + 8)
-                    {
-                        entry.flags = std::stoul(originalId.substr(0, 8), 0, 16);
-                        originalName = originalId.substr(9, 8);
-                        entry.checksum = std::stoul(originalId.substr(18, 8), 0, 16);
-                    }
-                    auto minLength = std::min<size_t>(8, originalName.length());
-                    memcpy(entry.name, originalName.c_str(), minLength);
-
-                    result = CreateObject(entry);
-                    auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2Headless);
-                    result->ReadJson(&readContext, jRoot);
-                    if (readContext.WasError())
-                    {
-                        throw std::runtime_error("Object has errors");
-                    }
-                }
-            }
+            CreateObjectFromJson(objectRepository, jRoot);
             json_decref(jRoot);
         }
         catch (const std::runtime_error &err)
@@ -276,4 +282,41 @@ namespace ObjectFactory
         }
         return result;
     }
-} // namespace ObjectFactory
+
+    Object * CreateObjectFromJson(IObjectRepository& objectRepository, const json_t * jRoot)
+    {
+        log_verbose("CreateObjectFromJson(...)");
+
+        Object * result = nullptr;
+        auto jObjectType = json_object_get(jRoot, "objectType");
+        if (json_is_string(jObjectType))
+        {
+            auto objectType = ParseObjectType(json_string_value(jObjectType));
+            if (objectType != 0xFF)
+            {
+                auto id = json_string_value(json_object_get(jRoot, "id"));
+
+                rct_object_entry entry = { 0 };
+                auto originalId = String::ToStd(json_string_value(json_object_get(jRoot, "originalId")));
+                auto originalName = originalId;
+                if (originalId.length() == 8 + 1 + 8 + 1 + 8)
+                {
+                    entry.flags = std::stoul(originalId.substr(0, 8), 0, 16);
+                    originalName = originalId.substr(9, 8);
+                    entry.checksum = std::stoul(originalId.substr(18, 8), 0, 16);
+                }
+                auto minLength = std::min<size_t>(8, originalName.length());
+                memcpy(entry.name, originalName.c_str(), minLength);
+
+                result = CreateObject(entry);
+                auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2Headless);
+                result->ReadJson(&readContext, jRoot);
+                if (readContext.WasError())
+                {
+                    throw std::runtime_error("Object has errors");
+                }
+            }
+        }
+        return result;
+    }
+}
