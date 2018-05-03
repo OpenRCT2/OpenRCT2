@@ -40,15 +40,15 @@ uint32 gCurrentViewportFlags;
 uint32 gScenarioTicks;
 uint8 gCurrentRotation;
 
-const CoordsXY TileDirectionDelta[] = {
-    {-32, 0},
-    {0,   +32},
-    {+32, 0},
-    {0,   -32},
-    {-32, +32},
-    {+32, +32},
-    {+32, -32},
-    {-32, -32}
+const TileCoordsXY TileDirectionDelta[] = {
+        { -1,  0 },
+        {  0, +1 },
+        { +1,  0 },
+        {  0, -1 },
+        { -1, +1 },
+        { +1, +1 },
+        { +1, -1 },
+        { -1, -1 }
 };
 
 TileCoordsXYZD ride_get_entrance_location(const Ride * ride, const sint32 stationIndex);
