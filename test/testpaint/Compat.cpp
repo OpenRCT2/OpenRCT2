@@ -40,6 +40,17 @@ uint32 gCurrentViewportFlags;
 uint32 gScenarioTicks;
 uint8 gCurrentRotation;
 
+const CoordsXY CoordsDirectionDelta[] = {
+        { -32,   0 },
+        {   0, +32 },
+        { +32,   0 },
+        {   0, -32 },
+        { -32, +32 },
+        { +32, +32 },
+        { +32, -32 },
+        { -32, -32 }
+};
+
 const TileCoordsXY TileDirectionDelta[] = {
         { -1,  0 },
         {  0, +1 },
