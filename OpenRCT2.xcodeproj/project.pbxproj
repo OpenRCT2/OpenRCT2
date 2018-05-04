@@ -62,6 +62,10 @@
 		93F9DA3920B46FB800D1BE92 /* ObjectJsonHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */; };
 		93F9DA3A20B46FCA00D1BE92 /* SceneryObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */; };
 		93F9DA3B20B4701100D1BE92 /* StdInOutConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B423720591513000C5BB7 /* StdInOutConsole.cpp */; };
+		93DE9750209C3C1000FB1CC8 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93DE974E209C3C0F00FB1CC8 /* GameState.cpp */; };
+		93DE9751209C3C1000FB1CC8 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93DE974E209C3C0F00FB1CC8 /* GameState.cpp */; };
+		93DE9752209C3C1000FB1CC8 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93DE974E209C3C0F00FB1CC8 /* GameState.cpp */; };
+		93DE9753209C3C1000FB1CC8 /* GameState.h in Headers */ = {isa = PBXBuildFile; fileRef = 93DE974F209C3C0F00FB1CC8 /* GameState.h */; };
 		C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */; };
 		C61ADB211FB7DC060024F2EF /* Scenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB201FB7DC060024F2EF /* Scenery.cpp */; };
 		C61ADB231FBBCB8B0024F2EF /* GameBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */; };
@@ -1119,6 +1123,8 @@
 		93CBA4C220A7502E00867D56 /* Imaging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Imaging.cpp; sourceTree = "<group>"; };
 		93CBA4C720A7504400867D56 /* ImageImporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageImporter.cpp; sourceTree = "<group>"; };
 		93CBA4C820A7504500867D56 /* ImageImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageImporter.h; sourceTree = "<group>"; };
+		93DE974E209C3C0F00FB1CC8 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameState.cpp; sourceTree = "<group>"; };
+		93DE974F209C3C0F00FB1CC8 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameState.h; sourceTree = "<group>"; };
 		C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TopToolbar.cpp; sourceTree = "<group>"; };
 		C61ADB201FB7DC060024F2EF /* Scenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scenery.cpp; sourceTree = "<group>"; };
 		C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameBottomToolbar.cpp; sourceTree = "<group>"; };
@@ -2313,6 +2319,8 @@
 				4CC4B8E21FE00C4100660D62 /* CmdlineSprite.cpp */,
 				4CC4B8E31FE00C4200660D62 /* CmdlineSprite.h */,
 				F76C836C1EC4E7CC00FA49E2 /* common.h */,
+				93DE974E209C3C0F00FB1CC8 /* GameState.cpp */,
+				93DE974F209C3C0F00FB1CC8 /* GameState.h */,
 				F76C83761EC4E7CC00FA49E2 /* Context.cpp */,
 				F76C83771EC4E7CC00FA49E2 /* Context.h */,
 				4C5DFF401FAC69D200CB093A /* Date.cpp */,
@@ -3245,6 +3253,7 @@
 				C62D838B1FD36D6F008C04F1 /* EditorObjectSelectionSession.h in Headers */,
 				93CBA4C320A7502E00867D56 /* Imaging.h in Headers */,
 				9308DA05209908090079EE96 /* Surface.h in Headers */,
+				93DE9753209C3C1000FB1CC8 /* GameState.h in Headers */,
 				C6352B841F477022006CCEE3 /* DataSerialiser.h in Headers */,
 				C67B28162002D67A00109C93 /* Window.h in Headers */,
 				C6352B961F477032006CCEE3 /* RideSetStatus.hpp in Headers */,
@@ -3600,6 +3609,7 @@
 				C666ED761F33DBB20061AA04 /* ShortcutKeyChange.cpp in Sources */,
 				C685E51C1F8907850090598F /* Map.cpp in Sources */,
 				F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */,
+				93DE9750209C3C1000FB1CC8 /* GameState.cpp in Sources */,
 				C654DF381F69C0430040F43D /* StaffFirePrompt.cpp in Sources */,
 				C68313D51FDB4F4C006DB3D8 /* Graph.cpp in Sources */,
 				C685E51D1F8907850090598F /* Research.cpp in Sources */,
@@ -3761,6 +3771,7 @@
 				C688790B20289B9B0084B384 /* WoodenWildMouse.cpp in Sources */,
 				F76C86031EC4E88300FA49E2 /* Sprite.cpp in Sources */,
 				C688792320289B9B0084B384 /* MotionSimulator.cpp in Sources */,
+				93DE9751209C3C1000FB1CC8 /* GameState.cpp in Sources */,
 				C68878EF20289B9B0084B384 /* CompactInvertedCoaster.cpp in Sources */,
 				C68878E320289B9B0084B384 /* Android.cpp in Sources */,
 				F76C86051EC4E88300FA49E2 /* Editor.cpp in Sources */,
@@ -3966,6 +3977,7 @@
 				93CBA4CB20A7504500867D56 /* ImageImporter.cpp in Sources */,
 				9346F9DD208A191900C77D91 /* GuestPathfinding.cpp in Sources */,
 				9346F9DA208A191900C77D91 /* Guest.cpp in Sources */,
+				93DE9752209C3C1000FB1CC8 /* GameState.cpp in Sources */,
 				F7D7749E1EC6713200BE6EBC /* Cli.cpp in Sources */,
 				93CBA4C620A7502E00867D56 /* Imaging.cpp in Sources */,
 				9308DA03209908090079EE96 /* Surface.cpp in Sources */,
