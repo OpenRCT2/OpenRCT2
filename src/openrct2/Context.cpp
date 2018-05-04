@@ -698,6 +698,12 @@ namespace OpenRCT2
 
 #ifndef __EMSCRIPTEN__
             _variableFrame = ShouldRunVariableFrame();
+
+            window_close(window_find_by_class(WC_TITLE_LOGO));
+            window_close(window_find_by_class(WC_TITLE_OPTIONS));
+            window_close(window_find_by_class(WC_TITLE_MENU));
+            window_close(window_find_by_class(WC_TITLE_EXIT));
+            title_set_hide_version_info(true);
             do
             {
                 RunFrame();
@@ -715,6 +721,7 @@ namespace OpenRCT2
 
         void RunFrame()
         {
+            platform_advance_ticks();
             // Make sure we catch the state change and reset it.
             bool useVariableFrame = ShouldRunVariableFrame();
             if (_variableFrame != useVariableFrame)

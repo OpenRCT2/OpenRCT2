@@ -106,16 +106,7 @@ static sint32 screenshot_get_next_path(char *path, size_t size)
 #endif
 
     // Glue together path and filename
-    safe_strcpy(path, screenshotPath, size);
-    path_end_with_separator(path, size);
-    auto fileNameCh = strchr(path, '\0');
-    if (fileNameCh == nullptr)
-    {
-        log_error("Unable to generate a screenshot filename.");
-        return -1;
-    }
-    const size_t leftBytes = size - strlen(path);
-    snprintf(fileNameCh, leftBytes, "%s %d-%02d-%02d %02d-%02d-%02d.png", park_name, currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute, currentTime.second);
+    snprintf(path, size, "%s%07u.png", screenshotPath, platform_get_ticks());
 
     if (!platform_file_exists(path)) {
         return 0; // path ok
@@ -130,7 +121,7 @@ static sint32 screenshot_get_next_path(char *path, size_t size)
     sint32 i;
     for (i = 1; i < 1000; i++) {
         // Glue together path and filename
-        snprintf(fileNameCh, leftBytes, "%s %d-%02d-%02d %02d-%02d-%02d (%d).png", park_name, currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute, currentTime.second, i);
+        snprintf(path, size, "%s%u.png", screenshotPath, platform_get_ticks());
 
         if (!platform_file_exists(path)) {
             return i;

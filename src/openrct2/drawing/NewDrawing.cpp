@@ -150,6 +150,7 @@ void drawing_engine_draw()
     {
         _drawingEngine->BeginDraw();
         _painter->Paint(_drawingEngine);
+        _drawingEngine->Screenshot();
         _drawingEngine->EndDraw();
     }
 }

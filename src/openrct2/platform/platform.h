@@ -111,6 +111,7 @@ bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite
 bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath);
 bool platform_file_delete(const utf8 *path);
 uint32 platform_get_ticks();
+void platform_advance_ticks();
 void platform_sleep(uint32 ms);
 void platform_get_openrct_data_path(utf8 *outPath, size_t outSize);
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t outSize);
