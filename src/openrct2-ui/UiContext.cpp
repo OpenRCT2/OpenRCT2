@@ -550,8 +550,11 @@ public:
     void CloseWindow() override
     {
         drawing_engine_dispose();
-        SDL_DestroyWindow(_window);
-        _window = nullptr;
+        if (_window != nullptr)
+        {
+            SDL_DestroyWindow(_window);
+            _window = nullptr;
+        }
     }
 
     void RecreateWindow() override
