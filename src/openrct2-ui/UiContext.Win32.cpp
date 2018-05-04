@@ -224,6 +224,6 @@ namespace OpenRCT2::Ui
     {
         return new Win32Context();
     }
-}
+} // namespace OpenRCT2::Ui
 
 #endif // _WIN32

@@ -385,6 +385,6 @@ namespace OpenRCT2::Ui
     {
         return new LinuxContext();
     }
-}
+} // namespace OpenRCT2::Ui
 
 #endif // __linux__ || __OpenBSD__

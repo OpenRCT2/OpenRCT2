@@ -645,7 +645,7 @@ namespace Config
         }
         return std::string();
     }
-}
+} // namespace Config
 
 GeneralConfiguration         gConfigGeneral;
 InterfaceConfiguration       gConfigInterface;

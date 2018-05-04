@@ -65,4 +65,4 @@ namespace OpenRCT2::Ui
         uint8 Data[CURSOR_BIT_WIDTH * CURSOR_HEIGHT];
         uint8 Mask[CURSOR_BIT_WIDTH * CURSOR_HEIGHT];
     };
-}
+} // namespace OpenRCT2::Ui

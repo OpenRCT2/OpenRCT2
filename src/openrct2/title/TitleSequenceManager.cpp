@@ -312,7 +312,7 @@ namespace TitleSequenceManager
         }
         return false;
     }
-}
+} // namespace TitleSequenceManager
 
 size_t title_sequence_manager_get_count()
 {

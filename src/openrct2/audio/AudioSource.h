@@ -37,4 +37,4 @@ namespace OpenRCT2::Audio
     {
         IAudioSource * CreateNull();
     }
-}
+} // namespace OpenRCT2::Audio

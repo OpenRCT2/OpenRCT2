@@ -47,5 +47,5 @@ namespace OpenRCT2
         IPlatformUiContext * CreatePlatformUiContext();
 
         InGameConsole& GetInGameConsole();
-    }
-}
+    } // namespace Ui
+} // namespace OpenRCT2

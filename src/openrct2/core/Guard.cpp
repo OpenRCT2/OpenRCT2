@@ -38,7 +38,6 @@ void openrct2_assert_fwd(bool expression, const char * message, ...)
     va_end(va);
 }
 
-
 namespace Guard
 {
     constexpr const utf8 * ASSERTION_MESSAGE = "An assertion failed, please report this to the OpenRCT2 developers.";
@@ -156,4 +155,4 @@ namespace Guard
 #endif
     }
 #endif
-}
+} // namespace Guard

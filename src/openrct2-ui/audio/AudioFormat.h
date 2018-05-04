@@ -53,4 +53,4 @@ namespace OpenRCT2::Audio
     {
         return !(lhs == rhs);
     }
-}
+} // namespace OpenRCT2::Audio

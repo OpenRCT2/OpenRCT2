@@ -235,4 +235,4 @@ namespace GameActions
         }
         return result;
     }
-}
+} // namespace GameActions

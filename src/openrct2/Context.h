@@ -114,7 +114,7 @@ namespace OpenRCT2
     IContext * CreateContext();
     IContext * CreateContext(IPlatformEnvironment * env, Audio::IAudioContext * audioContext, Ui::IUiContext * uiContext);
     IContext * GetContext();
-}
+} // namespace OpenRCT2
 
 enum
 {

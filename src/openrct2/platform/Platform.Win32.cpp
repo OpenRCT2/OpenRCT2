@@ -304,6 +304,6 @@ namespace Platform
         while (size >= wExePathCapacity);
         return String::ToUtf8(wExePath.get());
     }
-}
+} // namespace Platform
 
 #endif

@@ -38,4 +38,4 @@ namespace OpenRCT2::Ui
     {
         return new DummyWindowManager();
     }
-}
+} // namespace OpenRCT2::Ui

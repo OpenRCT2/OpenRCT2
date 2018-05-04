@@ -101,5 +101,5 @@ namespace Console
             auto formatLn = std::string(format) + "\n";
             vfprintf(stdout, formatLn.c_str(), args);
         }
-    }
-}
+    } // namespace Error
+} // namespace Console

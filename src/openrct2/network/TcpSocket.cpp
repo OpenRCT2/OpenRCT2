@@ -533,6 +533,6 @@ namespace Convert
     {
         return ntohs(value);
     }
-}
+} // namespace Convert
 
 #endif

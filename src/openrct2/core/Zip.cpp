@@ -158,6 +158,6 @@ namespace Zip
         }
         return result;
     }
-}
+} // namespace Zip
 
 # endif

@@ -96,4 +96,4 @@ namespace OpenRCT2::Ui
     {
         return new DummyUiContext();
     }
-}
+} // namespace OpenRCT2::Ui

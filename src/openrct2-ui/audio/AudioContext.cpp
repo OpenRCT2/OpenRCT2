@@ -98,4 +98,4 @@ namespace OpenRCT2::Audio
     {
         return new AudioContext();
     }
-}
+} // namespace OpenRCT2::Audio

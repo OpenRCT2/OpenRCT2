@@ -108,4 +108,4 @@ namespace CommandLine
 
     exitcode_t HandleCommandConvert(CommandLineArgEnumerator * enumerator);
     exitcode_t HandleCommandUri(CommandLineArgEnumerator * enumerator);
-}
+} // namespace CommandLine

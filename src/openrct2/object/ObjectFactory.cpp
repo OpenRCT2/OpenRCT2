@@ -276,4 +276,4 @@ namespace ObjectFactory
         }
         return result;
     }
-}
+} // namespace ObjectFactory

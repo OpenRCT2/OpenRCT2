@@ -182,6 +182,6 @@ namespace OpenRCT2::Ui
     {
         return new macOSContext();
     }
-}
+} // namespace OpenRCT2::Ui
 
 #endif // __APPLE__ && __MACH__

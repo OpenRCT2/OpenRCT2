@@ -53,7 +53,7 @@ namespace OpenRCT2::Audio
         virtual IAudioSource * GetSoundSource(sint32 id) abstract;
         virtual IAudioSource * GetMusicSource(sint32 id) abstract;
     };
-}
+} // namespace OpenRCT2::Audio
 
 #ifndef DSBPAN_LEFT
 #define DSBPAN_LEFT -10000

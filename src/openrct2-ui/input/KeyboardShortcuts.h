@@ -135,8 +135,8 @@ namespace OpenRCT2
             sint32 GetFromKey(sint32 key);
             void GetKeyboardMapScroll(const uint8 * keysState, sint32 * x, sint32 * y) const;
         };
-    }
-}
+    } // namespace Input
+} // namespace OpenRCT2
 
 /** The current shortcut being changed. */
 extern uint8 gKeyboardShortcutChangeId;

@@ -34,4 +34,4 @@ namespace Debug
 #endif
 #endif
     }
-}
+} // namespace Debug

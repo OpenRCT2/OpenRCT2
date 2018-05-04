@@ -60,4 +60,4 @@ namespace OpenRCT2::Audio
     };
 
     IAudioContext * CreateDummyAudioContext();
-}
+} // namespace OpenRCT2::Audio

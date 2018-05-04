@@ -98,4 +98,4 @@ namespace Memory
         }
         Free(ptr);
     }
-}
+} // namespace Memory

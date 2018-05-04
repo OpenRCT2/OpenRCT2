@@ -48,4 +48,4 @@ namespace RCT1
     const char * GetWaterObject(uint8 waterType);
 
     const std::vector<const char *> GetSceneryObjects(uint8 sceneryType);
-}
+} // namespace RCT1

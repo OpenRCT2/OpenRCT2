@@ -45,4 +45,4 @@ namespace OpenRCT2::Ui
     };
 
     IWindowManager * CreateDummyWindowManager();
-}
+} // namespace OpenRCT2::Ui

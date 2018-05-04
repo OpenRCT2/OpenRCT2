@@ -513,4 +513,4 @@ namespace OpenRCT2::Audio
     {
         return new AudioMixerImpl();
     }
-}
+} // namespace OpenRCT2::Audio

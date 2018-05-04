@@ -58,4 +58,4 @@ namespace Json
         size_t jsonOutputSize = String::SizeOf(jsonOutput);
         fs.Write(jsonOutput, jsonOutputSize);
     }
-}
+} // namespace Json

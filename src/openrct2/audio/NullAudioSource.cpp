@@ -39,4 +39,4 @@ namespace OpenRCT2::Audio
     {
         return new NullAudioSource();
     }
-}
+} // namespace OpenRCT2::Audio

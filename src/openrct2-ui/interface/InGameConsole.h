@@ -53,4 +53,4 @@ namespace OpenRCT2::Ui
         void Invalidate() const;
         sint32 GetNumVisibleLines() const;
     };
-}
+} // namespace OpenRCT2::Ui

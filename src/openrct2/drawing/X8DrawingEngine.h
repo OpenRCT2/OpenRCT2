@@ -25,7 +25,7 @@ namespace OpenRCT2
     namespace Ui
     {
         interface IUiContext;
-    }
+    } // namespace Ui
 
     namespace Drawing
     {
@@ -149,5 +149,5 @@ namespace OpenRCT2
 
             void SetDPI(rct_drawpixelinfo * dpi);
         };
-    }
-}
+    } // namespace Drawing
+} // namespace OpenRCT2

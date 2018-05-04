@@ -80,4 +80,4 @@ namespace OpenRCT2::Drawing
             sint32 xStart,
             sint32 yStart) abstract;
     };
-}
+} // namespace OpenRCT2::Drawing

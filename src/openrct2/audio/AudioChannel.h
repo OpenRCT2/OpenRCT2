@@ -73,4 +73,4 @@ namespace OpenRCT2::Audio
 
         virtual size_t Read(void * dst, size_t len) abstract;
     };
-}
+} // namespace OpenRCT2::Audio

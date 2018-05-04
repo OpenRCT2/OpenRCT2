@@ -295,4 +295,4 @@ namespace OpenRCT2::Audio
     {
         return new (std::nothrow) AudioChannelImpl();
     }
-}
+} // namespace OpenRCT2::Audio

@@ -26,12 +26,12 @@ namespace OpenRCT2
     namespace Drawing
     {
         interface IDrawingEngine;
-    }
+    } // namespace Drawing
 
     namespace Ui
     {
         interface IUiContext;
-    }
+    } // namespace Ui
 
     namespace Paint
     {
@@ -52,5 +52,5 @@ namespace OpenRCT2
             void PaintFPS(rct_drawpixelinfo * dpi);
             void MeasureFPS();
         };
-    }
-}
+    } // namespace Paint
+} // namespace OpenRCT2

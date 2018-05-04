@@ -207,4 +207,4 @@ namespace OpenRCT2::Audio
         }
         return source;
     }
-}
+} // namespace OpenRCT2::Audio
