@@ -270,7 +270,7 @@ namespace ObjectFactory
         try
         {
             auto jRoot = Json::ReadFromFile(path.c_str());
-            CreateObjectFromJson(objectRepository, jRoot);
+            result = CreateObjectFromJson(objectRepository, jRoot);
             json_decref(jRoot);
         }
         catch (const std::runtime_error &err)
