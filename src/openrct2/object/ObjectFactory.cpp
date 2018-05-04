@@ -15,10 +15,12 @@
 #pragma endregion
 
 #include "../core/Console.hpp"
+#include "../core/File.h"
 #include "../core/FileStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
+#include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Zip.h"
 #include "../OpenRCT2.h"
@@ -46,6 +48,7 @@ private:
 
     std::string _objectName;
     bool        _loadImages;
+    std::string _basePath;
     bool        _wasWarning = false;
     bool        _wasError = false;
 
@@ -53,10 +56,11 @@ public:
     bool WasWarning() const { return _wasWarning; }
     bool WasError() const { return _wasError; }
 
-    ReadObjectContext(IObjectRepository& objectRepository, const std::string &objectName, bool loadImages)
+    ReadObjectContext(IObjectRepository& objectRepository, const std::string &objectName, bool loadImages, const std::string& basePath)
         : _objectRepository(objectRepository),
           _objectName(objectName),
-          _loadImages(loadImages)
+          _loadImages(loadImages),
+          _basePath(basePath)
     {
     }
 
@@ -68,6 +72,12 @@ public:
     bool ShouldLoadImages() override
     {
         return _loadImages;
+    }
+
+    std::vector<uint8> GetData(const std::string_view& path) override
+    {
+        auto absolutePath = Path::Combine(_basePath, path.data());
+        return File::ReadAllBytes(absolutePath);
     }
 
     void LogWarning(uint32 code, const utf8 * text) override
@@ -93,7 +103,7 @@ public:
 
 namespace ObjectFactory
 {
-    static Object * CreateObjectFromJson(IObjectRepository& objectRepository, const json_t * jRoot);
+    static Object * CreateObjectFromJson(IObjectRepository& objectRepository, const json_t * jRoot, const std::string_view& basePath);
 
     static void ReadObjectLegacy(Object * object, IReadObjectContext * context, IStream * stream)
     {
@@ -133,7 +143,7 @@ namespace ObjectFactory
             log_verbose("  size: %zu", chunk->GetLength());
 
             auto chunkStream = MemoryStream(chunk->GetData(), chunk->GetLength());
-            auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2Headless);
+            auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2Headless, "");
             ReadObjectLegacy(result, &readContext, &chunkStream);
             if (readContext.WasError())
             {
@@ -159,7 +169,7 @@ namespace ObjectFactory
             utf8 objectName[DAT_NAME_LENGTH + 1];
             object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
 
-            auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2Headless);
+            auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2Headless, "");
             auto chunkStream = MemoryStream(data, dataSize);
             ReadObjectLegacy(result, &readContext, &chunkStream);
 
@@ -250,7 +260,7 @@ namespace ObjectFactory
                 throw JsonException(&jsonLoadError);
             }
 
-            return CreateObjectFromJson(objectRepository, jRoot);
+            return CreateObjectFromJson(objectRepository, jRoot, "");
         }
         catch (const std::exception& e)
         {
@@ -270,7 +280,7 @@ namespace ObjectFactory
         try
         {
             auto jRoot = Json::ReadFromFile(path.c_str());
-            result = CreateObjectFromJson(objectRepository, jRoot);
+            result = CreateObjectFromJson(objectRepository, jRoot, Path::GetDirectory(path));
             json_decref(jRoot);
         }
         catch (const std::runtime_error &err)
@@ -283,7 +293,7 @@ namespace ObjectFactory
         return result;
     }
 
-    Object * CreateObjectFromJson(IObjectRepository& objectRepository, const json_t * jRoot)
+    Object * CreateObjectFromJson(IObjectRepository& objectRepository, const json_t * jRoot, const std::string_view& basePath)
     {
         log_verbose("CreateObjectFromJson(...)");
 
@@ -309,7 +319,7 @@ namespace ObjectFactory
                 memcpy(entry.name, originalName.c_str(), minLength);
 
                 result = CreateObject(entry);
-                auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2Headless);
+                auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2Headless, basePath.data());
                 result->ReadJson(&readContext, jRoot);
                 if (readContext.WasError())
                 {

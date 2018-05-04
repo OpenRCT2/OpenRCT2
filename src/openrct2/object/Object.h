@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <string_view>
+#include <vector>
 #include "../common.h"
 #include "../core/Json.hpp"
 #include "ImageTable.h"
@@ -122,6 +124,7 @@ interface IReadObjectContext
 
     virtual IObjectRepository& GetObjectRepository() abstract;
     virtual bool ShouldLoadImages() abstract;
+    virtual std::vector<uint8> GetData(const std::string_view& path) abstract;
 
     virtual void LogWarning(uint32 code, const utf8 * text) abstract;
     virtual void LogError(uint32 code, const utf8 * text) abstract;

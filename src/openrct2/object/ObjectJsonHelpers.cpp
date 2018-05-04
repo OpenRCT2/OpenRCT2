@@ -26,6 +26,7 @@
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../drawing/ImageImporter.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../PlatformEnvironment.h"
@@ -35,6 +36,7 @@
 #include "ObjectJsonHelpers.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 namespace ObjectJsonHelpers
 {
@@ -314,6 +316,27 @@ namespace ObjectJsonHelpers
                 auto range = ParseRange(name.substr(rangeStart));
                 name = name.substr(0, rangeStart);
                 result = LoadObjectImages(context, name, range);
+            }
+        }
+        else
+        {
+            try
+            {
+                auto imageData = context->GetData(s);
+                auto image = Imaging::ReadFromBuffer(imageData, IMAGE_FORMAT::PNG_32);
+
+                ImageImporter importer;
+                auto importResult = importer.Import(image, 0, 0, ImageImporter::IMPORT_FLAGS::RLE);
+
+                result.push_back(importResult.Element);
+            }
+            catch (const std::exception& e)
+            {
+                auto msg = String::StdFormat("Unable to load image '%s': %s", s.c_str(), e.what());
+                context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, msg.c_str());
+
+                rct_g1_element emptyg1 = { 0 };
+                result.push_back(emptyg1);
             }
         }
         return result;
