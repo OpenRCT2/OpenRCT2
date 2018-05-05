@@ -125,6 +125,7 @@ namespace OpenRCT2
 
         public:
             KeyboardShortcuts(const std::shared_ptr<IPlatformEnvironment>& env);
+            ~KeyboardShortcuts();
 
             void Reset();
             bool Load();

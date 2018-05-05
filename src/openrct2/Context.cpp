@@ -918,35 +918,11 @@ namespace OpenRCT2
         }
     };
 
-    class PlainContext final : public Context
-    {
-        std::shared_ptr<IPlatformEnvironment> _env;
-        std::shared_ptr<IAudioContext> _audioContext;
-        std::shared_ptr<IUiContext> _uiContext;
-
-    public:
-        PlainContext()
-            : PlainContext(CreatePlatformEnvironment(), CreateDummyAudioContext(), CreateDummyUiContext())
-        {
-        }
-
-        PlainContext(
-            const std::shared_ptr<IPlatformEnvironment>& env,
-            const std::shared_ptr<IAudioContext>& audioContext,
-            const std::shared_ptr<IUiContext>& uiContext)
-            : Context(env, audioContext, uiContext),
-              _env(env),
-              _audioContext(audioContext),
-              _uiContext(uiContext)
-        {
-        }
-    };
-
     Context * Context::Instance = nullptr;
 
     std::unique_ptr<IContext> CreateContext()
     {
-        return std::make_unique<PlainContext>();
+        return std::make_unique<Context>(CreatePlatformEnvironment(), CreateDummyAudioContext(), CreateDummyUiContext());
     }
 
     std::unique_ptr<IContext> CreateContext(

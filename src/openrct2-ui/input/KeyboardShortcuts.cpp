@@ -38,6 +38,11 @@ KeyboardShortcuts::KeyboardShortcuts(const std::shared_ptr<IPlatformEnvironment>
     _instance = this;
 }
 
+KeyboardShortcuts::~KeyboardShortcuts()
+{
+    _instance = nullptr;
+}
+
 void KeyboardShortcuts::Reset()
 {
     for (size_t i = 0; i < SHORTCUT_COUNT; i++)
