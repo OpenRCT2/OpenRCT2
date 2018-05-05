@@ -657,7 +657,7 @@ namespace ThemeManager
         auto env = context->GetPlatformEnvironment();
         return env->GetDirectoryPath(DIRBASE::USER, DIRID::THEME);
     }
-}
+} // namespace ThemeManager
 
 void theme_manager_load_available_themes()
 {

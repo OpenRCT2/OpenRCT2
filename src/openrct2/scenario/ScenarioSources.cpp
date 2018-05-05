@@ -419,7 +419,7 @@ namespace ScenarioSources
             }
         }
     }
-}
+} // namespace ScenarioSources
 
 bool scenario_get_source_desc(const utf8 * name, source_desc * outDesc)
 {

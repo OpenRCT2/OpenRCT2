@@ -36,7 +36,7 @@ namespace Editor
     uint8 GetSelectedObjectFlags(sint32 objectType, size_t index);
     void ClearSelectedObject(sint32 objectType, size_t index, uint32 flags);
     void SetSelectedObject(sint32 objectType, size_t index, uint32 flags);
-}
+} // namespace Editor
 
 enum RCT2_EDITOR_STEP
 {

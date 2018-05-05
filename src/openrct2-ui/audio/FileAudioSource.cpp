@@ -21,7 +21,7 @@
 #include "AudioContext.h"
 #include "AudioFormat.h"
 
-namespace OpenRCT2 { namespace Audio
+namespace OpenRCT2::Audio
 {
     /**
      * An audio source where raw PCM data is streamed directly from
@@ -207,4 +207,4 @@ namespace OpenRCT2 { namespace Audio
         }
         return source;
     }
-} }
+} // namespace OpenRCT2::Audio

@@ -554,7 +554,7 @@ namespace Twitch
             news_item_add_to_queue_raw(NEWS_ITEM_BLANK, buffer, 0);
         }
     }
-}
+} // namespace Twitch
 
 void twitch_update()
 {

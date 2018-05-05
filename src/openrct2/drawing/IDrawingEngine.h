@@ -40,7 +40,7 @@ enum DRAWING_ENGINE_FLAGS
 struct rct_drawpixelinfo;
 struct rct_palette_entry;
 
-namespace OpenRCT2 { namespace Drawing
+namespace OpenRCT2::Drawing
 {
     interface IDrawingContext;
 
@@ -80,4 +80,4 @@ namespace OpenRCT2 { namespace Drawing
             sint32 xStart,
             sint32 yStart) abstract;
     };
-} }
+} // namespace OpenRCT2::Drawing

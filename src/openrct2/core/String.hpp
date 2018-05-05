@@ -33,7 +33,7 @@ namespace CODE_PAGE
     constexpr sint32 CP_950 = 950;      // ANSI/OEM Traditional Chinese (Taiwan; Hong Kong SAR, PRC); Chinese Traditional (Big5)
     constexpr sint32 CP_1252 = 1252;    // ANSI Latin 1; Western European (Windows)
     constexpr sint32 CP_UTF8 = 65001;   // Unicode (UTF-8)
-}
+} // namespace CODE_PAGE
 
 namespace String
 {
@@ -110,4 +110,4 @@ namespace String
      * Converts a multi-byte string from one code page to another.
      */
     std::string Convert(const std::string_view& src, sint32 srcCodePage, sint32 dstCodePage);
-}
+} // namespace String

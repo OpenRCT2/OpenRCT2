@@ -274,4 +274,4 @@ namespace Path
 #endif
         return result;
     }
-}
+} // namespace Path

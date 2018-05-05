@@ -54,4 +54,4 @@ namespace Path
      * Note: This will not resolve the case for Windows.
      */
     std::string ResolveCasing(const std::string &path);
-}
+} // namespace Path

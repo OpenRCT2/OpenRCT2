@@ -84,4 +84,4 @@ namespace OpenRCT2
 
     IPlatformEnvironment * CreatePlatformEnvironment(DIRBASE_VALUES basePaths);
     IPlatformEnvironment * CreatePlatformEnvironment();
-}
+} // namespace OpenRCT2

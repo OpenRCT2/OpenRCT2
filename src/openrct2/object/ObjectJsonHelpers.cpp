@@ -371,4 +371,4 @@ namespace ObjectJsonHelpers
             }
         }
     }
-}
+} // namespace ObjectJsonHelpers

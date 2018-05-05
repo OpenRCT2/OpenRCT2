@@ -46,4 +46,4 @@ namespace Platform
     std::string FormatTime(std::time_t timestamp);
 
     bool IsColourTerminalSupported();
-}
+} // namespace Platform

@@ -26,54 +26,54 @@
 
 #include <SDL.h>
 
-namespace OpenRCT2 { namespace Ui
+namespace OpenRCT2::Ui
+{
+
+    class AndroidContext final : public IPlatformUiContext
     {
+    private:
 
-        class AndroidContext final : public IPlatformUiContext
+    public:
+        AndroidContext()
         {
-        private:
-
-        public:
-            AndroidContext()
-            {
-            }
-
-            void SetWindowIcon(SDL_Window * window) override
-            {
-            }
-
-            bool IsSteamOverlayAttached() override
-            {
-                return false;
-            }
-
-            void ShowMessageBox(SDL_Window * window, const std::string &message) override
-            {
-                log_verbose(message.c_str());
-
-                STUB();
-            }
-
-            std::string ShowFileDialog(SDL_Window * window, const FileDialogDesc &desc) override
-            {
-                STUB();
-
-                return nullptr;
-            }
-
-            std::string ShowDirectoryDialog(SDL_Window * window, const std::string &title) override
-            {
-                log_info(title.c_str());
-                STUB();
-
-                return "/sdcard/rct2";
-            }
-        };
-
-        IPlatformUiContext * CreatePlatformUiContext()
-        {
-            return new AndroidContext();
         }
-    } }
+
+        void SetWindowIcon(SDL_Window * window) override
+        {
+        }
+
+        bool IsSteamOverlayAttached() override
+        {
+            return false;
+        }
+
+        void ShowMessageBox(SDL_Window * window, const std::string &message) override
+        {
+            log_verbose(message.c_str());
+
+            STUB();
+        }
+
+        std::string ShowFileDialog(SDL_Window * window, const FileDialogDesc &desc) override
+        {
+            STUB();
+
+            return nullptr;
+        }
+
+        std::string ShowDirectoryDialog(SDL_Window * window, const std::string &title) override
+        {
+            log_info(title.c_str());
+            STUB();
+
+            return "/sdcard/rct2";
+        }
+    };
+
+    IPlatformUiContext * CreatePlatformUiContext()
+    {
+        return new AndroidContext();
+    }
+}
 
 #endif // __ANDROID__

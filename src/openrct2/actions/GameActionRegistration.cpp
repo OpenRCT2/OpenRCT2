@@ -55,4 +55,4 @@ namespace GameActions
         Register<ParkSetNameAction>();
         Register<BannerSetNameAction>();
     }
-}
+} // namespace GameActions

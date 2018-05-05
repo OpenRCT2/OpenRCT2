@@ -1427,5 +1427,5 @@ namespace RCT1
         };
         return map[sceneryType];
     }
-}
+} // namespace RCT1
 // clang-format on

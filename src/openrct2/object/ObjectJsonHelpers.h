@@ -54,4 +54,4 @@ namespace ObjectJsonHelpers
         }
         return flags;
     }
-};
+} // namespace ObjectJsonHelpers

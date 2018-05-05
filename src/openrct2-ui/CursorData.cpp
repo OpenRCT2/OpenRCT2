@@ -17,7 +17,7 @@
 #include <openrct2/interface/Cursors.h>
 #include "CursorRepository.h"
 
-namespace OpenRCT2 { namespace Ui
+namespace OpenRCT2::Ui
 {
     static constexpr const CursorData BlankCursorData =
     {
@@ -664,4 +664,4 @@ namespace OpenRCT2 { namespace Ui
         }
         return result;
     }
-} }
+}

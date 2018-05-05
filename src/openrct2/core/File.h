@@ -30,4 +30,4 @@ namespace File
     void WriteAllBytes(const std::string &path, const void * buffer, size_t length);
     std::vector<std::string> ReadAllLines(const std::string &path);
     uint64 GetLastModified(const std::string &path);
-}
+} // namespace File

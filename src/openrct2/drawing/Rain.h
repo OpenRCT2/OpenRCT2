@@ -20,9 +20,9 @@
 
 struct rct_drawpixelinfo;
 
-namespace OpenRCT2 { namespace Drawing
+namespace OpenRCT2::Drawing
 {
     interface IRainDrawer;
-} }
+}
 
 void DrawRain(rct_drawpixelinfo * dpi, OpenRCT2::Drawing::IRainDrawer * rainDrawer);

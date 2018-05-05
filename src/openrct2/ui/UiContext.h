@@ -30,7 +30,7 @@ namespace OpenRCT2
     {
         enum class  DRAWING_ENGINE_TYPE;
         interface   IDrawingEngine;
-    }
+    } // namespace Drawing
 
     namespace Ui
     {
@@ -150,5 +150,5 @@ namespace OpenRCT2
         };
 
         IUiContext * CreateDummyUiContext();
-    }
-}
+    } // namespace Ui
+} // namespace OpenRCT2

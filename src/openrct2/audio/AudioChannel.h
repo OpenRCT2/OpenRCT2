@@ -18,7 +18,7 @@
 
 #include "../common.h"
 
-namespace OpenRCT2 { namespace Audio
+namespace OpenRCT2::Audio
 {
     interface IAudioSource;
 
@@ -73,4 +73,4 @@ namespace OpenRCT2 { namespace Audio
 
         virtual size_t Read(void * dst, size_t len) abstract;
     };
-} }
+} // namespace OpenRCT2::Audio

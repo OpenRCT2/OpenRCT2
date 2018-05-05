@@ -836,6 +836,6 @@ namespace
         shortcut_view_clipping,
         shortcut_highlight_path_issues_toggle,
     };
-}
+} // anonymous namespace
 
 #pragma endregion

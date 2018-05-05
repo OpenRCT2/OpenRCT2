@@ -252,4 +252,4 @@ namespace GameActions
         Register(T::TYPE, factory);
         return factory;
     }
-}
+} // namespace GameActions

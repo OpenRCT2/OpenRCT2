@@ -561,4 +561,4 @@ namespace String
         return std::string(src);
 #endif
     }
-}
+} // namespace String

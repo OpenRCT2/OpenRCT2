@@ -19,7 +19,7 @@
 #include <openrct2/common.h>
 #include <SDL2/SDL.h>
 
-namespace OpenRCT2 { namespace Audio
+namespace OpenRCT2::Audio
 {
     /**
      * Represents the size, frequency and number of channels for
@@ -53,4 +53,4 @@ namespace OpenRCT2 { namespace Audio
     {
         return !(lhs == rhs);
     }
-} }
+} // namespace OpenRCT2::Audio

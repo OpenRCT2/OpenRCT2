@@ -550,7 +550,7 @@ namespace CommandLine
         }
         return nullptr;
     }
-}
+} // namespace CommandLine
 
 sint32 cmdline_run(const char * * argv, sint32 argc)
 {

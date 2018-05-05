@@ -63,4 +63,4 @@ namespace SawyerEncoding
             return false;
         }
     }
-}
+} // namespace SawyerEncoding

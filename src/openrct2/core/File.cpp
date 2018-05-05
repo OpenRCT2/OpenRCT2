@@ -132,7 +132,7 @@ namespace File
 #endif
         return lastModified; 
     }
-}
+} // namespace File
 
 bool readentirefile(const utf8 * path, void * * outBuffer, size_t * outLength)
 {

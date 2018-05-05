@@ -624,4 +624,4 @@ namespace LanguagePackFactory
         auto languagePack = LanguagePack::FromText(id, text);
         return languagePack;
     }
-}
+} // namespace LanguagePackFactory
