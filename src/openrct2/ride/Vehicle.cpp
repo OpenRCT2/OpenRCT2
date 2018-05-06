@@ -1819,9 +1819,10 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
     if (ride_get_entrance_location(ride, ride->current_test_station).isNull())
         return;
 
-    sint16 x, y;
+    sint16 x, y, z;
     x = vehicle->x;
     y = vehicle->y;
+    z = vehicle->z;
 
     if (x == LOCATION_NULL)
     {
@@ -1830,12 +1831,20 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
     }
 
     rct_tile_element * tile_element = map_get_surface_element_at({x, y});
-    if (tile_element->base_height * 8 <= vehicle->z)
+    // If vehicle above ground.
+    if (tile_element->base_height * 8 <= z) 
     {
+        // Set tile_element to first element. Since elements aren't always ordered by base height,
+        // we must start at the first element and iterate through each tile element.
+        tile_element = map_get_first_element_at(x / 32, y / 32);
 
         bool cover_found = false;
         do
         {
+            // If the tile_element is lower than the vehicle, continue (don't set flag)
+            if (tile_element->base_height * 8 <= z)
+                continue;
+
             if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
             {
                 cover_found = true;
@@ -1857,6 +1866,7 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
                 cover_found = true;
                 break;
             }
+            // Iterate through each tile_element. 
         } while (!tile_element_is_last_for_tile(tile_element++));
 
         if (cover_found == false)
