@@ -1,5 +1,5 @@
 # CMAKE project for libopenrct2 (core OpenRCT2 component)
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.7)
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif ()
@@ -58,6 +58,9 @@ if (NOT DISABLE_TTF)
     endif ()
 endif ()
 
+# For unicode code page conversion.
+find_package(ICU 59.0 REQUIRED COMPONENTS uc)
+
 # Sources
 file(GLOB_RECURSE OPENRCT2_CORE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
                                         "${CMAKE_CURRENT_LIST_DIR}/*.h"
@@ -78,12 +81,14 @@ if (STATIC)
     target_link_libraries(${PROJECT} ${JANSSON_STATIC_LIBRARIES}
                                      ${PNG_STATIC_LIBRARIES}
                                      ${ZLIB_STATIC_LIBRARIES}
-                                     ${LIBZIP_STATIC_LIBRARIES})
+                                     ${LIBZIP_STATIC_LIBRARIES}
+                                     ${ICU_STATIC_LIBRARIES})
 else ()
     target_link_libraries(${PROJECT} ${JANSSON_LIBRARIES}
                                      ${PNG_LIBRARIES}
                                      ${ZLIB_LIBRARIES}
-                                     ${LIBZIP_LIBRARIES})
+                                     ${LIBZIP_LIBRARIES}
+                                     ${ICU_LIBRARIES})
 endif ()
 
 if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")

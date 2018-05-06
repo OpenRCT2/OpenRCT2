@@ -17,6 +17,9 @@
 #include <cwctype>
 #include <stdexcept>
 #include <vector>
+#ifndef _WIN32
+#include <unicode/unistr.h>
+#endif
 
 #ifdef _WIN32
 #ifndef NOMINMAX
@@ -26,6 +29,8 @@
 #include <windows.h>
 #endif
 
+#include "../common.h"
+#include "../localisation/ConversionTables.h"
 #include "../localisation/Language.h"
 #include "../util/Util.h"
 
@@ -567,8 +572,52 @@ namespace String
 
         return dst;
 #else
+        const char* codepage;
+        switch (srcCodePage)
+        {
+        case CODE_PAGE::CP_932:
+            codepage = "windows-932";
+            break;
+
+        case CODE_PAGE::CP_936:
+            codepage = "GB2312";
+            break;
+
+        case CODE_PAGE::CP_949:
+            codepage = "windows-949";
+            break;
+
+        case CODE_PAGE::CP_950:
+            codepage = "big5";
+            break;
+
+        default:
+            throw std::runtime_error("Unsupported code page: " + std::to_string(srcCodePage));
+        }
+
+        icu::UnicodeString convertString(src.data(), codepage);
+        std::string result;
+
+        if (dstCodePage == CODE_PAGE::CP_UTF8)
+            convertString.toUTF8String(result);
+        return result;
+#endif
+    }
+
+    std::string ToUpper(const utf8 * src)
+    {
+#ifdef _WIN32
+        // TODO: LCMapStringEx on Windows.
         STUB();
-        return std::string(src);
+        return String::ToStd(src);
+#else
+        icu::UnicodeString str = icu::UnicodeString::fromUTF8(src);
+        str.toUpper();
+
+        std::string res;
+        str.toUTF8String(res);
+
+        return res;
 #endif
     }
 } // namespace String

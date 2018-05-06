@@ -151,39 +151,16 @@ static std::string DecodeConvertWithTable(const std::string_view& src, TConvertF
 std::string rct2_to_utf8(const std::string_view& src, RCT2LanguageId languageId)
 {
     auto codePage = GetCodePageForRCT2Language(languageId);
-
-    std::string result;
-    switch (codePage)
+    if (codePage == CODE_PAGE::CP_1252)
     {
-        case CODE_PAGE::CP_1252:
-            // The code page used by RCT2 was not quite 1252 as some codes were used for Polish characters.
-            result = DecodeConvertWithTable(src, encoding_convert_rct2_to_unicode);
-            break;
-
-#ifdef _WIN32
-        default:
-            auto decoded = DecodeToMultiByte(src);
-            result = String::Convert(decoded, codePage, CODE_PAGE::CP_UTF8);
-#else
-        // TODO Change this to use a library such as libicu
-        case CODE_PAGE::CP_932:
-            result = DecodeConvertWithTable(src, encoding_convert_cp932_to_unicode);
-            break;
-        case CODE_PAGE::CP_936:
-            result = DecodeConvertWithTable(src, encoding_convert_gb2312_to_unicode);
-            break;
-        case CODE_PAGE::CP_949:
-            result = DecodeConvertWithTable(src, encoding_convert_cp949_to_unicode);
-            break;
-        case CODE_PAGE::CP_950:
-            result = DecodeConvertWithTable(src, encoding_convert_big5_to_unicode);
-            break;
-        default:
-            throw std::runtime_error("Unsupported code page: " + std::to_string(codePage));
-            break;
-#endif
+        // The code page used by RCT2 was not quite 1252 as some codes were used for Polish characters.
+        return DecodeConvertWithTable(src, encoding_convert_rct2_to_unicode);
     }
-    return result;
+    else
+    {
+        auto decoded = DecodeToMultiByte(src);
+        return String::Convert(decoded, codePage, CODE_PAGE::CP_UTF8);
+    }
 }
 
 std::string utf8_to_rct2(const std::string_view& src)
