@@ -1882,7 +1882,7 @@ sint32 guest_path_finding(rct_peep * peep)
         return guest_surface_path_finding(peep);
     }
 
-    TileCoordsXYZ loc = { peep->next_x / 32, peep->next_y / 32, peep->next_z / 8};
+    TileCoordsXYZ loc = { peep->next_x / 32, peep->next_y / 32, peep->next_z};
 
     rct_tile_element * tileElement = map_get_path_element_at(loc.x, loc.y, loc.z);
     if (tileElement == nullptr)
