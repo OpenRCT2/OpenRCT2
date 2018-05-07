@@ -233,7 +233,7 @@ static bool sprite_file_export(sint32 spriteIndex, const char *outPath)
         gfx_bmp_sprite_to_buffer((uint8*)spriteFilePalette, spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height, spriteHeader->width, IMAGE_TYPE_DEFAULT);
     }
 
-    if (image_io_png_write(&dpi, (rct_palette*)spriteFilePalette, outPath)) {
+    if (Imaging::PngWrite(&dpi, (rct_palette*)spriteFilePalette, outPath)) {
         return true;
     } else {
         fprintf(stderr, "Error writing PNG");
@@ -303,7 +303,7 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
     uint8 *pixels;
     uint32 width, height;
     sint32 bitDepth;
-    if (!image_io_png_read(&pixels, &width, &height, !keep_palette, path, &bitDepth))
+    if (!Imaging::PngRead(&pixels, &width, &height, !keep_palette, path, &bitDepth))
     {
         fprintf(stderr, "Error reading PNG\n");
         return false;

@@ -656,7 +656,7 @@ bool mapgen_load_heightmap(const utf8 * path)
     if (String::Equals(extension, ".png", false))
     {
         sint32 bitDepth;
-        if (!image_io_png_read(&pixels, &width, &height, true, path, &bitDepth))
+        if (!Imaging::PngRead(&pixels, &width, &height, true, path, &bitDepth))
         {
             log_warning("Error reading PNG");
             context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG);

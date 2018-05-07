@@ -153,7 +153,7 @@ sint32 screenshot_dump_png(rct_drawpixelinfo *dpi)
     rct_palette renderedPalette;
     screenshot_get_rendered_palette(&renderedPalette);
 
-    if (image_io_png_write(dpi, &renderedPalette, path)) {
+    if (Imaging::PngWrite(dpi, &renderedPalette, path)) {
         return index;
     } else {
         return -1;
@@ -169,7 +169,7 @@ sint32 screenshot_dump_png_32bpp(sint32 width, sint32 height, const void *pixels
         return -1;
     }
 
-    if (image_io_png_write_32bpp(width, height, pixels, path)) {
+    if (Imaging::PngWrite32bpp(width, height, pixels, path)) {
         return index;
     } else {
         return -1;
@@ -259,7 +259,7 @@ void screenshot_giant()
     rct_palette renderedPalette;
     screenshot_get_rendered_palette(&renderedPalette);
 
-    image_io_png_write(&dpi, &renderedPalette, path);
+    Imaging::PngWrite(&dpi, &renderedPalette, path);
 
     free(dpi.bits);
 
@@ -576,7 +576,7 @@ sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOption
         rct_palette renderedPalette;
         screenshot_get_rendered_palette(&renderedPalette);
 
-        image_io_png_write(&dpi, &renderedPalette, outputPath);
+        Imaging::PngWrite(&dpi, &renderedPalette, outputPath);
 
         free(dpi.bits);
         drawing_engine_dispose();
