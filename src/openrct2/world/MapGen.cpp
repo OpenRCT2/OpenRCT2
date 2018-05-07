@@ -25,7 +25,7 @@
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "../Game.h"
-#include "../Imaging.h"
+#include "../core/Imaging.h"
 #include "../localisation/StringIds.h"
 #include "../object/Object.h"
 #include "../platform/platform.h"

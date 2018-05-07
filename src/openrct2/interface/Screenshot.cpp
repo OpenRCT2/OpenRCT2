@@ -21,7 +21,7 @@
 #include "../audio/audio.h"
 #include "../Context.h"
 #include "../core/Console.hpp"
-#include "../Imaging.h"
+#include "../core/Imaging.h"
 #include "../OpenRCT2.h"
 #include "Screenshot.h"
 

@@ -18,12 +18,12 @@
 
 #include <algorithm>
 #include <png.h>
-#include "core/FileStream.hpp"
-#include "core/Guard.hpp"
-#include "core/Memory.hpp"
-#include "drawing/Drawing.h"
-
+#include "FileStream.hpp"
+#include "Guard.hpp"
 #include "Imaging.h"
+#include "Memory.hpp"
+#include "../drawing/Drawing.h"
+
 
 namespace Imaging
 {

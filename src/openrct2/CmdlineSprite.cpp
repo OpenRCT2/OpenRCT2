@@ -21,7 +21,7 @@
 #include <jansson.h>
 #include "CmdlineSprite.h"
 #include "drawing/Drawing.h"
-#include "Imaging.h"
+#include "core/Imaging.h"
 #include "localisation/Language.h"
 #include "OpenRCT2.h"
 #include "platform/platform.h"
