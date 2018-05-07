@@ -492,17 +492,15 @@ private:
         auto directory = Path::GetDirectory(dstPath);
         platform_ensure_directory_exists(directory.c_str());
 
-        size_t length;
-        auto mpdat = (uint8 *)(File::ReadAllBytes(srcPath, &length));
+        auto mpdat = File::ReadAllBytes(srcPath);
 
         // Rotate each byte of mp.dat left by 4 bits to convert
-        for (size_t i = 0; i < length; i++)
+        for (size_t i = 0; i < mpdat.size(); i++)
         {
             mpdat[i] = rol8(mpdat[i], 4);
         }
 
-        File::WriteAllBytes(dstPath, mpdat, length);
-        Memory::FreeArray(mpdat, length);
+        File::WriteAllBytes(dstPath, mpdat.data(), mpdat.size());
     }
 
     void AddScenario(const scenario_index_entry &entry)
