@@ -398,7 +398,7 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
 
             if (irg != nullptr)
             {
-                if (RideGroupManager::RideGroupsAreEqual(irg, rideGroup))
+                if (irg->Equals(rideGroup))
                 {
                     rideGroupIndex = i;
                     break;

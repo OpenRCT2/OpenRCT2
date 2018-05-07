@@ -217,7 +217,7 @@ void research_finish_item(rct_research_item * researchItem)
             {
                 const RideGroup * rideGroup = RideGroupManager::GetRideGroup(base_ride_type, rideEntry);
 
-                if (RideGroupManager::RideGroupIsInvented(rideGroup))
+                if (rideGroup->IsInvented())
                 {
                     ride_group_was_invented_before = true;
                 }

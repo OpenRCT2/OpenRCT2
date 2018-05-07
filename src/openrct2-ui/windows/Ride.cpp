@@ -2732,7 +2732,7 @@ static void window_ride_vehicle_mousedown(rct_window *w, rct_widgetindex widgetI
                     rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
                     currentRideGroup = RideGroupManager::GetRideGroup(ride->type, currentRideEntry);
 
-                    if (!RideGroupManager::RideGroupsAreEqual(rideGroup, currentRideGroup))
+                    if (!rideGroup->Equals(currentRideGroup))
                         continue;
                 }
 
