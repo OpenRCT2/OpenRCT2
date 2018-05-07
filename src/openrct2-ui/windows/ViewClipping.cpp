@@ -15,14 +15,15 @@
 #pragma endregion
 
 #include <cmath>
-
-#include <openrct2/config/Config.h>
-#include <openrct2-ui/windows/Window.h>
-
-#include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/Input.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/paint/Paint.h>
+#include <openrct2/world/Location.hpp>
 
 enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -32,7 +33,8 @@ enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
     WIDX_CLIP_HEIGHT_VALUE,
     WIDX_CLIP_HEIGHT_INCREASE,
     WIDX_CLIP_HEIGHT_DECREASE,
-    WIDX_CLIP_HEIGHT_SLIDER
+    WIDX_CLIP_HEIGHT_SLIDER,
+    WIDX_CLIP_SELECTOR,
 };
 
 enum class DISPLAY_TYPE {
@@ -56,8 +58,15 @@ static rct_widget window_view_clipping_widgets[] = {
     { WWT_BUTTON,           0,  138,        148,    35, 39,     STR_NUMERIC_UP,             STR_NONE }, // clip height increase
     { WWT_BUTTON,           0,  138,        148,    40, 44,     STR_NUMERIC_DOWN,           STR_NONE }, // clip height decrease
     { WWT_SCROLL,       0,  11,     149,    49, 61,     SCROLL_HORIZONTAL,          STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP }, // clip height scrollbar
+    { WWT_BUTTON,       0,  11,     149,    61, 73,     STR_NONE,                   STR_NONE }, // selector
     { WIDGETS_END }
 };
+
+#pragma endregion
+
+#pragma region Members
+
+static LocationXY16 _selectionStart;
 
 #pragma endregion
 
@@ -66,6 +75,9 @@ static rct_widget window_view_clipping_widgets[] = {
 static void window_view_clipping_close_button(rct_window *w);
 static void window_view_clipping_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_view_clipping_update(rct_window *w);
+static void window_view_clipping_tool_down(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_view_clipping_tool_drag(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_view_clipping_tool_up(struct rct_window*, rct_widgetindex, sint32, sint32);
 static void window_view_clipping_invalidate(rct_window *w);
 static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_view_clipping_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
@@ -82,9 +94,9 @@ static rct_window_event_list window_view_clipping_events = {
     nullptr,
     nullptr,
     nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
+    window_view_clipping_tool_down,
+    window_view_clipping_tool_drag,
+    window_view_clipping_tool_up,
     nullptr,
     nullptr,
     window_view_clipping_scrollgetsize,
@@ -133,7 +145,8 @@ rct_window * window_view_clipping_open()
         (1ULL << WIDX_CLIP_HEIGHT_VALUE) |
         (1ULL << WIDX_CLIP_HEIGHT_INCREASE) |
         (1ULL << WIDX_CLIP_HEIGHT_DECREASE) |
-        (1ULL << WIDX_CLIP_HEIGHT_SLIDER);
+        (1ULL << WIDX_CLIP_HEIGHT_SLIDER) |
+        (1ULL << WIDX_CLIP_SELECTOR);
 
     window_init_scroll_widgets(window);
 
@@ -144,7 +157,7 @@ rct_window * window_view_clipping_open()
 
     // Turn on view clipping when the window is opened.
     if (mainWindow != nullptr) {
-        mainWindow->viewport->flags |= VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
+        mainWindow->viewport->flags |= VIEWPORT_FLAG_CLIP_VIEW;
         window_invalidate(mainWindow);
     }
 
@@ -156,7 +169,7 @@ static void window_view_clipping_close()
     // Turn off view clipping when the window is closed.
     rct_window *mainWindow = window_get_main();
     if (mainWindow != nullptr) {
-        mainWindow->viewport->flags &= ~VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
+        mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CLIP_VIEW;
         window_invalidate(mainWindow);
     }
 
@@ -180,7 +193,7 @@ static void window_view_clipping_mouseup(rct_window *w, rct_widgetindex widgetIn
         // Toggle height clipping.
         mainWindow = window_get_main();
         if (mainWindow != nullptr) {
-            mainWindow->viewport->flags ^= VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
+            mainWindow->viewport->flags ^= VIEWPORT_FLAG_CLIP_VIEW;
             window_invalidate(mainWindow);
         }
         window_invalidate(w);
@@ -211,7 +224,28 @@ static void window_view_clipping_mouseup(rct_window *w, rct_widgetindex widgetIn
         }
         window_invalidate(w);
         break;
+    case WIDX_CLIP_SELECTOR:
+        // Activate the selection tool
+        tool_set(w, WIDX_BACKGROUND, TOOL_CROSSHAIR);
+
+        // Reset clip selection to show all tiles
+        gClipXMin = 0;
+        gClipXMax = MAXIMUM_MAP_SIZE_TECHNICAL - 1;
+        gClipYMin = 0;
+        gClipYMax = MAXIMUM_MAP_SIZE_TECHNICAL - 1;
+        gfx_invalidate_screen();
+        break;
     }
+}
+
+// Returns true when the tool is active
+static bool window_view_clipping_tool_is_active()
+{
+    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+        return false;
+    if (gCurrentToolWidget.window_classification != WC_VIEW_CLIPPING)
+        return false;
+    return true;
 }
 
 static void window_view_clipping_update(rct_window *w)
@@ -229,7 +263,54 @@ static void window_view_clipping_update(rct_window *w)
             window_invalidate(mainWindow);
         }
     }
+
+    if (window_view_clipping_tool_is_active())
+    {
+        // TODO: Deactivate selection tool and restore previous selection
+    }
+
     widget_invalidate(w, WIDX_CLIP_HEIGHT_SLIDER);
+}
+
+static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+{
+    sint16 mapX = x;
+    sint16 mapY = y;
+    sint32 direction;
+    screen_pos_to_map_pos(&mapX, &mapY, &direction);
+    if (mapX != LOCATION_NULL)
+    {
+        _selectionStart = { mapX, mapY };
+    }
+}
+
+static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+{
+    sint16 mapX = x;
+    sint16 mapY = y;
+    sint32 direction;
+    screen_pos_to_map_pos(&mapX, &mapY, &direction);
+    if (mapX != LOCATION_NULL)
+    {
+        map_invalidate_selection_rect();
+        gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+        gMapSelectPositionA.x = std::min(_selectionStart.x, mapX);
+        gMapSelectPositionB.x = std::max(_selectionStart.x, mapX);
+        gMapSelectPositionA.y = std::min(_selectionStart.y, mapY);
+        gMapSelectPositionB.y = std::max(_selectionStart.y, mapY);
+        gMapSelectType = MAP_SELECT_TYPE_FULL;
+        map_invalidate_selection_rect();
+    }
+}
+
+static void window_view_clipping_tool_up(struct rct_window*, rct_widgetindex, sint32, sint32)
+{
+    gClipXMin = gMapSelectPositionA.x / 32;
+    gClipXMax = gMapSelectPositionB.x / 32;
+    gClipYMin = gMapSelectPositionA.y / 32;
+    gClipYMax = gMapSelectPositionB.y / 32;
+    tool_cancel();
+    gfx_invalidate_screen();
 }
 
 static void window_view_clipping_invalidate(rct_window *w)
@@ -238,7 +319,7 @@ static void window_view_clipping_invalidate(rct_window *w)
 
     rct_window *mainWindow = window_get_main();
     if (mainWindow != nullptr) {
-        widget_set_checkbox_value(w, WIDX_CLIP_HEIGHT_CHECKBOX, mainWindow->viewport->flags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT);
+        widget_set_checkbox_value(w, WIDX_CLIP_HEIGHT_CHECKBOX, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
     }
 }
 

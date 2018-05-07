@@ -879,7 +879,7 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
 {
     gCurrentViewportFlags = viewFlags;
 
-    if (viewFlags & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT)) {
+    if (viewFlags & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_CLIP_VIEW)) {
         uint8 colour = 10;
         if (viewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES) {
             colour = 0;
