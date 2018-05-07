@@ -17,60 +17,105 @@
 #pragma warning(disable : 4611) // interaction between '_setjmp' and C++ object destruction is non-portable
 
 #include <algorithm>
+#include <fstream>
+#include <stdexcept>
+#include <streambuf>
 #include <png.h>
 #include "FileStream.hpp"
 #include "Guard.hpp"
 #include "Imaging.h"
 #include "Memory.hpp"
+#include "String.hpp"
 #include "../drawing/Drawing.h"
 
+template<typename T>
+class ivstream : public std::istream
+{
+private:
+    class vector_streambuf : public std::basic_streambuf<char, std::char_traits<char>>
+    {
+    public:
+        explicit vector_streambuf(const std::vector<T>& vec)
+        {
+            this->setg((char *)vec.data(), (char *)vec.data(), (char *)(vec.data() + vec.size()));
+        }
+    };
+
+    vector_streambuf _streambuf;
+
+public:
+    ivstream(const std::vector<T>& vec)
+        : std::istream(&_streambuf),
+          _streambuf(vec)
+    {
+    }
+};
 
 namespace Imaging
 {
-    static void PngReadData(png_structp png_ptr, png_bytep data, png_size_t length);
-    static void PngWriteData(png_structp png_ptr, png_bytep data, png_size_t length);
-    static void PngFlush(png_structp png_ptr);
-    static void PngWarning(png_structp png_ptr, const char * b);
-    static void PngError(png_structp png_ptr, const char * b);
+    constexpr auto EXCEPTION_IMAGE_FORMAT_UNSUPPORTED = "Unsupported image format.";
+    constexpr auto EXCEPTION_IMAGE_FORMAT_UNKNOWN = "Unknown image format.";
 
-    bool PngRead(uint8 * * pixels, uint32 * width, uint32 * height, bool expand, const utf8 * path, sint32 * bitDepth)
+    static void PngReadData(png_structp png_ptr, png_bytep data, png_size_t length)
+    {
+        auto istream = static_cast<std::istream *>(png_get_io_ptr(png_ptr));
+        istream->read((char *)data, length);
+    }
+
+    static void PngWriteData(png_structp png_ptr, png_bytep data, png_size_t length)
+    {
+        auto ostream = static_cast<std::ostream *>(png_get_io_ptr(png_ptr));
+        ostream->write((const char *)data, length);
+    }
+
+    static void PngFlush(png_structp png_ptr)
+    {
+        auto ostream = static_cast<std::ostream *>(png_get_io_ptr(png_ptr));
+        ostream->flush();
+    }
+
+    static void PngWarning(png_structp, const char * b)
+    {
+        log_warning(b);
+    }
+
+    static void PngError(png_structp, const char * b)
+    {
+        log_error(b);
+    }
+
+    static Image ReadPng(std::istream& istream, bool expandTo32)
     {
         png_structp png_ptr;
         png_infop info_ptr;
 
-        // Setup PNG structures
-        png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
-        if (png_ptr == nullptr)
-        {
-            return false;
-        }
-
-        info_ptr = png_create_info_struct(png_ptr);
-        if (info_ptr == nullptr)
-        {
-            png_destroy_read_struct(&png_ptr, nullptr, nullptr);
-            return false;
-        }
-
-        // Open PNG file
         try
         {
-            unsigned int sig_read = 0;
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
+            if (png_ptr == nullptr)
+            {
+                throw std::runtime_error("png_create_read_struct failed.");
+            }
+
+            info_ptr = png_create_info_struct(png_ptr);
+            if (info_ptr == nullptr)
+            {
+                throw std::runtime_error("png_create_info_struct failed.");
+            }
 
             // Set error handling
             if (setjmp(png_jmpbuf(png_ptr)))
             {
-                png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
-                return false;
+                throw std::runtime_error("png error.");
             }
 
             // Setup PNG reading
-            png_set_read_fn(png_ptr, &fs, PngReadData);
+            int sig_read = 0;
+            png_set_read_fn(png_ptr, &istream, PngReadData);
             png_set_sig_bytes(png_ptr, sig_read);
 
             uint32 readFlags = PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING;
-            if (expand)
+            if (expandTo32)
             {
                 // If we expand the resulting image always be full RGBA
                 readFlags |= PNG_TRANSFORM_GRAY_TO_RGB | PNG_TRANSFORM_EXPAND;
@@ -79,21 +124,21 @@ namespace Imaging
 
             // Read header
             png_uint_32 pngWidth, pngHeight;
-            int colourType, interlaceType;
-            png_get_IHDR(png_ptr, info_ptr, &pngWidth, &pngHeight, bitDepth, &colourType, &interlaceType, nullptr, nullptr);
+            int bitDepth, colourType, interlaceType;
+            png_get_IHDR(png_ptr, info_ptr, &pngWidth, &pngHeight, &bitDepth, &colourType, &interlaceType, nullptr, nullptr);
 
             // Read pixels as 32bpp RGBA data
-            png_size_t rowBytes = png_get_rowbytes(png_ptr, info_ptr);
-            png_bytepp rowPointers = png_get_rows(png_ptr, info_ptr);
-            uint8 * pngPixels = Memory::Allocate<uint8>(pngWidth * pngHeight * 4);
-            uint8 * dst = pngPixels;
+            auto rowBytes = png_get_rowbytes(png_ptr, info_ptr);
+            auto rowPointers = png_get_rows(png_ptr, info_ptr);
+            auto pngPixels = std::vector<uint8>(pngWidth * pngHeight * 4);
+            auto dst = pngPixels.data();
             if (colourType == PNG_COLOR_TYPE_RGB)
             {
                 // 24-bit PNG (no alpha)
                 Guard::Assert(rowBytes == pngWidth * 3, GUARD_LINE);
                 for (png_uint_32 i = 0; i < pngHeight; i++)
                 {
-                    uint8 * src = rowPointers[i];
+                    auto src = rowPointers[i];
                     for (png_uint_32 x = 0; x < pngWidth; x++)
                     {
                         *dst++ = *src++;
@@ -103,7 +148,7 @@ namespace Imaging
                     }
                 }
             }
-            else if (*bitDepth == 8 && !expand)
+            else if (bitDepth == 8 && !expandTo32)
             {
                 // 8-bit paletted or grayscale
                 Guard::Assert(rowBytes == pngWidth, GUARD_LINE);
@@ -128,58 +173,63 @@ namespace Imaging
             png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
 
             // Return the output data
-            *pixels = pngPixels;
-            if (width != nullptr) *width = pngWidth;
-            if (height != nullptr) *height = pngHeight;
-
-            return true;
+            Image img;
+            img.Width = pngWidth;
+            img.Height = pngHeight;
+            img.Depth = expandTo32 ? 32 : 8;
+            img.Pixels = std::move(pngPixels);
+            img.Stride = pngWidth;
+            return img;
         }
         catch (const std::exception &)
         {
-            *pixels = nullptr;
-            if (width != nullptr) *width = 0;
-            if (height != nullptr) *height = 0;
-            return false;
+            png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
+            throw;
         }
     }
 
-    bool PngWrite(const rct_drawpixelinfo * dpi, const rct_palette * palette, const utf8 * path)
+    static void WritePng(std::ostream& ostream, const Image& image)
     {
-        bool result = false;
-
-        // Get image size
-        int stride = dpi->width + dpi->pitch;
-
-        // Setup PNG
-        png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
-        if (png_ptr == nullptr)
-        {
-            return false;
-        }
-
-        png_infop info_ptr = png_create_info_struct(png_ptr);
-        if (info_ptr == nullptr)
-        {
-            png_destroy_write_struct(&png_ptr, (png_infopp)nullptr);
-            return false;
-        }
-
-        png_colorp png_palette = (png_colorp)png_malloc(png_ptr, PNG_MAX_PALETTE_LENGTH * sizeof(png_color));
-        for (int i = 0; i < 256; i++)
-        {
-            const rct_palette_entry *entry = &palette->entries[i];
-            png_palette[i].blue = entry->blue;
-            png_palette[i].green = entry->green;
-            png_palette[i].red = entry->red;
-        }
-
-        png_set_PLTE(png_ptr, info_ptr, png_palette, PNG_MAX_PALETTE_LENGTH);
-
+        png_structp png_ptr = nullptr;
+        png_colorp png_palette = nullptr;
         try
         {
-            // Open file for writing
-            auto fs = FileStream(path, FILE_MODE_WRITE);
-            png_set_write_fn(png_ptr, &fs, PngWriteData, PngFlush);
+            png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, nullptr, PngError, PngWarning);
+            if (png_ptr == nullptr)
+            {
+                throw std::runtime_error("png_create_write_struct failed.");
+            }
+
+            auto info_ptr = png_create_info_struct(png_ptr);
+            if (info_ptr == nullptr)
+            {
+                throw std::runtime_error("png_create_info_struct failed.");
+            }
+
+            if (image.Depth == 8)
+            {
+                if (image.Palette == nullptr)
+                {
+                    throw std::runtime_error("Expected a palette for 8-bit image.");
+                }
+
+                // Set the palette
+                png_palette = (png_colorp)png_malloc(png_ptr, PNG_MAX_PALETTE_LENGTH * sizeof(png_color));
+                if (png_palette == nullptr)
+                {
+                    throw std::runtime_error("png_malloc failed.");
+                }
+                for (size_t i = 0; i < PNG_MAX_PALETTE_LENGTH; i++)
+                {
+                    const auto entry = &image.Palette->entries[i];
+                    png_palette[i].blue = entry->blue;
+                    png_palette[i].green = entry->green;
+                    png_palette[i].red = entry->red;
+                }
+                png_set_PLTE(png_ptr, info_ptr, png_palette, PNG_MAX_PALETTE_LENGTH);
+            }
+
+            png_set_write_fn(png_ptr, &ostream, PngWriteData, PngFlush);
 
             // Set error handler
             if (setjmp(png_jmpbuf(png_ptr)))
@@ -188,115 +238,111 @@ namespace Imaging
             }
 
             // Write header
+            auto colourType = PNG_COLOR_TYPE_RGB_ALPHA;
+            if (image.Depth == 8)
+            {
+                png_byte transparentIndex = 0;
+                png_set_tRNS(png_ptr, info_ptr, &transparentIndex, 1, nullptr);
+                colourType = PNG_COLOR_TYPE_PALETTE;
+            }
             png_set_IHDR(
-                png_ptr, info_ptr, dpi->width, dpi->height, 8,
-                PNG_COLOR_TYPE_PALETTE, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
-            );
-            png_byte transparentIndex = 0;
-            png_set_tRNS(png_ptr, info_ptr, &transparentIndex, 1, nullptr);
+                png_ptr,
+                info_ptr,
+                image.Width,
+                image.Height,
+                8,
+                colourType,
+                PNG_INTERLACE_NONE,
+                PNG_COMPRESSION_TYPE_DEFAULT,
+                PNG_FILTER_TYPE_DEFAULT);
             png_write_info(png_ptr, info_ptr);
 
             // Write pixels
-            uint8 * bits = dpi->bits;
-            for (int y = 0; y < dpi->height; y++)
+            auto pixels = image.Pixels.data();
+            for (uint32 y = 0; y < image.Height; y++)
             {
-                png_write_row(png_ptr, (png_byte *)bits);
-                bits += stride;
+                png_write_row(png_ptr, (png_byte *)pixels);
+                pixels += image.Stride;
             }
 
-            // Finish
             png_write_end(png_ptr, nullptr);
-            result = true;
+            png_free(png_ptr, png_palette);
+            png_destroy_write_struct(&png_ptr, nullptr);
         }
-        catch (const std::exception &)
+        catch (const std::exception&)
         {
+            png_free(png_ptr, png_palette);
+            png_destroy_write_struct(&png_ptr, nullptr);
+            throw;
         }
-
-        png_free(png_ptr, png_palette);
-        png_destroy_write_struct(&png_ptr, (png_infopp)nullptr);
-        return result;
     }
 
-    bool PngWrite32bpp(sint32 width, sint32 height, const void * pixels, const utf8 * path)
+    static IMAGE_FORMAT GetImageFormatFromPath(const std::string_view& path)
     {
-        bool result = false;
-
-        // Setup PNG
-        png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, nullptr, PngError, PngWarning);
-        if (png_ptr == nullptr)
+        if (String::EndsWith(path, ".png", true))
         {
-            return false;
+            return IMAGE_FORMAT::PNG;
         }
-
-        png_infop info_ptr = png_create_info_struct(png_ptr);
-        if (info_ptr == nullptr)
+        else if (String::EndsWith(path, ".bmp", true))
         {
-            png_destroy_write_struct(&png_ptr, (png_infopp)nullptr);
-            return false;
+            return IMAGE_FORMAT::BITMAP;
         }
-
-        try
+        else
         {
-            // Open file for writing
-            auto fs = FileStream(path, FILE_MODE_WRITE);
-            png_set_write_fn(png_ptr, &fs, PngWriteData, PngFlush);
+            return IMAGE_FORMAT::UNKNOWN;
+        }
+    }
 
-            // Set error handler
-            if (setjmp(png_jmpbuf(png_ptr)))
+    static Image ReadFromStream(std::istream& istream, IMAGE_FORMAT format)
+    {
+        switch (format)
+        {
+            case IMAGE_FORMAT::PNG:
+                return ReadPng(istream, false);
+            case IMAGE_FORMAT::PNG_32:
+                return ReadPng(istream, true);
+            case IMAGE_FORMAT::AUTOMATIC:
+                throw std::invalid_argument("format can not be automatic.");
+            default:
+                throw std::runtime_error(EXCEPTION_IMAGE_FORMAT_UNKNOWN);
+        }
+    }
+
+    Image ReadFromFile(const std::string_view& path, IMAGE_FORMAT format)
+    {
+        switch (format)
+        {
+            case IMAGE_FORMAT::AUTOMATIC:
+                return ReadFromFile(path, GetImageFormatFromPath(path));
+            default:
             {
-                throw std::runtime_error("PNG ERROR");
+                std::ifstream fs(path.data(), std::ios::binary);
+                return ReadFromStream(fs, format);
             }
-
-            // Write header
-            png_set_IHDR(
-                png_ptr, info_ptr, width, height, 8,
-                PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
-            );
-            png_write_info(png_ptr, info_ptr);
-
-            // Write pixels
-            uint8 * bits = (uint8 *)pixels;
-            for (int y = 0; y < height; y++)
-            {
-                png_write_row(png_ptr, (png_byte *)bits);
-                bits += width * 4;
-            }
-
-            // Finish
-            png_write_end(png_ptr, nullptr);
-            result = true;
         }
-        catch (const std::exception &)
+    }
+
+    Image ReadFromBuffer(const std::vector<uint8>& buffer, IMAGE_FORMAT format)
+    {
+        ivstream<uint8> istream(buffer);
+        return ReadFromStream(istream, format);
+    }
+
+    void WriteToFile(const std::string_view& path, const Image& image, IMAGE_FORMAT format)
+    {
+        switch (format)
         {
+            case IMAGE_FORMAT::AUTOMATIC:
+                WriteToFile(path, image, GetImageFormatFromPath(path));
+                break;
+            case IMAGE_FORMAT::PNG:
+            {
+                std::ofstream fs(path.data(), std::ios::binary);
+                WritePng(fs, image);
+                break;
+            }
+            default:
+                throw std::runtime_error("Unknown image format.");
         }
-
-        png_destroy_write_struct(&png_ptr, &info_ptr);
-        return result;
-    }
-
-    static void PngReadData(png_structp png_ptr, png_bytep data, png_size_t length)
-    {
-        auto * fs = static_cast<FileStream *>(png_get_io_ptr(png_ptr));
-        fs->Read(data, length);
-    }
-
-    static void PngWriteData(png_structp png_ptr, png_bytep data, png_size_t length)
-    {
-        auto * fs = static_cast<FileStream *>(png_get_io_ptr(png_ptr));
-        fs->Write(data, length);
-    }
-
-    static void PngFlush(png_structp png_ptr)
-    {
-    }
-
-    static void PngWarning([[maybe_unused]] png_structp png_ptr, const char * b)
-    {
-        log_warning(b);
-    }
-
-    static void PngError([[maybe_unused]] png_structp png_ptr, const char * b)
-    {
-        log_error(b);
     }
 }

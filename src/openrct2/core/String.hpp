@@ -52,6 +52,7 @@ namespace String
     bool   Equals(const utf8 * a, const utf8 * b, bool ignoreCase = false);
     bool   StartsWith(const utf8 * str, const utf8 * match, bool ignoreCase = false);
     bool   StartsWith(const std::string &str, const std::string &match, bool ignoreCase = false);
+    bool   EndsWith(const std::string_view& str, const std::string_view& match, bool ignoreCase = false);
     size_t IndexOf(const utf8 * str, utf8 match, size_t startIndex = 0);
     ptrdiff_t LastIndexOf(const utf8 * str, utf8 match);
 
