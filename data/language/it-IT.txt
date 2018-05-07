@@ -3354,8 +3354,8 @@ STR_5232    :{SMALLFONT}{BLACK}Editor
 STR_5233    :{SMALLFONT}{BLACK}Altro
 STR_5234    :{SMALLFONT}{BLACK}Conferme
 STR_5235    :{SMALLFONT}{BLACK}Impostazioni
-STR_5236    :Finestra:
-STR_5237    :Tavolozza:
+STR_5236    :Finestra
+STR_5237    :Tavolozza
 STR_5238    :Tema attuale:
 STR_5239    :Duplica
 STR_5240    :Inserire un nome per il tema
@@ -3614,8 +3614,8 @@ STR_5491    :Lista Invenzioni
 STR_5492    :Opzioni Scenario
 STR_5493    :Mostra Messaggio
 STR_5495    :Lista Giocatore
-STR_5496    :Giocatore:
-STR_5497    :Ping:
+STR_5496    :Giocatore
+STR_5497    :Ping
 STR_5498    :Lista Server
 STR_5499    :Nome Giocatore:
 STR_5500    :Aggiungi Server
@@ -3759,7 +3759,7 @@ STR_5638    :Permesso negato
 STR_5639    :{SMALLFONT}{BLACK}Mostra lista dei giocatori
 STR_5640    :{SMALLFONT}{BLACK}Gestisci gruppo
 STR_5641    :Gruppo predefinito:
-STR_5642    :Gruppo:
+STR_5642    :Gruppo
 STR_5643    :Aggiungi gruppo
 STR_5644    :Rimuovi gruppo
 STR_5645    :Chat
@@ -3787,7 +3787,7 @@ STR_5666    :Accesso senza password
 STR_5701    :{WINDOW_COLOUR_2}Ultima azione: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Localizza l'ultima azione del giocatore
 STR_5703    :Non è possibile rimuovere l'host
-STR_5704    :Ultima azione:
+STR_5704    :Ultima azione
 STR_5705    :Non è possibile impostarlo a questo gruppo
 STR_5706    :Non è possibile rimuovere un gruppo che contiene giocatori
 STR_5707    :Questo gruppo non può essere modificato
@@ -4250,7 +4250,7 @@ STR_6166    :{SMALLFONT}{BLACK}Sincronizza i frame alla frequenza di aggiornamen
 STR_6167    :{SMALLFONT}{BLACK}Avanzate
 STR_6168    :Sequenza del titolo
 STR_6169    :Selezione scenario
-STR_6170    :Modifiche
+STR_6170    :Personalizzazione interfaccia
 STR_6171    :Cerca
 STR_6172    :{SMALLFONT}{BLACK}Cerca
 STR_6173    :Digitare il nome da cercare:
@@ -4306,6 +4306,19 @@ STR_6222    :Impossibile piazzare qui il punto di apparizione dei visitatori...
 STR_6223    :Deve trovarsi all'esterno del confine del parco!
 STR_6224    :{STRING} ha piazzato un punto di apparizione dei visitatori.
 STR_6225    :Non supportato con il rendering OpenGL
+STR_6226    :Attiva completamento anticipato dello scenario
+STR_6227    :{SMALLFONT}{BLACK}Completa lo scenario non appena tutti gli obiettivi sono raggiunti, prima della data di scadenza.
+STR_6228    :Opzioni scenario
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :Immobile
+STR_6233    :Visualizzazione spaccato
+STR_6234    :Evidenzia problemi nei sentieri
+STR_6235    :Informazioni server
+STR_6236    :Giocatori
+STR_6237    :Gruppi
+STR_6238    :Opzioni multigiocatore
 
 #############
 # Scenarios #
