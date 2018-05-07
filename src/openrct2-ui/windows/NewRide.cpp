@@ -365,7 +365,7 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
             const RideGroup * rideEntryRideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
             const RideGroup * rideGroup = RideGroupManager::RideGroupFind(rideType, rideGroupIndex);
 
-            if (!RideGroupManager::RideGroupsAreEqual(rideEntryRideGroup, rideGroup))
+            if (!rideEntryRideGroup->Equals(rideGroup))
                 continue;
         }
 
@@ -552,7 +552,8 @@ void window_new_ride_focus(ride_list_item rideItem)
             if (listItem->type == rideItem.type) {
                 const RideGroup * irg = RideGroupManager::GetRideGroup(rideTypeIndex, rideEntry);
 
-                if (!RideGroupManager::RideTypeHasRideGroups(rideTypeIndex) || RideGroupManager::RideGroupsAreEqual(rideGroup, irg)) {
+                if (!RideGroupManager::RideTypeHasRideGroups(rideTypeIndex) || rideGroup->Equals(irg))
+                {
                     _windowNewRideHighlightedItem[0] = rideItem;
                     w->new_ride.highlighted_ride_id = rideItem.ride_type_and_entry;
                     window_new_ride_scroll_to_focused_ride(w);
@@ -1082,7 +1083,7 @@ static void window_new_ride_list_vehicles_for(const uint8 rideType, const rct_ri
             rideGroup = RideGroupManager::GetRideGroup(rideType, (rct_ride_entry *)rideEntry);
             currentRideGroup = RideGroupManager::GetRideGroup(rideType, (rct_ride_entry *)currentRideEntry);
 
-            if (!RideGroupManager::RideGroupsAreEqual(rideGroup, currentRideGroup))
+            if (!rideGroup->Equals(currentRideGroup))
                 continue;
         }
 

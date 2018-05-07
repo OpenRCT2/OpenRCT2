@@ -103,6 +103,40 @@ static constexpr const RideGroup car_ride_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] 
 static constexpr const RideGroup twister_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_steel_twister_rc, ride_group_hyper_twister };
 static constexpr const RideGroup steel_wild_mouse_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_steel_wild_mouse, ride_group_spinning_wild_mouse };
 
+bool RideGroup::Equals(const RideGroup* otherRideGroup) const
+{
+    return
+        this->Naming.name == otherRideGroup->Naming.name &&
+        this->Naming.description == otherRideGroup->Naming.description;
+}
+
+bool RideGroup::IsInvented() const
+{
+    if (!ride_type_is_invented(this->RideType))
+        return false;
+
+    uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(this->RideType);
+
+    while (*rideEntryIndexPtr != RIDE_ENTRY_INDEX_NULL)
+    {
+        uint8 rideEntryIndex = *rideEntryIndexPtr++;
+
+        if (!ride_entry_is_invented(rideEntryIndex))
+            continue;
+
+        rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
+        const RideGroup * rideEntryRideGroup = RideGroupManager::GetRideGroup(this->RideType, rideEntry);
+
+        if (!this->Equals(rideEntryRideGroup))
+            continue;
+
+        // The ride entry is invented and belongs to the same ride group. This means the ride group is invented.
+        return true;
+    }
+
+    return false;
+}
+
 const RideGroup * RideGroupManager::GetRideGroup(const uint8 rideType, const rct_ride_entry * rideEntry)
 {
     switch (rideType)
@@ -172,42 +206,6 @@ const RideGroup * RideGroupManager::RideGroupFind(const uint8 rideType, const ui
     default:
         return nullptr;
     }
-}
-
-bool RideGroupManager::RideGroupsAreEqual(const RideGroup * a, const RideGroup * b)
-{
-    if (a != nullptr && b != nullptr && (a->Naming.name == b->Naming.name && a->Naming.description == b->Naming.description))
-    {
-        return true;
-    }
-    return false;
-}
-
-bool RideGroupManager::RideGroupIsInvented(const RideGroup * rideGroup)
-{
-    if (!ride_type_is_invented(rideGroup->RideType))
-        return false;
-
-    uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideGroup->RideType);
-
-    while (*rideEntryIndexPtr != RIDE_ENTRY_INDEX_NULL)
-    {
-        uint8 rideEntryIndex = *rideEntryIndexPtr++;
-
-        if (!ride_entry_is_invented(rideEntryIndex))
-            continue;
-
-        rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
-        const RideGroup * rideEntryRideGroup = GetRideGroup(rideGroup->RideType, rideEntry);
-
-        if (!RideGroupsAreEqual(rideGroup, rideEntryRideGroup))
-            continue;
-
-        // The ride entry is invented and belongs to the same ride group. This means the ride group is invented.
-        return true;
-    }
-
-    return false;
 }
 
 const std::vector<const char *> RideGroupManager::GetPreferredRideEntryOrder(const uint8 rideType)
