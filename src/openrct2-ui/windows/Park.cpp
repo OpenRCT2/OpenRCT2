@@ -775,9 +775,7 @@ static void window_park_entrance_invalidate(rct_window *w)
     window_park_entrance_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2 + widget_is_pressed(w, WIDX_OPEN_LIGHT);
 
     // Only allow closing of park for guest / rating objective
-    // Only allow closing of park when there is money
-    if (gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING ||
-        (gParkFlags & PARK_FLAGS_NO_MONEY))
+    if (gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING)
         w->disabled_widgets |= (1 << WIDX_OPEN_OR_CLOSE) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT);
     else
         w->disabled_widgets &= ~((1 << WIDX_OPEN_OR_CLOSE) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT));
