@@ -110,6 +110,7 @@ The following people are not part of the project team, but have been contributin
 * (Deurklink)
 * Nathan Zabriskie (NathanZabriskie)
 * Toby Hinloopen (tobyhinloopen)
+* Patrick Martinez (martip23)
 
 ## Toolchain
 * (Balletie) - macOS
