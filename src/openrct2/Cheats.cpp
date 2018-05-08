@@ -159,7 +159,7 @@ static void cheat_fix_rides()
             mechanic = ride_get_assigned_mechanic(ride);
 
             if (mechanic != nullptr){
-                remove_peep_from_ride(mechanic);
+                mechanic->RemoveFromRide();
             }
 
             ride_fix_breakdown(rideIndex, 0);
@@ -314,7 +314,7 @@ static void cheat_set_guest_parameter(sint32 parameter, sint32 value)
             peep->intensity = (15 << 4) | value;
             break;
         }
-        peep_update_sprite_type(peep);
+        peep->UpdateSpriteType();
     }
 
 }
@@ -336,12 +336,12 @@ static void cheat_give_all_guests(sint32 object)
             case OBJECT_BALLOON:
                 peep->item_standard_flags |= PEEP_ITEM_BALLOON;
                 peep->balloon_colour = scenario_rand_max(COLOUR_COUNT - 1);
-                peep_update_sprite_type(peep);
+                peep->UpdateSpriteType();
                 break;
             case OBJECT_UMBRELLA:
                 peep->item_standard_flags |= PEEP_ITEM_UMBRELLA;
                 peep->umbrella_colour = scenario_rand_max(COLOUR_COUNT - 1);
-                peep_update_sprite_type(peep);
+                peep->UpdateSpriteType();
                 break;
         }
     }
@@ -399,7 +399,7 @@ static void cheat_remove_all_guests()
         peep = &(get_sprite(spriteIndex)->peep);
         nextSpriteIndex = peep->next;
         if (peep->type == PEEP_TYPE_GUEST) {
-            peep_remove(peep);
+            peep->Remove();
         }
     }
 

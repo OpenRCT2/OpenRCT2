@@ -388,8 +388,8 @@ static void proximity_score_increment(sint32 type)
  */
 static void ride_ratings_score_close_proximity_in_direction(rct_tile_element *inputTileElement, sint32 direction)
 {
-    sint32 x = gRideRatingsCalcData.proximity_x + TileDirectionDelta[direction].x;
-    sint32 y = gRideRatingsCalcData.proximity_y + TileDirectionDelta[direction].y;
+    sint32 x = gRideRatingsCalcData.proximity_x + CoordsDirectionDelta[direction].x;
+    sint32 y = gRideRatingsCalcData.proximity_y + CoordsDirectionDelta[direction].y;
     if (x < 0 || y < 0 || x >= (32 * 256) || y >= (32 * 256))
         return;
 
@@ -478,8 +478,8 @@ static void ride_ratings_score_close_proximity_loops(rct_tile_element *inputTile
         ride_ratings_score_close_proximity_loops_helper(inputTileElement, x, y);
 
         sint32 direction = tile_element_get_direction(inputTileElement);
-        x = gRideRatingsCalcData.proximity_x + TileDirectionDelta[direction].x;
-        y = gRideRatingsCalcData.proximity_y + TileDirectionDelta[direction].y;
+        x = gRideRatingsCalcData.proximity_x + CoordsDirectionDelta[direction].x;
+        y = gRideRatingsCalcData.proximity_y + CoordsDirectionDelta[direction].y;
         ride_ratings_score_close_proximity_loops_helper(inputTileElement, x, y);
     }
 }

@@ -490,8 +490,8 @@ static void window_maze_construction_construct(sint32 direction)
 
     ride_construction_invalidate_current_track();
 
-    x = _currentTrackBeginX + (TileDirectionDelta[direction].x / 2);
-    y = _currentTrackBeginY + (TileDirectionDelta[direction].y / 2);
+    x = _currentTrackBeginX + (CoordsDirectionDelta[direction].x / 2);
+    y = _currentTrackBeginY + (CoordsDirectionDelta[direction].y / 2);
     z = _currentTrackBeginZ;
     switch (_rideConstructionState) {
     case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:

@@ -1384,7 +1384,7 @@ private:
         dst->special_sprite = src->special_sprite;
         dst->next_action_sprite_type = src->next_action_sprite_type;
         dst->action_sprite_image_offset = src->action_sprite_image_offset;
-        dst->no_action_frame_no = src->no_action_frame_no;
+        dst->no_action_frame_num = src->no_action_frame_num;
         dst->action_sprite_type = src->action_sprite_type;
         dst->action_frame = src->action_frame;
 
@@ -1420,7 +1420,7 @@ private:
         dst->next_x = src->next_x;
         dst->next_y = src->next_y;
         dst->next_z = src->next_z / 2;
-        dst->next_var_29 = src->next_var_29;
+        dst->next_flags = src->next_flags;
         dst->var_37 = src->var_37;
         dst->time_to_consume = src->time_to_consume;
         dst->step_progress = src->step_progress;

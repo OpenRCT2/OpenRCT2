@@ -57,6 +57,28 @@ uint8 gFootpathGroundFlags;
 static uint8 *_footpathQueueChainNext;
 static uint8 _footpathQueueChain[64];
 
+// This is the coordinates that a user of the bin should move to
+// rct2: 0x00992A4C
+const LocationXY16 BinUseOffsets[4] = {
+    { 11, 16 },
+    { 16, 21 },
+    { 21, 16 },
+    { 16, 11 },
+};
+
+// These are the offsets for bench positions on footpaths, 2 for each edge
+// rct2: 0x00981F2C, 0x00981F2E
+const LocationXY16 BenchUseOffsets[8] = {
+    {  7, 12 },
+    { 12, 25 },
+    { 25, 20 },
+    { 20,  7 },
+    {  7, 20 },
+    { 20, 25 },
+    { 25, 12 },
+    { 12,  7 },
+};
+
 /** rct2: 0x00981D6C, 0x00981D6E */
 const LocationXY16 word_981D6C[4] = {
     { -1,  0 },
@@ -446,8 +468,8 @@ static money32 footpath_place_real(sint32 type, sint32 x, sint32 y, sint32 z, si
             // It is possible, let's remove walls between the old and new piece of path
             wall_remove_intersecting_walls(x, y, z, z + 4 + ((slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) ? 2 : 0), direction ^ 2);
             wall_remove_intersecting_walls(
-                x - TileDirectionDelta[direction].x,
-                y - TileDirectionDelta[direction].y,
+                x - CoordsDirectionDelta[direction].x,
+                y - CoordsDirectionDelta[direction].y,
                 z, z + 4, direction
             );
         }
@@ -995,13 +1017,11 @@ void footpath_interrupt_peeps(sint32 x, sint32 y, sint32 z)
         if (peep->linked_list_type_offset == SPRITE_LIST_PEEP * 2) {
             if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING) {
                 if (peep->z == z) {
-                    peep_decrement_num_riders(peep);
-                    peep->state = PEEP_STATE_WALKING;
-                    peep_window_state_update(peep);
+                    peep->SetState(PEEP_STATE_WALKING);
                     peep->destination_x = (peep->x & 0xFFE0) + 16;
                     peep->destination_y = (peep->y & 0xFFE0) + 16;
                     peep->destination_tolerance = 5;
-                    peep_update_current_action_sprite_type(peep);
+                    peep->UpdateCurrentActionSpriteType();
                 }
             }
         }
@@ -1089,22 +1109,22 @@ static void footpath_connect_corners(sint32 initialX, sint32 initialY, rct_tile_
         sint32 y = initialY;
         sint32 direction = initialDirection;
 
-        x += TileDirectionDelta[direction].x;
-        y += TileDirectionDelta[direction].y;
+        x += CoordsDirectionDelta[direction].x;
+        y += CoordsDirectionDelta[direction].y;
         tileElement[1] = footpath_connect_corners_get_neighbour(x, y, z, (1 << (direction ^ 2)));
         if (tileElement[1] == nullptr)
             continue;
 
         direction = (direction + 1) & 3;
-        x += TileDirectionDelta[direction].x;
-        y += TileDirectionDelta[direction].y;
+        x += CoordsDirectionDelta[direction].x;
+        y += CoordsDirectionDelta[direction].y;
         tileElement[2] = footpath_connect_corners_get_neighbour(x, y, z, (1 << (direction ^ 2)));
         if (tileElement[2] == nullptr)
             continue;
 
         direction = (direction + 1) & 3;
-        x += TileDirectionDelta[direction].x;
-        y += TileDirectionDelta[direction].y;
+        x += CoordsDirectionDelta[direction].x;
+        y += CoordsDirectionDelta[direction].y;
         // First check link to previous tile
         tileElement[3] = footpath_connect_corners_get_neighbour(x, y, z, (1 << (direction ^ 2)));
         if (tileElement[3] == nullptr)
@@ -1239,8 +1259,8 @@ static bool sub_footpath_disconnect_queue_from_path(sint32 x, sint32 y, rct_tile
     if ((action < 0) && fence_in_the_way(x, y, tileElement->base_height, tileElement->clearance_height, direction))
         return false;
 
-    sint32 x1 = x + TileDirectionDelta[direction].x;
-    sint32 y1 = y + TileDirectionDelta[direction].y;
+    sint32 x1 = x + CoordsDirectionDelta[direction].x;
+    sint32 y1 = y + CoordsDirectionDelta[direction].y;
     sint32 z = tileElement->base_height;
     rct_tile_element *otherTileElement = footpath_get_element(x1, y1, z - 2, z, direction);
     if (otherTileElement != nullptr && !footpath_element_is_queue(otherTileElement)) {
@@ -1292,8 +1312,8 @@ static void loc_6A6D7E(
     sint32 initialX, sint32 initialY, sint32 z, sint32 direction, rct_tile_element *initialTileElement,
     sint32 flags, bool query, rct_neighbour_list *neighbourList
 ) {
-    sint32 x = initialX + TileDirectionDelta[direction].x;
-    sint32 y = initialY + TileDirectionDelta[direction].y;
+    sint32 x = initialX + CoordsDirectionDelta[direction].x;
+    sint32 y = initialY + CoordsDirectionDelta[direction].y;
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && map_is_edge(x, y)) {
         if (query) {
             neighbour_list_push(neighbourList, 7, direction, 255, 255);
@@ -1517,8 +1537,8 @@ void footpath_chain_ride_queue(sint32 rideIndex, sint32 entranceIndex, sint32 x,
             }
         }
 
-        x += TileDirectionDelta[direction].x;
-        y += TileDirectionDelta[direction].y;
+        x += CoordsDirectionDelta[direction].x;
+        y += CoordsDirectionDelta[direction].y;
         tileElement = map_get_first_element_at(x >> 5, y >> 5);
         do {
             if (lastQueuePathElement == tileElement)
@@ -1715,8 +1735,8 @@ static sint32 footpath_is_connected_to_map_edge_recurse(
     rct_tile_element *tileElement;
     sint32 edges, slopeDirection;
 
-    x += TileDirectionDelta[direction].x;
-    y += TileDirectionDelta[direction].y;
+    x += CoordsDirectionDelta[direction].x;
+    y += CoordsDirectionDelta[direction].y;
     if (++level > 250)
         return FOOTPATH_SEARCH_TOO_COMPLEX;
 
@@ -2213,8 +2233,8 @@ static void footpath_remove_edges_towards_here(sint32 x, sint32 y, sint32 z, sin
     if (isQueue) footpath_disconnect_queue_from_path(x, y, tileElement, -1);
 
     direction = (direction + 1) & 3;
-    x += TileDirectionDelta[direction].x;
-    y += TileDirectionDelta[direction].y;
+    x += CoordsDirectionDelta[direction].x;
+    y += CoordsDirectionDelta[direction].y;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
@@ -2418,7 +2438,7 @@ void footpath_remove_edges_at(sint32 x, sint32 y, rct_tile_element *tileElement)
         {
             sint32 z0 = z1 - 2;
             footpath_remove_edges_towards(
-                x + TileDirectionDelta[direction].x, y + TileDirectionDelta[direction].y, z0, z1, direction,
+                x + CoordsDirectionDelta[direction].x, y + CoordsDirectionDelta[direction].y, z0, z1, direction,
                 footpath_element_is_queue(tileElement));
         }
         else
