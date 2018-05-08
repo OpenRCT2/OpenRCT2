@@ -476,7 +476,7 @@ static uint8 peep_pathfind_get_max_number_junctions(rct_peep * peep)
  * A junction is considered 'thin' if it has more than 2 edges
  * leading to/from non-wide path elements; edges leading to/from non-path
  * elements (e.g. ride/shop entrances) or ride queues are not counted,
- * since entrances and ride queues coming off a path should not queueEnd in
+ * since entrances and ride queues coming off a path should not result in
  * the path being considered a junction.
  */
 static bool path_is_thin_junction(rct_tile_element * path, sint16 x, sint16 y, uint8 z)
@@ -524,7 +524,7 @@ static bool path_is_thin_junction(rct_tile_element * path, sint16 x, sint16 y, u
  * steps as possible.
  *
  * Each tile is checked to determine if the goal is reached.
- * When the goal is not reached the search queueEnd is only updated at the END
+ * When the goal is not reached the search result is only updated at the END
  * of each search path (some map element that is not a path or a path at which
  * a search limit is reached), NOT at each step along the way.
  * This means that the search ignores thin paths that are "no through paths"
@@ -535,13 +535,13 @@ static bool path_is_thin_junction(rct_tile_element * path, sint16 x, sint16 y, u
  * according to the search limits.
  * Unlike an A* search, which tracks for each tile a heuristic score (a
  * function of the xyz distances to the goal) and cost of reaching that tile
- * (steps to the tile), a single best queueEnd "so far" (best heuristic score
+ * (steps to the tile), a single best result "so far" (best heuristic score
  * with least cost) is tracked via the score parameter.
  * With this approach, explicit loop detection is necessary to limit the
  * search space, and each alternate route through the same tile can be
- * returned as the best queueEnd, rather than only the shortest route with A*.
+ * returned as the best result, rather than only the shortest route with A*.
  *
- * The parameters that hold the best search queueEnd so far are:
+ * The parameters that hold the best search result so far are:
  *   - score - the least heuristic distance from the goal
  *   - endSteps - the least number of steps that achieve the score.
  *
@@ -576,13 +576,13 @@ static bool path_is_thin_junction(rct_tile_element * path, sint16 x, sint16 y, u
  *
  * The score is only updated when:
  *   - the goal is reached;
- *   - a wide tile is encountered with a better search queueEnd - the goal may
+ *   - a wide tile is encountered with a better search result - the goal may
  *     still be reachable from here (only if the current tile is also wide);
- *   - a junction is encountered with a better search queueEnd and
+ *   - a junction is encountered with a better search result and
  *     maxNumJunctions is exceeded - the goal may still be reachable from here;
  *   - returning from a recursive call if a search limit (i.e. either
  *     maxNumStep or maxTilesChecked) was reached and the current tile has a
- *     better search queueEnd and the goal may still be reachable from here
+ *     better search result and the goal may still be reachable from here
  *     (i.e. not a dead end path tile).
  *
  *  rct2: 0x0069A997
@@ -605,7 +605,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 
     /* If this is where the search started this is a search loop and the
      * current search path ends here.
-     * Return without updating the parameters (best queueEnd so far). */
+     * Return without updating the parameters (best result so far). */
     if ((_peepPathFindHistory[0].location.x == (uint8)(x >> 5)) && (_peepPathFindHistory[0].location.y == (uint8)(y >> 5)) &&
         (_peepPathFindHistory[0].location.z == z))
     {
@@ -626,7 +626,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         {
 /* The mechanic will leave his patrol area by taking
  * the test_edge so the current search path ends here.
- * Return without updating the parameters (best queueEnd so far). */
+ * Return without updating the parameters (best result so far). */
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
@@ -807,7 +807,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         /* If this map element is the search goal the current search path ends here. */
         if (new_score == 0)
         {
-            /* If the search queueEnd is better than the best so far (in the parameters),
+            /* If the search result is better than the best so far (in the parameters),
              * then update the parameters with this search before continuing to the next map element. */
             if (new_score < *endScore || (new_score == *endScore && counter < *endSteps))
             {
@@ -841,7 +841,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         /* At this point the map element tile is not the goal. */
 
         /* If this map element is not a path, the search cannot be continued.
-         * Continue to the next map element without updating the parameters (best queueEnd so far). */
+         * Continue to the next map element without updating the parameters (best result so far). */
         if (searchResult != PATH_SEARCH_DEAD_END && searchResult != PATH_SEARCH_THIN && searchResult != PATH_SEARCH_JUNCTION &&
             searchResult != PATH_SEARCH_WIDE)
         {
@@ -866,7 +866,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
              *
              * So, if the current path is also wide the goal could
              * still be reachable from here.
-             * If the search queueEnd is better than the best so far
+             * If the search result is better than the best so far
              * (in the parameters), then update the parameters with
              * this search before continuing to the next map element. */
             if (currentElementIsWide && (new_score < *endScore || (new_score == *endScore && counter < *endSteps)))
@@ -917,7 +917,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         sint32 next_test_edge = bitscanforward(edges);
 
         /* If there are no other edges the current search ends here.
-         * Continue to the next map element without updating the parameters (best queueEnd so far). */
+         * Continue to the next map element without updating the parameters (best result so far). */
         if (next_test_edge == -1)
         {
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -935,7 +935,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         {
             /* The current search ends here.
              * The path continues, so the goal could still be reachable from here.
-             * If the search queueEnd is better than the best so far (in the parameters),
+             * If the search result is better than the best so far (in the parameters),
              * then update the parameters with this search before continuing to the next map element. */
             if (new_score < *endScore || (new_score == *endScore && counter < *endSteps))
             {
@@ -1032,7 +1032,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                 if (pathLoop)
                 {
 /* Loop detected.  The current search path ends here.
- * Continue to the next map element without updating the parameters (best queueEnd so far). */
+ * Continue to the next map element without updating the parameters (best result so far). */
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                     if (gPathFindDebug)
                     {
@@ -1045,7 +1045,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                 /* If the junction search limit is reached, the
                  * current search path ends here. The goal may still
                  * be reachable from here.
-                 * If the search queueEnd is better than the best so far (in the parameters),
+                 * If the search result is better than the best so far (in the parameters),
                  * then update the parameters with this search before continuing to the next map element. */
                 if (_peepPathFindNumJunctions <= 0)
                 {
@@ -1145,7 +1145,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
     if (!found)
     {
 /* No map element could be found.
- * Return without updating the parameters (best queueEnd so far). */
+ * Return without updating the parameters (best result so far). */
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
         {
