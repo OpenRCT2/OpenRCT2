@@ -479,7 +479,7 @@ static uint8 peep_pathfind_get_max_number_junctions(rct_peep * peep)
  * since entrances and ride queues coming off a path should not result in
  * the path being considered a junction.
  */
-static bool path_is_thin_junction(rct_tile_element * path, sint16 x, sint16 y, uint8 z)
+static bool path_is_thin_junction(rct_tile_element * path, TileCoordsXYZ loc)
 {
     uint8 edges = footpath_get_edges(path);
 
@@ -491,7 +491,7 @@ static bool path_is_thin_junction(rct_tile_element * path, sint16 x, sint16 y, u
     sint32 thin_count    = 0;
     do
     {
-        sint32 fp_result = footpath_element_next_in_direction({ x / 32, y / 32, z }, path, test_edge);
+        sint32 fp_result = footpath_element_next_in_direction(loc, path, test_edge);
 
         /* Ignore non-paths (e.g. ride entrances, shops), wide paths
          * and ride queues (per ignoreQueues) when counting
@@ -972,7 +972,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         {
             /* Check if this is a thin junction. And perform additional
              * necessary checks. */
-            thin_junction = path_is_thin_junction(tileElement, x, y, z);
+            thin_junction = path_is_thin_junction(tileElement, { x / 32, y / 32, z });
 
             if (thin_junction)
             {
@@ -1232,7 +1232,7 @@ sint32 peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep * peep)
          * check if the combination is 'thin'!
          * The junction is considered 'thin' simply if any of the
          * overlaid path elements there is a 'thin junction'. */
-        isThin = isThin || path_is_thin_junction(dest_tile_element, loc.x * 32, loc.y * 32, loc.z);
+        isThin = isThin || path_is_thin_junction(dest_tile_element, loc);
 
         // Collect the permitted edges of ALL matching path elements at this location.
         permitted_edges |= path_get_permitted_edges(dest_tile_element);
