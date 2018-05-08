@@ -587,7 +587,7 @@ static bool path_is_thin_junction(rct_tile_element * path, TileCoordsXYZ loc)
  *
  *  rct2: 0x0069A997
  */
-static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep * peep, rct_tile_element * currentTileElement,
+static void peep_pathfind_heuristic_search(TileCoordsXYZ loc, rct_peep * peep, rct_tile_element * currentTileElement,
                                            bool inPatrolArea, uint8 counter, uint16 * endScore, sint32 test_edge,
                                            uint8 * endJunctions, TileCoordsXYZ junctionList[16], uint8 directionList[16],
                                            TileCoordsXYZ * endXYZ, uint8 * endSteps)
@@ -595,10 +595,9 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
     uint8 searchResult = PATH_SEARCH_FAILED;
 
     bool currentElementIsWide =
-        (footpath_element_is_wide(currentTileElement) && !staff_can_ignore_wide_flag(peep, x, y, z, currentTileElement));
+        (footpath_element_is_wide(currentTileElement) && !staff_can_ignore_wide_flag(peep, loc.x * 32, loc.y * 32, loc.z, currentTileElement));
 
-    x += CoordsDirectionDelta[test_edge].x;
-    y += CoordsDirectionDelta[test_edge].y;
+    loc += TileDirectionDelta[test_edge];
 
     ++counter;
     _peepPathFindTilesChecked--;
@@ -606,8 +605,8 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
     /* If this is where the search started this is a search loop and the
      * current search path ends here.
      * Return without updating the parameters (best result so far). */
-    if ((_peepPathFindHistory[0].location.x == (uint8)(x >> 5)) && (_peepPathFindHistory[0].location.y == (uint8)(y >> 5)) &&
-        (_peepPathFindHistory[0].location.z == z))
+    if ((_peepPathFindHistory[0].location.x == (uint8)loc.x) && (_peepPathFindHistory[0].location.y == (uint8)loc.y) &&
+        (_peepPathFindHistory[0].location.z == loc.z))
     {
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
@@ -621,7 +620,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
     bool nextInPatrolArea = inPatrolArea;
     if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_MECHANIC)
     {
-        nextInPatrolArea = staff_is_location_in_patrol(peep, x, y);
+        nextInPatrolArea = staff_is_location_in_patrol(peep, loc.x * 32, loc.y * 32);
         if (inPatrolArea && !nextInPatrolArea)
         {
 /* The mechanic will leave his patrol area by taking
@@ -639,7 +638,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 
     /* Get the next map element of interest in the direction of test_edge. */
     bool               found       = false;
-    rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
+    rct_tile_element * tileElement = map_get_first_element_at(loc.x, loc.y);
     if (tileElement == nullptr)
     {
         return;
@@ -657,7 +656,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         {
         case TILE_ELEMENT_TYPE_TRACK:
         {
-            if (z != tileElement->base_height)
+            if (loc.z != tileElement->base_height)
                 continue;
             /* For peeps heading for a shop, the goal is the shop
              * tile. */
@@ -675,7 +674,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
             }
         }
         case TILE_ELEMENT_TYPE_ENTRANCE:
-            if (z != tileElement->base_height)
+            if (loc.z != tileElement->base_height)
                 continue;
             sint32 direction;
             searchResult = PATH_SEARCH_OTHER;
@@ -725,16 +724,16 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
              * queue path.
              * Otherwise, peeps walk on path tiles to get to the goal. */
 
-            if (!is_valid_path_z_and_direction(tileElement, z, test_edge))
+            if (!is_valid_path_z_and_direction(tileElement, loc.z, test_edge))
                 continue;
 
             // Path may be sloped, so set z to path base height.
-            z = tileElement->base_height;
+            loc.z = tileElement->base_height;
 
             if (footpath_element_is_wide(tileElement))
             {
                 /* Check if staff can ignore this wide flag. */
-                if (!staff_can_ignore_wide_flag(peep, x, y, z, tileElement))
+                if (!staff_can_ignore_wide_flag(peep, loc.x * 32, loc.y * 32, loc.z, tileElement))
                 {
                     searchResult = PATH_SEARCH_WIDE;
                     found        = true;
@@ -793,14 +792,14 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
          * Ignore for now. */
 
         // Calculate the heuristic score of this map element.
-        uint16 x_delta = abs(gPeepPathFindGoalPosition.x * 32 - x);
-        uint16 y_delta = abs(gPeepPathFindGoalPosition.y * 32 - y);
+        uint16 x_delta = abs(gPeepPathFindGoalPosition.x - loc.x) * 32;
+        uint16 y_delta = abs(gPeepPathFindGoalPosition.y - loc.y) * 32;
         if (x_delta < y_delta)
             x_delta >>= 4;
         else
             y_delta >>= 4;
         uint16 new_score = x_delta + y_delta;
-        uint16 z_delta   = abs(gPeepPathFindGoalPosition.z - z);
+        uint16 z_delta   = abs(gPeepPathFindGoalPosition.z - loc.z);
         z_delta <<= 1;
         new_score += z_delta;
 
@@ -815,9 +814,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                 *endScore = new_score;
                 *endSteps = counter;
                 // Update the end x,y,z
-                endXYZ->x = x >> 5;
-                endXYZ->y = y >> 5;
-                endXYZ->z = z;
+                *endXYZ = loc;
                 // Update the telemetry
                 *endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
                 for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++)
@@ -875,9 +872,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                 *endScore = new_score;
                 *endSteps = counter;
                 // Update the end x,y,z
-                endXYZ->x = x >> 5;
-                endXYZ->y = y >> 5;
-                endXYZ->z = z;
+                *endXYZ = loc;
                 // Update the telemetry
                 *endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
                 for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++)
@@ -943,9 +938,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                 *endScore = new_score;
                 *endSteps = counter;
                 // Update the end x,y,z
-                endXYZ->x = x >> 5;
-                endXYZ->y = y >> 5;
-                endXYZ->z = z;
+                *endXYZ = loc;
                 // Update the telemetry
                 *endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
                 for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++)
@@ -972,7 +965,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         {
             /* Check if this is a thin junction. And perform additional
              * necessary checks. */
-            thin_junction = path_is_thin_junction(tileElement, { x / 32, y / 32, z });
+            thin_junction = path_is_thin_junction(tileElement, loc);
 
             if (thin_junction)
             {
@@ -992,8 +985,8 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                  * already been visited by the peep while heading for this goal. */
                 for (auto &pathfindHistory : peep->pathfind_history)
                 {
-                    if (pathfindHistory.x == x >> 5 && pathfindHistory.y == y >> 5 &&
-                        pathfindHistory.z == z)
+                    if (pathfindHistory.x == loc.x && pathfindHistory.y == loc.y &&
+                        pathfindHistory.z == loc.z)
                     {
                         if (pathfindHistory.direction == 0)
                         {
@@ -1020,9 +1013,9 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                     for (sint32 junctionNum = _peepPathFindNumJunctions + 1; junctionNum <= _peepPathFindMaxJunctions;
                          junctionNum++)
                     {
-                        if ((_peepPathFindHistory[junctionNum].location.x == (uint8)(x >> 5)) &&
-                            (_peepPathFindHistory[junctionNum].location.y == (uint8)(y >> 5)) &&
-                            (_peepPathFindHistory[junctionNum].location.z == z))
+                        if ((_peepPathFindHistory[junctionNum].location.x == (uint8)loc.x) &&
+                            (_peepPathFindHistory[junctionNum].location.y == (uint8)loc.y) &&
+                            (_peepPathFindHistory[junctionNum].location.z == loc.z))
                         {
                             pathLoop = true;
                             break;
@@ -1055,9 +1048,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                         *endScore = new_score;
                         *endSteps = counter;
                         // Update the end x,y,z
-                        endXYZ->x = x >> 5;
-                        endXYZ->y = y >> 5;
-                        endXYZ->z = z;
+                        *endXYZ = loc;
                         // Update the telemetry
                         *endJunctions = _peepPathFindMaxJunctions; // - _peepPathFindNumJunctions;
                         for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++)
@@ -1081,9 +1072,9 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 
                 /* This junction was NOT previously visited in the current
                  * search path, so add the junction to the history. */
-                _peepPathFindHistory[_peepPathFindNumJunctions].location.x = (uint8)(x >> 5);
-                _peepPathFindHistory[_peepPathFindNumJunctions].location.y = (uint8)(y >> 5);
-                _peepPathFindHistory[_peepPathFindNumJunctions].location.z = z;
+                _peepPathFindHistory[_peepPathFindNumJunctions].location.x = (uint8)loc.x;
+                _peepPathFindHistory[_peepPathFindNumJunctions].location.y = (uint8)loc.y;
+                _peepPathFindHistory[_peepPathFindNumJunctions].location.z = loc.z;
                 // .direction take is added below.
 
                 _peepPathFindNumJunctions--;
@@ -1097,7 +1088,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
             edges &= ~(1 << next_test_edge);
             uint8 savedNumJunctions = _peepPathFindNumJunctions;
 
-            uint8 height = z;
+            uint8 height = loc.z;
             if (footpath_element_is_sloped(tileElement) && footpath_element_get_slope_direction(tileElement) == next_test_edge)
             {
                 height += 2;
@@ -1127,7 +1118,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                 _peepPathFindHistory[_peepPathFindNumJunctions + 1].direction = next_test_edge;
             }
 
-            peep_pathfind_heuristic_search(x, y, height, peep, tileElement, nextInPatrolArea, counter, endScore, next_test_edge,
+            peep_pathfind_heuristic_search({ loc.x, loc.y, height }, peep, tileElement, nextInPatrolArea, counter, endScore, next_test_edge,
                                            endJunctions, junctionList, directionList, endXYZ, endSteps);
             _peepPathFindNumJunctions = savedNumJunctions;
 
@@ -1425,7 +1416,7 @@ sint32 peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep * peep)
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
-            peep_pathfind_heuristic_search(loc.x * 32, loc.y * 32, height, peep, first_tile_element, inPatrolArea, 0, &score, test_edge,
+            peep_pathfind_heuristic_search({ loc.x, loc.y, height }, peep, first_tile_element, inPatrolArea, 0, &score, test_edge,
                                            &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
