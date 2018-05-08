@@ -49,11 +49,8 @@ struct Image
 
 namespace Imaging
 {
+    IMAGE_FORMAT GetImageFormatFromPath(const std::string_view& path);
     Image ReadFromFile(const std::string_view& path, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
     Image ReadFromBuffer(const std::vector<uint8>& buffer, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
     void WriteToFile(const std::string_view& path, const Image& image, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
-
-    bool PngRead(uint8 * * pixels, uint32 * width, uint32 * height, bool expand, const utf8 * path, sint32 * bitDepth);
-    bool PngWrite(const rct_drawpixelinfo * dpi, const rct_palette * palette, const utf8 * path);
-    bool PngWrite32bpp(sint32 width, sint32 height, const void * pixels, const utf8 * path);
 }

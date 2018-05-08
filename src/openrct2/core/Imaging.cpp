@@ -277,7 +277,7 @@ namespace Imaging
         }
     }
 
-    static IMAGE_FORMAT GetImageFormatFromPath(const std::string_view& path)
+    IMAGE_FORMAT GetImageFormatFromPath(const std::string_view& path)
     {
         if (String::EndsWith(path, ".png", true))
         {

@@ -233,10 +233,23 @@ static bool sprite_file_export(sint32 spriteIndex, const char *outPath)
         gfx_bmp_sprite_to_buffer((uint8*)spriteFilePalette, spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height, spriteHeader->width, IMAGE_TYPE_DEFAULT);
     }
 
-    if (Imaging::PngWrite(&dpi, (rct_palette*)spriteFilePalette, outPath)) {
+    auto const pixels8 = dpi.bits;
+    auto const pixelsLen = (dpi.width + dpi.pitch) * dpi.height;
+    try
+    {
+        Image image;
+        image.Width = dpi.width;
+        image.Height = dpi.height;
+        image.Depth = 8;
+        image.Stride = dpi.width + dpi.pitch;
+        image.Palette = std::make_unique<rct_palette>(*((rct_palette *)&spriteFilePalette));
+        image.Pixels = std::vector<uint8>(pixels8, pixels8 + pixelsLen);
+        Imaging::WriteToFile(outPath, image, IMAGE_FORMAT::PNG);
         return true;
-    } else {
-        fprintf(stderr, "Error writing PNG");
+    }
+    catch (const std::exception& e)
+    {
+        fprintf(stderr, "Unable to write png: %s", e.what());
         return false;
     }
 }
@@ -300,28 +313,33 @@ static sint32 get_palette_index(sint16 *colour)
 
 static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offset, bool keep_palette, rct_g1_element *outElement, uint8 **outBuffer, int *outBufferLength, sint32 mode)
 {
-    uint8 *pixels;
-    uint32 width, height;
-    sint32 bitDepth;
-    if (!Imaging::PngRead(&pixels, &width, &height, !keep_palette, path, &bitDepth))
+    Image image;
+    auto format = keep_palette ? IMAGE_FORMAT::PNG : IMAGE_FORMAT::PNG_32;
+    try
     {
-        fprintf(stderr, "Error reading PNG\n");
+        image = std::move(Imaging::ReadFromFile(path, format));
+    }
+    catch (const std::exception &e)
+    {
+        fprintf(stderr, "Error reading PNG: %s\n", e.what());
         return false;
     }
 
-    if (width > 256 || height > 256)
+    if (image.Width > 256 || image.Height > 256)
     {
         fprintf(stderr, "Only images 256x256 or less are supported.\n");
-        free(pixels);
         return false;
     }
 
-    if (keep_palette && (bitDepth != 8))
+    if (keep_palette && (image.Depth != 8))
     {
-        fprintf(stderr, "Image is not palletted, it has bit depth of %d\n", bitDepth);
-        free(pixels);
+        fprintf(stderr, "Image is not palletted, it has bit depth of %d\n", image.Depth);
         return false;
     }
+
+    const auto width = image.Width;
+    const auto height = image.Height;
+    const auto pixels = image.Pixels.data();
 
     memcpy(spriteFilePalette, CmdlineSprite::_standardPalette, 256 * 4);
 
@@ -497,7 +515,6 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
             }
         }
     }
-    free(pixels);
     free(rgbaSrc_orig);
 
     sint32 bufferLength = (sint32)(dst - buffer);

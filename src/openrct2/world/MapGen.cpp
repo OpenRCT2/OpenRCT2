@@ -647,75 +647,67 @@ static void mapgen_simplex(mapgen_settings * settings)
 
 bool mapgen_load_heightmap(const utf8 * path)
 {
-    const char * extension = path_get_extension(path);
-    uint8      * pixels;
-    size_t pitch;
-    uint32 numChannels;
-    uint32 width, height;
-
-    if (String::Equals(extension, ".png", false))
+    auto format = Imaging::GetImageFormatFromPath(path);
+    if (format == IMAGE_FORMAT::PNG)
     {
-        sint32 bitDepth;
-        if (!Imaging::PngRead(&pixels, &width, &height, true, path, &bitDepth))
+        // Promote to 32-bit
+        format = IMAGE_FORMAT::PNG_32;
+    }
+
+    try
+    {
+        auto image = Imaging::ReadFromFile(path, format);
+        if (image.Width != image.Height)
         {
-            log_warning("Error reading PNG");
-            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG);
+            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_WIDTH_AND_HEIGHT_DO_NOT_MATCH);
             return false;
         }
 
-        numChannels = 4;
-        pitch       = width * numChannels;
-    }
-    else if (strcicmp(extension, ".bmp") == 0)
-    {
-        if (!context_read_bmp((void **) &pixels, &width, &height, path))
+        auto size = image.Width;
+        if (image.Width > MAXIMUM_MAP_SIZE_PRACTICAL)
         {
-            // ReadBMP contains context_show_error calls
-            return false;
+            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG);
+            size = std::min<uint32>(image.Height, MAXIMUM_MAP_SIZE_PRACTICAL);
         }
 
-        numChannels = 4;
-        pitch       = width * numChannels;
-    }
-    else
-    {
-        openrct2_assert(false, "A file with an invalid file extension was selected.");
-        return false;
-    }
+        // Allocate memory for the height map values, one byte pixel
+        delete[] _heightMapData.mono_bitmap;
+        _heightMapData.mono_bitmap = new uint8[size * size];
+        _heightMapData.width = size;
+        _heightMapData.height = size;
 
-    if (width != height)
-    {
-        context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_WIDTH_AND_HEIGHT_DO_NOT_MATCH);
-        free(pixels);
-        return false;
-    }
-
-    if (width > MAXIMUM_MAP_SIZE_PRACTICAL)
-    {
-        context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG);
-        width = height = Math::Min(height, (uint32)MAXIMUM_MAP_SIZE_PRACTICAL);
-    }
-
-    // Allocate memory for the height map values, one byte pixel
-    delete[] _heightMapData.mono_bitmap;
-    _heightMapData.mono_bitmap = new uint8[width * height];
-    _heightMapData.width       = width;
-    _heightMapData.height      = height;
-
-    // Copy average RGB value to mono bitmap
-    for (uint32 x = 0; x < _heightMapData.width; x++)
-    {
-        for (uint32 y = 0; y < _heightMapData.height; y++)
+        // Copy average RGB value to mono bitmap
+        constexpr auto numChannels = 4;
+        const auto pitch = image.Stride;
+        const auto pixels = image.Pixels.data();
+        for (uint32 x = 0; x < _heightMapData.width; x++)
         {
-            const uint8 red   = pixels[x * numChannels + y * pitch];
-            const uint8 green = pixels[x * numChannels + y * pitch + 1];
-            const uint8 blue  = pixels[x * numChannels + y * pitch + 2];
-            _heightMapData.mono_bitmap[x + y * _heightMapData.width] = (red + green + blue) / 3;
+            for (uint32 y = 0; y < _heightMapData.height; y++)
+            {
+                const auto red = pixels[x * numChannels + y * pitch];
+                const auto green = pixels[x * numChannels + y * pitch + 1];
+                const auto blue = pixels[x * numChannels + y * pitch + 2];
+                _heightMapData.mono_bitmap[x + y * _heightMapData.width] = (red + green + blue) / 3;
+            }
         }
+        return true;
     }
-
-    free(pixels);
-    return true;
+    catch (const std::exception& e)
+    {
+        switch (format)
+        {
+            case IMAGE_FORMAT::BITMAP:
+                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP);
+                break;
+            case IMAGE_FORMAT::PNG_32:
+                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG);
+                break;
+            default:
+                log_error("Unable to load height map image: %s", e.what());
+                break;
+        }
+        return false;
+    }
 }
 
 /**
