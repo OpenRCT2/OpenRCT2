@@ -549,6 +549,8 @@ void research_insert(sint32 researched, sint32 rawValue, uint8 category)
  */
 void research_populate_list_random()
 {
+    research_reset_items();
+
     // Rides
     for (sint32 i = 0; i < MAX_RIDE_OBJECTS; i++)
     {
