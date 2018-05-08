@@ -172,10 +172,8 @@ extern paint_session gPaintSession;
 
 // Globals for paint clipping
 extern uint8 gClipHeight;
-extern uint8 gClipXMin;
-extern uint8 gClipXMax;
-extern uint8 gClipYMin;
-extern uint8 gClipYMax;
+extern LocationXY8 gClipSelectionA;
+extern LocationXY8 gClipSelectionB;
 
 /** rct2: 0x00993CC4. The white ghost that indicates not-yet-built elements. */
 #define CONSTRUCTION_MARKER (COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP);

@@ -67,7 +67,10 @@ static rct_widget window_view_clipping_widgets[] = {
 #pragma region Members
 
 static LocationXY16 _selectionStart;
-static bool _dragging = false;
+static LocationXY8 _previousClipSelectionA;
+static LocationXY8 _previousClipSelectionB;
+static bool _toolActive;
+static bool _dragging;
 
 #pragma endregion
 
@@ -163,6 +166,9 @@ rct_window * window_view_clipping_open()
         window_invalidate(mainWindow);
     }
 
+    _toolActive = false;
+    _dragging = false;
+
     return window;
 }
 
@@ -229,12 +235,14 @@ static void window_view_clipping_mouseup(rct_window *w, rct_widgetindex widgetIn
     case WIDX_CLIP_SELECTOR:
         // Activate the selection tool
         tool_set(w, WIDX_BACKGROUND, TOOL_CROSSHAIR);
+        _toolActive = true;
+        _dragging = false;
 
         // Reset clip selection to show all tiles
-        gClipXMin = 0;
-        gClipXMax = MAXIMUM_MAP_SIZE_TECHNICAL - 1;
-        gClipYMin = 0;
-        gClipYMax = MAXIMUM_MAP_SIZE_TECHNICAL - 1;
+        _previousClipSelectionA = gClipSelectionA;
+        _previousClipSelectionB = gClipSelectionB;
+        gClipSelectionA = { 0, 0 };
+        gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
         gfx_invalidate_screen();
         break;
     }
@@ -247,7 +255,7 @@ static bool window_view_clipping_tool_is_active()
         return false;
     if (gCurrentToolWidget.window_classification != WC_VIEW_CLIPPING)
         return false;
-    return true;
+    return _toolActive;
 }
 
 static void window_view_clipping_update(rct_window *w)
@@ -266,9 +274,12 @@ static void window_view_clipping_update(rct_window *w)
         }
     }
 
-    if (window_view_clipping_tool_is_active())
+    // Restore previous selection if the tool has been interrupted
+    if (_toolActive && !window_view_clipping_tool_is_active())
     {
-        // TODO: Deactivate selection tool and restore previous selection
+        _toolActive = false;
+        gClipSelectionA = _previousClipSelectionA;
+        gClipSelectionB = _previousClipSelectionB;
     }
 
     widget_invalidate(w, WIDX_CLIP_HEIGHT_SLIDER);
@@ -335,11 +346,9 @@ static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widget
 
 static void window_view_clipping_tool_up(struct rct_window*, rct_widgetindex, sint32, sint32)
 {
-    gClipXMin = gMapSelectPositionA.x / 32;
-    gClipXMax = gMapSelectPositionB.x / 32;
-    gClipYMin = gMapSelectPositionA.y / 32;
-    gClipYMax = gMapSelectPositionB.y / 32;
-    _dragging = false;
+    gClipSelectionA = { uint8(gMapSelectPositionA.x / 32), uint8(gMapSelectPositionA.y / 32) };
+    gClipSelectionB = { uint8(gMapSelectPositionB.x / 32), uint8(gMapSelectPositionB.y / 32) };
+    _toolActive = false;
     tool_cancel();
     gfx_invalidate_screen();
 }

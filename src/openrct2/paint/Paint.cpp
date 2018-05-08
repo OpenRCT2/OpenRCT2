@@ -26,10 +26,8 @@
 
 // Globals for paint clipping
 uint8 gClipHeight = 128; // Default to middle value
-uint8 gClipXMin = 0;
-uint8 gClipXMax = MAXIMUM_MAP_SIZE_TECHNICAL - 1;
-uint8 gClipYMin = 0;
-uint8 gClipYMax = MAXIMUM_MAP_SIZE_TECHNICAL - 1;
+LocationXY8 gClipSelectionA = { 0, 0 };
+LocationXY8 gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
 
 paint_session gPaintSession;
 static bool _paintSessionInUse;

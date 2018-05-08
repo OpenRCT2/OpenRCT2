@@ -146,9 +146,9 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
 
     if ((gCurrentViewportFlags & VIEWPORT_FLAG_CLIP_VIEW))
     {
-        if (x / 32 < gClipXMin || x / 32 > gClipXMax)
+        if (x / 32 < gClipSelectionA.x || x / 32 > gClipSelectionB.x)
             return;
-        if (y / 32 < gClipYMin || y / 32 > gClipYMax)
+        if (y / 32 < gClipSelectionA.y || y / 32 > gClipSelectionB.y)
             return;
     }
 

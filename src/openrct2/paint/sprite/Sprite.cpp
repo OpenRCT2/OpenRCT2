@@ -77,9 +77,9 @@ void sprite_paint_setup(paint_session * session, const uint16 eax, const uint16 
         {
             if (spr->unknown.z > (gClipHeight * 8))
                 continue;
-            if (spr->unknown.x / 32 < gClipXMin || spr->unknown.x / 32 > gClipXMax)
+            if (spr->unknown.x / 32 < gClipSelectionA.x || spr->unknown.x / 32 > gClipSelectionB.x)
                 continue;
-            if (spr->unknown.y / 32 < gClipYMin || spr->unknown.y / 32 > gClipYMax)
+            if (spr->unknown.y / 32 < gClipSelectionA.y || spr->unknown.y / 32 > gClipSelectionB.y)
                 continue;
         }
 
