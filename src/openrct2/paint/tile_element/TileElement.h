@@ -65,6 +65,16 @@ enum
     TUNNEL_13 = 0x0D,
     TUNNEL_14 = 0x0E,
     TUNNEL_15 = 0x0F,
+    // Ghost train doors
+    TUNNEL_DOORS_0 = 16,
+    TUNNEL_DOORS_1 = 17,
+    TUNNEL_DOORS_2 = 18,
+    TUNNEL_DOORS_3 = 19,
+    TUNNEL_DOORS_4 = 20,
+    TUNNEL_DOORS_5 = 21,
+    TUNNEL_DOORS_6 = 22,
+
+    TUNNEL_TYPE_COUNT
 };
 
 enum

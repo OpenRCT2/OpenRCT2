@@ -1232,6 +1232,12 @@ enum {
     RCT1_SCENERY_GEOMETRIC_SCULPTURE_5 = 171, // TGE5
 };
 
+enum {
+    RCT1_LANDSCAPE_DOOR_CLOSED = 0,
+    RCT1_LANDSCAPE_DOOR_HALF_OPEN = 2,
+    RCT1_LANDSCAPE_DOOR_OPEN = 3,
+};
+
 ParkLoadResult * load_from_sv4(const char *path);
 ParkLoadResult * load_from_sc4(const char *path);
 
