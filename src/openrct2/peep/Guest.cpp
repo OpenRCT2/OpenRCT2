@@ -5294,7 +5294,7 @@ void rct_peep::UpdateWalking()
     if (toilet > 140)
         return;
 
-    uint16 chance = HasFoodExtraFlag() ? 13107 : 2849;
+    uint16 chance = HasFood() ? 13107 : 2849;
 
     if ((scenario_rand() & 0xFFFF) > chance)
         return;
