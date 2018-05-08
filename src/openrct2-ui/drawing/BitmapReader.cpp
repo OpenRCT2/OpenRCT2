@@ -35,6 +35,8 @@ static std::vector<uint8> ReadToVector(std::istream &stream)
     return result;
 }
 
+// TODO Bitmaps aren't very complicated to read so we should probably just write our
+//      own implementation in libopenrct2 and spare the AOT implementation registration.
 static Image ReadBitmap(std::istream &istream, IMAGE_FORMAT format)
 {
     auto buffer = ReadToVector(istream);
