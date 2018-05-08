@@ -16,10 +16,13 @@
 
 #pragma once
 
+#include <functional>
+#include <istream>
 #include <memory>
 #include <string_view>
 #include <vector>
 #include "../common.h"
+#include "../drawing/Drawing.h"
 
 struct rct_drawpixelinfo;
 struct rct_palette;
@@ -46,6 +49,7 @@ struct Image
     uint32 Stride{};
 };
 
+using ImageReaderFunc = std::function<Image(std::istream&, IMAGE_FORMAT)>;
 
 namespace Imaging
 {
@@ -53,4 +57,6 @@ namespace Imaging
     Image ReadFromFile(const std::string_view& path, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
     Image ReadFromBuffer(const std::vector<uint8>& buffer, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
     void WriteToFile(const std::string_view& path, const Image& image, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
+
+    void SetReader(IMAGE_FORMAT format, ImageReaderFunc impl);
 }

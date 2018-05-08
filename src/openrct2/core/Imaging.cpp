@@ -56,6 +56,8 @@ namespace Imaging
     constexpr auto EXCEPTION_IMAGE_FORMAT_UNSUPPORTED = "Unsupported image format.";
     constexpr auto EXCEPTION_IMAGE_FORMAT_UNKNOWN = "Unknown image format.";
 
+    static std::unordered_map<IMAGE_FORMAT, ImageReaderFunc> _readerImplementations;
+
     static void PngReadData(png_structp png_ptr, png_bytep data, png_size_t length)
     {
         auto istream = static_cast<std::istream *>(png_get_io_ptr(png_ptr));
@@ -178,7 +180,7 @@ namespace Imaging
             img.Height = pngHeight;
             img.Depth = expandTo32 ? 32 : 8;
             img.Pixels = std::move(pngPixels);
-            img.Stride = pngWidth;
+            img.Stride = pngWidth * (expandTo32 ? 4 : 1);
             return img;
         }
         catch (const std::exception &)
@@ -293,6 +295,21 @@ namespace Imaging
         }
     }
 
+    static ImageReaderFunc GetReader(IMAGE_FORMAT format)
+    {
+        auto result = _readerImplementations.find(format);
+        if (result != _readerImplementations.end())
+        {
+            return result->second;
+        }
+        return {};
+    }
+
+    void SetReader(IMAGE_FORMAT format, ImageReaderFunc impl)
+    {
+        _readerImplementations[format] = impl;
+    }
+
     static Image ReadFromStream(std::istream& istream, IMAGE_FORMAT format)
     {
         switch (format)
@@ -304,7 +321,14 @@ namespace Imaging
             case IMAGE_FORMAT::AUTOMATIC:
                 throw std::invalid_argument("format can not be automatic.");
             default:
+            {
+                auto impl = GetReader(format);
+                if (impl)
+                {
+                    return impl(istream, format);
+                }
                 throw std::runtime_error(EXCEPTION_IMAGE_FORMAT_UNKNOWN);
+            }
         }
     }
 
