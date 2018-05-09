@@ -501,7 +501,7 @@ private:
         w->saved_view_x = gSavedViewX;
         w->saved_view_y = gSavedViewY;
 
-        char zoomDifference = gSavedViewZoom - w->viewport->zoom;
+        sint8 zoomDifference = gSavedViewZoom - w->viewport->zoom;
         w->viewport->zoom = gSavedViewZoom;
         gCurrentRotation = gSavedViewRotation;
         if (zoomDifference != 0)
