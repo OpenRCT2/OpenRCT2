@@ -27,6 +27,14 @@
 struct rct_drawpixelinfo;
 struct rct_palette;
 
+struct PaletteBGRA
+{
+    uint8 Blue{};
+    uint8 Green{};
+    uint8 Red{};
+    uint8 Alpha{};
+};
+
 enum class IMAGE_FORMAT
 {
     UNKNOWN,
