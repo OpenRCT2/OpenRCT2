@@ -24,31 +24,37 @@ using ImportResult = ImageImporter::ImportResult;
 
 struct RLECode
 {
-    uint8 NumPixels;
-    uint8 OffsetX;
+    uint8 NumPixels{};
+    uint8 OffsetX{};
 };
+
+constexpr sint32 PALETTE_TRANSPARENT = -1;
 
 ImportResult ImageImporter::Import(
     const Image& image,
     sint32 offsetX,
     sint32 offsetY,
-    bool keepPalette,
+    IMPORT_FLAGS flags,
     IMPORT_MODE mode) const
 {
     if (image.Width > 256 || image.Height > 256)
     {
-        throw std::runtime_error("Only images 256x256 or less are supported.");
+        throw std::invalid_argument("Only images 256x256 or less are supported.");
     }
 
-    if (keepPalette && image.Depth != 8)
+    if ((flags & IMPORT_FLAGS::KEEP_PALETTE) && image.Depth != 8)
     {
-        throw std::runtime_error("Image is not palletted, it has bit depth of " + image.Depth);
+        throw std::invalid_argument("Image is not palletted, it has bit depth of " + image.Depth);
+    }
+
+    if (!(flags & IMPORT_FLAGS::RLE))
+    {
+        throw std::invalid_argument("Only RLE image import is currently supported.");
     }
 
     const auto width = image.Width;
     const auto height = image.Height;
     const auto pixels = image.Pixels.data();
-    const auto palette = StandardPalette;
 
     auto buffer = (uint8 *)std::malloc((height * 2) + (width * height * 16));
     std::memset(buffer, 0, (height * 2) + (width * height * 16));
@@ -57,13 +63,13 @@ ImportResult ImageImporter::Import(
     // A larger range is needed for proper dithering
     auto palettedSrc = pixels;
     std::unique_ptr<sint16[]> rgbaSrcBuffer;
-    if (!keepPalette)
+    if (!(flags & IMPORT_FLAGS::KEEP_PALETTE))
     {
         rgbaSrcBuffer = std::make_unique<sint16[]>(height * width * 4);
     }
 
     auto rgbaSrc = rgbaSrcBuffer.get();
-    if (!keepPalette)
+    if (!(flags & IMPORT_FLAGS::KEEP_PALETTE))
     {
         for (uint32 x = 0; x < height * width * 4; x++)
         {
@@ -86,86 +92,24 @@ ImportResult ImageImporter::Import(
         for (uint32 x = 0; x < width; x++)
         {
             sint32 paletteIndex;
-            if (keepPalette)
+            if (flags & IMPORT_FLAGS::KEEP_PALETTE)
             {
                 paletteIndex = *palettedSrc;
                 // The 1st index is always transparent
                 if (paletteIndex == 0)
                 {
-                    paletteIndex = -1;
+                    paletteIndex = PALETTE_TRANSPARENT;
                 }
             }
             else
             {
-                paletteIndex = GetPaletteIndex(palette, rgbaSrc);
-
-                if (mode == IMPORT_MODE::CLOSEST || mode == IMPORT_MODE::DITHERING)
-                {
-                    if (paletteIndex == -1 && !IsTransparentPixel(rgbaSrc))
-                    {
-                        paletteIndex = GetClosestPaletteIndex(palette, rgbaSrc);
-                    }
-                }
-
-                if (mode == IMPORT_MODE::DITHERING)
-                {
-                    if (!IsTransparentPixel(rgbaSrc) && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc)))
-                    {
-                        sint16 dr = rgbaSrc[0] - (sint16)(palette[paletteIndex].Red);
-                        sint16 dg = rgbaSrc[1] - (sint16)(palette[paletteIndex].Green);
-                        sint16 db = rgbaSrc[2] - (sint16)(palette[paletteIndex].Blue);
-
-                        if (x + 1 < width)
-                        {
-                            if (!IsTransparentPixel(rgbaSrc + 4) && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc + 4)))
-                            {
-                                // Right
-                                rgbaSrc[4] += dr * 7 / 16;
-                                rgbaSrc[5] += dg * 7 / 16;
-                                rgbaSrc[6] += db * 7 / 16;
-                            }
-                        }
-
-                        if (y + 1 < height)
-                        {
-                            if (x > 0)
-                            {
-                                if (!IsTransparentPixel(rgbaSrc + 4 * (width - 1)) && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc + 4 * (width - 1))))
-                                {
-                                    // Bottom left
-                                    rgbaSrc[4 * (width - 1)] += dr * 3 / 16;
-                                    rgbaSrc[4 * (width - 1) + 1] += dg * 3 / 16;
-                                    rgbaSrc[4 * (width - 1) + 2] += db * 3 / 16;
-                                }
-                            }
-
-                            // Bottom
-                            if (!IsTransparentPixel(rgbaSrc + 4 * width) && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc + 4 * width)))
-                            {
-                                rgbaSrc[4 * width] += dr * 5 / 16;
-                                rgbaSrc[4 * width + 1] += dg * 5 / 16;
-                                rgbaSrc[4 * width + 2] += db * 5 / 16;
-                            }
-
-                            if (x + 1 < width)
-                            {
-                                if (!IsTransparentPixel(rgbaSrc + 4 * (width + 1)) && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc + 4 * (width + 1))))
-                                {
-                                    // Bottom right
-                                    rgbaSrc[4 * (width + 1)] += dr * 1 / 16;
-                                    rgbaSrc[4 * (width + 1) + 1] += dg * 1 / 16;
-                                    rgbaSrc[4 * (width + 1) + 2] += db * 1 / 16;
-                                }
-                            }
-                        }
-                    }
-                }
+                paletteIndex = CalculatePaletteIndex(mode, rgbaSrc, x, y, width, height);
             }
 
             rgbaSrc += 4;
             palettedSrc += 1;
 
-            if (paletteIndex == -1)
+            if (paletteIndex == PALETTE_TRANSPARENT)
             {
                 if (npixels != 0)
                 {
@@ -246,6 +190,73 @@ ImportResult ImageImporter::Import(
     return result;
 }
 
+sint32 ImageImporter::CalculatePaletteIndex(IMPORT_MODE mode, sint16 * rgbaSrc, sint32 x, sint32 y, sint32 width, sint32 height)
+{
+    auto palette = StandardPalette;
+    auto paletteIndex = GetPaletteIndex(palette, rgbaSrc);
+    if (mode == IMPORT_MODE::CLOSEST || mode == IMPORT_MODE::DITHERING)
+    {
+        if (paletteIndex == PALETTE_TRANSPARENT && !IsTransparentPixel(rgbaSrc))
+        {
+            paletteIndex = GetClosestPaletteIndex(palette, rgbaSrc);
+        }
+    }
+    if (mode == IMPORT_MODE::DITHERING)
+    {
+        if (!IsTransparentPixel(rgbaSrc) && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc)))
+        {
+            auto dr = rgbaSrc[0] - (sint16)(palette[paletteIndex].Red);
+            auto dg = rgbaSrc[1] - (sint16)(palette[paletteIndex].Green);
+            auto db = rgbaSrc[2] - (sint16)(palette[paletteIndex].Blue);
+
+            if (x + 1 < width)
+            {
+                if (!IsTransparentPixel(rgbaSrc + 4) && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc + 4)))
+                {
+                    // Right
+                    rgbaSrc[4] += dr * 7 / 16;
+                    rgbaSrc[5] += dg * 7 / 16;
+                    rgbaSrc[6] += db * 7 / 16;
+                }
+            }
+
+            if (y + 1 < height)
+            {
+                if (x > 0)
+                {
+                    if (!IsTransparentPixel(rgbaSrc + 4 * (width - 1)) && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc + 4 * (width - 1))))
+                    {
+                        // Bottom left
+                        rgbaSrc[4 * (width - 1)] += dr * 3 / 16;
+                        rgbaSrc[4 * (width - 1) + 1] += dg * 3 / 16;
+                        rgbaSrc[4 * (width - 1) + 2] += db * 3 / 16;
+                    }
+                }
+
+                // Bottom
+                if (!IsTransparentPixel(rgbaSrc + 4 * width) && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc + 4 * width)))
+                {
+                    rgbaSrc[4 * width] += dr * 5 / 16;
+                    rgbaSrc[4 * width + 1] += dg * 5 / 16;
+                    rgbaSrc[4 * width + 2] += db * 5 / 16;
+                }
+
+                if (x + 1 < width)
+                {
+                    if (!IsTransparentPixel(rgbaSrc + 4 * (width + 1)) && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc + 4 * (width + 1))))
+                    {
+                        // Bottom right
+                        rgbaSrc[4 * (width + 1)] += dr * 1 / 16;
+                        rgbaSrc[4 * (width + 1) + 1] += dg * 1 / 16;
+                        rgbaSrc[4 * (width + 1) + 2] += db * 1 / 16;
+                    }
+                }
+            }
+        }
+    }
+    return paletteIndex;
+}
+
 sint32 ImageImporter::GetPaletteIndex(const PaletteBGRA * palette, sint16 * colour)
 {
     if (!IsTransparentPixel(colour))
@@ -260,7 +271,7 @@ sint32 ImageImporter::GetPaletteIndex(const PaletteBGRA * palette, sint16 * colo
             }
         }
     }
-    return -1;
+    return PALETTE_TRANSPARENT;
 }
 
 bool ImageImporter::IsTransparentPixel(const sint16 * colour)
@@ -273,7 +284,7 @@ bool ImageImporter::IsTransparentPixel(const sint16 * colour)
  */
 bool ImageImporter::IsChangablePixel(sint32 paletteIndex)
 {
-    if (paletteIndex == -1)
+    if (paletteIndex == PALETTE_TRANSPARENT)
         return true;
     if (paletteIndex == 0)
         return false;
@@ -290,23 +301,25 @@ bool ImageImporter::IsChangablePixel(sint32 paletteIndex)
 
 sint32 ImageImporter::GetClosestPaletteIndex(const PaletteBGRA * palette, const sint16 * colour)
 {
-    uint32 smallest_error = (uint32)-1;
-    sint32 best_match = -1;
-
-    for (sint32 x = 0; x < 256; x++) {
-        if (IsChangablePixel(x)) {
+    auto smallestError = (uint32)-1;
+    auto bestMatch = PALETTE_TRANSPARENT;
+    for (sint32 x = 0; x < 256; x++)
+    {
+        if (IsChangablePixel(x))
+        {
             uint32 error =
                 ((sint16)(palette[x].Red) - colour[0]) * ((sint16)(palette[x].Red) - colour[0]) +
                 ((sint16)(palette[x].Green) - colour[1]) * ((sint16)(palette[x].Green) - colour[1]) +
                 ((sint16)(palette[x].Blue) - colour[2]) * ((sint16)(palette[x].Blue) - colour[2]);
 
-            if (smallest_error == (uint32)-1 || smallest_error > error) {
-                best_match = x;
-                smallest_error = error;
+            if (smallestError == (uint32)-1 || smallestError > error)
+            {
+                bestMatch = x;
+                smallestError = error;
             }
         }
     }
-    return best_match;
+    return bestMatch;
 }
 
 const PaletteBGRA ImageImporter::StandardPalette[256] =

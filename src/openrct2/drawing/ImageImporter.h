@@ -42,16 +42,24 @@ namespace OpenRCT2::Drawing
             DITHERING,
         };
 
+        enum IMPORT_FLAGS
+        {
+            NONE = 0,
+            KEEP_PALETTE = 1 << 0,
+            RLE = 1 << 1,
+        };
+
         ImportResult Import(
             const Image& image,
             sint32 offsetX = 0,
             sint32 offsetY = 0,
-            bool keepPalette = false,
+            IMPORT_FLAGS flags = IMPORT_FLAGS::NONE,
             IMPORT_MODE mode = IMPORT_MODE::DEFAULT) const;
 
     private:
         static const PaletteBGRA StandardPalette[256];
 
+        static sint32 CalculatePaletteIndex(IMPORT_MODE mode, sint16 * rgbaSrc, sint32 x, sint32 y, sint32 width, sint32 height);
         static sint32 GetPaletteIndex(const PaletteBGRA * palette, sint16 * colour);
         static bool IsTransparentPixel(const sint16 * colour);
         static bool IsChangablePixel(sint32 paletteIndex);

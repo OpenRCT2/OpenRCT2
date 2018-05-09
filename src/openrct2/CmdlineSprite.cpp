@@ -257,11 +257,17 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
 {
     try
     {
-        auto format = keep_palette ? IMAGE_FORMAT::PNG : IMAGE_FORMAT::PNG_32;
-        auto image = Imaging::ReadFromFile(path, format);
+        auto format = IMAGE_FORMAT::PNG_32;
+        auto flags = ImageImporter::IMPORT_FLAGS::RLE;
+        if (keep_palette)
+        {
+            format = IMAGE_FORMAT::PNG;
+            flags = (ImageImporter::IMPORT_FLAGS)(flags | ImageImporter::IMPORT_FLAGS::KEEP_PALETTE);
+        }
 
         ImageImporter importer;
-        auto result = importer.Import(image, x_offset, y_offset, keep_palette, (ImageImporter::IMPORT_MODE)mode);
+        auto image = Imaging::ReadFromFile(path, format);
+        auto result = importer.Import(image, x_offset, y_offset, flags, (ImageImporter::IMPORT_MODE)mode);
 
         *outElement = result.Element;
         *outBuffer = (uint8 *)result.Buffer;
