@@ -40,7 +40,7 @@ static std::vector<uint8> ReadToVector(std::istream &stream)
 static Image ReadBitmap(std::istream &istream, IMAGE_FORMAT format)
 {
     auto buffer = ReadToVector(istream);
-    auto sdlStream = SDL_RWFromConstMem(buffer.data(), buffer.size());
+    auto sdlStream = SDL_RWFromConstMem(buffer.data(), (int)buffer.size());
     auto bitmap = SDL_LoadBMP_RW(sdlStream, 1);
     if (bitmap != nullptr)
     {
