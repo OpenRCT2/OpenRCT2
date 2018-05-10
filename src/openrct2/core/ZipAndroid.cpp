@@ -119,7 +119,7 @@ public:
         return std::vector<uint8>(dataPtr, dataPtr + dataSize);
     }
 
-    void void SetFileData(const std::string_view& path, std::vector<uint8>&& data) override
+    void SetFileData(const std::string_view& path, std::vector<uint8>&& data) override
     {
         STUB();
     }
@@ -139,15 +139,15 @@ namespace Zip
 {
     std::unique_ptr<IZipArchive> Open(const std::string_view& path, ZIP_ACCESS access)
     {
-        return new ZipArchive(path, access);
+        return std::make_unique<ZipArchive>(path, access);
     }
 
-    std::unique_ptr<IZipArchive> TryOpen(const std::string_view path, ZIP_ACCESS access)
+    std::unique_ptr<IZipArchive> TryOpen(const std::string_view& path, ZIP_ACCESS access)
     {
         std::unique_ptr<IZipArchive> result;
         try
         {
-            result = new ZipArchive(path, access);
+            result = std::make_unique<ZipArchive>(path, access);
         }
         catch (const std::exception&)
         {
