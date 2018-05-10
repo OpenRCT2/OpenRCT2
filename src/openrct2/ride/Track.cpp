@@ -2405,3 +2405,13 @@ void track_element_set_type(rct_tile_element * tileElement, uint8 type)
 {
     tileElement->properties.track.type = type;
 }
+
+uint8 track_element_get_door_a_state(const rct_tile_element * tileElement)
+{
+    return (tileElement->properties.track.colour & TRACK_ELEMENT_DOOR_A_MASK) >> 2;
+}
+
+uint8 track_element_get_door_b_state(const rct_tile_element * tileElement)
+{
+    return (tileElement->properties.track.colour & TRACK_ELEMENT_DOOR_B_MASK) >> 5;
+}

@@ -149,7 +149,7 @@ static constexpr const uint8 byte_97B55D[] = {
     1, 5, 1, 3, 2, 3, 1, 5, 0
 };
 
-static constexpr const uint8 stru_97B570[][2] = {
+static constexpr const uint8 _tunnelHeights[TUNNEL_TYPE_COUNT][2] = {
     { 2, 2 },
     { 3, 3 },
     { 3, 5 },
@@ -165,10 +165,17 @@ static constexpr const uint8 stru_97B570[][2] = {
     { 2, 3 },
     { 3, 4 },
     { 2, 3 },
-    { 3, 4 }
+    { 3, 4 },
+    { 2, 2 },
+    { 2, 2 },
+    { 2, 2 },
+    { 2, 2 },
+    { 2, 2 },
+    { 2, 2 },
+    { 2, 2 },
 };
 
-static constexpr const sint16 word_97B590[] = {
+static constexpr const sint16 _boundBoxZOffsets[TUNNEL_TYPE_COUNT] = {
     0,
     0,
     -32,
@@ -185,13 +192,23 @@ static constexpr const sint16 word_97B590[] = {
     -16,
     -16,
     -16,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
 };
 
 // tunnel offset
-static constexpr const uint8 byte_97B5B0[] = {
+static constexpr const uint8 byte_97B5B0[TUNNEL_TYPE_COUNT] = {
     0, 0, 0, 3, 3, 3, 6, 6, 6, 6,
-    10, 11, 12, 13, 14, 14
+    10, 11, 12, 13, 14, 14,
+    16, 17, 18, 19, 20, 21, 22
 };
+
+#define EDGE_SPRITE_TYPE_COUNT 4
 
 #define DEFINE_EDGE_SPRITES(base) { \
     (base) +  0, \
@@ -216,9 +233,42 @@ static constexpr const uint8 byte_97B5B0[] = {
     (base) + 48, \
     (base) + 60, \
     (base) + 72, \
+    (base) + 36, \
+    (base) + 36, \
+    (base) + 36, \
+    (base) + 36, \
+    (base) + 36, \
+    (base) + 36, \
+    (base) + 36, \
 }
 
-static constexpr const uint32 _terrainEdgeSpriteIds[][TERRAIN_EDGE_COUNT] =
+#define DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(base) { \
+    (base) + 36, \
+    (base) + 40, \
+    (base) + 44, \
+    (base) + 48, \
+    (base) + 52, \
+    (base) + 56, \
+    (base) + 60, \
+    (base) + 64, \
+    (base) + 68, \
+    (base) + 72, \
+    (base) + 76, \
+    (base) + 80, \
+    (base) + 36, \
+    (base) + 48, \
+    (base) + 60, \
+    (base) + 72, \
+    (base) + 76, \
+    (base) + 80, \
+    (base) + 84, \
+    (base) + 88, \
+    (base) + 92, \
+    (base) + 96, \
+    (base) + 100, \
+}
+
+static constexpr const uint32 _terrainEdgeSpriteIds[][EDGE_SPRITE_TYPE_COUNT] =
 {
     DEFINE_EDGE_SPRITES(SPR_EDGE_ROCK_BASE),
     DEFINE_EDGE_SPRITES(SPR_EDGE_WOOD_RED_BASE),
@@ -237,7 +287,7 @@ static constexpr const uint32 _terrainEdgeSpriteIds[][TERRAIN_EDGE_COUNT] =
     DEFINE_EDGE_SPRITES(SPR_CSG_EDGE_SKYSCRAPER_B_BASE),
 };
 
-static constexpr const uint32 _terrainEdgeTunnelSpriteIds[][TERRAIN_EDGE_COUNT * 4] =
+static constexpr const uint32 _terrainEdgeTunnelSpriteIds[][TUNNEL_TYPE_COUNT] =
 {
     DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_ROCK_BASE),
     DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_WOOD_RED_BASE),
@@ -245,15 +295,15 @@ static constexpr const uint32 _terrainEdgeTunnelSpriteIds[][TERRAIN_EDGE_COUNT *
     DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_ICE_BASE),
     DEFINE_EDGE_TUNNEL_SPRITES(SPR_CSG_EDGE_BRICK_BASE),
     DEFINE_EDGE_TUNNEL_SPRITES(SPR_CSG_EDGE_IRON_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES(SPR_CSG_EDGE_GREY_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES(SPR_CSG_EDGE_YELLOW_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES(SPR_CSG_EDGE_RED_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES(SPR_CSG_EDGE_PURPLE_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES(SPR_CSG_EDGE_GREEN_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES(SPR_CSG_EDGE_STONE_BROWN_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES(SPR_CSG_EDGE_STONE_GREY_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES(SPR_CSG_EDGE_SKYSCRAPER_A_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES(SPR_CSG_EDGE_SKYSCRAPER_B_BASE),
+    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_GREY_BASE),
+    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_YELLOW_BASE),
+    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_RED_BASE),
+    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_PURPLE_BASE),
+    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_GREEN_BASE),
+    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_STONE_BROWN_BASE),
+    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_STONE_GREY_BASE),
+    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_SKYSCRAPER_A_BASE),
+    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_SKYSCRAPER_B_BASE),
 };
 
 static constexpr const uint8 byte_97B740[] =
@@ -715,7 +765,7 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
 
         // Tunnels
         uint8 tunnelType = tunnelArray[tunnelIndex].type;
-        uint8 tunnelHeight = stru_97B570[tunnelType][0];
+        uint8 tunnelHeight = _tunnelHeights[tunnelType][0];
         sint16 zOffset = curHeight;
 
         if ((zOffset + tunnelHeight) > ah || (zOffset + tunnelHeight) > al)
@@ -725,8 +775,8 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
 
         zOffset *= 16;
 
-        sint16 boundBoxOffsetZ = zOffset + word_97B590[tunnelType];
-        sint8 boundBoxLength = stru_97B570[tunnelType][1] * 16;
+        sint16 boundBoxOffsetZ = zOffset + _boundBoxZOffsets[tunnelType];
+        sint8 boundBoxLength = _tunnelHeights[tunnelType][1] * 16;
         if (boundBoxOffsetZ < 16)
         {
             boundBoxOffsetZ += 16;
@@ -739,8 +789,8 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
             boundBoxOffsetZ);
 
         boundBoxOffsetZ = curHeight * 16;
-        boundBoxLength = stru_97B570[tunnelType][1] * 16;
-        boundBoxOffsetZ += word_97B590[tunnelType];
+        boundBoxLength = _tunnelHeights[tunnelType][1] * 16;
+        boundBoxOffsetZ += _boundBoxZOffsets[tunnelType];
         if (boundBoxOffsetZ == 0)
         {
             boundBoxOffsetZ += 16;
@@ -752,7 +802,7 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
             session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16,
             tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ);
 
-        curHeight += stru_97B570[tunnelType][0];
+        curHeight += _tunnelHeights[tunnelType][0];
         tunnelIndex++;
     }
 }
