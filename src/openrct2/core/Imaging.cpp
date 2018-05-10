@@ -53,7 +53,6 @@ public:
 
 namespace Imaging
 {
-    constexpr auto EXCEPTION_IMAGE_FORMAT_UNSUPPORTED = "Unsupported image format.";
     constexpr auto EXCEPTION_IMAGE_FORMAT_UNKNOWN = "Unknown image format.";
 
     static std::unordered_map<IMAGE_FORMAT, ImageReaderFunc> _readerImplementations;
@@ -366,7 +365,7 @@ namespace Imaging
                 break;
             }
             default:
-                throw std::runtime_error("Unknown image format.");
+                throw std::runtime_error(EXCEPTION_IMAGE_FORMAT_UNKNOWN);
         }
     }
 }

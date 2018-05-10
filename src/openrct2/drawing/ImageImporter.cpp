@@ -16,6 +16,7 @@
 
 #include <cstring>
 #include <stdexcept>
+#include <string>
 #include "../core/Imaging.h"
 #include "ImageImporter.h"
 
@@ -44,7 +45,7 @@ ImportResult ImageImporter::Import(
 
     if ((flags & IMPORT_FLAGS::KEEP_PALETTE) && image.Depth != 8)
     {
-        throw std::invalid_argument("Image is not palletted, it has bit depth of " + image.Depth);
+        throw std::invalid_argument("Image is not palletted, it has bit depth of " + std::to_string(image.Depth));
     }
 
     if (!(flags & IMPORT_FLAGS::RLE))
