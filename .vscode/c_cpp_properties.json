@@ -22,7 +22,9 @@
             "macFrameworkPath": [
                 "/System/Library/Frameworks",
                 "/Library/Frameworks"
-            ]
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++17"
         },
         {
             "name": "Linux",
@@ -85,5 +87,5 @@
             "cppStandard": "c++17"
         }
     ],
-    "version": 3
+    "version": 4
 }
