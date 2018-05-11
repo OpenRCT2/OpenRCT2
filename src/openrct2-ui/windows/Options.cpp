@@ -268,15 +268,15 @@ static rct_widget window_options_rendering_widgets[] = {
 
 static rct_widget window_options_culture_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    { WWT_DROPDOWN,         1,  155,    299,    53,     64,     STR_NONE,               STR_NONE }, // language
+    { WWT_DROPDOWN,         1,  155,    299,    53,     64,     STR_STRING,             STR_NONE }, // language
     { WWT_BUTTON,           1,  288,    298,    54,     63,     STR_DROPDOWN_GLYPH,     STR_LANGUAGE_TIP },
-    { WWT_DROPDOWN,         1,  155,    299,    68,     79,     STR_ARG_12_STRINGID,    STR_NONE }, // Currency
+    { WWT_DROPDOWN,         1,  155,    299,    68,     79,     STR_NONE,               STR_NONE }, // Currency
     { WWT_BUTTON,           1,  288,    298,    69,     78,     STR_DROPDOWN_GLYPH,     STR_CURRENCY_TIP },
-    { WWT_DROPDOWN,         1,  155,    299,    83,     94,     STR_ARG_14_STRINGID,    STR_NONE }, // Distance and speed
+    { WWT_DROPDOWN,         1,  155,    299,    83,     94,     STR_NONE,               STR_NONE }, // Distance and speed
     { WWT_BUTTON,           1,  288,    298,    84,     93,     STR_DROPDOWN_GLYPH,     STR_DISTANCE_AND_SPEED_TIP },
-    { WWT_DROPDOWN,         1,  155,    299,    98,     110,    STR_ARG_20_STRINGID,    STR_NONE }, // Temperature
+    { WWT_DROPDOWN,         1,  155,    299,    98,     110,    STR_NONE,               STR_NONE }, // Temperature
     { WWT_BUTTON,           1,  288,    298,    99,     108,    STR_DROPDOWN_GLYPH,     STR_TEMPERATURE_FORMAT_TIP },
-    { WWT_DROPDOWN,         1,  155,    299,    113,    124,    STR_ARG_6_STRINGID,     STR_NONE }, // Height labels
+    { WWT_DROPDOWN,         1,  155,    299,    113,    124,    STR_NONE,               STR_NONE }, // Height labels
     { WWT_BUTTON,           1,  288,    298,    114,    123,    STR_DROPDOWN_GLYPH,     STR_HEIGHT_LABELS_UNITS_TIP },
     { WWT_DROPDOWN,         1,  155,    299,    128,    139,    STR_NONE,               STR_NONE }, // Date format
     { WWT_BUTTON,           1,  288,    298,    129,    138,    STR_DROPDOWN_GLYPH,     STR_DATE_FORMAT_TIP },
@@ -1646,39 +1646,34 @@ static void window_options_invalidate(rct_window *w)
     }
 
     case WINDOW_OPTIONS_PAGE_CULTURE:
-        // currency: pounds, dollars, etc. (10 total)
-        set_format_arg(12, rct_string_id, CurrencyDescriptors[gConfigGeneral.currency_format].stringId);
+        // Language
+        set_format_arg(0, char*, LanguagesDescriptors[gCurrentLanguage].native_name);
 
-        // distance: metric / imperial / si
+        // Currency: pounds, dollars, etc. (10 total)
+        window_options_culture_widgets[WIDX_CURRENCY].text = CurrencyDescriptors[gConfigGeneral.currency_format].stringId;
+
+        // Distance: metric / imperial / si
         {
             rct_string_id stringId;
-            switch (gConfigGeneral.measurement_format) {
+            switch (gConfigGeneral.measurement_format)
+            {
             default:
             case MEASUREMENT_FORMAT_IMPERIAL: stringId = STR_IMPERIAL; break;
             case MEASUREMENT_FORMAT_METRIC: stringId = STR_METRIC; break;
             case MEASUREMENT_FORMAT_SI: stringId = STR_SI; break;
             }
-            set_format_arg(14, rct_string_id, stringId);
+            window_options_culture_widgets[WIDX_DISTANCE].text = stringId;
         }
 
-        // temperature: celsius/fahrenheit
-        set_format_arg(20, rct_string_id, (gConfigGeneral.temperature_format == TEMPERATURE_FORMAT_F) ? STR_FAHRENHEIT : STR_CELSIUS);
+        // Date format
+        window_options_culture_widgets[WIDX_DATE_FORMAT].text = DateFormatStringIds[gConfigGeneral.date_format];
 
-        // height: units/real values
-        set_format_arg(6, rct_string_id, gConfigGeneral.show_height_as_units ? STR_UNITS : STR_REAL_VALUES);
+        // Temperature: celsius/fahrenheit
+        window_options_culture_widgets[WIDX_TEMPERATURE].text = gConfigGeneral.temperature_format == TEMPERATURE_FORMAT_F ? STR_FAHRENHEIT : STR_CELSIUS;
 
-        window_options_culture_widgets[WIDX_LANGUAGE].type = WWT_DROPDOWN;
-        window_options_culture_widgets[WIDX_LANGUAGE_DROPDOWN].type = WWT_BUTTON;
-        window_options_culture_widgets[WIDX_CURRENCY].type = WWT_DROPDOWN;
-        window_options_culture_widgets[WIDX_CURRENCY_DROPDOWN].type = WWT_BUTTON;
-        window_options_culture_widgets[WIDX_DISTANCE].type = WWT_DROPDOWN;
-        window_options_culture_widgets[WIDX_DISTANCE_DROPDOWN].type = WWT_BUTTON;
-        window_options_culture_widgets[WIDX_TEMPERATURE].type = WWT_DROPDOWN;
-        window_options_culture_widgets[WIDX_TEMPERATURE_DROPDOWN].type = WWT_BUTTON;
-        window_options_culture_widgets[WIDX_HEIGHT_LABELS].type = WWT_DROPDOWN;
-        window_options_culture_widgets[WIDX_HEIGHT_LABELS_DROPDOWN].type = WWT_BUTTON;
-        window_options_culture_widgets[WIDX_DATE_FORMAT].type = WWT_DROPDOWN;
-        window_options_culture_widgets[WIDX_DATE_FORMAT_DROPDOWN].type = WWT_BUTTON;
+        // Height: units/real values
+        window_options_culture_widgets[WIDX_HEIGHT_LABELS].text = gConfigGeneral.show_height_as_units ? STR_UNITS : STR_REAL_VALUES;
+
         break;
 
     case WINDOW_OPTIONS_PAGE_AUDIO:
@@ -1899,31 +1894,16 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(dpi, STR_SCALING_QUALITY, w, colour, w->x + 25, w->y + window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1);
         break;
     }
+
     case WINDOW_OPTIONS_PAGE_CULTURE:
         gfx_draw_string_left(dpi, STR_OPTIONS_LANGUAGE, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_LANGUAGE].top + 1);
-
-        gfx_draw_string(
-            dpi,
-            (char*)LanguagesDescriptors[gCurrentLanguage].native_name,
-            w->colours[1],
-            w->x + window_options_culture_widgets[WIDX_LANGUAGE].left + 1,
-            w->y + window_options_culture_widgets[WIDX_LANGUAGE].top
-        );
-
         gfx_draw_string_left(dpi, STR_CURRENCY, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_CURRENCY].top + 1);
         gfx_draw_string_left(dpi, STR_DISTANCE_AND_SPEED, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_DISTANCE].top + 1);
         gfx_draw_string_left(dpi, STR_TEMPERATURE, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_TEMPERATURE].top + 1);
         gfx_draw_string_left(dpi, STR_HEIGHT_LABELS, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_HEIGHT_LABELS].top + 1);
         gfx_draw_string_left(dpi, STR_DATE_FORMAT, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_DATE_FORMAT].top + 1);
-        gfx_draw_string_left(
-            dpi,
-            DateFormatStringIds[gConfigGeneral.date_format],
-            nullptr,
-            w->colours[1],
-            w->x + window_options_culture_widgets[WIDX_DATE_FORMAT].left + 1,
-            w->y + window_options_culture_widgets[WIDX_DATE_FORMAT].top
-        );
         break;
+
     case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
     {
         gfx_draw_string_left(dpi, STR_SHOW_TOOLBAR_BUTTONS_FOR, w, w->colours[1], w->x + 10, w->y + window_options_controls_and_interface_widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15);
