@@ -117,10 +117,13 @@ private:
         rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
         do
         {
-            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL) continue;
+            if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
+            {
+                continue;
+            }
             if (tileElement->base_height != baseZ) continue;
-            if ((tile_element_get_direction(tileElement)) != direction) continue;
-            if (tile_element_is_ghost(tileElement) != isGhost) continue;
+            if (tileElement->GetDirection() != direction) continue;
+            if (tileElement->IsGhost() != isGhost) continue;
             return tileElement;
         } while (!tile_element_is_last_for_tile(tileElement++));
         return nullptr;
