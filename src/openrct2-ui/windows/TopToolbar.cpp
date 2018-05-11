@@ -1250,9 +1250,9 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                     VIEWPORT_INTERACTION_MASK_TERRAIN &
                     VIEWPORT_INTERACTION_MASK_WATER;
                 sint32 interaction_type = 0;
-                rct_map_element* map_element;
+                rct_tile_element* tile_element;
 
-                get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
+                get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &tile_element, NULL);
 
                 if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
                     *grid_x = MAP_LOCATION_NULL;
@@ -1264,7 +1264,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 // TODO Some reason this code is not used on quarter-tile scenery, which doesn't make sense.
                 // It places items on top of water surfaces when you're not holding ctrl or shift. Is there any
                 // sort of quarter-tile scenery that would be commonly placed below water surfaces?
-                uint16 water_height = map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+                uint16 water_height = surface_get_water_height(tile_element);
                 if (water_height != 0) {
                     gSceneryPlaceZ = water_height * 16;
                 }
