@@ -310,7 +310,7 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
 #undef CONTROLS_GROUP_START
 #define THEMES_GROUP_START 148
     { WWT_GROUPBOX,         1,  5,      304,    THEMES_GROUP_START + 0,      THEMES_GROUP_START + 47,     STR_THEMES_GROUP,                       STR_NONE },                                 // Toolbar buttons group
-    { WWT_DROPDOWN,         1,  155,    299,    THEMES_GROUP_START + 14,     THEMES_GROUP_START + 25,     STR_NONE,                               STR_NONE },                                 // Themes
+    { WWT_DROPDOWN,         1,  155,    299,    THEMES_GROUP_START + 14,     THEMES_GROUP_START + 25,     STR_STRING,                             STR_NONE },                                 // Themes
     { WWT_BUTTON,           1,  288,    298,    THEMES_GROUP_START + 15,     THEMES_GROUP_START + 24,     STR_DROPDOWN_GLYPH,                     STR_CURRENT_THEME_TIP },
     { WWT_BUTTON,           1,  155,    299,    THEMES_GROUP_START + 30,     THEMES_GROUP_START + 42,     STR_EDIT_THEMES_BUTTON,                 STR_EDIT_THEMES_BUTTON_TIP },               // Themes button
 #undef THEMES_GROUP_START
@@ -1727,6 +1727,7 @@ static void window_options_invalidate(rct_window *w)
     break;
 
     case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
+    {
         widget_set_checkbox_value(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
         widget_set_checkbox_value(w, WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
         widget_set_checkbox_value(w, WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
@@ -1737,18 +1738,12 @@ static void window_options_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
         widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
 
-        window_options_controls_and_interface_widgets[WIDX_THEMES].type = WWT_DROPDOWN;
-        window_options_controls_and_interface_widgets[WIDX_THEMES_DROPDOWN].type = WWT_BUTTON;
-        window_options_controls_and_interface_widgets[WIDX_THEMES_BUTTON].type = WWT_BUTTON;
-        window_options_controls_and_interface_widgets[WIDX_SCREEN_EDGE_SCROLLING].type = WWT_CHECKBOX;
-        window_options_controls_and_interface_widgets[WIDX_TRAP_CURSOR].type = WWT_CHECKBOX;
-        window_options_controls_and_interface_widgets[WIDX_HOTKEY_DROPDOWN].type = WWT_BUTTON;
-        window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_FINANCES].type = WWT_CHECKBOX;
-        window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_RESEARCH].type = WWT_CHECKBOX;
-        window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_CHEATS].type = WWT_CHECKBOX;
-        window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_NEWS].type = WWT_CHECKBOX;
-        window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_MUTE].type = WWT_CHECKBOX;
+        size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
+        const utf8 * activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
+        set_format_arg(0, uintptr_t, (uintptr_t)activeThemeName);
+
         break;
+    }
 
     case WINDOW_OPTIONS_PAGE_MISC:
         // The real name setting of clients is fixed to that of the server
@@ -1907,21 +1902,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
     case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
     {
         gfx_draw_string_left(dpi, STR_SHOW_TOOLBAR_BUTTONS_FOR, w, w->colours[1], w->x + 10, w->y + window_options_controls_and_interface_widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15);
-
-        size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
-        const utf8 * activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-        set_format_arg(0, uintptr_t, (uintptr_t)activeThemeName);
-
         gfx_draw_string_left(dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1], w->x + 10, w->y + window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1);
-        gfx_draw_string_left_clipped(
-            dpi,
-            STR_STRING,
-            gCommonFormatArgs,
-            w->colours[1],
-            w->x + window_options_controls_and_interface_widgets[WIDX_THEMES].left + 1,
-            w->y + window_options_controls_and_interface_widgets[WIDX_THEMES].top,
-            window_options_controls_and_interface_widgets[WIDX_THEMES_DROPDOWN].left - window_options_controls_and_interface_widgets[WIDX_THEMES].left - 4
-        );
         break;
     }
     case WINDOW_OPTIONS_PAGE_MISC:
