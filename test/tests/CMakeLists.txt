@@ -147,6 +147,12 @@ add_executable(test_localisation ${STRING_TEST_SOURCES})
 target_link_libraries(test_localisation ${GTEST_LIBRARIES} test-common ${LDL} z)
 add_test(NAME localisation COMMAND test_localisation)
 
+# ImageImporter tests
+add_executable(test_imageimporter "${CMAKE_CURRENT_LIST_DIR}/ImageImporterTests.cpp"
+                                  "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+target_link_libraries(test_imageimporter ${GTEST_LIBRARIES} libopenrct2)
+add_test(NAME ImageImporter COMMAND test_imageimporter)
+
 # Ride ratings test
 set(RIDE_RATINGS_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/RideRatings.cpp"
                               "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
