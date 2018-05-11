@@ -61,5 +61,6 @@ namespace OpenRCT2::Localisation
 }
 
 // Legacy getters
+// TODO Remove usages of these and instead call via shared reference
 sint32 LocalisationService_GetCurrentLanguage();
 bool LocalisationService_UseTrueTypeFont();
