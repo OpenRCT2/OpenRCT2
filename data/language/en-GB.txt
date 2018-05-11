@@ -1777,8 +1777,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
-STR_1775    :Off
-STR_1776    :On
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}Ride music
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume

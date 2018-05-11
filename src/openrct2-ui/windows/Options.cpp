@@ -1705,9 +1705,6 @@ static void window_options_invalidate(rct_window *w)
 
         window_options_audio_widgets[WIDX_TITLE_MUSIC].text = window_options_title_music_names[gConfigSound.title_music];
 
-        // music: on/off
-        set_format_arg(8, rct_string_id, gConfigSound.ride_music_enabled ? STR_OPTIONS_RIDE_MUSIC_ON : STR_OPTIONS_RIDE_MUSIC_OFF);
-
         widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
         widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
         widget_set_checkbox_value(w, WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
