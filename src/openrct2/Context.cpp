@@ -94,7 +94,7 @@ namespace OpenRCT2
         ITrackDesignRepository *    _trackDesignRepository = nullptr;
         IScenarioRepository *       _scenarioRepository = nullptr;
 #ifdef __ENABLE_DISCORD__
-        DiscordService *            _discordService = nullptr;
+        std::unique_ptr<DiscordService> _discordService;
 #endif
         StdInOutConsole             _stdInOutConsole;
 
@@ -145,9 +145,6 @@ namespace OpenRCT2
 
             delete _titleScreen;
 
-#ifdef __ENABLE_DISCORD__
-            delete _discordService;
-#endif
             delete _scenarioRepository;
             delete _trackDesignRepository;
             delete _objectManager;
@@ -354,7 +351,7 @@ namespace OpenRCT2
             _trackDesignRepository = CreateTrackDesignRepository(_env);
             _scenarioRepository = CreateScenarioRepository(_env);
 #ifdef __ENABLE_DISCORD__
-            _discordService = new DiscordService();
+            _discordService = std::make_unique<DiscordService>();
 #endif
 
             try
