@@ -130,6 +130,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_SOUND_CHECKBOX,
     WIDX_MUSIC_CHECKBOX,
     WIDX_AUDIO_FOCUS_CHECKBOX,
+    WIDX_TITLE_MUSIC_LABEL,
     WIDX_TITLE_MUSIC,
     WIDX_TITLE_MUSIC_DROPDOWN,
     WIDX_SOUND_VOLUME,
@@ -289,6 +290,7 @@ static rct_widget window_options_audio_widgets[] = {
     { WWT_CHECKBOX,         1,  10,     229,    69,     80,     STR_SOUND_EFFECTS,      STR_SOUND_EFFECTS_TIP },        // Enable / disable sound effects
     { WWT_CHECKBOX,         1,  10,     229,    84,     95,     STR_RIDE_MUSIC,         STR_RIDE_MUSIC_TIP },           // Enable / disable ride music
     { WWT_CHECKBOX,         1,  10,     299,    98,     110,    STR_AUDIO_FOCUS,        STR_AUDIO_FOCUS_TIP },          // Enable / disable audio disabled on focus lost
+    { WWT_LABEL,            1,  10,     154,    113,    125,    STR_OPTIONS_MUSIC_LABEL,STR_NONE },                     // Title music label
     { WWT_DROPDOWN,         1,  155,    299,    112,    124,    STR_NONE,               STR_NONE },                     // Title music
     { WWT_BUTTON,           1,  288,    298,    113,    123,    STR_DROPDOWN_GLYPH,     STR_TITLE_MUSIC_TIP },
     { WWT_SCROLL,           1,  155,    299,    68,     80,     SCROLL_HORIZONTAL,      STR_NONE },                     // Sound effect volume
@@ -1680,6 +1682,34 @@ static void window_options_invalidate(rct_window *w)
         break;
 
     case WINDOW_OPTIONS_PAGE_AUDIO:
+    {
+        // Sound device
+        rct_string_id audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
+        const char* audioDeviceName = nullptr;
+        if (gAudioCurrentDevice == -1)
+        {
+            audioDeviceStringId = STR_SOUND_NONE;
+        }
+        else
+        {
+            audioDeviceStringId = STR_STRING;
+#ifndef __linux__
+            if (gAudioCurrentDevice == 0)
+            {
+                audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
+            }
+#endif // __linux__
+            if (audioDeviceStringId == STR_STRING)
+            {
+                audioDeviceName = gAudioDevices[gAudioCurrentDevice].name;
+            }
+        }
+
+        window_options_audio_widgets[WIDX_SOUND].text = audioDeviceStringId;
+        set_format_arg(0, char*, audioDeviceName);
+
+        window_options_audio_widgets[WIDX_TITLE_MUSIC].text = window_options_title_music_names[gConfigSound.title_music];
+
         // music: on/off
         set_format_arg(8, rct_string_id, gConfigSound.ride_music_enabled ? STR_OPTIONS_RIDE_MUSIC_ON : STR_OPTIONS_RIDE_MUSIC_OFF);
 
@@ -1687,7 +1717,9 @@ static void window_options_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
         widget_set_checkbox_value(w, WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
 
-        if(w->frame_no == 0){ // initialize only on first frame, otherwise the scrollbars wont be able to be modified
+        // Initialize only on first frame, otherwise the scrollbars wont be able to be modified
+        if (w->frame_no == 0)
+        {
             widget = &window_options_audio_widgets[WIDX_SOUND_VOLUME];
             w->scrolls[0].h_left = (sint16)ceil((gConfigSound.sound_volume / 100.0f) * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
             widget = &window_options_audio_widgets[WIDX_MUSIC_VOLUME];
@@ -1696,17 +1728,8 @@ static void window_options_invalidate(rct_window *w)
 
         widget_scroll_update_thumbs(w, WIDX_SOUND_VOLUME);
         widget_scroll_update_thumbs(w, WIDX_MUSIC_VOLUME);
-
-        window_options_audio_widgets[WIDX_SOUND].type = WWT_DROPDOWN;
-        window_options_audio_widgets[WIDX_SOUND_DROPDOWN].type = WWT_BUTTON;
-        window_options_audio_widgets[WIDX_SOUND_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_audio_widgets[WIDX_MUSIC_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_audio_widgets[WIDX_AUDIO_FOCUS_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_audio_widgets[WIDX_TITLE_MUSIC].type = WWT_DROPDOWN;
-        window_options_audio_widgets[WIDX_TITLE_MUSIC_DROPDOWN].type = WWT_BUTTON;
-        window_options_audio_widgets[WIDX_SOUND_VOLUME].type = WWT_SCROLL;
-        window_options_audio_widgets[WIDX_MUSIC_VOLUME].type = WWT_SCROLL;
-        break;
+    }
+    break;
 
     case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
         widget_set_checkbox_value(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
@@ -1901,45 +1924,6 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
             w->y + window_options_culture_widgets[WIDX_DATE_FORMAT].top
         );
         break;
-    case WINDOW_OPTIONS_PAGE_AUDIO:
-    {
-        // Sound device
-        rct_string_id audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
-        const char * audioDeviceName = nullptr;
-        if (gAudioCurrentDevice == -1) {
-            audioDeviceStringId = STR_SOUND_NONE;
-        } else {
-            audioDeviceStringId = STR_STRING;
-#ifndef __linux__
-            if (gAudioCurrentDevice == 0) {
-                audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
-            }
-#endif // __linux__
-            if (audioDeviceStringId == STR_STRING) {
-                audioDeviceName = gAudioDevices[gAudioCurrentDevice].name;
-            }
-        }
-        gfx_draw_string_left_clipped(
-            dpi,
-            audioDeviceStringId,
-            (void*)&audioDeviceName,
-            w->colours[1],
-            w->x + window_options_audio_widgets[WIDX_SOUND].left + 1,
-            w->y + window_options_audio_widgets[WIDX_SOUND].top,
-            window_options_audio_widgets[WIDX_SOUND_DROPDOWN].left - window_options_audio_widgets[WIDX_SOUND].left - 4
-        );
-
-        gfx_draw_string_left(dpi, STR_OPTIONS_MUSIC_LABEL, w, w->colours[1], w->x + 10, w->y + window_options_audio_widgets[WIDX_TITLE_MUSIC].top + 1);
-        gfx_draw_string_left(
-            dpi,
-            window_options_title_music_names[gConfigSound.title_music],
-            nullptr,
-            w->colours[1],
-            w->x + window_options_audio_widgets[WIDX_TITLE_MUSIC].left + 1,
-            w->y + window_options_audio_widgets[WIDX_TITLE_MUSIC].top
-        );
-        break;
-    }
     case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
     {
         gfx_draw_string_left(dpi, STR_SHOW_TOOLBAR_BUTTONS_FOR, w, w->colours[1], w->x + 10, w->y + window_options_controls_and_interface_widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15);
