@@ -15,11 +15,8 @@
 #pragma endregion
 
 /**
- * To better group the options together and allow the window to be scalable with additional OpenRCT2 options, the window has
- * been changed to a tab interface similar to the options window seen in Locomotion.
- *
- * TODO Some parts, particularly the string handling and order of widgets needs reorganising.
- *      Padding between the widgets and the window needs reducing, an artifact from originally being inside group boxes.
+ * To better group the options together and allow the window to be scalable with additional OpenRCT2 options,
+ * the window has been changed to a tab interface similar to the options window seen in Locomotion.
  */
 
 #include <cmath>
@@ -1633,15 +1630,6 @@ static void window_options_invalidate(rct_window *w)
 
         widget_set_checkbox_value(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
 
-        window_options_rendering_widgets[WIDX_TILE_SMOOTHING_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_rendering_widgets[WIDX_GRIDLINES_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_rendering_widgets[WIDX_VIRTUAL_FLOOR_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_rendering_widgets[WIDX_DAY_NIGHT_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_rendering_widgets[WIDX_ENABLE_LIGHT_FX_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_rendering_widgets[WIDX_UPPER_CASE_BANNERS_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_rendering_widgets[WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_rendering_widgets[WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_rendering_widgets[WIDX_SHOW_GUEST_PURCHASES_CHECKBOX].type = WWT_CHECKBOX;
         break;
     }
 
@@ -1783,18 +1771,6 @@ static void window_options_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
         widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
         widget_set_checkbox_value(w, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
-
-        window_options_advanced_widgets[WIDX_DEBUGGING_TOOLS].type = WWT_CHECKBOX;
-        window_options_advanced_widgets[WIDX_TEST_UNFINISHED_TRACKS].type = WWT_CHECKBOX;
-        window_options_advanced_widgets[WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM].type = WWT_CHECKBOX;
-        window_options_advanced_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_advanced_widgets[WIDX_STAY_CONNECTED_AFTER_DESYNC].type = WWT_CHECKBOX;
-
-        window_options_advanced_widgets[WIDX_AUTOSAVE].type = WWT_DROPDOWN;
-        window_options_advanced_widgets[WIDX_AUTOSAVE_DROPDOWN].type = WWT_BUTTON;
-
-        window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON].type = WWT_BUTTON;
-        window_options_advanced_widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WWT_BUTTON;
         break;
 
     case WINDOW_OPTIONS_PAGE_TWITCH:
@@ -1803,13 +1779,6 @@ static void window_options_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_CHAT_PEEP_NAMES_CHECKBOX, gConfigTwitch.enable_chat_peep_names);
         widget_set_checkbox_value(w, WIDX_CHAT_PEEP_TRACKING_CHECKBOX, gConfigTwitch.enable_chat_peep_tracking);
         widget_set_checkbox_value(w, WIDX_NEWS_CHECKBOX, gConfigTwitch.enable_news);
-
-        window_options_twitch_widgets[WIDX_CHANNEL_BUTTON].type = WWT_BUTTON;
-        window_options_twitch_widgets[WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_twitch_widgets[WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_twitch_widgets[WIDX_CHAT_PEEP_NAMES_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_twitch_widgets[WIDX_CHAT_PEEP_TRACKING_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_twitch_widgets[WIDX_NEWS_CHECKBOX].type = WWT_CHECKBOX;
         break;
     }
 
