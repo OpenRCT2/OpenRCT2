@@ -158,11 +158,6 @@ bool track_design_save(uint8 rideIndex)
         return false;
     }
 
-    if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK)) {
-        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
-        return false;
-    }
-
     _trackDesign = track_design_save_to_td6(rideIndex);
     if (_trackDesign == nullptr) {
         context_show_error(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
@@ -724,12 +719,14 @@ static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex)
         (ride->colour_scheme_type & 3) |
         (1 << 3); // Version .TD6
 
-    for (sint32 i = 0; i < 32; i++) {
+    for (sint32 i = 0; i < RCT12_MAX_VEHICLES_PER_RIDE; i++)
+    {
         td6->vehicle_colours[i] = ride->vehicle_colours[i];
         td6->vehicle_additional_colour[i] = ride->vehicle_colours_extended[i];
     }
 
-    for (sint32 i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++) {
+    for (sint32 i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
+    {
         td6->track_spine_colour[i] = ride->track_colour_main[i];
         td6->track_rail_colour[i] = ride->track_colour_additional[i];
         td6->track_support_colour[i] = ride->track_colour_supports[i];

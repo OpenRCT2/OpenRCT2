@@ -958,42 +958,38 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
     set_format_arg(2, rct_string_id, rideNaming.description);
     gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, COLOUR_BLACK);
 
-    // Number of designs available
-    if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK))
+    char availabilityString[AVAILABILITY_STRING_SIZE];
+    window_new_ride_list_vehicles_for(item.type, rideEntry, availabilityString);
+
+    if (availabilityString[0] != 0)
     {
-        char availabilityString[AVAILABILITY_STRING_SIZE];
-        window_new_ride_list_vehicles_for(item.type, rideEntry, availabilityString);
-
-        if (availabilityString[0] != 0)
-        {
-            const char * drawString = availabilityString;
-            gfx_draw_string_left_clipped(dpi, STR_AVAILABLE_VEHICLES, &drawString, COLOUR_BLACK, x, y + 39, WW - 2);
-        }
-
-        // Track designs are disabled in multiplayer, so don't say there are any designs available when in multiplayer
-        if (network_get_mode() != NETWORK_MODE_NONE) {
-            _lastTrackDesignCount = 0;
-        }
-        else if (item.type != _lastTrackDesignCountRideType.type || item.entry_index != _lastTrackDesignCountRideType.entry_index) {
-            _lastTrackDesignCountRideType = item;
-            _lastTrackDesignCount = get_num_track_designs(item);
-        }
-
-        rct_string_id stringId;
-        switch (_lastTrackDesignCount) {
-        case 0:
-            stringId = STR_CUSTOM_DESIGNED_LAYOUT;
-            break;
-        case 1:
-            stringId = STR_1_DESIGN_AVAILABLE;
-            break;
-        default:
-            stringId = STR_X_DESIGNS_AVAILABLE;
-            break;
-        }
-
-        gfx_draw_string_left(dpi, stringId, &_lastTrackDesignCount, COLOUR_BLACK, x, y + 51);
+        const char * drawString = availabilityString;
+        gfx_draw_string_left_clipped(dpi, STR_AVAILABLE_VEHICLES, &drawString, COLOUR_BLACK, x, y + 39, WW - 2);
     }
+
+    // Track designs are disabled in multiplayer, so don't say there are any designs available when in multiplayer
+    if (network_get_mode() != NETWORK_MODE_NONE) {
+        _lastTrackDesignCount = 0;
+    }
+    else if (item.type != _lastTrackDesignCountRideType.type || item.entry_index != _lastTrackDesignCountRideType.entry_index) {
+        _lastTrackDesignCountRideType = item;
+        _lastTrackDesignCount = get_num_track_designs(item);
+    }
+
+    rct_string_id designCountStringId;
+    switch (_lastTrackDesignCount) {
+    case 0:
+        designCountStringId = STR_CUSTOM_DESIGNED_LAYOUT;
+        break;
+    case 1:
+        designCountStringId = STR_1_DESIGN_AVAILABLE;
+        break;
+    default:
+        designCountStringId = STR_X_DESIGNS_AVAILABLE;
+        break;
+    }
+
+    gfx_draw_string_left(dpi, designCountStringId, &_lastTrackDesignCount, COLOUR_BLACK, x, y + 51);
 
     // Price
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
@@ -1039,14 +1035,13 @@ static void window_new_ride_select(rct_window *w)
     }
 #endif
 
-    if (allowTrackDesigns && ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
-        if (_lastTrackDesignCount > 0) {
-            auto intent = Intent(WC_TRACK_DESIGN_LIST);
-            intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.type);
-            intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.entry_index);
-            context_open_intent(&intent);
-            return;
-        }
+    if (allowTrackDesigns && _lastTrackDesignCount > 0)
+    {
+        auto intent = Intent(WC_TRACK_DESIGN_LIST);
+        intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.type);
+        intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.entry_index);
+        context_open_intent(&intent);
+        return;
     }
 
     ride_construct_new(item);

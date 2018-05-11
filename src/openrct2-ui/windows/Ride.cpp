@@ -5088,6 +5088,8 @@ static void window_ride_measurements_mousedown(rct_window *w, rct_widgetindex wi
     if (widgetIndex != WIDX_SAVE_TRACK_DESIGN)
         return;
 
+    Ride *ride = get_ride(w->number);
+
     gDropdownItemsFormat[0] = STR_SAVE_TRACK_DESIGN_ITEM;
     gDropdownItemsFormat[1] = STR_SAVE_TRACK_DESIGN_WITH_SCENERY_ITEM;
 
@@ -5103,6 +5105,11 @@ static void window_ride_measurements_mousedown(rct_window *w, rct_widgetindex wi
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
     {
         dropdown_set_disabled(1, true);
+    }
+    else if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
+    {
+        // Disable saving without scenery if we're a flat ride
+        dropdown_set_disabled(0, true);
     }
 }
 
@@ -5225,14 +5232,12 @@ static void window_ride_measurements_invalidate(rct_window *w)
         window_ride_measurements_widgets[WIDX_SAVE_DESIGN].type = WWT_EMPTY;
         window_ride_measurements_widgets[WIDX_CANCEL_DESIGN].type = WWT_EMPTY;
 
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK)) {
-            window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].type = WWT_FLATBTN;
-            w->disabled_widgets |= (1 << WIDX_SAVE_TRACK_DESIGN);
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED) {
-                if (ride->excitement != RIDE_RATING_UNDEFINED) {
-                    w->disabled_widgets &= ~(1 << WIDX_SAVE_TRACK_DESIGN);
-                    window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN;
-                }
+        window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].type = WWT_FLATBTN;
+        w->disabled_widgets |= (1 << WIDX_SAVE_TRACK_DESIGN);
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED) {
+            if (ride->excitement != RIDE_RATING_UNDEFINED) {
+                w->disabled_widgets &= ~(1 << WIDX_SAVE_TRACK_DESIGN);
+                window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN;
             }
         }
     }
