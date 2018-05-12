@@ -20,6 +20,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <streambuf>
+#include <unordered_map>
 #include <png.h>
 #include "FileStream.hpp"
 #include "Guard.hpp"
