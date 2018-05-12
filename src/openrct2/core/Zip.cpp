@@ -52,7 +52,7 @@ public:
 
     size_t GetNumFiles() const override
     {
-        return zip_get_num_files(_zip);
+        return zip_get_num_entries(_zip, 0);
     }
 
     std::string GetFileName(size_t index) const override
@@ -82,11 +82,11 @@ public:
     std::vector<uint8> GetFileData(const std::string_view& path) const override
     {
         std::vector<uint8> result;
-        auto index = (size_t)zip_name_locate(_zip, path.data(), 0);
+        auto index = GetIndexFromPath(path);
         auto dataSize = GetFileSize(index);
         if (dataSize > 0 && dataSize < SIZE_MAX)
         {
-            auto zipFile = zip_fopen(_zip, path.data(), 0);
+            auto zipFile = zip_fopen_index(_zip, index, 0);
             if (zipFile != nullptr)
             {
                 result.resize((size_t)dataSize);
@@ -110,7 +110,7 @@ public:
         const auto& writeBuffer = *_writeBuffers.rbegin();
 
         auto source = zip_source_buffer(_zip, writeBuffer.data(), writeBuffer.size(), 0);
-        auto index = zip_name_locate(_zip, path.data(), 0);
+        auto index = GetIndexFromPath(path);
         if (index == -1)
         {
             zip_add(_zip, path.data(), source);
@@ -123,14 +123,54 @@ public:
 
     void DeleteFile(const std::string_view& path) override
     {
-        auto index = zip_name_locate(_zip, path.data(), 0);
+        auto index = GetIndexFromPath(path);
         zip_delete(_zip, index);
     }
 
     void RenameFile(const std::string_view& path, const std::string_view& newPath) override
     {
-        auto index = zip_name_locate(_zip, path.data(), 0);
+        auto index = GetIndexFromPath(path);
         zip_file_rename(_zip, index, newPath.data(), ZIP_FL_ENC_GUESS);
+    }
+
+private:
+    /**
+     * Normalises both the given path and the stored paths and finds the first match.
+     */
+    zip_int64_t GetIndexFromPath(const std::string_view& path) const
+    {
+        auto normalisedPath = NormalisePath(path);
+        if (!normalisedPath.empty())
+        {
+            auto numFiles = zip_get_num_entries(_zip, 0);
+            for (zip_int64_t i = 0; i < numFiles; i++)
+            {
+                auto normalisedZipPath = NormalisePath(zip_get_name(_zip, i, ZIP_FL_ENC_GUESS));
+                if (normalisedZipPath == normalisedPath)
+                {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    static std::string NormalisePath(const std::string_view& path)
+    {
+        std::string result;
+        if (!path.empty())
+        {
+            // Convert back slashes to forward slashes
+            result = std::move(std::string(path));
+            for (auto ch = result.data(); *ch != '\0'; ch++)
+            {
+                if (*ch == '\\')
+                {
+                    *ch = '/';
+                }
+            }
+        }
+        return result;
     }
 };
 
