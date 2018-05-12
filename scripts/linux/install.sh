@@ -99,7 +99,7 @@ if [[ "$(uname)" == "Darwin" ]]; then
 elif [[ $(uname) == "Linux" ]]; then
 	# Clone discord-rpc for Discord's Rich Presence support
     # Use tagged release to prevent upstream changes from breaking our code
-	git clone https://github.com/discordapp/discord-rpc -b v3.3.0
+	git clone https://github.com/IntelOrca/discord-rpc -b fix/134-iothreadholder
     # Use rapidjson with a hack for GCC 8, while awaiting a fix upstream:
     # https://github.com/Tencent/rapidjson/issues/1205
     git clone https://github.com/janisozaur/rapidjson discord-rpc/thirdparty/rapidjson -b patch-1
