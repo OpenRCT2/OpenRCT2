@@ -342,6 +342,36 @@ namespace ObjectJsonHelpers
         return result;
     }
 
+    static std::vector<rct_g1_element> ParseImages(IReadObjectContext * context, json_t * el)
+    {
+        auto path = GetString(el, "path");
+        auto x = GetInteger(el, "x");
+        auto y = GetInteger(el, "y");
+
+        std::vector<rct_g1_element> result;
+        try
+        {
+            auto imageData = context->GetData(path);
+            auto image = Imaging::ReadFromBuffer(imageData, IMAGE_FORMAT::PNG_32);
+
+            ImageImporter importer;
+            auto importResult = importer.Import(image, 0, 0, ImageImporter::IMPORT_FLAGS::RLE);
+            auto g1Element = importResult.Element;
+            g1Element.x_offset = x;
+            g1Element.y_offset = y;
+            result.push_back(g1Element);
+        }
+        catch (const std::exception& e)
+        {
+            auto msg = String::StdFormat("Unable to load image '%s': %s", path.c_str(), e.what());
+            context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, msg.c_str());
+
+            rct_g1_element emptyg1 = { 0 };
+            result.push_back(emptyg1);
+        }
+        return result;
+    }
+
     static uint8 ParseStringId(const std::string &s)
     {
         if (s == "name") return OBJ_STRING_ID_NAME;
@@ -382,10 +412,20 @@ namespace ObjectJsonHelpers
         if (context->ShouldLoadImages())
         {
             auto jsonImages = json_object_get(root, "images");
-            auto imageElements = GetJsonStringArray(jsonImages);
-            for (const auto &ie : imageElements)
+            size_t i;
+            json_t * el;
+            json_array_foreach(jsonImages, i, el)
             {
-                auto images = ParseImages(context, ie);
+                std::vector<rct_g1_element> images;
+                if (json_is_string(el))
+                {
+                    auto s = json_string_value(el);
+                    images = std::move(ParseImages(context, s));
+                }
+                else if (json_is_object(el))
+                {
+                    images = std::move(ParseImages(context, el));
+                }
                 for (const auto &g1 : images)
                 {
                     imageTable.AddImage(&g1);
