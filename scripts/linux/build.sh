@@ -30,7 +30,7 @@ pushd build
 	if [[ $TARGET == "docker64" ]]
 	then
 		# CMAKE and MAKE opts from environment
-		docker run $ci_env -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:64bit-only bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja all install $OPENRCT_MAKE_OPTS && ./openrct2-cli scan-objects && ctest --output-on-failure && cd .. && bash <(curl -s https://codecov.io/bash)"
+		docker run $ci_env -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:64bit-only bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja all install $OPENRCT_MAKE_OPTS && ./openrct2-cli scan-objects && ctest --output-on-failure && cd .. && bash <(curl -s https://codecov.io/bash) 2>\&1 | grep -v \"has arcs\""
 	elif [[ $TARGET == "ubuntu_i686" ]]
 	then
 		# CMAKE and MAKE opts from environment
