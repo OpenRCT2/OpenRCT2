@@ -46,6 +46,15 @@
 		933F2CB820935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
 		933F2CB920935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
 		933F2CBB20935668001B33FD /* LocalisationService.h in Headers */ = {isa = PBXBuildFile; fileRef = 933F2CBA20935668001B33FD /* LocalisationService.h */; };
+		93CBA4C020A74FF200867D56 /* BitmapReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */; };
+		93CBA4C320A7502E00867D56 /* Imaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CBA4C120A7502D00867D56 /* Imaging.h */; };
+		93CBA4C420A7502E00867D56 /* Imaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4C220A7502E00867D56 /* Imaging.cpp */; };
+		93CBA4C520A7502E00867D56 /* Imaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4C220A7502E00867D56 /* Imaging.cpp */; };
+		93CBA4C620A7502E00867D56 /* Imaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4C220A7502E00867D56 /* Imaging.cpp */; };
+		93CBA4C920A7504500867D56 /* ImageImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4C720A7504400867D56 /* ImageImporter.cpp */; };
+		93CBA4CA20A7504500867D56 /* ImageImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4C720A7504400867D56 /* ImageImporter.cpp */; };
+		93CBA4CB20A7504500867D56 /* ImageImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4C720A7504400867D56 /* ImageImporter.cpp */; };
+		93CBA4CC20A7504500867D56 /* ImageImporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CBA4C820A7504500867D56 /* ImageImporter.h */; };
 		C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */; };
 		C61ADB211FB7DC060024F2EF /* Scenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB201FB7DC060024F2EF /* Scenery.cpp */; };
 		C61ADB231FBBCB8B0024F2EF /* GameBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */; };
@@ -404,7 +413,6 @@
 		F76C86031EC4E88300FA49E2 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83AF1EC4E7CC00FA49E2 /* Sprite.cpp */; };
 		F76C86051EC4E88300FA49E2 /* Editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B11EC4E7CC00FA49E2 /* Editor.cpp */; };
 		F76C86071EC4E88300FA49E2 /* FileClassifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B31EC4E7CC00FA49E2 /* FileClassifier.cpp */; };
-		F76C860B1EC4E88300FA49E2 /* Imaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B71EC4E7CC00FA49E2 /* Imaging.cpp */; };
 		F76C86451EC4E88300FA49E2 /* Http.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F61EC4E7CC00FA49E2 /* Http.cpp */; };
 		F76C86471EC4E88300FA49E2 /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F81EC4E7CC00FA49E2 /* Network.cpp */; };
 		F76C86491EC4E88300FA49E2 /* NetworkAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83FA1EC4E7CC00FA49E2 /* NetworkAction.cpp */; };
@@ -869,6 +877,12 @@
 		9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuestPathfinding.cpp; sourceTree = "<group>"; };
 		933F2CB620935653001B33FD /* LocalisationService.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LocalisationService.cpp; sourceTree = "<group>"; };
 		933F2CBA20935668001B33FD /* LocalisationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalisationService.h; sourceTree = "<group>"; };
+		93CBA4BE20A74FF200867D56 /* BitmapReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapReader.h; sourceTree = "<group>"; };
+		93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitmapReader.cpp; sourceTree = "<group>"; };
+		93CBA4C120A7502D00867D56 /* Imaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Imaging.h; sourceTree = "<group>"; };
+		93CBA4C220A7502E00867D56 /* Imaging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Imaging.cpp; sourceTree = "<group>"; };
+		93CBA4C720A7504400867D56 /* ImageImporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageImporter.cpp; sourceTree = "<group>"; };
+		93CBA4C820A7504500867D56 /* ImageImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageImporter.h; sourceTree = "<group>"; };
 		C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TopToolbar.cpp; sourceTree = "<group>"; };
 		C61ADB201FB7DC060024F2EF /* Scenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scenery.cpp; sourceTree = "<group>"; };
 		C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameBottomToolbar.cpp; sourceTree = "<group>"; };
@@ -1223,8 +1237,6 @@
 		F76C83B21EC4E7CC00FA49E2 /* Editor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Editor.h; sourceTree = "<group>"; };
 		F76C83B31EC4E7CC00FA49E2 /* FileClassifier.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileClassifier.cpp; sourceTree = "<group>"; };
 		F76C83B41EC4E7CC00FA49E2 /* FileClassifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileClassifier.h; sourceTree = "<group>"; };
-		F76C83B71EC4E7CC00FA49E2 /* Imaging.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Imaging.cpp; sourceTree = "<group>"; };
-		F76C83B81EC4E7CC00FA49E2 /* Imaging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Imaging.h; sourceTree = "<group>"; };
 		F76C83BA1EC4E7CC00FA49E2 /* input.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = input.h; sourceTree = "<group>"; };
 		F76C83F61EC4E7CC00FA49E2 /* Http.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Http.cpp; sourceTree = "<group>"; };
 		F76C83F71EC4E7CC00FA49E2 /* http.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = http.h; sourceTree = "<group>"; };
@@ -1819,8 +1831,6 @@
 				4CE4623F1FD0710E0001CD98 /* Game.cpp */,
 				4CE462401FD0710E0001CD98 /* Game.h */,
 				4C80798D2062AFE400C5850B /* HandleParkLoad.h */,
-				F76C83B71EC4E7CC00FA49E2 /* Imaging.cpp */,
-				F76C83B81EC4E7CC00FA49E2 /* Imaging.h */,
 				4CC4B8E81FE00C5D00660D62 /* Input.cpp */,
 				4CC4B8E91FE00C5D00660D62 /* Input.h */,
 				4CC4B8EA1FE00C5D00660D62 /* Intro.cpp */,
@@ -1890,6 +1900,8 @@
 			children = (
 				F76C83791EC4E7CC00FA49E2 /* Collections.hpp */,
 				F76C837A1EC4E7CC00FA49E2 /* Console.cpp */,
+				93CBA4C220A7502E00867D56 /* Imaging.cpp */,
+				93CBA4C120A7502D00867D56 /* Imaging.h */,
 				F76C837B1EC4E7CC00FA49E2 /* Console.hpp */,
 				C6352B811F477022006CCEE3 /* DataSerialiser.h */,
 				C6352B821F477022006CCEE3 /* DataSerialiserTraits.h */,
@@ -1936,6 +1948,8 @@
 				4C7B53D620002CA400A52E21 /* Font.cpp */,
 				4C7B53CB1FFF995100A52E21 /* Font.h */,
 				F76C83A31EC4E7CC00FA49E2 /* IDrawingContext.h */,
+				93CBA4C720A7504400867D56 /* ImageImporter.cpp */,
+				93CBA4C820A7504500867D56 /* ImageImporter.h */,
 				F76C83A41EC4E7CC00FA49E2 /* IDrawingEngine.h */,
 				F76C83A51EC4E7CC00FA49E2 /* Image.cpp */,
 				4C7B53D720002CA400A52E21 /* LightFX.cpp */,
@@ -2567,6 +2581,8 @@
 		F76C858D1EC4E82600FA49E2 /* drawing */ = {
 			isa = PBXGroup;
 			children = (
+				93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */,
+				93CBA4BE20A74FF200867D56 /* BitmapReader.h */,
 				F76C858E1EC4E82600FA49E2 /* engines */,
 			);
 			path = drawing;
@@ -2724,9 +2740,11 @@
 				C6352B971F477032006CCEE3 /* SetParkEntranceFeeAction.hpp in Headers */,
 				933F2CBB20935668001B33FD /* LocalisationService.h in Headers */,
 				C6352B861F477022006CCEE3 /* Endianness.h in Headers */,
+				93CBA4CC20A7504500867D56 /* ImageImporter.h in Headers */,
 				C6352B941F477032006CCEE3 /* PlaceParkEntranceAction.hpp in Headers */,
 				C6352B911F477032006CCEE3 /* GameAction.h in Headers */,
 				C62D838B1FD36D6F008C04F1 /* EditorObjectSelectionSession.h in Headers */,
+				93CBA4C320A7502E00867D56 /* Imaging.h in Headers */,
 				9308DA05209908090079EE96 /* Surface.h in Headers */,
 				C6352B841F477022006CCEE3 /* DataSerialiser.h in Headers */,
 				C67B28162002D67A00109C93 /* Window.h in Headers */,
@@ -3059,12 +3077,15 @@
 				C654DF3D1F69C0430040F43D /* TrackDesignPlace.cpp in Sources */,
 				C666EE721F37ACB10061AA04 /* Multiplayer.cpp in Sources */,
 				C654DF371F69C0430040F43D /* Sign.cpp in Sources */,
+				93CBA4C920A7504500867D56 /* ImageImporter.cpp in Sources */,
+				93CBA4C020A74FF200867D56 /* BitmapReader.cpp in Sources */,
 				C68878CC20289B710084B384 /* SoftwareDrawingEngine.cpp in Sources */,
 				C67CCD681FBBD138004FAE4C /* EditorMain.cpp in Sources */,
 				C6E415511FAFD6DC00D4A52A /* RideConstruction.cpp in Sources */,
 				C685E51B1F8907850090598F /* Guest.cpp in Sources */,
 				C64644F91F3FA4120026AC2D /* EditorInventionsList.cpp in Sources */,
 				C68878C720289B710084B384 /* OpenGLShaderProgram.cpp in Sources */,
+				93CBA4C420A7502E00867D56 /* Imaging.cpp in Sources */,
 				C6D2BEE61F9BAACE008B557C /* TrackList.cpp in Sources */,
 				C666EE701F37ACB10061AA04 /* LandRights.cpp in Sources */,
 				C666EE781F37ACB10061AA04 /* ServerList.cpp in Sources */,
@@ -3168,6 +3189,7 @@
 				C68878CE20289B9B0084B384 /* ObjectList.cpp in Sources */,
 				C688787620289A780084B384 /* RideGroupManager.cpp in Sources */,
 				C688788120289ADE0084B384 /* Line.cpp in Sources */,
+				93CBA4CA20A7504500867D56 /* ImageImporter.cpp in Sources */,
 				C688792520289B9B0084B384 /* RotoDrop.cpp in Sources */,
 				F76C85BA1EC4E88300FA49E2 /* CommandLine.cpp in Sources */,
 				C68878EE20289B9B0084B384 /* BolligerMabillardTrack.cpp in Sources */,
@@ -3247,7 +3269,6 @@
 				C68878E320289B9B0084B384 /* Android.cpp in Sources */,
 				F76C86051EC4E88300FA49E2 /* Editor.cpp in Sources */,
 				F76C86071EC4E88300FA49E2 /* FileClassifier.cpp in Sources */,
-				F76C860B1EC4E88300FA49E2 /* Imaging.cpp in Sources */,
 				C688786920289A660084B384 /* CableLift.cpp in Sources */,
 				C688790020289B9B0084B384 /* ReverseFreefallCoaster.cpp in Sources */,
 				C6607F481FE2B97E00D3FC0D /* Input.cpp in Sources */,
@@ -3354,6 +3375,7 @@
 				C688791220289B9B0084B384 /* GhostTrain.cpp in Sources */,
 				C688787F20289ADE0084B384 /* Font.cpp in Sources */,
 				C68878CF20289B9B0084B384 /* Litter.cpp in Sources */,
+				93CBA4C520A7502E00867D56 /* Imaging.cpp in Sources */,
 				F76C86AF1EC4E88400FA49E2 /* S4Importer.cpp in Sources */,
 				F76C86B01EC4E88400FA49E2 /* Tables.cpp in Sources */,
 				C688788520289ADE0084B384 /* Text.cpp in Sources */,
@@ -3441,9 +3463,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				9308DA00209908090079EE96 /* TileElement.cpp in Sources */,
+				93CBA4CB20A7504500867D56 /* ImageImporter.cpp in Sources */,
 				9346F9DD208A191900C77D91 /* GuestPathfinding.cpp in Sources */,
 				9346F9DA208A191900C77D91 /* Guest.cpp in Sources */,
 				F7D7749E1EC6713200BE6EBC /* Cli.cpp in Sources */,
+				93CBA4C620A7502E00867D56 /* Imaging.cpp in Sources */,
 				9308DA03209908090079EE96 /* Surface.cpp in Sources */,
 				933F2CB920935653001B33FD /* LocalisationService.cpp in Sources */,
 			);
