@@ -1775,8 +1775,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :Een attractie mag maar één actiefotogedeelte hebben
 STR_1774    :Een attractie mag maar één kabellift hebben
-STR_1775    :Uit
-STR_1776    :Aan
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}Attractiemuziek
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandapak
@@ -4534,6 +4534,12 @@ STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
 STR_6230    :{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :Nul
+STR_6233    :Opengewerkte weergave
+STR_6234    :Paden inspecteren
+STR_6235    :Serverinformatie
+STR_6236    :Spelers
+STR_6237    :Groepen
+STR_6238    :Multiplayeropties
 
 #############
 # Scenarios #
