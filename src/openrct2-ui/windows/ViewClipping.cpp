@@ -23,18 +23,22 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/paint/Paint.h>
+#include <openrct2/sprites.h>
 #include <openrct2/world/Location.hpp>
 
 enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
-    WIDX_CLIP_HEIGHT_CHECKBOX,
+    WIDX_CLIP_CHECKBOX_ENABLE,
+    WIDX_GROUPBOX_VERTICAL,
     WIDX_CLIP_HEIGHT_VALUE,
     WIDX_CLIP_HEIGHT_INCREASE,
     WIDX_CLIP_HEIGHT_DECREASE,
     WIDX_CLIP_HEIGHT_SLIDER,
+    WIDX_GROUPBOX_HORIZONTAL,
     WIDX_CLIP_SELECTOR,
+    WIDX_CLIP_CLEAR,
 };
 
 enum class DISPLAY_TYPE {
@@ -47,18 +51,21 @@ static DISPLAY_TYPE gClipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
 #pragma region Widgets
 
 #define WW 160
-#define WH 70
+#define WH 155
 
 static rct_widget window_view_clipping_widgets[] = {
-    { WWT_FRAME,        0,  0,      WW - 1, 0,  WH - 1, STR_NONE,               STR_NONE }, // panel / background
-    { WWT_CAPTION,      0,  1,      WW - 2, 1,  14,     STR_VIEW_CLIPPING_TITLE,        STR_WINDOW_TITLE_TIP }, // title bar
-    { WWT_CLOSEBOX,     0,  WW - 13,    WW - 3, 2,  13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }, // close x button
-    { WWT_CHECKBOX,     0,  11,     149,    19, 29,     STR_VIEW_CLIPPING_HEIGHT_ENABLE,    STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP }, // clip height enable/disable check box
-    { WWT_SPINNER,      0,  90,     149,    34, 45,     STR_NONE,               STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE }, // clip height value
-    { WWT_BUTTON,           0,  138,        148,    35, 39,     STR_NUMERIC_UP,             STR_NONE }, // clip height increase
-    { WWT_BUTTON,           0,  138,        148,    40, 44,     STR_NUMERIC_DOWN,           STR_NONE }, // clip height decrease
-    { WWT_SCROLL,       0,  11,     149,    49, 61,     SCROLL_HORIZONTAL,          STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP }, // clip height scrollbar
-    { WWT_BUTTON,       0,  11,     149,    61, 73,     STR_NONE,                   STR_NONE }, // selector
+    { WWT_FRAME,        0,  0,          WW - 1,     0,      WH - 1,     STR_NONE,                               STR_NONE }, // panel / background
+    { WWT_CAPTION,      0,  1,          WW - 2,     1,      14,         STR_VIEW_CLIPPING_TITLE,                STR_WINDOW_TITLE_TIP }, // title bar
+    { WWT_CLOSEBOX,     0,  WW - 13,    WW - 3,     2,      13,         STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP }, // close x button
+    { WWT_CHECKBOX,     0,  11,         WW - 11,    19,     29,         STR_VIEW_CLIPPING_HEIGHT_ENABLE,        STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP }, // clip enable/disable check box
+    { WWT_GROUPBOX,     0,  5,          WW - 6,     36,     83,         STR_VIEW_CLIPPING_VERTICAL_CLIPPING,    STR_NONE },
+    { WWT_SPINNER,      0,  90,         WW - 12,    51,     62,         STR_NONE,                               STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE }, // clip height value
+    { WWT_BUTTON,       0,  138,        WW - 13,    52,     56,         STR_NUMERIC_UP,                         STR_NONE }, // clip height increase
+    { WWT_BUTTON,       0,  138,        WW - 13,    57,     61,         STR_NUMERIC_DOWN,                       STR_NONE }, // clip height decrease
+    { WWT_SCROLL,       0,  11,         WW - 12,    66,     78,         SCROLL_HORIZONTAL,                      STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP }, // clip height scrollbar
+    { WWT_GROUPBOX,     0,  5,          WW - 6,     90,     WH - 6,     STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING,  STR_NONE },
+    { WWT_BUTTON,       0,  11,         WW - 12,    105,    121,        STR_VIEW_CLIPPING_SELECT_AREA,          STR_NONE }, // selector
+    { WWT_BUTTON,       0,  11,         WW - 12,    126,    143,        STR_VIEW_CLIPPING_CLEAR_SELECTION,      STR_NONE }, // clear
     { WIDGETS_END }
 };
 
@@ -146,12 +153,13 @@ rct_window * window_view_clipping_open()
     window = window_create(32, 32, WW, WH, &window_view_clipping_events, WC_VIEW_CLIPPING, 0);
     window->widgets = window_view_clipping_widgets;
     window->enabled_widgets = (1ULL << WIDX_CLOSE) |
-        (1ULL << WIDX_CLIP_HEIGHT_CHECKBOX) |
+        (1ULL << WIDX_CLIP_CHECKBOX_ENABLE) |
         (1ULL << WIDX_CLIP_HEIGHT_VALUE) |
         (1ULL << WIDX_CLIP_HEIGHT_INCREASE) |
         (1ULL << WIDX_CLIP_HEIGHT_DECREASE) |
         (1ULL << WIDX_CLIP_HEIGHT_SLIDER) |
-        (1ULL << WIDX_CLIP_SELECTOR);
+        (1ULL << WIDX_CLIP_SELECTOR) |
+        (1ULL << WIDX_CLIP_CLEAR);
 
     window_init_scroll_widgets(window);
 
@@ -188,6 +196,16 @@ static void window_view_clipping_close_button(rct_window *w)
     window_view_clipping_close();
 }
 
+// Returns true when the tool is active
+static bool window_view_clipping_tool_is_active()
+{
+    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+        return false;
+    if (gCurrentToolWidget.window_classification != WC_VIEW_CLIPPING)
+        return false;
+    return _toolActive;
+}
+
 static void window_view_clipping_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
     rct_window *mainWindow;
@@ -197,7 +215,7 @@ static void window_view_clipping_mouseup(rct_window *w, rct_widgetindex widgetIn
     case WIDX_CLOSE:
         window_close(w);
         break;
-    case WIDX_CLIP_HEIGHT_CHECKBOX:
+    case WIDX_CLIP_CHECKBOX_ENABLE:
         // Toggle height clipping.
         mainWindow = window_get_main();
         if (mainWindow != nullptr) {
@@ -245,17 +263,17 @@ static void window_view_clipping_mouseup(rct_window *w, rct_widgetindex widgetIn
         gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
         gfx_invalidate_screen();
         break;
+    case WIDX_CLIP_CLEAR:
+        if (window_view_clipping_tool_is_active())
+        {
+            _toolActive = false;
+            tool_cancel();
+        }
+        gClipSelectionA = { 0, 0 };
+        gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
+        gfx_invalidate_screen();
+        break;
     }
-}
-
-// Returns true when the tool is active
-static bool window_view_clipping_tool_is_active()
-{
-    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
-        return false;
-    if (gCurrentToolWidget.window_classification != WC_VIEW_CLIPPING)
-        return false;
-    return _toolActive;
 }
 
 static void window_view_clipping_update(rct_window *w)
@@ -359,7 +377,7 @@ static void window_view_clipping_invalidate(rct_window *w)
 
     rct_window *mainWindow = window_get_main();
     if (mainWindow != nullptr) {
-        widget_set_checkbox_value(w, WIDX_CLIP_HEIGHT_CHECKBOX, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
+        widget_set_checkbox_value(w, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
     }
 }
 
