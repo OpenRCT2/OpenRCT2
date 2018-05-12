@@ -379,6 +379,15 @@ static void window_view_clipping_invalidate(rct_window *w)
     if (mainWindow != nullptr) {
         widget_set_checkbox_value(w, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
     }
+
+    if (window_view_clipping_tool_is_active())
+    {
+        w->pressed_widgets |= 1ULL << WIDX_CLIP_SELECTOR;
+    }
+    else
+    {
+        w->pressed_widgets &= ~(1ULL << WIDX_CLIP_SELECTOR);
+    }
 }
 
 static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi)
