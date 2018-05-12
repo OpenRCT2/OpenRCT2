@@ -347,15 +347,21 @@ namespace ObjectJsonHelpers
         auto path = GetString(el, "path");
         auto x = GetInteger(el, "x");
         auto y = GetInteger(el, "y");
+        auto raw = (GetString(el, "format") == "raw");
 
         std::vector<rct_g1_element> result;
         try
         {
+            auto flags = ImageImporter::IMPORT_FLAGS::NONE;
+            if (!raw)
+            {
+                flags = (ImageImporter::IMPORT_FLAGS)(flags | ImageImporter::IMPORT_FLAGS::RLE);
+            }
             auto imageData = context->GetData(path);
             auto image = Imaging::ReadFromBuffer(imageData, IMAGE_FORMAT::PNG_32);
 
             ImageImporter importer;
-            auto importResult = importer.Import(image, 0, 0, ImageImporter::IMPORT_FLAGS::RLE);
+            auto importResult = importer.Import(image, 0, 0, flags);
             auto g1Element = importResult.Element;
             g1Element.x_offset = x;
             g1Element.y_offset = y;
