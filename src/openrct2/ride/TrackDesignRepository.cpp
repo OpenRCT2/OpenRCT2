@@ -149,8 +149,6 @@ public:
         Guard::ArgumentNotNull(env);
     }
 
-    ~TrackDesignRepository() override = default;
-
     size_t GetCount() const override
     {
         return _items.size();

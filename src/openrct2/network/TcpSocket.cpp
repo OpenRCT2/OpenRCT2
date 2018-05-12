@@ -93,8 +93,7 @@ private:
     std::string         _error;
 
 public:
-    TcpSocket()
-    = default;
+    TcpSocket() = default;
 
     ~TcpSocket() override
     {

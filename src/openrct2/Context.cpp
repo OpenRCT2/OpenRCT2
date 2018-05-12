@@ -437,7 +437,7 @@ namespace OpenRCT2
 
         bool LoadParkFromStream(IStream * stream, const std::string &path, bool loadTitleScreenFirstOnFail) final override
         {
-            ClassifiedFileInfo info{};
+            ClassifiedFileInfo info;
             if (TryClassifyFile(stream, &info))
             {
                 if (info.Type == FILE_TYPE::SAVED_GAME ||

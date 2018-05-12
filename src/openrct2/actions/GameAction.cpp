@@ -27,9 +27,6 @@
 #include "../world/Park.h"
 #include "GameAction.h"
 
-GameActionResult::GameActionResult()
-= default;
-
 GameActionResult::GameActionResult(GA_ERROR error, rct_string_id message)
 {
     Error = error;

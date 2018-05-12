@@ -764,7 +764,7 @@ NetworkGroup* Network::AddGroup()
         }
     }
     if (newid != -1) {
-        std::unique_ptr<NetworkGroup> group(new NetworkGroup); // change to make_unique in c++14
+        auto group = std::make_unique<NetworkGroup>();
         group->Id = newid;
         group->SetName("Group #" + std::to_string(newid));
         addedgroup = group.get();
@@ -845,17 +845,17 @@ void Network::SaveGroups()
 
 void Network::SetupDefaultGroups()
 {
-    std::unique_ptr<NetworkGroup> admin(new NetworkGroup()); // change to make_unique in c++14
+    auto admin = std::make_unique<NetworkGroup>();
     admin->SetName("Admin");
     admin->ActionsAllowed.fill(0xFF);
     admin->Id = 0;
     group_list.push_back(std::move(admin));
-    std::unique_ptr<NetworkGroup> spectator(new NetworkGroup()); // change to make_unique in c++14
+    auto spectator = std::make_unique<NetworkGroup>();
     spectator->SetName("Spectator");
     spectator->ToggleActionPermission(0); // Chat
     spectator->Id = 1;
     group_list.push_back(std::move(spectator));
-    std::unique_ptr<NetworkGroup> user(new NetworkGroup()); // change to make_unique in c++14
+    auto user = std::make_unique<NetworkGroup>();
     user->SetName("User");
     user->ActionsAllowed.fill(0xFF);
     user->ToggleActionPermission(15); // Kick Player
@@ -896,7 +896,7 @@ void Network::LoadGroups()
         for (size_t i = 0; i < groupCount; i++) {
             json_t * jsonGroup = json_array_get(json_groups, i);
 
-            std::unique_ptr<NetworkGroup> newgroup(new NetworkGroup(NetworkGroup::FromJson(jsonGroup))); // change to make_unique in c++14
+            auto newgroup = std::make_unique<NetworkGroup>(NetworkGroup::FromJson(jsonGroup));
             group_list.push_back(std::move(newgroup));
         }
         json_t * jsonDefaultGroup = json_object_get(json, "default_group");
@@ -2475,7 +2475,7 @@ void Network::Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPack
     for (uint32 i = 0; i < size; i++) {
         NetworkGroup group;
         group.Read(packet);
-        std::unique_ptr<NetworkGroup> newgroup(new NetworkGroup(group)); // change to make_unique in c++14
+        auto newgroup = std::make_unique<NetworkGroup>(group);
         group_list.push_back(std::move(newgroup));
     }
 }

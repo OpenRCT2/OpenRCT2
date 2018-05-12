@@ -7507,7 +7507,7 @@ static bool loc_6DB38B(rct_vehicle * vehicle, rct_tile_element * tileElement)
     sint32 trackType   = track_element_get_type(tileElement);
     sint32 vangleStart = TrackDefinitions[trackType].vangle_start;
 
-    return !(vangleStart != _vehicleVAngleEndF64E36 || bankStart != _vehicleBankEndF64E37);
+    return vangleStart == _vehicleVAngleEndF64E36 && bankStart == _vehicleBankEndF64E37;
 }
 
 static void loc_6DB481(rct_vehicle * vehicle)

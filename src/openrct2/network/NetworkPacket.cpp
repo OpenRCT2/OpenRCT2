@@ -23,12 +23,12 @@
 
 std::unique_ptr<NetworkPacket> NetworkPacket::Allocate()
 {
-    return std::make_unique<NetworkPacket>(); // change to make_unique in c++14
+    return std::make_unique<NetworkPacket>();
 }
 
 std::unique_ptr<NetworkPacket> NetworkPacket::Duplicate(NetworkPacket &packet)
 {
-    return std::make_unique<NetworkPacket>(packet); // change to make_unique in c++14
+    return std::make_unique<NetworkPacket>(packet);
 }
 
 uint8 * NetworkPacket::GetData()

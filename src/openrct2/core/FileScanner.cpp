@@ -66,7 +66,7 @@ private:
     {
         std::string                 Path;
         std::vector<DirectoryChild> Listing;
-        sint32                      Index{};
+        sint32                      Index = 0;
     };
 
     // Options
@@ -75,7 +75,7 @@ private:
     bool                        _recurse;
 
     // State
-    bool                        _started{};
+    bool                        _started = false;
     std::stack<DirectoryState>  _directoryStack;
 
     // Current

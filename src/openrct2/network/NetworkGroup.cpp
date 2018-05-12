@@ -25,9 +25,6 @@ NetworkGroup::NetworkGroup()
     ActionsAllowed = { 0 };
 }
 
-NetworkGroup::~NetworkGroup()
-= default;
-
 NetworkGroup NetworkGroup::FromJson(const json_t * json)
 {
     NetworkGroup group;

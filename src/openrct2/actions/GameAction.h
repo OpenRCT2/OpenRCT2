@@ -81,7 +81,7 @@ public:
     money32                 Cost = 0;
     uint16                  ExpenditureType = 0;
 
-    GameActionResult();
+    GameActionResult() = default;
     GameActionResult(GA_ERROR error, rct_string_id message);
     GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message);
     GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message, uint8 * args);

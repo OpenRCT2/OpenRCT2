@@ -45,8 +45,8 @@ enum class FILE_TYPE
 
 struct ClassifiedFileInfo
 {
-    FILE_TYPE Type;
-    uint32    Version;
+    FILE_TYPE Type = FILE_TYPE::UNDEFINED;
+    uint32 Version = 0;
 };
 
 #define FILE_TYPE_S4_CUTOFF 2

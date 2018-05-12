@@ -134,7 +134,6 @@ namespace OpenRCT2
 
         public:
             explicit X8DrawingContext(X8DrawingEngine * engine);
-            ~X8DrawingContext() override;
 
             IDrawingEngine * GetEngine() override;
 
