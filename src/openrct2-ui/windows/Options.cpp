@@ -40,6 +40,7 @@
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
@@ -1150,7 +1151,7 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
                 gDropdownItemsArgs[i - 1] = (uintptr_t)LanguagesDescriptors[i].native_name;
             }
             window_options_show_dropdown(w, widget, LANGUAGE_COUNT - 1);
-            dropdown_set_checked(gCurrentLanguage - 1, true);
+            dropdown_set_checked(LocalisationService_GetCurrentLanguage() - 1, true);
             break;
         case WIDX_DATE_FORMAT_DROPDOWN:
             for (size_t i = 0; i < 4; i++) {
@@ -1389,8 +1390,8 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
             break;
         case WIDX_LANGUAGE_DROPDOWN:
             {
-                sint32 fallbackLanguage = gCurrentLanguage;
-                if (dropdownIndex != gCurrentLanguage - 1) {
+                auto fallbackLanguage = LocalisationService_GetCurrentLanguage();
+                if (dropdownIndex != LocalisationService_GetCurrentLanguage() - 1) {
                     if (!language_open(dropdownIndex + 1))
                     {
                         // Failed to open language file, try to recover by falling
@@ -1635,7 +1636,7 @@ static void window_options_invalidate(rct_window *w)
 
     case WINDOW_OPTIONS_PAGE_CULTURE:
         // Language
-        set_format_arg(0, char*, LanguagesDescriptors[gCurrentLanguage].native_name);
+        set_format_arg(0, char*, LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name);
 
         // Currency: pounds, dollars, etc. (10 total)
         window_options_culture_widgets[WIDX_CURRENCY].text = CurrencyDescriptors[gConfigGeneral.currency_format].stringId;

@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 #include <openrct2/common.h>
 #include <openrct2/audio/AudioChannel.h>
@@ -69,5 +70,6 @@ namespace OpenRCT2::Audio
         IAudioMixer * Create();
     }
 
-    IAudioContext * CreateAudioContext();
+    std::unique_ptr<IAudioContext> CreateAudioContext();
+
 } // namespace OpenRCT2::Audio

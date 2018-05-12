@@ -26,6 +26,7 @@
 #include "../core/FileStream.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../localisation/LocalisationService.h"
 #include "../object/ObjectRepository.h"
 #include "../object/RideObject.h"
 #include "../PlatformEnvironment.h"
@@ -66,21 +67,21 @@ private:
     static constexpr auto PATTERN = "*.td4;*.td6";
 
 public:
-    explicit TrackDesignFileIndex(IPlatformEnvironment * env) :
+    explicit TrackDesignFileIndex(const IPlatformEnvironment &env) :
         FileIndex("track design index",
             MAGIC_NUMBER,
             VERSION,
-            env->GetFilePath(PATHID::CACHE_TRACKS),
+            env.GetFilePath(PATHID::CACHE_TRACKS),
             std::string(PATTERN),
             std::vector<std::string>({
-                env->GetDirectoryPath(DIRBASE::RCT1, DIRID::TRACK),
-                env->GetDirectoryPath(DIRBASE::RCT2, DIRID::TRACK),
-                env->GetDirectoryPath(DIRBASE::USER, DIRID::TRACK) }))
+                env.GetDirectoryPath(DIRBASE::RCT1, DIRID::TRACK),
+                env.GetDirectoryPath(DIRBASE::RCT2, DIRID::TRACK),
+                env.GetDirectoryPath(DIRBASE::USER, DIRID::TRACK) }))
     {
     }
 
 public:
-    std::tuple<bool, TrackRepositoryItem> Create(const std::string &path) const override
+    std::tuple<bool, TrackRepositoryItem> Create(sint32, const std::string &path) const override
     {
         auto td6 = track_design_open(path.c_str());
         if (td6 != nullptr)
@@ -137,14 +138,14 @@ private:
 class TrackDesignRepository final : public ITrackDesignRepository
 {
 private:
-    IPlatformEnvironment * const _env;
+    std::shared_ptr<IPlatformEnvironment> const _env;
     TrackDesignFileIndex const _fileIndex;
     std::vector<TrackRepositoryItem> _items;
 
 public:
-    explicit TrackDesignRepository(IPlatformEnvironment * env)
+    explicit TrackDesignRepository(const std::shared_ptr<IPlatformEnvironment>& env)
         : _env(env),
-          _fileIndex(env)
+          _fileIndex(*env)
     {
         Guard::ArgumentNotNull(env);
     }
@@ -284,10 +285,10 @@ public:
         return refs;
     }
 
-    void Scan() override
+    void Scan(sint32 language) override
     {
         _items.clear();
-        auto trackDesigns = _fileIndex.LoadOrBuild();
+        auto trackDesigns = _fileIndex.LoadOrBuild(language);
         for (const auto &td : trackDesigns)
         {
             _items.push_back(td);
@@ -347,7 +348,8 @@ public:
         std::string newPath = Path::Combine(installDir, fileName);
         if (File::Copy(path, newPath, false))
         {
-            auto td = _fileIndex.Create(path);
+            auto language = LocalisationService_GetCurrentLanguage();
+            auto td = _fileIndex.Create(language, path);
             if (std::get<0>(td))
             {
                 _items.push_back(std::get<1>(td));
@@ -396,7 +398,7 @@ private:
     }
 };
 
-ITrackDesignRepository * CreateTrackDesignRepository(IPlatformEnvironment * env)
+ITrackDesignRepository * CreateTrackDesignRepository(const std::shared_ptr<IPlatformEnvironment>& env)
 {
     return new TrackDesignRepository(env);
 }
@@ -404,7 +406,7 @@ ITrackDesignRepository * CreateTrackDesignRepository(IPlatformEnvironment * env)
 void track_repository_scan()
 {
     ITrackDesignRepository * repo = GetContext()->GetTrackDesignRepository();
-    repo->Scan();
+    repo->Scan(LocalisationService_GetCurrentLanguage());
 }
 
 bool track_repository_delete(const utf8 * path)

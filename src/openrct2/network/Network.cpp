@@ -142,7 +142,7 @@ Network::~Network()
     CloseConnection();
 }
 
-void Network::SetEnvironment(IPlatformEnvironment * env)
+void Network::SetEnvironment(const std::shared_ptr<IPlatformEnvironment>& env)
 {
     _env = env;
 }
@@ -2545,9 +2545,9 @@ void Network::Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacke
     network_chat_show_server_greeting();
 }
 
-void network_set_env(void * env)
+void network_set_env(const std::shared_ptr<IPlatformEnvironment>& env)
 {
-    gNetwork.SetEnvironment((IPlatformEnvironment *)env);
+    gNetwork.SetEnvironment(env);
 }
 
 void network_close()
@@ -3327,7 +3327,7 @@ sint32 network_get_pickup_peep_old_x(uint8 playerid) { return _pickup_peep_old_x
 void network_send_chat(const char* text) {}
 void network_send_password(const char* password) {}
 void network_close() {}
-void network_set_env(void * env) {}
+void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>&) {}
 void network_shutdown_client() {}
 void network_set_password(const char* password) {}
 uint8 network_get_current_player_id() { return 0; }

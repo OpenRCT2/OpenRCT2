@@ -62,10 +62,10 @@
   <!-- 3rd party libraries / dependencies -->
   <PropertyGroup>
     <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
-    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v16/openrct2-libs-v16-x86-windows-static-winssl.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='Win32'">827d86c1571bb73504b23929746b20d8094aae40</LibsSha1>
-    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v16/openrct2-libs-v16-x64-windows-static-winssl.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='x64'">5904b7e0562ace419b7c87d618e5ad00ba664b36</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v17/openrct2-libs-v17-x86-windows-static-winssl.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='Win32'">4f9fb5feebe4a4ed461b2a545b2fd1c91ef6527b</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v17/openrct2-libs-v17-x64-windows-static-winssl.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='x64'">5aab386f9eeaad102b330fcddea2b4cc9e3c7067</LibsSha1>
     <GtestVersion>1.8.0</GtestVersion>
     <GtestUrl>https://github.com/google/googletest/archive/release-1.8.0.zip</GtestUrl>
     <GtestSha1>667f873ab7a4d246062565fad32fb6d8e203ee73</GtestSha1>

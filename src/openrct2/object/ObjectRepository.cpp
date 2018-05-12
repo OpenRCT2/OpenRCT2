@@ -43,6 +43,7 @@
 
 #include "../config/Config.h"
 #include "../localisation/Localisation.h"
+#include "../localisation/LocalisationService.h"
 #include "../object/Object.h"
 #include "ObjectList.h"
 #include "../platform/platform.h"
@@ -86,21 +87,21 @@ private:
     IObjectRepository& _objectRepository;
 
 public:
-    explicit ObjectFileIndex(IObjectRepository& objectRepository, IPlatformEnvironment * env) :
+    explicit ObjectFileIndex(IObjectRepository& objectRepository, const IPlatformEnvironment& env) :
         FileIndex("object index",
             MAGIC_NUMBER,
             VERSION,
-            env->GetFilePath(PATHID::CACHE_OBJECTS),
+            env.GetFilePath(PATHID::CACHE_OBJECTS),
             std::string(PATTERN),
             std::vector<std::string>({
-                env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT),
-                env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT) })),
+                env.GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT),
+                env.GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT) })),
         _objectRepository(objectRepository)
     {
     }
 
 public:
-    std::tuple<bool, ObjectRepositoryItem> Create(const std::string &path) const override
+    std::tuple<bool, ObjectRepositoryItem> Create(sint32 language, const std::string &path) const override
     {
         auto extension = Path::GetExtension(path);
         if (String::Equals(extension, ".json", true))
@@ -111,7 +112,7 @@ public:
                 ObjectRepositoryItem item = { 0 };
                 item.ObjectEntry = *object->GetObjectEntry();
                 item.Path = String::Duplicate(path);
-                item.Name = String::Duplicate(object->GetName());
+                item.Name = String::Duplicate(object->GetName(language));
                 object->SetRepositoryItem(&item);
                 delete object;
                 return std::make_tuple(true, item);
@@ -208,15 +209,15 @@ private:
 
 class ObjectRepository final : public IObjectRepository
 {
-    IPlatformEnvironment * const        _env = nullptr;
-    ObjectFileIndex const               _fileIndex;
-    std::vector<ObjectRepositoryItem>   _items;
-    ObjectEntryMap                      _itemMap;
+    std::shared_ptr<IPlatformEnvironment> const _env;
+    ObjectFileIndex const _fileIndex;
+    std::vector<ObjectRepositoryItem> _items;
+    ObjectEntryMap _itemMap;
 
 public:
-    explicit ObjectRepository(IPlatformEnvironment * env)
+    explicit ObjectRepository(const std::shared_ptr<IPlatformEnvironment>& env)
         : _env(env),
-          _fileIndex(*this, env)
+          _fileIndex(*this, *env)
     {
     }
 
@@ -225,17 +226,17 @@ public:
         ClearItems();
     }
 
-    void LoadOrConstruct() override
+    void LoadOrConstruct(sint32 language) override
     {
         ClearItems();
-        auto items = _fileIndex.LoadOrBuild();
+        auto items = _fileIndex.LoadOrBuild(language);
         AddItems(items);
         SortItems();
     }
 
-    void Construct() override
+    void Construct(sint32 language) override
     {
-        auto items = _fileIndex.Rebuild();
+        auto items = _fileIndex.Rebuild(language);
         AddItems(items);
         SortItems();
     }
@@ -445,7 +446,8 @@ private:
 
     void ScanObject(const std::string &path)
     {
-        auto result = _fileIndex.Create(path);
+        auto language = LocalisationService_GetCurrentLanguage();
+        auto result = _fileIndex.Create(language, path);
         if (std::get<0>(result))
         {
             auto ori = std::get<1>(result);
@@ -637,7 +639,7 @@ private:
     }
 };
 
-IObjectRepository * CreateObjectRepository(IPlatformEnvironment * env)
+IObjectRepository * CreateObjectRepository(const std::shared_ptr<IPlatformEnvironment>& env)
 {
     return new ObjectRepository(env);
 }
@@ -665,8 +667,9 @@ const rct_object_entry * object_list_find(rct_object_entry * entry)
 void object_list_load()
 {
     auto context = GetContext();
-    IObjectRepository * objectRepository = context->GetObjectRepository();
-    objectRepository->LoadOrConstruct();
+    const auto& localisationService = context->GetLocalisationService();
+    auto objectRepository = context->GetObjectRepository();
+    objectRepository->LoadOrConstruct(localisationService.GetCurrentLanguage());
 
     IObjectManager * objectManager = context->GetObjectManager();
     objectManager->UnloadAll();

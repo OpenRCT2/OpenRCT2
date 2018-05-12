@@ -21,6 +21,9 @@
 
 #include "../drawing/TTF.h"
 #include "../localisation/Language.h"
+#include "../localisation/LocalisationService.h"
+
+using namespace OpenRCT2::Localisation;
 
 #ifndef NO_TTF
 uint8 const HINTING_DISABLED         =  0;
@@ -100,19 +103,19 @@ TTFFontSetDescriptor TTFFontArialUnicode = { {
 // clang-format on
 #endif // NO_TTF
 
-static void LoadSpriteFont()
+static void LoadSpriteFont(LocalisationService& localisationService)
 {
     ttf_dispose();
-    gUseTrueTypeFont   = false;
+    localisationService.UseTrueTypeFont(false);
 #ifndef NO_TTF
     gCurrentTTFFontSet = nullptr;
 #endif // NO_TTF
 }
 
 #ifndef NO_TTF
-static bool LoadFont(TTFFontSetDescriptor * font)
+static bool LoadFont(LocalisationService& localisationService, TTFFontSetDescriptor * font)
 {
-    gUseTrueTypeFont   = true;
+    localisationService.UseTrueTypeFont(true);
     gCurrentTTFFontSet = font;
 
     ttf_dispose();
@@ -120,7 +123,7 @@ static bool LoadFont(TTFFontSetDescriptor * font)
     return fontInitialised;
 }
 
-static bool LoadCustomConfigFont()
+static bool LoadCustomConfigFont(LocalisationService& localisationService)
 {
     static TTFFontSetDescriptor TTFFontCustom = { {
         { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_tiny, gConfigFonts.x_offset, gConfigFonts.y_offset,
@@ -134,7 +137,7 @@ static bool LoadCustomConfigFont()
     } };
 
     ttf_dispose();
-    gUseTrueTypeFont   = true;
+    localisationService.UseTrueTypeFont(true);
     gCurrentTTFFontSet = &TTFFontCustom;
 
     bool fontInitialised = ttf_initialise();
@@ -142,16 +145,17 @@ static bool LoadCustomConfigFont()
 }
 #endif // NO_TTF
 
-void TryLoadFonts()
+void TryLoadFonts(LocalisationService& localisationService)
 {
 #ifndef NO_TTF
-    TTFontFamily const * fontFamily = LanguagesDescriptors[gCurrentLanguage].font_family;
+    auto currentLanguage = localisationService.GetCurrentLanguage();
+    TTFontFamily const * fontFamily = LanguagesDescriptors[currentLanguage].font_family;
 
     if (fontFamily != FAMILY_OPENRCT2_SPRITE)
     {
         if (!String::IsNullOrEmpty(gConfigFonts.file_name))
         {
-            if (LoadCustomConfigFont())
+            if (LoadCustomConfigFont(localisationService))
             {
                 return;
             }
@@ -160,7 +164,7 @@ void TryLoadFonts()
 
         for (auto &font : *fontFamily)
         {
-            if (LoadFont(font))
+            if (LoadFont(localisationService, font))
             {
                 return;
             }
@@ -175,7 +179,7 @@ void TryLoadFonts()
 
             for (auto &font : TTFFamilySansSerif)
             {
-                if (LoadFont(font))
+                if (LoadFont(localisationService, font))
                 {
                     return;
                 }
@@ -188,5 +192,5 @@ void TryLoadFonts()
         }
     }
 #endif // NO_TTF
-    LoadSpriteFont();
+    LoadSpriteFont(localisationService);
 }

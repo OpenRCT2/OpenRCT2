@@ -20,6 +20,11 @@
 #include "../common.h"
 #include "../interface/Colour.h"
 
+namespace OpenRCT2
+{
+    interface IPlatformEnvironment;
+}
+
 struct rct_g1_element {
     uint8* offset;          // 0x00
     sint16 width;           // 0x04
@@ -281,7 +286,7 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, sint16 left, sint16 top, sint16
 void gfx_filter_rect(rct_drawpixelinfo *dpi, sint32 left, sint32 top, sint32 right, sint32 bottom, FILTER_PALETTE_ID palette);
 
 // sprite
-bool gfx_load_g1(void * platformEnvironment);
+bool gfx_load_g1(const OpenRCT2::IPlatformEnvironment& env);
 bool gfx_load_g2();
 bool gfx_load_csg();
 void gfx_unload_g1();

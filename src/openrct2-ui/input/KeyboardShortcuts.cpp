@@ -32,10 +32,15 @@ using namespace OpenRCT2::Input;
 // Remove when the C calls are removed
 static KeyboardShortcuts * _instance;
 
-KeyboardShortcuts::KeyboardShortcuts(IPlatformEnvironment * env)
+KeyboardShortcuts::KeyboardShortcuts(const std::shared_ptr<IPlatformEnvironment>& env)
     : _env(env)
 {
     _instance = this;
+}
+
+KeyboardShortcuts::~KeyboardShortcuts()
+{
+    _instance = nullptr;
 }
 
 void KeyboardShortcuts::Reset()

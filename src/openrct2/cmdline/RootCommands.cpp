@@ -399,12 +399,8 @@ static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumer
 
     auto context = std::unique_ptr<OpenRCT2::IContext>(OpenRCT2::CreateContext());
     auto env = context->GetPlatformEnvironment();
-    auto objectRepository = std::unique_ptr<IObjectRepository>(CreateObjectRepository(env));
-
-    // HACK: set gCurrentLanguage otherwise it be wrong for the index file
-    gCurrentLanguage = gConfigGeneral.language;
-
-    objectRepository->Construct();
+    auto objectRepository = CreateObjectRepository(env);
+    objectRepository->Construct(gConfigGeneral.language);
     return EXITCODE_OK;
 }
 

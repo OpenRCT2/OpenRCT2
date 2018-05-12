@@ -29,6 +29,12 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::Ui;
 
+template<typename T>
+static std::shared_ptr<T> to_shared(std::unique_ptr<T>&& src)
+{
+    return std::shared_ptr<T>(std::move(src));
+}
+
 /**
  * Main entry point for non-Windows systems. Windows instead uses its own DLL proxy.
  */
@@ -47,21 +53,16 @@ int main(int argc, const char * * argv)
             // Run OpenRCT2 with a plain context
             auto context = CreateContext();
             context->RunOpenRCT2(argc, argv);
-            delete context;
         }
         else
         {
             // Run OpenRCT2 with a UI context
-            auto env = CreatePlatformEnvironment();
-            auto audioContext = CreateAudioContext();
-            auto uiContext = CreateUiContext(env);
+            auto env = to_shared(CreatePlatformEnvironment());
+            auto audioContext = to_shared(CreateAudioContext());
+            auto uiContext = to_shared(CreateUiContext(env));
             auto context = CreateContext(env, audioContext, uiContext);
 
             context->RunOpenRCT2(argc, argv);
-
-            delete context;
-            delete uiContext;
-            delete audioContext;
         }
     }
     return gExitCode;

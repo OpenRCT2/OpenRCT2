@@ -157,7 +157,7 @@ void audio_populate_devices()
 {
     SafeFree(gAudioDevices);
 
-    IAudioContext * audioContext = OpenRCT2::GetContext()->GetAudioContext();
+    auto audioContext = OpenRCT2::GetContext()->GetAudioContext();
     std::vector<std::string> devices = audioContext->GetOutputDevices();
 
     // Replace blanks with localised unknown string

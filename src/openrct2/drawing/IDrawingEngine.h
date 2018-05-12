@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include "../common.h"
 
 enum DRAWING_ENGINE
@@ -40,8 +41,14 @@ enum DRAWING_ENGINE_FLAGS
 struct rct_drawpixelinfo;
 struct rct_palette_entry;
 
+namespace OpenRCT2::Ui
+{
+    interface IUiContext;
+} // namespace OpenRCT2::Ui
+
 namespace OpenRCT2::Drawing
 {
+    enum class DRAWING_ENGINE_TYPE;
     interface IDrawingContext;
 
     interface IDrawingEngine
@@ -68,6 +75,12 @@ namespace OpenRCT2::Drawing
         virtual DRAWING_ENGINE_FLAGS GetFlags() abstract;
 
         virtual void InvalidateImage(uint32 image) abstract;
+    };
+
+    interface IDrawingEngineFactory
+    {
+        virtual ~IDrawingEngineFactory() { }
+        virtual std::unique_ptr<IDrawingEngine> Create(DRAWING_ENGINE_TYPE type, const std::shared_ptr<OpenRCT2::Ui::IUiContext>& uiContext) abstract;
     };
 
     interface IRainDrawer

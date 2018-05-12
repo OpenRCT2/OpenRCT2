@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include "../common.h"
 #include "RideGroupManager.h"
 
@@ -45,13 +46,13 @@ interface ITrackDesignRepository
     virtual std::vector<track_design_file_ref> GetItemsForRideGroup(uint8 rideType,
                                                                     const RideGroup * rideGroup) const abstract;
 
-    virtual void Scan() abstract;
+    virtual void Scan(sint32 language) abstract;
     virtual bool Delete(const std::string &path) abstract;
     virtual std::string Rename(const std::string &path, const std::string &newName) abstract;
     virtual std::string Install(const std::string &path) abstract;
 };
 
-ITrackDesignRepository * CreateTrackDesignRepository(OpenRCT2::IPlatformEnvironment * env);
+ITrackDesignRepository * CreateTrackDesignRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 std::string GetNameFromTrackPath(const std::string &path);
 
 void    track_repository_scan();

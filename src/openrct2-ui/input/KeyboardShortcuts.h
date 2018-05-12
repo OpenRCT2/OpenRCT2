@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include <openrct2/common.h>
 
 #define SHIFT   0x100
@@ -119,11 +120,12 @@ namespace OpenRCT2
             constexpr static sint32 CURRENT_FILE_VERSION = 1;
             static const uint16 DefaultKeys[SHORTCUT_COUNT];
 
-            IPlatformEnvironment * const _env;
+            std::shared_ptr<IPlatformEnvironment> const _env;
             uint16 _keys[SHORTCUT_COUNT];
 
         public:
-            KeyboardShortcuts(IPlatformEnvironment * env);
+            KeyboardShortcuts(const std::shared_ptr<IPlatformEnvironment>& env);
+            ~KeyboardShortcuts();
 
             void Reset();
             bool Load();

@@ -18,6 +18,7 @@
 #include "../config/Config.h"
 #include "../interface/Colour.h"
 #include "../localisation/Localisation.h"
+#include "../localisation/LocalisationService.h"
 #include "../paint/Paint.h"
 #include "../sprites.h"
 #include "Drawing.h"
@@ -1459,7 +1460,7 @@ sint32 scrolling_text_setup(paint_session * session, rct_string_id stringId, uin
     const sint16* scrollingModePositions = _scrollPositions[scrollingMode];
 
     memset(scrollText->bitmap, 0, 320 * 8);
-    if (gUseTrueTypeFont) {
+    if (LocalisationService_UseTrueTypeFont()) {
         scrolling_text_set_bitmap_for_ttf(scrollString, scroll, scrollText->bitmap, scrollingModePositions);
     } else {
         scrolling_text_set_bitmap_for_sprite(scrollString, scroll, scrollText->bitmap, scrollingModePositions);

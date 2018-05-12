@@ -107,11 +107,11 @@ public:
      * Queries and directories and loads the index header. If the index is up to date,
      * the items are loaded from the index and returned, otherwise the index is rebuilt.
      */
-    std::vector<TItem> LoadOrBuild() const
+    std::vector<TItem> LoadOrBuild(sint32 language) const
     {
         std::vector<TItem> items;
         auto scanResult = Scan();
-        auto readIndexResult = ReadIndexFile(scanResult.Stats);
+        auto readIndexResult = ReadIndexFile(language, scanResult.Stats);
         if (std::get<0>(readIndexResult))
         {
             // Index was loaded
@@ -120,15 +120,15 @@ public:
         else
         {
             // Index was not loaded
-            items = Build(scanResult);
+            items = Build(language, scanResult);
         }
         return items;
     }
 
-    std::vector<TItem> Rebuild() const
+    std::vector<TItem> Rebuild(sint32 language) const
     {
         auto scanResult = Scan();
-        auto items = Build(scanResult);
+        auto items = Build(language, scanResult);
         return items;
     }
 
@@ -137,7 +137,7 @@ protected:
      * Loads the given file and creates the item representing the data to store in the index.
      * TODO Use std::optional when C++17 is available.
      */
-    virtual std::tuple<bool, TItem> Create(const std::string &path) const abstract;
+    virtual std::tuple<bool, TItem> Create(sint32 language, const std::string &path) const abstract;
 
     /**
      * Serialises an index item to the given stream.
@@ -180,7 +180,8 @@ private:
         return ScanResult(stats, files);
     }
 
-    void BuildRange(const ScanResult &scanResult,
+    void BuildRange(sint32 language,
+                    const ScanResult &scanResult,
                     size_t rangeStart,
                     size_t rangeEnd,
                     std::vector<TItem>& items,
@@ -198,7 +199,7 @@ private:
                 log_verbose("FileIndex:Indexing '%s'", filePath.c_str());
             }
 
-            auto item = Create(filePath);
+            auto item = Create(language, filePath);
             if (std::get<0>(item))
             {
                 items.push_back(std::get<1>(item));
@@ -208,7 +209,7 @@ private:
         }
     }
 
-    std::vector<TItem> Build(const ScanResult &scanResult) const
+    std::vector<TItem> Build(sint32 language, const ScanResult &scanResult) const
     {
         std::vector<TItem> allItems;
         Console::WriteLine("Building %s (%zu items)", _name.c_str(), scanResult.Files.size());
@@ -245,6 +246,7 @@ private:
 
                 jobPool.AddTask(std::bind(&FileIndex<TItem>::BuildRange,
                     this,
+                    language,
                     std::cref(scanResult),
                     rangeStart,
                     rangeStart + stepSize,
@@ -262,7 +264,7 @@ private:
                 allItems.insert(allItems.end(), itr.begin(), itr.end());
             }
 
-            WriteIndexFile(scanResult.Stats, allItems);
+            WriteIndexFile(language, scanResult.Stats, allItems);
         }
 
         auto endTime = std::chrono::high_resolution_clock::now();
@@ -272,7 +274,7 @@ private:
         return allItems;
     }
 
-    std::tuple<bool, std::vector<TItem>> ReadIndexFile(const DirectoryStats &stats) const
+    std::tuple<bool, std::vector<TItem>> ReadIndexFile(sint32 language, const DirectoryStats &stats) const
     {
         bool loadedItems = false;
         std::vector<TItem> items;
@@ -289,7 +291,7 @@ private:
                     header.MagicNumber == _magicNumber &&
                     header.VersionA == FILE_INDEX_VERSION &&
                     header.VersionB == _version &&
-                    header.LanguageId == gCurrentLanguage &&
+                    header.LanguageId == language &&
                     header.Stats.TotalFiles == stats.TotalFiles &&
                     header.Stats.TotalFileSize == stats.TotalFileSize &&
                     header.Stats.FileDateModifiedChecksum == stats.FileDateModifiedChecksum &&
@@ -318,7 +320,7 @@ private:
         return std::make_tuple(loadedItems, items);
     }
 
-    void WriteIndexFile(const DirectoryStats &stats, const std::vector<TItem> &items) const
+    void WriteIndexFile(sint32 language, const DirectoryStats &stats, const std::vector<TItem> &items) const
     {
         try
         {
@@ -331,7 +333,7 @@ private:
             header.MagicNumber = _magicNumber;
             header.VersionA = FILE_INDEX_VERSION;
             header.VersionB = _version;
-            header.LanguageId = gCurrentLanguage;
+            header.LanguageId = language;
             header.Stats = stats;
             header.NumItems = (uint32)items.size();
             fs.WriteValue(header);

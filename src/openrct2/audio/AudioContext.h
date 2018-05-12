@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
 #include "../common.h"
@@ -59,5 +60,6 @@ namespace OpenRCT2::Audio
         virtual void StopVehicleSounds() abstract;
     };
 
-    IAudioContext * CreateDummyAudioContext();
+    std::unique_ptr<IAudioContext> CreateDummyAudioContext();
+
 } // namespace OpenRCT2::Audio

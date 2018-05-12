@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include <vector>
 #include "../common.h"
 #include "../object/Object.h"
@@ -26,6 +27,11 @@ class       Object;
 namespace OpenRCT2
 {
     interface IPlatformEnvironment;
+}
+
+namespace OpenRCT2::Localisation
+{
+    class LocalisationService;
 }
 
 struct rct_drawpixelinfo;
@@ -58,8 +64,8 @@ interface IObjectRepository
 {
     virtual ~IObjectRepository() = default;
 
-    virtual void                            LoadOrConstruct() abstract;
-    virtual void                            Construct() abstract;
+    virtual void                            LoadOrConstruct(sint32 language) abstract;
+    virtual void                            Construct(sint32 language) abstract;
     virtual size_t                          GetNumObjects() const abstract;
     virtual const ObjectRepositoryItem *    GetObjects() const abstract;
     virtual const ObjectRepositoryItem *    FindObject(const utf8 * name) const abstract;
@@ -77,7 +83,7 @@ interface IObjectRepository
     virtual void                            WritePackedObjects(IStream * stream, std::vector<const ObjectRepositoryItem *> &objects) abstract;
 };
 
-IObjectRepository * CreateObjectRepository(OpenRCT2::IPlatformEnvironment * env);
+IObjectRepository * CreateObjectRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 
 bool IsObjectCustom(const ObjectRepositoryItem * object);
 

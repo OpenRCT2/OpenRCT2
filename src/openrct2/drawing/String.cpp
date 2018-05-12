@@ -20,6 +20,7 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Localisation.h"
+#include "../localisation/LocalisationService.h"
 #include "../platform/platform.h"
 #include "../sprites.h"
 #include "../util/Util.h"
@@ -822,7 +823,7 @@ void ttf_draw_string(rct_drawpixelinfo *dpi, const_utf8string text, sint32 colou
     info.x = x;
     info.y = y;
 
-    if (gUseTrueTypeFont) {
+    if (LocalisationService_UseTrueTypeFont()) {
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }
 
@@ -851,7 +852,7 @@ static sint32 ttf_get_string_width(const utf8 *text)
     info.maxY = 0;
 
     info.flags |= TEXT_DRAW_FLAG_NO_DRAW;
-    if (gUseTrueTypeFont) {
+    if (LocalisationService_UseTrueTypeFont()) {
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }
 
@@ -877,7 +878,7 @@ void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, si
 
     info.flags |= TEXT_DRAW_FLAG_Y_OFFSET_EFFECT;
 
-    if (!forceSpriteFont && gUseTrueTypeFont) {
+    if (!forceSpriteFont && LocalisationService_UseTrueTypeFont()) {
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }
 

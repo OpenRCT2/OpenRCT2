@@ -147,6 +147,7 @@ protected:
 
     std::string         GetOverrideString(uint8 index) const;
     std::string         GetString(uint8 index) const;
+    std::string         GetString(sint32 language, uint8 index) const;
 
     void                SetSourceGame(const uint8 sourceGame);
     bool                IsRCT1Object();
@@ -172,6 +173,7 @@ public:
 
     virtual uint8           GetObjectType() const final { return _objectEntry.flags & 0x0F; }
     virtual std::string     GetName() const;
+    virtual std::string     GetName(sint32 language) const;
 
     virtual void SetRepositoryItem(ObjectRepositoryItem * item) const { }
 

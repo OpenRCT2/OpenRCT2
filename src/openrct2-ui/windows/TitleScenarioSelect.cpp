@@ -20,6 +20,7 @@
 #include <openrct2/interface/themes.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/sprites.h>
@@ -282,7 +283,7 @@ static void window_scenarioselect_mousedown(rct_window *w, rct_widgetindex widge
 
 static sint32 get_scenario_list_item_size()
 {
-    if (!gUseTrueTypeFont)
+    if (!LocalisationService_UseTrueTypeFont())
         return 24;
 
     // Scenario title

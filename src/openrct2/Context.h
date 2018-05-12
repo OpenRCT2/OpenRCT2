@@ -18,6 +18,7 @@
 
 #include "common.h"
 
+#include <memory>
 #include <string>
 
 interface IObjectManager;
@@ -76,6 +77,11 @@ namespace OpenRCT2
         interface IAudioContext;
     }
 
+    namespace Localisation
+    {
+        class LocalisationService;
+    }
+
     namespace Ui
     {
         interface IUiContext;
@@ -88,9 +94,10 @@ namespace OpenRCT2
     {
         virtual ~IContext() = default;
 
-        virtual Audio::IAudioContext *   GetAudioContext() abstract;
-        virtual Ui::IUiContext *         GetUiContext() abstract;
-        virtual IPlatformEnvironment *   GetPlatformEnvironment() abstract;
+        virtual std::shared_ptr<Audio::IAudioContext> GetAudioContext() abstract;
+        virtual std::shared_ptr<Ui::IUiContext> GetUiContext() abstract;
+        virtual std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() abstract;
+        virtual Localisation::LocalisationService& GetLocalisationService() abstract;
         virtual IObjectManager *         GetObjectManager() abstract;
         virtual IObjectRepository *      GetObjectRepository() abstract;
         virtual ITrackDesignRepository * GetTrackDesignRepository() abstract;
@@ -111,8 +118,11 @@ namespace OpenRCT2
         virtual std::string GetPathLegacy(sint32 pathId) abstract;
     };
 
-    IContext * CreateContext();
-    IContext * CreateContext(IPlatformEnvironment * env, Audio::IAudioContext * audioContext, Ui::IUiContext * uiContext);
+    std::unique_ptr<IContext> CreateContext();
+    std::unique_ptr<IContext> CreateContext(
+        const std::shared_ptr<IPlatformEnvironment>& env,
+        const std::shared_ptr<Audio::IAudioContext>& audioContext,
+        const std::shared_ptr<Ui::IUiContext>& uiContext);
     IContext * GetContext();
 } // namespace OpenRCT2
 

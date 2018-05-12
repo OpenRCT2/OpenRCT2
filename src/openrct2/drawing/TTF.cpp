@@ -21,6 +21,7 @@
 
 #include "../config/Config.h"
 #include "../localisation/Localisation.h"
+#include "../localisation/LocalisationService.h"
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "TTF.h"
@@ -157,7 +158,7 @@ static void ttf_surface_cache_dispose_all()
 
 void ttf_toggle_hinting()
 {
-    if (!gUseTrueTypeFont)
+    if (!LocalisationService_UseTrueTypeFont())
     {
         return;
     }

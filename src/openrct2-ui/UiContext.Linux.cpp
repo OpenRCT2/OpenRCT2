@@ -374,7 +374,7 @@ namespace OpenRCT2::Ui
 
         static void ThrowMissingDialogApp()
         {
-            IUiContext * uiContext = GetContext()->GetUiContext();
+            auto uiContext = GetContext()->GetUiContext();
             std::string dialogMissingWarning = language_get_string(STR_MISSING_DIALOG_APPLICATION_ERROR);
             uiContext->ShowMessageBox(dialogMissingWarning);
             throw std::runtime_error(dialogMissingWarning);

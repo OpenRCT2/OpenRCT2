@@ -23,7 +23,7 @@
 #include <openrct2/drawing/X8DrawingEngine.h>
 #include <openrct2/Game.h>
 #include <openrct2/ui/UiContext.h>
-#include "DrawingEngines.h"
+#include "DrawingEngineFactory.hpp"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -32,14 +32,14 @@ using namespace OpenRCT2::Ui;
 class SoftwareDrawingEngine final : public X8DrawingEngine
 {
 private:
-    IUiContext * const  _uiContext;
+    std::shared_ptr<IUiContext> const _uiContext;
     SDL_Window *        _window         = nullptr;
     SDL_Surface *       _surface        = nullptr;
     SDL_Surface *       _RGBASurface    = nullptr;
     SDL_Palette *       _palette        = nullptr;
 
 public:
-    explicit SoftwareDrawingEngine(IUiContext * uiContext)
+    explicit SoftwareDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
         : X8DrawingEngine(uiContext),
           _uiContext(uiContext)
     {
@@ -163,7 +163,7 @@ private:
     }
 };
 
-IDrawingEngine * OpenRCT2::Ui::CreateSoftwareDrawingEngine(IUiContext * uiContext)
+std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateSoftwareDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
 {
-    return new SoftwareDrawingEngine(uiContext);
+    return std::make_unique<SoftwareDrawingEngine>(uiContext);
 }

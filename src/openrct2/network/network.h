@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 
 enum {
@@ -49,12 +50,16 @@ struct GameAction;
 struct rct_peep;
 struct LocationXYZ16;
 
+namespace OpenRCT2
+{
+    interface IPlatformEnvironment;
+}
+
 #ifndef DISABLE_NETWORK
 
 #include <array>
 #include <list>
 #include <set>
-#include <memory>
 #include <vector>
 #include <functional>
 #include <fstream>
@@ -79,17 +84,12 @@ enum {
 
 struct ObjectRepositoryItem;
 
-namespace OpenRCT2
-{
-    interface IPlatformEnvironment;
-}
-
 class Network
 {
 public:
     Network();
     ~Network();
-    void SetEnvironment(OpenRCT2::IPlatformEnvironment * env);
+    void SetEnvironment(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
     bool Init();
     void Close();
     bool BeginClient(const char* host, uint16 port);
@@ -259,7 +259,7 @@ private:
     std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
     std::string _serverLogPath;
     std::string _serverLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
-    OpenRCT2::IPlatformEnvironment * _env = nullptr;
+    std::shared_ptr<OpenRCT2::IPlatformEnvironment> _env;
 
     void UpdateServer();
     void UpdateClient();
@@ -301,7 +301,7 @@ private:
 
 #endif /* DISABLE_NETWORK */
 
-void network_set_env(void * env);
+void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 void network_close();
 void network_shutdown_client();
 sint32 network_begin_client(const char *host, sint32 port);

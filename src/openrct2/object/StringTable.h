@@ -56,5 +56,6 @@ public:
     void            Read(IReadObjectContext * context, IStream * stream, uint8 id);
     void            Sort();
     std::string     GetString(uint8 id) const;
+    std::string     GetString(uint8 language, uint8 id) const;
     void            SetString(uint8 id, uint8 language, const std::string &text);
 };

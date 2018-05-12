@@ -64,7 +64,7 @@
 #include "interface/Viewport.h"
 #include "Intro.h"
 #include "localisation/Date.h"
-#include "localisation/Language.h"
+#include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
 #include "network/http.h"
 #include "network/network.h"
@@ -74,6 +74,7 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
+using namespace OpenRCT2::Localisation;
 using namespace OpenRCT2::Ui;
 
 namespace OpenRCT2
@@ -82,17 +83,18 @@ namespace OpenRCT2
     {
     private:
         // Dependencies
-        IPlatformEnvironment * const    _env = nullptr;
-        IAudioContext * const           _audioContext = nullptr;
-        IUiContext * const              _uiContext = nullptr;
+        std::shared_ptr<IPlatformEnvironment> const _env;
+        std::shared_ptr<IAudioContext> const _audioContext;
+        std::shared_ptr<IUiContext> const _uiContext;
 
         // Services
+        std::shared_ptr<LocalisationService> _localisationService;
         IObjectRepository *         _objectRepository = nullptr;
         IObjectManager *            _objectManager = nullptr;
         ITrackDesignRepository *    _trackDesignRepository = nullptr;
         IScenarioRepository *       _scenarioRepository = nullptr;
 #ifdef __ENABLE_DISCORD__
-        DiscordService *            _discordService = nullptr;
+        std::unique_ptr<DiscordService> _discordService;
 #endif
         StdInOutConsole             _stdInOutConsole;
 
@@ -116,10 +118,14 @@ namespace OpenRCT2
         static Context * Instance;
 
     public:
-        Context(IPlatformEnvironment * env, IAudioContext * audioContext, IUiContext * uiContext)
+        Context(
+            const std::shared_ptr<IPlatformEnvironment>& env,
+            const std::shared_ptr<IAudioContext>& audioContext,
+            const std::shared_ptr<IUiContext>& uiContext)
             : _env(env),
               _audioContext(audioContext),
-              _uiContext(uiContext)
+              _uiContext(uiContext),
+              _localisationService(std::make_shared<LocalisationService>(env))
         {
             Instance = this;
         }
@@ -128,7 +134,6 @@ namespace OpenRCT2
         {
             window_close_all();
             http_dispose();
-            language_close_all();
             object_manager_unload_all_objects();
             gfx_object_check_all_images_freed();
             gfx_unload_g2();
@@ -140,9 +145,6 @@ namespace OpenRCT2
 
             delete _titleScreen;
 
-#ifdef __ENABLE_DISCORD__
-            delete _discordService;
-#endif
             delete _scenarioRepository;
             delete _trackDesignRepository;
             delete _objectManager;
@@ -151,19 +153,24 @@ namespace OpenRCT2
             Instance = nullptr;
         }
 
-        IAudioContext * GetAudioContext() override
+        std::shared_ptr<IAudioContext> GetAudioContext() override
         {
             return _audioContext;
         }
 
-        IUiContext * GetUiContext() override
+        std::shared_ptr<IUiContext> GetUiContext() override
         {
             return _uiContext;
         }
 
-        IPlatformEnvironment * GetPlatformEnvironment() override
+        std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() override
         {
             return _env;
+        }
+
+        Localisation::LocalisationService& GetLocalisationService() override
+        {
+            return *_localisationService;
         }
 
         IObjectManager * GetObjectManager() override
@@ -344,22 +351,30 @@ namespace OpenRCT2
             _trackDesignRepository = CreateTrackDesignRepository(_env);
             _scenarioRepository = CreateScenarioRepository(_env);
 #ifdef __ENABLE_DISCORD__
-            _discordService = new DiscordService();
+            _discordService = std::make_unique<DiscordService>();
 #endif
 
-            if (!language_open(gConfigGeneral.language))
+            try
             {
-                log_error("Failed to open configured language...");
-                if (!language_open(LANGUAGE_ENGLISH_UK))
+                _localisationService->OpenLanguage(gConfigGeneral.language, *_objectManager);
+            }
+            catch (const std::exception& e)
+            {
+                log_error("Failed to open configured language: %s", e.what());
+                try
                 {
-                    log_fatal("Failed to open fallback language...");
+                    _localisationService->OpenLanguage(LANGUAGE_ENGLISH_UK, *_objectManager);
+                }
+                catch (const std::exception&)
+                {
+                    log_fatal("Failed to open fallback language: %s", e.what());
                     return false;
                 }
             }
 
             if (platform_process_is_elevated())
             {
-                std::string elevationWarning = language_get_string(STR_ADMIN_NOT_RECOMMENDED);
+                std::string elevationWarning = _localisationService->GetString(STR_ADMIN_NOT_RECOMMENDED);
                 if (gOpenRCT2Headless)
                 {
                     Console::Error::WriteLine(elevationWarning.c_str());
@@ -378,14 +393,14 @@ namespace OpenRCT2
             // TODO Ideally we want to delay this until we show the title so that we can
             //      still open the game window and draw a progress screen for the creation
             //      of the object cache.
-            _objectRepository->LoadOrConstruct();
+            _objectRepository->LoadOrConstruct(_localisationService->GetCurrentLanguage());
 
             // TODO Like objects, this can take a while if there are a lot of track designs
             //      its also really something really we might want to do in the background
             //      as its not required until the player wants to place a new ride.
-            _trackDesignRepository->Scan();
+            _trackDesignRepository->Scan(_localisationService->GetCurrentLanguage());
 
-            _scenarioRepository->Scan();
+            _scenarioRepository->Scan(_localisationService->GetCurrentLanguage());
             TitleSequenceManager::Scan();
 
             if (!gOpenRCT2Headless)
@@ -548,7 +563,7 @@ namespace OpenRCT2
 
         bool LoadBaseGraphics()
         {
-            if (!gfx_load_g1(_env))
+            if (!gfx_load_g1(*_env))
             {
                 return false;
             }
@@ -900,37 +915,19 @@ namespace OpenRCT2
         }
     };
 
-    class PlainContext final : public Context
-    {
-        std::unique_ptr<IPlatformEnvironment>   _env;
-        std::unique_ptr<IAudioContext>          _audioContext;
-        std::unique_ptr<IUiContext>             _uiContext;
-
-    public:
-        PlainContext()
-            : PlainContext(CreatePlatformEnvironment(), CreateDummyAudioContext(), CreateDummyUiContext())
-        {
-        }
-
-        PlainContext(IPlatformEnvironment * env, IAudioContext * audioContext, IUiContext * uiContext)
-            : Context(env, audioContext, uiContext)
-        {
-            _env = std::unique_ptr<IPlatformEnvironment>(env);
-            _audioContext = std::unique_ptr<IAudioContext>(audioContext);
-            _uiContext = std::unique_ptr<IUiContext>(uiContext);
-        }
-    };
-
     Context * Context::Instance = nullptr;
 
-    IContext * CreateContext()
+    std::unique_ptr<IContext> CreateContext()
     {
-        return new PlainContext();
+        return std::make_unique<Context>(CreatePlatformEnvironment(), CreateDummyAudioContext(), CreateDummyUiContext());
     }
 
-    IContext * CreateContext(IPlatformEnvironment * env, Audio::IAudioContext * audioContext, IUiContext * uiContext)
+    std::unique_ptr<IContext> CreateContext(
+        const std::shared_ptr<IPlatformEnvironment>& env,
+        const std::shared_ptr<Audio::IAudioContext>& audioContext,
+        const std::shared_ptr<IUiContext>& uiContext)
     {
-        return new Context(env, audioContext, uiContext);
+        return std::make_unique<Context>(env, audioContext, uiContext);
     }
 
     IContext * GetContext()

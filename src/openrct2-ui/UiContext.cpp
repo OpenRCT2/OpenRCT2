@@ -34,7 +34,7 @@
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/Version.h>
 #include "CursorRepository.h"
-#include "drawing/engines/DrawingEngines.h"
+#include "drawing/engines/DrawingEngineFactory.hpp"
 #include "input/KeyboardShortcuts.h"
 #include "SDLException.h"
 #include "TextComposition.h"
@@ -94,7 +94,7 @@ private:
 public:
     InGameConsole& GetInGameConsole() { return _inGameConsole; }
 
-    explicit UiContext(IPlatformEnvironment * env)
+    explicit UiContext(const std::shared_ptr<IPlatformEnvironment>& env)
         : _platformUiContext(CreatePlatformUiContext()),
           _windowManager(CreateWindowManager()),
           _keyboardShortcuts(env)
@@ -261,20 +261,9 @@ public:
     }
 
     // Drawing
-    IDrawingEngine * CreateDrawingEngine(DRAWING_ENGINE_TYPE type) override
+    std::shared_ptr<Drawing::IDrawingEngineFactory> GetDrawingEngineFactory() override
     {
-        switch ((sint32)type) {
-        case DRAWING_ENGINE_SOFTWARE:
-            return CreateSoftwareDrawingEngine(this);
-        case DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY:
-            return CreateHardwareDisplayDrawingEngine(this);
-#ifndef DISABLE_OPENGL
-        case DRAWING_ENGINE_OPENGL:
-            return CreateOpenGLDrawingEngine(this);
-#endif
-        default:
-            return nullptr;
-        }
+        return std::make_shared<DrawingEngineFactory>();
     }
 
     // Text input
@@ -814,13 +803,13 @@ private:
     }
 };
 
-IUiContext * OpenRCT2::Ui::CreateUiContext(IPlatformEnvironment * env)
+std::unique_ptr<IUiContext> OpenRCT2::Ui::CreateUiContext(const std::shared_ptr<IPlatformEnvironment>& env)
 {
-    return new UiContext(env);
+    return std::make_unique<UiContext>(env);
 }
 
 InGameConsole& OpenRCT2::Ui::GetInGameConsole()
 {
-    auto uiContext = static_cast<UiContext *>(GetContext()->GetUiContext());
+    auto uiContext = std::static_pointer_cast<UiContext>(GetContext()->GetUiContext());
     return uiContext->GetInGameConsole();
 }
