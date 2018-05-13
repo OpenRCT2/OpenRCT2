@@ -4972,10 +4972,25 @@ STR_SCNR    :フォート・アナクロニズム
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
 
-
 ###############################################################################
 ## RCT2 Original Scenarios
 ###############################################################################
+
+<Alpine Adventures>
+STR_SCNR    :高山アドベンチャー
+STR_PARK    :Alpine Adventures
+STR_DTLS    :山あいの小さなスキーリゾート地を、雪をテーマにした遊園地に造り替えてください
+
+<Amity Airfield>
+STR_SCNR    :アミティ・エアフィールド
+STR_PARK    :Amity Airfield
+STR_DTLS    :この放置された空港を、飛行をテーマにした遊園地に造り替えてください
+
+<Botany Breakers>
+STR_SCNR    :ボタニー・ブレイカーズ
+STR_PARK    :Botany Breakers
+STR_DTLS    :この楽園のような島に、高い収益を生み出す遊園地を建設するのがあなたに与えられた課題です
+
 <Build your own Six Flags Belgium>
 STR_SCNR    :自身のシックス・フラッグス・ベルギー
 STR_PARK    :Six Flags Belgium
@@ -5005,3 +5020,88 @@ STR_DTLS    :このテーマパークに自身のシックス・フラッグス�
 STR_SCNR    :自身のシックス・フラッグス・パーク
 STR_PARK    :Six Flags
 STR_DTLS    :このテーマパークに自身シックス・フラッグス・パークを作って下さい。
+
+<Bumbly Bazaar>
+STR_SCNR    :バンブリー商店街
+STR_PARK    :Bumbly Bazaar
+STR_DTLS    : 小さな商店街からスタートし、乗物やローラーコースターで来園客を呼び寄せ、店や売店の利益を増やしてください
+
+<Crazy Castle>
+STR_SCNR    :クレイジーキャッスル
+STR_PARK    :Crazy Castle
+STR_DTLS    :あなたは、大きな城を相続しました - ここを、小さなテーマパークに造り替えてください.
+
+<Dusty Greens>
+STR_SCNR    :ダスティ・グリーン
+STR_PARK    :Dusty Greens
+STR_DTLS    :砂漠の中の、高速道路のジャンクションに近いダスティ・グリーンゴルフ場。ここを、人気遊園地にすることができますか
+
+<Electric Fields>
+STR_SCNR    :エレクトリック・フィールド
+STR_PARK    :Electric Fields
+STR_DTLS    :小さな農場を相続したあなたに与えられた課題は、畑や農場の建物の間に、小さなテーマパークを造ることです
+
+<Extreme Heights>
+STR_SCNR    :超高層
+STR_PARK    :Extreme Heights
+STR_DTLS    :財政上の制限なしで、この砂漠の遊園地を拡張し、究極のスリルを求める人々を呼び寄せてください
+
+<Factory Capers>
+STR_SCNR    :ファクトリー・ケイパーズ
+STR_PARK    :Factory Capers
+STR_DTLS    :放置された工業コンビナートは、機械風のテーマの遊園地を造るのにうってつけです
+
+<Fungus Woods>
+STR_SCNR    :キノコの森
+STR_PARK    :Fungus Woods
+STR_DTLS    :この「キノコの森」では、乗物は昔風の木造のものしか造れません。果たして、あなたはここを人気遊園地にできるでしょうか
+
+<Ghost Town>
+STR_SCNR    :ゴーストタウン
+STR_PARK    :Ghost Town
+STR_DTLS    :大遊園地チェーンに雇われたあなたは、この古ぼけた鉱山の町の周りに巨大ローラーコースター遊園地を造らなければなりません
+
+<Gravity Gardens>
+STR_SCNR    :グラビティー・ガーデン
+STR_PARK    :Gravity Gardens
+STR_DTLS    :あなたに与えられた課題は、この美しいグラビティー・ガーデンにローラーコースター遊園地を造ることです - ローラーコースターだけですよ、他の乗物はなしです!
+
+<Infernal Views>
+STR_SCNR    :地獄絵図
+STR_PARK    :Infernal Views
+STR_DTLS    :すぐ近くを溶岩とマグマが流れる、危険な遊園地です
+
+<Lucky Lake>
+STR_SCNR    :ラッキー・レイク
+STR_PARK    :Lucky Lake
+STR_DTLS    :この遊園地では資金は使い放題ですが、湖畔に位置しているので、拡張と経営はきっと困難なものとなるでしょう
+
+<Rainbow Summit>
+STR_SCNR    :レインボーサミット
+STR_PARK    :Rainbow Summit
+STR_DTLS    :丘の中腹にあるこの遊園地では、いかなる高層建築物も禁止されています。遊園地を拡張し、成功に導くことができるでしょうか
+
+<Six Flags Belgium>
+STR_SCNR    :シックスフラッグス・ベルギー
+STR_PARK    :Six Flags Belgium
+STR_DTLS    :このシックスフラッグス遊園地で、あなたの経営と改良の手腕を見せてください
+
+<Six Flags Great Adventure>
+STR_SCNR    :シックスフラッグス・グレートアドベンチャー
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :不足しているシックスフラッグスの乗物を設置するか、またはご自分でオリジナルデザインの乗物を作成して遊園地を改良してください!しかし、本来の最終目標である、遊園地
+
+<Six Flags Holland>
+STR_SCNR    :シックスフラッグス・オランダ
+STR_PARK    :Six Flags Holland
+STR_DTLS    :このシックスフラッグス遊園地で、あなたの経営と改良の手腕を見せてください
+
+<Six Flags Magic Mountain>
+STR_SCNR    :シックスフラッグス・マジックマウンテン
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :不足しているシックスフラッグスの乗物を設置するか、またはご自分でオリジナルデザインの乗物を作成して遊園地を改良してください!しかし、本来の最終目標である、遊園地
+
+<Six Flags over Texas>
+STR_SCNR    :シックスフラッグス・オーバーテキサス
+STR_PARK    :Six Flags over Texas
+STR_DTLS    : 不足しているシックスフラッグスの乗物を設置するか、またはご自分でオリジナルデザインの乗物を作成して遊園地を改良してください!しかし、本来の最終目標である、遊園地
