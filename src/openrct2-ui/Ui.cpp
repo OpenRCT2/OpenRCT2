@@ -20,6 +20,7 @@
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/ui/UiContext.h>
 #include "audio/AudioContext.h"
+#include "drawing/BitmapReader.h"
 #include "Ui.h"
 #include "UiContext.h"
 
@@ -46,6 +47,7 @@ int main(int argc, const char * * argv)
 {
     int runGame = cmdline_run(argv, argc);
     core_init();
+    RegisterBitmapReader();
     if (runGame == 1)
     {
         if (gOpenRCT2Headless)

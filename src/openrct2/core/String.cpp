@@ -160,6 +160,16 @@ namespace String
         return StartsWith(str.c_str(), match.c_str(), ignoreCase);
     }
 
+    bool EndsWith(const std::string_view& str, const std::string_view& match, bool ignoreCase)
+    {
+        if (str.size() >= match.size())
+        {
+            auto view = str.substr(str.size() - match.size());
+            return Equals(view.data(), match.data(), ignoreCase);
+        }
+        return false;
+    }
+
     size_t IndexOf(const utf8 * str, utf8 match, size_t startIndex)
     {
         const utf8 * ch = str + startIndex;

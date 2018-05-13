@@ -1127,11 +1127,6 @@ void context_input_handle_keyboard(bool isTitle)
     windowManager->HandleKeyboard(isTitle);
 }
 
-bool context_read_bmp(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const utf8 * path)
-{
-    return GetContext()->GetUiContext()->ReadBMP(outPixels, outWidth, outHeight, std::string(path));
-}
-
 void context_quit()
 {
     GetContext()->Quit();

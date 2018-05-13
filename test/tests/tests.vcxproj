@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LanguagePackTest.cpp" />
+    <ClCompile Include="ImageImporterTests.cpp" />
     <ClCompile Include="IniReaderTest.cpp" />
     <ClCompile Include="IniWriterTest.cpp" />
     <ClCompile Include="Localisation.cpp" />
