@@ -104,9 +104,9 @@ public:
         bool loadImages,
         const IFileDataRetriever * fileDataRetriever)
         : _objectRepository(objectRepository),
+          _fileDataRetriever(fileDataRetriever),
           _objectName(objectName),
-          _loadImages(loadImages),
-          _fileDataRetriever(fileDataRetriever)
+          _loadImages(loadImages)
     {
     }
 

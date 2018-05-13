@@ -161,7 +161,7 @@ private:
         if (!path.empty())
         {
             // Convert back slashes to forward slashes
-            result = std::move(std::string(path));
+            result = std::string(path);
             for (auto ch = result.data(); *ch != '\0'; ch++)
             {
                 if (*ch == '\\')

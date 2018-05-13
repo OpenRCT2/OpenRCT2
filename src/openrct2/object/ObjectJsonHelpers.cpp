@@ -426,11 +426,11 @@ namespace ObjectJsonHelpers
                 if (json_is_string(el))
                 {
                     auto s = json_string_value(el);
-                    images = std::move(ParseImages(context, s));
+                    images = ParseImages(context, s);
                 }
                 else if (json_is_object(el))
                 {
-                    images = std::move(ParseImages(context, el));
+                    images = ParseImages(context, el);
                 }
                 for (const auto &g1 : images)
                 {
