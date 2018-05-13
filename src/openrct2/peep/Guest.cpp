@@ -908,7 +908,7 @@ void rct_peep::UpdateSitting()
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        LocationXYZ16 loc = 
+        LocationXYZ16 loc =
         {
             (sint16)((x & 0xFFE0) + BenchUseOffsets[var_37 & 0x7].x),
             (sint16)((y & 0xFFE0) + BenchUseOffsets[var_37 & 0x7].y),
@@ -2413,7 +2413,7 @@ static bool peep_check_ride_price_at_entrance(rct_peep * peep, Ride * ride, mone
         peep->voucher_type == VOUCHER_TYPE_RIDE_FREE &&
         peep->voucher_arguments == peep->current_ride)
         return true;
-    
+
     if (peep->cash_in_pocket <= 0)
     {
         peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
@@ -3363,7 +3363,7 @@ void rct_peep::UpdateRideAtEntrance()
 
     // The peep will keep advancing in the entranceway
     // whilst in this state. When it has reached the very
-    // front of the queue destination tolerance is set to 
+    // front of the queue destination tolerance is set to
     // zero to indicate it is final decision time (try_leave will pass).
     // When a peep has to return to the queue without getting on a ride
     // this is the state it will return to.
@@ -4639,7 +4639,7 @@ void rct_peep::UpdateRideOnSpiralSlide()
  */
 void rct_peep::UpdateRideLeaveSpiralSlide()
 {
-    // Iterates through the spiral slide waypoints until it reaches 
+    // Iterates through the spiral slide waypoints until it reaches
     // waypoint 0. Then it readies to leave the ride by the entrance.
     sint16 actionX, actionY, xy_distance;
 
@@ -5284,6 +5284,52 @@ void rct_peep::UpdateWalking()
 
     if (peep_flags & PEEP_FLAGS_LEAVING_PARK)
         return;
+
+    // Make a peep jump out of joy randomly if hes happy.
+    if (action >= PEEP_ACTION_NONE_1 && (scenario_rand() & 0xFFFF) > 0xF000)
+    {
+        bool onSlopedPath = false;
+
+        rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
+        do
+        {
+            if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
+                continue;
+
+            sint16 height = map_height_from_slope(x, y, tileElement->properties.path.type);
+            if (height != 0)
+            {
+                onSlopedPath = true;
+                break;
+            }
+        } while (!tile_element_is_last_for_tile(tileElement++));
+
+        bool shouldJump = !climate_is_raining() &&
+            !onSlopedPath &&
+            sprite_type != PEEP_SPRITE_TYPE_UMBRELLA &&
+            sprite_type != PEEP_SPRITE_TYPE_BALLOON &&
+            energy >= 64 &&
+            happiness >= 128 &&
+            nausea <= 32;
+
+        if (shouldJump)
+        {
+            sint32 laugh = scenario_rand() & 15;
+            if (laugh < 3)
+            {
+                audio_play_sound_at_location(SOUND_LAUGH_1 + laugh, x, y, z);
+            }
+
+            // Jumping costs energy.
+            energy -= 1;
+
+            action = PEEP_ACTION_JUMP;
+            action_frame = 0;
+            action_sprite_image_offset = 0;
+            UpdateCurrentActionSpriteType();
+            Invalidate();
+        }
+    }
 
     if (nausea > 140)
         return;
