@@ -166,7 +166,7 @@ public:
     size_t GetCountForObjectEntry(uint8 rideType, const std::string &entry) const override
     {
         size_t count = 0;
-        const IObjectRepository * repo = GetContext()->GetObjectRepository();
+        const auto repo = GetContext()->GetObjectRepository();
 
         for (const auto &item : _items)
         {
@@ -195,7 +195,7 @@ public:
     size_t GetCountForRideGroup(uint8 rideType, const RideGroup * rideGroup) const override
     {
         size_t count = 0;
-        const IObjectRepository * repo = GetContext()->GetObjectRepository();
+        const auto repo = GetContext()->GetObjectRepository();
 
         for (const auto &item : _items)
         {
@@ -227,7 +227,7 @@ public:
     std::vector<track_design_file_ref> GetItemsForObjectEntry(uint8 rideType, const std::string &entry) const override
     {
         std::vector<track_design_file_ref> refs;
-        const IObjectRepository * repo = GetContext()->GetObjectRepository();
+        const auto repo = GetContext()->GetObjectRepository();
 
         for (const auto &item : _items)
         {
@@ -260,7 +260,7 @@ public:
     std::vector<track_design_file_ref> GetItemsForRideGroup(uint8 rideType, const RideGroup * rideGroup) const override
     {
         std::vector<track_design_file_ref> refs;
-        const IObjectRepository * repo = GetContext()->GetObjectRepository();
+        const auto repo = GetContext()->GetObjectRepository();
 
         for (const auto &item : _items)
         {
@@ -398,9 +398,9 @@ private:
     }
 };
 
-ITrackDesignRepository * CreateTrackDesignRepository(const std::shared_ptr<IPlatformEnvironment>& env)
+std::unique_ptr<ITrackDesignRepository> CreateTrackDesignRepository(const std::shared_ptr<IPlatformEnvironment>& env)
 {
-    return new TrackDesignRepository(env);
+    return std::make_unique<TrackDesignRepository>(env);
 }
 
 void track_repository_scan()

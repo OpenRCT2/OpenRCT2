@@ -283,23 +283,27 @@ rct_ride_entry * get_ride_entry_by_ride(Ride *ride)
 *
 *  rct2: 0x006DED68
 */
-void reset_type_to_ride_entry_index_map()
+void reset_type_to_ride_entry_index_map(IObjectManager& objectManager)
 {
     size_t stride = MAX_RIDE_OBJECTS + 1;
     uint8 * entryTypeTable = (uint8 *)malloc(RIDE_TYPE_COUNT * stride);
     memset(entryTypeTable, 0xFF, RIDE_TYPE_COUNT * stride);
 
     for (uint8 i = 0; i < MAX_RIDE_OBJECTS; i++) {
-        rct_ride_entry * rideEntry = get_ride_entry(i);
-        if (rideEntry == nullptr) {
-            continue;
-        }
-        for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
-            uint8 rideType = rideEntry->ride_type[j];
-            if (rideType < RIDE_TYPE_COUNT) {
-                uint8 * entryArray = &entryTypeTable[rideType * stride];
-                uint8 * nextEntry = (uint8 *)memchr(entryArray, 0xFF, stride);
-                *nextEntry = i;
+
+        auto obj = objectManager.GetLoadedObject(OBJECT_TYPE_RIDE, i);
+        if (obj != nullptr)
+        {
+            for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
+            {
+                auto rideEntry = (rct_ride_entry *)obj->GetLegacyData();
+                uint8 rideType = rideEntry->ride_type[j];
+                if (rideType < RIDE_TYPE_COUNT)
+                {
+                    uint8 * entryArray = &entryTypeTable[rideType * stride];
+                    uint8 * nextEntry = (uint8 *)memchr(entryArray, 0xFF, stride);
+                    *nextEntry = i;
+                }
             }
         }
     }

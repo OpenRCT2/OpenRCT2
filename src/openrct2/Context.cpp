@@ -89,17 +89,17 @@ namespace OpenRCT2
 
         // Services
         std::shared_ptr<LocalisationService> _localisationService;
-        IObjectRepository *         _objectRepository = nullptr;
-        IObjectManager *            _objectManager = nullptr;
-        ITrackDesignRepository *    _trackDesignRepository = nullptr;
-        IScenarioRepository *       _scenarioRepository = nullptr;
+        std::shared_ptr<IObjectRepository> _objectRepository;
+        std::shared_ptr<IObjectManager> _objectManager;
+        std::unique_ptr<ITrackDesignRepository> _trackDesignRepository;
+        std::unique_ptr<IScenarioRepository> _scenarioRepository;
 #ifdef __ENABLE_DISCORD__
         std::unique_ptr<DiscordService> _discordService;
 #endif
         StdInOutConsole             _stdInOutConsole;
 
         // Game states
-        TitleScreen * _titleScreen = nullptr;
+        std::unique_ptr<TitleScreen> _titleScreen;
 
         bool    _initialised = false;
         bool    _isWindowMinimised = false;
@@ -143,13 +143,6 @@ namespace OpenRCT2
             EVP_MD_CTX_destroy(gHashCTX);
 #endif // DISABLE_NETWORK
 
-            delete _titleScreen;
-
-            delete _scenarioRepository;
-            delete _trackDesignRepository;
-            delete _objectManager;
-            delete _objectRepository;
-
             Instance = nullptr;
         }
 
@@ -173,24 +166,24 @@ namespace OpenRCT2
             return *_localisationService;
         }
 
-        IObjectManager * GetObjectManager() override
+        std::shared_ptr<IObjectManager> GetObjectManager() override
         {
             return _objectManager;
         }
 
-        IObjectRepository * GetObjectRepository() override
+        std::shared_ptr<IObjectRepository> GetObjectRepository() override
         {
             return _objectRepository;
         }
 
         ITrackDesignRepository * GetTrackDesignRepository() override
         {
-            return _trackDesignRepository;
+            return _trackDesignRepository.get();
         }
 
         IScenarioRepository * GetScenarioRepository() override
         {
-            return _scenarioRepository;
+            return _scenarioRepository.get();
         }
 
         sint32 RunOpenRCT2(int argc, const char * * argv) override
@@ -346,8 +339,8 @@ namespace OpenRCT2
                 _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
 
-            _objectRepository = CreateObjectRepository(_env);
-            _objectManager = CreateObjectManager(_objectRepository);
+            _objectRepository = std::shared_ptr<IObjectRepository>(CreateObjectRepository(_env));
+            _objectManager = std::shared_ptr<IObjectManager>(CreateObjectManager(_objectRepository));
             _trackDesignRepository = CreateTrackDesignRepository(_env);
             _scenarioRepository = CreateScenarioRepository(_env);
 #ifdef __ENABLE_DISCORD__
@@ -432,7 +425,7 @@ namespace OpenRCT2
             viewport_init_all();
             game_init_all(150);
 
-            _titleScreen = new TitleScreen();
+            _titleScreen = std::make_unique<TitleScreen>();
             return true;
         }
 
@@ -462,12 +455,12 @@ namespace OpenRCT2
                     if (info.Version <= FILE_TYPE_S4_CUTOFF)
                     {
                         // Save is an S4 (RCT1 format)
-                        parkImporter.reset(ParkImporter::CreateS4());
+                        parkImporter = ParkImporter::CreateS4();
                     }
                     else
                     {
                         // Save is an S6 (RCT2 format)
-                        parkImporter.reset(ParkImporter::CreateS6(_objectRepository, _objectManager));
+                        parkImporter = ParkImporter::CreateS6(_objectRepository, _objectManager);
                     }
 
                     try

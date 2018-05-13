@@ -75,8 +75,8 @@ void SceneryGroupObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint
 void SceneryGroupObject::UpdateEntryIndexes()
 {
     auto context = GetContext();
-    IObjectRepository * objectRepository = context->GetObjectRepository();
-    IObjectManager * objectManager = context->GetObjectManager();
+    auto objectRepository = context->GetObjectRepository();
+    auto objectManager = context->GetObjectManager();
 
     _legacyType.entry_count = 0;
     for (const auto &objectEntry : _items)

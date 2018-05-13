@@ -36,19 +36,19 @@
 class ObjectManager final : public IObjectManager
 {
 private:
-    IObjectRepository *     _objectRepository;
-    std::vector<Object *>   _loadedObjects;
+    std::shared_ptr<IObjectRepository> _objectRepository;
+    std::vector<Object *> _loadedObjects;
 
 public:
-    explicit ObjectManager(IObjectRepository * objectRepository)
+    explicit ObjectManager(std::shared_ptr<IObjectRepository> objectRepository)
+        : _objectRepository(objectRepository)
     {
         Guard::ArgumentNotNull(objectRepository);
 
-        _objectRepository = objectRepository;
         _loadedObjects.resize(OBJECT_ENTRY_COUNT);
 
         UpdateSceneryGroupIndexes();
-        reset_type_to_ride_entry_index_map();
+        ResetTypeToRideEntryIndexMap();
     }
 
     ~ObjectManager() override
@@ -134,7 +134,7 @@ public:
                         }
                         _loadedObjects[slot] = loadedObject;
                         UpdateSceneryGroupIndexes();
-                        reset_type_to_ride_entry_index_map();
+                        ResetTypeToRideEntryIndexMap();
                     }
                 }
             }
@@ -165,7 +165,7 @@ public:
         {
             SetNewLoadedObjectList(std::get<1>(loadedObjects));
             UpdateSceneryGroupIndexes();
-            reset_type_to_ride_entry_index_map();
+            ResetTypeToRideEntryIndexMap();
             log_verbose("%u / %u new objects loaded", numNewLoadedObjects, requiredObjects.size());
             return true;
         }
@@ -196,7 +196,7 @@ public:
         if (numObjectsUnloaded > 0)
         {
             UpdateSceneryGroupIndexes();
-            reset_type_to_ride_entry_index_map();
+            ResetTypeToRideEntryIndexMap();
         }
     }
 
@@ -207,7 +207,7 @@ public:
             UnloadObject(object);
         }
         UpdateSceneryGroupIndexes();
-        reset_type_to_ride_entry_index_map();
+        ResetTypeToRideEntryIndexMap();
     }
 
     void ResetObjects() override
@@ -221,7 +221,7 @@ public:
             }
         }
         UpdateSceneryGroupIndexes();
-        reset_type_to_ride_entry_index_map();
+        ResetTypeToRideEntryIndexMap();
     }
 
     std::vector<const ObjectRepositoryItem *> GetPackableObjects() override
@@ -546,6 +546,11 @@ private:
         return loadedObject;
     }
 
+    void ResetTypeToRideEntryIndexMap()
+    {
+        reset_type_to_ride_entry_index_map(*this);
+    }
+
     static void ReportMissingObject(const rct_object_entry * entry)
     {
         utf8 objName[DAT_NAME_LENGTH + 1] = { 0 };
@@ -572,28 +577,28 @@ private:
     }
 };
 
-IObjectManager * CreateObjectManager(IObjectRepository * objectRepository)
+std::unique_ptr<IObjectManager> CreateObjectManager(std::shared_ptr<IObjectRepository> objectRepository)
 {
-    return new ObjectManager(objectRepository);
+    return std::make_unique<ObjectManager>(objectRepository);
 }
 
 void * object_manager_get_loaded_object_by_index(size_t index)
 {
-    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object * loadedObject = objectManager->GetLoadedObject(index);
     return (void *)loadedObject;
 }
 
 void * object_manager_get_loaded_object(const rct_object_entry * entry)
 {
-    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object * loadedObject = objectManager->GetLoadedObject(entry);
     return (void *)loadedObject;
 }
 
 uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
 {
-    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     const Object * object = static_cast<const Object *>(loadedObject);
     uint8 entryIndex = objectManager->GetLoadedObjectEntryIndex(object);
     return entryIndex;
@@ -601,20 +606,20 @@ uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
 
 void * object_manager_load_object(const rct_object_entry * entry)
 {
-    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object * loadedObject = objectManager->LoadObject(entry);
     return (void *)loadedObject;
 }
 
 void object_manager_unload_objects(const rct_object_entry * entries, size_t count)
 {
-    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     objectManager->UnloadObjects(entries, count);
 }
 
 void object_manager_unload_all_objects()
 {
-    IObjectManager * objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     if (objectManager != nullptr)
     {
         objectManager->UnloadAll();

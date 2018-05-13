@@ -29,6 +29,7 @@ enum PARK_LOAD_ERROR
     PARK_LOAD_ERROR_UNKNOWN = 255
 };
 
+#include <memory>
 #include <string>
 #include <vector>
 #include "core/String.hpp"
@@ -79,9 +80,9 @@ public:
 
 namespace ParkImporter
 {
-    IParkImporter * Create(const std::string &hintPath);
-    IParkImporter * CreateS4();
-    IParkImporter * CreateS6(IObjectRepository * objectRepository, IObjectManager * objectManager);
+    std::unique_ptr<IParkImporter> Create(const std::string &hintPath);
+    std::unique_ptr<IParkImporter> CreateS4();
+    std::unique_ptr<IParkImporter> CreateS6(std::shared_ptr<IObjectRepository> objectRepository, std::shared_ptr<IObjectManager> objectManager);
 
     bool ExtensionIsRCT1(const std::string &extension);
     bool ExtensionIsScenario(const std::string &extension);

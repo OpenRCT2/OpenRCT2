@@ -83,7 +83,7 @@ interface IObjectRepository
     virtual void                            WritePackedObjects(IStream * stream, std::vector<const ObjectRepositoryItem *> &objects) abstract;
 };
 
-IObjectRepository * CreateObjectRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
+std::unique_ptr<IObjectRepository> CreateObjectRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 
 bool IsObjectCustom(const ObjectRepositoryItem * object);
 

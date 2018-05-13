@@ -44,7 +44,7 @@ interface IObjectManager
     virtual std::vector<const ObjectRepositoryItem *> GetPackableObjects() abstract;
 };
 
-IObjectManager * CreateObjectManager(IObjectRepository * objectRepository);
+std::unique_ptr<IObjectManager> CreateObjectManager(std::shared_ptr<IObjectRepository> objectRepository);
 
 void *        object_manager_get_loaded_object_by_index(size_t index);
 void *        object_manager_get_loaded_object(const rct_object_entry * entry);

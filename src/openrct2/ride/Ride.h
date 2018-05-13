@@ -25,6 +25,8 @@
 #include "RideRatings.h"
 #include "Vehicle.h"
 
+interface IObjectManager;
+
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY   3
 // The max number of different types of vehicle.
 // Examples of vehicles here are the locomotive, tender and carriage of the Miniature Railway.
@@ -1038,7 +1040,7 @@ sint32 ride_get_unused_preset_vehicle_colour(uint8 ride_sub_type);
 void ride_set_vehicle_colours_to_random_preset(Ride *ride, uint8 preset_index);
 rct_ride_entry *get_ride_entry_by_ride(Ride *ride);
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
-void reset_type_to_ride_entry_index_map();
+void reset_type_to_ride_entry_index_map(IObjectManager& objectManager);
 void ride_measurement_clear(Ride *ride);
 void ride_measurements_update();
 rct_ride_measurement *ride_get_measurement(sint32 rideIndex, rct_string_id *message);

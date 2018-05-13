@@ -68,15 +68,15 @@ public:
 class S6Importer final : public IParkImporter
 {
 private:
-    IObjectRepository * const   _objectRepository;
-    IObjectManager * const      _objectManager;
+    std::shared_ptr<IObjectRepository> const _objectRepository;
+    std::shared_ptr<IObjectManager> const _objectManager;
 
     const utf8 *    _s6Path = nullptr;
     rct_s6_data     _s6 { };
     uint8           _gameVersion = 0;
 
 public:
-    S6Importer(IObjectRepository * objectRepository, IObjectManager * objectManager)
+    S6Importer(std::shared_ptr<IObjectRepository> objectRepository, std::shared_ptr<IObjectManager> objectManager)
         : _objectRepository(objectRepository),
           _objectManager(objectManager)
     {
@@ -852,9 +852,9 @@ public:
     }
 };
 
-IParkImporter * ParkImporter::CreateS6(IObjectRepository * objectRepository, IObjectManager * objectManager)
+std::unique_ptr<IParkImporter> ParkImporter::CreateS6(std::shared_ptr<IObjectRepository> objectRepository, std::shared_ptr<IObjectManager> objectManager)
 {
-    return new S6Importer(objectRepository, objectManager);
+    return std::make_unique<S6Importer>(objectRepository, objectManager);
 }
 
 ParkLoadResult * load_from_sv6(const char * path)
