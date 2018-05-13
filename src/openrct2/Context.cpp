@@ -35,12 +35,14 @@
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "core/Util.hpp"
+#include "drawing/IDrawingEngine.h"
 #include "FileClassifier.h"
 #include "HandleParkLoad.h"
 #include "network/network.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "OpenRCT2.h"
+#include "paint/Painter.h"
 #include "ParkImporter.h"
 #include "platform/Crash.h"
 #include "PlatformEnvironment.h"
@@ -74,7 +76,9 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Localisation;
+using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Ui;
 
 namespace OpenRCT2
@@ -101,6 +105,10 @@ namespace OpenRCT2
         // Game states
         std::unique_ptr<TitleScreen> _titleScreen;
 
+        sint32 _drawingEngineType = DRAWING_ENGINE_SOFTWARE;
+        std::unique_ptr<IDrawingEngine> _drawingEngine;
+        std::unique_ptr<Painter> _painter;
+
         bool    _initialised = false;
         bool    _isWindowMinimised = false;
         uint32  _lastTick = 0;
@@ -123,9 +131,9 @@ namespace OpenRCT2
             const std::shared_ptr<IAudioContext>& audioContext,
             const std::shared_ptr<IUiContext>& uiContext)
             : _env(env),
-              _audioContext(audioContext),
-              _uiContext(uiContext),
-              _localisationService(std::make_shared<LocalisationService>(env))
+            _audioContext(audioContext),
+            _uiContext(uiContext),
+            _localisationService(std::make_shared<LocalisationService>(env))
         {
             Instance = this;
         }
@@ -184,6 +192,16 @@ namespace OpenRCT2
         IScenarioRepository * GetScenarioRepository() override
         {
             return _scenarioRepository.get();
+        }
+
+        sint32 GetDrawingEngineType() override
+        {
+            return _drawingEngineType;
+        }
+
+        IDrawingEngine * GetDrawingEngine() override
+        {
+            return _drawingEngine.get();
         }
 
         sint32 RunOpenRCT2(int argc, const char * * argv) override
@@ -427,6 +445,73 @@ namespace OpenRCT2
 
             _titleScreen = std::make_unique<TitleScreen>();
             return true;
+        }
+
+        void InitialiseDrawingEngine() final override
+        {
+            assert(_drawingEngine == nullptr);
+            assert(_painter == nullptr);
+
+            _drawingEngineType = gConfigGeneral.drawing_engine;
+
+            auto drawingEngineFactory = _uiContext->GetDrawingEngineFactory();
+            auto drawingEngine = drawingEngineFactory->Create((DRAWING_ENGINE_TYPE)_drawingEngineType, _uiContext);
+
+            if (drawingEngine == nullptr)
+            {
+                if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
+                {
+                    _drawingEngineType = DRAWING_ENGINE_NONE;
+                    log_fatal("Unable to create a drawing engine.");
+                    exit(-1);
+                }
+                else
+                {
+                    log_error("Unable to create drawing engine. Falling back to software.");
+
+                    // Fallback to software
+                    gConfigGeneral.drawing_engine = DRAWING_ENGINE_SOFTWARE;
+                    config_save_default();
+                    drawing_engine_init();
+                }
+            }
+            else
+            {
+                _painter = std::make_unique<Painter>(_uiContext);
+                try
+                {
+                    drawingEngine->Initialise();
+                    drawingEngine->SetVSync(gConfigGeneral.use_vsync);
+                    _drawingEngine = std::unique_ptr<IDrawingEngine>(std::move(drawingEngine));
+                }
+                catch (const std::exception &ex)
+                {
+                    _painter = nullptr;
+                    if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
+                    {
+                        _drawingEngineType = DRAWING_ENGINE_NONE;
+                        log_error(ex.what());
+                        log_fatal("Unable to initialise a drawing engine.");
+                        exit(-1);
+                    }
+                    else
+                    {
+                        log_error(ex.what());
+                        log_error("Unable to initialise drawing engine. Falling back to software.");
+
+                        // Fallback to software
+                        gConfigGeneral.drawing_engine = DRAWING_ENGINE_SOFTWARE;
+                        config_save_default();
+                        drawing_engine_init();
+                    }
+                }
+            }
+        }
+
+        void DisposeDrawingEngine() final override
+        {
+            _drawingEngine = nullptr;
+            _painter = nullptr;
         }
 
         bool LoadParkFromFile(const std::string &path, bool loadTitleScreenOnFail) final override
@@ -767,7 +852,9 @@ namespace OpenRCT2
             Update();
             if (!_isWindowMinimised && !gOpenRCT2Headless)
             {
-                drawing_engine_draw();
+                _drawingEngine->BeginDraw();
+                _painter->Paint(*_drawingEngine);
+                _drawingEngine->EndDraw();
             }
         }
 
@@ -810,7 +897,9 @@ namespace OpenRCT2
                 const float alpha = (float)_accumulator / GAME_UPDATE_TIME_MS;
                 sprite_position_tween_all(alpha);
 
-                drawing_engine_draw();
+                _drawingEngine->BeginDraw();
+                _painter->Paint(*_drawingEngine);
+                _drawingEngine->EndDraw();
 
                 sprite_position_tween_restore();
             }

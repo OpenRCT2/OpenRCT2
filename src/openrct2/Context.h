@@ -77,6 +77,11 @@ namespace OpenRCT2
         interface IAudioContext;
     }
 
+    namespace Drawing
+    {
+        interface IDrawingEngine;
+    }
+
     namespace Localisation
     {
         class LocalisationService;
@@ -102,10 +107,14 @@ namespace OpenRCT2
         virtual std::shared_ptr<IObjectRepository> GetObjectRepository() abstract;
         virtual ITrackDesignRepository * GetTrackDesignRepository() abstract;
         virtual IScenarioRepository *    GetScenarioRepository() abstract;
+        virtual sint32 GetDrawingEngineType() abstract;
+        virtual Drawing::IDrawingEngine * GetDrawingEngine() abstract;
 
         virtual sint32 RunOpenRCT2(int argc, const char * * argv) abstract;
 
         virtual bool Initialise() abstract;
+        virtual void InitialiseDrawingEngine() abstract;
+        virtual void DisposeDrawingEngine() abstract;
         virtual bool LoadParkFromFile(const std::string &path, bool loadTitleScreenOnFail = false) abstract;
         virtual bool LoadParkFromStream(IStream * stream, const std::string &path, bool loadTitleScreenFirstOnFail = false) abstract;
         virtual void WriteLine(const std::string &s) abstract;
