@@ -2834,7 +2834,7 @@ private:
 
 std::unique_ptr<IParkImporter> ParkImporter::CreateS4()
 {
-    return std::unique_ptr<S4Importer>();
+    return std::make_unique<S4Importer>();
 }
 
 ParkLoadResult * load_from_sv4(const utf8 * path)
