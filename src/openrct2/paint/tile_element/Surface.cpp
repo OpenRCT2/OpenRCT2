@@ -677,27 +677,26 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
         return;
     }
 
-    // TODO: Check the viewport flag for view clipping instead of calling `tile_is_inside_clip_view(self)`
-    if (neighbour.tile_element == nullptr || (tile_is_inside_clip_view(self) && !tile_is_inside_clip_view(neighbour)))
+    bool neighbourIsClippedAway = (gCurrentViewportFlags & VIEWPORT_FLAG_CLIP_VIEW) && !tile_is_inside_clip_view(neighbour);
+
+    if (neighbour.tile_element == nullptr || neighbourIsClippedAway)
     {
-        // The neigbour tile doesn't exist or isn't drawn - assume minimum height to draw full edges
+        // The neighbour tile doesn't exist or isn't drawn - assume minimum height to draw full edges
         neighbourCornerHeight2 = MINIMUM_LAND_HEIGHT / 2;
         neighbourCornerHeight1 = MINIMUM_LAND_HEIGHT / 2;
     }
-    else
-    {
-        if (isWater)
-        {
-            uint8 waterHeight = surface_get_water_height(neighbour.tile_element);
-            if (waterHeight == height)
-            {
-                // Don't draw the edge when the neighbour's water level is the same
-                return;
-            }
 
-            cornerHeight1 = height;
-            cornerHeight2 = height;
+    if (isWater)
+    {
+        uint8 waterHeight = surface_get_water_height(neighbour.tile_element);
+        if (waterHeight == height && !neighbourIsClippedAway)
+        {
+            // Don't draw the edge when the neighbour's water level is the same
+            return;
         }
+
+        cornerHeight1 = height;
+        cornerHeight2 = height;
     }
 
     if (cornerHeight1 <= neighbourCornerHeight1 && cornerHeight2 <= neighbourCornerHeight2)
