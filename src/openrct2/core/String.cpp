@@ -549,6 +549,29 @@ namespace String
         return std::string(startSubstr, stringLength);
     }
 
+#ifndef _WIN32
+    static const char* GetIcuCodePage(sint32 codePage)
+    {
+        switch (codePage)
+        {
+        case CODE_PAGE::CP_932:
+            return "windows-932";
+
+        case CODE_PAGE::CP_936:
+            return "GB2312";
+
+        case CODE_PAGE::CP_949:
+            return "windows-949";
+
+        case CODE_PAGE::CP_950:
+            return "big5";
+
+        default:
+            throw std::runtime_error("Unsupported code page: " + std::to_string(codePage));
+        }
+    }
+#endif
+
     std::string Convert(const std::string_view& src, sint32 srcCodePage, sint32 dstCodePage)
     {
 #ifdef _WIN32
@@ -572,29 +595,7 @@ namespace String
 
         return dst;
 #else
-        const char* codepage;
-        switch (srcCodePage)
-        {
-        case CODE_PAGE::CP_932:
-            codepage = "windows-932";
-            break;
-
-        case CODE_PAGE::CP_936:
-            codepage = "GB2312";
-            break;
-
-        case CODE_PAGE::CP_949:
-            codepage = "windows-949";
-            break;
-
-        case CODE_PAGE::CP_950:
-            codepage = "big5";
-            break;
-
-        default:
-            throw std::runtime_error("Unsupported code page: " + std::to_string(srcCodePage));
-        }
-
+        const char* codepage = GetIcuCodePage(srcCodePage);
         icu::UnicodeString convertString(src.data(), codepage);
         std::string result;
 
