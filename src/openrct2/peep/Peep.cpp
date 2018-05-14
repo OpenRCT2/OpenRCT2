@@ -37,9 +37,11 @@
 #include "../ride/Track.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../ride/ShopItem.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
 #include "../util/Util.h"
+#include "../windows/Intent.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
@@ -52,7 +54,6 @@
 #include "../world/Surface.h"
 #include "Peep.h"
 #include "Staff.h"
-#include "../windows/Intent.h"
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 bool gPathFindDebug = false;

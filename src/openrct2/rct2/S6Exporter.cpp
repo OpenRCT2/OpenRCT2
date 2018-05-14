@@ -14,38 +14,38 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "S6Exporter.h"
 #include <algorithm>
 #include <cstring>
+#include <functional>
 #include "../common.h"
+#include "../config/Config.h"
 #include "../Context.h"
 #include "../core/FileStream.hpp"
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
-#include "../management/Award.h"
-#include "../object/Object.h"
-#include "../object/ObjectManager.h"
-#include "../object/ObjectRepository.h"
-#include "../rct12/SawyerChunkWriter.h"
-#include "S6Exporter.h"
-#include <functional>
-
-#include "../config/Config.h"
 #include "../Game.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
+#include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
 #include "../object/Object.h"
 #include "../object/ObjectLimits.h"
+#include "../object/ObjectManager.h"
+#include "../object/ObjectRepository.h"
 #include "../OpenRCT2.h"
 #include "../peep/Staff.h"
+#include "../rct12/SawyerChunkWriter.h"
 #include "../ride/Ride.h"
 #include "../ride/RideRatings.h"
+#include "../ride/ShopItem.h"
+#include "../ride/Station.h"
 #include "../ride/TrackData.h"
 #include "../scenario/Scenario.h"
 #include "../util/SawyerCoding.h"
@@ -54,7 +54,6 @@
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Sprite.h"
-#include "../ride/Station.h"
 
 S6Exporter::S6Exporter()
 {

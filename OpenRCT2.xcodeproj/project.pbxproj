@@ -26,6 +26,7 @@
 		4C3B423820591513000C5BB7 /* StdInOutConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B423720591513000C5BB7 /* StdInOutConsole.cpp */; };
 		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
 		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
+		4CDCB0BE20A9902F00321367 /* ShopItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CDCB0BC20A9902E00321367 /* ShopItem.cpp */; };
 		4CE9AAAD1FDA7B14004093C6 /* ObjectJsonHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */; };
 		4CF67197206B7E720034ADDD /* object in Resources */ = {isa = PBXBuildFile; fileRef = 4CF67196206B7E720034ADDD /* object */; };
 		9308D9FE209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
@@ -36,16 +37,16 @@
 		9308DA03209908090079EE96 /* Surface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FB209908080079EE96 /* Surface.cpp */; };
 		9308DA04209908090079EE96 /* TileElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 9308D9FC209908080079EE96 /* TileElement.h */; };
 		9308DA05209908090079EE96 /* Surface.h in Headers */ = {isa = PBXBuildFile; fileRef = 9308D9FD209908090079EE96 /* Surface.h */; };
+		933F2CB720935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
+		933F2CB820935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
+		933F2CB920935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
+		933F2CBB20935668001B33FD /* LocalisationService.h in Headers */ = {isa = PBXBuildFile; fileRef = 933F2CBA20935668001B33FD /* LocalisationService.h */; };
 		9346F9D8208A191900C77D91 /* Guest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D6208A191900C77D91 /* Guest.cpp */; };
 		9346F9D9208A191900C77D91 /* Guest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D6208A191900C77D91 /* Guest.cpp */; };
 		9346F9DA208A191900C77D91 /* Guest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D6208A191900C77D91 /* Guest.cpp */; };
 		9346F9DB208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
 		9346F9DC208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
 		9346F9DD208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
-		933F2CB720935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
-		933F2CB820935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
-		933F2CB920935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
-		933F2CBB20935668001B33FD /* LocalisationService.h in Headers */ = {isa = PBXBuildFile; fileRef = 933F2CBA20935668001B33FD /* LocalisationService.h */; };
 		93CBA4C020A74FF200867D56 /* BitmapReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */; };
 		93CBA4C320A7502E00867D56 /* Imaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CBA4C120A7502D00867D56 /* Imaging.h */; };
 		93CBA4C420A7502E00867D56 /* Imaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4C220A7502E00867D56 /* Imaging.cpp */; };
@@ -848,6 +849,8 @@
 		4CC4B8E91FE00C5D00660D62 /* Input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Input.h; sourceTree = "<group>"; };
 		4CC4B8EA1FE00C5D00660D62 /* Intro.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Intro.cpp; sourceTree = "<group>"; };
 		4CC4B8EB1FE00C5D00660D62 /* Intro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Intro.h; sourceTree = "<group>"; };
+		4CDCB0BC20A9902E00321367 /* ShopItem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShopItem.cpp; sourceTree = "<group>"; };
+		4CDCB0BD20A9902F00321367 /* ShopItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopItem.h; sourceTree = "<group>"; };
 		4CE4623F1FD0710E0001CD98 /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
 		4CE462401FD0710E0001CD98 /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		4CE462441FD161360001CD98 /* Platform.Android.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Android.cpp; sourceTree = "<group>"; };
@@ -873,10 +876,10 @@
 		9308D9FB209908080079EE96 /* Surface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Surface.cpp; sourceTree = "<group>"; };
 		9308D9FC209908080079EE96 /* TileElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileElement.h; sourceTree = "<group>"; };
 		9308D9FD209908090079EE96 /* Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Surface.h; sourceTree = "<group>"; };
-		9346F9D6208A191900C77D91 /* Guest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Guest.cpp; sourceTree = "<group>"; };
-		9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuestPathfinding.cpp; sourceTree = "<group>"; };
 		933F2CB620935653001B33FD /* LocalisationService.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LocalisationService.cpp; sourceTree = "<group>"; };
 		933F2CBA20935668001B33FD /* LocalisationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalisationService.h; sourceTree = "<group>"; };
+		9346F9D6208A191900C77D91 /* Guest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Guest.cpp; sourceTree = "<group>"; };
+		9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuestPathfinding.cpp; sourceTree = "<group>"; };
 		93CBA4BE20A74FF200867D56 /* BitmapReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapReader.h; sourceTree = "<group>"; };
 		93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitmapReader.cpp; sourceTree = "<group>"; };
 		93CBA4C120A7502D00867D56 /* Imaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Imaging.h; sourceTree = "<group>"; };
@@ -2277,6 +2280,8 @@
 				4C7B541520060D8E00A52E21 /* RideData.h */,
 				4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */,
 				4C8667811EEFDCDF0024AAB8 /* RideGroupManager.h */,
+				4CDCB0BC20A9902E00321367 /* ShopItem.cpp */,
+				4CDCB0BD20A9902F00321367 /* ShopItem.h */,
 				4C6AC20D1F9E1693004324AA /* Station.cpp */,
 				4C6AC20E1F9E1693004324AA /* Station.h */,
 				4CFE4E8E1F9625B0005243C2 /* Track.cpp */,
@@ -3062,6 +3067,7 @@
 				F76C887A1EC5324E00FA49E2 /* AudioMixer.cpp in Sources */,
 				C68313C81FDB4ED4006DB3D8 /* MouseInput.cpp in Sources */,
 				C68878C920289B710084B384 /* TextureCache.cpp in Sources */,
+				4CDCB0BE20A9902F00321367 /* ShopItem.cpp in Sources */,
 				C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */,
 				4C1A53ED205FD1A0000F8EF5 /* SceneryObject.cpp in Sources */,
 				F76C887B1EC5324E00FA49E2 /* FileAudioSource.cpp in Sources */,

@@ -57,6 +57,7 @@
 #include "Ride.h"
 #include "RideData.h"
 #include "RideGroupManager.h"
+#include "ShopItem.h"
 #include "Station.h"
 #include "Track.h"
 #include "TrackData.h"
@@ -156,8 +157,6 @@ sint32 gRideRemoveTrackPieceCallbackDirection;
 sint32 gRideRemoveTrackPieceCallbackType;
 
 money16 gTotalRideValueForMoney;
-uint32 gSamePriceThroughoutParkA;
-uint32 gSamePriceThroughoutParkB;
 
 money32 _currentTrackPrice;
 
@@ -429,26 +428,6 @@ void ride_update_favourited_stat()
     }
 
     window_invalidate_by_class(WC_RIDE_LIST);
-}
-
-money32 get_shop_item_cost(sint32 shopItem)
-{
-    return ShopItemStats[shopItem].cost;
-}
-
-money16 get_shop_base_value(sint32 shopItem)
-{
-    return ShopItemStats[shopItem].base_value;
-}
-
-money16 get_shop_cold_value(sint32 shopItem)
-{
-    return ShopItemStats[shopItem].cold_value;
-}
-
-money16 get_shop_hot_value(sint32 shopItem)
-{
-    return ShopItemStats[shopItem].hot_value;
 }
 
 /**
@@ -5742,50 +5721,6 @@ money32 ride_get_common_price(Ride *forRide)
     return MONEY32_UNDEFINED;
 }
 
-money32 shop_item_get_common_price(Ride *forRide, sint32 shopItem)
-{
-    rct_ride_entry *rideEntry;
-    Ride *ride;
-    sint32 i;
-
-    FOR_ALL_RIDES(i, ride) {
-        if (ride != forRide) {
-            rideEntry = get_ride_entry(ride->subtype);
-            if (rideEntry == nullptr) {
-                continue;
-            }
-            if (rideEntry->shop_item == shopItem) {
-                return ride->price;
-            }
-            if (rideEntry->shop_item_secondary == shopItem) {
-                return ride->price_secondary;
-            }
-            if (shop_item_is_photo(shopItem) && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)) {
-                return ride->price_secondary;
-            }
-        }
-    }
-
-    return MONEY32_UNDEFINED;
-}
-
-bool shop_item_is_photo(sint32 shopItem)
-{
-    return (
-        shopItem == SHOP_ITEM_PHOTO || shopItem == SHOP_ITEM_PHOTO2 ||
-        shopItem == SHOP_ITEM_PHOTO3 || shopItem == SHOP_ITEM_PHOTO4
-    );
-}
-
-bool shop_item_has_common_price(sint32 shopItem)
-{
-    if (shopItem < 32) {
-        return gSamePriceThroughoutParkA & (1u << shopItem);
-    } else {
-        return gSamePriceThroughoutParkB & (1u << (shopItem - 32));
-    }
-}
-
 void ride_set_name_to_default(Ride * ride, rct_ride_entry * rideEntry)
 {
     if (RideGroupManager::RideTypeIsIndependent(ride->type))
@@ -7726,109 +7661,6 @@ void ride_crash(uint8 rideIndex, uint8 vehicleIndex)
     set_format_arg(2, uint32, ride->name_arguments);
     if (gConfigNotifications.ride_crashed) {
         news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_HAS_CRASHED, rideIndex);
-    }
-}
-
-bool shop_item_is_food_or_drink(sint32 shopItem)
-{
-    switch (shopItem) {
-    case SHOP_ITEM_DRINK:
-    case SHOP_ITEM_BURGER:
-    case SHOP_ITEM_CHIPS:
-    case SHOP_ITEM_ICE_CREAM:
-    case SHOP_ITEM_CANDYFLOSS:
-    case SHOP_ITEM_PIZZA:
-    case SHOP_ITEM_POPCORN:
-    case SHOP_ITEM_HOT_DOG:
-    case SHOP_ITEM_TENTACLE:
-    case SHOP_ITEM_TOFFEE_APPLE:
-    case SHOP_ITEM_DOUGHNUT:
-    case SHOP_ITEM_COFFEE:
-    case SHOP_ITEM_CHICKEN:
-    case SHOP_ITEM_LEMONADE:
-    case SHOP_ITEM_PRETZEL:
-    case SHOP_ITEM_CHOCOLATE:
-    case SHOP_ITEM_ICED_TEA:
-    case SHOP_ITEM_FUNNEL_CAKE:
-    case SHOP_ITEM_BEEF_NOODLES:
-    case SHOP_ITEM_FRIED_RICE_NOODLES:
-    case SHOP_ITEM_WONTON_SOUP:
-    case SHOP_ITEM_MEATBALL_SOUP:
-    case SHOP_ITEM_FRUIT_JUICE:
-    case SHOP_ITEM_SOYBEAN_MILK:
-    case SHOP_ITEM_SUJEONGGWA:
-    case SHOP_ITEM_SUB_SANDWICH:
-    case SHOP_ITEM_COOKIE:
-    case SHOP_ITEM_ROAST_SAUSAGE:
-        return true;
-    default:
-        return false;
-    }
-}
-
-bool shop_item_is_food(sint32 shopItem)
-{
-    switch (shopItem) {
-    case SHOP_ITEM_BURGER:
-    case SHOP_ITEM_CHIPS:
-    case SHOP_ITEM_ICE_CREAM:
-    case SHOP_ITEM_CANDYFLOSS:
-    case SHOP_ITEM_PIZZA:
-    case SHOP_ITEM_POPCORN:
-    case SHOP_ITEM_HOT_DOG:
-    case SHOP_ITEM_TENTACLE:
-    case SHOP_ITEM_TOFFEE_APPLE:
-    case SHOP_ITEM_DOUGHNUT:
-    case SHOP_ITEM_CHICKEN:
-    case SHOP_ITEM_PRETZEL:
-    case SHOP_ITEM_FUNNEL_CAKE:
-    case SHOP_ITEM_BEEF_NOODLES:
-    case SHOP_ITEM_FRIED_RICE_NOODLES:
-    case SHOP_ITEM_WONTON_SOUP:
-    case SHOP_ITEM_MEATBALL_SOUP:
-    case SHOP_ITEM_SUB_SANDWICH:
-    case SHOP_ITEM_COOKIE:
-    case SHOP_ITEM_ROAST_SAUSAGE:
-        return true;
-    default:
-        return false;
-    }
-}
-
-bool shop_item_is_drink(sint32 shopItem)
-{
-    switch (shopItem) {
-    case SHOP_ITEM_DRINK:
-    case SHOP_ITEM_COFFEE:
-    case SHOP_ITEM_LEMONADE:
-    case SHOP_ITEM_CHOCOLATE:
-    case SHOP_ITEM_ICED_TEA:
-    case SHOP_ITEM_FRUIT_JUICE:
-    case SHOP_ITEM_SOYBEAN_MILK:
-    case SHOP_ITEM_SUJEONGGWA:
-        return true;
-    default:
-        return false;
-    }
-}
-
-bool shop_item_is_souvenir(sint32 shopItem)
-{
-    switch (shopItem) {
-    case SHOP_ITEM_BALLOON:
-    case SHOP_ITEM_TOY:
-    case SHOP_ITEM_MAP:
-    case SHOP_ITEM_PHOTO:
-    case SHOP_ITEM_UMBRELLA:
-    case SHOP_ITEM_HAT:
-    case SHOP_ITEM_TSHIRT:
-    case SHOP_ITEM_PHOTO2:
-    case SHOP_ITEM_PHOTO3:
-    case SHOP_ITEM_PHOTO4:
-    case SHOP_ITEM_SUNGLASSES:
-        return true;
-    default:
-        return false;
     }
 }
 

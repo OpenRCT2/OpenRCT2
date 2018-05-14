@@ -14,18 +14,18 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <openrct2/actions/ParkMarketingAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Math.hpp>
-#include <openrct2-ui/windows/Window.h>
-
-#include <openrct2/actions/ParkMarketingAction.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/Game.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
+#include <openrct2/ride/ShopItem.h>
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
 
 #define SELECTED_RIDE_UNDEFINED ((uint16)0xFFFF)
 
