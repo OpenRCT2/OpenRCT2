@@ -43,7 +43,7 @@ namespace String
     std::string     StdFormat_VA(const utf8 * format, va_list args);
     std::string     StdFormat(const utf8 * format, ...);
     std::string     ToUtf8(const std::wstring &s);
-    std::wstring    ToUtf16(const std::string &s);
+    std::wstring    ToUtf16(const std::string_view& s);
 
     bool   IsNullOrEmpty(const utf8 * str);
     sint32 Compare(const std::string &a, const std::string &b, bool ignoreCase = false);
@@ -115,5 +115,5 @@ namespace String
     /**
      * Returns an uppercased version of a UTF-8 string.
      */
-    std::string ToUpper(const utf8 * src);
+    std::string ToUpper(const std::string_view& src);
 }

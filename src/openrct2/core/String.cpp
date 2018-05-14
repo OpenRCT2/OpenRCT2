@@ -79,10 +79,10 @@ namespace String
         return result;
     }
 
-    std::wstring ToUtf16(const std::string &s)
+    std::wstring ToUtf16(const std::string_view& s)
     {
         std::wstring result;
-        wchar_t * wcstr = utf8_to_widechar(s.c_str());
+        wchar_t * wcstr = utf8_to_widechar(s.data());
         if (wcstr != nullptr)
         {
             result = std::wstring(wcstr);
@@ -647,12 +647,53 @@ namespace String
 #endif
     }
 
-    std::string ToUpper(const utf8 * src)
+    std::string ToUpper(const std::string_view& src)
     {
 #ifdef _WIN32
-        // TODO: LCMapStringEx on Windows.
-        STUB();
-        return String::ToStd(src);
+        auto srcW = ToUtf16(src);
+        auto dstW = std::wstring();
+
+        // Keep doubling the buffer size until transformed string fits (max 10 times)
+        size_t bufferLength = src.size();
+        for (size_t i = 0; i < 10; i++)
+        {
+            // Double buffer size
+            bufferLength *= 2;
+            dstW.resize(bufferLength);
+
+            // Transform the string
+            auto result = LCMapStringEx(
+                LOCALE_NAME_USER_DEFAULT,
+                LCMAP_UPPERCASE | LCMAP_LINGUISTIC_CASING,
+                srcW.c_str(),
+                (int)srcW.length(),
+                dstW.data(),
+                (int)dstW.capacity(),
+                nullptr,
+                nullptr,
+                0);
+            if (result == 0)
+            {
+                // Check the error
+                auto error = GetLastError();
+                if (error == ERROR_INSUFFICIENT_BUFFER)
+                {
+                    continue;
+                }
+                else
+                {
+                    log_warning("LCMapStringEx failed with %d", error);
+                    return std::string(src);
+                }
+            }
+            else
+            {
+                dstW.resize(result);
+                return String::ToUtf8(dstW);
+            }
+        }
+        log_warning("LCMapStringEx loop exceeded");
+        return std::string(src);
 #else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(src);
         str.toUpper();
