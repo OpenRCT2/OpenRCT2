@@ -1232,38 +1232,61 @@ money32 string_to_money(char * string_to_monetise)
 {
     const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
     char * text_ptr = string_to_monetise;
-    int i, j, sign;
+    uint32 numNumbers = 0;
+    bool hasMinus = false;
+    bool hasDecSep = false;
+
     // Remove everything except numbers decimal, and minus sign(s)
-    for (i = 0; text_ptr[i] != '\0'; ++i) {
+    for (uint32 i = 0, j; text_ptr[i] != '\0'; ++i)
+    {
+        if (text_ptr[i] >= '0' && text_ptr[i] <= '9')
+        {
+            numNumbers++;
+        }
+        else if (text_ptr[i] == decimal_char[0])
+        {
+            if (hasDecSep)
+                return MONEY32_UNDEFINED;
+            else
+                hasDecSep = true;
+        }
+        else if (text_ptr[i] == '-')
+        {
+            if (hasMinus)
+                return MONEY32_UNDEFINED;
+            else
+                hasMinus = true;
+        }
+
         while (!(
             (text_ptr[i] >= '0' && text_ptr[i] <= '9') ||
             (text_ptr[i] == decimal_char[0]) ||
             (text_ptr[i] == '-') ||
-            (text_ptr[i] == '\0')
-        )) {
+            (text_ptr[i] == '\0')))
+        {
             // Move everything over to the left by one
-            for (j = i; text_ptr[j] != '\0'; ++j) {
+            for (j = i; text_ptr[j] != '\0'; ++j)
+            {
                 text_ptr[j] = text_ptr[j + 1];
             }
             text_ptr[j] = '\0';
         }
     }
 
-    // If first character of shortened string is a minus, consider number negative
-    if (text_ptr[0] == '-') {
-        sign = -1;
-    }
-    else {
-        sign = 1;
-    }
+    if (numNumbers == 0)
+        return MONEY32_UNDEFINED;
 
-    // Now minus signs can be removed from string
-    for (i = 0; text_ptr[i] != '\0'; ++i) {
-        if (text_ptr[i] == '-') {
-            for (j = i; text_ptr[j] != '\0'; ++j) {
-                text_ptr[j] = text_ptr[j + 1];
-            }
-            text_ptr[j] = '\0';
+    sint32 sign = 1;
+    if (hasMinus)
+    {
+        // If there is a minus sign, it has to be at position 0 in order to be valid.
+        if (text_ptr[0] == '-')
+        {
+            sign = -1;
+        }
+        else
+        {
+            return MONEY32_UNDEFINED;
         }
     }
 
