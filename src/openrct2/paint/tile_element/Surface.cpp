@@ -19,6 +19,7 @@
 #include "../../OpenRCT2.h"
 #include "../../Cheats.h"
 #include "../../config/Config.h"
+#include "../../core/Guard.hpp"
 #include "../../core/Math.hpp"
 #include "../../core/Util.hpp"
 #include "../../drawing/Drawing.h"
@@ -424,6 +425,7 @@ static constexpr const uint32 dword_97B898[][2] =
 
 struct tile_descriptor
 {
+    TileCoordsXY tile_coords;
     const rct_tile_element * tile_element;
     uint8 terrain;
     uint8 slope;
@@ -612,12 +614,26 @@ static void viewport_surface_smoothen_edge(paint_session * session, enum edge_t 
     }
 }
 
+static bool tile_is_inside_clip_view(const tile_descriptor& tile)
+{
+    Guard::ArgumentNotNull(tile.tile_element);
+
+    if (tile.tile_element->base_height > gClipHeight)
+        return false;
+    if (tile.tile_coords.x < gClipSelectionA.x || tile.tile_coords.x > gClipSelectionB.x)
+        return false;
+    if (tile.tile_coords.y < gClipSelectionA.y || tile.tile_coords.y > gClipSelectionB.y)
+        return false;
+
+    return true;
+}
+
 static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum edge_t edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour, bool isWater)
 {
     if (!is_csg_loaded() && edgeStyle >= TERRAIN_EDGE_RCT2_COUNT)
         edgeStyle = TERRAIN_EDGE_ROCK;
 
-    sint16 al, ah, cl, ch, dl = 0, dh;
+    sint16 cornerHeight1, neighbourCornerHeight1, cornerHeight2, neighbourCornerHeight2;
 
     LocationXY8 offset = { 0, 0 };
     LocationXY8 bounds = { 0, 0 };
@@ -628,11 +644,11 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
     switch (edge)
     {
     case EDGE_BOTTOMLEFT:
-        al = self.corner_heights.left;
-        cl = self.corner_heights.bottom;
+        cornerHeight1 = self.corner_heights.left;
+        cornerHeight2 = self.corner_heights.bottom;
 
-        ah = neighbour.corner_heights.top;
-        ch = neighbour.corner_heights.right;
+        neighbourCornerHeight1 = neighbour.corner_heights.top;
+        neighbourCornerHeight2 = neighbour.corner_heights.right;
 
         offset.x = 30;
         bounds.y = 30;
@@ -643,11 +659,11 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
         break;
 
     case EDGE_BOTTOMRIGHT:
-        al = self.corner_heights.right;
-        cl = self.corner_heights.bottom;
+        cornerHeight1 = self.corner_heights.right;
+        cornerHeight2 = self.corner_heights.bottom;
 
-        ah = neighbour.corner_heights.top;
-        ch = neighbour.corner_heights.left;
+        neighbourCornerHeight1 = neighbour.corner_heights.top;
+        neighbourCornerHeight2 = neighbour.corner_heights.left;
 
         offset.y = 30;
         bounds.x = 30;
@@ -661,31 +677,32 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
         return;
     }
 
-    if (isWater)
-        dl = height;
-
-    if (neighbour.tile_element == nullptr)
+    // TODO: Check the viewport flag for view clipping instead of calling `tile_is_inside_clip_view(self)`
+    if (neighbour.tile_element == nullptr || (tile_is_inside_clip_view(self) && !tile_is_inside_clip_view(neighbour)))
     {
-        ch = 1;
-        ah = 1;
+        // The neigbour tile doesn't exist or isn't drawn - assume minimum height to draw full edges
+        neighbourCornerHeight2 = MINIMUM_LAND_HEIGHT / 2;
+        neighbourCornerHeight1 = MINIMUM_LAND_HEIGHT / 2;
     }
     else
     {
         if (isWater)
         {
-            dh = surface_get_water_height(neighbour.tile_element);
-            if (dl == dh)
+            uint8 waterHeight = surface_get_water_height(neighbour.tile_element);
+            if (waterHeight == height)
             {
+                // Don't draw the edge when the neighbour's water level is the same
                 return;
             }
 
-            al = dl;
-            cl = dl;
+            cornerHeight1 = height;
+            cornerHeight2 = height;
         }
     }
 
-    if (al <= ah && cl <= ch)
+    if (cornerHeight1 <= neighbourCornerHeight1 && cornerHeight2 <= neighbourCornerHeight2)
     {
+        // The edge is not visible behind the neighbour's slope
         return;
     }
 
@@ -703,18 +720,18 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
         base_image_id += 5;
     }
 
-    uint8 curHeight = Math::Min(ah, ch);
-    if (ch != ah)
+    uint8 curHeight = Math::Min(neighbourCornerHeight1, neighbourCornerHeight2);
+    if (neighbourCornerHeight2 != neighbourCornerHeight1)
     {
         // If bottom part of edge isn't straight, add a filler
         uint32 image_offset = 3;
 
-        if (ch >= ah)
+        if (neighbourCornerHeight2 >= neighbourCornerHeight1)
         {
             image_offset = 4;
         }
 
-        if (curHeight != al && curHeight != cl)
+        if (curHeight != cornerHeight1 && curHeight != cornerHeight2)
         {
             uint32 image_id = base_image_id + image_offset;
             sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16);
@@ -722,19 +739,19 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
         }
     }
 
-    ah = cl;
+    neighbourCornerHeight1 = cornerHeight2;
 
     for(uint32 tunnelIndex = 0; tunnelIndex < TUNNEL_MAX_COUNT;)
     {
-        if (curHeight >= al || curHeight >= cl)
+        if (curHeight >= cornerHeight1 || curHeight >= cornerHeight2)
         {
             // If top of edge isn't straight, add a filler
             uint32 image_offset = 1;
-            if (curHeight >= al)
+            if (curHeight >= cornerHeight1)
             {
                 image_offset = 2;
 
-                if (curHeight >= cl)
+                if (curHeight >= cornerHeight2)
                 {
                     return;
                 }
@@ -768,7 +785,7 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
         uint8 tunnelHeight = _tunnelHeights[tunnelType][0];
         sint16 zOffset = curHeight;
 
-        if ((zOffset + tunnelHeight) > ah || (zOffset + tunnelHeight) > al)
+        if ((zOffset + tunnelHeight) > neighbourCornerHeight1 || (zOffset + tunnelHeight) > cornerHeight1)
         {
             tunnelType = byte_97B5B0[tunnelType];
         }
@@ -1000,6 +1017,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, cons
 
     tile_descriptor selfDescriptor =
     {
+        { base.x / 32, base.y / 32 },
         tileElement,
         (uint8)terrain_type,
         surfaceShape,
@@ -1041,6 +1059,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, cons
         const uint8 baseHeight = surfaceElement->base_height / 2;
         const corner_height& ch = corner_heights[surfaceSlope];
 
+        descriptor.tile_coords = { position.x / 32, position.y / 32 };
         descriptor.tile_element = surfaceElement;
         descriptor.terrain = surface_get_terrain(surfaceElement);
         descriptor.slope = surfaceSlope;
