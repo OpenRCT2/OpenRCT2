@@ -50,9 +50,6 @@ rct_string_id user_string_allocate(sint32 base, const utf8 *text);
 void user_string_free(rct_string_id id);
 bool is_user_string_id(rct_string_id stringId);
 
-utf8 *win1252_to_utf8_alloc(const char *src, size_t srcMaxSize);
-sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t maxBufferLength);
-
 wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str);
 uint32 encoding_convert_unicode_to_rct2(uint32 unicode);
 

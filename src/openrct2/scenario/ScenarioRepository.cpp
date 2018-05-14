@@ -33,6 +33,7 @@
 #include "ScenarioSources.h"
 
 #include "../config/Config.h"
+#include "../localisation/Language.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../platform/platform.h"
@@ -128,7 +129,7 @@ private:
     static constexpr uint32 MAGIC_NUMBER = 0x58444953; // SIDX
     static constexpr uint16 VERSION = 3;
     static constexpr auto PATTERN = "*.sc4;*.sc6";
-    
+
 public:
     explicit ScenarioFileIndex(const IPlatformEnvironment& env) :
         FileIndex("scenario index",
@@ -238,7 +239,7 @@ private:
                 // RCT2 scenario
                 auto fs = FileStream(path, FILE_MODE_OPEN);
                 auto chunkReader = SawyerChunkReader(&fs);
- 
+
                 rct_s6_header header = chunkReader.ReadChunkAs<rct_s6_header>();
                 if (header.type == S6_TYPE_SCENARIO)
                 {
@@ -647,7 +648,8 @@ private:
                             if (scBasic.CompanyValue > highscore->company_value)
                             {
                                 SafeFree(highscore->name);
-                                highscore->name = win1252_to_utf8_alloc(scBasic.CompletedBy, Util::CountOf(scBasic.CompletedBy));
+                                std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2_LANGUAGE_ID_ENGLISH_UK);
+                                highscore->name = String::Duplicate(name.c_str());
                                 highscore->company_value = scBasic.CompanyValue;
                                 highscore->timestamp = DATETIME64_MIN;
                                 break;
@@ -658,7 +660,8 @@ private:
                     {
                         scenario_highscore_entry * highscore = InsertHighscore();
                         highscore->fileName = String::Duplicate(scBasic.Path);
-                        highscore->name = win1252_to_utf8_alloc(scBasic.CompletedBy, Util::CountOf(scBasic.CompletedBy));
+                        std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2_LANGUAGE_ID_ENGLISH_UK);
+                        highscore->name = String::Duplicate(name.c_str());
                         highscore->company_value = scBasic.CompanyValue;
                         highscore->timestamp = DATETIME64_MIN;
                     }

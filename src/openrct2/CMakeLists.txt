@@ -136,11 +136,6 @@ if (NOT DISABLE_TTF)
     endif ()
 endif ()
 
-if (UNIX OR STATIC OR ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
-    find_library(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
-    target_link_libraries(${PROJECT} ${ICONV_LIBRARIES})
-endif()
-
 if (HAVE_DISCORD_RPC)
     target_link_libraries(libopenrct2 discord-rpc)
 endif()
