@@ -205,7 +205,7 @@ public:
             }
 
             const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
-            uint8 rideGroupIndex = (ori != nullptr) ? ori->RideGroupIndex : 0;
+            uint8 rideGroupIndex = (ori != nullptr) ? ori->RideInfo.RideGroupIndex : 0;
             const RideGroup * itemRideGroup = RideGroupManager::RideGroupFind(rideType, rideGroupIndex);
 
             if (itemRideGroup != nullptr && itemRideGroup->Equals(rideGroup))
@@ -270,7 +270,7 @@ public:
             }
 
             const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
-            uint8 rideGroupIndex = (ori != nullptr) ? ori->RideGroupIndex : 0;
+            uint8 rideGroupIndex = (ori != nullptr) ? ori->RideInfo.RideGroupIndex : 0;
             const RideGroup * itemRideGroup = RideGroupManager::RideGroupFind(rideType, rideGroupIndex);
 
             if (itemRideGroup != nullptr && itemRideGroup->Equals(rideGroup))

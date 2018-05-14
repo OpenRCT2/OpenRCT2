@@ -277,8 +277,8 @@ static void visible_list_dispose()
 
 static bool visible_list_sort_ride_name(const list_item &a, const list_item &b)
 {
-    auto nameA = a.repositoryItem->Name;
-    auto nameB = b.repositoryItem->Name;
+    auto nameA = a.repositoryItem->Name.c_str();
+    auto nameB = b.repositoryItem->Name.c_str();
     return strcmp(nameA, nameB) < 0;
 }
 
@@ -361,7 +361,7 @@ static void window_editor_object_selection_init_widgets()
     if (!_window_editor_object_selection_widgets_initialised)
     {
         _window_editor_object_selection_widgets_initialised = true;
-        const auto &tabWidget = widgets[widgets.size() - 2];
+        auto tabWidget = widgets[widgets.size() - 2];
         for (sint32 i = 1; i < OBJECT_TYPE_COUNT; i++)
         {
             widgets.insert(widgets.end() - 1, tabWidget);
@@ -1035,7 +1035,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
     y = w->y + widget->bottom + 3;
     width = w->width - w->widgets[WIDX_LIST].right - 6;
     set_format_arg(0, rct_string_id, STR_STRING);
-    set_format_arg(2, const char *, listItem->repositoryItem->Name);
+    set_format_arg(2, const char *, listItem->repositoryItem->Name.c_str());
     gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
     // Draw description of object
@@ -1067,7 +1067,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
     // gfx_draw_string_right(dpi, stringId, nullptr, 2, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
 
     // Draw object dat name
-    const char *path = path_get_filename(listItem->repositoryItem->Path);
+    const char *path = path_get_filename(listItem->repositoryItem->Path.c_str());
     set_format_arg(0, rct_string_id, STR_STRING);
     set_format_arg(2, const char *, path);
     gfx_draw_string_right(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, w->x + w->width - 5, w->y + w->height - 3 - 12);
@@ -1134,7 +1134,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
             }
 
             // Draw text
-            safe_strcpy(buffer, listItem.repositoryItem->Name, 256 - (buffer - bufferWithColour));
+            safe_strcpy(buffer, listItem.repositoryItem->Name.c_str(), 256 - (buffer - bufferWithColour));
             if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
                 while (*buffer != 0 && *buffer != 9)
                     buffer++;
@@ -1317,8 +1317,7 @@ static bool filter_string(const ObjectRepositoryItem * item)
         return true;
 
     // Object doesn't have a name
-    utf8 *name = item->Name;
-    if (name == nullptr || name[0] == '\0')
+    if (item->Name.empty())
         return false;
 
     // Get ride type
@@ -1329,9 +1328,9 @@ static bool filter_string(const ObjectRepositoryItem * item)
     char type_lower[MAX_PATH];
     char object_path[MAX_PATH];
     char filter_lower[sizeof(_filter_string)];
-    safe_strcpy(name_lower, name, MAX_PATH);
+    safe_strcpy(name_lower, item->Name.c_str(), MAX_PATH);
     safe_strcpy(type_lower, rideTypeName, MAX_PATH);
-    safe_strcpy(object_path, item->Path, MAX_PATH);
+    safe_strcpy(object_path, item->Path.c_str(), MAX_PATH);
     safe_strcpy(filter_lower, _filter_string, sizeof(_filter_string));
 
     // Make use of lowercase characters only
@@ -1383,9 +1382,9 @@ static bool filter_chunks(const ObjectRepositoryItem * item)
         uint8 rideType = 0;
         for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
         {
-            if (item->RideType[i] != RIDE_TYPE_NULL)
+            if (item->RideInfo.RideType[i] != RIDE_TYPE_NULL)
             {
-                rideType = item->RideType[i];
+                rideType = item->RideInfo.RideType[i];
                 break;
             }
         }
@@ -1426,12 +1425,12 @@ static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item)
     rct_string_id result = STR_NONE;
     for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
-        uint8 rideType = item->RideType[i];
+        uint8 rideType = item->RideInfo.RideType[i];
         if (rideType != RIDE_TYPE_NULL)
         {
             if (RideGroupManager::RideTypeHasRideGroups(rideType))
             {
-                const RideGroup * rideGroup = RideGroupManager::RideGroupFind(rideType, item->RideGroupIndex);
+                const RideGroup * rideGroup = RideGroupManager::RideGroupFind(rideType, item->RideInfo.RideGroupIndex);
                 result = rideGroup->Naming.name;
             }
             else

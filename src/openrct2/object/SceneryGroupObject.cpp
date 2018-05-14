@@ -107,14 +107,7 @@ void SceneryGroupObject::UpdateEntryIndexes()
 
 void SceneryGroupObject::SetRepositoryItem(ObjectRepositoryItem * item) const
 {
-    Memory::Free(item->ThemeObjects);
-
-    item->NumThemeObjects = (uint16)_items.size();
-    item->ThemeObjects = Memory::AllocateArray<rct_object_entry>(_items.size());
-    for (size_t i = 0; i < _items.size(); i++)
-    {
-        item->ThemeObjects[i] = _items[i];
-    }
+    item->SceneryGroupInfo.Entries = _items;
 }
 
 std::vector<rct_object_entry> SceneryGroupObject::ReadItems(IStream * stream)

@@ -40,24 +40,20 @@ struct ObjectRepositoryItem
 {
     size_t             Id;
     rct_object_entry   ObjectEntry;
-    utf8 *             Path;
-    utf8 *             Name;
-    Object *           LoadedObject;
-    union
+    std::string        Path;
+    std::string        Name;
+    Object *           LoadedObject{};
+    struct
     {
-        struct
-        {
-            uint8   RideFlags;
-            uint8   RideCategory[2];
-            uint8   RideType[MAX_RIDE_TYPES_PER_RIDE_ENTRY];
-            uint8   RideGroupIndex;
-        };
-        struct
-        {
-            uint16             NumThemeObjects;
-            rct_object_entry * ThemeObjects;
-        };
-    };
+        uint8   RideFlags;
+        uint8   RideCategory[2];
+        uint8   RideType[MAX_RIDE_TYPES_PER_RIDE_ENTRY];
+        uint8   RideGroupIndex;
+    } RideInfo;
+    struct
+    {
+        std::vector<rct_object_entry> Entries;
+    } SceneryGroupInfo;
 };
 
 interface IObjectRepository

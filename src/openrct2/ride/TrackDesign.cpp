@@ -1900,7 +1900,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
         const ObjectRepositoryItem * ori = object_repository_find_object_by_name(rideEntryObject->name);
         if (ori != nullptr)
         {
-            uint8             rideGroupIndex = ori->RideGroupIndex;
+            uint8             rideGroupIndex = ori->RideInfo.RideGroupIndex;
             const RideGroup * td6RideGroup = RideGroupManager::RideGroupFind(td6->type, rideGroupIndex);
 
             uint8 * availableRideEntries = get_ride_entry_indices_for_ride_type(td6->type);
