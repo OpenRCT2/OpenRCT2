@@ -29,6 +29,7 @@
 #include "../rct1/RCT1.h"
 #include "../ride/RideData.h"
 #include "../ride/Ride.h"
+#include "../ride/ShopItem.h"
 #include "../ride/Station.h"
 #include "../scenario/Scenario.h"
 

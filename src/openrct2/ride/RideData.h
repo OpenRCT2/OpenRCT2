@@ -63,14 +63,6 @@ struct rct_ride_entrance_definition {
     uint16 colour_use_flags;
 };
 
-struct rct_shop_item_string_types {
-    rct_string_id price_label;      // Balloon price:
-    rct_string_id singular;         // Balloon
-    rct_string_id plural;           // Balloons
-    rct_string_id indefinite;       // a Balloon
-    rct_string_id display;          // "Diamond Heights" Balloon
-};
-
 struct rct_ride_data_4 {
     uint8 price;
     uint8 price_secondary;
@@ -127,13 +119,6 @@ enum {
     RIDE_TYPE_ALTERNATIVE_TRACK_TYPE = 2,   // Flying RC, Lay-down RC, Multi-dimension RC
 };
 
-struct rct_shop_item_stats {
-    uint16 cost;
-    uint16 base_value;
-    uint16 hot_value;
-    uint16 cold_value;
-};
-
 extern const bool hasRunningTrack[RIDE_TYPE_COUNT];
 extern const uint8 initialUpkeepCosts[RIDE_TYPE_COUNT];
 extern const uint8 costPerTrackPiece[RIDE_TYPE_COUNT];
@@ -158,18 +143,12 @@ extern const sint32 RidePhotoItems[RIDE_TYPE_COUNT];
 extern const ride_cost RideTrackCosts[RIDE_TYPE_COUNT];
 extern const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT];
 
-extern const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT];
-extern const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT];
-extern const uint32 ShopItemImage[SHOP_ITEM_COUNT];
-
 extern const rct_ride_entry_vehicle CableLiftVehicle;
 
 extern const uint16 RideFilmLength[3];
 extern const uint16 RideCrookedHouseLength[1];
 
 extern const rating_tuple RideRatings[RIDE_TYPE_COUNT];
-
-extern const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT];
 
 extern const uint8 RideConstructionDefaultTrackType[RIDE_TYPE_COUNT];
 

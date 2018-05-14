@@ -817,62 +817,6 @@ enum {
 };
 
 enum {
-    SHOP_ITEM_BALLOON,
-    SHOP_ITEM_TOY,
-    SHOP_ITEM_MAP,
-    SHOP_ITEM_PHOTO,
-    SHOP_ITEM_UMBRELLA,
-    SHOP_ITEM_DRINK,
-    SHOP_ITEM_BURGER,
-    SHOP_ITEM_CHIPS,
-    SHOP_ITEM_ICE_CREAM,
-    SHOP_ITEM_CANDYFLOSS,
-    SHOP_ITEM_EMPTY_CAN,
-    SHOP_ITEM_RUBBISH,
-    SHOP_ITEM_EMPTY_BURGER_BOX,
-    SHOP_ITEM_PIZZA,
-    SHOP_ITEM_VOUCHER,
-    SHOP_ITEM_POPCORN,
-    SHOP_ITEM_HOT_DOG,
-    SHOP_ITEM_TENTACLE,
-    SHOP_ITEM_HAT,
-    SHOP_ITEM_TOFFEE_APPLE,
-    SHOP_ITEM_TSHIRT,
-    SHOP_ITEM_DOUGHNUT,
-    SHOP_ITEM_COFFEE,
-    SHOP_ITEM_EMPTY_CUP,
-    SHOP_ITEM_CHICKEN,
-    SHOP_ITEM_LEMONADE,
-    SHOP_ITEM_EMPTY_BOX,
-    SHOP_ITEM_EMPTY_BOTTLE = 27,
-    SHOP_ITEM_ADMISSION = 31,
-    SHOP_ITEM_PHOTO2 = 32,
-    SHOP_ITEM_PHOTO3,
-    SHOP_ITEM_PHOTO4,
-    SHOP_ITEM_PRETZEL,
-    SHOP_ITEM_CHOCOLATE,
-    SHOP_ITEM_ICED_TEA,
-    SHOP_ITEM_FUNNEL_CAKE,
-    SHOP_ITEM_SUNGLASSES,
-    SHOP_ITEM_BEEF_NOODLES,
-    SHOP_ITEM_FRIED_RICE_NOODLES,
-    SHOP_ITEM_WONTON_SOUP,
-    SHOP_ITEM_MEATBALL_SOUP,
-    SHOP_ITEM_FRUIT_JUICE,
-    SHOP_ITEM_SOYBEAN_MILK,
-    SHOP_ITEM_SUJEONGGWA,
-    SHOP_ITEM_SUB_SANDWICH,
-    SHOP_ITEM_COOKIE,
-    SHOP_ITEM_EMPTY_BOWL_RED,
-    SHOP_ITEM_EMPTY_DRINK_CARTON,
-    SHOP_ITEM_EMPTY_JUICE_CUP,
-    SHOP_ITEM_ROAST_SAUSAGE,
-    SHOP_ITEM_EMPTY_BOWL_BLUE,
-    SHOP_ITEM_COUNT = 56,
-    SHOP_ITEM_NONE = 255
-};
-
-enum {
     RIDE_SETTING_MODE,
     RIDE_SETTING_DEPARTURE,
     RIDE_SETTING_MIN_WAITING_TIME,
@@ -943,8 +887,6 @@ rct_ride_measurement * get_ride_measurement(sint32 index);
         if ((ride = get_ride(i))->type != RIDE_TYPE_NULL)
 
 extern money16 gTotalRideValueForMoney;
-extern uint32 gSamePriceThroughoutParkA;
-extern uint32 gSamePriceThroughoutParkB;
 
 extern const uint8 gRideClassifications[MAX_RIDES];
 
@@ -1019,10 +961,6 @@ void ride_update_all();
 void ride_check_all_reachable();
 void ride_update_satisfaction(Ride* ride, uint8 happiness);
 void ride_update_popularity(Ride* ride, uint8 pop_amount);
-money32 get_shop_item_cost(sint32 shopItem);
-money16 get_shop_base_value(sint32 shopItem);
-money16 get_shop_hot_value(sint32 shopItem);
-money16 get_shop_cold_value(sint32 shopItem);
 bool ride_try_get_origin_element(sint32 rideIndex, CoordsXYE *output);
 sint32 ride_find_track_gap(CoordsXYE *input, CoordsXYE *output);
 void ride_construct_new(ride_list_item listItem);
@@ -1066,9 +1004,6 @@ sint32 ride_get_refund_price(sint32 ride_id);
 sint32 ride_get_random_colour_preset_index(uint8 ride_type);
 void ride_set_colour_preset(Ride *ride, uint8 index);
 money32 ride_get_common_price(Ride *forRide);
-money32 shop_item_get_common_price(Ride *forRide, sint32 shopItem);
-bool shop_item_is_photo(sint32 shopItem);
-bool shop_item_has_common_price(sint32 shopItem);
 rct_ride_name get_ride_naming(const uint8 rideType, rct_ride_entry * rideEntry);
 void game_command_create_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void game_command_callback_ride_construct_new(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
@@ -1157,10 +1092,6 @@ void ride_crash(uint8 rideIndex, uint8 vehicleIndex);
 
 void sub_6C94D8();
 
-bool shop_item_is_food_or_drink(sint32 shopItem);
-bool shop_item_is_food(sint32 shopItem);
-bool shop_item_is_drink(sint32 shopItem);
-bool shop_item_is_souvenir(sint32 shopItem);
 void ride_reset_all_names();
 const uint8* ride_seek_available_modes(Ride *ride);
 

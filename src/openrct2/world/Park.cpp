@@ -34,6 +34,7 @@
 #include "../peep/Staff.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../ride/ShopItem.h"
 #include "../scenario/Scenario.h"
 #include "Entrance.h"
 #include "Map.h"
