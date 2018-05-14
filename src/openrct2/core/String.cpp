@@ -667,49 +667,44 @@ namespace String
     {
 #ifdef _WIN32
         auto srcW = ToUtf16(src);
+
+        // Measure how long the destination needs to be
+        auto requiredSize = LCMapStringEx(
+            LOCALE_NAME_INVARIANT,
+            LCMAP_UPPERCASE | LCMAP_LINGUISTIC_CASING,
+            srcW.c_str(),
+            (int)srcW.length(),
+            nullptr,
+            0,
+            nullptr,
+            nullptr,
+            0);
+
         auto dstW = std::wstring();
+        dstW.resize(requiredSize);
 
-        // Keep doubling the buffer size until transformed string fits (max 10 times)
-        size_t bufferLength = src.size();
-        for (size_t i = 0; i < 10; i++)
+        // Transform the string
+        auto result = LCMapStringEx(
+            LOCALE_NAME_INVARIANT,
+            LCMAP_UPPERCASE | LCMAP_LINGUISTIC_CASING,
+            srcW.c_str(),
+            (int)srcW.length(),
+            dstW.data(),
+            (int)dstW.length(),
+            nullptr,
+            nullptr,
+            0);
+        if (result == 0)
         {
-            // Double buffer size
-            bufferLength *= 2;
-            dstW.resize(bufferLength);
-
-            // Transform the string
-            auto result = LCMapStringEx(
-                LOCALE_NAME_USER_DEFAULT,
-                LCMAP_UPPERCASE | LCMAP_LINGUISTIC_CASING,
-                srcW.c_str(),
-                (int)srcW.length(),
-                dstW.data(),
-                (int)dstW.capacity(),
-                nullptr,
-                nullptr,
-                0);
-            if (result == 0)
-            {
-                // Check the error
-                auto error = GetLastError();
-                if (error == ERROR_INSUFFICIENT_BUFFER)
-                {
-                    continue;
-                }
-                else
-                {
-                    log_warning("LCMapStringEx failed with %d", error);
-                    return std::string(src);
-                }
-            }
-            else
-            {
-                dstW.resize(result);
-                return String::ToUtf8(dstW);
-            }
+            // Check the error
+            auto error = GetLastError();
+            log_warning("LCMapStringEx failed with %d", error);
+            return std::string(src);
         }
-        log_warning("LCMapStringEx loop exceeded");
-        return std::string(src);
+        else
+        {
+            return String::ToUtf8(dstW);
+        }
 #else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
         str.toUpper();
