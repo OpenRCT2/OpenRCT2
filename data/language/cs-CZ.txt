@@ -1779,8 +1779,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :Je povolena jen jedna fotobuňka na atrakci
 STR_1774    :Je povolen pouze jeden výtah na atrakci
-STR_1775    :Vypnuto
-STR_1776    :Zapnuto
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}Hudba atrakcí
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda
