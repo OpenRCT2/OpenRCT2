@@ -23,7 +23,7 @@ uint32 gSamePriceThroughoutParkA;
 uint32 gSamePriceThroughoutParkB;
 
 /** rct2: 0x00982164 */
-const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT] =
+static const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT] =
 {
     {  3, 14, 14, 14 }, // SHOP_ITEM_BALLOON
     { 15, 30, 30, 30 }, // SHOP_ITEM_TOY

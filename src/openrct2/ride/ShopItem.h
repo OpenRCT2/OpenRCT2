@@ -98,7 +98,6 @@ extern uint32 gSamePriceThroughoutParkB;
 extern const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT];
 extern const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT];
 extern const uint32 ShopItemImage[SHOP_ITEM_COUNT];
-extern const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT];
 
 money32 get_shop_item_cost(sint32 shopItem);
 money16 get_shop_base_value(sint32 shopItem);
