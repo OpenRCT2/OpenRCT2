@@ -114,3 +114,18 @@ TEST_F(StringTest, Convert_Empty)
 }
 
 #endif
+
+///////////////////////////////////////////////////////////////////////////////
+// Tests for String::ToUpper
+///////////////////////////////////////////////////////////////////////////////
+
+TEST_F(StringTest, ToUpper_Basic)
+{
+    auto actual = String::ToUpper("test TEST tEsT 1234");
+    ASSERT_STREQ(actual.c_str(), "TEST TEST TEST 1234");
+}
+TEST_F(StringTest, ToUpper_Unicode)
+{
+    auto actual = String::ToUpper("éœǘξдȿ𞥃ꜳᲁ ÉŒǗΞДⱾ𞤡ꜲД 語");
+    ASSERT_STREQ(actual.c_str(), "ÉŒǗΞДⱾ𞤡ꜲД ÉŒǗΞДⱾ𞤡ꜲД 語");
+}

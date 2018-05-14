@@ -31,6 +31,7 @@
 #include "../common.h"
 #include "../config/Config.h"
 #include "../core/Math.hpp"
+#include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "Date.h"
 #include "../Game.h"
@@ -1215,12 +1216,16 @@ void format_string_to_upper(utf8 *dest, size_t size, rct_string_id format, void 
 
     format_string(dest, size, format, args);
 
-    // Convert to upper case
-    utf8 *ch = dest;
-    while (*ch != '\0') {
-        *ch = toupper(*ch);
-        ch++;
+    std::string upperString = String::ToUpper(dest);
+
+    if (upperString.size() + 1 >= size) {
+        upperString.resize(size - 1);
+        dest[size - 1] = '\0';
+        log_warning("Truncating formatted string \"%s\" to %d bytes.", dest, size);
     }
+
+    upperString.copy(dest, upperString.size());
+    dest[upperString.size()] = '\0';
 }
 
 money32 string_to_money(char * string_to_monetise)

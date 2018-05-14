@@ -111,4 +111,9 @@ namespace String
      * Converts a multi-byte string from one code page to another.
      */
     std::string Convert(const std::string_view& src, sint32 srcCodePage, sint32 dstCodePage);
-} // namespace String
+
+    /**
+     * Returns an uppercased version of a UTF-8 string.
+     */
+    std::string ToUpper(const utf8 * src);
+}
