@@ -695,7 +695,7 @@ namespace String
         log_warning("LCMapStringEx loop exceeded");
         return std::string(src);
 #else
-        icu::UnicodeString str = icu::UnicodeString::fromUTF8(src);
+        icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
         str.toUpper();
 
         std::string res;
