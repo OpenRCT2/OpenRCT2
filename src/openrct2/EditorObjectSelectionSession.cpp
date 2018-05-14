@@ -223,7 +223,7 @@ void sub_6AB211()
     sint32 numObjects = (sint32)object_repository_get_items_count();
     _objectSelectionFlags = std::vector<uint8>(numObjects);
 
-    for (uint8 objectType = 0; objectType < 11; objectType++) {
+    for (uint8 objectType = 0; objectType < OBJECT_TYPE_COUNT; objectType++) {
         _numSelectedObjectsForType[objectType] = 0;
         _numAvailableObjectsForType[objectType] = 0;
     }

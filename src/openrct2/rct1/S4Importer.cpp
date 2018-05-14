@@ -1834,6 +1834,9 @@ private:
 
     void LoadObjects()
     {
+        auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
+        objectManager->LoadDefaultObjects();
+
         LoadObjects(OBJECT_TYPE_RIDE, _rideEntries);
         LoadObjects(OBJECT_TYPE_SMALL_SCENERY, _smallSceneryEntries);
         LoadObjects(OBJECT_TYPE_LARGE_SCENERY, _largeSceneryEntries);

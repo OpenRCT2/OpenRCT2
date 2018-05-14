@@ -58,13 +58,6 @@ public:
 
     Object * GetLoadedObject(size_t index) override
     {
-        if (index >= OBJECT_ENTRY_COUNT)
-        {
-#ifdef DEBUG
-            log_warning("Object index %u exceeds maximum of %d.", index, OBJECT_ENTRY_COUNT);
-#endif
-            return nullptr;
-        }
         if (index >= _loadedObjects.size())
         {
             return nullptr;
@@ -82,11 +75,7 @@ public:
             return nullptr;
         }
 
-        size_t objectIndex = index;
-        for (sint32 i = 0; i < objectType; i++)
-        {
-            objectIndex += object_entry_group_counts[i];
-        }
+        auto objectIndex = GetIndexFromTypeEntry(objectType, index);
         return GetLoadedObject(objectIndex);
     }
 
@@ -121,7 +110,7 @@ public:
             loadedObject = ori->LoadedObject;
             if (loadedObject == nullptr)
             {
-                uint8 objectType = object_entry_get_type(entry);
+                uint8 objectType = object_entry_get_type(&ori->ObjectEntry);
                 sint32 slot = FindSpareSlot(objectType);
                 if (slot != -1)
                 {
@@ -164,6 +153,7 @@ public:
         else
         {
             SetNewLoadedObjectList(std::get<1>(loadedObjects));
+            LoadDefaultObjects();
             UpdateSceneryGroupIndexes();
             ResetTypeToRideEntryIndexMap();
             log_verbose("%u / %u new objects loaded", numNewLoadedObjects, requiredObjects.size());
@@ -241,6 +231,12 @@ public:
         return objects;
     }
 
+    void LoadDefaultObjects() override
+    {
+        // We currently will load new object types here that apply to all
+        // loaded RCT1 and RCT2 save files.
+    }
+
     static rct_string_id GetObjectSourceGameString(const rct_object_entry * entry)
     {
         switch (object_entry_get_source_game(entry))
@@ -265,15 +261,27 @@ public:
     }
 
 private:
+    Object * LoadObject(const std::string &name)
+    {
+        rct_object_entry entry{};
+        std::copy_n(name.c_str(), 8, entry.name);
+        return LoadObject(&entry);
+    }
+
     sint32 FindSpareSlot(uint8 objectType)
     {
-        sint32 firstIndex = GetIndexFromTypeEntry(objectType, 0);
-        sint32 endIndex = firstIndex + object_entry_group_counts[objectType];
-        for (sint32 i = firstIndex; i < endIndex; i++)
+        size_t firstIndex = GetIndexFromTypeEntry(objectType, 0);
+        size_t endIndex = firstIndex + object_entry_group_counts[objectType];
+        for (size_t i = firstIndex; i < endIndex; i++)
         {
-            if (_loadedObjects.size() > (size_t)i && _loadedObjects[i] == nullptr)
+            if (_loadedObjects.size() <= i)
             {
-                return i;
+                _loadedObjects.resize(i + 1);
+                return (sint32)i;
+            }
+            else if (_loadedObjects[i] == nullptr)
+            {
+                return (sint32)i;
             }
         }
         return -1;
@@ -565,14 +573,14 @@ private:
         Console::Error::WriteLine("[%s] Object could not be loaded.", objName);
     }
 
-    static sint32 GetIndexFromTypeEntry(uint8 objectType, uint8 entryIndex)
+    static sint32 GetIndexFromTypeEntry(sint32 objectType, size_t entryIndex)
     {
         sint32 result = 0;
-        for (uint8 i = 0; i < objectType; i++)
+        for (sint32 i = 0; i < objectType; i++)
         {
             result += object_entry_group_counts[i];
         }
-        result += entryIndex;
+        result += (sint32)entryIndex;
         return result;
     }
 };
