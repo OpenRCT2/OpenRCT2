@@ -322,11 +322,11 @@ bool shop_item_has_common_price(sint32 shopItem)
 {
     if (shopItem < 32)
     {
-        return gSamePriceThroughoutParkA & (1u << shopItem);
+        return (gSamePriceThroughoutParkA & (1u << shopItem)) != 0;
     }
     else
     {
-        return gSamePriceThroughoutParkB & (1u << (shopItem - 32));
+        return (gSamePriceThroughoutParkB & (1u << (shopItem - 32))) != 0;
     }
 }
 
