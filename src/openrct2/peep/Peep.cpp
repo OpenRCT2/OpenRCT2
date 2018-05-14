@@ -490,7 +490,7 @@ bool rct_peep::CheckForPath()
     path_check_optimisation++;
     if ((path_check_optimisation & 0xF) != (sprite_index & 0xF))
     {
-        // This condition makes the check happen less often 
+        // This condition makes the check happen less often
         // As a side effect peeps hover for a short,
         // random time when a path below them has been deleted
         return true;
@@ -627,7 +627,11 @@ bool rct_peep::UpdateAction(sint16 * actionX, sint16 * actionY, sint16 * xy_dist
 
     *xy_distance = x_delta + y_delta;
 
-    if (action == PEEP_ACTION_NONE_1 || action == PEEP_ACTION_NONE_2)
+    bool allowPeepMovement = (action == PEEP_ACTION_NONE_1) ||
+        (action == PEEP_ACTION_NONE_2) ||
+        (state == PEEP_STATE_WALKING && action == PEEP_ACTION_JUMP);
+
+    if (allowPeepMovement)
     {
         if (*xy_distance <= destination_tolerance)
         {
@@ -650,6 +654,7 @@ bool rct_peep::UpdateAction(sint16 * actionX, sint16 * actionY, sint16 * xy_dist
                 nextDirection = 0;
             }
         }
+
         sprite_direction = nextDirection;
         *actionX                     = x + word_981D7C[nextDirection / 8].x;
         *actionY                     = y + word_981D7C[nextDirection / 8].y;
@@ -659,6 +664,16 @@ bool rct_peep::UpdateAction(sint16 * actionX, sint16 * actionY, sint16 * xy_dist
         if (no_action_frame_num >= peepAnimation[action_sprite_type].num_frames)
         {
             no_action_frame_num = 0;
+            if (action == PEEP_ACTION_JUMP)
+            {
+                // No longer jumping, reset state.
+                action_sprite_image_offset = 0;
+                action = 0xFF;
+                UpdateCurrentActionSpriteType();
+                Invalidate();
+                *actionX = x;
+                *actionY = y;
+            }
         }
         action_sprite_image_offset = imageOffset[no_action_frame_num];
         return true;
@@ -1781,7 +1796,7 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     if (intensityHighest >= 7)
         intensityHighest = 15;
 
-    /* Check which intensity boxes are enabled 
+    /* Check which intensity boxes are enabled
      * and apply the appropriate intensity settings. */
     if (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
     {
@@ -1790,7 +1805,7 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
             intensityLowest = 0;
             intensityHighest = 15;
         }
-        else 
+        else
         {
             intensityLowest = 0;
             intensityHighest = 4;
