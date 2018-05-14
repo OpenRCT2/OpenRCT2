@@ -67,28 +67,44 @@ namespace String
         return returnValue;
     }
 
-    std::string ToUtf8(const std::wstring &s)
+    std::string ToUtf8(const std::wstring_view& src)
     {
+#ifdef _WIN32
+        int srcLen = (int)src.size();
+        int sizeReq = WideCharToMultiByte(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, nullptr, 0, nullptr, nullptr);
+        auto result = std::string(sizeReq, 0);
+        WideCharToMultiByte(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, result.data(), sizeReq, nullptr, nullptr);
+        return result;
+#else
         std::string result;
-        utf8 * cstr = widechar_to_utf8(s.c_str());
+        utf8 * cstr = widechar_to_utf8(std::wstring(src).c_str());
         if (cstr != nullptr)
         {
             result = std::string(cstr);
         }
         free(cstr);
         return result;
+#endif
     }
 
-    std::wstring ToUtf16(const std::string_view& s)
+    std::wstring ToUtf16(const std::string_view& src)
     {
+#ifdef _WIN32
+        int srcLen = (int)src.size();
+        int sizeReq = MultiByteToWideChar(CP_ACP, 0, src.data(), srcLen, nullptr, 0);
+        auto result = std::wstring(sizeReq, 0);
+        MultiByteToWideChar(CP_ACP, 0, src.data(), srcLen, result.data(), sizeReq);
+        return result;
+#else
         std::wstring result;
-        wchar_t * wcstr = utf8_to_widechar(s.data());
+        wchar_t * wcstr = utf8_to_widechar(std::string(src).c_str());
         if (wcstr != nullptr)
         {
             result = std::wstring(wcstr);
         }
         free(wcstr);
         return result;
+#endif
     }
 
     bool IsNullOrEmpty(const utf8 * str)
