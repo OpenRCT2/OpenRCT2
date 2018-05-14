@@ -501,9 +501,9 @@ static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex
         break;
     case WIDX_SIGN_DEMOLISH:
         {
-            while (1)
+            while (true)
             {
-                if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_WALL)
+                if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL)
                 {
                     rct_scenery_entry* scenery_entry = get_wall_entry(tile_element->properties.wall.type);
                     if (scenery_entry->wall.scrolling_mode != 0xFF)
@@ -514,12 +514,14 @@ static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex
                 }
                 tile_element++;
             }
-            auto wallRemoveAction = WallRemoveAction(x, y, tile_element->base_height, tile_element_get_direction(tile_element));
+            TileCoordsXYZD wallLocation = { x >> 5, y >> 5, tile_element->base_height, tile_element->GetDirection() };
+            auto wallRemoveAction = WallRemoveAction(wallLocation);
             GameActions::Execute(&wallRemoveAction);
         }
         break;
     case WIDX_SIGN_TEXT:
-        if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE){
+        if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
+        {
             Ride* ride = get_ride(banner->colour);
             set_format_arg(16, uint32, ride->name_arguments);
             string_id = ride->name;

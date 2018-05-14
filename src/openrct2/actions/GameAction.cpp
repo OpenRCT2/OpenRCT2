@@ -88,12 +88,8 @@ namespace GameActions
             {
                 result = factory();
             }
-            else
-            {
-                log_error("Attempting to create unregistered gameaction: %u\n", id);
-            }
         }
-        Guard::ArgumentNotNull(result);
+        Guard::ArgumentNotNull(result, "Attempting to create unregistered gameaction: %u", id);
         return std::unique_ptr<GameAction>(result);
     }
 
@@ -231,8 +227,7 @@ namespace GameActions
 
         if (result->Error != GA_ERROR::OK && 
             !(flags & GAME_COMMAND_FLAG_GHOST) &&
-            !(flags & GAME_COMMAND_FLAG_5) &&
-            result->ErrorMessage != STR_NONE)
+            !(flags & GAME_COMMAND_FLAG_5))
         {
             // Show the error box
             std::copy(result->ErrorMessageArgs.begin(), result->ErrorMessageArgs.end(), gCommonFormatArgs);

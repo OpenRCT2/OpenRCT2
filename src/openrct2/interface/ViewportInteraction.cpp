@@ -518,7 +518,8 @@ static void viewport_interaction_remove_park_wall(rct_tile_element *tileElement,
     }
     else
     {
-        auto wallRemoveAction = WallRemoveAction(x, y, tileElement->base_height, tile_element_get_direction(tileElement));
+        TileCoordsXYZD wallLocation = { x >> 5, y >> 5, tileElement->base_height, tileElement->GetDirection() };
+        auto wallRemoveAction = WallRemoveAction(wallLocation);
         GameActions::Execute(&wallRemoveAction);
     }
 }

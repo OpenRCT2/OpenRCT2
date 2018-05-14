@@ -16,31 +16,25 @@
 
 #pragma once
 
+#include "../Cheats.h"
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
+#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
-#include "GameAction.h"
-
-#include "../Cheats.h"
-#include "../interface/Window.h"
+#include "../world/Location.hpp"
 #include "../world/Wall.h"
+#include "GameAction.h"
 
 struct WallRemoveAction : public GameActionBase<GAME_COMMAND_REMOVE_WALL, GameActionResult>
 {
 private:
-    sint32 _x;
-    sint32 _y;
-    uint8 _baseHeight;
-    uint8 _direction;
+    TileCoordsXYZD _location;
 
 public:
-    WallRemoveAction() {}
-    WallRemoveAction(sint16 x, sint16 y, uint8 baseHeight, uint8 direction) :
-        _x(x),
-        _y(y),
-        _baseHeight(baseHeight),
-        _direction(direction)
+    WallRemoveAction() = default;
+    WallRemoveAction(const TileCoordsXYZD& location)
+        : _location(location)
     {
     }
 
@@ -53,7 +47,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << _x << _y << _baseHeight << _direction;
+        stream << _location.x << _location.y << _location.z << _location.direction;
     }
 
     GameActionResult::Ptr Query() const override
@@ -62,7 +56,7 @@ public:
         res->Cost = 0;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 
-        if (!map_is_location_valid(_x, _y))
+        if (!map_is_location_valid(_location.x << 5, _location.y << 5))
         {
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
@@ -71,12 +65,12 @@ public:
         if (!isGhost &&
             !(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) &&
             !gCheatsSandboxMode &&
-            !map_is_location_owned(_x, _y, _baseHeight * 8))
+            !map_is_location_owned(_location.x << 5, _location.y << 5, _location.z << 3))
         {
             return std::make_unique<GameActionResult>(GA_ERROR::NOT_OWNED, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        rct_tile_element * wallElement = GetFirstWallElementAt(_x, _y, _baseHeight, _direction, isGhost);
+        rct_tile_element* wallElement = GetFirstWallElementAt(_location, isGhost);
         if (wallElement == nullptr)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
@@ -94,36 +88,38 @@ public:
 
         const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
 
-        rct_tile_element * wallElement = GetFirstWallElementAt(_x, _y, _baseHeight, _direction, isGhost);
+        rct_tile_element * wallElement = GetFirstWallElementAt(_location, isGhost);
         if (wallElement == nullptr)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        res->Position.x = _x + 16;
-        res->Position.y = _y + 16;
+        res->Position.x = (_location.x << 5) + 16;
+        res->Position.y = (_location.y << 5) + 16;
         res->Position.z = tile_element_height(res->Position.x, res->Position.y);
 
         tile_element_remove_banner_entry(wallElement);
-        map_invalidate_tile_zoom1(_x, _y, wallElement->base_height * 8, (wallElement->base_height * 8) + 72);
+        map_invalidate_tile_zoom1(_location.x << 5, _location.y << 5, wallElement->base_height * 8, (wallElement->base_height * 8) + 72);
         tile_element_remove(wallElement);
 
         return res;
     }
 
 private:
-    rct_tile_element * GetFirstWallElementAt(sint32 x, sint32 y, uint8 baseZ, uint8 direction, bool isGhost) const
+    rct_tile_element* GetFirstWallElementAt(const TileCoordsXYZD& location, bool isGhost) const
     {
-        rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
+        rct_tile_element* tileElement = map_get_first_element_at(location.x, location.y);
         do
         {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
-            {
                 continue;
-            }
-            if (tileElement->base_height != baseZ) continue;
-            if (tileElement->GetDirection() != direction) continue;
-            if (tileElement->IsGhost() != isGhost) continue;
+            if (tileElement->base_height != location.z)
+                continue;
+            if (tileElement->GetDirection() != location.direction)
+                continue;
+            if (tileElement->IsGhost() != isGhost)
+                continue;
+
             return tileElement;
         } while (!tile_element_is_last_for_tile(tileElement++));
         return nullptr;

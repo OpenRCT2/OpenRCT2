@@ -1127,7 +1127,8 @@ restart_from_beginning:
             if (clear & (1 << 0))
             {
                 // NOTE: We execute the game action directly as this function is already called from such.
-                auto wallRemoveAction = WallRemoveAction(x * 32, y * 32, tileElement->base_height, tile_element_get_direction(tileElement));
+                TileCoordsXYZD wallLocation = { x, y, tileElement->base_height, tileElement->GetDirection() };
+                auto wallRemoveAction = WallRemoveAction(wallLocation);
                 wallRemoveAction.SetFlags(flags);
                 auto res = ((flags & GAME_COMMAND_FLAG_APPLY) ? wallRemoveAction.Execute() : wallRemoveAction.Query());
                 if (res->Error == GA_ERROR::OK)
@@ -3762,7 +3763,8 @@ static void clear_element_at(sint32 x, sint32 y, rct_tile_element **elementPtr)
         break;
     case TILE_ELEMENT_TYPE_WALL:
         {
-            auto wallRemoveAction = WallRemoveAction(x, y, element->base_height, tile_element_get_direction(element));
+            TileCoordsXYZD wallLocation = { x >> 5, y >> 5, element->base_height, element->GetDirection() };
+            auto wallRemoveAction = WallRemoveAction(wallLocation);
             GameActions::Execute(&wallRemoveAction);
         }
         break;

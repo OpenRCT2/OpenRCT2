@@ -865,7 +865,8 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, sint32 origi
 
                         uint8_t direction = (rotation + scenery->flags) & TILE_ELEMENT_DIRECTION_MASK;
 
-                        auto wallRemoveAction = WallRemoveAction(mapCoord.x, mapCoord.y, z, direction);
+                        TileCoordsXYZD wallLocation = { tile.x, tile.y, z, direction };
+                        auto wallRemoveAction = WallRemoveAction(wallLocation);
                         wallRemoveAction.SetFlags(flags);
 
                         GameActions::Execute(&wallRemoveAction);
