@@ -18,6 +18,7 @@
 #include <stdexcept>
 #include <vector>
 #ifndef _WIN32
+#include <unicode/ucnv.h>
 #include <unicode/unistr.h>
 #endif
 
@@ -37,6 +38,7 @@
 #include "Math.hpp"
 #include "Memory.hpp"
 #include "String.hpp"
+#include "StringBuilder.hpp"
 
 namespace String
 {
@@ -570,6 +572,41 @@ namespace String
             throw std::runtime_error("Unsupported code page: " + std::to_string(codePage));
         }
     }
+
+    static char* CodePageFromUTF8(const utf8* src, size_t srcMaxSize, sint32 dstCodePage)
+    {
+        UConverter *conv;
+        UErrorCode status = U_ZERO_ERROR;
+
+        const char* codepage = GetIcuCodePage(dstCodePage);
+        conv = ucnv_open(codepage, &status);
+
+        if (U_FAILURE(status))
+        {
+            log_error("ICU error: %s", u_errorName(status));
+            return nullptr;
+        }
+
+        const char *srcLimit = src + srcMaxSize;
+        auto sb = StringBuilder(64);
+
+        while ((src < srcLimit) && (*src != '\0'))
+        {
+            codepoint_t codepoint = ucnv_getNextUChar(conv, &src, srcLimit, &status);
+
+            if (U_FAILURE(status))
+            {
+                log_error("ICU error: %s", u_errorName(status));
+                return nullptr;
+            }
+
+            sb.Append(codepoint);
+        }
+
+        ucnv_close(conv);
+
+        return (char*) sb.StealString();
+    }
 #endif
 
     std::string Convert(const std::string_view& src, sint32 srcCodePage, sint32 dstCodePage)
@@ -597,10 +634,15 @@ namespace String
 #else
         const char* codepage = GetIcuCodePage(srcCodePage);
         icu::UnicodeString convertString(src.data(), codepage);
-        std::string result;
 
-        if (dstCodePage == CODE_PAGE::CP_UTF8)
-            convertString.toUTF8String(result);
+        std::string result;
+        convertString.toUTF8String(result);
+
+        if (dstCodePage != CODE_PAGE::CP_UTF8)
+        {
+            result = CodePageFromUTF8(result.c_str(), result.length(), dstCodePage);
+        }
+
         return result;
 #endif
     }
