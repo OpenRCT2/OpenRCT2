@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <string_view>
+#include <tuple>
 #include "../core/Imaging.h"
 #include "Drawing.h"
 
@@ -58,6 +59,10 @@ namespace OpenRCT2::Drawing
 
     private:
         static const PaletteBGRA StandardPalette[256];
+
+        static std::vector<sint32> GetPixels(const uint8 * pixels, uint32 width, uint32 height, IMPORT_FLAGS flags, IMPORT_MODE mode);
+        static std::tuple<void *, size_t> EncodeRaw(const sint32 * pixels, uint32 width, uint32 height);
+        static std::tuple<void *, size_t> EncodeRLE(const sint32 * pixels, uint32 width, uint32 height);
 
         static sint32 CalculatePaletteIndex(IMPORT_MODE mode, sint16 * rgbaSrc, sint32 x, sint32 y, sint32 width, sint32 height);
         static sint32 GetPaletteIndex(const PaletteBGRA * palette, sint16 * colour);

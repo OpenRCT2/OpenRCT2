@@ -82,7 +82,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 private:
     static constexpr uint32 MAGIC_NUMBER = 0x5844494F; // OIDX
     static constexpr uint16 VERSION = 17;
-    static constexpr auto PATTERN = "*.dat;*.pob;*.json";
+    static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
 
@@ -103,34 +103,29 @@ public:
 public:
     std::tuple<bool, ObjectRepositoryItem> Create(sint32 language, const std::string &path) const override
     {
+        Object * object = nullptr;
         auto extension = Path::GetExtension(path);
         if (String::Equals(extension, ".json", true))
         {
-            auto object = ObjectFactory::CreateObjectFromJsonFile(_objectRepository, path);
-            if (object != nullptr)
-            {
-                ObjectRepositoryItem item = { 0 };
-                item.ObjectEntry = *object->GetObjectEntry();
-                item.Path = String::Duplicate(path);
-                item.Name = String::Duplicate(object->GetName(language));
-                object->SetRepositoryItem(&item);
-                delete object;
-                return std::make_tuple(true, item);
-            }
+            object = ObjectFactory::CreateObjectFromJsonFile(_objectRepository, path);
+        }
+        else if (String::Equals(extension, ".parkobj", true))
+        {
+            object = ObjectFactory::CreateObjectFromZipFile(_objectRepository, path);
         }
         else
         {
-            auto object = ObjectFactory::CreateObjectFromLegacyFile(_objectRepository, path.c_str());
-            if (object != nullptr)
-            {
-                ObjectRepositoryItem item = { 0 };
-                item.ObjectEntry = *object->GetObjectEntry();
-                item.Path = String::Duplicate(path);
-                item.Name = String::Duplicate(object->GetName());
-                object->SetRepositoryItem(&item);
-                delete object;
-                return std::make_tuple(true, item);
-            }
+            object = ObjectFactory::CreateObjectFromLegacyFile(_objectRepository, path.c_str());
+        }
+        if (object != nullptr)
+        {
+            ObjectRepositoryItem item = { 0 };
+            item.ObjectEntry = *object->GetObjectEntry();
+            item.Path = String::Duplicate(path);
+            item.Name = String::Duplicate(object->GetName());
+            object->SetRepositoryItem(&item);
+            delete object;
+            return std::make_tuple(true, item);
         }
         return std::make_tuple(false, ObjectRepositoryItem());
     }
@@ -284,6 +279,10 @@ public:
         if (String::Equals(extension, ".json", true))
         {
             return ObjectFactory::CreateObjectFromJsonFile(*this, ori->Path);
+        }
+        else if (String::Equals(extension, ".parkobj", true))
+        {
+            return ObjectFactory::CreateObjectFromZipFile(*this, ori->Path);
         }
         else
         {

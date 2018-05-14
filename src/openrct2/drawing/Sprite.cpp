@@ -736,8 +736,12 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, sint32
         return;
     }
 
-    assert(imgMask->flags & G1_FLAG_BMP);
-    assert(imgColour->flags & G1_FLAG_BMP);
+    // Only BMP format is supported for masking
+    if (!(imgMask->flags & G1_FLAG_BMP) || !(imgColour->flags & G1_FLAG_BMP))
+    {
+        gfx_draw_sprite_software(dpi, colourImage, x, y, 0);
+        return;
+    }
 
     if (dpi->zoom_level != 0) {
         // TODO: Implement other zoom levels (probably not used though)

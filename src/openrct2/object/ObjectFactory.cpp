@@ -15,11 +15,14 @@
 #pragma endregion
 
 #include "../core/Console.hpp"
+#include "../core/File.h"
 #include "../core/FileStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
+#include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../core/Zip.h"
 #include "../OpenRCT2.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "BannerObject.h"
@@ -38,13 +41,56 @@
 #include "WallObject.h"
 #include "WaterObject.h"
 
+interface IFileDataRetriever
+{
+    virtual ~IFileDataRetriever() = default;
+    virtual std::vector<uint8> GetData(const std::string_view& path) const abstract;
+};
+
+class FileSystemDataRetriever : public IFileDataRetriever
+{
+private:
+    std::string _basePath;
+
+public:
+    FileSystemDataRetriever(const std::string_view& basePath)
+        : _basePath(basePath)
+    {
+    }
+
+    std::vector<uint8> GetData(const std::string_view& path) const override
+    {
+        auto absolutePath = Path::Combine(_basePath, path.data());
+        return File::ReadAllBytes(absolutePath);
+    }
+};
+
+class ZipDataRetriever : public IFileDataRetriever
+{
+private:
+    const IZipArchive& _zipArchive;
+
+public:
+    ZipDataRetriever(const IZipArchive& zipArchive)
+        : _zipArchive(zipArchive)
+    {
+    }
+
+    std::vector<uint8> GetData(const std::string_view& path) const override
+    {
+        return _zipArchive.GetFileData(path);
+    }
+};
+
 class ReadObjectContext : public IReadObjectContext
 {
 private:
     IObjectRepository& _objectRepository;
+    const IFileDataRetriever * _fileDataRetriever;
 
     std::string _objectName;
     bool        _loadImages;
+    std::string _basePath;
     bool        _wasWarning = false;
     bool        _wasError = false;
 
@@ -52,8 +98,13 @@ public:
     bool WasWarning() const { return _wasWarning; }
     bool WasError() const { return _wasError; }
 
-    ReadObjectContext(IObjectRepository& objectRepository, const std::string &objectName, bool loadImages)
+    ReadObjectContext(
+        IObjectRepository& objectRepository,
+        const std::string &objectName,
+        bool loadImages,
+        const IFileDataRetriever * fileDataRetriever)
         : _objectRepository(objectRepository),
+          _fileDataRetriever(fileDataRetriever),
           _objectName(objectName),
           _loadImages(loadImages)
     {
@@ -67,6 +118,15 @@ public:
     bool ShouldLoadImages() override
     {
         return _loadImages;
+    }
+
+    std::vector<uint8> GetData(const std::string_view& path) override
+    {
+        if (_fileDataRetriever != nullptr)
+        {
+            return _fileDataRetriever->GetData(path);
+        }
+        return {};
     }
 
     void LogWarning(uint32 code, const utf8 * text) override
@@ -92,6 +152,8 @@ public:
 
 namespace ObjectFactory
 {
+    static Object * CreateObjectFromJson(IObjectRepository& objectRepository, const json_t * jRoot, const IFileDataRetriever * fileRetriever);
+
     static void ReadObjectLegacy(Object * object, IReadObjectContext * context, IStream * stream)
     {
         try
@@ -130,7 +192,7 @@ namespace ObjectFactory
             log_verbose("  size: %zu", chunk->GetLength());
 
             auto chunkStream = MemoryStream(chunk->GetData(), chunk->GetLength());
-            auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2Headless);
+            auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2Headless, nullptr);
             ReadObjectLegacy(result, &readContext, &chunkStream);
             if (readContext.WasError())
             {
@@ -156,7 +218,7 @@ namespace ObjectFactory
             utf8 objectName[DAT_NAME_LENGTH + 1];
             object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
 
-            auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2Headless);
+            auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2Headless, nullptr);
             auto chunkStream = MemoryStream(data, dataSize);
             ReadObjectLegacy(result, &readContext, &chunkStream);
 
@@ -228,6 +290,38 @@ namespace ObjectFactory
         return 0xFF;
     }
 
+    Object * CreateObjectFromZipFile(IObjectRepository& objectRepository, const std::string_view& path)
+    {
+        Object * result = nullptr;
+        try
+        {
+            auto archive = Zip::Open(path, ZIP_ACCESS::READ);
+            auto jsonBytes = archive->GetFileData("object.json");
+            if (jsonBytes.empty())
+            {
+                throw std::runtime_error("Unable to open object.json.");
+            }
+
+            json_error_t jsonLoadError;
+            auto jRoot = json_loadb((const char *)jsonBytes.data(), jsonBytes.size(), 0, &jsonLoadError);
+            if (jRoot == nullptr)
+            {
+                throw JsonException(&jsonLoadError);
+            }
+
+            auto fileDataRetriever = ZipDataRetriever(*archive);
+            return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever);
+        }
+        catch (const std::exception& e)
+        {
+            Console::Error::WriteLine("Unable to open or read '%s': %s", path.data(), e.what());
+
+            delete result;
+            result = nullptr;
+        }
+        return result;
+    }
+
     Object * CreateObjectFromJsonFile(IObjectRepository& objectRepository, const std::string &path)
     {
         log_verbose("CreateObjectFromJsonFile(\"%s\")", path.c_str());
@@ -236,35 +330,8 @@ namespace ObjectFactory
         try
         {
             auto jRoot = Json::ReadFromFile(path.c_str());
-            auto jObjectType = json_object_get(jRoot, "objectType");
-            if (json_is_string(jObjectType))
-            {
-                auto objectType = ParseObjectType(json_string_value(jObjectType));
-                if (objectType != 0xFF)
-                {
-                    auto id = json_string_value(json_object_get(jRoot, "id"));
-
-                    rct_object_entry entry = { 0 };
-                    auto originalId = String::ToStd(json_string_value(json_object_get(jRoot, "originalId")));
-                    auto originalName = originalId;
-                    if (originalId.length() == 8 + 1 + 8 + 1 + 8)
-                    {
-                        entry.flags = std::stoul(originalId.substr(0, 8), 0, 16);
-                        originalName = originalId.substr(9, 8);
-                        entry.checksum = std::stoul(originalId.substr(18, 8), 0, 16);
-                    }
-                    auto minLength = std::min<size_t>(8, originalName.length());
-                    memcpy(entry.name, originalName.c_str(), minLength);
-
-                    result = CreateObject(entry);
-                    auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2Headless);
-                    result->ReadJson(&readContext, jRoot);
-                    if (readContext.WasError())
-                    {
-                        throw std::runtime_error("Object has errors");
-                    }
-                }
-            }
+            auto fileDataRetriever = FileSystemDataRetriever(Path::GetDirectory(path));
+            result = CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever);
             json_decref(jRoot);
         }
         catch (const std::runtime_error &err)
@@ -276,4 +343,41 @@ namespace ObjectFactory
         }
         return result;
     }
-} // namespace ObjectFactory
+
+    Object * CreateObjectFromJson(IObjectRepository& objectRepository, const json_t * jRoot, const IFileDataRetriever * fileRetriever)
+    {
+        log_verbose("CreateObjectFromJson(...)");
+
+        Object * result = nullptr;
+        auto jObjectType = json_object_get(jRoot, "objectType");
+        if (json_is_string(jObjectType))
+        {
+            auto objectType = ParseObjectType(json_string_value(jObjectType));
+            if (objectType != 0xFF)
+            {
+                auto id = json_string_value(json_object_get(jRoot, "id"));
+
+                rct_object_entry entry = { 0 };
+                auto originalId = String::ToStd(json_string_value(json_object_get(jRoot, "originalId")));
+                auto originalName = originalId;
+                if (originalId.length() == 8 + 1 + 8 + 1 + 8)
+                {
+                    entry.flags = std::stoul(originalId.substr(0, 8), 0, 16);
+                    originalName = originalId.substr(9, 8);
+                    entry.checksum = std::stoul(originalId.substr(18, 8), 0, 16);
+                }
+                auto minLength = std::min<size_t>(8, originalName.length());
+                memcpy(entry.name, originalName.c_str(), minLength);
+
+                result = CreateObject(entry);
+                auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2Headless, fileRetriever);
+                result->ReadJson(&readContext, jRoot);
+                if (readContext.WasError())
+                {
+                    throw std::runtime_error("Object has errors");
+                }
+            }
+        }
+        return result;
+    }
+}

@@ -23,12 +23,6 @@
 using namespace OpenRCT2::Drawing;
 using ImportResult = ImageImporter::ImportResult;
 
-struct RLECode
-{
-    uint8 NumPixels{};
-    uint8 OffsetX{};
-};
-
 constexpr sint32 PALETTE_TRANSPARENT = -1;
 
 ImportResult ImageImporter::Import(
@@ -48,18 +42,34 @@ ImportResult ImageImporter::Import(
         throw std::invalid_argument("Image is not palletted, it has bit depth of " + std::to_string(image.Depth));
     }
 
-    if (!(flags & IMPORT_FLAGS::RLE))
-    {
-        throw std::invalid_argument("Only RLE image import is currently supported.");
-    }
-
     const auto width = image.Width;
     const auto height = image.Height;
-    const auto pixels = image.Pixels.data();
 
-    auto buffer = (uint8 *)std::malloc((height * 2) + (width * height * 16));
-    std::memset(buffer, 0, (height * 2) + (width * height * 16));
-    auto yOffsets = (uint16 *)buffer;
+    auto pixels = GetPixels(image.Pixels.data(), width, height, flags, mode);
+    auto [buffer, bufferLength] = flags & IMPORT_FLAGS::RLE ?
+        EncodeRLE(pixels.data(), width, height) :
+        EncodeRaw(pixels.data(), width, height);
+
+    rct_g1_element outElement;
+    outElement.offset = (uint8 *)buffer;
+    outElement.width = width;
+    outElement.height = height;
+    outElement.flags = (flags & IMPORT_FLAGS::RLE ? G1_FLAG_RLE_COMPRESSION : G1_FLAG_BMP);
+    outElement.x_offset = offsetX;
+    outElement.y_offset = offsetY;
+    outElement.zoomed_offset = 0;
+
+    ImportResult result;
+    result.Element = outElement;
+    result.Buffer = buffer;
+    result.BufferLength = bufferLength;
+    return result;
+}
+
+std::vector<sint32> ImageImporter::GetPixels(const uint8 * pixels, uint32 width, uint32 height, IMPORT_FLAGS flags, IMPORT_MODE mode)
+{
+    std::vector<sint32> buffer;
+    buffer.reserve(width * height);
 
     // A larger range is needed for proper dithering
     auto palettedSrc = pixels;
@@ -78,18 +88,8 @@ ImportResult ImageImporter::Import(
         }
     }
 
-    auto dst = buffer + (height * 2);
     for (uint32 y = 0; y < height; y++)
     {
-        yOffsets[y] = (uint16)(dst - buffer);
-
-        auto previousCode = (RLECode *)nullptr;
-        auto currentCode = (RLECode *)dst;
-        dst += 2;
-
-        auto startX = 0;
-        auto npixels = 0;
-        bool pushRun = false;
         for (uint32 x = 0; x < width; x++)
         {
             sint32 paletteIndex;
@@ -110,13 +110,63 @@ ImportResult ImageImporter::Import(
             rgbaSrc += 4;
             palettedSrc += 1;
 
+            buffer.push_back(paletteIndex);
+        }
+    }
+
+    return buffer;
+}
+
+std::tuple<void *, size_t> ImageImporter::EncodeRaw(const sint32 * pixels, uint32 width, uint32 height)
+{
+    auto bufferLength = width * height;
+    auto buffer = (uint8 *)std::malloc(bufferLength);
+    for (size_t i = 0; i < bufferLength; i++)
+    {
+        auto p = pixels[i];
+        buffer[i] = (p == PALETTE_TRANSPARENT ? 0 : (uint8)p);
+    }
+    return std::make_tuple(buffer, bufferLength);
+}
+
+std::tuple<void *, size_t> ImageImporter::EncodeRLE(const sint32 * pixels, uint32 width, uint32 height)
+{
+    struct RLECode
+    {
+        uint8 NumPixels{};
+        uint8 OffsetX{};
+    };
+
+    auto src = pixels;
+    auto buffer = (uint8 *)std::malloc((height * 2) + (width * height * 16));
+    if (buffer == nullptr)
+    {
+        throw std::bad_alloc();
+    }
+
+    std::memset(buffer, 0, (height * 2) + (width * height * 16));
+    auto yOffsets = (uint16 *)buffer;
+    auto dst = buffer + (height * 2);
+    for (uint32 y = 0; y < height; y++)
+    {
+        yOffsets[y] = (uint16)(dst - buffer);
+
+        auto previousCode = (RLECode *)nullptr;
+        auto currentCode = (RLECode *)dst;
+        dst += 2;
+
+        auto startX = 0;
+        auto npixels = 0;
+        bool pushRun = false;
+        for (uint32 x = 0; x < width; x++)
+        {
+            sint32 paletteIndex = *src++;
             if (paletteIndex == PALETTE_TRANSPARENT)
             {
                 if (npixels != 0)
                 {
                     x--;
-                    rgbaSrc -= 4;
-                    palettedSrc -= 1;
+                    src--;
                     pushRun = true;
                 }
             }
@@ -173,22 +223,12 @@ ImportResult ImageImporter::Import(
     }
 
     auto bufferLength = (size_t)(dst - buffer);
-    buffer = (uint8 *)realloc(buffer, bufferLength);
-
-    rct_g1_element outElement;
-    outElement.offset = buffer;
-    outElement.width = width;
-    outElement.height = height;
-    outElement.flags = G1_FLAG_RLE_COMPRESSION;
-    outElement.x_offset = offsetX;
-    outElement.y_offset = offsetY;
-    outElement.zoomed_offset = 0;
-
-    ImportResult result;
-    result.Element = outElement;
-    result.Buffer = buffer;
-    result.BufferLength = bufferLength;
-    return result;
+    buffer = (uint8 * )realloc(buffer, bufferLength);
+    if (buffer == nullptr)
+    {
+        throw std::bad_alloc();
+    }
+    return std::make_tuple(buffer, bufferLength);
 }
 
 sint32 ImageImporter::CalculatePaletteIndex(IMPORT_MODE mode, sint16 * rgbaSrc, sint32 x, sint32 y, sint32 width, sint32 height)

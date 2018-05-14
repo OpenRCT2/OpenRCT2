@@ -26,6 +26,7 @@
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../drawing/ImageImporter.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../PlatformEnvironment.h"
@@ -35,6 +36,7 @@
 #include "ObjectJsonHelpers.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 namespace ObjectJsonHelpers
 {
@@ -316,6 +318,63 @@ namespace ObjectJsonHelpers
                 result = LoadObjectImages(context, name, range);
             }
         }
+        else
+        {
+            try
+            {
+                auto imageData = context->GetData(s);
+                auto image = Imaging::ReadFromBuffer(imageData, IMAGE_FORMAT::PNG_32);
+
+                ImageImporter importer;
+                auto importResult = importer.Import(image, 0, 0, ImageImporter::IMPORT_FLAGS::RLE);
+
+                result.push_back(importResult.Element);
+            }
+            catch (const std::exception& e)
+            {
+                auto msg = String::StdFormat("Unable to load image '%s': %s", s.c_str(), e.what());
+                context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, msg.c_str());
+
+                rct_g1_element emptyg1 = { 0 };
+                result.push_back(emptyg1);
+            }
+        }
+        return result;
+    }
+
+    static std::vector<rct_g1_element> ParseImages(IReadObjectContext * context, json_t * el)
+    {
+        auto path = GetString(el, "path");
+        auto x = GetInteger(el, "x");
+        auto y = GetInteger(el, "y");
+        auto raw = (GetString(el, "format") == "raw");
+
+        std::vector<rct_g1_element> result;
+        try
+        {
+            auto flags = ImageImporter::IMPORT_FLAGS::NONE;
+            if (!raw)
+            {
+                flags = (ImageImporter::IMPORT_FLAGS)(flags | ImageImporter::IMPORT_FLAGS::RLE);
+            }
+            auto imageData = context->GetData(path);
+            auto image = Imaging::ReadFromBuffer(imageData, IMAGE_FORMAT::PNG_32);
+
+            ImageImporter importer;
+            auto importResult = importer.Import(image, 0, 0, flags);
+            auto g1Element = importResult.Element;
+            g1Element.x_offset = x;
+            g1Element.y_offset = y;
+            result.push_back(g1Element);
+        }
+        catch (const std::exception& e)
+        {
+            auto msg = String::StdFormat("Unable to load image '%s': %s", path.c_str(), e.what());
+            context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, msg.c_str());
+
+            rct_g1_element emptyg1 = { 0 };
+            result.push_back(emptyg1);
+        }
         return result;
     }
 
@@ -359,10 +418,20 @@ namespace ObjectJsonHelpers
         if (context->ShouldLoadImages())
         {
             auto jsonImages = json_object_get(root, "images");
-            auto imageElements = GetJsonStringArray(jsonImages);
-            for (const auto &ie : imageElements)
+            size_t i;
+            json_t * el;
+            json_array_foreach(jsonImages, i, el)
             {
-                auto images = ParseImages(context, ie);
+                std::vector<rct_g1_element> images;
+                if (json_is_string(el))
+                {
+                    auto s = json_string_value(el);
+                    images = ParseImages(context, s);
+                }
+                else if (json_is_object(el))
+                {
+                    images = ParseImages(context, el);
+                }
                 for (const auto &g1 : images)
                 {
                     imageTable.AddImage(&g1);
