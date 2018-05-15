@@ -76,13 +76,12 @@ namespace String
         WideCharToMultiByte(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, result.data(), sizeReq, nullptr, nullptr);
         return result;
 #else
+        std::wstring wstr = std::wstring(src);
+        icu::UnicodeString str = icu::UnicodeString((char16_t*) wstr.c_str());
+
         std::string result;
-        utf8 * cstr = widechar_to_utf8(std::wstring(src).c_str());
-        if (cstr != nullptr)
-        {
-            result = std::string(cstr);
-        }
-        free(cstr);
+        str.toUTF8String(result);
+
         return result;
 #endif
     }
@@ -96,13 +95,11 @@ namespace String
         MultiByteToWideChar(CP_ACP, 0, src.data(), srcLen, result.data(), sizeReq);
         return result;
 #else
-        std::wstring result;
-        wchar_t * wcstr = utf8_to_widechar(std::string(src).c_str());
-        if (wcstr != nullptr)
-        {
-            result = std::wstring(wcstr);
-        }
-        free(wcstr);
+        icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
+
+        const char16_t* buffer = str.getBuffer();
+        std::wstring result = (wchar_t*) buffer;
+
         return result;
 #endif
     }
