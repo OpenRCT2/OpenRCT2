@@ -24,6 +24,9 @@
 
 #ifdef _WIN32
 
+#ifndef NOMINMAX
+    #define NOMINMAX
+#endif
 #undef interface
 #include <windows.h>
 #include <lmcons.h>

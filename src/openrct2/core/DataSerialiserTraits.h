@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include "../world/Location.hpp"
 #include "Endianness.h"
 #include "MemoryStream.h"
 
@@ -82,5 +83,26 @@ struct DataSerializerTraits<std::string>
         res.assign(str, len);
 
         Memory::FreeArray(str, len);
+    }
+};
+
+template<>
+struct DataSerializerTraits<MapRange>
+{
+    static void encode(IStream * stream, const MapRange &v)
+    {
+        stream->WriteValue(ByteSwapBE(v.LeftTop.x));
+        stream->WriteValue(ByteSwapBE(v.LeftTop.y));
+        stream->WriteValue(ByteSwapBE(v.RightBottom.y));
+        stream->WriteValue(ByteSwapBE(v.RightBottom.y));
+    }
+
+    static void decode(IStream * stream, MapRange &v)
+    {
+        auto l = ByteSwapBE(stream->ReadValue<sint32>());
+        auto t = ByteSwapBE(stream->ReadValue<sint32>());
+        auto r = ByteSwapBE(stream->ReadValue<sint32>());
+        auto b = ByteSwapBE(stream->ReadValue<sint32>());
+        v = MapRange(l, t, r, b);
     }
 };

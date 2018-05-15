@@ -14,6 +14,7 @@
 *****************************************************************************/
 #pragma endregion
 
+#include "ClearAction.hpp"
 #include "GameAction.h"
 #include "GuestSetNameAction.hpp"
 #include "ParkSetLoanAction.hpp"
@@ -38,6 +39,7 @@ namespace GameActions
 {
     void Register()
     {
+        Register<ClearAction>();
         Register<SetParkEntranceFeeAction>();
         Register<ParkMarketingAction>();
         Register<ParkSetLoanAction>();

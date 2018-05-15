@@ -57,7 +57,7 @@ private:
 
     sint32          _lastScreenWidth = 0;
     sint32          _lastScreenHeight = 0;
-    CoordsXY        _viewCentreLocation = { 0 };
+    CoordsXY        _viewCentreLocation;
 
 public:
     explicit TitleSequencePlayer(IScenarioRepository * scenarioRepository)

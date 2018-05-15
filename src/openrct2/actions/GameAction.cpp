@@ -198,11 +198,19 @@ namespace GameActions
                 if (network_get_mode() == NETWORK_MODE_SERVER && result->Error == GA_ERROR::OK)
                 {
                     uint32 playerId = action->GetPlayer();
+                    auto playerIndex = network_get_player_index(playerId);
 
-                    network_set_player_last_action(network_get_player_index(playerId), action->GetType());
+                    network_set_player_last_action(playerIndex, action->GetType());
                     if (result->Cost != 0)
                     {
                         network_add_player_money_spent(playerId, result->Cost);
+                    }
+                    if (result->Position.x != 0 ||
+                        result->Position.y != 0 ||
+                        result->Position.z != 0)
+                    {
+                        LocationXYZ16 coord = { (sint16)result->Position.x, (sint16)result->Position.y };
+                        network_set_player_last_action_coord(playerIndex, coord);
                     }
                 }
             }
