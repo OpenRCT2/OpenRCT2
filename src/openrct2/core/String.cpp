@@ -14,6 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifdef __MINGW32__
+// 0x0600 == vista
+#define WINVER 0x0600
+#define _WIN32_WINNT 0x0600
+#endif // __MINGW32__
+
 #include <cwctype>
 #include <stdexcept>
 #include <vector>
