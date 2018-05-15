@@ -89,16 +89,22 @@ static inline void staff_autoposition_new_staff_member(rct_peep * newPeep)
 
     newPeep->state = PEEP_STATE_FALLING;
 
-    sint16     x, y, z;
-    uint32     count = 0;
-    uint16     sprite_index;
-    rct_peep * guest = nullptr;
+    sint16             x, y, z;
+    uint32             count = 0;
+    uint16             sprite_index;
+    rct_peep *         guest = nullptr;
+    rct_tile_element * guest_tile = nullptr;
 
     // Count number of walking guests
     FOR_ALL_GUESTS(sprite_index, guest)
     {
         if (guest->state == PEEP_STATE_WALKING)
-            ++count;
+        {
+            // Check the walking guest's tile. Only count them if they're on a path tile.
+            guest_tile = map_get_path_element_at(guest->next_x / 32, guest->next_y / 32, guest->next_z);
+            if (guest_tile != nullptr)
+                ++count;
+        }
     }
 
     if (count > 0)
@@ -109,9 +115,13 @@ static inline void staff_autoposition_new_staff_member(rct_peep * newPeep)
         {
             if (guest->state == PEEP_STATE_WALKING)
             {
-                if (rand == 0)
-                    break;
-                --rand;
+                guest_tile = map_get_path_element_at(guest->next_x / 32, guest->next_y / 32, guest->next_z);
+                if (guest_tile != nullptr)
+                {
+                    if (rand == 0)
+                        break;
+                    --rand;
+                }
             }
         }
 
