@@ -17,7 +17,7 @@ RUN apt-get install --no-install-recommends -y rsync ca-certificates libjansson4
 COPY --from=build-env /openrct2-install /openrct2-install
 RUN rsync -a /openrct2-install/* / \
  && rm -rf /openrct2-install \
- && /openrct2-cli --version
+ && openrct2-cli --version
 
 # Done
 ENTRYPOINT ["openrct2-cli"]
