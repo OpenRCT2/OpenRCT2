@@ -391,7 +391,11 @@ public:
         else if (readBytes == SOCKET_ERROR)
         {
             *sizeReceived = 0;
-            if (LAST_SOCKET_ERROR() != EWOULDBLOCK && LAST_SOCKET_ERROR() != EAGAIN)
+            // Removing the check for EAGAIN and instead relying on the values being the same allows turning on of
+            // -Wlogical-op warning
+            static_assert(EWOULDBLOCK == EAGAIN, "Portability note: your system has different values for EWOULDBLOCK "
+                    "and EAGAIN, please extend the condition below");
+            if (LAST_SOCKET_ERROR() != EWOULDBLOCK)
             {
                 return NETWORK_READPACKET_DISCONNECTED;
             }
