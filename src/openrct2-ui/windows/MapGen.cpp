@@ -651,13 +651,13 @@ static void window_mapgen_base_mouseup(rct_window *w, rct_widgetindex widgetInde
         window_text_input_open(w, WIDX_MAP_SIZE, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, STR_FORMAT_INTEGER, _mapSize - 2, 4);
         break;
     case WIDX_BASE_HEIGHT:
-        TextInputDescriptionArgs[0] = (BASESIZE_MIN - 12) / 2;
-        TextInputDescriptionArgs[1] = (BASESIZE_MAX - 12) / 2;
+        TextInputDescriptionArgs[0] = (uint16)((BASESIZE_MIN - 12) / 2);
+        TextInputDescriptionArgs[1] = (uint16)((BASESIZE_MAX - 12) / 2);
         window_text_input_open(w, WIDX_BASE_HEIGHT, STR_BASE_HEIGHT, STR_ENTER_BASE_HEIGHT, STR_FORMAT_INTEGER, (_baseHeight - 12) / 2, 3);
         break;
     case WIDX_WATER_LEVEL:
-        TextInputDescriptionArgs[0] = (WATERLEVEL_MIN - 12) / 2;
-        TextInputDescriptionArgs[1] = (WATERLEVEL_MAX - 12) / 2;
+        TextInputDescriptionArgs[0] = (uint16)((WATERLEVEL_MIN - 12) / 2);
+        TextInputDescriptionArgs[1] = (uint16)((WATERLEVEL_MAX - 12) / 2);
         window_text_input_open(w, WIDX_WATER_LEVEL, STR_WATER_LEVEL, STR_ENTER_WATER_LEVEL, STR_FORMAT_INTEGER, (_waterLevel - 12) / 2, 3);
         break;
     }

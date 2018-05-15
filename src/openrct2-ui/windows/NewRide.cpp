@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <limits>
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/config/Config.h>
@@ -569,7 +570,7 @@ static void window_new_ride_set_page(rct_window *w, sint32 page)
     _windowNewRideCurrentTab = page;
     w->frame_no = 0;
     w->new_ride.highlighted_ride_id = -1;
-    w->new_ride.selected_ride_countdown = -1;
+    w->new_ride.selected_ride_countdown = std::numeric_limits<uint16>::max();
     window_new_ride_populate_list();
     if (page < WINDOW_NEW_RIDE_PAGE_RESEARCH) {
         w->new_ride.highlighted_ride_id = _windowNewRideHighlightedItem[page].ride_type_and_entry;

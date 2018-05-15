@@ -34,7 +34,7 @@ public:
     static std::unique_ptr<NetworkPacket> Duplicate(NetworkPacket& packet);
 
     uint8 * GetData();
-    uint32  GetCommand();
+    sint32  GetCommand();
 
     void Clear();
     bool CommandRequiresAuth();

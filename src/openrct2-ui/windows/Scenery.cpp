@@ -390,7 +390,7 @@ void window_scenery_set_default_placement_configuration()
     window_scenery_init();
 
     for (sint32 i = 0; i < SCENERY_WINDOW_TABS; i++)
-        gWindowSceneryTabSelections[i] = -1;
+        gWindowSceneryTabSelections[i] = WINDOW_SCENERY_TAB_SELECTION_UNDEFINED;
 
     for (sint32 i = 0; i < SCENERY_WINDOW_TABS; i++) {
         if (window_scenery_tab_entries[i][0] != -1) {
@@ -462,7 +462,7 @@ rct_window * window_scenery_open()
         (1 << WIDX_SCENERY_REPAINT_SCENERY_BUTTON) |
         (1 << WIDX_SCENERY_TERTIARY_COLOUR_BUTTON) |
         (1 << WIDX_SCENERY_EYEDROPPER_BUTTON) |
-        (1 << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
+        (1ULL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
     window_init_scroll_widgets(window);
     window_scenery_update_scroll(window);
@@ -1275,6 +1275,6 @@ void window_scenery_reset_selected_scenery_items()
 {
     for (size_t i = 0; i < SCENERY_WINDOW_TABS; i++)
     {
-        gWindowSceneryTabSelections[i] = -1;
+        gWindowSceneryTabSelections[i] = WINDOW_SCENERY_TAB_SELECTION_UNDEFINED;
     }
 }

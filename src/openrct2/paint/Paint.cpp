@@ -70,7 +70,7 @@ static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi)
     {
         quadrant = nullptr;
     }
-    session->QuadrantBackIndex = -1;
+    session->QuadrantBackIndex = std::numeric_limits<uint32>::max();
     session->QuadrantFrontIndex = 0;
     session->PSStringHead = nullptr;
     session->LastPSString = nullptr;

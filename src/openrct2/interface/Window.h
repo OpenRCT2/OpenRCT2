@@ -17,6 +17,7 @@
 #ifndef _WINDOW_H_
 #define _WINDOW_H_
 
+#include <limits>
 #include "../common.h"
 
 struct rct_drawpixelinfo;
@@ -113,6 +114,8 @@ struct rct_scroll {
     uint16 v_thumb_top;         // 0x0E
     uint16 v_thumb_bottom;      // 0x10
 };
+
+constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<uint16>::max();
 
 /**
  * Viewport focus structure.

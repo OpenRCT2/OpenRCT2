@@ -724,7 +724,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window * w, rct_widge
             image++;
         }
 
-        gDropdownItemsFormat[numPathTypes] = -1;
+        gDropdownItemsFormat[numPathTypes] = STR_NONE;
         gDropdownItemsArgs[numPathTypes]   = image;
         numPathTypes++;
     }

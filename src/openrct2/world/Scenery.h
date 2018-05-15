@@ -17,6 +17,7 @@
 #ifndef _SCENERY_H_
 #define _SCENERY_H_
 
+#include <limits>
 #include "../common.h"
 #include "../object/Object.h"
 #include "../world/Location.hpp"
@@ -239,6 +240,7 @@ enum
 };
 
 #define SCENERY_ENTRIES_BY_TAB 1024
+constexpr auto WINDOW_SCENERY_TAB_SELECTION_UNDEFINED = std::numeric_limits<uint16>::max();
 
 extern uint8 gWindowSceneryActiveTabIndex;
 extern uint16 gWindowSceneryTabSelections[20];
