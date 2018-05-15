@@ -109,7 +109,7 @@ The program can also be built as a command line program using CMake. This type o
 - curl (only if building with http support)
 - jansson (>= 2.5)
 - openssl (>= 1.0; only if building with multiplayer support)
-- iconv (part of glibc on Linux)
+- icu (>= 59.0)
 - zlib
 - gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
 - cmake
