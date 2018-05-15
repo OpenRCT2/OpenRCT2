@@ -70,6 +70,8 @@ bool gSilentResearch = false;
  */
 void research_reset_items()
 {
+    memset(gResearchItems, 0, sizeof(rct_research_item) * MAX_RESEARCH_ITEMS); // not required but simplifies debugging
+
     gResearchItems[0].rawValue = RESEARCHED_ITEMS_SEPARATOR;
     gResearchItems[1].rawValue = RESEARCHED_ITEMS_END;
     gResearchItems[2].rawValue = RESEARCHED_ITEMS_END_2;
@@ -443,75 +445,6 @@ void research_reset_current_item()
 
 /**
  *
- *  rct2: 0x006857FA
- */
-static void research_insert_unresearched(sint32 rawValue, sint32 category)
-{
-    rct_research_item * researchItem, * researchItem2;
-
-    researchItem = gResearchItems;
-    do
-    {
-        if (researchItem->rawValue == RESEARCHED_ITEMS_END)
-        {
-            // Insert slot
-            researchItem2 = researchItem;
-            while (researchItem2->rawValue != RESEARCHED_ITEMS_END_2)
-            {
-                researchItem2++;
-            }
-            memmove(researchItem + 1, researchItem, (researchItem2 - researchItem + 1) * sizeof(rct_research_item));
-
-            // Place new item
-            researchItem->rawValue = rawValue;
-            researchItem->category = category;
-            break;
-        }
-    }
-    while (rawValue != (researchItem++)->rawValue);
-}
-
-/**
- *
- *  rct2: 0x00685826
- */
-static void research_insert_researched(sint32 rawValue, uint8 category)
-{
-    rct_research_item * researchItem, * researchItem2;
-
-    researchItem = gResearchItems;
-    // First check to make sure that entry is not already accounted for
-    for (; researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
-    {
-        if ((researchItem->rawValue & 0xFFFFFF) == (rawValue & 0xFFFFFF))
-        {
-            return;
-        }
-    }
-    researchItem = gResearchItems;
-    do
-    {
-        if (researchItem->rawValue == RESEARCHED_ITEMS_SEPARATOR)
-        {
-            // Insert slot
-            researchItem2 = researchItem;
-            while (researchItem2->rawValue != RESEARCHED_ITEMS_END_2)
-            {
-                researchItem2++;
-            }
-            memmove(researchItem + 1, researchItem, (researchItem2 - researchItem + 1) * sizeof(rct_research_item));
-
-            // Place new item
-            researchItem->rawValue = rawValue;
-            researchItem->category = category;
-            break;
-        }
-    }
-    while (rawValue != (researchItem++)->rawValue);
-}
-
-/**
- *
  *  rct2: 0x006857CF
  */
 void research_remove(rct_research_item * researchItem)
@@ -533,14 +466,41 @@ void research_remove(rct_research_item * researchItem)
 
 void research_insert(sint32 researched, sint32 rawValue, uint8 category)
 {
-    if (researched)
+    rct_research_item *researchItem, *researchItem2;
+
+    researchItem = gResearchItems;
+
+    // First check to make sure that entry is not already accounted for
+    for (; researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
     {
-        research_insert_researched(rawValue, category);
+        if ((researchItem->rawValue & 0xFFFFFF) == (rawValue & 0xFFFFFF))
+        {
+            return;
+        }
     }
-    else
+
+    researchItem = gResearchItems;
+
+    const sint32 condition = researched ? RESEARCHED_ITEMS_END : RESEARCHED_ITEMS_SEPARATOR;
+    
+    do
     {
-        research_insert_unresearched(rawValue, category);
-    }
+        if (researchItem->rawValue == condition)
+        {
+            // Insert slot
+            researchItem2 = researchItem;
+            while (researchItem2->rawValue != RESEARCHED_ITEMS_END_2)
+            {
+                researchItem2++;
+            }
+            memmove(researchItem + 1, researchItem, (researchItem2 - researchItem + 1) * sizeof(rct_research_item));
+
+            // Place new item
+            researchItem->rawValue = rawValue;
+            researchItem->category = category;
+            break;
+        }
+    } while (rawValue != (researchItem++)->rawValue);
 }
 
 /**
