@@ -124,8 +124,28 @@ TEST_F(StringTest, ToUpper_Basic)
     auto actual = String::ToUpper("test TEST tEsT 1234");
     ASSERT_STREQ(actual.c_str(), "TEST TEST TEST 1234");
 }
-TEST_F(StringTest, ToUpper_Unicode)
+TEST_F(StringTest, ToUpper_Dutch)
 {
-    auto actual = String::ToUpper("éœǘξдȿ𞥃ꜳᲁ ÉŒǗΞДⱾ𞤡ꜲД 語");
-    ASSERT_STREQ(actual.c_str(), "ÉŒǗΞДⱾ𞤡ꜲД ÉŒǗΞДⱾ𞤡ꜲД 語");
+    auto actual = String::ToUpper(u8"fĳntjes puﬀend ﬁetsen");
+    ASSERT_STREQ(actual.c_str(), u8"FĲNTJES PUFFEND FIETSEN");
+}
+TEST_F(StringTest, ToUpper_French)
+{
+    auto actual = String::ToUpper(u8"jusqu'à 2500 carrés de côté");
+    ASSERT_STREQ(actual.c_str(), u8"JUSQU'À 2500 CARRÉS DE CÔTÉ");
+}
+TEST_F(StringTest, ToUpper_Greek)
+{
+    auto actual = String::ToUpper(u8"μέχρι 2500 τετράγωνα στην άκρη");
+    ASSERT_STREQ(actual.c_str(), u8"ΜΈΧΡΙ 2500 ΤΕΤΡΆΓΩΝΑ ΣΤΗΝ ΆΚΡΗ");
+}
+TEST_F(StringTest, ToUpper_Russian)
+{
+    auto actual = String::ToUpper(u8"до 2500 квадратов в сторону");
+    ASSERT_STREQ(actual.c_str(), u8"ДО 2500 КВАДРАТОВ В СТОРОНУ");
+}
+TEST_F(StringTest, ToUpper_Japanese)
+{
+    auto actual = String::ToUpper(u8"日本語で大文字がなし");
+    ASSERT_STREQ(actual.c_str(), u8"日本語で大文字がなし");
 }
