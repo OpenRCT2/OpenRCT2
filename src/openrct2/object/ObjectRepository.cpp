@@ -171,7 +171,7 @@ protected:
         switch (object_entry_get_type(&item.ObjectEntry)) {
         case OBJECT_TYPE_RIDE:
             item.RideInfo.RideFlags = stream->ReadValue<uint8>();
-            for (sint32 i = 0; i < 2; i++)
+            for (sint32 i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
             {
                 item.RideInfo.RideCategory[i] = stream->ReadValue<uint8>();
             }

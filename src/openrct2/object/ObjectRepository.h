@@ -46,7 +46,7 @@ struct ObjectRepositoryItem
     struct
     {
         uint8   RideFlags;
-        uint8   RideCategory[2];
+        uint8   RideCategory[MAX_CATEGORIES_PER_RIDE];
         uint8   RideType[MAX_RIDE_TYPES_PER_RIDE_ENTRY];
         uint8   RideGroupIndex;
     } RideInfo;
