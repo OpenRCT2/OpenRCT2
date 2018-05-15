@@ -90,9 +90,9 @@ namespace String
     {
 #ifdef _WIN32
         int srcLen = (int)src.size();
-        int sizeReq = MultiByteToWideChar(CP_ACP, 0, src.data(), srcLen, nullptr, 0);
+        int sizeReq = MultiByteToWideChar(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, nullptr, 0);
         auto result = std::wstring(sizeReq, 0);
-        MultiByteToWideChar(CP_ACP, 0, src.data(), srcLen, result.data(), sizeReq);
+        MultiByteToWideChar(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, result.data(), sizeReq);
         return result;
 #else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));

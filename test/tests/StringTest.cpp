@@ -126,7 +126,7 @@ TEST_F(StringTest, ToUpper_Basic)
 }
 TEST_F(StringTest, ToUpper_Dutch)
 {
-    auto actual = String::ToUpper(u8"fĳntjes puﬀend ﬁetsen");
+    auto actual = String::ToUpper(u8"fĳntjes puffend fietsen");
     ASSERT_STREQ(actual.c_str(), u8"FĲNTJES PUFFEND FIETSEN");
 }
 TEST_F(StringTest, ToUpper_French)
