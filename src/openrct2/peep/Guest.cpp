@@ -5051,6 +5051,8 @@ void rct_peep::UpdateRideShopLeave()
  * Used by entering_ride and queueing_front */
 void rct_peep::UpdateRide()
 {
+    next_flags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
+
     switch (sub_state)
     {
     case PEEP_RIDE_AT_ENTRANCE:
