@@ -32,6 +32,7 @@
 #include "SignSetNameAction.hpp"
 #include "ParkSetNameAction.hpp"
 #include "BannerSetNameAction.hpp"
+#include "WallRemoveAction.hpp"
 
 namespace GameActions
 {
@@ -54,5 +55,6 @@ namespace GameActions
         Register<SignSetNameAction>();
         Register<ParkSetNameAction>();
         Register<BannerSetNameAction>();
+        Register<WallRemoveAction>();
     }
 } // namespace GameActions

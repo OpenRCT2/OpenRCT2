@@ -23,6 +23,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../scenario/Scenario.h"
+#include "../actions/WallRemoveAction.hpp"
 #include "Climate.h"
 #include "Footpath.h"
 #include "Fountain.h"
@@ -30,6 +31,7 @@
 #include "Park.h"
 #include "Scenery.h"
 #include "SmallScenery.h"
+#include "Wall.h"
 
 uint8 gWindowSceneryActiveTabIndex;
 uint16 gWindowSceneryTabSelections[20];
@@ -242,16 +244,14 @@ void scenery_remove_ghost_tool_placement(){
         } while (!tile_element_is_last_for_tile(tile_element++));
     }
 
-    if (gSceneryGhostType & SCENERY_ENTRY_FLAG_2){
+    if (gSceneryGhostType & SCENERY_ENTRY_FLAG_2)
+    {
         gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_2;
-        game_do_command(
-            x,
-            105 | (gSceneryTileElementType << 8),
-            y,
-            gSceneryGhostWallRotation |(z << 8),
-            GAME_COMMAND_REMOVE_WALL,
-            0,
-            0);
+
+        TileCoordsXYZD wallLocation = { x >> 5, y >> 5, z, gSceneryGhostWallRotation };
+        auto wallRemoveAction = WallRemoveAction(wallLocation);
+        wallRemoveAction.SetFlags(GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_PATH_SCENERY);
+        wallRemoveAction.Execute();
     }
 
     if (gSceneryGhostType & SCENERY_ENTRY_FLAG_3){

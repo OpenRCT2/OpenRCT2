@@ -37,6 +37,7 @@
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
+#include "../actions/WallRemoveAction.hpp"
 #include "Banner.h"
 #include "Climate.h"
 #include "Footpath.h"
@@ -1100,6 +1101,7 @@ restart_from_beginning:
                     return MONEY32_UNDEFINED;
 
                 totalCost += cost;
+
                 if (flags & 1)
                     goto restart_from_beginning;
             } break;
@@ -1116,27 +1118,25 @@ restart_from_beginning:
                     return MONEY32_UNDEFINED;
 
                 totalCost += cost;
+
                 if (flags & 1)
                     goto restart_from_beginning;
 
             } break;
         case TILE_ELEMENT_TYPE_WALL:
-            if (clear & (1 << 0)) {
-                sint32 eax = x * 32;
-                sint32 ebx = flags;
-                sint32 ecx = y * 32;
-                sint32 edx = (tileElement->base_height << 8) | (tile_element_get_direction(tileElement));
-                sint32 edi = 0, ebp = 0;
-                cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_WALL, edi, ebp);
-
-                if (cost == MONEY32_UNDEFINED)
-                    return MONEY32_UNDEFINED;
-
-                totalCost += cost;
-                if (flags & 1)
-                    goto restart_from_beginning;
-
-            } break;
+            if (clear & (1 << 0))
+            {
+                // NOTE: We execute the game action directly as this function is already called from such.
+                TileCoordsXYZD wallLocation = { x, y, tileElement->base_height, tileElement->GetDirection() };
+                auto wallRemoveAction = WallRemoveAction(wallLocation);
+                wallRemoveAction.SetFlags(flags);
+                auto res = ((flags & GAME_COMMAND_FLAG_APPLY) ? wallRemoveAction.Execute() : wallRemoveAction.Query());
+                if (res->Error == GA_ERROR::OK)
+                {
+                    totalCost += res->Cost;
+                }
+            }
+            break;
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             if (clear & (1 << 1)) {
                 sint32 eax = x * 32;
@@ -1150,6 +1150,7 @@ restart_from_beginning:
                     return MONEY32_UNDEFINED;
 
                 totalCost += cost;
+
                 if (flags & 1)
                     goto restart_from_beginning;
 
@@ -3761,16 +3762,11 @@ static void clear_element_at(sint32 x, sint32 y, rct_tile_element **elementPtr)
         viewport_interaction_remove_park_entrance(element, x, y);
         break;
     case TILE_ELEMENT_TYPE_WALL:
-        gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-        game_do_command(
-                x,
-                GAME_COMMAND_FLAG_APPLY,
-                y,
-                tile_element_get_direction(element) | (element->base_height << 8),
-                GAME_COMMAND_REMOVE_WALL,
-                0,
-                0
-        );
+        {
+            TileCoordsXYZD wallLocation = { x >> 5, y >> 5, element->base_height, element->GetDirection() };
+            auto wallRemoveAction = WallRemoveAction(wallLocation);
+            GameActions::Execute(&wallRemoveAction);
+        }
         break;
     case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;

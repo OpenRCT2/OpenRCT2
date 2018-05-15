@@ -89,7 +89,7 @@ namespace GameActions
                 result = factory();
             }
         }
-        Guard::ArgumentNotNull(result);
+        Guard::ArgumentNotNull(result, "Attempting to create unregistered gameaction: %u", id);
         return std::unique_ptr<GameAction>(result);
     }
 

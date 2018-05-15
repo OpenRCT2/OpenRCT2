@@ -25,6 +25,7 @@
 #include "RideDemolishAction.hpp"
 #include "PlacePeepSpawnAction.hpp"
 #include "MazeSetTrackAction.hpp"
+#include "WallRemoveAction.hpp"
 
 #pragma region PlaceParkEntranceAction
     money32 place_park_entrance(sint16 x, sint16 y, sint16 z, uint8 direction)

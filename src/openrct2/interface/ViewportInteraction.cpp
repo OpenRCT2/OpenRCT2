@@ -30,12 +30,14 @@
 #include "../world/Map.h"
 #include "../world/Scenery.h"
 #include "../world/LargeScenery.h"
+#include "../world/Park.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
-#include "../world/Park.h"
+#include "../world/Wall.h"
 #include "Viewport.h"
 #include "Window_internal.h"
 #include "../Context.h"
+#include "../actions/WallRemoveAction.hpp"
 
 static void viewport_interaction_remove_scenery(rct_tile_element *tileElement, sint32 x, sint32 y);
 static void viewport_interaction_remove_footpath(rct_tile_element *tileElement, sint32 x, sint32 y);
@@ -510,19 +512,15 @@ void viewport_interaction_remove_park_entrance(rct_tile_element *tileElement, si
 static void viewport_interaction_remove_park_wall(rct_tile_element *tileElement, sint32 x, sint32 y)
 {
     rct_scenery_entry *sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
-    if (sceneryEntry->wall.scrolling_mode != 0xFF){
+    if (sceneryEntry->wall.scrolling_mode != 0xFF)
+    {
         context_open_detail_window(WD_SIGN_SMALL, tileElement->properties.wall.banner_index);
-    } else {
-        gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-        game_do_command(
-            x,
-            GAME_COMMAND_FLAG_APPLY,
-            y,
-            tile_element_get_direction(tileElement) | (tileElement->base_height << 8),
-            GAME_COMMAND_REMOVE_WALL,
-            0,
-            0
-        );
+    }
+    else
+    {
+        TileCoordsXYZD wallLocation = { x >> 5, y >> 5, tileElement->base_height, tileElement->GetDirection() };
+        auto wallRemoveAction = WallRemoveAction(wallLocation);
+        GameActions::Execute(&wallRemoveAction);
     }
 }
 
