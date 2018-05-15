@@ -14,17 +14,18 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "Addresses.h"
+
 #include <openrct2/config/Config.h>
-#include <openrct2/object/Object.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/interface/Viewport.h>
-#include <openrct2/ride/Ride.h>
-#include <openrct2/ride/Track.h>
-#include <openrct2/world/Sprite.h>
+#include <openrct2/object/Object.h>
 #include <openrct2/paint/tile_element/TileElement.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/Track.h>
+#include <openrct2/world/Location.hpp>
+#include <openrct2/world/Sprite.h>
 #include <openrct2/world/Surface.h>
-#include "Addresses.h"
 
 #define gRideEntries                RCT2_ADDRESS(0x009ACFA4, rct_ride_entry *)
 #define gTileElementTilePointers    RCT2_ADDRESS(0x013CE9A4, rct_tile_element *)
@@ -36,6 +37,8 @@ sint16 gMapBaseZ;
 bool gTrackDesignSaveMode = false;
 uint8 gTrackDesignSaveRideIndex = 255;
 uint8 gClipHeight = 255;
+LocationXY8 gClipSelectionA = { 0, 0 };
+LocationXY8 gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
 uint32 gCurrentViewportFlags;
 uint32 gScenarioTicks;
 uint8 gCurrentRotation;
