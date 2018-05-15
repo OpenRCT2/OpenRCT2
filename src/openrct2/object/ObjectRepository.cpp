@@ -121,8 +121,8 @@ public:
         {
             ObjectRepositoryItem item = { 0 };
             item.ObjectEntry = *object->GetObjectEntry();
-            item.Path = String::Duplicate(path);
-            item.Name = String::Duplicate(object->GetName());
+            item.Path = path;
+            item.Name = object->GetName();
             object->SetRepositoryItem(&item);
             delete object;
             return std::make_tuple(true, item);
@@ -139,22 +139,22 @@ protected:
 
         switch (object_entry_get_type(&item.ObjectEntry)) {
         case OBJECT_TYPE_RIDE:
-            stream->WriteValue<uint8>(item.RideFlags);
+            stream->WriteValue<uint8>(item.RideInfo.RideFlags);
             for (sint32 i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
             {
-                stream->WriteValue<uint8>(item.RideCategory[i]);
+                stream->WriteValue<uint8>(item.RideInfo.RideCategory[i]);
             }
             for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
             {
-                stream->WriteValue<uint8>(item.RideType[i]);
+                stream->WriteValue<uint8>(item.RideInfo.RideType[i]);
             }
-            stream->WriteValue<uint8>(item.RideGroupIndex);
+            stream->WriteValue<uint8>(item.RideInfo.RideGroupIndex);
             break;
         case OBJECT_TYPE_SCENERY_GROUP:
-            stream->WriteValue<uint16>(item.NumThemeObjects);
-            for (uint16 i = 0; i < item.NumThemeObjects; i++)
+            stream->WriteValue<uint16>((uint16)item.SceneryGroupInfo.Entries.size());
+            for (const auto& entry : item.SceneryGroupInfo.Entries)
             {
-                stream->WriteValue<rct_object_entry>(item.ThemeObjects[i]);
+                stream->WriteValue<rct_object_entry>(entry);
             }
             break;
         }
@@ -162,7 +162,7 @@ protected:
 
     ObjectRepositoryItem Deserialise(IStream * stream) const override
     {
-        ObjectRepositoryItem item = { 0 };
+        ObjectRepositoryItem item;
 
         item.ObjectEntry = stream->ReadValue<rct_object_entry>();
         item.Path = stream->ReadString();
@@ -170,25 +170,27 @@ protected:
 
         switch (object_entry_get_type(&item.ObjectEntry)) {
         case OBJECT_TYPE_RIDE:
-            item.RideFlags = stream->ReadValue<uint8>();
-            for (sint32 i = 0; i < 2; i++)
+            item.RideInfo.RideFlags = stream->ReadValue<uint8>();
+            for (sint32 i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
             {
-                item.RideCategory[i] = stream->ReadValue<uint8>();
+                item.RideInfo.RideCategory[i] = stream->ReadValue<uint8>();
             }
             for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
             {
-                item.RideType[i] = stream->ReadValue<uint8>();
+                item.RideInfo.RideType[i] = stream->ReadValue<uint8>();
             }
-            item.RideGroupIndex = stream->ReadValue<uint8>();
+            item.RideInfo.RideGroupIndex = stream->ReadValue<uint8>();
             break;
         case OBJECT_TYPE_SCENERY_GROUP:
-            item.NumThemeObjects = stream->ReadValue<uint16>();
-            item.ThemeObjects = Memory::AllocateArray<rct_object_entry>(item.NumThemeObjects);
-            for (uint16 i = 0; i < item.NumThemeObjects; i++)
             {
-                item.ThemeObjects[i] = stream->ReadValue<rct_object_entry>();
+                auto numEntries = stream->ReadValue<uint16>();
+                item.SceneryGroupInfo.Entries = std::vector<rct_object_entry>(numEntries);
+                for (size_t i = 0; i < numEntries; i++)
+                {
+                    item.SceneryGroupInfo.Entries[i] = stream->ReadValue<rct_object_entry>();
+                }
+                break;
             }
-            break;
         }
         return item;
     }
@@ -286,7 +288,7 @@ public:
         }
         else
         {
-            return ObjectFactory::CreateObjectFromLegacyFile(*this, ori->Path);
+            return ObjectFactory::CreateObjectFromLegacyFile(*this, ori->Path.c_str());
         }
     }
 
@@ -376,10 +378,6 @@ public:
 private:
     void ClearItems()
     {
-        for (auto &item : _items)
-        {
-            FreeItem(&item);
-        }
         _items.clear();
         _itemMap.clear();
     }
@@ -437,8 +435,8 @@ private:
         }
         else
         {
-            Console::Error::WriteLine("Object conflict: '%s'", conflict->Path);
-            Console::Error::WriteLine("               : '%s'", item.Path);
+            Console::Error::WriteLine("Object conflict: '%s'", conflict->Path.c_str());
+            Console::Error::WriteLine("               : '%s'", item.Path.c_str());
             return false;
         }
     }
@@ -451,22 +449,6 @@ private:
         {
             auto ori = std::get<1>(result);
             AddItem(ori);
-        }
-    }
-
-    static void FreeItem(ObjectRepositoryItem * item)
-    {
-        Memory::Free(item->Path);
-        Memory::Free(item->Name);
-        item->Path = nullptr;
-        item->Name = nullptr;
-
-        uint8 objectType = object_entry_get_type(&item->ObjectEntry);
-        switch (objectType) {
-        case OBJECT_TYPE_SCENERY_GROUP:
-            Memory::Free(item->ThemeObjects);
-            item->ThemeObjects = nullptr;
-            break;
         }
     }
 

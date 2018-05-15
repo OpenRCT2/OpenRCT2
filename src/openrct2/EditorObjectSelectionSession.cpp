@@ -61,7 +61,7 @@ static void setup_track_manager_objects()
         {
             *selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
-            for (auto rideType : item->RideType)
+            for (auto rideType : item->RideInfo.RideType)
             {
                 if (rideType != RIDE_TYPE_NULL && ride_type_has_flag(rideType, RIDE_TYPE_FLAG_HAS_TRACK))
                 {
@@ -90,7 +90,7 @@ static void setup_track_designer_objects()
         {
             *selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
-            for (uint8 rideType : item->RideType)
+            for (uint8 rideType : item->RideInfo.RideType)
             {
                 if (rideType != RIDE_TYPE_NULL)
                 {
@@ -223,7 +223,7 @@ void sub_6AB211()
     sint32 numObjects = (sint32)object_repository_get_items_count();
     _objectSelectionFlags = std::vector<uint8>(numObjects);
 
-    for (uint8 objectType = 0; objectType < 11; objectType++) {
+    for (uint8 objectType = 0; objectType < OBJECT_TYPE_COUNT; objectType++) {
         _numSelectedObjectsForType[objectType] = 0;
         _numAvailableObjectsForType[objectType] = 0;
     }
@@ -420,8 +420,9 @@ sint32 window_editor_object_selection_select_object(uint8 bh, sint32 flags, cons
 
         uint8 objectType = object_entry_get_type(&item->ObjectEntry);
         if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & (1 << 2))) {
-            for (sint32 j = 0; j < item->NumThemeObjects; j++) {
-                window_editor_object_selection_select_object(++bh, flags, &item->ThemeObjects[j]);
+            for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
+            {
+                window_editor_object_selection_select_object(++bh, flags, &sgEntry);
             }
         }
 
@@ -450,8 +451,10 @@ sint32 window_editor_object_selection_select_object(uint8 bh, sint32 flags, cons
         }
 
         if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & (1 << 2))) {
-            for (uint16 j = 0; j < item->NumThemeObjects; j++) {
-                if (!window_editor_object_selection_select_object(++bh, flags, &item->ThemeObjects[j])) {
+            for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
+            {
+                if (!window_editor_object_selection_select_object(++bh, flags, &sgEntry))
+                {
                     _maxObjectsWasHit = true;
                 }
             }

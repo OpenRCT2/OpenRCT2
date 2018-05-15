@@ -462,7 +462,7 @@ enum {
 #define WC_TRACK_DESIGN_PLACE__WIDX_ROTATE              3
 #define WC_MAP__WIDX_LAND_TOOL                          13
 #define WC_MAP__WIDX_ROTATE_90                          20
-#define WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1          4
+#define WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1          21
 #define WC_CLEAR_SCENERY__WIDX_PREVIEW                  3
 #define WC_LAND_RIGHTS__WIDX_PREVIEW                    3
 #define WC_STAFF__WIDX_PICKUP                           10

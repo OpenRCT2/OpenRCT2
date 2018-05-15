@@ -372,15 +372,15 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
 {
     for (sint32 i = 0; i < RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
-        item->RideType[i] = _legacyType.ride_type[i];
+        item->RideInfo.RideType[i] = _legacyType.ride_type[i];
     }
     for (sint32 i = 0; i < RCT2_MAX_CATEGORIES_PER_RIDE; i++)
     {
-        item->RideCategory[i] = _legacyType.category[i];
+        item->RideInfo.RideCategory[i] = _legacyType.category[i];
     }
 
     uint8 flags = 0;
-    item->RideFlags = flags;
+    item->RideInfo.RideFlags = flags;
 
     // Find the first non-null ride type, to be used when checking the ride group
     uint8 rideTypeIdx = ride_entry_get_first_non_null_ride_type(&_legacyType);
@@ -408,7 +408,7 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
         }
     }
 
-    item->RideGroupIndex = rideGroupIndex;
+    item->RideInfo.RideGroupIndex = rideGroupIndex;
 }
 
 void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * stream, rct_ride_entry_vehicle * vehicle)

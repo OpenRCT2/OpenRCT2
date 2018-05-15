@@ -306,6 +306,30 @@ namespace ObjectJsonHelpers
                 }
             }
         }
+        else if (String::StartsWith(s, "$G1"))
+        {
+            auto range = ParseRange(s.substr(3));
+            if (range.size() > 0)
+            {
+                for (auto i : range)
+                {
+                    auto og1 = gfx_get_g1_element(i);
+                    if (og1 == nullptr)
+                    {
+                        rct_g1_element g1{};
+                        result.push_back(g1);
+                    }
+                    else
+                    {
+                        auto length = g1_calculate_data_size(og1);
+                        auto g1 = *og1;
+                        g1.offset = (uint8 *)std::malloc(length);
+                        std::memcpy(g1.offset, og1->offset, length);
+                        result.push_back(g1);
+                    }
+                }
+            }
+        }
         else if (String::StartsWith(s, "$RCT2:OBJDATA/"))
         {
             auto name = s.substr(14);

@@ -501,6 +501,16 @@ static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] =
 };
 // clang-format on
 
+static uint32 get_edge_image(uint8 index, uint8 type)
+{
+    return _terrainEdgeSpriteIds[index][type];
+}
+
+static uint32 get_tunnel_image(uint8 index, uint8 type)
+{
+    return _terrainEdgeTunnelSpriteIds[index][type];
+}
+
 static uint8 viewport_surface_paint_setup_get_relative_slope(const rct_tile_element * tileElement, sint32 rotation)
 {
     const uint8 slope = tileElement->properties.surface.slope;
@@ -708,10 +718,10 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
     if (!is_csg_loaded() && edgeStyle >= TERRAIN_EDGE_RCT2_COUNT)
         edgeStyle = TERRAIN_EDGE_ROCK;
 
-    uint32 base_image_id = _terrainEdgeSpriteIds[edgeStyle][0];
+    uint32 base_image_id = get_edge_image(edgeStyle, 0);
     if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
     {
-        base_image_id = _terrainEdgeSpriteIds[edgeStyle][1];
+        base_image_id = get_edge_image(edgeStyle, 1);
     }
 
     if (edge == EDGE_BOTTOMRIGHT)
@@ -799,10 +809,8 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
             boundBoxLength -= 16;
         }
 
-        uint32 image_id = _terrainEdgeTunnelSpriteIds[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0);
-        sub_98197C(
-            session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, zOffset, 0, 0,
-            boundBoxOffsetZ);
+        uint32 image_id = get_tunnel_image(edgeStyle, tunnelType) + (edge == EDGE_BOTTOMRIGHT ? 2 : 0);
+        sub_98197C(session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, zOffset, 0, 0, boundBoxOffsetZ);
 
         boundBoxOffsetZ = curHeight * 16;
         boundBoxLength = _tunnelHeights[tunnelType][1] * 16;
@@ -813,10 +821,8 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
             boundBoxLength -= 16;
         }
 
-        image_id = _terrainEdgeTunnelSpriteIds[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
-        sub_98197C(
-            session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16,
-            tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ);
+        image_id = get_tunnel_image(edgeStyle, tunnelType) + (edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
+        sub_98197C(session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16, tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ);
 
         curHeight += _tunnelHeights[tunnelType][0];
         tunnelIndex++;
@@ -911,10 +917,10 @@ static void viewport_surface_draw_tile_side_top(paint_session * session, enum ed
 
     if (isWater)
     {
-        base_image_id = _terrainEdgeSpriteIds[terrain][2]; // var_08
+        base_image_id = get_edge_image(terrain, 2); // var_08
         if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         {
-            base_image_id = _terrainEdgeSpriteIds[terrain][1];  // var_04
+            base_image_id = get_edge_image(terrain, 1);  // var_04
         }
         base_image_id += (edge == EDGE_TOPLEFT ? 5 : 0);
     }
@@ -923,12 +929,12 @@ static void viewport_surface_draw_tile_side_top(paint_session * session, enum ed
         if (!(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
         {
             const uint8 incline = (cl - al) + 1;
-            const uint32 image_id = _terrainEdgeSpriteIds[terrain][3] + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
+            const uint32 image_id = get_edge_image(terrain, 3) + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
             const sint16 y = (dl - al) * 16;
             paint_attach_to_previous_ps(session, image_id, 0, y);
             return;
         }
-        base_image_id = _terrainEdgeSpriteIds[terrain][1] + (edge == EDGE_TOPLEFT ? 5 : 0); // var_04
+        base_image_id = get_edge_image(terrain, 1) + (edge == EDGE_TOPLEFT ? 5 : 0); // var_04
     }
 
     uint8 cur_height = Math::Min(ch, ah);
