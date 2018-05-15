@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -69,11 +69,19 @@ void sprite_paint_setup(paint_session * session, const uint16 eax, const uint16 
             }
         }
 
-        // Only paint sprites that are below the clip height.
+        // Only paint sprites that are below the clip height and inside the clip selection.
         // Here converting from land/path/etc height scale to pixel height scale.
         // Note: peeps/scenery on slopes will be above the base
         // height of the slope element, and consequently clipped.
-        if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (spr->unknown.z > (gClipHeight * 8) )) continue;
+        if ((gCurrentViewportFlags & VIEWPORT_FLAG_CLIP_VIEW))
+        {
+            if (spr->unknown.z > (gClipHeight * 8))
+                continue;
+            if (spr->unknown.x / 32 < gClipSelectionA.x || spr->unknown.x / 32 > gClipSelectionB.x)
+                continue;
+            if (spr->unknown.y / 32 < gClipSelectionA.y || spr->unknown.y / 32 > gClipSelectionB.y)
+                continue;
+        }
 
         dpi = session->Unk140E9A8;
 

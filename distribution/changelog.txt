@@ -30,6 +30,7 @@
 - Improved: [#5339] Change eyedropper icon to actual eyedropper and change cursor to crosshair.
 - Improved: [#7302] Raising land near the map edge makes the affected area smaller instead of showing an 'off edge map' error.
 - Improved: [#7435] Object indexing now supports multi-threading.
+- Improved: [#7510] Add horizontal clipping to cut-away view options.
 
 0.1.2 (2018-03-18)
 ------------------------------------------------------------------------

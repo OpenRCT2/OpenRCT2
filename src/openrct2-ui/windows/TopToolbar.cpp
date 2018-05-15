@@ -3315,7 +3315,7 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
         dropdown_set_checked(11, true);
     if (mainViewport->flags & VIEWPORT_FLAG_PATH_HEIGHTS)
         dropdown_set_checked(12, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT)
+    if (mainViewport->flags & VIEWPORT_FLAG_CLIP_VIEW)
         dropdown_set_checked(DDIDX_VIEW_CLIPPING, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
         dropdown_set_checked(DDIDX_HIGHLIGHT_PATH_ISSUES, true);
@@ -3370,7 +3370,7 @@ static void top_toolbar_view_menu_dropdown(sint16 dropdownIndex)
                 context_open_window(WC_VIEW_CLIPPING);
             } else {
                 // If window is already open, toggle the view clipping on/off
-                w->viewport->flags ^= VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
+                w->viewport->flags ^= VIEWPORT_FLAG_CLIP_VIEW;
             }
             break;
         case DDIDX_HIGHLIGHT_PATH_ISSUES:

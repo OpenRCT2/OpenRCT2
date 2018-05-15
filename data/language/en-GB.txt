@@ -4545,6 +4545,10 @@ STR_6235    :Server Information
 STR_6236    :Players
 STR_6237    :Groups
 STR_6238    :Multiplayer Options
+STR_6239    :Vertical Clipping
+STR_6240    :Horizontal Clipping
+STR_6241    :Select area
+STR_6242    :Clear selection
 
 #############
 # Scenarios #

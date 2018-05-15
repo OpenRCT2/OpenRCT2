@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -25,8 +25,10 @@
 #include "sprite/Sprite.h"
 #include "tile_element/TileElement.h"
 
-// Global for paint clipping height
+// Globals for paint clipping
 uint8 gClipHeight = 128; // Default to middle value
+LocationXY8 gClipSelectionA = { 0, 0 };
+LocationXY8 gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
 
 paint_session gPaintSession;
 static bool _paintSessionInUse;
