@@ -271,14 +271,16 @@ void editor_object_flags_free()
  *
  *  rct2: 0x00685791
  */
-static void remove_selected_objects_from_research(const rct_object_entry* installedObject){
+static void remove_selected_objects_from_research(const rct_object_entry* installedObject)
+{
     uint8 entry_type, entry_index;
     if (!find_object_in_entry_group(installedObject, &entry_type, &entry_index))
         return;
 
-    if (entry_type == OBJECT_TYPE_RIDE){
-        auto rideEntry = (rct_ride_entry *)object_entry_get_entry(entry_type, entry_index);
-
+    if (entry_type == OBJECT_TYPE_RIDE)
+    {
+        auto rideEntry = get_ride_entry(entry_index);
+        
         for (auto rideType : rideEntry->ride_type)
         {
             rct_research_item tmp = {};
