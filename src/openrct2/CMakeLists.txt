@@ -58,9 +58,6 @@ if (NOT DISABLE_TTF)
     endif ()
 endif ()
 
-# For unicode code page conversion.
-find_package(ICU 59.0 REQUIRED COMPONENTS uc)
-
 # Sources
 file(GLOB_RECURSE OPENRCT2_CORE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
                                         "${CMAKE_CURRENT_LIST_DIR}/*.h"
@@ -81,14 +78,12 @@ if (STATIC)
     target_link_libraries(${PROJECT} ${JANSSON_STATIC_LIBRARIES}
                                      ${PNG_STATIC_LIBRARIES}
                                      ${ZLIB_STATIC_LIBRARIES}
-                                     ${LIBZIP_STATIC_LIBRARIES}
-                                     ${ICU_STATIC_LIBRARIES})
+                                     ${LIBZIP_STATIC_LIBRARIES})
 else ()
     target_link_libraries(${PROJECT} ${JANSSON_LIBRARIES}
                                      ${PNG_LIBRARIES}
                                      ${ZLIB_LIBRARIES}
-                                     ${LIBZIP_LIBRARIES}
-                                     ${ICU_LIBRARIES})
+                                     ${LIBZIP_LIBRARIES})
 endif ()
 
 if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
@@ -112,6 +107,16 @@ if (NOT DISABLE_NETWORK)
     else ()
         target_link_libraries(${PROJECT} ${LIBCURL_LIBRARIES}
                                          ${OPENSSL_LIBRARIES})
+    endif ()
+endif ()
+
+if (NOT MINGW AND NOT MSVC)
+    # For unicode code page conversion.
+    find_package(ICU 59.0 REQUIRED COMPONENTS uc)
+    if (STATIC)
+        target_link_libraries(${PROJECT} ${ICU_STATIC_LIBRARIES})
+    else ()
+        target_link_libraries(${PROJECT} ${ICU_LIBRARIES})
     endif ()
 endif ()
 
