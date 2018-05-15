@@ -25,10 +25,6 @@ NetworkGroup::NetworkGroup()
     ActionsAllowed = { 0 };
 }
 
-NetworkGroup::~NetworkGroup()
-{
-}
-
 NetworkGroup NetworkGroup::FromJson(const json_t * json)
 {
     NetworkGroup group;

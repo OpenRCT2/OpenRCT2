@@ -23,6 +23,7 @@
 #include "../platform/platform.h"
 #include "../localisation/Language.h"
 #include "../core/Console.hpp"
+#include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"

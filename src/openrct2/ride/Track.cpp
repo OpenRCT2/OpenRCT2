@@ -2279,22 +2279,14 @@ bool track_element_is_covered(sint32 trackElementType)
 bool track_element_is_booster(uint8 rideType, uint8 trackType)
 {
     // Boosters share their ID with the Spinning Control track.
-    if (rideType != RIDE_TYPE_STEEL_WILD_MOUSE && trackType == TRACK_ELEM_BOOSTER)
-    {
-        return true;
-    }
-    return false;
+    return rideType != RIDE_TYPE_STEEL_WILD_MOUSE && trackType == TRACK_ELEM_BOOSTER;
 }
 
 bool track_element_has_speed_setting(uint8 trackType)
 {
     // This does not check if the element is really a Spinning Control track instead of a booster,
     // but this does not cause problems.
-    if (trackType == TRACK_ELEM_BRAKES || trackType == TRACK_ELEM_BOOSTER)
-    {
-        return true;
-    }
-    return false;
+    return trackType == TRACK_ELEM_BRAKES || trackType == TRACK_ELEM_BOOSTER;
 }
 
 uint8 track_element_get_seat_rotation(const rct_tile_element * tileElement)

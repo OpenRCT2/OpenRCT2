@@ -47,7 +47,7 @@ static exitcode_t HandleUri(const std::string &uri)
 {
     exitcode_t result = EXITCODE_CONTINUE;
     auto args = String::Split(uri, "/");
-    if (args.size() > 0)
+    if (!args.empty())
     {
 #ifndef DISABLE_NETWORK
         std::string arg = args[0];

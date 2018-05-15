@@ -15,6 +15,8 @@
 #pragma endregion
 
 #include <cassert>
+#include <cstdarg>
+#include <cstdio>
 #include <cstdlib>
 
 #include "../common.h"

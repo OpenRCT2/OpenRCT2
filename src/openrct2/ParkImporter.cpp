@@ -117,22 +117,14 @@ namespace ParkImporter
 
     bool ExtensionIsRCT1(const std::string &extension)
     {
-        if (String::Equals(extension, ".sc4", true) ||
-            String::Equals(extension, ".sv4", true))
-        {
-            return true;
-        }
-        return false;
+        return String::Equals(extension, ".sc4", true) ||
+            String::Equals(extension, ".sv4", true);
     }
 
     bool ExtensionIsScenario(const std::string &extension)
     {
-        if (String::Equals(extension, ".sc4", true) ||
-            String::Equals(extension, ".sc6", true))
-        {
-            return true;
-        }
-        return false;
+        return String::Equals(extension, ".sc4", true) ||
+            String::Equals(extension, ".sc6", true);
     }
 }
 

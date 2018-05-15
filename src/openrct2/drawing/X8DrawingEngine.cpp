@@ -470,11 +470,6 @@ X8DrawingContext::X8DrawingContext(X8DrawingEngine * engine)
     _engine = engine;
 }
 
-X8DrawingContext::~X8DrawingContext()
-{
-
-}
-
 IDrawingEngine * X8DrawingContext::GetEngine()
 {
     return _engine;

@@ -155,7 +155,7 @@ static void scrolling_text_format(utf8 *dst, size_t size, rct_draw_scroll_text *
 
 extern bool TempForScrollText;
 
-#define SCROLL_POS(x, y)    ((y * 64) + x)
+#define SCROLL_POS(x, y)    (((y) * 64) + (x))
 
 // clang-format off
 static constexpr const sint16 _scrollpos0[] = {

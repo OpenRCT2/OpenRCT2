@@ -58,7 +58,7 @@ public:
 
 private:
     std::list<std::unique_ptr<NetworkPacket>>   _outboundPackets;
-    uint32                                      _lastPacketTime;
+    uint32                                      _lastPacketTime = 0;
     utf8 *                                      _lastDisconnectReason   = nullptr;
 
     bool SendPacket(NetworkPacket &packet);

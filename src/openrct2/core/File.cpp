@@ -135,7 +135,7 @@ namespace File
         }
         free(pathW);
 #else
-        struct stat statInfo;
+        struct stat statInfo{};
         if (stat(path.c_str(), &statInfo) == 0)
         {
             lastModified = statInfo.st_mtime;

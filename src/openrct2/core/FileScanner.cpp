@@ -66,7 +66,7 @@ private:
     {
         std::string                 Path;
         std::vector<DirectoryChild> Listing;
-        sint32                      Index;
+        sint32                      Index = 0;
     };
 
     // Options
@@ -75,7 +75,7 @@ private:
     bool                        _recurse;
 
     // State
-    bool                        _started;
+    bool                        _started = false;
     std::stack<DirectoryState>  _directoryStack;
 
     // Current
@@ -132,7 +132,7 @@ public:
             PushState(_rootPath);
         }
 
-        while (_directoryStack.size() != 0)
+        while (!_directoryStack.empty())
         {
             DirectoryState * state = &_directoryStack.top();
             state->Index++;
@@ -337,7 +337,7 @@ private:
             String::Set(path, pathSize, directory);
             Path::Append(path, pathSize, node->d_name);
 
-            struct stat statInfo;
+            struct stat statInfo{};
             sint32 statRes = stat(path, &statInfo);
             if (statRes != -1)
             {

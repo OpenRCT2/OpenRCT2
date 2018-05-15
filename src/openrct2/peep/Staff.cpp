@@ -2057,7 +2057,7 @@ void rct_peep::UpdateAnswering()
         {
             return;
         }
-        
+
         if (current_ride != rideEntranceExitElement->properties.entrance.ride_index)
             return;
 

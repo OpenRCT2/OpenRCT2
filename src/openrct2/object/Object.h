@@ -139,7 +139,7 @@ class Object
 {
 private:
     char *              _identifier;
-    rct_object_entry    _objectEntry;
+    rct_object_entry    _objectEntry{};
     StringTable         _stringTable;
     ImageTable          _imageTable;
 

@@ -122,18 +122,18 @@ private:
     EntryList _waterEntry;
 
     // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
-    uint8 _rideTypeToRideEntryMap[RCT1_RIDE_TYPE_COUNT];
-    uint8 _vehicleTypeToRideEntryMap[RCT1_VEHICLE_TYPE_COUNT];
-    uint8 _smallSceneryTypeToEntryMap[256];
-    uint8 _largeSceneryTypeToEntryMap[256];
-    uint8 _wallTypeToEntryMap[256];
-    uint8 _pathTypeToEntryMap[24];
-    uint8 _pathAdditionTypeToEntryMap[16];
-    uint8 _sceneryThemeTypeToEntryMap[24];
+    uint8 _rideTypeToRideEntryMap[RCT1_RIDE_TYPE_COUNT]{};
+    uint8 _vehicleTypeToRideEntryMap[RCT1_VEHICLE_TYPE_COUNT]{};
+    uint8 _smallSceneryTypeToEntryMap[256]{};
+    uint8 _largeSceneryTypeToEntryMap[256]{};
+    uint8 _wallTypeToEntryMap[256]{};
+    uint8 _pathTypeToEntryMap[24]{};
+    uint8 _pathAdditionTypeToEntryMap[16]{};
+    uint8 _sceneryThemeTypeToEntryMap[24]{};
 
     // Research
-    uint8 _researchRideEntryUsed[MAX_RIDE_OBJECTS];
-    uint8 _researchRideTypeUsed[RCT1_RIDE_TYPE_COUNT];
+    uint8 _researchRideEntryUsed[MAX_RIDE_OBJECTS]{};
+    uint8 _researchRideTypeUsed[RCT1_RIDE_TYPE_COUNT]{};
 
     // Scenario repository - used for determining scenario name
     IScenarioRepository * _scenarioRepository = GetScenarioRepository();
@@ -206,7 +206,7 @@ public:
                 CreateAvailableObjectMappings();
 
                 auto missingObjects = GetInvalidObjects();
-                if (missingObjects.size() > 0)
+                if (!missingObjects.empty())
                 {
                     return ParkLoadResult::CreateMissingObjects(missingObjects);
                 }

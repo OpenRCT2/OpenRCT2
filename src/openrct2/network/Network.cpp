@@ -668,7 +668,7 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
         server_srand0_tick = 0;
         // Check that the server and client sprite hashes match
         const char *client_sprite_hash = sprite_checksum();
-        const bool sprites_mismatch = server_sprite_hash[0] != '\0' && strcmp(client_sprite_hash, server_sprite_hash);
+        const bool sprites_mismatch = server_sprite_hash[0] != '\0' && strcmp(client_sprite_hash, server_sprite_hash) != 0;
         // Check PRNG values and sprite hashes, if exist
         if ((srand0 != server_srand0) || sprites_mismatch) {
 #ifdef DEBUG_DESYNC
@@ -764,7 +764,7 @@ NetworkGroup* Network::AddGroup()
         }
     }
     if (newid != -1) {
-        std::unique_ptr<NetworkGroup> group(new NetworkGroup); // change to make_unique in c++14
+        auto group = std::make_unique<NetworkGroup>();
         group->Id = newid;
         group->SetName("Group #" + std::to_string(newid));
         addedgroup = group.get();
@@ -845,17 +845,17 @@ void Network::SaveGroups()
 
 void Network::SetupDefaultGroups()
 {
-    std::unique_ptr<NetworkGroup> admin(new NetworkGroup()); // change to make_unique in c++14
+    auto admin = std::make_unique<NetworkGroup>();
     admin->SetName("Admin");
     admin->ActionsAllowed.fill(0xFF);
     admin->Id = 0;
     group_list.push_back(std::move(admin));
-    std::unique_ptr<NetworkGroup> spectator(new NetworkGroup()); // change to make_unique in c++14
+    auto spectator = std::make_unique<NetworkGroup>();
     spectator->SetName("Spectator");
     spectator->ToggleActionPermission(0); // Chat
     spectator->Id = 1;
     group_list.push_back(std::move(spectator));
-    std::unique_ptr<NetworkGroup> user(new NetworkGroup()); // change to make_unique in c++14
+    auto user = std::make_unique<NetworkGroup>();
     user->SetName("User");
     user->ActionsAllowed.fill(0xFF);
     user->ToggleActionPermission(15); // Kick Player
@@ -896,7 +896,7 @@ void Network::LoadGroups()
         for (size_t i = 0; i < groupCount; i++) {
             json_t * jsonGroup = json_array_get(json_groups, i);
 
-            std::unique_ptr<NetworkGroup> newgroup(new NetworkGroup(NetworkGroup::FromJson(jsonGroup))); // change to make_unique in c++14
+            auto newgroup = std::make_unique<NetworkGroup>(NetworkGroup::FromJson(jsonGroup));
             group_list.push_back(std::move(newgroup));
         }
         json_t * jsonDefaultGroup = json_object_get(json, "default_group");
@@ -1956,7 +1956,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
             connection.AuthStatus = NETWORK_AUTH_BADNAME;
         } else
         if (!passwordless) {
-            if ((!password || strlen(password) == 0) && _password.size() > 0) {
+            if ((!password || strlen(password) == 0) && !_password.empty()) {
                 connection.AuthStatus = NETWORK_AUTH_REQUIREPASSWORD;
             } else
             if (password && _password != password) {
@@ -2474,7 +2474,7 @@ void Network::Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPack
     for (uint32 i = 0; i < size; i++) {
         NetworkGroup group;
         group.Read(packet);
-        std::unique_ptr<NetworkGroup> newgroup(new NetworkGroup(group)); // change to make_unique in c++14
+        auto newgroup = std::make_unique<NetworkGroup>(group);
         group_list.push_back(std::move(newgroup));
     }
 }
