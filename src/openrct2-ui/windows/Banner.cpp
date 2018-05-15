@@ -30,6 +30,7 @@
 #define WW 113
 #define WH 96
 
+// clang-format off
 enum WINDOW_BANNER_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -112,6 +113,7 @@ static rct_window_event_list window_banner_events = {
     window_banner_paint,
     nullptr
 };
+// clang-format on
 
 /**
 *

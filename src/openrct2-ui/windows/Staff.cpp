@@ -37,6 +37,7 @@
 #define WW 190
 #define WH 180
 
+// clang-format off
 enum WINDOW_STAFF_PAGE {
     WINDOW_STAFF_OVERVIEW,
     WINDOW_STAFF_OPTIONS,
@@ -293,6 +294,7 @@ static constexpr const uint32 window_staff_page_enabled_widgets[] = {
     (1 << WIDX_TAB_2) |
     (1 << WIDX_TAB_3)
 };
+// clang-format on
 
 static uint8 _availableCostumes[ENTERTAINER_COSTUME_COUNT];
 

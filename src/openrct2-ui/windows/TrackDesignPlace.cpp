@@ -45,6 +45,7 @@
 
 struct rct_track_td6;
 
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -108,6 +109,7 @@ static rct_window_event_list window_track_place_events = {
     window_track_place_paint,
     nullptr
 };
+// clang-format on
 
 static std::vector<uint8> _window_track_place_mini_preview;
 static sint16 _window_track_place_last_x;

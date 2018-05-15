@@ -31,6 +31,7 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 enum {
     PAGE_RIDES,
     PAGE_SHOPS_AND_STALLS,
@@ -187,6 +188,7 @@ static constexpr const rct_string_id page_names[] = {
     STR_SHOPS_AND_STALLS,
     STR_RESTROOMS_AND_INFORMATION_KIOSKS,
 };
+// clang-format on
 
 static sint32 _window_ride_list_information_type;
 

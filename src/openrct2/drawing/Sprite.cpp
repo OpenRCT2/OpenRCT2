@@ -48,6 +48,7 @@ struct rct_gx
     void * data;
 };
 
+// clang-format off
 constexpr struct
 {
     int start;
@@ -85,6 +86,7 @@ static inline uint32 rctc_to_rct2_index(uint32 image)
     else if (image >= 28246                 ) return image - 49;
     else throw std::runtime_error("Invalid RCTC g1.dat file");
 }
+// clang-format on
 
 static void read_and_convert_gxdat(IStream * stream, size_t count, bool is_rctc, rct_g1_element *elements)
 {

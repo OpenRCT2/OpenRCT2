@@ -22,6 +22,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2-ui/interface/Widget.h>
 
+// clang-format off
 enum WINDOW_TITLE_OPTIONS_WIDGET_IDX {
     WIDX_OPTIONS,
 };
@@ -64,6 +65,7 @@ static rct_window_event_list window_title_options_events = {
     window_title_options_paint,
     nullptr
 };
+// clang-format on
 
 /**
  * Creates the window containing the options button on the title screen.

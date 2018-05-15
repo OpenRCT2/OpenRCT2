@@ -50,6 +50,7 @@ static ride_list_item _windowNewRideListItems[384];
 
 #pragma region Ride type view order
 
+// clang-format off
 /**
  * The order of ride types shown in the new ride window so that the order stays consistent across games and rides of the same
  * type are kept together.
@@ -267,6 +268,7 @@ static constexpr const rct_string_id window_new_ride_titles[WINDOW_NEW_RIDE_PAGE
 
 static constexpr const sint32 window_new_ride_tab_animation_loops[] = { 20, 32, 10, 72, 24, 28, 16 };
 static constexpr const sint32 window_new_ride_tab_animation_divisor[] = { 4, 8, 2, 4, 4, 4, 2 };
+// clang-format on
 
 static void window_new_ride_set_page(rct_window *w, sint32 page);
 static void window_new_ride_refresh_widget_sizing(rct_window *w);

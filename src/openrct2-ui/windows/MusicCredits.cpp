@@ -23,6 +23,7 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 enum WINDOW_MUSIC_CREDITS_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -120,6 +121,7 @@ static rct_window_event_list window_music_credits_events = {
     window_music_credits_paint,
     window_music_credits_scrollpaint
 };
+// clang-format on
 
 /**
 *

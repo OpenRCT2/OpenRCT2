@@ -28,6 +28,7 @@
 #define WH 350
 #define TABHEIGHT 50
 
+// clang-format off
 enum
 {
     WINDOW_ABOUT_PAGE_OPENRCT2,
@@ -157,6 +158,7 @@ static rct_window_event_list *window_about_page_events[] = {
     &window_about_openrct2_events,
     &window_about_rct2_events,
 };
+// clang-format on
 
 static void window_about_set_page(rct_window *w, sint32 page);
 

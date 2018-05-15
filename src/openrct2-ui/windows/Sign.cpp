@@ -34,6 +34,7 @@
 #define WW 113
 #define WH 96
 
+// clang-format off
 enum WINDOW_SIGN_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -134,6 +135,7 @@ static rct_window_event_list window_sign_small_events = {
     window_sign_paint,
     nullptr
 };
+// clang-format on
 
 /**
 *

@@ -53,6 +53,7 @@
 
 using namespace OpenRCT2::Ui;
 
+// clang-format off
 enum {
     WIDX_PAUSE,
     WIDX_FILE_MENU,
@@ -275,6 +276,7 @@ static rct_window_event_list window_top_toolbar_events = {
     window_top_toolbar_paint,
     nullptr
 };
+// clang-format on
 
 static void top_toolbar_init_view_menu(rct_window *window, rct_widget *widget);
 static void top_toolbar_view_menu_dropdown(sint16 dropdownIndex);

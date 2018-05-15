@@ -1030,6 +1030,7 @@ struct console_command {
     const utf8 * usage;
 };
 
+// clang-format off
 static constexpr const utf8* console_variable_table[] = {
     "park_rating",
     "park_value",
@@ -1105,6 +1106,7 @@ static constexpr const console_command console_command_table[] = {
     { "show_limits", cc_show_limits, "Shows the map data counts and limits.", "show_limits" },
     { "date", cc_for_date, "Sets the date to a given date.", "Format <year>[ <month>[ <day>]]."}
 };
+// clang-format on
 
 static sint32 cc_windows(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
 {

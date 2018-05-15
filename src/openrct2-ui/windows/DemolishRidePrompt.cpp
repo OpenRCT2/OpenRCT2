@@ -25,6 +25,7 @@
 #define WW 200
 #define WH 100
 
+// clang-format off
 enum WINDOW_RIDE_DEMOLISH_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -77,6 +78,7 @@ static rct_window_event_list window_ride_demolish_events = {
     window_ride_demolish_paint,
     nullptr
 };
+// clang-format on
 
 /** Based off of rct2: 0x006B486A */
 rct_window * window_ride_demolish_prompt_open(sint32 rideIndex)

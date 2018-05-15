@@ -42,6 +42,7 @@
 
 #pragma region Widgets
 
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -442,6 +443,7 @@ static constexpr const rct_string_id RideConfigurationStringIds[] = {
     STR_QUARTER_LOOP,                       // 254
     STR_QUARTER_LOOP                        // 255
 };
+// clang-format on
 
 #pragma endregion
 

@@ -34,6 +34,7 @@
 
 #pragma region Widgets
 
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -167,6 +168,7 @@ static constexpr const rct_string_id EditorInventionsResearchCategories[] = {
     STR_RESEARCH_NEW_SHOPS_AND_STALLS,
     STR_RESEARCH_NEW_SCENERY_AND_THEMING,
 };
+// clang-format on
 
 static void window_editor_inventions_list_drag_open(rct_research_item *researchItem);
 static void move_research_item(rct_research_item *beforeItem);

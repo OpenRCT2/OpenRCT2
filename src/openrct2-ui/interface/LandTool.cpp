@@ -23,6 +23,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 static uint16 toolSizeSpriteIndices[] =
 {
     SPR_LAND_TOOL_SIZE_0,
@@ -68,6 +69,7 @@ uint32 WallTexturePreviews[] =
     SPR_G2_WALL_TEXTURE_SKYSCRAPER_A,
     SPR_G2_WALL_TEXTURE_SKYSCRAPER_B,
 };
+// clang-format on
 
 uint16 gLandToolSize;
 money32 gLandToolRaiseCost;

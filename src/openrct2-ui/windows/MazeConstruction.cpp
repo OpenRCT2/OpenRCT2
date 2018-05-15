@@ -30,6 +30,7 @@
 
 #pragma region Widgets
 
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -129,6 +130,7 @@ static rct_window_event_list window_maze_construction_events = {
     window_maze_construction_paint,
     nullptr
 };
+// clang-format on
 
 #pragma endregion
 

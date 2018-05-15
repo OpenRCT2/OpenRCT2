@@ -25,6 +25,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 enum {
     WINDOW_MULTIPLAYER_PAGE_INFORMATION,
     WINDOW_MULTIPLAYER_PAGE_PLAYERS,
@@ -296,6 +297,7 @@ static rct_window_event_list *window_multiplayer_page_events[] = {
     &window_multiplayer_groups_events,
     &window_multiplayer_options_events
 };
+// clang-format on
 
 static constexpr const sint32 window_multiplayer_animation_divisor[] = { 4, 4, 2, 2 };
 static constexpr const sint32 window_multiplayer_animation_frames[] = { 8, 8, 7, 4 };

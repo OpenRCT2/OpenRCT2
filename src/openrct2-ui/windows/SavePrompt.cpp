@@ -27,6 +27,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/scenario/Scenario.h>
 
+// clang-format off
 enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -107,6 +108,7 @@ static rct_window_event_list window_save_prompt_events = {
     window_save_prompt_paint,
     nullptr
 };
+// clang-format on
 
 /**
  *

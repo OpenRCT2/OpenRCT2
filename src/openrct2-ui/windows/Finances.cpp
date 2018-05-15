@@ -33,6 +33,7 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/Park.h>
 
+// clang-format off
 enum
 {
     WINDOW_FINANCES_PAGE_SUMMARY,
@@ -518,6 +519,7 @@ static constexpr const rct_string_id window_finances_summary_row_labels[RCT_EXPE
     STR_FINANCES_SUMMARY_RESEARCH,
     STR_FINANCES_SUMMARY_LOAN_INTEREST,
 };
+// clang-format on
 
 static void window_finances_set_page(rct_window *w, sint32 page);
 static void window_finances_set_pressed_tab(rct_window *w);

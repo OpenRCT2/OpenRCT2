@@ -23,6 +23,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/Intro.h>
 
+// clang-format off
 enum WINDOW_TITLE_EXIT_WIDGET_IDX {
     WIDX_EXIT,
 };
@@ -65,6 +66,7 @@ static rct_window_event_list window_title_exit_events = {
     window_title_exit_paint,
     nullptr
 };
+// clang-format on
 
 /**
  * Creates the window containing the exit button on the title screen.

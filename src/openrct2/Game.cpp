@@ -89,6 +89,7 @@ uint8 gUnk141F568;
 
 uint32 gCurrentTicks;
 
+// clang-format off
 GAME_COMMAND_CALLBACK_POINTER * game_command_callback = nullptr;
 static GAME_COMMAND_CALLBACK_POINTER * const game_command_callback_table[] = {
     nullptr,
@@ -102,6 +103,7 @@ static GAME_COMMAND_CALLBACK_POINTER * const game_command_callback_table[] = {
     game_command_callback_pickup_guest,
     game_command_callback_pickup_staff
 };
+// clang-format on
 sint32 game_command_playerid = -1;
 
 rct_string_id gGameCommandErrorTitle;

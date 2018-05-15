@@ -24,6 +24,7 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 enum WINDOW_CUSTOM_CURRENCY_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -87,6 +88,7 @@ static rct_window_event_list _windowCustomCurrencyEvents = {
     custom_currency_window_paint,
     nullptr
 };
+// clang-format on
 
 
 rct_window * custom_currency_window_open()

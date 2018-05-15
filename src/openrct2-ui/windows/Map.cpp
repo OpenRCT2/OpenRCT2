@@ -46,6 +46,7 @@
 // minimap. In order to distinguish those from actual coordinates, we use a separate name.
 using MapCoordsXY = TileCoordsXY;
 
+// clang-format off
 enum {
     PAGE_PEEPS,
     PAGE_RIDES
@@ -173,6 +174,7 @@ static rct_window_event_list window_map_events = {
     window_map_paint,
     window_map_scrollpaint
 };
+// clang-format on
 
 /** rct2: 0x00F1AD61 */
 static uint8 _activeTool;

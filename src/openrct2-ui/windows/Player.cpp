@@ -29,6 +29,7 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 enum WINDOW_PLAYER_PAGE {
     WINDOW_PLAYER_PAGE_OVERVIEW,
     WINDOW_PLAYER_PAGE_STATISTICS,
@@ -186,6 +187,7 @@ static uint32 window_player_page_enabled_widgets[] = {
     (1 << WIDX_TAB_1) |
     (1 << WIDX_TAB_2)
 };
+// clang-format on
 
 rct_window * window_player_open(uint8 id)
 {

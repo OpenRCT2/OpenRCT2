@@ -25,6 +25,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 enum {
     NOTIFICATION_CATEGORY_PARK,
     NOTIFICATION_CATEGORY_RIDE,
@@ -125,6 +126,7 @@ static rct_window_event_list window_news_options_events = {
     window_news_options_paint,
     nullptr
 };
+// clang-format on
 
 static void window_news_options_set_page(rct_window *w, sint32 page);
 static void window_news_options_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi);

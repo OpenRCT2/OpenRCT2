@@ -29,6 +29,7 @@
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 enum {
     WINDOW_MAPGEN_PAGE_BASE,
     WINDOW_MAPGEN_PAGE_RANDOM,
@@ -539,6 +540,7 @@ static constexpr const sint32 TabAnimationFrames[WINDOW_MAPGEN_PAGE_COUNT] = {
 static constexpr const sint32 TabAnimationLoops[WINDOW_MAPGEN_PAGE_COUNT] = {
     16, 16, 16, 0
 };
+// clang-format on
 
 #define BASESIZE_MIN 0
 #define BASESIZE_MAX 60

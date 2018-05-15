@@ -22,6 +22,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 enum {
     WIDX_BACKGROUND
 };
@@ -64,6 +65,7 @@ static rct_window_event_list window_tooltip_events = {
     window_tooltip_paint,
     nullptr
 };
+// clang-format on
 
 static utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)];
 static sint16 _tooltipNumLines;

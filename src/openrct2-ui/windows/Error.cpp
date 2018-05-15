@@ -25,6 +25,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 enum {
     WIDX_BACKGROUND
 };
@@ -67,6 +68,7 @@ static rct_window_event_list window_error_events = {
     window_error_paint,
     nullptr
 };
+// clang-format on
 
 static char _window_error_text[512];
 static uint16 _window_error_num_lines;

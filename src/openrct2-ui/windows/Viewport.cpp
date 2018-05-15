@@ -26,6 +26,7 @@
 #define INITIAL_WIDTH 500
 #define INITIAL_HEIGHT 350
 
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -86,6 +87,7 @@ static rct_window_event_list window_viewport_events = {
     window_viewport_paint,
     nullptr
 };
+// clang-format on
 
 static sint32 _viewportNumber = 1;
 

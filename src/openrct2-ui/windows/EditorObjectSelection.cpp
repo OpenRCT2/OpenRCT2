@@ -41,6 +41,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 
+// clang-format off
 enum
 {
     FILTER_RCT1 = (1 << 0),
@@ -214,6 +215,7 @@ static rct_window_event_list window_editor_object_selection_events = {
     window_editor_object_selection_paint,
     window_editor_object_selection_scrollpaint
 };
+// clang-format on
 
 #pragma endregion
 

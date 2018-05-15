@@ -34,6 +34,7 @@
 #include <openrct2/world/Sprite.h>
 #include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 struct TITLE_COMMAND_ORDER {
     // originally a uint8, but the new millisecond wait times require a uint16.
     uint16 command;
@@ -162,6 +163,7 @@ static rct_window_event_list window_title_command_editor_events = {
     window_title_command_editor_paint,
     nullptr
 };
+// clang-format on
 
 static void scenario_select_callback(const utf8 * path)
 {

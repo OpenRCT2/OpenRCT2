@@ -34,6 +34,7 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/Park.h>
 
+// clang-format off
 enum {
     WIDX_PREVIOUS_IMAGE,        // 1
     WIDX_PREVIOUS_STEP_BUTTON,  // 2
@@ -127,6 +128,7 @@ static constexpr const rct_string_id EditorStepNames[] = {
     STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER,
     STR_EDITOR_STEP_TRACK_DESIGNS_MANAGER,
 };
+// clang-format on
 
 /**
 * Creates the main editor top toolbar window.

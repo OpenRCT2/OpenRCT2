@@ -39,6 +39,7 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Banner.h>
 
+// clang-format off
 static constexpr const rct_string_id TerrainTypeStringIds[] = {
     STR_TILE_INSPECTOR_TERRAIN_GRASS,
     STR_TILE_INSPECTOR_TERRAIN_SAND,
@@ -545,6 +546,7 @@ static uint64 PageDisabledWidgets[] = {
     0,
     (1ULL << WIDX_BUTTON_ROTATE),
 };
+// clang-format on
 
 rct_window * window_tile_inspector_open()
 {

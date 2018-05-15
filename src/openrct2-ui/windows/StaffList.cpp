@@ -36,6 +36,7 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/management/Finance.h>
 
+// clang-format off
 enum {
     WINDOW_STAFF_LIST_TAB_HANDYMEN,
     WINDOW_STAFF_LIST_TAB_MECHANICS,
@@ -151,6 +152,7 @@ static constexpr const staff_naming_convention StaffNamingConvention[] = {
     { STR_SECURITY_GUARD_PLURAL,    STR_SECURITY_GUARD_SINGULAR,    STR_HIRE_SECURITY_GUARD },
     { STR_ENTERTAINER_PLURAL,       STR_ENTERTAINER_SINGULAR,       STR_HIRE_ENTERTAINER },
 };
+// clang-format on
 
 /*
 * rct2: 0x006BD3CC

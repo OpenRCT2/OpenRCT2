@@ -17,6 +17,7 @@
 #include <openrct2/interface/Cursors.h>
 #include "CursorRepository.h"
 
+// clang-format off
 namespace OpenRCT2::Ui
 {
     static constexpr const CursorData BlankCursorData =
@@ -665,3 +666,4 @@ namespace OpenRCT2::Ui
         return result;
     }
 }
+// clang-format on

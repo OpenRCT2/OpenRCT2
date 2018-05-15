@@ -28,6 +28,7 @@
 #define WW_SC_MAX 1200
 #define WH_SC_MAX 800
 
+// clang-format off
 enum WINDOW_SHORTCUT_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -156,6 +157,7 @@ const rct_string_id ShortcutStringIds[SHORTCUT_COUNT] = {
     STR_SHORTCUT_VIEW_CLIPPING,
     STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE,
 };
+// clang-format on
 
 
 /**

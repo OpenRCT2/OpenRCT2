@@ -23,6 +23,7 @@
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 enum WINDOW_WATER_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -83,6 +84,7 @@ static rct_window_event_list window_water_events = {
     window_water_paint,
     nullptr
 };
+// clang-format on
 
 /**
  *

@@ -26,6 +26,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Location.hpp>
 
+// clang-format off
 enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -125,6 +126,7 @@ static rct_window_event_list window_view_clipping_events = {
     window_view_clipping_paint,
     nullptr
 };
+// clang-format on
 
 #pragma endregion
 

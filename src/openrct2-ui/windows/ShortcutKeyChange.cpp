@@ -26,6 +26,7 @@
 #define WW 250
 #define WH 60
 
+// clang-format off
 enum WINDOW_SHORTCUT_CHANGE_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -74,6 +75,7 @@ static rct_window_event_list window_shortcut_change_events = {
     window_shortcut_change_paint,
     nullptr
 };
+// clang-format on
 
 rct_window * window_shortcut_change_open(sint32 selected_key)
 {

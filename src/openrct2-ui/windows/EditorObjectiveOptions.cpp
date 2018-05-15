@@ -33,6 +33,7 @@
 
 #pragma region Widgets
 
+// clang-format off
 enum {
     WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN,
     WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES,
@@ -254,6 +255,7 @@ static uint64 window_editor_objective_options_page_hold_down_widgets[] = {
 
     0
 };
+// clang-format on
 
 #pragma endregion
 

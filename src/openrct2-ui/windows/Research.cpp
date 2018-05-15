@@ -28,6 +28,7 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/management/Finance.h>
 
+// clang-format off
 enum {
     WINDOW_RESEARCH_PAGE_DEVELOPMENT,
     WINDOW_RESEARCH_PAGE_FUNDING,
@@ -229,6 +230,7 @@ static constexpr const rct_string_id ResearchStageNames[] = {
     STR_RESEARCH_STAGE_COMPLETING_DESIGN,
     STR_RESEARCH_STAGE_UNKNOWN,
 };
+// clang-format on
 
 static void window_research_set_page(rct_window *w, sint32 page);
 static void window_research_set_pressed_tab(rct_window *w);

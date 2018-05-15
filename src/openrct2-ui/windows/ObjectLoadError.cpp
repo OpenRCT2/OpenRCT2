@@ -23,6 +23,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/object/ObjectList.h>
 
+// clang-format off
 enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -96,6 +97,7 @@ static rct_window_event_list window_object_load_error_events = {
     window_object_load_error_paint,
     window_object_load_error_scrollpaint
 };
+// clang-format on
 
 static std::vector<rct_object_entry> _invalid_entries;
 static sint32 highlighted_index = -1;
