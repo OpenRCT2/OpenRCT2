@@ -26,6 +26,7 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 
+// clang-format off
 enum WINDOW_LAND_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -98,6 +99,7 @@ static rct_window_event_list window_land_events = {
     window_land_paint,
     nullptr
 };
+// clang-format on
 
 static sint32 _selectedFloorTexture;
 static sint32 _selectedWallTexture;

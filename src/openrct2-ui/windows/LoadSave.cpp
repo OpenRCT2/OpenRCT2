@@ -46,6 +46,7 @@
 #define WW 340
 #define WH 400
 
+// clang-format off
 enum
 {
     WIDX_BACKGROUND,
@@ -128,6 +129,7 @@ static rct_window_event_list window_loadsave_events =
     window_loadsave_paint,
     window_loadsave_scrollpaint
 };
+// clang-format on
 
 #pragma endregion
 

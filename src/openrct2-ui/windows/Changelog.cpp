@@ -30,6 +30,7 @@
 
 using namespace OpenRCT2;
 
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -90,6 +91,7 @@ static rct_window_event_list window_changelog_events = {
     window_changelog_paint,
     window_changelog_scrollpaint
 };
+// clang-format on
 
 static bool window_changelog_read_file();
 static void window_changelog_dispose_file();

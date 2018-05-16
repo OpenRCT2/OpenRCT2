@@ -29,6 +29,7 @@
 
 #define SELECTED_RIDE_UNDEFINED ((uint16)0xFFFF)
 
+// clang-format off
 enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -95,6 +96,7 @@ static rct_window_event_list window_new_campaign_events = {
     window_new_campaign_paint,
     nullptr
 };
+// clang-format on
 
 static uint8 window_new_campaign_rides[MAX_RIDES];
 static uint8 window_new_campaign_shop_items[64];

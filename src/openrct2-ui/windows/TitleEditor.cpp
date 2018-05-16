@@ -37,6 +37,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/scenario/Scenario.h>
 
+// clang-format off
 enum WINDOW_TITLE_EDITOR_TAB {
     WINDOW_TITLE_EDITOR_TAB_PRESETS,
     WINDOW_TITLE_EDITOR_TAB_SAVES,
@@ -216,6 +217,7 @@ static sint32 window_title_editor_tab_sprites[] = {
     SPR_FLOPPY,
     SPR_TAB_STATS_0
 };
+// clang-format on
 
 void window_title_editor_open(sint32 tab)
 {

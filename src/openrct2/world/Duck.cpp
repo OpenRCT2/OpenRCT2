@@ -25,6 +25,7 @@
 #include "../world/Surface.h"
 #include "Sprite.h"
 
+// clang-format off
 enum DUCK_STATE
 {
     FLY_TO_WATER,
@@ -77,6 +78,7 @@ static constexpr const uint8 * DuckAnimations[] =
     DuckAnimationDoubleDrink,   // DOUBLE_DRINK
     DuckAnimationFlyAway,       // FLY_AWAY
 };
+// clang-format on
 
 bool rct_sprite::IsDuck()
 {

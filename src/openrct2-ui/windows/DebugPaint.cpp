@@ -18,11 +18,12 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2-ui/interface/Widget.h>
-    #include <openrct2/localisation/Localisation.h>
-    #include <openrct2/paint/tile_element/TileElement.h>
-    #include <openrct2/paint/Paint.h>
-    #include <openrct2/ride/TrackPaint.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/paint/tile_element/TileElement.h>
+#include <openrct2/paint/Paint.h>
+#include <openrct2/ride/TrackPaint.h>
 
+// clang-format off
 enum WINDOW_DEBUG_PAINT_WIDGET_IDX
 {
     WIDX_BACKGROUND,
@@ -78,6 +79,7 @@ static rct_window_event_list window_debug_paint_events = {
     window_debug_paint_paint,
     nullptr
 };
+// clang-format on
 
 rct_window * window_debug_paint_open()
 {

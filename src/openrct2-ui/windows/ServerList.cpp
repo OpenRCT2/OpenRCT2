@@ -45,6 +45,7 @@ static std::mutex _mutex;
 static uint32 _numPlayersOnline = 0;
 static rct_string_id status_text = STR_SERVER_LIST_CONNECTING;
 
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -116,6 +117,7 @@ static rct_window_event_list window_server_list_events = {
     window_server_list_paint,
     window_server_list_scrollpaint
 };
+// clang-format on
 
 enum {
     DDIDX_JOIN,

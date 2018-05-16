@@ -36,6 +36,7 @@ static utf8 _moneySpinnerText[MONEY_STRING_MAXLENGTH];
 static money32 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
 static sint32 _selectedStaffSpeed = 1;
 
+// clang-format off
 enum
 {
     WINDOW_CHEATS_PAGE_MONEY,
@@ -614,6 +615,7 @@ static rct_string_id window_cheats_page_titles[] = {
     STR_CHEAT_TITLE_PARK,
     STR_CHEAT_TITLE_RIDE,
 };
+// clang-format on
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 

@@ -28,6 +28,7 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 enum {
     WINDOW_THEMES_TAB_SETTINGS,
     WINDOW_THEMES_TAB_MAIN_UI,
@@ -271,6 +272,7 @@ static rct_windowclass *window_themes_tab_classes[] = {
     window_themes_tab_6_classes,
     window_themes_tab_7_classes,
 };
+// clang-format on
 
 static uint8 _selected_tab = 0;
 static sint16 _colour_index_1 = -1;

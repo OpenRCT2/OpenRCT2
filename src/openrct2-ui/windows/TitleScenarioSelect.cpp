@@ -32,6 +32,7 @@
 
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
 
+// clang-format off
 enum class LIST_ITEM_TYPE : uint8
 {
     HEADING,
@@ -143,6 +144,7 @@ static rct_window_event_list window_scenarioselect_events = {
     window_scenarioselect_paint,
     window_scenarioselect_scrollpaint
 };
+// clang-format on
 
 static void draw_category_heading(rct_window *w, rct_drawpixelinfo *dpi, sint32 left, sint32 right, sint32 y, rct_string_id stringId);
 static void initialise_list_items(rct_window *w);

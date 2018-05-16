@@ -23,6 +23,7 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2-ui/interface/LandTool.h>
 
+// clang-format off
 enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -89,6 +90,7 @@ static rct_window_event_list window_clear_scenery_events = {
     window_clear_scenery_paint,
     nullptr
 };
+// clang-format on
 
 /**
  *

@@ -99,6 +99,7 @@ void dropdown_set_disabled(sint32 index, bool value)
 
 static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
+// clang-format off
 static rct_window_event_list window_dropdown_events = {
     nullptr,
     nullptr,
@@ -129,6 +130,7 @@ static rct_window_event_list window_dropdown_events = {
     window_dropdown_paint,
     nullptr
 };
+// clang-format on
 
 /**
  * Shows a text dropdown menu.

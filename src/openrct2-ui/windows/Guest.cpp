@@ -36,6 +36,7 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/Park.h>
 
+// clang-format off
 enum WINDOW_GUEST_PAGE {
     WINDOW_GUEST_OVERVIEW,
     WINDOW_GUEST_STATS,
@@ -475,6 +476,7 @@ static constexpr const uint32 window_guest_page_enabled_widgets[] = {
     (1 << WIDX_TAB_5) |
     (1 << WIDX_TAB_6)
 };
+// clang-format on
 
 /**
  *

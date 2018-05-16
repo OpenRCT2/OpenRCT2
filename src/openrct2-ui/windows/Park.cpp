@@ -36,6 +36,7 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/scenario/Scenario.h>
 
+// clang-format off
 enum WINDOW_PARK_PAGE {
     WINDOW_PARK_PAGE_ENTRANCE,
     WINDOW_PARK_PAGE_RATING,
@@ -545,6 +546,7 @@ static constexpr const window_park_award ParkAwards[] = {
     { STR_AWARD_MOST_CONFUSING_LAYOUT,      SPR_AWARD_MOST_CONFUSING_LAYOUT },
     { STR_AWARD_BEST_GENTLE_RIDES,          SPR_AWARD_BEST_GENTLE_RIDES },
 };
+// clang-format on
 
 static void window_park_init_viewport(rct_window *w);
 static void window_park_set_page(rct_window *w, sint32 page);

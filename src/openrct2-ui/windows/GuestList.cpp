@@ -30,6 +30,7 @@
 #include <openrct2/world/Sprite.h>
 #include <openrct2/scenario/Scenario.h>
 
+// clang-format off
 enum {
     PAGE_INDIVIDUAL,
     PAGE_SUMMARISED
@@ -141,6 +142,7 @@ static rct_window_event_list window_guest_list_events = {
     window_guest_list_paint,
     window_guest_list_scrollpaint
 };
+// clang-format on
 
 static uint32 _window_guest_list_last_find_groups_tick;
 static uint32 _window_guest_list_last_find_groups_selected_view;

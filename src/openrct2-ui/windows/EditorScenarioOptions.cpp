@@ -32,6 +32,7 @@
 
 #pragma region Widgets
 
+// clang-format off
 enum {
     WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL,
     WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS,
@@ -383,6 +384,7 @@ static uint32 window_editor_scenario_options_page_hold_down_widgets[] = {
         (1ULL << WIDX_ENTRY_PRICE_INCREASE) |
         (1ULL << WIDX_ENTRY_PRICE_DECREASE)
 };
+// clang-format on
 
 #pragma endregion
 

@@ -47,6 +47,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/scenario/Scenario.h>
 
+// clang-format off
 enum WINDOW_OPTIONS_PAGE {
     WINDOW_OPTIONS_PAGE_DISPLAY,
     WINDOW_OPTIONS_PAGE_RENDERING,
@@ -609,6 +610,7 @@ static uint64 window_options_page_enabled_widgets[] = {
     (1 << WIDX_CHAT_PEEP_TRACKING_CHECKBOX) |
     (1 << WIDX_NEWS_CHECKBOX)
 };
+// clang-format on
 
 #pragma endregion
 

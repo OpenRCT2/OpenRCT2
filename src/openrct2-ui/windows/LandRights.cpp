@@ -27,6 +27,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/world/Park.h>
 
+// clang-format off
 enum WINDOW_WATER_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -97,6 +98,7 @@ static rct_window_event_list window_land_rights_events = {
     window_land_rights_paint,
     nullptr
 };
+// clang-format on
 
 #define LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS 0
 #define LAND_RIGHTS_MODE_BUY_LAND 1

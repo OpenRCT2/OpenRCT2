@@ -67,6 +67,7 @@ enum {
 
 #pragma region Widgets
 
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -1211,6 +1212,7 @@ static constexpr const window_ride_colour_preview TrackColourPreviews[] = {
     { 0, 0 }, // 59
     { SPR_RIDE_DESIGN_PREVIEW_LIM_LAUNCHED_ROLLER_COASTER_TRACK,    SPR_RIDE_DESIGN_PREVIEW_LIM_LAUNCHED_ROLLER_COASTER_SUPPORTS},
 };
+// clang-format on
 
 struct rct_window_graphs_y_axis {
     uint8 interval;

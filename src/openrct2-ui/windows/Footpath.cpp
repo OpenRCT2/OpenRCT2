@@ -31,6 +31,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/world/Park.h>
 
+// clang-format off
 enum
 {
     PATH_CONSTRUCTION_MODE_LAND,
@@ -104,25 +105,15 @@ static rct_widget window_footpath_widgets[] = {
 };
 
 static void window_footpath_close(rct_window * w);
-
 static void window_footpath_mouseup(rct_window * w, rct_widgetindex widgetIndex);
-
 static void window_footpath_mousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget);
-
 static void window_footpath_dropdown(rct_window * w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
-
 static void window_footpath_update(rct_window * w);
-
 static void window_footpath_toolupdate(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-
 static void window_footpath_tooldown(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-
 static void window_footpath_tooldrag(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-
 static void window_footpath_toolup(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-
 static void window_footpath_invalidate(rct_window * w);
-
 static void window_footpath_paint(rct_window * w, rct_drawpixelinfo * dpi);
 
 static rct_window_event_list window_footpath_events = {
@@ -155,6 +146,7 @@ static rct_window_event_list window_footpath_events = {
     window_footpath_paint,
     nullptr
 };
+// clang-format on
 
 static money32 _window_footpath_cost;
 static sint8   _window_footpath_provisional_path_arrow_timer;
@@ -189,27 +181,16 @@ static constexpr const uint8 ConstructionPreviewImages[][4] = {
 };
 
 static void window_footpath_mousedown_direction(sint32 direction);
-
 static void window_footpath_mousedown_slope(sint32 slope);
-
 static void window_footpath_show_footpath_types_dialog(rct_window * w, rct_widget * widget, bool showQueues);
-
 static void window_footpath_set_provisional_path_at_point(sint32 x, sint32 y);
-
 static void window_footpath_set_selection_start_bridge_at_point(sint32 screenX, sint32 screenY);
-
 static void window_footpath_place_path_at_point(sint32 x, sint32 y);
-
 static void window_footpath_start_bridge_at_point(sint32 screenX, sint32 screenY);
-
 static void window_footpath_construct();
-
 static void window_footpath_remove();
-
 static void window_footpath_set_enabled_and_pressed_widgets();
-
 static void footpath_get_next_path_info(sint32 * type, sint32 * x, sint32 * y, sint32 * z, sint32 * slope);
-
 static bool footpath_select_default();
 
 /**

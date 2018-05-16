@@ -33,6 +33,7 @@ static char _description[MAX_SERVER_DESCRIPTION_LENGTH];
 static char _greeting[CHAT_INPUT_SIZE];
 static char _password[33];
 
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -108,6 +109,7 @@ static rct_window_event_list window_server_start_events = {
     window_server_start_paint,
     nullptr
 };
+// clang-format on
 
 rct_window * window_server_start_open()
 {

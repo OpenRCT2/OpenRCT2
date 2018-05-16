@@ -31,6 +31,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/ride/TrackDesign.h>
 
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -102,6 +103,7 @@ static rct_window_event_list window_track_list_events = {
     window_track_list_paint,
     window_track_list_scrollpaint
 };
+// clang-format on
 
 #define TRACK_DESIGN_INDEX_UNLOADED UINT16_MAX
 

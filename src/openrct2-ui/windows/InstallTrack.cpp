@@ -31,6 +31,7 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/ride/TrackDesign.h>
 
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -96,6 +97,7 @@ static rct_window_event_list window_install_track_events = {
     window_install_track_paint,
     nullptr
 };
+// clang-format on
 
 static rct_track_td6 * _trackDesign;
 static std::string _trackPath;

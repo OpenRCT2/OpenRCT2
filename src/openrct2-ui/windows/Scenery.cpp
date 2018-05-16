@@ -38,6 +38,7 @@
 #define SCENERY_BUTTON_HEIGHT   80
 #define SCENERY_WINDOW_TABS     (MAX_SCENERY_GROUP_OBJECTS + 1) // The + 1 is for the 'Miscellaneous' tab
 
+// clang-format off
 enum {
     WINDOW_SCENERY_TAB_1,
     WINDOW_SCENERY_TAB_2,
@@ -181,6 +182,7 @@ static rct_widget window_scenery_widgets[] = {
     { WWT_FLATBTN, 1, 609, 632, 154, 177, SPR_SCENERY_CLUSTER, STR_SCENERY_CLUSTER_TIP },                                   // 40000000         0x009DE478
     { WIDGETS_END },
 };
+// clang-format on
 
 void window_scenery_update_scroll(rct_window *w);
 

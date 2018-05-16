@@ -27,6 +27,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 enum WINDOW_NEWS_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -82,6 +83,7 @@ static rct_window_event_list window_news_events = {
     window_news_paint,
     window_news_scrollpaint
 };
+// clang-format on
 
 /**
  *

@@ -22,6 +22,7 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 static char _password[33];
 
 enum WINDOW_NETWORK_STATUS_WIDGET_IDX {
@@ -77,6 +78,7 @@ static rct_window_event_list window_network_status_events = {
     window_network_status_paint,
     nullptr
 };
+// clang-format on
 
 static close_callback _onClose = nullptr;
 

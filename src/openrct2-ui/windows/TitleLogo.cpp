@@ -22,6 +22,7 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 static rct_widget window_title_logo_widgets[] = {
     { WIDGETS_END },
 };
@@ -58,6 +59,7 @@ static rct_window_event_list window_title_logo_events = {
     window_title_logo_paint,
     nullptr
 };
+// clang-format on
 
 /**
  * Creates the window containing the logo and the expansion packs on the title screen.
