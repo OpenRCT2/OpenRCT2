@@ -5111,6 +5111,7 @@ static void window_ride_measurements_mousedown(rct_window *w, rct_widgetindex wi
     {
         // Disable saving without scenery if we're a flat ride
         dropdown_set_disabled(0, true);
+        gDropdownDefaultIndex = 1;
     }
 }
 
