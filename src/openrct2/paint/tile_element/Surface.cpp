@@ -640,9 +640,6 @@ static bool tile_is_inside_clip_view(const tile_descriptor& tile)
 
 static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum edge_t edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour, bool isWater)
 {
-    if (!is_csg_loaded() && edgeStyle >= TERRAIN_EDGE_RCT2_COUNT)
-        edgeStyle = TERRAIN_EDGE_ROCK;
-
     sint16 cornerHeight1, neighbourCornerHeight1, cornerHeight2, neighbourCornerHeight2;
 
     LocationXY8 offset = { 0, 0 };
