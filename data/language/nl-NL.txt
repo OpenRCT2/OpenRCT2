@@ -4540,6 +4540,10 @@ STR_6235    :Serverinformatie
 STR_6236    :Spelers
 STR_6237    :Groepen
 STR_6238    :Multiplayeropties
+STR_6239    :Verticale doorsnede
+STR_6240    :Horizontale doorsnede
+STR_6241    :Gebied selecteren
+STR_6242    :Selectie wissen
 
 #############
 # Scenarios #
