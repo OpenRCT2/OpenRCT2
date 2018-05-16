@@ -345,7 +345,7 @@ uint8 network_get_default_group();
 sint32 network_get_num_actions();
 rct_string_id network_get_action_name_string_id(uint32 index);
 sint32 network_can_perform_action(uint32 groupindex, uint32 index);
-sint32 network_can_perform_command(uint32 groupindex, uint32 index);
+sint32 network_can_perform_command(uint32 groupindex, sint32 index);
 void network_set_pickup_peep(uint8 playerid, rct_peep* peep);
 rct_peep* network_get_pickup_peep(uint8 playerid);
 void network_set_pickup_peep_old_x(uint8 playerid, sint32 x);

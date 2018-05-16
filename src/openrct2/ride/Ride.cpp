@@ -3519,8 +3519,8 @@ sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, u
         }
         sint32 pan_y = ((y2 / screenheight) - 0x8000) >> 4;
 
-        uint8  vol1  = -1;
-        uint8  vol2  = -1;
+        uint8  vol1  = 255;
+        uint8  vol2  = 255;
         sint32 panx2 = pan_x;
         sint32 pany2 = pan_y;
         if (pany2 < 0)
@@ -3538,7 +3538,7 @@ sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, u
             vol1  = (uint8) pany2;
             if (pany2 >= 256)
             {
-                vol1 = -1;
+                vol1 = 255;
             }
         }
 
@@ -3557,7 +3557,7 @@ sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, u
             vol2  = (uint8) panx2;
             if (panx2 >= 256)
             {
-                vol2 = -1;
+                vol2 = 255;
             }
         }
         if (vol1 >= vol2)
@@ -3651,7 +3651,7 @@ void ride_music_update_final()
                 {
                     break;
                 }
-                edi->ride_id = -1;
+                edi->ride_id = RIDE_ID_NULL;
             }
 
             // stop currently playing music that is not in music params list or not playing?
@@ -6991,13 +6991,13 @@ uint64 ride_entry_get_supported_track_pieces(const rct_ride_entry * rideEntry)
 
 static sint32 ride_get_smallest_station_length(Ride *ride)
 {
-    uint32 result = -1;
+    sint32 result = -1;
     for (sint32 i = 0; i < MAX_STATIONS; i++) {
         if (ride->station_starts[i].xy != RCT_XY8_UNDEFINED) {
-            result = Math::Min(result, (uint32)(ride->station_length[i]));
+            result = std::min<sint32>(result, ride->station_length[i]);
         }
     }
-    return (sint32)result;
+    return result;
 }
 
 /**

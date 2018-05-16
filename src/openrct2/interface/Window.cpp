@@ -1817,8 +1817,8 @@ void window_resize(rct_window *w, sint32 dw, sint32 dh)
 
     // Update scroll widgets
     for (i = 0; i < 3; i++) {
-        w->scrolls[i].h_right = -1;
-        w->scrolls[i].v_bottom = -1;
+        w->scrolls[i].h_right = WINDOW_SCROLL_UNDEFINED;
+        w->scrolls[i].v_bottom = WINDOW_SCROLL_UNDEFINED;
     }
     window_update_scroll_widgets(w);
 

@@ -1110,12 +1110,12 @@ static void format_string_part(utf8 **dest, size_t *size, rct_string_id format, 
         if ((*size) > 0) *(*dest) = '\0';
     } else if (format <= REAL_NAME_END) {
         // Real name
-        format -= -REAL_NAME_START;
+        auto realNameIndex = format - REAL_NAME_START;
 
-        format_append_string(dest, size, real_names[format % Util::CountOf(real_names)]);
+        format_append_string(dest, size, real_names[realNameIndex % Util::CountOf(real_names)]);
         if ((*size) == 0) return;
         format_push_char(' ');
-        format_push_char(real_name_initials[(format >> 10) % Util::CountOf(real_name_initials)]);
+        format_push_char(real_name_initials[(realNameIndex >> 10) % Util::CountOf(real_name_initials)]);
         format_push_char('.');
         *(*dest) = '\0';
 

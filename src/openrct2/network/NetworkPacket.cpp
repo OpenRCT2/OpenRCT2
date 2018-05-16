@@ -36,7 +36,7 @@ uint8 * NetworkPacket::GetData()
     return &(*Data)[0];
 }
 
-uint32 NetworkPacket::GetCommand()
+sint32 NetworkPacket::GetCommand()
 {
     if (Data->size() >= sizeof(uint32))
     {

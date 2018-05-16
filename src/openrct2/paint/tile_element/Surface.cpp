@@ -849,8 +849,8 @@ static void viewport_surface_draw_tile_side_top(paint_session * session, enum ed
 
     sint16 al, ah, cl, ch, dl = 0, dh;
 
-    LocationXY8 offset = { 0, 0 };
-    LocationXY8 bounds = { 0, 0 };
+    sLocationXY8 offset = { 0, 0 };
+    sLocationXY8 bounds = { 0, 0 };
 
     switch (edge)
     {
@@ -956,7 +956,8 @@ static void viewport_surface_draw_tile_side_top(paint_session * session, enum ed
 
     if (isWater)
     {
-        offset.xy = 0;
+        offset.x = 0;
+        offset.y = 0;
     }
 
     while (cur_height < al && cur_height < ah)

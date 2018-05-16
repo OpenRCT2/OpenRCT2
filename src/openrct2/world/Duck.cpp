@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <limits>
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../sprites.h"
@@ -185,13 +186,13 @@ void rct_duck::UpdateSwim()
         if (randomNumber & 0x80000000)
         {
             state = DUCK_STATE::DOUBLE_DRINK;
-            frame = -1;
+            frame = std::numeric_limits<uint16>::max();
             UpdateDoubleDrink();
         }
         else
         {
             state = DUCK_STATE::DRINK;
-            frame = -1;
+            frame = std::numeric_limits<uint16>::max();
             UpdateDrink();
         }
     }

@@ -952,7 +952,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
     sint32 type;
     // edx
     rct_tile_element* tile_element;
-    uint16 flags =
+    auto flags =
         VIEWPORT_INTERACTION_MASK_SCENERY &
         VIEWPORT_INTERACTION_MASK_WALL &
         VIEWPORT_INTERACTION_MASK_LARGE_SCENERY &
@@ -1049,7 +1049,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
 
 static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex widgetIndex)
 {
-    uint16 flags =
+    auto flags =
         VIEWPORT_INTERACTION_MASK_SCENERY &
         VIEWPORT_INTERACTION_MASK_WALL &
         VIEWPORT_INTERACTION_MASK_LARGE_SCENERY &
@@ -1184,7 +1184,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z)) {
                 // CTRL pressed
                 rct_tile_element* tile_element;
-                uint16 flags =
+                auto flags =
                     VIEWPORT_INTERACTION_MASK_TERRAIN &
                     VIEWPORT_INTERACTION_MASK_RIDE &
                     VIEWPORT_INTERACTION_MASK_SCENERY &
@@ -1309,7 +1309,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
         // If CTRL not pressed
         if (!gSceneryCtrlPressed) {
-            uint16 flags =
+            auto flags =
                 VIEWPORT_INTERACTION_MASK_TERRAIN &
                 VIEWPORT_INTERACTION_MASK_WATER;
             sint32 interaction_type = 0;
@@ -1383,7 +1383,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
     case SCENERY_TYPE_PATH_ITEM:
     {
         // Path bits
-        uint16 flags =
+        auto flags =
             VIEWPORT_INTERACTION_MASK_FOOTPATH &
             VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
         sint32 interaction_type = 0;
@@ -1521,7 +1521,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
     case SCENERY_TYPE_BANNER:
     {
         // Banner
-        uint16 flags =
+        auto flags =
             VIEWPORT_INTERACTION_MASK_FOOTPATH &
             VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
         sint32 interaction_type = 0;

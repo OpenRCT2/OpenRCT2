@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <limits>
 #include <openrct2/actions/ParkSetNameAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
@@ -570,7 +571,7 @@ static rct_window *window_park_open()
     w->page = WINDOW_PARK_PAGE_ENTRANCE;
     w->viewport_focus_coordinates.y = 0;
     w->frame_no = 0;
-    w->list_information_type = -1;
+    w->list_information_type = std::numeric_limits<uint16>::max();
     w->numberOfStaff = -1;
     w->var_492 = 0;
     window_park_set_disabled_tabs(w);
