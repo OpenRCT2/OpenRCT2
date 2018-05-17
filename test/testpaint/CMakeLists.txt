@@ -86,6 +86,12 @@ add_executable(testpaint EXCLUDE_FROM_ALL ${ORCT2_RIDE_SOURCES} ${ORCT2_RIDE_DEP
 target_include_directories(testpaint PRIVATE "${ROOT_DIR}/src/")
 target_link_libraries(testpaint z)
 
+if (NOT MINGW AND NOT MSVC)
+    # For unicode code page conversion
+    find_package(ICU 59.0 REQUIRED COMPONENTS uc)
+    target_link_libraries(testpaint ${ICU_LIBRARIES})
+endif ()
+
 set_target_properties(testpaint PROPERTIES COMPILE_FLAGS "-DNO_VEHICLES -D__TESTPAINT__ -Wno-unused")
 set_target_properties(testpaint PROPERTIES LINK_FLAGS ${RCT2_SEGMENT_LINKER_FLAGS})
 add_dependencies(testpaint segfiles)
