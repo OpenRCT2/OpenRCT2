@@ -78,9 +78,6 @@ TEST_F(StringTest, Split_ByEmpty)
 // Tests for String::Convert
 ///////////////////////////////////////////////////////////////////////////////
 
-// TODO Remove when String::Convert is implemented for non-Windows platforms
-#ifdef _WIN32
-
 TEST_F(StringTest, Convert_950_to_UTF8)
 {
     auto input = StringFromHex("a7d6b374aabab4c4a6e2aab0af57");
@@ -112,8 +109,6 @@ TEST_F(StringTest, Convert_Empty)
     auto actual = String::Convert(input, CODE_PAGE::CP_1252, CODE_PAGE::CP_UTF8);
     ASSERT_EQ(expected, actual);
 }
-
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 // Tests for String::ToUpper

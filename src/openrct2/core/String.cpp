@@ -612,14 +612,20 @@ namespace String
         case CODE_PAGE::CP_950:
             return "big5";
 
+        case CODE_PAGE::CP_1252:
+            return "windows-1252";
+
+        case CODE_PAGE::CP_UTF8:
+            return "utf-8";
+
         default:
             throw std::runtime_error("Unsupported code page: " + std::to_string(codePage));
         }
     }
 
-    static char* CodePageFromUTF8(const utf8* src, size_t srcMaxSize, sint32 dstCodePage)
+    static std::string CodePageFromUnicode(icu::UnicodeString src, sint32 dstCodePage)
     {
-        UConverter *conv;
+        UConverter* conv;
         UErrorCode status = U_ZERO_ERROR;
 
         const char* codepage = GetIcuCodePage(dstCodePage);
@@ -631,25 +637,29 @@ namespace String
             return nullptr;
         }
 
-        const char *srcLimit = src + srcMaxSize;
-        auto sb = StringBuilder(64);
+        // Allocate buffer to convert to.
+        int8_t char_size = ucnv_getMaxCharSize(conv);
+        std::string buffer(char_size * src.length(), '\0');
 
-        while ((src < srcLimit) && (*src != '\0'))
+        char* buffer_limit = &buffer[0] + (char_size * src.length());
+
+        // Ready the source string as well...
+        const char16_t* source = src.getTerminatedBuffer();
+        const char16_t* source_limit = source + src.length();
+
+        // Convert the lot.
+        char* buffer_target = &buffer[0];
+        ucnv_fromUnicode(conv, &buffer_target, buffer_limit, (const UChar**) &source, source_limit, nullptr, true, &status);
+
+        if (U_FAILURE(status))
         {
-            codepoint_t codepoint = ucnv_getNextUChar(conv, &src, srcLimit, &status);
-
-            if (U_FAILURE(status))
-            {
-                log_error("ICU error: %s", u_errorName(status));
-                return nullptr;
-            }
-
-            sb.Append(codepoint);
+            log_error("ICU error: %s", u_errorName(status));
+            return nullptr;
         }
 
         ucnv_close(conv);
 
-        return (char*) sb.StealString();
+        return buffer;
     }
 #endif
 
@@ -680,11 +690,13 @@ namespace String
         icu::UnicodeString convertString(src.data(), codepage);
 
         std::string result;
-        convertString.toUTF8String(result);
-
-        if (dstCodePage != CODE_PAGE::CP_UTF8)
+        if (dstCodePage == CODE_PAGE::CP_UTF8)
         {
-            result = CodePageFromUTF8(result.c_str(), result.length(), dstCodePage);
+            convertString.toUTF8String(result);
+        }
+        else
+        {
+            result = CodePageFromUnicode(convertString, dstCodePage);
         }
 
         return result;
