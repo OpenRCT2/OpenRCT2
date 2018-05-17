@@ -16,6 +16,7 @@
 
 #include <climits>
 #include <cstdlib>
+#include <limits>
 
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
@@ -6991,9 +6992,11 @@ uint64 ride_entry_get_supported_track_pieces(const rct_ride_entry * rideEntry)
 
 static sint32 ride_get_smallest_station_length(Ride *ride)
 {
-    sint32 result = -1;
-    for (sint32 i = 0; i < MAX_STATIONS; i++) {
-        if (ride->station_starts[i].xy != RCT_XY8_UNDEFINED) {
+    auto result = std::numeric_limits<sint32>::max();
+    for (sint32 i = 0; i < MAX_STATIONS; i++)
+    {
+        if (ride->station_starts[i].xy != RCT_XY8_UNDEFINED)
+        {
             result = std::min<sint32>(result, ride->station_length[i]);
         }
     }
