@@ -4312,7 +4312,7 @@ STR_6002    :{SMALLFONT}{BLACK}Lampy a atrakce budou v noci svítit.{NEWLINE}Vy�
 STR_6003    :Seříznuté zobrazení
 STR_6004    :Seříznuté zobrazení
 STR_6005    :Povolit seříznuté zobrazení
-STR_6006    :{SMALLFONT}{BLACK}Seříznuté zobrazení vykresluje prvky mapy pouze do (včetně) dané výšky
+STR_6006    :{SMALLFONT}{BLACK}Seříznuté zobrazení vykresluje prvky mapy pouze do dané výšky (vertikální oříznutí) a ve vybrané oblasti (horizontální oříznutí).
 STR_6007    :Výška řezu
 STR_6008    :{SMALLFONT}{BLACK}Přepnout na hodnotu s/bez jednotek
 STR_6009    :{SMALLFONT}{BLACK}Zvolit výšku řezu
@@ -4545,6 +4545,10 @@ STR_6235    :Informace o serveru
 STR_6236    :Hráči
 STR_6237    :Skupiny
 STR_6238    :Nastavení hry více hráčů
+STR_6239    :Vertikální oříznutí
+STR_6240    :Horizontální oříznutí
+STR_6241    :Vybrat oblast
+STR_6242    :Zrušit výběr
 
 ###############################################################################
 ## RCT2 Scenarios
