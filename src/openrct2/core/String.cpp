@@ -26,6 +26,7 @@
 #ifndef _WIN32
 #include <unicode/ucnv.h>
 #include <unicode/unistr.h>
+#include <unicode/utypes.h>
 #endif
 
 #ifdef _WIN32
@@ -82,8 +83,17 @@ namespace String
         WideCharToMultiByte(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, result.data(), sizeReq, nullptr, nullptr);
         return result;
 #else
+// Which constructor to use depends on the size of wchar_t...
+// UTF-32 is the default on most POSIX systems; Windows uses UTF-16.
+// Unfortunately, we'll have to help the compiler here.
+#if U_SIZEOF_WCHAR_T==4
+        icu::UnicodeString str = icu::UnicodeString::fromUTF32((const UChar32*) src.data(), src.length());
+#elif U_SIZEOF_WCHAR_T==2
         std::wstring wstr = std::wstring(src);
-        icu::UnicodeString str = icu::UnicodeString((char16_t*) wstr.c_str());
+        icu::UnicodeString str = icu::UnicodeString((const wchar_t*) wstr.c_str());
+#else
+#error Unsupported U_SIZEOF_WCHAR_T size
+#endif
 
         std::string result;
         str.toUTF8String(result);
@@ -103,8 +113,23 @@ namespace String
 #else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
 
+// Which constructor to use depends on the size of wchar_t...
+// UTF-32 is the default on most POSIX systems; Windows uses UTF-16.
+// Unfortunately, we'll have to help the compiler here.
+#if U_SIZEOF_WCHAR_T==4
+        size_t length = (size_t) str.length();
+        std::wstring result(length, '\0');
+
+        UErrorCode status = U_ZERO_ERROR;
+        str.toUTF32((UChar32*) &result[0], str.length(), status);
+
+#elif U_SIZEOF_WCHAR_T==2
         const char16_t* buffer = str.getBuffer();
         std::wstring result = (wchar_t*) buffer;
+
+#else
+#error Unsupported U_SIZEOF_WCHAR_T size
+#endif
 
         return result;
 #endif
