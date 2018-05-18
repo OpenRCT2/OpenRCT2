@@ -1050,7 +1050,7 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
             // 0 = east/right, 1 = south/bottom, 2 = west/left, 3 = north/top
             const sint32 eswn = (widgetIndex - WIDX_PATH_CHECK_EDGE_E) / 2;
             // Transform to world orientation
-            const sint32 index = (4 + eswn - get_current_rotation()) & 3;
+            const sint32 index = (eswn - get_current_rotation()) & 3;
             window_tile_inspector_path_toggle_edge(w->selected_list_item, index + 4);  // The corners are stored in the 4 most significant bits, hence the + 4
             break;
         }
@@ -1062,7 +1062,7 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
             // 0 = NE, 1 = SE, 2 = SW, 3 = NW
             const sint32 neseswnw = (widgetIndex - WIDX_PATH_CHECK_EDGE_NE) / 2;
             // Transform to world orientation
-            const sint32 index = (4 + neseswnw - get_current_rotation()) & 3;
+            const sint32 index = (neseswnw - get_current_rotation()) & 3;
             window_tile_inspector_path_toggle_edge(w->selected_list_item, index);
             break;
         }
@@ -1845,15 +1845,20 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 sint16 parkEntranceIndex = park_entrance_get_index(middleX, middleY, tileElement->base_height * 8);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &parkEntranceIndex, COLOUR_DARK_GREEN, x, y + 11);
             }
-            else {
-                sint16 rideEntranceIndex = (tileElement->properties.entrance.index & 0x30) >> 4;
-                if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
+            else
+            {
+                sint16 rideEntranceIndex = (tileElement->properties.entrance.index & 0x30) >> 4; // TODO: use mask or function
+                if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE)
+                {
                     // Ride entrance ID
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &rideEntranceIndex, COLOUR_DARK_GREEN, x, y + 11);
+                    gfx_draw_string_left(
+                        dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &rideEntranceIndex, COLOUR_DARK_GREEN, x, y + 11);
                 }
-                else {
+                else
+                {
                     // Ride exit ID
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_EXIT_ID, &rideEntranceIndex, COLOUR_DARK_GREEN, x, y + 11);
+                    gfx_draw_string_left(
+                        dpi, STR_TILE_INSPECTOR_ENTRANCE_EXIT_ID, &rideEntranceIndex, COLOUR_DARK_GREEN, x, y + 11);
                 }
             }
 
