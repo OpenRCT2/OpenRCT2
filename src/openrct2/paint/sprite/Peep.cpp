@@ -26,7 +26,7 @@
  *
  *  rct2: 0x0068F0FB
  */
-void peep_paint(paint_session * session, rct_peep * peep, sint32 imageDirection)
+void peep_paint(paint_session * session, const rct_peep * peep, sint32 imageDirection)
 {
 #ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available()) {
@@ -59,7 +59,7 @@ void peep_paint(paint_session * session, rct_peep * peep, sint32 imageDirection)
     }
 #endif
 
-    rct_drawpixelinfo * dpi = session->Unk140E9A8;
+    rct_drawpixelinfo * dpi = session->DPI;
     if (dpi->zoom_level > 2) {
         return;
     }

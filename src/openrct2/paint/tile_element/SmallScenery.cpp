@@ -164,7 +164,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, cons
     }
 
     if (scenery_small_entry_has_flag(entry,  SMALL_SCENERY_FLAG_ANIMATED)) {
-        rct_drawpixelinfo* dpi = session->Unk140E9A8;
+        rct_drawpixelinfo* dpi = session->DPI;
         if ((scenery_small_entry_has_flag(entry,  SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)) || (dpi->zoom_level <= 1)) {
             // 6E01A9:
             if (scenery_small_entry_has_flag(entry,  SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1)) {

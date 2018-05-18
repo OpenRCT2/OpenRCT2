@@ -49,7 +49,7 @@ namespace TestPaint
         rct_drawpixelinfo dpi = { 0 };
         dpi.zoom_level = 1;
         RCT2_Unk140E9A8 = &dpi;
-        gPaintSession.Unk140E9A8 = &dpi;
+        gPaintSession.DPI = &dpi;
 
         {
             Ride ride = {0};

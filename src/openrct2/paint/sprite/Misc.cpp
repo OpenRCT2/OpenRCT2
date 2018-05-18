@@ -35,9 +35,9 @@ const uint32 vehicle_particle_base_sprites[] = {
 /**
  * rct2: 0x00672AC9
  */
-void misc_paint(paint_session * session, rct_sprite *misc, sint32 imageDirection)
+void misc_paint(paint_session * session, const rct_sprite *misc, sint32 imageDirection)
 {
-    rct_drawpixelinfo * dpi = session->Unk140E9A8;
+    rct_drawpixelinfo * dpi = session->DPI;
 
     switch (misc->steam_particle.misc_identifier) {
         case SPRITE_MISC_STEAM_PARTICLE: // 0
@@ -53,7 +53,7 @@ void misc_paint(paint_session * session, rct_sprite *misc, sint32 imageDirection
                 return;
             }
 
-            rct_money_effect * moneyEffect = &misc->money_effect;
+            const rct_money_effect * moneyEffect = &misc->money_effect;
             money32 value;
             rct_string_id stringId = money_effect_get_string_id(moneyEffect, &value);
             paint_floating_money_effect(
@@ -178,7 +178,7 @@ void misc_paint(paint_session * session, rct_sprite *misc, sint32 imageDirection
 
         case SPRITE_MISC_DUCK:
             if (dpi->zoom_level == 0) {
-                rct_duck * duck = &misc->duck;
+                const rct_duck * duck = &misc->duck;
                 uint32 imageId = duck_get_frame_image(&misc->duck, imageDirection);
                 if (imageId != 0) {
                     sub_98196C(session, imageId, 0, 0, 1, 1, 0, duck->z);

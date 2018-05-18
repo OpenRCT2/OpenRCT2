@@ -1319,7 +1319,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(sint32 trackType, sin
  *  rct2: 0x006D4295
  */
 void vehicle_visual_splash_boats_or_water_coaster(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z,
-                                                  rct_vehicle * vehicle, const rct_ride_entry_vehicle * vehicleEntry)
+                                                  const rct_vehicle * vehicle, const rct_ride_entry_vehicle * vehicleEntry)
 {
     if (vehicle->is_child)
     {

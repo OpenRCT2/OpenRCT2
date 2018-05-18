@@ -3041,7 +3041,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle * vehicle)
  *
  *  rct2: 0x006D9EB0
  */
-void vehicle_peep_easteregg_here_we_are(rct_vehicle * vehicle)
+void vehicle_peep_easteregg_here_we_are(const rct_vehicle * vehicle)
 {
     uint16 spriteId = vehicle->sprite_index;
     do
@@ -5696,7 +5696,7 @@ produceScream:
  * dx: lateralG
  * esi: vehicle
  */
-void vehicle_get_g_forces(rct_vehicle * vehicle, sint32 * verticalG, sint32 * lateralG)
+void vehicle_get_g_forces(const rct_vehicle * vehicle, sint32 * verticalG, sint32 * lateralG)
 {
     sint32 gForceVert    = (((sint64)0x280000) * Unk9A37E4[vehicle->vehicle_sprite_type]) >> 32;
     gForceVert           = (((sint64)gForceVert) * Unk9A39C4[vehicle->bank_rotation]) >> 32;
@@ -6218,7 +6218,7 @@ void vehicle_get_g_forces(rct_vehicle * vehicle, sint32 * verticalG, sint32 * la
         *lateralG = (sint16)(gForceLateral & 0xFFFF);
 }
 
-void vehicle_set_map_toolbar(rct_vehicle * vehicle)
+void vehicle_set_map_toolbar(const rct_vehicle * vehicle)
 {
     Ride * ride;
     sint32 vehicleIndex;
@@ -6249,9 +6249,9 @@ void vehicle_set_map_toolbar(rct_vehicle * vehicle)
     set_map_tooltip_format_arg(16, uint32, (uint16)arg1);
 }
 
-rct_vehicle * vehicle_get_head(rct_vehicle * vehicle)
+rct_vehicle* vehicle_get_head(const rct_vehicle* vehicle)
 {
-    rct_vehicle * prevVehicle;
+    rct_vehicle* prevVehicle;
 
     for (;;)
     {
@@ -6262,10 +6262,10 @@ rct_vehicle * vehicle_get_head(rct_vehicle * vehicle)
         vehicle = prevVehicle;
     }
 
-    return vehicle;
+    return const_cast<rct_vehicle*>(vehicle);
 }
 
-rct_vehicle * vehicle_get_tail(rct_vehicle * vehicle)
+rct_vehicle* vehicle_get_tail(const rct_vehicle* vehicle)
 {
     uint16 spriteIndex;
 
@@ -6273,10 +6273,11 @@ rct_vehicle * vehicle_get_tail(rct_vehicle * vehicle)
     {
         vehicle = GET_VEHICLE(spriteIndex);
     }
-    return vehicle;
+
+    return const_cast<rct_vehicle*>(vehicle);
 }
 
-sint32 vehicle_is_used_in_pairs(rct_vehicle * vehicle)
+sint32 vehicle_is_used_in_pairs(const rct_vehicle * vehicle)
 {
     return vehicle->num_seats & VEHICLE_SEAT_PAIR_FLAG;
 }
@@ -9851,7 +9852,7 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
     return regs.eax;
 }
 
-rct_ride_entry_vehicle * vehicle_get_vehicle_entry(rct_vehicle * vehicle)
+rct_ride_entry_vehicle * vehicle_get_vehicle_entry(const rct_vehicle * vehicle)
 {
     rct_ride_entry * rideEntry = get_ride_entry(vehicle->ride_subtype);
     if (rideEntry == nullptr)
@@ -9861,7 +9862,7 @@ rct_ride_entry_vehicle * vehicle_get_vehicle_entry(rct_vehicle * vehicle)
     return &rideEntry->vehicles[vehicle->vehicle_type];
 }
 
-sint32 vehicle_get_total_num_peeps(rct_vehicle * vehicle)
+sint32 vehicle_get_total_num_peeps(const rct_vehicle * vehicle)
 {
     uint16 spriteIndex;
     sint32 numPeeps = 0;

@@ -61,7 +61,7 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
 
 static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi)
 {
-    session->Unk140E9A8 = dpi;
+    session->DPI = dpi;
     session->EndOfPaintStructArray = &session->PaintStructs[4000 - 1];
     session->NextFreePaintStruct = session->PaintStructs;
     session->UnkF1AD28 = nullptr;
@@ -135,7 +135,7 @@ static paint_struct * sub_9819_c(
     sint32 right = left + g1->width;
     sint32 top = bottom + g1->height;
 
-    rct_drawpixelinfo * dpi = session->Unk140E9A8;
+    rct_drawpixelinfo * dpi = session->DPI;
 
     if (right <= dpi->x)return nullptr;
     if (top <= dpi->y)return nullptr;
@@ -192,7 +192,7 @@ static paint_struct * sub_9819_c(
 */
 void paint_session_generate(paint_session * session)
 {
-    rct_drawpixelinfo * dpi = session->Unk140E9A8;
+    rct_drawpixelinfo * dpi = session->DPI;
     LocationXY16 mapTile =
     {
         (sint16)(dpi->x & 0xFFE0),
@@ -842,7 +842,7 @@ paint_struct * sub_98196C(
     sint16 right = left + g1Element->width;
     sint16 top = bottom + g1Element->height;
 
-    rct_drawpixelinfo *dpi = session->Unk140E9A8;
+    rct_drawpixelinfo *dpi = session->DPI;
 
     if (right <= dpi->x) return nullptr;
     if (top <= dpi->y) return nullptr;
@@ -900,6 +900,7 @@ paint_struct * sub_98196C(
 * @param bound_box_offset_z (0x009DEA56)
 * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
 */
+// Track Pieces, Shops.
 paint_struct * sub_98197C(
     paint_session * session,
     uint32          image_id,

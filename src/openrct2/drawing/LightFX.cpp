@@ -299,7 +299,7 @@ void lightfx_prepare_light_list()
                     dpi->height = 1;
                     dpi->width = 1;
                     gPaintSession.EndOfPaintStructArray = 0xF1A4CC;
-                    gPaintSession.Unk140E9A8 = dpi;
+                    gPaintSession.DPI = dpi;
                     painter_setup();
                     viewport_paint_setup();
                     paint_session_arrange(gPaintSession);
