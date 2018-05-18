@@ -1777,8 +1777,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
-STR_1775    :مغلق
-STR_1776    :مفعل
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}Ride music
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
@@ -3574,9 +3574,9 @@ STR_5232    :{SMALLFONT}{BLACK}Editors
 STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
 STR_5234    :{SMALLFONT}{BLACK}Prompts
 STR_5235    :{SMALLFONT}{BLACK}Settings
-STR_5236    :Window:
-STR_5237    :Palette:
-STR_5238    :الثيم الحالي:
+STR_5236    :نافذة
+STR_5237    :لوحة
+STR_5238    :الثيم الحالي
 STR_5239    :Duplicate
 STR_5240    :Enter a name for the theme
 STR_5241    :Can't change this theme
@@ -3834,8 +3834,8 @@ STR_5492    :إعدادات المشهد
 STR_5493    :أرسل رسالة
 STR_5494    :<removed string - do not use>
 STR_5495    :قائمة اللاعبيين
-STR_5496    :اللاعب:
-STR_5497    :البنج:
+STR_5496    :اللاعب
+STR_5497    :البنج
 STR_5498    :قائمة السرفر
 STR_5499    :اسم اللاعب:
 STR_5500    :أضف سرفر
@@ -3980,7 +3980,7 @@ STR_5638    :Permission denied
 STR_5639    :{SMALLFONT}{BLACK}أظهر قائمة اللاعبين
 STR_5640    :{SMALLFONT}{BLACK}إدارة المجموعات
 STR_5641    :المجموعة الإفتراضية:
-STR_5642    :مجموعة:
+STR_5642    :مجموعة
 STR_5643    :أضف مجموعة
 STR_5644    :إمسح مجموعة
 STR_5645    :الشات
@@ -4008,7 +4008,7 @@ STR_5666    :Passwordless Login
 STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
 STR_5703    :لا يمكن طرد المُضيف
-STR_5704    :Last Action:
+STR_5704    :أخر فعل
 STR_5705    :Can't set to this group
 STR_5706    :Can't remove group that players belong to
 STR_5707    :This group cannot be modified
@@ -4183,34 +4183,34 @@ STR_5871    :Plants don't age
 STR_5872    :{SMALLFONT}{BLACK}Disable plant ageing such that they don't wilt.
 STR_5873    :Allow chain lifts on all track pieces
 STR_5874    :{SMALLFONT}{BLACK}Allows any piece of track to be made into a chain lift
-STR_5875    :Drawing Engine:
-STR_5876    :{SMALLFONT}{BLACK}The engine to use for drawing the game.
-STR_5877    :Software
-STR_5878    :Software (hardware display)
-STR_5879    :OpenGL (experimental)
+STR_5875    :محرك الرسم:
+STR_5876    :{SMALLFONT}{BLACK}المحرك المُستخدم في رسم اللعبة.
+STR_5877    :البرمجيات
+STR_5878    :البرمجيات (عرض الأجهزة)
+STR_5879    :أوبن جي إل (تجريبي)
 STR_5880    :المحدد فقط
 STR_5881    :الغير محدد فقط
-STR_5882    :Custom currency
-STR_5883    :Custom currency configuration
-STR_5884    :{WINDOW_COLOUR_2}Exchange rate:
-STR_5885    :{WINDOW_COLOUR_2}is equivalent to {COMMA32} GBP (£)
+STR_5882    :العملة المخصصة
+STR_5883    :تكوين العملة المخصصة
+STR_5884    :{WINDOW_COLOUR_2}سعر الصرف:
+STR_5885    :{WINDOW_COLOUR_2}ما يعادل {COMMA32} GBP (£)
 STR_5886    :{WINDOW_COLOUR_2}علامة الميزانية:
-STR_5887    :Prefix
-STR_5888    :Suffix
-STR_5889    :Custom currency symbol
-STR_5890    :Enter the currency symbol to display
-STR_5891    :Default
-STR_5892    :{SMALLFONT}{BLACK}Go to the default directory
-STR_5893    :Exchange Rate
-STR_5894    :Enter the exchange rate
-STR_5895    :Save Track
-STR_5896    :Track save failed!
+STR_5887    :السابقة
+STR_5888    :اللاحقة
+STR_5889    :رمز العملة المخصص
+STR_5890    :أدخل رمز العملة لعرضها
+STR_5891    :الإفتراضي
+STR_5892    :{SMALLFONT}{BLACK}اذهب إلى الوجهة الافتراضية
+STR_5893    :سعر الصرف
+STR_5894    :أدخل سعر الصرف
+STR_5895    :حفظ المسار
+STR_5896    :تعذّر حفظ المسار!
 STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}Can't load the track, the file might be {newline}corrupted, broken or missing!
 STR_5899    :Toggle paint debug window
-STR_5900    :Use original drawing code
-STR_5901    :Show segment heights
-STR_5902    :Show bounding boxes
+STR_5900    :استخدم رمز الرسم الأصلي
+STR_5901    :إظهار ارتفاع المقطع
+STR_5902    :إظهار الصناديق المحيطة
 STR_5903    :Show paint debug window
 STR_5904    :إرجاع التاريخ
 STR_5905    :{SMALLFONT}{BLACK}A map generation tool that automatically creates a custom landscape
@@ -4219,7 +4219,7 @@ STR_5907    :{SMALLFONT}{BLACK}When enabled, zooming in will centre around the c
 STR_5908    :Allow arbitrary ride type changes
 STR_5909    :{SMALLFONT}{BLACK}Allows changing ride type freely. May cause crashes.
 STR_5910    :تطبيق
-STR_5911    :See-Through Paths
+STR_5911    :انظر من خلال المسارات
 STR_5912    :See-through paths toggle
 STR_5913    :الشات
 STR_5914    :رحلة غير معروفة
@@ -4232,15 +4232,15 @@ STR_5920    :تصيير مؤثرات الطقس
 STR_5921    :{SMALLFONT}{BLACK}If enabled, rain and gloomy colours will be rendered during storms.
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {STRINGID}
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {COMMA16} {STRINGID} per train
-STR_5924    :Surface details
+STR_5924    :تفاصيل السطح
 STR_5925    :تفاصيل المسار
 STR_5926    :تفاصيل المسار
-STR_5927    :Scenery details
+STR_5927    :تفاصيل المشهد
 STR_5928    :تفاصيل المدخل
 STR_5929    :خصائص الحائط
-STR_5930    :Large scenery details
+STR_5930    :تفاصيل المشهد الكبير
 STR_5931    :تفاصيل اليافطة
-STR_5932    :Corrupt element details
+STR_5932    :تفاصيل العناصر الفاسدة
 STR_5933    :الخصائص
 STR_5934    :{WINDOW_COLOUR_2}Terrain texture: {BLACK}{STRINGID}
 STR_5935    :{WINDOW_COLOUR_2}Terrain edge: {BLACK}{STRINGID}
@@ -4249,10 +4249,10 @@ STR_5937    :Not owned and not for sale
 STR_5938    :{WINDOW_COLOUR_2}Water level: {BLACK}{COMMA16}
 STR_5939    :Remove park fences
 STR_5940    :Restore park fences
-STR_5941    :{WINDOW_COLOUR_2}Base height:
+STR_5941    :{WINDOW_COLOUR_2}ارتفاع القاعدة:
 STR_5942    :{WINDOW_COLOUR_2}أسم المسار: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Additions: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Additions: {BLACK}None
+STR_5943    :{WINDOW_COLOUR_2}الإضافات: {BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}الإضافات: {BLACK}لا شئ
 STR_5945    :{WINDOW_COLOUR_2}حواف متصلة:
 STR_5946    :{WINDOW_COLOUR_2}نوع الرحلة: {BLACK}{STRINGID}
 STR_5947    :{WINDOW_COLOUR_2}معرف الرحلة: {BLACK}{COMMA16}
@@ -4263,35 +4263,35 @@ STR_5951    :{WINDOW_COLOUR_2}Track piece ID: {BLACK}{COMMA16}
 STR_5952    :{WINDOW_COLOUR_2}Sequence number: {BLACK}{COMMA16}
 STR_5953    :{SMALLFONT}{BLACK}Sort the map elements on the current tile based on their base height.
 STR_5954    :{WINDOW_COLOUR_2}Scenery age: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Quadrant placement: {BLACK}{STRINGID}
-STR_5956    :Southwest
-STR_5957    :Northwest
-STR_5958    :Northeast
-STR_5959    :Southeast
-STR_5960    :{WINDOW_COLOUR_2}Quadrant placement:
-STR_5961    :{WINDOW_COLOUR_2}Entry index: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Collision detection:
-STR_5963    :{WINDOW_COLOUR_2}Raised Corners:
-STR_5964    :{WINDOW_COLOUR_2}Diagonal
+STR_5955    :{WINDOW_COLOUR_2}وضع حالة رباعي: {BLACK}{STRINGID}
+STR_5956    :جنوب غرب
+STR_5957    :الشمال الغربي
+STR_5958    :شمالي شرقي
+STR_5959    :الجنوب الشرقي
+STR_5960    :{WINDOW_COLOUR_2}وضع حالة رباعي:
+STR_5961    :{WINDOW_COLOUR_2}فهرس المدخل: {BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}كشف التصادم:
+STR_5963    :{WINDOW_COLOUR_2}زوايا مرتفعة:
+STR_5964    :{WINDOW_COLOUR_2}مائل
 STR_5965    :{WINDOW_COLOUR_2}نوع المدخل: {BLACK}{STRINGID}
 STR_5966    :{WINDOW_COLOUR_2}جزء مدخل الحديقة: {BLACK}{STRINGID}
 STR_5967    :وسط
 STR_5968    :شمال
 STR_5969    :يمين
-STR_5970    :{WINDOW_COLOUR_2}Entrance ID: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}Exit ID: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}Ride ID: {BLACK}{COMMA16}
+STR_5970    :{WINDOW_COLOUR_2}مُعرف المدخل: {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}مُعرف المخرج: {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}مُعرف الرحلة: {BLACK}{COMMA16}
 STR_5973    :تسلق إلي الأعلي
 STR_5974    :{SMALLFONT}{BLACK}Changes the base- and clearance height so that it's at the same as the next element on the current tile. Doing this makes it easier to build on this tile.
 STR_5975    :إنحدار:
 STR_5976    :مستوي
-STR_5977    :Right side up
-STR_5978    :Left side up
+STR_5977    :الجانب الأيمن الأعلى
+STR_5978    :الجانب الأيسر لأعلى
 STR_5979    :{WINDOW_COLOUR_2}نوع الحائط: {BLACK}{COMMA16}
 STR_5980    :{WINDOW_COLOUR_2}كتابة اليافطة: {BLACK}{STRINGID}
 STR_5981    :{WINDOW_COLOUR_2}ليست يافطة
-STR_5982    :{WINDOW_COLOUR_2}Large scenery type: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}Large scenery piece ID: {BLACK}{COMMA16}
+STR_5982    :{WINDOW_COLOUR_2}نوع المشهد الكبير: {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}معرّف قطعة المشاهد الكبيرة: {BLACK}{COMMA16}
 STR_5984    :المسارات المقفلة:
 STR_5985    :مجلد جديد
 STR_5986    :أدخل الأسم للمجلد الجديد.
@@ -4311,13 +4311,13 @@ STR_5999    :حدد النقود
 STR_6000    :أدخل قيمة جديدة
 STR_6001    :تفعيل تأثيرات الضوء (تجريبي)
 STR_6002    :{SMALLFONT}{BLACK}Lamps and rides will be lit up at night.{NEWLINE}Requires rendering engine to be set to hardware display.
-STR_6003    :Cut-away View
-STR_6004    :Cut-away View
-STR_6005    :Enable cut-away view
-STR_6006    :{SMALLFONT}{BLACK}Cut-away view only displays map elements at or below the cut height
-STR_6007    :Cut height
+STR_6003    :عرض كوتاواي
+STR_6004    :عرض كوتاواي
+STR_6005    :تفعيل عرض كوتاواي
+STR_6006    :{SMALLFONT}{BLACK}Cut-away view only displays map elements at or below the cut height (vertical clipping) and in the selected area (horizontal clipping).
+STR_6007    :علو القطع
 STR_6008    :{SMALLFONT}{BLACK}Click to toggle raw value<->value in measurement units
-STR_6009    :{SMALLFONT}{BLACK}Select cut height
+STR_6009    :{SMALLFONT}{BLACK}حدد علو القطع
 STR_6010    :{COMMA2DP32}متر
 STR_6011    :{COMMA1DP16}قدم
 STR_6012    :{COMMA1DP16}
@@ -4478,7 +4478,7 @@ STR_6166    :{SMALLFONT}{BLACK}مزامنة كل فريم إلي معدل تحد
 STR_6167    :{SMALLFONT}{BLACK}متقدم
 STR_6168    :تسلسل العنوان
 STR_6169    :تحديد السيناريو
-STR_6170    :الضبط
+STR_6170    :ضبط الواجهة
 STR_6171    :البحث
 STR_6172    :{SMALLFONT}{BLACK}بحث
 STR_6173    :من فضلك وفر الأسم للبحث:
@@ -4530,6 +4530,28 @@ STR_6218    :الرسمية OpenRCT2
 STR_6219    :تعليم مشاكل المسار
 STR_6220    :أجعله مُستخدم
 STR_6221    :{SMALLFONT}{BLACK هذا سوف يحدد المدخل والمخرج المعروف للرحلة للمنطقة هذه. فقط مدخل ومخرج واحد يمكن إسخدامة لكل  محطة.
+STR_6222    :لا يمكن وضع نقطة دخول الضيوف هنا...
+STR_6223    :يجب أن يكون خارج حدود الحديقة!
+STR_6224    :{STRING} تم وضع نقطة دخول الضيوف.
+STR_6225    :غير مدعومة من تصيير أوبن جي إل
+STR_6226    :تمكين استكمال السيناريو المبكر
+STR_6227    :{SMALLFONT}{BLACK}يتم إطلاق إستكمال السيناريو عندما يتم استيفاء جميع أهداف السيناريو قبل الموعد المحدد.
+STR_6228    :إعدادات السيناريو
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :مُجمد
+STR_6233    :عرض كوتاواي
+STR_6234    :قم بتمييز مشاكل المسار
+STR_6235    :معلومات السرفر
+STR_6236    :اللاعبين
+STR_6237    :المجموعات
+STR_6238    :إعدادات اللعب المتعدد
+STR_6239    :لقطة عمودية
+STR_6240    :لقطة أفقية
+STR_6241    :حدد منطقة
+STR_6242    :إخلاء المُحدد
+
 #############
 # Scenarios #
 #############
