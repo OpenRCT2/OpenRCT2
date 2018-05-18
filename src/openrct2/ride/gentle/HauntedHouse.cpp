@@ -62,7 +62,7 @@ static void paint_haunted_house_structure(paint_session * session, uint8 rideInd
         session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
         boundBox.offset_y, height);
 
-    rct_drawpixelinfo * dpi = session->Unk140E9A8;
+    rct_drawpixelinfo * dpi = session->DPI;
     if (dpi->zoom_level == 0 && frameNum != 0)
     {
         switch (direction)

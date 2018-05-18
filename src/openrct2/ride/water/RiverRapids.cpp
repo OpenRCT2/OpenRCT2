@@ -185,7 +185,7 @@ static constexpr const uint32 river_rapids_track_pieces_25_deg_down_to_flat[][2]
  *  rct2: 0x006D5889
  */
 void vehicle_visual_river_rapids(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z,
-                                 rct_vehicle * vehicle, const rct_ride_entry_vehicle * vehicleEntry)
+                                 const rct_vehicle * vehicle, const rct_ride_entry_vehicle * vehicleEntry)
 {
     sint32 image_id;
     sint32 baseImage_id = imageDirection;
@@ -232,7 +232,7 @@ void vehicle_visual_river_rapids(paint_session * session, sint32 x, sint32 image
     sub_98197C(
         session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z);
 
-    if (session->Unk140E9A8->zoom_level < 2 && vehicle->num_peeps > 0)
+    if (session->DPI->zoom_level < 2 && vehicle->num_peeps > 0)
     {
         // Draw peeps: (this particular vehicle doesn't sort them back to front like others so the back ones sometimes clip, but
         // that's how the original does it...)

@@ -2202,7 +2202,7 @@ void track_paint(paint_session * session, uint8 direction, sint32 height, const 
         ride->entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
     }
 
-    rct_drawpixelinfo * dpi = session->Unk140E9A8;
+    rct_drawpixelinfo * dpi = session->DPI;
 
     if ((!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex) &&
         !(gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))

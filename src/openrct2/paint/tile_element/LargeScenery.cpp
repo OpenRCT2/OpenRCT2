@@ -258,7 +258,7 @@ void large_scenery_paint(paint_session * session, uint8 direction, uint16 height
                 return;
             }
         }
-        rct_drawpixelinfo* dpi = session->Unk140E9A8;
+        rct_drawpixelinfo* dpi = session->DPI;
         if (dpi->zoom_level > 1) {
             large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
             return;
@@ -339,7 +339,7 @@ void large_scenery_paint(paint_session * session, uint8 direction, uint16 height
         }
         return;
     }
-    rct_drawpixelinfo* dpi = session->Unk140E9A8;
+    rct_drawpixelinfo* dpi = session->DPI;
     if (dpi->zoom_level > 0) {
         large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
         return;

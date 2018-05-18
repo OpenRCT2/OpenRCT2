@@ -62,7 +62,7 @@ static void paint_enterprise_structure(
     uint32 imageId = (baseImageId + imageOffset) | imageColourFlags;
     sub_98197C(session, imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height);
 
-    rct_drawpixelinfo * dpi = session->Unk140E9A8;
+    rct_drawpixelinfo * dpi = session->DPI;
 
     if (dpi->zoom_level == 0 && imageOffset < 12 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {

@@ -1006,7 +1006,7 @@ static void viewport_surface_draw_water_side_top(paint_session * session, enum e
 */
 void surface_paint(paint_session * session, uint8 direction, uint16 height, const rct_tile_element * tileElement)
 {
-    rct_drawpixelinfo * dpi = session->Unk140E9A8;
+    rct_drawpixelinfo * dpi = session->DPI;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
     session->DidPassSurface = true;
     session->SurfaceElement = tileElement;

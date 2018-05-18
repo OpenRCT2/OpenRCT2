@@ -39,7 +39,7 @@ enum
  *  rct2: 0x006D5DA9
  */
 void vehicle_visual_roto_drop(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z,
-                              rct_vehicle * vehicle, const rct_ride_entry_vehicle * vehicleEntry)
+                              const rct_vehicle * vehicle, const rct_ride_entry_vehicle * vehicleEntry)
 {
     sint32 image_id;
     sint32 baseImage_id = (vehicleEntry->base_image_id + 4) + ((vehicle->animation_frame / 4) & 0x3);

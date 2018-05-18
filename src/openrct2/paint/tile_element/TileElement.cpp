@@ -122,7 +122,7 @@ static void blank_tiles_paint(paint_session * session, sint32 x, sint32 y)
     dx -= 16;
     sint32 bx = dx + 32;
 
-    rct_drawpixelinfo * dpi = session->Unk140E9A8;
+    rct_drawpixelinfo * dpi = session->DPI;
     if (bx <= dpi->y) return;
     dx -= 20;
     dx -= dpi->height;
@@ -142,7 +142,7 @@ bool gShowSupportSegmentHeights = false;
  */
 static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
 {
-    rct_drawpixelinfo *dpi = session->Unk140E9A8;
+    rct_drawpixelinfo *dpi = session->DPI;
 
     if ((gCurrentViewportFlags & VIEWPORT_FLAG_CLIP_VIEW))
     {

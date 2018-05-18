@@ -309,7 +309,7 @@ void entrance_paint(paint_session * session, uint8 direction, sint32 height, con
 {
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_LABEL;
 
-    rct_drawpixelinfo* dpi = session->Unk140E9A8;
+    rct_drawpixelinfo* dpi = session->DPI;
 
     if (gCurrentViewportFlags & VIEWPORT_FLAG_PATH_HEIGHTS &&
         dpi->zoom_level == 0){

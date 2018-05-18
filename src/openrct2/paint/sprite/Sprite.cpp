@@ -28,29 +28,34 @@
  * Paint Quadrant
  *  rct2: 0x0069E8B0
  */
-void sprite_paint_setup(paint_session * session, const uint16 eax, const uint16 ecx)
+void sprite_paint_setup(paint_session * session, const uint16 x, const uint16 y)
 {
-    rct_drawpixelinfo* dpi;
-
-    if ((eax & 0xe000) | (ecx & 0xe000)) return;
-
-    uint16 sprite_idx = sprite_get_first_in_quadrant(eax, ecx);
-    if (sprite_idx == SPRITE_INDEX_NULL) return;
-
-    if (gTrackDesignSaveMode) return;
-
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
+    if ((x & 0xe000) | (y & 0xe000))
     {
         return;
     }
 
-    bool highlightPathIssues = (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
+    if (gTrackDesignSaveMode || (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES))
+    {
+        return;
+    }
 
-    dpi = session->Unk140E9A8;
-    if (dpi->zoom_level > 2) return;
+    uint16 sprite_idx = sprite_get_first_in_quadrant(x, y);
+    if (sprite_idx == SPRITE_INDEX_NULL)
+    {
+        return;
+    }
 
+    rct_drawpixelinfo* dpi = session->DPI;
+    if (dpi->zoom_level > 2)
+    {
+        return;
+    }
 
-    for (rct_sprite* spr = get_sprite(sprite_idx); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.next_in_quadrant) {
+    const bool highlightPathIssues = (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
+
+    for (const rct_sprite* spr = get_sprite(sprite_idx); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.next_in_quadrant)
+    {
         spr = get_sprite(sprite_idx);
 
         if (highlightPathIssues)
@@ -76,19 +81,26 @@ void sprite_paint_setup(paint_session * session, const uint16 eax, const uint16 
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_CLIP_VIEW))
         {
             if (spr->unknown.z > (gClipHeight * 8))
+            {
                 continue;
+            }
             if (spr->unknown.x / 32 < gClipSelectionA.x || spr->unknown.x / 32 > gClipSelectionB.x)
+            {
                 continue;
+            }
             if (spr->unknown.y / 32 < gClipSelectionA.y || spr->unknown.y / 32 > gClipSelectionB.y)
+            {
                 continue;
+            }
         }
 
-        dpi = session->Unk140E9A8;
+        dpi = session->DPI;
 
-        if (dpi->y + dpi->height <= spr->unknown.sprite_top) continue;
-        if (spr->unknown.sprite_bottom <= dpi->y)continue;
-        if (dpi->x + dpi->width <= spr->unknown.sprite_left)continue;
-        if (spr->unknown.sprite_right <= dpi->x)continue;
+        if (dpi->y + dpi->height <= spr->unknown.sprite_top || spr->unknown.sprite_bottom <= dpi->y
+            || dpi->x + dpi->width <= spr->unknown.sprite_left || spr->unknown.sprite_right <= dpi->x)
+        {
+            continue;
+        }
 
         sint32 image_direction = session->CurrentRotation;
         image_direction <<= 3;
@@ -100,7 +112,8 @@ void sprite_paint_setup(paint_session * session, const uint16 eax, const uint16 
         session->SpritePosition.y = spr->unknown.y;
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
 
-        switch (spr->unknown.sprite_identifier) {
+        switch (spr->unknown.sprite_identifier)
+        {
         case SPRITE_IDENTIFIER_VEHICLE:
             vehicle_paint(session, (rct_vehicle*)spr, image_direction);
             break;
