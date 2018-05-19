@@ -693,10 +693,10 @@ private:
     {
         for (auto &highscore : _highscores)
         {
-            scenario_index_entry * scenerio = GetByFilename(highscore->fileName);
-            if (scenerio != nullptr)
+            scenario_index_entry * scenario = GetByFilename(highscore->fileName);
+            if (scenario != nullptr)
             {
-                scenerio->highscore = highscore;
+                scenario->highscore = highscore;
             }
         }
     }
