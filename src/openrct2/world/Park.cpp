@@ -493,21 +493,6 @@ bool park_entry_price_unlocked()
 
 using namespace OpenRCT2;
 
-static Park * _singleton = nullptr;
-
-Park::Park()
-{
-    _singleton = this;
-}
-
-Park::~Park()
-{
-    if (_singleton == this)
-    {
-        _singleton = nullptr;
-    }
-}
-
 bool Park::IsOpen() const
 {
     return (gParkFlags & PARK_FLAGS_PARK_OPEN) != 0;
@@ -1068,21 +1053,22 @@ void Park::UpdateHistories()
 
 sint32 park_is_open()
 {
-    return _singleton->IsOpen();
+    return GetContext()->GetPark()->IsOpen();
 }
 
 void park_init()
 {
-    if (_singleton == nullptr)
+    auto park = GetContext()->GetPark();
+    if (park == nullptr)
     {
         return;
     }
-    _singleton->Initialise();
+    park->Initialise();
 }
 
 sint32 park_calculate_size()
 {
-    auto tiles = _singleton->CalculateParkSize();
+    auto tiles = GetContext()->GetPark()->CalculateParkSize();
     if (tiles != gParkSize)
     {
         gParkSize = tiles;
@@ -1093,27 +1079,27 @@ sint32 park_calculate_size()
 
 sint32 calculate_park_rating()
 {
-    return _singleton->CalculateParkRating();
+    return GetContext()->GetPark()->CalculateParkRating();
 }
 
 money32 calculate_park_value()
 {
-    return _singleton->CalculateParkValue();
+    return GetContext()->GetPark()->CalculateParkValue();
 }
 
 money32 calculate_company_value()
 {
-    return _singleton->CalculateCompanyValue();
+    return GetContext()->GetPark()->CalculateCompanyValue();
 }
 
 rct_peep * park_generate_new_guest()
 {
-    return _singleton->GenerateGuest();
+    return GetContext()->GetPark()->GenerateGuest();
 }
 
 void park_reset_history()
 {
-    _singleton->ResetHistories();
+    GetContext()->GetPark()->ResetHistories();
 }
 
 uint8 calculate_guest_initial_happiness(uint8 percentage)

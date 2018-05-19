@@ -58,9 +58,6 @@ namespace OpenRCT2
     class Park final
     {
     public:
-        Park();
-        ~Park();
-
         bool IsOpen() const;
 
         uint16  GetParkRating() const;
