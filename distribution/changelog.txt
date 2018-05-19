@@ -27,6 +27,7 @@
 - Fix: [#7405] Rides can be covered by placing scenery underneath them.
 - Fix: [#7436] Only the first 32 vehicles of a train can be painted.
 - Fix: [#7480] Graphs skip values of 0.
+- Fix: [#7528] In park entrance pricing tab, switching tabs happens on mouse-down instead of mouse-up
 - Improved: [#2989] Multiplayer window now changes title when tab changes.
 - Improved: [#5339] Change eyedropper icon to actual eyedropper and change cursor to crosshair.
 - Improved: [#7302] Raising land near the map edge makes the affected area smaller instead of showing an 'off edge map' error.
