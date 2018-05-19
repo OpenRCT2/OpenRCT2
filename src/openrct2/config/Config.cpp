@@ -192,7 +192,7 @@ namespace Config
             model->disable_lightning_effect = reader->GetBoolean("disable_lightning_effect", false);
             model->allow_loading_with_incorrect_checksum = reader->GetBoolean("allow_loading_with_incorrect_checksum", true);
             model->steam_overlay_pause = reader->GetBoolean("steam_overlay_pause", true);
-            model->window_scale = reader->GetFloat("window_scale", platform_get_default_scale());
+            model->window_scale = reader->GetFloat("window_scale", -1);
             model->scale_quality = reader->GetEnum<sint32>("scale_quality", SCALE_QUALITY_SMOOTH_NN, Enum_ScaleQuality);
             model->show_fps = reader->GetBoolean("show_fps", false);
             model->trap_cursor = reader->GetBoolean("trap_cursor", false);

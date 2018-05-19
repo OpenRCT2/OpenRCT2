@@ -59,6 +59,11 @@ float platform_get_default_scale() {
     return displayScale;
 }
 
+void platform_get_changelog_path(utf8 *outPath, size_t outSize)
+{
+    STUB();
+}
+
 bool platform_get_steam_path(utf8 * outPath, size_t outSize)
 {
     return false;
