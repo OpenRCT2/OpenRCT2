@@ -90,6 +90,8 @@ char gScenarioFileName[MAX_PATH];
 static sint32 scenario_create_ducks();
 static void scenario_objective_check();
 
+using namespace OpenRCT2;
+
 void scenario_begin()
 {
     game_load_init();
@@ -108,9 +110,10 @@ void scenario_begin()
     if (gScenarioObjectiveType != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
         context_open_window_view(WV_PARK_OBJECTIVE);
 
-    gParkRating = calculate_park_rating();
-    gParkValue = calculate_park_value();
-    gCompanyValue = calculate_company_value();
+    auto park = GetContext()->GetPark();
+    gParkRating = park->CalculateParkRating();
+    gParkValue = park->CalculateParkValue();
+    gCompanyValue = park->CalculateCompanyValue();
     gHistoricalProfit = gInitialCash - gBankLoan;
     gCash = gInitialCash;
 
@@ -169,7 +172,7 @@ void scenario_begin()
     gTotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
     safe_strcpy(gScenarioCompletedBy, "?", sizeof(gScenarioCompletedBy));
-    park_reset_history();
+    park->ResetHistories();
     finance_reset_history();
     award_reset();
     reset_all_ride_build_dates();

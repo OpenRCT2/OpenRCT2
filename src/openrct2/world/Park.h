@@ -127,14 +127,9 @@ sint32 get_forced_park_rating();
 
 sint32 park_is_open();
 void park_init();
-void park_reset_history();
 sint32 park_calculate_size();
 
-sint32 calculate_park_rating();
-money32 calculate_park_value();
-money32 calculate_company_value();
 void reset_park_entry();
-rct_peep * park_generate_new_guest();
 
 void update_park_fences(sint32 x, sint32 y);
 void update_park_fences_around_tile(sint32 x, sint32 y);

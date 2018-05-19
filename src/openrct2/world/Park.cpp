@@ -44,6 +44,8 @@
 #include "Sprite.h"
 #include "Surface.h"
 
+using namespace OpenRCT2;
+
 rct_string_id gParkName;
 uint32 gParkNameArgs;
 uint32 gParkFlags;
@@ -442,7 +444,8 @@ void game_command_buy_land_rights(
 void set_forced_park_rating(sint32 rating)
 {
     _forcedParkRating = rating;
-    gParkRating = calculate_park_rating();
+    auto park = GetContext()->GetPark();
+    gParkRating = park->CalculateParkRating();
     auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
     context_broadcast_intent(&intent);
 }
@@ -490,8 +493,6 @@ bool park_entry_price_unlocked()
     }
     return false;
 }
-
-using namespace OpenRCT2;
 
 bool Park::IsOpen() const
 {
@@ -938,7 +939,7 @@ void Park::GenerateGuests()
         bool difficultGeneration = (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
         if (!difficultGeneration || _suggestedGuestMaximum + 150 >= gNumGuestsInPark)
         {
-            park_generate_new_guest();
+            GenerateGuest();
         }
     }
 
@@ -1027,7 +1028,7 @@ void Park::UpdateHistories()
     gNumGuestsInParkLastWeek = gNumGuestsInPark;
 
     // Update park rating, guests in park and current cash history
-    HistoryPushRecord<uint8, 32>(gParkRatingHistory, calculate_park_rating() / 4);
+    HistoryPushRecord<uint8, 32>(gParkRatingHistory, CalculateParkRating() / 4);
     HistoryPushRecord<uint8, 32>(gGuestsInParkHistory, std::min<uint16>(gNumGuestsInPark, 5000) / 20);
     HistoryPushRecord<money32, 128>(gCashHistory, finance_get_current_cash() - gBankLoan);
 
@@ -1075,31 +1076,6 @@ sint32 park_calculate_size()
         window_invalidate_by_class(WC_PARK_INFORMATION);
     }
     return tiles;
-}
-
-sint32 calculate_park_rating()
-{
-    return GetContext()->GetPark()->CalculateParkRating();
-}
-
-money32 calculate_park_value()
-{
-    return GetContext()->GetPark()->CalculateParkValue();
-}
-
-money32 calculate_company_value()
-{
-    return GetContext()->GetPark()->CalculateCompanyValue();
-}
-
-rct_peep * park_generate_new_guest()
-{
-    return GetContext()->GetPark()->GenerateGuest();
-}
-
-void park_reset_history()
-{
-    GetContext()->GetPark()->ResetHistories();
 }
 
 uint8 calculate_guest_initial_happiness(uint8 percentage)

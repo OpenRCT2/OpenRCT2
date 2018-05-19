@@ -31,6 +31,8 @@
 #include "GameAction.h"
 #include "MazeSetTrackAction.hpp"
 
+using namespace OpenRCT2;
+
 struct RideDemolishAction : public GameActionBase<GAME_COMMAND_DEMOLISH_RIDE, GameActionResult>
 {
 private:
@@ -190,7 +192,7 @@ public:
 
         user_string_free(ride->name);
         ride->type = RIDE_TYPE_NULL;
-        gParkValue = calculate_park_value();
+        gParkValue = GetContext()->GetPark()->CalculateCompanyValue();
 
         auto res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
