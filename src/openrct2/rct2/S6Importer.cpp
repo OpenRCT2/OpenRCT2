@@ -857,52 +857,35 @@ std::unique_ptr<IParkImporter> ParkImporter::CreateS6(std::shared_ptr<IObjectRep
     return std::make_unique<S6Importer>(objectRepository, objectManager);
 }
 
-ParkLoadResult * load_from_sv6(const char * path)
+void load_from_sv6(const char * path)
 {
-    ParkLoadResult * result = nullptr;
     auto context = OpenRCT2::GetContext();
-    auto s6Importer = new S6Importer(context->GetObjectRepository(), context->GetObjectManager());
+    auto s6Importer = std::make_unique<S6Importer>(context->GetObjectRepository(), context->GetObjectManager());
     try
     {
-        result = new ParkLoadResult(s6Importer->LoadSavedGame(path));
-
-        // We mustn't import if there's something
-        // wrong with the park data
-        if (result->Error == PARK_LOAD_ERROR_OK)
-        {
-            s6Importer->Import();
-
-            game_fix_save_vars();
-            sprite_position_tween_reset();
-        }
+        auto result = s6Importer->LoadSavedGame(path);
+        // TODO load objects
+        s6Importer->Import();
+        game_fix_save_vars();
+        sprite_position_tween_reset();
+        gScreenAge = 0;
+        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
     }
-    catch (const ObjectLoadException &)
+    catch (const ObjectLoadException&)
     {
         gErrorType     = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
     }
-    catch (const IOException &)
+    catch (const IOException&)
     {
         gErrorType     = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_GAME_SAVE_FAILED;
     }
-    catch (const std::exception &)
+    catch (const std::exception&)
     {
         gErrorType     = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
     }
-    delete s6Importer;
-
-    if (result == nullptr)
-    {
-        result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
-    }
-    if (result->Error == PARK_LOAD_ERROR_OK)
-    {
-        gScreenAge          = 0;
-        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-    }
-    return result;
 }
 
 /**

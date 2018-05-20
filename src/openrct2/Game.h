@@ -172,7 +172,7 @@ sint32 game_do_command_p(uint32 command, sint32 * eax, sint32 * ebx, sint32 * ec
 void game_log_multiplayer_command(int command, const int * eax, const int * ebx, const int * ecx, int * edx, int * edi, int * ebp);
 
 void game_load_or_quit_no_save_prompt();
-ParkLoadResult * load_from_sv6(const char * path);
+void load_from_sv6(const char * path);
 void game_load_init();
 void game_pause_toggle(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
 void pause_toggle();

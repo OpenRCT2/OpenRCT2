@@ -42,20 +42,12 @@ struct scenario_index_entry;
 struct ParkLoadResult final
 {
 public:
-    const PARK_LOAD_ERROR               Error;
-    const std::vector<rct_object_entry> MissingObjects;
-    const uint8                         Flag;
+    std::vector<rct_object_entry> const RequiredObjects;
 
-    static ParkLoadResult CreateOK();
-    static ParkLoadResult CreateInvalidExtension();
-    static ParkLoadResult CreateMissingObjects(const std::vector<rct_object_entry> &missingObjects);
-    static ParkLoadResult CreateUnknown();
-    static ParkLoadResult CreateUnsupportedRCTCflag(uint8 classic_flag);
-
-private:
-    explicit ParkLoadResult(PARK_LOAD_ERROR error);
-    ParkLoadResult(PARK_LOAD_ERROR error, const std::vector<rct_object_entry> &missingObjects);
-    ParkLoadResult(PARK_LOAD_ERROR error, const uint8 flag);
+    explicit ParkLoadResult(std::vector<rct_object_entry>&& requiredObjects)
+        : RequiredObjects(requiredObjects)
+    {
+    }
 };
 
 /**
@@ -87,6 +79,28 @@ namespace ParkImporter
     bool ExtensionIsRCT1(const std::string &extension);
     bool ExtensionIsScenario(const std::string &extension);
 }
+
+class ObjectLoadException : std::exception
+{
+public:
+    std::vector<rct_object_entry> const MissingObjects;
+
+    explicit ObjectLoadException(std::vector<rct_object_entry>&& missingObjects)
+        : MissingObjects(missingObjects)
+    {
+    }
+};
+
+class UnsupportedRCTCFlagException : std::exception
+{
+public:
+    uint8 const Flag;
+
+    explicit UnsupportedRCTCFlagException(uint8 flag)
+        : Flag(flag)
+    {
+    }
+};
 
 void park_importer_load_from_stream(void * stream, const utf8 * hintPath);
 bool park_importer_extension_is_scenario(const utf8 * extension);

@@ -25,7 +25,6 @@
 #include "Editor.h"
 #include "FileClassifier.h"
 #include "Game.h"
-#include "HandleParkLoad.h"
 #include "Input.h"
 #include "interface/Screenshot.h"
 #include "interface/Viewport.h"
@@ -1322,50 +1321,6 @@ void game_fix_save_vars()
 
     // Fix gParkEntrance locations for which the tile_element no longer exists
     fix_park_entrance_locations();
-}
-
-void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, const std::string & path, bool loadTitleFirst)
-{
-    if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_MISSING_OBJECTS)
-    {
-        // This option is used when loading parks from the command line
-        // to ensure that the title sequence loads before the window
-        if (loadTitleFirst)
-        {
-            title_load();
-        }
-        // The path needs to be duplicated as it's a const here
-        // which the window function doesn't like
-        auto intent = Intent(WC_OBJECT_LOAD_ERROR);
-        intent.putExtra(INTENT_EXTRA_PATH, path);
-        intent.putExtra(INTENT_EXTRA_LIST, (void *) ParkLoadResult_GetMissingObjects(result));
-        intent.putExtra(INTENT_EXTRA_LIST_COUNT, (uint32) ParkLoadResult_GetMissingObjectsCount(result));
-        context_open_intent(&intent);
-    }
-    else if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_UNSUPPORTED_RCTC_FLAG)
-    {
-        // This option is used when loading parks from the command line
-        // to ensure that the title sequence loads before the window
-        if (loadTitleFirst)
-        {
-            title_load();
-        }
-
-        set_format_arg(0, uint16, ParkLoadResult_GetFlag(result));
-        context_show_error(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE);
-
-    }
-    else if (ParkLoadResult_GetError(result) != PARK_LOAD_ERROR_OK)
-    {
-        // If loading the SV6 or SV4 failed for a reason other than invalid objects
-        // the current park state will be corrupted so just go back to the title screen.
-        title_load();
-    }
-}
-
-void handle_park_load_failure(const ParkLoadResult * result, const std::string & path)
-{
-    handle_park_load_failure_with_title_opt(result, path, false);
 }
 
 void game_load_init()
