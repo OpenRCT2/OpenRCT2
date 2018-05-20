@@ -742,7 +742,24 @@ void S6Exporter::ExportResearchedSceneryItems()
 
 void S6Exporter::ExportResearchList()
 {
-    memcpy(_s6.research_items, gResearchItems, sizeof(_s6.research_items));
+    rct_research_item separator = {};
+
+    std::vector<rct_research_item> combinedResearchItems = gResearchedResearchItems;
+
+    separator.rawValue = RESEARCHED_ITEMS_SEPARATOR;
+    combinedResearchItems.push_back(separator);
+
+    combinedResearchItems.insert(
+        combinedResearchItems.end(), gUnResearchedResearchItems.begin(), gUnResearchedResearchItems.end());
+
+    combinedResearchItems.resize(sizeof(_s6.research_items)-2);
+
+    separator.rawValue = RESEARCHED_ITEMS_END;
+    combinedResearchItems.push_back(separator);
+    separator.rawValue = RESEARCHED_ITEMS_END_2;
+    combinedResearchItems.push_back(separator);
+
+    memcpy(_s6.research_items, combinedResearchItems.data(), sizeof(_s6.research_items));
 }
 
 enum : uint32

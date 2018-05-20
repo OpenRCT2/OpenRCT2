@@ -212,8 +212,9 @@ static void research_rides_setup()
  */
 static void research_scenery_groups_setup()
 {
-    for (size_t i = 0; i < Util::CountOf(RequiredSelectedObjects); i++) {
-        const rct_object_entry * object = &RequiredSelectedObjects[i];
+    for (size_t i = 0; i < Util::CountOf(RequiredSelectedObjects); i++)
+    {
+        const rct_object_entry* object = &RequiredSelectedObjects[i];
 
         uint8 entry_type, entryIndex;
         if (!find_object_in_entry_group(object, &entry_type, &entryIndex))
@@ -222,17 +223,18 @@ static void research_scenery_groups_setup()
         if (entry_type != OBJECT_TYPE_SCENERY_GROUP)
             continue;
 
-        rct_research_item* research = gResearchItems;
-        for (; research->rawValue != RESEARCHED_ITEMS_END; research++)
-        {
-            if ((research->rawValue & 0xFFFFFF) != entryIndex)
-                continue;
+        auto SetAlwaysResearchedFlag = [entryIndex](rct_research_item& researchItem) {
+            if ((researchItem.rawValue & 0xFFFFFF) == entryIndex)
+            {
+                researchItem.flags |= RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED;
+                _editorInventionsListDraggedItem = &researchItem;
+                move_research_item(gResearchedResearchItems.data());
+                _editorInventionsListDraggedItem = nullptr;
+            }
+        };
 
-            research->flags |= RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED;
-            _editorInventionsListDraggedItem = research;
-            move_research_item(gResearchItems);
-            _editorInventionsListDraggedItem = nullptr;
-        }
+        std::for_each(std::begin(gResearchedResearchItems), std::end(gResearchedResearchItems), SetAlwaysResearchedFlag);
+        std::for_each(std::begin(gUnResearchedResearchItems), std::end(gUnResearchedResearchItems), SetAlwaysResearchedFlag);
     }
 }
 
@@ -252,38 +254,70 @@ static void research_always_researched_setup()
  *
  *  rct2: 0x006855E7
  */
-static void move_research_item(rct_research_item *beforeItem)
+static void move_research_item(rct_research_item* beforeItem)
 {
-    rct_window *w;
-    rct_research_item *researchItem, draggedItem;
+    const rct_research_item Copy = *_editorInventionsListDraggedItem;
 
-    if (_editorInventionsListDraggedItem + 1 == beforeItem)
-        return;
+    auto CompareResearchItems = [](const rct_research_item& First, const rct_research_item& Second) -> bool {
+        return First.rawValue == Second.rawValue && First.category == Second.category;
+    };
 
-    // Back up the dragged item
-    draggedItem = *_editorInventionsListDraggedItem;
+    auto RemoveItemIfFound = [&](std::vector<rct_research_item>& ResearchItems) -> bool {
+        auto Found = std::remove_if(
+            std::begin(ResearchItems), std::end(ResearchItems), [&](const rct_research_item& ResearchItem) -> bool {
+                return CompareResearchItems(Copy, ResearchItem);
+            });
+        if (Found != std::end(ResearchItems))
+        {
+            ResearchItems.erase(Found);
+            return true;
+        }
+        return false;
+    };
 
-    // Remove dragged item from list
-    researchItem = _editorInventionsListDraggedItem;
-    do {
-        *researchItem = *(researchItem + 1);
-        researchItem++;
-    } while (researchItem->rawValue != RESEARCHED_ITEMS_END_2);
-    // At end of this researchItem points to the end of the list
+    auto InsertBeforeItem = [&](std::vector<rct_research_item>& ResearchItems) {
+        auto Found = std::find_if(
+            std::begin(ResearchItems), std::end(ResearchItems), [&](const rct_research_item& ResearchItem) -> bool {
+                return CompareResearchItems(*beforeItem, ResearchItem);
+            });
 
-    if (beforeItem > _editorInventionsListDraggedItem)
-        beforeItem--;
+        if (Found != std::end(ResearchItems))
+        {
+            ResearchItems.insert(Found, Copy);
+            return true;
+        }
+        return false;
+    };
 
-    // Add dragged item to list
-    do {
-        *researchItem = *(researchItem - 1);
-        researchItem--;
-    } while (researchItem != beforeItem);
+    if (!RemoveItemIfFound(gResearchedResearchItems))
+    {
+        if (!RemoveItemIfFound(gUnResearchedResearchItems))
+        {
+            bool ItemNotFound = 0;
+            assert(ItemNotFound);
+        }
+    }
 
-    *researchItem = draggedItem;
+    if (CompareResearchItems(*beforeItem, gResearchItemSeparator))
+    {
+        gResearchedResearchItems.push_back(Copy);
+    }
+    else if (CompareResearchItems(*beforeItem, gResearchItemEnd))
+    {
+        gUnResearchedResearchItems.push_back(Copy);
+    }
+    else if (!InsertBeforeItem(gResearchedResearchItems))
+    {
+        if (!InsertBeforeItem(gUnResearchedResearchItems))
+        {
+            bool ItemNotInserted = 0;
+            assert(ItemNotInserted);
+        }
+    }
 
-    w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
-    if (w != nullptr) {
+    rct_window* w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
+    if (w != nullptr)
+    {
         w->research_item = nullptr;
         window_invalidate(w);
     }
@@ -293,22 +327,33 @@ static void move_research_item(rct_research_item *beforeItem)
  *
  *  rct2: 0x0068558E
  */
-static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y(sint32 scrollIndex, sint32 y)
+static rct_research_item* window_editor_inventions_list_get_item_from_scroll_y(sint32 scrollIndex, sint32 y)
 {
-    rct_research_item *researchItem;
-
-    researchItem = gResearchItems;
-
-    if (scrollIndex != 0) {
-        // Skip pre-researched items
-        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
-        researchItem++;
+    if (scrollIndex == 0)
+    {
+        for (rct_research_item& researchItem : gResearchedResearchItems)
+        {
+            y -= SCROLLABLE_ROW_HEIGHT;
+            if (y < 0)
+            {
+                if (research_item_is_always_researched(&researchItem))
+                {
+                    return nullptr;
+                }
+                return &researchItem;
+            }
+        }
     }
-
-    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++) {
-        y -= SCROLLABLE_ROW_HEIGHT;
-        if (y < 0)
-            return researchItem;
+    else
+    {
+        for (rct_research_item& researchItem : gUnResearchedResearchItems)
+        {
+            y -= SCROLLABLE_ROW_HEIGHT;
+            if (y < 0)
+            {
+                return &researchItem;
+            }
+        }
     }
 
     return nullptr;
@@ -318,25 +363,30 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y(s
  *
  *  rct2: 0x006855BB
  */
-static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y_include_seps(sint32 scrollIndex, sint32 y)
+static rct_research_item* window_editor_inventions_list_get_item_from_scroll_y_include_seps(sint32 scrollIndex, sint32 y)
 {
-    rct_research_item *researchItem;
-
-    researchItem = gResearchItems;
-
-    if (scrollIndex != 0) {
-        // Skip pre-researched items
-        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
-        researchItem++;
+    if (scrollIndex == 0)
+    {
+        for (rct_research_item& researchItem : gResearchedResearchItems)
+        {
+            y -= SCROLLABLE_ROW_HEIGHT;
+            if (y < 0)
+            {
+                return &researchItem;
+            }
+        }
+        return &gResearchItemSeparator;
     }
 
-    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++) {
+    for (rct_research_item& researchItem : gUnResearchedResearchItems)
+    {
         y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
-            return researchItem;
+        {
+            return &researchItem;
+        }
     }
-
-    return researchItem;
+    return &gResearchItemEnd;
 }
 
 static rct_research_item *get_research_item_at(sint32 x, sint32 y)
@@ -487,21 +537,15 @@ static void window_editor_inventions_list_update(rct_window *w)
  */
 static void window_editor_inventions_list_scrollgetheight(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
-    rct_research_item *researchItem;
-
-    *height = 0;
-
-    // Count / skip pre-researched items
-    for (researchItem = gResearchItems; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++)
-        *height += SCROLLABLE_ROW_HEIGHT;
-
-    if (scrollIndex == 1) {
-        researchItem++;
-
+    if (scrollIndex == 1)
+    {
         // Count non pre-researched items
-        *height = 0;
-        for (; researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
-            *height += SCROLLABLE_ROW_HEIGHT;
+        *height = SCROLLABLE_ROW_HEIGHT * static_cast<sint32>(gUnResearchedResearchItems.size());
+    }
+    else
+    {
+        // Count / skip pre-researched items
+        *height = SCROLLABLE_ROW_HEIGHT * static_cast<sint32>(gResearchedResearchItems.size());
     }
 }
 
@@ -718,39 +762,38 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
  *
  *  rct2: 0x006850BD
  */
-static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, sint32 scrollIndex)
 {
     // Draw background
     uint8 paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
-    rct_research_item* researchItem = gResearchItems;
-    sint32 researchItemEndMarker;
-
-    if (scrollIndex == 1)
+    const auto& listToPaint = [&]() -> auto
     {
-        // Skip pre-researched items
-        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
-        researchItem++;
-        researchItemEndMarker = RESEARCHED_ITEMS_END;
+        if (scrollIndex == 1)
+        {
+            return gUnResearchedResearchItems;
+        }
+        return gResearchedResearchItems;
     }
-    else
-    {
-        researchItemEndMarker = RESEARCHED_ITEMS_SEPARATOR;
-    }
+    ();
 
-    sint16 boxWidth = (w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right - w->widgets[WIDX_RESEARCH_ORDER_SCROLL].left);
-    sint16 columnSplitOffset = boxWidth / 2;
-    sint32 itemY = -SCROLLABLE_ROW_HEIGHT;
-    do
-    {
+    auto CompareResearchItems = [](const rct_research_item& First, const rct_research_item& Second) -> bool {
+        return First.rawValue == Second.rawValue && First.category == Second.category;
+    };
+
+    itemY = -SCROLLABLE_ROW_HEIGHT;
+
+    std::for_each(std::begin(listToPaint), std::end(listToPaint), [&](const rct_research_item& researchItem) {
         itemY += SCROLLABLE_ROW_HEIGHT;
         if (itemY + SCROLLABLE_ROW_HEIGHT < dpi->y || itemY >= dpi->y + dpi->height)
-            continue;
-
-        if (w->research_item == researchItem)
         {
-            sint32 top, bottom;
+            return;
+        }
+
+        uint8 colour = COLOUR_BRIGHT_GREEN | COLOUR_FLAG_TRANSLUCENT;
+        if (w->research_item && CompareResearchItems(*w->research_item, researchItem))
+        {
             if (_editorInventionsListDraggedItem == nullptr)
             {
                 // Highlight
@@ -764,51 +807,57 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
                 bottom = itemY;
             }
 
-            gfx_filter_rect(dpi, 0, top, boxWidth, bottom, PALETTE_DARKEN_1);
-        }
-
-        if (researchItem->rawValue == RESEARCHED_ITEMS_SEPARATOR || researchItem->rawValue == RESEARCHED_ITEMS_END)
-            continue;
-
-        if (researchItem == _editorInventionsListDraggedItem)
-            continue;
-
-        uint8 colourFlags = 0;
-        if (research_item_is_always_researched(researchItem))
-        {
             if (_editorInventionsListDraggedItem == nullptr)
-                gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK;
+            {
+                colour = COLOUR_BRIGHT_GREEN;
+            }
+        }
+
+        if (&researchItem != _editorInventionsListDraggedItem)
+        {
+            disableItemMovement = research_item_is_always_researched(&researchItem);
+
+            stringId = research_item_get_name(&researchItem);
+
+            ptr = buffer;
+            if (!disableItemMovement)
+            {
+                ptr = utf8_write_codepoint(ptr, colour);
+            }
+
+            if (researchItem.type == RESEARCH_ENTRY_TYPE_RIDE
+                && !RideGroupManager::RideTypeIsIndependent(researchItem.baseRideType))
+            {
+                const rct_string_id rideGroupName
+                    = get_ride_naming(researchItem.baseRideType, get_ride_entry(researchItem.entryIndex)).name;
+                rct_string_id args[] = { rideGroupName, stringId };
+                format_string(ptr, 256, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, &args);
+            }
             else
+            {
+                format_string(ptr, 256, stringId, nullptr);
+            }
+
+            if (disableItemMovement)
+            {
                 gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
-            colourFlags = COLOUR_FLAG_INSET;
+                if (colour == COLOUR_BRIGHT_GREEN && _editorInventionsListDraggedItem == nullptr)
+                {
+                    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK;
+                }
+                colour = COLOUR_FLAG_INSET | w->colours[1];
+            }
+            else
+            {
+                gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+                colour = COLOUR_BLACK;
+            }
+
+            left = 1;
+            top = itemY;
+            gfx_draw_string(dpi, buffer, colour, left, top);
         }
-        else
-            gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
-        rct_string_id itemNameId = research_item_get_name(researchItem);
-        sint32 left = 1;
-        sint32 top = itemY;
-
-        if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
-        {
-            const rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
-            rct_string_id args[] = {
-                STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME,
-                rideGroupName,
-            };
-
-            // Group name
-            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, &args, colourFlags, left, top, columnSplitOffset);
-
-            // Vehicle name
-            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, &itemNameId, colourFlags, left + columnSplitOffset, top, columnSplitOffset);
-        }
-        else
-        {
-            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, &itemNameId, colourFlags, left, top, boxWidth);
-        }
-    }
-    while (researchItem++->rawValue != researchItemEndMarker);
+    });
 }
 
 #pragma region Drag item
@@ -887,7 +936,9 @@ static void window_editor_inventions_list_drag_moved(rct_window* w, sint32 x, si
 
     researchItem = get_research_item_at(x, y);
     if (researchItem != nullptr)
+    {
         move_research_item(researchItem);
+    }
 
     window_close(w);
     _editorInventionsListDraggedItem = nullptr;
