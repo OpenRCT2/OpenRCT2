@@ -263,9 +263,9 @@ private:
             {
                 allItems.insert(allItems.end(), itr.begin(), itr.end());
             }
-
-            WriteIndexFile(language, scanResult.Stats, allItems);
         }
+
+        WriteIndexFile(language, scanResult.Stats, allItems);
 
         auto endTime = std::chrono::high_resolution_clock::now();
         auto duration = (std::chrono::duration<float>)(endTime - startTime);
