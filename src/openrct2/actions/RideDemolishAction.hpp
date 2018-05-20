@@ -115,12 +115,8 @@ public:
         switch (_modifyType) {
         case RIDE_MODIFY_DEMOLISH:
             return DemolishRide(ride);
-            break;
         case RIDE_MODIFY_RENEW:
             return RefurbishRide(ride);
-            break;
-        default:
-            break;
         }
 
         return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DO_THIS);
@@ -378,6 +374,8 @@ private:
 
             res->Position = { x, y, z };
         }
+
+        window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, _rideIndex);
 
         return res;
     }

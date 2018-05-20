@@ -204,10 +204,6 @@ static void window_ride_refurbish_mouseup(rct_window *w, rct_widgetindex widgetI
     case WIDX_REFURBISH:
     {
         ride_action_modify(w->number, RIDE_MODIFY_RENEW, GAME_COMMAND_FLAG_APPLY);
-        if (!(get_ride(w->number)->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
-        {
-            window_close(w);
-        }
         break;
     }
     case WIDX_CANCEL:
