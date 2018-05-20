@@ -767,7 +767,29 @@ public:
 
     void ImportResearchList()
     {
-        memcpy(gResearchItems, _s6.research_items, sizeof(_s6.research_items));
+        sint32 researchedItems = 0, unResearchedItems = 0;
+        for (const rct_research_item* researchItem = _s6.research_items; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR;
+             ++researchItem)
+        {
+            researchedItems++;
+        }
+
+        gResearchedResearchItems.resize(researchedItems);
+        memcpy(gResearchedResearchItems.data(), _s6.research_items, sizeof(rct_research_item) * researchedItems);
+
+        researchedItems++;
+        for (const rct_research_item* researchItem = _s6.research_items + researchedItems;
+             researchItem->rawValue != RESEARCHED_ITEMS_END;
+             ++researchItem)
+        {
+            unResearchedItems++;
+        }
+
+        gUnResearchedResearchItems.resize(researchedItems);
+        memcpy(
+            gUnResearchedResearchItems.data(),
+            _s6.research_items + researchedItems,
+            sizeof(rct_research_item) * unResearchedItems);
     }
 
     void Initialise()
