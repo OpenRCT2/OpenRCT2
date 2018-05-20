@@ -1,11 +1,18 @@
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * For a complete list of all authors, please refer to contributors.md
- * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is licensed under the GNU General Public License version 3.
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #include <algorithm>
 #include <memory>
@@ -26,7 +33,6 @@
 #include "ScenarioSources.h"
 
 #include "../config/Config.h"
-#include "../localisation/Language.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../platform/platform.h"
@@ -35,7 +41,7 @@
 
 using namespace OpenRCT2;
 
-static int32_t ScenarioCategoryCompare(int32_t categoryA, int32_t categoryB)
+static sint32 ScenarioCategoryCompare(sint32 categoryA, sint32 categoryB)
 {
     if (categoryA == categoryB) return 0;
     if (categoryA == SCENARIO_CATEGORY_DLC) return -1;
@@ -45,7 +51,7 @@ static int32_t ScenarioCategoryCompare(int32_t categoryA, int32_t categoryB)
     return Math::Sign(categoryA - categoryB);
 }
 
-static int32_t scenario_index_entry_CompareByCategory(const scenario_index_entry &entryA,
+static sint32 scenario_index_entry_CompareByCategory(const scenario_index_entry &entryA,
                                                   const scenario_index_entry &entryB)
 {
     // Order by category
@@ -68,7 +74,7 @@ static int32_t scenario_index_entry_CompareByCategory(const scenario_index_entry
     }
 }
 
-static int32_t scenario_index_entry_CompareByIndex(const scenario_index_entry &entryA,
+static sint32 scenario_index_entry_CompareByIndex(const scenario_index_entry &entryA,
                                                const scenario_index_entry &entryB)
 {
     // Order by source game
@@ -78,7 +84,7 @@ static int32_t scenario_index_entry_CompareByIndex(const scenario_index_entry &e
     }
 
     // Then by index / category / name
-    uint8_t sourceGame = entryA.source_game;
+    uint8 sourceGame = entryA.source_game;
     switch (sourceGame) {
     default:
         if (entryA.source_index == -1 && entryB.source_index == -1)
@@ -109,7 +115,14 @@ static int32_t scenario_index_entry_CompareByIndex(const scenario_index_entry &e
     }
 }
 
-static void scenario_highscore_free(scenario_highscore_entry * highscore)
+static void scenario_highscore_free(scenario_highscore_entry_v2 * highscore)
+{
+    SafeFree(highscore->fileName);
+    SafeFree(highscore->name);
+    SafeDelete(highscore);
+}
+
+static void scenario_highscore_free(scenario_highscore_entry_v1 * highscore)
 {
     SafeFree(highscore->fileName);
     SafeFree(highscore->name);
@@ -316,7 +329,7 @@ private:
 class ScenarioRepository final : public IScenarioRepository
 {
 private:
-    static constexpr uint32_t HighscoreFileVersion = 1;
+    static constexpr uint32_t HighscoreFileVersion = 2;
 
     std::shared_ptr<IPlatformEnvironment> const _env;
     ScenarioFileIndex const _fileIndex;
@@ -332,7 +345,7 @@ public:
 
     virtual ~ScenarioRepository()
     {
-        ClearHighscores();
+        ClearHighscoresV2();
     }
 
     void Scan(int32_t language) override
@@ -429,6 +442,7 @@ public:
                 {
                     highscore = InsertHighscore();
                     highscore->timestamp = platform_get_datetime_now_utc();
+                    highscore->days_record = MAXINT16;
                     scenario->highscore = highscore;
                 }
                 else
@@ -442,7 +456,16 @@ public:
                 }
                 highscore->fileName = String::Duplicate(Path::GetFileName(scenario->path));
                 highscore->name = String::Duplicate(name);
-                highscore->company_value = companyValue;
+
+                if (companyValue > highscore->company_value) 
+                {
+                    highscore->company_value = companyValue;
+                }
+                if (days < highscore->days_record) 
+                {
+                    highscore->days_record = days;
+                }
+
                 SaveHighscores();
                 return true;
             }
@@ -565,24 +588,96 @@ private:
 
         try
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
-            uint32_t fileVersion = fs.ReadValue<uint32_t>();
-            if (fileVersion != 1)
+            auto fsRead = FileStream(path, FILE_MODE_OPEN);
+            uint32 fileVersion = fsRead.ReadValue<uint32>();
+            
+            if (fileVersion == 1)
+            {
+                Console::Error::WriteLine("Found old highscores file, converting");
+                // Old highscores file doesn't contain days value, need to transfer values
+                uint32 numHighscores = fsRead.ReadValue<uint32>();
+
+                // Start over and overwrite old data
+                auto fsWrite = FileStream(path, FILE_MODE_WRITE);
+                fsWrite.WriteValue<uint32>(2);
+                fsWrite.WriteValue<uint32>(numHighscores);
+
+                Console::Error::WriteLine("Saving old values", numHighscores);
+
+                for (uint32 i = 0; i < numHighscores; i++)
+                {
+                    scenario_highscore_entry_v1 * highscore = InsertV1Highscore();
+                    highscore->fileName = fsRead.ReadString();
+                    highscore->name = fsRead.ReadString();
+                    highscore->company_value = fsRead.ReadValue<money32>();
+                    highscore->timestamp = fsRead.ReadValue<datetime64>();
+                }
+
+                Console::Error::WriteLine("Writing new values", numHighscores);
+
+                for (std::vector<scenario_highscore_entry_v1*>::iterator it = _highscoresV1.begin(); it != _highscoresV1.end(); ++it)
+                {
+                    scenario_highscore_entry_v2 * highscore = InsertV2Highscore();
+
+                    Console::Error::WriteLine("Saving highscores to memory", numHighscores);
+                    highscore->fileName = (*it)->fileName;
+                    highscore->name = (*it)->name;
+                    highscore->company_value = (*it)->company_value;
+                    highscore->days_record = MAXINT16;
+                    highscore->timestamp = (*it)->timestamp;
+
+                    Console::Error::WriteLine("Writing file name to highscores file");
+                    fsWrite.WriteValue(highscore->fileName);
+                    Console::Error::WriteLine("Writing player name to highscores file");
+                    fsWrite.WriteValue(highscore->name);
+                    Console::Error::WriteLine("Writing company value to highscores file");
+                    fsWrite.WriteValue(highscore->company_value);
+                    Console::Error::WriteLine("Writing days default to highscores file");
+                    fsWrite.WriteValue(MAXINT16);
+                    Console::Error::WriteLine("Writing timestamp to highscores file");
+                    fsWrite.WriteValue<datetime64>(highscore->timestamp);
+                }
+
+                ClearHighscoresV1();
+
+                //for (uint32 i = 0; i < numHighscores; i++)
+                //{
+                //    scenario_highscore_entry_v1 * old_highscore = InsertV1Highscore();
+                //    //scenario_highscore_entry_v2 * new_highscore = InsertV2Highscore();
+                //    old_highscore->fileName = fs.ReadString();
+                //    fs_new.WriteValue(old_highscore->fileName);
+                //    old_highscore->name = fs.ReadString();
+                //    fs_new.WriteValue(old_highscore->name);
+                //    old_highscore->company_value = fs.ReadValue<money32>();
+                //    fs_new.WriteValue(old_highscore->company_value);
+                //    fs_new.WriteValue(MAXINT16);
+                //    old_highscore->timestamp = fs.ReadValue<datetime64>();
+                //    fs_new.WriteValue<datetime64>(old_highscore->timestamp);
+                //}
+
+                //File::Delete(path);
+                //File::Copy(path + "_v2", path, true);
+                //File::Delete(path + "_v2");
+            }
+            else if (fileVersion == 2) 
+            {
+                ClearHighscoresV2();
+
+                uint32 numHighscores = fsRead.ReadValue<uint32>();
+                for (uint32 i = 0; i < numHighscores; i++)
+                {
+                    scenario_highscore_entry_v2 * highscore = InsertV2Highscore();
+                    highscore->fileName = fsRead.ReadString();
+                    highscore->name = fsRead.ReadString();
+                    highscore->company_value = fsRead.ReadValue<money32>();
+                    highscore->days_record = fsRead.ReadValue<sint16>();
+                    highscore->timestamp = fsRead.ReadValue<datetime64>();
+                }
+            }
+            else 
             {
                 Console::Error::WriteLine("Invalid or incompatible highscores file.");
                 return;
-            }
-
-            ClearHighscores();
-
-            uint32_t numHighscores = fs.ReadValue<uint32_t>();
-            for (uint32_t i = 0; i < numHighscores; i++)
-            {
-                scenario_highscore_entry * highscore = InsertHighscore();
-                highscore->fileName = fs.ReadString();
-                highscore->name = fs.ReadString();
-                highscore->company_value = fs.ReadValue<money32>();
-                highscore->timestamp = fs.ReadValue<datetime64>();
             }
         }
         catch (const std::exception &)
@@ -644,6 +739,7 @@ private:
                                 std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2_LANGUAGE_ID_ENGLISH_UK);
                                 highscore->name = String::Duplicate(name.c_str());
                                 highscore->company_value = scBasic.CompanyValue;
+                                highscore->days_record = MAXINT16;
                                 highscore->timestamp = DATETIME64_MIN;
                                 break;
                             }
@@ -656,6 +752,7 @@ private:
                         std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2_LANGUAGE_ID_ENGLISH_UK);
                         highscore->name = String::Duplicate(name.c_str());
                         highscore->company_value = scBasic.CompanyValue;
+                        highscore->days_record = MAXINT16;
                         highscore->timestamp = DATETIME64_MIN;
                     }
                 }
@@ -672,9 +769,18 @@ private:
         }
     }
 
-    void ClearHighscores()
+    void ClearHighscoresV1()
     {
-        for (auto highscore : _highscores)
+        for (auto highscore : _highscoresV1)
+        {
+            scenario_highscore_free(highscore);
+        }
+        _highscoresV1.clear();
+    }
+
+    void ClearHighscoresV2()
+    {
+        for (auto highscore : _highscoresV2)
         {
             scenario_highscore_free(highscore);
         }
@@ -686,6 +792,14 @@ private:
         auto highscore = new scenario_highscore_entry();
         memset(highscore, 0, sizeof(scenario_highscore_entry));
         _highscores.push_back(highscore);
+        return highscore;
+    }
+
+    scenario_highscore_entry_v1 * InsertV1Highscore()
+    {
+        auto highscore = new scenario_highscore_entry_v1();
+        memset(highscore, 0, sizeof(scenario_highscore_entry_v1));
+        _highscoresV1.push_back(highscore);
         return highscore;
     }
 
@@ -715,6 +829,7 @@ private:
                 fs.WriteString(highscore->fileName);
                 fs.WriteString(highscore->name);
                 fs.WriteValue(highscore->company_value);
+                fs.WriteValue(highscore->days_record);
                 fs.WriteValue(highscore->timestamp);
             }
         }
