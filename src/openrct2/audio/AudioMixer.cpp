@@ -74,7 +74,11 @@ void * Mixer_Play_Effect(size_t id, sint32 loop, sint32 volume, float pan, doubl
 
 void Mixer_Stop_Channel(void * channel)
 {
-    GetMixer()->Stop(static_cast<IAudioChannel*>(channel));
+    auto mixer = GetMixer();
+    if (mixer != nullptr)
+    {
+        mixer->Stop(static_cast<IAudioChannel*>(channel));
+    }
 }
 
 void Mixer_Channel_Volume(void * channel, sint32 volume)

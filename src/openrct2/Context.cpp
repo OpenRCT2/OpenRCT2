@@ -657,9 +657,20 @@ namespace OpenRCT2
         void Launch()
         {
             gIntroState = INTRO_STATE_NONE;
-            if ((gOpenRCT2StartupAction == STARTUP_ACTION_TITLE) && gConfigGeneral.play_intro)
+            if (gOpenRCT2Headless)
             {
-                gOpenRCT2StartupAction = STARTUP_ACTION_INTRO;
+                // NONE or OPEN are the only allowed actions for headless mode
+                if (gOpenRCT2StartupAction != STARTUP_ACTION_OPEN)
+                {
+                    gOpenRCT2StartupAction = STARTUP_ACTION_NONE;
+                }
+            }
+            else
+            {
+                if ((gOpenRCT2StartupAction == STARTUP_ACTION_TITLE) && gConfigGeneral.play_intro)
+                {
+                    gOpenRCT2StartupAction = STARTUP_ACTION_INTRO;
+                }
             }
 
             switch (gOpenRCT2StartupAction) {
