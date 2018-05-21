@@ -1999,8 +1999,11 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
 }
 
-static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, sint32 scrollIndex)
 {
+    const sint32 listWidth = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+    gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
+
     sint32 y = LIST_ITEM_HEIGHT * (windowTileInspectorElementCount - 1);
     sint32 i = 0;
     char buffer[256];
@@ -2008,23 +2011,18 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
     if (!windowTileInspectorTileSelected)
         return;
 
-    rct_tile_element *tileElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
+    const rct_tile_element* tileElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     do {
+        const bool highlightRow = i == w->selected_list_item || i == windowTileInspectorHighlightedIndex;
         sint32 type = tileElement->GetType();
         const char * typeName = "";
-        sint32 baseHeight = tileElement->base_height;
-        sint32 clearanceHeight = tileElement->clearance_height;
 
-        // Fill colour for current list element
-        const sint32 listWidth = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
-        if (i == w->selected_list_item) // Currently selected element
-            gfx_fill_rect(dpi, 0, y, listWidth, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].darker | 0x1000000);
-        else if (i == windowTileInspectorHighlightedIndex) // Hovering
-            gfx_fill_rect(dpi, 0, y, listWidth, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark | 0x1000000);
-        else if ((i & 1) != 0) // odd / even check
-            gfx_fill_rect(dpi, 0, y, listWidth, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
+        if (highlightRow)
+        {
+            gfx_fill_rect(dpi, 0, y, listWidth, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark);
+        }
 
         switch (type) {
         case TILE_ELEMENT_TYPE_SURFACE:
@@ -2076,18 +2074,45 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
             typeName = buffer;
         }
 
-        // Undo relative scroll offset, but keep the 3 pixel padding
-        sint32 x = -w->widgets[WIDX_LIST].left;
+        const sint32 baseHeight = tileElement->base_height;
+        const sint32 clearanceHeight = tileElement->clearance_height;
         const bool ghost = (tileElement->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
         const bool broken = (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN) != 0;
         const bool last = (tileElement->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
-        gfx_clip_string(buffer, w->widgets[WIDX_COLUMN_TYPE].right - w->widgets[WIDX_COLUMN_TYPE].left - COL_X_TYPE);
-        gfx_draw_string(dpi, (char *)typeName, COLOUR_DARK_GREEN, x + COL_X_TYPE + 3, y); // 3px padding
-        gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x + COL_X_BH, y);
-        gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &clearanceHeight, COLOUR_DARK_GREEN, x + COL_X_CH, y);
-        if (ghost) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_GF, y);
-        if (broken) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_BF, y);
-        if (last) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_LF, y);
+
+        const rct_string_id stringFormat = highlightRow ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING;
+
+        // Undo relative scroll offset, but keep the 3 pixel padding
+        const sint32 x = -w->widgets[WIDX_LIST].left;
+        set_format_arg(0, rct_string_id, STR_STRING);
+        set_format_arg(2, char*, typeName);
+        gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_TYPE + 3, y); // 3px padding
+
+        // Base height
+        set_format_arg(0, rct_string_id, STR_FORMAT_INTEGER);
+        set_format_arg(2, sint32, baseHeight);
+        gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_BH, y);
+
+        // Clearance height
+        set_format_arg(0, rct_string_id, STR_FORMAT_INTEGER);
+        set_format_arg(2, sint32, clearanceHeight);
+        gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_CH, y);
+
+        // Checkmarks for ghost, broken en last for tile
+        set_format_arg(0, rct_string_id, STR_STRING);
+        set_format_arg(2, char*, CheckBoxMarkString);
+        if (ghost)
+        {
+            gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_GF, y);
+        }
+        if (broken)
+        {
+            gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_BF, y);
+        }
+        if (last)
+        {
+            gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_LF, y);
+        }
 
         y -= LIST_ITEM_HEIGHT;
         i++;
