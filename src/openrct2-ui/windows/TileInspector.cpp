@@ -207,10 +207,10 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 
 // Window sizes
 #define WW 400
-#define WH 280
+#define WH 170
 #define MIN_WW WW
 #define MAX_WW WW
-#define MIN_WH 240
+#define MIN_WH 130
 #define MAX_WH 800
 
 // Button space for top buttons
@@ -1353,6 +1353,20 @@ static void window_tile_inspector_scrollgetsize(rct_window *w, sint32 scrollInde
 
 void window_tile_inspector_set_page(rct_window *w, const TILE_INSPECTOR_PAGE page)
 {
+    // Invalidate the window already, because the size may change
+    window_invalidate(w);
+
+    // subtract current page height, then add new page height
+    if (w->page != TILE_INSPECTOR_PAGE_DEFAULT)
+    {
+        w->height -= PageGroupBoxSettings[w->page - 1].details_top_offset - GROUPBOX_PADDING - 3;
+        w->min_height -= PageGroupBoxSettings[w->page - 1].details_top_offset - GROUPBOX_PADDING - 3;
+    }
+    if (page != TILE_INSPECTOR_PAGE_DEFAULT)
+    {
+        w->height += PageGroupBoxSettings[page - 1].details_top_offset - GROUPBOX_PADDING - 3;
+        w->min_height += PageGroupBoxSettings[page - 1].details_top_offset - GROUPBOX_PADDING - 3;
+    }
     w->page = page;
     w->widgets = PageWidgets[page];
     w->enabled_widgets = PageEnabledWidgets[page];
@@ -1425,15 +1439,17 @@ static void window_tile_inspector_invalidate(rct_window *w)
 {
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 
-    if (w->page == TILE_INSPECTOR_PAGE_DEFAULT) {
+    if (w->page == TILE_INSPECTOR_PAGE_DEFAULT)
+    {
         w->widgets[WIDX_GROUPBOX_DETAILS].type = WWT_EMPTY;
         w->widgets[WIDX_GROUPBOX_PROPERTIES].type = WWT_EMPTY;
         w->widgets[WIDX_LIST].bottom = w->height - PADDING_BOTTOM;
     }
-    else {
+    else
+    {
         w->widgets[WIDX_GROUPBOX_DETAILS].type = WWT_GROUPBOX;
         w->widgets[WIDX_GROUPBOX_PROPERTIES].type = WWT_GROUPBOX;
-        w->widgets[WIDX_GROUPBOX_DETAILS].image = PageGroupBoxSettings[w->page - 1].string_id;
+        w->widgets[WIDX_GROUPBOX_DETAILS].text = PageGroupBoxSettings[w->page - 1].string_id;
         w->widgets[WIDX_GROUPBOX_DETAILS].top = w->height - PageGroupBoxSettings[w->page - 1].details_top_offset;
         w->widgets[WIDX_GROUPBOX_DETAILS].bottom = w->height - PageGroupBoxSettings[w->page - 1].details_bottom_offset;
         w->widgets[WIDX_GROUPBOX_PROPERTIES].top = w->height - PageGroupBoxSettings[w->page - 1].properties_top_offset;
@@ -1441,7 +1457,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
         w->widgets[WIDX_LIST].bottom = w->widgets[WIDX_GROUPBOX_DETAILS].top - GROUPBOX_PADDING;
     }
 
-    // Only page-specific widgets related to the map element will be
+    // The default page doesn't need further invalidation
     if (w->page == TILE_INSPECTOR_PAGE_DEFAULT) {
         return;
     }
