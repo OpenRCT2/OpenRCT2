@@ -464,10 +464,17 @@ static struct {
     { COR_GBDT, COR_GBDB, COR_GBPT, COR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_CORRUPT_INFO }
 };
 
+// clang-format on
+static constexpr sint32 ViewportInteractionFlags = VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_SPRITE
+    & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_SCENERY & VIEWPORT_INTERACTION_MASK_FOOTPATH
+    & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM & VIEWPORT_INTERACTION_MASK_PARK & VIEWPORT_INTERACTION_MASK_WALL
+    & VIEWPORT_INTERACTION_MASK_LARGE_SCENERY & VIEWPORT_INTERACTION_MASK_BANNER;
+
 static sint16 windowTileInspectorHighlightedIndex = -1;
 static bool windowTileInspectorTileSelected = false;
 static sint32 windowTileInspectorToolMouseX = 0;
 static sint32 windowTileInspectorToolMouseY = 0;
+static bool windowTileInspectorToolCtrlDown = false;
 static sint32 windowTileInspectorToolMapX = 0;
 static sint32 windowTileInspectorToolMapY = 0;
 static bool windowTileInspectorApplyToAll = false;
@@ -490,6 +497,7 @@ static void window_tile_inspector_invalidate(rct_window *w);
 static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
+// clang-format off
 static rct_window_event_list TileInspectorWindowEvents = {
     nullptr,
     window_tile_inspector_mouseup,
@@ -608,20 +616,25 @@ static void window_tile_inspector_select_element_from_list(rct_window *w, sint32
     window_invalidate(w);
 }
 
-static void window_tile_inspector_load_tile(rct_window* w)
+static void window_tile_inspector_load_tile(rct_window* w, rct_tile_element* elementToSelect)
 {
-    rct_tile_element *element = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
-    sint32 numItems = 0;
-    do {
+    w->selected_list_item = -1;
+    w->scrolls[0].v_top = 0;
+
+    rct_tile_element* element = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
+    sint16 numItems = 0;
+    do
+    {
+        if (element == elementToSelect)
+        {
+            w->selected_list_item = numItems;
+        }
+
         numItems++;
     } while (!tile_element_is_last_for_tile(element++));
 
     windowTileInspectorElementCount = numItems;
 
-    // Clear selection
-    w->selected_list_item = -1;
-
-    w->scrolls[0].v_top = 0;
     window_invalidate(w);
 }
 
@@ -934,19 +947,19 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
         break;
     case WIDX_SPINNER_X_INCREASE:
         windowTileInspectorTileX = Math::Min<uint32>(windowTileInspectorTileX + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
-        window_tile_inspector_load_tile(w);
+        window_tile_inspector_load_tile(w, nullptr);
         break;
     case WIDX_SPINNER_X_DECREASE:
         windowTileInspectorTileX = Math::Max<uint32>(windowTileInspectorTileX - 1, 0);
-        window_tile_inspector_load_tile(w);
+        window_tile_inspector_load_tile(w, nullptr);
         break;
     case WIDX_SPINNER_Y_INCREASE:
         windowTileInspectorTileY = Math::Min<uint32>(windowTileInspectorTileY + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
-        window_tile_inspector_load_tile(w);
+        window_tile_inspector_load_tile(w, nullptr);
         break;
     case WIDX_SPINNER_Y_DECREASE:
         windowTileInspectorTileY = Math::Max<uint32>(windowTileInspectorTileY - 1, 0);
-        window_tile_inspector_load_tile(w);
+        window_tile_inspector_load_tile(w, nullptr);
         break;
     case WIDX_BUTTON_CORRUPT:
         window_tile_inspector_insert_corrupt_element(w->selected_list_item);
@@ -1267,17 +1280,30 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
 
     sint16 mapX = x;
     sint16 mapY = y;
-    sint32 direction;
-    screen_pos_to_map_pos(&mapX, &mapY, &direction);
-    if (mapX != LOCATION_NULL) {
+    rct_tile_element* clickedElement = nullptr;
+    if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))
+    {
+        get_map_coordinates_from_pos(x, y, ViewportInteractionFlags, &mapX, &mapY, nullptr, &clickedElement, nullptr);
+    }
+
+    // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
+    if (clickedElement == nullptr)
+    {
+        screen_pos_to_map_pos(&mapX, &mapY, nullptr);
+    }
+
+    if (mapX != LOCATION_NULL)
+    {
         gMapSelectPositionA.x = gMapSelectPositionB.x = mapX;
         gMapSelectPositionA.y = gMapSelectPositionB.y = mapY;
     }
-    else if (windowTileInspectorTileSelected){
+    else if (windowTileInspectorTileSelected)
+    {
         gMapSelectPositionA.x = gMapSelectPositionB.x = windowTileInspectorTileX << 5;
         gMapSelectPositionA.y = gMapSelectPositionB.y = windowTileInspectorTileY << 5;
     }
-    else {
+    else
+    {
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     }
 
@@ -1285,26 +1311,44 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
     map_invalidate_selection_rect();
 }
 
-static void window_tile_inspector_update_selected_tile(rct_window *w, sint32 x, sint32 y)
+static void window_tile_inspector_update_selected_tile(rct_window* w, sint32 x, sint32 y)
 {
+    const bool ctrlIsHeldDown = input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z);
+
     // Mouse hasn't moved
-    if (x == windowTileInspectorToolMouseX && y == windowTileInspectorToolMouseY) {
+    if (x == windowTileInspectorToolMouseX && y == windowTileInspectorToolMouseY
+        && windowTileInspectorToolCtrlDown == ctrlIsHeldDown)
+    {
         return;
     }
+
     windowTileInspectorToolMouseX = x;
     windowTileInspectorToolMouseY = y;
+    windowTileInspectorToolCtrlDown = ctrlIsHeldDown;
 
     sint16 mapX = x;
     sint16 mapY = y;
-    sint32 direction;
-    screen_pos_to_map_pos(&mapX, &mapY, &direction);
-    if (mapX == LOCATION_NULL) {
-        return;
+    rct_tile_element* clickedElement = nullptr;
+    if (ctrlIsHeldDown)
+    {
+        get_map_coordinates_from_pos(x, y, ViewportInteractionFlags, &mapX, &mapY, nullptr, &clickedElement, nullptr);
     }
 
-    // Tile is already selected
-    if (windowTileInspectorTileSelected && mapX == windowTileInspectorToolMapX && mapY == windowTileInspectorToolMapY) {
-        return;
+    // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
+    if (clickedElement == nullptr)
+    {
+        screen_pos_to_map_pos(&mapX, &mapY, nullptr);
+
+        if (mapX == LOCATION_NULL)
+        {
+            return;
+        }
+
+        // Tile is already selected
+        if (windowTileInspectorTileSelected && mapX == windowTileInspectorToolMapX && mapY == windowTileInspectorToolMapY)
+        {
+            return;
+        }
     }
 
     windowTileInspectorTileSelected = true;
@@ -1313,7 +1357,7 @@ static void window_tile_inspector_update_selected_tile(rct_window *w, sint32 x, 
     windowTileInspectorTileX = mapX >> 5;
     windowTileInspectorTileY = mapY >> 5;
 
-    window_tile_inspector_load_tile(w);
+    window_tile_inspector_load_tile(w, clickedElement);
 }
 
 static void window_tile_inspector_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
