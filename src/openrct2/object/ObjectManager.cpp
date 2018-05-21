@@ -135,7 +135,7 @@ public:
     {
         // Find all the required objects
         bool missingObjects;
-        auto requiredObjects = GetRequiredObjects(entries, &missingObjects);
+        auto requiredObjects = GetRequiredObjects(entries, count, &missingObjects);
         if (missingObjects)
         {
             return false;
@@ -482,11 +482,11 @@ private:
         return invalidEntries;
     }
 
-    std::vector<const ObjectRepositoryItem *> GetRequiredObjects(const rct_object_entry * entries, bool * missingObjects)
+    std::vector<const ObjectRepositoryItem *> GetRequiredObjects(const rct_object_entry * entries, size_t count, bool * missingObjects)
     {
         std::vector<const ObjectRepositoryItem *> requiredObjects;
         *missingObjects = false;
-        for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
+        for (sint32 i = 0; i < count; i++)
         {
             const rct_object_entry * entry = &entries[i];
             const ObjectRepositoryItem * ori = nullptr;

@@ -55,13 +55,6 @@
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 
-class ObjectLoadException : public std::runtime_error
-{
-public:
-    ObjectLoadException() : std::runtime_error("Unable to load objects.") { }
-    explicit ObjectLoadException(const std::string &message) : std::runtime_error(message) { }
-};
-
 /**
  * Class to import RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
  */
@@ -147,7 +140,7 @@ public:
 
         if (_s6.header.classic_flag == 0xf)
         {
-            return ParkLoadResult::CreateUnsupportedRCTCflag(_s6.header.classic_flag);
+            throw UnsupportedRCTCFlagException(_s6.header.classic_flag);
         }
 
         // Read packed objects
@@ -179,15 +172,9 @@ public:
             chunkReader.ReadChunk(&_s6.next_free_tile_element_pointer_index, 3048816);
         }
 
-        auto missingObjects = _objectManager->GetInvalidObjects(_s6.objects);
-
-        if (!missingObjects.empty())
-        {
-            return ParkLoadResult::CreateMissingObjects(missingObjects);
-        }
-
         _s6Path = path;
-        return ParkLoadResult::CreateOK();
+
+        return ParkLoadResult(std::vector<rct_object_entry>(std::begin(_s6.objects), std::end(_s6.objects)));
     }
 
     bool GetDetails(scenario_index_entry * dst) override
@@ -452,10 +439,11 @@ public:
         // pad_13CE778
 
         // Fix and set dynamic variables
-        if (!_objectManager->LoadObjects(_s6.objects, OBJECT_ENTRY_COUNT))
-        {
-            throw ObjectLoadException();
-        }
+        // TODO objects should already be loaded
+        // if (!_objectManager->LoadObjects(_s6.objects, OBJECT_ENTRY_COUNT))
+        // {
+        //     throw ObjectLoadException();
+        // }
         map_strip_ghost_flag_from_elements();
         map_update_tile_pointers();
         game_convert_strings_to_utf8();
@@ -893,47 +881,33 @@ void load_from_sv6(const char * path)
  *  rct2: 0x00676053
  * scenario (ebx)
  */
-ParkLoadResult * load_from_sc6(const char * path)
+void load_from_sc6(const char * path)
 {
-    ParkLoadResult * result = nullptr;
     auto context = OpenRCT2::GetContext();
-    auto s6Importer = new S6Importer(context->GetObjectRepository(), context->GetObjectManager());
+    auto s6Importer = std::make_unique<S6Importer>(context->GetObjectRepository(), context->GetObjectManager());
     try
     {
-        result = new ParkLoadResult(s6Importer->LoadScenario(path));
-        if (result->Error == PARK_LOAD_ERROR_OK)
-        {
-            s6Importer->Import();
-
-            game_fix_save_vars();
-            sprite_position_tween_reset();
-        }
+        auto result = s6Importer->LoadScenario(path);
+        s6Importer->Import();
+        game_fix_save_vars();
+        sprite_position_tween_reset();
+        return;
     }
-    catch (const ObjectLoadException &)
+    catch (const ObjectLoadException&)
     {
         gErrorType     = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_GAME_SAVE_FAILED;
     }
-    catch (const IOException &)
+    catch (const IOException&)
     {
         gErrorType     = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_GAME_SAVE_FAILED;
     }
-    catch (const std::exception &)
+    catch (const std::exception&)
     {
         gErrorType     = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
     }
-    delete s6Importer;
-
-    if (result == nullptr)
-    {
-        result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
-    }
-    if (result->Error != PARK_LOAD_ERROR_OK)
-    {
-        gScreenAge = 0;
-        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-    }
-    return result;
+    gScreenAge = 0;
+    gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
 }

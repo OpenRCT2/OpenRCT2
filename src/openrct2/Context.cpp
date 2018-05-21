@@ -559,7 +559,7 @@ namespace OpenRCT2
                     try
                     {
                         auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
-                        // _objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+                        _objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
                         parkImporter->Import();
                         String::Set(gScenarioSavePath, Util::CountOf(gScenarioSavePath), path.c_str());
                         String::Set(gCurrentLoadedPath, Util::CountOf(gCurrentLoadedPath), path.c_str());

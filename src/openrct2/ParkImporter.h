@@ -80,7 +80,7 @@ namespace ParkImporter
     bool ExtensionIsScenario(const std::string &extension);
 }
 
-class ObjectLoadException : std::exception
+class ObjectLoadException : public std::exception
 {
 public:
     std::vector<rct_object_entry> const MissingObjects;
@@ -91,7 +91,7 @@ public:
     }
 };
 
-class UnsupportedRCTCFlagException : std::exception
+class UnsupportedRCTCFlagException : public std::exception
 {
 public:
     uint8 const Flag;

@@ -177,7 +177,7 @@ public:
                                   bool skipObjectCheck,
                                   const utf8 * path) override
     {
-        _s4 = ReadAndDecodeS4(stream, isScenario);
+        _s4 = *ReadAndDecodeS4(stream, isScenario);
         _s4Path = path;
 
         // Only determine what objects we required to import this saved game
@@ -298,9 +298,9 @@ public:
     }
 
 private:
-    rct1_s4 ReadAndDecodeS4(IStream * stream, bool isScenario)
+    std::unique_ptr<rct1_s4> ReadAndDecodeS4(IStream * stream, bool isScenario)
     {
-        rct1_s4 s4;
+        auto s4 = std::make_unique<rct1_s4>();
         size_t dataSize = stream->GetLength() - stream->GetPosition();
         auto deleter_lambda = [dataSize](uint8 * ptr) { Memory::FreeArray(ptr, dataSize); };
         auto data = std::unique_ptr<uint8, decltype(deleter_lambda)>(stream->ReadArray<uint8>(dataSize), deleter_lambda);
@@ -319,7 +319,7 @@ private:
 
         if (decodedSize == sizeof(rct1_s4))
         {
-            std::memcpy(&s4, decodedData.get(), sizeof(rct1_s4));
+            std::memcpy(s4.get(), decodedData.get(), sizeof(rct1_s4));
             return s4;
         }
         else
