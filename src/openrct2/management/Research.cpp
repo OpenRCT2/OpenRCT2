@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <algorithm>
+#include <random>
 #include "../actions/ParkSetResearchFundingAction.hpp"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
