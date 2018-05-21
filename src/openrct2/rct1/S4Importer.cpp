@@ -66,6 +66,8 @@
 #include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 
+using namespace OpenRCT2;
+
 static uint8 GetPathType(rct_tile_element * tileElement);
 static sint32 GetWallType(rct_tile_element * tileElement, sint32 edge);
 static uint8 GetWallColour(rct_tile_element * tileElement);
@@ -316,7 +318,8 @@ public:
             {
                 // Use the ratio between the old and new park value to calcute the ratio to
                 // use for the park value history and the goal.
-                _parkValueConversionFactor = (calculate_park_value() * 10) / _s4.park_value;
+                auto park = GetContext()->GetPark();
+                _parkValueConversionFactor = (park->CalculateParkValue() * 10) / _s4.park_value;
             }
             else
             {

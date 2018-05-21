@@ -52,6 +52,7 @@
 #include "title/TitleScreen.h"
 #include "title/TitleSequenceManager.h"
 #include "ui/WindowManager.h"
+#include "world/Park.h"
 #include "Version.h"
 
 #include "audio/audio.h"
@@ -104,6 +105,7 @@ namespace OpenRCT2
 
         // Game states
         std::unique_ptr<TitleScreen> _titleScreen;
+        std::unique_ptr<Park> _park;
 
         sint32 _drawingEngineType = DRAWING_ENGINE_SOFTWARE;
         std::unique_ptr<IDrawingEngine> _drawingEngine;
@@ -162,6 +164,11 @@ namespace OpenRCT2
         std::shared_ptr<IUiContext> GetUiContext() override
         {
             return _uiContext;
+        }
+
+        Park * GetPark() override
+        {
+            return _park.get();
         }
 
         std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() override
@@ -444,6 +451,7 @@ namespace OpenRCT2
             game_init_all(150);
 
             _titleScreen = std::make_unique<TitleScreen>();
+            _park = std::make_unique<Park>();
             return true;
         }
 

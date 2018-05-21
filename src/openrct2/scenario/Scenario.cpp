@@ -90,6 +90,8 @@ char gScenarioFileName[MAX_PATH];
 static sint32 scenario_create_ducks();
 static void scenario_objective_check();
 
+using namespace OpenRCT2;
+
 void scenario_begin()
 {
     game_load_init();
@@ -108,9 +110,10 @@ void scenario_begin()
     if (gScenarioObjectiveType != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
         context_open_window_view(WV_PARK_OBJECTIVE);
 
-    gParkRating = calculate_park_rating();
-    gParkValue = calculate_park_value();
-    gCompanyValue = calculate_company_value();
+    auto park = GetContext()->GetPark();
+    gParkRating = park->CalculateParkRating();
+    gParkValue = park->CalculateParkValue();
+    gCompanyValue = park->CalculateCompanyValue();
     gHistoricalProfit = gInitialCash - gBankLoan;
     gCash = gInitialCash;
 
@@ -169,7 +172,7 @@ void scenario_begin()
     gTotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
     safe_strcpy(gScenarioCompletedBy, "?", sizeof(gScenarioCompletedBy));
-    park_reset_history();
+    park->ResetHistories();
     finance_reset_history();
     award_reset();
     reset_all_ride_build_dates();
@@ -250,8 +253,8 @@ void scenario_success_submit_name(const char *name)
 static void scenario_entrance_fee_too_high_check()
 {
     uint16 x = 0, y = 0;
-    money16 totalRideValue = gTotalRideValueForMoney;
-    money16 max_fee = totalRideValue + (totalRideValue / 2);
+    money16 totalRideValueForMoney = gTotalRideValueForMoney;
+    money16 max_fee = totalRideValueForMoney + (totalRideValueForMoney / 2);
 
     if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee) {
         for (sint32 i = 0; i < MAX_PARK_ENTRANCES && gParkEntrances[i].x != LOCATION_NULL; i++) {
@@ -345,8 +348,6 @@ static void scenario_week_update()
                 break;
         }
     }
-    park_update_histories();
-    park_calculate_size();
 }
 
 static void scenario_fortnight_update()

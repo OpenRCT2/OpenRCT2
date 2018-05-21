@@ -30,6 +30,8 @@
 #include "world/Sprite.h"
 #include "world/Surface.h"
 
+using namespace OpenRCT2;
+
 bool gCheatsSandboxMode = false;
 bool gCheatsDisableClearanceChecks = false;
 bool gCheatsDisableSupportLimits = false;
@@ -267,8 +269,9 @@ static void cheat_clear_loan()
 
 static void cheat_generate_guests(sint32 count)
 {
+    auto park = GetContext()->GetPark();
     for (sint32 i = 0; i < count; i++)
-        park_generate_new_guest();
+        park->GenerateGuest();
 
     window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 }
