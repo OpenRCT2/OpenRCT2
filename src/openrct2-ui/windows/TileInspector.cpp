@@ -1352,6 +1352,7 @@ static void window_tile_inspector_set_page(rct_window *w, const TILE_INSPECTOR_P
     w->widgets = PageWidgets[page];
     w->enabled_widgets = PageEnabledWidgets[page];
     w->disabled_widgets = PageDisabledWidgets[page];
+    w->pressed_widgets = 0;
 }
 
 static void window_tile_inspector_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
