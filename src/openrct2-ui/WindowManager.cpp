@@ -345,20 +345,6 @@ public:
             window_tile_inspector_clear_clipboard();
             break;
 
-        case INTENT_ACTION_SET_TILE_INSPECTOR_PAGE:
-        {
-            auto window = window_find_by_class(WC_TILE_INSPECTOR);
-            window_tile_inspector_set_page(window, static_cast<TILE_INSPECTOR_PAGE>(intent.GetUIntExtra(INTENT_EXTRA_PAGE)));
-            break;
-        }
-
-        case INTENT_ACTION_SET_TILE_INSPECTOR_BUTTONS:
-        {
-            auto window = window_find_by_class(WC_TILE_INSPECTOR);
-            window_tile_inspector_auto_set_buttons(window);
-            break;
-        }
-
         case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
         {
             rct_vehicle * vehicle = static_cast<rct_vehicle *>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
