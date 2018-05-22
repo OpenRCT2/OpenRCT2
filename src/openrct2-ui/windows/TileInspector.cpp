@@ -2077,13 +2077,23 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     do {
-        const bool highlightRow = i == w->selected_list_item || i == windowTileInspectorHighlightedIndex;
+        const bool selectedRow = i == w->selected_list_item;
+        const bool hoveredRow = i == windowTileInspectorHighlightedIndex;
         sint32 type = tileElement->GetType();
-        const char * typeName = "";
+        const char* typeName = "";
 
-        if (highlightRow)
+        if (selectedRow)
         {
             gfx_fill_rect(dpi, 0, y, listWidth, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark);
+        }
+        else if (hoveredRow)
+        {
+            gfx_fill_rect(dpi, 0, y, listWidth, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark | 0x1000000);
+        }
+        else if (((windowTileInspectorElementCount - i) & 1) == 0)
+        {
+            // Zebra stripes
+            gfx_fill_rect(dpi, 0, y, listWidth, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].light | 0x1000000);
         }
 
         switch (type) {
@@ -2142,7 +2152,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
         const bool broken = (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN) != 0;
         const bool last = (tileElement->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 
-        const rct_string_id stringFormat = highlightRow ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING;
+        const rct_string_id stringFormat = (selectedRow || hoveredRow) ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
 
         // Undo relative scroll offset, but keep the 3 pixel padding
         const sint32 x = -w->widgets[WIDX_LIST].left;
