@@ -65,6 +65,14 @@ static bool _researchedSceneryItems[MAX_RESEARCHED_SCENERY_ITEMS];
 
 bool gSilentResearch = false;
 
+namespace
+{
+bool compare_research_items(const rct_research_item& First, const rct_research_item& Second)
+{
+    return First.rawValue == Second.rawValue;
+}
+}
+
 /**
  *
  *  rct2: 0x006671AD, part of 0x00667132
@@ -138,23 +146,28 @@ static void research_next_design()
         research_invalidate_related_windows();
         auto gameAction = ParkSetResearchFundingAction(gResearchPriorities, 0);
         GameActions::Execute(&gameAction);
-        return;
     }
-
-    auto nextResearchItem = std::find_if(
-        std::begin(gUnResearchedResearchItems),
-        std::end(gUnResearchedResearchItems),
-        [](const rct_research_item& researchItem) { return (gResearchPriorities & (1 << researchItem.category)); });
-
-    if (nextResearchItem == gUnResearchedResearchItems.end())
+    else
     {
-        nextResearchItem = gUnResearchedResearchItems.begin();
+        gResearchNextItem = gResearchItemEnd;
+        for (const rct_research_item& researchItem : gUnResearchedResearchItems)
+        {
+            if (gResearchPriorities & (1 << researchItem.category))
+            {
+                gResearchNextItem = researchItem;
+                break;
+            }
+        }
+
+        if (! compare_research_items(gResearchNextItem, gResearchItemEnd))
+        {
+            gResearchNextItem = gUnResearchedResearchItems.front();
+        }
+
+        gResearchProgressStage = RESEARCH_STAGE_DESIGNING;
+
+        research_invalidate_related_windows();
     }
-
-    gResearchNextItem = *nextResearchItem;
-    gResearchProgressStage = RESEARCH_STAGE_DESIGNING;
-
-    research_invalidate_related_windows();
 }
 
 /**
@@ -415,50 +428,56 @@ void research_reset_current_item()
  *
  *  rct2: 0x006857CF
  */
-void research_remove(rct_research_item* researchItemToRemove)
+void research_remove(const rct_research_item& researchItemToRemove)
 {
-    auto CompareResearchItems = [](const rct_research_item& First, const rct_research_item& Second) -> bool {
-        return First.rawValue == Second.rawValue;
-    };
-
-    auto RemoveItemIfFound = [&](std::vector<rct_research_item>& ResearchItems) {
-        auto Found = std::remove_if(
-            std::begin(ResearchItems), std::end(ResearchItems), [&](const rct_research_item& researchItem) -> bool {
-                return CompareResearchItems(*researchItemToRemove, researchItem);
-            });
-        if (Found != std::end(ResearchItems))
+    for (auto it = gResearchedResearchItems.begin(); it != gResearchedResearchItems.end(); ++it)
+    {
+        if (compare_research_items(researchItemToRemove, *it))
         {
-            ResearchItems.erase(Found);
+            gResearchedResearchItems.erase(it);
+            return;
         }
-    };
+    }
 
-    RemoveItemIfFound(gResearchedResearchItems);
-    RemoveItemIfFound(gUnResearchedResearchItems);
+    for (auto it = gUnResearchedResearchItems.begin(); it != gUnResearchedResearchItems.end(); ++it)
+    {
+        if (compare_research_items(researchItemToRemove, *it))
+        {
+            gUnResearchedResearchItems.erase(it);
+            return;
+        }
+    }
 }
 
 void research_insert(sint32 researched, sint32 rawValue, uint8 category)
 {
-    auto CompareRawValue = [rawValue](const rct_research_item& researchItem) { return researchItem.rawValue == rawValue; };
+    rct_research_item newResearchItem;
+    newResearchItem.rawValue = rawValue;
+    newResearchItem.category = category;
 
-    if (gResearchedResearchItems.end()
-            != std::find_if(std::begin(gResearchedResearchItems), std::end(gResearchedResearchItems), CompareRawValue)
-        || gUnResearchedResearchItems.end()
-            != std::find_if(std::begin(gUnResearchedResearchItems), std::end(gUnResearchedResearchItems), CompareRawValue))
+    for (const rct_research_item& researchItem : gResearchedResearchItems)
     {
-        return;
+        if (compare_research_items(researchItem, newResearchItem))
+        {
+            return;
+        }
     }
 
-    rct_research_item researchItem;
-    researchItem.rawValue = rawValue;
-    researchItem.category = category;
+    for (const rct_research_item& researchItem : gUnResearchedResearchItems)
+    {
+        if (compare_research_items(researchItem, newResearchItem))
+        {
+            return;
+        }
+    }
 
     if (researched)
     {
-        gResearchedResearchItems.push_back(researchItem);
+        gResearchedResearchItems.push_back(newResearchItem);
     }
     else
     {
-        gUnResearchedResearchItems.push_back(researchItem);
+        gUnResearchedResearchItems.push_back(newResearchItem);
     }
 }
 
@@ -735,10 +754,15 @@ rct_string_id research_get_friendly_base_ride_type_name(uint8 trackType, rct_rid
  */
 void research_remove_flags()
 {
-    auto ClearAlwaysResearchedFlag = [](rct_research_item& researchItem) { researchItem.flags = 0; };
+    for (rct_research_item& researchItem : gResearchedResearchItems)
+    {
+        researchItem.flags = 0;
+    }
 
-    std::for_each(std::begin(gResearchedResearchItems), std::end(gResearchedResearchItems), ClearAlwaysResearchedFlag);
-    std::for_each(std::begin(gUnResearchedResearchItems), std::end(gUnResearchedResearchItems), ClearAlwaysResearchedFlag);
+    for (rct_research_item& researchItem : gUnResearchedResearchItems)
+    {
+        researchItem.flags = 0;
+    }
 }
 
 void research_fix()
@@ -768,7 +792,7 @@ void research_fix()
 
     for (rct_research_item& researchItemToRemove : researchItemsToRemove)
     {
-        research_remove(&researchItemToRemove);
+        research_remove(researchItemToRemove);
     }
 
     research_update_uncompleted_types();

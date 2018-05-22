@@ -121,7 +121,7 @@ void research_process_random_items();
 
 void research_finish_item(rct_research_item * researchItem);
 void research_insert(sint32 researched, sint32 rawValue, uint8 category);
-void research_remove(rct_research_item * researchItem);
+void research_remove(const rct_research_item& researchItem);
 
 void research_insert_ride_entry(uint8 entryIndex, bool researched);
 void research_insert_scenery_group_entry(uint8 entryIndex, bool researched);

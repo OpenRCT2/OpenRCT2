@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,6 +19,7 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/OpenRCT2.h>
+#include "openrct2/core/Guard.hpp"
 #include <openrct2/core/Util.hpp>
 #include <openrct2-ui/windows/Window.h>
 
@@ -161,6 +162,14 @@ static rct_window_event_list window_editor_inventions_list_drag_events = {
 
 #pragma endregion
 
+namespace
+{
+bool compare_research_items (const rct_research_item& First, const rct_research_item& Second)
+{
+    return First.rawValue == Second.rawValue && First.category == Second.category;
+}
+}
+
 static rct_research_item *_editorInventionsListDraggedItem;
 
 static constexpr const rct_string_id EditorInventionsResearchCategories[] = {
@@ -205,6 +214,17 @@ static void research_rides_setup()
     }
 }
 
+void research_set_always_researched_flag(const uint8 entryIndex, rct_research_item& researchItem)
+{
+    if ((researchItem.rawValue & 0xFFFFFF) == entryIndex)
+    {
+        researchItem.flags |= RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED;
+        _editorInventionsListDraggedItem = &researchItem;
+        move_research_item(gResearchedResearchItems.data());
+        _editorInventionsListDraggedItem = nullptr;
+    }
+}
+
 /**
  *
  *  rct2: 0x0068590C
@@ -215,26 +235,20 @@ static void research_scenery_groups_setup()
     for (size_t i = 0; i < Util::CountOf(RequiredSelectedObjects); i++)
     {
         const rct_object_entry* object = &RequiredSelectedObjects[i];
-
         uint8 entry_type, entryIndex;
-        if (!find_object_in_entry_group(object, &entry_type, &entryIndex))
-            continue;
 
-        if (entry_type != OBJECT_TYPE_SCENERY_GROUP)
-            continue;
-
-        auto SetAlwaysResearchedFlag = [entryIndex](rct_research_item& researchItem) {
-            if ((researchItem.rawValue & 0xFFFFFF) == entryIndex)
+        if (find_object_in_entry_group(object, &entry_type, &entryIndex) &&
+            entry_type == OBJECT_TYPE_SCENERY_GROUP)
+        {
+            for (rct_research_item& researchItem : gResearchedResearchItems)
             {
-                researchItem.flags |= RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED;
-                _editorInventionsListDraggedItem = &researchItem;
-                move_research_item(gResearchedResearchItems.data());
-                _editorInventionsListDraggedItem = nullptr;
+                research_set_always_researched_flag(entryIndex, researchItem);
             }
-        };
-
-        std::for_each(std::begin(gResearchedResearchItems), std::end(gResearchedResearchItems), SetAlwaysResearchedFlag);
-        std::for_each(std::begin(gUnResearchedResearchItems), std::end(gUnResearchedResearchItems), SetAlwaysResearchedFlag);
+            for (rct_research_item& researchItem : gUnResearchedResearchItems)
+            {
+                research_set_always_researched_flag(entryIndex, researchItem);
+            }
+        }
     }
 }
 
@@ -248,8 +262,6 @@ static void research_always_researched_setup()
     research_scenery_groups_setup();
 }
 
-
-
 /**
  *
  *  rct2: 0x006855E7
@@ -258,14 +270,10 @@ static void move_research_item(rct_research_item* beforeItem)
 {
     const rct_research_item Copy = *_editorInventionsListDraggedItem;
 
-    auto CompareResearchItems = [](const rct_research_item& First, const rct_research_item& Second) -> bool {
-        return First.rawValue == Second.rawValue && First.category == Second.category;
-    };
-
     auto RemoveItemIfFound = [&](std::vector<rct_research_item>& ResearchItems) -> bool {
         auto Found = std::remove_if(
             std::begin(ResearchItems), std::end(ResearchItems), [&](const rct_research_item& ResearchItem) -> bool {
-                return CompareResearchItems(Copy, ResearchItem);
+                return compare_research_items(Copy, ResearchItem);
             });
         if (Found != std::end(ResearchItems))
         {
@@ -278,7 +286,7 @@ static void move_research_item(rct_research_item* beforeItem)
     auto InsertBeforeItem = [&](std::vector<rct_research_item>& ResearchItems) {
         auto Found = std::find_if(
             std::begin(ResearchItems), std::end(ResearchItems), [&](const rct_research_item& ResearchItem) -> bool {
-                return CompareResearchItems(*beforeItem, ResearchItem);
+                return compare_research_items(*beforeItem, ResearchItem);
             });
 
         if (Found != std::end(ResearchItems))
@@ -293,16 +301,15 @@ static void move_research_item(rct_research_item* beforeItem)
     {
         if (!RemoveItemIfFound(gUnResearchedResearchItems))
         {
-            bool ItemNotFound = 0;
-            assert(ItemNotFound);
+            assert(0); // item not found
         }
     }
 
-    if (CompareResearchItems(*beforeItem, gResearchItemSeparator))
+    if (compare_research_items(*beforeItem, gResearchItemSeparator))
     {
         gResearchedResearchItems.push_back(Copy);
     }
-    else if (CompareResearchItems(*beforeItem, gResearchItemEnd))
+    else if (compare_research_items(*beforeItem, gResearchItemEnd))
     {
         gUnResearchedResearchItems.push_back(Copy);
     }
@@ -310,8 +317,7 @@ static void move_research_item(rct_research_item* beforeItem)
     {
         if (!InsertBeforeItem(gUnResearchedResearchItems))
         {
-            bool ItemNotInserted = 0;
-            assert(ItemNotInserted);
+            assert(0); // item not inserted
         }
     }
 
@@ -775,16 +781,12 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
             return gUnResearchedResearchItems;
         }
         return gResearchedResearchItems;
-    }
-    ();
-
-    auto CompareResearchItems = [](const rct_research_item& First, const rct_research_item& Second) -> bool {
-        return First.rawValue == Second.rawValue && First.category == Second.category;
-    };
+    }();
 
     itemY = -SCROLLABLE_ROW_HEIGHT;
 
-    std::for_each(std::begin(listToPaint), std::end(listToPaint), [&](const rct_research_item& researchItem) {
+    for (const rct_research_item& researchItem : listToPaint)
+    {
         itemY += SCROLLABLE_ROW_HEIGHT;
         if (itemY + SCROLLABLE_ROW_HEIGHT < dpi->y || itemY >= dpi->y + dpi->height)
         {
@@ -792,7 +794,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
         }
 
         uint8 colour = COLOUR_BRIGHT_GREEN | COLOUR_FLAG_TRANSLUCENT;
-        if (w->research_item && CompareResearchItems(*w->research_item, researchItem))
+        if (w->research_item && compare_research_items(*w->research_item, researchItem))
         {
             if (_editorInventionsListDraggedItem == nullptr)
             {
@@ -857,7 +859,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
             top = itemY;
             gfx_draw_string(dpi, buffer, colour, left, top);
         }
-    });
+    }
 }
 
 #pragma region Drag item
