@@ -31,11 +31,6 @@ bool gOpenRCT2NoGraphics = false;
 bool gOpenRCT2ShowChangelog;
 bool gOpenRCT2SilentBreakpad;
 
-#ifndef DISABLE_NETWORK
-// OpenSSL's message digest context used for calculating sprite checksums
-EVP_MD_CTX * gHashCTX = nullptr;
-#endif // DISABLE_NETWORK
-
 uint32 gCurrentDrawCount = 0;
 uint8 gScreenFlags;
 uint32 gScreenAge;

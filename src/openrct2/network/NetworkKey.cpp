@@ -22,6 +22,7 @@
 #include <openssl/rsa.h>
 
 #include "../core/IStream.hpp"
+#include "../core/Hash.h"
 #include "../Diagnostic.h"
 #include "NetworkKey.h"
 
@@ -312,38 +313,30 @@ std::string NetworkKey::PublicKeyString()
  */
 std::string NetworkKey::PublicKeyHash()
 {
-    std::string key = PublicKeyString();
-    if (key.empty())
+    try
     {
-        log_error("No key found");
-        return nullptr;
+        std::string key = PublicKeyString();
+        if (key.empty())
+        {
+            throw std::runtime_error("No key found");
+        }
+        auto hash = Hash::SHA1(key.c_str(), key.size());
+
+        std::string result;
+        result.reserve(hash.size() * 2);
+        for (auto b : hash)
+        {
+            char buf[3];
+            snprintf(buf, 3, "%02x", b);
+            result.append(buf);
+        }
+        return result;
     }
-    EVP_MD_CTX * ctx = EVP_MD_CTX_create();
-    if (EVP_DigestInit_ex(ctx, EVP_sha1(), nullptr) <= 0)
+    catch (std::exception& e)
     {
-        log_error("Failed to initialise digest context");
-        EVP_MD_CTX_destroy(ctx);
-        return nullptr;
+        log_error("Failed to create hash of public key: %s", e.what());
     }
-    if (EVP_DigestUpdate(ctx, key.c_str(), key.size()) <= 0)
-    {
-        log_error("Failed to update digset");
-        EVP_MD_CTX_destroy(ctx);
-        return nullptr;
-    }
-    uint32 digest_size = EVP_MAX_MD_SIZE;
-    std::vector<uint8> digest(EVP_MAX_MD_SIZE);
-    // Cleans up `ctx` automatically.
-    EVP_DigestFinal(ctx, digest.data(), &digest_size);
-    std::string digest_out;
-    digest_out.reserve(EVP_MAX_MD_SIZE * 2 + 1);
-    for (uint32 i = 0; i < digest_size; i++)
-    {
-        char buf[3];
-        snprintf(buf, 3, "%02x", digest[i]);
-        digest_out.append(buf);
-    }
-    return digest_out;
+    return nullptr;
 }
 
 bool NetworkKey::Sign(const uint8 * md, const size_t len, char ** signature, size_t * out_size)
