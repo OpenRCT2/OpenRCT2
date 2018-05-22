@@ -21,13 +21,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		4C1A53ED205FD1A0000F8EF5 /* SceneryObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */; };
 		4C3B4236205914F7000C5BB7 /* InGameConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B4234205914F7000C5BB7 /* InGameConsole.cpp */; };
-		4C3B423820591513000C5BB7 /* StdInOutConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B423720591513000C5BB7 /* StdInOutConsole.cpp */; };
 		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
 		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
-		4CDCB0BE20A9902F00321367 /* ShopItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CDCB0BC20A9902E00321367 /* ShopItem.cpp */; };
-		4CE9AAAD1FDA7B14004093C6 /* ObjectJsonHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */; };
 		4CF67197206B7E720034ADDD /* object in Resources */ = {isa = PBXBuildFile; fileRef = 4CF67196206B7E720034ADDD /* object */; };
 		9308D9FE209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
 		9308D9FF209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
@@ -56,6 +52,12 @@
 		93CBA4CA20A7504500867D56 /* ImageImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4C720A7504400867D56 /* ImageImporter.cpp */; };
 		93CBA4CB20A7504500867D56 /* ImageImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4C720A7504400867D56 /* ImageImporter.cpp */; };
 		93CBA4CC20A7504500867D56 /* ImageImporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CBA4C820A7504500867D56 /* ImageImporter.h */; };
+		93F9DA3620B46F3100D1BE92 /* libicudata.61.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93AF4A6320B462F7006489A5 /* libicudata.61.1.dylib */; };
+		93F9DA3720B46F3100D1BE92 /* libicuuc.61.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93AF4A6220B462F7006489A5 /* libicuuc.61.1.dylib */; };
+		93F9DA3820B46F9D00D1BE92 /* ShopItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CDCB0BC20A9902E00321367 /* ShopItem.cpp */; };
+		93F9DA3920B46FB800D1BE92 /* ObjectJsonHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */; };
+		93F9DA3A20B46FCA00D1BE92 /* SceneryObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */; };
+		93F9DA3B20B4701100D1BE92 /* StdInOutConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B423720591513000C5BB7 /* StdInOutConsole.cpp */; };
 		C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */; };
 		C61ADB211FB7DC060024F2EF /* Scenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB201FB7DC060024F2EF /* Scenery.cpp */; };
 		C61ADB231FBBCB8B0024F2EF /* GameBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */; };
@@ -3067,9 +3069,7 @@
 				F76C887A1EC5324E00FA49E2 /* AudioMixer.cpp in Sources */,
 				C68313C81FDB4ED4006DB3D8 /* MouseInput.cpp in Sources */,
 				C68878C920289B710084B384 /* TextureCache.cpp in Sources */,
-				4CDCB0BE20A9902F00321367 /* ShopItem.cpp in Sources */,
 				C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */,
-				4C1A53ED205FD1A0000F8EF5 /* SceneryObject.cpp in Sources */,
 				F76C887B1EC5324E00FA49E2 /* FileAudioSource.cpp in Sources */,
 				C68878CA20289B710084B384 /* TransparencyDepth.cpp in Sources */,
 				C64644FD1F3FA4120026AC2D /* Land.cpp in Sources */,
@@ -3100,7 +3100,6 @@
 				C68878C520289B710084B384 /* OpenGLDrawingEngine.cpp in Sources */,
 				C6D2BEE71F9BAACE008B557C /* MapTooltip.cpp in Sources */,
 				C666EE7B1F37ACB10061AA04 /* TitleExit.cpp in Sources */,
-				4C3B423820591513000C5BB7 /* StdInOutConsole.cpp in Sources */,
 				F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */,
 				F76C887E1EC5324E00FA49E2 /* CursorRepository.cpp in Sources */,
 				C654DF331F69C0430040F43D /* LoadSave.cpp in Sources */,
@@ -3113,7 +3112,6 @@
 				C68313D51FDB4F4C006DB3D8 /* Graph.cpp in Sources */,
 				C685E51D1F8907850090598F /* Research.cpp in Sources */,
 				C64644FB1F3FA4120026AC2D /* EditorScenarioOptions.cpp in Sources */,
-				4CE9AAAD1FDA7B14004093C6 /* ObjectJsonHelpers.cpp in Sources */,
 				C654DF321F69C0430040F43D /* InstallTrack.cpp in Sources */,
 				C64644FF1F3FA4120026AC2D /* StaffList.cpp in Sources */,
 				C6D2BEE81F9BAACE008B557C /* MazeConstruction.cpp in Sources */,
@@ -3340,11 +3338,13 @@
 				C68878F620289B9B0084B384 /* InvertedRollerCoaster.cpp in Sources */,
 				C68878E420289B9B0084B384 /* Linux.cpp in Sources */,
 				F76C86791EC4E88400FA49E2 /* SmallSceneryObject.cpp in Sources */,
+				93F9DA3820B46F9D00D1BE92 /* ShopItem.cpp in Sources */,
 				C688787720289A780084B384 /* Station.cpp in Sources */,
 				C68878DF20289B9B0084B384 /* VirtualFloor.cpp in Sources */,
 				C68878CD20289B9B0084B384 /* DefaultObjects.cpp in Sources */,
 				C688788220289ADE0084B384 /* Rect.cpp in Sources */,
 				F76C867B1EC4E88400FA49E2 /* StexObject.cpp in Sources */,
+				93F9DA3920B46FB800D1BE92 /* ObjectJsonHelpers.cpp in Sources */,
 				C688787320289A780084B384 /* RideRatings.cpp in Sources */,
 				C688790D20289B9B0084B384 /* CircusShow.cpp in Sources */,
 				C688788F20289B140084B384 /* Chat.cpp in Sources */,
@@ -3376,6 +3376,7 @@
 				C688790620289B9B0084B384 /* TwisterRollerCoaster.cpp in Sources */,
 				C688786720289A4A0084B384 /* SawyerCoding.cpp in Sources */,
 				F76C86A61EC4E88400FA49E2 /* macos.mm in Sources */,
+				93F9DA3B20B4701100D1BE92 /* StdInOutConsole.cpp in Sources */,
 				C68878FE20289B9B0084B384 /* MiniSuspendedCoaster.cpp in Sources */,
 				F76C86AD1EC4E88400FA49E2 /* PlatformEnvironment.cpp in Sources */,
 				C688791220289B9B0084B384 /* GhostTrain.cpp in Sources */,
@@ -3452,6 +3453,7 @@
 				C688792220289B9B0084B384 /* MagicCarpet.cpp in Sources */,
 				C688786B20289A6F0084B384 /* TrackDataOld.cpp in Sources */,
 				C688790720289B9B0084B384 /* VerticalDropRollerCoaster.cpp in Sources */,
+				93F9DA3A20B46FCA00D1BE92 /* SceneryObject.cpp in Sources */,
 				C688789D20289B200084B384 /* Date.cpp in Sources */,
 				C688787520289A780084B384 /* RideData.cpp in Sources */,
 				C688789B20289B200084B384 /* Convert.cpp in Sources */,
