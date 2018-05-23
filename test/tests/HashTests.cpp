@@ -53,3 +53,33 @@ TEST_F(HashTests, SHA1_Multiple)
 
     AssertHash("758a238d9a4748f80cc81f12be3885d5e45d34c2", result);
 }
+
+TEST_F(HashTests, SHA1_Many)
+{
+    auto alg = Hash::CreateSHA1();
+
+    // First digest
+    std::string inputA[] = {
+        "Merry-go-round 2 looks too intense for me",
+        "This park is really clean and tidy",
+        "This balloon from Balloon Stall 1 is really good value"
+    };
+    for (auto s : inputA)
+    {
+        alg->Update(s.data(), s.size());
+    }
+    AssertHash("758a238d9a4748f80cc81f12be3885d5e45d34c2", alg->Finish());
+
+    // Second digest
+    alg->Clear();
+    std::string inputB[] = {
+        "This balloon from Balloon Stall 1 is really good value"
+        "This park is really clean and tidy",
+        "Merry-go-round 2 looks too intense for me",
+    };
+    for (auto s : inputB)
+    {
+        alg->Update(s.data(), s.size());
+    }
+    AssertHash("ac46948f97d69fa766706e932ce82562b4f73aa7", alg->Finish());
+}
