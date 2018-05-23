@@ -456,7 +456,7 @@ static void window_ride_list_scrollmousedown(rct_window *w, sint32 scrollIndex, 
     // Open ride window
     uint8 rideIndex = w->list_item_positions[index];
     if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT) {
-        ride_demolish(rideIndex, GAME_COMMAND_FLAG_APPLY);
+        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
         window_ride_list_refresh_list(w);
     }
     else {

@@ -4549,6 +4549,15 @@ STR_6239    :Vertical Clipping
 STR_6240    :Horizontal Clipping
 STR_6241    :Select area
 STR_6242    :Clear selection
+STR_6243    :{SMALLFONT}{BLACK}Refurbishes the ride,{NEWLINE}makes it like new
+STR_6244    :Can't refurbish ride...
+STR_6245    :{SMALLFONT}{BLACK}Ride doesn't need refurbishing
+STR_6246    :Refurbish
+STR_6247    :Refurbish ride/attraction
+STR_6248    :{WINDOW_COLOUR_1}Do you want to refurbish {STRINGID} for {BLACK}{CURRENCY}?
+STR_6249    :{WINDOW_COLOUR_1}Do you want to refurbish {STRINGID}?
+STR_6250    :{WINDOW_COLOUR_1}Are you sure you want to completely demolish {STRINGID} and gain {BLACK}{CURRENCY}?
+STR_6251    :Ride is not empty yet
 
 #############
 # Scenarios #

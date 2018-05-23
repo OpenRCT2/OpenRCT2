@@ -5477,113 +5477,76 @@ sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
 }
 
 /**
+ * Given a track element of the ride, find the start of the track.
+ * It has to do this as a backwards loop in case this is an incomplete track.
+ */
+void ride_get_start_of_track(CoordsXYE * output)
+{
+    track_begin_end trackBeginEnd;
+    CoordsXYE trackElement = *output;
+    if (track_block_get_previous(trackElement.x, trackElement.y, trackElement.element, &trackBeginEnd)) {
+        rct_tile_element* initial_map = trackElement.element;
+        do {
+            CoordsXYE lastGood = {
+                /* .x = */ trackBeginEnd.begin_x,
+                /* .y = */ trackBeginEnd.begin_y,
+                /* .element = */ trackBeginEnd.begin_element
+            };
+
+            if (!track_block_get_previous(trackBeginEnd.end_x, trackBeginEnd.end_y, trackBeginEnd.begin_element, &trackBeginEnd)) {
+                trackElement = lastGood;
+                break;
+            }
+        } while (initial_map != trackBeginEnd.begin_element);
+    }
+    output = &trackElement;
+}
+
+/**
  *
  *  rct2: 0x006CB7FB
  */
 sint32 ride_get_refund_price(sint32 ride_id)
 {
-    uint8 oldpaused = gGamePaused;
-    gGamePaused = 0;
-    money32 refundPrice = 0;
+    CoordsXYE trackElement;
+    money32 addedcost, cost = 0;
 
-    tile_element_iterator it;
-
-    tile_element_iterator_begin(&it);
-    while (tile_element_iterator_next(&it)) {
-        if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
-            continue;
-
-        if (track_element_get_ride_index(it.element) != ride_id)
-            continue;
-
-        sint32 x = it.x * 32, y = it.y * 32;
-        sint32 z = it.element->base_height * 8;
-
-        uint8 rotation = tile_element_get_direction(it.element);
-        uint8 type = track_element_get_type(it.element);
-
-        if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP){
-            money32 removePrice = game_do_command(
-                x,
-                GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | (rotation << 8),
-                y,
-                type | (tile_element_get_track_sequence(it.element) << 8),
-                GAME_COMMAND_REMOVE_TRACK,
-                z,
-                0);
-            if (removePrice == MONEY32_UNDEFINED) {
-                tile_element_remove(it.element);
-            } else {
-                refundPrice += removePrice;
-            }
-            tile_element_iterator_restart_for_tile(&it);
-            continue;
-        }
-
-        // Using GAME_COMMAND_FLAG_2 for below commands as a HACK to stop fences from being removed
-        refundPrice += game_do_command(
-            x,
-            GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (0 << 8),
-            y,
-            ride_id | (2 << 8),
-            GAME_COMMAND_SET_MAZE_TRACK,
-            z,
-            0);
-        // Above gamecommand may remove the tile element which will cause the next game command to
-        // return MONEY32_UNDEFINED as it does not need to be called.
-
-        money32 removePrice = game_do_command(
-            x,
-            GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (1 << 8),
-            y + 16,
-            ride_id | (2 << 8),
-            GAME_COMMAND_SET_MAZE_TRACK,
-            z,
-            0);
-
-        if (removePrice == MONEY32_UNDEFINED &&
-            gGameCommandErrorText == 0)
-        {
-            tile_element_iterator_restart_for_tile(&it);
-            continue;
-        }
-
-        refundPrice += removePrice;
-
-        removePrice = game_do_command(
-            x + 16,
-            GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (2 << 8),
-            y + 16,
-            ride_id | (2 << 8),
-            GAME_COMMAND_SET_MAZE_TRACK,
-            z,
-            0);
-        if (refundPrice == MONEY32_UNDEFINED &&
-            gGameCommandErrorText == 0)
-        {
-            tile_element_iterator_restart_for_tile(&it);
-            continue;
-        }
-
-        refundPrice += removePrice;
-
-        removePrice = game_do_command(
-            x + 16,
-            GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (3 << 8),
-            y,
-            ride_id | (2 << 8),
-            GAME_COMMAND_SET_MAZE_TRACK,
-            z,
-            0);
-
-        if (removePrice != MONEY32_UNDEFINED)
-        {
-            refundPrice += removePrice;
-        }
-        tile_element_iterator_restart_for_tile(&it);
+    if (!ride_try_get_origin_element(ride_id, &trackElement)) {
+        gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+        return MONEY32_UNDEFINED;
     }
-    gGamePaused = oldpaused;
-    return refundPrice;
+
+    // Find the start in case it is not a complete circuit
+    ride_get_start_of_track(&trackElement);
+
+    uint8 direction = tile_element_get_direction(trackElement.element);
+
+    // Used in the following loop to know when we have
+    // completed all of the elements and are back at the
+    // start.
+    rct_tile_element *initial_map = trackElement.element;
+
+    do {
+        addedcost = game_do_command(
+            trackElement.x,
+            GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | (direction << 8),
+            trackElement.y,
+            trackElement.element->properties.track.type | ((trackElement.element->properties.track.sequence & 0xF) << 8),
+            GAME_COMMAND_REMOVE_TRACK,
+            trackElement.element->base_height * 8,
+            0
+        );
+
+        cost += (addedcost == MONEY32_UNDEFINED) ? 0 : addedcost;
+
+        if (!track_block_get_next(&trackElement, &trackElement, NULL, NULL))
+            break;
+
+        direction = tile_element_get_direction(trackElement.element);
+
+    } while (trackElement.element != initial_map);
+
+    return cost;
 }
 
 /**

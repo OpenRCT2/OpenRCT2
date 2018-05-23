@@ -677,7 +677,7 @@ static void window_ride_construction_close(rct_window *w)
     {
         sint32 previousPauseState = gGamePaused;
         gGamePaused = 0;
-        ride_demolish(rideIndex, GAME_COMMAND_FLAG_APPLY);
+        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
         gGamePaused = previousPauseState;
     }
 }

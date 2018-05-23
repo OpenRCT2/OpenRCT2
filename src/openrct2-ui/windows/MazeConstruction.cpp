@@ -187,7 +187,7 @@ static void window_maze_construction_close(rct_window *w)
     if (ride->overall_view.xy == RCT_XY8_UNDEFINED) {
         sint32 savedPausedState = gGamePaused;
         gGamePaused = 0;
-        ride_demolish(rideIndex, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         gGamePaused = savedPausedState;
     } else {
         auto intent = Intent(WC_RIDE);

@@ -844,6 +844,11 @@ enum {
     TRACK_SELECTION_FLAG_RECHECK          = 1 << 3,
 };
 
+enum {
+    RIDE_MODIFY_DEMOLISH,
+    RIDE_MODIFY_RENEW
+};
+
 struct rct_ride_properties {
     uint32 flags;
     uint8 min_value;
@@ -1059,6 +1064,8 @@ bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 ri
 bool track_block_get_previous(sint32 x, sint32 y, rct_tile_element *tileElement, track_begin_end *outTrackBeginEnd);
 bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8 direction, track_begin_end *outTrackBeginEnd);
 
+void ride_get_start_of_track(CoordsXYE * output);
+
 void window_ride_construction_update_active_elements();
 void ride_construction_remove_ghosts();
 money32 ride_entrance_exit_place_ghost(sint32 rideIndex, sint32 x, sint32 y, sint32 direction, sint32 placeType, sint32 stationNum);
@@ -1124,7 +1131,7 @@ bool ride_entry_has_category(const rct_ride_entry * rideEntry, uint8 category);
 
 sint32 ride_get_entry_index(sint32 rideType, sint32 rideSubType);
 
-void ride_demolish(sint32 rideIndex, sint32 flags);
+void ride_action_modify(sint32 rideIndex, sint32 modifyType, sint32 flags);
 void ride_stop_peeps_queuing(sint32 rideIndex);
 
 LocationXY16 ride_get_rotated_coords(sint16 x, sint16 y, sint16 z);

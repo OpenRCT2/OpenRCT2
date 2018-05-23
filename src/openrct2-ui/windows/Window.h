@@ -78,6 +78,7 @@ rct_window * window_park_rating_open();
 
 rct_window * window_banner_open(rct_windownumber number);
 rct_window * window_ride_demolish_prompt_open(sint32 rideIndex);
+rct_window * window_ride_refurbish_prompt_open(sint32 rideIndex);
 rct_window * window_sign_open(rct_windownumber number);
 rct_window * window_sign_small_open(rct_windownumber number);
 rct_window * window_player_open(uint8 id);
