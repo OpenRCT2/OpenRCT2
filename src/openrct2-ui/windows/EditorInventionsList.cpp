@@ -33,6 +33,8 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/ride/RideGroupManager.h>
 
+#include <algorithm>
+
 #pragma region Widgets
 
 #define WW 600
@@ -162,14 +164,6 @@ static rct_window_event_list window_editor_inventions_list_drag_events = {
 
 #pragma endregion
 
-namespace
-{
-bool compare_research_items (const rct_research_item& First, const rct_research_item& Second)
-{
-    return First.rawValue == Second.rawValue && First.category == Second.category;
-}
-}
-
 static rct_research_item *_editorInventionsListDraggedItem;
 
 static constexpr const rct_string_id EditorInventionsResearchCategories[] = {
@@ -185,6 +179,25 @@ static constexpr const rct_string_id EditorInventionsResearchCategories[] = {
 
 static void window_editor_inventions_list_drag_open(rct_research_item *researchItem);
 static void move_research_item(rct_research_item *beforeItem);
+
+namespace
+{
+bool compare_research_items(const rct_research_item& First, const rct_research_item& Second)
+{
+    return First.rawValue == Second.rawValue && First.category == Second.category;
+}
+
+void research_set_always_researched_flag(const uint8 entryIndex, rct_research_item& researchItem)
+{
+    if ((researchItem.rawValue & 0xFFFFFF) == entryIndex)
+    {
+        researchItem.flags |= RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED;
+        _editorInventionsListDraggedItem = &researchItem;
+        move_research_item(gResearchedResearchItems.data());
+        _editorInventionsListDraggedItem = nullptr;
+    }
+}
+} // namespace
 
 /**
  *
@@ -211,17 +224,6 @@ static void research_rides_setup()
         {
             Editor::SetSelectedObject(OBJECT_TYPE_RIDE, ride->subtype, OBJECT_SELECTION_FLAG_SELECTED);
         }
-    }
-}
-
-void research_set_always_researched_flag(const uint8 entryIndex, rct_research_item& researchItem)
-{
-    if ((researchItem.rawValue & 0xFFFFFF) == entryIndex)
-    {
-        researchItem.flags |= RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED;
-        _editorInventionsListDraggedItem = &researchItem;
-        move_research_item(gResearchedResearchItems.data());
-        _editorInventionsListDraggedItem = nullptr;
     }
 }
 
