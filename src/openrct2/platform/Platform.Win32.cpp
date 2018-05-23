@@ -197,15 +197,10 @@ namespace Platform
         return result;
     }
 
-    /**
-     * Checks if the current version of Windows supports ANSI colour codes.
-     * From Windows 10, build 10586 ANSI escape colour codes can be used on stdout.
-     */
-    static bool HasANSIColourSupport()
+    bool IsOSVersionAtLeast(uint32 major, uint32 minor, uint32 build)
     {
-        const DWORD MINV_MAJOR = 10, MINV_MINOR = 0, MINV_BUILD = 10586;
         bool result = false;
-        HMODULE hModule = GetModuleHandleA("ntdll.dll");
+        auto hModule = GetModuleHandleA("ntdll.dll");
         if (hModule != nullptr)
         {
             using RtlGetVersionPtr = NTSTATUS(WINAPI *)(PRTL_OSVERSIONINFOW);
@@ -216,11 +211,11 @@ namespace Platform
                 rovi.dwOSVersionInfoSize = sizeof(rovi);
                 if (fn(&rovi) == 0)
                 {
-                    if (rovi.dwMajorVersion > MINV_MAJOR ||
-                        (rovi.dwMajorVersion == MINV_MAJOR &&
-                        (rovi.dwMinorVersion > MINV_MINOR ||
-                            (rovi.dwMinorVersion == MINV_MINOR &&
-                                rovi.dwBuildNumber >= MINV_BUILD))))
+                    if (rovi.dwMajorVersion > major ||
+                        (rovi.dwMajorVersion == major &&
+                        (rovi.dwMinorVersion > minor ||
+                            (rovi.dwMinorVersion == minor &&
+                                rovi.dwBuildNumber >= build))))
                     {
                         result = true;
                     }
@@ -228,6 +223,15 @@ namespace Platform
             }
         }
         return result;
+    }
+
+    /**
+     * Checks if the current version of Windows supports ANSI colour codes.
+     * From Windows 10, build 10586 ANSI escape colour codes can be used on stdout.
+     */
+    static bool HasANSIColourSupport()
+    {
+        return IsOSVersionAtLeast(10, 0, 10586);
     }
 
     static void EnableANSIConsole()

@@ -45,5 +45,9 @@ namespace Platform
     std::string FormatShortDate(std::time_t timestamp);
     std::string FormatTime(std::time_t timestamp);
 
+#ifdef _WIN32
+    bool IsOSVersionAtLeast(uint32 major, uint32 minor, uint32 build);
+#endif
+
     bool IsColourTerminalSupported();
 } // namespace Platform

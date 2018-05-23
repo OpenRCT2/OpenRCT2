@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "Hash.h"
+#include "../platform/Platform2.h"
 #include <stdexcept>
 #include <string>
 
@@ -40,6 +41,7 @@ private:
     BCRYPT_ALG_HANDLE _hAlg{};
     BCRYPT_HASH_HANDLE _hHash{};
     PBYTE _pbHashObject{};
+    bool _reusable{};
 #else
     EVP_MD_CTX * _ctx{};
 #endif
@@ -48,63 +50,30 @@ public:
     Sha1Algorithm()
     {
 #ifdef __USE_CNG__
-        // TODO BCRYPT_HASH_REUSABLE_FLAG only available from Windows 8
-        auto status = BCryptOpenAlgorithmProvider(&_hAlg, BCRYPT_SHA1_ALGORITHM, nullptr, BCRYPT_HASH_REUSABLE_FLAG);
-        if (!NT_SUCCESS(status))
-        {
-            throw std::runtime_error("BCryptOpenAlgorithmProvider failed: " + std::to_string(status));
-        }
-
-        // Calculate the size of the buffer to hold the hash object
-        DWORD cbHashObject{};
-        DWORD cbData{};
-        status = BCryptGetProperty(_hAlg, BCRYPT_OBJECT_LENGTH, (PBYTE)&cbHashObject, sizeof(DWORD), &cbData, 0);
-        if (!NT_SUCCESS(status))
-        {
-            throw std::runtime_error("BCryptGetProperty failed: " + std::to_string(status));
-        }
-
-        // Create a hash
-        _pbHashObject = (PBYTE)HeapAlloc(GetProcessHeap(), 0, cbHashObject);
-        if (_pbHashObject == nullptr)
-        {
-            throw std::bad_alloc();
-        }
-        status = BCryptCreateHash(_hAlg, &_hHash, _pbHashObject, cbHashObject, nullptr, 0, 0);
-        if (!NT_SUCCESS(status))
-        {
-            throw std::runtime_error("BCryptCreateHash failed: " + std::to_string(status));
-        }
-#else
-        _ctx = EVP_MD_CTX_create();
-        if (_ctx == nullptr)
-        {
-            throw std::runtime_error("EVP_MD_CTX_create failed");
-        }
-        if (EVP_DigestInit_ex(_ctx, EVP_sha1(), nullptr) <= 0)
-        {
-            EVP_MD_CTX_destroy(_ctx);
-            throw std::runtime_error("EVP_DigestInit_ex failed");
-        }
+        // BCRYPT_HASH_REUSABLE_FLAG only available from Windows 8
+        _reusable = Platform::IsOSVersionAtLeast(6, 2, 0);
 #endif
+        Initialise();
     }
 
     ~Sha1Algorithm()
     {
-#ifdef __USE_CNG__
-        BCryptCloseAlgorithmProvider(_hAlg, 0);
-        BCryptDestroyHash(_hHash);
-        HeapFree(GetProcessHeap(), 0, _pbHashObject);
-#else
-        EVP_MD_CTX_destroy(_ctx);
-#endif
+        Dispose();
     }
 
     void Clear() override
     {
 #ifdef __USE_CNG__
-        // Finishing the current digest clears the state ready for a new digest
-        Finish();
+        if (_reusable)
+        {
+            // Finishing the current digest clears the state ready for a new digest
+            Finish();
+        }
+        else
+        {
+            Dispose();
+            Initialise();
+        }
 #else
         if (EVP_DigestInit_ex(_ctx, EVP_sha1(), nullptr) <= 0)
         {
@@ -152,6 +121,67 @@ public:
             throw std::runtime_error("Expected digest size to equal " + std::to_string(result.size()));
         }
         return result;
+#endif
+    }
+
+private:
+    void Initialise()
+    {
+#ifdef __USE_CNG__
+        auto flags = _reusable ? BCRYPT_HASH_REUSABLE_FLAG : 0;
+        auto status = BCryptOpenAlgorithmProvider(&_hAlg, BCRYPT_SHA1_ALGORITHM, nullptr, flags);
+        if (!NT_SUCCESS(status))
+        {
+            throw std::runtime_error("BCryptOpenAlgorithmProvider failed: " + std::to_string(status));
+        }
+
+        // Calculate the size of the buffer to hold the hash object
+        DWORD cbHashObject{};
+        DWORD cbData{};
+        status = BCryptGetProperty(_hAlg, BCRYPT_OBJECT_LENGTH, (PBYTE)&cbHashObject, sizeof(DWORD), &cbData, 0);
+        if (!NT_SUCCESS(status))
+        {
+            throw std::runtime_error("BCryptGetProperty failed: " + std::to_string(status));
+        }
+
+        // Create a hash
+        _pbHashObject = (PBYTE)HeapAlloc(GetProcessHeap(), 0, cbHashObject);
+        if (_pbHashObject == nullptr)
+        {
+            throw std::bad_alloc();
+        }
+        status = BCryptCreateHash(_hAlg, &_hHash, _pbHashObject, cbHashObject, nullptr, 0, 0);
+        if (!NT_SUCCESS(status))
+        {
+            throw std::runtime_error("BCryptCreateHash failed: " + std::to_string(status));
+        }
+#else
+        _ctx = EVP_MD_CTX_create();
+        if (_ctx == nullptr)
+        {
+            throw std::runtime_error("EVP_MD_CTX_create failed");
+        }
+        if (EVP_DigestInit_ex(_ctx, EVP_sha1(), nullptr) <= 0)
+        {
+            EVP_MD_CTX_destroy(_ctx);
+            throw std::runtime_error("EVP_DigestInit_ex failed");
+        }
+#endif
+    }
+
+    void Dispose()
+    {
+#ifdef __USE_CNG__
+        BCryptCloseAlgorithmProvider(_hAlg, 0);
+        BCryptDestroyHash(_hHash);
+        HeapFree(GetProcessHeap(), 0, _pbHashObject);
+
+        _hAlg = {};
+        _hHash = {};
+        _pbHashObject = {};
+#else
+        EVP_MD_CTX_destroy(_ctx);
+        _ctx = {};
 #endif
     }
 };
