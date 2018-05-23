@@ -178,7 +178,7 @@ static constexpr const rct_string_id EditorInventionsResearchCategories[] = {
 // clang-format on
 
 static void window_editor_inventions_list_drag_open(rct_research_item *researchItem);
-static void move_research_item(rct_research_item *beforeItem);
+static void move_research_item(const rct_research_item& beforeItem);
 
 namespace
 {
@@ -193,10 +193,40 @@ void research_set_always_researched_flag(const uint8 entryIndex, rct_research_it
     {
         researchItem.flags |= RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED;
         _editorInventionsListDraggedItem = &researchItem;
-        move_research_item(gResearchedResearchItems.data());
+        move_research_item(gResearchedResearchItems.front());
         _editorInventionsListDraggedItem = nullptr;
     }
 }
+
+bool remove(const rct_research_item& researchItem, std::vector<rct_research_item>& researchItems)
+{
+    for (auto it = researchItems.begin(); it != researchItems.end(); ++it)
+    {
+        if (compare_research_items(researchItem, *it))
+        {
+            researchItems.erase(it);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool insert(
+    const rct_research_item& researchItem,
+    const rct_research_item& before,
+    std::vector<rct_research_item>& researchItems)
+{
+    for (auto it = researchItems.begin(); it != researchItems.end(); ++it)
+    {
+        if (compare_research_items(before, *it))
+        {
+            researchItems.insert(it, researchItem);
+            return true;
+        }
+    }
+    return false;
+};
+
 } // namespace
 
 /**
@@ -268,56 +298,29 @@ static void research_always_researched_setup()
  *
  *  rct2: 0x006855E7
  */
-static void move_research_item(rct_research_item* beforeItem)
+static void move_research_item(const rct_research_item& beforeItem)
 {
-    const rct_research_item Copy = *_editorInventionsListDraggedItem;
-
-    auto RemoveItemIfFound = [&](std::vector<rct_research_item>& ResearchItems) -> bool {
-        auto Found = std::remove_if(
-            std::begin(ResearchItems), std::end(ResearchItems), [&](const rct_research_item& ResearchItem) -> bool {
-                return compare_research_items(Copy, ResearchItem);
-            });
-        if (Found != std::end(ResearchItems))
-        {
-            ResearchItems.erase(Found);
-            return true;
-        }
-        return false;
-    };
-
-    auto InsertBeforeItem = [&](std::vector<rct_research_item>& ResearchItems) {
-        auto Found = std::find_if(
-            std::begin(ResearchItems), std::end(ResearchItems), [&](const rct_research_item& ResearchItem) -> bool {
-                return compare_research_items(*beforeItem, ResearchItem);
-            });
-
-        if (Found != std::end(ResearchItems))
-        {
-            ResearchItems.insert(Found, Copy);
-            return true;
-        }
-        return false;
-    };
-
-    if (!RemoveItemIfFound(gResearchedResearchItems))
+    const rct_research_item copy = *_editorInventionsListDraggedItem;
+    
+    if (!remove(copy, gResearchedResearchItems))
     {
-        if (!RemoveItemIfFound(gUnResearchedResearchItems))
+        if (!remove(copy, gUnResearchedResearchItems))
         {
             assert(0); // item not found
         }
     }
 
-    if (compare_research_items(*beforeItem, gResearchItemSeparator))
+    if (compare_research_items(beforeItem, gResearchItemSeparator))
     {
-        gResearchedResearchItems.push_back(Copy);
+        gResearchedResearchItems.push_back(copy);
     }
-    else if (compare_research_items(*beforeItem, gResearchItemEnd))
+    else if (compare_research_items(beforeItem, gResearchItemEnd))
     {
-        gUnResearchedResearchItems.push_back(Copy);
+        gUnResearchedResearchItems.push_back(copy);
     }
-    else if (!InsertBeforeItem(gResearchedResearchItems))
+    else if (!insert(copy, beforeItem, gResearchedResearchItems))
     {
-        if (!InsertBeforeItem(gUnResearchedResearchItems))
+        if (!insert(copy, beforeItem, gUnResearchedResearchItems))
         {
             assert(0); // item not inserted
         }
@@ -935,12 +938,10 @@ static void window_editor_inventions_list_drag_cursor(rct_window *w, rct_widgeti
  */
 static void window_editor_inventions_list_drag_moved(rct_window* w, sint32 x, sint32 y)
 {
-    rct_research_item *researchItem;
-
-    researchItem = get_research_item_at(x, y);
-    if (researchItem != nullptr)
+    rct_research_item* researchItem = get_research_item_at(x, y);
+    if (researchItem)
     {
-        move_research_item(researchItem);
+        move_research_item(*researchItem);
     }
 
     window_close(w);
