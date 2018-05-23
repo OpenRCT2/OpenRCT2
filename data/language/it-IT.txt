@@ -1614,8 +1614,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :Può esserci soltanto una sezione di foto-in-corsa per attrazione
 STR_1774    :Può esserci soltanto una salita per il traino con cavo per attrazione
-STR_1775    :Off
-STR_1776    :On
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}Musica
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Costume da panda
@@ -4083,10 +4083,10 @@ STR_5999    :Imposta denaro
 STR_6000    :Inserire il nuovo valore
 STR_6001    :Attiva effetti luce (sperimentale)
 STR_6002    :{SMALLFONT}{BLACK}Le attrazioni e i lampioni saranno illuminati di notte. Richiede il motore di rendering hardware.
-STR_6003    :Vista sezionata
-STR_6004    :Vista sezionata
-STR_6005    :Attiva la vista sezionata
-STR_6006    :{SMALLFONT}{BLACK}La vista sezionata mostra solo elementi della mappa pari o inferiori all'altezza specificata
+STR_6003    :Visualizzazione ritagliata
+STR_6004    :Visualizzazione ritagliata
+STR_6005    :Attiva la visualizzazione ritagliata
+STR_6006    :{SMALLFONT}{BLACK}La visualizzazione ritagliata mostra solo gli elementi della mappa che si trovano pari o sotto all'altezza specificata (ritaglio verticale) e nell'area selezionata (ritaglio orizzontale).
 STR_6007    :Altezza sezionamento
 STR_6008    :{SMALLFONT}{BLACK}Cliccare per cambiare tra valore grezzo e unità di misura
 STR_6009    :{SMALLFONT}{BLACK}Selezionare altezza sezionamento
@@ -4319,6 +4319,10 @@ STR_6235    :Informazioni server
 STR_6236    :Giocatori
 STR_6237    :Gruppi
 STR_6238    :Opzioni multigiocatore
+STR_6239    :Ritaglio verticale
+STR_6240    :Ritaglio orizzontale
+STR_6241    :Seleziona area
+STR_6242    :Annulla selezione
 
 #############
 # Scenarios #
