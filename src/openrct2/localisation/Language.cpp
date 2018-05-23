@@ -18,7 +18,6 @@
 #include "../Context.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../core/StringBuilder.hpp"
 #include "../interface/Fonts.h"
 #include "../interface/FontFamilies.h"
 #include "../object/ObjectManager.h"

@@ -1,5 +1,5 @@
 # CMAKE project for libopenrct2 (core OpenRCT2 component)
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.7)
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif ()
@@ -110,6 +110,16 @@ if (NOT DISABLE_NETWORK)
     endif ()
 endif ()
 
+if (NOT MINGW AND NOT MSVC)
+    # For unicode code page conversion.
+    find_package(ICU 59.0 REQUIRED COMPONENTS uc)
+    if (STATIC)
+        target_link_libraries(${PROJECT} ${ICU_STATIC_LIBRARIES})
+    else ()
+        target_link_libraries(${PROJECT} ${ICU_LIBRARIES})
+    endif ()
+endif ()
+
 if (NOT APPLE AND NOT MINGW AND NOT MSVC)
     # This is ugly hack to work around https://bugs.launchpad.net/ubuntu/+source/gcc-5/+bug/1568899.
     # Once C++17 is enabled (and thus old compilers are no longer supported, this needs to be gone.
@@ -130,11 +140,6 @@ if (NOT DISABLE_TTF)
         endif ()
     endif ()
 endif ()
-
-if (UNIX OR STATIC OR ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
-    find_library(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
-    target_link_libraries(${PROJECT} ${ICONV_LIBRARIES})
-endif()
 
 if (HAVE_DISCORD_RPC)
     target_link_libraries(libopenrct2 discord-rpc)

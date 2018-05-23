@@ -14,9 +14,20 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifdef __MINGW32__
+// 0x0600 == vista
+#define WINVER 0x0600
+#define _WIN32_WINNT 0x0600
+#endif // __MINGW32__
+
 #include <cwctype>
 #include <stdexcept>
 #include <vector>
+#ifndef _WIN32
+#include <unicode/ucnv.h>
+#include <unicode/unistr.h>
+#include <unicode/utypes.h>
+#endif
 
 #ifdef _WIN32
 #ifndef NOMINMAX
@@ -26,12 +37,15 @@
 #include <windows.h>
 #endif
 
+#include "../common.h"
+#include "../localisation/ConversionTables.h"
 #include "../localisation/Language.h"
 #include "../util/Util.h"
 
 #include "Math.hpp"
 #include "Memory.hpp"
 #include "String.hpp"
+#include "StringBuilder.hpp"
 
 namespace String
 {
@@ -60,28 +74,65 @@ namespace String
         return returnValue;
     }
 
-    std::string ToUtf8(const std::wstring &s)
+    std::string ToUtf8(const std::wstring_view& src)
     {
-        std::string result;
-        utf8 * cstr = widechar_to_utf8(s.c_str());
-        if (cstr != nullptr)
-        {
-            result = std::string(cstr);
-        }
-        free(cstr);
+#ifdef _WIN32
+        int srcLen = (int)src.size();
+        int sizeReq = WideCharToMultiByte(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, nullptr, 0, nullptr, nullptr);
+        auto result = std::string(sizeReq, 0);
+        WideCharToMultiByte(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, result.data(), sizeReq, nullptr, nullptr);
         return result;
+#else
+// Which constructor to use depends on the size of wchar_t...
+// UTF-32 is the default on most POSIX systems; Windows uses UTF-16.
+// Unfortunately, we'll have to help the compiler here.
+#if U_SIZEOF_WCHAR_T==4
+        icu::UnicodeString str = icu::UnicodeString::fromUTF32((const UChar32*) src.data(), src.length());
+#elif U_SIZEOF_WCHAR_T==2
+        std::wstring wstr = std::wstring(src);
+        icu::UnicodeString str = icu::UnicodeString((const wchar_t*) wstr.c_str());
+#else
+#error Unsupported U_SIZEOF_WCHAR_T size
+#endif
+
+        std::string result;
+        str.toUTF8String(result);
+
+        return result;
+#endif
     }
 
-    std::wstring ToUtf16(const std::string &s)
+    std::wstring ToUtf16(const std::string_view& src)
     {
-        std::wstring result;
-        wchar_t * wcstr = utf8_to_widechar(s.c_str());
-        if (wcstr != nullptr)
-        {
-            result = std::wstring(wcstr);
-        }
-        free(wcstr);
+#ifdef _WIN32
+        int srcLen = (int)src.size();
+        int sizeReq = MultiByteToWideChar(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, nullptr, 0);
+        auto result = std::wstring(sizeReq, 0);
+        MultiByteToWideChar(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, result.data(), sizeReq);
         return result;
+#else
+        icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
+
+// Which constructor to use depends on the size of wchar_t...
+// UTF-32 is the default on most POSIX systems; Windows uses UTF-16.
+// Unfortunately, we'll have to help the compiler here.
+#if U_SIZEOF_WCHAR_T==4
+        size_t length = (size_t) str.length();
+        std::wstring result(length, '\0');
+
+        UErrorCode status = U_ZERO_ERROR;
+        str.toUTF32((UChar32*) &result[0], str.length(), status);
+
+#elif U_SIZEOF_WCHAR_T==2
+        const char16_t* buffer = str.getBuffer();
+        std::wstring result = (wchar_t*) buffer;
+
+#else
+#error Unsupported U_SIZEOF_WCHAR_T size
+#endif
+
+        return result;
+#endif
     }
 
     bool IsNullOrEmpty(const utf8 * str)
@@ -544,6 +595,74 @@ namespace String
         return std::string(startSubstr, stringLength);
     }
 
+#ifndef _WIN32
+    static const char* GetIcuCodePage(sint32 codePage)
+    {
+        switch (codePage)
+        {
+        case CODE_PAGE::CP_932:
+            return "windows-932";
+
+        case CODE_PAGE::CP_936:
+            return "GB2312";
+
+        case CODE_PAGE::CP_949:
+            return "windows-949";
+
+        case CODE_PAGE::CP_950:
+            return "big5";
+
+        case CODE_PAGE::CP_1252:
+            return "windows-1252";
+
+        case CODE_PAGE::CP_UTF8:
+            return "utf-8";
+
+        default:
+            throw std::runtime_error("Unsupported code page: " + std::to_string(codePage));
+        }
+    }
+
+    static std::string CodePageFromUnicode(icu::UnicodeString src, sint32 dstCodePage)
+    {
+        UConverter* conv;
+        UErrorCode status = U_ZERO_ERROR;
+
+        const char* codepage = GetIcuCodePage(dstCodePage);
+        conv = ucnv_open(codepage, &status);
+
+        if (U_FAILURE(status))
+        {
+            log_error("ICU error: %s", u_errorName(status));
+            return nullptr;
+        }
+
+        // Allocate buffer to convert to.
+        int8_t char_size = ucnv_getMaxCharSize(conv);
+        std::string buffer(char_size * src.length(), '\0');
+
+        char* buffer_limit = &buffer[0] + (char_size * src.length());
+
+        // Ready the source string as well...
+        const char16_t* source = src.getTerminatedBuffer();
+        const char16_t* source_limit = source + src.length();
+
+        // Convert the lot.
+        char* buffer_target = &buffer[0];
+        ucnv_fromUnicode(conv, &buffer_target, buffer_limit, (const UChar**) &source, source_limit, nullptr, true, &status);
+
+        if (U_FAILURE(status))
+        {
+            log_error("ICU error: %s", u_errorName(status));
+            return nullptr;
+        }
+
+        ucnv_close(conv);
+
+        return buffer;
+    }
+#endif
+
     std::string Convert(const std::string_view& src, sint32 srcCodePage, sint32 dstCodePage)
     {
 #ifdef _WIN32
@@ -567,8 +686,73 @@ namespace String
 
         return dst;
 #else
-        STUB();
-        return std::string(src);
+        const char* codepage = GetIcuCodePage(srcCodePage);
+        icu::UnicodeString convertString(src.data(), codepage);
+
+        std::string result;
+        if (dstCodePage == CODE_PAGE::CP_UTF8)
+        {
+            convertString.toUTF8String(result);
+        }
+        else
+        {
+            result = CodePageFromUnicode(convertString, dstCodePage);
+        }
+
+        return result;
+#endif
+    }
+
+    std::string ToUpper(const std::string_view& src)
+    {
+#ifdef _WIN32
+        auto srcW = ToUtf16(src);
+
+        // Measure how long the destination needs to be
+        auto requiredSize = LCMapStringEx(
+            LOCALE_NAME_INVARIANT,
+            LCMAP_UPPERCASE | LCMAP_LINGUISTIC_CASING,
+            srcW.c_str(),
+            (int)srcW.length(),
+            nullptr,
+            0,
+            nullptr,
+            nullptr,
+            0);
+
+        auto dstW = std::wstring();
+        dstW.resize(requiredSize);
+
+        // Transform the string
+        auto result = LCMapStringEx(
+            LOCALE_NAME_INVARIANT,
+            LCMAP_UPPERCASE | LCMAP_LINGUISTIC_CASING,
+            srcW.c_str(),
+            (int)srcW.length(),
+            dstW.data(),
+            (int)dstW.length(),
+            nullptr,
+            nullptr,
+            0);
+        if (result == 0)
+        {
+            // Check the error
+            auto error = GetLastError();
+            log_warning("LCMapStringEx failed with %d", error);
+            return std::string(src);
+        }
+        else
+        {
+            return String::ToUtf8(dstW);
+        }
+#else
+        icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
+        str.toUpper();
+
+        std::string res;
+        str.toUTF8String(res);
+
+        return res;
 #endif
     }
 } // namespace String

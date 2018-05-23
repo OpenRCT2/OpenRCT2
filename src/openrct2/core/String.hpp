@@ -42,8 +42,8 @@ namespace String
     std::string     ToStd(const utf8 * str);
     std::string     StdFormat_VA(const utf8 * format, va_list args);
     std::string     StdFormat(const utf8 * format, ...);
-    std::string     ToUtf8(const std::wstring &s);
-    std::wstring    ToUtf16(const std::string &s);
+    std::string     ToUtf8(const std::wstring_view& src);
+    std::wstring    ToUtf16(const std::string_view& src);
 
     bool   IsNullOrEmpty(const utf8 * str);
     sint32 Compare(const std::string &a, const std::string &b, bool ignoreCase = false);
@@ -111,4 +111,9 @@ namespace String
      * Converts a multi-byte string from one code page to another.
      */
     std::string Convert(const std::string_view& src, sint32 srcCodePage, sint32 dstCodePage);
-} // namespace String
+
+    /**
+     * Returns an uppercased version of a UTF-8 string.
+     */
+    std::string ToUpper(const std::string_view& src);
+}
