@@ -153,10 +153,10 @@ add_executable(test_localisation ${STRING_TEST_SOURCES})
 target_link_libraries(test_localisation ${GTEST_LIBRARIES} test-common ${LDL} z)
 add_test(NAME localisation COMMAND test_localisation)
 
-# Hash tests
-add_executable(test_hash "${CMAKE_CURRENT_LIST_DIR}/HashTests.cpp")
-target_link_libraries(test_hash ${GTEST_LIBRARIES} libopenrct2)
-add_test(NAME Hash COMMAND test_hash)
+# Crypt tests
+add_executable(test_crypt "${CMAKE_CURRENT_LIST_DIR}/CryptTests.cpp")
+target_link_libraries(test_crypt ${GTEST_LIBRARIES} libopenrct2)
+add_test(NAME Crypt COMMAND test_crypt)
 
 # ImageImporter tests
 add_executable(test_imageimporter "${CMAKE_CURRENT_LIST_DIR}/ImageImporterTests.cpp"

@@ -1,8 +1,8 @@
 #include <string>
-#include <openrct2/core/Hash.h>
+#include <openrct2/core/Crypt.h>
 #include <gtest/gtest.h>
 
-class HashTests : public testing::Test
+class CryptTests : public testing::Test
 {
 public:
     template<typename T>
@@ -29,14 +29,14 @@ public:
     }
 };
 
-TEST_F(HashTests, SHA1_Basic)
+TEST_F(CryptTests, SHA1_Basic)
 {
     std::string input = "The quick brown fox jumped over the lazy dog.";
     auto result = Hash::SHA1(input.data(), input.size());
     AssertHash("c0854fb9fb03c41cce3802cb0d220529e6eef94e", result);
 }
 
-TEST_F(HashTests, SHA1_Multiple)
+TEST_F(CryptTests, SHA1_Multiple)
 {
     std::string input[] = {
         "Merry-go-round 2 looks too intense for me",
@@ -54,7 +54,19 @@ TEST_F(HashTests, SHA1_Multiple)
     AssertHash("758a238d9a4748f80cc81f12be3885d5e45d34c2", result);
 }
 
-TEST_F(HashTests, SHA1_Many)
+TEST_F(CryptTests, SHA1_WithClear)
+{
+    std::string inputA = "Merry-go-round 2 looks too intense for me";
+    std::string inputB = "This park is really clean and tidy";
+
+    auto alg = Hash::CreateSHA1();
+    alg->Update(inputA.data(), inputA.size());
+    alg->Clear();
+    alg->Update(inputB.data(), inputB.size());
+    AssertHash("203986d57ebdbcdc8a45b7ee74c665960fd7ff48", alg->Finish());
+}
+
+TEST_F(CryptTests, SHA1_Many)
 {
     auto alg = Hash::CreateSHA1();
 
@@ -70,8 +82,9 @@ TEST_F(HashTests, SHA1_Many)
     }
     AssertHash("758a238d9a4748f80cc81f12be3885d5e45d34c2", alg->Finish());
 
+    // No need to clear after a finish
+
     // Second digest
-    alg->Clear();
     std::string inputB[] = {
         "This balloon from Balloon Stall 1 is really good value"
         "This park is really clean and tidy",

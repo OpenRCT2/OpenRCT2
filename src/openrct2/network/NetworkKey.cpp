@@ -17,12 +17,11 @@
 #ifndef DISABLE_NETWORK
 
 #include <vector>
-#include <openssl/evp.h>
 #include <openssl/pem.h>
 #include <openssl/rsa.h>
 
+#include "../core/Crypt.h"
 #include "../core/IStream.hpp"
-#include "../core/Hash.h"
 #include "../Diagnostic.h"
 #include "NetworkKey.h"
 

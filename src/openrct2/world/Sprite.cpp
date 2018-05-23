@@ -18,8 +18,8 @@
 #include <cmath>
 #include "../audio/audio.h"
 #include "../Cheats.h"
+#include "../core/Crypt.h"
 #include "../core/Guard.hpp"
-#include "../core/Hash.h"
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../Game.h"

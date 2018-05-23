@@ -23,14 +23,18 @@ template<size_t TLength>
 class HashAlgorithm
 {
 public:
+    typedef std::array<uint8_t, TLength> Result;
+
     virtual ~HashAlgorithm() = default;
     virtual void Clear() = 0;
     virtual void Update(const void * data, size_t dataLen) = 0;
-    virtual std::array<uint8_t, TLength> Finish() = 0;
+    virtual Result Finish() = 0;
 };
+
+using Sha1Algorithm = HashAlgorithm<20>;
 
 namespace Hash
 {
-    std::unique_ptr<HashAlgorithm<20>> CreateSHA1();
-    std::array<uint8_t, 20> SHA1(const void * data, size_t dataLen);
+    std::unique_ptr<Sha1Algorithm> CreateSHA1();
+    Sha1Algorithm::Result SHA1(const void * data, size_t dataLen);
 }
