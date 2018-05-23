@@ -94,14 +94,21 @@ void ScriptEngine::LoadPlugins()
         }
     }
 
-    // Enable hot reloading
-    _pluginFileWatcher = std::make_unique<FileWatcher>(base);
-    _pluginFileWatcher->OnFileChanged =
-        [this](const std::string &path)
-        {
-            std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
-            _changedPluginFiles.push_back(path);
-        };
+    try
+    {
+        // Enable hot reloading
+        _pluginFileWatcher = std::make_unique<FileWatcher>(base);
+        _pluginFileWatcher->OnFileChanged =
+            [this](const std::string &path)
+            {
+                std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
+                _changedPluginFiles.push_back(path);
+            };
+    }
+    catch (const std::exception& e)
+    {
+        std::printf("Unable to enable hot reloading of plugins: %s\n", e.what());
+    }
 }
 
 void ScriptEngine::AutoReloadPlugins()
