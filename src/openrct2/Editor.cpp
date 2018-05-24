@@ -424,9 +424,9 @@ namespace Editor
         rct_window   * w        = window_get_main();
         rct_viewport * viewport = window_get_viewport(w);
 
-        w->viewport_target_sprite = SPRITE_INDEX_NULL;
-        w->saved_view_x           = gSavedViewX;
-        w->saved_view_y           = gSavedViewY;
+//        w->viewport_target_sprite = SPRITE_INDEX_NULL;
+//        w->saved_view_x           = gSavedViewX;
+//        w->saved_view_y           = gSavedViewY;
         gCurrentRotation = gSavedViewRotation;
 
         sint32 zoom_difference = gSavedViewZoom - viewport->zoom;
@@ -445,8 +445,8 @@ namespace Editor
                 viewport->view_height >>= zoom_difference;
             }
         }
-        w->saved_view_x -= viewport->view_width >> 1;
-        w->saved_view_y -= viewport->view_height >> 1;
+//        w->saved_view_x -= viewport->view_width >> 1;
+//        w->saved_view_y -= viewport->view_height >> 1;
 
         window_invalidate(w);
         reset_all_sprite_quadrant_placements();

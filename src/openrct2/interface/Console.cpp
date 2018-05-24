@@ -925,10 +925,10 @@ static sint32 cc_show_limits(InteractiveConsole & console, [[maybe_unused]] cons
     sint32 tileElementCount = gNextFreeTileElement - gTileElements - 1;
 
     sint32 rideCount = 0;
-    for (sint32 i = 0; i < MAX_RIDES; ++i) 
+    for (sint32 i = 0; i < MAX_RIDES; ++i)
     {
         Ride * ride = get_ride(i);
-        if (ride->type != RIDE_TYPE_NULL) 
+        if (ride->type != RIDE_TYPE_NULL)
         {
             rideCount++;
         }
@@ -941,7 +941,7 @@ static sint32 cc_show_limits(InteractiveConsole & console, [[maybe_unused]] cons
     }
 
     sint32 staffCount = 0;
-    for (sint32 i = 0; i < STAFF_MAX_COUNT; ++i) 
+    for (sint32 i = 0; i < STAFF_MAX_COUNT; ++i)
     {
         if (gStaffModes[i] & 1)
         {

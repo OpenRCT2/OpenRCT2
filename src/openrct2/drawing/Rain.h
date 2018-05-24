@@ -17,6 +17,7 @@
 #pragma once
 
 #include "../common.h"
+#include "Drawing.h"
 
 struct rct_drawpixelinfo;
 

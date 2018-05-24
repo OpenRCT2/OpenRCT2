@@ -997,7 +997,7 @@ static rct_window *ride_create_or_find_construction_window(sint32 rideIndex)
     rct_window *w;
 
     w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w == nullptr || w->number != rideIndex) {
+    if (w == nullptr /*|| w->number != rideIndex*/) {
         window_close_construction_windows();
         _currentRideIndex = rideIndex;
         w = context_open_window(WC_RIDE_CONSTRUCTION);
@@ -7366,9 +7366,9 @@ static money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, ui
 
     rct_window *w = window_find_by_number(WC_RIDE, rideIndex);
     if (w != nullptr) {
-        if (w->page == 4) { // WINDOW_RIDE_PAGE_COLOUR
-            w->vehicleIndex = 0;
-        }
+//        if (w->page == 4) { // WINDOW_RIDE_PAGE_COLOUR
+//            w->vehicleIndex = 0;
+//        }
         window_invalidate(w);
     }
 

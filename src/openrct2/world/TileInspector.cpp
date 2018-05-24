@@ -140,15 +140,15 @@ sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 elementIndex,
             windowTileInspectorElementCount++;
 
             // Keep other elements (that are not being hidden) selected
-            if (tileInspectorWindow->selected_list_item > elementIndex)
-            {
-                tileInspectorWindow->selected_list_item++;
-            }
+//            if (tileInspectorWindow->selected_list_item > elementIndex)
+//            {
+//                tileInspectorWindow->selected_list_item++;
+//            }
 
-            if (tileInspectorWindow->selected_list_item == elementIndex)
-            {
-                window_tile_inspector_set_page(TILE_INSPECTOR_PAGE_CORRUPT);
-            }
+            // if (tileInspectorWindow->selected_list_item == elementIndex)
+            // {
+            //     window_tile_inspector_set_page(TILE_INSPECTOR_PAGE_CORRUPT);
+            // }
 
             window_tile_inspector_auto_set_buttons();
             window_invalidate(tileInspectorWindow);
@@ -183,15 +183,15 @@ sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 elementIndex,
         {
             windowTileInspectorElementCount--;
 
-            if (tileInspectorWindow->selected_list_item > elementIndex)
-            {
-                tileInspectorWindow->selected_list_item--;
-            }
-            else if (tileInspectorWindow->selected_list_item == elementIndex)
-            {
-                tileInspectorWindow->selected_list_item = -1;
-                window_tile_inspector_set_page(TILE_INSPECTOR_PAGE_DEFAULT);
-            }
+            // if (tileInspectorWindow->selected_list_item > elementIndex)
+            // {
+            //     tileInspectorWindow->selected_list_item--;
+            // }
+            // else if (tileInspectorWindow->selected_list_item == elementIndex)
+            // {
+            //     tileInspectorWindow->selected_list_item = -1;
+            //     window_tile_inspector_set_page(TILE_INSPECTOR_PAGE_DEFAULT);
+            // }
 
             window_tile_inspector_auto_set_buttons();
             window_invalidate(tileInspectorWindow);
@@ -216,10 +216,10 @@ sint32 tile_inspector_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 
         if (tileInspectorWindow != nullptr && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
         {
             // If one of them was selected, update selected list item
-            if (tileInspectorWindow->selected_list_item == first)
-                tileInspectorWindow->selected_list_item = second;
-            else if (tileInspectorWindow->selected_list_item == second)
-                tileInspectorWindow->selected_list_item = first;
+//            if (tileInspectorWindow->selected_list_item == first)
+//                tileInspectorWindow->selected_list_item = second;
+//            else if (tileInspectorWindow->selected_list_item == second)
+//                tileInspectorWindow->selected_list_item = first;
 
             window_tile_inspector_auto_set_buttons();
             window_invalidate(tileInspectorWindow);
@@ -368,11 +368,11 @@ sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_tile_element elem
             windowTileInspectorElementCount++;
 
             // Select new element if there was none selected already
-            sint16 newIndex = (sint16)(pastedElement - map_get_first_element_at(x, y));
-            if (tileInspectorWindow->selected_list_item == -1)
-                tileInspectorWindow->selected_list_item = newIndex;
-            else if (tileInspectorWindow->selected_list_item >= newIndex)
-                tileInspectorWindow->selected_list_item++;
+            // sint16 newIndex = (sint16)(pastedElement - map_get_first_element_at(x, y));
+            // if (tileInspectorWindow->selected_list_item == -1)
+            //     tileInspectorWindow->selected_list_item = newIndex;
+            // else if (tileInspectorWindow->selected_list_item >= newIndex)
+            //     tileInspectorWindow->selected_list_item++;
 
             window_tile_inspector_auto_set_buttons();
             window_invalidate(tileInspectorWindow);
@@ -430,7 +430,7 @@ sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags)
         if (tileInspectorWindow != nullptr && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
         {
             window_tile_inspector_set_page(TILE_INSPECTOR_PAGE_DEFAULT);
-            tileInspectorWindow->selected_list_item = -1;
+            // tileInspectorWindow->selected_list_item = -1;
             window_tile_inspector_auto_set_buttons();
             window_invalidate(tileInspectorWindow);
         }

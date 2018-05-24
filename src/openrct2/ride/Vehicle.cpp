@@ -888,7 +888,7 @@ static void vehicle_update_sound_params(rct_vehicle * vehicle)
     sint16 quarter_w = g_music_tracking_viewport->view_width / 4;
     sint16 quarter_h = g_music_tracking_viewport->view_height / 4;
 
-    if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
+    // if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
     {
         left -= quarter_w;
         bottom -= quarter_h;
@@ -900,7 +900,7 @@ static void vehicle_update_sound_params(rct_vehicle * vehicle)
     sint16 right = g_music_tracking_viewport->view_width + left;
     sint16 top = g_music_tracking_viewport->view_height + bottom;
 
-    if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
+    // if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
     {
         right += quarter_w + quarter_w;
         top += quarter_h + quarter_h;
