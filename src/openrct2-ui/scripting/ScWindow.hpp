@@ -15,8 +15,8 @@ namespace OpenRCT2::Scripting
 
     public:
         ScWindow(rct_window * w)
+            : ScWindow(w->classification, w->number)
         {
-            ScWindow(w->classification, w->number);
         }
 
         ScWindow(rct_windowclass c, rct_windownumber n)
