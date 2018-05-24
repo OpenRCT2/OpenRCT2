@@ -1302,27 +1302,34 @@ money32 string_to_money(const char* string_to_monetise)
     }
 
     int number = 0, decimal = 0;
-    if (strstr(buffer, decimal_char) == nullptr) {
+    if (strstr(processedString, decimal_char) == nullptr)
+    {
         // If decimal char does not exist, no tokenising is needed.
-        number = atoi(buffer);
+        number = atoi(processedString);
     }
-    else {
-        char *numberText = strtok(buffer, decimal_char);
+    else
+    {
+        char *numberText = strtok(processedString, decimal_char);
         char *decimalText = strtok(nullptr, decimal_char);
 
-        if (numberText != nullptr) number = atoi(numberText);
-        if (decimalText != nullptr) decimal = atoi(decimalText);
+        if (numberText != nullptr)
+            number = atoi(numberText);
+        if (decimalText != nullptr)
+            decimal = atoi(decimalText);
 
         // The second parameter in MONEY must be two digits in length, while the game only ever uses
         // the first of the two digits.
         // Convert invalid numbers, such as ".6", ".234", ".05", to ".60", ".20", ".00" (respectively)
-        while (decimal > 10) decimal /= 10;
-        if (decimal < 10) decimal *= 10;
+        while (decimal > 10)
+            decimal /= 10;
+        if (decimal < 10)
+            decimal *= 10;
     }
 
     money32 result = MONEY(number, decimal);
     // Check if MONEY resulted in overflow
-    if ((number > 0 && result < 0) || result / 10 < number) {
+    if ((number > 0 && result < 0) || result / 10 < number)
+    {
         result = INT_MAX;
     }
     result *= sign;
