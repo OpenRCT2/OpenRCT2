@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <ctype.h>
+#include <cstring>
 #include <limits.h>
 
 #ifdef _WIN32
@@ -30,6 +31,7 @@
 
 #include "../common.h"
 #include "../config/Config.h"
+#include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
@@ -1228,79 +1230,106 @@ void format_string_to_upper(utf8 *dest, size_t size, rct_string_id format, void 
     dest[upperString.size()] = '\0';
 }
 
-money32 string_to_money(char * string_to_monetise)
+money32 string_to_money(const char* string_to_monetise)
 {
     const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
-    char * text_ptr = string_to_monetise;
-    int i, j, sign;
-    // Remove everything except numbers decimal, and minus sign(s)
-    for (i = 0; text_ptr[i] != '\0'; ++i) {
-        while (!(
-            (text_ptr[i] >= '0' && text_ptr[i] <= '9') ||
-            (text_ptr[i] == decimal_char[0]) ||
-            (text_ptr[i] == '-') ||
-            (text_ptr[i] == '\0')
-        )) {
-            // Move everything over to the left by one
-            for (j = i; text_ptr[j] != '\0'; ++j) {
-                text_ptr[j] = text_ptr[j + 1];
-            }
-            text_ptr[j] = '\0';
+    char processedString[128] = {};
+
+    Guard::Assert(strlen(string_to_monetise) < sizeof(processedString));
+
+    uint32 numNumbers = 0;
+    bool hasMinus = false;
+    bool hasDecSep = false;
+    const char* src_ptr = string_to_monetise;
+    char* dst_ptr = processedString;
+
+    // Process the string, keeping only numbers decimal, and minus sign(s).
+    while (*src_ptr != '\0')
+    {
+        if (*src_ptr >= '0' && *src_ptr <= '9')
+        {
+            numNumbers++;
         }
+        else if (*src_ptr == decimal_char[0])
+        {
+            if (hasDecSep)
+                return MONEY32_UNDEFINED;
+            else
+                hasDecSep = true;
+        }
+        else if (*src_ptr == '-')
+        {
+            if (hasMinus)
+                return MONEY32_UNDEFINED;
+            else
+                hasMinus = true;
+        }
+        else
+        {
+            // Skip invalid characters.
+            src_ptr++;
+            continue;
+        }
+
+        // Copy numeric values.
+        *dst_ptr++ = *src_ptr;
+        src_ptr++;
     }
 
-    // If first character of shortened string is a minus, consider number negative
-    if (text_ptr[0] == '-') {
-        sign = -1;
-    }
-    else {
-        sign = 1;
-    }
+    // Terminate destination string.
+    *dst_ptr = '\0';
 
-    // Now minus signs can be removed from string
-    for (i = 0; text_ptr[i] != '\0'; ++i) {
-        if (text_ptr[i] == '-') {
-            for (j = i; text_ptr[j] != '\0'; ++j) {
-                text_ptr[j] = text_ptr[j + 1];
-            }
-            text_ptr[j] = '\0';
-        }
+    if (numNumbers == 0)
+        return MONEY32_UNDEFINED;
+
+    sint32 sign = 1;
+    if (hasMinus)
+    {
+        // If there is a minus sign, it has to be at position 0 in order to be valid.
+        if (processedString[0] == '-')
+            sign = -1;
+        else
+            return MONEY32_UNDEFINED;
     }
 
     // Due to the nature of strstr and strtok, decimals at the very beginning will be ignored, causing
     // ".1" to be interpreted as "1". To prevent this, prefix with "0" if decimal is at the beginning.
-    char * buffer = (char *)malloc(strlen(string_to_monetise) + 4);
-    if (string_to_monetise[0] == decimal_char[0]) {
-        strcpy(buffer, "0");
-        strcpy(buffer + 1, string_to_monetise);
-    }
-    else {
-        strcpy(buffer, string_to_monetise);
+    if (processedString[0] == decimal_char[0])
+    {
+        for (size_t i = strlen(processedString); i >= 1; i--)
+            processedString[i] = processedString[i - 1];
+        processedString[0] = '0';
     }
 
     int number = 0, decimal = 0;
-    if (strstr(buffer, decimal_char) == nullptr) {
+    if (strstr(processedString, decimal_char) == nullptr)
+    {
         // If decimal char does not exist, no tokenising is needed.
-        number = atoi(buffer);
+        number = atoi(processedString);
     }
-    else {
-        char *numberText = strtok(buffer, decimal_char);
+    else
+    {
+        char *numberText = strtok(processedString, decimal_char);
         char *decimalText = strtok(nullptr, decimal_char);
 
-        if (numberText != nullptr) number = atoi(numberText);
-        if (decimalText != nullptr) decimal = atoi(decimalText);
+        if (numberText != nullptr)
+            number = atoi(numberText);
+        if (decimalText != nullptr)
+            decimal = atoi(decimalText);
 
         // The second parameter in MONEY must be two digits in length, while the game only ever uses
         // the first of the two digits.
         // Convert invalid numbers, such as ".6", ".234", ".05", to ".60", ".20", ".00" (respectively)
-        while (decimal > 10) decimal /= 10;
-        if (decimal < 10) decimal *= 10;
+        while (decimal > 10)
+            decimal /= 10;
+        if (decimal < 10)
+            decimal *= 10;
     }
-    free(buffer);
 
     money32 result = MONEY(number, decimal);
     // Check if MONEY resulted in overflow
-    if ((number > 0 && result < 0) || result / 10 < number) {
+    if ((number > 0 && result < 0) || result / 10 < number)
+    {
         result = INT_MAX;
     }
     result *= sign;

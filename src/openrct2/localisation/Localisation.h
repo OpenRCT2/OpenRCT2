@@ -42,7 +42,7 @@ sint32 get_string_length(const utf8 *text);
 
 // The maximum number of characters allowed for string/money conversions (anything above will risk integer overflow issues)
 #define MONEY_STRING_MAXLENGTH 14
-money32 string_to_money(char * string_to_monetise);
+money32 string_to_money(const char* string_to_monetise);
 void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffer_len);
 
 void user_string_clear_all();
