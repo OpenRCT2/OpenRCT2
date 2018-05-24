@@ -3920,6 +3920,11 @@ enum {
     STR_DEMOLISH_RIDE_ID_MONEY = 6250,
     STR_RIDE_NOT_YET_EMPTY = 6251,
 
+    STR_TWITCH_API_URL = 6252,
+    STR_TWITCH_API_URL_TIP = 6253,
+    STR_TWITCH_API_URL_DESC = 6254,
+    STR_INVALID_URL = 6255,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

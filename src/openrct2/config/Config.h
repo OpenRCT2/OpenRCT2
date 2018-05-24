@@ -127,6 +127,7 @@ struct SoundConfiguration
 struct TwitchConfiguration
 {
     utf8 *      channel;
+    utf8 *      api_url;
     bool        enable_follower_peep_names;
     bool        enable_follower_peep_tracking;
     bool        enable_chat_peep_names;

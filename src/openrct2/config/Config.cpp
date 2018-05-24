@@ -466,6 +466,7 @@ namespace Config
         if (reader->ReadSection("twitch"))
         {
             auto model = &gConfigTwitch;
+            model->api_url = reader->GetCString("api_url", nullptr);
             model->channel = reader->GetCString("channel", nullptr);
             model->enable_follower_peep_names = reader->GetBoolean("follower_peep_names", true);
             model->enable_follower_peep_tracking = reader->GetBoolean("follower_peep_tracking", false);
@@ -479,6 +480,7 @@ namespace Config
     {
         auto model = &gConfigTwitch;
         writer->WriteSection("twitch");
+        writer->WriteString("api_url", model->api_url);
         writer->WriteString("channel", model->channel);
         writer->WriteBoolean("follower_peep_names", model->enable_follower_peep_names);
         writer->WriteBoolean("follower_peep_tracking", model->enable_follower_peep_tracking);
