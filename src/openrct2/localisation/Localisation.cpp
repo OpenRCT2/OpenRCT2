@@ -1230,50 +1230,50 @@ void format_string_to_upper(utf8 *dest, size_t size, rct_string_id format, void 
 
 money32 string_to_money(const char* string_to_monetise)
 {
-    char processedString[128];
-    safe_strcpy(processedString, string_to_monetise, 128);
     const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
-    char* text_ptr = processedString;
+    char processedString[128];
+
     uint32 numNumbers = 0;
     bool hasMinus = false;
     bool hasDecSep = false;
+    const char* src_ptr = string_to_monetise;
+    char* dst_ptr = processedString;
 
-    // Remove everything except numbers decimal, and minus sign(s)
-    for (uint32 i = 0, j; text_ptr[i] != '\0'; ++i)
+    // Process the string, keeping only numbers decimal, and minus sign(s).
+    while (*src_ptr != '\0')
     {
-        if (text_ptr[i] >= '0' && text_ptr[i] <= '9')
+        if (*src_ptr >= '0' && *src_ptr <= '9')
         {
             numNumbers++;
         }
-        else if (text_ptr[i] == decimal_char[0])
+        else if (*src_ptr == decimal_char[0])
         {
             if (hasDecSep)
                 return MONEY32_UNDEFINED;
             else
                 hasDecSep = true;
         }
-        else if (text_ptr[i] == '-')
+        else if (*src_ptr == '-')
         {
             if (hasMinus)
                 return MONEY32_UNDEFINED;
             else
                 hasMinus = true;
         }
-
-        while (!(
-            (text_ptr[i] >= '0' && text_ptr[i] <= '9') ||
-            (text_ptr[i] == decimal_char[0]) ||
-            (text_ptr[i] == '-') ||
-            (text_ptr[i] == '\0')))
+        else
         {
-            // Move everything over to the left by one
-            for (j = i; text_ptr[j] != '\0'; ++j)
-            {
-                text_ptr[j] = text_ptr[j + 1];
-            }
-            text_ptr[j] = '\0';
+            // Skip invalid characters.
+            src_ptr++;
+            continue;
         }
+
+        // Copy numeric values.
+        *dst_ptr++ = *src_ptr;
+        src_ptr++;
     }
+
+    // Terminate destination string.
+    *dst_ptr = '\0';
 
     if (numNumbers == 0)
         return MONEY32_UNDEFINED;
@@ -1282,14 +1282,10 @@ money32 string_to_money(const char* string_to_monetise)
     if (hasMinus)
     {
         // If there is a minus sign, it has to be at position 0 in order to be valid.
-        if (text_ptr[0] == '-')
-        {
+        if (processedString[0] == '-')
             sign = -1;
-        }
         else
-        {
             return MONEY32_UNDEFINED;
-        }
     }
 
     // Due to the nature of strstr and strtok, decimals at the very beginning will be ignored, causing
