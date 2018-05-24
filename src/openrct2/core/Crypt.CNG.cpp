@@ -32,28 +32,31 @@
 #include <bcrypt.h>
 #define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
 
-class CNGSha1Algorithm final : public Sha1Algorithm
+template<typename TBase>
+class CngHashAlgorithm final : public TBase
 {
 private:
+    const char * _algName;
     BCRYPT_ALG_HANDLE _hAlg{};
     BCRYPT_HASH_HANDLE _hHash{};
     PBYTE _pbHashObject{};
     bool _reusable{};
 
 public:
-    CNGSha1Algorithm()
+    CngHashAlgorithm(const char * algName)
     {
         // BCRYPT_HASH_REUSABLE_FLAG only available from Windows 8
+        _algName = algName;
         _reusable = Platform::IsOSVersionAtLeast(6, 2, 0);
         Initialise();
     }
 
-    ~CNGSha1Algorithm()
+    ~CngHashAlgorithm()
     {
         Dispose();
     }
 
-    void Clear() override
+    HashAlgorithm * Clear() override
     {
         if (_reusable)
         {
@@ -65,15 +68,17 @@ public:
             Dispose();
             Initialise();
         }
+        return this;
     }
 
-    void Update(const void * data, size_t dataLen) override
+    HashAlgorithm * Update(const void * data, size_t dataLen) override
     {
         auto status = BCryptHashData(_hHash, (PBYTE)data, (ULONG)dataLen, 0);
         if (!NT_SUCCESS(status))
         {
             throw std::runtime_error("BCryptHashData failed: " + std::to_string(status));
         }
+        return this;
     }
 
     Result Finish() override
@@ -91,7 +96,7 @@ private:
     void Initialise()
     {
         auto flags = _reusable ? BCRYPT_HASH_REUSABLE_FLAG : 0;
-        auto status = BCryptOpenAlgorithmProvider(&_hAlg, BCRYPT_SHA1_ALGORITHM, nullptr, flags);
+        auto status = BCryptOpenAlgorithmProvider(&_hAlg, TAlg, nullptr, flags);
         if (!NT_SUCCESS(status))
         {
             throw std::runtime_error("BCryptOpenAlgorithmProvider failed: " + std::to_string(status));
@@ -135,14 +140,12 @@ namespace Hash
 {
     std::unique_ptr<Sha1Algorithm> CreateSHA1()
     {
-        return std::make_unique<CNGSha1Algorithm>();
+        return std::make_unique<CngHashAlgorithm<Sha1Algorithm>>(BCRYPT_SHA1_ALGORITHM);
     }
 
-    Sha1Algorithm::Result SHA1(const void * data, size_t dataLen)
+    std::unique_ptr<Sha256Algorithm> CreateSHA256()
     {
-        CNGSha1Algorithm sha1;
-        sha1.Update(data, dataLen);
-        return sha1.Finish();
+        return std::make_unique<CngHashAlgorithm<Sha256Algorithm>>(BCRYPT_SHA256_ALGORITHM);
     }
 }
 

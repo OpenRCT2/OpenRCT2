@@ -18,6 +18,7 @@
 
 #include <array>
 #include <memory>
+#include <vector>
 
 template<size_t TLength>
 class HashAlgorithm
@@ -26,15 +27,43 @@ public:
     typedef std::array<uint8_t, TLength> Result;
 
     virtual ~HashAlgorithm() = default;
-    virtual void Clear() = 0;
-    virtual void Update(const void * data, size_t dataLen) = 0;
+    virtual HashAlgorithm * Clear() = 0;
+    virtual HashAlgorithm * Update(const void * data, size_t dataLen) = 0;
     virtual Result Finish() = 0;
 };
 
+class RsaKey
+{
+public:
+    virtual ~RsaKey() = default;
+    virtual void SetPrivate(const std::string_view& pem) = 0;
+    virtual void SetPublic(const std::string_view& pem) = 0;
+    virtual std::string GetPrivate() = 0;
+    virtual std::string GetPublic() = 0;
+};
+
+class RsaAlgorithm
+{
+public:
+    virtual ~RsaAlgorithm() = default;
+    virtual std::vector<uint8_t> SignData(const RsaKey& key, const void * data, size_t dataLen) = 0;
+    virtual bool VerifyData(const RsaKey& key, const void * data, size_t dataLen, const void * sig, size_t sigLen) = 0;
+};
+
 using Sha1Algorithm = HashAlgorithm<20>;
+using Sha256Algorithm = HashAlgorithm<32>;
 
 namespace Hash
 {
     std::unique_ptr<Sha1Algorithm> CreateSHA1();
-    Sha1Algorithm::Result SHA1(const void * data, size_t dataLen);
+    std::unique_ptr<Sha256Algorithm> CreateSHA256();
+    std::unique_ptr<RsaAlgorithm> CreateRSA();
+    std::unique_ptr<RsaKey> CreateRSAKey();
+
+    Sha1Algorithm::Result SHA1(const void * data, size_t dataLen)
+    {
+        return CreateSHA1()
+            ->Update(data, dataLen)
+            ->Finish();
+    }
 }
