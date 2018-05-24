@@ -1228,10 +1228,12 @@ void format_string_to_upper(utf8 *dest, size_t size, rct_string_id format, void 
     dest[upperString.size()] = '\0';
 }
 
-money32 string_to_money(char * string_to_monetise)
+money32 string_to_money(const char* string_to_monetise)
 {
+    char processedString[128];
+    safe_strcpy(processedString, string_to_monetise, 128);
     const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
-    char * text_ptr = string_to_monetise;
+    char* text_ptr = processedString;
     uint32 numNumbers = 0;
     bool hasMinus = false;
     bool hasDecSep = false;
@@ -1292,13 +1294,13 @@ money32 string_to_money(char * string_to_monetise)
 
     // Due to the nature of strstr and strtok, decimals at the very beginning will be ignored, causing
     // ".1" to be interpreted as "1". To prevent this, prefix with "0" if decimal is at the beginning.
-    char * buffer = (char *)malloc(strlen(string_to_monetise) + 4);
-    if (string_to_monetise[0] == decimal_char[0]) {
+    char * buffer = (char *)malloc(strlen(processedString) + 4);
+    if (processedString[0] == decimal_char[0]) {
         strcpy(buffer, "0");
-        strcpy(buffer + 1, string_to_monetise);
+        strcpy(buffer + 1, processedString);
     }
     else {
-        strcpy(buffer, string_to_monetise);
+        strcpy(buffer, processedString);
     }
 
     int number = 0, decimal = 0;
