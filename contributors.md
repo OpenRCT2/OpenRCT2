@@ -1,20 +1,20 @@
 # Contributors to OpenRCT2
 Includes all git commit authors. Aliases are GitHub user names.
 
-## Project team
-* Ted John (IntelOrca) - Owner, developer, merger, issue management
-* Duncan Frost (duncanspumpkin) - Developer, merger, issue management
-* Michael Steenbeek (Gymnasiast) - Developer, issue management, translation management
-* Michał Janiszewski (janisozaur) - Developer, CI, Linux management, issue management
-* Lewis Fox (LRFLEW) - Developer, macOS management
-* Marijn van der Werf (marijnvdwerf) - Developer
-* (zsilencer) - Developer
-* Richard Jenkins (rwjuk) - Developer, issue management
+## Development team
+* Ted John (IntelOrca) - Owner
+* Duncan Frost (duncanspumpkin)
+* Michael Steenbeek (Gymnasiast) - translation management
+* Michał Janiszewski (janisozaur) - CI, Linux management
+* Lewis Fox (LRFLEW) - macOS management
+* Marijn van der Werf (marijnvdwerf)
+* (zsilencer)
+* Richard Jenkins (rwjuk)
 * Hielke Morsink (Broxzier)
 * Aaron van Geffen (AaronVanGeffen)
 
 ## Long term contributors
-The following people are not part of the project team, but have been contributing for a long time.
+The following people are not part of the development team, but have been contributing for a long time.
 * Matte Andersson (Nubbie)
 * Kenton Boadway (Krutonium)
 * Joe Minor Jr (wolfreak99)
@@ -26,55 +26,56 @@ The following people are not part of the project team, but have been contributin
 * (qcz) - Scenery window, misc.
 * Matthias Lanzinger (lnz) - Climate, finance, scenario, ride reachability
 * (zsilencer) - Audio, multiplayer, misc.
-* Adrian Wielgosik (adrian17) - Misc.
-* (hexdec) - Misc.
-* Dennis Devriendt (ddevrien) - Misc.
-* Maciek Baron (MaciekBaron) - Misc.
+* (DutchRPW) - peep_update_days_in_queue, misc. money-related functions
+* Adrian Wielgosik (adrian17) - Ride window, top toolbar, map window, misc.
+* (hexdec) - Music credits window, staff window, misc.
+* Dennis Devriendt (ddevrien) - Banner window, map window, options window
+* Maciek Baron (MaciekBaron) - Peep enums, item flags, misc.
+* (Hual) - Minimap window resizing; address identification; sub_6C0C3F.
 * (AngeloG) - Scrollbar input, misc.
 * (jcdavis) - Misc.
 * (marcotc) - Rain drawing, misc.
-* (vanderkleij) - Misc.
-* Ben Pye (benpye) - Misc.
-* (JeroenSack) - Misc.
-* Sijmen Schoon (SijmenSchoon) - Misc.
-* Joe Minor Jr (wolfreak99) - Misc.
-* Inseok Lee (dlunch) - Original command line
-* Lewis Fox (LRFLEW) - Misc.
-* Marijn van der Werf (marijnvdwerf) - Drawing, misc.
-* Hielke Morsink (Broxzier) - Tile inspector, heightmap loader, misc.
+* (vanderkleij) - create_sprite, move_sprite_to_list
+* Ben Pye (benpye) - Logo rendering on title screen
+* (JeroenSack) - widget_scroll_get_part, misc.
+* Sijmen Schoon (SijmenSchoon) - redraw_peep_and_rain, misc bugfixes.
+* Lewis Fox (LRFLEW) - sub_69A997, OpenGL support, macOS
+* Marijn van der Werf (marijnvdwerf) - Peep functions, drawing and paint code
 
 ## Additional implementation (OpenRCT2)
 * (atmaxinger) - User configuration
 * (anyc) - Housecleaning, cross-platform fixes
 * Michael Steenbeek (Gymnasiast) - Cheats, RCT1 ride style, misc.
-* Miso Zmiric (mzmiric5) - Misc.
-* (DutchRPW) - Housecleaning, initialisation
-* Jørn Lomax (jvlomax) - User configuration
-* (KingHual) - Housecleaning
-* Alexander Overvoorde (Overv) - Misc.
-* (eezstreet) - Misc.
-* Thomas den Hollander (ThomasdenH) - Misc.
-* James Robertson (rd3k) - Misc.
+* Miso Zmiric (mzmiric5) - Twitch integration, misc.
+* Inseok Lee (dlunch) - Load save files from command line
+* Jørn Lomax (jvlomax) - Configuration parser
+* Alexander Overvoorde (Overv) - OpenGL improvements, Steam overlay detection, various bugfixes.
+* (eezstreet) - Add finances button to toolbar
+* Hielke Morsink (Broxzier) - Tile inspector, heightmap loader, misc.
+* Joe Minor Jr (wolfreak99) - Various cheats, bugfixes, new About and Changelog windows.
+* Thomas den Hollander (ThomasdenH) - Dithering in sprite importer, invert viewport dragging, park rating cheats misc.
+* James Robertson (rd3k) - Initial tile inspector, misc changes.
 * Robert Jordan (trigger-death) - UI theming, title sequence editor, misc.
 * Aaron van Geffen (AaronVanGeffen) - scenario select screen, font detection, misc.
 * Michał Janiszewski (janisozaur) - Linux port, crash handling, security, misc.
-* Kelson Blakewood (spacek531) - title sequences for release versions 0.0.4, 0.0.5/0.0.6/0.0.7, 0.1.0/0.1.1, and 0.1.2, title sequences using milliseconds
+* Kelson Blakewood (spacek531) - title sequences for release versions 0.0.4 through 0.1.2, title sequences using milliseconds
 * Hugo Wallenburg (Goddesen) - Misc.
 * Matte Andersson (Nubbie) - Misc, UX
 * Daniel Trujillo Viedma (gDanix) - Custom currency.
-* Niels NTG Poldervaart (Niels-NTG) - Misc.
 * (zaxcav) - Improvements to original pathfinding algorithm.
 * Jeroen D. Stout (JeroenDStout) - Light effects, train crossings, virtual floor.
+* Matthias Moninger (ZehMatt) - Game actions, multiplayer synchronisation, misc.
 * Joël Troch (JoelTroch) - Keyboard shortcuts for ride construction.
-* Thomas Delebo (delebota) - Misc.
+* Thomas Delebo (delebota) - Server descriptions and greetings.
+* Richard Jenkins (rwjuk) - Path issues overlay, console improvements, bug fixes
 * Brian Callahan (ibara) - OpenBSD port.
 * Jens Heuseveldt (jensj12) - Mountain tool improvements, misc.
-* Park Joon-Kyu (segfault87) - Misc.
+* Park Joon-Kyu (segfault87) - Allow filtering guests by name
 * Harrison Gentry (hgentry) - Date-changing command, misc.
-* Joshua Moerman (Jaxan) - Misc.
-* Nicolas Hawrysh (xp4xbox) - Misc.
-* Albert Morgese (Fusxfaranto) - Misc.
-* Olivier Wervers (oli414) - Misc.
+* Joshua Moerman (Jaxan) - Minimap cleanup, misc.
+* Nicolas Hawrysh (xp4xbox) - Various (ride) sprite improvements.
+* Albert Morgese (Fusxfaranto) - Shop auto-rotation, unicode uppercasing.
+* Olivier Wervers (oli414) - Remove unused objects command, various bugfixes
 
 ## Bug fixes
 * (halfbro)
@@ -82,7 +83,6 @@ The following people are not part of the project team, but have been contributin
 * (nean)
 * Ed Foley (e-foley)
 * Michael Pham (nightroan)
-* Hielke Morsink (Broxzier)
 * Lucas Riutzel (jackinloadup)
 * Youngjae Yu (YJSoft)
 * Chanwoong Kim (kexplo)
@@ -91,18 +91,17 @@ The following people are not part of the project team, but have been contributin
 * (marcovmun)
 * Sven Slootweg (joepie91)
 * Daniel Trujillo Viedma (gDanix)
+* Niels NTG Poldervaart (Niels-NTG) - Screenshot filenames
 * Jonathan Haas (HaasJona)
 * Jake Breen (Haekb)
 * Marco Benzi Tobar (Lisergishnu)
-* Richard Jenkins (rwjuk)
 * (ceeac)
-* Matthias Moninger (Zeh Matt)
 * Tomas Dittmann (Chaosmeister)
 * William Wallace (Willox)
 * Christian Friedrich Coors (ccoors)
 * Robbin Voortman (rvoortman)
 * (telk5093)
-* Ethan Smith (ethanhs) - Refactoring.
+* Ethan Smith (ethanhs) - Refactor MAX_PATH
 * Robert Lewicki (rlewicki)
 * Tyler Ruckinger (TyPR124)
 * Justin Gottula (jgottula)
@@ -115,7 +114,7 @@ The following people are not part of the project team, but have been contributin
 ## Toolchain
 * (Balletie) - macOS
 * Kevin Burke (kevinburke) - macOS, Unix
-* Miso Zmiric (mzmiric5) - macOS
+* Miso Zmiric (mzmiric5) - Initial macOS toolchain
 * Jarno Veuger (JarnoVgr) - Windows build server
 * Ted John (IntelOrca) - Windows
 * Michał Janiszewski (janisozaur) - Linux, Travis CI
@@ -135,9 +134,12 @@ The following people are not part of the project team, but have been contributin
 * Reviewing and merging: Michael Steenbeek (Gymnasiast), Matte Andersson (Nubbie), Rune Laenen (runelaenen) (formerly)
 * Fixing unmaintained languages: Michael Steenbeek (Gymnasiast)
 * Miscellaneous fixes: Alexander Overvoorde (Overv), Ed Foley (e-foley)
+
 * English (UK) - Ted John (IntelOrca), (Tinytimrob)
 * English (US) - Ted John (IntelOrca), Michael Steenbeek (Gymnasiast); small fixes: (LRFLEW), (mike-koch), Harry Lam (daihakken)
 * Catalan - Joan Josep (J0anJosep)
+* Chinese (Simplified) - Naiji Ma (naijim), (izhangfei), Eric Zhao (sczyh30)
+* Chinese (Traditional) - Harry Lam (daihakken)
 * Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap)
 * Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van der Werf (marijnvdwerf), Tom Kroes (ThePsionic); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (SijmenSchoon).
 * Finnish - (DJHasis), (Zode), (TheWing)
@@ -146,14 +148,12 @@ The following people are not part of the project team, but have been contributin
 * Italian - Luca Andrea Rossi (LucaRed)
 * Japanese - Aaron van Geffen (AaronVanGeffen), Nick Hall (nickhall), (jhako), Harry Lam (daihakken)
 * Korean - (telk5093), (NeverDruid); small fixes: (kexplo)
+* Norwegian - Hugo Wallenburg (Goddesen)
 * Polish - Adrian Wielgosik (adrian17), (lopezloo), Michał Janiszewski (janisozaur)
 * Portuguese (BR) - (kaudy), (renansimoes)
 * Russian - (Soosisya)
-* Simplified Chinese - Naiji Ma (naijim), (izhangfei), Eric Zhao (sczyh30)
 * Spanish - (mdtrooper), Josué Acevedo (Wirlie), Daniel Trujillo Viedma (gDanix); small fixes: (teapartycthulu)
 * Swedish - (Jinxit), (mharrys), (Slimeyo), Matte Andersson (Nubbie)
-* Traditional Chinese - Harry Lam (daihakken)
-* Norwegian - (Goddesen)
 
 ## Graphics
 * OpenRCT2 Logo - Yannic Geurts (xzbobzx)
