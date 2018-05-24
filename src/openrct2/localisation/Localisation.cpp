@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <ctype.h>
+#include <cstring>
 #include <limits.h>
 
 #ifdef _WIN32
@@ -30,6 +31,7 @@
 
 #include "../common.h"
 #include "../config/Config.h"
+#include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
@@ -1231,7 +1233,9 @@ void format_string_to_upper(utf8 *dest, size_t size, rct_string_id format, void 
 money32 string_to_money(const char* string_to_monetise)
 {
     const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
-    char processedString[128];
+    char processedString[128] = {};
+
+    Guard::Assert(strlen(string_to_monetise) < sizeof(processedString));
 
     uint32 numNumbers = 0;
     bool hasMinus = false;
@@ -1290,13 +1294,11 @@ money32 string_to_money(const char* string_to_monetise)
 
     // Due to the nature of strstr and strtok, decimals at the very beginning will be ignored, causing
     // ".1" to be interpreted as "1". To prevent this, prefix with "0" if decimal is at the beginning.
-    char * buffer = (char *)malloc(strlen(processedString) + 4);
-    if (processedString[0] == decimal_char[0]) {
-        strcpy(buffer, "0");
-        strcpy(buffer + 1, processedString);
-    }
-    else {
-        strcpy(buffer, processedString);
+    if (processedString[0] == decimal_char[0])
+    {
+        for (size_t i = strlen(processedString); i >= 1; i--)
+            processedString[i] = processedString[i - 1];
+        processedString[0] = '0';
     }
 
     int number = 0, decimal = 0;
@@ -1317,7 +1319,6 @@ money32 string_to_money(const char* string_to_monetise)
         while (decimal > 10) decimal /= 10;
         if (decimal < 10) decimal *= 10;
     }
-    free(buffer);
 
     money32 result = MONEY(number, decimal);
     // Check if MONEY resulted in overflow
