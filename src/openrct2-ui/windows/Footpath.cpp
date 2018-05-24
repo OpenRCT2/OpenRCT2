@@ -1139,7 +1139,7 @@ static rct_tile_element * footpath_get_tile_element_to_remove()
             }
         }
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
+    while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
 }

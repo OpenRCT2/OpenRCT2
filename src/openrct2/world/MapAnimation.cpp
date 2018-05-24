@@ -121,7 +121,7 @@ static bool map_animation_invalidate_ride_entrance(sint32 x, sint32 y, sint32 ba
         sint32 height = (tileElement->base_height * 8) + entranceDefinition->height + 8;
         map_invalidate_tile_zoom1(x, y, height, height + 16);
         return false;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -151,7 +151,7 @@ static bool map_animation_invalidate_queue_banner(sint32 x, sint32 y, sint32 bas
             map_invalidate_tile_zoom1(x, y, baseZ + 16, baseZ + 30);
         }
         return false;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -217,7 +217,7 @@ static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 ba
             return false;
         }
 
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
     return true;
 }
 
@@ -243,7 +243,7 @@ static bool map_animation_invalidate_park_entrance(sint32 x, sint32 y, sint32 ba
         baseZ = tileElement->base_height * 8;
         map_invalidate_tile_zoom1(x, y, baseZ + 32, baseZ + 64);
         return false;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -268,7 +268,7 @@ static bool map_animation_invalidate_track_waterfall(sint32 x, sint32 y, sint32 
             map_invalidate_tile_zoom1(x, y, z + 14, z + 46);
             return false;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -293,7 +293,7 @@ static bool map_animation_invalidate_track_rapids(sint32 x, sint32 y, sint32 bas
             map_invalidate_tile_zoom1(x, y, z + 14, z + 18);
             return false;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -327,7 +327,7 @@ static bool map_animation_invalidate_track_onridephoto(sint32 x, sint32 y, sint3
                 return true;
             }
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -352,7 +352,7 @@ static bool map_animation_invalidate_track_whirlpool(sint32 x, sint32 y, sint32 
             map_invalidate_tile_zoom1(x, y, z + 14, z + 18);
             return false;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -377,7 +377,7 @@ static bool map_animation_invalidate_track_spinningtunnel(sint32 x, sint32 y, si
             map_invalidate_tile_zoom1(x, y, z + 14, z + 32);
             return false;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -409,7 +409,7 @@ static bool map_animation_invalidate_banner(sint32 x, sint32 y, sint32 baseZ)
         baseZ = tileElement->base_height * 8;
         map_invalidate_tile_zoom1(x, y, baseZ, baseZ + 16);
         return false;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -437,7 +437,7 @@ static bool map_animation_invalidate_large_scenery(sint32 x, sint32 y, sint32 ba
             map_invalidate_tile_zoom1(x, y, z, z + 16);
             wasInvalidated = true;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return !wasInvalidated;
 }
@@ -492,7 +492,7 @@ static bool map_animation_invalidate_wall_door(sint32 x, sint32 y, sint32 baseZ)
             sint32 z = tileElement->base_height * 8;
             map_invalidate_tile_zoom1(x, y, z, z + 32);
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return removeAnimation;
 }
@@ -522,7 +522,7 @@ static bool map_animation_invalidate_wall(sint32 x, sint32 y, sint32 baseZ)
         sint32 z = tileElement->base_height * 8;
         map_invalidate_tile_zoom1(x, y, z, z + 16);
         wasInvalidated = true;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return !wasInvalidated;
 }

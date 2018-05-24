@@ -659,7 +659,7 @@ void rct_peep::Tick128UpdateGuest(sint32 index)
                         }
                     }
                     break;
-                } while (!tile_element_is_last_for_tile(tileElement++));
+                } while (!(tileElement++)->IsLastForTile());
 
                 if (found)
                 {
@@ -1635,7 +1635,7 @@ void rct_peep::PickRideToGoOn()
 
                         sint32 rideIndex = track_element_get_ride_index(tileElement);
                         rideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
-                    } while (!tile_element_is_last_for_tile(tileElement++));
+                    } while (!(tileElement++)->IsLastForTile());
                 }
             }
         }
@@ -2782,7 +2782,7 @@ static uint8 peep_assess_surroundings(sint16 centre_x, sint16 centre_y, sint16 c
                     }
                     break;
                 }
-            } while (!tile_element_is_last_for_tile(tileElement++));
+            } while (!(tileElement++)->IsLastForTile());
         }
     }
 
@@ -2976,7 +2976,7 @@ static void peep_head_for_nearest_ride_type(rct_peep * peep, sint32 rideType)
                         {
                             rideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
                         }
-                    } while (!tile_element_is_last_for_tile(tileElement++));
+                    } while (!(tileElement++)->IsLastForTile());
                 }
             }
         }
@@ -3105,7 +3105,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep * peep, sint32 rideTy
                         {
                             rideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
                         }
-                    } while (!tile_element_is_last_for_tile(tileElement++));
+                    } while (!(tileElement++)->IsLastForTile());
                 }
             }
         }
@@ -4767,7 +4767,7 @@ void rct_peep::UpdateRideMazePathfinding()
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK && stationHeight == tileElement->base_height)
             break;
 
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     uint16 mazeEntry  = track_element_get_maze_entry(tileElement);
     uint16 openHedges = 0;
@@ -4840,7 +4840,7 @@ void rct_peep::UpdateRideMazePathfinding()
             mazeType = maze_type::entrance_or_exit;
             break;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     switch (mazeType)
     {
@@ -4939,7 +4939,7 @@ void rct_peep::UpdateRideLeaveExit()
         MoveTo(x, y, height);
         Invalidate();
         return;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 }
 
 /**
@@ -5305,16 +5305,16 @@ void rct_peep::UpdateWalking()
     if (GetNextIsSurface() || GetNextIsSloped())
         return;
 
-    rct_tile_element * tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
+    rct_tile_element * tileElement = map_get_first_element_at(next_x / 32, next_y / 32);
 
-    for (;; tile_element++)
+    for (;; tileElement++)
     {
-        if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
-            if (next_z == tile_element->base_height)
+            if (next_z == tileElement->base_height)
                 break;
         }
-        if (tile_element_is_last_for_tile(tile_element))
+        if (tileElement->IsLastForTile())
         {
             return;
         }
@@ -5322,11 +5322,11 @@ void rct_peep::UpdateWalking()
 
     sint32 positions_free = 15;
 
-    if (footpath_element_has_path_scenery(tile_element))
+    if (footpath_element_has_path_scenery(tileElement))
     {
-        if (!footpath_element_path_scenery_is_ghost(tile_element))
+        if (!footpath_element_path_scenery_is_ghost(tileElement))
         {
-            rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
+            rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
             if (sceneryEntry == nullptr)
             {
                 return;
@@ -5337,7 +5337,7 @@ void rct_peep::UpdateWalking()
         }
     }
 
-    sint32 edges = (tile_element->properties.path.edges & 0xF) ^ 0xF;
+    sint32 edges = (tileElement->properties.path.edges & 0xF) ^ 0xF;
     if (edges == 0)
         return;
 
@@ -5738,45 +5738,45 @@ void rct_peep::UpdateUsingBin()
             return;
         }
 
-        rct_tile_element * tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
+        rct_tile_element * tileElement = map_get_first_element_at(next_x / 32, next_y / 32);
 
-        for (;; tile_element++)
+        for (;; tileElement++)
         {
-            if (tile_element->GetType() != TILE_ELEMENT_TYPE_PATH)
+            if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             {
                 continue;
             }
 
-            if (tile_element->base_height == next_z)
+            if (tileElement->base_height == next_z)
                 break;
 
-            if (tile_element_is_last_for_tile(tile_element))
+            if (tileElement->IsLastForTile())
             {
                 StateReset();
                 return;
             }
         }
 
-        if (!footpath_element_has_path_scenery(tile_element))
+        if (!footpath_element_has_path_scenery(tileElement))
         {
             StateReset();
             return;
         }
 
-        rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
+        rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
         if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
         {
             StateReset();
             return;
         }
 
-        if (tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)
+        if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
         {
             StateReset();
             return;
         }
 
-        if (footpath_element_path_scenery_is_ghost(tile_element))
+        if (footpath_element_path_scenery_is_ghost(tileElement))
         {
             StateReset();
             return;
@@ -5786,7 +5786,7 @@ void rct_peep::UpdateUsingBin()
         uint8 selected_bin = var_37 * 2;
 
         // This counts down 2 = No rubbish, 0 = full
-        uint8  space_left_in_bin = 0x3 & (tile_element->properties.path.addition_status >> selected_bin);
+        uint8  space_left_in_bin = 0x3 & (tileElement->properties.path.addition_status >> selected_bin);
         uint32 empty_containers  = HasEmptyContainerStandardFlag();
 
         for (uint8 cur_container = 0; cur_container < 32; cur_container++)
@@ -5853,11 +5853,11 @@ void rct_peep::UpdateUsingBin()
         }
 
         // Place new amount in bin by first clearing the value
-        tile_element->properties.path.addition_status &= ~(3 << selected_bin);
+        tileElement->properties.path.addition_status &= ~(3 << selected_bin);
         // Then placing the new value.
-        tile_element->properties.path.addition_status |= space_left_in_bin << selected_bin;
+        tileElement->properties.path.addition_status |= space_left_in_bin << selected_bin;
 
-        map_invalidate_tile_zoom0(next_x, next_y, tile_element->base_height << 3, tile_element->clearance_height << 3);
+        map_invalidate_tile_zoom0(next_x, next_y, tileElement->base_height << 3, tileElement->clearance_height << 3);
         StateReset();
         break;
     }
@@ -5909,35 +5909,35 @@ bool rct_peep::UpdateWalkingFindBench()
     if (!ShouldFindBench())
         return false;
 
-    rct_tile_element * tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
+    rct_tile_element * tileElement = map_get_first_element_at(next_x / 32, next_y / 32);
 
-    for (;; tile_element++)
+    for (;; tileElement++)
     {
-        if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
-            if (next_z == tile_element->base_height)
+            if (next_z == tileElement->base_height)
                 break;
         }
-        if (tile_element_is_last_for_tile(tile_element))
+        if (tileElement->IsLastForTile())
         {
             return false;
         }
     }
 
-    if (!footpath_element_has_path_scenery(tile_element))
+    if (!footpath_element_has_path_scenery(tileElement))
         return false;
-    rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
+    rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
 
     if (sceneryEntry == nullptr || !(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH))
         return false;
 
-    if (tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)
+    if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
         return false;
 
-    if (footpath_element_path_scenery_is_ghost(tile_element))
+    if (footpath_element_path_scenery_is_ghost(tileElement))
         return false;
 
-    sint32 edges = (tile_element->properties.path.edges & 0xF) ^ 0xF;
+    sint32 edges = (tileElement->properties.path.edges & 0xF) ^ 0xF;
     if (edges == 0)
         return false;
 
@@ -6004,24 +6004,24 @@ bool rct_peep::UpdateWalkingFindBin()
     if (peep->GetNextIsSurface())
         return false;
 
-    rct_tile_element * tile_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+    rct_tile_element * tileElement = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 
-    for (;; tile_element++)
+    for (;; tileElement++)
     {
-        if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
-            if (peep->next_z == tile_element->base_height)
+            if (peep->next_z == tileElement->base_height)
                 break;
         }
-        if (tile_element_is_last_for_tile(tile_element))
+        if (tileElement->IsLastForTile())
         {
             return false;
         }
     }
 
-    if (!footpath_element_has_path_scenery(tile_element))
+    if (!footpath_element_has_path_scenery(tileElement))
         return false;
-    rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
+    rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
     if (sceneryEntry == nullptr)
     {
         return false;
@@ -6030,20 +6030,20 @@ bool rct_peep::UpdateWalkingFindBin()
     if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
         return false;
 
-    if (tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)
+    if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
         return false;
 
-    if (footpath_element_path_scenery_is_ghost(tile_element))
+    if (footpath_element_path_scenery_is_ghost(tileElement))
         return false;
 
-    sint32 edges = (tile_element->properties.path.edges & 0xF) ^ 0xF;
+    sint32 edges = (tileElement->properties.path.edges & 0xF) ^ 0xF;
     if (edges == 0)
         return false;
 
     uint8 chosen_edge = scenario_rand() & 0x3;
 
     // Note: Bin quantity is inverted 0 = full, 3 = empty
-    uint8 bin_quantities = tile_element->properties.path.addition_status;
+    uint8 bin_quantities = tileElement->properties.path.addition_status;
 
     // Rotate the bin to the correct edge. Makes it easier for next calc.
     bin_quantities = ror8(ror8(bin_quantities, chosen_edge), chosen_edge);
@@ -6105,35 +6105,35 @@ static void peep_update_walking_break_scenery(rct_peep * peep)
     if (peep->GetNextIsSurface())
         return;
 
-    rct_tile_element * tile_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+    rct_tile_element * tileElement = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 
-    for (;; tile_element++)
+    for (;; tileElement++)
     {
-        if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
-            if (peep->next_z == tile_element->base_height)
+            if (peep->next_z == tileElement->base_height)
                 break;
         }
-        if (tile_element_is_last_for_tile(tile_element))
+        if (tileElement->IsLastForTile())
         {
             return;
         }
     }
 
-    if (!footpath_element_has_path_scenery(tile_element))
+    if (!footpath_element_has_path_scenery(tileElement))
         return;
-    rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
+    rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
 
     if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BREAKABLE))
         return;
 
-    if (tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)
+    if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
         return;
 
-    if (footpath_element_path_scenery_is_ghost(tile_element))
+    if (footpath_element_path_scenery_is_ghost(tileElement))
         return;
 
-    sint32 edges = tile_element->properties.path.edges & 0xF;
+    sint32 edges = tileElement->properties.path.edges & 0xF;
     if (edges == 0xF)
         return;
 
@@ -6171,9 +6171,9 @@ static void peep_update_walking_break_scenery(rct_peep * peep)
             return;
     }
 
-    tile_element->flags |= TILE_ELEMENT_FLAG_BROKEN;
+    tileElement->flags |= TILE_ELEMENT_FLAG_BROKEN;
 
-    map_invalidate_tile_zoom1(peep->next_x, peep->next_y, (tile_element->base_height << 3) + 32, tile_element->base_height << 3);
+    map_invalidate_tile_zoom1(peep->next_x, peep->next_y, (tileElement->base_height << 3) + 32, tileElement->base_height << 3);
 
     peep->angriness = 16;
 }
@@ -6312,7 +6312,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
             continue;
 
         return false;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     uint16 x = peep->next_x + CoordsDirectionDelta[edge].x;
     uint16 y = peep->next_y + CoordsDirectionDelta[edge].y;
@@ -6347,7 +6347,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
             continue;
 
         return false;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     // TODO: Extract loop B
     tileElement = surfaceElement;
@@ -6392,7 +6392,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
 
             return true;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     // TODO: Extract loop C
     tileElement = surfaceElement;
@@ -6424,7 +6424,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
         }
 
         return false;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     x += CoordsDirectionDelta[edge].x;
     y += CoordsDirectionDelta[edge].y;
@@ -6459,7 +6459,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
             continue;
 
         return false;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     // TODO: Extract loop B
     tileElement = surfaceElement;
@@ -6504,7 +6504,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
 
             return true;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     // TODO: Extract loop C
     tileElement = surfaceElement;
@@ -6536,7 +6536,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
         }
 
         return false;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     x += CoordsDirectionDelta[edge].x;
     y += CoordsDirectionDelta[edge].y;
@@ -6571,7 +6571,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
             continue;
 
         return false;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     // TODO: Extract loop B
     tileElement = surfaceElement;
@@ -6615,7 +6615,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
 
             return true;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return false;
 }
@@ -6733,7 +6733,7 @@ void rct_peep::UpdateSpriteType()
                 if ((z / 8) < tileElement->base_height)
                     break;
 
-                if (tile_element_is_last_for_tile(tileElement))
+                if (tileElement->IsLastForTile())
                 {
                     SetSpriteType(PEEP_SPRITE_TYPE_UMBRELLA);
                     return;

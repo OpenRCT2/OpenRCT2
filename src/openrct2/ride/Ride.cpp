@@ -568,7 +568,7 @@ bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 ri
         output->y = y;
         output->element = tileElement;
         return 1;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     if (direction != nullptr) *direction = direction_start;
     if (z != nullptr) *z = z_start;
@@ -722,7 +722,7 @@ bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 ride
         outTrackBeginEnd->begin_direction = nextRotation;
         outTrackBeginEnd->end_direction = directionStart ^ (1 << 1);
         return 1;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     outTrackBeginEnd->end_x = x;
     outTrackBeginEnd->end_y = y;
@@ -1218,7 +1218,7 @@ sint32 sub_6C683D(sint32* x, sint32* y, sint32* z, sint32 direction, sint32 type
         successTileElement = tileElement;
         if (tile_element_get_track_sequence(tileElement) == 0)
             break;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     tileElement = successTileElement;
     if (tileElement == nullptr)
@@ -1296,7 +1296,7 @@ sint32 sub_6C683D(sint32* x, sint32* y, sint32* z, sint32 direction, sint32 type
                 break;
             }
         }
-        while (!tile_element_is_last_for_tile(tileElement++));
+        while (!(tileElement++)->IsLastForTile());
 
         if (successTileElement == nullptr)
         {
@@ -3258,7 +3258,7 @@ static void ride_shop_connected(Ride* ride, sint32 ride_idx)
     do {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK && track_element_get_ride_index(tileElement) == ride_idx)
             break;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     uint16 entrance_directions = 0;
     uint8 track_type = track_element_get_type(tileElement);
@@ -4112,7 +4112,7 @@ static void sub_6B5952(sint32 rideIndex)
 
             sint32 direction = tile_element_get_direction(tileElement);
             footpath_chain_ride_queue(rideIndex, i, x, y, tileElement, direction ^ 2);
-        } while (!tile_element_is_last_for_tile(tileElement++));
+        } while (!(tileElement++)->IsLastForTile());
     }
 }
 
@@ -4422,7 +4422,7 @@ static void ride_set_maze_entrance_exit_points(Ride *ride)
             if (tileElement->base_height != z) continue;
 
             maze_entrance_hedge_removal(x, y, tileElement);
-        } while (!tile_element_is_last_for_tile(tileElement++));
+        } while (!(tileElement++)->IsLastForTile());
     }
 }
 
@@ -4805,7 +4805,7 @@ static void ride_create_vehicles_find_first_block(Ride *ride, CoordsXYE *outXYEl
                     outXYElement->y = trackBeginEnd.begin_y;
                     outXYElement->element = tileElement;
                     return;
-                } while (!tile_element_is_last_for_tile(tileElement++));
+                } while (!(tileElement++)->IsLastForTile());
             }
             break;
         case TRACK_ELEM_END_STATION:
@@ -4861,7 +4861,7 @@ static bool ride_create_vehicles(Ride *ride, sint32 rideIndex, CoordsXYE *elemen
             if (tileElement->base_height != z) continue;
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK) continue;
             break;
-        } while (!tile_element_is_last_for_tile(tileElement++));
+        } while (!(tileElement++)->IsLastForTile());
 
         z = tileElement->base_height;
         direction = tile_element_get_direction(tileElement);
@@ -4987,7 +4987,7 @@ static bool ride_initialise_cable_lift_track(Ride *ride, bool isApplying)
         }
         success = true;
         break;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     if (!success)
         return false;
@@ -5089,7 +5089,7 @@ static bool ride_create_cable_lift(sint32 rideIndex, bool isApplying)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK) continue;
         if (tileElement->base_height != z) continue;
         break;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
     sint32 direction = tile_element_get_direction(tileElement);
 
     rct_vehicle *head = nullptr;
@@ -5214,7 +5214,7 @@ static rct_tile_element *loc_6B4F6B(sint32 rideIndex, sint32 x, sint32 y)
 
         if (track_element_get_ride_index(tileElement) == rideIndex)
             return tileElement;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
 }
@@ -6639,7 +6639,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sin
                         return;
                     }
                 }
-                while (!tile_element_is_last_for_tile(tileElement++));
+                while (!(tileElement++)->IsLastForTile());
             }
             direction = (direction + 1) & 3;
         }
@@ -6687,7 +6687,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sin
                     goToNextTile = true;
                 }
             }
-            while (!goToNextTile && !tile_element_is_last_for_tile(tileElement++));
+            while (!goToNextTile && !(tileElement++)->IsLastForTile());
 
             if (!goToNextTile)
                 break;
@@ -7003,7 +7003,7 @@ static sint32 ride_get_track_length(Ride * ride)
 
             foundTrack = true;
         }
-        while (!foundTrack && !tile_element_is_last_for_tile(tileElement++));
+        while (!foundTrack && !(tileElement++)->IsLastForTile());
     }
 
     if (foundTrack)
@@ -7436,7 +7436,7 @@ void sub_6CB945(sint32 rideIndex)
 
                     trackFound = true;
                     break;
-                } while (!tile_element_is_last_for_tile(tileElement++));
+                } while (!(tileElement++)->IsLastForTile());
 
                 if (trackFound == false) {
                     break;
@@ -7469,7 +7469,7 @@ void sub_6CB945(sint32 rideIndex)
 
                     trackFound = true;
                     break;
-                } while (!tile_element_is_last_for_tile(tileElement++));
+                } while (!(tileElement++)->IsLastForTile());
 
                 if (!trackFound) {
                     break;
@@ -7574,7 +7574,7 @@ void sub_6CB945(sint32 rideIndex)
                 tileElement->properties.entrance.index &= 0x8F;
                 tileElement->properties.entrance.index |= stationId << 4;
                 shouldRemove = false;
-            } while (!tile_element_is_last_for_tile(trackElement++));
+            } while (!(trackElement++)->IsLastForTile());
 
             if (shouldRemove == true) {
                 footpath_queue_chain_reset();
@@ -7585,7 +7585,7 @@ void sub_6CB945(sint32 rideIndex)
                 tile_element_remove(tileElement);
                 tileElement--;
             }
-        } while (!tile_element_is_last_for_tile(tileElement++));
+        } while (!(tileElement++)->IsLastForTile());
     }
 }
 
@@ -7777,7 +7777,7 @@ rct_tile_element *get_station_platform(sint32 x, sint32 y, sint32 z, sint32 z_to
 
             foundTileElement = true;
             break;
-        } while (!tile_element_is_last_for_tile(tileElement++));
+        } while (!(tileElement++)->IsLastForTile());
     }
     if (!foundTileElement) {
         return nullptr;
@@ -8231,7 +8231,7 @@ void determine_ride_entrance_and_exit_locations()
                                 log_verbose("Fixed disconnected exit of ride %d, station %d to x = %d, y = %d and z = %d.", rideIndex, stationIndex, x, y, tileElement->base_height);
                             }
                         }
-                        while (!tile_element_is_last_for_tile(tileElement++));
+                        while (!(tileElement++)->IsLastForTile());
                     }
                 }
             }

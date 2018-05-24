@@ -403,7 +403,7 @@ static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8
             found = true;
             break;
         }
-        while (!tile_element_is_last_for_tile(tileElement++));
+        while (!(tileElement++)->IsLastForTile());
 
         if (!found)
         {
@@ -654,7 +654,7 @@ void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_tile_element *tileE
 
         map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
         return;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 }
 
 /**
@@ -691,7 +691,7 @@ void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_tile_element *tileEleme
 
         map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
         return;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 }
 
 void fix_park_entrance_locations(void)

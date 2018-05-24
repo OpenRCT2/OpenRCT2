@@ -706,7 +706,7 @@ void scenario_fix_ghosts(rct_s6_data *s6)
                 } else {
                     *destinationElement++ = *originalElement;
                 }
-            } while (!tile_element_is_last_for_tile(originalElement++));
+            } while (!(originalElement++)->IsLastForTile());
 
             // Set last element flag in case the original last element was never added
             (destinationElement - 1)->flags |= TILE_ELEMENT_FLAG_LAST_TILE;

@@ -66,7 +66,7 @@ static sint32 banner_get_ride_index_at(sint32 x, sint32 y, sint32 z)
             continue;
 
         resultRideIndex = rideIndex;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return resultRideIndex;
 }
@@ -158,7 +158,7 @@ static money32 BannerSetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 direc
 
             found = true;
             break;
-        } while (!tile_element_is_last_for_tile(tileElement++));
+        } while (!(tileElement++)->IsLastForTile());
 
         if (!found)
         {
@@ -214,7 +214,7 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
 
         pathFound = true;
         break;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     if (!pathFound)
     {
@@ -415,7 +415,7 @@ rct_tile_element *banner_get_tile_element(sint32 bannerIndex)
         {
             return tileElement;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
     return nullptr;
 }
 
@@ -543,7 +543,7 @@ void fix_duplicated_banners()
                     // Mark banner index as in-use
                     activeBanners[bannerIndex] = true;
                 }
-            } while (!tile_element_is_last_for_tile(tileElement++));
+            } while (!(tileElement++)->IsLastForTile());
         }
     }
 }

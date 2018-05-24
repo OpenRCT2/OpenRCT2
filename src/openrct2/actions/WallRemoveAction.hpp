@@ -121,7 +121,7 @@ private:
                 continue;
 
             return tileElement;
-        } while (!tile_element_is_last_for_tile(tileElement++));
+        } while (!(tileElement++)->IsLastForTile());
         return nullptr;
     }
 };

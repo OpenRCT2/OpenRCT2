@@ -291,7 +291,7 @@ static void virtual_floor_get_tile_properties(sint16 x, sint16 y, sint16 height,
 
         *outOccupied = true;
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
+    while (!(tileElement++)->IsLastForTile());
 }
 
 void virtual_floor_paint(paint_session * session)

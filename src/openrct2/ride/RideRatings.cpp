@@ -246,7 +246,7 @@ static void ride_ratings_update_state_2()
             gRideRatingsCalcData.proximity_track_type = track_element_get_type(tileElement);
             return;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
@@ -328,7 +328,7 @@ static void ride_ratings_update_state_5()
             gRideRatingsCalcData.proximity_track_type = track_element_get_type(trackBeginEnd.begin_element);
             return;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
@@ -426,7 +426,7 @@ static void ride_ratings_score_close_proximity_in_direction(rct_tile_element *in
             }
             break;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
 }
 
@@ -462,7 +462,7 @@ static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element *in
             }
         } break;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 }
 
 /**
@@ -615,7 +615,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElemen
             }
         } break;
         } // switch tileElement->GetType
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     uint8 direction = tile_element_get_direction(inputTileElement);
     ride_ratings_score_close_proximity_in_direction(inputTileElement, (direction + 1) & 3);
@@ -1310,7 +1310,7 @@ static sint32 ride_ratings_get_scenery_score(Ride *ride)
                 sint32 type = tileElement->GetType();
                 if (type == TILE_ELEMENT_TYPE_SMALL_SCENERY || type == TILE_ELEMENT_TYPE_LARGE_SCENERY)
                     numSceneryItems++;
-            } while (!tile_element_is_last_for_tile(tileElement++));
+            } while (!(tileElement++)->IsLastForTile());
         }
     }
 

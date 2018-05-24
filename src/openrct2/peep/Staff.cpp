@@ -744,7 +744,7 @@ bool staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z, r
                     widecount++;
                 }
             }
-        } while (!tile_element_is_last_for_tile(test_element++));
+        } while (!(test_element++)->IsLastForTile());
     }
 
     switch (total)
@@ -931,7 +931,7 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
         {
             return 0xFF;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     nextTile.x = (peep->x & 0xFFE0) + CoordsDirectionDelta[nextDirection].x;
     nextTile.y = (peep->y & 0xFFE0) + CoordsDirectionDelta[nextDirection].y;
@@ -947,7 +947,7 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
         {
             return 0xFF;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return nextDirection;
 }
@@ -1749,7 +1749,7 @@ void rct_peep::UpdateWatering()
             map_invalidate_tile_zoom0(actionX, actionY, tile_element->base_height * 8, tile_element->clearance_height * 8);
             staff_gardens_watered++;
             window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
-        } while (!tile_element_is_last_for_tile(tile_element++));
+        } while (!(tile_element++)->IsLastForTile());
 
         StateReset();
     }
@@ -1807,7 +1807,7 @@ void rct_peep::UpdateEmptyingBin()
                 if (next_z == tile_element->base_height)
                     break;
             }
-            if (tile_element_is_last_for_tile(tile_element))
+            if ((tile_element)->IsLastForTile())
             {
                 StateReset();
                 return;
@@ -2185,7 +2185,7 @@ static sint32 peep_update_patrolling_find_watering(rct_peep * peep)
             peep->destination_tolerance = 3;
 
             return 1;
-        } while (!tile_element_is_last_for_tile(tile_element++));
+        } while (!(tile_element++)->IsLastForTile());
     }
     return 0;
 }
@@ -2202,35 +2202,35 @@ static sint32 peep_update_patrolling_find_bin(rct_peep * peep)
     if (peep->GetNextIsSurface())
         return 0;
 
-    rct_tile_element * tile_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
-    if (tile_element == nullptr)
+    rct_tile_element * tileElement = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+    if (tileElement == nullptr)
         return 0;
 
-    for (;; tile_element++)
+    for (;; tileElement++)
     {
 
-        if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH && (tile_element->base_height == peep->next_z))
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && (tileElement->base_height == peep->next_z))
             break;
 
-        if (tile_element_is_last_for_tile(tile_element))
+        if (tileElement->IsLastForTile())
             return 0;
     }
 
-    if (!footpath_element_has_path_scenery(tile_element))
+    if (!footpath_element_has_path_scenery(tileElement))
         return 0;
-    rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
+    rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
 
     if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
         return 0;
 
-    if (tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)
+    if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
         return 0;
 
-    if (footpath_element_path_scenery_is_ghost(tile_element))
+    if (footpath_element_path_scenery_is_ghost(tileElement))
         return 0;
 
-    uint8 bin_positions   = tile_element->properties.path.edges & 0xF;
-    uint8 bin_quantity    = tile_element->properties.path.addition_status;
+    uint8 bin_positions   = tileElement->properties.path.edges & 0xF;
+    uint8 bin_quantity    = tileElement->properties.path.addition_status;
     uint8 chosen_position = 0;
 
     for (; chosen_position < 4; ++chosen_position)

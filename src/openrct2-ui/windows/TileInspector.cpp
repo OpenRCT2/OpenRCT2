@@ -623,7 +623,7 @@ static void window_tile_inspector_load_tile(rct_window* w)
     sint32 numItems = 0;
     do {
         numItems++;
-    } while (!tile_element_is_last_for_tile(element++));
+    } while (!(element++)->IsLastForTile());
 
     windowTileInspectorElementCount = numItems;
 
@@ -2086,5 +2086,5 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
         y -= LIST_ITEM_HEIGHT;
         i++;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 }
