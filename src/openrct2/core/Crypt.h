@@ -66,4 +66,11 @@ namespace Hash
             ->Update(data, dataLen)
             ->Finish();
     }
+
+    inline Sha256Algorithm::Result SHA256(const void * data, size_t dataLen)
+    {
+        return CreateSHA256()
+            ->Update(data, dataLen)
+            ->Finish();
+    }
 }

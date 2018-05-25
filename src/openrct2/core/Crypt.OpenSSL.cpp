@@ -18,7 +18,6 @@
 #define __USE_CNG__
 #endif
 
-#undef __USE_CNG__
 #ifndef __USE_CNG__
 
 #include "Crypt.h"
