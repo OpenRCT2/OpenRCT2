@@ -496,6 +496,7 @@ static void window_tile_inspector_scrollmouseover(rct_window *w, sint32 scrollIn
 static void window_tile_inspector_invalidate(rct_window *w);
 static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_tile_inspector_set_page(rct_window* w, const TILE_INSPECTOR_PAGE page);
 
 // clang-format off
 static rct_window_event_list TileInspectorWindowEvents = {
@@ -575,7 +576,7 @@ rct_window * window_tile_inspector_open()
         WF_RESIZABLE
     );
 
-    window->widgets = PageWidgets[TILE_INSPECTOR_PAGE_DEFAULT];
+    window_tile_inspector_set_page(window, TILE_INSPECTOR_PAGE_DEFAULT);
     window->min_width = MIN_WW;
     window->min_height = MIN_WH;
     window->max_width = MAX_WW;
