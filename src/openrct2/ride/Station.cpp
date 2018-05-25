@@ -325,7 +325,7 @@ rct_tile_element * ride_get_station_start_track_element(Ride * ride, sint32 stat
             return tileElement;
 
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
+    while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
 }
@@ -339,7 +339,7 @@ rct_tile_element * ride_get_station_exit_element(sint32 x, sint32 y, sint32 z)
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE && z == tileElement->base_height)
             return tileElement;
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
+    while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
 }

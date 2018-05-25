@@ -316,7 +316,7 @@ static bool is_jumping_fountain(sint32 type, sint32 x, sint32 y, sint32 z)
             return true;
         }
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
+    while (!(tileElement++)->IsLastForTile());
 
     return false;
 }

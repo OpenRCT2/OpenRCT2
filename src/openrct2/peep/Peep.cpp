@@ -516,7 +516,7 @@ bool rct_peep::CheckForPath()
                 return true;
             }
         }
-    } while (!tile_element_is_last_for_tile(tile_element++));
+    } while (!(tile_element++)->IsLastForTile());
 
     // Found no suitable path
     SetState(PEEP_STATE_FALLING);
@@ -1083,7 +1083,7 @@ void rct_peep::UpdateFalling()
             } // If not a path or surface go see next element
             else
                 continue;
-        } while (!tile_element_is_last_for_tile(tile_element++));
+        } while (!(tile_element++)->IsLastForTile());
     }
 
     // This will be null if peep is falling
@@ -2683,7 +2683,7 @@ static void peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, rct
                 found = true;
                 break;
             }
-        } while (!tile_element_is_last_for_tile(nextTileElement++));
+        } while (!(nextTileElement++)->IsLastForTile());
 
         if (!found)
         {
@@ -3237,7 +3237,7 @@ void rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & ti
             tile_result = tileElement;
             return;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     if (type == PEEP_TYPE_STAFF || (GetNextIsSurface()))
     {

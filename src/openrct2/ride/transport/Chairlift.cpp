@@ -133,7 +133,7 @@ chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(sint32 x, sint32 y
             continue;
 
         return tileElement;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
 };

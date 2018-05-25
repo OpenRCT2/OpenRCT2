@@ -198,7 +198,7 @@ void update_park_fences(sint32 x, sint32 y)
                 fence_required = 0;
                 break;
             }
-        } while (!tile_element_is_last_for_tile(tileElement++));
+        } while (!(tileElement++)->IsLastForTile());
 
         if (fence_required) {
             // As map_is_location_in_park sets the error text
@@ -349,7 +349,7 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
                          tileElement->base_height < surfaceElement->base_height))
                         return 0;
                 }
-            } while (!tile_element_is_last_for_tile(tileElement++));
+            } while (!(tileElement++)->IsLastForTile());
 
             if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
                 return gLandPrice;

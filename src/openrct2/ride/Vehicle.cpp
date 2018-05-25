@@ -1867,7 +1867,7 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
                 break;
             }
             // Iterate through each tile_element.
-        } while (!tile_element_is_last_for_tile(tile_element++));
+        } while (!(tile_element++)->IsLastForTile());
 
         if (cover_found == false)
         {
@@ -4699,7 +4699,7 @@ static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ &location)
                 return false;
             }
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
     return true;
 }
 
@@ -5211,7 +5211,7 @@ static rct_tile_element * vehicle_check_collision(sint16 x, sint16 y, sint16 z)
 
         if (tileElement->flags & bl)
             return tileElement;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
 }

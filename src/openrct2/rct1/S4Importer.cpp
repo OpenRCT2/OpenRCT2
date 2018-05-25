@@ -520,7 +520,7 @@ private:
             }
             }
 
-            if (tile_element_is_last_for_tile(tileElement++))
+            if ((tileElement++)->IsLastForTile())
             {
                 tileIndex++;
             }
@@ -2379,7 +2379,7 @@ private:
         rct_tile_element * nextFreeTileElement = gTileElements;
         for (size_t i = 0; i < RCT1_MAX_MAP_SIZE * RCT1_MAX_MAP_SIZE; i++)
         {
-            while (!tile_element_is_last_for_tile(nextFreeTileElement++));
+            while (!(nextFreeTileElement++)->IsLastForTile());
         }
 
         rct_tile_element * tileElement = gTileElements;
@@ -2392,7 +2392,7 @@ private:
             for (sint32 y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
                 *tilePointer++ = tileElement;
-                while (!tile_element_is_last_for_tile(tileElement++));
+                while (!(tileElement++)->IsLastForTile());
             }
 
             // Fill the rest of the row with blank tiles
@@ -2583,7 +2583,7 @@ private:
                         break;
                     }
                 }
-                while (!tile_element_is_last_for_tile(tileElement++));
+                while (!(tileElement++)->IsLastForTile());
             }
         }
 
@@ -2643,7 +2643,7 @@ private:
                         ImportBanner(dst, src);
                     }
                 }
-                while (!tile_element_is_last_for_tile(tileElement++));
+                while (!(tileElement++)->IsLastForTile());
             }
         }
     }
@@ -2832,7 +2832,7 @@ private:
                         ride->num_block_brakes++;
                     }
                 }
-                while (!tile_element_is_last_for_tile(tileElement++));
+                while (!(tileElement++)->IsLastForTile());
             }
         }
     }

@@ -625,7 +625,7 @@ static rct_tile_element * find_station_element(sint32 x, sint32 y, sint32 z, sin
 
         return tileElement;
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
+    while (!(tileElement++)->IsLastForTile());
     return nullptr;
 }
 
@@ -1684,7 +1684,7 @@ static money32 track_remove(uint8 type,
         found = 1;
         break;
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
+    while (!(tileElement++)->IsLastForTile());
 
     if (!found)
     {
@@ -1786,7 +1786,7 @@ static money32 track_remove(uint8 type,
             found = 1;
             break;
         }
-        while (!tile_element_is_last_for_tile(tileElement++));
+        while (!(tileElement++)->IsLastForTile());
 
         if (!found)
         {
@@ -1994,7 +1994,7 @@ void game_command_set_brakes_speed(
 
         break;
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
+    while (!(tileElement++)->IsLastForTile());
 
     *ebx = 0;
 }

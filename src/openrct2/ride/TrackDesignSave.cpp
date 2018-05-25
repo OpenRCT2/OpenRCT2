@@ -111,7 +111,7 @@ void track_design_save_select_nearby_scenery(sint32 rideIndex)
                     track_design_save_select_nearby_scenery_for_tile(rideIndex, x, y);
                     break;
                 }
-            } while (!tile_element_is_last_for_tile(tileElement++));
+            } while (!(tileElement++)->IsLastForTile());
         }
     }
     gfx_invalidate_screen();
@@ -611,7 +611,7 @@ static void track_design_save_select_nearby_scenery_for_tile(sint32 rideIndex, s
                         track_design_save_add_tile_element(interactionType, x * 32, y * 32, tileElement);
                     }
                 }
-            } while (!tile_element_is_last_for_tile(tileElement++));
+            } while (!(tileElement++)->IsLastForTile());
         }
     }
 }
@@ -801,7 +801,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
                     mapFound = true;
                     break;
                 }
-            } while (!tile_element_is_last_for_tile(tileElement++));
+            } while (!(tileElement++)->IsLastForTile());
             if (mapFound) {
                 break;
             }
@@ -843,7 +843,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
                     SafeFree(td6->maze_elements);
                     return false;
                 }
-            } while (!tile_element_is_last_for_tile(tileElement++));
+            } while (!(tileElement++)->IsLastForTile());
 
         }
         x = 0;
@@ -866,7 +866,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE) continue;
         if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE) continue;
         if (tileElement->properties.entrance.ride_index == rideIndex) break;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
     // Add something that stops this from walking off the end
 
     uint8 entrance_direction = tile_element_get_direction(tileElement);
@@ -892,7 +892,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE) continue;
         if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_EXIT) continue;
         if (tileElement->properties.entrance.ride_index == rideIndex) break;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
     // Add something that stops this from walking off the end
 
     uint8 exit_direction = tile_element_get_direction(tileElement);
@@ -1049,7 +1049,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
             do {
                 if (tile_element->GetType() != TILE_ELEMENT_TYPE_ENTRANCE) continue;
                 if (tile_element->base_height == z) break;
-            } while (!tile_element_is_last_for_tile(tile_element++));
+            } while (!(tile_element++)->IsLastForTile());
             // Add something that stops this from walking off the end
 
             uint8 entrance_direction = tile_element_get_direction(tile_element);

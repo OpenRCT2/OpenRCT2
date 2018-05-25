@@ -62,7 +62,7 @@ static rct_tile_element * get_banner_on_path(rct_tile_element * path_element)
 {
     // This is an improved version of original.
     // That only checked for one fence in the way.
-    if (tile_element_is_last_for_tile(path_element))
+    if (path_element->IsLastForTile())
         return nullptr;
 
     rct_tile_element * bannerElement = path_element + 1;
@@ -75,7 +75,7 @@ static rct_tile_element * get_banner_on_path(rct_tile_element * path_element)
         if (bannerElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
             return bannerElement;
         // Last element so there cant be any other banners
-        if (tile_element_is_last_for_tile(bannerElement))
+        if (bannerElement->IsLastForTile())
             return nullptr;
 
     } while (bannerElement++);
@@ -258,7 +258,7 @@ static uint8 footpath_element_next_in_direction(TileCoordsXYZ loc, rct_tile_elem
             return PATH_SEARCH_RIDE_QUEUE;
 
         return PATH_SEARCH_OTHER;
-    } while (!tile_element_is_last_for_tile(nextTileElement++));
+    } while (!(nextTileElement++)->IsLastForTile());
 
     return PATH_SEARCH_FAILED;
 }
@@ -371,7 +371,7 @@ static uint8 footpath_element_dest_in_dir(TileCoordsXYZ loc, rct_tile_element * 
             }
             return PATH_SEARCH_DEAD_END;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return PATH_SEARCH_FAILED;
 }
@@ -1131,7 +1131,7 @@ static void peep_pathfind_heuristic_search(TileCoordsXYZ loc, rct_peep * peep, r
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         } while ((next_test_edge = bitscanforward(edges)) != -1);
 
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     if (!found)
     {
@@ -1227,7 +1227,7 @@ sint32 peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep * peep)
 
         // Collect the permitted edges of ALL matching path elements at this location.
         permitted_edges |= path_get_permitted_edges(dest_tile_element);
-    } while (!tile_element_is_last_for_tile(dest_tile_element++));
+    } while (!(dest_tile_element++)->IsLastForTile());
     // Peep is not on a path.
     if (!found)
         return -1;
@@ -1740,7 +1740,7 @@ static void get_ride_queue_end(TileCoordsXYZ &loc)
 
         found = true;
         break;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     if (!found)
         return;
@@ -1805,7 +1805,7 @@ static void get_ride_queue_end(TileCoordsXYZ &loc)
                 found = true;
                 break;
             }
-        } while (!tile_element_is_last_for_tile(tileElement++));
+        } while (!(tileElement++)->IsLastForTile());
 
         if (found == false)
             break;

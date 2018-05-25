@@ -457,7 +457,7 @@ static void viewport_interaction_remove_footpath(rct_tile_element *tileElement, 
             footpath_remove(x, y, z, GAME_COMMAND_FLAG_APPLY);
             break;
         }
-    } while (!tile_element_is_last_for_tile(tileElement2++));
+    } while (!(tileElement2++)->IsLastForTile());
 }
 
 /**

@@ -244,7 +244,7 @@ static bool WallCheckObstruction(rct_scenery_entry * wall,
             break;
         }
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
+    while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -704,7 +704,7 @@ repeat:
         tile_element_remove(tileElement);
         goto repeat;
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
+    while (!(tileElement++)->IsLastForTile());
 }
 
 /**
@@ -741,7 +741,7 @@ void wall_remove_intersecting_walls(sint32 x, sint32 y, sint32 z0, sint32 z1, si
         tile_element_remove(tileElement);
         tileElement--;
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
+    while (!(tileElement++)->IsLastForTile());
 }
 
 /**

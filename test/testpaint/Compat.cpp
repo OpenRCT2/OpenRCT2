@@ -137,8 +137,9 @@ rct_sprite *get_sprite(size_t sprite_idx) {
     return &sprite_list[sprite_idx];
 }
 
-bool tile_element_is_last_for_tile(const rct_tile_element *element) {
-    return (element->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
+bool rct_tile_element::IsLastForTile() const
+{
+    return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
 uint8 rct_tile_element::GetType() const

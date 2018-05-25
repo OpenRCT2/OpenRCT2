@@ -1641,7 +1641,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
                     _trackDesignPlaceStateEntranceExitPlaced = true;
                     break;
                 }
-                while (!tile_element_is_last_for_tile(tile_element++));
+                while (!(tile_element++)->IsLastForTile());
             }
             else
             {

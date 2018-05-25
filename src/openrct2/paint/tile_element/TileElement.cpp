@@ -222,7 +222,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     uint16 max_height = 0;
     do{
         max_height = Math::Max(max_height, (uint16)element->clearance_height);
-    } while (!tile_element_is_last_for_tile(element++));
+    } while (!(element++)->IsLastForTile());
 
     element--;
 
@@ -269,7 +269,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
             session->PathElementOnSameHeight = nullptr;
             session->TrackElementOnSameHeight = nullptr;
             rct_tile_element * tile_element_sub_iterator = tile_element;
-            while (!tile_element_is_last_for_tile(tile_element_sub_iterator++))
+            while (!(tile_element_sub_iterator++)->IsLastForTile())
             {
                 if (tile_element_sub_iterator->base_height != tile_element->base_height)
                 {
@@ -286,7 +286,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
                 case TILE_ELEMENT_TYPE_CORRUPT:
                     // To preserve regular behaviour, make an element hidden by
                     //  corruption also invisible to this method.
-                    if (tile_element_is_last_for_tile(tile_element))
+                    if (tile_element->IsLastForTile())
                     {
                         break;
                     }
@@ -327,7 +327,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
             break;
         // A corrupt element inserted by OpenRCT2 itself, which skips the drawing of the next element only.
         case TILE_ELEMENT_TYPE_CORRUPT:
-            if (tile_element_is_last_for_tile(tile_element))
+            if (tile_element->IsLastForTile())
                 return;
             tile_element++;
             break;
@@ -336,7 +336,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
             return;
         }
         session->MapPosition = dword_9DE574;
-    } while (!tile_element_is_last_for_tile(tile_element++));
+    } while (!(tile_element++)->IsLastForTile());
 
 #ifndef __TESTPAINT__
     if (gConfigGeneral.use_virtual_floor && partOfVirtualFloor)

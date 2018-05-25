@@ -160,7 +160,7 @@ rct_tile_element *map_get_footpath_element(sint32 x, sint32 y, sint32 z)
     do {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->base_height == z)
             return tileElement;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
 }
@@ -178,7 +178,7 @@ static rct_tile_element *map_get_footpath_element_slope(sint32 x, sint32 y, sint
         ) {
             return tileElement;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
 }
@@ -489,7 +489,7 @@ static money32 footpath_place_real(sint32 type, sint32 x, sint32 y, sint32 z, si
  *  rct2: 0x006BA23E
  */
 static void remove_banners_at_element(sint32 x, sint32 y, rct_tile_element* tileElement){
-    while (!tile_element_is_last_for_tile(tileElement++)){
+    while (!(tileElement++)->IsLastForTile()){
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)return;
         else if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)continue;
 
@@ -534,7 +534,7 @@ money32 footpath_remove_real(sint32 x, sint32 y, sint32 z, sint32 flags)
         // If the ghost flag is present we have to make sure to only delete ghost footpaths as they may be
         // at the same origin.
         if ((flags & GAME_COMMAND_FLAG_GHOST) && tile_element_is_ghost(tileElement) == false) {
-            while (!tile_element_is_last_for_tile(tileElement++)) {
+            while (!(tileElement++)->IsLastForTile()) {
                 if (tileElement->type != TILE_ELEMENT_TYPE_PATH && !tile_element_is_ghost(tileElement)) {
                     continue;
                 }
@@ -1053,7 +1053,7 @@ bool fence_in_the_way(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction
             continue;
 
         return true;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
     return false;
 }
 
@@ -1081,7 +1081,7 @@ static rct_tile_element *footpath_connect_corners_get_neighbour(sint32 x, sint32
             continue;
 
         return tileElement;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
     return nullptr;
 }
 
@@ -1249,7 +1249,7 @@ static rct_tile_element *footpath_get_element(sint32 x, sint32 y, sint32 z0, sin
 
             return tileElement;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
     return nullptr;
 }
 
@@ -1374,7 +1374,7 @@ static void loc_6A6D7E(
                 }
                 break;
             }
-        } while (!tile_element_is_last_for_tile(tileElement++));
+        } while (!(tileElement++)->IsLastForTile());
         return;
 
     loc_6A6F1F:
@@ -1562,7 +1562,7 @@ void footpath_chain_ride_queue(sint32 rideIndex, sint32 entranceIndex, sint32 x,
                 z -= 2;
                 goto foundNextPath;
             }
-        } while (!tile_element_is_last_for_tile(tileElement++));
+        } while (!(tileElement++)->IsLastForTile());
         break;
 
     foundNextPath:
@@ -1670,7 +1670,7 @@ void footpath_update_queue_chains()
 
                 uint8 direction = tile_element_get_direction_with_offset(tileElement, 2);
                 footpath_chain_ride_queue(rideIndex, i, location.x << 5, location.y << 5, tileElement, direction);
-            } while (!tile_element_is_last_for_tile(tileElement++));
+            } while (!(tileElement++)->IsLastForTile());
         }
     }
 }
@@ -1775,21 +1775,21 @@ static sint32 footpath_is_connected_to_map_edge_recurse(
         if (!(flags & (1 << 7))) {
             if (tileElement[1].type == TILE_ELEMENT_TYPE_BANNER) {
                 for (sint32 i = 1; i < 4; i++) {
-                    if (tile_element_is_last_for_tile(&tileElement[i - 1])) break;
+                    if ((&tileElement[i - 1])->IsLastForTile()) break;
                     if (tileElement[i].type != TILE_ELEMENT_TYPE_BANNER) break;
                     edges &= tileElement[i].properties.banner.flags;
                 }
             }
             if (tileElement[2].type == TILE_ELEMENT_TYPE_BANNER && tileElement[1].type != TILE_ELEMENT_TYPE_PATH) {
                 for (sint32 i = 1; i < 6; i++) {
-                    if (tile_element_is_last_for_tile(&tileElement[i - 1])) break;
+                    if ((&tileElement[i - 1])->IsLastForTile()) break;
                     if (tileElement[i].type != TILE_ELEMENT_TYPE_BANNER) break;
                     edges &= tileElement[i].properties.banner.flags;
                 }
             }
         }
         goto searchFromFootpath;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
     return level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : FOOTPATH_SEARCH_INCOMPLETE;
 
 searchFromFootpath:
@@ -1964,7 +1964,7 @@ static void footpath_clear_wide(sint32 x, sint32 y)
             continue;
         footpath_element_set_wide(tileElement, false);
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
+    while (!(tileElement++)->IsLastForTile());
 }
 
 /**
@@ -1986,7 +1986,7 @@ static rct_tile_element* footpath_can_be_wide(sint32 x, sint32 y, uint8 height)
         if (footpath_element_is_sloped(tileElement))
             continue;
         return tileElement;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
 }
@@ -2179,7 +2179,7 @@ void footpath_update_path_wide_flags(sint32 x, sint32 y)
             if ((e != 0b10101111) && (e != 0b01011111) && (e != 0b11101111))
                 footpath_element_set_wide(tileElement, true);
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 }
 
 /**
@@ -2250,7 +2250,7 @@ static void footpath_remove_edges_towards_here(sint32 x, sint32 y, sint32 z, sin
         tileElement->properties.path.edges &= ~(1 << d);
         map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
         break;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 }
 
 /**
@@ -2287,7 +2287,7 @@ static void footpath_remove_edges_towards(sint32 x, sint32 y, sint32 z0, sint32 
             footpath_remove_edges_towards_here(x, y, z1, direction, tileElement, isQueue);
             break;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 }
 
 // Returns true when there is an element at the given coordinates that want to connect to a path with the given direction (ride
@@ -2354,7 +2354,7 @@ bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const rct
         default:
             break;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return false;
 }
@@ -2394,7 +2394,7 @@ static void footpath_fix_corners_around(sint32 x, sint32 y, rct_tile_element * p
                 const sint32 ix = xOffset + 1;
                 const sint32 iy = yOffset + 1;
                 tileElement->properties.path.edges &= ~(cornersTouchingTile[iy][ix] << 4);
-            } while (!tile_element_is_last_for_tile(tileElement++));
+            } while (!(tileElement++)->IsLastForTile());
         }
     }
 }

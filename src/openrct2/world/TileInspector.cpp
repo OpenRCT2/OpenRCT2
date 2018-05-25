@@ -65,7 +65,7 @@ static bool map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second
     *secondElement        = temp;
 
     // Swap the 'last map element for tile' flag if either one of them was last
-    if (tile_element_is_last_for_tile(firstElement) || tile_element_is_last_for_tile(secondElement))
+    if ((firstElement)->IsLastForTile() || (secondElement)->IsLastForTile())
     {
         firstElement->flags ^= TILE_ELEMENT_FLAG_LAST_TILE;
         secondElement->flags ^= TILE_ELEMENT_FLAG_LAST_TILE;
@@ -330,7 +330,7 @@ sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_tile_element elem
 
         rct_tile_element * const pastedElement = tile_element_insert(x, y, element.base_height, 0);
 
-        bool lastForTile = tile_element_is_last_for_tile(pastedElement);
+        bool lastForTile = pastedElement->IsLastForTile();
         *pastedElement   = element;
         pastedElement->flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
         if (lastForTile)
@@ -371,7 +371,7 @@ sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags)
         do
         {
             numElement++;
-        } while (!tile_element_is_last_for_tile(elementIterator++));
+        } while (!(elementIterator++)->IsLastForTile());
 
         // Bubble sort
         for (sint32 loopStart = 1; loopStart < numElement; loopStart++)
@@ -801,7 +801,7 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
 
                 found = true;
                 break;
-            } while (!tile_element_is_last_for_tile(tileElement++));
+            } while (!(tileElement++)->IsLastForTile());
 
             if (!found)
             {
@@ -934,7 +934,7 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
 
                 found = true;
                 break;
-            } while (!tile_element_is_last_for_tile(tileElement++));
+            } while (!(tileElement++)->IsLastForTile());
 
             if (!found)
             {
@@ -1038,7 +1038,7 @@ sint32 tile_inspector_corrupt_clamp(sint32 x, sint32 y, sint32 elementIndex, sin
     if (corruptElement == nullptr || corruptElement->GetType() != TILE_ELEMENT_TYPE_CORRUPT)
         return MONEY32_UNDEFINED;
 
-    if (tile_element_is_last_for_tile(corruptElement))
+    if (corruptElement->IsLastForTile())
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)

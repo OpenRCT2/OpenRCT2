@@ -192,7 +192,7 @@ static void paint_roto_drop_tower_section(
     sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
 
     const rct_tile_element * nextTileElement = tileElement + 1;
-    if (tile_element_is_last_for_tile(tileElement) || tileElement->clearance_height != nextTileElement->base_height)
+    if (tileElement->IsLastForTile() || tileElement->clearance_height != nextTileElement->base_height)
     {
         imageId = SPR_ROTO_DROP_TOWER_SEGMENT_TOP | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);

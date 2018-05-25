@@ -84,15 +84,10 @@ bool tile_element_is_underground(rct_tile_element * tileElement)
 {
     do {
         tileElement++;
-        if (tile_element_is_last_for_tile(tileElement - 1))
+        if ((tileElement - 1)->IsLastForTile())
             return false;
     } while (tileElement->GetType() != TILE_ELEMENT_TYPE_SURFACE);
     return true;
-}
-
-bool tile_element_is_last_for_tile(const rct_tile_element * element)
-{
-    return element->IsLastForTile();
 }
 
 sint32 tile_element_get_banner_index(rct_tile_element * tileElement)

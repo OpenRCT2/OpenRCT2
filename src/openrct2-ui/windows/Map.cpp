@@ -1570,7 +1570,8 @@ static uint16 map_window_get_pixel_colour_peep(CoordsXY c)
         colour = MAP_COLOUR_UNOWNED(colour);
 
     const sint32 maxSupportedTileElementType = (sint32)Util::CountOf(ElementTypeAddColour);
-    while (!tile_element_is_last_for_tile(tileElement++)) {
+    while (!(tileElement++)->IsLastForTile())
+    {
         sint32 tileElementType = tileElement->GetType() >> 2;
         if (tileElementType >= maxSupportedTileElementType) {
             tileElementType = TILE_ELEMENT_TYPE_CORRUPT >> 2;
@@ -1611,7 +1612,7 @@ static uint16 map_window_get_pixel_colour_ride(CoordsXY c)
             colourA = RideKeyColours[RideColourKey[ride->type]];
             break;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     if (colourA != 0)
         return colourA;
