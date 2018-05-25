@@ -2158,7 +2158,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
         const sint32 x = -w->widgets[WIDX_LIST].left;
         set_format_arg(0, rct_string_id, STR_STRING);
         set_format_arg(2, char*, typeName);
-        gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_TYPE + 3, y); // 3px padding
+        gfx_draw_string_left_clipped(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_TYPE + 3, y, COL_X_BH); // 3px padding
 
         // Base height
         set_format_arg(0, rct_string_id, STR_FORMAT_INTEGER);
