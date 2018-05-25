@@ -35,10 +35,12 @@
 - Fix: [#7544] Starting a headless server with no arguments causes the game to freeze.
 - Improved: [#2989] Multiplayer window now changes title when tab changes.
 - Improved: [#5339] Change eyedropper icon to actual eyedropper and change cursor to crosshair.
+- Improved: [#5832] Resize tile inspector automatically when selecting a tile element.
 - Improved: [#7302] Raising land near the map edge makes the affected area smaller instead of showing an 'off edge map' error.
 - Improved: [#7435] Object indexing now supports multi-threading.
 - Improved: [#7510] Add horizontal clipping to cut-away view options.
 - Improved: [#7531] "Save track design" dropdown now stays open.
+- Improved: [#7548] Ctrl-clicking with the tile inspector open now directly selects an element and its tile.
 
 0.1.2 (2018-03-18)
 ------------------------------------------------------------------------

@@ -38,19 +38,6 @@ uint32 windowTileInspectorTileX;
 uint32 windowTileInspectorTileY;
 sint32 windowTileInspectorElementCount = 0;
 
-static void window_tile_inspector_set_page(const TILE_INSPECTOR_PAGE page)
-{
-    auto intent = Intent(INTENT_ACTION_SET_TILE_INSPECTOR_PAGE);
-    intent.putExtra(INTENT_EXTRA_PAGE, page);
-    context_broadcast_intent(&intent);
-}
-
-static void window_tile_inspector_auto_set_buttons()
-{
-    auto intent = Intent(INTENT_ACTION_SET_TILE_INSPECTOR_BUTTONS);
-    context_broadcast_intent(&intent);
-}
-
 static bool map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second)
 {
     rct_tile_element * const firstElement  = map_get_nth_element_at(x, y, first);
@@ -145,12 +132,6 @@ sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 elementIndex,
                 tileInspectorWindow->selected_list_item++;
             }
 
-            if (tileInspectorWindow->selected_list_item == elementIndex)
-            {
-                window_tile_inspector_set_page(TILE_INSPECTOR_PAGE_CORRUPT);
-            }
-
-            window_tile_inspector_auto_set_buttons();
             window_invalidate(tileInspectorWindow);
         }
     }
@@ -190,10 +171,8 @@ sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 elementIndex,
             else if (tileInspectorWindow->selected_list_item == elementIndex)
             {
                 tileInspectorWindow->selected_list_item = -1;
-                window_tile_inspector_set_page(TILE_INSPECTOR_PAGE_DEFAULT);
             }
 
-            window_tile_inspector_auto_set_buttons();
             window_invalidate(tileInspectorWindow);
         }
     }
@@ -221,7 +200,6 @@ sint32 tile_inspector_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 
             else if (tileInspectorWindow->selected_list_item == second)
                 tileInspectorWindow->selected_list_item = first;
 
-            window_tile_inspector_auto_set_buttons();
             window_invalidate(tileInspectorWindow);
         }
     }
@@ -374,7 +352,6 @@ sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_tile_element elem
             else if (tileInspectorWindow->selected_list_item >= newIndex)
                 tileInspectorWindow->selected_list_item++;
 
-            window_tile_inspector_auto_set_buttons();
             window_invalidate(tileInspectorWindow);
         }
     }
@@ -429,9 +406,7 @@ sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags)
         rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
         if (tileInspectorWindow != nullptr && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
         {
-            window_tile_inspector_set_page(TILE_INSPECTOR_PAGE_DEFAULT);
             tileInspectorWindow->selected_list_item = -1;
-            window_tile_inspector_auto_set_buttons();
             window_invalidate(tileInspectorWindow);
         }
     }

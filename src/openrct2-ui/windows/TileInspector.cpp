@@ -207,10 +207,10 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 
 // Window sizes
 #define WW 400
-#define WH 280
+#define WH 170
 #define MIN_WW WW
 #define MAX_WW WW
-#define MIN_WH 240
+#define MIN_WH 130
 #define MAX_WH 800
 
 // Button space for top buttons
@@ -464,10 +464,17 @@ static struct {
     { COR_GBDT, COR_GBDB, COR_GBPT, COR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_CORRUPT_INFO }
 };
 
+// clang-format on
+static constexpr sint32 ViewportInteractionFlags = VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_SPRITE
+    & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_SCENERY & VIEWPORT_INTERACTION_MASK_FOOTPATH
+    & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM & VIEWPORT_INTERACTION_MASK_PARK & VIEWPORT_INTERACTION_MASK_WALL
+    & VIEWPORT_INTERACTION_MASK_LARGE_SCENERY & VIEWPORT_INTERACTION_MASK_BANNER;
+
 static sint16 windowTileInspectorHighlightedIndex = -1;
 static bool windowTileInspectorTileSelected = false;
 static sint32 windowTileInspectorToolMouseX = 0;
 static sint32 windowTileInspectorToolMouseY = 0;
+static bool windowTileInspectorToolCtrlDown = false;
 static sint32 windowTileInspectorToolMapX = 0;
 static sint32 windowTileInspectorToolMapY = 0;
 static bool windowTileInspectorApplyToAll = false;
@@ -490,6 +497,7 @@ static void window_tile_inspector_invalidate(rct_window *w);
 static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
+// clang-format off
 static rct_window_event_list TileInspectorWindowEvents = {
     nullptr,
     window_tile_inspector_mouseup,
@@ -566,19 +574,18 @@ rct_window * window_tile_inspector_open()
         WC_TILE_INSPECTOR,
         WF_RESIZABLE
     );
-    window_tile_inspector_set_page(window, TILE_INSPECTOR_PAGE_DEFAULT);
 
-    window_init_scroll_widgets(window);
+    window->widgets = PageWidgets[TILE_INSPECTOR_PAGE_DEFAULT];
     window->min_width = MIN_WW;
     window->min_height = MIN_WH;
     window->max_width = MAX_WW;
     window->max_height = MAX_WH;
     window->selected_list_item = -1;
+    window_init_scroll_widgets(window);
 
     windowTileInspectorTileSelected = false;
 
     tool_set(window, WIDX_BACKGROUND, TOOL_CROSSHAIR);
-    window_tile_inspector_auto_set_buttons(window);
 
     return window;
 }
@@ -597,44 +604,37 @@ static rct_tile_element* window_tile_inspector_get_selected_element(rct_window *
 
 static void window_tile_inspector_select_element_from_list(rct_window *w, sint32 index)
 {
-    sint32 page;
-    if (index < 0 || index >= windowTileInspectorElementCount) {
+    if (index < 0 || index >= windowTileInspectorElementCount)
+    {
         w->selected_list_item = -1;
-        page = 0;
     }
-    else {
+    else
+    {
         w->selected_list_item = index;
-
-        // Get type of selected map element to select the correct page
-        rct_tile_element *const tileElement = window_tile_inspector_get_selected_element(w);
-        page = (Math::Min<uint32>(tileElement->GetType(), TILE_ELEMENT_TYPE_CORRUPT) >> 2) + 1;
     }
 
-    window_tile_inspector_set_page(w, (TILE_INSPECTOR_PAGE)page);
-
-    // Enable/disable buttons
-    window_tile_inspector_auto_set_buttons(w);
     window_invalidate(w);
 }
 
-static void window_tile_inspector_load_tile(rct_window* w)
+static void window_tile_inspector_load_tile(rct_window* w, rct_tile_element* elementToSelect)
 {
-    rct_tile_element *element = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
-    sint32 numItems = 0;
-    do {
+    w->selected_list_item = -1;
+    w->scrolls[0].v_top = 0;
+
+    rct_tile_element* element = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
+    sint16 numItems = 0;
+    do
+    {
+        if (element == elementToSelect)
+        {
+            w->selected_list_item = numItems;
+        }
+
         numItems++;
     } while (!tile_element_is_last_for_tile(element++));
 
     windowTileInspectorElementCount = numItems;
 
-    // Set default page
-    window_tile_inspector_set_page(w, TILE_INSPECTOR_PAGE_DEFAULT);
-
-    // undo selection and buttons affecting it
-    w->selected_list_item = -1;
-    window_tile_inspector_auto_set_buttons(w);
-
-    w->scrolls[0].v_top = 0;
     window_invalidate(w);
 }
 
@@ -720,6 +720,7 @@ static void window_tile_inspector_copy_element(rct_window *w)
     // Copy value, in case the element gets moved
     tileInspectorCopiedElement = *window_tile_inspector_get_selected_element(w);
     windowTileInspectorElementCopied = true;
+    window_invalidate(w);
 }
 
 static void window_tile_inspector_paste_element(rct_window *w)
@@ -945,24 +946,20 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
         window_close(w);
         break;
     case WIDX_SPINNER_X_INCREASE:
-        windowTileInspectorTileX = Math::Min<uint32>(windowTileInspectorTileX + 1, 255);
-        window_tile_inspector_load_tile(w);
-        window_tile_inspector_auto_set_buttons(w);
+        windowTileInspectorTileX = Math::Min<uint32>(windowTileInspectorTileX + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
+        window_tile_inspector_load_tile(w, nullptr);
         break;
     case WIDX_SPINNER_X_DECREASE:
         windowTileInspectorTileX = Math::Max<uint32>(windowTileInspectorTileX - 1, 0);
-        window_tile_inspector_load_tile(w);
-        window_tile_inspector_auto_set_buttons(w);
+        window_tile_inspector_load_tile(w, nullptr);
         break;
     case WIDX_SPINNER_Y_INCREASE:
-        windowTileInspectorTileY = Math::Min<uint32>(windowTileInspectorTileY + 1, 255);
-        window_tile_inspector_load_tile(w);
-        window_tile_inspector_auto_set_buttons(w);
+        windowTileInspectorTileY = Math::Min<uint32>(windowTileInspectorTileY + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
+        window_tile_inspector_load_tile(w, nullptr);
         break;
     case WIDX_SPINNER_Y_DECREASE:
         windowTileInspectorTileY = Math::Max<uint32>(windowTileInspectorTileY - 1, 0);
-        window_tile_inspector_load_tile(w);
-        window_tile_inspector_auto_set_buttons(w);
+        window_tile_inspector_load_tile(w, nullptr);
         break;
     case WIDX_BUTTON_CORRUPT:
         window_tile_inspector_insert_corrupt_element(w->selected_list_item);
@@ -981,8 +978,6 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
         break;
     case WIDX_BUTTON_COPY:
         window_tile_inspector_copy_element(w);
-        window_tile_inspector_auto_set_buttons(w);
-        window_invalidate(w);
         break;
     case WIDX_BUTTON_PASTE:
         window_tile_inspector_paste_element(w);
@@ -1050,7 +1045,7 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
             // 0 = east/right, 1 = south/bottom, 2 = west/left, 3 = north/top
             const sint32 eswn = (widgetIndex - WIDX_PATH_CHECK_EDGE_E) / 2;
             // Transform to world orientation
-            const sint32 index = (4 + eswn - get_current_rotation()) & 3;
+            const sint32 index = (eswn - get_current_rotation()) & 3;
             window_tile_inspector_path_toggle_edge(w->selected_list_item, index + 4);  // The corners are stored in the 4 most significant bits, hence the + 4
             break;
         }
@@ -1062,7 +1057,7 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
             // 0 = NE, 1 = SE, 2 = SW, 3 = NW
             const sint32 neseswnw = (widgetIndex - WIDX_PATH_CHECK_EDGE_NE) / 2;
             // Transform to world orientation
-            const sint32 index = (4 + neseswnw - get_current_rotation()) & 3;
+            const sint32 index = (neseswnw - get_current_rotation()) & 3;
             window_tile_inspector_path_toggle_edge(w->selected_list_item, index);
             break;
         }
@@ -1285,17 +1280,30 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
 
     sint16 mapX = x;
     sint16 mapY = y;
-    sint32 direction;
-    screen_pos_to_map_pos(&mapX, &mapY, &direction);
-    if (mapX != LOCATION_NULL) {
+    rct_tile_element* clickedElement = nullptr;
+    if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))
+    {
+        get_map_coordinates_from_pos(x, y, ViewportInteractionFlags, &mapX, &mapY, nullptr, &clickedElement, nullptr);
+    }
+
+    // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
+    if (clickedElement == nullptr)
+    {
+        screen_pos_to_map_pos(&mapX, &mapY, nullptr);
+    }
+
+    if (mapX != LOCATION_NULL)
+    {
         gMapSelectPositionA.x = gMapSelectPositionB.x = mapX;
         gMapSelectPositionA.y = gMapSelectPositionB.y = mapY;
     }
-    else if (windowTileInspectorTileSelected){
+    else if (windowTileInspectorTileSelected)
+    {
         gMapSelectPositionA.x = gMapSelectPositionB.x = windowTileInspectorTileX << 5;
         gMapSelectPositionA.y = gMapSelectPositionB.y = windowTileInspectorTileY << 5;
     }
-    else {
+    else
+    {
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     }
 
@@ -1303,26 +1311,44 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
     map_invalidate_selection_rect();
 }
 
-static void window_tile_inspector_update_selected_tile(rct_window *w, sint32 x, sint32 y)
+static void window_tile_inspector_update_selected_tile(rct_window* w, sint32 x, sint32 y)
 {
+    const bool ctrlIsHeldDown = input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z);
+
     // Mouse hasn't moved
-    if (x == windowTileInspectorToolMouseX && y == windowTileInspectorToolMouseY) {
+    if (x == windowTileInspectorToolMouseX && y == windowTileInspectorToolMouseY
+        && windowTileInspectorToolCtrlDown == ctrlIsHeldDown)
+    {
         return;
     }
+
     windowTileInspectorToolMouseX = x;
     windowTileInspectorToolMouseY = y;
+    windowTileInspectorToolCtrlDown = ctrlIsHeldDown;
 
     sint16 mapX = x;
     sint16 mapY = y;
-    sint32 direction;
-    screen_pos_to_map_pos(&mapX, &mapY, &direction);
-    if (mapX == LOCATION_NULL) {
-        return;
+    rct_tile_element* clickedElement = nullptr;
+    if (ctrlIsHeldDown)
+    {
+        get_map_coordinates_from_pos(x, y, ViewportInteractionFlags, &mapX, &mapY, nullptr, &clickedElement, nullptr);
     }
 
-    // Tile is already selected
-    if (windowTileInspectorTileSelected && mapX == windowTileInspectorToolMapX && mapY == windowTileInspectorToolMapY) {
-        return;
+    // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
+    if (clickedElement == nullptr)
+    {
+        screen_pos_to_map_pos(&mapX, &mapY, nullptr);
+
+        if (mapX == LOCATION_NULL)
+        {
+            return;
+        }
+
+        // Tile is already selected
+        if (windowTileInspectorTileSelected && mapX == windowTileInspectorToolMapX && mapY == windowTileInspectorToolMapY)
+        {
+            return;
+        }
     }
 
     windowTileInspectorTileSelected = true;
@@ -1331,8 +1357,7 @@ static void window_tile_inspector_update_selected_tile(rct_window *w, sint32 x, 
     windowTileInspectorTileX = mapX >> 5;
     windowTileInspectorTileY = mapY >> 5;
 
-    window_tile_inspector_load_tile(w);
-    window_tile_inspector_auto_set_buttons(w);
+    window_tile_inspector_load_tile(w, clickedElement);
 }
 
 static void window_tile_inspector_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
@@ -1351,56 +1376,27 @@ static void window_tile_inspector_scrollgetsize(rct_window *w, sint32 scrollInde
     *height = windowTileInspectorElementCount * LIST_ITEM_HEIGHT;
 }
 
-void window_tile_inspector_set_page(rct_window *w, const TILE_INSPECTOR_PAGE page)
+static void window_tile_inspector_set_page(rct_window *w, const TILE_INSPECTOR_PAGE page)
 {
+    // Invalidate the window already, because the size may change
+    window_invalidate(w);
+
+    // subtract current page height, then add new page height
+    if (w->page != TILE_INSPECTOR_PAGE_DEFAULT)
+    {
+        w->height -= PageGroupBoxSettings[w->page - 1].details_top_offset - GROUPBOX_PADDING - 3;
+        w->min_height -= PageGroupBoxSettings[w->page - 1].details_top_offset - GROUPBOX_PADDING - 3;
+    }
+    if (page != TILE_INSPECTOR_PAGE_DEFAULT)
+    {
+        w->height += PageGroupBoxSettings[page - 1].details_top_offset - GROUPBOX_PADDING - 3;
+        w->min_height += PageGroupBoxSettings[page - 1].details_top_offset - GROUPBOX_PADDING - 3;
+    }
     w->page = page;
     w->widgets = PageWidgets[page];
     w->enabled_widgets = PageEnabledWidgets[page];
     w->disabled_widgets = PageDisabledWidgets[page];
-}
-
-void window_tile_inspector_auto_set_buttons(rct_window *w)
-{
-    // X and Y spinners
-    widget_set_enabled(w, WIDX_SPINNER_X_INCREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileX < 255)));
-    widget_set_enabled(w, WIDX_SPINNER_X_DECREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileX > 0)));
-    widget_set_enabled(w, WIDX_SPINNER_Y_INCREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileY < 255)));
-    widget_set_enabled(w, WIDX_SPINNER_Y_DECREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileY > 0)));
-
-    // Sort buttons
-    widget_set_enabled(w, WIDX_BUTTON_SORT, (windowTileInspectorTileSelected && windowTileInspectorElementCount > 1));
-
-    // Move Up button
-    widget_set_enabled(w, WIDX_BUTTON_MOVE_UP, (w->selected_list_item > 0));
-    widget_invalidate(w, WIDX_BUTTON_MOVE_UP);
-
-    // Move Down button
-    widget_set_enabled(w, WIDX_BUTTON_MOVE_DOWN, (w->selected_list_item != -1 && w->selected_list_item < windowTileInspectorElementCount - 1));
-    widget_invalidate(w, WIDX_BUTTON_MOVE_DOWN);
-
-    // Copy button
-    widget_set_enabled(w, WIDX_BUTTON_COPY, w->selected_list_item >= 0);
-    widget_invalidate(w, WIDX_BUTTON_COPY);
-
-    // Paste button
-    widget_set_enabled(w, WIDX_BUTTON_PASTE, windowTileInspectorTileSelected && windowTileInspectorElementCopied);
-    widget_invalidate(w, WIDX_BUTTON_PASTE);
-
-    // Page widgets
-    switch (w->page) {
-    case TILE_INSPECTOR_PAGE_WALL: {
-        const rct_tile_element *const tileElement = window_tile_inspector_get_selected_element(w);
-        const uint8 wallType = tileElement->properties.wall.type;
-        const rct_wall_scenery_entry wallEntry = get_wall_entry(wallType)->wall;
-        const bool canBeSloped = !(wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
-        // Wall slope dropdown
-        widget_set_enabled(w, WIDX_WALL_DROPDOWN_SLOPE, canBeSloped);
-        widget_invalidate(w, WIDX_WALL_DROPDOWN_SLOPE);
-        widget_set_enabled(w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON, canBeSloped);
-        widget_invalidate(w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON);
-        break;
-    }
-    } // switch page
+    w->pressed_widgets = 0;
 }
 
 static void window_tile_inspector_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
@@ -1423,17 +1419,74 @@ static void window_tile_inspector_scrollmouseover(rct_window *w, sint32 scrollIn
 
 static void window_tile_inspector_invalidate(rct_window *w)
 {
+    // Set the correct page automatically
+    TILE_INSPECTOR_PAGE page = TILE_INSPECTOR_PAGE_DEFAULT;
+    if (w->selected_list_item != -1)
+    {
+        const auto element = window_tile_inspector_get_selected_element(w);
+        auto type = element->GetType();
+        switch (type)
+        {
+            case TILE_ELEMENT_TYPE_SURFACE: page = TILE_INSPECTOR_PAGE_SURFACE; break;
+            case TILE_ELEMENT_TYPE_PATH: page = TILE_INSPECTOR_PAGE_PATH; break;
+            case TILE_ELEMENT_TYPE_TRACK: page = TILE_INSPECTOR_PAGE_TRACK; break;
+            case TILE_ELEMENT_TYPE_SMALL_SCENERY: page = TILE_INSPECTOR_PAGE_SCENERY; break;
+            case TILE_ELEMENT_TYPE_ENTRANCE: page = TILE_INSPECTOR_PAGE_ENTRANCE; break;
+            case TILE_ELEMENT_TYPE_WALL: page = TILE_INSPECTOR_PAGE_WALL; break;
+            case TILE_ELEMENT_TYPE_LARGE_SCENERY: page = TILE_INSPECTOR_PAGE_LARGE_SCENERY; break;
+            case TILE_ELEMENT_TYPE_BANNER: page = TILE_INSPECTOR_PAGE_BANNER; break;
+            case TILE_ELEMENT_TYPE_CORRUPT:
+            default:
+                page = TILE_INSPECTOR_PAGE_CORRUPT;
+                break;
+        }
+    }
+
+    if (w->page != page)
+    {
+        window_tile_inspector_set_page(w, page);
+        window_invalidate(w);
+    }
+
+    // X and Y spinners
+    widget_set_enabled(w, WIDX_SPINNER_X_INCREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileX < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
+    widget_set_enabled(w, WIDX_SPINNER_X_DECREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileX > 0)));
+    widget_set_enabled(w, WIDX_SPINNER_Y_INCREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileY < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
+    widget_set_enabled(w, WIDX_SPINNER_Y_DECREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileY > 0)));
+
+    // Sort buttons
+    widget_set_enabled(w, WIDX_BUTTON_SORT, (windowTileInspectorTileSelected && windowTileInspectorElementCount > 1));
+
+    // Move Up button
+    widget_set_enabled(w, WIDX_BUTTON_MOVE_UP, (w->selected_list_item > 0));
+    widget_invalidate(w, WIDX_BUTTON_MOVE_UP);
+
+    // Move Down button
+    widget_set_enabled(
+        w, WIDX_BUTTON_MOVE_DOWN, (w->selected_list_item != -1 && w->selected_list_item < windowTileInspectorElementCount - 1));
+    widget_invalidate(w, WIDX_BUTTON_MOVE_DOWN);
+
+    // Copy button
+    widget_set_enabled(w, WIDX_BUTTON_COPY, w->selected_list_item >= 0);
+    widget_invalidate(w, WIDX_BUTTON_COPY);
+
+    // Paste button
+    widget_set_enabled(w, WIDX_BUTTON_PASTE, windowTileInspectorTileSelected && windowTileInspectorElementCopied);
+    widget_invalidate(w, WIDX_BUTTON_PASTE);
+
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 
-    if (w->page == TILE_INSPECTOR_PAGE_DEFAULT) {
+    if (w->page == TILE_INSPECTOR_PAGE_DEFAULT)
+    {
         w->widgets[WIDX_GROUPBOX_DETAILS].type = WWT_EMPTY;
         w->widgets[WIDX_GROUPBOX_PROPERTIES].type = WWT_EMPTY;
         w->widgets[WIDX_LIST].bottom = w->height - PADDING_BOTTOM;
     }
-    else {
+    else
+    {
         w->widgets[WIDX_GROUPBOX_DETAILS].type = WWT_GROUPBOX;
         w->widgets[WIDX_GROUPBOX_PROPERTIES].type = WWT_GROUPBOX;
-        w->widgets[WIDX_GROUPBOX_DETAILS].image = PageGroupBoxSettings[w->page - 1].string_id;
+        w->widgets[WIDX_GROUPBOX_DETAILS].text = PageGroupBoxSettings[w->page - 1].string_id;
         w->widgets[WIDX_GROUPBOX_DETAILS].top = w->height - PageGroupBoxSettings[w->page - 1].details_top_offset;
         w->widgets[WIDX_GROUPBOX_DETAILS].bottom = w->height - PageGroupBoxSettings[w->page - 1].details_bottom_offset;
         w->widgets[WIDX_GROUPBOX_PROPERTIES].top = w->height - PageGroupBoxSettings[w->page - 1].properties_top_offset;
@@ -1441,7 +1494,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
         w->widgets[WIDX_LIST].bottom = w->widgets[WIDX_GROUPBOX_DETAILS].top - GROUPBOX_PADDING;
     }
 
-    // Only page-specific widgets related to the map element will be
+    // The default page doesn't need further invalidation
     if (w->page == TILE_INSPECTOR_PAGE_DEFAULT) {
         return;
     }
@@ -1449,7 +1502,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
     // Using a switch, because I don't think giving each page their own callbacks is
     // needed here, as only the mouseup and invalidate functions are different.
     const sint32 propertiesAnchor = w->widgets[WIDX_GROUPBOX_PROPERTIES].top;
-    rct_tile_element *const tileElement = window_tile_inspector_get_selected_element(w);
+    const rct_tile_element *const tileElement = window_tile_inspector_get_selected_element(w);
 
     switch (w->page) {
     case TILE_INSPECTOR_PAGE_SURFACE:
@@ -1587,6 +1640,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
         widget_set_enabled(w, WIDX_ENTRANCE_BUTTON_MAKE_USABLE, tileElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE);
         break;
     case TILE_INSPECTOR_PAGE_WALL:
+    {
         w->widgets[WIDX_WALL_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
         w->widgets[WIDX_WALL_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
         w->widgets[WIDX_WALL_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -1598,7 +1652,16 @@ static void window_tile_inspector_invalidate(rct_window *w)
         w->widgets[WIDX_WALL_DROPDOWN_SLOPE].text = WallSlopeStringIds[tileElement->GetSceneryQuadrant()];
         w->widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].top = GBBT(propertiesAnchor, 1) + 4;
         w->widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].bottom = GBBB(propertiesAnchor, 1) - 4;
+        const uint8 wallType = tileElement->properties.wall.type;
+        const rct_wall_scenery_entry wallEntry = get_wall_entry(wallType)->wall;
+        const bool canBeSloped = !(wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
+        // Wall slope dropdown
+        widget_set_enabled(w, WIDX_WALL_DROPDOWN_SLOPE, canBeSloped);
+        widget_invalidate(w, WIDX_WALL_DROPDOWN_SLOPE);
+        widget_set_enabled(w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON, canBeSloped);
+        widget_invalidate(w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON);
         break;
+    }
     case TILE_INSPECTOR_PAGE_LARGE_SCENERY:
         w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
         w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
@@ -1845,15 +1908,20 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 sint16 parkEntranceIndex = park_entrance_get_index(middleX, middleY, tileElement->base_height * 8);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &parkEntranceIndex, COLOUR_DARK_GREEN, x, y + 11);
             }
-            else {
-                sint16 rideEntranceIndex = (tileElement->properties.entrance.index & 0x30) >> 4;
-                if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
+            else
+            {
+                sint16 rideEntranceIndex = (tileElement->properties.entrance.index & 0x30) >> 4; // TODO: use mask or function
+                if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE)
+                {
                     // Ride entrance ID
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &rideEntranceIndex, COLOUR_DARK_GREEN, x, y + 11);
+                    gfx_draw_string_left(
+                        dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &rideEntranceIndex, COLOUR_DARK_GREEN, x, y + 11);
                 }
-                else {
+                else
+                {
                     // Ride exit ID
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_EXIT_ID, &rideEntranceIndex, COLOUR_DARK_GREEN, x, y + 11);
+                    gfx_draw_string_left(
+                        dpi, STR_TILE_INSPECTOR_ENTRANCE_EXIT_ID, &rideEntranceIndex, COLOUR_DARK_GREEN, x, y + 11);
                 }
             }
 
@@ -1928,7 +1996,6 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             if (largeSceneryEntry->large_scenery.scrolling_mode != 0xFF)
             {
                 const sint32 bannerIndex = scenery_large_get_banner_id(tileElement);
-                //window_sign_open(bannerIndex);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[bannerIndex].string_idx, COLOUR_DARK_GREEN, x, y + 22);
             }
             else {
@@ -1994,8 +2061,11 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
 }
 
-static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, sint32 scrollIndex)
 {
+    const sint32 listWidth = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+    gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
+
     sint32 y = LIST_ITEM_HEIGHT * (windowTileInspectorElementCount - 1);
     sint32 i = 0;
     char buffer[256];
@@ -2003,23 +2073,28 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
     if (!windowTileInspectorTileSelected)
         return;
 
-    rct_tile_element *tileElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
+    const rct_tile_element* tileElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     do {
+        const bool selectedRow = i == w->selected_list_item;
+        const bool hoveredRow = i == windowTileInspectorHighlightedIndex;
         sint32 type = tileElement->GetType();
-        const char * typeName = "";
-        sint32 baseHeight = tileElement->base_height;
-        sint32 clearanceHeight = tileElement->clearance_height;
+        const char* typeName = "";
 
-        // Fill colour for current list element
-        const sint32 listWidth = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
-        if (i == w->selected_list_item) // Currently selected element
-            gfx_fill_rect(dpi, 0, y, listWidth, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].darker | 0x1000000);
-        else if (i == windowTileInspectorHighlightedIndex) // Hovering
+        if (selectedRow)
+        {
+            gfx_fill_rect(dpi, 0, y, listWidth, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark);
+        }
+        else if (hoveredRow)
+        {
             gfx_fill_rect(dpi, 0, y, listWidth, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark | 0x1000000);
-        else if ((i & 1) != 0) // odd / even check
-            gfx_fill_rect(dpi, 0, y, listWidth, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
+        }
+        else if (((windowTileInspectorElementCount - i) & 1) == 0)
+        {
+            // Zebra stripes
+            gfx_fill_rect(dpi, 0, y, listWidth, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].light | 0x1000000);
+        }
 
         switch (type) {
         case TILE_ELEMENT_TYPE_SURFACE:
@@ -2071,18 +2146,45 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
             typeName = buffer;
         }
 
-        // Undo relative scroll offset, but keep the 3 pixel padding
-        sint32 x = -w->widgets[WIDX_LIST].left;
+        const sint32 baseHeight = tileElement->base_height;
+        const sint32 clearanceHeight = tileElement->clearance_height;
         const bool ghost = (tileElement->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
         const bool broken = (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN) != 0;
         const bool last = (tileElement->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
-        gfx_clip_string(buffer, w->widgets[WIDX_COLUMN_TYPE].right - w->widgets[WIDX_COLUMN_TYPE].left - COL_X_TYPE);
-        gfx_draw_string(dpi, (char *)typeName, COLOUR_DARK_GREEN, x + COL_X_TYPE + 3, y); // 3px padding
-        gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x + COL_X_BH, y);
-        gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &clearanceHeight, COLOUR_DARK_GREEN, x + COL_X_CH, y);
-        if (ghost) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_GF, y);
-        if (broken) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_BF, y);
-        if (last) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_LF, y);
+
+        const rct_string_id stringFormat = (selectedRow || hoveredRow) ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
+
+        // Undo relative scroll offset, but keep the 3 pixel padding
+        const sint32 x = -w->widgets[WIDX_LIST].left;
+        set_format_arg(0, rct_string_id, STR_STRING);
+        set_format_arg(2, char*, typeName);
+        gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_TYPE + 3, y); // 3px padding
+
+        // Base height
+        set_format_arg(0, rct_string_id, STR_FORMAT_INTEGER);
+        set_format_arg(2, sint32, baseHeight);
+        gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_BH, y);
+
+        // Clearance height
+        set_format_arg(0, rct_string_id, STR_FORMAT_INTEGER);
+        set_format_arg(2, sint32, clearanceHeight);
+        gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_CH, y);
+
+        // Checkmarks for ghost, broken en last for tile
+        set_format_arg(0, rct_string_id, STR_STRING);
+        set_format_arg(2, char*, CheckBoxMarkString);
+        if (ghost)
+        {
+            gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_GF, y);
+        }
+        if (broken)
+        {
+            gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_BF, y);
+        }
+        if (last)
+        {
+            gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_LF, y);
+        }
 
         y -= LIST_ITEM_HEIGHT;
         i++;
