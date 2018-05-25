@@ -4544,6 +4544,15 @@ STR_6239    :Verticale doorsnede
 STR_6240    :Horizontale doorsnede
 STR_6241    :Gebied selecteren
 STR_6242    :Selectie wissen
+STR_6243    :{SMALLFONT}{BLACK}Renoveert de attractie{NEWLINE}(maakt de attractie zo goed als nieuw)
+STR_6244    :Kan de attractie niet renoveren...
+STR_6245    :{SMALLFONT}{BLACK}Attractie hoeft niet gerenoveerd te worden
+STR_6246    :Renoveren
+STR_6247    :Attractie renoveren
+STR_6248    :{WINDOW_COLOUR_1}Wil je {STRINGID} renoveren voor {CURRENCY}?
+STR_6249    :{WINDOW_COLOUR_1}Wil je {STRINGID} renoveren?
+STR_6250    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} volledig wilt afbreken? Je krijgt er {CURRENCY} voor terug.
+STR_6251    :Attractie is nog niet leeg
 
 #############
 # Scenarios #
