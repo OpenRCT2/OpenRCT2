@@ -60,7 +60,7 @@ namespace Hash
     std::unique_ptr<RsaAlgorithm> CreateRSA();
     std::unique_ptr<RsaKey> CreateRSAKey();
 
-    Sha1Algorithm::Result SHA1(const void * data, size_t dataLen)
+    inline Sha1Algorithm::Result SHA1(const void * data, size_t dataLen)
     {
         return CreateSHA1()
             ->Update(data, dataLen)

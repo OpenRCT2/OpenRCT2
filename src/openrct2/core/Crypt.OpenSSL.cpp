@@ -18,6 +18,7 @@
 #define __USE_CNG__
 #endif
 
+#undef __USE_CNG__
 #ifndef __USE_CNG__
 
 #include "Crypt.h"
@@ -25,6 +26,7 @@
 #include <string>
 #include <vector>
 #include <openssl/evp.h>
+#include <openssl/pem.h>
 
 static void OpenSSLThrowOnBadStatus(const std::string_view& name, int status)
 {
@@ -109,12 +111,100 @@ public:
 class OpenSSLRsaKey final : public RsaKey
 {
 public:
-    EVP_PKEY * const EvpKey{};
+    EVP_PKEY * GetEvpKey() const { return _evpKey; }
 
-    void SetPrivate(const std::string_view& pem) override { }
-    void SetPublic(const std::string_view& pem) override { }
-    std::string GetPrivate() override { return ""; }
-    std::string GetPublic() override { return ""; }
+    void SetPrivate(const std::string_view& pem) override
+    {
+        SetKey(pem, true);
+    }
+
+    void SetPublic(const std::string_view& pem) override
+    {
+        SetKey(pem, false);
+    }
+
+    std::string GetPrivate() override { return GetKey(true); }
+
+    std::string GetPublic() override { return GetKey(false); }
+
+private:
+    EVP_PKEY * _evpKey{};
+
+    void SetKey(const std::string_view& pem, bool isPrivate)
+    {
+        // Read PEM data via BIO buffer
+        auto bio = BIO_new_mem_buf(pem.data(), (int)pem.size());
+        if (bio == nullptr)
+        {
+            throw std::runtime_error("BIO_new_mem_buf failed");
+        }
+        auto rsa = isPrivate ?
+            PEM_read_bio_RSAPrivateKey(bio, nullptr, nullptr, nullptr) :
+            PEM_read_bio_RSAPublicKey(bio, nullptr, nullptr, nullptr);
+        if (rsa == nullptr)
+        {
+            BIO_free_all(bio);
+            auto msg = isPrivate ?
+                "PEM_read_bio_RSAPrivateKey failed" :
+                "PEM_read_bio_RSAPublicKey failed";
+            throw std::runtime_error(msg);
+        }
+        BIO_free_all(bio);
+
+        if (isPrivate && !RSA_check_key(rsa))
+        {
+            RSA_free(rsa);
+            throw std::runtime_error("PEM key was invalid");
+        }
+
+        // Assign new key
+        EVP_PKEY_free(_evpKey);
+        _evpKey = EVP_PKEY_new();
+        EVP_PKEY_set1_RSA(_evpKey, rsa);
+        RSA_free(rsa);
+    }
+
+    std::string GetKey(bool isPrivate)
+    {
+        if (_evpKey == nullptr)
+        {
+            throw std::runtime_error("No key has been assigned");
+        }
+
+        auto rsa = EVP_PKEY_get1_RSA(_evpKey);
+        if (rsa == nullptr)
+        {
+            throw std::runtime_error("EVP_PKEY_get1_RSA failed");
+        }
+        if (!RSA_check_key(rsa))
+        {
+            RSA_free(rsa);
+            throw std::runtime_error("Loaded RSA key is invalid");
+        }
+
+        auto bio = BIO_new(BIO_s_mem());
+        if (bio == nullptr)
+        {
+            throw std::runtime_error("BIO_new failed");
+        }
+
+        auto status = isPrivate ?
+            PEM_write_bio_RSAPrivateKey(bio, rsa, nullptr, nullptr, 0, nullptr, nullptr) :
+            PEM_write_bio_RSAPublicKey(bio, rsa);
+        if (status != 1)
+        {
+            BIO_free_all(bio);
+            RSA_free(rsa);
+            throw std::runtime_error("PEM_write_bio_RSAPrivateKey failed");
+        }
+        RSA_free(rsa);
+
+        auto keylen = BIO_pending(bio);
+        std::string result(keylen, 0);
+        BIO_read(bio, result.data(), keylen);
+        BIO_free_all(bio);
+        return result;
+    }
 };
 
 class OpenSSLRsaAlgorithm final : public RsaAlgorithm
@@ -122,7 +212,7 @@ class OpenSSLRsaAlgorithm final : public RsaAlgorithm
 public:
     std::vector<uint8_t> SignData(const RsaKey& key, const void * data, size_t dataLen) override
     {
-        auto evpKey = static_cast<const OpenSSLRsaKey&>(key).EvpKey;
+        auto evpKey = static_cast<const OpenSSLRsaKey&>(key).GetEvpKey();
         EVP_MD_CTX * mdctx{};
         try
         {
@@ -160,7 +250,7 @@ public:
 
     bool VerifyData(const RsaKey& key, const void * data, size_t dataLen, const void * sig, size_t sigLen) override
     {
-        auto evpKey = static_cast<const OpenSSLRsaKey&>(key).EvpKey;
+        auto evpKey = static_cast<const OpenSSLRsaKey&>(key).GetEvpKey();
         EVP_MD_CTX * mdctx{};
         try
         {
@@ -182,7 +272,7 @@ public:
                 OpenSSLThrowOnBadStatus("EVP_DigestVerifyUpdate", status);
             }
             EVP_MD_CTX_destroy(mdctx);
-            return status == 0;
+            return status == 1;
         }
         catch (const std::exception&)
         {

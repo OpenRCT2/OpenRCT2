@@ -18,6 +18,8 @@
 #define __USE_CNG__
 #endif
 
+#undef __USE_CNG__
+
 #ifdef __USE_CNG__
 
 #include "Crypt.h"
@@ -36,14 +38,14 @@ template<typename TBase>
 class CngHashAlgorithm final : public TBase
 {
 private:
-    const char * _algName;
+    const wchar_t * _algName;
     BCRYPT_ALG_HANDLE _hAlg{};
     BCRYPT_HASH_HANDLE _hHash{};
     PBYTE _pbHashObject{};
     bool _reusable{};
 
 public:
-    CngHashAlgorithm(const char * algName)
+    CngHashAlgorithm(const wchar_t * algName)
     {
         // BCRYPT_HASH_REUSABLE_FLAG only available from Windows 8
         _algName = algName;
@@ -56,7 +58,7 @@ public:
         Dispose();
     }
 
-    HashAlgorithm * Clear() override
+    TBase * Clear() override
     {
         if (_reusable)
         {
@@ -71,7 +73,7 @@ public:
         return this;
     }
 
-    HashAlgorithm * Update(const void * data, size_t dataLen) override
+    TBase * Update(const void * data, size_t dataLen) override
     {
         auto status = BCryptHashData(_hHash, (PBYTE)data, (ULONG)dataLen, 0);
         if (!NT_SUCCESS(status))
@@ -81,9 +83,9 @@ public:
         return this;
     }
 
-    Result Finish() override
+    typename TBase::Result Finish() override
     {
-        Result result;
+        typename TBase::Result result;
         auto status = BCryptFinishHash(_hHash, result.data(), (ULONG)result.size(), 0);
         if (!NT_SUCCESS(status))
         {
@@ -96,7 +98,7 @@ private:
     void Initialise()
     {
         auto flags = _reusable ? BCRYPT_HASH_REUSABLE_FLAG : 0;
-        auto status = BCryptOpenAlgorithmProvider(&_hAlg, TAlg, nullptr, flags);
+        auto status = BCryptOpenAlgorithmProvider(&_hAlg, _algName, nullptr, flags);
         if (!NT_SUCCESS(status))
         {
             throw std::runtime_error("BCryptOpenAlgorithmProvider failed: " + std::to_string(status));

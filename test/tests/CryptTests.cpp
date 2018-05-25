@@ -1,5 +1,7 @@
 #include <string>
 #include <openrct2/core/Crypt.h>
+#include <openrct2/core/File.h>
+#include <openrct2/network/NetworkKey.h>
 #include <gtest/gtest.h>
 
 class CryptTests : public testing::Test
@@ -95,4 +97,36 @@ TEST_F(CryptTests, SHA1_Many)
         alg->Update(s.data(), s.size());
     }
     AssertHash("ac46948f97d69fa766706e932ce82562b4f73aa7", alg->Finish());
+}
+
+TEST_F(CryptTests, RSA_Basic)
+{
+    std::vector<uint8> data = { 0, 1, 2, 3, 4, 5, 6, 7 };
+
+    auto file = File::ReadAllBytes("C:/Users/Ted/Documents/OpenRCT2/keys/Ted.privkey");
+    auto key = Hash::CreateRSAKey();
+    key->SetPrivate(std::string_view((const char *)file.data(), file.size()));
+
+    auto rsa = Hash::CreateRSA();
+    auto signature = rsa->SignData(*key, data.data(), data.size());
+    bool verified = rsa->VerifyData(*key, data.data(), data.size(), signature.data(), signature.size());
+    ASSERT_TRUE(verified);
+}
+
+TEST_F(CryptTests, RSA_VerifyWithPublic)
+{
+    std::vector<uint8> data = { 7, 6, 5, 4, 3, 2, 1, 0 };
+
+    auto privateFile = File::ReadAllBytes("C:/Users/Ted/Documents/OpenRCT2/keys/Ted.privkey");
+    auto privateKey = Hash::CreateRSAKey();
+    privateKey->SetPrivate(std::string_view((const char *)privateFile.data(), privateFile.size()));
+
+    auto publicFile = File::ReadAllBytes("C:/Users/Ted/Documents/OpenRCT2/keys/Ted-f60af9b4ea83cd884238bcbeba8e11545e70d574.pubkey");
+    auto publicKey = Hash::CreateRSAKey();
+    publicKey->SetPublic(std::string_view((const char *)publicFile.data(), publicFile.size()));
+
+    auto rsa = Hash::CreateRSA();
+    auto signature = rsa->SignData(*privateKey, data.data(), data.size());
+    bool verified = rsa->VerifyData(*publicKey, data.data(), data.size(), signature.data(), signature.size());
+    ASSERT_TRUE(verified);
 }
