@@ -232,7 +232,6 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 #define GROUPBOX_PADDING 6
 #define HORIZONTAL_GROUPBOX_PADDING 5
 #define VERTICAL_GROUPBOX_PADDING 4
-#define LIST_ITEM_HEIGHT 11
 #define BUTTONW 130
 #define BUTTONH 17
 
@@ -1374,7 +1373,7 @@ static void window_tile_inspector_tool_drag(rct_window* w, rct_widgetindex widge
 static void window_tile_inspector_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
     *width = WW - 30;
-    *height = windowTileInspectorElementCount * LIST_ITEM_HEIGHT;
+    *height = windowTileInspectorElementCount * SCROLLABLE_ROW_HEIGHT;
 }
 
 static void window_tile_inspector_set_page(rct_window *w, const TILE_INSPECTOR_PAGE page)
@@ -1403,13 +1402,13 @@ static void window_tile_inspector_set_page(rct_window *w, const TILE_INSPECTOR_P
 static void window_tile_inspector_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
     // Because the list items are displayed in reverse order, subtract the calculated index from the amount of elements
-    const sint16 index = windowTileInspectorElementCount - (y - 1) / LIST_ITEM_HEIGHT - 1;
+    const sint16 index = windowTileInspectorElementCount - (y - 1) / SCROLLABLE_ROW_HEIGHT - 1;
     window_tile_inspector_select_element_from_list(w, index);
 }
 
 static void window_tile_inspector_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-    sint16 index = windowTileInspectorElementCount - (y - 1) / LIST_ITEM_HEIGHT - 1;
+    sint16 index = windowTileInspectorElementCount - (y - 1) / SCROLLABLE_ROW_HEIGHT - 1;
     if (index < 0 || index >= windowTileInspectorElementCount)
         windowTileInspectorHighlightedIndex = -1;
     else
@@ -2067,7 +2066,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     const sint32 listWidth = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
-    sint32 y = LIST_ITEM_HEIGHT * (windowTileInspectorElementCount - 1);
+    sint32 y = SCROLLABLE_ROW_HEIGHT * (windowTileInspectorElementCount - 1);
     sint32 i = 0;
     char buffer[256];
 
@@ -2085,16 +2084,16 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
 
         if (selectedRow)
         {
-            gfx_fill_rect(dpi, 0, y, listWidth, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark);
+            gfx_fill_rect(dpi, 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark);
         }
         else if (hoveredRow)
         {
-            gfx_fill_rect(dpi, 0, y, listWidth, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark | 0x1000000);
+            gfx_fill_rect(dpi, 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark | 0x1000000);
         }
         else if (((windowTileInspectorElementCount - i) & 1) == 0)
         {
             // Zebra stripes
-            gfx_fill_rect(dpi, 0, y, listWidth, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].light | 0x1000000);
+            gfx_fill_rect(dpi, 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].light | 0x1000000);
         }
 
         switch (type) {
@@ -2159,7 +2158,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
         const sint32 x = -w->widgets[WIDX_LIST].left;
         set_format_arg(0, rct_string_id, STR_STRING);
         set_format_arg(2, char*, typeName);
-        gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_TYPE + 3, y); // 3px padding
+        gfx_draw_string_left_clipped(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_TYPE + 3, y, COL_X_BH); // 3px padding
 
         // Base height
         set_format_arg(0, rct_string_id, STR_FORMAT_INTEGER);
@@ -2187,7 +2186,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
             gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_LF, y);
         }
 
-        y -= LIST_ITEM_HEIGHT;
+        y -= SCROLLABLE_ROW_HEIGHT;
         i++;
     } while (!(tileElement++)->IsLastForTile());
 }
