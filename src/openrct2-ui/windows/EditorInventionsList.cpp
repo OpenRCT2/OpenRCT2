@@ -720,50 +720,51 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
  */
 static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
-    rct_research_item *researchItem;
-    sint32 left, top, bottom, itemY, disableItemMovement;
-    sint32 researchItemEndMarker;
-    rct_string_id stringId;
-    utf8 buffer[256], *ptr;
-
     // Draw background
     uint8 paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
-    researchItem = gResearchItems;
+    rct_research_item* researchItem = gResearchItems;
+    sint32 researchItemEndMarker;
 
-    if (scrollIndex == 1) {
+    if (scrollIndex == 1)
+    {
         // Skip pre-researched items
         for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
         researchItem++;
         researchItemEndMarker = RESEARCHED_ITEMS_END;
-    } else {
+    }
+    else
+    {
         researchItemEndMarker = RESEARCHED_ITEMS_SEPARATOR;
     }
 
-    // Since this is now a do while need to counteract the +SCROLLABLE_ROW_HEIGHT
-    itemY = -SCROLLABLE_ROW_HEIGHT;
+    sint16 boxWidth = (w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right - w->widgets[WIDX_RESEARCH_ORDER_SCROLL].left);
+    sint16 columnSplitOffset = boxWidth / 2;
+    sint32 itemY = -SCROLLABLE_ROW_HEIGHT;
     do
     {
         itemY += SCROLLABLE_ROW_HEIGHT;
         if (itemY + SCROLLABLE_ROW_HEIGHT < dpi->y || itemY >= dpi->y + dpi->height)
             continue;
 
-        uint8 colour = COLOUR_BRIGHT_GREEN | COLOUR_FLAG_TRANSLUCENT;
-        if (w->research_item == researchItem) {
-            if (_editorInventionsListDraggedItem == nullptr) {
+        if (w->research_item == researchItem)
+        {
+            sint32 top, bottom;
+            if (_editorInventionsListDraggedItem == nullptr)
+            {
                 // Highlight
                 top = itemY;
                 bottom = itemY + SCROLLABLE_ROW_HEIGHT - 1;
-            } else {
+            }
+            else
+            {
                 // Drop horizontal rule
                 top = itemY - 1;
                 bottom = itemY;
             }
-            gfx_filter_rect(dpi, 0, top, w->width, bottom, PALETTE_DARKEN_1);
 
-            if (_editorInventionsListDraggedItem == nullptr)
-                colour = COLOUR_BRIGHT_GREEN;
+            gfx_filter_rect(dpi, 0, top, boxWidth, bottom, PALETTE_DARKEN_1);
         }
 
         if (researchItem->rawValue == RESEARCHED_ITEMS_SEPARATOR || researchItem->rawValue == RESEARCHED_ITEMS_END)
@@ -772,44 +773,42 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
         if (researchItem == _editorInventionsListDraggedItem)
             continue;
 
-        disableItemMovement = research_item_is_always_researched(researchItem);
-
-        stringId = research_item_get_name(researchItem);
-
-        ptr = buffer;
-        if (!disableItemMovement) {
-            ptr = utf8_write_codepoint(ptr, colour);
+        uint8 colourFlags = 0;
+        if (research_item_is_always_researched(researchItem))
+        {
+            if (_editorInventionsListDraggedItem == nullptr)
+                gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK;
+            else
+                gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
+            colourFlags = COLOUR_FLAG_INSET;
         }
+        else
+            gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+
+        rct_string_id itemNameId = research_item_get_name(researchItem);
+        sint32 left = 1;
+        sint32 top = itemY;
 
         if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
         {
             const rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
             rct_string_id args[] = {
+                STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME,
                 rideGroupName,
-                stringId
             };
-            format_string(ptr, 256, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, &args);
+
+            // Group name
+            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, &args, colourFlags, left, top, columnSplitOffset);
+
+            // Vehicle name
+            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, &itemNameId, colourFlags, left + columnSplitOffset, top, columnSplitOffset);
         }
         else
         {
-            format_string(ptr, 256, stringId, nullptr);
+            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, &itemNameId, colourFlags, left, top, boxWidth);
         }
-
-        if (disableItemMovement) {
-            gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
-            if (colour == COLOUR_BRIGHT_GREEN && _editorInventionsListDraggedItem == nullptr) {
-                gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK;
-            }
-            colour = COLOUR_FLAG_INSET | w->colours[1];
-        } else {
-            gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-            colour = COLOUR_BLACK;
-        }
-
-        left = 1;
-        top = itemY;
-        gfx_draw_string(dpi, buffer, colour, left, top);
-    }while(researchItem++->rawValue != researchItemEndMarker);
+    }
+    while (researchItem++->rawValue != researchItemEndMarker);
 }
 
 #pragma region Drag item
