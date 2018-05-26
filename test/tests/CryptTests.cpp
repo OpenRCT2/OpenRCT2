@@ -130,3 +130,12 @@ TEST_F(CryptTests, RSA_VerifyWithPublic)
     bool verified = rsa->VerifyData(*publicKey, data.data(), data.size(), signature.data(), signature.size());
     ASSERT_TRUE(verified);
 }
+
+TEST_F(CryptTests, RSAKey_GetPublic)
+{
+    auto inPem = File::ReadAllText("C:/Users/Ted/Documents/OpenRCT2/keys/Ted-b298a310905df8865788bdc864560c3d4c3ba562.pubkey");
+    auto publicKey = Hash::CreateRSAKey();
+    publicKey->SetPublic(inPem);
+    auto outPem = publicKey->GetPublic();
+    ASSERT_EQ(inPem, outPem);
+}

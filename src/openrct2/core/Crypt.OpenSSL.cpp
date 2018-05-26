@@ -112,6 +112,11 @@ class OpenSSLRsaKey final : public RsaKey
 public:
     EVP_PKEY * GetEvpKey() const { return _evpKey; }
 
+    ~OpenSSLRsaKey()
+    {
+        EVP_PKEY_free(_evpKey);
+    }
+
     void SetPrivate(const std::string_view& pem) override
     {
         SetKey(pem, true);

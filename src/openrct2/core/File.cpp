@@ -56,10 +56,10 @@ namespace File
         std::vector<uint8> result;
 
 #if defined(_WIN32) && !defined(__MINGW32__)
-        auto pathW = String::ToUtf16(path.data());
+        auto pathW = String::ToUtf16(std::string(path));
         std::ifstream fs(pathW, std::ios::in | std::ios::binary);
 #else
-        std::ifstream fs(path.data(), std::ios::in | std::ios::binary);
+        std::ifstream fs(std::string(path), std::ios::in | std::ios::binary);
 #endif
         if (!fs.is_open())
         {
@@ -80,6 +80,15 @@ namespace File
             fs.read((char *)result.data(), result.size());
             fs.exceptions(fs.failbit);
         }
+        return result;
+    }
+
+    std::string ReadAllText(const std::string_view& path)
+    {
+        auto bytes = ReadAllBytes(path);
+        // TODO skip BOM
+        std::string result(bytes.size(), 0);
+        std::copy(bytes.begin(), bytes.end(), result.begin());
         return result;
     }
 

@@ -24,11 +24,13 @@
 #include "../platform/Platform2.h"
 #include "IStream.hpp"
 #include <stdexcept>
+#include <sstream>
 #include <string>
 #include <tuple>
 
 // CNG: Cryptography API: Next Generation (CNG)
 //      available in Windows Vista onwards.
+#define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <wincrypt.h>
@@ -244,6 +246,45 @@ public:
     }
 };
 
+class DerWriter
+{
+private:
+    std::vector<uint8_t> _buffer;
+
+public:
+    void WriteSequenceHeader()
+    {
+        _buffer.push_back(0x30);
+        _buffer.push_back(0x81);
+        _buffer.push_back(0x89);
+    }
+
+    void WriteInteger(const std::vector<uint8_t>& data)
+    {
+        if (data.size() < 128)
+        {
+            _buffer.push_back((uint8_t)data.size());
+        }
+        else if (data.size() <= std::numeric_limits<uint8_t>().max())
+        {
+            _buffer.push_back(0b10000001);
+            _buffer.push_back((uint8_t)data.size());
+        }
+        else if (data.size() <= std::numeric_limits<uint16_t>().max())
+        {
+            _buffer.push_back(0b10000010);
+            _buffer.push_back((data.size() >> 8) & 0xFF);
+            _buffer.push_back(data.size() & 0xFF);
+        }
+        _buffer.insert(_buffer.end(), data.begin(), data.end());
+    }
+
+    std::vector<uint8_t>&& Complete()
+    {
+        return std::move(_buffer);
+    }
+};
+
 class CngRsaKey final : public RsaKey
 {
 private:
@@ -257,6 +298,11 @@ private:
 
 public:
     NCRYPT_KEY_HANDLE GetKeyHandle() const { return _hKey; }
+
+    ~CngRsaKey()
+    {
+        NCryptFreeObject(_hKey);
+    }
 
     void SetPrivate(const std::string_view& pem) override
     {
@@ -284,9 +330,27 @@ public:
         _hKey = ImportKey(params);
     }
 
-    std::string GetPrivate() override { return GetKey(true); }
+    std::string GetPrivate() override
+    {
+        return "";
+    }
 
-    std::string GetPublic() override { return GetKey(false); }
+    std::string GetPublic() override
+    {
+        auto params = ExportKey(true);
+        DerWriter derWriter;
+        derWriter.WriteSequenceHeader();
+        derWriter.WriteInteger(params.Modulus);
+        derWriter.WriteInteger(params.Exponent);
+        auto derBytes = derWriter.Complete();
+        auto b64 = EncodeBase64(derBytes);
+
+        std::ostringstream sb;
+        sb << std::string(SZ_PUBLIC_BEGIN_TOKEN) << std::endl;
+        sb << b64 << std::endl;
+        sb << std::string(SZ_PUBLIC_END_TOKEN) << std::endl;
+        return sb.str();
+    }
 
 private:
     static constexpr std::string_view SZ_PUBLIC_BEGIN_TOKEN = "-----BEGIN RSA PUBLIC KEY-----";
@@ -295,11 +359,6 @@ private:
     static constexpr std::string_view SZ_PRIVATE_END_TOKEN = "-----END RSA PRIVATE KEY-----";
 
     NCRYPT_KEY_HANDLE _hKey{};
-
-    std::string GetKey(bool isPrivate)
-    {
-        throw std::runtime_error("Not implemented");
-    }
 
     static std::vector<uint8_t> ReadPEM(const std::string_view& pem, const std::string_view& beginToken, const std::string_view& endToken)
     {
@@ -333,6 +392,21 @@ private:
             }
         }
         return input;
+    }
+
+    static std::string EncodeBase64(const std::vector<uint8_t>& input)
+    {
+        DWORD chString;
+        if (!CryptBinaryToStringA(input.data(), (DWORD)input.size(), CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF, NULL, &chString))
+        {
+            throw std::runtime_error("CryptBinaryToStringA failed");
+        }
+        std::string result(chString, 0);
+        if (!CryptBinaryToStringA(input.data(), (DWORD)input.size(), CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF, result.data(), &chString))
+        {
+            throw std::runtime_error("CryptBinaryToStringA failed");
+        }
+        return result;
     }
 
     static std::vector<uint8_t> DecodeBase64(const std::string_view& input)
@@ -378,6 +452,38 @@ private:
         NCryptFreeObject(hProv);
         CngThrowOnBadStatus("NCryptImportKey", status);
         return hKey;
+    }
+
+    RsaKeyParams ExportKey(bool onlyPublic)
+    {
+        auto blobType = onlyPublic ? BCRYPT_RSAPUBLIC_BLOB : BCRYPT_RSAPRIVATE_BLOB;
+
+        std::vector<uint8_t> output;
+        NCRYPT_PROV_HANDLE hProv{};
+        try
+        {
+            auto status = NCryptOpenStorageProvider(&hProv, MS_KEY_STORAGE_PROVIDER, 0);
+            CngThrowOnBadStatus("NCryptOpenStorageProvider", status);
+            DWORD cbOutput{};
+            status = NCryptExportKey(hProv, _hKey, blobType, NULL, NULL, 0, &cbOutput, 0);
+            CngThrowOnBadStatus("NCryptExportKey", status);
+            output = std::vector<uint8_t>(cbOutput);
+            status = NCryptExportKey(hProv, _hKey, blobType, NULL, output.data(), cbOutput, NULL, 0);
+            CngThrowOnBadStatus("NCryptExportKey", status);
+            NCryptFreeObject(hProv);
+        }
+        catch (const std::exception&)
+        {
+            NCryptFreeObject(hProv);
+        }
+
+        RsaKeyParams params;
+        const auto& header = *((BCRYPT_RSAKEY_BLOB*)output.data());
+        size_t i = sizeof(BCRYPT_RSAKEY_BLOB);
+        params.Modulus.insert(params.Modulus.end(), output.begin() + i, output.begin() + i + header.cbModulus);
+        i += header.cbModulus;
+        params.Exponent.insert(params.Exponent.end(), output.begin() + i, output.begin() + i + header.cbPublicExp);
+        return params;
     }
 };
 
