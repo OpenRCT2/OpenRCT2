@@ -22,6 +22,7 @@
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
+#include "../ParkImporter.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
@@ -131,34 +132,20 @@ public:
         return loadedObject;
     }
 
-    bool LoadObjects(const rct_object_entry * entries, size_t count) override
+    void LoadObjects(const rct_object_entry * entries, size_t count) override
     {
         // Find all the required objects
-        bool missingObjects;
-        auto requiredObjects = GetRequiredObjects(entries, count, &missingObjects);
-        if (missingObjects)
-        {
-            return false;
-        }
+        auto requiredObjects = GetRequiredObjects(entries, count);
 
-        // Create a new list of loaded objects
+        // Load the required objects
         size_t numNewLoadedObjects = 0;
         auto loadedObjects = LoadObjects(requiredObjects, &numNewLoadedObjects);
 
-        if (!std::get<0>(loadedObjects))
-        {
-            UnloadAll();
-            return false;
-        }
-        else
-        {
-            SetNewLoadedObjectList(std::get<1>(loadedObjects));
-            LoadDefaultObjects();
-            UpdateSceneryGroupIndexes();
-            ResetTypeToRideEntryIndexMap();
-            log_verbose("%u / %u new objects loaded", numNewLoadedObjects, requiredObjects.size());
-            return true;
-        }
+        SetNewLoadedObjectList(loadedObjects);
+        LoadDefaultObjects();
+        UpdateSceneryGroupIndexes();
+        ResetTypeToRideEntryIndexMap();
+        log_verbose("%u / %u new objects loaded", numNewLoadedObjects, requiredObjects.size());
     }
 
     void UnloadObjects(const rct_object_entry * entries, size_t count) override
@@ -482,10 +469,11 @@ private:
         return invalidEntries;
     }
 
-    std::vector<const ObjectRepositoryItem *> GetRequiredObjects(const rct_object_entry * entries, size_t count, bool * missingObjects)
+    std::vector<const ObjectRepositoryItem *> GetRequiredObjects(const rct_object_entry * entries, size_t count)
     {
         std::vector<const ObjectRepositoryItem *> requiredObjects;
-        *missingObjects = false;
+        std::vector<rct_object_entry> missingObjects;
+
         for (sint32 i = 0; i < count; i++)
         {
             const rct_object_entry * entry = &entries[i];
@@ -495,19 +483,27 @@ private:
                 ori = _objectRepository->FindObject(entry);
                 if (ori == nullptr && object_entry_get_type(entry) != OBJECT_TYPE_SCENARIO_TEXT)
                 {
-                    *missingObjects = true;
+                    missingObjects.push_back(*entry);
                     ReportMissingObject(entry);
                 }
             }
             requiredObjects.push_back(ori);
         }
+
+        if (missingObjects.size() > 0)
+        {
+            throw ObjectLoadException(std::move(missingObjects));
+        }
+
         return requiredObjects;
     }
 
-    std::pair<bool, std::vector<Object *>> LoadObjects(std::vector<const ObjectRepositoryItem *> &requiredObjects, size_t * outNewObjectsLoaded)
+    std::vector<Object *> LoadObjects(std::vector<const ObjectRepositoryItem *> &requiredObjects, size_t * outNewObjectsLoaded)
     {
-        size_t newObjectsLoaded = 0;
+        std::vector<Object *> objects;
         std::vector<Object *> loadedObjects;
+        std::vector<rct_object_entry> badObjects;
+        objects.reserve(OBJECT_ENTRY_COUNT);
         loadedObjects.reserve(OBJECT_ENTRY_COUNT);
         for (auto ori : requiredObjects)
         {
@@ -520,20 +516,33 @@ private:
                     loadedObject = GetOrLoadObject(ori);
                     if (loadedObject == nullptr)
                     {
+                        badObjects.push_back(ori->ObjectEntry);
                         ReportObjectLoadProblem(&ori->ObjectEntry);
-                        return std::make_pair(false, std::vector<Object *>());
-                    } else {
-                        newObjectsLoaded++;
+                    }
+                    else
+                    {
+                        loadedObjects.push_back(loadedObject);
                     }
                 }
             }
-            loadedObjects.push_back(loadedObject);
+            objects.push_back(loadedObject);
         }
+
+        if (badObjects.size() > 0)
+        {
+            // Unload all the new objects we loaded
+            for (auto object : loadedObjects)
+            {
+                UnloadObject(object);
+            }
+            throw ObjectLoadException(std::move(badObjects));
+        }
+
         if (outNewObjectsLoaded != nullptr)
         {
-            *outNewObjectsLoaded = newObjectsLoaded;
+            *outNewObjectsLoaded = loadedObjects.size();
         }
-        return std::make_pair(true, loadedObjects);
+        return objects;
     }
 
     Object * GetOrLoadObject(const ObjectRepositoryItem * ori)
