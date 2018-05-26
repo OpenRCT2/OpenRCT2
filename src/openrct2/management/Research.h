@@ -108,8 +108,10 @@ extern bool gSilentResearch;
 
 extern rct_research_item gResearchItemSeparator;
 extern rct_research_item gResearchItemEnd;
+extern rct_research_item gResearchItemEnd2;
 extern std::vector<rct_research_item> gResearchedResearchItems;
 extern std::vector<rct_research_item> gUnResearchedResearchItems;
+extern std::vector<rct_research_item> gUnresearchableResearchItems;
 
 void research_reset_items();
 void research_update_uncompleted_types();
