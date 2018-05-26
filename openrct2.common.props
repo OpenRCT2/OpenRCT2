@@ -18,8 +18,8 @@
     <TargetName>$(ProjectName)</TargetName>
     <ShowAllFiles>true</ShowAllFiles>
 
-    <VcpkgTriplet Condition="'$(Platform)'=='Win32' and '$(UseSharedLibs)'!='true'">x86-windows-static</VcpkgTriplet>
-    <VcpkgTriplet Condition="'$(Platform)'=='x64' and '$(UseSharedLibs)'!='true'">x64-windows-static</VcpkgTriplet>
+    <VcpkgTriplet Condition="'$(Platform)'=='Win32' and '$(UseSharedLibs)'!='true'">x86-windows-static-winssl</VcpkgTriplet>
+    <VcpkgTriplet Condition="'$(Platform)'=='x64' and '$(UseSharedLibs)'!='true'">x64-windows-static-winssl</VcpkgTriplet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <UseDebugLibraries>true</UseDebugLibraries>
