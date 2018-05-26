@@ -51,10 +51,12 @@ uint8  gResearchExpectedMonth;
 uint8  gResearchExpectedDay;
 rct_research_item gResearchNextItem;
 
-rct_research_item gResearchItemSeparator = { RESEARCHED_ITEMS_SEPARATOR ,0};
+rct_research_item gResearchItemSeparator = { RESEARCHED_ITEMS_SEPARATOR, 0 };
 rct_research_item gResearchItemEnd = { RESEARCHED_ITEMS_END, 0 };
+rct_research_item gResearchItemEnd2 = { RESEARCHED_ITEMS_END_2, 0 };
 std::vector<rct_research_item> gResearchedResearchItems;
 std::vector<rct_research_item> gUnResearchedResearchItems;
+std::vector<rct_research_item> gUnresearchableResearchItems;
 
 // 0x00EE787C
 uint8 gResearchUncompletedCategories;
@@ -459,6 +461,7 @@ void research_insert(sint32 researched, sint32 rawValue, uint8 category)
     {
         if (compare_research_items(researchItem, newResearchItem))
         {
+            assert(0); // already researched.
             return;
         }
     }
@@ -467,6 +470,7 @@ void research_insert(sint32 researched, sint32 rawValue, uint8 category)
     {
         if (compare_research_items(researchItem, newResearchItem))
         {
+            assert(0); // already researched.
             return;
         }
     }

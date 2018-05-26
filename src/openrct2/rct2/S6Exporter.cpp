@@ -742,22 +742,25 @@ void S6Exporter::ExportResearchedSceneryItems()
 
 void S6Exporter::ExportResearchList()
 {
-    rct_research_item separator = {};
-
+    // concatenate the researchitems into one array.
     std::vector<rct_research_item> combinedResearchItems = gResearchedResearchItems;
 
-    separator.rawValue = RESEARCHED_ITEMS_SEPARATOR;
-    combinedResearchItems.push_back(separator);
+    combinedResearchItems.push_back(gResearchItemSeparator);
 
     combinedResearchItems.insert(
         combinedResearchItems.end(), gUnResearchedResearchItems.begin(), gUnResearchedResearchItems.end());
 
-    combinedResearchItems.resize(sizeof(_s6.research_items)-2);
+    combinedResearchItems.push_back(gResearchItemEnd);
 
-    separator.rawValue = RESEARCHED_ITEMS_END;
-    combinedResearchItems.push_back(separator);
-    separator.rawValue = RESEARCHED_ITEMS_END_2;
-    combinedResearchItems.push_back(separator);
+    combinedResearchItems.insert(
+        combinedResearchItems.end(), gUnresearchableResearchItems.begin(), gUnresearchableResearchItems.end());
+
+    combinedResearchItems.push_back(gResearchItemEnd2);
+
+    // ensure backwardscompatibility by restricting the exported items to MAX_RESEARCH_ITEMS
+    combinedResearchItems.resize(MAX_RESEARCH_ITEMS);
+    combinedResearchItems.at(MAX_RESEARCH_ITEMS - 2) = gResearchItemEnd;
+    combinedResearchItems.at(MAX_RESEARCH_ITEMS - 1) = gResearchItemEnd2;
 
     memcpy(_s6.research_items, combinedResearchItems.data(), sizeof(_s6.research_items));
 }
