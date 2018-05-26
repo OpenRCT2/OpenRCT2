@@ -22,6 +22,7 @@
 
 #include "Crypt.h"
 #include "../platform/Platform2.h"
+#include "IStream.hpp"
 #include <stdexcept>
 #include <string>
 #include <tuple>
@@ -30,6 +31,7 @@
 //      available in Windows Vista onwards.
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <wincrypt.h>
 #include <bcrypt.h>
 #include <ncrypt.h>
 #define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
@@ -136,19 +138,150 @@ private:
     }
 };
 
+class DerReader
+{
+private:
+    ivstream<uint8_t> _stream;
+
+    template<typename T>
+    T Read(std::istream& stream)
+    {
+        T value;
+        stream.read((char*)&value, sizeof(T));
+        return value;
+    }
+
+    template<typename T>
+    std::vector<T> Read(std::istream& stream, size_t count)
+    {
+        std::vector<T> values(count);
+        stream.read((char*)values.data(), sizeof(T) * count);
+        return values;
+    }
+
+    int ReadTag(std::istream& stream)
+    {
+        auto a = Read<uint8_t>(stream);
+        // auto tagClass = a >> 6;
+        // auto tagConstructed = ((a & 0x20) != 0);
+        auto tagNumber = a & 0x1F;
+        if (tagNumber == 0x1F)
+        {
+            throw std::runtime_error("Unsupported DER tag");
+        }
+        return tagNumber;
+    }
+
+    int ReadLength(std::istream& stream)
+    {
+        auto a = Read<uint8_t>(stream);
+        auto len = a & 0x7F;
+        if (len == a)
+        {
+            return len;
+        }
+        if (len > 6)
+        {
+            throw std::runtime_error("Length over 48 bits not supported at this position");
+        }
+        if (len == 0)
+        {
+            throw std::runtime_error("Unknown length");
+        }
+        auto result = 0;
+        for (auto i = 0; i < len; i++)
+        {
+            result = (result << 8) + Read<uint8_t>(stream);
+        }
+        return result;
+    }
+
+public:
+    DerReader(const std::vector<uint8_t>& data)
+        : _stream(data)
+    {
+    }
+
+    void ReadSequenceHeader()
+    {
+        auto a = Read<uint16_t>(_stream);
+        if (a == 0x8130)
+        {
+            Read<uint8_t>(_stream);
+        }
+        else if (a == 0x8230)
+        {
+            Read<uint16_t>(_stream);
+        }
+        else
+        {
+            throw std::runtime_error("Invalid DER code");
+        }
+    }
+
+    std::vector<uint8_t> ReadInteger()
+    {
+        auto t = ReadTag(_stream);
+        if (t != 2)
+        {
+            throw std::runtime_error("Expected INTEGER");
+        }
+        auto len = ReadLength(_stream);
+        auto result = Read<uint8_t>(_stream, len);
+
+        auto v = result[0];
+        auto neg = (v > 127);
+        auto pad = neg ? 255 : 0;
+        for (size_t i = 0; i < result.size(); i++)
+        {
+            if (result[i] != pad)
+            {
+                result.erase(result.begin(), result.begin() + i);
+                break;
+            }
+        }
+        return result;
+    }
+};
+
 class CngRsaKey final : public RsaKey
 {
+private:
+    struct RsaKeyParams
+    {
+        std::vector<uint8_t> Modulus;
+        std::vector<uint8_t> Exponent;
+        std::vector<uint8_t> Prime1;
+        std::vector<uint8_t> Prime2;
+    };
+
 public:
     NCRYPT_KEY_HANDLE GetKeyHandle() const { return _hKey; }
 
     void SetPrivate(const std::string_view& pem) override
     {
-        SetKey(pem, true);
+        auto der = ReadPEM(pem, SZ_PRIVATE_BEGIN_TOKEN, SZ_PRIVATE_END_TOKEN);
+        DerReader derReader(der);
+        RsaKeyParams params;
+        derReader.ReadSequenceHeader();
+        derReader.ReadInteger();
+        params.Modulus = derReader.ReadInteger();
+        params.Exponent = derReader.ReadInteger();
+        derReader.ReadInteger();
+        params.Prime1 = derReader.ReadInteger();
+        params.Prime2 = derReader.ReadInteger();
+        _hKey = ImportKey(params);
     }
 
     void SetPublic(const std::string_view& pem) override
     {
-        SetKey(pem, false);
+        auto der = ReadPEM(pem, SZ_PUBLIC_BEGIN_TOKEN, SZ_PUBLIC_END_TOKEN);
+        DerReader derReader(der);
+        RsaKeyParams params;
+        derReader.ReadSequenceHeader();
+        params.Modulus = derReader.ReadInteger();
+        params.Exponent = derReader.ReadInteger();
+        _hKey = ImportKey(params);
     }
 
     std::string GetPrivate() override { return GetKey(true); }
@@ -156,16 +289,95 @@ public:
     std::string GetPublic() override { return GetKey(false); }
 
 private:
-    NCRYPT_KEY_HANDLE _hKey{};
+    static constexpr std::string_view SZ_PUBLIC_BEGIN_TOKEN = "-----BEGIN RSA PUBLIC KEY-----";
+    static constexpr std::string_view SZ_PUBLIC_END_TOKEN = "-----END RSA PUBLIC KEY-----";
+    static constexpr std::string_view SZ_PRIVATE_BEGIN_TOKEN = "-----BEGIN RSA PRIVATE KEY-----";
+    static constexpr std::string_view SZ_PRIVATE_END_TOKEN = "-----END RSA PRIVATE KEY-----";
 
-    void SetKey(const std::string_view& pem, bool isPrivate)
-    {
-        throw std::runtime_error("Not implemented");
-    }
+    NCRYPT_KEY_HANDLE _hKey{};
 
     std::string GetKey(bool isPrivate)
     {
         throw std::runtime_error("Not implemented");
+    }
+
+    static std::vector<uint8_t> ReadPEM(const std::string_view& pem, const std::string_view& beginToken, const std::string_view& endToken)
+    {
+        auto beginPos = pem.find(beginToken);
+        auto endPos = pem.find(endToken);
+        if (beginPos != std::string::npos && endPos != std::string::npos)
+        {
+            beginPos += beginToken.size();
+            auto code = Trim(pem.substr(beginPos, endPos - beginPos));
+            return DecodeBase64(code);
+        }
+        throw std::runtime_error("Invalid PEM file");
+    }
+
+    static std::string_view Trim(std::string_view input)
+    {
+        for (size_t i = 0; i < input.size(); i++)
+        {
+            if (input[i] >= '!')
+            {
+                input.remove_prefix(i);
+                break;
+            }
+        }
+        for (size_t i = input.size() - 1; i >= 0; i--)
+        {
+            if (input[i] >= '!')
+            {
+                input = input.substr(0, i + 1);
+                break;
+            }
+        }
+        return input;
+    }
+
+    static std::vector<uint8_t> DecodeBase64(const std::string_view& input)
+    {
+        DWORD cbBinary;
+        if (!CryptStringToBinaryA(input.data(), (DWORD)input.size(), CRYPT_STRING_BASE64, NULL, &cbBinary, NULL, NULL))
+        {
+            throw std::runtime_error("CryptStringToBinaryA failed");
+        }
+        std::vector<uint8_t> result(cbBinary);
+        if (!CryptStringToBinaryA(input.data(), (DWORD)input.size(), CRYPT_STRING_BASE64, result.data(), &cbBinary, NULL, NULL))
+        {
+            throw std::runtime_error("CryptStringToBinaryA failed");
+        }
+        return result;
+    }
+
+    static NCRYPT_KEY_HANDLE ImportKey(const RsaKeyParams& params)
+    {
+        bool isPublic = params.Prime1.size() == 0;
+        auto blobType = isPublic ? BCRYPT_RSAPUBLIC_BLOB : BCRYPT_RSAPRIVATE_BLOB;
+
+        BCRYPT_RSAKEY_BLOB header{};
+        header.Magic = isPublic ? BCRYPT_RSAPUBLIC_MAGIC : BCRYPT_RSAPRIVATE_MAGIC;
+        header.BitLength = (ULONG)(params.Modulus.size() * 8);
+        header.cbPublicExp = (ULONG)params.Exponent.size();
+        header.cbModulus = (ULONG)params.Modulus.size();
+        header.cbPrime1 = (ULONG)params.Prime1.size();
+        header.cbPrime2 = (ULONG)params.Prime2.size();
+
+        std::vector<uint8_t> blob;
+        blob.insert(blob.end(), (uint8_t*)&header, (uint8_t*)(&header + 1));
+        blob.insert(blob.end(), params.Exponent.begin(), params.Exponent.end());
+        blob.insert(blob.end(), params.Modulus.begin(), params.Modulus.end());
+        blob.insert(blob.end(), params.Prime1.begin(), params.Prime1.end());
+        blob.insert(blob.end(), params.Prime2.begin(), params.Prime2.end());
+
+        NCRYPT_PROV_HANDLE hProv{};
+        NCRYPT_KEY_HANDLE hKey{};
+        auto status = NCryptOpenStorageProvider(&hProv, MS_KEY_STORAGE_PROVIDER, 0);
+        CngThrowOnBadStatus("NCryptOpenStorageProvider", status);
+        status = NCryptImportKey(hProv, NULL, blobType, NULL, &hKey, (PBYTE)blob.data(), (DWORD)blob.size(), 0);
+        NCryptFreeObject(hProv);
+        CngThrowOnBadStatus("NCryptImportKey", status);
+        return hKey;
     }
 };
 

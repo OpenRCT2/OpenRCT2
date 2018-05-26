@@ -121,7 +121,7 @@ TEST_F(CryptTests, RSA_VerifyWithPublic)
     auto privateKey = Hash::CreateRSAKey();
     privateKey->SetPrivate(std::string_view((const char *)privateFile.data(), privateFile.size()));
 
-    auto publicFile = File::ReadAllBytes("C:/Users/Ted/Documents/OpenRCT2/keys/Ted-f60af9b4ea83cd884238bcbeba8e11545e70d574.pubkey");
+    auto publicFile = File::ReadAllBytes("C:/Users/Ted/Documents/OpenRCT2/keys/Ted-b298a310905df8865788bdc864560c3d4c3ba562.pubkey");
     auto publicKey = Hash::CreateRSAKey();
     publicKey->SetPublic(std::string_view((const char *)publicFile.data(), publicFile.size()));
 
