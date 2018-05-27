@@ -991,7 +991,7 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
     }
 
     // Only element-specific widgets from now on
-    if (w->page == TILE_INSPECTOR_PAGE_DEFAULT) {
+    if (w->selected_list_item == TILE_INSPECTOR_PAGE_DEFAULT || w->selected_list_item == -1) {
         return;
     }
 
