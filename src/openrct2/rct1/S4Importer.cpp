@@ -1896,8 +1896,7 @@ private:
         {
             rct_object_entry entry{};
             entry.flags = ((OBJECT_SOURCE_RCT2 << 4) & 0xF0) | (objectType & 0x0F);
-            std::memset(entry.name, ' ', sizeof(entry.name));
-            std::strncpy(entry.name, objectName, sizeof(entry.name));
+            entry.SetName(objectName);
             entries.push_back(entry);
         }
     }

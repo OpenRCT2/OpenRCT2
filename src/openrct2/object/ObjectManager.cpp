@@ -476,7 +476,7 @@ private:
         std::vector<const ObjectRepositoryItem *> requiredObjects;
         std::vector<rct_object_entry> missingObjects;
 
-        for (sint32 i = 0; i < count; i++)
+        for (size_t i = 0; i < count; i++)
         {
             const rct_object_entry * entry = &entries[i];
             const ObjectRepositoryItem * ori = nullptr;
@@ -511,9 +511,9 @@ private:
             auto begin = n * partitionSize;
             auto end = std::min(items.size(), begin + partitionSize);
             threads.emplace_back(
-                [func, &items](size_t begin, size_t end)
+                [func](size_t pbegin, size_t pend)
                 {
-                    for (size_t i = begin; i < end; i++)
+                    for (size_t i = pbegin; i < pend; i++)
                     {
                         func(i);
                     }
