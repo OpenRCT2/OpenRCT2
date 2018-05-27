@@ -236,7 +236,6 @@ void TitleScreen::TitleInitialise()
         }
     }
     ChangePresetSequence((sint32)seqId);
-    TryLoadSequence();
 }
 
 bool TitleScreen::TryLoadSequence(bool loadPreview)
