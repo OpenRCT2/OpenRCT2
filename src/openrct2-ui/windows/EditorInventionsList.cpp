@@ -34,19 +34,22 @@
 
 #pragma region Widgets
 
+#define WW 600
+#define WH 400
+
 // clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
-    WIDX_PAGE_BACKGROUND,
+    WIDX_RESIZE,
     WIDX_TAB_1,
     WIDX_PRE_RESEARCHED_SCROLL,
     WIDX_RESEARCH_ORDER_SCROLL,
     WIDX_PREVIEW,
-    WIDX_RANDOM_SHUFFLE,
+    WIDX_MOVE_ITEMS_TO_TOP,
     WIDX_MOVE_ITEMS_TO_BOTTOM,
-    WIDX_MOVE_ITEMS_TO_TOP
+    WIDX_RANDOM_SHUFFLE
 };
 
 static rct_widget window_editor_inventions_list_widgets[] = {
@@ -54,13 +57,13 @@ static rct_widget window_editor_inventions_list_widgets[] = {
     { WWT_CAPTION,          0,  1,      598,    1,      14,     STR_INVENTION_LIST,     STR_WINDOW_TITLE_TIP    },
     { WWT_CLOSEBOX,         0,  587,    597,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP    },
     { WWT_RESIZE,           1,  0,      599,    43,     399,    STR_NONE,               STR_NONE                },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE                },
-    { WWT_SCROLL,           1,  4,      371,    56,     175,    SCROLL_VERTICAL,        STR_NONE                },
-    { WWT_SCROLL,           1,  4,      371,    189,    396,    SCROLL_VERTICAL,        STR_NONE                },
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE          },
+    { WWT_SCROLL,           1,  4,      371,    56,     216,    SCROLL_VERTICAL,        STR_NONE                },
+    { WWT_SCROLL,           1,  4,      371,    231,    387,    SCROLL_VERTICAL,        STR_NONE                },
     { WWT_FLATBTN,          1,  431,    544,    106,    219,    0xFFFFFFFF,             STR_NONE                },
-    { WWT_BUTTON,           1,  375,    594,    383,    396,    STR_RANDOM_SHUFFLE,     STR_RANDOM_SHUFFLE_TIP  },
-    { WWT_BUTTON,           1,  375,    594,    368,    381,    STR_MOVE_ALL_BOTTOM,    STR_NONE                },
-    { WWT_BUTTON,           1,  375,    594,    353,    366,    STR_MOVE_ALL_TOP,       STR_NONE                },
+    { WWT_BUTTON,           1,  375,    594,    343,    356,    STR_MOVE_ALL_TOP,       STR_NONE                },
+    { WWT_BUTTON,           1,  375,    594,    358,    371,    STR_MOVE_ALL_BOTTOM,    STR_NONE                },
+    { WWT_BUTTON,           1,  375,    594,    373,    386,    STR_RANDOM_SHUFFLE,     STR_RANDOM_SHUFFLE_TIP  },
     { WIDGETS_END }
 };
 
@@ -75,6 +78,7 @@ static rct_widget window_editor_inventions_list_drag_widgets[] = {
 
 static void window_editor_inventions_list_close(rct_window *w);
 static void window_editor_inventions_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_editor_inventions_list_resize(rct_window *w);
 static void window_editor_inventions_list_update(rct_window *w);
 static void window_editor_inventions_list_scrollgetheight(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_editor_inventions_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
@@ -95,7 +99,7 @@ static rct_string_id window_editor_inventions_list_prepare_name(const rct_resear
 static rct_window_event_list window_editor_inventions_list_events = {
     window_editor_inventions_list_close,
     window_editor_inventions_list_mouseup,
-    nullptr,
+    window_editor_inventions_list_resize,
     nullptr,
     nullptr,
     nullptr,
@@ -372,15 +376,16 @@ rct_window * window_editor_inventions_list_open()
     research_always_researched_setup();
 
     w = window_create_centred(
-        600,
-        400,
+        WW,
+        WH,
         &window_editor_inventions_list_events,
         WC_EDITOR_INVENTION_LIST,
-        WF_NO_SCROLLING
+        WF_NO_SCROLLING | WF_RESIZABLE
     );
     w->widgets = window_editor_inventions_list_widgets;
     w->enabled_widgets =
         (1 << WIDX_CLOSE) |
+        (1 << WIDX_RESIZE) |
         (1 << WIDX_TAB_1) |
         (1 << WIDX_RANDOM_SHUFFLE) |
         (1 << WIDX_MOVE_ITEMS_TO_BOTTOM) |
@@ -390,6 +395,11 @@ rct_window * window_editor_inventions_list_open()
     w->selected_tab = 0;
     w->research_item = nullptr;
     _editorInventionsListDraggedItem = nullptr;
+
+    w->min_width = WW;
+    w->min_height = WH;
+    w->max_width = WW * 2;
+    w->max_height = WH * 2;
 
     return w;
 }
@@ -434,6 +444,20 @@ static void window_editor_inventions_list_mouseup(rct_window *w, rct_widgetindex
         window_init_scroll_widgets(w);
         window_invalidate(w);
         break;
+    }
+}
+
+static void window_editor_inventions_list_resize(rct_window *w)
+{
+    if (w->width < w->min_width)
+    {
+        window_invalidate(w);
+        w->width = w->min_width;
+    }
+    if (w->height < w->min_height)
+    {
+        window_invalidate(w);
+        w->height = w->min_height;
     }
 }
 
@@ -566,6 +590,41 @@ static void window_editor_inventions_list_invalidate(rct_window *w)
 
     w->widgets[WIDX_CLOSE].type =
         gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
+
+    w->widgets[WIDX_BACKGROUND].right = w->width - 1;
+    w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+    w->widgets[WIDX_TITLE].right = w->width - 2;
+    w->widgets[WIDX_CLOSE].left = w->width - 13;
+    w->widgets[WIDX_CLOSE].right = w->width - 3;
+    w->widgets[WIDX_RESIZE].right = w->width - 1;
+    w->widgets[WIDX_RESIZE].bottom = w->height - 1;
+
+    sint16 scroll_list_height = (w->height - 88) / 2;
+
+    w->widgets[WIDX_PRE_RESEARCHED_SCROLL].bottom = 60 + scroll_list_height;
+    w->widgets[WIDX_PRE_RESEARCHED_SCROLL].right = w->width - 229;
+
+    w->widgets[WIDX_RESEARCH_ORDER_SCROLL].top = w->widgets[WIDX_PRE_RESEARCHED_SCROLL].bottom + 15;
+    w->widgets[WIDX_RESEARCH_ORDER_SCROLL].bottom = w->widgets[WIDX_RESEARCH_ORDER_SCROLL].top + scroll_list_height;
+    w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right = w->width - 229;
+
+    w->widgets[WIDX_PREVIEW].left = w->width - 169;
+    w->widgets[WIDX_PREVIEW].right = w->width - 56;
+
+    w->widgets[WIDX_MOVE_ITEMS_TO_TOP].top = w->height - 57;
+    w->widgets[WIDX_MOVE_ITEMS_TO_TOP].bottom = w->height - 44;
+    w->widgets[WIDX_MOVE_ITEMS_TO_TOP].left = w->width - 225;
+    w->widgets[WIDX_MOVE_ITEMS_TO_TOP].right = w->width - 6;
+
+    w->widgets[WIDX_MOVE_ITEMS_TO_BOTTOM].top = w->height - 42;
+    w->widgets[WIDX_MOVE_ITEMS_TO_BOTTOM].bottom = w->height - 29;
+    w->widgets[WIDX_MOVE_ITEMS_TO_BOTTOM].left = w->width - 225;
+    w->widgets[WIDX_MOVE_ITEMS_TO_BOTTOM].right = w->width - 6;
+
+    w->widgets[WIDX_RANDOM_SHUFFLE].top = w->height - 27;
+    w->widgets[WIDX_RANDOM_SHUFFLE].bottom = w->height - 14;
+    w->widgets[WIDX_RANDOM_SHUFFLE].left = w->width - 225;
+    w->widgets[WIDX_RANDOM_SHUFFLE].right = w->width - 6;
 }
 
 /**
@@ -661,50 +720,51 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
  */
 static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
-    rct_research_item *researchItem;
-    sint32 left, top, bottom, itemY, disableItemMovement;
-    sint32 researchItemEndMarker;
-    rct_string_id stringId;
-    utf8 buffer[256], *ptr;
-
     // Draw background
     uint8 paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
-    researchItem = gResearchItems;
+    rct_research_item* researchItem = gResearchItems;
+    sint32 researchItemEndMarker;
 
-    if (scrollIndex == 1) {
+    if (scrollIndex == 1)
+    {
         // Skip pre-researched items
         for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
         researchItem++;
         researchItemEndMarker = RESEARCHED_ITEMS_END;
-    } else {
+    }
+    else
+    {
         researchItemEndMarker = RESEARCHED_ITEMS_SEPARATOR;
     }
 
-    // Since this is now a do while need to counteract the +SCROLLABLE_ROW_HEIGHT
-    itemY = -SCROLLABLE_ROW_HEIGHT;
+    sint16 boxWidth = (w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right - w->widgets[WIDX_RESEARCH_ORDER_SCROLL].left);
+    sint16 columnSplitOffset = boxWidth / 2;
+    sint32 itemY = -SCROLLABLE_ROW_HEIGHT;
     do
     {
         itemY += SCROLLABLE_ROW_HEIGHT;
         if (itemY + SCROLLABLE_ROW_HEIGHT < dpi->y || itemY >= dpi->y + dpi->height)
             continue;
 
-        uint8 colour = COLOUR_BRIGHT_GREEN | COLOUR_FLAG_TRANSLUCENT;
-        if (w->research_item == researchItem) {
-            if (_editorInventionsListDraggedItem == nullptr) {
+        if (w->research_item == researchItem)
+        {
+            sint32 top, bottom;
+            if (_editorInventionsListDraggedItem == nullptr)
+            {
                 // Highlight
                 top = itemY;
                 bottom = itemY + SCROLLABLE_ROW_HEIGHT - 1;
-            } else {
+            }
+            else
+            {
                 // Drop horizontal rule
                 top = itemY - 1;
                 bottom = itemY;
             }
-            gfx_filter_rect(dpi, 0, top, w->width, bottom, PALETTE_DARKEN_1);
 
-            if (_editorInventionsListDraggedItem == nullptr)
-                colour = COLOUR_BRIGHT_GREEN;
+            gfx_filter_rect(dpi, 0, top, boxWidth, bottom, PALETTE_DARKEN_1);
         }
 
         if (researchItem->rawValue == RESEARCHED_ITEMS_SEPARATOR || researchItem->rawValue == RESEARCHED_ITEMS_END)
@@ -713,44 +773,42 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
         if (researchItem == _editorInventionsListDraggedItem)
             continue;
 
-        disableItemMovement = research_item_is_always_researched(researchItem);
-
-        stringId = research_item_get_name(researchItem);
-
-        ptr = buffer;
-        if (!disableItemMovement) {
-            ptr = utf8_write_codepoint(ptr, colour);
+        uint8 colourFlags = 0;
+        if (research_item_is_always_researched(researchItem))
+        {
+            if (_editorInventionsListDraggedItem == nullptr)
+                gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK;
+            else
+                gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
+            colourFlags = COLOUR_FLAG_INSET;
         }
+        else
+            gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+
+        rct_string_id itemNameId = research_item_get_name(researchItem);
+        sint32 left = 1;
+        sint32 top = itemY;
 
         if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
         {
             const rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
             rct_string_id args[] = {
+                STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME,
                 rideGroupName,
-                stringId
             };
-            format_string(ptr, 256, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, &args);
+
+            // Group name
+            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, &args, colourFlags, left, top, columnSplitOffset);
+
+            // Vehicle name
+            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, &itemNameId, colourFlags, left + columnSplitOffset, top, columnSplitOffset);
         }
         else
         {
-            format_string(ptr, 256, stringId, nullptr);
+            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, &itemNameId, colourFlags, left, top, boxWidth);
         }
-
-        if (disableItemMovement) {
-            gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
-            if (colour == COLOUR_BRIGHT_GREEN && _editorInventionsListDraggedItem == nullptr) {
-                gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK;
-            }
-            colour = COLOUR_FLAG_INSET | w->colours[1];
-        } else {
-            gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-            colour = COLOUR_BLACK;
-        }
-
-        left = 1;
-        top = itemY;
-        gfx_draw_string(dpi, buffer, colour, left, top);
-    }while(researchItem++->rawValue != researchItemEndMarker);
+    }
+    while (researchItem++->rawValue != researchItemEndMarker);
 }
 
 #pragma region Drag item
