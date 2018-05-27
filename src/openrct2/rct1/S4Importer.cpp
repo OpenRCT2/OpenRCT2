@@ -340,8 +340,9 @@ private:
         String::Set(gScenarioFileName, sizeof(gScenarioFileName), GetRCT1ScenarioName().c_str());
 
         // Do map initialisation, same kind of stuff done when loading scenario editor
-        OpenRCT2::GetContext()->GetObjectManager()->UnloadAll();
-        game_init_all(mapSize);
+        auto context = OpenRCT2::GetContext();
+        context->GetObjectManager()->UnloadAll();
+        context->GetGameState()->InitAll(mapSize);
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gS6Info.category = SCENARIO_CATEGORY_OTHER;

@@ -1420,39 +1420,6 @@ void game_load_or_quit_no_save_prompt()
     }
 }
 
-/**
- * Initialises the map, park etc. basically all S6 data.
- */
-void game_init_all(sint32 mapSize)
-{
-    gInMapInitCode = true;
-
-    map_init(mapSize);
-    park_init();
-    finance_init();
-    reset_park_entry();
-    banner_init();
-    ride_init_all();
-    reset_sprite_list();
-    staff_reset_modes();
-    date_reset();
-    climate_reset(CLIMATE_COOL_AND_WET);
-    news_item_init_queue();
-    user_string_clear_all();
-
-    gInMapInitCode = false;
-
-    gNextGuestNumber = 1;
-
-    context_init();
-    scenery_set_default_placement_configuration();
-
-    auto intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
-    context_broadcast_intent(&intent);
-
-    load_palette();
-}
-
 GAME_COMMAND_POINTER * new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_set_ride_appearance,
     game_command_set_land_height,

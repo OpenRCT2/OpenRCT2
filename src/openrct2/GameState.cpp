@@ -21,6 +21,7 @@
 #include "Input.h"
 #include "interface/Screenshot.h"
 #include "localisation/Date.h"
+#include "localisation/Localisation.h"
 #include "management/NewsItem.h"
 #include "network/network.h"
 #include "OpenRCT2.h"
@@ -28,15 +29,50 @@
 #include "scenario/Scenario.h"
 #include "title/TitleScreen.h"
 #include "title/TitleSequencePlayer.h"
+#include "windows/Intent.h"
 #include "world/Climate.h"
 #include "world/MapAnimation.h"
 #include "world/Park.h"
+#include "world/Scenery.h"
 
 using namespace OpenRCT2;
 
 GameState::GameState()
 {
     _park = std::make_unique<Park>();
+}
+
+/**
+ * Initialises the map, park etc. basically all S6 data.
+ */
+void GameState::InitAll(sint32 mapSize)
+{
+    gInMapInitCode = true;
+
+    map_init(mapSize);
+    _park->Initialise();
+    finance_init();
+    reset_park_entry();
+    banner_init();
+    ride_init_all();
+    reset_sprite_list();
+    staff_reset_modes();
+    date_reset();
+    climate_reset(CLIMATE_COOL_AND_WET);
+    news_item_init_queue();
+    user_string_clear_all();
+
+    gInMapInitCode = false;
+
+    gNextGuestNumber = 1;
+
+    context_init();
+    scenery_set_default_placement_configuration();
+
+    auto intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
+    context_broadcast_intent(&intent);
+
+    load_palette();
 }
 
 void GameState::Update()

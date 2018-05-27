@@ -62,7 +62,7 @@ namespace Editor
         audio_stop_all_music_and_sounds();
         object_manager_unload_all_objects();
         object_list_load();
-        game_init_all(150);
+        OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -141,7 +141,7 @@ namespace Editor
 
         object_manager_unload_all_objects();
         object_list_load();
-        game_init_all(150);
+        OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         SetAllLandOwned();
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         viewport_init_all();
@@ -162,7 +162,7 @@ namespace Editor
 
         object_manager_unload_all_objects();
         object_list_load();
-        game_init_all(150);
+        OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         SetAllLandOwned();
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         viewport_init_all();

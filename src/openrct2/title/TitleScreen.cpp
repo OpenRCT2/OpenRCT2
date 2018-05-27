@@ -130,7 +130,7 @@ void TitleScreen::Load()
 
     network_close();
     audio_stop_all_music_and_sounds();
-    game_init_all(150);
+    GetContext()->GetGameState()->InitAll(150);
     viewport_init_all();
     context_open_window(WC_MAIN_WINDOW);
     CreateWindows();
@@ -276,7 +276,7 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
         _loadedTitleSequenceId = SIZE_MAX;
         if (!loadPreview)
         {
-            game_init_all(150);
+            GetContext()->GetGameState()->InitAll(150);
         }
         return false;
     }

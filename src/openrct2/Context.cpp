@@ -449,9 +449,10 @@ namespace OpenRCT2
             util_srand((uint32)time(nullptr));
             input_reset_place_obj_modifier();
             viewport_init_all();
-            game_init_all(150);
 
             _gameState = std::make_unique<GameState>();
+            _gameState->InitAll(150);
+
             _titleScreen = std::make_unique<TitleScreen>(_gameState.get());
             return true;
         }

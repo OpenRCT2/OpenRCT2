@@ -1060,16 +1060,6 @@ sint32 park_is_open()
     return GetContext()->GetGameState()->GetPark()->IsOpen();
 }
 
-void park_init()
-{
-    auto park = GetContext()->GetGameState()->GetPark();
-    if (park == nullptr)
-    {
-        return;
-    }
-    park->Initialise();
-}
-
 sint32 park_calculate_size()
 {
     auto tiles = GetContext()->GetGameState()->GetPark()->CalculateParkSize();

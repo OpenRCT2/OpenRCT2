@@ -128,7 +128,6 @@ void set_forced_park_rating(sint32 rating);
 sint32 get_forced_park_rating();
 
 sint32 park_is_open();
-void park_init();
 sint32 park_calculate_size();
 
 void reset_park_entry();

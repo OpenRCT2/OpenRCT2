@@ -38,6 +38,7 @@ namespace OpenRCT2
         Date * GetDate() { return &_date; }
         Park * GetPark() { return _park.get(); }
 
+        void InitAll(sint32 mapSize);
         void Update();
         void UpdateLogic();
     };
