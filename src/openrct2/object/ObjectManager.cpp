@@ -17,6 +17,8 @@
 #include <algorithm>
 #include <array>
 #include <memory>
+#include <mutex>
+#include <thread>
 #include <unordered_set>
 #include "../Context.h"
 #include "../core/Console.hpp"
@@ -503,29 +505,61 @@ private:
         std::vector<Object *> objects;
         std::vector<Object *> loadedObjects;
         std::vector<rct_object_entry> badObjects;
-        objects.reserve(OBJECT_ENTRY_COUNT);
+        objects.resize(OBJECT_ENTRY_COUNT);
         loadedObjects.reserve(OBJECT_ENTRY_COUNT);
-        for (auto ori : requiredObjects)
-        {
-            Object * loadedObject = nullptr;
-            if (ori != nullptr)
+
+        // Read objects
+        std::mutex commonMutex;
+        auto batch =
+            [this, &commonMutex, requiredObjects, &objects, &badObjects, &loadedObjects](size_t begin, size_t end) -> void
             {
-                loadedObject = ori->LoadedObject;
-                if (loadedObject == nullptr)
+                for (size_t i = begin; i < end; i++)
                 {
-                    loadedObject = GetOrLoadObject(ori);
-                    if (loadedObject == nullptr)
+                    auto ori = requiredObjects[i];
+                    Object * loadedObject = nullptr;
+                    if (ori != nullptr)
                     {
-                        badObjects.push_back(ori->ObjectEntry);
-                        ReportObjectLoadProblem(&ori->ObjectEntry);
+                        loadedObject = ori->LoadedObject;
+                        if (loadedObject == nullptr)
+                        {
+                            loadedObject = _objectRepository->LoadObject(ori);
+                            if (loadedObject == nullptr)
+                            {
+                                std::lock_guard<std::mutex> guard(commonMutex);
+                                badObjects.push_back(ori->ObjectEntry);
+                                ReportObjectLoadProblem(&ori->ObjectEntry);
+                            }
+                            else
+                            {
+                                std::lock_guard<std::mutex> guard(commonMutex);
+                                loadedObjects.push_back(loadedObject);
+                                // Connect the ori to the registered object
+                                _objectRepository->RegisterLoadedObject(ori, loadedObject);
+                            }
+                        }
                     }
-                    else
-                    {
-                        loadedObjects.push_back(loadedObject);
-                    }
+                    objects[i] = loadedObject;
                 }
-            }
-            objects.push_back(loadedObject);
+            };
+
+        auto partitions = std::thread::hardware_concurrency();
+        auto partitionSize = (requiredObjects.size() + (partitions - 1)) / partitions;
+        std::vector<std::thread> threads;
+        for (size_t n = 0; n < partitions; n++)
+        {
+            auto begin = n * partitionSize;
+            auto end = std::min(requiredObjects.size(), begin + partitionSize);
+            threads.emplace_back(batch, begin, end);
+        }
+        for (auto& t : threads)
+        {
+            t.join();
+        }
+
+        // Load objects
+        for (auto obj : loadedObjects)
+        {
+            obj->Load();
         }
 
         if (badObjects.size() > 0)
