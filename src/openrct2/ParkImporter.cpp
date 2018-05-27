@@ -52,20 +52,3 @@ namespace ParkImporter
             String::Equals(extension, ".sc6", true);
     }
 }
-
-void park_importer_load_from_stream(void * stream_c, const utf8 * hintPath_c)
-{
-    IStream * stream = (IStream *)stream_c;
-    std::string hintPath = String::ToStd(hintPath_c);
-
-    bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
-
-    auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
-    parkImporter->LoadFromStream(stream, isScenario);
-    parkImporter->Import();
-}
-
-bool park_importer_extension_is_scenario(const utf8 * extension)
-{
-    return ParkImporter::ExtensionIsScenario(String::ToStd(extension));
-}

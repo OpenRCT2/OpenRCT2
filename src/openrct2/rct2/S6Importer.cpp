@@ -439,11 +439,6 @@ public:
         // pad_13CE778
 
         // Fix and set dynamic variables
-        // TODO objects should already be loaded
-        // if (!_objectManager->LoadObjects(_s6.objects, OBJECT_ENTRY_COUNT))
-        // {
-        //     throw ObjectLoadException();
-        // }
         map_strip_ghost_flag_from_elements();
         map_update_tile_pointers();
         game_convert_strings_to_utf8();
@@ -851,8 +846,9 @@ void load_from_sv6(const char * path)
     auto s6Importer = std::make_unique<S6Importer>(context->GetObjectRepository(), context->GetObjectManager());
     try
     {
+        auto objectMgr = context->GetObjectManager();
         auto result = s6Importer->LoadSavedGame(path);
-        // TODO load objects
+        objectMgr->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
         s6Importer->Import();
         game_fix_save_vars();
         sprite_position_tween_reset();

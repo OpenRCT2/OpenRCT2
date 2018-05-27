@@ -2856,17 +2856,19 @@ std::unique_ptr<IParkImporter> ParkImporter::CreateS4()
 
 void load_from_sv4(const utf8 * path)
 {
+    auto objectMgr = GetContext()->GetObjectManager();
     auto s4Importer = std::make_unique<S4Importer>();
     auto result = s4Importer->LoadSavedGame(path);
-    // TODO load objects
+    objectMgr->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
     s4Importer->Import();
 }
 
 void load_from_sc4(const utf8 * path)
 {
+    auto objectMgr = GetContext()->GetObjectManager();
     auto s4Importer = std::make_unique<S4Importer>();
     auto result = s4Importer->LoadScenario(path);
-    // TODO load objects
+    objectMgr->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
     s4Importer->Import();
 }
 
