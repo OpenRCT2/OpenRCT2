@@ -29,6 +29,7 @@
 #include <openrct2/title/TitleScreen.h>
 #include <openrct2/title/TitleSequenceManager.h>
 #include <openrct2/core/Math.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2-ui/windows/Window.h>
 
@@ -185,6 +186,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 
     // Twitch
     WIDX_CHANNEL_BUTTON = WIDX_PAGE_START,
+    WIDX_API_URL_BUTTON,
     WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX,
     WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX,
     WIDX_CHAT_PEEP_NAMES_CHECKBOX,
@@ -371,11 +373,12 @@ static rct_widget window_options_advanced_widgets[] = {
 static rct_widget window_options_twitch_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     { WWT_BUTTON,           1,  10,     299,    54,     66,     STR_TWITCH_NAME,            STR_TWITCH_NAME_TIP },              // Twitch channel name
-    { WWT_CHECKBOX,         2,  10,     299,    71,     86,     STR_TWITCH_PEEP_FOLLOWERS,  STR_TWITCH_PEEP_FOLLOWERS_TIP },    // Twitch name peeps by follows
-    { WWT_CHECKBOX,         2,  10,     299,    87,     102,    STR_TWITCH_FOLLOWERS_TRACK, STR_TWITCH_FOLLOWERS_TRACK_TIP },   // Twitch information on for follows
-    { WWT_CHECKBOX,         2,  10,     299,    103,    118,    STR_TWITCH_PEEP_CHAT,       STR_TWITCH_PEEP_CHAT_TIP },         // Twitch name peeps by chat
-    { WWT_CHECKBOX,         2,  10,     299,    119,    134,    STR_TWITCH_CHAT_TRACK,      STR_TWITCH_CHAT_TRACK_TIP  },       // Twitch information on for chat
-    { WWT_CHECKBOX,         2,  10,     299,    135,    150,    STR_TWITCH_CHAT_NEWS,       STR_TWITCH_CHAT_NEWS_TIP },         // Twitch chat !news as notifications in game
+    { WWT_BUTTON,           1,  10,     299,    71,     83,     STR_TWITCH_API_URL,         STR_TWITCH_API_URL_TIP },           // Twitch API name
+    { WWT_CHECKBOX,         2,  10,     299,    88,     103,    STR_TWITCH_PEEP_FOLLOWERS,  STR_TWITCH_PEEP_FOLLOWERS_TIP },    // Twitch name peeps by follows
+    { WWT_CHECKBOX,         2,  10,     299,    104,    119,    STR_TWITCH_FOLLOWERS_TRACK, STR_TWITCH_FOLLOWERS_TRACK_TIP },   // Twitch information on for follows
+    { WWT_CHECKBOX,         2,  10,     299,    120,    135,    STR_TWITCH_PEEP_CHAT,       STR_TWITCH_PEEP_CHAT_TIP },         // Twitch name peeps by chat
+    { WWT_CHECKBOX,         2,  10,     299,    136,    151,    STR_TWITCH_CHAT_TRACK,      STR_TWITCH_CHAT_TRACK_TIP  },       // Twitch information on for chat
+    { WWT_CHECKBOX,         2,  10,     299,    152,    167,    STR_TWITCH_CHAT_NEWS,       STR_TWITCH_CHAT_NEWS_TIP },         // Twitch chat !news as notifications in game
     { WIDGETS_END },
 };
 
@@ -604,6 +607,7 @@ static uint64 window_options_page_enabled_widgets[] = {
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_CHANNEL_BUTTON) |
+    (1 << WIDX_API_URL_BUTTON) |
     (1 << WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX) |
     (1 << WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX) |
     (1 << WIDX_CHAT_PEEP_NAMES_CHECKBOX) |
@@ -986,6 +990,9 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             gConfigTwitch.enable_news ^= 1;
             config_save_default();
             window_invalidate(w);
+            break;
+        case WIDX_API_URL_BUTTON:
+            window_text_input_raw_open(w, widgetIndex, STR_TWITCH_API_URL, STR_TWITCH_API_URL_DESC, gConfigTwitch.api_url, 256);
             break;
         }
         break;
@@ -1953,9 +1960,24 @@ static void window_options_text_input(rct_window *w, rct_widgetindex widgetIndex
     if (text == nullptr)
         return;
 
-    if (widgetIndex == WIDX_CHANNEL_BUTTON) {
+    if (widgetIndex == WIDX_CHANNEL_BUTTON)
+    {
         free(gConfigTwitch.channel);
         gConfigTwitch.channel = _strdup(text);
+        config_save_default();
+    }
+    else if (widgetIndex == WIDX_API_URL_BUTTON)
+    {
+        if (!String::StartsWith(text, "http://", false) && !String::StartsWith(text, "https://", false))
+        {
+            context_show_error(STR_INVALID_URL, STR_NONE);
+            return;
+        }
+        if (gConfigTwitch.api_url != nullptr)
+        {
+            free(gConfigTwitch.api_url);
+        }
+        gConfigTwitch.api_url = _strdup(text);
         config_save_default();
     }
 }
