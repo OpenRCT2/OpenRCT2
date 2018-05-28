@@ -176,7 +176,7 @@ void input_handle_keyboard(bool isTitle)
         }
     }
 
-    if (gConfigGeneral.use_virtual_floor)
+    if (gConfigGeneral.virtual_floor_style > 0)
     {
         if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
             virtual_floor_enable();

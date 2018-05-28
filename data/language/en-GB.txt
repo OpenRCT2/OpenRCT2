@@ -4508,7 +4508,7 @@ STR_6198    :{BLACK}Day:
 STR_6199    :Set date
 STR_6200    :Reset date
 STR_6201    :{MONTH}
-STR_6202    :Enable virtual floor
+STR_6202    :Virtual floor style:
 STR_6203    :{SMALLFONT}{BLACK}When enabled, a virtual floor will be rendered when holding Ctrl or Shift to ease vertical placement of elements.
 STR_6204    :Brick
 STR_6205    :Iron
@@ -4562,6 +4562,10 @@ STR_6252    :Twitch API URL
 STR_6253    :{SMALLFONT}{BLACK}Provide URL of Twitch integration API. Required in order to enable Twitch integration.
 STR_6254    :URL of Twitch integration API:
 STR_6255    :URL is not valid
+STR_6256    :Rendering effects
+STR_6257    :Glassy (translucent)
+STR_6258    :Clear (transparent)
+STR_6259    :Disabled
 
 #############
 # Scenarios #
