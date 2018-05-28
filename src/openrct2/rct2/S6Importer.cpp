@@ -880,10 +880,12 @@ void load_from_sv6(const char * path)
 void load_from_sc6(const char * path)
 {
     auto context = OpenRCT2::GetContext();
+    auto objManager = context->GetObjectManager();
     auto s6Importer = std::make_unique<S6Importer>(context->GetObjectRepository(), context->GetObjectManager());
     try
     {
         auto result = s6Importer->LoadScenario(path);
+        objManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
         s6Importer->Import();
         game_fix_save_vars();
         sprite_position_tween_reset();
