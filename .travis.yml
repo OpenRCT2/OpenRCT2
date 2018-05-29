@@ -193,4 +193,5 @@ notifications:
 cache:
     directories:
         - .cache
+        - $HOME/.ccache
     apt: true
