@@ -33,6 +33,7 @@
 - Fix: [#7480] Graphs skip values of 0.
 - Fix: [#7528] In park entrance pricing tab, switching tabs happens on mouse-down instead of mouse-up
 - Fix: [#7544] Starting a headless server with no arguments causes the game to freeze.
+- Fix: [#7571] Hovering a ride design over scenery will give tons of money.
 - Improved: [#2989] Multiplayer window now changes title when tab changes.
 - Improved: [#5339] Change eyedropper icon to actual eyedropper and change cursor to crosshair.
 - Improved: [#5832] Resize tile inspector automatically when selecting a tile element.
