@@ -97,9 +97,7 @@ enum {
     WIDX_TEST_LIGHT,
     WIDX_OPEN_LIGHT,
     WIDX_RIDE_TYPE,
-    WIDX_RIDE_TYPE_INCREASE,
-    WIDX_RIDE_TYPE_DECREASE,
-    WIDX_RIDE_TYPE_APPLY,
+    WIDX_RIDE_TYPE_DROPDOWN,
 
     WIDX_VEHICLE_TYPE = 14,
     WIDX_VEHICLE_TYPE_DROPDOWN,
@@ -231,12 +229,8 @@ static rct_widget window_ride_main_widgets[] = {
     { WWT_IMGBTN,           1,  296,    309,    48,     61,     SPR_G2_RCT1_CLOSE_BUTTON_0,     STR_CLOSE_RIDE_TIP                          },
     { WWT_IMGBTN,           1,  296,    309,    62,     75,     SPR_G2_RCT1_TEST_BUTTON_0,      STR_TEST_RIDE_TIP                           },
     { WWT_IMGBTN,           1,  296,    309,    76,     89,     SPR_G2_RCT1_OPEN_BUTTON_0,      STR_OPEN_RIDE_TIP                           },
-
-    // Ride type spinner + apply button
-    { WWT_SPINNER,          1,  3,      253,    180,    191,    STR_ARG_6_STRINGID,             STR_NONE                                    },
-    { WWT_BUTTON,           1,  242,    252,    181,    185,    STR_NUMERIC_UP,                 STR_NONE                                    },
-    { WWT_BUTTON,           1,  242,    252,    186,    190,    STR_NUMERIC_DOWN,               STR_NONE                                    },
-    { WWT_BUTTON,           1,  260,    307,    180,    191,    STR_APPLY,                      STR_NONE                                    },
+    { WWT_DROPDOWN,         1,  3,      307,    180,    191,    STR_ARG_6_STRINGID,             STR_NONE                                    },
+    { WWT_BUTTON,           1,  297,    307,    180,    191,    STR_DROPDOWN_GLYPH,             STR_NONE                                    },
     { WIDGETS_END },
 };
 
@@ -420,9 +414,7 @@ static constexpr const uint64 window_ride_page_enabled_widgets[] = {
         (1ULL << WIDX_TEST_LIGHT) |
         (1ULL << WIDX_OPEN_LIGHT) |
         (1ULL << WIDX_RIDE_TYPE) |
-        (1ULL << WIDX_RIDE_TYPE_INCREASE) |
-        (1ULL << WIDX_RIDE_TYPE_DECREASE) |
-        (1ULL << WIDX_RIDE_TYPE_APPLY),
+        (1ULL << WIDX_RIDE_TYPE_DROPDOWN),
     MAIN_RIDE_ENABLED_WIDGETS |
         (1ULL << WIDX_VEHICLE_TYPE) |
         (1ULL << WIDX_VEHICLE_TYPE_DROPDOWN) |
@@ -503,8 +495,6 @@ static constexpr const uint64 window_ride_page_enabled_widgets[] = {
 };
 
 static constexpr const uint64 window_ride_page_hold_down_widgets[] = {
-    (1ULL << WIDX_RIDE_TYPE_INCREASE) |
-        (1ULL << WIDX_RIDE_TYPE_DECREASE),
     (1ULL << WIDX_VEHICLE_TRAINS_INCREASE) |
         (1ULL << WIDX_VEHICLE_TRAINS_DECREASE) |
         (1ULL << WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE) |
@@ -2200,23 +2190,8 @@ static void window_ride_main_mousedown(rct_window *w, rct_widgetindex widgetInde
     case WIDX_OPEN:
         window_ride_show_open_dropdown(w, widget);
         break;
-    case WIDX_RIDE_TYPE:
+    case WIDX_RIDE_TYPE_DROPDOWN:
         window_ride_show_ride_type_dropdown(w, widget);
-        break;
-    case WIDX_RIDE_TYPE_INCREASE:
-        _rideType = Math::Min(RIDE_TYPE_COUNT - 1, _rideType + 1);
-        widget_invalidate(w, WIDX_RIDE_TYPE);
-        break;
-    case WIDX_RIDE_TYPE_DECREASE:
-        _rideType = Math::Max(0, _rideType - 1);
-        widget_invalidate(w, WIDX_RIDE_TYPE);
-        break;
-    case WIDX_RIDE_TYPE_APPLY:
-        if (_rideType < RIDE_TYPE_COUNT)
-        {
-            set_operating_setting(w->number, RIDE_SETTING_RIDE_TYPE, _rideType);
-        }
-        window_invalidate_all();
         break;
     }
 }
@@ -2268,10 +2243,14 @@ static void window_ride_main_dropdown(rct_window *w, rct_widgetindex widgetIndex
         }
         ride_set_status(w->number, status);
         break;
-    case WIDX_RIDE_TYPE:
+    case WIDX_RIDE_TYPE_DROPDOWN:
         if (dropdownIndex != -1 && dropdownIndex < RIDE_TYPE_COUNT) {
             _rideType = Math::Clamp(0, dropdownIndex, RIDE_TYPE_COUNT - 1);
-            widget_invalidate(w, WIDX_RIDE_TYPE);
+            if (_rideType < RIDE_TYPE_COUNT)
+            {
+                set_operating_setting(w->number, RIDE_SETTING_RIDE_TYPE, _rideType);
+            }
+            window_invalidate_all();
         }
     }
 }
@@ -2384,32 +2363,20 @@ static void window_ride_main_invalidate(rct_window *w)
     window_ride_main_widgets[WIDX_VIEW].right = w->width - 60;
     window_ride_main_widgets[WIDX_VIEW_DROPDOWN].right = w->width - 61;
     window_ride_main_widgets[WIDX_VIEW_DROPDOWN].left = w->width - 71;
-    window_ride_main_widgets[WIDX_RIDE_TYPE].right = w->width - 87;
+    window_ride_main_widgets[WIDX_RIDE_TYPE].right = w->width - 26;
     window_ride_main_widgets[WIDX_RIDE_TYPE].top = w->height - 17;
     window_ride_main_widgets[WIDX_RIDE_TYPE].bottom = w->height - 4;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].right = w->width - 88;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].left = w->width - 98;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].top = w->height - 16;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].bottom = w->height - 11;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].right = w->width - 88;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].left = w->width - 98;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].top = w->height - 10;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].bottom = w->height - 5;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].left = w->width - 83;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].right = w->width - 26;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].top = w->height - 17;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].bottom = w->height - 4;
+    window_ride_main_widgets[WIDX_RIDE_TYPE_DROPDOWN].left = w->width - 37;
+    window_ride_main_widgets[WIDX_RIDE_TYPE_DROPDOWN].right = w->width - 27;
+    window_ride_main_widgets[WIDX_RIDE_TYPE_DROPDOWN].top = w->height - 16;
+    window_ride_main_widgets[WIDX_RIDE_TYPE_DROPDOWN].bottom = w->height - 5;
 
     if (!gCheatsAllowArbitraryRideTypeChanges) {
         window_ride_main_widgets[WIDX_RIDE_TYPE].type = WWT_EMPTY;
-        window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].type = WWT_EMPTY;
-        window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].type = WWT_EMPTY;
-        window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].type = WWT_EMPTY;
+        window_ride_main_widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WWT_EMPTY;
     } else {
-        window_ride_main_widgets[WIDX_RIDE_TYPE].type = WWT_SPINNER;
-        window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].type = WWT_BUTTON;
-        window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].type = WWT_BUTTON;
-        window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].type = WWT_BUTTON;
+        window_ride_main_widgets[WIDX_RIDE_TYPE].type = WWT_DROPDOWN;
+        window_ride_main_widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WWT_BUTTON;
     }
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
