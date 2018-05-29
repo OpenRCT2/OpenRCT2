@@ -4126,6 +4126,7 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5815    :{SMALLFONT}{BLACK}Display FPS counter in-game
 STR_5816    :{SMALLFONT}{BLACK}Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
 STR_5817    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Sets UI scaling type
+STR_5817    :{SMALLFONT}{BLACK}Setter skaleringsmetode for brukergrensesnitt. Krever hardware rendering.{NEWLINE}Lineær skalering er jevn, men utydelig. 'Jevn nærmeste-nabo'-skalering er skarp, men er mer krevende.
 STR_5818    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Use nearest neighbour scaling{NEWLINE}when window scaling factor set{NEWLINE}to integer values (1, 2, 3, etc)
 STR_5819    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
 STR_5820    :{SMALLFONT}{BLACK}Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
@@ -4468,6 +4469,8 @@ STR_6154    :Det er ikke anbefalt å kjøre OpenRCT2 med opphøyde brukerrettigh
 STR_6155    :Hverken KDialog eller Zenity er installert. Installer en av dem, eller konfigurer fra kommandolinjen.
 STR_6156    :Reservert navn
 STR_6157    :Kommandolinje
+STR_6158    :Kunne ikke laste inn fil...{NEWLINE}RCTC-versjon {COMMA16} er ikke kompatibel.
+STR_6159    :Jevn nærmeste-nabo
 
 #############
 # Scenarios #
