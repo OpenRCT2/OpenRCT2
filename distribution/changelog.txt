@@ -33,7 +33,7 @@
 - Fix: [#7480] Graphs skip values of 0.
 - Fix: [#7528] In park entrance pricing tab, switching tabs happens on mouse-down instead of mouse-up
 - Fix: [#7544] Starting a headless server with no arguments causes the game to freeze.
-- Fix: [#7571] Hovering a ride design over scenery will give tons of money.
+- Fix: [#7571] Hovering a ride design over scenery or tracks will give tons of money.
 - Improved: [#2989] Multiplayer window now changes title when tab changes.
 - Improved: [#5339] Change eyedropper icon to actual eyedropper and change cursor to crosshair.
 - Improved: [#5832] Resize tile inspector automatically when selecting a tile element.
@@ -46,6 +46,7 @@
 - Improved: [#7548] Ctrl-clicking with the tile inspector open now directly selects an element and its tile.
 - Improved: [#7555] Allow setting the Twitch API URL, allowing custom API servers.
 - Improved: [#7567] Improve the performance of loading parks and the title sequence.
+- Improved: [#7577] Allow fine-tuning the virtual floor style.
 
 0.1.2 (2018-03-18)
 ------------------------------------------------------------------------
