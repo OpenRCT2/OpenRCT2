@@ -35,6 +35,7 @@
 #include "../localisation/Currency.h"
 #include "../localisation/Date.h"
 #include "../localisation/Language.h"
+#include "../paint/VirtualFloor.h"
 #include "../platform/platform.h"
 #include "../scenario/Scenario.h"
 
@@ -107,6 +108,13 @@ namespace Config
         ConfigEnumEntry<sint32>("SMOOTH_NEAREST_NEIGHBOUR", SCALE_QUALITY_SMOOTH_NN),
     });
 
+    static const auto Enum_VirtualFloorStyle = ConfigEnum<sint32>(
+    {
+        ConfigEnumEntry<sint32>("OFF", VIRTUAL_FLOOR_STYLE_OFF),
+        ConfigEnumEntry<sint32>("CLEAR", VIRTUAL_FLOOR_STYLE_CLEAR),
+        ConfigEnumEntry<sint32>("GLASSY", VIRTUAL_FLOOR_STYLE_GLASSY),
+    });
+
     /**
      * Config enum wrapping LanguagesDescriptors.
      */
@@ -169,9 +177,7 @@ namespace Config
             model->drawing_engine = reader->GetEnum<sint32>("drawing_engine", DRAWING_ENGINE_SOFTWARE, Enum_DrawingEngine);
             model->uncap_fps = reader->GetBoolean("uncap_fps", false);
             model->use_vsync = reader->GetBoolean("use_vsync", true);
-            model->virtual_floor_style = reader->GetSint32("virtual_floor_style", 2);
-            if (model->virtual_floor_style < 0 || model->virtual_floor_style > 2)
-                model->virtual_floor_style = 2;
+            model->virtual_floor_style = reader->GetEnum<sint32>("virtual_floor_style", VIRTUAL_FLOOR_STYLE_GLASSY, Enum_VirtualFloorStyle);
 
             // Default config setting is false until ghost trains are implemented #4540
             model->test_unfinished_tracks = reader->GetBoolean("test_unfinished_tracks", false);
@@ -284,7 +290,7 @@ namespace Config
         writer->WriteBoolean("show_guest_purchases", model->show_guest_purchases);
         writer->WriteBoolean("show_real_names_of_guests", model->show_real_names_of_guests);
         writer->WriteBoolean("allow_early_completion", model->allow_early_completion);
-        writer->WriteSint32("virtual_floor_style", model->virtual_floor_style);
+        writer->WriteEnum<sint32>("virtual_floor_style", model->virtual_floor_style, Enum_VirtualFloorStyle);
     }
 
     static void ReadInterface(IIniReader * reader)

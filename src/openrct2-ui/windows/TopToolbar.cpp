@@ -1299,7 +1299,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             *parameter_2 = (cl ^ (1 << 1)) | (gWindowSceneryPrimaryColour << 8);
             *parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
 
-            if (gConfigGeneral.virtual_floor_style > 0)
+            if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_OFF)
             {
                 virtual_floor_set_height(gSceneryPlaceZ);
             }
@@ -1556,7 +1556,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
     }
     }
 
-    if (gConfigGeneral.virtual_floor_style > 0)
+    if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_OFF)
     {
         virtual_floor_set_height(gSceneryPlaceZ);
     }
@@ -2465,7 +2465,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
     map_invalidate_selection_rect();
     map_invalidate_map_selection_tiles();
 
-    if (gConfigGeneral.virtual_floor_style > 0)
+    if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_OFF)
     {
         virtual_floor_invalidate();
     }
