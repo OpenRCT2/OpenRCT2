@@ -32,6 +32,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectManager.h>
@@ -1222,6 +1223,17 @@ static constexpr const rct_window_graphs_y_axis window_graphs_y_axi[] = {
     {13, -4, 1,  STR_RIDE_STATS_G_FORCE_FORMAT},    // GRAPH_LATERAL
 };
 
+// Used for sorting the ride type cheat dropdown.
+struct RideTypeLabel
+{
+    uint8 ride_type_id;
+    rct_string_id label_id;
+    const char* label_string;
+};
+
+static sint32 RideDropdownDataLanguage = LANGUAGE_UNDEFINED;
+static std::vector<RideTypeLabel> RideDropdownData;
+
 static void window_ride_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, sint32 page, sint32 spriteIndex)
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
@@ -2154,27 +2166,59 @@ static void window_ride_show_open_dropdown(rct_window *w, rct_widget *widget)
     gDropdownDefaultIndex = highlightedIndex;
 }
 
+static void populate_ride_type_dropdown()
+{
+    auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
+    if (RideDropdownDataLanguage == ls.GetCurrentLanguage())
+        return;
+
+    RideDropdownData.clear();
+
+    for (uint8 i = 0; i < RIDE_TYPE_COUNT; i++)
+    {
+        RideTypeLabel label = { i, RideNaming[i].name, ls.GetString(RideNaming[i].name) };
+        RideDropdownData.push_back(label);
+    }
+
+    std::sort(RideDropdownData.begin(), RideDropdownData.end(), [](auto& a, auto& b) { return std::strcmp(a.label_string, b.label_string) < 0; });
+}
+
 static void window_ride_show_ride_type_dropdown(rct_window *w, rct_widget *widget)
 {
     assert(_rideType == Math::Clamp<uint8>(0, _rideType, RIDE_TYPE_COUNT));
 
-    for (sint32 i = 0; i < RIDE_TYPE_COUNT; i++) {
+    populate_ride_type_dropdown();
+
+    for (size_t i = 0; i < RideDropdownData.size(); i++)
+    {
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = RideNaming[i].name;
+        gDropdownItemsArgs[i] = RideDropdownData[i].label_id;
     }
 
+    rct_widget *dropdownWidget = widget - 1;
     window_dropdown_show_text(
-        w->x + widget->left,
-        w->y + widget->top,
-        widget->bottom - widget->top + 1,
+        w->x + dropdownWidget->left,
+        w->y + dropdownWidget->top,
+        dropdownWidget->bottom - dropdownWidget->top + 1,
         w->colours[1],
         DROPDOWN_FLAG_STAY_OPEN,
         RIDE_TYPE_COUNT
     );
 
-    gDropdownHighlightedIndex = _rideType;
-    gDropdownDefaultIndex = _rideType;
-    dropdown_set_checked(_rideType, true);
+    // Find the current ride type in the ordered list.
+    uint8 pos = 0;
+    for (uint8 i = 0; i < RIDE_TYPE_COUNT; i++)
+    {
+        if (RideDropdownData[i].ride_type_id == _rideType)
+        {
+            pos = i;
+            break;
+        }
+    }
+
+    gDropdownHighlightedIndex = pos;
+    gDropdownDefaultIndex = pos;
+    dropdown_set_checked(pos, true);
 }
 
 /**
@@ -2244,8 +2288,10 @@ static void window_ride_main_dropdown(rct_window *w, rct_widgetindex widgetIndex
         ride_set_status(w->number, status);
         break;
     case WIDX_RIDE_TYPE_DROPDOWN:
-        if (dropdownIndex != -1 && dropdownIndex < RIDE_TYPE_COUNT) {
-            _rideType = Math::Clamp(0, dropdownIndex, RIDE_TYPE_COUNT - 1);
+        if (dropdownIndex != -1 && dropdownIndex < RIDE_TYPE_COUNT)
+        {
+            uint8 rideLabelId = Math::Clamp(0, dropdownIndex, RIDE_TYPE_COUNT - 1);
+            _rideType = RideDropdownData[rideLabelId].ride_type_id;
             if (_rideType < RIDE_TYPE_COUNT)
             {
                 set_operating_setting(w->number, RIDE_SETTING_RIDE_TYPE, _rideType);
