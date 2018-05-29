@@ -4559,9 +4559,9 @@ STR_6249    :{WINDOW_COLOUR_1}Do you want to refurbish {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}Are you sure you want to completely demolish {STRINGID} and gain {CURRENCY}?
 STR_6251    :Ride is not empty yet
 STR_6252    :Twitch API URL
-STR_6253    :{SMALLFONT}{BLACK}Provide URL of Twitch integration API. Must be required in order to enable Twitch integration.
-STR_6254    :Please input URL of Twitch integration API.
-STR_6255    :URL is not valid.
+STR_6253    :{SMALLFONT}{BLACK}Provide URL of Twitch integration API. Required in order to enable Twitch integration.
+STR_6254    :URL of Twitch integration API:
+STR_6255    :URL is not valid
 
 #############
 # Scenarios #
