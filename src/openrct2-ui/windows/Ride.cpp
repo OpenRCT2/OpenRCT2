@@ -32,6 +32,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectManager.h>
@@ -97,9 +98,7 @@ enum {
     WIDX_TEST_LIGHT,
     WIDX_OPEN_LIGHT,
     WIDX_RIDE_TYPE,
-    WIDX_RIDE_TYPE_INCREASE,
-    WIDX_RIDE_TYPE_DECREASE,
-    WIDX_RIDE_TYPE_APPLY,
+    WIDX_RIDE_TYPE_DROPDOWN,
 
     WIDX_VEHICLE_TYPE = 14,
     WIDX_VEHICLE_TYPE_DROPDOWN,
@@ -231,12 +230,8 @@ static rct_widget window_ride_main_widgets[] = {
     { WWT_IMGBTN,           1,  296,    309,    48,     61,     SPR_G2_RCT1_CLOSE_BUTTON_0,     STR_CLOSE_RIDE_TIP                          },
     { WWT_IMGBTN,           1,  296,    309,    62,     75,     SPR_G2_RCT1_TEST_BUTTON_0,      STR_TEST_RIDE_TIP                           },
     { WWT_IMGBTN,           1,  296,    309,    76,     89,     SPR_G2_RCT1_OPEN_BUTTON_0,      STR_OPEN_RIDE_TIP                           },
-
-    // Ride type spinner + apply button
-    { WWT_SPINNER,          1,  3,      253,    180,    191,    STR_ARG_6_STRINGID,             STR_NONE                                    },
-    { WWT_BUTTON,           1,  242,    252,    181,    185,    STR_NUMERIC_UP,                 STR_NONE                                    },
-    { WWT_BUTTON,           1,  242,    252,    186,    190,    STR_NUMERIC_DOWN,               STR_NONE                                    },
-    { WWT_BUTTON,           1,  260,    307,    180,    191,    STR_APPLY,                      STR_NONE                                    },
+    { WWT_DROPDOWN,         1,  3,      307,    180,    191,    STR_ARG_6_STRINGID,             STR_NONE                                    },
+    { WWT_BUTTON,           1,  297,    307,    180,    191,    STR_DROPDOWN_GLYPH,             STR_NONE                                    },
     { WIDGETS_END },
 };
 
@@ -420,9 +415,7 @@ static constexpr const uint64 window_ride_page_enabled_widgets[] = {
         (1ULL << WIDX_TEST_LIGHT) |
         (1ULL << WIDX_OPEN_LIGHT) |
         (1ULL << WIDX_RIDE_TYPE) |
-        (1ULL << WIDX_RIDE_TYPE_INCREASE) |
-        (1ULL << WIDX_RIDE_TYPE_DECREASE) |
-        (1ULL << WIDX_RIDE_TYPE_APPLY),
+        (1ULL << WIDX_RIDE_TYPE_DROPDOWN),
     MAIN_RIDE_ENABLED_WIDGETS |
         (1ULL << WIDX_VEHICLE_TYPE) |
         (1ULL << WIDX_VEHICLE_TYPE_DROPDOWN) |
@@ -503,8 +496,6 @@ static constexpr const uint64 window_ride_page_enabled_widgets[] = {
 };
 
 static constexpr const uint64 window_ride_page_hold_down_widgets[] = {
-    (1ULL << WIDX_RIDE_TYPE_INCREASE) |
-        (1ULL << WIDX_RIDE_TYPE_DECREASE),
     (1ULL << WIDX_VEHICLE_TRAINS_INCREASE) |
         (1ULL << WIDX_VEHICLE_TRAINS_DECREASE) |
         (1ULL << WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE) |
@@ -1231,6 +1222,17 @@ static constexpr const rct_window_graphs_y_axis window_graphs_y_axi[] = {
     {13, -3, 1,  STR_RIDE_STATS_G_FORCE_FORMAT},    // GRAPH_VERTICAL
     {13, -4, 1,  STR_RIDE_STATS_G_FORCE_FORMAT},    // GRAPH_LATERAL
 };
+
+// Used for sorting the ride type cheat dropdown.
+struct RideTypeLabel
+{
+    uint8 ride_type_id;
+    rct_string_id label_id;
+    const char* label_string;
+};
+
+static sint32 RideDropdownDataLanguage = LANGUAGE_UNDEFINED;
+static std::vector<RideTypeLabel> RideDropdownData;
 
 static void window_ride_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, sint32 page, sint32 spriteIndex)
 {
@@ -2164,27 +2166,59 @@ static void window_ride_show_open_dropdown(rct_window *w, rct_widget *widget)
     gDropdownDefaultIndex = highlightedIndex;
 }
 
+static void populate_ride_type_dropdown()
+{
+    auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
+    if (RideDropdownDataLanguage == ls.GetCurrentLanguage())
+        return;
+
+    RideDropdownData.clear();
+
+    for (uint8 i = 0; i < RIDE_TYPE_COUNT; i++)
+    {
+        RideTypeLabel label = { i, RideNaming[i].name, ls.GetString(RideNaming[i].name) };
+        RideDropdownData.push_back(label);
+    }
+
+    std::sort(RideDropdownData.begin(), RideDropdownData.end(), [](auto& a, auto& b) { return std::strcmp(a.label_string, b.label_string) < 0; });
+}
+
 static void window_ride_show_ride_type_dropdown(rct_window *w, rct_widget *widget)
 {
     assert(_rideType == Math::Clamp<uint8>(0, _rideType, RIDE_TYPE_COUNT));
 
-    for (sint32 i = 0; i < RIDE_TYPE_COUNT; i++) {
+    populate_ride_type_dropdown();
+
+    for (size_t i = 0; i < RideDropdownData.size(); i++)
+    {
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = RideNaming[i].name;
+        gDropdownItemsArgs[i] = RideDropdownData[i].label_id;
     }
 
+    rct_widget *dropdownWidget = widget - 1;
     window_dropdown_show_text(
-        w->x + widget->left,
-        w->y + widget->top,
-        widget->bottom - widget->top + 1,
+        w->x + dropdownWidget->left,
+        w->y + dropdownWidget->top,
+        dropdownWidget->bottom - dropdownWidget->top + 1,
         w->colours[1],
         DROPDOWN_FLAG_STAY_OPEN,
         RIDE_TYPE_COUNT
     );
 
-    gDropdownHighlightedIndex = _rideType;
-    gDropdownDefaultIndex = _rideType;
-    dropdown_set_checked(_rideType, true);
+    // Find the current ride type in the ordered list.
+    uint8 pos = 0;
+    for (uint8 i = 0; i < RIDE_TYPE_COUNT; i++)
+    {
+        if (RideDropdownData[i].ride_type_id == _rideType)
+        {
+            pos = i;
+            break;
+        }
+    }
+
+    gDropdownHighlightedIndex = pos;
+    gDropdownDefaultIndex = pos;
+    dropdown_set_checked(pos, true);
 }
 
 /**
@@ -2200,23 +2234,8 @@ static void window_ride_main_mousedown(rct_window *w, rct_widgetindex widgetInde
     case WIDX_OPEN:
         window_ride_show_open_dropdown(w, widget);
         break;
-    case WIDX_RIDE_TYPE:
+    case WIDX_RIDE_TYPE_DROPDOWN:
         window_ride_show_ride_type_dropdown(w, widget);
-        break;
-    case WIDX_RIDE_TYPE_INCREASE:
-        _rideType = Math::Min(RIDE_TYPE_COUNT - 1, _rideType + 1);
-        widget_invalidate(w, WIDX_RIDE_TYPE);
-        break;
-    case WIDX_RIDE_TYPE_DECREASE:
-        _rideType = Math::Max(0, _rideType - 1);
-        widget_invalidate(w, WIDX_RIDE_TYPE);
-        break;
-    case WIDX_RIDE_TYPE_APPLY:
-        if (_rideType < RIDE_TYPE_COUNT)
-        {
-            set_operating_setting(w->number, RIDE_SETTING_RIDE_TYPE, _rideType);
-        }
-        window_invalidate_all();
         break;
     }
 }
@@ -2268,10 +2287,16 @@ static void window_ride_main_dropdown(rct_window *w, rct_widgetindex widgetIndex
         }
         ride_set_status(w->number, status);
         break;
-    case WIDX_RIDE_TYPE:
-        if (dropdownIndex != -1 && dropdownIndex < RIDE_TYPE_COUNT) {
-            _rideType = Math::Clamp(0, dropdownIndex, RIDE_TYPE_COUNT - 1);
-            widget_invalidate(w, WIDX_RIDE_TYPE);
+    case WIDX_RIDE_TYPE_DROPDOWN:
+        if (dropdownIndex != -1 && dropdownIndex < RIDE_TYPE_COUNT)
+        {
+            uint8 rideLabelId = Math::Clamp(0, dropdownIndex, RIDE_TYPE_COUNT - 1);
+            _rideType = RideDropdownData[rideLabelId].ride_type_id;
+            if (_rideType < RIDE_TYPE_COUNT)
+            {
+                set_operating_setting(w->number, RIDE_SETTING_RIDE_TYPE, _rideType);
+            }
+            window_invalidate_all();
         }
     }
 }
@@ -2384,32 +2409,20 @@ static void window_ride_main_invalidate(rct_window *w)
     window_ride_main_widgets[WIDX_VIEW].right = w->width - 60;
     window_ride_main_widgets[WIDX_VIEW_DROPDOWN].right = w->width - 61;
     window_ride_main_widgets[WIDX_VIEW_DROPDOWN].left = w->width - 71;
-    window_ride_main_widgets[WIDX_RIDE_TYPE].right = w->width - 87;
+    window_ride_main_widgets[WIDX_RIDE_TYPE].right = w->width - 26;
     window_ride_main_widgets[WIDX_RIDE_TYPE].top = w->height - 17;
     window_ride_main_widgets[WIDX_RIDE_TYPE].bottom = w->height - 4;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].right = w->width - 88;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].left = w->width - 98;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].top = w->height - 16;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].bottom = w->height - 11;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].right = w->width - 88;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].left = w->width - 98;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].top = w->height - 10;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].bottom = w->height - 5;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].left = w->width - 83;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].right = w->width - 26;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].top = w->height - 17;
-    window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].bottom = w->height - 4;
+    window_ride_main_widgets[WIDX_RIDE_TYPE_DROPDOWN].left = w->width - 37;
+    window_ride_main_widgets[WIDX_RIDE_TYPE_DROPDOWN].right = w->width - 27;
+    window_ride_main_widgets[WIDX_RIDE_TYPE_DROPDOWN].top = w->height - 16;
+    window_ride_main_widgets[WIDX_RIDE_TYPE_DROPDOWN].bottom = w->height - 5;
 
     if (!gCheatsAllowArbitraryRideTypeChanges) {
         window_ride_main_widgets[WIDX_RIDE_TYPE].type = WWT_EMPTY;
-        window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].type = WWT_EMPTY;
-        window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].type = WWT_EMPTY;
-        window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].type = WWT_EMPTY;
+        window_ride_main_widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WWT_EMPTY;
     } else {
-        window_ride_main_widgets[WIDX_RIDE_TYPE].type = WWT_SPINNER;
-        window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].type = WWT_BUTTON;
-        window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].type = WWT_BUTTON;
-        window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].type = WWT_BUTTON;
+        window_ride_main_widgets[WIDX_RIDE_TYPE].type = WWT_DROPDOWN;
+        window_ride_main_widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WWT_BUTTON;
     }
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
