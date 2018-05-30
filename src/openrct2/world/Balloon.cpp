@@ -17,6 +17,7 @@
 #include "../network/network.h"
 
 #include "../audio/audio.h"
+#include "../config/Config.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "Sprite.h"
@@ -89,7 +90,17 @@ void rct_balloon::Pop()
 {
     popped = 1;
     frame = 0;
-    audio_play_sound_at_location(SOUND_BALLOON_POP, x, y, z);
+
+    if (!gConfigGeneral.balloons_explode)
+    {
+        audio_play_sound_at_location(SOUND_BALLOON_POP, x, y, z);
+    }
+    else
+    {
+        audio_play_sound_at_location(SOUND_CRASH, x, y, z + 12);
+        sprite_misc_explosion_cloud_create(x, y, z + 14);
+        sprite_misc_explosion_flare_create(x, y, z + 14);
+    }
 }
 
 static money32 game_command_balloon_press(uint16 spriteIndex, uint8 flags)

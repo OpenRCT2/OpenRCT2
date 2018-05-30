@@ -89,6 +89,7 @@ struct GeneralConfiguration
     bool        steam_overlay_pause;
     bool        show_real_names_of_guests;
     bool        allow_early_completion;
+    bool        balloons_explode;
 
     bool        confirmation_prompt;
     sint32      load_save_sort;
