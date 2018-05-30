@@ -1238,7 +1238,7 @@ enum {
     RCT1_LANDSCAPE_DOOR_OPEN = 3,
 };
 
-ParkLoadResult * load_from_sv4(const char *path);
-ParkLoadResult * load_from_sc4(const char *path);
+void load_from_sv4(const char *path);
+void load_from_sc4(const char *path);
 
 #endif

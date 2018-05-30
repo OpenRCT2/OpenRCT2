@@ -44,6 +44,7 @@
 - Improved: [#7531] "Save track design" dropdown now stays open.
 - Improved: [#7548] Ctrl-clicking with the tile inspector open now directly selects an element and its tile.
 - Improved: [#7555] Allow setting the Twitch API URL, allowing custom API servers.
+- Improved: [#7567] Improve the performance of loading parks and the title sequence.
 
 0.1.2 (2018-03-18)
 ------------------------------------------------------------------------

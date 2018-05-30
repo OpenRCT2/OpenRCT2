@@ -108,7 +108,7 @@ public:
 class S4Importer final : public IParkImporter
 {
 private:
-    const utf8 * _s4Path = nullptr;
+    std::string  _s4Path;
     rct1_s4      _s4 = { 0 };
     uint8        _gameVersion = 0;
     uint8        _parkValueConversionFactor = 0;
@@ -174,51 +174,16 @@ public:
 
     ParkLoadResult LoadFromStream(IStream * stream,
                                   bool isScenario,
-                                  bool skipObjectCheck = false,
-                                  const utf8 * path = String::Empty) override
+                                  bool skipObjectCheck,
+                                  const utf8 * path) override
     {
-        size_t dataSize = stream->GetLength() - stream->GetPosition();
-        auto deleter_lambda = [dataSize](uint8 * ptr) { Memory::FreeArray(ptr, dataSize); };
-        auto data = std::unique_ptr<uint8, decltype(deleter_lambda)>(stream->ReadArray<uint8>(dataSize), deleter_lambda);
-        auto decodedData = std::unique_ptr<uint8, decltype(&Memory::Free<uint8>)>(Memory::Allocate<uint8>(sizeof(rct1_s4)), &Memory::Free<uint8>);
+        _s4 = *ReadAndDecodeS4(stream, isScenario);
+        _s4Path = path;
 
-        size_t decodedSize;
-        sint32 fileType = sawyercoding_detect_file_type(data.get(), dataSize);
-        if (isScenario && (fileType & FILE_VERSION_MASK) != FILE_VERSION_RCT1)
-        {
-            decodedSize = sawyercoding_decode_sc4(data.get(), decodedData.get(), dataSize, sizeof(rct1_s4));
-        }
-        else
-        {
-            decodedSize = sawyercoding_decode_sv4(data.get(), decodedData.get(), dataSize, sizeof(rct1_s4));
-        }
-
-        if (decodedSize == sizeof(rct1_s4))
-        {
-            std::memcpy(&_s4, decodedData.get(), sizeof(rct1_s4));
-            if (_s4Path)
-            {
-                Memory::Free(_s4Path);
-            }
-            _s4Path = String::Duplicate(path);
-
-            if (!skipObjectCheck)
-            {
-                InitialiseEntryMaps();
-                CreateAvailableObjectMappings();
-
-                auto missingObjects = GetInvalidObjects();
-                if (!missingObjects.empty())
-                {
-                    return ParkLoadResult::CreateMissingObjects(missingObjects);
-                }
-            }
-        }
-        else
-        {
-            throw std::runtime_error("Unable to decode park.");
-        }
-        return ParkLoadResult::CreateOK();
+        // Only determine what objects we required to import this saved game
+        InitialiseEntryMaps();
+        CreateAvailableObjectMappings();
+        return ParkLoadResult(GetRequiredObjects());
     }
 
     void Import() override
@@ -333,6 +298,36 @@ public:
     }
 
 private:
+    std::unique_ptr<rct1_s4> ReadAndDecodeS4(IStream * stream, bool isScenario)
+    {
+        auto s4 = std::make_unique<rct1_s4>();
+        size_t dataSize = stream->GetLength() - stream->GetPosition();
+        auto deleter_lambda = [dataSize](uint8 * ptr) { Memory::FreeArray(ptr, dataSize); };
+        auto data = std::unique_ptr<uint8, decltype(deleter_lambda)>(stream->ReadArray<uint8>(dataSize), deleter_lambda);
+        auto decodedData = std::unique_ptr<uint8, decltype(&Memory::Free<uint8>)>(Memory::Allocate<uint8>(sizeof(rct1_s4)), &Memory::Free<uint8>);
+
+        size_t decodedSize;
+        sint32 fileType = sawyercoding_detect_file_type(data.get(), dataSize);
+        if (isScenario && (fileType & FILE_VERSION_MASK) != FILE_VERSION_RCT1)
+        {
+            decodedSize = sawyercoding_decode_sc4(data.get(), decodedData.get(), dataSize, sizeof(rct1_s4));
+        }
+        else
+        {
+            decodedSize = sawyercoding_decode_sv4(data.get(), decodedData.get(), dataSize, sizeof(rct1_s4));
+        }
+
+        if (decodedSize == sizeof(rct1_s4))
+        {
+            std::memcpy(s4.get(), decodedData.get(), sizeof(rct1_s4));
+            return s4;
+        }
+        else
+        {
+            throw std::runtime_error("Unable to decode park.");
+        }
+    }
+
     void Initialise()
     {
         _gameVersion = sawyercoding_detect_rct1_version(_s4.game_version) & FILE_VERSION_MASK;
@@ -1890,17 +1885,33 @@ private:
         }
     }
 
-    std::vector<rct_object_entry> GetInvalidObjects()
+    void AppendRequiredObjects(std::vector<rct_object_entry>& entries, uint8 objectType, const EntryList& entryList)
     {
-        std::vector<rct_object_entry> missingObjects;
-        GetInvalidObjects(OBJECT_TYPE_RIDE, _rideEntries.GetEntries(), missingObjects);
-        GetInvalidObjects(OBJECT_TYPE_SMALL_SCENERY, _smallSceneryEntries.GetEntries(), missingObjects);
-        GetInvalidObjects(OBJECT_TYPE_LARGE_SCENERY, _largeSceneryEntries.GetEntries(), missingObjects);
-        GetInvalidObjects(OBJECT_TYPE_WALLS, _wallEntries.GetEntries(), missingObjects);
-        GetInvalidObjects(OBJECT_TYPE_PATHS, _pathEntries.GetEntries(), missingObjects);
-        GetInvalidObjects(OBJECT_TYPE_PATH_BITS, _pathAdditionEntries.GetEntries(), missingObjects);
-        GetInvalidObjects(OBJECT_TYPE_SCENERY_GROUP, _sceneryGroupEntries.GetEntries(), missingObjects);
-        GetInvalidObjects(OBJECT_TYPE_BANNERS, std::vector<const char *>({
+        AppendRequiredObjects(entries, objectType, entryList.GetEntries());
+    }
+
+    void AppendRequiredObjects(std::vector<rct_object_entry>& entries, uint8 objectType, const std::vector<const char *>& objectNames)
+    {
+        for (const auto objectName : objectNames)
+        {
+            rct_object_entry entry{};
+            entry.flags = ((OBJECT_SOURCE_RCT2 << 4) & 0xF0) | (objectType & 0x0F);
+            entry.SetName(objectName);
+            entries.push_back(entry);
+        }
+    }
+
+    std::vector<rct_object_entry> GetRequiredObjects()
+    {
+        std::vector<rct_object_entry> result;
+        AppendRequiredObjects(result, OBJECT_TYPE_RIDE, _rideEntries);
+        AppendRequiredObjects(result, OBJECT_TYPE_SMALL_SCENERY, _smallSceneryEntries);
+        AppendRequiredObjects(result, OBJECT_TYPE_LARGE_SCENERY, _largeSceneryEntries);
+        AppendRequiredObjects(result, OBJECT_TYPE_WALLS, _wallEntries);
+        AppendRequiredObjects(result, OBJECT_TYPE_PATHS, _pathEntries);
+        AppendRequiredObjects(result, OBJECT_TYPE_PATH_BITS, _pathAdditionEntries);
+        AppendRequiredObjects(result, OBJECT_TYPE_SCENERY_GROUP, _sceneryGroupEntries);
+        AppendRequiredObjects(result, OBJECT_TYPE_BANNERS, std::vector<const char *>({
             "BN1     ",
             "BN2     ",
             "BN3     ",
@@ -1909,11 +1920,10 @@ private:
             "BN6     ",
             "BN7     ",
             "BN8     ",
-            "BN9     "
-        }), missingObjects);
-        GetInvalidObjects(OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char *>({ "PKENT1  " }), missingObjects);
-        GetInvalidObjects(OBJECT_TYPE_WATER, _waterEntry.GetEntries(), missingObjects);
-        return missingObjects;
+            "BN9     " }));
+        AppendRequiredObjects(result, OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char *>({ "PKENT1  " }));
+        AppendRequiredObjects(result, OBJECT_TYPE_WATER, _waterEntry);
+        return result;
     }
 
     void GetInvalidObjects(uint8 objectType, const std::vector<const char *> &entries, std::vector<rct_object_entry> &missingObjects)
@@ -2843,44 +2853,22 @@ std::unique_ptr<IParkImporter> ParkImporter::CreateS4()
     return std::make_unique<S4Importer>();
 }
 
-ParkLoadResult * load_from_sv4(const utf8 * path)
+void load_from_sv4(const utf8 * path)
 {
-    ParkLoadResult * result = nullptr;
+    auto objectMgr = GetContext()->GetObjectManager();
     auto s4Importer = std::make_unique<S4Importer>();
-    try
-    {
-        result = new ParkLoadResult(s4Importer->LoadSavedGame(path));
-        if (result->Error == PARK_LOAD_ERROR_OK)
-        {
-            s4Importer->Import();
-        }
-    }
-    catch (const std::exception &)
-    {
-        delete result;
-        result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
-    }
-    return result;
+    auto result = s4Importer->LoadSavedGame(path);
+    objectMgr->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+    s4Importer->Import();
 }
 
-ParkLoadResult * load_from_sc4(const utf8 * path)
+void load_from_sc4(const utf8 * path)
 {
-    ParkLoadResult * result = nullptr;
+    auto objectMgr = GetContext()->GetObjectManager();
     auto s4Importer = std::make_unique<S4Importer>();
-    try
-    {
-        result = new ParkLoadResult(s4Importer->LoadScenario(path));
-        if (result->Error == PARK_LOAD_ERROR_OK)
-        {
-            s4Importer->Import();
-        }
-    }
-    catch (const std::exception &)
-    {
-        delete result;
-        result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
-    }
-    return result;
+    auto result = s4Importer->LoadScenario(path);
+    objectMgr->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+    s4Importer->Import();
 }
 
 static uint8 GetPathType(rct_tile_element * tileElement)

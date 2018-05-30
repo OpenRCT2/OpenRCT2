@@ -22,6 +22,7 @@
 #include "../core/Math.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../object/ObjectManager.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../scenario/ScenarioRepository.h"
@@ -417,7 +418,11 @@ private:
             else
             {
                 auto parkImporter = ParkImporter::Create(path);
-                parkImporter->Load(path);
+                auto result = parkImporter->Load(path);
+
+                auto objectManager = GetContext()->GetObjectManager();
+                objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+
                 parkImporter->Import();
             }
             PrepareParkForPlayback();
@@ -452,7 +457,11 @@ private:
                 std::string extension = Path::GetExtension(hintPath);
                 bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
                 auto parkImporter = ParkImporter::Create(hintPath);
-                parkImporter->LoadFromStream(stream, isScenario);
+                auto result = parkImporter->LoadFromStream(stream, isScenario);
+
+                auto objectManager = GetContext()->GetObjectManager();
+                objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+
                 parkImporter->Import();
             }
             PrepareParkForPlayback();

@@ -16,6 +16,7 @@
 
 #include <openrct2/config/Config.h>
 #include <openrct2/FileClassifier.h>
+#include <openrct2/object/ObjectManager.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/scenario/ScenarioSources.h>
@@ -374,10 +375,16 @@ static void window_title_editor_mouseup(rct_window * w, rct_widgetindex widgetIn
     case WIDX_TITLE_EDITOR_LOAD_SAVE:
         if (w->selected_list_item >= 0 && w->selected_list_item < (sint16)_editingTitleSequence->NumSaves)
         {
-            TitleSequenceParkHandle * handle = TitleSequenceGetParkHandle(_editingTitleSequence, w->selected_list_item);
-            const utf8 * extension = path_get_extension(handle->HintPath);
-            bool isScenario = park_importer_extension_is_scenario(extension);
-            park_importer_load_from_stream(handle->Stream, handle->HintPath);
+            auto handle = TitleSequenceGetParkHandle(_editingTitleSequence, w->selected_list_item);
+            auto stream = (IStream *)handle->Stream;
+            auto hintPath = String::ToStd(handle->HintPath);
+
+            bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
+            auto objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+            auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
+            auto result = parkImporter->LoadFromStream(stream, isScenario);
+            objectMgr->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+            parkImporter->Import();
 
             if (isScenario)
                 scenario_begin();

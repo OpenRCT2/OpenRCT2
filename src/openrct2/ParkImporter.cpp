@@ -22,81 +22,6 @@
 #include "object/ObjectRepository.h"
 #include "ParkImporter.h"
 
-ParkLoadResult::ParkLoadResult(PARK_LOAD_ERROR error)
-    : Error(error),
-      Flag(0)
-{
-}
-
-ParkLoadResult::ParkLoadResult(PARK_LOAD_ERROR error, const std::vector<rct_object_entry> &missingObjects)
-    : Error(error),
-      MissingObjects(missingObjects),
-      Flag(0)
-{
-}
-
-ParkLoadResult::ParkLoadResult(PARK_LOAD_ERROR error, const uint8 flag)
-    : Error(error),
-      Flag(flag)
-{
-}
-
-ParkLoadResult ParkLoadResult::CreateOK()
-{
-    return ParkLoadResult(PARK_LOAD_ERROR::PARK_LOAD_ERROR_OK);
-}
-
-ParkLoadResult ParkLoadResult::CreateInvalidExtension()
-{
-    return ParkLoadResult(PARK_LOAD_ERROR::PARK_LOAD_ERROR_INVALID_EXTENSION);
-}
-
-ParkLoadResult ParkLoadResult::CreateMissingObjects(const std::vector<rct_object_entry> &missingObjects)
-{
-    return ParkLoadResult(PARK_LOAD_ERROR::PARK_LOAD_ERROR_MISSING_OBJECTS, missingObjects);
-}
-
-ParkLoadResult ParkLoadResult::CreateUnknown()
-{
-    return ParkLoadResult(PARK_LOAD_ERROR::PARK_LOAD_ERROR_UNKNOWN);
-}
-
-ParkLoadResult ParkLoadResult::CreateUnsupportedRCTCflag(uint8 classic_flag)
-{
-    return ParkLoadResult(PARK_LOAD_ERROR::PARK_LOAD_ERROR_UNSUPPORTED_RCTC_FLAG, classic_flag);
-}
-
-PARK_LOAD_ERROR ParkLoadResult_GetError(const ParkLoadResult * t)
-{
-    return t->Error;
-}
-
-size_t ParkLoadResult_GetMissingObjectsCount(const ParkLoadResult * t)
-{
-    return t->MissingObjects.size();
-}
-
-uint8 ParkLoadResult_GetFlag(const ParkLoadResult * t)
-{
-    return t->Flag;
-}
-
-const rct_object_entry * ParkLoadResult_GetMissingObjects(const ParkLoadResult * t)
-{
-    return t->MissingObjects.data();
-}
-
-void ParkLoadResult_Delete(ParkLoadResult * t)
-{
-    delete t;
-}
-
-ParkLoadResult * ParkLoadResult_CreateInvalidExtension()
-{
-    return new ParkLoadResult(ParkLoadResult::CreateInvalidExtension());
-}
-
-
 namespace ParkImporter
 {
     std::unique_ptr<IParkImporter> Create(const std::string &hintPath)
@@ -126,21 +51,4 @@ namespace ParkImporter
         return String::Equals(extension, ".sc4", true) ||
             String::Equals(extension, ".sc6", true);
     }
-}
-
-void park_importer_load_from_stream(void * stream_c, const utf8 * hintPath_c)
-{
-    IStream * stream = (IStream *)stream_c;
-    std::string hintPath = String::ToStd(hintPath_c);
-
-    bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
-
-    auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
-    parkImporter->LoadFromStream(stream, isScenario);
-    parkImporter->Import();
-}
-
-bool park_importer_extension_is_scenario(const utf8 * extension)
-{
-    return ParkImporter::ExtensionIsScenario(String::ToStd(extension));
 }

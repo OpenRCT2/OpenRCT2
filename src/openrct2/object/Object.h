@@ -88,6 +88,19 @@ struct rct_object_entry {
         };
     };
 
+    void SetName(const char * value)
+    {
+        auto src = value;
+        for (size_t i = 0; i < sizeof(name); i++)
+        {
+            auto dc = ' ';
+            if (*src != '\0')
+            {
+                dc = *src++;
+            }
+            name[i] = dc;
+        }
+    }
 };
 assert_struct_size(rct_object_entry, 0x10);
 

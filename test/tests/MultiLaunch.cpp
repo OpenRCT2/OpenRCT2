@@ -29,11 +29,7 @@ TEST(MultiLaunchTest, all)
         bool initialised = context->Initialise();
         ASSERT_TRUE(initialised);
 
-        ParkLoadResult * plr = load_from_sv6(path.c_str());
-
-        ASSERT_EQ(ParkLoadResult_GetError(plr), PARK_LOAD_ERROR_OK);
-        ParkLoadResult_Delete(plr);
-
+        load_from_sv6(path.c_str());
         game_load_init();
 
         // Check ride count to check load was successful

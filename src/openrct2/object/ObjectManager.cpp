@@ -17,11 +17,14 @@
 #include <algorithm>
 #include <array>
 #include <memory>
+#include <mutex>
+#include <thread>
 #include <unordered_set>
 #include "../Context.h"
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
+#include "../ParkImporter.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
@@ -131,34 +134,20 @@ public:
         return loadedObject;
     }
 
-    bool LoadObjects(const rct_object_entry * entries, size_t count) override
+    void LoadObjects(const rct_object_entry * entries, size_t count) override
     {
         // Find all the required objects
-        bool missingObjects;
-        auto requiredObjects = GetRequiredObjects(entries, &missingObjects);
-        if (missingObjects)
-        {
-            return false;
-        }
+        auto requiredObjects = GetRequiredObjects(entries, count);
 
-        // Create a new list of loaded objects
+        // Load the required objects
         size_t numNewLoadedObjects = 0;
         auto loadedObjects = LoadObjects(requiredObjects, &numNewLoadedObjects);
 
-        if (!std::get<0>(loadedObjects))
-        {
-            UnloadAll();
-            return false;
-        }
-        else
-        {
-            SetNewLoadedObjectList(std::get<1>(loadedObjects));
-            LoadDefaultObjects();
-            UpdateSceneryGroupIndexes();
-            ResetTypeToRideEntryIndexMap();
-            log_verbose("%u / %u new objects loaded", numNewLoadedObjects, requiredObjects.size());
-            return true;
-        }
+        SetNewLoadedObjectList(loadedObjects);
+        LoadDefaultObjects();
+        UpdateSceneryGroupIndexes();
+        ResetTypeToRideEntryIndexMap();
+        log_verbose("%u / %u new objects loaded", numNewLoadedObjects, requiredObjects.size());
     }
 
     void UnloadObjects(const rct_object_entry * entries, size_t count) override
@@ -482,11 +471,12 @@ private:
         return invalidEntries;
     }
 
-    std::vector<const ObjectRepositoryItem *> GetRequiredObjects(const rct_object_entry * entries, bool * missingObjects)
+    std::vector<const ObjectRepositoryItem *> GetRequiredObjects(const rct_object_entry * entries, size_t count)
     {
         std::vector<const ObjectRepositoryItem *> requiredObjects;
-        *missingObjects = false;
-        for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
+        std::vector<rct_object_entry> missingObjects;
+
+        for (size_t i = 0; i < count; i++)
         {
             const rct_object_entry * entry = &entries[i];
             const ObjectRepositoryItem * ori = nullptr;
@@ -495,45 +485,109 @@ private:
                 ori = _objectRepository->FindObject(entry);
                 if (ori == nullptr && object_entry_get_type(entry) != OBJECT_TYPE_SCENARIO_TEXT)
                 {
-                    *missingObjects = true;
+                    missingObjects.push_back(*entry);
                     ReportMissingObject(entry);
                 }
             }
             requiredObjects.push_back(ori);
         }
+
+        if (missingObjects.size() > 0)
+        {
+            throw ObjectLoadException(std::move(missingObjects));
+        }
+
         return requiredObjects;
     }
 
-    std::pair<bool, std::vector<Object *>> LoadObjects(std::vector<const ObjectRepositoryItem *> &requiredObjects, size_t * outNewObjectsLoaded)
+    template<typename T, typename TFunc>
+    static void ParallelFor(const std::vector<T>& items, TFunc func)
     {
-        size_t newObjectsLoaded = 0;
-        std::vector<Object *> loadedObjects;
-        loadedObjects.reserve(OBJECT_ENTRY_COUNT);
-        for (auto ori : requiredObjects)
+        auto partitions = std::thread::hardware_concurrency();
+        auto partitionSize = (items.size() + (partitions - 1)) / partitions;
+        std::vector<std::thread> threads;
+        for (size_t n = 0; n < partitions; n++)
         {
-            Object * loadedObject = nullptr;
-            if (ori != nullptr)
-            {
-                loadedObject = ori->LoadedObject;
-                if (loadedObject == nullptr)
+            auto begin = n * partitionSize;
+            auto end = std::min(items.size(), begin + partitionSize);
+            threads.emplace_back(
+                [func](size_t pbegin, size_t pend)
                 {
-                    loadedObject = GetOrLoadObject(ori);
+                    for (size_t i = pbegin; i < pend; i++)
+                    {
+                        func(i);
+                    }
+                },
+                begin,
+                end);
+        }
+        for (auto& t : threads)
+        {
+            t.join();
+        }
+    }
+
+    std::vector<Object *> LoadObjects(std::vector<const ObjectRepositoryItem *> &requiredObjects, size_t * outNewObjectsLoaded)
+    {
+        std::vector<Object *> objects;
+        std::vector<Object *> loadedObjects;
+        std::vector<rct_object_entry> badObjects;
+        objects.resize(OBJECT_ENTRY_COUNT);
+        loadedObjects.reserve(OBJECT_ENTRY_COUNT);
+
+        // Read objects
+        std::mutex commonMutex;
+        ParallelFor(
+            requiredObjects,
+            [this, &commonMutex, requiredObjects, &objects, &badObjects, &loadedObjects](size_t i)
+            {
+                auto ori = requiredObjects[i];
+                Object * loadedObject = nullptr;
+                if (ori != nullptr)
+                {
+                    loadedObject = ori->LoadedObject;
                     if (loadedObject == nullptr)
                     {
-                        ReportObjectLoadProblem(&ori->ObjectEntry);
-                        return std::make_pair(false, std::vector<Object *>());
-                    } else {
-                        newObjectsLoaded++;
+                        loadedObject = _objectRepository->LoadObject(ori);
+                        if (loadedObject == nullptr)
+                        {
+                            std::lock_guard<std::mutex> guard(commonMutex);
+                            badObjects.push_back(ori->ObjectEntry);
+                            ReportObjectLoadProblem(&ori->ObjectEntry);
+                        }
+                        else
+                        {
+                            std::lock_guard<std::mutex> guard(commonMutex);
+                            loadedObjects.push_back(loadedObject);
+                            // Connect the ori to the registered object
+                            _objectRepository->RegisterLoadedObject(ori, loadedObject);
+                        }
                     }
                 }
-            }
-            loadedObjects.push_back(loadedObject);
+                objects[i] = loadedObject;
+            });
+
+        // Load objects
+        for (auto obj : loadedObjects)
+        {
+            obj->Load();
         }
+
+        if (badObjects.size() > 0)
+        {
+            // Unload all the new objects we loaded
+            for (auto object : loadedObjects)
+            {
+                UnloadObject(object);
+            }
+            throw ObjectLoadException(std::move(badObjects));
+        }
+
         if (outNewObjectsLoaded != nullptr)
         {
-            *outNewObjectsLoaded = newObjectsLoaded;
+            *outNewObjectsLoaded = loadedObjects.size();
         }
-        return std::make_pair(true, loadedObjects);
+        return objects;
     }
 
     Object * GetOrLoadObject(const ObjectRepositoryItem * ori)

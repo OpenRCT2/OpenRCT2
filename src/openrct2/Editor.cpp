@@ -245,22 +245,15 @@ namespace Editor
      */
     static bool ReadS6(const char * path)
     {
-        ParkLoadResult * loadResult = nullptr;
-        const char     * extension  = path_get_extension(path);
+        auto extension  = path_get_extension(path);
         if (_stricmp(extension, ".sc6") == 0)
         {
-            loadResult = load_from_sc6(path);
+            load_from_sc6(path);
         }
         else if (_stricmp(extension, ".sv6") == 0)
         {
-            loadResult = load_from_sv6(path);
+            load_from_sv6(path);
         }
-        if (ParkLoadResult_GetError(loadResult) != PARK_LOAD_ERROR_OK)
-        {
-            ParkLoadResult_Delete(loadResult);
-            return false;
-        }
-        ParkLoadResult_Delete(loadResult);
 
         ClearMapForEditing(true);
 

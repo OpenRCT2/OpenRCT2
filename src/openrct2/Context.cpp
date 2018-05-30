@@ -36,8 +36,8 @@
 #include "core/String.hpp"
 #include "core/Util.hpp"
 #include "drawing/IDrawingEngine.h"
+#include "localisation/Localisation.h"
 #include "FileClassifier.h"
-#include "HandleParkLoad.h"
 #include "network/network.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
@@ -559,52 +559,80 @@ namespace OpenRCT2
                     try
                     {
                         auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
-                        if (result.Error == PARK_LOAD_ERROR_OK)
+                        _objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+                        parkImporter->Import();
+                        String::Set(gScenarioSavePath, Util::CountOf(gScenarioSavePath), path.c_str());
+                        String::Set(gCurrentLoadedPath, Util::CountOf(gCurrentLoadedPath), path.c_str());
+                        gFirstTimeSaving = true;
+                        game_fix_save_vars();
+                        sprite_position_tween_reset();
+                        gScreenAge = 0;
+                        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+                        if (info.Type == FILE_TYPE::SAVED_GAME)
                         {
-                            parkImporter->Import();
-                            String::Set(gScenarioSavePath, Util::CountOf(gScenarioSavePath), path.c_str());
-                            String::Set(gCurrentLoadedPath, Util::CountOf(gCurrentLoadedPath), path.c_str());
-                            gFirstTimeSaving = true;
-                            game_fix_save_vars();
-                            sprite_position_tween_reset();
-                            gScreenAge = 0;
-                            gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-                            if (info.Type == FILE_TYPE::SAVED_GAME)
+                            if (network_get_mode() == NETWORK_MODE_CLIENT)
                             {
-                                if (network_get_mode() == NETWORK_MODE_CLIENT)
-                                {
-                                    network_close();
-                                }
-                                game_load_init();
-                                if (network_get_mode() == NETWORK_MODE_SERVER)
-                                {
-                                    network_send_map();
-                                }
+                                network_close();
                             }
-                            else
+                            game_load_init();
+                            if (network_get_mode() == NETWORK_MODE_SERVER)
                             {
-                                scenario_begin();
-                                if (network_get_mode() == NETWORK_MODE_SERVER)
-                                {
-                                    network_send_map();
-                                }
-                                if (network_get_mode() == NETWORK_MODE_CLIENT)
-                                {
-                                    network_close();
-                                }
+                                network_send_map();
                             }
-                            // This ensures that the newly loaded save reflects the user's
-                            // 'show real names of guests' option, now that it's a global setting
-                            peep_update_names(gConfigGeneral.show_real_names_of_guests);
-                            return true;
                         }
                         else
                         {
-                            handle_park_load_failure_with_title_opt(&result, path, loadTitleScreenFirstOnFail);
+                            scenario_begin();
+                            if (network_get_mode() == NETWORK_MODE_SERVER)
+                            {
+                                network_send_map();
+                            }
+                            if (network_get_mode() == NETWORK_MODE_CLIENT)
+                            {
+                                network_close();
+                            }
                         }
+                        // This ensures that the newly loaded save reflects the user's
+                        // 'show real names of guests' option, now that it's a global setting
+                        peep_update_names(gConfigGeneral.show_real_names_of_guests);
+                        return true;
                     }
-                    catch (const std::exception &e)
+                    catch (const ObjectLoadException& e)
                     {
+                        // This option is used when loading parks from the command line
+                        // to ensure that the title sequence loads before the window
+                        if (loadTitleScreenFirstOnFail)
+                        {
+                            title_load();
+                        }
+                        // The path needs to be duplicated as it's a const here
+                        // which the window function doesn't like
+                        auto intent = Intent(WC_OBJECT_LOAD_ERROR);
+                        intent.putExtra(INTENT_EXTRA_PATH, path);
+                        intent.putExtra(INTENT_EXTRA_LIST, (void *)e.MissingObjects.data());
+                        intent.putExtra(INTENT_EXTRA_LIST_COUNT, (uint32)e.MissingObjects.size());
+
+                        auto windowManager = _uiContext->GetWindowManager();
+                        windowManager->OpenIntent(&intent);
+                    }
+                    catch (const UnsupportedRCTCFlagException& e)
+                    {
+                        // This option is used when loading parks from the command line
+                        // to ensure that the title sequence loads before the window
+                        if (loadTitleScreenFirstOnFail)
+                        {
+                            title_load();
+                        }
+
+                        auto windowManager = _uiContext->GetWindowManager();
+                        set_format_arg(0, uint16, e.Flag);
+                        windowManager->ShowError(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE);
+                    }
+                    catch (const std::exception& e)
+                    {
+                        // If loading the SV6 or SV4 failed for a reason other than invalid objects
+                        // the current park state will be corrupted so just go back to the title screen.
+                        title_load();
                         Console::Error::WriteLine(e.what());
                     }
                 }
