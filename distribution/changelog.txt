@@ -37,6 +37,7 @@
 - Improved: [#5339] Change eyedropper icon to actual eyedropper and change cursor to crosshair.
 - Improved: [#5832] Resize tile inspector automatically when selecting a tile element.
 - Improved: [#6221] The scenario editor's invention list is now resizeable.
+- Improved: [#7069] The arbitrary ride type selection dropdown is now sorted orthographically, and has its spinners removed.
 - Improved: [#7302] Raising land near the map edge makes the affected area smaller instead of showing an 'off edge map' error.
 - Improved: [#7435] Object indexing now supports multi-threading.
 - Improved: [#7510] Add horizontal clipping to cut-away view options.
