@@ -478,10 +478,10 @@ static money32 WallPlace(uint8 wallType,
             banner->x = position.x / 32;
             banner->y = position.y / 32;
 
-            sint32 rideIndex = banner_get_closest_ride_index(position.x, position.y, position.z);
-            if (rideIndex != -1)
+            uint8 rideIndex = banner_get_closest_ride_index(position.x, position.y, position.z);
+            if (rideIndex != RIDE_ID_NULL)
             {
-                banner->colour = rideIndex & 0xFF;
+                banner->ride_index = rideIndex;
                 banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
             }
         }

@@ -2793,7 +2793,7 @@ void game_command_place_large_scenery(
     gCommandPosition.y = y + 16;
     gCommandPosition.z = base_height;
     gSceneryGroundFlags = 0;
-    uint8 banner_id = 0xFF;
+    uint8 banner_id = (uint8)BANNER_INDEX_NULL;
     money32 supportsCost = 0;
 
     if (game_is_paused() && !gCheatsBuildInPauseMode) {
@@ -2816,7 +2816,9 @@ void game_command_place_large_scenery(
         *ebx = MONEY32_UNDEFINED;
         return;
     }
-    if(scenery_entry->large_scenery.scrolling_mode != 0xFF){
+
+    if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
+    {
         banner_id = create_new_banner(flags);
 
         if (banner_id == MAX_BANNERS) {
@@ -2831,9 +2833,10 @@ void game_command_place_large_scenery(
             banner->x = x / 32;
             banner->y = y / 32;
 
-            sint32 rideIndex = banner_get_closest_ride_index(x, y, z);
-            if (rideIndex != -1) {
-                banner->colour = rideIndex;
+            uint8 rideIndex = banner_get_closest_ride_index(x, y, z);
+            if (rideIndex != RIDE_ID_NULL)
+            {
+                banner->ride_index = rideIndex;
                 banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
             }
         }
@@ -2978,7 +2981,7 @@ void game_command_place_large_scenery(
             scenery_large_set_primary_colour(new_tile_element, colour1);
             scenery_large_set_secondary_colour(new_tile_element, colour2);
 
-            if (banner_id != 0xFF)
+            if (banner_id != BANNER_INDEX_NULL)
             {
                 scenery_large_set_banner_id(new_tile_element, banner_id);
             }

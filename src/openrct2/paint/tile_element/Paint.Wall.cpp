@@ -381,8 +381,9 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, const 
     rct_banner * banner = &gBanners[bannerIndex];
 
     set_format_arg(0, rct_string_id, banner->string_idx);
-    if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE) {
-        Ride * ride = get_ride(banner->colour);
+    if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
+    {
+        Ride * ride = get_ride(banner->ride_index);
         set_format_arg(0, rct_string_id, ride->name);
         set_format_arg(2, uint32, ride->name_arguments);
     }

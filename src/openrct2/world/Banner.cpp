@@ -44,21 +44,17 @@ rct_banner gBanners[MAX_BANNERS];
  *
  *  rct2: 0x006B7EAB
  */
-static sint32 banner_get_ride_index_at(sint32 x, sint32 y, sint32 z)
+static uint8 banner_get_ride_index_at(sint32 x, sint32 y, sint32 z)
 {
-    rct_tile_element *tileElement;
-    Ride *ride;
-    sint32 rideIndex, resultRideIndex;
-
-    resultRideIndex = -1;
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    uint8 resultRideIndex = RIDE_ID_NULL;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
-        rideIndex = track_element_get_ride_index(tileElement);
-        ride = get_ride(rideIndex);
+        uint8 rideIndex = track_element_get_ride_index(tileElement);
+        Ride* ride = get_ride(rideIndex);
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;
 
@@ -423,9 +419,8 @@ rct_tile_element *banner_get_tile_element(sint32 bannerIndex)
  *
  *  rct2: 0x006B7D86
  */
-sint32 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z)
+uint8 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z)
 {
-    sint32 i, rideIndex;
     Ride *ride;
 
     static constexpr const LocationXY16 NeighbourCheckOrder[] =
@@ -441,18 +436,19 @@ sint32 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z)
         {   0,   0 }
     };
 
-    for (i = 0; i < (sint32)Util::CountOf(NeighbourCheckOrder); i++)
+    for (size_t i = 0; i < (sint32)Util::CountOf(NeighbourCheckOrder); i++)
     {
-        rideIndex = banner_get_ride_index_at(x + NeighbourCheckOrder[i].x, y + NeighbourCheckOrder[i].y, z);
-        if (rideIndex != -1)
+        uint8 rideIndex = banner_get_ride_index_at(x + NeighbourCheckOrder[i].x, y + NeighbourCheckOrder[i].y, z);
+        if (rideIndex != RIDE_ID_NULL)
         {
             return rideIndex;
         }
     }
 
-    rideIndex = -1;
+    sint32 index;
+    uint8 rideIndex = RIDE_ID_NULL;
     sint32 resultDistance = std::numeric_limits<sint32>::max();
-    FOR_ALL_RIDES(i, ride)
+    FOR_ALL_RIDES(index, ride)
     {
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;
@@ -467,7 +463,7 @@ sint32 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z)
         if (distance < resultDistance)
         {
             resultDistance = distance;
-            rideIndex = i;
+            rideIndex = static_cast<uint8>(index);
         }
     }
 

@@ -275,8 +275,9 @@ void large_scenery_paint(paint_session * session, uint8 direction, uint16 height
         uint32 bannerIndex = scenery_large_get_banner_id(tileElement);
         rct_banner *banner = &gBanners[bannerIndex];
         rct_string_id stringId = banner->string_idx;
-        if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE) {
-            Ride * ride = get_ride(banner->colour);
+        if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
+        {
+            Ride * ride = get_ride(banner->ride_index);
             stringId = ride->name;
             set_format_arg(0, uint32, ride->name_arguments);
         }
@@ -365,8 +366,9 @@ void large_scenery_paint(paint_session * session, uint8 direction, uint16 height
     uint16 scrollMode = entry->large_scenery.scrolling_mode + ((direction + 1) & 0x3);
     rct_banner *banner = &gBanners[bannerIndex];
     set_format_arg(0, rct_string_id, banner->string_idx);
-    if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE) {
-        Ride * ride = get_ride(banner->colour);
+    if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
+    {
+        Ride * ride = get_ride(banner->ride_index);
         set_format_arg(0, rct_string_id, ride->name);
         set_format_arg(2, uint32, ride->name_arguments);
     }

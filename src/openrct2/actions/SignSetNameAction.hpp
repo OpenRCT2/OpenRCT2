@@ -99,13 +99,13 @@ public:
         else
         {
             // If empty name take closest ride name.
-            sint32 rideIndex = banner_get_closest_ride_index(x, y, 16);
-            if (rideIndex == -1)
+            uint8 rideIndex = banner_get_closest_ride_index(x, y, 16);
+            if (rideIndex == RIDE_ID_NULL)
             {
                 return MakeResult();
             }
 
-            banner->colour = rideIndex;
+            banner->ride_index = rideIndex;
             banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
 
             rct_string_id prev_string_id = banner->string_idx;
