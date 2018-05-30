@@ -4549,6 +4549,19 @@ STR_6239    :Vertikální oříznutí
 STR_6240    :Horizontální oříznutí
 STR_6241    :Vybrat oblast
 STR_6242    :Zrušit výběr
+STR_6243    :{SMALLFONT}{BLACK}Zrenovuje atrakci,{NEWLINE}bude jako nová
+STR_6244    :Atrakci nelze renovovat...
+STR_6245    :{SMALLFONT}{BLACK}Atrakce nepotřebuje renovaci
+STR_6246    :Renovovat
+STR_6247    :Renovovat atrakci
+STR_6248    :{WINDOW_COLOUR_1}Chcete renovovat {STRINGID} za cenu {CURRENCY}?
+STR_6249    :{WINDOW_COLOUR_1}Chcete renovovat {STRINGID}?
+STR_6250    :{WINDOW_COLOUR_1}Opravdu chcete zbourat {STRINGID} a tím získat {CURRENCY}?
+STR_6251    :Atrakce ještě není prázdná
+STR_6252    :Twitch API URL
+STR_6253    :{SMALLFONT}{BLACK}Zadejte URL adresu integračního Twitch API. Je to nutné pro zapnutí Twitch integrace.
+STR_6254    :URL adresa integračního Twitch API:
+STR_6255    :Nevalidní URL adresa
 
 ###############################################################################
 ## RCT2 Scenarios
