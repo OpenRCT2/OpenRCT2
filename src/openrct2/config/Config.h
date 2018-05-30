@@ -42,7 +42,7 @@ struct GeneralConfiguration
     // Map rendering
     bool        landscape_smoothing;
     bool        always_show_gridlines;
-    bool        use_virtual_floor;
+    sint32      virtual_floor_style;
     bool        day_night_cycle;
     bool        enable_light_fx;
     bool        upper_case_banners;

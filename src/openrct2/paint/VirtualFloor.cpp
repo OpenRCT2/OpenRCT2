@@ -14,7 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "VirtualFloor.h"
 #include "../Input.h"
+#include "../config/Config.h"
 #include "../interface/Viewport.h"
 #include "../sprites.h"
 #include "../world/Map.h"
@@ -395,6 +397,9 @@ void virtual_floor_paint(paint_session * session)
             SPR_G2_SELECTION_EDGE_NW | (!(occupiedEdges & 0x8) ? ((litEdges & 0x8) ? remap_lit : remap_base) : remap_edge), 0,
             0, 0, 0, 1, _virtualFloorHeight, 5, 5, _virtualFloorHeight + ((dullEdges & 0x8) ? -2 : 0));
     }
+
+    if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_GLASSY)
+        return;
 
     if (!weAreOccupied && !weAreLit)
     {

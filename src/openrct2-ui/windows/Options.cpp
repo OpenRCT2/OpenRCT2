@@ -102,13 +102,16 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_RENDERING_GROUP = WIDX_PAGE_START,
     WIDX_TILE_SMOOTHING_CHECKBOX,
     WIDX_GRIDLINES_CHECKBOX,
-    WIDX_VIRTUAL_FLOOR_CHECKBOX,
+    WIDX_UPPER_CASE_BANNERS_CHECKBOX,
+    WIDX_SHOW_GUEST_PURCHASES_CHECKBOX,
+    WIDX_VIRTUAL_FLOOR_LABEL,
+    WIDX_VIRTUAL_FLOOR,
+    WIDX_VIRTUAL_FLOOR_DROPDOWN,
+    WIDX_EFFECTS_GROUP,
     WIDX_DAY_NIGHT_CHECKBOX,
     WIDX_ENABLE_LIGHT_FX_CHECKBOX,
-    WIDX_UPPER_CASE_BANNERS_CHECKBOX,
     WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
     WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX,
-    WIDX_SHOW_GUEST_PURCHASES_CHECKBOX,
 
     // Culture / Units
     WIDX_LANGUAGE = WIDX_PAGE_START,
@@ -253,17 +256,22 @@ static rct_widget window_options_display_widgets[] = {
 static rct_widget window_options_rendering_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define FRAME_RENDERING_START 53
-    { WWT_GROUPBOX,         1,  5,      304,    FRAME_RENDERING_START + 0,      FRAME_RENDERING_START + 151,    STR_RENDERING_GROUP,            STR_NONE },                             // Rendering group
+    { WWT_GROUPBOX,         1,  5,      304,    FRAME_RENDERING_START + 0,      FRAME_RENDERING_START + 92,     STR_RENDERING_GROUP,            STR_NONE },                             // Rendering group
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 15,     FRAME_RENDERING_START + 26,     STR_TILE_SMOOTHING,             STR_TILE_SMOOTHING_TIP },               // Landscape smoothing
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 30,     FRAME_RENDERING_START + 41,     STR_GRIDLINES,                  STR_GRIDLINES_TIP },                    // Gridlines
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 45,     FRAME_RENDERING_START + 56,     STR_ENABLE_VIRTUAL_FLOOR,       STR_ENABLE_VIRTUAL_FLOOR_TIP },         // Virtual floor
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 60,     FRAME_RENDERING_START + 71,     STR_CYCLE_DAY_NIGHT,            STR_CYCLE_DAY_NIGHT_TIP },              // Cycle day-night
-    { WWT_CHECKBOX,         1,  25,     290,    FRAME_RENDERING_START + 75,     FRAME_RENDERING_START + 86,     STR_ENABLE_LIGHTING_EFFECTS,    STR_ENABLE_LIGHTING_EFFECTS_TIP },      // Enable light fx
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 90,     FRAME_RENDERING_START + 101,    STR_UPPERCASE_BANNERS,          STR_UPPERCASE_BANNERS_TIP },            // Uppercase banners
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 105,    FRAME_RENDERING_START + 116,    STR_RENDER_WEATHER_EFFECTS,     STR_RENDER_WEATHER_EFFECTS_TIP },       // Render weather effects
-    { WWT_CHECKBOX,         1,  25,     290,    FRAME_RENDERING_START + 120,    FRAME_RENDERING_START + 131,    STR_DISABLE_LIGHTNING_EFFECT,   STR_DISABLE_LIGHTNING_EFFECT_TIP },     // Disable lightning effect
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 135,    FRAME_RENDERING_START + 146,    STR_SHOW_GUEST_PURCHASES,       STR_SHOW_GUEST_PURCHASES_TIP },
+    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 45,     FRAME_RENDERING_START + 56,     STR_UPPERCASE_BANNERS,          STR_UPPERCASE_BANNERS_TIP },            // Uppercase banners
+    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 60,     FRAME_RENDERING_START + 71,     STR_SHOW_GUEST_PURCHASES,       STR_SHOW_GUEST_PURCHASES_TIP },         // Guest purchases
+    { WWT_LABEL,            1,  10,     290,    FRAME_RENDERING_START + 75,     FRAME_RENDERING_START + 86,     STR_VIRTUAL_FLOOR_STYLE,        STR_NONE },                             // Virtual floor
+    { WWT_DROPDOWN,         1,  155,    299,    FRAME_RENDERING_START + 75,     FRAME_RENDERING_START + 86,     STR_NONE,                       STR_VIRTUAL_FLOOR_STYLE_TIP },          // Virtual floor dropdown
+    { WWT_BUTTON,           1,  288,    298,    FRAME_RENDERING_START + 76,     FRAME_RENDERING_START + 85,     STR_DROPDOWN_GLYPH,             STR_VIRTUAL_FLOOR_STYLE_TIP },          // Virtual floor dropdown
 #undef FRAME_RENDERING_START
+#define FRAME_EFFECTS_START 148
+    { WWT_GROUPBOX,         1,  5,      304,    FRAME_EFFECTS_START + 0,        FRAME_EFFECTS_START + 78,       STR_EFFECTS_GROUP,              STR_NONE },                             // Rendering group
+    { WWT_CHECKBOX,         1,  10,     290,    FRAME_EFFECTS_START + 15,       FRAME_EFFECTS_START + 26,       STR_CYCLE_DAY_NIGHT,            STR_CYCLE_DAY_NIGHT_TIP },              // Cycle day-night
+    { WWT_CHECKBOX,         1,  25,     290,    FRAME_EFFECTS_START + 30,       FRAME_EFFECTS_START + 41,       STR_ENABLE_LIGHTING_EFFECTS,    STR_ENABLE_LIGHTING_EFFECTS_TIP },      // Enable light fx
+    { WWT_CHECKBOX,         1,  10,     290,    FRAME_EFFECTS_START + 45,       FRAME_EFFECTS_START + 56,       STR_RENDER_WEATHER_EFFECTS,     STR_RENDER_WEATHER_EFFECTS_TIP },       // Render weather effects
+    { WWT_CHECKBOX,         1,  25,     290,    FRAME_EFFECTS_START + 60,       FRAME_EFFECTS_START + 71,       STR_DISABLE_LIGHTNING_EFFECT,   STR_DISABLE_LIGHTNING_EFFECT_TIP },     // Disable lightning effect
+#undef FRAME_EFFECTS_START
     { WIDGETS_END },
 };
 
@@ -533,13 +541,14 @@ static uint64 window_options_page_enabled_widgets[] = {
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_TILE_SMOOTHING_CHECKBOX) |
     (1 << WIDX_GRIDLINES_CHECKBOX) |
-    (1 << WIDX_VIRTUAL_FLOOR_CHECKBOX) |
+    (1 << WIDX_UPPER_CASE_BANNERS_CHECKBOX) |
+    (1 << WIDX_SHOW_GUEST_PURCHASES_CHECKBOX) |
+    (1 << WIDX_VIRTUAL_FLOOR) |
+    (1 << WIDX_VIRTUAL_FLOOR_DROPDOWN) |
     (1 << WIDX_DAY_NIGHT_CHECKBOX) |
     (1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX) |
-    (1 << WIDX_UPPER_CASE_BANNERS_CHECKBOX) |
     (1 << WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX) |
-    (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX) |
-    (1 << WIDX_SHOW_GUEST_PURCHASES_CHECKBOX),
+    (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_LANGUAGE) |
@@ -724,11 +733,6 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
                 else
                     w->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
             }
-            break;
-        case WIDX_VIRTUAL_FLOOR_CHECKBOX:
-            gConfigGeneral.use_virtual_floor ^= 1;
-            config_save_default();
-            window_invalidate(w);
             break;
         case WIDX_DAY_NIGHT_CHECKBOX:
             gConfigGeneral.day_night_cycle ^= 1;
@@ -1095,6 +1099,23 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
         }
         break;
 
+    case WINDOW_OPTIONS_PAGE_RENDERING:
+        switch (widgetIndex) {
+        case WIDX_VIRTUAL_FLOOR_DROPDOWN:
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_VIRTUAL_FLOOR_STYLE_DISABLED;
+            gDropdownItemsArgs[1] = STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT;
+            gDropdownItemsArgs[2] = STR_VIRTUAL_FLOOR_STYLE_GLASSY;
+
+            window_options_show_dropdown(w, widget, 3);
+
+            dropdown_set_checked(gConfigGeneral.virtual_floor_style, true);
+            break;
+        }
+        break;
+
     case WINDOW_OPTIONS_PAGE_CULTURE:
         switch (widgetIndex) {
         case WIDX_HEIGHT_LABELS_DROPDOWN:
@@ -1363,6 +1384,16 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
         }
         break;
 
+    case WINDOW_OPTIONS_PAGE_RENDERING:
+        switch (widgetIndex)
+        {
+        case WIDX_VIRTUAL_FLOOR_DROPDOWN:
+            gConfigGeneral.virtual_floor_style = dropdownIndex;
+            config_save_default();
+            break;
+        }
+        break;
+
     case WINDOW_OPTIONS_PAGE_CULTURE:
         switch (widgetIndex) {
         case WIDX_HEIGHT_LABELS_DROPDOWN:
@@ -1614,8 +1645,18 @@ static void window_options_invalidate(rct_window *w)
     {
         widget_set_checkbox_value(w, WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
         widget_set_checkbox_value(w, WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
-        widget_set_checkbox_value(w, WIDX_VIRTUAL_FLOOR_CHECKBOX, gConfigGeneral.use_virtual_floor);
         widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
+        widget_set_checkbox_value(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
+        widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
+
+        rct_string_id VirtualFloorStyleStrings[] = {
+            STR_VIRTUAL_FLOOR_STYLE_DISABLED,
+            STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
+            STR_VIRTUAL_FLOOR_STYLE_GLASSY
+        };
+
+        window_options_rendering_widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[gConfigGeneral.virtual_floor_style];
+
         widget_set_checkbox_value(w, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
         if (gConfigGeneral.day_night_cycle &&
             gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY
@@ -1625,7 +1666,6 @@ static void window_options_invalidate(rct_window *w)
             w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
         }
 
-        widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
         widget_set_checkbox_value(w, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX, gConfigGeneral.render_weather_effects || gConfigGeneral.render_weather_gloom);
         widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
         if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom) {
@@ -1637,8 +1677,6 @@ static void window_options_invalidate(rct_window *w)
             w->enabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
             w->disabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
         }
-
-        widget_set_checkbox_value(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
 
         break;
     }
