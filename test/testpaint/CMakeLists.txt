@@ -57,7 +57,7 @@ file(GLOB_RECURSE ORCT2_RIDE_SOURCES "${OPENRCT2_SRCPATH}/ride/*/*.cpp")
 file(GLOB_RECURSE ORCT2_RIDE_DEP_SOURCES
     "${OPENRCT2_SRCPATH}/Diagnostic.cpp"
     "${OPENRCT2_SRCPATH}/paint/PaintHelpers.cpp"
-    "${OPENRCT2_SRCPATH}/paint/tile_element/TileElement.cpp"
+    "${OPENRCT2_SRCPATH}/paint/tile_element/Paint.TileElement.cpp"
     "${OPENRCT2_SRCPATH}/ride/RideData.cpp"
     "${OPENRCT2_SRCPATH}/ride/TrackData.cpp"
     "${OPENRCT2_SRCPATH}/ride/TrackDataOld.cpp"
