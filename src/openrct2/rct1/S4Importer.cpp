@@ -284,8 +284,8 @@ public:
             {
                 // Use the ratio between the old and new park value to calcute the ratio to
                 // use for the park value history and the goal.
-                auto park = GetContext()->GetGameState()->GetPark();
-                _parkValueConversionFactor = (park->CalculateParkValue() * 10) / _s4.park_value;
+                auto& park = GetContext()->GetGameState()->GetPark();
+                _parkValueConversionFactor = (park.CalculateParkValue() * 10) / _s4.park_value;
             }
             else
             {

@@ -270,10 +270,11 @@ static void cheat_clear_loan()
 
 static void cheat_generate_guests(sint32 count)
 {
-    auto park = GetContext()->GetGameState()->GetPark();
+    auto& park = GetContext()->GetGameState()->GetPark();
     for (sint32 i = 0; i < count; i++)
-        park->GenerateGuest();
-
+    {
+        park.GenerateGuest();
+    }
     window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 }
 

@@ -34,9 +34,10 @@ namespace OpenRCT2
 
     public:
         GameState();
+        GameState(const GameState&) = delete;
 
-        Date * GetDate() { return &_date; }
-        Park * GetPark() { return _park.get(); }
+        Date& GetDate() { return _date; }
+        Park& GetPark() { return *_park; }
 
         void InitAll(sint32 mapSize);
         void Update();

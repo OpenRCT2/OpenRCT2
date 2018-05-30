@@ -60,6 +60,9 @@ namespace OpenRCT2
     class Park final
     {
     public:
+        Park() = default;
+        Park(const Park&) = delete;
+
         bool IsOpen() const;
 
         uint16  GetParkRating() const;

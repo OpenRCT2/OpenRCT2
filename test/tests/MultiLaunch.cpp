@@ -39,15 +39,15 @@ TEST(MultiLaunchTest, all)
         ASSERT_EQ(gRideCount, 134);
         auto gs = context->GetGameState();
         ASSERT_NE(gs, nullptr);
-        auto date = gs->GetDate();
-        ASSERT_EQ(date->GetMonthTicks(), 0);
+        auto& date = gs->GetDate();
+        ASSERT_EQ(date.GetMonthTicks(), 0);
 
         for (int j = 0; j < updatesToTest; j++)
         {
             gs->UpdateLogic();
         }
 
-        ASSERT_EQ(date->GetMonthTicks(), 7862 + updatesToTest);
+        ASSERT_EQ(date.GetMonthTicks(), 7862 + updatesToTest);
 
         // Check ride count again
         ASSERT_EQ(gRideCount, 134);

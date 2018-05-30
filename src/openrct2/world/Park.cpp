@@ -446,8 +446,8 @@ void game_command_buy_land_rights(
 void set_forced_park_rating(sint32 rating)
 {
     _forcedParkRating = rating;
-    auto park = GetContext()->GetGameState()->GetPark();
-    gParkRating = park->CalculateParkRating();
+    auto& park = GetContext()->GetGameState()->GetPark();
+    gParkRating = park.CalculateParkRating();
     auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
     context_broadcast_intent(&intent);
 }
@@ -1058,12 +1058,12 @@ void Park::UpdateHistories()
 
 sint32 park_is_open()
 {
-    return GetContext()->GetGameState()->GetPark()->IsOpen();
+    return GetContext()->GetGameState()->GetPark().IsOpen();
 }
 
 sint32 park_calculate_size()
 {
-    auto tiles = GetContext()->GetGameState()->GetPark()->CalculateParkSize();
+    auto tiles = GetContext()->GetGameState()->GetPark().CalculateParkSize();
     if (tiles != gParkSize)
     {
         gParkSize = tiles;

@@ -235,7 +235,7 @@ private:
 
         user_string_free(ride->name);
         ride->type = RIDE_TYPE_NULL;
-        gParkValue = GetContext()->GetGameState()->GetPark()->CalculateParkValue();
+        gParkValue = GetContext()->GetGameState()->GetPark().CalculateParkValue();
 
         auto res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
