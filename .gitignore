@@ -11,6 +11,7 @@ distribution/android/*/external/
 
 # Build artifacts
 artifacts
+bin.*/
 .cache
 .dependencies
 sequencesversion
