@@ -106,12 +106,14 @@ extern rct_research_item gResearchNextItem;
 extern uint8 gResearchUncompletedCategories;
 extern bool gSilentResearch;
 
-extern rct_research_item gResearchItemSeparator;
-extern rct_research_item gResearchItemEnd;
-extern rct_research_item gResearchItemEnd2;
-extern std::vector<rct_research_item> gResearchedResearchItems;
-extern std::vector<rct_research_item> gUnResearchedResearchItems;
-extern std::vector<rct_research_item> gUnresearchableResearchItems;
+namespace ResearchItem
+{
+extern rct_research_item gSeparator;
+extern rct_research_item gEnd;
+extern rct_research_item gEnd2;
+extern std::vector<rct_research_item> gResearched;
+extern std::vector<rct_research_item> gResearchable;
+}
 
 void research_reset_items();
 void research_update_uncompleted_types();

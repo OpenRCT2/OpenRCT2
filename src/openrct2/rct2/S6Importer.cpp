@@ -774,8 +774,8 @@ public:
             researchedItems++;
         }
 
-        gResearchedResearchItems.resize(researchedItems);
-        memcpy(gResearchedResearchItems.data(), _s6.research_items, sizeof(rct_research_item) * researchedItems);
+        ResearchItem::gResearched.resize(researchedItems);
+        memcpy(ResearchItem::gResearched.data(), _s6.research_items, sizeof(rct_research_item) * researchedItems);
 
         researchedItems++;
         for (const rct_research_item* researchItem = _s6.research_items + researchedItems;
@@ -785,9 +785,9 @@ public:
             unResearchedItems++;
         }
 
-        gUnResearchedResearchItems.resize(researchedItems);
+        ResearchItem::gResearchable.resize(researchedItems);
         memcpy(
-            gUnResearchedResearchItems.data(),
+            ResearchItem::gResearchable.data(),
             _s6.research_items + researchedItems,
             sizeof(rct_research_item) * unResearchedItems);
     }
