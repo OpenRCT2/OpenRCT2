@@ -5484,8 +5484,11 @@ void ride_get_start_of_track(CoordsXYE * output)
 {
     track_begin_end trackBeginEnd;
     CoordsXYE trackElement = *output;
-    if (track_block_get_previous(trackElement.x, trackElement.y, trackElement.element, &trackBeginEnd)) {
+    if (track_block_get_previous(trackElement.x, trackElement.y, trackElement.element, &trackBeginEnd))
+    {
         rct_tile_element* initial_map = trackElement.element;
+        track_begin_end slowIt = trackBeginEnd;
+        bool moveSlowIt = true;
         do {
             CoordsXYE lastGood = {
                 /* .x = */ trackBeginEnd.begin_x,
@@ -5493,13 +5496,24 @@ void ride_get_start_of_track(CoordsXYE * output)
                 /* .element = */ trackBeginEnd.begin_element
             };
 
-            if (!track_block_get_previous(trackBeginEnd.end_x, trackBeginEnd.end_y, trackBeginEnd.begin_element, &trackBeginEnd)) {
+            if (!track_block_get_previous(trackBeginEnd.end_x, trackBeginEnd.end_y, trackBeginEnd.begin_element, &trackBeginEnd))
+            {
                 trackElement = lastGood;
                 break;
             }
+
+            moveSlowIt = !moveSlowIt;
+            if (moveSlowIt)
+            {
+                if (!track_block_get_previous(slowIt.end_x, slowIt.end_y, slowIt.begin_element, &slowIt) ||
+                    slowIt.begin_element == trackBeginEnd.begin_element)
+                {
+                    break;
+                }
+            }
         } while (initial_map != trackBeginEnd.begin_element);
     }
-    output = &trackElement;
+    *output = trackElement;
 }
 
 /**
@@ -5511,7 +5525,8 @@ sint32 ride_get_refund_price(sint32 ride_id)
     CoordsXYE trackElement;
     money32 addedcost, cost = 0;
 
-    if (!ride_try_get_origin_element(ride_id, &trackElement)) {
+    if (!ride_try_get_origin_element(ride_id, &trackElement))
+    {
         gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         return MONEY32_UNDEFINED;
     }
@@ -5525,6 +5540,8 @@ sint32 ride_get_refund_price(sint32 ride_id)
     // completed all of the elements and are back at the
     // start.
     rct_tile_element *initial_map = trackElement.element;
+    CoordsXYE slowIt = trackElement;
+    bool moveSlowIt = true;
 
     do {
         addedcost = game_do_command(
@@ -5539,8 +5556,19 @@ sint32 ride_get_refund_price(sint32 ride_id)
 
         cost += (addedcost == MONEY32_UNDEFINED) ? 0 : addedcost;
 
-        if (!track_block_get_next(&trackElement, &trackElement, NULL, NULL))
+        if (!track_block_get_next(&trackElement, &trackElement, nullptr, nullptr))
+        {
             break;
+        }
+
+        moveSlowIt = !moveSlowIt;
+        if (moveSlowIt)
+        {
+            if (!track_block_get_next(&slowIt, &slowIt, nullptr, nullptr) || slowIt.element == trackElement.element)
+            {
+                break;
+            }
+        }
 
         direction = tile_element_get_direction(trackElement.element);
 
