@@ -18,6 +18,7 @@ platform:
   - x64
 configuration: Release
 build:
+  parallel: true
   project: openrct2.proj
 test_script:
 - ps: msbuild openrct2.proj /t:Test /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
