@@ -14,6 +14,8 @@
 *****************************************************************************/
 #pragma endregion
 
+#pragma once
+
 #include <memory>
 #include <stack>
 #include <string>

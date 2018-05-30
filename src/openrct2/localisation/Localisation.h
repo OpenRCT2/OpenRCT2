@@ -50,9 +50,6 @@ rct_string_id user_string_allocate(sint32 base, const utf8 *text);
 void user_string_free(rct_string_id id);
 bool is_user_string_id(rct_string_id stringId);
 
-wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str);
-uint32 encoding_convert_unicode_to_rct2(uint32 unicode);
-
 #define MAX_USER_STRINGS 1024
 #define USER_STRING_MAX_LENGTH 32
 

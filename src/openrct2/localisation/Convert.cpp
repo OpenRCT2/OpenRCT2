@@ -19,7 +19,8 @@
 #include <stdexcept>
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
-#include "Localisation.h"
+#include "ConversionTables.h"
+#include "Language.h"
 
 /**
  * Decodes an RCT2 string to a wide char string still in the original code page.

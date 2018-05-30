@@ -14,6 +14,8 @@
 *****************************************************************************/
 #pragma endregion
 
+#pragma once
+
 #include <openrct2/common.h>
 #include <openrct2/Context.h>
 #include <openrct2/ui/UiContext.h>
