@@ -2059,8 +2059,10 @@ bool Network::LoadMap(IStream * stream)
     try
     {
         auto context = GetContext();
+        auto objManager = context->GetObjectManager();
         auto importer = ParkImporter::CreateS6(context->GetObjectRepository(), context->GetObjectManager());
-        importer->LoadFromStream(stream, false);
+        auto loadResult = importer->LoadFromStream(stream, false);
+        objManager->LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
         importer->Import();
 
         sprite_position_tween_reset();
