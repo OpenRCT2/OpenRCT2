@@ -22,7 +22,7 @@
 
 #define BANNER_NULL 255
 #define MAX_BANNERS 250
-#define BANNER_INDEX_NULL -1
+#define BANNER_INDEX_NULL ((uint8)-1)
 
 #pragma pack(push, 1)
 struct rct_banner
@@ -54,7 +54,7 @@ extern rct_banner gBanners[MAX_BANNERS];
 
 void banner_init();
 sint32 create_new_banner(uint8 flags);
-rct_tile_element *banner_get_tile_element(sint32 bannerIndex);
+rct_tile_element* banner_get_tile_element(uint8 bannerIndex);
 uint8 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z);
 void banner_reset_broken_index();
 void fix_duplicated_banners();

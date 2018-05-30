@@ -2793,7 +2793,7 @@ void game_command_place_large_scenery(
     gCommandPosition.y = y + 16;
     gCommandPosition.z = base_height;
     gSceneryGroundFlags = 0;
-    uint8 banner_id = (uint8)BANNER_INDEX_NULL;
+    uint8 banner_id = BANNER_INDEX_NULL;
     money32 supportsCost = 0;
 
     if (game_is_paused() && !gCheatsBuildInPauseMode) {
@@ -2821,7 +2821,8 @@ void game_command_place_large_scenery(
     {
         banner_id = create_new_banner(flags);
 
-        if (banner_id == MAX_BANNERS) {
+        if (banner_id == BANNER_INDEX_NULL)
+        {
             *ebx = MONEY32_UNDEFINED;
             return;
         }

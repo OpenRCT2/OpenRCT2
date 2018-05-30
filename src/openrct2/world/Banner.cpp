@@ -356,7 +356,7 @@ static uint8 BannerGetNewIndex() {
             return bannerIndex;
         }
     }
-    return BANNER_NULL;
+    return BANNER_INDEX_NULL;
 }
 
 /**
@@ -382,10 +382,10 @@ sint32 create_new_banner(uint8 flags)
 {
     uint8 bannerIndex = BannerGetNewIndex();
 
-    if (bannerIndex == BANNER_NULL)
+    if (bannerIndex == BANNER_INDEX_NULL)
     {
         gGameCommandErrorText = STR_TOO_MANY_BANNERS_IN_GAME;
-        return BANNER_NULL;
+        return bannerIndex;
     }
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -401,7 +401,7 @@ sint32 create_new_banner(uint8 flags)
     return bannerIndex;
 }
 
-rct_tile_element *banner_get_tile_element(sint32 bannerIndex)
+rct_tile_element* banner_get_tile_element(uint8 bannerIndex)
 {
     rct_banner *banner = &gBanners[bannerIndex];
     rct_tile_element *tileElement = map_get_first_element_at(banner->x, banner->y);

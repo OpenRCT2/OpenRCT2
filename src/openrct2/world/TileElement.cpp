@@ -90,7 +90,7 @@ bool tile_element_is_underground(rct_tile_element * tileElement)
     return true;
 }
 
-sint32 tile_element_get_banner_index(rct_tile_element * tileElement)
+uint8 tile_element_get_banner_index(rct_tile_element* tileElement)
 {
     rct_scenery_entry* sceneryEntry;
 
@@ -135,7 +135,7 @@ void tile_element_set_banner_index(rct_tile_element * tileElement, sint32 banner
 
 void tile_element_remove_banner_entry(rct_tile_element * tileElement)
 {
-    sint32 bannerIndex = tile_element_get_banner_index(tileElement);
+    uint8 bannerIndex = tile_element_get_banner_index(tileElement);
     if (bannerIndex == BANNER_INDEX_NULL)
         return;
 
