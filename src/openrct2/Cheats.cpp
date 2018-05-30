@@ -17,6 +17,7 @@
 #include "actions/ParkSetLoanAction.hpp"
 #include "Cheats.h"
 #include "config/Config.h"
+#include "GameState.h"
 #include "localisation/Localisation.h"
 #include "network/network.h"
 #include "ride/Ride.h"

@@ -19,6 +19,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../core/MemoryStream.h"
+#include "../GameState.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"

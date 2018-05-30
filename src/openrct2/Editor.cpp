@@ -21,6 +21,7 @@
 #include "EditorObjectSelectionSession.h"
 #include "FileClassifier.h"
 #include "Game.h"
+#include "GameState.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "audio/audio.h"

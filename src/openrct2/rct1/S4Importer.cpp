@@ -27,6 +27,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../GameState.h"
 #include "../object/Object.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"

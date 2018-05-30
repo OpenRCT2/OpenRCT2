@@ -17,7 +17,6 @@
 #pragma once
 
 #include "common.h"
-#include "GameState.h"
 
 #include <memory>
 #include <string>
@@ -71,6 +70,7 @@ enum
 
 namespace OpenRCT2
 {
+    class GameState;
     interface IPlatformEnvironment;
 
     namespace Audio

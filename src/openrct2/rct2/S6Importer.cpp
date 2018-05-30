@@ -23,6 +23,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"

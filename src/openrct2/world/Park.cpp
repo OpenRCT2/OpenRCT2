@@ -22,6 +22,7 @@
 #include "../core/Util.hpp"
 #include "../Date.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../interface/Colour.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"

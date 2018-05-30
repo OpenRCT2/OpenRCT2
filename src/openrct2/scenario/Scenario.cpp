@@ -19,6 +19,7 @@
 #include "../config/Config.h"
 #include "../FileClassifier.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
