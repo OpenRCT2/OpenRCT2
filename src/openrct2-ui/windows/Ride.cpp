@@ -496,6 +496,7 @@ static constexpr const uint64 window_ride_page_enabled_widgets[] = {
 };
 
 static constexpr const uint64 window_ride_page_hold_down_widgets[] = {
+    0,
     (1ULL << WIDX_VEHICLE_TRAINS_INCREASE) |
         (1ULL << WIDX_VEHICLE_TRAINS_DECREASE) |
         (1ULL << WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE) |
