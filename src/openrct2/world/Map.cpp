@@ -3328,7 +3328,7 @@ void map_obstruction_set_error_text(rct_tile_element *tileElement)
  *  ebp = clearFunc
  *  bl = bl
  */
-sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, CLEAR_FUNC clearFunc, uint8 bl, uint8 flags, money32 *price, uint8 crossingMode)
+bool map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, CLEAR_FUNC clearFunc, uint8 bl, uint8 flags, money32 *price, uint8 crossingMode)
 {
     sint32 al, ah, bh, cl, ch, water_height;
     al = ah = bh = cl = ch = water_height = 0;
@@ -3336,10 +3336,17 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
 
     gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
     bool canBuildCrossing = false;
-    if (x >= gMapSizeUnits || y >= gMapSizeUnits || x < 32 || y < 32) {
+    if (x >= gMapSizeUnits || y >= gMapSizeUnits || x < 32 || y < 32)
+    {
         gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
         return false;
     }
+
+    if (gCheatsDisableClearanceChecks)
+    {
+        return true;
+    }
+
     rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
     do {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SURFACE) {
@@ -3351,7 +3358,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
             continue;
         }
         water_height = surface_get_water_height(tileElement) * 2;
-        if (water_height && water_height > zLow && tileElement->base_height < zHigh && !gCheatsDisableClearanceChecks) {
+        if (water_height && water_height > zLow && tileElement->base_height < zHigh) {
             gMapGroundFlags |= ELEMENT_IS_UNDERWATER;
             if (water_height < zHigh) {
                 goto loc_68BAE6;
