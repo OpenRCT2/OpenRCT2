@@ -523,7 +523,7 @@ void Park::Initialise()
     gParkRating = 0;
     _guestGenerationProbability = 0;
     gTotalRideValueForMoney = 0;
-    gResearchLastItem = gResearchItemSeparator;;
+    gResearchLastItem = ResearchItem::gSeparator;
 
     for (size_t i = 0; i < 20; i++)
     {
