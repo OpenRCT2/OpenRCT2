@@ -752,6 +752,11 @@ bool map_is_location_valid(sint32 x, sint32 y)
     return false;
 }
 
+bool map_is_edge(sint32 x, sint32 y)
+{
+    return (x < 32 || y < 32 || x >= gMapSizeUnits || y >= gMapSizeUnits);
+}
+
 bool map_can_build_at(sint32 x, sint32 y, sint32 z)
 {
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
