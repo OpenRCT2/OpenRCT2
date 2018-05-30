@@ -374,7 +374,7 @@ static rct_research_item* window_editor_inventions_list_get_item_from_scroll_y(s
  *
  *  rct2: 0x006855BB
  */
-static rct_research_item* window_editor_inventions_list_get_item_from_scroll_y_include_seps(sint32 scrollIndex, sint32 y)
+static const rct_research_item* window_editor_inventions_list_get_item_from_scroll_y_include_seps(sint32 scrollIndex, sint32 y)
 {
     if (scrollIndex == 0)
     {
@@ -400,7 +400,7 @@ static rct_research_item* window_editor_inventions_list_get_item_from_scroll_y_i
     return &ResearchItem::gEnd;
 }
 
-static rct_research_item *get_research_item_at(sint32 x, sint32 y)
+static const rct_research_item *get_research_item_at(sint32 x, sint32 y)
 {
     rct_window *w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
     if (w != nullptr && w->x <= x && w->y < y && w->x + w->width > x && w->y + w->height > y) {
@@ -922,7 +922,7 @@ static void window_editor_inventions_list_drag_cursor(rct_window *w, rct_widgeti
 {
     rct_window *inventionListWindow = window_find_by_class(WC_EDITOR_INVENTION_LIST);
     if (inventionListWindow != nullptr) {
-        rct_research_item *researchItem = get_research_item_at(x, y);
+        const rct_research_item *researchItem = get_research_item_at(x, y);
         if (researchItem != inventionListWindow->research_item) {
             inventionListWindow = (rct_window *)researchItem;
             window_invalidate(inventionListWindow);
@@ -938,7 +938,7 @@ static void window_editor_inventions_list_drag_cursor(rct_window *w, rct_widgeti
  */
 static void window_editor_inventions_list_drag_moved(rct_window* w, sint32 x, sint32 y)
 {
-    rct_research_item* researchItem = get_research_item_at(x, y);
+    const rct_research_item* researchItem = get_research_item_at(x, y);
     if (researchItem)
     {
         move_research_item(*researchItem);

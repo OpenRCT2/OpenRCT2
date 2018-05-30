@@ -54,9 +54,9 @@ rct_research_item gResearchNextItem;
 
 namespace ResearchItem
 {
-rct_research_item gSeparator = { RESEARCHED_ITEMS_SEPARATOR, 0 };
-rct_research_item gEnd = { RESEARCHED_ITEMS_END, 0 };
-rct_research_item gEnd2 = { RESEARCHED_ITEMS_END_2, 0 };
+const rct_research_item gSeparator = { RESEARCHED_ITEMS_SEPARATOR, 0 };
+const rct_research_item gEnd = { RESEARCHED_ITEMS_END, 0 };
+const rct_research_item gEnd2 = { RESEARCHED_ITEMS_END_2, 0 };
 std::vector<rct_research_item> gResearched;
 std::vector<rct_research_item> gResearchable;
 #ifdef _DEBUG

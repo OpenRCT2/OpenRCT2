@@ -108,9 +108,9 @@ extern bool gSilentResearch;
 
 namespace ResearchItem
 {
-extern rct_research_item gSeparator;
-extern rct_research_item gEnd;
-extern rct_research_item gEnd2;
+extern const rct_research_item gSeparator;
+extern const rct_research_item gEnd;
+extern const rct_research_item gEnd2;
 extern std::vector<rct_research_item> gResearched;
 extern std::vector<rct_research_item> gResearchable;
 }
