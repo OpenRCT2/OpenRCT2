@@ -29,8 +29,6 @@ struct rct2_install_info;
 
 #define INVALID_HANDLE -1
 
-#define TOUCH_DOUBLE_TIMEOUT 300
-
 #ifdef _WIN32
 #define PATH_SEPARATOR "\\"
 #define PLATFORM_NEWLINE "\r\n"
@@ -38,11 +36,6 @@ struct rct2_install_info;
 #define PATH_SEPARATOR "/"
 #define PLATFORM_NEWLINE "\n"
 #endif
-
-#define SHIFT 0x100
-#define CTRL 0x200
-#define ALT 0x400
-#define CMD 0x800
 
 struct resolution_t {
     sint32 width, height;
