@@ -4553,6 +4553,10 @@ STR_6248    :{WINDOW_COLOUR_1}Wil je {STRINGID} renoveren voor {CURRENCY}?
 STR_6249    :{WINDOW_COLOUR_1}Wil je {STRINGID} renoveren?
 STR_6250    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} volledig wilt afbreken? Je krijgt er {CURRENCY} voor terug.
 STR_6251    :Attractie is nog niet leeg
+STR_6252    :Twitch-API-URL
+STR_6253    :{SMALLFONT}{BLACK}Voer de URL van de Twitch-integratie-API in. Vereist voor het inschakelen van Twitch-integratie.
+STR_6254    :URL van de Twitch-integratie-API:
+STR_6255    :URL is niet geldig
 
 #############
 # Scenarios #
