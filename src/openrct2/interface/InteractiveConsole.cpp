@@ -52,7 +52,7 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
-#include "Console.h"
+#include "InteractiveConsole.h"
 #include "Viewport.h"
 
 #ifndef NO_TTF

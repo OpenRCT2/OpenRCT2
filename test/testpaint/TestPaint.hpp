@@ -21,7 +21,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/paint/Paint.h>
-#include <openrct2/paint/tile_element/TileElement.h>
+#include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include "Addresses.h"
 
 #define gRideEntries                RCT2_ADDRESS(0x009ACFA4, rct_ride_entry*)

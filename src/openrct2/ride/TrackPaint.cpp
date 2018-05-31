@@ -21,7 +21,7 @@
 #include "../localisation/Localisation.h"
 #include "../paint/Paint.h"
 #include "../paint/Supports.h"
-#include "../paint/tile_element/TileElement.h"
+#include "../paint/tile_element/Paint.TileElement.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
 #include "../world/Map.h"

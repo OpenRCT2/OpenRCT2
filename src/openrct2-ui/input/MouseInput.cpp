@@ -28,7 +28,7 @@
 #include <openrct2/core/Util.hpp>
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/interface/Chat.h>
-#include <openrct2/interface/Console.h>
+#include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>

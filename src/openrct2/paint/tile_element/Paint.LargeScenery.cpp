@@ -28,7 +28,7 @@
 #include "../../world/Scenery.h"
 #include "../Paint.h"
 #include "../Supports.h"
-#include "TileElement.h"
+#include "Paint.TileElement.h"
 
 // 6B8172:
 static void large_scenery_paint_supports(

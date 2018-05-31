@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../../interface/Viewport.h"
-#include "../../paint/tile_element/Surface.h"
+#include "../../paint/tile_element/Paint.Surface.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../sprites.h"

@@ -31,8 +31,8 @@
 #include "../../sprites.h"
 #include "../../world/Sprite.h"
 #include "../../world/Surface.h"
-#include "Surface.h"
-#include "TileElement.h"
+#include "Paint.Surface.h"
+#include "Paint.TileElement.h"
 
 // clang-format off
 static constexpr const uint8 byte_97B444[] =

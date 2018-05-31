@@ -31,7 +31,7 @@
 #include "../ride/Station.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
-#include "../paint/tile_element/TileElement.h"
+#include "../paint/tile_element/Paint.TileElement.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../world/Entrance.h"

@@ -21,7 +21,7 @@
 #include "../sprites.h"
 #include "../world/Map.h"
 #include "Paint.h"
-#include "tile_element/TileElement.h"
+#include "tile_element/Paint.TileElement.h"
 #include "VirtualFloor.h"
 #include <algorithm>
 #include <limits>

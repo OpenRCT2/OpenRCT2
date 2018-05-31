@@ -19,7 +19,7 @@
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/paint/tile_element/TileElement.h>
+#include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/paint/Paint.h>
 #include <openrct2/ride/TrackPaint.h>
 

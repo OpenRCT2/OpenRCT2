@@ -29,8 +29,8 @@
 #include "../../world/Surface.h"
 #include "../Paint.h"
 #include "../Supports.h"
-#include "TileElement.h"
-#include "Surface.h"
+#include "Paint.TileElement.h"
+#include "Paint.Surface.h"
 #include "../../world/Map.h"
 #include "../../drawing/LightFX.h"
 

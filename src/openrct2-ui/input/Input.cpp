@@ -22,7 +22,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/Input.h>
 #include <openrct2/interface/Chat.h>
-#include <openrct2/interface/Console.h>
+#include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2-ui/windows/Window.h>
 #include "../interface/InGameConsole.h"

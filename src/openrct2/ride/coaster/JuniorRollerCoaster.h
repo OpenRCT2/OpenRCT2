@@ -18,7 +18,7 @@
 #define _JUNIOR_ROLLER_COASTER_H
 
 #include "../../common.h"
-#include "../../paint/tile_element/TileElement.h"
+#include "../../paint/tile_element/Paint.TileElement.h"
 
 enum JUNIOR_RC_CHAINTYPE
 {

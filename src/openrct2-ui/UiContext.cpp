@@ -42,7 +42,7 @@
 #include "WindowManager.h"
 
 #include <openrct2/Input.h>
-#include <openrct2/interface/Console.h>
+#include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2-ui/interface/Window.h>
 
 #include "interface/InGameConsole.h"
