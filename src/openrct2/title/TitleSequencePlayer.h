@@ -38,7 +38,7 @@ interface ITitleSequencePlayer
     virtual void Eject() abstract;
 };
 
-ITitleSequencePlayer * CreateTitleSequencePlayer(IScenarioRepository * scenarioRepository, OpenRCT2::GameState * gameState);
+ITitleSequencePlayer * CreateTitleSequencePlayer(IScenarioRepository& scenarioRepository, OpenRCT2::GameState& gameState);
 
 // When testing title sequences within a normal game
 extern bool gPreviewingTitleSequenceInGame;

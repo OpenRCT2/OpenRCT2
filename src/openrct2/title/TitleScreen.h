@@ -29,7 +29,7 @@ namespace OpenRCT2
     class TitleScreen final
     {
     public:
-        TitleScreen(GameState * gameState);
+        TitleScreen(GameState& gameState);
         ~TitleScreen();
 
         ITitleSequencePlayer *  GetSequencePlayer();
@@ -46,7 +46,7 @@ namespace OpenRCT2
         void ChangePresetSequence(size_t preset);
 
     private:
-        GameState * const       _gameState;
+        GameState&              _gameState;
 
         ITitleSequencePlayer *  _sequencePlayer = nullptr;
         size_t                  _loadedTitleSequenceId = SIZE_MAX;

@@ -453,7 +453,7 @@ namespace OpenRCT2
             _gameState = std::make_unique<GameState>();
             _gameState->InitAll(150);
 
-            _titleScreen = std::make_unique<TitleScreen>(_gameState.get());
+            _titleScreen = std::make_unique<TitleScreen>(*_gameState);
             return true;
         }
 

@@ -41,7 +41,7 @@ using namespace OpenRCT2;
 // TODO Remove when no longer required.
 static TitleScreen * _singleton = nullptr;
 
-TitleScreen::TitleScreen(GameState * gameState)
+TitleScreen::TitleScreen(GameState& gameState)
     : _gameState(gameState)
 {
     _singleton = this;
@@ -174,7 +174,7 @@ void TitleScreen::Update()
         }
         for (sint32 i = 0; i < numUpdates; i++)
         {
-            _gameState->UpdateLogic();
+            _gameState.UpdateLogic();
         }
         update_palette_effects();
         // update_rain_animation();
@@ -227,8 +227,8 @@ void TitleScreen::TitleInitialise()
 {
     if (_sequencePlayer == nullptr)
     {
-        IScenarioRepository * scenarioRepository = GetScenarioRepository();
-        _sequencePlayer = CreateTitleSequencePlayer(scenarioRepository, _gameState);
+        auto scenarioRepository = GetScenarioRepository();
+        _sequencePlayer = CreateTitleSequencePlayer(*scenarioRepository, _gameState);
     }
     size_t seqId = title_get_config_sequence();
     if (seqId == SIZE_MAX)

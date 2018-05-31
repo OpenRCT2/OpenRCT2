@@ -50,8 +50,8 @@ class TitleSequencePlayer final : public ITitleSequencePlayer
 private:
     static constexpr const char * SFMM_FILENAME = "Six Flags Magic Mountain.SC6";
 
-    IScenarioRepository * const _scenarioRepository;
-    GameState * const           _gameState;
+    IScenarioRepository&    _scenarioRepository;
+    GameState&              _gameState;
 
     size_t          _sequenceId = 0;
     TitleSequence * _sequence = nullptr;
@@ -63,12 +63,10 @@ private:
     CoordsXY        _viewCentreLocation = { 0 };
 
 public:
-    explicit TitleSequencePlayer(IScenarioRepository * scenarioRepository, GameState * gameState)
+    explicit TitleSequencePlayer(IScenarioRepository& scenarioRepository, GameState& gameState)
         : _scenarioRepository(scenarioRepository),
           _gameState(gameState)
     {
-        Guard::ArgumentNotNull(scenarioRepository);
-        Guard::ArgumentNotNull(gameState);
     }
 
     ~TitleSequencePlayer() override
@@ -216,7 +214,7 @@ public:
         {
             if (Update())
             {
-                _gameState->UpdateLogic();
+                _gameState.UpdateLogic();
             }
             else
             {
@@ -264,7 +262,7 @@ private:
             break;
         case TITLE_SCRIPT_LOADMM:
         {
-            const scenario_index_entry * entry = _scenarioRepository->GetByFilename(SFMM_FILENAME);
+            const scenario_index_entry * entry = _scenarioRepository.GetByFilename(SFMM_FILENAME);
             if (entry == nullptr)
             {
                 Console::Error::WriteLine("%s not found.", SFMM_FILENAME);
@@ -332,10 +330,10 @@ private:
             }
 
             const utf8 * path = nullptr;
-            size_t numScenarios =  _scenarioRepository->GetCount();
+            size_t numScenarios =  _scenarioRepository.GetCount();
             for (size_t i = 0; i < numScenarios; i++)
             {
-                const scenario_index_entry * scenario = _scenarioRepository->GetByIndex(i);
+                const scenario_index_entry * scenario = _scenarioRepository.GetByIndex(i);
                 if (scenario && scenario->source_index == sourceDesc.index)
                 {
                     path = scenario->path;
@@ -591,7 +589,7 @@ private:
     }
 };
 
-ITitleSequencePlayer * CreateTitleSequencePlayer(IScenarioRepository * scenarioRepository, GameState * gameState)
+ITitleSequencePlayer * CreateTitleSequencePlayer(IScenarioRepository& scenarioRepository, GameState& gameState)
 {
     return new TitleSequencePlayer(scenarioRepository, gameState);
 }
