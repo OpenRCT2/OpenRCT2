@@ -55,9 +55,14 @@ struct rct_ride;
 
 namespace OpenRCT2
 {
+    class Date;
+
     class Park final
     {
     public:
+        Park() = default;
+        Park(const Park&) = delete;
+
         bool IsOpen() const;
 
         uint16  GetParkRating() const;
@@ -65,7 +70,7 @@ namespace OpenRCT2
         money32 GetCompanyValue() const;
 
         void Initialise();
-        void Update();
+        void Update(const Date &date);
 
         sint32          CalculateParkSize() const;
         sint32          CalculateParkRating() const;
@@ -126,7 +131,6 @@ void set_forced_park_rating(sint32 rating);
 sint32 get_forced_park_rating();
 
 sint32 park_is_open();
-void park_init();
 sint32 park_calculate_size();
 
 void reset_park_entry();

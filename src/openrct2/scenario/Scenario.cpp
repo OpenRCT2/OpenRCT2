@@ -19,6 +19,7 @@
 #include "../config/Config.h"
 #include "../FileClassifier.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -110,10 +111,10 @@ void scenario_begin()
     if (gScenarioObjectiveType != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
         context_open_window_view(WV_PARK_OBJECTIVE);
 
-    auto park = GetContext()->GetPark();
-    gParkRating = park->CalculateParkRating();
-    gParkValue = park->CalculateParkValue();
-    gCompanyValue = park->CalculateCompanyValue();
+    auto& park = GetContext()->GetGameState()->GetPark();
+    gParkRating = park.CalculateParkRating();
+    gParkValue = park.CalculateParkValue();
+    gCompanyValue = park.CalculateCompanyValue();
     gHistoricalProfit = gInitialCash - gBankLoan;
     gCash = gInitialCash;
 
@@ -172,7 +173,7 @@ void scenario_begin()
     gTotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
     safe_strcpy(gScenarioCompletedBy, "?", sizeof(gScenarioCompletedBy));
-    park->ResetHistories();
+    park.ResetHistories();
     finance_reset_history();
     award_reset();
     reset_all_ride_build_dates();
@@ -397,7 +398,6 @@ void scenario_update()
 {
     if (gScreenFlags == SCREEN_FLAGS_PLAYING)
     {
-        date_update();
         if (date_is_day_start(gDateMonthTicks))
         {
             scenario_day_update();

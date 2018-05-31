@@ -23,6 +23,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -771,7 +772,7 @@ public:
 
     void Initialise()
     {
-        game_init_all(_s6.map_size);
+        OpenRCT2::GetContext()->GetGameState()->InitAll(_s6.map_size);
     }
 
     /**

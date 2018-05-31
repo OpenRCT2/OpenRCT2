@@ -20,7 +20,9 @@
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Util.hpp"
+#include "../Date.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../interface/Colour.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
@@ -444,8 +446,8 @@ void game_command_buy_land_rights(
 void set_forced_park_rating(sint32 rating)
 {
     _forcedParkRating = rating;
-    auto park = GetContext()->GetPark();
-    gParkRating = park->CalculateParkRating();
+    auto& park = GetContext()->GetGameState()->GetPark();
+    gParkRating = park.CalculateParkRating();
     auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
     context_broadcast_intent(&intent);
 }
@@ -577,13 +579,9 @@ void Park::Initialise()
     format_string(gS6Info.details, 256, STR_NO_DETAILS_YET, nullptr);
 }
 
-void Park::Update()
+void Park::Update(const Date &date)
 {
-    // TODO: move when GameState class is introduced.
-    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
-        return;
-
-    // Every 5 seconds approximately
+    // Every ~13 seconds
     if (gCurrentTicks % 512 == 0)
     {
         gParkRating = CalculateParkRating();
@@ -597,15 +595,17 @@ void Park::Update()
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
         context_broadcast_intent(&intent);
     }
-
-    // Every week
-    if (date_is_week_start(gDateMonthTicks))
+    // Every ~102 seconds
+    if (gCurrentTicks % 4096 == 0)
     {
-        UpdateHistories();
         gParkSize = CalculateParkSize();
         window_invalidate_by_class(WC_PARK_INFORMATION);
     }
-
+    // Every new week
+    if (date.IsWeekStart())
+    {
+        UpdateHistories();
+    }
     GenerateGuests();
 }
 
@@ -1058,22 +1058,12 @@ void Park::UpdateHistories()
 
 sint32 park_is_open()
 {
-    return GetContext()->GetPark()->IsOpen();
-}
-
-void park_init()
-{
-    auto park = GetContext()->GetPark();
-    if (park == nullptr)
-    {
-        return;
-    }
-    park->Initialise();
+    return GetContext()->GetGameState()->GetPark().IsOpen();
 }
 
 sint32 park_calculate_size()
 {
-    auto tiles = GetContext()->GetPark()->CalculateParkSize();
+    auto tiles = GetContext()->GetGameState()->GetPark().CalculateParkSize();
     if (tiles != gParkSize)
     {
         gParkSize = tiles;

@@ -38,6 +38,7 @@
 #include "drawing/IDrawingEngine.h"
 #include "localisation/Localisation.h"
 #include "FileClassifier.h"
+#include "GameState.h"
 #include "network/network.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
@@ -105,7 +106,7 @@ namespace OpenRCT2
 
         // Game states
         std::unique_ptr<TitleScreen> _titleScreen;
-        std::unique_ptr<Park> _park;
+        std::unique_ptr<GameState> _gameState;
 
         sint32 _drawingEngineType = DRAWING_ENGINE_SOFTWARE;
         std::unique_ptr<IDrawingEngine> _drawingEngine;
@@ -166,9 +167,9 @@ namespace OpenRCT2
             return _uiContext;
         }
 
-        Park * GetPark() override
+        GameState * GetGameState() override
         {
-            return _park.get();
+            return _gameState.get();
         }
 
         std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() override
@@ -448,10 +449,11 @@ namespace OpenRCT2
             util_srand((uint32)time(nullptr));
             input_reset_place_obj_modifier();
             viewport_init_all();
-            game_init_all(150);
 
-            _titleScreen = std::make_unique<TitleScreen>();
-            _park = std::make_unique<Park>();
+            _gameState = std::make_unique<GameState>();
+            _gameState->InitAll(150);
+
+            _titleScreen = std::make_unique<TitleScreen>(*_gameState);
             return true;
         }
 
@@ -975,7 +977,7 @@ namespace OpenRCT2
             }
             else
             {
-                game_update();
+                _gameState->Update();
             }
 
 #ifdef __ENABLE_DISCORD__

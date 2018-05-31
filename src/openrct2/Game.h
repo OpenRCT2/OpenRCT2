@@ -161,8 +161,6 @@ void game_increase_game_speed();
 void game_reduce_game_speed();
 
 void game_create_windows();
-void game_update();
-void game_logic_update();
 void reset_all_sprite_quadrant_placements();
 void update_palette_effects();
 
@@ -188,4 +186,3 @@ void game_convert_strings_to_rct2(rct_s6_data * s6);
 void utf8_to_rct2_self(char * buffer, size_t length);
 void rct2_to_utf8_self(char * buffer, size_t length);
 void game_fix_save_vars();
-void game_init_all(sint32 mapSize);

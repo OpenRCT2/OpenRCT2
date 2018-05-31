@@ -18,6 +18,11 @@
 
 #include "../common.h"
 
+namespace OpenRCT2
+{
+    class GameState;
+}
+
 interface IScenarioRepository;
 
 interface ITitleSequencePlayer
@@ -33,7 +38,7 @@ interface ITitleSequencePlayer
     virtual void Eject() abstract;
 };
 
-ITitleSequencePlayer * CreateTitleSequencePlayer(IScenarioRepository * scenarioRepository);
+ITitleSequencePlayer * CreateTitleSequencePlayer(IScenarioRepository& scenarioRepository, OpenRCT2::GameState& gameState);
 
 // When testing title sequences within a normal game
 extern bool gPreviewingTitleSequenceInGame;

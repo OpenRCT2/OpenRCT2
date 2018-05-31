@@ -22,35 +22,42 @@
 
 interface ITitleSequencePlayer;
 
-class TitleScreen final
+namespace OpenRCT2
 {
-public:
-    ITitleSequencePlayer *  GetSequencePlayer();
-    size_t                  GetCurrentSequence();
-    bool                    PreviewSequence(size_t value);
-    void                    StopPreviewingSequence();
-    bool                    IsPreviewingSequence();
-    bool                    ShouldHideVersionInfo();
-    void                    SetHideVersionInfo(bool value);
+    class GameState;
 
-    TitleScreen();
-    ~TitleScreen();
+    class TitleScreen final
+    {
+    public:
+        TitleScreen(GameState& gameState);
+        ~TitleScreen();
 
-    void Load();
-    void Update();
-    void CreateWindows();
-    void ChangePresetSequence(size_t preset);
+        ITitleSequencePlayer *  GetSequencePlayer();
+        size_t                  GetCurrentSequence();
+        bool                    PreviewSequence(size_t value);
+        void                    StopPreviewingSequence();
+        bool                    IsPreviewingSequence();
+        bool                    ShouldHideVersionInfo();
+        void                    SetHideVersionInfo(bool value);
 
-private:
-    ITitleSequencePlayer *  _sequencePlayer = nullptr;
-    size_t                  _loadedTitleSequenceId = SIZE_MAX;
-    size_t                  _currentSequence = SIZE_MAX;
-    bool                    _hideVersionInfo = false;
-    bool                    _previewingSequence = false;
+        void Load();
+        void Update();
+        void CreateWindows();
+        void ChangePresetSequence(size_t preset);
 
-    void TitleInitialise();
-    bool TryLoadSequence(bool loadPreview = false);
-};
+    private:
+        GameState&              _gameState;
+
+        ITitleSequencePlayer *  _sequencePlayer = nullptr;
+        size_t                  _loadedTitleSequenceId = SIZE_MAX;
+        size_t                  _currentSequence = SIZE_MAX;
+        bool                    _hideVersionInfo = false;
+        bool                    _previewingSequence = false;
+
+        void TitleInitialise();
+        bool TryLoadSequence(bool loadPreview = false);
+    };
+}
 
 void title_load();
 void title_create_windows();

@@ -17,6 +17,7 @@
 #include "actions/ParkSetLoanAction.hpp"
 #include "Cheats.h"
 #include "config/Config.h"
+#include "GameState.h"
 #include "localisation/Localisation.h"
 #include "network/network.h"
 #include "ride/Ride.h"
@@ -269,10 +270,11 @@ static void cheat_clear_loan()
 
 static void cheat_generate_guests(sint32 count)
 {
-    auto park = GetContext()->GetPark();
+    auto& park = GetContext()->GetGameState()->GetPark();
     for (sint32 i = 0; i < count; i++)
-        park->GenerateGuest();
-
+    {
+        park.GenerateGuest();
+    }
     window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 }
 

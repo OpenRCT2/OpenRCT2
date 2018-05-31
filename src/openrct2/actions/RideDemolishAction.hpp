@@ -19,6 +19,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../core/MemoryStream.h"
+#include "../GameState.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
@@ -234,7 +235,7 @@ private:
 
         user_string_free(ride->name);
         ride->type = RIDE_TYPE_NULL;
-        gParkValue = GetContext()->GetPark()->CalculateParkValue();
+        gParkValue = GetContext()->GetGameState()->GetPark().CalculateParkValue();
 
         auto res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
