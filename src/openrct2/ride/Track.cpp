@@ -1646,7 +1646,8 @@ static money32 track_remove(uint8 type,
         return MONEY32_UNDEFINED;
     }
 
-    uint8 found = 0;
+    bool found = false;
+    bool isGhost = flags & GAME_COMMAND_FLAG_GHOST;
     rct_tile_element * tileElement = map_get_first_element_at(originX / 32, originY / 32);
     if (tileElement == nullptr)
     {
@@ -1667,7 +1668,8 @@ static money32 track_remove(uint8 type,
         if (tile_element_get_track_sequence(tileElement) != sequence)
             continue;
 
-        // Probably should add a check for ghost here as well!
+        if (tileElement->IsGhost() != isGhost)
+            continue;
 
         uint8 track_type = track_element_get_type(tileElement);
         switch (track_type)
@@ -1681,7 +1683,7 @@ static money32 track_remove(uint8 type,
         if (track_type != type)
             continue;
 
-        found = 1;
+        found = true;
         break;
     }
     while (!(tileElement++)->IsLastForTile());
@@ -1761,7 +1763,7 @@ static money32 track_remove(uint8 type,
 
         trackpieceZ = z;
 
-        found      = 0;
+        found = false;
         tileElement = map_get_first_element_at(x / 32, y / 32);
         do
         {
@@ -1783,7 +1785,10 @@ static money32 track_remove(uint8 type,
             if (track_element_get_type(tileElement) != type)
                 continue;
 
-            found = 1;
+            if (tileElement->IsGhost() != isGhost)
+                continue;
+
+            found = true;
             break;
         }
         while (!(tileElement++)->IsLastForTile());
