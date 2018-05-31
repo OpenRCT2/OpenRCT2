@@ -342,10 +342,10 @@ static rct_widget window_ride_income_widgets[] = {
     MAIN_RIDE_WIDGETS,
     { WWT_LABEL,            1,  19,     144,    50,     61,     0xFFFFFFFF,                                 STR_NONE                                                    },
       SPINNER_WIDGETS      (1,  147,    308,    50,     61,     STR_ARG_6_CURRENCY2DP,                      STR_NONE),  // NB: 3 widgets
-    { WWT_CHECKBOX,         1,  5,      310,    61,     72,     STR_SAME_PRICE_THROUGHOUT_PARK,             STR_SAME_PRICE_THROUGHOUT_PARK_TIP                          },
-    { WWT_LABEL,            1,  19,     144,    89,     100,    0xFFFFFFFF,                                 STR_NONE                                                    },
-      SPINNER_WIDGETS      (1,  147,    308,    89,     100,    STR_RIDE_SECONDARY_PRICE_VALUE,             STR_NONE),  // NB: 3 widgets
-    { WWT_CHECKBOX,         1,  5,      310,    100,    111,    STR_SAME_PRICE_THROUGHOUT_PARK,             STR_SAME_PRICE_THROUGHOUT_PARK_TIP                          },
+    { WWT_CHECKBOX,         1,  5,      310,    62,     74,     STR_SAME_PRICE_THROUGHOUT_PARK,             STR_SAME_PRICE_THROUGHOUT_PARK_TIP                          },
+    { WWT_LABEL,            1,  19,     144,    94,     105,    0xFFFFFFFF,                                 STR_NONE                                                    },
+      SPINNER_WIDGETS      (1,  147,    308,    94,     105,    STR_RIDE_SECONDARY_PRICE_VALUE,             STR_NONE),  // NB: 3 widgets
+    { WWT_CHECKBOX,         1,  5,      310,    106,    118,    STR_SAME_PRICE_THROUGHOUT_PARK,             STR_SAME_PRICE_THROUGHOUT_PARK_TIP                          },
     { WIDGETS_END },
 };
 
@@ -5994,7 +5994,7 @@ static void window_ride_income_mouseup(rct_window *w, rct_widgetindex widgetInde
  */
 static void window_ride_income_resize(rct_window *w)
 {
-    window_set_resize(w, 316, 183, 316, 183);
+    window_set_resize(w, 316, 194, 316, 194);
 }
 
 /**
@@ -6155,11 +6155,12 @@ static void window_ride_income_paint(rct_window *w, rct_drawpixelinfo *dpi)
     rideEntry = get_ride_entry_by_ride(ride);
 
     x = w->x + window_ride_income_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-    y = w->y + window_ride_income_widgets[WIDX_PAGE_BACKGROUND].top + 29;
+    y = w->y + window_ride_income_widgets[WIDX_PAGE_BACKGROUND].top + 33;
 
     // Primary item profit / loss per item sold
     primaryItem = rideEntry->shop_item;
-    if (primaryItem != SHOP_ITEM_NONE) {
+    if (primaryItem != SHOP_ITEM_NONE)
+    {
         profit = ride->price;
 
         stringId = STR_PROFIT_PER_ITEM_SOLD;
@@ -6171,14 +6172,15 @@ static void window_ride_income_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
         gfx_draw_string_left(dpi, stringId, &profit, COLOUR_BLACK, x, y);
     }
-    y += 39;
+    y += 44;
 
     // Secondary item profit / loss per item sold
     secondaryItem = RidePhotoItems[ride->type];
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
         secondaryItem = rideEntry->shop_item_secondary;
 
-    if (secondaryItem != SHOP_ITEM_NONE) {
+    if (secondaryItem != SHOP_ITEM_NONE)
+    {
         profit = ride->price_secondary;
 
         stringId = STR_PROFIT_PER_ITEM_SOLD;
@@ -6190,7 +6192,7 @@ static void window_ride_income_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
         gfx_draw_string_left(dpi, stringId, &profit, COLOUR_BLACK, x, y);
     }
-    y += 15;
+    y += 18;
 
     // Income per hour
     if (ride->income_per_hour != MONEY32_UNDEFINED) {
