@@ -225,31 +225,20 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 static rct_widget window_options_display_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     { WWT_GROUPBOX,         1,  5,      304,    53,     207,    STR_HARDWARE_GROUP,     STR_NONE },                 // Hardware group
-
     { WWT_DROPDOWN,         1,  155,    299,    68,     79,     STR_NONE,               STR_NONE },                 // Fullscreen
     { WWT_BUTTON,           1,  288,    298,    69,     78,     STR_DROPDOWN_GLYPH,     STR_FULLSCREEN_MODE_TIP },
-
-        { WWT_DROPDOWN,         1,  155,    299,    83,     94,     STR_ARG_16_RESOLUTION_X_BY_Y,   STR_NONE },             // Resolution
-        { WWT_BUTTON,           1,  288,    298,    84,     93,     STR_DROPDOWN_GLYPH,     STR_DISPLAY_RESOLUTION_TIP },
-
-    { WWT_SPINNER,          1,  155,    299,    98,     109,    STR_NONE,               STR_WINDOW_SCALE_TIP },     // Scale spinner
-    { WWT_BUTTON,           1,  288,    298,    99,     103,    STR_NUMERIC_UP,         STR_NONE },                 // Scale spinner up
-    { WWT_BUTTON,           1,  288,    298,    104,    108,    STR_NUMERIC_DOWN,       STR_NONE },                 // Scale spinner down
-
+    { WWT_DROPDOWN,         1,  155,    299,    83,     94,     STR_ARG_16_RESOLUTION_X_BY_Y,   STR_NONE },             // Resolution
+    { WWT_BUTTON,           1,  288,    298,    84,     93,     STR_DROPDOWN_GLYPH,     STR_DISPLAY_RESOLUTION_TIP },
+      SPINNER_WIDGETS      (1,  155,    299,    98,    109,     STR_NONE,               STR_WINDOW_SCALE_TIP), // Scale spinner (3 widgets)
     { WWT_DROPDOWN,         1,  155,    299,    113,    124,    STR_NONE,               STR_NONE },
     { WWT_BUTTON,           1,  288,    298,    114,    123,    STR_DROPDOWN_GLYPH,     STR_DRAWING_ENGINE_TIP },
-
-        { WWT_DROPDOWN,         1,  155,    299,    128,    139,    STR_NONE,                       STR_NONE },                         // Scaling quality hint
-        { WWT_BUTTON,           1,  288,    298,    129,    138,    STR_DROPDOWN_GLYPH,             STR_SCALE_QUALITY_TIP },
-
-        { WWT_CHECKBOX,         1,  25,     290,    144,    155,    STR_STEAM_OVERLAY_PAUSE,        STR_STEAM_OVERLAY_PAUSE_TIP },      // Pause on steam overlay
-
+    { WWT_DROPDOWN,         1,  155,    299,    128,    139,    STR_NONE,                       STR_NONE },                         // Scaling quality hint
+    { WWT_BUTTON,           1,  288,    298,    129,    138,    STR_DROPDOWN_GLYPH,             STR_SCALE_QUALITY_TIP },
+    { WWT_CHECKBOX,         1,  25,     290,    144,    155,    STR_STEAM_OVERLAY_PAUSE,        STR_STEAM_OVERLAY_PAUSE_TIP },      // Pause on steam overlay
     { WWT_CHECKBOX,         1,  11,     153,    161,    172,    STR_UNCAP_FPS,          STR_UNCAP_FPS_TIP },        // Uncap fps
     { WWT_CHECKBOX,         1,  155,    290,    161,    172,    STR_SHOW_FPS,           STR_SHOW_FPS_TIP },         // Show fps
     { WWT_CHECKBOX,         1,  11,     290,    176,    187,    STR_USE_VSYNC,          STR_USE_VSYNC_TIP },        // Use vsync
     { WWT_CHECKBOX,         1,  11,     290,    191,    202,    STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS,  STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP },    // Minimise fullscreen focus loss
-
-
     { WIDGETS_END },
 };
 

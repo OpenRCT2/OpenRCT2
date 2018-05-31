@@ -238,37 +238,25 @@ static rct_widget window_ride_main_widgets[] = {
 // 0x009ADDA8
 static rct_widget window_ride_vehicle_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_DROPDOWN,         1,  7,      308,    50,     61,     0xFFFFFFFF,                     STR_NONE                                        },
-    { WWT_BUTTON,           1,  297,    307,    51,     60,     STR_DROPDOWN_GLYPH,             STR_NONE                                        },
-    { WWT_SCROLL,           1,  7,      308,    147,    189,    0,                              STR_NONE                                        },
-    { WWT_SPINNER,          1,  7,      151,    196,    207,    STR_RIDE_VEHICLE_COUNT,         STR_MAX_VEHICLES_TIP                            },
-    { WWT_BUTTON,           1,  140,    150,    197,    201,    STR_NUMERIC_UP,                 STR_NONE                                        },
-    { WWT_BUTTON,           1,  140,    150,    202,    206,    STR_NUMERIC_DOWN,               STR_NONE                                        },
-    { WWT_SPINNER,          1,  164,    308,    196,    207,    STR_1_CAR_PER_TRAIN,            STR_MAX_CARS_PER_TRAIN_TIP                      },
-    { WWT_BUTTON,           1,  297,    307,    197,    201,    STR_NUMERIC_UP,                 STR_NONE                                        },
-    { WWT_BUTTON,           1,  297,    307,    202,    206,    STR_NUMERIC_DOWN,               STR_NONE                                        },
+    { WWT_DROPDOWN,         1,  7,      308,    50,     61,     0xFFFFFFFF,                                 STR_NONE                                        },
+    { WWT_BUTTON,           1,  297,    307,    51,     60,     STR_DROPDOWN_GLYPH,                         STR_NONE                                        },
+    { WWT_SCROLL,           1,  7,      308,    147,    189,    0,                                          STR_NONE                                        },
+      SPINNER_WIDGETS      (1,  7,      151,    196,    207,    STR_RIDE_VEHICLE_COUNT,                     STR_MAX_VEHICLES_TIP),
+      SPINNER_WIDGETS      (1,  164,    308,    196,    207,    STR_1_CAR_PER_TRAIN,                        STR_MAX_CARS_PER_TRAIN_TIP),
     { WIDGETS_END },
 };
 
 // 0x009ADEFC
 static rct_widget window_ride_operating_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_SPINNER,          1,  157,    308,    61,     72,     STR_ARG_18_STRINGID,                        STR_NONE                                        },
-    { WWT_BUTTON,           1,  297,    307,    62,     66,     STR_NUMERIC_UP,                             STR_NONE                                        },
-    { WWT_BUTTON,           1,  297,    307,    67,     71,     STR_NUMERIC_DOWN,                           STR_NONE                                        },
-    { WWT_SPINNER,          1,  157,    308,    75,     86,     STR_LIFT_HILL_CHAIN_SPEED_VALUE,            STR_NONE                                        },
-    { WWT_BUTTON,           1,  297,    307,    76,     80,     STR_NUMERIC_UP,                             STR_SELECT_LIFT_HILL_CHAIN_SPEED_TIP            },
-    { WWT_BUTTON,           1,  297,    307,    81,     85,     STR_NUMERIC_DOWN,                           STR_SELECT_LIFT_HILL_CHAIN_SPEED_TIP            },
+      SPINNER_WIDGETS      (1,  157,    308,    61,     72,     STR_ARG_18_STRINGID,                        STR_NONE), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  157,    308,    75,     86,     STR_LIFT_HILL_CHAIN_SPEED_VALUE,            STR_NONE), // NB: 3 widgets
     { WWT_CHECKBOX,         1,  7,      86,     109,    120,    STR_WAIT_FOR,                               STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP    },
     { WWT_CHECKBOX,         1,  7,      308,    124,    135,    0xFFFFFFFF,                                 STR_NONE                                        },
     { WWT_CHECKBOX,         1,  7,      156,    139,    150,    STR_MINIMUM_WAITING_TIME,                   STR_MINIMUM_LENGTH_BEFORE_DEPARTING_TIP         },
-    { WWT_SPINNER,          1,  157,    308,    139,    150,    STR_ARG_10_STRINGID,                        STR_NONE                                        },
-    { WWT_BUTTON,           1,  297,    307,    140,    144,    STR_NUMERIC_UP,                             STR_NONE                                        },
-    { WWT_BUTTON,           1,  297,    307,    145,    149,    STR_NUMERIC_DOWN,                           STR_NONE                                        },
+      SPINNER_WIDGETS      (1,  157,    308,    139,    150,    STR_ARG_10_STRINGID,                        STR_NONE), // NB: 3 widgets
     { WWT_CHECKBOX,         1,  7,      156,    154,    165,    STR_MAXIMUM_WAITING_TIME,                   STR_MAXIMUM_LENGTH_BEFORE_DEPARTING_TIP         },
-    { WWT_SPINNER,          1,  157,    308,    154,    165,    STR_ARG_14_STRINGID,                        STR_NONE                                        },
-    { WWT_BUTTON,           1,  297,    307,    155,    159,    STR_NUMERIC_UP,                             STR_NONE                                        },
-    { WWT_BUTTON,           1,  297,    307,    160,    164,    STR_NUMERIC_DOWN,                           STR_NONE                                        },
+      SPINNER_WIDGETS      (1,  157,    308,    154,    165,    STR_ARG_14_STRINGID,                        STR_NONE), // NB: 3 widgets
     { WWT_CHECKBOX,         1,  7,      308,    169,    180,    STR_SYNCHRONISE_WITH_ADJACENT_STATIONS,     STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP      },
     { WWT_LABEL,            1, 21,      149,    61,     72,     0xFFFFFFFF,                                 STR_NONE                                        },
     { WWT_LABEL,            1, 21,      149,    75,     86,     STR_LIFT_HILL_CHAIN_SPEED,                  STR_NONE                                        },
@@ -277,9 +265,7 @@ static rct_widget window_ride_operating_widgets[] = {
     { WWT_DROPDOWN,         1,  87,     308,    109,    120,    0xFFFFFFFF,                                 STR_NONE                                        },
     { WWT_BUTTON,           1,  297,    307,    110,    119,    STR_DROPDOWN_GLYPH,                         STR_NONE                                        },
     { WWT_LABEL,            1,  21,     149,    89,     100,    STR_NUMBER_OF_CIRCUITS,                     STR_NUMBER_OF_CIRCUITS_TIP                      },
-    { WWT_SPINNER,          1,  157,    308,    89,     100,    STR_NUMBER_OF_CIRCUITS_VALUE,               STR_NONE                                        },
-    { WWT_BUTTON,           1,  297,    307,    90,     94,     STR_NUMERIC_UP,                             STR_SELECT_NUMBER_OF_CIRCUITS_TIP               },
-    { WWT_BUTTON,           1,  297,    307,    95,     99,     STR_NUMERIC_DOWN,                           STR_SELECT_NUMBER_OF_CIRCUITS_TIP               },
+      SPINNER_WIDGETS      (1,  157,    308,    89,     100,    STR_NUMBER_OF_CIRCUITS_VALUE,               STR_NONE), // NB: 3 widgets
     { WIDGETS_END },
 };
 
@@ -355,14 +341,10 @@ static rct_widget window_ride_graphs_widgets[] = {
 static rct_widget window_ride_income_widgets[] = {
     MAIN_RIDE_WIDGETS,
     { WWT_LABEL,            1,  19,     144,    50,     61,     0xFFFFFFFF,                                 STR_NONE                                                    },
-    { WWT_SPINNER,          1,  147,    308,    50,     61,     STR_ARG_6_CURRENCY2DP,                      STR_NONE                                                    },
-    { WWT_BUTTON,           1,  297,    307,    51,     55,     STR_NUMERIC_UP,                             STR_NONE                                                    },
-    { WWT_BUTTON,           1,  297,    307,    56,     60,     STR_NUMERIC_DOWN,                           STR_NONE                                                    },
+      SPINNER_WIDGETS      (1,  147,    308,    50,     61,     STR_ARG_6_CURRENCY2DP,                      STR_NONE),  // NB: 3 widgets
     { WWT_CHECKBOX,         1,  5,      310,    61,     72,     STR_SAME_PRICE_THROUGHOUT_PARK,             STR_SAME_PRICE_THROUGHOUT_PARK_TIP                          },
     { WWT_LABEL,            1,  19,     144,    89,     100,    0xFFFFFFFF,                                 STR_NONE                                                    },
-    { WWT_SPINNER,          1,  147,    308,    89,     100,    STR_RIDE_SECONDARY_PRICE_VALUE,             STR_NONE                                                    },
-    { WWT_BUTTON,           1,  297,    307,    90,     94,     STR_NUMERIC_UP,                             STR_NONE                                                    },
-    { WWT_BUTTON,           1,  297,    307,    95,     99,     STR_NUMERIC_DOWN,                           STR_NONE                                                    },
+      SPINNER_WIDGETS      (1,  147,    308,    89,     100,    STR_RIDE_SECONDARY_PRICE_VALUE,             STR_NONE),  // NB: 3 widgets
     { WWT_CHECKBOX,         1,  5,      310,    100,    111,    STR_SAME_PRICE_THROUGHOUT_PARK,             STR_SAME_PRICE_THROUGHOUT_PARK_TIP                          },
     { WIDGETS_END },
 };

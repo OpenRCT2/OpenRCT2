@@ -48,6 +48,13 @@ enum WINDOW_WIDGET_TYPES {
 #define WIDGETS_END     WWT_LAST, 0, 0, 0, 0, 0, 0, 0
 #define BAR_BLINK       (1u << 31)
 
+#define SPINNER_INCREASE(l, r, t, b)   r - 12, r - 1,  t + 1, b - 1
+#define SPINNER_DECREASE(l, r, t, b)   r - 25, r - 13, t + 1, b - 1
+#define SPINNER_WIDGETS(colour, left, right, top, bottom, text, tooltip) \
+    { WWT_SPINNER,      colour, left, right, top, bottom,                   text,             tooltip  }, \
+    { WWT_BUTTON,       colour, SPINNER_INCREASE(left, right, top, bottom), STR_NUMERIC_UP,   STR_NONE }, \
+    { WWT_BUTTON,       colour, SPINNER_DECREASE(left, right, top, bottom), STR_NUMERIC_DOWN, STR_NONE }  \
+
 enum {
     SCROLL_HORIZONTAL = (1 << 0),
     SCROLL_VERTICAL = (1 << 1),
