@@ -119,9 +119,7 @@ static rct_widget window_park_guests_widgets[] = {
 static rct_widget window_park_price_widgets[] = {
     MAIN_PARK_WIDGETS,
     { WWT_LABEL,            1,  21,     146,    50,     61,     STR_ADMISSION_PRICE,            STR_NONE },                         //
-    { WWT_SPINNER,          1,  147,    222,    50,     61,     STR_ARG_6_CURRENCY2DP,          STR_NONE },                         // price
-    { WWT_BUTTON,           1,  211,    221,    51,     55,     STR_NUMERIC_UP,                 STR_NONE },                         // increase price
-    { WWT_BUTTON,           1,  211,    221,    56,     60,     STR_NUMERIC_DOWN,               STR_NONE },                         // decrease price
+      SPINNER_WIDGETS      (1,  147,    222,    50,     61,     STR_ARG_6_CURRENCY2DP,          STR_NONE), // Price (3 widgets)
     { WIDGETS_END },
 };
 
