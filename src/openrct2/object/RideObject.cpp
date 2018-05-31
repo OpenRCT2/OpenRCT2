@@ -343,7 +343,7 @@ void RideObject::Unload()
     _legacyType.images_offset = 0;
 }
 
-void RideObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
+void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] sint32 width, [[maybe_unused]] sint32 height) const
 {
     uint32 imageId = _legacyType.images_offset;
 
@@ -411,7 +411,8 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
     item->RideInfo.RideGroupIndex = rideGroupIndex;
 }
 
-void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * stream, rct_ride_entry_vehicle * vehicle)
+void RideObject::ReadLegacyVehicle(
+    [[maybe_unused]] IReadObjectContext* context, IStream* stream, rct_ride_entry_vehicle* vehicle)
 {
     vehicle->rotation_frame_mask = stream->ReadValue<uint16>();
     stream->Seek(2 * 1, STREAM_SEEK_CURRENT);
@@ -644,7 +645,7 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
     ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }
 
-void RideObject::ReadJsonVehicleInfo(IReadObjectContext * context, const json_t * properties)
+void RideObject::ReadJsonVehicleInfo([[maybe_unused]] IReadObjectContext* context, const json_t* properties)
 {
     _legacyType.min_cars_in_train = ObjectJsonHelpers::GetInteger(properties, "minCarsPerTrain", 1);
     _legacyType.max_cars_in_train = ObjectJsonHelpers::GetInteger(properties, "maxCarsPerTrain", 1);

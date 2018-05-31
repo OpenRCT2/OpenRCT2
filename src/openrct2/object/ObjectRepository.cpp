@@ -99,7 +99,7 @@ public:
     }
 
 public:
-    std::tuple<bool, ObjectRepositoryItem> Create(sint32 language, const std::string &path) const override
+    std::tuple<bool, ObjectRepositoryItem> Create([[maybe_unused]] sint32 language, const std::string& path) const override
     {
         Object * object = nullptr;
         auto extension = Path::GetExtension(path);

@@ -29,7 +29,7 @@ namespace OpenRCT2::Audio
             return 0;
         }
 
-        size_t Read(void * dst, uint64 offset, size_t len) override
+        size_t Read([[maybe_unused]] void* dst, [[maybe_unused]] uint64 offset, [[maybe_unused]] size_t len) override
         {
             return 0;
         }

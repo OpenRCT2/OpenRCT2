@@ -100,7 +100,7 @@ rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint
     return header;
 }
 
-void Object::SetSourceGame(const uint8 sourceGame)
+void Object::SetSourceGame([[maybe_unused]] const uint8 sourceGame)
 {
     // FIXME: Temporary disabled because it breaks exporting to vanilla.
     /*_objectEntry.flags &= 0x0F;

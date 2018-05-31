@@ -281,8 +281,12 @@ static uint8 footpath_element_next_in_direction(TileCoordsXYZ loc, rct_tile_elem
  *
  * This is the recursive portion of footpath_element_destination_in_direction().
  */
-static uint8 footpath_element_dest_in_dir(TileCoordsXYZ loc, rct_tile_element * inputTileElement,
-                                          uint8 chosenDirection, uint8 * outRideIndex, sint32 level)
+static uint8 footpath_element_dest_in_dir(
+    TileCoordsXYZ loc,
+    [[maybe_unused]] rct_tile_element* inputTileElement,
+    uint8 chosenDirection,
+    uint8* outRideIndex,
+    sint32 level)
 {
     rct_tile_element * tileElement;
     sint32            direction;
@@ -1560,7 +1564,7 @@ static uint8 get_nearest_park_entrance_index(uint16 x, uint16 y)
  *
  *  rct2: 0x006952C0
  */
-static sint32 guest_path_find_entering_park(rct_peep * peep, rct_tile_element * tile_element, uint8 edges)
+static sint32 guest_path_find_entering_park(rct_peep* peep, [[maybe_unused]] rct_tile_element* tile_element, uint8 edges)
 {
     // Send peeps to the nearest park entrance.
     uint8 chosenEntrance = get_nearest_park_entrance_index(peep->next_x, peep->next_y);
@@ -1615,7 +1619,7 @@ static uint8 get_nearest_peep_spawn_index(uint16 x, uint16 y)
  *
  *  rct2: 0x0069536C
  */
-static sint32 guest_path_find_leaving_park(rct_peep * peep, rct_tile_element * tile_element, uint8 edges)
+static sint32 guest_path_find_leaving_park(rct_peep* peep, [[maybe_unused]] rct_tile_element* tile_element, uint8 edges)
 {
     // Send peeps to the nearest spawn point.
     uint8 chosenSpawn = get_nearest_peep_spawn_index(peep->next_x, peep->next_y);
@@ -1650,7 +1654,7 @@ static sint32 guest_path_find_leaving_park(rct_peep * peep, rct_tile_element * t
  *
  *  rct2: 0x00695161
  */
-static sint32 guest_path_find_park_entrance(rct_peep * peep, rct_tile_element * tile_element, uint8 edges)
+static sint32 guest_path_find_park_entrance(rct_peep* peep, [[maybe_unused]] rct_tile_element* tile_element, uint8 edges)
 {
     uint8 entranceNum;
 

@@ -371,8 +371,8 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
  *
  *  rct2: 0x006BEFA1
  */
-void game_command_hire_new_staff_member(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                        sint32 * ebp)
+void game_command_hire_new_staff_member(
+    sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, [[maybe_unused]] sint32* esi, sint32* edi, [[maybe_unused]] sint32* ebp)
 {
     *ebx = staff_hire_new_staff_member((*ebx & 0xFF00) >> 8, *ebx & 0xFF, *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFFFF,
                                        (*ebx & 0xFF0000) >> 16, edi);
@@ -402,8 +402,14 @@ static constexpr const bool peep_slow_walking_types[] = {
  *
  *  rct2: 0x006C0BB5
  */
-void game_command_set_staff_order(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                  sint32 * ebp)
+void game_command_set_staff_order(
+    [[maybe_unused]] sint32* eax,
+    sint32* ebx,
+    [[maybe_unused]] sint32* ecx,
+    sint32* edx,
+    [[maybe_unused]] sint32* esi,
+    [[maybe_unused]] sint32* edi,
+    [[maybe_unused]] sint32* ebp)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
     uint8  order_id         = *ebx >> 8;
@@ -453,8 +459,14 @@ void game_command_set_staff_order(sint32 * eax, sint32 * ebx, sint32 * ecx, sint
  *
  *  rct2: 0x006C09D1
  */
-void game_command_set_staff_patrol(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                   sint32 * ebp)
+void game_command_set_staff_patrol(
+    sint32* eax,
+    sint32* ebx,
+    sint32* ecx,
+    sint32* edx,
+    [[maybe_unused]] sint32* esi,
+    [[maybe_unused]] sint32* edi,
+    [[maybe_unused]] sint32* ebp)
 {
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
     {
@@ -507,8 +519,14 @@ void game_command_set_staff_patrol(sint32 * eax, sint32 * ebx, sint32 * ecx, sin
  *
  *  rct2: 0x006C0B83
  */
-void game_command_fire_staff_member(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                    sint32 * ebp)
+void game_command_fire_staff_member(
+    [[maybe_unused]] sint32* eax,
+    sint32* ebx,
+    [[maybe_unused]] sint32* ecx,
+    sint32* edx,
+    [[maybe_unused]] sint32* esi,
+    [[maybe_unused]] sint32* edi,
+    [[maybe_unused]] sint32* ebp)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
@@ -1540,7 +1558,8 @@ sint32 staff_path_finding(rct_peep * peep)
     }
 }
 
-void game_command_pickup_staff(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+void game_command_pickup_staff(
+    sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, [[maybe_unused]] sint32* esi, sint32* edi, sint32* ebp)
 {
     sint32 peepnum = *eax;
     sint32 x       = *edi;

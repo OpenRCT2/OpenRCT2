@@ -129,7 +129,7 @@ public:
         return {};
     }
 
-    void LogWarning(uint32 code, const utf8 * text) override
+    void LogWarning([[maybe_unused]] uint32 code, const utf8* text) override
     {
         _wasWarning = true;
 
@@ -139,7 +139,7 @@ public:
         }
     }
 
-    void LogError(uint32 code, const utf8 * text) override
+    void LogError([[maybe_unused]] uint32 code, const utf8* text) override
     {
         _wasError = true;
 

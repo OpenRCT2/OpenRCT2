@@ -23,15 +23,15 @@ namespace OpenRCT2::Audio
         IAudioMixer * GetMixer() override { return nullptr; }
 
         std::vector<std::string> GetOutputDevices() override { return std::vector<std::string>(); }
-        void SetOutputDevice(const std::string &deviceName) override { }
+        void SetOutputDevice(const std::string &/*deviceName*/) override { }
 
-        IAudioSource * CreateStreamFromWAV(const std::string &path) override { return nullptr; }
+        IAudioSource * CreateStreamFromWAV(const std::string &/*path*/) override { return nullptr; }
 
         void StartTitleMusic() override { }
 
-        IAudioChannel * PlaySound(sint32 soundId, sint32 volume, sint32 pan) override { return nullptr; }
-        IAudioChannel * PlaySoundAtLocation(sint32 soundId, sint16 x, sint16 y, sint16 z) override { return nullptr; }
-        IAudioChannel * PlaySoundPanned(sint32 soundId, sint32 pan, sint16 x, sint16 y, sint16 z) override { return nullptr; }
+        IAudioChannel * PlaySound(sint32 /*soundId*/, sint32 /*volume*/, sint32 /*pan*/) override { return nullptr; }
+        IAudioChannel * PlaySoundAtLocation(sint32 /*soundId*/, sint16 /*x*/, sint16 /*y*/, sint16 /*z*/) override { return nullptr; }
+        IAudioChannel * PlaySoundPanned(sint32 /*soundId*/, sint32 /*pan*/, sint16 /*x*/, sint16 /*y*/, sint16 /*z*/) override { return nullptr; }
 
         void ToggleAllSounds() override { }
         void PauseSounds() override { }

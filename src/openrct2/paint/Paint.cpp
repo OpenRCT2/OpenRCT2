@@ -730,7 +730,7 @@ paint_session * paint_session_alloc(rct_drawpixelinfo * dpi)
     return session;
 }
 
-void paint_session_free(paint_session * session)
+void paint_session_free([[maybe_unused]] paint_session* session)
 {
     _paintSessionInUse = false;
 }

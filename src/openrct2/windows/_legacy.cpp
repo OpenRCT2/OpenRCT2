@@ -35,7 +35,14 @@
 
 bool gDisableErrorWindowSound = false;
 
-void game_command_callback_pickup_guest(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
+void game_command_callback_pickup_guest(
+    sint32 eax,
+    sint32 ebx,
+    sint32 ecx,
+    [[maybe_unused]] sint32 edx,
+    [[maybe_unused]] sint32 esi,
+    [[maybe_unused]] sint32 edi,
+    [[maybe_unused]] sint32 ebp)
 {
     switch (ecx)
     {
@@ -59,7 +66,14 @@ void game_command_callback_pickup_guest(sint32 eax, sint32 ebx, sint32 ecx, sint
     }
 }
 
-void game_command_callback_hire_new_staff_member(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
+void game_command_callback_hire_new_staff_member(
+    [[maybe_unused]] sint32 eax,
+    [[maybe_unused]] sint32 ebx,
+    [[maybe_unused]] sint32 ecx,
+    [[maybe_unused]] sint32 edx,
+    [[maybe_unused]] sint32 esi,
+    sint32 edi,
+    [[maybe_unused]] sint32 ebp)
 {
     sint32 sprite_index = edi;
     if (sprite_index == SPRITE_INDEX_NULL)
@@ -76,7 +90,14 @@ void game_command_callback_hire_new_staff_member(sint32 eax, sint32 ebx, sint32 
     }
 }
 
-void game_command_callback_pickup_staff(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
+void game_command_callback_pickup_staff(
+    sint32 eax,
+    sint32 ebx,
+    sint32 ecx,
+    [[maybe_unused]] sint32 edx,
+    [[maybe_unused]] sint32 esi,
+    [[maybe_unused]] sint32 edi,
+    [[maybe_unused]] sint32 ebp)
 {
     switch (ecx)
     {
@@ -108,7 +129,14 @@ uint8 _rideConstructionState2;
 bool _stationConstructed;
 bool _deferClose;
 
-void game_command_callback_place_ride_entrance_or_exit(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
+void game_command_callback_place_ride_entrance_or_exit(
+    [[maybe_unused]] sint32 eax,
+    [[maybe_unused]] sint32 ebx,
+    [[maybe_unused]] sint32 ecx,
+    [[maybe_unused]] sint32 edx,
+    [[maybe_unused]] sint32 esi,
+    [[maybe_unused]] sint32 edi,
+    [[maybe_unused]] sint32 ebp)
 {
     audio_play_sound_at_location(
         SOUND_PLACE_ITEM,
@@ -555,7 +583,14 @@ void window_ride_construction_update_active_elements()
     context_broadcast_intent(&intent);
 }
 
-void game_command_callback_place_banner(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
+void game_command_callback_place_banner(
+    [[maybe_unused]] sint32 eax,
+    sint32 ebx,
+    [[maybe_unused]] sint32 ecx,
+    [[maybe_unused]] sint32 edx,
+    [[maybe_unused]] sint32 esi,
+    sint32 edi,
+    [[maybe_unused]] sint32 ebp)
 {
     if (ebx != MONEY32_UNDEFINED) {
         sint32 bannerId = edi;
