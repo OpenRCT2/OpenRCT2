@@ -63,9 +63,7 @@ static rct_widget window_server_start_widgets[] = {
     { WWT_TEXT_BOX,         1,  120,    WW-8,   52,         64,     STR_NONE,                       STR_NONE },                 // description text box
     { WWT_TEXT_BOX,         1,  120,    WW-8,   68,         80,     STR_NONE,                       STR_NONE },                 // greeting text box
     { WWT_TEXT_BOX,         1,  120,    WW-8,   84,         96,     STR_NONE,                       STR_NONE },                 // password text box
-    { WWT_SPINNER,          1,  120,    WW-8,   100,        111,    STR_SERVER_MAX_PLAYERS_VALUE,   STR_NONE },                 // max players
-    { WWT_BUTTON,           1,  WW-18,  WW-8,   101,        105,    STR_NUMERIC_UP,                 STR_NONE },
-    { WWT_BUTTON,           1,  WW-18,  WW-8,   106,        110,    STR_NUMERIC_DOWN,               STR_NONE },
+      SPINNER_WIDGETS      (1,  120,    WW-8,   100,        111,    STR_SERVER_MAX_PLAYERS_VALUE,   STR_NONE),                  // max players (3 widgets)
     { WWT_CHECKBOX,         1,  6,      WW-8,   117,        130,    STR_ADVERTISE,                  STR_ADVERTISE_SERVER_TIP }, // advertise checkbox
     { WWT_BUTTON,           1,  6,      106,    WH-6-13,    WH-6,   STR_NEW_GAME,                   STR_NONE },                 // start server button
     { WWT_BUTTON,           1,  112,    212,    WH-6-13,    WH-6,   STR_LOAD_GAME,                  STR_NONE },
