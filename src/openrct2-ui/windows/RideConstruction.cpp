@@ -1737,7 +1737,8 @@ static void window_ride_construction_construct(rct_window *w)
         }
 
         CoordsXYE next_track;
-        if (track_block_get_next_from_zero(x, y, z, _currentRideIndex, trackDirection, &next_track, &z, &trackDirection)) {
+        if (track_block_get_next_from_zero(x, y, z, _currentRideIndex, trackDirection, &next_track, &z, &trackDirection, false))
+        {
             _currentTrackBeginX = next_track.x;
             _currentTrackBeginY = next_track.y;
             _currentTrackBeginZ = z;

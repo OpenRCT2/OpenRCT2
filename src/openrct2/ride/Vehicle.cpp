@@ -2583,10 +2583,17 @@ static void vehicle_update_waiting_to_depart(rct_vehicle * vehicle)
         sint32       z;
         sint32       direction;
 
-        if (track_block_get_next_from_zero(vehicle->track_x, vehicle->track_y, vehicle->track_z, vehicle->ride,
-                                           (uint8)(vehicle->track_direction & 0x3), &track, &z, &direction))
+        if (track_block_get_next_from_zero(
+                vehicle->track_x,
+                vehicle->track_y,
+                vehicle->track_z,
+                vehicle->ride,
+                (uint8)(vehicle->track_direction & 0x3),
+                &track,
+                &z,
+                &direction,
+                false))
         {
-
             if (track_element_is_cable_lift(track.element))
             {
                 vehicle->status = VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT;

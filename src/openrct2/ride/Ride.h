@@ -1059,7 +1059,7 @@ void ride_all_has_any_track_elements(bool *rideIndexArray);
 void ride_construction_set_default_next_piece();
 
 bool track_block_get_next(CoordsXYE *input, CoordsXYE *output, sint32 *z, sint32 *direction);
-bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 rideIndex, uint8 direction_start, CoordsXYE *output, sint32 *z, sint32 *direction);
+bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 rideIndex, uint8 direction_start, CoordsXYE *output, sint32 *z, sint32 *direction, bool isGhost);
 
 bool track_block_get_previous(sint32 x, sint32 y, rct_tile_element *tileElement, track_begin_end *outTrackBeginEnd);
 bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8 direction, track_begin_end *outTrackBeginEnd);
