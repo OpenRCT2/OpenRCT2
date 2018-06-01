@@ -1236,6 +1236,19 @@ struct RideTypeLabel
 static sint32 RideDropdownDataLanguage = LANGUAGE_UNDEFINED;
 static std::vector<RideTypeLabel> RideDropdownData;
 
+// Used for sorting the vehicle type dropdown.
+struct VehicleTypeLabel
+{
+    sint32 subtype_id;
+    rct_string_id label_id;
+    const char* label_string;
+};
+
+static sint32 VehicleDropdownDataLanguage = LANGUAGE_UNDEFINED;
+static rct_ride_entry *VehicleDropdownRideType = nullptr;
+static bool VehicleDropdownExpanded = false;
+static std::vector<VehicleTypeLabel> VehicleDropdownData;
+
 static void window_ride_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, sint32 page, sint32 spriteIndex)
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
@@ -2183,6 +2196,8 @@ static void populate_ride_type_dropdown()
     }
 
     std::sort(RideDropdownData.begin(), RideDropdownData.end(), [](auto& a, auto& b) { return std::strcmp(a.label_string, b.label_string) < 0; });
+
+    RideDropdownDataLanguage = ls.GetCurrentLanguage();
 }
 
 static void window_ride_show_ride_type_dropdown(rct_window *w, rct_widget *widget)
@@ -2223,9 +2238,8 @@ static void window_ride_show_ride_type_dropdown(rct_window *w, rct_widget *widge
     dropdown_set_checked(pos, true);
 }
 
-static void window_ride_show_vehicle_type_dropdown(rct_window *w, rct_widget *widget)
+static void populate_vehicle_type_dropdown(Ride *ride)
 {
-    Ride *ride = get_ride(w->number);
     rct_ride_entry *rideEntry = get_ride_entry_by_ride(ride);
 
     bool selectionShouldBeExpanded;
@@ -2243,10 +2257,16 @@ static void window_ride_show_vehicle_type_dropdown(rct_window *w, rct_widget *wi
         rideTypeIteratorMax = ride->type;
     }
 
-    sint32 selectedIndex = -1;
-    sint32 numItems = 0;
-    // Dropdowns with more items start acting weird, so cap it.
-    for (; rideTypeIterator <= rideTypeIteratorMax && numItems < DROPDOWN_ITEMS_MAX_SIZE; rideTypeIterator++)
+    // Don't repopulate the list if we just did.
+    auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
+    if (VehicleDropdownExpanded == selectionShouldBeExpanded &&
+        VehicleDropdownRideType == rideEntry &&
+        VehicleDropdownDataLanguage == ls.GetCurrentLanguage())
+        return;
+
+    VehicleDropdownData.clear();
+
+    for (; rideTypeIterator <= rideTypeIteratorMax; rideTypeIterator++)
     {
         if (selectionShouldBeExpanded && ride_type_has_flag(rideTypeIterator, RIDE_TYPE_FLAG_FLAT_RIDE))
             continue;
@@ -2255,7 +2275,7 @@ static void window_ride_show_vehicle_type_dropdown(rct_window *w, rct_widget *wi
 
         uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideTypeIterator);
 
-        for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != RIDE_ENTRY_INDEX_NULL && numItems < DROPDOWN_ITEMS_MAX_SIZE; currentRideEntryIndex++)
+        for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != RIDE_ENTRY_INDEX_NULL; currentRideEntryIndex++)
         {
             sint32 rideEntryIndex = *currentRideEntryIndex;
             rct_ride_entry *currentRideEntry = get_ride_entry(rideEntryIndex);
@@ -2274,14 +2294,29 @@ static void window_ride_show_vehicle_type_dropdown(rct_window *w, rct_widget *wi
                     continue;
             }
 
-            if (ride->subtype == rideEntryIndex)
-                selectedIndex = numItems;
-
-            gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[numItems] = (rideEntryIndex << 16) | currentRideEntry->naming.name;
-
-            numItems++;
+            VehicleTypeLabel label = { rideEntryIndex, currentRideEntry->naming.name, ls.GetString(currentRideEntry->naming.name) };
+            VehicleDropdownData.push_back(label);
         }
+    }
+
+    std::sort(VehicleDropdownData.begin(), VehicleDropdownData.end(), [](auto& a, auto& b) { return std::strcmp(a.label_string, b.label_string) < 0; });
+
+    VehicleDropdownExpanded = selectionShouldBeExpanded;
+    VehicleDropdownRideType = rideEntry;
+    VehicleDropdownDataLanguage = ls.GetCurrentLanguage();
+}
+
+static void window_ride_show_vehicle_type_dropdown(rct_window *w, rct_widget *widget)
+{
+    Ride *ride = get_ride(w->number);
+    populate_vehicle_type_dropdown(ride);
+
+    size_t numItems = std::min<size_t>(VehicleDropdownData.size(), DROPDOWN_ITEMS_MAX_SIZE);
+
+    for (size_t i = 0; i < numItems; i++)
+    {
+        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItemsArgs[i] = VehicleDropdownData[i].label_id;
     }
 
     rct_widget *dropdownWidget = widget - 1;
@@ -2296,7 +2331,20 @@ static void window_ride_show_vehicle_type_dropdown(rct_window *w, rct_widget *wi
         widget->right - dropdownWidget->left
     );
 
-    dropdown_set_checked(selectedIndex, true);
+    // Find the current vehicle type in the ordered list.
+    uint8 pos = 0;
+    for (uint8 i = 0; i < VehicleDropdownData.size(); i++)
+    {
+        if (VehicleDropdownData[i].subtype_id == ride->subtype)
+        {
+            pos = i;
+            break;
+        }
+    }
+
+    gDropdownHighlightedIndex = pos;
+    gDropdownDefaultIndex = pos;
+    dropdown_set_checked(pos, true);
 }
 
 /**
@@ -2815,8 +2863,8 @@ static void window_ride_vehicle_dropdown(rct_window *w, rct_widgetindex widgetIn
 
     switch (widgetIndex) {
     case WIDX_VEHICLE_TYPE_DROPDOWN:
-        dropdownIndex = (gDropdownItemsArgs[dropdownIndex] >> 16) & 0xFFFF;
-        ride_set_ride_entry(w->number, dropdownIndex);
+        sint32 newRideType = VehicleDropdownData[dropdownIndex].subtype_id;
+        ride_set_ride_entry(w->number, newRideType);
         break;
     }
 }
