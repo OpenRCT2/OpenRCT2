@@ -50,7 +50,7 @@ static void ParkEntranceRemoveSegment(sint32 x, sint32 y, sint32 z)
 
     map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
     tile_element_remove(tileElement);
-    update_park_fences(x, y);
+    update_park_fences({x, y});
 }
 
 static money32 ParkEntranceRemove(sint16 x, sint16 y, uint8 z, uint8 flags)

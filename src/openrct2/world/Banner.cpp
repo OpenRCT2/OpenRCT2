@@ -193,7 +193,7 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
         return MONEY32_UNDEFINED;
     }
 
-    if (!map_is_location_valid(x, y))
+    if (!map_is_location_valid({x, y}))
     {
         return MONEY32_UNDEFINED;
     }

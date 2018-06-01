@@ -7904,7 +7904,7 @@ static void sub_6DBF3E(rct_vehicle * vehicle)
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
 
     rct_tile_element * tileElement = nullptr;
-    if (map_is_location_valid(vehicle->track_x, vehicle->track_y))
+    if (map_is_location_valid({vehicle->track_x, vehicle->track_y}))
     {
         tileElement =
             map_get_track_element_at_of_type_seq(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);

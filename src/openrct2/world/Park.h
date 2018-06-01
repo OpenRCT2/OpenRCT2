@@ -135,8 +135,8 @@ sint32 park_calculate_size();
 
 void reset_park_entry();
 
-void update_park_fences(sint32 x, sint32 y);
-void update_park_fences_around_tile(sint32 x, sint32 y);
+void update_park_fences(CoordsXY coords);
+void update_park_fences_around_tile(CoordsXY coords);
 
 uint8 calculate_guest_initial_happiness(uint8 percentage);
 

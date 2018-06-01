@@ -429,7 +429,7 @@ static money32 footpath_place_real(sint32 type, sint32 x, sint32 y, sint32 z, si
     gFootpathPrice = 0;
     gFootpathGroundFlags = 0;
 
-    if (map_is_edge(x, y)) {
+    if (map_is_edge({x, y})) {
         gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
         return MONEY32_UNDEFINED;
     }
@@ -1059,7 +1059,7 @@ bool fence_in_the_way(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction
 
 static rct_tile_element *footpath_connect_corners_get_neighbour(sint32 x, sint32 y, sint32 z, sint32 requireEdges)
 {
-    if (!map_is_location_valid(x, y))
+    if (!map_is_location_valid({x, y}))
     {
         return nullptr;
     }
@@ -1310,7 +1310,7 @@ static void loc_6A6D7E(
 ) {
     sint32 x = initialX + CoordsDirectionDelta[direction].x;
     sint32 y = initialY + CoordsDirectionDelta[direction].y;
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && map_is_edge(x, y)) {
+    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && map_is_edge({x, y})) {
         if (query) {
             neighbour_list_push(neighbourList, 7, direction, 255, 255);
         }
@@ -2255,7 +2255,7 @@ static void footpath_remove_edges_towards_here(sint32 x, sint32 y, sint32 z, sin
  */
 static void footpath_remove_edges_towards(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction, bool isQueue)
 {
-    if (!map_is_location_valid(x, y))
+    if (!map_is_location_valid({x, y}))
     {
         return;
     }

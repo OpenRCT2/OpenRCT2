@@ -454,7 +454,7 @@ static void cheat_own_all_land()
             // only own tiles that were not set to 0
             if (destOwnership != OWNERSHIP_UNOWNED) {
                 surfaceElement->properties.surface.ownership |= destOwnership;
-                update_park_fences_around_tile(coords.x, coords.y);
+                update_park_fences_around_tile(coords);
                 uint16 baseHeight = surfaceElement->base_height * 8;
                 map_invalidate_tile(coords.x, coords.y, baseHeight, baseHeight + 16);
             }
@@ -468,7 +468,7 @@ static void cheat_own_all_land()
         if (x != PEEP_SPAWN_UNDEFINED) {
             rct_tile_element * surfaceElement = map_get_surface_element_at({x, y});
             surfaceElement->properties.surface.ownership = OWNERSHIP_UNOWNED;
-            update_park_fences_around_tile(x, y);
+            update_park_fences_around_tile({x, y});
             uint16 baseHeight = surfaceElement->base_height * 8;
             map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
         }

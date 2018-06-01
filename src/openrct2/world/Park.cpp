@@ -167,27 +167,20 @@ void game_command_set_park_open(
 *
 *  rct2: 0x00664D05
 */
-void update_park_fences(sint32 x, sint32 y)
+void update_park_fences(CoordsXY coords)
 {
-    if (x > 0x1FFF)
-        return;
-    if (y > 0x1FFF)
+    if (map_is_edge(coords))
         return;
 
-    // When setting the ownership of map edges
-    if (x <= 0 || x >= gMapSizeUnits)
-        return;
-    if (y <= 0 || y >= gMapSizeUnits)
+    rct_tile_element* surfaceElement = map_get_surface_element_at(coords);
+    if (surfaceElement == nullptr)
         return;
 
-    rct_tile_element* sufaceElement = map_get_surface_element_at({x, y});
-    if (sufaceElement == nullptr)return;
+    uint8 newOwnership = surfaceElement->properties.surface.ownership & 0xF0;
+    if ((surfaceElement->properties.surface.ownership & OWNERSHIP_OWNED) == 0) {
+        bool fenceRequired = true;
 
-    uint8 newOwnership = sufaceElement->properties.surface.ownership & 0xF0;
-    if ((sufaceElement->properties.surface.ownership & OWNERSHIP_OWNED) == 0) {
-        uint8 fence_required = 1;
-
-        rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
+        rct_tile_element* tileElement = map_get_first_element_at(coords.x / 32, coords.y / 32);
         // If an entrance element do not place flags around surface
         do {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
@@ -197,28 +190,28 @@ void update_park_fences(sint32 x, sint32 y)
                 continue;
 
             if (!(tileElement->flags & TILE_ELEMENT_FLAG_GHOST)) {
-                fence_required = 0;
+                fenceRequired = false;
                 break;
             }
         } while (!(tileElement++)->IsLastForTile());
 
-        if (fence_required) {
+        if (fenceRequired) {
             // As map_is_location_in_park sets the error text
             // will require to back it up.
             rct_string_id previous_error = gGameCommandErrorText;
-            if (map_is_location_in_park(x - 32, y)){
+            if (map_is_location_in_park({coords.x - 32, coords.y})){
                 newOwnership |= 0x8;
             }
 
-            if (map_is_location_in_park(x, y - 32)){
+            if (map_is_location_in_park({coords.x, coords.y - 32})){
                 newOwnership |= 0x4;
             }
 
-            if (map_is_location_in_park(x + 32, y)){
+            if (map_is_location_in_park({coords.x + 32, coords.y})){
                 newOwnership |= 0x2;
             }
 
-            if (map_is_location_in_park(x, y + 32)){
+            if (map_is_location_in_park({coords.x, coords.y + 32})){
                 newOwnership |= 0x1;
             }
 
@@ -226,21 +219,21 @@ void update_park_fences(sint32 x, sint32 y)
         }
     }
 
-    if (sufaceElement->properties.surface.ownership != newOwnership) {
-        sint32 z0 = sufaceElement->base_height * 8;
+    if (surfaceElement->properties.surface.ownership != newOwnership) {
+        sint32 z0 = surfaceElement->base_height * 8;
         sint32 z1 = z0 + 16;
-        map_invalidate_tile(x, y, z0, z1);
-        sufaceElement->properties.surface.ownership = newOwnership;
+        map_invalidate_tile(coords.x, coords.y, z0, z1);
+        surfaceElement->properties.surface.ownership = newOwnership;
     }
 }
 
-void update_park_fences_around_tile(sint32 x, sint32 y)
+void update_park_fences_around_tile(CoordsXY coords)
 {
-    update_park_fences(x, y);
-    update_park_fences(x + 32, y);
-    update_park_fences(x - 32, y);
-    update_park_fences(x, y + 32);
-    update_park_fences(x, y - 32);
+    update_park_fences(coords);
+    update_park_fences({coords.x + 32, coords.y});
+    update_park_fences({coords.x - 32, coords.y});
+    update_park_fences({coords.x, coords.y + 32});
+    update_park_fences({coords.x, coords.y - 32});
 }
 
 void park_set_name(const char *name)
@@ -270,13 +263,13 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
         }
         if (flags & GAME_COMMAND_FLAG_APPLY) {
             surfaceElement->properties.surface.ownership |= OWNERSHIP_OWNED;
-            update_park_fences_around_tile(x, y);
+            update_park_fences_around_tile({x, y});
         }
         return gLandPrice;
     case BUY_LAND_RIGHTS_FLAG_UNOWN_TILE: // 1
         if (flags & GAME_COMMAND_FLAG_APPLY) {
             surfaceElement->properties.surface.ownership &= ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-            update_park_fences_around_tile(x, y);
+            update_park_fences_around_tile({x, y});
         }
         return 0;
     case BUY_LAND_RIGHTS_FLAG_BUY_CONSTRUCTION_RIGHTS: // 2
@@ -370,7 +363,7 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
             }
             surfaceElement->properties.surface.ownership &= 0x0F;
             surfaceElement->properties.surface.ownership |= newOwnership;
-            update_park_fences_around_tile(x, y);
+            update_park_fences_around_tile({x, y});
             gMapLandRightsUpdateSuccess = true;
             return 0;
         }

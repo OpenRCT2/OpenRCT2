@@ -744,17 +744,17 @@ sint32 map_height_from_slope(sint32 x, sint32 y, sint32 slope)
     return 0;
 }
 
-bool map_is_location_valid(sint32 x, sint32 y)
+bool map_is_location_valid(CoordsXY coords)
 {
-    if (x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && x >= 0 && y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && y >= 0) {
+    if (coords.x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && coords.x >= 0 && coords.y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && coords.y >= 0) {
         return true;
     }
     return false;
 }
 
-bool map_is_edge(sint32 x, sint32 y)
+bool map_is_edge(CoordsXY coords)
 {
-    return (x < 32 || y < 32 || x >= gMapSizeUnits || y >= gMapSizeUnits);
+    return (coords.x < 32 || coords.y < 32 || coords.x >= gMapSizeUnits || coords.y >= gMapSizeUnits);
 }
 
 bool map_can_build_at(sint32 x, sint32 y, sint32 z)
@@ -775,7 +775,7 @@ bool map_can_build_at(sint32 x, sint32 y, sint32 z)
 bool map_is_location_owned(sint32 x, sint32 y, sint32 z)
 {
     // This check is to avoid throwing lots of messages in logs.
-    if (map_is_location_valid(x, y)) {
+    if (map_is_location_valid({x, y})) {
         rct_tile_element *tileElement = map_get_surface_element_at({x, y});
         if (tileElement != nullptr) {
             if (tileElement->properties.surface.ownership & OWNERSHIP_OWNED)
@@ -797,10 +797,11 @@ bool map_is_location_owned(sint32 x, sint32 y, sint32 z)
  *
  *  rct2: 0x00664F2C
  */
-bool map_is_location_in_park(sint32 x, sint32 y)
+bool map_is_location_in_park(CoordsXY coords)
 {
-    if (map_is_location_valid(x, y)) {
-        rct_tile_element *tileElement = map_get_surface_element_at({x, y});
+    if (map_is_location_valid(coords))
+    {
+        rct_tile_element* tileElement = map_get_surface_element_at(coords);
         if (tileElement == nullptr)
             return false;
         if (tileElement->properties.surface.ownership & OWNERSHIP_OWNED)
@@ -813,7 +814,7 @@ bool map_is_location_in_park(sint32 x, sint32 y)
 
 bool map_is_location_owned_or_has_rights(sint32 x, sint32 y)
 {
-    if (map_is_location_valid(x, y)) {
+    if (map_is_location_valid({x, y})) {
         rct_tile_element *tileElement = map_get_surface_element_at({x, y});
         if (tileElement == nullptr) {
             return false;
@@ -1298,7 +1299,7 @@ static money32 map_change_surface_style(sint32 x0, sint32 y0, sint32 x1, sint32 
             if (y > 0x1FFF) continue;
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode) {
-                if (!map_is_location_in_park(x, y)) continue;
+                if (!map_is_location_in_park({x, y})) continue;
             }
 
             rct_tile_element* tileElement = map_get_surface_element_at({x, y});
@@ -1541,7 +1542,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode) {
-        if (!map_is_location_in_park(x, y)) {
+        if (!map_is_location_in_park({x, y})) {
             return MONEY32_UNDEFINED;
         }
     }
@@ -2176,7 +2177,7 @@ static money32 smooth_land_row_by_edge(sint32 flags, sint32 x, sint32 y, sint32 
     money32 result;
 
     // check if we need to start at all
-    if (!map_is_location_valid(x, y) || !map_is_location_valid(x + stepX, y + stepY)) {
+    if (!map_is_location_valid({x, y}) || !map_is_location_valid({x + stepX, y + stepY})) {
         return 0;
     }
     tileElement = map_get_surface_element_at({x, y});
@@ -2203,7 +2204,7 @@ static money32 smooth_land_row_by_edge(sint32 flags, sint32 x, sint32 y, sint32 
         y += stepY;
         // check if we need to continue after raising the current tile
         // this needs to be checked before the tile is changed
-        if (!map_is_location_valid(x + stepX, y + stepY)) {
+        if (!map_is_location_valid({x + stepX, y + stepY})) {
             shouldContinue &= ~0x3;
         }
         else
@@ -2296,7 +2297,7 @@ static money32 smooth_land_row_by_corner(sint32 flags, sint32 x, sint32 y, sint3
     }
 
     // check if we need to start at all
-    if (!map_is_location_valid(x, y) || !map_is_location_valid(x + stepX, y + stepY)) {
+    if (!map_is_location_valid({x, y}) || !map_is_location_valid({x + stepX, y + stepY})) {
         return 0;
     }
     tileElement = map_get_surface_element_at({x, y});
@@ -2316,7 +2317,7 @@ static money32 smooth_land_row_by_corner(sint32 flags, sint32 x, sint32 y, sint3
         y += stepY;
         // check if we need to continue after raising the current tile
         // this needs to be checked before the tile is changed
-        if (!map_is_location_valid(x + stepX, y + stepY)) {
+        if (!map_is_location_valid({x + stepX, y + stepY})) {
             shouldContinue = false;
         }
         else
@@ -2718,7 +2719,7 @@ void game_command_set_water_height(
         return;
     }
 
-    if(!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && !map_is_location_in_park(x, y)){
+    if(!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && !map_is_location_in_park({x, y})){
         *ebx = MONEY32_UNDEFINED;
         return;
     }
@@ -3538,7 +3539,7 @@ static void map_update_grass_length(sint32 x, sint32 y, rct_tile_element *tileEl
 
     // Check if grass is underwater or outside park
     sint32 waterHeight = surface_get_water_height(tileElement) * 2;
-    if (waterHeight > tileElement->base_height || !map_is_location_in_park(x, y)) {
+    if (waterHeight > tileElement->base_height || !map_is_location_in_park({x, y})) {
         if (grassLength != GRASS_LENGTH_CLEAR_0)
             map_set_grass_length(x, y, tileElement, GRASS_LENGTH_CLEAR_0);
 
@@ -3711,7 +3712,7 @@ void map_extend_boundary_surface()
         newTileElement->base_height = z;
         newTileElement->clearance_height = z;
 
-        update_park_fences(x << 5, y << 5);
+        update_park_fences({x << 5, y << 5});
     }
 
     x = gMapSize - 2;
@@ -3747,7 +3748,7 @@ void map_extend_boundary_surface()
         newTileElement->base_height = z;
         newTileElement->clearance_height = z;
 
-        update_park_fences(x << 5, y << 5);
+        update_park_fences({x << 5, y << 5});
     }
 }
 
@@ -4739,7 +4740,7 @@ void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tile
     {
         currentElement = map_get_surface_element_at((*tile).x, (*tile).y);
         currentElement->properties.surface.ownership |= ownership;
-        update_park_fences_around_tile((*tile).x * 32, (*tile).y * 32);
+        update_park_fences_around_tile({(*tile).x * 32, (*tile).y * 32});
     }
 }
 

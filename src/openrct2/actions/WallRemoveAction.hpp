@@ -56,7 +56,7 @@ public:
         res->Cost = 0;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 
-        if (!map_is_location_valid(_location.x << 5, _location.y << 5))
+        if (!map_is_location_valid({_location.x << 5, _location.y << 5}))
         {
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
