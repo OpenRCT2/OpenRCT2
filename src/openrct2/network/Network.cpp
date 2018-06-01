@@ -75,8 +75,6 @@ static sint32 _pickup_peep_old_x = LOCATION_NULL;
 
 #include "NetworkAction.h"
 
-#include <openssl/evp.h> // just for OpenSSL_add_all_algorithms()
-
 #pragma comment(lib, "Ws2_32.lib")
 
 using namespace OpenRCT2;
@@ -129,7 +127,6 @@ Network::Network()
     server_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Server_Handle_GAMEINFO;
     server_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Server_Handle_TOKEN;
     server_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Server_Handle_OBJECTS;
-    OpenSSL_add_all_algorithms();
 
     _chat_log_fs << std::unitbuf;
     _server_log_fs << std::unitbuf;
@@ -668,11 +665,11 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
         server_srand0_tick = 0;
         // Check that the server and client sprite hashes match
         const char *client_sprite_hash = sprite_checksum();
-        const bool sprites_mismatch = server_sprite_hash[0] != '\0' && strcmp(client_sprite_hash, server_sprite_hash) != 0;
+        const bool sprites_mismatch = server_sprite_hash[0] != '\0' && strcmp(client_sprite_hash, server_sprite_hash.c_str()) != 0;
         // Check PRNG values and sprite hashes, if exist
         if ((srand0 != server_srand0) || sprites_mismatch) {
 #ifdef DEBUG_DESYNC
-            dbg_report_desync(tick, srand0, server_srand0, client_sprite_hash, server_sprite_hash);
+            dbg_report_desync(tick, srand0, server_srand0, client_sprite_hash, server_sprite_hash.c_str());
 #endif
             return false;
         }
@@ -2370,13 +2367,15 @@ void Network::Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& p
     if (server_srand0_tick == 0) {
         server_srand0 = srand0;
         server_srand0_tick = server_tick;
-        server_sprite_hash[0] = '\0';
+        server_sprite_hash.resize(0);
         if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
         {
             const char* text = packet.ReadString();
             if (text != nullptr)
             {
-                safe_strcpy(server_sprite_hash, text, sizeof(server_sprite_hash));
+                auto textLen = std::strlen(text);
+                server_sprite_hash.resize(textLen);
+                std::memcpy(server_sprite_hash.data(), text, textLen);
             }
         }
     }

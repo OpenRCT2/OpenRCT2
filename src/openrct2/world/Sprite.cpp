@@ -211,6 +211,8 @@ static size_t GetSpatialIndexOffset(sint32 x, sint32 y)
 
 const char * sprite_checksum()
 {
+    using namespace Crypt;
+
     // TODO Remove statics, should be one of these per sprite manager / OpenRCT2 context.
     //      Alternatively, make a new class for this functionality.
     static std::unique_ptr<HashAlgorithm<20>> _spriteHashAlg;
@@ -220,7 +222,7 @@ const char * sprite_checksum()
     {
         if (_spriteHashAlg == nullptr)
         {
-            _spriteHashAlg = Hash::CreateSHA1();
+            _spriteHashAlg = CreateSHA1();
         }
 
         _spriteHashAlg->Clear();

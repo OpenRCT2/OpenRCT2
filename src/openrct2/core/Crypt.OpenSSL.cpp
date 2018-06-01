@@ -14,11 +14,7 @@
 *****************************************************************************/
 #pragma endregion
 
-#if defined(_WIN32) && !defined(__USE_OPENSSL__)
-#define __USE_CNG__
-#endif
-
-#ifndef __USE_CNG__
+#ifndef DISABLE_NETWORK
 
 #include "Crypt.h"
 #include <stdexcept>
@@ -27,11 +23,23 @@
 #include <openssl/evp.h>
 #include <openssl/pem.h>
 
+using namespace Crypt;
+
 static void OpenSSLThrowOnBadStatus(const std::string_view& name, int status)
 {
     if (status != 1)
     {
         throw std::runtime_error(std::string(name) + " failed: " + std::to_string(status));
+    }
+}
+
+static void OpenSSLInitialise()
+{
+    static bool _opensslInitialised = false;
+    if (!_opensslInitialised)
+    {
+        _opensslInitialised = true;
+        OpenSSL_add_all_algorithms();
     }
 }
 
@@ -117,6 +125,41 @@ public:
         EVP_PKEY_free(_evpKey);
     }
 
+    void Generate() override
+    {
+        auto ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, nullptr);
+        if (ctx == nullptr)
+        {
+            throw std::runtime_error("EVP_PKEY_CTX_new_id failed");
+        }
+
+        try
+        {
+            auto status = EVP_PKEY_CTX_set_rsa_keygen_bits(ctx, 2048);
+            if (status == 0)
+            {
+                throw std::runtime_error("EVP_PKEY_CTX_set_rsa_keygen_bits failed");
+            }
+
+            status = EVP_PKEY_keygen_init(ctx);
+            OpenSSLThrowOnBadStatus("EVP_PKEY_keygen_init", status);
+
+            EVP_PKEY * key{};
+            status = EVP_PKEY_keygen(ctx, &key);
+            OpenSSLThrowOnBadStatus("EVP_PKEY_keygen", status);
+
+            EVP_PKEY_free(_evpKey);
+            _evpKey = key;
+
+            EVP_PKEY_CTX_free(ctx);
+        }
+        catch (const std::exception&)
+        {
+            EVP_PKEY_CTX_free(ctx);
+            throw;
+        }
+    }
+
     void SetPrivate(const std::string_view& pem) override
     {
         SetKey(pem, true);
@@ -179,11 +222,6 @@ private:
         if (rsa == nullptr)
         {
             throw std::runtime_error("EVP_PKEY_get1_RSA failed");
-        }
-        if (!RSA_check_key(rsa))
-        {
-            RSA_free(rsa);
-            throw std::runtime_error("Loaded RSA key is invalid");
         }
 
         auto bio = BIO_new(BIO_s_mem());
@@ -286,27 +324,31 @@ public:
     }
 };
 
-namespace Hash
+namespace Crypt
 {
     std::unique_ptr<Sha1Algorithm> CreateSHA1()
     {
+        OpenSSLInitialise();
         return std::make_unique<OpenSSLHashAlgorithm<Sha1Algorithm>>(EVP_sha1());
     }
 
     std::unique_ptr<Sha256Algorithm> CreateSHA256()
     {
+        OpenSSLInitialise();
         return std::make_unique<OpenSSLHashAlgorithm<Sha256Algorithm>>(EVP_sha256());
     }
 
     std::unique_ptr<RsaAlgorithm> CreateRSA()
     {
+        OpenSSLInitialise();
         return std::make_unique<OpenSSLRsaAlgorithm>();
     }
 
     std::unique_ptr<RsaKey> CreateRSAKey()
     {
+        OpenSSLInitialise();
         return std::make_unique<OpenSSLRsaKey>();
     }
 }
 
-#endif
+#endif // DISABLE_NETWORK
