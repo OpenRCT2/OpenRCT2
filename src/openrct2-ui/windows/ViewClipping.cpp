@@ -51,7 +51,7 @@ static DISPLAY_TYPE gClipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
 
 #pragma region Widgets
 
-#define WW 160
+#define WW 180
 #define WH 155
 
 static rct_widget window_view_clipping_widgets[] = {
@@ -60,9 +60,7 @@ static rct_widget window_view_clipping_widgets[] = {
     { WWT_CLOSEBOX,     0,  WW - 13,    WW - 3,     2,      13,         STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP }, // close x button
     { WWT_CHECKBOX,     0,  11,         WW - 11,    19,     29,         STR_VIEW_CLIPPING_HEIGHT_ENABLE,        STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP }, // clip enable/disable check box
     { WWT_GROUPBOX,     0,  5,          WW - 6,     36,     83,         STR_VIEW_CLIPPING_VERTICAL_CLIPPING,    STR_NONE },
-    { WWT_SPINNER,      0,  90,         WW - 12,    51,     62,         STR_NONE,                               STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE }, // clip height value
-    { WWT_BUTTON,       0,  138,        WW - 13,    52,     56,         STR_NUMERIC_UP,                         STR_NONE }, // clip height increase
-    { WWT_BUTTON,       0,  138,        WW - 13,    57,     61,         STR_NUMERIC_DOWN,                       STR_NONE }, // clip height decrease
+      STEPPER_WIDGETS  (0,  90,         WW - 12,    51,     62,         STR_NONE,                               STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE), // clip height (3 widgets)
     { WWT_SCROLL,       0,  11,         WW - 12,    66,     78,         SCROLL_HORIZONTAL,                      STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP }, // clip height scrollbar
     { WWT_GROUPBOX,     0,  5,          WW - 6,     90,     WH - 6,     STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING,  STR_NONE },
     { WWT_BUTTON,       0,  11,         WW - 12,    105,    121,        STR_VIEW_CLIPPING_SELECT_AREA,          STR_NONE }, // selector

@@ -244,10 +244,8 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 #define GBB(GROUPTOP, col, row) GBBL(col), GBBR(col), GBBT((GROUPTOP), row), GBBB((GROUPTOP), row)
 #define GBBF(GROUPTOP, col, row)GBBL(col), WW - 10, GBBT((GROUPTOP), row), GBBB((GROUPTOP), row) // Full width
 
-// Spinners and dropdowns use the buttons as a reference
-#define GBS(GBT, col, row)  GBBL(col), GBBR(col), GBBT(GBT, row) + 3, GBBB(GBT, row) - 3 // Group box spinner / dropdown field
-#define GBSI(GBT, col, row) GBBR(col) - 11, GBBR(col) - 1, GBBT(GBT, row) + 4, GBBT(GBT, row) + 8 // Group box spinner increase
-#define GBSD(GBT, col, row) GBBR(col) - 11, GBBR(col) - 1, GBBB(GBT, row) - 8, GBBB(GBT, row) - 4 // Group box spinner decrease
+// Dropdowns use the buttons as a reference
+#define GBD(GBT, col, row)  GBBL(col), GBBR(col), GBBT(GBT, row) + 3, GBBB(GBT, row) - 3 // Group box dropdown field
 #define GBDB(GBT, col, row) GBBR(col) - 11, GBBR(col) - 1, GBBT(GBT, row) + 4, GBBB(GBT, row) - 4 // Group box dropdown button
 
 // Checkbox - given topleft corner
@@ -258,12 +256,8 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
     { WWT_CAPTION,      0,  1,              WW - 2,             1,              14,         STR_TILE_INSPECTOR_TITLE,   STR_WINDOW_TITLE_TIP },     /* title bar */             \
     { WWT_CLOSEBOX,     0,  WW - 13,        WW - 3,             2,              13,         STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },     /* close x button */        \
     { WWT_SCROLL,       1,  3,              WW - 4,             57,             WH - PADDING_BOTTOM,    2,              STR_NONE },                 /* Element list */          \
-    { WWT_SPINNER,          1,  20,         61,                 23,             34,         STR_NONE,                   STR_NONE },                 /* Spinner for X */         \
-    { WWT_BUTTON,           1,  51,         60,                 24,             28,         STR_NUMERIC_UP,             STR_NONE },                 /* increase X */            \
-    { WWT_BUTTON,           1,  51,         60,                 29,             33,         STR_NUMERIC_DOWN,           STR_NONE },                 /* decrease X */            \
-    { WWT_SPINNER,          1,  77,         118,                23,             34,         STR_NONE,                   STR_NONE },                 /* Spinner for Y */         \
-    { WWT_BUTTON,           1,  108,        117,                24,             28,         STR_NUMERIC_UP,             STR_NONE },                 /* increase Y */            \
-    { WWT_BUTTON,           1,  108,        117,                29,             33,         STR_NUMERIC_DOWN,           STR_NONE },                 /* decrease Y */            \
+      STEPPER_WIDGETS  (1,  20,             70,                 23,             34,         STR_NONE,                   STR_NONE),                  /* Spinner X (3 widgets) */ \
+      STEPPER_WIDGETS  (1,  90,             140,                23,             34,         STR_NONE,                   STR_NONE),                  /* Spinner Y (3 widgets) */ \
     /* Buttons */                                                                                                                                                               \
     { WWT_FLATBTN,      1,  BX,             BW,                 BY,             BH,         SPR_MAP,          STR_INSERT_CORRUPT_TIP },             /* Insert corrupt button */ \
     { WWT_FLATBTN,      1,  BX - BS * 1,    BW - BS * 1,        BY,             BH,         SPR_DEMOLISH,     STR_REMOVE_SELECTED_ELEMENT_TIP },    /* Remove button */         \
@@ -295,9 +289,7 @@ static rct_widget DefaultWidgets[] = {
 #define SUR_GBDT (SUR_GBDB + 20 + 4 * 11)       // Surface group box details top
 static rct_widget SurfaceWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
-    { WWT_SPINNER,          1,  GBS(WH - SUR_GBPT, 1, 0),               STR_NONE,                   STR_NONE }, // WIDX_SURFACE_SPINNER_HEIGHT
-    { WWT_BUTTON,           1,  GBSI(WH - SUR_GBPT, 1, 0),              STR_NUMERIC_UP,             STR_NONE }, // WIDX_SURFACE_SPINNER_HEIGHT_INCREASE
-    { WWT_BUTTON,           1,  GBSD(WH - SUR_GBPT, 1, 0),              STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_SURFACE_SPINNER_HEIGHT_DECREASE
+      STEPPER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - SUR_GBPT, 0) + 3, GBBB(WH - SUR_GBPT, 0) - 3,   STR_NONE, STR_NONE),  // WIDX_SURFACE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     { WWT_BUTTON,           1,  GBB(WH - SUR_GBPT, 0, 1),   STR_TILE_INSPECTOR_SURFACE_REMOVE_FENCES,   STR_NONE }, // WIDX_SURFACE_BUTTON_REMOVE_FENCES
     { WWT_BUTTON,           1,  GBB(WH - SUR_GBPT, 1, 1),   STR_TILE_INSPECTOR_SURFACE_RESTORE_FENCES,  STR_NONE }, // WIDX_SURFACE_BUTTON_RESTORE_FENCES
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 1, GBBT(WH - SUR_GBPT, 2) + 7 * 0),  STR_NONE,   STR_NONE }, // WIDX_SURFACE_CHECK_CORNER_N
@@ -314,9 +306,7 @@ static rct_widget SurfaceWidgets[] = {
 #define PAT_GBDT (PAT_GBDB + 20 + 2 * 11)       // Path group box info top
 static rct_widget PathWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
-    { WWT_SPINNER,          1,  GBS(WH - PAT_GBPT, 1, 0),               STR_NONE,                   STR_NONE }, // WIDX_PATH_SPINNER_HEIGHT
-    { WWT_BUTTON,           1,  GBSI(WH - PAT_GBPT, 1, 0),              STR_NUMERIC_UP,             STR_NONE }, // WIDX_PATH_SPINNER_HEIGHT_INCREASE
-    { WWT_BUTTON,           1,  GBSD(WH - PAT_GBPT, 1, 0),              STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_PATH_SPINNER_HEIGHT_DECREASE
+      STEPPER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - PAT_GBPT, 0) + 3, GBBB(WH - PAT_GBPT, 0) - 3,  STR_NONE,  STR_NONE),  // WIDX_PATH_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     { WWT_CHECKBOX,         1,  GBBF(WH - PAT_GBPT, 0, 1),              STR_TILE_INSPECTOR_PATH_SLOPED, STR_NONE }, // WIDX_PATH_CHECK_SLOPED
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 3, GBBT(WH - PAT_GBPT, 2) + 7 * 1),  STR_NONE,   STR_NONE }, // WIDX_PATH_CHECK_EDGE_NE
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 4, GBBT(WH - PAT_GBPT, 2) + 7 * 2),  STR_NONE,   STR_NONE }, // WIDX_PATH_CHECK_EDGE_E
@@ -336,9 +326,7 @@ static rct_widget PathWidgets[] = {
 static rct_widget TrackWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     { WWT_CHECKBOX,         1,  GBBF(WH - TRA_GBPT, 0, 0),  STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE,    STR_NONE }, // WIDX_TRACK_CHECK_APPLY_TO_ALL
-    { WWT_SPINNER,          1,  GBS(WH - TRA_GBPT, 1, 1),   STR_NONE,                                       STR_NONE }, // WIDX_TRACK_SPINNER_HEIGHT
-    { WWT_BUTTON,           1,  GBSI(WH - TRA_GBPT, 1, 1),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_TRACK_SPINNER_HEIGHT_INCREASE
-    { WWT_BUTTON,           1,  GBSD(WH - TRA_GBPT, 1, 1),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_TRACK_SPINNER_HEIGHT_DECREASE
+      STEPPER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - TRA_GBPT, 1) + 3, GBBB(WH - TRA_GBPT, 1) - 3,   STR_NONE, STR_NONE),  // WIDX_TRACK_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     { WWT_CHECKBOX,         1,  GBBF(WH - TRA_GBPT, 0, 2),  STR_TILE_INSPECTOR_TRACK_CHAIN_LIFT,            STR_NONE }, // WIDX_TRACK_CHECK_CHAIN_LIFT
     { WIDGETS_END },
 };
@@ -349,9 +337,7 @@ static rct_widget TrackWidgets[] = {
 #define SCE_GBDT (SCE_GBDB + 20 + 3 * 11)       // Scenery group box info top
 static rct_widget SceneryWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
-    { WWT_SPINNER,          1,  GBS(WH - SCE_GBPT, 1, 0),               STR_NONE,                   STR_NONE }, // WIDX_SCENERY_SPINNER_HEIGHT
-    { WWT_BUTTON,           1,  GBSI(WH - SCE_GBPT, 1, 0),              STR_NUMERIC_UP,             STR_NONE }, // WIDX_SCENERY_SPINNER_HEIGHT_INCREASE
-    { WWT_BUTTON,           1,  GBSD(WH - SCE_GBPT, 1, 0),              STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_SCENERY_SPINNER_HEIGHT_DECREASE
+      STEPPER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - SCE_GBPT, 0) + 3, GBBB(WH - SCE_GBPT, 0) - 3,  STR_NONE,   STR_NONE),  // WIDX_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 1, GBBT(WH - SCE_GBPT, 1) + 7 * 0),  STR_NONE,   STR_NONE }, // WIDX_SCENERY_CHECK_QUARTER_N
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 2, GBBT(WH - SCE_GBPT, 1) + 7 * 1),  STR_NONE,   STR_NONE }, // WIDX_SCENERY_CHECK_QUARTER_E
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 1, GBBT(WH - SCE_GBPT, 1) + 7 * 2),  STR_NONE,   STR_NONE }, // WIDX_SCENERY_CHECK_QUARTER_S
@@ -363,15 +349,14 @@ static rct_widget SceneryWidgets[] = {
     { WIDGETS_END },
 };
 
+
 #define ENT_GBPB PADDING_BOTTOM                 // Entrance group box properties bottom
 #define ENT_GBPT (ENT_GBPB + 16 + 2 * 21)       // Entrance group box properties top
 #define ENT_GBDB (ENT_GBPT + GROUPBOX_PADDING)  // Entrance group box info bottom
 #define ENT_GBDT (ENT_GBDB + 20 + 3 * 11)       // Entrance group box info top
 static rct_widget EntranceWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
-    { WWT_SPINNER,          1,  GBS(WH - ENT_GBPT, 1, 0),   STR_NONE,                                       STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT
-    { WWT_BUTTON,           1,  GBSI(WH - ENT_GBPT, 1, 0),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE
-    { WWT_BUTTON,           1,  GBSD(WH - ENT_GBPT, 1, 0),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE
+      STEPPER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - ENT_GBPT, 0) + 3, GBBB(WH - ENT_GBPT, 0) - 3,   STR_NONE,  STR_NONE),  // WIDX_ENTRANCE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     { WWT_BUTTON,           1,  GBB(WH - ENT_GBPT, 0, 1),   STR_TILE_INSPECTOR_ENTRANCE_MAKE_USABLE,        STR_TILE_INSPECTOR_ENTRANCE_MAKE_USABLE_TIP }, // WIDX_ENTRANCE_BUTTON_MAKE_USABLE
     { WIDGETS_END },
 };
@@ -382,10 +367,8 @@ static rct_widget EntranceWidgets[] = {
 #define WALL_GBDT (WALL_GBDB + 20 + 2 * 11)     // Wall group box info top
 static rct_widget WallWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
-    { WWT_SPINNER,          1,  GBS(WH - WALL_GBPT, 1, 0),  STR_NONE,                                       STR_NONE }, // WIDX_WALL_SPINNER_HEIGHT
-    { WWT_BUTTON,           1,  GBSI(WH - WALL_GBPT, 1, 0), STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_WALL_SPINNER_HEIGHT_INCREASE
-    { WWT_BUTTON,           1,  GBSD(WH - WALL_GBPT, 1, 0), STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_WALL_SPINNER_HEIGHT_DECREASE
-    { WWT_DROPDOWN,         1,  GBS(WH - WALL_GBPT, 1, 1),  STR_NONE,                                       STR_NONE }, // WIDX_WALL_DROPDOWN_SLOPE
+      STEPPER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - WALL_GBPT, 0) + 3, GBBB(WH - WALL_GBPT, 0) - 3, STR_NONE,  STR_NONE),  // WIDX_WALL_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+    { WWT_DROPDOWN,         1,  GBD(WH - WALL_GBPT, 1, 1),  STR_NONE,                                       STR_NONE }, // WIDX_WALL_DROPDOWN_SLOPE
     { WWT_BUTTON,           1,  GBDB(WH - WALL_GBPT, 1, 1), STR_DROPDOWN_GLYPH,                             STR_NONE }, // WIDX_WALL_DROPDOWN_SLOPE_BUTTON
     { WIDGETS_END },
 };
@@ -396,9 +379,7 @@ static rct_widget WallWidgets[] = {
 #define LAR_GBDT (LAR_GBDB + 20 + 3 * 11)       // Large scenery group box info top
 static rct_widget LargeSceneryWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
-    { WWT_SPINNER,          1,  GBS(WH - LAR_GBPT, 1, 0),   STR_NONE,                                       STR_NONE }, // WIDX_LARGE_SCENERY_SPINNER_HEIGHT
-    { WWT_BUTTON,           1,  GBSI(WH - LAR_GBPT, 1, 0),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE
-    { WWT_BUTTON,           1,  GBSD(WH - LAR_GBPT, 1, 0),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE
+      STEPPER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - LAR_GBPT, 0) + 3, GBBB(WH - LAR_GBPT, 0) - 3,   STR_NONE,  STR_NONE),  // WIDX_LARGE_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     { WIDGETS_END },
 };
 
@@ -408,9 +389,7 @@ static rct_widget LargeSceneryWidgets[] = {
 #define BAN_GBDT (BAN_GBDB + 20 + 1 * 11)       // Banner group box info top
 static rct_widget BannerWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
-    { WWT_SPINNER,          1,  GBS(WH - BAN_GBPT, 1, 0),   STR_NONE,                                       STR_NONE }, // WIDX_BANNER_SPINNER_HEIGHT
-    { WWT_BUTTON,           1,  GBSI(WH - BAN_GBPT, 1, 0),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_BANNER_SPINNER_HEIGHT_INCREASE
-    { WWT_BUTTON,           1,  GBSD(WH - BAN_GBPT, 1, 0),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_BANNER_SPINNER_HEIGHT_DECREASE
+      STEPPER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - BAN_GBPT, 0) + 3, GBBB(WH - BAN_GBPT, 0) - 3,   STR_NONE,  STR_NONE),  // WIDX_BANNER_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 3,   GBBT(WH - BAN_GBPT, 1) + 7 * 1),    STR_NONE,       STR_NONE }, // WIDX_BANNER_CHECK_BLOCK_NE
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 3,   GBBT(WH - BAN_GBPT, 1) + 7 * 3),    STR_NONE,       STR_NONE }, // WIDX_BANNER_CHECK_BLOCK_SE
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 1,   GBBT(WH - BAN_GBPT, 1) + 7 * 3),    STR_NONE,       STR_NONE }, // WIDX_BANNER_CHECK_BLOCK_SW
@@ -425,9 +404,7 @@ static rct_widget BannerWidgets[] = {
 #define COR_GBDT (COR_GBDB + 20 + 0 * 11)       // Corrupt element group box info top
 static rct_widget CorruptWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
-    { WWT_SPINNER,          1,  GBS(WH - COR_GBPT, 1, 0),   STR_NONE,                                       STR_NONE }, // WIDX_CORRUPT_SPINNER_HEIGHT
-    { WWT_BUTTON,           1,  GBSI(WH - COR_GBPT, 1, 0),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE
-    { WWT_BUTTON,           1,  GBSD(WH - COR_GBPT, 1, 0),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE
+      STEPPER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - COR_GBPT, 0) + 3, GBBB(WH - COR_GBPT, 0) - 3,   STR_NONE,  STR_NONE),  // WIDX_CORRUPT_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     { WWT_BUTTON,           1,  GBB(WH - SUR_GBPT, 0, 1),   STR_TILE_INSPECTOR_CLAMP_TO_NEXT, STR_TILE_INSPECTOR_CLAMP_TO_NEXT_TIP }, // WIDX_CORRUPT_BUTTON_CLAMP
     { WIDGETS_END },
 };
@@ -1509,8 +1486,8 @@ static void window_tile_inspector_invalidate(rct_window *w)
         w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
         w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
         w->widgets[WIDX_SURFACE_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
-        w->widgets[WIDX_SURFACE_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 0) + 8;
-        w->widgets[WIDX_SURFACE_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
+        w->widgets[WIDX_SURFACE_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
+        w->widgets[WIDX_SURFACE_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 0) + 4;
         w->widgets[WIDX_SURFACE_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
         w->widgets[WIDX_SURFACE_BUTTON_REMOVE_FENCES].top = GBBT(propertiesAnchor, 1);
         w->widgets[WIDX_SURFACE_BUTTON_REMOVE_FENCES].bottom = GBBB(propertiesAnchor, 1);
@@ -1536,8 +1513,8 @@ static void window_tile_inspector_invalidate(rct_window *w)
         w->widgets[WIDX_PATH_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
         w->widgets[WIDX_PATH_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
         w->widgets[WIDX_PATH_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
-        w->widgets[WIDX_PATH_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 0) + 8;
-        w->widgets[WIDX_PATH_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
+        w->widgets[WIDX_PATH_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
+        w->widgets[WIDX_PATH_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 0) + 4;
         w->widgets[WIDX_PATH_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
         w->widgets[WIDX_PATH_CHECK_SLOPED].top = GBBT(propertiesAnchor, 1) + 2;
         w->widgets[WIDX_PATH_CHECK_SLOPED].bottom = GBBT(propertiesAnchor, 1) + 15;
@@ -1573,8 +1550,8 @@ static void window_tile_inspector_invalidate(rct_window *w)
         w->widgets[WIDX_TRACK_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 1) + 3;
         w->widgets[WIDX_TRACK_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 1) - 3;
         w->widgets[WIDX_TRACK_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 1) + 4;
-        w->widgets[WIDX_TRACK_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 1) + 8;
-        w->widgets[WIDX_TRACK_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 1) - 8;
+        w->widgets[WIDX_TRACK_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 1) - 4;
+        w->widgets[WIDX_TRACK_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 1) + 4;
         w->widgets[WIDX_TRACK_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 1) - 4;
         w->widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].top = GBBT(propertiesAnchor, 2);
         w->widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].bottom = GBBB(propertiesAnchor, 2);
@@ -1586,8 +1563,8 @@ static void window_tile_inspector_invalidate(rct_window *w)
         w->widgets[WIDX_SCENERY_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
         w->widgets[WIDX_SCENERY_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
         w->widgets[WIDX_SCENERY_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
-        w->widgets[WIDX_SCENERY_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 0) + 8;
-        w->widgets[WIDX_SCENERY_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
+        w->widgets[WIDX_SCENERY_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
+        w->widgets[WIDX_SCENERY_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 0) + 4;
         w->widgets[WIDX_SCENERY_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
 
         // Quadrant checkboxes
@@ -1632,8 +1609,8 @@ static void window_tile_inspector_invalidate(rct_window *w)
         w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
         w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
         w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
-        w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 0) + 8;
-        w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
+        w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
+        w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 0) + 4;
         w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
         w->widgets[WIDX_ENTRANCE_BUTTON_MAKE_USABLE].top = GBBT(propertiesAnchor, 1);
         w->widgets[WIDX_ENTRANCE_BUTTON_MAKE_USABLE].bottom = GBBB(propertiesAnchor, 1);
@@ -1644,8 +1621,8 @@ static void window_tile_inspector_invalidate(rct_window *w)
         w->widgets[WIDX_WALL_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
         w->widgets[WIDX_WALL_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
         w->widgets[WIDX_WALL_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
-        w->widgets[WIDX_WALL_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 0) + 8;
-        w->widgets[WIDX_WALL_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
+        w->widgets[WIDX_WALL_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
+        w->widgets[WIDX_WALL_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 0) + 4;
         w->widgets[WIDX_WALL_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
         w->widgets[WIDX_WALL_DROPDOWN_SLOPE].top = GBBT(propertiesAnchor, 1) + 3;
         w->widgets[WIDX_WALL_DROPDOWN_SLOPE].bottom = GBBB(propertiesAnchor, 1) - 3;
@@ -1666,16 +1643,16 @@ static void window_tile_inspector_invalidate(rct_window *w)
         w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
         w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
         w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
-        w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 0) + 8;
-        w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
+        w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
+        w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 0) + 4;
         w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
         break;
     case TILE_INSPECTOR_PAGE_BANNER:
         w->widgets[WIDX_BANNER_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
         w->widgets[WIDX_BANNER_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
         w->widgets[WIDX_BANNER_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
-        w->widgets[WIDX_BANNER_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 0) + 8;
-        w->widgets[WIDX_BANNER_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
+        w->widgets[WIDX_BANNER_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
+        w->widgets[WIDX_BANNER_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 0) + 4;
         w->widgets[WIDX_BANNER_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
         widget_set_checkbox_value(w, WIDX_BANNER_CHECK_BLOCK_NE, !(tileElement->properties.banner.flags & (1 << ((0 - get_current_rotation()) & 3))));
         widget_set_checkbox_value(w, WIDX_BANNER_CHECK_BLOCK_SE, !(tileElement->properties.banner.flags & (1 << ((1 - get_current_rotation()) & 3))));
@@ -1686,8 +1663,8 @@ static void window_tile_inspector_invalidate(rct_window *w)
         w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
         w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
         w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
-        w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 0) + 8;
-        w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
+        w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
+        w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 0) + 4;
         w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
         w->widgets[WIDX_CORRUPT_BUTTON_CLAMP].top = GBBT(propertiesAnchor, 1);
         w->widgets[WIDX_CORRUPT_BUTTON_CLAMP].bottom = GBBB(propertiesAnchor, 1);
@@ -1724,15 +1701,15 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
 
     // Draw coordinates
-    gfx_draw_string(dpi, (char *)"X:", COLOUR_DARK_GREEN, w->x + 6, w->y + 24);
-    gfx_draw_string(dpi, (char *)"Y:", COLOUR_DARK_GREEN, w->x + 64, w->y + 24);
+    gfx_draw_string(dpi, (char *)"X:", COLOUR_DARK_GREEN, w->x + 5, w->y + 24);
+    gfx_draw_string(dpi, (char *)"Y:", COLOUR_DARK_GREEN, w->x + 74, w->y + 24);
     if (windowTileInspectorTileSelected) {
-        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &windowTileInspectorTileX, COLOUR_DARK_GREEN, w->x + 48, w->y + 24);
-        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &windowTileInspectorTileY, COLOUR_DARK_GREEN, w->x + 105, w->y + 24);
+        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &windowTileInspectorTileX, COLOUR_DARK_GREEN, w->x + 43, w->y + 24);
+        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &windowTileInspectorTileY, COLOUR_DARK_GREEN, w->x + 113, w->y + 24);
     }
     else {
-        gfx_draw_string(dpi, (char *)"-", COLOUR_DARK_GREEN, w->x + 48 - 7, w->y + 24);
-        gfx_draw_string(dpi, (char *)"-", COLOUR_DARK_GREEN, w->x + 105 - 7, w->y + 24);
+        gfx_draw_string(dpi, (char *)"-", COLOUR_DARK_GREEN, w->x + 43 - 7, w->y + 24);
+        gfx_draw_string(dpi, (char *)"-", COLOUR_DARK_GREEN, w->x + 113 - 7, w->y + 24);
     }
 
     if (w->selected_list_item != -1) {
