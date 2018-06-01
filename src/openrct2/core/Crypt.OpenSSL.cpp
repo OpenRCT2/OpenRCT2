@@ -180,7 +180,8 @@ private:
     void SetKey(const std::string_view& pem, bool isPrivate)
     {
         // Read PEM data via BIO buffer
-        auto bio = BIO_new_mem_buf(pem.data(), (int)pem.size());
+        // HACK first parameter is not const on MINGW for some reason
+        auto bio = BIO_new_mem_buf((void *)pem.data(), (int)pem.size());
         if (bio == nullptr)
         {
             throw std::runtime_error("BIO_new_mem_buf failed");
