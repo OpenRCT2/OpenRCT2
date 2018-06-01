@@ -26,7 +26,5 @@ struct encoding_convert_entry
 
 extern const encoding_convert_entry RCT2ToUnicodeTable[256];
 
-static sint32 encoding_search_compare(const void *pKey, const void *pEntry);
-static wchar_t encoding_convert_x_to_unicode(wchar_t code, const encoding_convert_entry *table, size_t count);
 wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str);
 uint32 encoding_convert_unicode_to_rct2(uint32 unicode);
