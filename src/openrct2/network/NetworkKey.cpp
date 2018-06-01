@@ -115,7 +115,7 @@ bool NetworkKey::SavePrivate(IStream * stream)
     {
         if (_key == nullptr)
         {
-            throw std::exception("No key loaded");
+            throw std::runtime_error("No key loaded");
         }
         auto pem = _key->GetPrivate();
         stream->Write(pem.data(), pem.size());
@@ -134,7 +134,7 @@ bool NetworkKey::SavePublic(IStream * stream)
     {
         if (_key == nullptr)
         {
-            throw std::exception("No key loaded");
+            throw std::runtime_error("No key loaded");
         }
         auto pem = _key->GetPrivate();
         stream->Write(pem.data(), pem.size());
@@ -151,7 +151,7 @@ std::string NetworkKey::PublicKeyString()
 {
     if (_key == nullptr)
     {
-        throw std::exception("No key loaded");
+        throw std::runtime_error("No key loaded");
     }
     return _key->GetPublic();
 }

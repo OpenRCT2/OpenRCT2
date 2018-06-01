@@ -16,8 +16,8 @@
 
 #pragma once
 
+#include <istream>
 #include <stdexcept>
-#include <streambuf>
 #include <string>
 #include <vector>
 #include "../common.h"

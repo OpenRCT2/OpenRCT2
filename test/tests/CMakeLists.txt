@@ -154,7 +154,8 @@ target_link_libraries(test_localisation ${GTEST_LIBRARIES} test-common ${LDL} z)
 add_test(NAME localisation COMMAND test_localisation)
 
 # Crypt tests
-add_executable(test_crypt "${CMAKE_CURRENT_LIST_DIR}/CryptTests.cpp")
+add_executable(test_crypt "${CMAKE_CURRENT_LIST_DIR}/CryptTests.cpp"
+                          "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
 target_link_libraries(test_crypt ${GTEST_LIBRARIES} libopenrct2)
 add_test(NAME Crypt COMMAND test_crypt)
 
