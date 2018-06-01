@@ -19,7 +19,6 @@
 #include "../audio/AudioMixer.h"
 #include "../Context.h"
 #include "../drawing/Drawing.h"
-#include "../interface/themes.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
@@ -77,7 +76,7 @@ void chat_update()
     _chatCaretTicks = (_chatCaretTicks + 1) % 30;
 }
 
-void chat_draw(rct_drawpixelinfo * dpi)
+void chat_draw(rct_drawpixelinfo * dpi, uint8 chatBackgroundColor)
 {
     if (network_get_mode() == NETWORK_MODE_NONE || network_get_status() != NETWORK_STATUS_CONNECTED || network_get_authstatus() != NETWORK_AUTH_OK) {
         gChatOpen = false;
@@ -94,7 +93,6 @@ void chat_draw(rct_drawpixelinfo * dpi)
     char* lineCh = lineBuffer;
     char* inputLine = _chatCurrentLine;
     sint32 inputLineHeight = 10;
-    uint8 chatBackgroundColor = theme_get_colour(WC_CHAT, 0);
 
     // Draw chat window
     if (gChatOpen) {

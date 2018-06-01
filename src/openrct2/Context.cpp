@@ -64,7 +64,6 @@
 #include "Input.h"
 #include "interface/Chat.h"
 #include "interface/InteractiveConsole.h"
-#include "interface/themes.h"
 #include "interface/Viewport.h"
 #include "Intro.h"
 #include "localisation/Date.h"
@@ -424,7 +423,6 @@ namespace OpenRCT2
             http_init();
             network_set_env(_env);
             chat_init();
-            theme_manager_initialise();
             CopyOriginalUserFilesOver();
 
             if (!gOpenRCT2NoGraphics)

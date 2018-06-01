@@ -29,6 +29,8 @@
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/interface/Chat.h>
+#include <openrct2/interface/themes.h>
 #include <openrct2/platform/Platform2.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
@@ -123,6 +125,8 @@ public:
 
     void Draw(rct_drawpixelinfo * dpi) override
     {
+        auto bgColour = theme_get_colour(WC_CHAT, 0);
+        chat_draw(dpi, bgColour);
         _inGameConsole.Draw(dpi);
     }
 

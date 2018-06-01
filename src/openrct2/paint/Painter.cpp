@@ -51,7 +51,6 @@ void Painter::Paint(IDrawingEngine& de)
         de.PaintWindows();
 
         update_palette_effects();
-        chat_draw(dpi);
         _uiContext->Draw(dpi);
 
         if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !title_should_hide_version_info())

@@ -18,6 +18,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/config/Config.h>
+#include <openrct2/interface/themes.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/Input.h>
 #include <openrct2/world/Sprite.h>
@@ -33,6 +34,7 @@ class WindowManager final : public IWindowManager
 public:
     void Init() override
     {
+        theme_manager_initialise();
         window_guest_list_init_vars();
         window_new_ride_init_vars();
     }
