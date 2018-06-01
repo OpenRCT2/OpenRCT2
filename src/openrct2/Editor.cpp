@@ -40,7 +40,10 @@
 #include "world/Footpath.h"
 #include "world/Scenery.h"
 #include "world/Park.h"
-#include "interface/Window_internal.h"
+#include "ui/UiContext.h"
+#include "ui/WindowManager.h"
+
+using namespace OpenRCT2;
 
 namespace Editor
 {
@@ -415,45 +418,18 @@ namespace Editor
 
     static void FinaliseMainView()
     {
-        rct_window   * w        = window_get_main();
-        rct_viewport * viewport = window_get_viewport(w);
+        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        windowManager->SetMainView(gSavedViewX, gSavedViewY, gSavedViewZoom, gSavedViewRotation);
 
-        w->viewport_target_sprite = SPRITE_INDEX_NULL;
-        w->saved_view_x           = gSavedViewX;
-        w->saved_view_y           = gSavedViewY;
-        gCurrentRotation = gSavedViewRotation;
-
-        sint32 zoom_difference = gSavedViewZoom - viewport->zoom;
-        viewport->zoom = gSavedViewZoom;
-        if (zoom_difference != 0)
-        {
-            if (zoom_difference >= 0)
-            {
-                viewport->view_width <<= zoom_difference;
-                viewport->view_height <<= zoom_difference;
-            }
-            else
-            {
-                zoom_difference = -zoom_difference;
-                viewport->view_width >>= zoom_difference;
-                viewport->view_height >>= zoom_difference;
-            }
-        }
-        w->saved_view_x -= viewport->view_width >> 1;
-        w->saved_view_y -= viewport->view_height >> 1;
-
-        window_invalidate(w);
         reset_all_sprite_quadrant_placements();
         scenery_set_default_placement_configuration();
 
-        auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
-        context_broadcast_intent(&intent);
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_NEW_RIDES));
 
         gWindowUpdateTicks = 0;
         load_palette();
 
-        intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
-        context_broadcast_intent(&intent);
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD));
     }
 
     /**

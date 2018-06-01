@@ -18,7 +18,9 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/config/Config.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/Input.h>
+#include <openrct2/world/Sprite.h>
 #include "input/Input.h"
 #include "input/KeyboardShortcuts.h"
 #include "WindowManager.h"
@@ -438,6 +440,33 @@ public:
         utf8 buffer[256];
         keyboard_shortcuts_format_string(buffer, sizeof(buffer), shortcut);
         return std::string(buffer);
+    }
+
+    void SetMainView(sint32 x, sint32 y, sint32 zoom, sint32 rotation) override
+    {
+        auto mainWindow = window_get_main();
+        if (mainWindow != nullptr)
+        {
+            auto viewport = window_get_viewport(mainWindow);
+            mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
+            mainWindow->saved_view_x = x;
+            mainWindow->saved_view_y = y;
+            viewport->zoom = zoom;
+            gCurrentRotation = rotation;
+            auto zoomDifference = zoom - viewport->zoom;
+            if (zoomDifference != 0)
+            {
+                viewport->view_width <<= zoomDifference;
+                viewport->view_height <<= zoomDifference;
+            }
+            mainWindow->saved_view_x -= viewport->view_width >> 1;
+            mainWindow->saved_view_y -= viewport->view_height >> 1;
+
+            // Make sure the viewport has correct coordinates set.
+            viewport_update_position(mainWindow);
+
+            window_invalidate(mainWindow);
+        }
     }
 };
 
