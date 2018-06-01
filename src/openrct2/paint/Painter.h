@@ -17,6 +17,7 @@
 #pragma once
 
 #include <ctime>
+#include <memory>
 #include "../common.h"
 
 struct rct_drawpixelinfo;
