@@ -2223,6 +2223,82 @@ static void window_ride_show_ride_type_dropdown(rct_window *w, rct_widget *widge
     dropdown_set_checked(pos, true);
 }
 
+static void window_ride_show_vehicle_type_dropdown(rct_window *w, rct_widget *widget)
+{
+    Ride *ride = get_ride(w->number);
+    rct_ride_entry *rideEntry = get_ride_entry_by_ride(ride);
+
+    bool selectionShouldBeExpanded;
+    sint32 rideTypeIterator, rideTypeIteratorMax;
+    if (gCheatsShowVehiclesFromOtherTrackTypes && !(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE || ride->type == RIDE_TYPE_MINI_GOLF))
+    {
+        selectionShouldBeExpanded = true;
+        rideTypeIterator = 0;
+        rideTypeIteratorMax = RIDE_TYPE_COUNT - 1;
+    }
+    else
+    {
+        selectionShouldBeExpanded = false;
+        rideTypeIterator = ride->type;
+        rideTypeIteratorMax = ride->type;
+    }
+
+    sint32 selectedIndex = -1;
+    sint32 numItems = 0;
+    // Dropdowns with more items start acting weird, so cap it.
+    for (; rideTypeIterator <= rideTypeIteratorMax && numItems < DROPDOWN_ITEMS_MAX_SIZE; rideTypeIterator++)
+    {
+        if (selectionShouldBeExpanded && ride_type_has_flag(rideTypeIterator, RIDE_TYPE_FLAG_FLAT_RIDE))
+            continue;
+        if (selectionShouldBeExpanded && (rideTypeIterator == RIDE_TYPE_MAZE || rideTypeIterator == RIDE_TYPE_MINI_GOLF))
+            continue;
+
+        uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideTypeIterator);
+
+        for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != RIDE_ENTRY_INDEX_NULL && numItems < DROPDOWN_ITEMS_MAX_SIZE; currentRideEntryIndex++)
+        {
+            sint32 rideEntryIndex = *currentRideEntryIndex;
+            rct_ride_entry *currentRideEntry = get_ride_entry(rideEntryIndex);
+
+            // Skip if vehicle type has not been invented yet
+            if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
+                continue;
+
+            // Skip if vehicle does not belong to the same ride group
+            if (RideGroupManager::RideTypeHasRideGroups(ride->type) && !selectionShouldBeExpanded)
+            {
+                const RideGroup *rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
+                const RideGroup *currentRideGroup = RideGroupManager::GetRideGroup(ride->type, currentRideEntry);
+
+                if (!rideGroup->Equals(currentRideGroup))
+                    continue;
+            }
+
+            if (ride->subtype == rideEntryIndex)
+                selectedIndex = numItems;
+
+            gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[numItems] = (rideEntryIndex << 16) | currentRideEntry->naming.name;
+
+            numItems++;
+        }
+    }
+
+    rct_widget *dropdownWidget = widget - 1;
+    window_dropdown_show_text_custom_width(
+        w->x + dropdownWidget->left,
+        w->y + dropdownWidget->top,
+        dropdownWidget->bottom - dropdownWidget->top + 1,
+        w->colours[1],
+        0,
+        DROPDOWN_FLAG_STAY_OPEN,
+        numItems,
+        widget->right - dropdownWidget->left
+    );
+
+    dropdown_set_checked(selectedIndex, true);
+}
+
 /**
  *
  *  rct2: 0x006AF1BD
@@ -2702,83 +2778,11 @@ static void window_ride_vehicle_resize(rct_window *w)
  */
 static void window_ride_vehicle_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
 {
-    rct_widget *dropdownWidget = widget - 1;
-    Ride *ride;
-    rct_ride_entry *rideEntry, *currentRideEntry;
-    const RideGroup * rideGroup, * currentRideGroup;
-    sint32 numItems, rideEntryIndex, selectedIndex, rideTypeIterator, rideTypeIteratorMax;
-    uint8 *rideEntryIndexPtr;
-    bool selectionShouldBeExpanded;
-
-    ride = get_ride(w->number);
-    rideEntry = get_ride_entry_by_ride(ride);
-
-    if(gCheatsShowVehiclesFromOtherTrackTypes && !(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type==RIDE_TYPE_MAZE || ride->type==RIDE_TYPE_MINI_GOLF)) {
-        selectionShouldBeExpanded = true;
-        rideTypeIterator = 0;
-        rideTypeIteratorMax = RIDE_TYPE_COUNT - 1;
-    }
-    else {
-        selectionShouldBeExpanded = false;
-        rideTypeIterator = ride->type;
-        rideTypeIteratorMax = ride->type;
-    }
+    Ride *ride = get_ride(w->number);
 
     switch (widgetIndex) {
     case WIDX_VEHICLE_TYPE_DROPDOWN:
-        selectedIndex = -1;
-        numItems = 0;
-
-        // Dropdowns with more items start acting weird, so cap it.
-        for (; rideTypeIterator <= rideTypeIteratorMax && numItems < DROPDOWN_ITEMS_MAX_SIZE; rideTypeIterator++) {
-
-            if(selectionShouldBeExpanded && ride_type_has_flag(rideTypeIterator, RIDE_TYPE_FLAG_FLAT_RIDE))
-                continue;
-            if(selectionShouldBeExpanded && (rideTypeIterator == RIDE_TYPE_MAZE || rideTypeIterator == RIDE_TYPE_MINI_GOLF))
-                continue;
-
-            rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideTypeIterator);
-
-            for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != RIDE_ENTRY_INDEX_NULL && numItems < DROPDOWN_ITEMS_MAX_SIZE; currentRideEntryIndex++) {
-                rideEntryIndex = *currentRideEntryIndex;
-                currentRideEntry = get_ride_entry(rideEntryIndex);
-
-                // Skip if vehicle type is not invented yet
-                if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
-                    continue;
-
-                // Skip if vehicle does not belong to the same ride group
-                if (RideGroupManager::RideTypeHasRideGroups(ride->type) && !selectionShouldBeExpanded)
-                {
-                    rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
-                    currentRideGroup = RideGroupManager::GetRideGroup(ride->type, currentRideEntry);
-
-                    if (!rideGroup->Equals(currentRideGroup))
-                        continue;
-                }
-
-                if (ride->subtype == rideEntryIndex)
-                    selectedIndex = numItems;
-
-                gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[numItems] = (rideEntryIndex << 16) | currentRideEntry->naming.name;
-
-                numItems++;
-            }
-        }
-
-        window_dropdown_show_text_custom_width(
-            w->x + dropdownWidget->left,
-            w->y + dropdownWidget->top,
-            dropdownWidget->bottom - dropdownWidget->top + 1,
-            w->colours[1],
-            0,
-            DROPDOWN_FLAG_STAY_OPEN,
-            numItems,
-            widget->right - dropdownWidget->left
-        );
-
-        dropdown_set_checked(selectedIndex, true);
+        window_ride_show_vehicle_type_dropdown(w, &w->widgets[widgetIndex]);
         break;
     case WIDX_VEHICLE_TRAINS_INCREASE:
         if (ride->num_vehicles < 32)
@@ -2793,6 +2797,7 @@ static void window_ride_vehicle_mousedown(rct_window *w, rct_widgetindex widgetI
             ride_set_num_cars_per_vehicle(w->number, ride->num_cars_per_train + 1);
         break;
     case WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE:
+        rct_ride_entry * rideEntry = get_ride_entry_by_ride(ride);
         if (ride->num_cars_per_train > rideEntry->zero_cars + 1)
             ride_set_num_cars_per_vehicle(w->number, ride->num_cars_per_train - 1);
         break;
