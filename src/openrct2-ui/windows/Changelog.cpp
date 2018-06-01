@@ -196,12 +196,17 @@ static void window_changelog_scrollpaint(rct_window * w, rct_drawpixelinfo * dpi
     gCurrentFontFlags = 0;
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
+    const sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+
     sint32 x = 3;
-    sint32 y = 3;
+    sint32 y = 3 - lineHeight;
     for (auto line : _changelogLines)
     {
+        y += lineHeight;
+        if (y < dpi->y || y >= dpi->y + dpi->height)
+            continue;
+
         gfx_draw_string(dpi, (char *)line, w->colours[0], x, y);
-        y += 11;
     }
 }
 
