@@ -24,7 +24,7 @@
 #include "../drawing/Drawing.h"
 #include "../Game.h"
 #include "../interface/Chat.h"
-#include "../interface/Console.h"
+#include "../interface/InteractiveConsole.h"
 #include "../Intro.h"
 #include "../localisation/Language.h"
 #include "../localisation/FormatCodes.h"

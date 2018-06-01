@@ -63,7 +63,7 @@
 #include "Game.h"
 #include "Input.h"
 #include "interface/Chat.h"
-#include "interface/Console.h"
+#include "interface/InteractiveConsole.h"
 #include "interface/themes.h"
 #include "interface/Viewport.h"
 #include "Intro.h"

@@ -29,7 +29,7 @@
 #include "Utils.hpp"
 #include "VerticalTunnelCall.hpp"
 
-#include <openrct2/paint/tile_element/TileElement.h>
+#include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/paint/Supports.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/Track.h>

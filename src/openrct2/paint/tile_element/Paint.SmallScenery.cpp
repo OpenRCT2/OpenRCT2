@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "TileElement.h"
+#include "Paint.TileElement.h"
 #include "../../config/Config.h"
 #include "../../Game.h"
 #include "../../interface/Viewport.h"

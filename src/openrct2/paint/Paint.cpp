@@ -22,8 +22,8 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "Paint.h"
-#include "sprite/Sprite.h"
-#include "tile_element/TileElement.h"
+#include "sprite/Paint.Sprite.h"
+#include "tile_element/Paint.TileElement.h"
 
 // Globals for paint clipping
 uint8 gClipHeight = 128; // Default to middle value

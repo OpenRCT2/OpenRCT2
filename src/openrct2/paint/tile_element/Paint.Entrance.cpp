@@ -25,7 +25,7 @@
 #include "../../world/Park.h"
 #include "../Paint.h"
 #include "../Supports.h"
-#include "TileElement.h"
+#include "Paint.TileElement.h"
 #include "../../drawing/LightFX.h"
 
 static uint32 _unk9E32BC;

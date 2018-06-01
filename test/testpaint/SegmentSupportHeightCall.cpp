@@ -19,7 +19,7 @@
 
 #include "SegmentSupportHeightCall.hpp"
 
-#include <openrct2/paint/tile_element/TileElement.h>
+#include <openrct2/paint/tile_element/Paint.TileElement.h>
 
 static bool SortSegmentSupportCalls(SegmentSupportCall lhs, SegmentSupportCall rhs)
 {

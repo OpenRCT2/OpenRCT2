@@ -1,6 +1,6 @@
 #pragma once
 
-#include <openrct2/interface/Console.h>
+#include <openrct2/interface/InteractiveConsole.h>
 
 namespace OpenRCT2::Ui
 {

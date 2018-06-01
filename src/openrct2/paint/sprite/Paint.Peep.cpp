@@ -17,7 +17,7 @@
 #include "../../config/Config.h"
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
-#include "Sprite.h"
+#include "Paint.Sprite.h"
 #include "../../peep/Peep.h"
 #include "../../world/Sprite.h"
 #include "../Paint.h"

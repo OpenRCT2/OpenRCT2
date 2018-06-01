@@ -18,7 +18,7 @@
 #include "../world/Surface.h"
 #include "Paint.h"
 #include "Supports.h"
-#include "tile_element/TileElement.h"
+#include "tile_element/Paint.TileElement.h"
 
 /** rct2: 0x0097AF20, 0x0097AF21 */
 // clang-format off

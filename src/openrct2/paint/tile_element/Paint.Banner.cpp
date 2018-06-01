@@ -20,7 +20,7 @@
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
 #include "../../ride/TrackDesign.h"
-#include "TileElement.h"
+#include "Paint.TileElement.h"
 #include "../../world/Banner.h"
 #include "../../world/Scenery.h"
 

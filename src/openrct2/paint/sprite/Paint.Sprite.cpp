@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "Sprite.h"
+#include "Paint.Sprite.h"
 #include "../Paint.h"
 #include "../../drawing/Drawing.h"
 #include "../../world/Sprite.h"

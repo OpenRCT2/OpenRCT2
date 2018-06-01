@@ -21,7 +21,7 @@
 #include <openrct2/core/String.hpp>
 #include "TextComposition.h"
 
-#include <openrct2/interface/Console.h>
+#include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/localisation/Localisation.h>
 #include "interface/InGameConsole.h"

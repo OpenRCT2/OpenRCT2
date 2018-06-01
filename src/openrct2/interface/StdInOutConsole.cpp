@@ -1,7 +1,7 @@
 #include "../thirdparty/linenoise.hpp"
 #include "../OpenRCT2.h"
 #include "../platform/Platform2.h"
-#include "Console.h"
+#include "InteractiveConsole.h"
 
 void StdInOutConsole::Start()
 {

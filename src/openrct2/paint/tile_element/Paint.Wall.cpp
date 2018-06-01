@@ -28,7 +28,7 @@
 #include "../../world/Scenery.h"
 #include "../../world/Wall.h"
 #include "../Paint.h"
-#include "TileElement.h"
+#include "Paint.TileElement.h"
 
 static constexpr const uint8 byte_9A406C[] = {
     2, 2, 22, 26, 30, 34, 34, 34, 34, 34, 30, 26, 22, 2, 6, 2,

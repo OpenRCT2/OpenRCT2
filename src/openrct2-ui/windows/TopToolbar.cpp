@@ -26,7 +26,7 @@
 #include <openrct2/core/Util.hpp>
 #include <openrct2/Editor.h>
 #include <openrct2/Input.h>
-#include <openrct2/interface/Console.h>
+#include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>

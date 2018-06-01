@@ -19,7 +19,7 @@
 
 #include "RideData.h"
 #include "../common.h"
-#include "../paint/tile_element/TileElement.h"
+#include "../paint/tile_element/Paint.TileElement.h"
 #include "../paint/Paint.h"
 #include "../world/Map.h"
 
