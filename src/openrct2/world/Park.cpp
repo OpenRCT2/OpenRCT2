@@ -167,7 +167,7 @@ void game_command_set_park_open(
 *
 *  rct2: 0x00664D05
 */
-void update_park_fences(CoordsXY coords)
+void update_park_fences(const CoordsXY coords)
 {
     if (map_is_edge(coords))
         return;
@@ -227,7 +227,7 @@ void update_park_fences(CoordsXY coords)
     }
 }
 
-void update_park_fences_around_tile(CoordsXY coords)
+void update_park_fences_around_tile(const CoordsXY coords)
 {
     update_park_fences(coords);
     update_park_fences({coords.x + 32, coords.y});

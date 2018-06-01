@@ -287,7 +287,7 @@ rct_tile_element * map_get_surface_element_at(sint32 x, sint32 y)
     return tileElement;
 }
 
-rct_tile_element * map_get_surface_element_at(CoordsXY coords)
+rct_tile_element * map_get_surface_element_at(const CoordsXY coords)
 {
     return map_get_surface_element_at(coords.x / 32, coords.y / 32);
 }
@@ -744,7 +744,7 @@ sint32 map_height_from_slope(sint32 x, sint32 y, sint32 slope)
     return 0;
 }
 
-bool map_is_location_valid(CoordsXY coords)
+bool map_is_location_valid(const CoordsXY coords)
 {
     if (coords.x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && coords.x >= 0 && coords.y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && coords.y >= 0) {
         return true;
@@ -752,7 +752,7 @@ bool map_is_location_valid(CoordsXY coords)
     return false;
 }
 
-bool map_is_edge(CoordsXY coords)
+bool map_is_edge(const CoordsXY coords)
 {
     return (coords.x < 32 || coords.y < 32 || coords.x >= gMapSizeUnits || coords.y >= gMapSizeUnits);
 }
@@ -797,7 +797,7 @@ bool map_is_location_owned(sint32 x, sint32 y, sint32 z)
  *
  *  rct2: 0x00664F2C
  */
-bool map_is_location_in_park(CoordsXY coords)
+bool map_is_location_in_park(const CoordsXY coords)
 {
     if (map_is_location_valid(coords))
     {
