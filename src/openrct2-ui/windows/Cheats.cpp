@@ -218,22 +218,14 @@ static rct_widget window_cheats_money_widgets[] =
     MAIN_CHEATS_WIDGETS,
     { WWT_CHECKBOX,         1,      XPL(0),                 WPL(0),                 YPL(0),         HPL(0),         STR_MAKE_PARK_NO_MONEY,             STR_NONE },                             // No money
     { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(1),         HPL(3.5),       STR_ADD_SET_MONEY,                  STR_NONE },                             // add / set money group frame
-    { WWT_SPINNER,          1,      XPL(0),                 WPL(1) - 10,            YPL(2) + 2,     HPL(2) - 3,     STR_NONE,                           STR_NONE },                             // money value
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(2) + 3,     YPL(2) + 7,     STR_NUMERIC_UP,                     STR_NONE },                             // increase money
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(2) + 8,     YPL(2) + 12,    STR_NUMERIC_DOWN,                   STR_NONE },                             // decrease money
+      SPINNER_WIDGETS      (1,      XPL(0),                 WPL(1) - 10,            YPL(2) + 2,     HPL(2) - 3,     STR_NONE,                           STR_NONE),                              // money value (3 widgets)
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(3),         HPL(3),         STR_ADD_MONEY,                      STR_NONE },                             // add money
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(3),         HPL(3),         STR_SET_MONEY,                      STR_NONE },                             // set money
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(5),         HPL(5),         STR_CHEAT_CLEAR_LOAN,               STR_NONE },                             // Clear loan
     { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(6.5),       HPL(10.5),      STR_DATE_SET,                       STR_NONE },                             // Date group
-    { WWT_SPINNER,          1,      WPL(0),                 WPL(1) - 10,            YPL(7) + 2,     HPL(7) - 3,     STR_NONE,                           STR_NONE },                             // Year box
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(7) + 3,     YPL(7) + 7,     STR_NUMERIC_UP,                     STR_NONE },                             // increase year
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(7) + 8,     YPL(7) + 12,    STR_NUMERIC_DOWN,                   STR_NONE },                             // decrease year
-    { WWT_SPINNER,          1,      WPL(0),                 WPL(1) - 10,            YPL(8) + 2,     HPL(8) - 3,     STR_NONE,                           STR_NONE },                             // Month box
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(8) + 3,     YPL(8) + 7,     STR_NUMERIC_UP,                     STR_NONE },                             // increase month
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(8) + 8,     YPL(8) + 12,    STR_NUMERIC_DOWN,                   STR_NONE },                             // decrease month
-    { WWT_SPINNER,          1,      WPL(0),                 WPL(1) - 10,            YPL(9) + 2,     HPL(9) - 3,     STR_NONE,                           STR_NONE },                             // Day box
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(9) + 3,     YPL(9) + 7,     STR_NUMERIC_UP,                     STR_NONE },                             // increase day
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(9) + 8,     YPL(9) + 12,    STR_NUMERIC_DOWN,                   STR_NONE },                             // decrease day
+      SPINNER_WIDGETS      (1,      WPL(0),                 WPL(1) - 10,            YPL(7) + 2,     HPL(7) - 3,     STR_NONE,                           STR_NONE),                              // Year box (3 widgets)
+      SPINNER_WIDGETS      (1,      WPL(0),                 WPL(1) - 10,            YPL(8) + 2,     HPL(8) - 3,     STR_NONE,                           STR_NONE),                              // Month box (3 widgets)
+      SPINNER_WIDGETS      (1,      WPL(0),                 WPL(1) - 10,            YPL(9) + 2,     HPL(9) - 3,     STR_NONE,                           STR_NONE),                              // Day box (3 widgets)
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(10),        HPL(10),        STR_DATE_SET,                       STR_NONE },                             // Set Date
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(10),        HPL(10),        STR_DATE_RESET,                     STR_NONE },                             // Reset Date
     { WIDGETS_END },
@@ -284,9 +276,7 @@ static rct_widget window_cheats_misc_widgets[] =
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(2),         HPL(2),         STR_CHEAT_RESET_DATE,               STR_NONE },                             // Reset date
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(3),         HPL(3),         STR_CHEAT_OWN_ALL_LAND,             STR_CHEAT_OWN_ALL_LAND_TIP },           // Own all land
     { WWT_CHECKBOX,         1,      XPL(0),                 WPL(0),                 YPL(5),         HPL(5),         STR_FORCE_PARK_RATING,              STR_NONE },                             // Force park rating
-    { WWT_SPINNER,          1,      XPL(1),                 WPL(1) - 10,            YPL(5) + 2,     HPL(5) - 3,     STR_NONE,                           STR_NONE },                             // park rating
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(5) + 3,     YPL(5) + 7,     STR_NUMERIC_UP,                     STR_NONE },                             // increase rating
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(5) + 8,     YPL(5) + 12,    STR_NUMERIC_DOWN,                   STR_NONE },                             // decrease rating
+      SPINNER_WIDGETS      (1,      XPL(1),                 WPL(1) - 10,            YPL(5) + 2,     HPL(5) - 3,     STR_NONE,                           STR_NONE),                              // park rating (3 widgets)
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(6),         HPL(6),         STR_CHEAT_WIN_SCENARIO,             STR_NONE },                             // Win scenario
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(6),         HPL(6),         STR_CHEAT_HAVE_FUN,                 STR_NONE },                             // Have fun!
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(7),         HPL(7),         STR_CHEAT_NEVERENDING_MARKETING,    STR_CHEAT_NEVERENDING_MARKETING_TIP },  // never ending marketing campaigns
@@ -1191,15 +1181,15 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(dpi, STR_YEAR,                         nullptr, COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(7) + TXTO);
         gfx_draw_string_left(dpi, STR_MONTH,                        nullptr, COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(8) + TXTO);
         gfx_draw_string_left(dpi, STR_DAY,                          nullptr, COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(9) + TXTO);
-        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,              &year_spinner_value, w->colours[1], w->x + WPL(1) - 10 - TXTO, w->y + YPL(7) + TXTO);
-        gfx_draw_string_right(dpi, STR_FORMAT_MONTH,                &actual_month, w->colours[1], w->x + WPL(1) - 10 - TXTO, w->y + YPL(8) + TXTO);
-        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,              &day_spinner_value, w->colours[1], w->x + WPL(1) - 10 - TXTO, w->y + YPL(9) + TXTO);
+        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,              &year_spinner_value, w->colours[1], w->x + WPL(1) - 34 - TXTO, w->y + YPL(7) + TXTO);
+        gfx_draw_string_right(dpi, STR_FORMAT_MONTH,                &actual_month,       w->colours[1], w->x + WPL(1) - 34 - TXTO, w->y + YPL(8) + TXTO);
+        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,              &day_spinner_value,  w->colours[1], w->x + WPL(1) - 34 - TXTO, w->y + YPL(9) + TXTO);
     }
     else if (w->page == WINDOW_CHEATS_PAGE_MISC)
     {
         gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED,            nullptr,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(17) + TXTO);
         gfx_draw_string_left(dpi, STR_FORCE_WEATHER,                nullptr,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(10) + TXTO);
-        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,              &park_rating_spinner_value, w->colours[1], w->x + WPL(1) - 10 - TXTO, w->y + YPL(5) + TXTO);
+        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,              &park_rating_spinner_value, w->colours[1], w->x + WPL(1) - 34 - TXTO, w->y + YPL(5) + TXTO);
     }
     else if (w->page == WINDOW_CHEATS_PAGE_GUESTS)
     {
