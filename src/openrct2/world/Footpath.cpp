@@ -429,7 +429,7 @@ static money32 footpath_place_real(sint32 type, sint32 x, sint32 y, sint32 z, si
     gFootpathPrice = 0;
     gFootpathGroundFlags = 0;
 
-    if (x >= gMapSizeUnits || y >= gMapSizeUnits) {
+    if (map_is_edge(x, y)) {
         gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
         return MONEY32_UNDEFINED;
     }
@@ -1057,18 +1057,13 @@ bool fence_in_the_way(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction
     return false;
 }
 
-static bool map_is_edge(sint32 x, sint32 y)
-{
-    return (
-        x < 32 ||
-        y < 32 ||
-        x >= gMapSizeUnits ||
-        y >= gMapSizeUnits
-    );
-}
-
 static rct_tile_element *footpath_connect_corners_get_neighbour(sint32 x, sint32 y, sint32 z, sint32 requireEdges)
 {
+    if (!map_is_location_valid(x, y))
+    {
+        return nullptr;
+    }
+
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -1082,6 +1077,7 @@ static rct_tile_element *footpath_connect_corners_get_neighbour(sint32 x, sint32
 
         return tileElement;
     } while (!(tileElement++)->IsLastForTile());
+
     return nullptr;
 }
 
@@ -2259,28 +2255,35 @@ static void footpath_remove_edges_towards_here(sint32 x, sint32 y, sint32 z, sin
  */
 static void footpath_remove_edges_towards(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction, bool isQueue)
 {
-    rct_tile_element *tileElement;
-    sint32 slope;
+    if (!map_is_location_valid(x, y))
+    {
+        return;
+    }
 
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
-    do {
+    rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    do
+    {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        if (z1 == tileElement->base_height) {
-            if (footpath_element_is_sloped(tileElement)) {
-                slope = footpath_element_get_slope_direction(tileElement);
+        if (z1 == tileElement->base_height)
+        {
+            if (footpath_element_is_sloped(tileElement))
+            {
+                uint8 slope = footpath_element_get_slope_direction(tileElement);
                 if (slope != direction)
                     break;
             }
             footpath_remove_edges_towards_here(x, y, z1, direction, tileElement, isQueue);
             break;
         }
-        if (z0 == tileElement->base_height) {
+
+        if (z0 == tileElement->base_height)
+        {
             if (!footpath_element_is_sloped(tileElement))
                 break;
 
-            slope = footpath_element_get_slope_direction(tileElement) ^ 2;
+            uint8 slope = footpath_element_get_slope_direction(tileElement) ^ 2;
             if (slope != direction)
                 break;
 
