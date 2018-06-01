@@ -1,8 +1,10 @@
 #include <string>
 #include <openrct2/core/Crypt.h>
 #include <openrct2/core/File.h>
+#include <openrct2/core/Path.hpp>
 #include <openrct2/network/NetworkKey.h>
 #include <gtest/gtest.h>
+#include "TestData.h"
 
 class CryptTests : public testing::Test
 {
@@ -28,6 +30,16 @@ public:
             result.append(buf);
         }
         return result;
+    }
+
+    std::string GetTestPrivateKeyPath()
+    {
+        return Path::Combine(TestData::GetBasePath(), "keys", "Player.privkey");
+    }
+
+    std::string GetTestPublicKeyPath()
+    {
+        return Path::Combine(TestData::GetBasePath(), "keys", "Player-56f4afb74622a23bd2539ee701fe1b2c13d7e6ba.pubkey");
     }
 };
 
@@ -103,9 +115,9 @@ TEST_F(CryptTests, RSA_Basic)
 {
     std::vector<uint8> data = { 0, 1, 2, 3, 4, 5, 6, 7 };
 
-    auto file = File::ReadAllBytes("C:/Users/Ted/Documents/OpenRCT2/keys/Ted.privkey");
+    auto file = File::ReadAllText(GetTestPrivateKeyPath());
     auto key = Crypt::CreateRSAKey();
-    key->SetPrivate(std::string_view((const char *)file.data(), file.size()));
+    key->SetPrivate(std::string_view(file.data(), file.size()));
 
     auto rsa = Crypt::CreateRSA();
     auto signature = rsa->SignData(*key, data.data(), data.size());
@@ -117,13 +129,13 @@ TEST_F(CryptTests, RSA_VerifyWithPublic)
 {
     std::vector<uint8> data = { 7, 6, 5, 4, 3, 2, 1, 0 };
 
-    auto privateFile = File::ReadAllBytes("C:/Users/Ted/Documents/OpenRCT2/keys/Ted.privkey");
+    auto privateFile = File::ReadAllText(GetTestPrivateKeyPath());
     auto privateKey = Crypt::CreateRSAKey();
-    privateKey->SetPrivate(std::string_view((const char *)privateFile.data(), privateFile.size()));
+    privateKey->SetPrivate(std::string_view(privateFile.data(), privateFile.size()));
 
-    auto publicFile = File::ReadAllBytes("C:/Users/Ted/Documents/OpenRCT2/keys/Ted-b298a310905df8865788bdc864560c3d4c3ba562.pubkey");
+    auto publicFile = File::ReadAllText(GetTestPublicKeyPath());
     auto publicKey = Crypt::CreateRSAKey();
-    publicKey->SetPublic(std::string_view((const char *)publicFile.data(), publicFile.size()));
+    publicKey->SetPublic(std::string_view(publicFile.data(), publicFile.size()));
 
     auto rsa = Crypt::CreateRSA();
     auto signature = rsa->SignData(*privateKey, data.data(), data.size());
@@ -133,7 +145,7 @@ TEST_F(CryptTests, RSA_VerifyWithPublic)
 
 TEST_F(CryptTests, RSAKey_GetPublic)
 {
-    auto inPem = File::ReadAllText("C:/Users/Ted/Documents/OpenRCT2/keys/Ted-b298a310905df8865788bdc864560c3d4c3ba562.pubkey");
+    auto inPem = File::ReadAllText(GetTestPublicKeyPath());
     auto publicKey = Crypt::CreateRSAKey();
     publicKey->SetPublic(inPem);
     auto outPem = publicKey->GetPublic();
