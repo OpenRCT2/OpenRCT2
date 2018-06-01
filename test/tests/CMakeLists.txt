@@ -153,11 +153,13 @@ add_executable(test_localisation ${STRING_TEST_SOURCES})
 target_link_libraries(test_localisation ${GTEST_LIBRARIES} test-common ${LDL} z)
 add_test(NAME localisation COMMAND test_localisation)
 
-# Crypt tests
-add_executable(test_crypt "${CMAKE_CURRENT_LIST_DIR}/CryptTests.cpp"
-                          "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
-target_link_libraries(test_crypt ${GTEST_LIBRARIES} libopenrct2)
-add_test(NAME Crypt COMMAND test_crypt)
+if (NOT DISABLE_NETWORK)
+    # Crypt tests
+    add_executable(test_crypt "${CMAKE_CURRENT_LIST_DIR}/CryptTests.cpp"
+                              "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+    target_link_libraries(test_crypt ${GTEST_LIBRARIES} libopenrct2)
+    add_test(NAME Crypt COMMAND test_crypt)
+endif ()
 
 # ImageImporter tests
 add_executable(test_imageimporter "${CMAKE_CURRENT_LIST_DIR}/ImageImporterTests.cpp"
