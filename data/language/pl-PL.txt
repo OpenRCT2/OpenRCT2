@@ -464,8 +464,8 @@ STR_1214    :{SMALLFONT}{BLACK}Wybierz maksymalny czas oczekiwania na stacji prz
 STR_1215    :{WINDOW_COLOUR_2}Synchronizuj z sąsiadującymi stacjami
 STR_1216    :{SMALLFONT}{BLACK}Wybierz, czy kolejki mają synchronizować start z innymi stacjami (dla 'wyścigów')
 STR_1217    :{COMMA16} sekund
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1223    :{SMALLFONT}{BLACK}Atrakcje transportowe
 STR_1224    :{SMALLFONT}{BLACK}Łagodne atrakcje
 STR_1225    :{SMALLFONT}{BLACK}Kolejki górskie

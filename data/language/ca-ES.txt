@@ -1220,8 +1220,8 @@ STR_1214    :{SMALLFONT}{BLACK}Seleccioneu el temps d'espera màxim abans d'arre
 STR_1215    :{WINDOW_COLOUR_2}Sincronitza l'arrencada amb les estacions adjacents.
 STR_1216    :{SMALLFONT}{BLACK}Seleccioneu si cal sincronitzar la posada en marxa dels vehicles de l'estació ambs els d'estacions adjacents.
 STR_1217    :{COMMA16} segons
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Només sortida
 STR_1221    :Sense entrada
 STR_1222    :Sense sortida

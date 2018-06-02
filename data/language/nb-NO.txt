@@ -1220,8 +1220,8 @@ STR_1214    :{SMALLFONT}{BLACK}Velg største tid å vente før avgang
 STR_1215    :{WINDOW_COLOUR_2}Synkroniser med stasjonen ved siden av
 STR_1216    :{SMALLFONT}{BLACK}Velg om avgang skal synkroniseres for alle tilliggende stasjoner (for 'løp')
 STR_1217    :{COMMA16} sekunder
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Kun utgang
 STR_1221    :Ingen inngang
 STR_1222    :Ingen utgang

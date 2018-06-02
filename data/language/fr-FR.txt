@@ -1221,8 +1221,8 @@ STR_1214    :{SMALLFONT}{BLACK}Sélectionnez la durée maximum à attendre avant
 STR_1215    :{WINDOW_COLOUR_2}Synchroniser avec les stations adjacentes
 STR_1216    :{SMALLFONT}{BLACK}Sélectionnez s'il faut synchroniser le départ avec toutes les stations adjacentes
 STR_1217    :{COMMA16} secondes
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Sortie uniquement
 STR_1221    :Pas d'entrée
 STR_1222    :Pas de sortie

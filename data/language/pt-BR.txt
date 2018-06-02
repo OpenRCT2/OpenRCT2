@@ -1220,8 +1220,8 @@ STR_1214    :{SMALLFONT}{BLACK}Selecione o tempo máximo de espera antes de sair
 STR_1215    :{WINDOW_COLOUR_2}Sincronizar com estações adjacentes
 STR_1216    :{SMALLFONT}{BLACK}Selecione para sincronizar saída com todas estações adjacentes (para corrida)
 STR_1217    :{COMMA16} segundos
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Somente Saída
 STR_1221    :Sem entrada
 STR_1222    :Sem saída
@@ -4536,7 +4536,7 @@ STR_6226    :Habilitar conclusão antecipada de cenário
 STR_6227    :{SMALLFONT}{BLACK}Ativa a conclusão do cenário quando todos os objetivos são alcançados antes da data prevista.
 STR_6228    :Opções de Cenário
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
-STR_6230    :{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6230    :{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :Congelado
 STR_6233    :Vista em corte

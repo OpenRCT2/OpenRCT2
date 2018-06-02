@@ -1220,8 +1220,8 @@ STR_1214    :{SMALLFONT}{BLACK}Selecciona el tiempo de espera máximo antes de p
 STR_1215    :{WINDOW_COLOUR_2}Sincronizar con estaciones adyacentes
 STR_1216    :{SMALLFONT}{BLACK}Selecciona si deseas sincronizar esta estación con otras estaciones adyacentes a esta estación.
 STR_1217    :{COMMA16} segundos
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Sólo salida
 STR_1221    :No hay entrada
 STR_1222    :No hay salida
