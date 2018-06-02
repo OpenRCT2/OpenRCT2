@@ -34,7 +34,6 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/audio/audio.h>
-#include <openrct2/interface/themes.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Currency.h>
@@ -47,6 +46,7 @@
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/scenario/Scenario.h>
+#include "../interface/Theme.h"
 
 // clang-format off
 enum WINDOW_OPTIONS_PAGE {

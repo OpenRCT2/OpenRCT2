@@ -14,11 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _THEMES_H_
-#define _THEMES_H_
+#pragma once
 
-#include "../common.h"
-#include "Window.h"
+#include <openrct2/common.h>
+#include <openrct2/interface/Window.h>
 
 enum {
     UITHEME_FLAG_PREDEFINED                            = 1 << 0,
@@ -53,5 +52,3 @@ void     theme_delete();
 
 uint8         theme_desc_get_num_colours(rct_windowclass wc);
 rct_string_id theme_desc_get_name(rct_windowclass wc);
-
-#endif

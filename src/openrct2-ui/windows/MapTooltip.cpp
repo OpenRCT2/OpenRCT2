@@ -18,10 +18,10 @@
 
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
-#include <openrct2/interface/themes.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/drawing/Drawing.h>
+#include "../interface/Theme.h"
 
 // clang-format off
 static rct_widget window_map_tooltip_widgets[] = {

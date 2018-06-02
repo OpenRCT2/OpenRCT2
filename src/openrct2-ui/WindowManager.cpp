@@ -18,12 +18,12 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/config/Config.h>
-#include <openrct2/interface/themes.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/Input.h>
 #include <openrct2/world/Sprite.h>
 #include "input/Input.h"
 #include "input/KeyboardShortcuts.h"
+#include "interface/Theme.h"
 #include "WindowManager.h"
 #include "windows/Window.h"
 

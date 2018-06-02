@@ -1,10 +1,10 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
-#include <openrct2/interface/themes.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/world/Sprite.h>
 #include <openrct2/ui/UiContext.h>
+#include "Theme.h"
 #include "Window.h"
 
 #define RCT2_NEW_WINDOW         (gWindowNextSlot)

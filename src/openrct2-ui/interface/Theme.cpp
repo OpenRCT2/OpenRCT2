@@ -21,24 +21,23 @@
 #include <vector>
 #include <jansson.h>
 
-#include "../common.h"
-#include "../config/Config.h"
-#include "../Context.h"
-#include "../core/File.h"
-#include "../core/FileScanner.h"
-#include "../core/Guard.hpp"
-#include "../core/Json.hpp"
-#include "../core/Math.hpp"
-#include "../core/Path.hpp"
-#include "../core/String.hpp"
-#include "../drawing/Drawing.h"
-#include "../localisation/Language.h"
-#include "../localisation/StringIds.h"
-#include "../PlatformEnvironment.h"
-#include "themes.h"
+#include <openrct2/common.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/Context.h>
+#include <openrct2/core/File.h>
+#include <openrct2/core/FileScanner.h>
+#include <openrct2/core/Guard.hpp>
+#include <openrct2/core/Json.hpp>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/core/Path.hpp>
+#include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Language.h>
+#include <openrct2/localisation/StringIds.h>
+#include <openrct2/PlatformEnvironment.h>
+#include <openrct2/interface/Colour.h>
+#include "Theme.h"
 #include "Window.h"
-#include "Window_internal.h"
-#include "Colour.h"
 
 using namespace OpenRCT2;
 

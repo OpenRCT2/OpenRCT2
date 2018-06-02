@@ -30,7 +30,6 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/interface/Chat.h>
-#include <openrct2/interface/themes.h>
 #include <openrct2/platform/Platform2.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
@@ -38,6 +37,7 @@
 #include "CursorRepository.h"
 #include "drawing/engines/DrawingEngineFactory.hpp"
 #include "input/KeyboardShortcuts.h"
+#include "interface/Theme.h"
 #include "SDLException.h"
 #include "TextComposition.h"
 #include "UiContext.h"

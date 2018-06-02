@@ -21,7 +21,6 @@
 #include <openrct2/core/Math.hpp>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
-#include <openrct2/interface/themes.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
@@ -33,6 +32,7 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Sprite.h>
 #include <openrct2/management/Finance.h>
+#include "../interface/Theme.h"
 
 // clang-format off
 enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX

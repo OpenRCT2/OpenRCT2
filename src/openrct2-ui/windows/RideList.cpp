@@ -20,7 +20,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/core/Util.hpp>
 #include <openrct2/Game.h>
-#include <openrct2/interface/themes.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
@@ -30,6 +29,7 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/drawing/Drawing.h>
+#include "../interface/Theme.h"
 
 // clang-format off
 enum {

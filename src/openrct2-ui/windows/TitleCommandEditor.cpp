@@ -22,7 +22,6 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/core/Util.hpp>
-#include <openrct2/interface/themes.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/scenario/ScenarioRepository.h>
@@ -33,6 +32,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/world/Sprite.h>
 #include <openrct2/drawing/Drawing.h>
+#include "../interface/Theme.h"
 
 // clang-format off
 struct TITLE_COMMAND_ORDER {
