@@ -28,7 +28,6 @@
 #include "../Game.h"
 #include "../Input.h"
 #include "../interface/Window.h"
-#include "../interface/Window_internal.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
@@ -64,6 +63,10 @@
 #include "TrackData.h"
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
+#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
+
+using namespace OpenRCT2;
 
 #pragma region Ride classification table
 
@@ -993,19 +996,11 @@ static sint32 ride_check_if_construction_allowed(Ride *ride)
 
 static rct_window *ride_create_or_find_construction_window(sint32 rideIndex)
 {
-    rct_window *w;
-
-    w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w == nullptr || w->number != rideIndex) {
-        window_close_construction_windows();
-        _currentRideIndex = rideIndex;
-        w = context_open_window(WC_RIDE_CONSTRUCTION);
-    } else {
-        ride_construction_invalidate_current_track();
-        _currentRideIndex = rideIndex;
-    }
-
-    return w;
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS);
+    intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
+    windowManager->BroadcastIntent(intent);
+    return window_find_by_class(WC_RIDE_CONSTRUCTION);
 }
 
 /**
@@ -7394,13 +7389,10 @@ static money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, ui
         network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
     }
 
-    rct_window *w = window_find_by_number(WC_RIDE, rideIndex);
-    if (w != nullptr) {
-        if (w->page == 4) { // WINDOW_RIDE_PAGE_COLOUR
-            w->vehicleIndex = 0;
-        }
-        window_invalidate(w);
-    }
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto intent = Intent(INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE);
+    intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
+    windowManager->BroadcastIntent(intent);
 
     gfx_invalidate_screen();
     return 0;

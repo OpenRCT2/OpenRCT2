@@ -307,6 +307,24 @@ public:
             window_maze_construction_update_pressed_widgets();
             break;
 
+        case INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS:
+        {
+            auto rideIndex = intent.GetUIntExtra(INTENT_EXTRA_RIDE_ID);
+            auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+            if (w == nullptr || w->number != rideIndex)
+            {
+                window_close_construction_windows();
+                _currentRideIndex = rideIndex;
+                w = OpenWindow(WC_RIDE_CONSTRUCTION);
+            }
+            else
+            {
+                ride_construction_invalidate_current_track();
+                _currentRideIndex = rideIndex;
+            }
+            break;
+        }
+
         case INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES:
             window_ride_construction_update_enabled_track_pieces();
             break;
@@ -370,6 +388,20 @@ public:
 
             window_invalidate(w);
             break;
+        }
+
+        case INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE:
+        {
+            auto rideIndex = intent.GetUIntExtra(INTENT_EXTRA_RIDE_ID);
+            auto w = window_find_by_number(WC_RIDE, rideIndex);
+            if (w != nullptr)
+            {
+                if (w->page == 4) // WINDOW_RIDE_PAGE_COLOUR
+                { 
+                    w->vehicleIndex = 0;
+                }
+                window_invalidate(w);
+            }
         }
 
         case INTENT_ACTION_UPDATE_CLIMATE:
