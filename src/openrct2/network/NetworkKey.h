@@ -20,13 +20,15 @@
 #ifndef DISABLE_NETWORK
 
 #include "../common.h"
+#include <memory>
 #include <string>
-#include <openssl/evp.h>
-
-using EVP_PKEY     = evp_pkey_st;
-using EVP_PKEY_CTX = evp_pkey_ctx_st;
 
 interface IStream;
+
+namespace Crypt
+{
+    class RsaKey;
+}
 
 class NetworkKey final
 {
@@ -45,8 +47,7 @@ public:
     bool Verify(const uint8 * md, const size_t len, const char * sig, const size_t siglen);
 private:
     NetworkKey (const NetworkKey &) = delete;
-    EVP_PKEY_CTX * _ctx = nullptr;
-    EVP_PKEY *     _key = nullptr;
+    std::unique_ptr<Crypt::RsaKey> _key;
 };
 
 #endif // DISABLE_NETWORK

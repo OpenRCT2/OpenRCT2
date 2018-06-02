@@ -18,6 +18,7 @@
 #include <cmath>
 #include "../audio/audio.h"
 #include "../Cheats.h"
+#include "../core/Crypt.h"
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
@@ -208,47 +209,58 @@ static size_t GetSpatialIndexOffset(sint32 x, sint32 y)
 
 #ifndef DISABLE_NETWORK
 
-static uint8 _spriteChecksum[EVP_MAX_MD_SIZE + 1];
-
 const char * sprite_checksum()
 {
-    if (EVP_DigestInit_ex(gHashCTX, EVP_sha1(), NULL) <= 0)
+    using namespace Crypt;
+
+    // TODO Remove statics, should be one of these per sprite manager / OpenRCT2 context.
+    //      Alternatively, make a new class for this functionality.
+    static std::unique_ptr<HashAlgorithm<20>> _spriteHashAlg;
+    static std::string result;
+
+    try
     {
-        openrct2_assert(false, "Failed to initialise SHA1 engine");
-    }
-    for (size_t i = 0; i < MAX_SPRITES; i++)
-    {
-        rct_sprite *sprite = get_sprite(i);
-        if (sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL && sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_MISC)
+        if (_spriteHashAlg == nullptr)
         {
-            rct_sprite copy = *sprite;
-            copy.unknown.sprite_left = copy.unknown.sprite_right = copy.unknown.sprite_top = copy.unknown.sprite_bottom = 0;
+            _spriteHashAlg = CreateSHA1();
+        }
 
-            if (copy.unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
-                // We set this to 0 because as soon the client selects a guest the window will remove the
-                // invalidation flags causing the sprite checksum to be different than on server, the flag does not affect game state.
-                copy.peep.window_invalidate_flags = 0;
-            }
-
-            if (EVP_DigestUpdate(gHashCTX, &copy, sizeof(rct_sprite)) <= 0)
+        _spriteHashAlg->Clear();
+        for (size_t i = 0; i < MAX_SPRITES; i++)
+        {
+            auto sprite = get_sprite(i);
+            if (sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL && sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_MISC)
             {
-                openrct2_assert(false, "Failed to update digest");
+                auto copy = *sprite;
+                copy.unknown.sprite_left = copy.unknown.sprite_right = copy.unknown.sprite_top = copy.unknown.sprite_bottom = 0;
+
+                if (copy.unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+                {
+                    // We set this to 0 because as soon the client selects a guest the window will remove the
+                    // invalidation flags causing the sprite checksum to be different than on server, the flag does not affect game state.
+                    copy.peep.window_invalidate_flags = 0;
+                }
+
+                _spriteHashAlg->Update(&copy, sizeof(copy));
             }
         }
+
+        auto hash = _spriteHashAlg->Finish();
+
+        result.reserve(hash.size() * 2);
+        for (auto b : hash)
+        {
+            char buf[3];
+            snprintf(buf, 3, "%02x", b);
+            result.append(buf);
+        }
+        return result.c_str();
     }
-    uint8 localhash[EVP_MAX_MD_SIZE + 1];
-    uint32 size = sizeof(localhash);
-    EVP_DigestFinal(gHashCTX, localhash, &size);
-    assert(size <= sizeof(localhash));
-    localhash[sizeof(localhash) - 1] = '\0';
-    char *x = (char *)_spriteChecksum;
-    for (uint32 i = 0; i < size; i++)
+    catch (std::exception& e)
     {
-        snprintf(x, EVP_MAX_MD_SIZE + 1, "%02x", localhash[i]);
-        x += 2;
+        log_error("sprite_checksum failed: %s", e.what());
+        throw;
     }
-    *x = '\0';
-    return (char *)_spriteChecksum;
 }
 #else
 

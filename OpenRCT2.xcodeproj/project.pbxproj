@@ -37,6 +37,8 @@
 		933F2CB820935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
 		933F2CB920935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
 		933F2CBB20935668001B33FD /* LocalisationService.h in Headers */ = {isa = PBXBuildFile; fileRef = 933F2CBA20935668001B33FD /* LocalisationService.h */; };
+		9344BEF920C1E6180047D165 /* Crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 9344BEF720C1E6180047D165 /* Crypt.h */; };
+		9344BEFA20C1E6180047D165 /* Crypt.OpenSSL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9344BEF820C1E6180047D165 /* Crypt.OpenSSL.cpp */; };
 		9346F9D8208A191900C77D91 /* Guest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D6208A191900C77D91 /* Guest.cpp */; };
 		9346F9D9208A191900C77D91 /* Guest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D6208A191900C77D91 /* Guest.cpp */; };
 		9346F9DA208A191900C77D91 /* Guest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D6208A191900C77D91 /* Guest.cpp */; };
@@ -868,6 +870,8 @@
 		9308D9FD209908090079EE96 /* Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Surface.h; sourceTree = "<group>"; };
 		933F2CB620935653001B33FD /* LocalisationService.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LocalisationService.cpp; sourceTree = "<group>"; };
 		933F2CBA20935668001B33FD /* LocalisationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalisationService.h; sourceTree = "<group>"; };
+		9344BEF720C1E6180047D165 /* Crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crypt.h; sourceTree = "<group>"; };
+		9344BEF820C1E6180047D165 /* Crypt.OpenSSL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Crypt.OpenSSL.cpp; sourceTree = "<group>"; };
 		9346F9D6208A191900C77D91 /* Guest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Guest.cpp; sourceTree = "<group>"; };
 		9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuestPathfinding.cpp; sourceTree = "<group>"; };
 		9350B44420B46E0800897BC5 /* translit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = translit.h; sourceTree = "<group>"; };
@@ -2405,6 +2409,8 @@
 			children = (
 				F76C83791EC4E7CC00FA49E2 /* Collections.hpp */,
 				F76C837A1EC4E7CC00FA49E2 /* Console.cpp */,
+				9344BEF720C1E6180047D165 /* Crypt.h */,
+				9344BEF820C1E6180047D165 /* Crypt.OpenSSL.cpp */,
 				93CBA4C220A7502E00867D56 /* Imaging.cpp */,
 				93CBA4C120A7502D00867D56 /* Imaging.h */,
 				F76C837B1EC4E7CC00FA49E2 /* Console.hpp */,
@@ -3253,6 +3259,7 @@
 				C6352B941F477032006CCEE3 /* PlaceParkEntranceAction.hpp in Headers */,
 				C6352B911F477032006CCEE3 /* GameAction.h in Headers */,
 				C62D838B1FD36D6F008C04F1 /* EditorObjectSelectionSession.h in Headers */,
+				9344BEF920C1E6180047D165 /* Crypt.h in Headers */,
 				939A35A220C12FFD00630B3F /* InteractiveConsole.h in Headers */,
 				93CBA4C320A7502E00867D56 /* Imaging.h in Headers */,
 				9308DA05209908090079EE96 /* Surface.h in Headers */,
@@ -3883,6 +3890,7 @@
 				C688786720289A4A0084B384 /* SawyerCoding.cpp in Sources */,
 				F76C86A61EC4E88400FA49E2 /* macos.mm in Sources */,
 				93F9DA3B20B4701100D1BE92 /* StdInOutConsole.cpp in Sources */,
+				9344BEFA20C1E6180047D165 /* Crypt.OpenSSL.cpp in Sources */,
 				93F76F0520BFF77B00D4512C /* Paint.TileElement.cpp in Sources */,
 				C68878FE20289B9B0084B384 /* MiniSuspendedCoaster.cpp in Sources */,
 				F76C86AD1EC4E88400FA49E2 /* PlatformEnvironment.cpp in Sources */,

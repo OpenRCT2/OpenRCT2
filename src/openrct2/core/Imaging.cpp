@@ -19,38 +19,14 @@
 #include <algorithm>
 #include <fstream>
 #include <stdexcept>
-#include <streambuf>
 #include <unordered_map>
 #include <png.h>
-#include "FileStream.hpp"
+#include "IStream.hpp"
 #include "Guard.hpp"
 #include "Imaging.h"
 #include "Memory.hpp"
 #include "String.hpp"
 #include "../drawing/Drawing.h"
-
-template<typename T>
-class ivstream : public std::istream
-{
-private:
-    class vector_streambuf : public std::basic_streambuf<char, std::char_traits<char>>
-    {
-    public:
-        explicit vector_streambuf(const std::vector<T>& vec)
-        {
-            this->setg((char *)vec.data(), (char *)vec.data(), (char *)(vec.data() + vec.size()));
-        }
-    };
-
-    vector_streambuf _streambuf;
-
-public:
-    ivstream(const std::vector<T>& vec)
-        : std::istream(&_streambuf),
-          _streambuf(vec)
-    {
-    }
-};
 
 namespace Imaging
 {

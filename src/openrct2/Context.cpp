@@ -150,9 +150,6 @@ namespace OpenRCT2
             gfx_unload_g2();
             gfx_unload_g1();
             config_release();
-#ifndef DISABLE_NETWORK
-            EVP_MD_CTX_destroy(gHashCTX);
-#endif // DISABLE_NETWORK
 
             Instance = nullptr;
         }
@@ -330,11 +327,6 @@ namespace OpenRCT2
                 throw std::runtime_error("Context already initialised.");
             }
             _initialised = true;
-
-#ifndef DISABLE_NETWORK
-            gHashCTX = EVP_MD_CTX_create();
-            Guard::Assert(gHashCTX != nullptr, "EVP_MD_CTX_create failed");
-#endif // DISABLE_NETWORK
 
             crash_init();
 

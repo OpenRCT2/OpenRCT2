@@ -64,7 +64,6 @@ namespace OpenRCT2
 #include <functional>
 #include <fstream>
 #include <map>
-#include <openssl/evp.h>
 #include "../actions/GameAction.h"
 #include "../core/Json.hpp"
 #include "../core/Nullable.hpp"
@@ -242,7 +241,7 @@ private:
     uint32 server_tick = 0;
     uint32 server_srand0 = 0;
     uint32 server_srand0_tick = 0;
-    char server_sprite_hash[EVP_MAX_MD_SIZE + 1]{};
+    std::string server_sprite_hash;
     uint8 player_id = 0;
     std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
     std::multiset<GameCommand> game_command_queue;

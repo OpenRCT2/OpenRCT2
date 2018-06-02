@@ -16,8 +16,10 @@
 
 #pragma once
 
+#include <istream>
 #include <stdexcept>
 #include <string>
+#include <vector>
 #include "../common.h"
 #include "Memory.hpp"
 
@@ -116,4 +118,27 @@ class IOException : public std::runtime_error
 {
 public:
     explicit IOException(const std::string &message) : std::runtime_error(message) { }
+};
+
+template<typename T>
+class ivstream : public std::istream
+{
+private:
+    class vector_streambuf : public std::basic_streambuf<char, std::char_traits<char>>
+    {
+    public:
+        explicit vector_streambuf(const std::vector<T>& vec)
+        {
+            this->setg((char *)vec.data(), (char *)vec.data(), (char *)(vec.data() + vec.size()));
+        }
+    };
+
+    vector_streambuf _streambuf;
+
+public:
+    ivstream(const std::vector<T>& vec)
+        : std::istream(&_streambuf),
+        _streambuf(vec)
+    {
+    }
 };
