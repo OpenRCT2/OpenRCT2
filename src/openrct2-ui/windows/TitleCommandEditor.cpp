@@ -126,7 +126,6 @@ static void window_title_command_editor_tool_down(rct_window * w, rct_widgetinde
 static void window_title_command_editor_invalidate(rct_window * w);
 static void window_title_command_editor_paint(rct_window * w, rct_drawpixelinfo * dpi);
 static void window_title_command_editor_textinput(rct_window * w, rct_widgetindex widgetIndex, char * text);
-static void window_title_command_editor_inputsize(rct_window * w);
 static void scenario_select_callback(const utf8 * path);
 static sint32 get_command_info_index(sint32 index);
 static TITLE_COMMAND_ORDER get_command_info(sint32 index);
