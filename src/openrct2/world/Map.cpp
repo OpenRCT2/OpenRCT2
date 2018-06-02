@@ -3772,8 +3772,22 @@ static void clear_element_at(sint32 x, sint32 y, rct_tile_element **elementPtr)
         (*elementPtr)++;
         break;
     case TILE_ELEMENT_TYPE_ENTRANCE:
-        viewport_interaction_remove_park_entrance(element, x, y);
+    {
+        sint32 rotation = tile_element_get_direction_with_offset(element, 1);
+        switch (element->properties.entrance.index & 0x0F) {
+        case 1:
+            x += CoordsDirectionDelta[rotation].x;
+            y += CoordsDirectionDelta[rotation].y;
+            break;
+        case 2:
+            x -= CoordsDirectionDelta[rotation].x;
+            y -= CoordsDirectionDelta[rotation].y;
+            break;
+        }
+        gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
+        game_do_command(x, GAME_COMMAND_FLAG_APPLY, y, element->base_height / 2, GAME_COMMAND_REMOVE_PARK_ENTRANCE, 0, 0);
         break;
+    }
     case TILE_ELEMENT_TYPE_WALL:
         {
             TileCoordsXYZD wallLocation = { x >> 5, y >> 5, element->base_height, element->GetDirection() };

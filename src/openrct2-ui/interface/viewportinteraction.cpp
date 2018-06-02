@@ -14,36 +14,37 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/Math.hpp"
-#include "../Editor.h"
-#include "../Game.h"
-#include "../Input.h"
-#include "../localisation/Localisation.h"
-#include "../OpenRCT2.h"
-#include "../ride/Ride.h"
-#include "../ride/RideData.h"
-#include "../ride/Track.h"
-#include "../scenario/Scenario.h"
-#include "../windows/Intent.h"
-#include "../world/Banner.h"
-#include "../world/Footpath.h"
-#include "../world/Map.h"
-#include "../world/Scenery.h"
-#include "../world/LargeScenery.h"
-#include "../world/Park.h"
-#include "../world/Sprite.h"
-#include "../world/Surface.h"
-#include "../world/Wall.h"
+#include <openrct2/core/Math.hpp>
+#include <openrct2/Editor.h>
+#include <openrct2/Game.h>
+#include <openrct2/Input.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/ride/Ride.h>
+#include <openrct2/ride/RideData.h>
+#include <openrct2/ride/Track.h>
+#include <openrct2/scenario/Scenario.h>
+#include <openrct2/windows/Intent.h>
+#include <openrct2/world/Banner.h>
+#include <openrct2/world/Footpath.h>
+#include <openrct2/world/Map.h>
+#include <openrct2/world/Scenery.h>
+#include <openrct2/world/LargeScenery.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/world/Sprite.h>
+#include <openrct2/world/Surface.h>
+#include <openrct2/world/Wall.h>
+#include <openrct2/Context.h>
+#include <openrct2/actions/WallRemoveAction.hpp>
 #include "Viewport.h"
-#include "Window_internal.h"
-#include "../Context.h"
-#include "../actions/WallRemoveAction.hpp"
+#include "Window.h"
 
 static void viewport_interaction_remove_scenery(rct_tile_element *tileElement, sint32 x, sint32 y);
 static void viewport_interaction_remove_footpath(rct_tile_element *tileElement, sint32 x, sint32 y);
 static void viewport_interaction_remove_footpath_item(rct_tile_element *tileElement, sint32 x, sint32 y);
 static void viewport_interaction_remove_park_wall(rct_tile_element *tileElement, sint32 x, sint32 y);
 static void viewport_interaction_remove_large_scenery(rct_tile_element *tileElement, sint32 x, sint32 y);
+static void viewport_interaction_remove_park_entrance(rct_tile_element *tileElement, sint32 x, sint32 y);
 static rct_peep *viewport_interaction_get_closest_peep(sint32 x, sint32 y, sint32 maxDistance);
 
 /**
