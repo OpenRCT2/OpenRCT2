@@ -59,6 +59,9 @@ namespace OpenRCT2
     };
 }
 
+// When testing title sequences within a normal game
+extern bool gPreviewingTitleSequenceInGame;
+
 void title_load();
 void title_create_windows();
 void * title_get_sequence_player();

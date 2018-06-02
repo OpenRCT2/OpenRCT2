@@ -51,7 +51,6 @@
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
 #include "title/TitleScreen.h"
-#include "title/TitleSequencePlayer.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "util/SawyerCoding.h"

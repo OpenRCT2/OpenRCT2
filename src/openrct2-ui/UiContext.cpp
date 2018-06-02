@@ -31,6 +31,7 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/platform/Platform2.h>
+#include <openrct2/title/TitleSequencePlayer.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/Version.h>
@@ -48,6 +49,7 @@
 #include <openrct2-ui/interface/Window.h>
 
 #include "interface/InGameConsole.h"
+#include "title/TitleSequencePlayer.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -92,6 +94,7 @@ private:
     float               _gestureRadius          = 0;
 
     InGameConsole       _inGameConsole;
+    std::unique_ptr<ITitleSequencePlayer> _titleSequencePlayer;
 
 public:
     InGameConsole& GetInGameConsole() { return _inGameConsole; }
@@ -586,6 +589,17 @@ public:
         return (SDL_SetClipboardText(target) == 0);
     }
 
+    ITitleSequencePlayer * GetTitleSequencePlayer() override
+    {
+        if (_titleSequencePlayer == nullptr)
+        {
+            auto context = GetContext();
+            auto scenarioRepository = context->GetScenarioRepository();
+            auto gameState = context->GetGameState();
+            _titleSequencePlayer = CreateTitleSequencePlayer(*scenarioRepository, *gameState);
+        }
+        return _titleSequencePlayer.get();
+    }
 
 private:
     void CreateWindow(sint32 x, sint32 y)

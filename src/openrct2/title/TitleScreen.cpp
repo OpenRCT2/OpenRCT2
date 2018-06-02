@@ -35,10 +35,12 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../ui/UiContext.h"
 
 using namespace OpenRCT2;
 
 // TODO Remove when no longer required.
+bool gPreviewingTitleSequenceInGame;
 static TitleScreen * _singleton = nullptr;
 
 TitleScreen::TitleScreen(GameState& gameState)
@@ -49,7 +51,6 @@ TitleScreen::TitleScreen(GameState& gameState)
 
 TitleScreen::~TitleScreen()
 {
-    delete _sequencePlayer;
     _singleton = nullptr;
 }
 
@@ -227,8 +228,7 @@ void TitleScreen::TitleInitialise()
 {
     if (_sequencePlayer == nullptr)
     {
-        auto scenarioRepository = GetScenarioRepository();
-        _sequencePlayer = CreateTitleSequencePlayer(*scenarioRepository, _gameState);
+        _sequencePlayer = GetContext()->GetUiContext()->GetTitleSequencePlayer();
     }
     size_t seqId = title_get_config_sequence();
     if (seqId == SIZE_MAX)

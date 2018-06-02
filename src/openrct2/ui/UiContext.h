@@ -24,6 +24,7 @@
 #include "../interface/Cursors.h"
 
 struct rct_drawpixelinfo;
+interface ITitleSequencePlayer;
 
 namespace OpenRCT2
 {
@@ -142,6 +143,9 @@ namespace OpenRCT2
 
             // Clipboard
             virtual bool              SetClipboardText(const utf8* target) abstract;
+
+            // HACK Until all title logic is moved to libopenrct2ui, we will need to provide some services
+            virtual ITitleSequencePlayer * GetTitleSequencePlayer() abstract;
         };
 
         std::shared_ptr<IUiContext> CreateDummyUiContext();
