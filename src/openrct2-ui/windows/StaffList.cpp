@@ -124,7 +124,7 @@ static rct_widget window_staff_list_widgets[] = {
     { WWT_TAB,              1,  34,         64,         17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_MECHANICS_TAB_TIP },      // mechanics tab
     { WWT_TAB,              1,  65,         95,         17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_SECURITY_TAB_TIP },       // security guards tab
     { WWT_TAB,              1,  96,         126,        17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_ENTERTAINERS_TAB_TIP },   // entertainers tab
-    { WWT_SCROLL,           1,  3,          316,        72,     266,    SCROLL_BOTH,            STR_NONE },                         // staff list
+    { WWT_SCROLL,           1,  3,          316,        72,     266,    SCROLL_VERTICAL,        STR_NONE },                         // staff list
     { WWT_COLOURBTN,        1,  130,        141,        58,     69,     STR_NONE,               STR_UNIFORM_COLOUR_TIP },           // uniform colour picker
     { WWT_BUTTON,           0,  WW - 155,   WW - 11,    17,     29,     STR_NONE,               STR_HIRE_STAFF_TIP },               // hire button
     { WWT_FLATBTN,          1,  WW - 77,    WW - 54,    46,     69,     SPR_DEMOLISH,           STR_QUICK_FIRE_STAFF },             // quick fire staff
@@ -435,7 +435,7 @@ void window_staff_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *
         window_invalidate(w);
     }
 
-    *width = 420;
+    *width = w->widgets[WIDX_STAFF_LIST_LIST].right - w->widgets[WIDX_STAFF_LIST_LIST].left - 15;
 }
 
 /**
@@ -658,44 +658,57 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
 
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
+    // How much space do we have for the name and action columns? (Discount scroll area and icons.)
+    sint32 nonIconSpace = w->widgets[WIDX_STAFF_LIST_LIST].right - w->widgets[WIDX_STAFF_LIST_LIST].left - 15 - 68;
+    sint32 columnSize = nonIconSpace / 2;
+    sint32 actionOffset = w->widgets[WIDX_STAFF_LIST_LIST].right - columnSize - 15;
+
     y = 0;
     i = 0;
     selectedTab = _windowStaffListSelectedTab;
-    FOR_ALL_STAFF(spriteIndex, peep) {
-        if (peep->staff_type == selectedTab) {
-            if (y > dpi->y + dpi->height) {
+    FOR_ALL_STAFF(spriteIndex, peep)
+    {
+        if (peep->staff_type == selectedTab)
+        {
+            if (y > dpi->y + dpi->height)
+            {
                 break;
             }
 
-            if (y + 11 >= dpi->y) {
+            if (y + 11 >= dpi->y)
+            {
                 sint32 format = (_quick_fire_mode ? STR_RED_STRINGID : STR_BLACK_STRING);
 
-                if (i == _windowStaffListHighlightedIndex) {
+                if (i == _windowStaffListHighlightedIndex)
+                {
                     gfx_filter_rect(dpi, 0, y, 800, y + (SCROLLABLE_ROW_HEIGHT - 1), PALETTE_DARKEN_1);
                     format = (_quick_fire_mode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
                 }
 
                 set_format_arg(0, rct_string_id, peep->name_string_idx);
                 set_format_arg(2, uint32, peep->id);
-                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y, 107);
+                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y, columnSize);
 
                 get_arguments_from_action(peep, &argument_1, &argument_2);
                 set_format_arg(0, uint32, argument_1);
                 set_format_arg(4, uint32, argument_2);
-                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 175, y, 305);
+                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, actionOffset, y, columnSize);
 
                 // True if a patrol path is set for the worker
                 if (gStaffModes[peep->staff_id] & 2) {
-                    gfx_draw_sprite(dpi, SPR_STAFF_PATROL_PATH, 110, y, 0);
+                    gfx_draw_sprite(dpi, SPR_STAFF_PATROL_PATH, columnSize + 5, y, 0);
                 }
 
-                staffOrderIcon_x = 0x7D;
-                if (peep->staff_type != 3) {
+                staffOrderIcon_x = columnSize + 20;
+                if (peep->staff_type != 3)
+                {
                     staffOrders = peep->staff_orders;
                     staffOrderSprite = staffOrderBaseSprites[selectedTab];
 
-                    while (staffOrders != 0) {
-                        if (staffOrders & 1) {
+                    while (staffOrders != 0)
+                    {
+                        if (staffOrders & 1)
+                        {
                             gfx_draw_sprite(dpi, staffOrderSprite, staffOrderIcon_x, y, 0);
                         }
                         staffOrders = staffOrders >> 1;
@@ -703,7 +716,9 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
                         // TODO: Remove sprite ID addition
                         staffOrderSprite++;
                     }
-                } else {
+                }
+                else
+                {
                     gfx_draw_sprite(dpi, staffCostumeSprites[peep->sprite_type - 4], staffOrderIcon_x, y, 0);
                 }
             }
