@@ -18,6 +18,8 @@
 
 #include "../common.h"
 
+struct Ride;
+
 enum
 {
     SHOP_ITEM_BALLOON,
