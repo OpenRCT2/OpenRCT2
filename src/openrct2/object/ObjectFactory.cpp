@@ -129,23 +129,23 @@ public:
         return {};
     }
 
-    void LogWarning([[maybe_unused]] uint32 code, const utf8* text) override
+    void LogWarning(uint32 code, const utf8* text) override
     {
         _wasWarning = true;
 
         if (!String::IsNullOrEmpty(text))
         {
-            Console::Error::WriteLine("[%s] Warning: %s", _objectName.c_str(), text);
+            Console::Error::WriteLine("[%s] Warning (%d): %s", _objectName.c_str(), code, text);
         }
     }
 
-    void LogError([[maybe_unused]] uint32 code, const utf8* text) override
+    void LogError(uint32 code, const utf8* text) override
     {
         _wasError = true;
 
         if (!String::IsNullOrEmpty(text))
         {
-            Console::Error::WriteLine("[%s] Error: %s", _objectName.c_str(), text);
+            Console::Error::WriteLine("[%s] Error (%d): %s", _objectName.c_str(), code, text);
         }
     }
 };
