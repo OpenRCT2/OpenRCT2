@@ -601,7 +601,6 @@ static void window_ride_customer_update(rct_window *w);
 static void window_ride_customer_invalidate(rct_window *w);
 static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_ride_set_colours();
 static void window_ride_set_page(rct_window *w, sint32 page);
 
 // 0x0098DFD4

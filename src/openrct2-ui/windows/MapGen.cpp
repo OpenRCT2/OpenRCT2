@@ -501,7 +501,6 @@ static constexpr const sint32 TabAnimationLoops[WINDOW_MAPGEN_PAGE_COUNT] = {
 
 static void window_mapgen_set_page(rct_window *w, sint32 page);
 static void window_mapgen_set_pressed_tab(rct_window *w);
-static void window_mapgen_anchor_border_widgets(rct_window *w);
 static void window_mapgen_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 
 static sint32 _mapSize = 150;

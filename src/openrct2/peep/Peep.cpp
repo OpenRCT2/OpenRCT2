@@ -86,11 +86,6 @@ static rct_tile_element * _peepRideEntranceExitElement;
 static void * _crowdSoundChannel = nullptr;
 
 static void   peep_128_tick_update(rct_peep * peep, sint32 index);
-static bool   peep_should_find_bench(rct_peep * peep);
-static void   peep_update_ride_nausea_growth(rct_peep * peep, Ride * ride);
-static void   peep_ride_is_too_intense(rct_peep * peep, sint32 rideIndex, bool peepAtRide);
-static void   peep_tried_to_enter_full_queue(rct_peep * peep, sint32 rideIndex);
-static bool   peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideToView, uint8 * rideSeatToView);
 static void   peep_easter_egg_peep_interactions(rct_peep * peep);
 static void   peep_give_real_name(rct_peep * peep);
 static void   peep_release_balloon(rct_peep * peep, sint16 spawn_height);

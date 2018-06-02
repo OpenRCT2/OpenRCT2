@@ -194,7 +194,6 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi);
 static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi);
 static void window_map_inputsize_land(rct_window *w);
 static void window_map_inputsize_map(rct_window *w);
-static void window_map_set_bounds(rct_window* w);
 
 static void window_map_set_land_rights_tool_update(sint32 x, sint32 y);
 static void window_map_place_park_entrance_tool_update(sint32 x, sint32 y);

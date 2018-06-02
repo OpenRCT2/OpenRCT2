@@ -75,8 +75,6 @@ struct ObjectEntryEqual
 
 using ObjectEntryMap = std::unordered_map<rct_object_entry, size_t, ObjectEntryHash, ObjectEntryEqual>;
 
-static void ReportMissingObject(const rct_object_entry * entry);
-
 class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
