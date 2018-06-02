@@ -51,6 +51,7 @@
 - Improved: [#7567] Improve the performance of loading parks and the title sequence.
 - Improved: [#7577] Allow fine-tuning the virtual floor style.
 - Improved: [#7608] The vehicle selection dropdown is now sorted orthographically.
+- Improved: [#7613] Resizing the staff window now resizes the name and action columns too.
 
 0.1.2 (2018-03-18)
 ------------------------------------------------------------------------
