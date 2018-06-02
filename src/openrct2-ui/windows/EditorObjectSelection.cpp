@@ -1068,26 +1068,27 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
         gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y + 5, width, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_BLACK);
     }
 
-    // Draw object source
-    stringId = object_manager_get_source_game_string(highlightedEntry);
-    gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
+    y = w->y + w->height - (12 * 4);
 
-    //
-    if (get_selected_object_type(w) == OBJECT_TYPE_RIDE) {
-        y = w->y + w->height - 3 - 12 - 14 - 14;
+    // Draw ride type.
+    if (get_selected_object_type(w) == OBJECT_TYPE_RIDE)
+    {
         stringId = get_ride_type_string_id(listItem->repositoryItem);
         gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, w->x + w->width - 5, y);
-        y -= 11;
     }
 
-    //stringId = highlightedEntry->checksum
-    // gfx_draw_string_right(dpi, stringId, nullptr, 2, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
+    y += 12;
+
+    // Draw object source
+    stringId = object_manager_get_source_game_string(highlightedEntry);
+    gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, w->x + w->width - 5, y);
+    y += 12;
 
     // Draw object dat name
     const char *path = path_get_filename(listItem->repositoryItem->Path.c_str());
     set_format_arg(0, rct_string_id, STR_STRING);
     set_format_arg(2, const char *, path);
-    gfx_draw_string_right(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, w->x + w->width - 5, w->y + w->height - 3 - 12);
+    gfx_draw_string_right(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, w->x + w->width - 5, y);
 }
 
 /**
