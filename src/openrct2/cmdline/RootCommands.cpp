@@ -91,8 +91,10 @@ static constexpr const CommandLineOptionDefinition StandardOptions[]
 static exitcode_t HandleNoCommand(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandEdit(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandIntro(CommandLineArgEnumerator * enumerator);
+#ifndef DISABLE_NETWORK
 static exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator);
+#endif
 static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator);
 

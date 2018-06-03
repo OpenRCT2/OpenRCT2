@@ -611,18 +611,6 @@ static void join_server(std::string address)
     }
 }
 
-static uint32 get_total_player_count()
-{
-    return std::accumulate(
-        _serverEntries.begin(),
-        _serverEntries.end(),
-        0,
-        [](uint32 acc, const server_entry &entry)
-        {
-            return acc + entry.players;
-        });
-}
-
 static void fetch_servers()
 {
 #ifndef DISABLE_HTTP
@@ -656,6 +644,18 @@ static void fetch_servers()
 }
 
 #ifndef DISABLE_HTTP
+static uint32 get_total_player_count()
+{
+    return std::accumulate(
+        _serverEntries.begin(),
+        _serverEntries.end(),
+        0,
+        [](uint32 acc, const server_entry &entry)
+        {
+            return acc + entry.players;
+        });
+}
+
 static void fetch_servers_callback(http_response_t* response)
 {
     if (response == nullptr) {
