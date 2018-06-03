@@ -146,7 +146,7 @@ if (HAVE_DISCORD_RPC)
 endif()
 
 # Includes
-target_include_directories(${PROJECT} SYSTEM PRIVATE ${LIBZIP_INCLUDE_DIRS})
+target_include_directories(${PROJECT} PRIVATE ${LIBZIP_INCLUDE_DIRS})
 target_include_directories(${PROJECT} PUBLIC ${JANSSON_INCLUDE_DIRS})
 target_include_directories(${PROJECT} PRIVATE ${PNG_INCLUDE_DIRS}
                                               ${ZLIB_INCLUDE_DIRS})
