@@ -157,8 +157,8 @@ static std::vector<rct_widget> _window_editor_object_selection_widgets = {
     { WWT_TAB,              1,  127,    157,    47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_THRILL_RIDES_TIP },
     { WWT_TAB,              1,  158,    188,    47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_WATER_RIDES_TIP },
     { WWT_TAB,              1,  189,    219,    47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_SHOPS_STALLS_TIP },
-    { WWT_TABLE_HEADER,     1,  4,      204,    80,     93,     STR_NONE,                       STR_NONE },
-    { WWT_TABLE_HEADER,     1,  205,    291,    80,     93,     STR_NONE,                       STR_NONE },
+    { WWT_TABLE_HEADER,     1,  4,      148,    80,     93,     STR_NONE,                       STR_NONE },
+    { WWT_TABLE_HEADER,     1,  149,    291,    80,     93,     STR_NONE,                       STR_NONE },
 
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
     // Copied object type times...
@@ -883,33 +883,48 @@ static void window_editor_object_selection_invalidate(rct_window *w)
     w->widgets[WIDX_FILTER_CLEAR_BUTTON].top = (ridePage ? 80 : 46);
     w->widgets[WIDX_FILTER_CLEAR_BUTTON].bottom = (ridePage ? 91 : 57);
 
-    if (ridePage) {
+    if (ridePage)
+    {
         w->enabled_widgets |= (1 << WIDX_FILTER_RIDE_TAB_ALL) | (1 << WIDX_FILTER_RIDE_TAB_TRANSPORT) |
             (1 << WIDX_FILTER_RIDE_TAB_GENTLE) | (1 << WIDX_FILTER_RIDE_TAB_COASTER) | (1 << WIDX_FILTER_RIDE_TAB_THRILL) |
             (1 << WIDX_FILTER_RIDE_TAB_WATER) | (1 << WIDX_FILTER_RIDE_TAB_STALL);
+
         for (sint32 i = 0; i < 7; i++)
             w->pressed_widgets &= ~(1 << (WIDX_FILTER_RIDE_TAB_ALL + i));
+
         if ((_filter_flags & FILTER_RIDES) == FILTER_RIDES)
             w->pressed_widgets |= (1 << WIDX_FILTER_RIDE_TAB_ALL);
-        else {
-            for (sint32 i = 0; i < 6; i++) {
+        else
+        {
+            for (sint32 i = 0; i < 6; i++)
+            {
                 if (_filter_flags & (1 << (_numSourceGameItems + i)))
                     w->pressed_widgets |= (uint64)(1ULL << (WIDX_FILTER_RIDE_TAB_TRANSPORT + i));
             }
         }
+
         w->widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WWT_IMGBTN;
         for (sint32 i = WIDX_FILTER_RIDE_TAB_ALL; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
             w->widgets[i].type = WWT_TAB;
 
+        sint32 width_limit = (w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left - 15) / 2;
+
         w->widgets[WIDX_LIST_SORT_TYPE].type = WWT_TABLE_HEADER;
         w->widgets[WIDX_LIST_SORT_TYPE].top = w->widgets[WIDX_FILTER_STRING_BUTTON].bottom + 3;
         w->widgets[WIDX_LIST_SORT_TYPE].bottom = w->widgets[WIDX_LIST_SORT_TYPE].top + 13;
+        w->widgets[WIDX_LIST_SORT_TYPE].left = 4;
+        w->widgets[WIDX_LIST_SORT_TYPE].right = w->widgets[WIDX_LIST_SORT_TYPE].left + width_limit;
+
         w->widgets[WIDX_LIST_SORT_RIDE].type = WWT_TABLE_HEADER;
         w->widgets[WIDX_LIST_SORT_RIDE].top = w->widgets[WIDX_LIST_SORT_TYPE].top;
         w->widgets[WIDX_LIST_SORT_RIDE].bottom = w->widgets[WIDX_LIST_SORT_TYPE].bottom;
+        w->widgets[WIDX_LIST_SORT_RIDE].left = w->widgets[WIDX_LIST_SORT_TYPE].right + 1;
         w->widgets[WIDX_LIST_SORT_RIDE].right = w->widgets[WIDX_LIST].right;
+
         w->widgets[WIDX_LIST].top = w->widgets[WIDX_LIST_SORT_TYPE].bottom + 2;
-    } else {
+    }
+    else
+    {
         w->enabled_widgets &= ~((1 << WIDX_FILTER_RIDE_TAB_ALL) | (1 << WIDX_FILTER_RIDE_TAB_TRANSPORT) |
             (1 << WIDX_FILTER_RIDE_TAB_GENTLE) | (1 << WIDX_FILTER_RIDE_TAB_COASTER) | (1 << WIDX_FILTER_RIDE_TAB_THRILL) |
             (1 << WIDX_FILTER_RIDE_TAB_WATER) | (1 << WIDX_FILTER_RIDE_TAB_STALL));
@@ -1053,26 +1068,27 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
         gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y + 5, width, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_BLACK);
     }
 
-    // Draw object source
-    stringId = object_manager_get_source_game_string(highlightedEntry);
-    gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
+    y = w->y + w->height - (12 * 4);
 
-    //
-    if (get_selected_object_type(w) == OBJECT_TYPE_RIDE) {
-        y = w->y + w->height - 3 - 12 - 14 - 14;
+    // Draw ride type.
+    if (get_selected_object_type(w) == OBJECT_TYPE_RIDE)
+    {
         stringId = get_ride_type_string_id(listItem->repositoryItem);
         gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, w->x + w->width - 5, y);
-        y -= 11;
     }
 
-    //stringId = highlightedEntry->checksum
-    // gfx_draw_string_right(dpi, stringId, nullptr, 2, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
+    y += 12;
+
+    // Draw object source
+    stringId = object_manager_get_source_game_string(highlightedEntry);
+    gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, w->x + w->width - 5, y);
+    y += 12;
 
     // Draw object dat name
     const char *path = path_get_filename(listItem->repositoryItem->Path.c_str());
     set_format_arg(0, rct_string_id, STR_STRING);
     set_format_arg(2, const char *, path);
-    gfx_draw_string_right(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, w->x + w->width - 5, w->y + w->height - 3 - 12);
+    gfx_draw_string_right(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, w->x + w->width - 5, y);
 }
 
 /**
@@ -1127,11 +1143,13 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
                 gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
             }
 
+            sint32 width_limit = (w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left - x) / 2;
+
             if (ridePage) {
                 // Draw ride type
                 rct_string_id rideTypeStringId = get_ride_type_string_id(listItem.repositoryItem);
                 safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
-                gfx_draw_string(dpi, bufferWithColour, colour, x, y);
+                gfx_draw_string_left_clipped(dpi, STR_STRING, &bufferWithColour, colour, x, y, width_limit - 15);
                 x = w->widgets[WIDX_LIST_SORT_RIDE].left - w->widgets[WIDX_LIST].left;
             }
 
@@ -1143,7 +1161,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 
                 *buffer = 0;
             }
-            gfx_draw_string(dpi, bufferWithColour, colour, x, y);
+            gfx_draw_string_left_clipped(dpi, STR_STRING, &bufferWithColour, colour, x, y, width_limit);
         }
         y += 12;
     }
