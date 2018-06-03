@@ -247,41 +247,81 @@ static void window_viewport_wheel_input(rct_window *w, sint32 wheel)
         window_zoom_out(w, true);
 }
 
-static bool window_other_wheel_input(rct_window *w, rct_widgetindex widgetIndex, sint32 wheel)
+static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex, sint32 wheel)
 {
     // HACK: Until we have a new window system that allows us to add new events like mouse wheel easily,
     //       this selective approach will have to do.
 
     // Allow mouse wheel scrolling to increment or decrement the land tool size for various windows
-    sint32 previewWidgetIndex;
-    switch (w->classification) {
-    case WC_WATER:
-        previewWidgetIndex = WC_WATER__WIDX_PREVIEW;
-        break;
-    case WC_CLEAR_SCENERY:
-        previewWidgetIndex = WC_CLEAR_SCENERY__WIDX_PREVIEW;
-        break;
-    case WC_LAND_RIGHTS:
-        previewWidgetIndex = WC_LAND_RIGHTS__WIDX_PREVIEW;
-        break;
-    case WC_LAND:
-        previewWidgetIndex = WC_LAND__WIDX_PREVIEW;
-        break;
-    case WC_MAP:
-        previewWidgetIndex = WC_MAP__WIDX_LAND_TOOL;
-        break;
-    default:
+    auto widgetType = w->widgets[widgetIndex].type;
+
+    // Lower widgetIndex once or twice we got a type that matches, to allow scrolling on the increase/decrease buttons too
+    sint32 attempts = 0;
+    while (widgetType != WWT_IMGBTN && widgetType != WWT_STEPPER && widgetIndex > 0)
+    {
+        switch (widgetType)
+        {
+            case WWT_TRNBTN: // + and - for preview widget
+            case WWT_BUTTON: // + and - for stepper widget
+            {
+                if (attempts > 0)
+                {
+                    // Verify that the previous button was of the same type
+                    auto previousType = w->widgets[widgetIndex + 1].type;
+                    if (previousType != widgetType)
+                    {
+                        return false;
+                    }
+                }
+                break;
+            }
+            default:
+                // The widget type is not an increment or decrement button
+                return false;
+        }
+
+        attempts++;
+        if (attempts > 2)
+        {
+            // We're 2 buttons up, and no preview or stepper widget was found
+            return false;
+        }
+
+        widgetIndex--;
+        widgetType = w->widgets[widgetIndex].type;
+    }
+
+    rct_widgetindex buttonWidgetIndex;
+    if (widgetType == WWT_IMGBTN)
+    {
+        buttonWidgetIndex = wheel < 0 ? widgetIndex + 2 : widgetIndex + 1;
+
+        // For previews, the - and + buttons are expected to be of type WWT_TRNBTN
+        auto buttonType = w->widgets[buttonWidgetIndex].type;
+        if (buttonType != WWT_TRNBTN)
+        {
+            return false;
+        }
+    }
+    else
+    {
+        buttonWidgetIndex = wheel < 0 ? widgetIndex + 1 : widgetIndex + 2;
+
+        // For steppers, the - and + buttons are expected to be of type WWT_BUTTON
+        auto buttonType = w->widgets[buttonWidgetIndex].type;
+        if (buttonType != WWT_BUTTON)
+        {
+            return false;
+        }
+    }
+
+    if (widget_is_disabled(w, buttonWidgetIndex))
+    {
         return false;
     }
 
-    // Preview / Increment / Decrement
-    if (widgetIndex >= previewWidgetIndex && widgetIndex < previewWidgetIndex + 3) {
-        rct_widgetindex buttonWidgetIndex = wheel < 0 ? previewWidgetIndex + 2 : previewWidgetIndex + 1;
-        window_event_mouse_down_call(w, buttonWidgetIndex);
-        return true;
-    }
-
-    return false;
+    window_event_mouse_down_call(w, buttonWidgetIndex);
+    return true;
 }
 
 /**
