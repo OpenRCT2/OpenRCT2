@@ -155,7 +155,7 @@ static http_response_t *http_request(const HttpRequest2 &request)
     CURL *curl;
     CURLcode curlResult;
     http_response_t *response;
-    read_buffer readBuffer = { nullptr };
+    read_buffer readBuffer = {};
     write_buffer writeBuffer;
 
     curl = curl_easy_init();

@@ -78,7 +78,7 @@ namespace Twitch
 
         static AudienceMember FromJson(json_t * json)
         {
-            AudienceMember member = { nullptr };
+            AudienceMember member = {};
 
             if (!json_is_object(json)) return member;
             json_t * name = json_object_get(json, "name");

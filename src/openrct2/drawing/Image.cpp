@@ -238,7 +238,7 @@ void gfx_object_free_images(uint32 baseImageId, uint32 count)
         for (uint32 i = 0; i < count; i++)
         {
             uint32 imageId = baseImageId + i;
-            rct_g1_element g1 = { nullptr };
+            rct_g1_element g1 = {};
             gfx_set_g1_element(imageId, &g1);
             drawing_engine_invalidate_image(imageId);
         }

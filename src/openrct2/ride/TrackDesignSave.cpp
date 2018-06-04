@@ -1186,7 +1186,7 @@ bool track_design_save_to_file(const utf8 *path)
     window_close_construction_windows();
 
     // Create TD6 data buffer
-    auto_buffer td6Buffer = { 0 };
+    auto_buffer td6Buffer = {};
     auto_buffer_write(&td6Buffer, td6, 0xA3);
     if (td6->type == RIDE_TYPE_MAZE) {
         auto_buffer_write(&td6Buffer, td6->maze_elements, track_design_get_maze_elements_count(td6) * sizeof(rct_td6_maze_element));

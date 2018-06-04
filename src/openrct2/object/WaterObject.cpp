@@ -117,7 +117,7 @@ void WaterObject::ReadJsonPalette(const json_t * jPalette)
         dataIndex += 3;
     }
 
-    rct_g1_element g1 = { 0 };
+    rct_g1_element g1 = {};
     g1.offset = data.get();
     g1.width = (sint16)numColours;
     g1.x_offset = (sint16)paletteStartIndex;

@@ -442,7 +442,7 @@ private:
     {
         std::string serviceName = std::to_string(port);
 
-        addrinfo hints = { 0 };
+        addrinfo hints = {};
         hints.ai_family = AF_UNSPEC;
         if (address == nullptr)
         {

@@ -23,7 +23,7 @@
 class WaterObject final : public Object
 {
 private:
-    rct_water_type _legacyType = { 0 };
+    rct_water_type _legacyType = {};
 
 public:
     explicit WaterObject(const rct_object_entry &entry) : Object(entry) { }

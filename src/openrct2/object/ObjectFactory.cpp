@@ -357,7 +357,7 @@ namespace ObjectFactory
             {
                 auto id = json_string_value(json_object_get(jRoot, "id"));
 
-                rct_object_entry entry = { 0 };
+                rct_object_entry entry = {};
                 auto originalId = String::ToStd(json_string_value(json_object_get(jRoot, "originalId")));
                 auto originalName = originalId;
                 if (originalId.length() == 8 + 1 + 8 + 1 + 8)

@@ -454,7 +454,7 @@ void S6Exporter::ExportRides()
     {
         auto src = get_ride(index);
         auto dst = &_s6.rides[index];
-        *dst = { 0 };
+        *dst = {};
         if (src->type == RIDE_TYPE_NULL)
         {
             dst->type = RIDE_TYPE_NULL;

@@ -874,7 +874,7 @@ void footpath_get_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 *x
     sint32 z = 0, interactionType;
     rct_tile_element *myTileElement;
     rct_viewport *viewport;
-    LocationXY16 position = { 0 };
+    LocationXY16 position = {};
 
     get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH, &position.x, &position.y, &interactionType, &myTileElement, &viewport);
     if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL))) {
@@ -948,7 +948,7 @@ void footpath_bridge_get_info_from_pos(sint32 screenX, sint32 screenY, sint32 *x
     sint32 interactionType;
     rct_viewport *viewport;
 
-    LocationXY16 map_pos = { 0 };
+    LocationXY16 map_pos = {};
     get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_RIDE, &map_pos.x, &map_pos.y, &interactionType, tileElement, &viewport);
     *x = map_pos.x;
     *y = map_pos.y;

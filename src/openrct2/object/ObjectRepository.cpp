@@ -117,7 +117,7 @@ public:
         }
         if (object != nullptr)
         {
-            ObjectRepositoryItem item = { 0 };
+            ObjectRepositoryItem item = {};
             item.ObjectEntry = *object->GetObjectEntry();
             item.Path = path;
             item.Name = object->GetName();
@@ -248,7 +248,7 @@ public:
 
     const ObjectRepositoryItem * FindObject(const utf8 * name) const override
     {
-        rct_object_entry entry = { 0 };
+        rct_object_entry entry = {};
         utf8 entryName[9] = { ' ' };
         String::Set(entryName, sizeof(entryName), name);
         std::copy_n(entryName, 8, entry.name);

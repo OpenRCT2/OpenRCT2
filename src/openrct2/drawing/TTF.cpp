@@ -47,12 +47,12 @@ struct ttf_getwidth_cache_entry
     uint32      lastUseTick;
 };
 
-static ttf_cache_entry _ttfSurfaceCache[TTF_SURFACE_CACHE_SIZE] = { nullptr };
+static ttf_cache_entry _ttfSurfaceCache[TTF_SURFACE_CACHE_SIZE] = {};
 static sint32 _ttfSurfaceCacheCount = 0;
 static sint32 _ttfSurfaceCacheHitCount = 0;
 static sint32 _ttfSurfaceCacheMissCount = 0;
 
-static ttf_getwidth_cache_entry _ttfGetWidthCache[TTF_GETWIDTH_CACHE_SIZE] = { 0 };
+static ttf_getwidth_cache_entry _ttfGetWidthCache[TTF_GETWIDTH_CACHE_SIZE] = {};
 static sint32 _ttfGetWidthCacheCount = 0;
 static sint32 _ttfGetWidthCacheHitCount = 0;
 static sint32 _ttfGetWidthCacheMissCount = 0;

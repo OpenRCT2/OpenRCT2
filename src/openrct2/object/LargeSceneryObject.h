@@ -25,7 +25,7 @@
 class LargeSceneryObject final : public SceneryObject
 {
 private:
-    rct_scenery_entry                       _legacyType = { 0 };
+    rct_scenery_entry                       _legacyType = {};
     uint32                                  _baseImageId = 0;
     std::vector<rct_large_scenery_tile>     _tiles;
     std::unique_ptr<rct_large_scenery_text> _3dFont;

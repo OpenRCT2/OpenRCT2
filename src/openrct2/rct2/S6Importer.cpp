@@ -180,7 +180,7 @@ public:
 
     bool GetDetails(scenario_index_entry * dst) override
     {
-        *dst = { 0 };
+        *dst = {};
         return false;
     }
 
@@ -474,7 +474,7 @@ public:
         {
             auto src = &_s6.rides[index];
             auto dst = get_ride(index);
-            *dst = { 0 };
+            *dst = {};
             if (src->type == RIDE_TYPE_NULL)
             {
                 dst->type = RIDE_TYPE_NULL;

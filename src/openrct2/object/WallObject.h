@@ -23,7 +23,7 @@
 class WallObject final : public SceneryObject
 {
 private:
-    rct_scenery_entry   _legacyType = { 0 };
+    rct_scenery_entry   _legacyType = {};
 
 public:
     explicit WallObject(const rct_object_entry &entry) : SceneryObject(entry) { }
