@@ -82,9 +82,9 @@ struct rct_ride_entry_vehicle {
     uint8 draw_order;
     uint8 num_vertical_frames_override; // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine it. Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
     uint8 peep_loading_waypoint_segments; // 0x61 new
-    uint8 pad_62[6];                // 0x62 , 0x7B
-    std::vector<std::array<sLocationXY8, 3> > peep_loading_waypoints;
-    std::vector<sint8> peep_loading_positions; // previously 0x61 , 0x7B
+    uint8 pad_62[6] = {};          // 0x62 , 0x7B
+    std::vector<std::array<sLocationXY8, 3>> peep_loading_waypoints = {};
+    std::vector<sint8> peep_loading_positions = {}; // previously 0x61 , 0x7B
 };
 #ifdef __TESTPAINT__
 #pragma pack(pop)

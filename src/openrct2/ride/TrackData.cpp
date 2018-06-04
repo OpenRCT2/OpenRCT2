@@ -27900,7 +27900,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9571BC, {
     {     16,  -63,    0, 24,  0,  0 }, {     16,  -64,    0, 24,  0,  0 },
 })
 
-CREATE_VEHICLE_INFO(TrackVehicleInfo_000000, { 0 })
+CREATE_VEHICLE_INFO(TrackVehicleInfo_000000, { { 0, 0, 0, 0, 0, 0 } })
 
 static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8B8F98[] = {
     &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C,

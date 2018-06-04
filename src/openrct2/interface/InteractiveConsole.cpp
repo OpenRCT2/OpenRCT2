@@ -769,6 +769,8 @@ static sint32
     console.WriteLineError("OpenRCT2 build not compiled with Twitch integration.");
 #else
     // TODO: Add some twitch commands
+    // Display a message to the player for now
+    console.WriteLine("To be implemented");
 #endif
     return 0;
 }
@@ -1097,7 +1099,7 @@ static constexpr const console_command console_command_table[] = {
                                     "This is a safer method opposed to \"open object_selection\".",
                                     "load_object <objectfilenodat>" },
     { "object_count", cc_object_count, "Shows the number of objects of each type in the scenario.", "object_count" },
-    { "twitch", cc_twitch, "Twitch API" },
+    { "twitch", cc_twitch, "Twitch API", "twitch" },
     { "reset_user_strings", cc_reset_user_strings, "Resets all user-defined strings, to fix incorrectly occurring 'Chosen name in use already' errors.", "reset_user_strings" },
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
     { "staff", cc_staff, "Staff management.", "staff <subcommand>"},
