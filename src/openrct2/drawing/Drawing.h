@@ -321,7 +321,8 @@ void draw_string_left_underline(rct_drawpixelinfo *dpi, rct_string_id format, vo
 void draw_string_centred_underline(rct_drawpixelinfo *dpi, rct_string_id format, void *args, uint8 colour, sint32 x, sint32 y);
 void draw_string_right_underline(rct_drawpixelinfo *dpi, rct_string_id format, void *args, uint8 colour, sint32 x, sint32 y);
 
-void gfx_draw_string_left_clipped(rct_drawpixelinfo *dpi, rct_string_id format, void *args, uint8 colour, sint32 x, sint32 y, sint32 width);
+void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8 colour, sint32 x, sint32 y, sint32 width);
+void gfx_draw_string_left_clipped_no_font_reset(rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8 colour, sint32 x, sint32 y, sint32 width);
 void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, rct_string_id format, void *args, uint8 colour, sint32 x, sint32 y, sint32 width);
 void gfx_draw_string_right_clipped(rct_drawpixelinfo *dpi, rct_string_id format, void *args, uint8 colour, sint32 x, sint32 y, sint32 width);
 

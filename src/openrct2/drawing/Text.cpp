@@ -128,15 +128,45 @@ static void DrawTextCompat(rct_drawpixelinfo * dpi, sint32 x, sint32 y, rct_stri
     DrawText(dpi, x, y, &_legacyPaint, format, args);
 }
 
-static void DrawTextEllipsisedCompat(rct_drawpixelinfo * dpi, sint32 x, sint32 y, sint32 width, rct_string_id format, void * args,
-                                     uint8 colour,
-                                     TextAlignment alignment, bool underline = false)
+static void DrawTextEllipsisedCompat(
+    rct_drawpixelinfo* dpi,
+    sint32 x,
+    sint32 y,
+    sint32 width,
+    rct_string_id format,
+    void* args,
+    uint8 colour,
+    TextAlignment alignment,
+    bool underline = false)
 {
     _legacyPaint.UnderlineText = underline;
     _legacyPaint.Colour = colour;
     _legacyPaint.Alignment = alignment;
     _legacyPaint.SpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+
+    utf8 buffer[256];
+    format_string(buffer, sizeof(buffer), format, args);
+    gfx_clip_string(buffer, width);
+
+    DrawText(dpi, x, y, &_legacyPaint, buffer);
+}
+
+static void DrawTextEllipsisedCompatNoFontReset(
+    rct_drawpixelinfo* dpi,
+    sint32 x,
+    sint32 y,
+    sint32 width,
+    rct_string_id format,
+    void* args,
+    uint8 colour,
+    TextAlignment alignment,
+    bool underline = false)
+{
+    _legacyPaint.UnderlineText = underline;
+    _legacyPaint.Colour = colour;
+    _legacyPaint.Alignment = alignment;
+    _legacyPaint.SpriteBase = gCurrentFontSpriteBase;
 
     utf8 buffer[256];
     format_string(buffer, sizeof(buffer), format, args);
@@ -190,6 +220,12 @@ void draw_string_right_underline(rct_drawpixelinfo * dpi, rct_string_id format, 
 void gfx_draw_string_left_clipped(rct_drawpixelinfo * dpi, rct_string_id format, void * args, uint8 colour, sint32 x, sint32 y, sint32 width)
 {
     DrawTextEllipsisedCompat(dpi, x, y, width, format, args, colour, TextAlignment::LEFT);
+}
+
+void gfx_draw_string_left_clipped_no_font_reset(
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8 colour, sint32 x, sint32 y, sint32 width)
+{
+    DrawTextEllipsisedCompatNoFontReset(dpi, x, y, width, format, args, colour, TextAlignment::LEFT);
 }
 
 void gfx_draw_string_centred_clipped(rct_drawpixelinfo * dpi, rct_string_id format, void * args, uint8 colour, sint32 x, sint32 y, sint32 width)
