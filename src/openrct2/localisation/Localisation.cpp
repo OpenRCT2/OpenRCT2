@@ -1336,7 +1336,7 @@ money32 string_to_money(const char* string_to_monetise)
     return result;
 }
 
-void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffer_len)
+void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffer_len, bool forceDecimals)
 {
     if (amount == MONEY32_UNDEFINED) {
         snprintf(buffer_to_put_value_to, buffer_len, "0");
@@ -1344,18 +1344,28 @@ void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffe
     }
     int sign = amount >= 0 ? 1 : -1;
     int a = abs(amount);
-    if (a / 10 > 0 && a % 10 > 0) { // If whole and decimal exist
+
+    bool amountIsInteger = (a / 10 > 0) && (a % 10 == 0);
+
+    // If whole and decimal exist
+    if ((a / 10 > 0 && a % 10 > 0) || (amountIsInteger && forceDecimals))
+    {
         const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
         snprintf(buffer_to_put_value_to, buffer_len, "%d%s%d0", (a / 10) * sign, decimal_char, a % 10);
     }
-    else if (a / 10 > 0 && a % 10 == 0) { // If whole exists, but not decimal
+    // If whole exists, but not decimal
+    else if (amountIsInteger)
+    {
         snprintf(buffer_to_put_value_to, buffer_len, "%d", (a / 10) * sign);
     }
-    else if (a / 10 == 0 && a % 10 > 0) { // If decimal exists, but not whole
+    // If decimal exists, but not whole
+    else if (a / 10 == 0 && a % 10 > 0)
+    {
         const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
         snprintf(buffer_to_put_value_to, buffer_len, "%s0%s%d0", sign < 0 ? "-" : "", decimal_char, a % 10);
     }
-    else {
+    else
+    {
         snprintf(buffer_to_put_value_to, buffer_len, "0");
     }
 }

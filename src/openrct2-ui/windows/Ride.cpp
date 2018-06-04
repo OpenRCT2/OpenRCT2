@@ -6047,7 +6047,7 @@ static void window_ride_income_mouseup(rct_window *w, rct_widgetindex widgetInde
 
             Ride* ride = get_ride(w->number);
 
-            money_to_string((money32)ride->price, _moneyInputText, MONEY_STRING_MAXLENGTH);
+            money_to_string((money32)ride->price, _moneyInputText, MONEY_STRING_MAXLENGTH, true);
             window_text_input_raw_open(w, WIDX_PRIMARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneyInputText, MONEY_STRING_MAXLENGTH);
             break;
         }
@@ -6057,7 +6057,7 @@ static void window_ride_income_mouseup(rct_window *w, rct_widgetindex widgetInde
     case WIDX_SECONDARY_PRICE:{
         money32 price32 = (money32)window_ride_income_get_secondary_price(w);
 
-        money_to_string(price32, _moneyInputText, MONEY_STRING_MAXLENGTH);
+        money_to_string(price32, _moneyInputText, MONEY_STRING_MAXLENGTH, true);
         window_text_input_raw_open(w, WIDX_SECONDARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneyInputText, MONEY_STRING_MAXLENGTH);
     }break;
     case WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK:
