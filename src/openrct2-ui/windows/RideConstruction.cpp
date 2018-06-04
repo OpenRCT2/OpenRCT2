@@ -2964,29 +2964,29 @@ static void window_ride_construction_update_widgets(rct_window *w)
 
         window_ride_construction_widgets[WIDX_BANK_LEFT].type = WWT_STEPPER;
         window_ride_construction_widgets[WIDX_BANK_LEFT].left = 12;
-        window_ride_construction_widgets[WIDX_BANK_LEFT].right = 83;
+        window_ride_construction_widgets[WIDX_BANK_LEFT].right = 96;
         window_ride_construction_widgets[WIDX_BANK_LEFT].top = 138;
         window_ride_construction_widgets[WIDX_BANK_LEFT].bottom = 149;
         window_ride_construction_widgets[WIDX_BANK_STRAIGHT].type = WWT_BUTTON;
         window_ride_construction_widgets[WIDX_BANK_STRAIGHT].text = STR_NUMERIC_UP;
-        window_ride_construction_widgets[WIDX_BANK_STRAIGHT].left = 72;
-        window_ride_construction_widgets[WIDX_BANK_STRAIGHT].right = 82;
+        window_ride_construction_widgets[WIDX_BANK_STRAIGHT].left = 84;
+        window_ride_construction_widgets[WIDX_BANK_STRAIGHT].right = 95;
         window_ride_construction_widgets[WIDX_BANK_STRAIGHT].top = 139;
-        window_ride_construction_widgets[WIDX_BANK_STRAIGHT].bottom = 143;
+        window_ride_construction_widgets[WIDX_BANK_STRAIGHT].bottom = 148;
         window_ride_construction_widgets[WIDX_BANK_RIGHT].type = WWT_BUTTON;
         window_ride_construction_widgets[WIDX_BANK_RIGHT].text = STR_NUMERIC_DOWN;
         window_ride_construction_widgets[WIDX_BANK_RIGHT].left = 72;
-        window_ride_construction_widgets[WIDX_BANK_RIGHT].right = 82;
-        window_ride_construction_widgets[WIDX_BANK_RIGHT].top = 144;
+        window_ride_construction_widgets[WIDX_BANK_RIGHT].right = 83;
+        window_ride_construction_widgets[WIDX_BANK_RIGHT].top = 139;
         window_ride_construction_widgets[WIDX_BANK_RIGHT].bottom = 148;
         w->hold_down_widgets |= (1 << WIDX_BANK_STRAIGHT) | (1 << WIDX_BANK_RIGHT);
     }
 
     window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].right = 162;
     window_ride_construction_widgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WWT_EMPTY;
-    window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = 0;
-    window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = 0;
-    window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = 0;
+    window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WWT_EMPTY;
+    window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WWT_EMPTY;
+    window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WWT_EMPTY;
     if (
         (rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER || rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT) &&
         _selectedTrackType != TRACK_ELEM_BRAKES &&
