@@ -32,6 +32,7 @@
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "../scenario/Scenario.h"
+#include "../sprites.h"
 #include "../world/Map.h"
 #include "../world/Sprite.h"
 #include "Viewport.h"
@@ -292,34 +293,36 @@ static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex,
     }
 
     rct_widgetindex buttonWidgetIndex;
-    if (widgetType == WWT_IMGBTN)
+    uint16 expectedType;
+    uint32 expectedContent[2];
+    switch (widgetType)
     {
-        buttonWidgetIndex = wheel < 0 ? widgetIndex + 2 : widgetIndex + 1;
-
-        // For previews, the - and + buttons are expected to be of type WWT_TRNBTN
-        auto buttonType = w->widgets[buttonWidgetIndex].type;
-        if (buttonType != WWT_TRNBTN)
-        {
-            return false;
-        }
+        case WWT_IMGBTN:
+            buttonWidgetIndex = wheel < 0 ? widgetIndex + 2 : widgetIndex + 1;
+            expectedType = WWT_TRNBTN;
+            expectedContent[0] = IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE;
+            expectedContent[1] = IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE;
+            break;
+        case WWT_STEPPER:
+            buttonWidgetIndex = wheel < 0 ? widgetIndex + 1 : widgetIndex + 2;
+            expectedType = WWT_BUTTON;
+            expectedContent[0] = STR_NUMERIC_UP;
+            expectedContent[1] = STR_NUMERIC_DOWN;
+            break;
+        default: return false;
     }
-    else if (widgetType == WWT_STEPPER)
-    {
-        buttonWidgetIndex = wheel < 0 ? widgetIndex + 1 : widgetIndex + 2;
 
-        // For steppers, the - and + buttons are expected to be of type WWT_BUTTON
-        auto buttonType = w->widgets[buttonWidgetIndex].type;
-        if (buttonType != WWT_BUTTON)
-        {
-            return false;
-        }
-    }
-    else
+    if (widget_is_disabled(w, buttonWidgetIndex))
     {
         return false;
     }
 
-    if (widget_is_disabled(w, buttonWidgetIndex))
+    auto button1Type = w->widgets[widgetIndex + 1].type;
+    auto button1Image = w->widgets[widgetIndex + 1].image;
+    auto button2Type = w->widgets[widgetIndex + 2].type;
+    auto button2Image = w->widgets[widgetIndex + 2].image;
+    if (button1Type != expectedType || button2Type != expectedType || button1Image != expectedContent[0]
+        || button2Image != expectedContent[1])
     {
         return false;
     }
