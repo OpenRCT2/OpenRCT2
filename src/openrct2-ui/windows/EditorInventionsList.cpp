@@ -305,10 +305,17 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y(s
         researchItem++;
     }
 
-    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++) {
+    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
+    {
         y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
+        {
+            if (research_item_is_always_researched(researchItem))
+            {
+                return nullptr;
+            }
             return researchItem;
+        }
     }
 
     return nullptr;
@@ -330,10 +337,17 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y_i
         researchItem++;
     }
 
-    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++) {
+    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
+    {
         y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
+        {
+            if (research_item_is_always_researched(researchItem))
+            {
+                return nullptr;
+            }
             return researchItem;
+        }
     }
 
     return researchItem;
