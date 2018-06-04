@@ -35,7 +35,8 @@ endif ()
 
 # Sources
 file(GLOB_RECURSE OPENRCT2_UI_SOURCES
-    "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/*.cpp")
+file(GLOB_RECURSE OPENRCT2_UI_HEADERS
     "${CMAKE_CURRENT_LIST_DIR}/*.h"
     "${CMAKE_CURRENT_LIST_DIR}/*.hpp")
 
@@ -96,4 +97,17 @@ else ()
 endif ()
 if (MSVC)
     add_definitions(-D__DISABLE_DLL_PROXY__)
+endif ()
+
+# Add headers check to verify all headers carry their dependencies.
+# Only valid for Clang for now:
+# - GCC 8 does not support -Wno-pragma-once-outside-header
+# - Other compilers status unknown
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    add_library(${PROJECT}-headers-check OBJECT ${OPENRCT2_UI_HEADERS})
+    set_target_properties(${PROJECT}-headers-check PROPERTIES LINKER_LANGUAGE CXX)
+    set_source_files_properties(${OPENRCT2_UI_HEADERS} PROPERTIES LANGUAGE CXX)
+    add_definitions("-x c++ -Wno-pragma-once-outside-header -Wno-unused-const-variable")
+    get_target_property(OPENRCT2_INCLUDE_DIRS ${PROJECT} INCLUDE_DIRECTORIES)
+    set_target_properties(${PROJECT}-headers-check PROPERTIES INCLUDE_DIRECTORIES ${OPENRCT2_INCLUDE_DIRS})
 endif ()
