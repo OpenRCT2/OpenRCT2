@@ -303,7 +303,7 @@ static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex,
             return false;
         }
     }
-    else
+    else if (widgetType == WWT_STEPPER)
     {
         buttonWidgetIndex = wheel < 0 ? widgetIndex + 1 : widgetIndex + 2;
 
@@ -313,6 +313,10 @@ static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex,
         {
             return false;
         }
+    }
+    else
+    {
+        return false;
     }
 
     if (widget_is_disabled(w, buttonWidgetIndex))

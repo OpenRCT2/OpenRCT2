@@ -84,6 +84,7 @@ static bool _dragging;
 
 static void window_view_clipping_close_button(rct_window* w);
 static void window_view_clipping_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_view_clipping_mousedown(rct_window*w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_view_clipping_update(rct_window* w);
 static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
@@ -98,7 +99,7 @@ static rct_window_event_list window_view_clipping_events = {
     window_view_clipping_close_button,
     window_view_clipping_mouseup,
     nullptr,
-    nullptr,
+    window_view_clipping_mousedown,
     nullptr,
     nullptr,
     window_view_clipping_update,
@@ -160,6 +161,7 @@ rct_window * window_view_clipping_open()
         (1ULL << WIDX_CLIP_HEIGHT_SLIDER) |
         (1ULL << WIDX_CLIP_SELECTOR) |
         (1ULL << WIDX_CLIP_CLEAR);
+    window->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
 
     window_init_scroll_widgets(window);
 
@@ -224,20 +226,6 @@ static void window_view_clipping_mouseup(rct_window *w, rct_widgetindex widgetIn
         }
         window_invalidate(w);
         break;
-    case WIDX_CLIP_HEIGHT_INCREASE:
-        if (gClipHeight < 255)
-            window_view_clipping_set_clipheight(w, gClipHeight + 1);
-        mainWindow = window_get_main();
-        if (mainWindow != nullptr)
-            window_invalidate(mainWindow);
-        break;
-    case WIDX_CLIP_HEIGHT_DECREASE:
-        if (gClipHeight > 0)
-            window_view_clipping_set_clipheight(w, gClipHeight - 1);
-        mainWindow = window_get_main();
-        if (mainWindow != nullptr)
-            window_invalidate(mainWindow);
-        break;
     case WIDX_CLIP_HEIGHT_VALUE:
         // Toggle display of the cut height value in RAW vs UNITS
         if (gClipHeightDisplayType == DISPLAY_TYPE::DISPLAY_RAW)
@@ -273,6 +261,29 @@ static void window_view_clipping_mouseup(rct_window *w, rct_widgetindex widgetIn
         gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
         gfx_invalidate_screen();
         break;
+    }
+}
+
+static void window_view_clipping_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    rct_window* mainWindow = window_get_main();
+
+    switch (widgetIndex)
+    {
+        case WIDX_CLIP_HEIGHT_INCREASE:
+            if (gClipHeight < 255)
+                window_view_clipping_set_clipheight(w, gClipHeight + 1);
+            mainWindow = window_get_main();
+            if (mainWindow != nullptr)
+                window_invalidate(mainWindow);
+            break;
+        case WIDX_CLIP_HEIGHT_DECREASE:
+            if (gClipHeight > 0)
+                window_view_clipping_set_clipheight(w, gClipHeight - 1);
+            mainWindow = window_get_main();
+            if (mainWindow != nullptr)
+                window_invalidate(mainWindow);
+            break;
     }
 }
 
