@@ -3247,7 +3247,7 @@ void rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & ti
                 SetState(PEEP_STATE_1);
             }
 
-            if (!map_is_location_in_park(actionX & 0xFFE0, actionY & 0xFFE0))
+            if (!map_is_location_in_park({actionX & 0xFFE0, actionY & 0xFFE0}))
             {
                 peep_return_to_centre_of_tile(this);
                 return;

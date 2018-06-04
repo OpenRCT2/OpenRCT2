@@ -29,7 +29,7 @@
 
 static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 flags)
 {
-    if (!map_is_location_valid(x, y))
+    if (!map_is_location_valid({x, y}))
     {
         return MONEY32_UNDEFINED;
     }

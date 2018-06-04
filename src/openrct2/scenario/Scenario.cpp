@@ -432,7 +432,7 @@ static sint32 scenario_create_ducks()
     x = (x + 64) * 32;
     y = (y + 64) * 32;
 
-    if (!map_is_location_in_park(x, y))
+    if (!map_is_location_in_park({x, y}))
         return 0;
 
     centreWaterZ = (tile_element_height(x, y) >> 16) & 0xFFFF;

@@ -337,7 +337,7 @@ static money32 WallPlace(uint8 wallType,
 
         if (position.z == 0)
         {
-            if (!map_is_location_in_park(position.x, position.y))
+            if (!map_is_location_in_park({position.x, position.y}))
             {
                 return MONEY32_UNDEFINED;
             }
@@ -594,7 +594,7 @@ static money32 WallSetColour(sint16 x,
     gCommandPosition.z = z;
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) &&
-        !map_is_location_in_park(x, y) &&
+        !map_is_location_in_park({x, y}) &&
         !gCheatsSandboxMode)
     {
 

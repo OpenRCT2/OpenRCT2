@@ -201,11 +201,11 @@ public:
                 footpath_connect_edges(entranceLoc.x, entranceLoc.y, newElement, 1);
             }
 
-            update_park_fences(entranceLoc.x, entranceLoc.y);
-            update_park_fences(entranceLoc.x - 32, entranceLoc.y);
-            update_park_fences(entranceLoc.x + 32, entranceLoc.y);
-            update_park_fences(entranceLoc.x, entranceLoc.y - 32);
-            update_park_fences(entranceLoc.x, entranceLoc.y + 32);
+            update_park_fences(entranceLoc);
+            update_park_fences({entranceLoc.x - 32, entranceLoc.y});
+            update_park_fences({entranceLoc.x + 32, entranceLoc.y});
+            update_park_fences({entranceLoc.x, entranceLoc.y - 32});
+            update_park_fences({entranceLoc.x, entranceLoc.y + 32});
 
             map_invalidate_tile(entranceLoc.x, entranceLoc.y, newElement->base_height * 8, newElement->clearance_height * 8);
 
