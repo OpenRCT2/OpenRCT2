@@ -104,9 +104,12 @@ endif ()
 # - GCC 8 does not support -Wno-pragma-once-outside-header
 # - Other compilers status unknown
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    add_library(${PROJECT}-headers-check OBJECT ${OPENRCT2_UI_HEADERS})
+    set(OPENRCT2_HEADERS_CHECK ${OPENRCT2_UI_HEADERS})
+    # OpenGLAPIProc.h is not meant to be included directly.
+    list(REMOVE_ITEM OPENRCT2_HEADERS_CHECK "${CMAKE_CURRENT_LIST_DIR}/drawing/engines/opengl/OpenGLAPIProc.h")
+    add_library(${PROJECT}-headers-check OBJECT ${OPENRCT2_HEADERS_CHECK})
     set_target_properties(${PROJECT}-headers-check PROPERTIES LINKER_LANGUAGE CXX)
-    set_source_files_properties(${OPENRCT2_UI_HEADERS} PROPERTIES LANGUAGE CXX)
+    set_source_files_properties(${OPENRCT2_HEADERS_CHECK} PROPERTIES LANGUAGE CXX)
     add_definitions("-x c++ -Wno-pragma-once-outside-header -Wno-unused-const-variable")
     get_target_property(OPENRCT2_INCLUDE_DIRS ${PROJECT} INCLUDE_DIRECTORIES)
     set_target_properties(${PROJECT}-headers-check PROPERTIES INCLUDE_DIRECTORIES ${OPENRCT2_INCLUDE_DIRS})
