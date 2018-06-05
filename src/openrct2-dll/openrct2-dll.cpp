@@ -62,7 +62,7 @@ static char * * GetCommandLineArgs(int argc, wchar_t * * argvW)
     char * * argv = (char * *)malloc(argc * sizeof(char *));
     if (argv == nullptr)
     {
-        return false;
+        return nullptr;
     }
 
     // Convert to UTF-8
