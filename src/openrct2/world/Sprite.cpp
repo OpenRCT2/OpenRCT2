@@ -247,6 +247,7 @@ const char * sprite_checksum()
 
         auto hash = _spriteHashAlg->Finish();
 
+        result.clear();
         result.reserve(hash.size() * 2);
         for (auto b : hash)
         {
