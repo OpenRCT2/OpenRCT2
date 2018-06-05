@@ -1199,7 +1199,7 @@ void window_staff_overview_viewport_rotate(rct_window *w)
 void window_staff_viewport_init(rct_window* w){
     if (w->page != WINDOW_STAFF_OVERVIEW) return;
 
-    sprite_focus focus = { 0 };
+    sprite_focus focus = {};
 
     focus.sprite_id = w->number;
 

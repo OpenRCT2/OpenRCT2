@@ -247,7 +247,7 @@ namespace OpenRCT2::Audio
 
         AudioFormat GetFormat() const override
         {
-            AudioFormat result = { 0 };
+            AudioFormat result = {};
             // The second check is there because NullAudioSource does not implement GetFormat. Avoid calling it.
             if (_source != nullptr && _source->GetLength() > 0)
             {

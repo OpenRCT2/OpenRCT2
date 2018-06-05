@@ -895,7 +895,7 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
 {
     gfx_clear(dpi, PALETTE_INDEX_10);
 
-    rct_g1_element g1temp = { nullptr };
+    rct_g1_element g1temp = {};
     g1temp.offset = _mapImageData.data();
     g1temp.width = MAP_WINDOW_MAP_SIZE;
     g1temp.height = MAP_WINDOW_MAP_SIZE;

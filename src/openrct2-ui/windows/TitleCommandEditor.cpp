@@ -196,7 +196,7 @@ static TITLE_COMMAND_ORDER get_command_info(sint32 index)
 
 static LocationXY16 get_location()
 {
-    LocationXY16 mapCoord = { 0 };
+    LocationXY16 mapCoord = {};
     rct_window * w = window_get_main();
     if (w != nullptr)
     {

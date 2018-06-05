@@ -542,7 +542,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     y = w->y + (widget->top + widget->bottom) / 2;
 
     if (drawing_engine_get_type() != DRAWING_ENGINE_OPENGL) {
-        rct_g1_element g1temp = { nullptr };
+        rct_g1_element g1temp = {};
         g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
         g1temp.width = 370;
         g1temp.height = 217;

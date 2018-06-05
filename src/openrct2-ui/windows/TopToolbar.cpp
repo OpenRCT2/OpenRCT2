@@ -1786,7 +1786,7 @@ static void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    LocationXY16 mapTile = { 0 };
+    LocationXY16 mapTile = {};
     screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, nullptr);
 
     if (mapTile.x == LOCATION_NULL) {
@@ -1864,7 +1864,7 @@ static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y)
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    LocationXY16 mapTile = { 0 };
+    LocationXY16 mapTile = {};
     screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, nullptr);
 
     if (mapTile.x == LOCATION_NULL)
@@ -2203,7 +2203,7 @@ static void top_toolbar_tool_update_water(sint16 x, sint16 y){
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    LocationXY16 mapTile = { 0 };
+    LocationXY16 mapTile = {};
     sint32 interaction_type = 0;
     get_map_coordinates_from_pos(
         x,
@@ -2487,7 +2487,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
     uint8 scenery_type = (selected_tab & 0xFF00) >> 8;
     uint8 selected_scenery = selected_tab & 0xFF;
-    LocationXY16 mapTile = { 0 };
+    LocationXY16 mapTile = {};
     uint32 parameter1, parameter2, parameter3;
 
     sub_6E1F34(x, y, selected_tab, &mapTile.x, &mapTile.y, &parameter1, &parameter2, &parameter3);
