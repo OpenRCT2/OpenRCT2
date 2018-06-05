@@ -472,7 +472,7 @@ int main(int argc, char *argv[]) {
             continue;
         }
 
-        TestCase testCase = {0};
+        TestCase testCase = {};
         testCase.rideType = rideType;
 
         if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE)) {

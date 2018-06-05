@@ -1464,7 +1464,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, cons
         // Owned land boundary fences
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
 
-        registers regs = { 0 };
+        registers regs = {};
         regs.al = tileElement->properties.surface.ownership & 0x0F;
         regs.ax = regs.ax << rotation;
         regs.ah = regs.al >> 4;

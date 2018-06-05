@@ -46,11 +46,11 @@ std::vector<SegmentSupportCall> SegmentSupportHeightCall::getSegmentCalls(suppor
     std::vector<SegmentSupportCall> calls;
 
     while (positionsRemaining != 0) {
-        SegmentSupportCall call = {0};
+        SegmentSupportCall call = {};
         call.height = -1;
         call.slope = -1;
 
-        support_height referenceSupport = { 0 };
+        support_height referenceSupport = {};
 
         for (int i = 0; i < 9; i++) {
             if (positionsRemaining & segment_offsets[i]) {

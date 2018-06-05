@@ -1739,8 +1739,8 @@ static void miniature_railway_track_diag_flat(
     sint16 supportType = monorail_diag_support_types[direction][trackSequence];
 
     uint32   floorImage       = 0;
-    LocationXY16 floorBoundSize   = { 0 };
-    LocationXY16 floorBoundOffset = { 0 };
+    LocationXY16 floorBoundSize   = {};
+    LocationXY16 floorBoundOffset = {};
 
     if (supportType != -1)
     {
@@ -1827,8 +1827,8 @@ static void miniature_railway_track_diag_25_deg_up(
     bool hasSupports = false;
 
     uint32   floorImage       = 0;
-    LocationXY16 floorBoundSize   = { 0 };
-    LocationXY16 floorBoundOffset = { 0 };
+    LocationXY16 floorBoundSize   = {};
+    LocationXY16 floorBoundOffset = {};
 
     if (supportType != -1)
     {
@@ -1890,8 +1890,8 @@ static void miniature_railway_track_diag_flat_to_25_deg_up(
     bool hasSupports = false;
 
     uint32   floorImage       = 0;
-    LocationXY16 floorBoundSize   = { 0 };
-    LocationXY16 floorBoundOffset = { 0 };
+    LocationXY16 floorBoundSize   = {};
+    LocationXY16 floorBoundOffset = {};
 
     sint16 supportType = monorail_diag_support_types[direction][trackSequence];
     if (supportType != -1)
@@ -1956,8 +1956,8 @@ static void miniature_railway_track_diag_25_deg_up_to_flat(
     sint16 supportType = monorail_diag_support_types[direction][trackSequence];
 
     uint32   floorImage       = 0;
-    LocationXY16 floorBoundSize   = { 0 };
-    LocationXY16 floorBoundOffset = { 0 };
+    LocationXY16 floorBoundSize   = {};
+    LocationXY16 floorBoundOffset = {};
 
     if (supportType != -1)
     {
@@ -2035,8 +2035,8 @@ static void miniature_railway_track_diag_25_deg_down(
     bool hasSupports = false;
 
     uint32   floorImage       = 0;
-    LocationXY16 floorBoundSize   = { 0 };
-    LocationXY16 floorBoundOffset = { 0 };
+    LocationXY16 floorBoundSize   = {};
+    LocationXY16 floorBoundOffset = {};
     sint16   supportType      = monorail_diag_support_types[direction][trackSequence];
 
     if (supportType != -1)
@@ -2113,8 +2113,8 @@ static void miniature_railway_track_diag_flat_to_25_deg_down(
 
     bool     hasSupports      = false;
     uint32   floorImage       = 0;
-    LocationXY16 floorBoundSize   = { 0 };
-    LocationXY16 floorBoundOffset = { 0 };
+    LocationXY16 floorBoundSize   = {};
+    LocationXY16 floorBoundOffset = {};
     sint16   supportType      = monorail_diag_support_types[direction][trackSequence];
 
     if (supportType != -1)
@@ -2177,8 +2177,8 @@ static void miniature_railway_track_diag_25_deg_down_to_flat(
 {
     bool     hasSupports      = false;
     uint32   floorImage       = 0;
-    LocationXY16 floorBoundSize   = { 0 };
-    LocationXY16 floorBoundOffset = { 0 };
+    LocationXY16 floorBoundSize   = {};
+    LocationXY16 floorBoundOffset = {};
     sint16   supportType      = monorail_diag_support_types[direction][trackSequence];
 
     if (supportType != -1)

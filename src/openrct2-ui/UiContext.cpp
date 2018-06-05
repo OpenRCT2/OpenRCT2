@@ -82,10 +82,10 @@ private:
     // Input
     KeyboardShortcuts   _keyboardShortcuts;
     TextComposition     _textComposition;
-    CursorState         _cursorState            = { 0 };
+    CursorState         _cursorState            = {};
     uint32              _lastKeyPressed         = 0;
     const uint8 *       _keysState              = nullptr;
-    uint8               _keysPressed[256]       = { 0 };
+    uint8               _keysPressed[256]       = {};
     uint32              _lastGestureTimestamp   = 0;
     float               _gestureRadius          = 0;
 

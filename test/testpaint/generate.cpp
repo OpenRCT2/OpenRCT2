@@ -404,9 +404,9 @@ private:
         TunnelCall tileTunnelCalls[4][4];
         sint16 verticalTunnelHeights[4];
         std::vector<SegmentSupportCall> segmentSupportCalls[4];
-        support_height generalSupports[4] = { 0 };
+        support_height generalSupports[4] = {};
         for (int direction = 0; direction < 4; direction++) {
-            rct_tile_element tileElement = { 0 };
+            rct_tile_element tileElement = {};
             tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
             track_element_set_type(&tileElement, trackType);
             tileElement.base_height = 3;
@@ -420,7 +420,7 @@ private:
             RCT2_GLOBAL(0x009DE56A, sint16) = 64;
             RCT2_GLOBAL(0x009DE56E, sint16) = 64;
 
-            function_call callBuffer[256] = { 0 };
+            function_call callBuffer[256] = {};
             PaintIntercept::ClearCalls();
             CallOriginal(trackType, direction, trackSequence, height, &tileElement);
             int numCalls = PaintIntercept::GetCalls(callBuffer);

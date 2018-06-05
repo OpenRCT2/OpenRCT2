@@ -2044,63 +2044,67 @@ static void junior_rc_right_bank_to_flat_paint_setup(
     junior_rc_flat_to_left_bank_paint_setup(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
-static constexpr const LocationXY16 junior_rc_banked_right_quarter_turn_5_tiles_bound_lengths[4][5] = { {
-                                                                                       { 32, 20 },
-                                                                                       { 32, 16 },
-                                                                                       { 16, 16 },
-                                                                                       { 16, 32 },
-                                                                                       { 20, 32 },
-                                                                                   },
-                                                                                   {
-                                                                                       { 20, 32 },
-                                                                                       { 16, 32 },
-                                                                                       { 16, 16 },
-                                                                                       { 32, 16 },
-                                                                                       { 32, 20 },
-                                                                                   },
-                                                                                   {
-                                                                                       { 32, 1 },
-                                                                                       { 32, 16 },
-                                                                                       { 16, 16 },
-                                                                                       { 16, 32 },
-                                                                                       { 1, 32 },
-                                                                                   },
-                                                                                   {
-                                                                                       { 20, 32 },
-                                                                                       { 16, 32 },
-                                                                                       { 16, 16 },
-                                                                                       { 32, 16 },
-                                                                                       { 32, 20 },
-                                                                                   } };
+static constexpr const LocationXY16 junior_rc_banked_right_quarter_turn_5_tiles_bound_lengths[4][5] = {
+    {
+        { 32, 20 },
+        { 32, 16 },
+        { 16, 16 },
+        { 16, 32 },
+        { 20, 32 },
+    },
+    {
+        { 20, 32 },
+        { 16, 32 },
+        { 16, 16 },
+        { 32, 16 },
+        { 32, 20 },
+    },
+    {
+        { 32, 1 },
+        { 32, 16 },
+        { 16, 16 },
+        { 16, 32 },
+        { 1, 32 },
+    },
+    {
+        { 20, 32 },
+        { 16, 32 },
+        { 16, 16 },
+        { 32, 16 },
+        { 32, 20 },
+    },
+};
 
-static constexpr const LocationXYZ16 junior_rc_banked_right_quarter_turn_5_tiles_bound_offsets[4][5] = { {
-                                                                                        { 0, 6 },
-                                                                                        { 0, 16 },
-                                                                                        { 0, 0 },
-                                                                                        { 16, 0 },
-                                                                                        { 6, 0 },
-                                                                                    },
-                                                                                    {
-                                                                                        { 6, 0 },
-                                                                                        { 16, 0 },
-                                                                                        { 0, 16 },
-                                                                                        { 0, 0 },
-                                                                                        { 0, 6 },
-                                                                                    },
-                                                                                    {
-                                                                                        { 0, 27 },
-                                                                                        { 0, 0, 27 },
-                                                                                        { 16, 16, 27 },
-                                                                                        { 0, 0, 27 },
-                                                                                        { 27, 0 },
-                                                                                    },
-                                                                                    {
-                                                                                        { 6, 0 },
-                                                                                        { 0, 0 },
-                                                                                        { 16, 0 },
-                                                                                        { 0, 16 },
-                                                                                        { 0, 6 },
-                                                                                    } };
+static constexpr const LocationXYZ16 junior_rc_banked_right_quarter_turn_5_tiles_bound_offsets[4][5] = {
+    {
+        { 0, 6, 0 },
+        { 0, 16, 0 },
+        { 0, 0, 0 },
+        { 16, 0, 0 },
+        { 6, 0, 0 },
+    },
+    {
+        { 6, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 16, 0 },
+        { 0, 0, 0 },
+        { 0, 6, 0 },
+    },
+    {
+        { 0, 27, 0 },
+        { 0, 0, 27 },
+        { 16, 16, 27 },
+        { 0, 0, 27 },
+        { 27, 0, 0 },
+    },
+    {
+        { 6, 0, 0 },
+        { 0, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 16, 0 },
+        { 0, 6, 0 },
+    },
+};
 
 /* rct2: 0x008AB010, 0x0052304C */
 static void junior_rc_banked_right_quarter_turn_5_tiles_paint_setup(
@@ -3084,47 +3088,51 @@ static void junior_rc_left_quarter_turn_3_tiles_paint_setup(
                                                      tileElement);
 }
 
-static constexpr const LocationXY16 junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths[4][3] = { {
-                                                                                     { 32, 20 },
-                                                                                     { 16, 16 },
-                                                                                     { 20, 32 },
-                                                                                 },
-                                                                                 {
-                                                                                     { 20, 32 },
-                                                                                     { 16, 16 },
-                                                                                     { 32, 20 },
-                                                                                 },
-                                                                                 {
-                                                                                     { 32, 1 },
-                                                                                     { 16, 16 },
-                                                                                     { 1, 32 },
-                                                                                 },
-                                                                                 {
-                                                                                     { 20, 32 },
-                                                                                     { 16, 16 },
-                                                                                     { 32, 20 },
-                                                                                 } };
+static constexpr const LocationXY16 junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths[4][3] = {
+    {
+        { 32, 20 },
+        { 16, 16 },
+        { 20, 32 },
+    },
+    {
+        { 20, 32 },
+        { 16, 16 },
+        { 32, 20 },
+    },
+    {
+        { 32, 1 },
+        { 16, 16 },
+        { 1, 32 },
+    },
+    {
+        { 20, 32 },
+        { 16, 16 },
+        { 32, 20 },
+    },
+};
 
-static constexpr const LocationXYZ16 junior_rc_right_quarter_turn_3_tiles_bank_offsets[4][3] = { {
-                                                                                { 0, 6 },
-                                                                                { 16, 16 },
-                                                                                { 6, 0 },
-                                                                            },
-                                                                            {
-                                                                                { 6, 0 },
-                                                                                { 16, 0 },
-                                                                                { 0, 6 },
-                                                                            },
-                                                                            {
-                                                                                { 0, 27 },
-                                                                                { 0, 0, 27 },
-                                                                                { 27, 0 },
-                                                                            },
-                                                                            {
-                                                                                { 6, 0 },
-                                                                                { 0, 16 },
-                                                                                { 0, 6 },
-                                                                            } };
+static constexpr const LocationXYZ16 junior_rc_right_quarter_turn_3_tiles_bank_offsets[4][3] = {
+    {
+        { 0, 6, 0 },
+        { 16, 16, 0 },
+        { 6, 0, 0 },
+    },
+    {
+        { 6, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 6, 0 },
+    },
+    {
+        { 0, 27, 0 },
+        { 0, 0, 27 },
+        { 27, 0, 0 },
+    },
+    {
+        { 6, 0, 0 },
+        { 0, 16, 0 },
+        { 0, 6, 0 },
+    },
+};
 
 /** rct2: 0x008AA0D0, 0x00523EA0, 0x005240CC, 0x0052430F, 0x00524500*/
 static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(
@@ -3192,9 +3200,9 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
     JUNIOR_RC_CHAINTYPE      chainType)
 {
     uint32   imageId      = 0;
-    LocationXY16 offset       = { 0 };
-    LocationXY16 boundsLength = { 0 };
-    LocationXY16 boundsOffset = { 0 };
+    LocationXY16 offset       = {};
+    LocationXY16 boundsLength = {};
+    LocationXY16 boundsOffset = {};
 
     switch (trackSequence)
     {
@@ -3276,9 +3284,9 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
     JUNIOR_RC_CHAINTYPE      chainType)
 {
     uint32   imageId      = 0;
-    LocationXY16 offset       = { 0 };
-    LocationXY16 boundsLength = { 0 };
-    LocationXY16 boundsOffset = { 0 };
+    LocationXY16 offset       = {};
+    LocationXY16 boundsLength = {};
+    LocationXY16 boundsOffset = {};
 
     switch (trackSequence)
     {
@@ -4087,28 +4095,28 @@ static constexpr const LocationXY16 junior_rc_left_eighth_to_diag_bank_bound_len
 
 static constexpr const LocationXYZ16 junior_rc_left_eighth_to_diag_bank_bound_offsets[4][4] = {
     {
-        { 0, 27 },
-        { 0, 0 },
-        { 0, 16 },
-        { 16, 16 },
+        { 0, 27, 0 },
+        { 0, 0, 0 },
+        { 0, 16, 0 },
+        { 16, 16, 0 },
     },
     {
-        { 27, 0 },
+        { 27, 0, 0 },
         { 0, 0, 27 },
         { 16, 16, 27 },
         { 16, 0, 27 },
     },
     {
-        { 0, 6 },
-        { 0, 16 },
-        { 16, 0 },
-        { 0, 0 },
+        { 0, 6, 0 },
+        { 0, 16, 0 },
+        { 16, 0, 0 },
+        { 0, 0, 0 },
     },
     {
-        { 6, 0 },
-        { 16, 0 },
-        { 0, 0 },
-        { 0, 16 },
+        { 6, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 0, 0 },
+        { 0, 16, 0 },
     },
 };
 
@@ -4235,28 +4243,28 @@ static constexpr const LocationXY16 junior_rc_right_eighth_to_diag_bank_bound_le
 
 static constexpr const LocationXYZ16 junior_rc_right_eighth_to_diag_bank_bound_offsets[4][4] = {
     {
-        { 0, 6 },
-        { 0, 0 },
-        { 0, 0 },
-        { 16, 0 },
+        { 0, 6, 0 },
+        { 0, 0, 0 },
+        { 0, 0, 0 },
+        { 16, 0, 0 },
     },
     {
-        { 6, 0 },
-        { 16, 0 },
-        { 0, 16 },
-        { 0, 0 },
+        { 6, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 16, 0 },
+        { 0, 0, 0 },
     },
     {
-        { 0, 27 },
+        { 0, 27, 0 },
         { 0, 0, 27 },
         { 4, 4, 27 },
         { 0, 16, 27 },
     },
     {
-        { 27, 0 },
-        { 0, 0 },
-        { 16, 0 },
-        { 16, 16 },
+        { 27, 0, 0 },
+        { 0, 0, 0 },
+        { 16, 0, 0 },
+        { 16, 16, 0 },
     },
 };
 
@@ -5183,16 +5191,16 @@ static void junior_rc_diag_25_deg_down_to_right_bank_paint_setup(
 
 static constexpr const LocationXYZ16 junior_rc_diag_left_bank_bound_offsets[4] = {
     { -16, -16, 27 },
-    { -16, -16 },
-    { -16, -16 },
-    { -16, -16 },
+    { -16, -16, 0 },
+    { -16, -16, 0 },
+    { -16, -16, 0 },
 };
 
 static constexpr const LocationXYZ16 junior_rc_diag_right_bank_bound_offsets[4] = {
-    { -16, -16 },
-    { -16, -16 },
+    { -16, -16, 0 },
+    { -16, -16, 0 },
     { -16, -16, 27 },
-    { -16, -16 },
+    { -16, -16, 0 },
 };
 
 /** rct2: 0x008AB1A0 */
@@ -5346,19 +5354,19 @@ static void junior_rc_60_deg_down_paint_setup(
 }
 
 static constexpr const LocationXY16 junior_rc_25_deg_up_to_60_deg_up_bound_lengths[4][2] = {
-    { { 32, 20 }, { 0 } },
+    { { 32, 20 }, { 0, 0 } },
     { { 10, 32 }, { 2, 32 } },
     { { 32, 10 }, { 32, 2 } },
-    { { 20, 32 }, { 0 } },
+    { { 20, 32 }, { 0, 0 } },
 };
 
 static constexpr const sint8 junior_rc_25_deg_up_to_60_deg_up_bound_thickness[4] = { 1, 43, 43, 1 };
 
 static constexpr const LocationXY16 junior_rc_25_deg_up_to_60_deg_up_bound_offsets[4][2] = {
-    { { 0, 6 }, { 0 } },
+    { { 0, 6 }, { 0, 0 } },
     { { 10, 0 }, { 4, 0 } },
     { { 0, 10 }, { 0, 4 } },
-    { { 6, 0 }, { 0 } },
+    { { 6, 0 }, { 0, 0 } },
 };
 
 void junior_rc_paint_track_25_deg_up_to_60_deg_up(
@@ -5788,27 +5796,33 @@ static void junior_rc_diag_60_deg_down_to_25_deg_down_paint_setup(
 }
 
 static constexpr const LocationXY16 junior_rc_flat_to_60_deg_up_bound_lengths[4][2] = {
-    { { 32, 24 }, { 0 } },
+    { { 32, 24 }, { 0, 0 } },
     { { 10, 1 }, { 2, 32 } },
     { { 1, 10 }, { 32, 2 } },
-    { { 24, 32 }, { 0 } },
+    { { 24, 32 }, { 0, 0 } },
 };
 
 static constexpr const sint8 junior_rc_flat_to_60_deg_up_bound_thickness[4] = { 1, 43, 43, 1 };
 
 static constexpr const LocationXY16 junior_rc_flat_to_60_deg_up_bound_offsets[4][2] = {
-    { { 0, 4 }, { 0 } },
+    { { 0, 4 }, { 0, 0 } },
     { { 10, 0 }, { 4, 0 } },
     { { 0, 10 }, { 0, 4 } },
-    { { 4, 0 }, { 0 } },
+    { { 4, 0 }, { 0, 0 } },
 };
 
 static constexpr const LocationXY16 junior_rc_flat_to_60_deg_up_tile_offsets[4][2] = {
-    { { 12, -10 }, { 0 } }, { { 22, 9 }, { 12, -11 } }, { { 30, 7 }, { 5, 0 } }, { { 12, -12 }, { 0 } }
+    { { 12, -10 }, { 0, 0 } },
+    { { 22, 9 }, { 12, -11 } },
+    { { 30, 7 }, { 5, 0 } },
+    { { 12, -12 }, { 0, 0 } },
 };
 
 static constexpr const LocationXY16 junior_rc_60_deg_up_to_flat_tile_offsets[4][2] = {
-    { { 13, -9 }, { 0 } }, { { 32, 9 }, { -7, -11 } }, { { 22, 18 }, { 2, -19 } }, { { 13, -9 }, { 0 } }
+    { { 13, -9 }, { 0, 0 } },
+    { { 32, 9 }, { -7, -11 } },
+    { { 22, 18 }, { 2, -19 } },
+    { { 13, -9 }, { 0, 0 } },
 };
 
 static void junior_rc_flat_to_60_deg_up_paint_setup(

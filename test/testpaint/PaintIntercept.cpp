@@ -30,8 +30,8 @@ paint_session gPaintSession;
 
 static bool _woodenSupports = false;
 static uint8 _callCount = 0;
-static function_call _calls[256] = {0};
-static paint_struct _paintStructs = {0};
+static function_call _calls[256] = {};
+static paint_struct _paintStructs = {};
 
 namespace PaintIntercept {
     static uint8 InterceptWoodenASupports(registers *regs);
@@ -200,7 +200,7 @@ namespace PaintIntercept {
             return;
         }
 
-        function_call call = {0};
+        function_call call = {};
         call.function = SET_SEGMENT_HEIGHT;
 
         _calls[_callCount] = call;

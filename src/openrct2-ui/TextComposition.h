@@ -30,12 +30,12 @@ namespace OpenRCT2::Ui
     class TextComposition
     {
     private:
-        TextInputSession _session = { 0 };
+        TextInputSession _session = {};
 
         bool    _imeActive = false;
         sint32  _imeStart = 0;
         sint32  _imeLength = 0;
-        utf8    _imeBuffer[32] = { 0 };
+        utf8    _imeBuffer[32] = {};
 
     public:
         bool IsActive();
