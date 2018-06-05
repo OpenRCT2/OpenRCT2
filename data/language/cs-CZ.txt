@@ -4508,7 +4508,7 @@ STR_6198    :{BLACK}Den:
 STR_6199    :Nastavit datum
 STR_6200    :Resetovat datum
 STR_6201    :{MONTH}
-STR_6202    :Vykreslovat virtuální mřížku
+STR_6202    :Styl virtuální mřížky
 STR_6203    :{SMALLFONT}{BLACK}Pro usnadnění vertikálního umisťování objektů můžete podržet klávesu Ctrl nebo Shift a poté bude vykreslena pomocná virtuální mřížka.
 STR_6204    :Cihla
 STR_6205    :Železo
@@ -4562,6 +4562,10 @@ STR_6252    :Twitch API URL
 STR_6253    :{SMALLFONT}{BLACK}Zadejte URL adresu integračního Twitch API. Je to nutné pro zapnutí Twitch integrace.
 STR_6254    :URL adresa integračního Twitch API:
 STR_6255    :Nevalidní URL adresa
+STR_6256    :Vykreslovací efekty
+STR_6257    :Sklo (poloprůsvitně)
+STR_6258    :Čistě (průhledně)
+STR_6259    :Žádné
 
 ###############################################################################
 ## RCT2 Scenarios
