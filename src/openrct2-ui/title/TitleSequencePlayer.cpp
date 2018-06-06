@@ -441,7 +441,7 @@ private:
 
     /**
      * @param stream The stream to read the park data from.
-     * @param pathHint Hint path, the extension is grabbed to determine what importer to use.
+     * @param hintPath Hint path, the extension is grabbed to determine what importer to use.
      */
     bool LoadParkFromStream(IStream * stream, const std::string &hintPath)
     {

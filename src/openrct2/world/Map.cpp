@@ -4556,7 +4556,6 @@ rct_tile_element *map_get_track_element_at(sint32 x, sint32 y, sint32 z)
  * @param x x units, not tiles.
  * @param y y units, not tiles.
  * @param z Base height.
- * @param trackType
  */
 rct_tile_element *map_get_track_element_at_of_type(sint32 x, sint32 y, sint32 z, sint32 trackType)
 {
@@ -4577,8 +4576,6 @@ rct_tile_element *map_get_track_element_at_of_type(sint32 x, sint32 y, sint32 z,
  * @param x x units, not tiles.
  * @param y y units, not tiles.
  * @param z Base height.
- * @param trackType
- * @param sequence
  */
 rct_tile_element *map_get_track_element_at_of_type_seq(sint32 x, sint32 y, sint32 z, sint32 trackType, sint32 sequence)
 {
@@ -4601,8 +4598,6 @@ rct_tile_element *map_get_track_element_at_of_type_seq(sint32 x, sint32 y, sint3
  * @param x x units, not tiles.
  * @param y y units, not tiles.
  * @param z Base height.
- * @param trackType
- * @param ride index
  */
 rct_tile_element *map_get_track_element_at_of_type_from_ride(sint32 x, sint32 y, sint32 z, sint32 trackType, sint32 rideIndex) {
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
@@ -4623,7 +4618,6 @@ rct_tile_element *map_get_track_element_at_of_type_from_ride(sint32 x, sint32 y,
  * @param x x units, not tiles.
  * @param y y units, not tiles.
  * @param z Base height.
- * @param ride index
  */
 rct_tile_element *map_get_track_element_at_from_ride(sint32 x, sint32 y, sint32 z, sint32 rideIndex) {
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
@@ -4644,7 +4638,6 @@ rct_tile_element *map_get_track_element_at_from_ride(sint32 x, sint32 y, sint32 
  * @param y y units, not tiles.
  * @param z Base height.
  * @param direction The direction (0 - 3).
- * @param ride index
  */
 rct_tile_element *map_get_track_element_at_with_direction_from_ride(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 rideIndex)
 {

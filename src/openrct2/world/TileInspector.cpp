@@ -78,8 +78,9 @@ static bool map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second
 
 /**
  * Inserts a corrupt element under a given element on a given tile
- * @param x, y: The coordinates of the tile
- * @param elementIndex: The nth element on this tile
+ * @param x The x coordinate of the tile
+ * @param y The y coordinate of the tile
+ * @param elementIndex The nth element on this tile
  * Returns 0 on success, MONEY_UNDEFINED otherwise.
  */
 sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 elementIndex, sint32 flags)
@@ -144,8 +145,9 @@ sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 elementIndex,
 
 /**
  * Forcefully removes an element for a given tile
- * @param x, y: The coordinates of the tile
- * @param elementIndex: The nth element on this tile
+ * @param x The x coordinate of the tile
+ * @param y The y coordinate of the tile
+ * @param elementIndex The nth element on this tile
  */
 sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 elementIndex, sint32 flags)
 {

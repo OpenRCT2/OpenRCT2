@@ -355,8 +355,8 @@ static sint32 game_check_affordability(sint32 cost)
  *
  *  rct2: 0x006677F2
  *
- * @param flags (ebx)
- * @param command (esi)
+ * @param ebx flags
+ * @param esi command
  */
 sint32 game_do_command(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
 {
@@ -367,8 +367,8 @@ sint32 game_do_command(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 es
 *
 *  rct2: 0x006677F2 with pointers as arguments
 *
-* @param flags (ebx)
-* @param command (esi)
+* @param ebx flags
+* @param esi command
 */
 sint32 game_do_command_p(uint32 command, sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
 {

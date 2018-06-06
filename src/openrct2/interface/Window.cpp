@@ -457,9 +457,6 @@ void window_invalidate_by_class(rct_windowclass cls)
 /**
  * Invalidates all windows with the specified window class and number.
  *  rct2: 0x006EC3AC
- * @param (ah) widget index
- * @param cls (al) without bit 14 set
- * @param number (bx)
  */
 void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number)
 {
@@ -518,9 +515,6 @@ void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex
 /**
  * Invalidates the specified widget of all windows that match the specified window class and number.
  *  rct2: 0x006EC3AC
- * @param (ah) widget index
- * @param cls (al) with bit 15 set
- * @param number (bx)
  */
 void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, rct_widgetindex widgetIndex)
 {
