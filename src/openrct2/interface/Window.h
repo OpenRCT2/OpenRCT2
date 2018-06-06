@@ -566,7 +566,7 @@ rct_window *window_find_by_class(rct_windowclass cls);
 rct_window *window_find_by_number(rct_windowclass cls, rct_windownumber number);
 rct_window *window_find_from_point(sint32 x, sint32 y);
 rct_widgetindex window_find_widget_from_point(rct_window *w, sint32 x, sint32 y);
-void window_invalidate(rct_window *window);
+void window_invalidate(const rct_window *window);
 void window_invalidate_by_class(rct_windowclass cls);
 void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number);
 void window_invalidate_all();

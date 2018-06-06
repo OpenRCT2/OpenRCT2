@@ -103,9 +103,17 @@ extern uint8 gResearchExpectedDay;
 extern rct_research_item gResearchLastItem;
 extern rct_research_item gResearchNextItem;
 
-extern rct_research_item gResearchItems[MAX_RESEARCH_ITEMS];
 extern uint8 gResearchUncompletedCategories;
 extern bool gSilentResearch;
+
+namespace ResearchItem
+{
+extern const rct_research_item gSeparator;
+extern const rct_research_item gEnd;
+extern const rct_research_item gEnd2;
+extern std::vector<rct_research_item> gResearched;
+extern std::vector<rct_research_item> gResearchable;
+}
 
 void research_reset_items();
 void research_update_uncompleted_types();
@@ -117,7 +125,7 @@ void research_process_random_items();
 
 void research_finish_item(rct_research_item * researchItem);
 void research_insert(sint32 researched, sint32 rawValue, uint8 category);
-void research_remove(rct_research_item * researchItem);
+void research_remove(const rct_research_item& researchItem);
 
 void research_insert_ride_entry(uint8 entryIndex, bool researched);
 void research_insert_scenery_group_entry(uint8 entryIndex, bool researched);
@@ -147,4 +155,4 @@ void research_fix();
 void research_items_make_all_unresearched();
 void research_items_make_all_researched();
 void research_items_shuffle();
-bool research_item_is_always_researched(rct_research_item * researchItem);
+bool research_item_is_always_researched(const rct_research_item * researchItem);

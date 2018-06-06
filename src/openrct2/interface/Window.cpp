@@ -978,7 +978,7 @@ rct_widgetindex window_find_widget_from_point(rct_window *w, sint32 x, sint32 y)
  *
  * @param window The window to invalidate (esi).
  */
-void window_invalidate(rct_window *window)
+void window_invalidate(const rct_window *window)
 {
     if (window != nullptr)
         gfx_set_dirty_blocks(window->x, window->y, window->x + window->width, window->y + window->height);
