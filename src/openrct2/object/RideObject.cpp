@@ -726,7 +726,7 @@ std::vector<rct_ride_entry_vehicle> RideObject::ReadJsonCars(const json_t * jCar
 
 rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
 {
-    rct_ride_entry_vehicle car = { 0 };
+    rct_ride_entry_vehicle car = {};
     car.rotation_frame_mask = ObjectJsonHelpers::GetInteger(jCar, "rotationFrameMask");
     car.spacing = ObjectJsonHelpers::GetInteger(jCar, "spacing");
     car.car_mass = ObjectJsonHelpers::GetInteger(jCar, "mass");
@@ -869,7 +869,7 @@ vehicle_colour_preset_list RideObject::ReadJsonCarColours(const json_t * jCarCol
         {
             // Read all colours from first config
             auto config = ReadJsonColourConfiguration(firstElement);
-            vehicle_colour_preset_list list = { 0 };
+            vehicle_colour_preset_list list = {};
             list.count = 255;
             std::copy_n(config.data(), std::min<size_t>(numColours, 32), list.list);
             return list;
@@ -877,7 +877,7 @@ vehicle_colour_preset_list RideObject::ReadJsonCarColours(const json_t * jCarCol
     }
 
     // Read first colour for each config
-    vehicle_colour_preset_list list = { 0 };
+    vehicle_colour_preset_list list = {};
     size_t index;
     const json_t * jConfiguration;
     json_array_foreach(jCarColours, index, jConfiguration)
@@ -905,7 +905,7 @@ std::vector<vehicle_colour> RideObject::ReadJsonColourConfiguration(const json_t
     const json_t * jColours;
     json_array_foreach(jColourConfig, index, jColours)
     {
-        vehicle_colour carColour = { 0 };
+        vehicle_colour carColour = {};
         auto colours = ObjectJsonHelpers::GetJsonStringArray(jColours);
         if (colours.size() >= 1)
         {

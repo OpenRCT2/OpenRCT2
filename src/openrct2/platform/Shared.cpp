@@ -46,7 +46,7 @@
 #endif
 
 #if defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
-    static mach_timebase_info_data_t _mach_base_info = { 0 };
+    static mach_timebase_info_data_t _mach_base_info = {};
 #endif
 
 #if !((defined (_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700) || (defined(__APPLE__) && defined(__MACH__)))

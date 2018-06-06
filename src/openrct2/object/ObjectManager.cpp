@@ -433,7 +433,7 @@ private:
             const ObjectRepositoryItem * ori = nullptr;
             if (object_entry_is_empty(&entry))
             {
-                entry = { 0 };
+                entry = {};
                 continue;
             }
 
@@ -448,7 +448,7 @@ private:
                 else
                 {
                     log_info("Ignoring missing STEX entry.");
-                    entry = { 0 };
+                    entry = {};
                     continue;
                 }
             }

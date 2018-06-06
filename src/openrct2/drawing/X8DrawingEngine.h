@@ -79,9 +79,9 @@ namespace OpenRCT2
             size_t  _bitsSize   = 0;
             uint8 * _bits       = nullptr;
 
-            DirtyGrid   _dirtyGrid  = { 0 };
+            DirtyGrid   _dirtyGrid  = {};
 
-            rct_drawpixelinfo _bitsDPI  = { 0 };
+            rct_drawpixelinfo _bitsDPI  = {};
 
     #ifdef __ENABLE_LIGHTFX__
             bool _lastLightFXenabled = false;

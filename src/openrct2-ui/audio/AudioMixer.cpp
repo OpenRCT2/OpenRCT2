@@ -44,7 +44,7 @@ namespace OpenRCT2::Audio
         IAudioSource * _nullSource = nullptr;
 
         SDL_AudioDeviceID _deviceId = 0;
-        AudioFormat _format = { 0 };
+        AudioFormat _format = {};
         std::list<ISDLAudioChannel *> _channels;
         float _volume = 1.0f;
         float _adjustSoundVolume = 0.0f;
@@ -75,7 +75,7 @@ namespace OpenRCT2::Audio
         {
             Close();
 
-            SDL_AudioSpec want = { 0 };
+            SDL_AudioSpec want = {};
             want.freq = 22050;
             want.format = AUDIO_S16SYS;
             want.channels = 2;

@@ -217,12 +217,12 @@ static std::string gfx_get_csg_data_path()
     return path;
 }
 
-static rct_gx   _g1 = { 0 };
-static rct_gx   _g2 = { 0 };
-static rct_gx   _csg = { 0 };
+static rct_gx   _g1 = {};
+static rct_gx   _g2 = {};
+static rct_gx   _csg = {};
 static bool     _csgLoaded = false;
 
-static rct_g1_element _g1Temp = { nullptr };
+static rct_g1_element _g1Temp = {};
 bool gTinyFontAntiAliased = false;
 
 /**

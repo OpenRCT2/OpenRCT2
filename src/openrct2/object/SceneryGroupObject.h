@@ -25,7 +25,7 @@ struct ObjectRepositoryItem;
 class SceneryGroupObject final : public Object
 {
 private:
-    rct_scenery_group_entry         _legacyType = { 0 };
+    rct_scenery_group_entry         _legacyType = {};
     std::vector<rct_object_entry>   _items;
 
 public:

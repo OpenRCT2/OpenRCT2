@@ -20,7 +20,7 @@
 #include "../sprites.h"
 #include "Colour.h"
 
-rct_colour_map ColourMapA[COLOUR_COUNT] = { 0 };
+rct_colour_map ColourMapA[COLOUR_COUNT] = {};
 
 enum
 {

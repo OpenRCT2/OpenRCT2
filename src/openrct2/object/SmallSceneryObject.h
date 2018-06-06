@@ -23,7 +23,7 @@
 class SmallSceneryObject final : public SceneryObject
 {
 private:
-    rct_scenery_entry   _legacyType = { 0 };
+    rct_scenery_entry   _legacyType = {};
     std::vector<uint8>  _frameOffsets;
 
 public:

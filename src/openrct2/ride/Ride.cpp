@@ -796,25 +796,21 @@ bool track_block_get_previous(sint32 x, sint32 y, rct_tile_element *tileElement,
  */
 sint32 ride_find_track_gap(CoordsXYE *input, CoordsXYE *output)
 {
-    rct_window *w;
-    Ride *ride;
-    track_circuit_iterator it = { 0 }, slowIt;
-    sint32 rideIndex;
-
     assert(input->element->GetType() == TILE_ELEMENT_TYPE_TRACK);
-    rideIndex = track_element_get_ride_index(input->element);
-    ride = get_ride(rideIndex);
+    sint32 rideIndex = track_element_get_ride_index(input->element);
+    Ride* ride = get_ride(rideIndex);
 
     if (ride->type == RIDE_TYPE_MAZE)
         return 0;
 
-    w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
     if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
         ride_construction_invalidate_current_track();
 
     bool moveSlowIt = true;
+    track_circuit_iterator it = {};
     track_circuit_iterator_begin(&it, *input);
-    slowIt = it;
+    track_circuit_iterator slowIt = it;
     while (track_circuit_iterator_next(&it)) {
         if (!track_is_connected_by_shape(it.last.element, it.current.element)) {
             *output = it.current;
@@ -4713,7 +4709,8 @@ static train_ref vehicle_create_train(sint32 rideIndex, sint32 x, sint32 y, sint
 static void vehicle_create_trains(sint32 rideIndex, sint32 x, sint32 y, sint32 z, rct_tile_element *tileElement)
 {
     Ride *ride = get_ride(rideIndex);
-    train_ref firstTrain = { nullptr }, lastTrain = { nullptr };
+    train_ref firstTrain = {};
+    train_ref lastTrain = {};
     sint32 remainingDistance = 0;
 
     for (sint32 vehicleIndex = 0; vehicleIndex < ride->num_vehicles; vehicleIndex++) {
@@ -5228,7 +5225,7 @@ sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
 {
     sint32 stationIndex;
     Ride *ride;
-    CoordsXYE trackElement, problematicTrackElement = { 0 };
+    CoordsXYE trackElement, problematicTrackElement = {};
 
     ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_NULL)
@@ -5357,7 +5354,7 @@ sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
 {
     sint32 stationIndex;
     Ride *ride;
-    CoordsXYE trackElement, problematicTrackElement = { 0 };
+    CoordsXYE trackElement, problematicTrackElement = {};
 
     ride = get_ride(rideIndex);
 
@@ -6905,7 +6902,7 @@ static void ride_update_vehicle_colours(sint32 rideIndex)
     for (sint32 i = 0; i < MAX_VEHICLES_PER_RIDE; i++) {
         sint32 carIndex = 0;
         uint16 spriteIndex = ride->vehicles[i];
-        rct_vehicle_colour colours = { 0 };
+        rct_vehicle_colour colours = {};
         uint8 coloursExtended = 0;
 
         while (spriteIndex != SPRITE_INDEX_NULL) {

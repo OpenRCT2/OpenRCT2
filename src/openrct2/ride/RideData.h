@@ -69,7 +69,7 @@ struct rct_ride_data_4 {
     uint16 flags;
     uint8 default_music;
     uint8 alternate_type;
-    uint8 pad[2];
+    uint8 pad[2] = {};
 };
 
 struct ride_cost {
@@ -85,7 +85,7 @@ struct rct_ride_data_5 {
     uint8 z;
     uint8 price;
     uint8 bonus_value;      // Deprecated. Use rideBonusValue instead
-    uint8 pad;
+    uint8 pad = 0;
 };
 
 struct rct_ride_lift_data {

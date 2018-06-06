@@ -952,7 +952,7 @@ struct ride_overall_view {
     uint8 zoom;
 };
 
-static ride_overall_view ride_overall_views[MAX_RIDES] = {0};
+static ride_overall_view ride_overall_views[MAX_RIDES] = {};
 
 static constexpr const sint32 window_ride_tab_animation_divisor[] = { 0, 0, 2, 2, 4, 2, 8, 8, 2, 0 };
 static constexpr const sint32 window_ride_tab_animation_frames[] = { 0, 0, 4, 16, 8, 16, 8, 8, 8, 0 };
@@ -4159,7 +4159,7 @@ static void window_ride_set_track_colour_scheme(rct_window *w, sint32 x, sint32 
 
     newColourScheme = (uint8)w->ride_colour;
 
-    LocationXY16 mapCoord = { 0 };
+    LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_RIDE, &mapCoord.x, &mapCoord.y, &interactionType, &tileElement, nullptr);
     x = mapCoord.x;
     y = mapCoord.y;

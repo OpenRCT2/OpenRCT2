@@ -174,7 +174,7 @@ std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadJsonTiles(const json
     const json_t * jTile;
     json_array_foreach(jTiles, index, jTile)
     {
-        rct_large_scenery_tile tile = { 0 };
+        rct_large_scenery_tile tile = {};
         tile.x_offset = json_integer_value(json_object_get(jTile, "x"));
         tile.y_offset = json_integer_value(json_object_get(jTile, "y"));
         tile.z_offset = json_integer_value(json_object_get(jTile, "z"));
@@ -246,7 +246,7 @@ std::vector<LocationXY16> LargeSceneryObject::ReadJsonOffsets(const json_t * jOf
     const json_t * jOffset;
     json_array_foreach(jOffsets, index, jOffset)
     {
-        LocationXY16 offset = { 0 };
+        LocationXY16 offset = {};
         offset.x = json_integer_value(json_object_get(jOffset, "x"));
         offset.y = json_integer_value(json_object_get(jOffset, "y"));
         offsets.push_back(offset);

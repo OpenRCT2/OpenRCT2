@@ -131,7 +131,7 @@ private:
     size_t  _bitsSize   = 0;
     uint8 * _bits       = nullptr;
 
-    rct_drawpixelinfo _bitsDPI  = { nullptr };
+    rct_drawpixelinfo _bitsDPI  = {};
 
     OpenGLDrawingContext *    _drawingContext;
 

@@ -448,7 +448,7 @@ paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadr
 */
 paint_struct paint_session_arrange(paint_session * session)
 {
-    paint_struct psHead = { 0 };
+    paint_struct psHead = {};
     paint_struct * ps = &psHead;
     ps->next_quadrant_ps = nullptr;
     uint32 quadrantIndex = session->QuadrantBackIndex;

@@ -93,7 +93,7 @@ rct_object_entry Object::GetScgPathXHeader()
 
 rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32 flags, uint32 checksum)
 {
-    rct_object_entry header = { 0 };
+    rct_object_entry header = {};
     header.flags = flags;
     std::copy_n(name, DAT_NAME_LENGTH, header.name);
     header.checksum = checksum;

@@ -33,7 +33,7 @@ namespace OpenRCT2::Audio
     class MemoryAudioSource final : public ISDLAudioSource
     {
     private:
-        AudioFormat         _format = { 0 };
+        AudioFormat         _format = {};
         std::vector<uint8>  _data;
         uint8 *             _dataSDL = nullptr;
         size_t              _length = 0;
@@ -85,7 +85,7 @@ namespace OpenRCT2::Audio
             SDL_RWops * rw = SDL_RWFromFile(path, "rb");
             if (rw != nullptr)
             {
-                SDL_AudioSpec audiospec = { 0 };
+                SDL_AudioSpec audiospec = {};
                 uint32 audioLen;
                 SDL_AudioSpec * spec = SDL_LoadWAV_RW(rw, false, &audiospec, &_dataSDL, &audioLen);
                 if (spec != nullptr)

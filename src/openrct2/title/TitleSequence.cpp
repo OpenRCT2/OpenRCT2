@@ -46,7 +46,7 @@ static std::string LegacyScriptWrite(TitleSequence * seq);
 TitleSequence * CreateTitleSequence()
 {
     TitleSequence * seq = Memory::Allocate<TitleSequence>();
-    *seq = { 0 };
+    *seq = {};
     return seq;
 }
 
@@ -400,7 +400,7 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
         token = &parts[0 * 128];
         part1 = &parts[1 * 128];
         part2 = &parts[2 * 128];
-        TitleCommand command = { 0 };
+        TitleCommand command = {};
         command.Type = TITLE_SCRIPT_UNDEFINED;
 
         if (token[0] != 0)

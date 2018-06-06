@@ -23,7 +23,7 @@
 class FootpathObject final : public Object
 {
 private:
-    rct_footpath_entry _legacyType = { 0 };
+    rct_footpath_entry _legacyType = {};
 
 public:
     explicit FootpathObject(const rct_object_entry &entry) : Object(entry) { }

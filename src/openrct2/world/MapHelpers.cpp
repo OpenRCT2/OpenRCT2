@@ -214,7 +214,7 @@ sint32 tile_smooth(sint32 x, sint32 y)
             sint32 SE; 
             sint32 S; 
         };
-    } neighbourHeightOffset = { 0 };
+    } neighbourHeightOffset = {};
 
     // Find the neighbour base heights
     for (sint32 index = 0, y_offset = -1; y_offset <= 1; y_offset++)

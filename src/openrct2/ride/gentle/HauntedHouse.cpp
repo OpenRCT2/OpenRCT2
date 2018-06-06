@@ -30,8 +30,9 @@ struct haunted_house_bound_box
 };
 
 /** rct2: 0x1428180 */
-static haunted_house_bound_box haunted_house_data[] = { { 6, 0, 42, 24 }, { 0 }, { -16, -16, 32, 32 }, { 0 },
-                                                        { 0, 6, 24, 42 }, { 0 } };
+static haunted_house_bound_box haunted_house_data[] = {
+    { 6, 0, 42, 24 }, { 0, 0, 0, 0 }, { -16, -16, 32, 32 }, { 0, 0, 0, 0 }, { 0, 6, 24, 42 }, { 0, 0, 0, 0 },
+};
 
 /**
  * rct2: 0x0076F72C

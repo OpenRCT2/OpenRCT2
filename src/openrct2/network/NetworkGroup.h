@@ -30,8 +30,6 @@ public:
 
     static NetworkGroup FromJson(const json_t * json);
 
-    NetworkGroup();
-
     const std::string & GetName() const;
     void SetName(std::string name);
 

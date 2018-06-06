@@ -23,7 +23,7 @@
 class StexObject final : public Object
 {
 private:
-    rct_stex_entry _legacyType = { 0 };
+    rct_stex_entry _legacyType = {};
 
 public:
     explicit StexObject(const rct_object_entry &entry) : Object(entry) { }

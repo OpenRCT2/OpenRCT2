@@ -30,7 +30,7 @@ namespace OpenRCT2::Audio
     class FileAudioSource final : public ISDLAudioSource
     {
     private:
-        AudioFormat _format = { 0 };
+        AudioFormat _format = {};
         SDL_RWops * _rw = nullptr;
         uint64      _dataBegin = 0;
         uint64      _dataLength = 0;

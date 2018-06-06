@@ -34,7 +34,7 @@ sint32 _hookTableOffset = 0;
 sint32 _maxHooks = 1000;
 #define HOOK_BYTE_COUNT (140)
 
-registers gHookRegisters = {0};
+registers gHookRegisters = {};
 
 // This macro writes a little-endian 4-byte long value into *data
 // It is used to avoid type punning.
@@ -47,7 +47,7 @@ registers gHookRegisters = {0};
 static void hookfunc(uintptr_t address, uintptr_t hookAddress, sint32 stacksize)
 {
     sint32 i = 0;
-    uint8 data[HOOK_BYTE_COUNT] = {0};
+    uint8 data[HOOK_BYTE_COUNT] = {};
 
     uintptr_t registerAddress = (uintptr_t) &gHookRegisters;
 

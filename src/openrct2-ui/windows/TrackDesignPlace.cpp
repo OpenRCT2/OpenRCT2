@@ -473,7 +473,7 @@ static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Draw mini tile preview
     rct_drawpixelinfo clippedDpi;
     if (clip_drawpixelinfo(&clippedDpi, dpi, w->x + 4, w->y + 18, 168, 78)) {
-        rct_g1_element g1temp = { nullptr };
+        rct_g1_element g1temp = {};
         g1temp.offset = _window_track_place_mini_preview.data();
         g1temp.width = TRACK_MINI_PREVIEW_WIDTH;
         g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;

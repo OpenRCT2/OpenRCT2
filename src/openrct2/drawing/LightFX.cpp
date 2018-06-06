@@ -277,7 +277,7 @@ void lightfx_prepare_light_list()
             }
 
             for (sint32 pat = startSamplePoint; pat < totalSamplePoints; pat++) {
-                LocationXY16 mapCoord = { 0 };
+                LocationXY16 mapCoord = {};
 
                 rct_tile_element *tileElement = nullptr;
 

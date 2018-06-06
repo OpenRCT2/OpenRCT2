@@ -167,7 +167,7 @@ namespace ObjectJsonHelpers
 
     rct_object_entry ParseObjectEntry(const std::string & s)
     {
-        rct_object_entry entry = { 0 };
+        rct_object_entry entry = {};
         std::fill_n(entry.name, sizeof(entry.name), ' ');
         auto copyLen = std::min<size_t>(8, s.size());
         std::copy_n(s.c_str(), copyLen, entry.name);
@@ -284,7 +284,7 @@ namespace ObjectJsonHelpers
         std::vector<rct_g1_element> result;
         if (s.empty())
         {
-            rct_g1_element emptyg1 = { 0 };
+            rct_g1_element emptyg1 = {};
             result.push_back(emptyg1);
         }
         else if (String::StartsWith(s, "$CSG"))
@@ -359,7 +359,7 @@ namespace ObjectJsonHelpers
                 auto msg = String::StdFormat("Unable to load image '%s': %s", s.c_str(), e.what());
                 context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, msg.c_str());
 
-                rct_g1_element emptyg1 = { 0 };
+                rct_g1_element emptyg1 = {};
                 result.push_back(emptyg1);
             }
         }
@@ -396,7 +396,7 @@ namespace ObjectJsonHelpers
             auto msg = String::StdFormat("Unable to load image '%s': %s", path.c_str(), e.what());
             context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, msg.c_str());
 
-            rct_g1_element emptyg1 = { 0 };
+            rct_g1_element emptyg1 = {};
             result.push_back(emptyg1);
         }
         return result;

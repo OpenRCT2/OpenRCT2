@@ -670,7 +670,7 @@ void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
     {
         sprite_focus sprite;
         coordinate_focus coordinate;
-    } focus = { 0 }; // The focus will be either a sprite or a coordinate.
+    } focus = {}; // The focus will be either a sprite or a coordinate.
 
     focus.sprite.sprite_id = window->viewport_smart_follow_sprite;
 
@@ -730,7 +730,7 @@ void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
 
 void viewport_update_smart_staff_follow(rct_window * window, rct_peep * peep)
 {
-    sprite_focus focus = { 0 };
+    sprite_focus focus = {};
 
     focus.sprite_id = window->viewport_smart_follow_sprite;
 
@@ -753,7 +753,7 @@ void viewport_update_smart_staff_follow(rct_window * window, rct_peep * peep)
 void viewport_update_smart_vehicle_follow(rct_window * window)
 {
     // Can be expanded in the future if needed
-    sprite_focus focus = { 0 };
+    sprite_focus focus = {};
 
     focus.sprite_id = window->viewport_smart_follow_sprite;
 
@@ -970,7 +970,7 @@ LocationXY16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, ui
 
 LocationXY16 viewport_coord_to_map_coord(sint32 x, sint32 y, sint32 z)
 {
-    LocationXY16 ret = { 0 };
+    LocationXY16 ret = {};
     switch (get_current_rotation()) {
     case 0:
         ret.x = -x / 2 + y + z;

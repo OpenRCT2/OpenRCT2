@@ -110,7 +110,7 @@ class S4Importer final : public IParkImporter
 {
 private:
     std::string  _s4Path;
-    rct1_s4      _s4 = { 0 };
+    rct1_s4      _s4 = {};
     uint8        _gameVersion = 0;
     uint8        _parkValueConversionFactor = 0;
 
@@ -220,7 +220,7 @@ public:
 
     bool GetDetails(scenario_index_entry * dst) override
     {
-        *dst = { 0 };
+        *dst = {};
 
         source_desc desc;
         // If no entry is found, this is a custom scenario.

@@ -105,7 +105,7 @@ namespace OpenRCT2::Ui
             std::wstring wcFilters = GetFilterString(desc.Filters);
 
             // Set open file name options
-            OPENFILENAMEW openFileName = { 0 };
+            OPENFILENAMEW openFileName = {};
             openFileName.lStructSize = sizeof(OPENFILENAMEW);
             openFileName.hwndOwner = GetHWND(window);
             openFileName.lpstrTitle = wcTitle.c_str();
@@ -163,7 +163,7 @@ namespace OpenRCT2::Ui
                 SUCCEEDED(SHGetMalloc(&lpMalloc)))
             {
                 std::wstring titleW = String::ToUtf16(title);
-                BROWSEINFOW bi = { 0 };
+                BROWSEINFOW bi = {};
                 bi.lpszTitle = titleW.c_str();
                 bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE | BIF_NONEWFOLDERBUTTON;
 

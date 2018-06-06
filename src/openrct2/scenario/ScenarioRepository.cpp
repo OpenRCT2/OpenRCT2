@@ -264,7 +264,7 @@ private:
 
     static scenario_index_entry CreateNewScenarioEntry(const std::string &path, uint64 timestamp, rct_s6_info * s6Info)
     {
-        scenario_index_entry entry = { 0 };
+        scenario_index_entry entry = {};
 
         // Set new entry
         String::Set(entry.path, sizeof(entry.path), path.c_str());

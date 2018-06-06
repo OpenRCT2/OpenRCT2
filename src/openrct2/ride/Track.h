@@ -29,14 +29,12 @@ struct rct_trackdefinition
     uint8 bank_end;
     uint8 bank_start;
     sint8 preview_z_offset;
-    uint8 pad[2];
+    uint8 pad[2] = {};
 };
 assert_struct_size(rct_trackdefinition, 8);
 #pragma pack(pop)
 
-/**
-* Size: 0x0A
-*/
+/* size 0x0A */
 struct rct_preview_track
 {
     uint8  index;    // 0x00

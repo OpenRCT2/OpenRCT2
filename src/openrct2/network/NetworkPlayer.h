@@ -37,7 +37,7 @@ public:
     uint32      CommandsRan             = 0;
     sint32      LastAction              = -999;
     uint32      LastActionTime          = 0;
-    LocationXYZ16   LastActionCoord         = { 0 };
+    LocationXYZ16   LastActionCoord     = {};
     rct_peep*   PickupPeep              = nullptr;
     sint32      PickupPeepOldX          = LOCATION_NULL;
     std::string KeyHash;
