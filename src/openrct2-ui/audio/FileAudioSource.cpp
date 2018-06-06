@@ -132,7 +132,6 @@ namespace OpenRCT2::Audio
             default:
                 log_verbose("Invalid bits per sample");
                 return false;
-                break;
             }
             _format.channels = waveFormat.channels;
 
