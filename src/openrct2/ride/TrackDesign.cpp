@@ -1158,7 +1158,6 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, sint32 origi
                 default:
                     _trackDesignPlaceStateSceneryUnavailable = true;
                     continue;
-                    break;
                 }
                 _trackDesignPlaceCost = add_clamp_money32(_trackDesignPlaceCost, cost);
                 if (_trackDesignPlaceOperation != PTD_OPERATION_2)

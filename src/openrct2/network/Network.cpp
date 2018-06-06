@@ -1396,7 +1396,6 @@ bool Network::ProcessConnection(NetworkConnection& connection)
                 connection.SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
             }
             return false;
-            break;
         case NETWORK_READPACKET_SUCCESS:
             // done reading in packet
             ProcessPacket(connection, connection.InboundPacket);

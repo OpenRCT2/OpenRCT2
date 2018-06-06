@@ -98,7 +98,6 @@ namespace Guard
         switch (_assertBehaviour) {
         case ASSERT_BEHAVIOUR::ABORT:
             abort();
-            break;
         default:
         case ASSERT_BEHAVIOUR::CASSERT:
             assert(false);
