@@ -190,7 +190,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set_source_files_properties(${OPENRCT2_CORE_HEADERS} PROPERTIES LANGUAGE CXX)
     add_definitions("-x c++ -Wno-pragma-once-outside-header -Wno-unused-const-variable")
     get_target_property(LIBOPENRCT2_INCLUDE_DIRS ${PROJECT} INCLUDE_DIRECTORIES)
-    set_target_properties(${PROJECT}-headers-check PROPERTIES INCLUDE_DIRECTORIES ${LIBOPENRCT2_INCLUDE_DIRS})
+    set_target_properties(${PROJECT}-headers-check PROPERTIES INCLUDE_DIRECTORIES "${LIBOPENRCT2_INCLUDE_DIRS}")
 else ()
     # Dummy target to ease invocation
     add_custom_target(${PROJECT}-headers-check)
