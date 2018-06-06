@@ -180,18 +180,18 @@ public:
     const rct_object_entry *    GetObjectEntry() const { return &_objectEntry; }
     virtual void *              GetLegacyData() abstract;
 
-    virtual void ReadJson(IReadObjectContext * context, const json_t * root) { }
+    virtual void ReadJson(IReadObjectContext * /*context*/, const json_t * /*root*/) { }
     virtual void ReadLegacy(IReadObjectContext * context, IStream * stream) abstract;
     virtual void Load() abstract;
     virtual void Unload() abstract;
 
-    virtual void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const { }
+    virtual void DrawPreview(rct_drawpixelinfo * /*dpi*/, sint32 /*width*/, sint32 /*height*/) const { }
 
     virtual uint8           GetObjectType() const final { return _objectEntry.flags & 0x0F; }
     virtual std::string     GetName() const;
     virtual std::string     GetName(sint32 language) const;
 
-    virtual void SetRepositoryItem(ObjectRepositoryItem * item) const { }
+    virtual void SetRepositoryItem(ObjectRepositoryItem * /*item*/) const { }
 
     const ImageTable & GetImageTable() const { return _imageTable; }
 

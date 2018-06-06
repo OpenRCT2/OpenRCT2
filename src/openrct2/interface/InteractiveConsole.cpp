@@ -968,7 +968,8 @@ static sint32 cc_show_limits(InteractiveConsole & console, [[maybe_unused]] cons
     return 0;
 }
 
-static sint32 cc_for_date(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
+static sint32
+    cc_for_date([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] sint32 argc)
 {
     sint32 year = 0;
     sint32 month = 0;

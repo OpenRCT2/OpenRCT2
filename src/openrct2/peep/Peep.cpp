@@ -923,7 +923,8 @@ bool peep_pickup_command(uint32 peepnum, sint32 x, sint32 y, sint32 z, sint32 ac
     return true;
 }
 
-void game_command_pickup_guest(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+void game_command_pickup_guest(
+    sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, [[maybe_unused]] sint32* esi, sint32* edi, sint32* ebp)
 {
     sint32 peepnum = *eax;
     sint32 x       = *edi;
@@ -3357,7 +3358,7 @@ static void peep_apply_easter_egg_to_nearby_guests(rct_peep * peep, easter_egg_f
     }
 }
 
-static void peep_give_passing_peeps_purple_clothes(rct_peep * peep, rct_peep * otherPeep)
+static void peep_give_passing_peeps_purple_clothes([[maybe_unused]] rct_peep* peep, rct_peep* otherPeep)
 {
     otherPeep->tshirt_colour   = COLOUR_BRIGHT_PURPLE;
     otherPeep->trousers_colour = COLOUR_BRIGHT_PURPLE;
@@ -3843,7 +3844,7 @@ void peep_handle_easteregg_name(rct_peep * peep)
 }
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-void pathfind_logging_enable(rct_peep * peep)
+void pathfind_logging_enable([[maybe_unused]] rct_peep* peep)
 {
 #if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
     /* Determine if the pathfinding debugging is wanted for this peep. */

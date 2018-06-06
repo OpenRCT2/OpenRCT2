@@ -109,10 +109,11 @@ public:
         return result;
     }
 
-    ParkLoadResult LoadFromStream(IStream * stream,
-                                  bool isScenario,
-                                  bool skipObjectCheck = false,
-                                  const utf8 * path = String::Empty) override
+    ParkLoadResult LoadFromStream(
+        IStream* stream,
+        bool isScenario,
+        [[maybe_unused]] bool skipObjectCheck = false,
+        const utf8* path = String::Empty) override
     {
         if (isScenario && !gConfigGeneral.allow_loading_with_incorrect_checksum && !SawyerEncoding::ValidateChecksum(stream))
         {

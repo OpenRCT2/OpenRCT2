@@ -60,7 +60,7 @@ void WaterObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 heig
     gfx_draw_string_centred(dpi, STR_WINDOW_NO_IMAGE, x, y, COLOUR_BLACK, nullptr);
 }
 
-void WaterObject::ReadJson(IReadObjectContext * context, const json_t * root)
+void WaterObject::ReadJson([[maybe_unused]] IReadObjectContext* context, const json_t* root)
 {
     auto properties = json_object_get(root, "properties");
     _legacyType.flags = ObjectJsonHelpers::GetFlags<uint16>(properties, {

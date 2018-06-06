@@ -173,10 +173,8 @@ public:
         return result;
     }
 
-    ParkLoadResult LoadFromStream(IStream * stream,
-                                  bool isScenario,
-                                  bool skipObjectCheck,
-                                  const utf8 * path) override
+    ParkLoadResult
+        LoadFromStream(IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck, const utf8* path) override
     {
         _s4 = *ReadAndDecodeS4(stream, isScenario);
         _s4Path = path;

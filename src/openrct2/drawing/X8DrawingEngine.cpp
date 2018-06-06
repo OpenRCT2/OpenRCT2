@@ -135,7 +135,7 @@ void X8RainDrawer::Restore()
 #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 #endif
 
-X8DrawingEngine::X8DrawingEngine(const std::shared_ptr<Ui::IUiContext>& uiContext)
+X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiContext>& uiContext)
 {
     _drawingContext = new X8DrawingContext(this);
 #ifdef __ENABLE_LIGHTFX__
@@ -161,11 +161,11 @@ void X8DrawingEngine::Resize(uint32 width, uint32 height)
     ConfigureBits(width, height, pitch);
 }
 
-void X8DrawingEngine::SetPalette(const rct_palette_entry * palette)
+void X8DrawingEngine::SetPalette([[maybe_unused]] const rct_palette_entry* palette)
 {
 }
 
-void X8DrawingEngine::SetVSync(bool vsync)
+void X8DrawingEngine::SetVSync([[maybe_unused]] bool vsync)
 {
     // Not applicable for this engine
 }
@@ -299,7 +299,7 @@ DRAWING_ENGINE_FLAGS X8DrawingEngine::GetFlags()
     return DEF_DIRTY_OPTIMISATIONS;
 }
 
-void X8DrawingEngine::InvalidateImage(uint32 image)
+void X8DrawingEngine::InvalidateImage([[maybe_unused]] uint32 image)
 {
     // Not applicable for this engine
 }
@@ -368,7 +368,8 @@ void X8DrawingEngine::ConfigureBits(uint32 width, uint32 height, uint32 pitch)
 #endif
 }
 
-void X8DrawingEngine::OnDrawDirtyBlock(uint32 x, uint32 y, uint32 columns, uint32 rows)
+void X8DrawingEngine::OnDrawDirtyBlock(
+    [[maybe_unused]] uint32 x, [[maybe_unused]] uint32 y, [[maybe_unused]] uint32 columns, [[maybe_unused]] uint32 rows)
 {
 }
 

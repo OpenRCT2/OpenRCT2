@@ -376,32 +376,32 @@ private:
 class DefaultIniReader final : public IIniReader
 {
 public:
-    bool ReadSection(const std::string &name) override
+    bool ReadSection([[maybe_unused]] const std::string& name) override
     {
         return true;
     }
 
-    bool GetBoolean(const std::string &name, bool defaultValue) const override
+    bool GetBoolean([[maybe_unused]] const std::string& name, bool defaultValue) const override
     {
         return defaultValue;
     }
 
-    sint32 GetSint32(const std::string &name, sint32 defaultValue) const override
+    sint32 GetSint32([[maybe_unused]] const std::string& name, sint32 defaultValue) const override
     {
         return defaultValue;
     }
 
-    float GetFloat(const std::string &name, float defaultValue) const override
+    float GetFloat([[maybe_unused]] const std::string& name, float defaultValue) const override
     {
         return defaultValue;
     }
 
-    std::string GetString(const std::string &name, const std::string &defaultValue) const override
+    std::string GetString([[maybe_unused]] const std::string& name, const std::string& defaultValue) const override
     {
         return defaultValue;
     }
 
-    bool TryGetString(const std::string &name, std::string * outValue) const override
+    bool TryGetString([[maybe_unused]] const std::string& name, [[maybe_unused]] std::string* outValue) const override
     {
         return false;
     }

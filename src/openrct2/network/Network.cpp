@@ -1800,7 +1800,7 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
     }
 }
 
-void Network::Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Server_Handle_TOKEN(NetworkConnection& connection, [[maybe_unused]] NetworkPacket& packet)
 {
     uint8 token_size = 10 + (rand() & 0x7f);
     connection.Challenge.resize(token_size);
@@ -1976,7 +1976,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
     }
 }
 
-void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32 size, offset;
     packet >> size >> offset;
@@ -2149,7 +2149,7 @@ bool Network::SaveMap(IStream * stream, const std::vector<const ObjectRepository
     return result;
 }
 
-void Network::Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_CHAT([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     const char* text = packet.ReadString();
     if (text) {
@@ -2173,7 +2173,7 @@ void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
     }
 }
 
-void Network::Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_GAMECMD([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32 tick;
     uint32 args[7];
@@ -2184,7 +2184,7 @@ void Network::Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
     game_command_queue.emplace(tick, args, playerid, callback, _commandId++);
 }
 
-void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32 tick;
     uint32 type;
@@ -2356,7 +2356,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
     game_command_queue.emplace(tick, args, playerid, callback, _commandId++);
 }
 
-void Network::Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_TICK([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32 srand0;
     uint32 flags;
@@ -2382,7 +2382,7 @@ void Network::Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& p
     game_commands_processed_this_tick = 0;
 }
 
-void Network::Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_PLAYERLIST([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     uint8 size;
     packet >> size;
@@ -2412,12 +2412,12 @@ void Network::Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPac
     }
 }
 
-void Network::Client_Handle_PING(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_PING([[maybe_unused]] NetworkConnection& connection, [[maybe_unused]] NetworkPacket& packet)
 {
     Client_Send_PING();
 }
 
-void Network::Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Server_Handle_PING(NetworkConnection& connection, [[maybe_unused]] NetworkPacket& packet)
 {
     sint32 ping = platform_get_ticks() - connection.PingTime;
     if (ping < 0) {
@@ -2429,7 +2429,7 @@ void Network::Server_Handle_PING(NetworkConnection& connection, NetworkPacket& p
     }
 }
 
-void Network::Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_PINGLIST([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     uint8 size;
     packet >> size;
@@ -2455,19 +2455,19 @@ void Network::Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, Netw
     }
 }
 
-void Network::Server_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Server_Handle_GAMEINFO(NetworkConnection& connection, [[maybe_unused]] NetworkPacket& packet)
 {
     Server_Send_GAMEINFO(connection);
 }
 
-void Network::Client_Handle_SHOWERROR(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_SHOWERROR([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     rct_string_id title, message;
     packet >> title >> message;
     context_show_error(title, message);
 }
 
-void Network::Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_GROUPLIST([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     group_list.clear();
     uint8 size;
@@ -2480,7 +2480,7 @@ void Network::Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPack
     }
 }
 
-void Network::Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_EVENT([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     char text[256];
     uint16 eventType;
@@ -2523,7 +2523,7 @@ static std::string json_stdstring_value(const json_t * string)
     return cstr == nullptr ? std::string() : std::string(cstr);
 }
 
-void Network::Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_GAMEINFO([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     const char * jsonString = packet.ReadString();
 

@@ -253,7 +253,7 @@ static void TTF_drawLine_Shaded(const TTF_Font *font, const TTFSurface *textbuf,
     }
 }
 
-static void TTF_SetFTError(const char *msg, FT_Error error)
+static void TTF_SetFTError(const char* msg, [[maybe_unused]] FT_Error error)
 {
 #ifdef USE_FREETYPE_ERRORS
 #undef FTERRORS_H
@@ -1125,8 +1125,7 @@ int TTF_SizeUTF8(TTF_Font *font, const char *text, int *w, int *h)
     return status;
 }
 
-TTFSurface *TTF_RenderUTF8_Solid(TTF_Font *font,
-    const char *text, uint32 colour)
+TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unused]] uint32 colour)
 {
     bool first;
     int xstart;
@@ -1246,8 +1245,7 @@ TTFSurface *TTF_RenderUTF8_Solid(TTF_Font *font,
     return textbuf;
 }
 
-TTFSurface *TTF_RenderUTF8_Shaded(TTF_Font *font,
-                const char *text, uint32 fg, uint32 bg)
+TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unused]] uint32 fg, [[maybe_unused]] uint32 bg)
 {
     bool first;
     int xstart;
