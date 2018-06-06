@@ -52,6 +52,7 @@
 - Improved: [#7577] Allow fine-tuning the virtual floor style.
 - Improved: [#7608] The vehicle selection dropdown is now sorted orthographically.
 - Improved: [#7613] Resizing the staff window now resizes the name and action columns too.
+- Improved: [#7627] Allow scrolling up and down on steppers to change their values.
 
 0.1.2 (2018-03-18)
 ------------------------------------------------------------------------
