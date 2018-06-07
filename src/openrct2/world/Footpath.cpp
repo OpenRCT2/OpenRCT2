@@ -2178,6 +2178,12 @@ void footpath_update_path_wide_flags(sint32 x, sint32 y)
     } while (!(tileElement++)->IsLastForTile());
 }
 
+bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position)
+{
+    auto pathElement = map_get_path_element_at(position.x, position.y, position.z);
+    return pathElement != nullptr && (pathElement->flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE);
+}
+
 /**
  *
  *  rct2: 0x006A7642

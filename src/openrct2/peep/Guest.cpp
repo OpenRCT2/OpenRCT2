@@ -5248,12 +5248,14 @@ void rct_peep::UpdateWalking()
         }
     }
 
-    rct_tile_element * path_element = map_get_path_element_at(destination_x / 32, destination_y / 32, next_z);
-    if (path_element && path_element->flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE)
+    // Check if vehicle is blocking the destination tile
+    auto curPos = TileCoordsXYZ(CoordsXYZ { x, y, z });
+    auto dstPos = TileCoordsXYZ(CoordsXY { destination_x, destination_y }, next_z);
+    if (curPos.x != dstPos.x || curPos.y != dstPos.y)
     {
-        if (!(x >> 5 == destination_x >> 5 &&
-              y >> 5 == destination_y >> 5))
+        if (footpath_is_blocked_by_vehicle(dstPos))
         {
+            // Wait for vehicle to pass
             return;
         }
     }
