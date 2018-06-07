@@ -17,6 +17,7 @@
 - Fix: [#5210] Default system dialog not accessible from saving landscape window.
 - Fix: [#6134] Scenarios incorrectly categorised when using Polish version of RCT2.
 - Fix: [#6141] CSS50.dat is never loaded.
+- Fix: [#6647] Changelog window causes FPS drop.
 - Fix: [#6938] Banner do not correctly capitalise non-ASCII characters.
 - Fix: [#7176] Mechanics sometimes fall down from rides.
 - Fix: [#7303] Visual glitch with virtual floor near map edges.
