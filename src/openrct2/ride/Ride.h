@@ -972,6 +972,7 @@ void ride_construct_new(ride_list_item listItem);
 void ride_construct(sint32 rideIndex);
 sint32 ride_modify(CoordsXYE *input);
 void ride_remove_peeps(sint32 rideIndex);
+void ride_clear_blocked_tiles(sint32 rideIndex);
 void ride_get_status(sint32 rideIndex, rct_string_id *formatSecondary, sint32 *argument);
 rct_peep *ride_get_assigned_mechanic(Ride *ride);
 sint32 ride_get_total_length(Ride *ride);
