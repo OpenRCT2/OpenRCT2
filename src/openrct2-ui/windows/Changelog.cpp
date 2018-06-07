@@ -170,7 +170,9 @@ static void window_changelog_scrollgetsize(
     [[maybe_unused]] rct_window * w, [[maybe_unused]] sint32 scrollIndex, sint32 * width, sint32 * height)
 {
     *width = _changelogLongestLineWidth + 4;
-    *height = (sint32)(_changelogLines.size() * 11);
+
+    const sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    *height = (sint32)(_changelogLines.size() * lineHeight);
 }
 
 static void window_changelog_invalidate(rct_window *w)
