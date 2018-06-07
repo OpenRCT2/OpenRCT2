@@ -49,8 +49,8 @@
 #include "../windows/Intent.h"
 
 static void vehicle_update(rct_vehicle * vehicle);
-static void vehicle_update_crossings(rct_vehicle * vehicle);
-static void vehicle_claxon(rct_vehicle * vehicle);
+static void vehicle_update_crossings(const rct_vehicle * vehicle);
+static void vehicle_claxon(const rct_vehicle * vehicle);
 
 static void   vehicle_update_showing_film(rct_vehicle * vehicle);
 static void   vehicle_update_doing_circus_show(rct_vehicle * vehicle);
@@ -9906,15 +9906,15 @@ void vehicle_invalidate_window(rct_vehicle * vehicle)
     context_broadcast_intent(&intent);
 }
 
-void vehicle_update_crossings(rct_vehicle * vehicle)
+void vehicle_update_crossings(const rct_vehicle * vehicle)
 {
     if (vehicle_get_head(vehicle) != vehicle)
     {
         return;
     }
 
-    rct_vehicle *frontVehicle;
-    rct_vehicle *backVehicle;
+    const rct_vehicle * frontVehicle{};
+    const rct_vehicle * backVehicle{};
 
     bool travellingForwards = !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE);
 
@@ -10047,7 +10047,7 @@ void vehicle_update_crossings(rct_vehicle * vehicle)
     }
 }
 
-void vehicle_claxon(rct_vehicle * vehicle)
+void vehicle_claxon(const rct_vehicle * vehicle)
 {
     rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
     audio_play_sound_at_location((rideEntry->vehicles[0].sound_range == 3)? SOUND_TRAIN_WHISTLE : SOUND_TRAM, vehicle->x, vehicle->y, vehicle->z);
