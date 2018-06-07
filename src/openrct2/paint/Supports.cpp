@@ -332,8 +332,6 @@ static constexpr const uint16 word_97B3C4[] = {
 };
 // clang-format on
 
-extern bool gUseOriginalRidePaint;
-
 /**
  * Adds paint structs for wooden supports.
  *  rct2: 0x006629BC

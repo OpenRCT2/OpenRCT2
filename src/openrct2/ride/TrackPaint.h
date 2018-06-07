@@ -277,8 +277,6 @@ extern const LocationXY16 defaultDiagTileOffsets[4];
 
 extern const uint8 mapLeftEighthTurnToOrthogonal[5];
 
-extern bool gUseOriginalRidePaint;
-
 extern const size_t mini_golf_peep_animation_lengths[];
 
 bool track_paint_util_has_fence(

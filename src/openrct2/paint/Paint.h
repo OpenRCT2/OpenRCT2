@@ -179,6 +179,7 @@ extern LocationXY8 gClipSelectionB;
 #define CONSTRUCTION_MARKER (COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP);
 extern bool gShowDirtyVisuals;
 extern bool gPaintBoundingBoxes;
+extern bool gPaintBlockedTiles;
 
 paint_struct * sub_98196C(
     paint_session * session,

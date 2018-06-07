@@ -206,8 +206,6 @@ enum
 };
 // clang-format on
 
-bool gUseOriginalRidePaint = false;
-
 bool track_paint_util_has_fence(
     enum edge_t edge, LocationXY16 position, const rct_tile_element * tileElement, Ride * ride, uint8 rotation)
 {

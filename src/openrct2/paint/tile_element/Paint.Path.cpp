@@ -800,7 +800,7 @@ void path_paint(paint_session * session, uint16 height, const rct_tile_element *
     }
 
     // For debugging purpose, show blocked tiles with a colour
-    if (tile_element->flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE)
+    if (gPaintBlockedTiles && (tile_element->flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE))
     {
         imageFlags = COLOUR_BRIGHT_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP;
     }
