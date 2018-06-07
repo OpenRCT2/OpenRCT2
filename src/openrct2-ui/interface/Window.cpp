@@ -1,16 +1,26 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/Input.h>
+#include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/sprites.h>
 #include <openrct2/world/Sprite.h>
 #include <openrct2/ui/UiContext.h>
 #include "Theme.h"
 #include "Window.h"
 
+using namespace OpenRCT2;
+
+// The amount of pixels to scroll per wheel click
+constexpr sint32 WINDOW_SCROLL_PIXELS = 17;
+
 #define RCT2_NEW_WINDOW         (gWindowNextSlot)
 #define RCT2_LAST_WINDOW        (gWindowNextSlot - 1)
 
-using namespace OpenRCT2;
+static sint32 _previousAbsoluteWheel = 0;
 
 static bool window_fits_between_others(sint32 x, sint32 y, sint32 width, sint32 height)
 {
@@ -264,4 +274,244 @@ rct_window * window_create_centred(sint32 width, sint32 height, rct_window_event
     sint32 x = (screenWidth - width) / 2;
     sint32 y = std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - height) / 2);
     return window_create(x, y, width, height, event_handlers, cls, flags);
+}
+
+static sint32 window_get_widget_index(rct_window *w, rct_widget *widget)
+{
+    sint32 i = 0;
+    for (rct_widget *widget2 = w->widgets; widget2->type != WWT_LAST; widget2++, i++)
+        if (widget == widget2)
+            return i;
+    return -1;
+}
+
+static sint32 window_get_scroll_index(rct_window *w, sint32 targetWidgetIndex)
+{
+    if (w->widgets[targetWidgetIndex].type != WWT_SCROLL)
+        return -1;
+
+    sint32 scrollIndex = 0;
+    rct_widgetindex widgetIndex = 0;
+    for (rct_widget *widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++) {
+        if (widgetIndex == targetWidgetIndex)
+            break;
+        if (widget->type == WWT_SCROLL)
+            scrollIndex++;
+    }
+
+    return scrollIndex;
+}
+
+static rct_widget *window_get_scroll_widget(rct_window *w, sint32 scrollIndex)
+{
+    for (rct_widget *widget = w->widgets; widget->type != WWT_LAST; widget++) {
+        if (widget->type != WWT_SCROLL)
+            continue;
+
+        if (scrollIndex == 0)
+            return widget;
+        scrollIndex--;
+    }
+
+    return nullptr;
+}
+
+/**
+ *
+ *  rct2: 0x006E78E3
+ */
+static void window_scroll_wheel_input(rct_window *w, sint32 scrollIndex, sint32 wheel)
+{
+    rct_scroll *scroll = &w->scrolls[scrollIndex];
+    rct_widget *widget = window_get_scroll_widget(w, scrollIndex);
+    rct_widgetindex widgetIndex = window_get_widget_index(w, widget);
+
+    if (scroll->flags & VSCROLLBAR_VISIBLE) {
+        sint32 size = widget->bottom - widget->top - 1;
+        if (scroll->flags & HSCROLLBAR_VISIBLE)
+            size -= 11;
+        size = std::max(0, scroll->v_bottom - size);
+        scroll->v_top = std::min(std::max(0, scroll->v_top + wheel), size);
+    } else {
+        sint32 size = widget->right - widget->left - 1;
+        if (scroll->flags & VSCROLLBAR_VISIBLE)
+            size -= 11;
+        size = std::max(0, scroll->h_right - size);
+        scroll->h_left = std::min(std::max(0, scroll->h_left + wheel), size);
+    }
+
+    widget_scroll_update_thumbs(w, widgetIndex);
+    widget_invalidate(w, widgetIndex);
+}
+
+/**
+ *
+ *  rct2: 0x006E793B
+ */
+static sint32 window_wheel_input(rct_window *w, sint32 wheel)
+{
+    sint32 i = 0;
+    for (rct_widget *widget = w->widgets; widget->type != WWT_LAST; widget++) {
+        if (widget->type != WWT_SCROLL)
+            continue;
+
+        // Originally always checked first scroll view, bug maybe?
+        rct_scroll *scroll = &w->scrolls[i];
+        if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE)) {
+            window_scroll_wheel_input(w, i, wheel);
+            return 1;
+        }
+        i++;
+    }
+
+    return 0;
+}
+
+/**
+ *
+ *  rct2: 0x006E79FB
+ */
+static void window_viewport_wheel_input(rct_window *w, sint32 wheel)
+{
+    if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO))
+        return;
+
+    if (wheel < 0)
+        window_zoom_in(w, true);
+    else if (wheel > 0)
+        window_zoom_out(w, true);
+}
+
+static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex, sint32 wheel)
+{
+    // HACK: Until we have a new window system that allows us to add new events like mouse wheel easily,
+    //       this selective approach will have to do.
+
+    // Allow mouse wheel scrolling to increment or decrement the land tool size for various windows
+    auto widgetType = w->widgets[widgetIndex].type;
+
+    // Lower widgetIndex once or twice we got a type that matches, to allow scrolling on the increase/decrease buttons too
+    sint32 attempts = 0;
+    while (widgetType != WWT_IMGBTN && widgetType != WWT_SPINNER && widgetIndex > 0)
+    {
+        switch (widgetType)
+        {
+            case WWT_TRNBTN: // + and - for preview widget
+            case WWT_BUTTON: // + and - for spinner widget
+            {
+                if (attempts > 0)
+                {
+                    // Verify that the previous button was of the same type
+                    auto previousType = w->widgets[widgetIndex + 1].type;
+                    if (previousType != widgetType)
+                    {
+                        return false;
+                    }
+                }
+                break;
+            }
+            default:
+                // The widget type is not an increment or decrement button
+                return false;
+        }
+
+        attempts++;
+        if (attempts > 2)
+        {
+            // We're 2 buttons up, and no preview or spinner widget was found
+            return false;
+        }
+
+        widgetIndex--;
+        widgetType = w->widgets[widgetIndex].type;
+    }
+
+    rct_widgetindex buttonWidgetIndex;
+    uint16 expectedType;
+    uint32 expectedContent[2];
+    switch (widgetType)
+    {
+        case WWT_IMGBTN:
+            buttonWidgetIndex = wheel < 0 ? widgetIndex + 2 : widgetIndex + 1;
+            expectedType = WWT_TRNBTN;
+            expectedContent[0] = IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE;
+            expectedContent[1] = IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE;
+            break;
+        case WWT_SPINNER:
+            buttonWidgetIndex = wheel < 0 ? widgetIndex + 1 : widgetIndex + 2;
+            expectedType = WWT_BUTTON;
+            expectedContent[0] = STR_NUMERIC_UP;
+            expectedContent[1] = STR_NUMERIC_DOWN;
+            break;
+        default: return false;
+    }
+
+    if (widget_is_disabled(w, buttonWidgetIndex))
+    {
+        return false;
+    }
+
+    auto button1Type = w->widgets[widgetIndex + 1].type;
+    auto button1Image = w->widgets[widgetIndex + 1].image;
+    auto button2Type = w->widgets[widgetIndex + 2].type;
+    auto button2Image = w->widgets[widgetIndex + 2].image;
+    if (button1Type != expectedType || button2Type != expectedType || button1Image != expectedContent[0]
+        || button2Image != expectedContent[1])
+    {
+        return false;
+    }
+
+    window_event_mouse_down_call(w, buttonWidgetIndex);
+    return true;
+}
+
+/**
+ *
+ *  rct2: 0x006E7868
+ */
+void window_all_wheel_input()
+{
+    // Get wheel value
+    CursorState * cursorState = (CursorState *)context_get_cursor_state();
+    sint32 absolute_wheel = cursorState->wheel;
+    sint32 relative_wheel = absolute_wheel - _previousAbsoluteWheel;
+    sint32 pixel_scroll = relative_wheel * WINDOW_SCROLL_PIXELS;
+    _previousAbsoluteWheel = absolute_wheel;
+
+    if (relative_wheel == 0)
+        return;
+
+    // Check window cursor is over
+    if (!(input_test_flag(INPUT_FLAG_5))) {
+        rct_window *w = window_find_from_point(cursorState->x, cursorState->y);
+        if (w != nullptr) {
+            // Check if main window
+            if (w->classification == WC_MAIN_WINDOW || w->classification == WC_VIEWPORT) {
+                window_viewport_wheel_input(w, relative_wheel);
+                return;
+            }
+
+            // Check scroll view, cursor is over
+            rct_widgetindex widgetIndex = window_find_widget_from_point(w, cursorState->x, cursorState->y);
+            if (widgetIndex != -1) {
+                rct_widget *widget = &w->widgets[widgetIndex];
+                if (widget->type == WWT_SCROLL) {
+                    sint32 scrollIndex = window_get_scroll_index(w, widgetIndex);
+                    rct_scroll *scroll =  &w->scrolls[scrollIndex];
+                    if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE)) {
+                        window_scroll_wheel_input(w, window_get_scroll_index(w, widgetIndex), pixel_scroll);
+                        return;
+                    }
+                } else {
+                    if (window_other_wheel_input(w, widgetIndex, pixel_scroll)) {
+                        return;
+                    }
+                }
+
+                // Check other scroll views on window
+                if (window_wheel_input(w, pixel_scroll))
+                    return;
+            }
+        }
+    }
 }

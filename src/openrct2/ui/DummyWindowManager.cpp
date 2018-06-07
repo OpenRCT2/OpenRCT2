@@ -33,6 +33,7 @@ namespace OpenRCT2::Ui
         void HandleKeyboard(bool /*isTitle*/) override { }
         std::string GetKeyboardShortcutString(sint32 /*shortcut*/) override { return std::string(); }
         void SetMainView(sint32 x, sint32 y, sint32 zoom, sint32 rotation) override { }
+        void UpdateMouseWheel() override { }
     };
 
     IWindowManager * CreateDummyWindowManager()

@@ -502,6 +502,11 @@ public:
             window_invalidate(mainWindow);
         }
     }
+
+    void UpdateMouseWheel() override
+    {
+        window_all_wheel_input();
+    }
 };
 
 IWindowManager * OpenRCT2::Ui::CreateWindowManager()
