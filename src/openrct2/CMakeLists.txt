@@ -93,7 +93,7 @@ endif ()
 
 if (NOT DISABLE_NETWORK)
     if (WIN32)
-        target_link_libraries(${PROJECT} ws2_32)
+        target_link_libraries(${PROJECT} ws2_32 crypt32 wldap32 version winmm imm32)
     endif ()
 
     # our HTTP implementation requires use of threads
