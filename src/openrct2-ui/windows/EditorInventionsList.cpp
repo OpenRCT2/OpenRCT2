@@ -773,39 +773,52 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
         if (researchItem == _editorInventionsListDraggedItem)
             continue;
 
-        uint8 colourFlags = 0;
+        utf8 groupNameBuffer[256], vehicleNameBuffer[256];
+        utf8* groupNamePtr = groupNameBuffer;
+        utf8* vehicleNamePtr = vehicleNameBuffer;
+
+        uint8 colour;
         if (research_item_is_always_researched(researchItem))
         {
-            if (_editorInventionsListDraggedItem == nullptr)
+            if (w->research_item == researchItem && _editorInventionsListDraggedItem == nullptr)
                 gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK;
             else
                 gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
-            colourFlags = COLOUR_FLAG_INSET;
+            colour = w->colours[1] | COLOUR_FLAG_INSET;
         }
         else
+        {
+            // TODO: this is actually just a black colour.
+            colour = COLOUR_BRIGHT_GREEN | COLOUR_FLAG_TRANSLUCENT;
             gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
+            groupNamePtr = utf8_write_codepoint(groupNamePtr, colour);
+            vehicleNamePtr = utf8_write_codepoint(vehicleNamePtr, colour);
+        }
+
         rct_string_id itemNameId = research_item_get_name(researchItem);
-        sint32 left = 1;
-        sint32 top = itemY;
 
         if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
         {
             const rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
-            rct_string_id args[] = {
-                STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME,
-                rideGroupName,
-            };
-
-            // Group name
-            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, &args, colourFlags, left, top, columnSplitOffset);
-
-            // Vehicle name
-            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, &itemNameId, colourFlags, left + columnSplitOffset, top, columnSplitOffset);
+            format_string(groupNamePtr, sizeof(groupNameBuffer), STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, (void*) &rideGroupName);
+            format_string(vehicleNamePtr, sizeof(vehicleNamePtr), itemNameId, nullptr);
         }
         else
         {
-            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, &itemNameId, colourFlags, left, top, boxWidth);
+            format_string(groupNamePtr, sizeof(groupNameBuffer), itemNameId, nullptr);
+            vehicleNamePtr = nullptr;
+        }
+
+        // Draw group name
+        gfx_clip_string(groupNameBuffer, columnSplitOffset);
+        gfx_draw_string(dpi, groupNameBuffer, colour, 1, itemY);
+
+        // Draw vehicle name
+        if (vehicleNamePtr)
+        {
+            gfx_clip_string(vehicleNameBuffer, columnSplitOffset);
+            gfx_draw_string(dpi, vehicleNameBuffer, colour, columnSplitOffset + 1, itemY);
         }
     }
     while (researchItem++->rawValue != researchItemEndMarker);
