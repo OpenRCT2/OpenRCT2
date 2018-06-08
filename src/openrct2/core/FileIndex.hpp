@@ -154,7 +154,7 @@ private:
     {
         DirectoryStats stats {};
         std::vector<std::string> files;
-        for (const auto directory : SearchPaths)
+        for (const auto& directory : SearchPaths)
         {
             log_verbose("FileIndex:Scanning for %s in '%s'", _pattern.c_str(), directory.c_str());
 
@@ -339,7 +339,7 @@ private:
             fs.WriteValue(header);
 
             // Write items
-            for (const auto item : items)
+            for (const auto& item : items)
             {
                 Serialise(&fs, item);
             }
