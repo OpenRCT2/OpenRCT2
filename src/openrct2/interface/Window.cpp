@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <algorithm>
+#include <cmath>
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../Context.h"
@@ -85,7 +86,6 @@ static constexpr const float window_scroll_locations[][2] = {
     {0.125f,    0.125f},
 };
 
-static bool window_fits_between_others(sint32 x, sint32 y, sint32 width, sint32 height);
 static sint32 window_draw_split(rct_drawpixelinfo *dpi, rct_window *w, sint32 left, sint32 top, sint32 right, sint32 bottom);
 static void window_draw_single(rct_drawpixelinfo *dpi, rct_window *w, sint32 left, sint32 top, sint32 right, sint32 bottom);
 
