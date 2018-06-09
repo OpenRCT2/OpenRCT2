@@ -51,7 +51,6 @@
     <None Include="data\shaders\**\*.frag" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="**\*.c" />
     <ClCompile Include="**\*.cpp" />
   </ItemGroup>
   <ItemGroup>
