@@ -1827,7 +1827,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         direction = _currentTrackPieceDirection;
         type = _currentTrackPieceType;
 
-        if (sub_6C683D(&x, &y, &z, direction, type, 0, &tileElement, 0)) {
+        if (sub_6C683D(&x, &y, &z, direction & 3, type, 0, &tileElement, 0)) {
             window_ride_construction_update_active_elements();
             return;
         }

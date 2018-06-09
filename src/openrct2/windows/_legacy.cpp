@@ -513,7 +513,7 @@ void window_ride_construction_mouseup_demolish_next_piece(sint32 x, sint32 y, si
         _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
         _currentTrackSelectionFlags = 0;
         _rideConstructionArrowPulseTime = 0;
-        direction = _currentTrackPieceDirection;
+        _currentTrackPieceDirection = direction & 3;
         sint32 slope = _currentTrackCurve;
         sint32 slopeEnd = _previousTrackSlopeEnd;
         sint32 b2 = _currentTrackSlopeEnd;
@@ -525,7 +525,7 @@ void window_ride_construction_mouseup_demolish_next_piece(sint32 x, sint32 y, si
         window_ride_construction_update_active_elements();
         if (!ride_try_get_origin_element(_currentRideIndex, NULL)) {
             ride_initialise_construction_window(_currentRideIndex);
-            _currentTrackPieceDirection = direction;
+            _currentTrackPieceDirection = direction & 3;
             if (!(slope & 0x100)) {
                 _currentTrackCurve = slope;
                 _previousTrackSlopeEnd = slopeEnd;
