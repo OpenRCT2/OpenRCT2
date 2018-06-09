@@ -267,11 +267,15 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex,
             tileElement->type |= newRotation;
             break;
         case TILE_ELEMENT_TYPE_BANNER:
-            tileElement->properties.banner.flags ^= 1 << tileElement->properties.banner.position;
+        {
+            uint8 unblockedEdges = tileElement->properties.banner.flags & 0xF;
+            unblockedEdges = (unblockedEdges << 1 | unblockedEdges >> 3) & 0xF;
+            tileElement->properties.banner.flags &= ~0xF;
+            tileElement->properties.banner.flags |= unblockedEdges;
             tileElement->properties.banner.position++;
             tileElement->properties.banner.position &= 3;
-            tileElement->properties.banner.flags ^= 1 << tileElement->properties.banner.position;
             break;
+        }
         }
 
         map_invalidate_tile_full(x << 5, y << 5);
