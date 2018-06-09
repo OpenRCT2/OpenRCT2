@@ -2793,7 +2793,7 @@ void game_command_place_large_scenery(
     gCommandPosition.y = y + 16;
     gCommandPosition.z = base_height;
     gSceneryGroundFlags = 0;
-    uint8 banner_id = BANNER_INDEX_NULL;
+    BannerIndex banner_id = BANNER_INDEX_NULL;
     money32 supportsCost = 0;
 
     if (game_is_paused() && !gCheatsBuildInPauseMode) {
@@ -4299,7 +4299,7 @@ void game_command_set_sign_style(
     sint32 *                  edi,
     sint32 *                  ebp)
 {
-    uint8 bannerId = *ecx & 0xFF;
+    BannerIndex bannerId = *ecx & 0xFF;
     if (bannerId > Util::CountOf(gBanners)) {
         log_warning("Invalid game command for setting sign style, banner id = %d", bannerId);
         *ebx = MONEY32_UNDEFINED;

@@ -693,7 +693,7 @@ void scenario_fix_ghosts(rct_s6_data *s6)
             rct_tile_element *originalElement = map_get_first_element_at(x, y);
             do {
                 if (originalElement->flags & TILE_ELEMENT_FLAG_GHOST) {
-                    uint8 bannerIndex = tile_element_get_banner_index(originalElement);
+                    BannerIndex bannerIndex = tile_element_get_banner_index(originalElement);
                     if (bannerIndex != BANNER_INDEX_NULL) {
                         rct_banner *banner = &s6->banners[bannerIndex];
                         if (banner->type != BANNER_NULL)

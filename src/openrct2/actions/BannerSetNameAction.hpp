@@ -30,12 +30,12 @@
 struct BannerSetNameAction : public GameActionBase<GAME_COMMAND_SET_BANNER_NAME, GameActionResult>
 {
 private:
-    sint32 _bannerIndex;
+    BannerIndex _bannerIndex;
     std::string _name;
 
 public:
     BannerSetNameAction() {}
-    BannerSetNameAction(sint32 bannerIndex, const std::string& name)
+    BannerSetNameAction(BannerIndex bannerIndex, const std::string& name)
         : _bannerIndex(bannerIndex),
         _name(name)
     {

@@ -272,7 +272,7 @@ void large_scenery_paint(paint_session * session, uint8 direction, uint16 height
             textColour = COLOUR_GREY;
         }
         textColour = (textColour << 19) | IMAGE_TYPE_REMAP;
-        uint32 bannerIndex = scenery_large_get_banner_id(tileElement);
+        BannerIndex bannerIndex = scenery_large_get_banner_id(tileElement);
         rct_banner *banner = &gBanners[bannerIndex];
         rct_string_id stringId = banner->string_idx;
         if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
@@ -362,7 +362,7 @@ void large_scenery_paint(paint_session * session, uint8 direction, uint16 height
     }
     // 6B809A:
     set_format_arg(7, uint8, textColour);
-    uint32 bannerIndex = scenery_large_get_banner_id(tileElement);
+    BannerIndex bannerIndex = scenery_large_get_banner_id(tileElement);
     uint16 scrollMode = entry->large_scenery.scrolling_mode + ((direction + 1) & 0x3);
     rct_banner *banner = &gBanners[bannerIndex];
     set_format_arg(0, rct_string_id, banner->string_idx);

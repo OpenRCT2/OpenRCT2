@@ -453,7 +453,7 @@ static money32 WallPlace(uint8 wallType,
             }
         }
     }
-    sint32 bannerIndex = 0xFF;
+    BannerIndex bannerIndex = BANNER_INDEX_NULL;
     rct_scenery_entry * wallEntry = get_wall_entry(wallType);
 
     if (wallEntry == nullptr)

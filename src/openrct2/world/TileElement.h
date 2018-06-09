@@ -82,7 +82,7 @@ struct rct_tile_element_wall_properties {
     uint8 type; //4
     union {
         uint8 colour_3; //5
-        uint8 banner_index; //5
+        BannerIndex banner_index; // 5
     };
     uint8 colour_1; //6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
     uint8 animation; //7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
@@ -96,7 +96,7 @@ struct rct_tile_element_scenerymultiple_properties {
 assert_struct_size(rct_tile_element_scenerymultiple_properties, 4);
 
 struct rct_tile_element_banner_properties {
-    uint8 index; //4
+    BannerIndex index; // 4
     uint8 position; //5
     uint8 flags; //6
     uint8 unused; //7
@@ -210,13 +210,13 @@ enum
 
 sint32 tile_element_get_direction(const rct_tile_element * element);
 sint32 tile_element_get_direction_with_offset(const rct_tile_element * element, uint8 offset);
-uint8 tile_element_get_banner_index(rct_tile_element* tileElement);
+BannerIndex tile_element_get_banner_index(rct_tile_element* tileElement);
 bool tile_element_is_ghost(const rct_tile_element * element);
 bool tile_element_is_underground(rct_tile_element * tileElement);
 bool tile_element_is_last_for_tile(const rct_tile_element *element);
 
 // ~Oli414: The banner functions should probably be part of banner.
-void tile_element_set_banner_index(rct_tile_element * tileElement, sint32 bannerIndex);
+void tile_element_set_banner_index(rct_tile_element* tileElement, BannerIndex bannerIndex);
 void tile_element_remove_banner_entry(rct_tile_element *tileElement);
 
 uint8 tile_element_get_ride_index(const rct_tile_element * tileElement);
