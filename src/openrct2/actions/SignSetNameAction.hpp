@@ -17,13 +17,16 @@
 #pragma once
 
 #include "../Context.h"
+#include "../Diagnostic.h"
+#include "../common.h"
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
-#include "../ui/UiContext.h"
-#include "../world/Sprite.h"
+#include "../ride/Ride.h"
 #include "../world/Banner.h"
 #include "GameAction.h"
+
+#include <string>
 
 struct SignSetNameAction : public GameActionBase<GAME_COMMAND_SET_SIGN_NAME, GameActionResult>
 {
@@ -32,10 +35,10 @@ private:
     std::string _name;
 
 public:
-    SignSetNameAction() {}
+    SignSetNameAction() = default;
     SignSetNameAction(sint32 bannerIndex, const std::string& name)
-        : _bannerIndex(bannerIndex),
-        _name(name)
+        : _bannerIndex(bannerIndex)
+        , _name(name)
     {
     }
 
