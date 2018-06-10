@@ -82,7 +82,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 
 ### Windows:
 - 7 / 8 / 10
-- Visual Studio 2017 update 3 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
+- Visual Studio 2017 update 7 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
   - Desktop development with C++
   - [Windows 10 SDK (10.0.14393.0)](https://go.microsoft.com/fwlink/p/?LinkId=838916)
 - [7-Zip](http://www.7-zip.org/) (for deployment only)
