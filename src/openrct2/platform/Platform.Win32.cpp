@@ -17,8 +17,6 @@
 #ifdef _WIN32
 
 #include <memory>
-
-#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <datetimeapi.h>
 #include <shlobj.h>
@@ -27,6 +25,8 @@
 #if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
     #define __USE_SHGETKNOWNFOLDERPATH__
     #define __USE_GETDATEFORMATEX__
+#else
+    #define ENABLE_VIRTUAL_TERMINAL_PROCESSING  0x0004
 #endif
 
 #include "../core/Path.hpp"
@@ -197,7 +197,79 @@ namespace Platform
         return result;
     }
 
-#ifdef __USE_SHGETKNOWNFOLDERPATH__
+    bool IsOSVersionAtLeast(uint32 major, uint32 minor, uint32 build)
+    {
+        bool result = false;
+        auto hModule = GetModuleHandleA("ntdll.dll");
+        if (hModule != nullptr)
+        {
+            using RtlGetVersionPtr = NTSTATUS(WINAPI *)(PRTL_OSVERSIONINFOW);
+            auto fn = (RtlGetVersionPtr)GetProcAddress(hModule, "RtlGetVersion");
+            if (fn != nullptr)
+            {
+                RTL_OSVERSIONINFOW rovi{};
+                rovi.dwOSVersionInfoSize = sizeof(rovi);
+                if (fn(&rovi) == 0)
+                {
+                    if (rovi.dwMajorVersion > major ||
+                        (rovi.dwMajorVersion == major &&
+                        (rovi.dwMinorVersion > minor ||
+                            (rovi.dwMinorVersion == minor &&
+                                rovi.dwBuildNumber >= build))))
+                    {
+                        result = true;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Checks if the current version of Windows supports ANSI colour codes.
+     * From Windows 10, build 10586 ANSI escape colour codes can be used on stdout.
+     */
+    static bool HasANSIColourSupport()
+    {
+        return IsOSVersionAtLeast(10, 0, 10586);
+    }
+
+    static void EnableANSIConsole()
+    {
+        if (HasANSIColourSupport())
+        {
+            auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
+            DWORD mode;
+            GetConsoleMode(handle, &mode);
+            if (!(mode & ENABLE_VIRTUAL_TERMINAL_PROCESSING))
+            {
+                mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+                SetConsoleMode(handle, mode);
+            }
+        }
+    }
+
+    bool IsColourTerminalSupported()
+    {
+        static bool hasChecked = false;
+        static bool isSupported = false;
+        if (!hasChecked)
+        {
+            if (HasANSIColourSupport())
+            {
+                EnableANSIConsole();
+                isSupported = true;
+            }
+            else
+            {
+                isSupported = false;
+            }
+            hasChecked = true;
+        }
+        return isSupported;
+    }
+
+ #ifdef __USE_SHGETKNOWNFOLDERPATH__
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid)
     {
         std::string path;
@@ -236,6 +308,6 @@ namespace Platform
         while (size >= wExePathCapacity);
         return String::ToUtf8(wExePath.get());
     }
-}
+} // namespace Platform
 
 #endif

@@ -15,15 +15,15 @@
 #pragma endregion
 
 #include <ctime>
-
-#include "../core/Guard.hpp"
+#include <memory>
 
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../platform/Crash.h"
 #include "../platform/platform.h"
 #include "../localisation/Language.h"
-
 #include "../core/Console.hpp"
+#include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -91,8 +91,10 @@ static constexpr const CommandLineOptionDefinition StandardOptions[]
 static exitcode_t HandleNoCommand(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandEdit(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandIntro(CommandLineArgEnumerator * enumerator);
+#ifndef DISABLE_NETWORK
 static exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator);
+#endif
 static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator);
 
@@ -265,7 +267,7 @@ exitcode_t HandleCommandEdit(CommandLineArgEnumerator * enumerator)
     return EXITCODE_CONTINUE;
 }
 
-exitcode_t HandleCommandIntro(CommandLineArgEnumerator * enumerator)
+exitcode_t HandleCommandIntro([[maybe_unused]] CommandLineArgEnumerator * enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
     if (result != EXITCODE_CONTINUE)
@@ -388,7 +390,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
     }
 }
 
-static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator)
+static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumerator * enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
     if (result != EXITCODE_CONTINUE)
@@ -396,18 +398,17 @@ static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator
         return result;
     }
 
-    auto env = OpenRCT2::CreatePlatformEnvironment();
+    gOpenRCT2Headless = true;
 
-    // HACK: set gCurrentLanguage otherwise it be wrong for the index file
-    gCurrentLanguage = gConfigGeneral.language;
-
+    auto context = std::unique_ptr<OpenRCT2::IContext>(OpenRCT2::CreateContext());
+    auto env = context->GetPlatformEnvironment();
     auto objectRepository = CreateObjectRepository(env);
-    objectRepository->Construct();
+    objectRepository->Construct(gConfigGeneral.language);
     return EXITCODE_OK;
 }
 
 #if defined(_WIN32) && !defined(__MINGW32__)
-static exitcode_t HandleCommandRegisterShell(CommandLineArgEnumerator * enumerator)
+static exitcode_t HandleCommandRegisterShell([[maybe_unused]] CommandLineArgEnumerator * enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
     if (result != EXITCODE_CONTINUE)

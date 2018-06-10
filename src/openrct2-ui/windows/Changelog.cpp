@@ -26,9 +26,11 @@
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2/drawing/Drawing.h>
 
 using namespace OpenRCT2;
 
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -89,6 +91,7 @@ static rct_window_event_list window_changelog_events = {
     window_changelog_paint,
     window_changelog_scrollpaint
 };
+// clang-format on
 
 static bool window_changelog_read_file();
 static void window_changelog_dispose_file();
@@ -129,7 +132,7 @@ rct_window * window_changelog_open()
     return window;
 }
 
-static void window_changelog_close(rct_window *w)
+static void window_changelog_close([[maybe_unused]] rct_window * w)
 {
     window_changelog_dispose_file();
 }
@@ -163,10 +166,13 @@ static void window_changelog_resize(rct_window *w)
     }
 }
 
-static void window_changelog_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+static void window_changelog_scrollgetsize(
+    [[maybe_unused]] rct_window * w, [[maybe_unused]] sint32 scrollIndex, sint32 * width, sint32 * height)
 {
     *width = _changelogLongestLineWidth + 4;
-    *height = (sint32)(_changelogLines.size() * 11);
+
+    const sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    *height = (sint32)(_changelogLines.size() * lineHeight);
 }
 
 static void window_changelog_invalidate(rct_window *w)
@@ -187,17 +193,22 @@ static void window_changelog_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_draw_widgets(w, dpi);
 }
 
-static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+static void window_changelog_scrollpaint(rct_window * w, rct_drawpixelinfo * dpi, [[maybe_unused]] sint32 scrollIndex)
 {
     gCurrentFontFlags = 0;
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
+    const sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+
     sint32 x = 3;
-    sint32 y = 3;
+    sint32 y = 3 - lineHeight;
     for (auto line : _changelogLines)
     {
+        y += lineHeight;
+        if (y + lineHeight < dpi->y || y >= dpi->y + dpi->height)
+            continue;
+
         gfx_draw_string(dpi, (char *)line, w->colours[0], x, y);
-        y += 11;
     }
 }
 

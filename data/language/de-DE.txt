@@ -1219,8 +1219,8 @@ STR_1214    :{SMALLFONT}{BLACK}Wählen Sie die Höchstwartezeit{NEWLINE}vor der 
 STR_1215    :{WINDOW_COLOUR_2}Mit benachbarten Stationen synchronisieren
 STR_1216    :{SMALLFONT}{BLACK}Auswählen, ob Abfahrt mit allen benachbarten Stationen (für `Rennen') synchronisiert werden soll
 STR_1217    :{COMMA16} Sekunden
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Nur Ausgang
 STR_1221    :Kein Eingang
 STR_1222    :Kein Ausgang
@@ -4967,13 +4967,3 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
-
-#######################
-# Bahnen/Attraktionen # 
-#######################
-
-#WW
-[CONDORRD]
-STR_NAME    :Kondorbahn
-STR_DESC    :Die Passagiere fahren, in speziellen Gurten hängend, unterhalb der Strecke. In den kondorförmigen Wagen erleben sie dabei ein Gefühl des Fliegens.
-STR_CPTY    :4 Fahrgäste pro Wagen

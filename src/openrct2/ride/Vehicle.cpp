@@ -32,9 +32,12 @@
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../world/MapAnimation.h"
+#include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Sprite.h"
+#include "../world/Surface.h"
+#include "../world/Wall.h"
 #include "Vehicle.h"
 #include "CableLift.h"
 #include "Ride.h"
@@ -68,7 +71,7 @@ static void   vehicle_update_crash(rct_vehicle * vehicle);
 static void   vehicle_update_travelling_boat(rct_vehicle * vehicle);
 static void   vehicle_update_motion_boat_hire(rct_vehicle * vehicle);
 static void   vehicle_update_boat_location(rct_vehicle * vehicle);
-static bool   vehicle_is_boat_on_water(rct_vehicle * vehicle, int x, int y);
+static bool   vehicle_boat_is_location_accessible(const TileCoordsXYZ &location);
 static void   vehicle_update_arriving(rct_vehicle * vehicle);
 static void   vehicle_update_unloading_passengers(rct_vehicle * vehicle);
 static void   vehicle_update_waiting_for_cable_lift(rct_vehicle * vehicle);
@@ -87,7 +90,7 @@ static void vehicle_kill_all_passengers(rct_vehicle * vehicle);
 static bool vehicle_can_depart_synchronised(rct_vehicle * vehicle);
 
 #define NO_SCREAM 254
-#define VEHICLE_INVALID_ID -1
+#define VEHICLE_INVALID_ID (-1)
 
 #define VEHICLE_MAX_SPIN_SPEED  1536
 #define VEHICLE_MAX_SPIN_SPEED_FOR_STOPPING 700
@@ -814,7 +817,7 @@ const rct_vehicle_info * vehicle_get_move_info(sint32 cd, sint32 typeAndDirectio
 {
     if (!vehicle_move_info_valid(cd, typeAndDirection, offset))
     {
-        static constexpr const rct_vehicle_info zero = { 0 };
+        static constexpr const rct_vehicle_info zero = {};
         return &zero;
     }
     return &gTrackVehicleInfo[cd][typeAndDirection]->info[offset];
@@ -1816,9 +1819,10 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
     if (ride_get_entrance_location(ride, ride->current_test_station).isNull())
         return;
 
-    sint16 x, y;
+    sint16 x, y, z;
     x = vehicle->x;
     y = vehicle->y;
+    z = vehicle->z;
 
     if (x == LOCATION_NULL)
     {
@@ -1827,25 +1831,33 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
     }
 
     rct_tile_element * tile_element = map_get_surface_element_at({x, y});
-    if (tile_element->base_height * 8 <= vehicle->z)
+    // If vehicle above ground.
+    if (tile_element->base_height * 8 <= z)
     {
+        // Set tile_element to first element. Since elements aren't always ordered by base height,
+        // we must start at the first element and iterate through each tile element.
+        tile_element = map_get_first_element_at(x / 32, y / 32);
 
         bool cover_found = false;
         do
         {
-            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+            // If the tile_element is lower than the vehicle, continue (don't set flag)
+            if (tile_element->base_height * 8 <= z)
+                continue;
+
+            if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
             {
                 cover_found = true;
                 break;
             }
 
-            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_PATH)
+            if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
             {
                 cover_found = true;
                 break;
             }
 
-            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+            if (tile_element->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
 
             rct_scenery_entry * scenery = get_small_scenery_entry(tile_element->properties.scenery.type);
@@ -1854,7 +1866,8 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
                 cover_found = true;
                 break;
             }
-        } while (!tile_element_is_last_for_tile(tile_element++));
+            // Iterate through each tile_element.
+        } while (!(tile_element++)->IsLastForTile());
 
         if (cover_found == false)
         {
@@ -2570,10 +2583,17 @@ static void vehicle_update_waiting_to_depart(rct_vehicle * vehicle)
         sint32       z;
         sint32       direction;
 
-        if (track_block_get_next_from_zero(vehicle->track_x, vehicle->track_y, vehicle->track_z, vehicle->ride,
-                                           (uint8)(vehicle->track_direction & 0x3), &track, &z, &direction))
+        if (track_block_get_next_from_zero(
+                vehicle->track_x,
+                vehicle->track_y,
+                vehicle->track_z,
+                vehicle->ride,
+                (uint8)(vehicle->track_direction & 0x3),
+                &track,
+                &z,
+                &direction,
+                false))
         {
-
             if (track_element_is_cable_lift(track.element))
             {
                 vehicle->status = VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT;
@@ -2723,7 +2743,7 @@ assert_struct_size(rct_synchronised_vehicle, 4);
 #define SYNCHRONISED_VEHICLE_COUNT 16
 
 // Synchronised vehicle info
-static rct_synchronised_vehicle _synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT] = { 0 };
+static rct_synchronised_vehicle _synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT] = {};
 
 static rct_synchronised_vehicle * _lastSynchronisedVehicle = nullptr;
 
@@ -2861,8 +2881,8 @@ static bool vehicle_can_depart_synchronised(rct_vehicle * vehicle)
     spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
     {
-        x += TileDirectionDelta[direction].x;
-        y += TileDirectionDelta[direction].y;
+        x += CoordsDirectionDelta[direction].x;
+        y += CoordsDirectionDelta[direction].y;
         if (try_add_synchronised_station(x, y, z))
         {
             spaceBetween = maxCheckDistance;
@@ -2883,8 +2903,8 @@ static bool vehicle_can_depart_synchronised(rct_vehicle * vehicle)
     spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
     {
-        x += TileDirectionDelta[direction].x;
-        y += TileDirectionDelta[direction].y;
+        x += CoordsDirectionDelta[direction].x;
+        y += CoordsDirectionDelta[direction].y;
         if (try_add_synchronised_station(x, y, z))
         {
             spaceBetween = maxCheckDistance;
@@ -3028,7 +3048,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle * vehicle)
  *
  *  rct2: 0x006D9EB0
  */
-void vehicle_peep_easteregg_here_we_are(rct_vehicle * vehicle)
+void vehicle_peep_easteregg_here_we_are(const rct_vehicle * vehicle)
 {
     uint16 spriteId = vehicle->sprite_index;
     do
@@ -3150,11 +3170,7 @@ static bool vehicle_next_tower_element_is_top(rct_vehicle * vehicle)
         return true;
     }
 
-    if (track_element_get_type(tileElement + 2) == TRACK_ELEM_TOWER_SECTION)
-    {
-        return false;
-    }
-    return true;
+    return track_element_get_type(tileElement + 2) != TRACK_ELEM_TOWER_SECTION;
 }
 
 /**
@@ -3167,8 +3183,8 @@ static void vehicle_update_travelling_boat_hire_setup(rct_vehicle * vehicle)
     vehicle->track_x = vehicle->x & 0xFFE0;
     vehicle->track_y = vehicle->y & 0xFFE0;
 
-    LocationXY8 location = { static_cast<uint8>((vehicle->track_x + TileDirectionDelta[vehicle->sprite_direction >> 3].x) / 32),
-                             static_cast<uint8>((vehicle->track_y + TileDirectionDelta[vehicle->sprite_direction >> 3].y) /
+    LocationXY8 location = { static_cast<uint8>((vehicle->track_x + CoordsDirectionDelta[vehicle->sprite_direction >> 3].x) / 32),
+                             static_cast<uint8>((vehicle->track_y + CoordsDirectionDelta[vehicle->sprite_direction >> 3].y) /
                                                 32) };
 
     vehicle->boat_location = location;
@@ -4098,18 +4114,14 @@ static void vehicle_update_unloading_passengers(rct_vehicle * vehicle)
             rct_peep * peep         = GET_PEEP(vehicle->peep[seat * 2]);
             vehicle->peep[seat * 2] = SPRITE_INDEX_NULL;
 
-            peep_decrement_num_riders(peep);
-            peep->sub_state = 7;
-            peep->state     = PEEP_STATE_LEAVING_RIDE;
-            peep_window_state_update(peep);
+            peep->SetState(PEEP_STATE_LEAVING_RIDE);
+            peep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
 
             peep                        = GET_PEEP(vehicle->peep[seat * 2 + 1]);
             vehicle->peep[seat * 2 + 1] = SPRITE_INDEX_NULL;
 
-            peep_decrement_num_riders(peep);
-            peep->sub_state = 7;
-            peep->state     = PEEP_STATE_LEAVING_RIDE;
-            peep_window_state_update(peep);
+            peep->SetState(PEEP_STATE_LEAVING_RIDE);
+            peep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
         }
     }
     else
@@ -4144,10 +4156,8 @@ static void vehicle_update_unloading_passengers(rct_vehicle * vehicle)
             for (uint8 peepIndex = 0; peepIndex < train->num_peeps; peepIndex++)
             {
                 rct_peep * peep = GET_PEEP(train->peep[peepIndex]);
-                peep_decrement_num_riders(peep);
-                peep->sub_state = 7;
-                peep->state     = PEEP_STATE_LEAVING_RIDE;
-                peep_window_state_update(peep);
+                peep->SetState(PEEP_STATE_LEAVING_RIDE);
+                peep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
             }
         }
     }
@@ -4468,7 +4478,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle * vehicle)
             sint32 flooredY = floor2(y, 32);
             if (flooredX != vehicle->track_x || flooredY != vehicle->track_y)
             {
-                if (vehicle_is_boat_on_water(vehicle, x, y))
+                if (!vehicle_boat_is_location_accessible(TileCoordsXYZ(CoordsXYZ{x, y, vehicle->track_z})))
                 {
                     // loc_6DA939:
                     Ride * ride = get_ride(vehicle->ride);
@@ -4608,8 +4618,8 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
     LocationXY8 returnPosition  = ride->boat_hire_return_position;
     uint8       returnDirection = ride->boat_hire_return_direction & 3;
 
-    LocationXY8 location = { static_cast<uint8>((vehicle->x + TileDirectionDelta[returnDirection].x) / 32),
-                             static_cast<uint8>((vehicle->y + TileDirectionDelta[returnDirection].y) / 32) };
+    LocationXY8 location = { static_cast<uint8>((vehicle->x + CoordsDirectionDelta[returnDirection].x) / 32),
+                             static_cast<uint8>((vehicle->y + CoordsDirectionDelta[returnDirection].y) / 32) };
 
     if (location.xy == returnPosition.xy)
     {
@@ -4628,8 +4638,8 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
         if (scenario_rand() & 1)
         {
             LocationXY16 destLocation = {
-                static_cast<sint16>(returnPosition.x * 32 - TileDirectionDelta[returnDirection].x + 16),
-                static_cast<sint16>(returnPosition.y * 32 - TileDirectionDelta[returnDirection].y + 16)
+                static_cast<sint16>(returnPosition.x * 32 - CoordsDirectionDelta[returnDirection].x + 16),
+                static_cast<sint16>(returnPosition.y * 32 - CoordsDirectionDelta[returnDirection].y + 16)
             };
 
             destLocation.x -= vehicle->x;
@@ -4654,10 +4664,10 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
             continue;
         }
 
-        sint16 x = vehicle->track_x + TileDirectionDelta[(randDirection + rotation) & 3].x;
-        sint16 y = vehicle->track_y + TileDirectionDelta[(randDirection + rotation) & 3].y;
+        sint16 x = vehicle->track_x + CoordsDirectionDelta[(randDirection + rotation) & 3].x;
+        sint16 y = vehicle->track_y + CoordsDirectionDelta[(randDirection + rotation) & 3].y;
 
-        if (vehicle_is_boat_on_water(vehicle, x, y))
+        if (!vehicle_boat_is_location_accessible(TileCoordsXYZ(CoordsXYZ{x, y, vehicle->track_z})))
         {
             continue;
         }
@@ -4666,8 +4676,8 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
         return;
     }
 
-    sint16 x                 = vehicle->track_x + TileDirectionDelta[curDirection & 3].x;
-    sint16 y                 = vehicle->track_y + TileDirectionDelta[curDirection & 3].y;
+    sint16 x                 = vehicle->track_x + CoordsDirectionDelta[curDirection & 3].x;
+    sint16 y                 = vehicle->track_y + CoordsDirectionDelta[curDirection & 3].y;
     vehicle->boat_location.x = x / 32;
     vehicle->boat_location.y = y / 32;
 }
@@ -4676,29 +4686,28 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
  *
  *  rct2: 0x006DA22A
  */
-static bool vehicle_is_boat_on_water(rct_vehicle * vehicle, sint32 x, sint32 y)
+static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ &location)
 {
-    sint32            z          = vehicle->track_z >> 3;
-    rct_tile_element * tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    rct_tile_element * tileElement = map_get_first_element_at(location.x, location.y);
     do
     {
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SURFACE)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
         {
-            sint32 waterZ = map_get_water_height(tileElement) * 2;
-            if (z != waterZ)
+            sint32 waterZ = surface_get_water_height(tileElement) * 2;
+            if (location.z != waterZ)
             {
-                return true;
+                return false;
             }
         }
         else
         {
-            if (z > tileElement->base_height - 2 && z < tileElement->clearance_height + 2)
+            if (location.z > tileElement->base_height - 2 && location.z < tileElement->clearance_height + 2)
             {
-                return true;
+                return false;
             }
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
-    return false;
+    } while (!(tileElement++)->IsLastForTile());
+    return true;
 }
 
 /**
@@ -5209,7 +5218,7 @@ static rct_tile_element * vehicle_check_collision(sint16 x, sint16 y, sint16 z)
 
         if (tileElement->flags & bl)
             return tileElement;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
 }
@@ -5694,7 +5703,7 @@ produceScream:
  * dx: lateralG
  * esi: vehicle
  */
-void vehicle_get_g_forces(rct_vehicle * vehicle, sint32 * verticalG, sint32 * lateralG)
+void vehicle_get_g_forces(const rct_vehicle * vehicle, sint32 * verticalG, sint32 * lateralG)
 {
     sint32 gForceVert    = (((sint64)0x280000) * Unk9A37E4[vehicle->vehicle_sprite_type]) >> 32;
     gForceVert           = (((sint64)gForceVert) * Unk9A39C4[vehicle->bank_rotation]) >> 32;
@@ -6216,7 +6225,7 @@ void vehicle_get_g_forces(rct_vehicle * vehicle, sint32 * verticalG, sint32 * la
         *lateralG = (sint16)(gForceLateral & 0xFFFF);
 }
 
-void vehicle_set_map_toolbar(rct_vehicle * vehicle)
+void vehicle_set_map_toolbar(const rct_vehicle * vehicle)
 {
     Ride * ride;
     sint32 vehicleIndex;
@@ -6247,9 +6256,9 @@ void vehicle_set_map_toolbar(rct_vehicle * vehicle)
     set_map_tooltip_format_arg(16, uint32, (uint16)arg1);
 }
 
-rct_vehicle * vehicle_get_head(rct_vehicle * vehicle)
+rct_vehicle* vehicle_get_head(const rct_vehicle* vehicle)
 {
-    rct_vehicle * prevVehicle;
+    rct_vehicle* prevVehicle;
 
     for (;;)
     {
@@ -6260,10 +6269,10 @@ rct_vehicle * vehicle_get_head(rct_vehicle * vehicle)
         vehicle = prevVehicle;
     }
 
-    return vehicle;
+    return const_cast<rct_vehicle*>(vehicle);
 }
 
-rct_vehicle * vehicle_get_tail(rct_vehicle * vehicle)
+rct_vehicle* vehicle_get_tail(const rct_vehicle* vehicle)
 {
     uint16 spriteIndex;
 
@@ -6271,10 +6280,11 @@ rct_vehicle * vehicle_get_tail(rct_vehicle * vehicle)
     {
         vehicle = GET_VEHICLE(spriteIndex);
     }
-    return vehicle;
+
+    return const_cast<rct_vehicle*>(vehicle);
 }
 
-sint32 vehicle_is_used_in_pairs(rct_vehicle * vehicle)
+sint32 vehicle_is_used_in_pairs(const rct_vehicle * vehicle)
 {
     return vehicle->num_seats & VEHICLE_SEAT_PAIR_FLAG;
 }
@@ -7480,14 +7490,14 @@ static void vehicle_update_scenery_door(rct_vehicle * vehicle)
     if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL)
     {
         tileElement->properties.wall.animation &= ~(WALL_ANIMATION_FLAG_DIRECTION_BACKWARD);
-        wall_element_set_animation_frame(tileElement, 1);
+        wall_set_animation_frame(tileElement, 1);
         map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, x, y, z);
         vehicle_play_scenery_door_open_sound(vehicle, tileElement);
     }
     else
     {
         tileElement->properties.wall.animation &= ~(WALL_ANIMATION_FLAG_DIRECTION_BACKWARD);
-        wall_element_set_animation_frame(tileElement, 6);
+        wall_set_animation_frame(tileElement, 6);
         vehicle_play_scenery_door_close_sound(vehicle, tileElement);
     }
 }
@@ -7505,12 +7515,7 @@ static bool loc_6DB38B(rct_vehicle * vehicle, rct_tile_element * tileElement)
     sint32 trackType   = track_element_get_type(tileElement);
     sint32 vangleStart = TrackDefinitions[trackType].vangle_start;
 
-    if (vangleStart != _vehicleVAngleEndF64E36 || bankStart != _vehicleBankEndF64E37)
-    {
-        return false;
-    }
-
-    return true;
+    return vangleStart == _vehicleVAngleEndF64E36 && bankStart == _vehicleBankEndF64E37;
 }
 
 static void loc_6DB481(rct_vehicle * vehicle)
@@ -7565,14 +7570,14 @@ static void vehicle_update_handle_scenery_door(rct_vehicle * vehicle)
     if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL)
     {
         tileElement->properties.wall.animation |= WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
-        wall_element_set_animation_frame(tileElement, 1);
+        wall_set_animation_frame(tileElement, 1);
         map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, x, y, z);
         vehicle_play_scenery_door_open_sound(vehicle, tileElement);
     }
     else
     {
         tileElement->properties.wall.animation &= ~(WALL_ANIMATION_FLAG_DIRECTION_BACKWARD);
-        wall_element_set_animation_frame(tileElement, 6);
+        wall_set_animation_frame(tileElement, 6);
         vehicle_play_scenery_door_close_sound(vehicle, tileElement);
     }
 }
@@ -7899,7 +7904,7 @@ static void sub_6DBF3E(rct_vehicle * vehicle)
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
 
     rct_tile_element * tileElement = nullptr;
-    if (map_is_location_valid(vehicle->track_x, vehicle->track_y))
+    if (map_is_location_valid({vehicle->track_x, vehicle->track_y}))
     {
         tileElement =
             map_get_track_element_at_of_type_seq(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
@@ -7976,7 +7981,7 @@ static void sub_6DBF3E(rct_vehicle * vehicle)
 static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle * vehicle, uint16 trackType, Ride * ride,
                                                                rct_ride_entry * rideEntry)
 {
-    registers regs = { 0 };
+    registers regs = {};
 
     _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
     _vehicleBankEndF64E37   = TrackDefinitions[trackType].bank_end;
@@ -8173,7 +8178,7 @@ loc_6DB41D:
 static bool vehicle_update_track_motion_forwards(rct_vehicle * vehicle, rct_ride_entry_vehicle * vehicleEntry, Ride * ride,
                                                  rct_ride_entry * rideEntry)
 {
-    registers regs = { 0 };
+    registers regs = {};
 loc_6DAEB9:
     regs.edi         = vehicle->track_type;
     regs.cx          = vehicle->track_type >> 2;
@@ -8412,7 +8417,7 @@ loc_6DB967:
  *  rct2: 0x006DBAA6
  */
 static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle * vehicle, uint16 trackType, Ride * ride,
-                                                                rct_ride_entry * rideEntry, uint16 * progress)
+                                                                uint16 * progress)
 {
     _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_start;
     _vehicleBankEndF64E37   = TrackDefinitions[trackType].bank_start;
@@ -8579,7 +8584,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle * ve
 static bool vehicle_update_track_motion_backwards(rct_vehicle * vehicle, rct_ride_entry_vehicle * vehicleEntry, Ride * ride,
                                                   rct_ride_entry * rideEntry)
 {
-    registers regs = { 0 };
+    registers regs = {};
 
 loc_6DBA33:;
     uint16 trackType = vehicle->track_type >> 2;
@@ -8617,7 +8622,7 @@ loc_6DBA33:;
     regs.ax = vehicle->track_progress - 1;
     if (regs.ax == -1)
     {
-        if (!vehicle_update_track_motion_backwards_get_new_track(vehicle, trackType, ride, rideEntry, (uint16 *)&regs.ax))
+        if (!vehicle_update_track_motion_backwards_get_new_track(vehicle, trackType, ride, (uint16 *)&regs.ax))
         {
             goto loc_6DBE5E;
         }
@@ -8736,7 +8741,7 @@ loc_6DBE7F:
  */
 static sint32 vehicle_update_track_motion_mini_golf(rct_vehicle * vehicle, sint32 * outStation)
 {
-    registers regs = { 0 };
+    registers regs = {};
 
     Ride *                   ride         = get_ride(vehicle->ride);
     rct_ride_entry *         rideEntry    = get_ride_entry(vehicle->ride_subtype);
@@ -9515,7 +9520,7 @@ static void vehicle_update_track_motion_powered_ride_acceleration(rct_vehicle * 
     uint16 trackType = vehicle->track_direction >> 2;
 
     if (trackType == TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE)
-    {    
+    {
         speedModifier = (vehicle->var_CD == 5) ? HALF_SPEED : THREE_QUARTER_SPEED;
     }
     else if (trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE)
@@ -9599,7 +9604,7 @@ static void vehicle_update_track_motion_powered_ride_acceleration(rct_vehicle * 
  */
 sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
 {
-    registers regs = { 0 };
+    registers regs = {};
 
     Ride *                   ride = get_ride(vehicle->ride);
     rct_ride_entry *         rideEntry = get_ride_entry(vehicle->ride_subtype);
@@ -9854,7 +9859,7 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
     return regs.eax;
 }
 
-rct_ride_entry_vehicle * vehicle_get_vehicle_entry(rct_vehicle * vehicle)
+rct_ride_entry_vehicle * vehicle_get_vehicle_entry(const rct_vehicle * vehicle)
 {
     rct_ride_entry * rideEntry = get_ride_entry(vehicle->ride_subtype);
     if (rideEntry == nullptr)
@@ -9864,7 +9869,7 @@ rct_ride_entry_vehicle * vehicle_get_vehicle_entry(rct_vehicle * vehicle)
     return &rideEntry->vehicles[vehicle->vehicle_type];
 }
 
-sint32 vehicle_get_total_num_peeps(rct_vehicle * vehicle)
+sint32 vehicle_get_total_num_peeps(const rct_vehicle * vehicle)
 {
     uint16 spriteIndex;
     sint32 numPeeps = 0;

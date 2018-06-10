@@ -19,7 +19,7 @@
 
 #include "RideData.h"
 #include "../common.h"
-#include "../paint/tile_element/TileElement.h"
+#include "../paint/tile_element/Paint.TileElement.h"
 #include "../paint/Paint.h"
 #include "../world/Map.h"
 
@@ -283,7 +283,7 @@ extern const size_t mini_golf_peep_animation_lengths[];
 
 bool track_paint_util_has_fence(
     enum edge_t edge, LocationXY16 position, const rct_tile_element * tileElement, Ride * ride, uint8 rotation);
-void track_paint_util_paint_floor(paint_session * session, uint8 edges, uint32 colourFlags, uint16 height, const uint32 floorSprites[4], uint8 rotation);
+void track_paint_util_paint_floor(paint_session * session, uint8 edges, uint32 colourFlags, uint16 height, const uint32 floorSprites[4]);
 void track_paint_util_paint_fences(
     paint_session *          session,
     uint8                    edges,
@@ -294,21 +294,19 @@ void track_paint_util_paint_fences(
     uint16                   height,
     const uint32             fenceSprites[4],
     uint8                    rotation);
-bool track_paint_util_draw_station_covers(paint_session * session, enum edge_t edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height);
-bool track_paint_util_draw_station_covers_2(paint_session * session, enum edge_t edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height, uint8 stationVariant);
+bool track_paint_util_draw_station_covers(paint_session * session, enum edge_t edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint16 height);
+bool track_paint_util_draw_station_covers_2(paint_session * session, enum edge_t edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint16 height, uint8 stationVariant);
 void track_paint_util_draw_station_platform(
     paint_session * session, Ride * ride, uint8 direction, sint32 height, sint32 zOffset, const rct_tile_element * tileElement);
 void track_paint_util_draw_station(
     paint_session *          session,
     uint8                    rideIndex,
-    uint8                    trackSequence,
     uint8                    direction,
     uint16                   height,
     const rct_tile_element * tileElement);
 void track_paint_util_draw_station_2(
     paint_session *          session,
     uint8                    rideIndex,
-    uint8                    trackSequence,
     uint8                    direction,
     uint16                   height,
     const rct_tile_element * tileElement,
@@ -317,7 +315,6 @@ void track_paint_util_draw_station_2(
 void track_paint_util_draw_station_3(
     paint_session *          session,
     uint8                    rideIndex,
-    uint8                    trackSequence,
     uint8                    direction,
     uint16                   height,
     uint16                   coverHeight,
@@ -325,7 +322,6 @@ void track_paint_util_draw_station_3(
 void track_paint_util_draw_station_inverted(
     paint_session *          session,
     uint8                    rideIndex,
-    uint8                    trackSequence,
     uint8                    direction,
     sint32                   height,
     const rct_tile_element * tileElement,
@@ -343,32 +339,32 @@ void track_paint_util_draw_pier(
 void track_paint_util_draw_station_metal_supports(paint_session * session, uint8 direction, uint16 height, uint32 colour);
 void track_paint_util_draw_station_metal_supports_2(paint_session * session, uint8 direction, uint16 height, uint32 colour, uint8 type);
 
-void track_paint_util_right_quarter_turn_5_tiles_paint(paint_session * session, sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5], const LocationXY16 offsets[4][5], const LocationXY16 boundsLengths[4][5], const LocationXYZ16 boundsOffsets[4][5], uint8 rotation);
-void track_paint_util_right_quarter_turn_5_tiles_paint_2(paint_session * session, sint16 height, sint32 direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5]);
-void track_paint_util_right_quarter_turn_5_tiles_paint_3(paint_session * session, sint16 height, sint32 direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5]);
+void track_paint_util_right_quarter_turn_5_tiles_paint(paint_session * session, sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5], const LocationXY16 offsets[4][5], const LocationXY16 boundsLengths[4][5], const LocationXYZ16 boundsOffsets[4][5]);
+void track_paint_util_right_quarter_turn_5_tiles_paint_2(paint_session * session, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5]);
+void track_paint_util_right_quarter_turn_5_tiles_paint_3(paint_session * session, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5]);
 void track_paint_util_right_quarter_turn_5_tiles_tunnel(paint_session * session, sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType);
 void track_paint_util_right_quarter_turn_5_tiles_wooden_supports(paint_session * session, sint16 height, uint8 direction, uint8 trackSequence);
 void track_paint_util_right_quarter_turn_3_tiles_25_deg_up_tunnel(paint_session * session, sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType0, uint8 tunnelType3);
 void track_paint_util_right_quarter_turn_3_tiles_25_deg_down_tunnel(paint_session * session, sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType0, uint8 tunnelType3);
-void track_paint_util_right_quarter_turn_3_tiles_paint(paint_session * session, sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], const LocationXY16 offsets[4][3], const LocationXY16 boundsLengths[4][3], const LocationXYZ16 boundsOffsets[4][3], uint8 rotation);
-void track_paint_util_right_quarter_turn_3_tiles_paint_2(paint_session * session, sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation);
-void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(paint_session * session, sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation, sint32 heightOffset);
-void track_paint_util_right_quarter_turn_3_tiles_paint_3(paint_session * session, sint16 height, sint32 direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[4][3]);
-void track_paint_util_right_quarter_turn_3_tiles_paint_4(paint_session * session, sint16 height, sint32 direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[4][3]);
+void track_paint_util_right_quarter_turn_3_tiles_paint(paint_session * session, sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], const LocationXY16 offsets[4][3], const LocationXY16 boundsLengths[4][3], const LocationXYZ16 boundsOffsets[4][3]);
+void track_paint_util_right_quarter_turn_3_tiles_paint_2(paint_session * session, sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3]);
+void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(paint_session * session, sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], sint32 heightOffset);
+void track_paint_util_right_quarter_turn_3_tiles_paint_3(paint_session * session, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[4][3]);
+void track_paint_util_right_quarter_turn_3_tiles_paint_4(paint_session * session, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[4][3]);
 void track_paint_util_right_quarter_turn_3_tiles_tunnel(paint_session * session, sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType);
-void track_paint_util_left_quarter_turn_3_tiles_paint(paint_session * session, sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation);
-void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(paint_session * session, sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation, sint32 heightOffset);
+void track_paint_util_left_quarter_turn_3_tiles_paint(paint_session * session, sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3]);
+void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(paint_session * session, sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], sint32 heightOffset);
 void track_paint_util_left_quarter_turn_3_tiles_tunnel(paint_session * session, sint16 height, uint8 tunnelType, uint8 direction, uint8 trackSequence);
-void track_paint_util_left_quarter_turn_1_tile_paint(paint_session * session, sint8 thickness, sint16 height, sint16 boundBoxZOffset, sint32 direction, uint32 colourFlags, const uint32 * sprites, uint8 rotation);
-void track_paint_util_spinning_tunnel_paint(paint_session * session, sint8 thickness, sint16 height, uint8 direction, uint8 rotation);
+void track_paint_util_left_quarter_turn_1_tile_paint(paint_session * session, sint8 thickness, sint16 height, sint16 boundBoxZOffset, sint32 direction, uint32 colourFlags, const uint32 * sprites);
+void track_paint_util_spinning_tunnel_paint(paint_session * session, sint8 thickness, sint16 height, uint8 direction);
 void track_paint_util_onride_photo_small_paint(
     paint_session * session, uint8 direction, sint32 height, const rct_tile_element * tileElement);
 void track_paint_util_onride_photo_paint(
     paint_session * session, uint8 direction, sint32 height, const rct_tile_element * tileElement);
-void track_paint_util_right_helix_up_small_quarter_tiles_paint(paint_session * session, const sint8 thickness[2], sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3][2], const LocationXY16 offsets[4][3][2], const LocationXY16 boundsLengths[4][3][2], const LocationXYZ16 boundsOffsets[4][3][2], uint8 rotation);
-void track_paint_util_right_helix_up_large_quarter_tiles_paint(paint_session * session, const sint8 thickness[2], sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5][2], const LocationXY16 offsets[4][5][2], const LocationXY16 boundsLengths[4][5][2], const LocationXYZ16 boundsOffsets[4][5][2], uint8 rotation);
-void track_paint_util_eighth_to_diag_tiles_paint(paint_session * session, const sint8 thickness[4][4], sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][4], const LocationXY16 offsets[4][4], const LocationXY16 boundsLengths[4][4], const LocationXYZ16 boundsOffsets[4][4], uint8 rotation);
-void track_paint_util_diag_tiles_paint(paint_session * session, sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4], const LocationXY16 offsets[4], const LocationXY16 boundsLengths[4], const LocationXYZ16 boundsOffsets[4], uint8 rotation);
+void track_paint_util_right_helix_up_small_quarter_tiles_paint(paint_session * session, const sint8 thickness[2], sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3][2], const LocationXY16 offsets[4][3][2], const LocationXY16 boundsLengths[4][3][2], const LocationXYZ16 boundsOffsets[4][3][2]);
+void track_paint_util_right_helix_up_large_quarter_tiles_paint(paint_session * session, const sint8 thickness[2], sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5][2], const LocationXY16 offsets[4][5][2], const LocationXY16 boundsLengths[4][5][2], const LocationXYZ16 boundsOffsets[4][5][2]);
+void track_paint_util_eighth_to_diag_tiles_paint(paint_session * session, const sint8 thickness[4][4], sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][4], const LocationXY16 offsets[4][4], const LocationXY16 boundsLengths[4][4], const LocationXYZ16 boundsOffsets[4][4]);
+void track_paint_util_diag_tiles_paint(paint_session * session, sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4], const LocationXY16 offsets[4], const LocationXY16 boundsLengths[4], const LocationXYZ16 boundsOffsets[4]);
 
 void track_paint_util_left_quarter_turn_1_tile_tunnel(paint_session * session, uint8 direction, uint16 baseHeight, sint8 startOffset, uint8 startTunnel, sint8 endOffset, uint8 endTunnel);
 void track_paint_util_right_quarter_turn_1_tile_tunnel(paint_session * session, uint8 direction, uint16 baseHeight, sint8 startOffset, uint8 startTunnel, sint8 endOffset, uint8 endTunnel);

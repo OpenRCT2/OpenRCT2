@@ -18,7 +18,7 @@
 #define _BANNER_H_
 
 #include "../common.h"
-#include "Map.h"
+#include "TileElement.h"
 
 #define BANNER_NULL 255
 #define MAX_BANNERS 250

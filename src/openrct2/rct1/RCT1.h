@@ -390,7 +390,7 @@ struct rct1_peep {
     uint16 next_x;                  // 0x24
     uint16 next_y;                  // 0x26
     uint8 next_z;                   // 0x28
-    uint8 next_var_29;              // 0x29
+    uint8 next_flags;              // 0x29
     uint8 outside_of_park;          // 0x2A
     uint8 state;                    // 0x2B
     uint8 sub_state;                // 0x2C
@@ -416,7 +416,7 @@ struct rct1_peep {
     uint8 thirst;                   // 0x3F
     uint8 toilet;                   // 0x40
     uint8 mass;                     // 0x41
-    uint8 var_42;
+    uint8 time_to_consume;
     uint8 intensity;                // 0x43 The max intensity is stored in the first 4 bits, and the min intensity in the second 4 bits
     uint8 nausea_tolerance;         // 0x44
     uint8 window_invalidate_flags;  // 0x45
@@ -444,17 +444,17 @@ struct rct1_peep {
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
     uint8 special_sprite;           // 0x6D
     uint8 action_sprite_type;       // 0x6E
-    // Seems to be used like a local variable, as it's always set before calling peep_switch_to_next_action_sprite_type, which reads this again
+    // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which reads this again
     uint8 next_action_sprite_type;  // 0x6F
     uint8 action_sprite_image_offset; // 0x70
     uint8 action;                   // 0x71
     uint8 action_frame;             // 0x72
-    uint8 var_73;
+    uint8 step_progress;
     union {
         uint16 mechanic_time_since_call; // time getting to ride to fix
         uint16 next_in_queue;       // 0x74
     };
-    uint8 var_76;
+    uint8 pad_76;
     uint8 pad_77;
     union{
         uint8 maze_last_edge;       // 0x78
@@ -469,7 +469,7 @@ struct rct1_peep {
     money32 cash_in_pocket;         // 0xA0
     money32 cash_spent;             // 0xA4
     sint32 time_in_park;            // 0xA8
-    sint8 var_AC;                   // 0xAC
+    sint8 rejoin_queue_timeout;                   // 0xAC
     uint8 previous_ride;            // 0xAD
     uint16 previous_ride_time_out;  // 0xAE
     rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];   // 0xB0
@@ -486,12 +486,12 @@ struct rct1_peep {
     uint32 peep_flags;              // 0xC8
     rct12_xyzd8 pathfind_goal;        // 0xCC
     rct12_xyzd8 pathfind_history[4];  // 0xD0
-    uint8 no_action_frame_no;       // 0xE0
+    uint8 no_action_frame_num;       // 0xE0
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8 litter_count;             // 0xE1
     union{
         uint8 time_on_ride;         // 0xE2
-        uint8 var_E2;               // 0xE2
+        uint8 staff_mowing_timeout;               // 0xE2
     };
     // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8 disgusting_count;         // 0xE3
@@ -502,12 +502,12 @@ struct rct1_peep {
     uint8 no_of_food;               // 0xEC
     uint8 no_of_drinks;             // 0xED
     uint8 no_of_souvenirs;          // 0xEE
-    uint8 var_EF;
+    uint8 vandalism_seen;           // 0xEF
     uint8 voucher_type;             // 0xF0
     uint8 voucher_arguments;        // 0xF1 ride_id or string_offset_id
     uint8 surroundings_thought_timeout; // 0xF2
     uint8 angriness;                // 0xF3
-    uint8 var_F4;
+    uint8 time_lost;
     uint8 days_in_queue;            // 0xF5
     uint8 balloon_colour;           // 0xF6
     uint8 umbrella_colour;          // 0xF7
@@ -1232,7 +1232,13 @@ enum {
     RCT1_SCENERY_GEOMETRIC_SCULPTURE_5 = 171, // TGE5
 };
 
-ParkLoadResult * load_from_sv4(const char *path);
-ParkLoadResult * load_from_sc4(const char *path);
+enum {
+    RCT1_LANDSCAPE_DOOR_CLOSED = 0,
+    RCT1_LANDSCAPE_DOOR_HALF_OPEN = 2,
+    RCT1_LANDSCAPE_DOOR_OPEN = 3,
+};
+
+void load_from_sv4(const char *path);
+void load_from_sc4(const char *path);
 
 #endif

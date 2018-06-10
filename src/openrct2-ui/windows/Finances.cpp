@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <openrct2/actions/ParkSetLoanAction.hpp>
+#include <openrct2/actions/ParkSetResearchFundingAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2-ui/windows/Window.h>
@@ -24,9 +26,14 @@
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/RideData.h>
+#include <openrct2/ride/ShopItem.h>
 #include <openrct2/sprites.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/management/Finance.h>
+#include <openrct2/scenario/Scenario.h>
+#include <openrct2/world/Park.h>
 
+// clang-format off
 enum
 {
     WINDOW_FINANCES_PAGE_SUMMARY,
@@ -51,7 +58,8 @@ enum
     WIDX_TAB_5,
     WIDX_TAB_6,
 
-    WIDX_LOAN = 10,
+    WIDX_SUMMARY_SCROLL = 10,
+    WIDX_LOAN,
     WIDX_LOAN_INCREASE,
     WIDX_LOAN_DECREASE,
 
@@ -87,14 +95,13 @@ enum
 
 static rct_widget _windowFinancesSummaryWidgets[] =
 {
-    { WWT_FRAME,            0,  0,      529,    0,  288,    0xFFFFFFFF,                 STR_NONE                                }, \
+    { WWT_FRAME,            0,  0,      529,    0,  309,    0xFFFFFFFF,                 STR_NONE                                }, \
     { WWT_CAPTION,          0,  1,      528,    1,  14,     STR_FINANCIAL_SUMMARY,      STR_WINDOW_TITLE_TIP                    }, \
     { WWT_CLOSEBOX,         0,  517,    527,    2,  13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP                    }, \
-    { WWT_RESIZE,           1,  0,      529,    43, 288,    0xFFFFFFFF,                 STR_NONE                                }, \
+    { WWT_RESIZE,           1,  0,      529,    43, 309,    0xFFFFFFFF,                 STR_NONE                                }, \
     TAB_WIDGETS,
-    { WWT_SPINNER,          1,  64,     153,    259,    270,    STR_FINANCES_SUMMARY_LOAN_VALUE,    STR_NONE },
-    { WWT_BUTTON,           1,  142,    152,    260,    264,    STR_NUMERIC_UP,                     STR_NONE },
-    { WWT_BUTTON,           1,  142,    152,    265,    269,    STR_NUMERIC_DOWN,                   STR_NONE },
+    { WWT_SCROLL,           1,  130,    520,     50,    260,    SCROLL_HORIZONTAL,                  STR_NONE },
+      SPINNER_WIDGETS      (1,  64,     153,    279,    290,    STR_FINANCES_SUMMARY_LOAN_VALUE,    STR_NONE), // NB: 3 widgets.
     { WIDGETS_END },
 };
 
@@ -183,9 +190,12 @@ static rct_widget *_windowFinancesPageWidgets[] =
 
 static void window_finances_summary_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_finances_summary_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_finances_summary_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
+static void window_finances_summary_invertscroll(rct_window *w);
 static void window_finances_summary_update(rct_window *w);
 static void window_finances_summary_invalidate(rct_window *w);
 static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_finances_summary_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static void window_finances_financial_graph_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_finances_financial_graph_update(rct_window *w);
@@ -232,7 +242,7 @@ static rct_window_event_list _windowFinancesSummaryEvents =
     nullptr,
     nullptr,
     nullptr,
-    nullptr,
+    window_finances_summary_scrollgetsize,
     nullptr,
     nullptr,
     nullptr,
@@ -244,7 +254,7 @@ static rct_window_event_list _windowFinancesSummaryEvents =
     nullptr,
     window_finances_summary_invalidate,
     window_finances_summary_paint,
-    nullptr
+    window_finances_summary_scrollpaint
 };
 
 // 0x00988F28
@@ -438,6 +448,7 @@ static rct_window_event_list *const _windowFinancesPageEvents[] =
 static constexpr const uint32 WindowFinancesPageEnabledWidgets[] =
 {
     ALWAYS_ENABLED_WIDGETS |
+    (1ULL << WIDX_SUMMARY_SCROLL) |
     (1ULL << WIDX_LOAN_INCREASE) |
     (1ULL << WIDX_LOAN_DECREASE),
 
@@ -486,6 +497,10 @@ static constexpr const sint32 WindowFinancesTabAnimationLoops[] =
     16, 32, 32, 32, 38, 16
 };
 
+static constexpr const sint32 EXPENDITURE_COLUMN_WIDTH = 80;
+
+static sint32 _lastPaintedMonth;
+
 static constexpr const rct_string_id window_finances_summary_row_labels[RCT_EXPENDITURE_TYPE_COUNT] = {
     STR_FINANCES_SUMMARY_RIDE_CONSTRUCTION,
     STR_FINANCES_SUMMARY_RIDE_RUNNING_COSTS,
@@ -502,6 +517,7 @@ static constexpr const rct_string_id window_finances_summary_row_labels[RCT_EXPE
     STR_FINANCES_SUMMARY_RESEARCH,
     STR_FINANCES_SUMMARY_LOAN_INTEREST,
 };
+// clang-format on
 
 static void window_finances_set_page(rct_window *w, sint32 page);
 static void window_finances_set_pressed_tab(rct_window *w);
@@ -517,7 +533,7 @@ rct_window * window_finances_open()
 
     w = window_bring_to_front_by_class(WC_FINANCES);
     if (w == nullptr) {
-        w = window_create_auto_pos(530, 290, _windowFinancesPageEvents[0], WC_FINANCES, WF_10);
+        w = window_create_auto_pos(530, 310, _windowFinancesPageEvents[0], WC_FINANCES, WF_10);
         w->number = 0;
         w->frame_no = 0;
 
@@ -527,7 +543,7 @@ rct_window * window_finances_open()
     w->page = WINDOW_FINANCES_PAGE_SUMMARY;
     window_invalidate(w);
     w->width = 530;
-    w->height = 290;
+    w->height = 310;
     window_invalidate(w);
 
     w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
@@ -536,7 +552,11 @@ rct_window * window_finances_open()
     w->event_handlers = _windowFinancesPageEvents[WINDOW_FINANCES_PAGE_SUMMARY];
     w->pressed_widgets = 0;
     w->disabled_widgets = 0;
+
     window_init_scroll_widgets(w);
+
+    // Scroll summary all the way to the right, initially.
+    window_finances_summary_invertscroll(w);
 
     return w;
 }
@@ -577,22 +597,41 @@ static void window_finances_summary_mouseup(rct_window *w, rct_widgetindex widge
  */
 static void window_finances_summary_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    money32 newLoan;
-
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_LOAN_INCREASE:
-        newLoan = gBankLoan + MONEY(1000, 00);
-        gGameCommandErrorTitle = STR_CANT_BORROW_ANY_MORE_MONEY;
-        finance_set_loan(newLoan);
-        break;
+        {
+            auto newLoan = gBankLoan + MONEY(1000, 00);
+            auto gameAction = ParkSetLoanAction(newLoan);
+            GameActions::Execute(&gameAction);
+            break;
+        }
     case WIDX_LOAN_DECREASE:
-        if (gBankLoan > 0) {
-            newLoan = gBankLoan - MONEY(1000, 00);
-            gGameCommandErrorTitle = STR_CANT_PAY_BACK_LOAN;
-            finance_set_loan(newLoan);
+        if (gBankLoan > 0)
+        {
+            auto newLoan = gBankLoan - MONEY(1000, 00);
+            auto gameAction = ParkSetLoanAction(newLoan);
+            GameActions::Execute(&gameAction);
         }
         break;
     }
+}
+
+static uint16 summary_num_months_available()
+{
+    return std::min<uint16>(gDateMonthsElapsed, EXPENDITURE_TABLE_MONTH_COUNT);
+}
+
+static void window_finances_summary_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+{
+    *width = EXPENDITURE_COLUMN_WIDTH * (summary_num_months_available() + 1);
+}
+
+static void window_finances_summary_invertscroll(rct_window *w)
+{
+    rct_widget summary = w->widgets[WIDX_SUMMARY_SCROLL];
+    w->scrolls[0].h_left = std::max(0, w->scrolls[0].h_right - ((summary.right - summary.left) - 2));
+    widget_scroll_update_thumbs(w, WIDX_SUMMARY_SCROLL);
 }
 
 /**
@@ -618,6 +657,10 @@ static void window_finances_summary_invalidate(rct_window *w)
         window_init_scroll_widgets(w);
     }
 
+    // Keep up with new months being added in the first two years.
+    if (gDateMonthsElapsed != _lastPaintedMonth)
+        window_finances_summary_invertscroll(w);
+
     window_finances_set_pressed_tab(w);
     set_format_arg(6, money32, gBankLoan);
 }
@@ -628,33 +671,74 @@ static void window_finances_summary_invalidate(rct_window *w)
  */
 static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 i, j, x, y;
-
     window_draw_widgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
-    x = w->x + 8;
-    y = w->y + 51;
+    sint32 x = w->x + 8;
+    sint32 y = w->y + 51;
 
     // Expenditure / Income heading
     draw_string_left_underline(dpi, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, nullptr, COLOUR_BLACK, x, y);
     y += 14;
 
     // Expenditure / Income row labels
-    for (i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++) {
+    for (sint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++)
+    {
         // Darken every even row
         if (i % 2 == 0)
-            gfx_fill_rect(dpi, x, y - 1, x + 513 - 2, y + (TABLE_CELL_HEIGHT - 2), ColourMapA[w->colours[1]].lighter | 0x1000000);
+            gfx_fill_rect(dpi, x, y - 1, x + 121, y + (TABLE_CELL_HEIGHT - 2), ColourMapA[w->colours[1]].lighter | 0x1000000);
 
         gfx_draw_string_left(dpi, window_finances_summary_row_labels[i], nullptr, COLOUR_BLACK, x, y - 1);
         y += TABLE_CELL_HEIGHT;
     }
 
+    // Horizontal rule below expenditure / income table
+    gfx_fill_rect_inset(dpi, w->x + 8, w->y + 272, w->x + 8 + 513, w->y + 272 + 1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
+
+    // Loan and interest rate
+    gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, nullptr, COLOUR_BLACK, w->x + 8, w->y + 279);
+    set_format_arg(0, uint16, gBankLoanInterestRate);
+    gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, gCommonFormatArgs, COLOUR_BLACK, w->x + 160, w->y + 279);
+
+    // Current cash
+    rct_string_id stringId = gCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
+    gfx_draw_string_left(dpi, stringId, &gCash, COLOUR_BLACK, w->x + 8, w->y + 294);
+
+    // Objective related financial information
+    if (gScenarioObjectiveType == OBJECTIVE_MONTHLY_FOOD_INCOME) {
+        money32 lastMonthProfit = finance_get_last_month_shop_profit();
+        set_format_arg(0, money32, lastMonthProfit);
+        gfx_draw_string_left(dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, gCommonFormatArgs, COLOUR_BLACK, w->x + 280, w->y + 279);
+    } else {
+        // Park value and company value
+        gfx_draw_string_left(dpi, STR_PARK_VALUE_LABEL, &gParkValue, COLOUR_BLACK, w->x + 280, w->y + 279);
+        gfx_draw_string_left(dpi, STR_COMPANY_VALUE_LABEL, &gCompanyValue, COLOUR_BLACK, w->x + 280, w->y + 294);
+    }
+}
+
+static void window_finances_summary_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+{
+    sint32 x = 0;
+    sint32 y = TABLE_CELL_HEIGHT + 2;
+
+    rct_widget self = w->widgets[WIDX_SUMMARY_SCROLL];
+    sint32 row_width = std::max<uint16>(w->scrolls[0].h_right, self.right - self.left);
+
+    // Expenditure / Income row labels
+    for (sint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++)
+    {
+        // Darken every even row
+        if (i % 2 == 0)
+            gfx_fill_rect(dpi, x, y - 1, x + row_width, y + (TABLE_CELL_HEIGHT - 2), ColourMapA[w->colours[1]].lighter | 0x1000000);
+
+        y += TABLE_CELL_HEIGHT;
+    }
+
     // Expenditure / Income values for each month
-    x = w->x + 118;
     sint16 currentMonthYear = gDateMonthsElapsed;
-    for (i = 4; i >= 0; i--) {
-        y = w->y + 51;
+    for (sint32 i = summary_num_months_available(); i >= 0; i--)
+    {
+        y = 0;
 
         sint16 monthyear = currentMonthYear - i;
         if (monthyear < 0)
@@ -668,14 +752,14 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
             monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING,
             gCommonFormatArgs,
             COLOUR_BLACK,
-            x + 80,
+            x + EXPENDITURE_COLUMN_WIDTH,
             y
         );
         y += 14;
 
         // Month expenditures
         money32 profit = 0;
-        for (j = 0; j < RCT_EXPENDITURE_TYPE_COUNT; j++)
+        for (sint32 j = 0; j < RCT_EXPENDITURE_TYPE_COUNT; j++)
         {
             money32 expenditure = gExpenditureTable[i][j];
             if (expenditure != 0)
@@ -686,7 +770,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
                     expenditure >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_EXPENDITURE_VALUE,
                     &expenditure,
                     COLOUR_BLACK,
-                    x + 80,
+                    x + EXPENDITURE_COLUMN_WIDTH,
                     y
                 );
             }
@@ -700,36 +784,15 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
             profit >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_LOSS_VALUE,
             &profit,
             COLOUR_BLACK,
-            x + 80,
+            x + EXPENDITURE_COLUMN_WIDTH,
             y
         );
-        gfx_fill_rect(dpi, x + 10, y - 2, x + 10 + 70, y - 2, PALETTE_INDEX_10);
+        gfx_fill_rect(dpi, x + 10, y - 2, x + EXPENDITURE_COLUMN_WIDTH, y - 2, PALETTE_INDEX_10);
 
-        x += 80;
+        x += EXPENDITURE_COLUMN_WIDTH;
     }
 
-    // Horizontal rule below expenditure / income table
-    gfx_fill_rect_inset(dpi, w->x + 8, w->y + 252, w->x + 8 + 513, w->y + 252 + 1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
-
-    // Loan and interest rate
-    gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, nullptr, COLOUR_BLACK, w->x + 8, w->y + 259);
-    set_format_arg(0, uint16, gBankLoanInterestRate);
-    gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, gCommonFormatArgs, COLOUR_BLACK, w->x + 160, w->y + 259);
-
-    // Current cash
-    rct_string_id stringId = gCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
-    gfx_draw_string_left(dpi, stringId, &gCash, COLOUR_BLACK, w->x + 8, w->y + 274);
-
-    // Objective related financial information
-    if (gScenarioObjectiveType == OBJECTIVE_MONTHLY_FOOD_INCOME) {
-        money32 lastMonthProfit = finance_get_last_month_shop_profit();
-        set_format_arg(0, money32, lastMonthProfit);
-        gfx_draw_string_left(dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, gCommonFormatArgs, COLOUR_BLACK, w->x + 280, w->y + 259);
-    } else {
-        // Park value and company value
-        gfx_draw_string_left(dpi, STR_PARK_VALUE_LABEL, &gParkValue, COLOUR_BLACK, w->x + 280, w->y + 259);
-        gfx_draw_string_left(dpi, STR_COMPANY_VALUE_LABEL, &gCompanyValue, COLOUR_BLACK, w->x + 280, w->y + 274);
-    }
+    _lastPaintedMonth = currentMonthYear;
 }
 
 #pragma endregion
@@ -1204,8 +1267,6 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
  */
 static void window_finances_research_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    sint32 activeResearchTypes;
-
     switch (widgetIndex) {
     case WIDX_CLOSE:
         window_close(w);
@@ -1225,10 +1286,14 @@ static void window_finances_research_mouseup(rct_window *w, rct_widgetindex widg
     case WIDX_WATER_RIDES:
     case WIDX_SHOPS_AND_STALLS:
     case WIDX_SCENERY_AND_THEMING:
-        activeResearchTypes = gResearchPriorities;
-        activeResearchTypes ^= 1ULL << (widgetIndex - WIDX_TRANSPORT_RIDES);
-        research_set_priority(activeResearchTypes);
-        break;
+        {
+            auto activeResearchTypes = gResearchPriorities;
+            activeResearchTypes ^= 1ULL << (widgetIndex - WIDX_TRANSPORT_RIDES);
+
+            auto gameAction = ParkSetResearchFundingAction(activeResearchTypes, gResearchFundingLevel);
+            GameActions::Execute(&gameAction);
+            break;
+        }
     }
 }
 
@@ -1274,7 +1339,8 @@ static void window_finances_research_dropdown(rct_window *w, rct_widgetindex wid
     if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || dropdownIndex == -1)
         return;
 
-    research_set_funding(dropdownIndex);
+    auto gameAction = ParkSetResearchFundingAction(gResearchPriorities, dropdownIndex);
+    GameActions::Execute(&gameAction);
 }
 
 /**
@@ -1375,7 +1441,7 @@ static void window_finances_set_page(rct_window *w, sint32 page)
         w->height = 207;
     } else if (w->page == WINDOW_FINANCES_PAGE_SUMMARY) {
         w->width = 530;
-        w->height = 290;
+        w->height = 310;
     } else {
         w->width = 530;
         w->height = 257;
@@ -1385,6 +1451,10 @@ static void window_finances_set_page(rct_window *w, sint32 page)
 
     window_init_scroll_widgets(w);
     window_invalidate(w);
+
+    // Scroll summary all the way to the right, initially.
+    if (w->page == WINDOW_FINANCES_PAGE_SUMMARY)
+        window_finances_summary_invertscroll(w);
 }
 
 static void window_finances_set_pressed_tab(rct_window *w)

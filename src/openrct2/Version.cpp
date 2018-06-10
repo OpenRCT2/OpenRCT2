@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include <string>
-#include "core/String.hpp"
 #include "Version.h"
 
 #ifdef OPENRCT2_BUILD_INFO_HEADER

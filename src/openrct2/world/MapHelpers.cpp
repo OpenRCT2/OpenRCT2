@@ -18,6 +18,7 @@
 #include "../core/Math.hpp"
 #include "Map.h"
 #include "MapHelpers.h"
+#include "Surface.h"
 
 /**
  * Not perfect, this still leaves some particular tiles unsmoothed.
@@ -213,7 +214,7 @@ sint32 tile_smooth(sint32 x, sint32 y)
             sint32 SE; 
             sint32 S; 
         };
-    } neighbourHeightOffset = { 0 };
+    } neighbourHeightOffset = {};
 
     // Find the neighbour base heights
     for (sint32 index = 0, y_offset = -1; y_offset <= 1; y_offset++)
@@ -269,7 +270,7 @@ sint32 tile_smooth(sint32 x, sint32 y)
     {
         // All corners are raised, raise the entire tile instead.
         surfaceElement->base_height = (surfaceElement->clearance_height += 2);
-        uint8 waterHeight = map_get_water_height(surfaceElement) * 2;
+        uint8 waterHeight = surface_get_water_height(surfaceElement) * 2;
         if (waterHeight <= surfaceElement->base_height)
         {
             surfaceElement->properties.surface.terrain &= ~TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;

@@ -1220,8 +1220,8 @@ STR_1214    :{SMALLFONT}{BLACK}選擇發車前最多的等待時長
 STR_1215    :{WINDOW_COLOUR_2}與鄰近車站同步發車
 STR_1216    :{SMALLFONT}{BLACK}選擇是否與全部鄰近車站同步發車 (以便'競賽')
 STR_1217    :{COMMA16}秒
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :只准卸客
 STR_1221    :尚未建造入口
 STR_1222    :尚未建造出口
@@ -1778,8 +1778,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :每個遊樂設施只可建造一個即時照相區域
 STR_1774    :每個遊樂設施只可建造一個纜索坡道
-STR_1775    :關閉
-STR_1776    :開啟
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}音樂
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} 熊貓服裝
@@ -3575,8 +3575,8 @@ STR_5232    :{SMALLFONT}{BLACK}編輯工具
 STR_5233    :{SMALLFONT}{BLACK}其他
 STR_5234    :{SMALLFONT}{BLACK}彈出視窗
 STR_5235    :{SMALLFONT}{BLACK}設定
-STR_5236    :主題:
-STR_5237    :調色盤:
+STR_5236    :主題
+STR_5237    :調色盤
 STR_5238    :目前主題:
 STR_5239    :複製
 STR_5240    :請輸入這個主題的名稱
@@ -3836,8 +3836,8 @@ STR_5492    :劇情選項
 STR_5493    :發送訊息
 STR_5494    :<not used anymore>
 STR_5495    :玩家列表
-STR_5496    :玩家:
-STR_5497    :延遲值 (Ping):
+STR_5496    :玩家
+STR_5497    :延遲值 (Ping)
 STR_5498    :伺服器列表
 STR_5499    :玩家名稱:
 STR_5500    :新增伺服器
@@ -3982,7 +3982,7 @@ STR_5638    :並沒有足夠的權限
 STR_5639    :{SMALLFONT}{BLACK}顯示玩家列表
 STR_5640    :{SMALLFONT}{BLACK}管理組別
 STR_5641    :預設組別:
-STR_5642    :組別:
+STR_5642    :組別
 STR_5643    :新增組別
 STR_5644    :移除組別
 STR_5645    :聊天
@@ -4010,7 +4010,7 @@ STR_5666    :無密碼登入
 STR_5701    :{WINDOW_COLOUR_2}最近的動作: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}將這個玩家的最近的動作定位
 STR_5703    :無法踢除架設者
-STR_5704    :最近的動作:
+STR_5704    :最近的動作
 STR_5705    :無法將此玩家分配到此組別
 STR_5706    :無法移除有玩家在內的組別
 STR_5707    :無法修改此組別
@@ -4315,7 +4315,7 @@ STR_6002    :{SMALLFONT}{BLACK}夜晚的時候, 路燈及遊樂設施將會有�
 STR_6003    :切入檢視
 STR_6004    :切入檢視
 STR_6005    :啟用切入檢視
-STR_6006    :{SMALLFONT}{BLACK}切入檢視只顯示低於或等於切入高度的地圖元素
+STR_6006    :{SMALLFONT}{BLACK}切入檢視只顯示低於或等於切入高度(垂直切割)及於選擇範圍(縱橫切割)的地圖元素
 STR_6007    :切入高度
 STR_6008    :{SMALLFONT}{BLACK}點撃來切換原生值或量度單位值
 STR_6009    :{SMALLFONT}{BLACK}選擇切入高度
@@ -4463,7 +4463,7 @@ STR_6150    :主列表伺服器傳回不正確的回應 (無JSON 號碼)
 STR_6151    :主列表伺服器傳回列表失敗
 STR_6152    :主列表伺服器傳回不正確的回應 (無JSON 陣列)
 STR_6153    :付費進入樂園 / 按乘搭遊樂設施的次數付費
-STR_6154    :不建議以管理員權限運行OpenRCT2.
+STR_6154    :為安全起見, 不建議以管理員權限運行OpenRCT2.
 STR_6155    :本系統中並未安裝KDialog或Zenity. 請安裝其中一款, 或於命令提示字元中配置.
 STR_6156    :名字已被預留
 STR_6157    :命令提示字元
@@ -4479,7 +4479,7 @@ STR_6166    :{SMALLFONT}{BLACK}將每影格與螢幕的更新頻率同步, 以�
 STR_6167    :{SMALLFONT}{BLACK}進階
 STR_6168    :主選單動畫
 STR_6169    :劇情選項
-STR_6170    :小設定
+STR_6170    :界面小設定
 STR_6171    :搜尋
 STR_6172    :{SMALLFONT}{BLACK}搜尋
 STR_6173    :請輸入名字來搜尋:
@@ -4527,6 +4527,34 @@ STR_6211    :棕色砂岩
 STR_6212    :灰色砂岩
 STR_6213    :高樓大廈A
 STR_6214    :高樓大廈B
+STR_6215    :建造
+STR_6216    :運作
+STR_6217    :遊樂設施/軌道可用性
+STR_6218    :OpenRCT2官方
+STR_6219    :高亮道路問題
+STR_6220    :設為可用
+STR_6221    :{SMALLFONT}{BLACK}此選項會將當前選中的網格設定為這個遊樂設施的已知入口或出口位置. 一個車站只能有一個可用入口及出口.
+STR_6222    :不能在這裡放置遊客進出點...
+STR_6223    :必須放置於樂園邊界外!
+STR_6224    :{STRING}已放置一個遊客進出點.
+STR_6225    :使用OpenGL渲染器時不支援
+STR_6226    :啟用劇情提早完成
+STR_6227    :{SMALLFONT}{BLACK}當劇情目前於指定日期前完成時便立即完成劇情.
+STR_6228    :劇情選項
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}:
+STR_6232    :涷結
+STR_6233    :切入檢視
+STR_6234    :高亮道路問題
+STR_6235    :伺服器資訊
+STR_6236    :玩家
+STR_6237    :群組
+STR_6238    :多人遊戲選項
+STR_6239    :垂直切割
+STR_6240    :縱橫切割
+STR_6241    :選擇範圍
+STR_6242    :清除選擇
 
 #############
 # Scenarios #
@@ -4969,110 +4997,3 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
-
-#####################
-# Rides/attractions # 
-#####################
-###############################################################################
-## RCT2 Objects
-###############################################################################
-[AML1]
-STR_NAME    :美式蒸氣火車
-STR_DESC    :配備著復刻蒸氣火車頭及煤水車的小型蒸氣火車, 拉著帶有帆布車頂的木製車廂
-STR_CPTY    :每車廂6位乘客
-
-[CLIFT1]
-STR_NAME    :纜車車卡
-STR_DESC    :供纜車使用的開放式車卡
-STR_CPTY    :每車卡2位乘客
-
-[CLIFT2]
-STR_NAME    :登頂滑雪纜車車椅
-STR_DESC    :供纜車使用的開放式車卡
-STR_CPTY    :每車卡2位乘客
-
-[LIFT1]
-STR_NAME    :升降機
-STR_DESC    :遊客乘搭升降機上下穿梭於垂直的管道中, 並借此訪問另一層
-STR_CPTY    :16位乘客
-
-[MONO1]
-STR_NAME    :流線型單軌電車
-STR_DESC    :大載客量的單軌電車, 車頭車尾都配備著流線型設計
-STR_CPTY    :每車卡5或10位乘客
-
-[MONO2]
-STR_NAME    :小型單軌電車
-STR_DESC    :附有開放式側邊的小型單軌電車
-STR_CPTY    :每車卡4位乘客
-
-[MONO3]
-STR_NAME    :懷舊風格單軌電車
-STR_DESC    :使用開放式設計車廂的單軌電車
-STR_CPTY    :每車卡4位乘客
-
-[NRL]
-STR_NAME    :蒸氣火車
-STR_DESC    :配備著復刻蒸氣火車頭及煤水車的小型蒸氣火車, 拉著開放式的木製車廂
-STR_CPTY    :每車廂6位乘客
-
-[NRL2]
-STR_NAME    :有蓋蒸氣火車
-STR_DESC    :配備著復刻蒸氣火車頭及煤水車的小型蒸氣火車, 拉著帶有織布車頂的木製車廂
-STR_CPTY    :每車廂6位乘客
-
-[SMONO]
-STR_NAME    :懸掛式單軌電車
-STR_DESC    :大載客量的單軌電車
-STR_CPTY    :每車卡8位乘客
-
-[TRAM1]
-STR_NAME    :電車
-STR_DESC    :復刻的懷舊電車
-STR_CPTY    :每車卡10位乘客
-
-[4X4]
-STR_NAME    :怪獸卡車
-STR_DESC    :能爬上陡斜坡道, 而且帶有動力的巨型4 x 4卡車
-STR_CPTY    :每卡車2位乘客
-
-[CHBUILD]
-STR_NAME    :古怪屋
-STR_DESC    :一座建築物, 含有扭曲房間及傾斜走道使人於行走中失去方向感
-STR_CPTY    :5位遊客
-
-[CIRCUS1]
-STR_NAME    :馬戲團
-STR_DESC    :於大型帳幕內進行動物馬戲團表演
-STR_CPTY    :30位遊客
-
-[CTCAR]
-STR_NAME    :笑臉貓遊
-STR_DESC    :帶有動力的貓型車輛跟隨著軌道的路線遊覽周邊
-STR_CPTY    :每輛車2位乘客
-
-[DODG1]
-STR_NAME    :碰碰車
-STR_DESC    :自助駕駛的電力碰碰車
-STR_CPTY    :每車輛1位乘客
-
-[FSAUC]
-STR_NAME    :碰碰飛碟
-STR_DESC    :自助駕駛的飛碟型車輛
-STR_CPTY    :每飛碟1位乘客
-
-[FWH1]
-STR_NAME    :摩天輪
-STR_DESC    :不斷旋轉, 附有露天座椅的巨大輪環
-STR_CPTY    :32位乘客
-
-[GOLF1]
-STR_NAME    :迷你高爾夫
-STR_DESC    :一個溫和的迷你高爾夫遊戲
-STR_CPTY    : 
-
-#WW
-[CONDORRD]
-STR_NAME    :神鷹暢遊
-STR_DESC    :乘客乘坐於軌道下的神鷹造型列車上, 將會於飛馳中體驗飛一般的快感
-STR_CPTY    :每車卡4位乘客

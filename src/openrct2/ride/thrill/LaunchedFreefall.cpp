@@ -39,7 +39,7 @@ static constexpr const uint32 launched_freefall_fence_sprites[] = { SPR_FENCE_ME
  *  rct2: 0x006D5FAB
  */
 void vehicle_visual_launched_freefall(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z,
-                                      rct_vehicle * vehicle, const rct_ride_entry_vehicle * vehicleEntry)
+                                      const rct_vehicle * vehicle, const rct_ride_entry_vehicle * vehicleEntry)
 {
     sint32 image_id;
     sint32 baseImage_id = vehicleEntry->base_image_id + ((vehicle->restraints_position / 64) * 2);
@@ -53,7 +53,7 @@ void vehicle_visual_launched_freefall(paint_session * session, sint32 x, sint32 
     sub_98197C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
 
     // Draw peeps:
-    if (session->Unk140E9A8->zoom_level < 2)
+    if (session->DPI->zoom_level < 2)
     {
         if (vehicle->num_peeps > 0)
         {
@@ -185,7 +185,7 @@ static void paint_launched_freefall_tower_section(
     sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
 
     const rct_tile_element * nextTileElement = tileElement + 1;
-    if (tile_element_is_last_for_tile(tileElement) || tileElement->clearance_height != nextTileElement->base_height)
+    if (tileElement->IsLastForTile() || tileElement->clearance_height != nextTileElement->base_height)
     {
         imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT_TOP | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);

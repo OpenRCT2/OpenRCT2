@@ -31,7 +31,7 @@ sint16 SideTunnelCall::GetTunnelOffset(uint32 baseHeight, tunnel_entry calls[3])
 
 
 TunnelCall SideTunnelCall::ExtractTunnelCalls(tunnel_entry *calls, uint8 count, uint16 baseHeight, bool *error) {
-    TunnelCall tunnelCall = {0};
+    TunnelCall tunnelCall = {};
 
     if (count == 0) {
         tunnelCall.call = TUNNELCALL_NONE;

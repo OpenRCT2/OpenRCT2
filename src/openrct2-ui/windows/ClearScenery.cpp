@@ -23,6 +23,7 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2-ui/interface/LandTool.h>
 
+// clang-format off
 enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -34,8 +35,6 @@ enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
     WIDX_LARGE_SCENERY,
     WIDX_FOOTPATH
 };
-
-validate_global_widx(WC_CLEAR_SCENERY, WIDX_PREVIEW);
 
 static rct_widget window_clear_scenery_widgets[] = {
     { WWT_FRAME,    0,  0,  97, 0,  93, 0xFFFFFFFF,                                 STR_NONE },                         // panel / background
@@ -89,6 +88,7 @@ static rct_window_event_list window_clear_scenery_events = {
     window_clear_scenery_paint,
     nullptr
 };
+// clang-format on
 
 /**
  *
@@ -125,7 +125,7 @@ rct_window * window_clear_scenery_open()
  *
  *  rct2: 0x006E6B65
  */
-static void window_clear_scenery_close(rct_window *w)
+static void window_clear_scenery_close([[maybe_unused]] rct_window * w)
 {
     // If the tool wasn't changed, turn tool off
     if (clear_scenery_tool_is_active())
@@ -160,7 +160,7 @@ static void window_clear_scenery_mouseup(rct_window *w, rct_widgetindex widgetIn
     }
 }
 
-static void window_clear_scenery_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
+static void window_clear_scenery_mousedown(rct_window * w, rct_widgetindex widgetIndex, [[maybe_unused]] rct_widget * widget)
 {
     switch (widgetIndex) {
     case WIDX_DECREMENT:

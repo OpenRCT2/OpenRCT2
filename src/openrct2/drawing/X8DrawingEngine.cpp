@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <algorithm>
+#include <cstring>
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../ui/UiContext.h"
@@ -53,6 +54,7 @@ void X8RainDrawer::SetDPI(rct_drawpixelinfo * dpi)
 
 void X8RainDrawer::Draw(sint32 x, sint32 y, sint32 width, sint32 height, sint32 xStart, sint32 yStart)
 {
+    // clang-format off
     static constexpr const uint8 RainPattern[] =
     {
         32, 32, 0, 12, 0, 14, 0, 16, 255, 0, 255, 0, 255, 0, 255, 0, 255,
@@ -60,6 +62,7 @@ void X8RainDrawer::Draw(sint32 x, sint32 y, sint32 width, sint32 height, sint32 
         255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255,
         0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 0, 0
     };
+    // clang-format on
 
     const uint8 * pattern = RainPattern;
     uint8 patternXSpace = *pattern++;
@@ -132,7 +135,7 @@ void X8RainDrawer::Restore()
 #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 #endif
 
-X8DrawingEngine::X8DrawingEngine(Ui::IUiContext * uiContext)
+X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiContext>& uiContext)
 {
     _drawingContext = new X8DrawingContext(this);
 #ifdef __ENABLE_LIGHTFX__
@@ -158,11 +161,11 @@ void X8DrawingEngine::Resize(uint32 width, uint32 height)
     ConfigureBits(width, height, pitch);
 }
 
-void X8DrawingEngine::SetPalette(const rct_palette_entry * palette)
+void X8DrawingEngine::SetPalette([[maybe_unused]] const rct_palette_entry* palette)
 {
 }
 
-void X8DrawingEngine::SetVSync(bool vsync)
+void X8DrawingEngine::SetVSync([[maybe_unused]] bool vsync)
 {
     // Not applicable for this engine
 }
@@ -296,7 +299,7 @@ DRAWING_ENGINE_FLAGS X8DrawingEngine::GetFlags()
     return DEF_DIRTY_OPTIMISATIONS;
 }
 
-void X8DrawingEngine::InvalidateImage(uint32 image)
+void X8DrawingEngine::InvalidateImage([[maybe_unused]] uint32 image)
 {
     // Not applicable for this engine
 }
@@ -365,7 +368,8 @@ void X8DrawingEngine::ConfigureBits(uint32 width, uint32 height, uint32 pitch)
 #endif
 }
 
-void X8DrawingEngine::OnDrawDirtyBlock(uint32 x, uint32 y, uint32 columns, uint32 rows)
+void X8DrawingEngine::OnDrawDirtyBlock(
+    [[maybe_unused]] uint32 x, [[maybe_unused]] uint32 y, [[maybe_unused]] uint32 columns, [[maybe_unused]] uint32 rows)
 {
 }
 
@@ -467,11 +471,6 @@ void X8DrawingEngine::DrawDirtyBlocks(uint32 x, uint32 y, uint32 columns, uint32
 X8DrawingContext::X8DrawingContext(X8DrawingEngine * engine)
 {
     _engine = engine;
-}
-
-X8DrawingContext::~X8DrawingContext()
-{
-
 }
 
 IDrawingEngine * X8DrawingContext::GetEngine()

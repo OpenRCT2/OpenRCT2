@@ -20,15 +20,6 @@
 #include "NetworkAction.h"
 #include "NetworkGroup.h"
 
-NetworkGroup::NetworkGroup()
-{
-    ActionsAllowed = { 0 };
-}
-
-NetworkGroup::~NetworkGroup()
-{
-}
-
 NetworkGroup NetworkGroup::FromJson(const json_t * json)
 {
     NetworkGroup group;

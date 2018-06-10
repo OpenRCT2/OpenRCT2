@@ -109,9 +109,9 @@ private:
     }
 };
 
-IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment(DIRBASE_VALUES basePaths)
+std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment(DIRBASE_VALUES basePaths)
 {
-    return new PlatformEnvironment(basePaths);
+    return std::make_unique<PlatformEnvironment>(basePaths);
 }
 
 static std::string GetOpenRCT2DirectoryName()
@@ -123,7 +123,7 @@ static std::string GetOpenRCT2DirectoryName()
 #endif
 }
 
-IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment()
+std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
 {
     auto subDirectory = GetOpenRCT2DirectoryName();
 

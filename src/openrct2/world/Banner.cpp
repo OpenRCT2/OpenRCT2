@@ -26,11 +26,13 @@
 
 #include "Banner.h"
 #include "Map.h"
+#include "MapAnimation.h"
 #include "Park.h"
 #include "Scenery.h"
 #include "../Game.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
 #include "../windows/Intent.h"
@@ -52,7 +54,7 @@ static sint32 banner_get_ride_index_at(sint32 x, sint32 y, sint32 z)
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         rideIndex = track_element_get_ride_index(tileElement);
@@ -64,7 +66,7 @@ static sint32 banner_get_ride_index_at(sint32 x, sint32 y, sint32 z)
             continue;
 
         resultRideIndex = rideIndex;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return resultRideIndex;
 }
@@ -148,7 +150,7 @@ static money32 BannerSetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 direc
         bool found = false;
         do
         {
-            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_BANNER)
+            if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
                 continue;
 
             if (tileElement->properties.banner.position != direction)
@@ -156,7 +158,7 @@ static money32 BannerSetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 direc
 
             found = true;
             break;
-        } while (!tile_element_is_last_for_tile(tileElement++));
+        } while (!(tileElement++)->IsLastForTile());
 
         if (!found)
         {
@@ -191,7 +193,7 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
         return MONEY32_UNDEFINED;
     }
 
-    if (!map_is_location_valid(x, y))
+    if (!map_is_location_valid({x, y}))
     {
         return MONEY32_UNDEFINED;
     }
@@ -201,7 +203,7 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
     bool pathFound = false;
     do
     {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
         if (tileElement->base_height != pathBaseHeight * 2 && tileElement->base_height != (pathBaseHeight - 1) * 2)
@@ -212,7 +214,7 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
 
         pathFound = true;
         break;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     if (!pathFound)
     {
@@ -256,7 +258,7 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
         gBanners[*bannerIndex].colour = colour;
         gBanners[*bannerIndex].x = x / 32;
         gBanners[*bannerIndex].y = y / 32;
-        newTileElement->type = TILE_ELEMENT_TYPE_BANNER;
+        newTileElement->SetType(TILE_ELEMENT_TYPE_BANNER);
         newTileElement->clearance_height = newTileElement->base_height + 2;
         newTileElement->properties.banner.position = direction;
         newTileElement->properties.banner.flags = 0xFF;
@@ -281,71 +283,6 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
         return 0;
     }
     return bannerEntry->banner.price;
-}
-
-static money32 BannerSetName(uint8 bannerIndex,
-    uint16 nameChunkIndex,
-    uint32 nameChunk1,
-    uint32 nameChunk2,
-    uint32 nameChunk3,
-    uint8 flags)
-{
-    static char newName[128];
-
-    if (bannerIndex >= MAX_BANNERS)
-    {
-        log_warning("Invalid game command for setting banner name, banner id = %d", bannerIndex);
-        return MONEY32_UNDEFINED;
-    }
-    rct_banner* banner = &gBanners[bannerIndex];
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
-    size_t indexToOffset[3] = { 24, 0, 12 };
-
-    if (nameChunkIndex > Util::CountOf(indexToOffset))
-    {
-        log_warning("Invalid chunk index for setting banner name, banner id = %d, index = %d", bannerIndex, nameChunkIndex);
-        return MONEY32_UNDEFINED;
-    }
-
-    size_t nameChunkOffset = std::min<size_t>(indexToOffset[nameChunkIndex], Util::CountOf(newName) - 12);
-    std::memcpy(&newName[0 + nameChunkOffset], &nameChunk1, sizeof(uint32));
-    std::memcpy(&newName[4 + nameChunkOffset], &nameChunk2, sizeof(uint32));
-    std::memcpy(&newName[8 + nameChunkOffset], &nameChunk3, sizeof(uint32));
-
-    if (nameChunkIndex != 0)
-    {
-        return 0;
-    }
-
-    if (!(flags & GAME_COMMAND_FLAG_APPLY))
-    {
-        return 0;
-    }
-
-    utf8 *buffer = gCommonStringFormatBuffer;
-    utf8 *dst = buffer;
-    dst = utf8_write_codepoint(dst, FORMAT_COLOUR_CODE_START + banner->text_colour);
-    String::Set(dst, 256, newName, 32);
-
-    rct_string_id stringId = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, buffer);
-    if (stringId != 0)
-    {
-        rct_string_id prevStringId = banner->string_idx;
-        banner->string_idx = stringId;
-        user_string_free(prevStringId);
-
-        auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
-        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, bannerIndex);
-        context_broadcast_intent(&intent);
-    }
-    else
-    {
-        gGameCommandErrorText = STR_ERR_CANT_SET_BANNER_TEXT;
-        return MONEY32_UNDEFINED;
-    }
-
-    return 0;
 }
 
 static money32 BannerSetStyle(uint8 bannerIndex, uint8 colour, uint8 textColour, uint8 bannerFlags, uint8 flags)
@@ -478,7 +415,7 @@ rct_tile_element *banner_get_tile_element(sint32 bannerIndex)
         {
             return tileElement;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
     return nullptr;
 }
 
@@ -561,7 +498,7 @@ void fix_duplicated_banners()
             {
                 // TODO: Handle walls and large-scenery that use banner indices too. Large scenery can be tricky, as they occupy
                 // multiple tiles that should both refer to the same banner index.
-                if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_BANNER)
+                if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
                 {
                     uint8 bannerIndex = tileElement->properties.banner.index;
                     if (activeBanners[bannerIndex])
@@ -606,7 +543,7 @@ void fix_duplicated_banners()
                     // Mark banner index as in-use
                     activeBanners[bannerIndex] = true;
                 }
-            } while (!tile_element_is_last_for_tile(tileElement++));
+            } while (!(tileElement++)->IsLastForTile());
         }
     }
 }
@@ -615,7 +552,14 @@ void fix_duplicated_banners()
  *
  *  rct2: 0x006BA058
  */
-void game_command_remove_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_remove_banner(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     *ebx = BannerRemove(
         *eax & 0xFFFF,
@@ -630,7 +574,14 @@ void game_command_remove_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
  *
  *  rct2: 0x006BA16A
  */
-void game_command_set_banner_colour(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_set_banner_colour(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    sint32 *                  ebp)
 {
     *ebx = BannerSetColour(
         *eax & 0xFFFF,
@@ -646,7 +597,8 @@ void game_command_set_banner_colour(sint32* eax, sint32* ebx, sint32* ecx, sint3
  *
  *  rct2: 0x006B9E6D
  */
-void game_command_place_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_place_banner(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     *ebx = BannerPlace(
         *eax & 0xFFFF,
@@ -660,19 +612,14 @@ void game_command_place_banner(sint32* eax, sint32* ebx, sint32* ecx, sint32* ed
     );
 }
 
-void game_command_set_banner_name(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
-{
-    *ebx = BannerSetName(
-        *ecx & 0xFF,
-        *eax & 0xFFFF,
-        *edx,
-        *ebp,
-        *edi,
-        *ebx & 0xFF
-    );
-}
-
-void game_command_set_banner_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_set_banner_style(
+    [[maybe_unused]] sint32 * eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    sint32 *                  edi,
+    sint32 *                  ebp)
 {
     *ebx = BannerSetStyle(
         *ecx & 0xFF,
@@ -682,4 +629,3 @@ void game_command_set_banner_style(sint32* eax, sint32* ebx, sint32* ecx, sint32
         *ebx & 0xFF
     );
 }
-

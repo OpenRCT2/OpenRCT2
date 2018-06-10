@@ -1057,8 +1057,8 @@ STR_1214    :{SMALLFONT}{BLACK}Scegli il tempo di attesa massimo prima di partir
 STR_1215    :{WINDOW_COLOUR_2}Sincron. con le stazioni adiacenti
 STR_1216    :{SMALLFONT}{BLACK}Scegli se sincronizzare la partenza con le stazioni adiacenti (per le 'corse')
 STR_1217    :{COMMA16} secondi
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Solo uscita
 STR_1221    :Nessuna entrata
 STR_1222    :Nessuna uscita
@@ -1614,8 +1614,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :Può esserci soltanto una sezione di foto-in-corsa per attrazione
 STR_1774    :Può esserci soltanto una salita per il traino con cavo per attrazione
-STR_1775    :Off
-STR_1776    :On
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}Musica
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Costume da panda
@@ -3354,8 +3354,8 @@ STR_5232    :{SMALLFONT}{BLACK}Editor
 STR_5233    :{SMALLFONT}{BLACK}Altro
 STR_5234    :{SMALLFONT}{BLACK}Conferme
 STR_5235    :{SMALLFONT}{BLACK}Impostazioni
-STR_5236    :Finestra:
-STR_5237    :Tavolozza:
+STR_5236    :Finestra
+STR_5237    :Tavolozza
 STR_5238    :Tema attuale:
 STR_5239    :Duplica
 STR_5240    :Inserire un nome per il tema
@@ -3614,8 +3614,8 @@ STR_5491    :Lista Invenzioni
 STR_5492    :Opzioni Scenario
 STR_5493    :Mostra Messaggio
 STR_5495    :Lista Giocatore
-STR_5496    :Giocatore:
-STR_5497    :Ping:
+STR_5496    :Giocatore
+STR_5497    :Ping
 STR_5498    :Lista Server
 STR_5499    :Nome Giocatore:
 STR_5500    :Aggiungi Server
@@ -3759,7 +3759,7 @@ STR_5638    :Permesso negato
 STR_5639    :{SMALLFONT}{BLACK}Mostra lista dei giocatori
 STR_5640    :{SMALLFONT}{BLACK}Gestisci gruppo
 STR_5641    :Gruppo predefinito:
-STR_5642    :Gruppo:
+STR_5642    :Gruppo
 STR_5643    :Aggiungi gruppo
 STR_5644    :Rimuovi gruppo
 STR_5645    :Chat
@@ -3787,7 +3787,7 @@ STR_5666    :Accesso senza password
 STR_5701    :{WINDOW_COLOUR_2}Ultima azione: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Localizza l'ultima azione del giocatore
 STR_5703    :Non è possibile rimuovere l'host
-STR_5704    :Ultima azione:
+STR_5704    :Ultima azione
 STR_5705    :Non è possibile impostarlo a questo gruppo
 STR_5706    :Non è possibile rimuovere un gruppo che contiene giocatori
 STR_5707    :Questo gruppo non può essere modificato
@@ -4083,10 +4083,10 @@ STR_5999    :Imposta denaro
 STR_6000    :Inserire il nuovo valore
 STR_6001    :Attiva effetti luce (sperimentale)
 STR_6002    :{SMALLFONT}{BLACK}Le attrazioni e i lampioni saranno illuminati di notte. Richiede il motore di rendering hardware.
-STR_6003    :Vista sezionata
-STR_6004    :Vista sezionata
-STR_6005    :Attiva la vista sezionata
-STR_6006    :{SMALLFONT}{BLACK}La vista sezionata mostra solo elementi della mappa pari o inferiori all'altezza specificata
+STR_6003    :Visualizzazione ritagliata
+STR_6004    :Visualizzazione ritagliata
+STR_6005    :Attiva la visualizzazione ritagliata
+STR_6006    :{SMALLFONT}{BLACK}La visualizzazione ritagliata mostra solo gli elementi della mappa che si trovano pari o sotto all'altezza specificata (ritaglio verticale) e nell'area selezionata (ritaglio orizzontale).
 STR_6007    :Altezza sezionamento
 STR_6008    :{SMALLFONT}{BLACK}Cliccare per cambiare tra valore grezzo e unità di misura
 STR_6009    :{SMALLFONT}{BLACK}Selezionare altezza sezionamento
@@ -4250,7 +4250,7 @@ STR_6166    :{SMALLFONT}{BLACK}Sincronizza i frame alla frequenza di aggiornamen
 STR_6167    :{SMALLFONT}{BLACK}Avanzate
 STR_6168    :Sequenza del titolo
 STR_6169    :Selezione scenario
-STR_6170    :Modifiche
+STR_6170    :Personalizzazione interfaccia
 STR_6171    :Cerca
 STR_6172    :{SMALLFONT}{BLACK}Cerca
 STR_6173    :Digitare il nome da cercare:
@@ -4306,6 +4306,23 @@ STR_6222    :Impossibile piazzare qui il punto di apparizione dei visitatori...
 STR_6223    :Deve trovarsi all'esterno del confine del parco!
 STR_6224    :{STRING} ha piazzato un punto di apparizione dei visitatori.
 STR_6225    :Non supportato con il rendering OpenGL
+STR_6226    :Attiva completamento anticipato dello scenario
+STR_6227    :{SMALLFONT}{BLACK}Completa lo scenario non appena tutti gli obiettivi sono raggiunti, prima della data di scadenza.
+STR_6228    :Opzioni scenario
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :Immobile
+STR_6233    :Visualizzazione spaccato
+STR_6234    :Evidenzia problemi nei sentieri
+STR_6235    :Informazioni server
+STR_6236    :Giocatori
+STR_6237    :Gruppi
+STR_6238    :Opzioni multigiocatore
+STR_6239    :Ritaglio verticale
+STR_6240    :Ritaglio orizzontale
+STR_6241    :Seleziona area
+STR_6242    :Annulla selezione
 
 #############
 # Scenarios #
@@ -4748,13 +4765,3 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
-
-#####################
-# Rides/attractions #
-#####################
-
-#WW
-[CONDORRD]
-STR_NAME    :Condor Ride
-STR_DESC    :Guidando in speciali carrelli sotto la pista, i piloti sperimentano la sensazione di volo mentre prendono aria nei treni Condor
-STR_CPTY    :4 passeggeri per carrozza

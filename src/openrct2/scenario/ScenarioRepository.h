@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include "../common.h"
 
 struct rct_object_entry;
@@ -63,7 +64,7 @@ interface IScenarioRepository
     /**
      * Scans the scenario directories and grabs the metadata for all the scenarios.
      */
-    virtual void Scan() abstract;
+    virtual void Scan(sint32 language) abstract;
 
     virtual size_t GetCount() const abstract;
     virtual const scenario_index_entry * GetByIndex(size_t index) const  abstract;
@@ -74,10 +75,10 @@ interface IScenarioRepository
     virtual const scenario_index_entry * GetByInternalName(const utf8 * name) const abstract;
     virtual const scenario_index_entry * GetByPath(const utf8 * path) const abstract;
 
-    virtual bool TryRecordHighscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) abstract;
+    virtual bool TryRecordHighscore(sint32 language, const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) abstract;
 };
 
-IScenarioRepository * CreateScenarioRepository(OpenRCT2::IPlatformEnvironment * env);
+std::unique_ptr<IScenarioRepository> CreateScenarioRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 IScenarioRepository * GetScenarioRepository();
 
 void    scenario_repository_scan();
@@ -85,4 +86,3 @@ size_t  scenario_repository_get_count();
 const   scenario_index_entry *scenario_repository_get_by_index(size_t index);
 bool    scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name);
 void    scenario_translate(scenario_index_entry * scenarioEntry, const struct rct_object_entry * stexObjectEntry);
-

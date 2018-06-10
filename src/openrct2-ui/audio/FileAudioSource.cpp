@@ -21,7 +21,7 @@
 #include "AudioContext.h"
 #include "AudioFormat.h"
 
-namespace OpenRCT2 { namespace Audio
+namespace OpenRCT2::Audio
 {
     /**
      * An audio source where raw PCM data is streamed directly from
@@ -30,7 +30,7 @@ namespace OpenRCT2 { namespace Audio
     class FileAudioSource final : public ISDLAudioSource
     {
     private:
-        AudioFormat _format = { 0 };
+        AudioFormat _format = {};
         SDL_RWops * _rw = nullptr;
         uint64      _dataBegin = 0;
         uint64      _dataLength = 0;
@@ -132,7 +132,6 @@ namespace OpenRCT2 { namespace Audio
             default:
                 log_verbose("Invalid bits per sample");
                 return false;
-                break;
             }
             _format.channels = waveFormat.channels;
 
@@ -207,4 +206,4 @@ namespace OpenRCT2 { namespace Audio
         }
         return source;
     }
-} }
+} // namespace OpenRCT2::Audio

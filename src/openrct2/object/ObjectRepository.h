@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include <vector>
 #include "../common.h"
 #include "../object/Object.h"
@@ -28,38 +29,39 @@ namespace OpenRCT2
     interface IPlatformEnvironment;
 }
 
+namespace OpenRCT2::Localisation
+{
+    class LocalisationService;
+}
+
 struct rct_drawpixelinfo;
 
 struct ObjectRepositoryItem
 {
     size_t             Id;
     rct_object_entry   ObjectEntry;
-    utf8 *             Path;
-    utf8 *             Name;
-    Object *           LoadedObject;
-    union
+    std::string        Path;
+    std::string        Name;
+    Object *           LoadedObject{};
+    struct
     {
-        struct
-        {
-            uint8   RideFlags;
-            uint8   RideCategory[2];
-            uint8   RideType[MAX_RIDE_TYPES_PER_RIDE_ENTRY];
-            uint8   RideGroupIndex;
-        };
-        struct
-        {
-            uint16             NumThemeObjects;
-            rct_object_entry * ThemeObjects;
-        };
-    };
+        uint8   RideFlags;
+        uint8   RideCategory[MAX_CATEGORIES_PER_RIDE];
+        uint8   RideType[MAX_RIDE_TYPES_PER_RIDE_ENTRY];
+        uint8   RideGroupIndex;
+    } RideInfo;
+    struct
+    {
+        std::vector<rct_object_entry> Entries;
+    } SceneryGroupInfo;
 };
 
 interface IObjectRepository
 {
-    virtual ~IObjectRepository() { }
+    virtual ~IObjectRepository() = default;
 
-    virtual void                            LoadOrConstruct() abstract;
-    virtual void                            Construct() abstract;
+    virtual void                            LoadOrConstruct(sint32 language) abstract;
+    virtual void                            Construct(sint32 language) abstract;
     virtual size_t                          GetNumObjects() const abstract;
     virtual const ObjectRepositoryItem *    GetObjects() const abstract;
     virtual const ObjectRepositoryItem *    FindObject(const utf8 * name) const abstract;
@@ -77,8 +79,7 @@ interface IObjectRepository
     virtual void                            WritePackedObjects(IStream * stream, std::vector<const ObjectRepositoryItem *> &objects) abstract;
 };
 
-IObjectRepository * CreateObjectRepository(OpenRCT2::IPlatformEnvironment * env);
-IObjectRepository * GetObjectRepository();
+std::unique_ptr<IObjectRepository> CreateObjectRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 
 bool IsObjectCustom(const ObjectRepositoryItem * object);
 

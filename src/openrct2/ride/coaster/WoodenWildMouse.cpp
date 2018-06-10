@@ -16,7 +16,7 @@
 
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
-#include "../../paint/tile_element/TileElement.h"
+#include "../../paint/tile_element/Paint.TileElement.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../sprites.h"
@@ -160,7 +160,7 @@ static void wooden_wild_mouse_track_flat(
 static void wooden_wild_mouse_track_station(
     paint_session *          session,
     uint8                    rideIndex,
-    uint8                    trackSequence,
+    [[maybe_unused]] uint8   trackSequence,
     uint8                    direction,
     sint32                   height,
     const rct_tile_element * tileElement)
@@ -177,7 +177,7 @@ static void wooden_wild_mouse_track_station(
     sub_98199C_rotated(session, direction, imageIds[direction][0] | session->TrackColours[SCHEME_TRACK], 0, 6, 32, 20, 1,
                        height, 0, 0, height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
-    track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, tileElement);
+    track_paint_util_draw_station(session, rideIndex, direction, height, tileElement);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -577,7 +577,7 @@ static void wooden_wild_mouse_track_right_quarter_turn_3(
     static uint8 supportType[] = { 4, 5, 2, 3 };
 
     track_paint_util_right_quarter_turn_3_tiles_paint_4(
-        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
+        session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence)

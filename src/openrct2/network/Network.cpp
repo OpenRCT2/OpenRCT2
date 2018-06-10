@@ -24,6 +24,7 @@
 
 #include "../platform/platform.h"
 #include "../util/SawyerCoding.h"
+#include "../world/Location.hpp"
 
 #include "network.h"
 
@@ -33,7 +34,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "43"
+#define NETWORK_STREAM_VERSION "19"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static rct_peep* _pickup_peep = nullptr;
@@ -70,10 +71,9 @@ static sint32 _pickup_peep_old_x = LOCATION_NULL;
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../Cheats.h"
+#include "../world/Park.h"
 
 #include "NetworkAction.h"
-
-#include <openssl/evp.h> // just for OpenSSL_add_all_algorithms()
 
 #pragma comment(lib, "Ws2_32.lib")
 
@@ -127,7 +127,6 @@ Network::Network()
     server_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Server_Handle_GAMEINFO;
     server_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Server_Handle_TOKEN;
     server_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Server_Handle_OBJECTS;
-    OpenSSL_add_all_algorithms();
 
     _chat_log_fs << std::unitbuf;
     _server_log_fs << std::unitbuf;
@@ -135,10 +134,12 @@ Network::Network()
 
 Network::~Network()
 {
-    Close();
+    CloseChatLog();
+    CloseServerLog();
+    CloseConnection();
 }
 
-void Network::SetEnvironment(IPlatformEnvironment * env)
+void Network::SetEnvironment(const std::shared_ptr<IPlatformEnvironment>& env)
 {
     _env = env;
 }
@@ -163,52 +164,59 @@ bool Network::Init()
 
 void Network::Close()
 {
-    if (status == NETWORK_STATUS_NONE)
+    if (status != NETWORK_STATUS_NONE)
     {
-        // Already closed. This prevents a call in ~Network() to gfx_invalidate_screen()
-        // which may no longer be valid on Linux and would cause a segfault.
-        return;
-    }
+        // HACK Because Close() is closed all over the place, it sometimes gets called inside an Update
+        //      call. This then causes disposed data to be accessed. Therefore, save closing until the
+        //      end of the update loop.
+        if (_closeLock)
+        {
+            _requireClose = true;
+            return;
+        }
 
-    // HACK Because Close() is closed all over the place, it sometimes gets called inside an Update
-    //      call. This then causes disposed data to be accessed. Therefore, save closing until the
-    //      end of the update loop.
-    if (_closeLock) {
-        _requireClose = true;
-        return;
-    }
+        CloseChatLog();
+        CloseServerLog();
+        CloseConnection();
 
-    if (mode == NETWORK_MODE_CLIENT) {
+        client_connection_list.clear();
+        game_command_queue.clear();
+        player_list.clear();
+        group_list.clear();
+
+        gfx_invalidate_screen();
+
+        _requireClose = false;
+    }
+}
+
+void Network::CloseConnection()
+{
+    if (mode == NETWORK_MODE_CLIENT)
+    {
         delete server_connection->Socket;
         server_connection->Socket = nullptr;
-    } else if (mode == NETWORK_MODE_SERVER) {
+    }
+    else if (mode == NETWORK_MODE_SERVER)
+    {
         delete listening_socket;
         listening_socket = nullptr;
         delete _advertiser;
         _advertiser = nullptr;
     }
 
-    CloseChatLog();
-    CloseServerLog();
-
     mode = NETWORK_MODE_NONE;
     status = NETWORK_STATUS_NONE;
     _lastConnectStatus = SOCKET_STATUS_CLOSED;
-    server_connection->AuthStatus = NETWORK_AUTH_NONE;
-    server_connection->InboundPacket.Clear();
-    server_connection->SetLastDisconnectReason(nullptr);
-    SafeDelete(server_connection);
-
-    client_connection_list.clear();
-    game_command_queue.clear();
-    player_list.clear();
-    group_list.clear();
+    if (server_connection != nullptr)
+    {
+        server_connection->AuthStatus = NETWORK_AUTH_NONE;
+        server_connection->InboundPacket.Clear();
+        server_connection->SetLastDisconnectReason(nullptr);
+        delete server_connection;
+    }
 
     DisposeWSA();
-
-    gfx_invalidate_screen();
-
-    _requireClose = false;
 }
 
 bool Network::BeginClient(const char* host, uint16 port)
@@ -657,11 +665,11 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
         server_srand0_tick = 0;
         // Check that the server and client sprite hashes match
         const char *client_sprite_hash = sprite_checksum();
-        const bool sprites_mismatch = server_sprite_hash[0] != '\0' && strcmp(client_sprite_hash, server_sprite_hash);
+        const bool sprites_mismatch = server_sprite_hash[0] != '\0' && strcmp(client_sprite_hash, server_sprite_hash.c_str()) != 0;
         // Check PRNG values and sprite hashes, if exist
         if ((srand0 != server_srand0) || sprites_mismatch) {
 #ifdef DEBUG_DESYNC
-            dbg_report_desync(tick, srand0, server_srand0, client_sprite_hash, server_sprite_hash);
+            dbg_report_desync(tick, srand0, server_srand0, client_sprite_hash, server_sprite_hash.c_str());
 #endif
             return false;
         }
@@ -753,7 +761,7 @@ NetworkGroup* Network::AddGroup()
         }
     }
     if (newid != -1) {
-        std::unique_ptr<NetworkGroup> group(new NetworkGroup); // change to make_unique in c++14
+        auto group = std::make_unique<NetworkGroup>();
         group->Id = newid;
         group->SetName("Group #" + std::to_string(newid));
         addedgroup = group.get();
@@ -834,17 +842,17 @@ void Network::SaveGroups()
 
 void Network::SetupDefaultGroups()
 {
-    std::unique_ptr<NetworkGroup> admin(new NetworkGroup()); // change to make_unique in c++14
+    auto admin = std::make_unique<NetworkGroup>();
     admin->SetName("Admin");
     admin->ActionsAllowed.fill(0xFF);
     admin->Id = 0;
     group_list.push_back(std::move(admin));
-    std::unique_ptr<NetworkGroup> spectator(new NetworkGroup()); // change to make_unique in c++14
+    auto spectator = std::make_unique<NetworkGroup>();
     spectator->SetName("Spectator");
     spectator->ToggleActionPermission(0); // Chat
     spectator->Id = 1;
     group_list.push_back(std::move(spectator));
-    std::unique_ptr<NetworkGroup> user(new NetworkGroup()); // change to make_unique in c++14
+    auto user = std::make_unique<NetworkGroup>();
     user->SetName("User");
     user->ActionsAllowed.fill(0xFF);
     user->ToggleActionPermission(15); // Kick Player
@@ -885,7 +893,7 @@ void Network::LoadGroups()
         for (size_t i = 0; i < groupCount; i++) {
             json_t * jsonGroup = json_array_get(json_groups, i);
 
-            std::unique_ptr<NetworkGroup> newgroup(new NetworkGroup(NetworkGroup::FromJson(jsonGroup))); // change to make_unique in c++14
+            auto newgroup = std::make_unique<NetworkGroup>(NetworkGroup::FromJson(jsonGroup));
             group_list.push_back(std::move(newgroup));
         }
         json_t * jsonDefaultGroup = json_object_get(json, "default_group");
@@ -1095,7 +1103,8 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
     } else {
         // This will send all custom objects to connected clients
         // TODO: fix it so custom objects negotiation is performed even in this case.
-        IObjectManager * objManager = GetObjectManager();
+        auto context = GetContext();
+        auto objManager = context->GetObjectManager();
         objects = objManager->GetPackableObjects();
     }
 
@@ -1387,7 +1396,6 @@ bool Network::ProcessConnection(NetworkConnection& connection)
                 connection.SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
             }
             return false;
-            break;
         case NETWORK_READPACKET_SUCCESS:
             // done reading in packet
             ProcessPacket(connection, connection.InboundPacket);
@@ -1781,7 +1789,8 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
         format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
         chat_history_add(text);
 
-        IObjectManager * objManager = GetObjectManager();
+        auto context = GetContext();
+        auto objManager = context->GetObjectManager();
         auto objects = objManager->GetPackableObjects();
         Server_Send_OBJECTS(connection, objects);
 
@@ -1790,7 +1799,7 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
     }
 }
 
-void Network::Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Server_Handle_TOKEN(NetworkConnection& connection, [[maybe_unused]] NetworkPacket& packet)
 {
     uint8 token_size = 10 + (rand() & 0x7f);
     connection.Challenge.resize(token_size);
@@ -1802,7 +1811,7 @@ void Network::Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 
 void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet)
 {
-    IObjectRepository * repo = GetObjectRepository();
+    auto repo = GetContext()->GetObjectRepository();
     uint32 size;
     packet >> size;
     log_verbose("client received object list, it has %u entries", size);
@@ -1855,7 +1864,7 @@ void Network::Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
         return;
     }
     log_verbose("Client requested %u objects", size);
-    IObjectRepository * repo = GetObjectRepository();
+    auto repo = GetContext()->GetObjectRepository();
     for (uint32 i = 0; i < size; i++)
     {
         const char * name = (const char *)packet.Read(8);
@@ -1943,7 +1952,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
             connection.AuthStatus = NETWORK_AUTH_BADNAME;
         } else
         if (!passwordless) {
-            if ((!password || strlen(password) == 0) && _password.size() > 0) {
+            if ((!password || strlen(password) == 0) && !_password.empty()) {
                 connection.AuthStatus = NETWORK_AUTH_REQUIREPASSWORD;
             } else
             if (password && _password != password) {
@@ -1966,7 +1975,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
     }
 }
 
-void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32 size, offset;
     packet >> size >> offset;
@@ -2045,16 +2054,17 @@ bool Network::LoadMap(IStream * stream)
     bool result = false;
     try
     {
-        auto importer = std::unique_ptr<IParkImporter>(
-            ParkImporter::CreateS6(GetObjectRepository(), GetObjectManager()));
-        importer->LoadFromStream(stream, false);
+        auto context = GetContext();
+        auto objManager = context->GetObjectManager();
+        auto importer = ParkImporter::CreateS6(context->GetObjectRepository(), context->GetObjectManager());
+        auto loadResult = importer->LoadFromStream(stream, false);
+        objManager->LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
         importer->Import();
 
         sprite_position_tween_reset();
 
         // Read checksum
-        uint32 checksum = stream->ReadValue<uint32>();
-        UNUSED(checksum);
+        [[maybe_unused]] uint32 checksum = stream->ReadValue<uint32>();
 
         // Read other data not in normal save files
         stream->Read(gSpriteSpatialIndex, 0x10001 * sizeof(uint16));
@@ -2082,7 +2092,7 @@ bool Network::LoadMap(IStream * stream)
         gCheatsDisableRideValueAging = stream->ReadValue<uint8>() != 0;
         gConfigGeneral.show_real_names_of_guests = stream->ReadValue<uint8>() != 0;
         gCheatsIgnoreResearchStatus = stream->ReadValue<uint8>() != 0;
-        
+
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         result = true;
     }
@@ -2138,7 +2148,7 @@ bool Network::SaveMap(IStream * stream, const std::vector<const ObjectRepository
     return result;
 }
 
-void Network::Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_CHAT([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     const char* text = packet.ReadString();
     if (text) {
@@ -2162,7 +2172,7 @@ void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
     }
 }
 
-void Network::Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_GAMECMD([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32 tick;
     uint32 args[7];
@@ -2173,7 +2183,7 @@ void Network::Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
     game_command_queue.emplace(tick, args, playerid, callback, _commandId++);
 }
 
-void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32 tick;
     uint32 type;
@@ -2195,7 +2205,7 @@ void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 
     if (player_id == action->GetPlayer())
     {
-        // Only execute callbacks that belong to us, 
+        // Only execute callbacks that belong to us,
         // clients can have identical network ids assigned.
         auto itr = _gameActionCallbacks.find(action->GetNetworkId());
         if (itr != _gameActionCallbacks.end())
@@ -2345,7 +2355,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
     game_command_queue.emplace(tick, args, playerid, callback, _commandId++);
 }
 
-void Network::Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_TICK([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32 srand0;
     uint32 flags;
@@ -2356,20 +2366,22 @@ void Network::Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& p
     if (server_srand0_tick == 0) {
         server_srand0 = srand0;
         server_srand0_tick = server_tick;
-        server_sprite_hash[0] = '\0';
+        server_sprite_hash.resize(0);
         if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
         {
             const char* text = packet.ReadString();
             if (text != nullptr)
             {
-                safe_strcpy(server_sprite_hash, text, sizeof(server_sprite_hash));
+                auto textLen = std::strlen(text);
+                server_sprite_hash.resize(textLen);
+                std::memcpy(server_sprite_hash.data(), text, textLen);
             }
         }
     }
     game_commands_processed_this_tick = 0;
 }
 
-void Network::Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_PLAYERLIST([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     uint8 size;
     packet >> size;
@@ -2399,12 +2411,12 @@ void Network::Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPac
     }
 }
 
-void Network::Client_Handle_PING(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_PING([[maybe_unused]] NetworkConnection& connection, [[maybe_unused]] NetworkPacket& packet)
 {
     Client_Send_PING();
 }
 
-void Network::Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Server_Handle_PING(NetworkConnection& connection, [[maybe_unused]] NetworkPacket& packet)
 {
     sint32 ping = platform_get_ticks() - connection.PingTime;
     if (ping < 0) {
@@ -2416,7 +2428,7 @@ void Network::Server_Handle_PING(NetworkConnection& connection, NetworkPacket& p
     }
 }
 
-void Network::Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_PINGLIST([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     uint8 size;
     packet >> size;
@@ -2442,19 +2454,19 @@ void Network::Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, Netw
     }
 }
 
-void Network::Server_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Server_Handle_GAMEINFO(NetworkConnection& connection, [[maybe_unused]] NetworkPacket& packet)
 {
     Server_Send_GAMEINFO(connection);
 }
 
-void Network::Client_Handle_SHOWERROR(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_SHOWERROR([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     rct_string_id title, message;
     packet >> title >> message;
     context_show_error(title, message);
 }
 
-void Network::Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_GROUPLIST([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     group_list.clear();
     uint8 size;
@@ -2462,12 +2474,12 @@ void Network::Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPack
     for (uint32 i = 0; i < size; i++) {
         NetworkGroup group;
         group.Read(packet);
-        std::unique_ptr<NetworkGroup> newgroup(new NetworkGroup(group)); // change to make_unique in c++14
+        auto newgroup = std::make_unique<NetworkGroup>(group);
         group_list.push_back(std::move(newgroup));
     }
 }
 
-void Network::Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_EVENT([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     char text[256];
     uint16 eventType;
@@ -2510,7 +2522,7 @@ static std::string json_stdstring_value(const json_t * string)
     return cstr == nullptr ? std::string() : std::string(cstr);
 }
 
-void Network::Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_GAMEINFO([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     const char * jsonString = packet.ReadString();
 
@@ -2532,9 +2544,9 @@ void Network::Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacke
     network_chat_show_server_greeting();
 }
 
-void network_set_env(void * env)
+void network_set_env(const std::shared_ptr<IPlatformEnvironment>& env)
 {
-    gNetwork.SetEnvironment((IPlatformEnvironment *)env);
+    gNetwork.SetEnvironment(env);
 }
 
 void network_close()
@@ -2748,7 +2760,14 @@ void network_chat_show_server_greeting()
     }
 }
 
-void game_command_set_player_group(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_set_player_group(
+    [[maybe_unused]] sint32 * eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     uint8 playerid = (uint8)*ecx;
     uint8 groupid = (uint8)*edx;
@@ -2807,7 +2826,8 @@ void game_command_set_player_group(sint32* eax, sint32* ebx, sint32* ecx, sint32
     *ebx = 0;
 }
 
-void game_command_modify_groups(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+void game_command_modify_groups(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     uint8 action = (uint8)*eax;
     uint8 groupid = (uint8)(*eax >> 8);
@@ -2995,7 +3015,14 @@ void game_command_modify_groups(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
     *ebx = 0;
 }
 
-void game_command_kick_player(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+void game_command_kick_player(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    [[maybe_unused]] sint32 * ecx,
+    [[maybe_unused]] sint32 * edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     uint8 playerid = (uint8)*eax;
     NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
@@ -3061,7 +3088,7 @@ sint32 network_can_perform_action(uint32 groupindex, uint32 index)
     return gNetwork.group_list[groupindex]->CanPerformAction(index);
 }
 
-sint32 network_can_perform_command(uint32 groupindex, uint32 index)
+sint32 network_can_perform_command(uint32 groupindex, sint32 index)
 {
     return gNetwork.group_list[groupindex]->CanPerformCommand(index);
 }
@@ -3291,7 +3318,7 @@ uint8 network_get_default_group() { return 0; }
 sint32 network_get_num_actions() { return 0; }
 rct_string_id network_get_action_name_string_id(uint32 index) { return -1; }
 sint32 network_can_perform_action(uint32 groupindex, uint32 index) { return 0; }
-sint32 network_can_perform_command(uint32 groupindex, uint32 index) { return 0; }
+sint32 network_can_perform_command(uint32 groupindex, sint32 index) { return 0; }
 void network_set_pickup_peep(uint8 playerid, rct_peep* peep) { _pickup_peep = peep; }
 rct_peep* network_get_pickup_peep(uint8 playerid) { return _pickup_peep; }
 void network_set_pickup_peep_old_x(uint8 playerid, sint32 x) { _pickup_peep_old_x = x; }
@@ -3299,7 +3326,7 @@ sint32 network_get_pickup_peep_old_x(uint8 playerid) { return _pickup_peep_old_x
 void network_send_chat(const char* text) {}
 void network_send_password(const char* password) {}
 void network_close() {}
-void network_set_env(void * env) {}
+void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>&) {}
 void network_shutdown_client() {}
 void network_set_password(const char* password) {}
 uint8 network_get_current_player_id() { return 0; }

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,101 +14,160 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
+#include <limits>
+#include <stdexcept>
+#include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "ConversionTables.h"
-#include "Localisation.h"
+#include "Language.h"
 
-sint32 rct2_to_utf8(utf8 *dst, const char *src)
+/**
+ * Decodes an RCT2 string to a wide char string still in the original code page.
+ * An RCT2 string is a multi-byte string where every two-byte code point is preceeded with a byte value of 255.
+ */
+static std::wstring DecodeToWideChar(const std::string_view& src)
 {
-    wchar_t codepoint;
+    std::wstring decoded;
+    decoded.reserve(src.size());
+    for (auto it = src.begin(); it != src.end(); )
+    {
+        uint8_t c = *it++;
+        if (c == 255)
+        {
+            // Push next two characters
+            uint8 a = 0;
+            uint8 b = 0;
+            if (it != src.end())
+            {
+                a = *it++;
+                if (it != src.end())
+                {
+                    b = *it++;
+                }
+                else
+                {
+                    // 2nd byte for double byte character is missing
+                    break;
+                }
+            }
+            else
+            {
+                // 1st byte for double byte character is missing
+                break;
+            }
 
-    utf8 *start = dst;
-    const char *ch = src;
-    while (*ch != 0) {
-        if (*ch == (char)(uint8)0xFF) {
-            ch++;
-
-            // Read wide char
-            uint8 a = *ch++;
-            uint8 b = *ch++;
-            codepoint = (a << 8) | b;
-        } else {
-            codepoint = (uint8)(*ch++);
-            codepoint = encoding_convert_rct2_to_unicode(codepoint);
+            wchar_t cp = (a << 8) | b;
+            decoded.push_back(cp);
         }
-
-        dst = utf8_write_codepoint(dst, codepoint);
+        else
+        {
+            // Push character
+            decoded.push_back(c);
+        }
     }
-    dst = utf8_write_codepoint(dst, 0);
-    return (sint32)(dst - start);
+    return decoded;
 }
 
-sint32 utf8_to_rct2(char *dst, const utf8 *src)
+static std::string DecodeToMultiByte(const std::string_view& src)
 {
-    char *start = dst;
-    const utf8 *ch = src;
+    auto wide = DecodeToWideChar(src);
+    std::string result;
+    result.reserve(wide.size());
+    for (auto cc : wide)
+    {
+        if (cc <= 255)
+        {
+            result.push_back(cc);
+        }
+        else
+        {
+            result.push_back((cc >> 8) & 0xFF);
+            result.push_back(cc & 0xFF);
+        }
+    }
+    return result;
+}
+
+/**
+ * Encodes a UTF-8 string as an RCT2 string.
+ */
+static std::string Encode(const std::string_view& src)
+{
+    std::string dst;
+    const utf8 * ch = src.data();
     sint32 codepoint;
-    while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+    while ((codepoint = utf8_get_next(ch, &ch)) != 0)
+    {
         codepoint = encoding_convert_unicode_to_rct2(codepoint);
-        if (codepoint < 256) {
-            *dst++ = (char)codepoint;
-        } else if (codepoint <= 0xFFFF) {
-            *dst++ = (char)(uint8)0xFF;
-            *dst++ = (codepoint >> 8) & 0xFF;
-            *dst++ = codepoint & 0xFF;
+        if (codepoint <= std::numeric_limits<uint8>::max())
+        {
+            dst.push_back(codepoint);
+        }
+        else if (codepoint <= std::numeric_limits<uint16>::max())
+        {
+            dst.push_back((char)(uint8)0xFF);
+            dst.push_back((codepoint >> 8) & 0xFF);
+            dst.push_back(codepoint & 0xFF);
+        }
+        else
+        {
+            // RCT2 strings do not support code points greater than 65535, replace them with '?'
+            dst.push_back('?');
         }
     }
-    *dst++ = 0;
-    return (sint32)(dst - start);
+    return dst;
 }
 
-static sint32 encoding_search_compare(const void *pKey, const void *pEntry)
+static sint32 GetCodePageForRCT2Language(RCT2LanguageId languageId)
 {
-    uint16 key = *((uint16*)pKey);
-    encoding_convert_entry *entry = (encoding_convert_entry*)pEntry;
-    if (key < entry->code) return -1;
-    if (key > entry->code) return 1;
-    return 0;
-}
-
-static wchar_t encoding_convert_x_to_unicode(wchar_t code, const encoding_convert_entry *table, size_t count)
-{
-    encoding_convert_entry * entry = (encoding_convert_entry *)bsearch(&code, table, count, sizeof(encoding_convert_entry), encoding_search_compare);
-    if (entry == nullptr) return code;
-    else return entry->unicode;
-}
-
-uint32 encoding_convert_unicode_to_rct2(uint32 unicode)
-{
-    // Can't do a binary search as it's sorted by RCT2 code, not unicode
-    for (uint32 i = 0; i < Util::CountOf(RCT2ToUnicodeTable); i++) {
-        if (RCT2ToUnicodeTable[i].unicode == unicode) return RCT2ToUnicodeTable[i].code;
+    switch (languageId)
+    {
+        case RCT2_LANGUAGE_ID_JAPANESE:
+            return CODE_PAGE::CP_932;
+        case RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED:
+            return CODE_PAGE::CP_936;
+        case RCT2_LANGUAGE_ID_KOREAN:
+            return CODE_PAGE::CP_949;
+        case RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL:
+            return CODE_PAGE::CP_950;
+        default:
+            return CODE_PAGE::CP_1252;
     }
-    return unicode;
 }
 
-wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str)
+template<typename TConvertFunc>
+static std::string DecodeConvertWithTable(const std::string_view& src, TConvertFunc func)
 {
-    return encoding_convert_x_to_unicode(rct2str, RCT2ToUnicodeTable, Util::CountOf(RCT2ToUnicodeTable));
+    auto decoded = DecodeToWideChar(src);
+    std::wstring u16;
+    u16.reserve(decoded.size());
+    for (auto cc : decoded)
+    {
+        u16.push_back(func(cc));
+    }
+    return String::ToUtf8(u16);
 }
 
-wchar_t encoding_convert_gb2312_to_unicode(wchar_t gb2312)
+std::string rct2_to_utf8(const std::string_view& src, RCT2LanguageId languageId)
 {
-    return encoding_convert_x_to_unicode(gb2312 - 0x8080, GB2312ToUnicodeTable, Util::CountOf(GB2312ToUnicodeTable));
+    auto codePage = GetCodePageForRCT2Language(languageId);
+    if (codePage == CODE_PAGE::CP_1252)
+    {
+        // The code page used by RCT2 was not quite 1252 as some codes were used for Polish characters.
+        return DecodeConvertWithTable(src, encoding_convert_rct2_to_unicode);
+    }
+    else
+    {
+        auto decoded = DecodeToMultiByte(src);
+        return String::Convert(decoded, codePage, CODE_PAGE::CP_UTF8);
+    }
 }
 
-wchar_t encoding_convert_big5_to_unicode(wchar_t big5)
+std::string utf8_to_rct2(const std::string_view& src)
 {
-    return encoding_convert_x_to_unicode(big5, Big5ToUnicodeTable, Util::CountOf(Big5ToUnicodeTable));
+    // NOTE: This is only used for SC6 / SV6 files which don't store the language identifier
+    //       because of this, we can only store in RCT2's CP_1252 format. We can preserve some
+    //       unicode characters, but only those between 256 and 65535.
+    return Encode(src);
 }
-
-wchar_t encoding_convert_cp932_to_unicode(wchar_t cp932)
-{
-    return encoding_convert_x_to_unicode(cp932, CP932ToUnicodeTable, Util::CountOf(CP932ToUnicodeTable));
-}
-
-wchar_t encoding_convert_cp949_to_unicode(wchar_t cp949)
-{
-    return encoding_convert_x_to_unicode(cp949, CP949ToUnicodeTable, Util::CountOf(CP949ToUnicodeTable));
-}
-

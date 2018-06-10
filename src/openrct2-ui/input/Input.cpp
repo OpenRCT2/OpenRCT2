@@ -22,11 +22,15 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/Input.h>
 #include <openrct2/interface/Chat.h>
-#include <openrct2/interface/Console.h>
+#include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2-ui/windows/Window.h>
+#include "../interface/InGameConsole.h"
+#include "../UiContext.h"
 #include "KeyboardShortcuts.h"
 #include "Input.h"
+
+using namespace OpenRCT2::Ui;
 
 static void input_handle_console(sint32 key)
 {
@@ -54,7 +58,8 @@ static void input_handle_console(sint32 key)
     }
     if (input != CONSOLE_INPUT_NONE)
     {
-        console_input(input);
+        auto& console = GetInGameConsole();
+        console.Input(input);
     }
 }
 
@@ -129,7 +134,8 @@ void input_handle_keyboard(bool isTitle)
         return;
     }
 
-    if (!gConsoleOpen)
+    auto& console = GetInGameConsole();
+    if (!console.IsOpen())
     {
         if (!isTitle)
         {
@@ -170,7 +176,7 @@ void input_handle_keyboard(bool isTitle)
         }
     }
 
-    if (gConfigGeneral.use_virtual_floor)
+    if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_OFF)
     {
         if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
             virtual_floor_enable();
@@ -188,14 +194,14 @@ void input_handle_keyboard(bool isTitle)
         // Reserve backtick for console
         if (key == SDL_SCANCODE_GRAVE)
         {
-            if ((gConfigGeneral.debugging_tools && !context_is_input_active()) || gConsoleOpen)
+            if ((gConfigGeneral.debugging_tools && !context_is_input_active()) || console.IsOpen())
             {
                 window_cancel_textbox();
-                console_toggle();
+                console.Toggle();
             }
             continue;
         }
-        else if (gConsoleOpen)
+        else if (console.IsOpen())
         {
             input_handle_console(key);
             continue;

@@ -11,16 +11,20 @@ distribution/android/*/external/
 
 # Build artifacts
 artifacts
+bin.*/
 .cache
 .dependencies
+sequencesversion
+objectsversion
 
 #lib
 lib
 libversion
 
-#sequences
+# Downloaded or built data files
+data/g2.dat
 data/title
-sequencesversion
+data/object
 
 #################
 ## Eclipse
@@ -277,7 +281,6 @@ pip-log.txt
 openrct2.id*
 openrct2.nam
 openrct2.til
-data/g2.dat
 
 #################
 ## Linux

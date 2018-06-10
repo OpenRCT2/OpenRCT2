@@ -15,30 +15,41 @@
 #pragma endregion
 
 #include <openrct2/config/Config.h>
-#include <openrct2/network/network.h>
-#include <openrct2/world/Climate.h>
-#include <openrct2/core/Math.hpp>
-#include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
-#include <openrct2-ui/interface/Widget.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/core/Util.hpp>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
+#include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/world/Surface.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
 
 #define CHEATS_MONEY_DEFAULT MONEY(10000,00)
 #define CHEATS_MONEY_INCREMENT_DIV MONEY(5000,00)
 static utf8 _moneySpinnerText[MONEY_STRING_MAXLENGTH];
 static money32 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
+static sint32 _selectedStaffSpeed = 1;
 
+// clang-format off
 enum
 {
     WINDOW_CHEATS_PAGE_MONEY,
     WINDOW_CHEATS_PAGE_GUESTS,
     WINDOW_CHEATS_PAGE_MISC,
     WINDOW_CHEATS_PAGE_RIDES,
+};
+
+static rct_string_id _staffSpeedNames[] =
+{
+    STR_FROZEN,
+    STR_NORMAL,
+    STR_FAST,
 };
 
 static constexpr const rct_string_id WeatherTypes[] =
@@ -137,8 +148,8 @@ enum WINDOW_CHEATS_WIDGET_IDX
     WIDX_FIX_VANDALISM,
     WIDX_REMOVE_LITTER,
     WIDX_DISABLE_PLANT_AGING,
-    WIDX_FAST_STAFF,
-    WIDX_NORMAL_STAFF,
+    WIDX_STAFF_SPEED,
+    WIDX_STAFF_SPEED_DROPDOWN_BUTTON,
 
     WIDX_FIX_ALL = WIDX_TAB_CONTENT,
     WIDX_RENEW_RIDES,
@@ -207,22 +218,14 @@ static rct_widget window_cheats_money_widgets[] =
     MAIN_CHEATS_WIDGETS,
     { WWT_CHECKBOX,         1,      XPL(0),                 WPL(0),                 YPL(0),         HPL(0),         STR_MAKE_PARK_NO_MONEY,             STR_NONE },                             // No money
     { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(1),         HPL(3.5),       STR_ADD_SET_MONEY,                  STR_NONE },                             // add / set money group frame
-    { WWT_SPINNER,          1,      XPL(0),                 WPL(1) - 10,            YPL(2) + 2,     HPL(2) - 3,     STR_NONE,                           STR_NONE },                             // money value
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(2) + 3,     YPL(2) + 7,     STR_NUMERIC_UP,                     STR_NONE },                             // increase money
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(2) + 8,     YPL(2) + 12,    STR_NUMERIC_DOWN,                   STR_NONE },                             // decrease money
+      SPINNER_WIDGETS      (1,      XPL(0),                 WPL(1) - 10,            YPL(2) + 2,     HPL(2) - 3,     STR_NONE,                           STR_NONE),                              // money value (3 widgets)
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(3),         HPL(3),         STR_ADD_MONEY,                      STR_NONE },                             // add money
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(3),         HPL(3),         STR_SET_MONEY,                      STR_NONE },                             // set money
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(5),         HPL(5),         STR_CHEAT_CLEAR_LOAN,               STR_NONE },                             // Clear loan
     { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(6.5),       HPL(10.5),      STR_DATE_SET,                       STR_NONE },                             // Date group
-    { WWT_SPINNER,          1,      WPL(0),                 WPL(1) - 10,            YPL(7) + 2,     HPL(7) - 3,     STR_NONE,                           STR_NONE },                             // Year box
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(7) + 3,     YPL(7) + 7,     STR_NUMERIC_UP,                     STR_NONE },                             // increase year
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(7) + 8,     YPL(7) + 12,    STR_NUMERIC_DOWN,                   STR_NONE },                             // decrease year
-    { WWT_SPINNER,          1,      WPL(0),                 WPL(1) - 10,            YPL(8) + 2,     HPL(8) - 3,     STR_NONE,                           STR_NONE },                             // Month box
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(8) + 3,     YPL(8) + 7,     STR_NUMERIC_UP,                     STR_NONE },                             // increase month
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(8) + 8,     YPL(8) + 12,    STR_NUMERIC_DOWN,                   STR_NONE },                             // decrease month
-    { WWT_SPINNER,          1,      WPL(0),                 WPL(1) - 10,            YPL(9) + 2,     HPL(9) - 3,     STR_NONE,                           STR_NONE },                             // Day box
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(9) + 3,     YPL(9) + 7,     STR_NUMERIC_UP,                     STR_NONE },                             // increase day
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(9) + 8,     YPL(9) + 12,    STR_NUMERIC_DOWN,                   STR_NONE },                             // decrease day
+      SPINNER_WIDGETS      (1,      WPL(0),                 WPL(1) - 10,            YPL(7) + 2,     HPL(7) - 3,     STR_NONE,                           STR_NONE),                              // Year box (3 widgets)
+      SPINNER_WIDGETS      (1,      WPL(0),                 WPL(1) - 10,            YPL(8) + 2,     HPL(8) - 3,     STR_NONE,                           STR_NONE),                              // Month box (3 widgets)
+      SPINNER_WIDGETS      (1,      WPL(0),                 WPL(1) - 10,            YPL(9) + 2,     HPL(9) - 3,     STR_NONE,                           STR_NONE),                              // Day box (3 widgets)
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(10),        HPL(10),        STR_DATE_SET,                       STR_NONE },                             // Set Date
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(10),        HPL(10),        STR_DATE_RESET,                     STR_NONE },                             // Reset Date
     { WIDGETS_END },
@@ -273,9 +276,7 @@ static rct_widget window_cheats_misc_widgets[] =
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(2),         HPL(2),         STR_CHEAT_RESET_DATE,               STR_NONE },                             // Reset date
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(3),         HPL(3),         STR_CHEAT_OWN_ALL_LAND,             STR_CHEAT_OWN_ALL_LAND_TIP },           // Own all land
     { WWT_CHECKBOX,         1,      XPL(0),                 WPL(0),                 YPL(5),         HPL(5),         STR_FORCE_PARK_RATING,              STR_NONE },                             // Force park rating
-    { WWT_SPINNER,          1,      XPL(1),                 WPL(1) - 10,            YPL(5) + 2,     HPL(5) - 3,     STR_NONE,                           STR_NONE },                             // park rating
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(5) + 3,     YPL(5) + 7,     STR_NUMERIC_UP,                     STR_NONE },                             // increase rating
-    { WWT_BUTTON,           1,      WPL(1) - 10,            WPL(1),                 YPL(5) + 8,     YPL(5) + 12,    STR_NUMERIC_DOWN,                   STR_NONE },                             // decrease rating
+      SPINNER_WIDGETS      (1,      XPL(1),                 WPL(1) - 10,            YPL(5) + 2,     HPL(5) - 3,     STR_NONE,                           STR_NONE),                              // park rating (3 widgets)
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(6),         HPL(6),         STR_CHEAT_WIN_SCENARIO,             STR_NONE },                             // Win scenario
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(6),         HPL(6),         STR_CHEAT_HAVE_FUN,                 STR_NONE },                             // Have fun!
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(7),         HPL(7),         STR_CHEAT_NEVERENDING_MARKETING,    STR_CHEAT_NEVERENDING_MARKETING_TIP },  // never ending marketing campaigns
@@ -289,9 +290,9 @@ static rct_widget window_cheats_misc_widgets[] =
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(14),        HPL(14),        STR_CHEAT_WATER_PLANTS,             STR_NONE },                             // Water plants
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(14),        HPL(14),        STR_CHEAT_FIX_VANDALISM,            STR_NONE },                             // Fix vandalism
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(15),        HPL(15),        STR_CHEAT_REMOVE_LITTER,            STR_NONE },                             // Remove litter
-    { WWT_CHECKBOX,         1,      XPL(0),                 WPL(0),                 YPL(16),        HPL(16),        STR_CHEAT_DISABLE_PLANT_AGING,      STR_CHEAT_DISABLE_PLANT_AGING_TIP },    // Disable plant ageing
-    { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(17),        HPL(17),        STR_FAST,                           STR_NONE },                             // Fast staff
-    { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(17),        HPL(17),        STR_NORMAL,                         STR_NONE },                             // Normal staff
+    { WWT_CHECKBOX,         1,      XPL(0),                 WPL(1),                 YPL(16),        HPL(16),        STR_CHEAT_DISABLE_PLANT_AGING,      STR_CHEAT_DISABLE_PLANT_AGING_TIP },    // Disable plant ageing
+    { WWT_DROPDOWN,         1,      XPL(1),                 WPL(1),                 YPL(17) + 2,    YPL(17) + 13,   STR_NONE,                           STR_NONE },                             // Staff speed
+    { WWT_BUTTON,           1,      WPL(1) - 11,            WPL(1) - 1,             YPL(17) + 3,    YPL(17) + 12,   STR_DROPDOWN_GLYPH,                 STR_NONE },                             // Staff speed
     { WIDGETS_END },
 };
 static rct_widget window_cheats_rides_widgets[] =
@@ -552,8 +553,8 @@ static uint64 window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_NEVERENDING_MARKETING) |
     (1ULL << WIDX_SANDBOX_MODE) |
     (1ULL << WIDX_RESET_DATE) |
-    (1ULL << WIDX_FAST_STAFF) |
-    (1ULL << WIDX_NORMAL_STAFF) |
+    (1ULL << WIDX_STAFF_SPEED) |
+    (1ULL << WIDX_STAFF_SPEED_DROPDOWN_BUTTON) |
     (1ULL << WIDX_PARK_PARAMETERS) |
     (1ULL << WIDX_FORCE_PARK_RATING) |
     (1ULL << WIDX_INCREASE_PARK_RATING) |
@@ -604,6 +605,7 @@ static rct_string_id window_cheats_page_titles[] = {
     STR_CHEAT_TITLE_PARK,
     STR_CHEAT_TITLE_RIDE,
 };
+// clang-format on
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 
@@ -627,7 +629,7 @@ rct_window * window_cheats_open()
     return window;
 }
 
-static void window_cheats_money_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void window_cheats_money_mousedown(rct_window * w, rct_widgetindex widgetIndex, [[maybe_unused]] rct_widget * widget)
 {
     switch (widgetIndex)
     {
@@ -706,7 +708,8 @@ static void window_cheats_misc_mousedown(rct_window *w, rct_widgetindex widgetIn
         if (get_forced_park_rating() >= 0)
             game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETFORCEDPARKRATING, park_rating_spinner_value, GAME_COMMAND_CHEAT, 0, 0);
         break;
-    case WIDX_WEATHER_DROPDOWN_BUTTON:{
+    case WIDX_WEATHER_DROPDOWN_BUTTON:
+        {
         rct_widget *dropdownWidget;
         int i, currentWeather;
 
@@ -729,17 +732,61 @@ static void window_cheats_misc_mousedown(rct_window *w, rct_widgetindex widgetIn
 
         currentWeather = gClimateCurrent.Weather;
         dropdown_set_checked(currentWeather, true);
-    }
-    break;
+        }
+        break;
+    case WIDX_STAFF_SPEED_DROPDOWN_BUTTON:
+        {
+            rct_widget * dropdownWidget;
+
+            dropdownWidget = widget - 1;
+
+            for (size_t i = 0; i < Util::CountOf(_staffSpeedNames); i++)
+            {
+                gDropdownItemsArgs[i] = _staffSpeedNames[i];
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+            }
+
+            window_dropdown_show_text_custom_width(
+                w->x + dropdownWidget->left,
+                w->y + dropdownWidget->top,
+                dropdownWidget->bottom - dropdownWidget->top + 1,
+                w->colours[1],
+                0,
+                DROPDOWN_FLAG_STAY_OPEN,
+                3,
+                dropdownWidget->right - dropdownWidget->left - 3
+            );
+            dropdown_set_checked(_selectedStaffSpeed, true);
+        }
     }
 }
 
-static void window_cheats_misc_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_cheats_misc_dropdown([[maybe_unused]] rct_window * w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
-    if (widgetIndex != WIDX_WEATHER_DROPDOWN_BUTTON || dropdownIndex == -1)
+    if (dropdownIndex == -1)
+    {
         return;
+    }
+    else if (widgetIndex == WIDX_WEATHER_DROPDOWN_BUTTON)
+    {
+        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_FORCEWEATHER, dropdownIndex, GAME_COMMAND_CHEAT, 0, 0);
 
-    game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_FORCEWEATHER, dropdownIndex, GAME_COMMAND_CHEAT, 0, 0);
+    }
+    else if (widgetIndex == WIDX_STAFF_SPEED_DROPDOWN_BUTTON)
+    {
+        sint32 speed = CHEATS_STAFF_FAST_SPEED;
+        switch (dropdownIndex)
+        {
+        case 0:
+            speed = CHEATS_STAFF_FREEZE_SPEED;
+            break;
+        case 1:
+            speed = CHEATS_STAFF_NORMAL_SPEED;
+        }
+
+       game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETSTAFFSPEED, speed, GAME_COMMAND_CHEAT, 0, 0);
+        _selectedStaffSpeed = dropdownIndex;
+    }
 }
 
 static void window_cheats_money_mouseup(rct_window *w, rct_widgetindex widgetIndex)
@@ -921,12 +968,6 @@ static void window_cheats_misc_mouseup(rct_window *w, rct_widgetindex widgetInde
         break;
     case WIDX_RESET_DATE:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_RESETDATE, 0, GAME_COMMAND_CHEAT, 0, 0);
-        break;
-    case WIDX_FAST_STAFF:
-        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETSTAFFSPEED, CHEATS_STAFF_FAST_SPEED, GAME_COMMAND_CHEAT, 0, 0);
-        break;
-    case WIDX_NORMAL_STAFF:
-        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETSTAFFSPEED, CHEATS_STAFF_NORMAL_SPEED, GAME_COMMAND_CHEAT, 0, 0);
         break;
     case WIDX_PARK_PARAMETERS:
         context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
@@ -1118,6 +1159,8 @@ static void window_cheats_invalidate(rct_window *w)
 
     // Current weather
     window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[gClimateCurrent.Weather];
+    // Staff speed
+    window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[_selectedStaffSpeed];
 }
 
 static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -1138,15 +1181,15 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(dpi, STR_YEAR,                         nullptr, COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(7) + TXTO);
         gfx_draw_string_left(dpi, STR_MONTH,                        nullptr, COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(8) + TXTO);
         gfx_draw_string_left(dpi, STR_DAY,                          nullptr, COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(9) + TXTO);
-        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,              &year_spinner_value, w->colours[1], w->x + WPL(1) - 10 - TXTO, w->y + YPL(7) + TXTO);
-        gfx_draw_string_right(dpi, STR_FORMAT_MONTH,                &actual_month, w->colours[1], w->x + WPL(1) - 10 - TXTO, w->y + YPL(8) + TXTO);
-        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,              &day_spinner_value, w->colours[1], w->x + WPL(1) - 10 - TXTO, w->y + YPL(9) + TXTO);
+        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,              &year_spinner_value, w->colours[1], w->x + WPL(1) - 34 - TXTO, w->y + YPL(7) + TXTO);
+        gfx_draw_string_right(dpi, STR_FORMAT_MONTH,                &actual_month,       w->colours[1], w->x + WPL(1) - 34 - TXTO, w->y + YPL(8) + TXTO);
+        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,              &day_spinner_value,  w->colours[1], w->x + WPL(1) - 34 - TXTO, w->y + YPL(9) + TXTO);
     }
     else if (w->page == WINDOW_CHEATS_PAGE_MISC)
     {
         gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED,            nullptr,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(17) + TXTO);
         gfx_draw_string_left(dpi, STR_FORCE_WEATHER,                nullptr,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(10) + TXTO);
-        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,              &park_rating_spinner_value, w->colours[1], w->x + WPL(1) - 10 - TXTO, w->y + YPL(5) + TXTO);
+        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,              &park_rating_spinner_value, w->colours[1], w->x + WPL(1) - 34 - TXTO, w->y + YPL(5) + TXTO);
     }
     else if (w->page == WINDOW_CHEATS_PAGE_GUESTS)
     {

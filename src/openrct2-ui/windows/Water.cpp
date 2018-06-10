@@ -21,7 +21,9 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2-ui/interface/LandTool.h>
+#include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 enum WINDOW_WATER_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -30,8 +32,6 @@ enum WINDOW_WATER_WIDGET_IDX {
     WIDX_DECREMENT,
     WIDX_INCREMENT
 };
-
-validate_global_widx(WC_WATER, WIDX_PREVIEW);
 
 static rct_widget window_water_widgets[] = {
     { WWT_FRAME,    0,  0,  75, 0,  76, 0xFFFFFFFF,                             STR_NONE },                         // panel / background
@@ -82,6 +82,7 @@ static rct_window_event_list window_water_events = {
     window_water_paint,
     nullptr
 };
+// clang-format on
 
 /**
  *

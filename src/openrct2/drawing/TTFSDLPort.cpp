@@ -27,7 +27,7 @@ misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <math.h>
+#include <cmath>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -66,8 +66,8 @@ in the result FT_Bitmap after the FT_Render_Glyph() call. */
 #define NUM_GRAYS       256
 
 /* Handy routines for converting from fixed point */
-#define FT_FLOOR(X) ((X & -64) / 64)
-#define FT_CEIL(X)  (((X + 63) & -64) / 64)
+#define FT_FLOOR(X) (((X) & -64) / 64)
+#define FT_CEIL(X)  ((((X) + 63) & -64) / 64)
 
 #define CACHED_METRICS  0x10
 #define CACHED_BITMAP   0x01
@@ -253,7 +253,7 @@ static void TTF_drawLine_Shaded(const TTF_Font *font, const TTFSurface *textbuf,
     }
 }
 
-static void TTF_SetFTError(const char *msg, FT_Error error)
+static void TTF_SetFTError(const char* msg, [[maybe_unused]] FT_Error error)
 {
 #ifdef USE_FREETYPE_ERRORS
 #undef FTERRORS_H
@@ -911,8 +911,7 @@ static uint32 UTF8_getch(const char **src, size_t *srclen)
 {
     const uint8 *p = *(const uint8**)src;
     size_t left = 0;
-    bool overlong = false;
-    UNUSED(overlong);
+    [[maybe_unused]] bool overlong = false;
     bool underflow = false;
     uint32 ch = UNKNOWN_UNICODE;
 
@@ -1126,8 +1125,7 @@ int TTF_SizeUTF8(TTF_Font *font, const char *text, int *w, int *h)
     return status;
 }
 
-TTFSurface *TTF_RenderUTF8_Solid(TTF_Font *font,
-    const char *text, uint32 colour)
+TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unused]] uint32 colour)
 {
     bool first;
     int xstart;
@@ -1247,8 +1245,7 @@ TTFSurface *TTF_RenderUTF8_Solid(TTF_Font *font,
     return textbuf;
 }
 
-TTFSurface *TTF_RenderUTF8_Shaded(TTF_Font *font,
-                const char *text, uint32 fg, uint32 bg)
+TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unused]] uint32 fg, [[maybe_unused]] uint32 bg)
 {
     bool first;
     int xstart;

@@ -14,16 +14,18 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "Addresses.h"
+
 #include <openrct2/config/Config.h>
-#include <openrct2/object/Object.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/interface/Viewport.h>
+#include <openrct2/object/Object.h>
+#include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/Track.h>
+#include <openrct2/world/Location.hpp>
 #include <openrct2/world/Sprite.h>
-#include <openrct2/paint/tile_element/TileElement.h>
-#include <openrct2/ride/Ride.h>
-#include "Addresses.h"
+#include <openrct2/world/Surface.h>
 
 #define gRideEntries                RCT2_ADDRESS(0x009ACFA4, rct_ride_entry *)
 #define gTileElementTilePointers    RCT2_ADDRESS(0x013CE9A4, rct_tile_element *)
@@ -35,19 +37,32 @@ sint16 gMapBaseZ;
 bool gTrackDesignSaveMode = false;
 uint8 gTrackDesignSaveRideIndex = 255;
 uint8 gClipHeight = 255;
+LocationXY8 gClipSelectionA = { 0, 0 };
+LocationXY8 gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
 uint32 gCurrentViewportFlags;
 uint32 gScenarioTicks;
 uint8 gCurrentRotation;
 
-const CoordsXY TileDirectionDelta[] = {
-    {-32, 0},
-    {0,   +32},
-    {+32, 0},
-    {0,   -32},
-    {-32, +32},
-    {+32, +32},
-    {+32, -32},
-    {-32, -32}
+const CoordsXY CoordsDirectionDelta[] = {
+        { -32,   0 },
+        {   0, +32 },
+        { +32,   0 },
+        {   0, -32 },
+        { -32, +32 },
+        { +32, +32 },
+        { +32, -32 },
+        { -32, -32 }
+};
+
+const TileCoordsXY TileDirectionDelta[] = {
+        { -1,  0 },
+        {  0, +1 },
+        { +1,  0 },
+        {  0, -1 },
+        { -1, +1 },
+        { +1, +1 },
+        { +1, -1 },
+        { -1, -1 }
 };
 
 TileCoordsXYZD ride_get_entrance_location(const Ride * ride, const sint32 stationIndex);
@@ -87,7 +102,7 @@ uint8 gMapSelectArrowDirection;
 void entrance_paint(paint_session * session, uint8 direction, int height, const rct_tile_element * tile_element) {}
 void banner_paint(paint_session * session, uint8 direction, int height, const rct_tile_element * tile_element) {}
 void surface_paint(paint_session * session, uint8 direction, uint16 height, const rct_tile_element * tileElement) {}
-void path_paint(paint_session * session, uint8 direction, uint16 height, const rct_tile_element * tileElement) {}
+void path_paint(paint_session * session, uint16 height, const rct_tile_element * tileElement) {}
 void scenery_paint(paint_session * session, uint8 direction, int height, const rct_tile_element * tileElement) {}
 void fence_paint(paint_session * session, uint8 direction, int height, const rct_tile_element * tileElement) {}
 void large_scenery_paint(paint_session * session, uint8 direction, uint16 height, const rct_tile_element * tileElement) {}
@@ -122,12 +137,14 @@ rct_sprite *get_sprite(size_t sprite_idx) {
     return &sprite_list[sprite_idx];
 }
 
-bool tile_element_is_last_for_tile(const rct_tile_element *element) {
-    return (element->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
+bool rct_tile_element::IsLastForTile() const
+{
+    return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
-int tile_element_get_type(const rct_tile_element *element) {
-    return element->type & TILE_ELEMENT_TYPE_MASK;
+uint8 rct_tile_element::GetType() const
+{
+    return this->type & TILE_ELEMENT_TYPE_MASK;
 }
 
 int tile_element_get_direction(const rct_tile_element *element) {
@@ -211,7 +228,7 @@ void tile_element_decrement_onride_photo_timout(rct_tile_element * tileElement)
     }
 }
 
-sint32 map_get_water_height(const rct_tile_element * tileElement)
+sint32 surface_get_water_height(const rct_tile_element * tileElement)
 {
     return tileElement->properties.surface.terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
 }

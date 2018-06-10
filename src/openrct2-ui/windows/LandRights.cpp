@@ -24,7 +24,10 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2-ui/interface/LandTool.h>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/world/Park.h>
 
+// clang-format off
 enum WINDOW_WATER_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -35,8 +38,6 @@ enum WINDOW_WATER_WIDGET_IDX {
     WIDX_BUY_LAND_RIGHTS,
     WIDX_BUY_CONSTRUCTION_RIGHTS
 };
-
-validate_global_widx(WC_LAND_RIGHTS, WIDX_PREVIEW);
 
 static rct_widget window_land_rights_widgets[] = {
     { WWT_FRAME,    0,  0,  97, 0,  93, 0xFFFFFFFF,                                 STR_NONE },                             // panel / background
@@ -95,6 +96,7 @@ static rct_window_event_list window_land_rights_events = {
     window_land_rights_paint,
     nullptr
 };
+// clang-format on
 
 #define LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS 0
 #define LAND_RIGHTS_MODE_BUY_LAND 1
@@ -285,7 +287,7 @@ static void window_land_rights_tool_update_land_rights(sint16 x, sint16 y)
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    LocationXY16 mapTile = { 0 };
+    LocationXY16 mapTile = {};
     screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, nullptr);
 
     if (mapTile.x == LOCATION_NULL) {

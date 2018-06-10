@@ -16,6 +16,7 @@
 
 #include <openrct2-ui/windows/Window.h>
 
+#include <openrct2/actions/ParkSetResearchFundingAction.hpp>
 #include <openrct2/Game.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -24,7 +25,10 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/management/Finance.h>
 
+// clang-format off
 enum {
     WINDOW_RESEARCH_PAGE_DEVELOPMENT,
     WINDOW_RESEARCH_PAGE_FUNDING,
@@ -226,6 +230,7 @@ static constexpr const rct_string_id ResearchStageNames[] = {
     STR_RESEARCH_STAGE_COMPLETING_DESIGN,
     STR_RESEARCH_STAGE_UNKNOWN,
 };
+// clang-format on
 
 static void window_research_set_page(rct_window *w, sint32 page);
 static void window_research_set_pressed_tab(rct_window *w);
@@ -410,8 +415,6 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
  */
 static void window_research_funding_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    sint32 activeResearchTypes;
-
     switch (widgetIndex) {
     case WIDX_CLOSE:
         window_close(w);
@@ -427,10 +430,13 @@ static void window_research_funding_mouseup(rct_window *w, rct_widgetindex widge
     case WIDX_WATER_RIDES:
     case WIDX_SHOPS_AND_STALLS:
     case WIDX_SCENERY_AND_THEMING:
-        activeResearchTypes = gResearchPriorities;
-        activeResearchTypes ^= 1 << (widgetIndex - WIDX_TRANSPORT_RIDES);
-        research_set_priority(activeResearchTypes);
-        break;
+        {
+            auto activeResearchTypes = gResearchPriorities;
+            activeResearchTypes ^= 1 << (widgetIndex - WIDX_TRANSPORT_RIDES);
+            auto gameAction = ParkSetResearchFundingAction(activeResearchTypes, gResearchFundingLevel);
+            GameActions::Execute(&gameAction);
+            break;
+        }
     }
 }
 
@@ -476,8 +482,8 @@ static void window_research_funding_dropdown(rct_window *w, rct_widgetindex widg
     if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || dropdownIndex == -1)
         return;
 
-    research_set_funding(dropdownIndex);
-    window_invalidate(w);
+    auto gameAction = ParkSetResearchFundingAction(gResearchPriorities, dropdownIndex);
+    GameActions::Execute(&gameAction);
 }
 
 /**

@@ -14,45 +14,44 @@
 *****************************************************************************/
 #pragma endregion
 
+#pragma once
+
 #include <openrct2/common.h>
 #include <openrct2/Context.h>
 #include <openrct2/ui/UiContext.h>
 
 union SDL_Event;
 
-namespace OpenRCT2
+namespace OpenRCT2::Ui
 {
-    namespace Ui
+    /**
+     * Represents a
+     */
+    class TextComposition
     {
-        /**
-        * Represents a
-        */
-        class TextComposition
-        {
-        private:
-            TextInputSession _session = { 0 };
+    private:
+        TextInputSession _session = {};
 
-            bool    _imeActive = false;
-            sint32  _imeStart = 0;
-            sint32  _imeLength = 0;
-            utf8    _imeBuffer[32] = { 0 };
+        bool    _imeActive = false;
+        sint32  _imeStart = 0;
+        sint32  _imeLength = 0;
+        utf8    _imeBuffer[32] = {};
 
-        public:
-            bool IsActive();
-            TextInputSession * Start(utf8 * buffer, size_t bufferSize);
-            void Stop();
-            void HandleMessage(const SDL_Event * e);
+    public:
+        bool IsActive();
+        TextInputSession * Start(utf8 * buffer, size_t bufferSize);
+        void Stop();
+        void HandleMessage(const SDL_Event * e);
 
-        private:
-            void CursorHome();
-            void CursorEnd();
-            void CursorLeft();
-            void CursorRight();
-            void Insert(const utf8 * text);
-            void InsertCodepoint(codepoint_t codepoint);
-            void Clear();
-            void Delete();
-            void RecalculateLength();
-        };
-    }
+    private:
+        void CursorHome();
+        void CursorEnd();
+        void CursorLeft();
+        void CursorRight();
+        void Insert(const utf8 * text);
+        void InsertCodepoint(codepoint_t codepoint);
+        void Clear();
+        void Delete();
+        void RecalculateLength();
+    };
 }

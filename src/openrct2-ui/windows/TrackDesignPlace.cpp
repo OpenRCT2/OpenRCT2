@@ -31,6 +31,9 @@
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/ride/TrackDesign.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/world/Surface.h>
 
 #define TRACK_MINI_PREVIEW_WIDTH    168
 #define TRACK_MINI_PREVIEW_HEIGHT   78
@@ -40,6 +43,9 @@
 #define PALETTE_INDEX_PRIMARY_MID_DARK (248)
 #define PALETTE_INDEX_PRIMARY_LIGHTEST (252)
 
+struct rct_track_td6;
+
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -103,6 +109,7 @@ static rct_window_event_list window_track_place_events = {
     window_track_place_paint,
     nullptr
 };
+// clang-format on
 
 static std::vector<uint8> _window_track_place_mini_preview;
 static sint16 _window_track_place_last_x;
@@ -429,8 +436,8 @@ static sint32 window_track_place_get_base_z(sint32 x, sint32 y)
     }
 
     // Increase Z above water
-    if (map_get_water_height(tileElement) > 0)
-        z = Math::Max(z, map_get_water_height(tileElement) << 4);
+    if (surface_get_water_height(tileElement) > 0)
+        z = Math::Max(z, surface_get_water_height(tileElement) << 4);
 
     return z + place_virtual_track(_trackDesign, PTD_OPERATION_GET_PLACE_Z, true, 0, x, y, z);
 }
@@ -466,7 +473,7 @@ static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Draw mini tile preview
     rct_drawpixelinfo clippedDpi;
     if (clip_drawpixelinfo(&clippedDpi, dpi, w->x + 4, w->y + 18, 168, 78)) {
-        rct_g1_element g1temp = { nullptr };
+        rct_g1_element g1temp = {};
         g1temp.offset = _window_track_place_mini_preview.data();
         g1temp.width = TRACK_MINI_PREVIEW_WIDTH;
         g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;
@@ -510,6 +517,9 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint3
 {
     uint8 rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
     rct_td6_track_element *trackElement = td6->track_elements;
+
+    const rct_preview_track * * trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks : FlatRideTrackBlocks;
+
     while (trackElement->type != 255) {
         sint32 trackType = trackElement->type;
         if (trackType == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) {
@@ -517,7 +527,7 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint3
         }
 
         // Follow a single track piece shape
-        const rct_preview_track *trackBlock = TrackBlocks[trackType];
+        const rct_preview_track *trackBlock = trackBlockArray[trackType];
         while (trackBlock->index != 255) {
             sint16 x = origin.x;
             sint16 y = origin.y;
@@ -562,8 +572,8 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint3
             rotation |= 4;
         }
         if (!(rotation & 4)) {
-            origin.x += TileDirectionDelta[rotation].x;
-            origin.y += TileDirectionDelta[rotation].y;
+            origin.x += CoordsDirectionDelta[rotation].x;
+            origin.y += CoordsDirectionDelta[rotation].y;
         }
         trackElement++;
     }

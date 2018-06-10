@@ -179,6 +179,8 @@ public:
             return window_banner_open(id);
         case WD_DEMOLISH_RIDE:
             return window_ride_demolish_prompt_open(id);
+        case WD_REFURBISH_RIDE:
+            return window_ride_refurbish_prompt_open(id);
         case WD_NEW_CAMPAIGN:
             return window_new_campaign_open(id);
         case WD_SIGN:
@@ -343,20 +345,6 @@ public:
             window_tile_inspector_clear_clipboard();
             break;
 
-        case INTENT_ACTION_SET_TILE_INSPECTOR_PAGE:
-        {
-            auto window = window_find_by_class(WC_TILE_INSPECTOR);
-            window_tile_inspector_set_page(window, static_cast<TILE_INSPECTOR_PAGE>(intent.GetUIntExtra(INTENT_EXTRA_PAGE)));
-            break;
-        }
-
-        case INTENT_ACTION_SET_TILE_INSPECTOR_BUTTONS:
-        {
-            auto window = window_find_by_class(WC_TILE_INSPECTOR);
-            window_tile_inspector_auto_set_buttons(window);
-            break;
-        }
-
         case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
         {
             rct_vehicle * vehicle = static_cast<rct_vehicle *>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
@@ -410,7 +398,10 @@ public:
             }
             break;
         }
-
+        case INTENT_ACTION_UPDATE_RESEARCH:
+            window_invalidate_by_class(WC_FINANCES);
+            window_invalidate_by_class(WC_RESEARCH);
+            break;
         }
     }
 

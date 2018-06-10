@@ -16,8 +16,12 @@
 
 #include "GameAction.h"
 #include "GuestSetNameAction.hpp"
+#include "ParkSetLoanAction.hpp"
+#include "ParkSetResearchFundingAction.hpp"
+#include "ParkMarketingAction.hpp"
 #include "PlaceParkEntranceAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
+#include "StaffSetColourAction.hpp"
 #include "StaffSetNameAction.hpp"
 #include "RideCreateAction.hpp"
 #include "RideSetStatus.hpp"
@@ -25,20 +29,32 @@
 #include "RideDemolishAction.hpp"
 #include "PlacePeepSpawnAction.hpp"
 #include "MazeSetTrackAction.hpp"
+#include "SignSetNameAction.hpp"
+#include "ParkSetNameAction.hpp"
+#include "BannerSetNameAction.hpp"
+#include "WallRemoveAction.hpp"
 
 namespace GameActions
 {
     void Register()
     {
         Register<SetParkEntranceFeeAction>();
+        Register<ParkMarketingAction>();
+        Register<ParkSetLoanAction>();
+        Register<ParkSetResearchFundingAction>();
         Register<PlaceParkEntranceAction>();
         Register<RideCreateAction>();
         Register<RideSetStatusAction>();
         Register<RideSetNameAction>();
         Register<RideDemolishAction>();
         Register<GuestSetNameAction>();
+        Register<StaffSetColourAction>();
         Register<StaffSetNameAction>();
         Register<PlacePeepSpawnAction>();
         Register<MazeSetTrackAction>();
+        Register<SignSetNameAction>();
+        Register<ParkSetNameAction>();
+        Register<BannerSetNameAction>();
+        Register<WallRemoveAction>();
     }
-}
+} // namespace GameActions

@@ -20,15 +20,15 @@
 #endif
 
 #include "../platform/platform.h"
-#include "../localisation/Localisation.h"
 #include "../util/Util.h"
+#include "../localisation/Language.h"
 
 #include "File.h"
 #include "Math.hpp"
 #include "Memory.hpp"
 #include "Path.hpp"
-#include "String.hpp"
 #include "Util.hpp"
+#include "String.hpp"
 
 namespace Path
 {
@@ -162,7 +162,7 @@ namespace Path
     const utf8 * GetExtension(const utf8 * path)
     {
         const utf8 * lastDot = nullptr;
-        const utf8 * ch = path;
+        const utf8 * ch = GetFileName(path);
         for (; *ch != '\0'; ch++)
         {
             if (*ch == '.')
@@ -274,4 +274,4 @@ namespace Path
 #endif
         return result;
     }
-}
+} // namespace Path

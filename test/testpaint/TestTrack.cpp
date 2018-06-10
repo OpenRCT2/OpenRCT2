@@ -29,7 +29,7 @@
 #include "Utils.hpp"
 #include "VerticalTunnelCall.hpp"
 
-#include <openrct2/paint/tile_element/TileElement.h>
+#include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/paint/Supports.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/Track.h>
@@ -99,9 +99,9 @@ public:
                          Ride *ride, rct_ride_entry *rideEntry
     ) override {
         if (variant == 0) {
-            tileElement->type &= ~TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+            tileElement->type &= ~TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
         } else {
-            tileElement->type |= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+            tileElement->type |= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
         }
     }
 };
@@ -265,13 +265,13 @@ uint8 TestTrack::TestPaintTrackElement(uint8 rideType, uint8 trackType, std::str
 static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
     uint16 height = 3 * 16;
 
-    rct_tile_element tileElement = {0};
+    rct_tile_element tileElement = {};
     tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     track_element_set_type(&tileElement, trackType);
     tileElement.base_height = height / 16;
     g_currently_drawn_item = &tileElement;
 
-    rct_tile_element surfaceElement = {0};
+    rct_tile_element surfaceElement = {};
     surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
@@ -284,7 +284,7 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
     TestPaint::ResetEnvironment();
     TestPaint::ResetTunnels();
 
-    function_call callBuffer[256] = {0};
+    function_call callBuffer[256] = {};
     int callCount = 0;
 
     // TODO: test supports
@@ -413,13 +413,13 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
 static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
     uint16 height = 3 * 16;
 
-    rct_tile_element tileElement = {0};
+    rct_tile_element tileElement = {};
     tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     track_element_set_type(&tileElement, trackType);
     tileElement.base_height = height / 16;
     g_currently_drawn_item = &tileElement;
     
-    rct_tile_element surfaceElement = {0};
+    rct_tile_element surfaceElement = {};
     surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
@@ -492,13 +492,13 @@ static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackTyp
 static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
     uint16 height = 3 * 16;
 
-    rct_tile_element tileElement = {0};
+    rct_tile_element tileElement = {};
     tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     track_element_set_type(&tileElement, trackType);
     tileElement.base_height = height / 16;
     g_currently_drawn_item = &tileElement;
 
-    rct_tile_element surfaceElement = {0};
+    rct_tile_element surfaceElement = {};
     surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
@@ -588,13 +588,13 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
 static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
     uint16 height = 3 * 16;
 
-    rct_tile_element tileElement = {0};
+    rct_tile_element tileElement = {};
     tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     track_element_set_type(&tileElement, trackType);
     tileElement.base_height = height / 16;
     g_currently_drawn_item = &tileElement;
 
-    rct_tile_element surfaceElement = {0};
+    rct_tile_element surfaceElement = {};
     surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
@@ -704,13 +704,13 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
 static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
     uint16 height = 3 * 16;
 
-    rct_tile_element tileElement = {0};
+    rct_tile_element tileElement = {};
     tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     track_element_set_type(&tileElement, trackType);
     tileElement.base_height = height / 16;
     g_currently_drawn_item = &tileElement;
 
-    rct_tile_element surfaceElement = {0};
+    rct_tile_element surfaceElement = {};
     surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;

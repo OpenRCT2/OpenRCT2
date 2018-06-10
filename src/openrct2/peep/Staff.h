@@ -78,8 +78,6 @@ extern colour_t gStaffHandymanColour;
 extern colour_t gStaffMechanicColour;
 extern colour_t gStaffSecurityColour;
 
-void game_command_update_staff_colour(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                      sint32 * ebp);
 void game_command_hire_new_staff_member(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
                                         sint32 * ebp);
 void game_command_callback_hire_new_staff_member(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi,
@@ -96,7 +94,6 @@ void game_command_pickup_staff(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 
                                sint32 * ebp);
 
 void     staff_reset_modes();
-void     update_staff_colour(uint8 staffType, uint16 colour);
 void     staff_set_name(uint16 spriteIndex, const char * name);
 uint16   hire_new_staff_member(uint8 staffType);
 void     staff_update_greyed_patrol_areas();

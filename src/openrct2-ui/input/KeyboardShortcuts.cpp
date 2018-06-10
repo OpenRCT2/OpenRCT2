@@ -32,10 +32,15 @@ using namespace OpenRCT2::Input;
 // Remove when the C calls are removed
 static KeyboardShortcuts * _instance;
 
-KeyboardShortcuts::KeyboardShortcuts(IPlatformEnvironment * env)
+KeyboardShortcuts::KeyboardShortcuts(const std::shared_ptr<IPlatformEnvironment>& env)
     : _env(env)
 {
     _instance = this;
+}
+
+KeyboardShortcuts::~KeyboardShortcuts()
+{
+    _instance = nullptr;
 }
 
 void KeyboardShortcuts::Reset()
@@ -305,4 +310,6 @@ const uint16 KeyboardShortcuts::DefaultKeys[SHORTCUT_COUNT] =
     PLATFORM_MODIFIER | SDL_SCANCODE_L,         // SHORTCUT_LOAD_GAME
     SDL_SCANCODE_B,                             // SHORTCUT_CLEAR_SCENERY
     SDL_SCANCODE_7,                             // SHORTCUT_GRIDLINES_DISPLAY_TOGGLE
+    SHORTCUT_UNDEFINED,                         // SHORTCUT_VIEW_CLIPPING
+    SDL_SCANCODE_I,                             // SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE
 };

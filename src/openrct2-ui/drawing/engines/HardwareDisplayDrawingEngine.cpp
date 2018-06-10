@@ -22,7 +22,7 @@
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/X8DrawingEngine.h>
 #include <openrct2/ui/UiContext.h>
-#include "DrawingEngines.h"
+#include "DrawingEngineFactory.hpp"
 
 #include <openrct2/drawing/LightFX.h>
 #include <openrct2/Game.h>
@@ -37,7 +37,7 @@ class HardwareDisplayDrawingEngine final : public X8DrawingEngine
 private:
     constexpr static uint32 DIRTY_VISUAL_TIME = 32;
 
-    IUiContext * const  _uiContext;
+    std::shared_ptr<IUiContext> const _uiContext;
     SDL_Window *        _window                     = nullptr;
     SDL_Renderer *      _sdlRenderer                = nullptr;
     SDL_Texture *       _screenTexture              = nullptr;
@@ -60,7 +60,7 @@ private:
     bool    smoothNN = false;
 
 public:
-    explicit HardwareDisplayDrawingEngine(IUiContext * uiContext)
+    explicit HardwareDisplayDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
         : X8DrawingEngine(uiContext),
           _uiContext(uiContext)
     {
@@ -415,7 +415,7 @@ private:
     }
 };
 
-IDrawingEngine * OpenRCT2::Ui::CreateHardwareDisplayDrawingEngine(IUiContext * uiContext)
+std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateHardwareDisplayDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
 {
-    return new HardwareDisplayDrawingEngine(uiContext);
+    return std::make_unique<HardwareDisplayDrawingEngine>(uiContext);
 }

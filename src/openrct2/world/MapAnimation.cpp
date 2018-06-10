@@ -14,11 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cstring>
+
 #include "../Game.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../interface/Viewport.h"
+#include "../world/Wall.h"
 #include "MapAnimation.h"
 #include "Map.h"
 #include "Scenery.h"
@@ -107,7 +110,7 @@ static bool map_animation_invalidate_ride_entrance(sint32 x, sint32 y, sint32 ba
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
         if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
             continue;
@@ -118,7 +121,7 @@ static bool map_animation_invalidate_ride_entrance(sint32 x, sint32 y, sint32 ba
         sint32 height = (tileElement->base_height * 8) + entranceDefinition->height + 8;
         map_invalidate_tile_zoom1(x, y, height, height + 16);
         return false;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -135,7 +138,7 @@ static bool map_animation_invalidate_queue_banner(sint32 x, sint32 y, sint32 bas
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
         if (!(tileElement->flags & 1))
             continue;
@@ -148,7 +151,7 @@ static bool map_animation_invalidate_queue_banner(sint32 x, sint32 y, sint32 bas
             map_invalidate_tile_zoom1(x, y, baseZ + 16, baseZ + 30);
         }
         return false;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -168,7 +171,7 @@ static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 ba
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             continue;
         if (tileElement->flags & (1 << 4))
             continue;
@@ -185,8 +188,8 @@ static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 ba
             // Peep, looking at scenery
             if (!(gCurrentTicks & 0x3FF) && game_is_not_paused()) {
                 sint32 direction = tile_element_get_direction(tileElement);
-                sint32 x2 = x - TileDirectionDelta[direction].x;
-                sint32 y2 = y - TileDirectionDelta[direction].y;
+                sint32 x2 = x - CoordsDirectionDelta[direction].x;
+                sint32 y2 = y - CoordsDirectionDelta[direction].y;
 
                 uint16 spriteIdx = sprite_get_first_in_quadrant(x2, y2);
                 for (; spriteIdx != SPRITE_INDEX_NULL; spriteIdx = sprite->unknown.next_in_quadrant) {
@@ -205,7 +208,7 @@ static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 ba
                     peep->action = PEEP_ACTION_CHECK_TIME;
                     peep->action_frame = 0;
                     peep->action_sprite_image_offset = 0;
-                    peep_update_current_action_sprite_type(peep);
+                    peep->UpdateCurrentActionSpriteType();
                     invalidate_sprite_1((rct_sprite*)peep);
                     break;
                 }
@@ -214,7 +217,7 @@ static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 ba
             return false;
         }
 
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
     return true;
 }
 
@@ -230,7 +233,7 @@ static bool map_animation_invalidate_park_entrance(sint32 x, sint32 y, sint32 ba
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
         if (tileElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
             continue;
@@ -240,7 +243,7 @@ static bool map_animation_invalidate_park_entrance(sint32 x, sint32 y, sint32 ba
         baseZ = tileElement->base_height * 8;
         map_invalidate_tile_zoom1(x, y, baseZ + 32, baseZ + 64);
         return false;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -257,7 +260,7 @@ static bool map_animation_invalidate_track_waterfall(sint32 x, sint32 y, sint32 
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         if (track_element_get_type(tileElement) == TRACK_ELEM_WATERFALL) {
@@ -265,7 +268,7 @@ static bool map_animation_invalidate_track_waterfall(sint32 x, sint32 y, sint32 
             map_invalidate_tile_zoom1(x, y, z + 14, z + 46);
             return false;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -282,7 +285,7 @@ static bool map_animation_invalidate_track_rapids(sint32 x, sint32 y, sint32 bas
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         if (track_element_get_type(tileElement) == TRACK_ELEM_RAPIDS) {
@@ -290,7 +293,7 @@ static bool map_animation_invalidate_track_rapids(sint32 x, sint32 y, sint32 bas
             map_invalidate_tile_zoom1(x, y, z + 14, z + 18);
             return false;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -309,7 +312,7 @@ static bool map_animation_invalidate_track_onridephoto(sint32 x, sint32 y, sint3
             break;
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         if (track_element_get_type(tileElement) == TRACK_ELEM_ON_RIDE_PHOTO) {
@@ -324,7 +327,7 @@ static bool map_animation_invalidate_track_onridephoto(sint32 x, sint32 y, sint3
                 return true;
             }
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -341,7 +344,7 @@ static bool map_animation_invalidate_track_whirlpool(sint32 x, sint32 y, sint32 
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         if (track_element_get_type(tileElement) == TRACK_ELEM_WHIRLPOOL) {
@@ -349,7 +352,7 @@ static bool map_animation_invalidate_track_whirlpool(sint32 x, sint32 y, sint32 
             map_invalidate_tile_zoom1(x, y, z + 14, z + 18);
             return false;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -366,7 +369,7 @@ static bool map_animation_invalidate_track_spinningtunnel(sint32 x, sint32 y, si
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         if (track_element_get_type(tileElement) == TRACK_ELEM_SPINNING_TUNNEL) {
@@ -374,7 +377,7 @@ static bool map_animation_invalidate_track_spinningtunnel(sint32 x, sint32 y, si
             map_invalidate_tile_zoom1(x, y, z + 14, z + 32);
             return false;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -383,7 +386,7 @@ static bool map_animation_invalidate_track_spinningtunnel(sint32 x, sint32 y, si
  *
  *  rct2: 0x0068DF8F
  */
-static bool map_animation_invalidate_remove(sint32 x, sint32 y, sint32 baseZ)
+static bool map_animation_invalidate_remove([[maybe_unused]] sint32 x, [[maybe_unused]] sint32 y, [[maybe_unused]] sint32 baseZ)
 {
     return true;
 }
@@ -400,13 +403,13 @@ static bool map_animation_invalidate_banner(sint32 x, sint32 y, sint32 baseZ)
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_BANNER)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
             continue;
 
         baseZ = tileElement->base_height * 8;
         map_invalidate_tile_zoom1(x, y, baseZ, baseZ + 16);
         return false;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -425,7 +428,7 @@ static bool map_animation_invalidate_large_scenery(sint32 x, sint32 y, sint32 ba
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_LARGE_SCENERY)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
             continue;
 
         sceneryEntry = get_large_scenery_entry(tileElement->properties.scenery.type & 0x3FF);
@@ -434,7 +437,7 @@ static bool map_animation_invalidate_large_scenery(sint32 x, sint32 y, sint32 ba
             map_invalidate_tile_zoom1(x, y, z, z + 16);
             wasInvalidated = true;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return !wasInvalidated;
 }
@@ -456,7 +459,7 @@ static bool map_animation_invalidate_wall_door(sint32 x, sint32 y, sint32 baseZ)
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
 
         sceneryEntry = get_wall_entry(tileElement->properties.scenery.type);
@@ -469,7 +472,7 @@ static bool map_animation_invalidate_wall_door(sint32 x, sint32 y, sint32 baseZ)
 
         bool invalidate = false;
 
-        uint8 currentFrame = wall_element_get_animation_frame(tileElement);
+        uint8 currentFrame = wall_get_animation_frame(tileElement);
         if (currentFrame != 0) {
             if (currentFrame == 15) {
                 currentFrame = 0;
@@ -484,12 +487,12 @@ static bool map_animation_invalidate_wall_door(sint32 x, sint32 y, sint32 baseZ)
                 }
             }
         }
-        wall_element_set_animation_frame(tileElement, currentFrame);
+        wall_set_animation_frame(tileElement, currentFrame);
         if (invalidate) {
             sint32 z = tileElement->base_height * 8;
             map_invalidate_tile_zoom1(x, y, z, z + 32);
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return removeAnimation;
 }
@@ -508,7 +511,7 @@ static bool map_animation_invalidate_wall(sint32 x, sint32 y, sint32 baseZ)
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
 
         sceneryEntry = get_wall_entry(tileElement->properties.scenery.type);
@@ -519,7 +522,7 @@ static bool map_animation_invalidate_wall(sint32 x, sint32 y, sint32 baseZ)
         sint32 z = tileElement->base_height * 8;
         map_invalidate_tile_zoom1(x, y, z, z + 16);
         wasInvalidated = true;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     return !wasInvalidated;
 }

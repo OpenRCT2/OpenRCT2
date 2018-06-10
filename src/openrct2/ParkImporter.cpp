@@ -15,92 +15,18 @@
 #pragma endregion
 
 #include <memory>
+#include "Context.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "ParkImporter.h"
 
-ParkLoadResult::ParkLoadResult(PARK_LOAD_ERROR error)
-    : Error(error),
-      Flag(0)
-{
-}
-
-ParkLoadResult::ParkLoadResult(PARK_LOAD_ERROR error, const std::vector<rct_object_entry> &missingObjects)
-    : Error(error),
-      MissingObjects(missingObjects),
-      Flag(0)
-{
-}
-
-ParkLoadResult::ParkLoadResult(PARK_LOAD_ERROR error, const uint8 flag)
-    : Error(error),
-      Flag(flag)
-{
-}
-
-ParkLoadResult ParkLoadResult::CreateOK()
-{
-    return ParkLoadResult(PARK_LOAD_ERROR::PARK_LOAD_ERROR_OK);
-}
-
-ParkLoadResult ParkLoadResult::CreateInvalidExtension()
-{
-    return ParkLoadResult(PARK_LOAD_ERROR::PARK_LOAD_ERROR_INVALID_EXTENSION);
-}
-
-ParkLoadResult ParkLoadResult::CreateMissingObjects(const std::vector<rct_object_entry> &missingObjects)
-{
-    return ParkLoadResult(PARK_LOAD_ERROR::PARK_LOAD_ERROR_MISSING_OBJECTS, missingObjects);
-}
-
-ParkLoadResult ParkLoadResult::CreateUnknown()
-{
-    return ParkLoadResult(PARK_LOAD_ERROR::PARK_LOAD_ERROR_UNKNOWN);
-}
-
-ParkLoadResult ParkLoadResult::CreateUnsupportedRCTCflag(uint8 classic_flag)
-{
-    return ParkLoadResult(PARK_LOAD_ERROR::PARK_LOAD_ERROR_UNSUPPORTED_RCTC_FLAG, classic_flag);
-}
-
-PARK_LOAD_ERROR ParkLoadResult_GetError(const ParkLoadResult * t)
-{
-    return t->Error;
-}
-
-size_t ParkLoadResult_GetMissingObjectsCount(const ParkLoadResult * t)
-{
-    return t->MissingObjects.size();
-}
-
-uint8 ParkLoadResult_GetFlag(const ParkLoadResult * t)
-{
-    return t->Flag;
-}
-
-const rct_object_entry * ParkLoadResult_GetMissingObjects(const ParkLoadResult * t)
-{
-    return t->MissingObjects.data();
-}
-
-void ParkLoadResult_Delete(ParkLoadResult * t)
-{
-    delete t;
-}
-
-ParkLoadResult * ParkLoadResult_CreateInvalidExtension()
-{
-    return new ParkLoadResult(ParkLoadResult::CreateInvalidExtension());
-}
-
-
 namespace ParkImporter
 {
-    IParkImporter * Create(const std::string &hintPath)
+    std::unique_ptr<IParkImporter> Create(const std::string &hintPath)
     {
-        IParkImporter * parkImporter = nullptr;
+        std::unique_ptr<IParkImporter> parkImporter;
         std::string extension = Path::GetExtension(hintPath);
         if (ExtensionIsRCT1(extension))
         {
@@ -108,46 +34,21 @@ namespace ParkImporter
         }
         else
         {
-            parkImporter = CreateS6(GetObjectRepository(), GetObjectManager());
+            auto context = OpenRCT2::GetContext();
+            parkImporter = CreateS6(context->GetObjectRepository(), context->GetObjectManager());
         }
         return parkImporter;
     }
 
     bool ExtensionIsRCT1(const std::string &extension)
     {
-        if (String::Equals(extension, ".sc4", true) ||
-            String::Equals(extension, ".sv4", true))
-        {
-            return true;
-        }
-        return false;
+        return String::Equals(extension, ".sc4", true) ||
+            String::Equals(extension, ".sv4", true);
     }
 
     bool ExtensionIsScenario(const std::string &extension)
     {
-        if (String::Equals(extension, ".sc4", true) ||
-            String::Equals(extension, ".sc6", true))
-        {
-            return true;
-        }
-        return false;
+        return String::Equals(extension, ".sc4", true) ||
+            String::Equals(extension, ".sc6", true);
     }
 }
-
-void park_importer_load_from_stream(void * stream_c, const utf8 * hintPath_c)
-{
-    IStream * stream = (IStream *)stream_c;
-    std::string hintPath = String::ToStd(hintPath_c);
-
-    bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
-
-    auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
-    parkImporter->LoadFromStream(stream, isScenario);
-    parkImporter->Import();
-}
-
-bool park_importer_extension_is_scenario(const utf8 * extension)
-{
-    return ParkImporter::ExtensionIsScenario(String::ToStd(extension));
-}
-

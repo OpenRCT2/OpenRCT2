@@ -1651,7 +1651,7 @@ void junior_rc_paint_track_flat(
 void junior_rc_paint_station(
     paint_session *          session,
     uint8                    rideIndex,
-    uint8                    trackSequence,
+    [[maybe_unused]] uint8   trackSequence,
     uint8                    direction,
     uint16                   height,
     const rct_tile_element * tileElement,
@@ -1705,7 +1705,7 @@ void junior_rc_paint_station(
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
-    track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, tileElement);
+    track_paint_util_draw_station(session, rideIndex, direction, height, tileElement);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -1834,7 +1834,7 @@ static void junior_rc_right_quarter_turn_5_tiles_paint_setup(
     track_paint_util_right_quarter_turn_5_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_flat_quarter_turn_5_tiles, defaultRightQuarterTurn5TilesOffsets,
-        defaultRightQuarterTurn5TilesBoundLengths, defaultRightQuarterTurn5TilesBoundOffsets, session->CurrentRotation);
+        defaultRightQuarterTurn5TilesBoundLengths, defaultRightQuarterTurn5TilesBoundOffsets);
 
     sint32 supportHeight = height + junior_rc_track_right_quarter_turn_5_tiles_support_height_offset[direction][trackSequence];
     switch (trackSequence)
@@ -2044,63 +2044,67 @@ static void junior_rc_right_bank_to_flat_paint_setup(
     junior_rc_flat_to_left_bank_paint_setup(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
-static constexpr const LocationXY16 junior_rc_banked_right_quarter_turn_5_tiles_bound_lengths[4][5] = { {
-                                                                                       { 32, 20 },
-                                                                                       { 32, 16 },
-                                                                                       { 16, 16 },
-                                                                                       { 16, 32 },
-                                                                                       { 20, 32 },
-                                                                                   },
-                                                                                   {
-                                                                                       { 20, 32 },
-                                                                                       { 16, 32 },
-                                                                                       { 16, 16 },
-                                                                                       { 32, 16 },
-                                                                                       { 32, 20 },
-                                                                                   },
-                                                                                   {
-                                                                                       { 32, 1 },
-                                                                                       { 32, 16 },
-                                                                                       { 16, 16 },
-                                                                                       { 16, 32 },
-                                                                                       { 1, 32 },
-                                                                                   },
-                                                                                   {
-                                                                                       { 20, 32 },
-                                                                                       { 16, 32 },
-                                                                                       { 16, 16 },
-                                                                                       { 32, 16 },
-                                                                                       { 32, 20 },
-                                                                                   } };
+static constexpr const LocationXY16 junior_rc_banked_right_quarter_turn_5_tiles_bound_lengths[4][5] = {
+    {
+        { 32, 20 },
+        { 32, 16 },
+        { 16, 16 },
+        { 16, 32 },
+        { 20, 32 },
+    },
+    {
+        { 20, 32 },
+        { 16, 32 },
+        { 16, 16 },
+        { 32, 16 },
+        { 32, 20 },
+    },
+    {
+        { 32, 1 },
+        { 32, 16 },
+        { 16, 16 },
+        { 16, 32 },
+        { 1, 32 },
+    },
+    {
+        { 20, 32 },
+        { 16, 32 },
+        { 16, 16 },
+        { 32, 16 },
+        { 32, 20 },
+    },
+};
 
-static constexpr const LocationXYZ16 junior_rc_banked_right_quarter_turn_5_tiles_bound_offsets[4][5] = { {
-                                                                                        { 0, 6 },
-                                                                                        { 0, 16 },
-                                                                                        { 0, 0 },
-                                                                                        { 16, 0 },
-                                                                                        { 6, 0 },
-                                                                                    },
-                                                                                    {
-                                                                                        { 6, 0 },
-                                                                                        { 16, 0 },
-                                                                                        { 0, 16 },
-                                                                                        { 0, 0 },
-                                                                                        { 0, 6 },
-                                                                                    },
-                                                                                    {
-                                                                                        { 0, 27 },
-                                                                                        { 0, 0, 27 },
-                                                                                        { 16, 16, 27 },
-                                                                                        { 0, 0, 27 },
-                                                                                        { 27, 0 },
-                                                                                    },
-                                                                                    {
-                                                                                        { 6, 0 },
-                                                                                        { 0, 0 },
-                                                                                        { 16, 0 },
-                                                                                        { 0, 16 },
-                                                                                        { 0, 6 },
-                                                                                    } };
+static constexpr const LocationXYZ16 junior_rc_banked_right_quarter_turn_5_tiles_bound_offsets[4][5] = {
+    {
+        { 0, 6, 0 },
+        { 0, 16, 0 },
+        { 0, 0, 0 },
+        { 16, 0, 0 },
+        { 6, 0, 0 },
+    },
+    {
+        { 6, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 16, 0 },
+        { 0, 0, 0 },
+        { 0, 6, 0 },
+    },
+    {
+        { 0, 27, 0 },
+        { 0, 0, 27 },
+        { 16, 16, 27 },
+        { 0, 0, 27 },
+        { 27, 0, 0 },
+    },
+    {
+        { 6, 0, 0 },
+        { 0, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 16, 0 },
+        { 0, 6, 0 },
+    },
+};
 
 /* rct2: 0x008AB010, 0x0052304C */
 static void junior_rc_banked_right_quarter_turn_5_tiles_paint_setup(
@@ -2119,7 +2123,7 @@ static void junior_rc_banked_right_quarter_turn_5_tiles_paint_setup(
     track_paint_util_right_quarter_turn_5_tiles_paint(
         session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_banked_quarter_turn_5_tiles, nullptr, junior_rc_banked_right_quarter_turn_5_tiles_bound_lengths,
-        junior_rc_banked_right_quarter_turn_5_tiles_bound_offsets, session->CurrentRotation);
+        junior_rc_banked_right_quarter_turn_5_tiles_bound_offsets);
 
     if (direction == 1 && trackSequence == 6)
     {
@@ -2608,8 +2612,7 @@ void junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(
     track_paint_util_right_quarter_turn_5_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_left_quarter_turn_5_tiles_25_deg_up[chainType],
-        junior_rc_left_quarter_turn_5_tiles_25_deg_up_offsets, defaultRightQuarterTurn5TilesBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_left_quarter_turn_5_tiles_25_deg_up_offsets, defaultRightQuarterTurn5TilesBoundLengths, nullptr);
 
     uint8 supportSpecial[4] = { 8, 8, 8, 3 };
     switch (trackSequence)
@@ -2691,7 +2694,7 @@ void junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(
     track_paint_util_right_quarter_turn_5_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_right_quarter_turn_5_tiles_25_deg_up[chainType], defaultRightQuarterTurn5TilesOffsets,
-        defaultRightQuarterTurn5TilesBoundLengths, nullptr, session->CurrentRotation);
+        defaultRightQuarterTurn5TilesBoundLengths, nullptr);
 
     uint8 supportSpecial[4] = { 11, 8, 8, 7 };
     switch (trackSequence)
@@ -3040,7 +3043,7 @@ static void junior_rc_right_quarter_turn_3_tiles_paint_setup(
     track_paint_util_right_quarter_turn_3_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets,
-        defaultRightQuarterTurn3TilesBoundLengths, nullptr, session->CurrentRotation);
+        defaultRightQuarterTurn3TilesBoundLengths, nullptr);
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     uint8 supportType[2][4] = { { 1, 0, 0, 2 }, { 2, 0, 0, 1 } };
@@ -3085,47 +3088,51 @@ static void junior_rc_left_quarter_turn_3_tiles_paint_setup(
                                                      tileElement);
 }
 
-static constexpr const LocationXY16 junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths[4][3] = { {
-                                                                                     { 32, 20 },
-                                                                                     { 16, 16 },
-                                                                                     { 20, 32 },
-                                                                                 },
-                                                                                 {
-                                                                                     { 20, 32 },
-                                                                                     { 16, 16 },
-                                                                                     { 32, 20 },
-                                                                                 },
-                                                                                 {
-                                                                                     { 32, 1 },
-                                                                                     { 16, 16 },
-                                                                                     { 1, 32 },
-                                                                                 },
-                                                                                 {
-                                                                                     { 20, 32 },
-                                                                                     { 16, 16 },
-                                                                                     { 32, 20 },
-                                                                                 } };
+static constexpr const LocationXY16 junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths[4][3] = {
+    {
+        { 32, 20 },
+        { 16, 16 },
+        { 20, 32 },
+    },
+    {
+        { 20, 32 },
+        { 16, 16 },
+        { 32, 20 },
+    },
+    {
+        { 32, 1 },
+        { 16, 16 },
+        { 1, 32 },
+    },
+    {
+        { 20, 32 },
+        { 16, 16 },
+        { 32, 20 },
+    },
+};
 
-static constexpr const LocationXYZ16 junior_rc_right_quarter_turn_3_tiles_bank_offsets[4][3] = { {
-                                                                                { 0, 6 },
-                                                                                { 16, 16 },
-                                                                                { 6, 0 },
-                                                                            },
-                                                                            {
-                                                                                { 6, 0 },
-                                                                                { 16, 0 },
-                                                                                { 0, 6 },
-                                                                            },
-                                                                            {
-                                                                                { 0, 27 },
-                                                                                { 0, 0, 27 },
-                                                                                { 27, 0 },
-                                                                            },
-                                                                            {
-                                                                                { 6, 0 },
-                                                                                { 0, 16 },
-                                                                                { 0, 6 },
-                                                                            } };
+static constexpr const LocationXYZ16 junior_rc_right_quarter_turn_3_tiles_bank_offsets[4][3] = {
+    {
+        { 0, 6, 0 },
+        { 16, 16, 0 },
+        { 6, 0, 0 },
+    },
+    {
+        { 6, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 6, 0 },
+    },
+    {
+        { 0, 27, 0 },
+        { 0, 0, 27 },
+        { 27, 0, 0 },
+    },
+    {
+        { 6, 0, 0 },
+        { 0, 16, 0 },
+        { 0, 6, 0 },
+    },
+};
 
 /** rct2: 0x008AA0D0, 0x00523EA0, 0x005240CC, 0x0052430F, 0x00524500*/
 static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(
@@ -3141,7 +3148,7 @@ static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(
     track_paint_util_right_quarter_turn_3_tiles_paint(
         session, thickness[direction][trackSequence], height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_banked_quarter_turn_3_tiles, nullptr, junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths,
-        junior_rc_right_quarter_turn_3_tiles_bank_offsets, session->CurrentRotation);
+        junior_rc_right_quarter_turn_3_tiles_bank_offsets);
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     if (direction == 1 && trackSequence == 3)
@@ -3193,9 +3200,9 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
     JUNIOR_RC_CHAINTYPE      chainType)
 {
     uint32   imageId      = 0;
-    LocationXY16 offset       = { 0 };
-    LocationXY16 boundsLength = { 0 };
-    LocationXY16 boundsOffset = { 0 };
+    LocationXY16 offset       = {};
+    LocationXY16 boundsLength = {};
+    LocationXY16 boundsOffset = {};
 
     switch (trackSequence)
     {
@@ -3277,9 +3284,9 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
     JUNIOR_RC_CHAINTYPE      chainType)
 {
     uint32   imageId      = 0;
-    LocationXY16 offset       = { 0 };
-    LocationXY16 boundsLength = { 0 };
-    LocationXY16 boundsOffset = { 0 };
+    LocationXY16 offset       = {};
+    LocationXY16 boundsLength = {};
+    LocationXY16 boundsOffset = {};
 
     switch (trackSequence)
     {
@@ -3445,7 +3452,7 @@ static void junior_rc_right_half_banked_helix_up_small_paint_setup(
     track_paint_util_right_helix_up_small_quarter_tiles_paint(
         session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_right_half_banked_helix_up_small_quarter_tiles, nullptr,
-        defaultRightHelixUpSmallQuarterBoundLengths, defaultRightHelixUpSmallQuarterBoundOffsets, session->CurrentRotation);
+        defaultRightHelixUpSmallQuarterBoundLengths, defaultRightHelixUpSmallQuarterBoundOffsets);
 
     if (trackSequence == 0)
     {
@@ -3515,7 +3522,7 @@ static void junior_rc_right_half_banked_helix_down_small_paint_setup(
     track_paint_util_right_helix_up_small_quarter_tiles_paint(
         session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_right_half_banked_helix_down_small_quarter_tiles, nullptr,
-        defaultRightHelixUpSmallQuarterBoundLengths, defaultRightHelixUpSmallQuarterBoundOffsets, session->CurrentRotation);
+        defaultRightHelixUpSmallQuarterBoundLengths, defaultRightHelixUpSmallQuarterBoundOffsets);
 
     if (trackSequence == 0)
     {
@@ -3625,7 +3632,7 @@ static void junior_rc_right_half_banked_helix_up_large_paint_setup(
     track_paint_util_right_helix_up_large_quarter_tiles_paint(
         session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_right_half_banked_helix_up_large_quarter_tiles, nullptr,
-        defaultRightHelixUpLargeQuarterBoundLengths, defaultRightHelixUpLargeQuarterBoundOffsets, session->CurrentRotation);
+        defaultRightHelixUpLargeQuarterBoundLengths, defaultRightHelixUpLargeQuarterBoundOffsets);
 
     if (trackSequence == 0)
     {
@@ -3711,7 +3718,7 @@ static void junior_rc_right_half_banked_helix_down_large_paint_setup(
     track_paint_util_right_helix_up_large_quarter_tiles_paint(
         session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_right_half_banked_helix_down_large_quarter_tiles, nullptr,
-        defaultRightHelixUpLargeQuarterBoundLengths, defaultRightHelixUpLargeQuarterBoundOffsets, session->CurrentRotation);
+        defaultRightHelixUpLargeQuarterBoundLengths, defaultRightHelixUpLargeQuarterBoundOffsets);
 
     if (trackSequence == 0)
     {
@@ -3909,7 +3916,7 @@ static void junior_rc_left_eighth_to_diag_paint_setup(
     track_paint_util_eighth_to_diag_tiles_paint(
         session, defaultEighthToDiagThickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_left_eight_to_diag, nullptr, defaultLeftEighthToDiagBoundLengths,
-        defaultLeftEighthToDiagBoundOffsets, session->CurrentRotation);
+        defaultLeftEighthToDiagBoundOffsets);
 
     switch (trackSequence)
     {
@@ -3976,7 +3983,7 @@ static void junior_rc_right_eighth_to_diag_paint_setup(
     track_paint_util_eighth_to_diag_tiles_paint(
         session, defaultEighthToDiagThickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_right_eight_to_diag, nullptr, defaultRightEighthToDiagBoundLengths,
-        defaultRightEighthToDiagBoundOffsets, session->CurrentRotation);
+        defaultRightEighthToDiagBoundOffsets);
 
     switch (trackSequence)
     {
@@ -4088,28 +4095,28 @@ static constexpr const LocationXY16 junior_rc_left_eighth_to_diag_bank_bound_len
 
 static constexpr const LocationXYZ16 junior_rc_left_eighth_to_diag_bank_bound_offsets[4][4] = {
     {
-        { 0, 27 },
-        { 0, 0 },
-        { 0, 16 },
-        { 16, 16 },
+        { 0, 27, 0 },
+        { 0, 0, 0 },
+        { 0, 16, 0 },
+        { 16, 16, 0 },
     },
     {
-        { 27, 0 },
+        { 27, 0, 0 },
         { 0, 0, 27 },
         { 16, 16, 27 },
         { 16, 0, 27 },
     },
     {
-        { 0, 6 },
-        { 0, 16 },
-        { 16, 0 },
-        { 0, 0 },
+        { 0, 6, 0 },
+        { 0, 16, 0 },
+        { 16, 0, 0 },
+        { 0, 0, 0 },
     },
     {
-        { 6, 0 },
-        { 16, 0 },
-        { 0, 0 },
-        { 0, 16 },
+        { 6, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 0, 0 },
+        { 0, 16, 0 },
     },
 };
 
@@ -4152,8 +4159,7 @@ static void junior_rc_left_eighth_to_diag_bank_paint_setup(
     track_paint_util_eighth_to_diag_tiles_paint(
         session, junior_rc_left_eighth_to_diag_bank_thickness, height, direction, trackSequence,
         session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_left_eight_to_diag_bank, nullptr,
-        junior_rc_left_eighth_to_diag_bank_bound_lengths, junior_rc_left_eighth_to_diag_bank_bound_offsets,
-        session->CurrentRotation);
+        junior_rc_left_eighth_to_diag_bank_bound_lengths, junior_rc_left_eighth_to_diag_bank_bound_offsets);
 
     switch (trackSequence)
     {
@@ -4237,28 +4243,28 @@ static constexpr const LocationXY16 junior_rc_right_eighth_to_diag_bank_bound_le
 
 static constexpr const LocationXYZ16 junior_rc_right_eighth_to_diag_bank_bound_offsets[4][4] = {
     {
-        { 0, 6 },
-        { 0, 0 },
-        { 0, 0 },
-        { 16, 0 },
+        { 0, 6, 0 },
+        { 0, 0, 0 },
+        { 0, 0, 0 },
+        { 16, 0, 0 },
     },
     {
-        { 6, 0 },
-        { 16, 0 },
-        { 0, 16 },
-        { 0, 0 },
+        { 6, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 16, 0 },
+        { 0, 0, 0 },
     },
     {
-        { 0, 27 },
+        { 0, 27, 0 },
         { 0, 0, 27 },
         { 4, 4, 27 },
         { 0, 16, 27 },
     },
     {
-        { 27, 0 },
-        { 0, 0 },
-        { 16, 0 },
-        { 16, 16 },
+        { 27, 0, 0 },
+        { 0, 0, 0 },
+        { 16, 0, 0 },
+        { 16, 16, 0 },
     },
 };
 
@@ -4301,8 +4307,7 @@ static void junior_rc_right_eighth_to_diag_bank_paint_setup(
     track_paint_util_eighth_to_diag_tiles_paint(
         session, junior_rc_right_eighth_to_diag_bank_thickness, height, direction, trackSequence,
         session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_eight_to_diag_bank, nullptr,
-        junior_rc_right_eighth_to_diag_bank_bound_lengths, junior_rc_right_eighth_to_diag_bank_bound_offsets,
-        session->CurrentRotation);
+        junior_rc_right_eighth_to_diag_bank_bound_lengths, junior_rc_right_eighth_to_diag_bank_bound_offsets);
 
     switch (trackSequence)
     {
@@ -4403,8 +4408,7 @@ void junior_rc_paint_track_diag_flat(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4429,8 +4433,7 @@ void junior_rc_paint_track_diag_25_deg_up(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_25_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_25_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4454,8 +4457,7 @@ void junior_rc_paint_track_diag_flat_to_25_deg_up(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_flat_to_25_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_flat_to_25_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4482,8 +4484,7 @@ void junior_rc_paint_track_diag_flat_to_60_deg_up(
 
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_flat_to_60_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_flat_to_60_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4507,8 +4508,7 @@ void junior_rc_paint_track_diag_25_deg_up_to_flat(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_25_deg_up_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_25_deg_up_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4535,8 +4535,7 @@ void junior_rc_paint_track_diag_60_deg_up_to_flat(
 
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_60_deg_up_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_60_deg_up_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4561,8 +4560,7 @@ void junior_rc_paint_track_diag_25_deg_down(
 
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_25_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_25_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4586,8 +4584,7 @@ void junior_rc_paint_track_diag_flat_to_25_deg_down(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_flat_to_25_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_flat_to_25_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4614,8 +4611,7 @@ void junior_rc_paint_track_diag_flat_to_60_deg_down(
 
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_flat_to_60_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_flat_to_60_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4639,8 +4635,7 @@ void junior_rc_paint_track_diag_25_deg_down_to_flat(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_25_deg_down_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_25_deg_down_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4667,8 +4662,7 @@ void junior_rc_paint_track_diag_60_deg_down_to_flat(
 
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_60_deg_down_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_60_deg_down_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4842,8 +4836,7 @@ static void junior_rc_diag_flat_to_left_bank_paint_setup(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_flat_to_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_flat_to_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 0 && trackSequence == 1)
     {
@@ -4874,8 +4867,7 @@ static void junior_rc_diag_flat_to_right_bank_paint_setup(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_flat_to_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_flat_to_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 2 && trackSequence == 2)
     {
@@ -4906,8 +4898,7 @@ static void junior_rc_diag_left_bank_to_flat_paint_setup(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_left_bank_to_flat, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_left_bank_to_flat, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 0 && trackSequence == 1)
     {
@@ -4938,8 +4929,7 @@ static void junior_rc_diag_right_bank_to_flat_paint_setup(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_right_bank_to_flat, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_right_bank_to_flat, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 2 && trackSequence == 2)
     {
@@ -4970,8 +4960,7 @@ static void junior_rc_diag_left_bank_to_25_deg_up_paint_setup(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_left_bank_to_25_deg_up, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_left_bank_to_25_deg_up, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 0 && trackSequence == 1)
     {
@@ -5001,8 +4990,7 @@ static void junior_rc_diag_right_bank_to_25_deg_up_paint_setup(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_right_bank_to_25_deg_up, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_right_bank_to_25_deg_up, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 2 && trackSequence == 2)
     {
@@ -5032,8 +5020,7 @@ static void junior_rc_diag_25_deg_up_to_left_bank_paint_setup(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_25_deg_up_to_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_25_deg_up_to_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 0 && trackSequence == 1)
     {
@@ -5063,8 +5050,7 @@ static void junior_rc_diag_25_deg_up_to_right_bank_paint_setup(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_25_deg_up_to_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_25_deg_up_to_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 2 && trackSequence == 2)
     {
@@ -5094,8 +5080,7 @@ static void junior_rc_diag_left_bank_to_25_deg_down_paint_setup(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_left_bank_to_25_deg_down, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_left_bank_to_25_deg_down, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 0 && trackSequence == 1)
     {
@@ -5125,8 +5110,7 @@ static void junior_rc_diag_right_bank_to_25_deg_down_paint_setup(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_right_bank_to_25_deg_down, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_right_bank_to_25_deg_down, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 2 && trackSequence == 2)
     {
@@ -5156,8 +5140,7 @@ static void junior_rc_diag_25_deg_down_to_left_bank_paint_setup(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_25_deg_down_to_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_25_deg_down_to_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 0 && trackSequence == 1)
     {
@@ -5187,8 +5170,7 @@ static void junior_rc_diag_25_deg_down_to_right_bank_paint_setup(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_25_deg_down_to_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_25_deg_down_to_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (direction == 2 && trackSequence == 2)
     {
@@ -5209,16 +5191,16 @@ static void junior_rc_diag_25_deg_down_to_right_bank_paint_setup(
 
 static constexpr const LocationXYZ16 junior_rc_diag_left_bank_bound_offsets[4] = {
     { -16, -16, 27 },
-    { -16, -16 },
-    { -16, -16 },
-    { -16, -16 },
+    { -16, -16, 0 },
+    { -16, -16, 0 },
+    { -16, -16, 0 },
 };
 
 static constexpr const LocationXYZ16 junior_rc_diag_right_bank_bound_offsets[4] = {
-    { -16, -16 },
-    { -16, -16 },
+    { -16, -16, 0 },
+    { -16, -16, 0 },
     { -16, -16, 27 },
-    { -16, -16 },
+    { -16, -16, 0 },
 };
 
 /** rct2: 0x008AB1A0 */
@@ -5234,7 +5216,7 @@ static void junior_rc_diag_left_bank_paint_setup(
     track_paint_util_diag_tiles_paint(
         session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths,
-        junior_rc_diag_left_bank_bound_offsets, session->CurrentRotation);
+        junior_rc_diag_left_bank_bound_offsets);
 
     if (trackSequence == 3)
     {
@@ -5261,7 +5243,7 @@ static void junior_rc_diag_right_bank_paint_setup(
     track_paint_util_diag_tiles_paint(
         session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths,
-        junior_rc_diag_right_bank_bound_offsets, session->CurrentRotation);
+        junior_rc_diag_right_bank_bound_offsets);
 
     if (trackSequence == 3)
     {
@@ -5372,19 +5354,19 @@ static void junior_rc_60_deg_down_paint_setup(
 }
 
 static constexpr const LocationXY16 junior_rc_25_deg_up_to_60_deg_up_bound_lengths[4][2] = {
-    { { 32, 20 }, { 0 } },
+    { { 32, 20 }, { 0, 0 } },
     { { 10, 32 }, { 2, 32 } },
     { { 32, 10 }, { 32, 2 } },
-    { { 20, 32 }, { 0 } },
+    { { 20, 32 }, { 0, 0 } },
 };
 
 static constexpr const sint8 junior_rc_25_deg_up_to_60_deg_up_bound_thickness[4] = { 1, 43, 43, 1 };
 
 static constexpr const LocationXY16 junior_rc_25_deg_up_to_60_deg_up_bound_offsets[4][2] = {
-    { { 0, 6 }, { 0 } },
+    { { 0, 6 }, { 0, 0 } },
     { { 10, 0 }, { 4, 0 } },
     { { 0, 10 }, { 0, 4 } },
-    { { 6, 0 }, { 0 } },
+    { { 6, 0 }, { 0, 0 } },
 };
 
 void junior_rc_paint_track_25_deg_up_to_60_deg_up(
@@ -5579,8 +5561,7 @@ void junior_rc_paint_track_diag_60_deg_up(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_60_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_60_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -5604,8 +5585,7 @@ void junior_rc_paint_track_diag_60_deg_down(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_60_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_60_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -5629,8 +5609,7 @@ void junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_25_deg_up_to_60_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr,
-        session->CurrentRotation);
+        junior_rc_track_pieces_diag_25_deg_up_to_60_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -5664,7 +5643,7 @@ void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
         track_paint_util_diag_tiles_paint(
             session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
             junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths,
-            nullptr, session->CurrentRotation);
+            nullptr);
     }
 
     if (trackSequence == 3)
@@ -5699,7 +5678,7 @@ void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
         track_paint_util_diag_tiles_paint(
             session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
             junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths,
-            nullptr, session->CurrentRotation);
+            nullptr);
     }
 
     if (trackSequence == 3)
@@ -5725,7 +5704,7 @@ void junior_rc_paint_track_diag_60_deg_down_to_25_deg_down(
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_diag_60_deg_down_to_25_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths,
-        nullptr, session->CurrentRotation);
+        nullptr);
 
     if (trackSequence == 3)
     {
@@ -5817,27 +5796,33 @@ static void junior_rc_diag_60_deg_down_to_25_deg_down_paint_setup(
 }
 
 static constexpr const LocationXY16 junior_rc_flat_to_60_deg_up_bound_lengths[4][2] = {
-    { { 32, 24 }, { 0 } },
+    { { 32, 24 }, { 0, 0 } },
     { { 10, 1 }, { 2, 32 } },
     { { 1, 10 }, { 32, 2 } },
-    { { 24, 32 }, { 0 } },
+    { { 24, 32 }, { 0, 0 } },
 };
 
 static constexpr const sint8 junior_rc_flat_to_60_deg_up_bound_thickness[4] = { 1, 43, 43, 1 };
 
 static constexpr const LocationXY16 junior_rc_flat_to_60_deg_up_bound_offsets[4][2] = {
-    { { 0, 4 }, { 0 } },
+    { { 0, 4 }, { 0, 0 } },
     { { 10, 0 }, { 4, 0 } },
     { { 0, 10 }, { 0, 4 } },
-    { { 4, 0 }, { 0 } },
+    { { 4, 0 }, { 0, 0 } },
 };
 
 static constexpr const LocationXY16 junior_rc_flat_to_60_deg_up_tile_offsets[4][2] = {
-    { { 12, -10 }, { 0 } }, { { 22, 9 }, { 12, -11 } }, { { 30, 7 }, { 5, 0 } }, { { 12, -12 }, { 0 } }
+    { { 12, -10 }, { 0, 0 } },
+    { { 22, 9 }, { 12, -11 } },
+    { { 30, 7 }, { 5, 0 } },
+    { { 12, -12 }, { 0, 0 } },
 };
 
 static constexpr const LocationXY16 junior_rc_60_deg_up_to_flat_tile_offsets[4][2] = {
-    { { 13, -9 }, { 0 } }, { { 32, 9 }, { -7, -11 } }, { { 22, 18 }, { 2, -19 } }, { { 13, -9 }, { 0 } }
+    { { 13, -9 }, { 0, 0 } },
+    { { 32, 9 }, { -7, -11 } },
+    { { 22, 18 }, { 2, -19 } },
+    { { 13, -9 }, { 0, 0 } },
 };
 
 static void junior_rc_flat_to_60_deg_up_paint_setup(

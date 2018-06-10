@@ -54,7 +54,7 @@ static std::wstring SHGetPathFromIDListLongPath(LPCITEMIDLIST pidl)
     return pszPath;
 }
 
-namespace OpenRCT2 { namespace Ui
+namespace OpenRCT2::Ui
 {
     class Win32Context : public IPlatformUiContext
     {
@@ -105,7 +105,7 @@ namespace OpenRCT2 { namespace Ui
             std::wstring wcFilters = GetFilterString(desc.Filters);
 
             // Set open file name options
-            OPENFILENAMEW openFileName = { 0 };
+            OPENFILENAMEW openFileName = {};
             openFileName.lStructSize = sizeof(OPENFILENAMEW);
             openFileName.hwndOwner = GetHWND(window);
             openFileName.lpstrTitle = wcTitle.c_str();
@@ -163,7 +163,7 @@ namespace OpenRCT2 { namespace Ui
                 SUCCEEDED(SHGetMalloc(&lpMalloc)))
             {
                 std::wstring titleW = String::ToUtf16(title);
-                BROWSEINFOW bi = { 0 };
+                BROWSEINFOW bi = {};
                 bi.lpszTitle = titleW.c_str();
                 bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE | BIF_NONEWFOLDERBUTTON;
 
@@ -224,6 +224,6 @@ namespace OpenRCT2 { namespace Ui
     {
         return new Win32Context();
     }
-} }
+} // namespace OpenRCT2::Ui
 
 #endif // _WIN32

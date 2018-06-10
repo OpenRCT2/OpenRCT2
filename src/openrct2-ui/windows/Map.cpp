@@ -29,6 +29,8 @@
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
+#include <openrct2/world/Sprite.h>
+#include <openrct2/world/Surface.h>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -44,6 +46,7 @@
 // minimap. In order to distinguish those from actual coordinates, we use a separate name.
 using MapCoordsXY = TileCoordsXY;
 
+// clang-format off
 enum {
     PAGE_PEEPS,
     PAGE_RIDES
@@ -74,7 +77,6 @@ enum WINDOW_MAP_WIDGET_IDX {
     WIDX_MAP_GENERATOR = 21
 };
 
-validate_global_widx(WC_MAP, WIDX_LAND_TOOL);
 validate_global_widx(WC_MAP, WIDX_ROTATE_90);
 
 static rct_widget window_map_widgets[] = {
@@ -85,9 +87,7 @@ static rct_widget window_map_widgets[] = {
     { WWT_COLOURBTN,        1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SHOW_PEOPLE_ON_MAP_TIP },
     { WWT_COLOURBTN,        1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SHOW_RIDES_STALLS_ON_MAP_TIP },
     { WWT_SCROLL,           1,  3,      241,    46,     225,    SCROLL_BOTH,                            STR_NONE },
-    { WWT_SPINNER,          1,  104,    198,    229,    240,    STR_MAP_SIZE_VALUE,                     STR_NONE },
-    { WWT_BUTTON,           1,  187,    197,    230,    234,    STR_NUMERIC_UP,                         STR_NONE },
-    { WWT_BUTTON,           1,  187,    197,    235,    239,    STR_NUMERIC_DOWN,                       STR_NONE },
+      SPINNER_WIDGETS      (1,  104,    198,    229,    240,    STR_MAP_SIZE_VALUE,                     STR_NONE), // NB: 3 widgets
     { WWT_FLATBTN,          1,  4,      27,     1,      24,     SPR_BUY_LAND_RIGHTS,                    STR_SELECT_PARK_OWNED_LAND_TIP },
     { WWT_FLATBTN,          1,  4,      27,     1,      24,     SPR_PARK_ENTRANCE,                      STR_BUILD_PARK_ENTRANCE_TIP },
     { WWT_FLATBTN,          1,  28,     51,     1,      24,     (uint32) SPR_NONE,                      STR_SET_STARTING_POSITIONS_TIP },
@@ -171,6 +171,7 @@ static rct_window_event_list window_map_events = {
     window_map_paint,
     window_map_scrollpaint
 };
+// clang-format on
 
 /** rct2: 0x00F1AD61 */
 static uint8 _activeTool;
@@ -181,6 +182,8 @@ static uint32 _currentLine;
 /** rct2: 0x00F1AD68 */
 static std::vector<uint8> _mapImageData;
 
+static uint16 _landRightsToolSize;
+
 static void window_map_init_map();
 static void window_map_centre_on_view_point();
 static void window_map_show_default_scenario_editor_buttons(rct_window *w);
@@ -190,7 +193,6 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi);
 static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi);
 static void window_map_inputsize_land(rct_window *w);
 static void window_map_inputsize_map(rct_window *w);
-static void window_map_set_bounds(rct_window* w);
 
 static void window_map_set_land_rights_tool_update(sint32 x, sint32 y);
 static void window_map_place_park_entrance_tool_update(sint32 x, sint32 y);
@@ -264,8 +266,8 @@ rct_window * window_map_open()
     gWindowSceneryRotation = 0;
     window_map_centre_on_view_point();
 
-    // Reset land tool size
-    gLandToolSize = 1;
+    // Reset land rights tool size
+    _landRightsToolSize = 1;
 
     return w;
 }
@@ -315,7 +317,7 @@ static void window_map_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             break;
         _activeTool = 2;
         // Prevent mountain tool size.
-        gLandToolSize = Math::Max<uint16>(MINIMUM_TOOL_SIZE, gLandToolSize);
+        _landRightsToolSize = Math::Max<uint16>(MINIMUM_TOOL_SIZE, _landRightsToolSize);
         show_gridlines();
         show_land_rights();
         show_construction_rights();
@@ -423,14 +425,14 @@ static void window_map_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct
         map_window_decrease_map_size();
         break;
     case WIDX_LAND_TOOL_SMALLER:
-        // Decrement land ownership tool size
-        gLandToolSize = Math::Max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
+        // Decrement land rights tool size
+        _landRightsToolSize = Math::Max(MINIMUM_TOOL_SIZE, _landRightsToolSize - 1);
 
         window_invalidate(w);
         break;
     case WIDX_LAND_TOOL_LARGER:
-        // Increment land ownership tool size
-        gLandToolSize = Math::Min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
+        // Increment land rights tool size
+        _landRightsToolSize = Math::Min(MAXIMUM_TOOL_SIZE, _landRightsToolSize + 1);
 
         window_invalidate(w);
         break;
@@ -615,9 +617,9 @@ static void window_map_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32
         );
     } else if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS)) {
         // Set land rights
-        sint32 landToolSize = Math::Max<sint32>(1, gLandToolSize);
-        sint32 size = (landToolSize * 32) - 32;
-        sint32 radius = (landToolSize * 16) - 16;
+        sint32 landRightsToolSize = Math::Max<sint32>(1, _landRightsToolSize);
+        sint32 size = (landRightsToolSize * 32) - 32;
+        sint32 radius = (landRightsToolSize * 16) - 16;
         mapX = (mapX - radius) & 0xFFE0;
         mapY = (mapY - radius) & 0xFFE0;
 
@@ -656,7 +658,7 @@ static void window_map_textinput(rct_window *w, rct_widgetindex widgetIndex, cha
         size = strtol(text, &end, 10);
         if (*end == '\0') {
             size = Math::Clamp(MINIMUM_TOOL_SIZE, size, MAXIMUM_TOOL_SIZE);
-            gLandToolSize = size;
+            _landRightsToolSize = size;
             window_invalidate(w);
         }
         break;
@@ -747,8 +749,8 @@ static void window_map_invalidate(rct_window *w)
     w->widgets[WIDX_MAP_SIZE_SPINNER].top = w->height - 15;
     w->widgets[WIDX_MAP_SIZE_SPINNER].bottom = w->height - 4;
     w->widgets[WIDX_MAP_SIZE_SPINNER_UP].top = w->height - 14;
-    w->widgets[WIDX_MAP_SIZE_SPINNER_UP].bottom = w->height - 10;
-    w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].top = w->height - 9;
+    w->widgets[WIDX_MAP_SIZE_SPINNER_UP].bottom = w->height - 5;
+    w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].top = w->height - 14;
     w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].bottom = w->height - 5;
 
     w->widgets[WIDX_SET_LAND_RIGHTS].top = w->height - 70;
@@ -813,7 +815,7 @@ static void window_map_invalidate(rct_window *w)
                 for (i = 0; i < 4; i++)
                     w->widgets[WIDX_LAND_OWNED_CHECKBOX + i].type = WWT_CHECKBOX;
 
-                w->widgets[WIDX_LAND_TOOL].image = land_tool_size_to_sprite_index(gLandToolSize);
+                w->widgets[WIDX_LAND_TOOL].image = land_tool_size_to_sprite_index(_landRightsToolSize);
             }
         } else {
             // if no tool is active: show the default scenario editor buttons
@@ -835,8 +837,8 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
     sint32 y = w->y + (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2;
 
     // Draw land tool size
-    if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE) {
-        gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
+    if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE) {
+        gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &_landRightsToolSize);
     }
     y = w->y + window_map_widgets[WIDX_LAND_TOOL].bottom + 5;
 
@@ -892,7 +894,7 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
 {
     gfx_clear(dpi, PALETTE_INDEX_10);
 
-    rct_g1_element g1temp = { nullptr };
+    rct_g1_element g1temp = {};
     g1temp.offset = _mapImageData.data();
     g1temp.width = MAP_WINDOW_MAP_SIZE;
     g1temp.height = MAP_WINDOW_MAP_SIZE;
@@ -1179,12 +1181,12 @@ static void window_map_set_land_rights_tool_update(sint32 x, sint32 y)
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
     gMapSelectType = MAP_SELECT_TYPE_FULL;
 
-    sint32 landToolSize = gLandToolSize;
-    if (landToolSize == 0)
-        landToolSize = 1;
+    sint32 landRightsToolSize = _landRightsToolSize;
+    if (landRightsToolSize == 0)
+        landRightsToolSize = 1;
 
-    sint32 size = (landToolSize * 32) - 32;
-    sint32 radius = (landToolSize * 16) - 16;
+    sint32 size = (landRightsToolSize * 32) - 32;
+    sint32 radius = (landRightsToolSize * 16) - 16;
     mapX = (mapX - radius) & 0xFFE0;
     mapY = (mapY - radius) & 0xFFE0;
     gMapSelectPositionA.x = mapX;
@@ -1207,7 +1209,7 @@ static void place_park_entrance_get_map_position(sint32 x, sint32 y, sint16 *map
         return;
 
     tileElement = map_get_surface_element_at(*mapX >> 5, *mapY >> 5);
-    *mapZ = map_get_water_height(tileElement);
+    *mapZ = surface_get_water_height(tileElement);
     if (*mapZ == 0) {
         *mapZ = tileElement->base_height / 2;
         if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0) {
@@ -1243,10 +1245,10 @@ static void window_map_place_park_entrance_tool_update(sint32 x, sint32 y)
     sideDirection = (direction + 1) & 3;
     gMapSelectionTiles[0].x = mapX;
     gMapSelectionTiles[0].y = mapY;
-    gMapSelectionTiles[1].x = mapX + TileDirectionDelta[sideDirection].x;
-    gMapSelectionTiles[1].y = mapY + TileDirectionDelta[sideDirection].y;
-    gMapSelectionTiles[2].x = mapX - TileDirectionDelta[sideDirection].x;
-    gMapSelectionTiles[2].y = mapY - TileDirectionDelta[sideDirection].y;
+    gMapSelectionTiles[1].x = mapX + CoordsDirectionDelta[sideDirection].x;
+    gMapSelectionTiles[1].y = mapY + CoordsDirectionDelta[sideDirection].y;
+    gMapSelectionTiles[2].x = mapX - CoordsDirectionDelta[sideDirection].x;
+    gMapSelectionTiles[2].y = mapY - CoordsDirectionDelta[sideDirection].y;
     gMapSelectionTiles[3].x = -1;
     gMapSelectionTiles[3].y = -1;
 
@@ -1287,7 +1289,7 @@ static void window_map_set_peep_spawn_tool_update(sint32 x, sint32 y)
         return;
 
     mapZ = tileElement->base_height * 8;
-    if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SURFACE) {
+    if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE) {
         if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
             mapZ += 16;
         if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
@@ -1556,16 +1558,17 @@ static constexpr const uint8 RideColourKey[] = {
 static uint16 map_window_get_pixel_colour_peep(CoordsXY c)
 {
     rct_tile_element * tileElement = map_get_surface_element_at(c);
-    uint16 colour = TerrainColour[tile_element_get_terrain(tileElement)];
-    if (map_get_water_height(tileElement) > 0)
+    uint16 colour = TerrainColour[surface_get_terrain(tileElement)];
+    if (surface_get_water_height(tileElement) > 0)
         colour = WaterColour;
 
     if (!(tileElement->properties.surface.ownership & OWNERSHIP_OWNED))
         colour = MAP_COLOUR_UNOWNED(colour);
 
     const sint32 maxSupportedTileElementType = (sint32)Util::CountOf(ElementTypeAddColour);
-    while (!tile_element_is_last_for_tile(tileElement++)) {
-        sint32 tileElementType = tile_element_get_type(tileElement) >> 2;
+    while (!(tileElement++)->IsLastForTile())
+    {
+        sint32 tileElementType = tileElement->GetType() >> 2;
         if (tileElementType >= maxSupportedTileElementType) {
             tileElementType = TILE_ELEMENT_TYPE_CORRUPT >> 2;
         }
@@ -1585,9 +1588,9 @@ static uint16 map_window_get_pixel_colour_ride(CoordsXY c)
     // as an improvement we could use first_element to show underground stuff?
     rct_tile_element * tileElement = map_get_surface_element_at(c);
     do {
-        switch (tile_element_get_type(tileElement)) {
+        switch (tileElement->GetType()) {
         case TILE_ELEMENT_TYPE_SURFACE:
-            if (map_get_water_height(tileElement) > 0)
+            if (surface_get_water_height(tileElement) > 0)
                 // Why is this a different water colour as above (195)?
                 colourB = MAP_COLOUR(PALETTE_INDEX_194);
             if (!(tileElement->properties.surface.ownership & OWNERSHIP_OWNED))
@@ -1605,7 +1608,7 @@ static uint16 map_window_get_pixel_colour_ride(CoordsXY c)
             colourA = RideKeyColours[RideColourKey[ride->type]];
             break;
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     if (colourA != 0)
         return colourA;

@@ -22,9 +22,11 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
+#include <openrct2/drawing/Drawing.h>
 
 #pragma region Widgets
 
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -129,6 +131,7 @@ static rct_window_event_list window_track_delete_prompt_events = {
     window_track_delete_prompt_paint,
     nullptr
 };
+// clang-format on
 
 #pragma endregion
 

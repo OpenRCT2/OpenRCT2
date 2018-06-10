@@ -16,6 +16,7 @@
 
 #include "../common.h"
 #include <cmath>
+#include <cstring>
 #include <vector>
 
 #include "../Context.h"
@@ -24,7 +25,7 @@
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "../Game.h"
-#include "../Imaging.h"
+#include "../core/Imaging.h"
 #include "../localisation/StringIds.h"
 #include "../object/Object.h"
 #include "../platform/platform.h"
@@ -34,6 +35,7 @@
 #include "MapGen.h"
 #include "Scenery.h"
 #include "SmallScenery.h"
+#include "Surface.h"
 
 #pragma region Height map struct
 
@@ -129,8 +131,8 @@ void mapgen_generate_blank(mapgen_settings * settings)
         for (x = 1; x < settings->mapSize - 1; x++)
         {
             tileElement = map_get_surface_element_at(x, y);
-            tile_element_set_terrain(tileElement, settings->floor);
-            tile_element_set_terrain_edge(tileElement, settings->wall);
+            surface_set_terrain(tileElement, settings->floor);
+            surface_set_terrain_edge(tileElement, settings->wall);
             tileElement->base_height      = settings->height;
             tileElement->clearance_height = settings->height;
         }
@@ -180,8 +182,8 @@ void mapgen_generate(mapgen_settings * settings)
         for (x = 1; x < mapSize - 1; x++)
         {
             tileElement = map_get_surface_element_at(x, y);
-            tile_element_set_terrain(tileElement, floorTexture);
-            tile_element_set_terrain_edge(tileElement, wallTexture);
+            surface_set_terrain(tileElement, floorTexture);
+            surface_set_terrain_edge(tileElement, wallTexture);
             tileElement->base_height      = settings->height;
             tileElement->clearance_height = settings->height;
         }
@@ -226,7 +228,7 @@ void mapgen_generate(mapgen_settings * settings)
             tileElement = map_get_surface_element_at(x, y);
 
             if (tileElement->base_height < waterLevel + 6)
-                tile_element_set_terrain(tileElement, beachTexture);
+                surface_set_terrain(tileElement, beachTexture);
         }
     }
 
@@ -322,7 +324,7 @@ static void mapgen_place_trees()
             rct_tile_element * tileElement = map_get_surface_element_at(x, y);
 
             // Exclude water tiles
-            if (map_get_water_height(tileElement) > 0)
+            if (surface_get_water_height(tileElement) > 0)
                 continue;
 
             pos.x = x;
@@ -354,7 +356,7 @@ static void mapgen_place_trees()
 
         sint32 type = -1;
         rct_tile_element * tileElement = map_get_surface_element_at(pos.x, pos.y);
-        switch (tile_element_get_terrain(tileElement))
+        switch (surface_get_terrain(tileElement))
         {
         case TERRAIN_GRASS:
         case TERRAIN_DIRT:
@@ -645,75 +647,67 @@ static void mapgen_simplex(mapgen_settings * settings)
 
 bool mapgen_load_heightmap(const utf8 * path)
 {
-    const char * extension = path_get_extension(path);
-    uint8      * pixels;
-    size_t pitch;
-    uint32 numChannels;
-    uint32 width, height;
-
-    if (String::Equals(extension, ".png", false))
+    auto format = Imaging::GetImageFormatFromPath(path);
+    if (format == IMAGE_FORMAT::PNG)
     {
-        sint32 bitDepth;
-        if (!image_io_png_read(&pixels, &width, &height, true, path, &bitDepth))
+        // Promote to 32-bit
+        format = IMAGE_FORMAT::PNG_32;
+    }
+
+    try
+    {
+        auto image = Imaging::ReadFromFile(path, format);
+        if (image.Width != image.Height)
         {
-            log_warning("Error reading PNG");
-            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG);
+            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_WIDTH_AND_HEIGHT_DO_NOT_MATCH);
             return false;
         }
 
-        numChannels = 4;
-        pitch       = width * numChannels;
-    }
-    else if (strcicmp(extension, ".bmp") == 0)
-    {
-        if (!context_read_bmp((void **) &pixels, &width, &height, path))
+        auto size = image.Width;
+        if (image.Width > MAXIMUM_MAP_SIZE_PRACTICAL)
         {
-            // ReadBMP contains context_show_error calls
-            return false;
+            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG);
+            size = std::min<uint32>(image.Height, MAXIMUM_MAP_SIZE_PRACTICAL);
         }
 
-        numChannels = 4;
-        pitch       = width * numChannels;
-    }
-    else
-    {
-        openrct2_assert(false, "A file with an invalid file extension was selected.");
-        return false;
-    }
+        // Allocate memory for the height map values, one byte pixel
+        delete[] _heightMapData.mono_bitmap;
+        _heightMapData.mono_bitmap = new uint8[size * size];
+        _heightMapData.width = size;
+        _heightMapData.height = size;
 
-    if (width != height)
-    {
-        context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_WIDTH_AND_HEIGHT_DO_NOT_MATCH);
-        free(pixels);
-        return false;
-    }
-
-    if (width > MAXIMUM_MAP_SIZE_PRACTICAL)
-    {
-        context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG);
-        width = height = Math::Min(height, (uint32)MAXIMUM_MAP_SIZE_PRACTICAL);
-    }
-
-    // Allocate memory for the height map values, one byte pixel
-    delete[] _heightMapData.mono_bitmap;
-    _heightMapData.mono_bitmap = new uint8[width * height];
-    _heightMapData.width       = width;
-    _heightMapData.height      = height;
-
-    // Copy average RGB value to mono bitmap
-    for (uint32 x = 0; x < _heightMapData.width; x++)
-    {
-        for (uint32 y = 0; y < _heightMapData.height; y++)
+        // Copy average RGB value to mono bitmap
+        constexpr auto numChannels = 4;
+        const auto pitch = image.Stride;
+        const auto pixels = image.Pixels.data();
+        for (uint32 x = 0; x < _heightMapData.width; x++)
         {
-            const uint8 red   = pixels[x * numChannels + y * pitch];
-            const uint8 green = pixels[x * numChannels + y * pitch + 1];
-            const uint8 blue  = pixels[x * numChannels + y * pitch + 2];
-            _heightMapData.mono_bitmap[x + y * _heightMapData.width] = (red + green + blue) / 3;
+            for (uint32 y = 0; y < _heightMapData.height; y++)
+            {
+                const auto red = pixels[x * numChannels + y * pitch];
+                const auto green = pixels[x * numChannels + y * pitch + 1];
+                const auto blue = pixels[x * numChannels + y * pitch + 2];
+                _heightMapData.mono_bitmap[x + y * _heightMapData.width] = (red + green + blue) / 3;
+            }
         }
+        return true;
     }
-
-    free(pixels);
-    return true;
+    catch (const std::exception& e)
+    {
+        switch (format)
+        {
+            case IMAGE_FORMAT::BITMAP:
+                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP);
+                break;
+            case IMAGE_FORMAT::PNG_32:
+                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG);
+                break;
+            default:
+                log_error("Unable to load height map image: %s", e.what());
+                break;
+        }
+        return false;
+    }
 }
 
 /**

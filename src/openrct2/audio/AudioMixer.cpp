@@ -28,13 +28,13 @@ using namespace OpenRCT2::Audio;
 
 static IAudioMixer * GetMixer()
 {
-    IAudioContext * audioContext = GetContext()->GetAudioContext();
+    auto audioContext = GetContext()->GetAudioContext();
     return audioContext->GetMixer();
 }
 
 void Mixer_Init(const char * device)
 {
-    IAudioContext * audioContext = GetContext()->GetAudioContext();
+    auto audioContext = GetContext()->GetAudioContext();
     if (device == nullptr)
     {
         device = "";
@@ -74,7 +74,11 @@ void * Mixer_Play_Effect(size_t id, sint32 loop, sint32 volume, float pan, doubl
 
 void Mixer_Stop_Channel(void * channel)
 {
-    GetMixer()->Stop(static_cast<IAudioChannel*>(channel));
+    auto mixer = GetMixer();
+    if (mixer != nullptr)
+    {
+        mixer->Stop(static_cast<IAudioChannel*>(channel));
+    }
 }
 
 void Mixer_Channel_Volume(void * channel, sint32 volume)
@@ -140,7 +144,7 @@ void * Mixer_Play_Music(sint32 pathId, sint32 loop, sint32 streaming)
         {
             const utf8 * path = context_get_path_legacy(pathId);
 
-            IAudioContext * audioContext = GetContext()->GetAudioContext();
+            auto audioContext = GetContext()->GetAudioContext();
             IAudioSource * source = audioContext->CreateStreamFromWAV(path);
             if (source != nullptr)
             {

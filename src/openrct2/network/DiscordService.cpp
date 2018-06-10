@@ -30,7 +30,7 @@ constexpr const char * APPLICATION_ID = "378612438200877056";
 constexpr const char * STEAM_APP_ID = nullptr;
 constexpr const uint32 REFRESH_INTERVAL = 5 * GAME_UPDATE_FPS; // 5 seconds
 
-static void OnReady()
+static void OnReady([[maybe_unused]] const DiscordUser* request)
 {
     log_verbose("DiscordService::OnReady()");
 }

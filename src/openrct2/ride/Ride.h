@@ -25,6 +25,8 @@
 #include "RideRatings.h"
 #include "Vehicle.h"
 
+interface IObjectManager;
+
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY   3
 // The max number of different types of vehicle.
 // Examples of vehicles here are the locomotive, tender and carriage of the Miniature Railway.
@@ -35,7 +37,7 @@
 #define MAX_CATEGORIES_PER_RIDE         2
 #define DOWNTIME_HISTORY_SIZE           8
 #define CUSTOMER_HISTORY_SIZE           10
-#define MAX_CARS_PER_TRAIN              32
+#define MAX_CARS_PER_TRAIN              255
 #define MAX_STATIONS                    4
 #define RIDE_MEASUREMENT_MAX_ITEMS      4800
 #define MAX_RIDES                       255
@@ -126,6 +128,7 @@ struct rct_ride_entry {
     uint8 shop_item;                                    // 0x1C0
     uint8 shop_item_secondary;                          // 0x1C1
     rct_string_id capacity;
+    void * obj;
 };
 
 #pragma pack(pop)
@@ -431,7 +434,7 @@ enum {
     RIDE_ENTRY_FLAG_COVERED_RIDE                    = 1 << 10,
     RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS             = 1 << 11,
     RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME_DEPRECATED   = 1 << 12, // Always set with SEPARATE_RIDE, and deprecated in favour of it.
-    RIDE_ENTRY_FLAG_SEPARATE_RIDE                   = 1 << 13,
+    RIDE_ENTRY_FLAG_SEPARATE_RIDE_DEPRECATED        = 1 << 13, // Made redundant by ride groups
     RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN               = 1 << 14,
     RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE          = 1 << 15,
     RIDE_ENTRY_FLAG_16                              = 1 << 16,
@@ -751,7 +754,8 @@ enum {
     RIDE_ELEMENT_WHIRLPOOL               = 1 << 7
 };
 
-enum ride_type_flags {
+enum ride_type_flags : uint32
+{
     RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN = 1 << 0,
     RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL = 1 << 1,
     RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS = 1 << 2,
@@ -813,62 +817,6 @@ enum {
 };
 
 enum {
-    SHOP_ITEM_BALLOON,
-    SHOP_ITEM_TOY,
-    SHOP_ITEM_MAP,
-    SHOP_ITEM_PHOTO,
-    SHOP_ITEM_UMBRELLA,
-    SHOP_ITEM_DRINK,
-    SHOP_ITEM_BURGER,
-    SHOP_ITEM_CHIPS,
-    SHOP_ITEM_ICE_CREAM,
-    SHOP_ITEM_CANDYFLOSS,
-    SHOP_ITEM_EMPTY_CAN,
-    SHOP_ITEM_RUBBISH,
-    SHOP_ITEM_EMPTY_BURGER_BOX,
-    SHOP_ITEM_PIZZA,
-    SHOP_ITEM_VOUCHER,
-    SHOP_ITEM_POPCORN,
-    SHOP_ITEM_HOT_DOG,
-    SHOP_ITEM_TENTACLE,
-    SHOP_ITEM_HAT,
-    SHOP_ITEM_TOFFEE_APPLE,
-    SHOP_ITEM_TSHIRT,
-    SHOP_ITEM_DOUGHNUT,
-    SHOP_ITEM_COFFEE,
-    SHOP_ITEM_EMPTY_CUP,
-    SHOP_ITEM_CHICKEN,
-    SHOP_ITEM_LEMONADE,
-    SHOP_ITEM_EMPTY_BOX,
-    SHOP_ITEM_EMPTY_BOTTLE = 27,
-    SHOP_ITEM_ADMISSION = 31,
-    SHOP_ITEM_PHOTO2 = 32,
-    SHOP_ITEM_PHOTO3,
-    SHOP_ITEM_PHOTO4,
-    SHOP_ITEM_PRETZEL,
-    SHOP_ITEM_CHOCOLATE,
-    SHOP_ITEM_ICED_TEA,
-    SHOP_ITEM_FUNNEL_CAKE,
-    SHOP_ITEM_SUNGLASSES,
-    SHOP_ITEM_BEEF_NOODLES,
-    SHOP_ITEM_FRIED_RICE_NOODLES,
-    SHOP_ITEM_WONTON_SOUP,
-    SHOP_ITEM_MEATBALL_SOUP,
-    SHOP_ITEM_FRUIT_JUICE,
-    SHOP_ITEM_SOYBEAN_MILK,
-    SHOP_ITEM_SU_JONGKWA,
-    SHOP_ITEM_SUB_SANDWICH,
-    SHOP_ITEM_COOKIE,
-    SHOP_ITEM_EMPTY_BOWL_RED,
-    SHOP_ITEM_EMPTY_DRINK_CARTON,
-    SHOP_ITEM_EMPTY_JUICE_CUP,
-    SHOP_ITEM_ROAST_SAUSAGE,
-    SHOP_ITEM_EMPTY_BOWL_BLUE,
-    SHOP_ITEM_COUNT = 56,
-    SHOP_ITEM_NONE = 255
-};
-
-enum {
     RIDE_SETTING_MODE,
     RIDE_SETTING_DEPARTURE,
     RIDE_SETTING_MIN_WAITING_TIME,
@@ -894,6 +842,11 @@ enum {
     TRACK_SELECTION_FLAG_TRACK            = 1 << 1,
     TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT = 1 << 2,
     TRACK_SELECTION_FLAG_RECHECK          = 1 << 3,
+};
+
+enum {
+    RIDE_MODIFY_DEMOLISH,
+    RIDE_MODIFY_RENEW
 };
 
 struct rct_ride_properties {
@@ -939,8 +892,6 @@ rct_ride_measurement * get_ride_measurement(sint32 index);
         if ((ride = get_ride(i))->type != RIDE_TYPE_NULL)
 
 extern money16 gTotalRideValueForMoney;
-extern uint32 gSamePriceThroughoutParkA;
-extern uint32 gSamePriceThroughoutParkB;
 
 extern const uint8 gRideClassifications[MAX_RIDES];
 
@@ -1015,10 +966,6 @@ void ride_update_all();
 void ride_check_all_reachable();
 void ride_update_satisfaction(Ride* ride, uint8 happiness);
 void ride_update_popularity(Ride* ride, uint8 pop_amount);
-money32 get_shop_item_cost(sint32 shopItem);
-money16 get_shop_base_value(sint32 shopItem);
-money16 get_shop_hot_value(sint32 shopItem);
-money16 get_shop_cold_value(sint32 shopItem);
 bool ride_try_get_origin_element(sint32 rideIndex, CoordsXYE *output);
 sint32 ride_find_track_gap(CoordsXYE *input, CoordsXYE *output);
 void ride_construct_new(ride_list_item listItem);
@@ -1032,11 +979,11 @@ sint32 ride_get_total_time(Ride *ride);
 sint32 ride_can_have_multiple_circuits(Ride *ride);
 track_colour ride_get_track_colour(Ride *ride, sint32 colourScheme);
 vehicle_colour ride_get_vehicle_colour(Ride *ride, sint32 vehicleIndex);
-sint32 ride_get_unused_preset_vehicle_colour(uint8 ride_type, uint8 ride_sub_type);
+sint32 ride_get_unused_preset_vehicle_colour(uint8 ride_sub_type);
 void ride_set_vehicle_colours_to_random_preset(Ride *ride, uint8 preset_index);
 rct_ride_entry *get_ride_entry_by_ride(Ride *ride);
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
-void reset_type_to_ride_entry_index_map();
+void reset_type_to_ride_entry_index_map(IObjectManager& objectManager);
 void ride_measurement_clear(Ride *ride);
 void ride_measurements_update();
 rct_ride_measurement *ride_get_measurement(sint32 rideIndex, rct_string_id *message);
@@ -1052,7 +999,7 @@ sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, u
 void ride_music_update_final();
 void ride_prepare_breakdown(sint32 rideIndex, sint32 breakdownReason);
 rct_tile_element *ride_get_station_start_track_element(Ride *ride, sint32 stationIndex);
-rct_tile_element *ride_get_station_exit_element(Ride *ride, sint32 x, sint32 y, sint32 z);
+rct_tile_element *ride_get_station_exit_element(sint32 x, sint32 y, sint32 z);
 void ride_set_status(sint32 rideIndex, sint32 status);
 void game_command_set_ride_status(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void ride_set_name(sint32 rideIndex, const char *name);
@@ -1062,9 +1009,6 @@ sint32 ride_get_refund_price(sint32 ride_id);
 sint32 ride_get_random_colour_preset_index(uint8 ride_type);
 void ride_set_colour_preset(Ride *ride, uint8 index);
 money32 ride_get_common_price(Ride *forRide);
-money32 shop_item_get_common_price(Ride *forRide, sint32 shopItem);
-bool shop_item_is_photo(sint32 shopItem);
-bool shop_item_has_common_price(sint32 shopItem);
 rct_ride_name get_ride_naming(const uint8 rideType, rct_ride_entry * rideEntry);
 void game_command_create_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void game_command_callback_ride_construct_new(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
@@ -1115,10 +1059,12 @@ void ride_all_has_any_track_elements(bool *rideIndexArray);
 void ride_construction_set_default_next_piece();
 
 bool track_block_get_next(CoordsXYE *input, CoordsXYE *output, sint32 *z, sint32 *direction);
-bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 rideIndex, uint8 direction_start, CoordsXYE *output, sint32 *z, sint32 *direction);
+bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 rideIndex, uint8 direction_start, CoordsXYE *output, sint32 *z, sint32 *direction, bool isGhost);
 
 bool track_block_get_previous(sint32 x, sint32 y, rct_tile_element *tileElement, track_begin_end *outTrackBeginEnd);
 bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8 direction, track_begin_end *outTrackBeginEnd);
+
+void ride_get_start_of_track(CoordsXYE * output);
 
 void window_ride_construction_update_active_elements();
 void ride_construction_remove_ghosts();
@@ -1153,10 +1099,6 @@ void ride_crash(uint8 rideIndex, uint8 vehicleIndex);
 
 void sub_6C94D8();
 
-bool shop_item_is_food_or_drink(sint32 shopItem);
-bool shop_item_is_food(sint32 shopItem);
-bool shop_item_is_drink(sint32 shopItem);
-bool shop_item_is_souvenir(sint32 shopItem);
 void ride_reset_all_names();
 const uint8* ride_seek_available_modes(Ride *ride);
 
@@ -1189,7 +1131,7 @@ bool ride_entry_has_category(const rct_ride_entry * rideEntry, uint8 category);
 
 sint32 ride_get_entry_index(sint32 rideType, sint32 rideSubType);
 
-void ride_demolish(sint32 rideIndex, sint32 flags);
+void ride_action_modify(sint32 rideIndex, sint32 modifyType, sint32 flags);
 void ride_stop_peeps_queuing(sint32 rideIndex);
 
 LocationXY16 ride_get_rotated_coords(sint16 x, sint16 y, sint16 z);

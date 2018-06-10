@@ -17,6 +17,17 @@
 #ifndef _VIRTUAL_FLOOR_H
 #define _VIRTUAL_FLOOR_H
 
+#include "../common.h"
+
+enum VirtualFloorStyles
+{
+	VIRTUAL_FLOOR_STYLE_OFF,
+	VIRTUAL_FLOOR_STYLE_CLEAR,
+	VIRTUAL_FLOOR_STYLE_GLASSY
+};
+
+struct paint_session;
+
 uint16 virtual_floor_get_height();
 
 bool virtual_floor_is_enabled();

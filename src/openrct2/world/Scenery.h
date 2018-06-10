@@ -17,9 +17,11 @@
 #ifndef _SCENERY_H_
 #define _SCENERY_H_
 
+#include <limits>
 #include "../common.h"
 #include "../object/Object.h"
-#include "Map.h"
+#include "../world/Location.hpp"
+#include "TileElement.h"
 
 #define SCENERY_SMALL_SCENERY_ID_MIN    0x0
 #define SCENERY_SMALL_SCENERY_ID_MAX    0xFC
@@ -56,15 +58,22 @@ struct rct_large_scenery_tile {
     sint16 y_offset;
     sint16 z_offset;
     uint8 z_clearance;
-    uint16 var_7;
+    // CCCC WWWW 0SS0 0000
+    uint16 flags;
 };
 assert_struct_size(rct_large_scenery_tile, 9);
+
+enum
+{
+    LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS             = 0x20,
+    LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE    = 0x40,
+};
 
 struct rct_large_scenery_text_glyph {
     uint8 image_offset;
     uint8 width;
     uint8 height;
-    uint8 var_3;
+    uint8 pad_3;
 };
 assert_struct_size(rct_large_scenery_text_glyph, 4);
 
@@ -73,7 +82,7 @@ struct rct_large_scenery_text {
     uint16 max_width;       // 0x8
     uint16 pad_A;           // 0xA
     uint8 flags;            // 0xC
-    uint8 var_D;            // 0xD
+    uint8 num_images;       // 0xD
     rct_large_scenery_text_glyph glyphs[256]; // 0xE
 };
 assert_struct_size(rct_large_scenery_text, 14 + 4 * 256);
@@ -231,6 +240,7 @@ enum
 };
 
 #define SCENERY_ENTRIES_BY_TAB 1024
+constexpr auto WINDOW_SCENERY_TAB_SELECTION_UNDEFINED = std::numeric_limits<uint16>::max();
 
 extern uint8 gWindowSceneryActiveTabIndex;
 extern uint16 gWindowSceneryTabSelections[20];

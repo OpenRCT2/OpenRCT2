@@ -1220,8 +1220,8 @@ STR_1214    :{SMALLFONT}{BLACK}Välj högsta väntetid innan avgång
 STR_1215    :{WINDOW_COLOUR_2}Synkronisera med närliggande stationer
 STR_1216    :{SMALLFONT}{BLACK}Välj om avgången ska synkroniseras med alla närliggande stationer (för 'rally')
 STR_1217    :{COMMA16} sekunder
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Endast utgång
 STR_1221    :Ingen ingång
 STR_1222    :Ingen utgång
@@ -1779,8 +1779,8 @@ STR_1773    :Bara en fotosektion tillåten per åktur
 STR_1774    :Bara en uppskjutskulle tillåten per åktur
 STR_1775    :Av
 STR_1776    :På
-STR_1777    :{WINDOW_COLOUR_2}Åkturs-musik
-STR_1778    :{STRINGID} - - 
+STR_1777    :<removed string - do not use>
+STR_1778    :<removed string - do not use>
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandadräkt
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigerdräkt
 STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elefantdräkt
@@ -4510,12 +4510,18 @@ STR_6201    :{MONTH}
 STR_6202    :Aktivera virtuella golv
 STR_6203    :{SMALLFONT}{BLACK}När aktiverad, kommer ett rutnät att ritas i samma höjd som elementen är på när du håller in Ctrl eller Shift vilket förenklar vertikala placeringar.
 
-
 STR_6215    :Konstruktion
 STR_6216    :Manövrering
 STR_6217    :Åktur-/spårtillgänglighet
 STR_6218    :Officiella OpenRCT2
 STR_6219    :Visa problem på gångvägar
+
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+
+
+
 
 #############
 # Scenarion #
@@ -4958,26 +4964,6 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
-
-#####################
-# Rides/attractions #
-#####################
-
-#WW
-[CONDORRD]
-STR_NAME    :Kondorhjulet
-STR_DESC    :Åkandes i speciella byglar under spåret känner passagerarna känslan av flygning när de sveper genom luften i kondorformade vagnar
-STR_CPTY    :4 passagerare per vagn
-
-##############
-# RCT Object #
-##############
-
-[SCGWWEST]
-STR_NAME    :Vilda västern-tema
-
-[SCGGIANT]
-STR_NAME    :Jätte trädgårds-tema
 
 #Maintainer: Nubbie
 #Everyone is allowed to edit this document

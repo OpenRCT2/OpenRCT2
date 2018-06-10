@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 #include <openrct2/common.h>
 
@@ -29,6 +30,7 @@ namespace OpenRCT2
     namespace Ui
     {
         struct      FileDialogDesc;
+        class       InGameConsole;
         interface   IUiContext;
 
         interface IPlatformUiContext
@@ -42,7 +44,9 @@ namespace OpenRCT2
             virtual std::string ShowDirectoryDialog(SDL_Window * window, const std::string &title) abstract;
         };
 
-        IUiContext * CreateUiContext(IPlatformEnvironment * env);
+        std::unique_ptr<IUiContext> CreateUiContext(const std::shared_ptr<IPlatformEnvironment>& env);
         IPlatformUiContext * CreatePlatformUiContext();
-    }
-}
+
+        InGameConsole& GetInGameConsole();
+    } // namespace Ui
+} // namespace OpenRCT2

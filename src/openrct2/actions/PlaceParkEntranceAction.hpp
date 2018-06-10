@@ -22,9 +22,12 @@
 #include "GameAction.h"
 
 #include "../Cheats.h"
+#include "../management/Finance.h"
 #include "../world/Entrance.h"
 #include "../world/Park.h"
 #include "../world/Footpath.h"
+#include "../world/MapAnimation.h"
+#include "../world/Sprite.h"
 
 struct PlaceParkEntranceAction : public GameActionBase<GAME_COMMAND_PLACE_PARK_ENTRANCE, GameActionResult>
 {
@@ -101,13 +104,13 @@ public:
         {
             if (index == 1)
             {
-                entranceLoc.x += TileDirectionDelta[(_direction - 1) & 0x3].x;
-                entranceLoc.y += TileDirectionDelta[(_direction - 1) & 0x3].y;
+                entranceLoc.x += CoordsDirectionDelta[(_direction - 1) & 0x3].x;
+                entranceLoc.y += CoordsDirectionDelta[(_direction - 1) & 0x3].y;
             }
             else if (index == 2)
             {
-                entranceLoc.x += TileDirectionDelta[(_direction + 1) & 0x3].x * 2;
-                entranceLoc.y += TileDirectionDelta[(_direction + 1) & 0x3].y * 2;
+                entranceLoc.x += CoordsDirectionDelta[(_direction + 1) & 0x3].x * 2;
+                entranceLoc.y += CoordsDirectionDelta[(_direction + 1) & 0x3].y * 2;
             }
 
             if (!gCheatsDisableClearanceChecks)
@@ -163,13 +166,13 @@ public:
         {
             if (index == 1)
             {
-                entranceLoc.x += TileDirectionDelta[(_direction - 1) & 0x3].x;
-                entranceLoc.y += TileDirectionDelta[(_direction - 1) & 0x3].y;
+                entranceLoc.x += CoordsDirectionDelta[(_direction - 1) & 0x3].x;
+                entranceLoc.y += CoordsDirectionDelta[(_direction - 1) & 0x3].y;
             }
             else if (index == 2)
             {
-                entranceLoc.x += TileDirectionDelta[(_direction + 1) & 0x3].x * 2;
-                entranceLoc.y += TileDirectionDelta[(_direction + 1) & 0x3].y * 2;
+                entranceLoc.x += CoordsDirectionDelta[(_direction + 1) & 0x3].x * 2;
+                entranceLoc.y += CoordsDirectionDelta[(_direction + 1) & 0x3].y * 2;
             }
 
             if (!(flags & GAME_COMMAND_FLAG_GHOST))
@@ -187,8 +190,8 @@ public:
                 newElement->flags |= TILE_ELEMENT_FLAG_GHOST;
             }
 
-            newElement->type = TILE_ELEMENT_TYPE_ENTRANCE;
-            newElement->type |= _direction;
+            newElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
+            newElement->SetDirection(_direction);
             newElement->properties.entrance.index = index;
             newElement->properties.entrance.type = ENTRANCE_TYPE_PARK_ENTRANCE;
             newElement->properties.entrance.path_type = gFootpathSelectedId;
@@ -198,11 +201,11 @@ public:
                 footpath_connect_edges(entranceLoc.x, entranceLoc.y, newElement, 1);
             }
 
-            update_park_fences(entranceLoc.x, entranceLoc.y);
-            update_park_fences(entranceLoc.x - 32, entranceLoc.y);
-            update_park_fences(entranceLoc.x + 32, entranceLoc.y);
-            update_park_fences(entranceLoc.x, entranceLoc.y - 32);
-            update_park_fences(entranceLoc.x, entranceLoc.y + 32);
+            update_park_fences(entranceLoc);
+            update_park_fences({entranceLoc.x - 32, entranceLoc.y});
+            update_park_fences({entranceLoc.x + 32, entranceLoc.y});
+            update_park_fences({entranceLoc.x, entranceLoc.y - 32});
+            update_park_fences({entranceLoc.x, entranceLoc.y + 32});
 
             map_invalidate_tile(entranceLoc.x, entranceLoc.y, newElement->base_height * 8, newElement->clearance_height * 8);
 

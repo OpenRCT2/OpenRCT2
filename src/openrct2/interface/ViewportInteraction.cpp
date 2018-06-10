@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../Cheats.h"
 #include "../core/Math.hpp"
 #include "../Editor.h"
 #include "../Game.h"
@@ -31,10 +30,14 @@
 #include "../world/Map.h"
 #include "../world/Scenery.h"
 #include "../world/LargeScenery.h"
+#include "../world/Park.h"
 #include "../world/Sprite.h"
+#include "../world/Surface.h"
+#include "../world/Wall.h"
 #include "Viewport.h"
 #include "Window_internal.h"
 #include "../Context.h"
+#include "../actions/WallRemoveAction.hpp"
 
 static void viewport_interaction_remove_scenery(rct_tile_element *tileElement, sint32 x, sint32 y);
 static void viewport_interaction_remove_footpath(rct_tile_element *tileElement, sint32 x, sint32 y);
@@ -61,7 +64,7 @@ sint32 viewport_interaction_get_item_left(sint32 x, sint32 y, viewport_interacti
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-    LocationXY16 mapCoord = { 0 };
+    LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord.x, &mapCoord.y, &info->type, &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
@@ -194,7 +197,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-    LocationXY16 mapCoord = { 0 };
+    LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(x, y, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord.x, &mapCoord.y, &info->type, &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
@@ -217,7 +220,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
     case VIEWPORT_INTERACTION_ITEM_RIDE:
         if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
             return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
             return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
         ride = get_ride(tile_element_get_ride_index(tileElement));
@@ -226,7 +229,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
 
         set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
 
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE) {
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE) {
             rct_string_id stringId;
             if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
                 if (ride->num_stations > 1) {
@@ -334,7 +337,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             break;
 
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             break;
 
         set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
@@ -449,12 +452,12 @@ static void viewport_interaction_remove_footpath(rct_tile_element *tileElement, 
 
     tileElement2 = map_get_first_element_at(x / 32, y / 32);
     do {
-        if (tile_element_get_type(tileElement2) == TILE_ELEMENT_TYPE_PATH && tileElement2->base_height == z) {
+        if (tileElement2->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement2->base_height == z) {
             gGameCommandErrorTitle = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
             footpath_remove(x, y, z, GAME_COMMAND_FLAG_APPLY);
             break;
         }
-    } while (!tile_element_is_last_for_tile(tileElement2++));
+    } while (!(tileElement2++)->IsLastForTile());
 }
 
 /**
@@ -490,12 +493,12 @@ void viewport_interaction_remove_park_entrance(rct_tile_element *tileElement, si
     sint32 rotation = tile_element_get_direction_with_offset(tileElement, 1);
     switch (tileElement->properties.entrance.index & 0x0F) {
     case 1:
-        x += TileDirectionDelta[rotation].x;
-        y += TileDirectionDelta[rotation].y;
+        x += CoordsDirectionDelta[rotation].x;
+        y += CoordsDirectionDelta[rotation].y;
         break;
     case 2:
-        x -= TileDirectionDelta[rotation].x;
-        y -= TileDirectionDelta[rotation].y;
+        x -= CoordsDirectionDelta[rotation].x;
+        y -= CoordsDirectionDelta[rotation].y;
         break;
     }
     gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
@@ -509,19 +512,15 @@ void viewport_interaction_remove_park_entrance(rct_tile_element *tileElement, si
 static void viewport_interaction_remove_park_wall(rct_tile_element *tileElement, sint32 x, sint32 y)
 {
     rct_scenery_entry *sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
-    if (sceneryEntry->wall.scrolling_mode != 0xFF){
+    if (sceneryEntry->wall.scrolling_mode != 0xFF)
+    {
         context_open_detail_window(WD_SIGN_SMALL, tileElement->properties.wall.banner_index);
-    } else {
-        gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-        game_do_command(
-            x,
-            GAME_COMMAND_FLAG_APPLY,
-            y,
-            tile_element_get_direction(tileElement) | (tileElement->base_height << 8),
-            GAME_COMMAND_REMOVE_WALL,
-            0,
-            0
-        );
+    }
+    else
+    {
+        TileCoordsXYZD wallLocation = { x >> 5, y >> 5, tileElement->base_height, tileElement->GetDirection() };
+        auto wallRemoveAction = WallRemoveAction(wallLocation);
+        GameActions::Execute(&wallRemoveAction);
     }
 }
 
@@ -610,7 +609,7 @@ void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *di
 
     sint16 originalZ = 0;
     if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER) {
-        originalZ = map_get_water_height(myTileElement) << 4;
+        originalZ = surface_get_water_height(myTileElement) << 4;
     }
 
     LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);

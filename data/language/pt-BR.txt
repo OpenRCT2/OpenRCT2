@@ -1220,8 +1220,8 @@ STR_1214    :{SMALLFONT}{BLACK}Selecione o tempo máximo de espera antes de sair
 STR_1215    :{WINDOW_COLOUR_2}Sincronizar com estações adjacentes
 STR_1216    :{SMALLFONT}{BLACK}Selecione para sincronizar saída com todas estações adjacentes (para corrida)
 STR_1217    :{COMMA16} segundos
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Somente Saída
 STR_1221    :Sem entrada
 STR_1222    :Sem saída
@@ -2907,7 +2907,7 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) direitos autorai
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) direitos autorais {COPYRIGHT} Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) direitos autorais {COPYRIGHT} Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) direitos autorais {COPYRIGHT} Chris Sawyer
-STR_2900    :{WINDOW_COLOUR_2}
+STR_2900    :<removed string - do not use>
 STR_2901    :{WINDOW_COLOUR_2}(Amostras Grátis de Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
 STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) direitos autorais {COPYRIGHT} Chris Sawyer
@@ -3572,8 +3572,8 @@ STR_5232    :{SMALLFONT}{BLACK}Editores
 STR_5233    :{SMALLFONT}{BLACK}Variados
 STR_5234    :{SMALLFONT}{BLACK}Pop-ups
 STR_5235    :{SMALLFONT}{BLACK}Configurações
-STR_5236    :Janela:
-STR_5237    :Paleta:
+STR_5236    :Janela
+STR_5237    :Paleta
 STR_5238    :Tema Atual:
 STR_5239    :Duplicar
 STR_5240    :Insira um nome para o tema
@@ -3832,8 +3832,8 @@ STR_5492    :Opções de cenário
 STR_5493    :Enviar Mensagem
 STR_5494    :<removed string - do not use>
 STR_5495    :Lista de Jogadores
-STR_5496    :Jogador:
-STR_5497    :Ping:
+STR_5496    :Jogador
+STR_5497    :Ping
 STR_5498    :Lista de Servidores
 STR_5499    :Nome do Jogador:
 STR_5500    :Adicionar Servidor
@@ -3978,7 +3978,7 @@ STR_5638    :Permissão negada
 STR_5639    :{SMALLFONT}{BLACK}Mostrar lista de jogadores
 STR_5640    :{SMALLFONT}{BLACK}Gerenciar grupos
 STR_5641    :Grupo Padrão:
-STR_5642    :Grupo:
+STR_5642    :Grupo
 STR_5643    :Adicionar Grupo
 STR_5644    :Remover Grupo
 STR_5645    :Bate-Papo
@@ -4006,7 +4006,7 @@ STR_5666    :Login sem senha
 STR_5701    :{WINDOW_COLOUR_2}Última ação: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Localizar ação mais recente do jogador
 STR_5703    :Não é possível expulsar o anfitrião
-STR_5704    :Última Ação:
+STR_5704    :Última Ação
 STR_5705    :Impossível definir para este grupo
 STR_5706    :Impossível remover grupo que os jogadores pertencem
 STR_5707    :Este grupo não pode ser modificado
@@ -4460,7 +4460,7 @@ STR_6150    :Resposta inválida do servidor principal (sem número JSON)
 STR_6151    :Servidor principal falhou ao retornar servidores
 STR_6152    :Resposta inválida do servidor principal (sem matriz JSON)
 STR_6153    :Entrada paga / Brinquedos pagos
-STR_6154    :Não é recomendado rodar o OpenRCT2 com permissões elevadas.
+STR_6154    :Por motivos de segurança, não é recomendado rodar o OpenRCT2 com permissões elevadas.
 STR_6155    :Nem KDialog ou Zenity estão instalados. Por favor instale um, ou configure pela linha de comando.
 STR_6156    :Nome está reservado
 STR_6157    :Console
@@ -4476,7 +4476,7 @@ STR_6166    :{SMALLFONT}{BLACK}Sincroniza cada quadro mostrado com a taxa de atu
 STR_6167    :{SMALLFONT}{BLACK}Avançado
 STR_6168    :Sequência de Título
 STR_6169    :Seleção de Cenários
-STR_6170    :Melhoras
+STR_6170    :Melhoras de Interface
 STR_6171    :Procurar
 STR_6172    :{SMALLFONT}{BLACK}Procura
 STR_6173    :Por favor forneça um nome para pesquisar:
@@ -4531,6 +4531,20 @@ STR_6221    :{SMALLFONT}{BLACK}Isto irá definir a localização da entrada ou s
 STR_6222    :Impossível colocar gerador de visitantes aqui...
 STR_6223    :Deve ficar fora das barreiras do parque!
 STR_6224    :{STRING} colocou um gerador de visitantes.
+STR_6225    :Não suportado com renderizador OpenGL
+STR_6226    :Habilitar conclusão antecipada de cenário
+STR_6227    :{SMALLFONT}{BLACK}Ativa a conclusão do cenário quando todos os objetivos são alcançados antes da data prevista.
+STR_6228    :Opções de Cenário
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :Congelado
+STR_6233    :Vista em corte
+STR_6234    :Destacar problemas nos caminhos
+STR_6235    :Informação do Servidor
+STR_6236    :Jogadores
+STR_6237    :Grupos
+STR_6238    :Opções de Multiplayer
 
 #############
 # Scenarios #
@@ -4973,403 +4987,6 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
-
-#####################
-# Rides/attractions # 
-#####################
-
-#RCT2
-[TOPSP1]
-STR_NAME    :Top Spin
-STR_DESC    :Passageiros brincam numa gôndola suspensa por grandes braços rotatórios, rodando de pernas para o ar para frente e para trás 
-STR_CPTY    :8 passageiros
-
-[BMSD]
-STR_NAME    :Trens Tornado
-STR_DESC    :Um trem espaçoso com travas de ombro
-
-[BMSU]
-STR_NAME    :Trens Tornado em Pé
-STR_DESC    :Um trem com travas de ombro, onde passageiros passeiam em pé
-
-[BMFL]
-STR_NAME    :Trens Tornado sem chão
-STR_DESC    :Um trem espaçoso com travas de ombro e sem chão, deixando o passeio mais emocionante
-
-[WMMINE]
-STR_NAME    :Carros de Mina
-STR_DESC    :Carros moldados como um carro antigo de mina
-
-[WMOUSE]
-STR_NAME    :Carros de Rato
-STR_DESC    :Carros individuais moldados como um rato
-
-[STEEP1]
-STR_NAME    :Cavalos
-STR_DESC    :Carros únicos moldados como um cavalo
-
-[STEEP2]
-STR_NAME    :Motos
-STR_DESC    :Carros únicos moldados como motos
-
-[SBOX]
-STR_NAME    :Caixas de Sabão
-STR_DESC    :Carros únicos moldados como caixas de sabão
-
-[BOB1]
-STR_NAME    :Trens Bobsleigh
-STR_DESC    :Um trem com carros de 2 assentos onde os passageiros sentam um atrás do outro
-
-[INTBOB]
-STR_NAME    :Trens Bobsleigh (6 assentos)
-STR_DESC    :Bobsleighs com assentos de 3 fileiras, com espaço para duas pessoas em cada
-
-[LIFT1]
-STR_NAME    :Cabine do Elevador
-STR_DESC    :Cabine de aço do elevador
-
-[ARRT1]
-STR_NAME    :Trens Montanha-Russa Saca Rolhas
-STR_DESC    :Trens de montanha-russa com travas de ombro
-
-[ARRT2]
-STR_NAME    :Trens Hiper-montanha
-STR_DESC    :Trens confortáveis apenas com travas de colo
-
-[MONBK]
-STR_NAME    :Bicicletas
-
-[OBS1]
-STR_NAME    :Cabine Plataforma única
-
-[OBS2]
-STR_NAME    :Cabine Plataforma dupla
-
-[GTC]
-STR_NAME    :Carros Trem Fantasma
-
-[HMCAR]
-STR_NAME    :Carros Mansão Assombrada
-
-[VREEL]
-STR_NAME    :Toneis Virginia Reel
-
-[WMSPIN]
-STR_NAME    :Carros Rato Giratório
-
-[AMT1]
-STR_NAME    :Trens de Mina
-
-[SLCT]
-STR_NAME    :Trens Montanha Invertida Compacta
-
-[SLCFO]
-STR_NAME    :Carros Face-off
-
-[VEKDV]
-STR_NAME    :Carros Vai-e-vem Vertical
-
-[THCAR]
-STR_NAME    :Trens Montanha Vertical de Propulsão Hidráulica
-
-[SSC1]
-STR_NAME    :Carro Queda Livre Lançada
-
-[DING1]
-STR_NAME    :Dinghies
-
-[LFB1]
-STR_NAME    :Troncos
-
-[RFTBOAT]
-STR_NAME    :Jangadas
-
-[IVMC1]
-STR_NAME    :Carros com 4 assentos
-
-[SPDRCR]
-STR_NAME    :Trens Montanha-Russa Espiral
-
-[TOGST]
-STR_NAME    :Trens Montanha-Russa em Pé
-
-[PREMT1]
-STR_NAME    :Trens Montanh-Russa de Indução Linear
-
-[PMT1]
-STR_NAME    :Trens de Mina Motorizados
-
-[BMAIR]
-STR_NAME    :Trens Montanha-Russa Voadora
-
-[INTINV]
-STR_NAME    :Trens Impulso
-
-[INTST]
-STR_NAME    :Trens Giga-Montanha
-
-[NEMT]
-STR_NAME    :Trens Montanha-Russa Invertida (4 assentos)
-
-[VEKST]
-STR_NAME    :Trens Montanha-Russa Deitada
-
-[REVCAR]
-STR_NAME    :Carros Reversos
-STR_DESC    :Carros Truque capaz de virar em torno de si em seções de reversão especiais
-
-[SKYTR]
-STR_NAME    :Carros Deitados
-
-[BMVD]
-STR_NAME    :Trens Tornado (6 assentos)
-
-[SUBMAR]
-STR_NAME    :Submarinos
-
-#WW
-[CONDORRD]
-STR_NAME    :Condor
-STR_DESC    :Montando em travas especiais sob a pista, os passageiros experimentarão a sensação de voar pelo ar em uma estrutura na forma de Condor
-STR_CPTY    :4 passageiros por carro
-
-#WW
-[CONGAEEL]
-STR_NAME    :Montanha-Russa Enguia Conger
-STR_DESC    :Uma montanha russa de aço compacta onde trens com formato de enguia viajam por parafusos e loops
-STR_CPTY    :4 passageiros por carro
-
-#WW
-[MINELIFT]
-STR_NAME    :Cabine de Elevador de Mina
-STR_DESC    :Uma cabine de aço de elevator comumente usado em minas
-
-#WW
-[ANACONDA]
-STR_NAME    :Trens Anaconda
-
-#WW
-[CROCFLUM]
-STR_NAME    :Barcos Crocodilo
-
-#WW
-[WHICGRUB]
-STR_NAME    :Trens Larvas Comestíveis
-
-#WW
-[GRATWHTE]
-STR_NAME    :Trens Grande Tubarão Branco
-STR_DESC    :Trens com travas de ombro, moldados como um Grande Tubarão Branco
-
-#WW
-[BOMERANG]
-STR_NAME    :Trens Bumerangue
-
-#WW
-[KOLARIDE]
-STR_NAME    :Carro Coala
-
-#WW
-[MANTARAY]
-STR_NAME    :Barcos Arraia Manta
-STR_DESC    :Barcos de montanha-russa em formato de uma Arraia Manta
-
-#WW
-[TUTLBOAT]
-STR_NAME    :Barcos Tartaruga
-
-#WW, for the Wooden RC
-[MINECART]
-STR_NAME    :Trens Carro de Mina
-
-#WW
-[LIONRIDE]
-STR_NAME    :Carros Leão
-
-#WW
-[RHINORID]
-STR_NAME    :Trens Rinocerontes
-
-#WW
-[OSTRICH]
-STR_NAME    :Trens Avestruz
-
-#WW
-[GORILLA]
-STR_NAME    :Trens Gorila
-
-#WW
-[FOOTBALL]
-STR_NAME    :Trens Bola de Futebol
-
-#WW
-[TIGRTWST]
-STR_NAME    :Carros Tigre-de-Bengala
-
-#WW
-[TAXICSTR]
-STR_NAME    :Trens Taxi Amarelo
-
-#WW
-[OUTRIGGR]
-STR_NAME    :Canoas Polinésia
-
-#WW
-[SANFTRAM]
-STR_NAME    :Bonde São Francisco
-
-#WW
-[PENGUINB]
-STR_NAME    :Trens Penguim
-
-#WW
-[POLARBER]
-STR_NAME    :Trens Urso Polar
-
-#WW
-[LONDONBS]
-STR_NAME    :Ônibus Routemaster
-STR_DESC    :Replicas do famoso ônibus Routemaster de Londres
-
-#WW
-[BLACKCAB]
-STR_NAME    :Taxis Pretos
-
-#WW
-[TGVTRAIN]
-STR_NAME    :Trens TGV
-
-#WW
-[ROCKET]
-STR_NAME    :Foguetes de 1950
-
-#WW
-[SPUTNIKR]
-STR_NAME    :Carros Sputnik
-
-#WW
-[DHOWWATR]
-STR_NAME    :Barcos Veleiros
-
-#WW
-[SURFBRDC]
-STR_NAME    :Trens Surfing
-
-#WW
-[KILLWHAL]
-STR_NAME    :Submarinos Baleia Assassina
-
-#WW
-[HIPPORID]
-STR_NAME    :Submarinos Hipopótamo
-
-#WW
-[DOLPHINR]
-STR_NAME    :Barcos Golfinho
-
-#WW
-[MANDARIN]
-STR_NAME    :Barcos Pato-mandarim
-STR_DESC    :Barco no formato de pato, movidos pelo pedalar dos passageiros da frente
-
-#TT
-[BATTRRAM]
-STR_NAME    :Trens Aríete
-
-#TT
-[BLCKDETH]
-STR_NAME    :Trens Peste Negra
-
-#TT
-[JOUSTING]
-STR_NAME    :Cavaleiros de Competição
-
-#TT
-[OAKBAREL]
-STR_NAME    :Barris de Carvalho
-
-#TT
-[STAMPHRD]
-STR_NAME    :Trens Rebanho de Estamparia
-
-#TT
-[DRAGNFLY]
-STR_NAME    :Carros Libélula
-
-#TT
-[PTERODAC]
-STR_NAME    :Trens Pterodáctilo
-
-#TT
-[PEGASUSX]
-STR_NAME    :Carros Pegasus
-
-#TT
-[CERBERUS]
-STR_NAME    :Trens Cérbero
-
-#TT
-[HARPIESX]
-STR_NAME    :Trens Harpias
-
-#TT
-[VALKYRIE]
-STR_NAME    :Trens Valquírias
-
-#TT
-[RIVRSTYX]
-STR_NAME    :Barcos Rio Styx
-
-#TT
-[TELEPTER]
-STR_NAME    :Cabine Teletransportadora
-
-#TT
-[HOVERCAR]
-STR_NAME    :Carros Flutuantes
-
-#TT
-[HOVRBORD]
-STR_NAME    :Hoverboards
-
-#TT
-[HOVERBKE]
-STR_NAME    :Motos Flutuantes
-
-#TT, Reverser RC
-[POLICECR]
-STR_NAME    :Carros de Polícia
-
-#TT, Looping RC
-[POLCHASE]
-STR_NAME    :Trens Carro de Polícia
-
-#TT
-[GANSTRCR]
-STR_NAME    :Carros Gangster
-
-#TT
-[SEAPLANE]
-STR_NAME    :Carros Hidroavião Suspensos
-
-#TT
-[BARNSTRM]
-STR_NAME    :Carros Avião BarnStorming
-
-#TT
-[FLYGBOAT]
-STR_NAME    :Barcos voadores
-
-#TT
-[BMVOCTPS]
-STR_NAME    :Bolha do Espaço Sideral
-
-#TT
-[JETPLANE]
-STR_NAME    :Carros Avião a Jato
-#TT
-[HOTRODXX]
-STR_NAME    :Carros Hot Rod
 
 ###########
 # Scenery #

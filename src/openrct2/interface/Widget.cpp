@@ -19,7 +19,6 @@
 #include "../drawing/Drawing.h"
 #include "../Input.h"
 #include "../sprites.h"
-#include "../platform/platform.h"
 #include "../localisation/Localisation.h"
 #include "../util/Util.h"
 #include "../Context.h"
@@ -412,7 +411,13 @@ static void widget_text_centred(rct_drawpixelinfo *dpi, rct_window *w, rct_widge
     sint32 t;
 
     if (widget->type == WWT_BUTTON || widget->type == WWT_TABLE_HEADER)
-        t = w->y + std::max<sint32>(widget->top, (widget->top + widget->bottom) / 2 - 5);
+    {
+        sint32 height = (widget->bottom - widget->top);
+        if (height >= 10)
+            t = w->y + std::max<sint32>(widget->top, widget->top + (height / 2) - 5);
+        else
+            t = w->y + widget->top - 1;
+    }
     else
         t = w->y + widget->top;
 
@@ -450,7 +455,13 @@ static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex w
     sint32 t;
 
     if (widget->type == WWT_BUTTON || widget->type == WWT_TABLE_HEADER)
-        t = w->y + std::max<sint32>(widget->top, (widget->top + widget->bottom) / 2 - 5);
+    {
+        sint32 height = (widget->bottom - widget->top);
+        if (height >= 10)
+            t = w->y + std::max<sint32>(widget->top, widget->top + (height / 2) - 5);
+        else
+            t = w->y + widget->top - 1;
+    }
     else
         t = w->y + widget->top;
 

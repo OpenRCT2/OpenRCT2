@@ -17,6 +17,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 #include <vector>
 #include "../common.h"
 
@@ -26,8 +27,9 @@ namespace File
     bool Copy(const std::string &srcPath, const std::string &dstPath, bool overwrite);
     bool Delete(const std::string &path);
     bool Move(const std::string &srcPath, const std::string &dstPath);
-    void * ReadAllBytes(const std::string &path, size_t * length);
+    std::vector<uint8> ReadAllBytes(const std::string_view& path);
+    std::string ReadAllText(const std::string_view& path);
     void WriteAllBytes(const std::string &path, const void * buffer, size_t length);
     std::vector<std::string> ReadAllLines(const std::string &path);
     uint64 GetLastModified(const std::string &path);
-}
+} // namespace File

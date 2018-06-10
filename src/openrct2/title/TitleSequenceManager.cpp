@@ -169,6 +169,7 @@ namespace TitleSequenceManager
     {
         utf8 path[MAX_PATH];
         GetUserSequencesPath(path, sizeof(path));
+        platform_ensure_directory_exists(path);
         Path::Append(path, sizeof(path), name.c_str());
         if (isZip)
         {
@@ -295,7 +296,6 @@ namespace TitleSequenceManager
     static void GetUserSequencesPath(utf8 * buffer, size_t bufferSize)
     {
         platform_get_user_directory(buffer, "title sequences", bufferSize);
-        platform_ensure_directory_exists(buffer);
     }
 
     static bool IsNameReserved(const std::string &name)
@@ -312,7 +312,7 @@ namespace TitleSequenceManager
         }
         return false;
     }
-}
+} // namespace TitleSequenceManager
 
 size_t title_sequence_manager_get_count()
 {

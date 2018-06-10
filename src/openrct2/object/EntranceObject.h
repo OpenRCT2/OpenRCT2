@@ -23,7 +23,7 @@
 class EntranceObject final : public Object
 {
 private:
-    rct_entrance_type _legacyType = { 0 };
+    rct_entrance_type _legacyType = {};
 
 public:
     explicit EntranceObject(const rct_object_entry &entry) : Object(entry) { }
@@ -31,6 +31,7 @@ public:
     void * GetLegacyData()  override { return &_legacyType; }
 
     void ReadLegacy(IReadObjectContext * context, IStream * stream) override;
+    void ReadJson(IReadObjectContext * context, const json_t * root) override;
     void Load() override;
     void Unload() override;
 

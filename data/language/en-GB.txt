@@ -1220,8 +1220,8 @@ STR_1214    :{SMALLFONT}{BLACK}Select maximum length of time to wait before depa
 STR_1215    :{WINDOW_COLOUR_2}Synchronise with adjacent stations
 STR_1216    :{SMALLFONT}{BLACK}Select whether to synchronise departure with all adjacent stations (for 'racing')
 STR_1217    :{COMMA16} seconds
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Exit only
 STR_1221    :No entrance
 STR_1222    :No exit
@@ -1600,7 +1600,7 @@ STR_1594    :{SMALLFONT}{OPENQUOTES}This wonton soup from {STRINGID} is really g
 STR_1595    :{SMALLFONT}{OPENQUOTES}This meatball soup from {STRINGID} is really good value{ENDQUOTES}
 STR_1596    :{SMALLFONT}{OPENQUOTES}This fruit juice from {STRINGID} is really good value{ENDQUOTES}
 STR_1597    :{SMALLFONT}{OPENQUOTES}This soybean milk from {STRINGID} is really good value{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}This sujongkwa from {STRINGID} is really good value{ENDQUOTES}
+STR_1598    :{SMALLFONT}{OPENQUOTES}This sujeonggwa from {STRINGID} is really good value{ENDQUOTES}
 STR_1599    :{SMALLFONT}{OPENQUOTES}This sub sandwich from {STRINGID} is really good value{ENDQUOTES}
 STR_1600    :{SMALLFONT}{OPENQUOTES}This cookie from {STRINGID} is really good value{ENDQUOTES}
 STR_1601    :
@@ -1632,7 +1632,7 @@ STR_1626    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for wonton soup fro
 STR_1627    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for meatball soup from {STRINGID}{ENDQUOTES}
 STR_1628    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fruit juice from {STRINGID}{ENDQUOTES}
 STR_1629    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for soybean milk from {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sujongkwa from {STRINGID}{ENDQUOTES}
+STR_1630    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sujeonggwa from {STRINGID}{ENDQUOTES}
 STR_1631    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a sub sandwich from {STRINGID}{ENDQUOTES}
 STR_1632    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cookie from {STRINGID}{ENDQUOTES}
 STR_1633    :
@@ -1777,8 +1777,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
-STR_1775    :Off
-STR_1776    :On
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}Ride music
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
@@ -2118,7 +2118,7 @@ STR_2110    :{WINDOW_COLOUR_2}Wonton Soup price:
 STR_2111    :{WINDOW_COLOUR_2}Meatball Soup price:
 STR_2112    :{WINDOW_COLOUR_2}Fruit Juice price:
 STR_2113    :{WINDOW_COLOUR_2}Soybean Milk price:
-STR_2114    :{WINDOW_COLOUR_2}Sujongkwa price:
+STR_2114    :{WINDOW_COLOUR_2}Sujeonggwa price:
 STR_2115    :{WINDOW_COLOUR_2}Sub Sandwich price:
 STR_2116    :{WINDOW_COLOUR_2}Cookie price:
 STR_2117    :{WINDOW_COLOUR_2}
@@ -2140,7 +2140,7 @@ STR_2132    :Wonton Soup
 STR_2133    :Meatball Soup
 STR_2134    :Fruit Juice
 STR_2135    :Soybean Milk
-STR_2136    :Sujongkwa
+STR_2136    :Sujeonggwa
 STR_2137    :Sub Sandwich
 STR_2138    :Cookie
 STR_2139    :Empty Bowl
@@ -2162,7 +2162,7 @@ STR_2154    :Wonton Soups
 STR_2155    :Meatball Soups
 STR_2156    :Fruit Juices
 STR_2157    :Soybean Milks
-STR_2158    :Sujongkwa
+STR_2158    :Sujeonggwa
 STR_2159    :Sub Sandwiches
 STR_2160    :Cookies
 STR_2161    :Empty Bowls
@@ -2184,7 +2184,7 @@ STR_2176    :some Wonton Soup
 STR_2177    :some Meatball Soup
 STR_2178    :a Fruit Juice
 STR_2179    :some Soybean Milk
-STR_2180    :some Sujongkwa
+STR_2180    :some Sujeonggwa
 STR_2181    :a Sub Sandwich
 STR_2182    :a Cookie
 STR_2183    :an Empty Bowl
@@ -2206,7 +2206,7 @@ STR_2198    :Wonton Soup
 STR_2199    :Meatball Soup
 STR_2200    :Fruit Juice
 STR_2201    :Soybean Milk
-STR_2202    :Sujongkwa
+STR_2202    :Sujeonggwa
 STR_2203    :Sub Sandwich
 STR_2204    :Cookie
 STR_2205    :Empty Bowl
@@ -3572,8 +3572,8 @@ STR_5232    :{SMALLFONT}{BLACK}Editors
 STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
 STR_5234    :{SMALLFONT}{BLACK}Prompts
 STR_5235    :{SMALLFONT}{BLACK}Settings
-STR_5236    :Window:
-STR_5237    :Palette:
+STR_5236    :Window
+STR_5237    :Palette
 STR_5238    :Current Theme:
 STR_5239    :Duplicate
 STR_5240    :Enter a name for the theme
@@ -3832,8 +3832,8 @@ STR_5492    :Scenario options
 STR_5493    :Send Message
 STR_5494    :<removed string - do not use>
 STR_5495    :Player List
-STR_5496    :Player:
-STR_5497    :Ping:
+STR_5496    :Player
+STR_5497    :Ping
 STR_5498    :Server List
 STR_5499    :Player Name:
 STR_5500    :Add Server
@@ -3978,7 +3978,7 @@ STR_5638    :Permission denied
 STR_5639    :{SMALLFONT}{BLACK}Show list of players
 STR_5640    :{SMALLFONT}{BLACK}Manage groups
 STR_5641    :Default Group:
-STR_5642    :Group:
+STR_5642    :Group
 STR_5643    :Add Group
 STR_5644    :Remove Group
 STR_5645    :Chat
@@ -4006,7 +4006,7 @@ STR_5666    :Passwordless Login
 STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
 STR_5703    :Can't kick the host
-STR_5704    :Last Action:
+STR_5704    :Last Action
 STR_5705    :Can't set to this group
 STR_5706    :Can't remove group that players belong to
 STR_5707    :This group cannot be modified
@@ -4312,7 +4312,7 @@ STR_6002    :{SMALLFONT}{BLACK}Lamps and rides will be lit up at night.{NEWLINE}
 STR_6003    :Cut-away View
 STR_6004    :Cut-away View
 STR_6005    :Enable cut-away view
-STR_6006    :{SMALLFONT}{BLACK}Cut-away view only displays map elements at or below the cut height
+STR_6006    :{SMALLFONT}{BLACK}Cut-away view only displays map elements at or below the cut height (vertical clipping) and in the selected area (horizontal clipping).
 STR_6007    :Cut height
 STR_6008    :{SMALLFONT}{BLACK}Click to toggle raw value<->value in measurement units
 STR_6009    :{SMALLFONT}{BLACK}Select cut height
@@ -4476,7 +4476,7 @@ STR_6166    :{SMALLFONT}{BLACK}Synchronises each frame displayed to the monitor'
 STR_6167    :{SMALLFONT}{BLACK}Advanced
 STR_6168    :Title Sequence
 STR_6169    :Scenario selection
-STR_6170    :Tweaks
+STR_6170    :Interface Tweaks
 STR_6171    :Search
 STR_6172    :{SMALLFONT}{BLACK}Search
 STR_6173    :Please provide the name to search:
@@ -4508,7 +4508,7 @@ STR_6198    :{BLACK}Day:
 STR_6199    :Set date
 STR_6200    :Reset date
 STR_6201    :{MONTH}
-STR_6202    :Enable virtual floor
+STR_6202    :Virtual floor style:
 STR_6203    :{SMALLFONT}{BLACK}When enabled, a virtual floor will be rendered when holding Ctrl or Shift to ease vertical placement of elements.
 STR_6204    :Brick
 STR_6205    :Iron
@@ -4532,6 +4532,40 @@ STR_6222    :Can't place guest entry point here...
 STR_6223    :Must be outside park boundaries!
 STR_6224    :{STRING} placed a guest entry point.
 STR_6225    :Not supported with OpenGL renderer
+STR_6226    :Enable early scenario completion
+STR_6227    :{SMALLFONT}{BLACK}Triggers scenario completion when all scenario goals are met before the target date.
+STR_6228    :Scenario Options
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :Frozen
+STR_6233    :Cut-away view
+STR_6234    :Highlight path issues
+STR_6235    :Server Information
+STR_6236    :Players
+STR_6237    :Groups
+STR_6238    :Multiplayer Options
+STR_6239    :Vertical Clipping
+STR_6240    :Horizontal Clipping
+STR_6241    :Select area
+STR_6242    :Clear selection
+STR_6243    :{SMALLFONT}{BLACK}Refurbishes the ride,{NEWLINE}makes it like new
+STR_6244    :Can't refurbish ride...
+STR_6245    :{SMALLFONT}{BLACK}Ride doesn't need refurbishing
+STR_6246    :Refurbish
+STR_6247    :Refurbish ride/attraction
+STR_6248    :{WINDOW_COLOUR_1}Do you want to refurbish {STRINGID} for {CURRENCY}?
+STR_6249    :{WINDOW_COLOUR_1}Do you want to refurbish {STRINGID}?
+STR_6250    :{WINDOW_COLOUR_1}Are you sure you want to completely demolish {STRINGID} and gain {CURRENCY}?
+STR_6251    :Ride is not empty yet
+STR_6252    :Twitch API URL
+STR_6253    :{SMALLFONT}{BLACK}Provide URL of Twitch integration API. Required in order to enable Twitch integration.
+STR_6254    :URL of Twitch integration API:
+STR_6255    :URL is not valid
+STR_6256    :Rendering effects
+STR_6257    :Glassy (translucent)
+STR_6258    :Clear (transparent)
+STR_6259    :Disabled
 
 #############
 # Scenarios #
@@ -4975,410 +5009,9 @@ STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
 
-#####################
-# Rides/attractions #
-#####################
-
-#RCT2
-[TOPSP1]
-STR_NAME    :Top Spin
-STR_DESC    :Passengers ride in a gondola suspended by large rotating arms, rotating forwards and backwards head-over-heels
-STR_CPTY    :8 passengers
-
-[BMSD]
-STR_NAME    :Twister Trains
-STR_DESC    :A spacious train with shoulder restraints
-
-[BMSU]
-STR_NAME    :Stand-up Twister Trains
-STR_DESC    :A train with shoulder restraints, in which the riders stand up
-
-[BMFL]
-STR_NAME    :Floorless Twister Trains
-STR_DESC    :A spacious train with shoulder restraints and no floor, making for a more exciting ride
-
-[WMMINE]
-STR_NAME    :Mine Cars
-STR_DESC    :Cars shaped like an old mine cart
-
-[WMOUSE]
-STR_NAME    :Mouse Cars
-STR_DESC    :Indivual cars shaped like a mouse
-
-[STEEP1]
-STR_NAME    :Horses
-STR_DESC    :Single cars shaped like a horse
-
-[STEEP2]
-STR_NAME    :Motorbikes
-STR_DESC    :Single cars shaped like a motorbike
-
-[SBOX]
-STR_NAME    :Soap boxes
-STR_DESC    :Single cars shaped like a soap box
-
-[BOB1]
-STR_NAME    :Bobsleigh Trains
-STR_DESC    :A train consisting of 2-seater cars where the riders are behind each other
-
-[INTBOB]
-STR_NAME    :6-seater Bobsleighs
-STR_DESC    :Bobsleighs with three seating rows, with room for two people on each
-
-[LIFT1]
-STR_NAME    :Lift Cabin
-STR_DESC    :Steel lift cabin
-
-[ARRT1]
-STR_NAME    :Corkscrew Roller Coaster Trains
-STR_DESC    :Roller coaster train with shoulder restraints
-
-[ARRT2]
-STR_NAME    :Hypercoaster Trains
-STR_DESC    :Comfortable trains with only lap bar restraints
-
-[MONBK]
-STR_NAME    :Bicycles
-
-[OBS1]
-STR_NAME    :Single-deck Cabin
-
-[OBS2]
-STR_NAME    :Double-deck Cabin
-
-[GTC]
-STR_NAME    :Ghost Train Cars
-
-[HMCAR]
-STR_NAME    :Haunted Mansion Cars
-
-[VREEL]
-STR_NAME    :Virginia Reel tubs
-
-[WMSPIN]
-STR_NAME    :Spinning Mouse Cars
-
-[AMT1]
-STR_NAME    :Mine Trains
-
-[SLCT]
-STR_NAME    :Compact Inverted Coaster Trains
-
-[SLCFO]
-STR_NAME    :Face-off Cars
-
-[VEKDV]
-STR_NAME    :Vertical Shuttle Cars
-
-[THCAR]
-STR_NAME    :Air Powered Vertical Coaster Trains
-
-[SSC1]
-STR_NAME    :Launched Freefall car
-
-[DING1]
-STR_NAME    :Dinghies
-
-[LFB1]
-STR_NAME    :Logs
-
-[RFTBOAT]
-STR_NAME    :Rafts
-
-[IVMC1]
-STR_NAME    :Four-seater Cars
-
-[SPDRCR]
-STR_NAME    :Spiral Roller Coaster Trains
-
-[TOGST]
-STR_NAME    :Stand-up Roller Coaster Trains
-
-[PREMT1]
-STR_NAME    :LIM Launched Roller Coaster Trains
-
-[PMT1]
-STR_NAME    :Powered mine train
-
-[BMAIR]
-STR_NAME    :Flying Roller Coaster Trains
-
-[INTINV]
-STR_NAME    :Impulse Trains
-
-[INTST]
-STR_NAME    :Giga Coaster Trains
-
-[NEMT]
-STR_NAME    :4-across Inverted Roller Coaster Trains
-
-[VEKST]
-STR_NAME    :Lay-down Roller Coaster Trains
-
-[REVCAR]
-STR_NAME    :Reverser Cars
-STR_DESC    :Bogied cars capable of turning around on special reversing sections
-
-[SKYTR]
-STR_NAME    :Lay-down Cars
-
-[BMVD]
-STR_NAME    :Six-seater Twister Trains
-
-[SUBMAR]
-STR_NAME    :Submarines
-
-#WW
-[CONDORRD]
-STR_NAME    :Condor Trains
-STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
-STR_CPTY    :4 passengers per car
-
-#WW
-[CONGAEEL]
-STR_NAME    :Conger Eel Trains
-STR_DESC    :Trains with shoulder restraints, in the shape of a Conger Eel.
-
-#WW
-[MINELIFT]
-STR_NAME    :Mine Lift Cabin
-STR_DESC    :A steel lift cabin commonly used in mines
-
-#WW
-[ANACONDA]
-STR_NAME    :Anaconda Trains
-
-#WW
-[CROCFLUM]
-STR_NAME    :Crocodile boats
-
-#WW
-[WHICGRUB]
-STR_NAME    :Witchity Grub Trains
-
-#WW
-[GRATWHTE]
-STR_NAME    :Great White Shark Trains
-STR_DESC    :Trains with shoulder restraints, in the shape of a Great White Shark
-
-#WW
-[BOMERANG]
-STR_NAME    :Boomerang Trains
-
-#WW
-[KOLARIDE]
-STR_NAME    :Koala car
-
-#WW
-[MANTARAY]
-STR_NAME    :Manta Ray boats
-STR_DESC    :Coaster boats in the shape of a Manta Ray
-
-#WW
-[TUTLBOAT]
-STR_NAME    :Turtle boats
-
-#WW, for the Wooden RC
-[MINECART]
-STR_NAME    :Mine Cart Trains
-
-#WW
-[LIONRIDE]
-STR_NAME    :Lion Cars
-
-#WW
-[RHINORID]
-STR_NAME    :Rhino Trains
-
-#WW
-[OSTRICH]
-STR_NAME    :Ostrich Trains
-
-#WW
-[GORILLA]
-STR_NAME    :Gorilla Trains
-
-#WW
-[FOOTBALL]
-STR_NAME    :Football Trains
-
-#WW
-[TIGRTWST]
-STR_NAME    :Bengal Tiger Cars
-
-#WW
-[TAXICSTR]
-STR_NAME    :Yellow Taxi Trains
-
-#WW
-[OUTRIGGR]
-STR_NAME    :Outrigger canoes
-
-#WW
-[SANFTRAM]
-STR_NAME    :San Francisco Trams
-
-#WW
-[PENGUINB]
-STR_NAME    :Penguin Trains
-
-#WW
-[POLARBER]
-STR_NAME    :Polar Bear Trains
-
-#WW
-[LONDONBS]
-STR_NAME    :Routemaster buses
-STR_DESC    :Replicas of the famous London Routemaster bus
-
-#WW
-[BLACKCAB]
-STR_NAME    :Black Cabs
-
-#WW
-[TGVTRAIN]
-STR_NAME    :TGV Trains
-
-#WW
-[ROCKET]
-STR_NAME    :1950's Rockets
-
-#WW
-[SPUTNIKR]
-STR_NAME    :Sputnik Cars
-
-#WW
-[DHOWWATR]
-STR_NAME    :Dhow boats
-
-#WW
-[SURFBRDC]
-STR_NAME    :Surfing Trains
-
-#WW
-[KILLWHAL]
-STR_NAME    :Killer Whale Submarines
-
-#WW
-[HIPPORID]
-STR_NAME    :Hippo Submarines
-
-#WW
-[DOLPHINR]
-STR_NAME    :Dolphin boats
-
-#WW
-[MANDARIN]
-STR_NAME    :Mandarin Duck Boats
-STR_DESC    :Duck shaped boat, propelled by the pedalling front seat passengers
-
-#TT
-[BATTRRAM]
-STR_NAME    :Battering Ram Trains
-
-#TT
-[BLCKDETH]
-STR_NAME    :Black Death Trains
-
-#TT
-[JOUSTING]
-STR_NAME    :Jousting Knights
-
-#TT
-[OAKBAREL]
-STR_NAME    :Oak Barrels
-
-#TT
-[STAMPHRD]
-STR_NAME    :Stampeding Herd Trains
-
-#TT
-[DRAGNFLY]
-STR_NAME    :Dragonfly Cars
-
-#TT
-[PTERODAC]
-STR_NAME    :Pterodactyl Trains
-
-#TT
-[PEGASUSX]
-STR_NAME    :Pegasus Cars
-
-#TT
-[CERBERUS]
-STR_NAME    :Cerberus Trains
-
-#TT
-[HARPIESX]
-STR_NAME    :Harpies Trains
-
-#TT
-[VALKYRIE]
-STR_NAME    :Valkyries Trains
-
-#TT
-[RIVRSTYX]
-STR_NAME    :River Styx boats
-
-#TT
-[TELEPTER]
-STR_NAME    :Teleporter Cabin
-
-#TT
-[HOVERCAR]
-STR_NAME    :Hover Cars
-
-#TT
-[HOVRBORD]
-STR_NAME    :Hoverboards
-
-#TT
-[HOVERBKE]
-STR_NAME    :Hover Bikes
-
-#TT, Reverser RC
-[POLICECR]
-STR_NAME    :Police Cars
-
-#TT, Looping RC
-[POLCHASE]
-STR_NAME    :Police Car Trains
-
-#TT
-[GANSTRCR]
-STR_NAME    :Gangster Cars
-
-#TT
-[SEAPLANE]
-STR_NAME    :Suspended Seaplane Cars
-
-#TT
-[BARNSTRM]
-STR_NAME    :BarnStorming Cars
-
-#TT
-[FLYGBOAT]
-STR_NAME    :Flying boats
-
-#TT
-[BMVOCTPS]
-STR_NAME    :Blob from Outer Space
-
-#TT
-[JETPLANE]
-STR_NAME    :Jet Plane Cars
-
-#TT
-[HOTRODXX]
-STR_NAME    :Hot Rod Cars
-
 ###########
 # Scenery #
 ###########
-
-#Bulrushes was spelt incorrectly
-[TBR]
-STR_NAME    :Bulrushes
 
 ## Start OpenRCT2 Official
 [XXBBBR01]

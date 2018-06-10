@@ -14,6 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cmath>
+#include <cstdlib>
+
 #include "Drawing.h"
 
 /**
@@ -90,7 +93,7 @@ void gfx_draw_line_software(rct_drawpixelinfo *dpi, sint32 x1, sint32 y1, sint32
     // Bresenham's algorithm
 
     // If vertical plot points upwards
-    sint32 steep = abs(y2 - y1) > abs(x2 - x1);
+    sint32 steep = std::abs(y2 - y1) > std::abs(x2 - x1);
     if (steep){
         sint32 temp_y2 = y2;
         sint32 temp_x2 = x2;
@@ -111,7 +114,7 @@ void gfx_draw_line_software(rct_drawpixelinfo *dpi, sint32 x1, sint32 y1, sint32
     }
 
     sint32 delta_x = x2 - x1;
-    sint32 delta_y = abs(y2 - y1);
+    sint32 delta_y = std::abs(y2 - y1);
     sint32 error = delta_x / 2;
     sint32 y_step;
     sint32 y = y1;

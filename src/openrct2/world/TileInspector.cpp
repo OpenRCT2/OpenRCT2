@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "Banner.h"
 #include "../common.h"
 #include "../Context.h"
 #include "../Game.h"
@@ -28,25 +29,14 @@
 #include "LargeScenery.h"
 #include "Map.h"
 #include "Scenery.h"
+#include "Surface.h"
 #include "TileInspector.h"
 #include "../ride/Station.h"
+#include "Park.h"
 
 uint32 windowTileInspectorTileX;
 uint32 windowTileInspectorTileY;
 sint32 windowTileInspectorElementCount = 0;
-
-static void window_tile_inspector_set_page(rct_window * w, const TILE_INSPECTOR_PAGE page)
-{
-    auto intent = Intent(INTENT_ACTION_SET_TILE_INSPECTOR_PAGE);
-    intent.putExtra(INTENT_EXTRA_PAGE, page);
-    context_broadcast_intent(&intent);
-}
-
-static void window_tile_inspector_auto_set_buttons(rct_window * w)
-{
-    auto intent = Intent(INTENT_ACTION_SET_TILE_INSPECTOR_BUTTONS);
-    context_broadcast_intent(&intent);
-}
 
 static bool map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second)
 {
@@ -75,7 +65,7 @@ static bool map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second
     *secondElement        = temp;
 
     // Swap the 'last map element for tile' flag if either one of them was last
-    if (tile_element_is_last_for_tile(firstElement) || tile_element_is_last_for_tile(secondElement))
+    if ((firstElement)->IsLastForTile() || (secondElement)->IsLastForTile())
     {
         firstElement->flags ^= TILE_ELEMENT_FLAG_LAST_TILE;
         secondElement->flags ^= TILE_ELEMENT_FLAG_LAST_TILE;
@@ -142,12 +132,6 @@ sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 elementIndex,
                 tileInspectorWindow->selected_list_item++;
             }
 
-            if (tileInspectorWindow->selected_list_item == elementIndex)
-            {
-                window_tile_inspector_set_page(tileInspectorWindow, TILE_INSPECTOR_PAGE_CORRUPT);
-            }
-
-            window_tile_inspector_auto_set_buttons(tileInspectorWindow);
             window_invalidate(tileInspectorWindow);
         }
     }
@@ -187,10 +171,8 @@ sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 elementIndex,
             else if (tileInspectorWindow->selected_list_item == elementIndex)
             {
                 tileInspectorWindow->selected_list_item = -1;
-                window_tile_inspector_set_page(tileInspectorWindow, TILE_INSPECTOR_PAGE_DEFAULT);
             }
 
-            window_tile_inspector_auto_set_buttons(tileInspectorWindow);
             window_invalidate(tileInspectorWindow);
         }
     }
@@ -218,7 +200,6 @@ sint32 tile_inspector_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 
             else if (tileInspectorWindow->selected_list_item == second)
                 tileInspectorWindow->selected_list_item = first;
 
-            window_tile_inspector_auto_set_buttons(tileInspectorWindow);
             window_invalidate(tileInspectorWindow);
         }
     }
@@ -237,7 +218,7 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex,
         {
             return MONEY32_UNDEFINED;
         }
-        switch (tile_element_get_type(tileElement))
+        switch (tileElement->GetType())
         {
         case TILE_ELEMENT_TYPE_PATH:
             if (footpath_element_is_sloped(tileElement))
@@ -286,11 +267,15 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex,
             tileElement->type |= newRotation;
             break;
         case TILE_ELEMENT_TYPE_BANNER:
-            tileElement->properties.banner.flags ^= 1 << tileElement->properties.banner.position;
+        {
+            uint8 unblockedEdges = tileElement->properties.banner.flags & 0xF;
+            unblockedEdges = (unblockedEdges << 1 | unblockedEdges >> 3) & 0xF;
+            tileElement->properties.banner.flags &= ~0xF;
+            tileElement->properties.banner.flags |= unblockedEdges;
             tileElement->properties.banner.position++;
             tileElement->properties.banner.position &= 3;
-            tileElement->properties.banner.flags ^= 1 << tileElement->properties.banner.position;
             break;
+        }
         }
 
         map_invalidate_tile_full(x << 5, y << 5);
@@ -349,7 +334,7 @@ sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_tile_element elem
 
         rct_tile_element * const pastedElement = tile_element_insert(x, y, element.base_height, 0);
 
-        bool lastForTile = tile_element_is_last_for_tile(pastedElement);
+        bool lastForTile = pastedElement->IsLastForTile();
         *pastedElement   = element;
         pastedElement->flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
         if (lastForTile)
@@ -371,7 +356,6 @@ sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_tile_element elem
             else if (tileInspectorWindow->selected_list_item >= newIndex)
                 tileInspectorWindow->selected_list_item++;
 
-            window_tile_inspector_auto_set_buttons(tileInspectorWindow);
             window_invalidate(tileInspectorWindow);
         }
     }
@@ -391,7 +375,7 @@ sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags)
         do
         {
             numElement++;
-        } while (!tile_element_is_last_for_tile(elementIterator++));
+        } while (!(elementIterator++)->IsLastForTile());
 
         // Bubble sort
         for (sint32 loopStart = 1; loopStart < numElement; loopStart++)
@@ -426,9 +410,7 @@ sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags)
         rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
         if (tileInspectorWindow != nullptr && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
         {
-            window_tile_inspector_set_page(tileInspectorWindow, TILE_INSPECTOR_PAGE_DEFAULT);
             tileInspectorWindow->selected_list_item = -1;
-            window_tile_inspector_auto_set_buttons(tileInspectorWindow);
             window_invalidate(tileInspectorWindow);
         }
     }
@@ -451,7 +433,7 @@ sint32 tile_inspector_any_base_height_offset(sint32 x, sint32 y, sint16 elementI
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
         {
             uint8 entranceType = tileElement->properties.entrance.type;
             if (entranceType != ENTRANCE_TYPE_PARK_ENTRANCE)
@@ -501,7 +483,7 @@ sint32 tile_inspector_surface_show_park_fences(sint32 x, sint32 y, bool showFenc
         if (!showFences)
             surfaceelement->properties.surface.ownership &= ~0x0F;
         else
-            update_park_fences(x << 5, y << 5);
+            update_park_fences({x << 5, y << 5});
 
         map_invalidate_tile_full(x << 5, y << 5);
 
@@ -619,7 +601,7 @@ sint32 tile_inspector_path_set_sloped(sint32 x, sint32 y, sint32 elementIndex, b
 {
     rct_tile_element * const pathElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (pathElement == nullptr || tile_element_get_type(pathElement) != TILE_ELEMENT_TYPE_PATH)
+    if (pathElement == nullptr || pathElement->GetType() != TILE_ELEMENT_TYPE_PATH)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -646,7 +628,7 @@ sint32 tile_inspector_path_toggle_edge(sint32 x, sint32 y, sint32 elementIndex, 
 {
     rct_tile_element * const pathElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (pathElement == nullptr || tile_element_get_type(pathElement) != TILE_ELEMENT_TYPE_PATH)
+    if (pathElement == nullptr || pathElement->GetType() != TILE_ELEMENT_TYPE_PATH)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -669,7 +651,7 @@ sint32 tile_inspector_entrance_make_usable(sint32 x, sint32 y, sint32 elementInd
 {
     rct_tile_element * const entranceElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (entranceElement == nullptr || tile_element_get_type(entranceElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+    if (entranceElement == nullptr || entranceElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
         return MONEY32_UNDEFINED;
 
     Ride * ride = get_ride(entranceElement->properties.entrance.ride_index);
@@ -705,7 +687,7 @@ sint32 tile_inspector_wall_set_slope(sint32 x, sint32 y, sint32 elementIndex, si
 {
     rct_tile_element * const wallElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (wallElement == nullptr || tile_element_get_type(wallElement) != TILE_ELEMENT_TYPE_WALL)
+    if (wallElement == nullptr || wallElement->GetType() != TILE_ELEMENT_TYPE_WALL)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -735,7 +717,7 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
     if (offset == 0)
         return 0;
 
-    if (trackElement == nullptr || tile_element_get_type(trackElement) != TILE_ELEMENT_TYPE_TRACK)
+    if (trackElement == nullptr || trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -809,7 +791,7 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
                 if (tileElement->base_height != elemZ / 8)
                     continue;
 
-                if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+                if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
 
                 if ((tile_element_get_direction(tileElement)) != rotation)
@@ -823,7 +805,7 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
 
                 found = true;
                 break;
-            } while (!tile_element_is_last_for_tile(tileElement++));
+            } while (!(tileElement++)->IsLastForTile());
 
             if (!found)
             {
@@ -857,7 +839,7 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
 {
     rct_tile_element * const trackElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (trackElement == nullptr || tile_element_get_type(trackElement) != TILE_ELEMENT_TYPE_TRACK)
+    if (trackElement == nullptr || trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -867,7 +849,7 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
             // Set chain for only the selected piece
             if (track_element_is_lift_hill(trackElement) != setChain)
             {
-                trackElement->type ^= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+                trackElement->type ^= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
             }
 
             return 0;
@@ -942,7 +924,7 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
                 if (tileElement->base_height != elemZ / 8)
                     continue;
 
-                if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
+                if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
 
                 if ((tile_element_get_direction(tileElement)) != rotation)
@@ -956,7 +938,7 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
 
                 found = true;
                 break;
-            } while (!tile_element_is_last_for_tile(tileElement++));
+            } while (!(tileElement++)->IsLastForTile());
 
             if (!found)
             {
@@ -974,7 +956,7 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
 
             if (track_element_is_lift_hill(tileElement) != setChain)
             {
-                tileElement->type ^= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+                tileElement->type ^= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
             }
         }
     }
@@ -989,7 +971,7 @@ sint32 tile_inspector_scenery_set_quarter_location(sint32 x, sint32 y, sint32 el
 {
     rct_tile_element * const tileElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (tileElement == nullptr || tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+    if (tileElement == nullptr || tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -1016,7 +998,7 @@ sint32 tile_inspector_scenery_set_quarter_collision(sint32 x, sint32 y, sint32 e
 {
     rct_tile_element * const tileElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (tileElement == nullptr || tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+    if (tileElement == nullptr || tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -1037,7 +1019,7 @@ sint32 tile_inspector_banner_toggle_blocking_edge(sint32 x, sint32 y, sint32 ele
 {
     rct_tile_element * const bannerElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (bannerElement == nullptr || tile_element_get_type(bannerElement) != TILE_ELEMENT_TYPE_BANNER)
+    if (bannerElement == nullptr || bannerElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -1057,10 +1039,10 @@ sint32 tile_inspector_corrupt_clamp(sint32 x, sint32 y, sint32 elementIndex, sin
 {
     rct_tile_element * const corruptElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (corruptElement == nullptr || tile_element_get_type(corruptElement) != TILE_ELEMENT_TYPE_CORRUPT)
+    if (corruptElement == nullptr || corruptElement->GetType() != TILE_ELEMENT_TYPE_CORRUPT)
         return MONEY32_UNDEFINED;
 
-    if (tile_element_is_last_for_tile(corruptElement))
+    if (corruptElement->IsLastForTile())
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)

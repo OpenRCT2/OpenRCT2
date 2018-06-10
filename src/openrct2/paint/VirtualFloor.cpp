@@ -14,12 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "VirtualFloor.h"
 #include "../Input.h"
+#include "../config/Config.h"
 #include "../interface/Viewport.h"
 #include "../sprites.h"
 #include "../world/Map.h"
 #include "Paint.h"
-#include "tile_element/TileElement.h"
+#include "tile_element/Paint.TileElement.h"
 #include "VirtualFloor.h"
 #include <algorithm>
 #include <limits>
@@ -252,7 +254,7 @@ static void virtual_floor_get_tile_properties(sint16 x, sint16 y, sint16 height,
     rct_tile_element * tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
-        sint32 elementType = tile_element_get_type(tileElement);
+        sint32 elementType = tileElement->GetType();
 
         if (elementType == TILE_ELEMENT_TYPE_SURFACE)
         {
@@ -291,7 +293,7 @@ static void virtual_floor_get_tile_properties(sint16 x, sint16 y, sint16 height,
 
         *outOccupied = true;
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
+    while (!(tileElement++)->IsLastForTile());
 }
 
 void virtual_floor_paint(paint_session * session)
@@ -303,6 +305,9 @@ void virtual_floor_paint(paint_session * session)
         {  32,   0 },
         {   0, -32 }
     };
+
+    if (_virtualFloorHeight < MINIMUM_LAND_HEIGHT)
+        return;
 
     uint8 direction = session->CurrentRotation;
 
@@ -392,6 +397,9 @@ void virtual_floor_paint(paint_session * session)
             SPR_G2_SELECTION_EDGE_NW | (!(occupiedEdges & 0x8) ? ((litEdges & 0x8) ? remap_lit : remap_base) : remap_edge), 0,
             0, 0, 0, 1, _virtualFloorHeight, 5, 5, _virtualFloorHeight + ((dullEdges & 0x8) ? -2 : 0));
     }
+
+    if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_GLASSY)
+        return;
 
     if (!weAreOccupied && !weAreLit)
     {

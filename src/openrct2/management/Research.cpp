@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <algorithm>
+#include "../actions/ParkSetResearchFundingAction.hpp"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/Util.hpp"
@@ -161,7 +162,8 @@ static void research_next_design()
                 gResearchProgressStage = RESEARCH_STAGE_FINISHED_ALL;
                 research_invalidate_related_windows();
                 // Reset funding to 0 if no more rides.
-                research_set_funding(0);
+                auto gameAction = ParkSetResearchFundingAction(gResearchPriorities, 0);
+                GameActions::Execute(&gameAction);
                 return;
             }
         }
@@ -215,7 +217,7 @@ void research_finish_item(rct_research_item * researchItem)
             {
                 const RideGroup * rideGroup = RideGroupManager::GetRideGroup(base_ride_type, rideEntry);
 
-                if (RideGroupManager::RideGroupIsInvented(rideGroup))
+                if (rideGroup->IsInvented())
                 {
                     ride_group_was_invented_before = true;
                 }
@@ -227,31 +229,39 @@ void research_finish_item(rct_research_item * researchItem)
 
             ride_entry_set_invented(rideEntryIndex);
 
-            if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE))
+            bool seenRideEntry[MAX_RIDE_OBJECTS];
+
+            rct_research_item * researchItem2 = gResearchItems;
+            for (; researchItem2->rawValue != RESEARCHED_ITEMS_END; researchItem2++)
             {
-                for (sint32 i = 0; i < MAX_RESEARCHED_TRACK_TYPES; i++)
+                if (researchItem2->rawValue != RESEARCHED_ITEMS_SEPARATOR &&
+                    researchItem2->type == RESEARCH_ENTRY_TYPE_RIDE)
+                {
+                    uint8 index = researchItem2->entryIndex;
+                    seenRideEntry[index] = true;
+                }
+            }
+
+            // RCT2 made non-separated vehicles available at once, by removing all but one from research.
+            // To ensure old files keep working, look for ride entries not in research, and make them available as well.
+            for (sint32 i = 0; i < MAX_RIDE_OBJECTS; i++)
+            {
+                if (!seenRideEntry[i])
                 {
                     rct_ride_entry * rideEntry2 = get_ride_entry(i);
-                    if (rideEntry2 == nullptr)
+                    if (rideEntry2 != nullptr)
                     {
-                        continue;
-                    }
-                    if ((rideEntry2->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE))
-                    {
-                        continue;
-                    }
-
-                    for (auto rideType : rideEntry2->ride_type)
-                    {
-                        if (rideType == base_ride_type)
+                        for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
                         {
-                            ride_entry_set_invented(i);
-                            break;
+                            if (rideEntry2->ride_type[j] == base_ride_type)
+                            {
+                                ride_entry_set_invented(i);
+                                break;
+                            }
                         }
                     }
                 }
             }
-
 
             // If a vehicle should be listed separately (maze, mini golf, flat rides, shops)
             if (RideGroupManager::RideTypeIsIndependent(base_ride_type))
@@ -539,6 +549,8 @@ void research_insert(sint32 researched, sint32 rawValue, uint8 category)
  */
 void research_populate_list_random()
 {
+    research_reset_items();
+
     // Rides
     for (sint32 i = 0; i < MAX_RIDE_OBJECTS; i++)
     {
@@ -603,52 +615,6 @@ void research_populate_list_researched()
 
         research_insert(true, i, RESEARCH_CATEGORY_SCENERY_GROUP);
     }
-}
-
-void research_set_funding(sint32 amount)
-{
-    game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, amount, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);
-
-}
-
-void research_set_priority(sint32 activeCategories)
-{
-    game_do_command(0, (1 << 8) | GAME_COMMAND_FLAG_APPLY, 0, activeCategories, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);
-}
-
-/**
- *
- *  rct2: 0x00684A7F
- */
-void game_command_set_research_funding(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
-{
-    sint32 setPriorities    = (*ebx & (1 << 8)) != 0;
-    uint32 fundingAmount    = *edx;
-    sint32 activeCategories = *edx;
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RESEARCH;
-    if (*ebx & GAME_COMMAND_FLAG_APPLY)
-    {
-        if (!setPriorities)
-        {
-            if (fundingAmount >= Util::CountOf(_researchRate))
-            {
-                *ebx = MONEY32_UNDEFINED;
-                log_warning("Invalid research rate %d", fundingAmount);
-                return;
-            }
-            gResearchFundingLevel = fundingAmount;
-        }
-        else
-        {
-            gResearchPriorities = activeCategories;
-        }
-
-        window_invalidate_by_class(WC_FINANCES);
-        window_invalidate_by_class(WC_RESEARCH);
-    }
-
-    *ebx = 0;
 }
 
 void research_insert_ride_entry(uint8 entryIndex, bool researched)
@@ -819,7 +785,7 @@ void set_every_ride_entry_not_invented()
  *
  *  rct2: 0x0068563D
  */
-rct_string_id research_item_get_name(rct_research_item * researchItem)
+rct_string_id research_item_get_name(const rct_research_item * researchItem)
 {
 
     if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE)

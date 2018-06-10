@@ -21,13 +21,16 @@
 
 #include <openrct2/Game.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/world/Scenery.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/sprites.h>
+#include <openrct2/world/Banner.h>
+#include <openrct2/world/Scenery.h>
+#include <openrct2/actions/BannerSetNameAction.hpp>
 
 #define WW 113
 #define WH 96
 
+// clang-format off
 enum WINDOW_BANNER_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -110,6 +113,7 @@ static rct_window_event_list window_banner_events = {
     window_banner_paint,
     nullptr
 };
+// clang-format on
 
 /**
 *
@@ -146,7 +150,7 @@ rct_window * window_banner_open(rct_windownumber number)
     rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
     while(1) {
         if (
-            (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_BANNER) &&
+            (tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) &&
             (tile_element->properties.banner.index == w->number)
         ) {
             break;
@@ -196,7 +200,7 @@ static void window_banner_mouseup(rct_window *w, rct_widgetindex widgetIndex)
     rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
 
     while (1){
-        if ((tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_BANNER) &&
+        if ((tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) &&
             (tile_element->properties.banner.index == w->number)) break;
         tile_element++;
     }
@@ -285,10 +289,10 @@ static void window_banner_dropdown(rct_window *w, rct_widgetindex widgetIndex, s
  */
 static void window_banner_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
-    if (widgetIndex == WIDX_BANNER_TEXT && text != nullptr) {
-        game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 0)), GAME_COMMAND_SET_BANNER_NAME, *((sint32*)(text + 8)), *((sint32*)(text + 4)));
-        game_do_command(2, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 12)), GAME_COMMAND_SET_BANNER_NAME, *((sint32*)(text + 20)), *((sint32*)(text + 16)));
-        game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 24)), GAME_COMMAND_SET_BANNER_NAME, *((sint32*)(text + 32)), *((sint32*)(text + 28)));
+    if (widgetIndex == WIDX_BANNER_TEXT && text != nullptr)
+    {
+        auto bannerSetNameAction = BannerSetNameAction(w->number, text);
+        GameActions::Execute(&bannerSetNameAction);
     }
 }
 

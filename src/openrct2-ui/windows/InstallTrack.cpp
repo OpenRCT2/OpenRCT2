@@ -29,7 +29,9 @@
 #include <openrct2/platform/platform.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
+#include <openrct2/ride/TrackDesign.h>
 
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -95,6 +97,7 @@ static rct_window_event_list window_install_track_events = {
     window_install_track_paint,
     nullptr
 };
+// clang-format on
 
 static rct_track_td6 * _trackDesign;
 static std::string _trackPath;
@@ -231,7 +234,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
     sint32 colour = ColourMapA[w->colours[0]].darkest;
     gfx_fill_rect(dpi, x, y, x + 369, y + 216, colour);
 
-    rct_g1_element g1temp = { nullptr };
+    rct_g1_element g1temp = {};
     g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
     g1temp.width = 370;
     g1temp.height = 217;

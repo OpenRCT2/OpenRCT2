@@ -18,12 +18,9 @@
 
 #include "common.h"
 
-#ifndef DISABLE_NETWORK
-    #include <openssl/evp.h>
-#endif // DISABLE_NETWORK
-
 enum STARTUP_ACTION
 {
+    STARTUP_ACTION_NONE,
     STARTUP_ACTION_INTRO,
     STARTUP_ACTION_TITLE,
     STARTUP_ACTION_OPEN,
@@ -56,10 +53,6 @@ extern bool gOpenRCT2Headless;
 extern bool gOpenRCT2NoGraphics;
 extern bool gOpenRCT2ShowChangelog;
 extern bool gOpenRCT2SilentBreakpad;
-
-#ifndef DISABLE_NETWORK
-extern EVP_MD_CTX * gHashCTX;
-#endif // DISABLE_NETWORK
 
 #ifndef DISABLE_NETWORK
 extern sint32 gNetworkStart;

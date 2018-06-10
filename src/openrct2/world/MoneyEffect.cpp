@@ -14,9 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
+#include "Map.h"
 #include "../OpenRCT2.h"
 #include "Sprite.h"
 

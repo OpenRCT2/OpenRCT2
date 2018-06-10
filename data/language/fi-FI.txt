@@ -1222,8 +1222,8 @@ STR_1214    :{SMALLFONT}{BLACK}Valitse enimmäisodotusaika ennen lähtöä
 STR_1215    :{WINDOW_COLOUR_2}Synkronoi rinnakkaisasemien kanssa
 STR_1216    :{SMALLFONT}{BLACK}Valitse pitäisikö synkronoida lähtö kaikkien rinnakkaisasemien kanssa ('kilpa-ajoa' varten)
 STR_1217    :{COMMA16} sekuntia
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Vain uloskäynti
 STR_1221    :Ei sisäänkäyntiä
 STR_1222    :Ei uloskäyntiä
@@ -3895,13 +3895,3 @@ STR_5549    :Vuosi/Kuukausi/Päivä
 STR_5550    :{POP16}{POP16}Vuosi {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Vuosi/Päivä/Kuukausi
 STR_5552    :{POP16}{POP16}Vuosi {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-
-#########
-# Rides #
-#########
-
-#WW
-[CONDORRD]
-STR_NAME    :Condor Ride
-STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
-STR_CPTY    :4 matkustajaa per auto

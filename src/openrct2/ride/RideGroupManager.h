@@ -31,16 +31,17 @@ struct RideGroup
     uint16 MaximumHeight;
     uint64 AvailableTrackPieces;
     rct_ride_name Naming;
+
+    bool Equals(const RideGroup* otherRideGroup) const;
+    bool IsInvented() const;
 };
 
 class RideGroupManager
 {
-    public:
+public:
     static const RideGroup * GetRideGroup(const uint8 trackType, const rct_ride_entry * rideEntry);
     static bool RideTypeHasRideGroups(const uint8 trackType);
     static const RideGroup * RideGroupFind(const uint8 rideType, const uint8 index);
-    static bool RideGroupsAreEqual(const RideGroup * a, const RideGroup * b);
-    static bool RideGroupIsInvented(const RideGroup * rideGroup);
 
     static const std::vector<const char *> GetPreferredRideEntryOrder(const uint8 rideType);
     static sint32 VehiclePreferenceCompare(const uint8 rideType, const char * a, const char * b);

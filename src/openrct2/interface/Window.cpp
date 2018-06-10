@@ -31,6 +31,8 @@
 #include "../localisation/StringIds.h"
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
+#include "../scenario/Scenario.h"
+#include "../sprites.h"
 #include "../world/Map.h"
 #include "../world/Sprite.h"
 #include "Viewport.h"
@@ -246,41 +248,87 @@ static void window_viewport_wheel_input(rct_window *w, sint32 wheel)
         window_zoom_out(w, true);
 }
 
-static bool window_other_wheel_input(rct_window *w, rct_widgetindex widgetIndex, sint32 wheel)
+static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex, sint32 wheel)
 {
     // HACK: Until we have a new window system that allows us to add new events like mouse wheel easily,
     //       this selective approach will have to do.
 
     // Allow mouse wheel scrolling to increment or decrement the land tool size for various windows
-    sint32 previewWidgetIndex;
-    switch (w->classification) {
-    case WC_WATER:
-        previewWidgetIndex = WC_WATER__WIDX_PREVIEW;
-        break;
-    case WC_CLEAR_SCENERY:
-        previewWidgetIndex = WC_CLEAR_SCENERY__WIDX_PREVIEW;
-        break;
-    case WC_LAND_RIGHTS:
-        previewWidgetIndex = WC_LAND_RIGHTS__WIDX_PREVIEW;
-        break;
-    case WC_LAND:
-        previewWidgetIndex = WC_LAND__WIDX_PREVIEW;
-        break;
-    case WC_MAP:
-        previewWidgetIndex = WC_MAP__WIDX_LAND_TOOL;
-        break;
-    default:
+    auto widgetType = w->widgets[widgetIndex].type;
+
+    // Lower widgetIndex once or twice we got a type that matches, to allow scrolling on the increase/decrease buttons too
+    sint32 attempts = 0;
+    while (widgetType != WWT_IMGBTN && widgetType != WWT_SPINNER && widgetIndex > 0)
+    {
+        switch (widgetType)
+        {
+            case WWT_TRNBTN: // + and - for preview widget
+            case WWT_BUTTON: // + and - for spinner widget
+            {
+                if (attempts > 0)
+                {
+                    // Verify that the previous button was of the same type
+                    auto previousType = w->widgets[widgetIndex + 1].type;
+                    if (previousType != widgetType)
+                    {
+                        return false;
+                    }
+                }
+                break;
+            }
+            default:
+                // The widget type is not an increment or decrement button
+                return false;
+        }
+
+        attempts++;
+        if (attempts > 2)
+        {
+            // We're 2 buttons up, and no preview or spinner widget was found
+            return false;
+        }
+
+        widgetIndex--;
+        widgetType = w->widgets[widgetIndex].type;
+    }
+
+    rct_widgetindex buttonWidgetIndex;
+    uint16 expectedType;
+    uint32 expectedContent[2];
+    switch (widgetType)
+    {
+        case WWT_IMGBTN:
+            buttonWidgetIndex = wheel < 0 ? widgetIndex + 2 : widgetIndex + 1;
+            expectedType = WWT_TRNBTN;
+            expectedContent[0] = IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE;
+            expectedContent[1] = IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE;
+            break;
+        case WWT_SPINNER:
+            buttonWidgetIndex = wheel < 0 ? widgetIndex + 1 : widgetIndex + 2;
+            expectedType = WWT_BUTTON;
+            expectedContent[0] = STR_NUMERIC_UP;
+            expectedContent[1] = STR_NUMERIC_DOWN;
+            break;
+        default: return false;
+    }
+
+    if (widget_is_disabled(w, buttonWidgetIndex))
+    {
         return false;
     }
 
-    // Preview / Increment / Decrement
-    if (widgetIndex >= previewWidgetIndex && widgetIndex < previewWidgetIndex + 3) {
-        rct_widgetindex buttonWidgetIndex = wheel < 0 ? previewWidgetIndex + 2 : previewWidgetIndex + 1;
-        window_event_mouse_down_call(w, buttonWidgetIndex);
-        return true;
+    auto button1Type = w->widgets[widgetIndex + 1].type;
+    auto button1Image = w->widgets[widgetIndex + 1].image;
+    auto button2Type = w->widgets[widgetIndex + 2].type;
+    auto button2Image = w->widgets[widgetIndex + 2].image;
+    if (button1Type != expectedType || button2Type != expectedType || button1Image != expectedContent[0]
+        || button2Image != expectedContent[1])
+    {
+        return false;
     }
 
-    return false;
+    window_event_mouse_down_call(w, buttonWidgetIndex);
+    return true;
 }
 
 /**
@@ -1816,8 +1864,8 @@ void window_resize(rct_window *w, sint32 dw, sint32 dh)
 
     // Update scroll widgets
     for (i = 0; i < 3; i++) {
-        w->scrolls[i].h_right = -1;
-        w->scrolls[i].v_bottom = -1;
+        w->scrolls[i].h_right = WINDOW_SCROLL_UNDEFINED;
+        w->scrolls[i].v_bottom = WINDOW_SCROLL_UNDEFINED;
     }
     window_update_scroll_widgets(w);
 

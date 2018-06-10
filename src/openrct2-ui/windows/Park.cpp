@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <limits>
+#include <openrct2/actions/ParkSetNameAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
@@ -32,7 +34,10 @@
 #include <openrct2/world/Entrance.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/interface/themes.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/scenario/Scenario.h>
 
+// clang-format off
 enum WINDOW_PARK_PAGE {
     WINDOW_PARK_PAGE_ENTRANCE,
     WINDOW_PARK_PAGE_RATING,
@@ -114,9 +119,7 @@ static rct_widget window_park_guests_widgets[] = {
 static rct_widget window_park_price_widgets[] = {
     MAIN_PARK_WIDGETS,
     { WWT_LABEL,            1,  21,     146,    50,     61,     STR_ADMISSION_PRICE,            STR_NONE },                         //
-    { WWT_SPINNER,          1,  147,    222,    50,     61,     STR_ARG_6_CURRENCY2DP,          STR_NONE },                         // price
-    { WWT_BUTTON,           1,  211,    221,    51,     55,     STR_NUMERIC_UP,                 STR_NONE },                         // increase price
-    { WWT_BUTTON,           1,  211,    221,    56,     60,     STR_NUMERIC_DOWN,               STR_NONE },                         // decrease price
+      SPINNER_WIDGETS      (1,  147,    222,    50,     61,     STR_ARG_6_CURRENCY2DP,          STR_NONE), // Price (3 widgets)
     { WIDGETS_END },
 };
 
@@ -542,6 +545,7 @@ static constexpr const window_park_award ParkAwards[] = {
     { STR_AWARD_MOST_CONFUSING_LAYOUT,      SPR_AWARD_MOST_CONFUSING_LAYOUT },
     { STR_AWARD_BEST_GENTLE_RIDES,          SPR_AWARD_BEST_GENTLE_RIDES },
 };
+// clang-format on
 
 static void window_park_init_viewport(rct_window *w);
 static void window_park_set_page(rct_window *w, sint32 page);
@@ -565,7 +569,7 @@ static rct_window *window_park_open()
     w->page = WINDOW_PARK_PAGE_ENTRANCE;
     w->viewport_focus_coordinates.y = 0;
     w->frame_no = 0;
-    w->list_information_type = -1;
+    w->list_information_type = std::numeric_limits<uint16>::max();
     w->numberOfStaff = -1;
     w->var_492 = 0;
     window_park_set_disabled_tabs(w);
@@ -745,7 +749,10 @@ static void window_park_entrance_update(rct_window *w)
 static void window_park_entrance_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
     if (widgetIndex == WIDX_RENAME && text != nullptr)
-        park_set_name(text);
+    {
+        auto action = ParkSetNameAction(text);
+        GameActions::Execute(&action);
+    }
 }
 
 /**
@@ -769,9 +776,7 @@ static void window_park_entrance_invalidate(rct_window *w)
     window_park_entrance_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2 + widget_is_pressed(w, WIDX_OPEN_LIGHT);
 
     // Only allow closing of park for guest / rating objective
-    // Only allow closing of park when there is money
-    if (gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING ||
-        (gParkFlags & PARK_FLAGS_NO_MONEY))
+    if (gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING)
         w->disabled_widgets |= (1 << WIDX_OPEN_OR_CLOSE) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT);
     else
         w->disabled_widgets &= ~((1 << WIDX_OPEN_OR_CLOSE) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT));
@@ -1204,15 +1209,6 @@ static void window_park_price_mousedown(rct_window *w, rct_widgetindex widgetInd
     switch (widgetIndex) {
     case WIDX_CLOSE:
         window_close(w);
-        break;
-    case WIDX_TAB_1:
-    case WIDX_TAB_2:
-    case WIDX_TAB_3:
-    case WIDX_TAB_4:
-    case WIDX_TAB_5:
-    case WIDX_TAB_6:
-    case WIDX_TAB_7:
-        window_park_set_page(w, widgetIndex - WIDX_TAB_1);
         break;
     case WIDX_INCREASE_PRICE:
         newFee = Math::Min(MAX_ENTRANCE_FEE, gParkEntranceFee + MONEY(1,00));

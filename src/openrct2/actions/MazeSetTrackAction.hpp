@@ -23,8 +23,10 @@
 #include "../Cheats.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../management/Finance.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "../world/Footpath.h"
 #include "../world/Park.h"
 
 /** rct2: 0x00993CE9 */
@@ -232,7 +234,7 @@ public:
             assert(tileElement != nullptr);
 
             tileElement->clearance_height = clearanceHeight;
-            tileElement->type = TILE_ELEMENT_TYPE_TRACK;
+            tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
             track_element_set_type(tileElement, TRACK_ELEM_MAZE);
             track_element_set_ride_index(tileElement, _rideIndex);
@@ -272,8 +274,8 @@ public:
                 uint8 temp_edx = byte_993CFC[segmentOffset];
                 if (temp_edx != 0xFF)
                 {
-                    uint16 previousElementX = floor2(_x, 32) - TileDirectionDelta[_direction].x;
-                    uint16 previousElementY = floor2(_y, 32) - TileDirectionDelta[_direction].y;
+                    uint16 previousElementX = floor2(_x, 32) - CoordsDirectionDelta[_direction].x;
+                    uint16 previousElementY = floor2(_y, 32) - CoordsDirectionDelta[_direction].y;
 
                     rct_tile_element * previousTileElement = map_get_track_element_at_of_type_from_ride(
                         previousElementX,
@@ -302,8 +304,8 @@ public:
         case GC_SET_MAZE_TRACK_FILL:
             if (!_initialPlacement)
             {
-                uint16 previousSegmentX = _x - TileDirectionDelta[_direction].x / 2;
-                uint16 previousSegmentY = _y - TileDirectionDelta[_direction].y / 2;
+                uint16 previousSegmentX = _x - CoordsDirectionDelta[_direction].x / 2;
+                uint16 previousSegmentY = _y - CoordsDirectionDelta[_direction].y / 2;
 
                 tileElement = map_get_track_element_at_of_type_from_ride(
                     previousSegmentX,
@@ -335,8 +337,8 @@ public:
                     tileElement->properties.track.maze_entry |= (1 << segmentBit);
 
                     uint32 direction1 = byte_993D0C[segmentBit];
-                    uint16 nextElementX = floor2(previousSegmentX, 32) + TileDirectionDelta[direction1].x;
-                    uint16 nextElementY = floor2(previousSegmentY, 32) + TileDirectionDelta[direction1].y;
+                    uint16 nextElementX = floor2(previousSegmentX, 32) + CoordsDirectionDelta[direction1].x;
+                    uint16 nextElementY = floor2(previousSegmentY, 32) + CoordsDirectionDelta[direction1].y;
 
                     rct_tile_element * tmp_tileElement = map_get_track_element_at_of_type_from_ride(
                         nextElementX,

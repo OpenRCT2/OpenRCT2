@@ -1,3 +1,61 @@
+0.1.3 (in development)
+------------------------------------------------------------------------
+- Feature: [#1417] Allow saving track designs for flat rides.
+- Feature: [#1675] Auto-rotate shops to face footpaths.
+- Feature: [#3473] Add button in ride window's maintainance tab to refurbish the ride.
+- Feature: [#6510] Ability to select edges or a row of tiles by holding down Ctrl using the land tool.
+- Feature: [#7187] Option for early scenario completion.
+- Feature: [#7266] Make headless instances use an interactive terminal with access to the in-game console API.
+- Feature: [#7267] Leverage more historical data in Finances window.
+- Feature: [#7316] Cheat to allow freezing all staff
+- Feature: [#7332] Keyboard shortcuts for view path issues and cutaway view.
+- Feature: [#7348] Add large half loops to the Vertical Drop Roller Coaster.
+- Feature: [#7459] Allow opening and closing of parks that use no money.
+- Feature: [#7579] New horizontal +/- spinner widgets to make adjusting values easier.
+- Fix: [#2053] When clearance checks are disabled, a track piece ghost can remove non-ghost track pieces.
+- Fix: [#2611] Some objects show (undefined string) instead of a description in Korean.
+- Fix: [#3596] Saving parks, landscapes and tracks with a period in the filenames don't get their extension.
+- Fix: [#5210] Default system dialog not accessible from saving landscape window.
+- Fix: [#6134] Scenarios incorrectly categorised when using Polish version of RCT2.
+- Fix: [#6141] CSS50.dat is never loaded.
+- Fix: [#6647] Changelog window causes FPS drop.
+- Fix: [#6938] Banner do not correctly capitalise non-ASCII characters.
+- Fix: [#7176] Mechanics sometimes fall down from rides.
+- Fix: [#7303] Visual glitch with virtual floor near map edges.
+- Fix: [#7313] Loading an invalid path with openrct2 produces results different than expected.
+- Fix: [#7327] Abstract scenery and stations don't get fully See-Through when hiding them (original bug).
+- Fix: [#7331] Invention list in scenario editor crashes upon removing previously-enabled ride/stall entries.
+- Fix: [#7341] Staff may auto-spawn on guests walking outside of paths.
+- Fix: [#7354] Cut-away view does not draw tile elements that have been moved down on the list.
+- Fix: [#7358] Peeps and staff entering rides still have the slope speed penalty set.
+- Fix: [#7382] Opening the mini-map reverts the size of the land tool to 1x1, regardless of what was selected before.
+- Fix: [#7402] Edges of neigbouring footpaths stay connected after removing a path that's underneath a ride entrance.
+- Fix: [#7405] Rides can be covered by placing scenery underneath them.
+- Fix: [#7418] Staff walk off paths with a connection but no adjacent path.
+- Fix: [#7434] Diagonal ride segments cannot be deleted if they are isolated.
+- Fix: [#7436] Only the first 32 vehicles of a train can be painted.
+- Fix: [#7480] Graphs skip values of 0.
+- Fix: [#7505] Game crashes when trying to make path over map edge while having clearance checks disabled.
+- Fix: [#7528] In park entrance pricing tab, switching tabs happens on mouse-down instead of mouse-up
+- Fix: [#7544] Starting a headless server with no arguments causes the game to freeze.
+- Fix: [#7571] Hovering a ride design over scenery or tracks will give tons of money.
+- Improved: [#2989] Multiplayer window now changes title when tab changes.
+- Improved: [#5339] Change eyedropper icon to actual eyedropper and change cursor to crosshair.
+- Improved: [#5832] Resize tile inspector automatically when selecting a tile element.
+- Improved: [#6221] The scenario editor's invention list is now resizeable.
+- Improved: [#7069] The arbitrary ride type selection dropdown is now sorted orthographically, and has its spinners removed.
+- Improved: [#7302] Raising land near the map edge makes the affected area smaller instead of showing an 'off edge map' error.
+- Improved: [#7435] Object indexing now supports multi-threading.
+- Improved: [#7510] Add horizontal clipping to cut-away view options.
+- Improved: [#7531] "Save track design" dropdown now stays open.
+- Improved: [#7548] Ctrl-clicking with the tile inspector open now directly selects an element and its tile.
+- Improved: [#7555] Allow setting the Twitch API URL, allowing custom API servers.
+- Improved: [#7567] Improve the performance of loading parks and the title sequence.
+- Improved: [#7577] Allow fine-tuning the virtual floor style.
+- Improved: [#7608] The vehicle selection dropdown is now sorted orthographically.
+- Improved: [#7613] Resizing the staff window now resizes the name and action columns too.
+- Improved: [#7627] Allow scrolling up and down on spinners to change their values.
+
 0.1.2 (2018-03-18)
 ------------------------------------------------------------------------
 - Feature: [#2893] Object selection filters for items from RCT1, Added Attractions and Loopy Landscapes.
@@ -112,6 +170,7 @@
 - Fix: [#7011] Swinging and bobsleigh cars going backwards swing in the wrong direction (original bug).
 - Fix: [#7042, #7077] Paths sometimes disconnect when building them with clearance checks off.
 - Fix: [#7125] No entry signs not correctly handled in pathfinding.
+- Fix: [#7153] Sign text cut off when using TTF Fonts.
 - Fix: [#7223] Vehicle mass not correctly recalculated when using remove all guests cheat.
 - Fix: [#7229] Exploding guests cheat causes rides to get stuck and freezes game.
 - Fix: [#7295] peep_should_go_on_ride_again() checked balloon colour instead of toilet need.

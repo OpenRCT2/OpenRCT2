@@ -16,22 +16,22 @@
 
 #include "AudioContext.h"
 
-namespace OpenRCT2 { namespace Audio
+namespace OpenRCT2::Audio
 {
     class DummyAudioContext final : public IAudioContext
     {
         IAudioMixer * GetMixer() override { return nullptr; }
 
         std::vector<std::string> GetOutputDevices() override { return std::vector<std::string>(); }
-        void SetOutputDevice(const std::string &deviceName) override { }
+        void SetOutputDevice(const std::string &/*deviceName*/) override { }
 
-        IAudioSource * CreateStreamFromWAV(const std::string &path) override { return nullptr; }
+        IAudioSource * CreateStreamFromWAV(const std::string &/*path*/) override { return nullptr; }
 
         void StartTitleMusic() override { }
 
-        IAudioChannel * PlaySound(sint32 soundId, sint32 volume, sint32 pan) override { return nullptr; }
-        IAudioChannel * PlaySoundAtLocation(sint32 soundId, sint16 x, sint16 y, sint16 z) override { return nullptr; }
-        IAudioChannel * PlaySoundPanned(sint32 soundId, sint32 pan, sint16 x, sint16 y, sint16 z) override { return nullptr; }
+        IAudioChannel * PlaySound(sint32 /*soundId*/, sint32 /*volume*/, sint32 /*pan*/) override { return nullptr; }
+        IAudioChannel * PlaySoundAtLocation(sint32 /*soundId*/, sint16 /*x*/, sint16 /*y*/, sint16 /*z*/) override { return nullptr; }
+        IAudioChannel * PlaySoundPanned(sint32 /*soundId*/, sint32 /*pan*/, sint16 /*x*/, sint16 /*y*/, sint16 /*z*/) override { return nullptr; }
 
         void ToggleAllSounds() override { }
         void PauseSounds() override { }
@@ -45,8 +45,8 @@ namespace OpenRCT2 { namespace Audio
         void StopVehicleSounds() override { }
     };
 
-    IAudioContext * CreateDummyAudioContext()
+    std::unique_ptr<IAudioContext> CreateDummyAudioContext()
     {
-        return new DummyAudioContext();
+        return std::make_unique<DummyAudioContext>();
     }
-} }
+} // namespace OpenRCT2::Audio

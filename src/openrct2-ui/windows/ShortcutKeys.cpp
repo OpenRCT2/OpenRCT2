@@ -20,6 +20,7 @@
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/drawing/Drawing.h>
 
 #define WW 420
 #define WH 280
@@ -27,6 +28,7 @@
 #define WW_SC_MAX 1200
 #define WH_SC_MAX 800
 
+// clang-format off
 enum WINDOW_SHORTCUT_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -152,7 +154,10 @@ const rct_string_id ShortcutStringIds[SHORTCUT_COUNT] = {
     STR_LOAD_GAME,
     STR_SHORTCUT_CLEAR_SCENERY,
     STR_SHORTCUT_GRIDLINES_DISPLAY_TOGGLE,
+    STR_SHORTCUT_VIEW_CLIPPING,
+    STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE,
 };
+// clang-format on
 
 
 /**

@@ -19,7 +19,7 @@
 
 #include "SegmentSupportHeightCall.hpp"
 
-#include <openrct2/paint/tile_element/TileElement.h>
+#include <openrct2/paint/tile_element/Paint.TileElement.h>
 
 static bool SortSegmentSupportCalls(SegmentSupportCall lhs, SegmentSupportCall rhs)
 {
@@ -46,11 +46,11 @@ std::vector<SegmentSupportCall> SegmentSupportHeightCall::getSegmentCalls(suppor
     std::vector<SegmentSupportCall> calls;
 
     while (positionsRemaining != 0) {
-        SegmentSupportCall call = {0};
+        SegmentSupportCall call = {};
         call.height = -1;
         call.slope = -1;
 
-        support_height referenceSupport = { 0 };
+        support_height referenceSupport = {};
 
         for (int i = 0; i < 9; i++) {
             if (positionsRemaining & segment_offsets[i]) {

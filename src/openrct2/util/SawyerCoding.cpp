@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cstring>
+
 #include "../core/Math.hpp"
 #include "../platform/platform.h"
 #include "../scenario/Scenario.h"

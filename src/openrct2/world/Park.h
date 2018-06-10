@@ -14,10 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _PARK_H_
-#define _PARK_H_
+#pragma once
 
 #include "../common.h"
+#include "../ride/Ride.h"
+#include "Map.h"
 
 #define DECRYPT_MONEY(money) ((money32)rol32((money) ^ 0xF4EC9621, 13))
 #define ENCRYPT_MONEY(money) ((money32)(ror32((money), 13) ^ 0xF4EC9621))
@@ -26,7 +27,8 @@
 
 struct rct_peep;
 
-enum {
+enum : uint32
+{
     PARK_FLAGS_PARK_OPEN = (1 << 0),
     PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT = (1 << 1),
     PARK_FLAGS_FORBID_LANDSCAPE_CHANGES = (1 << 2),
@@ -47,6 +49,51 @@ enum {
     PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19), // Not used anymore
     PARK_FLAGS_UNLOCK_ALL_PRICES = (1u << 31), // OpenRCT2 only!
 };
+
+struct rct_peep;
+struct rct_ride;
+
+namespace OpenRCT2
+{
+    class Date;
+
+    class Park final
+    {
+    public:
+        Park() = default;
+        Park(const Park&) = delete;
+
+        bool IsOpen() const;
+
+        uint16  GetParkRating() const;
+        money32 GetParkValue() const;
+        money32 GetCompanyValue() const;
+
+        void Initialise();
+        void Update(const Date &date);
+
+        sint32          CalculateParkSize() const;
+        sint32          CalculateParkRating() const;
+        money32         CalculateParkValue() const;
+        money32         CalculateCompanyValue() const;
+        static uint8    CalculateGuestInitialHappiness(uint8 percentage);
+
+        rct_peep *  GenerateGuest();
+
+        void ResetHistories();
+        void UpdateHistories();
+
+    private:
+        money32     CalculateRideValue(const Ride * ride) const;
+        money16     CalculateTotalRideValueForMoney() const;
+        uint32      CalculateSuggestedMaxGuests() const;
+        uint32      CalculateGuestGenerationProbability() const;
+
+        void        GenerateGuests();
+        rct_peep *  GenerateGuestFromCampaign(sint32 campaign);
+
+    };
+}
 
 enum
 {
@@ -84,20 +131,12 @@ void set_forced_park_rating(sint32 rating);
 sint32 get_forced_park_rating();
 
 sint32 park_is_open();
-void park_init();
-void park_reset_history();
 sint32 park_calculate_size();
 
-sint32 calculate_park_rating();
-money32 calculate_park_value();
-money32 calculate_company_value();
 void reset_park_entry();
-rct_peep * park_generate_new_guest();
 
-void park_update();
-void park_update_histories();
-void update_park_fences(sint32 x, sint32 y);
-void update_park_fences_around_tile(sint32 x, sint32 y);
+void update_park_fences(CoordsXY coords);
+void update_park_fences_around_tile(CoordsXY coords);
 
 uint8 calculate_guest_initial_happiness(uint8 percentage);
 
@@ -110,12 +149,9 @@ sint32 map_buy_land_rights(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 se
 
 void game_command_set_park_entrance_fee(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void game_command_set_park_open(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
-void game_command_set_park_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void game_command_buy_land_rights(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 
 money16 park_get_entrance_fee();
 
 bool park_ride_prices_unlocked();
 bool park_entry_price_unlocked();
-
-#endif

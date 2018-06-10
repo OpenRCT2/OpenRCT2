@@ -27,7 +27,11 @@
 #include <openrct2/sprites.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/windows/Intent.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/interface/Colour.h>
+#include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 enum {
     PAGE_RIDES,
     PAGE_SHOPS_AND_STALLS,
@@ -184,6 +188,7 @@ static constexpr const rct_string_id page_names[] = {
     STR_SHOPS_AND_STALLS,
     STR_RESTROOMS_AND_INFORMATION_KIOSKS,
 };
+// clang-format on
 
 static sint32 _window_ride_list_information_type;
 
@@ -451,7 +456,7 @@ static void window_ride_list_scrollmousedown(rct_window *w, sint32 scrollIndex, 
     // Open ride window
     uint8 rideIndex = w->list_item_positions[index];
     if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT) {
-        ride_demolish(rideIndex, GAME_COMMAND_FLAG_APPLY);
+        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
         window_ride_list_refresh_list(w);
     }
     else {
@@ -598,7 +603,9 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
         ride = get_ride(w->list_item_positions[i]);
 
         // Ride name
-        gfx_draw_string_left_clipped(dpi, format, &ride->name, COLOUR_BLACK, 0, y - 1, 159);
+        set_format_arg(0, rct_string_id, ride->name);
+        set_format_arg(2, uint32, ride->name_arguments);
+        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1, 159);
 
         // Ride information
         formatSecondary = 0;

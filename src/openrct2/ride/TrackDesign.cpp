@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,6 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../Cheats.h"
+#include "../core/File.h"
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
@@ -39,8 +40,12 @@
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/Footpath.h"
+#include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
+#include "../world/Surface.h"
+#include "../world/Wall.h"
+#include "../actions/WallRemoveAction.hpp"
 
 struct map_backup
 {
@@ -88,21 +93,18 @@ rct_track_td6 * track_design_open(const utf8 * path)
 {
     log_verbose("track_design_open(\"%s\")", path);
 
-    uint8  * buffer;
-    size_t bufferLength;
-    if (readentirefile(path, (void **) &buffer, &bufferLength))
+    try
     {
-        if (!sawyercoding_validate_track_checksum(buffer, bufferLength))
+        auto buffer = File::ReadAllBytes(path);
+        if (!sawyercoding_validate_track_checksum(buffer.data(), buffer.size()))
         {
             log_error("Track checksum failed. %s", path);
-            free(buffer);
             return nullptr;
         }
 
         // Decode the track data
         uint8 * decoded = (uint8 *) malloc(0x10000);
-        size_t decodedLength = sawyercoding_decode_td6(buffer, decoded, bufferLength);
-        free(buffer);
+        size_t decodedLength = sawyercoding_decode_td6(buffer.data(), decoded, buffer.size());
         decoded = (uint8 *) realloc(decoded, decodedLength);
         if (decoded == nullptr)
         {
@@ -119,6 +121,10 @@ rct_track_td6 * track_design_open(const utf8 * path)
                 return td6;
             }
         }
+    }
+    catch (const std::exception& e)
+    {
+        log_error("Unable to load track design: %s", e.what());
     }
     return nullptr;
 }
@@ -697,8 +703,7 @@ static void track_design_update_max_min_coordinates(sint16 x, sint16 y, sint16 z
  *  rct2: 0x006D0964
  */
 static sint32
-track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIndex, sint32 originX, sint32 originY,
-                           sint32 originZ)
+track_design_place_scenery(rct_td6_scenery_element * scenery_start, sint32 originX, sint32 originY, sint32 originZ)
 {
     for (uint8 mode = 0; mode <= 1; mode++)
     {
@@ -855,15 +860,17 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
                         0);
                     break;
                 case OBJECT_TYPE_WALLS:
-                    z = (scenery->z * 8 + originZ) / 8;
-                    game_do_command(
-                        mapCoord.x,
-                        flags,
-                        mapCoord.y,
-                        (z << 8) | ((rotation + scenery->flags) & 0x3),
-                        GAME_COMMAND_REMOVE_WALL,
-                        0,
-                        0);
+                    {
+                        z = (scenery->z * 8 + originZ) / 8;
+
+                        uint8_t direction = (rotation + scenery->flags) & TILE_ELEMENT_DIRECTION_MASK;
+
+                        TileCoordsXYZD wallLocation = { tile.x, tile.y, z, direction };
+                        auto wallRemoveAction = WallRemoveAction(wallLocation);
+                        wallRemoveAction.SetFlags(flags);
+
+                        GameActions::Execute(&wallRemoveAction);
+                    }
                     break;
                 case OBJECT_TYPE_PATHS:
                     z = (scenery->z * 8 + originZ) / 8;
@@ -1151,7 +1158,6 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
                 default:
                     _trackDesignPlaceStateSceneryUnavailable = true;
                     continue;
-                    break;
                 }
                 _trackDesignPlaceCost = add_clamp_money32(_trackDesignPlaceCost, cost);
                 if (_trackDesignPlaceOperation != PTD_OPERATION_2)
@@ -1350,9 +1356,9 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
                 }
             }
 
-            if (map_get_water_height(tile_element) > 0)
+            if (surface_get_water_height(tile_element) > 0)
             {
-                sint16 water_height = map_get_water_height(tile_element);
+                sint16 water_height = surface_get_water_height(tile_element);
                 water_height *= 16;
                 if (water_height > map_height)
                 {
@@ -1370,7 +1376,7 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
 
     if (_trackDesignPlaceOperation == PTD_OPERATION_CLEAR_OUTLINES)
     {
-        ride_demolish(rideIndex, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
     }
 
     gTrackPreviewOrigin.x = x;
@@ -1381,6 +1387,8 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
 
 static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
 {
+    const rct_preview_track * * trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks : FlatRideTrackBlocks;
+
     gTrackPreviewOrigin.x = x;
     gTrackPreviewOrigin.y = y;
     gTrackPreviewOrigin.z = z;
@@ -1412,7 +1420,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
         switch (_trackDesignPlaceOperation)
         {
         case PTD_OPERATION_DRAW_OUTLINES:
-            for (const rct_preview_track * trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
+            for (const rct_preview_track * trackBlock = trackBlockArray[trackType]; trackBlock->index != 0xFF; trackBlock++)
             {
                 LocationXY16 tile = {x, y};
                 map_offset_with_rotation(&tile.x, &tile.y, trackBlock->x, trackBlock->y, rotation);
@@ -1423,7 +1431,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
         case PTD_OPERATION_CLEAR_OUTLINES:
         {
             const rct_track_coordinates * trackCoordinates = &TrackCoordinates[trackType];
-            const rct_preview_track     * trackBlock       = TrackBlocks[trackType];
+            const rct_preview_track     * trackBlock       = trackBlockArray[trackType];
             sint32                      tempZ              = z - trackCoordinates->z_begin + trackBlock->z;
             uint8                       flags              =
                                             GAME_COMMAND_FLAG_APPLY |
@@ -1453,7 +1461,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
                        (tempZ & 0xFFFF);
 
             sint32 edx = _currentRideIndex | (trackType << 8);
-            if (track->flags & TRACK_ELEMENT_FLAG_CHAIN_LIFT)
+            if (track->flags & TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT)
             {
                 edx |= 0x10000;
             }
@@ -1492,7 +1500,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
         case PTD_OPERATION_GET_PLACE_Z:
         {
             sint32                       tempZ        = z - TrackCoordinates[trackType].z_begin;
-            for (const rct_preview_track * trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
+            for (const rct_preview_track * trackBlock = trackBlockArray[trackType]; trackBlock->index != 0xFF; trackBlock++)
             {
                 sint16 tmpX = x;
                 sint16 tmpY = y;
@@ -1519,7 +1527,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
                     }
                 }
 
-                uint8 water_height = map_get_water_height(tileElement) * 16;
+                uint8 water_height = surface_get_water_height(tileElement) * 16;
                 if (water_height > 0 && water_height > height)
                 {
                     height = water_height;
@@ -1546,8 +1554,8 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
         }
         else
         {
-            x += TileDirectionDelta[rotation].x;
-            y += TileDirectionDelta[rotation].y;
+            x += CoordsDirectionDelta[rotation].x;
+            y += CoordsDirectionDelta[rotation].y;
         }
     }
 
@@ -1584,8 +1592,8 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
             if (_trackDesignPlaceOperation != PTD_OPERATION_1)
             {
                 LocationXY16        tile          = {
-                    (sint16) (x + TileDirectionDelta[rotation].x),
-                    (sint16) (y + TileDirectionDelta[rotation].y)
+                    (sint16) (x + CoordsDirectionDelta[rotation].x),
+                    (sint16) (y + CoordsDirectionDelta[rotation].y)
                 };
                 rct_tile_element * tile_element = map_get_first_element_at(tile.x >> 5, tile.y >> 5);
                 z = gTrackPreviewOrigin.z / 8;
@@ -1593,7 +1601,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
 
                 do
                 {
-                    if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_TRACK)
+                    if (tile_element->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     {
                         continue;
                     }
@@ -1632,7 +1640,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
                     _trackDesignPlaceStateEntranceExitPlaced = true;
                     break;
                 }
-                while (!tile_element_is_last_for_tile(tile_element++));
+                while (!(tile_element++)->IsLastForTile());
             }
             else
             {
@@ -1720,7 +1728,6 @@ sint32 place_virtual_track(rct_track_td6 * td6, uint8 ptdOperation, bool placeSc
     {
         if (!track_design_place_scenery(
             scenery,
-            rideIndex,
             gTrackPreviewOrigin.x,
             gTrackPreviewOrigin.y,
             gTrackPreviewOrigin.z
@@ -1789,6 +1796,17 @@ static bool track_design_place_preview(rct_track_td6 * td6, money32 * cost, uint
         ride->track_colour_main[i]       = td6->track_spine_colour[i];
         ride->track_colour_additional[i] = td6->track_rail_colour[i];
         ride->track_colour_supports[i]   = td6->track_support_colour[i];
+    }
+
+    // Flat rides need their vehicle colours loaded for display
+    // in the preview window
+    if (!ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK))
+    {
+        for (sint32 i = 0; i < RCT12_MAX_VEHICLE_COLOURS; i++)
+        {
+            ride->vehicle_colours[i] = td6->vehicle_colours[i];
+            ride->vehicle_colours_extended[i] = td6->vehicle_additional_colour[i];
+        }
     }
 
     byte_9D8150 = true;
@@ -1885,7 +1903,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
         const ObjectRepositoryItem * ori = object_repository_find_object_by_name(rideEntryObject->name);
         if (ori != nullptr)
         {
-            uint8             rideGroupIndex = ori->RideGroupIndex;
+            uint8             rideGroupIndex = ori->RideInfo.RideGroupIndex;
             const RideGroup * td6RideGroup = RideGroupManager::RideGroupFind(td6->type, rideGroupIndex);
 
             uint8 * availableRideEntries = get_ride_entry_indices_for_ride_type(td6->type);
@@ -1899,7 +1917,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
                 }
 
                 const RideGroup * irg = RideGroupManager::GetRideGroup(td6->type, ire);
-                if (RideGroupManager::RideGroupsAreEqual(td6RideGroup, irg))
+                if (td6RideGroup->Equals(irg))
                 {
                     entryIndex = *rei;
                     break;
@@ -1955,7 +1973,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
     if (cost == MONEY32_UNDEFINED || !(flags & GAME_COMMAND_FLAG_APPLY))
     {
         rct_string_id error_reason = gGameCommandErrorText;
-        ride_demolish(rideIndex, GAME_COMMAND_FLAG_APPLY);
+        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
         gGameCommandErrorText   = error_reason;
         gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         *outRideIndex = rideIndex;
@@ -2006,7 +2024,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
         ride->track_colour_supports[i]   = td6->track_support_colour[i];
     }
 
-    for (sint32 i = 0; i < 32; i++)
+    for (sint32 i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
     {
         ride->vehicle_colours[i].body_colour = td6->vehicle_colours[i].body_colour;
         ride->vehicle_colours[i].trim_colour = td6->vehicle_colours[i].trim_colour;
@@ -2163,8 +2181,14 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
  *
  *  rct2: 0x006D13FE
  */
-void game_command_place_track_design(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                     sint32 * ebp)
+void game_command_place_track_design(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    [[maybe_unused]] sint32 * edx,
+    [[maybe_unused]] sint32 * esi,
+    sint32 *                  edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     sint16 x     = *eax & 0xFFFF;
     sint16 y     = *ecx & 0xFFFF;
@@ -2179,8 +2203,8 @@ void game_command_place_track_design(sint32 * eax, sint32 * ebx, sint32 * ecx, s
  *
  *  rct2: 0x006CDEE4
  */
-void game_command_place_maze_design(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                    sint32 * ebp)
+void game_command_place_maze_design(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, [[maybe_unused]] sint32 * ebp)
 {
     *ebx = place_maze_design(
         *ebx & 0xFF,
@@ -2233,6 +2257,14 @@ void track_design_draw_preview(rct_track_td6 * td6, uint8 * pixels)
     sint32 size_x = gTrackPreviewMax.x - gTrackPreviewMin.x;
     sint32 size_y = gTrackPreviewMax.y - gTrackPreviewMin.y;
     sint32 size_z = gTrackPreviewMax.z - gTrackPreviewMin.z;
+
+    // Special case for flat rides - Z-axis info is irrelevant
+    // and must be zeroed out lest the preview be off-centre
+    if (!ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK))
+    {
+        centre.z = 0;
+        size_z = 0;
+    }
 
     sint32 zoom_level = 1;
 

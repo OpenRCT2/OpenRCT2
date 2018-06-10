@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../Cheats.h"
+#include "../management/Finance.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "../ride/TrackDesign.h"
@@ -23,10 +24,12 @@
 #include "Park.h"
 #include "Scenery.h"
 #include "SmallScenery.h"
+#include "MapAnimation.h"
+#include "Surface.h"
 
 static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 flags)
 {
-    if (!map_is_location_valid(x, y))
+    if (!map_is_location_valid({x, y}))
     {
         return MONEY32_UNDEFINED;
     }
@@ -77,7 +80,7 @@ static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 qu
     bool sceneryFound = false;
     rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             continue;
         if ((tileElement->type >> 6) != quadrant)
             continue;
@@ -91,7 +94,7 @@ static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 qu
 
         sceneryFound = true;
         break;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 
     if (!sceneryFound)
     {
@@ -270,9 +273,9 @@ static money32 SmallSceneryPlace(sint16 x,
 
     rct_tile_element* surfaceElement = map_get_surface_element_at({x, y});
 
-    if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && map_get_water_height(surfaceElement) > 0)
+    if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surface_get_water_height(surfaceElement) > 0)
     {
-        sint32 water_height = (map_get_water_height(surfaceElement) * 16) - 1;
+        sint32 water_height = (surface_get_water_height(surfaceElement) * 16) - 1;
         if (water_height > targetHeight)
         {
             gGameCommandErrorText = STR_CANT_BUILD_THIS_UNDERWATER;
@@ -288,9 +291,9 @@ static money32 SmallSceneryPlace(sint16 x,
             return MONEY32_UNDEFINED;
         }
 
-        if (surfaceElement != nullptr && map_get_water_height(surfaceElement) > 0)
+        if (surfaceElement != nullptr && surface_get_water_height(surfaceElement) > 0)
         {
-            if ((map_get_water_height(surfaceElement) * 16) > targetHeight)
+            if ((surface_get_water_height(surfaceElement) * 16) > targetHeight)
             {
                 gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ON_LAND;
                 return MONEY32_UNDEFINED;
@@ -319,7 +322,7 @@ static money32 SmallSceneryPlace(sint16 x,
         {
             if (surfaceElement != nullptr)
             {
-                if (map_get_water_height(surfaceElement) ||
+                if (surface_get_water_height(surfaceElement) ||
                     (surfaceElement->base_height * 8) != targetHeight)
                 {
 
@@ -441,7 +444,14 @@ static money32 SmallSceneryPlace(sint16 x,
  *
  *  rct2: 0x006E0E01
  */
-void game_command_remove_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_remove_scenery(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     *ebx = SmallSceneryRemove(
         *eax & 0xFFFF,
@@ -457,7 +467,14 @@ void game_command_remove_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
  *
  *  rct2: 0x006E0F26
  */
-void game_command_set_scenery_colour(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_set_scenery_colour(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    sint32 *                  ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    sint32 *                  ebp)
 {
     *ebx = SmallScenerySetColour(
         *eax & 0xFFFF,
@@ -477,7 +494,7 @@ void game_command_set_scenery_colour(sint32* eax, sint32* ebx, sint32* ecx, sint
  */
 sint32 map_place_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price)
 {
-    if (tile_element_get_type(*tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+    if ((*tile_element)->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return 1;
 
     if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
@@ -514,7 +531,7 @@ sint32 map_place_scenery_clear_func(rct_tile_element** tile_element, sint32 x, s
  */
 sint32 map_place_non_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price)
 {
-    if (tile_element_get_type(*tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+    if ((*tile_element)->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return 1;
 
     rct_scenery_entry* scenery = get_small_scenery_entry((*tile_element)->properties.scenery.type);
@@ -546,7 +563,8 @@ sint32 map_place_non_scenery_clear_func(rct_tile_element** tile_element, sint32 
  *
  *  rct2: 0x006E08F4
  */
-void game_command_place_scenery(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_place_scenery(
+    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     *ebx = SmallSceneryPlace(
         *eax & 0xFFFF,

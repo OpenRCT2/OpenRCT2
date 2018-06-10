@@ -18,11 +18,15 @@
 
 #include <cmath>
 #include <chrono>
+#include <cstring>
 #include <future>
 #include <string>
 #include <thread>
 
 // clang-format off
+// MSVC: include <math.h> here otherwise PI gets defined twice
+#include <cmath>
+
 #ifdef _WIN32
     // winsock2 must be included before windows.h
     #include <winsock2.h>
@@ -89,9 +93,7 @@ private:
     std::string         _error;
 
 public:
-    TcpSocket()
-    {
-    }
+    TcpSocket() = default;
 
     ~TcpSocket() override
     {
@@ -124,7 +126,7 @@ public:
             throw std::runtime_error("Socket not closed.");
         }
 
-        sockaddr_storage ss;
+        sockaddr_storage ss { };
         sint32 ss_len;
         if (!ResolveAddress(address, port, &ss, &ss_len))
         {
@@ -184,7 +186,7 @@ public:
         {
             throw std::runtime_error("Socket not listening.");
         }
-        struct sockaddr_storage client_addr;
+        struct sockaddr_storage client_addr { };
         socklen_t client_len = sizeof(struct sockaddr_storage);
 
         ITcpSocket * tcpSocket = nullptr;
@@ -237,7 +239,7 @@ public:
             // Resolve address
             _status = SOCKET_STATUS_RESOLVING;
 
-            sockaddr_storage ss;
+            sockaddr_storage ss { };
             sint32 ss_len;
             if (!ResolveAddress(address, port, &ss, &ss_len))
             {
@@ -289,7 +291,7 @@ public:
 #pragma warning(disable : 4548) // expression before comma has no effect; expected expression with side-effect
                 FD_SET(_socket, &writeFD);
 #pragma warning(pop)
-                timeval timeout;
+                timeval timeout { };
                 timeout.tv_sec = 0;
                 timeout.tv_usec = 0;
                 if (select((sint32)(_socket + 1), nullptr, &writeFD, nullptr, &timeout) > 0)
@@ -389,7 +391,17 @@ public:
         else if (readBytes == SOCKET_ERROR)
         {
             *sizeReceived = 0;
-            if (LAST_SOCKET_ERROR() != EWOULDBLOCK && LAST_SOCKET_ERROR() != EAGAIN)
+#ifndef _WIN32
+            // Removing the check for EAGAIN and instead relying on the values being the same allows turning on of
+            // -Wlogical-op warning.
+            // This is not true on Windows, see:
+            // * https://msdn.microsoft.com/en-us/library/windows/desktop/ms737828(v=vs.85).aspx
+            // * https://msdn.microsoft.com/en-us/library/windows/desktop/ms741580(v=vs.85).aspx
+            // * https://msdn.microsoft.com/en-us/library/windows/desktop/ms740668(v=vs.85).aspx
+            static_assert(EWOULDBLOCK == EAGAIN, "Portability note: your system has different values for EWOULDBLOCK "
+                    "and EAGAIN, please extend the condition below");
+#endif // _WIN32
+            if (LAST_SOCKET_ERROR() != EWOULDBLOCK)
             {
                 return NETWORK_READPACKET_DISCONNECTED;
             }
@@ -440,7 +452,7 @@ private:
     {
         std::string serviceName = std::to_string(port);
 
-        addrinfo hints = { 0 };
+        addrinfo hints = {};
         hints.ai_family = AF_UNSPEC;
         if (address == nullptr)
         {
@@ -532,6 +544,6 @@ namespace Convert
     {
         return ntohs(value);
     }
-}
+} // namespace Convert
 
 #endif

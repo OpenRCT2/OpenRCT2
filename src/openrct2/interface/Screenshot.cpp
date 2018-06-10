@@ -21,7 +21,7 @@
 #include "../audio/audio.h"
 #include "../Context.h"
 #include "../core/Console.hpp"
-#include "../Imaging.h"
+#include "../core/Imaging.h"
 #include "../OpenRCT2.h"
 #include "Screenshot.h"
 
@@ -32,11 +32,37 @@
 #include "../platform/platform.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
+#include "../world/Map.h"
+#include "../world/Park.h"
+#include "../world/Surface.h"
 #include "Viewport.h"
 
 using namespace OpenRCT2;
 
 uint8 gScreenshotCountdown = 0;
+
+static bool WriteDpiToFile(const std::string_view& path, const rct_drawpixelinfo * dpi, const rct_palette& palette)
+{
+    auto const pixels8 = dpi->bits;
+    auto const pixelsLen = (dpi->width + dpi->pitch) * dpi->height;
+    try
+    {
+        Image image;
+        image.Width = dpi->width;
+        image.Height = dpi->height;
+        image.Depth = 8;
+        image.Stride = dpi->width + dpi->pitch;
+        image.Palette = std::make_unique<rct_palette>(palette);
+        image.Pixels = std::vector<uint8>(pixels8, pixels8 + pixelsLen);
+        Imaging::WriteToFile(path, image, IMAGE_FORMAT::PNG);
+        return true;
+    }
+    catch (const std::exception& e)
+    {
+        log_error("Unable to write png: %s", e.what());
+        return false;
+    }
+}
 
 /**
  *
@@ -150,9 +176,12 @@ sint32 screenshot_dump_png(rct_drawpixelinfo *dpi)
     rct_palette renderedPalette;
     screenshot_get_rendered_palette(&renderedPalette);
 
-    if (image_io_png_write(dpi, &renderedPalette, path)) {
+    if (WriteDpiToFile(path, dpi, renderedPalette))
+    {
         return index;
-    } else {
+    }
+    else
+    {
         return -1;
     }
 }
@@ -166,9 +195,23 @@ sint32 screenshot_dump_png_32bpp(sint32 width, sint32 height, const void *pixels
         return -1;
     }
 
-    if (image_io_png_write_32bpp(width, height, pixels, path)) {
+    const auto pixels8 = (const uint8 *)pixels;
+    const auto pixelsLen = width * 4 * height;
+
+    try
+    {
+        Image image;
+        image.Width = width;
+        image.Height = height;
+        image.Depth = 32;
+        image.Stride = width * 4;
+        image.Pixels = std::vector<uint8>(pixels8, pixels8 + pixelsLen);
+        Imaging::WriteToFile(path, image, IMAGE_FORMAT::PNG_32);
         return index;
-    } else {
+    }
+    catch (const std::exception &e)
+    {
+        log_error("Unable to save screenshot: %s", e.what());
         return -1;
     }
 }
@@ -256,7 +299,7 @@ void screenshot_giant()
     rct_palette renderedPalette;
     screenshot_get_rendered_palette(&renderedPalette);
 
-    image_io_png_write(&dpi, &renderedPalette, path);
+    WriteDpiToFile(path, &dpi, renderedPalette);
 
     free(dpi.bits);
 
@@ -445,7 +488,6 @@ sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOption
         {
             std::printf("%s\n", e.what());
             drawing_engine_dispose();
-            delete context;
             return -1;
         }
 
@@ -515,7 +557,6 @@ sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOption
             {
                 std::printf("Weather can only be set to an integer value from 1 till 6.");
                 drawing_engine_dispose();
-                delete context;
                 return -1;
             }
 
@@ -575,11 +616,10 @@ sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOption
         rct_palette renderedPalette;
         screenshot_get_rendered_palette(&renderedPalette);
 
-        image_io_png_write(&dpi, &renderedPalette, outputPath);
+        WriteDpiToFile(outputPath, &dpi, renderedPalette);
 
         free(dpi.bits);
         drawing_engine_dispose();
     }
-    delete context;
     return 1;
 }

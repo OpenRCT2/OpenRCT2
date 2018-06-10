@@ -30,7 +30,11 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Scenery.h>
+#include <openrct2/management/Research.h>
+#include <openrct2/scenario/Scenario.h>
+#include <openrct2/world/Park.h>
 
+// clang-format off
 enum {
     WIDX_PREVIOUS_IMAGE,        // 1
     WIDX_PREVIOUS_STEP_BUTTON,  // 2
@@ -124,6 +128,7 @@ static constexpr const rct_string_id EditorStepNames[] = {
     STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER,
     STR_EDITOR_STEP_TRACK_DESIGNS_MANAGER,
 };
+// clang-format on
 
 /**
 * Creates the main editor top toolbar window.
@@ -307,7 +312,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 *
 *  rct2: 0x0066F5AE
 */
-static void window_editor_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_editor_bottom_toolbar_mouseup([[maybe_unused]] rct_window * w, rct_widgetindex widgetIndex)
 {
     if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON) {
         if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) ||

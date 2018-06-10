@@ -20,7 +20,7 @@
 
 #include "Drawing.h"
 
-namespace OpenRCT2 { namespace Drawing
+namespace OpenRCT2::Drawing
 {
     interface IDrawingEngine;
 
@@ -39,4 +39,4 @@ namespace OpenRCT2 { namespace Drawing
         virtual void DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour)                          abstract;
         virtual void DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette)                             abstract;
     };
-} }
+} // namespace OpenRCT2::Drawing

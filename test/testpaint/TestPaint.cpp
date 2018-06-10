@@ -27,6 +27,7 @@
 #include <openrct2/paint/Paint.h>
 #include <openrct2/paint/Supports.h>
 #include <openrct2/ride/TrackData.h>
+#include <openrct2/scenario/Scenario.h>
 #include <openrct2/interface/Viewport.h>
 
 namespace TestPaint
@@ -45,23 +46,23 @@ namespace TestPaint
         gPaintSession.TrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
         gPaintSession.TrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
 
-        rct_drawpixelinfo dpi = { 0 };
+        rct_drawpixelinfo dpi = {};
         dpi.zoom_level = 1;
         RCT2_Unk140E9A8 = &dpi;
-        gPaintSession.Unk140E9A8 = &dpi;
+        gPaintSession.DPI = &dpi;
 
         {
-            Ride ride = {0};
+            Ride ride = {};
             ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
-            static rct_ride_entry rideEntry = {0};
-            rct_ride_entry_vehicle vehicleEntry { 0 };
+            static rct_ride_entry rideEntry = {};
+            rct_ride_entry_vehicle vehicleEntry {};
             vehicleEntry.base_image_id = 0x70000;
             rideEntry.vehicles[0] = vehicleEntry;
             gRideList[0] = ride;
             gRideEntries[0] = &rideEntry;
         }
         {
-            rct2_ride ride = {0};
+            rct2_ride ride = {};
             ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
             RCT2_Rides[0] = ride;
         }

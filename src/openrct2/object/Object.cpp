@@ -71,9 +71,14 @@ std::string Object::GetString(uint8 index) const
     auto sz = GetOverrideString(index);
     if (sz.empty())
     {
-        sz = GetStringTable()->GetString(index);
+        sz = GetStringTable().GetString(index);
     }
     return sz;
+}
+
+std::string Object::GetString(sint32 language, uint8 index) const
+{
+    return GetStringTable().GetString(language, index);
 }
 
 rct_object_entry Object::GetScgWallsHeader()
@@ -88,7 +93,7 @@ rct_object_entry Object::GetScgPathXHeader()
 
 rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32 flags, uint32 checksum)
 {
-    rct_object_entry header = { 0 };
+    rct_object_entry header = {};
     header.flags = flags;
     std::copy_n(name, DAT_NAME_LENGTH, header.name);
     header.checksum = checksum;
@@ -709,6 +714,11 @@ bool Object::IsOpenRCT2OfficialObject()
 std::string Object::GetName() const
 {
     return GetString(OBJ_STRING_ID_NAME);
+}
+
+std::string Object::GetName(sint32 language) const
+{
+    return GetString(language, OBJ_STRING_ID_NAME);
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

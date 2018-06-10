@@ -89,6 +89,22 @@ namespace Platform
         std::strftime(time, sizeof(time), "%X", std::gmtime(&timestamp));
         return std::string(time);
     }
+
+    bool IsColourTerminalSupported()
+    {
+        static bool hasChecked = false;
+        static bool isSupported = false;
+        if (!hasChecked)
+        {
+            auto term = GetEnvironmentVariable("TERM");
+            isSupported =
+                term != "cons25" &&
+                term != "dumb" &&
+                term != "emacs";
+            hasChecked = true;
+        }
+        return isSupported;
+    }
 }
 
 #endif

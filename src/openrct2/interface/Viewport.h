@@ -18,6 +18,7 @@
 #define _VIEWPORT_H_
 
 #include "Window.h"
+#include "../world/Location.hpp"
 
 struct paint_session;
 struct paint_struct;
@@ -47,7 +48,7 @@ enum {
     VIEWPORT_FLAG_INVISIBLE_SPRITES = (1 << 14),
     VIEWPORT_FLAG_15 = (1 << 15),
     VIEWPORT_FLAG_SEETHROUGH_PATHS = (1 << 16),
-    VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT = (1 << 17),
+    VIEWPORT_FLAG_CLIP_VIEW = (1 << 17),
     VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES = (1 << 18),
 };
 
@@ -127,7 +128,7 @@ void viewport_update_sprite_follow(rct_window *window);
 void viewport_update_smart_sprite_follow(rct_window * window);
 void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep);
 void viewport_update_smart_staff_follow(rct_window * window, rct_peep * peep);
-void viewport_update_smart_vehicle_follow(rct_window * window, rct_vehicle * vehicle);
+void viewport_update_smart_vehicle_follow(rct_window * window);
 void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, sint32 left, sint32 top, sint32 right, sint32 bottom);
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, sint16 left, sint16 top, sint16 right, sint16 bottom);
 

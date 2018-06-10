@@ -26,18 +26,19 @@
 #include "../Context.h"
 #include "../core/File.h"
 #include "../core/FileScanner.h"
+#include "../core/Guard.hpp"
 #include "../core/Json.hpp"
 #include "../core/Math.hpp"
-#include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../core/Util.hpp"
+#include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
 #include "../PlatformEnvironment.h"
 #include "themes.h"
 #include "Window.h"
 #include "Window_internal.h"
+#include "Colour.h"
 
 using namespace OpenRCT2;
 
@@ -303,7 +304,7 @@ UIThemeWindowEntry UIThemeWindowEntry::FromJson(const WindowThemeDesc * wtDesc, 
     uint8 numColours = (uint8)json_array_size(jsonColours);
     numColours = Math::Min(numColours, wtDesc->NumColours);
 
-    UIThemeWindowEntry result;
+    UIThemeWindowEntry result { };
     result.WindowClass = wtDesc->WindowClass;
     result.Theme = wtDesc->DefaultTheme;
 
@@ -523,7 +524,7 @@ namespace ThemeManager
         NumPredefinedThemes = 0;
         for (auto predefinedTheme : PredefinedThemes)
         {
-            AvailableTheme theme;
+            AvailableTheme theme {};
             theme.Name = predefinedTheme.Theme->Name;
             outThemes->push_back(std::move(theme));
 
@@ -537,7 +538,7 @@ namespace ThemeManager
             auto fileInfo = scanner->GetFileInfo();
             auto name = Path::GetFileNameWithoutExtension(std::string(fileInfo->Name));
 
-            AvailableTheme theme;
+            AvailableTheme theme {};
             theme.Name = name;
             theme.Path = GetThemeFileName(theme.Name);
             outThemes->push_back(std::move(theme));
@@ -656,7 +657,7 @@ namespace ThemeManager
         auto env = context->GetPlatformEnvironment();
         return env->GetDirectoryPath(DIRBASE::USER, DIRID::THEME);
     }
-}
+} // namespace ThemeManager
 
 void theme_manager_load_available_themes()
 {
@@ -746,7 +747,7 @@ uint8 theme_get_colour(rct_windowclass wc, uint8 index)
 
 void theme_set_colour(rct_windowclass wc, uint8 index, colour_t colour)
 {
-    UIThemeWindowEntry entry;
+    UIThemeWindowEntry entry { };
     entry.WindowClass = wc;
 
     auto currentEntry = (UIThemeWindowEntry *)ThemeManager::CurrentTheme->GetEntry(wc);

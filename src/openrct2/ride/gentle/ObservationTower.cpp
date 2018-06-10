@@ -35,7 +35,7 @@ enum
  *  rct2: 0x006D6258
  */
 void vehicle_visual_observation_tower(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z,
-                                      rct_vehicle * vehicle, const rct_ride_entry_vehicle * vehicleEntry)
+                                      const rct_vehicle * vehicle, const rct_ride_entry_vehicle * vehicleEntry)
 {
     sint32 image_id;
     sint32 baseImage_id = (vehicle->restraints_position / 64);
@@ -176,7 +176,7 @@ static void paint_observation_tower_section(
     sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
 
     const rct_tile_element * nextTileElement = tileElement + 1;
-    if (tile_element_is_last_for_tile(tileElement) || tileElement->clearance_height != nextTileElement->base_height)
+    if (tileElement->IsLastForTile() || tileElement->clearance_height != nextTileElement->base_height)
     {
         imageId = SPR_OBSERVATION_TOWER_SEGMENT_TOP | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);

@@ -24,7 +24,7 @@
 #include "AudioContext.h"
 #include "AudioFormat.h"
 
-namespace OpenRCT2 { namespace Audio
+namespace OpenRCT2::Audio
 {
     class AudioChannelImpl : public ISDLAudioChannel
     {
@@ -247,7 +247,7 @@ namespace OpenRCT2 { namespace Audio
 
         AudioFormat GetFormat() const override
         {
-            AudioFormat result = { 0 };
+            AudioFormat result = {};
             // The second check is there because NullAudioSource does not implement GetFormat. Avoid calling it.
             if (_source != nullptr && _source->GetLength() > 0)
             {
@@ -295,4 +295,4 @@ namespace OpenRCT2 { namespace Audio
     {
         return new (std::nothrow) AudioChannelImpl();
     }
-} }
+} // namespace OpenRCT2::Audio

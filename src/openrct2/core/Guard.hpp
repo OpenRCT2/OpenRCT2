@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include <stdarg.h>
 #include <stdbool.h>
 
@@ -53,6 +54,15 @@ namespace Guard
     }
 
     template<typename T>
+    static void ArgumentNotNull(const std::shared_ptr<T>& argument, const char * message = nullptr, ...)
+    {
+        va_list args;
+        va_start(args, message);
+        Assert_VA(argument != nullptr, message, args);
+        va_end(args);
+    }
+
+    template<typename T>
     static void ArgumentInRange(T argument, T min, T max, const char * message = nullptr, ...)
     {
         va_list args;
@@ -60,6 +70,6 @@ namespace Guard
         Assert(argument >= min && argument <= max, message, args);
         va_end(args);
     }
-}
+} // namespace Guard
 
 #define GUARD_LINE "Location: %s:%d", __func__, __LINE__

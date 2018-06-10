@@ -23,7 +23,9 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 enum {
     WINDOW_MULTIPLAYER_PAGE_INFORMATION,
     WINDOW_MULTIPLAYER_PAGE_PLAYERS,
@@ -41,7 +43,11 @@ enum WINDOW_MULTIPLAYER_WIDGET_IDX {
     WIDX_TAB3,
     WIDX_TAB4,
 
-    WIDX_LIST = 8,
+    WIDX_HEADER_PLAYER = 8,
+    WIDX_HEADER_GROUP,
+    WIDX_HEADER_LAST_ACTION,
+    WIDX_HEADER_PING,
+    WIDX_LIST,
 
     WIDX_DEFAULT_GROUP = 8,
     WIDX_DEFAULT_GROUP_DROPDOWN,
@@ -58,8 +64,8 @@ enum WINDOW_MULTIPLAYER_WIDGET_IDX {
 };
 
 #define MAIN_MULTIPLAYER_WIDGETS \
-    { WWT_FRAME,            0,  0,      339,    0,      239,    0xFFFFFFFF,                 STR_NONE },                 /* panel / background   */  \
-    { WWT_CAPTION,          0,  1,      338,    1,      14,     STR_MULTIPLAYER,            STR_WINDOW_TITLE_TIP },     /* title bar            */  \
+    { WWT_FRAME,            0,  0,      339,    0,      239,    STR_NONE,                   STR_NONE },                 /* panel / background   */  \
+    { WWT_CAPTION,          0,  1,      338,    1,      14,     STR_NONE,                   STR_WINDOW_TITLE_TIP },     /* title bar            */ \
     { WWT_CLOSEBOX,         0,  327,    337,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },     /* close x button       */  \
     { WWT_RESIZE,           1,  0,      339,    43,     239,    0xFFFFFFFF,                 STR_NONE },                 /* content panel        */  \
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_SHOW_SERVER_INFO_TIP }, /* tab                  */  \
@@ -74,6 +80,10 @@ static rct_widget window_multiplayer_information_widgets[] = {
 
 static rct_widget window_multiplayer_players_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
+    { WWT_TABLE_HEADER,     0,  3,      175,    46,      60,    STR_PLAYER,                 STR_NONE },                 // Player name
+    { WWT_TABLE_HEADER,     0,  176,    258,    46,      60,    STR_GROUP,                  STR_NONE },                 // Player name
+    { WWT_TABLE_HEADER,     0,  259,    358,    46,      60,    STR_LAST_ACTION,            STR_NONE },                 // Player name
+    { WWT_TABLE_HEADER,     0,  359,    400,    46,      60,    STR_PING,                   STR_NONE },                 // Player name
     { WWT_SCROLL,           1,  3,      336,    60,     236,    SCROLL_VERTICAL,            STR_NONE },                 // list
     { WIDGETS_END }
 };
@@ -111,6 +121,13 @@ static constexpr const uint64 window_multiplayer_page_enabled_widgets[] = {
     (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4),
     (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_DEFAULT_GROUP) | (1 << WIDX_DEFAULT_GROUP_DROPDOWN) | (1 << WIDX_ADD_GROUP) | (1 << WIDX_REMOVE_GROUP) | (1 << WIDX_RENAME_GROUP) | (1 << WIDX_SELECTED_GROUP) | (1 << WIDX_SELECTED_GROUP_DROPDOWN),
     (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_LOG_CHAT_CHECKBOX) | (1 << WIDX_LOG_SERVER_ACTIONS_CHECKBOX) | (1 << WIDX_KNOWN_KEYS_ONLY_CHECKBOX),
+};
+
+static constexpr rct_string_id WindowMultiplayerPageTitles[] = {
+    STR_MULTIPLAYER_INFORMATION_TITLE,
+    STR_MULTIPLAYER_PLAYERS_TITLE,
+    STR_MULTIPLAYER_GROUPS_TITLE,
+    STR_MULTIPLAYER_OPTIONS_TITLE,
 };
 
 static uint8 _selectedGroup = 0;
@@ -280,6 +297,7 @@ static rct_window_event_list *window_multiplayer_page_events[] = {
     &window_multiplayer_groups_events,
     &window_multiplayer_options_events
 };
+// clang-format on
 
 static constexpr const sint32 window_multiplayer_animation_divisor[] = { 4, 4, 2, 2 };
 static constexpr const sint32 window_multiplayer_animation_frames[] = { 8, 8, 7, 4 };
@@ -316,6 +334,7 @@ static void window_multiplayer_set_page(rct_window* w, sint32 page)
     w->event_handlers = window_multiplayer_page_events[page];
     w->pressed_widgets = 0;
     w->widgets = window_multiplayer_page_widgets[page];
+    w->widgets[WIDX_TITLE].text = WindowMultiplayerPageTitles[page];
 
     window_event_resize_call(w);
     window_event_invalidate_call(w);
@@ -400,16 +419,17 @@ static LocationXY16 window_multiplayer_information_get_size()
     }
 
     sint32 width = 450;
-    sint32 height = 110;
-    sint32 numLines, fontSpriteBase;
+    sint32 height = 60;
+    sint32 minNumLines = 5;
+    sint32 descNumLines, fontSpriteBase;
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     utf8 * buffer = _strdup(network_get_server_description());
-    gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
+    gfx_wrap_string(buffer, width, &descNumLines, &fontSpriteBase);
     free(buffer);
 
     sint32 lineHeight = font_get_line_height(fontSpriteBase);
-    height += (numLines + 1) * lineHeight;
+    height += (minNumLines + descNumLines) * lineHeight;
 
     _windowInformationSizeDirty = false;
     _windowInformationSize = { (sint16)width, (sint16)height };
@@ -451,27 +471,26 @@ static void window_multiplayer_information_paint(rct_window *w, rct_drawpixelinf
         const utf8 * name = network_get_server_name();
         {
             gfx_draw_string_left_wrapped(dpi, (void*)&name, x, y, width, STR_STRING, w->colours[1]);
-            y += 11;
+            y += LIST_ROW_HEIGHT;
         }
-        y += 3;
+        y += LIST_ROW_HEIGHT / 2;
 
         const utf8 * description = network_get_server_description();
         if (!str_is_null_or_empty(description)) {
-            gfx_draw_string_left_wrapped(dpi, (void*)&description, x, y, width, STR_STRING, w->colours[1]);
-            y += 11;
+            y += gfx_draw_string_left_wrapped(dpi, (void*)&description, x, y, width, STR_STRING, w->colours[1]);
+            y += LIST_ROW_HEIGHT / 2;
         }
-        y += 8;
 
         const utf8 * providerName = network_get_server_provider_name();
         if (!str_is_null_or_empty(providerName)) {
             gfx_draw_string_left(dpi, STR_PROVIDER_NAME, (void*)&providerName, COLOUR_BLACK, x, y);
-            y += 11;
+            y += LIST_ROW_HEIGHT;
         }
 
         const utf8 * providerEmail = network_get_server_provider_email();
         if (!str_is_null_or_empty(providerEmail)) {
             gfx_draw_string_left(dpi, STR_PROVIDER_EMAIL, (void*)&providerEmail, COLOUR_BLACK, x, y);
-            y += 11;
+            y += LIST_ROW_HEIGHT;
         }
 
         const utf8 * providerWebsite = network_get_server_provider_website();
@@ -509,6 +528,8 @@ static void window_multiplayer_players_resize(rct_window *w)
     w->no_list_items = network_get_num_players();
     w->list_item_positions[0] = 0;
 
+    w->widgets[WIDX_HEADER_PING].right = w->width - 5;
+
     w->selected_list_item = -1;
     window_invalidate(w);
 }
@@ -528,7 +549,7 @@ static void window_multiplayer_players_scrollgetsize(rct_window *w, sint32 scrol
         window_invalidate(w);
     }
 
-    *height = network_get_num_players() * 10;
+    *height = network_get_num_players() * SCROLLABLE_ROW_HEIGHT;
     i = *height - window_multiplayer_players_widgets[WIDX_LIST].bottom + window_multiplayer_players_widgets[WIDX_LIST].top + 21;
     if (i < 0)
         i = 0;
@@ -542,7 +563,7 @@ static void window_multiplayer_players_scrollmousedown(rct_window *w, sint32 scr
 {
     sint32 index;
 
-    index = y / 10;
+    index = y / SCROLLABLE_ROW_HEIGHT;
     if (index >= w->no_list_items)
         return;
 
@@ -556,7 +577,7 @@ static void window_multiplayer_players_scrollmouseover(rct_window *w, sint32 scr
 {
     sint32 index;
 
-    index = y / 10;
+    index = y / SCROLLABLE_ROW_HEIGHT;
     if (index >= w->no_list_items)
         return;
 
@@ -581,12 +602,6 @@ static void window_multiplayer_players_paint(rct_window *w, rct_drawpixelinfo *d
     window_draw_widgets(w, dpi);
     window_multiplayer_draw_tab_images(w, dpi);
 
-    // Columns
-    gfx_draw_string_left(dpi, STR_PLAYER, nullptr, w->colours[2], w->x + 6, 58 - 12 + w->y + 1);
-    gfx_draw_string_left(dpi, STR_GROUP, nullptr, w->colours[2], w->x + 180, 58 - 12 + w->y + 1);
-    gfx_draw_string_left(dpi, STR_LAST_ACTION, nullptr, w->colours[2], w->x + 263, 58 - 12 + w->y + 1);
-    gfx_draw_string_left(dpi, STR_PING, nullptr, w->colours[2], w->x + 363, 58 - 12 + w->y + 1);
-
     // Number of players
     stringId = w->no_list_items == 1 ? STR_MULTIPLAYER_PLAYER_COUNT : STR_MULTIPLAYER_PLAYER_COUNT_PLURAL;
     x = w->x + 4;
@@ -596,25 +611,27 @@ static void window_multiplayer_players_paint(rct_window *w, rct_drawpixelinfo *d
 
 static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
-    sint32 y;
-
-    y = 0;
+    sint32 y = 0;
     for (sint32 i = 0; i < network_get_num_players(); i++) {
         if (y > dpi->y + dpi->height) {
             break;
         }
 
-        if (y + 11 >= dpi->y) {
+        if (y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi->y)
+        {
             char buffer[300];
 
             // Draw player name
             char* lineCh = buffer;
             sint32 colour = COLOUR_BLACK;
-            if (i == w->selected_list_item) {
-                gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
+            if (i == w->selected_list_item)
+            {
+                gfx_filter_rect(dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
                 safe_strcpy(buffer, network_get_player_name(i), sizeof(buffer));
                 colour = w->colours[2];
-            } else {
+            }
+            else
+            {
                 if (network_get_player_flags(i) & NETWORK_PLAYER_FLAG_ISSERVER) {
                     lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
                 } else {
@@ -623,7 +640,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
                 safe_strcpy(lineCh, network_get_player_name(i), sizeof(buffer) - (lineCh - buffer));
             }
             gfx_clip_string(buffer, 230);
-            gfx_draw_string(dpi, buffer, colour, 0, y - 1);
+            gfx_draw_string(dpi, buffer, colour, 0, y);
 
             // Draw group name
             lineCh = buffer;
@@ -632,7 +649,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
                 lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);
                 safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
                 gfx_clip_string(buffer, 80);
-                gfx_draw_string(dpi, buffer, colour, 173, y - 1);
+                gfx_draw_string(dpi, buffer, colour, 173, y);
             }
 
             // Draw last action
@@ -641,7 +658,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
             if (action != -999) {
                 set_format_arg(0, rct_string_id, network_get_action_name_string_id(action));
             }
-            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, 256, y - 1, 100);
+            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, 256, y, 100);
 
             // Draw ping
             lineCh = buffer;
@@ -655,9 +672,9 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
                 lineCh = utf8_write_codepoint(lineCh, FORMAT_RED);
             }
             snprintf(lineCh, sizeof(buffer) - (lineCh - buffer), "%d ms", ping);
-            gfx_draw_string(dpi, buffer, colour, 356, y - 1);
+            gfx_draw_string(dpi, buffer, colour, 356, y);
         }
-        y += 10;
+        y += SCROLLABLE_ROW_HEIGHT;
     }
 }
 
@@ -749,7 +766,7 @@ static void window_multiplayer_groups_scrollgetsize(rct_window *w, sint32 scroll
         window_invalidate(w);
     }
 
-    *height = network_get_num_actions() * 10;
+    *height = network_get_num_actions() * SCROLLABLE_ROW_HEIGHT;
     i = *height - window_multiplayer_groups_widgets[WIDX_LIST].bottom + window_multiplayer_groups_widgets[WIDX_LIST].top + 21;
     if (i < 0)
         i = 0;
@@ -763,7 +780,7 @@ static void window_multiplayer_groups_scrollmousedown(rct_window *w, sint32 scro
 {
     sint32 index;
 
-    index = y / 10;
+    index = y / SCROLLABLE_ROW_HEIGHT;
     if (index >= w->no_list_items)
         return;
 
@@ -777,7 +794,7 @@ static void window_multiplayer_groups_scrollmouseover(rct_window *w, sint32 scro
 {
     sint32 index;
 
-    index = y / 10;
+    index = y / SCROLLABLE_ROW_HEIGHT;
     if (index >= w->no_list_items)
         return;
 
@@ -875,13 +892,14 @@ static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelin
 
     for (sint32 i = 0; i < network_get_num_actions(); i++) {
         if (i == w->selected_list_item) {
-            gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
+            gfx_filter_rect(dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
         }
         if (y > dpi->y + dpi->height) {
             break;
         }
 
-        if (y + 11 >= dpi->y) {
+        if (y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi->y)
+        {
             char buffer[300] = {0};
             sint32 groupindex = network_get_group_index(_selectedGroup);
             if (groupindex != -1){
@@ -889,15 +907,15 @@ static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelin
                     char* lineCh = buffer;
                     lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
                     lineCh = utf8_write_codepoint(lineCh, FORMAT_TICK);
-                    gfx_draw_string(dpi, buffer, COLOUR_BLACK, 0, y - 1);
+                    gfx_draw_string(dpi, buffer, COLOUR_BLACK, 0, y);
                 }
             }
 
             // Draw action name
             set_format_arg(0, uint16, network_get_action_name_string_id(i));
-            gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, 10, y - 1);
+            gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, 10, y);
         }
-        y += 10;
+        y += SCROLLABLE_ROW_HEIGHT;
     }
 }
 

@@ -25,7 +25,7 @@ namespace OpenRCT2
     namespace Ui
     {
         interface IUiContext;
-    }
+    } // namespace Ui
 
     namespace Drawing
     {
@@ -79,9 +79,9 @@ namespace OpenRCT2
             size_t  _bitsSize   = 0;
             uint8 * _bits       = nullptr;
 
-            DirtyGrid   _dirtyGrid  = { 0 };
+            DirtyGrid   _dirtyGrid  = {};
 
-            rct_drawpixelinfo _bitsDPI  = { 0 };
+            rct_drawpixelinfo _bitsDPI  = {};
 
     #ifdef __ENABLE_LIGHTFX__
             bool _lastLightFXenabled = false;
@@ -91,7 +91,7 @@ namespace OpenRCT2
             X8DrawingContext *  _drawingContext;
 
         public:
-            explicit X8DrawingEngine(Ui::IUiContext * uiContext);
+            explicit X8DrawingEngine(const std::shared_ptr<Ui::IUiContext>& uiContext);
             ~X8DrawingEngine() override;
 
             void Initialise() override;
@@ -134,7 +134,6 @@ namespace OpenRCT2
 
         public:
             explicit X8DrawingContext(X8DrawingEngine * engine);
-            ~X8DrawingContext() override;
 
             IDrawingEngine * GetEngine() override;
 
@@ -149,5 +148,5 @@ namespace OpenRCT2
 
             void SetDPI(rct_drawpixelinfo * dpi);
         };
-    }
-}
+    } // namespace Drawing
+} // namespace OpenRCT2

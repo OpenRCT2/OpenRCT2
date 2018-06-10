@@ -19,6 +19,7 @@
 #include "../core/String.hpp"
 #include "../localisation/Language.h"
 #include "../localisation/LanguagePack.h"
+#include "../localisation/LocalisationService.h"
 #include "Object.h"
 #include "StringTable.h"
 
@@ -63,18 +64,18 @@ void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8 id)
                 (rct2LanguageId <= RCT2_LANGUAGE_ID_PORTUGUESE) ?
                 RCT2ToOpenRCT2LanguageId[rct2LanguageId] :
                 LANGUAGE_UNDEFINED;
-            StringTableEntry entry;
+            StringTableEntry entry { };
             entry.Id = id;
             entry.LanguageId = languageId;
 
             std::string stringAsWin1252 = stream->ReadStdString();
-            utf8 * stringAsUtf8 = rct2_language_string_to_utf8(stringAsWin1252.c_str(), stringAsWin1252.size(), rct2LanguageId);
+            auto stringAsUtf8 = rct2_to_utf8(stringAsWin1252, rct2LanguageId);
 
-            if (StringIsBlank(stringAsUtf8))
+            if (StringIsBlank(stringAsUtf8.data()))
             {
                 entry.LanguageId = LANGUAGE_UNDEFINED;
             }
-            String::Trim(stringAsUtf8);
+            stringAsUtf8 = String::Trim(stringAsUtf8);
 
             entry.Text = stringAsUtf8;
             _strings.push_back(entry);
@@ -97,7 +98,19 @@ std::string StringTable::GetString(uint8 id) const
             return string.Text;
         }
     }
-    return nullptr;
+    return std::string();
+}
+
+std::string StringTable::GetString(uint8 language, uint8 id) const
+{
+    for (auto &string : _strings)
+    {
+        if (string.LanguageId == language && string.Id == id)
+        {
+            return string.Text;
+        }
+    }
+    return std::string();
 }
 
 void StringTable::SetString(uint8 id, uint8 language, const std::string &text)
@@ -111,7 +124,8 @@ void StringTable::SetString(uint8 id, uint8 language, const std::string &text)
 
 void StringTable::Sort()
 {
-    std::sort(_strings.begin(), _strings.end(), [](const StringTableEntry &a, const StringTableEntry &b) -> bool
+    auto targetLanguage = LocalisationService_GetCurrentLanguage();
+    std::sort(_strings.begin(), _strings.end(), [targetLanguage](const StringTableEntry &a, const StringTableEntry &b) -> bool
     {
         if (a.Id == b.Id)
         {
@@ -120,11 +134,11 @@ void StringTable::Sort()
                 return String::Compare(a.Text, b.Text, true) < 0;
             }
 
-            if (a.LanguageId == gCurrentLanguage)
+            if (a.LanguageId == targetLanguage)
             {
                 return true;
             }
-            if (b.LanguageId == gCurrentLanguage)
+            if (b.LanguageId == targetLanguage)
             {
                 return false;
             }

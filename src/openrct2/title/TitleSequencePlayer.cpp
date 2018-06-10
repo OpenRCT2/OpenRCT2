@@ -22,7 +22,9 @@
 #include "../core/Math.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../object/ObjectManager.h"
 #include "../OpenRCT2.h"
+#include "../GameState.h"
 #include "../ParkImporter.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
@@ -37,7 +39,9 @@
 #include "../interface/Window_internal.h"
 #include "../management/NewsItem.h"
 #include "../windows/Intent.h"
+#include "../world/Map.h"
 #include "../world/Scenery.h"
+#include "../world/Sprite.h"
 
 using namespace OpenRCT2;
 
@@ -46,7 +50,8 @@ class TitleSequencePlayer final : public ITitleSequencePlayer
 private:
     static constexpr const char * SFMM_FILENAME = "Six Flags Magic Mountain.SC6";
 
-    IScenarioRepository * _scenarioRepository = nullptr;
+    IScenarioRepository&    _scenarioRepository;
+    GameState&              _gameState;
 
     size_t          _sequenceId = 0;
     TitleSequence * _sequence = nullptr;
@@ -55,14 +60,13 @@ private:
 
     sint32          _lastScreenWidth = 0;
     sint32          _lastScreenHeight = 0;
-    CoordsXY        _viewCentreLocation = { 0 };
+    CoordsXY        _viewCentreLocation = {};
 
 public:
-    explicit TitleSequencePlayer(IScenarioRepository * scenarioRepository)
+    explicit TitleSequencePlayer(IScenarioRepository& scenarioRepository, GameState& gameState)
+        : _scenarioRepository(scenarioRepository),
+          _gameState(gameState)
     {
-        Guard::ArgumentNotNull(scenarioRepository);
-
-        _scenarioRepository = scenarioRepository;
     }
 
     ~TitleSequencePlayer() override
@@ -210,7 +214,7 @@ public:
         {
             if (Update())
             {
-                game_logic_update();
+                _gameState.UpdateLogic();
             }
             else
             {
@@ -258,7 +262,7 @@ private:
             break;
         case TITLE_SCRIPT_LOADMM:
         {
-            const scenario_index_entry * entry = _scenarioRepository->GetByFilename(SFMM_FILENAME);
+            const scenario_index_entry * entry = _scenarioRepository.GetByFilename(SFMM_FILENAME);
             if (entry == nullptr)
             {
                 Console::Error::WriteLine("%s not found.", SFMM_FILENAME);
@@ -326,10 +330,10 @@ private:
             }
 
             const utf8 * path = nullptr;
-            size_t numScenarios =  _scenarioRepository->GetCount();
+            size_t numScenarios =  _scenarioRepository.GetCount();
             for (size_t i = 0; i < numScenarios; i++)
             {
-                const scenario_index_entry * scenario = _scenarioRepository->GetByIndex(i);
+                const scenario_index_entry * scenario = _scenarioRepository.GetByIndex(i);
                 if (scenario && scenario->source_index == sourceDesc.index)
                 {
                     path = scenario->path;
@@ -414,8 +418,12 @@ private:
             }
             else
             {
-                auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(path));
-                parkImporter->Load(path);
+                auto parkImporter = ParkImporter::Create(path);
+                auto result = parkImporter->Load(path);
+
+                auto objectManager = GetContext()->GetObjectManager();
+                objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+
                 parkImporter->Import();
             }
             PrepareParkForPlayback();
@@ -449,8 +457,12 @@ private:
             {
                 std::string extension = Path::GetExtension(hintPath);
                 bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
-                auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
-                parkImporter->LoadFromStream(stream, isScenario);
+                auto parkImporter = ParkImporter::Create(hintPath);
+                auto result = parkImporter->LoadFromStream(stream, isScenario);
+
+                auto objectManager = GetContext()->GetObjectManager();
+                objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+
                 parkImporter->Import();
             }
             PrepareParkForPlayback();
@@ -499,7 +511,7 @@ private:
         w->saved_view_x = gSavedViewX;
         w->saved_view_y = gSavedViewY;
 
-        char zoomDifference = gSavedViewZoom - w->viewport->zoom;
+        sint8 zoomDifference = gSavedViewZoom - w->viewport->zoom;
         w->viewport->zoom = gSavedViewZoom;
         gCurrentRotation = gSavedViewRotation;
         if (zoomDifference != 0)
@@ -577,9 +589,9 @@ private:
     }
 };
 
-ITitleSequencePlayer * CreateTitleSequencePlayer(IScenarioRepository * scenarioRepository)
+ITitleSequencePlayer * CreateTitleSequencePlayer(IScenarioRepository& scenarioRepository, GameState& gameState)
 {
-    return new TitleSequencePlayer(scenarioRepository);
+    return new TitleSequencePlayer(scenarioRepository, gameState);
 }
 
 bool gPreviewingTitleSequenceInGame = false;

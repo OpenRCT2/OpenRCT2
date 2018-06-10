@@ -16,7 +16,7 @@
 
 #include "AudioSource.h"
 
-namespace OpenRCT2 { namespace Audio
+namespace OpenRCT2::Audio
 {
     /**
      * An audio source representing silence.
@@ -29,7 +29,7 @@ namespace OpenRCT2 { namespace Audio
             return 0;
         }
 
-        size_t Read(void * dst, uint64 offset, size_t len) override
+        size_t Read([[maybe_unused]] void* dst, [[maybe_unused]] uint64 offset, [[maybe_unused]] size_t len) override
         {
             return 0;
         }
@@ -39,4 +39,4 @@ namespace OpenRCT2 { namespace Audio
     {
         return new NullAudioSource();
     }
-} }
+} // namespace OpenRCT2::Audio

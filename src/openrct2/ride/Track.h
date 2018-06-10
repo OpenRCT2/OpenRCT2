@@ -29,14 +29,12 @@ struct rct_trackdefinition
     uint8 bank_end;
     uint8 bank_start;
     sint8 preview_z_offset;
-    uint8 pad[2];
+    uint8 pad[2] = {};
 };
 assert_struct_size(rct_trackdefinition, 8);
 #pragma pack(pop)
 
-/**
-* Size: 0x0A
-*/
+/* size 0x0A */
 struct rct_preview_track
 {
     uint8  index;    // 0x00
@@ -63,7 +61,11 @@ enum
 {
     TRACK_ELEMENT_FLAG_TERMINAL_STATION = 1 << 3,
     TRACK_ELEMENT_FLAG_INVERTED         = 1 << 6,
-    TRACK_ELEMENT_FLAG_CHAIN_LIFT       = 1 << 7,
+};
+
+enum
+{
+    TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT  = 1 << 7,
 };
 
 enum
@@ -72,10 +74,13 @@ enum
     // that field in the map element
 
     // Used for multi-dimension coaster
-        TRACK_ELEMENT_COLOUR_FLAG_INVERTED = (1 << 2),
+    TRACK_ELEMENT_COLOUR_FLAG_INVERTED = (1 << 2),
 
     // Used for giga coaster
-        TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT = (1 << 3),
+    TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT = (1 << 3),
+
+    TRACK_ELEMENT_DOOR_A_MASK = 0b00011100,
+    TRACK_ELEMENT_DOOR_B_MASK = 0b11100000,
 };
 
 #define TRACK_ELEMENT_FLAG_MAGNITUDE_MASK 0x0F
@@ -582,3 +587,6 @@ uint8 track_element_get_ride_index(const rct_tile_element * tileElement);
 void track_element_set_ride_index(rct_tile_element * tileElement, uint8 rideIndex);
 uint8 track_element_get_type(const rct_tile_element * tileElement);
 void track_element_set_type(rct_tile_element * tileElement, uint8 rideIndex);
+
+uint8 track_element_get_door_a_state(const rct_tile_element * tileElement);
+uint8 track_element_get_door_b_state(const rct_tile_element * tileElement);

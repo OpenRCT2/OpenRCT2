@@ -140,7 +140,7 @@ static void spiral_slide_paint_tile_front(
         sub_98197C(session, image_id, 16, 16, 8, 16, 108, height, 8, 0, height + 3);
     }
 
-    rct_drawpixelinfo * dpi = session->Unk140E9A8;
+    rct_drawpixelinfo * dpi = session->DPI;
     if (dpi->zoom_level == 0 && ride->slide_in_use != 0)
     {
         uint8 slide_progress = ride->spiral_slide_progress;

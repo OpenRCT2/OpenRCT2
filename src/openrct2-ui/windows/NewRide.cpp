@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <limits>
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/config/Config.h>
@@ -38,6 +39,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
+#include <openrct2/world/Park.h>
 
 #define AVAILABILITY_STRING_SIZE 256
 #define WH 382
@@ -49,6 +51,7 @@ static ride_list_item _windowNewRideListItems[384];
 
 #pragma region Ride type view order
 
+// clang-format off
 /**
  * The order of ride types shown in the new ride window so that the order stays consistent across games and rides of the same
  * type are kept together.
@@ -266,6 +269,7 @@ static constexpr const rct_string_id window_new_ride_titles[WINDOW_NEW_RIDE_PAGE
 
 static constexpr const sint32 window_new_ride_tab_animation_loops[] = { 20, 32, 10, 72, 24, 28, 16 };
 static constexpr const sint32 window_new_ride_tab_animation_divisor[] = { 4, 8, 2, 4, 4, 4, 2 };
+// clang-format on
 
 static void window_new_ride_set_page(rct_window *w, sint32 page);
 static void window_new_ride_refresh_widget_sizing(rct_window *w);
@@ -364,7 +368,7 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
             const RideGroup * rideEntryRideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
             const RideGroup * rideGroup = RideGroupManager::RideGroupFind(rideType, rideGroupIndex);
 
-            if (!RideGroupManager::RideGroupsAreEqual(rideEntryRideGroup, rideGroup))
+            if (!rideEntryRideGroup->Equals(rideGroup))
                 continue;
         }
 
@@ -551,7 +555,8 @@ void window_new_ride_focus(ride_list_item rideItem)
             if (listItem->type == rideItem.type) {
                 const RideGroup * irg = RideGroupManager::GetRideGroup(rideTypeIndex, rideEntry);
 
-                if (!RideGroupManager::RideTypeHasRideGroups(rideTypeIndex) || RideGroupManager::RideGroupsAreEqual(rideGroup, irg)) {
+                if (!RideGroupManager::RideTypeHasRideGroups(rideTypeIndex) || rideGroup->Equals(irg))
+                {
                     _windowNewRideHighlightedItem[0] = rideItem;
                     w->new_ride.highlighted_ride_id = rideItem.ride_type_and_entry;
                     window_new_ride_scroll_to_focused_ride(w);
@@ -567,7 +572,7 @@ static void window_new_ride_set_page(rct_window *w, sint32 page)
     _windowNewRideCurrentTab = page;
     w->frame_no = 0;
     w->new_ride.highlighted_ride_id = -1;
-    w->new_ride.selected_ride_countdown = -1;
+    w->new_ride.selected_ride_countdown = std::numeric_limits<uint16>::max();
     window_new_ride_populate_list();
     if (page < WINDOW_NEW_RIDE_PAGE_RESEARCH) {
         w->new_ride.highlighted_ride_id = _windowNewRideHighlightedItem[page].ride_type_and_entry;
@@ -928,15 +933,17 @@ static sint32 get_num_track_designs(ride_list_item item)
         }
     }
 
+    ITrackDesignRepository * repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
+
     if (rideEntry != nullptr && RideGroupManager::RideTypeHasRideGroups(item.type))
     {
         const RideGroup * rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
-        ITrackDesignRepository * repo = GetTrackDesignRepository();
         return (sint32)repo->GetCountForRideGroup(item.type, rideGroup);
     }
-
-    ITrackDesignRepository * repo = GetTrackDesignRepository();
-    return (sint32)repo->GetCountForObjectEntry(item.type, String::ToStd(entryPtr));
+    else
+    {
+        return (sint32)repo->GetCountForObjectEntry(item.type, String::ToStd(entryPtr));
+    }
 }
 
 /**
@@ -954,42 +961,38 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
     set_format_arg(2, rct_string_id, rideNaming.description);
     gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, COLOUR_BLACK);
 
-    // Number of designs available
-    if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK))
+    char availabilityString[AVAILABILITY_STRING_SIZE];
+    window_new_ride_list_vehicles_for(item.type, rideEntry, availabilityString);
+
+    if (availabilityString[0] != 0)
     {
-        char availabilityString[AVAILABILITY_STRING_SIZE];
-        window_new_ride_list_vehicles_for(item.type, rideEntry, availabilityString);
-
-        if (availabilityString[0] != 0)
-        {
-            const char * drawString = availabilityString;
-            gfx_draw_string_left_clipped(dpi, STR_AVAILABLE_VEHICLES, &drawString, COLOUR_BLACK, x, y + 39, WW - 2);
-        }
-
-        // Track designs are disabled in multiplayer, so don't say there are any designs available when in multiplayer
-        if (network_get_mode() != NETWORK_MODE_NONE) {
-            _lastTrackDesignCount = 0;
-        }
-        else if (item.type != _lastTrackDesignCountRideType.type || item.entry_index != _lastTrackDesignCountRideType.entry_index) {
-            _lastTrackDesignCountRideType = item;
-            _lastTrackDesignCount = get_num_track_designs(item);
-        }
-
-        rct_string_id stringId;
-        switch (_lastTrackDesignCount) {
-        case 0:
-            stringId = STR_CUSTOM_DESIGNED_LAYOUT;
-            break;
-        case 1:
-            stringId = STR_1_DESIGN_AVAILABLE;
-            break;
-        default:
-            stringId = STR_X_DESIGNS_AVAILABLE;
-            break;
-        }
-
-        gfx_draw_string_left(dpi, stringId, &_lastTrackDesignCount, COLOUR_BLACK, x, y + 51);
+        const char * drawString = availabilityString;
+        gfx_draw_string_left_clipped(dpi, STR_AVAILABLE_VEHICLES, &drawString, COLOUR_BLACK, x, y + 39, WW - 2);
     }
+
+    // Track designs are disabled in multiplayer, so don't say there are any designs available when in multiplayer
+    if (network_get_mode() != NETWORK_MODE_NONE) {
+        _lastTrackDesignCount = 0;
+    }
+    else if (item.type != _lastTrackDesignCountRideType.type || item.entry_index != _lastTrackDesignCountRideType.entry_index) {
+        _lastTrackDesignCountRideType = item;
+        _lastTrackDesignCount = get_num_track_designs(item);
+    }
+
+    rct_string_id designCountStringId;
+    switch (_lastTrackDesignCount) {
+    case 0:
+        designCountStringId = STR_CUSTOM_DESIGNED_LAYOUT;
+        break;
+    case 1:
+        designCountStringId = STR_1_DESIGN_AVAILABLE;
+        break;
+    default:
+        designCountStringId = STR_X_DESIGNS_AVAILABLE;
+        break;
+    }
+
+    gfx_draw_string_left(dpi, designCountStringId, &_lastTrackDesignCount, COLOUR_BLACK, x, y + 51);
 
     // Price
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
@@ -1035,14 +1038,13 @@ static void window_new_ride_select(rct_window *w)
     }
 #endif
 
-    if (allowTrackDesigns && ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
-        if (_lastTrackDesignCount > 0) {
-            auto intent = Intent(WC_TRACK_DESIGN_LIST);
-            intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.type);
-            intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.entry_index);
-            context_open_intent(&intent);
-            return;
-        }
+    if (allowTrackDesigns && _lastTrackDesignCount > 0)
+    {
+        auto intent = Intent(WC_TRACK_DESIGN_LIST);
+        intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.type);
+        intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.entry_index);
+        context_open_intent(&intent);
+        return;
     }
 
     ride_construct_new(item);
@@ -1079,7 +1081,7 @@ static void window_new_ride_list_vehicles_for(const uint8 rideType, const rct_ri
             rideGroup = RideGroupManager::GetRideGroup(rideType, (rct_ride_entry *)rideEntry);
             currentRideGroup = RideGroupManager::GetRideGroup(rideType, (rct_ride_entry *)currentRideEntry);
 
-            if (!RideGroupManager::RideGroupsAreEqual(rideGroup, currentRideGroup))
+            if (!rideGroup->Equals(currentRideGroup))
                 continue;
         }
 

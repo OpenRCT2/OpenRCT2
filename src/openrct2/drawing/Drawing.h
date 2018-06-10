@@ -20,6 +20,11 @@
 #include "../common.h"
 #include "../interface/Colour.h"
 
+namespace OpenRCT2
+{
+    interface IPlatformEnvironment;
+}
+
 struct rct_g1_element {
     uint8* offset;          // 0x00
     sint16 width;           // 0x04
@@ -56,11 +61,13 @@ enum {
     G1_FLAG_BMP             = (1 << 0), // Image data is encoded as raw pixels (no transparency)
     G1_FLAG_1               = (1 << 1),
     G1_FLAG_RLE_COMPRESSION = (1 << 2), // Image data is encoded using RCT2's form of run length encoding
+    G1_FLAG_PALETTE         = (1 << 3), // Image data is a sequence of palette entries R8G8B8
     G1_FLAG_HAS_ZOOM_SPRITE = (1 << 4), // Use a different sprite for higher zoom levels
     G1_FLAG_NO_ZOOM_DRAW    = (1 << 5), // Does not get drawn at higher zoom levels (only zoom 0)
 };
 
-enum {
+enum : uint32
+{
     IMAGE_TYPE_DEFAULT = 0,
     IMAGE_TYPE_REMAP = (1 << 29),
     IMAGE_TYPE_TRANSPARENT = (1 << 30),
@@ -279,7 +286,7 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, sint16 left, sint16 top, sint16
 void gfx_filter_rect(rct_drawpixelinfo *dpi, sint32 left, sint32 top, sint32 right, sint32 bottom, FILTER_PALETTE_ID palette);
 
 // sprite
-bool gfx_load_g1(void * platformEnvironment);
+bool gfx_load_g1(const OpenRCT2::IPlatformEnvironment& env);
 bool gfx_load_g2();
 bool gfx_load_csg();
 void gfx_unload_g1();
@@ -291,7 +298,7 @@ bool is_csg_loaded();
 uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count);
 void gfx_object_free_images(uint32 baseImageId, uint32 count);
 void gfx_object_check_all_images_freed();
-void FASTCALL gfx_bmp_sprite_to_buffer(const uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, const rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, sint32 height, sint32 width, sint32 image_type);
+void FASTCALL gfx_bmp_sprite_to_buffer(const uint8* palette_pointer, uint8* source_pointer, uint8* dest_pointer, const rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, sint32 height, sint32 width, sint32 image_type);
 void FASTCALL gfx_rle_sprite_to_buffer(const uint8* RESTRICT source_bits_pointer, uint8* RESTRICT dest_bits_pointer, const uint8* RESTRICT palette_pointer, const rct_drawpixelinfo * RESTRICT dpi, sint32 image_type, sint32 source_y_start, sint32 height, sint32 source_x_start, sint32 width);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo *dpi, sint32 image_id, sint32 x, sint32 y, uint32 tertiary_colour);
 void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo *dpi, sint32 image_id, sint32 x, sint32 y, uint8 * palette);
@@ -339,6 +346,7 @@ void scrolling_text_initialise_bitmaps();
 sint32 scrolling_text_setup(struct paint_session * session, rct_string_id stringId, uint16 scroll, uint16 scrollingMode);
 
 rct_size16 FASTCALL gfx_get_sprite_size(uint32 image_id);
+size_t g1_calculate_data_size(const rct_g1_element * g1);
 
 void mask_scalar(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
                  uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap);

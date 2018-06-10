@@ -17,6 +17,7 @@
 #include <cassert>
 #include <cstdarg>
 #include <cstdio>
+#include <cstdlib>
 
 #include "../common.h"
 
@@ -38,7 +39,6 @@ void openrct2_assert_fwd(bool expression, const char * message, ...)
     Guard::Assert_VA(expression, message, va);
     va_end(va);
 }
-
 
 namespace Guard
 {
@@ -98,7 +98,6 @@ namespace Guard
         switch (_assertBehaviour) {
         case ASSERT_BEHAVIOUR::ABORT:
             abort();
-            break;
         default:
         case ASSERT_BEHAVIOUR::CASSERT:
             assert(false);
@@ -157,4 +156,4 @@ namespace Guard
 #endif
     }
 #endif
-}
+} // namespace Guard

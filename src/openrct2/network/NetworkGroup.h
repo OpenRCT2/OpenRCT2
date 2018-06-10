@@ -25,13 +25,10 @@
 class NetworkGroup final
 {
 public:
-    std::array<uint8, 8>    ActionsAllowed;
+    std::array<uint8, 8>    ActionsAllowed{};
     uint8                   Id = 0;
 
     static NetworkGroup FromJson(const json_t * json);
-
-    NetworkGroup();
-    ~NetworkGroup();
 
     const std::string & GetName() const;
     void SetName(std::string name);

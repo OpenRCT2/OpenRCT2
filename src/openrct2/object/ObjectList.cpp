@@ -14,6 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cstring>
+
+#include "../Context.h"
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../Game.h"
@@ -165,7 +168,7 @@ void * object_entry_get_chunk(sint32 objectType, size_t index)
     }
 
     void * result = nullptr;
-    auto objectMgr = GetObjectManager();
+    auto objectMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objectMgr->GetLoadedObject(objectIndex);
     if (obj != nullptr)
     {
@@ -177,7 +180,7 @@ void * object_entry_get_chunk(sint32 objectType, size_t index)
 const rct_object_entry * object_entry_get_entry(sint32 objectType, size_t index)
 {
     const rct_object_entry * result = nullptr;
-    auto objectMgr = GetObjectManager();
+    auto objectMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objectMgr->GetLoadedObject(objectType, index);
     if (obj != nullptr)
     {

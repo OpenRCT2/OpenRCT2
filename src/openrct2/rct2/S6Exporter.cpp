@@ -14,36 +14,38 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "S6Exporter.h"
 #include <algorithm>
 #include <cstring>
+#include <functional>
+#include "../common.h"
+#include "../config/Config.h"
+#include "../Context.h"
 #include "../core/FileStream.hpp"
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
-#include "../management/Award.h"
-#include "../object/Object.h"
-#include "../object/ObjectManager.h"
-#include "../object/ObjectRepository.h"
-#include "../rct12/SawyerChunkWriter.h"
-#include "S6Exporter.h"
-#include <functional>
-
-#include "../config/Config.h"
 #include "../Game.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
+#include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
 #include "../object/Object.h"
 #include "../object/ObjectLimits.h"
+#include "../object/ObjectManager.h"
+#include "../object/ObjectRepository.h"
 #include "../OpenRCT2.h"
 #include "../peep/Staff.h"
+#include "../rct12/SawyerChunkWriter.h"
 #include "../ride/Ride.h"
 #include "../ride/RideRatings.h"
+#include "../ride/ShopItem.h"
+#include "../ride/Station.h"
 #include "../ride/TrackData.h"
 #include "../scenario/Scenario.h"
 #include "../util/SawyerCoding.h"
@@ -52,7 +54,6 @@
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Sprite.h"
-#include "../ride/Station.h"
 
 S6Exporter::S6Exporter()
 {
@@ -105,7 +106,7 @@ void S6Exporter::Save(IStream * stream, bool isScenario)
     // 2: Write packed objects
     if (_s6.header.num_packed_objects > 0)
     {
-        IObjectRepository * objRepo = GetObjectRepository();
+        auto objRepo = OpenRCT2::GetContext()->GetObjectRepository();
         objRepo->WritePackedObjects(stream, ExportObjectsList);
     }
 
@@ -162,6 +163,14 @@ void S6Exporter::Export()
         log_error("Found %d disjoint null sprites", disjoint_sprites_count);
     }
     _s6.info = gS6Info;
+    {
+        auto temp = utf8_to_rct2(gS6Info.name);
+        safe_strcpy(_s6.info.name, temp.data(), sizeof(_s6.info.name));
+    }
+    {
+        auto temp = utf8_to_rct2(gS6Info.details);
+        safe_strcpy(_s6.info.details, temp.data(), sizeof(_s6.info.details));
+    }
     uint32 researchedTrackPiecesA[128];
     uint32 researchedTrackPiecesB[128];
 
@@ -445,7 +454,7 @@ void S6Exporter::ExportRides()
     {
         auto src = get_ride(index);
         auto dst = &_s6.rides[index];
-        *dst = { 0 };
+        *dst = {};
         if (src->type == RIDE_TYPE_NULL)
         {
             dst->type = RIDE_TYPE_NULL;
@@ -736,7 +745,8 @@ void S6Exporter::ExportResearchList()
     memcpy(_s6.research_items, gResearchItems, sizeof(_s6.research_items));
 }
 
-enum {
+enum : uint32
+{
     S6_SAVE_FLAG_EXPORT    = 1 << 0,
     S6_SAVE_FLAG_SCENARIO  = 1 << 1,
     S6_SAVE_FLAG_AUTOMATIC = 1u << 31,
@@ -772,7 +782,7 @@ sint32 scenario_save(const utf8 * path, sint32 flags)
     {
         if (flags & S6_SAVE_FLAG_EXPORT)
         {
-            IObjectManager * objManager   = GetObjectManager();
+            auto objManager   = OpenRCT2::GetContext()->GetObjectManager();
             s6exporter->ExportObjectsList = objManager->GetPackableObjects();
         }
         s6exporter->RemoveTracklessRides = true;
@@ -800,4 +810,3 @@ sint32 scenario_save(const utf8 * path, sint32 flags)
     }
     return result;
 }
-

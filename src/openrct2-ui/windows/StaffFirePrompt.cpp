@@ -18,10 +18,14 @@
 #include <openrct2/Game.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/world/Sprite.h>
+#include <openrct2/interface/Colour.h>
+#include <openrct2/drawing/Drawing.h>
 
 #define WW 200
 #define WH 100
 
+// clang-format off
 enum WINDOW_STAFF_FIRE_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -74,6 +78,9 @@ static rct_window_event_list window_staff_fire_events = {
     window_staff_fire_paint,
     nullptr
 };
+//clang-format on
+
+
 /** Based off of rct2: 0x6C0A77 */
 rct_window* window_staff_fire_prompt_open(rct_peep* peep)
 {

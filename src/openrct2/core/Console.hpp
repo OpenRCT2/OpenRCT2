@@ -37,5 +37,5 @@ namespace Console
         void WriteLine();
         void WriteLine(const utf8 * format, ...);
         void WriteLine_VA(const utf8 * format, va_list args);
-    }
-}
+    } // namespace Error
+} // namespace Console

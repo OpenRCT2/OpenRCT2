@@ -16,7 +16,10 @@
 
 #pragma once
 
+#include <string_view>
+#include <vector>
 #include "../common.h"
+#include "../core/Json.hpp"
 #include "ImageTable.h"
 #include "StringTable.h"
 
@@ -85,6 +88,19 @@ struct rct_object_entry {
         };
     };
 
+    void SetName(const char * value)
+    {
+        auto src = value;
+        for (size_t i = 0; i < sizeof(name); i++)
+        {
+            auto dc = ' ';
+            if (*src != '\0')
+            {
+                dc = *src++;
+            }
+            name[i] = dc;
+        }
+    }
 };
 assert_struct_size(rct_object_entry, 0x10);
 
@@ -110,16 +126,7 @@ struct rct_object_filters {
 assert_struct_size(rct_object_filters, 3);
 #pragma pack(pop)
 
-enum OBJ_STRING_ID
-{
-    OBJ_STRING_ID_NAME,
-    OBJ_STRING_ID_DESCRIPTION,
-    OBJ_STRING_ID_SCENARIO_NAME = 0,
-    OBJ_STRING_ID_PARK_NAME = 1,
-    OBJ_STRING_ID_SCENARIO_DETAILS = 2,
-    OBJ_STRING_ID_CAPACITY = 2,
-};
-
+interface IObjectRepository;
 interface IStream;
 struct    ObjectRepositoryItem;
 struct    rct_drawpixelinfo;
@@ -127,6 +134,10 @@ struct    rct_drawpixelinfo;
 interface IReadObjectContext
 {
     virtual ~IReadObjectContext() = default;
+
+    virtual IObjectRepository& GetObjectRepository() abstract;
+    virtual bool ShouldLoadImages() abstract;
+    virtual std::vector<uint8> GetData(const std::string_view& path) abstract;
 
     virtual void LogWarning(uint32 code, const utf8 * text) abstract;
     virtual void LogError(uint32 code, const utf8 * text) abstract;
@@ -141,17 +152,18 @@ class Object
 {
 private:
     char *              _identifier;
-    rct_object_entry    _objectEntry;
+    rct_object_entry    _objectEntry{};
     StringTable         _stringTable;
     ImageTable          _imageTable;
 
 protected:
-    StringTable *       GetStringTable() { return &_stringTable; }
-    const StringTable * GetStringTable() const { return &_stringTable; }
-    ImageTable  *       GetImageTable() { return &_imageTable; }
+    StringTable &       GetStringTable() { return _stringTable; }
+    const StringTable & GetStringTable() const { return _stringTable; }
+    ImageTable &        GetImageTable() { return _imageTable; }
 
     std::string         GetOverrideString(uint8 index) const;
     std::string         GetString(uint8 index) const;
+    std::string         GetString(sint32 language, uint8 index) const;
 
     void                SetSourceGame(const uint8 sourceGame);
     bool                IsRCT1Object();
@@ -168,16 +180,20 @@ public:
     const rct_object_entry *    GetObjectEntry() const { return &_objectEntry; }
     virtual void *              GetLegacyData() abstract;
 
+    virtual void ReadJson(IReadObjectContext * /*context*/, const json_t * /*root*/) { }
     virtual void ReadLegacy(IReadObjectContext * context, IStream * stream) abstract;
     virtual void Load() abstract;
     virtual void Unload() abstract;
 
-    virtual void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const { }
+    virtual void DrawPreview(rct_drawpixelinfo * /*dpi*/, sint32 /*width*/, sint32 /*height*/) const { }
 
     virtual uint8           GetObjectType() const final { return _objectEntry.flags & 0x0F; }
     virtual std::string     GetName() const;
+    virtual std::string     GetName(sint32 language) const;
 
-    virtual void SetRepositoryItem(ObjectRepositoryItem * item) const { }
+    virtual void SetRepositoryItem(ObjectRepositoryItem * /*item*/) const { }
+
+    const ImageTable & GetImageTable() const { return _imageTable; }
 
     rct_object_entry GetScgWallsHeader();
     rct_object_entry GetScgPathXHeader();
@@ -210,7 +226,6 @@ sint32 object_calculate_checksum(const rct_object_entry * entry, const void * da
 bool find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
 void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
 
-const rct_object_entry * object_list_find_by_name(const char *name);
 const rct_object_entry * object_list_find(rct_object_entry *entry);
 
 void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);

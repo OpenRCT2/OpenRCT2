@@ -35,6 +35,7 @@
 #include "../localisation/Currency.h"
 #include "../localisation/Date.h"
 #include "../localisation/Language.h"
+#include "../paint/VirtualFloor.h"
 #include "../platform/platform.h"
 #include "../scenario/Scenario.h"
 
@@ -107,6 +108,13 @@ namespace Config
         ConfigEnumEntry<sint32>("SMOOTH_NEAREST_NEIGHBOUR", SCALE_QUALITY_SMOOTH_NN),
     });
 
+    static const auto Enum_VirtualFloorStyle = ConfigEnum<sint32>(
+    {
+        ConfigEnumEntry<sint32>("OFF", VIRTUAL_FLOOR_STYLE_OFF),
+        ConfigEnumEntry<sint32>("CLEAR", VIRTUAL_FLOOR_STYLE_CLEAR),
+        ConfigEnumEntry<sint32>("GLASSY", VIRTUAL_FLOOR_STYLE_GLASSY),
+    });
+
     /**
      * Config enum wrapping LanguagesDescriptors.
      */
@@ -169,7 +177,7 @@ namespace Config
             model->drawing_engine = reader->GetEnum<sint32>("drawing_engine", DRAWING_ENGINE_SOFTWARE, Enum_DrawingEngine);
             model->uncap_fps = reader->GetBoolean("uncap_fps", false);
             model->use_vsync = reader->GetBoolean("use_vsync", true);
-            model->use_virtual_floor = reader->GetBoolean("use_virtual_floor", true);
+            model->virtual_floor_style = reader->GetEnum<sint32>("virtual_floor_style", VIRTUAL_FLOOR_STYLE_GLASSY, Enum_VirtualFloorStyle);
 
             // Default config setting is false until ghost trains are implemented #4540
             model->test_unfinished_tracks = reader->GetBoolean("test_unfinished_tracks", false);
@@ -210,6 +218,7 @@ namespace Config
             model->render_weather_gloom = reader->GetBoolean("render_weather_gloom", true);
             model->show_guest_purchases = reader->GetBoolean("show_guest_purchases", false);
             model->show_real_names_of_guests = reader->GetBoolean("show_real_names_of_guests", true);
+            model->allow_early_completion = reader->GetBoolean("allow_early_completion", false);
         }
     }
 
@@ -280,7 +289,8 @@ namespace Config
         writer->WriteBoolean("render_weather_gloom", model->render_weather_gloom);
         writer->WriteBoolean("show_guest_purchases", model->show_guest_purchases);
         writer->WriteBoolean("show_real_names_of_guests", model->show_real_names_of_guests);
-        writer->WriteBoolean("use_virtual_floor", model->use_virtual_floor);
+        writer->WriteBoolean("allow_early_completion", model->allow_early_completion);
+        writer->WriteEnum<sint32>("virtual_floor_style", model->virtual_floor_style, Enum_VirtualFloorStyle);
     }
 
     static void ReadInterface(IIniReader * reader)
@@ -464,6 +474,7 @@ namespace Config
         if (reader->ReadSection("twitch"))
         {
             auto model = &gConfigTwitch;
+            model->api_url = reader->GetCString("api_url", nullptr);
             model->channel = reader->GetCString("channel", nullptr);
             model->enable_follower_peep_names = reader->GetBoolean("follower_peep_names", true);
             model->enable_follower_peep_tracking = reader->GetBoolean("follower_peep_tracking", false);
@@ -477,6 +488,7 @@ namespace Config
     {
         auto model = &gConfigTwitch;
         writer->WriteSection("twitch");
+        writer->WriteString("api_url", model->api_url);
         writer->WriteString("channel", model->channel);
         writer->WriteBoolean("follower_peep_names", model->enable_follower_peep_names);
         writer->WriteBoolean("follower_peep_tracking", model->enable_follower_peep_tracking);
@@ -643,7 +655,7 @@ namespace Config
         }
         return std::string();
     }
-}
+} // namespace Config
 
 GeneralConfiguration         gConfigGeneral;
 InterfaceConfiguration       gConfigInterface;
@@ -740,7 +752,7 @@ bool config_find_or_browse_install_directory()
         {
             while (true)
             {
-                IUiContext * uiContext = GetContext()->GetUiContext();
+                auto uiContext = GetContext()->GetUiContext();
                 uiContext->ShowMessageBox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. \nPlease select the directory where you installed RollerCoaster Tycoon 2.");
 
                 std::string installPath = uiContext->ShowDirectoryDialog("Please select your RCT2 directory");

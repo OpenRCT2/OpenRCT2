@@ -20,10 +20,13 @@
 #include <string>
 #include <tuple>
 #include <vector>
+#include <list>
 #include "../common.h"
+#include "Console.hpp"
 #include "File.h"
 #include "FileScanner.h"
 #include "FileStream.hpp"
+#include "JobPool.hpp"
 #include "Path.hpp"
 
 template<typename TItem>
@@ -104,11 +107,11 @@ public:
      * Queries and directories and loads the index header. If the index is up to date,
      * the items are loaded from the index and returned, otherwise the index is rebuilt.
      */
-    std::vector<TItem> LoadOrBuild() const
+    std::vector<TItem> LoadOrBuild(sint32 language) const
     {
         std::vector<TItem> items;
         auto scanResult = Scan();
-        auto readIndexResult = ReadIndexFile(scanResult.Stats);
+        auto readIndexResult = ReadIndexFile(language, scanResult.Stats);
         if (std::get<0>(readIndexResult))
         {
             // Index was loaded
@@ -117,15 +120,15 @@ public:
         else
         {
             // Index was not loaded
-            items = Build(scanResult);
+            items = Build(language, scanResult);
         }
         return items;
     }
 
-    std::vector<TItem> Rebuild() const
+    std::vector<TItem> Rebuild(sint32 language) const
     {
         auto scanResult = Scan();
-        auto items = Build(scanResult);
+        auto items = Build(language, scanResult);
         return items;
     }
 
@@ -134,7 +137,7 @@ protected:
      * Loads the given file and creates the item representing the data to store in the index.
      * TODO Use std::optional when C++17 is available.
      */
-    virtual std::tuple<bool, TItem> Create(const std::string &path) const abstract;
+    virtual std::tuple<bool, TItem> Create(sint32 language, const std::string &path) const abstract;
 
     /**
      * Serialises an index item to the given stream.
@@ -151,7 +154,7 @@ private:
     {
         DirectoryStats stats {};
         std::vector<std::string> files;
-        for (const auto directory : SearchPaths)
+        for (const auto& directory : SearchPaths)
         {
             log_verbose("FileIndex:Scanning for %s in '%s'", _pattern.c_str(), directory.c_str());
 
@@ -177,35 +180,101 @@ private:
         return ScanResult(stats, files);
     }
 
-    std::vector<TItem> Build(const ScanResult &scanResult) const
+    void BuildRange(sint32 language,
+                    const ScanResult &scanResult,
+                    size_t rangeStart,
+                    size_t rangeEnd,
+                    std::vector<TItem>& items,
+                    std::atomic<size_t>& processed,
+                    std::mutex& printLock) const
     {
-        std::vector<TItem> items;
-        Console::WriteLine("Building %s (%zu items)", _name.c_str(), scanResult.Files.size());
-
-        auto startTime = std::chrono::high_resolution_clock::now();
-        // Start at 1, so that we can reach 100% completion status
-        size_t i = 1;
-        for (auto filePath : scanResult.Files)
+        items.reserve(rangeEnd - rangeStart);
+        for (size_t i = rangeStart; i < rangeEnd; i++)
         {
-            Console::WriteFormat("File %5d of %d, done %3d%%\r", i, scanResult.Files.size(), i * 100 / scanResult.Files.size());
-            i++;
-            log_verbose("FileIndex:Indexing '%s'", filePath.c_str());
-            auto item = Create(filePath);
+            const auto& filePath = scanResult.Files.at(i);
+
+            if (_log_levels[DIAGNOSTIC_LEVEL_VERBOSE])
+            {
+                std::lock_guard<std::mutex> lock(printLock);
+                log_verbose("FileIndex:Indexing '%s'", filePath.c_str());
+            }
+
+            auto item = Create(language, filePath);
             if (std::get<0>(item))
             {
                 items.push_back(std::get<1>(item));
             }
+
+            processed++;
+        }
+    }
+
+    std::vector<TItem> Build(sint32 language, const ScanResult &scanResult) const
+    {
+        std::vector<TItem> allItems;
+        Console::WriteLine("Building %s (%zu items)", _name.c_str(), scanResult.Files.size());
+
+        auto startTime = std::chrono::high_resolution_clock::now();
+
+        const size_t totalCount = scanResult.Files.size();
+        if (totalCount > 0)
+        {
+            JobPool jobPool;
+            std::mutex printLock; // For verbose prints.
+
+            std::list<std::vector<TItem>> containers;
+
+            size_t stepSize = 100; // Handpicked, seems to work well with 4/8 cores.
+
+            std::atomic<size_t> processed = ATOMIC_VAR_INIT(0);
+
+            auto reportProgress =
+                [&]()
+                {
+                    const size_t completed = processed;
+                    Console::WriteFormat("File %5d of %d, done %3d%%\r", completed, totalCount, completed * 100 / totalCount);
+                };
+
+            for (size_t rangeStart = 0; rangeStart < totalCount; rangeStart += stepSize)
+            {
+                if (rangeStart + stepSize > totalCount)
+                {
+                    stepSize = totalCount - rangeStart;
+                }
+
+                auto& items = containers.emplace_back();
+
+                jobPool.AddTask(std::bind(&FileIndex<TItem>::BuildRange,
+                    this,
+                    language,
+                    std::cref(scanResult),
+                    rangeStart,
+                    rangeStart + stepSize,
+                    std::ref(items),
+                    std::ref(processed),
+                    std::ref(printLock)));
+
+                reportProgress();
+            }
+
+            jobPool.Join(reportProgress);
+
+            for (auto&& itr : containers)
+            {
+                allItems.insert(allItems.end(), itr.begin(), itr.end());
+            }
         }
 
-        WriteIndexFile(scanResult.Stats, items);
+        WriteIndexFile(language, scanResult.Stats, allItems);
 
         auto endTime = std::chrono::high_resolution_clock::now();
         auto duration = (std::chrono::duration<float>)(endTime - startTime);
         Console::WriteLine("Finished building %s in %.2f seconds.", _name.c_str(), duration.count());
-        return items;
+
+        return allItems;
     }
 
-    std::tuple<bool, std::vector<TItem>> ReadIndexFile(const DirectoryStats &stats) const
+    std::tuple<bool, std::vector<TItem>> ReadIndexFile(sint32 language, const DirectoryStats &stats) const
     {
         bool loadedItems = false;
         std::vector<TItem> items;
@@ -222,12 +291,13 @@ private:
                     header.MagicNumber == _magicNumber &&
                     header.VersionA == FILE_INDEX_VERSION &&
                     header.VersionB == _version &&
-                    header.LanguageId == gCurrentLanguage &&
+                    header.LanguageId == language &&
                     header.Stats.TotalFiles == stats.TotalFiles &&
                     header.Stats.TotalFileSize == stats.TotalFileSize &&
                     header.Stats.FileDateModifiedChecksum == stats.FileDateModifiedChecksum &&
                     header.Stats.PathChecksum == stats.PathChecksum)
                 {
+                    items.reserve(header.NumItems);
                     // Directory is the same, just read the saved items
                     for (uint32 i = 0; i < header.NumItems; i++)
                     {
@@ -250,26 +320,26 @@ private:
         return std::make_tuple(loadedItems, items);
     }
 
-    void WriteIndexFile(const DirectoryStats &stats, const std::vector<TItem> &items) const
+    void WriteIndexFile(sint32 language, const DirectoryStats &stats, const std::vector<TItem> &items) const
     {
         try
         {
             log_verbose("FileIndex:Writing index: '%s'", _indexPath.c_str());
             Path::CreateDirectory(Path::GetDirectory(_indexPath));
             auto fs = FileStream(_indexPath, FILE_MODE_WRITE);
-    
+
             // Write header
             FileIndexHeader header;
             header.MagicNumber = _magicNumber;
             header.VersionA = FILE_INDEX_VERSION;
             header.VersionB = _version;
-            header.LanguageId = gCurrentLanguage;
+            header.LanguageId = language;
             header.Stats = stats;
             header.NumItems = (uint32)items.size();
             fs.WriteValue(header);
-    
+
             // Write items
-            for (const auto item : items)
+            for (const auto& item : items)
             {
                 Serialise(&fs, item);
             }

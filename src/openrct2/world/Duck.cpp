@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <limits>
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../sprites.h"
@@ -22,8 +23,10 @@
 #include "../Game.h"
 #include "../localisation/Date.h"
 #include "../scenario/Scenario.h"
+#include "../world/Surface.h"
 #include "Sprite.h"
 
+// clang-format off
 enum DUCK_STATE
 {
     FLY_TO_WATER,
@@ -76,6 +79,7 @@ static constexpr const uint8 * DuckAnimations[] =
     DuckAnimationDoubleDrink,   // DOUBLE_DRINK
     DuckAnimationFlyAway,       // FLY_AWAY
 };
+// clang-format on
 
 bool rct_sprite::IsDuck()
 {
@@ -126,7 +130,7 @@ void rct_duck::UpdateFlyToWater()
     sint32 manhattanDistanceN = abs(target_x - newX) + abs(target_y - newY);
 
     rct_tile_element * tileElement = map_get_surface_element_at({target_x, target_y});
-    sint32 waterHeight = map_get_water_height(tileElement);
+    sint32 waterHeight = surface_get_water_height(tileElement);
     if (waterHeight == 0)
     {
         state = DUCK_STATE::FLY_AWAY;
@@ -182,13 +186,13 @@ void rct_duck::UpdateSwim()
         if (randomNumber & 0x80000000)
         {
             state = DUCK_STATE::DOUBLE_DRINK;
-            frame = -1;
+            frame = std::numeric_limits<uint16>::max();
             UpdateDoubleDrink();
         }
         else
         {
             state = DUCK_STATE::DRINK;
-            frame = -1;
+            frame = std::numeric_limits<uint16>::max();
             UpdateDrink();
         }
     }
@@ -285,7 +289,7 @@ void rct_duck::UpdateFlyAway()
         sint32 newX = x + (DuckMoveOffset[direction].x * 2);
         sint32 newY = y + (DuckMoveOffset[direction].y * 2);
         sint32 newZ = Math::Min(z + 2, 496);
-        if (map_is_location_valid(newX, newY))
+        if (map_is_location_valid({newX, newY}))
         {
             MoveTo(newX, newY, newZ);
             Invalidate();

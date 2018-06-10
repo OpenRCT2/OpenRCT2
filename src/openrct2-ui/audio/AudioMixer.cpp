@@ -36,7 +36,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/platform/platform.h>
 
-namespace OpenRCT2 { namespace Audio
+namespace OpenRCT2::Audio
 {
     class AudioMixerImpl final : public IAudioMixer
     {
@@ -44,7 +44,7 @@ namespace OpenRCT2 { namespace Audio
         IAudioSource * _nullSource = nullptr;
 
         SDL_AudioDeviceID _deviceId = 0;
-        AudioFormat _format = { 0 };
+        AudioFormat _format = {};
         std::list<ISDLAudioChannel *> _channels;
         float _volume = 1.0f;
         float _adjustSoundVolume = 0.0f;
@@ -75,7 +75,7 @@ namespace OpenRCT2 { namespace Audio
         {
             Close();
 
-            SDL_AudioSpec want = { 0 };
+            SDL_AudioSpec want = {};
             want.freq = 22050;
             want.format = AUDIO_S16SYS;
             want.channels = 2;
@@ -513,4 +513,4 @@ namespace OpenRCT2 { namespace Audio
     {
         return new AudioMixerImpl();
     }
-} }
+} // namespace OpenRCT2::Audio

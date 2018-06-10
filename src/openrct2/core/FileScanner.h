@@ -67,4 +67,4 @@ namespace Path
     void QueryDirectory(QueryDirectoryResult * result, const std::string &pattern);
 
     std::vector<std::string> GetDirectories(const std::string &path);
-}
+} // namespace Path

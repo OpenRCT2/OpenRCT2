@@ -16,6 +16,7 @@
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 
+#include <cstring>
 #include <ctype.h>
 #include <dirent.h>
 #include <errno.h>
@@ -371,29 +372,6 @@ bool platform_file_delete(const utf8 *path)
 {
     sint32 ret = unlink(path);
     return ret == 0;
-}
-
-static wchar_t *regular_to_wchar(const char* src)
-{
-    sint32 len = strnlen(src, MAX_PATH);
-    wchar_t * w_buffer = (wchar_t *)malloc((len + 1) * sizeof(wchar_t));
-    mbtowc (NULL, NULL, 0);  /* reset mbtowc */
-
-    sint32 max = len;
-    sint32 i = 0;
-    while (max > 0)
-    {
-        sint32 length;
-        length = mbtowc(&w_buffer[i], &src[i], max);
-        if (length < 1)
-        {
-            w_buffer[i + 1] = '\0';
-            break;
-        }
-        i += length;
-        max -= length;
-    }
-    return w_buffer;
 }
 
 time_t platform_file_get_modified_time(const utf8* path){

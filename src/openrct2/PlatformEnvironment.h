@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 #include "common.h"
 
@@ -82,6 +83,7 @@ namespace OpenRCT2
         virtual void SetBasePath(DIRBASE base, const std::string &path) abstract;
     };
 
-    IPlatformEnvironment * CreatePlatformEnvironment(DIRBASE_VALUES basePaths);
-    IPlatformEnvironment * CreatePlatformEnvironment();
-}
+    std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment(DIRBASE_VALUES basePaths);
+    std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment();
+
+} // namespace OpenRCT2

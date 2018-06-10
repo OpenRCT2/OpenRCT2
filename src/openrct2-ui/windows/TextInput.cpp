@@ -31,10 +31,12 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
+#include <openrct2/drawing/Drawing.h>
 
 #define WW 250
 #define WH 90
 
+// clang-format off
 enum WINDOW_TEXT_INPUT_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -91,6 +93,7 @@ static rct_window_event_list window_text_input_events = {
     window_text_input_paint,
     nullptr
 };
+// clang-format on
 
 static rct_string_id input_text_description;
 static utf8 text_input[TEXT_INPUT_SIZE] = { 0 };

@@ -15,25 +15,21 @@
 #pragma endregion
 
 #include <algorithm>
+#include <cstring>
+
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../core/Math.hpp"
 #include "../drawing/Drawing.h"
 #include "../Game.h"
 #include "../Input.h"
-#include "../localisation/Localisation.h"
 #include "../OpenRCT2.h"
 #include "../paint/Paint.h"
-#include "../paint/Supports.h"
 #include "../peep/Staff.h"
-#include "../ride/RideData.h"
-#include "../ride/TrackData.h"
-#include "../world/Banner.h"
+#include "../ride/Ride.h"
+#include "../ride/TrackDesign.h"
 #include "../world/Climate.h"
-#include "../world/Entrance.h"
-#include "../world/Footpath.h"
 #include "../world/Map.h"
-#include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "Colour.h"
 #include "Viewport.h"
@@ -653,8 +649,7 @@ void viewport_update_smart_sprite_follow(rct_window * window)
     }
     else if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
     {
-        rct_vehicle * vehicle = GET_VEHICLE(window->viewport_smart_follow_sprite);
-        viewport_update_smart_vehicle_follow(window, vehicle);
+        viewport_update_smart_vehicle_follow(window);
     }
     else if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_MISC ||
              sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
@@ -675,7 +670,7 @@ void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
     {
         sprite_focus sprite;
         coordinate_focus coordinate;
-    } focus = { 0 }; // The focus will be either a sprite or a coordinate.
+    } focus = {}; // The focus will be either a sprite or a coordinate.
 
     focus.sprite.sprite_id = window->viewport_smart_follow_sprite;
 
@@ -735,7 +730,7 @@ void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
 
 void viewport_update_smart_staff_follow(rct_window * window, rct_peep * peep)
 {
-    sprite_focus focus = { 0 };
+    sprite_focus focus = {};
 
     focus.sprite_id = window->viewport_smart_follow_sprite;
 
@@ -755,10 +750,10 @@ void viewport_update_smart_staff_follow(rct_window * window, rct_peep * peep)
     window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
 }
 
-void viewport_update_smart_vehicle_follow(rct_window * window, rct_vehicle * vehicle)
+void viewport_update_smart_vehicle_follow(rct_window * window)
 {
     // Can be expanded in the future if needed
-    sprite_focus focus = { 0 };
+    sprite_focus focus = {};
 
     focus.sprite_id = window->viewport_smart_follow_sprite;
 
@@ -884,7 +879,7 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
 {
     gCurrentViewportFlags = viewFlags;
 
-    if (viewFlags & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT)) {
+    if (viewFlags & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_CLIP_VIEW)) {
         uint8 colour = 10;
         if (viewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES) {
             colour = 0;
@@ -975,7 +970,7 @@ LocationXY16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, ui
 
 LocationXY16 viewport_coord_to_map_coord(sint32 x, sint32 y, sint32 z)
 {
-    LocationXY16 ret = { 0 };
+    LocationXY16 ret = {};
     switch (get_current_rotation()) {
     case 0:
         ret.x = -x / 2 + y + z;

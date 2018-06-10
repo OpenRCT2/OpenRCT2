@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include <memory>
+#include <string_view>
+#include <vector>
 #include "../common.h"
 
 /**
@@ -25,33 +28,30 @@ interface IZipArchive
 {
     virtual ~IZipArchive() { }
 
-    virtual size_t          GetNumFiles() const abstract;
-    virtual const utf8 *    GetFileName(size_t index) const abstract;
-    virtual uint64          GetFileSize(size_t index) const abstract;
-    virtual void *          GetFileData(const utf8 * path, size_t * outSize) const abstract;
-    virtual IStream *       GetFileStream(const utf8 * path) const abstract;
+    virtual size_t GetNumFiles() const abstract;
+    virtual std::string GetFileName(size_t index) const abstract;
+    virtual uint64 GetFileSize(size_t index) const abstract;
+    virtual std::vector<uint8> GetFileData(const std::string_view& path) const abstract;
 
     /**
      * Creates or overwrites a file within the zip archive to the given data buffer.
      * @param path The path of the file within the zip.
-     * @param data The data to write, this buffer must not be mutated or disposed until
-     *             the zip archive has been disposed.
-     * @param dataSize The size of the data in bytes.
+     * @param data The data to write.
      */
-    virtual void SetFileData(const utf8 * path, void * data, size_t dataSize) abstract;
+    virtual void SetFileData(const std::string_view& path, std::vector<uint8>&& data) abstract;
 
-    virtual void DeleteFile(const utf8 * path) abstract;
-    virtual void RenameFile(const utf8 * path, const utf8 * newPath) abstract;
+    virtual void DeleteFile(const std::string_view& path) abstract;
+    virtual void RenameFile(const std::string_view& path, const std::string_view& newPath) abstract;
 };
 
-enum ZIP_ACCESS
+enum class ZIP_ACCESS
 {
-    ZIP_ACCESS_READ,
-    ZIP_ACCESS_WRITE,
+    READ,
+    WRITE,
 };
 
 namespace Zip
 {
-    IZipArchive * Open(const utf8 * path, ZIP_ACCESS zipAccess);
-    IZipArchive * TryOpen(const utf8 * path, ZIP_ACCESS zipAccess);
+    std::unique_ptr<IZipArchive> Open(const std::string_view& path, ZIP_ACCESS zipAccess);
+    std::unique_ptr<IZipArchive> TryOpen(const std::string_view& path, ZIP_ACCESS zipAccess);
 }

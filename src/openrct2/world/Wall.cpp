@@ -31,6 +31,7 @@
 #include "Park.h"
 #include "Scenery.h"
 #include "SmallScenery.h"
+#include "Surface.h"
 #include "Wall.h"
 
 /**
@@ -64,10 +65,7 @@ static bool TrackIsAllowedWallEdges(uint8 rideType, uint8 trackType, uint8 track
  *  rct2: 0x006E5CBA
  */
 static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
-                                          sint32 x,
-                                          sint32 y,
                                           sint32 z0,
-                                          sint32 z1,
                                           sint32 edge,
                                           rct_tile_element * trackElement,
                                           bool * wallAcrossTrack)
@@ -188,7 +186,7 @@ static bool WallCheckObstruction(rct_scenery_entry * wall,
     rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
     do
     {
-        sint32 elementType = tile_element_get_type(tileElement);
+        sint32 elementType = tileElement->GetType();
         if (elementType == TILE_ELEMENT_TYPE_SURFACE) continue;
         if (z0 >= tileElement->clearance_height) continue;
         if (z1 <= tileElement->base_height) continue;
@@ -222,7 +220,7 @@ static bool WallCheckObstruction(rct_scenery_entry * wall,
             tile = &entry->large_scenery.tiles[sequence];
             {
                 sint32 direction = ((edge - tile_element_get_direction(tileElement)) & TILE_ELEMENT_DIRECTION_MASK) + 8;
-                if (!(tile->var_7 & (1 << direction)))
+                if (!(tile->flags & (1 << direction)))
                 {
                     map_obstruction_set_error_text(tileElement);
                     return false;
@@ -239,14 +237,14 @@ static bool WallCheckObstruction(rct_scenery_entry * wall,
             }
             break;
         case TILE_ELEMENT_TYPE_TRACK:
-            if (!WallCheckObstructionWithTrack(wall, x, y, z0, z1, edge, tileElement, wallAcrossTrack))
+            if (!WallCheckObstructionWithTrack(wall, z0, edge, tileElement, wallAcrossTrack))
             {
                 return false;
             }
             break;
         }
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
+    while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -339,7 +337,7 @@ static money32 WallPlace(uint8 wallType,
 
         if (position.z == 0)
         {
-            if (!map_is_location_in_park(position.x, position.y))
+            if (!map_is_location_in_park({position.x, position.y}))
             {
                 return MONEY32_UNDEFINED;
             }
@@ -375,9 +373,9 @@ static money32 WallPlace(uint8 wallType,
         return MONEY32_UNDEFINED;
     }
 
-    if (map_get_water_height(surfaceElement) > 0)
+    if (surface_get_water_height(surfaceElement) > 0)
     {
-        uint16 waterHeight = map_get_water_height(surfaceElement) * 16;
+        uint16 waterHeight = surface_get_water_height(surfaceElement) * 16;
 
         if (position.z < waterHeight && !gCheatsDisableClearanceChecks)
         {
@@ -579,67 +577,6 @@ static money32 WallPlace(uint8 wallType,
     }
 }
 
-static rct_tile_element * GetFirstWallElementAt(sint32 x, sint32 y, uint8 baseZ, uint8 direction, bool isGhost)
-{
-    rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
-    do
-    {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL) continue;
-        if (tileElement->base_height != baseZ) continue;
-        if ((tile_element_get_direction(tileElement)) != direction) continue;
-        if (tile_element_is_ghost(tileElement) != isGhost) continue;
-        return tileElement;
-    }
-    while (!tile_element_is_last_for_tile(tileElement++));
-    return nullptr;
-}
-
-static money32 WallRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 direction, uint8 flags)
-{
-    if (!map_is_location_valid(x, y))
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    bool isGhost = (flags & GAME_COMMAND_FLAG_GHOST) != 0;
-    if (!isGhost &&
-        game_is_paused() &&
-        !gCheatsBuildInPauseMode)
-    {
-        gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-        return MONEY32_UNDEFINED;
-    }
-
-    if (!isGhost &&
-        !(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) &&
-        !gCheatsSandboxMode &&
-        !map_is_location_owned(x, y, baseHeight * 8))
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    rct_tile_element * wallElement = GetFirstWallElementAt(x, y, baseHeight, direction, isGhost);
-    if (!(flags & GAME_COMMAND_FLAG_APPLY) || (wallElement == nullptr))
-    {
-        return 0;
-    }
-
-    if (gGameCommandNestLevel == 1 && !isGhost)
-    {
-        LocationXYZ16 coord;
-        coord.x = x + 16;
-        coord.y = y + 16;
-        coord.z = tile_element_height(coord.x, coord.y);
-        network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-    }
-
-    tile_element_remove_banner_entry(wallElement);
-    map_invalidate_tile_zoom1(x, y, wallElement->base_height * 8, (wallElement->base_height * 8) + 72);
-    tile_element_remove(wallElement);
-    return 0;
-}
-
 static money32 WallSetColour(sint16 x,
                              sint16 y,
                              uint8 baseHeight,
@@ -657,7 +594,7 @@ static money32 WallSetColour(sint16 x,
     gCommandPosition.z = z;
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) &&
-        !map_is_location_in_park(x, y) &&
+        !map_is_location_in_park({x, y}) &&
         !gCheatsSandboxMode)
     {
 
@@ -691,12 +628,12 @@ static money32 WallSetColour(sint16 x,
     return 0;
 }
 
-uint8 wall_element_get_animation_frame(const rct_tile_element * wallElement)
+uint8 wall_get_animation_frame(const rct_tile_element * wallElement)
 {
     return (wallElement->properties.wall.animation >> 3) & 0xF;
 }
 
-void wall_element_set_animation_frame(rct_tile_element * wallElement, uint8 frameNum)
+void wall_set_animation_frame(rct_tile_element * wallElement, uint8 frameNum)
 {
     wallElement->properties.wall.animation &= WALL_ANIMATION_FLAG_ALL_FLAGS;
     wallElement->properties.wall.animation |= (frameNum & 0xF) << 3;
@@ -755,7 +692,7 @@ repeat:
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
         if (z0 >= tileElement->clearance_height)
             continue;
@@ -767,7 +704,7 @@ repeat:
         tile_element_remove(tileElement);
         goto repeat;
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
+    while (!(tileElement++)->IsLastForTile());
 }
 
 /**
@@ -790,7 +727,7 @@ void wall_remove_intersecting_walls(sint32 x, sint32 y, sint32 z0, sint32 z1, si
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
 
         if (tileElement->clearance_height <= z0 || tileElement->base_height >= z1)
@@ -804,7 +741,7 @@ void wall_remove_intersecting_walls(sint32 x, sint32 y, sint32 z0, sint32 z1, si
         tile_element_remove(tileElement);
         tileElement--;
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
+    while (!(tileElement++)->IsLastForTile());
 }
 
 /**
@@ -815,7 +752,7 @@ void game_command_place_wall(sint32 * eax,
                              sint32 * ebx,
                              sint32 * ecx,
                              sint32 * edx,
-                             sint32 * esi,
+                             [[maybe_unused]] sint32 * esi,
                              sint32 * edi,
                              sint32 * ebp)
 {
@@ -855,35 +792,14 @@ money32 wall_place(sint32 type,
 
 /**
  *
- *  rct2: 0x006E5597
- */
-void game_command_remove_wall(sint32 * eax,
-                              sint32 * ebx,
-                              sint32 * ecx,
-                              sint32 * edx,
-                              sint32 * esi,
-                              sint32 * edi,
-                              sint32 * ebp)
-{
-    *ebx = WallRemove(
-        *eax & 0xFFFF,
-        *ecx & 0xFFFF,
-        (*edx >> 8) & 0xFF,
-        *edx & 0xFF,
-        *ebx & 0xFF
-    );
-}
-
-/**
- *
  *  rct2: 0x006E56B5
  */
 void game_command_set_wall_colour(sint32 * eax,
                                   sint32 * ebx,
                                   sint32 * ecx,
                                   sint32 * edx,
-                                  sint32 * esi,
-                                  sint32 * edi,
+                                  [[maybe_unused]] sint32 * esi,
+                                  [[maybe_unused]] sint32 * edi,
                                   sint32 * ebp)
 {
     *ebx = WallSetColour(
@@ -897,4 +813,3 @@ void game_command_set_wall_colour(sint32 * eax,
         *ebx & 0xFF
     );
 }
-

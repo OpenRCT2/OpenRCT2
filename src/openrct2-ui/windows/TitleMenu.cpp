@@ -27,6 +27,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2-ui/interface/Dropdown.h>
 
+// clang-format off
 enum {
     WIDX_START_NEW_GAME,
     WIDX_CONTINUE_SAVED_GAME,
@@ -78,6 +79,7 @@ static rct_window_event_list window_title_menu_events = {
     window_title_menu_paint,
     nullptr
 };
+// clang-format on
 
 /**
  * Creates the window containing the menu buttons on the title screen.

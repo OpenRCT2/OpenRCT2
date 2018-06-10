@@ -30,10 +30,14 @@
 #include <openrct2/Input.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/interface/themes.h>
+#include <openrct2/world/Sprite.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/management/Finance.h>
 
 #define WW 190
 #define WH 180
 
+// clang-format off
 enum WINDOW_STAFF_PAGE {
     WINDOW_STAFF_OVERVIEW,
     WINDOW_STAFF_OPTIONS,
@@ -290,6 +294,7 @@ static constexpr const uint32 window_staff_page_enabled_widgets[] = {
     (1 << WIDX_TAB_2) |
     (1 << WIDX_TAB_3)
 };
+// clang-format on
 
 static uint8 _availableCostumes[ENTERTAINER_COSTUME_COUNT];
 
@@ -1194,7 +1199,7 @@ void window_staff_overview_viewport_rotate(rct_window *w)
 void window_staff_viewport_init(rct_window* w){
     if (w->page != WINDOW_STAFF_OVERVIEW) return;
 
-    sprite_focus focus = { 0 };
+    sprite_focus focus = {};
 
     focus.sprite_id = w->number;
 

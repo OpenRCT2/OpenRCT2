@@ -178,7 +178,7 @@ static void top_spin_paint_vehicle(
         session, image_id, (sint8)seatCoords.x, (sint8)seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX,
         boundBoxOffsetY, boundBoxOffsetZ);
 
-    rct_drawpixelinfo * dpi = session->Unk140E9A8;
+    rct_drawpixelinfo * dpi = session->DPI;
     if (dpi->zoom_level < 2 && vehicle != nullptr && vehicle->num_peeps != 0)
     {
         image_id = (seatImageId + (1 * 76)) |
@@ -269,8 +269,7 @@ static void paint_top_spin(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    track_paint_util_paint_floor(
-        session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, session->CurrentRotation);
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
 
     track_paint_util_paint_fences(
         session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,

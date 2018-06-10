@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <cctype>
+#include <cmath>
 #include <ctime>
 #include "../common.h"
 #include "../core/Guard.hpp"
@@ -222,7 +223,7 @@ bool avx2_available()
 // https://github.com/gcc-mirror/gcc/commit/132fa33ce998df69a9f793d63785785f4b93e6f1
 // which causes it to ignore subleafs, but the new function is unavailable on Ubuntu's
 // prehistoric toolchains
-#if defined(OpenRCT2_CPUID_GNUC_X86)
+#if defined(OpenRCT2_CPUID_GNUC_X86) && (!defined(__FreeBSD__) || (__FreeBSD__ > 10))
     return __builtin_cpu_supports("avx2");
 #else
     // AVX2 support is declared as the 5th bit of EBX with CPUID(EAX = 7, ECX = 0).
@@ -447,7 +448,7 @@ char *safe_strtrimleft(char *destination, const char *source, size_t size)
     return safe_strcpy(destination, source, size);
 }
 
-#if !defined(_GNU_SOURCE)
+#if !(defined(_GNU_SOURCE) || (defined(__DARWIN_C_LEVEL) && __DARWIN_C_LEVEL >= 200809L))
 char * strcasestr(const char * haystack, const char * needle)
 {
     const char * p1 = haystack;
@@ -655,7 +656,7 @@ uint8 soft_light(uint8 a, uint8 b)
     }
     else
     {
-        fr = (2 * fa * (1 - fb)) + (sqrtf(fa) * ((2 * fb) - 1));
+        fr = (2 * fa * (1 - fb)) + (std::sqrt(fa) * ((2 * fb) - 1));
     }
     return (uint8)(Math::Clamp(0.0f, fr, 1.0f) * 255.0f);
 }

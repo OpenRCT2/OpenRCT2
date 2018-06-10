@@ -32,7 +32,7 @@
   </PropertyGroup>
   <Import Project="..\..\openrct2.common.props" />
   <PropertyGroup>
-    <OutDir>$(SolutionDir)bin\tests\</OutDir>
+    <OutDir>$(SolutionDir)bin\</OutDir>
     <IncludePath>$(GtestDir);$(GtestDir)\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)bin;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -52,12 +52,16 @@
   <!-- Files -->
   <ItemGroup>
     <ClInclude Include="AssertHelpers.hpp" />
+    <ClInclude Include="helpers\StringHelpers.hpp" />
     <ClInclude Include="TestData.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CryptTests.cpp" />
     <ClCompile Include="LanguagePackTest.cpp" />
+    <ClCompile Include="ImageImporterTests.cpp" />
     <ClCompile Include="IniReaderTest.cpp" />
     <ClCompile Include="IniWriterTest.cpp" />
+    <ClCompile Include="Localisation.cpp" />
     <ClCompile Include="MultiLaunch.cpp" />
     <ClCompile Include="RideRatings.cpp" />
     <ClCompile Include="sawyercoding_test.cpp" />
@@ -65,6 +69,7 @@
     <ClCompile Include="TestData.cpp" />
     <ClCompile Include="tests.cpp" />
     <ClCompile Include="StringTest.cpp" />
+    <ClCompile Include="TileElements.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

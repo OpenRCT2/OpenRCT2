@@ -24,7 +24,7 @@
 #include "../drawing/Drawing.h"
 #include "../Game.h"
 #include "../interface/Chat.h"
-#include "../interface/Console.h"
+#include "../interface/InteractiveConsole.h"
 #include "../Intro.h"
 #include "../localisation/Language.h"
 #include "../localisation/FormatCodes.h"
@@ -34,25 +34,25 @@ using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Ui;
 
-Painter::Painter(IUiContext * uiContext)
+Painter::Painter(const std::shared_ptr<IUiContext>& uiContext)
     : _uiContext(uiContext)
 {
 }
 
-void Painter::Paint(IDrawingEngine * de)
+void Painter::Paint(IDrawingEngine& de)
 {
-    auto dpi = de->GetDrawingPixelInfo();
+    auto dpi = de.GetDrawingPixelInfo();
     if (gIntroState != INTRO_STATE_NONE)
     {
         intro_draw(dpi);
     }
     else
     {
-        de->PaintWindows();
+        de.PaintWindows();
 
         update_palette_effects();
         chat_draw(dpi);
-        console_draw(dpi);
+        _uiContext->Draw(dpi);
 
         if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !title_should_hide_version_info())
         {
@@ -62,7 +62,7 @@ void Painter::Paint(IDrawingEngine * de)
         gfx_draw_pickedup_peep(dpi);
         gfx_invalidate_pickedup_peep();
 
-        de->PaintRain();
+        de.PaintRain();
     }
 
     if (gConfigGeneral.show_fps)

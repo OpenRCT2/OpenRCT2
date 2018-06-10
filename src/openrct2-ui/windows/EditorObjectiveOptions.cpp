@@ -17,6 +17,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/windows/Window.h>
 
+#include <openrct2/actions/ParkSetNameAction.hpp>
 #include <openrct2/Context.h>
 #include <openrct2/core/Util.hpp>
 #include <openrct2/Game.h>
@@ -27,9 +28,12 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Climate.h>
+#include <openrct2/scenario/Scenario.h>
+#include <openrct2/world/Park.h>
 
 #pragma region Widgets
 
+// clang-format off
 enum {
     WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN,
     WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES,
@@ -97,12 +101,8 @@ static rct_widget window_editor_objective_options_main_widgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,
     { WWT_DROPDOWN,         1,  98,     441,    48,     59,     STR_NONE,                   STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP          },
     { WWT_BUTTON,           1,  430,    440,    49,     58,     STR_DROPDOWN_GLYPH,         STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP          },
-    { WWT_SPINNER,          1,  158,    237,    65,     76,     STR_NONE,                   STR_NONE                                            },
-    { WWT_BUTTON,           1,  226,    236,    66,     70,     STR_NUMERIC_UP,             STR_NONE                                            },
-    { WWT_BUTTON,           1,  226,    236,    71,     75,     STR_NUMERIC_DOWN,           STR_NONE                                            },
-    { WWT_SPINNER,          1,  158,    277,    82,     93,     STR_NONE,                   STR_NONE                                            },
-    { WWT_BUTTON,           1,  266,    276,    83,     87,     STR_NUMERIC_UP,             STR_NONE                                            },
-    { WWT_BUTTON,           1,  266,    276,    88,     92,     STR_NUMERIC_DOWN,           STR_NONE                                            },
+      SPINNER_WIDGETS      (1,  158,    277,    65,     76,     STR_NONE,                   STR_NONE), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  158,    277,    82,     93,     STR_NONE,                   STR_NONE), // NB: 3 widgets
     { WWT_DROPDOWN,         1,  98,     277,    99,     110,    STR_NONE,                   STR_SELECT_CLIMATE_TIP                              },
     { WWT_BUTTON,           1,  266,    276,    100,    109,    STR_DROPDOWN_GLYPH,         STR_SELECT_CLIMATE_TIP                              },
     { WWT_BUTTON,           1,  370,    444,    116,    127,    STR_CHANGE,                 STR_CHANGE_NAME_OF_PARK_TIP                         },
@@ -251,6 +251,7 @@ static uint64 window_editor_objective_options_page_hold_down_widgets[] = {
 
     0
 };
+// clang-format on
 
 #pragma endregion
 
@@ -792,11 +793,14 @@ static void window_editor_objective_options_main_textinput(rct_window *w, rct_wi
 
     switch (widgetIndex) {
     case WIDX_PARK_NAME:
-        park_set_name(text);
+        {
+            auto action = ParkSetNameAction(text);
+            GameActions::Execute(&action);
 
-        if (gS6Info.name[0] == '\0')
-            format_string(gS6Info.name, 64, gParkName, &gParkNameArgs);
-        break;
+            if (gS6Info.name[0] == '\0')
+                format_string(gS6Info.name, 64, gParkName, &gParkNameArgs);
+            break;
+        }
     case WIDX_SCENARIO_NAME:
         safe_strcpy(gS6Info.name, text, Util::CountOf(gS6Info.name));
         window_invalidate(w);

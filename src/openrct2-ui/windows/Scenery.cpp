@@ -29,6 +29,8 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/management/Research.h>
 
 #define WINDOW_SCENERY_WIDTH    634
 #define WINDOW_SCENERY_HEIGHT   180
@@ -36,6 +38,7 @@
 #define SCENERY_BUTTON_HEIGHT   80
 #define SCENERY_WINDOW_TABS     (MAX_SCENERY_GROUP_OBJECTS + 1) // The + 1 is for the 'Miscellaneous' tab
 
+// clang-format off
 enum {
     WINDOW_SCENERY_TAB_1,
     WINDOW_SCENERY_TAB_2,
@@ -175,10 +178,11 @@ static rct_widget window_scenery_widgets[] = {
     { WWT_COLOURBTN, 1, 615, 626, 93, 104, 0xFFFFFFFF, STR_SELECT_COLOUR },             // 8000000          0x009DE448
     { WWT_COLOURBTN, 1, 615, 626, 105, 116, 0xFFFFFFFF, STR_SELECT_SECONDARY_COLOUR },  // 10000000         0x009DE458
     { WWT_COLOURBTN, 1, 615, 626, 117, 128, 0xFFFFFFFF, STR_SELECT_TERNARY_COLOUR },        // 20000000         0x009DE468
-    { WWT_FLATBTN, 1, 609, 632, 130, 153, SPR_PICKUP_BTN, STR_SCENERY_EYEDROPPER_TIP },                                 // 40000000         0x009DE478
+    { WWT_FLATBTN, 1, 609, 632, 130, 153, SPR_G2_EYEDROPPER, STR_SCENERY_EYEDROPPER_TIP },                                 // 40000000         0x009DE478
     { WWT_FLATBTN, 1, 609, 632, 154, 177, SPR_SCENERY_CLUSTER, STR_SCENERY_CLUSTER_TIP },                                   // 40000000         0x009DE478
     { WIDGETS_END },
 };
+// clang-format on
 
 void window_scenery_update_scroll(rct_window *w);
 
@@ -388,7 +392,7 @@ void window_scenery_set_default_placement_configuration()
     window_scenery_init();
 
     for (sint32 i = 0; i < SCENERY_WINDOW_TABS; i++)
-        gWindowSceneryTabSelections[i] = -1;
+        gWindowSceneryTabSelections[i] = WINDOW_SCENERY_TAB_SELECTION_UNDEFINED;
 
     for (sint32 i = 0; i < SCENERY_WINDOW_TABS; i++) {
         if (window_scenery_tab_entries[i][0] != -1) {
@@ -460,7 +464,7 @@ rct_window * window_scenery_open()
         (1 << WIDX_SCENERY_REPAINT_SCENERY_BUTTON) |
         (1 << WIDX_SCENERY_TERTIARY_COLOUR_BUTTON) |
         (1 << WIDX_SCENERY_EYEDROPPER_BUTTON) |
-        (1 << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
+        (1ULL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
     window_init_scroll_widgets(window);
     window_scenery_update_scroll(window);
@@ -772,7 +776,7 @@ static void window_scenery_update(rct_window *w)
     }
 
     if (gWindowSceneryEyedropperEnabled) {
-        gCurrentToolId = TOOL_PICKER;
+        gCurrentToolId = TOOL_CROSSHAIR;
     } else if (gWindowSceneryPaintEnabled == 1) { // the repaint scenery tool is active
         gCurrentToolId = TOOL_PAINT_DOWN;
     } else {
@@ -1273,6 +1277,6 @@ void window_scenery_reset_selected_scenery_items()
 {
     for (size_t i = 0; i < SCENERY_WINDOW_TABS; i++)
     {
-        gWindowSceneryTabSelections[i] = -1;
+        gWindowSceneryTabSelections[i] = WINDOW_SCENERY_TAB_SELECTION_UNDEFINED;
     }
 }

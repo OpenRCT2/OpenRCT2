@@ -114,4 +114,4 @@ namespace Collections
     }
 
     #pragma endregion
-}
+} // namespace Collections

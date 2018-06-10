@@ -385,7 +385,7 @@ extern uint32 gLastAutoSaveUpdate;
 
 extern char gScenarioFileName[260];
 
-ParkLoadResult * load_from_sc6(const char *path);
+void load_from_sc6(const char *path);
 void scenario_begin();
 void scenario_update();
 

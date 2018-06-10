@@ -16,6 +16,8 @@
 
 #pragma warning(disable : 4127) // conditional expression is constant
 
+#include <cstring>
+
 #include "Drawing.h"
 
 template<sint32 image_type, sint32 zoom_level>

@@ -34,7 +34,6 @@ void path_set_extension(utf8 *path, const utf8 *newExtension, size_t size);
 void path_append_extension(utf8 *path, const utf8 *newExtension, size_t size);
 void path_remove_extension(utf8 *path);
 void path_end_with_separator(utf8 *path, size_t size);
-bool readentirefile(const utf8 *path, void **outBuffer, size_t *outLength);
 bool writeentirefile(const utf8 * path, const void * buffer, size_t length);
 
 bool sse41_available();
@@ -51,7 +50,7 @@ char *safe_strcpy(char * destination, const char * source, size_t num);
 char *safe_strcat(char *destination, const char *source, size_t size);
 char *safe_strcat_path(char *destination, const char *source, size_t size);
 char *safe_strtrimleft(char *destination, const char *source, size_t size);
-#if !defined(_GNU_SOURCE)
+#if !(defined(_GNU_SOURCE) || (defined(__DARWIN_C_LEVEL) && __DARWIN_C_LEVEL >= 200809L))
 char * strcasestr(const char * haystack, const char * needle);
 #endif
 

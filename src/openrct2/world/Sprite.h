@@ -336,9 +336,10 @@ union rct_sprite {
 
     bool IsBalloon();
     bool IsDuck();
+    bool IsPeep();
     rct_balloon * AsBalloon();
     rct_duck * AsDuck();
-
+    rct_peep * AsPeep();
 };
 assert_struct_size(rct_sprite, 0x100);
 

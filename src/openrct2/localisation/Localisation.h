@@ -17,6 +17,8 @@
 #ifndef LOCALISATION_H
 #define LOCALISATION_H
 
+#include <cstring>
+
 #include "Currency.h"
 #include "Date.h"
 #include "FormatCodes.h"
@@ -40,25 +42,13 @@ sint32 get_string_length(const utf8 *text);
 
 // The maximum number of characters allowed for string/money conversions (anything above will risk integer overflow issues)
 #define MONEY_STRING_MAXLENGTH 14
-money32 string_to_money(char * string_to_monetise);
+money32 string_to_money(const char* string_to_monetise);
 void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffer_len);
 
 void user_string_clear_all();
 rct_string_id user_string_allocate(sint32 base, const utf8 *text);
 void user_string_free(rct_string_id id);
 bool is_user_string_id(rct_string_id stringId);
-
-utf8 *win1252_to_utf8_alloc(const char *src, size_t srcMaxSize);
-sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t maxBufferLength);
-
-sint32 rct2_to_utf8(utf8 *dst, const char *src);
-sint32 utf8_to_rct2(char *dst, const utf8 *src);
-wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str);
-uint32 encoding_convert_unicode_to_rct2(uint32 unicode);
-wchar_t encoding_convert_gb2312_to_unicode(wchar_t gb2312);
-wchar_t encoding_convert_big5_to_unicode(wchar_t big5);
-wchar_t encoding_convert_cp932_to_unicode(wchar_t cp932);
-wchar_t encoding_convert_cp949_to_unicode(wchar_t cp949);
 
 #define MAX_USER_STRINGS 1024
 #define USER_STRING_MAX_LENGTH 32
@@ -94,7 +84,7 @@ extern const rct_string_id DateDayNames[31];
 extern const rct_string_id DateGameMonthNames[MONTH_COUNT];
 extern const rct_string_id DateGameShortMonthNames[MONTH_COUNT];
 
-static inline void set_format_arg_body(uint8 *args, size_t offset, uintptr_t value, size_t size)
+[[maybe_unused]] static inline void set_format_arg_body(uint8 *args, size_t offset, uintptr_t value, size_t size)
 {
     memcpy(args + offset, &value, size);
 }

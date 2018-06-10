@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -17,26 +17,26 @@
 #ifndef __ANDROID__
 #include <zip.h>
 #include "IStream.hpp"
-#include "MemoryStream.h"
 #include "Zip.h"
 
 class ZipArchive final : public IZipArchive
 {
 private:
-    zip_t *     _zip;
-    ZIP_ACCESS  _access;
+    zip_t * _zip;
+    ZIP_ACCESS _access;
+    std::vector<std::vector<uint8>> _writeBuffers;
 
 public:
-    ZipArchive(const utf8 * path, ZIP_ACCESS access)
+    ZipArchive(const std::string_view& path, ZIP_ACCESS access)
     {
-        sint32 zipOpenMode = ZIP_RDONLY;
-        if (access == ZIP_ACCESS_WRITE)
+        auto zipOpenMode = ZIP_RDONLY;
+        if (access == ZIP_ACCESS::WRITE)
         {
             zipOpenMode = ZIP_CREATE;
         }
 
         sint32 error;
-        _zip = zip_open(path, zipOpenMode, &error);
+        _zip = zip_open(path.data(), zipOpenMode, &error);
         if (_zip == nullptr)
         {
             throw IOException("Unable to open zip file.");
@@ -52,13 +52,18 @@ public:
 
     size_t GetNumFiles() const override
     {
-        return zip_get_num_files(_zip);
+        return zip_get_num_entries(_zip, 0);
     }
 
-    const utf8 * GetFileName(size_t index) const override
+    std::string GetFileName(size_t index) const override
     {
-        const utf8 * name = zip_get_name(_zip, index, ZIP_FL_ENC_GUESS);
-        return name;
+        std::string result;
+        auto name = zip_get_name(_zip, index, ZIP_FL_ENC_GUESS);
+        if (name != nullptr)
+        {
+            result = name;
+        }
+        return result;
     }
 
     uint64 GetFileSize(size_t index) const override
@@ -74,51 +79,41 @@ public:
         }
     }
 
-    void * GetFileData(const utf8 * path, size_t * outSize) const override
+    std::vector<uint8> GetFileData(const std::string_view& path) const override
     {
-        void * data = nullptr;
-
-        size_t index = (size_t)zip_name_locate(_zip, path, 0);
-        uint64 dataSize = GetFileSize(index);
+        std::vector<uint8> result;
+        auto index = GetIndexFromPath(path);
+        auto dataSize = GetFileSize(index);
         if (dataSize > 0 && dataSize < SIZE_MAX)
         {
-            zip_file_t * zipFile = zip_fopen(_zip, path, 0);
+            auto zipFile = zip_fopen_index(_zip, index, 0);
             if (zipFile != nullptr)
             {
-                data = Memory::Allocate<void>((size_t)dataSize);
-                uint64 readBytes = zip_fread(zipFile, data, dataSize);
+                result.resize((size_t)dataSize);
+                uint64 readBytes = zip_fread(zipFile, result.data(), dataSize);
                 if (readBytes != dataSize)
                 {
-                    SafeFree(data);
-                    dataSize = 0;
+                    result.clear();
+                    result.shrink_to_fit();
                 }
                 zip_fclose(zipFile);
             }
         }
-
-        if (outSize != nullptr) *outSize = (size_t)dataSize;
-        return data;
+        return result;
     }
 
-    IStream * GetFileStream(const utf8 * path) const override
+    void SetFileData(const std::string_view& path, std::vector<uint8>&& data) override
     {
-        IStream * stream = nullptr;
-        size_t dataSize;
-        void * data = GetFileData(path, &dataSize);
-        if (data != nullptr)
-        {
-            stream = new MemoryStream(data, dataSize, MEMORY_ACCESS::READ | MEMORY_ACCESS::OWNER);
-        }
-        return stream;
-    }
+        // Push buffer to an internal list as libzip requires access to it until the zip
+        // handle is closed.
+        _writeBuffers.push_back(std::move(data));
+        const auto& writeBuffer = *_writeBuffers.rbegin();
 
-    void SetFileData(const utf8 * path, void * data, size_t dataSize) override
-    {
-        zip_source_t * source = zip_source_buffer(_zip, data, dataSize, 0);
-        sint64 index = zip_name_locate(_zip, path, 0);
+        auto source = zip_source_buffer(_zip, writeBuffer.data(), writeBuffer.size(), 0);
+        auto index = GetIndexFromPath(path);
         if (index == -1)
         {
-            zip_add(_zip, path, source);
+            zip_add(_zip, path.data(), source);
         }
         else
         {
@@ -126,38 +121,78 @@ public:
         }
     }
 
-    void DeleteFile(const utf8 * path) override
+    void DeleteFile(const std::string_view& path) override
     {
-        uint64 index = zip_name_locate(_zip, path, 0);
+        auto index = GetIndexFromPath(path);
         zip_delete(_zip, index);
     }
 
-    void RenameFile(const utf8 * path, const utf8 * newPath) override
+    void RenameFile(const std::string_view& path, const std::string_view& newPath) override
     {
-        uint64 index = zip_name_locate(_zip, path, 0);
-        zip_file_rename(_zip, index, newPath, ZIP_FL_ENC_GUESS);
+        auto index = GetIndexFromPath(path);
+        zip_file_rename(_zip, index, newPath.data(), ZIP_FL_ENC_GUESS);
+    }
+
+private:
+    /**
+     * Normalises both the given path and the stored paths and finds the first match.
+     */
+    zip_int64_t GetIndexFromPath(const std::string_view& path) const
+    {
+        auto normalisedPath = NormalisePath(path);
+        if (!normalisedPath.empty())
+        {
+            auto numFiles = zip_get_num_entries(_zip, 0);
+            for (zip_int64_t i = 0; i < numFiles; i++)
+            {
+                auto normalisedZipPath = NormalisePath(zip_get_name(_zip, i, ZIP_FL_ENC_GUESS));
+                if (normalisedZipPath == normalisedPath)
+                {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    static std::string NormalisePath(const std::string_view& path)
+    {
+        std::string result;
+        if (!path.empty())
+        {
+            // Convert back slashes to forward slashes
+            result = std::string(path);
+            for (auto ch = result.data(); *ch != '\0'; ch++)
+            {
+                if (*ch == '\\')
+                {
+                    *ch = '/';
+                }
+            }
+        }
+        return result;
     }
 };
 
 namespace Zip
 {
-    IZipArchive * Open(const utf8 * path, ZIP_ACCESS access)
+    std::unique_ptr<IZipArchive> Open(const std::string_view& path, ZIP_ACCESS access)
     {
-        return new ZipArchive(path, access);
+        return std::make_unique<ZipArchive>(path, access);
     }
 
-    IZipArchive * TryOpen(const utf8 * path, ZIP_ACCESS access)
+    std::unique_ptr<IZipArchive> TryOpen(const std::string_view& path, ZIP_ACCESS access)
     {
-        IZipArchive * result = nullptr;
+        std::unique_ptr<IZipArchive> result;
         try
         {
-            result = new ZipArchive(path, access);
+            result = std::make_unique<ZipArchive>(path, access);
         }
-        catch (const std::exception &)
+        catch (const std::exception&)
         {
         }
         return result;
     }
-}
+} // namespace Zip
 
 # endif

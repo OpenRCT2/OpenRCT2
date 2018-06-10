@@ -53,6 +53,69 @@ namespace ScenarioSources
 
         // RCT1 pack by RCTScenarioLover has a mistake:
         { "Geoffrey Gardens",                       "Geoffery Gardens"                          },
+
+        // CD Projekt Polish Edition
+        { "Alpine Adventures",                          "Górska przygoda"                           },
+        { "Amity Airfield",                             "Lotnisko Pogięcie"                         },
+        { "Botany Breakers",                            "Wyspa Odludna"                             },
+        { "Bumbly Bazaar",                              "Gwarne targowisko"                         },
+        { "Crazy Castle",                               "Zwariowany zamek"                          },
+        { "Dusty Greens",                               "Zapiaszczone Dołki"                        },
+        { "Electric Fields",                            "Pola elektryczne"                          },
+        { "Extreme Heights",                            "Ekstremalne wysokości"                     },
+        { "Factory Capers",                             "300% normy"                                },
+        { "Fungus Woods",                               "Grzybowe Lasy"                             },
+        { "Ghost Town",                                 "Miasto-widmo"                              },
+        { "Gravity Gardens",                            "Ogrody Grawitacji"                         },
+        { "Infernal Views",                             "Piekielny widok"                           },
+        { "Lucky Lake",                                 "Jezioro Szczęściarzy"                      },
+        { "Rainbow Summit",                             "Tęczowy Szczyt"                            },
+
+        { "Six Flags Belgium",                          "\"Sześć Flag\" - Belgia"                   },
+        { "Six Flags Holland",                          "\"Sześć Flag\" - Holandia"                 },
+        { "Six Flags Magic Mountain",                   "Czarodziejska góra \"Sześciu Flag\""       },
+        { "Six Flags Great Adventure",                  "\"Sześć Flag\" - wielka przygoda"          },
+        { "Six Flags over Texas",                       "\"Sześć Flag nad Teksasem\""             },
+        { "Build your own Six Flags Belgium",           "Wybuduj własny park \"Sześć Flag\" - Belgia" },
+        { "Build your own Six Flags Holland",           "Wybuduj własny park \"Sześć Flag\" - Holandia" },
+        { "Build your own Six Flags Magic Mountain",    "Wybuduj własny park czarodziejska góra \"Sześciu Flag\"" },
+        { "Build your own Six Flags Great Adventure",   "Wybuduj własny park \"Sześć Flag\" - wielka przygoda" },
+        { "Build your own Six Flags over Texas",        "Wybuduj własny park \"Sześć Flag nad Teksasem\"" },
+        { "Build your own Six Flags Park",              "Wybuduj własny park \"Sześć Flag\""        },
+
+        { "Africa - African Diamond Mine",              "Afryka - kopalnia diamentów"               },
+        { "Africa - Oasis",                             "Afryka - oaza"                             },
+        { "Africa - Victoria Falls",                    "Afryka - Wodospad Wiktorii"                },
+        { "Antarctic - Ecological Salvage",             "Antarktyka - utylizacja"                   },
+        { "Asia - Great Wall of China Tourism Enhancement", "Azja - rozwój turystyki wokół Wielkiego Muru Chińskiego" },
+        { "Asia - Japanese Coastal Reclaim",            "Azja - odzysk japońskiego wybrzeża"        },
+        { "Asia - Maharaja Palace",                     "Azja - pałac maharadży"                    },
+        { "Australasia - Ayers Rock",                   "Australazja - Ayers Rock"                  },
+        { "Australasia - Fun at the beach",             "Australazja - zabawa na plaży"             },
+        { "Europe - European Cultural Festival",        "Europa - Europejski Festiwal Kulturalny"   },
+        { "Europe - Renovation",                        "Europa - odbudowa"                         },
+        { "N. America - Extreme Hawaiian Island",       "Ameryka Płn. - ekstremalne Hawaje"         },
+        { "North America - Grand Canyon",               "Ameryka Płn. - Wielki Kanion"              },
+        { "North America - Rollercoaster Heaven",       "Ameryka Płn. - raj kolejek górskich"       },
+        { "South America - Inca Lost City",             "Ameryka Płd. - zaginione miasto Inków"     },
+        { "South America - Rain Forest Plateau",        "Ameryka Płd. - tropikalny płaskowyż"       },
+        { "South America - Rio Carnival",               "Ameryka Płd. - karnawał w Rio"             },
+
+        { "Dark Age - Castle",                          "Mroczne Wieki - zamek"                     },
+        { "Dark Age - Robin Hood",                      "Mroczne Wieki - Robin Hood"                },
+        { "Future - First Encounters",                  "Przyszłość - pierwsze spotkania"           },
+        { "Future - Future World",                      "Przyszłość - świat przyszłości"            },
+        { "Mythological - Animatronic Film Set",        "Mitologia - mechaniczny plan filmowy"      },
+        { "Mythological - Cradle of Civilisation",      "Mitologia - kołyska cywilizacji"           },
+        { "Prehistoric - After the Asteroid",           "Prehistoria - po asteroidzie"              },
+        { "Prehistoric - Jurassic Safari",              "Prehistoria - jurajskie safari"            },
+        { "Prehistoric - Stone Age",                    "Prehistoria - epoka kamienna"              },
+        { "Roaring Twenties - Prison Island",           "Ryczące Dwudziestki - wyspa więzienna"     },
+        { "Roaring Twenties - Schneider Cup",           "Ryczące Dwudziestki - puchar Schneidera"   },
+        { "Roaring Twenties - Skyscrapers",             "Ryczące Dwudziestki - drapacze chmur"      },
+        { "Rock 'n' Roll - Flower Power",               "Rock 'n' Roll - dzieci kwiaty"             },
+        // Skipping Rock 'n' Roll - Rock 'n' Roll as that name matches exactly.
+
     };
 
     // RCT
@@ -356,7 +419,7 @@ namespace ScenarioSources
             }
         }
     }
-}
+} // namespace ScenarioSources
 
 bool scenario_get_source_desc(const utf8 * name, source_desc * outDesc)
 {

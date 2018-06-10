@@ -21,7 +21,9 @@
 #include <openrct2/interface/themes.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 static rct_widget window_map_tooltip_widgets[] = {
     { WWT_IMGBTN, 0, 0, 199, 0, 29, 0xFFFFFFFF, STR_NONE },
     { WIDGETS_END }
@@ -60,6 +62,7 @@ static rct_window_event_list window_map_tooltip_events = {
     window_map_tooltip_paint,
     nullptr
 };
+// clang-format on
 
 #define MAP_TOOLTIP_ARGS
 

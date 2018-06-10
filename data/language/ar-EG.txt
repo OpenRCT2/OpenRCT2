@@ -1220,8 +1220,8 @@ STR_1214    :{SMALLFONT}{BLACK}Select maximum length of time to wait before depa
 STR_1215    :{WINDOW_COLOUR_2}Synchronise with adjacent stations
 STR_1216    :{SMALLFONT}{BLACK}Select whether to synchronise departure with all adjacent stations (for 'racing')
 STR_1217    :{COMMA16} ثواني
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :مخرج فقط
 STR_1221    :لا مدخل
 STR_1222    :لا مخرج
@@ -1777,8 +1777,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
-STR_1775    :مغلق
-STR_1776    :مفعل
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}Ride music
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
@@ -3574,9 +3574,9 @@ STR_5232    :{SMALLFONT}{BLACK}Editors
 STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
 STR_5234    :{SMALLFONT}{BLACK}Prompts
 STR_5235    :{SMALLFONT}{BLACK}Settings
-STR_5236    :Window:
-STR_5237    :Palette:
-STR_5238    :الثيم الحالي:
+STR_5236    :نافذة
+STR_5237    :لوحة
+STR_5238    :الثيم الحالي
 STR_5239    :Duplicate
 STR_5240    :Enter a name for the theme
 STR_5241    :Can't change this theme
@@ -3834,8 +3834,8 @@ STR_5492    :إعدادات المشهد
 STR_5493    :أرسل رسالة
 STR_5494    :<removed string - do not use>
 STR_5495    :قائمة اللاعبيين
-STR_5496    :اللاعب:
-STR_5497    :البنج:
+STR_5496    :اللاعب
+STR_5497    :البنج
 STR_5498    :قائمة السرفر
 STR_5499    :اسم اللاعب:
 STR_5500    :أضف سرفر
@@ -3980,7 +3980,7 @@ STR_5638    :Permission denied
 STR_5639    :{SMALLFONT}{BLACK}أظهر قائمة اللاعبين
 STR_5640    :{SMALLFONT}{BLACK}إدارة المجموعات
 STR_5641    :المجموعة الإفتراضية:
-STR_5642    :مجموعة:
+STR_5642    :مجموعة
 STR_5643    :أضف مجموعة
 STR_5644    :إمسح مجموعة
 STR_5645    :الشات
@@ -4008,7 +4008,7 @@ STR_5666    :Passwordless Login
 STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
 STR_5703    :لا يمكن طرد المُضيف
-STR_5704    :Last Action:
+STR_5704    :أخر فعل
 STR_5705    :Can't set to this group
 STR_5706    :Can't remove group that players belong to
 STR_5707    :This group cannot be modified
@@ -4183,34 +4183,34 @@ STR_5871    :Plants don't age
 STR_5872    :{SMALLFONT}{BLACK}Disable plant ageing such that they don't wilt.
 STR_5873    :Allow chain lifts on all track pieces
 STR_5874    :{SMALLFONT}{BLACK}Allows any piece of track to be made into a chain lift
-STR_5875    :Drawing Engine:
-STR_5876    :{SMALLFONT}{BLACK}The engine to use for drawing the game.
-STR_5877    :Software
-STR_5878    :Software (hardware display)
-STR_5879    :OpenGL (experimental)
+STR_5875    :محرك الرسم:
+STR_5876    :{SMALLFONT}{BLACK}المحرك المُستخدم في رسم اللعبة.
+STR_5877    :البرمجيات
+STR_5878    :البرمجيات (عرض الأجهزة)
+STR_5879    :أوبن جي إل (تجريبي)
 STR_5880    :المحدد فقط
 STR_5881    :الغير محدد فقط
-STR_5882    :Custom currency
-STR_5883    :Custom currency configuration
-STR_5884    :{WINDOW_COLOUR_2}Exchange rate:
-STR_5885    :{WINDOW_COLOUR_2}is equivalent to {COMMA32} GBP (£)
+STR_5882    :العملة المخصصة
+STR_5883    :تكوين العملة المخصصة
+STR_5884    :{WINDOW_COLOUR_2}سعر الصرف:
+STR_5885    :{WINDOW_COLOUR_2}ما يعادل {COMMA32} GBP (£)
 STR_5886    :{WINDOW_COLOUR_2}علامة الميزانية:
-STR_5887    :Prefix
-STR_5888    :Suffix
-STR_5889    :Custom currency symbol
-STR_5890    :Enter the currency symbol to display
-STR_5891    :Default
-STR_5892    :{SMALLFONT}{BLACK}Go to the default directory
-STR_5893    :Exchange Rate
-STR_5894    :Enter the exchange rate
-STR_5895    :Save Track
-STR_5896    :Track save failed!
+STR_5887    :السابقة
+STR_5888    :اللاحقة
+STR_5889    :رمز العملة المخصص
+STR_5890    :أدخل رمز العملة لعرضها
+STR_5891    :الإفتراضي
+STR_5892    :{SMALLFONT}{BLACK}اذهب إلى الوجهة الافتراضية
+STR_5893    :سعر الصرف
+STR_5894    :أدخل سعر الصرف
+STR_5895    :حفظ المسار
+STR_5896    :تعذّر حفظ المسار!
 STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}Can't load the track, the file might be {newline}corrupted, broken or missing!
 STR_5899    :Toggle paint debug window
-STR_5900    :Use original drawing code
-STR_5901    :Show segment heights
-STR_5902    :Show bounding boxes
+STR_5900    :استخدم رمز الرسم الأصلي
+STR_5901    :إظهار ارتفاع المقطع
+STR_5902    :إظهار الصناديق المحيطة
 STR_5903    :Show paint debug window
 STR_5904    :إرجاع التاريخ
 STR_5905    :{SMALLFONT}{BLACK}A map generation tool that automatically creates a custom landscape
@@ -4219,7 +4219,7 @@ STR_5907    :{SMALLFONT}{BLACK}When enabled, zooming in will centre around the c
 STR_5908    :Allow arbitrary ride type changes
 STR_5909    :{SMALLFONT}{BLACK}Allows changing ride type freely. May cause crashes.
 STR_5910    :تطبيق
-STR_5911    :See-Through Paths
+STR_5911    :انظر من خلال المسارات
 STR_5912    :See-through paths toggle
 STR_5913    :الشات
 STR_5914    :رحلة غير معروفة
@@ -4232,15 +4232,15 @@ STR_5920    :تصيير مؤثرات الطقس
 STR_5921    :{SMALLFONT}{BLACK}If enabled, rain and gloomy colours will be rendered during storms.
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {STRINGID}
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {COMMA16} {STRINGID} per train
-STR_5924    :Surface details
+STR_5924    :تفاصيل السطح
 STR_5925    :تفاصيل المسار
 STR_5926    :تفاصيل المسار
-STR_5927    :Scenery details
+STR_5927    :تفاصيل المشهد
 STR_5928    :تفاصيل المدخل
 STR_5929    :خصائص الحائط
-STR_5930    :Large scenery details
+STR_5930    :تفاصيل المشهد الكبير
 STR_5931    :تفاصيل اليافطة
-STR_5932    :Corrupt element details
+STR_5932    :تفاصيل العناصر الفاسدة
 STR_5933    :الخصائص
 STR_5934    :{WINDOW_COLOUR_2}Terrain texture: {BLACK}{STRINGID}
 STR_5935    :{WINDOW_COLOUR_2}Terrain edge: {BLACK}{STRINGID}
@@ -4249,10 +4249,10 @@ STR_5937    :Not owned and not for sale
 STR_5938    :{WINDOW_COLOUR_2}Water level: {BLACK}{COMMA16}
 STR_5939    :Remove park fences
 STR_5940    :Restore park fences
-STR_5941    :{WINDOW_COLOUR_2}Base height:
+STR_5941    :{WINDOW_COLOUR_2}ارتفاع القاعدة:
 STR_5942    :{WINDOW_COLOUR_2}أسم المسار: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Additions: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Additions: {BLACK}None
+STR_5943    :{WINDOW_COLOUR_2}الإضافات: {BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}الإضافات: {BLACK}لا شئ
 STR_5945    :{WINDOW_COLOUR_2}حواف متصلة:
 STR_5946    :{WINDOW_COLOUR_2}نوع الرحلة: {BLACK}{STRINGID}
 STR_5947    :{WINDOW_COLOUR_2}معرف الرحلة: {BLACK}{COMMA16}
@@ -4263,35 +4263,35 @@ STR_5951    :{WINDOW_COLOUR_2}Track piece ID: {BLACK}{COMMA16}
 STR_5952    :{WINDOW_COLOUR_2}Sequence number: {BLACK}{COMMA16}
 STR_5953    :{SMALLFONT}{BLACK}Sort the map elements on the current tile based on their base height.
 STR_5954    :{WINDOW_COLOUR_2}Scenery age: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Quadrant placement: {BLACK}{STRINGID}
-STR_5956    :Southwest
-STR_5957    :Northwest
-STR_5958    :Northeast
-STR_5959    :Southeast
-STR_5960    :{WINDOW_COLOUR_2}Quadrant placement:
-STR_5961    :{WINDOW_COLOUR_2}Entry index: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Collision detection:
-STR_5963    :{WINDOW_COLOUR_2}Raised Corners:
-STR_5964    :{WINDOW_COLOUR_2}Diagonal
+STR_5955    :{WINDOW_COLOUR_2}وضع حالة رباعي: {BLACK}{STRINGID}
+STR_5956    :جنوب غرب
+STR_5957    :الشمال الغربي
+STR_5958    :شمالي شرقي
+STR_5959    :الجنوب الشرقي
+STR_5960    :{WINDOW_COLOUR_2}وضع حالة رباعي:
+STR_5961    :{WINDOW_COLOUR_2}فهرس المدخل: {BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}كشف التصادم:
+STR_5963    :{WINDOW_COLOUR_2}زوايا مرتفعة:
+STR_5964    :{WINDOW_COLOUR_2}مائل
 STR_5965    :{WINDOW_COLOUR_2}نوع المدخل: {BLACK}{STRINGID}
 STR_5966    :{WINDOW_COLOUR_2}جزء مدخل الحديقة: {BLACK}{STRINGID}
 STR_5967    :وسط
 STR_5968    :شمال
 STR_5969    :يمين
-STR_5970    :{WINDOW_COLOUR_2}Entrance ID: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}Exit ID: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}Ride ID: {BLACK}{COMMA16}
+STR_5970    :{WINDOW_COLOUR_2}مُعرف المدخل: {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}مُعرف المخرج: {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}مُعرف الرحلة: {BLACK}{COMMA16}
 STR_5973    :تسلق إلي الأعلي
 STR_5974    :{SMALLFONT}{BLACK}Changes the base- and clearance height so that it's at the same as the next element on the current tile. Doing this makes it easier to build on this tile.
 STR_5975    :إنحدار:
 STR_5976    :مستوي
-STR_5977    :Right side up
-STR_5978    :Left side up
+STR_5977    :الجانب الأيمن الأعلى
+STR_5978    :الجانب الأيسر لأعلى
 STR_5979    :{WINDOW_COLOUR_2}نوع الحائط: {BLACK}{COMMA16}
 STR_5980    :{WINDOW_COLOUR_2}كتابة اليافطة: {BLACK}{STRINGID}
 STR_5981    :{WINDOW_COLOUR_2}ليست يافطة
-STR_5982    :{WINDOW_COLOUR_2}Large scenery type: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}Large scenery piece ID: {BLACK}{COMMA16}
+STR_5982    :{WINDOW_COLOUR_2}نوع المشهد الكبير: {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}معرّف قطعة المشاهد الكبيرة: {BLACK}{COMMA16}
 STR_5984    :المسارات المقفلة:
 STR_5985    :مجلد جديد
 STR_5986    :أدخل الأسم للمجلد الجديد.
@@ -4311,13 +4311,13 @@ STR_5999    :حدد النقود
 STR_6000    :أدخل قيمة جديدة
 STR_6001    :تفعيل تأثيرات الضوء (تجريبي)
 STR_6002    :{SMALLFONT}{BLACK}Lamps and rides will be lit up at night.{NEWLINE}Requires rendering engine to be set to hardware display.
-STR_6003    :Cut-away View
-STR_6004    :Cut-away View
-STR_6005    :Enable cut-away view
-STR_6006    :{SMALLFONT}{BLACK}Cut-away view only displays map elements at or below the cut height
-STR_6007    :Cut height
+STR_6003    :عرض كوتاواي
+STR_6004    :عرض كوتاواي
+STR_6005    :تفعيل عرض كوتاواي
+STR_6006    :{SMALLFONT}{BLACK}Cut-away view only displays map elements at or below the cut height (vertical clipping) and in the selected area (horizontal clipping).
+STR_6007    :علو القطع
 STR_6008    :{SMALLFONT}{BLACK}Click to toggle raw value<->value in measurement units
-STR_6009    :{SMALLFONT}{BLACK}Select cut height
+STR_6009    :{SMALLFONT}{BLACK}حدد علو القطع
 STR_6010    :{COMMA2DP32}متر
 STR_6011    :{COMMA1DP16}قدم
 STR_6012    :{COMMA1DP16}
@@ -4478,7 +4478,7 @@ STR_6166    :{SMALLFONT}{BLACK}مزامنة كل فريم إلي معدل تحد
 STR_6167    :{SMALLFONT}{BLACK}متقدم
 STR_6168    :تسلسل العنوان
 STR_6169    :تحديد السيناريو
-STR_6170    :الضبط
+STR_6170    :ضبط الواجهة
 STR_6171    :البحث
 STR_6172    :{SMALLFONT}{BLACK}بحث
 STR_6173    :من فضلك وفر الأسم للبحث:
@@ -4510,7 +4510,7 @@ STR_6198    :{BLACK}يوم:
 STR_6199    :حدد التاريخ
 STR_6200    :إسترجاع التاريخ
 STR_6201    :{MONTH}
-STR_6202    :تفعيل اللأرض الإفتراضية
+STR_6202    :نمط الأرض الإفتراضية
 STR_6203    :{SMALLFONT}{BLACK}حينما يتم تفعيلة، سوف يتم إظهار أرضية إفتراضية لكل تساعدك في وضع الأشكال عمودياً بشكل صحيح.
 STR_6204    :حجر
 STR_6205    :حديد
@@ -4530,6 +4530,41 @@ STR_6218    :الرسمية OpenRCT2
 STR_6219    :تعليم مشاكل المسار
 STR_6220    :أجعله مُستخدم
 STR_6221    :{SMALLFONT}{BLACK هذا سوف يحدد المدخل والمخرج المعروف للرحلة للمنطقة هذه. فقط مدخل ومخرج واحد يمكن إسخدامة لكل  محطة.
+STR_6222    :لا يمكن وضع نقطة دخول الضيوف هنا...
+STR_6223    :يجب أن يكون خارج حدود الحديقة!
+STR_6224    :{STRING} تم وضع نقطة دخول الضيوف.
+STR_6225    :غير مدعومة من تصيير أوبن جي إل
+STR_6226    :تمكين استكمال السيناريو المبكر
+STR_6227    :{SMALLFONT}{BLACK}يتم إطلاق إستكمال السيناريو عندما يتم استيفاء جميع أهداف السيناريو قبل الموعد المحدد.
+STR_6228    :إعدادات السيناريو
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :مُجمد
+STR_6233    :عرض كوتاواي
+STR_6234    :قم بتمييز مشاكل المسار
+STR_6235    :معلومات السرفر
+STR_6236    :اللاعبين
+STR_6237    :المجموعات
+STR_6238    :إعدادات اللعب المتعدد
+STR_6239    :لقطة عمودية
+STR_6240    :لقطة أفقية
+STR_6241    :حدد منطقة
+STR_6242    :إخلاء المُحدد
+STR_6243    :{SMALLFONT}{BLACK}تجديد الرحلة،{NEWLINE}إجعلها كالجديدة
+STR_6244    :لايمكن تجديد الرحلة...
+STR_6245    :{SMALLFONT}{BLACK}الرحلة لا تحتاج إلي التجديد
+STR_6246    :تجديد
+STR_6247    :تجديد الرحلة/الجذب
+STR_6248    :{WINDOW_COLOUR_1}هل تود تجديد {STRINGID} بقيمة {CURRENCY}?
+STR_6249    :{WINDOW_COLOUR_1}هل تود تجديد {STRINGID}?
+STR_6250    :{WINDOW_COLOUR_1}هل تود تدمير {STRINGID} بالكامل و إسترجاع {CURRENCY}?
+STR_6251    :الرحلة ليس ممتلئة بعد
+STR_6252    :رابط واجهة تطبيق تويتش
+STR_6253    :{SMALLFONT}{BLACK}وفر الرابط لواجهة تطبيق تويتش. مطلوبة من أجل .
+STR_6254    :الرابط لواجهة برمجة تطبيق تويتش:
+STR_6255    :رابط غير صالح
+
 #############
 # Scenarios #
 #############
@@ -4971,407 +5006,3 @@ STR_DTLS    :
 STR_SCNR    :حصن مفارقة تاريخية
 STR_PARK    :حصن مفارقة تاريخية
 STR_DTLS    :
-
-#####################
-# Rides/attractions #
-#####################
-
-#RCT2
-[TOPSP1]
-STR_NAME    :اللفة العالية
-STR_DESC    :Passengers ride in a gondola suspended by large rotating arms, rotating forwards and backwards head-over-heels
-STR_CPTY    :8 راكبين
-
-[BMSD]
-STR_NAME    :Twister Trains
-STR_DESC    :A spacious train with shoulder restraints
-
-[BMSU]
-STR_NAME    :Stand-up Twister Trains
-STR_DESC    :A train with shoulder restraints, in which the riders stand up
-
-[BMFL]
-STR_NAME    :Floorless Twister Trains
-STR_DESC    :A spacious train with shoulder restraints and no floor, making for a more exciting ride
-
-[WMMINE]
-STR_NAME    :Mine Cars
-STR_DESC    :Cars shaped like an old mine cart
-
-[WMOUSE]
-STR_NAME    :Mouse Cars
-STR_DESC    :Indivual cars shaped like a mouse
-
-[STEEP1]
-STR_NAME    :Horses
-STR_DESC    :Single cars shaped like a horse
-
-[STEEP2]
-STR_NAME    :Motorbikes
-STR_DESC    :Single cars shaped like a motorbike
-
-[SBOX]
-STR_NAME    :Soap boxes
-STR_DESC    :Single cars shaped like a soap box
-
-[BOB1]
-STR_NAME    :Bobsleigh Trains
-STR_DESC    :A train consisting of 2-seater cars where the riders are behind each other
-
-[INTBOB]
-STR_NAME    :6-seater Bobsleighs
-STR_DESC    :Bobsleighs with three seating rows, with room for two people on each
-
-[LIFT1]
-STR_NAME    :Lift Cabin
-STR_DESC    :Steel lift cabin
-
-[ARRT1]
-STR_NAME    :Corkscrew Roller Coaster Trains
-STR_DESC    :Roller coaster train with shoulder restraints
-
-[ARRT2]
-STR_NAME    :Hypercoaster Trains
-STR_DESC    :Comfortable trains with only lap bar restraints
-
-[MONBK]
-STR_NAME    :Bicycles
-
-[OBS1]
-STR_NAME    :Single-deck Cabin
-
-[OBS2]
-STR_NAME    :Double-deck Cabin
-
-[GTC]
-STR_NAME    :Ghost Train Cars
-
-[HMCAR]
-STR_NAME    :Haunted Mansion Cars
-
-[VREEL]
-STR_NAME    :Virginia Reel tubs
-
-[WMSPIN]
-STR_NAME    :Spinning Mouse Cars
-
-[AMT1]
-STR_NAME    :Mine Trains
-
-[SLCT]
-STR_NAME    :Compact Inverted Coaster Trains
-
-[SLCFO]
-STR_NAME    :Face-off Cars
-
-[VEKDV]
-STR_NAME    :Vertical Shuttle Cars
-
-[THCAR]
-STR_NAME    :Air Powered Vertical Coaster Trains
-
-[SSC1]
-STR_NAME    :Launched Freefall car
-
-[DING1]
-STR_NAME    :Dinghies
-
-[LFB1]
-STR_NAME    :Logs
-
-[RFTBOAT]
-STR_NAME    :Rafts
-
-[IVMC1]
-STR_NAME    :Four-seater Cars
-
-[SPDRCR]
-STR_NAME    :Spiral Roller Coaster Trains
-
-[TOGST]
-STR_NAME    :Stand-up Roller Coaster Trains
-
-[PREMT1]
-STR_NAME    :LIM Launched Roller Coaster Trains
-
-[PMT1]
-STR_NAME    :Powered mine train
-
-[BMAIR]
-STR_NAME    :Flying Roller Coaster Trains
-
-[INTINV]
-STR_NAME    :Impulse Trains
-
-[INTST]
-STR_NAME    :Giga Coaster Trains
-
-[NEMT]
-STR_NAME    :4-across Inverted Roller Coaster Trains
-
-[VEKST]
-STR_NAME    :Lay-down Roller Coaster Trains
-
-[REVCAR]
-STR_NAME    :Reverser Cars
-STR_DESC    :Bogied cars capable of turning around on special reversing sections
-
-[SKYTR]
-STR_NAME    :Lay-down Cars
-
-[BMVD]
-STR_NAME    :Six-seater Twister Trains
-
-[SUBMAR]
-STR_NAME    :Submarines
-
-#WW
-[CONDORRD]
-STR_NAME    :Condor Trains
-STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
-STR_CPTY    :4 راكبين لكل عربة
-#WW
-[CONGAEEL]
-STR_NAME    :Conger Eel Trains
-STR_DESC    :Trains with shoulder restraints, in the shape of a Conger Eel.
-STR_CPTY    :4 راكبين لكل عربة
-#WW
-[MINELIFT]
-STR_NAME    :Mine Lift Cabin
-STR_DESC    :A steel lift cabin commonly used in mines
-
-#WW
-[ANACONDA]
-STR_NAME    :Anaconda Trains
-
-#WW
-[CROCFLUM]
-STR_NAME    :Crocodile boats
-
-#WW
-[WHICGRUB]
-STR_NAME    :Witchity Grub Trains
-
-#WW
-[GRATWHTE]
-STR_NAME    :Great White Shark Trains
-STR_DESC    :Trains with shoulder restraints, in the shape of a Great White Shark
-
-#WW
-[BOMERANG]
-STR_NAME    :Boomerang Trains
-
-#WW
-[KOLARIDE]
-STR_NAME    :Koala car
-
-#WW
-[MANTARAY]
-STR_NAME    :Manta Ray boats
-STR_DESC    :Coaster boats in the shape of a Manta Ray
-
-#WW
-[TUTLBOAT]
-STR_NAME    :Turtle boats
-
-#WW, for the Wooden RC
-[MINECART]
-STR_NAME    :Mine Cart Trains
-
-#WW
-[LIONRIDE]
-STR_NAME    :سيارات الأسد
-
-#WW
-[RHINORID]
-STR_NAME    :قطارات وحيد القرن
-
-#WW
-[OSTRICH]
-STR_NAME    :Ostrich Trains
-
-#WW
-[GORILLA]
-STR_NAME    :Gorilla Trains
-
-#WW
-[FOOTBALL]
-STR_NAME    :قطارات كرة القدم
-
-#WW
-[TIGRTWST]
-STR_NAME    :Bengal Tiger Cars
-
-#WW
-[TAXICSTR]
-STR_NAME    :قطارات سيارات التاكسي الصفراء
-
-#WW
-[OUTRIGGR]
-STR_NAME    :Outrigger canoes
-
-#WW
-[SANFTRAM]
-STR_NAME    :مترو سان فرنسيسكو
-
-#WW
-[PENGUINB]
-STR_NAME    :قطارات البطريق
-
-#WW
-[POLARBER]
-STR_NAME    :Polar Bear Trains
-
-#WW
-[LONDONBS]
-STR_NAME    :Routemaster buses
-STR_DESC    :Replicas of the famous London Routemaster bus
-
-#WW
-[BLACKCAB]
-STR_NAME    :Black Cabs
-
-#WW
-[TGVTRAIN]
-STR_NAME    :TGV Trains
-
-#WW
-[ROCKET]
-STR_NAME    :صواريخ 1950
-
-#WW
-[SPUTNIKR]
-STR_NAME    :Sputnik Cars
-
-#WW
-[DHOWWATR]
-STR_NAME    :Dhow boats
-
-#WW
-[SURFBRDC]
-STR_NAME    :Surfing Trains
-
-#WW
-[KILLWHAL]
-STR_NAME    :غواصات الحوت القاتل
-
-#WW
-[HIPPORID]
-STR_NAME    :غواصات الهيبو
-
-#WW
-[DOLPHINR]
-STR_NAME    :قوارب الدلوفين
-
-#WW
-[MANDARIN]
-STR_NAME    :Mandarin Duck Boats
-STR_DESC    :Duck shaped boat, propelled by the pedalling front seat passengers
-
-#TT
-[BATTRRAM]
-STR_NAME    :Battering Ram Trains
-
-#TT
-[BLCKDETH]
-STR_NAME    :قطارات الموت الأسود
-
-#TT
-[JOUSTING]
-STR_NAME    :Jousting Knights
-
-#TT
-[OAKBAREL]
-STR_NAME    :براميل السنديان
-
-#TT
-[STAMPHRD]
-STR_NAME    :Stampeding Herd Trains
-
-#TT
-[DRAGNFLY]
-STR_NAME    :سيارات التانين الطائرة
-
-#TT
-[PTERODAC]
-STR_NAME    :Pterodactyl Trains
-
-#TT
-[PEGASUSX]
-STR_NAME    :سيارات بيجسوس
-
-#TT
-[CERBERUS]
-STR_NAME    :Cerberus Trains
-
-#TT
-[HARPIESX]
-STR_NAME    :Harpies Trains
-
-#TT
-[VALKYRIE]
-STR_NAME    :Valkyries Trains
-
-#TT
-[RIVRSTYX]
-STR_NAME    :River Styx boats
-
-#TT
-[TELEPTER]
-STR_NAME    :المقصورة المتنقلة
-
-#TT
-[HOVERCAR]
-STR_NAME    :السيارات الحوامة
-
-#TT
-[HOVRBORD]
-STR_NAME    :الألواح الحوامة
-
-#TT
-[HOVERBKE]
-STR_NAME    :العجلات الحوامة
-
-#TT, Reverser RC
-[POLICECR]
-STR_NAME    :سيارات الشرطة
-
-#TT, Looping RC
-[POLCHASE]
-STR_NAME    :قطار سيارات الشرطة
-
-#TT
-[GANSTRCR]
-STR_NAME    :سيارات العصابات
-
-#TT
-[SEAPLANE]
-STR_NAME    :سيارات الطائرة المائية المُعلقة
-
-#TT
-[BARNSTRM]
-STR_NAME    :سيارات بارنستورمينغ
-
-#TT
-[FLYGBOAT]
-STR_NAME    :القوارب الطائرة
-
-#TT
-[BMVOCTPS]
-STR_NAME    :سائل من الفضاء الخارجي
-
-#TT
-[JETPLANE]
-STR_NAME    :سيارات الطائرات النفاثة
-
-#TT
-[HOTRODXX]
-STR_NAME    :سيارات الطرق السريعة
-
-###########
-# Scenery #
-###########
-
-#Bulrushes
-[TBR]
-STR_NAME    :اعشاب البرك

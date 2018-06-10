@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <memory>
 #include <openrct2/common.h>
 
 #define SHIFT   0x100
@@ -97,6 +98,8 @@ enum
     SHORTCUT_LOAD_GAME,
     SHORTCUT_CLEAR_SCENERY,
     SHORTCUT_GRIDLINES_DISPLAY_TOGGLE,
+    SHORTCUT_VIEW_CLIPPING,
+    SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE,
 
     SHORTCUT_COUNT,
 
@@ -117,11 +120,12 @@ namespace OpenRCT2
             constexpr static sint32 CURRENT_FILE_VERSION = 1;
             static const uint16 DefaultKeys[SHORTCUT_COUNT];
 
-            IPlatformEnvironment * const _env;
+            std::shared_ptr<IPlatformEnvironment> const _env;
             uint16 _keys[SHORTCUT_COUNT];
 
         public:
-            KeyboardShortcuts(IPlatformEnvironment * env);
+            KeyboardShortcuts(const std::shared_ptr<IPlatformEnvironment>& env);
+            ~KeyboardShortcuts();
 
             void Reset();
             bool Load();
@@ -133,8 +137,8 @@ namespace OpenRCT2
             sint32 GetFromKey(sint32 key);
             void GetKeyboardMapScroll(const uint8 * keysState, sint32 * x, sint32 * y) const;
         };
-    }
-}
+    } // namespace Input
+} // namespace OpenRCT2
 
 /** The current shortcut being changed. */
 extern uint8 gKeyboardShortcutChangeId;

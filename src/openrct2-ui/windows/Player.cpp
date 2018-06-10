@@ -26,7 +26,10 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/interface/Colour.h>
+#include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 enum WINDOW_PLAYER_PAGE {
     WINDOW_PLAYER_PAGE_OVERVIEW,
     WINDOW_PLAYER_PAGE_STATISTICS,
@@ -184,6 +187,7 @@ static uint32 window_player_page_enabled_widgets[] = {
     (1 << WIDX_TAB_1) |
     (1 << WIDX_TAB_2)
 };
+// clang-format on
 
 rct_window * window_player_open(uint8 id)
 {
@@ -521,7 +525,7 @@ void window_player_statistics_paint(rct_window *w, rct_drawpixelinfo *dpi)
     set_format_arg(0, uint32, network_get_player_commands_ran(player));
     gfx_draw_string_left(dpi, STR_COMMANDS_RAN, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
     set_format_arg(0, uint32, network_get_player_money_spent(player));
     gfx_draw_string_left(dpi, STR_MONEY_SPENT, gCommonFormatArgs, COLOUR_BLACK, x, y);

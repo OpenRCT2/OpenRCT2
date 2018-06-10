@@ -134,8 +134,14 @@ void balloon_update(rct_balloon * balloon)
     balloon->Update();
 }
 
-void game_command_balloon_press(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+void game_command_balloon_press(
+    sint32 *                  eax,
+    sint32 *                  ebx,
+    [[maybe_unused]] sint32 * ecx,
+    [[maybe_unused]] sint32 * edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     *ebx = game_command_balloon_press(*eax & 0xFFFF, *ebx & 0xFF);
 }
-

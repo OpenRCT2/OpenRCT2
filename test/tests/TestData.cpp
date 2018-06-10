@@ -13,4 +13,4 @@ namespace TestData
         std::string path = Path::Combine(GetBasePath(), "parks", name);
         return path;
     }
-};
+} // namespace TestData

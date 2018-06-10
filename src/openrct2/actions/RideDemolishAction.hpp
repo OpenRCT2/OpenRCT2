@@ -19,24 +19,32 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../core/MemoryStream.h"
+#include "../GameState.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../management/NewsItem.h"
 #include "../ride/Ride.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
+#include "../world/Banner.h"
+#include "../world/Sprite.h"
 #include "../world/Park.h"
 #include "GameAction.h"
 #include "MazeSetTrackAction.hpp"
+
+using namespace OpenRCT2;
 
 struct RideDemolishAction : public GameActionBase<GAME_COMMAND_DEMOLISH_RIDE, GameActionResult>
 {
 private:
     sint32 _rideIndex = -1;
+    uint8 _modifyType = RIDE_MODIFY_DEMOLISH;
 
 public:
     RideDemolishAction() {}
-    RideDemolishAction(sint32 rideIndex)
-        : _rideIndex(rideIndex)
+    RideDemolishAction(sint32 rideIndex, uint8 modifyType) :
+        _rideIndex(rideIndex),
+        _modifyType(modifyType)
     {
     }
 
@@ -49,7 +57,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << _rideIndex;
+        stream << _rideIndex << _modifyType;
     }
 
     GameActionResult::Ptr Query() const override
@@ -61,13 +69,39 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
         }
 
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE && _modifyType == RIDE_MODIFY_DEMOLISH)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::NO_CLEARANCE, STR_CANT_DEMOLISH_RIDE,
                 STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
         }
 
-        return std::make_unique<GameActionResult>();
+        GameActionResult::Ptr result = std::make_unique<GameActionResult>();
+
+        if (_modifyType == RIDE_MODIFY_RENEW)
+        {
+            if (ride->status != RIDE_STATUS_CLOSED)
+            {
+                return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE,
+                    STR_MUST_BE_CLOSED_FIRST);
+            }
+
+            if (ride->num_riders > 0)
+            {
+                return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE,
+                    STR_RIDE_NOT_YET_EMPTY);
+            }
+
+            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED) || RideAvailableBreakdowns[ride->type] == 0)
+            {
+                return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE,
+                    STR_CANT_REFURBISH_NOT_NEEDED);
+            }
+
+            result->ErrorTitle = STR_CANT_REFURBISH_RIDE;
+            result->Cost = GetRefurbishPrice();
+        }
+
+        return result;
     }
 
     GameActionResult::Ptr Execute() const override
@@ -79,6 +113,20 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
         }
 
+        switch (_modifyType) {
+        case RIDE_MODIFY_DEMOLISH:
+            return DemolishRide(ride);
+        case RIDE_MODIFY_RENEW:
+            return RefurbishRide(ride);
+        }
+
+        return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DO_THIS);
+    }
+
+private:
+
+    GameActionResult::Ptr DemolishRide(Ride * ride) const
+    {
         money32 refundPrice = DemolishTracks();
 
         ride_clear_for_construction(_rideIndex);
@@ -187,7 +235,7 @@ public:
 
         user_string_free(ride->name);
         ride->type = RIDE_TYPE_NULL;
-        gParkValue = calculate_park_value();
+        gParkValue = GetContext()->GetGameState()->GetPark().CalculateParkValue();
 
         auto res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
@@ -219,8 +267,6 @@ public:
         return res;
     }
 
-private:
-
     money32 MazeRemoveTrack(uint16 x, uint16 y, uint16 z, uint8 direction) const
     {
         auto setMazeTrack = MazeSetTrackAction(x, y, z, false, direction, _rideIndex, GC_SET_MAZE_TRACK_FILL);
@@ -251,7 +297,7 @@ private:
         tile_element_iterator_begin(&it);
         while (tile_element_iterator_next(&it))
         {
-            if (tile_element_get_type(it.element) != TILE_ELEMENT_TYPE_TRACK)
+            if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
                 continue;
 
             if (track_element_get_ride_index(it.element) != _rideIndex)
@@ -306,5 +352,42 @@ private:
 
         gGamePaused = oldpaused;
         return refundPrice;
+    }
+
+    GameActionResult::Ptr RefurbishRide(Ride * ride) const
+    {
+        auto res = std::make_unique<GameActionResult>();
+        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Cost = GetRefurbishPrice();
+
+        ride_renew(ride);
+
+        ride->lifecycle_flags &= ~RIDE_LIFECYCLE_EVER_BEEN_OPENED;
+        ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
+
+        ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_CUSTOMER;
+
+        if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
+        {
+            sint32 x = (ride->overall_view.x * 32) + 16;
+            sint32 y = (ride->overall_view.y * 32) + 16;
+            sint32 z = tile_element_height(x, y);
+
+            res->Position = { x, y, z };
+        }
+
+        window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, _rideIndex);
+
+        return res;
+    }
+
+    money32 GetRefurbishPrice() const
+    {
+        return -GetRefundPrice() / 2;
+    }
+
+    money32 GetRefundPrice() const
+    {
+        return ride_get_refund_price(_rideIndex);
     }
 };

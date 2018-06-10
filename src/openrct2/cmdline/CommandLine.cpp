@@ -14,11 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cstring>
+
 #include "../core/Console.hpp"
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
-#include "CommandLine.hpp"
 #include "../OpenRCT2.h"
+#include "CommandLine.hpp"
 
 #pragma region CommandLineArgEnumerator
 
@@ -461,11 +463,7 @@ namespace CommandLine
             }
             else if (shortOption[1] != '\0')
             {
-                if (!ParseOptionValue(option, &shortOption[1]))
-                {
-                    return false;
-                }
-                return true;
+                return ParseOptionValue(option, &shortOption[1]);
             }
         }
 
@@ -510,7 +508,7 @@ namespace CommandLine
         }
     }
 
-    static bool HandleSpecialArgument(const char * argument)
+    static bool HandleSpecialArgument([[maybe_unused]] const char * argument)
     {
 #ifdef __APPLE__
         if (String::Equals(argument, "-NSDocumentRevisionsDebugMode"))
@@ -524,7 +522,6 @@ namespace CommandLine
 #endif
         return false;
     }
-
 
     const CommandLineOptionDefinition * FindOption(const CommandLineOptionDefinition * options, char shortName)
     {
@@ -549,7 +546,7 @@ namespace CommandLine
         }
         return nullptr;
     }
-}
+} // namespace CommandLine
 
 sint32 cmdline_run(const char * * argv, sint32 argc)
 {

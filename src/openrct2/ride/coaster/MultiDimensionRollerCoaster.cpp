@@ -16,7 +16,7 @@
 
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
-#include "../../paint/tile_element/TileElement.h"
+#include "../../paint/tile_element/Paint.TileElement.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../sprites.h"
@@ -148,23 +148,23 @@ static void multi_dimension_rc_track_station(
     if (direction == 0 || direction == 2)
     {
         hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, session->CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, entranceStyle, direction, height);
+        track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, entranceStyle, height);
     }
     else
     {
         hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, entranceStyle, direction, height);
+        track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, entranceStyle, height);
     }
 
     if (direction == 0 || direction == 2)
     {
         hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, entranceStyle, direction, height);
+        track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, entranceStyle, height);
     }
     else
     {
         hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, entranceStyle, direction, height);
+        track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, entranceStyle, height);
     }
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);

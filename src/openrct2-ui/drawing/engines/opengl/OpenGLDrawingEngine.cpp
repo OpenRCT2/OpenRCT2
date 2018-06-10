@@ -31,7 +31,7 @@
 #include <openrct2/Intro.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/ui/UiContext.h>
-#include "../DrawingEngines.h"
+#include "../DrawingEngineFactory.hpp"
 #include "ApplyPaletteShader.h"
 #include "DrawCommands.h"
 #include "DrawLineShader.h"
@@ -121,7 +121,7 @@ public:
 class OpenGLDrawingEngine : public IDrawingEngine
 {
 private:
-    IUiContext * const  _uiContext  = nullptr;
+    std::shared_ptr<IUiContext> const _uiContext;
     SDL_Window *        _window     = nullptr;
     SDL_GLContext       _context    = nullptr;
 
@@ -131,7 +131,7 @@ private:
     size_t  _bitsSize   = 0;
     uint8 * _bits       = nullptr;
 
-    rct_drawpixelinfo _bitsDPI  = { nullptr };
+    rct_drawpixelinfo _bitsDPI  = {};
 
     OpenGLDrawingContext *    _drawingContext;
 
@@ -144,7 +144,7 @@ public:
     SDL_Color Palette[256];
     vec4      GLPalette[256];
 
-    explicit OpenGLDrawingEngine(IUiContext * uiContext)
+    explicit OpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
         : _uiContext(uiContext)
     {
         _window = (SDL_Window *)_uiContext->GetWindow();
@@ -419,9 +419,9 @@ private:
     }
 };
 
-IDrawingEngine * OpenRCT2::Ui::CreateOpenGLDrawingEngine(IUiContext * uiContext)
+std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateOpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
 {
-    return new OpenGLDrawingEngine(uiContext);
+    return std::make_unique<OpenGLDrawingEngine>(uiContext);
 }
 
 OpenGLDrawingContext::OpenGLDrawingContext(OpenGLDrawingEngine * engine)

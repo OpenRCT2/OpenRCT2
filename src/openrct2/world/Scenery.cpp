@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../common.h"
+#include "../Context.h"
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../localisation/Localisation.h"
@@ -22,6 +23,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../scenario/Scenario.h"
+#include "../actions/WallRemoveAction.hpp"
 #include "Climate.h"
 #include "Footpath.h"
 #include "Fountain.h"
@@ -29,6 +31,7 @@
 #include "Park.h"
 #include "Scenery.h"
 #include "SmallScenery.h"
+#include "Wall.h"
 
 uint8 gWindowSceneryActiveTabIndex;
 uint16 gWindowSceneryTabSelections[20];
@@ -91,9 +94,9 @@ void scenery_update_tile(sint32 x, sint32 y)
                 continue;
         }
 
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SMALL_SCENERY) {
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY) {
             scenery_update_age(x, y, tileElement);
-        } else if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH) {
+        } else if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH) {
             if (footpath_element_has_path_scenery(tileElement) && !footpath_element_path_scenery_is_ghost(tileElement)) {
                 rct_scenery_entry *sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
                 if (sceneryEntry != nullptr) {
@@ -106,7 +109,7 @@ void scenery_update_tile(sint32 x, sint32 y)
                 }
             }
         }
-    } while (!tile_element_is_last_for_tile(tileElement++));
+    } while (!(tileElement++)->IsLastForTile());
 }
 
 /**
@@ -149,7 +152,7 @@ void scenery_update_age(sint32 x, sint32 y, rct_tile_element *tileElement)
         if (tile_element_is_ghost(tileElementAbove))
             continue;
 
-        switch (tile_element_get_type(tileElementAbove)) {
+        switch (tileElementAbove->GetType()) {
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         case TILE_ELEMENT_TYPE_ENTRANCE:
         case TILE_ELEMENT_TYPE_PATH:
@@ -219,14 +222,14 @@ void scenery_remove_ghost_tool_placement(){
     if (gSceneryGhostType & SCENERY_ENTRY_FLAG_1)
     {
         gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_1;
-        rct_tile_element * tile_element = map_get_first_element_at(x / 32, y / 32);
+        rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
 
         do
         {
-            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_PATH)
+            if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
                 continue;
 
-            if (tile_element->base_height != z)
+            if (tileElement->base_height != z)
                 continue;
 
             game_do_command(
@@ -238,19 +241,17 @@ void scenery_remove_ghost_tool_placement(){
                 gSceneryGhostPathObjectType & 0xFFFF0000,
                 0);
             break;
-        } while (!tile_element_is_last_for_tile(tile_element++));
+        } while (!(tileElement++)->IsLastForTile());
     }
 
-    if (gSceneryGhostType & SCENERY_ENTRY_FLAG_2){
+    if (gSceneryGhostType & SCENERY_ENTRY_FLAG_2)
+    {
         gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_2;
-        game_do_command(
-            x,
-            105 | (gSceneryTileElementType << 8),
-            y,
-            gSceneryGhostWallRotation |(z << 8),
-            GAME_COMMAND_REMOVE_WALL,
-            0,
-            0);
+
+        TileCoordsXYZD wallLocation = { x >> 5, y >> 5, z, gSceneryGhostWallRotation };
+        auto wallRemoveAction = WallRemoveAction(wallLocation);
+        wallRemoveAction.SetFlags(GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_PATH_SCENERY);
+        wallRemoveAction.Execute();
     }
 
     if (gSceneryGhostType & SCENERY_ENTRY_FLAG_3){
@@ -281,7 +282,7 @@ void scenery_remove_ghost_tool_placement(){
 rct_scenery_entry *get_small_scenery_entry(sint32 entryIndex)
 {
     rct_scenery_entry * result = nullptr;
-    auto objMgr = GetObjectManager();
+    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (objMgr != nullptr)
     {
         auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
@@ -296,7 +297,7 @@ rct_scenery_entry *get_small_scenery_entry(sint32 entryIndex)
 rct_scenery_entry *get_large_scenery_entry(sint32 entryIndex)
 {
     rct_scenery_entry * result = nullptr;
-    auto objMgr = GetObjectManager();
+    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (objMgr != nullptr)
     {
         auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
@@ -311,7 +312,7 @@ rct_scenery_entry *get_large_scenery_entry(sint32 entryIndex)
 rct_scenery_entry *get_wall_entry(sint32 entryIndex)
 {
     rct_scenery_entry * result = nullptr;
-    auto objMgr = GetObjectManager();
+    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (objMgr != nullptr)
     {
         auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_WALLS, entryIndex);
@@ -326,7 +327,7 @@ rct_scenery_entry *get_wall_entry(sint32 entryIndex)
 rct_scenery_entry *get_banner_entry(sint32 entryIndex)
 {
     rct_scenery_entry * result = nullptr;
-    auto objMgr = GetObjectManager();
+    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (objMgr != nullptr)
     {
         auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_BANNERS, entryIndex);
@@ -341,7 +342,7 @@ rct_scenery_entry *get_banner_entry(sint32 entryIndex)
 rct_scenery_entry *get_footpath_item_entry(sint32 entryIndex)
 {
     rct_scenery_entry * result = nullptr;
-    auto objMgr = GetObjectManager();
+    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (objMgr != nullptr)
     {
         auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_PATH_BITS, entryIndex);
@@ -356,7 +357,7 @@ rct_scenery_entry *get_footpath_item_entry(sint32 entryIndex)
 rct_scenery_group_entry *get_scenery_group_entry(sint32 entryIndex)
 {
     rct_scenery_group_entry * result = nullptr;
-    auto objMgr = GetObjectManager();
+    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (objMgr != nullptr)
     {
         auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_SCENERY_GROUP, entryIndex);

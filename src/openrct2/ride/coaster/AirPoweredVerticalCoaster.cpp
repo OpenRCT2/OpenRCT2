@@ -16,7 +16,7 @@
 
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
-#include "../../paint/tile_element/TileElement.h"
+#include "../../paint/tile_element/Paint.TileElement.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../sprites.h"
@@ -278,7 +278,7 @@ static void air_powered_vertical_rc_track_right_quarter_turn_5(
     };
 
     track_paint_util_right_quarter_turn_5_tiles_paint_3(
-        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
+        session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
     track_paint_util_right_quarter_turn_5_tiles_wooden_supports(session, height, direction, trackSequence);
     track_paint_util_right_quarter_turn_5_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_6);
 
@@ -465,7 +465,7 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(
     };
 
     track_paint_util_right_quarter_turn_5_tiles_paint_2(
-        session, height, direction, session->CurrentRotation, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
+        session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
 
     if (direction == 1 && trackSequence == 6)
     {

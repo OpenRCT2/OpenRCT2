@@ -27,13 +27,14 @@
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform2.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/Version.h>
 #include "CursorRepository.h"
-#include "drawing/engines/DrawingEngines.h"
+#include "drawing/engines/DrawingEngineFactory.hpp"
 #include "input/KeyboardShortcuts.h"
 #include "SDLException.h"
 #include "TextComposition.h"
@@ -41,8 +42,10 @@
 #include "WindowManager.h"
 
 #include <openrct2/Input.h>
-#include <openrct2/interface/Console.h>
+#include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2-ui/interface/Window.h>
+
+#include "interface/InGameConsole.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -79,15 +82,19 @@ private:
     // Input
     KeyboardShortcuts   _keyboardShortcuts;
     TextComposition     _textComposition;
-    CursorState         _cursorState            = { 0 };
+    CursorState         _cursorState            = {};
     uint32              _lastKeyPressed         = 0;
     const uint8 *       _keysState              = nullptr;
-    uint8               _keysPressed[256]       = { 0 };
+    uint8               _keysPressed[256]       = {};
     uint32              _lastGestureTimestamp   = 0;
     float               _gestureRadius          = 0;
 
+    InGameConsole       _inGameConsole;
+
 public:
-    explicit UiContext(IPlatformEnvironment * env)
+    InGameConsole& GetInGameConsole() { return _inGameConsole; }
+
+    explicit UiContext(const std::shared_ptr<IPlatformEnvironment>& env)
         : _platformUiContext(CreatePlatformUiContext()),
           _windowManager(CreateWindowManager()),
           _keyboardShortcuts(env)
@@ -107,6 +114,16 @@ public:
         delete _windowManager;
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
         delete _platformUiContext;
+    }
+
+    void Update() override
+    {
+        _inGameConsole.Update();
+    }
+
+    void Draw(rct_drawpixelinfo * dpi) override
+    {
+        _inGameConsole.Draw(dpi);
     }
 
     // Window
@@ -244,20 +261,9 @@ public:
     }
 
     // Drawing
-    IDrawingEngine * CreateDrawingEngine(DRAWING_ENGINE_TYPE type) override
+    std::shared_ptr<Drawing::IDrawingEngineFactory> GetDrawingEngineFactory() override
     {
-        switch ((sint32)type) {
-        case DRAWING_ENGINE_SOFTWARE:
-            return CreateSoftwareDrawingEngine(this);
-        case DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY:
-            return CreateHardwareDisplayDrawingEngine(this);
-#ifndef DISABLE_OPENGL
-        case DRAWING_ENGINE_OPENGL:
-            return CreateOpenGLDrawingEngine(this);
-#endif
-        default:
-            return nullptr;
-        }
+        return std::make_shared<DrawingEngineFactory>();
     }
 
     // Text input
@@ -349,9 +355,9 @@ public:
                 _cursorState.y = (sint32)(e.motion.y / gConfigGeneral.window_scale);
                 break;
             case SDL_MOUSEWHEEL:
-                if (gConsoleOpen)
+                if (_inGameConsole.IsOpen())
                 {
-                    console_scroll(e.wheel.y * 3); // Scroll 3 lines at a time
+                    _inGameConsole.Scroll(e.wheel.y * 3); // Scroll 3 lines at a time
                     break;
                 }
                 _cursorState.wheel -= e.wheel.y;
@@ -533,8 +539,11 @@ public:
     void CloseWindow() override
     {
         drawing_engine_dispose();
-        SDL_DestroyWindow(_window);
-        _window = nullptr;
+        if (_window != nullptr)
+        {
+            SDL_DestroyWindow(_window);
+            _window = nullptr;
+        }
     }
 
     void RecreateWindow() override
@@ -566,69 +575,6 @@ public:
     IWindowManager * GetWindowManager() override
     {
         return _windowManager;
-    }
-
-    bool ReadBMP(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const std::string &path) override
-    {
-        auto bitmap = SDL_LoadBMP(path.c_str());
-        if (bitmap != nullptr)
-        {
-            sint32 numChannels = bitmap->format->BytesPerPixel;
-            if (numChannels < 3 || bitmap->format->BitsPerPixel < 24)
-            {
-                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_24_BIT_BITMAP);
-                SDL_FreeSurface(bitmap);
-                return false;
-            }
-
-            // Copy pixels over, then discard the surface
-            *outPixels = nullptr;
-            *outWidth = bitmap->w;
-            *outHeight = bitmap->h;
-            if (SDL_LockSurface(bitmap) == 0)
-            {
-                *outPixels = malloc(bitmap->w * bitmap->h * 4);
-                memset(*outPixels, 0xFF, bitmap->w * bitmap->h);
-
-                auto src = (const uint8 *)bitmap->pixels;
-                auto dst = (uint8 *)*outPixels;
-                if (numChannels == 4)
-                {
-                    for (sint32 y = 0; y < bitmap->h; y++)
-                    {
-                        memcpy(dst, src, bitmap->w);
-                        src += bitmap->pitch;
-                        dst += bitmap->w;
-                    }
-                }
-                else
-                {
-                    for (sint32 y = 0; y < bitmap->h; y++)
-                    {
-                        for (sint32 x = 0; x < bitmap->w; x++)
-                        {
-                            memcpy(dst, src, 3);
-                            src += 3;
-                            dst += 4;
-                        }
-                        src += bitmap->pitch - (bitmap->w * 3);
-                    }
-                }
-                SDL_UnlockSurface(bitmap);
-            }
-            else
-            {
-                return false;
-            }
-            SDL_FreeSurface(bitmap);
-            return true;
-        }
-        else
-        {
-            log_warning("Failed to load bitmap: %s", SDL_GetError());
-            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP);
-            return false;
-        }
     }
 
     bool SetClipboardText(const utf8* target) override
@@ -794,7 +740,13 @@ private:
     }
 };
 
-IUiContext * OpenRCT2::Ui::CreateUiContext(IPlatformEnvironment * env)
+std::unique_ptr<IUiContext> OpenRCT2::Ui::CreateUiContext(const std::shared_ptr<IPlatformEnvironment>& env)
 {
-    return new UiContext(env);
+    return std::make_unique<UiContext>(env);
+}
+
+InGameConsole& OpenRCT2::Ui::GetInGameConsole()
+{
+    auto uiContext = std::static_pointer_cast<UiContext>(GetContext()->GetUiContext());
+    return uiContext->GetInGameConsole();
 }

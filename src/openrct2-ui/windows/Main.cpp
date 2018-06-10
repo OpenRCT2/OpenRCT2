@@ -22,6 +22,7 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/world/Footpath.h>
 
+// clang-format off
 static rct_widget window_main_widgets[] = {
     { WWT_VIEWPORT, 0, 0x0000, -1, 0x0000, -1, STR_VIEWPORT, 0xFFFF },
     { WIDGETS_END },
@@ -59,6 +60,7 @@ static rct_window_event_list window_main_events = {
     window_main_paint,
     nullptr
 };
+// clang-format on
 
 /**
  * Creates the main window that holds the main viewport.

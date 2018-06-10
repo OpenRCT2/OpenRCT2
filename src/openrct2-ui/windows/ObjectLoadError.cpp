@@ -23,6 +23,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/object/ObjectList.h>
 
+// clang-format off
 enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -47,12 +48,12 @@ static rct_widget window_object_load_error_widgets[] = {
     { WWT_FRAME,             0, 0,               WW - 1,                0,          WH - 1,     STR_NONE,                       STR_NONE },                // Background
     { WWT_CAPTION,           0, 1,               WW - 2,                1,          14,         STR_OBJECT_LOAD_ERROR_TITLE,    STR_WINDOW_TITLE_TIP },    // Title bar
     { WWT_CLOSEBOX,          0, WW - 13,         WW - 3,                2,          13,         STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP },    // Close button
-    { WWT_TABLE_HEADER,      0, NAME_COL_LEFT,   SOURCE_COL_LEFT - 1,   57,         68,         STR_OBJECT_NAME,                STR_NONE },                // 'Object name' header
-    { WWT_TABLE_HEADER,      0, SOURCE_COL_LEFT, TYPE_COL_LEFT - 1,     57,         68,         STR_OBJECT_SOURCE,              STR_NONE },                // 'Object source' header
-    { WWT_TABLE_HEADER,      0, TYPE_COL_LEFT,   WW_LESS_PADDING - 1,   57,         68,         STR_OBJECT_TYPE,                STR_NONE },                // 'Object type' header
-    { WWT_SCROLL,            0, 4,               WW_LESS_PADDING,       68,         WH - 40,    SCROLL_VERTICAL,                STR_NONE },                // Scrollable list area
-    { WWT_BUTTON,            0, 45,              225,                   WH - 32,    WH - 12,    STR_COPY_SELECTED,              STR_NONE },                // Copy selected btn
-    { WWT_BUTTON,            0, 225,             395,                   WH - 32,    WH - 12,    STR_COPY_ALL,                   STR_NONE },                // Copy all btn
+    { WWT_TABLE_HEADER,      0, NAME_COL_LEFT,   SOURCE_COL_LEFT - 1,   57,         70,         STR_OBJECT_NAME,                STR_NONE },                // 'Object name' header
+    { WWT_TABLE_HEADER,      0, SOURCE_COL_LEFT, TYPE_COL_LEFT - 1,     57,         70,         STR_OBJECT_SOURCE,              STR_NONE },                // 'Object source' header
+    { WWT_TABLE_HEADER,      0, TYPE_COL_LEFT,   WW_LESS_PADDING - 1,   57,         70,         STR_OBJECT_TYPE,                STR_NONE },                // 'Object type' header
+    { WWT_SCROLL,            0, 4,               WW_LESS_PADDING,       70,         WH - 33,    SCROLL_VERTICAL,                STR_NONE },                // Scrollable list area
+    { WWT_BUTTON,            0, 45,              220,                   WH - 23,    WH - 10,    STR_COPY_SELECTED,              STR_NONE },                // Copy selected btn
+    { WWT_BUTTON,            0, 230,             400,                   WH - 23,    WH - 10,    STR_COPY_ALL,                   STR_NONE },                // Copy all btn
     { WIDGETS_END },
 };
 
@@ -96,6 +97,7 @@ static rct_window_event_list window_object_load_error_events = {
     window_object_load_error_paint,
     window_object_load_error_scrollpaint
 };
+// clang-format on
 
 static std::vector<rct_object_entry> _invalid_entries;
 static sint32 highlighted_index = -1;
@@ -261,7 +263,7 @@ static void window_object_load_error_scrollmouseover(rct_window *w, sint32 scrol
 {
     // Highlight item that the cursor is over, or remove highlighting if none
     sint32 selected_item;
-    selected_item = y / 10;
+    selected_item = y / SCROLLABLE_ROW_HEIGHT;
     if (selected_item < 0 || selected_item >= w->no_list_items)
         highlighted_index = -1;
     else
@@ -284,13 +286,13 @@ static void window_object_load_error_select_element_from_list(rct_window *w, sin
 static void window_object_load_error_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
     sint32 selected_item;
-    selected_item = y / 10;
+    selected_item = y / SCROLLABLE_ROW_HEIGHT;
     window_object_load_error_select_element_from_list(w, selected_item);
 }
 
 static void window_object_load_error_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
-    *height = w->no_list_items * 10;
+    *height = w->no_list_items * SCROLLABLE_ROW_HEIGHT;
 }
 
 static void window_object_load_error_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -312,31 +314,32 @@ static void window_object_load_error_scrollpaint(rct_window *w, rct_drawpixelinf
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
     const sint32 list_width = w->widgets[WIDX_SCROLL].right - w->widgets[WIDX_SCROLL].left;
 
-    for (sint32 i = 0; i < w->no_list_items; i++) {
-        sint32 y = i * 10;
+    for (sint32 i = 0; i < w->no_list_items; i++)
+    {
+        sint32 y = i * SCROLLABLE_ROW_HEIGHT;
         if (y > dpi->y + dpi->height)
             break;
 
-        if (y + 10 < dpi->y)
+        if (y + SCROLLABLE_ROW_HEIGHT < dpi->y)
             continue;
 
         // If hovering over item, change the color and fill the backdrop.
-        if (i == w->selected_list_item) // Currently selected element
-            gfx_fill_rect(dpi, 0, y, list_width, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].darker | 0x1000000);
-        else if (i == highlighted_index) // Hovering
-            gfx_fill_rect(dpi, 0, y, list_width, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark | 0x1000000);
+        if (i == w->selected_list_item)
+            gfx_fill_rect(dpi, 0, y, list_width, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].darker);
+        else if (i == highlighted_index)
+            gfx_fill_rect(dpi, 0, y, list_width, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark);
         else if ((i & 1) != 0) // odd / even check
-            gfx_fill_rect(dpi, 0, y, list_width, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
+            gfx_fill_rect(dpi, 0, y, list_width, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].light);
 
         // Draw the actual object entry's name...
-        gfx_draw_string(dpi, strndup(_invalid_entries[i].name, 8), COLOUR_DARK_GREEN, NAME_COL_LEFT, y);
+        gfx_draw_string(dpi, strndup(_invalid_entries[i].name, 8), COLOUR_DARK_GREEN, NAME_COL_LEFT - 3, y);
 
         // ... source game ...
         rct_string_id sourceStringId = object_manager_get_source_game_string(&_invalid_entries[i]);
-        gfx_draw_string_left(dpi, sourceStringId, nullptr, COLOUR_DARK_GREEN, SOURCE_COL_LEFT, y);
+        gfx_draw_string_left(dpi, sourceStringId, nullptr, COLOUR_DARK_GREEN, SOURCE_COL_LEFT - 3, y);
 
         // ... and type
         rct_string_id type = get_object_type_string(&_invalid_entries[i]);
-        gfx_draw_string_left(dpi, type, nullptr, COLOUR_DARK_GREEN, TYPE_COL_LEFT, y);
+        gfx_draw_string_left(dpi, type, nullptr, COLOUR_DARK_GREEN, TYPE_COL_LEFT - 3, y);
     }
 }

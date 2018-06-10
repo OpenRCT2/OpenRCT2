@@ -21,6 +21,7 @@
 #include "EditorObjectSelectionSession.h"
 #include "FileClassifier.h"
 #include "Game.h"
+#include "GameState.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "audio/audio.h"
@@ -31,12 +32,14 @@
 #include "object/ObjectManager.h"
 #include "peep/Staff.h"
 #include "rct1/RCT1.h"
+#include "scenario/Scenario.h"
 #include "util/Util.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
 #include "world/Entrance.h"
 #include "world/Footpath.h"
 #include "world/Scenery.h"
+#include "world/Park.h"
 #include "interface/Window_internal.h"
 
 namespace Editor
@@ -60,7 +63,7 @@ namespace Editor
         audio_stop_all_music_and_sounds();
         object_manager_unload_all_objects();
         object_list_load();
-        game_init_all(150);
+        OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -139,7 +142,7 @@ namespace Editor
 
         object_manager_unload_all_objects();
         object_list_load();
-        game_init_all(150);
+        OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         SetAllLandOwned();
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         viewport_init_all();
@@ -160,7 +163,7 @@ namespace Editor
 
         object_manager_unload_all_objects();
         object_list_load();
-        game_init_all(150);
+        OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         SetAllLandOwned();
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         viewport_init_all();
@@ -243,22 +246,15 @@ namespace Editor
      */
     static bool ReadS6(const char * path)
     {
-        ParkLoadResult * loadResult = nullptr;
-        const char     * extension  = path_get_extension(path);
+        auto extension  = path_get_extension(path);
         if (_stricmp(extension, ".sc6") == 0)
         {
-            loadResult = load_from_sc6(path);
+            load_from_sc6(path);
         }
         else if (_stricmp(extension, ".sv6") == 0)
         {
-            loadResult = load_from_sv6(path);
+            load_from_sv6(path);
         }
-        if (ParkLoadResult_GetError(loadResult) != PARK_LOAD_ERROR_OK)
-        {
-            ParkLoadResult_Delete(loadResult);
-            return false;
-        }
-        ParkLoadResult_Delete(loadResult);
 
         ClearMapForEditing(true);
 
@@ -574,7 +570,14 @@ namespace Editor
         return true;
     }
 
-    void GameCommandEditScenarioOptions(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+    void GameCommandEditScenarioOptions(
+        [[maybe_unused]] sint32 * eax,
+        sint32 *                  ebx,
+        sint32 *                  ecx,
+        sint32 *                  edx,
+        [[maybe_unused]] sint32 * esi,
+        [[maybe_unused]] sint32 * edi,
+        [[maybe_unused]] sint32 * ebp)
     {
         if (!(*ebx & GAME_COMMAND_FLAG_APPLY))
         {

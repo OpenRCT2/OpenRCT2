@@ -29,10 +29,10 @@ enum class TextAlignment
 
 struct TextPaint
 {
-    uint8           Colour;
-    sint16          SpriteBase;
-    bool            UnderlineText;
-    TextAlignment   Alignment;
+    uint8           Colour = 0;
+    sint16          SpriteBase = 0;
+    bool            UnderlineText = false;
+    TextAlignment   Alignment = TextAlignment::LEFT;
 };
 
 class StaticLayout
@@ -40,7 +40,7 @@ class StaticLayout
 private:
     utf8string  _buffer;
     TextPaint   _paint;
-    sint32      _lineCount;
+    sint32      _lineCount = 0;
     sint32      _lineHeight;
     sint32      _maxWidth;
 

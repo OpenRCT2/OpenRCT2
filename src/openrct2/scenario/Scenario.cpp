@@ -19,6 +19,7 @@
 #include "../config/Config.h"
 #include "../FileClassifier.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -90,6 +91,8 @@ char gScenarioFileName[MAX_PATH];
 static sint32 scenario_create_ducks();
 static void scenario_objective_check();
 
+using namespace OpenRCT2;
+
 void scenario_begin()
 {
     game_load_init();
@@ -108,9 +111,10 @@ void scenario_begin()
     if (gScenarioObjectiveType != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
         context_open_window_view(WV_PARK_OBJECTIVE);
 
-    gParkRating = calculate_park_rating();
-    gParkValue = calculate_park_value();
-    gCompanyValue = calculate_company_value();
+    auto& park = GetContext()->GetGameState()->GetPark();
+    gParkRating = park.CalculateParkRating();
+    gParkValue = park.CalculateParkValue();
+    gCompanyValue = park.CalculateCompanyValue();
     gHistoricalProfit = gInitialCash - gBankLoan;
     gCash = gInitialCash;
 
@@ -169,7 +173,7 @@ void scenario_begin()
     gTotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
     safe_strcpy(gScenarioCompletedBy, "?", sizeof(gScenarioCompletedBy));
-    park_reset_history();
+    park.ResetHistories();
     finance_reset_history();
     award_reset();
     reset_all_ride_build_dates();
@@ -250,8 +254,8 @@ void scenario_success_submit_name(const char *name)
 static void scenario_entrance_fee_too_high_check()
 {
     uint16 x = 0, y = 0;
-    money16 totalRideValue = gTotalRideValueForMoney;
-    money16 max_fee = totalRideValue + (totalRideValue / 2);
+    money16 totalRideValueForMoney = gTotalRideValueForMoney;
+    money16 max_fee = totalRideValueForMoney + (totalRideValueForMoney / 2);
 
     if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee) {
         for (sint32 i = 0; i < MAX_PARK_ENTRANCES && gParkEntrances[i].x != LOCATION_NULL; i++) {
@@ -310,6 +314,10 @@ static void scenario_day_update()
     case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
         scenario_objective_check();
         break;
+    default:
+        if (gConfigGeneral.allow_early_completion)
+            scenario_objective_check();
+        break;
     }
 
     // Lower the casualty penalty
@@ -322,7 +330,7 @@ static void scenario_day_update()
 
 static void scenario_week_update()
 {
-    sint32 month = gDateMonthsElapsed & 7;
+    sint32 month = date_get_month(gDateMonthsElapsed);
 
     finance_pay_wages();
     finance_pay_research();
@@ -341,8 +349,6 @@ static void scenario_week_update()
                 break;
         }
     }
-    park_update_histories();
-    park_calculate_size();
 }
 
 static void scenario_fortnight_update()
@@ -392,7 +398,6 @@ void scenario_update()
 {
     if (gScreenFlags == SCREEN_FLAGS_PLAYING)
     {
-        date_update();
         if (date_is_day_start(gDateMonthTicks))
         {
             scenario_day_update();
@@ -427,7 +432,7 @@ static sint32 scenario_create_ducks()
     x = (x + 64) * 32;
     y = (y + 64) * 32;
 
-    if (!map_is_location_in_park(x, y))
+    if (!map_is_location_in_park({x, y}))
         return 0;
 
     centreWaterZ = (tile_element_height(x, y) >> 16) & 0xFFFF;
@@ -605,7 +610,7 @@ static bool scenario_prepare_rides_for_save()
     tile_element_iterator_begin(&it);
     do
     {
-        if (tile_element_get_type(it.element) == TILE_ELEMENT_TYPE_TRACK)
+        if (it.element->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
             markTrackAsIndestructible = false;
 
@@ -701,7 +706,7 @@ void scenario_fix_ghosts(rct_s6_data *s6)
                 } else {
                     *destinationElement++ = *originalElement;
                 }
-            } while (!tile_element_is_last_for_tile(originalElement++));
+            } while (!(originalElement++)->IsLastForTile());
 
             // Set last element flag in case the original last element was never added
             (destinationElement - 1)->flags |= TILE_ELEMENT_FLAG_LAST_TILE;
@@ -736,11 +741,13 @@ static void scenario_objective_check_guests_by()
     sint16 objectiveGuests = gScenarioObjectiveNumGuests;
     sint16 currentMonthYear = gDateMonthsElapsed;
 
-    if (currentMonthYear == 8 * objectiveYear){
-        if (parkRating >= 600 && guestsInPark >= objectiveGuests)
+    if (currentMonthYear == MONTH_COUNT * objectiveYear || gConfigGeneral.allow_early_completion) {
+        if (parkRating >= 600 && guestsInPark >= objectiveGuests) {
             scenario_success();
-        else
+        }
+        else if (currentMonthYear == MONTH_COUNT * objectiveYear) {
             scenario_failure();
+        }
     }
 }
 
@@ -751,11 +758,13 @@ static void scenario_objective_check_park_value_by()
     money32 objectiveParkValue = gScenarioObjectiveCurrency;
     money32 parkValue = gParkValue;
 
-    if (currentMonthYear == 8 * objectiveYear) {
-        if (parkValue >= objectiveParkValue)
+    if (currentMonthYear == MONTH_COUNT * objectiveYear || gConfigGeneral.allow_early_completion) {
+        if (parkValue >= objectiveParkValue) {
             scenario_success();
-        else
+        }
+        else if (currentMonthYear == MONTH_COUNT * objectiveYear) {
             scenario_failure();
+        }
     }
 }
 

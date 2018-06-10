@@ -15,9 +15,9 @@
 #pragma endregion
 
 #include "../core/Util.hpp"
-#include "../localisation/ConversionTables.h"
 #include "../localisation/FormatCodes.h"
 #include "../localisation/Language.h"
+#include "../localisation/LocalisationService.h"
 #include "../sprites.h"
 #include "Drawing.h"
 #include "Font.h"
@@ -63,7 +63,7 @@ sint32 font_sprite_get_codepoint_offset(sint32 codepoint)
     case FORMAT_ENDQUOTES: return 34 - 32;
 
     case FORMAT_UP: return 160 - 32;
-    case FORMAT_INVERTEDEXCLAMATION: return 160 - 32;
+    case FORMAT_INVERTEDEXCLAMATION: return 161 - 32;
     case FORMAT_POUND: return 163 - 32;
 
     case FORMAT_YEN: return 165 - 32;
@@ -159,7 +159,7 @@ sint32 font_get_line_height(sint32 fontSpriteBase)
 {
     sint32 fontSize = font_get_size_from_sprite_base(fontSpriteBase);
 #ifndef NO_TTF
-    if (gUseTrueTypeFont) {
+    if (LocalisationService_UseTrueTypeFont()) {
         return gCurrentTTFFontSet->size[fontSize].line_height;
     } else {
 #endif // NO_TTF
@@ -266,7 +266,7 @@ bool font_supports_string_ttf(const utf8 *text, sint32 fontSize)
 
 bool font_supports_string(const utf8 *text, sint32 fontSize)
 {
-    if (gUseTrueTypeFont) {
+    if (LocalisationService_UseTrueTypeFont()) {
         return font_supports_string_ttf(text, fontSize);
     } else {
         return font_supports_string_sprite(text);

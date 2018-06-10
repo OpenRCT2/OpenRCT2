@@ -24,7 +24,7 @@
 #include "AudioContext.h"
 #include "AudioFormat.h"
 
-namespace OpenRCT2 { namespace Audio
+namespace OpenRCT2::Audio
 {
     /**
      * An audio source where raw PCM data is initially loaded into RAM from
@@ -33,7 +33,7 @@ namespace OpenRCT2 { namespace Audio
     class MemoryAudioSource final : public ISDLAudioSource
     {
     private:
-        AudioFormat         _format = { 0 };
+        AudioFormat         _format = {};
         std::vector<uint8>  _data;
         uint8 *             _dataSDL = nullptr;
         size_t              _length = 0;
@@ -85,7 +85,7 @@ namespace OpenRCT2 { namespace Audio
             SDL_RWops * rw = SDL_RWFromFile(path, "rb");
             if (rw != nullptr)
             {
-                SDL_AudioSpec audiospec = { 0 };
+                SDL_AudioSpec audiospec = {};
                 uint32 audioLen;
                 SDL_AudioSpec * spec = SDL_LoadWAV_RW(rw, false, &audiospec, &_dataSDL, &audioLen);
                 if (spec != nullptr)
@@ -243,4 +243,4 @@ namespace OpenRCT2 { namespace Audio
         }
         return source;
     }
-} }
+} // namespace OpenRCT2::Audio

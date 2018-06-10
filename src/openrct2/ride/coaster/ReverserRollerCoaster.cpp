@@ -16,7 +16,7 @@
 
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
-#include "../../paint/tile_element/TileElement.h"
+#include "../../paint/tile_element/Paint.TileElement.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../sprites.h"
@@ -33,7 +33,7 @@
  *  rct2: 0x006D4453
  */
 void vehicle_visual_reverser(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z,
-                             rct_vehicle * vehicle, const rct_ride_entry_vehicle * vehicleEntry)
+                             const rct_vehicle * vehicle, const rct_ride_entry_vehicle * vehicleEntry)
 {
     rct_vehicle * v1          = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
     rct_vehicle * v2          = GET_VEHICLE(vehicle->next_vehicle_on_ride);
@@ -42,7 +42,7 @@ void vehicle_visual_reverser(paint_session * session, sint32 x, sint32 imageDire
     z                         = (v1->z + v2->z) / 2;
     session->SpritePosition.x = x;
     session->SpritePosition.y = y;
-    vehicle_visual_default(session, x, imageDirection, y, z, vehicle, vehicleEntry);
+    vehicle_visual_default(session, imageDirection, z, vehicle, vehicleEntry);
 }
 #endif
 
@@ -99,7 +99,7 @@ static void reverser_rc_track_flat(
 static void reverser_rc_track_station(
     paint_session *          session,
     uint8                    rideIndex,
-    uint8                    trackSequence,
+    [[maybe_unused]] uint8   trackSequence,
     uint8                    direction,
     sint32                   height,
     const rct_tile_element * tileElement)
@@ -116,7 +116,7 @@ static void reverser_rc_track_station(
     sub_98199C_rotated(session, direction, imageIds[direction][0] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 27, 2,
                        height, 0, 2, height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
-    track_paint_util_draw_station_2(session, rideIndex, trackSequence, direction, height, tileElement, 9, 11);
+    track_paint_util_draw_station_2(session, rideIndex, direction, height, tileElement, 9, 11);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);

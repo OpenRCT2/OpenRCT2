@@ -17,6 +17,9 @@
 #ifndef _VEHICLE_H_
 #define _VEHICLE_H_
 
+#include <cstddef>
+#include <vector>
+#include <array>
 #include "../common.h"
 #include "../world/Location.hpp"
 
@@ -25,7 +28,9 @@ struct rct_vehicle_colour {
     uint8 trim_colour;
 };
 
+#ifdef __TESTPAINT__
 #pragma pack(push, 1)
+#endif // __TESTPAINT__
 /**
  * Ride type vehicle structure.
  * size: 0x65
@@ -76,10 +81,21 @@ struct rct_ride_entry_vehicle {
     uint8 effect_visual;
     uint8 draw_order;
     uint8 num_vertical_frames_override; // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine it. Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
-    sint8* peep_loading_positions;  // 0x61 , 0x7B
-    uint16 peep_loading_positions_count;
+    uint8 peep_loading_waypoint_segments; // 0x61 new
+    uint8 pad_62[6] = {};          // 0x62 , 0x7B
+    std::vector<std::array<sLocationXY8, 3>> peep_loading_waypoints = {};
+    std::vector<sint8> peep_loading_positions = {}; // previously 0x61 , 0x7B
 };
+#ifdef __TESTPAINT__
 #pragma pack(pop)
+#endif // __TESTPAINT__
+#ifdef PLATFORM_32BIT
+static_assert(offsetof(rct_ride_entry_vehicle, peep_loading_positions) % 4 == 0, "Invalid struct layout");
+static_assert(sizeof(rct_ride_entry_vehicle) % 4 == 0, "Invalid struct size");
+#else
+static_assert(offsetof(rct_ride_entry_vehicle, peep_loading_positions) % 8 == 0, "Invalid struct layout");
+static_assert(sizeof(rct_ride_entry_vehicle) % 8 == 0, "Invalid struct size");
+#endif
 
 struct rct_vehicle {
     uint8 sprite_identifier;        // 0x00
@@ -224,7 +240,8 @@ struct rct_vehicle_info {
     uint8 bank_rotation;    // 0x08
 };
 
-enum {
+enum : uint32
+{
     VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY = 1 << 0, // Set on powered vehicles that do not slow down when going down a hill
     VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS = 1 << 1,
     VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH = 1 << 2,
@@ -251,7 +268,7 @@ enum {
     VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION = 1 << 23,             // Set on animated vehicles like the Multi-dimension coaster trains, Miniature Railway locomotives and Helicycles.
     VEHICLE_ENTRY_FLAG_RIDER_ANIMATION = 1 << 24,               // Set when the animation updates rider sprite positions
     VEHICLE_ENTRY_FLAG_25 = 1 << 25,
-    VEHICLE_ENTRY_FLAG_26 = 1 << 26,
+    VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS = 1 << 26,          // Peep loading positions have x and y coordinates. Normal rides just have offsets
     VEHICLE_ENTRY_FLAG_SLIDE_SWING = 1 << 27,                   // Set on dingy slides. They have there own swing value calculations and have a different amount of images.
     VEHICLE_ENTRY_FLAG_CHAIRLIFT = 1 << 28,
     VEHICLE_ENTRY_FLAG_WATER_RIDE = 1 << 29,                    // Set on rides where water would provide continuous propulsion
@@ -306,7 +323,8 @@ enum {
     VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES
 };
 
-enum{
+enum : uint32
+{
     VEHICLE_UPDATE_FLAG_ON_LIFT_HILL = (1 << 0),
     VEHICLE_UPDATE_FLAG_1 = (1 << 1),
     VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT = (1 << 2),
@@ -323,7 +341,8 @@ enum{
     VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE = (1 << 13) // After passing a rotation toggle track piece this will enable
 };
 
-enum {
+enum : uint32
+{
     VEHICLE_SPRITE_FLAG_FLAT = (1 << 0),
     VEHICLE_SPRITE_FLAG_GENTLE_SLOPES = (1 << 1),
     VEHICLE_SPRITE_FLAG_STEEP_SLOPES = (1 << 2),
@@ -362,7 +381,8 @@ enum {
     VEHICLE_VISUAL_SUBMARINE
 };
 
-enum {
+enum : uint32
+{
     VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION = 1 << 0,
     VEHICLE_UPDATE_MOTION_TRACK_FLAG_1 = 1 << 1,
     VEHICLE_UPDATE_MOTION_TRACK_FLAG_2 = 1 << 2,
@@ -388,18 +408,18 @@ enum {
 rct_vehicle * try_get_vehicle(uint16 spriteIndex);
 void vehicle_update_all();
 void vehicle_sounds_update();
-void vehicle_get_g_forces(rct_vehicle *vehicle, sint32 *verticalG, sint32 *lateralG);
-void vehicle_set_map_toolbar(rct_vehicle *vehicle);
-sint32 vehicle_is_used_in_pairs(rct_vehicle *vehicle);
+void vehicle_get_g_forces(const rct_vehicle *vehicle, sint32 *verticalG, sint32 *lateralG);
+void vehicle_set_map_toolbar(const rct_vehicle *vehicle);
+sint32 vehicle_is_used_in_pairs(const rct_vehicle *vehicle);
 sint32 vehicle_update_track_motion(rct_vehicle *vehicle, sint32 *outStation);
-rct_ride_entry_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle);
-sint32 vehicle_get_total_num_peeps(rct_vehicle *vehicle);
+rct_ride_entry_vehicle *vehicle_get_vehicle_entry(const rct_vehicle *vehicle);
+sint32 vehicle_get_total_num_peeps(const rct_vehicle *vehicle);
 void vehicle_invalidate_window(rct_vehicle *vehicle);
 void vehicle_update_test_finish(rct_vehicle* vehicle);
 void vehicle_test_reset(rct_vehicle* vehicle);
-void vehicle_peep_easteregg_here_we_are(rct_vehicle* vehicle);
-rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
-rct_vehicle *vehicle_get_tail(rct_vehicle *vehicle);
+void vehicle_peep_easteregg_here_we_are(const rct_vehicle* vehicle);
+rct_vehicle *vehicle_get_head(const rct_vehicle *vehicle);
+rct_vehicle* vehicle_get_tail(const rct_vehicle* vehicle);
 const rct_vehicle_info *vehicle_get_move_info(sint32 cd, sint32 typeAndDirection, sint32 offset);
 uint16 vehicle_get_move_info_size(sint32 cd, sint32 typeAndDirection);
 bool vehicle_update_dodgems_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId);

@@ -18,6 +18,7 @@
 
 #include "../common.h"
 #include "Map.h"
+#include "TileElement.h"
 
 colour_t scenery_large_get_primary_colour(const rct_tile_element * tileElement);
 colour_t scenery_large_get_secondary_colour(const rct_tile_element * tileElement);

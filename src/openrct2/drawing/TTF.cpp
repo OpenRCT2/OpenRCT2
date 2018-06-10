@@ -21,6 +21,7 @@
 
 #include "../config/Config.h"
 #include "../localisation/Localisation.h"
+#include "../localisation/LocalisationService.h"
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "TTF.h"
@@ -46,12 +47,12 @@ struct ttf_getwidth_cache_entry
     uint32      lastUseTick;
 };
 
-static ttf_cache_entry _ttfSurfaceCache[TTF_SURFACE_CACHE_SIZE] = { nullptr };
+static ttf_cache_entry _ttfSurfaceCache[TTF_SURFACE_CACHE_SIZE] = {};
 static sint32 _ttfSurfaceCacheCount = 0;
 static sint32 _ttfSurfaceCacheHitCount = 0;
 static sint32 _ttfSurfaceCacheMissCount = 0;
 
-static ttf_getwidth_cache_entry _ttfGetWidthCache[TTF_GETWIDTH_CACHE_SIZE] = { 0 };
+static ttf_getwidth_cache_entry _ttfGetWidthCache[TTF_GETWIDTH_CACHE_SIZE] = {};
 static sint32 _ttfGetWidthCacheCount = 0;
 static sint32 _ttfGetWidthCacheHitCount = 0;
 static sint32 _ttfGetWidthCacheMissCount = 0;
@@ -157,7 +158,7 @@ static void ttf_surface_cache_dispose_all()
 
 void ttf_toggle_hinting()
 {
-    if (!gUseTrueTypeFont)
+    if (!LocalisationService_UseTrueTypeFont())
     {
         return;
     }

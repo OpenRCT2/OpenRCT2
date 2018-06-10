@@ -16,24 +16,24 @@
 
 #pragma once
 
-#include "Object.h"
-
+#include <vector>
 #include "../ride/Ride.h"
+#include "Object.h"
 
 class RideObject final : public Object
 {
 private:
-    rct_ride_entry              _legacyType = { };
-    vehicle_colour_preset_list  _presetColours = { 0 };
-    sint8 *                     _peepLoadingPositions[4] = { nullptr };
-    uint16                      _peepLoadingPositionsCount[4] = { 0 };
+    rct_ride_entry              _legacyType = {};
+    vehicle_colour_preset_list  _presetColours = {};
+    std::vector<sint8>          _peepLoadingPositions[MAX_VEHICLES_PER_RIDE_ENTRY];
+    std::vector<std::array<sLocationXY8, 3> > _peepLoadingWaypoints[MAX_VEHICLES_PER_RIDE_ENTRY];
 
 public:
     explicit RideObject(const rct_object_entry &entry) : Object(entry) { }
-    ~RideObject();
 
     void * GetLegacyData()  override { return &_legacyType; }
 
+    void ReadJson(IReadObjectContext * context, const json_t * root) override;
     void ReadLegacy(IReadObjectContext * context, IStream * stream) override;
     void Load() override;
     void Unload() override;
@@ -47,8 +47,19 @@ public:
 
 private:
     void ReadLegacyVehicle(IReadObjectContext * context, IStream * stream, rct_ride_entry_vehicle * vehicle);
-    void PerformFixes();
+
+    void ReadJsonVehicleInfo(IReadObjectContext * context, const json_t * properties);
+    std::vector<rct_ride_entry_vehicle> ReadJsonCars(const json_t * jCars);
+    rct_ride_entry_vehicle ReadJsonCar(const json_t * jCar);
+    vehicle_colour_preset_list ReadJsonCarColours(const json_t * jCarColours);
+    std::vector<vehicle_colour> ReadJsonColourConfiguration(const json_t * jColourConfig);
 
     static uint8 CalculateNumVerticalFrames(const rct_ride_entry_vehicle * vehicleEntry);
     static uint8 CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * vehicleEntry);
+
+    static bool IsRideTypeShopOrFacility(uint8 rideType);
+    static uint8 ParseRideType(const std::string &s);
+    static uint8 ParseRideCategory(const std::string &s);
+    static uint8 ParseShopItem(const std::string &s);
+    static colour_t ParseColour(const std::string &s);
 };

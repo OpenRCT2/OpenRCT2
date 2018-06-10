@@ -22,6 +22,7 @@
 #include "../interface/Colour.h"
 #include "RCT1.h"
 #include "../ride/Ride.h"
+#include "../world/Surface.h"
 
 // clang-format off
 namespace RCT1
@@ -1426,5 +1427,5 @@ namespace RCT1
         };
         return map[sceneryType];
     }
-}
+} // namespace RCT1
 // clang-format on

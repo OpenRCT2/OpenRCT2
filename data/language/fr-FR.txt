@@ -1221,8 +1221,8 @@ STR_1214    :{SMALLFONT}{BLACK}Sélectionnez la durée maximum à attendre avant
 STR_1215    :{WINDOW_COLOUR_2}Synchroniser avec les stations adjacentes
 STR_1216    :{SMALLFONT}{BLACK}Sélectionnez s'il faut synchroniser le départ avec toutes les stations adjacentes
 STR_1217    :{COMMA16} secondes
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Sortie uniquement
 STR_1221    :Pas d'entrée
 STR_1222    :Pas de sortie
@@ -1779,8 +1779,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :Une seule section photo sur le vif autorisée par attraction
 STR_1774    :Une seule montée par câble autorisée par attraction
-STR_1775    :Éteint
-STR_1776    :Allumé
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}Musique
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Costume de panda
@@ -2874,7 +2874,7 @@ STR_2862    :Remerciements musique...
 STR_2863    :Remerciements musique
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) sans copyright
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade :   (J.Heyken) British Standard Music Coy ; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}In Continental Mood :   (Compositeur inconnu) Copyright
+STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole :   (Robert Vollstedt) Copyright Control
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey :   (Traditionnelle)
 STR_2868    :{WINDOW_COLOUR_2}Les Histoires du Bois de Vienne :   (Johann Strauss) sans copyright
 STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance :   (Traditionnelle)
@@ -3575,8 +3575,8 @@ STR_5232    :{SMALLFONT}{BLACK}Editeurs
 STR_5233    :{SMALLFONT}{BLACK}Divers
 STR_5234    :{SMALLFONT}{BLACK}Fenêtres de dialogue
 STR_5235    :{SMALLFONT}{BLACK}Paramètres
-STR_5236    :Fenêtre :
-STR_5237    :Palette :
+STR_5236    :Fenêtre
+STR_5237    :Palette
 STR_5238    :Thème actuel :
 STR_5239    :Dupliquer
 STR_5240    :Entrez un nom pour le thème
@@ -3835,8 +3835,8 @@ STR_5492    :Options du scénario
 STR_5493    :Envoyer un message
 STR_5494    :<removed string - do not use>
 STR_5495    :Liste des joueurs
-STR_5496    :Joueur :
-STR_5497    :Ping :
+STR_5496    :Joueur
+STR_5497    :Ping
 STR_5498    :Liste des serveurs
 STR_5499    :Nom du joueur :
 STR_5500    :Ajouter un serveur
@@ -3981,7 +3981,7 @@ STR_5638    :Permission refusée
 STR_5639    :{SMALLFONT}{BLACK}Affiche la liste des joueurs
 STR_5640    :{SMALLFONT}{BLACK}Gérer les groupes
 STR_5641    :Groupe par défaut :
-STR_5642    :Groupes :
+STR_5642    :Groupe
 STR_5643    :Ajouter groupe
 STR_5644    :Suppr. groupe
 STR_5645    :Chat
@@ -4009,7 +4009,7 @@ STR_5666    :Connexion sans mot de passe
 STR_5701    :{WINDOW_COLOUR_2}Dernière action : {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Localise l'action la plus récente du joueur
 STR_5703    :Imposible d'expulser l'hébergeur
-STR_5704    :Dernière action :
+STR_5704    :Dernière action
 STR_5705    :Impossible d'attribuer à ce groupe
 STR_5706    :Impossible de supprimer un groupe ayant des joueurs
 STR_5707    :Ce groupe ne peut pas être modifié
@@ -4036,10 +4036,10 @@ STR_5726    :{SMALLFONT}{BLACK}Définit la météo actuelle dans le parc
 STR_5727    :Qual. de mise à l'échelle :
 STR_5728    :Requiert l'option d'affichage matériel
 STR_5729    :{SMALLFONT}{BLACK}Requiert l'option d'affichage matériel
-STR_5730    :Au plus proche
+STR_5730    :<removed string - do not use>
 STR_5731    :Linéaire
-STR_5732    :Anisotropique
-STR_5733    :Utilise la mise à l'échelle NN aux échelles d'entiers
+STR_5732    :<removed string - do not use>
+STR_5733    :<removed string - do not use>
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendu
 STR_5735    :Etat du réseau
@@ -4126,7 +4126,7 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Affiche le nombre d'images par seconde durant le jeu
 STR_5816    :{SMALLFONT}{BLACK}Définit le ratio de mise à l'échelle du jeu.{NEWLINE}Utile lors de l'utilisation de résolutions élevées
-STR_5817    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Définit le type de mise à l'échelle de l'interface graphique{NEWLINE}{NEWLINE}Voisinage proche est plus net mais peut causer des distorsions sur des mises à l'échelle non entières.{NEWLINE}Linéaire et Anisotrope sont lisses mais flous.{NEWLINE}Voisinage proche lisse est net même sur des mises à l'échelle non entières mais peut causer un dégradement des performances mineure.
+STR_5817    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Définit le type de mise à l'échelle de l'interface graphique{NEWLINE}{NEWLINE}La mise à l'échelle est linéaire est lisse mais le résultat est flou. La mise à l'échelle en mode voisinage proche est précise mais peut causer un dégradement des performances mineure.
 STR_5818    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Utilise l'échelle la plus proche quand le ratio de mise à l'échelle est un entier (1, 2, 3, etc.)
 STR_5819    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Met le jeu en pause quand l'overlay Steam est ouvert
 STR_5820    :{SMALLFONT}{BLACK}Minimise le jeu si le focus est perdu en plein écran
@@ -4315,7 +4315,7 @@ STR_6002    :{SMALLFONT}{BLACK}Les lampes et attractions seront éclairées dura
 STR_6003    :Vue en coupe
 STR_6004    :Vue en coupe
 STR_6005    :Active la vue en coupe
-STR_6006    :{SMALLFONT}{BLACK}La vue en coupe affiche les éléments de la carte qui sont à la hauteur de coupe et en dessous.
+STR_6006    :{SMALLFONT}{BLACK}La vue en coupe affiche les éléments de la carte qui sont à la hauteur de coupe ou en dessous (coupe verticale) dans une zone sélectionnée (coupe horizontale).
 STR_6007    :Hauteur de coupe
 STR_6008    :{SMALLFONT}{BLACK}Cliquez pour permutter entre valeur explicite<->valeur mesurée
 STR_6009    :{SMALLFONT}{BLACK}Sélectionnez hauteur de coupe
@@ -4476,12 +4476,13 @@ STR_6160    :{WINDOW_COLOUR_2}Véhicules disponibles: {BLACK}{STRING}
 STR_6161    :Basculer les lignes de quadrillage
 STR_6162    :Souris folle tournante
 STR_6163    :Les voitures en forme de souris se faufilent dans les virages serrés et petites chutes en tournant doucement pour désorienter les passagers
+STR_6164    :{WHITE}{CROSS}
 STR_6165    :Utiliser la synchronisation verticale
 STR_6166    :{SMALLFONT}{BLACK}Synchronise chaque image affichée sur la fréquence de rafraîchissement du moniteur, ce qui empêche le déchirement de l'écran.
 STR_6167    :{SMALLFONT}{BLACK}Paramètres avancés
 STR_6168    :Séquence d'ouverture
 STR_6169    :Sélection de scénario
-STR_6170    :Ajustements
+STR_6170    :Ajustements de l'interface
 STR_6171    :Chercher
 STR_6172    :{SMALLFONT}{BLACK}Chercher
 STR_6173    :Veuillez indiquer le nom à rechercher:
@@ -4513,16 +4514,63 @@ STR_6198    :{BLACK}Journée:
 STR_6199    :Régler la date
 STR_6200    :Réinitialiser la date
 STR_6201    :{MONTH}
-STR_6202    :Activer le plancher virtuel
+STR_6202    :Style de plancher virtuel
 STR_6203    :{SMALLFONT}{BLACK}Lorsque cette option est activée, un étage virtuel est rendu quand Ctrl ou Shift est tenu pour faciliter le placement vertical des éléments.
-STR_6215    :Construction
+STR_6204    :Brique
+STR_6205    :Fer
+STR_6206    :Stuc gris
+STR_6207    :Stuc jaune
+STR_6208    :Stuc rouge
+STR_6209    :Stuc violet
+STR_6210    :Stuc vert
+STR_6211    :Pierre de sable marron
+STR_6212    :Pierre de sable gris
+STR_6213    :Gratte-ciel A
+STR_6214    :Gratte-ciel B
 STR_6216    :Opération
 STR_6217    :Attraction / disponibilité du piste
 STR_6218    :OpenRCT2 Officiel
 STR_6219    :Mettre en évidence les problèmes du chemin
 STR_6220    :Rendre utilisable
 STR_6221    :{SMALLFONT}{BLACK}Ceci définira l'emplacement d'entrée ou de sortie connu de la course sur la tuile actuellement sélectionnée. Un seul emplacement d'entrée et de sortie peut être rendu utilisable par station.
-
+STR_6222    :Impossible de placer le point d'entrée des visiteurs ici...
+STR_6223    :Il doit être en dehors des limites du parc !
+STR_6224    :{STRING} a placé un point d'entrée du parc
+STR_6225    :N'est pas supporté avec le rendu OpenGL
+STR_6226    :Activer la complétion prématurée d'un scénario
+STR_6227    :{SMALLFONT}{BLACK}Enclenche la complétion d'un scénario quand tous les objectifs sont atteints avant la date limite.
+STR_6228    :Options du scénario
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID} : {STRINGID}
+STR_6230    :{STRINGID} :
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID} : {MOVE_X}{185}{STRINGID}
+STR_6232    :Immobile
+STR_6233    :Vue en coupe
+STR_6234    :Mettre en évidence les problèmes du chemin
+STR_6235    :Information du serveur
+STR_6236    :Joueurs
+STR_6237    :Groupes
+STR_6238    :Options multijoueurs
+STR_6239    :Coupe verticale
+STR_6240    :Coupe horizontale
+STR_6241    :Sélectionner zone
+STR_6242    :Effacer sélection
+STR_6243    :{SMALLFONT}{BLACK}Renouvelle l'attraction,{NEWLINE}comme si elle venait d'être construite
+STR_6244    :Impossible de renouveller l'attraction...
+STR_6245    :{SMALLFONT}{BLACK}Cette attraction n'a pas besoin d'un renouvellement
+STR_6246    :Renouveller
+STR_6247    :Renouvelle l'attraction
+STR_6248    :{WINDOW_COLOUR_1}Voulez-vous renouveller {STRINGID} pour {CURRENCY} ?
+STR_6249    :{WINDOW_COLOUR_1}Voulez-vous renouveller {STRINGID} ?
+STR_6250    :{WINDOW_COLOUR_1}Etes-vous sûr(e) de vouloir détruire complétement {STRINGID} et gagner {CURRENCY} ?
+STR_6251    :L'attraction n'est pas encore vide
+STR_6252    :Adresse vers l'intégration API Twitch
+STR_6253    :{SMALLFONT}{BLACK}Fournit l'adresse vers l'intégration API de Twitch. Requis pour activer les interactions Twitch.
+STR_6254    :Adresse URL de l'intégration API Twitch :
+STR_6255    :L'adresse est invalide
+STR_6256    :Effets de rendu
+STR_6257    :Verre (transparent)
+STR_6258    :Net (transparent)
+STR_6259    :Désactivé
 
 
 #############
@@ -4966,13 +5014,3 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronisme
 STR_PARK    :Fort Anachronisme
 STR_DTLS    :
-
-#####################
-# Rides/attractions #
-#####################
-
-#WW
-[CONDORRD]
-STR_NAME    :Le condor
-STR_DESC    :Les passagers sont couchés à plat ventre dans une voiture en forme de condor se déplaçant sur un monorail et se balançant d'un côté à l'autre dans les virages
-STR_CPTY    :4 passagers par voiture

@@ -64,6 +64,7 @@
 #include "world/Park.h"
 #include "world/Scenery.h"
 #include "world/Sprite.h"
+#include "world/Surface.h"
 #include "world/Water.h"
 #include "object/ObjectList.h"
 #include "interface/Window_internal.h"
@@ -87,6 +88,7 @@ uint8 gUnk141F568;
 
 uint32 gCurrentTicks;
 
+// clang-format off
 GAME_COMMAND_CALLBACK_POINTER * game_command_callback = nullptr;
 static GAME_COMMAND_CALLBACK_POINTER * const game_command_callback_table[] = {
     nullptr,
@@ -98,15 +100,17 @@ static GAME_COMMAND_CALLBACK_POINTER * const game_command_callback_table[] = {
     game_command_callback_place_ride_entrance_or_exit,
     game_command_callback_hire_new_staff_member,
     game_command_callback_pickup_guest,
-    game_command_callback_pickup_staff,
-    game_command_callback_marketing_start_campaign,
+    game_command_callback_pickup_staff
 };
+// clang-format on
 sint32 game_command_playerid = -1;
 
 rct_string_id gGameCommandErrorTitle;
 rct_string_id gGameCommandErrorText;
 uint8         gErrorType;
 rct_string_id gErrorStringId;
+
+using namespace OpenRCT2;
 
 sint32 game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER * callback)
 {
@@ -327,211 +331,6 @@ void update_palette_effects()
         }
     }
 }
-
-void game_update()
-{
-    gInUpdateCode = true;
-
-    uint32 numUpdates;
-
-    // 0x006E3AEC // screen_game_process_mouse_input();
-    screenshot_check();
-    game_handle_keyboard_input();
-
-    if (game_is_not_paused() && gPreviewingTitleSequenceInGame)
-    {
-        title_sequence_player_update((ITitleSequencePlayer *) title_get_sequence_player());
-    }
-
-    // Determine how many times we need to update the game
-    if (gGameSpeed > 1)
-    {
-        numUpdates = 1 << (gGameSpeed - 1);
-    }
-    else
-    {
-        numUpdates = gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
-        numUpdates = Math::Clamp(1u, numUpdates, (uint32) GAME_MAX_UPDATES);
-    }
-
-    if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK)
-    {
-        if (network_get_server_tick() - gCurrentTicks >= 10)
-        {
-            // Make sure client doesn't fall behind the server too much
-            numUpdates += 10;
-        }
-    }
-
-    if (game_is_paused())
-    {
-        numUpdates = 0;
-        // Update the animation list. Note this does not
-        // increment the map animation.
-        map_animation_invalidate_all();
-
-        // Special case because we set numUpdates to 0, otherwise in game_logic_update.
-        network_update();
-
-        network_process_game_commands();
-    }
-
-    // Update the game one or more times
-    for (uint32 i = 0; i < numUpdates; i++)
-    {
-        game_logic_update();
-
-        if (gGameSpeed > 1)
-            continue;
-
-        if (input_get_state() == INPUT_STATE_RESET ||
-            input_get_state() == INPUT_STATE_NORMAL
-            )
-        {
-            if (input_test_flag(INPUT_FLAG_VIEWPORT_SCROLLING))
-            {
-                input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
-                break;
-            }
-        }
-        else
-        {
-            break;
-        }
-    }
-
-    if (!gOpenRCT2Headless)
-    {
-        input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
-
-        // the flickering frequency is reduced by 4, compared to the original
-        // it was done due to inability to reproduce original frequency
-        // and decision that the original one looks too fast
-        if (gCurrentTicks % 4 == 0)
-            gWindowMapFlashingFlags ^= (1 << 15);
-
-        // Handle guest map flashing
-        gWindowMapFlashingFlags &= ~(1 << 1);
-        if (gWindowMapFlashingFlags & (1 << 0))
-            gWindowMapFlashingFlags |= (1 << 1);
-        gWindowMapFlashingFlags &= ~(1 << 0);
-
-        // Handle staff map flashing
-        gWindowMapFlashingFlags &= ~(1 << 3);
-        if (gWindowMapFlashingFlags & (1 << 2))
-            gWindowMapFlashingFlags |= (1 << 3);
-        gWindowMapFlashingFlags &= ~(1 << 2);
-
-        context_update_map_tooltip();
-
-        // Input
-        gUnk141F568 = gUnk13CA740;
-
-        context_handle_input();
-    }
-
-    // Always perform autosave check, even when paused
-    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) &&
-        !(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) &&
-        !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
-        )
-    {
-        scenario_autosave_check();
-    }
-
-    window_dispatch_update_all();
-
-    gGameCommandNestLevel = 0;
-    gInUpdateCode         = false;
-}
-
-void game_logic_update()
-{
-    gScreenAge++;
-    if (gScreenAge == 0)
-        gScreenAge--;
-
-    network_update();
-
-    if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK)
-    {
-        // Can't be in sync with server, round trips won't work if we are at same level.
-        if (gCurrentTicks >= network_get_server_tick())
-        {
-            // Don't run past the server
-            return;
-        }
-    }
-
-    if (network_get_mode() == NETWORK_MODE_SERVER)
-    {
-        // Send current tick out.
-        network_send_tick();
-    }
-    else if (network_get_mode() == NETWORK_MODE_CLIENT)
-    {
-        // Check desync.
-        network_check_desynchronization();
-    }
-
-    sub_68B089();
-    scenario_update();
-    climate_update();
-    map_update_tiles();
-    // Temporarily remove provisional paths to prevent peep from interacting with them
-    map_remove_provisional_elements();
-    map_update_path_wide_flags();
-    peep_update_all();
-    map_restore_provisional_elements();
-    vehicle_update_all();
-    sprite_misc_update_all();
-    ride_update_all();
-    park_update();
-    research_update();
-    ride_ratings_update_all();
-    ride_measurements_update();
-    news_item_update_current();
-
-    map_animation_invalidate_all();
-    vehicle_sounds_update();
-    peep_update_crowd_noise();
-    climate_update_sound();
-    editor_open_windows_for_current_step();
-
-    // Update windows
-    //window_dispatch_update_all();
-
-    if (gErrorType != ERROR_TYPE_NONE)
-    {
-        rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
-        rct_string_id body_text  = gErrorStringId;
-        if (gErrorType == ERROR_TYPE_GENERIC)
-        {
-            title_text = gErrorStringId;
-            body_text  = 0xFFFF;
-        }
-        gErrorType = ERROR_TYPE_NONE;
-
-        context_show_error(title_text, body_text);
-    }
-
-    // Start autosave timer after update
-    if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
-    {
-        gLastAutoSaveUpdate = platform_get_ticks();
-    }
-
-    // Separated out processing commands in network_update which could call scenario_rand where gInUpdateCode is false.
-    // All commands that are received are first queued and then executed where gInUpdateCode is set to true.
-    network_process_game_commands();
-
-    network_flush();
-
-    gCurrentTicks++;
-    gScenarioTicks++;
-    gSavedAge++;
-}
-
 /**
  *
  *  rct2: 0x0069C62C
@@ -1043,7 +842,14 @@ bool game_is_not_paused()
  *
  *  rct2: 0x00667C15
  */
-void game_pause_toggle(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+void game_pause_toggle(
+    [[maybe_unused]] sint32 * eax,
+    sint32 *                  ebx,
+    [[maybe_unused]] sint32 * ecx,
+    [[maybe_unused]] sint32 * edx,
+    [[maybe_unused]] sint32 * esi,
+    [[maybe_unused]] sint32 * edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
         pause_toggle();
@@ -1055,7 +861,14 @@ void game_pause_toggle(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, s
  *
  *  rct2: 0x0066DB5F
  */
-static void game_load_or_quit(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+static void game_load_or_quit(
+    [[maybe_unused]] sint32 * eax,
+    sint32 *                  ebx,
+    [[maybe_unused]] sint32 * ecx,
+    sint32 *                  edx,
+    [[maybe_unused]] sint32 * esi,
+    sint32 *                  edi,
+    [[maybe_unused]] sint32 * ebp)
 {
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
     {
@@ -1087,13 +900,12 @@ static void load_landscape()
     context_open_intent(&intent);
 }
 
-static void utf8_to_rct2_self(char * buffer, size_t length)
+void utf8_to_rct2_self(char * buffer, size_t length)
 {
-    char tempBuffer[512];
-    utf8_to_rct2(tempBuffer, buffer);
+    auto temp = utf8_to_rct2(buffer);
 
     size_t       i   = 0;
-    const char * src = tempBuffer;
+    const char * src = temp.data();
     char       * dst = buffer;
     while (*src != 0 && i < length - 1)
     {
@@ -1125,13 +937,12 @@ static void utf8_to_rct2_self(char * buffer, size_t length)
     while (i < length);
 }
 
-static void rct2_to_utf8_self(char * buffer, size_t length)
+void rct2_to_utf8_self(char * buffer, size_t length)
 {
     if (length > 0)
     {
-        char tempBuffer[512];
-        rct2_to_utf8(tempBuffer, buffer);
-        safe_strcpy(buffer, tempBuffer, length);
+        auto temp = rct2_to_utf8(buffer, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        safe_strcpy(buffer, temp.data(), length);
     }
 }
 
@@ -1259,7 +1070,7 @@ void game_fix_save_vars()
 
     for (auto ptr : peepsToRemove)
     {
-        peep_remove(ptr);
+        ptr->Remove();
     }
 
     // Fixes broken saves where a surface element could be null
@@ -1305,50 +1116,6 @@ void game_fix_save_vars()
 
     // Fix gParkEntrance locations for which the tile_element no longer exists
     fix_park_entrance_locations();
-}
-
-void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, const std::string & path, bool loadTitleFirst)
-{
-    if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_MISSING_OBJECTS)
-    {
-        // This option is used when loading parks from the command line
-        // to ensure that the title sequence loads before the window
-        if (loadTitleFirst)
-        {
-            title_load();
-        }
-        // The path needs to be duplicated as it's a const here
-        // which the window function doesn't like
-        auto intent = Intent(WC_OBJECT_LOAD_ERROR);
-        intent.putExtra(INTENT_EXTRA_PATH, path);
-        intent.putExtra(INTENT_EXTRA_LIST, (void *) ParkLoadResult_GetMissingObjects(result));
-        intent.putExtra(INTENT_EXTRA_LIST_COUNT, (uint32) ParkLoadResult_GetMissingObjectsCount(result));
-        context_open_intent(&intent);
-    }
-    else if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_UNSUPPORTED_RCTC_FLAG)
-    {
-        // This option is used when loading parks from the command line
-        // to ensure that the title sequence loads before the window
-        if (loadTitleFirst)
-        {
-            title_load();
-        }
-
-        set_format_arg(0, uint16, ParkLoadResult_GetFlag(result));
-        context_show_error(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE);
-
-    }
-    else if (ParkLoadResult_GetError(result) != PARK_LOAD_ERROR_OK)
-    {
-        // If loading the SV6 or SV4 failed for a reason other than invalid objects
-        // the current park state will be corrupted so just go back to the title screen.
-        title_load();
-    }
-}
-
-void handle_park_load_failure(const ParkLoadResult * result, const std::string & path)
-{
-    handle_park_load_failure_with_title_opt(result, path, false);
 }
 
 void game_load_init()
@@ -1653,39 +1420,6 @@ void game_load_or_quit_no_save_prompt()
     }
 }
 
-/**
- * Initialises the map, park etc. basically all S6 data.
- */
-void game_init_all(sint32 mapSize)
-{
-    gInMapInitCode = true;
-
-    map_init(mapSize);
-    park_init();
-    finance_init();
-    reset_park_entry();
-    banner_init();
-    ride_init_all();
-    reset_sprite_list();
-    staff_reset_modes();
-    date_reset();
-    climate_reset(CLIMATE_COOL_AND_WET);
-    news_item_init_queue();
-    user_string_clear_all();
-
-    gInMapInitCode = false;
-
-    gNextGuestNumber = 1;
-
-    context_init();
-    scenery_set_default_placement_configuration();
-
-    auto intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
-    context_broadcast_intent(&intent);
-
-    load_palette();
-}
-
 GAME_COMMAND_POINTER * new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_set_ride_appearance,
     game_command_set_land_height,
@@ -1721,22 +1455,22 @@ GAME_COMMAND_POINTER * new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_set_staff_patrol,
     game_command_fire_staff_member,
     game_command_set_staff_order,
-    game_command_set_park_name,
+    nullptr,
     game_command_set_park_open,
     game_command_buy_land_rights,
     game_command_place_park_entrance,
     game_command_remove_park_entrance,
     game_command_set_maze_track,
     game_command_set_park_entrance_fee,
-    game_command_update_staff_colour,
+    nullptr,
     game_command_place_wall,
-    game_command_remove_wall,
+    nullptr,
     game_command_place_large_scenery,
     game_command_remove_large_scenery,
-    game_command_set_current_loan,
-    game_command_set_research_funding,
+    nullptr,
+    nullptr,
     game_command_place_track_design,
-    game_command_start_campaign,
+    nullptr,
     game_command_place_maze_design,
     game_command_place_banner,
     game_command_remove_banner,
@@ -1746,8 +1480,8 @@ GAME_COMMAND_POINTER * new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_set_banner_colour,
     game_command_set_land_ownership,
     game_command_clear_scenery,
-    game_command_set_banner_name,
-    game_command_set_sign_name,
+    nullptr,
+    nullptr,
     game_command_set_banner_style,
     game_command_set_sign_style,
     game_command_set_player_group,

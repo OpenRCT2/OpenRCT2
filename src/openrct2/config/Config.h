@@ -42,7 +42,7 @@ struct GeneralConfiguration
     // Map rendering
     bool        landscape_smoothing;
     bool        always_show_gridlines;
-    bool        use_virtual_floor;
+    sint32      virtual_floor_style;
     bool        day_night_cycle;
     bool        enable_light_fx;
     bool        upper_case_banners;
@@ -88,6 +88,7 @@ struct GeneralConfiguration
     bool        scenario_hide_mega_park;
     bool        steam_overlay_pause;
     bool        show_real_names_of_guests;
+    bool        allow_early_completion;
 
     bool        confirmation_prompt;
     sint32      load_save_sort;
@@ -126,6 +127,7 @@ struct SoundConfiguration
 struct TwitchConfiguration
 {
     utf8 *      channel;
+    utf8 *      api_url;
     bool        enable_follower_peep_names;
     bool        enable_follower_peep_tracking;
     bool        enable_chat_peep_names;

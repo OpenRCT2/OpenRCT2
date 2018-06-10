@@ -19,6 +19,7 @@
 #include "../../paint/Supports.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../../world/Sprite.h"
 
 struct haunted_house_bound_box
 {
@@ -29,8 +30,9 @@ struct haunted_house_bound_box
 };
 
 /** rct2: 0x1428180 */
-static haunted_house_bound_box haunted_house_data[] = { { 6, 0, 42, 24 }, { 0 }, { -16, -16, 32, 32 }, { 0 },
-                                                        { 0, 6, 24, 42 }, { 0 } };
+static haunted_house_bound_box haunted_house_data[] = {
+    { 6, 0, 42, 24 }, { 0, 0, 0, 0 }, { -16, -16, 32, 32 }, { 0, 0, 0, 0 }, { 0, 6, 24, 42 }, { 0, 0, 0, 0 },
+};
 
 /**
  * rct2: 0x0076F72C
@@ -61,7 +63,7 @@ static void paint_haunted_house_structure(paint_session * session, uint8 rideInd
         session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
         boundBox.offset_y, height);
 
-    rct_drawpixelinfo * dpi = session->Unk140E9A8;
+    rct_drawpixelinfo * dpi = session->DPI;
     if (dpi->zoom_level == 0 && frameNum != 0)
     {
         switch (direction)
@@ -108,8 +110,7 @@ static void paint_haunted_house(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    track_paint_util_paint_floor(
-        session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, session->CurrentRotation);
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
 
     track_paint_util_paint_fences(
         session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,

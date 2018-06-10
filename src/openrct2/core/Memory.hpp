@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <cstdlib>
 #include <cstring>
 #include <typeinfo>
 #include "../common.h"
@@ -97,4 +98,4 @@ namespace Memory
         }
         Free(ptr);
     }
-}
+} // namespace Memory

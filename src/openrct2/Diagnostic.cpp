@@ -16,13 +16,14 @@
 
 #include <cstdarg>
 #include <cstdio>
+#include "core/String.hpp"
 #include "Diagnostic.h"
 
 #ifdef __ANDROID__
 #include <android/log.h>
 #endif
 
-static bool _log_location_enabled = true;
+[[maybe_unused]] static bool _log_location_enabled = true;
 bool _log_levels[DIAGNOSTIC_LEVEL_COUNT] = { true, true, true, false, true };
 
 static FILE * diagnostic_get_stream(DIAGNOSTIC_LEVEL level)
@@ -60,7 +61,6 @@ void diagnostic_log_with_location(DIAGNOSTIC_LEVEL diagnosticLevel, const char *
     if (!_log_levels[diagnosticLevel])
         return;
 
-    UNUSED(_log_location_enabled);
     snprintf(buf, 1024, "[%s:%d (%s)]: ", file, line, function);
 
     va_start(args, format);
@@ -81,46 +81,45 @@ static constexpr const char * _level_strings[] = {
 void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char *format, ...)
 {
     va_list args;
+    if (_log_levels[diagnosticLevel])
+    {
+        // Level
+        auto prefix = String::StdFormat("%s: ", _level_strings[diagnosticLevel]);
 
-    if (!_log_levels[diagnosticLevel])
-        return;
+        // Message
+        va_start(args, format);
+        auto msg = String::StdFormat_VA(format, args);
+        va_end(args);
 
-    FILE * stream = diagnostic_get_stream(diagnosticLevel);
-
-    // Level
-    fprintf(stream, "%s: ", _level_strings[diagnosticLevel]);
-
-    // Message
-    va_start(args, format);
-    vfprintf(stream, format, args);
-    va_end(args);
-
-    // Line terminator
-    fprintf(stream, "\n");
+        auto stream = diagnostic_get_stream(diagnosticLevel);
+        fprintf(stream, "%s%s\n", prefix.c_str(), msg.c_str());
+    }
 }
 
 void diagnostic_log_with_location(DIAGNOSTIC_LEVEL diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...)
 {
     va_list args;
+    if (_log_levels[diagnosticLevel])
+    {
+        // Level and source code information
+        std::string prefix;
+        if (_log_location_enabled)
+        {
+            prefix = String::StdFormat("%s[%s:%d (%s)]: ", _level_strings[diagnosticLevel], file, line, function);
+        }
+        else
+        {
+            prefix = String::StdFormat("%s: ", _level_strings[diagnosticLevel]);
+        }
 
-    if (!_log_levels[diagnosticLevel])
-        return;
+        // Message
+        va_start(args, format);
+        auto msg = String::StdFormat_VA(format, args);
+        va_end(args);
 
-    FILE * stream = diagnostic_get_stream(diagnosticLevel);
-
-    // Level and source code information
-    if (_log_location_enabled)
-        fprintf(stream, "%s[%s:%d (%s)]: ", _level_strings[diagnosticLevel], file, line, function);
-    else
-        fprintf(stream, "%s: ", _level_strings[diagnosticLevel]);
-
-    // Message
-    va_start(args, format);
-    vfprintf(stream, format, args);
-    va_end(args);
-
-    // Line terminator
-    fprintf(stream, "\n");
+        auto stream = diagnostic_get_stream(diagnosticLevel);
+        fprintf(stream, "%s%s\n", prefix.c_str(), msg.c_str());
+    }
 }
 
 #endif // __ANDROID__

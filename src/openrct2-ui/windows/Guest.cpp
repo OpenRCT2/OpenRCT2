@@ -28,11 +28,15 @@
 #include <openrct2/peep/Peep.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/ride/RideData.h>
+#include <openrct2/ride/ShopItem.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
+#include <openrct2/scenario/Scenario.h>
+#include <openrct2/world/Park.h>
 
+// clang-format off
 enum WINDOW_GUEST_PAGE {
     WINDOW_GUEST_OVERVIEW,
     WINDOW_GUEST_STATS,
@@ -472,6 +476,7 @@ static constexpr const uint32 window_guest_page_enabled_widgets[] = {
     (1 << WIDX_TAB_5) |
     (1 << WIDX_TAB_6)
 };
+// clang-format on
 
 /**
  *
@@ -692,7 +697,7 @@ void window_guest_viewport_init(rct_window* w){
     union{
         sprite_focus sprite;
         coordinate_focus coordinate;
-    } focus = { 0 }; // The focus will be either a sprite or a coordinate.
+    } focus = {}; // The focus will be either a sprite or a coordinate.
 
     focus.sprite.sprite_id = w->number;
 
@@ -1012,7 +1017,7 @@ void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
             w->list_information_type = 0;
             return;
         }
-        if (peep->thoughts[i].var_2 == 1){ // If a fresh thought
+        if (peep->thoughts[i].freshness == 1){ // If a fresh thought
             break;
         }
     }
@@ -1929,7 +1934,7 @@ void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi)
     y += 10;
     for (rct_peep_thought* thought = peep->thoughts; thought < &peep->thoughts[PEEP_MAX_THOUGHTS]; ++thought){
         if (thought->type == PEEP_THOUGHT_TYPE_NONE) return;
-        if (thought->var_2 == 0) continue;
+        if (thought->freshness == 0) continue;
 
         sint32 width = window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].right
             - window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left
@@ -2105,7 +2110,7 @@ void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     for (sint32 item = 0; item < SHOP_ITEM_COUNT; item++) {
         if (y >= maxY) break;
-        if (!peep_has_item(peep, item)) continue;
+        if (!peep->HasItem(item)) continue;
 
         rct_string_id stringId = window_guest_inventory_format_item(peep, item);
         y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, itemNameWidth, stringId, COLOUR_BLACK);

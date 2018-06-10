@@ -17,10 +17,14 @@
 #include <algorithm>
 #include <array>
 #include <memory>
+#include <mutex>
+#include <thread>
 #include <unordered_set>
+#include "../Context.h"
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
+#include "../ParkImporter.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
@@ -35,19 +39,19 @@
 class ObjectManager final : public IObjectManager
 {
 private:
-    IObjectRepository *     _objectRepository;
-    std::vector<Object *>   _loadedObjects;
+    std::shared_ptr<IObjectRepository> _objectRepository;
+    std::vector<Object *> _loadedObjects;
 
 public:
-    explicit ObjectManager(IObjectRepository * objectRepository)
+    explicit ObjectManager(std::shared_ptr<IObjectRepository> objectRepository)
+        : _objectRepository(objectRepository)
     {
         Guard::ArgumentNotNull(objectRepository);
 
-        _objectRepository = objectRepository;
         _loadedObjects.resize(OBJECT_ENTRY_COUNT);
 
         UpdateSceneryGroupIndexes();
-        reset_type_to_ride_entry_index_map();
+        ResetTypeToRideEntryIndexMap();
     }
 
     ~ObjectManager() override
@@ -57,13 +61,6 @@ public:
 
     Object * GetLoadedObject(size_t index) override
     {
-        if (index >= OBJECT_ENTRY_COUNT)
-        {
-#ifdef DEBUG
-            log_warning("Object index %u exceeds maximum of %d.", index, OBJECT_ENTRY_COUNT);
-#endif
-            return nullptr;
-        }
         if (index >= _loadedObjects.size())
         {
             return nullptr;
@@ -81,11 +78,7 @@ public:
             return nullptr;
         }
 
-        size_t objectIndex = index;
-        for (sint32 i = 0; i < objectType; i++)
-        {
-            objectIndex += object_entry_group_counts[i];
-        }
+        auto objectIndex = GetIndexFromTypeEntry(objectType, index);
         return GetLoadedObject(objectIndex);
     }
 
@@ -120,7 +113,7 @@ public:
             loadedObject = ori->LoadedObject;
             if (loadedObject == nullptr)
             {
-                uint8 objectType = object_entry_get_type(entry);
+                uint8 objectType = object_entry_get_type(&ori->ObjectEntry);
                 sint32 slot = FindSpareSlot(objectType);
                 if (slot != -1)
                 {
@@ -133,7 +126,7 @@ public:
                         }
                         _loadedObjects[slot] = loadedObject;
                         UpdateSceneryGroupIndexes();
-                        reset_type_to_ride_entry_index_map();
+                        ResetTypeToRideEntryIndexMap();
                     }
                 }
             }
@@ -141,33 +134,20 @@ public:
         return loadedObject;
     }
 
-    bool LoadObjects(const rct_object_entry * entries, size_t count) override
+    void LoadObjects(const rct_object_entry * entries, size_t count) override
     {
         // Find all the required objects
-        bool missingObjects;
-        auto requiredObjects = GetRequiredObjects(entries, &missingObjects);
-        if (missingObjects)
-        {
-            return false;
-        }
+        auto requiredObjects = GetRequiredObjects(entries, count);
 
-        // Create a new list of loaded objects
+        // Load the required objects
         size_t numNewLoadedObjects = 0;
         auto loadedObjects = LoadObjects(requiredObjects, &numNewLoadedObjects);
 
-        if (!std::get<0>(loadedObjects))
-        {
-            UnloadAll();
-            return false;
-        }
-        else
-        {
-            SetNewLoadedObjectList(std::get<1>(loadedObjects));
-            UpdateSceneryGroupIndexes();
-            reset_type_to_ride_entry_index_map();
-            log_verbose("%u / %u new objects loaded", numNewLoadedObjects, requiredObjects.size());
-            return true;
-        }
+        SetNewLoadedObjectList(loadedObjects);
+        LoadDefaultObjects();
+        UpdateSceneryGroupIndexes();
+        ResetTypeToRideEntryIndexMap();
+        log_verbose("%u / %u new objects loaded", numNewLoadedObjects, requiredObjects.size());
     }
 
     void UnloadObjects(const rct_object_entry * entries, size_t count) override
@@ -195,7 +175,7 @@ public:
         if (numObjectsUnloaded > 0)
         {
             UpdateSceneryGroupIndexes();
-            reset_type_to_ride_entry_index_map();
+            ResetTypeToRideEntryIndexMap();
         }
     }
 
@@ -206,7 +186,7 @@ public:
             UnloadObject(object);
         }
         UpdateSceneryGroupIndexes();
-        reset_type_to_ride_entry_index_map();
+        ResetTypeToRideEntryIndexMap();
     }
 
     void ResetObjects() override
@@ -220,7 +200,7 @@ public:
             }
         }
         UpdateSceneryGroupIndexes();
-        reset_type_to_ride_entry_index_map();
+        ResetTypeToRideEntryIndexMap();
     }
 
     std::vector<const ObjectRepositoryItem *> GetPackableObjects() override
@@ -238,6 +218,12 @@ public:
             }
         }
         return objects;
+    }
+
+    void LoadDefaultObjects() override
+    {
+        // We currently will load new object types here that apply to all
+        // loaded RCT1 and RCT2 save files.
     }
 
     static rct_string_id GetObjectSourceGameString(const rct_object_entry * entry)
@@ -264,15 +250,27 @@ public:
     }
 
 private:
+    Object * LoadObject(const std::string &name)
+    {
+        rct_object_entry entry{};
+        std::copy_n(name.c_str(), 8, entry.name);
+        return LoadObject(&entry);
+    }
+
     sint32 FindSpareSlot(uint8 objectType)
     {
-        sint32 firstIndex = GetIndexFromTypeEntry(objectType, 0);
-        sint32 endIndex = firstIndex + object_entry_group_counts[objectType];
-        for (sint32 i = firstIndex; i < endIndex; i++)
+        size_t firstIndex = GetIndexFromTypeEntry(objectType, 0);
+        size_t endIndex = firstIndex + object_entry_group_counts[objectType];
+        for (size_t i = firstIndex; i < endIndex; i++)
         {
-            if (_loadedObjects.size() > (size_t)i && _loadedObjects[i] == nullptr)
+            if (_loadedObjects.size() <= i)
             {
-                return i;
+                _loadedObjects.resize(i + 1);
+                return (sint32)i;
+            }
+            else if (_loadedObjects[i] == nullptr)
+            {
+                return (sint32)i;
             }
         }
         return -1;
@@ -435,7 +433,7 @@ private:
             const ObjectRepositoryItem * ori = nullptr;
             if (object_entry_is_empty(&entry))
             {
-                entry = { 0 };
+                entry = {};
                 continue;
             }
 
@@ -450,7 +448,7 @@ private:
                 else
                 {
                     log_info("Ignoring missing STEX entry.");
-                    entry = { 0 };
+                    entry = {};
                     continue;
                 }
             }
@@ -473,11 +471,12 @@ private:
         return invalidEntries;
     }
 
-    std::vector<const ObjectRepositoryItem *> GetRequiredObjects(const rct_object_entry * entries, bool * missingObjects)
+    std::vector<const ObjectRepositoryItem *> GetRequiredObjects(const rct_object_entry * entries, size_t count)
     {
         std::vector<const ObjectRepositoryItem *> requiredObjects;
-        *missingObjects = false;
-        for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
+        std::vector<rct_object_entry> missingObjects;
+
+        for (size_t i = 0; i < count; i++)
         {
             const rct_object_entry * entry = &entries[i];
             const ObjectRepositoryItem * ori = nullptr;
@@ -486,45 +485,109 @@ private:
                 ori = _objectRepository->FindObject(entry);
                 if (ori == nullptr && object_entry_get_type(entry) != OBJECT_TYPE_SCENARIO_TEXT)
                 {
-                    *missingObjects = true;
+                    missingObjects.push_back(*entry);
                     ReportMissingObject(entry);
                 }
             }
             requiredObjects.push_back(ori);
         }
+
+        if (missingObjects.size() > 0)
+        {
+            throw ObjectLoadException(std::move(missingObjects));
+        }
+
         return requiredObjects;
     }
 
-    std::pair<bool, std::vector<Object *>> LoadObjects(std::vector<const ObjectRepositoryItem *> &requiredObjects, size_t * outNewObjectsLoaded)
+    template<typename T, typename TFunc>
+    static void ParallelFor(const std::vector<T>& items, TFunc func)
     {
-        size_t newObjectsLoaded = 0;
-        std::vector<Object *> loadedObjects;
-        loadedObjects.reserve(OBJECT_ENTRY_COUNT);
-        for (auto ori : requiredObjects)
+        auto partitions = std::thread::hardware_concurrency();
+        auto partitionSize = (items.size() + (partitions - 1)) / partitions;
+        std::vector<std::thread> threads;
+        for (size_t n = 0; n < partitions; n++)
         {
-            Object * loadedObject = nullptr;
-            if (ori != nullptr)
-            {
-                loadedObject = ori->LoadedObject;
-                if (loadedObject == nullptr)
+            auto begin = n * partitionSize;
+            auto end = std::min(items.size(), begin + partitionSize);
+            threads.emplace_back(
+                [func](size_t pbegin, size_t pend)
                 {
-                    loadedObject = GetOrLoadObject(ori);
+                    for (size_t i = pbegin; i < pend; i++)
+                    {
+                        func(i);
+                    }
+                },
+                begin,
+                end);
+        }
+        for (auto& t : threads)
+        {
+            t.join();
+        }
+    }
+
+    std::vector<Object *> LoadObjects(std::vector<const ObjectRepositoryItem *> &requiredObjects, size_t * outNewObjectsLoaded)
+    {
+        std::vector<Object *> objects;
+        std::vector<Object *> loadedObjects;
+        std::vector<rct_object_entry> badObjects;
+        objects.resize(OBJECT_ENTRY_COUNT);
+        loadedObjects.reserve(OBJECT_ENTRY_COUNT);
+
+        // Read objects
+        std::mutex commonMutex;
+        ParallelFor(
+            requiredObjects,
+            [this, &commonMutex, requiredObjects, &objects, &badObjects, &loadedObjects](size_t i)
+            {
+                auto ori = requiredObjects[i];
+                Object * loadedObject = nullptr;
+                if (ori != nullptr)
+                {
+                    loadedObject = ori->LoadedObject;
                     if (loadedObject == nullptr)
                     {
-                        ReportObjectLoadProblem(&ori->ObjectEntry);
-                        return std::make_pair(false, std::vector<Object *>());
-                    } else {
-                        newObjectsLoaded++;
+                        loadedObject = _objectRepository->LoadObject(ori);
+                        if (loadedObject == nullptr)
+                        {
+                            std::lock_guard<std::mutex> guard(commonMutex);
+                            badObjects.push_back(ori->ObjectEntry);
+                            ReportObjectLoadProblem(&ori->ObjectEntry);
+                        }
+                        else
+                        {
+                            std::lock_guard<std::mutex> guard(commonMutex);
+                            loadedObjects.push_back(loadedObject);
+                            // Connect the ori to the registered object
+                            _objectRepository->RegisterLoadedObject(ori, loadedObject);
+                        }
                     }
                 }
-            }
-            loadedObjects.push_back(loadedObject);
+                objects[i] = loadedObject;
+            });
+
+        // Load objects
+        for (auto obj : loadedObjects)
+        {
+            obj->Load();
         }
+
+        if (badObjects.size() > 0)
+        {
+            // Unload all the new objects we loaded
+            for (auto object : loadedObjects)
+            {
+                UnloadObject(object);
+            }
+            throw ObjectLoadException(std::move(badObjects));
+        }
+
         if (outNewObjectsLoaded != nullptr)
         {
-            *outNewObjectsLoaded = newObjectsLoaded;
+            *outNewObjectsLoaded = loadedObjects.size();
         }
-        return std::make_pair(true, loadedObjects);
+        return objects;
     }
 
     Object * GetOrLoadObject(const ObjectRepositoryItem * ori)
@@ -545,6 +608,11 @@ private:
         return loadedObject;
     }
 
+    void ResetTypeToRideEntryIndexMap()
+    {
+        reset_type_to_ride_entry_index_map(*this);
+    }
+
     static void ReportMissingObject(const rct_object_entry * entry)
     {
         utf8 objName[DAT_NAME_LENGTH + 1] = { 0 };
@@ -559,48 +627,40 @@ private:
         Console::Error::WriteLine("[%s] Object could not be loaded.", objName);
     }
 
-    static sint32 GetIndexFromTypeEntry(uint8 objectType, uint8 entryIndex)
+    static sint32 GetIndexFromTypeEntry(sint32 objectType, size_t entryIndex)
     {
         sint32 result = 0;
-        for (uint8 i = 0; i < objectType; i++)
+        for (sint32 i = 0; i < objectType; i++)
         {
             result += object_entry_group_counts[i];
         }
-        result += entryIndex;
+        result += (sint32)entryIndex;
         return result;
     }
 };
 
-static ObjectManager * _objectManager = nullptr;
-
-IObjectManager * CreateObjectManager(IObjectRepository * objectRepository)
+std::unique_ptr<IObjectManager> CreateObjectManager(std::shared_ptr<IObjectRepository> objectRepository)
 {
-    _objectManager = new ObjectManager(objectRepository);
-    return _objectManager;
-}
-
-IObjectManager * GetObjectManager()
-{
-    return _objectManager;
+    return std::make_unique<ObjectManager>(objectRepository);
 }
 
 void * object_manager_get_loaded_object_by_index(size_t index)
 {
-    IObjectManager * objectManager = GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object * loadedObject = objectManager->GetLoadedObject(index);
     return (void *)loadedObject;
 }
 
 void * object_manager_get_loaded_object(const rct_object_entry * entry)
 {
-    IObjectManager * objectManager = GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object * loadedObject = objectManager->GetLoadedObject(entry);
     return (void *)loadedObject;
 }
 
 uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
 {
-    IObjectManager * objectManager = GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     const Object * object = static_cast<const Object *>(loadedObject);
     uint8 entryIndex = objectManager->GetLoadedObjectEntryIndex(object);
     return entryIndex;
@@ -608,20 +668,20 @@ uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
 
 void * object_manager_load_object(const rct_object_entry * entry)
 {
-    IObjectManager * objectManager = GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object * loadedObject = objectManager->LoadObject(entry);
     return (void *)loadedObject;
 }
 
 void object_manager_unload_objects(const rct_object_entry * entries, size_t count)
 {
-    IObjectManager * objectManager = GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     objectManager->UnloadObjects(entries, count);
 }
 
 void object_manager_unload_all_objects()
 {
-    IObjectManager * objectManager = GetObjectManager();
+    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     if (objectManager != nullptr)
     {
         objectManager->UnloadAll();
@@ -632,4 +692,3 @@ rct_string_id object_manager_get_source_game_string(const rct_object_entry * ent
 {
     return ObjectManager::GetObjectSourceGameString(entry);
 }
-

@@ -67,6 +67,7 @@ Some Linux distributions offer native packages already. These packages are usual
 * openSUSE OBS: [games/openrct2](https://software.opensuse.org/download.html?project=games&package=openrct2)
 * Gentoo (main portage tree): [games-simulation/openrct2](https://packages.gentoo.org/packages/games-simulation/openrct2)
 * NixOS (`nixos-unstable` channel): [openrct2](https://github.com/NixOS/nixpkgs/blob/master/pkgs/games/openrct2/default.nix)
+* Fedora 26/27 i386/amd64: [openrct2](https://copr.fedorainfracloud.org/coprs/nauticalnexus/openrct2/)
 
 Some \*BSD operating systems offer native packages. These packages are usually third-party, but we're trying to resolve issues they are facing.
 * OpenBSD: [games/openrct2](http://openports.se/games/openrct2)
@@ -81,7 +82,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 
 ### Windows:
 - 7 / 8 / 10
-- Visual Studio 2017 update 3 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
+- Visual Studio 2017 update 7 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
   - Desktop development with C++
   - [Windows 10 SDK (10.0.14393.0)](https://go.microsoft.com/fwlink/p/?LinkId=838916)
 - [7-Zip](http://www.7-zip.org/) (for deployment only)
@@ -108,7 +109,7 @@ The program can also be built as a command line program using CMake. This type o
 - curl (only if building with http support)
 - jansson (>= 2.5)
 - openssl (>= 1.0; only if building with multiplayer support)
-- iconv (part of glibc on Linux)
+- icu (>= 59.0)
 - zlib
 - gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
 - cmake

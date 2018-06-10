@@ -16,13 +16,17 @@
 
 #pragma once
 
+#include "../common.h"
 #include "../core/MemoryStream.h"
+#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "GameAction.h"
 
 #include "../Cheats.h"
 #include "../interface/Window.h"
+#include "../management/Finance.h"
 #include "../world/Park.h"
+#include "../world/Sprite.h"
 #include "../ride/Ride.h"
 
 static rct_string_id _StatusErrorTitles[] =

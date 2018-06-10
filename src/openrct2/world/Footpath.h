@@ -127,7 +127,10 @@ extern money32 gFootpathPrice;
 extern uint8 gFootpathGroundFlags;
 
 extern const LocationXY16 word_981D6C[4];
+extern const LocationXY16 BinUseOffsets[4];
+extern const LocationXY16 BenchUseOffsets[8];
 
+rct_tile_element *map_get_footpath_element(sint32 x, sint32 y, sint32 z);
 money32 footpath_remove_real(sint32 x, sint32 y, sint32 z, sint32 flags);
 void game_command_place_footpath(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
 void game_command_place_footpath_from_track(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);

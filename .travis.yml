@@ -14,7 +14,7 @@ sudo: required
 dist: trusty
 env:
     global:
-        - OPENRCT2_VERSION="0.1.2"
+        - OPENRCT2_VERSION="0.1.3"
 
 matrix:
     include:
@@ -23,7 +23,7 @@ matrix:
           services:
             - docker
           env:
-            - OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DPORTABLE=ON -DDISABLE_RCT2_TESTS=on -DCMAKE_CXX_FLAGS=-Wl,--compress-debug-sections=zlib" TARGET=ubuntu_amd64
+            - OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DPORTABLE=ON -DCMAKE_CXX_FLAGS=\"-gz\"" TARGET=ubuntu_amd64
             - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
           after_success:
             # Android jobs are triggered from cron and overwrite `after_sucess` part
@@ -47,8 +47,9 @@ matrix:
           services:
             - docker
           env:
-            - OPENRCT2_CMAKE_OPTS="-G Ninja -DFORCE32=ON -DBUILD_SHARED_LIBS=off -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DDISABLE_RCT2_TESTS=on -DCMAKE_CXX_FLAGS=-Wl,--compress-debug-sections=zlib" TARGET=ubuntu_i686
+            - OPENRCT2_CMAKE_OPTS="-G Ninja -DFORCE32=ON -DBUILD_SHARED_LIBS=off -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DCMAKE_BUILD_TYPE=debug -DCMAKE_CXX_FLAGS=\"-coverage -m32 -gz\"" TARGET=ubuntu_i686
             - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
+            - secure: "JGMzQHmDgpnVzP2uYP5KL7h6SzzGmL4kH7vJmGQRpudKAEzhzB0n7lzjrJOU82hxwmuQQ+RKlE/uxdI32Xbgl+wzZMdfQoZGMWHZfl8Le0Ft5gfZncPuE3poCbiSyPSXok9zU12JHKpEjV/sgqXv/HwhL3jAC68GPGpmxb6xWj8="
           after_success:
             # Android jobs are triggered from cron and overwrite `after_sucess` part
             - if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]] ; then exit 0 ; fi
@@ -68,28 +69,30 @@ matrix:
               fi
         - os: linux
           if: type != cron
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUILD_SHARED_LIBS=ON -DDISABLE_RCT2_TESTS=on" TARGET=ubuntu_amd64
+          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=ubuntu_amd64
         - os: linux
           if: type != cron
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DFORCE32=on -DBUILD_SHARED_LIBS=ON -DDISABLE_RCT2_TESTS=on" TARGET=windows
+          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DFORCE32=on -DBUILD_SHARED_LIBS=ON" TARGET=windows
         - os: linux
           if: type != cron
-          env: TARGET=docker64 OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_TTF=ON -DCMAKE_BUILD_TYPE=release -DBUILD_SHARED_LIBS=ON -DDISABLE_RCT2_TESTS=on"
+          env: TARGET=docker64 OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_TTF=ON -DCMAKE_BUILD_TYPE=release -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2"
           services:
             - docker
         - os: linux
           if: type != cron
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DBUILD_SHARED_LIBS=ON -DDISABLE_RCT2_TESTS=on" TARGET=docker64
+          env:
+            - OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=debug -DCMAKE_CXX_FLAGS=\"-coverage\" -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=docker64
+            - secure: "JGMzQHmDgpnVzP2uYP5KL7h6SzzGmL4kH7vJmGQRpudKAEzhzB0n7lzjrJOU82hxwmuQQ+RKlE/uxdI32Xbgl+wzZMdfQoZGMWHZfl8Le0Ft5gfZncPuE3poCbiSyPSXok9zU12JHKpEjV/sgqXv/HwhL3jAC68GPGpmxb6xWj8="
           services:
             - docker
         - os: linux
           if: type != cron
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_OPENGL=ON -DBUILD_SHARED_LIBS=ON -DDISABLE_RCT2_TESTS=on" TARGET=docker64
+          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_OPENGL=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=docker64
           services:
             - docker
         - os: osx
           if: type != cron
-          osx_image: xcode8.3
+          osx_image: xcode9.3
           env:
             - secure: "OXn/i72FxW/oh6RGlaN+gHSbkt1ToFe36etaiDOsJQznt6fe9CpFdnE8U1XBHlGokcEjbGNErRU7CFDKYHQuGrPZyHXwgqG2/0emIqFaFt5ti5ypyYKf5qH9x1LLLfdZxDyHkxXdlJ7Etxbp3G7qrV8CGRQiYRNHm1f98AmuufE="
           after_success:
@@ -108,7 +111,6 @@ matrix:
         - os: linux
           if: type = cron OR branch = master OR branch =~ ^android
           language: android
-          dist: precise
           before_install: []
           env:
             - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
@@ -191,4 +193,5 @@ notifications:
 cache:
     directories:
         - .cache
+        - $HOME/.ccache
     apt: true

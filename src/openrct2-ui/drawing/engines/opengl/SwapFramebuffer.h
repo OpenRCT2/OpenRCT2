@@ -17,11 +17,9 @@
 #pragma once
 
 #include <openrct2/common.h>
-#include "OpenGLAPI.h"
 #include "ApplyTransparencyShader.h"
-
-class CopyFramebufferShader;
-class OpenGLFramebuffer;
+#include "OpenGLAPI.h"
+#include "OpenGLFramebuffer.h"
 
 /**
  * Class to maintain two different framebuffers where the active framebuffer

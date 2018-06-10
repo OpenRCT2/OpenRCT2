@@ -668,7 +668,7 @@ static void paint_miniature_railway_track_flat(
 static void paint_miniature_railway_station(
     paint_session *          session,
     uint8                    rideIndex,
-    uint8                    trackSequence,
+    [[maybe_unused]] uint8   trackSequence,
     uint8                    direction,
     sint32                   height,
     const rct_tile_element * tileElement)
@@ -685,7 +685,7 @@ static void paint_miniature_railway_station(
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
-    track_paint_util_draw_station_3(session, rideIndex, trackSequence, direction, height + 2, height, tileElement);
+    track_paint_util_draw_station_3(session, rideIndex, direction, height + 2, height, tileElement);
     // covers shouldn't be offset by +2
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -962,7 +962,7 @@ static void paint_miniature_railway_track_right_quarter_turn_5_tiles(
             track_paint_util_right_quarter_turn_5_tiles_paint(
                 session, 2, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                 miniature_railway_track_pieces_flat_quarter_turn_5_tiles, miniature_railway_right_quarter_turn_5_tiles_offsets,
-                miniature_railway_right_quarter_turn_5_tiles_bound_lengths, nullptr, session->CurrentRotation);
+                miniature_railway_right_quarter_turn_5_tiles_bound_lengths, nullptr);
         }
         else
         {
@@ -970,7 +970,7 @@ static void paint_miniature_railway_track_right_quarter_turn_5_tiles(
                 session, 2, height, direction, trackSequence, session->TrackColours[SCHEME_SUPPORTS],
                 miniature_railway_right_quarter_turn_5_tiles_track_floor, nullptr,
                 miniature_railway_right_quarter_turn_5_tiles_bound_lengths,
-                miniature_railway_right_quarter_turn_5_tiles_bound_offsets, session->CurrentRotation);
+                miniature_railway_right_quarter_turn_5_tiles_bound_offsets);
 
             sint32 index   = miniature_railway_right_quarter_turn_5_tiles_sprite_map[trackSequence];
             uint32 imageId = miniature_railway_track_pieces_flat_quarter_turn_5_tiles[direction][index] |
@@ -1310,7 +1310,7 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(
         track_paint_util_right_quarter_turn_3_tiles_paint(
             session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
             miniature_railway_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets,
-            defaultRightQuarterTurn3TilesBoundLengths, nullptr, session->CurrentRotation);
+            defaultRightQuarterTurn3TilesBoundLengths, nullptr);
 
         // The following piece was missing in vanilla RCT2
         if (trackSequence == 1 && direction == 0)
@@ -1324,7 +1324,7 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(
         track_paint_util_right_quarter_turn_3_tiles_paint(
             session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_SUPPORTS],
             miniature_railway_right_quarter_turn_3_tile_track_floor, nullptr, defaultRightQuarterTurn3TilesBoundLengths,
-            miniature_railway_right_quarter_turn_3_tile_bound_offsets, session->CurrentRotation);
+            miniature_railway_right_quarter_turn_3_tile_bound_offsets);
 
         static constexpr const sint8 right_quarter_turn_3_tiles_sprite_map[] = { 0, -1, 1, 2 };
 
@@ -1739,8 +1739,8 @@ static void miniature_railway_track_diag_flat(
     sint16 supportType = monorail_diag_support_types[direction][trackSequence];
 
     uint32   floorImage       = 0;
-    LocationXY16 floorBoundSize   = { 0 };
-    LocationXY16 floorBoundOffset = { 0 };
+    LocationXY16 floorBoundSize   = {};
+    LocationXY16 floorBoundOffset = {};
 
     if (supportType != -1)
     {
@@ -1827,8 +1827,8 @@ static void miniature_railway_track_diag_25_deg_up(
     bool hasSupports = false;
 
     uint32   floorImage       = 0;
-    LocationXY16 floorBoundSize   = { 0 };
-    LocationXY16 floorBoundOffset = { 0 };
+    LocationXY16 floorBoundSize   = {};
+    LocationXY16 floorBoundOffset = {};
 
     if (supportType != -1)
     {
@@ -1890,8 +1890,8 @@ static void miniature_railway_track_diag_flat_to_25_deg_up(
     bool hasSupports = false;
 
     uint32   floorImage       = 0;
-    LocationXY16 floorBoundSize   = { 0 };
-    LocationXY16 floorBoundOffset = { 0 };
+    LocationXY16 floorBoundSize   = {};
+    LocationXY16 floorBoundOffset = {};
 
     sint16 supportType = monorail_diag_support_types[direction][trackSequence];
     if (supportType != -1)
@@ -1956,8 +1956,8 @@ static void miniature_railway_track_diag_25_deg_up_to_flat(
     sint16 supportType = monorail_diag_support_types[direction][trackSequence];
 
     uint32   floorImage       = 0;
-    LocationXY16 floorBoundSize   = { 0 };
-    LocationXY16 floorBoundOffset = { 0 };
+    LocationXY16 floorBoundSize   = {};
+    LocationXY16 floorBoundOffset = {};
 
     if (supportType != -1)
     {
@@ -2035,8 +2035,8 @@ static void miniature_railway_track_diag_25_deg_down(
     bool hasSupports = false;
 
     uint32   floorImage       = 0;
-    LocationXY16 floorBoundSize   = { 0 };
-    LocationXY16 floorBoundOffset = { 0 };
+    LocationXY16 floorBoundSize   = {};
+    LocationXY16 floorBoundOffset = {};
     sint16   supportType      = monorail_diag_support_types[direction][trackSequence];
 
     if (supportType != -1)
@@ -2113,8 +2113,8 @@ static void miniature_railway_track_diag_flat_to_25_deg_down(
 
     bool     hasSupports      = false;
     uint32   floorImage       = 0;
-    LocationXY16 floorBoundSize   = { 0 };
-    LocationXY16 floorBoundOffset = { 0 };
+    LocationXY16 floorBoundSize   = {};
+    LocationXY16 floorBoundOffset = {};
     sint16   supportType      = monorail_diag_support_types[direction][trackSequence];
 
     if (supportType != -1)
@@ -2177,8 +2177,8 @@ static void miniature_railway_track_diag_25_deg_down_to_flat(
 {
     bool     hasSupports      = false;
     uint32   floorImage       = 0;
-    LocationXY16 floorBoundSize   = { 0 };
-    LocationXY16 floorBoundOffset = { 0 };
+    LocationXY16 floorBoundSize   = {};
+    LocationXY16 floorBoundOffset = {};
     sint16   supportType      = monorail_diag_support_types[direction][trackSequence];
 
     if (supportType != -1)

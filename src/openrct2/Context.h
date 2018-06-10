@@ -18,9 +18,15 @@
 
 #include "common.h"
 
+#include <memory>
 #include <string>
 
+interface IObjectManager;
+interface IObjectRepository;
+interface IScenarioRepository;
 interface IStream;
+interface ITrackDesignRepository;
+
 class Intent;
 struct rct_window;
 using rct_windowclass = uint8;
@@ -64,11 +70,22 @@ enum
 
 namespace OpenRCT2
 {
+    class GameState;
     interface IPlatformEnvironment;
 
     namespace Audio
     {
         interface IAudioContext;
+    }
+
+    namespace Drawing
+    {
+        interface IDrawingEngine;
+    }
+
+    namespace Localisation
+    {
+        class LocalisationService;
     }
 
     namespace Ui
@@ -83,15 +100,26 @@ namespace OpenRCT2
     {
         virtual ~IContext() = default;
 
-        virtual Audio::IAudioContext *  GetAudioContext() abstract;
-        virtual Ui::IUiContext *        GetUiContext() abstract;
-        virtual IPlatformEnvironment *  GetPlatformEnvironment() abstract;
+        virtual std::shared_ptr<Audio::IAudioContext> GetAudioContext() abstract;
+        virtual std::shared_ptr<Ui::IUiContext> GetUiContext() abstract;
+        virtual GameState * GetGameState() abstract;
+        virtual std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() abstract;
+        virtual Localisation::LocalisationService& GetLocalisationService() abstract;
+        virtual std::shared_ptr<IObjectManager> GetObjectManager() abstract;
+        virtual std::shared_ptr<IObjectRepository> GetObjectRepository() abstract;
+        virtual ITrackDesignRepository * GetTrackDesignRepository() abstract;
+        virtual IScenarioRepository *    GetScenarioRepository() abstract;
+        virtual sint32 GetDrawingEngineType() abstract;
+        virtual Drawing::IDrawingEngine * GetDrawingEngine() abstract;
 
         virtual sint32 RunOpenRCT2(int argc, const char * * argv) abstract;
 
         virtual bool Initialise() abstract;
+        virtual void InitialiseDrawingEngine() abstract;
+        virtual void DisposeDrawingEngine() abstract;
         virtual bool LoadParkFromFile(const std::string &path, bool loadTitleScreenOnFail = false) abstract;
         virtual bool LoadParkFromStream(IStream * stream, const std::string &path, bool loadTitleScreenFirstOnFail = false) abstract;
+        virtual void WriteLine(const std::string &s) abstract;
         virtual void Finish() abstract;
         virtual void Quit() abstract;
 
@@ -101,14 +129,17 @@ namespace OpenRCT2
         virtual std::string GetPathLegacy(sint32 pathId) abstract;
     };
 
-    IContext * CreateContext();
-    IContext * CreateContext(IPlatformEnvironment * env, Audio::IAudioContext * audioContext, Ui::IUiContext * uiContext);
+    std::unique_ptr<IContext> CreateContext();
+    std::unique_ptr<IContext> CreateContext(
+        const std::shared_ptr<IPlatformEnvironment>& env,
+        const std::shared_ptr<Audio::IAudioContext>& audioContext,
+        const std::shared_ptr<Ui::IUiContext>& uiContext);
     IContext * GetContext();
-}
+} // namespace OpenRCT2
 
 enum
 {
-    // The game update inverval in milliseconds, (1000 / 40fps) = 25ms
+    // The game update interval in milliseconds, (1000 / 40fps) = 25ms
     GAME_UPDATE_TIME_MS = 25,
     // The number of logical update / ticks per second.
     GAME_UPDATE_FPS = 40,
@@ -215,4 +246,3 @@ void context_quit();
 const utf8 * context_get_path_legacy(sint32 pathId);
 bool context_load_park_from_file(const utf8 * path);
 bool context_load_park_from_stream(void * stream);
-

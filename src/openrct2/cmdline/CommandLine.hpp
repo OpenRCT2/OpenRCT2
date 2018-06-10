@@ -87,12 +87,12 @@ enum
 
 constexpr char NAC = '\0';
 
-#define ExampleTableEnd { NULL, NULL }
-#define OptionTableEnd  { UINT8_MAX, NULL, NAC, NULL, NULL }
-#define CommandTableEnd { NULL, NULL, NULL, NULL }
+#define ExampleTableEnd { nullptr, nullptr }
+#define OptionTableEnd  { UINT8_MAX, nullptr, NAC, nullptr, nullptr }
+#define CommandTableEnd { nullptr, nullptr, nullptr, nullptr, nullptr }
 
-#define DefineCommand(name, params, options, func) { name, params, options, NULL,            func }
-#define DefineSubCommand(name, subcommandtable)    { name, "",     NULL,    subcommandtable, NULL }
+#define DefineCommand(name, params, options, func) { name, params, options, nullptr,         func }
+#define DefineSubCommand(name, subcommandtable)    { name, "",     nullptr, subcommandtable, nullptr }
 
 namespace CommandLine
 {
@@ -108,4 +108,4 @@ namespace CommandLine
 
     exitcode_t HandleCommandConvert(CommandLineArgEnumerator * enumerator);
     exitcode_t HandleCommandUri(CommandLineArgEnumerator * enumerator);
-}
+} // namespace CommandLine

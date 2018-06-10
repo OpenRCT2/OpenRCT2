@@ -14,13 +14,16 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <unordered_map>
 #include "../core/IStream.hpp"
-#include "FootpathItemObject.h"
-
 #include "../drawing/Drawing.h"
+#include "../interface/Cursors.h"
 #include "../localisation/Localisation.h"
 #include "../object/Object.h"
+#include "../object/ObjectRepository.h"
 #include "ObjectList.h"
+#include "FootpathItemObject.h"
+#include "ObjectJsonHelpers.h"
 
 void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
@@ -32,12 +35,12 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     _legacyType.path_bit.scenery_tab_id = stream->ReadValue<uint8>();
     stream->Seek(1, STREAM_SEEK_CURRENT);
 
-    GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
+    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
     SetPrimarySceneryGroup(&sgEntry);
 
-    GetImageTable()->Read(context, stream);
+    GetImageTable().Read(context, stream);
 
     // Validate properties
     if (_legacyType.large_scenery.price <= 0)
@@ -47,24 +50,28 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stre
 
     // Add path bits to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
     // Since this is already done the other way round for original items, avoid adding those to prevent duplicates.
-    const std::string identifier = GetIdentifier();
-    const rct_object_entry * objectEntry = object_list_find_by_name(identifier.c_str());
-    static const rct_object_entry scgPathX = Object::GetScgPathXHeader();
+    auto identifier = GetIdentifier();
 
-    if (objectEntry != nullptr &&
-        (object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_WACKY_WORLDS ||
-         object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_TIME_TWISTER ||
-         object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_CUSTOM))
+    auto& objectRepository = context->GetObjectRepository();
+    auto item = objectRepository.FindObject(identifier);
+    if (item != nullptr)
     {
-        SetPrimarySceneryGroup(&scgPathX);
+        auto sourceGame = object_entry_get_source_game(&item->ObjectEntry);
+        if (sourceGame == OBJECT_SOURCE_WACKY_WORLDS ||
+            sourceGame == OBJECT_SOURCE_TIME_TWISTER ||
+            sourceGame == OBJECT_SOURCE_CUSTOM)
+        {
+            auto scgPathX = Object::GetScgPathXHeader();
+            SetPrimarySceneryGroup(&scgPathX);
+        }
     }
 }
 
 void FootpathItemObject::Load()
 {
-    GetStringTable()->Sort();
+    GetStringTable().Sort();
     _legacyType.name = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
+    _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
 
     _legacyType.path_bit.scenery_tab_id = 0xFF;
 }
@@ -72,7 +79,7 @@ void FootpathItemObject::Load()
 void FootpathItemObject::Unload()
 {
     language_free_object_string(_legacyType.name);
-    gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
+    gfx_object_free_images(_legacyType.image, GetImageTable().GetCount());
 
     _legacyType.name = 0;
     _legacyType.image = 0;
@@ -83,4 +90,47 @@ void FootpathItemObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint
     sint32 x = width / 2;
     sint32 y = height / 2;
     gfx_draw_sprite(dpi, _legacyType.image, x - 22, y - 24, 0);
+}
+
+static uint8 ParseDrawType(const std::string &s)
+{
+    if (s == "lamp") return PATH_BIT_DRAW_TYPE_LIGHTS;
+    if (s == "bin") return PATH_BIT_DRAW_TYPE_BINS;
+    if (s == "bench") return PATH_BIT_DRAW_TYPE_BENCHES;
+    if (s == "fountain") return PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS;
+    return PATH_BIT_DRAW_TYPE_LIGHTS;
+}
+
+void FootpathItemObject::ReadJson(IReadObjectContext * context, const json_t * root)
+{
+    auto properties = json_object_get(root, "properties");
+    _legacyType.path_bit.draw_type = ParseDrawType(ObjectJsonHelpers::GetString(properties, "renderAs"));
+    _legacyType.path_bit.tool_id = ObjectJsonHelpers::ParseCursor(ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_LAMPPOST_DOWN);
+    _legacyType.path_bit.price = json_integer_value(json_object_get(properties, "price"));
+
+    SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
+
+    // Flags
+    _legacyType.path_bit.flags = ObjectJsonHelpers::GetFlags<uint16>(properties, {
+        { "isBin", PATH_BIT_FLAG_IS_BIN },
+        { "isBench", PATH_BIT_FLAG_IS_BENCH },
+        { "isBreakable", PATH_BIT_FLAG_BREAKABLE },
+        { "isLamp", PATH_BIT_FLAG_LAMP },
+        { "isJumpingFountainWater", PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER },
+        { "isJumpingFountainSnow", PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW },
+        { "isTelevision", PATH_BIT_FLAG_IS_QUEUE_SCREEN }});
+
+    // HACK To avoid 'negated' properties in JSON, handle these separately until
+    //      flags are inverted in this code base.
+    if (!ObjectJsonHelpers::GetBoolean(properties, "isAllowedOnQueue", false))
+    {
+        _legacyType.path_bit.flags |= PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE;
+    }
+    if (!ObjectJsonHelpers::GetBoolean(properties, "isAllowedOnSlope", false))
+    {
+        _legacyType.path_bit.flags |= PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE;
+    }
+
+    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
+    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }

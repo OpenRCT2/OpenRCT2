@@ -105,7 +105,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
 
     try
     {
-        auto importer = std::unique_ptr<IParkImporter>(ParkImporter::Create(sourcePath));
+        auto importer = ParkImporter::Create(sourcePath);
         importer->Load(sourcePath);
         importer->Import();
     }

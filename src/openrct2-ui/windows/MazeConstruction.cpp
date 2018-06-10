@@ -30,6 +30,7 @@
 
 #pragma region Widgets
 
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -129,6 +130,7 @@ static rct_window_event_list window_maze_construction_events = {
     window_maze_construction_paint,
     nullptr
 };
+// clang-format on
 
 #pragma endregion
 
@@ -185,7 +187,7 @@ static void window_maze_construction_close(rct_window *w)
     if (ride->overall_view.xy == RCT_XY8_UNDEFINED) {
         sint32 savedPausedState = gGamePaused;
         gGamePaused = 0;
-        ride_demolish(rideIndex, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         gGamePaused = savedPausedState;
     } else {
         auto intent = Intent(WC_RIDE);
@@ -490,8 +492,8 @@ static void window_maze_construction_construct(sint32 direction)
 
     ride_construction_invalidate_current_track();
 
-    x = _currentTrackBeginX + (TileDirectionDelta[direction].x / 2);
-    y = _currentTrackBeginY + (TileDirectionDelta[direction].y / 2);
+    x = _currentTrackBeginX + (CoordsDirectionDelta[direction].x / 2);
+    y = _currentTrackBeginY + (CoordsDirectionDelta[direction].y / 2);
     z = _currentTrackBeginZ;
     switch (_rideConstructionState) {
     case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:

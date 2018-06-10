@@ -16,13 +16,19 @@
 
 #pragma once
 
+#include <string_view>
 #include "../common.h"
 
+interface IObjectRepository;
 class Object;
+struct rct_object_entry;
 
 namespace ObjectFactory
 {
-    Object * CreateObjectFromLegacyFile(const utf8 * path);
-    Object * CreateObjectFromLegacyData(const rct_object_entry * entry, const void * data, size_t dataSize);
+    Object * CreateObjectFromLegacyFile(IObjectRepository& objectRepository, const utf8 * path);
+    Object * CreateObjectFromLegacyData(IObjectRepository& objectRepository, const rct_object_entry * entry, const void * data, size_t dataSize);
+    Object * CreateObjectFromZipFile(IObjectRepository& objectRepository, const std::string_view& path);
     Object * CreateObject(const rct_object_entry &entry);
+
+    Object * CreateObjectFromJsonFile(IObjectRepository& objectRepository, const std::string &path);
 }

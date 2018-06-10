@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+
 enum {
     NETWORK_MODE_NONE,
     NETWORK_MODE_CLIENT,
@@ -47,18 +50,20 @@ struct GameAction;
 struct rct_peep;
 struct LocationXYZ16;
 
+namespace OpenRCT2
+{
+    interface IPlatformEnvironment;
+}
+
 #ifndef DISABLE_NETWORK
 
 #include <array>
 #include <list>
 #include <set>
-#include <memory>
-#include <string>
 #include <vector>
 #include <functional>
 #include <fstream>
 #include <map>
-#include <openssl/evp.h>
 #include "../actions/GameAction.h"
 #include "../core/Json.hpp"
 #include "../core/Nullable.hpp"
@@ -78,17 +83,12 @@ enum {
 
 struct ObjectRepositoryItem;
 
-namespace OpenRCT2
-{
-    interface IPlatformEnvironment;
-}
-
 class Network
 {
 public:
     Network();
     ~Network();
-    void SetEnvironment(OpenRCT2::IPlatformEnvironment * env);
+    void SetEnvironment(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
     bool Init();
     void Close();
     bool BeginClient(const char* host, uint16 port);
@@ -173,6 +173,8 @@ public:
     std::string ServerProviderWebsite;
 
 private:
+    void CloseConnection();
+
     bool ProcessConnection(NetworkConnection& connection);
     void ProcessPacket(NetworkConnection& connection, NetworkPacket& packet);
     void AddClient(ITcpSocket * socket);
@@ -214,7 +216,14 @@ private:
         uint8 callback = 0;
         uint32 commandIndex = 0;
         bool operator<(const GameCommand& comp) const {
-            return tick < comp.tick && commandIndex < comp.commandIndex;
+            // First sort by tick
+            if (tick < comp.tick)
+                return true;
+            if (tick > comp.tick)
+                return false;
+
+            // If the ticks are equal sort by commandIndex
+            return commandIndex < comp.commandIndex;
         }
     };
 
@@ -232,7 +241,7 @@ private:
     uint32 server_tick = 0;
     uint32 server_srand0 = 0;
     uint32 server_srand0_tick = 0;
-    char server_sprite_hash[EVP_MAX_MD_SIZE + 1];
+    std::string server_sprite_hash;
     uint8 player_id = 0;
     std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
     std::multiset<GameCommand> game_command_queue;
@@ -249,7 +258,7 @@ private:
     std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
     std::string _serverLogPath;
     std::string _serverLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
-    OpenRCT2::IPlatformEnvironment * _env = nullptr;
+    std::shared_ptr<OpenRCT2::IPlatformEnvironment> _env;
 
     void UpdateServer();
     void UpdateClient();
@@ -291,7 +300,7 @@ private:
 
 #endif /* DISABLE_NETWORK */
 
-void network_set_env(void * env);
+void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 void network_close();
 void network_shutdown_client();
 sint32 network_begin_client(const char *host, sint32 port);
@@ -335,7 +344,7 @@ uint8 network_get_default_group();
 sint32 network_get_num_actions();
 rct_string_id network_get_action_name_string_id(uint32 index);
 sint32 network_can_perform_action(uint32 groupindex, uint32 index);
-sint32 network_can_perform_command(uint32 groupindex, uint32 index);
+sint32 network_can_perform_command(uint32 groupindex, sint32 index);
 void network_set_pickup_peep(uint8 playerid, rct_peep* peep);
 rct_peep* network_get_pickup_peep(uint8 playerid);
 void network_set_pickup_peep_old_x(uint8 playerid, sint32 x);

@@ -27,10 +27,6 @@
 #include "../world/Park.h"
 #include "GameAction.h"
 
-GameActionResult::GameActionResult()
-{
-}
-
 GameActionResult::GameActionResult(GA_ERROR error, rct_string_id message)
 {
     Error = error;
@@ -89,7 +85,7 @@ namespace GameActions
                 result = factory();
             }
         }
-        Guard::ArgumentNotNull(result);
+        Guard::ArgumentNotNull(result, "Attempting to create unregistered gameaction: %u", id);
         return std::unique_ptr<GameAction>(result);
     }
 
@@ -235,4 +231,4 @@ namespace GameActions
         }
         return result;
     }
-}
+} // namespace GameActions

@@ -19,7 +19,7 @@
 #include "../common.h"
 #include "AudioMixer.h"
 
-namespace OpenRCT2 { namespace Audio
+namespace OpenRCT2::Audio
 {
     /**
      * Represents a readable source of audio PCM data.
@@ -37,4 +37,4 @@ namespace OpenRCT2 { namespace Audio
     {
         IAudioSource * CreateNull();
     }
-} }
+} // namespace OpenRCT2::Audio

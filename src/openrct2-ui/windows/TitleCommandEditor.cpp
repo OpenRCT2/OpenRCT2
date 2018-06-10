@@ -31,7 +31,10 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/world/Sprite.h>
+#include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 struct TITLE_COMMAND_ORDER {
     // originally a uint8, but the new millisecond wait times require a uint16.
     uint16 command;
@@ -123,7 +126,6 @@ static void window_title_command_editor_tool_down(rct_window * w, rct_widgetinde
 static void window_title_command_editor_invalidate(rct_window * w);
 static void window_title_command_editor_paint(rct_window * w, rct_drawpixelinfo * dpi);
 static void window_title_command_editor_textinput(rct_window * w, rct_widgetindex widgetIndex, char * text);
-static void window_title_command_editor_inputsize(rct_window * w);
 static void scenario_select_callback(const utf8 * path);
 static sint32 get_command_info_index(sint32 index);
 static TITLE_COMMAND_ORDER get_command_info(sint32 index);
@@ -160,6 +162,7 @@ static rct_window_event_list window_title_command_editor_events = {
     window_title_command_editor_paint,
     nullptr
 };
+// clang-format on
 
 static void scenario_select_callback(const utf8 * path)
 {
@@ -193,7 +196,7 @@ static TITLE_COMMAND_ORDER get_command_info(sint32 index)
 
 static LocationXY16 get_location()
 {
-    LocationXY16 mapCoord = { 0 };
+    LocationXY16 mapCoord = {};
     rct_window * w = window_get_main();
     if (w != nullptr)
     {

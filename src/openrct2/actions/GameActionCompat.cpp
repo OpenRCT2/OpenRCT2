@@ -25,6 +25,7 @@
 #include "RideDemolishAction.hpp"
 #include "PlacePeepSpawnAction.hpp"
 #include "MazeSetTrackAction.hpp"
+#include "WallRemoveAction.hpp"
 
 #pragma region PlaceParkEntranceAction
     money32 place_park_entrance(sint16 x, sint16 y, sint16 z, uint8 direction)
@@ -45,13 +46,14 @@
     *
     *  rct2: 0x006666E7
     */
-    void game_command_place_park_entrance(sint32* eax,
-                                          sint32* ebx,
-                                          sint32* ecx,
-                                          sint32* edx,
-                                          sint32* esi,
-                                          sint32* edi,
-                                          sint32* ebp)
+    void game_command_place_park_entrance(
+        [[maybe_unused]] sint32 * eax,
+        [[maybe_unused]] sint32 * ebx,
+        [[maybe_unused]] sint32 * ecx,
+        [[maybe_unused]] sint32 * edx,
+        [[maybe_unused]] sint32 * esi,
+        [[maybe_unused]] sint32 * edi,
+        [[maybe_unused]] sint32 * ebp)
     {
         Guard::Assert(false, "GAME_COMMAND_PLACE_PARK_ENTRANCE DEPRECATED");
     }
@@ -87,7 +89,14 @@
         GameActions::Execute(&gameAction);
     }
 
-    void game_command_set_park_entrance_fee(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+    void game_command_set_park_entrance_fee(
+        [[maybe_unused]] int * eax,
+        [[maybe_unused]] int * ebx,
+        [[maybe_unused]] int * ecx,
+        [[maybe_unused]] int * edx,
+        [[maybe_unused]] int * esi,
+        int *                  edi,
+        [[maybe_unused]] int * ebp)
     {
         money16 fee = (money16)(*edi & 0xFFFF);
         auto gameAction = SetParkEntranceFeeAction(fee);
@@ -104,7 +113,7 @@
     {
         sint32 rideEntryIndex = ride_get_entry_index(listItem.type, listItem.entry_index);
         sint32 colour1 = ride_get_random_colour_preset_index(listItem.type);
-        sint32 colour2 = ride_get_unused_preset_vehicle_colour(listItem.type, rideEntryIndex);
+        sint32 colour2 = ride_get_unused_preset_vehicle_colour(rideEntryIndex);
 
         auto gameAction = RideCreateAction(listItem.type, listItem.entry_index, colour1, colour2);
 
@@ -123,7 +132,7 @@
     {
         sint32 rideEntryIndex = ride_get_entry_index(type, subType);
         sint32 colour1 = ride_get_random_colour_preset_index(type);
-        sint32 colour2 = ride_get_unused_preset_vehicle_colour(type, rideEntryIndex);
+        sint32 colour2 = ride_get_unused_preset_vehicle_colour(rideEntryIndex);
 
         auto gameAction = RideCreateAction(type, subType, colour1, colour2);
         gameAction.SetFlags(flags);
@@ -141,7 +150,14 @@
     *
     *  rct2: 0x006B3F0F
     */
-    void game_command_create_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+    void game_command_create_ride(
+        [[maybe_unused]] sint32 * eax,
+        [[maybe_unused]] sint32 * ebx,
+        [[maybe_unused]] sint32 * ecx,
+        [[maybe_unused]] sint32 * edx,
+        [[maybe_unused]] sint32 * esi,
+        [[maybe_unused]] sint32 * edi,
+        [[maybe_unused]] sint32 * ebp)
     {
         Guard::Assert(false, "GAME_COMMAND_CREATE_RIDE DEPRECATED");
     }
@@ -160,7 +176,14 @@
     *
     *  rct2: 0x006B4EA6
     */
-    void game_command_set_ride_status(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+    void game_command_set_ride_status(
+        [[maybe_unused]] sint32 * eax,
+        [[maybe_unused]] sint32 * ebx,
+        [[maybe_unused]] sint32 * ecx,
+        [[maybe_unused]] sint32 * edx,
+        [[maybe_unused]] sint32 * esi,
+        [[maybe_unused]] sint32 * edi,
+        [[maybe_unused]] sint32 * ebp)
     {
         Guard::Assert(false, "GAME_COMMAND_SET_RIDE_STATUS DEPRECATED");
     }
@@ -178,16 +201,23 @@
     *
     *  rct2: 0x006B578B
     */
-    void game_command_set_ride_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+    void game_command_set_ride_name(
+        [[maybe_unused]] sint32 * eax,
+        [[maybe_unused]] sint32 * ebx,
+        [[maybe_unused]] sint32 * ecx,
+        [[maybe_unused]] sint32 * edx,
+        [[maybe_unused]] sint32 * esi,
+        [[maybe_unused]] sint32 * edi,
+        [[maybe_unused]] sint32 * ebp)
     {
         Guard::Assert(false, "GAME_COMMAND_SET_RIDE_NAME DEPRECATED");
     }
 #pragma endregion
 
-#pragma region RideDemolishAction
-    void ride_demolish(sint32 rideIndex, sint32 flags)
+#pragma region RideModifyAction
+    void ride_action_modify(sint32 rideIndex, sint32 modifyType, sint32 flags)
     {
-        auto gameAction = RideDemolishAction(rideIndex);
+        auto gameAction = RideDemolishAction(rideIndex, modifyType);
         gameAction.SetFlags(flags);
 
         GameActions::Execute(&gameAction);
@@ -197,7 +227,14 @@
     *
     *  rct2: 0x006B49D9
     */
-    void game_command_demolish_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+    void game_command_demolish_ride(
+        [[maybe_unused]] sint32 * eax,
+        [[maybe_unused]] sint32 * ebx,
+        [[maybe_unused]] sint32 * ecx,
+        [[maybe_unused]] sint32 * edx,
+        [[maybe_unused]] sint32 * esi,
+        [[maybe_unused]] sint32 * edi,
+        [[maybe_unused]] sint32 * ebp)
     {
         Guard::Assert(false, "GAME_COMMAND_DEMOLISH_RIDE DEPRECATED");
     }
@@ -215,7 +252,14 @@
     *
     *  rct2: 0x00698D6C
     */
-    void game_command_set_guest_name(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+    void game_command_set_guest_name(
+        [[maybe_unused]] sint32 * eax,
+        [[maybe_unused]] sint32 * ebx,
+        [[maybe_unused]] sint32 * ecx,
+        [[maybe_unused]] sint32 * edx,
+        [[maybe_unused]] sint32 * esi,
+        [[maybe_unused]] sint32 * edi,
+        [[maybe_unused]] sint32 * ebp)
     {
         Guard::Assert(false, "GAME_COMMAND_SET_GUEST_NAME DEPRECATED");
     }
@@ -230,7 +274,14 @@
         GameActions::Execute(&gameAction);
     }
 
-    void game_command_set_staff_name(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+    void game_command_set_staff_name(
+        [[maybe_unused]] sint32 * eax,
+        [[maybe_unused]] sint32 * ebx,
+        [[maybe_unused]] sint32 * ecx,
+        [[maybe_unused]] sint32 * edx,
+        [[maybe_unused]] sint32 * esi,
+        [[maybe_unused]] sint32 * edi,
+        [[maybe_unused]] sint32 * ebp)
     {
         Guard::Assert(false, "GAME_COMMAND_SET_STAFF_NAME DEPRECATED");
     }
@@ -282,13 +333,14 @@
     *
     *  rct2: 0x006CD8CE
     */
-    void game_command_set_maze_track(sint32 * eax,
-        sint32 * ebx,
-        sint32 * ecx,
-        sint32 * edx,
-        sint32 * esi,
-        sint32 * edi,
-        sint32 * ebp)
+    void game_command_set_maze_track(
+        [[maybe_unused]] sint32 * eax,
+        [[maybe_unused]] sint32 * ebx,
+        [[maybe_unused]] sint32 * ecx,
+        [[maybe_unused]] sint32 * edx,
+        [[maybe_unused]] sint32 * esi,
+        [[maybe_unused]] sint32 * edi,
+        [[maybe_unused]] sint32 * ebp)
     {
         Guard::Assert(false, "GAME_COMMAND_SET_MAZE_TRACK DEPRECATED");
     }

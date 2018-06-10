@@ -34,7 +34,7 @@ namespace Json
 class JsonException final : public std::runtime_error
 {
 private:
-    json_error_t _jsonError = { 0 };
+    json_error_t _jsonError = {};
 
 public:
     explicit JsonException(const std::string &message) : std::runtime_error(message) { }

@@ -16,26 +16,26 @@
 
 #include "WindowManager.h"
 
-namespace OpenRCT2 { namespace Ui
+namespace OpenRCT2::Ui
 {
     class DummyWindowManager final : public IWindowManager
     {
         void Init() override {};
-        rct_window * OpenWindow(rct_windowclass wc) override { return nullptr; }
-        rct_window * OpenView(uint8 view) override { return nullptr; }
-        rct_window * OpenDetails(uint8 type, sint32 id) override { return nullptr; }
-        rct_window * ShowError(rct_string_id title, rct_string_id message) override { return nullptr; }
-        rct_window * OpenIntent(Intent * intent) override { return nullptr; };
-        void BroadcastIntent(const Intent &intent) override { }
-        void ForceClose(rct_windowclass windowClass) override { }
+        rct_window * OpenWindow(rct_windowclass /*wc*/) override { return nullptr; }
+        rct_window * OpenView(uint8 /*view*/) override { return nullptr; }
+        rct_window * OpenDetails(uint8 /*type*/, sint32 /*id*/) override { return nullptr; }
+        rct_window * ShowError(rct_string_id /*title*/, rct_string_id /*message*/) override { return nullptr; }
+        rct_window * OpenIntent(Intent * /*intent*/) override { return nullptr; };
+        void BroadcastIntent(const Intent &/*intent*/) override { }
+        void ForceClose(rct_windowclass /*windowClass*/) override { }
         void UpdateMapTooltip() override { }
         void HandleInput() override { }
-        void HandleKeyboard(bool isTitle) override { }
-        std::string GetKeyboardShortcutString(sint32 shortcut) override { return std::string(); }
+        void HandleKeyboard(bool /*isTitle*/) override { }
+        std::string GetKeyboardShortcutString(sint32 /*shortcut*/) override { return std::string(); }
     };
 
     IWindowManager * CreateDummyWindowManager()
     {
         return new DummyWindowManager();
     }
-} }
+} // namespace OpenRCT2::Ui
