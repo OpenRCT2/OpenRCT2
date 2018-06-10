@@ -1,4 +1,4 @@
-0.1.3 (in development)
+0.2.0 (2018-06-10)
 ------------------------------------------------------------------------
 - Feature: [#1417] Allow saving track designs for flat rides.
 - Feature: [#1675] Auto-rotate shops to face footpaths.

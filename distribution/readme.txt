@@ -1,5 +1,5 @@
-Last updated:    2018-03-18
-Release version: 0.1.2
+Last updated:    2018-06-10
+Release version: 0.2.0
 ------------------------------------------------------------------------
 
 
@@ -143,12 +143,12 @@ to all files in this distribution, except as noted below.
 
 Jansson  | MIT licence.
 libcURL  | MIT (or Modified BSD-style) licence.
+libicu   | Unicode licence.
 libspeex | BSD-style licence.
 libpng   | libpng licence.
 libzip   | BSD 3 clause licence.
 OpenSSL  | OpenSSL Licence
 SDL2     | zlib licence.
-SDL2 TTF | zlib licence.
 zlib     | zlib licence.
 
 Licences for sub-libraries used by the above may vary. For more information, visit the libraries' respective official websites.
