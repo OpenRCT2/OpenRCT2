@@ -41,7 +41,7 @@ static rct_widget window_custom_currency_widgets[] = {
     { WWT_FRAME,            0,  0,      399,    0,      99, 0xFFFFFFFF,                         STR_NONE },
     { WWT_CAPTION,          0,  1,      398,    1,      14, STR_CUSTOM_CURRENCY_WINDOW_TITLE,   STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,         0,  387,    397,    2,      13, STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP },
-      STEPPER_WIDGETS      (1,  100,    200,    30,     40, STR_CHEAT_CURRENCY_FORMAT,          STR_NONE), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  100,    200,    30,     40, STR_CHEAT_CURRENCY_FORMAT,          STR_NONE), // NB: 3 widgets
     { WWT_BUTTON,           1,  120,    200,    50,     60, 0,                                  STR_NONE },
     { WWT_DROPDOWN,         1,  220,    350,    50,     60, STR_NONE,                           STR_NONE },
     { WWT_BUTTON,           1,  339,    349,    51,     59, STR_DROPDOWN_GLYPH,                 STR_NONE },

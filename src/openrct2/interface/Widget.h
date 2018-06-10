@@ -32,7 +32,7 @@ enum WINDOW_WIDGET_TYPES {
     WWT_LABEL_CENTRED = 12,    // Centred text
     WWT_TABLE_HEADER = 13,     // Left-aligned textual button
     WWT_LABEL = 14,            // Left-aligned text
-    WWT_STEPPER = 15,
+    WWT_SPINNER = 15,
     WWT_DROPDOWN = 16,
     WWT_VIEWPORT = 17,
     WWT_GROUPBOX = 19,
@@ -48,12 +48,12 @@ enum WINDOW_WIDGET_TYPES {
 #define WIDGETS_END     WWT_LAST, 0, 0, 0, 0, 0, 0, 0
 #define BAR_BLINK       (1u << 31)
 
-#define STEPPER_INCREASE(l, r, t, b)   r - 12, r - 1,  t + 1, b - 1
-#define STEPPER_DECREASE(l, r, t, b)   r - 25, r - 13, t + 1, b - 1
-#define STEPPER_WIDGETS(colour, left, right, top, bottom, text, tooltip) \
-    { WWT_STEPPER,      colour, left, right, top, bottom,                   text,             tooltip  }, \
-    { WWT_BUTTON,       colour, STEPPER_INCREASE(left, right, top, bottom), STR_NUMERIC_UP,   STR_NONE }, \
-    { WWT_BUTTON,       colour, STEPPER_DECREASE(left, right, top, bottom), STR_NUMERIC_DOWN, STR_NONE }  \
+#define SPINNER_INCREASE(l, r, t, b)   r - 12, r - 1,  t + 1, b - 1
+#define SPINNER_DECREASE(l, r, t, b)   r - 25, r - 13, t + 1, b - 1
+#define SPINNER_WIDGETS(colour, left, right, top, bottom, text, tooltip) \
+    { WWT_SPINNER,      colour, left, right, top, bottom,                   text,             tooltip  }, \
+    { WWT_BUTTON,       colour, SPINNER_INCREASE(left, right, top, bottom), STR_NUMERIC_UP,   STR_NONE }, \
+    { WWT_BUTTON,       colour, SPINNER_DECREASE(left, right, top, bottom), STR_NUMERIC_DOWN, STR_NONE }  \
 
 enum {
     SCROLL_HORIZONTAL = (1 << 0),

@@ -101,8 +101,8 @@ static rct_widget window_editor_objective_options_main_widgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,
     { WWT_DROPDOWN,         1,  98,     441,    48,     59,     STR_NONE,                   STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP          },
     { WWT_BUTTON,           1,  430,    440,    49,     58,     STR_DROPDOWN_GLYPH,         STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP          },
-      STEPPER_WIDGETS      (1,  158,    277,    65,     76,     STR_NONE,                   STR_NONE), // NB: 3 widgets
-      STEPPER_WIDGETS      (1,  158,    277,    82,     93,     STR_NONE,                   STR_NONE), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  158,    277,    65,     76,     STR_NONE,                   STR_NONE), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  158,    277,    82,     93,     STR_NONE,                   STR_NONE), // NB: 3 widgets
     { WWT_DROPDOWN,         1,  98,     277,    99,     110,    STR_NONE,                   STR_SELECT_CLIMATE_TIP                              },
     { WWT_BUTTON,           1,  266,    276,    100,    109,    STR_DROPDOWN_GLYPH,         STR_SELECT_CLIMATE_TIP                              },
     { WWT_BUTTON,           1,  370,    444,    116,    127,    STR_CHANGE,                 STR_CHANGE_NAME_OF_PARK_TIP                         },
@@ -835,10 +835,10 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
     switch (gScenarioObjectiveType) {
     case OBJECTIVE_GUESTS_BY:
     case OBJECTIVE_PARK_VALUE_BY:
-        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1].type = WWT_STEPPER;
+        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1].type = WWT_SPINNER;
         window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WWT_BUTTON;
         window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WWT_BUTTON;
-        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2].type = WWT_STEPPER;
+        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2].type = WWT_SPINNER;
         window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WWT_BUTTON;
         window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WWT_BUTTON;
         break;
@@ -848,7 +848,7 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
     case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
     case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
     case OBJECTIVE_MONTHLY_FOOD_INCOME:
-        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1].type = WWT_STEPPER;
+        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1].type = WWT_SPINNER;
         window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WWT_BUTTON;
         window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WWT_BUTTON;
         window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2].type = WWT_EMPTY;

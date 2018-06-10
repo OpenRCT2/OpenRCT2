@@ -127,7 +127,7 @@ static rct_widget window_ride_construction_widgets[] = {
     { WWT_FLATBTN,          1,  19,     42,     132,    155,    SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK,       STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP           },
     { WWT_FLATBTN,          1,  123,    146,    132,    155,    SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK,       STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP       },
     { WWT_GROUPBOX,         0,  96,     162,    120,    160,    STR_RIDE_CONSTRUCTION_SEAT_ROT,             STR_NONE                                                },
-      STEPPER_WIDGETS      (1,  101,    158,    138,    149,    0,                                          STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP),
+      SPINNER_WIDGETS      (1,  101,    158,    138,    149,    0,                                          STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP),
     { WIDGETS_END }
 };
 
@@ -2962,7 +2962,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
         _currentlyShowingBrakeOrBoosterSpeed = true;
         window_ride_construction_widgets[WIDX_BANK_LEFT].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_VELOCITY;
 
-        window_ride_construction_widgets[WIDX_BANK_LEFT].type = WWT_STEPPER;
+        window_ride_construction_widgets[WIDX_BANK_LEFT].type = WWT_SPINNER;
         window_ride_construction_widgets[WIDX_BANK_LEFT].left = 12;
         window_ride_construction_widgets[WIDX_BANK_LEFT].right = 96;
         window_ride_construction_widgets[WIDX_BANK_LEFT].top = 138;
@@ -2993,11 +2993,11 @@ static void window_ride_construction_update_widgets(rct_window *w)
         _currentTrackCurve != (0x100 | TRACK_ELEM_BRAKES)
     ) {
         window_ride_construction_widgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WWT_GROUPBOX;
-        window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WWT_STEPPER;
+        window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WWT_SPINNER;
         window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WWT_BUTTON;
         window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WWT_BUTTON;
         window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].right = 92;
-        if (window_ride_construction_widgets[WIDX_BANK_LEFT].type != WWT_STEPPER) {
+        if (window_ride_construction_widgets[WIDX_BANK_LEFT].type != WWT_SPINNER) {
             for (sint32 i = WIDX_BANK_LEFT; i <= WIDX_BANK_RIGHT; i++) {
                 window_ride_construction_widgets[i].left -= 36;
                 window_ride_construction_widgets[i].right -= 36;

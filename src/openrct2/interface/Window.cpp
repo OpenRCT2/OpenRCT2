@@ -258,12 +258,12 @@ static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex,
 
     // Lower widgetIndex once or twice we got a type that matches, to allow scrolling on the increase/decrease buttons too
     sint32 attempts = 0;
-    while (widgetType != WWT_IMGBTN && widgetType != WWT_STEPPER && widgetIndex > 0)
+    while (widgetType != WWT_IMGBTN && widgetType != WWT_SPINNER && widgetIndex > 0)
     {
         switch (widgetType)
         {
             case WWT_TRNBTN: // + and - for preview widget
-            case WWT_BUTTON: // + and - for stepper widget
+            case WWT_BUTTON: // + and - for spinner widget
             {
                 if (attempts > 0)
                 {
@@ -284,7 +284,7 @@ static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex,
         attempts++;
         if (attempts > 2)
         {
-            // We're 2 buttons up, and no preview or stepper widget was found
+            // We're 2 buttons up, and no preview or spinner widget was found
             return false;
         }
 
@@ -303,7 +303,7 @@ static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex,
             expectedContent[0] = IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE;
             expectedContent[1] = IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE;
             break;
-        case WWT_STEPPER:
+        case WWT_SPINNER:
             buttonWidgetIndex = wheel < 0 ? widgetIndex + 1 : widgetIndex + 2;
             expectedType = WWT_BUTTON;
             expectedContent[0] = STR_NUMERIC_UP;

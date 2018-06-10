@@ -119,7 +119,7 @@ static rct_widget window_park_guests_widgets[] = {
 static rct_widget window_park_price_widgets[] = {
     MAIN_PARK_WIDGETS,
     { WWT_LABEL,            1,  21,     146,    50,     61,     STR_ADMISSION_PRICE,            STR_NONE },                         //
-      STEPPER_WIDGETS      (1,  147,    222,    50,     61,     STR_ARG_6_CURRENCY2DP,          STR_NONE), // Price (3 widgets)
+      SPINNER_WIDGETS      (1,  147,    222,    50,     61,     STR_ARG_6_CURRENCY2DP,          STR_NONE), // Price (3 widgets)
     { WIDGETS_END },
 };
 
@@ -1267,7 +1267,7 @@ static void window_park_price_invalidate(rct_window *w)
     }
     else
     {
-        window_park_price_widgets[WIDX_PRICE].type = WWT_STEPPER;
+        window_park_price_widgets[WIDX_PRICE].type = WWT_SPINNER;
         window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_BUTTON;
         window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_BUTTON;
     }

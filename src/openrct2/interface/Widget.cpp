@@ -146,7 +146,7 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIn
     case WWT_LABEL:
         widget_text(dpi, w, widgetIndex);
         break;
-    case WWT_STEPPER:
+    case WWT_SPINNER:
     case WWT_DROPDOWN:
     case WWT_VIEWPORT:
         widget_text_inset(dpi, w, widgetIndex);
