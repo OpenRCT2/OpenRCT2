@@ -570,7 +570,7 @@ rct_window * window_tile_inspector_open()
     window->min_height = MIN_WH;
     window->max_width = MAX_WW;
     window->max_height = MAX_WH;
-    window->selected_list_item = -1;
+    windowTileInspectorSelectedIndex = -1;
     window_init_scroll_widgets(window);
 
     windowTileInspectorTileSelected = false;
@@ -587,20 +587,20 @@ void window_tile_inspector_clear_clipboard()
 
 static rct_tile_element* window_tile_inspector_get_selected_element(rct_window *w)
 {
-    openrct2_assert(w->selected_list_item >= 0 && w->selected_list_item < windowTileInspectorElementCount,
+    openrct2_assert(windowTileInspectorSelectedIndex >= 0 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount,
                     "Selected list item out of range");
-    return map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + w->selected_list_item;
+    return map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + windowTileInspectorSelectedIndex;
 }
 
 static void window_tile_inspector_select_element_from_list(rct_window *w, sint32 index)
 {
     if (index < 0 || index >= windowTileInspectorElementCount)
     {
-        w->selected_list_item = -1;
+        windowTileInspectorSelectedIndex = -1;
     }
     else
     {
-        w->selected_list_item = index;
+        windowTileInspectorSelectedIndex = index;
     }
 
     window_invalidate(w);
@@ -608,7 +608,7 @@ static void window_tile_inspector_select_element_from_list(rct_window *w, sint32
 
 static void window_tile_inspector_load_tile(rct_window* w, rct_tile_element* elementToSelect)
 {
-    w->selected_list_item = -1;
+    windowTileInspectorSelectedIndex = -1;
     w->scrolls[0].v_top = 0;
 
     rct_tile_element* element = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
@@ -617,7 +617,7 @@ static void window_tile_inspector_load_tile(rct_window* w, rct_tile_element* ele
     {
         if (element == elementToSelect)
         {
-            w->selected_list_item = numItems;
+            windowTileInspectorSelectedIndex = numItems;
         }
 
         numItems++;
@@ -936,16 +936,16 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
         window_close(w);
         break;
     case WIDX_BUTTON_CORRUPT:
-        window_tile_inspector_insert_corrupt_element(w->selected_list_item);
+        window_tile_inspector_insert_corrupt_element(windowTileInspectorSelectedIndex);
         break;
     case WIDX_BUTTON_REMOVE: {
-        sint32 nextItemToSelect = w->selected_list_item - 1;
-        window_tile_inspector_remove_element(w->selected_list_item);
+        sint32 nextItemToSelect = windowTileInspectorSelectedIndex - 1;
+        window_tile_inspector_remove_element(windowTileInspectorSelectedIndex);
         window_tile_inspector_select_element_from_list(w, nextItemToSelect);
         break;
     }
     case WIDX_BUTTON_ROTATE:
-        window_tile_inspector_rotate_element(w->selected_list_item);
+        window_tile_inspector_rotate_element(windowTileInspectorSelectedIndex);
         break;
     case WIDX_BUTTON_SORT:
         window_tile_inspector_sort_elements();
@@ -957,15 +957,15 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
         window_tile_inspector_paste_element(w);
         break;
     case WIDX_BUTTON_MOVE_DOWN:
-        window_tile_inspector_swap_elements(w->selected_list_item, w->selected_list_item + 1);
+        window_tile_inspector_swap_elements(windowTileInspectorSelectedIndex, windowTileInspectorSelectedIndex + 1);
         break;
     case WIDX_BUTTON_MOVE_UP:
-        window_tile_inspector_swap_elements(w->selected_list_item - 1, w->selected_list_item);
+        window_tile_inspector_swap_elements(windowTileInspectorSelectedIndex - 1, windowTileInspectorSelectedIndex);
         break;
     }
 
     // Only element-specific widgets from now on
-    if (w->page == TILE_INSPECTOR_PAGE_DEFAULT || w->selected_list_item == -1) {
+    if (w->page == TILE_INSPECTOR_PAGE_DEFAULT || windowTileInspectorSelectedIndex == -1) {
         return;
     }
 
@@ -997,7 +997,7 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
     case TILE_INSPECTOR_PAGE_PATH:
         switch (widgetIndex) {
         case WIDX_PATH_CHECK_SLOPED:
-            window_tile_inspector_path_set_sloped(w->selected_list_item, !footpath_element_is_sloped(tileElement));
+            window_tile_inspector_path_set_sloped(windowTileInspectorSelectedIndex, !footpath_element_is_sloped(tileElement));
             break;
         case WIDX_PATH_CHECK_EDGE_E:
         case WIDX_PATH_CHECK_EDGE_S:
@@ -1008,7 +1008,7 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
             const sint32 eswn = (widgetIndex - WIDX_PATH_CHECK_EDGE_E) / 2;
             // Transform to world orientation
             const sint32 index = (eswn - get_current_rotation()) & 3;
-            window_tile_inspector_path_toggle_edge(w->selected_list_item, index + 4);  // The corners are stored in the 4 most significant bits, hence the + 4
+            window_tile_inspector_path_toggle_edge(windowTileInspectorSelectedIndex, index + 4);  // The corners are stored in the 4 most significant bits, hence the + 4
             break;
         }
         case WIDX_PATH_CHECK_EDGE_NE:
@@ -1020,7 +1020,7 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
             const sint32 neseswnw = (widgetIndex - WIDX_PATH_CHECK_EDGE_NE) / 2;
             // Transform to world orientation
             const sint32 index = (neseswnw - get_current_rotation()) & 3;
-            window_tile_inspector_path_toggle_edge(w->selected_list_item, index);
+            window_tile_inspector_path_toggle_edge(windowTileInspectorSelectedIndex, index);
             break;
         }
         } // switch widget index
@@ -1036,7 +1036,7 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
         {
             bool entireTrackBlock = widget_is_pressed(w, WIDX_TRACK_CHECK_APPLY_TO_ALL);
             bool newLift = !track_element_is_lift_hill(tileElement);
-            window_tile_inspector_track_block_set_lift(w->selected_list_item, entireTrackBlock, newLift);
+            window_tile_inspector_track_block_set_lift(windowTileInspectorSelectedIndex, entireTrackBlock, newLift);
             break;
         }
         } // switch widget index
@@ -1048,13 +1048,13 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
         case WIDX_SCENERY_CHECK_QUARTER_E:
         case WIDX_SCENERY_CHECK_QUARTER_S:
         case WIDX_SCENERY_CHECK_QUARTER_W:
-            window_tile_inspector_quarter_tile_set(w->selected_list_item, widgetIndex - WIDX_SCENERY_CHECK_QUARTER_N);
+            window_tile_inspector_quarter_tile_set(windowTileInspectorSelectedIndex, widgetIndex - WIDX_SCENERY_CHECK_QUARTER_N);
             break;
         case WIDX_SCENERY_CHECK_COLLISION_N:
         case WIDX_SCENERY_CHECK_COLLISION_E:
         case WIDX_SCENERY_CHECK_COLLISION_S:
         case WIDX_SCENERY_CHECK_COLLISION_W:
-            window_tile_inspector_toggle_quadrant_collosion(w->selected_list_item, widgetIndex - WIDX_SCENERY_CHECK_COLLISION_N);
+            window_tile_inspector_toggle_quadrant_collosion(windowTileInspectorSelectedIndex, widgetIndex - WIDX_SCENERY_CHECK_COLLISION_N);
             break;
         } // switch widget index
         break;
@@ -1062,7 +1062,7 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
     case TILE_INSPECTOR_PAGE_ENTRANCE:
         switch (widgetIndex) {
         case WIDX_ENTRANCE_BUTTON_MAKE_USABLE:
-            window_tile_inspector_entrance_make_usable(w->selected_list_item);
+            window_tile_inspector_entrance_make_usable(windowTileInspectorSelectedIndex);
             break;
         } // switch widget index
         break;
@@ -1073,7 +1073,7 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
         case WIDX_BANNER_CHECK_BLOCK_SE:
         case WIDX_BANNER_CHECK_BLOCK_SW:
         case WIDX_BANNER_CHECK_BLOCK_NW:
-            window_tile_inspector_banner_toggle_block(w->selected_list_item, widgetIndex - WIDX_BANNER_CHECK_BLOCK_NE);
+            window_tile_inspector_banner_toggle_block(windowTileInspectorSelectedIndex, widgetIndex - WIDX_BANNER_CHECK_BLOCK_NE);
             break;
         } // switch widget index
         break;
@@ -1081,7 +1081,7 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
     case TILE_INSPECTOR_PAGE_CORRUPT:
         switch (widgetIndex) {
         case WIDX_CORRUPT_BUTTON_CLAMP:
-            window_tile_inspector_clamp_corrupt(w->selected_list_item);
+            window_tile_inspector_clamp_corrupt(windowTileInspectorSelectedIndex);
             break;
         } // switch widget index
         break;
@@ -1125,7 +1125,7 @@ static void window_tile_inspector_mousedown(rct_window *w, rct_widgetindex widge
     } // switch widget index
 
     // Only element-specific widgets from now on
-    if (w->page == TILE_INSPECTOR_PAGE_DEFAULT || w->selected_list_item == -1)
+    if (w->page == TILE_INSPECTOR_PAGE_DEFAULT || windowTileInspectorSelectedIndex == -1)
     {
         return;
     }
@@ -1136,10 +1136,10 @@ static void window_tile_inspector_mousedown(rct_window *w, rct_widgetindex widge
             switch (widgetIndex)
             {
                 case WIDX_SURFACE_SPINNER_HEIGHT_INCREASE:
-                    window_tile_inspector_base_height_offset(w->selected_list_item, 1);
+                    window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, 1);
                     break;
                 case WIDX_SURFACE_SPINNER_HEIGHT_DECREASE:
-                    window_tile_inspector_base_height_offset(w->selected_list_item, -1);
+                    window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, -1);
                     break;
             } // switch widget index
             break;
@@ -1148,10 +1148,10 @@ static void window_tile_inspector_mousedown(rct_window *w, rct_widgetindex widge
             switch (widgetIndex)
             {
                 case WIDX_PATH_SPINNER_HEIGHT_INCREASE:
-                    window_tile_inspector_base_height_offset(w->selected_list_item, 1);
+                    window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, 1);
                     break;
                 case WIDX_PATH_SPINNER_HEIGHT_DECREASE:
-                    window_tile_inspector_base_height_offset(w->selected_list_item, -1);
+                    window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, -1);
                     break;
             } // switch widget index
             break;
@@ -1162,21 +1162,21 @@ static void window_tile_inspector_mousedown(rct_window *w, rct_widgetindex widge
                 case WIDX_TRACK_SPINNER_HEIGHT_INCREASE:
                     if (widget_is_pressed(w, WIDX_TRACK_CHECK_APPLY_TO_ALL))
                     {
-                        window_tile_inspector_track_block_height_offset(w->selected_list_item, 1);
+                        window_tile_inspector_track_block_height_offset(windowTileInspectorSelectedIndex, 1);
                     }
                     else
                     {
-                        window_tile_inspector_base_height_offset(w->selected_list_item, 1);
+                        window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, 1);
                     }
                     break;
                 case WIDX_TRACK_SPINNER_HEIGHT_DECREASE:
                     if (widget_is_pressed(w, WIDX_TRACK_CHECK_APPLY_TO_ALL))
                     {
-                        window_tile_inspector_track_block_height_offset(w->selected_list_item, -1);
+                        window_tile_inspector_track_block_height_offset(windowTileInspectorSelectedIndex, -1);
                     }
                     else
                     {
-                        window_tile_inspector_base_height_offset(w->selected_list_item, -1);
+                        window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, -1);
                     }
                     break;
             } // switch widget index
@@ -1186,10 +1186,10 @@ static void window_tile_inspector_mousedown(rct_window *w, rct_widgetindex widge
             switch (widgetIndex)
             {
                 case WIDX_SCENERY_SPINNER_HEIGHT_INCREASE:
-                    window_tile_inspector_base_height_offset(w->selected_list_item, 1);
+                    window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, 1);
                     break;
                 case WIDX_SCENERY_SPINNER_HEIGHT_DECREASE:
-                    window_tile_inspector_base_height_offset(w->selected_list_item, -1);
+                    window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, -1);
                     break;
             } // switch widget index
             break;
@@ -1198,12 +1198,12 @@ static void window_tile_inspector_mousedown(rct_window *w, rct_widgetindex widge
             switch (widgetIndex)
             {
                 case WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE:
-                    window_tile_inspector_base_height_offset(w->selected_list_item, 1);
+                    window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, 1);
                     break;
                 case WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE:
-                    window_tile_inspector_base_height_offset(w->selected_list_item, -1);
+                    window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, -1);
                     break;
-                case WIDX_ENTRANCE_BUTTON_MAKE_USABLE: window_tile_inspector_entrance_make_usable(w->selected_list_item); break;
+                case WIDX_ENTRANCE_BUTTON_MAKE_USABLE: window_tile_inspector_entrance_make_usable(windowTileInspectorSelectedIndex); break;
             } // switch widget index
             break;
 
@@ -1211,10 +1211,10 @@ static void window_tile_inspector_mousedown(rct_window *w, rct_widgetindex widge
             switch (widgetIndex)
             {
                 case WIDX_WALL_SPINNER_HEIGHT_INCREASE:
-                    window_tile_inspector_base_height_offset(w->selected_list_item, 1);
+                    window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, 1);
                     break;
                 case WIDX_WALL_SPINNER_HEIGHT_DECREASE:
-                    window_tile_inspector_base_height_offset(w->selected_list_item, -1);
+                    window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, -1);
                     break;
                 case WIDX_WALL_DROPDOWN_SLOPE_BUTTON:
                     // Use dropdown instead of dropdown button
@@ -1248,10 +1248,10 @@ static void window_tile_inspector_mousedown(rct_window *w, rct_widgetindex widge
             switch (widgetIndex)
             {
                 case WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE:
-                    window_tile_inspector_base_height_offset(w->selected_list_item, 1);
+                    window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, 1);
                     break;
                 case WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE:
-                    window_tile_inspector_base_height_offset(w->selected_list_item, -1);
+                    window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, -1);
                     break;
             } // switch widget index
             break;
@@ -1260,10 +1260,10 @@ static void window_tile_inspector_mousedown(rct_window *w, rct_widgetindex widge
             switch (widgetIndex)
             {
                 case WIDX_BANNER_SPINNER_HEIGHT_INCREASE:
-                    window_tile_inspector_base_height_offset(w->selected_list_item, 1);
+                    window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, 1);
                     break;
                 case WIDX_BANNER_SPINNER_HEIGHT_DECREASE:
-                    window_tile_inspector_base_height_offset(w->selected_list_item, -1);
+                    window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, -1);
                     break;
             } // switch widget index
             break;
@@ -1272,10 +1272,10 @@ static void window_tile_inspector_mousedown(rct_window *w, rct_widgetindex widge
             switch (widgetIndex)
             {
                 case WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE:
-                    window_tile_inspector_base_height_offset(w->selected_list_item, 1);
+                    window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, 1);
                     break;
                 case WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE:
-                    window_tile_inspector_base_height_offset(w->selected_list_item, -1);
+                    window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, -1);
                     break;
             } // switch widget index
     } // switch page
@@ -1308,7 +1308,7 @@ static void window_tile_inspector_dropdown(rct_window *w, rct_widgetindex widget
 
         switch (widgetIndex) {
         case WIDX_WALL_DROPDOWN_SLOPE_BUTTON:
-            window_tile_inspector_wall_set_slope(w->selected_list_item, dropdownIndex << 6);
+            window_tile_inspector_wall_set_slope(windowTileInspectorSelectedIndex, dropdownIndex << 6);
             break;
         }
         break;
@@ -1465,7 +1465,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
 {
     // Set the correct page automatically
     TILE_INSPECTOR_PAGE page = TILE_INSPECTOR_PAGE_DEFAULT;
-    if (w->selected_list_item != -1)
+    if (windowTileInspectorSelectedIndex != -1)
     {
         const auto element = window_tile_inspector_get_selected_element(w);
         auto type = element->GetType();
@@ -1502,16 +1502,16 @@ static void window_tile_inspector_invalidate(rct_window *w)
     widget_set_enabled(w, WIDX_BUTTON_SORT, (windowTileInspectorTileSelected && windowTileInspectorElementCount > 1));
 
     // Move Up button
-    widget_set_enabled(w, WIDX_BUTTON_MOVE_UP, (w->selected_list_item > 0));
+    widget_set_enabled(w, WIDX_BUTTON_MOVE_UP, (windowTileInspectorSelectedIndex > 0));
     widget_invalidate(w, WIDX_BUTTON_MOVE_UP);
 
     // Move Down button
     widget_set_enabled(
-        w, WIDX_BUTTON_MOVE_DOWN, (w->selected_list_item != -1 && w->selected_list_item < windowTileInspectorElementCount - 1));
+        w, WIDX_BUTTON_MOVE_DOWN, (windowTileInspectorSelectedIndex != -1 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount - 1));
     widget_invalidate(w, WIDX_BUTTON_MOVE_DOWN);
 
     // Copy button
-    widget_set_enabled(w, WIDX_BUTTON_COPY, w->selected_list_item >= 0);
+    widget_set_enabled(w, WIDX_BUTTON_COPY, windowTileInspectorSelectedIndex >= 0);
     widget_invalidate(w, WIDX_BUTTON_COPY);
 
     // Paste button
@@ -1787,7 +1787,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string(dpi, (char *)"-", COLOUR_DARK_GREEN, w->x + 113 - 7, w->y + 24);
     }
 
-    if (w->selected_list_item != -1) {
+    if (windowTileInspectorSelectedIndex != -1) {
         // X and Y of first element in detail box
         sint32 x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
         sint32 y = w->y + w->widgets[WIDX_GROUPBOX_DETAILS].top + 14;
@@ -2129,7 +2129,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     do {
-        const bool selectedRow = i == w->selected_list_item;
+        const bool selectedRow = i == windowTileInspectorSelectedIndex;
         const bool hoveredRow = i == windowTileInspectorHighlightedIndex;
         sint32 type = tileElement->GetType();
         const char* typeName = "";
