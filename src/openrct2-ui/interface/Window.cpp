@@ -515,3 +515,112 @@ void window_all_wheel_input()
         }
     }
 }
+
+/**
+ * Initialises scroll widgets to their virtual size.
+ *  rct2: 0x006EAEB8
+ *
+ * @param window The window (esi).
+ */
+void window_init_scroll_widgets(rct_window *w)
+{
+    rct_widget* widget;
+    rct_scroll* scroll;
+    sint32 widget_index, scroll_index;
+    sint32 width, height;
+
+    widget_index = 0;
+    scroll_index = 0;
+    for (widget = w->widgets; widget->type != WWT_LAST; widget++) {
+        if (widget->type != WWT_SCROLL) {
+            widget_index++;
+            continue;
+        }
+
+        scroll = &w->scrolls[scroll_index];
+        scroll->flags = 0;
+        width = 0;
+        height = 0;
+        window_get_scroll_size(w, scroll_index, &width, &height);
+        scroll->h_left = 0;
+        scroll->h_right = width + 1;
+        scroll->v_top = 0;
+        scroll->v_bottom = height + 1;
+
+        if (widget->content & SCROLL_HORIZONTAL)
+            scroll->flags |= HSCROLLBAR_VISIBLE;
+        if (widget->content & SCROLL_VERTICAL)
+            scroll->flags |= VSCROLLBAR_VISIBLE;
+
+        widget_scroll_update_thumbs(w, widget_index);
+
+        widget_index++;
+        scroll_index++;
+    }
+}
+
+/**
+ *
+ *  rct2: 0x006EB15C
+ *
+ * @param window (esi)
+ * @param dpi (edi)
+ */
+void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
+{
+    rct_widget *widget;
+    rct_widgetindex widgetIndex;
+
+    if ((w->flags & WF_TRANSPARENT) && !(w->flags & WF_NO_BACKGROUND))
+        gfx_filter_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, PALETTE_51);
+
+    //todo: some code missing here? Between 006EB18C and 006EB260
+
+    widgetIndex = 0;
+    for (widget = w->widgets; widget->type != WWT_LAST; widget++) {
+        // Check if widget is outside the draw region
+        if (w->x + widget->left < dpi->x + dpi->width && w->x + widget->right >= dpi->x)
+            if (w->y + widget->top < dpi->y + dpi->height && w->y + widget->bottom >= dpi->y)
+                widget_draw(dpi, w, widgetIndex);
+
+        widgetIndex++;
+    }
+
+    //todo: something missing here too? Between 006EC32B and 006EC369
+
+    if (w->flags & WF_WHITE_BORDER_MASK) {
+        gfx_fill_rect_inset(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, COLOUR_WHITE, INSET_RECT_FLAG_FILL_NONE);
+    }
+}
+
+/**
+ *
+ *  rct2: 0x006EA776
+ */
+static void window_invalidate_pressed_image_buttons(rct_window *w)
+{
+    rct_widgetindex widgetIndex;
+    rct_widget *widget;
+
+    widgetIndex = 0;
+    for (widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++) {
+        if (widget->type != WWT_IMGBTN)
+            continue;
+
+        if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
+            gfx_set_dirty_blocks(w->x, w->y, w->x + w->width, w->y + w->height);
+    }
+}
+
+/**
+ *
+ *  rct2: 0x006EA73F
+ */
+void invalidate_all_windows_after_input()
+{
+    for (rct_window *w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
+        window_update_scroll_widgets(w);
+        window_invalidate_pressed_image_buttons(w);
+        window_event_resize_call(w);
+    }
+}
