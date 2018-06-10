@@ -32,7 +32,7 @@
 - Fix: [#7402] Edges of neigbouring footpaths stay connected after removing a path that's underneath a ride entrance.
 - Fix: [#7405] Rides can be covered by placing scenery underneath them.
 - Fix: [#7418] Staff walk off paths with a connection but no adjacent path.
-- Fix: [#7434] Allow deletion of isolated diagonal track pieces
+- Fix: [#7434] Diagonal ride segments cannot be deleted if they are isolated.
 - Fix: [#7436] Only the first 32 vehicles of a train can be painted.
 - Fix: [#7480] Graphs skip values of 0.
 - Fix: [#7505] Game crashes when trying to make path over map edge while having clearance checks disabled.
