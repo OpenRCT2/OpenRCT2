@@ -241,22 +241,22 @@ static rct_widget window_ride_vehicle_widgets[] = {
     { WWT_DROPDOWN,         1,  7,      308,    50,     61,     0xFFFFFFFF,                                 STR_NONE                                        },
     { WWT_BUTTON,           1,  297,    307,    51,     60,     STR_DROPDOWN_GLYPH,                         STR_NONE                                        },
     { WWT_SCROLL,           1,  7,      308,    147,    189,    0,                                          STR_NONE                                        },
-      STEPPER_WIDGETS      (1,  7,      151,    196,    207,    STR_RIDE_VEHICLE_COUNT,                     STR_MAX_VEHICLES_TIP),
-      STEPPER_WIDGETS      (1,  164,    308,    196,    207,    STR_1_CAR_PER_TRAIN,                        STR_MAX_CARS_PER_TRAIN_TIP),
+      SPINNER_WIDGETS      (1,  7,      151,    196,    207,    STR_RIDE_VEHICLE_COUNT,                     STR_MAX_VEHICLES_TIP),
+      SPINNER_WIDGETS      (1,  164,    308,    196,    207,    STR_1_CAR_PER_TRAIN,                        STR_MAX_CARS_PER_TRAIN_TIP),
     { WIDGETS_END },
 };
 
 // 0x009ADEFC
 static rct_widget window_ride_operating_widgets[] = {
     MAIN_RIDE_WIDGETS,
-      STEPPER_WIDGETS      (1,  157,    308,    61,     72,     STR_ARG_18_STRINGID,                        STR_NONE), // NB: 3 widgets
-      STEPPER_WIDGETS      (1,  157,    308,    75,     86,     STR_LIFT_HILL_CHAIN_SPEED_VALUE,            STR_NONE), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  157,    308,    61,     72,     STR_ARG_18_STRINGID,                        STR_NONE), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  157,    308,    75,     86,     STR_LIFT_HILL_CHAIN_SPEED_VALUE,            STR_NONE), // NB: 3 widgets
     { WWT_CHECKBOX,         1,  7,      86,     109,    120,    STR_WAIT_FOR,                               STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP    },
     { WWT_CHECKBOX,         1,  7,      308,    124,    135,    0xFFFFFFFF,                                 STR_NONE                                        },
     { WWT_CHECKBOX,         1,  7,      156,    139,    150,    STR_MINIMUM_WAITING_TIME,                   STR_MINIMUM_LENGTH_BEFORE_DEPARTING_TIP         },
-      STEPPER_WIDGETS      (1,  157,    308,    139,    150,    STR_ARG_10_STRINGID,                        STR_NONE), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  157,    308,    139,    150,    STR_ARG_10_STRINGID,                        STR_NONE), // NB: 3 widgets
     { WWT_CHECKBOX,         1,  7,      156,    154,    165,    STR_MAXIMUM_WAITING_TIME,                   STR_MAXIMUM_LENGTH_BEFORE_DEPARTING_TIP         },
-      STEPPER_WIDGETS      (1,  157,    308,    154,    165,    STR_ARG_14_STRINGID,                        STR_NONE), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  157,    308,    154,    165,    STR_ARG_14_STRINGID,                        STR_NONE), // NB: 3 widgets
     { WWT_CHECKBOX,         1,  7,      308,    169,    180,    STR_SYNCHRONISE_WITH_ADJACENT_STATIONS,     STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP      },
     { WWT_LABEL,            1, 21,      149,    61,     72,     0xFFFFFFFF,                                 STR_NONE                                        },
     { WWT_LABEL,            1, 21,      149,    75,     86,     STR_LIFT_HILL_CHAIN_SPEED,                  STR_NONE                                        },
@@ -265,7 +265,7 @@ static rct_widget window_ride_operating_widgets[] = {
     { WWT_DROPDOWN,         1,  87,     308,    109,    120,    0xFFFFFFFF,                                 STR_NONE                                        },
     { WWT_BUTTON,           1,  297,    307,    110,    119,    STR_DROPDOWN_GLYPH,                         STR_NONE                                        },
     { WWT_LABEL,            1,  21,     149,    89,     100,    STR_NUMBER_OF_CIRCUITS,                     STR_NUMBER_OF_CIRCUITS_TIP                      },
-      STEPPER_WIDGETS      (1,  157,    308,    89,     100,    STR_NUMBER_OF_CIRCUITS_VALUE,               STR_NONE), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  157,    308,    89,     100,    STR_NUMBER_OF_CIRCUITS_VALUE,               STR_NONE), // NB: 3 widgets
     { WIDGETS_END },
 };
 
@@ -283,7 +283,7 @@ static rct_widget window_ride_maintenance_widgets[] = {
 // 0x009AE2A4
 static rct_widget window_ride_colour_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_STEPPER,          1,  3,      70,     47,     93,     0xFFFFFFFF,                     STR_NONE                                                    },
+    { WWT_SPINNER,          1,  3,      70,     47,     93,     0xFFFFFFFF,                     STR_NONE                                                    },
     { WWT_DROPDOWN,         1,  74,     312,    49,     60,     STR_ARG_14_STRINGID,            STR_NONE                                                    },
     { WWT_BUTTON,           1,  301,    311,    50,     59,     STR_DROPDOWN_GLYPH,             STR_COLOUR_SCHEME_TO_CHANGE_TIP                             },
     { WWT_COLOURBTN,        1,  79,     90,     74,     85,     0xFFFFFFFF,                     STR_SELECT_MAIN_COLOUR_TIP                                  },
@@ -292,7 +292,7 @@ static rct_widget window_ride_colour_widgets[] = {
     { WWT_DROPDOWN,         1,  74,     312,    49,     60,     0xFFFFFFFF,                     STR_NONE                                                    },
     { WWT_BUTTON,           1,  301,    311,    50,     59,     STR_DROPDOWN_GLYPH,             STR_NONE                                                    },
     { WWT_FLATBTN,          1,  289,    312,    68,     91,     SPR_PAINTBRUSH,                 STR_PAINT_INDIVIDUAL_AREA_TIP                               },
-    { WWT_STEPPER,          1,  245,    312,    101,    147,    0xFFFFFFFF,                     STR_NONE                                                    },
+    { WWT_SPINNER,          1,  245,    312,    101,    147,    0xFFFFFFFF,                     STR_NONE                                                    },
     { WWT_DROPDOWN,         1,  3,      241,    103,    114,    0,                              STR_NONE                                                    },
     { WWT_BUTTON,           1,  230,    240,    104,    113,    STR_DROPDOWN_GLYPH,             STR_SELECT_STYLE_OF_ENTRANCE_EXIT_STATION_TIP               },
     { WWT_SCROLL,           1,  3,      70,     157,    203,    0,                              STR_NONE                                                    },
@@ -341,10 +341,10 @@ static rct_widget window_ride_graphs_widgets[] = {
 static rct_widget window_ride_income_widgets[] = {
     MAIN_RIDE_WIDGETS,
     { WWT_LABEL,            1,  19,     144,    50,     61,     0xFFFFFFFF,                                 STR_NONE                                                    },
-      STEPPER_WIDGETS      (1,  147,    308,    50,     61,     STR_ARG_6_CURRENCY2DP,                      STR_NONE),  // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  147,    308,    50,     61,     STR_ARG_6_CURRENCY2DP,                      STR_NONE),  // NB: 3 widgets
     { WWT_CHECKBOX,         1,  5,      310,    62,     74,     STR_SAME_PRICE_THROUGHOUT_PARK,             STR_SAME_PRICE_THROUGHOUT_PARK_TIP                          },
     { WWT_LABEL,            1,  19,     144,    94,     105,    0xFFFFFFFF,                                 STR_NONE                                                    },
-      STEPPER_WIDGETS      (1,  147,    308,    94,     105,    STR_RIDE_SECONDARY_PRICE_VALUE,             STR_NONE),  // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  147,    308,    94,     105,    STR_RIDE_SECONDARY_PRICE_VALUE,             STR_NONE),  // NB: 3 widgets
     { WWT_CHECKBOX,         1,  5,      310,    106,    118,    STR_SAME_PRICE_THROUGHOUT_PARK,             STR_SAME_PRICE_THROUGHOUT_PARK_TIP                          },
     { WIDGETS_END },
 };
@@ -2895,7 +2895,7 @@ static void window_ride_vehicle_invalidate(rct_window *w)
 
     // Trains
     if (rideEntry->cars_per_flat_ride > 1 || gCheatsDisableTrainLengthLimit) {
-        window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS].type = WWT_STEPPER;
+        window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS].type = WWT_SPINNER;
         window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_INCREASE].type = WWT_BUTTON;
         window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_DECREASE].type = WWT_BUTTON;
 
@@ -2907,7 +2907,7 @@ static void window_ride_vehicle_invalidate(rct_window *w)
 
     // Cars per train
     if (rideEntry->zero_cars + 1 < rideEntry->max_cars_in_train||gCheatsDisableTrainLengthLimit) {
-        window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].type = WWT_STEPPER;
+        window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].type = WWT_SPINNER;
         window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE].type = WWT_BUTTON;
         window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE].type = WWT_BUTTON;
     } else {
@@ -3453,7 +3453,7 @@ static void window_ride_operating_invalidate(rct_window *w)
     if (track_piece_is_available_for_ride_type(ride->type, TRACK_LIFT_HILL))
     {
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WWT_LABEL;
-        window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED].type = WWT_STEPPER;
+        window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED].type = WWT_SPINNER;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_INCREASE].type = WWT_BUTTON;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_DECREASE].type = WWT_BUTTON;
         set_format_arg(20, uint16, ride->lift_hill_speed);
@@ -3467,7 +3467,7 @@ static void window_ride_operating_invalidate(rct_window *w)
     // Number of circuits
     if (ride_can_have_multiple_circuits(ride)) {
         window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_LABEL].type = WWT_LABEL;
-        window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS].type = WWT_STEPPER;
+        window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS].type = WWT_SPINNER;
         window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE].type = WWT_BUTTON;
         window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE].type = WWT_BUTTON;
         set_format_arg(22, uint16, ride->num_circuits);
@@ -3514,12 +3514,12 @@ static void window_ride_operating_invalidate(rct_window *w)
         window_ride_operating_widgets[WIDX_LOAD_DROPDOWN].type = WWT_BUTTON;
 
         window_ride_operating_widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].type = WWT_CHECKBOX;
-        window_ride_operating_widgets[WIDX_MINIMUM_LENGTH].type = WWT_STEPPER;
+        window_ride_operating_widgets[WIDX_MINIMUM_LENGTH].type = WWT_SPINNER;
         window_ride_operating_widgets[WIDX_MINIMUM_LENGTH_INCREASE].type = WWT_BUTTON;
         window_ride_operating_widgets[WIDX_MINIMUM_LENGTH_DECREASE].type = WWT_BUTTON;
 
         window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH_CHECKBOX].type = WWT_CHECKBOX;
-        window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH].type = WWT_STEPPER;
+        window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH].type = WWT_SPINNER;
         window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH_INCREASE].type = WWT_BUTTON;
         window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WWT_BUTTON;
 
@@ -3615,7 +3615,7 @@ static void window_ride_operating_invalidate(rct_window *w)
         window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].type = WWT_LABEL;
         window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].text = caption;
         window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].tooltip = tooltip;
-        window_ride_operating_widgets[WIDX_MODE_TWEAK].type = WWT_STEPPER;
+        window_ride_operating_widgets[WIDX_MODE_TWEAK].type = WWT_SPINNER;
         window_ride_operating_widgets[WIDX_MODE_TWEAK].text = format;
         window_ride_operating_widgets[WIDX_MODE_TWEAK_INCREASE].type = WWT_BUTTON;
         window_ride_operating_widgets[WIDX_MODE_TWEAK_DECREASE].type = WWT_BUTTON;
@@ -4542,13 +4542,13 @@ static void window_ride_colour_invalidate(rct_window *w)
 
     // Track preview
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS))
-        window_ride_colour_widgets[WIDX_TRACK_PREVIEW].type = WWT_STEPPER;
+        window_ride_colour_widgets[WIDX_TRACK_PREVIEW].type = WWT_SPINNER;
     else
         window_ride_colour_widgets[WIDX_TRACK_PREVIEW].type = WWT_EMPTY;
 
     // Entrance style
     if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT) {
-        window_ride_colour_widgets[WIDX_ENTRANCE_PREVIEW].type = WWT_STEPPER;
+        window_ride_colour_widgets[WIDX_ENTRANCE_PREVIEW].type = WWT_SPINNER;
         window_ride_colour_widgets[WIDX_ENTRANCE_STYLE].type = WWT_DROPDOWN;
         window_ride_colour_widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].type = WWT_BUTTON;
 
@@ -6172,7 +6172,7 @@ static void window_ride_income_invalidate(rct_window *w)
 
         // Show widgets
         window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].type = WWT_LABEL;
-        window_ride_income_widgets[WIDX_SECONDARY_PRICE].type = WWT_STEPPER;
+        window_ride_income_widgets[WIDX_SECONDARY_PRICE].type = WWT_SPINNER;
         window_ride_income_widgets[WIDX_SECONDARY_PRICE_INCREASE].type = WWT_BUTTON;
         window_ride_income_widgets[WIDX_SECONDARY_PRICE_DECREASE].type = WWT_BUTTON;
         window_ride_income_widgets[WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK].type = WWT_CHECKBOX;

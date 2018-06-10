@@ -107,10 +107,10 @@ static rct_widget window_editor_scenario_options_financial_widgets[] = {
     { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_PARK_TIP               },
 
     { WWT_CHECKBOX,         1,  8,      271,    48,     59,     STR_MAKE_PARK_NO_MONEY,                 STR_MAKE_PARK_NO_MONEY_TIP                  },
-      STEPPER_WIDGETS      (1,  168,    267,    65,     76,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      STEPPER_WIDGETS      (1,  168,    267,    82,     93,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      STEPPER_WIDGETS      (1,  168,    267,    99,     110,    STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      STEPPER_WIDGETS      (1,  168,    237,    116,    127,    STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  168,    267,    65,     76,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  168,    267,    82,     93,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  168,    267,    99,     110,    STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  168,    237,    116,    127,    STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
     { WWT_CHECKBOX,         1,  8,      271,    133,    144,    STR_FORBID_MARKETING,                   STR_FORBID_MARKETING_TIP                    },
     { WIDGETS_END }
 };
@@ -124,10 +124,10 @@ static rct_widget window_editor_scenario_options_guests_widgets[] = {
     { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_GUESTS_TIP             },
     { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_PARK_TIP               },
 
-      STEPPER_WIDGETS      (1,  268,    337,    48,     59,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      STEPPER_WIDGETS      (1,  268,    337,    65,     76,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      STEPPER_WIDGETS      (1,  268,    337,    82,     93,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      STEPPER_WIDGETS      (1,  268,    337,    99,     110,    STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  268,    337,    48,     59,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  268,    337,    65,     76,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  268,    337,    82,     93,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  268,    337,    99,     110,    STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
     { WWT_CHECKBOX,         1,  8,      371,    116,    127,    STR_GUESTS_PREFER_LESS_INTENSE_RIDES,   STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP    },
     { WWT_CHECKBOX,         1,  8,      371,    133,    144,    STR_GUESTS_PREFER_MORE_INTENSE_RIDES,   STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP    },
     { WIDGETS_END }
@@ -142,11 +142,11 @@ static rct_widget window_editor_scenario_options_park_widgets[] = {
     { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_GUESTS_TIP             },
     { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_PARK_TIP               },
 
-      STEPPER_WIDGETS      (1,  188,    257,    48,     59,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      STEPPER_WIDGETS      (1,  188,    257,    65,     76,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  188,    257,    48,     59,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  188,    257,    65,     76,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
     { WWT_DROPDOWN,         1,  8,      217,    82,     93,     STR_NONE,                               STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP          },
     { WWT_BUTTON,           1,  206,    216,    83,     92,     STR_DROPDOWN_GLYPH,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP          },
-      STEPPER_WIDGETS      (1,  328,    397,    82,     93,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
+      SPINNER_WIDGETS      (1,  328,    397,    82,     93,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
     { WWT_CHECKBOX,         1,  8,      391,    99,     110,    STR_FORBID_TREE_REMOVAL,                STR_FORBID_TREE_REMOVAL_TIP                 },
     { WWT_CHECKBOX,         1,  8,      391,    116,    127,    STR_FORBID_LANDSCAPE_CHANGES,           STR_FORBID_LANDSCAPE_CHANGES_TIP            },
     { WWT_CHECKBOX,         1,  8,      391,    133,    144,    STR_FORBID_HIGH_CONSTRUCTION,           STR_FORBID_HIGH_CONSTRUCTION_TIP            },
@@ -721,16 +721,16 @@ static void window_editor_scenario_options_financial_invalidate(rct_window *w)
             w->widgets[i].type = WWT_EMPTY;
     } else {
         w->pressed_widgets &= ~(1 << WIDX_NO_MONEY);
-        w->widgets[WIDX_INITIAL_CASH].type = WWT_STEPPER;
+        w->widgets[WIDX_INITIAL_CASH].type = WWT_SPINNER;
         w->widgets[WIDX_INITIAL_CASH_INCREASE].type = WWT_BUTTON;
         w->widgets[WIDX_INITIAL_CASH_DECREASE].type = WWT_BUTTON;
-        w->widgets[WIDX_INITIAL_LOAN].type = WWT_STEPPER;
+        w->widgets[WIDX_INITIAL_LOAN].type = WWT_SPINNER;
         w->widgets[WIDX_INITIAL_LOAN_INCREASE].type =  WWT_BUTTON;
         w->widgets[WIDX_INITIAL_LOAN_DECREASE].type =  WWT_BUTTON;
-        w->widgets[WIDX_MAXIMUM_LOAN].type = WWT_STEPPER;
+        w->widgets[WIDX_MAXIMUM_LOAN].type = WWT_SPINNER;
         w->widgets[WIDX_MAXIMUM_LOAN_INCREASE].type =  WWT_BUTTON;
         w->widgets[WIDX_MAXIMUM_LOAN_DECREASE].type =  WWT_BUTTON;
-        w->widgets[WIDX_INTEREST_RATE].type = WWT_STEPPER;
+        w->widgets[WIDX_INTEREST_RATE].type = WWT_SPINNER;
         w->widgets[WIDX_INTEREST_RATE_INCREASE].type =  WWT_BUTTON;
         w->widgets[WIDX_INTEREST_RATE_DECREASE].type =  WWT_BUTTON;
         w->widgets[WIDX_FORBID_MARKETING].type = WWT_CHECKBOX;
@@ -1026,7 +1026,7 @@ static void window_editor_scenario_options_guests_invalidate(rct_window *w)
         w->widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WWT_EMPTY;
         w->widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WWT_EMPTY;
     } else {
-        w->widgets[WIDX_CASH_PER_GUEST].type = WWT_STEPPER;
+        w->widgets[WIDX_CASH_PER_GUEST].type = WWT_SPINNER;
         w->widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WWT_BUTTON;
         w->widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WWT_BUTTON;
     }
@@ -1388,10 +1388,10 @@ static void window_editor_scenario_options_park_invalidate(rct_window *w)
     }
     else
     {
-        w->widgets[WIDX_LAND_COST].type = WWT_STEPPER;
+        w->widgets[WIDX_LAND_COST].type = WWT_SPINNER;
         w->widgets[WIDX_LAND_COST_INCREASE].type = WWT_BUTTON;
         w->widgets[WIDX_LAND_COST_DECREASE].type = WWT_BUTTON;
-        w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type = WWT_STEPPER;
+        w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type = WWT_SPINNER;
         w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE].type = WWT_BUTTON;
         w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE].type = WWT_BUTTON;
         w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WWT_DROPDOWN;
@@ -1405,7 +1405,7 @@ static void window_editor_scenario_options_park_invalidate(rct_window *w)
         }
         else
         {
-            w->widgets[WIDX_ENTRY_PRICE].type = WWT_STEPPER;
+            w->widgets[WIDX_ENTRY_PRICE].type = WWT_SPINNER;
             w->widgets[WIDX_ENTRY_PRICE_INCREASE].type = WWT_BUTTON;
             w->widgets[WIDX_ENTRY_PRICE_DECREASE].type = WWT_BUTTON;
         }

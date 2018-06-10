@@ -218,14 +218,14 @@ static rct_widget window_cheats_money_widgets[] =
     MAIN_CHEATS_WIDGETS,
     { WWT_CHECKBOX,         1,      XPL(0),                 WPL(0),                 YPL(0),         HPL(0),         STR_MAKE_PARK_NO_MONEY,             STR_NONE },                             // No money
     { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(1),         HPL(3.5),       STR_ADD_SET_MONEY,                  STR_NONE },                             // add / set money group frame
-      STEPPER_WIDGETS      (1,      XPL(0),                 WPL(1) - 10,            YPL(2) + 2,     HPL(2) - 3,     STR_NONE,                           STR_NONE),                              // money value (3 widgets)
+      SPINNER_WIDGETS      (1,      XPL(0),                 WPL(1) - 10,            YPL(2) + 2,     HPL(2) - 3,     STR_NONE,                           STR_NONE),                              // money value (3 widgets)
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(3),         HPL(3),         STR_ADD_MONEY,                      STR_NONE },                             // add money
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(3),         HPL(3),         STR_SET_MONEY,                      STR_NONE },                             // set money
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(5),         HPL(5),         STR_CHEAT_CLEAR_LOAN,               STR_NONE },                             // Clear loan
     { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(6.5),       HPL(10.5),      STR_DATE_SET,                       STR_NONE },                             // Date group
-      STEPPER_WIDGETS      (1,      WPL(0),                 WPL(1) - 10,            YPL(7) + 2,     HPL(7) - 3,     STR_NONE,                           STR_NONE),                              // Year box (3 widgets)
-      STEPPER_WIDGETS      (1,      WPL(0),                 WPL(1) - 10,            YPL(8) + 2,     HPL(8) - 3,     STR_NONE,                           STR_NONE),                              // Month box (3 widgets)
-      STEPPER_WIDGETS      (1,      WPL(0),                 WPL(1) - 10,            YPL(9) + 2,     HPL(9) - 3,     STR_NONE,                           STR_NONE),                              // Day box (3 widgets)
+      SPINNER_WIDGETS      (1,      WPL(0),                 WPL(1) - 10,            YPL(7) + 2,     HPL(7) - 3,     STR_NONE,                           STR_NONE),                              // Year box (3 widgets)
+      SPINNER_WIDGETS      (1,      WPL(0),                 WPL(1) - 10,            YPL(8) + 2,     HPL(8) - 3,     STR_NONE,                           STR_NONE),                              // Month box (3 widgets)
+      SPINNER_WIDGETS      (1,      WPL(0),                 WPL(1) - 10,            YPL(9) + 2,     HPL(9) - 3,     STR_NONE,                           STR_NONE),                              // Day box (3 widgets)
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(10),        HPL(10),        STR_DATE_SET,                       STR_NONE },                             // Set Date
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(10),        HPL(10),        STR_DATE_RESET,                     STR_NONE },                             // Reset Date
     { WIDGETS_END },
@@ -276,7 +276,7 @@ static rct_widget window_cheats_misc_widgets[] =
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(2),         HPL(2),         STR_CHEAT_RESET_DATE,               STR_NONE },                             // Reset date
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(3),         HPL(3),         STR_CHEAT_OWN_ALL_LAND,             STR_CHEAT_OWN_ALL_LAND_TIP },           // Own all land
     { WWT_CHECKBOX,         1,      XPL(0),                 WPL(0),                 YPL(5),         HPL(5),         STR_FORCE_PARK_RATING,              STR_NONE },                             // Force park rating
-      STEPPER_WIDGETS      (1,      XPL(1),                 WPL(1) - 10,            YPL(5) + 2,     HPL(5) - 3,     STR_NONE,                           STR_NONE),                              // park rating (3 widgets)
+      SPINNER_WIDGETS      (1,      XPL(1),                 WPL(1) - 10,            YPL(5) + 2,     HPL(5) - 3,     STR_NONE,                           STR_NONE),                              // park rating (3 widgets)
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(6),         HPL(6),         STR_CHEAT_WIN_SCENARIO,             STR_NONE },                             // Win scenario
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(6),         HPL(6),         STR_CHEAT_HAVE_FUN,                 STR_NONE },                             // Have fun!
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(7),         HPL(7),         STR_CHEAT_NEVERENDING_MARKETING,    STR_CHEAT_NEVERENDING_MARKETING_TIP },  // never ending marketing campaigns
