@@ -22,17 +22,27 @@
 #endif
 
 const char gVersionInfoFull[] =
-    OPENRCT2_NAME ", v" OPENRCT2_VERSION
-#ifdef OPENRCT2_BRANCH
-    "-" OPENRCT2_BRANCH
+    OPENRCT2_NAME ", "
+#ifdef OPENRCT2_VERSION_TAG
+    OPENRCT2_VERSION_TAG
+#else
+    "v" OPENRCT2_VERSION
 #endif
-#ifdef OPENRCT2_COMMIT_SHA1_SHORT
-    " build " OPENRCT2_COMMIT_SHA1_SHORT
+#if defined(OPENRCT2_BRANCH) || defined(OPENRCT2_COMMIT_SHA1_SHORT) || !defined(NDEBUG)
+    " ("
+#if defined(OPENRCT2_BRANCH) && defined(OPENRCT2_COMMIT_SHA1_SHORT)
+    OPENRCT2_COMMIT_SHA1_SHORT " on " OPENRCT2_BRANCH
+#elif defined(OPENRCT2_COMMIT_SHA1_SHORT)
+    OPENRCT2_COMMIT_SHA1_SHORT
+#elif defined(OPENRCT2_BRANCH)
+    OPENRCT2_BRANCH
+#endif
+#ifndef NDEBUG
+    ", DEBUG"
+#endif
+    ")"
 #endif
 #ifdef OPENRCT2_BUILD_SERVER
     " provided by " OPENRCT2_BUILD_SERVER
-#endif
-#ifndef NDEBUG
-    " (DEBUG)"
 #endif
     ;

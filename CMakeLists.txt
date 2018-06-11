@@ -47,6 +47,16 @@ if (PORTABLE OR WIN32)
     set(CMAKE_INSTALL_RPATH "$ORIGIN")
 endif ()
 
+# Describe current version in terms of closest tag
+execute_process(
+    COMMAND git describe HEAD
+    COMMAND sed -E "s/-g.+$//"
+    WORKING_DIRECTORY ${ROOT_DIR}
+    OUTPUT_VARIABLE OPENRCT2_VERSION_TAG
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+)
+
 # Define current git branch
 execute_process(
     COMMAND git rev-parse --abbrev-ref HEAD
