@@ -232,7 +232,7 @@ static money32 BannerPlace(
     }
 
     *bannerIndex = create_new_banner(flags);
-    if (*bannerIndex == BANNER_NULL)
+    if (*bannerIndex == BANNER_INDEX_NULL)
     {
         return MONEY32_UNDEFINED;
     }
@@ -505,7 +505,7 @@ void fix_duplicated_banners()
 
                         // Banner index is already in use by another banner, so duplicate it
                         BannerIndex newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
-                        if (newBannerIndex == BANNER_NULL)
+                        if (newBannerIndex == BANNER_INDEX_NULL)
                         {
                             log_error("Failed to create new banner.");
                             continue;

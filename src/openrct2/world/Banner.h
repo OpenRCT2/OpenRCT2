@@ -14,15 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _BANNER_H_
-#define _BANNER_H_
+#pragma once
 
 #include "../common.h"
 #include "TileElement.h"
 
-#define BANNER_NULL 255
-#define MAX_BANNERS 250
-#define BANNER_INDEX_NULL ((BannerIndex)-1)
+constexpr uint8 BANNER_NULL = 255;
+constexpr size_t MAX_BANNERS = 250;
+constexpr BannerIndex BANNER_INDEX_NULL = (BannerIndex)-1;
 
 #pragma pack(push, 1)
 struct rct_banner
@@ -59,5 +58,3 @@ uint8 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z);
 void banner_reset_broken_index();
 void fix_duplicated_banners();
 void game_command_callback_place_banner(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
-
-#endif

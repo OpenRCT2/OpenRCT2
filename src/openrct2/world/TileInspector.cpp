@@ -309,7 +309,7 @@ sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_tile_element elem
         {
             // The element to be pasted refers to a banner index - make a copy of it
             BannerIndex newBannerIndex = create_new_banner(flags);
-            if (newBannerIndex == BANNER_NULL)
+            if (newBannerIndex == BANNER_INDEX_NULL)
             {
                 return MONEY32_UNDEFINED;
             }
