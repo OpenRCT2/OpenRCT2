@@ -181,4 +181,10 @@ enum UnicodePolish
     UNICODE_Z_ACUTE = 378,
 };
 
+enum UnicodeDingbats
+{
+    UNICODE_DINGBATS_PLUS = 0x2795,
+    UNICODE_DINGBATS_MINUS = 0x2796,
+};
+
 #endif
