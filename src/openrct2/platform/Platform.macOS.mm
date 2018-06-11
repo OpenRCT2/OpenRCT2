@@ -1,5 +1,7 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright
 /*****************************************************************************
+ * Copyright (c) 2014-2018 OpenRCT2 Developers
+ *
 * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
 *
 * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
