@@ -15,33 +15,35 @@
 #pragma endregion
 
 #include <memory>
-#include "../common.h"
-#include "../Context.h"
-#include "../core/Console.hpp"
-#include "../core/Guard.hpp"
-#include "../core/Math.hpp"
-#include "../core/Path.hpp"
-#include "../core/String.hpp"
-#include "../object/ObjectManager.h"
-#include "../OpenRCT2.h"
-#include "../GameState.h"
-#include "../ParkImporter.h"
-#include "../scenario/ScenarioRepository.h"
-#include "../scenario/ScenarioSources.h"
-#include "TitleScreen.h"
-#include "TitleSequence.h"
-#include "TitleSequenceManager.h"
+#include <openrct2/common.h>
+#include <openrct2/Context.h>
+#include <openrct2/core/Console.hpp>
+#include <openrct2/core/Guard.hpp>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/core/Path.hpp>
+#include <openrct2/core/String.hpp>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/GameState.h>
+#include <openrct2/ParkImporter.h>
+#include <openrct2/scenario/ScenarioRepository.h>
+#include <openrct2/scenario/ScenarioSources.h>
+#include <openrct2/title/TitleScreen.h>
+#include <openrct2/title/TitleSequence.h>
+#include <openrct2/title/TitleSequenceManager.h>
+#include <openrct2/title/TitleSequencePlayer.h>
+#include <openrct2/Game.h>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/Window.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
+#include <openrct2/management/NewsItem.h>
+#include <openrct2/windows/Intent.h>
+#include <openrct2/world/Map.h>
+#include <openrct2/world/Scenery.h>
+#include <openrct2/world/Sprite.h>
 #include "TitleSequencePlayer.h"
-
-#include "../Game.h"
-#include "../interface/Viewport.h"
 #include "../interface/Window.h"
-#include "../interface/Window_internal.h"
-#include "../management/NewsItem.h"
-#include "../windows/Intent.h"
-#include "../world/Map.h"
-#include "../world/Scenery.h"
-#include "../world/Sprite.h"
 
 using namespace OpenRCT2;
 
@@ -502,36 +504,8 @@ private:
 
     void PrepareParkForPlayback()
     {
-        rct_window * w = window_get_main();
-        if (w == nullptr)
-        {
-            return;
-        }
-        w->viewport_target_sprite = SPRITE_INDEX_NULL;
-        w->saved_view_x = gSavedViewX;
-        w->saved_view_y = gSavedViewY;
-
-        sint8 zoomDifference = gSavedViewZoom - w->viewport->zoom;
-        w->viewport->zoom = gSavedViewZoom;
-        gCurrentRotation = gSavedViewRotation;
-        if (zoomDifference != 0)
-        {
-            if (zoomDifference < 0)
-            {
-                zoomDifference = -zoomDifference;
-                w->viewport->view_width >>= zoomDifference;
-                w->viewport->view_height >>= zoomDifference;
-            }
-            else
-            {
-                w->viewport->view_width <<= zoomDifference;
-                w->viewport->view_height <<= zoomDifference;
-            }
-        }
-        w->saved_view_x -= w->viewport->view_width >> 1;
-        w->saved_view_y -= w->viewport->view_height >> 1;
-
-        window_invalidate(w);
+        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        windowManager->SetMainView(gSavedViewX, gSavedViewY, gSavedViewZoom, gSavedViewRotation);
         reset_sprite_spatial_index();
         reset_all_sprite_quadrant_placements();
         auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
@@ -589,35 +563,7 @@ private:
     }
 };
 
-ITitleSequencePlayer * CreateTitleSequencePlayer(IScenarioRepository& scenarioRepository, GameState& gameState)
+std::unique_ptr<ITitleSequencePlayer> CreateTitleSequencePlayer(IScenarioRepository& scenarioRepository, GameState& gameState)
 {
-    return new TitleSequencePlayer(scenarioRepository, gameState);
+    return std::make_unique<TitleSequencePlayer>(scenarioRepository, gameState);
 }
-
-bool gPreviewingTitleSequenceInGame = false;
-
-sint32 title_sequence_player_get_current_position(ITitleSequencePlayer * player)
-{
-    return player->GetCurrentPosition();
-}
-
-bool title_sequence_player_begin(ITitleSequencePlayer * player, uint32 titleSequenceId)
-{
-    return player->Begin(titleSequenceId);
-}
-
-void title_sequence_player_reset(ITitleSequencePlayer * player)
-{
-    player->Reset();
-}
-
-bool title_sequence_player_update(ITitleSequencePlayer * player)
-{
-    return player->Update();
-}
-
-void title_sequence_player_seek(ITitleSequencePlayer * player, uint32 position)
-{
-    player->Seek(position);
-}
-

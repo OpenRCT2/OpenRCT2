@@ -36,3 +36,4 @@ enum TILE_INSPECTOR_PAGE
 extern uint32 windowTileInspectorTileX;
 extern uint32 windowTileInspectorTileY;
 extern sint32 windowTileInspectorElementCount;
+extern sint32 windowTileInspectorSelectedIndex;

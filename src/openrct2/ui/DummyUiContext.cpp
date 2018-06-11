@@ -104,6 +104,8 @@ namespace OpenRCT2::Ui
             return false;
         }
 
+        ITitleSequencePlayer * GetTitleSequencePlayer() override { return nullptr; }
+
         ~DummyUiContext() { delete _windowManager; }
     };
 

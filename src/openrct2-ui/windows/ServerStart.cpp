@@ -22,10 +22,10 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/interface/Chat.h>
-#include <openrct2/interface/themes.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
+#include "../interface/Theme.h"
 
 static char _port[7];
 static char _name[65];

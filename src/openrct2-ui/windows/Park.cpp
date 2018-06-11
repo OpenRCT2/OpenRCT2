@@ -33,9 +33,9 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Entrance.h>
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2/interface/themes.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/scenario/Scenario.h>
+#include "../interface/Theme.h"
 
 // clang-format off
 enum WINDOW_PARK_PAGE {

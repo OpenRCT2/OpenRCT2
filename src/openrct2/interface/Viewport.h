@@ -158,8 +158,6 @@ sint32 viewport_interaction_right_over(sint32 x, sint32 y);
 sint32 viewport_interaction_right_click(sint32 x, sint32 y);
 void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *direction, rct_tile_element **tileElement);
 
-void viewport_interaction_remove_park_entrance(rct_tile_element *tileElement, sint32 x, sint32 y);
-
 void sub_68B2B7(paint_session * session, sint32 x, sint32 y);
 void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps);
 

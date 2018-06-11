@@ -28,7 +28,6 @@
 #include "Input.h"
 #include "interface/Screenshot.h"
 #include "interface/Viewport.h"
-#include "interface/Widget.h"
 #include "interface/Window.h"
 #include "localisation/Localisation.h"
 #include "management/Finance.h"
@@ -51,7 +50,8 @@
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
 #include "title/TitleScreen.h"
-#include "title/TitleSequencePlayer.h"
+#include "ui/UiContext.h"
+#include "ui/WindowManager.h"
 #include "util/SawyerCoding.h"
 #include "util/Util.h"
 #include "windows/Intent.h"
@@ -67,7 +67,6 @@
 #include "world/Surface.h"
 #include "world/Water.h"
 #include "object/ObjectList.h"
-#include "interface/Window_internal.h"
 
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 
@@ -1136,28 +1135,8 @@ void game_load_init()
         window_unfollow_sprite(mainWindow);
     }
 
-    if (mainWindow != nullptr)
-    {
-        rct_viewport * viewport = window_get_viewport(mainWindow);
-        mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
-        mainWindow->saved_view_x           = gSavedViewX;
-        mainWindow->saved_view_y           = gSavedViewY;
-        uint8 zoomDifference = gSavedViewZoom - viewport->zoom;
-        viewport->zoom = gSavedViewZoom;
-        gCurrentRotation = gSavedViewRotation;
-        if (zoomDifference != 0)
-        {
-            viewport->view_width <<= zoomDifference;
-            viewport->view_height <<= zoomDifference;
-        }
-        mainWindow->saved_view_x -= viewport->view_width >> 1;
-        mainWindow->saved_view_y -= viewport->view_height >> 1;
-
-        // Make sure the viewport has correct coordinates set.
-        viewport_update_position(mainWindow);
-
-        window_invalidate(mainWindow);
-    }
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    windowManager->SetMainView(gSavedViewX, gSavedViewY, gSavedViewZoom, gSavedViewRotation);
 
     if (network_get_mode() != NETWORK_MODE_CLIENT)
     {

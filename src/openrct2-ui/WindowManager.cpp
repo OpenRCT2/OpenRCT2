@@ -18,9 +18,12 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/config/Config.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/Input.h>
+#include <openrct2/world/Sprite.h>
 #include "input/Input.h"
 #include "input/KeyboardShortcuts.h"
+#include "interface/Theme.h"
 #include "WindowManager.h"
 #include "windows/Window.h"
 
@@ -31,6 +34,7 @@ class WindowManager final : public IWindowManager
 public:
     void Init() override
     {
+        theme_manager_initialise();
         window_guest_list_init_vars();
         window_new_ride_init_vars();
     }
@@ -303,6 +307,24 @@ public:
             window_maze_construction_update_pressed_widgets();
             break;
 
+        case INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS:
+        {
+            auto rideIndex = intent.GetUIntExtra(INTENT_EXTRA_RIDE_ID);
+            auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+            if (w == nullptr || w->number != rideIndex)
+            {
+                window_close_construction_windows();
+                _currentRideIndex = rideIndex;
+                w = OpenWindow(WC_RIDE_CONSTRUCTION);
+            }
+            else
+            {
+                ride_construction_invalidate_current_track();
+                _currentRideIndex = rideIndex;
+            }
+            break;
+        }
+
         case INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES:
             window_ride_construction_update_enabled_track_pieces();
             break;
@@ -366,6 +388,20 @@ public:
 
             window_invalidate(w);
             break;
+        }
+
+        case INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE:
+        {
+            auto rideIndex = intent.GetUIntExtra(INTENT_EXTRA_RIDE_ID);
+            auto w = window_find_by_number(WC_RIDE, rideIndex);
+            if (w != nullptr)
+            {
+                if (w->page == 4) // WINDOW_RIDE_PAGE_COLOUR
+                { 
+                    w->vehicleIndex = 0;
+                }
+                window_invalidate(w);
+            }
         }
 
         case INTENT_ACTION_UPDATE_CLIMATE:
@@ -438,6 +474,38 @@ public:
         utf8 buffer[256];
         keyboard_shortcuts_format_string(buffer, sizeof(buffer), shortcut);
         return std::string(buffer);
+    }
+
+    void SetMainView(sint32 x, sint32 y, sint32 zoom, sint32 rotation) override
+    {
+        auto mainWindow = window_get_main();
+        if (mainWindow != nullptr)
+        {
+            auto viewport = window_get_viewport(mainWindow);
+            mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
+            mainWindow->saved_view_x = x;
+            mainWindow->saved_view_y = y;
+            viewport->zoom = zoom;
+            gCurrentRotation = rotation;
+            auto zoomDifference = zoom - viewport->zoom;
+            if (zoomDifference != 0)
+            {
+                viewport->view_width <<= zoomDifference;
+                viewport->view_height <<= zoomDifference;
+            }
+            mainWindow->saved_view_x -= viewport->view_width >> 1;
+            mainWindow->saved_view_y -= viewport->view_height >> 1;
+
+            // Make sure the viewport has correct coordinates set.
+            viewport_update_position(mainWindow);
+
+            window_invalidate(mainWindow);
+        }
+    }
+
+    void UpdateMouseWheel() override
+    {
+        window_all_wheel_input();
     }
 };
 

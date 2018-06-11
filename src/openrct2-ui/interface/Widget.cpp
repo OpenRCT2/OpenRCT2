@@ -16,15 +16,14 @@
 
 #include <algorithm>
 #include <cmath>
-#include "../drawing/Drawing.h"
-#include "../Input.h"
-#include "../sprites.h"
-#include "../localisation/Localisation.h"
-#include "../util/Util.h"
-#include "../Context.h"
+#include <openrct2/Context.h>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/Input.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/sprites.h>
+#include <openrct2/util/Util.h>
 #include "Widget.h"
 #include "Window.h"
-#include "Window_internal.h"
 
 static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
 static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
@@ -44,71 +43,6 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widget
 static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, sint32 l, sint32 t, sint32 r, sint32 b, sint32 colour);
 static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, sint32 l, sint32 t, sint32 r, sint32 b, sint32 colour);
 static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
-
-/**
- *
- *  rct2: 0x006EAF26
- */
-void widget_scroll_update_thumbs(rct_window *w, rct_widgetindex widget_index)
-{
-    rct_widget *widget = &w->widgets[widget_index];
-    rct_scroll* scroll = &w->scrolls[window_get_scroll_data_index(w, widget_index)];
-
-    if (scroll->flags & HSCROLLBAR_VISIBLE) {
-        sint32 view_size = widget->right - widget->left - 21;
-        if (scroll->flags & VSCROLLBAR_VISIBLE)
-            view_size -= 11;
-        sint32 x = scroll->h_left * view_size;
-        if (scroll->h_right != 0)
-            x /= scroll->h_right;
-        scroll->h_thumb_left = x + 11;
-
-        x = widget->right - widget->left - 2;
-        if (scroll->flags & VSCROLLBAR_VISIBLE)
-            x -= 11;
-        x += scroll->h_left;
-        if (scroll->h_right != 0)
-            x = (x * view_size) / scroll->h_right;
-        x += 11;
-        view_size += 10;
-        scroll->h_thumb_right = std::min(x, view_size);
-
-        if(scroll->h_thumb_right - scroll->h_thumb_left < 20) {
-            double barPosition = (scroll->h_thumb_right * 1.0) / view_size;
-
-            scroll->h_thumb_left = (uint16)std::lround(scroll->h_thumb_left - (20 * barPosition));
-            scroll->h_thumb_right = (uint16)std::lround(scroll->h_thumb_right + (20 * (1 - barPosition)));
-        }
-    }
-
-    if (scroll->flags & VSCROLLBAR_VISIBLE) {
-        sint32 view_size = widget->bottom - widget->top - 21;
-        if (scroll->flags & HSCROLLBAR_VISIBLE)
-            view_size -= 11;
-        sint32 y = scroll->v_top * view_size;
-        if (scroll->v_bottom != 0)
-            y /= scroll->v_bottom;
-        scroll->v_thumb_top = y + 11;
-
-        y = widget->bottom - widget->top - 2;
-        if (scroll->flags & HSCROLLBAR_VISIBLE)
-            y -= 11;
-        y += scroll->v_top;
-        if (scroll->v_bottom != 0)
-            y = (y * view_size) / scroll->v_bottom;
-        y += 11;
-        view_size += 10;
-        scroll->v_thumb_bottom = std::min(y, view_size);
-
-        if(scroll->v_thumb_bottom - scroll->v_thumb_top < 20) {
-            double barPosition = (scroll->v_thumb_bottom * 1.0) / view_size;
-
-            scroll->v_thumb_top = (uint16)std::lround(scroll->v_thumb_top - (20 * barPosition));
-            scroll->v_thumb_bottom = (uint16)std::lround(scroll->v_thumb_bottom + (20 * (1 - barPosition)));
-        }
-    }
-
-}
 
 /**
  *

@@ -28,7 +28,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2-ui/windows/Window.h>
-
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -37,6 +36,7 @@
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/scenario/Scenario.h>
+#include "../title/TitleSequencePlayer.h"
 
 // clang-format off
 enum WINDOW_TITLE_EDITOR_TAB {
@@ -440,9 +440,9 @@ static void window_title_editor_mouseup(rct_window * w, rct_widgetindex widgetIn
         sint32 position = w->selected_list_item;
         if (title_is_previewing_sequence() && position != -1 && position < (sint32)_editingTitleSequence->NumCommands)
         {
-            ITitleSequencePlayer * player = window_title_editor_get_player();
-            title_sequence_player_seek(player, position);
-            title_sequence_player_update(player);
+            auto player = window_title_editor_get_player();
+            player->Seek(position);
+            player->Update();
         }
         break;
     }
@@ -479,9 +479,9 @@ static void window_title_editor_mouseup(rct_window * w, rct_widgetindex widgetIn
     case WIDX_TITLE_EDITOR_REPLAY:
         if (title_is_previewing_sequence())
         {
-            ITitleSequencePlayer * player = window_title_editor_get_player();
-            title_sequence_player_reset(player);
-            title_sequence_player_update(player);
+            auto player = window_title_editor_get_player();
+            player->Reset();
+            player->Update();
         }
         break;
     case WIDX_TITLE_EDITOR_STOP:
@@ -506,14 +506,14 @@ static void window_title_editor_mouseup(rct_window * w, rct_widgetindex widgetIn
     case WIDX_TITLE_EDITOR_SKIP:
         if (title_is_previewing_sequence())
         {
-            ITitleSequencePlayer * player = window_title_editor_get_player();
-            sint32 position = title_sequence_player_get_current_position(player) + 1;
+            auto player = window_title_editor_get_player();
+            sint32 position = player->GetCurrentPosition() + 1;
             if (position >= (sint32)_editingTitleSequence->NumCommands)
             {
                 position = 0;
             }
-            title_sequence_player_seek(player, position);
-            title_sequence_player_update(player);
+            player->Seek(position);
+            player->Update();
         }
         break;
     }
@@ -927,8 +927,8 @@ static void window_title_editor_scrollpaint_commands(rct_window * w, rct_drawpix
     sint32 position = -1;
     if (title_is_previewing_sequence() && _selectedTitleSequence == title_get_current_sequence())
     {
-        ITitleSequencePlayer * player = window_title_editor_get_player();
-        position = title_sequence_player_get_current_position(player);
+        auto player = window_title_editor_get_player();
+        position = player->GetCurrentPosition();
     }
 
     sint32 x = 0;

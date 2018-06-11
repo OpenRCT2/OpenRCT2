@@ -34,6 +34,7 @@
 #include "world/MapAnimation.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
+#include "ui/UiContext.h"
 
 using namespace OpenRCT2;
 
@@ -87,7 +88,11 @@ void GameState::Update()
 
     if (game_is_not_paused() && gPreviewingTitleSequenceInGame)
     {
-        title_sequence_player_update((ITitleSequencePlayer *) title_get_sequence_player());
+        auto player = GetContext()->GetUiContext()->GetTitleSequencePlayer();
+        if (player != nullptr)
+        {
+            player->Update();
+        }
     }
 
     // Determine how many times we need to update the game

@@ -27,7 +27,6 @@
 #include <openrct2/core/Util.hpp>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
-#include <openrct2/interface/themes.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Date.h>
@@ -51,6 +50,7 @@
 #include <openrct2/ride/Station.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/ride/TrackDesign.h>
+#include "../interface/Theme.h"
 
 enum {
     WINDOW_RIDE_PAGE_MAIN,

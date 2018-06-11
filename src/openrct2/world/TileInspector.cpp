@@ -20,7 +20,6 @@
 #include "../Game.h"
 #include "../core/Guard.hpp"
 #include "../interface/Window.h"
-#include "../interface/Window_internal.h"
 #include "../localisation/Localisation.h"
 #include "../ride/Track.h"
 #include "../windows/Intent.h"
@@ -34,9 +33,12 @@
 #include "../ride/Station.h"
 #include "Park.h"
 
+using namespace OpenRCT2;
+
 uint32 windowTileInspectorTileX;
 uint32 windowTileInspectorTileY;
 sint32 windowTileInspectorElementCount = 0;
+sint32 windowTileInspectorSelectedIndex;
 
 static bool map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second)
 {
@@ -127,9 +129,9 @@ sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 elementIndex,
             windowTileInspectorElementCount++;
 
             // Keep other elements (that are not being hidden) selected
-            if (tileInspectorWindow->selected_list_item > elementIndex)
+            if (windowTileInspectorSelectedIndex > elementIndex)
             {
-                tileInspectorWindow->selected_list_item++;
+                windowTileInspectorSelectedIndex++;
             }
 
             window_invalidate(tileInspectorWindow);
@@ -164,13 +166,13 @@ sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 elementIndex,
         {
             windowTileInspectorElementCount--;
 
-            if (tileInspectorWindow->selected_list_item > elementIndex)
+            if (windowTileInspectorSelectedIndex > elementIndex)
             {
-                tileInspectorWindow->selected_list_item--;
+                windowTileInspectorSelectedIndex--;
             }
-            else if (tileInspectorWindow->selected_list_item == elementIndex)
+            else if (windowTileInspectorSelectedIndex == elementIndex)
             {
-                tileInspectorWindow->selected_list_item = -1;
+                windowTileInspectorSelectedIndex = -1;
             }
 
             window_invalidate(tileInspectorWindow);
@@ -195,10 +197,10 @@ sint32 tile_inspector_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 
         if (tileInspectorWindow != nullptr && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
         {
             // If one of them was selected, update selected list item
-            if (tileInspectorWindow->selected_list_item == first)
-                tileInspectorWindow->selected_list_item = second;
-            else if (tileInspectorWindow->selected_list_item == second)
-                tileInspectorWindow->selected_list_item = first;
+            if (windowTileInspectorSelectedIndex == first)
+                windowTileInspectorSelectedIndex = second;
+            else if (windowTileInspectorSelectedIndex == second)
+                windowTileInspectorSelectedIndex = first;
 
             window_invalidate(tileInspectorWindow);
         }
@@ -351,10 +353,10 @@ sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_tile_element elem
 
             // Select new element if there was none selected already
             sint16 newIndex = (sint16)(pastedElement - map_get_first_element_at(x, y));
-            if (tileInspectorWindow->selected_list_item == -1)
-                tileInspectorWindow->selected_list_item = newIndex;
-            else if (tileInspectorWindow->selected_list_item >= newIndex)
-                tileInspectorWindow->selected_list_item++;
+            if (windowTileInspectorSelectedIndex == -1)
+                windowTileInspectorSelectedIndex = newIndex;
+            else if (windowTileInspectorSelectedIndex >= newIndex)
+                windowTileInspectorSelectedIndex++;
 
             window_invalidate(tileInspectorWindow);
         }
@@ -410,7 +412,7 @@ sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags)
         rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
         if (tileInspectorWindow != nullptr && (uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)
         {
-            tileInspectorWindow->selected_list_item = -1;
+            windowTileInspectorSelectedIndex = -1;
             window_invalidate(tileInspectorWindow);
         }
     }

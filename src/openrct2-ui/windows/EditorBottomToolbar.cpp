@@ -26,13 +26,13 @@
 #include <openrct2/Input.h>
 #include <openrct2/sprites.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/interface/themes.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/Park.h>
+#include "../interface/Theme.h"
 
 // clang-format off
 enum {

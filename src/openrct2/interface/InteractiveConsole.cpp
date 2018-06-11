@@ -31,7 +31,6 @@
 #include "../EditorObjectSelectionSession.h"
 #include "../Game.h"
 #include "../interface/Colour.h"
-#include "../interface/themes.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/User.h"
 #include "../management/Finance.h"

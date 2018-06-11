@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
+#pragma region Copyright (c) 2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,17 +16,15 @@
 
 #pragma once
 
-#include "../common.h"
+#include <memory>
+#include <openrct2/common.h>
 
-interface ITitleSequencePlayer
+interface ITitleSequencePlayer;
+interface IScenarioRepository;
+
+namespace OpenRCT2
 {
-    virtual ~ITitleSequencePlayer() = default;
+    class GameState;
+}
 
-    virtual sint32 GetCurrentPosition() const abstract;
-
-    virtual bool Begin(size_t titleSequenceId) abstract;
-    virtual void Reset() abstract;
-    virtual bool Update() abstract;
-    virtual void Seek(sint32 position) abstract;
-    virtual void Eject() abstract;
-};
+std::unique_ptr<ITitleSequencePlayer> CreateTitleSequencePlayer(IScenarioRepository& scenarioRepository, OpenRCT2::GameState& gameState);

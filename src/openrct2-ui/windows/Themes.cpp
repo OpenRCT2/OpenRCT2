@@ -24,9 +24,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2/interface/themes.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/drawing/Drawing.h>
+#include "../interface/Theme.h"
 
 // clang-format off
 enum {

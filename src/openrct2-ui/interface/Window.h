@@ -18,3 +18,5 @@
 
 #include <openrct2/interface/Window.h>
 #include <openrct2/interface/Window_internal.h>
+
+void window_all_wheel_input();
