@@ -52,6 +52,7 @@ static constexpr const uint8 BoundBoxDebugColours[] =
 
 bool gShowDirtyVisuals;
 bool gPaintBoundingBoxes;
+bool gPaintBlockedTiles;
 
 static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi);
 static void paint_attached_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags);

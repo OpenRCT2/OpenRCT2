@@ -4566,6 +4566,7 @@ STR_6256    :Rendering effects
 STR_6257    :Glassy (translucent)
 STR_6258    :Clear (transparent)
 STR_6259    :Disabled
+STR_6260    :Show blocked tiles
 
 #############
 # Scenarios #

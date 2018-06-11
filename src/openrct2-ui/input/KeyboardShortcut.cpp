@@ -622,13 +622,6 @@ static void shortcut_show_multiplayer()
         context_open_window(WC_MULTIPLAYER);
 }
 
-static void shortcut_orginal_painting_toggle()
-{
-    gUseOriginalRidePaint = !gUseOriginalRidePaint;
-    window_invalidate_by_class(WC_DEBUG_PAINT);
-    gfx_invalidate_screen();
-}
-
 static void shortcut_debug_paint_toggle()
 {
     rct_window * window = window_find_by_class(WC_DEBUG_PAINT);
@@ -815,7 +808,7 @@ namespace
         shortcut_mute_sound,
         shortcut_windowed_mode_toggle,
         shortcut_show_multiplayer,
-        shortcut_orginal_painting_toggle,
+        nullptr,
         shortcut_debug_paint_toggle,
         shortcut_see_through_paths_toggle,
         shortcut_ride_construction_turn_left,

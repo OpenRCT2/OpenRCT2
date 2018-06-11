@@ -49,6 +49,8 @@
 #include "../windows/Intent.h"
 
 static void vehicle_update(rct_vehicle * vehicle);
+static void vehicle_update_crossings(const rct_vehicle * vehicle);
+static void vehicle_claxon(const rct_vehicle * vehicle);
 
 static void   vehicle_update_showing_film(rct_vehicle * vehicle);
 static void   vehicle_update_doing_circus_show(rct_vehicle * vehicle);
@@ -3357,6 +3359,9 @@ static void vehicle_update_departing(rct_vehicle * vehicle)
         {
             vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
             vehicle->velocity = 0;
+
+            // We have turned, so treat it like entering a new tile
+            vehicle_update_crossings(vehicle);
         }
     }
 
@@ -8277,6 +8282,8 @@ loc_6DAEB9:
     uint16 trackTotalProgress = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
     if (regs.ax >= trackTotalProgress)
     {
+        vehicle_update_crossings(vehicle);
+
         if (!vehicle_update_track_motion_forwards_get_new_track(vehicle, trackType, ride, rideEntry))
         {
             goto loc_6DB94A;
@@ -8622,6 +8629,8 @@ loc_6DBA33:;
     regs.ax = vehicle->track_progress - 1;
     if (regs.ax == -1)
     {
+        vehicle_update_crossings(vehicle);
+
         if (!vehicle_update_track_motion_backwards_get_new_track(vehicle, trackType, ride, (uint16 *)&regs.ax))
         {
             goto loc_6DBE5E;
@@ -9895,4 +9904,151 @@ void vehicle_invalidate_window(rct_vehicle * vehicle)
     auto intent = Intent(INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW);
     intent.putExtra(INTENT_EXTRA_VEHICLE, vehicle);
     context_broadcast_intent(&intent);
+}
+
+void vehicle_update_crossings(const rct_vehicle * vehicle)
+{
+    if (vehicle_get_head(vehicle) != vehicle)
+    {
+        return;
+    }
+
+    const rct_vehicle * frontVehicle{};
+    const rct_vehicle * backVehicle{};
+
+    bool travellingForwards = !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE);
+
+    if (travellingForwards)
+    {
+        frontVehicle = vehicle;
+        backVehicle = vehicle_get_tail(vehicle);
+    }
+    else
+    {
+        frontVehicle = vehicle_get_tail(vehicle);
+        backVehicle = vehicle;
+    }
+
+    CoordsXYE xyElement;
+    track_begin_end output;
+    sint32 z, direction;
+
+    xyElement.x = frontVehicle->track_x;
+    xyElement.y = frontVehicle->track_y;
+    z           = frontVehicle->track_z;
+    xyElement.element = map_get_track_element_at_of_type_seq(
+        frontVehicle->track_x, frontVehicle->track_y, frontVehicle->track_z >> 3,
+        frontVehicle->track_type >> 2, 0
+        );
+
+    if (xyElement.element && vehicle->status != VEHICLE_STATUS_ARRIVING)
+    {
+        sint16  autoReserveAhead = 4 + abs(vehicle->velocity) / 150000;
+        sint16  crossingBonus = 0;
+        bool    playedClaxon = false;
+
+            // vehicle positions mean we have to take larger
+            //  margins for travelling backwards
+        if (!travellingForwards)
+        {
+            autoReserveAhead += 1;
+        }
+
+        while (true)
+        {
+            rct_tile_element *tileElement = map_get_path_element_at(
+               xyElement.x / 32,
+               xyElement.y / 32,
+               xyElement.element->base_height
+            );
+
+            if (tileElement)
+            {
+                if (!playedClaxon && 0 == (tileElement->flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE))
+                {
+                    vehicle_claxon(vehicle);
+                }
+                crossingBonus = 4;
+                tileElement->flags |= TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+            }
+            else
+            {
+                crossingBonus = 0;
+            }
+
+            if (--autoReserveAhead + crossingBonus <= 0)
+            {
+                break;
+            }
+
+            z = xyElement.element->base_height;
+
+            if (travellingForwards)
+            {
+                if (!track_block_get_next(&xyElement, &xyElement, &z, &direction))
+                {
+                    break;
+                }
+            }
+            else
+            {
+                if (!track_block_get_previous(xyElement.x, xyElement.y, xyElement.element, &output))
+                {
+                    break;
+                }
+                xyElement.x = output.begin_x;
+                xyElement.y = output.begin_y;
+                xyElement.element = output.begin_element;
+            }
+
+            if (xyElement.element->properties.track.type == TRACK_ELEM_BEGIN_STATION ||
+                xyElement.element->properties.track.type == TRACK_ELEM_MIDDLE_STATION ||
+                xyElement.element->properties.track.type == TRACK_ELEM_END_STATION)
+            {
+                break;
+            }
+        }
+    }
+
+    xyElement.x = backVehicle->track_x;
+    xyElement.y = backVehicle->track_y;
+    z           = backVehicle->track_z;
+    xyElement.element = map_get_track_element_at_of_type_seq(
+        backVehicle->track_x, backVehicle->track_y, backVehicle->track_z >> 3,
+        backVehicle->track_type >> 2, 0
+        );
+
+    if (xyElement.element)
+    {
+        uint8 freeCount = travellingForwards? 3 : 1;
+
+        while (freeCount-- > 0)
+        {
+            if (travellingForwards)
+            {
+                if (track_block_get_previous(xyElement.x, xyElement.y, xyElement.element, &output))
+                {
+                    xyElement.x = output.begin_x;
+                    xyElement.y = output.begin_y;
+                    xyElement.element = output.begin_element;
+                }
+            }
+
+            rct_tile_element *tileElement = map_get_path_element_at(
+                xyElement.x / 32,
+                xyElement.y / 32,
+                xyElement.element->base_height
+            );
+            if (tileElement)
+            {
+                tileElement->flags &= ~TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+            }
+        }
+    }
+}
+
+void vehicle_claxon(const rct_vehicle * vehicle)
+{
+    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+    audio_play_sound_at_location((rideEntry->vehicles[0].sound_range == 3)? SOUND_TRAIN_WHISTLE : SOUND_TRAM, vehicle->x, vehicle->y, vehicle->z);
 }

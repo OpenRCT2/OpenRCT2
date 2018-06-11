@@ -5248,6 +5248,18 @@ void rct_peep::UpdateWalking()
         }
     }
 
+    // Check if vehicle is blocking the destination tile
+    auto curPos = TileCoordsXYZ(CoordsXYZ { x, y, z });
+    auto dstPos = TileCoordsXYZ(CoordsXY { destination_x, destination_y }, next_z);
+    if (curPos.x != dstPos.x || curPos.y != dstPos.y)
+    {
+        if (footpath_is_blocked_by_vehicle(dstPos))
+        {
+            // Wait for vehicle to pass
+            return;
+        }
+    }
+
     uint8 pathingResult;
     PerformNextAction(pathingResult);
     if (!(pathingResult & PATHING_DESTINATION_REACHED))

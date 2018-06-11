@@ -149,6 +149,7 @@ void footpath_update_queue_chains();
 bool fence_in_the_way(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction);
 void footpath_chain_ride_queue(sint32 rideIndex, sint32 entranceIndex, sint32 x, sint32 y, rct_tile_element * tileElement, sint32 direction);
 void footpath_update_path_wide_flags(sint32 x, sint32 y);
+bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
 
 sint32 footpath_is_connected_to_map_edge(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 flags);
 bool footpath_element_is_sloped(const rct_tile_element * tileElement);
