@@ -181,6 +181,11 @@ enum UnicodePolish
     UNICODE_Z_ACUTE = 378,
 };
 
+enum UnicodeGerman
+{
+    UNICODE_CAPITAL_SHARP_S = 0x1E9E,
+};
+
 enum UnicodeDingbats
 {
     UNICODE_DINGBATS_PLUS = 0x2795,
