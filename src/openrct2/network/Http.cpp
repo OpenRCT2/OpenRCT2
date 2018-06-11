@@ -33,15 +33,15 @@
 
 #define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
 
-namespace http
+namespace OpenRCT2::Network::Http
 {
 
-HTTP::HTTP()
+Http::Http()
 {
     curl_global_init(CURL_GLOBAL_DEFAULT);
 }
 
-HTTP::~HTTP()
+Http::~Http()
 {
     curl_global_cleanup();
 }
@@ -178,7 +178,7 @@ void DoAsync(const Request & req, std::function<void(Response & res)> fn)
         Response res;
         try
         {
-            res = http::Do(req);
+            res = Do(req);
         }
         catch (std::exception & e)
         {
@@ -190,7 +190,7 @@ void DoAsync(const Request & req, std::function<void(Response & res)> fn)
     thread.detach();
 }
 
-size_t download_park(const char * url, void ** outData)
+size_t DownloadPark(const char * url, void ** outData)
 {
     // Download park to buffer in memory
     Request request;
@@ -225,6 +225,6 @@ size_t download_park(const char * url, void ** outData)
     return dataSize;
 }
 
-} // namespace http
+} // namespace OpenRCT2::Network
 
 #endif

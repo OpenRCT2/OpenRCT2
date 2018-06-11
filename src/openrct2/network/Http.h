@@ -14,8 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef OPENRCT2_NETWORK_HTTP_H_
-#define OPENRCT2_NETWORK_HTTP_H_
+#pragma once
 
 #ifndef DISABLE_HTTP
 
@@ -25,7 +24,7 @@
 
 #include "../common.h"
 
-namespace http
+namespace OpenRCT2::Network::Http
 {
 
 enum class Status
@@ -44,24 +43,24 @@ struct Response
 {
     Status                             status;
     std::string                        content_type;
-    std::string                        body;
-    std::map<std::string, std::string> header;
-    std::string                        error;
+    std::string                        body   = "";
+    std::map<std::string, std::string> header = {};
+    std::string                        error  = "";
 };
 
 struct Request
 {
     std::string                        url;
-    std::map<std::string, std::string> header;
-    Method                             method;
-    std::string                        body;
-    bool                               forceIPv4;
+    std::map<std::string, std::string> header    = {};
+    Method                             method    = Method::GET;
+    std::string                        body      = "";
+    bool                               forceIPv4 = false;
 };
 
-struct HTTP
+struct Http
 {
-    HTTP();
-    ~HTTP();
+    Http();
+    ~Http();
 };
 
 Response Do(const Request & req);
@@ -74,10 +73,8 @@ void     DoAsync(const Request & req, std::function<void(Response & res)> fn);
  * @param outData The data returned.
  * @returns The size of the data or 0 if the download failed.
  */
-size_t download_park(const char * url, void ** outData);
+size_t DownloadPark(const char * url, void ** outData);
 
 } /* namespace http */
 
 #endif // DISABLE_HTTP
-
-#endif // OPENRCT2_NETWORK_HTTP_H

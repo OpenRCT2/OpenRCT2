@@ -33,6 +33,8 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/drawing/Drawing.h>
 
+using namespace OpenRCT2::Network;
+
 #define WWIDTH_MIN 500
 #define WHEIGHT_MIN 300
 #define WWIDTH_MAX 1200
@@ -136,7 +138,7 @@ static void sort_servers();
 static void join_server(std::string address);
 static void fetch_servers();
 #ifndef DISABLE_HTTP
-static void fetch_servers_callback(http::Response & response);
+static void fetch_servers_callback(Http::Response & response);
 #endif
 static bool is_version_valid(const std::string &version);
 
@@ -633,12 +635,12 @@ static void fetch_servers()
         sort_servers();
     }
 
-    http::Request request;
+    Http::Request request;
     request.url = masterServerUrl;
-    request.method           = http::Method::GET;
+    request.method           = Http::Method::GET;
     request.header["Accept"] = "application/json";
     status_text = STR_SERVER_LIST_CONNECTING;
-    http::DoAsync(request, fetch_servers_callback);
+    Http::DoAsync(request, fetch_servers_callback);
 #endif
 }
 
@@ -655,9 +657,9 @@ static uint32 get_total_player_count()
         });
 }
 
-static void fetch_servers_callback(http::Response & response)
+static void fetch_servers_callback(Http::Response & response)
 {
-    if (response.status != http::Status::OK)
+    if (response.status != Http::Status::OK)
     {
         status_text = STR_SERVER_LIST_NO_CONNECTION;
         window_invalidate_by_class(WC_SERVER_LIST);

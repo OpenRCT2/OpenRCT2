@@ -33,6 +33,8 @@
 #include "../world/Park.h"
 #include "Http.h"
 
+using namespace OpenRCT2::Network;
+
 #ifndef DISABLE_HTTP
 
 enum MASTER_SERVER_STATUS
@@ -103,9 +105,9 @@ private:
         _lastAdvertiseTime = platform_get_ticks();
 
         // Send the registration request
-        http::Request request;
+        Http::Request request;
         request.url = GetMasterServerUrl();
-        request.method = http::Method::POST;
+        request.method = Http::Method::POST;
         request.forceIPv4 = forceIPv4;
 
         json_t *body = json_object();
@@ -114,8 +116,8 @@ private:
         request.body                   = json_dumps(body, JSON_COMPACT);
         request.header["Content-Type"] = "application/json";
 
-        http::DoAsync(request, [&](http::Response response) -> void {
-            if (response.status != http::Status::OK)
+        Http::DoAsync(request, [&](Http::Response response) -> void {
+            if (response.status != Http::Status::OK)
             {
                 Console::WriteLine("Unable to connect to master server");
                 return;
@@ -130,17 +132,17 @@ private:
 
     void SendHeartbeat()
     {
-        http::Request request;
+        Http::Request request;
         request.url = GetMasterServerUrl();
-        request.method = http::Method::POST;
+        request.method = Http::Method::POST;
 
         json_t * body                  = GetHeartbeatJson();
         request.body                   = json_dumps(body, JSON_COMPACT);
         request.header["Content-Type"] = "application/json";
 
         _lastHeartbeatTime = platform_get_ticks();
-        http::DoAsync(request, [&](http::Response response) -> void {
-            if (response.status != http::Status::OK)
+        Http::DoAsync(request, [&](Http::Response response) -> void {
+            if (response.status != Http::Status::OK)
             {
                 Console::WriteLine("Unable to connect to master server");
                 return;

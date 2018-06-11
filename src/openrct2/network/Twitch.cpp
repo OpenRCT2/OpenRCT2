@@ -50,6 +50,7 @@
 #include "twitch.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Network;
 
 
 bool gTwitchEnable = false;
@@ -112,7 +113,7 @@ namespace Twitch
     static bool              _twitchIdle = true;
     static uint32            _twitchLastPulseTick = 0;
     static sint32               _twitchLastPulseOperation = 1;
-    static http::Response       _twitchJsonResponse;
+    static Http::Response       _twitchJsonResponse;
 
     static void Join();
     static void Leave();
@@ -208,14 +209,14 @@ namespace Twitch
         _twitchState = TWITCH_STATE_JOINING;
         _twitchIdle = false;
 
-        http::Request request;
+        Http::Request request;
         request.url = url;
-        request.method = http::Method::GET;
+        request.method = Http::Method::GET;
 
-        http::DoAsync(request, [](http::Response res) {
+        Http::DoAsync(request, [](Http::Response res) {
             std::shared_ptr<void> _(nullptr, [&](...) { _twitchIdle = true; });
 
-            if (res.status != http::Status::OK)
+            if (res.status != Http::Status::OK)
             {
                 _twitchState = TWITCH_STATE_LEFT;
                 GetContext()->WriteLine("Unable to connect to twitch channel.");
@@ -284,10 +285,10 @@ namespace Twitch
         _twitchState = TWITCH_STATE_WAITING;
         _twitchIdle = false;
 
-        http::DoAsync({ url }, [](http::Response res) {
+        Http::DoAsync({ url }, [](Http::Response res) {
             std::shared_ptr<void> _(nullptr, [&](...) { _twitchIdle = true; });
 
-            if (res.status != http::Status::OK)
+            if (res.status != Http::Status::OK)
             {
                 _twitchState = TWITCH_STATE_JOINED;
                 return;
@@ -316,10 +317,10 @@ namespace Twitch
         _twitchState = TWITCH_STATE_WAITING;
         _twitchIdle = false;
 
-        http::DoAsync({ url }, [](http::Response res) {
+        Http::DoAsync({ url }, [](Http::Response res) {
             std::shared_ptr<void> _(nullptr, [&](...) { _twitchIdle = true; });
 
-            if (res.status != http::Status::OK)
+            if (res.status != Http::Status::OK)
             {
                 _twitchState = TWITCH_STATE_JOINED;
                 return;
