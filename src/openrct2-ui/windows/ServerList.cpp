@@ -33,7 +33,9 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/drawing/Drawing.h>
 
+#ifndef DISABLE_HTTP
 using namespace OpenRCT2::Network;
+#endif
 
 #define WWIDTH_MIN 500
 #define WHEIGHT_MIN 300
@@ -136,8 +138,8 @@ static void dispose_server_entry_list();
 static server_entry & add_server_entry(const std::string &address);
 static void sort_servers();
 static void join_server(std::string address);
-static void fetch_servers();
 #ifndef DISABLE_HTTP
+static void fetch_servers();
 static void fetch_servers_callback(Http::Response & response);
 #endif
 static bool is_version_valid(const std::string &version);
@@ -181,7 +183,9 @@ rct_window * window_server_list_open()
     server_list_load_server_entries();
     window->no_list_items = (uint16)_serverEntries.size();
 
+#ifndef DISABLE_HTTP
     fetch_servers();
+#endif
 
     return window;
 }
@@ -221,7 +225,9 @@ static void window_server_list_mouseup(rct_window *w, rct_widgetindex widgetInde
             break;
         }
     case WIDX_FETCH_SERVERS:
+#ifndef DISABLE_HTTP
         fetch_servers();
+#endif
         break;
     case WIDX_ADD_SERVER:
         window_text_input_open(w, widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, STR_NONE, 0, 128);
@@ -613,9 +619,9 @@ static void join_server(std::string address)
     }
 }
 
+#ifndef DISABLE_HTTP
 static void fetch_servers()
 {
-#ifndef DISABLE_HTTP
     const char *masterServerUrl = OPENRCT2_MASTER_SERVER_URL;
     if (!str_is_null_or_empty(gConfigNetwork.master_server_url)) {
         masterServerUrl = gConfigNetwork.master_server_url;
@@ -641,10 +647,8 @@ static void fetch_servers()
     request.header["Accept"] = "application/json";
     status_text = STR_SERVER_LIST_CONNECTING;
     Http::DoAsync(request, fetch_servers_callback);
-#endif
 }
 
-#ifndef DISABLE_HTTP
 static uint32 get_total_player_count()
 {
     return std::accumulate(
