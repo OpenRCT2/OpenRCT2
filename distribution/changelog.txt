@@ -1,7 +1,7 @@
 0.2.0+ (in development)
 ------------------------------------------------------------------------
 - Feature: [#6998] Guests now wait for passing vehicles before crossing railway tracks.
-- Fix: [#7653] Finances money spinner is to narrow for big loans.
+- Fix: [#7653] Finances money spinner is too narrow for big loans.
 
 0.2.0 (2018-06-10)
 ------------------------------------------------------------------------
