@@ -36,12 +36,7 @@ static constexpr const rct_crooked_house_bound_box crooked_house_data[] = { { 6,
                                                      { 0, 6, 24, 42 } };
 
 /**
- * rct2: 0x0088ABA4
- * @param (edi) direction
- * @param (al) al
- * @param (cl) cl
- * @param (ebx) image_id
- * @param (edx) height
+ *  rct2: 0x0088ABA4
  */
 static void paint_crooked_house_structure(paint_session * session, uint8 direction, uint8 x_offset, uint8 y_offset,
                                           uint32 segment, sint32 height)

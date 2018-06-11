@@ -330,9 +330,6 @@ static void path_bit_jumping_fountains_paint(
 /**
  * rct2: 0x006A4101
  * @param tile_element (esi)
- * @param (ecx)
- * @param ebp (ebp)
- * @param base_image_id (0x00F3EF78)
  */
 static void sub_6A4101(
     paint_session *          session,

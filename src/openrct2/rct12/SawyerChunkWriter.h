@@ -41,7 +41,7 @@ public:
 
     /**
      * Writes a chunk to the stream containing the given buffer.
-     * @param dst The source buffer.
+     * @param src The source buffer.
      * @param length The size of the source buffer.
      */
     void WriteChunk(const void * src, size_t length, SAWYER_ENCODING encoding);

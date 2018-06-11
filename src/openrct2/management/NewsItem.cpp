@@ -291,10 +291,6 @@ void news_item_get_subject_location(sint32 type, sint32 subject, sint32 * x, sin
 /**
  *
  *  rct2: 0x0066DF55
- *
- * @param  a (al)
- * @param string_id (ebx)
- * @param c (ecx)
  */
 void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 {

@@ -401,7 +401,6 @@ static void td6_reset_trailing_elements(rct_track_td6 * td6)
 
 /**
  *
- * @param td6
  * @param clearScenery Set when importing TD4 designs, to avoid corrupted data being interpreted as scenery.
  */
 static void td6_set_element_helper_pointers(rct_track_td6 * td6, bool clearScenery)

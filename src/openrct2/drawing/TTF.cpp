@@ -16,8 +16,11 @@
 
 #ifndef NO_TTF
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#pragma clang diagnostic pop
 
 #include "../config/Config.h"
 #include "../localisation/Localisation.h"

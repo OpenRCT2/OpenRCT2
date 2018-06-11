@@ -600,11 +600,6 @@ bool rct_peep::UpdateAction()
  * start an action. Returns true if the correct destination
  * has not yet been reached. xy_distance is how close the
  * peep is to the target.
- *
- * @param actionX (ax)
- * @param actionY (cx)
- * @param distance (bp)
- * @param peep (esi)
  */
 bool rct_peep::UpdateAction(sint16 * actionX, sint16 * actionY, sint16 * xy_distance)
 {
@@ -2234,8 +2229,6 @@ sint32 get_peep_face_sprite_large(rct_peep * peep)
  *
  *  rct2: 0x0069A5A0
  * tests if a peep's name matches a cheat code, normally returns using a register flag
- * @param index (eax)
- * @param ride (esi)
  */
 sint32 peep_check_easteregg_name(sint32 index, rct_peep * peep)
 {

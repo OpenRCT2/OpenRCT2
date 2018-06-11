@@ -609,8 +609,7 @@ namespace Config
     /**
      * Attempts to find the RCT2 installation directory.
      * This should be created from some other resource when OpenRCT2 grows.
-     * @param resultPath Pointer to where the absolute path of the RCT2 installation directory will be copied to.
-     * @returns 1 if successful, otherwise 0.
+     * @returns Path to RCT2, if found. Empty string otherwise.
      */
     static std::string FindRCT2Path()
     {

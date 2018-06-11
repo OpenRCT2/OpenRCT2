@@ -519,8 +519,6 @@ void window_all_wheel_input()
 /**
  * Initialises scroll widgets to their virtual size.
  *  rct2: 0x006EAEB8
- *
- * @param window The window (esi).
  */
 void window_init_scroll_widgets(rct_window *w)
 {
@@ -562,9 +560,6 @@ void window_init_scroll_widgets(rct_window *w)
 /**
  *
  *  rct2: 0x006EB15C
- *
- * @param window (esi)
- * @param dpi (edi)
  */
 void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 {

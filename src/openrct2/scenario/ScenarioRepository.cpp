@@ -487,8 +487,8 @@ private:
 
     /**
      * Converts Mega Park to normalised file location (mp.dat to sc21.sc4)
-     * @param Full path to mp.dat
-     * @param Full path to sc21.dat
+     * @param srcPath Full path to mp.dat
+     * @param dstPath Full path to sc21.dat
      */
     void ConvertMegaPark(const std::string &srcPath, const std::string &dstPath)
     {

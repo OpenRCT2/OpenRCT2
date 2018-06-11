@@ -157,9 +157,7 @@ public:
 
     /**
      *
-     * @param rideType
      * @param entry The entry name to count the track list of. Leave empty to count track list for the non-separated types (e.g. Hyper-Twister, Car Ride)
-     * @return
      */
     size_t GetCountForObjectEntry(uint8 rideType, const std::string &entry) const override
     {
@@ -217,10 +215,7 @@ public:
 
     /**
      *
-     * @param outRefs
-     * @param rideType
      * @param entry The entry name to build a track list for. Leave empty to build track list for the non-separated types (e.g. Hyper-Twister, Car Ride)
-     * @return
      */
     std::vector<track_design_file_ref> GetItemsForObjectEntry(uint8 rideType, const std::string &entry) const override
     {

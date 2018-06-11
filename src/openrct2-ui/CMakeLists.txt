@@ -71,7 +71,7 @@ endif ()
 # Includes
 target_include_directories(${PROJECT} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/.."
                                               ${SPEEX_INCLUDE_DIRS})
-target_include_directories(${PROJECT} PRIVATE ${SDL2_INCLUDE_DIRS})
+target_include_directories(${PROJECT} SYSTEM PRIVATE ${SDL2_INCLUDE_DIRS})
 
 # Compiler flags
 if (WIN32)
