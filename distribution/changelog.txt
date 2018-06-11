@@ -1,3 +1,7 @@
+0.2.0+ (in development)
+------------------------------------------------------------------------
+- Feature: [#6998] Guests now wait for passing vehicles before crossing railway tracks.
+
 0.2.0 (2018-06-10)
 ------------------------------------------------------------------------
 - Feature: [#1417] Allow saving track designs for flat rides.
