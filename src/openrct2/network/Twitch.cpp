@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -26,13 +26,17 @@
     #error HTTP must be enabled to use the TWITCH functionality.
 #endif
 
+#include <jansson.h>
+#include <memory>
 #include <vector>
 #include "../Context.h"
+
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
 #include "../OpenRCT2.h"
 
 #include "../config/Config.h"
+#include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../Game.h"
 #include "../interface/InteractiveConsole.h"
@@ -42,10 +46,12 @@
 #include "../platform/platform.h"
 #include "../util/Util.h"
 #include "../world/Sprite.h"
-#include "http.h"
+#include "Http.h"
 #include "twitch.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Network;
+
 
 bool gTwitchEnable = false;
 
@@ -107,7 +113,7 @@ namespace Twitch
     static bool              _twitchIdle = true;
     static uint32            _twitchLastPulseTick = 0;
     static sint32               _twitchLastPulseOperation = 1;
-    static http_response_t * _twitchJsonResponse;
+    static Http::Response       _twitchJsonResponse;
 
     static void Join();
     static void Leave();
@@ -203,37 +209,33 @@ namespace Twitch
         _twitchState = TWITCH_STATE_JOINING;
         _twitchIdle = false;
 
-        http_request_t request = {};
+        Http::Request request;
         request.url = url;
-        request.method = HTTP_METHOD_GET;
-        request.body = nullptr;
-        request.type = HTTP_DATA_JSON;
-        http_request_async(&request, [](http_response_t *jsonResponse) -> void
-        {
-            auto context = GetContext();
-            if (jsonResponse == nullptr)
+        request.method = Http::Method::GET;
+
+        Http::DoAsync(request, [](Http::Response res) {
+            std::shared_ptr<void> _(nullptr, [&](...) { _twitchIdle = true; });
+
+            if (res.status != Http::Status::OK)
             {
                 _twitchState = TWITCH_STATE_LEFT;
-                context->WriteLine("Unable to connect to twitch channel.");
+                GetContext()->WriteLine("Unable to connect to twitch channel.");
+                return;
+            }
+
+            auto     root       = Json::FromString(res.body);
+            json_t * jsonStatus = json_object_get(root, "status");
+            if (json_is_number(jsonStatus) && json_integer_value(jsonStatus) == TWITCH_STATUS_OK)
+            {
+                _twitchState = TWITCH_STATE_JOINED;
             }
             else
             {
-                json_t * jsonStatus = json_object_get(jsonResponse->root, "status");
-                if (json_is_number(jsonStatus) && json_integer_value(jsonStatus) == TWITCH_STATUS_OK)
-                {
-                    _twitchState = TWITCH_STATE_JOINED;
-                }
-                else
-                {
-                    _twitchState = TWITCH_STATE_LEFT;
-                }
-
-                http_request_dispose(jsonResponse);
-
-                _twitchLastPulseTick = 0;
-                context->WriteLine("Connected to twitch channel.");
+                _twitchState = TWITCH_STATE_LEFT;
             }
-            _twitchIdle = true;
+
+            _twitchLastPulseTick = 0;
+            GetContext()->WriteLine("Connected to twitch channel.");
         });
     }
 
@@ -242,13 +244,8 @@ namespace Twitch
      */
     static void Leave()
     {
-        if (_twitchJsonResponse != nullptr)
-        {
-            http_request_dispose(_twitchJsonResponse);
-            _twitchJsonResponse = nullptr;
-        }
-
         GetContext()->WriteLine("Left twitch channel.");
+        _twitchJsonResponse = {};
         _twitchState = TWITCH_STATE_LEFT;
         _twitchLastPulseTick = 0;
         gTwitchEnable = false;
@@ -288,23 +285,17 @@ namespace Twitch
         _twitchState = TWITCH_STATE_WAITING;
         _twitchIdle = false;
 
-        http_request_t request = {};
-        request.url = url;
-        request.method = HTTP_METHOD_GET;
-        request.body = nullptr;
-        request.type = HTTP_DATA_JSON;
-        http_request_async(&request, [](http_response_t * jsonResponse) -> void
-        {
-            if (jsonResponse == nullptr)
+        Http::DoAsync({ url }, [](Http::Response res) {
+            std::shared_ptr<void> _(nullptr, [&](...) { _twitchIdle = true; });
+
+            if (res.status != Http::Status::OK)
             {
                 _twitchState = TWITCH_STATE_JOINED;
+                return;
             }
-            else
-            {
-                _twitchJsonResponse = jsonResponse;
-                _twitchState = TWITCH_STATE_GET_FOLLOWERS;
-            }
-            _twitchIdle = true;
+
+            _twitchJsonResponse = res;
+            _twitchState        = TWITCH_STATE_GET_FOLLOWERS;
         });
     }
 
@@ -326,37 +317,31 @@ namespace Twitch
         _twitchState = TWITCH_STATE_WAITING;
         _twitchIdle = false;
 
-        http_request_t request = {};
-        request.url = url;
-        request.method = HTTP_METHOD_GET;
-        request.body = nullptr;
-        request.type = HTTP_DATA_JSON;
-        http_request_async(&request, [](http_response_t * jsonResponse) -> void
-        {
-            if (jsonResponse == nullptr)
+        Http::DoAsync({ url }, [](Http::Response res) {
+            std::shared_ptr<void> _(nullptr, [&](...) { _twitchIdle = true; });
+
+            if (res.status != Http::Status::OK)
             {
                 _twitchState = TWITCH_STATE_JOINED;
+                return;
             }
-            else
-            {
-                _twitchJsonResponse = jsonResponse;
-                _twitchState = TWITCH_STATE_GET_MESSAGES;
-            }
-            _twitchIdle = true;
+
+            _twitchJsonResponse = res;
+            _twitchState        = TWITCH_STATE_GET_MESSAGES;
         });
     }
 
     static void ParseFollowers()
     {
-        http_response_t *jsonResponse = _twitchJsonResponse;
-        if (json_is_array(jsonResponse->root))
+        json_t * root = Json::FromString(_twitchJsonResponse.body);
+        if (json_is_array(root))
         {
             std::vector<AudienceMember> members;
 
-            size_t audienceCount = json_array_size(jsonResponse->root);
+            size_t audienceCount = json_array_size(root);
             for (size_t i = 0; i < audienceCount; i++)
             {
-                json_t * jsonAudienceMember = json_array_get(jsonResponse->root, i);
+                json_t * jsonAudienceMember = json_array_get(root, i);
                 auto member = AudienceMember::FromJson(jsonAudienceMember);
                 if (!String::IsNullOrEmpty(member.Name))
                 {
@@ -371,8 +356,7 @@ namespace Twitch
             ManageGuestNames(members);
         }
 
-        http_request_dispose(_twitchJsonResponse);
-        _twitchJsonResponse = nullptr;
+        _twitchJsonResponse = {};
         _twitchState = TWITCH_STATE_JOINED;
 
         gfx_invalidate_screen();
@@ -380,12 +364,12 @@ namespace Twitch
 
     static void ParseMessages()
     {
-        http_response_t * jsonResponse = _twitchJsonResponse;
-        if (json_is_array(jsonResponse->root))
+        json_t * root = Json::FromString(_twitchJsonResponse.body);
+        if (json_is_array(root))
         {
-            size_t messageCount = json_array_size(jsonResponse->root);
+            size_t messageCount = json_array_size(root);
             for (size_t i = 0; i < messageCount; i++) {
-                json_t * jsonMessage = json_array_get(jsonResponse->root, i);
+                json_t * jsonMessage = json_array_get(root, i);
                 if (!json_is_object(jsonMessage))
                 {
                     continue;
@@ -397,8 +381,7 @@ namespace Twitch
             }
         }
 
-        http_request_dispose(_twitchJsonResponse);
-        _twitchJsonResponse = nullptr;
+        _twitchJsonResponse = {};
         _twitchState = TWITCH_STATE_JOINED;
     }
 
@@ -569,7 +552,7 @@ namespace Twitch
             safe_strcpy(buffer + 1, message, sizeof(buffer) - 1);
 
 	    utf8_remove_formatting(buffer, false);
-	    
+
             // TODO Create a new news item type for twitch which has twitch icon
             news_item_add_to_queue_raw(NEWS_ITEM_BLANK, buffer, 0);
         }

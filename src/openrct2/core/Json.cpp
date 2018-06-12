@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -57,5 +57,17 @@ namespace Json
         auto fs = FileStream(path, FILE_MODE_WRITE);
         size_t jsonOutputSize = String::SizeOf(jsonOutput);
         fs.Write(jsonOutput, jsonOutputSize);
+    }
+
+    json_t * FromString(const std::string & raw)
+    {
+        json_t *     root;
+        json_error_t error;
+        root = json_loads(raw.c_str(), 0, &error);
+        if (root == nullptr)
+        {
+            throw JsonException(&error);
+        }
+        return root;
     }
 } // namespace Json
