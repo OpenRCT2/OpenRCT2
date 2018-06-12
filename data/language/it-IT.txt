@@ -4282,7 +4282,7 @@ STR_6198    :{BLACK}Giorno:
 STR_6199    :Imposta data
 STR_6200    :Reimposta data
 STR_6201    :{MONTH}
-STR_6202    :Attiva pavimento virtuale
+STR_6202    :Stile pavimento virtuale:
 STR_6203    :{SMALLFONT}{BLACK}Se attivo mostra un pavimento virtuale mentre si tiene premuto Ctrl o Maiusc, per facilitare il posizionamento di elementi.
 STR_6204    :Mattoni
 STR_6205    :Ferro
@@ -4323,6 +4323,23 @@ STR_6239    :Ritaglio verticale
 STR_6240    :Ritaglio orizzontale
 STR_6241    :Seleziona area
 STR_6242    :Annulla selezione
+STR_6243    :{SMALLFONT}{BLACK}Rinnova l'attrazione,{NEWLINE}rendendola come nuova
+STR_6244    :Impossibile rinnovare l'attrazione...
+STR_6245    :{SMALLFONT}{BLACK}L'attrazione non necessita di rinnovamento
+STR_6246    :Rinnova
+STR_6247    :Rinnova percorso/attrazione
+STR_6248    :{WINDOW_COLOUR_1}Rinnovare davvero {STRINGID} al costo di {CURRENCY}?
+STR_6249    :{WINDOW_COLOUR_1}Rinnovare davvero {STRINGID}?
+STR_6250    :{WINDOW_COLOUR_1}Si è sicuri di voler demolire completamente {STRINGID} e guadagnare {CURRENCY}?
+STR_6251    :L'attrazione non è ancora vuota
+STR_6252    :URL API di Twitch
+STR_6253    :{SMALLFONT}{BLACK}Inserire l'URL delle API per l'integrazione di Twitch. Richiesto per abilitare l'integrazione con Twitch.
+STR_6254    :URL delle API per l'integrazione di Twitch:
+STR_6255    :L'URL non è valido
+STR_6256    :Effetti di rendering
+STR_6257    :Vetro (traslucido)
+STR_6258    :Limpido (trasparente)
+STR_6259    :Disabilitato
 
 #############
 # Scenarios #
