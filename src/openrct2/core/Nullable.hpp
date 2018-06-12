@@ -17,6 +17,7 @@
 #pragma once
 
 #include "../common.h"
+#include <cstddef>
 
 template<typename T>
 struct Nullable
