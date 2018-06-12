@@ -18,6 +18,7 @@
 
 #include <SDL2/SDL.h>
 #include <stdexcept>
+#include <string>
 
 /**
  * An exception which wraps an SDL error.
