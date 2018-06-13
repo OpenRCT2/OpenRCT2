@@ -310,10 +310,6 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y(s
         y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
         {
-            if (research_item_is_always_researched(researchItem))
-            {
-                return nullptr;
-            }
             return researchItem;
         }
     }
@@ -342,10 +338,6 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y_i
         y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
         {
-            if (research_item_is_always_researched(researchItem))
-            {
-                return nullptr;
-            }
             return researchItem;
         }
     }
@@ -531,7 +523,8 @@ static void window_editor_inventions_list_scrollmousedown(rct_window *w, sint32 
     if (researchItem == nullptr)
         return;
 
-    if (researchItem->rawValue < RESEARCHED_ITEMS_END_2 && research_item_is_always_researched(researchItem))
+    // Disallow picking up always-researched items
+    if (researchItem->rawValue < RESEARCHED_ITEMS_END_2 || research_item_is_always_researched(researchItem))
         return;
 
     window_invalidate(w);
@@ -547,9 +540,16 @@ static void window_editor_inventions_list_scrollmouseover(rct_window *w, sint32 
     rct_research_item *researchItem;
 
     researchItem = window_editor_inventions_list_get_item_from_scroll_y(scrollIndex, y);
-    if (researchItem != w->research_item) {
+    if (researchItem != w->research_item)
+    {
         w->research_item = researchItem;
         window_invalidate(w);
+
+        // Prevent always-researched items from being highlighted when hovered over
+        if (researchItem != nullptr && research_item_is_always_researched(researchItem))
+        {
+            w->research_item = nullptr;
+        }
     }
 }
 
@@ -582,15 +582,13 @@ static void window_editor_inventions_list_cursor(rct_window *w, rct_widgetindex 
         return;
     }
 
+    // Use the open hand as cursor for items that can be picked up
     researchItem = window_editor_inventions_list_get_item_from_scroll_y(scrollIndex, y);
-    if (researchItem == nullptr)
-        return;
-
-    if (researchItem->rawValue < RESEARCHED_ITEMS_END_2 && research_item_is_always_researched(researchItem)) {
-        return;
+    if (researchItem != nullptr && researchItem->rawValue >= RESEARCHED_ITEMS_END_2
+        && !research_item_is_always_researched(researchItem))
+    {
+        *cursorId = CURSOR_HAND_OPEN;
     }
-
-    *cursorId = CURSOR_HAND_OPEN;
 }
 
 /**
