@@ -112,6 +112,12 @@ sint32 font_sprite_get_codepoint_offset(sint32 codepoint)
     case UNICODE_Z_DOT: return RCT2_Z_DOT - 32;
     case UNICODE_Z_ACUTE: return RCT2_Z_ACUTE - 32;
 
+    // Render capital sharp-S (ẞ) with lowercase sprite (ß)
+    case UNICODE_CAPITAL_SHARP_S: return 223 - 32;
+
+    case UNICODE_DINGBATS_PLUS: return 11;
+    case UNICODE_DINGBATS_MINUS: return 13;
+
     default:
         if (codepoint < 32 || codepoint >= 256) codepoint = '?';
         return codepoint - 32;

@@ -1220,8 +1220,8 @@ STR_1214    :{SMALLFONT}{BLACK}Select maximum length of time to wait before depa
 STR_1215    :{WINDOW_COLOUR_2}Synchronise with adjacent stations
 STR_1216    :{SMALLFONT}{BLACK}Select whether to synchronise departure with all adjacent stations (for 'racing')
 STR_1217    :{COMMA16} ثواني
-STR_1218    :{BLACK}+
-STR_1219    :{BLACK}-
+STR_1218    :{BLACK}➕
+STR_1219    :{BLACK}➖
 STR_1220    :مخرج فقط
 STR_1221    :لا مدخل
 STR_1222    :لا مخرج

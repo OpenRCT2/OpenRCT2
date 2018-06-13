@@ -1670,12 +1670,16 @@ void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     y = w->y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
-    sint32 ride_string_id = STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE;
-    sint32 ride_string_arguments = 0;
-    if (peep->favourite_ride != 0xFF){
-        Ride* ride = get_ride(peep->favourite_ride);
-        ride_string_arguments = ride->name_arguments;
-        ride_string_id = ride->name;
+    rct_string_id ride_string_id = STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE;
+    uint32 ride_string_arguments = 0;
+    if (peep->favourite_ride != 0xFF)
+    {
+        auto ride = get_ride(peep->favourite_ride);
+        if (ride != nullptr)
+        {
+            ride_string_arguments = ride->name_arguments;
+            ride_string_id = ride->name;
+        }
     }
     set_format_arg(0, rct_string_id, ride_string_id);
     set_format_arg(2, uint32, ride_string_arguments);
@@ -1689,28 +1693,31 @@ void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 void window_guest_rides_scroll_paint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
-    // ax
     sint32 left = dpi->x;
-    // bx
     sint32 right = dpi->x + dpi->width - 1;
-    // cx
     sint32 top = dpi->y;
-    // dx
     sint32 bottom = dpi->y + dpi->height - 1;
 
-    sint32 colour = ColourMapA[w->colours[1]].mid_light;
+    auto colour = ColourMapA[w->colours[1]].mid_light;
     gfx_fill_rect(dpi, left, top, right, bottom, colour);
 
-    for (sint32 list_index = 0; list_index < w->no_list_items; list_index++){
-        sint32 y = list_index * 10;
-        sint32 string_format = STR_BLACK_STRING;
-        if (list_index == w->selected_list_item){
+    for (sint32 list_index = 0; list_index < w->no_list_items; list_index++)
+    {
+        auto y = list_index * 10;
+        rct_string_id stringId = STR_BLACK_STRING;
+        if (list_index == w->selected_list_item)
+        {
             gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
-            string_format = STR_WINDOW_COLOUR_2_STRINGID;
+            stringId = STR_WINDOW_COLOUR_2_STRINGID;
         }
-        Ride* ride = get_ride(w->list_item_positions[list_index]);
 
-        gfx_draw_string_left(dpi, string_format, (void*)&ride->name, COLOUR_BLACK, 0, y - 1);
+        auto ride = get_ride(w->list_item_positions[list_index]);
+        if (ride != nullptr)
+        {
+            set_format_arg(0, rct_string_id, ride->name);
+            set_format_arg(2, uint32, ride->name_arguments);
+            gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1);
+        }
     }
 }
 

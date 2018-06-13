@@ -1220,8 +1220,8 @@ STR_1214    :{SMALLFONT}{BLACK}Select maximum length of time to wait before depa
 STR_1215    :{WINDOW_COLOUR_2}全ての直接隣接する乗り場と出発タイミングを同期する
 STR_1216    :{SMALLFONT}{BLACK}レースのために全ての直接隣接する乗り場と出発タイミングを同期するかどうか選択。
 STR_1217    :{COMMA16}分
-STR_1218    :{BLACK}+
-STR_1219    :{BLACK}-
+STR_1218    :{BLACK}➕
+STR_1219    :{BLACK}➖
 STR_1220    :出口のみ
 STR_1221    :入口がない
 STR_1222    :出口がない

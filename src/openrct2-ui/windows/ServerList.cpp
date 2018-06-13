@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -22,7 +22,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/Context.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/network/http.h>
+#include <openrct2/network/Http.h>
 #include <openrct2/network/network.h>
 #include <openrct2/network/ServerList.h>
 #include <openrct2/sprites.h>
@@ -32,6 +32,10 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/drawing/Drawing.h>
+
+#ifndef DISABLE_HTTP
+using namespace OpenRCT2::Network;
+#endif
 
 #define WWIDTH_MIN 500
 #define WHEIGHT_MIN 300
@@ -134,9 +138,9 @@ static void dispose_server_entry_list();
 static server_entry & add_server_entry(const std::string &address);
 static void sort_servers();
 static void join_server(std::string address);
-static void fetch_servers();
 #ifndef DISABLE_HTTP
-static void fetch_servers_callback(http_response_t* response);
+static void fetch_servers();
+static void fetch_servers_callback(Http::Response & response);
 #endif
 static bool is_version_valid(const std::string &version);
 
@@ -179,7 +183,9 @@ rct_window * window_server_list_open()
     server_list_load_server_entries();
     window->no_list_items = (uint16)_serverEntries.size();
 
+#ifndef DISABLE_HTTP
     fetch_servers();
+#endif
 
     return window;
 }
@@ -219,7 +225,9 @@ static void window_server_list_mouseup(rct_window *w, rct_widgetindex widgetInde
             break;
         }
     case WIDX_FETCH_SERVERS:
+#ifndef DISABLE_HTTP
         fetch_servers();
+#endif
         break;
     case WIDX_ADD_SERVER:
         window_text_input_open(w, widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, STR_NONE, 0, 128);
@@ -611,9 +619,9 @@ static void join_server(std::string address)
     }
 }
 
+#ifndef DISABLE_HTTP
 static void fetch_servers()
 {
-#ifndef DISABLE_HTTP
     const char *masterServerUrl = OPENRCT2_MASTER_SERVER_URL;
     if (!str_is_null_or_empty(gConfigNetwork.master_server_url)) {
         masterServerUrl = gConfigNetwork.master_server_url;
@@ -633,17 +641,14 @@ static void fetch_servers()
         sort_servers();
     }
 
-    http_request_t request = {};
+    Http::Request request;
     request.url = masterServerUrl;
-    request.method = HTTP_METHOD_GET;
-    request.body = nullptr;
-    request.type = HTTP_DATA_JSON;
+    request.method           = Http::Method::GET;
+    request.header["Accept"] = "application/json";
     status_text = STR_SERVER_LIST_CONNECTING;
-    http_request_async(&request, fetch_servers_callback);
-#endif
+    Http::DoAsync(request, fetch_servers_callback);
 }
 
-#ifndef DISABLE_HTTP
 static uint32 get_total_player_count()
 {
     return std::accumulate(
@@ -656,18 +661,19 @@ static uint32 get_total_player_count()
         });
 }
 
-static void fetch_servers_callback(http_response_t* response)
+static void fetch_servers_callback(Http::Response & response)
 {
-    if (response == nullptr) {
+    if (response.status != Http::Status::OK)
+    {
         status_text = STR_SERVER_LIST_NO_CONNECTION;
         window_invalidate_by_class(WC_SERVER_LIST);
         log_warning("Unable to connect to master server");
         return;
     }
 
-    json_t *jsonStatus = json_object_get(response->root, "status");
+    json_t * root       = Json::FromString(response.body);
+    json_t * jsonStatus = json_object_get(root, "status");
     if (!json_is_number(jsonStatus)) {
-        http_request_dispose(response);
         status_text = STR_SERVER_LIST_INVALID_RESPONSE_JSON_NUMBER;
         window_invalidate_by_class(WC_SERVER_LIST);
         log_warning("Invalid response from master server");
@@ -676,16 +682,14 @@ static void fetch_servers_callback(http_response_t* response)
 
     sint32 status = (sint32)json_integer_value(jsonStatus);
     if (status != 200) {
-        http_request_dispose(response);
         status_text = STR_SERVER_LIST_MASTER_SERVER_FAILED;
         window_invalidate_by_class(WC_SERVER_LIST);
         log_warning("Master server failed to return servers");
         return;
     }
 
-    json_t *jsonServers = json_object_get(response->root, "servers");
+    json_t * jsonServers = json_object_get(root, "servers");
     if (!json_is_array(jsonServers)) {
-        http_request_dispose(response);
         status_text = STR_SERVER_LIST_INVALID_RESPONSE_JSON_ARRAY;
         window_invalidate_by_class(WC_SERVER_LIST);
         log_warning("Invalid response from master server");
@@ -728,7 +732,6 @@ static void fetch_servers_callback(http_response_t* response)
             newserver.maxplayers = (uint8)json_integer_value(maxPlayers);
         }
     }
-    http_request_dispose(response);
 
     sort_servers();
     _numPlayersOnline = get_total_player_count();

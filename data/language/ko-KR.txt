@@ -1220,8 +1220,8 @@ STR_1214    :{SMALLFONT}{BLACK}출발하기 전에 최대한 기다릴 시간
 STR_1215    :{WINDOW_COLOUR_2}인접한 탑승장과 같이 출발시킴
 STR_1216    :{SMALLFONT}{BLACK}체크하면 모든 인접한 탑승장의 차량을 동시에 출발시킵니다
 STR_1217    :{COMMA16}초
-STR_1218    :{BLACK}+
-STR_1219    :{BLACK}-
+STR_1218    :{BLACK}➕
+STR_1219    :{BLACK}➖
 STR_1220    :출구만 있음
 STR_1221    :입구 없음
 STR_1222    :출구 없음

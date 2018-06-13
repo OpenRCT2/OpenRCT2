@@ -3,6 +3,7 @@
 - Feature: [#6998] Guests now wait for passing vehicles before crossing railway tracks.
 - Fix: [#7653] Finances money spinner is too narrow for big loans.
 - Fix: [#7673] Vehicle names are cut off in invention list.
+- Fix: [#7674] Rides show up as random numbers in guest's ride list.
 
 0.2.0 (2018-06-10)
 ------------------------------------------------------------------------

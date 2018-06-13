@@ -1220,8 +1220,8 @@ STR_1214    :{SMALLFONT}{BLACK}選擇發車前最多的等待時長
 STR_1215    :{WINDOW_COLOUR_2}與鄰近車站同步發車
 STR_1216    :{SMALLFONT}{BLACK}選擇是否與全部鄰近車站同步發車 (以便'競賽')
 STR_1217    :{COMMA16}秒
-STR_1218    :{BLACK}+
-STR_1219    :{BLACK}-
+STR_1218    :{BLACK}➕
+STR_1219    :{BLACK}➖
 STR_1220    :只准卸客
 STR_1221    :尚未建造入口
 STR_1222    :尚未建造出口

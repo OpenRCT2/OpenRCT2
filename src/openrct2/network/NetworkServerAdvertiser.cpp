@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -31,7 +31,9 @@
 #include "../util/Util.h"
 #include "../world/Map.h"
 #include "../world/Park.h"
-#include "http.h"
+#include "Http.h"
+
+using namespace OpenRCT2::Network;
 
 #ifndef DISABLE_HTTP
 
@@ -103,30 +105,26 @@ private:
         _lastAdvertiseTime = platform_get_ticks();
 
         // Send the registration request
-        http_request_t request = {};
-        request.tag = this;
+        Http::Request request;
         request.url = GetMasterServerUrl();
-        request.method = HTTP_METHOD_POST;
+        request.method = Http::Method::POST;
         request.forceIPv4 = forceIPv4;
 
         json_t *body = json_object();
         json_object_set_new(body, "key", json_string(_key.c_str()));
         json_object_set_new(body, "port", json_integer(_port));
-        request.root = body;
-        request.type = HTTP_DATA_JSON;
+        request.body                   = json_dumps(body, JSON_COMPACT);
+        request.header["Content-Type"] = "application/json";
 
-        http_request_async(&request, [](http_response_t * response) -> void
-        {
-            if (response == nullptr)
+        Http::DoAsync(request, [&](Http::Response response) -> void {
+            if (response.status != Http::Status::OK)
             {
                 Console::WriteLine("Unable to connect to master server");
+                return;
             }
-            else
-            {
-                auto advertiser = static_cast<NetworkServerAdvertiser*>(response->tag);
-                advertiser->OnRegistrationResponse(response->root);
-                http_request_dispose(response);
-            }
+
+            json_t * root = Json::FromString(response.body);
+            this->OnRegistrationResponse(root);
         });
 
         json_decref(body);
@@ -134,31 +132,27 @@ private:
 
     void SendHeartbeat()
     {
-        http_request_t request = {};
-        request.tag = this;
+        Http::Request request;
         request.url = GetMasterServerUrl();
-        request.method = HTTP_METHOD_PUT;
+        request.method = Http::Method::POST;
 
-        json_t * jsonBody = GetHeartbeatJson();
-        request.root = jsonBody;
-        request.type = HTTP_DATA_JSON;
+        json_t * body                  = GetHeartbeatJson();
+        request.body                   = json_dumps(body, JSON_COMPACT);
+        request.header["Content-Type"] = "application/json";
 
         _lastHeartbeatTime = platform_get_ticks();
-        http_request_async(&request, [](http_response_t *response) -> void
-        {
-            if (response == nullptr)
+        Http::DoAsync(request, [&](Http::Response response) -> void {
+            if (response.status != Http::Status::OK)
             {
-                log_warning("Unable to connect to master server");
+                Console::WriteLine("Unable to connect to master server");
+                return;
             }
-            else
-            {
-                auto advertiser = static_cast<NetworkServerAdvertiser*>(response->tag);
-                advertiser->OnHeartbeatResponse(response->root);
-                http_request_dispose(response);
-            }
+
+            json_t * root = Json::FromString(response.body);
+            this->OnHeartbeatResponse(root);
         });
 
-        json_decref(jsonBody);
+        json_decref(body);
     }
 
     void OnRegistrationResponse(json_t * jsonRoot)

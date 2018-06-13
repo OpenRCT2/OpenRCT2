@@ -1221,8 +1221,8 @@ STR_1214    :{SMALLFONT}{BLACK}Vyberte maximální délku čekání před odjezd
 STR_1215    :{WINDOW_COLOUR_2}Synchronizovat se sousedícími stanicemi
 STR_1216    :{SMALLFONT}{BLACK}Vyberte, zda synchronizovat odjezdy se sousedícími stanicemi (pro "závodění")
 STR_1217    :{COMMA16} sekund
-STR_1218    :{BLACK}+
-STR_1219    :{BLACK}-
+STR_1218    :{BLACK}➕
+STR_1219    :{BLACK}➖
 STR_1220    :Jen východ
 STR_1221    :Nemá vchod
 STR_1222    :Chybí východ
