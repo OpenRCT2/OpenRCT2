@@ -1670,12 +1670,16 @@ void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     y = w->y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
-    sint32 ride_string_id = STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE;
-    sint32 ride_string_arguments = 0;
-    if (peep->favourite_ride != 0xFF){
-        Ride* ride = get_ride(peep->favourite_ride);
-        ride_string_arguments = ride->name_arguments;
-        ride_string_id = ride->name;
+    rct_string_id ride_string_id = STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE;
+    uint32 ride_string_arguments = 0;
+    if (peep->favourite_ride != 0xFF)
+    {
+        auto ride = get_ride(peep->favourite_ride);
+        if (ride != nullptr)
+        {
+            ride_string_arguments = ride->name_arguments;
+            ride_string_id = ride->name;
+        }
     }
     set_format_arg(0, rct_string_id, ride_string_id);
     set_format_arg(2, uint32, ride_string_arguments);
