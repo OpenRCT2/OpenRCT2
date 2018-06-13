@@ -1355,6 +1355,7 @@ static void game_load_or_quit_no_save_prompt_callback(sint32 result, const utf8 
 {
     if (result == MODAL_RESULT_OK)
     {
+        window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
         context_load_park_from_file(path);
     }
 }
