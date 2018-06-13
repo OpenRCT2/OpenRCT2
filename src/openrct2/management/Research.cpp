@@ -343,9 +343,11 @@ void research_update()
         return;
     }
 
-    researchLevel = ((gParkFlags & PARK_FLAGS_NO_MONEY) && gResearchFundingLevel == RESEARCH_FUNDING_NONE)
-        ? RESEARCH_FUNDING_NORMAL
-        : gResearchFundingLevel;
+    if ((gParkFlags & PARK_FLAGS_NO_MONEY) && gResearchFundingLevel == RESEARCH_FUNDING_NONE) {
+        researchLevel = RESEARCH_FUNDING_NORMAL;
+    } else {
+        researchLevel = gResearchFundingLevel;
+    }
 
     currentResearchProgress = gResearchProgress;
     currentResearchProgress += _researchRate[researchLevel];
