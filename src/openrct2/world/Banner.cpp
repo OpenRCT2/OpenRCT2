@@ -445,7 +445,7 @@ uint8 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z)
         }
     }
 
-    sint32 index;
+    uint8 index;
     uint8 rideIndex = RIDE_ID_NULL;
     sint32 resultDistance = std::numeric_limits<sint32>::max();
     FOR_ALL_RIDES(index, ride)
@@ -463,7 +463,7 @@ uint8 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z)
         if (distance < resultDistance)
         {
             resultDistance = distance;
-            rideIndex = static_cast<uint8>(index);
+            rideIndex = index;
         }
     }
 
