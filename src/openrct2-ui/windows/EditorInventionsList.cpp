@@ -801,12 +801,12 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
         if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
         {
             const rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
-            format_string(groupNamePtr, sizeof(groupNameBuffer), STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, (void*) &rideGroupName);
-            format_string(vehicleNamePtr, sizeof(vehicleNamePtr), itemNameId, nullptr);
+            format_string(groupNamePtr, Util::CountOf(groupNameBuffer), STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, (void*) &rideGroupName);
+            format_string(vehicleNamePtr, Util::CountOf(vehicleNameBuffer), itemNameId, nullptr);
         }
         else
         {
-            format_string(groupNamePtr, sizeof(groupNameBuffer), itemNameId, nullptr);
+            format_string(groupNamePtr, Util::CountOf(groupNameBuffer), itemNameId, nullptr);
             vehicleNamePtr = nullptr;
         }
 
@@ -817,7 +817,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
         // Draw vehicle name
         if (vehicleNamePtr)
         {
-            gfx_clip_string(vehicleNameBuffer, columnSplitOffset);
+            gfx_clip_string(vehicleNameBuffer, columnSplitOffset - 11);
             gfx_draw_string(dpi, vehicleNameBuffer, colour, columnSplitOffset + 1, itemY);
         }
     }
