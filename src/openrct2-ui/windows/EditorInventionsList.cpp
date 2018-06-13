@@ -909,7 +909,13 @@ static void window_editor_inventions_list_drag_moved(rct_window* w, sint32 x, si
 {
     rct_research_item *researchItem;
 
-    researchItem = get_research_item_at(x, y);
+    // Skip always researched items, so that the dragged item gets placed underneath them
+    do
+    {
+        researchItem = get_research_item_at(x, y);
+        y += LIST_ROW_HEIGHT;
+    } while (researchItem != nullptr && researchItem->rawValue >= 0 && research_item_is_always_researched(researchItem));
+
     if (researchItem != nullptr)
         move_research_item(researchItem);
 
