@@ -817,7 +817,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
         // Draw vehicle name
         if (vehicleNamePtr)
         {
-            gfx_clip_string(vehicleNameBuffer, columnSplitOffset);
+            gfx_clip_string(vehicleNameBuffer, columnSplitOffset - 11);
             gfx_draw_string(dpi, vehicleNameBuffer, colour, columnSplitOffset + 1, itemY);
         }
     }
