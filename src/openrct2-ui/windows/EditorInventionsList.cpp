@@ -894,7 +894,6 @@ static void window_editor_inventions_list_drag_cursor(rct_window *w, rct_widgeti
     if (inventionListWindow != nullptr) {
         rct_research_item *researchItem = get_research_item_at(x, y);
         if (researchItem != inventionListWindow->research_item) {
-            inventionListWindow = (rct_window *)researchItem;
             window_invalidate(inventionListWindow);
         }
     }
