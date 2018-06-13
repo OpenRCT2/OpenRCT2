@@ -139,6 +139,8 @@ using money64 = fixed64_1dp;
 #define MONEY16_UNDEFINED               (money16)(uint16)0xFFFF
 #define MONEY32_UNDEFINED               ((money32)0x80000000)
 
+using BannerIndex = uint8;
+
 using EMPTY_ARGS_VOID_POINTER = void();
 using rct_string_id           = uint16;
 

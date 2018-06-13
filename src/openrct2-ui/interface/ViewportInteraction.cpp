@@ -535,8 +535,8 @@ static void viewport_interaction_remove_large_scenery(rct_tile_element *tileElem
 
     if (sceneryEntry->large_scenery.scrolling_mode != 0xFF)
     {
-        sint32 id = scenery_large_get_banner_id(tileElement);
-        context_open_detail_window(WD_SIGN, id);
+        BannerIndex bannerIndex = scenery_large_get_banner_id(tileElement);
+        context_open_detail_window(WD_SIGN, bannerIndex);
     } else {
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
         game_do_command(

@@ -90,7 +90,7 @@ bool tile_element_is_underground(rct_tile_element * tileElement)
     return true;
 }
 
-sint32 tile_element_get_banner_index(rct_tile_element * tileElement)
+BannerIndex tile_element_get_banner_index(rct_tile_element* tileElement)
 {
     rct_scenery_entry* sceneryEntry;
 
@@ -114,18 +114,18 @@ sint32 tile_element_get_banner_index(rct_tile_element * tileElement)
     }
 }
 
-void tile_element_set_banner_index(rct_tile_element * tileElement, sint32 bannerIndex)
+void tile_element_set_banner_index(rct_tile_element* tileElement, BannerIndex bannerIndex)
 {
     switch (tileElement->GetType())
     {
     case TILE_ELEMENT_TYPE_WALL:
-        tileElement->properties.wall.banner_index = (uint8)bannerIndex;
+        tileElement->properties.wall.banner_index = bannerIndex;
         break;
     case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-        scenery_large_set_banner_id(tileElement, (uint8)bannerIndex);
+        scenery_large_set_banner_id(tileElement, bannerIndex);
         break;
     case TILE_ELEMENT_TYPE_BANNER:
-        tileElement->properties.banner.index = (uint8)bannerIndex;
+        tileElement->properties.banner.index = bannerIndex;
         break;
     default:
         log_error("Tried to set banner index on unsuitable tile element!");
@@ -135,13 +135,14 @@ void tile_element_set_banner_index(rct_tile_element * tileElement, sint32 banner
 
 void tile_element_remove_banner_entry(rct_tile_element * tileElement)
 {
-    sint32 bannerIndex = tile_element_get_banner_index(tileElement);
+    BannerIndex bannerIndex = tile_element_get_banner_index(tileElement);
     if (bannerIndex == BANNER_INDEX_NULL)
         return;
 
     rct_banner* banner = &gBanners[bannerIndex];
     if (banner->type != BANNER_NULL) {
-        window_close_by_number(WC_BANNER, bannerIndex);
+        rct_windownumber windowNumber = bannerIndex;
+        window_close_by_number(WC_BANNER, windowNumber);
         banner->type = BANNER_NULL;
         user_string_free(banner->string_idx);
     }

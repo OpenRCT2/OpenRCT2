@@ -140,7 +140,7 @@ private:
         {
             if (banner.type != BANNER_NULL &&
                 banner.flags & BANNER_FLAG_LINKED_TO_RIDE &&
-                banner.colour == _rideIndex)
+                banner.ride_index == _rideIndex)
             {
                 banner.flags &= 0xFB;
                 banner.string_idx = STR_DEFAULT_SIGN;

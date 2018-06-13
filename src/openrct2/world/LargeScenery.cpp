@@ -42,14 +42,14 @@ void scenery_large_set_secondary_colour(rct_tile_element * tileElement, colour_t
     tileElement->properties.scenerymultiple.colour[1] |= colour;
 }
 
-sint32 scenery_large_get_banner_id(const rct_tile_element * tileElement)
+BannerIndex scenery_large_get_banner_id(const rct_tile_element* tileElement)
 {
     return (tileElement->type & 0xC0) |
            (((tileElement->properties.scenerymultiple.colour[0]) &~ TILE_ELEMENT_COLOUR_MASK) >> 2) |
            (((tileElement->properties.scenerymultiple.colour[1]) &~ TILE_ELEMENT_COLOUR_MASK) >> 5);
 }
 
-void scenery_large_set_banner_id(rct_tile_element * tileElement, uint8 bannerIndex)
+void scenery_large_set_banner_id(rct_tile_element * tileElement, BannerIndex bannerIndex)
 {
     tileElement->type |= bannerIndex & 0xC0;
     tileElement->properties.scenerymultiple.colour[0] |= (bannerIndex & 0x38) << 2;

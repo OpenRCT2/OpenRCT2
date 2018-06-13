@@ -17,13 +17,16 @@
 #pragma once
 
 #include "../Context.h"
+#include "../Diagnostic.h"
+#include "../common.h"
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
-#include "../ui/UiContext.h"
-#include "../world/Sprite.h"
+#include "../ride/Ride.h"
 #include "../world/Banner.h"
 #include "GameAction.h"
+
+#include <string>
 
 struct SignSetNameAction : public GameActionBase<GAME_COMMAND_SET_SIGN_NAME, GameActionResult>
 {
@@ -32,10 +35,10 @@ private:
     std::string _name;
 
 public:
-    SignSetNameAction() {}
+    SignSetNameAction() = default;
     SignSetNameAction(sint32 bannerIndex, const std::string& name)
-        : _bannerIndex(bannerIndex),
-        _name(name)
+        : _bannerIndex(bannerIndex)
+        , _name(name)
     {
     }
 
@@ -52,7 +55,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (_bannerIndex >= MAX_BANNERS || _bannerIndex < 0)
+        if ((BannerIndex)_bannerIndex >= MAX_BANNERS || _bannerIndex < 0)
         {
             log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -99,13 +102,13 @@ public:
         else
         {
             // If empty name take closest ride name.
-            sint32 rideIndex = banner_get_closest_ride_index(x, y, 16);
-            if (rideIndex == -1)
+            uint8 rideIndex = banner_get_closest_ride_index(x, y, 16);
+            if (rideIndex == RIDE_ID_NULL)
             {
                 return MakeResult();
             }
 
-            banner->colour = rideIndex;
+            banner->ride_index = rideIndex;
             banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
 
             rct_string_id prev_string_id = banner->string_idx;

@@ -951,7 +951,7 @@ static sint32 cc_show_limits(InteractiveConsole & console, [[maybe_unused]] cons
     }
 
     sint32 bannerCount = 0;
-    for (sint32 i = 0; i < MAX_BANNERS; ++i)
+    for (BannerIndex i = 0; i < MAX_BANNERS; ++i)
     {
         if (gBanners[i].type != BANNER_NULL)
         {

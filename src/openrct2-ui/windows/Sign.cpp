@@ -176,9 +176,9 @@ rct_window * window_sign_open(rct_windownumber number)
             rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
             if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
             {
-                sint32 id = scenery_large_get_banner_id(tile_element);
+                BannerIndex bannerIndex = scenery_large_get_banner_id(tile_element);
 
-                if (id == w->number)
+                if (bannerIndex == w->number)
                     break;
             }
         }
@@ -243,8 +243,8 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
                 rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
                 if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
                 {
-                    sint32 id = scenery_large_get_banner_id(tile_element);
-                    if (id == w->number)
+                    BannerIndex bannerIndex = scenery_large_get_banner_id(tile_element);
+                    if (bannerIndex == w->number)
                         break;
                 }
             }
@@ -260,8 +260,9 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             0);
         break;
     case WIDX_SIGN_TEXT:
-        if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE){
-            Ride* ride = get_ride(banner->colour);
+        if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
+        {
+            Ride* ride = get_ride(banner->ride_index);
             set_format_arg(16, uint32, ride->name_arguments);
             string_id = ride->name;
         }
@@ -524,7 +525,7 @@ static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex
     case WIDX_SIGN_TEXT:
         if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
         {
-            Ride* ride = get_ride(banner->colour);
+            Ride* ride = get_ride(banner->ride_index);
             set_format_arg(16, uint32, ride->name_arguments);
             string_id = ride->name;
         }
