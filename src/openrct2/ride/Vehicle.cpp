@@ -10050,5 +10050,12 @@ void vehicle_update_crossings(const rct_vehicle * vehicle)
 void vehicle_claxon(const rct_vehicle * vehicle)
 {
     rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
-    audio_play_sound_at_location((rideEntry->vehicles[0].sound_range == 3)? SOUND_TRAIN_WHISTLE : SOUND_TRAM, vehicle->x, vehicle->y, vehicle->z);
+    Switch (rideEntry->vehicles[vehicle->vehicle_type].sound_range) {
+    case 3:
+        audio_play_sound_at_location(SOUND_TRAM, vehicle->x, vehicle->y, vehicle->z);
+        break;
+    case 4:
+        audio_play_sound_at_location(SOUND_TRAIN_WHISTLE, vehicle->x, vehicle->y, vehicle->z);
+        break;
+    }
 }
