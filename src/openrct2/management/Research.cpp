@@ -343,9 +343,12 @@ void research_update()
         return;
     }
 
-    if ((gParkFlags & PARK_FLAGS_NO_MONEY) && gResearchFundingLevel == RESEARCH_FUNDING_NONE) {
+    if ((gParkFlags & PARK_FLAGS_NO_MONEY) && gResearchFundingLevel == RESEARCH_FUNDING_NONE) 
+    {
         researchLevel = RESEARCH_FUNDING_NORMAL;
-    } else {
+    } 
+    else 
+    {
         researchLevel = gResearchFundingLevel;
     }
 
