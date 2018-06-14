@@ -66,3 +66,4 @@ if (${env:APPVEYOR_REPO_TAG} -ne "true")
     $env:GIT_BRANCH = $env:APPVEYOR_REPO_BRANCH
 }
 $env:GIT_COMMIT_SHA1 = $env:APPVEYOR_REPO_COMMIT
+$env:GIT_DESCRIBE = (git describe HEAD | sed -E "s/-g.+$//")
