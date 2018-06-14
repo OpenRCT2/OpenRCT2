@@ -69,7 +69,7 @@ static sint32 cc_help(InteractiveConsole &console, const utf8 **argv, sint32 arg
 
 static bool invalidArguments(bool *invalid, bool arguments);
 
-#define SET_FLAG(variable, flag, value) {if (value) variable |= flag; else variable &= ~flag;}
+#define SET_FLAG(variable, flag, value) {if (value) variable |= flag; else variable &= ~(flag);}
 
 sint32 console_parse_int(const utf8 *src, bool *valid) {
     utf8 *end;

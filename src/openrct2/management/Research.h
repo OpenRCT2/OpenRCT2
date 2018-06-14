@@ -55,11 +55,11 @@ enum
 };
 
 // Everything before this point has been researched
-#define RESEARCHED_ITEMS_SEPARATOR -1
+#define RESEARCHED_ITEMS_SEPARATOR (-1)
 // Everything before this point and after separator still requires research
-#define RESEARCHED_ITEMS_END -2
+#define RESEARCHED_ITEMS_END (-2)
 // Extra end of list entry. Leftover from RCT1.
-#define RESEARCHED_ITEMS_END_2 -3
+#define RESEARCHED_ITEMS_END_2 (-3)
 
 #define MAX_RESEARCH_ITEMS            500
 #define MAX_RESEARCHED_TRACK_TYPES    128
