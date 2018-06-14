@@ -482,12 +482,14 @@ public:
         if (mainWindow != nullptr)
         {
             auto viewport = window_get_viewport(mainWindow);
+            auto zoomDifference = zoom - viewport->zoom;
+
             mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
             mainWindow->saved_view_x = x;
             mainWindow->saved_view_y = y;
             viewport->zoom = zoom;
             gCurrentRotation = rotation;
-            auto zoomDifference = zoom - viewport->zoom;
+
             if (zoomDifference != 0)
             {
                 viewport->view_width <<= zoomDifference;
