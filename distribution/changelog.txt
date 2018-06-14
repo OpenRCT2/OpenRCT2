@@ -6,6 +6,7 @@
 - Fix: [#7673] Vehicle names are cut off in invention list.
 - Fix: [#7674] Rides show up as random numbers in guest's ride list.
 - Fix: [#7678] Crash when loading or starting a new game while having object selection window open.
+- Fix: [#7683] 'Arbitrary ride type' dropdown state is no longer shared between windows.
 
 0.2.0 (2018-06-10)
 ------------------------------------------------------------------------
