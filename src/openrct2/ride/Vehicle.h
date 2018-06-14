@@ -402,7 +402,8 @@ enum {
     VEHICLE_SOUND2_FLAGS_LIFT_HILL = 1 << 1 // When on a lift hill generate sound
 };
 
-enum {
+enum 
+{
     FRICTION_SOUND_WOOD_SMALL = 1,
     FRICTION_SOUND_STEEL = 2,
     FRICTION_SOUND_PETROL = 21,
@@ -413,7 +414,8 @@ enum {
     FRICTION_SOUND_NONE = 255
 };
 
-enum {
+enum 
+{
     SOUND_RANGE_SCREAMS_0 = 0,
     SOUND_RANGE_SCREAMS_1 = 1,
     SOUND_RANGE_SCREAMS_2 = 2,
