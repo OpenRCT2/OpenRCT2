@@ -938,7 +938,6 @@ static rct_window_event_list *window_ride_page_events[] = {
 
 #pragma endregion
 
-static uint8 _rideType;
 static bool _collectTrackDesignScenery = false;
 static sint32 _lastSceneryX = 0;
 static sint32 _lastSceneryY = 0;
@@ -1512,7 +1511,6 @@ static void window_ride_update_overall_view(uint8 ride_index) {
 static rct_window *window_ride_open(sint32 rideIndex)
 {
     rct_window *w;
-    Ride *ride;
 
     w = window_create_auto_pos(316, 207, window_ride_page_events[0], WC_RIDE, WF_10 | WF_RESIZABLE);
     w->widgets = window_ride_page_widgets[WINDOW_RIDE_PAGE_MAIN];
@@ -1531,9 +1529,6 @@ static rct_window *window_ride_open(sint32 rideIndex)
     w->min_height = 180;
     w->max_width = 500;
     w->max_height = 450;
-
-    ride = get_ride(rideIndex);
-    _rideType = ride->type;
 
     window_ride_update_overall_view((uint8) rideIndex);
 
@@ -1599,7 +1594,6 @@ static rct_window * window_ride_open_station(sint32 rideIndex, sint32 stationInd
     ) {
         tool_cancel();
     }
-    _rideType = ride->type;
 
     w->page = WINDOW_RIDE_PAGE_MAIN;
     w->width = 316;
@@ -1709,7 +1703,6 @@ rct_window *window_ride_open_vehicle(rct_vehicle *vehicle)
         w->ride.var_482 = -1;
     }
 
-    _rideType = ride->type;
     w->page = WINDOW_RIDE_PAGE_MAIN;
     w->width = 316;
     w->height = 180;
@@ -2183,8 +2176,7 @@ static void populate_ride_type_dropdown()
 
 static void window_ride_show_ride_type_dropdown(rct_window *w, rct_widget *widget)
 {
-    assert(_rideType == Math::Clamp<uint8>(0, _rideType, RIDE_TYPE_COUNT));
-
+    Ride* ride = get_ride(w->number);
     populate_ride_type_dropdown();
 
     for (size_t i = 0; i < RideDropdownData.size(); i++)
@@ -2207,7 +2199,7 @@ static void window_ride_show_ride_type_dropdown(rct_window *w, rct_widget *widge
     uint8 pos = 0;
     for (uint8 i = 0; i < RIDE_TYPE_COUNT; i++)
     {
-        if (RideDropdownData[i].ride_type_id == _rideType)
+        if (RideDropdownData[i].ride_type_id == ride->type)
         {
             pos = i;
             break;
@@ -2398,10 +2390,10 @@ static void window_ride_main_dropdown(rct_window *w, rct_widgetindex widgetIndex
         if (dropdownIndex != -1 && dropdownIndex < RIDE_TYPE_COUNT)
         {
             uint8 rideLabelId = Math::Clamp(0, dropdownIndex, RIDE_TYPE_COUNT - 1);
-            _rideType = RideDropdownData[rideLabelId].ride_type_id;
-            if (_rideType < RIDE_TYPE_COUNT)
+            uint8 rideType = RideDropdownData[rideLabelId].ride_type_id;
+            if (rideType < RIDE_TYPE_COUNT)
             {
-                set_operating_setting(w->number, RIDE_SETTING_RIDE_TYPE, _rideType);
+                set_operating_setting(w->number, RIDE_SETTING_RIDE_TYPE, rideType);
             }
             window_invalidate_all();
         }
@@ -2492,7 +2484,7 @@ static void window_ride_main_invalidate(rct_window *w)
 
     set_format_arg(0, rct_string_id, ride->name);
     set_format_arg(2, uint32, ride->name_arguments);
-    set_format_arg(6, uint16, RideNaming[_rideType].name);
+    set_format_arg(6, uint16, RideNaming[ride->type].name);
     uint32 spriteIds[] = {
         SPR_CLOSED,
         SPR_OPEN,
