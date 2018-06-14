@@ -13,6 +13,7 @@
 - Feature: [#1417] Allow saving track designs for flat rides.
 - Feature: [#1675] Auto-rotate shops to face footpaths.
 - Feature: [#3473] Add button in ride window's maintainance tab to refurbish the ride.
+- Feature: [#4143] New horizontal +/- spinner widgets to make adjusting values easier.
 - Feature: [#6510] Ability to select edges or a row of tiles by holding down Ctrl using the land tool.
 - Feature: [#7187] Option for early scenario completion.
 - Feature: [#7266] Make headless instances use an interactive terminal with access to the in-game console API.
@@ -21,7 +22,6 @@
 - Feature: [#7332] Keyboard shortcuts for view path issues and cutaway view.
 - Feature: [#7348] Add large half loops to the Vertical Drop Roller Coaster.
 - Feature: [#7459] Allow opening and closing of parks that use no money.
-- Feature: [#7579] New horizontal +/- spinner widgets to make adjusting values easier.
 - Fix: [#2053] When clearance checks are disabled, a track piece ghost can remove non-ghost track pieces.
 - Fix: [#2611] Some objects show (undefined string) instead of a description in Korean.
 - Fix: [#3596] Saving parks, landscapes and tracks with a period in the filenames don't get their extension.
