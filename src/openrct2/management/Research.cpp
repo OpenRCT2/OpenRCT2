@@ -32,6 +32,7 @@
 #include "../ride/RideData.h"
 #include "../ride/RideGroupManager.h"
 #include "../ride/TrackData.h"
+#include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "NewsItem.h"
 #include "Finance.h"
@@ -342,7 +343,14 @@ void research_update()
         return;
     }
 
-    researchLevel = gResearchFundingLevel;
+    if ((gParkFlags & PARK_FLAGS_NO_MONEY) && gResearchFundingLevel == RESEARCH_FUNDING_NONE) 
+    {
+        researchLevel = RESEARCH_FUNDING_NORMAL;
+    } 
+    else 
+    {
+        researchLevel = gResearchFundingLevel;
+    }
 
     currentResearchProgress = gResearchProgress;
     currentResearchProgress += _researchRate[researchLevel];
