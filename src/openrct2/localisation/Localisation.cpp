@@ -1233,6 +1233,7 @@ void format_string_to_upper(utf8 *dest, size_t size, rct_string_id format, void 
 money32 string_to_money(const char* string_to_monetise)
 {
     const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
+    const currency_descriptor* currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
     char processedString[128] = {};
 
     Guard::Assert(strlen(string_to_monetise) < sizeof(processedString));
@@ -1256,6 +1257,11 @@ money32 string_to_money(const char* string_to_monetise)
                 return MONEY32_UNDEFINED;
             else
                 hasDecSep = true;
+
+            // Replace localised decimal separator with an English one.
+            *dst_ptr++ = '.';
+            src_ptr++;
+            continue;
         }
         else if (*src_ptr == '-')
         {
@@ -1301,34 +1307,14 @@ money32 string_to_money(const char* string_to_monetise)
         processedString[0] = '0';
     }
 
-    int number = 0, decimal = 0;
-    if (strstr(processedString, decimal_char) == nullptr)
-    {
-        // If decimal char does not exist, no tokenising is needed.
-        number = atoi(processedString);
-    }
-    else
-    {
-        char *numberText = strtok(processedString, decimal_char);
-        char *decimalText = strtok(nullptr, decimal_char);
+    auto number = std::stod(processedString, nullptr);
+    number /= (currencyDesc->rate / 10.0);
+    auto whole = static_cast<uint16>(number);
+    auto fraction = static_cast<uint8>((number - whole) * 100);
 
-        if (numberText != nullptr)
-            number = atoi(numberText);
-        if (decimalText != nullptr)
-            decimal = atoi(decimalText);
-
-        // The second parameter in MONEY must be two digits in length, while the game only ever uses
-        // the first of the two digits.
-        // Convert invalid numbers, such as ".6", ".234", ".05", to ".60", ".20", ".00" (respectively)
-        while (decimal > 10)
-            decimal /= 10;
-        if (decimal < 10)
-            decimal *= 10;
-    }
-
-    money32 result = MONEY(number, decimal);
+    money32 result = MONEY(whole, fraction);
     // Check if MONEY resulted in overflow
-    if ((number > 0 && result < 0) || result / 10 < number)
+    if ((whole > 0 && result < 0) || result / 10 < whole)
     {
         result = INT_MAX;
     }
@@ -1336,33 +1322,47 @@ money32 string_to_money(const char* string_to_monetise)
     return result;
 }
 
+/**
+ *
+ * @param amount The amount in tens of pounds, e.g. 123 = £ 12.30
+ * @param buffer_to_put_value_to Output parameter.
+ * @param buffer_len Length of the buffer.
+ * @param forceDecimals Show decimals, even if the amount does not have them. Will be ignored if the current exchange
+ *                          rate is too big to have decimals.
+ */
 void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffer_len, bool forceDecimals)
 {
-    if (amount == MONEY32_UNDEFINED) {
+    if (amount == MONEY32_UNDEFINED)
+    {
         snprintf(buffer_to_put_value_to, buffer_len, "0");
         return;
     }
-    int sign = amount >= 0 ? 1 : -1;
-    int a = abs(amount);
 
-    bool amountIsInteger = (a / 10 > 0) && (a % 10 == 0);
+    const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
+
+    int sign = amount >= 0 ? 1 : -1;
+    int a = abs(amount) * currencyDesc->rate;
+
+    bool amountIsInteger = (a / 100 > 0) && (a % 100 == 0);
 
     // If whole and decimal exist
-    if ((a / 10 > 0 && a % 10 > 0) || (amountIsInteger && forceDecimals))
+    if ((a / 100 > 0 && a % 100 > 0) || (amountIsInteger && forceDecimals && currencyDesc->rate < 100))
     {
         const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
-        snprintf(buffer_to_put_value_to, buffer_len, "%d%s%d0", (a / 10) * sign, decimal_char, a % 10);
+        auto decimalPart = a % 100;
+        auto precedingZero = (decimalPart < 10) ? "0" : "";
+        snprintf(buffer_to_put_value_to, buffer_len, "%d%s%s%d", (a / 100) * sign, decimal_char, precedingZero, decimalPart);
     }
     // If whole exists, but not decimal
     else if (amountIsInteger)
     {
-        snprintf(buffer_to_put_value_to, buffer_len, "%d", (a / 10) * sign);
+        snprintf(buffer_to_put_value_to, buffer_len, "%d", (a / 100) * sign);
     }
     // If decimal exists, but not whole
-    else if (a / 10 == 0 && a % 10 > 0)
+    else if (a / 100 == 0 && a % 100 > 0)
     {
         const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
-        snprintf(buffer_to_put_value_to, buffer_len, "%s0%s%d0", sign < 0 ? "-" : "", decimal_char, a % 10);
+        snprintf(buffer_to_put_value_to, buffer_len, "%s0%s%d", sign < 0 ? "-" : "", decimal_char, a % 100);
     }
     else
     {
