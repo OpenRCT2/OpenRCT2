@@ -10052,10 +10052,10 @@ void vehicle_claxon(const rct_vehicle * vehicle)
     rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
     switch (rideEntry->vehicles[vehicle->vehicle_type].sound_range)
     {
-    case 3:
+    case SOUND_RANGE_WHISTLE:
         audio_play_sound_at_location(SOUND_TRAIN_WHISTLE, vehicle->x, vehicle->y, vehicle->z);
         break;
-    case 4:
+    case SOUND_RANGE_BELL:
         audio_play_sound_at_location(SOUND_TRAM, vehicle->x, vehicle->y, vehicle->z);
         break;
     }
