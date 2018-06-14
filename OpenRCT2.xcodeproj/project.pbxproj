@@ -3482,7 +3482,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"#define\" OPENRCT2_BRANCH \\\"$(git rev-parse --abbrev-ref HEAD)\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1 \\\"$(git rev-parse HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$(git rev-parse --short HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+			shellScript = "echo \"#define\" OPENRCT2_VERSION_TAG \\\"$(git describe HEAD | sed -E 's/-g.+$//')\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\n\nbranch=$(git rev-parse --abbrev-ref HEAD)\nif [ \"$branch\" != \"master\" ]; then\necho \"#define\" OPENRCT2_BRANCH \\\"$branch\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\nshortsha1=$(git rev-parse --short HEAD)\nif [ \"$shortsha1\" != \"HEAD\" ]; then\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$shortsha1\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+			showEnvVarsInLog = 0;
 		};
 		D4E09E831E049C0600F53CE3 /* Download Title Sequences */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3543,7 +3544,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"#define\" OPENRCT2_BRANCH \\\"$(git rev-parse --abbrev-ref HEAD)\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1 \\\"$(git rev-parse HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$(git rev-parse --short HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+			shellScript = "echo \"#define\" OPENRCT2_VERSION_TAG \\\"$(git describe HEAD | sed -E 's/-g.+$//')\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\n\nbranch=$(git rev-parse --abbrev-ref HEAD)\nif [ \"$branch\" != \"master\" ]; then\necho \"#define\" OPENRCT2_BRANCH \\\"$branch\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\nshortsha1=$(git rev-parse --short HEAD)\nif [ \"$shortsha1\" != \"HEAD\" ]; then\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$shortsha1\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+			showEnvVarsInLog = 0;
 		};
 		F7D7748C1EC66E9300BE6EBC /* Get Git Variables */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3559,7 +3561,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"#define\" OPENRCT2_BRANCH \\\"$(git rev-parse --abbrev-ref HEAD)\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1 \\\"$(git rev-parse HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$(git rev-parse --short HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+			shellScript = "echo \"#define\" OPENRCT2_VERSION_TAG \\\"$(git describe HEAD | sed -E 's/-g.+$//')\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\n\nbranch=$(git rev-parse --abbrev-ref HEAD)\nif [ \"$branch\" != \"master\" ]; then\necho \"#define\" OPENRCT2_BRANCH \\\"$branch\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\nshortsha1=$(git rev-parse --short HEAD)\nif [ \"$shortsha1\" != \"HEAD\" ]; then\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$shortsha1\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 

@@ -166,13 +166,20 @@ endif ()
 # To avoid unnecessary rebuilds set the current branch and
 # short sha1 only for the two files that use these
 # definitions: Version.cpp and Crash/Platform.cpp
-set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/Version.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Crash/Platform.cpp PROPERTY
-    COMPILE_DEFINITIONS OPENRCT2_BRANCH="${OPENRCT2_BRANCH}")
+set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/Version.cpp ${CMAKE_CURRENT_LIST_DIR}/Crash/Platform.cpp
+    PROPERTY COMPILE_DEFINITIONS
+    OPENRCT2_VERSION_TAG="${OPENRCT2_VERSION_TAG}")
+
+if (NOT OPENRCT2_BRANCH STREQUAL "master")
+    set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/Version.cpp ${CMAKE_CURRENT_LIST_DIR}/Crash/Platform.cpp
+        APPEND PROPERTY COMPILE_DEFINITIONS
+        OPENRCT2_BRANCH="${OPENRCT2_BRANCH}")
+endif()
+
 if (NOT OPENRCT2_COMMIT_SHA1_SHORT STREQUAL "HEAD")
-    set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/Version.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Crash/Platform.cpp APPEND PROPERTY
-    COMPILE_DEFINITIONS OPENRCT2_COMMIT_SHA1_SHORT="${OPENRCT2_COMMIT_SHA1_SHORT}")
+    set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/Version.cpp ${CMAKE_CURRENT_LIST_DIR}/Crash/Platform.cpp
+        APPEND PROPERTY COMPILE_DEFINITIONS
+        OPENRCT2_COMMIT_SHA1_SHORT="${OPENRCT2_COMMIT_SHA1_SHORT}")
 endif()
 
 if((X86 OR X86_64) AND NOT MSVC)
