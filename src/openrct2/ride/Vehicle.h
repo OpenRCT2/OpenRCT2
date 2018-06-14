@@ -402,8 +402,7 @@ enum {
     VEHICLE_SOUND2_FLAGS_LIFT_HILL = 1 << 1 // When on a lift hill generate sound
 };
 
-enum friction_sound
-{
+enum {
     FRICTION_SOUND_WOOD_SMALL = 1,
     FRICTION_SOUND_STEEL = 2,
     FRICTION_SOUND_PETROL = 21,
@@ -412,17 +411,16 @@ enum friction_sound
     FRICTION_SOUND_WOOD_LARGE = 54,
     FRICTION_SOUND_STEEL_SMOOTH = 57,
     FRICTION_SOUND_NONE = 255
-}
+};
 
-enum sound_range
-{
+enum {
     SOUND_RANGE_SCREAMS_0 = 0,
     SOUND_RANGE_SCREAMS_1 = 1,
     SOUND_RANGE_SCREAMS_2 = 2,
     SOUND_RANGE_WHISTLE = 3,
     SOUND_RANGE_BELL = 4,
     SOUND_RANGE_NONE = 255
-}
+};
 
 #define VEHICLE_SEAT_PAIR_FLAG  0x80
 #define VEHICLE_SEAT_NUM_MASK   0x7F
