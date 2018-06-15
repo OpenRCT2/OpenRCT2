@@ -38,6 +38,10 @@ struct rct_research_item
         };
     };
     uint8 category;
+
+    bool IsInventedEndMarker() const;
+    bool IsRandomEndMarker() const;
+    bool IsUninventedEndMarker() const;
 };
 assert_struct_size(rct_research_item, 5);
 #pragma pack(pop)

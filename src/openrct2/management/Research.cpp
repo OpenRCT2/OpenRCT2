@@ -1015,3 +1015,18 @@ bool research_item_is_always_researched(rct_research_item * researchItem)
 {
     return (researchItem->flags & (RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED | RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED)) != 0;
 }
+
+bool rct_research_item::IsInventedEndMarker() const
+{
+    return rawValue == RESEARCHED_ITEMS_SEPARATOR;
+}
+
+bool rct_research_item::IsUninventedEndMarker() const
+{
+    return rawValue == RESEARCHED_ITEMS_END;
+}
+
+bool rct_research_item::IsRandomEndMarker() const
+{
+    return rawValue == RESEARCHED_ITEMS_END_2;
+}
