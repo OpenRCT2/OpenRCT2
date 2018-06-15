@@ -2123,7 +2123,7 @@ private:
         gResearchExpectedMonth = _s4.next_research_expected_month;
 
         ConvertResearchEntry(&gResearchNextItem, _s4.next_research_item, _s4.next_research_type);
-        if (gResearchNextItem.rawValue == RESEARCHED_ITEMS_SEPARATOR)
+        if (gResearchNextItem.IsInventedEndMarker())
         {
             gResearchProgressStage     = RESEARCH_STAGE_INITIAL_RESEARCH;
             gResearchProgress          = 0;
