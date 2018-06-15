@@ -223,7 +223,7 @@ static void research_scenery_groups_setup()
             continue;
 
         rct_research_item* research = gResearchItems;
-        for (; research->rawValue != RESEARCHED_ITEMS_END; research++)
+        for (; !research->IsUninventedEndMarker(); research++)
         {
             if ((research->rawValue & 0xFFFFFF) != entryIndex)
                 continue;
@@ -268,7 +268,7 @@ static void move_research_item(rct_research_item *beforeItem)
     do {
         *researchItem = *(researchItem + 1);
         researchItem++;
-    } while (researchItem->rawValue != RESEARCHED_ITEMS_END_2);
+    } while (!researchItem->IsRandomEndMarker());
     // At end of this researchItem points to the end of the list
 
     if (beforeItem > _editorInventionsListDraggedItem)
@@ -301,11 +301,11 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y(s
 
     if (scrollIndex != 0) {
         // Skip pre-researched items
-        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
+        for (; !researchItem->IsInventedEndMarker(); researchItem++) { }
         researchItem++;
     }
 
-    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
+    for (; !researchItem->IsInventedEndMarker() && !researchItem->IsUninventedEndMarker(); researchItem++)
     {
         y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
@@ -329,11 +329,11 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y_i
 
     if (scrollIndex != 0) {
         // Skip pre-researched items
-        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
+        for (; !researchItem->IsInventedEndMarker(); researchItem++) { }
         researchItem++;
     }
 
-    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
+    for (; !researchItem->IsInventedEndMarker() && !researchItem->IsUninventedEndMarker(); researchItem++)
     {
         y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
@@ -498,7 +498,7 @@ static void window_editor_inventions_list_scrollgetheight(rct_window *w, sint32 
     *height = 0;
 
     // Count / skip pre-researched items
-    for (researchItem = gResearchItems; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++)
+    for (researchItem = gResearchItems; !researchItem->IsInventedEndMarker(); researchItem++)
         *height += SCROLLABLE_ROW_HEIGHT;
 
     if (scrollIndex == 1) {
@@ -506,7 +506,7 @@ static void window_editor_inventions_list_scrollgetheight(rct_window *w, sint32 
 
         // Count non pre-researched items
         *height = 0;
-        for (; researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
+        for (; !researchItem->IsUninventedEndMarker(); researchItem++)
             *height += SCROLLABLE_ROW_HEIGHT;
     }
 }
@@ -742,7 +742,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
     if (scrollIndex == 1)
     {
         // Skip pre-researched items
-        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
+        for (; !researchItem->IsInventedEndMarker(); researchItem++) { }
         researchItem++;
         researchItemEndMarker = RESEARCHED_ITEMS_END;
     }
@@ -779,7 +779,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
             gfx_filter_rect(dpi, 0, top, boxWidth, bottom, PALETTE_DARKEN_1);
         }
 
-        if (researchItem->rawValue == RESEARCHED_ITEMS_SEPARATOR || researchItem->rawValue == RESEARCHED_ITEMS_END)
+        if (researchItem->IsInventedEndMarker() || researchItem->IsUninventedEndMarker())
             continue;
 
         if (researchItem == _editorInventionsListDraggedItem)

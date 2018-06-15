@@ -317,7 +317,7 @@ static void window_research_development_invalidate(rct_window *w)
     window_research_set_pressed_tab(w);
 
     window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_EMPTY;
-    if (gResearchLastItem.rawValue != RESEARCHED_ITEMS_SEPARATOR)
+    if (!gResearchLastItem.IsInventedEndMarker())
     {
         uint8 type = gResearchLastItem.type;
         window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
@@ -395,7 +395,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
     y = w->y + w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
 
     rct_string_id lastDevelopmentFormat;
-    if (gResearchLastItem.rawValue != RESEARCHED_ITEMS_SEPARATOR)
+    if (!gResearchLastItem.IsInventedEndMarker())
     {
         stringId = research_item_get_name(&gResearchLastItem);
         uint8 type = gResearchLastItem.type;

@@ -84,9 +84,9 @@ void research_update_uncompleted_types()
 {
     sint32 uncompletedResearchTypes = 0;
     rct_research_item * researchItem = gResearchItems;
-    while (researchItem++->rawValue != RESEARCHED_ITEMS_SEPARATOR);
+    while (!(researchItem++)->IsInventedEndMarker());
 
-    for (; researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
+    for (; !researchItem->IsUninventedEndMarker(); researchItem++)
     {
         uncompletedResearchTypes |= (1 << researchItem->category);
     }
@@ -139,7 +139,7 @@ static void research_next_design()
 
     // Skip already researched items
     firstUnresearchedItem = gResearchItems;
-    while (firstUnresearchedItem->rawValue != RESEARCHED_ITEMS_SEPARATOR)
+    while (!firstUnresearchedItem->IsInventedEndMarker())
     {
         firstUnresearchedItem++;
     }
@@ -149,7 +149,7 @@ static void research_next_design()
     for (;;)
     {
         researchItem++;
-        if (researchItem->rawValue == RESEARCHED_ITEMS_END)
+        if (researchItem->IsUninventedEndMarker())
         {
             if (!ignoreActiveResearchTypes)
             {
@@ -186,7 +186,7 @@ static void research_next_design()
         *(researchItem - 1) = tmp;
         researchItem--;
     }
-    while ((researchItem + 1)->rawValue != RESEARCHED_ITEMS_SEPARATOR);
+    while (!(researchItem + 1)->IsInventedEndMarker());
 
     research_invalidate_related_windows();
 }
@@ -233,9 +233,9 @@ void research_finish_item(rct_research_item * researchItem)
             bool seenRideEntry[MAX_RIDE_OBJECTS];
 
             rct_research_item * researchItem2 = gResearchItems;
-            for (; researchItem2->rawValue != RESEARCHED_ITEMS_END; researchItem2++)
+            for (; !researchItem2->IsUninventedEndMarker(); researchItem2++)
             {
-                if (researchItem2->rawValue != RESEARCHED_ITEMS_SEPARATOR &&
+                if (!researchItem2->IsInventedEndMarker() &&
                     researchItem2->type == RESEARCH_ENTRY_TYPE_RIDE)
                 {
                     uint8 index = researchItem2->entryIndex;
@@ -387,10 +387,10 @@ void research_update()
 void research_process_random_items()
 {
     rct_research_item * research = gResearchItems;
-    for (; research->rawValue != RESEARCHED_ITEMS_END; research++) { }
+    for (; !research->IsUninventedEndMarker(); research++) { }
 
     research++;
-    for (; research->rawValue != RESEARCHED_ITEMS_END_2; research += 2)
+    for (; !research->IsRandomEndMarker(); research += 2)
     {
         if (scenario_rand() & 1)
         {
@@ -411,7 +411,7 @@ void research_process_random_items()
                 ebp = inner_research;
             }
         }
-        while ((inner_research++)->rawValue != RESEARCHED_ITEMS_END);
+        while (!(inner_research++)->IsUninventedEndMarker());
         assert(edx != nullptr);
         edx->rawValue = research->rawValue;
         assert(ebp != nullptr);
@@ -439,7 +439,7 @@ void research_reset_current_item()
     set_all_scenery_groups_not_invented();
 
 
-    for (rct_research_item * research = gResearchItems; research->rawValue != RESEARCHED_ITEMS_SEPARATOR; research++)
+    for (rct_research_item * research = gResearchItems; !research->IsInventedEndMarker(); research++)
     {
         research_finish_item(research);
     }
@@ -460,11 +460,11 @@ static void research_insert_unresearched(sint32 rawValue, sint32 category)
     researchItem = gResearchItems;
     do
     {
-        if (researchItem->rawValue == RESEARCHED_ITEMS_END)
+        if (researchItem->IsUninventedEndMarker())
         {
             // Insert slot
             researchItem2 = researchItem;
-            while (researchItem2->rawValue != RESEARCHED_ITEMS_END_2)
+            while (!researchItem2->IsRandomEndMarker())
             {
                 researchItem2++;
             }
@@ -489,7 +489,7 @@ static void research_insert_researched(sint32 rawValue, uint8 category)
 
     researchItem = gResearchItems;
     // First check to make sure that entry is not already accounted for
-    for (; researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
+    for (; !researchItem->IsUninventedEndMarker(); researchItem++)
     {
         if ((researchItem->rawValue & 0xFFFFFF) == (rawValue & 0xFFFFFF))
         {
@@ -499,11 +499,11 @@ static void research_insert_researched(sint32 rawValue, uint8 category)
     researchItem = gResearchItems;
     do
     {
-        if (researchItem->rawValue == RESEARCHED_ITEMS_SEPARATOR)
+        if (researchItem->IsInventedEndMarker())
         {
             // Insert slot
             researchItem2 = researchItem;
-            while (researchItem2->rawValue != RESEARCHED_ITEMS_END_2)
+            while (!researchItem2->IsRandomEndMarker())
             {
                 researchItem2++;
             }
@@ -525,7 +525,7 @@ static void research_insert_researched(sint32 rawValue, uint8 category)
 void research_remove(rct_research_item * researchItem)
 {
     for (rct_research_item * researchItem2 = gResearchItems;
-         researchItem2->rawValue != RESEARCHED_ITEMS_END; researchItem2++)
+         !researchItem2->IsUninventedEndMarker(); researchItem2++)
     {
         if (researchItem2->rawValue == researchItem->rawValue)
         {
@@ -533,7 +533,7 @@ void research_remove(rct_research_item * researchItem)
             {
                 *researchItem2 = *(researchItem2 + 1);
             }
-            while (researchItem2++->rawValue != RESEARCHED_ITEMS_END_2);
+            while (!(researchItem2++)->IsRandomEndMarker());
             return;
         }
     }
@@ -845,7 +845,7 @@ rct_string_id research_get_friendly_base_ride_type_name(uint8 trackType, rct_rid
  */
 void research_remove_flags()
 {
-    for (rct_research_item * research = gResearchItems; research->rawValue != RESEARCHED_ITEMS_END_2; research++)
+    for (rct_research_item * research = gResearchItems; !research->IsRandomEndMarker(); research++)
     {
         // Clear the always researched flags.
         if (research->rawValue > RESEARCHED_ITEMS_SEPARATOR)
@@ -861,9 +861,9 @@ void research_fix()
     for (sint32 i = 0; i < MAX_RESEARCH_ITEMS; i++)
     {
         rct_research_item * researchItem = &gResearchItems[i];
-        if (researchItem->rawValue == RESEARCHED_ITEMS_SEPARATOR)
+        if (researchItem->IsInventedEndMarker())
             continue;
-        if (researchItem->rawValue == RESEARCHED_ITEMS_END)
+        if (researchItem->IsUninventedEndMarker())
         {
             if (i == MAX_RESEARCH_ITEMS - 1)
             {
@@ -872,7 +872,7 @@ void research_fix()
             (++researchItem)->rawValue = RESEARCHED_ITEMS_END_2;
             break;
         }
-        if (researchItem->rawValue == RESEARCHED_ITEMS_END_2)
+        if (researchItem->IsRandomEndMarker())
             break;
         if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE)
         {
@@ -940,13 +940,13 @@ void research_items_make_all_unresearched()
     sint32 sorted;
     do {
         sorted = 1;
-        for (researchItem = gResearchItems; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++)
+        for (researchItem = gResearchItems; !researchItem->IsInventedEndMarker(); researchItem++)
         {
             if (research_item_is_always_researched(researchItem))
                 continue;
 
             nextResearchItem = researchItem + 1;
-            if (nextResearchItem->rawValue == RESEARCHED_ITEMS_SEPARATOR || research_item_is_always_researched(nextResearchItem))
+            if (nextResearchItem->IsInventedEndMarker() || research_item_is_always_researched(nextResearchItem))
             {
                 // Bubble up always researched item or separator
                 researchItemTemp = *researchItem;
@@ -954,7 +954,7 @@ void research_items_make_all_unresearched()
                 *nextResearchItem = researchItemTemp;
                 sorted = 0;
 
-                if (researchItem->rawValue == RESEARCHED_ITEMS_SEPARATOR)
+                if (researchItem->IsInventedEndMarker())
                     break;
             }
         }
@@ -967,10 +967,10 @@ void research_items_make_all_researched()
     rct_research_item * researchItem, researchItemTemp;
 
     // Find separator
-    for (researchItem = gResearchItems; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
+    for (researchItem = gResearchItems; !researchItem->IsInventedEndMarker(); researchItem++) { }
 
     // Move separator below all items
-    for (; (researchItem + 1)->rawValue != RESEARCHED_ITEMS_END; researchItem++)
+    for (; !(researchItem + 1)->IsUninventedEndMarker(); researchItem++)
     {
         // Swap separator with research item
         researchItemTemp = *researchItem;
@@ -989,13 +989,13 @@ void research_items_shuffle()
     sint32 i, numNonResearchedItems;
 
     // Skip pre-researched items
-    for (researchItem = gResearchItems; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) {}
+    for (researchItem = gResearchItems; !researchItem->IsInventedEndMarker(); researchItem++) {}
     researchItem++;
     researchOrderBase = researchItem;
 
     // Count non pre-researched items
     numNonResearchedItems = 0;
-    for (; researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
+    for (; !researchItem->IsUninventedEndMarker(); researchItem++)
         numNonResearchedItems++;
 
     // Shuffle list
@@ -1014,4 +1014,19 @@ void research_items_shuffle()
 bool research_item_is_always_researched(rct_research_item * researchItem)
 {
     return (researchItem->flags & (RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED | RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED)) != 0;
+}
+
+bool rct_research_item::IsInventedEndMarker() const
+{
+    return (rawValue == RESEARCHED_ITEMS_SEPARATOR);
+}
+
+bool rct_research_item::IsUninventedEndMarker() const
+{
+    return (rawValue == RESEARCHED_ITEMS_END);
+}
+
+bool rct_research_item::IsRandomEndMarker() const
+{
+    return (rawValue == RESEARCHED_ITEMS_END_2);
 }
