@@ -213,8 +213,6 @@ void window_close(rct_window* window)
     num_windows = (sint32)(RCT2_NEW_WINDOW - window);
     if (num_windows > 0)
         memmove(window, window + 1, num_windows * sizeof(rct_window));
-
-    viewport_update_pointers();
 }
 
 /**

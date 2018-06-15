@@ -894,7 +894,6 @@ static void window_park_init_viewport(rct_window *w)
         w->viewport = nullptr;
         viewportFlags = viewport->flags;
         viewport->width = 0;
-        viewport_update_pointers();
     }
 
     // Call invalidate event

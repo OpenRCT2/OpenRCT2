@@ -347,7 +347,6 @@ static void window_banner_viewport_rotate(rct_window *w)
     w->viewport = nullptr;
 
     view->width = 0;
-    viewport_update_pointers();
 
     rct_banner* banner = &gBanners[w->number];
 

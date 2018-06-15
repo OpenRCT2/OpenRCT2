@@ -1877,8 +1877,6 @@ static void window_ride_init_viewport(rct_window *w)
         viewport_flags = w->viewport->flags;
         w->viewport->width = 0;
         w->viewport = nullptr;
-
-        viewport_update_pointers();
     } else if (gConfigGeneral.always_show_gridlines) {
         viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
     }

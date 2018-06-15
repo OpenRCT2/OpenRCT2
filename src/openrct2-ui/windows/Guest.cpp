@@ -749,8 +749,6 @@ void window_guest_viewport_init(rct_window* w){
         viewport_flags = w->viewport->flags;
         w->viewport->width = 0;
         w->viewport = nullptr;
-
-        viewport_update_pointers();
     }
     else{
         viewport_flags = 0;

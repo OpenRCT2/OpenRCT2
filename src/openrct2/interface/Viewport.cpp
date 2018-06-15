@@ -192,17 +192,6 @@ void viewport_create(rct_window *w, sint32 x, sint32 y, sint32 width, sint32 hei
     w->saved_view_y = view_y;
     viewport->view_x = view_x;
     viewport->view_y = view_y;
-
-    viewport_update_pointers();
-}
-
-/**
- *
- *  rct2: 0x006EE510
- */
-void viewport_update_pointers()
-{
-
 }
 
 /**
