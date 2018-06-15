@@ -156,7 +156,7 @@ static int TTF_initialized = 0;
         TTF_SetError("Library not initialized");        \
         return errval;                      \
     }                               \
-    if ( !p ) {                         \
+    if ( !(p) ) {                         \
         TTF_SetError("Passed a NULL pointer");          \
         return errval;                      \
     }

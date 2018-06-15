@@ -20,7 +20,7 @@
 
 #define MIXER_VOLUME_MAX        128
 #define MIXER_LOOP_NONE         0
-#define MIXER_LOOP_INFINITE     -1
+#define MIXER_LOOP_INFINITE     (-1)
 
 enum MIXER_GROUP
 {
@@ -56,7 +56,7 @@ namespace OpenRCT2::Audio
 } // namespace OpenRCT2::Audio
 
 #ifndef DSBPAN_LEFT
-#define DSBPAN_LEFT -10000
+#define DSBPAN_LEFT (-10000)
 #endif
 #ifndef DSBPAN_RIGHT
 #define DSBPAN_RIGHT 10000

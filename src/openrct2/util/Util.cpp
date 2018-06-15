@@ -272,9 +272,9 @@ static sint32 bitcount_lut(uint32 source)
     // https://graphics.stanford.edu/~seander/bithacks.html
     static constexpr const uint8 BitsSetTable256[256] =
     {
-    #define B2(n) n,     n+1,     n+1,     n+2
-    #define B4(n) B2(n), B2(n+1), B2(n+1), B2(n+2)
-    #define B6(n) B4(n), B4(n+1), B4(n+1), B4(n+2)
+    #define B2(n) n,     (n) + 1,     (n) + 1,   (n) + 2
+    #define B4(n) B2(n), B2((n) + 1), B2((n) + 1), B2((n) + 2)
+    #define B6(n) B4(n), B4((n) + 1), B4((n) + 1), B4((n) + 2)
     B6(0), B6(1), B6(1), B6(2)
     };
     return BitsSetTable256[source & 0xff] +
@@ -505,8 +505,8 @@ uint32 util_rand() {
     return rand();
 }
 
-#define CHUNK 128*1024
-#define MAX_ZLIB_REALLOC 4*1024*1024
+#define CHUNK (128 * 1024)
+#define MAX_ZLIB_REALLOC (4 * 1024 * 1024)
 
 /**
  * @brief Inflates zlib-compressed data
@@ -585,10 +585,10 @@ uint8 *util_zlib_deflate(const uint8 *data, size_t data_in_size, size_t *data_ou
 
 // Type-independent code left as macro to reduce duplicate code.
 #define add_clamp_body(value, value_to_add, min_cap, max_cap) \
-    if ((value_to_add > 0) && (value > (max_cap - value_to_add))) { \
+    if ((value_to_add > 0) && (value > (max_cap - (value_to_add)))) { \
         value = max_cap; \
     } \
-    else if ((value_to_add < 0) && (value < (min_cap - value_to_add))) { \
+    else if ((value_to_add < 0) && (value < (min_cap - (value_to_add)))) { \
         value = min_cap; \
     } \
     else { \

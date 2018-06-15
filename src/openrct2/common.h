@@ -128,7 +128,7 @@ using money64 = fixed64_1dp;
 
 // Construct a fixed point number. For example, to create the value 3.65 you
 // would write FIXED_2DP(3,65)
-#define FIXED_XDP(x, whole, fraction)   ((whole) * (10 * x) + (fraction))
+#define FIXED_XDP(x, whole, fraction)   ((whole) * (10 * (x)) + (fraction))
 #define FIXED_1DP(whole, fraction)      FIXED_XDP(1, whole, fraction)
 #define FIXED_2DP(whole, fraction)      FIXED_XDP(10, whole, fraction)
 

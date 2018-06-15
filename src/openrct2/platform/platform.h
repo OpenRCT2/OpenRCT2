@@ -27,7 +27,7 @@ struct rct2_install_info;
 #define MAX_PATH 260
 #endif
 
-#define INVALID_HANDLE -1
+#define INVALID_HANDLE (-1)
 
 #ifdef _WIN32
 #define PATH_SEPARATOR "\\"
