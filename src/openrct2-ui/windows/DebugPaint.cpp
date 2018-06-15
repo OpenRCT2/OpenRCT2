@@ -14,14 +14,18 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <openrct2/Context.h>
-#include <openrct2-ui/windows/Window.h>
-
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
+#include <openrct2/core/Guard.hpp>
+#include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/paint/tile_element/Paint.TileElement.h>
+#include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/paint/Paint.h>
+#include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/ride/TrackPaint.h>
+
+static sint32 ResizeLanguage = LANGUAGE_UNDEFINED;
 
 // clang-format off
 enum WINDOW_DEBUG_PAINT_WIDGET_IDX
@@ -115,6 +119,7 @@ rct_window * window_debug_paint_open()
     window->colours[0] = TRANSLUCENT(COLOUR_BLACK);
     window->colours[1] = COLOUR_GREY;
 
+    ResizeLanguage = LANGUAGE_UNDEFINED;
     return window;
 }
 
@@ -150,6 +155,40 @@ static void window_debug_paint_mouseup([[maybe_unused]] rct_window * w, rct_widg
 
 static void window_debug_paint_invalidate(rct_window * w)
 {
+    const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
+    const auto currentLanguage = ls.GetCurrentLanguage();
+    if (ResizeLanguage != currentLanguage)
+    {
+        ResizeLanguage = currentLanguage;
+        window_invalidate(w);
+
+        // Find the width of the longest string
+        sint16 newWidth = 0;
+        for (size_t widgetIndex = WIDX_TOGGLE_SHOW_WIDE_PATHS; widgetIndex < WIDX_TOGGLE_SHOW_DIRTY_VISUALS; widgetIndex++)
+        {
+            auto stringIdx = w->widgets[widgetIndex].text;
+            auto string = ls.GetString(stringIdx);
+            Guard::ArgumentNotNull(string);
+            auto width = gfx_get_string_width(string);
+            newWidth = std::max<sint16>(width, newWidth);
+        }
+
+        // Add padding for both sides (8) and the offset for the text after the checkbox (15)
+        newWidth += 8 * 2 + 15;
+
+        w->width = newWidth;
+        w->max_width = newWidth;
+        w->min_width = newWidth;
+        w->widgets[WIDX_BACKGROUND].right = newWidth - 1;
+        w->widgets[WIDX_TOGGLE_SHOW_WIDE_PATHS].right = newWidth - 8;
+        w->widgets[WIDX_TOGGLE_SHOW_BLOCKED_TILES].right = newWidth - 8;
+        w->widgets[WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS].right = newWidth - 8;
+        w->widgets[WIDX_TOGGLE_SHOW_BOUND_BOXES].right = newWidth - 8;
+        w->widgets[WIDX_TOGGLE_SHOW_DIRTY_VISUALS].right = newWidth - 8;
+
+        window_invalidate(w);
+    }
+
     widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
     widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
     widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
