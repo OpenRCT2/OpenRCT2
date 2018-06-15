@@ -180,6 +180,7 @@ extern LocationXY8 gClipSelectionB;
 extern bool gShowDirtyVisuals;
 extern bool gPaintBoundingBoxes;
 extern bool gPaintBlockedTiles;
+extern bool gPaintWidePathsAsGhost;
 
 paint_struct * sub_98196C(
     paint_session * session,

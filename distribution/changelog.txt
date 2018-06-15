@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#5993] Ride window prices can now be set via text input.
 - Feature: [#6998] Guests now wait for passing vehicles before crossing railway tracks.
+- Feature: [#7694] Debug option to visualize paths that the game detects as wide.
 - Fix: [#7628] Always-researched items can be modified in the inventory list.
 - Fix: [#7643] No Money scenarios with funding set to zero.
 - Fix: [#7653] Finances money spinner is too narrow for big loans.

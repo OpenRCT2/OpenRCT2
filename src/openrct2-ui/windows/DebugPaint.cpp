@@ -27,6 +27,7 @@
 enum WINDOW_DEBUG_PAINT_WIDGET_IDX
 {
     WIDX_BACKGROUND,
+    WIDX_TOGGLE_SHOW_WIDE_PATHS,
     WIDX_TOGGLE_SHOW_BLOCKED_TILES,
     WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS,
     WIDX_TOGGLE_SHOW_BOUND_BOXES,
@@ -34,14 +35,15 @@ enum WINDOW_DEBUG_PAINT_WIDGET_IDX
 };
 
 #define WINDOW_WIDTH    (200)
-#define WINDOW_HEIGHT   (8 + 15 + 15 + 15 + 11 + 8)
+#define WINDOW_HEIGHT   (8 + 15 + 15 + 15 + 15 + 11 + 8)
 
 static rct_widget window_debug_paint_widgets[] = {
-    { WWT_FRAME,    0,  0,  WINDOW_WIDTH - 1,   0,                  WINDOW_HEIGHT - 1,      0xFFFFFFFF,                             STR_NONE },
-    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8,                  8 + 11,                 STR_DEBUG_PAINT_SHOW_BLOCKED_TILES,     STR_NONE },
-    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15,             8 + 15 + 11,            STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS,   STR_NONE },
-    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15 + 15,        8 + 15 + 15 + 11,       STR_DEBUG_PAINT_SHOW_BOUND_BOXES,       STR_NONE },
-    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15 + 15 + 15,   8 + 15 + 15 + 15 + 11,  STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS,     STR_NONE },
+    { WWT_FRAME,    0,  0,  WINDOW_WIDTH - 1,   0,              WINDOW_HEIGHT - 1,  STR_NONE,                               STR_NONE },
+    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15 * 0,     8 + 15 * 0 + 11,    STR_DEBUG_PAINT_SHOW_WIDE_PATHS,        STR_NONE },
+    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15 * 1,     8 + 15 * 1 + 11,    STR_DEBUG_PAINT_SHOW_BLOCKED_TILES,     STR_NONE },
+    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15 * 2,     8 + 15 * 2 + 11,    STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS,   STR_NONE },
+    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15 * 3,     8 + 15 * 3 + 11,    STR_DEBUG_PAINT_SHOW_BOUND_BOXES,       STR_NONE },
+    { WWT_CHECKBOX, 1,  8,  WINDOW_WIDTH - 8,   8 + 15 * 4,     8 + 15 * 4 + 11,    STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS,     STR_NONE },
     { WIDGETS_END },
 };
 
@@ -102,6 +104,7 @@ rct_window * window_debug_paint_open()
 
     window->widgets = window_debug_paint_widgets;
     window->enabled_widgets =
+        (1 << WIDX_TOGGLE_SHOW_WIDE_PATHS) |
         (1 << WIDX_TOGGLE_SHOW_BLOCKED_TILES) |
         (1 << WIDX_TOGGLE_SHOW_BOUND_BOXES) |
         (1 << WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS) |
@@ -118,6 +121,11 @@ rct_window * window_debug_paint_open()
 static void window_debug_paint_mouseup([[maybe_unused]] rct_window * w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex) {
+        case WIDX_TOGGLE_SHOW_WIDE_PATHS:
+            gPaintWidePathsAsGhost = !gPaintWidePathsAsGhost;
+            gfx_invalidate_screen();
+            break;
+
         case WIDX_TOGGLE_SHOW_BLOCKED_TILES:
             gPaintBlockedTiles = !gPaintBlockedTiles;
             gfx_invalidate_screen();
@@ -142,6 +150,7 @@ static void window_debug_paint_mouseup([[maybe_unused]] rct_window * w, rct_widg
 
 static void window_debug_paint_invalidate(rct_window * w)
 {
+    widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
     widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
     widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
     widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
