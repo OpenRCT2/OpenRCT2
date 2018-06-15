@@ -95,7 +95,10 @@ public:
 
     void AddRange(std::initializer_list<const char *> initializerList)
     {
-        Collections::AddRange(_entries, initializerList);
+        for (auto entry : initializerList)
+        {
+            GetOrAddEntry(entry);
+        }
     }
 };
 
