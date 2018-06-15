@@ -809,7 +809,7 @@ static void window_new_ride_invalidate(rct_window *w)
 
     if (_windowNewRideCurrentTab == WINDOW_NEW_RIDE_PAGE_RESEARCH) {
         window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_EMPTY;
-        if (gResearchLastItem.rawValue != RESEARCHED_ITEMS_SEPARATOR)
+        if (!gResearchLastItem.IsInventedEndMarker())
         {
             uint8 type = gResearchLastItem.type;
             window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
