@@ -1,5 +1,6 @@
 0.2.0+ (in development)
 ------------------------------------------------------------------------
+- Feature: [#5993] Ride window prices can now be set via text input.
 - Feature: [#6998] Guests now wait for passing vehicles before crossing railway tracks.
 - Fix: [#7628] Always-researched items can be modified in the inventory list.
 - Fix: [#7643] No Money scenarios with funding set to zero.

@@ -806,7 +806,7 @@ static void window_cheats_money_mouseup(rct_window *w, rct_widgetindex widgetInd
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_NOMONEY, gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1, GAME_COMMAND_CHEAT, 0, 0);
         break;
     case WIDX_MONEY_SPINNER:
-        money_to_string(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH);
+        money_to_string(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH, false);
         window_text_input_raw_open(w, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneySpinnerText, MONEY_STRING_MAXLENGTH);
         break;
     case WIDX_SET_MONEY:
