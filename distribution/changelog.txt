@@ -10,6 +10,7 @@
 - Fix: [#7674] Rides show up as random numbers in guest's ride list.
 - Fix: [#7678] Crash when loading or starting a new game while having object selection window open.
 - Fix: [#7683] 'Arbitrary ride type' dropdown state is shared between windows.
+- Fix: [#7697] Some scenery groups in RCT1 saves are never invented.
 
 0.2.0 (2018-06-10)
 ------------------------------------------------------------------------
@@ -35,7 +36,7 @@
 - Fix: [#6938] Banner do not correctly capitalise non-ASCII characters.
 - Fix: [#7176] Mechanics sometimes fall down from rides.
 - Fix: [#7303] Visual glitch with virtual floor near map edges.
-- Fix: [#7313] Loading an invalid path with openrct2 produces results different than expected.
+- Fix: [#7313] Loading an invalid path with OpenRCT2 produces results different than expected.
 - Fix: [#7327] Abstract scenery and stations don't get fully See-Through when hiding them (original bug).
 - Fix: [#7331] Invention list in scenario editor crashes upon removing previously-enabled ride/stall entries.
 - Fix: [#7341] Staff may auto-spawn on guests walking outside of paths.
