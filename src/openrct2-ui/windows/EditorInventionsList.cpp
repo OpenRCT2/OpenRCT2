@@ -305,10 +305,13 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y(s
         researchItem++;
     }
 
-    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++) {
+    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
+    {
         y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
+        {
             return researchItem;
+        }
     }
 
     return nullptr;
@@ -330,10 +333,13 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y_i
         researchItem++;
     }
 
-    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++) {
+    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
+    {
         y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
+        {
             return researchItem;
+        }
     }
 
     return researchItem;
@@ -517,7 +523,8 @@ static void window_editor_inventions_list_scrollmousedown(rct_window *w, sint32 
     if (researchItem == nullptr)
         return;
 
-    if (researchItem->rawValue < RESEARCHED_ITEMS_END_2 && research_item_is_always_researched(researchItem))
+    // Disallow picking up always-researched items
+    if (researchItem->rawValue < RESEARCHED_ITEMS_END_2 || research_item_is_always_researched(researchItem))
         return;
 
     window_invalidate(w);
@@ -533,9 +540,16 @@ static void window_editor_inventions_list_scrollmouseover(rct_window *w, sint32 
     rct_research_item *researchItem;
 
     researchItem = window_editor_inventions_list_get_item_from_scroll_y(scrollIndex, y);
-    if (researchItem != w->research_item) {
+    if (researchItem != w->research_item)
+    {
         w->research_item = researchItem;
         window_invalidate(w);
+
+        // Prevent always-researched items from being highlighted when hovered over
+        if (researchItem != nullptr && research_item_is_always_researched(researchItem))
+        {
+            w->research_item = nullptr;
+        }
     }
 }
 
@@ -568,15 +582,13 @@ static void window_editor_inventions_list_cursor(rct_window *w, rct_widgetindex 
         return;
     }
 
+    // Use the open hand as cursor for items that can be picked up
     researchItem = window_editor_inventions_list_get_item_from_scroll_y(scrollIndex, y);
-    if (researchItem == nullptr)
-        return;
-
-    if (researchItem->rawValue < RESEARCHED_ITEMS_END_2 && research_item_is_always_researched(researchItem)) {
-        return;
+    if (researchItem != nullptr && researchItem->rawValue >= RESEARCHED_ITEMS_END_2
+        && !research_item_is_always_researched(researchItem))
+    {
+        *cursorId = CURSOR_HAND_OPEN;
     }
-
-    *cursorId = CURSOR_HAND_OPEN;
 }
 
 /**
@@ -882,7 +894,6 @@ static void window_editor_inventions_list_drag_cursor(rct_window *w, rct_widgeti
     if (inventionListWindow != nullptr) {
         rct_research_item *researchItem = get_research_item_at(x, y);
         if (researchItem != inventionListWindow->research_item) {
-            inventionListWindow = (rct_window *)researchItem;
             window_invalidate(inventionListWindow);
         }
     }
@@ -898,7 +909,13 @@ static void window_editor_inventions_list_drag_moved(rct_window* w, sint32 x, si
 {
     rct_research_item *researchItem;
 
-    researchItem = get_research_item_at(x, y);
+    // Skip always researched items, so that the dragged item gets placed underneath them
+    do
+    {
+        researchItem = get_research_item_at(x, y);
+        y += LIST_ROW_HEIGHT;
+    } while (researchItem != nullptr && researchItem->rawValue >= 0 && research_item_is_always_researched(researchItem));
+
     if (researchItem != nullptr)
         move_research_item(researchItem);
 
