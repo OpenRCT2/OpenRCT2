@@ -273,6 +273,20 @@ public:
         return std::make_shared<DrawingEngineFactory>();
     }
 
+    void DrawRainAnimation(IRainDrawer* rainDrawer, rct_drawpixelinfo* dpi, DrawRainFunc drawFunc) override
+    {
+        sint32 left = dpi->x;
+        sint32 right = left + dpi->width;
+        sint32 top = dpi->y;
+        sint32 bottom = top + dpi->height;
+
+        rct_window * newWindow = gWindowNextSlot;
+        for (rct_window * w = g_window_list; w < newWindow; w++)
+        {
+            DrawRainWindow(rainDrawer, w, left, right, top, bottom, drawFunc);
+        }
+    }
+
     // Text input
     bool IsTextInputActive() override
     {
@@ -755,6 +769,89 @@ private:
     uint32 GetWindowFlags()
     {
         return SDL_GetWindowFlags(_window);
+    }
+
+    static void DrawRainWindow(
+        IRainDrawer * rainDrawer,
+        rct_window * original_w,
+        sint16 left,
+        sint16 right,
+        sint16 top,
+        sint16 bottom,
+        DrawRainFunc drawFunc)
+    {
+        rct_window * newWindow = gWindowNextSlot;
+        rct_window * w = original_w + 1; // Start from second window
+        for (; ; w++)
+        {
+            if (w >= newWindow)
+            {
+                // Loop ended, draw rain for original_w
+                auto vp = original_w->viewport;
+                if (vp != nullptr)
+                {
+                    left = std::max<sint16>(left, vp->x);
+                    right = std::min<sint16>(right, vp->x + vp->width);
+                    top = std::max<sint16>(top, vp->y);
+                    bottom = std::min<sint16>(bottom, vp->y + vp->height);
+                    if (left < right && top < bottom)
+                    {
+                        auto width = right - left;
+                        auto height = bottom - top;
+                        drawFunc(rainDrawer, left, top, width, height);
+                    }
+                }
+                return;
+            }
+
+            if (right <= w->x || bottom <= w->y)
+            {
+                continue;
+            }
+
+            if (RCT_WINDOW_RIGHT(w) <= left || RCT_WINDOW_BOTTOM(w) <= top)
+            {
+                continue;
+            }
+
+            if (left >= w->x)
+            {
+                break;
+            }
+
+            DrawRainWindow(rainDrawer, original_w, left, w->x, top, bottom, drawFunc);
+
+            left = w->x;
+            DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
+            return;
+        }
+
+        sint16 w_right = RCT_WINDOW_RIGHT(w);
+        if (right > w_right) {
+            DrawRainWindow(rainDrawer, original_w, left, w_right, top, bottom, drawFunc);
+
+            left = w_right;
+            DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
+            return;
+        }
+
+        if (top < w->y) {
+            DrawRainWindow(rainDrawer, original_w, left, right, top, w->y, drawFunc);
+
+            top = w->y;
+            DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
+            return;
+        }
+
+        sint16 w_bottom = RCT_WINDOW_BOTTOM(w);
+        if (bottom > w_bottom)
+        {
+            DrawRainWindow(rainDrawer, original_w, left, right, top, w_bottom, drawFunc);
+
+            top = w_bottom;
+            DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
+            return;
+        }
     }
 };
 
