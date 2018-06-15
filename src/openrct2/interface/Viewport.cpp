@@ -24,10 +24,14 @@
 #include "../world/Climate.h"
 #include "../world/Map.h"
 #include "../world/Sprite.h"
+#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "Colour.h"
 #include "Viewport.h"
 #include "Window.h"
 #include "Window_internal.h"
+
+using namespace OpenRCT2;
 
 //#define DEBUG_SHOW_DIRTY_BOX
 uint8 gShowGridLinesRefCount;
@@ -1538,14 +1542,14 @@ void viewport_invalidate(rct_viewport *viewport, sint32 left, sint32 top, sint32
     // if unknown viewport visibility, use the containing window to discover the status
     if (viewport->visibility == VC_UNKNOWN)
     {
-        for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
+        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        auto owner = windowManager->GetOwner(viewport);
+        if (owner != nullptr && owner->classification != WC_MAIN_WINDOW)
         {
-            if (w->classification != WC_MAIN_WINDOW && w->viewport != nullptr && w->viewport == viewport)
+            // note, window_is_visible will update viewport->visibility, so this should have a low hit count
+            if (!window_is_visible(owner))
             {
-                // note, window_is_visible will update viewport->visibility, so this should have a low hit count
-                if (!window_is_visible(w)) {
-                    return;
-                }
+                return;
             }
         }
     }

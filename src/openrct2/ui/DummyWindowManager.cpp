@@ -27,6 +27,7 @@ namespace OpenRCT2::Ui
         std::string GetKeyboardShortcutString(sint32 /*shortcut*/) override { return std::string(); }
         void SetMainView(sint32 x, sint32 y, sint32 zoom, sint32 rotation) override { }
         void UpdateMouseWheel() override { }
+        rct_window* GetOwner(const rct_viewport* viewport) override { return nullptr; }
     };
 
     IWindowManager * CreateDummyWindowManager()
