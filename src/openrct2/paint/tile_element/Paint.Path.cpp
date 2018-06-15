@@ -27,6 +27,8 @@
 #include "../../world/Map.h"
 #include "../../drawing/LightFX.h"
 
+bool gPaintWidePathsAsGhost = false;
+
 // clang-format off
 const uint8 byte_98D800[] = {
     12, 9, 3, 6
@@ -793,6 +795,13 @@ void path_paint(paint_session * session, uint16 height, const rct_tile_element *
     if (gPaintBlockedTiles && (tile_element->flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE))
     {
         imageFlags = COLOUR_BRIGHT_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP;
+    }
+
+    // Draw wide flags as ghosts, leaving only the "walkable" paths to be drawn normally
+    if (gPaintWidePathsAsGhost && footpath_element_is_wide(tile_element))
+    {
+        imageFlags &= 0x7FFFF;
+        imageFlags |= CONSTRUCTION_MARKER;
     }
 
     sint16 x = session->MapPosition.x, y = session->MapPosition.y;
