@@ -127,7 +127,7 @@ private:
     {
         Http::Request request;
         request.url = GetMasterServerUrl();
-        request.method = Http::Method::POST;
+        request.method = Http::Method::PUT;
 
         json_t * body                  = GetHeartbeatJson();
         request.body                   = json_dumps(body, JSON_COMPACT);
