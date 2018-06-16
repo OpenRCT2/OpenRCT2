@@ -35,13 +35,7 @@
 #include "Window.h"
 #include "Window_internal.h"
 
-#define RCT2_FIRST_WINDOW       (g_window_list)
-#define RCT2_LAST_WINDOW        (gWindowNextSlot - 1)
-#define RCT2_NEW_WINDOW         (gWindowNextSlot)
-
-rct_window g_window_list[WINDOW_LIMIT_MAX + WINDOW_LIMIT_RESERVED];
-rct_window * gWindowFirst;
-rct_window * gWindowNextSlot = nullptr;
+std::vector<std::unique_ptr<rct_window>> g_window_list;
 rct_window * gWindowAudioExclusive;
 
 uint16 TextInputDescriptionArgs[4];
@@ -82,6 +76,18 @@ static constexpr const float window_scroll_locations[][2] = {
 static sint32 window_draw_split(rct_drawpixelinfo *dpi, rct_window *w, sint32 left, sint32 top, sint32 right, sint32 bottom);
 static void window_draw_single(rct_drawpixelinfo *dpi, rct_window *w, sint32 left, sint32 top, sint32 right, sint32 bottom);
 
+size_t window_get_index(const rct_window* w)
+{
+    for (size_t i = 0; i < g_window_list.size(); i++)
+    {
+        if (g_window_list[i].get() == w)
+        {
+            return i;
+        }
+    }
+    return std::numeric_limits<size_t>::max();
+}
+
 /**
  *
  *  rct2: 0x006ED7B0
@@ -89,15 +95,27 @@ static void window_draw_single(rct_drawpixelinfo *dpi, rct_window *w, sint32 lef
 void window_dispatch_update_all()
 {
     // gTooltipNotShownTicks++;
-    for (rct_window *w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
-        window_event_update_call(w);
+
+    // The window list can change during update calls, so use index based iteration
+    for (auto i = g_window_list.size(); i > 0; i--)
+    {
+        if (i - 1 < g_window_list.size())
+        {
+            auto& w = g_window_list[i - 1];
+            window_event_update_call(w.get());
+        }
+    }
 }
 
 void window_update_all_viewports()
 {
-    for (rct_window *w = g_window_list; w < RCT2_NEW_WINDOW; w++)
-        if (w->viewport != nullptr && window_is_visible(w))
-            viewport_update_position(w);
+    for (auto& w : g_window_list)
+    {
+        if (w->viewport != nullptr && window_is_visible(w.get()))
+        {
+            viewport_update_position(w.get());
+        }
+    }
 }
 
 /**
@@ -114,16 +132,24 @@ void window_update_all()
     gWindowUpdateTicks += gTicksSinceLastUpdate;
     if (gWindowUpdateTicks >= 1000) {
         gWindowUpdateTicks = 0;
-        for (rct_window* w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
+        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+        {
+            auto w = it->get();
             window_event_unknown_07_call(w);
+        }
     }
 
     // Border flash invalidation
-    for (rct_window* w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
-        if (w->flags & WF_WHITE_BORDER_MASK) {
+    for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+    {
+        auto w = it->get();
+        if (w->flags & WF_WHITE_BORDER_MASK)
+        {
             w->flags -= WF_WHITE_BORDER_ONE;
             if (!(w->flags & WF_WHITE_BORDER_MASK))
+            {
                 window_invalidate(w);
+            }
         }
     }
 
@@ -133,29 +159,27 @@ void window_update_all()
 
 static void window_close_surplus(sint32 cap, sint8 avoid_classification)
 {
-    sint32 count, i, diff;
     //find the amount of windows that are currently open
-    count = WINDOW_LIMIT_MAX;
-    for (i = 0; i < WINDOW_LIMIT_MAX; i++) {
-        if (&g_window_list[i] == RCT2_NEW_WINDOW) {
-            count = i;
-            break;
-        }
-    }
+    auto count = (sint32)g_window_list.size();
     //difference between amount open and cap = amount to close
-    diff = count - WINDOW_LIMIT_RESERVED - cap;
-    for (i = 0; i < diff; i++) {
-        rct_window *w = nullptr;
+    auto diff = count - WINDOW_LIMIT_RESERVED - cap;
+    for (auto i = 0; i < diff; i++)
+    {
         //iterates through the list until it finds the newest window, or a window that can be closed
-        for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
+        rct_window* foundW{};
+        for (auto& w : g_window_list)
+        {
             if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
+            {
+                foundW = w.get();
                 break;
+            }
         }
         //skip window if window matches specified rct_windowclass (as user may be modifying via options)
-        if (avoid_classification != -1 && w != nullptr && w->classification == avoid_classification) {
+        if (avoid_classification != -1 && foundW != nullptr && foundW->classification == avoid_classification) {
             continue;
         }
-        window_close(w);
+        window_close(foundW);
     }
 }
 
@@ -183,8 +207,6 @@ void window_set_window_limit(sint32 value)
  */
 void window_close(rct_window* window)
 {
-    sint32 num_windows;
-
     if (window == nullptr)
         return;
 
@@ -208,11 +230,11 @@ void window_close(rct_window* window)
     // Invalidate the window (area)
     window_invalidate(window);
 
-    // Remove window from list and reshift all windows
-    RCT2_NEW_WINDOW--;
-    num_windows = (sint32)(RCT2_NEW_WINDOW - window);
-    if (num_windows > 0)
-        memmove(window, window + 1, num_windows * sizeof(rct_window));
+    auto index = window_get_index(window);
+    if (index != std::numeric_limits<size_t>::max())
+    {
+        g_window_list.erase(g_window_list.begin() + index);
+    }
 }
 
 /**
@@ -222,12 +244,13 @@ void window_close(rct_window* window)
  */
 void window_close_by_class(rct_windowclass cls)
 {
-    for (rct_window *w = g_window_list; w < RCT2_NEW_WINDOW;) {
-        if (w->classification == cls) {
-            window_close(w);
-            w = g_window_list;
-        } else {
-            w++;
+    for (size_t i = 0; i < g_window_list.size(); i++)
+    {
+        auto& w = *g_window_list[i];
+        if (w.classification == cls)
+        {
+            window_close(&w);
+            i--;
         }
     }
 }
@@ -240,12 +263,13 @@ void window_close_by_class(rct_windowclass cls)
  */
 void window_close_by_number(rct_windowclass cls, rct_windownumber number)
 {
-    for (rct_window* w = g_window_list; w < RCT2_NEW_WINDOW;) {
-        if (w->classification == cls && w->number == number) {
-            window_close(w);
-            w = g_window_list;
-        } else {
-            w++;
+    for (size_t i = 0; i < g_window_list.size(); i++)
+    {
+        auto& w = *g_window_list[i];
+        if (w.classification == cls && w.number == number)
+        {
+            window_close(&w);
+            i--;
         }
     }
 }
@@ -258,10 +282,13 @@ void window_close_by_number(rct_windowclass cls, rct_windownumber number)
  */
 rct_window *window_find_by_class(rct_windowclass cls)
 {
-    for (rct_window *w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+    for (auto& w : g_window_list)
+    {
         if (w->classification == cls)
-            return w;
-
+        {
+            return w.get();
+        }
+    }
     return nullptr;
 }
 
@@ -274,12 +301,13 @@ rct_window *window_find_by_class(rct_windowclass cls)
  */
 rct_window *window_find_by_number(rct_windowclass cls, rct_windownumber number)
 {
-    rct_window *w;
-
-    for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+    for (auto& w : g_window_list)
+    {
         if (w->classification == cls && w->number == number)
-            return w;
-
+        {
+            return w.get();
+        }
+    }
     return nullptr;
 }
 
@@ -290,18 +318,19 @@ rct_window *window_find_by_number(rct_windowclass cls, rct_windownumber number)
  */
 void window_close_top()
 {
-    rct_window* w;
-
     window_close_by_class(WC_DROPDOWN);
 
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR)
             return;
 
-    for (w = RCT2_NEW_WINDOW - 1; w >= g_window_list; w--) {
-        if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
-            window_close(w);
-            return;
+    for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+    {
+        auto& w = **it;
+        if (!(w.flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+        {
+            window_close(&w);
+            break;
         }
     }
 }
@@ -313,32 +342,26 @@ void window_close_top()
  */
 void window_close_all()
 {
-    if (gWindowNextSlot == nullptr)
-    {
-        return;
-    }
-
     window_close_by_class(WC_DROPDOWN);
-
-    for (rct_window * w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
+    for (size_t i = g_window_list.size(); i > 0; i--)
     {
-        if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+        auto& w = *g_window_list[i - 1];
+        if (!(w.flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
         {
-            window_close(w);
+            window_close(&w);
         }
     }
 }
 
 void window_close_all_except_class(rct_windowclass cls)
 {
-    rct_window* w;
-
     window_close_by_class(WC_DROPDOWN);
-
-    for (w = g_window_list; w <= RCT2_LAST_WINDOW; w++){
-        if (w->classification != cls && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
-            window_close(w);
-            w = g_window_list;
+    for (size_t i = g_window_list.size(); i > 0; i--)
+    {
+        auto& w = *g_window_list[i - 1];
+        if (w.classification != cls && !(w.flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+        {
+            window_close(&w);
         }
     }
 }
@@ -348,11 +371,12 @@ void window_close_all_except_class(rct_windowclass cls)
  */
 void window_close_all_except_flags(uint16 flags)
 {
-    for (rct_window * w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
+    for (size_t i = g_window_list.size(); i > 0; i--)
     {
-        if (!(w->flags & flags))
+        auto& w = *g_window_list[i - 1];
+        if (!(w.flags & flags))
         {
-            window_close(w);
+            window_close(&w);
         }
     }
 }
@@ -363,20 +387,20 @@ void window_close_all_except_flags(uint16 flags)
  */
 rct_window *window_find_from_point(sint32 x, sint32 y)
 {
-    rct_window *w;
-    sint32 widget_index;
-
-    for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
-        if (x < w->x || x >= w->x + w->width || y < w->y || y >= w->y + w->height)
+    for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+    {
+        auto& w = **it;
+        if (x < w.x || x >= w.x + w.width || y < w.y || y >= w.y + w.height)
             continue;
 
-        if (w->flags & WF_NO_BACKGROUND) {
-            widget_index = window_find_widget_from_point(w, x, y);
-            if (widget_index == -1)
+        if (w.flags & WF_NO_BACKGROUND)
+        {
+            auto widgetIndex = window_find_widget_from_point(&w, x, y);
+            if (widgetIndex == -1)
                 continue;
         }
 
-        return w;
+        return &w;
     }
 
     return nullptr;
@@ -438,11 +462,13 @@ void window_invalidate(rct_window *window)
  */
 void window_invalidate_by_class(rct_windowclass cls)
 {
-    rct_window* w;
-
-    for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+    for (auto& w : g_window_list)
+    {
         if (w->classification == cls)
-            window_invalidate(w);
+        {
+            window_invalidate(w.get());
+        }
+    }
 }
 
 /**
@@ -451,11 +477,13 @@ void window_invalidate_by_class(rct_windowclass cls)
  */
 void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number)
 {
-    rct_window* w;
-
-    for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+    for (auto& w : g_window_list)
+    {
         if (w->classification == cls && w->number == number)
-            window_invalidate(w);
+        {
+            window_invalidate(w.get());
+        }
+    }
 }
 
 /**
@@ -463,10 +491,10 @@ void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number)
  */
 void window_invalidate_all()
 {
-    rct_window* w;
-
-    for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
-        window_invalidate(w);
+    for (auto& w : g_window_list)
+    {
+        window_invalidate(w.get());
+    }
 }
 
 /**
@@ -496,11 +524,13 @@ void widget_invalidate(rct_window *w, rct_widgetindex widgetIndex)
  */
 void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex)
 {
-    rct_window* w;
-
-    for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+    for (auto& w : g_window_list)
+    {
         if (w->classification == cls)
-            widget_invalidate(w, widgetIndex);
+        {
+            widget_invalidate(w.get(), widgetIndex);
+        }
+    }
 }
 
 /**
@@ -509,11 +539,13 @@ void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex
  */
 void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, rct_widgetindex widgetIndex)
 {
-    rct_window* w;
-
-    for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+    for (auto& w : g_window_list)
+    {
         if (w->classification == cls && w->number == number)
-            widget_invalidate(w, widgetIndex);
+        {
+            widget_invalidate(w.get(), widgetIndex);
+        }
+    }
 }
 
 /**
@@ -587,33 +619,39 @@ sint32 window_get_scroll_data_index(rct_window *w, rct_widgetindex widget_index)
  */
 rct_window *window_bring_to_front(rct_window *w)
 {
-    if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
-        return w;
+    if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+    {
+        size_t srcIndex = window_get_index(w);
+        if (srcIndex != std::numeric_limits<size_t>::max())
+        {
+            auto wptr = std::move(g_window_list[srcIndex]);
+            g_window_list.erase(g_window_list.begin() + srcIndex);
 
-    rct_window *v;
-    for (v = RCT2_LAST_WINDOW; v >= g_window_list; v--)
-        if (!(v->flags & WF_STICK_TO_FRONT))
-            break;
+            // Insert in front of the first non-stick-to-front window
+            size_t dstIndex = 0;
+            for (size_t i = g_window_list.size(); i > 0; i--)
+            {
+                auto& w2 = *g_window_list[i - 1];
+                if (!(w2.flags & WF_STICK_TO_FRONT))
+                {
+                    dstIndex = i;
+                    break;
+                }
+            }
 
-    if (v >= g_window_list && w != v) {
-        do {
-            rct_window t = *w;
-            *w = *(w + 1);
-            *(w + 1) = t;
-            w++;
-        } while (w != v);
+            g_window_list.insert(g_window_list.begin() + dstIndex, std::move(wptr));
+            window_invalidate(w);
 
-        window_invalidate(w);
+            if (w->x + w->width < 20)
+            {
+                sint32 i = 20 - w->x;
+                w->x += i;
+                if (w->viewport != nullptr)
+                    w->viewport->x += i;
+                window_invalidate(w);
+            }
+        }
     }
-
-    if (w->x + w->width < 20) {
-        sint32 i = 20 - w->x;
-        w->x += i;
-        if (w->viewport != nullptr)
-            w->viewport->x += i;
-        window_invalidate(w);
-    }
-
     return w;
 }
 
@@ -662,8 +700,9 @@ rct_window *window_bring_to_front_by_number(rct_windowclass cls, rct_windownumbe
  */
 void window_push_others_right(rct_window* window)
 {
-    for (rct_window* w = g_window_list; w < gWindowNextSlot; w++) {
-        if (w == window)
+    for (auto& w : g_window_list)
+    {
+        if (w.get() == window)
             continue;
         if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
             continue;
@@ -676,12 +715,12 @@ void window_push_others_right(rct_window* window)
         if (w->y + w->height <= window->y)
             continue;
 
-        window_invalidate(w);
+        window_invalidate(w.get());
         if (window->x + window->width + 13 >= context_get_width())
             continue;
         uint16 push_amount = window->x + window->width - w->x + 3;
         w->x += push_amount;
-        window_invalidate(w);
+        window_invalidate(w.get());
         if (w->viewport != nullptr)
             w->viewport->x += push_amount;
     }
@@ -694,11 +733,11 @@ void window_push_others_right(rct_window* window)
 void window_push_others_below(rct_window *w1)
 {
     sint32 push_amount;
-    rct_window* w2;
 
     // Enumerate through all other windows
-    for (w2 = g_window_list; w2 < RCT2_NEW_WINDOW; w2++) {
-        if (w1 == w2)
+    for (auto& w2 : g_window_list)
+    {
+        if (w1 == w2.get())
             continue;
 
         // ?
@@ -716,13 +755,13 @@ void window_push_others_below(rct_window *w1)
             continue;
 
         // Invalidate the window's current area
-        window_invalidate(w2);
+        window_invalidate(w2.get());
 
         push_amount = w1->y + w1->height - w2->y + 3;
         w2->y += push_amount;
 
         // Invalidate the window's new area
-        window_invalidate(w2);
+        window_invalidate(w2.get());
 
         // Update viewport position if necessary
         if (w2->viewport != nullptr)
@@ -736,13 +775,13 @@ void window_push_others_below(rct_window *w1)
  */
 rct_window *window_get_main()
 {
-    rct_window* w = nullptr;
-
-    for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+    for (auto& w : g_window_list)
+    {
         if (w->classification == WC_MAIN_WINDOW)
-            return w;
-
-    openrct2_assert(w != nullptr, "Failed to get main window");
+        {
+            return w.get();
+        }
+    }
     return nullptr;
 }
 
@@ -818,32 +857,39 @@ void window_scroll_to_location(rct_window *w, sint32 x, sint32 y, sint32 z)
         LocationXY16 map_coordinate = coordinate_3d_to_2d(&location_3d, get_current_rotation());
 
         sint32 i = 0;
-        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
-            sint32 found = 0;
-            while (!found) {
+        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+        {
+            bool found = false;
+            while (!found)
+            {
                 sint16 x2 = w->viewport->x + (sint16)(w->viewport->width * window_scroll_locations[i][0]);
                 sint16 y2 = w->viewport->y + (sint16)(w->viewport->height * window_scroll_locations[i][1]);
-                rct_window* w2 = w;
-                while (true) {
-                    w2++;
-                    if (w2 >= gWindowNextSlot) {
-                        found = 1;
+                for (auto w2i = window_get_index(w); w2i <= g_window_list.size(); w2i++)
+                {
+                    if (w2i == g_window_list.size())
+                    {
+                        found = true;
                         break;
                     }
+
+                    auto& w2 = g_window_list[w2i];
                     sint16 x1 = w2->x - 10;
                     sint16 y1 = w2->y - 10;
-                    if (x2 >= x1 && x2 <= w2->width + x1 + 20) {
-                        if (y2 >= y1 && y2 <= w2->height + y1 + 20) {
+                    if (x2 >= x1 && x2 <= w2->width + x1 + 20)
+                    {
+                        if (y2 >= y1 && y2 <= w2->height + y1 + 20)
+                        {
                             // window is covering this area, try the next one
                             i++;
-                            found = 0;
+                            found = false;
                             break;
                         }
                     }
                 }
-                if (i >= (sint32)Util::CountOf(window_scroll_locations)) {
+                if (i >= (sint32)Util::CountOf(window_scroll_locations))
+                {
                     i = 0;
-                    found = 1;
+                    found = true;
                 }
             }
         }
@@ -864,10 +910,11 @@ void window_scroll_to_location(rct_window *w, sint32 x, sint32 y, sint32 z)
  */
 static void call_event_viewport_rotate_on_all_windows()
 {
-    rct_window *w;
-
-    for (w = RCT2_NEW_WINDOW - 1; w >= g_window_list; w--)
+    for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+    {
+        auto w = it->get();
         window_event_viewport_rotate_call(w);
+    }
 }
 
 /**
@@ -1063,9 +1110,12 @@ void window_draw(rct_drawpixelinfo *dpi, rct_window *w, sint32 left, sint32 top,
     if (top >= bottom) return;
 
     // Draw the window in this region
-    for (rct_window *v = w; v < RCT2_NEW_WINDOW; v++) {
+    for (size_t i = window_get_index(w); i < g_window_list.size(); i++)
+    {
         // Don't draw overlapping opaque windows, they won't have changed
-        if ((w == v || (v->flags & WF_TRANSPARENT)) && window_is_visible(v)) {
+        auto v = g_window_list[i].get();
+        if ((w == v || (v->flags & WF_TRANSPARENT)) && window_is_visible(v))
+        {
             window_draw_single(dpi, v, left, top, right, bottom);
         }
     }
@@ -1077,11 +1127,11 @@ void window_draw(rct_drawpixelinfo *dpi, rct_window *w, sint32 left, sint32 top,
  */
 static sint32 window_draw_split(rct_drawpixelinfo *dpi, rct_window *w, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
-    rct_window* topwindow;
-
     // Divide the draws up for only the visible regions of the window recursively
-    for (topwindow = w + 1; topwindow < RCT2_NEW_WINDOW; topwindow++) {
+    for (auto i = window_get_index(w) + 1; i < g_window_list.size(); i++)
+    {
         // Check if this window overlaps w
+        auto topwindow = g_window_list[i].get();
         if (topwindow->x >= right || topwindow->y >= bottom)
             continue;
         if (topwindow->x + topwindow->width <= left || topwindow->y + topwindow->height <= top)
@@ -1513,16 +1563,25 @@ void window_bubble_list_item(rct_window* w, sint32 item_position){
  * Called after a window resize to move windows if they
  * are going to be out of sight.
  */
-void window_relocate_windows(sint32 width, sint32 height){
+void window_relocate_windows(sint32 width, sint32 height)
+{
     sint32 new_location = 8;
-    for (rct_window* w = g_window_list; w < RCT2_NEW_WINDOW; w++){
-
+    for (auto& w : g_window_list)
+    {
         // Work out if the window requires moving
-        if (w->x + 10 < width){
-            if (w->flags&(WF_STICK_TO_BACK | WF_STICK_TO_FRONT)){
-                if (w->y -22 < height)continue;
+        if (w->x + 10 < width)
+        {
+            if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
+            {
+                if (w->y -22 < height)
+                {
+                    continue;
+                }
             }
-            if (w->y + 10 < height)continue;
+            if (w->y + 10 < height)
+            {
+                continue;
+            }
         }
 
         // Calculate the new locations
@@ -1535,7 +1594,8 @@ void window_relocate_windows(sint32 width, sint32 height){
         new_location += 8;
 
         // Adjust the viewport if required.
-        if (w->viewport != nullptr){
+        if (w->viewport != nullptr)
+        {
             w->viewport->x -= x - w->x;
             w->viewport->y -= y - w->y;
         }
@@ -1663,14 +1723,13 @@ void window_close_construction_windows()
  */
 void window_update_viewport_ride_music()
 {
-    rct_viewport *viewport;
-    rct_window *w;
-
     gRideMusicParamsListEnd = &gRideMusicParamsList[0];
     g_music_tracking_viewport = nullptr;
 
-    for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
-        viewport = w->viewport;
+    for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+    {
+        auto w = it->get();
+        auto viewport = w->viewport;
         if (viewport == nullptr || !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
             continue;
 
@@ -1694,20 +1753,17 @@ void window_update_viewport_ride_music()
 
 static void window_snap_left(rct_window *w, sint32 proximity)
 {
-    sint32 right, rightMost, wLeftProximity, wRightProximity, wBottom;
-    rct_window *mainWindow, *w2;
-
-    mainWindow = window_get_main();
-
-    wBottom = w->y + w->height;
-    wLeftProximity = w->x - (proximity * 2);
-    wRightProximity = w->x + (proximity * 2);
-    rightMost = INT32_MIN;
-    for (w2 = g_window_list; w2 < RCT2_NEW_WINDOW; w2++) {
-        if (w2 == w || w2 == mainWindow)
+    auto mainWindow = window_get_main();
+    auto wBottom = w->y + w->height;
+    auto wLeftProximity = w->x - (proximity * 2);
+    auto wRightProximity = w->x + (proximity * 2);
+    auto rightMost = INT32_MIN;
+    for (auto& w2 : g_window_list)
+    {
+        if (w2.get() == w || w2.get() == mainWindow)
             continue;
 
-        right = w2->x + w2->width;
+        auto right = w2->x + w2->width;
 
         if (wBottom < w2->y || w->y > w2->y + w2->height)
             continue;
@@ -1727,20 +1783,17 @@ static void window_snap_left(rct_window *w, sint32 proximity)
 
 static void window_snap_top(rct_window *w, sint32 proximity)
 {
-    sint32 bottom, bottomMost, wTopProximity, wBottomProximity, wRight;
-    rct_window *mainWindow, *w2;
-
-    mainWindow = window_get_main();
-
-    wRight = w->x + w->width;
-    wTopProximity = w->y - (proximity * 2);
-    wBottomProximity = w->y + (proximity * 2);
-    bottomMost = INT32_MIN;
-    for (w2 = g_window_list; w2 < RCT2_NEW_WINDOW; w2++) {
-        if (w2 == w || w2 == mainWindow)
+    auto mainWindow = window_get_main();
+    auto wRight = w->x + w->width;
+    auto wTopProximity = w->y - (proximity * 2);
+    auto wBottomProximity = w->y + (proximity * 2);
+    auto bottomMost = INT32_MIN;
+    for (auto& w2 : g_window_list)
+    {
+        if (w2.get() == w || w2.get() == mainWindow)
             continue;
 
-        bottom = w2->y + w2->height;
+        auto bottom = w2->y + w2->height;
 
         if (wRight < w2->x || w->x > w2->x + w2->width)
             continue;
@@ -1760,18 +1813,15 @@ static void window_snap_top(rct_window *w, sint32 proximity)
 
 static void window_snap_right(rct_window *w, sint32 proximity)
 {
-    sint32 leftMost, wLeftProximity, wRightProximity, wRight, wBottom, screenWidth;
-    rct_window *mainWindow, *w2;
-
-    mainWindow = window_get_main();
-
-    wRight = w->x + w->width;
-    wBottom = w->y + w->height;
-    wLeftProximity = wRight - (proximity * 2);
-    wRightProximity = wRight + (proximity * 2);
-    leftMost = INT32_MAX;
-    for (w2 = g_window_list; w2 < RCT2_NEW_WINDOW; w2++) {
-        if (w2 == w || w2 == mainWindow)
+    auto mainWindow = window_get_main();
+    auto  wRight = w->x + w->width;
+    auto  wBottom = w->y + w->height;
+    auto  wLeftProximity = wRight - (proximity * 2);
+    auto  wRightProximity = wRight + (proximity * 2);
+    auto  leftMost = INT32_MAX;
+    for (auto& w2 : g_window_list)
+    {
+        if (w2.get() == w || w2.get() == mainWindow)
             continue;
 
         if (wBottom < w2->y || w->y > w2->y + w2->height)
@@ -1783,7 +1833,7 @@ static void window_snap_right(rct_window *w, sint32 proximity)
         leftMost = std::min<sint32>(leftMost, w2->x);
     }
 
-    screenWidth = context_get_width();
+    auto screenWidth = context_get_width();
     if (screenWidth >= wLeftProximity && screenWidth <= wRightProximity)
         leftMost = std::min(leftMost, screenWidth);
 
@@ -1793,18 +1843,15 @@ static void window_snap_right(rct_window *w, sint32 proximity)
 
 static void window_snap_bottom(rct_window *w, sint32 proximity)
 {
-    sint32 topMost, wTopProximity, wBottomProximity, wRight, wBottom, screenHeight;
-    rct_window *mainWindow, *w2;
-
-    mainWindow = window_get_main();
-
-    wRight = w->x + w->width;
-    wBottom = w->y + w->height;
-    wTopProximity = wBottom - (proximity * 2);
-    wBottomProximity = wBottom + (proximity * 2);
-    topMost = INT32_MAX;
-    for (w2 = g_window_list; w2 < RCT2_NEW_WINDOW; w2++) {
-        if (w2 == w || w2 == mainWindow)
+    auto mainWindow = window_get_main();
+    auto wRight = w->x + w->width;
+    auto wBottom = w->y + w->height;
+    auto wTopProximity = wBottom - (proximity * 2);
+    auto wBottomProximity = wBottom + (proximity * 2);
+    auto topMost = INT32_MAX;
+    for (auto& w2 : g_window_list)
+    {
+        if (w2.get() == w || w2.get() == mainWindow)
             continue;
 
         if (wRight < w2->x || w->x > w2->x + w2->width)
@@ -1816,7 +1863,7 @@ static void window_snap_bottom(rct_window *w, sint32 proximity)
         topMost = std::min<sint32>(topMost, w2->y);
     }
 
-    screenHeight = context_get_height();
+    auto screenHeight = context_get_height();
     if (screenHeight >= wTopProximity && screenHeight <= wBottomProximity)
         topMost = std::min(topMost, screenHeight);
 
@@ -1952,13 +1999,15 @@ bool window_is_visible(rct_window* w)
     }
 
     // start from the window above the current
-    for (rct_window *w_other = (w+1); w_other < RCT2_NEW_WINDOW; w_other++)
+    for (auto i = window_get_index(w) + 1; i < g_window_list.size(); i++)
     {
+        auto& w_other = *g_window_list[i];
+
         // if covered by a higher window, no rendering needed
-        if (w_other->x <= w->x
-            && w_other->y <= w->y
-            && w_other->x + w_other->width >= w->x + w->width
-            && w_other->y + w_other->height >= w->y + w->height)
+        if (w_other.x <= w->x
+            && w_other.y <= w->y
+            && w_other.x + w_other.width >= w->x + w->width
+            && w_other.y + w_other.height >= w->y + w->height)
         {
             w->visibility = VC_COVERED;
             w->viewport->visibility = VC_COVERED;
@@ -1991,56 +2040,41 @@ void window_draw_all(rct_drawpixelinfo *dpi, sint16 left, sint16 top, sint16 rig
     windowDPI.pitch = dpi->width + dpi->pitch + left - right;
     windowDPI.zoom_level = 0;
 
-    for (rct_window *w = g_window_list; w < gWindowNextSlot; w++) {
+    for (auto& w : g_window_list)
+    {
         if (w->flags & WF_TRANSPARENT) continue;
         if (right <= w->x || bottom <= w->y) continue;
         if (left >= w->x + w->width || top >= w->y + w->height) continue;
 
-        window_draw(&windowDPI, w, left, top, right, bottom);
+        window_draw(&windowDPI, w.get(), left, top, right, bottom);
     }
 }
 
 rct_viewport * window_get_previous_viewport(rct_viewport * current)
 {
     bool foundPrevious = (current == nullptr);
-    rct_window * window = gWindowNextSlot;
-
-    if (window == nullptr)
+    for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
     {
-        return nullptr;
-    }
-
-    while (true)
-    {
-        window--;
-        if (window < g_window_list)
+        auto& w = **it;
+        if (w.viewport != nullptr)
         {
-            break;
-        }
-
-        if (window->viewport == nullptr)
-        {
-            continue;
-        }
-
-        if (foundPrevious)
-        {
-            return window->viewport;
-        }
-
-        if (window->viewport == current)
-        {
-            foundPrevious = true;
+            if (foundPrevious)
+            {
+                return w.viewport;
+            }
+            if (w.viewport == current)
+            {
+                foundPrevious = true;
+            }
         }
     }
-
     return nullptr;
 }
 
 void window_reset_visibilities()
 {
     // reset window visibility status to unknown
-    for (rct_window * w = g_window_list; w < gWindowNextSlot; w++)
+    for (auto& w : g_window_list)
     {
         w->visibility = VC_UNKNOWN;
         if (w->viewport != nullptr)
@@ -2052,8 +2086,7 @@ void window_reset_visibilities()
 
 void window_init_all()
 {
-    window_close_all();
-    gWindowNextSlot = g_window_list;
+    window_close_all_except_flags(0);
 }
 
 void window_follow_sprite(rct_window * w, size_t spriteIndex)
@@ -2083,19 +2116,18 @@ rct_viewport * window_get_viewport(rct_window * w)
 
 rct_window * window_get_listening()
 {
-    for (rct_window * w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
+    for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
     {
-        if (w->viewport == nullptr)
+        auto& w = **it;
+        auto viewport = w.viewport;
+        if (viewport != nullptr)
         {
-            continue;
-        }
-
-        if (w->viewport->flags & VIEWPORT_FLAG_SOUND_ON)
-        {
-            return w;
+            if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
+            {
+                return &w;
+            }
         }
     }
-
     return nullptr;
 }
 

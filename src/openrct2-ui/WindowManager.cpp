@@ -502,6 +502,18 @@ public:
     {
         window_all_wheel_input();
     }
+
+    rct_window* GetOwner(const rct_viewport* viewport) override
+    {
+        for (auto& w : g_window_list)
+        {
+            if (w->viewport == viewport)
+            {
+                return w.get();
+            }
+        }
+        return nullptr;
+    }
 };
 
 IWindowManager * OpenRCT2::Ui::CreateWindowManager()

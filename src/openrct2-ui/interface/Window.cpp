@@ -26,14 +26,12 @@ using namespace OpenRCT2;
 // The amount of pixels to scroll per wheel click
 constexpr sint32 WINDOW_SCROLL_PIXELS = 17;
 
-#define RCT2_NEW_WINDOW         (gWindowNextSlot)
-#define RCT2_LAST_WINDOW        (gWindowNextSlot - 1)
-
 static sint32 _previousAbsoluteWheel = 0;
 
 static bool window_fits_between_others(sint32 x, sint32 y, sint32 width, sint32 height)
 {
-    for (rct_window *w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
+    for (auto& w : g_window_list)
+    {
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
@@ -76,37 +74,45 @@ rct_window *window_create(sint32 x, sint32 y, sint32 width, sint32 height, rct_w
 {
     // Check if there are any window slots left
     // include WINDOW_LIMIT_RESERVED for items such as the main viewport and toolbars to not appear to be counted.
-    if (RCT2_NEW_WINDOW >= &(g_window_list[gConfigGeneral.window_limit + WINDOW_LIMIT_RESERVED])) {
-        rct_window *w = nullptr;
+    if (g_window_list.size() >= (size_t)(gConfigGeneral.window_limit + WINDOW_LIMIT_RESERVED))
+    {
         // Close least recently used window
-        for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+        for (auto& w : g_window_list)
+        {
             if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
+            {
+                window_close(w.get());
                 break;
-
-        window_close(w);
-    }
-
-    rct_window *w = RCT2_NEW_WINDOW;
-
-    // Flags
-    if (flags & WF_STICK_TO_BACK) {
-        for (; w >= g_window_list + 1; w--) {
-            if ((w - 1)->flags & WF_STICK_TO_FRONT)
-                continue;
-            if ((w - 1)->flags & WF_STICK_TO_BACK)
-                break;
-        }
-    }
-    else if (!(flags & WF_STICK_TO_FRONT)) {
-        for (; w >= g_window_list + 1; w--) {
-            if (!((w - 1)->flags & WF_STICK_TO_FRONT))
-                break;
+            }
         }
     }
 
-    // Move w to new window slot
-    if (w != RCT2_NEW_WINDOW)
-        *RCT2_NEW_WINDOW = *w;
+    // Find right position to insert new window
+    auto dstIndex = g_window_list.size();
+    if (flags & WF_STICK_TO_BACK)
+    {
+        for (size_t i = 0; i < g_window_list.size(); i++)
+        {
+            if (!(g_window_list[i]->flags & WF_STICK_TO_BACK))
+            {
+                dstIndex = i;
+            }
+        }
+    }
+    else if (!(flags & WF_STICK_TO_FRONT))
+    {
+        for (size_t i = g_window_list.size(); i > 0; i--)
+        {
+            if (!(g_window_list[i - 1]->flags & WF_STICK_TO_FRONT))
+            {
+                dstIndex = i;
+                break;
+            }
+        }
+    }
+
+    g_window_list.insert(g_window_list.begin() + dstIndex, std::make_unique<rct_window>());
+    auto w = g_window_list[dstIndex].get();
 
     // Setup window
     w->classification = cls;
@@ -144,7 +150,6 @@ rct_window *window_create(sint32 x, sint32 y, sint32 width, sint32 height, rct_w
     w->selected_tab = 0;
     w->var_4AE = 0;
     w->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
-    RCT2_NEW_WINDOW++;
 
     colour_scheme_update(w);
     window_invalidate(w);
@@ -194,7 +199,8 @@ rct_window *window_create_auto_pos(sint32 width, sint32 height, rct_window_event
     if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
     // Place window next to another
-    for (rct_window *w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
+    for (auto& w : g_window_list)
+    {
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
@@ -232,7 +238,8 @@ rct_window *window_create_auto_pos(sint32 width, sint32 height, rct_window_event
     }
 
     // Overlap
-    for (rct_window *w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
+    for (auto& w : g_window_list)
+    {
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
@@ -256,12 +263,13 @@ rct_window *window_create_auto_pos(sint32 width, sint32 height, rct_window_event
     // Cascade
     x = 0;
     y = 30;
-    for (rct_window *w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
-        if (x != w->x || y != w->y)
-            continue;
-
-        x += 5;
-        y += 5;
+    for (auto& w : g_window_list)
+    {
+        if (x == w->x && y == w->y)
+        {
+            x += 5;
+            y += 5;
+        }
     }
 
     // Clamp to inside the screen
@@ -622,9 +630,10 @@ static void window_invalidate_pressed_image_buttons(rct_window *w)
  */
 void invalidate_all_windows_after_input()
 {
-    for (rct_window *w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
-        window_update_scroll_widgets(w);
-        window_invalidate_pressed_image_buttons(w);
-        window_event_resize_call(w);
+    for (auto& w : g_window_list)
+    {
+        window_update_scroll_widgets(w.get());
+        window_invalidate_pressed_image_buttons(w.get());
+        window_event_resize_call(w.get());
     }
 }

@@ -24,10 +24,14 @@
 #include "../world/Climate.h"
 #include "../world/Map.h"
 #include "../world/Sprite.h"
+#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "Colour.h"
 #include "Viewport.h"
 #include "Window.h"
 #include "Window_internal.h"
+
+using namespace OpenRCT2;
 
 //#define DEBUG_SHOW_DIRTY_BOX
 uint8 gShowGridLinesRefCount;
@@ -234,15 +238,20 @@ void viewport_adjust_for_map_height(sint16* x, sint16* y, sint16 *z)
 static void viewport_redraw_after_shift(rct_drawpixelinfo *dpi, rct_window *window, rct_viewport *viewport, sint32 x, sint32 y)
 {
     // sub-divide by intersecting windows
-    if (window < gWindowNextSlot)
+    if (window != nullptr)
     {
         // skip current window and non-intersecting windows
         if (viewport == window->viewport                                ||
             viewport->x + viewport->width  <= window->x                 ||
             viewport->x                    >= window->x + window->width ||
             viewport->y + viewport->height <= window->y                 ||
-            viewport->y                    >= window->y + window->height){
-            viewport_redraw_after_shift(dpi, window + 1, viewport, x, y);
+            viewport->y                    >= window->y + window->height)
+        {
+            auto nextWindowIndex = window_get_index(window) + 1;
+            auto nextWindow = nextWindowIndex >= g_window_list.size() ?
+                nullptr :
+                g_window_list[nextWindowIndex].get();
+            viewport_redraw_after_shift(dpi, nextWindow, viewport, x, y);
             return;
         }
 
@@ -351,12 +360,11 @@ static void viewport_redraw_after_shift(rct_drawpixelinfo *dpi, rct_window *wind
     }
 }
 
-static void viewport_shift_pixels(rct_drawpixelinfo *dpi, rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_diff)
+static void viewport_shift_pixels(rct_drawpixelinfo *dpi, rct_window* window, rct_viewport* viewport, sint16 x_diff, sint16 y_diff)
 {
-    rct_window* orignal_w = w;
-    sint32 left = 0, right = 0, top = 0, bottom = 0;
-
-    for (; w < gWindowNextSlot; w++){
+    for (auto i = window_get_index(window); i < g_window_list.size(); i++)
+    {
+        auto w = g_window_list[i].get();
         if (!(w->flags & WF_TRANSPARENT)) continue;
         if (w->viewport == viewport) continue;
 
@@ -366,10 +374,10 @@ static void viewport_shift_pixels(rct_drawpixelinfo *dpi, rct_window* w, rct_vie
         if (viewport->y + viewport->height <= w->y)continue;
         if (w->y + w->height <= viewport->y) continue;
 
-        left = w->x;
-        right = w->x + w->width;
-        top = w->y;
-        bottom = w->y + w->height;
+        auto left = w->x;
+        auto right = w->x + w->width;
+        auto top = w->y;
+        auto bottom = w->y + w->height;
 
         if (left < viewport->x)left = viewport->x;
         if (right > viewport->x + viewport->width) right = viewport->x + viewport->width;
@@ -383,8 +391,7 @@ static void viewport_shift_pixels(rct_drawpixelinfo *dpi, rct_window* w, rct_vie
         window_draw_all(dpi, left, top, right, bottom);
     }
 
-    w = orignal_w;
-    viewport_redraw_after_shift(dpi, w, viewport, x_diff, y_diff);
+    viewport_redraw_after_shift(dpi, window, viewport, x_diff, y_diff);
 }
 
 static void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport)
@@ -1538,14 +1545,14 @@ void viewport_invalidate(rct_viewport *viewport, sint32 left, sint32 top, sint32
     // if unknown viewport visibility, use the containing window to discover the status
     if (viewport->visibility == VC_UNKNOWN)
     {
-        for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
+        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        auto owner = windowManager->GetOwner(viewport);
+        if (owner != nullptr && owner->classification != WC_MAIN_WINDOW)
         {
-            if (w->classification != WC_MAIN_WINDOW && w->viewport != nullptr && w->viewport == viewport)
+            // note, window_is_visible will update viewport->visibility, so this should have a low hit count
+            if (!window_is_visible(owner))
             {
-                // note, window_is_visible will update viewport->visibility, so this should have a low hit count
-                if (!window_is_visible(w)) {
-                    return;
-                }
+                return;
             }
         }
     }

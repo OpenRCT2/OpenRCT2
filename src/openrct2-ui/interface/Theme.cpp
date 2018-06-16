@@ -865,9 +865,9 @@ rct_string_id theme_desc_get_name(rct_windowclass wc)
 
 void colour_scheme_update_all()
 {
-    for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
+    for (auto& w : g_window_list)
     {
-        colour_scheme_update(w);
+        colour_scheme_update(w.get());
     }
 }
 

@@ -37,6 +37,7 @@ namespace OpenRCT2::Ui
         virtual std::string GetKeyboardShortcutString(sint32 shortcut) abstract;
         virtual void SetMainView(sint32 x, sint32 y, sint32 zoom, sint32 rotation) abstract;
         virtual void UpdateMouseWheel() abstract;
+        virtual rct_window* GetOwner(const rct_viewport* viewport) abstract;
     };
 
     IWindowManager * CreateDummyWindowManager();
