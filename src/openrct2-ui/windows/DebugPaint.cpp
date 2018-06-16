@@ -157,7 +157,7 @@ static void window_debug_paint_invalidate(rct_window * w)
 
         // Find the width of the longest string
         sint16 newWidth = 0;
-        for (size_t widgetIndex = WIDX_TOGGLE_SHOW_WIDE_PATHS; widgetIndex < WIDX_TOGGLE_SHOW_DIRTY_VISUALS; widgetIndex++)
+        for (size_t widgetIndex = WIDX_TOGGLE_SHOW_WIDE_PATHS; widgetIndex <= WIDX_TOGGLE_SHOW_DIRTY_VISUALS; widgetIndex++)
         {
             auto stringIdx = w->widgets[widgetIndex].text;
             auto string = ls.GetString(stringIdx);
