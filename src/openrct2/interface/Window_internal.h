@@ -7,9 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _WINDOW2_H_
-#define _WINDOW2_H_
+#pragma once
 
+#include <vector>
 #include "Window.h"
 
 struct rct_research_item;
@@ -96,6 +96,4 @@ struct rct_window {
 };
 
 // rct2: 0x01420078
-extern rct_window g_window_list[WINDOW_LIMIT_MAX + WINDOW_LIMIT_RESERVED];
-
-#endif
+extern std::vector<rct_window> g_window_list;

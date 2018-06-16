@@ -528,8 +528,6 @@ using close_callback = void (*)();
 #define WINDOW_LIMIT_MAX 64
 #define WINDOW_LIMIT_RESERVED 4 // Used to reserve room for the main viewport, toolbars, etc.
 
-extern rct_window * gWindowFirst;
-extern rct_window * gWindowNextSlot;
 extern rct_window * gWindowAudioExclusive;
 
 extern uint16 gWindowUpdateTicks;
@@ -539,6 +537,7 @@ extern colour_t gCurrentWindowColours[4];
 
 extern bool gDisableErrorWindowSound;
 
+size_t window_get_index(const rct_window* w);
 void window_dispatch_update_all();
 void window_update_all_viewports();
 void window_update_all();

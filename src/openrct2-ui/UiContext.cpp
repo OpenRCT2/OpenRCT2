@@ -273,10 +273,9 @@ public:
         sint32 top = dpi->y;
         sint32 bottom = top + dpi->height;
 
-        rct_window * newWindow = gWindowNextSlot;
-        for (rct_window * w = g_window_list; w < newWindow; w++)
+        for (auto& w : g_window_list)
         {
-            DrawRainWindow(rainDrawer, w, left, right, top, bottom, drawFunc);
+            DrawRainWindow(rainDrawer, &w, left, right, top, bottom, drawFunc);
         }
     }
 
@@ -773,11 +772,10 @@ private:
         sint16 bottom,
         DrawRainFunc drawFunc)
     {
-        rct_window * newWindow = gWindowNextSlot;
-        rct_window * w = original_w + 1; // Start from second window
-        for (; ; w++)
+        rct_window * w{};
+        for (auto i = window_get_index(original_w) + 1; ; i++)
         {
-            if (w >= newWindow)
+            if (i >= g_window_list.size())
             {
                 // Loop ended, draw rain for original_w
                 auto vp = original_w->viewport;
@@ -797,6 +795,7 @@ private:
                 return;
             }
 
+            w = &g_window_list[i];
             if (right <= w->x || bottom <= w->y)
             {
                 continue;

@@ -505,11 +505,11 @@ public:
 
     rct_window* GetOwner(const rct_viewport* viewport) override
     {
-        for (auto w = g_window_list; w < gWindowNextSlot; w++)
+        for (auto& w : g_window_list)
         {
-            if (w->viewport == viewport)
+            if (w.viewport == viewport)
             {
-                return w;
+                return &w;
             }
         }
         return nullptr;

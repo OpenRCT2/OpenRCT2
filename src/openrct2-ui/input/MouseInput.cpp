@@ -106,9 +106,9 @@ static void input_update_tooltip(rct_window * w, rct_widgetindex widgetIndex, si
  */
 void game_handle_input()
 {
-    for (rct_window * w = g_window_list; w < gWindowNextSlot; w++)
+    for (auto& w : g_window_list)
     {
-        window_event_unknown_07_call(w);
+        window_event_unknown_07_call(&w);
     }
 
     invalidate_all_windows_after_input();
@@ -135,9 +135,9 @@ void game_handle_input()
         process_mouse_tool(x, y);
     }
 
-    for (rct_window * w = g_window_list; w < gWindowNextSlot; w++)
+    for (auto& w : g_window_list)
     {
-        window_event_unknown_08_call(w);
+        window_event_unknown_08_call(&w);
     }
 }
 
