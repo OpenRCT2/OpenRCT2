@@ -867,7 +867,7 @@ void colour_scheme_update_all()
 {
     for (auto& w : g_window_list)
     {
-        colour_scheme_update(&w);
+        colour_scheme_update(w.get());
     }
 }
 

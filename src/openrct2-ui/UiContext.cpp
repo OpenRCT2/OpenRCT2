@@ -275,7 +275,7 @@ public:
 
         for (auto& w : g_window_list)
         {
-            DrawRainWindow(rainDrawer, &w, left, right, top, bottom, drawFunc);
+            DrawRainWindow(rainDrawer, w.get(), left, right, top, bottom, drawFunc);
         }
     }
 
@@ -795,7 +795,7 @@ private:
                 return;
             }
 
-            w = &g_window_list[i];
+            w = g_window_list[i].get();
             if (right <= w->x || bottom <= w->y)
             {
                 continue;

@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <memory>
 #include <vector>
 #include "Window.h"
 
@@ -96,4 +97,4 @@ struct rct_window {
 };
 
 // rct2: 0x01420078
-extern std::vector<rct_window> g_window_list;
+extern std::vector<std::unique_ptr<rct_window>> g_window_list;

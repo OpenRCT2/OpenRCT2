@@ -32,13 +32,13 @@ static bool window_fits_between_others(sint32 x, sint32 y, sint32 width, sint32 
 {
     for (auto& w : g_window_list)
     {
-        if (w.flags & WF_STICK_TO_BACK)
+        if (w->flags & WF_STICK_TO_BACK)
             continue;
 
-        if (x + width <= w.x) continue;
-        if (x >= w.x + w.width) continue;
-        if (y + height <= w.y) continue;
-        if (y >= w.y + w.height) continue;
+        if (x + width <= w->x) continue;
+        if (x >= w->x + w->width) continue;
+        if (y + height <= w->y) continue;
+        if (y >= w->y + w->height) continue;
         return false;
     }
 
@@ -74,14 +74,14 @@ rct_window *window_create(sint32 x, sint32 y, sint32 width, sint32 height, rct_w
 {
     // Check if there are any window slots left
     // include WINDOW_LIMIT_RESERVED for items such as the main viewport and toolbars to not appear to be counted.
-    if (g_window_list.size() >= gConfigGeneral.window_limit + WINDOW_LIMIT_RESERVED)
+    if (g_window_list.size() >= (size_t)(gConfigGeneral.window_limit + WINDOW_LIMIT_RESERVED))
     {
         // Close least recently used window
         for (auto& w : g_window_list)
         {
-            if (!(w.flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
+            if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
             {
-                window_close(&w);
+                window_close(w.get());
                 break;
             }
         }
@@ -93,7 +93,7 @@ rct_window *window_create(sint32 x, sint32 y, sint32 width, sint32 height, rct_w
     {
         for (size_t i = 0; i < g_window_list.size(); i++)
         {
-            if (!(g_window_list[i].flags & WF_STICK_TO_BACK))
+            if (!(g_window_list[i]->flags & WF_STICK_TO_BACK))
             {
                 dstIndex = i;
             }
@@ -103,7 +103,7 @@ rct_window *window_create(sint32 x, sint32 y, sint32 width, sint32 height, rct_w
     {
         for (size_t i = g_window_list.size(); i > 0; i--)
         {
-            if (!(g_window_list[i - 1].flags & WF_STICK_TO_FRONT))
+            if (!(g_window_list[i - 1]->flags & WF_STICK_TO_FRONT))
             {
                 dstIndex = i;
                 break;
@@ -111,7 +111,8 @@ rct_window *window_create(sint32 x, sint32 y, sint32 width, sint32 height, rct_w
         }
     }
 
-    auto w = &(*(g_window_list.insert(g_window_list.begin() + dstIndex, rct_window{})));
+    g_window_list.insert(g_window_list.begin() + dstIndex, std::make_unique<rct_window>());
+    auto w = g_window_list[dstIndex].get();
 
     // Setup window
     w->classification = cls;
@@ -200,62 +201,62 @@ rct_window *window_create_auto_pos(sint32 width, sint32 height, rct_window_event
     // Place window next to another
     for (auto& w : g_window_list)
     {
-        if (w.flags & WF_STICK_TO_BACK)
+        if (w->flags & WF_STICK_TO_BACK)
             continue;
 
-        x = w.x + w.width + 2;
-        y = w.y;
+        x = w->x + w->width + 2;
+        y = w->y;
         if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
-        x = w.x - w.width - 2;
-        y = w.y;
+        x = w->x - w->width - 2;
+        y = w->y;
         if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
-        x = w.x;
-        y = w.y + w.height + 2;
+        x = w->x;
+        y = w->y + w->height + 2;
         if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
-        x = w.x;
-        y = w.y - w.height - 2;
+        x = w->x;
+        y = w->y - w->height - 2;
         if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
-        x = w.x + w.width + 2;
-        y = w.y - w.height - 2;
+        x = w->x + w->width + 2;
+        y = w->y - w->height - 2;
         if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
-        x = w.x - w.width - 2;
-        y = w.y - w.height - 2;
+        x = w->x - w->width - 2;
+        y = w->y - w->height - 2;
         if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
-        x = w.x + w.width + 2;
-        y = w.y + w.height + 2;
+        x = w->x + w->width + 2;
+        y = w->y + w->height + 2;
         if (window_fits_within_space(x, y, width, height)) goto foundSpace;
 
-        x = w.x - w.width - 2;
-        y = w.y + w.height + 2;
+        x = w->x - w->width - 2;
+        y = w->y + w->height + 2;
         if (window_fits_within_space(x, y, width, height)) goto foundSpace;
     }
 
     // Overlap
     for (auto& w : g_window_list)
     {
-        if (w.flags & WF_STICK_TO_BACK)
+        if (w->flags & WF_STICK_TO_BACK)
             continue;
 
-        x = w.x + w.width + 2;
-        y = w.y;
+        x = w->x + w->width + 2;
+        y = w->y;
         if (window_fits_on_screen(x, y, width, height)) goto foundSpace;
 
-        x = w.x - w.width - 2;
-        y = w.y;
+        x = w->x - w->width - 2;
+        y = w->y;
         if (window_fits_on_screen(x, y, width, height)) goto foundSpace;
 
-        x = w.x;
-        y = w.y + w.height + 2;
+        x = w->x;
+        y = w->y + w->height + 2;
         if (window_fits_on_screen(x, y, width, height)) goto foundSpace;
 
-        x = w.x;
-        y = w.y - w.height - 2;
+        x = w->x;
+        y = w->y - w->height - 2;
         if (window_fits_on_screen(x, y, width, height)) goto foundSpace;
     }
 
@@ -264,7 +265,7 @@ rct_window *window_create_auto_pos(sint32 width, sint32 height, rct_window_event
     y = 30;
     for (auto& w : g_window_list)
     {
-        if (x == w.x && y == w.y)
+        if (x == w->x && y == w->y)
         {
             x += 5;
             y += 5;
@@ -631,8 +632,8 @@ void invalidate_all_windows_after_input()
 {
     for (auto& w : g_window_list)
     {
-        window_update_scroll_widgets(&w);
-        window_invalidate_pressed_image_buttons(&w);
-        window_event_resize_call(&w);
+        window_update_scroll_widgets(w.get());
+        window_invalidate_pressed_image_buttons(w.get());
+        window_event_resize_call(w.get());
     }
 }

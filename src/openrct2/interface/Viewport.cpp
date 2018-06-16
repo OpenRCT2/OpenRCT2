@@ -250,7 +250,7 @@ static void viewport_redraw_after_shift(rct_drawpixelinfo *dpi, rct_window *wind
             auto nextWindowIndex = window_get_index(window) + 1;
             auto nextWindow = nextWindowIndex >= g_window_list.size() ?
                 nullptr :
-                &g_window_list[nextWindowIndex];
+                g_window_list[nextWindowIndex].get();
             viewport_redraw_after_shift(dpi, nextWindow, viewport, x, y);
             return;
         }
@@ -364,7 +364,7 @@ static void viewport_shift_pixels(rct_drawpixelinfo *dpi, rct_window* window, rc
 {
     for (auto i = window_get_index(window); i < g_window_list.size(); i++)
     {
-        auto w = &g_window_list[i];
+        auto w = g_window_list[i].get();
         if (!(w->flags & WF_TRANSPARENT)) continue;
         if (w->viewport == viewport) continue;
 

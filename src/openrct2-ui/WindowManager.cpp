@@ -507,9 +507,9 @@ public:
     {
         for (auto& w : g_window_list)
         {
-            if (w.viewport == viewport)
+            if (w->viewport == viewport)
             {
-                return &w;
+                return w.get();
             }
         }
         return nullptr;
