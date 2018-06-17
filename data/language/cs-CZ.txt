@@ -4566,6 +4566,8 @@ STR_6256    :Vykreslovací efekty
 STR_6257    :Sklo (poloprůsvitně)
 STR_6258    :Čistě (průhledně)
 STR_6259    :Žádné
+STR_6260    :Zobrazit blokované dlaždice
+STR_6261    :Zobrazit široké cesty
 
 ###############################################################################
 ## RCT2 Scenarios
