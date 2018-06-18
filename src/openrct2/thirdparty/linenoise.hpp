@@ -131,6 +131,8 @@
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
+// OpenRCT2: Windows.h defines `interface` too without checking if it exists already, so we we have to undefine it first
+#undef interface
 #include <windows.h>
 #include <io.h>
 #ifndef STDIN_FILENO

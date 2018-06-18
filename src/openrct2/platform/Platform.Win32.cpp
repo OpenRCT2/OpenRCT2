@@ -9,8 +9,11 @@
 
 #ifdef _WIN32
 
-#include <memory>
+// Windows.h needs to be included first
 #include <windows.h>
+
+// Then the rest
+#include <memory>
 #include <datetimeapi.h>
 #include <shlobj.h>
 #undef GetEnvironmentVariable

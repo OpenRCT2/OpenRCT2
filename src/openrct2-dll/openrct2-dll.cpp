@@ -7,14 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+// Windows.h needs to be included first
 #define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#undef CreateWindow
 
+// Then the rest
+#include <shellapi.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include <windows.h>
-#include <shellapi.h>
-#undef CreateWindow
 
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/Context.h>
