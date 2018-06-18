@@ -1777,8 +1777,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :Nur ein Fahrtfoto-Bereich pro Bahn erlaubt
 STR_1774    :Nur ein Kabellifthügel pro Bahn erlaubt
-STR_1775    :Aus
-STR_1776    :Ein
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}Attraktionsmusik
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandakostüm
@@ -3570,8 +3570,8 @@ STR_5232    :{SMALLFONT}{BLACK}Editoren
 STR_5233    :{SMALLFONT}{BLACK}Sonstiges
 STR_5234    :{SMALLFONT}{BLACK}Eingabeaufforderungen
 STR_5235    :{SMALLFONT}{BLACK}Einstellungen
-STR_5236    :Fenster:
-STR_5237    :Farbpalette:
+STR_5236    :Fenster
+STR_5237    :Farbpalette
 STR_5238    :Aktuelles Thema:
 STR_5239    :Duplizieren
 STR_5240    :Namen für Thema eingeben:
@@ -3830,8 +3830,8 @@ STR_5492    :Szenario-Optionen
 STR_5493    :Nachricht senden
 STR_5494    :<removed string - do not use>
 STR_5495    :Spielerliste
-STR_5496    :Spieler:
-STR_5497    :Ping:
+STR_5496    :Spieler
+STR_5497    :Ping
 STR_5498    :Serverliste
 STR_5499    :Spielername:
 STR_5500    :Server hinzufügen
@@ -3976,7 +3976,7 @@ STR_5638    :Keine Berechtigung
 STR_5639    :{SMALLFONT}{BLACK}Spielerliste anzeigen
 STR_5640    :{SMALLFONT}{BLACK}Gruppen verwalten
 STR_5641    :Standardgruppe:
-STR_5642    :Gruppe:
+STR_5642    :Gruppe
 STR_5643    :Gruppe hinzuf.
 STR_5644    :Gruppe entf.
 STR_5645    :Chat
@@ -4004,7 +4004,7 @@ STR_5666    :Passwortloser Login
 STR_5701    :{WINDOW_COLOUR_2}Letzte Aktion: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Lokalisiert die letzte Aktion des Spielers
 STR_5703    :Host kann nicht entfernt werden
-STR_5704    :Letzte Aktion:
+STR_5704    :Letzte Aktion
 STR_5705    :Diese Gruppe kann nicht{NEWLINE}eingestellt werden
 STR_5706    :Diese Gruppe kann nicht entfernt werden, solange ihr Spieler angehören
 STR_5707    :Diese Gruppe kann nicht{NEWLINE}angepasst werden
@@ -4306,7 +4306,7 @@ STR_6002    :{SMALLFONT}{BLACK}Lampen und Bahnen werden nachts beleuchtet.{NEWLI
 STR_6003    :Schnittansicht
 STR_6004    :Schnittansicht
 STR_6005    :Schnittansicht aktivieren
-STR_6006    :{SMALLFONT}{BLACK}Die Schnittansicht zeigt nur Kartenelemente auf oder unterhalb der Schnitthöhe.
+STR_6006    :{SMALLFONT}{BLACK}Die Schnittansicht zeigt nur Kartenelemente auf oder unterhalb der Schnitthöhe (vertikaler Schnitt) und in dem ausgewählten Bereich (horizontaler Schnitt).
 STR_6007    :Schnitthöhe:
 STR_6008    :{SMALLFONT}{BLACK}Zum Umschalten zwischen Rohwert<->Maßeinheit klicken.
 STR_6009    :{SMALLFONT}{BLACK}Schnitthöhe auswählen
@@ -4501,7 +4501,7 @@ STR_6198    :{BLACK}Tag:
 STR_6199    :Datum setzen
 STR_6200    :Datum zurücksetzen
 STR_6201    :{MONTH}
-STR_6202    :Virtuellen Boden aktivieren
+STR_6202    :Stil des virtuellen Bodens:
 STR_6203    :{SMALLFONT}{BLACK}Um vertikales Platzieren von Elementen zu vereinfachen, wird ein virtueller Boden eingeblendet, wenn Strg oder Shift gehalten wird
 STR_6204    :Ziegelstein
 STR_6205    :Eisen
@@ -4525,6 +4525,42 @@ STR_6222    :Kann Eingangspunkt für Besucher hier nicht platzieren...
 STR_6223    :Muss außerhalb der Parkgrenzen liegen!
 STR_6224    :{STRING} hat einen Eingangspunkt für Besucher platziert.
 STR_6225    :Wird von OpenGL nicht unterstützt
+STR_6226    :Vorzeitiges Abschließen von Szenarios aktivieren
+STR_6227    :{SMALLFONT}{BLACK}Aktiviert den Abschluss eines Szenarios bei erreichen aller Ziele, auch wenn das Zieldatum noch nicht erreicht wurde.
+STR_6228    :Szenario-Optionen
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :Eingefroren
+STR_6233    :Schnittansicht
+STR_6234    :Probleme mit Wegen hervorheben
+STR_6235    :Serverinformationen
+STR_6236    :Spieler
+STR_6237    :Gruppen
+STR_6238    :Mehrspieleroptionen
+STR_6239    :Vertikaler Schnitt
+STR_6240    :Horizontaler Schnitt
+STR_6241    :Bereich auswählen
+STR_6242    :Auswahl aufheben
+STR_6243    :{SMALLFONT}{BLACK}Saniert die Attraktion und macht sie wie neu
+STR_6244    :Kann Attraktion nicht sanieren...
+STR_6245    :{SMALLFONT}{BLACK}Attraktion benötigt keine Sanierung
+STR_6246    :Sanieren
+STR_6247    :Attraktion sanieren
+STR_6248    :{WINDOW_COLOUR_1}Wollen Sie {STRINGID} für {CURRENCY} sanieren?
+STR_6249    :{WINDOW_COLOUR_1}Wollen Sie {STRINGID} sanieren?
+STR_6250    :{WINDOW_COLOUR_1}Wollen Sie {STRINGID} wirklich komplett abreißen und dafür {CURRENCY} erhalten?
+STR_6251    :Attraktion ist noch nicht leer
+STR_6252    :Twitch-API-URL
+STR_6253    :{SMALLFONT}{BLACK}Geben Sie die URL der Twitch-Integrations-API an. Benötigt, um die Twitch-Integration zu aktivieren.
+STR_6254    :URL der Twitch-Integrations-API:
+STR_6255    :URL ist nicht gültig
+STR_6256    :Rendering effects
+STR_6257    :Gläsern (durchsichtig)
+STR_6258    :Klar (transparent)
+STR_6259    :Deaktiviert
+STR_6260    :Blockierte Kacheln anzeigen
+STR_6261    :Breite Wege anzeigen
 
 #############
 # Scenarios #
