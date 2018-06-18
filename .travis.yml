@@ -163,6 +163,21 @@ matrix:
             - if [[ "z$OPENRCT2_ORG_TOKEN" != "z" && "$TRAVIS_PULL_REQUEST" == "false" && ("${TRAVIS_BRANCH}" =~ ^(develop|push/) || "z${TRAVIS_TAG}" != "z") ]] ; then
               curl -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=OpenRCT2-${OPENRCT2_VERSION}${FILENAME_PART}-android-x86.apk" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$PUSH_BRANCH" --form "flavourId=12" --form "file=@app/build/outputs/apk/app-x86-pr.apk" "https://openrct2.org/altapi/?command=push-build";
               fi
+        - os: linux
+          before_install: []
+          language: cpp
+          sudo: false 
+          addons:
+            apt:
+              sources:
+                - llvm-toolchain-trusty-6.0
+                - ubuntu-toolchain-r-test
+              packages:
+                - libstdc++6-4.7-dev
+                - libllvm6.0
+                - clang-format-6.0
+          script:
+            - ./scripts/run-clang-format.py -r src test
         # Following entries used to be included in testing, but they only proved useful while changing things in CMake setup.
         # They are meant to be used when there are changes to CMakeLists.txt
         # - os: linux
