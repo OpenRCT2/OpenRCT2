@@ -13,12 +13,12 @@
 #define _WIN32_WINNT 0x0600
 #endif // __MINGW32__
 
-#include "../common.h"
-
 #ifdef _WIN32
 
-#undef interface
+// Windows.h needs to be included first
 #include <windows.h>
+
+// Then the rest
 #include <lmcons.h>
 #include <psapi.h>
 #include <shlobj.h>

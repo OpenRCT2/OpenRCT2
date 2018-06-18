@@ -7,25 +7,24 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <cassert>
-#include <cstdarg>
-#include <cstdio>
-#include <cstdlib>
-
-#include "../common.h"
-
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
 
 #include "../Version.h"
+#include "../common.h"
 #include "Console.hpp"
 #include "Diagnostics.hpp"
 #include "Guard.hpp"
 #include "String.hpp"
 
-void openrct2_assert_fwd(bool expression, const char * message, ...)
+#include <cassert>
+#include <cstdarg>
+#include <cstdio>
+#include <cstdlib>
+
+void openrct2_assert_fwd(bool expression, const char* message, ...)
 {
     va_list va;
     va_start(va, message);

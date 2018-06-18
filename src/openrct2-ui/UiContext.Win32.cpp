@@ -15,7 +15,11 @@
 #define _WIN32_WINNT 0x0600
 #endif // __MINGW32__
 
-#include <sstream>
+// Windows.h needs to be included first
+#include <windows.h>
+#undef CreateWindow
+
+// Then the rest
 #include <openrct2/common.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/Path.hpp>
@@ -23,8 +27,7 @@
 #include <openrct2/ui/UiContext.h>
 #include "UiContext.h"
 
-#undef interface
-#include <windows.h>
+#include <sstream>
 #include <shlobj.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_syswm.h>
