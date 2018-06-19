@@ -166,14 +166,14 @@ file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
 
 add_library(openrct2 SHARED ${LIBOPENRCT2_SOURCES})
 target_link_libraries(openrct2
-                        android log dl z
+                        android log dl z SDL2
                         png jansson icu icuuc icudata ssl crypto
                       )
 
 add_library(openrct2-ui SHARED ${OPENRCT2_GUI_SOURCES})
 add_executable(openrct2-cli ${OPENRCT2_CLI_SOURCES})
 
-target_link_libraries(openrct2-ui openrct2 GLESv1_CM GLESv2 SDL2 SDL2main speexdsp)
+target_link_libraries(openrct2-ui openrct2 GLESv1_CM GLESv2 SDL2main speexdsp)
 target_link_libraries(openrct2-cli openrct2)
 
 target_include_directories(openrct2-ui PRIVATE "${ORCT2_ROOT}/src")
