@@ -26,9 +26,9 @@
 #include "../world/Park.h"
 #include "Http.h"
 
-using namespace OpenRCT2::Network;
-
 #ifndef DISABLE_HTTP
+
+using namespace OpenRCT2::Network;
 
 enum MASTER_SERVER_STATUS
 {

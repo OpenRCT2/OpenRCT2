@@ -40,6 +40,8 @@ ExternalProject_Add(libs
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}icui18n${CMAKE_STATIC_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}icuuc${CMAKE_STATIC_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}icudata${CMAKE_STATIC_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}ssl${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}crypto${CMAKE_SHARED_LIBRARY_SUFFIX}
 
     LOG_DOWNLOAD 1
     LOG_UPDATE 1
@@ -108,6 +110,19 @@ set_target_properties(icudata PROPERTIES IMPORTED_LOCATION
 )
 add_dependencies(icudata libs)
 
+add_library(ssl SHARED IMPORTED)
+set_target_properties(ssl PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}ssl${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(ssl libs)
+
+add_library(crypto SHARED IMPORTED)
+set_target_properties(crypto PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}crypto${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(crypto libs)
+
+
 include_directories("${CMAKE_BINARY_DIR}/libs/include")
 include_directories("${CMAKE_BINARY_DIR}/libs/include/freetype2")
 include_directories("${CMAKE_BINARY_DIR}/libs/include/SDL2")
@@ -115,7 +130,7 @@ include_directories("${CMAKE_BINARY_DIR}/libs/include/SDL2")
 # now build app's shared lib
 include_directories(./ndk_helper
                     ${ANDROID_NDK}/sources/android/cpufeatures)
-add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH -DDISABLE_NETWORK -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DNO_TTF -DSDL_MAIN_HANDLED)
+add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DNO_TTF -DSDL_MAIN_HANDLED)
 
 # Fix SpeexDSP compilation
 add_definitions(-DHAVE_STDINT_H)
@@ -147,7 +162,7 @@ endif()
 add_library(openrct2 SHARED ${LIBOPENRCT2_SOURCES})
 target_link_libraries(openrct2
                         android log dl GLESv1_CM GLESv2 z
-                        SDL2 png jansson speexdsp icu icuuc icudata
+                        SDL2 png jansson speexdsp icu icuuc icudata ssl crypto
                       )
 
 add_library(openrct2-ui SHARED ${OPENRCT2_GUI_SOURCES})
