@@ -22,7 +22,7 @@ endif()
 
 include(ExternalProject)
 ExternalProject_Add(libs
-    URL https://github.com/OpenRCT2/openrct2-dependencies-android/releases/download/v0.8/openrct2-libs-android-${ANDROID_ABI}.zip
+    URL https://github.com/OpenRCT2/openrct2-dependencies-android/releases/download/v0.9/openrct2-libs-android-${ANDROID_ABI}.tar.gz
 
     SOURCE_DIR "${CMAKE_BINARY_DIR}/libs"
 
@@ -37,6 +37,9 @@ ExternalProject_Add(libs
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2-2.0${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}SDL2main${CMAKE_STATIC_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}speexdsp${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}icui18n${CMAKE_STATIC_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}icuuc${CMAKE_STATIC_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}icudata${CMAKE_STATIC_LIBRARY_SUFFIX}
 
     LOG_DOWNLOAD 1
     LOG_UPDATE 1
@@ -87,6 +90,23 @@ set_target_properties(speexdsp PROPERTIES IMPORTED_LOCATION
 )
 add_dependencies(speexdsp libs)
 
+add_library(icu STATIC IMPORTED)
+set_target_properties(icu PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}icui18n${CMAKE_STATIC_LIBRARY_SUFFIX}
+)
+add_dependencies(icu libs)
+
+add_library(icuuc STATIC IMPORTED)
+set_target_properties(icuuc PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}icuuc${CMAKE_STATIC_LIBRARY_SUFFIX}
+)
+add_dependencies(icuuc libs)
+
+add_library(icudata STATIC IMPORTED)
+set_target_properties(icudata PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}icudata${CMAKE_STATIC_LIBRARY_SUFFIX}
+)
+add_dependencies(icudata libs)
 
 include_directories("${CMAKE_BINARY_DIR}/libs/include")
 include_directories("${CMAKE_BINARY_DIR}/libs/include/freetype2")
@@ -127,7 +147,7 @@ endif()
 add_library(openrct2 SHARED ${LIBOPENRCT2_SOURCES})
 target_link_libraries(openrct2
                         android log dl GLESv1_CM GLESv2 z
-                        SDL2 png jansson speexdsp
+                        SDL2 png jansson speexdsp icu icuuc icudata
                       )
 
 add_library(openrct2-ui SHARED ${OPENRCT2_GUI_SOURCES})
