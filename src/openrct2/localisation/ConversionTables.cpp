@@ -143,7 +143,7 @@ const encoding_convert_entry RCT2ToUnicodeTable[256] =
     { 124, FORMAT_INT32 },
     { 125, FORMAT_COMMA2DP32 },
     { 126, FORMAT_COMMA16 },
-    { 127, FORMAT_uint16_t },
+    { 127, FORMAT_UINT16 },
     { 128, FORMAT_CURRENCY2DP },
     { 129, FORMAT_CURRENCY },
     { 130, FORMAT_STRINGID },

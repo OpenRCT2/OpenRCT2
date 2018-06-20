@@ -936,7 +936,7 @@ static void format_string_code(uint32_t format_code, char **dest, size_t *size, 
 
         format_comma_separated_integer(dest, size, value);
         break;
-    case FORMAT_uint16_t:
+    case FORMAT_UINT16:
         // Pop argument
         value = *((uint16_t*)*args);
         *args += 2;
