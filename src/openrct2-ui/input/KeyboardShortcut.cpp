@@ -32,7 +32,7 @@
 #include <openrct2/world/Park.h>
 #include "KeyboardShortcuts.h"
 
-uint8 gKeyboardShortcutChangeId;
+uint8_t gKeyboardShortcutChangeId;
 
 using shortcut_action = void (*)();
 
@@ -45,18 +45,18 @@ namespace
  *
  *  rct2: 0x006E3E68
  */
-void keyboard_shortcut_handle(sint32 key)
+void keyboard_shortcut_handle(int32_t key)
 {
-    sint32 shortcut = keyboard_shortcuts_get_from_key(key);
+    int32_t shortcut = keyboard_shortcuts_get_from_key(key);
     if (shortcut != -1)
     {
         keyboard_shortcut_handle_command(shortcut);
     }
 }
 
-void keyboard_shortcut_handle_command(sint32 shortcutIndex)
+void keyboard_shortcut_handle_command(int32_t shortcutIndex)
 {
-    if (shortcutIndex >= 0 && static_cast<uint32>(shortcutIndex) < Util::CountOf(shortcut_table))
+    if (shortcutIndex >= 0 && static_cast<uint32_t>(shortcutIndex) < Util::CountOf(shortcut_table))
     {
         shortcut_action action = shortcut_table[shortcutIndex];
         if (action != nullptr)
@@ -68,7 +68,7 @@ void keyboard_shortcut_handle_command(sint32 shortcutIndex)
 
 #pragma region Shortcut Commands
 
-static void toggle_view_flag(sint32 viewportFlag)
+static void toggle_view_flag(int32_t viewportFlag)
 {
     rct_window * window;
 

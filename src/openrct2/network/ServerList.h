@@ -21,8 +21,8 @@ struct server_entry
     std::string version;
     bool        requiresPassword    = false;
     bool        favourite           = false;
-    uint8       players             = 0;
-    uint8       maxplayers          = 0;
+    uint8_t       players             = 0;
+    uint8_t       maxplayers          = 0;
 };
 
 std::vector<server_entry> server_list_read();

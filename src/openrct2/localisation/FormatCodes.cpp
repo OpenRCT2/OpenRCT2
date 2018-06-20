@@ -15,7 +15,7 @@
 #pragma region Format codes
 
 struct format_code_token {
-    uint32 code;
+    uint32_t code;
     const char *token;
 };
 
@@ -41,7 +41,7 @@ static constexpr const format_code_token format_code_tokens[] = {
     { FORMAT_INT32,                     "INT32"                 },
     { FORMAT_COMMA2DP32,                "COMMA2DP32"            },
     { FORMAT_COMMA16,                   "COMMA16"               },
-    { FORMAT_UINT16,                    "UINT16"                },
+    { FORMAT_uint16_t,                    "uint16_t"                },
     { FORMAT_CURRENCY2DP,               "CURRENCY2DP"           },
     { FORMAT_CURRENCY,                  "CURRENCY"              },
     { FORMAT_STRINGID,                  "STRINGID"              },
@@ -95,9 +95,9 @@ static constexpr const format_code_token format_code_tokens[] = {
 };
 // clang-format on
 
-uint32 format_get_code(const char *token)
+uint32_t format_get_code(const char *token)
 {
-    for (uint32 i = 0; i < Util::CountOf(format_code_tokens); i++)
+    for (uint32_t i = 0; i < Util::CountOf(format_code_tokens); i++)
     {
         if (_strcmpi(token, format_code_tokens[i].token) == 0)
             return format_code_tokens[i].code;
@@ -105,9 +105,9 @@ uint32 format_get_code(const char *token)
     return 0;
 }
 
-const char *format_get_token(uint32 code)
+const char *format_get_token(uint32_t code)
 {
-    for (uint32 i = 0; i < Util::CountOf(format_code_tokens); i++)
+    for (uint32_t i = 0; i < Util::CountOf(format_code_tokens); i++)
     {
         if (code == format_code_tokens[i].code)
             return format_code_tokens[i].token;
@@ -115,7 +115,7 @@ const char *format_get_token(uint32 code)
     return nullptr;
 }
 
-bool utf8_should_use_sprite_for_codepoint(sint32 codepoint)
+bool utf8_should_use_sprite_for_codepoint(int32_t codepoint)
 {
     switch (codepoint) {
     case FORMAT_UP:

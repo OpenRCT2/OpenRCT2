@@ -35,15 +35,15 @@ interface IStream
     virtual bool    CanRead()                                 const abstract;
     virtual bool    CanWrite()                                const abstract;
 
-    virtual uint64  GetLength()                               const abstract;
-    virtual uint64  GetPosition()                             const abstract;
-    virtual void    SetPosition(uint64 position)                    abstract;
-    virtual void    Seek(sint64 offset, sint32 origin)                 abstract;
+    virtual uint64_t  GetLength()                               const abstract;
+    virtual uint64_t  GetPosition()                             const abstract;
+    virtual void    SetPosition(uint64_t position)                    abstract;
+    virtual void    Seek(int64_t offset, int32_t origin)                 abstract;
 
-    virtual void    Read(void * buffer, uint64 length)              abstract;
-    virtual void    Write(const void * buffer, uint64 length)       abstract;
+    virtual void    Read(void * buffer, uint64_t length)              abstract;
+    virtual void    Write(const void * buffer, uint64_t length)       abstract;
 
-    virtual uint64  TryRead(void * buffer, uint64 length)           abstract;
+    virtual uint64_t  TryRead(void * buffer, uint64_t length)           abstract;
 
     ///////////////////////////////////////////////////////////////////////////
     // Helper methods
@@ -68,7 +68,7 @@ interface IStream
     }
 
     /**
-     * Reads the given type from the stream. Use this only for small types (e.g. sint8, sint64, double)
+     * Reads the given type from the stream. Use this only for small types (e.g. int8_t, int64_t, double)
      */
     template<typename T>
     T ReadValue()
@@ -79,7 +79,7 @@ interface IStream
     }
 
     /**
-     * Writes the given type to the stream. Use this only for small types (e.g. sint8, sint64, double)
+     * Writes the given type to the stream. Use this only for small types (e.g. int8_t, int64_t, double)
      */
     template<typename T>
     void WriteValue(const T value)

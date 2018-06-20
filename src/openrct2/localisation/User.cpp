@@ -30,9 +30,9 @@ void user_string_clear_all()
  *
  *  rct2: 0x006C421D
  */
-rct_string_id user_string_allocate(sint32 base, const utf8 *text)
+rct_string_id user_string_allocate(int32_t base, const utf8 *text)
 {
-    sint32 highBits = (base & 0x7F) << 9;
+    int32_t highBits = (base & 0x7F) << 9;
     bool allowDuplicates = base & USER_STRING_DUPLICATION_PERMITTED;
 
     if (!allowDuplicates && user_string_exists(text)) {
@@ -40,7 +40,7 @@ rct_string_id user_string_allocate(sint32 base, const utf8 *text)
         return 0;
     }
 
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++)
+    for (int32_t i = 0; i < MAX_USER_STRINGS; i++)
     {
         char * userString = gUserStrings[i];
 
@@ -70,7 +70,7 @@ void user_string_free(rct_string_id id)
 static bool user_string_exists(const utf8 *text)
 {
     char * userString;
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++)
+    for (int32_t i = 0; i < MAX_USER_STRINGS; i++)
     {
         userString = gUserStrings[i];
         if (userString[0] == 0)
@@ -89,7 +89,7 @@ bool is_user_string_id(rct_string_id stringId)
 
 void reset_user_strings()
 {
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++)
+    for (int32_t i = 0; i < MAX_USER_STRINGS; i++)
     {
         gUserStrings[i][0] = 0;
     }

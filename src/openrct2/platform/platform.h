@@ -31,26 +31,26 @@ struct rct2_install_info;
 #endif
 
 struct resolution_t {
-    sint32 width, height;
+    int32_t width, height;
 };
 
 struct file_info {
     const char *path;
-    uint64 size;
-    uint64 last_modified;
+    uint64_t size;
+    uint64_t last_modified;
 };
 
 struct rct2_date {
-    uint8 day;
-    uint8 month;
-    sint16 year;
-    uint8 day_of_week;
+    uint8_t day;
+    uint8_t month;
+    int16_t year;
+    uint8_t day_of_week;
 };
 
 struct rct2_time {
-    uint8 hour;
-    uint8 minute;
-    uint8 second;
+    uint8_t hour;
+    uint8_t minute;
+    uint8_t second;
 };
 
 enum FILEDIALOG_TYPE
@@ -60,7 +60,7 @@ enum FILEDIALOG_TYPE
 };
 
 struct file_dialog_desc {
-    uint8 type;
+    uint8_t type;
     const utf8 *title;
     const utf8 *initial_directory;
     const utf8 *default_filename;
@@ -71,7 +71,7 @@ struct file_dialog_desc {
 };
 
 // Platform shared definitions
-void platform_update_palette(const uint8 *colours, sint32 start_index, sint32 num_colours);
+void platform_update_palette(const uint8_t *colours, int32_t start_index, int32_t num_colours);
 void platform_toggle_windowed_mode();
 void platform_refresh_video(bool recreate_window);
 void platform_get_date_utc(rct2_date *out_date);
@@ -91,24 +91,24 @@ bool platform_lock_single_instance();
 bool platform_place_string_on_clipboard(utf8* target);
 
 // Returns the bitmask of the GetLogicalDrives function for windows, 0 for other systems
-sint32 platform_get_drives();
+int32_t platform_get_drives();
 
 bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite);
 bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath);
 bool platform_file_delete(const utf8 *path);
-uint32 platform_get_ticks();
-void platform_sleep(uint32 ms);
+uint32_t platform_get_ticks();
+void platform_sleep(uint32_t ms);
 void platform_get_openrct_data_path(utf8 *outPath, size_t outSize);
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t outSize);
 utf8* platform_get_username();
 bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc, size_t outSize);
 utf8 *platform_open_directory_browser(const utf8 *title);
-uint8 platform_get_locale_currency();
-uint8 platform_get_currency_value(const char *currencyCode);
-uint16 platform_get_locale_language();
-uint8 platform_get_locale_measurement_format();
-uint8 platform_get_locale_temperature_format();
-uint8 platform_get_locale_date_format();
+uint8_t platform_get_locale_currency();
+uint8_t platform_get_currency_value(const char *currencyCode);
+uint16_t platform_get_locale_language();
+uint8_t platform_get_locale_measurement_format();
+uint8_t platform_get_locale_temperature_format();
+uint8_t platform_get_locale_date_format();
 bool platform_process_is_elevated();
 bool platform_get_steam_path(utf8 * outPath, size_t outSize);
 
@@ -141,7 +141,7 @@ void core_init();
     bool platform_setup_uri_protocol();
     // This function cannot be marked as 'static', even though it may seem to be,
     // as it requires external linkage, which 'static' prevents
-    __declspec(dllexport) sint32 StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, sint32 nCmdShow);
+    __declspec(dllexport) int32_t StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32_t nCmdShow);
 #endif // _WIN32
 
 #if defined(__APPLE__) && defined(__MACH__)

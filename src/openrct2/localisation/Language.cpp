@@ -48,18 +48,18 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
 // clang-format on
 
 // clang-format off
-const utf8 BlackUpArrowString[] =       { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x96, (utf8)(uint8)0xB2, (utf8)(uint8)0x00 };
-const utf8 BlackDownArrowString[] =     { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x96, (utf8)(uint8)0xBC, (utf8)(uint8)0x00 };
-const utf8 BlackLeftArrowString[] =     { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x97, (utf8)(uint8)0x80, (utf8)(uint8)0x00 };
-const utf8 BlackRightArrowString[] =    { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x96, (utf8)(uint8)0xB6, (utf8)(uint8)0x00 };
-const utf8 CheckBoxMarkString[] =       { (utf8)(uint8)0xE2, (utf8)(uint8)0x9C, (utf8)(uint8)0x93, (utf8)(uint8)0x00 };
+const utf8 BlackUpArrowString[] =       { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x8E, (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x96, (utf8)(uint8_t)0xB2, (utf8)(uint8_t)0x00 };
+const utf8 BlackDownArrowString[] =     { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x8E, (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x96, (utf8)(uint8_t)0xBC, (utf8)(uint8_t)0x00 };
+const utf8 BlackLeftArrowString[] =     { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x8E, (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x97, (utf8)(uint8_t)0x80, (utf8)(uint8_t)0x00 };
+const utf8 BlackRightArrowString[] =    { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x8E, (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x96, (utf8)(uint8_t)0xB6, (utf8)(uint8_t)0x00 };
+const utf8 CheckBoxMarkString[] =       { (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x9C, (utf8)(uint8_t)0x93, (utf8)(uint8_t)0x00 };
 // clang-format on
 
 void utf8_remove_format_codes(utf8 * text, bool allowcolours)
 {
     const utf8 * ch = text;
     utf8 * dstCh = text;
-    sint32 codepoint;
+    int32_t codepoint;
     while ((codepoint = String::GetNextCodepoint(ch, &ch)) != 0)
     {
         if (!utf8_is_format_code(codepoint) || (allowcolours && utf8_is_colour_code(codepoint)))
@@ -70,9 +70,9 @@ void utf8_remove_format_codes(utf8 * text, bool allowcolours)
     *dstCh = 0;
 }
 
-uint8 language_get_id_from_locale(const char * locale)
+uint8_t language_get_id_from_locale(const char * locale)
 {
-    uint8 i = 0;
+    uint8_t i = 0;
     for (const auto &langDesc : LanguagesDescriptors)
     {
         if (String::Equals(locale, langDesc.locale))
@@ -90,7 +90,7 @@ const char * language_get_string(rct_string_id id)
     return localisationService.GetString(id);
 }
 
-bool language_open(sint32 id)
+bool language_open(int32_t id)
 {
     auto context = OpenRCT2::GetContext();
     auto& localisationService = context->GetLocalisationService();
@@ -125,7 +125,7 @@ void language_free_object_string(rct_string_id stringId)
     localisationService.FreeObjectString(stringId);
 }
 
-rct_string_id language_get_object_override_string_id(const char * identifier, uint8 index)
+rct_string_id language_get_object_override_string_id(const char * identifier, uint8_t index)
 {
     const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     return localisationService.GetObjectOverrideStringId(identifier, index);

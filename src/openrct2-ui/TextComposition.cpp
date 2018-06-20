@@ -101,7 +101,7 @@ void TextComposition::HandleMessage(const SDL_Event * e)
             break;
         }
 
-        uint16 modifier = e->key.keysym.mod;
+        uint16_t modifier = e->key.keysym.mod;
         SDL_Keycode key = e->key.keysym.sym;
         if (key == SDLK_KP_ENTER)
         {
@@ -241,7 +241,7 @@ void TextComposition::CursorRight()
 void TextComposition::Insert(const utf8 * text)
 {
     const utf8 * ch = text;
-    uint32 codepoint;
+    uint32_t codepoint;
     while ((codepoint = utf8_get_next(ch, &ch)) != 0)
     {
         InsertCodepoint(codepoint);

@@ -17,7 +17,7 @@ struct ByteSwapT { };
 template <>
 struct ByteSwapT<1>
 {
-    static uint8 SwapBE(uint8 value)
+    static uint8_t SwapBE(uint8_t value)
     {
         return value;
     }
@@ -26,18 +26,18 @@ struct ByteSwapT<1>
 template <>
 struct ByteSwapT<2>
 {
-    static uint16 SwapBE(uint16 value)
+    static uint16_t SwapBE(uint16_t value)
     {
-        return (uint16)((value << 8) | (value >> 8));
+        return (uint16_t)((value << 8) | (value >> 8));
     }
 };
 
 template <>
 struct ByteSwapT<4>
 {
-    static uint32 SwapBE(uint32 value)
+    static uint32_t SwapBE(uint32_t value)
     {
-        return (uint32)(((value << 24) |
+        return (uint32_t)(((value << 24) |
             ((value << 8) & 0x00FF0000) |
                          ((value >> 8) & 0x0000FF00) |
                          (value >> 24)));

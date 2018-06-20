@@ -36,7 +36,7 @@
 #include "../util/Util.h"
 #include "platform.h"
 
-uint16 platform_get_locale_language(){
+uint16_t platform_get_locale_language(){
     const char *langString = setlocale(LC_MESSAGES, "");
     if(langString != nullptr){
         // The locale has the following form:
@@ -45,9 +45,9 @@ uint16 platform_get_locale_language(){
         // longest on my system is 29 with codeset and modifier, so 32 for the pattern should be more than enough
         char pattern[32];
         //strip the codeset and modifier part
-        sint32 length = strlen(langString);
+        int32_t length = strlen(langString);
         {
-            for(sint32 i = 0; i < length; ++i){
+            for(int32_t i = 0; i < length; ++i){
                 if(langString[i] == '.' || langString[i] == '@'){
                     length = i;
                     break;
@@ -65,7 +65,7 @@ uint16 platform_get_locale_language(){
         }
 
         // Iterate through all available languages
-        for(sint32 i = 1; i < LANGUAGE_COUNT; ++i){
+        for(int32_t i = 1; i < LANGUAGE_COUNT; ++i){
             if(!fnmatch(pattern, LanguagesDescriptors[i].locale, 0)){
                 return i;
             }
@@ -86,7 +86,7 @@ uint16 platform_get_locale_language(){
         if(strip != nullptr){
             pattern[strip - pattern] = '*';
             pattern[strip - pattern +1] = '\0'; // pattern is now "language*"
-            for(sint32 i = 1; i < LANGUAGE_COUNT; ++i){
+            for(int32_t i = 1; i < LANGUAGE_COUNT; ++i){
                 if(!fnmatch(pattern, LanguagesDescriptors[i].locale, 0)){
                     return i;
                 }
@@ -96,7 +96,7 @@ uint16 platform_get_locale_language(){
     return LANGUAGE_ENGLISH_UK;
 }
 
-uint8 platform_get_locale_currency(){
+uint8_t platform_get_locale_currency(){
     char *langstring = setlocale(LC_MONETARY, "");
 
     if (langstring == nullptr) {
@@ -108,7 +108,7 @@ uint8 platform_get_locale_currency(){
     return platform_get_currency_value(lc->int_curr_symbol);
 }
 
-uint8 platform_get_locale_measurement_format(){
+uint8_t platform_get_locale_measurement_format(){
     // LC_MEASUREMENT is GNU specific.
     #ifdef LC_MEASUREMENT
     const char *langstring = setlocale(LC_MEASUREMENT, "");

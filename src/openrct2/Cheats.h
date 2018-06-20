@@ -111,12 +111,12 @@ enum {
 #define CHEATS_STAFF_NORMAL_SPEED 0x60
 #define CHEATS_STAFF_FREEZE_SPEED 0
 
-extern sint32 park_rating_spinner_value;
-extern sint32 year_spinner_value;
-extern sint32 month_spinner_value;
-extern sint32 day_spinner_value;
+extern int32_t park_rating_spinner_value;
+extern int32_t year_spinner_value;
+extern int32_t month_spinner_value;
+extern int32_t day_spinner_value;
 
-void game_command_cheat(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
+void game_command_cheat(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 void cheats_reset();
 

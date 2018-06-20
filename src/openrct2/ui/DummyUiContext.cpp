@@ -31,9 +31,9 @@ namespace OpenRCT2::Ui
         void CloseWindow() override { }
         void RecreateWindow() override { }
         void * GetWindow() override { return nullptr; }
-        sint32 GetWidth() override { return 0; }
-        sint32 GetHeight() override { return 0; }
-        sint32 GetScaleQuality() override { return 0; }
+        int32_t GetWidth() override { return 0; }
+        int32_t GetHeight() override { return 0; }
+        int32_t GetScaleQuality() override { return 0; }
         void SetFullscreenMode(FULLSCREEN_MODE /*mode*/) override { }
         std::vector<Resolution> GetFullscreenResolutions() override { return std::vector<Resolution>(); }
         bool HasFocus() override { return false; }
@@ -50,14 +50,14 @@ namespace OpenRCT2::Ui
         const CursorState * GetCursorState() override { return nullptr; }
         CURSOR_ID GetCursor() override { return CURSOR_ARROW; }
         void SetCursor(CURSOR_ID /*cursor*/) override { }
-        void SetCursorScale(uint8 /*scale*/) override  { }
+        void SetCursorScale(uint8_t /*scale*/) override  { }
         void SetCursorVisible(bool /*value*/) override { }
-        void GetCursorPosition(sint32 * /*x*/, sint32 * /*y*/) override { }
-        void SetCursorPosition(sint32 /*x*/, sint32 /*y*/) override { }
+        void GetCursorPosition(int32_t * /*x*/, int32_t * /*y*/) override { }
+        void SetCursorPosition(int32_t /*x*/, int32_t /*y*/) override { }
         void SetCursorTrap(bool /*value*/) override { }
-        const uint8 * GetKeysState() override { return nullptr; }
-        const uint8 * GetKeysPressed() override { return nullptr; }
-        void SetKeysPressed(uint32 /*keysym*/, uint8 /*scancode*/) override { }
+        const uint8_t * GetKeysState() override { return nullptr; }
+        const uint8_t * GetKeysPressed() override { return nullptr; }
+        void SetKeysPressed(uint32_t /*keysym*/, uint8_t /*scancode*/) override { }
 
         class X8DrawingEngineFactory final : public IDrawingEngineFactory
         {

@@ -177,8 +177,8 @@ static void window_network_status_paint(rct_window *w, rct_drawpixelinfo *dpi)
     lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);
     safe_strcpy(lineCh, window_network_status_text, sizeof(buffer) - (lineCh - buffer));
     gfx_clip_string(buffer, w->widgets[WIDX_BACKGROUND].right - 50);
-    sint32 x = w->x + (w->width / 2);
-    sint32 y = w->y + (w->height / 2);
+    int32_t x = w->x + (w->width / 2);
+    int32_t y = w->y + (w->height / 2);
     x -= gfx_get_string_width(buffer) / 2;
     gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
 }

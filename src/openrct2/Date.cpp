@@ -14,25 +14,25 @@
 
 using namespace OpenRCT2;
 
-constexpr sint32 MONTH_TICKS_INCREMENT  = 4;
-constexpr sint32 MASK_WEEK_TICKS        = 0x3FFF;
-constexpr sint32 MASK_FORTNIGHT_TICKS   = 0x7FFF;
-constexpr sint32 MASK_MONTH_TICKS       = 0xFFFF;
+constexpr int32_t MONTH_TICKS_INCREMENT  = 4;
+constexpr int32_t MASK_WEEK_TICKS        = 0x3FFF;
+constexpr int32_t MASK_FORTNIGHT_TICKS   = 0x7FFF;
+constexpr int32_t MASK_MONTH_TICKS       = 0xFFFF;
 
-Date::Date(uint32 monthsElapsed, uint16 monthTicks)
+Date::Date(uint32_t monthsElapsed, uint16_t monthTicks)
     : _monthTicks(monthTicks),
       _monthsElapsed(monthsElapsed)
 {
 }
 
-Date Date::FromYMD(sint32 year, sint32 month, sint32 day)
+Date Date::FromYMD(int32_t year, int32_t month, int32_t day)
 {
     // Year, months
     Guard::ArgumentInRange(month, 0, MONTH_COUNT - 1);
-    sint32 monthsElapsed = (year * MONTH_COUNT) + month;
+    int32_t monthsElapsed = (year * MONTH_COUNT) + month;
 
     // Day
-    sint32 monthTicks = 0;
+    int32_t monthTicks = 0;
     if (day != 0)
     {
         auto daysInMonth = GetDaysInMonth(month);
@@ -45,7 +45,7 @@ Date Date::FromYMD(sint32 year, sint32 month, sint32 day)
 
 void Date::Update()
 {
-    sint32 monthTicks = _monthTicks + MONTH_TICKS_INCREMENT;
+    int32_t monthTicks = _monthTicks + MONTH_TICKS_INCREMENT;
     if (monthTicks > MASK_MONTH_TICKS)
     {
         _monthTicks = 0;
@@ -53,33 +53,33 @@ void Date::Update()
     }
     else
     {
-        _monthTicks = (uint16)monthTicks;
+        _monthTicks = (uint16_t)monthTicks;
     }
 }
 
-uint16 Date::GetMonthTicks() const
+uint16_t Date::GetMonthTicks() const
 {
     return _monthTicks;
 }
 
-uint32 Date::GetMonthsElapsed() const
+uint32_t Date::GetMonthsElapsed() const
 {
     return _monthsElapsed;
 }
 
-sint32 Date::GetDay() const
+int32_t Date::GetDay() const
 {
     auto month = GetMonth();
     auto daysInMonth = GetDaysInMonth(month);
     return ((_monthTicks * daysInMonth) >> 16) & 0xFF;
 }
 
-sint32 Date::GetMonth() const
+int32_t Date::GetMonth() const
 {
     return _monthsElapsed % MONTH_COUNT;
 }
 
-sint32 Date::GetYear() const
+int32_t Date::GetYear() const
 {
     return _monthsElapsed / MONTH_COUNT;
 }
@@ -90,9 +90,9 @@ bool Date::IsDayStart() const
     {
         return false;
     }
-    sint32 prevMonthTick = _monthTicks - 4;
-    sint32 currentMonth = GetMonth();
-    sint32 currentDaysInMonth = GetDaysInMonth(currentMonth);
+    int32_t prevMonthTick = _monthTicks - 4;
+    int32_t currentMonth = GetMonth();
+    int32_t currentDaysInMonth = GetDaysInMonth(currentMonth);
     return ((currentDaysInMonth * _monthTicks) >> 16 != (currentDaysInMonth * prevMonthTick) >> 16);
 }
 
@@ -111,7 +111,7 @@ bool Date::IsMonthStart() const
     return (_monthTicks == 0);
 }
 
-sint32 Date::GetDaysInMonth(sint32 month)
+int32_t Date::GetDaysInMonth(int32_t month)
 {
     Guard::ArgumentInRange(month, 0, MONTH_COUNT - 1);
 

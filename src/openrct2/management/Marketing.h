@@ -35,10 +35,10 @@ enum {
 };
 
 extern const money16 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
-extern uint8 gMarketingCampaignDaysLeft[20];
-extern uint8 gMarketingCampaignRideIndex[22];
+extern uint8_t gMarketingCampaignDaysLeft[20];
+extern uint8_t gMarketingCampaignRideIndex[22];
 
-sint32 marketing_get_campaign_guest_generation_probability(sint32 campaign);
+int32_t marketing_get_campaign_guest_generation_probability(int32_t campaign);
 void marketing_update();
-void marketing_set_guest_campaign(rct_peep *peep, sint32 campaign);
-bool marketing_is_campaign_type_applicable(sint32 campaignType);
+void marketing_set_guest_campaign(rct_peep *peep, int32_t campaign);
+bool marketing_is_campaign_type_applicable(int32_t campaignType);

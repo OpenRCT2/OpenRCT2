@@ -16,10 +16,10 @@
 
 struct haunted_house_bound_box
 {
-    sint16 offset_x;
-    sint16 offset_y;
-    sint16 length_x;
-    sint16 length_y;
+    int16_t offset_x;
+    int16_t offset_y;
+    int16_t length_x;
+    int16_t length_y;
 };
 
 /** rct2: 0x1428180 */
@@ -30,17 +30,17 @@ static haunted_house_bound_box haunted_house_data[] = {
 /**
  * rct2: 0x0076F72C
  */
-static void paint_haunted_house_structure(paint_session * session, uint8 rideIndex, uint8 direction, sint8 xOffset,
-                                          sint8 yOffset, uint8 part, uint16 height)
+static void paint_haunted_house_structure(paint_session * session, uint8_t rideIndex, uint8_t direction, int8_t xOffset,
+                                          int8_t yOffset, uint8_t part, uint16_t height)
 {
     const rct_tile_element * savedTileElement = static_cast<const rct_tile_element *>(session->CurrentlyDrawnItem);
 
-    uint8 frameNum = 0;
+    uint8_t frameNum = 0;
 
     Ride *           ride      = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
 
-    uint32 baseImageId = rideEntry->vehicles[0].base_image_id;
+    uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
     {
@@ -50,7 +50,7 @@ static void paint_haunted_house_structure(paint_session * session, uint8 rideInd
         frameNum                    = vehicle->vehicle_sprite_type;
     }
 
-    uint32                  imageId  = (baseImageId + direction) | session->TrackColours[SCHEME_MISC];
+    uint32_t                  imageId  = (baseImageId + direction) | session->TrackColours[SCHEME_MISC];
     haunted_house_bound_box boundBox = haunted_house_data[part];
     sub_98197C(
         session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
@@ -89,15 +89,15 @@ static void paint_haunted_house_structure(paint_session * session, uint8 rideInd
  */
 static void paint_haunted_house(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
-    sint32   edges    = edges_3x3[trackSequence];
+    int32_t   edges    = edges_3x3[trackSequence];
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
@@ -122,7 +122,7 @@ static void paint_haunted_house(
         break;
     }
 
-    sint32 cornerSegments = 0;
+    int32_t cornerSegments = 0;
     switch (trackSequence)
     {
     case 1:
@@ -151,7 +151,7 @@ static void paint_haunted_house(
 /**
  * rct2: 0x0076E7B0
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(int32_t trackType, int32_t direction)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {

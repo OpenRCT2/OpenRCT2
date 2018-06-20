@@ -40,7 +40,7 @@ private:
     rct_s6_data _s6{};
 
     void Save(IStream * stream, bool isScenario);
-    static uint32 GetLoanHash(money32 initialCash, money32 bankLoan, uint32 maxBankLoan);
+    static uint32_t GetLoanHash(money32 initialCash, money32 bankLoan, uint32_t maxBankLoan);
     void ExportResearchedRideTypes();
     void ExportResearchedRideEntries();
     void ExportResearchedSceneryItems();

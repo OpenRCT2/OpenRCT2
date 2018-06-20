@@ -19,7 +19,7 @@
 #include "../world/Park.h"
 #include "../world/Footpath.h"
 
-static sint32 _nextPeepSpawnIndex = 0;
+static int32_t _nextPeepSpawnIndex = 0;
 
 struct PlacePeepSpawnAction : public GameActionBase<GAME_COMMAND_PLACE_PEEP_SPAWN, GameActionResult>
 {
@@ -33,7 +33,7 @@ public:
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameActionBase::GetActionFlags() | GA_FLAGS::EDITOR_ONLY | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
@@ -96,8 +96,8 @@ public:
         gCommandPosition.z = _location.z / 8;
 
         // Find empty or next appropriate peep spawn to use
-        sint32 peepSpawnIndex = -1;
-        for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
+        int32_t peepSpawnIndex = -1;
+        for (int32_t i = 0; i < MAX_PEEP_SPAWNS; i++) {
             if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED) {
                 peepSpawnIndex = i;
                 break;
@@ -111,14 +111,14 @@ public:
             _nextPeepSpawnIndex = (peepSpawnIndex + 1) % MAX_PEEP_SPAWNS;
 
             // Before the new location is set, clear the old location
-            sint32 prevX = gPeepSpawns[peepSpawnIndex].x;
+            int32_t prevX = gPeepSpawns[peepSpawnIndex].x;
             gPeepSpawns[peepSpawnIndex].x = PEEP_SPAWN_UNDEFINED;
 
             map_invalidate_tile_full(prevX, gPeepSpawns[peepSpawnIndex].y);
         }
 
         // Shift the spawn point to the middle of the tile
-        sint32 middleX, middleY;
+        int32_t middleX, middleY;
         middleX = _location.x + 16 + (word_981D6C[_location.direction].x * 15);
         middleY = _location.y + 16 + (word_981D6C[_location.direction].y * 15);
 

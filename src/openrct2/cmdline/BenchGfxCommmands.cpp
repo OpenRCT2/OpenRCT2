@@ -22,8 +22,8 @@ const CommandLineCommand CommandLine::BenchGfxCommands[]
 static exitcode_t HandleBenchGfx(CommandLineArgEnumerator *argEnumerator)
 {
     const char * * argv = (const char * *)argEnumerator->GetArguments() + argEnumerator->GetIndex();
-    sint32 argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
-    sint32 result = cmdline_for_gfxbench(argv, argc);
+    int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
+    int32_t result = cmdline_for_gfxbench(argv, argc);
     if (result < 0) {
         return EXITCODE_FAIL;
     }

@@ -25,13 +25,13 @@
 
 bool gParkEntranceGhostExists = false;
 LocationXYZ16 gParkEntranceGhostPosition = { 0, 0, 0 };
-uint8 gParkEntranceGhostDirection = 0;
+uint8_t gParkEntranceGhostDirection = 0;
 CoordsXYZD gParkEntrances[MAX_PARK_ENTRANCES];
 
 CoordsXYZD gRideEntranceExitGhostPosition;
-uint8 gRideEntranceExitGhostStationIndex;
+uint8_t gRideEntranceExitGhostStationIndex;
 
-static void ParkEntranceRemoveSegment(sint32 x, sint32 y, sint32 z)
+static void ParkEntranceRemoveSegment(int32_t x, int32_t y, int32_t z)
 {
     rct_tile_element *tileElement;
 
@@ -46,9 +46,9 @@ static void ParkEntranceRemoveSegment(sint32 x, sint32 y, sint32 z)
     update_park_fences({x, y});
 }
 
-static money32 ParkEntranceRemove(sint16 x, sint16 y, uint8 z, uint8 flags)
+static money32 ParkEntranceRemove(int16_t x, int16_t y, uint8_t z, uint8_t flags)
 {
-    sint32 entranceIndex, direction;
+    int32_t entranceIndex, direction;
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
     {
@@ -94,13 +94,13 @@ static money32 ParkEntranceRemove(sint16 x, sint16 y, uint8 z, uint8 flags)
     return 0;
 }
 
-static money32 RideEntranceExitPlace(sint16 x,
-    sint16 y,
-    sint16 z,
-    uint8 direction,
-    uint8 flags,
-    uint8 rideIndex,
-    uint8 stationNum,
+static money32 RideEntranceExitPlace(int16_t x,
+    int16_t y,
+    int16_t z,
+    uint8_t direction,
+    uint8_t flags,
+    uint8_t rideIndex,
+    uint8_t stationNum,
     bool isExit)
 {
     // Remember when in unknown station num mode rideIndex is unknown and z is set
@@ -134,7 +134,7 @@ static money32 RideEntranceExitPlace(sint16 x,
             return MONEY32_UNDEFINED;
         }
 
-        sint16 clear_z = z / 8 + (isExit ? 5 : 7);
+        int16_t clear_z = z / 8 + (isExit ? 5 : 7);
 
         if (!gCheatsDisableClearanceChecks &&
             !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, &cost, CREATE_CROSSING_MODE_NONE))
@@ -254,7 +254,7 @@ static money32 RideEntranceExitPlace(sint16 x,
             return MONEY32_UNDEFINED;
         }
 
-        sint8 clear_z = (z / 8) + (isExit ? 5 : 7);
+        int8_t clear_z = (z / 8) + (isExit ? 5 : 7);
 
         if (!gCheatsDisableClearanceChecks &&
             !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, &cost, CREATE_CROSSING_MODE_NONE))
@@ -298,11 +298,11 @@ static money32 RideEntranceExitPlace(sint16 x,
 
             if (isExit)
             {
-                ride_set_exit_location(ride, stationNum, { x / 32, y / 32, z / 8, (uint8)tile_element_get_direction(tileElement)});
+                ride_set_exit_location(ride, stationNum, { x / 32, y / 32, z / 8, (uint8_t)tile_element_get_direction(tileElement)});
             }
             else
             {
-                ride_set_entrance_location(ride, stationNum, { x / 32, y / 32, z / 8, (uint8)tile_element_get_direction(tileElement)});
+                ride_set_entrance_location(ride, stationNum, { x / 32, y / 32, z / 8, (uint8_t)tile_element_get_direction(tileElement)});
                 ride->last_peep_in_queue[stationNum] = SPRITE_INDEX_NULL;
                 ride->queue_length[stationNum] = 0;
 
@@ -327,7 +327,7 @@ static money32 RideEntranceExitPlace(sint16 x,
     return cost;
 }
 
-static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8 stationNum, uint8 flags)
+static money32 RideEntranceExitRemove(int16_t x, int16_t y, uint8_t rideIndex, uint8_t stationNum, uint8_t flags)
 {
     if (rideIndex >= MAX_RIDES)
     {
@@ -435,7 +435,7 @@ static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8
     return 0;
 }
 
-static money32 RideEntranceExitPlaceGhost(uint8 rideIndex, sint16 x, sint16 y, uint8 direction, uint8 placeType, uint8 stationNum)
+static money32 RideEntranceExitPlaceGhost(uint8_t rideIndex, int16_t x, int16_t y, uint8_t direction, uint8_t placeType, uint8_t stationNum)
 {
     return game_do_command(
         x,
@@ -457,13 +457,13 @@ static money32 RideEntranceExitPlaceGhost(uint8 rideIndex, sint16 x, sint16 y, u
  *  rct2: 0x00666A63
  */
 void game_command_remove_park_entrance(
-    sint32 *                  eax,
-    sint32 *                  ebx,
-    sint32 *                  ecx,
-    sint32 *                  edx,
-    [[maybe_unused]] sint32 * esi,
-    [[maybe_unused]] sint32 * edi,
-    [[maybe_unused]] sint32 * ebp)
+    int32_t *                  eax,
+    int32_t *                  ebx,
+    int32_t *                  ecx,
+    int32_t *                  edx,
+    [[maybe_unused]] int32_t * esi,
+    [[maybe_unused]] int32_t * edi,
+    [[maybe_unused]] int32_t * ebp)
 {
     *ebx = ParkEntranceRemove(
         *eax & 0xFFFF,
@@ -493,9 +493,9 @@ void park_entrance_remove_ghost()
     }
 }
 
-sint32 park_entrance_get_index(sint32 x, sint32 y, sint32 z)
+int32_t park_entrance_get_index(int32_t x, int32_t y, int32_t z)
 {
-    sint32 i;
+    int32_t i;
 
     for (i = 0; i < MAX_PARK_ENTRANCES; i++)
     {
@@ -551,12 +551,12 @@ void ride_entrance_exit_remove_ghost()
  *
  *  rct2: 0x006CA28C
  */
-money32 ride_entrance_exit_place_ghost(sint32 rideIndex,
-                                        sint32 x,
-                                        sint32 y,
-                                        sint32 direction,
-                                        sint32 placeType,
-                                        sint32 stationNum)
+money32 ride_entrance_exit_place_ghost(int32_t rideIndex,
+                                        int32_t x,
+                                        int32_t y,
+                                        int32_t direction,
+                                        int32_t placeType,
+                                        int32_t stationNum)
 {
     ride_construction_remove_ghosts();
     money32 result = RideEntranceExitPlaceGhost(rideIndex, x, y, direction, placeType, stationNum);
@@ -577,13 +577,13 @@ money32 ride_entrance_exit_place_ghost(sint32 rideIndex,
  *  rct2: 0x006660A8
  */
 void game_command_place_ride_entrance_or_exit(
-    sint32 *                  eax,
-    sint32 *                  ebx,
-    sint32 *                  ecx,
-    sint32 *                  edx,
-    [[maybe_unused]] sint32 * esi,
-    sint32 *                  edi,
-    [[maybe_unused]] sint32 * ebp)
+    int32_t *                  eax,
+    int32_t *                  ebx,
+    int32_t *                  ecx,
+    int32_t *                  edx,
+    [[maybe_unused]] int32_t * esi,
+    int32_t *                  edi,
+    [[maybe_unused]] int32_t * ebp)
 {
     *ebx = RideEntranceExitPlace(
         *eax & 0xFFFF,
@@ -602,13 +602,13 @@ void game_command_place_ride_entrance_or_exit(
  *  rct2: 0x0066640B
  */
 void game_command_remove_ride_entrance_or_exit(
-    sint32 *                  eax,
-    sint32 *                  ebx,
-    sint32 *                  ecx,
-    sint32 *                  edx,
-    [[maybe_unused]] sint32 * esi,
-    sint32 *                  edi,
-    [[maybe_unused]] sint32 * ebp)
+    int32_t *                  eax,
+    int32_t *                  ebx,
+    int32_t *                  ecx,
+    int32_t *                  edx,
+    [[maybe_unused]] int32_t * esi,
+    int32_t *                  edi,
+    [[maybe_unused]] int32_t * ebp)
 {
     *ebx = RideEntranceExitRemove(
         *eax & 0xFFFF,
@@ -623,13 +623,13 @@ void game_command_remove_ride_entrance_or_exit(
  * Replaces the outer hedge walls for an entrance placement removal.
  *  rct2: 0x00666D6F
  */
-void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_tile_element *tileElement)
+void maze_entrance_hedge_replacement(int32_t x, int32_t y, rct_tile_element *tileElement)
 {
-    sint32 direction = tile_element_get_direction(tileElement);
+    int32_t direction = tile_element_get_direction(tileElement);
     x += CoordsDirectionDelta[direction].x;
     y += CoordsDirectionDelta[direction].y;
-    sint32 z = tileElement->base_height;
-    sint32 rideIndex = track_element_get_ride_index(tileElement);
+    int32_t z = tileElement->base_height;
+    int32_t rideIndex = track_element_get_ride_index(tileElement);
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
@@ -639,7 +639,7 @@ void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_tile_element *tileE
         if (track_element_get_type(tileElement) != TRACK_ELEM_MAZE) continue;
 
         // Each maze element is split into 4 sections with 4 different walls
-        uint8 mazeSection = direction * 4;
+        uint8_t mazeSection = direction * 4;
         // Add the top outer wall
         tileElement->properties.track.maze_entry |= (1 << ((mazeSection + 9) & 0x0F));
         // Add the bottom outer wall
@@ -654,13 +654,13 @@ void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_tile_element *tileE
  * Removes the hedge walls for an entrance placement.
  *  rct2: 0x00666CBE
  */
-void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_tile_element *tileElement)
+void maze_entrance_hedge_removal(int32_t x, int32_t y, rct_tile_element *tileElement)
 {
-    sint32 direction = tile_element_get_direction(tileElement);
+    int32_t direction = tile_element_get_direction(tileElement);
     x += CoordsDirectionDelta[direction].x;
     y += CoordsDirectionDelta[direction].y;
-    sint32 z = tileElement->base_height;
-    sint32 rideIndex = track_element_get_ride_index(tileElement);
+    int32_t z = tileElement->base_height;
+    int32_t rideIndex = track_element_get_ride_index(tileElement);
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
@@ -670,7 +670,7 @@ void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_tile_element *tileEleme
         if (track_element_get_type(tileElement) != TRACK_ELEM_MAZE) continue;
 
         // Each maze element is split into 4 sections with 4 different walls
-        uint8 mazeSection = direction * 4;
+        uint8_t mazeSection = direction * 4;
         // Remove the top outer wall
         tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 9) & 0x0F));
         // Remove the bottom outer wall

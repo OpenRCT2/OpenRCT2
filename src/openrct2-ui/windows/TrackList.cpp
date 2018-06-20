@@ -57,14 +57,14 @@ static rct_widget window_track_list_widgets[] = {
 static void window_track_list_close(rct_window *w);
 static void window_track_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_track_list_update(rct_window *w);
-static void window_track_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-static void window_track_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_track_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_track_list_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void window_track_list_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_track_list_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_track_list_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_track_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_track_list_invalidate(rct_window *w);
 static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 static rct_window_event_list window_track_list_events = {
     window_track_list_close,
@@ -104,10 +104,10 @@ ride_list_item _window_track_list_item;
 
 static std::vector<track_design_file_ref> _trackDesigns;
 static utf8                    _filterString[USER_STRING_MAX_LENGTH];
-static std::vector<uint16>     _filteredTrackIds;
-static uint16                  _loadedTrackDesignIndex;
+static std::vector<uint16_t>     _filteredTrackIds;
+static uint16_t                  _loadedTrackDesignIndex;
 static rct_track_td6         * _loadedTrackDesign;
-static std::vector<uint8>      _trackDesignPreviewPixels;
+static std::vector<uint8_t>      _trackDesignPreviewPixels;
 
 static void track_list_load_designs(ride_list_item item);
 static bool track_list_load_design_for_preview(utf8 *path);
@@ -124,11 +124,11 @@ rct_window * window_track_list_open(ride_list_item item)
     String::Set(_filterString, sizeof(_filterString), "");
     track_list_load_designs(item);
 
-    sint32 x, y;
+    int32_t x, y;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
-        sint32 screenWidth = context_get_width();
-        sint32 screenHeight = context_get_height();
+        int32_t screenWidth = context_get_width();
+        int32_t screenHeight = context_get_height();
         x = screenWidth / 2 - 300;
         y = std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
     }
@@ -187,7 +187,7 @@ static void window_track_list_filter_list()
     // Nothing to filter, so fill the list with all indices
     if (String::LengthOf(_filterString) == 0)
     {
-        for (uint16 i = 0; i < _trackDesigns.size(); i++)
+        for (uint16_t i = 0; i < _trackDesigns.size(); i++)
             _filteredTrackIds.push_back(i);
 
         return;
@@ -196,15 +196,15 @@ static void window_track_list_filter_list()
     // Convert filter to lowercase
     utf8 filterStringLower[sizeof(_filterString)];
     String::Set(filterStringLower, sizeof(filterStringLower), _filterString);
-    for (sint32 i = 0; filterStringLower[i] != '\0'; i++)
+    for (int32_t i = 0; filterStringLower[i] != '\0'; i++)
         filterStringLower[i] = (utf8)tolower(filterStringLower[i]);
 
     // Fill the set with indices for tracks that match the filter
-    for (uint16 i = 0; i < _trackDesigns.size(); i++)
+    for (uint16_t i = 0; i < _trackDesigns.size(); i++)
     {
         utf8 trackNameLower[USER_STRING_MAX_LENGTH];
         String::Set(trackNameLower, sizeof(trackNameLower), _trackDesigns[i].name);
-        for (sint32 j = 0; trackNameLower[j] != '\0'; j++)
+        for (int32_t j = 0; trackNameLower[j] != '\0'; j++)
             trackNameLower[j] = (utf8)tolower(trackNameLower[j]);
 
         if (strstr(trackNameLower, filterStringLower) != nullptr)
@@ -250,7 +250,7 @@ static void window_track_list_close(rct_window *w)
  *
  *  rct2: 0x006CFB82
  */
-static void window_track_list_select(rct_window *w, sint32 listIndex)
+static void window_track_list_select(rct_window *w, int32_t listIndex)
 {
     // Displays a message if the ride can't load, fix #4080
     if (_loadedTrackDesign == nullptr) {
@@ -273,7 +273,7 @@ static void window_track_list_select(rct_window *w, sint32 listIndex)
         gTrackDesignSceneryToggle = true;
     }
 
-    uint16 trackDesignIndex = _filteredTrackIds[listIndex];
+    uint16_t trackDesignIndex = _filteredTrackIds[listIndex];
     track_design_file_ref *tdRef = &_trackDesigns[trackDesignIndex];
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
         auto intent = Intent(WC_MANAGE_TRACK_DESIGN);
@@ -290,7 +290,7 @@ static void window_track_list_select(rct_window *w, sint32 listIndex)
     }
 }
 
-static sint32 window_track_list_get_list_item_index_from_position(sint32 x, sint32 y)
+static int32_t window_track_list_get_list_item_index_from_position(int32_t x, int32_t y)
 {
     size_t maxItems = _filteredTrackIds.size();
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
@@ -298,8 +298,8 @@ static sint32 window_track_list_get_list_item_index_from_position(sint32 x, sint
         maxItems++;
     }
 
-    sint32 index = y / SCROLLABLE_ROW_HEIGHT;
-    if (index < 0 || (uint32)index >= maxItems) {
+    int32_t index = y / SCROLLABLE_ROW_HEIGHT;
+    if (index < 0 || (uint32_t)index >= maxItems) {
         index = -1;
     }
     return index;
@@ -357,7 +357,7 @@ static void window_track_list_mouseup(rct_window *w, rct_widgetindex widgetIndex
  *
  *  rct2: 0x006CFAB0
  */
-static void window_track_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+static void window_track_list_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height)
 {
     size_t numItems = _filteredTrackIds.size();
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
@@ -365,17 +365,17 @@ static void window_track_list_scrollgetsize(rct_window *w, sint32 scrollIndex, s
         numItems++;
     }
 
-    *height = (sint32)(numItems * SCROLLABLE_ROW_HEIGHT);
+    *height = (int32_t)(numItems * SCROLLABLE_ROW_HEIGHT);
 }
 
 /**
  *
  *  rct2: 0x006CFB39
  */
-static void window_track_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_track_list_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
     if (!w->track_list.track_list_being_updated) {
-        sint32 i = window_track_list_get_list_item_index_from_position(x, y);
+        int32_t i = window_track_list_get_list_item_index_from_position(x, y);
         if (i != -1) {
             window_track_list_select(w, i);
         }
@@ -386,11 +386,11 @@ static void window_track_list_scrollmousedown(rct_window *w, sint32 scrollIndex,
  *
  *  rct2: 0x006CFAD7
  */
-static void window_track_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_track_list_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
     if (!w->track_list.track_list_being_updated)
     {
-        sint32 i = window_track_list_get_list_item_index_from_position(x, y);
+        int32_t i = window_track_list_get_list_item_index_from_position(x, y);
         if (i != -1 && w->selected_list_item != i)
         {
             w->selected_list_item = i;
@@ -492,7 +492,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
     window_draw_widgets(w, dpi);
 
-    sint32 listItemIndex = w->selected_list_item;
+    int32_t listItemIndex = w->selected_list_item;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
         if (_trackDesigns.size() == 0 || listItemIndex == -1)
@@ -506,10 +506,10 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
         listItemIndex--;
     }
 
-    sint32 trackIndex = _filteredTrackIds[listItemIndex];
+    int32_t trackIndex = _filteredTrackIds[listItemIndex];
 
     // Track preview
-    sint32 x, y, colour;
+    int32_t x, y, colour;
     rct_widget *widget = &window_track_list_widgets[WIDX_TRACK_PREVIEW];
     x = w->x + widget->left + 1;
     y = w->y + widget->top + 1;
@@ -530,7 +530,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
         return;
     }
 
-    sint32 trackPreviewX = x, trackPreviewY = y;
+    int32_t trackPreviewX = x, trackPreviewY = y;
     x = w->x + (widget->left + widget->right) / 2;
     y = w->y + (widget->top + widget->bottom) / 2;
 
@@ -594,14 +594,14 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
             if (td6->type == RIDE_TYPE_MINI_GOLF)
             {
                 // Holes
-                uint16 holes = td6->holes & 0x1F;
+                uint16_t holes = td6->holes & 0x1F;
                 gfx_draw_string_left(dpi, STR_HOLES, &holes, COLOUR_BLACK, x, y);
                 y += LIST_ROW_HEIGHT;
             }
             else
             {
                 // Maximum speed
-                uint16 speed = ((td6->max_speed << 16) * 9) >> 18;
+                uint16_t speed = ((td6->max_speed << 16) * 9) >> 18;
                 gfx_draw_string_left(dpi, STR_MAX_SPEED, &speed, COLOUR_BLACK, x, y);
                 y += LIST_ROW_HEIGHT;
 
@@ -613,7 +613,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             // Ride length
             set_format_arg(0, rct_string_id, STR_RIDE_LENGTH_ENTRY);
-            set_format_arg(2, uint16, td6->ride_length);
+            set_format_arg(2, uint16_t, td6->ride_length);
             gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, x, y, 214);
             y += LIST_ROW_HEIGHT;
         }
@@ -621,7 +621,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
         if (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
         {
             // Maximum positive vertical Gs
-            sint32 gForces = td6->max_positive_vertical_g * 32;
+            int32_t gForces = td6->max_positive_vertical_g * 32;
             gfx_draw_string_left(dpi, STR_MAX_POSITIVE_VERTICAL_G, &gForces, COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
 
@@ -641,7 +641,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 if (td6->total_air_time != 0)
                 {
                     // Total air time
-                    sint32 airTime = td6->total_air_time * 25;
+                    int32_t airTime = td6->total_air_time * 25;
                     gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &airTime, COLOUR_BLACK, x, y);
                     y += LIST_ROW_HEIGHT;
                 }
@@ -651,19 +651,19 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
         if (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_DROPS))
         {
             // Drops
-            uint16 drops = td6->drops & 0x3F;
+            uint16_t drops = td6->drops & 0x3F;
             gfx_draw_string_left(dpi, STR_DROPS, &drops, COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
 
             // Drop height is multiplied by 0.75
-            uint16 highestDropHeight = (td6->highest_drop_height * 3) / 4;
+            uint16_t highestDropHeight = (td6->highest_drop_height * 3) / 4;
             gfx_draw_string_left(dpi, STR_HIGHEST_DROP_HEIGHT, &highestDropHeight, COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
         }
 
         if (td6->type != RIDE_TYPE_MINI_GOLF)
         {
-            uint16 inversions = td6->inversions & 0x1F;
+            uint16_t inversions = td6->inversions & 0x1F;
             if (inversions != 0)
             {
                 // Inversions
@@ -677,8 +677,8 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     if (td6->space_required_x != 0xFF)
     {
         // Space required
-        set_format_arg(0, uint16, td6->space_required_x);
-        set_format_arg(2, uint16, td6->space_required_y);
+        set_format_arg(0, uint16_t, td6->space_required_x);
+        set_format_arg(2, uint16_t, td6->space_required_y);
         gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, gCommonFormatArgs, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
     }
@@ -693,13 +693,13 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x006CF8CD
  */
-static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex)
 {
-    uint8 paletteIndex = ColourMapA[w->colours[0]].mid_light;
+    uint8_t paletteIndex = ColourMapA[w->colours[0]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
-    sint32 x = 0;
-    sint32 y = 0;
+    int32_t x = 0;
+    int32_t y = 0;
     size_t listIndex = 0;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
         if (_trackDesigns.size() == 0) {

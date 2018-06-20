@@ -25,7 +25,7 @@
 NewsItem gNewsItems[MAX_NEWS_ITEMS];
 
 /** rct2: 0x0097BE7C */
-const uint8 news_type_properties[] =
+const uint8_t news_type_properties[] =
 {
     0,                                              // NEWS_ITEM_NULL
     NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT, // NEWS_ITEM_RIDE
@@ -39,9 +39,9 @@ const uint8 news_type_properties[] =
     NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_GRAPH
 };
 
-static sint32 news_item_get_new_history_slot();
+static int32_t news_item_get_new_history_slot();
 
-bool news_item_is_valid_idx(sint32 index)
+bool news_item_is_valid_idx(int32_t index)
 {
     if (index >= MAX_NEWS_ITEMS)
     {
@@ -51,7 +51,7 @@ bool news_item_is_valid_idx(sint32 index)
     return true;
 }
 
-NewsItem * news_item_get(sint32 index)
+NewsItem * news_item_get(int32_t index)
 {
     if (news_item_is_valid_idx(index))
     {
@@ -63,7 +63,7 @@ NewsItem * news_item_get(sint32 index)
     }
 }
 
-bool news_item_is_empty(sint32 index)
+bool news_item_is_empty(int32_t index)
 {
     NewsItem * news = news_item_get(index);
     return news != nullptr && news->Type == NEWS_ITEM_NULL;
@@ -95,7 +95,7 @@ void news_item_init_queue()
 
 static void news_item_tick_current()
 {
-    sint32 ticks;
+    int32_t ticks;
     ticks = ++news_item_get(0)->Ticks;
     // Only play news item sound when in normal playing mode
     if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING))
@@ -107,7 +107,7 @@ static void news_item_tick_current()
 
 static bool news_item_is_current_old()
 {
-    sint32 remove_time = 320;
+    int32_t remove_time = 320;
     if (!news_item_is_empty(5) &&
         !news_item_is_empty(4) &&
         !news_item_is_empty(3) &&
@@ -146,7 +146,7 @@ void news_item_update_current()
  */
 void news_item_close_current()
 {
-    sint32 i;
+    int32_t i;
     NewsItem * newsItems = gNewsItems;
 
     // Check if there is a current message
@@ -180,7 +180,7 @@ void news_item_close_current()
 
 static void news_item_shift_history_up()
 {
-    const sint32 history_idx = 11;
+    const int32_t history_idx = 11;
     NewsItem * history_start = news_item_get(history_idx);
     const size_t count = sizeof(NewsItem) * (MAX_NEWS_ITEMS - 1 - history_idx);
     memmove(history_start, history_start + 1, count);
@@ -191,10 +191,10 @@ static void news_item_shift_history_up()
  * Finds a spare history slot or replaces an existing one if there are no spare
  * slots available.
  */
-static sint32 news_item_get_new_history_slot()
+static int32_t news_item_get_new_history_slot()
 {
     // Find an available history news item slot
-    for (sint32 i = 11; i < MAX_NEWS_ITEMS; i++)
+    for (int32_t i = 11; i < MAX_NEWS_ITEMS; i++)
     {
         if (news_item_is_empty(i))
             return i;
@@ -211,7 +211,7 @@ static sint32 news_item_get_new_history_slot()
  *
  *  rct2: 0x0066BA74
  */
-void news_item_get_subject_location(sint32 type, sint32 subject, sint32 * x, sint32 * y, sint32 * z)
+void news_item_get_subject_location(int32_t type, int32_t subject, int32_t * x, int32_t * y, int32_t * z)
 {
     Ride        * ride;
     rct_peep    * peep;
@@ -255,7 +255,7 @@ void news_item_get_subject_location(sint32 type, sint32 subject, sint32 * x, sin
         // Find the first car of the train peep is on
         vehicle = &(get_sprite(ride->vehicles[peep->current_train])->vehicle);
         // Find the actual car peep is on
-        for (sint32 i = 0; i < peep->current_car; i++)
+        for (int32_t i = 0; i < peep->current_car; i++)
         {
             vehicle = &(get_sprite(vehicle->next_vehicle_on_train)->vehicle);
         }
@@ -285,7 +285,7 @@ void news_item_get_subject_location(sint32 type, sint32 subject, sint32 * x, sin
  *
  *  rct2: 0x0066DF55
  */
-void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
+void news_item_add_to_queue(uint8_t type, rct_string_id string_id, uint32_t assoc)
 {
     utf8 buffer[256];
     void * args = gCommonFormatArgs;
@@ -295,7 +295,7 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
     news_item_add_to_queue_raw(type, buffer, assoc);
 }
 
-void news_item_add_to_queue_raw(uint8 type, const utf8 * text, uint32 assoc)
+void news_item_add_to_queue_raw(uint8_t type, const utf8 * text, uint32_t assoc)
 {
     NewsItem * newsItem = gNewsItems;
 
@@ -329,7 +329,7 @@ void news_item_add_to_queue_raw(uint8 type, const utf8 * text, uint32 assoc)
  *  rct2: 0x0066EBE6
  *
  */
-void news_item_open_subject(sint32 type, sint32 subject)
+void news_item_open_subject(int32_t type, int32_t subject)
 {
     rct_peep   * peep;
     rct_window * window;
@@ -408,10 +408,10 @@ void news_item_open_subject(sint32 type, sint32 subject)
  *
  *  rct2: 0x0066E407
  */
-void news_item_disable_news(uint8 type, uint32 assoc)
+void news_item_disable_news(uint8_t type, uint32_t assoc)
 {
     // TODO: write test invalidating windows
-    for (sint32 i = 0; i < 11; i++)
+    for (int32_t i = 0; i < 11; i++)
     {
         if (!news_item_is_empty(i))
         {
@@ -432,7 +432,7 @@ void news_item_disable_news(uint8 type, uint32 assoc)
         }
     }
 
-    for (sint32 i = 11; i < MAX_NEWS_ITEMS; i++)
+    for (int32_t i = 11; i < MAX_NEWS_ITEMS; i++)
     {
         if (!news_item_is_empty(i))
         {

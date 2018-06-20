@@ -25,7 +25,7 @@ NetworkGroup NetworkGroup::FromJson(const json_t * json)
         throw std::runtime_error("Missing group data");
     }
 
-    group.Id    = (uint8)json_integer_value(jsonId);
+    group.Id    = (uint8_t)json_integer_value(jsonId);
     group._name = std::string(json_string_value(jsonName));
     std::fill(group.ActionsAllowed.begin(), group.ActionsAllowed.end(), 0);
 
@@ -36,7 +36,7 @@ NetworkGroup NetworkGroup::FromJson(const json_t * json)
         if (perm_name == nullptr) {
             continue;
         }
-        sint32 action_id = NetworkActions::FindCommandByPermissionName(perm_name);
+        int32_t action_id = NetworkActions::FindCommandByPermissionName(perm_name);
         if (action_id != -1) {
             group.ToggleActionPermission(action_id);
         }
@@ -114,9 +114,9 @@ bool NetworkGroup::CanPerformAction(size_t index) const
     return (ActionsAllowed[byte] & (1 << bit)) != 0;
 }
 
-bool NetworkGroup::CanPerformCommand(sint32 command) const
+bool NetworkGroup::CanPerformCommand(int32_t command) const
 {
-    sint32 action = NetworkActions::FindCommand(command);
+    int32_t action = NetworkActions::FindCommand(command);
     if (action != -1)
     {
         return CanPerformAction(action);

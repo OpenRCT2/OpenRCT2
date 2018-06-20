@@ -35,12 +35,12 @@
 #endif // USE_BREAKPAD
 
 #ifndef DISABLE_NETWORK
-sint32  gNetworkStart = NETWORK_MODE_NONE;
+int32_t  gNetworkStart = NETWORK_MODE_NONE;
 char gNetworkStartHost[128];
-sint32  gNetworkStartPort = NETWORK_DEFAULT_PORT;
+int32_t  gNetworkStartPort = NETWORK_DEFAULT_PORT;
 char* gNetworkStartAddress = nullptr;
 
-static uint32 _port            = 0;
+static uint32_t _port            = 0;
 static char*  _address         = nullptr;
 #endif
 

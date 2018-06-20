@@ -66,8 +66,8 @@ void Painter::Paint(IDrawingEngine& de)
 
 void Painter::PaintFPS(rct_drawpixelinfo * dpi)
 {
-    sint32 x = _uiContext->GetWidth() / 2;
-    sint32 y = 2;
+    int32_t x = _uiContext->GetWidth() / 2;
+    int32_t y = 2;
 
     // Measure FPS
     MeasureFPS();
@@ -82,7 +82,7 @@ void Painter::PaintFPS(rct_drawpixelinfo * dpi)
     snprintf(ch, 64 - (ch - buffer), "%d", _currentFPS);
 
     // Draw Text
-    sint32 stringWidth = gfx_get_string_width(buffer);
+    int32_t stringWidth = gfx_get_string_width(buffer);
     x = x - (stringWidth / 2);
     gfx_draw_string(dpi, buffer, 0, x, y);
 

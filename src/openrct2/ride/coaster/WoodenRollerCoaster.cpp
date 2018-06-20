@@ -21,8 +21,8 @@
 
 struct sprite_bb_2
 {
-    uint32    sprite_id_a;
-    uint32    sprite_id_b;
+    uint32_t    sprite_id_a;
+    uint32_t    sprite_id_b;
     LocationXYZ16 offset;
     LocationXYZ16 bb_offset;
     LocationXYZ16 bb_size;
@@ -383,30 +383,30 @@ enum
     SPR_WOODEN_RC_STATION_RAILS_NW_SE = 24840,
 };
 
-static constexpr const uint32 _wooden_rc_block_brakes_image_ids[4][2] = {
+static constexpr const uint32_t _wooden_rc_block_brakes_image_ids[4][2] = {
     { SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE },
     { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
     { SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE },
     { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
 };
 
-static uint32 wooden_rc_get_track_colour(paint_session * session)
+static uint32_t wooden_rc_get_track_colour(paint_session * session)
 {
     return (session->TrackColours[SCHEME_TRACK] & ~0xF80000) | session->TrackColours[SCHEME_SUPPORTS];
 }
 
-static uint32 wooden_rc_get_rails_colour(paint_session * session)
+static uint32_t wooden_rc_get_rails_colour(paint_session * session)
 {
     return session->TrackColours[SCHEME_TRACK];
 }
 
-static paint_struct * wooden_rc_track_paint(paint_session * session, uint32 imageIdTrack, uint32 imageIdRails, uint8 direction,
-                                            sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x,
-                                            sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset,
-                                            sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z)
+static paint_struct * wooden_rc_track_paint(paint_session * session, uint32_t imageIdTrack, uint32_t imageIdRails, uint8_t direction,
+                                            int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+                                            int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset,
+                                            int16_t bound_box_offset_x, int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
-    uint32 imageId      = imageIdTrack | wooden_rc_get_track_colour(session);
-    uint32 railsImageId = imageIdRails | wooden_rc_get_rails_colour(session);
+    uint32_t imageId      = imageIdTrack | wooden_rc_get_track_colour(session);
+    uint32_t railsImageId = imageIdRails | wooden_rc_get_rails_colour(session);
 
     sub_98197C_rotated(session, direction, imageId, x_offset, y_offset, bound_box_length_x, bound_box_length_y,
                        bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
@@ -414,45 +414,45 @@ static paint_struct * wooden_rc_track_paint(paint_session * session, uint32 imag
                               bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
 }
 
-static void wooden_rc_track_paint_bb(paint_session * session, const sprite_bb_2 * bb, sint16 height)
+static void wooden_rc_track_paint_bb(paint_session * session, const sprite_bb_2 * bb, int16_t height)
 {
     if (bb->sprite_id_a == 0)
         return;
 
-    uint32 imageId      = bb->sprite_id_a | wooden_rc_get_track_colour(session);
-    uint32 railsImageId = bb->sprite_id_b | wooden_rc_get_rails_colour(session);
+    uint32_t imageId      = bb->sprite_id_a | wooden_rc_get_track_colour(session);
+    uint32_t railsImageId = bb->sprite_id_b | wooden_rc_get_rails_colour(session);
 
     sub_98197C(
-        session, imageId, (sint8)bb->offset.x, (sint8)bb->offset.y, bb->bb_size.x, bb->bb_size.y, (sint8)bb->bb_size.z,
+        session, imageId, (int8_t)bb->offset.x, (int8_t)bb->offset.y, bb->bb_size.x, bb->bb_size.y, (int8_t)bb->bb_size.z,
         height + bb->offset.z, bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z);
     sub_98199C(
-        session, railsImageId, (sint8)bb->offset.x, (sint8)bb->offset.y, bb->bb_size.x, bb->bb_size.y, (sint8)bb->bb_size.z,
+        session, railsImageId, (int8_t)bb->offset.x, (int8_t)bb->offset.y, bb->bb_size.x, bb->bb_size.y, (int8_t)bb->bb_size.z,
         height + bb->offset.z, bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z);
 }
 
 /** rct2: 0x008AC568 */
 static void wooden_rc_track_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][2] = {
+    static constexpr const uint32_t imageIds[4][2] = {
         { SPR_WOODEN_RC_FLAT_SW_NE, SPR_WOODEN_RC_FLAT_CHAIN_SW_NE },
         { SPR_WOODEN_RC_FLAT_NW_SE, SPR_WOODEN_RC_FLAT_CHAIN_NW_SE },
         { SPR_WOODEN_RC_FLAT_SW_NE, SPR_WOODEN_RC_FLAT_CHAIN_NE_SW },
         { SPR_WOODEN_RC_FLAT_NW_SE, SPR_WOODEN_RC_FLAT_CHAIN_SE_NW },
     };
-    static constexpr const uint32 railsImageIds[4][2] = {
+    static constexpr const uint32_t railsImageIds[4][2] = {
         { SPR_WOODEN_RC_FLAT_RAILS_SW_NE, SPR_WOODEN_RC_FLAT_CHAIN_RAILS_SW_NE },
         { SPR_WOODEN_RC_FLAT_RAILS_NW_SE, SPR_WOODEN_RC_FLAT_CHAIN_RAILS_NW_SE },
         { SPR_WOODEN_RC_FLAT_RAILS_SW_NE, SPR_WOODEN_RC_FLAT_CHAIN_RAILS_NE_SW },
         { SPR_WOODEN_RC_FLAT_RAILS_NW_SE, SPR_WOODEN_RC_FLAT_CHAIN_RAILS_SE_NW },
     };
 
-    uint8 isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
     wooden_rc_track_paint(session, imageIds[direction][isChained], railsImageIds[direction][isChained], direction, 0, 2, 32, 25,
                           2, height, 0, 3, height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -463,20 +463,20 @@ static void wooden_rc_track_flat(
 
 static void wooden_rc_track_station(
     paint_session *          session,
-    uint8                    rideIndex,
-    [[maybe_unused]] uint8   trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    [[maybe_unused]] uint8_t   trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 stationImageIds[4][2] = {
+    static constexpr const uint32_t stationImageIds[4][2] = {
         { SPR_WOODEN_RC_STATION_SW_NE, SPR_WOODEN_RC_STATION_RAILS_SW_NE },
         { SPR_WOODEN_RC_STATION_NW_SE, SPR_WOODEN_RC_STATION_RAILS_NW_SE },
         { SPR_WOODEN_RC_STATION_SW_NE, SPR_WOODEN_RC_STATION_RAILS_SW_NE },
         { SPR_WOODEN_RC_STATION_NW_SE, SPR_WOODEN_RC_STATION_RAILS_NW_SE },
     };
 
-    sint32 trackType = track_element_get_type(tileElement);
+    int32_t trackType = track_element_get_type(tileElement);
     if (trackType == TRACK_ELEM_END_STATION)
     {
         wooden_rc_track_paint(session, _wooden_rc_block_brakes_image_ids[direction][0],
@@ -498,13 +498,13 @@ static void wooden_rc_track_station(
 /** rct2: 0x008AC578 */
 static void wooden_rc_track_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[2][4][4] = {
+    static constexpr const uint32_t imageIds[2][4][4] = {
         {
             { SPR_WOODEN_RC_25_DEG_SW_NE, SPR_WOODEN_RC_25_DEG_RAILS_SW_NE, 0, 0 },
             { SPR_WOODEN_RC_25_DEG_NW_SE, SPR_WOODEN_RC_25_DEG_RAILS_NW_SE, SPR_WOODEN_RC_25_DEG_FRONT_NW_SE,
@@ -523,7 +523,7 @@ static void wooden_rc_track_25_deg_up(
         }
     };
 
-    uint8 isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
     wooden_rc_track_paint(session, imageIds[isChained][direction][0], imageIds[isChained][direction][1], direction, 0, 0, 32,
                           25, 2, height, 0, 3, height);
     if (direction == 1 || direction == 2)
@@ -549,13 +549,13 @@ static void wooden_rc_track_25_deg_up(
 /** rct2: 0x008AC588 */
 static void wooden_rc_track_60_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][2] = {
+    static constexpr const uint32_t imageIds[4][2] = {
         { SPR_WOODEN_RC_60_DEG_SW_NE, SPR_WOODEN_RC_60_DEG_RAILS_SW_NE },
         { SPR_WOODEN_RC_60_DEG_NW_SE, SPR_WOODEN_RC_60_DEG_RAILS_NW_SE },
         { SPR_WOODEN_RC_60_DEG_NE_SW, SPR_WOODEN_RC_60_DEG_RAILS_NE_SW },
@@ -590,13 +590,13 @@ static void wooden_rc_track_60_deg_up(
 /** rct2: 0x008AC598 */
 static void wooden_rc_track_flat_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[2][4][4] = {
+    static constexpr const uint32_t imageIds[2][4][4] = {
         {
             { SPR_WOODEN_RC_FLAT_TO_25_DEG_SW_NE, SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_SW_NE, 0, 0 },
             { SPR_WOODEN_RC_FLAT_TO_25_DEG_NW_SE, SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_NW_SE,
@@ -615,7 +615,7 @@ static void wooden_rc_track_flat_to_25_deg_up(
         }
     };
 
-    uint8 isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
     wooden_rc_track_paint(session, imageIds[isChained][direction][0], imageIds[isChained][direction][1], direction, 0, 0, 32,
                           25, 2, height, 0, 3, height);
     if (direction == 1 || direction == 2)
@@ -641,13 +641,13 @@ static void wooden_rc_track_flat_to_25_deg_up(
 /** rct2: 0x008AC5A8 */
 static void wooden_rc_track_25_deg_up_to_60_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][4] = {
+    static constexpr const uint32_t imageIds[4][4] = {
         { SPR_WOODEN_RC_25_DEG_TO_60_DEG_SW_NE, SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_SW_NE, 0, 0 },
         { SPR_WOODEN_RC_25_DEG_TO_60_DEG_NW_SE, SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_NW_SE,
           SPR_WOODEN_RC_25_DEG_TO_60_DEG_FRONT_NW_SE, SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_FRONT_NW_SE },
@@ -686,13 +686,13 @@ static void wooden_rc_track_25_deg_up_to_60_deg_up(
 /** rct2: 0x008AC5B8 */
 static void wooden_rc_track_60_deg_up_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][4] = {
+    static constexpr const uint32_t imageIds[4][4] = {
         { SPR_WOODEN_RC_60_DEG_TO_25_DEG_SW_NE, SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_SW_NE, 0, 0 },
         { SPR_WOODEN_RC_60_DEG_TO_25_DEG_NW_SE, SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_NW_SE,
           SPR_WOODEN_RC_60_DEG_TO_25_DEG_FRONT_NW_SE, SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_FRONT_NW_SE },
@@ -731,13 +731,13 @@ static void wooden_rc_track_60_deg_up_to_25_deg_up(
 /** rct2: 0x008AC5C8 */
 static void wooden_rc_track_25_deg_up_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[2][4][4] = {
+    static constexpr const uint32_t imageIds[2][4][4] = {
         {
             { SPR_WOODEN_RC_25_DEG_TO_FLAT_SW_NE, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_SW_NE, 0, 0 },
             { SPR_WOODEN_RC_25_DEG_TO_FLAT_NW_SE, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_NW_SE,
@@ -756,7 +756,7 @@ static void wooden_rc_track_25_deg_up_to_flat(
         }
     };
 
-    uint8 isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
     wooden_rc_track_paint(session, imageIds[isChained][direction][0], imageIds[isChained][direction][1], direction, 0, 0, 32,
                           25, 2, height, 0, 3, height);
     if (direction == 1 || direction == 2)
@@ -782,10 +782,10 @@ static void wooden_rc_track_25_deg_up_to_flat(
 /** rct2: 0x008AC5D8 */
 static void wooden_rc_track_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -794,10 +794,10 @@ static void wooden_rc_track_25_deg_down(
 /** rct2: 0x008AC5E8 */
 static void wooden_rc_track_60_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -806,10 +806,10 @@ static void wooden_rc_track_60_deg_down(
 /** rct2: 0x008AC5F8 */
 static void wooden_rc_track_flat_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -818,10 +818,10 @@ static void wooden_rc_track_flat_to_25_deg_down(
 /** rct2: 0x008AC608 */
 static void wooden_rc_track_25_deg_down_to_60_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_60_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -830,10 +830,10 @@ static void wooden_rc_track_25_deg_down_to_60_deg_down(
 /** rct2: 0x008AC618 */
 static void wooden_rc_track_60_deg_down_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_25_deg_up_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -842,10 +842,10 @@ static void wooden_rc_track_60_deg_down_to_25_deg_down(
 /** rct2: 0x008AC628 */
 static void wooden_rc_track_25_deg_down_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -853,10 +853,10 @@ static void wooden_rc_track_25_deg_down_to_flat(
 
 static void wooden_rc_track_right_quarter_turn_5(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     static constexpr const sprite_bb_2 imageIds[2][4][7] = {
@@ -1053,7 +1053,7 @@ static void wooden_rc_track_right_quarter_turn_5(
               { 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
           } },
     };
-    static sint8 supportType[4][7] = {
+    static int8_t supportType[4][7] = {
         { 0, -1, 4, 2, -1, 4, 1 },
         { 1, -1, 5, 3, -1, 5, 0 },
         { 0, -1, 2, 4, -1, 2, 1 },
@@ -1070,7 +1070,7 @@ static void wooden_rc_track_right_quarter_turn_5(
                                       session->TrackColours[SCHEME_SUPPORTS], nullptr);
     }
 
-    sint32 blockedSegments = 0;
+    int32_t blockedSegments = 0;
     switch (trackSequence)
     {
     case 0:
@@ -1102,10 +1102,10 @@ static void wooden_rc_track_right_quarter_turn_5(
 
 static void wooden_rc_track_left_quarter_turn_5(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -1115,13 +1115,13 @@ static void wooden_rc_track_left_quarter_turn_5(
 /** rct2: 0x008AC658 */
 static void wooden_rc_track_flat_to_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][4] = {
+    static constexpr const uint32_t imageIds[4][4] = {
         { SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_SW_NE, SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_SW_NE, 0, 0 },
         { SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_NW_SE, SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_NW_SE,
           SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_FRONT_NW_SE, SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_RAILS_FRONT_NW_SE },
@@ -1146,13 +1146,13 @@ static void wooden_rc_track_flat_to_left_bank(
 /** rct2: 0x008AC668 */
 static void wooden_rc_track_flat_to_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][4] = {
+    static constexpr const uint32_t imageIds[4][4] = {
         { SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_SW_NE, SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_SW_NE,
           SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_FRONT_SW_NE, SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_RAILS_FRONT_SW_NE },
         { SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_NW_SE, SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_NW_SE, 0, 0 },
@@ -1177,10 +1177,10 @@ static void wooden_rc_track_flat_to_right_bank(
 /** rct2: 0x008AC678 */
 static void wooden_rc_track_left_bank_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_flat_to_right_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1189,10 +1189,10 @@ static void wooden_rc_track_left_bank_to_flat(
 /** rct2: 0x008AC688 */
 static void wooden_rc_track_right_bank_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_flat_to_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1200,10 +1200,10 @@ static void wooden_rc_track_right_bank_to_flat(
 
 static void wooden_rc_track_banked_right_quarter_turn_5(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     static constexpr const sprite_bb_2 imageIds[2][4][7] = {
@@ -1400,7 +1400,7 @@ static void wooden_rc_track_banked_right_quarter_turn_5(
               { 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
           } },
     };
-    static sint8 supportType[4][7] = {
+    static int8_t supportType[4][7] = {
         { 0, -1, 4, 2, -1, 4, 1 },
         { 1, -1, 5, 3, -1, 5, 0 },
         { 0, -1, 2, 4, -1, 2, 1 },
@@ -1417,7 +1417,7 @@ static void wooden_rc_track_banked_right_quarter_turn_5(
                                       session->TrackColours[SCHEME_SUPPORTS], nullptr);
     }
 
-    sint32 blockedSegments = 0;
+    int32_t blockedSegments = 0;
     switch (trackSequence)
     {
     case 0:
@@ -1449,10 +1449,10 @@ static void wooden_rc_track_banked_right_quarter_turn_5(
 
 static void wooden_rc_track_banked_left_quarter_turn_5(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -1462,13 +1462,13 @@ static void wooden_rc_track_banked_left_quarter_turn_5(
 /** rct2: 0x008AC6B8 */
 static void wooden_rc_track_left_bank_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][4] = {
+    static constexpr const uint32_t imageIds[4][4] = {
         { SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_SW_NE, SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_RAILS_SW_NE, 0, 0 },
         { SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_NW_SE, SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_RAILS_NW_SE,
           SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_FRONT_NW_SE, SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_RAILS_FRONT_NW_SE },
@@ -1500,13 +1500,13 @@ static void wooden_rc_track_left_bank_to_25_deg_up(
 /** rct2: 0x008AC6C8 */
 static void wooden_rc_track_right_bank_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][4] = {
+    static constexpr const uint32_t imageIds[4][4] = {
         { SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_SW_NE, SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_RAILS_SW_NE, 0, 0 },
         { SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_NW_SE, SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_RAILS_NW_SE,
           SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_FRONT_NW_SE, SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_RAILS_FRONT_NW_SE },
@@ -1538,13 +1538,13 @@ static void wooden_rc_track_right_bank_to_25_deg_up(
 /** rct2: 0x008AC6D8 */
 static void wooden_rc_track_25_deg_up_to_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][4] = {
+    static constexpr const uint32_t imageIds[4][4] = {
         { SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_SW_NE, SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_RAILS_SW_NE, 0, 0 },
         { SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_NW_SE, SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_RAILS_NW_SE,
           SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_FRONT_NW_SE, SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_RAILS_FRONT_NW_SE },
@@ -1576,13 +1576,13 @@ static void wooden_rc_track_25_deg_up_to_left_bank(
 /** rct2: 0x008AC6E8 */
 static void wooden_rc_track_25_deg_up_to_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][4] = {
+    static constexpr const uint32_t imageIds[4][4] = {
         { SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_SW_NE, SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_RAILS_SW_NE, 0, 0 },
         { SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_NW_SE, SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_RAILS_NW_SE,
           SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_FRONT_NW_SE, SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_RAILS_FRONT_NW_SE },
@@ -1614,10 +1614,10 @@ static void wooden_rc_track_25_deg_up_to_right_bank(
 /** rct2: 0x008AC6F8 */
 static void wooden_rc_track_left_bank_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_25_deg_up_to_right_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1626,10 +1626,10 @@ static void wooden_rc_track_left_bank_to_25_deg_down(
 /** rct2: 0x008AC708 */
 static void wooden_rc_track_right_bank_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_25_deg_up_to_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1638,10 +1638,10 @@ static void wooden_rc_track_right_bank_to_25_deg_down(
 /** rct2: 0x008AC718 */
 static void wooden_rc_track_25_deg_down_to_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_right_bank_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1650,10 +1650,10 @@ static void wooden_rc_track_25_deg_down_to_left_bank(
 /** rct2: 0x008AC728 */
 static void wooden_rc_track_25_deg_down_to_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_left_bank_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1662,13 +1662,13 @@ static void wooden_rc_track_25_deg_down_to_right_bank(
 /** rct2: 0x008AC738 */
 static void wooden_rc_track_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][2] = {
+    static constexpr const uint32_t imageIds[4][2] = {
         { SPR_WOODEN_RC_LEFT_BANK_SW_NE, SPR_WOODEN_RC_LEFT_BANK_RAILS_SW_NE },
         { SPR_WOODEN_RC_LEFT_BANK_NW_SE, SPR_WOODEN_RC_LEFT_BANK_RAILS_NW_SE },
         { SPR_WOODEN_RC_LEFT_BANK_NE_SW, SPR_WOODEN_RC_LEFT_BANK_RAILS_NE_SW },
@@ -1686,10 +1686,10 @@ static void wooden_rc_track_left_bank(
 /** rct2: 0x008AC748 */
 static void wooden_rc_track_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1698,10 +1698,10 @@ static void wooden_rc_track_right_bank(
 /** rct2: 0x008AC758 */
 static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -1964,10 +1964,10 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
 /** rct2: 0x008AC768 */
 static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -2230,10 +2230,10 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
 /** rct2: 0x008AC778 */
 static void wooden_rc_track_left_quarter_turn_5_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -2243,10 +2243,10 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_down(
 /** rct2: 0x008AC788 */
 static void wooden_rc_track_right_quarter_turn_5_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -2256,10 +2256,10 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_down(
 /** rct2: 0x008AC798 */
 static void wooden_rc_track_s_bend_left(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -2461,10 +2461,10 @@ static void wooden_rc_track_s_bend_left(
 /** rct2: 0x008AC7A8 */
 static void wooden_rc_track_s_bend_right(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -2666,10 +2666,10 @@ static void wooden_rc_track_s_bend_right(
 /** rct2: 0x008ACE18 */
 static void wooden_rc_track_left_vertical_loop(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -2881,10 +2881,10 @@ static void wooden_rc_track_left_vertical_loop(
 /** rct2: 0x008ACE28 */
 static void wooden_rc_track_right_vertical_loop(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -3070,10 +3070,10 @@ static void wooden_rc_track_right_vertical_loop(
 /** rct2: 0x008AC7E8 */
 static void wooden_rc_track_left_quarter_turn_3(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -3226,10 +3226,10 @@ static void wooden_rc_track_left_quarter_turn_3(
 /** rct2: 0x008AC7F8 */
 static void wooden_rc_track_right_quarter_turn_3(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -3239,10 +3239,10 @@ static void wooden_rc_track_right_quarter_turn_3(
 /** rct2: 0x008AC808 */
 static void wooden_rc_track_left_quarter_turn_3_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -3395,10 +3395,10 @@ static void wooden_rc_track_left_quarter_turn_3_bank(
 /** rct2: 0x008AC818 */
 static void wooden_rc_track_right_quarter_turn_3_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -3408,10 +3408,10 @@ static void wooden_rc_track_right_quarter_turn_3_bank(
 /** rct2: 0x008AC828 */
 static void wooden_rc_track_left_quarter_turn_3_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -3533,10 +3533,10 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_up(
 /** rct2: 0x008AC838 */
 static void wooden_rc_track_right_quarter_turn_3_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -3658,10 +3658,10 @@ static void wooden_rc_track_right_quarter_turn_3_25_deg_up(
 /** rct2: 0x008AC848 */
 static void wooden_rc_track_left_quarter_turn_3_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -3671,10 +3671,10 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_down(
 /** rct2: 0x008AC858 */
 static void wooden_rc_track_right_quarter_turn_3_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -3684,10 +3684,10 @@ static void wooden_rc_track_right_quarter_turn_3_25_deg_down(
 /** rct2: 0x008ACAB8 */
 static void wooden_rc_track_left_half_banked_helix_up_small(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -4028,10 +4028,10 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
 /** rct2: 0x008ACAC8 */
 static void wooden_rc_track_right_half_banked_helix_up_small(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -4372,10 +4372,10 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
 /** rct2: 0x008ACAD8 */
 static void wooden_rc_track_left_half_banked_helix_down_small(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (trackSequence >= 4)
@@ -4391,10 +4391,10 @@ static void wooden_rc_track_left_half_banked_helix_down_small(
 /** rct2: 0x008ACAE8 */
 static void wooden_rc_track_right_half_banked_helix_down_small(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (trackSequence >= 4)
@@ -4409,10 +4409,10 @@ static void wooden_rc_track_right_half_banked_helix_down_small(
 /** rct2: 0x008ACAF8 */
 static void wooden_rc_track_left_half_banked_helix_up_large(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -4933,10 +4933,10 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
 /** rct2: 0x008ACB08 */
 static void wooden_rc_track_right_half_banked_helix_up_large(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -5457,10 +5457,10 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
 /** rct2: 0x008ACB18 */
 static void wooden_rc_track_left_half_banked_helix_down_large(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (trackSequence >= 7)
@@ -5476,10 +5476,10 @@ static void wooden_rc_track_left_half_banked_helix_down_large(
 /** rct2: 0x008ACB28 */
 static void wooden_rc_track_right_half_banked_helix_down_large(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (trackSequence >= 7)
@@ -5494,10 +5494,10 @@ static void wooden_rc_track_right_half_banked_helix_down_large(
 /** rct2: 0x008ACB98 */
 static void wooden_rc_track_left_quarter_turn_1_60_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -5551,10 +5551,10 @@ static void wooden_rc_track_left_quarter_turn_1_60_deg_up(
 /** rct2: 0x008ACB78 */
 static void wooden_rc_track_right_quarter_turn_1_60_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -5608,10 +5608,10 @@ static void wooden_rc_track_right_quarter_turn_1_60_deg_up(
 /** rct2: 0x008ACB88 */
 static void wooden_rc_track_left_quarter_turn_1_60_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_right_quarter_turn_1_60_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);
@@ -5620,10 +5620,10 @@ static void wooden_rc_track_left_quarter_turn_1_60_deg_down(
 /** rct2: 0x008ACBA8 */
 static void wooden_rc_track_right_quarter_turn_1_60_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_left_quarter_turn_1_60_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
@@ -5632,13 +5632,13 @@ static void wooden_rc_track_right_quarter_turn_1_60_deg_down(
 /** rct2: 0x008AC868 */
 static void wooden_rc_track_brakes(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][2] = {
+    static constexpr const uint32_t imageIds[4][2] = {
         { SPR_WOODEN_RC_BRAKES_SW_NE, SPR_WOODEN_RC_BRAKES_RAILS_SW_NE },
         { SPR_WOODEN_RC_BRAKES_NW_SE, SPR_WOODEN_RC_BRAKES_RAILS_NW_SE },
         { SPR_WOODEN_RC_BRAKES_SW_NE, SPR_WOODEN_RC_BRAKES_RAILS_SW_NE },
@@ -5656,10 +5656,10 @@ static void wooden_rc_track_brakes(
 /** rct2: 0x008ACC78 */
 static void wooden_rc_track_25_deg_up_left_banked(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -5716,10 +5716,10 @@ static void wooden_rc_track_25_deg_up_left_banked(
 /** rct2: 0x008ACC88 */
 static void wooden_rc_track_25_deg_up_right_banked(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -5776,10 +5776,10 @@ static void wooden_rc_track_25_deg_up_right_banked(
 /** rct2: 0x008AC878 */
 static void wooden_rc_track_on_ride_photo(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -5819,10 +5819,10 @@ static void wooden_rc_track_on_ride_photo(
 /** rct2: 0x008ACC98 */
 static void wooden_rc_track_25_deg_down_left_banked(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_25_deg_up_right_banked(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -5831,10 +5831,10 @@ static void wooden_rc_track_25_deg_down_left_banked(
 /** rct2: 0x008ACCA8 */
 static void wooden_rc_track_25_deg_down_right_banked(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_25_deg_up_left_banked(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -5843,10 +5843,10 @@ static void wooden_rc_track_25_deg_down_right_banked(
 /** rct2: 0x008ACE08 */
 static void wooden_rc_track_water_splash(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -6189,10 +6189,10 @@ static void wooden_rc_track_water_splash(
 /** rct2: 0x008AC958 */
 static void wooden_rc_track_left_eighth_to_diag(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -6394,10 +6394,10 @@ static void wooden_rc_track_left_eighth_to_diag(
 /** rct2: 0x008AC968 */
 static void wooden_rc_track_right_eighth_to_diag(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -6599,10 +6599,10 @@ static void wooden_rc_track_right_eighth_to_diag(
 /** rct2: 0x008AC978 */
 static void wooden_rc_track_left_eighth_to_orthogonal(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -6612,10 +6612,10 @@ static void wooden_rc_track_left_eighth_to_orthogonal(
 /** rct2: 0x008AC988 */
 static void wooden_rc_track_right_eighth_to_orthogonal(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -6625,10 +6625,10 @@ static void wooden_rc_track_right_eighth_to_orthogonal(
 /** rct2: 0x008AC998 */
 static void wooden_rc_track_left_eighth_bank_to_diag(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -6830,10 +6830,10 @@ static void wooden_rc_track_left_eighth_bank_to_diag(
 /** rct2: 0x008AC9A8 */
 static void wooden_rc_track_right_eighth_bank_to_diag(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7035,10 +7035,10 @@ static void wooden_rc_track_right_eighth_bank_to_diag(
 /** rct2: 0x008AC9B8 */
 static void wooden_rc_track_left_eighth_bank_to_orthogonal(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -7048,10 +7048,10 @@ static void wooden_rc_track_left_eighth_bank_to_orthogonal(
 /** rct2: 0x008AC9C8 */
 static void wooden_rc_track_right_eighth_bank_to_orthogonal(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -7061,10 +7061,10 @@ static void wooden_rc_track_right_eighth_bank_to_orthogonal(
 /** rct2: 0x008AC888 */
 static void wooden_rc_track_diag_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7243,10 +7243,10 @@ static void wooden_rc_track_diag_flat(
 /** rct2: 0x008AC8B8 */
 static void wooden_rc_track_diag_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7425,10 +7425,10 @@ static void wooden_rc_track_diag_25_deg_up(
 /** rct2: 0x008AC8E8 */
 static void wooden_rc_track_diag_60_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7519,10 +7519,10 @@ static void wooden_rc_track_diag_60_deg_up(
 /** rct2: 0x008AC898 */
 static void wooden_rc_track_diag_flat_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7701,10 +7701,10 @@ static void wooden_rc_track_diag_flat_to_25_deg_up(
 /** rct2: 0x008AC8C8 */
 static void wooden_rc_track_diag_25_deg_up_to_60_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7795,10 +7795,10 @@ static void wooden_rc_track_diag_25_deg_up_to_60_deg_up(
 /** rct2: 0x008AC8D8 */
 static void wooden_rc_track_diag_60_deg_up_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7889,10 +7889,10 @@ static void wooden_rc_track_diag_60_deg_up_to_25_deg_up(
 /** rct2: 0x008AC8A8 */
 static void wooden_rc_track_diag_25_deg_up_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -8071,10 +8071,10 @@ static void wooden_rc_track_diag_25_deg_up_to_flat(
 /** rct2: 0x008AC918 */
 static void wooden_rc_track_diag_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -8253,10 +8253,10 @@ static void wooden_rc_track_diag_25_deg_down(
 /** rct2: 0x008AC948 */
 static void wooden_rc_track_diag_60_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -8347,10 +8347,10 @@ static void wooden_rc_track_diag_60_deg_down(
 /** rct2: 0x008AC8F8 */
 static void wooden_rc_track_diag_flat_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -8524,10 +8524,10 @@ static void wooden_rc_track_diag_flat_to_25_deg_down(
 /** rct2: 0x008AC928 */
 static void wooden_rc_track_diag_25_deg_down_to_60_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -8618,10 +8618,10 @@ static void wooden_rc_track_diag_25_deg_down_to_60_deg_down(
 /** rct2: 0x008AC938 */
 static void wooden_rc_track_diag_60_deg_down_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -8712,10 +8712,10 @@ static void wooden_rc_track_diag_60_deg_down_to_25_deg_down(
 /** rct2: 0x008AC908 */
 static void wooden_rc_track_diag_25_deg_down_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -8894,10 +8894,10 @@ static void wooden_rc_track_diag_25_deg_down_to_flat(
 /** rct2: 0x008ACA18 */
 static void wooden_rc_track_diag_flat_to_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -8988,10 +8988,10 @@ static void wooden_rc_track_diag_flat_to_left_bank(
 /** rct2: 0x008AC9F8 */
 static void wooden_rc_track_diag_flat_to_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -9082,10 +9082,10 @@ static void wooden_rc_track_diag_flat_to_right_bank(
 /** rct2: 0x008ACA08 */
 static void wooden_rc_track_diag_left_bank_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -9176,10 +9176,10 @@ static void wooden_rc_track_diag_left_bank_to_flat(
 /** rct2: 0x008ACA28 */
 static void wooden_rc_track_diag_right_bank_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -9270,10 +9270,10 @@ static void wooden_rc_track_diag_right_bank_to_flat(
 /** rct2: 0x008ACA58 */
 static void wooden_rc_track_diag_left_bank_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -9364,10 +9364,10 @@ static void wooden_rc_track_diag_left_bank_to_25_deg_up(
 /** rct2: 0x008ACA68 */
 static void wooden_rc_track_diag_right_bank_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -9458,10 +9458,10 @@ static void wooden_rc_track_diag_right_bank_to_25_deg_up(
 /** rct2: 0x008ACA38 */
 static void wooden_rc_track_diag_25_deg_up_to_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -9552,10 +9552,10 @@ static void wooden_rc_track_diag_25_deg_up_to_left_bank(
 /** rct2: 0x008ACA48 */
 static void wooden_rc_track_diag_25_deg_up_to_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -9646,10 +9646,10 @@ static void wooden_rc_track_diag_25_deg_up_to_right_bank(
 /** rct2: 0x008ACA78 */
 static void wooden_rc_track_diag_left_bank_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -9735,10 +9735,10 @@ static void wooden_rc_track_diag_left_bank_to_25_deg_down(
 /** rct2: 0x008ACA88 */
 static void wooden_rc_track_diag_right_bank_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -9824,10 +9824,10 @@ static void wooden_rc_track_diag_right_bank_to_25_deg_down(
 /** rct2: 0x008ACA98 */
 static void wooden_rc_track_diag_25_deg_down_to_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -9918,10 +9918,10 @@ static void wooden_rc_track_diag_25_deg_down_to_left_bank(
 /** rct2: 0x008ACAA8 */
 static void wooden_rc_track_diag_25_deg_down_to_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -10012,10 +10012,10 @@ static void wooden_rc_track_diag_25_deg_down_to_right_bank(
 /** rct2: 0x008AC9D8 */
 static void wooden_rc_track_diag_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -10106,10 +10106,10 @@ static void wooden_rc_track_diag_left_bank(
 /** rct2: 0x008AC9E8 */
 static void wooden_rc_track_diag_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -10200,10 +10200,10 @@ static void wooden_rc_track_diag_right_bank(
 /** rct2: 0x008ACB38 */
 static void wooden_rc_track_left_bank_to_left_quarter_turn_3_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -10325,10 +10325,10 @@ static void wooden_rc_track_left_bank_to_left_quarter_turn_3_25_deg_up(
 /** rct2: 0x008ACB48 */
 static void wooden_rc_track_right_bank_to_right_quarter_turn_3_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -10450,10 +10450,10 @@ static void wooden_rc_track_right_bank_to_right_quarter_turn_3_25_deg_up(
 /** rct2: 0x008ACB58 */
 static void wooden_rc_track_left_quarter_turn_3_25_deg_down_to_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -10575,10 +10575,10 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_down_to_left_bank(
 /** rct2: 0x008ACB68 */
 static void wooden_rc_track_right_quarter_turn_3_25_deg_down_to_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -10700,10 +10700,10 @@ static void wooden_rc_track_right_quarter_turn_3_25_deg_down_to_right_bank(
 /** rct2: 0x008ACDF8 */
 static void wooden_rc_track_block_brakes(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_paint(session, _wooden_rc_block_brakes_image_ids[direction][0],
@@ -10717,10 +10717,10 @@ static void wooden_rc_track_block_brakes(
 /** rct2: 0x008ACCB8 */
 static void wooden_rc_track_left_banked_quarter_turn_3_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -10842,10 +10842,10 @@ static void wooden_rc_track_left_banked_quarter_turn_3_25_deg_up(
 /** rct2: 0x008ACCC8 */
 static void wooden_rc_track_right_banked_quarter_turn_3_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -10967,10 +10967,10 @@ static void wooden_rc_track_right_banked_quarter_turn_3_25_deg_up(
 /** rct2: 0x008ACCD8 */
 static void wooden_rc_track_left_banked_quarter_turn_3_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -10981,10 +10981,10 @@ static void wooden_rc_track_left_banked_quarter_turn_3_25_deg_down(
 /** rct2: 0x008ACCE8 */
 static void wooden_rc_track_right_banked_quarter_turn_3_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -10995,10 +10995,10 @@ static void wooden_rc_track_right_banked_quarter_turn_3_25_deg_down(
 /** rct2: 0x008ACC38 */
 static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -11261,10 +11261,10 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
 /** rct2: 0x008ACC48 */
 static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -11527,10 +11527,10 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
 /** rct2: 0x008ACC58 */
 static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -11541,10 +11541,10 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_down(
 /** rct2: 0x008ACC68 */
 static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -11555,10 +11555,10 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_down(
 /** rct2: 0x008ACCF8 */
 static void wooden_rc_track_25_deg_up_to_left_banked_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -11607,10 +11607,10 @@ static void wooden_rc_track_25_deg_up_to_left_banked_25_deg_up(
 /** rct2: 0x008ACD08 */
 static void wooden_rc_track_25_deg_up_to_right_banked_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -11659,10 +11659,10 @@ static void wooden_rc_track_25_deg_up_to_right_banked_25_deg_up(
 /** rct2: 0x008ACD18 */
 static void wooden_rc_track_left_banked_25_deg_up_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -11711,10 +11711,10 @@ static void wooden_rc_track_left_banked_25_deg_up_to_25_deg_up(
 /** rct2: 0x008ACD28 */
 static void wooden_rc_track_right_banked_25_deg_up_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -11763,10 +11763,10 @@ static void wooden_rc_track_right_banked_25_deg_up_to_25_deg_up(
 /** rct2: 0x008ACD38 */
 static void wooden_rc_track_25_deg_down_to_left_banked_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_right_banked_25_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
@@ -11776,10 +11776,10 @@ static void wooden_rc_track_25_deg_down_to_left_banked_25_deg_down(
 /** rct2: 0x008ACD48 */
 static void wooden_rc_track_25_deg_down_to_right_banked_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_left_banked_25_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
@@ -11789,10 +11789,10 @@ static void wooden_rc_track_25_deg_down_to_right_banked_25_deg_down(
 /** rct2: 0x008ACD58 */
 static void wooden_rc_track_left_banked_25_deg_down_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_25_deg_up_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
@@ -11802,10 +11802,10 @@ static void wooden_rc_track_left_banked_25_deg_down_to_25_deg_down(
 /** rct2: 0x008ACD68 */
 static void wooden_rc_track_right_banked_25_deg_down_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_25_deg_up_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
@@ -11815,10 +11815,10 @@ static void wooden_rc_track_right_banked_25_deg_down_to_25_deg_down(
 /** rct2: 0x008ACD78 */
 static void wooden_rc_track_left_banked_flat_to_left_banked_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -11875,10 +11875,10 @@ static void wooden_rc_track_left_banked_flat_to_left_banked_25_deg_up(
 /** rct2: 0x008ACD88 */
 static void wooden_rc_track_right_banked_flat_to_right_banked_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -11935,10 +11935,10 @@ static void wooden_rc_track_right_banked_flat_to_right_banked_25_deg_up(
 /** rct2: 0x008ACD98 */
 static void wooden_rc_track_left_banked_25_deg_up_to_left_banked_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -11995,10 +11995,10 @@ static void wooden_rc_track_left_banked_25_deg_up_to_left_banked_flat(
 /** rct2: 0x008ACDA8 */
 static void wooden_rc_track_right_banked_25_deg_up_to_right_banked_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -12055,10 +12055,10 @@ static void wooden_rc_track_right_banked_25_deg_up_to_right_banked_flat(
 /** rct2: 0x008ACDB8 */
 static void wooden_rc_track_left_banked_flat_to_left_banked_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_right_banked_25_deg_up_to_right_banked_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height,
@@ -12068,10 +12068,10 @@ static void wooden_rc_track_left_banked_flat_to_left_banked_25_deg_down(
 /** rct2: 0x008ACDC8 */
 static void wooden_rc_track_right_banked_flat_to_right_banked_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_left_banked_25_deg_up_to_left_banked_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height,
@@ -12081,10 +12081,10 @@ static void wooden_rc_track_right_banked_flat_to_right_banked_25_deg_down(
 /** rct2: 0x008ACDD8 */
 static void wooden_rc_track_left_banked_25_deg_down_to_left_banked_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_right_banked_flat_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
@@ -12094,10 +12094,10 @@ static void wooden_rc_track_left_banked_25_deg_down_to_left_banked_flat(
 /** rct2: 0x008ACDE8 */
 static void wooden_rc_track_right_banked_25_deg_down_to_right_banked_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_left_banked_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
@@ -12107,10 +12107,10 @@ static void wooden_rc_track_right_banked_25_deg_down_to_right_banked_flat(
 /** rct2: 0x008ACBB8 */
 static void wooden_rc_track_flat_to_left_banked_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -12167,10 +12167,10 @@ static void wooden_rc_track_flat_to_left_banked_25_deg_up(
 /** rct2: 0x008ACBC8 */
 static void wooden_rc_track_flat_to_right_banked_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -12227,10 +12227,10 @@ static void wooden_rc_track_flat_to_right_banked_25_deg_up(
 /** rct2: 0x008ACBD8 */
 static void wooden_rc_track_left_banked_25_deg_up_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -12287,10 +12287,10 @@ static void wooden_rc_track_left_banked_25_deg_up_to_flat(
 /** rct2: 0x008ACBE8 */
 static void wooden_rc_track_right_banked_25_deg_up_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -12347,10 +12347,10 @@ static void wooden_rc_track_right_banked_25_deg_up_to_flat(
 /** rct2: 0x008ACBF8 */
 static void wooden_rc_track_flat_to_left_banked_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_right_banked_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -12359,10 +12359,10 @@ static void wooden_rc_track_flat_to_left_banked_25_deg_down(
 /** rct2: 0x008ACC08 */
 static void wooden_rc_track_flat_to_right_banked_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_left_banked_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -12371,10 +12371,10 @@ static void wooden_rc_track_flat_to_right_banked_25_deg_down(
 /** rct2: 0x008ACC18 */
 static void wooden_rc_track_left_banked_25_deg_down_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_flat_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -12383,16 +12383,16 @@ static void wooden_rc_track_left_banked_25_deg_down_to_flat(
 /** rct2: 0x008ACC28 */
 static void wooden_rc_track_right_banked_25_deg_down_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     wooden_rc_track_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_wooden_rc(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_wooden_rc(int32_t trackType, int32_t direction)
 {
     switch (trackType)
     {

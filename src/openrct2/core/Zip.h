@@ -23,15 +23,15 @@ interface IZipArchive
 
     virtual size_t GetNumFiles() const abstract;
     virtual std::string GetFileName(size_t index) const abstract;
-    virtual uint64 GetFileSize(size_t index) const abstract;
-    virtual std::vector<uint8> GetFileData(const std::string_view& path) const abstract;
+    virtual uint64_t GetFileSize(size_t index) const abstract;
+    virtual std::vector<uint8_t> GetFileData(const std::string_view& path) const abstract;
 
     /**
      * Creates or overwrites a file within the zip archive to the given data buffer.
      * @param path The path of the file within the zip.
      * @param data The data to write.
      */
-    virtual void SetFileData(const std::string_view& path, std::vector<uint8>&& data) abstract;
+    virtual void SetFileData(const std::string_view& path, std::vector<uint8_t>&& data) abstract;
 
     virtual void DeleteFile(const std::string_view& path) abstract;
     virtual void RenameFile(const std::string_view& path, const std::string_view& newPath) abstract;

@@ -53,20 +53,20 @@
 #endif
 
 static void console_write_all_commands(InteractiveConsole &console);
-static sint32 console_parse_int(const utf8 *src, bool *valid);
+static int32_t console_parse_int(const utf8 *src, bool *valid);
 static double console_parse_double(const utf8 *src, bool *valid);
 
-static sint32 cc_variables(InteractiveConsole &console, const utf8 **argv, sint32 argc);
-static sint32 cc_windows(InteractiveConsole &console, const utf8 **argv, sint32 argc);
-static sint32 cc_help(InteractiveConsole &console, const utf8 **argv, sint32 argc);
+static int32_t cc_variables(InteractiveConsole &console, const utf8 **argv, int32_t argc);
+static int32_t cc_windows(InteractiveConsole &console, const utf8 **argv, int32_t argc);
+static int32_t cc_help(InteractiveConsole &console, const utf8 **argv, int32_t argc);
 
 static bool invalidArguments(bool *invalid, bool arguments);
 
 #define SET_FLAG(variable, flag, value) {if (value) variable |= flag; else variable &= ~(flag);}
 
-sint32 console_parse_int(const utf8 *src, bool *valid) {
+int32_t console_parse_int(const utf8 *src, bool *valid) {
     utf8 *end;
-    sint32 value;
+    int32_t value;
     value = strtol(src, &end, 10); *valid = (*end == '\0');
     return value;
 }
@@ -78,37 +78,37 @@ double console_parse_double(const utf8 *src, bool *valid) {
     return value;
 }
 
-static sint32 cc_clear(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
+static int32_t cc_clear(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] int32_t argc)
 {
     console.Clear();
     return 0;
 }
 
-static sint32 cc_close(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
+static int32_t cc_close(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] int32_t argc)
 {
     console.Close();
     return 0;
 }
 
-static sint32 cc_hide(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
+static int32_t cc_hide(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] int32_t argc)
 {
     console.Hide();
     return 0;
 }
 
-static sint32 cc_echo(InteractiveConsole &console, const utf8 **argv, sint32 argc)
+static int32_t cc_echo(InteractiveConsole &console, const utf8 **argv, int32_t argc)
 {
     if (argc > 0)
         console.WriteLine(argv[0]);
     return 0;
 }
 
-static sint32 cc_rides(InteractiveConsole &console, const utf8 **argv, sint32 argc)
+static int32_t cc_rides(InteractiveConsole &console, const utf8 **argv, int32_t argc)
 {
     if (argc > 0) {
         if (strcmp(argv[0], "list") == 0) {
             Ride *ride;
-            sint32 i;
+            int32_t i;
             FOR_ALL_RIDES(i, ride) {
                 char name[128];
                 format_string(name, 128, ride->name, &ride->name_arguments);
@@ -118,7 +118,7 @@ static sint32 cc_rides(InteractiveConsole &console, const utf8 **argv, sint32 ar
             if (argc < 4) {
                 if (argc > 1 && strcmp(argv[1], "mode") == 0){
                     console.WriteFormatLine("Ride modes are specified using integer IDs as given below:");
-                    for (sint32 i = 0; i < RIDE_MODE_COUNT; i++) {
+                    for (int32_t i = 0; i < RIDE_MODE_COUNT; i++) {
                         char mode_name[128] = { 0 };
                         rct_string_id mode_string_id = RideModeNames[i];
                         format_string(mode_name, 128, mode_string_id, nullptr);
@@ -137,15 +137,15 @@ static sint32 cc_rides(InteractiveConsole &console, const utf8 **argv, sint32 ar
             }
             if (strcmp(argv[1], "type") == 0) {
                 bool int_valid[2] = { 0 };
-                sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
-                sint32 type = console_parse_int(argv[3], &int_valid[1]);
+                int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
+                int32_t type = console_parse_int(argv[3], &int_valid[1]);
                 if (!int_valid[0] || !int_valid[1]) {
                     console.WriteFormatLine("This command expects integer arguments");
                 } else if (ride_index < 0) {
                     console.WriteFormatLine("Ride index must not be negative");
                 } else {
                     gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
-                    sint32 res = game_do_command(0, (type << 8) | 1, 0, (RIDE_SETTING_RIDE_TYPE << 8) | ride_index, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+                    int32_t res = game_do_command(0, (type << 8) | 1, 0, (RIDE_SETTING_RIDE_TYPE << 8) | ride_index, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
                     if (res == MONEY32_UNDEFINED) {
                         console.WriteFormatLine("That didn't work");
                     }
@@ -153,8 +153,8 @@ static sint32 cc_rides(InteractiveConsole &console, const utf8 **argv, sint32 ar
             }
             else if (strcmp(argv[1], "mode") == 0) {
                 bool int_valid[2] = { 0 };
-                sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
-                sint32 mode = console_parse_int(argv[3], &int_valid[1]);
+                int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
+                int32_t mode = console_parse_int(argv[3], &int_valid[1]);
                 if (!int_valid[0] || !int_valid[1]) {
                     console.WriteFormatLine("This command expects integer arguments");
                 } else if (ride_index < 0) {
@@ -175,8 +175,8 @@ static sint32 cc_rides(InteractiveConsole &console, const utf8 **argv, sint32 ar
             }
             else if (strcmp(argv[1], "mass") == 0) {
                 bool int_valid[2] = { 0 };
-                sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
-                sint32 mass = console_parse_int(argv[3], &int_valid[1]);
+                int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
+                int32_t mass = console_parse_int(argv[3], &int_valid[1]);
 
                 if (ride_index < 0) {
                     console.WriteFormatLine("Ride index must not be negative");
@@ -193,8 +193,8 @@ static sint32 cc_rides(InteractiveConsole &console, const utf8 **argv, sint32 ar
                         console.WriteFormatLine("No ride found with index %d", ride_index);
                     }
                     else {
-                        for (sint32 i = 0; i < ride->num_vehicles; i++) {
-                            uint16 vehicle_index = ride->vehicles[i];
+                        for (int32_t i = 0; i < ride->num_vehicles; i++) {
+                            uint16_t vehicle_index = ride->vehicles[i];
                             while (vehicle_index != SPRITE_INDEX_NULL) {
                                 rct_vehicle *vehicle = GET_VEHICLE(vehicle_index);
                                 vehicle->mass = mass;
@@ -206,7 +206,7 @@ static sint32 cc_rides(InteractiveConsole &console, const utf8 **argv, sint32 ar
             }
             else if (strcmp(argv[1], "excitement") == 0) {
                 bool int_valid[2] = { 0 };
-                sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
+                int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
                 ride_rating excitement = console_parse_int(argv[3], &int_valid[1]);
 
                 if (ride_index < 0) {
@@ -230,7 +230,7 @@ static sint32 cc_rides(InteractiveConsole &console, const utf8 **argv, sint32 ar
             }
             else if (strcmp(argv[1], "intensity") == 0) {
                 bool int_valid[2] = { 0 };
-                sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
+                int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
                 ride_rating intensity = console_parse_int(argv[3], &int_valid[1]);
 
                 if (ride_index < 0) {
@@ -254,7 +254,7 @@ static sint32 cc_rides(InteractiveConsole &console, const utf8 **argv, sint32 ar
             }
             else if (strcmp(argv[1], "nausea") == 0) {
                 bool int_valid[2] = { 0 };
-                sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
+                int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
                 ride_rating nausea = console_parse_int(argv[3], &int_valid[1]);
 
                 if (ride_index < 0) {
@@ -283,12 +283,12 @@ static sint32 cc_rides(InteractiveConsole &console, const utf8 **argv, sint32 ar
     return 0;
 }
 
-static sint32 cc_staff(InteractiveConsole &console, const utf8 **argv, sint32 argc)
+static int32_t cc_staff(InteractiveConsole &console, const utf8 **argv, int32_t argc)
 {
     if (argc > 0) {
         if (strcmp(argv[0], "list") == 0) {
             rct_peep *peep;
-            sint32 i;
+            int32_t i;
             FOR_ALL_STAFF(i, peep) {
                 char name[128];
                 format_string(name, 128, peep->name_string_idx, &peep->id);
@@ -298,7 +298,7 @@ static sint32 cc_staff(InteractiveConsole &console, const utf8 **argv, sint32 ar
             if (argc < 4) {
                 console.WriteFormatLine("staff set energy <staff id> <value 0-255>");
                 console.WriteFormatLine("staff set costume <staff id> <costume id>");
-                for (sint32 i = 0; i < ENTERTAINER_COSTUME_COUNT; i++) {
+                for (int32_t i = 0; i < ENTERTAINER_COSTUME_COUNT; i++) {
                     char costume_name[128] = { 0 };
                     rct_string_id costume = StaffCostumeNames[i];
                     format_string(costume_name, 128, STR_DROPDOWN_MENU_LABEL, &costume);
@@ -309,7 +309,7 @@ static sint32 cc_staff(InteractiveConsole &console, const utf8 **argv, sint32 ar
                 return 0;
             }
             if (strcmp(argv[1], "energy") == 0) {
-                sint32 int_val[3];
+                int32_t int_val[3];
                 bool int_valid[3] = { 0 };
                 int_val[0] = console_parse_int(argv[2], &int_valid[0]);
                 int_val[1] = console_parse_int(argv[3], &int_valid[1]);
@@ -321,7 +321,7 @@ static sint32 cc_staff(InteractiveConsole &console, const utf8 **argv, sint32 ar
                     peep->energy_target = int_val[1];
                 }
             } else if (strcmp(argv[1], "costume") == 0) {
-                sint32 int_val[2];
+                int32_t int_val[2];
                 bool int_valid[2] = { 0 };
                 int_val[0] = console_parse_int(argv[2], &int_valid[0]);
                 int_val[1] = console_parse_int(argv[3], &int_valid[1]);
@@ -341,7 +341,7 @@ static sint32 cc_staff(InteractiveConsole &console, const utf8 **argv, sint32 ar
                     return 1;
                 }
 
-                sint32 costume = int_val[1] | 0x80;
+                int32_t costume = int_val[1] | 0x80;
                 game_do_command(peep->x, (costume << 8) | 1, peep->y, int_val[0], GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
             }
         }
@@ -351,7 +351,7 @@ static sint32 cc_staff(InteractiveConsole &console, const utf8 **argv, sint32 ar
     return 0;
 }
 
-static sint32 cc_get(InteractiveConsole &console, const utf8 **argv, sint32 argc)
+static int32_t cc_get(InteractiveConsole &console, const utf8 **argv, int32_t argc)
 {
     if (argc > 0) {
         if (strcmp(argv[0], "park_rating") == 0) {
@@ -379,8 +379,8 @@ static sint32 cc_get(InteractiveConsole &console, const utf8 **argv, sint32 argc
             console.WriteFormatLine("guest_initial_cash %d.%d0", gGuestInitialCash / 10, gGuestInitialCash % 10);
         }
         else if (strcmp(argv[0], "guest_initial_happiness") == 0) {
-            uint32 current_happiness = gGuestInitialHappiness;
-            for (sint32 i = 15; i <= 99; i++) {
+            uint32_t current_happiness = gGuestInitialHappiness;
+            for (int32_t i = 15; i <= 99; i++) {
                 if (i == 99) {
                     console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", 15, gGuestInitialHappiness);
                 }
@@ -454,7 +454,7 @@ static sint32 cc_get(InteractiveConsole &console, const utf8 **argv, sint32 argc
         else if (strcmp(argv[0], "location") == 0) {
             rct_window *w = window_get_main();
             if (w != nullptr) {
-                sint32 interactionType;
+                int32_t interactionType;
                 rct_tile_element *tileElement;
                 LocationXY16 mapCoord = {};
                 rct_viewport * viewport = window_get_viewport(w);
@@ -500,11 +500,11 @@ static sint32 cc_get(InteractiveConsole &console, const utf8 **argv, sint32 argc
     }
     return 0;
 }
-static sint32 cc_set(InteractiveConsole &console, const utf8 **argv, sint32 argc)
+static int32_t cc_set(InteractiveConsole &console, const utf8 **argv, int32_t argc)
 {
-    sint32 i;
+    int32_t i;
     if (argc > 1) {
-        sint32 int_val[4];
+        int32_t int_val[4];
         bool int_valid[4];
         double double_val[4];
         bool double_valid[4];
@@ -522,7 +522,7 @@ static sint32 cc_set(InteractiveConsole &console, const utf8 **argv, sint32 argc
         }
 
         if (strcmp(argv[0], "money") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-            money32 money = MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100);
+            money32 money = MONEY((int32_t)double_val[0], ((int32_t)(double_val[0] * 100)) % 100);
             bool run_get_money = true;
             if (gCash != money) {
                 if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETMONEY, money, GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
@@ -554,11 +554,11 @@ static sint32 cc_set(InteractiveConsole &console, const utf8 **argv, sint32 argc
             console.Execute("get max_loan");
         }
         else if (strcmp(argv[0], "guest_initial_cash") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-            gGuestInitialCash = Math::Clamp(MONEY(0, 0), MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100), MONEY(1000, 0));
+            gGuestInitialCash = Math::Clamp(MONEY(0, 0), MONEY((int32_t)double_val[0], ((int32_t)(double_val[0] * 100)) % 100), MONEY(1000, 0));
             console.Execute("get guest_initial_cash");
         }
         else if (strcmp(argv[0], "guest_initial_happiness") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-            gGuestInitialHappiness = calculate_guest_initial_happiness((uint8)int_val[0]);
+            gGuestInitialHappiness = calculate_guest_initial_happiness((uint8_t)int_val[0]);
             console.Execute("get guest_initial_happiness");
         }
         else if (strcmp(argv[0], "guest_initial_hunger") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
@@ -614,11 +614,11 @@ static sint32 cc_set(InteractiveConsole &console, const utf8 **argv, sint32 argc
             console.Execute("get park_open");
         }
         else if (strcmp(argv[0], "land_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-            gLandPrice = Math::Clamp(MONEY(0, 0), MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100), MONEY(200, 0));
+            gLandPrice = Math::Clamp(MONEY(0, 0), MONEY((int32_t)double_val[0], ((int32_t)(double_val[0] * 100)) % 100), MONEY(200, 0));
             console.Execute("get land_rights_cost");
         }
         else if (strcmp(argv[0], "construction_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-            gConstructionRightsPrice = Math::Clamp(MONEY(0, 0), MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100), MONEY(200, 0));
+            gConstructionRightsPrice = Math::Clamp(MONEY(0, 0), MONEY((int32_t)double_val[0], ((int32_t)(double_val[0] * 100)) % 100), MONEY(200, 0));
             console.Execute("get construction_rights_cost");
         }
         else if (strcmp(argv[0], "climate") == 0) {
@@ -661,9 +661,9 @@ static sint32 cc_set(InteractiveConsole &console, const utf8 **argv, sint32 argc
         else if (strcmp(argv[0], "location") == 0 && invalidArguments(&invalidArgs, int_valid[0] && int_valid[1])) {
             rct_window *w = window_get_main();
             if (w != nullptr) {
-                sint32 x = (sint16)(int_val[0] * 32 + 16);
-                sint32 y = (sint16)(int_val[1] * 32 + 16);
-                sint32 z = tile_element_height(x, y);
+                int32_t x = (int16_t)(int_val[0] * 32 + 16);
+                int32_t y = (int16_t)(int_val[1] * 32 + 16);
+                int32_t z = tile_element_height(x, y);
                 window_set_location(w, x, y, z);
                 viewport_update_position(w);
                 console.Execute("get location");
@@ -754,8 +754,8 @@ static sint32 cc_set(InteractiveConsole &console, const utf8 **argv, sint32 argc
     return 0;
 }
 
-static sint32
-    cc_twitch([[maybe_unused]] InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
+static int32_t
+    cc_twitch([[maybe_unused]] InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] int32_t argc)
 {
 #ifdef DISABLE_TWITCH
     console.WriteLineError("OpenRCT2 build not compiled with Twitch integration.");
@@ -767,11 +767,11 @@ static sint32
     return 0;
 }
 
-static sint32 cc_load_object(InteractiveConsole &console, const utf8 **argv, sint32 argc) {
+static int32_t cc_load_object(InteractiveConsole &console, const utf8 **argv, int32_t argc) {
     if (argc > 0) {
         char name[9] = { 0 };
         memset(name, ' ', 8);
-        sint32 i = 0;
+        int32_t i = 0;
         for (const char * ch = argv[0]; *ch != '\0' && i < 8; ch++) {
             name[i++] = *ch;
         }
@@ -794,17 +794,17 @@ static sint32 cc_load_object(InteractiveConsole &console, const utf8 **argv, sin
             console.WriteLineError("Unable to load object.");
             return 1;
         }
-        sint32 groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+        int32_t groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
 
-        uint8 objectType = object_entry_get_type(entry);
+        uint8_t objectType = object_entry_get_type(entry);
         if (objectType == OBJECT_TYPE_RIDE) {
             // Automatically research the ride so it's supported by the game.
             rct_ride_entry *rideEntry;
-            sint32 rideType;
+            int32_t rideType;
 
             rideEntry = get_ride_entry(groupIndex);
 
-            for (sint32 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
+            for (int32_t j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
                 rideType = rideEntry->ride_type[j];
                 if (rideType != RIDE_TYPE_NULL)
                     research_insert(true, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | groupIndex, rideEntry->category[0]);
@@ -834,12 +834,12 @@ static sint32 cc_load_object(InteractiveConsole &console, const utf8 **argv, sin
     return 0;
 }
 
-static sint32 cc_object_count(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
+static int32_t cc_object_count(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] int32_t argc)
 {
     const utf8* object_type_names[] = { "Rides", "Small scenery", "Large scenery", "Walls", "Banners", "Paths", "Path Additions", "Scenery groups", "Park entrances", "Water" };
-    for (sint32 i = 0; i < 10; i++) {
+    for (int32_t i = 0; i < 10; i++) {
 
-        sint32 entryGroupIndex = 0;
+        int32_t entryGroupIndex = 0;
         for (; entryGroupIndex < object_entry_group_counts[i]; entryGroupIndex++){
             if (object_entry_get_chunk(i, entryGroupIndex) == nullptr)
             {
@@ -852,14 +852,14 @@ static sint32 cc_object_count(InteractiveConsole & console, [[maybe_unused]] con
     return 0;
 }
 
-static sint32 cc_reset_user_strings(
-    [[maybe_unused]] InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
+static int32_t cc_reset_user_strings(
+    [[maybe_unused]] InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] int32_t argc)
 {
     reset_user_strings();
     return 0;
 }
 
-static sint32 cc_open(InteractiveConsole &console, const utf8 **argv, sint32 argc) {
+static int32_t cc_open(InteractiveConsole &console, const utf8 **argv, int32_t argc) {
     if (argc > 0) {
         bool title = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) != 0;
         bool invalidTitle = false;
@@ -886,16 +886,16 @@ static sint32 cc_open(InteractiveConsole &console, const utf8 **argv, sint32 arg
     return 0;
 }
 
-static sint32
-cc_remove_unused_objects(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
+static int32_t
+cc_remove_unused_objects(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] int32_t argc)
 {
-    sint32 result = editor_remove_unused_objects();
+    int32_t result = editor_remove_unused_objects();
     console.WriteFormatLine("%d unused object entries have been removed.", result);
     return 0;
 }
 
-static sint32
-cc_remove_park_fences(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
+static int32_t
+cc_remove_park_fences(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] int32_t argc)
 {
     tile_element_iterator it;
     tile_element_iterator_begin(&it);
@@ -913,13 +913,13 @@ cc_remove_park_fences(InteractiveConsole & console, [[maybe_unused]] const utf8 
     return 0;
 }
 
-static sint32 cc_show_limits(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
+static int32_t cc_show_limits(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] int32_t argc)
 {
     map_reorganise_elements();
-    sint32 tileElementCount = gNextFreeTileElement - gTileElements - 1;
+    int32_t tileElementCount = gNextFreeTileElement - gTileElements - 1;
 
-    sint32 rideCount = 0;
-    for (sint32 i = 0; i < MAX_RIDES; ++i) 
+    int32_t rideCount = 0;
+    for (int32_t i = 0; i < MAX_RIDES; ++i)
     {
         Ride * ride = get_ride(i);
         if (ride->type != RIDE_TYPE_NULL) 
@@ -928,14 +928,14 @@ static sint32 cc_show_limits(InteractiveConsole & console, [[maybe_unused]] cons
         }
     }
 
-    sint32 spriteCount = 0;
-    for (sint32 i = 1; i < NUM_SPRITE_LISTS; ++i)
+    int32_t spriteCount = 0;
+    for (int32_t i = 1; i < NUM_SPRITE_LISTS; ++i)
     {
         spriteCount += gSpriteListCount[i];
     }
 
-    sint32 staffCount = 0;
-    for (sint32 i = 0; i < STAFF_MAX_COUNT; ++i) 
+    int32_t staffCount = 0;
+    for (int32_t i = 0; i < STAFF_MAX_COUNT; ++i)
     {
         if (gStaffModes[i] & 1)
         {
@@ -943,7 +943,7 @@ static sint32 cc_show_limits(InteractiveConsole & console, [[maybe_unused]] cons
         }
     }
 
-    sint32 bannerCount = 0;
+    int32_t bannerCount = 0;
     for (BannerIndex i = 0; i < MAX_BANNERS; ++i)
     {
         if (gBanners[i].type != BANNER_NULL)
@@ -960,12 +960,12 @@ static sint32 cc_show_limits(InteractiveConsole & console, [[maybe_unused]] cons
     return 0;
 }
 
-static sint32
-    cc_for_date([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] sint32 argc)
+static int32_t
+    cc_for_date([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] int32_t argc)
 {
-    sint32 year = 0;
-    sint32 month = 0;
-    sint32 day = 0;
+    int32_t year = 0;
+    int32_t month = 0;
+    int32_t day = 0;
     if (argc < 1 || argc > 3)
     {
         return -1;
@@ -1017,7 +1017,7 @@ static sint32
     return 1;
 }
 
-using console_command_func = sint32 (*)(InteractiveConsole &console, const utf8 ** argv, sint32 argc);
+using console_command_func = int32_t (*)(InteractiveConsole &console, const utf8 ** argv, int32_t argc);
 struct console_command {
     const utf8 * command;
     console_command_func func;
@@ -1103,7 +1103,7 @@ static constexpr const console_command console_command_table[] = {
 };
 // clang-format on
 
-static sint32 cc_windows(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
+static int32_t cc_windows(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] int32_t argc)
 {
     for (auto s : console_window_table)
     {
@@ -1112,7 +1112,7 @@ static sint32 cc_windows(InteractiveConsole & console, [[maybe_unused]] const ut
     return 0;
 }
 
-static sint32 cc_variables(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] sint32 argc)
+static int32_t cc_variables(InteractiveConsole & console, [[maybe_unused]] const utf8 ** argv, [[maybe_unused]] int32_t argc)
 {
     for (auto s : console_variable_table)
     {
@@ -1121,7 +1121,7 @@ static sint32 cc_variables(InteractiveConsole & console, [[maybe_unused]] const 
     return 0;
 }
 
-static sint32 cc_help(InteractiveConsole &console, const utf8 **argv, sint32 argc)
+static int32_t cc_help(InteractiveConsole &console, const utf8 **argv, int32_t argc)
 {
     if (argc > 0)
     {
@@ -1160,8 +1160,8 @@ static bool invalidArguments(bool *invalid, bool arguments)
 
 void InteractiveConsole::Execute(const std::string &s)
 {
-    sint32 argc = 0;
-    sint32 argvCapacity = 8;
+    int32_t argc = 0;
+    int32_t argvCapacity = 8;
     utf8 **argv = (utf8 * *)malloc(argvCapacity * sizeof(utf8*));
     const utf8 *start = s.c_str();
     const utf8 *end;
@@ -1218,7 +1218,7 @@ void InteractiveConsole::Execute(const std::string &s)
         }
     }
 
-    for (sint32 i = 0; i < argc; i++)
+    for (int32_t i = 0; i < argc; i++)
         free(argv[i]);
     free(argv);
 

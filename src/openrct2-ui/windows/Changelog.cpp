@@ -49,10 +49,10 @@ static rct_widget window_changelog_widgets[] = {
 static void window_changelog_close(rct_window *w);
 static void window_changelog_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_changelog_resize(rct_window *w);
-static void window_changelog_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
+static void window_changelog_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void window_changelog_invalidate(rct_window *w);
 static void window_changelog_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 static rct_window_event_list window_changelog_events = {
     window_changelog_close,
@@ -91,7 +91,7 @@ static void window_changelog_dispose_file();
 
 static std::string _changelogText;
 static std::vector<const char *> _changelogLines;
-static sint32 _changelogLongestLineWidth = 0;
+static int32_t _changelogLongestLineWidth = 0;
 
 rct_window * window_changelog_open()
 {
@@ -104,8 +104,8 @@ rct_window * window_changelog_open()
     if (!window_changelog_read_file())
         return nullptr;
 
-    sint32 screenWidth = context_get_width();
-    sint32 screenHeight = context_get_height();
+    int32_t screenWidth = context_get_width();
+    int32_t screenHeight = context_get_height();
 
     window = window_create_centred(
         screenWidth * 4 / 5,
@@ -141,8 +141,8 @@ static void window_changelog_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 
 static void window_changelog_resize(rct_window *w)
 {
-    sint32 screenWidth = context_get_width();
-    sint32 screenHeight = context_get_height();
+    int32_t screenWidth = context_get_width();
+    int32_t screenHeight = context_get_height();
 
     w->max_width = (screenWidth * 4) / 5;
     w->max_height = (screenHeight * 4) / 5;
@@ -160,12 +160,12 @@ static void window_changelog_resize(rct_window *w)
 }
 
 static void window_changelog_scrollgetsize(
-    [[maybe_unused]] rct_window * w, [[maybe_unused]] sint32 scrollIndex, sint32 * width, sint32 * height)
+    [[maybe_unused]] rct_window * w, [[maybe_unused]] int32_t scrollIndex, int32_t * width, int32_t * height)
 {
     *width = _changelogLongestLineWidth + 4;
 
-    const sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
-    *height = (sint32)(_changelogLines.size() * lineHeight);
+    const int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    *height = (int32_t)(_changelogLines.size() * lineHeight);
 }
 
 static void window_changelog_invalidate(rct_window *w)
@@ -186,15 +186,15 @@ static void window_changelog_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_draw_widgets(w, dpi);
 }
 
-static void window_changelog_scrollpaint(rct_window * w, rct_drawpixelinfo * dpi, [[maybe_unused]] sint32 scrollIndex)
+static void window_changelog_scrollpaint(rct_window * w, rct_drawpixelinfo * dpi, [[maybe_unused]] int32_t scrollIndex)
 {
     gCurrentFontFlags = 0;
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
-    const sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    const int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
-    sint32 x = 3;
-    sint32 y = 3 - lineHeight;
+    int32_t x = 3;
+    int32_t y = 3 - lineHeight;
     for (auto line : _changelogLines)
     {
         y += lineHeight;
@@ -256,7 +256,7 @@ static bool window_changelog_read_file()
     auto ch = start;
     while (*ch != '\0')
     {
-        uint8 c = *ch;
+        uint8_t c = *ch;
         if (c == '\n')
         {
             *ch++ = 0;

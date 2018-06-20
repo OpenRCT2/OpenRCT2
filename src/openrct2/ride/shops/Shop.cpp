@@ -24,10 +24,10 @@
  */
 static void shop_paint_setup(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     bool hasSupports = wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_3], nullptr);
@@ -42,7 +42,7 @@ static void shop_paint_setup(
         return;
     }
 
-    uint32 imageId = session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = session->TrackColours[SCHEME_TRACK];
     if (imageId & IMAGE_TYPE_REMAP_2_PLUS)
     {
         imageId &= 0x60FFFFFF;
@@ -52,7 +52,7 @@ static void shop_paint_setup(
 
     if (hasSupports)
     {
-        uint32 foundationImageId =
+        uint32_t foundationImageId =
             ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session->TrackColours[SCHEME_3];
         sub_98197C(session, foundationImageId, 0, 0, 28, 28, 45, height, 2, 2, height);
 
@@ -68,7 +68,7 @@ static void shop_paint_setup(
 }
 
 /* 0x00761160 */
-TRACK_PAINT_FUNCTION get_track_paint_function_shop(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_shop(int32_t trackType, int32_t direction)
 {
     switch (trackType)
     {

@@ -52,10 +52,10 @@ namespace OpenRCT2::Ui
     {
         struct HotSpot
         {
-            sint16 X;
-            sint16 Y;
+            int16_t X;
+            int16_t Y;
         } HotSpot;
-        uint8 Data[CURSOR_BIT_WIDTH * CURSOR_HEIGHT];
-        uint8 Mask[CURSOR_BIT_WIDTH * CURSOR_HEIGHT];
+        uint8_t Data[CURSOR_BIT_WIDTH * CURSOR_HEIGHT];
+        uint8_t Mask[CURSOR_BIT_WIDTH * CURSOR_HEIGHT];
     };
 } // namespace OpenRCT2::Ui

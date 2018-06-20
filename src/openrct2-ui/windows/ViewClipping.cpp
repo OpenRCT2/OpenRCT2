@@ -79,10 +79,10 @@ static void window_view_clipping_close_button(rct_window* w);
 static void window_view_clipping_mouseup(rct_window* w, rct_widgetindex widgetIndex);
 static void window_view_clipping_mousedown(rct_window*w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_view_clipping_update(rct_window* w);
-static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_view_clipping_tool_up(rct_window* w, rct_widgetindex, sint32, sint32);
+static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_view_clipping_tool_up(rct_window* w, rct_widgetindex, int32_t, int32_t);
 static void window_view_clipping_invalidate(rct_window* w);
 static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi);
 static void window_view_clipping_scrollgetsize(rct_window* w, int scrollIndex, int* width, int* height);
@@ -122,12 +122,12 @@ static rct_window_event_list window_view_clipping_events = {
 
 #pragma endregion
 
-static void window_view_clipping_set_clipheight(rct_window *w, const uint8 clipheight)
+static void window_view_clipping_set_clipheight(rct_window *w, const uint8_t clipheight)
 {
     gClipHeight = clipheight;
     rct_widget* widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
     const float clip_height_ratio = (float)gClipHeight / 255;
-    w->scrolls[0].h_left = (sint16)std::ceil(clip_height_ratio * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
+    w->scrolls[0].h_left = (int16_t)std::ceil(clip_height_ratio * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
 }
 
 rct_window * window_view_clipping_open()
@@ -284,8 +284,8 @@ static void window_view_clipping_update(rct_window *w)
 {
     const rct_widget *const widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
     const rct_scroll *const scroll = &w->scrolls[0];
-    const sint16 scroll_width = widget->right - widget->left - 1;
-    const uint8 clip_height = (uint8)(((float)scroll->h_left / (scroll->h_right - scroll_width)) * 255);
+    const int16_t scroll_width = widget->right - widget->left - 1;
+    const uint8_t clip_height = (uint8_t)(((float)scroll->h_left / (scroll->h_right - scroll_width)) * 255);
     if (clip_height != gClipHeight) {
         gClipHeight = clip_height;
 
@@ -307,16 +307,16 @@ static void window_view_clipping_update(rct_window *w)
     widget_invalidate(w, WIDX_CLIP_HEIGHT_SLIDER);
 }
 
-static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     if (_dragging)
     {
         return;
     }
 
-    sint16 mapX = x;
-    sint16 mapY = y;
-    sint32 direction;
+    int16_t mapX = x;
+    int16_t mapY = y;
+    int32_t direction;
     screen_pos_to_map_pos(&mapX, &mapY, &direction);
     if (mapX != LOCATION_NULL)
     {
@@ -329,11 +329,11 @@ static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widg
     }
 }
 
-static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
-    sint16 mapX = x;
-    sint16 mapY = y;
-    sint32 direction;
+    int16_t mapX = x;
+    int16_t mapY = y;
+    int32_t direction;
     screen_pos_to_map_pos(&mapX, &mapY, &direction);
     if (mapX != LOCATION_NULL)
     {
@@ -342,16 +342,16 @@ static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widget
     }
 }
 
-static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     if (!_dragging)
     {
         return;
     }
 
-    sint16 mapX = x;
-    sint16 mapY = y;
-    sint32 direction;
+    int16_t mapX = x;
+    int16_t mapY = y;
+    int32_t direction;
     screen_pos_to_map_pos(&mapX, &mapY, &direction);
     if (mapX != LOCATION_NULL)
     {
@@ -366,10 +366,10 @@ static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widget
     }
 }
 
-static void window_view_clipping_tool_up(struct rct_window*, rct_widgetindex, sint32, sint32)
+static void window_view_clipping_tool_up(struct rct_window*, rct_widgetindex, int32_t, int32_t)
 {
-    gClipSelectionA = { uint8(gMapSelectPositionA.x / 32), uint8(gMapSelectPositionA.y / 32) };
-    gClipSelectionB = { uint8(gMapSelectPositionB.x / 32), uint8(gMapSelectPositionB.y / 32) };
+    gClipSelectionA = { uint8_t(gMapSelectPositionA.x / 32), uint8_t(gMapSelectPositionA.y / 32) };
+    gClipSelectionB = { uint8_t(gMapSelectPositionB.x / 32), uint8_t(gMapSelectPositionB.y / 32) };
     _toolActive = false;
     tool_cancel();
     gfx_invalidate_screen();
@@ -399,8 +399,8 @@ static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_draw_widgets(w, dpi);
 
     // Clip height value
-    sint32 x = w->x + 8;
-    sint32 y = w->y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
+    int32_t x = w->x + 8;
+    int32_t y = w->y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
     gfx_draw_string_left(dpi, STR_VIEW_CLIPPING_HEIGHT_VALUE, nullptr, w->colours[0], x, y);
 
     x = w->x + w->widgets[WIDX_CLIP_HEIGHT_VALUE].left + 1;
@@ -409,7 +409,7 @@ static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi)
     fixed16_1dp clipHeightValueInUnits;
     fixed32_2dp clipHeightValueInMeters;
     fixed16_1dp clipHeightValueInFeet;
-    sint32 clipHeightRawValue = (sint32)gClipHeight;
+    int32_t clipHeightRawValue = (int32_t)gClipHeight;
     switch (gClipHeightDisplayType) {
     case DISPLAY_TYPE::DISPLAY_RAW:
     default:

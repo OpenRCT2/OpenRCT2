@@ -46,7 +46,7 @@ void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char *format, ...)
     va_end(args);
 }
 
-void diagnostic_log_with_location(DIAGNOSTIC_LEVEL diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...)
+void diagnostic_log_with_location(DIAGNOSTIC_LEVEL diagnosticLevel, const char *file, const char *function, int32_t line, const char *format, ...)
 {
     va_list args;
     char buf[1024];
@@ -89,7 +89,7 @@ void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char *format, ...)
     }
 }
 
-void diagnostic_log_with_location(DIAGNOSTIC_LEVEL diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...)
+void diagnostic_log_with_location(DIAGNOSTIC_LEVEL diagnosticLevel, const char *file, const char *function, int32_t line, const char *format, ...)
 {
     va_list args;
     if (_log_levels[diagnosticLevel])

@@ -22,15 +22,6 @@
 #include <cassert>
 #include <cstdint>
 
-using sint8 = int8_t;
-using sint16 = int16_t;
-using sint32 = int32_t;
-using sint64 = int64_t;
-using uint8 = uint8_t;
-using uint16 = uint16_t;
-using uint32 = uint32_t;
-using uint64 = uint64_t;
-
 #include "Diagnostic.h"
 
 using utf8             = char;
@@ -47,17 +38,17 @@ using utf16string = utf16*;
 #define MAX_PATH 260
 #endif
 
-using codepoint_t = uint32;
-using colour_t = uint8;
+using codepoint_t = uint32_t;
+using colour_t = uint8_t;
 
-#define rol8(x, shift)      (((uint8)(x) << (shift)) | ((uint8)(x) >> (8 - (shift))))
-#define ror8(x, shift)      (((uint8)(x) >> (shift)) | ((uint8)(x) << (8 - (shift))))
-#define rol16(x, shift)     (((uint16)(x) << (shift)) | ((uint16)(x) >> (16 - (shift))))
-#define ror16(x, shift)     (((uint16)(x) >> (shift)) | ((uint16)(x) << (16 - (shift))))
-#define rol32(x, shift)     (((uint32)(x) << (shift)) | ((uint32)(x) >> (32 - (shift))))
-#define ror32(x, shift)     (((uint32)(x) >> (shift)) | ((uint32)(x) << (32 - (shift))))
-#define rol64(x, shift)     (((uint64)(x) << (shift)) | ((uint32)(x) >> (64 - (shift))))
-#define ror64(x, shift)     (((uint64)(x) >> (shift)) | ((uint32)(x) << (64 - (shift))))
+#define rol8(x, shift)      (((uint8_t)(x) << (shift)) | ((uint8_t)(x) >> (8 - (shift))))
+#define ror8(x, shift)      (((uint8_t)(x) >> (shift)) | ((uint8_t)(x) << (8 - (shift))))
+#define rol16(x, shift)     (((uint16_t)(x) << (shift)) | ((uint16_t)(x) >> (16 - (shift))))
+#define ror16(x, shift)     (((uint16_t)(x) >> (shift)) | ((uint16_t)(x) << (16 - (shift))))
+#define rol32(x, shift)     (((uint32_t)(x) << (shift)) | ((uint32_t)(x) >> (32 - (shift))))
+#define ror32(x, shift)     (((uint32_t)(x) >> (shift)) | ((uint32_t)(x) << (32 - (shift))))
+#define rol64(x, shift)     (((uint64_t)(x) << (shift)) | ((uint64_t)(x) >> (64 - (shift))))
+#define ror64(x, shift)     (((uint64_t)(x) >> (shift)) | ((uint64_t)(x) << (64 - (shift))))
 
 // Rounds an integer down to the given power of 2. y must be a power of 2.
 #define floor2(x, y)        ((x) & (~((y) - 1)))
@@ -78,8 +69,8 @@ using colour_t = uint8;
 
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 #define RCT2_ENDIANESS __ORDER_LITTLE_ENDIAN__
-#define LOBYTE(w) ((uint8)(w))
-#define HIBYTE(w) ((uint8)(((uint16)(w)>>8)&0xFF))
+#define LOBYTE(w) ((uint8_t)(w))
+#define HIBYTE(w) ((uint8_t)(((uint16_t)(w)>>8)&0xFF))
 #endif // __BYTE_ORDER__
 
 #ifndef RCT2_ENDIANESS
@@ -100,18 +91,18 @@ char *strndup(const char *src, size_t size);
 #define OPENRCT2_MASTER_SERVER_URL  "https://servers.openrct2.io"
 
 // Time (represented as number of 100-nanosecond intervals since 0001-01-01T00:00:00Z)
-using datetime64 = uint64;
+using datetime64 = uint64_t;
 
 #define DATETIME64_MIN ((datetime64)0)
 
 // Represent fixed point numbers. dp = decimal point
-using fixed8_1dp = uint8;
-using fixed8_2dp = uint8;
-using fixed16_1dp = sint16;
-using fixed16_2dp = sint16;
-using fixed32_1dp = sint32;
-using fixed32_2dp = sint32;
-using fixed64_1dp = sint64;
+using fixed8_1dp = uint8_t;
+using fixed8_2dp = uint8_t;
+using fixed16_1dp = int16_t;
+using fixed16_2dp = int16_t;
+using fixed32_1dp = int32_t;
+using fixed32_2dp = int32_t;
+using fixed64_1dp = int64_t;
 
 // Money is stored as a multiple of 0.10.
 using money8 = fixed8_1dp;
@@ -129,13 +120,13 @@ using money64 = fixed64_1dp;
 #define MONEY(whole, fraction)          ((whole) * 10 + ((fraction) / 10))
 
 #define MONEY_FREE                      MONEY(0,00)
-#define MONEY16_UNDEFINED               (money16)(uint16)0xFFFF
+#define MONEY16_UNDEFINED               (money16)(uint16_t)0xFFFF
 #define MONEY32_UNDEFINED               ((money32)0x80000000)
 
-using BannerIndex = uint8;
+using BannerIndex = uint8_t;
 
 using EMPTY_ARGS_VOID_POINTER = void();
-using rct_string_id           = uint16;
+using rct_string_id           = uint16_t;
 
 #define SafeFree(x) do { free(x); (x) = nullptr; } while (false)
 
@@ -196,48 +187,48 @@ using rct_string_id           = uint16;
 #pragma pack(push, 1)
 struct registers {
     union {
-        sint32 eax;
-        sint16 ax;
+        int32_t eax;
+        int16_t ax;
         struct {
             char al;
             char ah;
         };
     };
     union {
-        sint32 ebx;
-        sint16 bx;
+        int32_t ebx;
+        int16_t bx;
         struct {
             char bl;
             char bh;
         };
     };
     union {
-        sint32 ecx;
-        sint16 cx;
+        int32_t ecx;
+        int16_t cx;
         struct {
             char cl;
             char ch;
         };
     };
     union {
-        sint32 edx;
-        sint16 dx;
+        int32_t edx;
+        int16_t dx;
         struct {
             char dl;
             char dh;
         };
     };
     union {
-        sint32 esi;
-        sint16 si;
+        int32_t esi;
+        int16_t si;
     };
     union {
-        sint32 edi;
-        sint16 di;
+        int32_t edi;
+        int16_t di;
     };
     union {
-        sint32 ebp;
-        sint16 bp;
+        int32_t ebp;
+        int16_t bp;
     };
 };
 assert_struct_size(registers, 7 * 4);

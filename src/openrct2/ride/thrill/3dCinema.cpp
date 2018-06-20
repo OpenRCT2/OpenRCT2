@@ -17,8 +17,8 @@
 /**
  * rct2: 0x007664C2
  */
-static void paint_3d_cinema_structure(paint_session * session, uint8 rideIndex, uint8 direction, sint8 xOffset, sint8 yOffset,
-                                      uint16 height)
+static void paint_3d_cinema_structure(paint_session * session, uint8_t rideIndex, uint8_t direction, int8_t xOffset, int8_t yOffset,
+                                      uint16_t height)
 {
     const rct_tile_element * savedTileElement = static_cast<const rct_tile_element *>(session->CurrentlyDrawnItem);
 
@@ -36,14 +36,14 @@ static void paint_3d_cinema_structure(paint_session * session, uint8 rideIndex, 
         session->CurrentlyDrawnItem = GET_VEHICLE(ride->vehicles[0]);
     }
 
-    uint32 imageColourFlags = session->TrackColours[SCHEME_MISC];
+    uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
         imageColourFlags =
             SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
-    uint32 imageId = (rideEntry->vehicles[0].base_image_id + direction) | imageColourFlags;
+    uint32_t imageId = (rideEntry->vehicles[0].base_image_id + direction) | imageColourFlags;
     sub_98197C(session, imageId, xOffset, yOffset, 24, 24, 47, height + 3, xOffset + 16, yOffset + 16, height + 3);
 
     session->CurrentlyDrawnItem = savedTileElement;
@@ -55,15 +55,15 @@ static void paint_3d_cinema_structure(paint_session * session, uint8 rideIndex, 
  */
 static void paint_3d_cinema(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
-    sint32   edges    = edges_3x3[trackSequence];
+    int32_t   edges    = edges_3x3[trackSequence];
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
@@ -97,7 +97,7 @@ static void paint_3d_cinema(
         break;
     }
 
-    sint32 cornerSegments = 0;
+    int32_t cornerSegments = 0;
     switch (trackSequence)
     {
     case 1:
@@ -124,7 +124,7 @@ static void paint_3d_cinema(
 }
 
 /* 0x0076554C */
-TRACK_PAINT_FUNCTION get_track_paint_function_3d_cinema(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_3d_cinema(int32_t trackType, int32_t direction)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {

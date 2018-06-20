@@ -82,7 +82,7 @@ static rct_window_event_list window_viewport_events = {
 };
 // clang-format on
 
-static sint32 _viewportNumber = 1;
+static int32_t _viewportNumber = 1;
 
 /**
  * Creates a custom viewport window.
@@ -108,8 +108,8 @@ rct_window * window_viewport_open()
     rct_window *mainWindow = window_get_main();
     if (mainWindow != nullptr) {
         rct_viewport *mainViewport = mainWindow->viewport;
-        sint32 x = mainViewport->view_x + (mainViewport->view_width / 2);
-        sint32 y = mainViewport->view_y + (mainViewport->view_height / 2);
+        int32_t x = mainViewport->view_x + (mainViewport->view_width / 2);
+        int32_t y = mainViewport->view_y + (mainViewport->view_height / 2);
         w->saved_view_x = x - (w->viewport->view_width / 2);
         w->saved_view_y = y - (w->viewport->view_height / 2);
     }
@@ -133,7 +133,7 @@ static void window_viewport_anchor_border_widgets(rct_window *w)
 static void window_viewport_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
     rct_window *mainWindow;
-    sint16 x, y;
+    int16_t x, y;
 
     switch (widgetIndex) {
     case WIDX_CLOSE:
@@ -188,7 +188,7 @@ static void window_viewport_invalidate(rct_window *w)
 {
     rct_widget *viewportWidget;
     rct_viewport *viewport;
-    sint32 i;
+    int32_t i;
 
     viewportWidget = &window_viewport_widgets[WIDX_VIEWPORT];
     viewport = w->viewport;
@@ -203,7 +203,7 @@ static void window_viewport_invalidate(rct_window *w)
     }
 
     // Set title
-    set_format_arg(0, uint32, w->number);
+    set_format_arg(0, uint32_t, w->number);
 
     // Set disabled widgets
     w->disabled_widgets = 0;

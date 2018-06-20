@@ -41,8 +41,8 @@ const CommandLineCommand CommandLine::ScreenshotCommands[]
 static exitcode_t HandleScreenshot(CommandLineArgEnumerator *argEnumerator)
 {
     const char * * argv = (const char * *)argEnumerator->GetArguments() + argEnumerator->GetIndex();
-    sint32 argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
-    sint32 result = cmdline_for_screenshot(argv, argc, &options);
+    int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
+    int32_t result = cmdline_for_screenshot(argv, argc, &options);
     if (result < 0) {
         return EXITCODE_FAIL;
     }

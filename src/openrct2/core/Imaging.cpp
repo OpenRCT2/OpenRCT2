@@ -85,7 +85,7 @@ namespace Imaging
             png_set_read_fn(png_ptr, &istream, PngReadData);
             png_set_sig_bytes(png_ptr, sig_read);
 
-            uint32 readFlags = PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING;
+            uint32_t readFlags = PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING;
             if (expandTo32)
             {
                 // If we expand the resulting image always be full RGBA
@@ -101,7 +101,7 @@ namespace Imaging
             // Read pixels as 32bpp RGBA data
             auto rowBytes = png_get_rowbytes(png_ptr, info_ptr);
             auto rowPointers = png_get_rows(png_ptr, info_ptr);
-            auto pngPixels = std::vector<uint8>(pngWidth * pngHeight * 4);
+            auto pngPixels = std::vector<uint8_t>(pngWidth * pngHeight * 4);
             auto dst = pngPixels.data();
             if (colourType == PNG_COLOR_TYPE_RGB)
             {
@@ -230,7 +230,7 @@ namespace Imaging
 
             // Write pixels
             auto pixels = image.Pixels.data();
-            for (uint32 y = 0; y < image.Height; y++)
+            for (uint32_t y = 0; y < image.Height; y++)
             {
                 png_write_row(png_ptr, (png_byte *)pixels);
                 pixels += image.Stride;
@@ -315,9 +315,9 @@ namespace Imaging
         }
     }
 
-    Image ReadFromBuffer(const std::vector<uint8>& buffer, IMAGE_FORMAT format)
+    Image ReadFromBuffer(const std::vector<uint8_t>& buffer, IMAGE_FORMAT format)
     {
-        ivstream<uint8> istream(buffer);
+        ivstream<uint8_t> istream(buffer);
         return ReadFromStream(istream, format);
     }
 

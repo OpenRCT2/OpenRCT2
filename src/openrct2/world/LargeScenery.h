@@ -19,7 +19,7 @@ void scenery_large_set_primary_colour(rct_tile_element * tileElement, colour_t c
 void scenery_large_set_secondary_colour(rct_tile_element * tileElement, colour_t colour);
 BannerIndex scenery_large_get_banner_id(const rct_tile_element* tileElement);
 void scenery_large_set_banner_id(rct_tile_element * tileElement, BannerIndex bannerIndex);
-sint32 scenery_large_get_type(const rct_tile_element * tileElement);
-sint32 scenery_large_get_sequence(const rct_tile_element * tileElement);
-void scenery_large_set_type(rct_tile_element * tileElement, uint16 type);
-void scenery_large_set_sequence(rct_tile_element * tileElement, uint16 sequence);
+int32_t scenery_large_get_type(const rct_tile_element * tileElement);
+int32_t scenery_large_get_sequence(const rct_tile_element * tileElement);
+void scenery_large_set_type(rct_tile_element * tileElement, uint16_t type);
+void scenery_large_set_sequence(rct_tile_element * tileElement, uint16_t sequence);

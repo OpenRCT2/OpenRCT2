@@ -65,8 +65,8 @@ static rct_widget window_track_place_widgets[] = {
 static void window_track_place_close(rct_window *w);
 static void window_track_place_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_track_place_update(rct_window *w);
-static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 static void window_track_place_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_track_place_unknown14(rct_window *w);
 static void window_track_place_invalidate(rct_window *w);
@@ -104,30 +104,30 @@ static rct_window_event_list window_track_place_events = {
 };
 // clang-format on
 
-static std::vector<uint8> _window_track_place_mini_preview;
-static sint16 _window_track_place_last_x;
-static sint16 _window_track_place_last_y;
+static std::vector<uint8_t> _window_track_place_mini_preview;
+static int16_t _window_track_place_last_x;
+static int16_t _window_track_place_last_y;
 
-static uint8 _window_track_place_ride_index;
+static uint8_t _window_track_place_ride_index;
 static bool _window_track_place_last_was_valid;
-static sint16 _window_track_place_last_valid_x;
-static sint16 _window_track_place_last_valid_y;
-static sint16 _window_track_place_last_valid_z;
+static int16_t _window_track_place_last_valid_x;
+static int16_t _window_track_place_last_valid_y;
+static int16_t _window_track_place_last_valid_z;
 static money32 _window_track_place_last_cost;
 
 static rct_track_td6 *_trackDesign;
 
 static void window_track_place_clear_provisional();
-static sint32 window_track_place_get_base_z(sint32 x, sint32 y);
-static void window_track_place_attempt_placement(rct_track_td6 *td6, sint32 x, sint32 y, sint32 z, sint32 bl, money32 *cost, uint8 *rideIndex);
+static int32_t window_track_place_get_base_z(int32_t x, int32_t y);
+static void window_track_place_attempt_placement(rct_track_td6 *td6, int32_t x, int32_t y, int32_t z, int32_t bl, money32 *cost, uint8_t *rideIndex);
 
 static void window_track_place_clear_mini_preview();
 static void window_track_place_draw_mini_preview(rct_track_td6 *td6);
-static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint32 pass, LocationXY16 origin, LocationXY16 *min, LocationXY16 *max);
-static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, sint32 pass, LocationXY16 origin, LocationXY16 *min, LocationXY16 *max);
-static LocationXY16 draw_mini_preview_get_pixel_position(sint16 x, sint16 y);
+static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, int32_t pass, LocationXY16 origin, LocationXY16 *min, LocationXY16 *max);
+static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, int32_t pass, LocationXY16 origin, LocationXY16 *min, LocationXY16 *max);
+static LocationXY16 draw_mini_preview_get_pixel_position(int16_t x, int16_t y);
 static bool draw_mini_preview_is_pixel_in_bounds(LocationXY16 pixel);
-static uint8 *draw_mini_preview_get_pixel_ptr(LocationXY16 pixel);
+static uint8_t *draw_mini_preview_get_pixel_ptr(LocationXY16 pixel);
 
 /**
  *
@@ -252,9 +252,9 @@ static void window_track_place_update(rct_window *w)
  *
  *  rct2: 0x006CFF2D
  */
-static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
-    sint16 mapX, mapY, mapZ;
+    int16_t mapX, mapY, mapZ;
 
     map_invalidate_map_selection_tiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -282,8 +282,8 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         window_track_place_clear_provisional();
 
         // Try increasing Z until a feasible placement is found
-        for (sint32 i = 0; i < 7; i++) {
-            uint8 rideIndex;
+        for (int32_t i = 0; i < 7; i++) {
+            uint8_t rideIndex;
             window_track_place_attempt_placement(_trackDesign, mapX, mapY, mapZ, 105, &cost, &rideIndex);
             if (cost != MONEY32_UNDEFINED) {
                 _window_track_place_ride_index = rideIndex;
@@ -311,12 +311,12 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
  *
  *  rct2: 0x006CFF34
  */
-static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
-    sint32 i;
-    sint16 mapX, mapY, mapZ;
+    int32_t i;
+    int16_t mapX, mapY, mapZ;
     money32 cost;
-    uint8 rideIndex;
+    uint8_t rideIndex;
 
     window_track_place_clear_provisional();
     map_invalidate_map_selection_tiles();
@@ -411,10 +411,10 @@ static void window_track_place_clear_provisional()
  *
  *  rct2: 0x006D17C6
  */
-static sint32 window_track_place_get_base_z(sint32 x, sint32 y)
+static int32_t window_track_place_get_base_z(int32_t x, int32_t y)
 {
     rct_tile_element *tileElement;
-    sint32 z;
+    int32_t z;
 
     tileElement = map_get_surface_element_at(x >> 5, y >> 5);
     z = tileElement->base_height * 8;
@@ -435,9 +435,9 @@ static sint32 window_track_place_get_base_z(sint32 x, sint32 y)
     return z + place_virtual_track(_trackDesign, PTD_OPERATION_GET_PLACE_Z, true, 0, x, y, z);
 }
 
-static void window_track_place_attempt_placement(rct_track_td6 *td6, sint32 x, sint32 y, sint32 z, sint32 bl, money32 *cost, uint8 *rideIndex)
+static void window_track_place_attempt_placement(rct_track_td6 *td6, int32_t x, int32_t y, int32_t z, int32_t bl, money32 *cost, uint8_t *rideIndex)
 {
-    sint32 eax, ebx, ecx, edx, esi, edi, ebp;
+    int32_t eax, ebx, ecx, edx, esi, edi, ebp;
     money32 result;
 
     edx = esi = ebp = 0;
@@ -491,7 +491,7 @@ static void window_track_place_draw_mini_preview(rct_track_td6 *td6)
     // First pass is used to determine the width and height of the image so it can centre it
     LocationXY16 min = { 0, 0 };
     LocationXY16 max = { 0, 0 };
-    for (sint32 pass = 0; pass < 2; pass++) {
+    for (int32_t pass = 0; pass < 2; pass++) {
         LocationXY16 origin = { 0, 0 };
         if (pass == 1) {
             origin.x -= ((max.x + min.x) >> 6) * 32;
@@ -506,15 +506,15 @@ static void window_track_place_draw_mini_preview(rct_track_td6 *td6)
     }
 }
 
-static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint32 pass, LocationXY16 origin, LocationXY16 *min, LocationXY16 *max)
+static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, int32_t pass, LocationXY16 origin, LocationXY16 *min, LocationXY16 *max)
 {
-    uint8 rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
+    uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
     rct_td6_track_element *trackElement = td6->track_elements;
 
     const rct_preview_track * * trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks : FlatRideTrackBlocks;
 
     while (trackElement->type != 255) {
-        sint32 trackType = trackElement->type;
+        int32_t trackType = trackElement->type;
         if (trackType == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) {
             trackType = 255;
         }
@@ -522,8 +522,8 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint3
         // Follow a single track piece shape
         const rct_preview_track *trackBlock = trackBlockArray[trackType];
         while (trackBlock->index != 255) {
-            sint16 x = origin.x;
-            sint16 y = origin.y;
+            int16_t x = origin.x;
+            int16_t y = origin.y;
             map_offset_with_rotation(&x, &y, trackBlock->x, trackBlock->y, rotation);
 
             if (pass == 0) {
@@ -534,15 +534,15 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint3
             } else {
                 LocationXY16 pixelPosition = draw_mini_preview_get_pixel_position(x, y);
                 if (draw_mini_preview_is_pixel_in_bounds(pixelPosition)) {
-                    uint8 *pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
+                    uint8_t *pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
 
-                    uint8 bits = trackBlock->var_08 << (rotation & 3);
+                    uint8_t bits = trackBlock->var_08 << (rotation & 3);
                     bits = (bits & 0x0F) | ((bits & 0xF0) >> 4);
 
                     // Station track is a lighter colour
-                    uint8 colour = (TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN) ? PALETTE_INDEX_PRIMARY_LIGHTEST : PALETTE_INDEX_PRIMARY_MID_DARK;
+                    uint8_t colour = (TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN) ? PALETTE_INDEX_PRIMARY_LIGHTEST : PALETTE_INDEX_PRIMARY_MID_DARK;
 
-                    for (sint32 i = 0; i < 4; i++) {
+                    for (int32_t i = 0; i < 4; i++) {
                         if (bits & 1) pixel[338 + i] = colour; // x + 2, y + 2
                         if (bits & 2) pixel[168 + i] = colour; //        y + 1
                         if (bits & 4) pixel[  2 + i] = colour; // x + 2
@@ -572,13 +572,13 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint3
     }
 }
 
-static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, sint32 pass, LocationXY16 origin, LocationXY16 *min, LocationXY16 *max)
+static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, int32_t pass, LocationXY16 origin, LocationXY16 *min, LocationXY16 *max)
 {
-    uint8 rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
+    uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
     rct_td6_maze_element *mazeElement = td6->maze_elements;
     while (mazeElement->all != 0) {
-        sint16 x = mazeElement->x * 32;
-        sint16 y = mazeElement->y * 32;
+        int16_t x = mazeElement->x * 32;
+        int16_t y = mazeElement->y * 32;
         rotate_map_coordinates(&x, &y, rotation);
 
         x += origin.x;
@@ -592,12 +592,12 @@ static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, sint32
         } else {
             LocationXY16 pixelPosition = draw_mini_preview_get_pixel_position(x, y);
             if (draw_mini_preview_is_pixel_in_bounds(pixelPosition)) {
-                uint8 *pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
+                uint8_t *pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
 
                 // Entrance or exit is a lighter colour
-                uint8 colour = mazeElement->type == 8 || mazeElement->type == 128 ? PALETTE_INDEX_PRIMARY_LIGHTEST : PALETTE_INDEX_PRIMARY_MID_DARK;
+                uint8_t colour = mazeElement->type == 8 || mazeElement->type == 128 ? PALETTE_INDEX_PRIMARY_LIGHTEST : PALETTE_INDEX_PRIMARY_MID_DARK;
 
-                for (sint32 i = 0; i < 4; i++) {
+                for (int32_t i = 0; i < 4; i++) {
                     pixel[338 + i] = colour; // x + 2, y + 2
                     pixel[168 + i] = colour; //        y + 1
                     pixel[  2 + i] = colour; // x + 2
@@ -609,11 +609,11 @@ static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, sint32
     }
 }
 
-static LocationXY16 draw_mini_preview_get_pixel_position(sint16 x, sint16 y)
+static LocationXY16 draw_mini_preview_get_pixel_position(int16_t x, int16_t y)
 {
     return {
-        (sint16)(80 + ((y / 32) - (x / 32)) * 4),
-        (sint16)(38 + ((y / 32) + (x / 32)) * 2)
+        (int16_t)(80 + ((y / 32) - (x / 32)) * 4),
+        (int16_t)(38 + ((y / 32) + (x / 32)) * 2)
     };
 }
 
@@ -622,7 +622,7 @@ static bool draw_mini_preview_is_pixel_in_bounds(LocationXY16 pixel)
     return pixel.x >= 0 && pixel.y >= 0 && pixel.x <= 160 && pixel.y <= 75;
 }
 
-static uint8 *draw_mini_preview_get_pixel_ptr(LocationXY16 pixel)
+static uint8_t *draw_mini_preview_get_pixel_ptr(LocationXY16 pixel)
 {
     return &_window_track_place_mini_preview[pixel.y * TRACK_MINI_PREVIEW_WIDTH + pixel.x];
 }

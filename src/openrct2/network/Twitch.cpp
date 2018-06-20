@@ -100,12 +100,12 @@ namespace Twitch
      * TODO Ideally, the chat message pulse should be more frequent than the followers / chat members so that news messages etc.
      * have a lower latency.
      */
-    constexpr uint32 PulseTime = 10 * 1000;
+    constexpr uint32_t PulseTime = 10 * 1000;
 
-    static sint32               _twitchState = TWITCH_STATE_LEFT;
+    static int32_t               _twitchState = TWITCH_STATE_LEFT;
     static bool              _twitchIdle = true;
-    static uint32            _twitchLastPulseTick = 0;
-    static sint32               _twitchLastPulseOperation = 1;
+    static uint32_t            _twitchLastPulseTick = 0;
+    static int32_t               _twitchLastPulseOperation = 1;
     static Http::Response       _twitchJsonResponse;
 
     static void Join();
@@ -137,8 +137,8 @@ namespace Twitch
             switch (_twitchState) {
             case TWITCH_STATE_LEFT:
             {
-                uint32 currentTime = platform_get_ticks();
-                uint32 timeSinceLastPulse = currentTime - _twitchLastPulseTick;
+                uint32_t currentTime = platform_get_ticks();
+                uint32_t timeSinceLastPulse = currentTime - _twitchLastPulseTick;
                 if (_twitchLastPulseTick == 0 || timeSinceLastPulse > PulseTime)
                 {
                     _twitchLastPulseTick = currentTime;
@@ -148,8 +148,8 @@ namespace Twitch
             }
             case TWITCH_STATE_JOINED:
             {
-                uint32 currentTime = platform_get_ticks();
-                uint32 timeSinceLastPulse = currentTime - _twitchLastPulseTick;
+                uint32_t currentTime = platform_get_ticks();
+                uint32_t timeSinceLastPulse = currentTime - _twitchLastPulseTick;
                 if (_twitchLastPulseTick == 0 || timeSinceLastPulse > PulseTime) {
                     _twitchLastPulseTick = currentTime;
                     _twitchLastPulseOperation = (_twitchLastPulseOperation + 1) % 2;
@@ -407,7 +407,7 @@ namespace Twitch
     static void ManageGuestNames(std::vector<AudienceMember> &members)
     {
         // Check what followers are already in the park
-        uint16 spriteIndex;
+        uint16_t spriteIndex;
         rct_peep *peep;
         FOR_ALL_GUESTS(spriteIndex, peep)
         {
@@ -541,7 +541,7 @@ namespace Twitch
         if (gConfigTwitch.enable_news)
         {
             utf8 buffer[256];
-            buffer[0] = (utf8)(uint8)FORMAT_TOPAZ;
+            buffer[0] = (utf8)(uint8_t)FORMAT_TOPAZ;
             safe_strcpy(buffer + 1, message, sizeof(buffer) - 1);
 
 	    utf8_remove_formatting(buffer, false);

@@ -63,4 +63,4 @@ enum
     TUNE_SWEAT_DREAMS,                              // 45, (sic)
 };
 
-extern std::vector<uint8> gRideMusicStyleTuneIds[];
+extern std::vector<uint8_t> gRideMusicStyleTuneIds[];

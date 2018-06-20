@@ -28,9 +28,9 @@ public:
     void Load() override;
     void Unload() override;
 
-    void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const override;
+    void DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const override;
 
 private:
     void ReadJsonPalette(const json_t * jPalette);
-    uint32 ParseColour(const std::string &s) const;
+    uint32_t ParseColour(const std::string &s) const;
 };

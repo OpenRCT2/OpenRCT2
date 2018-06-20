@@ -13,11 +13,11 @@
 
 struct rct_drawpixelinfo;
 
-extern uint8 gScreenshotCountdown;
+extern uint8_t gScreenshotCountdown;
 
 struct ScreenshotOptions
 {
-    sint32 weather     = 0;
+    int32_t weather     = 0;
     bool hide_guests   = false;
     bool hide_sprites  = false;
     bool clear_grass   = false;
@@ -29,11 +29,11 @@ struct ScreenshotOptions
 };
 
 void screenshot_check();
-sint32 screenshot_dump();
-sint32 screenshot_dump_png(rct_drawpixelinfo *dpi);
-sint32 screenshot_dump_png_32bpp(sint32 width, sint32 height, const void *pixels);
+int32_t screenshot_dump();
+int32_t screenshot_dump_png(rct_drawpixelinfo *dpi);
+int32_t screenshot_dump_png_32bpp(int32_t width, int32_t height, const void *pixels);
 
 void screenshot_giant();
-sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOptions * options);
-sint32 cmdline_for_gfxbench(const char **argv, sint32 argc);
+int32_t cmdline_for_screenshot(const char * * argv, int32_t argc, ScreenshotOptions * options);
+int32_t cmdline_for_gfxbench(const char **argv, int32_t argc);
 

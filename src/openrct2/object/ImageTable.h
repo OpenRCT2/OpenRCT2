@@ -20,7 +20,7 @@ interface IStream;
 class ImageTable
 {
 private:
-    std::unique_ptr<uint8[]>    _data;
+    std::unique_ptr<uint8_t[]>    _data;
     std::vector<rct_g1_element> _entries;
 
 public:
@@ -31,6 +31,6 @@ public:
 
     void                    Read(IReadObjectContext * context, IStream * stream);
     const rct_g1_element *  GetImages() const { return _entries.data(); }
-    uint32                  GetCount() const { return (uint32)_entries.size(); }
+    uint32_t                  GetCount() const { return (uint32_t)_entries.size(); }
     void                    AddImage(const rct_g1_element * g1);
 };

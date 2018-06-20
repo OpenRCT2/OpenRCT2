@@ -32,20 +32,20 @@ public:
     RideCreateGameActionResult() : GameActionResult(GA_ERROR::OK, 0) {}
     RideCreateGameActionResult(GA_ERROR error, rct_string_id message) : GameActionResult(error, message) {}
 
-    sint32 rideIndex = -1;
+    int32_t rideIndex = -1;
 };
 
 struct RideCreateAction : public GameActionBase<GAME_COMMAND_CREATE_RIDE, RideCreateGameActionResult>
 {
 private:
-    sint32 _rideType;
-    sint32 _subType;
-    uint8 _colour1;
-    uint8 _colour2;
+    int32_t _rideType;
+    int32_t _subType;
+    uint8_t _colour1;
+    uint8_t _colour2;
 
 public:
     RideCreateAction() {}
-    RideCreateAction(sint32 rideType, sint32 subType, sint32 colour1, sint32 colour2) :
+    RideCreateAction(int32_t rideType, int32_t subType, int32_t colour1, int32_t colour2) :
         _rideType(rideType),
         _subType(subType),
         _colour1(colour1),
@@ -53,7 +53,7 @@ public:
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;;
     }
@@ -67,7 +67,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        sint32 rideIndex = ride_get_empty_slot();
+        int32_t rideIndex = ride_get_empty_slot();
         if (rideIndex == -1)
         {
             // No more free slots available.
@@ -79,7 +79,7 @@ public:
             return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
         }
 
-        sint32 rideEntryIndex = ride_get_entry_index(_rideType, _subType);
+        int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
         if (rideEntryIndex >= 128)
         {
             return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
@@ -110,8 +110,8 @@ public:
         rct_ride_entry * rideEntry;
         auto res = std::make_unique<RideCreateGameActionResult>();
 
-        sint32 rideEntryIndex = ride_get_entry_index(_rideType, _subType);
-        sint32 rideIndex = ride_get_empty_slot();
+        int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
+        int32_t rideIndex = ride_get_empty_slot();
 
         res->rideIndex = rideIndex;
 
@@ -140,7 +140,7 @@ public:
             ride_set_name_to_default(ride, rideEntry);
         }
 
-        for (sint32 i = 0; i < MAX_STATIONS; i++)
+        for (int32_t i = 0; i < MAX_STATIONS; i++)
         {
             ride->station_starts[i].xy = RCT_XY8_UNDEFINED;
             ride_clear_entrance_location(ride, i);

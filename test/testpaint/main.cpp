@@ -31,8 +31,8 @@
 #include <openrct2/ride/TrackData.h>
 
 struct TestCase {
-    uint8 rideType;
-    std::vector<uint8> trackTypes;
+    uint8_t rideType;
+    std::vector<uint8_t> trackTypes;
 };
 
 enum CLIColour {
@@ -186,7 +186,7 @@ int main(int argc, char *argv[]);
 
 static HMODULE _dllModule = nullptr;
 
-utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint)
+utf8 *utf8_write_codepoint(utf8 *dst, uint32_t codepoint)
 {
     if (codepoint <= 0x7F) {
         dst[0] = (utf8)codepoint;
@@ -274,10 +274,10 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 
 char *segments = (char *)(GOOD_PLACE_FOR_DATA_SEGMENT);
 
-static uint32 sawyercoding_calculate_checksum(const uint8* buffer, size_t length)
+static uint32_t sawyercoding_calculate_checksum(const uint8_t* buffer, size_t length)
 {
     size_t i;
-    uint32 checksum = 0;
+    uint32_t checksum = 0;
     for (i = 0; i < length; i++)
         checksum += buffer[i];
 
@@ -352,10 +352,10 @@ static bool openrct2_setup_rct2_segment()
     // Check that the expected data is at various addresses.
     // Start at 0x9a6000, which is start of .data, to skip the region containing addresses to DLL
     // calls, which can be changed by windows/wine loader.
-    const uint32 c1 = sawyercoding_calculate_checksum((const uint8*)(segments + (uintptr_t)(0x009A6000 - 0x8a4000)), 0x009E0000 - 0x009A6000);
-    const uint32 c2 = sawyercoding_calculate_checksum((const uint8*)(segments + (uintptr_t)(0x01428000 - 0x8a4000)), 0x014282BC - 0x01428000);
-    const uint32 exp_c1 = 10114815;
-    const uint32 exp_c2 = 23564;
+    const uint32_t c1 = sawyercoding_calculate_checksum((const uint8_t*)(segments + (uintptr_t)(0x009A6000 - 0x8a4000)), 0x009E0000 - 0x009A6000);
+    const uint32_t c2 = sawyercoding_calculate_checksum((const uint8_t*)(segments + (uintptr_t)(0x01428000 - 0x8a4000)), 0x014282BC - 0x01428000);
+    const uint32_t exp_c1 = 10114815;
+    const uint32_t exp_c2 = 23564;
     if (c1 != exp_c1 || c2 != exp_c2) {
         log_warning("c1 = %u, expected %u, match %d", c1, exp_c1, c1 == exp_c1);
         log_warning("c2 = %u, expected %u, match %d", c2, exp_c2, c2 == exp_c2);
@@ -367,7 +367,7 @@ static bool openrct2_setup_rct2_segment()
 
 static void PrintRideTypes()
 {
-    for (uint8 rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++) {
+    for (uint8_t rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++) {
         CLIColour colour = CLIColour::DEFAULT;
         bool implemented = Utils::rideIsImplemented(rideType);
         const char * rideName = RideNames[rideType];
@@ -421,7 +421,7 @@ int main(int argc, char *argv[]) {
     std::vector<TestCase> testCases;
 
     bool generate = false;
-    uint8 specificRideType = 0xFF;
+    uint8_t specificRideType = 0xFF;
     for (int i = 0; i < argc; ++i) {
         char *arg = argv[i];
         if (strcmp(arg, "--gtest_color=no") == 0) {
@@ -456,7 +456,7 @@ int main(int argc, char *argv[]) {
         return generatePaintCode(specificRideType);
     }
 
-    for (uint8 rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++) {
+    for (uint8_t rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++) {
         if (specificRideType != RIDE_TYPE_NULL && rideType != specificRideType) {
             continue;
         }

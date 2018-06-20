@@ -95,7 +95,7 @@ static rct_window_event_list window_install_track_events = {
 static rct_track_td6 * _trackDesign;
 static std::string _trackPath;
 static std::string _trackName;
-static std::vector<uint8> _trackDesignPreviewPixels;
+static std::vector<uint8_t> _trackDesignPreviewPixels;
 
 static void window_install_track_update_preview();
 static void window_install_track_design(rct_window *w);
@@ -128,10 +128,10 @@ rct_window * window_install_track_open(const utf8 *path)
     gTrackDesignSceneryToggle = false;
     _currentTrackPieceDirection = 2;
 
-    sint32 screenWidth = context_get_width();
-    sint32 screenHeight = context_get_height();
-    sint32 x = screenWidth / 2 - 201;
-    sint32 y = std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
+    int32_t screenWidth = context_get_width();
+    int32_t screenHeight = context_get_height();
+    int32_t x = screenWidth / 2 - 201;
+    int32_t y = std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
 
     rct_window *w = window_create(x, y, WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
     w->widgets = window_install_track_widgets;
@@ -222,9 +222,9 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     // Track preview
     rct_widget *widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];
-    sint32 x = w->x + widget->left + 1;
-    sint32 y = w->y + widget->top + 1;
-    sint32 colour = ColourMapA[w->colours[0]].darkest;
+    int32_t x = w->x + widget->left + 1;
+    int32_t y = w->y + widget->top + 1;
+    int32_t colour = ColourMapA[w->colours[0]].darkest;
     gfx_fill_rect(dpi, x, y, x + 369, y + 216, colour);
 
     rct_g1_element g1temp = {};
@@ -265,7 +265,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
     void * objectEntry = object_manager_load_object(&td6->vehicle_object);
     if (objectEntry != nullptr)
     {
-        sint32 groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);
+        int32_t groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);
         rideName = get_ride_naming(td6->type, get_ride_entry(groupIndex));
         friendlyTrackName = rideName.name;
     }
@@ -296,14 +296,14 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
         if (td6->type == RIDE_TYPE_MINI_GOLF)
         {
             // Holes
-            uint16 holes = td6->holes & 0x1F;
+            uint16_t holes = td6->holes & 0x1F;
             gfx_draw_string_left(dpi, STR_HOLES, &holes, COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
         }
         else
         {
             // Maximum speed
-            uint16 speed = ((td6->max_speed << 16) * 9) >> 18;
+            uint16_t speed = ((td6->max_speed << 16) * 9) >> 18;
             gfx_draw_string_left(dpi, STR_MAX_SPEED, &speed, COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
 
@@ -315,7 +315,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
         // Ride length
         set_format_arg(0, rct_string_id, STR_RIDE_LENGTH_ENTRY);
-        set_format_arg(2, uint16, td6->ride_length);
+        set_format_arg(2, uint16_t, td6->ride_length);
         gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, x, y, 214);
         y += LIST_ROW_HEIGHT;
     }
@@ -323,7 +323,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
     if (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
     {
         // Maximum positive vertical Gs
-        sint32 gForces = td6->max_positive_vertical_g * 32;
+        int32_t gForces = td6->max_positive_vertical_g * 32;
         gfx_draw_string_left(dpi, STR_MAX_POSITIVE_VERTICAL_G, &gForces, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
 
@@ -343,7 +343,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
             if (td6->total_air_time != 0)
             {
                 // Total air time
-                sint32 airTime = td6->total_air_time * 25;
+                int32_t airTime = td6->total_air_time * 25;
                 gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &airTime, COLOUR_BLACK, x, y);
                 y += LIST_ROW_HEIGHT;
             }
@@ -353,7 +353,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
     if (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_DROPS))
     {
         // Drops
-        uint16 drops = td6->drops & 0x3F;
+        uint16_t drops = td6->drops & 0x3F;
         gfx_draw_string_left(dpi, STR_DROPS, &drops, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
 
@@ -364,7 +364,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     if (td6->type != RIDE_TYPE_MINI_GOLF)
     {
-        uint16 inversions = td6->inversions & 0x1F;
+        uint16_t inversions = td6->inversions & 0x1F;
         if (inversions != 0)
         {
             // Inversions
@@ -377,8 +377,8 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
     if (td6->space_required_x != 0xFF)
     {
         // Space required
-        set_format_arg(0, uint16, td6->space_required_x);
-        set_format_arg(2, uint16, td6->space_required_y);
+        set_format_arg(0, uint16_t, td6->space_required_x);
+        set_format_arg(2, uint16_t, td6->space_required_y);
         gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, gCommonFormatArgs, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
     }

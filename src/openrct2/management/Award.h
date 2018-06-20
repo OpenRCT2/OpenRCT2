@@ -13,8 +13,8 @@
 
 struct Award
 {
-    uint16 Time;
-    uint16 Type;
+    uint16_t Time;
+    uint16_t Type;
 };
 
 enum PARK_AWARD
@@ -43,6 +43,6 @@ enum PARK_AWARD
 
 extern Award gCurrentAwards[MAX_AWARDS];
 
-bool award_is_positive(sint32 type);
+bool award_is_positive(int32_t type);
 void award_reset();
 void award_update_all();

@@ -39,11 +39,11 @@ enum class FILE_TYPE
 struct ClassifiedFileInfo
 {
     FILE_TYPE Type = FILE_TYPE::UNDEFINED;
-    uint32 Version = 0;
+    uint32_t Version = 0;
 };
 
 #define FILE_TYPE_S4_CUTOFF 2
 bool TryClassifyFile(const std::string &path, ClassifiedFileInfo * result);
 bool TryClassifyFile(IStream * stream, ClassifiedFileInfo * result);
 
-uint32 get_file_extension_type(const utf8 * path);
+uint32_t get_file_extension_type(const utf8 * path);

@@ -50,7 +50,7 @@ public:
     {
     }
 
-    void Resize(uint32 width, uint32 height) override
+    void Resize(uint32_t width, uint32_t height) override
     {
         SDL_FreeSurface(_surface);
         SDL_FreeSurface(_RGBASurface);
@@ -84,7 +84,7 @@ public:
         if (windowSurface != nullptr && _palette != nullptr)
         {
             SDL_Colour colours[256];
-            for (sint32 i = 0; i < 256; i++) {
+            for (int32_t i = 0; i < 256; i++) {
                 colours[i].r = palette[i].red;
                 colours[i].g = palette[i].green;
                 colours[i].b = palette[i].blue;
@@ -113,7 +113,7 @@ private:
         }
 
         // Copy pixels from the virtual screen buffer to the surface
-        std::copy_n(_bits, _surface->pitch * _surface->h, (uint8 *)_surface->pixels);
+        std::copy_n(_bits, _surface->pitch * _surface->h, (uint8_t *)_surface->pixels);
 
         // Unlock the surface
         if (SDL_MUSTLOCK(_surface))

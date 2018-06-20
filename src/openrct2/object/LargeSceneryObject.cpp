@@ -23,13 +23,13 @@
 void LargeSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
-    _legacyType.large_scenery.tool_id = stream->ReadValue<uint8>();
-    _legacyType.large_scenery.flags = stream->ReadValue<uint8>();
-    _legacyType.large_scenery.price = stream->ReadValue<sint16>();
-    _legacyType.large_scenery.removal_price = stream->ReadValue<sint16>();
+    _legacyType.large_scenery.tool_id = stream->ReadValue<uint8_t>();
+    _legacyType.large_scenery.flags = stream->ReadValue<uint8_t>();
+    _legacyType.large_scenery.price = stream->ReadValue<int16_t>();
+    _legacyType.large_scenery.removal_price = stream->ReadValue<int16_t>();
     stream->Seek(5, STREAM_SEEK_CURRENT);
     _legacyType.large_scenery.scenery_tab_id = 0xFF;
-    _legacyType.large_scenery.scrolling_mode = stream->ReadValue<uint8>();
+    _legacyType.large_scenery.scrolling_mode = stream->ReadValue<uint8_t>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
@@ -97,19 +97,19 @@ void LargeSceneryObject::Unload()
     _legacyType.image = 0;
 }
 
-void LargeSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
+void LargeSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const
 {
-    sint32 x = width / 2;
-    sint32 y = (height / 2) - 39;
+    int32_t x = width / 2;
+    int32_t y = (height / 2) - 39;
 
-    uint32 imageId = 0xB2D00000 | _legacyType.image;
+    uint32_t imageId = 0xB2D00000 | _legacyType.image;
     gfx_draw_sprite(dpi, imageId, x, y, 0);
 }
 
 std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(IStream * stream)
 {
     auto tiles = std::vector<rct_large_scenery_tile>();
-    while (stream->ReadValue<uint16>() != 0xFFFF)
+    while (stream->ReadValue<uint16_t>() != 0xFFFF)
     {
         stream->Seek(-2, STREAM_SEEK_CURRENT);
         auto tile = stream->ReadValue<rct_large_scenery_tile>();
@@ -133,7 +133,7 @@ void LargeSceneryObject::ReadJson(IReadObjectContext * context, const json_t * r
         -1;
 
     // Flags
-    _legacyType.large_scenery.flags = ObjectJsonHelpers::GetFlags<uint8>(properties, {
+    _legacyType.large_scenery.flags = ObjectJsonHelpers::GetFlags<uint8_t>(properties, {
         { "hasPrimaryColour", LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
         { "hasSecondaryColour", LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
         { "isAnimated", LARGE_SCENERY_FLAG_ANIMATED },
@@ -217,7 +217,7 @@ std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(const
 
     font->max_width = json_integer_value(json_object_get(j3dFont, "maxWidth"));
     font->num_images = json_integer_value(json_object_get(j3dFont, "numImages"));
-    font->flags = ObjectJsonHelpers::GetFlags<uint8>(j3dFont, {
+    font->flags = ObjectJsonHelpers::GetFlags<uint8_t>(j3dFont, {
         { "isVertical", LARGE_SCENERY_TEXT_FLAG_VERTICAL },
         { "isTwoLine", LARGE_SCENERY_TEXT_FLAG_TWO_LINE } });
 

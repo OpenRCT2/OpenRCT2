@@ -45,8 +45,8 @@ namespace OpenRCT2::Audio
         std::vector<std::string> GetOutputDevices() override
         {
             std::vector<std::string> devices;
-            sint32 numDevices = SDL_GetNumAudioDevices(SDL_FALSE);
-            for (sint32 i = 0; i < numDevices; i++)
+            int32_t numDevices = SDL_GetNumAudioDevices(SDL_FALSE);
+            for (int32_t i = 0; i < numDevices; i++)
             {
                 std::string deviceName = String::ToStd(SDL_GetAudioDeviceName(i, SDL_FALSE));
                 devices.push_back(deviceName);
@@ -71,9 +71,9 @@ namespace OpenRCT2::Audio
 
         void StartTitleMusic() override { }
 
-        IAudioChannel * PlaySound(sint32 soundId, sint32 volume, sint32 pan) override { return nullptr; }
-        IAudioChannel * PlaySoundAtLocation(sint32 soundId, sint16 x, sint16 y, sint16 z) override { return nullptr; }
-        IAudioChannel * PlaySoundPanned(sint32 soundId, sint32 pan, sint16 x, sint16 y, sint16 z) override { return nullptr; }
+        IAudioChannel * PlaySound(int32_t soundId, int32_t volume, int32_t pan) override { return nullptr; }
+        IAudioChannel * PlaySoundAtLocation(int32_t soundId, int16_t x, int16_t y, int16_t z) override { return nullptr; }
+        IAudioChannel * PlaySoundPanned(int32_t soundId, int32_t pan, int16_t x, int16_t y, int16_t z) override { return nullptr; }
 
         void ToggleAllSounds() override { }
         void PauseSounds() override { }

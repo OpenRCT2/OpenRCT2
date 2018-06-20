@@ -9,8 +9,8 @@
 
 #include "SideTunnelCall.hpp"
 
-sint16 SideTunnelCall::GetTunnelOffset(uint32 baseHeight, tunnel_entry calls[3]) {
-    for (sint16 offset = -56; offset <= 56; offset += 8) {
+int16_t SideTunnelCall::GetTunnelOffset(uint32_t baseHeight, tunnel_entry calls[3]) {
+    for (int16_t offset = -56; offset <= 56; offset += 8) {
         if (calls[0].height != (baseHeight - 8 + offset) / 16) continue;
         if (calls[1].height != (baseHeight + 0 + offset) / 16) continue;
         if (calls[2].height != (baseHeight + 8 + offset) / 16) continue;
@@ -23,7 +23,7 @@ sint16 SideTunnelCall::GetTunnelOffset(uint32 baseHeight, tunnel_entry calls[3])
 }
 
 
-TunnelCall SideTunnelCall::ExtractTunnelCalls(tunnel_entry *calls, uint8 count, uint16 baseHeight, bool *error) {
+TunnelCall SideTunnelCall::ExtractTunnelCalls(tunnel_entry *calls, uint8_t count, uint16_t baseHeight, bool *error) {
     TunnelCall tunnelCall = {};
 
     if (count == 0) {

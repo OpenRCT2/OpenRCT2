@@ -124,7 +124,7 @@ namespace OpenRCT2::Ui
         }
 
     private:
-        static sint32 Execute(const std::string &command, std::string * output = nullptr)
+        static int32_t Execute(const std::string &command, std::string * output = nullptr)
         {
             log_verbose("executing \"%s\"...\n", command.c_str());
             FILE * fpipe = popen(command.c_str(), "r");

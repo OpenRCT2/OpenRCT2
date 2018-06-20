@@ -15,17 +15,17 @@
 
 #include <immintrin.h>
 
-void mask_sse4_1(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
-                 uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap)
+void mask_sse4_1(int32_t width, int32_t height, const uint8_t * RESTRICT maskSrc, const uint8_t * RESTRICT colourSrc,
+                 uint8_t * RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
 {
     if (width == 32)
     {
         const __m128i zero128 = {};
-        for (sint32 yy = 0; yy < height; yy++)
+        for (int32_t yy = 0; yy < height; yy++)
         {
-            sint32 colourStep = yy * (colourWrap + 32);
-            sint32 maskStep   = yy * (maskWrap + 32);
-            sint32 dstStep    = yy * (dstWrap + 32);
+            int32_t colourStep = yy * (colourWrap + 32);
+            int32_t maskStep   = yy * (maskWrap + 32);
+            int32_t dstStep    = yy * (dstWrap + 32);
 
             // first half
             const __m128i colour1   = _mm_lddqu_si128((const __m128i *)(colourSrc + colourStep));
@@ -61,8 +61,8 @@ void mask_sse4_1(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, co
 #error You have to compile this file with SSE4.1 enabled, when targetting x86!
 #endif
 
-void mask_sse4_1(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
-                 uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap)
+void mask_sse4_1(int32_t width, int32_t height, const uint8_t * RESTRICT maskSrc, const uint8_t * RESTRICT colourSrc,
+                 uint8_t * RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
 {
     openrct2_assert(false, "SSE 4.1 function called on a CPU that doesn't support SSE 4.1");
 }

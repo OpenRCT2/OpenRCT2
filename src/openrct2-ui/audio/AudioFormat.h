@@ -20,16 +20,16 @@ namespace OpenRCT2::Audio
      */
     struct AudioFormat
     {
-        sint32          freq;
+        int32_t          freq;
         SDL_AudioFormat format;
-        sint32          channels;
+        int32_t          channels;
 
-        sint32 BytesPerSample() const
+        int32_t BytesPerSample() const
         {
             return (SDL_AUDIO_BITSIZE(format)) / 8;
         }
 
-        sint32 GetByteRate() const
+        int32_t GetByteRate() const
         {
             return BytesPerSample() * channels;
         }

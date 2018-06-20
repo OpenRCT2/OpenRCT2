@@ -34,15 +34,15 @@ private:
     bool        _canRead        = false;
     bool        _canWrite       = false;
     bool        _disposed       = false;
-    uint64      _fileSize       = 0;
+    uint64_t      _fileSize       = 0;
 
 public:
-    FileStream(const std::string &path, sint32 fileMode) :
+    FileStream(const std::string &path, int32_t fileMode) :
         FileStream(path.c_str(), fileMode)
     {
     }
 
-    FileStream(const utf8 * path, sint32 fileMode)
+    FileStream(const utf8 * path, int32_t fileMode)
     {
         const char * mode;
         switch (fileMode) {
@@ -101,8 +101,8 @@ public:
     bool CanRead()  const override { return _canRead;  }
     bool CanWrite() const override { return _canWrite; }
 
-    uint64 GetLength()   const override { return _fileSize; }
-    uint64 GetPosition() const override
+    uint64_t GetLength()   const override { return _fileSize; }
+    uint64_t GetPosition() const override
     {
 #if defined(_MSC_VER)
         return _ftelli64(_file);
@@ -113,12 +113,12 @@ public:
 #endif
     }
 
-    void SetPosition(uint64 position) override
+    void SetPosition(uint64_t position) override
     {
         Seek(position, STREAM_SEEK_BEGIN);
     }
 
-    void Seek(sint64 offset, sint32 origin) override
+    void Seek(int64_t offset, int32_t origin) override
     {
 #if defined(_MSC_VER)
         switch (origin) {
@@ -159,9 +159,9 @@ public:
 #endif
     }
 
-    void Read(void * buffer, uint64 length) override
+    void Read(void * buffer, uint64_t length) override
     {
-        uint64 remainingBytes = GetLength() - GetPosition();
+        uint64_t remainingBytes = GetLength() - GetPosition();
         if (length <= remainingBytes)
         {
             if (fread(buffer, (size_t)length, 1, _file) == 1)
@@ -172,18 +172,18 @@ public:
         throw IOException("Attempted to read past end of file.");
     }
 
-    void Write(const void * buffer, uint64 length) override
+    void Write(const void * buffer, uint64_t length) override
     {
         if (fwrite(buffer, (size_t)length, 1, _file) != 1)
         {
             throw IOException("Unable to write to file.");
         }
 
-        uint64 position = GetPosition();
+        uint64_t position = GetPosition();
         _fileSize = std::max(_fileSize, position);
     }
 
-    uint64 TryRead(void * buffer, uint64 length) override
+    uint64_t TryRead(void * buffer, uint64_t length) override
     {
         size_t readBytes = fread(buffer, 1, (size_t)length, _file);
         return readBytes;

@@ -115,12 +115,12 @@ inline void CheckGLError()
 namespace OpenGLAPI
 {
     bool Initialise();
-    void SetTexture(uint16 index, GLenum type, GLuint texture);
+    void SetTexture(uint16_t index, GLenum type, GLuint texture);
 }
 
 namespace OpenGLState
 {
-    extern uint16 ActiveTexture;
+    extern uint16_t ActiveTexture;
     extern GLuint CurrentProgram;
 
     void Reset();

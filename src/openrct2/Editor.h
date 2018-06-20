@@ -21,14 +21,14 @@ namespace Editor
     bool LoadLandscape(const utf8 *path);
 
     bool CheckPark();
-    sint32 CheckObjectSelection();
+    int32_t CheckObjectSelection();
 
     void OpenWindowsForCurrentStep();
-    void GameCommandEditScenarioOptions(sint32*, sint32*, sint32*, sint32*, sint32*, sint32*, sint32*);
+    void GameCommandEditScenarioOptions(int32_t*, int32_t*, int32_t*, int32_t*, int32_t*, int32_t*, int32_t*);
 
-    uint8 GetSelectedObjectFlags(sint32 objectType, size_t index);
-    void ClearSelectedObject(sint32 objectType, size_t index, uint32 flags);
-    void SetSelectedObject(sint32 objectType, size_t index, uint32 flags);
+    uint8_t GetSelectedObjectFlags(int32_t objectType, size_t index);
+    void ClearSelectedObject(int32_t objectType, size_t index, uint32_t flags);
+    void SetSelectedObject(int32_t objectType, size_t index, uint32_t flags);
 } // namespace Editor
 
 enum RCT2_EDITOR_STEP
@@ -70,6 +70,6 @@ enum
 
 void editor_open_windows_for_current_step();
 
-void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
+void game_command_edit_scenario_options(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 #endif

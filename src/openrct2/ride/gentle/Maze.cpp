@@ -46,25 +46,25 @@ enum
  */
 static void maze_paint_setup(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    uint16 maze_entry = track_element_get_maze_entry(tileElement);
+    uint16_t maze_entry = track_element_get_maze_entry(tileElement);
     maze_entry        = rol16(maze_entry, direction * 4);
 
-    uint32 rotation = session->CurrentRotation;
+    uint32_t rotation = session->CurrentRotation;
     // draw ground
-    sint32 image_id = SPR_TERRAIN_DIRT | session->TrackColours[SCHEME_MISC];
+    int32_t image_id = SPR_TERRAIN_DIRT | session->TrackColours[SCHEME_MISC];
     sub_98196C(session, image_id, 0, 0, 32, 32, 0, height);
 
     wooden_a_supports_paint_setup(session, (rotation & 1) ? 0 : 1, 0, height, session->TrackColours[SCHEME_3], nullptr);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
 
-    sint32 base_image_id = 0;
+    int32_t base_image_id = 0;
     switch (get_ride(rideIndex)->track_colour_supports[0])
     {
     case 0:
@@ -175,7 +175,7 @@ static void maze_paint_setup(
 /**
  * rct2: 0x008A81E8
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_maze(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_maze(int32_t trackType, int32_t direction)
 {
     if (trackType != TRACK_ELEM_MAZE)
     {

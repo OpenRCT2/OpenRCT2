@@ -17,12 +17,12 @@
 #include "SegmentSupportHeightCall.hpp"
 
 namespace Printer {
-    std::string PrintFunctionCall(function_call call, uint16 baseHeight);
-    std::string PrintFunctionCalls(std::vector <function_call> calls, uint16 baseHeight);
+    std::string PrintFunctionCall(function_call call, uint16_t baseHeight);
+    std::string PrintFunctionCalls(std::vector <function_call> calls, uint16_t baseHeight);
 
     std::string PrintSegmentSupportHeightCalls(std::vector<SegmentSupportCall> calls);
 
     std::string PrintSideTunnelCalls(TunnelCall tunnelCalls[4][4]);
 
-    std::string PrintHeightOffset(uint16 height, uint16 baseHeight);
+    std::string PrintHeightOffset(uint16_t height, uint16_t baseHeight);
 }

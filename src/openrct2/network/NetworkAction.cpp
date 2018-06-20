@@ -15,7 +15,7 @@
 #include "../Game.h"
 #include "../localisation/StringIds.h"
 
-sint32 NetworkActions::FindCommand(sint32 command)
+int32_t NetworkActions::FindCommand(int32_t command)
 {
     auto it = std::find_if(Actions.begin(), Actions.end(), [&command](NetworkAction const &action)
     {
@@ -30,12 +30,12 @@ sint32 NetworkActions::FindCommand(sint32 command)
     });
     if (it != Actions.end())
     {
-        return (sint32)(it - Actions.begin());
+        return (int32_t)(it - Actions.begin());
     }
     return -1;
 }
 
-sint32 NetworkActions::FindCommandByPermissionName(const std::string &permission_name)
+int32_t NetworkActions::FindCommandByPermissionName(const std::string &permission_name)
 {
     auto it = std::find_if(Actions.begin(), Actions.end(), [&permission_name](NetworkAction const &action)
     {
@@ -43,7 +43,7 @@ sint32 NetworkActions::FindCommandByPermissionName(const std::string &permission
     });
     if (it != Actions.end())
     {
-        return (sint32)(it - Actions.begin());
+        return (int32_t)(it - Actions.begin());
     }
     return -1;
 }

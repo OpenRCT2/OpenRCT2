@@ -41,7 +41,7 @@ static const char * TryLoadAllProcAddresses()
 
 namespace OpenGLState
 {
-    uint16 ActiveTexture;
+    uint16_t ActiveTexture;
     GLuint CurrentProgram;
 
     void Reset()
@@ -51,7 +51,7 @@ namespace OpenGLState
     }
 }
 
-void OpenGLAPI::SetTexture(uint16 index, GLenum type, GLuint texture)
+void OpenGLAPI::SetTexture(uint16_t index, GLenum type, GLuint texture)
 {
     if (OpenGLState::ActiveTexture != index)
     {

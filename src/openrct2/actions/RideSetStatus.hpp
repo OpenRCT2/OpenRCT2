@@ -32,18 +32,18 @@ static rct_string_id _StatusErrorTitles[] =
 struct RideSetStatusAction : public GameActionBase<GAME_COMMAND_SET_RIDE_STATUS, GameActionResult>
 {
 private:
-    sint32 _rideIndex = -1;
-    uint8 _status = RIDE_STATUS_CLOSED;
+    int32_t _rideIndex = -1;
+    uint8_t _status = RIDE_STATUS_CLOSED;
 
 public:
     RideSetStatusAction() {}
-    RideSetStatusAction(uint8 rideIndex, uint8 status) :
+    RideSetStatusAction(uint8_t rideIndex, uint8_t status) :
         _rideIndex(rideIndex),
         _status(status)
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
@@ -61,7 +61,7 @@ public:
         Ride *ride = get_ride(_rideIndex);
         res->ErrorTitle = _StatusErrorTitles[_status];
         set_format_arg_on(res->ErrorMessageArgs.data(), 6, rct_string_id, ride->name);
-        set_format_arg_on(res->ErrorMessageArgs.data(), 8, uint32, ride->name_arguments);
+        set_format_arg_on(res->ErrorMessageArgs.data(), 8, uint32_t, ride->name_arguments);
 
         if (_rideIndex >= MAX_RIDES || _rideIndex < 0)
         {
@@ -102,7 +102,7 @@ public:
         Ride *ride = get_ride(_rideIndex);
         res->ErrorTitle = _StatusErrorTitles[_status];
         set_format_arg_on(res->ErrorMessageArgs.data(), 6, rct_string_id, ride->name);
-        set_format_arg_on(res->ErrorMessageArgs.data(), 8,uint32, ride->name_arguments);
+        set_format_arg_on(res->ErrorMessageArgs.data(), 8,uint32_t, ride->name_arguments);
 
         if (ride->type == RIDE_TYPE_NULL)
         {

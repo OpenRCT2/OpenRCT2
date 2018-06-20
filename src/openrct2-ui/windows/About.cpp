@@ -73,7 +73,7 @@ static rct_widget *window_about_page_widgets[] = {
 #define DEFAULT_ENABLED_WIDGETS \
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_ABOUT_OPENRCT2) | (1ULL << WIDX_TAB_ABOUT_RCT2)
 
-static uint64 window_about_page_enabled_widgets[] = {
+static uint64_t window_about_page_enabled_widgets[] = {
     DEFAULT_ENABLED_WIDGETS | (1ULL << WIDX_CHANGELOG),
     DEFAULT_ENABLED_WIDGETS | (1ULL << WIDX_MUSIC_CREDITS),
 };
@@ -153,7 +153,7 @@ static rct_window_event_list *window_about_page_events[] = {
 };
 // clang-format on
 
-static void window_about_set_page(rct_window *w, sint32 page);
+static void window_about_set_page(rct_window *w, int32_t page);
 
 /**
  *
@@ -208,7 +208,7 @@ static void window_about_openrct2_common_paint(rct_window * w, rct_drawpixelinfo
 {
     window_draw_widgets(w, dpi);
 
-    sint32 x1, x2, y;
+    int32_t x1, x2, y;
 
     x1 = w->x + (&w->widgets[WIDX_TAB_ABOUT_OPENRCT2])->left + 45;
     x2 = w->x + (&w->widgets[WIDX_TAB_ABOUT_RCT2])->left + 45;
@@ -225,10 +225,10 @@ static void window_about_openrct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
     window_about_openrct2_common_paint(w, dpi);
 
-    sint32 x, y, width;
+    int32_t x, y, width;
     rct_size16 logoSize;
 
-    sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
     x = w->x + (w->width / 2);
     y = w->y + w->widgets[WIDX_PAGE_BACKGROUND].top + lineHeight;
@@ -287,7 +287,7 @@ static void window_about_rct2_mouseup(rct_window *w, rct_widgetindex widgetIndex
  */
 static void window_about_rct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 x, y, yPage;
+    int32_t x, y, yPage;
 
     window_about_openrct2_common_paint(w, dpi);
 
@@ -296,7 +296,7 @@ static void window_about_rct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
     x = w->x + 200;
     y = yPage + 5;
 
-    sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
     // Credits
     gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, x, y, COLOUR_BLACK, nullptr);
@@ -325,7 +325,7 @@ static void window_about_rct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 #pragma endregion RCT2
 
-static void window_about_set_page(rct_window *w, sint32 page)
+static void window_about_set_page(rct_window *w, int32_t page)
 {
     w->page = page;
     w->frame_no = 0;

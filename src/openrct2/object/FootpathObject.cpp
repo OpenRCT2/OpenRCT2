@@ -17,9 +17,9 @@
 void FootpathObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(10, STREAM_SEEK_CURRENT);
-    _legacyType.support_type = stream->ReadValue<uint8>();
-    _legacyType.flags = stream->ReadValue<uint8>();
-    _legacyType.scrolling_mode = stream->ReadValue<uint8>();
+    _legacyType.support_type = stream->ReadValue<uint8_t>();
+    _legacyType.flags = stream->ReadValue<uint8_t>();
+    _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
     stream->Seek(1, STREAM_SEEK_CURRENT);
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
@@ -49,15 +49,15 @@ void FootpathObject::Unload()
     _legacyType.image = 0;
 }
 
-void FootpathObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
+void FootpathObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const
 {
-    sint32 x = width / 2;
-    sint32 y = height / 2;
+    int32_t x = width / 2;
+    int32_t y = height / 2;
     gfx_draw_sprite(dpi, _legacyType.image + 71, x - 49, y - 17, 0);
     gfx_draw_sprite(dpi, _legacyType.image + 72, x + 4, y - 17, 0);
 }
 
-static uint8 ParseSupportType(const std::string &s)
+static uint8_t ParseSupportType(const std::string &s)
 {
     if (s == "pole") return FOOTPATH_ENTRY_SUPPORT_TYPE_POLE;
     else /* if (s == "box") */ return FOOTPATH_ENTRY_SUPPORT_TYPE_BOX;
@@ -70,7 +70,7 @@ void FootpathObject::ReadJson(IReadObjectContext * context, const json_t * root)
     _legacyType.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
 
     // Flags
-    _legacyType.flags = ObjectJsonHelpers::GetFlags<uint8>(properties, {
+    _legacyType.flags = ObjectJsonHelpers::GetFlags<uint8_t>(properties, {
         { "hasSupportImages", FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE },
         { "hasElevatedPathImages", FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE },
         { "editorOnly", FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR } });

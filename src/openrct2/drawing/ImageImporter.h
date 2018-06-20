@@ -45,22 +45,22 @@ namespace OpenRCT2::Drawing
 
         ImportResult Import(
             const Image& image,
-            sint32 offsetX = 0,
-            sint32 offsetY = 0,
+            int32_t offsetX = 0,
+            int32_t offsetY = 0,
             IMPORT_FLAGS flags = IMPORT_FLAGS::NONE,
             IMPORT_MODE mode = IMPORT_MODE::DEFAULT) const;
 
     private:
         static const PaletteBGRA StandardPalette[256];
 
-        static std::vector<sint32> GetPixels(const uint8 * pixels, uint32 width, uint32 height, IMPORT_FLAGS flags, IMPORT_MODE mode);
-        static std::tuple<void *, size_t> EncodeRaw(const sint32 * pixels, uint32 width, uint32 height);
-        static std::tuple<void *, size_t> EncodeRLE(const sint32 * pixels, uint32 width, uint32 height);
+        static std::vector<int32_t> GetPixels(const uint8_t * pixels, uint32_t width, uint32_t height, IMPORT_FLAGS flags, IMPORT_MODE mode);
+        static std::tuple<void *, size_t> EncodeRaw(const int32_t * pixels, uint32_t width, uint32_t height);
+        static std::tuple<void *, size_t> EncodeRLE(const int32_t * pixels, uint32_t width, uint32_t height);
 
-        static sint32 CalculatePaletteIndex(IMPORT_MODE mode, sint16 * rgbaSrc, sint32 x, sint32 y, sint32 width, sint32 height);
-        static sint32 GetPaletteIndex(const PaletteBGRA * palette, sint16 * colour);
-        static bool IsTransparentPixel(const sint16 * colour);
-        static bool IsChangablePixel(sint32 paletteIndex);
-        static sint32 GetClosestPaletteIndex(const PaletteBGRA * palette, const sint16 * colour);
+        static int32_t CalculatePaletteIndex(IMPORT_MODE mode, int16_t * rgbaSrc, int32_t x, int32_t y, int32_t width, int32_t height);
+        static int32_t GetPaletteIndex(const PaletteBGRA * palette, int16_t * colour);
+        static bool IsTransparentPixel(const int16_t * colour);
+        static bool IsChangablePixel(int32_t paletteIndex);
+        static int32_t GetClosestPaletteIndex(const PaletteBGRA * palette, const int16_t * colour);
     };
 }

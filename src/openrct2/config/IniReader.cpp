@@ -86,7 +86,7 @@ struct StringICmp
 class IniReader final : public IIniReader
 {
 private:
-    std::vector<uint8>                                                      _buffer;
+    std::vector<uint8_t>                                                      _buffer;
     std::vector<Span>                                                       _lines;
     std::unordered_map<std::string, LineRange, StringIHash, StringICmp>     _sections;
     std::unordered_map<std::string, std::string, StringIHash, StringICmp>   _values;
@@ -94,7 +94,7 @@ private:
 public:
     explicit IniReader(IStream * stream)
     {
-        uint64 length = stream->GetLength() - stream->GetPosition();
+        uint64_t length = stream->GetLength() - stream->GetPosition();
         _buffer.resize(length);
         stream->Read(_buffer.data(), length);
 
@@ -134,9 +134,9 @@ public:
         return result;
     }
 
-    sint32 GetSint32(const std::string &name, sint32 defaultValue) const override
+    int32_t GetInt32(const std::string &name, int32_t defaultValue) const override
     {
-        sint32 result = defaultValue;
+        int32_t result = defaultValue;
         std::string value;
         if (TryGetString(name, &value))
         {
@@ -379,7 +379,7 @@ public:
         return defaultValue;
     }
 
-    sint32 GetSint32([[maybe_unused]] const std::string& name, sint32 defaultValue) const override
+    int32_t GetInt32([[maybe_unused]] const std::string& name, int32_t defaultValue) const override
     {
         return defaultValue;
     }

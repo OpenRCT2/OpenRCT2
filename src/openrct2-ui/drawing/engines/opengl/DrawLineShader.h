@@ -33,7 +33,7 @@ public:
     DrawLineShader();
     ~DrawLineShader() override;
 
-    void SetScreenSize(sint32 width, sint32 height);
+    void SetScreenSize(int32_t width, int32_t height);
     void DrawInstances(const LineCommandBatch& instances);
 
 private:

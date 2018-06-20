@@ -175,7 +175,7 @@ static void window_clear_scenery_mousedown(rct_window * w, rct_widgetindex widge
 
 static void window_clear_scenery_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
-    sint32 size;
+    int32_t size;
     char* end;
 
     if (widgetIndex != WIDX_PREVIEW || text == nullptr)
@@ -231,7 +231,7 @@ static void window_clear_scenery_invalidate(rct_window *w)
  */
 static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 x, y;
+    int32_t x, y;
 
     window_draw_widgets(w, dpi);
 

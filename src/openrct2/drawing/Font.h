@@ -38,11 +38,11 @@ using TTF_Font = _TTF_Font;
 struct TTFFontDescriptor {
     const utf8 *filename;
     const utf8 *font_name;
-    sint32 ptSize;
-    sint32 offset_x;
-    sint32 offset_y;
-    sint32 line_height;
-    sint32 hinting_threshold;
+    int32_t ptSize;
+    int32_t offset_x;
+    int32_t offset_y;
+    int32_t line_height;
+    int32_t hinting_threshold;
     TTF_Font * font;
 };
 
@@ -55,14 +55,14 @@ extern TTFFontSetDescriptor *gCurrentTTFFontSet;
 #endif // NO_TTF
 
 void font_sprite_initialise_characters();
-sint32 font_sprite_get_codepoint_offset(sint32 codepoint);
-sint32 font_sprite_get_codepoint_width(uint16 fontSpriteBase, sint32 codepoint);
-sint32 font_sprite_get_codepoint_sprite(sint32 fontSpriteBase, sint32 codepoint);
-sint32 font_get_size_from_sprite_base(uint16 spriteBase);
-sint32 font_get_line_height(sint32 fontSpriteBase);
-sint32 font_get_line_height_small(sint32 fontSpriteBase);
+int32_t font_sprite_get_codepoint_offset(int32_t codepoint);
+int32_t font_sprite_get_codepoint_width(uint16_t fontSpriteBase, int32_t codepoint);
+int32_t font_sprite_get_codepoint_sprite(int32_t fontSpriteBase, int32_t codepoint);
+int32_t font_get_size_from_sprite_base(uint16_t spriteBase);
+int32_t font_get_line_height(int32_t fontSpriteBase);
+int32_t font_get_line_height_small(int32_t fontSpriteBase);
 bool font_supports_string_sprite(const utf8 *text);
-bool font_supports_string_ttf(const utf8 *text, sint32 fontSize);
-bool font_supports_string(const utf8 *text, sint32 fontSize);
+bool font_supports_string_ttf(const utf8 *text, int32_t fontSize);
+bool font_supports_string(const utf8 *text, int32_t fontSize);
 
 #endif

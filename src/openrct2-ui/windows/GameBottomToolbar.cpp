@@ -65,18 +65,18 @@ static rct_widget window_game_bottom_toolbar_widgets[] =
     { WIDGETS_END },
 };
 
-uint8 gToolbarDirtyFlags;
+uint8_t gToolbarDirtyFlags;
 
 static void window_game_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_game_bottom_toolbar_invalidate(rct_window *w);
 static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_game_bottom_toolbar_update(rct_window* w);
-static void window_game_bottom_toolbar_cursor(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y, sint32 *cursorId);
+static void window_game_bottom_toolbar_cursor(rct_window *w, rct_widgetindex widgetIndex, int32_t x, int32_t y, int32_t *cursorId);
 static void window_game_bottom_toolbar_unknown05(rct_window *w);
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, rct_window *w);
-static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, sint32 colour, sint32 x, sint32 y, uint8 factor);
+static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, int32_t colour, int32_t x, int32_t y, uint8_t factor);
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo *dpi, rct_window *w);
@@ -126,12 +126,12 @@ static void window_game_bottom_toolbar_invalidate_dirty_widgets(rct_window *w);
  */
 rct_window * window_game_bottom_toolbar_open()
 {
-    sint32 screenWidth = context_get_width();
-    sint32 screenHeight = context_get_height();
+    int32_t screenWidth = context_get_width();
+    int32_t screenHeight = context_get_height();
 
     // Figure out how much line height we have to work with.
-    uint32 line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
-    uint32 toolbar_height = line_height * 2 + 12;
+    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t toolbar_height = line_height * 2 + 12;
 
     rct_window * window = window_create(
         0,
@@ -206,8 +206,8 @@ static void window_game_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex wi
 
         {
             newsItem = news_item_get(0);
-            sint32 x, y, z;
-            sint32 subject = newsItem->Assoc;
+            int32_t x, y, z;
+            int32_t subject = newsItem->Assoc;
 
             news_item_get_subject_location(newsItem->Type, subject, &x, &y, &z);
 
@@ -228,16 +228,16 @@ static void window_game_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex wi
 
 static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
-    sint32 month, day;
+    int32_t month, day;
 
     switch (widgetIndex)
     {
     case WIDX_MONEY:
-        set_format_arg(0, sint32, gCurrentProfit);
-        set_format_arg(4, sint32, gParkValue);
+        set_format_arg(0, int32_t, gCurrentProfit);
+        set_format_arg(4, int32_t, gParkValue);
         break;
     case WIDX_PARK_RATING:
-        set_format_arg(0, sint16, gParkRating);
+        set_format_arg(0, int16_t, gParkRating);
         break;
     case WIDX_DATE:
         month = date_get_month(gDateMonthsElapsed);
@@ -256,7 +256,7 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex wi
 static void window_game_bottom_toolbar_invalidate(rct_window *w)
 {
     // Figure out how much line height we have to work with.
-    uint32 line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
     // Reset dimensions as appropriate -- in case we're switching languages.
     w->height = line_height * 2 + 12;
@@ -289,7 +289,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
     w->widgets[WIDX_DATE].bottom = line_height + 1;
 
     // Anchor the middle and right panel to the right
-    sint32 x = context_get_width();
+    int32_t x = context_get_width();
     w->width = x;
     x--;
     window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right = x;
@@ -345,8 +345,8 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
         w->disabled_widgets &= ~(1 << WIDX_NEWS_LOCATE);
 
         // Find out if the news item is no longer valid
-        sint32 y, z;
-        sint32 subject = newsItem->Assoc;
+        int32_t y, z;
+        int32_t subject = newsItem->Assoc;
         news_item_get_subject_location(newsItem->Type, subject, &x, &y, &z);
 
         if (x == LOCATION_NULL)
@@ -444,14 +444,14 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
     );
 
     // Figure out how much line height we have to work with.
-    uint32 line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
     // Draw money
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_MONEY];
-        sint32 x = w->x + (widget.left + widget.right) / 2;
-        sint32 y = w->y + (widget.top + widget.bottom) / 2 - (line_height == 10 ? 5 : 6);
+        int32_t x = w->x + (widget.left + widget.right) / 2;
+        int32_t y = w->y + (widget.top + widget.bottom) / 2 - (line_height == 10 ? 5 : 6);
 
         set_format_arg(0, money32, gCash);
         gfx_draw_string_centred(
@@ -481,8 +481,8 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
     // Draw guests
     {
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
-        sint32 x = w->x + (widget.left + widget.right) / 2;
-        sint32 y = w->y + (widget.top + widget.bottom) / 2 - 6;
+        int32_t x = w->x + (widget.left + widget.right) / 2;
+        int32_t y = w->y + (widget.top + widget.bottom) / 2 - 6;
 
         gfx_draw_string_centred(
             dpi,
@@ -497,8 +497,8 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
     // Draw park rating
     {
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_PARK_RATING];
-        sint32 x = w->x + widget.left + 11;
-        sint32 y = w->y + (widget.top + widget.bottom) / 2 - 5;
+        int32_t x = w->x + widget.left + 11;
+        int32_t y = w->y + (widget.top + widget.bottom) / 2 - 5;
 
         window_game_bottom_toolbar_draw_park_rating(
             dpi,
@@ -515,9 +515,9 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
  *
  *  rct2: 0x0066C76C
  */
-static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, sint32 colour, sint32 x, sint32 y, uint8 factor)
+static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, int32_t colour, int32_t x, int32_t y, uint8_t factor)
 {
-    sint16 bar_width;
+    int16_t bar_width;
 
     bar_width = (factor * 114) / 255;
     gfx_fill_rect_inset(dpi, x + 1, y + 1, x + 114, y + 9, w->colours[1], INSET_RECT_F_30);
@@ -545,18 +545,18 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
         INSET_RECT_F_30
     );
 
-    sint32 x = (window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right) / 2 + w->x;
-    sint32 y = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->y + 2;
+    int32_t x = (window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right) / 2 + w->x;
+    int32_t y = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->y + 2;
 
     // Date
-    sint32 year = date_get_year(gDateMonthsElapsed) + 1;
-    sint32 month = date_get_month(gDateMonthsElapsed);
-    sint32 day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
+    int32_t year = date_get_year(gDateMonthsElapsed) + 1;
+    int32_t month = date_get_month(gDateMonthsElapsed);
+    int32_t day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
     rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
     set_format_arg(0, rct_string_id, DateDayNames[day]);
-    set_format_arg(2, sint16, month);
-    set_format_arg(4, sint16, year);
+    set_format_arg(2, int16_t, month);
+    set_format_arg(4, int16_t, year);
     gfx_draw_string_centred(
         dpi,
         stringId,
@@ -567,20 +567,20 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
     );
 
     // Figure out how much line height we have to work with.
-    uint32 line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
     // Temperature
     x = w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15;
     y += line_height + 1;
 
-    sint32 temperature = gClimateCurrent.Temperature;
+    int32_t temperature = gClimateCurrent.Temperature;
     rct_string_id format = STR_CELSIUS_VALUE;
     if (gConfigGeneral.temperature_format == TEMPERATURE_FORMAT_F)
     {
         temperature = climate_celsius_to_fahrenheit(temperature);
         format = STR_FAHRENHEIT_VALUE;
     }
-    set_format_arg(0, sint16, temperature);
+    set_format_arg(0, int16_t, temperature);
     gfx_draw_string_left(dpi, format, gCommonFormatArgs, COLOUR_BLACK, x, y + 6);
     x += 30;
 
@@ -606,7 +606,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
  */
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w)
 {
-    sint32 x, y, width;
+    int32_t x, y, width;
     NewsItem *newsItem;
     rct_widget *middleOutsetWidget;
 
@@ -650,18 +650,18 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
         }
 
         rct_peep* peep = GET_PEEP(newsItem->Assoc);
-        sint32 clip_x = 10, clip_y = 19;
+        int32_t clip_x = 10, clip_y = 19;
 
         if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER)
         {
             clip_y += 3;
         }
 
-        uint32 image_id_base = g_peep_animation_entries[peep->sprite_type].sprite_animation->base_image;
+        uint32_t image_id_base = g_peep_animation_entries[peep->sprite_type].sprite_animation->base_image;
         image_id_base += w->frame_no & 0xFFFFFFFC;
         image_id_base++;
 
-        uint32 image_id = image_id_base;
+        uint32_t image_id = image_id_base;
         image_id |= SPRITE_ID_PALETTE_COLOUR_2(peep->tshirt_colour, peep->trousers_colour);
 
         gfx_draw_sprite(&cliped_dpi, image_id, clip_x, clip_y, 0);
@@ -722,11 +722,11 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo *dpi,
     );
 
     // Figure out how much line height we have to work with.
-    uint32 line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
-    sint32 x = w->x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2;
-    sint32 y = w->y + middleOutsetWidget->top + line_height + 1;
-    sint32 width = middleOutsetWidget->right - middleOutsetWidget->left - 62;
+    int32_t x = w->x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2;
+    int32_t y = w->y + middleOutsetWidget->top + line_height + 1;
+    int32_t width = middleOutsetWidget->right - middleOutsetWidget->left - 62;
 
     // Check if there is a map tooltip to draw
     rct_string_id stringId;
@@ -759,7 +759,7 @@ static void window_game_bottom_toolbar_update(rct_window* w){
  *
  *  rct2: 0x0066C644
  */
-static void window_game_bottom_toolbar_cursor(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y, sint32 *cursorId)
+static void window_game_bottom_toolbar_cursor(rct_window *w, rct_widgetindex widgetIndex, int32_t x, int32_t y, int32_t *cursorId)
 {
     switch (widgetIndex)
     {

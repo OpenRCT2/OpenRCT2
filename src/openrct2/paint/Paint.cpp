@@ -19,14 +19,14 @@
 #include "tile_element/Paint.TileElement.h"
 
 // Globals for paint clipping
-uint8 gClipHeight = 128; // Default to middle value
+uint8_t gClipHeight = 128; // Default to middle value
 LocationXY8 gClipSelectionA = { 0, 0 };
 LocationXY8 gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
 
 paint_session gPaintSession;
 static bool _paintSessionInUse;
 
-static constexpr const uint8 BoundBoxDebugColours[] =
+static constexpr const uint8_t BoundBoxDebugColours[] =
 {
     0,   // NONE
     102, // TERRAIN
@@ -48,10 +48,10 @@ bool gPaintBoundingBoxes;
 bool gPaintBlockedTiles;
 
 static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi);
-static void paint_attached_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags);
-static void paint_ps_image_with_bounding_boxes(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 imageId, sint16 x, sint16 y);
-static void paint_ps_image(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 imageId, sint16 x, sint16 y);
-static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 viewFlags);
+static void paint_attached_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32_t viewFlags);
+static void paint_ps_image_with_bounding_boxes(rct_drawpixelinfo * dpi, paint_struct * ps, uint32_t imageId, int16_t x, int16_t y);
+static void paint_ps_image(rct_drawpixelinfo * dpi, paint_struct * ps, uint32_t imageId, int16_t x, int16_t y);
+static uint32_t paint_ps_colourify_image(uint32_t imageId, uint8_t spriteType, uint32_t viewFlags);
 
 static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi)
 {
@@ -64,7 +64,7 @@ static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi)
     {
         quadrant = nullptr;
     }
-    session->QuadrantBackIndex = std::numeric_limits<uint32>::max();
+    session->QuadrantBackIndex = std::numeric_limits<uint32_t>::max();
     session->QuadrantFrontIndex = 0;
     session->PSStringHead = nullptr;
     session->LastPSString = nullptr;
@@ -73,9 +73,9 @@ static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi)
     session->SurfaceElement = nullptr;
 }
 
-static void paint_session_add_ps_to_quadrant(paint_session * session, paint_struct * ps, sint32 positionHash)
+static void paint_session_add_ps_to_quadrant(paint_session * session, paint_struct * ps, int32_t positionHash)
 {
-    uint32 paintQuadrantIndex = Math::Clamp(0, positionHash / 32, MAX_PAINT_QUADRANTS - 1);
+    uint32_t paintQuadrantIndex = Math::Clamp(0, positionHash / 32, MAX_PAINT_QUADRANTS - 1);
     ps->quadrant_index = paintQuadrantIndex;
     ps->next_quadrant_ps = session->Quadrants[paintQuadrantIndex];
     session->Quadrants[paintQuadrantIndex] = ps;
@@ -88,7 +88,7 @@ static void paint_session_add_ps_to_quadrant(paint_session * session, paint_stru
 * Extracted from 0x0098196c, 0x0098197c, 0x0098198c, 0x0098199c
 */
 static paint_struct * sub_9819_c(
-    paint_session * session, uint32 image_id, LocationXYZ16 offset, LocationXYZ16 boundBoxSize, LocationXYZ16 boundBoxOffset)
+    paint_session * session, uint32_t image_id, LocationXYZ16 offset, LocationXYZ16 boundBoxSize, LocationXYZ16 boundBoxOffset)
 {
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray) return nullptr;
     auto g1 = gfx_get_g1_element(image_id & 0x7FFFF);
@@ -123,11 +123,11 @@ static paint_struct * sub_9819_c(
     ps->x = map.x;
     ps->y = map.y;
 
-    sint32 left = map.x + g1->x_offset;
-    sint32 bottom = map.y + g1->y_offset;
+    int32_t left = map.x + g1->x_offset;
+    int32_t bottom = map.y + g1->y_offset;
 
-    sint32 right = left + g1->width;
-    sint32 top = bottom + g1->height;
+    int32_t right = left + g1->width;
+    int32_t top = bottom + g1->height;
 
     rct_drawpixelinfo * dpi = session->DPI;
 
@@ -189,12 +189,12 @@ void paint_session_generate(paint_session * session)
     rct_drawpixelinfo * dpi = session->DPI;
     LocationXY16 mapTile =
     {
-        (sint16)(dpi->x & 0xFFE0),
-        (sint16)((dpi->y - 16) & 0xFFE0)
+        (int16_t)(dpi->x & 0xFFE0),
+        (int16_t)((dpi->y - 16) & 0xFFE0)
     };
 
-    sint16 half_x = mapTile.x >> 1;
-    uint16 num_vertical_quadrants = (dpi->height + 2128) >> 5;
+    int16_t half_x = mapTile.x >> 1;
+    uint16_t num_vertical_quadrants = (dpi->height + 2128) >> 5;
 
     session->CurrentRotation = get_current_rotation();
     switch (get_current_rotation())
@@ -343,8 +343,8 @@ template<> bool check_bounding_box<3>(const paint_struct_bound_box& initialBBox,
     return false;
 }
 
-template<uint8 _TRotation>
-static paint_struct * paint_arrange_structs_helper_rotation(paint_struct * ps_next, uint16 quadrantIndex, uint8 flag)
+template<uint8_t _TRotation>
+static paint_struct * paint_arrange_structs_helper_rotation(paint_struct * ps_next, uint16_t quadrantIndex, uint8_t flag)
 {
     paint_struct * ps;
     paint_struct * ps_temp;
@@ -420,7 +420,7 @@ static paint_struct * paint_arrange_structs_helper_rotation(paint_struct * ps_ne
     }
 }
 
-paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadrantIndex, uint8 flag, uint8 rotation)
+paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16_t quadrantIndex, uint8_t flag, uint8_t rotation)
 {
     switch (rotation)
     {
@@ -445,8 +445,8 @@ paint_struct paint_session_arrange(paint_session * session)
     paint_struct psHead = {};
     paint_struct * ps = &psHead;
     ps->next_quadrant_ps = nullptr;
-    uint32 quadrantIndex = session->QuadrantBackIndex;
-    const uint8 rotation = get_current_rotation();
+    uint32_t quadrantIndex = session->QuadrantBackIndex;
+    const uint8_t rotation = get_current_rotation();
     if (quadrantIndex != UINT32_MAX)
     {
         do
@@ -480,13 +480,13 @@ paint_struct paint_session_arrange(paint_session * session)
 *
 *  rct2: 0x00688485
 */
-void paint_draw_structs(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags)
+void paint_draw_structs(rct_drawpixelinfo * dpi, paint_struct * ps, uint32_t viewFlags)
 {
     paint_struct* previous_ps = ps->next_quadrant_ps;
     for (ps = ps->next_quadrant_ps; ps;)
     {
-        sint16 x = ps->x;
-        sint16 y = ps->y;
+        int16_t x = ps->x;
+        int16_t y = ps->y;
         if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_SPRITE)
         {
             if (dpi->zoom_level >= 1)
@@ -501,7 +501,7 @@ void paint_draw_structs(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewF
             }
         }
 
-        uint32 imageId = paint_ps_colourify_image(ps->image_id, ps->sprite_type, viewFlags);
+        uint32_t imageId = paint_ps_colourify_image(ps->image_id, ps->sprite_type, viewFlags);
         if (gPaintBoundingBoxes && dpi->zoom_level == 0)
         {
             paint_ps_image_with_bounding_boxes(dpi, ps, imageId, x, y);
@@ -530,15 +530,15 @@ void paint_draw_structs(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewF
 *  rct2: 0x00688596
 *  Part of 0x688485
 */
-static void paint_attached_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags)
+static void paint_attached_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32_t viewFlags)
 {
     attached_paint_struct * attached_ps = ps->attached_ps;
     for (; attached_ps; attached_ps = attached_ps->next)
     {
-        sint16 x = attached_ps->x + ps->x;
-        sint16 y = attached_ps->y + ps->y;
+        int16_t x = attached_ps->x + ps->x;
+        int16_t y = attached_ps->y + ps->y;
 
-        uint32 imageId = paint_ps_colourify_image(attached_ps->image_id, ps->sprite_type, viewFlags);
+        uint32_t imageId = paint_ps_colourify_image(attached_ps->image_id, ps->sprite_type, viewFlags);
         if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
         {
             gfx_draw_sprite_raw_masked(dpi, x, y, imageId, attached_ps->colour_image_id);
@@ -550,72 +550,72 @@ static void paint_attached_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32
     }
 }
 
-static void paint_ps_image_with_bounding_boxes(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 imageId, sint16 x, sint16 y)
+static void paint_ps_image_with_bounding_boxes(rct_drawpixelinfo * dpi, paint_struct * ps, uint32_t imageId, int16_t x, int16_t y)
 {
-    const uint8 colour = BoundBoxDebugColours[ps->sprite_type];
-    const uint8 rotation = get_current_rotation();
+    const uint8_t colour = BoundBoxDebugColours[ps->sprite_type];
+    const uint8_t rotation = get_current_rotation();
 
     const LocationXYZ16 frontTop =
     {
-        (sint16)ps->bounds.x_end,
-        (sint16)ps->bounds.y_end,
-        (sint16)ps->bounds.z_end
+        (int16_t)ps->bounds.x_end,
+        (int16_t)ps->bounds.y_end,
+        (int16_t)ps->bounds.z_end
     };
     const LocationXY16 screenCoordFrontTop = coordinate_3d_to_2d(&frontTop, rotation);
 
     const LocationXYZ16 frontBottom =
     {
-        (sint16)ps->bounds.x_end,
-        (sint16)ps->bounds.y_end,
-        (sint16)ps->bounds.z
+        (int16_t)ps->bounds.x_end,
+        (int16_t)ps->bounds.y_end,
+        (int16_t)ps->bounds.z
     };
     const LocationXY16 screenCoordFrontBottom = coordinate_3d_to_2d(&frontBottom, rotation);
 
     const LocationXYZ16 leftTop =
     {
-        (sint16)ps->bounds.x,
-        (sint16)ps->bounds.y_end,
-        (sint16)ps->bounds.z_end
+        (int16_t)ps->bounds.x,
+        (int16_t)ps->bounds.y_end,
+        (int16_t)ps->bounds.z_end
     };
     const LocationXY16 screenCoordLeftTop = coordinate_3d_to_2d(&leftTop, rotation);
 
     const LocationXYZ16 leftBottom =
     {
-        (sint16)ps->bounds.x,
-        (sint16)ps->bounds.y_end,
-        (sint16)ps->bounds.z
+        (int16_t)ps->bounds.x,
+        (int16_t)ps->bounds.y_end,
+        (int16_t)ps->bounds.z
     };
     const LocationXY16 screenCoordLeftBottom = coordinate_3d_to_2d(&leftBottom, rotation);
 
     const LocationXYZ16 rightTop =
     {
-        (sint16)ps->bounds.x_end,
-        (sint16)ps->bounds.y,
-        (sint16)ps->bounds.z_end
+        (int16_t)ps->bounds.x_end,
+        (int16_t)ps->bounds.y,
+        (int16_t)ps->bounds.z_end
     };
     const LocationXY16 screenCoordRightTop = coordinate_3d_to_2d(&rightTop, rotation);
 
     const LocationXYZ16 rightBottom =
     {
-        (sint16)ps->bounds.x_end,
-        (sint16)ps->bounds.y,
-        (sint16)ps->bounds.z
+        (int16_t)ps->bounds.x_end,
+        (int16_t)ps->bounds.y,
+        (int16_t)ps->bounds.z
     };
     const LocationXY16 screenCoordRightBottom = coordinate_3d_to_2d(&rightBottom, rotation);
 
     const LocationXYZ16 backTop =
     {
-        (sint16)ps->bounds.x,
-        (sint16)ps->bounds.y,
-        (sint16)ps->bounds.z_end
+        (int16_t)ps->bounds.x,
+        (int16_t)ps->bounds.y,
+        (int16_t)ps->bounds.z_end
     };
     const LocationXY16 screenCoordBackTop = coordinate_3d_to_2d(&backTop, rotation);
 
     const LocationXYZ16 backBottom =
     {
-        (sint16)ps->bounds.x,
-        (sint16)ps->bounds.y,
-        (sint16)ps->bounds.z
+        (int16_t)ps->bounds.x,
+        (int16_t)ps->bounds.y,
+        (int16_t)ps->bounds.z
     };
     const LocationXY16 screenCoordBackBottom = coordinate_3d_to_2d(&backBottom, rotation);
 
@@ -644,7 +644,7 @@ static void paint_ps_image_with_bounding_boxes(rct_drawpixelinfo * dpi, paint_st
     gfx_draw_line(dpi, screenCoordFrontTop.x, screenCoordFrontTop.y, screenCoordRightTop.x, screenCoordRightTop.y, colour);
 }
 
-static void paint_ps_image(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 imageId, sint16 x, sint16 y)
+static void paint_ps_image(rct_drawpixelinfo * dpi, paint_struct * ps, uint32_t imageId, int16_t x, int16_t y)
 {
     if (ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
     {
@@ -654,11 +654,11 @@ static void paint_ps_image(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 im
     gfx_draw_sprite(dpi, imageId, x, y, ps->tertiary_colour);
 }
 
-static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 viewFlags)
+static uint32_t paint_ps_colourify_image(uint32_t imageId, uint8_t spriteType, uint32_t viewFlags)
 {
-    constexpr uint32 primaryColour   = COLOUR_BRIGHT_YELLOW;
-    constexpr uint32 secondaryColour = COLOUR_GREY;
-    constexpr uint32 seeThoughFlags  = IMAGE_TYPE_TRANSPARENT | (primaryColour << 19) | (secondaryColour << 24);
+    constexpr uint32_t primaryColour   = COLOUR_BRIGHT_YELLOW;
+    constexpr uint32_t secondaryColour = COLOUR_GREY;
+    constexpr uint32_t seeThoughFlags  = IMAGE_TYPE_TRANSPARENT | (primaryColour << 19) | (secondaryColour << 24);
 
     if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
     {
@@ -705,7 +705,7 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
 
 static void draw_pixel_info_crop_by_zoom(rct_drawpixelinfo *dpi)
 {
-    sint32 zoom = dpi->zoom_level;
+    int32_t zoom = dpi->zoom_level;
     dpi->zoom_level = 0;
     dpi->x >>= zoom;
     dpi->y >>= zoom;
@@ -743,16 +743,16 @@ void paint_session_free([[maybe_unused]] paint_session* session)
 */
 paint_struct * sub_98196C(
     paint_session * session,
-    uint32          image_id,
-    sint8           x_offset,
-    sint8           y_offset,
-    sint16          bound_box_length_x,
-    sint16          bound_box_length_y,
-    sint8           bound_box_length_z,
-    sint16          z_offset)
+    uint32_t          image_id,
+    int8_t           x_offset,
+    int8_t           y_offset,
+    int16_t          bound_box_length_x,
+    int16_t          bound_box_length_y,
+    int8_t           bound_box_length_z,
+    int16_t          z_offset)
 {
-    assert((uint16)bound_box_length_x == (sint16)bound_box_length_x);
-    assert((uint16)bound_box_length_y == (sint16)bound_box_length_y);
+    assert((uint16_t)bound_box_length_x == (int16_t)bound_box_length_x);
+    assert((uint16_t)bound_box_length_y == (int16_t)bound_box_length_y);
 
     session->UnkF1AD28 = nullptr;
     session->UnkF1AD2C = nullptr;
@@ -830,11 +830,11 @@ paint_struct * sub_98196C(
     ps->x = map.x;
     ps->y = map.y;
 
-    sint16 left = map.x + g1Element->x_offset;
-    sint16 bottom = map.y + g1Element->y_offset;
+    int16_t left = map.x + g1Element->x_offset;
+    int16_t bottom = map.y + g1Element->y_offset;
 
-    sint16 right = left + g1Element->width;
-    sint16 top = bottom + g1Element->height;
+    int16_t right = left + g1Element->width;
+    int16_t top = bottom + g1Element->height;
 
     rct_drawpixelinfo *dpi = session->DPI;
 
@@ -856,7 +856,7 @@ paint_struct * sub_98196C(
 
     session->UnkF1AD28 = ps;
 
-    sint32 positionHash = 0;
+    int32_t positionHash = 0;
     switch (session->CurrentRotation)
     {
     case 0:
@@ -897,16 +897,16 @@ paint_struct * sub_98196C(
 // Track Pieces, Shops.
 paint_struct * sub_98197C(
     paint_session * session,
-    uint32          image_id,
-    sint8           x_offset,
-    sint8           y_offset,
-    sint16          bound_box_length_x,
-    sint16          bound_box_length_y,
-    sint8           bound_box_length_z,
-    sint16          z_offset,
-    sint16          bound_box_offset_x,
-    sint16          bound_box_offset_y,
-    sint16          bound_box_offset_z)
+    uint32_t          image_id,
+    int8_t           x_offset,
+    int8_t           y_offset,
+    int16_t          bound_box_length_x,
+    int16_t          bound_box_length_y,
+    int8_t           bound_box_length_z,
+    int16_t          z_offset,
+    int16_t          bound_box_offset_x,
+    int16_t          bound_box_offset_y,
+    int16_t          bound_box_offset_z)
 {
     session->UnkF1AD28 = nullptr;
     session->UnkF1AD2C = nullptr;
@@ -924,8 +924,8 @@ paint_struct * sub_98197C(
 
     LocationXY16 attach =
     {
-        (sint16)ps->bounds.x,
-        (sint16)ps->bounds.y
+        (int16_t)ps->bounds.x,
+        (int16_t)ps->bounds.y
     };
 
     rotate_map_coordinates(&attach.x, &attach.y, session->CurrentRotation);
@@ -942,7 +942,7 @@ paint_struct * sub_98197C(
         break;
     }
 
-    sint32 positionHash = attach.x + attach.y;
+    int32_t positionHash = attach.x + attach.y;
     paint_session_add_ps_to_quadrant(session, ps, positionHash);
 
     session->NextFreePaintStruct++;
@@ -967,19 +967,19 @@ paint_struct * sub_98197C(
 */
 paint_struct * sub_98198C(
     paint_session * session,
-    uint32          image_id,
-    sint8           x_offset,
-    sint8           y_offset,
-    sint16          bound_box_length_x,
-    sint16          bound_box_length_y,
-    sint8           bound_box_length_z,
-    sint16          z_offset,
-    sint16          bound_box_offset_x,
-    sint16          bound_box_offset_y,
-    sint16          bound_box_offset_z)
+    uint32_t          image_id,
+    int8_t           x_offset,
+    int8_t           y_offset,
+    int16_t          bound_box_length_x,
+    int16_t          bound_box_length_y,
+    int8_t           bound_box_length_z,
+    int16_t          z_offset,
+    int16_t          bound_box_offset_x,
+    int16_t          bound_box_offset_y,
+    int16_t          bound_box_offset_z)
 {
-    assert((uint16)bound_box_length_x == bound_box_length_x);
-    assert((uint16)bound_box_length_y == bound_box_length_y);
+    assert((uint16_t)bound_box_length_x == bound_box_length_x);
+    assert((uint16_t)bound_box_length_y == bound_box_length_y);
 
     session->UnkF1AD28 = nullptr;
     session->UnkF1AD2C = nullptr;
@@ -1016,19 +1016,19 @@ paint_struct * sub_98198C(
 */
 paint_struct * sub_98199C(
     paint_session * session,
-    uint32          image_id,
-    sint8           x_offset,
-    sint8           y_offset,
-    sint16          bound_box_length_x,
-    sint16          bound_box_length_y,
-    sint8           bound_box_length_z,
-    sint16          z_offset,
-    sint16          bound_box_offset_x,
-    sint16          bound_box_offset_y,
-    sint16          bound_box_offset_z)
+    uint32_t          image_id,
+    int8_t           x_offset,
+    int8_t           y_offset,
+    int16_t          bound_box_length_x,
+    int16_t          bound_box_length_y,
+    int8_t           bound_box_length_z,
+    int16_t          z_offset,
+    int16_t          bound_box_offset_x,
+    int16_t          bound_box_offset_y,
+    int16_t          bound_box_offset_z)
 {
-    assert((uint16)bound_box_length_x == (sint16)bound_box_length_x);
-    assert((uint16)bound_box_length_y == (sint16)bound_box_length_y);
+    assert((uint16_t)bound_box_length_x == (int16_t)bound_box_length_x);
+    assert((uint16_t)bound_box_length_y == (int16_t)bound_box_length_y);
 
     if (session->UnkF1AD28 == nullptr)
     {
@@ -1063,7 +1063,7 @@ paint_struct * sub_98199C(
 * @param y (cx)
 * @return (!CF) success
 */
-bool paint_attach_to_previous_attach(paint_session * session, uint32 image_id, uint16 x, uint16 y)
+bool paint_attach_to_previous_attach(paint_session * session, uint32_t image_id, uint16_t x, uint16_t y)
 {
     if (session->UnkF1AD2C == nullptr)
     {
@@ -1100,7 +1100,7 @@ bool paint_attach_to_previous_attach(paint_session * session, uint32 image_id, u
 * @param y (cx)
 * @return (!CF) success
 */
-bool paint_attach_to_previous_ps(paint_session * session, uint32 image_id, uint16 x, uint16 y)
+bool paint_attach_to_previous_ps(paint_session * session, uint32_t image_id, uint16_t x, uint16_t y)
 {
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray)
     {
@@ -1141,7 +1141,7 @@ bool paint_attach_to_previous_ps(paint_session * session, uint32 image_id, uint1
 * @param y_offsets (di)
 * @param rotation (ebp)
 */
-void paint_floating_money_effect(paint_session * session, money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation)
+void paint_floating_money_effect(paint_session * session, money32 amount, rct_string_id string_id, int16_t y, int16_t z, int8_t y_offsets[], int16_t offset_x, uint32_t rotation)
 {
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray)
     {
@@ -1155,7 +1155,7 @@ void paint_floating_money_effect(paint_session * session, money32 amount, rct_st
     ps->args[1] = y;
     ps->args[2] = 0;
     ps->args[3] = 0;
-    ps->y_offsets = (uint8 *)y_offsets;
+    ps->y_offsets = (uint8_t *)y_offsets;
 
     const LocationXYZ16 position =
     {
@@ -1204,6 +1204,6 @@ void paint_draw_money_structs(rct_drawpixelinfo * dpi, paint_string_struct * ps)
             forceSpriteFont = true;
         }
 
-        gfx_draw_string_with_y_offsets(&dpi2, buffer, COLOUR_BLACK, ps->x, ps->y, (sint8 *)ps->y_offsets, forceSpriteFont);
+        gfx_draw_string_with_y_offsets(&dpi2, buffer, COLOUR_BLACK, ps->x, ps->y, (int8_t *)ps->y_offsets, forceSpriteFont);
     } while ((ps = ps->next) != nullptr);
 }

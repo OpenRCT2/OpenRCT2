@@ -29,25 +29,25 @@ enum
 
 struct function_call
 {
-    uint8 function;
+    uint8_t function;
     struct paint
     {
-        uint32 image_id;
+        uint32_t image_id;
         LocationXY16 offset;
         LocationXYZ16 bound_box_length;
-        sint16 z_offset;
+        int16_t z_offset;
         LocationXYZ16 bound_box_offset;
-        uint32 rotation;
+        uint32_t rotation;
         paint_struct output_struct;
     } paint;
     struct supports
     {
         int type;
-        uint8 segment;
+        uint8_t segment;
         int special;
         int height;
-        uint32 colour_flags;
-        sint32 prepend_to;
+        uint32_t colour_flags;
+        int32_t prepend_to;
     } supports;
 };
 

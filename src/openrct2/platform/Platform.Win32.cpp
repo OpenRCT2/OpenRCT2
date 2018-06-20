@@ -38,7 +38,7 @@ namespace Platform
 #endif
     static std::string WIN32_GetModuleFileNameW(HMODULE hModule);
 
-    uint32 GetTicks()
+    uint32_t GetTicks()
     {
         return platform_get_ticks();
     }
@@ -190,7 +190,7 @@ namespace Platform
         return result;
     }
 
-    bool IsOSVersionAtLeast(uint32 major, uint32 minor, uint32 build)
+    bool IsOSVersionAtLeast(uint32_t major, uint32_t minor, uint32_t build)
     {
         bool result = false;
         auto hModule = GetModuleHandleA("ntdll.dll");
@@ -289,9 +289,9 @@ namespace Platform
 
     static std::string WIN32_GetModuleFileNameW(HMODULE hModule)
     {
-        uint32 wExePathCapacity = MAX_PATH;
+        uint32_t wExePathCapacity = MAX_PATH;
         std::unique_ptr<wchar_t[]> wExePath;
-        uint32 size;
+        uint32_t size;
         do
         {
             wExePathCapacity *= 2;

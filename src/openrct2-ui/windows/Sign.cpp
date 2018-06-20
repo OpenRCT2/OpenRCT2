@@ -54,7 +54,7 @@ static rct_widget window_sign_widgets[] = {
 
 static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_sign_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_sign_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_sign_viewport_rotate(rct_window *w);
 static void window_sign_invalidate(rct_window *w);
@@ -94,7 +94,7 @@ static rct_window_event_list window_sign_events = {
 };
 
 static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_sign_small_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_sign_small_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_sign_small_invalidate(rct_window *w);
 
 // 0x9A410C
@@ -157,8 +157,8 @@ rct_window * window_sign_open(rct_windownumber number)
     w->number = number;
     window_init_scroll_widgets(w);
 
-    sint32 view_x = gBanners[w->number].x << 5;
-    sint32 view_y = gBanners[w->number].y << 5;
+    int32_t view_x = gBanners[w->number].x << 5;
+    int32_t view_y = gBanners[w->number].y << 5;
 
     rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
@@ -178,7 +178,7 @@ rct_window * window_sign_open(rct_windownumber number)
         tile_element++;
     }
 
-    sint32 view_z = tile_element->base_height << 3;
+    int32_t view_z = tile_element->base_height << 3;
     w->frame_no = view_z;
 
     w->list_information_type = scenery_large_get_primary_colour(tile_element);
@@ -217,8 +217,8 @@ rct_window * window_sign_open(rct_windownumber number)
 static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
     rct_banner* banner = &gBanners[w->number];
-    sint32 x = banner->x << 5;
-    sint32 y = banner->y << 5;
+    int32_t x = banner->x << 5;
+    int32_t y = banner->y << 5;
 
     rct_string_id string_id;
 
@@ -256,7 +256,7 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
         {
             Ride* ride = get_ride(banner->ride_index);
-            set_format_arg(16, uint32, ride->name_arguments);
+            set_format_arg(16, uint32_t, ride->name_arguments);
             string_id = ride->name;
         }
         else
@@ -276,10 +276,10 @@ static void window_sign_mousedown(rct_window *w, rct_widgetindex widgetIndex, rc
 {
     switch (widgetIndex) {
     case WIDX_MAIN_COLOUR:
-        window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), (uint8)w->list_information_type);
+        window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), (uint8_t)w->list_information_type);
         break;
     case WIDX_TEXT_COLOUR:
-        window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), (uint8)w->var_492);
+        window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), (uint8_t)w->var_492);
         break;
     }
 }
@@ -288,7 +288,7 @@ static void window_sign_mousedown(rct_window *w, rct_widgetindex widgetIndex, rc
  *
  *  rct2: 0x6B979C
  */
-static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     switch (widgetIndex){
     case WIDX_MAIN_COLOUR:
@@ -373,9 +373,9 @@ static void window_sign_viewport_rotate(rct_window *w)
 
     rct_banner* banner = &gBanners[w->number];
 
-    sint32 view_x = (banner->x << 5) + 16;
-    sint32 view_y = (banner->y << 5) + 16;
-    sint32 view_z = w->frame_no;
+    int32_t view_x = (banner->x << 5) + 16;
+    int32_t view_y = (banner->y << 5) + 16;
+    int32_t view_z = w->frame_no;
 
     // Create viewport
     rct_widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
@@ -427,8 +427,8 @@ rct_window * window_sign_small_open(rct_windownumber number){
     w->colours[1] = COLOUR_DARK_BROWN;
     w->colours[2] = COLOUR_DARK_BROWN;
 
-    sint32 view_x = gBanners[w->number].x << 5;
-    sint32 view_y = gBanners[w->number].y << 5;
+    int32_t view_x = gBanners[w->number].x << 5;
+    int32_t view_y = gBanners[w->number].y << 5;
 
     rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
@@ -443,7 +443,7 @@ rct_window * window_sign_small_open(rct_windownumber number){
         tile_element++;
     }
 
-    sint32 view_z = tile_element->base_height << 3;
+    int32_t view_z = tile_element->base_height << 3;
     w->frame_no = view_z;
 
     w->list_information_type = wall_get_primary_colour(tile_element);
@@ -483,8 +483,8 @@ rct_window * window_sign_small_open(rct_windownumber number){
 static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
     rct_banner* banner = &gBanners[w->number];
-    sint32 x = banner->x << 5;
-    sint32 y = banner->y << 5;
+    int32_t x = banner->x << 5;
+    int32_t y = banner->y << 5;
 
     rct_string_id string_id;
 
@@ -518,7 +518,7 @@ static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex
         if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
         {
             Ride* ride = get_ride(banner->ride_index);
-            set_format_arg(16, uint32, ride->name_arguments);
+            set_format_arg(16, uint32_t, ride->name_arguments);
             string_id = ride->name;
         }
         else
@@ -534,7 +534,7 @@ static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex
  *
  *  rct2: 0x6E617C
  */
-static void window_sign_small_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_sign_small_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     switch (widgetIndex){
     case WIDX_MAIN_COLOUR:

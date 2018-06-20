@@ -32,13 +32,13 @@ public:
     void Unload() override;
     void UpdateEntryIndexes();
 
-    void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const override;
+    void DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const override;
 
     void SetRepositoryItem(ObjectRepositoryItem * item) const override;
 
 private:
     static std::vector<rct_object_entry> ReadItems(IStream * stream);
-    static uint32 ReadJsonEntertainerCostumes(const json_t * jCostumes);
-    static uint32 ParseEntertainerCostume(const std::string &s);
+    static uint32_t ReadJsonEntertainerCostumes(const json_t * jCostumes);
+    static uint32_t ParseEntertainerCostume(const std::string &s);
     static std::vector<rct_object_entry> ReadJsonEntries(const json_t * jEntries);
 };

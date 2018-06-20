@@ -16,29 +16,29 @@
 #include "TileElement.h"
 #include "Scenery.h"
 
-uint8 rct_tile_element::GetType() const
+uint8_t rct_tile_element::GetType() const
 {
     return this->type & TILE_ELEMENT_TYPE_MASK;
 }
 
-void rct_tile_element::SetType(uint8 newType)
+void rct_tile_element::SetType(uint8_t newType)
 {
     this->type &= ~TILE_ELEMENT_TYPE_MASK;
     this->type |= (newType & TILE_ELEMENT_TYPE_MASK);
 }
 
-uint8 rct_tile_element::GetDirection() const
+uint8_t rct_tile_element::GetDirection() const
 {
     return this->type & TILE_ELEMENT_DIRECTION_MASK;
 }
 
-void rct_tile_element::SetDirection(uint8 direction)
+void rct_tile_element::SetDirection(uint8_t direction)
 {
     this->type &= ~TILE_ELEMENT_DIRECTION_MASK;
     this->type |= (direction & TILE_ELEMENT_DIRECTION_MASK);
 }
 
-uint8 rct_tile_element::GetDirectionWithOffset(uint8 offset) const
+uint8_t rct_tile_element::GetDirectionWithOffset(uint8_t offset) const
 {
     return ((this->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
 }
@@ -53,17 +53,17 @@ bool rct_tile_element::IsGhost() const
     return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
 }
 
-uint8 rct_tile_element::GetSceneryQuadrant() const
+uint8_t rct_tile_element::GetSceneryQuadrant() const
 {
     return (this->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
-sint32 tile_element_get_direction(const rct_tile_element * element)
+int32_t tile_element_get_direction(const rct_tile_element * element)
 {
     return element->GetDirection();
 }
 
-sint32 tile_element_get_direction_with_offset(const rct_tile_element * element, uint8 offset)
+int32_t tile_element_get_direction_with_offset(const rct_tile_element * element, uint8_t offset)
 {
     return element->GetDirectionWithOffset(offset);
 }
@@ -141,7 +141,7 @@ void tile_element_remove_banner_entry(rct_tile_element * tileElement)
     }
 }
 
-uint8 tile_element_get_ride_index(const rct_tile_element * tileElement)
+uint8_t tile_element_get_ride_index(const rct_tile_element * tileElement)
 {
     switch (tileElement->GetType())
     {

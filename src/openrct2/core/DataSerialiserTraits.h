@@ -38,36 +38,36 @@ template<>
 struct DataSerializerTraits<bool> : public DataSerializerTraitsIntegral<bool> {};
 
 template<>
-struct DataSerializerTraits<uint8> : public DataSerializerTraitsIntegral<uint8> {};
+struct DataSerializerTraits<uint8_t> : public DataSerializerTraitsIntegral<uint8_t> {};
 
 template<>
-struct DataSerializerTraits<sint8> : public DataSerializerTraitsIntegral<sint8> {};
+struct DataSerializerTraits<int8_t> : public DataSerializerTraitsIntegral<int8_t> {};
 
 template<>
-struct DataSerializerTraits<uint16> : public DataSerializerTraitsIntegral<uint16> {};
+struct DataSerializerTraits<uint16_t> : public DataSerializerTraitsIntegral<uint16_t> {};
 
 template<>
-struct DataSerializerTraits<sint16> : public DataSerializerTraitsIntegral<sint16> {};
+struct DataSerializerTraits<int16_t> : public DataSerializerTraitsIntegral<int16_t> {};
 
 template<>
-struct DataSerializerTraits<uint32> : public DataSerializerTraitsIntegral<uint32> {};
+struct DataSerializerTraits<uint32_t> : public DataSerializerTraitsIntegral<uint32_t> {};
 
 template<>
-struct DataSerializerTraits<sint32> : public DataSerializerTraitsIntegral<sint32> {};
+struct DataSerializerTraits<int32_t> : public DataSerializerTraitsIntegral<int32_t> {};
 
 template<>
 struct DataSerializerTraits<std::string>
 {
     static void encode(IStream *stream, const std::string& str)
     {
-        uint16 len = (uint16)str.size();
-        uint16 swapped = ByteSwapBE(len);
+        uint16_t len = (uint16_t)str.size();
+        uint16_t swapped = ByteSwapBE(len);
         stream->Write(&swapped);
         stream->WriteArray(str.c_str(), len);
     }
     static void decode(IStream *stream, std::string& res)
     {
-        uint16 len;
+        uint16_t len;
         stream->Read(&len);
         len = ByteSwapBE(len);
 

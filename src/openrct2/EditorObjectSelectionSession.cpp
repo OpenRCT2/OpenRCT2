@@ -27,9 +27,9 @@
 
 
 bool _maxObjectsWasHit;
-std::vector<uint8> _objectSelectionFlags;
-sint32 _numSelectedObjectsForType[OBJECT_TYPE_COUNT];
-static sint32 _numAvailableObjectsForType[OBJECT_TYPE_COUNT];
+std::vector<uint8_t> _objectSelectionFlags;
+int32_t _numSelectedObjectsForType[OBJECT_TYPE_COUNT];
+static int32_t _numAvailableObjectsForType[OBJECT_TYPE_COUNT];
 
 static void setup_in_use_selection_flags();
 static void setup_track_designer_objects();
@@ -43,13 +43,13 @@ static void window_editor_object_selection_select_default_objects();
  */
 static void setup_track_manager_objects()
 {
-    sint32 numObjects = (sint32)object_repository_get_items_count();
+    int32_t numObjects = (int32_t)object_repository_get_items_count();
     const ObjectRepositoryItem * items = object_repository_get_items();
-    for (sint32 i = 0; i < numObjects; i++)
+    for (int32_t i = 0; i < numObjects; i++)
     {
-        uint8 * selectionFlags = &_objectSelectionFlags[i];
+        uint8_t * selectionFlags = &_objectSelectionFlags[i];
         const ObjectRepositoryItem * item = &items[i];
-        uint8 object_type = object_entry_get_type(&item->ObjectEntry);
+        uint8_t object_type = object_entry_get_type(&item->ObjectEntry);
         if (object_type == OBJECT_TYPE_RIDE)
         {
             *selectionFlags |= OBJECT_SELECTION_FLAG_6;
@@ -72,18 +72,18 @@ static void setup_track_manager_objects()
  */
 static void setup_track_designer_objects()
 {
-    sint32 numObjects = (sint32)object_repository_get_items_count();
+    int32_t numObjects = (int32_t)object_repository_get_items_count();
     const ObjectRepositoryItem * items = object_repository_get_items();
-    for (sint32 i = 0; i < numObjects; i++)
+    for (int32_t i = 0; i < numObjects; i++)
     {
-        uint8 * selectionFlags = &_objectSelectionFlags[i];
+        uint8_t * selectionFlags = &_objectSelectionFlags[i];
         const ObjectRepositoryItem * item = &items[i];
-        uint8 objectType = object_entry_get_type(&item->ObjectEntry);
+        uint8_t objectType = object_entry_get_type(&item->ObjectEntry);
         if (objectType == OBJECT_TYPE_RIDE)
         {
             *selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
-            for (uint8 rideType : item->RideInfo.RideType)
+            for (uint8_t rideType : item->RideInfo.RideType)
             {
                 if (rideType != RIDE_TYPE_NULL)
                 {
@@ -104,9 +104,9 @@ static void setup_track_designer_objects()
  */
 void setup_in_use_selection_flags()
 {
-    for (uint8 objectType = 0; objectType < OBJECT_TYPE_COUNT; objectType++)
+    for (uint8_t objectType = 0; objectType < OBJECT_TYPE_COUNT; objectType++)
     {
-        for (sint32 i = 0; i < object_entry_group_counts[objectType]; i++)
+        for (int32_t i = 0; i < object_entry_group_counts[objectType]; i++)
         {
             Editor::ClearSelectedObject(objectType, i, OBJECT_SELECTION_FLAG_ALL);
             if (object_entry_get_chunk(objectType, i) != nullptr)
@@ -119,7 +119,7 @@ void setup_in_use_selection_flags()
     tile_element_iterator iter;
     tile_element_iterator_begin(&iter);
     do {
-        uint16 type;
+        uint16_t type;
         rct_banner* banner;
 
         switch (iter.element->GetType()) {
@@ -134,7 +134,7 @@ void setup_in_use_selection_flags()
             Editor::SetSelectedObject(OBJECT_TYPE_PATHS, type, OBJECT_SELECTION_FLAG_SELECTED);
 
             if (footpath_element_has_path_scenery(iter.element)) {
-                uint8 path_additions = footpath_element_get_path_scenery_index(iter.element);
+                uint8_t path_additions = footpath_element_get_path_scenery_index(iter.element);
                 Editor::SetSelectedObject(OBJECT_TYPE_PATH_BITS, path_additions, OBJECT_SELECTION_FLAG_SELECTED);
             }
             break;
@@ -175,22 +175,22 @@ void setup_in_use_selection_flags()
         }
     } while (tile_element_iterator_next(&iter));
 
-    for (uint8 ride_index = 0; ride_index < 0xFF; ride_index++) {
+    for (uint8_t ride_index = 0; ride_index < 0xFF; ride_index++) {
         Ride* ride = get_ride(ride_index);
         if (ride->type != RIDE_TYPE_NULL) {
-            uint8 type = ride->subtype;
+            uint8_t type = ride->subtype;
             Editor::SetSelectedObject(OBJECT_TYPE_RIDE, type, OBJECT_SELECTION_FLAG_SELECTED);
         }
     }
 
-    sint32 numObjects = (sint32)object_repository_get_items_count();
+    int32_t numObjects = (int32_t)object_repository_get_items_count();
     const ObjectRepositoryItem * items = object_repository_get_items();
-    for (sint32 i = 0; i < numObjects; i++) {
-        uint8 *selectionFlags = &_objectSelectionFlags[i];
+    for (int32_t i = 0; i < numObjects; i++) {
+        uint8_t *selectionFlags = &_objectSelectionFlags[i];
         const ObjectRepositoryItem * item = &items[i];
         *selectionFlags &= ~OBJECT_SELECTION_FLAG_IN_USE;
 
-        uint8 entryType, entryIndex;
+        uint8_t entryType, entryIndex;
         if (find_object_in_entry_group(&item->ObjectEntry, &entryType, &entryIndex)) {
             auto flags = Editor::GetSelectedObjectFlags(entryType, entryIndex);
             if (flags & OBJECT_SELECTION_FLAG_SELECTED)
@@ -213,17 +213,17 @@ void setup_in_use_selection_flags()
  */
 void sub_6AB211()
 {
-    sint32 numObjects = (sint32)object_repository_get_items_count();
-    _objectSelectionFlags = std::vector<uint8>(numObjects);
+    int32_t numObjects = (int32_t)object_repository_get_items_count();
+    _objectSelectionFlags = std::vector<uint8_t>(numObjects);
 
-    for (uint8 objectType = 0; objectType < OBJECT_TYPE_COUNT; objectType++) {
+    for (uint8_t objectType = 0; objectType < OBJECT_TYPE_COUNT; objectType++) {
         _numSelectedObjectsForType[objectType] = 0;
         _numAvailableObjectsForType[objectType] = 0;
     }
 
     const ObjectRepositoryItem * items = object_repository_get_items();
-    for (sint32 i = 0; i < numObjects; i++) {
-        uint8 objectType = object_entry_get_type(&items[i].ObjectEntry);
+    for (int32_t i = 0; i < numObjects; i++) {
+        uint8_t objectType = object_entry_get_type(&items[i].ObjectEntry);
         _numAvailableObjectsForType[objectType]++;
     }
 
@@ -266,7 +266,7 @@ void editor_object_flags_free()
  */
 static void remove_selected_objects_from_research(const rct_object_entry* installedObject)
 {
-    uint8 entry_type, entry_index;
+    uint8_t entry_type, entry_index;
     if (!find_object_in_entry_group(installedObject, &entry_type, &entry_index))
         return;
 
@@ -298,13 +298,13 @@ static void remove_selected_objects_from_research(const rct_object_entry* instal
  */
 void unload_unselected_objects()
 {
-    sint32 numItems = (sint32)object_repository_get_items_count();
+    int32_t numItems = (int32_t)object_repository_get_items_count();
     const ObjectRepositoryItem * items = object_repository_get_items();
 
     size_t numObjectsToUnload = 0;
     rct_object_entry * objectsToUnload = (rct_object_entry *)malloc(numItems * sizeof(rct_object_entry));
 
-    for (sint32 i = 0; i < numItems; i++) {
+    for (int32_t i = 0; i < numItems; i++) {
         if (!(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)) {
             const rct_object_entry * entry = &items[i].ObjectEntry;
 
@@ -338,9 +338,9 @@ static void window_editor_object_selection_select_default_objects()
  */
 static void window_editor_object_selection_select_required_objects()
 {
-    sint32 i;
+    int32_t i;
 
-    for (i = 0; i < (sint32)Util::CountOf(RequiredSelectedObjects); i++)
+    for (i = 0; i < (int32_t)Util::CountOf(RequiredSelectedObjects); i++)
         window_editor_object_selection_select_object(0, 0xF, &RequiredSelectedObjects[i]);
 }
 
@@ -355,10 +355,10 @@ void reset_selected_object_count_and_size()
         objectType = 0;
     }
 
-    sint32 numObjects = (sint32)object_repository_get_items_count();
+    int32_t numObjects = (int32_t)object_repository_get_items_count();
     const ObjectRepositoryItem * items = object_repository_get_items();
-    for (sint32 i = 0; i < numObjects; i++) {
-        uint8 objectType = object_entry_get_type(&items[i].ObjectEntry);
+    for (int32_t i = 0; i < numObjects; i++) {
+        uint8_t objectType = object_entry_get_type(&items[i].ObjectEntry);
         if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED) {
             _numSelectedObjectsForType[objectType]++;
         }
@@ -370,7 +370,7 @@ void reset_selected_object_count_and_size()
  * optional / required dependants of an
  * object.
  */
-static void set_object_selection_error(uint8 is_master_object, rct_string_id error_msg){
+static void set_object_selection_error(uint8_t is_master_object, rct_string_id error_msg){
     gGameCommandErrorText = error_msg;
     if (!is_master_object){
         reset_selected_object_count_and_size();
@@ -381,9 +381,9 @@ static void set_object_selection_error(uint8 is_master_object, rct_string_id err
  *
  *  rct2: 0x006AB54F
  */
-sint32 window_editor_object_selection_select_object(uint8 bh, sint32 flags, const rct_object_entry *entry)
+int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, const rct_object_entry *entry)
 {
-    sint32 numObjects = (sint32)object_repository_get_items_count();
+    int32_t numObjects = (int32_t)object_repository_get_items_count();
     const ObjectRepositoryItem * item = object_repository_find_object_by_entry(entry);
     if (item == nullptr) {
         set_object_selection_error(bh, STR_OBJECT_SELECTION_ERR_OBJECT_DATA_NOT_FOUND);
@@ -391,15 +391,15 @@ sint32 window_editor_object_selection_select_object(uint8 bh, sint32 flags, cons
     }
 
     // Get repository item index
-    sint32 index = -1;
+    int32_t index = -1;
     const ObjectRepositoryItem * items = object_repository_get_items();
-    for (sint32 i = 0; i < numObjects; i++) {
+    for (int32_t i = 0; i < numObjects; i++) {
         if (&items[i] == item) {
             index = i;
         }
     }
 
-    uint8 * selectionFlags = &_objectSelectionFlags[index];
+    uint8_t * selectionFlags = &_objectSelectionFlags[index];
     if (!(flags & 1)) {
         if (!(*selectionFlags & OBJECT_SELECTION_FLAG_SELECTED)) {
             return 1;
@@ -413,7 +413,7 @@ sint32 window_editor_object_selection_select_object(uint8 bh, sint32 flags, cons
             return 0;
         }
 
-        uint8 objectType = object_entry_get_type(&item->ObjectEntry);
+        uint8_t objectType = object_entry_get_type(&item->ObjectEntry);
         if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & (1 << 2))) {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
             {
@@ -434,8 +434,8 @@ sint32 window_editor_object_selection_select_object(uint8 bh, sint32 flags, cons
             return 1;
         }
 
-        uint8 objectType = object_entry_get_type(&item->ObjectEntry);
-        uint16 maxObjects = object_entry_group_counts[objectType];
+        uint8_t objectType = object_entry_get_type(&item->ObjectEntry);
+        uint16_t maxObjects = object_entry_group_counts[objectType];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
             maxObjects = 4;
         }
@@ -475,13 +475,13 @@ sint32 window_editor_object_selection_select_object(uint8 bh, sint32 flags, cons
     }
 }
 
-bool editor_check_object_group_at_least_one_selected(sint32 checkObjectType)
+bool editor_check_object_group_at_least_one_selected(int32_t checkObjectType)
 {
-    sint32 numObjects = (sint32)object_repository_get_items_count();
+    int32_t numObjects = (int32_t)object_repository_get_items_count();
     const ObjectRepositoryItem * items = object_repository_get_items();
 
-    for (sint32 i = 0; i < numObjects; i++) {
-        uint8 objectType = object_entry_get_type(&items[i].ObjectEntry);
+    for (int32_t i = 0; i < numObjects; i++) {
+        uint8_t objectType = object_entry_get_type(&items[i].ObjectEntry);
         if (checkObjectType == objectType && (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)) {
             return true;
         }
@@ -489,21 +489,21 @@ bool editor_check_object_group_at_least_one_selected(sint32 checkObjectType)
     return false;
 }
 
-sint32 editor_remove_unused_objects()
+int32_t editor_remove_unused_objects()
 {
     sub_6AB211();
     setup_in_use_selection_flags();
 
-    sint32 numObjects = (sint32)object_repository_get_items_count();
+    int32_t numObjects = (int32_t)object_repository_get_items_count();
     const ObjectRepositoryItem * items = object_repository_get_items();
 
-    sint32 numUnselectedObjects = 0;
-    for (sint32 i = 0; i < numObjects; i++)
+    int32_t numUnselectedObjects = 0;
+    for (int32_t i = 0; i < numObjects; i++)
     {
         if (!(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_IN_USE) && !(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
         {
             const ObjectRepositoryItem * item = &items[i];
-            uint8 objectType = object_entry_get_type(&item->ObjectEntry);
+            uint8_t objectType = object_entry_get_type(&item->ObjectEntry);
 
             if (objectType == OBJECT_TYPE_PARK_ENTRANCE || objectType == OBJECT_TYPE_SCENARIO_TEXT || objectType == OBJECT_TYPE_WATER || objectType == OBJECT_TYPE_SCENERY_GROUP)
             {

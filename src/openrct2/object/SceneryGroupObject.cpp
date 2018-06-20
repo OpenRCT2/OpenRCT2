@@ -28,11 +28,11 @@ void SceneryGroupObject::ReadLegacy(IReadObjectContext * context, IStream * stre
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
     stream->Seek(0x80 * 2, STREAM_SEEK_CURRENT);
-    _legacyType.entry_count = stream->ReadValue<uint8>();
-    _legacyType.pad_107 = stream->ReadValue<uint8>();
-    _legacyType.priority = stream->ReadValue<uint8>();
-    _legacyType.pad_109 = stream->ReadValue<uint8>();
-    _legacyType.entertainer_costumes = stream->ReadValue<uint32>();
+    _legacyType.entry_count = stream->ReadValue<uint8_t>();
+    _legacyType.pad_107 = stream->ReadValue<uint8_t>();
+    _legacyType.priority = stream->ReadValue<uint8_t>();
+    _legacyType.pad_109 = stream->ReadValue<uint8_t>();
+    _legacyType.entertainer_costumes = stream->ReadValue<uint32_t>();
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
     _items = ReadItems(stream);
@@ -56,12 +56,12 @@ void SceneryGroupObject::Unload()
     _legacyType.image = 0;
 }
 
-void SceneryGroupObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
+void SceneryGroupObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const
 {
-    sint32 x = width / 2;
-    sint32 y = height / 2;
+    int32_t x = width / 2;
+    int32_t y = height / 2;
 
-    uint32 imageId = _legacyType.image + 0x20600001;
+    uint32_t imageId = _legacyType.image + 0x20600001;
     gfx_draw_sprite(dpi, imageId, x - 15, y - 14, 0);
 }
 
@@ -78,7 +78,7 @@ void SceneryGroupObject::UpdateEntryIndexes()
         if (ori == nullptr) continue;
         if (ori->LoadedObject == nullptr) continue;
 
-        uint16 sceneryEntry = objectManager->GetLoadedObjectEntryIndex(ori->LoadedObject);
+        uint16_t sceneryEntry = objectManager->GetLoadedObjectEntryIndex(ori->LoadedObject);
         Guard::Assert(sceneryEntry != UINT8_MAX, GUARD_LINE);
 
         auto objectType = ori->ObjectEntry.flags & 0x0F;
@@ -106,7 +106,7 @@ void SceneryGroupObject::SetRepositoryItem(ObjectRepositoryItem * item) const
 std::vector<rct_object_entry> SceneryGroupObject::ReadItems(IStream * stream)
 {
     auto items = std::vector<rct_object_entry>();
-    while (stream->ReadValue<uint8>() != 0xFF)
+    while (stream->ReadValue<uint8_t>() != 0xFF)
     {
         stream->Seek(-1, STREAM_SEEK_CURRENT);
         auto entry = stream->ReadValue<rct_object_entry>();
@@ -137,9 +137,9 @@ void SceneryGroupObject::ReadJson(IReadObjectContext * context, const json_t * r
     ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }
 
-uint32 SceneryGroupObject::ReadJsonEntertainerCostumes(const json_t * jCostumes)
+uint32_t SceneryGroupObject::ReadJsonEntertainerCostumes(const json_t * jCostumes)
 {
-    uint32 costumes = 0;
+    uint32_t costumes = 0;
     auto szCostumes = ObjectJsonHelpers::GetJsonStringArray(jCostumes);
     for (const auto& szCostume : szCostumes)
     {
@@ -152,7 +152,7 @@ uint32 SceneryGroupObject::ReadJsonEntertainerCostumes(const json_t * jCostumes)
     return costumes;
 }
 
-uint32 SceneryGroupObject::ParseEntertainerCostume(const std::string &s)
+uint32_t SceneryGroupObject::ParseEntertainerCostume(const std::string &s)
 {
     if (s == "panda")       return ENTERTAINER_COSTUME_PANDA;
     if (s == "tiger")       return ENTERTAINER_COSTUME_TIGER;

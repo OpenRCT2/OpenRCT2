@@ -26,8 +26,8 @@ namespace OpenRCT2::Ui
         TextInputSession _session = {};
 
         bool    _imeActive = false;
-        sint32  _imeStart = 0;
-        sint32  _imeLength = 0;
+        int32_t  _imeStart = 0;
+        int32_t  _imeLength = 0;
         utf8    _imeBuffer[32] = {};
 
     public:

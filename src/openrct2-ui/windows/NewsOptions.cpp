@@ -26,7 +26,7 @@ enum {
 };
 
 struct notification_def {
-    uint8 category;
+    uint8_t category;
     rct_string_id caption;
     size_t config_offset;
 };
@@ -121,7 +121,7 @@ static rct_window_event_list window_news_options_events = {
 };
 // clang-format on
 
-static void window_news_options_set_page(rct_window *w, sint32 page);
+static void window_news_options_set_page(rct_window *w, int32_t page);
 static void window_news_options_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi);
 static bool *get_notification_value_ptr(const notification_def *ndef);
 
@@ -167,9 +167,9 @@ static void window_news_options_mouseup(rct_window *w, rct_widgetindex widgetInd
         break;
     default:
     {
-        sint32 checkBoxIndex = widgetIndex - WIDX_CHECKBOX_0;
+        int32_t checkBoxIndex = widgetIndex - WIDX_CHECKBOX_0;
         if (checkBoxIndex >= 0) {
-            sint32 matchIndex = 0;
+            int32_t matchIndex = 0;
             for (size_t i = 0; i < Util::CountOf(NewsItemOptionDefinitions); i++) {
                 const notification_def *ndef = &NewsItemOptionDefinitions[i];
                 if (ndef->category != w->page) continue;
@@ -208,9 +208,9 @@ static void window_news_options_invalidate(rct_window *w)
 
     // Set checkboxes
     rct_widget *baseCheckBox = &w->widgets[WIDX_CHECKBOX_0];
-    sint32 y = baseCheckBox->top;
+    int32_t y = baseCheckBox->top;
 
-    sint32 checkboxWidgetIndex = WIDX_CHECKBOX_0;
+    int32_t checkboxWidgetIndex = WIDX_CHECKBOX_0;
     rct_widget *checkboxWidget = &w->widgets[checkboxWidgetIndex];
     for (size_t i = 0; i < Util::CountOf(NewsItemOptionDefinitions); i++) {
         const notification_def *ndef = &NewsItemOptionDefinitions[i];
@@ -260,7 +260,7 @@ static void window_news_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_news_options_draw_tab_images(w, dpi);
 }
 
-static void window_news_options_set_page(rct_window *w, sint32 page)
+static void window_news_options_set_page(rct_window *w, int32_t page)
 {
     if (w->page != page) {
         w->page = page;
@@ -269,18 +269,18 @@ static void window_news_options_set_page(rct_window *w, sint32 page)
     }
 }
 
-const sint32 window_news_option_tab_animation_divisor[] = { 1, 4, 4 };
-const sint32 window_news_option_tab_animation_frames[] = { 1, 16, 8 };
+const int32_t window_news_option_tab_animation_divisor[] = { 1, 4, 4 };
+const int32_t window_news_option_tab_animation_frames[] = { 1, 16, 8 };
 
-static void window_news_options_draw_tab_image(rct_window *w, rct_drawpixelinfo *dpi, sint32 page, sint32 spriteIndex)
+static void window_news_options_draw_tab_image(rct_window *w, rct_drawpixelinfo *dpi, int32_t page, int32_t spriteIndex)
 {
     rct_widgetindex widgetIndex = WIDX_TAB_PARK + page;
 
     if (!(w->disabled_widgets & (1LL << widgetIndex))) {
         if (w->page == page) {
-            sint32 numFrames = window_news_option_tab_animation_frames[w->page];
+            int32_t numFrames = window_news_option_tab_animation_frames[w->page];
             if (numFrames > 1) {
-                sint32 frame = w->frame_no / window_news_option_tab_animation_divisor[w->page];
+                int32_t frame = w->frame_no / window_news_option_tab_animation_divisor[w->page];
                 spriteIndex += (frame % numFrames);
             }
         }

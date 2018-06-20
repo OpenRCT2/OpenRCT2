@@ -30,18 +30,18 @@ using namespace OpenRCT2;
 struct RideDemolishAction : public GameActionBase<GAME_COMMAND_DEMOLISH_RIDE, GameActionResult>
 {
 private:
-    sint32 _rideIndex = -1;
-    uint8 _modifyType = RIDE_MODIFY_DEMOLISH;
+    int32_t _rideIndex = -1;
+    uint8_t _modifyType = RIDE_MODIFY_DEMOLISH;
 
 public:
     RideDemolishAction() {}
-    RideDemolishAction(sint32 rideIndex, uint8 modifyType) :
+    RideDemolishAction(int32_t rideIndex, uint8_t modifyType) :
         _rideIndex(rideIndex),
         _modifyType(modifyType)
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags();
     }
@@ -140,12 +140,12 @@ private:
             }
         }
 
-        uint16 spriteIndex;
+        uint16_t spriteIndex;
         rct_peep *peep;
         FOR_ALL_GUESTS(spriteIndex, peep)
         {
-            uint8 ride_id_bit = _rideIndex % 8;
-            uint8 ride_id_offset = _rideIndex / 8;
+            uint8_t ride_id_bit = _rideIndex % 8;
+            uint8_t ride_id_offset = _rideIndex / 8;
 
             // clear ride from potentially being in rides_been_on
             peep->rides_been_on[ride_id_offset] &= ~(1 << ride_id_bit);
@@ -211,7 +211,7 @@ private:
                 peep->favourite_ride = MAX_RIDES;
             }
 
-            for (sint32 i = 0; i < PEEP_MAX_THOUGHTS; i++)
+            for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; i++)
             {
                 if (peep->thoughts[i].type != PEEP_THOUGHT_TYPE_NONE &&
                     peep->thoughts[i].item == _rideIndex)
@@ -236,9 +236,9 @@ private:
 
         if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
         {
-            sint32 x = (ride->overall_view.x * 32) + 16;
-            sint32 y = (ride->overall_view.y * 32) + 16;
-            sint32 z = tile_element_height(x, y);
+            int32_t x = (ride->overall_view.x * 32) + 16;
+            int32_t y = (ride->overall_view.y * 32) + 16;
+            int32_t z = tile_element_height(x, y);
 
             res->Position = { x, y, z };
         }
@@ -260,7 +260,7 @@ private:
         return res;
     }
 
-    money32 MazeRemoveTrack(uint16 x, uint16 y, uint16 z, uint8 direction) const
+    money32 MazeRemoveTrack(uint16_t x, uint16_t y, uint16_t z, uint8_t direction) const
     {
         auto setMazeTrack = MazeSetTrackAction(x, y, z, false, direction, _rideIndex, GC_SET_MAZE_TRACK_FILL);
         setMazeTrack.SetFlags(GetFlags());
@@ -282,7 +282,7 @@ private:
     {
         money32 refundPrice = 0;
 
-        uint8 oldpaused = gGamePaused;
+        uint8_t oldpaused = gGamePaused;
         gGamePaused = 0;
 
         tile_element_iterator it;
@@ -296,11 +296,11 @@ private:
             if (track_element_get_ride_index(it.element) != _rideIndex)
                 continue;
 
-            sint32 x = it.x * 32, y = it.y * 32;
-            sint32 z = it.element->base_height * 8;
+            int32_t x = it.x * 32, y = it.y * 32;
+            int32_t z = it.element->base_height * 8;
 
-            uint8 rotation = tile_element_get_direction(it.element);
-            uint8 type = track_element_get_type(it.element);
+            uint8_t rotation = tile_element_get_direction(it.element);
+            uint8_t type = track_element_get_type(it.element);
 
             if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
             {
@@ -330,7 +330,7 @@ private:
                 { 16, 0 },
             };
 
-            for (uint8 dir = 0; dir < 4; dir++)
+            for (uint8_t dir = 0; dir < 4; dir++)
             {
                 const LocationXY16& off = DirOffsets[dir];
                 money32 removePrice = MazeRemoveTrack(x + off.x, y + off.y, z, dir);
@@ -362,9 +362,9 @@ private:
 
         if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
         {
-            sint32 x = (ride->overall_view.x * 32) + 16;
-            sint32 y = (ride->overall_view.y * 32) + 16;
-            sint32 z = tile_element_height(x, y);
+            int32_t x = (ride->overall_view.x * 32) + 16;
+            int32_t y = (ride->overall_view.y * 32) + 16;
+            int32_t z = tile_element_height(x, y);
 
             res->Position = { x, y, z };
         }

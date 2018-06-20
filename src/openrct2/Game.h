@@ -92,7 +92,7 @@ enum GAME_COMMAND
     GAME_COMMAND_COUNT
 };
 
-enum : uint32
+enum : uint32_t
 {
     GAME_COMMAND_FLAG_APPLY               = (1 << 0), // If this flag is set, the command is applied, otherwise only the cost is retrieved
     GAME_COMMAND_FLAG_2                   = (1 << 2),
@@ -118,37 +118,37 @@ enum
     ERROR_TYPE_FILE_LOAD = 255
 };
 
-using GAME_COMMAND_POINTER          = void(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
-using GAME_COMMAND_CALLBACK_POINTER = void(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
+using GAME_COMMAND_POINTER          = void(int32_t * eax, int32_t * ebx, int32_t * ecx, int32_t * edx, int32_t * esi, int32_t * edi, int32_t * ebp);
+using GAME_COMMAND_CALLBACK_POINTER = void(int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
 
 extern GAME_COMMAND_CALLBACK_POINTER * game_command_callback;
-sint32 game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER * callback);
-GAME_COMMAND_CALLBACK_POINTER * game_command_callback_get_callback(uint32 index);
-extern sint32 game_command_playerid;
+int32_t game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER * callback);
+GAME_COMMAND_CALLBACK_POINTER * game_command_callback_get_callback(uint32_t index);
+extern int32_t game_command_playerid;
 
 extern rct_string_id gGameCommandErrorTitle;
 extern rct_string_id gGameCommandErrorText;
-extern uint8         gErrorType;
+extern uint8_t         gErrorType;
 extern rct_string_id gErrorStringId;
 
 extern GAME_COMMAND_POINTER * new_game_command_table[GAME_COMMAND_COUNT];
 
-extern uint32 gCurrentTicks;
+extern uint32_t gCurrentTicks;
 
-extern uint16 gTicksSinceLastUpdate;
-extern uint8  gGamePaused;
-extern sint32 gGameSpeed;
+extern uint16_t gTicksSinceLastUpdate;
+extern uint8_t  gGamePaused;
+extern int32_t gGameSpeed;
 extern float  gDayNightCycle;
 extern bool   gInUpdateCode;
 extern bool   gInMapInitCode;
-extern sint32 gGameCommandNestLevel;
+extern int32_t gGameCommandNestLevel;
 extern bool   gGameCommandIsNetworked;
 extern char   gCurrentLoadedPath[260];
 
 extern bool gLoadKeepWindowsOpen;
 
-extern uint8 gUnk13CA740;
-extern uint8 gUnk141F568;
+extern uint8_t gUnk13CA740;
+extern uint8_t gUnk141F568;
 
 void game_increase_game_speed();
 void game_reduce_game_speed();
@@ -157,15 +157,15 @@ void game_create_windows();
 void reset_all_sprite_quadrant_placements();
 void update_palette_effects();
 
-sint32 game_do_command(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
-sint32 game_do_command_p(uint32 command, sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
+int32_t game_do_command(int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
+int32_t game_do_command_p(uint32_t command, int32_t * eax, int32_t * ebx, int32_t * ecx, int32_t * edx, int32_t * esi, int32_t * edi, int32_t * ebp);
 
 void game_log_multiplayer_command(int command, const int * eax, const int * ebx, const int * ecx, int * edx, int * edi, int * ebp);
 
 void game_load_or_quit_no_save_prompt();
 void load_from_sv6(const char * path);
 void game_load_init();
-void game_pause_toggle(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
+void game_pause_toggle(int32_t * eax, int32_t * ebx, int32_t * ecx, int32_t * edx, int32_t * esi, int32_t * edi, int32_t * ebp);
 void pause_toggle();
 bool game_is_paused();
 bool game_is_not_paused();

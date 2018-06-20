@@ -18,8 +18,8 @@
 class NetworkGroup final
 {
 public:
-    std::array<uint8, 8>    ActionsAllowed{};
-    uint8                   Id = 0;
+    std::array<uint8_t, 8>    ActionsAllowed{};
+    uint8_t                   Id = 0;
 
     static NetworkGroup FromJson(const json_t * json);
 
@@ -30,7 +30,7 @@ public:
     void Write(NetworkPacket &packet);
     void ToggleActionPermission(size_t index);
     bool CanPerformAction(size_t index) const;
-    bool CanPerformCommand(sint32 command) const;
+    bool CanPerformCommand(int32_t command) const;
 
     json_t * ToJson() const;
 

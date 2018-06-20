@@ -125,18 +125,18 @@ enum {
 
 struct rct_colour_map
 {
-    uint8 colour_0;
-    uint8 colour_1;
-    uint8 darkest;
-    uint8 darker;
-    uint8 dark;
-    uint8 mid_dark;
-    uint8 mid_light;
-    uint8 light;
-    uint8 lighter;
-    uint8 lightest;
-    uint8 colour_10;
-    uint8 colour_11;
+    uint8_t colour_0;
+    uint8_t colour_1;
+    uint8_t darkest;
+    uint8_t darker;
+    uint8_t dark;
+    uint8_t mid_dark;
+    uint8_t mid_light;
+    uint8_t light;
+    uint8_t lighter;
+    uint8_t lightest;
+    uint8_t colour_10;
+    uint8_t colour_11;
 };
 
 extern rct_colour_map ColourMapA[COLOUR_COUNT];
@@ -144,7 +144,7 @@ extern rct_colour_map ColourMapA[COLOUR_COUNT];
 void colours_init_maps();
 
 #ifndef NO_TTF
-uint8 blendColours(const uint8 paletteIndex1, const uint8 paletteIndex2);
+uint8_t blendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);
 #endif
 
 #endif

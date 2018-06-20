@@ -250,8 +250,8 @@ static void window_track_delete_prompt_open()
 {
     window_close_by_class(WC_TRACK_DELETE_PROMPT);
 
-    sint32 screenWidth = context_get_width();
-    sint32 screenHeight = context_get_height();
+    int32_t screenWidth = context_get_width();
+    int32_t screenHeight = context_get_height();
     rct_window *w = window_create(
         std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - 250) / 2),
         (screenHeight - 44) / 2,

@@ -13,10 +13,10 @@
 #include <time.h>
 #include "../common.h"
 
-sint32 squaredmetres_to_squaredfeet(sint32 squaredMetres);
-sint32 metres_to_feet(sint32 metres);
-sint32 mph_to_kmph(sint32 mph);
-sint32 mph_to_dmps(sint32 mph);
+int32_t squaredmetres_to_squaredfeet(int32_t squaredMetres);
+int32_t metres_to_feet(int32_t metres);
+int32_t mph_to_kmph(int32_t mph);
+int32_t mph_to_dmps(int32_t mph);
 
 bool filename_valid_characters(const utf8 *filename);
 
@@ -32,12 +32,12 @@ bool writeentirefile(const utf8 * path, const void * buffer, size_t length);
 bool sse41_available();
 bool avx2_available();
 
-sint32 bitscanforward(sint32 source);
+int32_t bitscanforward(int32_t source);
 void bitcount_init();
-sint32 bitcount(uint32 source);
-bool strequals(const char *a, const char *b, sint32 length, bool caseInsensitive);
-sint32 strcicmp(char const *a, char const *b);
-sint32 strlogicalcmp(char const *a, char const *b);
+int32_t bitcount(uint32_t source);
+bool strequals(const char *a, const char *b, int32_t length, bool caseInsensitive);
+int32_t strcicmp(char const *a, char const *b);
+int32_t strlogicalcmp(char const *a, char const *b);
 utf8 * safe_strtrunc(utf8 * text, size_t size);
 char *safe_strcpy(char * destination, const char * source, size_t num);
 char *safe_strcat(char *destination, const char *source, size_t size);
@@ -50,20 +50,20 @@ char * strcasestr(const char * haystack, const char * needle);
 bool utf8_is_bom(const char *str);
 bool str_is_null_or_empty(const char *str);
 
-void util_srand(sint32 source);
-uint32 util_rand();
+void util_srand(int32_t source);
+uint32_t util_rand();
 
-uint8 *util_zlib_deflate(const uint8 *data, size_t data_in_size, size_t *data_out_size);
-uint8 *util_zlib_inflate(uint8 *data, size_t data_in_size, size_t *data_out_size);
+uint8_t *util_zlib_deflate(const uint8_t *data, size_t data_in_size, size_t *data_out_size);
+uint8_t *util_zlib_inflate(uint8_t *data, size_t data_in_size, size_t *data_out_size);
 
-sint8 add_clamp_sint8(sint8 value, sint8 value_to_add);
-sint16 add_clamp_sint16(sint16 value, sint16 value_to_add);
-sint32 add_clamp_sint32(sint32 value, sint32 value_to_add);
+int8_t add_clamp_int8_t(int8_t value, int8_t value_to_add);
+int16_t add_clamp_int16_t(int16_t value, int16_t value_to_add);
+int32_t add_clamp_int32_t(int32_t value, int32_t value_to_add);
 money32 add_clamp_money32(money32 value, money32 value_to_add);
 
-uint8 lerp(uint8 a, uint8 b, float t);
+uint8_t lerp(uint8_t a, uint8_t b, float t);
 float flerp(float a, float b, float t);
-uint8 soft_light(uint8 a, uint8 b);
+uint8_t soft_light(uint8_t a, uint8_t b);
 
 size_t strcatftime(char * buffer, size_t bufferSize, const char * format, const struct tm * tp);
 

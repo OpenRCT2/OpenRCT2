@@ -63,25 +63,25 @@ char gScenarioCompletedBy[32];
 char gScenarioSavePath[MAX_PATH];
 char gScenarioExpansionPacks[3256];
 bool gFirstTimeSaving = true;
-uint16 gSavedAge;
-uint32 gLastAutoSaveUpdate = 0;
+uint16_t gSavedAge;
+uint32_t gLastAutoSaveUpdate = 0;
 
-uint32 gScenarioTicks;
-uint32 gScenarioSrand0;
-uint32 gScenarioSrand1;
+uint32_t gScenarioTicks;
+uint32_t gScenarioSrand0;
+uint32_t gScenarioSrand1;
 
-uint8 gScenarioObjectiveType;
-uint8 gScenarioObjectiveYear;
-uint16 gScenarioObjectiveNumGuests;
+uint8_t gScenarioObjectiveType;
+uint8_t gScenarioObjectiveYear;
+uint16_t gScenarioObjectiveNumGuests;
 money32 gScenarioObjectiveCurrency;
 
-uint16 gScenarioParkRatingWarningDays;
+uint16_t gScenarioParkRatingWarningDays;
 money32 gScenarioCompletedCompanyValue;
 money32 gScenarioCompanyValueRecord;
 
 char gScenarioFileName[MAX_PATH];
 
-static sint32 scenario_create_ducks();
+static int32_t scenario_create_ducks();
 static void scenario_objective_check();
 
 using namespace OpenRCT2;
@@ -246,17 +246,17 @@ void scenario_success_submit_name(const char *name)
  */
 static void scenario_entrance_fee_too_high_check()
 {
-    uint16 x = 0, y = 0;
+    uint16_t x = 0, y = 0;
     money16 totalRideValueForMoney = gTotalRideValueForMoney;
     money16 max_fee = totalRideValueForMoney + (totalRideValueForMoney / 2);
 
     if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee) {
-        for (sint32 i = 0; i < MAX_PARK_ENTRANCES && gParkEntrances[i].x != LOCATION_NULL; i++) {
+        for (int32_t i = 0; i < MAX_PARK_ENTRANCES && gParkEntrances[i].x != LOCATION_NULL; i++) {
             x = gParkEntrances[i].x + 16;
             y = gParkEntrances[i].y + 16;
         }
 
-        uint32 packed_xy = (y << 16) | x;
+        uint32_t packed_xy = (y << 16) | x;
         if (gConfigNotifications.park_warnings) {
             news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
         }
@@ -268,7 +268,7 @@ void scenario_autosave_check()
     if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE) return;
 
     // Milliseconds since last save
-    uint32 timeSinceSave = platform_get_ticks() - gLastAutoSaveUpdate;
+    uint32_t timeSinceSave = platform_get_ticks() - gLastAutoSaveUpdate;
 
     bool shouldSave = false;
     switch (gConfigGeneral.autosave_frequency) {
@@ -314,7 +314,7 @@ static void scenario_day_update()
     }
 
     // Lower the casualty penalty
-    uint16 casualtyPenaltyModifier = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
+    uint16_t casualtyPenaltyModifier = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
     gParkRatingCasualtyPenalty = std::max(0, gParkRatingCasualtyPenalty - casualtyPenaltyModifier);
 
     auto intent = Intent(INTENT_ACTION_UPDATE_DATE);
@@ -323,7 +323,7 @@ static void scenario_day_update()
 
 static void scenario_week_update()
 {
-    sint32 month = date_get_month(gDateMonthsElapsed);
+    int32_t month = date_get_month(gDateMonthsElapsed);
 
     finance_pay_wages();
     finance_pay_research();
@@ -337,7 +337,7 @@ static void scenario_week_update()
 
     if (month <= MONTH_APRIL && water_type != nullptr && water_type->flags & WATER_FLAGS_ALLOW_DUCKS) {
         // 100 attempts at finding some water to create a few ducks at
-        for (sint32 i = 0; i < 100; i++) {
+        for (int32_t i = 0; i < 100; i++) {
             if (scenario_create_ducks())
                 break;
         }
@@ -415,9 +415,9 @@ void scenario_update()
  *
  *  rct2: 0x006744A9
  */
-static sint32 scenario_create_ducks()
+static int32_t scenario_create_ducks()
 {
-    sint32 i, j, r, c, x, y, waterZ, centreWaterZ, x2, y2;
+    int32_t i, j, r, c, x, y, waterZ, centreWaterZ, x2, y2;
 
     r = scenario_rand();
     x = ((r >> 16) & 0xFFFF) & 0x7F;
@@ -473,15 +473,15 @@ static sint32 scenario_create_ducks()
  * @return eax
  */
 #ifndef DEBUG_DESYNC
-uint32 scenario_rand()
+uint32_t scenario_rand()
 #else
 static FILE *fp = nullptr;
 static const char *realm = "LC";
 
-uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 line, const void *data)
+uint32_t dbg_scenario_rand(const char *file, const char *function, const uint32_t line, const void *data)
 #endif
 {
-    uint32 originalSrand0 = gScenarioSrand0;
+    uint32_t originalSrand0 = gScenarioSrand0;
     gScenarioSrand0 += ror32(gScenarioSrand1 ^ 0x1234567F, 7);
     gScenarioSrand1 = ror32(originalSrand0, 3);
 
@@ -520,7 +520,7 @@ uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 li
 }
 
 #ifdef DEBUG_DESYNC
-void dbg_report_desync(uint32 tick, uint32 srand0, uint32 server_srand0, const char *clientHash, const char *serverHash)
+void dbg_report_desync(uint32_t tick, uint32_t srand0, uint32_t server_srand0, const char *clientHash, const char *serverHash)
 {
     if (fp == nullptr)
     {
@@ -550,12 +550,12 @@ void dbg_report_desync(uint32 tick, uint32 srand0, uint32 server_srand0, const c
 }
 #endif
 
-uint32 scenario_rand_max(uint32 max)
+uint32_t scenario_rand_max(uint32_t max)
 {
     if (max < 2) return 0;
     if ((max & (max - 1)) == 0)
         return scenario_rand() & (max - 1);
-    uint32 rand, cap = ~((uint32)0) - (~((uint32)0) % max) - 1;
+    uint32_t rand, cap = ~((uint32_t)0) - (~((uint32_t)0) % max) - 1;
     do {
         rand = scenario_rand();
     } while (rand > cap);
@@ -568,10 +568,10 @@ uint32 scenario_rand_max(uint32 max)
  */
 static bool scenario_prepare_rides_for_save()
 {
-    sint32 isFiveCoasterObjective = gScenarioObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
-    sint32 i;
+    int32_t isFiveCoasterObjective = gScenarioObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
+    int32_t i;
     Ride * ride;
-    uint8 rcs = 0;
+    uint8_t rcs = 0;
 
     FOR_ALL_RIDES(i, ride)
     {
@@ -681,8 +681,8 @@ void scenario_fix_ghosts(rct_s6_data *s6)
     // Remove all ghost elements
     rct_tile_element *destinationElement = s6->tile_elements;
 
-    for (sint32 y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++) {
-        for (sint32 x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++) {
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++) {
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++) {
             rct_tile_element *originalElement = map_get_first_element_at(x, y);
             do {
                 if (originalElement->flags & TILE_ELEMENT_FLAG_GHOST) {
@@ -711,7 +711,7 @@ void scenario_remove_trackless_rides(rct_s6_data *s6)
 {
     bool rideHasTrack[MAX_RIDES];
     ride_all_has_any_track_elements(rideHasTrack);
-    for (sint32 i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++) {
+    for (int32_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++) {
         rct2_ride * ride = &s6->rides[i];
 
         if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL) {
@@ -728,11 +728,11 @@ void scenario_remove_trackless_rides(rct_s6_data *s6)
 
 static void scenario_objective_check_guests_by()
 {
-    uint8 objectiveYear = gScenarioObjectiveYear;
-    sint16 parkRating = gParkRating;
-    sint16 guestsInPark = gNumGuestsInPark;
-    sint16 objectiveGuests = gScenarioObjectiveNumGuests;
-    sint16 currentMonthYear = gDateMonthsElapsed;
+    uint8_t objectiveYear = gScenarioObjectiveYear;
+    int16_t parkRating = gParkRating;
+    int16_t guestsInPark = gNumGuestsInPark;
+    int16_t objectiveGuests = gScenarioObjectiveNumGuests;
+    int16_t currentMonthYear = gDateMonthsElapsed;
 
     if (currentMonthYear == MONTH_COUNT * objectiveYear || gConfigGeneral.allow_early_completion) {
         if (parkRating >= 600 && guestsInPark >= objectiveGuests) {
@@ -746,8 +746,8 @@ static void scenario_objective_check_guests_by()
 
 static void scenario_objective_check_park_value_by()
 {
-    uint8 objectiveYear = gScenarioObjectiveYear;
-    sint16 currentMonthYear = gDateMonthsElapsed;
+    uint8_t objectiveYear = gScenarioObjectiveYear;
+    int16_t currentMonthYear = gDateMonthsElapsed;
     money32 objectiveParkValue = gScenarioObjectiveCurrency;
     money32 parkValue = gParkValue;
 
@@ -768,14 +768,14 @@ static void scenario_objective_check_park_value_by()
 **/
 static void scenario_objective_check_10_rollercoasters()
 {
-    sint32 i, rcs = 0;
-    uint8 type_already_counted[256];
+    int32_t i, rcs = 0;
+    uint8_t type_already_counted[256];
     Ride* ride;
 
     memset(type_already_counted, 0, 256);
 
     FOR_ALL_RIDES(i, ride) {
-        uint8 subtype_id = ride->subtype;
+        uint8_t subtype_id = ride->subtype;
         rct_ride_entry *rideEntry = get_ride_entry(subtype_id);
         if (rideEntry == nullptr) {
             continue;
@@ -848,15 +848,15 @@ static void scenario_objective_check_monthly_ride_income()
  */
 static void scenario_objective_check_10_rollercoasters_length()
 {
-    sint32 i, rcs = 0;
-    uint8 type_already_counted[256];
-    sint16 objective_length = gScenarioObjectiveNumGuests;
+    int32_t i, rcs = 0;
+    uint8_t type_already_counted[256];
+    int16_t objective_length = gScenarioObjectiveNumGuests;
     Ride* ride;
 
     memset(type_already_counted, 0, 256);
 
     FOR_ALL_RIDES(i, ride) {
-        uint8 subtype_id = ride->subtype;
+        uint8_t subtype_id = ride->subtype;
         rct_ride_entry *rideEntry = get_ride_entry(subtype_id);
         if (rideEntry == nullptr) {
             continue;
@@ -882,9 +882,9 @@ static void scenario_objective_check_finish_5_rollercoasters()
 
     // Originally, this did not check for null rides, neither did it check if
     // the rides are even rollercoasters, never mind the right rollercoasters to be finished.
-    sint32 i;
+    int32_t i;
     Ride * ride;
-    sint32 rcs = 0;
+    int32_t rcs = 0;
     FOR_ALL_RIDES(i, ride)
     {
         const rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
@@ -917,7 +917,7 @@ static void scenario_objective_check_replay_loan_and_park_value()
 static void scenario_objective_check_monthly_food_income()
 {
     money32 * lastMonthExpenditure = gExpenditureTable[1];
-    sint32 lastMonthProfit =
+    int32_t lastMonthProfit =
        lastMonthExpenditure[RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES] +
        lastMonthExpenditure[RCT_EXPENDITURE_TYPE_SHOP_STOCK] +
        lastMonthExpenditure[RCT_EXPENDITURE_TYPE_FOODDRINK_SALES] +

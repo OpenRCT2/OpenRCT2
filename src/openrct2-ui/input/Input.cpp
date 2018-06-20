@@ -25,7 +25,7 @@
 
 using namespace OpenRCT2::Ui;
 
-static void input_handle_console(sint32 key)
+static void input_handle_console(int32_t key)
 {
     CONSOLE_INPUT input = CONSOLE_INPUT_NONE;
     switch (key)
@@ -56,7 +56,7 @@ static void input_handle_console(sint32 key)
     }
 }
 
-static void input_handle_chat(sint32 key)
+static void input_handle_chat(int32_t key)
 {
     CHAT_INPUT input = CHAT_INPUT_NONE;
     switch (key)
@@ -77,7 +77,7 @@ static void input_handle_chat(sint32 key)
 static void game_handle_key_scroll()
 {
     rct_window * mainWindow;
-    sint32       scrollX, scrollY;
+    int32_t       scrollX, scrollY;
 
     mainWindow = window_get_main();
     if (mainWindow == nullptr)
@@ -97,7 +97,7 @@ static void game_handle_key_scroll()
 
     scrollX                 = 0;
     scrollY                 = 0;
-    const uint8 * keysState = context_get_keys_state();
+    const uint8_t * keysState = context_get_keys_state();
     get_keyboard_map_scroll(keysState, &scrollX, &scrollY);
 
     if (scrollX != 0 || scrollY != 0)
@@ -107,7 +107,7 @@ static void game_handle_key_scroll()
     input_scroll_viewport(scrollX, scrollY);
 }
 
-static sint32 input_scancode_to_rct_keycode(sint32 sdl_key)
+static int32_t input_scancode_to_rct_keycode(int32_t sdl_key)
 {
     char keycode = (char)SDL_GetKeyFromScancode((SDL_Scancode)sdl_key);
 
@@ -144,7 +144,7 @@ void input_handle_keyboard(bool isTitle)
 
         // Handle modifier keys and key scrolling
         gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
-        const uint8 * keysState   = context_get_keys_state();
+        const uint8_t * keysState   = context_get_keys_state();
         if (keysState[SDL_SCANCODE_LSHIFT] || keysState[SDL_SCANCODE_RSHIFT])
         {
             gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_SHIFT_Z;
@@ -178,7 +178,7 @@ void input_handle_keyboard(bool isTitle)
     }
 
     // Handle key input
-    sint32 key;
+    int32_t key;
     while (!gOpenRCT2Headless && (key = get_next_key()) != 0)
     {
         if (key == 255)

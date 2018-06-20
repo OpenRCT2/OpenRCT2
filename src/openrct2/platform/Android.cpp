@@ -25,15 +25,15 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 }
 #endif
 
-uint16 platform_get_locale_language() {
+uint16_t platform_get_locale_language() {
     return LANGUAGE_ENGLISH_UK;
 }
 
-uint8 platform_get_locale_currency() {
+uint8_t platform_get_locale_currency() {
     return platform_get_currency_value(NULL);
 }
 
-uint8 platform_get_locale_measurement_format() {
+uint8_t platform_get_locale_measurement_format() {
     return MEASUREMENT_FORMAT_METRIC;
 }
 

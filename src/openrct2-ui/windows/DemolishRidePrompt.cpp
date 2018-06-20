@@ -120,7 +120,7 @@ static rct_window_event_list window_ride_refurbish_events = {
 };
 
 /** Based off of rct2: 0x006B486A */
-rct_window * window_ride_demolish_prompt_open(sint32 rideIndex)
+rct_window * window_ride_demolish_prompt_open(int32_t rideIndex)
 {
     rct_window *w;
 
@@ -146,7 +146,7 @@ rct_window * window_ride_demolish_prompt_open(sint32 rideIndex)
     return w;
 }
 
-rct_window * window_ride_refurbish_prompt_open(sint32 rideIndex)
+rct_window * window_ride_refurbish_prompt_open(int32_t rideIndex)
 {
     rct_window *w;
 
@@ -217,11 +217,11 @@ static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi)
     Ride* ride = get_ride(w->number);
 
     set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32, ride->name_arguments);
+    set_format_arg(2, uint32_t, ride->name_arguments);
     set_format_arg(6, money32, _demolishRideCost);
 
-    sint32 x = w->x + WW / 2;
-    sint32 y = w->y + (WH / 2) - 3;
+    int32_t x = w->x + WW / 2;
+    int32_t y = w->y + (WH / 2) - 3;
 
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
@@ -240,11 +240,11 @@ static void window_ride_refurbish_paint(rct_window *w, rct_drawpixelinfo *dpi)
     Ride* ride = get_ride(w->number);
 
     set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32, ride->name_arguments);
+    set_format_arg(2, uint32_t, ride->name_arguments);
     set_format_arg(6, money32, _demolishRideCost / 2);
 
-    sint32 x = w->x + WW / 2;
-    sint32 y = w->y + (WH / 2) - 3;
+    int32_t x = w->x + WW / 2;
+    int32_t y = w->y + (WH / 2) - 3;
 
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {

@@ -28,15 +28,15 @@ enum
     SPR_LIFT_CAGE_NW_FRONT = 15003,
 };
 
-static constexpr const uint32 lift_cage_sprites[][2] = {
+static constexpr const uint32_t lift_cage_sprites[][2] = {
     { SPR_LIFT_CAGE_BACK, SPR_LIFT_CAGE_FRONT },       { SPR_LIFT_CAGE_NE_BACK, SPR_LIFT_CAGE_NE_FRONT },
     { SPR_LIFT_CAGE_SE_BACK, SPR_LIFT_CAGE_SE_FRONT }, { SPR_LIFT_CAGE_SW_BACK, SPR_LIFT_CAGE_SW_FRONT },
     { SPR_LIFT_CAGE_NW_BACK, SPR_LIFT_CAGE_NW_FRONT },
 };
 
-static void paint_lift_cage(paint_session * session, sint8 index, uint32 colourFlags, sint32 height, uint8 rotation)
+static void paint_lift_cage(paint_session * session, int8_t index, uint32_t colourFlags, int32_t height, uint8_t rotation)
 {
-    uint32 imageId;
+    uint32_t imageId;
 
     imageId = lift_cage_sprites[1 + index][0] | colourFlags;
     sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 2, 2, height);
@@ -48,10 +48,10 @@ static void paint_lift_cage(paint_session * session, sint8 index, uint32 colourF
 /** rct2: 0x0076C6CC */
 static void paint_lift_base(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -76,18 +76,18 @@ static void paint_lift_base(
         return;
     }
 
-    sint32   edges    = edges_3x3[trackSequence];
+    int32_t   edges    = edges_3x3[trackSequence];
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
-    uint32 imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
+    uint32_t imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
     track_paint_util_paint_fences(
         session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
         session->CurrentRotation);
 
-    sint32 blockedSegments = 0;
+    int32_t blockedSegments = 0;
     switch (trackSequence)
     {
     case 1:
@@ -123,10 +123,10 @@ static void paint_lift_base(
 /** rct2: 0x0076C6DC */
 static void paint_lift_tower_section(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (trackSequence == 1)
@@ -145,7 +145,7 @@ static void paint_lift_tower_section(
 /**
  * rct2: 0x0076C5BC
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_lift(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_lift(int32_t trackType, int32_t direction)
 {
     switch (trackType)
     {

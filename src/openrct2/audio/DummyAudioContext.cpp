@@ -22,9 +22,9 @@ namespace OpenRCT2::Audio
 
         void StartTitleMusic() override { }
 
-        IAudioChannel * PlaySound(sint32 /*soundId*/, sint32 /*volume*/, sint32 /*pan*/) override { return nullptr; }
-        IAudioChannel * PlaySoundAtLocation(sint32 /*soundId*/, sint16 /*x*/, sint16 /*y*/, sint16 /*z*/) override { return nullptr; }
-        IAudioChannel * PlaySoundPanned(sint32 /*soundId*/, sint32 /*pan*/, sint16 /*x*/, sint16 /*y*/, sint16 /*z*/) override { return nullptr; }
+        IAudioChannel * PlaySound(int32_t /*soundId*/, int32_t /*volume*/, int32_t /*pan*/) override { return nullptr; }
+        IAudioChannel * PlaySoundAtLocation(int32_t /*soundId*/, int16_t /*x*/, int16_t /*y*/, int16_t /*z*/) override { return nullptr; }
+        IAudioChannel * PlaySoundPanned(int32_t /*soundId*/, int32_t /*pan*/, int16_t /*x*/, int16_t /*y*/, int16_t /*z*/) override { return nullptr; }
 
         void ToggleAllSounds() override { }
         void PauseSounds() override { }

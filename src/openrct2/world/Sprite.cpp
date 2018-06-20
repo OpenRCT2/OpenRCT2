@@ -24,15 +24,15 @@
 #include "Fountain.h"
 #include "Sprite.h"
 
-uint16 gSpriteListHead[6];
-uint16 gSpriteListCount[6];
+uint16_t gSpriteListHead[6];
+uint16_t gSpriteListCount[6];
 static rct_sprite _spriteList[MAX_SPRITES];
 
 static bool _spriteFlashingList[MAX_SPRITES];
 
 #define SPATIAL_INDEX_LOCATION_NULL 0x10000
 
-uint16 gSpriteSpatialIndex[0x10001];
+uint16_t gSpriteSpatialIndex[0x10001];
 
 const rct_string_id litterNames[12] = {
     STR_LITTER_VOMIT,
@@ -52,7 +52,7 @@ const rct_string_id litterNames[12] = {
 static LocationXYZ16 _spritelocations1[MAX_SPRITES];
 static LocationXYZ16 _spritelocations2[MAX_SPRITES];
 
-static size_t GetSpatialIndexOffset(sint32 x, sint32 y);
+static size_t GetSpatialIndexOffset(int32_t x, int32_t y);
 
 rct_sprite *try_get_sprite(size_t spriteIndex)
 {
@@ -70,17 +70,17 @@ rct_sprite *get_sprite(size_t sprite_idx)
     return &_spriteList[sprite_idx];
 }
 
-uint16 sprite_get_first_in_quadrant(sint32 x, sint32 y)
+uint16_t sprite_get_first_in_quadrant(int32_t x, int32_t y)
 {
-    sint32 offset = ((x & 0x1FE0) << 3) | (y >> 5);
+    int32_t offset = ((x & 0x1FE0) << 3) | (y >> 5);
     return gSpriteSpatialIndex[offset];
 }
 
-static void invalidate_sprite_max_zoom(rct_sprite *sprite, sint32 maxZoom)
+static void invalidate_sprite_max_zoom(rct_sprite *sprite, int32_t maxZoom)
 {
     if (sprite->unknown.sprite_left == LOCATION_NULL) return;
 
-    for (sint32 i = 0; i < MAX_VIEWPORT_COUNT; i++) {
+    for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++) {
         rct_viewport *viewport = &g_viewport_list[i];
         if (viewport->width != 0 && viewport->zoom <= maxZoom) {
             viewport_invalidate(
@@ -132,7 +132,7 @@ void reset_sprite_list()
     gSavedAge = 0;
     memset(_spriteList, 0, sizeof(rct_sprite) * MAX_SPRITES);
 
-    for (sint32 i = 0; i < NUM_SPRITE_LISTS; i++) {
+    for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++) {
         gSpriteListHead[i] = SPRITE_INDEX_NULL;
         gSpriteListCount[i] = 0;
         _spriteFlashingList[i] = false;
@@ -140,7 +140,7 @@ void reset_sprite_list()
 
     rct_sprite* previous_spr = (rct_sprite*)SPRITE_INDEX_NULL;
 
-    for (sint32 i = 0; i < MAX_SPRITES; ++i){
+    for (int32_t i = 0; i < MAX_SPRITES; ++i){
         rct_sprite *spr = get_sprite(i);
         spr->unknown.sprite_identifier = SPRITE_IDENTIFIER_NULL;
         spr->unknown.sprite_index = i;
@@ -177,22 +177,22 @@ void reset_sprite_spatial_index()
         rct_sprite *spr = get_sprite(i);
         if (spr->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL) {
             size_t index = GetSpatialIndexOffset(spr->unknown.x, spr->unknown.y);
-            uint16 nextSpriteId = gSpriteSpatialIndex[index];
+            uint16_t nextSpriteId = gSpriteSpatialIndex[index];
             gSpriteSpatialIndex[index] = spr->unknown.sprite_index;
             spr->unknown.next_in_quadrant = nextSpriteId;
         }
     }
 }
 
-static size_t GetSpatialIndexOffset(sint32 x, sint32 y)
+static size_t GetSpatialIndexOffset(int32_t x, int32_t y)
 {
     size_t index = SPATIAL_INDEX_LOCATION_NULL;
     if (x != LOCATION_NULL) {
         x = Math::Clamp(0, x, 0xFFFF);
         y = Math::Clamp(0, y, 0xFFFF);
 
-        sint16 flooredX = floor2(x, 32);
-        uint8 tileY = y >> 5;
+        int16_t flooredX = floor2(x, 32);
+        uint8_t tileY = y >> 5;
         index = (flooredX << 3) | tileY;
     }
 
@@ -268,11 +268,11 @@ const char * sprite_checksum()
 static void sprite_reset(rct_unk_sprite *sprite)
 {
     // Need to retain how the sprite is linked in lists
-    uint8 llto = sprite->linked_list_type_offset;
-    uint16 next = sprite->next;
-    uint16 next_in_quadrant = sprite->next_in_quadrant;
-    uint16 prev = sprite->previous;
-    uint16 sprite_index = sprite->sprite_index;
+    uint8_t llto = sprite->linked_list_type_offset;
+    uint16_t next = sprite->next;
+    uint16_t next_in_quadrant = sprite->next_in_quadrant;
+    uint16_t prev = sprite->previous;
+    uint16_t sprite_index = sprite->sprite_index;
     _spriteFlashingList[sprite_index] = false;
 
     memset(sprite, 0, sizeof(rct_sprite));
@@ -292,7 +292,7 @@ static void sprite_reset(rct_unk_sprite *sprite)
 void sprite_clear_all_unused()
 {
     rct_unk_sprite *sprite;
-    uint16 spriteIndex, nextSpriteIndex;
+    uint16_t spriteIndex, nextSpriteIndex;
 
     spriteIndex = gSpriteListHead[SPRITE_LIST_NULL];
     while (spriteIndex != SPRITE_INDEX_NULL) {
@@ -318,12 +318,12 @@ void sprite_clear_all_unused()
 * rct2: 0x0069EC6B
 * bl: if bl & 2 > 0, the sprite ends up in the MISC linked list.
 */
-rct_sprite *create_sprite(uint8 bl)
+rct_sprite *create_sprite(uint8_t bl)
 {
     size_t linkedListTypeOffset = SPRITE_LIST_UNKNOWN * 2;
     if ((bl & 2) != 0) {
         // 69EC96;
-        uint16 cx = 0x12C - gSpriteListCount[SPRITE_LIST_MISC];
+        uint16_t cx = 0x12C - gSpriteListCount[SPRITE_LIST_MISC];
         if (cx >= gSpriteListCount[SPRITE_LIST_NULL]) {
             return nullptr;
         }
@@ -334,7 +334,7 @@ rct_sprite *create_sprite(uint8 bl)
 
     rct_unk_sprite *sprite = &(get_sprite(gSpriteListHead[SPRITE_LIST_NULL]))->unknown;
 
-    move_sprite_to_list((rct_sprite *)sprite, (uint8)linkedListTypeOffset);
+    move_sprite_to_list((rct_sprite *)sprite, (uint8_t)linkedListTypeOffset);
 
     // Need to reset all sprite data, as the uninitialised values
     // may contain garbage and cause a desync later on.
@@ -360,15 +360,15 @@ rct_sprite *create_sprite(uint8 bl)
  * rct2: 0x0069ED0B
  * This function moves a sprite to the specified sprite linked list.
  * There are 5/6 of those, and cl specifies a pointer offset
- * of the desired linked list in a uint16 array. Known valid values are
+ * of the desired linked list in a uint16_t array. Known valid values are
  * 2, 4, 6, 8 or 10 (SPRITE_LIST_... * 2)
  */
-void move_sprite_to_list(rct_sprite *sprite, uint8 newListOffset)
+void move_sprite_to_list(rct_sprite *sprite, uint8_t newListOffset)
 {
     rct_unk_sprite *unkSprite = &sprite->unknown;
-    uint8 oldListOffset = unkSprite->linked_list_type_offset;
-    sint32 oldList = oldListOffset >> 1;
-    sint32 newList = newListOffset >> 1;
+    uint8_t oldListOffset = unkSprite->linked_list_type_offset;
+    int32_t oldList = oldListOffset >> 1;
+    int32_t newList = newListOffset >> 1;
 
     // No need to move if the sprite is already in the desired list
     if (oldListOffset == newListOffset) {
@@ -436,7 +436,7 @@ static void sprite_steam_particle_update(rct_steam_particle *steam)
  *
  *  rct2: 0x0067363D
  */
-void sprite_misc_explosion_cloud_create(sint32 x, sint32 y, sint32 z)
+void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z)
 {
     rct_unk_sprite *sprite = (rct_unk_sprite*)create_sprite(2);
     if (sprite != nullptr) {
@@ -467,7 +467,7 @@ static void sprite_misc_explosion_cloud_update(rct_sprite * sprite)
  *
  *  rct2: 0x0067366B
  */
-void sprite_misc_explosion_flare_create(sint32 x, sint32 y, sint32 z)
+void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z)
 {
     rct_unk_sprite *sprite = (rct_unk_sprite*)create_sprite(2);
     if (sprite != nullptr) {
@@ -539,7 +539,7 @@ static void sprite_misc_update(rct_sprite *sprite)
 void sprite_misc_update_all()
 {
     rct_sprite *sprite;
-    uint16 spriteIndex;
+    uint16_t spriteIndex;
 
     spriteIndex = gSpriteListHead[SPRITE_LIST_MISC];
     while (spriteIndex != SPRITE_INDEX_NULL) {
@@ -558,7 +558,7 @@ void sprite_misc_update_all()
  * @param z (dx)
  * @param sprite (esi)
  */
-void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite *sprite)
+void sprite_move(int16_t x, int16_t y, int16_t z, rct_sprite *sprite)
 {
     if (x < 0 || y < 0 || x > 0x1FFF || y > 0x1FFF) {
         x = LOCATION_NULL;
@@ -567,7 +567,7 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite *sprite)
     size_t newIndex = GetSpatialIndexOffset(x, y);
     size_t currentIndex = GetSpatialIndexOffset(sprite->unknown.x, sprite->unknown.y);
     if (newIndex != currentIndex) {
-        uint16 *spriteIndex = &gSpriteSpatialIndex[currentIndex];
+        uint16_t *spriteIndex = &gSpriteSpatialIndex[currentIndex];
         if (*spriteIndex != SPRITE_INDEX_NULL) {
             rct_sprite *sprite2 = get_sprite(*spriteIndex);
             while (sprite != sprite2) {
@@ -580,7 +580,7 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite *sprite)
         }
         *spriteIndex = sprite->unknown.next_in_quadrant;
 
-        sint32 tempSpriteIndex = gSpriteSpatialIndex[newIndex];
+        int32_t tempSpriteIndex = gSpriteSpatialIndex[newIndex];
         gSpriteSpatialIndex[newIndex] = sprite->unknown.sprite_index;
         sprite->unknown.next_in_quadrant = tempSpriteIndex;
     }
@@ -595,8 +595,8 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite *sprite)
     }
 }
 
-void sprite_set_coordinates(sint16 x, sint16 y, sint16 z, rct_sprite *sprite){
-    sint16 new_x = x, new_y = y, start_x = x;
+void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, rct_sprite *sprite){
+    int16_t new_x = x, new_y = y, start_x = x;
     switch (get_current_rotation()){
     case 0:
         new_x = new_y - new_x;
@@ -637,7 +637,7 @@ void sprite_remove(rct_sprite *sprite)
     _spriteFlashingList[sprite->unknown.sprite_index] = false;
 
     size_t quadrantIndex = GetSpatialIndexOffset(sprite->unknown.x, sprite->unknown.y);
-    uint16 *spriteIndex = &gSpriteSpatialIndex[quadrantIndex];
+    uint16_t *spriteIndex = &gSpriteSpatialIndex[quadrantIndex];
     rct_sprite *quadrantSprite;
     while (*spriteIndex != SPRITE_INDEX_NULL && (quadrantSprite = get_sprite(*spriteIndex)) != sprite)
     {
@@ -646,7 +646,7 @@ void sprite_remove(rct_sprite *sprite)
     *spriteIndex = sprite->unknown.next_in_quadrant;
 }
 
-static bool litter_can_be_at(sint32 x, sint32 y, sint32 z)
+static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
 {
     rct_tile_element *tileElement;
 
@@ -658,7 +658,7 @@ static bool litter_can_be_at(sint32 x, sint32 y, sint32 z)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        sint32 pathZ = tileElement->base_height * 8;
+        int32_t pathZ = tileElement->base_height * 8;
         if (pathZ < z || pathZ >= z + 32)
             continue;
 
@@ -674,7 +674,7 @@ static bool litter_can_be_at(sint32 x, sint32 y, sint32 z)
  *
  *  rct2: 0x0067375D
  */
-void litter_create(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 type)
+void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type)
 {
     if (gCheatsDisableLittering)
         return;
@@ -687,8 +687,8 @@ void litter_create(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 type)
 
     if (gSpriteListCount[SPRITE_LIST_LITTER] >= 500) {
         rct_litter *newestLitter = nullptr;
-        uint32 newestLitterCreationTick = 0;
-        for (uint16 nextSpriteIndex, spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
+        uint32_t newestLitterCreationTick = 0;
+        for (uint16_t nextSpriteIndex, spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
             rct_litter *litter = &get_sprite(spriteIndex)->litter;
             nextSpriteIndex = litter->next;
             if (newestLitterCreationTick <= litter->creationTick) {
@@ -723,12 +723,12 @@ void litter_create(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 type)
  *
  *  rct2: 0x006738E1
  */
-void litter_remove_at(sint32 x, sint32 y, sint32 z)
+void litter_remove_at(int32_t x, int32_t y, int32_t z)
 {
-    uint16 spriteIndex = sprite_get_first_in_quadrant(x, y);
+    uint16_t spriteIndex = sprite_get_first_in_quadrant(x, y);
     while (spriteIndex != SPRITE_INDEX_NULL) {
         rct_sprite *sprite = get_sprite(spriteIndex);
-        uint16 nextSpriteIndex = sprite->unknown.next_in_quadrant;
+        uint16_t nextSpriteIndex = sprite->unknown.next_in_quadrant;
         if (sprite->unknown.linked_list_type_offset == SPRITE_LIST_LITTER * 2) {
             rct_litter *litter = &sprite->litter;
 
@@ -759,7 +759,7 @@ static bool sprite_should_tween(rct_sprite *sprite)
 
 static void store_sprite_locations(LocationXYZ16 * sprite_locations)
 {
-    for (uint16 i = 0; i < MAX_SPRITES; i++) {
+    for (uint16_t i = 0; i < MAX_SPRITES; i++) {
         // skip going through `get_sprite` to not get stalled on assert,
         // this can get very expensive for busy parks with uncap FPS option on
         const rct_sprite *sprite = &_spriteList[i];
@@ -783,7 +783,7 @@ void sprite_position_tween_all(float alpha)
 {
     const float inv = (1.0f - alpha);
 
-    for (uint16 i = 0; i < MAX_SPRITES; i++) {
+    for (uint16_t i = 0; i < MAX_SPRITES; i++) {
         rct_sprite * sprite = get_sprite(i);
         if (sprite_should_tween(sprite)) {
             LocationXYZ16 posA = _spritelocations1[i];
@@ -807,7 +807,7 @@ void sprite_position_tween_all(float alpha)
  */
 void sprite_position_tween_restore()
 {
-    for (uint16 i = 0; i < MAX_SPRITES; i++) {
+    for (uint16_t i = 0; i < MAX_SPRITES; i++) {
         rct_sprite * sprite = get_sprite(i);
         if (sprite_should_tween(sprite)) {
             invalidate_sprite_2(sprite);
@@ -820,7 +820,7 @@ void sprite_position_tween_restore()
 
 void sprite_position_tween_reset()
 {
-    for (uint16 i = 0; i < MAX_SPRITES; i++) {
+    for (uint16_t i = 0; i < MAX_SPRITES; i++) {
         rct_sprite * sprite = get_sprite(i);
         _spritelocations1[i].x =
         _spritelocations2[i].x = sprite->unknown.x;
@@ -843,7 +843,7 @@ bool sprite_get_flashing(rct_sprite *sprite)
     return _spriteFlashingList[sprite->unknown.sprite_index];
 }
 
-static rct_sprite * find_sprite_list_cycle(uint16 sprite_idx)
+static rct_sprite * find_sprite_list_cycle(uint16_t sprite_idx)
 {
     if (sprite_idx == SPRITE_INDEX_NULL)
     {
@@ -878,7 +878,7 @@ static rct_sprite * find_sprite_list_cycle(uint16 sprite_idx)
     return cycle_start;
 }
 
-static rct_sprite * find_sprite_quadrant_cycle(uint16 sprite_idx)
+static rct_sprite * find_sprite_quadrant_cycle(uint16_t sprite_idx)
 {
     if (sprite_idx == SPRITE_INDEX_NULL)
     {
@@ -913,9 +913,9 @@ static rct_sprite * find_sprite_quadrant_cycle(uint16 sprite_idx)
     return cycle_start;
 }
 
-static bool index_is_in_list(uint16 index, enum SPRITE_LIST sl)
+static bool index_is_in_list(uint16_t index, enum SPRITE_LIST sl)
 {
-    uint16 sprite_index = gSpriteListHead[sl];
+    uint16_t sprite_index = gSpriteListHead[sl];
     while (sprite_index != SPRITE_INDEX_NULL)
     {
         if (sprite_index == index)
@@ -927,9 +927,9 @@ static bool index_is_in_list(uint16 index, enum SPRITE_LIST sl)
     return false;
 }
 
-sint32 check_for_sprite_list_cycles(bool fix)
+int32_t check_for_sprite_list_cycles(bool fix)
 {
-    for (sint32 i = 0; i < NUM_SPRITE_LISTS; i++) {
+    for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++) {
         rct_sprite * cycle_start = find_sprite_list_cycle(gSpriteListHead[i]);
         if (cycle_start != nullptr)
         {
@@ -940,7 +940,7 @@ sint32 check_for_sprite_list_cycles(bool fix)
                 get_sprite(gSpriteListHead[i])->unknown.previous = SPRITE_INDEX_NULL;
 
                 // Store the leftover part of cycle to be fixed
-                uint16 cycle_next = cycle_start->unknown.next;
+                uint16_t cycle_next = cycle_start->unknown.next;
 
                 // Break the cycle
                 cycle_start->unknown.next = SPRITE_INDEX_NULL;
@@ -970,11 +970,11 @@ sint32 check_for_sprite_list_cycles(bool fix)
  *
  * @return count of disjoint sprites found
  */
-sint32 fix_disjoint_sprites()
+int32_t fix_disjoint_sprites()
 {
     // Find reachable sprites
     bool reachable[MAX_SPRITES] = { false };
-    uint16 sprite_idx = gSpriteListHead[SPRITE_LIST_NULL];
+    uint16_t sprite_idx = gSpriteListHead[SPRITE_LIST_NULL];
     rct_sprite * null_list_tail = nullptr;
     while (sprite_idx != SPRITE_INDEX_NULL)
     {
@@ -984,7 +984,7 @@ sint32 fix_disjoint_sprites()
         sprite_idx = null_list_tail->unknown.next;
     }
 
-    sint32 count = 0;
+    int32_t count = 0;
 
     // Find all null sprites
     for (sprite_idx = 0; sprite_idx < MAX_SPRITES; sprite_idx++)
@@ -1009,16 +1009,16 @@ sint32 fix_disjoint_sprites()
     return count;
 }
 
-sint32 check_for_spatial_index_cycles(bool fix)
+int32_t check_for_spatial_index_cycles(bool fix)
 {
-    for (sint32 i = 0; i < SPATIAL_INDEX_LOCATION_NULL; i++) {
+    for (int32_t i = 0; i < SPATIAL_INDEX_LOCATION_NULL; i++) {
         rct_sprite * cycle_start = find_sprite_quadrant_cycle(gSpriteSpatialIndex[i]);
         if (cycle_start != nullptr)
         {
             if (fix)
             {
                 // Store the leftover part of cycle to be fixed
-                uint16 cycle_next = cycle_start->unknown.next_in_quadrant;
+                uint16_t cycle_next = cycle_start->unknown.next_in_quadrant;
 
                 // Break the cycle
                 cycle_start->unknown.next_in_quadrant = SPRITE_INDEX_NULL;

@@ -14,9 +14,9 @@
 #include <openrct2/core/Imaging.h>
 #include "BitmapReader.h"
 
-static std::vector<uint8> ReadToVector(std::istream &stream)
+static std::vector<uint8_t> ReadToVector(std::istream &stream)
 {
-    std::vector<uint8> result;
+    std::vector<uint8_t> result;
     if (!stream.eof() && !stream.fail())
     {
         stream.seekg(0, std::ios_base::end);
@@ -58,11 +58,11 @@ static Image ReadBitmap(std::istream &istream, IMAGE_FORMAT format)
             std::fill(image.Pixels.begin(), image.Pixels.end(), 0xFF);
 
             // Copy pixels over
-            auto src = (const uint8 *)bitmap->pixels;
+            auto src = (const uint8_t *)bitmap->pixels;
             auto dst = image.Pixels.data();
             if (numChannels == 4)
             {
-                for (sint32 y = 0; y < bitmap->h; y++)
+                for (int32_t y = 0; y < bitmap->h; y++)
                 {
                     std::memcpy(dst, src, bitmap->w);
                     src += bitmap->pitch;
@@ -71,9 +71,9 @@ static Image ReadBitmap(std::istream &istream, IMAGE_FORMAT format)
             }
             else
             {
-                for (sint32 y = 0; y < bitmap->h; y++)
+                for (int32_t y = 0; y < bitmap->h; y++)
                 {
-                    for (sint32 x = 0; x < bitmap->w; x++)
+                    for (int32_t x = 0; x < bitmap->w; x++)
                     {
                         std::memcpy(dst, src, 3);
                         src += 3;

@@ -20,12 +20,12 @@ namespace CODE_PAGE
     // windows.h defines CP_UTF8
 #undef CP_UTF8
 
-    constexpr sint32 CP_932 = 932;      // ANSI/OEM Japanese; Japanese (Shift-JIS)
-    constexpr sint32 CP_936 = 936;      // ANSI/OEM Simplified Chinese (PRC, Singapore); Chinese Simplified (GB2312)
-    constexpr sint32 CP_949 = 949;      // ANSI/OEM Korean (Unified Hangul Code)
-    constexpr sint32 CP_950 = 950;      // ANSI/OEM Traditional Chinese (Taiwan; Hong Kong SAR, PRC); Chinese Traditional (Big5)
-    constexpr sint32 CP_1252 = 1252;    // ANSI Latin 1; Western European (Windows)
-    constexpr sint32 CP_UTF8 = 65001;   // Unicode (UTF-8)
+    constexpr int32_t CP_932 = 932;      // ANSI/OEM Japanese; Japanese (Shift-JIS)
+    constexpr int32_t CP_936 = 936;      // ANSI/OEM Simplified Chinese (PRC, Singapore); Chinese Simplified (GB2312)
+    constexpr int32_t CP_949 = 949;      // ANSI/OEM Korean (Unified Hangul Code)
+    constexpr int32_t CP_950 = 950;      // ANSI/OEM Traditional Chinese (Taiwan; Hong Kong SAR, PRC); Chinese Traditional (Big5)
+    constexpr int32_t CP_1252 = 1252;    // ANSI Latin 1; Western European (Windows)
+    constexpr int32_t CP_UTF8 = 65001;   // Unicode (UTF-8)
 } // namespace CODE_PAGE
 
 namespace String
@@ -39,8 +39,8 @@ namespace String
     std::wstring    ToUtf16(const std::string_view& src);
 
     bool   IsNullOrEmpty(const utf8 * str);
-    sint32 Compare(const std::string &a, const std::string &b, bool ignoreCase = false);
-    sint32 Compare(const utf8 * a, const utf8 * b, bool ignoreCase = false);
+    int32_t Compare(const std::string &a, const std::string &b, bool ignoreCase = false);
+    int32_t Compare(const utf8 * a, const utf8 * b, bool ignoreCase = false);
     bool   Equals(const std::string &a, const std::string &b, bool ignoreCase = false);
     bool   Equals(const utf8 * a, const utf8 * b, bool ignoreCase = false);
     bool   StartsWith(const utf8 * str, const utf8 * match, bool ignoreCase = false);
@@ -103,7 +103,7 @@ namespace String
     /**
      * Converts a multi-byte string from one code page to another.
      */
-    std::string Convert(const std::string_view& src, sint32 srcCodePage, sint32 dstCodePage);
+    std::string Convert(const std::string_view& src, int32_t srcCodePage, int32_t dstCodePage);
 
     /**
      * Returns an uppercased version of a UTF-8 string.

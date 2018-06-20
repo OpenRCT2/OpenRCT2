@@ -17,12 +17,12 @@ namespace OpenRCT2::Audio
     class NullAudioSource : public IAudioSource
     {
     public:
-        uint64 GetLength() const override
+        uint64_t GetLength() const override
         {
             return 0;
         }
 
-        size_t Read([[maybe_unused]] void* dst, [[maybe_unused]] uint64 offset, [[maybe_unused]] size_t len) override
+        size_t Read([[maybe_unused]] void* dst, [[maybe_unused]] uint64_t offset, [[maybe_unused]] size_t len) override
         {
             return 0;
         }

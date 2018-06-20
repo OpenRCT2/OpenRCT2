@@ -25,16 +25,16 @@
 rct_sprite *sprite_list =           RCT2_ADDRESS(0x010E63BC, rct_sprite);
 
 Ride gRideList[MAX_RIDES];
-sint16 gMapSizeUnits;
-sint16 gMapBaseZ;
+int16_t gMapSizeUnits;
+int16_t gMapBaseZ;
 bool gTrackDesignSaveMode = false;
-uint8 gTrackDesignSaveRideIndex = 255;
-uint8 gClipHeight = 255;
+uint8_t gTrackDesignSaveRideIndex = 255;
+uint8_t gClipHeight = 255;
 LocationXY8 gClipSelectionA = { 0, 0 };
 LocationXY8 gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
-uint32 gCurrentViewportFlags;
-uint32 gScenarioTicks;
-uint8 gCurrentRotation;
+uint32_t gCurrentViewportFlags;
+uint32_t gScenarioTicks;
+uint8_t gCurrentRotation;
 
 const CoordsXY CoordsDirectionDelta[] = {
         { -32,   0 },
@@ -58,14 +58,14 @@ const TileCoordsXY TileDirectionDelta[] = {
         { -1, -1 }
 };
 
-TileCoordsXYZD ride_get_entrance_location(const Ride * ride, const sint32 stationIndex);
-TileCoordsXYZD ride_get_exit_location(const Ride * ride, const sint32 stationIndex);
+TileCoordsXYZD ride_get_entrance_location(const Ride * ride, const int32_t stationIndex);
+TileCoordsXYZD ride_get_exit_location(const Ride * ride, const int32_t stationIndex);
 
-uint8 get_current_rotation() {
+uint8_t get_current_rotation() {
     return gCurrentRotation & 3;
 }
 
-const uint32 construction_markers[] = {
+const uint32_t construction_markers[] = {
     COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP, // White
     2 << 19 | 0b110000 << 19 | IMAGE_TYPE_TRANSPARENT, // Translucent
 };
@@ -85,20 +85,20 @@ int object_entry_group_counts[] = {
 };
 
 GeneralConfiguration gConfigGeneral;
-uint16 gMapSelectFlags;
-uint16 gMapSelectType;
+uint16_t gMapSelectFlags;
+uint16_t gMapSelectType;
 LocationXY16 gMapSelectPositionA;
 LocationXY16 gMapSelectPositionB;
 LocationXYZ16 gMapSelectArrowPosition;
-uint8 gMapSelectArrowDirection;
+uint8_t gMapSelectArrowDirection;
 
-void entrance_paint(paint_session * session, uint8 direction, int height, const rct_tile_element * tile_element) {}
-void banner_paint(paint_session * session, uint8 direction, int height, const rct_tile_element * tile_element) {}
-void surface_paint(paint_session * session, uint8 direction, uint16 height, const rct_tile_element * tileElement) {}
-void path_paint(paint_session * session, uint16 height, const rct_tile_element * tileElement) {}
-void scenery_paint(paint_session * session, uint8 direction, int height, const rct_tile_element * tileElement) {}
-void fence_paint(paint_session * session, uint8 direction, int height, const rct_tile_element * tileElement) {}
-void large_scenery_paint(paint_session * session, uint8 direction, uint16 height, const rct_tile_element * tileElement) {}
+void entrance_paint(paint_session * session, uint8_t direction, int height, const rct_tile_element * tile_element) {}
+void banner_paint(paint_session * session, uint8_t direction, int height, const rct_tile_element * tile_element) {}
+void surface_paint(paint_session * session, uint8_t direction, uint16_t height, const rct_tile_element * tileElement) {}
+void path_paint(paint_session * session, uint16_t height, const rct_tile_element * tileElement) {}
+void scenery_paint(paint_session * session, uint8_t direction, int height, const rct_tile_element * tileElement) {}
+void fence_paint(paint_session * session, uint8_t direction, int height, const rct_tile_element * tileElement) {}
+void large_scenery_paint(paint_session * session, uint8_t direction, uint16_t height, const rct_tile_element * tileElement) {}
 
 Ride *get_ride(int index) {
     if (index < 0 || index >= MAX_RIDES) {
@@ -135,7 +135,7 @@ bool rct_tile_element::IsLastForTile() const
     return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
-uint8 rct_tile_element::GetType() const
+uint8_t rct_tile_element::GetType() const
 {
     return this->type & TILE_ELEMENT_TYPE_MASK;
 }
@@ -144,7 +144,7 @@ int tile_element_get_direction(const rct_tile_element *element) {
     return element->type & TILE_ELEMENT_DIRECTION_MASK;
 }
 
-int tile_element_get_direction_with_offset(const rct_tile_element *element, uint8 offset) {
+int tile_element_get_direction_with_offset(const rct_tile_element *element, uint8_t offset) {
     return ((element->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
 }
 
@@ -160,13 +160,13 @@ int tile_element_get_station(const rct_tile_element * tileElement) {
     return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
 }
 
-void tile_element_set_station(rct_tile_element * tileElement, uint32 stationIndex)
+void tile_element_set_station(rct_tile_element * tileElement, uint32_t stationIndex)
 {
     tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
     tileElement->properties.track.sequence |= (stationIndex << 4);
 }
 
-sint32 tile_element_get_track_sequence(const rct_tile_element * tileElement)
+int32_t tile_element_get_track_sequence(const rct_tile_element * tileElement)
 {
     return tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
 }
@@ -221,7 +221,7 @@ void tile_element_decrement_onride_photo_timout(rct_tile_element * tileElement)
     }
 }
 
-sint32 surface_get_water_height(const rct_tile_element * tileElement)
+int32_t surface_get_water_height(const rct_tile_element * tileElement)
 {
     return tileElement->properties.surface.terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
 }
@@ -231,7 +231,7 @@ bool ride_type_has_flag(int rideType, int flag)
     return (RideProperties[rideType].flags & flag) != 0;
 }
 
-sint16 get_height_marker_offset()
+int16_t get_height_marker_offset()
 {
     return 0;
 }
@@ -268,32 +268,32 @@ bool is_csg_loaded()
     return false;
 }
 
-uint8 track_element_get_colour_scheme(const rct_tile_element * tileElement)
+uint8_t track_element_get_colour_scheme(const rct_tile_element * tileElement)
 {
     return tileElement->properties.track.colour & 0x3;
 }
 
-uint16 track_element_get_maze_entry(const rct_tile_element * tileElement)
+uint16_t track_element_get_maze_entry(const rct_tile_element * tileElement)
 {
     return tileElement->properties.track.maze_entry;
 }
 
-uint8 track_element_get_ride_index(const rct_tile_element * tileElement)
+uint8_t track_element_get_ride_index(const rct_tile_element * tileElement)
 {
     return tileElement->properties.track.ride_index;
 }
 
-void track_element_set_ride_index(rct_tile_element * tileElement, uint8 rideIndex)
+void track_element_set_ride_index(rct_tile_element * tileElement, uint8_t rideIndex)
 {
     tileElement->properties.track.ride_index = rideIndex;
 }
 
-uint8 track_element_get_type(const rct_tile_element * tileElement)
+uint8_t track_element_get_type(const rct_tile_element * tileElement)
 {
     return tileElement->properties.track.type;
 }
 
-void track_element_set_type(rct_tile_element * tileElement, uint8 type)
+void track_element_set_type(rct_tile_element * tileElement, uint8_t type)
 {
     tileElement->properties.track.type = type;
 }
@@ -308,12 +308,12 @@ void track_element_clear_cable_lift(rct_tile_element * trackElement)
     trackElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
 
-TileCoordsXYZD ride_get_entrance_location(const Ride * ride, const sint32 stationIndex)
+TileCoordsXYZD ride_get_entrance_location(const Ride * ride, const int32_t stationIndex)
 {
     return ride->entrances[stationIndex];
 }
 
-TileCoordsXYZD ride_get_exit_location(const Ride * ride, const sint32 stationIndex)
+TileCoordsXYZD ride_get_exit_location(const Ride * ride, const int32_t stationIndex)
 {
     return ride->exits[stationIndex];
 }

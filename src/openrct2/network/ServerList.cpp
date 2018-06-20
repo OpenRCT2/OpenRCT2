@@ -27,7 +27,7 @@ std::vector<server_entry> server_list_read()
         auto env = GetContext()->GetPlatformEnvironment();
         auto path = env->GetFilePath(PATHID::NETWORK_SERVERS);
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        auto numEntries = fs.ReadValue<uint32>();
+        auto numEntries = fs.ReadValue<uint32_t>();
         for (size_t i = 0; i < numEntries; i++)
         {
             server_entry serverInfo;
@@ -61,7 +61,7 @@ bool server_list_write(const std::vector<server_entry> &entries)
     try
     {
         auto fs = FileStream(path, FILE_MODE_WRITE);
-        fs.WriteValue<uint32>((uint32)entries.size());
+        fs.WriteValue<uint32_t>((uint32_t)entries.size());
         for (const auto &entry : entries)
         {
             fs.WriteString(entry.address);

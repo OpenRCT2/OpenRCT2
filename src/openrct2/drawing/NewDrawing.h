@@ -16,15 +16,15 @@ struct rct_palette_entry;
 
 extern rct_string_id DrawingEngineStringIds[3];
 
-sint32 drawing_engine_get_type();
-bool drawing_engine_requires_new_window(sint32 srcEngine, sint32 dstEngine);
+int32_t drawing_engine_get_type();
+bool drawing_engine_requires_new_window(int32_t srcEngine, int32_t dstEngine);
 void drawing_engine_init();
 void drawing_engine_resize();
 void drawing_engine_set_palette(const rct_palette_entry * colours);
-void drawing_engine_copy_rect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy);
+void drawing_engine_copy_rect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy);
 void drawing_engine_dispose();
 
 rct_drawpixelinfo * drawing_engine_get_dpi();
 bool drawing_engine_has_dirty_optimisations();
-void drawing_engine_invalidate_image(uint32 image);
+void drawing_engine_invalidate_image(uint32_t image);
 void drawing_engine_set_vsync(bool vsync);

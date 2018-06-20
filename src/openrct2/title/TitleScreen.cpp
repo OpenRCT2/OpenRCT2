@@ -162,11 +162,11 @@ void TitleScreen::Update()
         TryLoadSequence();
         _sequencePlayer->Update();
 
-        sint32 numUpdates = 1;
+        int32_t numUpdates = 1;
         if (gGameSpeed > 1) {
             numUpdates = 1 << (gGameSpeed - 1);
         }
-        for (sint32 i = 0; i < numUpdates; i++)
+        for (int32_t i = 0; i < numUpdates; i++)
         {
             _gameState.UpdateLogic();
         }
@@ -232,7 +232,7 @@ void TitleScreen::TitleInitialise()
             seqId = 0;
         }
     }
-    ChangePresetSequence((sint32)seqId);
+    ChangePresetSequence((int32_t)seqId);
 }
 
 bool TitleScreen::TryLoadSequence(bool loadPreview)
@@ -369,7 +369,7 @@ bool title_is_previewing_sequence()
     return false;
 }
 
-void DrawOpenRCT2(rct_drawpixelinfo * dpi, sint32 x, sint32 y)
+void DrawOpenRCT2(rct_drawpixelinfo * dpi, int32_t x, int32_t y)
 {
     utf8 buffer[256];
 
@@ -384,7 +384,7 @@ void DrawOpenRCT2(rct_drawpixelinfo * dpi, sint32 x, sint32 y)
     gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5 - 13);
 
     // Invalidate screen area
-    sint16 width = (sint16)gfx_get_string_width(buffer);
+    int16_t width = (int16_t)gfx_get_string_width(buffer);
     gfx_set_dirty_blocks(x, y, x + width, y + 30); // 30 is an arbitrary height to catch both strings
 
     // Write platform information

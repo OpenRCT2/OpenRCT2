@@ -14,7 +14,7 @@
 /**
  * The type of encoding / compression for a sawyer encoded chunk.
  */
-enum class SAWYER_ENCODING : uint8
+enum class SAWYER_ENCODING : uint8_t
 {
     NONE,
     RLE,

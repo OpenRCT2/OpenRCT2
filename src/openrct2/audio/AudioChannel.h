@@ -25,25 +25,25 @@ namespace OpenRCT2::Audio
 
         virtual IAudioSource * GetSource() const abstract;
 
-        virtual sint32  GetGroup() const abstract;
-        virtual void    SetGroup(sint32 group) abstract;
+        virtual int32_t  GetGroup() const abstract;
+        virtual void    SetGroup(int32_t group) abstract;
 
         virtual double  GetRate() const abstract;
         virtual void    SetRate(double rate) abstract;
 
-        virtual uint64  GetOffset() const abstract;
-        virtual bool    SetOffset(uint64 offset) abstract;
+        virtual uint64_t  GetOffset() const abstract;
+        virtual bool    SetOffset(uint64_t offset) abstract;
 
-        virtual sint32  GetLoop() const abstract;
-        virtual void    SetLoop(sint32 value) abstract;
+        virtual int32_t  GetLoop() const abstract;
+        virtual void    SetLoop(int32_t value) abstract;
 
-        virtual sint32  GetVolume() const abstract;
+        virtual int32_t  GetVolume() const abstract;
         virtual float   GetVolumeL() const abstract;
         virtual float   GetVolumeR() const abstract;
         virtual float   GetOldVolumeL() const abstract;
         virtual float   GetOldVolumeR() const abstract;
-        virtual sint32  GetOldVolume() const abstract;
-        virtual void    SetVolume(sint32 volume) abstract;
+        virtual int32_t  GetOldVolume() const abstract;
+        virtual void    SetVolume(int32_t volume) abstract;
 
         virtual float   GetPan() const abstract;
         virtual void    SetPan(float pan) abstract;
@@ -61,7 +61,7 @@ namespace OpenRCT2::Audio
 
         virtual bool IsPlaying() const abstract;
 
-        virtual void Play(IAudioSource * source, sint32 loop = 0) abstract;
+        virtual void Play(IAudioSource * source, int32_t loop = 0) abstract;
         virtual void UpdateOldVolume() abstract;
 
         virtual size_t Read(void * dst, size_t len) abstract;

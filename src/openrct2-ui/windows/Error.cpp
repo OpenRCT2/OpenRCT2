@@ -64,7 +64,7 @@ static rct_window_event_list window_error_events = {
 // clang-format on
 
 static char _window_error_text[512];
-static uint16 _window_error_num_lines;
+static uint16_t _window_error_num_lines;
 
 /**
  *
@@ -76,7 +76,7 @@ static uint16 _window_error_num_lines;
 rct_window * window_error_open(rct_string_id title, rct_string_id message)
 {
     utf8 *dst;
-    sint32 numLines, fontHeight, x, y, width, height, maxY;
+    int32_t numLines, fontHeight, x, y, width, height, maxY;
     rct_window *w;
 
     window_close_by_class(WC_ERROR);
@@ -121,8 +121,8 @@ rct_window * window_error_open(rct_string_id title, rct_string_id message)
     window_error_widgets[WIDX_BACKGROUND].right = width;
     window_error_widgets[WIDX_BACKGROUND].bottom = height;
 
-    sint32 screenWidth = context_get_width();
-    sint32 screenHeight = context_get_height();
+    int32_t screenWidth = context_get_width();
+    int32_t screenHeight = context_get_height();
     const CursorState * state = context_get_cursor_state();
     x = state->x - (width / 2);
     x = Math::Clamp(0, x, screenWidth);
@@ -162,7 +162,7 @@ static void window_error_unknown5(rct_window *w)
  */
 static void window_error_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 t, l, r, b;
+    int32_t t, l, r, b;
 
     l = w->x;
     t = w->y;

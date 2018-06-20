@@ -22,10 +22,10 @@
 /** rct2: 0x0087694C */
 static void heartline_twister_rc_track_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -91,13 +91,13 @@ static void heartline_twister_rc_track_flat(
 
 static void heartline_twister_rc_track_station(
     paint_session *          session,
-    uint8                    rideIndex,
-    [[maybe_unused]] uint8   trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    [[maybe_unused]] uint8_t   trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][3] = {
+    static constexpr const uint32_t imageIds[4][3] = {
         { 19732, SPR_STATION_BASE_B_SW_NE },
         { 19733, SPR_STATION_BASE_B_NW_SE },
         { 19732, SPR_STATION_BASE_B_SW_NE },
@@ -118,10 +118,10 @@ static void heartline_twister_rc_track_station(
 /** rct2: 0x0087695C */
 static void heartline_twister_rc_track_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -207,10 +207,10 @@ static void heartline_twister_rc_track_25_deg_up(
 /** rct2: 0x008769FC */
 static void heartline_twister_rc_track_60_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -296,10 +296,10 @@ static void heartline_twister_rc_track_60_deg_up(
 /** rct2: 0x0087696C */
 static void heartline_twister_rc_track_flat_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -385,10 +385,10 @@ static void heartline_twister_rc_track_flat_to_25_deg_up(
 /** rct2: 0x008769BC */
 static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -474,10 +474,10 @@ static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(
 /** rct2: 0x008769CC */
 static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -563,10 +563,10 @@ static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(
 /** rct2: 0x0087697C */
 static void heartline_twister_rc_track_25_deg_up_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -652,10 +652,10 @@ static void heartline_twister_rc_track_25_deg_up_to_flat(
 /** rct2: 0x0087698C */
 static void heartline_twister_rc_track_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     heartline_twister_rc_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -664,10 +664,10 @@ static void heartline_twister_rc_track_25_deg_down(
 /** rct2: 0x00876A0C */
 static void heartline_twister_rc_track_60_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     heartline_twister_rc_track_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -676,10 +676,10 @@ static void heartline_twister_rc_track_60_deg_down(
 /** rct2: 0x0087699C */
 static void heartline_twister_rc_track_flat_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     heartline_twister_rc_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -688,10 +688,10 @@ static void heartline_twister_rc_track_flat_to_25_deg_down(
 /** rct2: 0x008769DC */
 static void heartline_twister_rc_track_25_deg_down_to_60_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     heartline_twister_rc_track_60_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
@@ -701,10 +701,10 @@ static void heartline_twister_rc_track_25_deg_down_to_60_deg_down(
 /** rct2: 0x008769EC */
 static void heartline_twister_rc_track_60_deg_down_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     heartline_twister_rc_track_25_deg_up_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
@@ -714,10 +714,10 @@ static void heartline_twister_rc_track_60_deg_down_to_25_deg_down(
 /** rct2: 0x008769AC */
 static void heartline_twister_rc_track_25_deg_down_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     heartline_twister_rc_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -726,10 +726,10 @@ static void heartline_twister_rc_track_25_deg_down_to_flat(
 /** rct2: 0x00876A6C */
 static void heartline_twister_rc_track_heartline_transfer_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -908,10 +908,10 @@ static void heartline_twister_rc_track_heartline_transfer_up(
 /** rct2: 0x00876A7C */
 static void heartline_twister_rc_track_heartline_transfer_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -1090,10 +1090,10 @@ static void heartline_twister_rc_track_heartline_transfer_down(
 /** rct2: 0x00876A4C */
 static void heartline_twister_rc_track_left_heartline_roll(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -1316,10 +1316,10 @@ static void heartline_twister_rc_track_left_heartline_roll(
 /** rct2: 0x00876A5C */
 static void heartline_twister_rc_track_right_heartline_roll(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -1539,7 +1539,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
     }
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_heartline_twister_rc(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_heartline_twister_rc(int32_t trackType, int32_t direction)
 {
     switch (trackType)
     {

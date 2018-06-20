@@ -16,8 +16,8 @@
 #include "../../world/Sprite.h"
 
 /** rct2: 0x0076E5C9 */
-static void paint_twist_structure(paint_session * session, Ride * ride, uint8 direction, sint8 xOffset, sint8 yOffset,
-                                  uint16 height)
+static void paint_twist_structure(paint_session * session, Ride * ride, uint8_t direction, int8_t xOffset, int8_t yOffset,
+                                  uint16_t height)
 {
     const rct_tile_element * savedTileElement = static_cast<const rct_tile_element *>(session->CurrentlyDrawnItem);
 
@@ -30,7 +30,7 @@ static void paint_twist_structure(paint_session * session, Ride * ride, uint8 di
     }
 
     height += 7;
-    uint32 baseImageId = rideEntry->vehicles[0].base_image_id;
+    uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
     {
@@ -40,7 +40,7 @@ static void paint_twist_structure(paint_session * session, Ride * ride, uint8 di
         session->CurrentlyDrawnItem = vehicle;
     }
 
-    uint32 frameNum = (direction * 88) % 216;
+    uint32_t frameNum = (direction * 88) % 216;
     if (vehicle != nullptr)
     {
         frameNum += (vehicle->sprite_direction >> 3) << 4;
@@ -48,15 +48,15 @@ static void paint_twist_structure(paint_session * session, Ride * ride, uint8 di
         frameNum = frameNum % 216;
     }
 
-    uint32 imageColourFlags = session->TrackColours[SCHEME_MISC];
+    uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
         imageColourFlags =
             SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
-    uint32 structureFrameNum = frameNum % 24;
-    uint32 imageId           = (baseImageId + structureFrameNum) | imageColourFlags;
+    uint32_t structureFrameNum = frameNum % 24;
+    uint32_t imageId           = (baseImageId + structureFrameNum) | imageColourFlags;
     sub_98197C(session, imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height);
 
     rct_drawpixelinfo * dpi = session->DPI;
@@ -64,11 +64,11 @@ static void paint_twist_structure(paint_session * session, Ride * ride, uint8 di
     if (dpi->zoom_level < 1 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
 
-        for (sint32 i = 0; i < vehicle->num_peeps; i += 2)
+        for (int32_t i = 0; i < vehicle->num_peeps; i += 2)
         {
             imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[i], vehicle->peep_tshirt_colours[i + 1]);
 
-            uint32 peepFrameNum = (frameNum + i * 12) % 216;
+            uint32_t peepFrameNum = (frameNum + i * 12) % 216;
             imageId             = (baseImageId + 24 + peepFrameNum) | imageColourFlags;
             sub_98199C(session, imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height);
         }
@@ -81,19 +81,19 @@ static void paint_twist_structure(paint_session * session, Ride * ride, uint8 di
 /** rct2: 0x0076D858 */
 static void paint_twist(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
-    const uint8 edges    = edges_3x3[trackSequence];
+    const uint8_t edges    = edges_3x3[trackSequence];
     Ride *      ride     = get_ride(rideIndex);
     LocationXY16    position = session->MapPosition;
 
-    uint32 imageId;
+    uint32_t imageId;
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
@@ -142,7 +142,7 @@ static void paint_twist(
         break;
     }
 
-    sint32 cornerSegments = 0;
+    int32_t cornerSegments = 0;
     switch (trackSequence)
     {
     case 1:
@@ -167,7 +167,7 @@ static void paint_twist(
 /**
  * rct2: 0x0076D658
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_twist(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_twist(int32_t trackType, int32_t direction)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {

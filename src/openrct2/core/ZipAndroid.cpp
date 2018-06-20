@@ -82,7 +82,7 @@ public:
         return string;
     }
 
-    uint64 GetFileSize(size_t index) const override
+    uint64_t GetFileSize(size_t index) const override
     {
         // retrieve the JNI environment.
         JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
@@ -93,7 +93,7 @@ public:
         return (size_t) env->CallLongMethod(_zip, fileSizeMethod, (jint) index);
     }
 
-    std::vector<uint8> GetFileData(const std::string_view& path) const override
+    std::vector<uint8_t> GetFileData(const std::string_view& path) const override
     {
         // retrieve the JNI environment.
         JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
@@ -106,13 +106,13 @@ public:
         jmethodID fileMethod = env->GetMethodID(zipClass, "getFile", "(I)J");
         jlong ptr = env->CallLongMethod(_zip, fileMethod, index);
 
-        auto dataPtr = reinterpret_cast<uint8 *>(ptr);
+        auto dataPtr = reinterpret_cast<uint8_t *>(ptr);
         auto dataSize = this->GetFileSize(index);
 
-        return std::vector<uint8>(dataPtr, dataPtr + dataSize);
+        return std::vector<uint8_t>(dataPtr, dataPtr + dataSize);
     }
 
-    void SetFileData(const std::string_view& path, std::vector<uint8>&& data) override
+    void SetFileData(const std::string_view& path, std::vector<uint8_t>&& data) override
     {
         STUB();
     }

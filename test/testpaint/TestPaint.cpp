@@ -114,8 +114,8 @@ namespace TestPaint
 
     struct IgnoredEntry
     {
-        uint8 Direction;
-        uint8 TrackSequence;
+        uint8_t Direction;
+        uint8_t TrackSequence;
     };
 
     static bool _ignoredAll;
@@ -127,7 +127,7 @@ namespace TestPaint
         _ignoredEntries.clear();
     }
 
-    void testIgnore(uint8 direction, uint8 trackSequence)
+    void testIgnore(uint8_t direction, uint8_t trackSequence)
     {
         _ignoredEntries.push_back({ direction, trackSequence });
     }
@@ -137,7 +137,7 @@ namespace TestPaint
         _ignoredAll = true;
     }
 
-    bool testIsIgnored(uint8 direction, uint8 trackSequence)
+    bool testIsIgnored(uint8_t direction, uint8_t trackSequence)
     {
         if (_ignoredAll) return true;
         for (const IgnoredEntry &entry : _ignoredEntries)
@@ -157,7 +157,7 @@ void testpaint_clear_ignore()
     TestPaint::testClearIgnore();
 }
 
-void testpaint_ignore(uint8 direction, uint8 trackSequence)
+void testpaint_ignore(uint8_t direction, uint8_t trackSequence)
 {
     TestPaint::testIgnore(direction, trackSequence);
 }
@@ -167,7 +167,7 @@ void testpaint_ignore_all()
     TestPaint::testIgnoreAll();
 }
 
-bool testpaint_is_ignored(uint8 direction, uint8 trackSequence)
+bool testpaint_is_ignored(uint8_t direction, uint8_t trackSequence)
 {
     return TestPaint::testIsIgnored(direction, trackSequence);
 }

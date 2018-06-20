@@ -92,10 +92,10 @@ static rct_string_id input_text_description;
 static utf8 text_input[TEXT_INPUT_SIZE] = { 0 };
 static rct_windowclass calling_class = 0;
 static rct_windownumber calling_number = 0;
-static sint32 calling_widget = 0;
-static sint32 _maxInputLength;
+static int32_t calling_widget = 0;
+static int32_t _maxInputLength;
 
-void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength)
+void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength)
 {
     // Get the raw string
     utf8 buffer[Util::CountOf(text_input)]{};
@@ -106,7 +106,7 @@ void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct
     window_text_input_raw_open(call_w, call_widget, title, description, buffer, maxLength);
 }
 
-void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, const_utf8string existing_text, sint32 maxLength)
+void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, const_utf8string existing_text, int32_t maxLength)
 {
     _maxInputLength = maxLength;
 
@@ -125,12 +125,12 @@ void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget,
     char wrapped_string[TEXT_INPUT_SIZE];
     safe_strcpy(wrapped_string, text_input, TEXT_INPUT_SIZE);
 
-    sint32 no_lines = 0, font_height = 0;
+    int32_t no_lines = 0, font_height = 0;
 
     // String length needs to add 12 either side of box +13 for cursor when max length.
     gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
 
-    sint32 height = no_lines * 10 + WH;
+    int32_t height = no_lines * 10 + WH;
 
     // Window will be in the centre of the screen
     rct_window* w = window_create_centred(
@@ -194,10 +194,10 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
     window_draw_widgets(w, dpi);
 
-    sint32 y = w->y + 25;
+    int32_t y = w->y + 25;
 
-    sint32 no_lines = 0;
-    sint32 font_height = 0;
+    int32_t no_lines = 0;
+    int32_t font_height = 0;
 
 
     gfx_draw_string_centred(dpi, input_text_description, w->x + WW / 2, y, w->colours[1], &TextInputDescriptionArgs);
@@ -220,11 +220,11 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     char* wrap_pointer = wrapped_string;
     size_t char_count = 0;
-    uint8 cur_drawn = 0;
+    uint8_t cur_drawn = 0;
 
-    sint32 cursorX = 0;
-    sint32 cursorY = 0;
-    for (sint32 line = 0; line <= no_lines; line++) {
+    int32_t cursorX = 0;
+    int32_t cursorY = 0;
+    for (int32_t line = 0; line <= no_lines; line++) {
         gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->x + 12, y);
 
         size_t string_length = get_string_size(wrap_pointer) - 1;
@@ -236,18 +236,18 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
             cursorX = w->x + 13 + gfx_get_string_width(temp_string);
             cursorY = y;
 
-            sint32 width = 6;
+            int32_t width = 6;
             if (gTextInput->SelectionStart < strlen(text_input)){
                 // Make a 1 utf8-character wide string for measuring the width
                 // of the currently selected character.
                 utf8 tmp[5] = { 0 }; // This is easier than setting temp_string[0..5]
-                uint32 codepoint = utf8_get_next(text_input + gTextInput->SelectionStart, nullptr);
+                uint32_t codepoint = utf8_get_next(text_input + gTextInput->SelectionStart, nullptr);
                 utf8_write_codepoint(tmp, codepoint);
                 width = std::max(gfx_get_string_width(tmp) - 2, 4);
             }
 
             if (w->frame_no > 15){
-                uint8 colour = ColourMapA[w->colours[1]].mid_light;
+                uint8_t colour = ColourMapA[w->colours[1]].mid_light;
                 // TODO: palette index addition
                 gfx_fill_rect(dpi, cursorX, y + 9, cursorX + width, y + 9, colour + 5);
             }
@@ -318,13 +318,13 @@ static void window_text_input_invalidate(rct_window *w)
     char wrapped_string[TEXT_INPUT_SIZE];
     safe_strcpy(wrapped_string, text_input, TEXT_INPUT_SIZE);
 
-    sint32 no_lines = 0, font_height = 0;
+    int32_t no_lines = 0, font_height = 0;
 
     // String length needs to add 12 either side of box
     // +13 for cursor when max length.
     gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
 
-    sint32 height = no_lines * 10 + WH;
+    int32_t height = no_lines * 10 + WH;
 
     // Change window size if required.
     if (height != w->height) {

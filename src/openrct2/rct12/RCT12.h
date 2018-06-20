@@ -41,8 +41,8 @@
 
 struct rct12_award
 {
-    uint16 time;
-    uint16 type;
+    uint16_t time;
+    uint16_t type;
 };
 assert_struct_size(rct12_award, 4);
 
@@ -52,29 +52,29 @@ assert_struct_size(rct12_award, 4);
  */
 struct rct12_news_item
 {
-    uint8   Type;
-    uint8   Flags;
-    uint32  Assoc;
-    uint16  Ticks;
-    uint16  MonthYear;
-    uint8   Day;
-    uint8   pad_0B;
+    uint8_t   Type;
+    uint8_t   Flags;
+    uint32_t  Assoc;
+    uint16_t  Ticks;
+    uint16_t  MonthYear;
+    uint8_t   Day;
+    uint8_t   pad_0B;
     char    Text[256];
 };
 assert_struct_size(rct12_news_item, 0x10C);
 
 struct rct12_xyzd8
 {
-    uint8 x, y, z, direction;
+    uint8_t x, y, z, direction;
 };
 assert_struct_size(rct12_xyzd8, 4);
 
 struct rct12_peep_spawn
 {
-    uint16 x;
-    uint16 y;
-    uint8 z;
-    uint8 direction;
+    uint16_t x;
+    uint16_t y;
+    uint8_t z;
+    uint8_t direction;
 };
 assert_struct_size(rct12_peep_spawn, 6);
 

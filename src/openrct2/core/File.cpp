@@ -44,9 +44,9 @@ namespace File
         return platform_file_move(srcPath.c_str(), dstPath.c_str());
     }
 
-    std::vector<uint8> ReadAllBytes(const std::string_view& path)
+    std::vector<uint8_t> ReadAllBytes(const std::string_view& path)
     {
-        std::vector<uint8> result;
+        std::vector<uint8_t> result;
 
 #if defined(_WIN32) && !defined(__MINGW32__)
         auto pathW = String::ToUtf16(std::string(path));
@@ -120,9 +120,9 @@ namespace File
         return lines;
     }
 
-    uint64 GetLastModified(const std::string &path)
+    uint64_t GetLastModified(const std::string &path)
     {
-        uint64 lastModified = 0;
+        uint64_t lastModified = 0;
 #ifdef _WIN32
         auto pathW = utf8_to_widechar(path.c_str());
         auto hFile = CreateFileW(pathW, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
@@ -131,7 +131,7 @@ namespace File
             FILETIME ftCreate, ftAccess, ftWrite;
             if (GetFileTime(hFile, &ftCreate, &ftAccess, &ftWrite))
             {
-                lastModified = ((uint64)ftWrite.dwHighDateTime << 32ULL) | (uint64)ftWrite.dwLowDateTime;
+                lastModified = ((uint64_t)ftWrite.dwHighDateTime << 32ULL) | (uint64_t)ftWrite.dwLowDateTime;
             }
             CloseHandle(hFile);
         }

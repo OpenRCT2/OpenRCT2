@@ -16,23 +16,23 @@
 
 struct TitleCommand
 {
-    uint8 Type;
+    uint8_t Type;
     union {
-        uint8 SaveIndex;    // LOAD (this index is internal only)
+        uint8_t SaveIndex;    // LOAD (this index is internal only)
         struct              // LOCATION
         {
-            uint8 X;
-            uint8 Y;
+            uint8_t X;
+            uint8_t Y;
         };
-        uint8  Rotations;                                // ROTATE (counter-clockwise)
-        uint8  Zoom;                                     // ZOOM
+        uint8_t  Rotations;                                // ROTATE (counter-clockwise)
+        uint8_t  Zoom;                                     // ZOOM
         struct                                           // FOLLOW
         {
-            uint16 SpriteIndex;
+            uint16_t SpriteIndex;
             utf8 SpriteName[USER_STRING_MAX_LENGTH];
         };
-        uint8  Speed;                                    // SPEED
-        uint16 Milliseconds;                             // WAIT
+        uint8_t  Speed;                                    // SPEED
+        uint16_t Milliseconds;                             // WAIT
         utf8   Scenario[TITLE_COMMAND_SCENARIO_LENGTH];  // LOADSC
     };
 };
@@ -77,7 +77,7 @@ enum TITLE_SCRIPT
 };
 
 constexpr const utf8 *  TITLE_SEQUENCE_EXTENSION = ".parkseq";
-constexpr uint8         SAVE_INDEX_INVALID = UINT8_MAX;
+constexpr uint8_t         SAVE_INDEX_INVALID = UINT8_MAX;
 
 TitleSequence * CreateTitleSequence();
 TitleSequence * LoadTitleSequence(const utf8 * path);
