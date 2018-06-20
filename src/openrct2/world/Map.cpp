@@ -418,10 +418,10 @@ void map_count_remaining_land_rights()
  */
 void map_strip_ghost_flag_from_elements()
 {
-    rct_tile_element *tileElement = gTileElements;
-    do {
-        tileElement->flags &= ~TILE_ELEMENT_FLAG_GHOST;
-    } while (++tileElement < gTileElements + MAX_TILE_ELEMENTS);
+    for (auto& element : gTileElements)
+    {
+        element.flags &= ~TILE_ELEMENT_FLAG_GHOST;
+    }
 }
 
 /**
@@ -602,55 +602,6 @@ int32_t tile_element_height(int32_t x, int32_t y)
 
     return height;
 }
-
-/**
- *
- *  rct2: 0x0068B089
- */
-void sub_68B089()
-{
-    int32_t i;
-    rct_tile_element *tileElementFirst, *tileElement;
-
-    if (gTrackDesignSaveMode)
-        return;
-
-    i = gNextFreeTileElementPointerIndex;
-    do {
-        i++;
-        if (i >= MAX_TILE_TILE_ELEMENT_POINTERS)
-            i = 0;
-    } while (gTileElementTilePointers[i] == TILE_UNDEFINED_TILE_ELEMENT);
-    gNextFreeTileElementPointerIndex = i;
-
-    tileElementFirst = tileElement = gTileElementTilePointers[i];
-    do {
-        tileElement--;
-        if (tileElement < gTileElements)
-            break;
-    } while (tileElement->base_height == 255);
-    tileElement++;
-
-    if (tileElement == tileElementFirst)
-        return;
-
-    //
-    gTileElementTilePointers[i] = tileElement;
-    do {
-        *tileElement = *tileElementFirst;
-        tileElementFirst->base_height = 255;
-
-        tileElementFirst++;
-    } while (!(tileElement++)->IsLastForTile());
-
-    tileElement = gNextFreeTileElement;
-    do {
-        tileElement--;
-    } while (tileElement->base_height == 255);
-    tileElement++;
-    gNextFreeTileElement = tileElement;
-}
-
 
 /**
  * Checks if the tile at coordinate at height counts as connected.
@@ -3185,25 +3136,30 @@ void map_reorganise_elements()
  *  Returns true on space available for more elements
  *  Reorganises the map elements to check for space
  */
-bool map_check_free_elements_and_reorganise(int32_t num_elements)
+bool map_check_free_elements_and_reorganise(int32_t numElements)
 {
-    if ((gNextFreeTileElement + num_elements) <= gTileElements + MAX_TILE_ELEMENTS)
-        return true;
+    if (numElements != 0)
+    {
+        auto tileElementEnd = &gTileElements[MAX_TILE_ELEMENTS];
 
-    for (int32_t i = 1000; i != 0; --i)
-        sub_68B089();
+        // Check if is there is room for the required number of elements
+        auto newTileElementEnd = gNextFreeTileElement + numElements;
+        if (newTileElementEnd > tileElementEnd)
+        {
+            // Defragment the map element list
+            map_reorganise_elements();
 
-    if ((gNextFreeTileElement + num_elements) <= gTileElements + MAX_TILE_ELEMENTS)
-        return true;
-
-    map_reorganise_elements();
-
-    if ((gNextFreeTileElement + num_elements) <= gTileElements + MAX_TILE_ELEMENTS)
-        return true;
-    else{
-        gGameCommandErrorText = STR_ERR_LANDSCAPE_DATA_AREA_FULL;
-        return false;
+            // Check if there is any room again
+            newTileElementEnd = gNextFreeTileElement + numElements;
+            if (newTileElementEnd > tileElementEnd)
+            {
+                // Not enough spare elements left :'(
+                gGameCommandErrorText = STR_ERR_LANDSCAPE_DATA_AREA_FULL;
+                return false;
+            }
+        }
     }
+    return true;
 }
 
 /**

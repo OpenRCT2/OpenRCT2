@@ -142,7 +142,6 @@ rct_tile_element *map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t
 rct_tile_element * map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 rct_tile_element * map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 int32_t tile_element_height(int32_t x, int32_t y);
-void sub_68B089();
 bool map_coord_is_connected(int32_t x, int32_t y, int32_t z, uint8_t faceDirection);
 void map_remove_provisional_elements();
 void map_restore_provisional_elements();
