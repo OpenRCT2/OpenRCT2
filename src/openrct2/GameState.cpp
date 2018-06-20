@@ -218,8 +218,6 @@ void GameState::UpdateLogic()
         network_check_desynchronization();
     }
 
-    sub_68B089();
-
     date_update();
     _date = Date(gDateMonthTicks, gDateMonthTicks);
 
