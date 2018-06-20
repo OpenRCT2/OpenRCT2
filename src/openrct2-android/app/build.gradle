@@ -15,7 +15,7 @@ android {
         externalNativeBuild {
             cmake {
                 arguments '-DANDROID_STL=c++_shared'
-                targets 'openrct2', 'openrct2-ui'
+                targets 'openrct2', 'openrct2-ui', 'openrct2-cli'
             }
         }
     }
