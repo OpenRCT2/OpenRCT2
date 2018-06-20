@@ -41,7 +41,7 @@ static constexpr const format_code_token format_code_tokens[] = {
     { FORMAT_INT32,                     "INT32"                 },
     { FORMAT_COMMA2DP32,                "COMMA2DP32"            },
     { FORMAT_COMMA16,                   "COMMA16"               },
-    { FORMAT_uint16_t,                    "uint16_t"                },
+    { FORMAT_UINT16,                    "UINT16"                },
     { FORMAT_CURRENCY2DP,               "CURRENCY2DP"           },
     { FORMAT_CURRENCY,                  "CURRENCY"              },
     { FORMAT_STRINGID,                  "STRINGID"              },
