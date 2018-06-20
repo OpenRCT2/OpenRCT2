@@ -57,7 +57,7 @@ namespace OpenRCT2::Audio
             size_t bytesToRead = 0;
             if (offset < _length)
             {
-                bytesToRead = (size_t)Math::Min<uint64>(len, _length - offset);
+                bytesToRead = (size_t)std::min<uint64>(len, _length - offset);
 
                 auto src = GetData();
                 if (src != nullptr)

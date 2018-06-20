@@ -102,7 +102,7 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint
 
     sint32 x = width / 2;
     sint32 y = (height / 2) + (_legacyType.small_scenery.height / 2);
-    y = Math::Min(y, height - 16);
+    y = std::min(y, height - 16);
 
     if ((scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_FULL_TILE)) &&
         (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_VOFFSET_CENTRE)))

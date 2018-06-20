@@ -461,7 +461,7 @@ static void mapgen_set_height()
             uint8 baseHeight = (q00 + q01 + q10 + q11) / 4;
 
             tileElement = map_get_surface_element_at(x, y);
-            tileElement->base_height      = Math::Max(2, baseHeight * 2);
+            tileElement->base_height      = std::max(2, baseHeight * 2);
             tileElement->clearance_height = tileElement->base_height;
 
             if (q00 > baseHeight)
@@ -791,8 +791,8 @@ void mapgen_generate_from_heightmap(mapgen_settings * settings)
             for (uint32 x = 0; x < _heightMapData.width; x++)
             {
                 uint8 value = dest[x + y * _heightMapData.width];
-                maxValue    = Math::Max(maxValue, value);
-                minValue    = Math::Min(minValue, value);
+                maxValue    = std::max(maxValue, value);
+                minValue    = std::min(minValue, value);
             }
         }
 

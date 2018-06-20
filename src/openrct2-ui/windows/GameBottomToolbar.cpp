@@ -506,7 +506,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
             w->colours[3],
             x,
             y,
-            Math::Max(10, ((gParkRating / 4) * 263) / 256)
+            std::max(10, ((gParkRating / 4) * 263) / 256)
         );
     }
 }

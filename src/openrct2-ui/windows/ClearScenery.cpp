@@ -158,14 +158,14 @@ static void window_clear_scenery_mousedown(rct_window * w, rct_widgetindex widge
     switch (widgetIndex) {
     case WIDX_DECREMENT:
         // Decrement land tool size, if it stays within the limit
-        gLandToolSize = Math::Max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
+        gLandToolSize = std::max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
 
         // Invalidate the window
         window_invalidate(w);
         break;
     case WIDX_INCREMENT:
         // Increment land tool size, if it stays within the limit
-        gLandToolSize = Math::Min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
+        gLandToolSize = std::min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
 
         // Invalidate the window
         window_invalidate(w);
@@ -183,8 +183,8 @@ static void window_clear_scenery_textinput(rct_window *w, rct_widgetindex widget
 
     size = strtol(text, &end, 10);
     if (*end == '\0') {
-        size = Math::Max(MINIMUM_TOOL_SIZE, size);
-        size = Math::Min(MAXIMUM_TOOL_SIZE, size);
+        size = std::max(MINIMUM_TOOL_SIZE, size);
+        size = std::min(MAXIMUM_TOOL_SIZE, size);
         gLandToolSize = size;
         window_invalidate(w);
     }

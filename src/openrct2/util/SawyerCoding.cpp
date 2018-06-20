@@ -104,10 +104,10 @@ size_t sawyercoding_decode_sc4(const uint8 *src, uint8 *dst, size_t length, size
     size_t decodedLength = decode_chunk_rle_with_size(src, dst, length - 4, bufferLength);
 
     // Decode
-    for (size_t i = 0x60018; i <= Math::Min(decodedLength - 1, (size_t)0x1F8353); i++)
+    for (size_t i = 0x60018; i <= std::min(decodedLength - 1, (size_t)0x1F8353); i++)
         dst[i] = dst[i] ^ 0x9C;
 
-    for (size_t i = 0x60018; i <= Math::Min(decodedLength - 1, (size_t)0x1F8350); i += 4) {
+    for (size_t i = 0x60018; i <= std::min(decodedLength - 1, (size_t)0x1F8350); i += 4) {
         dst[i + 1] = ror8(dst[i + 1], 3);
 
         uint32 *code = (uint32*)&dst[i];
@@ -310,7 +310,7 @@ static size_t encode_chunk_repeat(const uint8 *src_buffer, uint8 *dst_buffer, si
         size_t bestRepeatCount = 0;
         for (size_t repeatIndex = searchIndex; repeatIndex <= searchEnd; repeatIndex++) {
             size_t repeatCount = 0;
-            size_t maxRepeatCount = Math::Min(Math::Min((size_t)7, searchEnd - repeatIndex), length - i - 1);
+            size_t maxRepeatCount = std::min(std::min((size_t)7, searchEnd - repeatIndex), length - i - 1);
             // maxRepeatCount should not exceed length
             assert(repeatIndex + maxRepeatCount < length);
             assert(i + maxRepeatCount < length);

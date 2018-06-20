@@ -826,7 +826,7 @@ bool rct_peep::Place(TileCoordsXYZ location, bool apply)
         if (type == PEEP_TYPE_GUEST)
         {
             action_sprite_type = 0xFF;
-            happiness_target   = Math::Max(happiness_target - 10, 0);
+            happiness_target   = std::max(happiness_target - 10, 0);
             UpdateCurrentActionSpriteType();
         }
 
@@ -1005,7 +1005,7 @@ void rct_peep::UpdateFalling()
             news_item_add_to_queue(NEWS_ITEM_BLANK, STR_NEWS_ITEM_GUEST_DROWNED, actionX | (actionY << 16));
         }
 
-        gParkRatingCasualtyPenalty = Math::Min(gParkRatingCasualtyPenalty + 25, 1000);
+        gParkRatingCasualtyPenalty = std::min(gParkRatingCasualtyPenalty + 25, 1000);
         Remove();
         return;
     }
@@ -1566,7 +1566,7 @@ void peep_update_crowd_noise()
 
         // Formula to scale peeps to dB where peeps [0, 120] scales approximately logarithmically to [-3314, -150] dB/100
         // 207360000 maybe related to DSBVOLUME_MIN which is -10,000 (dB/100)
-        volume = 120 - Math::Min(visiblePeeps, 120);
+        volume = 120 - std::min(visiblePeeps, 120);
         volume = volume * volume * volume * volume;
         volume = (((207360000 - volume) >> viewport->zoom) - 207360000) / 65536 - 150;
 
@@ -1760,7 +1760,7 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     peep->window_invalidate_flags = 0;
 
     uint8 intensityHighest = (scenario_rand() & 0x7) + 3;
-    uint8 intensityLowest = Math::Min(intensityHighest, static_cast<uint8>(7)) - 3;
+    uint8 intensityLowest = std::min(intensityHighest, static_cast<uint8>(7)) - 3;
 
     if (intensityHighest >= 7)
         intensityHighest = 15;
@@ -2761,7 +2761,7 @@ static void peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rct_
             if ((scenario_rand() & 0xFFFF) <= 10922)
             {
                 peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_VANDALISM, PEEP_THOUGHT_ITEM_NONE);
-                peep->happiness_target = Math::Max(0, peep->happiness_target - 17);
+                peep->happiness_target = std::max(0, peep->happiness_target - 17);
             }
             vandalThoughtTimeout = 3;
         }
@@ -2810,11 +2810,11 @@ static void peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rct_
     {
 
         peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CROWDED, PEEP_THOUGHT_ITEM_NONE);
-        peep->happiness_target = Math::Max(0, peep->happiness_target - 14);
+        peep->happiness_target = std::max(0, peep->happiness_target - 14);
     }
 
-    litter_count = Math::Min(static_cast<uint8>(3), litter_count);
-    sick_count   = Math::Min(static_cast<uint8>(3), sick_count);
+    litter_count = std::min(static_cast<uint8>(3), litter_count);
+    sick_count   = std::min(static_cast<uint8>(3), sick_count);
 
     uint8 disgusting_time  = peep->disgusting_count & 0xC0;
     uint8 disgusting_count = ((peep->disgusting_count & 0xF) << 2) | sick_count;
@@ -2836,7 +2836,7 @@ static void peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rct_
         if (total_sick >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
         {
             peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_PATH_DISGUSTING, PEEP_THOUGHT_ITEM_NONE);
-            peep->happiness_target = Math::Max(0, peep->happiness_target - 17);
+            peep->happiness_target = std::max(0, peep->happiness_target - 17);
             // Reset disgusting time
             peep->disgusting_count |= 0xC0;
         }
@@ -2862,7 +2862,7 @@ static void peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rct_
         if (total_litter >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
         {
             peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_LITTER, PEEP_THOUGHT_ITEM_NONE);
-            peep->happiness_target = Math::Max(0, peep->happiness_target - 17);
+            peep->happiness_target = std::max(0, peep->happiness_target - 17);
             // Reset litter time
             peep->litter_count |= 0xC0;
         }
@@ -3187,7 +3187,7 @@ void rct_peep::PerformNextAction(uint8 & pathing_result, rct_tile_element * & ti
     }
 
     rct_tile_element * tileElement = map_get_first_element_at(actionX / 32, actionY / 32);
-    sint16            base_z     = Math::Max(0, (z / 8) - 2);
+    sint16            base_z     = std::max(0, (z / 8) - 2);
     sint16            top_z      = (z / 8) + 1;
 
     do

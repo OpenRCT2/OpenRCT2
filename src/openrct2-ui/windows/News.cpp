@@ -109,7 +109,7 @@ rct_window * window_news_open()
     sint32 height = 0;
     window_get_scroll_size(window, 0, &width, &height);
     widget = &window_news_widgets[WIDX_SCROLL];
-    window->scrolls[0].v_top = Math::Max(0, height - (widget->bottom - widget->top - 1));
+    window->scrolls[0].v_top = std::max(0, height - (widget->bottom - widget->top - 1));
     widget_scroll_update_thumbs(window, WIDX_SCROLL);
 
     return window;

@@ -284,7 +284,7 @@ static void climate_update_rain_sound()
         else
         {
             // Increase rain sound
-            _rainVolume = Math::Min(-1400, _rainVolume + 80);
+            _rainVolume = std::min(-1400, _rainVolume + 80);
             if (gRainSoundChannel != nullptr)
             {
                 Mixer_Channel_Volume(gRainSoundChannel, DStoMixerVolume(_rainVolume));

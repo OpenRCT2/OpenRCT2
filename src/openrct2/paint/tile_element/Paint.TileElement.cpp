@@ -214,7 +214,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
 
     uint16 max_height = 0;
     do{
-        max_height = Math::Max(max_height, (uint16)element->clearance_height);
+        max_height = std::max(max_height, (uint16)element->clearance_height);
     } while (!(element++)->IsLastForTile());
 
     element--;

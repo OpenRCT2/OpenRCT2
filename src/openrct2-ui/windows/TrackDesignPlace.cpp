@@ -430,7 +430,7 @@ static sint32 window_track_place_get_base_z(sint32 x, sint32 y)
 
     // Increase Z above water
     if (surface_get_water_height(tileElement) > 0)
-        z = Math::Max(z, surface_get_water_height(tileElement) << 4);
+        z = std::max(z, surface_get_water_height(tileElement) << 4);
 
     return z + place_virtual_track(_trackDesign, PTD_OPERATION_GET_PLACE_Z, true, 0, x, y, z);
 }
@@ -527,10 +527,10 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint3
             map_offset_with_rotation(&x, &y, trackBlock->x, trackBlock->y, rotation);
 
             if (pass == 0) {
-                min->x = Math::Min(min->x, x);
-                max->x = Math::Max(max->x, x);
-                min->y = Math::Min(min->y, y);
-                max->y = Math::Max(max->y, y);
+                min->x = std::min(min->x, x);
+                max->x = std::max(max->x, x);
+                min->y = std::min(min->y, y);
+                max->y = std::max(max->y, y);
             } else {
                 LocationXY16 pixelPosition = draw_mini_preview_get_pixel_position(x, y);
                 if (draw_mini_preview_is_pixel_in_bounds(pixelPosition)) {
@@ -585,10 +585,10 @@ static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, sint32
         y += origin.y;
 
         if (pass == 0) {
-            min->x = Math::Min(min->x, x);
-            max->x = Math::Max(max->x, x);
-            min->y = Math::Min(min->y, y);
-            max->y = Math::Max(max->y, y);
+            min->x = std::min(min->x, x);
+            max->x = std::max(max->x, x);
+            min->y = std::min(min->y, y);
+            max->y = std::max(max->y, y);
         } else {
             LocationXY16 pixelPosition = draw_mini_preview_get_pixel_position(x, y);
             if (draw_mini_preview_is_pixel_in_bounds(pixelPosition)) {

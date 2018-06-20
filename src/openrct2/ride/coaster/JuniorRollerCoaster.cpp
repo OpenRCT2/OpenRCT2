@@ -4473,7 +4473,7 @@ void junior_rc_paint_track_diag_flat_to_60_deg_up(
     JUNIOR_RC_CHAINTYPE      chainType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    chainType = Math::Min(JUNIOR_RC_CHAIN_FRICTION_WHEELS, chainType);
+    chainType = std::min(JUNIOR_RC_CHAIN_FRICTION_WHEELS, chainType);
 
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
@@ -4524,7 +4524,7 @@ void junior_rc_paint_track_diag_60_deg_up_to_flat(
     JUNIOR_RC_CHAINTYPE      chainType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    chainType = Math::Min(JUNIOR_RC_CHAIN_FRICTION_WHEELS, chainType);
+    chainType = std::min(JUNIOR_RC_CHAIN_FRICTION_WHEELS, chainType);
 
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
@@ -4600,7 +4600,7 @@ void junior_rc_paint_track_diag_flat_to_60_deg_down(
     JUNIOR_RC_CHAINTYPE      chainType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    chainType = Math::Min(JUNIOR_RC_CHAIN_FRICTION_WHEELS, chainType);
+    chainType = std::min(JUNIOR_RC_CHAIN_FRICTION_WHEELS, chainType);
 
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
@@ -4651,7 +4651,7 @@ void junior_rc_paint_track_diag_60_deg_down_to_flat(
     JUNIOR_RC_CHAINTYPE      chainType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    chainType = Math::Min(JUNIOR_RC_CHAIN_FRICTION_WHEELS, chainType);
+    chainType = std::min(JUNIOR_RC_CHAIN_FRICTION_WHEELS, chainType);
 
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],

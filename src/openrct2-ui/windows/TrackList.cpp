@@ -130,7 +130,7 @@ rct_window * window_track_list_open(ride_list_item item)
         sint32 screenWidth = context_get_width();
         sint32 screenHeight = context_get_height();
         x = screenWidth / 2 - 300;
-        y = Math::Max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
+        y = std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
     }
     else
     {

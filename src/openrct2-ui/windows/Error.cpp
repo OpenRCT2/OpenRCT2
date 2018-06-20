@@ -109,7 +109,7 @@ rct_window * window_error_open(rct_string_id title, rct_string_id message)
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     width = gfx_get_string_width_new_lined(_window_error_text);
-    width = Math::Min(196, width);
+    width = std::min(196, width);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gfx_wrap_string(_window_error_text, width + 1, &numLines, &fontHeight);
@@ -128,11 +128,11 @@ rct_window * window_error_open(rct_string_id title, rct_string_id message)
     x = Math::Clamp(0, x, screenWidth);
 
     y = state->y + 26;
-    y = Math::Max(22, y);
+    y = std::max(22, y);
     maxY = screenHeight - height;
     if (y > maxY) {
         y = y - height - 40;
-        y = Math::Min(y, maxY);
+        y = std::min(y, maxY);
     }
 
     w = window_create(x, y, width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);

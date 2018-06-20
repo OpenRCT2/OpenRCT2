@@ -1112,7 +1112,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
     }
     size_t chunksize = 65000;
     for (size_t i = 0; i < out_size; i += chunksize) {
-        size_t datasize = Math::Min(chunksize, out_size - i);
+        size_t datasize = std::min(chunksize, out_size - i);
         std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
         *packet << (uint32)NETWORK_COMMAND_MAP << (uint32)out_size << (uint32)i;
         packet->Write(&header[i], datasize);

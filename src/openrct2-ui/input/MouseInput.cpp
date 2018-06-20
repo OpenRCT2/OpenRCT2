@@ -221,8 +221,8 @@ static void input_scroll_drag_continue(sint32 x, sint32 y, rct_window * w)
         sint16 size = widget->right - widget->left - 1;
         if (scroll->flags & VSCROLLBAR_VISIBLE)
             size -= 11;
-        size = Math::Max(0, scroll->h_right - size);
-        scroll->h_left = Math::Min<uint16>(Math::Max(0, scroll->h_left + dx), size);
+        size = std::max(0, scroll->h_right - size);
+        scroll->h_left = std::min<uint16>(std::max(0, scroll->h_left + dx), size);
     }
 
     if (scroll->flags & VSCROLLBAR_VISIBLE)
@@ -230,8 +230,8 @@ static void input_scroll_drag_continue(sint32 x, sint32 y, rct_window * w)
         sint16 size = widget->bottom - widget->top - 1;
         if (scroll->flags & HSCROLLBAR_VISIBLE)
             size -= 11;
-        size = Math::Max(0, scroll->v_bottom - size);
-        scroll->v_top = Math::Min<uint16>(Math::Max(0, scroll->v_top + dy), size);
+        size = std::max(0, scroll->v_bottom - size);
+        scroll->v_top = std::min<uint16>(std::max(0, scroll->v_top + dy), size);
     }
 
     widget_scroll_update_thumbs(w, widgetIndex);
@@ -627,38 +627,38 @@ static void input_scroll_begin(rct_window * w, rct_widgetindex widgetIndex, sint
     sint32 widget_width = widg->right - widg->left - 1;
     if (scroll->flags & VSCROLLBAR_VISIBLE)
         widget_width -= 11;
-    sint32 widget_content_width = Math::Max(scroll->h_right - widget_width, 0);
+    sint32 widget_content_width = std::max(scroll->h_right - widget_width, 0);
 
     sint32 widget_height = widg->bottom - widg->top - 1;
     if (scroll->flags & HSCROLLBAR_VISIBLE)
         widget_height -= 11;
-    sint32 widget_content_height = Math::Max(scroll->v_bottom - widget_height, 0);
+    sint32 widget_content_height = std::max(scroll->v_bottom - widget_height, 0);
 
     switch (scroll_area)
     {
     case SCROLL_PART_HSCROLLBAR_LEFT:
-        scroll->h_left = Math::Max(scroll->h_left - 3, 0);
+        scroll->h_left = std::max(scroll->h_left - 3, 0);
         break;
     case SCROLL_PART_HSCROLLBAR_RIGHT:
-        scroll->h_left = Math::Min(scroll->h_left + 3, widget_content_width);
+        scroll->h_left = std::min(scroll->h_left + 3, widget_content_width);
         break;
     case SCROLL_PART_HSCROLLBAR_LEFT_TROUGH:
-        scroll->h_left = Math::Max(scroll->h_left - widget_width, 0);
+        scroll->h_left = std::max(scroll->h_left - widget_width, 0);
         break;
     case SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH:
-        scroll->h_left = Math::Min(scroll->h_left + widget_width, widget_content_width);
+        scroll->h_left = std::min(scroll->h_left + widget_width, widget_content_width);
         break;
     case SCROLL_PART_VSCROLLBAR_TOP:
-        scroll->v_top = Math::Max(scroll->v_top - 3, 0);
+        scroll->v_top = std::max(scroll->v_top - 3, 0);
         break;
     case SCROLL_PART_VSCROLLBAR_BOTTOM:
-        scroll->v_top = Math::Min(scroll->v_top + 3, widget_content_height);
+        scroll->v_top = std::min(scroll->v_top + 3, widget_content_height);
         break;
     case SCROLL_PART_VSCROLLBAR_TOP_TROUGH:
-        scroll->v_top = Math::Max(scroll->v_top - widget_height, 0);
+        scroll->v_top = std::max(scroll->v_top - widget_height, 0);
         break;
     case SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH:
-        scroll->v_top = Math::Min(scroll->v_top + widget_height, widget_content_height);
+        scroll->v_top = std::min(scroll->v_top + widget_height, widget_content_height);
         break;
     default:
         break;

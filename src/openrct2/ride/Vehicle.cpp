@@ -1038,7 +1038,7 @@ static uint8 vehicle_sounds_update_get_pan_volume(rct_vehicle_sound_params * sou
     uint8  vol2 = 0xFF;
 
     sint16 pan_y = std::abs(sound_params->pan_y);
-    pan_y = Math::Min((sint16)0xFFF, pan_y);
+    pan_y = std::min((sint16)0xFFF, pan_y);
     pan_y -= 0x800;
     if (pan_y > 0)
     {
@@ -1055,7 +1055,7 @@ static uint8 vehicle_sounds_update_get_pan_volume(rct_vehicle_sound_params * sou
     }
 
     sint16 pan_x = std::abs(sound_params->pan_x);
-    pan_x = Math::Min((sint16)0xFFF, pan_x);
+    pan_x = std::min((sint16)0xFFF, pan_x);
     pan_x -= 0x800;
 
     if (pan_x > 0)
@@ -1072,8 +1072,8 @@ static uint8 vehicle_sounds_update_get_pan_volume(rct_vehicle_sound_params * sou
         }
     }
 
-    vol1 = Math::Min(vol1, vol2);
-    return Math::Max(0, vol1 - gVolumeAdjustZoom);
+    vol1 = std::min(vol1, vol2);
+    return std::max(0, vol1 - gVolumeAdjustZoom);
 }
 
 /*  Returns the vehicle sound for a sound_param.
@@ -1118,7 +1118,7 @@ static void vehicle_sounds_update_sound_1(rct_vehicle * vehicle, rct_vehicle_sou
     sint32       volume = vehicle->sound1_volume;
     volume *= panVol;
     volume = volume / 8;
-    volume = Math::Max(volume - 0x1FFF, -10000);
+    volume = std::max(volume - 0x1FFF, -10000);
 
     if (vehicle->sound1_id == RCT12_SOUND_ID_NULL)
     {
@@ -1183,7 +1183,7 @@ static void vehicle_sounds_update_sound_2(rct_vehicle * vehicle, rct_vehicle_sou
     sint32 volume = vehicle->sound2_volume;
     volume *= panVol;
     volume = volume / 8;
-    volume = Math::Max(volume - 0x1FFF, -10000);
+    volume = std::max(volume - 0x1FFF, -10000);
 
     if (vehicle->sound2_id == RCT12_SOUND_ID_NULL)
     {
@@ -1213,7 +1213,7 @@ static void vehicle_sounds_update_sound_2(rct_vehicle * vehicle, rct_vehicle_sou
         {
             frequency = 12649;
         }
-        frequency = Math::Min((frequency * 2) - 3248, 25700);
+        frequency = std::min((frequency * 2) - 3248, 25700);
 
         uint8  looping = _soundParams[vehicle->sound2_id][0];
         sint32 pan = sound_params->pan_x;
@@ -1320,7 +1320,7 @@ void vehicle_sounds_update()
             }
         }
         vehicleSound->volume = tempvolume;
-        panVol = Math::Max(0, panVol - tempvolume);
+        panVol = std::max(0, panVol - tempvolume);
 
         rct_vehicle * vehicle = GET_VEHICLE(vehicleSoundParams->id);
         vehicle_sounds_update_sound_1(vehicle, vehicleSoundParams, vehicleSound, panVol);
@@ -1392,7 +1392,7 @@ static bool vehicle_close_restraints(rct_vehicle * vehicle)
         }
         else
         {
-            vehicle->restraints_position = Math::Max(vehicle->restraints_position - 20, 0);
+            vehicle->restraints_position = std::max(vehicle->restraints_position - 20, 0);
             if (vehicle->restraints_position == 0)
             {
                 continue;
@@ -1905,7 +1905,7 @@ static uint16 sub_6D7AC0(sint32 currentSoundId, sint32 currentVolume, sint32 tar
     {
         if (currentSoundId == targetSoundId)
         {
-            currentVolume = Math::Min(currentVolume + 15, targetVolume);
+            currentVolume = std::min(currentVolume + 15, targetVolume);
             return (currentVolume << 8) | currentSoundId;
         }
         else
@@ -3091,7 +3091,7 @@ void vehicle_update_test_finish(rct_vehicle * vehicle)
         totalTime += ride->time[i];
     }
 
-    totalTime           = Math::Max(totalTime, 1u);
+    totalTime           = std::max(totalTime, 1u);
     ride->average_speed = ride->average_speed / totalTime;
 
     window_invalidate_by_number(WC_RIDE, vehicle->ride);
@@ -3202,8 +3202,8 @@ static void vehicle_update_departing_boat_hire(rct_vehicle * vehicle)
     Ride * ride            = get_ride(vehicle->ride);
 
     ride->station_depart[vehicle->current_station] &= STATION_DEPART_FLAG;
-    uint8 waitingTime = Math::Max(ride->min_waiting_time, static_cast<uint8>(3));
-    waitingTime       = Math::Min(waitingTime, static_cast<uint8>(127));
+    uint8 waitingTime = std::max(ride->min_waiting_time, static_cast<uint8>(3));
+    waitingTime       = std::min(waitingTime, static_cast<uint8>(127));
     ride->station_depart[vehicle->current_station] |= waitingTime;
     vehicle_update_travelling_boat_hire_setup(vehicle);
 }
@@ -3477,8 +3477,8 @@ static void vehicle_finish_departing(rct_vehicle * vehicle)
         uint8 waitingTime = 3;
         if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
         {
-            waitingTime = Math::Max(ride->min_waiting_time, static_cast<uint8>(3));
-            waitingTime = Math::Min(waitingTime, static_cast<uint8>(127));
+            waitingTime = std::max(ride->min_waiting_time, static_cast<uint8>(3));
+            waitingTime = std::min(waitingTime, static_cast<uint8>(127));
         }
 
         ride->station_depart[vehicle->current_station] |= waitingTime;
@@ -3775,7 +3775,7 @@ static void vehicle_update_travelling(rct_vehicle * vehicle)
         {
             if (vehicle->velocity >= -131940)
                 vehicle->acceleration = -3298;
-            vehicle->velocity = Math::Max(vehicle->velocity, -131940);
+            vehicle->velocity = std::max(vehicle->velocity, -131940);
         }
         else
         {
@@ -4279,8 +4279,8 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle * vehicle)
     uint8 waitingTime = 3;
     if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
     {
-        waitingTime = Math::Max(ride->min_waiting_time, static_cast<uint8>(3));
-        waitingTime = Math::Min(waitingTime, static_cast<uint8>(127));
+        waitingTime = std::max(ride->min_waiting_time, static_cast<uint8>(3));
+        waitingTime = std::min(waitingTime, static_cast<uint8>(127));
     }
 
     ride->station_depart[vehicle->current_station] |= waitingTime;
@@ -5325,7 +5325,7 @@ static void vehicle_crash_on_land(rct_vehicle * vehicle)
     sprite_misc_explosion_cloud_create(vehicle->x, vehicle->y, vehicle->z);
     sprite_misc_explosion_flare_create(vehicle->x, vehicle->y, vehicle->z);
 
-    uint8 numParticles = Math::Min(vehicle->sprite_width, static_cast<uint8>(7));
+    uint8 numParticles = std::min(vehicle->sprite_width, static_cast<uint8>(7));
 
     while (numParticles-- != 0)
         crashed_vehicle_particle_create(vehicle->colours, vehicle->x, vehicle->y, vehicle->z);
@@ -5522,7 +5522,7 @@ static void vehicle_update_sound(rct_vehicle * vehicle)
     {
         frictionId = vehicleEntry->friction_sound_id;
         ecx >>= 15;
-        frictionVolume = Math::Min(208 + (ecx & 0xFF), 255);
+        frictionVolume = std::min(208 + (ecx & 0xFF), 255);
     }
 
     switch (vehicleEntry->sound_range)
@@ -6514,7 +6514,7 @@ bool vehicle_update_dodgems_collision(rct_vehicle * vehicle, sint16 x, sint16 y,
             sint32 ecx = (vehicle->var_44 + vehicle2->var_44) / 2;
             ecx *= 30;
             ecx >>= 8;
-            if (Math::Max(distX, distY) < ecx)
+            if (std::max(distX, distY) < ecx)
             {
                 if (spriteId != nullptr)
                     *spriteId = vehicle2->sprite_index;
@@ -7701,7 +7701,7 @@ static bool vehicle_update_motion_collision_detection(rct_vehicle * vehicle, sin
         if (x_diff + y_diff + z_diff > 0xFFFF)
             return false;
 
-        uint16 ecx = Math::Min(vehicle->var_44 + collideVehicle->var_44, 560);
+        uint16 ecx = std::min(vehicle->var_44 + collideVehicle->var_44, 560);
         ecx        = ((ecx >> 1) * 30) >> 8;
 
         if (x_diff + y_diff + z_diff >= ecx)
@@ -7757,8 +7757,8 @@ static bool vehicle_update_motion_collision_detection(rct_vehicle * vehicle, sin
             if (y_diff > 0x7FFF)
                 continue;
 
-            uint8 cl = Math::Min(vehicle->var_CD, collideVehicle->var_CD);
-            uint8 ch = Math::Max(vehicle->var_CD, collideVehicle->var_CD);
+            uint8 cl = std::min(vehicle->var_CD, collideVehicle->var_CD);
+            uint8 ch = std::max(vehicle->var_CD, collideVehicle->var_CD);
             if (cl != ch)
             {
                 if (cl == 5 && ch == 6)
@@ -9457,7 +9457,7 @@ loc_6DCEFF:
 
     if (vehicle->vehicle_sprite_type != 0)
     {
-        regs.eax = Math::Max(0, regs.eax);
+        regs.eax = std::max(0, regs.eax);
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
         {
             if (vehicle->vehicle_sprite_type == 2)

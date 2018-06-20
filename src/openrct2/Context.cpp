@@ -871,7 +871,7 @@ namespace OpenRCT2
 
             uint32 elapsed = currentTick - _lastTick;
             _lastTick = currentTick;
-            _accumulator = Math::Min(_accumulator + elapsed, (uint32)GAME_UPDATE_MAX_THRESHOLD);
+            _accumulator = std::min(_accumulator + elapsed, (uint32)GAME_UPDATE_MAX_THRESHOLD);
 
             _uiContext->ProcessMessages();
 
@@ -907,7 +907,7 @@ namespace OpenRCT2
             uint32 elapsed = currentTick - _lastTick;
 
             _lastTick = currentTick;
-            _accumulator = Math::Min(_accumulator + elapsed, (uint32)GAME_UPDATE_MAX_THRESHOLD);
+            _accumulator = std::min(_accumulator + elapsed, (uint32)GAME_UPDATE_MAX_THRESHOLD);
 
             _uiContext->ProcessMessages();
 
