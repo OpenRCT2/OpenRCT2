@@ -47,8 +47,8 @@ using colour_t = uint8_t;
 #define ror16(x, shift)     (((uint16_t)(x) >> (shift)) | ((uint16_t)(x) << (16 - (shift))))
 #define rol32(x, shift)     (((uint32_t)(x) << (shift)) | ((uint32_t)(x) >> (32 - (shift))))
 #define ror32(x, shift)     (((uint32_t)(x) >> (shift)) | ((uint32_t)(x) << (32 - (shift))))
-#define rol64(x, shift)     (((uint64_t)(x) << (shift)) | ((uint32_t)(x) >> (64 - (shift))))
-#define ror64(x, shift)     (((uint64_t)(x) >> (shift)) | ((uint32_t)(x) << (64 - (shift))))
+#define rol64(x, shift)     (((uint64_t)(x) << (shift)) | ((uint64_t)(x) >> (64 - (shift))))
+#define ror64(x, shift)     (((uint64_t)(x) >> (shift)) | ((uint64_t)(x) << (64 - (shift))))
 
 // Rounds an integer down to the given power of 2. y must be a power of 2.
 #define floor2(x, y)        ((x) & (~((y) - 1)))
