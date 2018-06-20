@@ -233,7 +233,7 @@ void TextComposition::CursorRight()
         }
         while (!utf8_is_codepoint_start(ch) && selectionOffset < selectionMaxOffset);
 
-        _session.SelectionSize = Math::Max<size_t>(0, _session.SelectionSize - (selectionOffset - _session.SelectionStart));
+        _session.SelectionSize = std::max<size_t>(0, _session.SelectionSize - (selectionOffset - _session.SelectionStart));
         _session.SelectionStart = selectionOffset;
     }
 }

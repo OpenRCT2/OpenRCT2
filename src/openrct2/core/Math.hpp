@@ -17,18 +17,6 @@
 namespace Math
 {
     template<typename T>
-    static T Min(T a, T b)
-    {
-        return (std::min)(a, b);
-    }
-
-    template<typename T>
-    static T Max(T a, T b)
-    {
-        return (std::max)(a, b);
-    }
-
-    template<typename T>
     static T Clamp(T low, T x, T high)
     {
         return (std::min)((std::max)(low, x), high);

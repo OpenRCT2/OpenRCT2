@@ -357,7 +357,7 @@ static void format_append_string(char **dest, size_t *size, const utf8 *string) 
 
 static void format_append_string_n(char **dest, size_t *size, const utf8 *string, size_t maxlen) {
     if ((*size) == 0) return;
-    size_t length = Math::Min(maxlen, strlen(string));
+    size_t length = std::min(maxlen, strlen(string));
     if (length < (*size)) {
         memcpy((*dest), string, length);
         (*dest) += length;

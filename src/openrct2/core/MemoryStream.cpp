@@ -140,7 +140,7 @@ void MemoryStream::Read(void * buffer, uint64 length)
 uint64 MemoryStream::TryRead(void * buffer, uint64 length)
 {
     uint64 remainingBytes = GetLength() - GetPosition();
-    uint64 bytesToRead = Math::Min(length, remainingBytes);
+    uint64 bytesToRead = std::min(length, remainingBytes);
     Read(buffer, bytesToRead);
     return bytesToRead;
 }
@@ -163,14 +163,14 @@ void MemoryStream::Write(const void * buffer, uint64 length)
 
     std::copy_n((const uint8 *)buffer, length, (uint8 *)_position);
     _position = (void*)((uintptr_t)_position + length);
-    _dataSize = Math::Max<size_t>(_dataSize, (size_t)nextPosition);
+    _dataSize = std::max<size_t>(_dataSize, (size_t)nextPosition);
 }
 
 void MemoryStream::EnsureCapacity(size_t capacity)
 {
     if (_dataCapacity < capacity)
     {
-        size_t newCapacity = Math::Max<size_t>(8, _dataCapacity);
+        size_t newCapacity = std::max<size_t>(8, _dataCapacity);
         while (newCapacity < capacity)
         {
             newCapacity *= 2;

@@ -690,13 +690,13 @@ static void window_cheats_misc_mousedown(rct_window *w, rct_widgetindex widgetIn
     switch (widgetIndex)
     {
     case WIDX_INCREASE_PARK_RATING:
-        park_rating_spinner_value = Math::Min(999, 10 * (park_rating_spinner_value / 10 + 1));
+        park_rating_spinner_value = std::min(999, 10 * (park_rating_spinner_value / 10 + 1));
         widget_invalidate_by_class(WC_CHEATS, WIDX_PARK_RATING_SPINNER);
         if (get_forced_park_rating() >= 0)
             game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETFORCEDPARKRATING, park_rating_spinner_value, GAME_COMMAND_CHEAT, 0, 0);
         break;
     case WIDX_DECREASE_PARK_RATING:
-        park_rating_spinner_value = Math::Max(0, 10 * (park_rating_spinner_value / 10 - 1));
+        park_rating_spinner_value = std::max(0, 10 * (park_rating_spinner_value / 10 - 1));
         widget_invalidate_by_class(WC_CHEATS, WIDX_PARK_RATING_SPINNER);
         if (get_forced_park_rating() >= 0)
             game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETFORCEDPARKRATING, park_rating_spinner_value, GAME_COMMAND_CHEAT, 0, 0);
@@ -1252,7 +1252,7 @@ static void window_cheats_set_page(rct_window *w, sint32 page)
     rct_widget *widget = &w->widgets[WIDX_TAB_CONTENT];
     while (widget->type != WWT_LAST)
     {
-        maxY = Math::Max(maxY, (sint32) widget->bottom);
+        maxY = std::max(maxY, (sint32) widget->bottom);
         widget++;
     }
     maxY += 6;

@@ -328,7 +328,7 @@ namespace Editor
 
             gGuestInitialCash = Math::Clamp((money16)MONEY(10, 00), gGuestInitialCash, (money16)MAX_ENTRANCE_FEE);
 
-            gInitialCash = Math::Min(gInitialCash, 100000);
+            gInitialCash = std::min(gInitialCash, 100000);
             finance_reset_cash_to_initial();
 
             gBankLoan = Math::Clamp(
@@ -595,12 +595,12 @@ namespace Editor
             break;
         case EDIT_SCENARIOOPTIONS_SETINITIALLOAN:
             gBankLoan    = Math::Clamp(MONEY(0, 00), *edx, MONEY(5000000, 00));
-            gMaxBankLoan = Math::Max(gBankLoan, gMaxBankLoan);
+            gMaxBankLoan = std::max(gBankLoan, gMaxBankLoan);
             window_invalidate_by_class(WC_FINANCES);
             break;
         case EDIT_SCENARIOOPTIONS_SETMAXIMUMLOANSIZE:
             gMaxBankLoan = Math::Clamp(MONEY(0, 00), *edx, MONEY(5000000, 00));
-            gBankLoan    = Math::Min(gBankLoan, gMaxBankLoan);
+            gBankLoan    = std::min(gBankLoan, gMaxBankLoan);
             window_invalidate_by_class(WC_FINANCES);
             break;
         case EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE:

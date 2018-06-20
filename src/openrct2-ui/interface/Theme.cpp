@@ -294,7 +294,7 @@ UIThemeWindowEntry UIThemeWindowEntry::FromJson(const WindowThemeDesc * wtDesc, 
     }
 
     uint8 numColours = (uint8)json_array_size(jsonColours);
-    numColours = Math::Min(numColours, wtDesc->NumColours);
+    numColours = std::min(numColours, wtDesc->NumColours);
 
     UIThemeWindowEntry result { };
     result.WindowClass = wtDesc->WindowClass;

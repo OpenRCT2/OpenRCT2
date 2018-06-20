@@ -91,7 +91,7 @@ namespace OpenRCT2::Ui
         std::string ShowFileDialog(SDL_Window * window, const FileDialogDesc &desc) override
         {
             std::wstring wcFilename = String::ToUtf16(desc.DefaultFilename);
-            wcFilename.resize(Math::Max<size_t>(wcFilename.size(), MAX_PATH));
+            wcFilename.resize(std::max<size_t>(wcFilename.size(), MAX_PATH));
 
             std::wstring wcTitle = String::ToUtf16(desc.Title);
             std::wstring wcInitialDirectory = String::ToUtf16(desc.InitialDirectory);

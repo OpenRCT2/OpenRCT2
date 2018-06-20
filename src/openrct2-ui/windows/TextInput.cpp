@@ -243,7 +243,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 utf8 tmp[5] = { 0 }; // This is easier than setting temp_string[0..5]
                 uint32 codepoint = utf8_get_next(text_input + gTextInput->SelectionStart, nullptr);
                 utf8_write_codepoint(tmp, codepoint);
-                width = Math::Max(gfx_get_string_width(tmp) - 2, 4);
+                width = std::max(gfx_get_string_width(tmp) - 2, 4);
             }
 
             if (w->frame_no > 15){

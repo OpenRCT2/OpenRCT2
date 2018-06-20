@@ -602,7 +602,7 @@ void window_scenery_update_scroll(rct_window *w)
     scenery_item sceneryItem = window_scenery_count_rows_with_selected_item(tabIndex);
     w->scrolls[0].v_bottom = window_scenery_rows_height(sceneryItem.allRows) + 1;
 
-    sint32 maxTop = Math::Max(0, w->scrolls[0].v_bottom - listHeight);
+    sint32 maxTop = std::max(0, w->scrolls[0].v_bottom - listHeight);
     sint32 rowSelected = count_rows(sceneryItem.selected_item);
     if (sceneryItem.sceneryId == -1) {
         rowSelected = 0;
@@ -612,7 +612,7 @@ void window_scenery_update_scroll(rct_window *w)
     }
 
     w->scrolls[0].v_top = window_scenery_rows_height(rowSelected);
-    w->scrolls[0].v_top = Math::Min<sint32>(maxTop, w->scrolls[0].v_top);
+    w->scrolls[0].v_top = std::min<sint32>(maxTop, w->scrolls[0].v_top);
 
     widget_scroll_update_thumbs(w, WIDX_SCENERY_LIST);
 }
@@ -739,10 +739,10 @@ static void window_scenery_update(rct_window *w)
                         w->max_height = WINDOW_SCENERY_HEIGHT;
                     }
                 } else {
-                    sint32 windowHeight = Math::Min(463, w->scrolls[0].v_bottom + 62);
+                    sint32 windowHeight = std::min(463, w->scrolls[0].v_bottom + 62);
                     if (context_get_height() < 600)
-                        windowHeight = Math::Min(374, windowHeight);
-                    windowHeight = Math::Max(WINDOW_SCENERY_HEIGHT, windowHeight);
+                        windowHeight = std::min(374, windowHeight);
+                    windowHeight = std::max(WINDOW_SCENERY_HEIGHT, windowHeight);
 
                     w->min_width = WINDOW_SCENERY_WIDTH;
                     w->max_width = WINDOW_SCENERY_WIDTH;

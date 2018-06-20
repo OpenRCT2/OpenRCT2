@@ -147,7 +147,7 @@ void window_dropdown_show_text(sint32 x, sint32 y, sint32 extray, uint8 colour, 
         format_string(buffer, 256, gDropdownItemsFormat[i], (void*)(&gDropdownItemsArgs[i]));
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
         string_width = gfx_get_string_width(buffer);
-        max_string_width = Math::Max(string_width, max_string_width);
+        max_string_width = std::max(string_width, max_string_width);
     }
 
     window_dropdown_show_text_custom_width(x, y, extray, colour, 0, flags, num_items, max_string_width + 3);
@@ -199,9 +199,9 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
     sint32 screenWidth = context_get_width();
     sint32 screenHeight = context_get_height();
     if (x + width > screenWidth)
-        x = Math::Max(0, screenWidth - width);
+        x = std::max(0, screenWidth - width);
     if (y + height > screenHeight)
-        y = Math::Max(0, screenHeight - height);
+        y = std::max(0, screenHeight - height);
 
     window_dropdown_widgets[WIDX_BACKGROUND].right = width;
     window_dropdown_widgets[WIDX_BACKGROUND].bottom = height;
@@ -283,9 +283,9 @@ void window_dropdown_show_image(sint32 x, sint32 y, sint32 extray, uint8 colour,
     sint32 screenWidth = context_get_width();
     sint32 screenHeight = context_get_height();
     if (x + width > screenWidth)
-        x = Math::Max(0, screenWidth - width);
+        x = std::max(0, screenWidth - width);
     if (y + height > screenHeight)
-        y = Math::Max(0, screenHeight - height);
+        y = std::max(0, screenHeight - height);
     window_dropdown_widgets[WIDX_BACKGROUND].right = width;
     window_dropdown_widgets[WIDX_BACKGROUND].bottom = height;
 

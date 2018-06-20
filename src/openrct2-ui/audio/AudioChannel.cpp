@@ -96,7 +96,7 @@ namespace OpenRCT2::Audio
 
         void SetRate(double rate) override
         {
-            _rate = Math::Max(0.001, rate);
+            _rate = std::max(0.001, rate);
         }
 
         uint64 GetOffset() const override

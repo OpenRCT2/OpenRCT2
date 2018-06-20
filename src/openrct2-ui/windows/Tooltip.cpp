@@ -90,7 +90,7 @@ void window_tooltip_show(rct_string_id id, sint32 x, sint32 y)
     sint32 tooltip_text_width;
     tooltip_text_width = gfx_get_string_width_new_lined(buffer);
     buffer = gCommonStringFormatBuffer;
-    tooltip_text_width = Math::Min(tooltip_text_width, 196);
+    tooltip_text_width = std::min(tooltip_text_width, 196);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 

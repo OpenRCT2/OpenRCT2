@@ -178,14 +178,14 @@ static void window_land_rights_mousedown(rct_window *w, rct_widgetindex widgetIn
     switch (widgetIndex) {
     case WIDX_DECREMENT:
         // Decrement land rights tool size
-        gLandToolSize = Math::Max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
+        gLandToolSize = std::max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
 
         // Invalidate the window
         window_invalidate(w);
         break;
     case WIDX_INCREMENT:
         // Decrement land rights tool size
-        gLandToolSize = Math::Min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
+        gLandToolSize = std::min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
 
         // Invalidate the window
         window_invalidate(w);
@@ -203,8 +203,8 @@ static void window_land_rights_textinput(rct_window *w, rct_widgetindex widgetIn
 
     size = strtol(text, &end, 10);
     if (*end == '\0') {
-        size = Math::Max(MINIMUM_TOOL_SIZE,size);
-        size = Math::Min(MAXIMUM_TOOL_SIZE,size);
+        size = std::max(MINIMUM_TOOL_SIZE,size);
+        size = std::min(MAXIMUM_TOOL_SIZE,size);
         gLandToolSize = size;
         window_invalidate(w);
     }

@@ -165,10 +165,10 @@ void X8DrawingEngine::SetVSync([[maybe_unused]] bool vsync)
 
 void X8DrawingEngine::Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
-    left = Math::Max(left, 0);
-    top = Math::Max(top, 0);
-    right = Math::Min(right, (sint32)_width);
-    bottom = Math::Min(bottom, (sint32)_height);
+    left = std::max(left, 0);
+    top = std::max(top, 0);
+    right = std::min(right, (sint32)_width);
+    bottom = std::min(bottom, (sint32)_height);
 
     if (left >= right) return;
     if (top >= bottom) return;
@@ -241,10 +241,10 @@ void X8DrawingEngine::CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, 
     // NOTE: when zooming, there can be x, y, dx, dy combinations that go off the
     // screen; hence the checks. This code should ultimately not be called when
     // zooming because this function is specific to updating the screen on move
-    sint32 lmargin = Math::Min(x - dx, 0);
-    sint32 rmargin = Math::Min((sint32)_width - (x - dx + width), 0);
-    sint32 tmargin = Math::Min(y - dy, 0);
-    sint32 bmargin = Math::Min((sint32)_height - (y - dy + height), 0);
+    sint32 lmargin = std::min(x - dx, 0);
+    sint32 rmargin = std::min((sint32)_width - (x - dx + width), 0);
+    sint32 tmargin = std::min(y - dy, 0);
+    sint32 bmargin = std::min((sint32)_height - (y - dy + height), 0);
     x -= lmargin;
     y -= tmargin;
     width += lmargin + rmargin;
@@ -321,8 +321,8 @@ void X8DrawingEngine::ConfigureBits(uint32 width, uint32 height, uint32 pitch)
             uint8 * src = _bits;
             uint8 * dst = newBits;
 
-            uint32 minWidth = Math::Min(_width, width);
-            uint32 minHeight = Math::Min(_height, height);
+            uint32 minWidth = std::min(_width, width);
+            uint32 minHeight = std::min(_height, height);
             for (uint32 y = 0; y < minHeight; y++)
             {
                 std::copy_n(src, minWidth, dst);
@@ -443,10 +443,10 @@ void X8DrawingEngine::DrawDirtyBlocks(uint32 x, uint32 y, uint32 columns, uint32
     }
 
     // Determine region in pixels
-    uint32 left = Math::Max<uint32>(0, x * _dirtyGrid.BlockWidth);
-    uint32 top = Math::Max<uint32>(0, y * _dirtyGrid.BlockHeight);
-    uint32 right = Math::Min(_width, left + (columns * _dirtyGrid.BlockWidth));
-    uint32 bottom = Math::Min(_height, top + (rows * _dirtyGrid.BlockHeight));
+    uint32 left = std::max<uint32>(0, x * _dirtyGrid.BlockWidth);
+    uint32 top = std::max<uint32>(0, y * _dirtyGrid.BlockHeight);
+    uint32 right = std::min(_width, left + (columns * _dirtyGrid.BlockWidth));
+    uint32 bottom = std::min(_height, top + (rows * _dirtyGrid.BlockHeight));
     if (right <= left || bottom <= top)
     {
         return;

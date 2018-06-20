@@ -1466,13 +1466,13 @@ static void window_ride_update_overall_view(uint8 ride_index) {
         sint32 z1 = it.element->base_height * 8;
         sint32 z2 = it.element->clearance_height * 8;
 
-        minx = Math::Min(minx, x);
-        miny = Math::Min(miny, y);
-        minz = Math::Min(minz, z1);
+        minx = std::min(minx, x);
+        miny = std::min(miny, y);
+        minz = std::min(minz, z1);
 
-        maxx = Math::Max(maxx, x);
-        maxy = Math::Max(maxy, y);
-        maxz = Math::Max(maxz, z2);
+        maxx = std::max(maxx, x);
+        maxy = std::max(maxy, y);
+        maxz = std::max(maxz, z2);
     }
 
     ride_overall_view *view = &ride_overall_views[ride_index];
@@ -2919,7 +2919,7 @@ static void window_ride_vehicle_invalidate(rct_window *w)
     set_format_arg(12, rct_string_id, stringId);
     set_format_arg(14, uint16, ride->max_trains);
 
-    set_format_arg(16, uint16, Math::Max(1, ride->min_max_cars_per_train & 0xF) - rideEntry->zero_cars);
+    set_format_arg(16, uint16, std::max(1, ride->min_max_cars_per_train & 0xF) - rideEntry->zero_cars);
 
     stringId = RideComponentNames[RIDE_COMPONENT_TYPE_CAR].singular;
     if ((ride->min_max_cars_per_train & 0xF) - rideEntry->zero_cars > 1) {
@@ -3020,7 +3020,7 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, PALETTE_INDEX_12);
 
     rct_widget *widget = &window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
-    sint32 startX = Math::Max(2, ((widget->right - widget->left) - ((ride->num_vehicles - 1) * 36)) / 2 - 25);
+    sint32 startX = std::max(2, ((widget->right - widget->left) - ((ride->num_vehicles - 1) * 36)) / 2 - 25);
     sint32 startY = widget->bottom - widget->top - 4;
 
     rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, 0)];
@@ -4022,7 +4022,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     uint16 reliability = ride->reliability_percentage;
     gfx_draw_string_left(dpi, STR_RELIABILITY_LABEL_1757, &reliability, COLOUR_BLACK, x, y);
-    window_ride_maintenance_draw_bar(w, dpi, x + 103, y, Math::Max<sint32>(10, reliability), COLOUR_BRIGHT_GREEN);
+    window_ride_maintenance_draw_bar(w, dpi, x + 103, y, std::max<sint32>(10, reliability), COLOUR_BRIGHT_GREEN);
     y += 11;
 
     uint16 downTime = ride->downtime;
@@ -5617,7 +5617,7 @@ static void window_ride_graphs_scrollgetheight(rct_window *w, sint32 scrollIndex
     // Get measurement size
     measurement = ride_get_measurement(w->number, nullptr);
     if (measurement != nullptr)
-        *width = Math::Max<sint32>(*width, measurement->num_items);
+        *width = std::max<sint32>(*width, measurement->num_items);
 }
 
 /**
@@ -6527,7 +6527,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     // Age
     //If the ride has a build date that is in the future, show it as built this year.
-    age = Math::Max((gDateMonthsElapsed - ride->build_date) / 8, 0);
+    age = std::max((gDateMonthsElapsed - ride->build_date) / 8, 0);
     stringId = age == 0 ?
         STR_BUILT_THIS_YEAR :
         age == 1 ?

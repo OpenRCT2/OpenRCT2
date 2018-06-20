@@ -788,7 +788,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
     // Align right hand side toolbar buttons
     sint32 screenWidth = context_get_width();
     firstAlignment = 1;
-    x = Math::Max(640, screenWidth);
+    x = std::max(640, screenWidth);
     for (size_t i = 0; i < Util::CountOf(right_aligned_widgets_order); ++i) {
         widgetIndex = right_aligned_widgets_order[i];
         widget = &window_top_toolbar_widgets[widgetIndex];
@@ -1256,7 +1256,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                     sint16 z = (tile_element->base_height * 8) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
-                    z = Math::Max<sint16>(z, 16);
+                    z = std::max<sint16>(z, 16);
 
                     gSceneryPlaceZ = z;
                 }
@@ -1271,7 +1271,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                     z += gSceneryShiftPressZOffset;
                 }
 
-                z = Math::Max<sint16>(z, 16);
+                z = std::max<sint16>(z, 16);
 
                 gSceneryPlaceZ = z;
             }
@@ -1335,7 +1335,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 sint16 z = (tile_element->base_height * 8) & 0xFFF0;
                 z += gSceneryShiftPressZOffset;
 
-                z = Math::Max<sint16>(z, 16);
+                z = std::max<sint16>(z, 16);
 
                 gSceneryPlaceZ = z;
             }
@@ -1349,7 +1349,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 z += gSceneryShiftPressZOffset;
             }
 
-            z = Math::Max<sint16>(z, 16);
+            z = std::max<sint16>(z, 16);
 
             gSceneryPlaceZ = z;
         }
@@ -1425,7 +1425,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 sint16 z = (tile_element->base_height * 8) & 0xFFF0;
                 z += gSceneryShiftPressZOffset;
 
-                z = Math::Max<sint16>(z, 16);
+                z = std::max<sint16>(z, 16);
 
                 gSceneryPlaceZ = z;
             }
@@ -1439,7 +1439,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 z += gSceneryShiftPressZOffset;
             }
 
-            z = Math::Max<sint16>(z, 16);
+            z = std::max<sint16>(z, 16);
 
             gSceneryPlaceZ = z;
         }
@@ -1479,7 +1479,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 sint16 z = (tile_element->base_height * 8) & 0xFFF0;
                 z += gSceneryShiftPressZOffset;
 
-                z = Math::Max<sint16>(z, 16);
+                z = std::max<sint16>(z, 16);
 
                 gSceneryPlaceZ = z;
             }
@@ -1493,7 +1493,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 z += gSceneryShiftPressZOffset;
             }
 
-            z = Math::Max<sint16>(z, 16);
+            z = std::max<sint16>(z, 16);
 
             gSceneryPlaceZ = z;
         }
@@ -1804,7 +1804,7 @@ static void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
         state_changed++;
     }
 
-    sint16 tool_size = Math::Max<uint16>(1, gLandToolSize);
+    sint16 tool_size = std::max<uint16>(1, gLandToolSize);
     sint16 tool_length = (tool_size - 1) * 32;
 
     // Move to tool bottom left
@@ -1886,7 +1886,7 @@ static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y)
         state_changed++;
     }
 
-    sint16 tool_size = Math::Max<uint16>(1, gLandToolSize);
+    sint16 tool_size = std::max<uint16>(1, gLandToolSize);
     sint16 tool_length = (tool_size - 1) * 32;
 
     // Move to tool bottom left
@@ -2234,7 +2234,7 @@ static void top_toolbar_tool_update_water(sint16 x, sint16 y){
         state_changed++;
     }
 
-    sint16 tool_size = Math::Max<uint16>(1, gLandToolSize);
+    sint16 tool_size = std::max<uint16>(1, gLandToolSize);
     sint16 tool_length = (tool_size - 1) * 32;
 
     // Move to tool bottom left

@@ -1061,7 +1061,7 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
             break;
         case WIDX_SCALE_DOWN:
             gConfigGeneral.window_scale -= 0.25f;
-            gConfigGeneral.window_scale = Math::Max(0.5f, gConfigGeneral.window_scale);
+            gConfigGeneral.window_scale = std::max(0.5f, gConfigGeneral.window_scale);
             config_save_default();
             gfx_invalidate_screen();
             context_trigger_resize();
@@ -1815,7 +1815,7 @@ static void window_options_invalidate(rct_window *w)
     // Automatically adjust window height to fit widgets
     sint32 y = 0;
     for (widget = &w->widgets[WIDX_PAGE_START]; widget->type != WWT_LAST; widget++) {
-        y = Math::Max<sint32>(y, widget->bottom);
+        y = std::max<sint32>(y, widget->bottom);
     }
     w->height = y + 6;
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;

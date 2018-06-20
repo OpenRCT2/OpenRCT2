@@ -744,16 +744,16 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, sint32
         return;
     }
 
-    width = Math::Min(imgMask->width, imgColour->width);
-    height = Math::Min(imgMask->height, imgColour->height);
+    width = std::min(imgMask->width, imgColour->width);
+    height = std::min(imgMask->height, imgColour->height);
 
     x += imgMask->x_offset;
     y += imgMask->y_offset;
 
-    left = Math::Max<sint32>(dpi->x, x);
-    top = Math::Max<sint32>(dpi->y, y);
-    right = Math::Min(dpi->x + dpi->width, x + width);
-    bottom = Math::Min(dpi->y + dpi->height, y + height);
+    left = std::max<sint32>(dpi->x, x);
+    top = std::max<sint32>(dpi->y, y);
+    right = std::min(dpi->x + dpi->width, x + width);
+    bottom = std::min(dpi->y + dpi->height, y + height);
 
     width = right - left;
     height = bottom - top;

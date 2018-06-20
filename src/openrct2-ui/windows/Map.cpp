@@ -310,7 +310,7 @@ static void window_map_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             break;
         _activeTool = 2;
         // Prevent mountain tool size.
-        _landRightsToolSize = Math::Max<uint16>(MINIMUM_TOOL_SIZE, _landRightsToolSize);
+        _landRightsToolSize = std::max<uint16>(MINIMUM_TOOL_SIZE, _landRightsToolSize);
         show_gridlines();
         show_land_rights();
         show_construction_rights();
@@ -419,13 +419,13 @@ static void window_map_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct
         break;
     case WIDX_LAND_TOOL_SMALLER:
         // Decrement land rights tool size
-        _landRightsToolSize = Math::Max(MINIMUM_TOOL_SIZE, _landRightsToolSize - 1);
+        _landRightsToolSize = std::max(MINIMUM_TOOL_SIZE, _landRightsToolSize - 1);
 
         window_invalidate(w);
         break;
     case WIDX_LAND_TOOL_LARGER:
         // Increment land rights tool size
-        _landRightsToolSize = Math::Min(MAXIMUM_TOOL_SIZE, _landRightsToolSize + 1);
+        _landRightsToolSize = std::min(MAXIMUM_TOOL_SIZE, _landRightsToolSize + 1);
 
         window_invalidate(w);
         break;
@@ -583,7 +583,7 @@ static void window_map_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32
 
     if (land_tool_is_active()) {
         // Set land terrain
-        sint32 landToolSize = Math::Max<sint32>(1, gLandToolSize);
+        sint32 landToolSize = std::max<sint32>(1, gLandToolSize);
         sint32 size = (landToolSize * 32) - 32;
         sint32 radius = (landToolSize * 16) - 16;
         mapX = (mapX - radius) & 0xFFE0;
@@ -610,7 +610,7 @@ static void window_map_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32
         );
     } else if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS)) {
         // Set land rights
-        sint32 landRightsToolSize = Math::Max<sint32>(1, _landRightsToolSize);
+        sint32 landRightsToolSize = std::max<sint32>(1, _landRightsToolSize);
         sint32 size = (landRightsToolSize * 32) - 32;
         sint32 radius = (landRightsToolSize * 16) - 16;
         mapX = (mapX - radius) & 0xFFE0;
@@ -953,8 +953,8 @@ static void window_map_centre_on_view_point()
 
     ax >>= 1;
     bx >>= 1;
-    cx = Math::Max(cx - ax, 0);
-    dx = Math::Max(dx - bx, 0);
+    cx = std::max(cx - ax, 0);
+    dx = std::max(dx - bx, 0);
 
     bp = w_map->scrolls[0].h_right - bp;
     di = w_map->scrolls[0].v_bottom - di;

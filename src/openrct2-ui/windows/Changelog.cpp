@@ -277,7 +277,7 @@ static bool window_changelog_read_file()
     for (auto line : _changelogLines)
     {
         auto width = gfx_get_string_width(line);
-        _changelogLongestLineWidth = Math::Max(width, _changelogLongestLineWidth);
+        _changelogLongestLineWidth = std::max(width, _changelogLongestLineWidth);
     }
     return true;
 }

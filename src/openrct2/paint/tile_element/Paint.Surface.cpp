@@ -719,7 +719,7 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
         base_image_id += 5;
     }
 
-    uint8 curHeight = Math::Min(neighbourCornerHeight1, neighbourCornerHeight2);
+    uint8 curHeight = std::min(neighbourCornerHeight1, neighbourCornerHeight2);
     if (neighbourCornerHeight2 != neighbourCornerHeight1)
     {
         // If bottom part of edge isn't straight, add a filler
@@ -927,7 +927,7 @@ static void viewport_surface_draw_tile_side_top(paint_session * session, enum ed
         base_image_id = get_edge_image(terrain, 1) + (edge == EDGE_TOPLEFT ? 5 : 0); // var_04
     }
 
-    uint8 cur_height = Math::Min(ch, ah);
+    uint8 cur_height = std::min(ch, ah);
     if (ch != ah)
     {
         // neighbour tile corners aren't level

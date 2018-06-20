@@ -160,8 +160,8 @@ namespace CommandLine
         const CommandLineCommand * command;
         for (command = commands; command->Name != nullptr; command++)
         {
-            maxNameLength = Math::Max(maxNameLength, String::LengthOf(command->Name));
-            maxParamsLength = Math::Max(maxParamsLength, String::LengthOf(command->Parameters));
+            maxNameLength = std::max(maxNameLength, String::LengthOf(command->Name));
+            maxParamsLength = std::max(maxParamsLength, String::LengthOf(command->Parameters));
         }
 
         for (command = commands; command->Name != nullptr; command++)
@@ -208,7 +208,7 @@ namespace CommandLine
             char buffer[128];
             GetOptionCaption(buffer, sizeof(buffer), option);
             size_t optionCaptionLength = String::LengthOf(buffer);
-            maxOptionLength = Math::Max(maxOptionLength, optionCaptionLength);
+            maxOptionLength = std::max(maxOptionLength, optionCaptionLength);
         }
 
         option = options;
@@ -236,7 +236,7 @@ namespace CommandLine
         for (example = examples; example->Arguments != nullptr; example++)
         {
             size_t argumentsLength = String::LengthOf(example->Arguments);
-            maxArgumentsLength = Math::Max(maxArgumentsLength, argumentsLength);
+            maxArgumentsLength = std::max(maxArgumentsLength, argumentsLength);
         }
 
         Console::WriteLine("examples:");

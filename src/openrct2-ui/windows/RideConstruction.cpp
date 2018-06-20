@@ -2023,7 +2023,7 @@ static bool ride_get_place_position_from_screen_position(sint32 screenX, sint32 
             tileElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
             mapZ = floor2(tileElement->base_height * 8, 16);
             mapZ += _trackPlaceShiftZ;
-            mapZ = Math::Max<sint16>(mapZ, 16);
+            mapZ = std::max<sint16>(mapZ, 16);
             _trackPlaceZ = mapZ;
         }
     } else {
@@ -2032,7 +2032,7 @@ static bool ride_get_place_position_from_screen_position(sint32 screenX, sint32 
         if (_trackPlaceShiftState != 0) {
             mapZ += _trackPlaceShiftZ;
         }
-        _trackPlaceZ = Math::Max<sint32>(mapZ, 16);
+        _trackPlaceZ = std::max<sint32>(mapZ, 16);
     }
 
     if (mapX == LOCATION_NULL)
@@ -3357,7 +3357,7 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
     trackBlock = get_track_def_from_ride(ride, trackType);
     sint32 bx = 0;
     do {
-        bx = Math::Min<sint32>(bx, trackBlock->z);
+        bx = std::min<sint32>(bx, trackBlock->z);
         trackBlock++;
     } while (trackBlock->index != 255);
     z -= bx;
@@ -3596,7 +3596,7 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
         const rct_preview_track *trackBlock = get_track_def_from_ride(ride, _currentTrackPieceType);
         sint32 bx = 0;
         do {
-            bx = Math::Min<sint32>(bx, trackBlock->z);
+            bx = std::min<sint32>(bx, trackBlock->z);
             trackBlock++;
         } while (trackBlock->index != 255);
         z -= bx;

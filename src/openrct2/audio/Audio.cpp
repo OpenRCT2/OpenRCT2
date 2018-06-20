@@ -248,7 +248,7 @@ sint32 audio_play_sound(sint32 soundId, sint32 volume, sint32 pan)
     if (pan != AUDIO_PLAY_AT_CENTRE)
     {
         sint32 x2 = pan << 16;
-        uint16 screenWidth = Math::Max<sint32>(64, OpenRCT2::GetContext()->GetUiContext()->GetWidth());
+        uint16 screenWidth = std::max<sint32>(64, OpenRCT2::GetContext()->GetUiContext()->GetWidth());
         mixerPan = ((x2 / screenWidth) - 0x8000) >> 4;
     }
 

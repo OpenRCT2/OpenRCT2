@@ -1154,7 +1154,7 @@ static void window_finances_marketing_invalidate(rct_window *w)
         if (gMarketingCampaignDaysLeft[i] != 0)
             numActiveCampaigns++;
 
-    sint32 y = Math::Max(1, numActiveCampaigns) * LIST_ROW_HEIGHT + 92;
+    sint32 y = std::max(1, numActiveCampaigns) * LIST_ROW_HEIGHT + 92;
 
     // Update group box positions
     _windowFinancesMarketingWidgets[WIDX_ACTIVE_CAMPAIGNS_GROUP].bottom = y - 22;
