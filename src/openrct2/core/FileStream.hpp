@@ -180,7 +180,7 @@ public:
         }
 
         uint64 position = GetPosition();
-        _fileSize = Math::Max(_fileSize, position);
+        _fileSize = std::max(_fileSize, position);
     }
 
     uint64 TryRead(void * buffer, uint64 length) override

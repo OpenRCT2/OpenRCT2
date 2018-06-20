@@ -127,7 +127,7 @@ GAME_COMMAND_CALLBACK_POINTER * game_command_callback_get_callback(uint32 index)
 
 void game_increase_game_speed()
 {
-    gGameSpeed = Math::Min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
+    gGameSpeed = std::min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
     if (gGameSpeed == 5)
         gGameSpeed = 8;
     window_invalidate_by_class(WC_TOP_TOOLBAR);
@@ -135,7 +135,7 @@ void game_increase_game_speed()
 
 void game_reduce_game_speed()
 {
-    gGameSpeed = Math::Max(1, gGameSpeed - 1);
+    gGameSpeed = std::max(1, gGameSpeed - 1);
     if (gGameSpeed == 7)
         gGameSpeed = 4;
     window_invalidate_by_class(WC_TOP_TOOLBAR);
@@ -760,7 +760,7 @@ void game_log_multiplayer_command(int command, const int * eax, const int * ebx,
             if (nameChunkOffset < 0)
                 nameChunkOffset = 2;
             nameChunkOffset *= 12;
-            nameChunkOffset  = Math::Min(nameChunkOffset, (sint32) (Util::CountOf(banner_name) - 12));
+            nameChunkOffset  = std::min(nameChunkOffset, (sint32) (Util::CountOf(banner_name) - 12));
             memcpy(banner_name + nameChunkOffset + 0, edx, 4);
             memcpy(banner_name + nameChunkOffset + 4, ebp, 4);
             memcpy(banner_name + nameChunkOffset + 8, edi, 4);

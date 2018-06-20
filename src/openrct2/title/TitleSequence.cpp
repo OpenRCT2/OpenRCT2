@@ -430,7 +430,7 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
             else if (_stricmp(token, "SPEED") == 0)
             {
                 command.Type = TITLE_SCRIPT_SPEED;
-                command.Speed = Math::Max(1, Math::Min(4, atoi(part1) & 0xFF));
+                command.Speed = std::max(1, std::min(4, atoi(part1) & 0xFF));
             }
             else if (_stricmp(token, "FOLLOW") == 0)
             {

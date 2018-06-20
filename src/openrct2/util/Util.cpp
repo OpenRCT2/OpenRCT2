@@ -518,7 +518,7 @@ uint8 *util_zlib_inflate(uint8 *data, size_t data_in_size, size_t *data_out_size
         // Try to guesstimate the size needed for output data by applying the
         // same ratio it would take to compress data_in_size.
         out_size = (uLong)data_in_size * (uLong)data_in_size / compressBound((uLong)data_in_size);
-        out_size = Math::Min((uLongf)MAX_ZLIB_REALLOC, out_size);
+        out_size = std::min((uLongf)MAX_ZLIB_REALLOC, out_size);
     }
     uLongf buffer_size = out_size;
     uint8 *buffer = (uint8 *)malloc(buffer_size);

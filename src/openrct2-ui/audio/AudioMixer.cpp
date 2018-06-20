@@ -327,7 +327,7 @@ namespace OpenRCT2::Audio
             sint32 mixVolume = ApplyVolume(channel, buffer, bufferLen);
 
             // Finally mix on to destination buffer
-            size_t dstLength = Math::Min(length, bufferLen);
+            size_t dstLength = std::min(length, bufferLen);
             SDL_MixAudioFormat(data, (const uint8 *)buffer, _format.format, (uint32)dstLength, mixVolume);
 
             channel->UpdateOldVolume();
@@ -388,7 +388,7 @@ namespace OpenRCT2::Audio
                 // Cap sound volume on title screen so music is more audible
                 if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
                 {
-                    volumeAdjust = Math::Min(volumeAdjust, 0.75f);
+                    volumeAdjust = std::min(volumeAdjust, 0.75f);
                 }
                 break;
             case MIXER_GROUP_RIDE_MUSIC:

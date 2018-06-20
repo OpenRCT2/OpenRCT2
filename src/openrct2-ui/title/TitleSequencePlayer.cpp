@@ -253,7 +253,7 @@ private:
             break;
         case TITLE_SCRIPT_WAIT:
             // The waitCounter is measured in 25-ms game ticks. Previously it was seconds * 40 ticks/second, now it is ms / 25 ms/tick
-            _waitCounter = Math::Max<sint32>(1, command->Milliseconds / (uint32)GAME_UPDATE_TIME_MS);
+            _waitCounter = std::max<sint32>(1, command->Milliseconds / (uint32)GAME_UPDATE_TIME_MS);
             break;
         case TITLE_SCRIPT_LOADMM:
         {

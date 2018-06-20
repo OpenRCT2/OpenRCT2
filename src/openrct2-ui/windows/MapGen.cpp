@@ -612,27 +612,27 @@ static void window_mapgen_base_mousedown(rct_window *w, rct_widgetindex widgetIn
 {
     switch (widgetIndex) {
     case WIDX_MAP_SIZE_UP:
-        _mapSize = Math::Min(_mapSize + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
+        _mapSize = std::min(_mapSize + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
         window_invalidate(w);
         break;
     case WIDX_MAP_SIZE_DOWN:
-        _mapSize = Math::Max(_mapSize - 1, MINIMUM_MAP_SIZE_TECHNICAL);
+        _mapSize = std::max(_mapSize - 1, MINIMUM_MAP_SIZE_TECHNICAL);
         window_invalidate(w);
         break;
     case WIDX_BASE_HEIGHT_UP:
-        _baseHeight = Math::Min(_baseHeight + 2, BASESIZE_MAX);
+        _baseHeight = std::min(_baseHeight + 2, BASESIZE_MAX);
         window_invalidate(w);
         break;
     case WIDX_BASE_HEIGHT_DOWN:
-        _baseHeight = Math::Max(_baseHeight - 2, BASESIZE_MIN);
+        _baseHeight = std::max(_baseHeight - 2, BASESIZE_MIN);
         window_invalidate(w);
         break;
     case WIDX_WATER_LEVEL_UP:
-        _waterLevel = Math::Min(_waterLevel + 2, WATERLEVEL_MAX);
+        _waterLevel = std::min(_waterLevel + 2, WATERLEVEL_MAX);
         window_invalidate(w);
         break;
     case WIDX_WATER_LEVEL_DOWN:
-        _waterLevel = Math::Max(_waterLevel - 2, WATERLEVEL_MIN);
+        _waterLevel = std::max(_waterLevel - 2, WATERLEVEL_MIN);
         window_invalidate(w);
         break;
     case WIDX_FLOOR_TEXTURE:
@@ -873,51 +873,51 @@ static void window_mapgen_simplex_mousedown(rct_window *w, rct_widgetindex widge
 {
     switch (widgetIndex) {
     case WIDX_SIMPLEX_LOW_UP:
-        _simplex_low = Math::Min(_simplex_low + 1, 24);
+        _simplex_low = std::min(_simplex_low + 1, 24);
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_LOW_DOWN:
-        _simplex_low = Math::Max(_simplex_low - 1, 0);
+        _simplex_low = std::max(_simplex_low - 1, 0);
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_HIGH_UP:
-        _simplex_high = Math::Min(_simplex_high + 1, 36);
+        _simplex_high = std::min(_simplex_high + 1, 36);
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_HIGH_DOWN:
-        _simplex_high = Math::Max(_simplex_high - 1, 0);
+        _simplex_high = std::max(_simplex_high - 1, 0);
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_BASE_FREQ_UP:
-        _simplex_base_freq = Math::Min(_simplex_base_freq + 5, 1000);
+        _simplex_base_freq = std::min(_simplex_base_freq + 5, 1000);
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_BASE_FREQ_DOWN:
-        _simplex_base_freq = Math::Max(_simplex_base_freq - 5, 0);
+        _simplex_base_freq = std::max(_simplex_base_freq - 5, 0);
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_OCTAVES_UP:
-        _simplex_octaves = Math::Min(_simplex_octaves + 1, 10);
+        _simplex_octaves = std::min(_simplex_octaves + 1, 10);
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_OCTAVES_DOWN:
-        _simplex_octaves = Math::Max(_simplex_octaves - 1, 1);
+        _simplex_octaves = std::max(_simplex_octaves - 1, 1);
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_MAP_SIZE_UP:
-        _mapSize = Math::Min(_mapSize + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
+        _mapSize = std::min(_mapSize + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_MAP_SIZE_DOWN:
-        _mapSize = Math::Max(_mapSize - 1, MINIMUM_MAP_SIZE_TECHNICAL);
+        _mapSize = std::max(_mapSize - 1, MINIMUM_MAP_SIZE_TECHNICAL);
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_WATER_LEVEL_UP:
-        _waterLevel = Math::Min(_waterLevel + 2, 54);
+        _waterLevel = std::min(_waterLevel + 2, 54);
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_WATER_LEVEL_DOWN:
-        _waterLevel = Math::Max(_waterLevel - 2, 0);
+        _waterLevel = std::max(_waterLevel - 2, 0);
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX:
@@ -1051,37 +1051,37 @@ static void window_mapgen_heightmap_mousedown(rct_window *w, rct_widgetindex wid
     switch (widgetIndex)
     {
     case WIDX_HEIGHTMAP_STRENGTH_UP:
-        _heightmapSmoothStrength = Math::Min(_heightmapSmoothStrength + 1, MAX_SMOOTH_ITERATIONS);
+        _heightmapSmoothStrength = std::min(_heightmapSmoothStrength + 1, MAX_SMOOTH_ITERATIONS);
         widget_invalidate(w, WIDX_HEIGHTMAP_STRENGTH);
         break;
     case WIDX_HEIGHTMAP_STRENGTH_DOWN:
-        _heightmapSmoothStrength = Math::Max(_heightmapSmoothStrength - 1, 1);
+        _heightmapSmoothStrength = std::max(_heightmapSmoothStrength - 1, 1);
         widget_invalidate(w, WIDX_HEIGHTMAP_STRENGTH);
         break;
     case WIDX_HEIGHTMAP_LOW_UP:
-        _heightmapLow = Math::Min(_heightmapLow + 1, 142 - 1);
-        _heightmapHigh = Math::Max(_heightmapHigh, _heightmapLow + 1);
+        _heightmapLow = std::min(_heightmapLow + 1, 142 - 1);
+        _heightmapHigh = std::max(_heightmapHigh, _heightmapLow + 1);
         widget_invalidate(w, WIDX_HEIGHTMAP_LOW);
         break;
     case WIDX_HEIGHTMAP_LOW_DOWN:
-        _heightmapLow = Math::Max(_heightmapLow - 1, 2);
+        _heightmapLow = std::max(_heightmapLow - 1, 2);
         widget_invalidate(w, WIDX_HEIGHTMAP_LOW);
         break;
     case WIDX_HEIGHTMAP_HIGH_UP:
-        _heightmapHigh = Math::Min(_heightmapHigh + 1, 142);
+        _heightmapHigh = std::min(_heightmapHigh + 1, 142);
         widget_invalidate(w, WIDX_HEIGHTMAP_HIGH);
         break;
     case WIDX_HEIGHTMAP_HIGH_DOWN:
-        _heightmapHigh = Math::Max(_heightmapHigh - 1, 2 + 1);
-        _heightmapLow = Math::Min(_heightmapLow, _heightmapHigh - 1);
+        _heightmapHigh = std::max(_heightmapHigh - 1, 2 + 1);
+        _heightmapLow = std::min(_heightmapLow, _heightmapHigh - 1);
         widget_invalidate(w, WIDX_HEIGHTMAP_HIGH);
         break;
     case WIDX_HEIGHTMAP_WATER_LEVEL_UP:
-        _waterLevel = Math::Min(_waterLevel + 2, 54);
+        _waterLevel = std::min(_waterLevel + 2, 54);
         widget_invalidate(w, WIDX_HEIGHTMAP_WATER_LEVEL);
         break;
     case WIDX_HEIGHTMAP_WATER_LEVEL_DOWN:
-        _waterLevel = Math::Max(_waterLevel - 2, 0);
+        _waterLevel = std::max(_waterLevel - 2, 0);
         widget_invalidate(w, WIDX_HEIGHTMAP_WATER_LEVEL);
         break;
     }

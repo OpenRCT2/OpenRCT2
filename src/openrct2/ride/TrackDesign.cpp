@@ -189,13 +189,13 @@ static rct_track_td6 * track_design_open_from_td4(uint8 * src, size_t srcLength)
     {
         const char * name = RCT1::GetRideTypeObject(td4->type);
         assert(name != nullptr);
-        memcpy(vehicleObject.name, name, Math::Min(String::SizeOf(name), (size_t)8));
+        memcpy(vehicleObject.name, name, std::min(String::SizeOf(name), (size_t)8));
     }
     else
     {
         const char * name = RCT1::GetVehicleObject(td4->vehicle_type);
         assert(name != nullptr);
-        memcpy(vehicleObject.name, name, Math::Min(String::SizeOf(name), (size_t)8));
+        memcpy(vehicleObject.name, name, std::min(String::SizeOf(name), (size_t)8));
     }
     memcpy(&td6->vehicle_object, &vehicleObject, sizeof(rct_object_entry));
     td6->vehicle_type = td4->vehicle_type;
@@ -292,7 +292,7 @@ static rct_track_td6 * track_design_open_from_td4(uint8 * src, size_t srcLength)
     td6->number_of_cars_per_train = td4->number_of_cars_per_train;
     td6->min_waiting_time         = td4->min_waiting_time;
     td6->max_waiting_time         = td4->max_waiting_time;
-    td6->operation_setting        = Math::Min(td4->operation_setting, RideProperties[td6->type].max_value);
+    td6->operation_setting        = std::min(td4->operation_setting, RideProperties[td6->type].max_value);
     td6->max_speed                = td4->max_speed;
     td6->average_speed            = td4->average_speed;
     td6->ride_length              = td4->ride_length;
@@ -357,7 +357,7 @@ static rct_track_td6 * track_design_open_from_buffer(uint8 * src, size_t srcLeng
     memcpy(td6->elements, src + 0xA3, td6->elementsSize);
 
     // Cap operation setting
-    td6->operation_setting = Math::Min(td6->operation_setting, RideProperties[td6->type].max_value);
+    td6->operation_setting = std::min(td6->operation_setting, RideProperties[td6->type].max_value);
 
     td6_set_element_helper_pointers(td6, false);
     return td6;
@@ -682,12 +682,12 @@ static void track_design_add_selection_tile(sint16 x, sint16 y)
 
 static void track_design_update_max_min_coordinates(sint16 x, sint16 y, sint16 z)
 {
-    gTrackPreviewMin.x = Math::Min(gTrackPreviewMin.x, x);
-    gTrackPreviewMax.x = Math::Max(gTrackPreviewMax.x, x);
-    gTrackPreviewMin.y = Math::Min(gTrackPreviewMin.y, y);
-    gTrackPreviewMax.y = Math::Max(gTrackPreviewMax.y, y);
-    gTrackPreviewMin.z = Math::Min(gTrackPreviewMin.z, z);
-    gTrackPreviewMax.z = Math::Max(gTrackPreviewMax.z, z);
+    gTrackPreviewMin.x = std::min(gTrackPreviewMin.x, x);
+    gTrackPreviewMax.x = std::max(gTrackPreviewMax.x, x);
+    gTrackPreviewMin.y = std::min(gTrackPreviewMin.y, y);
+    gTrackPreviewMax.y = std::max(gTrackPreviewMax.y, y);
+    gTrackPreviewMin.z = std::min(gTrackPreviewMin.z, z);
+    gTrackPreviewMax.z = std::max(gTrackPreviewMax.z, z);
 }
 
 /**

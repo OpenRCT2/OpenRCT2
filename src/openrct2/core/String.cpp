@@ -267,7 +267,7 @@ namespace String
     utf8 * Set(utf8 * buffer, size_t bufferSize, const utf8 * src, size_t srcSize)
     {
         utf8 * dst = buffer;
-        size_t minSize = Math::Min(bufferSize - 1, srcSize);
+        size_t minSize = std::min(bufferSize - 1, srcSize);
         for (size_t i = 0; i < minSize; i++)
         {
             *dst++ = *src;

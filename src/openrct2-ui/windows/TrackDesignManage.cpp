@@ -253,7 +253,7 @@ static void window_track_delete_prompt_open()
     sint32 screenWidth = context_get_width();
     sint32 screenHeight = context_get_height();
     rct_window *w = window_create(
-        Math::Max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - 250) / 2),
+        std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - 250) / 2),
         (screenHeight - 44) / 2,
         250,
         74,
