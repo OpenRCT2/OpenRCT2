@@ -31,7 +31,7 @@
 class PaintCodeGenerator
 {
 public:
-    int Generate(uint8 rideType)
+    int Generate(uint8_t rideType)
     {
         auto filename = "paint_" + std::to_string(rideType) + ".c";
         FILE * file = fopen(filename.c_str(), "w");
@@ -52,7 +52,7 @@ public:
 
 private:
     std::string _rideName;
-    uint8       _rideType;
+    uint8_t       _rideType;
     FILE *      _file;
 
     bool        _conditionalSupports;
@@ -121,9 +121,9 @@ private:
 
             if (trackType == TRACK_ELEM_END_STATION)
             {
-                const uint32 * paintFunctionList = RideTypeTrackPaintFunctionsOld[_rideType];
+                const uint32_t * paintFunctionList = RideTypeTrackPaintFunctionsOld[_rideType];
                 WriteLine(0, "/** rct2: 0x%08X, 0x%08X, 0x%08X */", paintFunctionList[TRACK_ELEM_END_STATION], paintFunctionList[TRACK_ELEM_BEGIN_STATION], paintFunctionList[TRACK_ELEM_MIDDLE_STATION]);
-                WriteLine(0, "static void " + _rideName + "_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_tile_element * tileElement)");
+                WriteLine(0, "static void " + _rideName + "_track_station(uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int height, rct_tile_element * tileElement)");
                 WriteLine(0, "{");
                 WriteLine(0, "}");
                 WriteLine();
@@ -134,7 +134,7 @@ private:
     void GenerateTrackFunction(int trackType)
     {
         WriteLine(0, "/** rct2: 0x%08X */", RideTypeTrackPaintFunctionsOld[_rideType][trackType]);
-        WriteLine(0, "static void " + GetTrackFunctionName(trackType) + "(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_tile_element * tileElement)");
+        WriteLine(0, "static void " + GetTrackFunctionName(trackType) + "(uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int height, rct_tile_element * tileElement)");
         WriteLine(0, "{");
         if (!GenerateMirrorCall(1, trackType))
         {
@@ -181,7 +181,7 @@ private:
 
     bool GenerateMirrorCall(int tabs, int trackType)
     {
-        uint8 mirrorTable[][3] = {
+        uint8_t mirrorTable[][3] = {
             { 0, TRACK_ELEM_25_DEG_DOWN, TRACK_ELEM_25_DEG_UP },
             { 0, TRACK_ELEM_60_DEG_DOWN, TRACK_ELEM_60_DEG_UP },
             { 0, TRACK_ELEM_FLAT_TO_25_DEG_DOWN, TRACK_ELEM_25_DEG_UP_TO_FLAT },
@@ -387,7 +387,7 @@ private:
 
         std::vector<function_call> calls[4], chainLiftCalls[4], cableLiftCalls[4];
         TunnelCall tileTunnelCalls[4][4];
-        sint16 verticalTunnelHeights[4];
+        int16_t verticalTunnelHeights[4];
         std::vector<SegmentSupportCall> segmentSupportCalls[4];
         support_height generalSupports[4] = {};
         for (int direction = 0; direction < 4; direction++) {
@@ -402,8 +402,8 @@ private:
             g_currently_drawn_item = &tileElement;
 
             // Set position
-            RCT2_GLOBAL(0x009DE56A, sint16) = 64;
-            RCT2_GLOBAL(0x009DE56E, sint16) = 64;
+            RCT2_GLOBAL(0x009DE56A, int16_t) = 64;
+            RCT2_GLOBAL(0x009DE56E, int16_t) = 64;
 
             function_call callBuffer[256] = {};
             PaintIntercept::ClearCalls();
@@ -446,8 +446,8 @@ private:
             // Check a different position for direction 0 to see if supports are different
             if (direction == 0)
             {
-                RCT2_GLOBAL(0x009DE56A, sint16) = 64 + 32;
-                RCT2_GLOBAL(0x009DE56E, sint16) = 64;
+                RCT2_GLOBAL(0x009DE56A, int16_t) = 64 + 32;
+                RCT2_GLOBAL(0x009DE56E, int16_t) = 64;
                 tileElement.type = 0;
                 track_element_clear_cable_lift(&tileElement);
                 PaintIntercept::ClearCalls();
@@ -636,7 +636,7 @@ private:
         WriteLine(tabs, s);
     }
 
-    std::string FormatXYSwap(sint16 x, sint16 y, int direction)
+    std::string FormatXYSwap(int16_t x, int16_t y, int direction)
     {
         if (direction & 1)
         {
@@ -724,7 +724,7 @@ private:
                         int height,
                         rct_tile_element * tileElement,
                         TunnelCall tileTunnelCalls[4][4],
-                        sint16 verticalTunnelHeights[4])
+                        int16_t verticalTunnelHeights[4])
     {
         TestPaint::ResetTunnels();
 
@@ -733,8 +733,8 @@ private:
             CallOriginal(trackType, direction, trackSequence, height + offset, tileElement);
         }
 
-        uint8 rightIndex = (4 - direction) % 4;
-        uint8 leftIndex = (rightIndex + 1) % 4;
+        uint8_t rightIndex = (4 - direction) % 4;
+        uint8_t leftIndex = (rightIndex + 1) % 4;
 
         for (int i = 0; i < 4; ++i) {
             tileTunnelCalls[direction][i].call = TUNNELCALL_SKIPPED;
@@ -774,12 +774,12 @@ private:
         return true;
     }
 
-    void GenerateTunnelCall(int tabs, TunnelCall tileTunnelCalls[4][4], sint16 verticalTunnelHeights[4])
+    void GenerateTunnelCall(int tabs, TunnelCall tileTunnelCalls[4][4], int16_t verticalTunnelHeights[4])
     {
-        constexpr uint8 TunnelLeft = 0;
-        constexpr uint8 TunnelRight = 1;
-        constexpr uint8 TunnelNA = 255;
-        static const uint8 dsToWay[4][4] =
+        constexpr uint8_t TunnelLeft = 0;
+        constexpr uint8_t TunnelRight = 1;
+        constexpr uint8_t TunnelNA = 255;
+        static const uint8_t dsToWay[4][4] =
         {
             { TunnelRight, TunnelLeft, TunnelNA, TunnelNA },
             { TunnelLeft, TunnelNA, TunnelNA, TunnelRight },
@@ -788,8 +788,8 @@ private:
         };
 
 
-        sint16 tunnelOffset[4] = { 0 };
-        uint8 tunnelType[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
+        int16_t tunnelOffset[4] = { 0 };
+        uint8_t tunnelType[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
         for (int direction = 0; direction < 4; direction++)
         {
             for (int side = 0; side < 4; side++)
@@ -921,7 +921,7 @@ private:
         }
 
         WriteLine(tabs, "paint_util_set_general_support_height(session, height%s, 0x%02X);",
-            GetOffsetExpressionString((sint16)generalSupports[0].height).c_str(),
+            GetOffsetExpressionString((int16_t)generalSupports[0].height).c_str(),
             generalSupports[0].slope);
         if (!AllMatch(generalSupports, 4))
         {
@@ -929,12 +929,12 @@ private:
         }
     }
 
-    std::string GetImageIdString(uint32 imageId)
+    std::string GetImageIdString(uint32_t imageId)
     {
         std::string result;
 
-        uint32 image = imageId & 0x7FFFF;
-        uint32 palette = imageId & ~0x7FFFF;
+        uint32_t image = imageId & 0x7FFFF;
+        uint32_t palette = imageId & ~0x7FFFF;
 
         std::string paletteName;
         if (palette == TestPaint::DEFAULT_SCHEME_TRACK) paletteName = "gTrackColours[SCHEME_TRACK]";
@@ -996,7 +996,7 @@ private:
         TestPaint::ResetEnvironment();
         TestPaint::ResetSupportHeights();
 
-        uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[_rideType][trackType];
+        uint32_t *trackDirectionList = (uint32_t *)RideTypeTrackPaintFunctionsOld[_rideType][trackType];
         // Have to call from this point as it pushes esi and expects callee to pop it
         RCT2_CALLPROC_X(
             0x006C4934,
@@ -1084,7 +1084,7 @@ private:
     }
 };
 
-int generatePaintCode(uint8 rideType)
+int generatePaintCode(uint8_t rideType)
 {
     if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
     {

@@ -14,25 +14,25 @@
 struct mapgen_settings
 {
     // Base
-    sint32 mapSize;
-    sint32 height;
-    sint32 water_level;
-    sint32 floor;
-    sint32 wall;
+    int32_t mapSize;
+    int32_t height;
+    int32_t water_level;
+    int32_t floor;
+    int32_t wall;
 
     // Features (e.g. tree, rivers, lakes etc.)
-    sint32 trees;
+    int32_t trees;
 
     // Simplex Noise Parameters
-    sint32 simplex_low;
-    sint32 simplex_high;
+    int32_t simplex_low;
+    int32_t simplex_high;
     float  simplex_base_freq;
-    sint32 simplex_octaves;
+    int32_t simplex_octaves;
 
     // Height map settings
     bool   smooth;
     bool   smooth_height_map;
-    uint32 smooth_strength;
+    uint32_t smooth_strength;
     bool   normalize_height;
 };
 

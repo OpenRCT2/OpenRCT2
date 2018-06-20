@@ -44,7 +44,7 @@ static rct_widget window_custom_currency_widgets[] = {
 
 static void custom_currency_window_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void custom_currency_window_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void custom_currency_window_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void custom_currency_window_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void custom_currency_window_text_input(struct rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -195,14 +195,14 @@ static void custom_currency_window_mouseup(rct_window *w, rct_widgetindex widget
             STR_RATE_INPUT_TITLE,
             STR_RATE_INPUT_DESC,
             STR_FORMAT_INTEGER,
-            (uint32)CurrencyDescriptors[CURRENCY_CUSTOM].rate,
+            (uint32_t)CurrencyDescriptors[CURRENCY_CUSTOM].rate,
             CURRENCY_RATE_MAX_NUM_DIGITS
         );
         break;
     }
 }
 
-static void custom_currency_window_dropdown([[maybe_unused]] rct_window * w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void custom_currency_window_dropdown([[maybe_unused]] rct_window * w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if(dropdownIndex == -1)
         return;
@@ -230,7 +230,7 @@ static void custom_currency_window_text_input([[maybe_unused]] struct rct_window
 {
     if (text == nullptr)
         return;
-    sint32 rate;
+    int32_t rate;
     char* end;
     switch(widgetIndex){
     case WIDX_SYMBOL_TEXT:
@@ -265,9 +265,9 @@ static void custom_currency_window_text_input([[maybe_unused]] struct rct_window
 
 static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 x, y;
+    int32_t x, y;
 
-    set_format_arg(0, sint32, 100);
+    set_format_arg(0, int32_t, 100);
 
     window_draw_widgets(w, dpi);
 
@@ -276,8 +276,8 @@ static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     gfx_draw_string_left(dpi, STR_RATE, nullptr, w->colours[1], x, y);
 
-    sint32 baseExchange = CurrencyDescriptors[CURRENCY_POUNDS].rate;
-    set_format_arg(0, sint32, baseExchange);
+    int32_t baseExchange = CurrencyDescriptors[CURRENCY_POUNDS].rate;
+    set_format_arg(0, int32_t, baseExchange);
     gfx_draw_string_left(dpi, STR_CUSTOM_CURRENCY_EQUIVALENCY, gCommonFormatArgs, w->colours[1], x + 200, y);
 
     y += 20;

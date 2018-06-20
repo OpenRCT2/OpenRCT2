@@ -26,7 +26,7 @@ enum TILE_INSPECTOR_PAGE
     TILE_INSPECTOR_PAGE_CORRUPT
 };
 
-extern uint32 windowTileInspectorTileX;
-extern uint32 windowTileInspectorTileY;
-extern sint32 windowTileInspectorElementCount;
-extern sint32 windowTileInspectorSelectedIndex;
+extern uint32_t windowTileInspectorTileX;
+extern uint32_t windowTileInspectorTileY;
+extern int32_t windowTileInspectorElementCount;
+extern int32_t windowTileInspectorSelectedIndex;

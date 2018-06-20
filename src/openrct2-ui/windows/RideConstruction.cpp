@@ -132,10 +132,10 @@ static void window_ride_construction_close(rct_window *w);
 static void window_ride_construction_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_ride_construction_resize(rct_window *w);
 static void window_ride_construction_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
-static void window_ride_construction_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_ride_construction_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_ride_construction_update(rct_window *w);
-static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 static void window_ride_construction_invalidate(rct_window *w);
 static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -439,19 +439,19 @@ static constexpr const rct_string_id RideConfigurationStringIds[] = {
 #pragma endregion
 
 static bool     _trackPlaceCtrlState;
-static sint32   _trackPlaceCtrlZ;
+static int32_t   _trackPlaceCtrlZ;
 static bool     _trackPlaceShiftState;
-static sint32   _trackPlaceShiftStartScreenX;
-static sint32   _trackPlaceShiftStartScreenY;
-static sint32   _trackPlaceShiftZ;
-static sint32   _trackPlaceZ;
+static int32_t   _trackPlaceShiftStartScreenX;
+static int32_t   _trackPlaceShiftStartScreenY;
+static int32_t   _trackPlaceShiftZ;
+static int32_t   _trackPlaceZ;
 static money32  _trackPlaceCost;
 static bool     _autoOpeningShop;
 static bool     _autoRotatingShop;
-static uint8    _currentlyShowingBrakeOrBoosterSpeed;
+static uint8_t    _currentlyShowingBrakeOrBoosterSpeed;
 static bool     _boosterTrackSelected;
 
-static uint32   _currentDisabledSpecialTrackPieces;
+static uint32_t   _currentDisabledSpecialTrackPieces;
 
 static void window_ride_construction_construct(rct_window *w);
 static void window_ride_construction_mouseup_demolish(rct_window* w);
@@ -461,25 +461,25 @@ static void window_ride_construction_exit_click(rct_window *w);
 
 static void window_ride_construction_draw_track_piece(
     rct_window *w, rct_drawpixelinfo *dpi,
-    sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 unknown,
-    sint32 width, sint32 height
+    int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t unknown,
+    int32_t width, int32_t height
 );
 static void sub_6CBCE2(
     rct_drawpixelinfo * dpi,
-    sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 edx,
-    sint32 originX, sint32 originY, sint32 originZ
+    int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t edx,
+    int32_t originX, int32_t originY, int32_t originZ
 );
 static void window_ride_construction_update_map_selection();
 static void window_ride_construction_update_possible_ride_configurations();
 static void window_ride_construction_update_widgets(rct_window *w);
-static void window_ride_construction_select_map_tiles(Ride *ride, sint32 trackType, sint32 trackDirection, sint32 x, sint32 y);
+static void window_ride_construction_select_map_tiles(Ride *ride, int32_t trackType, int32_t trackDirection, int32_t x, int32_t y);
 static void window_ride_construction_show_special_track_dropdown(rct_window *w, rct_widget *widget);
-static void ride_selected_track_set_seat_rotation(sint32 seatRotation);
-static void loc_6C7502(sint32 al);
-static void ride_construction_set_brakes_speed(sint32 brakesSpeed);
-static void ride_construction_tooldown_entrance_exit(sint32 screenX, sint32 screenY);
+static void ride_selected_track_set_seat_rotation(int32_t seatRotation);
+static void loc_6C7502(int32_t al);
+static void ride_construction_set_brakes_speed(int32_t brakesSpeed);
+static void ride_construction_tooldown_entrance_exit(int32_t screenX, int32_t screenY);
 
-static uint8 _currentPossibleRideConfigurations[32];
+static uint8_t _currentPossibleRideConfigurations[32];
 
 static constexpr const rct_string_id RideConstructionSeatAngleRotationStrings[] = {
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180,
@@ -500,12 +500,12 @@ static constexpr const rct_string_id RideConstructionSeatAngleRotationStrings[] 
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_495,
 };
 
-static bool is_track_enabled(sint32 trackFlagIndex)
+static bool is_track_enabled(int32_t trackFlagIndex)
 {
     return (_enabledRidePieces & (1ULL << trackFlagIndex)) != 0;
 }
 
-static sint32 ride_get_alternative_type(Ride *ride)
+static int32_t ride_get_alternative_type(Ride *ride)
 {
     return (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ?
         RideData4[ride->type].alternate_type :
@@ -526,7 +526,7 @@ static void close_ride_window_for_construction(rct_windownumber number)
  */
 rct_window *window_ride_construction_open()
 {
-    sint32 rideIndex = _currentRideIndex;
+    int32_t rideIndex = _currentRideIndex;
     close_ride_window_for_construction(rideIndex);
 
     rct_window *w;
@@ -634,7 +634,7 @@ static void window_ride_construction_close(rct_window *w)
 
     hide_gridlines();
 
-    uint8 rideIndex = _currentRideIndex;
+    uint8_t rideIndex = _currentRideIndex;
     Ride * ride = get_ride(rideIndex);
 
     // If we demolish a ride all windows will be closed including the construction window,
@@ -666,7 +666,7 @@ static void window_ride_construction_close(rct_window *w)
     }
     else
     {
-        sint32 previousPauseState = gGamePaused;
+        int32_t previousPauseState = gGamePaused;
         gGamePaused = 0;
         ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
         gGamePaused = previousPauseState;
@@ -723,9 +723,9 @@ static void window_ride_construction_resize(rct_window *w)
     }
 
     Ride *ride = get_ride(_currentRideIndex);
-    sint32 rideType = ride_get_alternative_type(ride);
+    int32_t rideType = ride_get_alternative_type(ride);
 
-    uint64 disabledWidgets = 0;
+    uint64_t disabledWidgets = 0;
 
     if (_currentTrackCurve & 0x100) {
         disabledWidgets |=
@@ -1275,7 +1275,7 @@ static void window_ride_construction_resize(rct_window *w)
     }
 
     // Set and invalidate the changed widgets
-    uint64 currentDisabledWidgets = w->disabled_widgets;
+    uint64_t currentDisabledWidgets = w->disabled_widgets;
     if (currentDisabledWidgets == disabledWidgets)
         return;
 
@@ -1533,9 +1533,9 @@ static void window_ride_construction_mousedown(rct_window *w, rct_widgetindex wi
             _currentTrackPrice = MONEY32_UNDEFINED;
             window_ride_construction_update_active_elements();
         } else {
-            uint8 *brakesSpeedPtr = &_currentBrakeSpeed2;
-            uint8 maxBrakesSpeed = 30;
-            uint8 brakesSpeed = *brakesSpeedPtr + 2;
+            uint8_t *brakesSpeedPtr = &_currentBrakeSpeed2;
+            uint8_t maxBrakesSpeed = 30;
+            uint8_t brakesSpeed = *brakesSpeedPtr + 2;
             if (brakesSpeed <= maxBrakesSpeed) {
                 if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED) {
                     ride_construction_set_brakes_speed(brakesSpeed);
@@ -1553,8 +1553,8 @@ static void window_ride_construction_mousedown(rct_window *w, rct_widgetindex wi
             _currentTrackPrice = MONEY32_UNDEFINED;
             window_ride_construction_update_active_elements();
         } else {
-            uint8 *brakesSpeedPtr = &_currentBrakeSpeed2;
-            uint8 brakesSpeed = *brakesSpeedPtr - 2;
+            uint8_t *brakesSpeedPtr = &_currentBrakeSpeed2;
+            uint8_t brakesSpeed = *brakesSpeedPtr - 2;
             if (brakesSpeed >= 2) {
                 if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED) {
                     ride_construction_set_brakes_speed(brakesSpeed);
@@ -1608,7 +1608,7 @@ static void window_ride_construction_mousedown(rct_window *w, rct_widgetindex wi
  *
  *  rct2: 0x006C78CD
  */
-static void window_ride_construction_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_ride_construction_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (widgetIndex != WIDX_SPECIAL_TRACK_DROPDOWN)
         return;
@@ -1617,7 +1617,7 @@ static void window_ride_construction_dropdown(rct_window *w, rct_widgetindex wid
 
     ride_construction_invalidate_current_track();
     _currentTrackPrice = MONEY32_UNDEFINED;
-    sint32 trackPiece = _currentPossibleRideConfigurations[dropdownIndex];
+    int32_t trackPiece = _currentPossibleRideConfigurations[dropdownIndex];
     switch (trackPiece) {
     case TRACK_ELEM_END_STATION:
     case TRACK_ELEM_S_BEND_LEFT:
@@ -1640,7 +1640,7 @@ static void window_ride_construction_dropdown(rct_window *w, rct_widgetindex wid
  */
 static void window_ride_construction_construct(rct_window *w)
 {
-    sint32 trackType, trackDirection, rideIndex, liftHillAndAlternativeState, x, y, z, properties;
+    int32_t trackType, trackDirection, rideIndex, liftHillAndAlternativeState, x, y, z, properties;
     track_begin_end trackBeginEnd;
 
     _currentTrackPrice = MONEY32_UNDEFINED;
@@ -1759,7 +1759,7 @@ static void window_ride_construction_construct(rct_window *w)
  */
 static void window_ride_construction_mouseup_demolish(rct_window* w)
 {
-    sint32 x, y, z, direction, type;
+    int32_t x, y, z, direction, type;
     rct_tile_element *tileElement;
     CoordsXYE inputElement, outputElement;
     track_begin_end trackBeginEnd;
@@ -1975,10 +1975,10 @@ static void window_ride_construction_update(rct_window *w)
  *
  *  rct2: 0x006CC538
  */
-static bool ride_get_place_position_from_screen_position(sint32 screenX, sint32 screenY, sint32 *outX, sint32 *outY)
+static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_t screenY, int32_t *outX, int32_t *outY)
 {
-    sint16 mapX, mapY, mapZ;
-    sint32 interactionType, direction;
+    int16_t mapX, mapY, mapZ;
+    int32_t interactionType, direction;
     rct_tile_element *tileElement;
     rct_viewport *viewport;
 
@@ -2023,7 +2023,7 @@ static bool ride_get_place_position_from_screen_position(sint32 screenX, sint32 
             tileElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
             mapZ = floor2(tileElement->base_height * 8, 16);
             mapZ += _trackPlaceShiftZ;
-            mapZ = std::max<sint16>(mapZ, 16);
+            mapZ = std::max<int16_t>(mapZ, 16);
             _trackPlaceZ = mapZ;
         }
     } else {
@@ -2032,7 +2032,7 @@ static bool ride_get_place_position_from_screen_position(sint32 screenX, sint32 
         if (_trackPlaceShiftState != 0) {
             mapZ += _trackPlaceShiftZ;
         }
-        _trackPlaceZ = std::max<sint32>(mapZ, 16);
+        _trackPlaceZ = std::max<int32_t>(mapZ, 16);
     }
 
     if (mapX == LOCATION_NULL)
@@ -2047,7 +2047,7 @@ static bool ride_get_place_position_from_screen_position(sint32 screenX, sint32 
  *
  *  rct2: 0x006C8229
  */
-static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     switch (widgetIndex) {
     case WIDX_CONSTRUCT:
@@ -2064,7 +2064,7 @@ static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex w
  *
  *  rct2: 0x006C8248
  */
-static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     switch (widgetIndex) {
     case WIDX_CONSTRUCT:
@@ -2097,22 +2097,22 @@ static void window_ride_construction_invalidate(rct_window *w)
             stringId = STR_BOOSTER;
         }
     }
-    set_format_arg(0, uint16, stringId);
+    set_format_arg(0, uint16_t, stringId);
 
     if (_currentlyShowingBrakeOrBoosterSpeed) {
-        uint16 brakeSpeed2 = ((_currentBrakeSpeed2 * 9) >> 2) & 0xFFFF;
+        uint16_t brakeSpeed2 = ((_currentBrakeSpeed2 * 9) >> 2) & 0xFFFF;
         if (_boosterTrackSelected)
         {
             brakeSpeed2 = get_booster_speed(ride->type, brakeSpeed2);
         }
-        set_format_arg(2, uint16, brakeSpeed2);
+        set_format_arg(2, uint16_t, brakeSpeed2);
     }
 
     window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].text = RideConstructionSeatAngleRotationStrings[_currentSeatRotationAngle];
 
     // Set window title arguments
     set_format_arg(4, rct_string_id, ride->name);
-    set_format_arg(6, uint32, ride->name_arguments);
+    set_format_arg(6, uint32_t, ride->name_arguments);
 }
 
 /**
@@ -2123,7 +2123,7 @@ static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi
 {
     rct_drawpixelinfo clipdpi;
     rct_widget *widget;
-    sint32 x, y, width, height;
+    int32_t x, y, width, height;
 
     window_draw_widgets(w, dpi);
 
@@ -2131,7 +2131,7 @@ static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi
     if (widget->type == WWT_EMPTY)
         return;
 
-    sint32 trackType, trackDirection, rideIndex, liftHillAndAlternativeState;
+    int32_t trackType, trackDirection, rideIndex, liftHillAndAlternativeState;
     if (window_ride_construction_update_state(&trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, nullptr, nullptr, nullptr, nullptr))
         return;
 
@@ -2161,8 +2161,8 @@ static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi
 
 static void window_ride_construction_draw_track_piece(
     rct_window *w, rct_drawpixelinfo *dpi,
-    sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 unknown,
-    sint32 width, sint32 height
+    int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t unknown,
+    int32_t width, int32_t height
 ) {
     const rct_preview_track *trackBlock;
     Ride *ride;
@@ -2173,15 +2173,15 @@ static void window_ride_construction_draw_track_piece(
     while ((trackBlock + 1)->index != 0xFF)
         trackBlock++;
 
-    sint16 x = trackBlock->x;
-    sint16 z = trackBlock->z;
-    sint16 y = trackBlock->y;
+    int16_t x = trackBlock->x;
+    int16_t z = trackBlock->z;
+    int16_t y = trackBlock->y;
     if (trackBlock->var_09 & 2) {
         x = 0;
         y = 0;
     }
 
-    sint16 tmp;
+    int16_t tmp;
     switch (trackDirection & 3) {
     case 1:
         tmp = x;
@@ -2205,7 +2205,7 @@ static void window_ride_construction_draw_track_piece(
     y = 4112 + (y / 2);
     z = 1024 + z;
 
-    sint16 previewZOffset = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
+    int16_t previewZOffset = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
         FlatRideTrackDefinitions[trackType].preview_z_offset :
         TrackDefinitions[trackType].preview_z_offset;
     z -= previewZOffset;
@@ -2216,7 +2216,7 @@ static void window_ride_construction_draw_track_piece(
 
     dpi->x += x - width / 2;
     dpi->y += y - height / 2 - 16;
-    uint32 d = unknown << 16;
+    uint32_t d = unknown << 16;
     d |= rideIndex;
     d |= trackType << 8;
 
@@ -2236,13 +2236,13 @@ static rct_tile_element *_backupTileElementArrays[5];
  */
 static void sub_6CBCE2(
     rct_drawpixelinfo * dpi,
-    sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 edx,
-    sint32 originX, sint32 originY, sint32 originZ
+    int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t edx,
+    int32_t originX, int32_t originY, int32_t originZ
 ) {
     Ride *ride;
     const rct_preview_track *trackBlock;
-    sint32 preserve_current_viewport_flags;
-    sint32 offsetX, offsetY;
+    int32_t preserve_current_viewport_flags;
+    int32_t offsetX, offsetY;
 
     paint_session * session = paint_session_alloc(dpi);
     preserve_current_viewport_flags = gCurrentViewportFlags;
@@ -2251,10 +2251,10 @@ static void sub_6CBCE2(
 
     ride = get_ride(rideIndex);
 
-    sint16 preserveMapSizeUnits = gMapSizeUnits;
-    sint16 preserveMapSizeMinus2 = gMapSizeMinus2;
-    sint16 preserveMapSize = gMapSize;
-    sint16 preserveMapSizeMaxXY = gMapSizeMaxXY;
+    int16_t preserveMapSizeUnits = gMapSizeUnits;
+    int16_t preserveMapSizeMinus2 = gMapSizeMinus2;
+    int16_t preserveMapSize = gMapSize;
+    int16_t preserveMapSizeMaxXY = gMapSizeMaxXY;
 
     gMapSizeUnits = 255 * 32;
     gMapSizeMinus2 = (255 * 32) + 286;
@@ -2263,8 +2263,8 @@ static void sub_6CBCE2(
 
     trackBlock = get_track_def_from_ride(ride, trackType);
     while (trackBlock->index != 255) {
-        sint32 bl = trackBlock->var_08;
-        sint32 bh;
+        int32_t bl = trackBlock->var_08;
+        int32_t bh;
         switch (trackDirection) {
         default:
         case 0:
@@ -2302,13 +2302,13 @@ static void sub_6CBCE2(
             bl |= bh;
             break;
         }
-        sint32 x = originX + offsetX;
-        sint32 y = originY + offsetY;
-        sint32 baseZ = (originZ + trackBlock->z) >> 3;
-        sint32 clearanceZ = ((trackBlock->var_07 + RideData5[ride->type].clearance_height) >> 3) + baseZ + 4;
+        int32_t x = originX + offsetX;
+        int32_t y = originY + offsetY;
+        int32_t baseZ = (originZ + trackBlock->z) >> 3;
+        int32_t clearanceZ = ((trackBlock->var_07 + RideData5[ride->type].clearance_height) >> 3) + baseZ + 4;
 
-        sint32 tileX = x >> 5;
-        sint32 tileY = y >> 5;
+        int32_t tileX = x >> 5;
+        int32_t tileY = y >> 5;
 
         // Replace map elements with temporary ones containing track
         _backupTileElementArrays[0] = map_get_first_element_at(tileX + 0, tileY + 0);
@@ -2381,9 +2381,9 @@ void window_ride_construction_update_active_elements_impl()
 
     _selectedTrackType = 255;
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED) {
-        sint32 x = _currentTrackBeginX;
-        sint32 y = _currentTrackBeginY;
-        sint32 z = _currentTrackBeginZ;
+        int32_t x = _currentTrackBeginX;
+        int32_t y = _currentTrackBeginY;
+        int32_t z = _currentTrackBeginZ;
         if (!sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, &tileElement, 0)) {
             _selectedTrackType = track_element_get_type(tileElement);
             if (track_element_has_speed_setting(track_element_get_type(tileElement)))
@@ -2404,7 +2404,7 @@ void window_ride_construction_update_enabled_track_pieces()
 {
     Ride *ride = get_ride(_currentRideIndex);
     rct_ride_entry *rideEntry = get_ride_entry_by_ride(ride);
-    sint32 rideType = (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideData4[ride->type].alternate_type : ride->type;
+    int32_t rideType = (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideData4[ride->type].alternate_type : ride->type;
 
     if (rideEntry == nullptr)
         return;
@@ -2433,7 +2433,7 @@ void window_ride_construction_update_enabled_track_pieces()
  */
 void sub_6C94D8()
 {
-    sint32 x, y, z, direction, type, rideIndex, liftHillAndAlternativeState;
+    int32_t x, y, z, direction, type, rideIndex, liftHillAndAlternativeState;
 
     // Recheck if area is fine for new track.
     // Set by footpath placement
@@ -2533,7 +2533,7 @@ void sub_6C94D8()
 static void window_ride_construction_update_map_selection()
 {
     Ride *ride;
-    sint32 trackType, trackDirection, x, y;
+    int32_t trackType, trackDirection, x, y;
 
     map_invalidate_map_selection_tiles();
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -2574,8 +2574,8 @@ static void window_ride_construction_update_map_selection()
 static void window_ride_construction_update_possible_ride_configurations()
 {
     Ride *ride;
-    sint32 trackType;
-    sint32 edi;
+    int32_t trackType;
+    int32_t edi;
 
     ride = get_ride(_currentRideIndex);
 
@@ -2585,10 +2585,10 @@ static void window_ride_construction_update_possible_ride_configurations()
     else
         edi = ride->type;
 
-    sint32 currentPossibleRideConfigurationIndex = 0;
+    int32_t currentPossibleRideConfigurationIndex = 0;
     _numCurrentPossibleSpecialTrackPieces = 0;
     for (trackType = 0; trackType < 256; trackType++) {
-        sint32 edx = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
+        int32_t edx = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
             FlatRideTrackDefinitions[trackType].type :
             TrackDefinitions[trackType].type;
 
@@ -2603,7 +2603,7 @@ static void window_ride_construction_update_possible_ride_configurations()
             continue;
         }
 
-        sint32 slope, bank;
+        int32_t slope, bank;
         if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT || _rideConstructionState == RIDE_CONSTRUCTION_STATE_PLACE) {
             if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
                 slope = FlatRideTrackDefinitions[trackType].vangle_start;
@@ -2664,9 +2664,9 @@ static void window_ride_construction_update_possible_ride_configurations()
  */
 static void window_ride_construction_update_widgets(rct_window *w)
 {
-    uint8 rideIndex = _currentRideIndex;
+    uint8_t rideIndex = _currentRideIndex;
     Ride *ride = get_ride(rideIndex);
-    sint32 rideType = ride_get_alternative_type(ride);
+    int32_t rideType = ride_get_alternative_type(ride);
 
     w->hold_down_widgets = 0;
     if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_IS_SHOP) || !_stationConstructed) {
@@ -2779,7 +2779,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
             window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WWT_FLATBTN;
     }
 
-    sint32 x;
+    int32_t x;
     if ((is_track_enabled(TRACK_LIFT_HILL) && _currentTrackCurve < 256) || (gCheatsEnableChainLiftOnAllTrack && ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))) {
         window_ride_construction_widgets[WIDX_CHAIN_LIFT].type = WWT_FLATBTN;
         x = 9;
@@ -2788,7 +2788,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
         x = 23;
     }
 
-    for (sint32 i = WIDX_SLOPE_DOWN_STEEP; i <= WIDX_SLOPE_UP_STEEP; i++) {
+    for (int32_t i = WIDX_SLOPE_DOWN_STEEP; i <= WIDX_SLOPE_UP_STEEP; i++) {
         window_ride_construction_widgets[i].left = x;
         window_ride_construction_widgets[i].right = x + 23;
         x += 24;
@@ -2800,9 +2800,9 @@ static void window_ride_construction_update_widgets(rct_window *w)
     window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP;
     if (is_track_enabled(TRACK_SLOPE_VERTICAL)) {
         if (_previousTrackSlopeEnd == TRACK_SLOPE_UP_60 || _previousTrackSlopeEnd == TRACK_SLOPE_UP_90) {
-            sint32 originalSlopeUpSteepLeft = window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].left;
-            sint32 originalSlopeUpSteepRight = window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].right;
-            for (sint32 i = WIDX_SLOPE_UP_STEEP; i > WIDX_SLOPE_DOWN_STEEP; i--) {
+            int32_t originalSlopeUpSteepLeft = window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].left;
+            int32_t originalSlopeUpSteepRight = window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].right;
+            for (int32_t i = WIDX_SLOPE_UP_STEEP; i > WIDX_SLOPE_DOWN_STEEP; i--) {
                 window_ride_construction_widgets[i].left = window_ride_construction_widgets[i - 1].left;
                 window_ride_construction_widgets[i].right = window_ride_construction_widgets[i - 1].right;
             }
@@ -2811,9 +2811,9 @@ static void window_ride_construction_update_widgets(rct_window *w)
             window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image = SPR_RIDE_CONSTRUCTION_VERTICAL_RISE;
             window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_VERTICAL_RISE_TIP;
         } else if (_previousTrackSlopeEnd == TRACK_SLOPE_DOWN_60 || _previousTrackSlopeEnd == TRACK_SLOPE_DOWN_90) {
-            sint32 originalSlopeDownSteepLeft = window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].left;
-            sint32 originalSlopeDownSteepRight = window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].right;
-            for (sint32 i = WIDX_SLOPE_DOWN_STEEP; i < WIDX_SLOPE_UP_STEEP; i++) {
+            int32_t originalSlopeDownSteepLeft = window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].left;
+            int32_t originalSlopeDownSteepRight = window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].right;
+            for (int32_t i = WIDX_SLOPE_DOWN_STEEP; i < WIDX_SLOPE_UP_STEEP; i++) {
                 window_ride_construction_widgets[i].left = window_ride_construction_widgets[i + 1].left;
                 window_ride_construction_widgets[i].right = window_ride_construction_widgets[i + 1].right;
             }
@@ -2835,7 +2835,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
         window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image = SPR_RIDE_CONSTRUCTION_HELIX_UP;
         window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_HELIX_UP_TIP;
 
-        sint32 tmp = window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].left;
+        int32_t tmp = window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].left;
         window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].left = window_ride_construction_widgets[WIDX_SLOPE_DOWN].left;
         window_ride_construction_widgets[WIDX_SLOPE_DOWN].left = tmp;
 
@@ -2863,7 +2863,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
         window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image = SPR_RIDE_CONSTRUCTION_HELIX_UP;
         window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_HELIX_UP_TIP;
 
-        sint32 tmp = window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].left;
+        int32_t tmp = window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].left;
         window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].left = window_ride_construction_widgets[WIDX_SLOPE_DOWN].left;
         window_ride_construction_widgets[WIDX_SLOPE_DOWN].left = tmp;
 
@@ -2991,14 +2991,14 @@ static void window_ride_construction_update_widgets(rct_window *w)
         window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WWT_BUTTON;
         window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].right = 92;
         if (window_ride_construction_widgets[WIDX_BANK_LEFT].type != WWT_SPINNER) {
-            for (sint32 i = WIDX_BANK_LEFT; i <= WIDX_BANK_RIGHT; i++) {
+            for (int32_t i = WIDX_BANK_LEFT; i <= WIDX_BANK_RIGHT; i++) {
                 window_ride_construction_widgets[i].left -= 36;
                 window_ride_construction_widgets[i].right -= 36;
             }
         }
     }
 
-    uint64 pressedWidgets = w->pressed_widgets & (
+    uint64_t pressedWidgets = w->pressed_widgets & (
         (1 << WIDX_BACKGROUND) |
         (1 << WIDX_TITLE) |
         (1 << WIDX_CLOSE) |
@@ -3137,7 +3137,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
     window_invalidate(w);
 }
 
-static void window_ride_construction_select_map_tiles(Ride *ride, sint32 trackType, sint32 trackDirection, sint32 x, sint32 y)
+static void window_ride_construction_select_map_tiles(Ride *ride, int32_t trackType, int32_t trackDirection, int32_t x, int32_t y)
 {
     // If the scenery tool is active, we do not display our tiles as it
     // will conflict with larger scenery objects selecting tiles
@@ -3147,11 +3147,11 @@ static void window_ride_construction_select_map_tiles(Ride *ride, sint32 trackTy
     }
 
     const rct_preview_track *trackBlock;
-    sint32 offsetX, offsetY;
+    int32_t offsetX, offsetY;
 
     trackBlock = get_track_def_from_ride(ride, trackType);
     trackDirection &= 3;
-    sint32 selectionTileIndex = 0;
+    int32_t selectionTileIndex = 0;
     while (trackBlock->index != 255) {
         switch (trackDirection) {
         default:
@@ -3187,9 +3187,9 @@ static void window_ride_construction_select_map_tiles(Ride *ride, sint32 trackTy
  */
 static void window_ride_construction_show_special_track_dropdown(rct_window *w, rct_widget *widget)
 {
-    sint32 defaultIndex = -1;
-    for (sint32 i = 0; i < _numCurrentPossibleRideConfigurations; i++) {
-        uint8 trackPiece = _currentPossibleRideConfigurations[i];
+    int32_t defaultIndex = -1;
+    for (int32_t i = 0; i < _numCurrentPossibleRideConfigurations; i++) {
+        uint8_t trackPiece = _currentPossibleRideConfigurations[i];
         rct_string_id trackPieceStringId = RideConfigurationStringIds[trackPiece];
         if (trackPieceStringId == STR_RAPIDS) {
             Ride *ride = get_ride(_currentRideIndex);
@@ -3219,7 +3219,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
         widget->right - widget->left
     );
 
-    for (sint32 i = 0; i < 32; i++)
+    for (int32_t i = 0; i < 32; i++)
     {
         if (_currentDisabledSpecialTrackPieces & (1 << i))
         {
@@ -3233,9 +3233,9 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
  *
  *  rct2: 0x006C7630
  */
-static void ride_selected_track_set_seat_rotation(sint32 seatRotation)
+static void ride_selected_track_set_seat_rotation(int32_t seatRotation)
 {
-    sint32 x, y, z;
+    int32_t x, y, z;
     x = _currentTrackBeginX;
     y = _currentTrackBeginY;
     z = _currentTrackBeginZ;
@@ -3247,7 +3247,7 @@ static void ride_selected_track_set_seat_rotation(sint32 seatRotation)
  *
  *  rct2: 0x006C7502
  */
-static void loc_6C7502(sint32 al)
+static void loc_6C7502(int32_t al)
 {
     _currentTrackSlopeEnd = al;
     _currentTrackPrice = MONEY32_UNDEFINED;
@@ -3263,10 +3263,10 @@ static void loc_6C7502(sint32 al)
  *
  *  rct2: 0x006C76E9
  */
-static void ride_construction_set_brakes_speed(sint32 brakesSpeed)
+static void ride_construction_set_brakes_speed(int32_t brakesSpeed)
 {
     rct_tile_element *tileElement;
-    sint32 x, y, z;
+    int32_t x, y, z;
 
     x = _currentTrackBeginX;
     y = _currentTrackBeginY;
@@ -3289,9 +3289,9 @@ static void ride_construction_set_brakes_speed(sint32 brakesSpeed)
  *
  *  rct2: 0x006CC6A8
  */
-void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
+void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
 {
-    sint32 x, y, z;
+    int32_t x, y, z;
     Ride *ride;
     const rct_preview_track *trackBlock;
 
@@ -3321,7 +3321,7 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
     gMapSelectionTiles[1].x = -1;
     gMapSelectionTiles[1].y = -1;
 
-    sint32 trackType, trackDirection, rideIndex, liftHillAndAlternativeState;
+    int32_t trackType, trackDirection, rideIndex, liftHillAndAlternativeState;
     if (window_ride_construction_update_state(&trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, nullptr, nullptr, nullptr, nullptr)) {
         ride_construction_invalidate_current_track();
         map_invalidate_map_selection_tiles();
@@ -3339,7 +3339,7 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
     if (_trackPlaceZ == 0) {
         // Raise z above all slopes and water
         if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT) {
-            sint32 highestZ = 0;
+            int32_t highestZ = 0;
             LocationXY16 *selectedTile = gMapSelectionTiles;
             while (selectedTile->x != -1) {
                 if (selectedTile->x < (256 * 32) && selectedTile->y < (256 * 32)) {
@@ -3355,9 +3355,9 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
     }
     // loc_6CC91B:
     trackBlock = get_track_def_from_ride(ride, trackType);
-    sint32 bx = 0;
+    int32_t bx = 0;
     do {
-        bx = std::min<sint32>(bx, trackBlock->z);
+        bx = std::min<int32_t>(bx, trackBlock->z);
         trackBlock++;
     } while (trackBlock->index != 255);
     z -= bx;
@@ -3431,7 +3431,7 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
         constexpr sLocationXY8 DirOffsets[4] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
         bool keepOrientation = false;
-        for (sint8 i = 0; i < 4; i++)
+        for (int8_t i = 0; i < 4; i++)
         {
             pathsByDir[i] = map_get_footpath_element(
                 (x >> 5) + DirOffsets[i].x,
@@ -3478,7 +3478,7 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
 
         if (!keepOrientation)
         {
-            for (sint8 i = 0; i < 4; i++)
+            for (int8_t i = 0; i < 4; i++)
             {
                 if (pathsByDir[i])
                 {
@@ -3501,10 +3501,10 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
  *
  *  rct2: 0x006CD354
  */
-void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY)
+void ride_construction_toolupdate_entrance_exit(int32_t screenX, int32_t screenY)
 {
-    sint32 x, y, direction;
-    uint8 stationNum;
+    int32_t x, y, direction;
+    uint8_t stationNum;
 
     map_invalidate_selection_rect();
     map_invalidate_map_selection_tiles();
@@ -3549,10 +3549,10 @@ void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY)
  *
  *  rct2: 0x006CCA73
  */
-void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
+void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
 {
     const CursorState * state = context_get_cursor_state();
-    sint32 trackType, trackDirection, rideIndex, liftHillAndAlternativeState, x, y, z, properties, highestZ;
+    int32_t trackType, trackDirection, rideIndex, liftHillAndAlternativeState, x, y, z, properties, highestZ;
     rct_window *w;
 
     map_invalidate_map_selection_tiles();
@@ -3594,9 +3594,9 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
     Ride *ride = get_ride(_currentRideIndex);
     if (_trackPlaceZ == 0) {
         const rct_preview_track *trackBlock = get_track_def_from_ride(ride, _currentTrackPieceType);
-        sint32 bx = 0;
+        int32_t bx = 0;
         do {
-            bx = std::min<sint32>(bx, trackBlock->z);
+            bx = std::min<int32_t>(bx, trackBlock->z);
             trackBlock++;
         } while (trackBlock->index != 255);
         z -= bx;
@@ -3610,7 +3610,7 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
     }
 
     if (ride->type == RIDE_TYPE_MAZE) {
-        for (sint32 zAttempts = 41; zAttempts >= 0; zAttempts--) {
+        for (int32_t zAttempts = 41; zAttempts >= 0; zAttempts--) {
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_MAZE_BUILD;
             _currentTrackBeginX = x;
             _currentTrackBeginY = y;
@@ -3674,7 +3674,7 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
         return;
     }
 
-    for (sint32 zAttempts = 41; zAttempts >= 0; zAttempts--) {
+    for (int32_t zAttempts = 41; zAttempts >= 0; zAttempts--) {
         _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
         _currentTrackBeginX = x;
         _currentTrackBeginY = y;
@@ -3702,14 +3702,14 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
                 zAttempts == 0 ||
                 z < 0
             ) {
-                sint32 saveTrackDirection = _currentTrackPieceDirection;
-                sint32 saveCurrentTrackCurve = _currentTrackCurve;
-                sint32 savePreviousTrackSlopeEnd = _previousTrackSlopeEnd;
-                sint32 saveCurrentTrackSlopeEnd = _currentTrackSlopeEnd;
-                sint32 savePreviousTrackBankEnd = _previousTrackBankEnd;
-                sint32 saveCurrentTrackBankEnd = _currentTrackBankEnd;
-                sint32 saveCurrentTrackAlternative = _currentTrackAlternative;
-                sint32 saveCurrentTrackLiftHill = _currentTrackLiftHill;
+                int32_t saveTrackDirection = _currentTrackPieceDirection;
+                int32_t saveCurrentTrackCurve = _currentTrackCurve;
+                int32_t savePreviousTrackSlopeEnd = _previousTrackSlopeEnd;
+                int32_t saveCurrentTrackSlopeEnd = _currentTrackSlopeEnd;
+                int32_t savePreviousTrackBankEnd = _previousTrackBankEnd;
+                int32_t saveCurrentTrackBankEnd = _currentTrackBankEnd;
+                int32_t saveCurrentTrackAlternative = _currentTrackAlternative;
+                int32_t saveCurrentTrackLiftHill = _currentTrackLiftHill;
 
                 ride_initialise_construction_window(_currentRideIndex);
 
@@ -3751,14 +3751,14 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
  *
  *  rct2: 0x006CCA73
  */
-static void ride_construction_tooldown_entrance_exit(sint32 screenX, sint32 screenY)
+static void ride_construction_tooldown_entrance_exit(int32_t screenX, int32_t screenY)
 {
     ride_construction_invalidate_current_track();
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    sint32 mapX, mapY, direction;
+    int32_t mapX, mapY, direction;
     ride_get_entrance_or_exit_position_from_screen_position(screenX, screenY, &mapX, &mapY, &direction);
     if (gRideEntranceExitPlaceDirection == 255)
         return;

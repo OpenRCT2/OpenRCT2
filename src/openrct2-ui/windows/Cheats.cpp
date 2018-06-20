@@ -27,7 +27,7 @@
 #define CHEATS_MONEY_INCREMENT_DIV MONEY(5000,00)
 static utf8 _moneySpinnerText[MONEY_STRING_MAXLENGTH];
 static money32 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
-static sint32 _selectedStaffSpeed = 1;
+static int32_t _selectedStaffSpeed = 1;
 
 // clang-format off
 enum
@@ -181,17 +181,17 @@ enum WINDOW_CHEATS_WIDGET_IDX
 #define OPTH            10                                              // Option (checkbox) height (two columns)
 #define GROUP_SPACE     6
 
-#define YPL(ROW)        ((sint16)(YOS + ((BTNH + YSPA) * ROW)))
-#define HPL(ROW)        ((sint16)(YPL(ROW) + BTNH))
-#define OHPL(ROW)       ((sint16)(YPL(ROW) + OPTH))
-#define XPL(COL)        ((sint16)(XOS + ((BTNW + XSPA) * COL)))
-#define WPL(COL)        ((sint16)(XPL(COL) + BTNW))
-#define OWPL            ((sint16)(XPL(0) + OPTW))
+#define YPL(ROW)        ((int16_t)(YOS + ((BTNH + YSPA) * ROW)))
+#define HPL(ROW)        ((int16_t)(YPL(ROW) + BTNH))
+#define OHPL(ROW)       ((int16_t)(YPL(ROW) + OPTH))
+#define XPL(COL)        ((int16_t)(XOS + ((BTNW + XSPA) * COL)))
+#define WPL(COL)        ((int16_t)(XPL(COL) + BTNW))
+#define OWPL            ((int16_t)(XPL(0) + OPTW))
 
-#define MIN_BTN_LEFT    ((sint16)(XPL(1)))
-#define MIN_BTN_RIGHT   ((sint16)(WPL(1) - (BTNW / 2)))
-#define MAX_BTN_LEFT    ((sint16)(XPL(1.5)))
-#define MAX_BTN_RIGHT   ((sint16)(WPL(1)))
+#define MIN_BTN_LEFT    ((int16_t)(XPL(1)))
+#define MIN_BTN_RIGHT   ((int16_t)(WPL(1) - (BTNW / 2)))
+#define MAX_BTN_LEFT    ((int16_t)(XPL(1.5)))
+#define MAX_BTN_RIGHT   ((int16_t)(WPL(1)))
 
 #define TXTO 3  // Text horizontal offset from button left (for button text)
 #pragma endregion
@@ -326,14 +326,14 @@ static rct_widget *window_cheats_page_widgets[] =
 static void window_cheats_money_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_cheats_money_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_cheats_misc_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_cheats_misc_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_cheats_misc_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_cheats_guests_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_cheats_misc_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_cheats_rides_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_cheats_update(rct_window *w);
 static void window_cheats_invalidate(rct_window *w);
 static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_cheats_set_page(rct_window *w, sint32 page);
+static void window_cheats_set_page(rct_window *w, int32_t page);
 static void window_cheats_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
 static rct_window_event_list window_cheats_money_events =
@@ -475,7 +475,7 @@ static rct_window_event_list *window_cheats_page_events[] =
 
 #define MAIN_CHEAT_ENABLED_WIDGETS (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_TAB_4)
 
-static uint64 window_cheats_page_enabled_widgets[] = {
+static uint64_t window_cheats_page_enabled_widgets[] = {
     MAIN_CHEAT_ENABLED_WIDGETS |
     (1ULL << WIDX_NO_MONEY) |
     (1ULL << WIDX_ADD_SET_MONEY_GROUP) |
@@ -573,7 +573,7 @@ static uint64 window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES)
 };
 
-static uint64 window_cheats_page_hold_down_widgets[] = {
+static uint64_t window_cheats_page_hold_down_widgets[] = {
     (1ULL << WIDX_MONEY_SPINNER_INCREMENT) |
     (1ULL << WIDX_MONEY_SPINNER_DECREMENT) |
     (1ULL << WIDX_ADD_MONEY) |
@@ -754,7 +754,7 @@ static void window_cheats_misc_mousedown(rct_window *w, rct_widgetindex widgetIn
     }
 }
 
-static void window_cheats_misc_dropdown([[maybe_unused]] rct_window * w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_cheats_misc_dropdown([[maybe_unused]] rct_window * w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1)
     {
@@ -767,7 +767,7 @@ static void window_cheats_misc_dropdown([[maybe_unused]] rct_window * w, rct_wid
     }
     else if (widgetIndex == WIDX_STAFF_SPEED_DROPDOWN_BUTTON)
     {
-        sint32 speed = CHEATS_STAFF_FAST_SPEED;
+        int32_t speed = CHEATS_STAFF_FAST_SPEED;
         switch (dropdownIndex)
         {
         case 0:
@@ -1083,7 +1083,7 @@ static void window_cheats_update(rct_window *w)
 
 static void window_cheats_invalidate(rct_window *w)
 {
-    sint32 i;
+    int32_t i;
 
     rct_widget *widgets = window_cheats_page_widgets[w->page];
     if (w->widgets != widgets)
@@ -1108,7 +1108,7 @@ static void window_cheats_invalidate(rct_window *w)
     case WINDOW_CHEATS_PAGE_MONEY:{
         widget_set_checkbox_value(w, WIDX_NO_MONEY, gParkFlags & PARK_FLAGS_NO_MONEY);
 
-        uint64 money_widgets = (1 << WIDX_ADD_SET_MONEY_GROUP) | (1 << WIDX_MONEY_SPINNER) | (1 << WIDX_MONEY_SPINNER_INCREMENT) |
+        uint64_t money_widgets = (1 << WIDX_ADD_SET_MONEY_GROUP) | (1 << WIDX_MONEY_SPINNER) | (1 << WIDX_MONEY_SPINNER_INCREMENT) |
             (1 << WIDX_MONEY_SPINNER_DECREMENT) | (1 << WIDX_ADD_MONEY) | (1 << WIDX_SET_MONEY) | (1 << WIDX_CLEAR_LOAN);
         if (gParkFlags & PARK_FLAGS_NO_MONEY)
         {
@@ -1120,7 +1120,7 @@ static void window_cheats_invalidate(rct_window *w)
         }
     }break;
     case WINDOW_CHEATS_PAGE_GUESTS:
-        set_format_arg(0, sint32, 10000);
+        set_format_arg(0, int32_t, 10000);
         widget_set_checkbox_value(w, WIDX_GUEST_IGNORE_RIDE_INTENSITY, gCheatsIgnoreRideIntensity);
         widget_set_checkbox_value(w, WIDX_DISABLE_VANDALISM, gCheatsDisableVandalism);
         widget_set_checkbox_value(w, WIDX_DISABLE_LITTERING, gCheatsDisableLittering);
@@ -1134,7 +1134,7 @@ static void window_cheats_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
         break;
     case WINDOW_CHEATS_PAGE_RIDES:
-        set_format_arg(0, uint16, 255);
+        set_format_arg(0, uint16_t, 255);
         widget_set_checkbox_value(w, WIDX_FAST_LIFT_HILL, gCheatsFastLiftHill);
         widget_set_checkbox_value(w, WIDX_DISABLE_BRAKES_FAILURE, gCheatsDisableBrakesFailure);
         widget_set_checkbox_value(w, WIDX_DISABLE_ALL_BREAKDOWNS, gCheatsDisableAllBreakdowns);
@@ -1163,13 +1163,13 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     if (w->page == WINDOW_CHEATS_PAGE_MONEY)
     {
-        uint8 colour = w->colours[1];
+        uint8_t colour = w->colours[1];
         set_format_arg(0, money32, _moneySpinnerValue);
         if (widget_is_disabled(w, WIDX_MONEY_SPINNER))
         {
             colour |= COLOUR_FLAG_INSET;
         }
-        sint32 actual_month = month_spinner_value - 1;
+        int32_t actual_month = month_spinner_value - 1;
         gfx_draw_string_left(dpi, STR_BOTTOM_TOOLBAR_CASH,          gCommonFormatArgs, colour, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
         gfx_draw_string_left(dpi, STR_YEAR,                         nullptr, COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(7) + TXTO);
         gfx_draw_string_left(dpi, STR_MONTH,                        nullptr, COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(8) + TXTO);
@@ -1199,7 +1199,7 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 {
-    sint32 sprite_idx;
+    int32_t sprite_idx;
 
     // Money tab
     if (!(w->disabled_widgets & (1 << WIDX_TAB_1)))
@@ -1236,7 +1236,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
     }
 }
 
-static void window_cheats_set_page(rct_window *w, sint32 page)
+static void window_cheats_set_page(rct_window *w, int32_t page)
 {
     w->page = page;
     w->frame_no = 0;
@@ -1248,11 +1248,11 @@ static void window_cheats_set_page(rct_window *w, sint32 page)
     w->event_handlers = window_cheats_page_events[page];
     w->widgets = window_cheats_page_widgets[page];
 
-    sint32 maxY = 0;
+    int32_t maxY = 0;
     rct_widget *widget = &w->widgets[WIDX_TAB_CONTENT];
     while (widget->type != WWT_LAST)
     {
-        maxY = std::max(maxY, (sint32) widget->bottom);
+        maxY = std::max(maxY, (int32_t) widget->bottom);
         widget++;
     }
     maxY += 6;

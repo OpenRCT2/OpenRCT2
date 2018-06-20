@@ -29,19 +29,19 @@
 bool gDisableErrorWindowSound = false;
 
 void game_command_callback_pickup_guest(
-    sint32 eax,
-    sint32 ebx,
-    sint32 ecx,
-    [[maybe_unused]] sint32 edx,
-    [[maybe_unused]] sint32 esi,
-    [[maybe_unused]] sint32 edi,
-    [[maybe_unused]] sint32 ebp)
+    int32_t eax,
+    int32_t ebx,
+    int32_t ecx,
+    [[maybe_unused]] int32_t edx,
+    [[maybe_unused]] int32_t esi,
+    [[maybe_unused]] int32_t edi,
+    [[maybe_unused]] int32_t ebp)
 {
     switch (ecx)
     {
     case 0:
     {
-        sint32 peepnum = eax;
+        int32_t peepnum = eax;
         rct_window * w = window_find_by_number(WC_PEEP, peepnum);
         if (w)
         {
@@ -60,15 +60,15 @@ void game_command_callback_pickup_guest(
 }
 
 void game_command_callback_hire_new_staff_member(
-    [[maybe_unused]] sint32 eax,
-    [[maybe_unused]] sint32 ebx,
-    [[maybe_unused]] sint32 ecx,
-    [[maybe_unused]] sint32 edx,
-    [[maybe_unused]] sint32 esi,
-    sint32 edi,
-    [[maybe_unused]] sint32 ebp)
+    [[maybe_unused]] int32_t eax,
+    [[maybe_unused]] int32_t ebx,
+    [[maybe_unused]] int32_t ecx,
+    [[maybe_unused]] int32_t edx,
+    [[maybe_unused]] int32_t esi,
+    int32_t edi,
+    [[maybe_unused]] int32_t ebp)
 {
-    sint32 sprite_index = edi;
+    int32_t sprite_index = edi;
     if (sprite_index == SPRITE_INDEX_NULL)
     {
         rct_window * window = window_find_by_class(WC_STAFF_LIST);
@@ -84,19 +84,19 @@ void game_command_callback_hire_new_staff_member(
 }
 
 void game_command_callback_pickup_staff(
-    sint32 eax,
-    sint32 ebx,
-    sint32 ecx,
-    [[maybe_unused]] sint32 edx,
-    [[maybe_unused]] sint32 esi,
-    [[maybe_unused]] sint32 edi,
-    [[maybe_unused]] sint32 ebp)
+    int32_t eax,
+    int32_t ebx,
+    int32_t ecx,
+    [[maybe_unused]] int32_t edx,
+    [[maybe_unused]] int32_t esi,
+    [[maybe_unused]] int32_t edi,
+    [[maybe_unused]] int32_t ebp)
 {
     switch (ecx)
     {
     case 0:
     {
-        sint32 peepnum = eax;
+        int32_t peepnum = eax;
         rct_window * w = window_find_by_number(WC_PEEP, peepnum);
         if (w)
         {
@@ -114,8 +114,8 @@ void game_command_callback_pickup_staff(
     }
 }
 
-uint64 _enabledRidePieces;
-uint8 _rideConstructionState2;
+uint64_t _enabledRidePieces;
+uint8_t _rideConstructionState2;
 
 // This variable is updated separately from ride->num_stations because the latter
 // is unreliable if currently in station construction mode
@@ -123,13 +123,13 @@ bool _stationConstructed;
 bool _deferClose;
 
 void game_command_callback_place_ride_entrance_or_exit(
-    [[maybe_unused]] sint32 eax,
-    [[maybe_unused]] sint32 ebx,
-    [[maybe_unused]] sint32 ecx,
-    [[maybe_unused]] sint32 edx,
-    [[maybe_unused]] sint32 esi,
-    [[maybe_unused]] sint32 edi,
-    [[maybe_unused]] sint32 ebp)
+    [[maybe_unused]] int32_t eax,
+    [[maybe_unused]] int32_t ebx,
+    [[maybe_unused]] int32_t ecx,
+    [[maybe_unused]] int32_t edx,
+    [[maybe_unused]] int32_t esi,
+    [[maybe_unused]] int32_t edi,
+    [[maybe_unused]] int32_t ebp)
 {
     audio_play_sound_at_location(
         SOUND_PLACE_ITEM,
@@ -155,7 +155,7 @@ void game_command_callback_place_ride_entrance_or_exit(
  *
  *  rct2: 0x006CA162
  */
-money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 liftHillAndAlternativeState, sint32 x, sint32 y, sint32 z)
+money32 place_provisional_track_piece(int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, int32_t x, int32_t y, int32_t z)
 {
     Ride *ride;
     money32 result;
@@ -164,7 +164,7 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
     ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        sint32 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST; // 105
+        int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST; // 105
         result = maze_set_track(x, y, z, flags, true, 0, rideIndex, GC_SET_MAZE_TRACK_BUILD);
         if (result == MONEY32_UNDEFINED)
             return result;
@@ -195,7 +195,7 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
         if (result == MONEY32_UNDEFINED)
             return result;
 
-        sint16 z_begin, z_end;
+        int16_t z_begin, z_end;
         const rct_track_coordinates * coords = get_track_coord_from_ride(ride, trackType);
         if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
         {
@@ -231,14 +231,14 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
     }
 }
 
-static std::tuple<bool, uint8> window_ride_construction_update_state_get_track_element() {
+static std::tuple<bool, uint8_t> window_ride_construction_update_state_get_track_element() {
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES);
     context_broadcast_intent(&intent);
 
-    uint8 startSlope = _previousTrackSlopeEnd;
-    uint8 endSlope = _currentTrackSlopeEnd;
-    uint8 startBank = _previousTrackBankEnd;
-    uint8 endBank = _currentTrackBankEnd;
+    uint8_t startSlope = _previousTrackSlopeEnd;
+    uint8_t endSlope = _currentTrackSlopeEnd;
+    uint8_t startBank = _previousTrackBankEnd;
+    uint8_t endBank = _currentTrackBankEnd;
 
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
         startSlope = _currentTrackSlopeEnd;
@@ -247,7 +247,7 @@ static std::tuple<bool, uint8> window_ride_construction_update_state_get_track_e
         endBank = _previousTrackBankEnd;
     }
 
-    uint16 curve = _currentTrackCurve;
+    uint16_t curve = _currentTrackCurve;
     if (curve == 0xFFFF) {
         return std::make_tuple(false, 0);
     }
@@ -261,7 +261,7 @@ static std::tuple<bool, uint8> window_ride_construction_update_state_get_track_e
 
     if (curve <= 8)
     {
-        for (uint32 i = 0; i < Util::CountOf(gTrackDescriptors); i++)
+        for (uint32_t i = 0; i < Util::CountOf(gTrackDescriptors); i++)
         {
             const track_descriptor * trackDescriptor = &gTrackDescriptors[i];
 
@@ -328,9 +328,9 @@ static std::tuple<bool, uint8> window_ride_construction_update_state_get_track_e
  * @param[out] _properties (edirs16)
  * @return (CF)
  */
-bool window_ride_construction_update_state(sint32 *_trackType, sint32 *_trackDirection, sint32 *_rideIndex, sint32 *_liftHillAndAlternativeState, sint32 *_x, sint32 *_y, sint32 *_z, sint32 *_properties) {
-    uint8 trackType, trackDirection, rideIndex;
-    uint16 z, x, y, liftHillAndAlternativeState, properties;
+bool window_ride_construction_update_state(int32_t *_trackType, int32_t *_trackDirection, int32_t *_rideIndex, int32_t *_liftHillAndAlternativeState, int32_t *_x, int32_t *_y, int32_t *_z, int32_t *_properties) {
+    uint8_t trackType, trackDirection, rideIndex;
+    uint16_t z, x, y, liftHillAndAlternativeState, properties;
 
     auto updated_element = window_ride_construction_update_state_get_track_element();
     if (!std::get<0>(updated_element)) {
@@ -378,9 +378,9 @@ bool window_ride_construction_update_state(sint32 *_trackType, sint32 *_trackDir
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES) && _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES) {
         if (ride->type != RIDE_TYPE_WATER_COASTER || trackType == TRACK_ELEM_FLAT || trackType == TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES || trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES) {
-            sint16 alternativeType = AlternativeTrackTypes[trackType];
+            int16_t alternativeType = AlternativeTrackTypes[trackType];
             if (alternativeType > -1) {
-                trackType = (uint8) alternativeType;
+                trackType = (uint8_t) alternativeType;
             }
             liftHillAndAlternativeState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
         }
@@ -498,7 +498,7 @@ void window_ride_construction_do_station_check()
     }
 }
 
-void window_ride_construction_mouseup_demolish_next_piece(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 type)
+void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type)
 {
     if (gGotoStartPlacementMode) {
         z &= 0xFFF0;
@@ -507,13 +507,13 @@ void window_ride_construction_mouseup_demolish_next_piece(sint32 x, sint32 y, si
         _currentTrackSelectionFlags = 0;
         _rideConstructionArrowPulseTime = 0;
         _currentTrackPieceDirection = direction & 3;
-        sint32 slope = _currentTrackCurve;
-        sint32 slopeEnd = _previousTrackSlopeEnd;
-        sint32 b2 = _currentTrackSlopeEnd;
-        sint32 bankEnd = _previousTrackBankEnd;
-        sint32 bankStart = _currentTrackBankEnd;
-        sint32 b5 = _currentTrackAlternative;
-        sint32 b4 = _currentTrackLiftHill;
+        int32_t slope = _currentTrackCurve;
+        int32_t slopeEnd = _previousTrackSlopeEnd;
+        int32_t b2 = _currentTrackSlopeEnd;
+        int32_t bankEnd = _previousTrackBankEnd;
+        int32_t bankStart = _currentTrackBankEnd;
+        int32_t b5 = _currentTrackAlternative;
+        int32_t b4 = _currentTrackLiftHill;
         ride_construction_set_default_next_piece();
         window_ride_construction_update_active_elements();
         if (!ride_try_get_origin_element(_currentRideIndex, NULL)) {
@@ -577,16 +577,16 @@ void window_ride_construction_update_active_elements()
 }
 
 void game_command_callback_place_banner(
-    [[maybe_unused]] sint32 eax,
-    sint32 ebx,
-    [[maybe_unused]] sint32 ecx,
-    [[maybe_unused]] sint32 edx,
-    [[maybe_unused]] sint32 esi,
-    sint32 edi,
-    [[maybe_unused]] sint32 ebp)
+    [[maybe_unused]] int32_t eax,
+    int32_t ebx,
+    [[maybe_unused]] int32_t ecx,
+    [[maybe_unused]] int32_t edx,
+    [[maybe_unused]] int32_t esi,
+    int32_t edi,
+    [[maybe_unused]] int32_t ebp)
 {
     if (ebx != MONEY32_UNDEFINED) {
-        sint32 bannerId = edi;
+        int32_t bannerId = edi;
 
         audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
         context_open_detail_window(WD_BANNER, bannerId);
@@ -599,7 +599,7 @@ void game_command_callback_place_banner(
  */
 bool scenery_tool_is_active()
 {
-    sint32 toolWindowClassification = gCurrentToolWidget.window_classification;
+    int32_t toolWindowClassification = gCurrentToolWidget.window_classification;
     rct_widgetindex toolWidgetIndex = gCurrentToolWidget.widget_index;
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
         if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == WC_TOP_TOOLBAR__WIDX_SCENERY)

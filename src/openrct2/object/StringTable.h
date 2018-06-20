@@ -17,7 +17,7 @@
 interface IReadObjectContext;
 interface IStream;
 
-enum OBJ_STRING_ID : uint8
+enum OBJ_STRING_ID : uint8_t
 {
     OBJ_STRING_ID_UNKNOWN = 255,
     OBJ_STRING_ID_NAME = 0,
@@ -31,8 +31,8 @@ enum OBJ_STRING_ID : uint8
 
 struct StringTableEntry
 {
-    uint8       Id          = OBJ_STRING_ID_UNKNOWN;
-    uint8       LanguageId  = LANGUAGE_UNDEFINED;
+    uint8_t       Id          = OBJ_STRING_ID_UNKNOWN;
+    uint8_t       LanguageId  = LANGUAGE_UNDEFINED;
     std::string Text;
 };
 
@@ -46,9 +46,9 @@ public:
     StringTable(const StringTable &) = delete;
     StringTable & operator=(const StringTable &) = delete;
 
-    void            Read(IReadObjectContext * context, IStream * stream, uint8 id);
+    void            Read(IReadObjectContext * context, IStream * stream, uint8_t id);
     void            Sort();
-    std::string     GetString(uint8 id) const;
-    std::string     GetString(uint8 language, uint8 id) const;
-    void            SetString(uint8 id, uint8 language, const std::string &text);
+    std::string     GetString(uint8_t id) const;
+    std::string     GetString(uint8_t language, uint8_t id) const;
+    void            SetString(uint8_t id, uint8_t language, const std::string &text);
 };

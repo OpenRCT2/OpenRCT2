@@ -31,9 +31,9 @@ const LocationXY16 BannerBoundBoxes[][2] = {
  *
  *  rct2: 0x006B9CC4
  */
-void banner_paint(paint_session * session, uint8 direction, sint32 height, const rct_tile_element * tile_element)
+void banner_paint(paint_session * session, uint8_t direction, int32_t height, const rct_tile_element * tile_element)
 {
-    uint16 boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
+    uint16_t boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
     rct_drawpixelinfo* dpi = session->DPI;
 
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_BANNER;
@@ -55,8 +55,8 @@ void banner_paint(paint_session * session, uint8 direction, sint32 height, const
     boundBoxOffsetY = BannerBoundBoxes[direction][0].y;
     boundBoxOffsetZ = height + 2;
 
-    uint32 base_id = (direction << 1) + banner_scenery->image;
-    uint32 image_id = base_id;
+    uint32_t base_id = (direction << 1) + banner_scenery->image;
+    uint32_t image_id = base_id;
 
     if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST) // if being placed
     {
@@ -82,15 +82,15 @@ void banner_paint(paint_session * session, uint8 direction, sint32 height, const
     // If text not showing / ghost
     if (direction >= 2 || (tile_element->flags & TILE_ELEMENT_FLAG_GHOST)) return;
 
-    uint16 scrollingMode = banner_scenery->banner.scrolling_mode;
+    uint16_t scrollingMode = banner_scenery->banner.scrolling_mode;
     if (scrollingMode >= MAX_SCROLLING_TEXT_MODES) {
         return;
     }
 
     scrollingMode += direction;
 
-    set_format_arg(0, uint32, 0);
-    set_format_arg(4, uint32, 0);
+    set_format_arg(0, uint32_t, 0);
+    set_format_arg(4, uint32_t, 0);
 
     rct_string_id string_id = STR_NO_ENTRY;
     if (!(gBanners[tile_element->properties.banner.index].flags & BANNER_FLAG_NO_ENTRY))
@@ -106,8 +106,8 @@ void banner_paint(paint_session * session, uint8 direction, sint32 height, const
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
 
-    uint16 string_width = gfx_get_string_width(gCommonStringFormatBuffer);
-    uint16 scroll = (gCurrentTicks / 2) % string_width;
+    uint16_t string_width = gfx_get_string_width(gCommonStringFormatBuffer);
+    uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
     sub_98199C(
         session, scrolling_text_setup(session, string_id, scroll, scrollingMode), 0, 0, 1, 1, 0x15, height + 22,

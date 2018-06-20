@@ -87,14 +87,14 @@ enum
     SPR_REVERSE_FREEFALL_RC_SLOPE_SUPPORTS_SE_NW_5  = 22225,
 };
 
-static constexpr const uint32 reverse_freefall_rc_track_pieces_station[4] = {
+static constexpr const uint32_t reverse_freefall_rc_track_pieces_station[4] = {
     SPR_REVERSE_FREEFALL_RC_STATION_SW_NE,
     SPR_REVERSE_FREEFALL_RC_STATION_NW_SE,
     SPR_REVERSE_FREEFALL_RC_STATION_SW_NE,
     SPR_REVERSE_FREEFALL_RC_STATION_NW_SE,
 };
 
-static constexpr const uint32 reverse_freefall_rc_track_pieces_slope[7][4] = {
+static constexpr const uint32_t reverse_freefall_rc_track_pieces_slope[7][4] = {
     {
         SPR_REVERSE_FREEFALL_RC_SLOPE_SW_NE_0,
         SPR_REVERSE_FREEFALL_RC_SLOPE_NW_SE_0,
@@ -134,7 +134,7 @@ static constexpr const uint32 reverse_freefall_rc_track_pieces_slope[7][4] = {
     },
 };
 
-static constexpr const uint32 reverse_freefall_rc_track_pieces_slope_supports[7][4] = {
+static constexpr const uint32_t reverse_freefall_rc_track_pieces_slope_supports[7][4] = {
     {
         SPR_REVERSE_FREEFALL_RC_SLOPE_SUPPORTS_SW_NE_0,
         SPR_REVERSE_FREEFALL_RC_SLOPE_SUPPORTS_NW_SE_0,
@@ -179,14 +179,14 @@ static constexpr const uint32 reverse_freefall_rc_track_pieces_slope_supports[7]
     },
 };
 
-static constexpr const uint32 reverse_freefall_rc_track_pieces_vertical[4] = {
+static constexpr const uint32_t reverse_freefall_rc_track_pieces_vertical[4] = {
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SW_NE,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_NW_SE,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_NE_SW,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SE_NW,
 };
 
-static constexpr const uint32 reverse_freefall_rc_track_pieces_vertical_supports[4] = {
+static constexpr const uint32_t reverse_freefall_rc_track_pieces_vertical_supports[4] = {
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_SW_NE,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_NW_SE,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_NE_SW,
@@ -195,21 +195,21 @@ static constexpr const uint32 reverse_freefall_rc_track_pieces_vertical_supports
 
 static void paint_reverse_freefall_rc_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (direction & 1)
     {
-        uint32 imageId = SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE | session->TrackColours[SCHEME_TRACK];
+        uint32_t imageId = SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height);
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
     else
     {
-        uint32 imageId = SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE | session->TrackColours[SCHEME_TRACK];
+        uint32_t imageId = SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
@@ -221,14 +221,14 @@ static void paint_reverse_freefall_rc_flat(
 
 static void paint_reverse_freefall_rc_station(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     Ride *                               ride          = get_ride(rideIndex);
-    uint32                               imageId;
+    uint32_t                               imageId;
 
     if (direction == 0 || direction == 2)
     {
@@ -267,24 +267,24 @@ static void paint_reverse_freefall_rc_station(
 
 static void paint_reverse_freefall_rc_slope(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     TESTPAINT_IGNORE_ALL();
 
-    static constexpr const sint8  bbHeights03[]     = { 1, 6, 14, 37, 64 };
-    static constexpr const sint8  bbHeights12[]     = { 1, 6, 14, 27, 59 };
-    static constexpr const sint32 supportHeights[]  = { 48, 64, 128, 176, 208, 240, 240 };
-    static constexpr const sint32 tunnelOffsets03[] = { 0, 0, 0, 16, 64 };
+    static constexpr const int8_t  bbHeights03[]     = { 1, 6, 14, 37, 64 };
+    static constexpr const int8_t  bbHeights12[]     = { 1, 6, 14, 27, 59 };
+    static constexpr const int32_t supportHeights[]  = { 48, 64, 128, 176, 208, 240, 240 };
+    static constexpr const int32_t tunnelOffsets03[] = { 0, 0, 0, 16, 64 };
 
-    uint32 supportsImageId =
+    uint32_t supportsImageId =
         reverse_freefall_rc_track_pieces_slope_supports[trackSequence][direction] | session->TrackColours[SCHEME_SUPPORTS];
-    uint32 trackImageId =
+    uint32_t trackImageId =
         reverse_freefall_rc_track_pieces_slope[trackSequence][direction] | session->TrackColours[SCHEME_TRACK];
-    sint8 bbHeight;
+    int8_t bbHeight;
     bool  isDirection03 = (direction == 0 || direction == 3);
     switch (trackSequence)
     {
@@ -299,7 +299,7 @@ static void paint_reverse_freefall_rc_slope(
             sub_98197C_rotated(session, direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
             sub_98199C_rotated(session, direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
 
-            sint32 tunnelOffset = tunnelOffsets03[trackSequence];
+            int32_t tunnelOffset = tunnelOffsets03[trackSequence];
             if (direction & 1)
             {
                 paint_util_push_tunnel_right(session, height + tunnelOffset, TUNNEL_6);
@@ -323,7 +323,7 @@ static void paint_reverse_freefall_rc_slope(
     case 5:
         if (wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr))
         {
-            uint32 floorImageId;
+            uint32_t floorImageId;
             if (direction & 1)
             {
                 floorImageId = SPR_FLOOR_PLANKS_90_DEG | session->TrackColours[SCHEME_SUPPORTS];
@@ -364,13 +364,13 @@ static void paint_reverse_freefall_rc_slope(
 
 static void paint_reverse_freefall_rc_vertical(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    uint32 supportsImageId, trackImageId;
+    uint32_t supportsImageId, trackImageId;
     switch (trackSequence)
     {
     case 0:
@@ -397,7 +397,7 @@ static void paint_reverse_freefall_rc_vertical(
     }
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_reverse_freefall_rc(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_reverse_freefall_rc(int32_t trackType, int32_t direction)
 {
     switch (trackType)
     {

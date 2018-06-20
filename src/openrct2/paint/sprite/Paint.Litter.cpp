@@ -39,8 +39,8 @@ enum {
 };
 
 struct litter_sprite {
-    uint16 base_id;
-    uint8 direction_mask;
+    uint16_t base_id;
+    uint8_t direction_mask;
 };
 
 /** rct2: 0x0097EF6C */
@@ -63,7 +63,7 @@ static constexpr const litter_sprite litter_sprites[] = {
  * Litter Paint Setup
  *  rct2: 0x006736FC
  */
-void litter_paint(paint_session * session, const rct_litter *litter, sint32 imageDirection)
+void litter_paint(paint_session * session, const rct_litter *litter, int32_t imageDirection)
 {
     rct_drawpixelinfo *dpi;
 
@@ -76,7 +76,7 @@ void litter_paint(paint_session * session, const rct_litter *litter, sint32 imag
     // anything that isn't required.
     imageDirection &= litter_sprites[litter->type].direction_mask;
 
-    uint32 image_id = imageDirection + litter_sprites[litter->type].base_id;
+    uint32_t image_id = imageDirection + litter_sprites[litter->type].base_id;
 
     // In the following call to sub_98197C, we add 4 (instead of 2) to the
     //  bound_box_offset_z to make sure litter is drawn on top of railways

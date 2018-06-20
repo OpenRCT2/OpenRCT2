@@ -17,4 +17,4 @@
  * to render the command batch. It will never underestimate the number of
  * iterations, but it can overestimate, usually by no more than +2.
  */
-sint32 MaxTransparencyDepth(const RectCommandBatch &transparent);
+int32_t MaxTransparencyDepth(const RectCommandBatch &transparent);

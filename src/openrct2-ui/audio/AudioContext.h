@@ -26,24 +26,24 @@ namespace OpenRCT2::Audio
 #pragma pack(push, 1)
     struct WaveFormat
     {
-        uint16 encoding;
-        uint16 channels;
-        uint32 frequency;
-        uint32 byterate;
-        uint16 blockalign;
-        uint16 bitspersample;
+        uint16_t encoding;
+        uint16_t channels;
+        uint32_t frequency;
+        uint32_t byterate;
+        uint16_t blockalign;
+        uint16_t bitspersample;
     };
     assert_struct_size(WaveFormat, 16);
 
     struct WaveFormatEx
     {
-        uint16 encoding;
-        uint16 channels;
-        uint32 frequency;
-        uint32 byterate;
-        uint16 blockalign;
-        uint16 bitspersample;
-        uint16 extrasize;
+        uint16_t encoding;
+        uint16_t channels;
+        uint32_t frequency;
+        uint32_t byterate;
+        uint16_t blockalign;
+        uint16_t bitspersample;
+        uint16_t extrasize;
     };
     assert_struct_size(WaveFormatEx, 18);
 #pragma pack(pop)

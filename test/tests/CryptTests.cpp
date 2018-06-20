@@ -122,7 +122,7 @@ TEST_F(CryptTests, SHA1_Many)
 
 TEST_F(CryptTests, RSA_Basic)
 {
-    std::vector<uint8> data = { 0, 1, 2, 3, 4, 5, 6, 7 };
+    std::vector<uint8_t> data = { 0, 1, 2, 3, 4, 5, 6, 7 };
 
     auto file = File::ReadAllText(GetTestPrivateKeyPath());
     auto key = Crypt::CreateRSAKey();
@@ -136,7 +136,7 @@ TEST_F(CryptTests, RSA_Basic)
 
 TEST_F(CryptTests, RSA_VerifyWithPublic)
 {
-    std::vector<uint8> data = { 7, 6, 5, 4, 3, 2, 1, 0 };
+    std::vector<uint8_t> data = { 7, 6, 5, 4, 3, 2, 1, 0 };
 
     auto privateFile = File::ReadAllText(GetTestPrivateKeyPath());
     auto privateKey = Crypt::CreateRSAKey();

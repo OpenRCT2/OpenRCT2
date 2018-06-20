@@ -16,7 +16,7 @@ using ride_rating = fixed16_2dp;
 // Convenience function for writing ride ratings. The result is a 16 bit signed
 // integer. To create the ride rating 3.65 type RIDE_RATING(3,65)
 #define RIDE_RATING(whole, fraction)    FIXED_2DP(whole, fraction)
-#define RIDE_RATING_UNDEFINED           (ride_rating)(uint16)0xFFFF
+#define RIDE_RATING_UNDEFINED           (ride_rating)(uint16_t)0xFFFF
 
 #pragma pack(push, 1)
 
@@ -35,21 +35,21 @@ enum {
 };
 
 struct rct_ride_rating_calc_data {
-    uint16  proximity_x;
-    uint16  proximity_y;
-    uint16  proximity_z;
-    uint16  proximity_start_x;
-    uint16  proximity_start_y;
-    uint16  proximity_start_z;
-    uint8   current_ride;
-    uint8   state;
-    uint8   proximity_track_type;
-    uint8   proximity_base_height;
-    uint16  proximity_total;
-    uint16  proximity_scores[26];
-    uint16  num_brakes;
-    uint16  num_reversers;
-    uint16  station_flags;
+    uint16_t  proximity_x;
+    uint16_t  proximity_y;
+    uint16_t  proximity_z;
+    uint16_t  proximity_start_x;
+    uint16_t  proximity_start_y;
+    uint16_t  proximity_start_z;
+    uint8_t   current_ride;
+    uint8_t   state;
+    uint8_t   proximity_track_type;
+    uint8_t   proximity_base_height;
+    uint16_t  proximity_total;
+    uint16_t  proximity_scores[26];
+    uint16_t  num_brakes;
+    uint16_t  num_reversers;
+    uint16_t  station_flags;
 };
 
 extern rct_ride_rating_calc_data gRideRatingsCalcData;

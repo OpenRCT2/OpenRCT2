@@ -29,11 +29,11 @@ void SawyerChunkWriter::WriteChunk(const SawyerChunk * chunk)
 void SawyerChunkWriter::WriteChunk(const void * src, size_t length, SAWYER_ENCODING encoding)
 {
     sawyercoding_chunk_header header;
-    header.encoding = (uint8)encoding;
-    header.length = (uint32)length;
+    header.encoding = (uint8_t)encoding;
+    header.length = (uint32_t)length;
 
-    auto data = std::make_unique<uint8[]>(MAX_COMPRESSED_CHUNK_SIZE);
-    size_t dataLength = sawyercoding_write_chunk_buffer(data.get(), (const uint8 *)src, header);
+    auto data = std::make_unique<uint8_t[]>(MAX_COMPRESSED_CHUNK_SIZE);
+    size_t dataLength = sawyercoding_write_chunk_buffer(data.get(), (const uint8_t *)src, header);
 
     _stream->Write(data.get(), dataLength);
 }

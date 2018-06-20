@@ -136,7 +136,7 @@ bool platform_directory_delete(const utf8 *path)
     fileop.lpszProgressTitle     = nullptr;
     fileop.hNameMappings         = nullptr;
 
-    sint32 ret = SHFileOperationW(&fileop);
+    int32_t ret = SHFileOperationW(&fileop);
     return (ret == 0);
 }
 
@@ -160,7 +160,7 @@ bool platform_lock_single_instance()
     }
 }
 
-sint32 platform_get_drives()
+int32_t platform_get_drives()
 {
     return GetLogicalDrives();
 }
@@ -224,7 +224,7 @@ bool platform_get_steam_path(utf8 * outPath, size_t outSize)
     return result == ERROR_SUCCESS;
 }
 
-uint16 platform_get_locale_language()
+uint16_t platform_get_locale_language()
 {
     CHAR langCode[4];
 
@@ -295,7 +295,7 @@ time_t platform_file_get_modified_time(const utf8* path)
     }
 }
 
-uint8 platform_get_locale_currency()
+uint8_t platform_get_locale_currency()
 {
     CHAR currCode[4];
     if (GetLocaleInfo(LOCALE_USER_DEFAULT,
@@ -309,7 +309,7 @@ uint8 platform_get_locale_currency()
     return platform_get_currency_value(currCode);
 }
 
-uint8 platform_get_locale_measurement_format()
+uint8_t platform_get_locale_measurement_format()
 {
     UINT measurement_system;
     if (GetLocaleInfo(LOCALE_USER_DEFAULT,
@@ -329,7 +329,7 @@ uint8 platform_get_locale_measurement_format()
     }
 }
 
-uint8 platform_get_locale_temperature_format()
+uint8_t platform_get_locale_temperature_format()
 {
     UINT fahrenheit;
 
@@ -350,7 +350,7 @@ uint8 platform_get_locale_temperature_format()
         return TEMPERATURE_FORMAT_C;
 }
 
-uint8 platform_get_locale_date_format()
+uint8_t platform_get_locale_date_format()
 {
     // Retrieve short date format, eg "MM/dd/yyyy"
     wchar_t dateFormat[20];
@@ -450,7 +450,7 @@ datetime64 platform_get_datetime_now_utc()
     // Get file time
     FILETIME fileTime;
     GetSystemTimeAsFileTime(&fileTime);
-    uint64 fileTime64 = ((uint64)fileTime.dwHighDateTime << 32ULL) | ((uint64)fileTime.dwLowDateTime);
+    uint64_t fileTime64 = ((uint64_t)fileTime.dwHighDateTime << 32ULL) | ((uint64_t)fileTime.dwLowDateTime);
 
     // File time starts from: 1601-01-01T00:00:00Z
     // Convert to start from: 0001-01-01T00:00:00Z
@@ -510,12 +510,12 @@ static bool windows_setup_file_association(
     const utf8 * fileTypeText,
     const utf8 * commandText,
     const utf8 * commandArgs,
-    const uint32 iconIndex
+    const uint32_t iconIndex
 ) {
     wchar_t exePathW[MAX_PATH];
     wchar_t dllPathW[MAX_PATH];
 
-    [[maybe_unused]] sint32 printResult;
+    [[maybe_unused]] int32_t printResult;
 
     GetModuleFileNameW(NULL, exePathW, sizeof(exePathW));
     GetModuleFileNameW(plaform_get_dll_module(), dllPathW, sizeof(dllPathW));

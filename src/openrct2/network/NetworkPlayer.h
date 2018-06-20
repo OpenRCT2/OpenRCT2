@@ -21,21 +21,21 @@ class NetworkPacket;
 class NetworkPlayer final
 {
 public:
-    uint8       Id                      = 0;
+    uint8_t       Id                      = 0;
     std::string Name;
-    uint16      Ping                    = 0;
-    uint8       Flags                   = 0;
-    uint8       Group                   = 0;
+    uint16_t      Ping                    = 0;
+    uint8_t       Flags                   = 0;
+    uint8_t       Group                   = 0;
     money32     MoneySpent              = MONEY(0, 0);
-    uint32      CommandsRan             = 0;
-    sint32      LastAction              = -999;
-    uint32      LastActionTime          = 0;
+    uint32_t      CommandsRan             = 0;
+    int32_t      LastAction              = -999;
+    uint32_t      LastActionTime          = 0;
     LocationXYZ16   LastActionCoord     = {};
     rct_peep*   PickupPeep              = nullptr;
-    sint32      PickupPeepOldX          = LOCATION_NULL;
+    int32_t      PickupPeepOldX          = LOCATION_NULL;
     std::string KeyHash;
-    uint32      LastDemolishRideTime    = 0;
-    uint32      LastPlaceSceneryTime    = 0;
+    uint32_t      LastDemolishRideTime    = 0;
+    uint32_t      LastPlaceSceneryTime    = 0;
 
     NetworkPlayer() = default;
 

@@ -31,7 +31,7 @@ rct_string_id DrawingEngineStringIds[] =
     STR_DRAWING_ENGINE_OPENGL,
 };
 
-sint32 drawing_engine_get_type()
+int32_t drawing_engine_get_type()
 {
     auto context = GetContext();
     return context->GetDrawingEngineType();
@@ -48,7 +48,7 @@ static IDrawingEngine * GetDrawingEngine()
     return result;
 }
 
-bool drawing_engine_requires_new_window(sint32 srcEngine, sint32 dstEngine)
+bool drawing_engine_requires_new_window(int32_t srcEngine, int32_t dstEngine)
 {
 #ifdef _WIN32
     if (srcEngine != DRAWING_ENGINE_OPENGL && dstEngine != DRAWING_ENGINE_OPENGL)
@@ -98,7 +98,7 @@ void drawing_engine_set_palette(const rct_palette_entry * colours)
     }
 }
 
-void drawing_engine_copy_rect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy)
+void drawing_engine_copy_rect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy)
 {
     auto context = GetContext();
     if (context != nullptr)
@@ -138,7 +138,7 @@ bool drawing_engine_has_dirty_optimisations()
     return result;
 }
 
-void drawing_engine_invalidate_image(uint32 image)
+void drawing_engine_invalidate_image(uint32_t image)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -156,7 +156,7 @@ void drawing_engine_set_vsync(bool vsync)
     }
 }
 
-void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom)
+void gfx_set_dirty_blocks(int16_t left, int16_t top, int16_t right, int16_t bottom)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -169,7 +169,7 @@ void gfx_draw_all_dirty_blocks()
 {
 }
 
-void gfx_clear(rct_drawpixelinfo * dpi, uint8 paletteIndex)
+void gfx_clear(rct_drawpixelinfo * dpi, uint8_t paletteIndex)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -179,7 +179,7 @@ void gfx_clear(rct_drawpixelinfo * dpi, uint8 paletteIndex)
     }
 }
 
-void gfx_fill_rect(rct_drawpixelinfo * dpi, sint32 left, sint32 top, sint32 right, sint32 bottom, sint32 colour)
+void gfx_fill_rect(rct_drawpixelinfo * dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, int32_t colour)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -189,7 +189,7 @@ void gfx_fill_rect(rct_drawpixelinfo * dpi, sint32 left, sint32 top, sint32 righ
     }
 }
 
-void gfx_filter_rect(rct_drawpixelinfo * dpi, sint32 left, sint32 top, sint32 right, sint32 bottom, FILTER_PALETTE_ID palette)
+void gfx_filter_rect(rct_drawpixelinfo * dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, FILTER_PALETTE_ID palette)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -199,7 +199,7 @@ void gfx_filter_rect(rct_drawpixelinfo * dpi, sint32 left, sint32 top, sint32 ri
     }
 }
 
-void gfx_draw_line(rct_drawpixelinfo *dpi, sint32 x1, sint32 y1, sint32 x2, sint32 y2, sint32 colour)
+void gfx_draw_line(rct_drawpixelinfo *dpi, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t colour)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -209,7 +209,7 @@ void gfx_draw_line(rct_drawpixelinfo *dpi, sint32 x1, sint32 y1, sint32 x2, sint
     }
 }
 
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo * dpi, sint32 image, sint32 x, sint32 y, uint32 tertiary_colour)
+void FASTCALL gfx_draw_sprite(rct_drawpixelinfo * dpi, int32_t image, int32_t x, int32_t y, uint32_t tertiary_colour)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -219,7 +219,7 @@ void FASTCALL gfx_draw_sprite(rct_drawpixelinfo * dpi, sint32 image, sint32 x, s
     }
 }
 
-void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo * dpi, sint32 image, sint32 x, sint32 y, uint8 * palette)
+void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo * dpi, int32_t image, int32_t x, int32_t y, uint8_t * palette)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -229,7 +229,7 @@ void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo * dpi, sint32 image, sint32 x, si
     }
 }
 
-void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo * dpi, sint32 x, sint32 y, sint32 maskImage, sint32 colourImage)
+void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo * dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -239,7 +239,7 @@ void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo * dpi, sint32 x, sint
     }
 }
 
-void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo * dpi, sint32 image, sint32 x, sint32 y, uint8 colour)
+void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo * dpi, int32_t image, int32_t x, int32_t y, uint8_t colour)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -249,7 +249,7 @@ void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo * dpi, sint32 image, sint3
     }
 }
 
-sint32 screenshot_dump()
+int32_t screenshot_dump()
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)

@@ -29,14 +29,14 @@ namespace OpenRCT2::Localisation
     {
     private:
         const std::shared_ptr<IPlatformEnvironment> _env;
-        sint32 _currentLanguage{};
+        int32_t _currentLanguage{};
         bool _useTrueTypeFont{};
         std::unique_ptr<ILanguagePack> _languageFallback;
         std::unique_ptr<ILanguagePack> _languageCurrent;
         std::stack<rct_string_id> _availableObjectStringIds;
 
     public:
-        sint32 GetCurrentLanguage() const { return _currentLanguage; }
+        int32_t GetCurrentLanguage() const { return _currentLanguage; }
         bool UseTrueTypeFont() const { return _useTrueTypeFont; }
         void UseTrueTypeFont(bool value) { _useTrueTypeFont = value; }
 
@@ -45,10 +45,10 @@ namespace OpenRCT2::Localisation
 
         const char * GetString(rct_string_id id) const;
         std::tuple<rct_string_id, rct_string_id, rct_string_id> GetLocalisedScenarioStrings(const std::string& scenarioFilename) const;
-        rct_string_id GetObjectOverrideStringId(const char * identifier, uint8 index) const;
-        std::string GetLanguagePath(uint32 languageId) const;
+        rct_string_id GetObjectOverrideStringId(const char * identifier, uint8_t index) const;
+        std::string GetLanguagePath(uint32_t languageId) const;
 
-        void OpenLanguage(sint32 id, IObjectManager& objectManager);
+        void OpenLanguage(int32_t id, IObjectManager& objectManager);
         void CloseLanguages();
         rct_string_id AllocateObjectString(const std::string& target);
         void FreeObjectString(rct_string_id stringId);
@@ -57,5 +57,5 @@ namespace OpenRCT2::Localisation
 
 // Legacy getters
 // TODO Remove usages of these and instead call via shared reference
-sint32 LocalisationService_GetCurrentLanguage();
+int32_t LocalisationService_GetCurrentLanguage();
 bool LocalisationService_UseTrueTypeFont();

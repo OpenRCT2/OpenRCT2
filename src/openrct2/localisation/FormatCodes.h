@@ -12,8 +12,8 @@
 
 #include "../common.h"
 
-uint32 format_get_code(const char *token);
-const char *format_get_token(uint32 code);
+uint32_t format_get_code(const char *token);
+const char *format_get_token(uint32_t code);
 
 enum {
     // Font format codes
@@ -58,7 +58,7 @@ enum {
     FORMAT_INT32,
     FORMAT_COMMA2DP32,
     FORMAT_COMMA16,
-    FORMAT_UINT16,
+    FORMAT_uint16_t,
     FORMAT_CURRENCY2DP,
     FORMAT_CURRENCY,
     FORMAT_STRINGID,

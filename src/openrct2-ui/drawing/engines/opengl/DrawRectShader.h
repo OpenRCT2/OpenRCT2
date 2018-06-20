@@ -49,7 +49,7 @@ public:
     DrawRectShader();
     ~DrawRectShader() override;
 
-    void SetScreenSize(sint32 width, sint32 height);
+    void SetScreenSize(int32_t width, int32_t height);
     void EnablePeeling(GLuint peelingTex);
     void DisablePeeling();
 

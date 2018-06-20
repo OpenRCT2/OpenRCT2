@@ -108,11 +108,11 @@ bool RideGroup::IsInvented() const
     if (!ride_type_is_invented(this->RideType))
         return false;
 
-    uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(this->RideType);
+    uint8_t *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(this->RideType);
 
     while (*rideEntryIndexPtr != RIDE_ENTRY_INDEX_NULL)
     {
-        uint8 rideEntryIndex = *rideEntryIndexPtr++;
+        uint8_t rideEntryIndex = *rideEntryIndexPtr++;
 
         if (!ride_entry_is_invented(rideEntryIndex))
             continue;
@@ -130,7 +130,7 @@ bool RideGroup::IsInvented() const
     return false;
 }
 
-const RideGroup * RideGroupManager::GetRideGroup(const uint8 rideType, const rct_ride_entry * rideEntry)
+const RideGroup * RideGroupManager::GetRideGroup(const uint8_t rideType, const rct_ride_entry * rideEntry)
 {
     switch (rideType)
     {
@@ -164,7 +164,7 @@ const RideGroup * RideGroupManager::GetRideGroup(const uint8 rideType, const rct
     }
 }
 
-bool RideGroupManager::RideTypeHasRideGroups(const uint8 rideType)
+bool RideGroupManager::RideTypeHasRideGroups(const uint8_t rideType)
 {
     switch (rideType)
     {
@@ -179,7 +179,7 @@ bool RideGroupManager::RideTypeHasRideGroups(const uint8 rideType)
     }
 }
 
-const RideGroup * RideGroupManager::RideGroupFind(const uint8 rideType, const uint8 index)
+const RideGroup * RideGroupManager::RideGroupFind(const uint8_t rideType, const uint8_t index)
 {
     if (index >= MAX_RIDE_GROUPS_PER_RIDE_TYPE)
         return nullptr;
@@ -201,7 +201,7 @@ const RideGroup * RideGroupManager::RideGroupFind(const uint8 rideType, const ui
     }
 }
 
-const std::vector<const char *> RideGroupManager::GetPreferredRideEntryOrder(const uint8 rideType)
+const std::vector<const char *> RideGroupManager::GetPreferredRideEntryOrder(const uint8_t rideType)
 {
     // clang-format off
     static const std::vector<const char *> preferredRideEntryOrder[] =
@@ -308,7 +308,7 @@ const std::vector<const char *> RideGroupManager::GetPreferredRideEntryOrder(con
  * which picture is shown on the new ride tab and which train type is selected
  * by default.
  */
-sint32 RideGroupManager::VehiclePreferenceCompare(const uint8 rideType, const char * a, const char * b)
+int32_t RideGroupManager::VehiclePreferenceCompare(const uint8_t rideType, const char * a, const char * b)
 {
     std::vector<const char *> rideEntryOrder = RideGroupManager::GetPreferredRideEntryOrder(rideType);
     for (const char * object : rideEntryOrder)
@@ -325,7 +325,7 @@ sint32 RideGroupManager::VehiclePreferenceCompare(const uint8 rideType, const ch
     return 0;
 }
 
-bool RideGroupManager::RideTypeIsIndependent(const uint8 rideType)
+bool RideGroupManager::RideTypeIsIndependent(const uint8_t rideType)
 {
     switch (rideType)
     {
@@ -428,7 +428,7 @@ bool RideGroupManager::RideTypeIsIndependent(const uint8 rideType)
     return true;
 }
 
-const uint8 gRideCategories[] = {
+const uint8_t gRideCategories[] = {
     RIDE_CATEGORY_ROLLERCOASTER, // Spiral Roller coaster
     RIDE_CATEGORY_ROLLERCOASTER, // Stand Up Coaster
     RIDE_CATEGORY_ROLLERCOASTER, // Suspended Swinging

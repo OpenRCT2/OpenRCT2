@@ -19,7 +19,7 @@
 #include "../util/Util.h"
 #include "TTF.h"
 
-enum : uint32
+enum : uint32_t
 {
     TEXT_DRAW_FLAG_INSET = 1 << 0,
     TEXT_DRAW_FLAG_OUTLINE = 1 << 1,
@@ -30,21 +30,21 @@ enum : uint32
     TEXT_DRAW_FLAG_NO_DRAW = 1u << 31
 };
 
-static sint32 ttf_get_string_width(const utf8 *text);
+static int32_t ttf_get_string_width(const utf8 *text);
 
 /**
  *
  *  rct2: 0x006C23B1
  */
-sint32 gfx_get_string_width_new_lined(utf8 *text)
+int32_t gfx_get_string_width_new_lined(utf8 *text)
 {
     utf8 *ch = text;
     utf8 *firstCh = text;
     utf8 *nextCh;
     utf8 backup;
-    sint32 codepoint;
+    int32_t codepoint;
 
-    sint32 maxWidth = 0;
+    int32_t maxWidth = 0;
     while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0) {
         if (codepoint == FORMAT_NEWLINE || codepoint == FORMAT_NEWLINE_SMALLER) {
             backup = *nextCh;
@@ -66,7 +66,7 @@ sint32 gfx_get_string_width_new_lined(utf8 *text)
  *  rct2: 0x006C2321
  * buffer (esi)
  */
-sint32 gfx_get_string_width(const utf8 * buffer)
+int32_t gfx_get_string_width(const utf8 * buffer)
 {
     return ttf_get_string_width(buffer);
 }
@@ -78,9 +78,9 @@ sint32 gfx_get_string_width(const utf8 * buffer)
  * buffer (esi)
  * width (edi)
  */
-sint32 gfx_clip_string(utf8 *text, sint32 width)
+int32_t gfx_clip_string(utf8 *text, int32_t width)
 {
-    sint32 clippedWidth;
+    int32_t clippedWidth;
 
     if (width < 6) {
         *text = 0;
@@ -96,7 +96,7 @@ sint32 gfx_clip_string(utf8 *text, sint32 width)
     utf8 *ch = text;
     utf8 *nextCh = text;
     utf8 *clipCh = text;
-    sint32 codepoint;
+    int32_t codepoint;
     while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0) {
         if (utf8_is_format_code(codepoint)) {
             ch = nextCh;
@@ -104,21 +104,21 @@ sint32 gfx_clip_string(utf8 *text, sint32 width)
             continue;
         }
 
-        for (sint32 i = 0; i < 4; i++) { backup[i] = nextCh[i]; };
-        for (sint32 i = 0; i < 3; i++) { nextCh[i] = '.'; }
+        for (int32_t i = 0; i < 4; i++) { backup[i] = nextCh[i]; };
+        for (int32_t i = 0; i < 3; i++) { nextCh[i] = '.'; }
         nextCh[3] = 0;
 
-        sint32 queryWidth = gfx_get_string_width(text);
+        int32_t queryWidth = gfx_get_string_width(text);
         if (queryWidth < width) {
             clipCh = nextCh;
             clippedWidth = queryWidth;
         } else {
-            for (sint32 i = 0; i < 3; i++) { clipCh[i] = '.'; }
+            for (int32_t i = 0; i < 3; i++) { clipCh[i] = '.'; }
             clipCh[3] = 0;
             return clippedWidth;
         }
 
-        for (sint32 i = 0; i < 4; i++) { nextCh[i] = backup[i]; };
+        for (int32_t i = 0; i < 4; i++) { nextCh[i] = backup[i]; };
         ch = nextCh;
     }
     return gfx_get_string_width(text);
@@ -137,23 +137,23 @@ sint32 gfx_clip_string(utf8 *text, sint32 width)
  * num_lines (edi) - out
  * font_height (ebx) - out
  */
-sint32 gfx_wrap_string(utf8 *text, sint32 width, sint32 *outNumLines, sint32 *outFontHeight)
+int32_t gfx_wrap_string(utf8 *text, int32_t width, int32_t *outNumLines, int32_t *outFontHeight)
 {
-    sint32 lineWidth = 0;
-    sint32 maxWidth = 0;
+    int32_t lineWidth = 0;
+    int32_t maxWidth = 0;
     *outNumLines = 0;
 
     // Pointer to the start of the current word
     utf8 *currentWord = nullptr;
 
     // Width of line up to current word
-    sint32 currentWidth = 0;
+    int32_t currentWidth = 0;
 
     utf8 *ch = text;
     utf8 *firstCh = text;
     utf8 *nextCh;
-    sint32 codepoint;
-    sint32 numCharactersOnLine = 0;
+    int32_t codepoint;
+    int32_t numCharactersOnLine = 0;
     while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0) {
         if (codepoint == ' ') {
             currentWord = ch;
@@ -174,7 +174,7 @@ sint32 gfx_wrap_string(utf8 *text, sint32 width, sint32 *outNumLines, sint32 *ou
             continue;
         }
 
-        uint8 saveCh = *nextCh;
+        uint8_t saveCh = *nextCh;
         *nextCh = 0;
         lineWidth = gfx_get_string_width(firstCh);
         *nextCh = saveCh;
@@ -211,25 +211,25 @@ sint32 gfx_wrap_string(utf8 *text, sint32 width, sint32 *outNumLines, sint32 *ou
 /**
  * Draws text that is left aligned and vertically centred.
  */
-void gfx_draw_string_left_centred(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y)
+void gfx_draw_string_left_centred(rct_drawpixelinfo *dpi, rct_string_id format, void *args, int32_t colour, int32_t x, int32_t y)
 {
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     char *buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, format, args);
-    sint32 height = string_get_height_raw(buffer);
+    int32_t height = string_get_height_raw(buffer);
     gfx_draw_string(dpi, buffer, colour, x, y - (height / 2));
 }
 
 /**
  * Changes the palette so that the next character changes colour
  */
-static void colour_char(uint8 colour, const uint16* current_font_flags, uint8* palette_pointer) {
+static void colour_char(uint8_t colour, const uint16_t* current_font_flags, uint8_t* palette_pointer) {
 
-    sint32 colour32 = 0;
+    int32_t colour32 = 0;
     const rct_g1_element * g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
     if (g1 != nullptr)
     {
-        colour32 = ((uint32 *)g1->offset)[colour & 0xFF];
+        colour32 = ((uint32_t *)g1->offset)[colour & 0xFF];
     }
 
     if (!(*current_font_flags & 2))
@@ -247,9 +247,9 @@ static void colour_char(uint8 colour, const uint16* current_font_flags, uint8* p
  * Changes the palette so that the next character changes colour
  * This is specific to changing to a predefined window related colour
  */
-static void colour_char_window(uint8 colour, const uint16* current_font_flags,uint8* palette_pointer) {
+static void colour_char_window(uint8_t colour, const uint16_t* current_font_flags,uint8_t* palette_pointer) {
 
-    sint32 eax;
+    int32_t eax;
 
     colour = NOT_TRANSLUCENT(colour);
     eax = ColourMapA[colour].colour_11;
@@ -273,14 +273,14 @@ static void colour_char_window(uint8 colour, const uint16* current_font_flags,ui
  * text     : esi
  * dpi      : edi
  */
-void draw_string_centred_raw(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 numLines, char *text)
+void draw_string_centred_raw(rct_drawpixelinfo *dpi, int32_t x, int32_t y, int32_t numLines, char *text)
 {
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gfx_draw_string(dpi, (char *)"", COLOUR_BLACK, dpi->x, dpi->y);
     gCurrentFontFlags = 0;
 
-    for (sint32 i = 0; i <= numLines; i++) {
-        sint32 width = gfx_get_string_width(text);
+    for (int32_t i = 0; i <= numLines; i++) {
+        int32_t width = gfx_get_string_width(text);
         gfx_draw_string(dpi, text, TEXT_COLOUR_254, x - (width / 2), y);
 
         const utf8 *ch = text;
@@ -295,11 +295,11 @@ void draw_string_centred_raw(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 
     }
 }
 
-sint32 string_get_height_raw(char *buffer)
+int32_t string_get_height_raw(char *buffer)
 {
-    uint16 fontBase = gCurrentFontSpriteBase;
+    uint16_t fontBase = gCurrentFontSpriteBase;
 
-    sint32 height = 0;
+    int32_t height = 0;
     if (fontBase <= FONT_SPRITE_BASE_MEDIUM)
         height += 10;
     else if (fontBase == FONT_SPRITE_BASE_TINY)
@@ -371,9 +371,9 @@ sint32 string_get_height_raw(char *buffer)
  * width    : bp
  * ticks    : ebp >> 16
  */
-void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 width, sint32 colour, rct_string_id format, void *args, sint32 ticks)
+void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, int32_t x, int32_t y, int32_t width, int32_t colour, rct_string_id format, void *args, int32_t ticks)
 {
-    sint32 numLines, fontSpriteBase, lineHeight, lineY;
+    int32_t numLines, fontSpriteBase, lineHeight, lineY;
     utf8 *buffer = gCommonStringFormatBuffer;
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
@@ -385,17 +385,17 @@ void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, sint32 x, s
     gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
     lineHeight = font_get_line_height(fontSpriteBase);
 
-    sint32 numCharactersDrawn = 0;
-    sint32 numCharactersToDraw = ticks;
+    int32_t numCharactersDrawn = 0;
+    int32_t numCharactersToDraw = ticks;
 
     gCurrentFontFlags = 0;
     lineY = y - ((numLines * lineHeight) / 2);
-    for (sint32 line = 0; line <= numLines; line++) {
-        sint32 halfWidth = gfx_get_string_width(buffer) / 2;
+    for (int32_t line = 0; line <= numLines; line++) {
+        int32_t halfWidth = gfx_get_string_width(buffer) / 2;
 
         utf8 *ch = buffer;
         utf8 *nextCh;
-        sint32 codepoint;
+        int32_t codepoint;
         while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0) {
             if (!utf8_is_format_code(codepoint)) {
                 numCharactersDrawn++;
@@ -419,27 +419,27 @@ void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, sint32 x, s
 }
 
 struct text_draw_info {
-    sint32 startX;
-    sint32 startY;
-    sint32 x;
-    sint32 y;
-    sint32 maxX;
-    sint32 maxY;
-    sint32 flags;
-    uint8 palette[8];
-    uint16 font_sprite_base;
-    const sint8 *y_offset;
+    int32_t startX;
+    int32_t startY;
+    int32_t x;
+    int32_t y;
+    int32_t maxX;
+    int32_t maxY;
+    int32_t flags;
+    uint8_t palette[8];
+    uint16_t font_sprite_base;
+    const int8_t *y_offset;
 };
 
-static void ttf_draw_character_sprite(rct_drawpixelinfo *dpi, sint32 codepoint, text_draw_info *info)
+static void ttf_draw_character_sprite(rct_drawpixelinfo *dpi, int32_t codepoint, text_draw_info *info)
 {
-    sint32 characterWidth = font_sprite_get_codepoint_width(info->font_sprite_base, codepoint);
-    sint32 sprite = font_sprite_get_codepoint_sprite(info->font_sprite_base, codepoint);
+    int32_t characterWidth = font_sprite_get_codepoint_width(info->font_sprite_base, codepoint);
+    int32_t sprite = font_sprite_get_codepoint_sprite(info->font_sprite_base, codepoint);
 
     if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW)) {
 
-        sint32 x = info->x;
-        sint32 y = info->y;
+        int32_t x = info->x;
+        int32_t y = info->y;
         if (info->flags & TEXT_DRAW_FLAG_Y_OFFSET_EFFECT) {
             y += *info->y_offset++;
         }
@@ -452,7 +452,7 @@ static void ttf_draw_character_sprite(rct_drawpixelinfo *dpi, sint32 codepoint, 
 static void ttf_draw_string_raw_sprite(rct_drawpixelinfo *dpi, const utf8 *text, text_draw_info *info)
 {
     const utf8 *ch = text;
-    sint32 codepoint;
+    int32_t codepoint;
 
     while (!utf8_is_format_code(codepoint = utf8_get_next(ch, &ch))) {
         ttf_draw_character_sprite(dpi, codepoint, info);
@@ -476,26 +476,26 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
         info->x += ttf_getwidth_cache_get_or_add(fontDesc->font, text);
         return;
     } else {
-        uint8 colour = info->palette[1];
+        uint8_t colour = info->palette[1];
         TTFSurface * surface = ttf_surface_cache_get_or_add(fontDesc->font, text);
         if (surface == nullptr)
             return;
 
-        sint32 drawX = info->x + fontDesc->offset_x;
-        sint32 drawY = info->y + fontDesc->offset_y;
-        sint32 width = surface->w;
-        sint32 height = surface->h;
+        int32_t drawX = info->x + fontDesc->offset_x;
+        int32_t drawY = info->y + fontDesc->offset_y;
+        int32_t width = surface->w;
+        int32_t height = surface->h;
 
-        sint32 overflowX = (dpi->x + dpi->width) - (drawX + width);
-        sint32 overflowY = (dpi->y + dpi->height) - (drawY + height);
+        int32_t overflowX = (dpi->x + dpi->width) - (drawX + width);
+        int32_t overflowY = (dpi->y + dpi->height) - (drawY + height);
         if (overflowX < 0) width += overflowX;
         if (overflowY < 0) height += overflowY;
-        sint32 skipX = drawX - dpi->x;
-        sint32 skipY = drawY - dpi->y;
+        int32_t skipX = drawX - dpi->x;
+        int32_t skipY = drawY - dpi->y;
         info->x += width;
 
-        auto src = (const uint8 *)surface->pixels;
-        uint8 *dst = dpi->bits;
+        auto src = (const uint8_t *)surface->pixels;
+        uint8_t *dst = dpi->bits;
 
         if (skipX < 0) {
             width += skipX;
@@ -511,15 +511,15 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
         dst += skipX;
         dst += skipY * (dpi->width + dpi->pitch);
 
-        sint32 srcScanSkip = surface->pitch - width;
-        sint32 dstScanSkip = dpi->width + dpi->pitch - width;
-        uint8 *dst_orig = dst;
-        const uint8 *src_orig = src;
+        int32_t srcScanSkip = surface->pitch - width;
+        int32_t dstScanSkip = dpi->width + dpi->pitch - width;
+        uint8_t *dst_orig = dst;
+        const uint8_t *src_orig = src;
 
         // Draw shadow/outline
         if (info->flags & TEXT_DRAW_FLAG_OUTLINE) {
-            for (sint32 yy = 0; yy < height - 0; yy++) {
-                for (sint32 xx = 0; xx < width - 0; xx++) {
+            for (int32_t yy = 0; yy < height - 0; yy++) {
+                for (int32_t xx = 0; xx < width - 0; xx++) {
                     if (*src != 0) {
                         *(dst + 1) = info->palette[3]; // right
                         *(dst - 1) = info->palette[3]; // left
@@ -538,8 +538,8 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
             dst = dst_orig;
             src = src_orig;
             bool use_hinting = gConfigFonts.enable_hinting && fontDesc->hinting_threshold > 0;
-            for (sint32 yy = 0; yy < height; yy++) {
-                for (sint32 xx = 0; xx < width; xx++) {
+            for (int32_t yy = 0; yy < height; yy++) {
+                for (int32_t xx = 0; xx < width; xx++) {
                     if (*src != 0) {
                         if (info->flags & TEXT_DRAW_FLAG_INSET) {
                             *(dst + width + dstScanSkip + 1) = info->palette[3];
@@ -593,20 +593,20 @@ static void ttf_draw_string_raw(rct_drawpixelinfo *dpi, const utf8 *text, text_d
 static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *text, text_draw_info *info)
 {
     const utf8 *nextCh;
-    sint32 codepoint;
+    int32_t codepoint;
 
     codepoint = utf8_get_next(text, &nextCh);
     switch (codepoint) {
     case FORMAT_MOVE_X:
-        info->x = info->startX + (uint8)(*nextCh++);
+        info->x = info->startX + (uint8_t)(*nextCh++);
         break;
     case FORMAT_ADJUST_PALETTE:
     {
-        uint16 eax = palette_to_g1_offset[(uint8)*nextCh++];
+        uint16_t eax = palette_to_g1_offset[(uint8_t)*nextCh++];
         const rct_g1_element * g1 = gfx_get_g1_element(eax);
         if (g1 != nullptr)
         {
-            uint32 ebx = g1->offset[249] + 256;
+            uint32_t ebx = g1->offset[249] + 256;
             if (!(info->flags & TEXT_DRAW_FLAG_OUTLINE)) {
                 ebx = ebx & 0xFF;
             }
@@ -651,19 +651,19 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
         break;
     case FORMAT_WINDOW_COLOUR_1:
     {
-        uint16 flags = info->flags;
+        uint16_t flags = info->flags;
         colour_char_window(gCurrentWindowColours[0], &flags, info->palette);
         break;
     }
     case FORMAT_WINDOW_COLOUR_2:
     {
-        uint16 flags = info->flags;
+        uint16_t flags = info->flags;
         colour_char_window(gCurrentWindowColours[1], &flags, info->palette);
         break;
     }
     case FORMAT_WINDOW_COLOUR_3:
     {
-        uint16 flags = info->flags;
+        uint16_t flags = info->flags;
         colour_char_window(gCurrentWindowColours[2], &flags, info->palette);
         break;
     }
@@ -671,7 +671,7 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
         break;
     case FORMAT_INLINE_SPRITE:
     {
-        uint32 imageId = *((uint32*)(nextCh));
+        uint32_t imageId = *((uint32_t*)(nextCh));
         const rct_g1_element * g1 = gfx_get_g1_element(imageId & 0x7FFFF);
         if (g1 != nullptr)
         {
@@ -685,7 +685,7 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
     }
     default:
         if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END) {
-            uint16 flags = info->flags;
+            uint16_t flags = info->flags;
             colour_char(codepoint - FORMAT_COLOUR_CODE_START, &flags, info->palette);
         } else if (codepoint <= 0x16) { //case 0x11? FORMAT_NEW_LINE_X_Y
             nextCh += 2;
@@ -702,7 +702,7 @@ static const utf8 *ttf_process_glyph_run(rct_drawpixelinfo *dpi, const utf8 *tex
     utf8 buffer[512];
     const utf8 *ch = text;
     const utf8 *lastCh;
-    sint32 codepoint;
+    int32_t codepoint;
 
 #ifndef NO_TTF
     bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
@@ -731,7 +731,7 @@ static void ttf_process_string(rct_drawpixelinfo *dpi, const utf8 *text, text_dr
 {
     const utf8 *ch = text;
     const utf8 *nextCh;
-    sint32 codepoint;
+    int32_t codepoint;
 
 #ifndef NO_TTF
     bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
@@ -753,13 +753,13 @@ static void ttf_process_string(rct_drawpixelinfo *dpi, const utf8 *text, text_dr
     }
 }
 
-static void ttf_process_initial_colour(sint32 colour, text_draw_info *info)
+static void ttf_process_initial_colour(int32_t colour, text_draw_info *info)
 {
     if (colour != TEXT_COLOUR_254 && colour != TEXT_COLOUR_255) {
         info->flags &= ~(TEXT_DRAW_FLAG_INSET | TEXT_DRAW_FLAG_OUTLINE | TEXT_DRAW_FLAG_DARK | TEXT_DRAW_FLAG_EXTRA_DARK);
-        if ((sint16)info->font_sprite_base < 0) {
+        if ((int16_t)info->font_sprite_base < 0) {
             info->flags |= TEXT_DRAW_FLAG_DARK;
-            if ((sint16)info->font_sprite_base == FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK) {
+            if ((int16_t)info->font_sprite_base == FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK) {
                 info->flags |= TEXT_DRAW_FLAG_EXTRA_DARK;
             }
             info->font_sprite_base = FONT_SPRITE_BASE_MEDIUM;
@@ -770,14 +770,14 @@ static void ttf_process_initial_colour(sint32 colour, text_draw_info *info)
         colour &= ~COLOUR_FLAG_OUTLINE;
         if (!(colour & COLOUR_FLAG_INSET)) {
             if (!(info->flags & TEXT_DRAW_FLAG_INSET)) {
-                uint16 flags = info->flags;
-                colour_char_window(colour, &flags, (uint8*)&info->palette);
+                uint16_t flags = info->flags;
+                colour_char_window(colour, &flags, (uint8_t*)&info->palette);
             }
         } else {
             info->flags |= TEXT_DRAW_FLAG_INSET;
             colour &= ~COLOUR_FLAG_INSET;
 
-            uint32 eax;
+            uint32_t eax;
             if (info->flags & TEXT_DRAW_FLAG_DARK) {
                 if (info->flags & TEXT_DRAW_FLAG_EXTRA_DARK) {
                     eax = ColourMapA[colour].mid_light;
@@ -804,7 +804,7 @@ static void ttf_process_initial_colour(sint32 colour, text_draw_info *info)
     }
 }
 
-void ttf_draw_string(rct_drawpixelinfo *dpi, const_utf8string text, sint32 colour, sint32 x, sint32 y)
+void ttf_draw_string(rct_drawpixelinfo *dpi, const_utf8string text, int32_t colour, int32_t x, int32_t y)
 {
     if (text == nullptr) return;
 
@@ -832,7 +832,7 @@ void ttf_draw_string(rct_drawpixelinfo *dpi, const_utf8string text, sint32 colou
     gLastDrawStringY = info.y;
 }
 
-static sint32 ttf_get_string_width(const utf8 *text)
+static int32_t ttf_get_string_width(const utf8 *text)
 {
     text_draw_info info;
     info.font_sprite_base = gCurrentFontSpriteBase;
@@ -858,7 +858,7 @@ static sint32 ttf_get_string_width(const utf8 *text)
  *
  *  rct2: 0x00682F28
  */
-void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, sint32 colour, sint32 x, sint32 y, const sint8 *yOffsets, bool forceSpriteFont)
+void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, int32_t colour, int32_t x, int32_t y, const int8_t *yOffsets, bool forceSpriteFont)
 {
     text_draw_info info;
     info.font_sprite_base = gCurrentFontSpriteBase;
@@ -887,7 +887,7 @@ void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, si
     gLastDrawStringY = info.y;
 }
 
-void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 availableWidth)
+void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, int32_t availableWidth)
 {
     size_t length = strlen(path);
 
@@ -898,7 +898,7 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 avai
     }
 
     // Count path separators
-    sint32 path_separators = 0;
+    int32_t path_separators = 0;
     for (size_t x = 0; x < length; x++) {
         if (path[x] == *PATH_SEPARATOR || path[x] == '/') {
             path_separators++;
@@ -909,8 +909,8 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 avai
     safe_strcpy(buffer, "...", bufferSize);
 
     // Abbreviate beginning with xth separator
-    sint32 begin = -1;
-    for (sint32 x = 0; x < path_separators; x++){
+    int32_t begin = -1;
+    for (int32_t x = 0; x < path_separators; x++){
         do {
             begin++;
         } while (path[begin] != *PATH_SEPARATOR && path[begin] != '/');

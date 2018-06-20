@@ -38,17 +38,17 @@ enum MASTER_SERVER_STATUS
     MASTER_SERVER_STATUS_INTERNAL_ERROR     = 500
 };
 
-constexpr sint32 MASTER_SERVER_REGISTER_TIME = 120 * 1000; // 2 minutes
-constexpr sint32 MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000; // 1 minute
+constexpr int32_t MASTER_SERVER_REGISTER_TIME = 120 * 1000; // 2 minutes
+constexpr int32_t MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000; // 1 minute
 
 class NetworkServerAdvertiser final : public INetworkServerAdvertiser
 {
 private:
-    uint16 _port;
+    uint16_t _port;
 
     ADVERTISE_STATUS    _status = ADVERTISE_STATUS::UNREGISTERED;
-    uint32              _lastAdvertiseTime = 0;
-    uint32              _lastHeartbeatTime = 0;
+    uint32_t              _lastAdvertiseTime = 0;
+    uint32_t              _lastHeartbeatTime = 0;
 
     // Our unique token for this server
     std::string         _token;
@@ -60,7 +60,7 @@ private:
     bool                _forceIPv4 = false;
 
 public:
-    explicit NetworkServerAdvertiser(uint16 port)
+    explicit NetworkServerAdvertiser(uint16_t port)
     {
         _port = port;
         _key = GenerateAdvertiseKey();
@@ -153,7 +153,7 @@ private:
         json_t *jsonStatus = json_object_get(jsonRoot, "status");
         if (json_is_integer(jsonStatus))
         {
-            sint32 status = (sint32)json_integer_value(jsonStatus);
+            int32_t status = (int32_t)json_integer_value(jsonStatus);
             if (status == MASTER_SERVER_STATUS_OK)
             {
                 json_t * jsonToken = json_object_get(jsonRoot, "token");
@@ -190,7 +190,7 @@ private:
         json_t *jsonStatus = json_object_get(jsonRoot, "status");
         if (json_is_integer(jsonStatus))
         {
-            sint32 status = (sint32)json_integer_value(jsonStatus);
+            int32_t status = (int32_t)json_integer_value(jsonStatus);
             if (status == MASTER_SERVER_STATUS_OK)
             {
                 // Master server has successfully updated our server status
@@ -205,7 +205,7 @@ private:
 
     json_t * GetHeartbeatJson()
     {
-        uint32 numPlayers = network_get_num_players();
+        uint32_t numPlayers = network_get_num_players();
 
         json_t * root = json_object();
         json_object_set_new(root, "token", json_string(_token.c_str()));
@@ -231,9 +231,9 @@ private:
         // Generate a string of 16 random hex characters (64-integer key as a hex formatted string)
         static constexpr const char hexChars[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
         char key[17];
-        for (sint32 i = 0; i < 16; i++)
+        for (int32_t i = 0; i < 16; i++)
         {
-            sint32 hexCharIndex = util_rand() % Util::CountOf(hexChars);
+            int32_t hexCharIndex = util_rand() % Util::CountOf(hexChars);
             key[i] = hexChars[hexCharIndex];
         }
         key[Util::CountOf(key) - 1] = 0;
@@ -251,7 +251,7 @@ private:
     }
 };
 
-INetworkServerAdvertiser * CreateServerAdvertiser(uint16 port)
+INetworkServerAdvertiser * CreateServerAdvertiser(uint16_t port)
 {
     return new NetworkServerAdvertiser(port);
 }
@@ -265,7 +265,7 @@ public:
     virtual void                Update() override {};
 };
 
-INetworkServerAdvertiser * CreateServerAdvertiser(uint16 port)
+INetworkServerAdvertiser * CreateServerAdvertiser(uint16_t port)
 {
     return new DummyNetworkServerAdvertiser();
 }

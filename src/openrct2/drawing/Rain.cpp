@@ -20,8 +20,8 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
-static void DrawLightRain(IRainDrawer * rainDrawer, sint32 left, sint32 top, sint32 width, sint32 height);
-static void DrawHeavyRain(IRainDrawer * rainDrawer, sint32 left, sint32 top, sint32 width, sint32 height);
+static void DrawLightRain(IRainDrawer * rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+static void DrawHeavyRain(IRainDrawer * rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
 
 /**
  *
@@ -43,7 +43,7 @@ void DrawRain(rct_drawpixelinfo * dpi, IRainDrawer * rainDrawer)
     if (gConfigGeneral.render_weather_effects)
     {
         // Get rain draw function and draw rain
-        uint32 rainType = gClimateCurrent.RainLevel;
+        uint32_t rainType = gClimateCurrent.RainLevel;
         if (rainType != RAIN_LEVEL_NONE && !gTrackDesignSaveMode && !(gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         {
             auto drawFunc = DrawRainFunctions[rainType];
@@ -57,16 +57,16 @@ void DrawRain(rct_drawpixelinfo * dpi, IRainDrawer * rainDrawer)
  *
  *  rct2: 0x00684114
  */
-static void DrawLightRain(IRainDrawer * rainDrawer, sint32 left, sint32 top, sint32 width, sint32 height)
+static void DrawLightRain(IRainDrawer * rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
-    sint32 x_start = -(sint32)gScenarioTicks + 8;
-    sint32 y_start = (gScenarioTicks * 3) + 7;
+    int32_t x_start = -(int32_t)gScenarioTicks + 8;
+    int32_t y_start = (gScenarioTicks * 3) + 7;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     rainDrawer->Draw(left, top, width, height, x_start, y_start);
 
-    x_start = -(sint32)gScenarioTicks + 0x18;
+    x_start = -(int32_t)gScenarioTicks + 0x18;
     y_start = (gScenarioTicks * 4) + 0x0D;
     y_start = -y_start;
     x_start += left;
@@ -78,30 +78,30 @@ static void DrawLightRain(IRainDrawer * rainDrawer, sint32 left, sint32 top, sin
  *
  *  rct2: 0x0068416D
  */
-static void DrawHeavyRain(IRainDrawer * rainDrawer, sint32 left, sint32 top, sint32 width, sint32 height)
+static void DrawHeavyRain(IRainDrawer * rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
-    sint32 x_start = -(sint32)gScenarioTicks;
-    sint32 y_start = gScenarioTicks * 5;
+    int32_t x_start = -(int32_t)gScenarioTicks;
+    int32_t y_start = gScenarioTicks * 5;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     rainDrawer->Draw(left, top, width, height, x_start, y_start);
 
-    x_start = -(sint32)gScenarioTicks + 0x10;
+    x_start = -(int32_t)gScenarioTicks + 0x10;
     y_start = (gScenarioTicks * 6) + 5;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     rainDrawer->Draw(left, top, width, height, x_start, y_start);
 
-    x_start = -(sint32)gScenarioTicks + 8;
+    x_start = -(int32_t)gScenarioTicks + 8;
     y_start = (gScenarioTicks * 3) + 7;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     rainDrawer->Draw(left, top, width, height, x_start, y_start);
 
-    x_start = -(sint32)gScenarioTicks + 0x18;
+    x_start = -(int32_t)gScenarioTicks + 0x18;
     y_start = (gScenarioTicks * 4) + 0x0D;
     y_start = -y_start;
     x_start += left;

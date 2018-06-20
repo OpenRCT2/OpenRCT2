@@ -15,16 +15,16 @@
 #include "../../world/Sprite.h"
 
 /** rct2: 0x0142805C */
-static constexpr const uint32 merry_go_round_rider_offsets[] = { 0, 32, 64, 96, 16, 48, 80, 112 };
+static constexpr const uint32_t merry_go_round_rider_offsets[] = { 0, 32, 64, 96, 16, 48, 80, 112 };
 
 /** rct2: 0x0142807C */
-static constexpr const uint16 merry_go_round_breakdown_vibration[] = { 0, 1, 2, 3, 4, 3, 2, 1, 0, 0 };
+static constexpr const uint16_t merry_go_round_breakdown_vibration[] = { 0, 1, 2, 3, 4, 3, 2, 1, 0, 0 };
 
 /**
  * rct2: 0x0076287D
  */
-static void paint_merry_go_round_structure(paint_session * session, uint8 rideIndex, uint8 direction, sint8 xOffset,
-                                           sint8 yOffset, uint16 height)
+static void paint_merry_go_round_structure(paint_session * session, uint8_t rideIndex, uint8_t direction, int8_t xOffset,
+                                           int8_t yOffset, uint16_t height)
 {
     const rct_tile_element * savedTileElement = static_cast<const rct_tile_element *>(session->CurrentlyDrawnItem);
     height += 7;
@@ -38,7 +38,7 @@ static void paint_merry_go_round_structure(paint_session * session, uint8 rideIn
         return;
     }
 
-    uint32 baseImageId = rideEntry->vehicles[0].base_image_id;
+    uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
     {
@@ -53,30 +53,30 @@ static void paint_merry_go_round_structure(paint_session * session, uint8 rideIn
         }
     }
 
-    uint32 rotationOffset = 0;
+    uint32_t rotationOffset = 0;
     if (vehicle != nullptr)
     {
-        uint32 rotation = ((vehicle->sprite_direction >> 3) + session->CurrentRotation) << 5;
+        uint32_t rotation = ((vehicle->sprite_direction >> 3) + session->CurrentRotation) << 5;
         rotationOffset  = (vehicle->vehicle_sprite_type + rotation) % 128;
     }
 
-    uint32 imageOffset = rotationOffset & 0x1F;
+    uint32_t imageOffset = rotationOffset & 0x1F;
 
-    uint32 imageColourFlags = session->TrackColours[SCHEME_MISC];
+    uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
         imageColourFlags =
             SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
-    uint32 imageId = (baseImageId + imageOffset) | imageColourFlags;
+    uint32_t imageId = (baseImageId + imageOffset) | imageColourFlags;
     sub_98197C(session, imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height);
 
     rct_drawpixelinfo * dpi = session->DPI;
     if (dpi->zoom_level == 0 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
 
-        for (sint32 peep = 0; peep <= 14; peep += 2)
+        for (int32_t peep = 0; peep <= 14; peep += 2)
         {
             if (vehicle->num_peeps <= peep)
             {
@@ -107,15 +107,15 @@ static void paint_merry_go_round_structure(paint_session * session, uint8 rideIn
  */
 static void paint_merry_go_round(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
-    sint32   edges    = edges_3x3[trackSequence];
+    int32_t   edges    = edges_3x3[trackSequence];
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
@@ -149,7 +149,7 @@ static void paint_merry_go_round(
         break;
     }
 
-    sint32 cornerSegments = 0;
+    int32_t cornerSegments = 0;
     switch (trackSequence)
     {
     case 1:
@@ -178,7 +178,7 @@ static void paint_merry_go_round(
 /**
  * rct2: 0x0076190C
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int32_t trackType, int32_t direction)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {

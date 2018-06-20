@@ -25,31 +25,31 @@
 #include "Drawing.h"
 #include "LightFX.h"
 
-static uint8 _bakedLightTexture_lantern_0[32*32];
-static uint8 _bakedLightTexture_lantern_1[64*64];
-static uint8 _bakedLightTexture_lantern_2[128*128];
-static uint8 _bakedLightTexture_lantern_3[256*256];
-static uint8 _bakedLightTexture_spot_0[32 * 32];
-static uint8 _bakedLightTexture_spot_1[64 * 64];
-static uint8 _bakedLightTexture_spot_2[128 * 128];
-static uint8 _bakedLightTexture_spot_3[256 * 256];
+static uint8_t _bakedLightTexture_lantern_0[32*32];
+static uint8_t _bakedLightTexture_lantern_1[64*64];
+static uint8_t _bakedLightTexture_lantern_2[128*128];
+static uint8_t _bakedLightTexture_lantern_3[256*256];
+static uint8_t _bakedLightTexture_spot_0[32 * 32];
+static uint8_t _bakedLightTexture_spot_1[64 * 64];
+static uint8_t _bakedLightTexture_spot_2[128 * 128];
+static uint8_t _bakedLightTexture_spot_3[256 * 256];
 static rct_drawpixelinfo    _pixelInfo;
 static bool _lightfxAvailable = false;
 
 static void* _light_rendered_buffer_back = nullptr;
 static void* _light_rendered_buffer_front = nullptr;
 
-static uint32   _lightPolution_back = 0;
-static uint32   _lightPolution_front = 0;
+static uint32_t   _lightPolution_back = 0;
+static uint32_t   _lightPolution_front = 0;
 
 struct lightlist_entry {
-    sint16  x, y, z;
-    uint8   lightType;
-    uint8   lightIntensity;
-    uint32  lightID;
-    uint16  lightIDqualifier;
-    uint8   lightLinger;
-    uint8   pad[1];
+    int16_t  x, y, z;
+    uint8_t   lightType;
+    uint8_t   lightIntensity;
+    uint32_t  lightID;
+    uint16_t  lightIDqualifier;
+    uint8_t   lightLinger;
+    uint8_t   pad[1];
 };
 
 static lightlist_entry  _LightListA[16000];
@@ -58,47 +58,47 @@ static lightlist_entry  _LightListB[16000];
 static lightlist_entry  *_LightListBack;
 static lightlist_entry  *_LightListFront;
 
-static uint32           LightListCurrentCountBack;
-static uint32           LightListCurrentCountFront;
+static uint32_t           LightListCurrentCountBack;
+static uint32_t           LightListCurrentCountFront;
 
-static sint16           _current_view_x_front           = 0;
-static sint16           _current_view_y_front           = 0;
-static uint8            _current_view_rotation_front    = 0;
-static uint8            _current_view_zoom_front        = 0;
-static sint16           _current_view_x_back            = 0;
-static sint16           _current_view_y_back            = 0;
-static uint8            _current_view_rotation_back     = 0;
-static uint8            _current_view_zoom_back         = 0;
-static uint8            _current_view_zoom_back_delay   = 0;
+static int16_t           _current_view_x_front           = 0;
+static int16_t           _current_view_y_front           = 0;
+static uint8_t            _current_view_rotation_front    = 0;
+static uint8_t            _current_view_zoom_front        = 0;
+static int16_t           _current_view_x_back            = 0;
+static int16_t           _current_view_y_back            = 0;
+static uint8_t            _current_view_rotation_back     = 0;
+static uint8_t            _current_view_zoom_back         = 0;
+static uint8_t            _current_view_zoom_back_delay   = 0;
 
 static rct_palette gPalette_light;
 
-static uint8 calc_light_intensity_lantern(sint32 x, sint32 y) {
+static uint8_t calc_light_intensity_lantern(int32_t x, int32_t y) {
     double distance = (double)(x * x + y * y);
 
     double light = 0.03 + std::pow(10.0 / (1.0 + distance / 100.0), 0.55);
     light *= std::min(1.0, std::max(0.0, 2.0 - std::sqrt(distance) / 64));
     light *= 0.1f;
 
-    return (uint8)(std::min(255.0, light * 255.0));
+    return (uint8_t)(std::min(255.0, light * 255.0));
 }
 
-static uint8 calc_light_intensity_spot(sint32 x, sint32 y) {
+static uint8_t calc_light_intensity_spot(int32_t x, int32_t y) {
     double distance = (double)(x * x + y * y);
 
     double light = 0.3 + std::pow(10.0 / (1.0 + distance / 100.0), 0.75);
     light *= std::min(1.0, std::max(0.0, 2.0 - std::sqrt(distance) / 64));
     light *= 0.5f;
 
-    return (uint8)(std::min(255.0, light * 255.0)) >> 4;
+    return (uint8_t)(std::min(255.0, light * 255.0)) >> 4;
 }
 
-static void calc_rescale_light_half( uint8 *target, uint8 *source,uint32 targetWidth, uint32 targetHeight) {
-    uint8 *parcerRead = source;
-    uint8 *parcerWrite = target;
+static void calc_rescale_light_half( uint8_t *target, uint8_t *source,uint32_t targetWidth, uint32_t targetHeight) {
+    uint8_t *parcerRead = source;
+    uint8_t *parcerWrite = target;
 
-    for (uint32 y = 0; y < targetHeight; y++) {
-        for (uint32 x = 0; x < targetWidth; x++) {
+    for (uint32_t y = 0; y < targetHeight; y++) {
+        for (uint32_t x = 0; x < targetWidth; x++) {
             *parcerWrite = (*parcerRead);
             parcerWrite++;
             parcerRead += 2;
@@ -127,10 +127,10 @@ void lightfx_init()
     memset(_bakedLightTexture_lantern_2, 0xFF, 128 * 128);
     memset(_bakedLightTexture_lantern_3, 0xFF, 256 * 256);
 
-    uint8 *parcer = _bakedLightTexture_lantern_3;
+    uint8_t *parcer = _bakedLightTexture_lantern_3;
 
-    for (sint32 y = 0; y < 256; y++) {
-        for (sint32 x = 0; x < 256; x++) {
+    for (int32_t y = 0; y < 256; y++) {
+        for (int32_t x = 0; x < 256; x++) {
             *parcer = calc_light_intensity_lantern(x - 128, y - 128);
             parcer++;
         }
@@ -138,8 +138,8 @@ void lightfx_init()
 
     parcer = _bakedLightTexture_spot_3;
 
-    for (sint32 y = 0; y < 256; y++) {
-        for (sint32 x = 0; x < 256; x++) {
+    for (int32_t y = 0; y < 256; y++) {
+        for (int32_t x = 0; x < 256; x++) {
             *parcer = calc_light_intensity_spot(x - 128, y - 128);
             parcer++;
         }
@@ -166,7 +166,7 @@ extern void viewport_paint_setup();
 
 void lightfx_prepare_light_list()
 {
-    for (uint32 light = 0; light < LightListCurrentCountFront; light++) {
+    for (uint32_t light = 0; light < LightListCurrentCountFront; light++) {
         lightlist_entry *entry = &_LightListFront[light];
 
         if (entry->z == 0x7FFF) {
@@ -185,8 +185,8 @@ void lightfx_prepare_light_list()
         entry->x = coord_2d.x;// - (_current_view_x_front);
         entry->y = coord_2d.y;// - (_current_view_y_front);
 
-        sint32 posOnScreenX = entry->x - _current_view_x_front;
-        sint32 posOnScreenY = entry->y - _current_view_y_front;
+        int32_t posOnScreenX = entry->x - _current_view_x_front;
+        int32_t posOnScreenY = entry->y - _current_view_y_front;
 
         posOnScreenX >>= _current_view_zoom_front;
         posOnScreenY >>= _current_view_zoom_front;
@@ -203,10 +203,10 @@ void lightfx_prepare_light_list()
     //  entry->x >>= _current_view_zoom_front;
     //  entry->y >>= _current_view_zoom_front;
 
-        uint32 lightIntensityOccluded = 0x0;
+        uint32_t lightIntensityOccluded = 0x0;
 
-        sint32 dirVecX = 707;
-        sint32 dirVecY = 707;
+        int32_t dirVecX = 707;
+        int32_t dirVecY = 707;
 
         switch (_current_view_rotation_front) {
         case 0:
@@ -232,8 +232,8 @@ void lightfx_prepare_light_list()
         }
 
 #ifdef LIGHTFX_UNKNOWN_PART_1
-        sint32 tileOffsetX = 0;
-        sint32 tileOffsetY = 0;
+        int32_t tileOffsetX = 0;
+        int32_t tileOffsetY = 0;
         switch (_current_view_rotation_front) {
         case 0:
             tileOffsetX = 0;
@@ -253,28 +253,28 @@ void lightfx_prepare_light_list()
             break;
         }
 
-        sint32 mapFrontDiv = 1 << _current_view_zoom_front;
-        static sint16 offsetPattern[26] = {     0, 0,       -4, 0,      0, -3,      4, 0,       0, 3,
+        int32_t mapFrontDiv = 1 << _current_view_zoom_front;
+        static int16_t offsetPattern[26] = {     0, 0,       -4, 0,      0, -3,      4, 0,       0, 3,
                                                             -2, -1,     -1, -1,     2, 1,       1, 1,
                                                             -3, -2,     -3, 2,      3, -2,      3, 2    };
 #endif //LIGHTFX_UNKNOWN_PART_1
 
         if (true) {
-            sint32 totalSamplePoints = 5;
-            sint32 startSamplePoint = 1;
-            // sint32 lastSampleCount = 0;
+            int32_t totalSamplePoints = 5;
+            int32_t startSamplePoint = 1;
+            // int32_t lastSampleCount = 0;
 
             if ((entry->lightIDqualifier & 0xF) == LIGHTFX_LIGHT_QUALIFIER_MAP) {
                 startSamplePoint = 0;
                 totalSamplePoints = 1;
             }
 
-            for (sint32 pat = startSamplePoint; pat < totalSamplePoints; pat++) {
+            for (int32_t pat = startSamplePoint; pat < totalSamplePoints; pat++) {
                 LocationXY16 mapCoord = {};
 
                 rct_tile_element *tileElement = nullptr;
 
-                sint32 interactionType = 0;
+                int32_t interactionType = 0;
 
                 rct_window *w = window_get_main();
                 if (w != nullptr) {
@@ -310,12 +310,12 @@ void lightfx_prepare_light_list()
                     //RCT2_GLOBAL(0x9AC148, uint8_t) = 0;
                     //RCT2_GLOBAL(0x9AC138 + 4, int16_t) = screenX;
                     //RCT2_GLOBAL(0x9AC138 + 6, int16_t) = screenY;
-                    //if (screenX >= 0 && screenX < (sint32)myviewport->width && screenY >= 0 && screenY < (sint32)myviewport->height)
+                    //if (screenX >= 0 && screenX < (int32_t)myviewport->width && screenY >= 0 && screenY < (int32_t)myviewport->height)
                     //{
                     //  screenX <<= myviewport->zoom;
                     //  screenY <<= myviewport->zoom;
-                    //  screenX += (sint32)myviewport->view_x;
-                    //  screenY += (sint32)myviewport->view_y;
+                    //  screenX += (int32_t)myviewport->view_x;
+                    //  screenY += (int32_t)myviewport->view_y;
                     //  RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t) = myviewport->zoom;
                     //  screenX &= (0xFFFF << myviewport->zoom) & 0xFFFF;
                     //  screenY &= (0xFFFF << myviewport->zoom) & 0xFFFF;
@@ -336,8 +336,8 @@ void lightfx_prepare_light_list()
                     //}
                 }
 
-                sint32 minDist = 0;
-                sint32 baseHeight = -999;
+                int32_t minDist = 0;
+                int32_t baseHeight = -999;
 
                 if (interactionType != VIEWPORT_INTERACTION_ITEM_SPRITE && tileElement) {
                     baseHeight = tileElement->base_height;
@@ -345,10 +345,10 @@ void lightfx_prepare_light_list()
 
                 minDist = ((baseHeight * 8) - coord_3d.z) / 2;
 
-                sint32 deltaX = mapCoord.x - coord_3d.x;
-                sint32 deltaY = mapCoord.y - coord_3d.y;
+                int32_t deltaX = mapCoord.x - coord_3d.x;
+                int32_t deltaY = mapCoord.y - coord_3d.y;
 
-                sint32 projDot = (dirVecX * deltaX + dirVecY * deltaY) / 1000;
+                int32_t projDot = (dirVecX * deltaX + dirVecY * deltaY) / 1000;
 
                 projDot = std::max(minDist, projDot);
 
@@ -382,7 +382,7 @@ void lightfx_prepare_light_list()
                     break;
                     // if (_current_view_zoom_front > 0)
                     //  break;
-                    // sint32 newSampleCount = lightIntensityOccluded / 900;
+                    // int32_t newSampleCount = lightIntensityOccluded / 900;
                     // if (abs(newSampleCount - lastSampleCount) < 10)
                     //  break;
                     // totalSamplePoints += 4;
@@ -402,8 +402,8 @@ void lightfx_prepare_light_list()
 
         //  log_warning("sample-count: %i, occlusion: %i", totalSamplePoints, lightIntensityOccluded / totalSamplePoints);
 
-            entry->lightIntensity = std::min<uint32>(0xFF, (entry->lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100));
-            entry->lightIntensity = std::max<uint32>(0x00, entry->lightIntensity - _current_view_zoom_front * 5);
+            entry->lightIntensity = std::min<uint32_t>(0xFF, (entry->lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100));
+            entry->lightIntensity = std::max<uint32_t>(0x00, entry->lightIntensity - _current_view_zoom_front * 5);
         }
 
         if (_current_view_zoom_front > 0) {
@@ -434,7 +434,7 @@ void lightfx_swap_buffers()
     LightListCurrentCountFront = LightListCurrentCountBack;
     LightListCurrentCountBack = 0x0;
 
-    uint32 uTmp = _lightPolution_back;
+    uint32_t uTmp = _lightPolution_back;
     _lightPolution_back = _lightPolution_front;
     _lightPolution_front = uTmp;
 
@@ -469,18 +469,18 @@ void lightfx_render_lights_to_frontbuffer()
 
 //  log_warning("%i lights", LightListCurrentCountFront);
 
-    for (uint32 light = 0; light < LightListCurrentCountFront; light++) {
-        const uint8 *bufReadBase    = nullptr;
-        uint8       *bufWriteBase   = (uint8 *)_light_rendered_buffer_front;
-        uint32      bufReadWidth, bufReadHeight;
-        sint32      bufWriteX, bufWriteY;
-        sint32      bufWriteWidth, bufWriteHeight;
-        uint32      bufReadSkip, bufWriteSkip;
+    for (uint32_t light = 0; light < LightListCurrentCountFront; light++) {
+        const uint8_t *bufReadBase    = nullptr;
+        uint8_t       *bufWriteBase   = (uint8_t *)_light_rendered_buffer_front;
+        uint32_t      bufReadWidth, bufReadHeight;
+        int32_t      bufWriteX, bufWriteY;
+        int32_t      bufWriteWidth, bufWriteHeight;
+        uint32_t      bufReadSkip, bufWriteSkip;
 
         lightlist_entry * entry = &_LightListFront[light];
 
-        sint32      inRectCentreX   = entry->x;
-        sint32      inRectCentreY   = entry->y;
+        int32_t      inRectCentreX   = entry->x;
+        int32_t      inRectCentreY   = entry->y;
 
         if (entry->z != 0x7FFF) {
             inRectCentreX -= _current_view_x_front;
@@ -563,8 +563,8 @@ void lightfx_render_lights_to_frontbuffer()
         if (bufWriteHeight <= 0)
             continue;
 
-        sint32  rightEdge = bufWriteX + bufWriteWidth;
-        sint32  bottomEdge = bufWriteY + bufWriteHeight;
+        int32_t  rightEdge = bufWriteX + bufWriteWidth;
+        int32_t  bottomEdge = bufWriteY + bufWriteHeight;
 
         if (rightEdge > _pixelInfo.width) {
             bufWriteWidth -= rightEdge - _pixelInfo.width;
@@ -584,8 +584,8 @@ void lightfx_render_lights_to_frontbuffer()
         bufWriteSkip    = _pixelInfo.width - bufWriteWidth;
 
         if (entry->lightIntensity == 0xFF) {
-            for (sint32 y = 0; y < bufWriteHeight; y++) {
-                for (sint32 x = 0; x < bufWriteWidth; x++) {
+            for (int32_t y = 0; y < bufWriteHeight; y++) {
+                for (int32_t x = 0; x < bufWriteWidth; x++) {
                     *bufWriteBase = std::min(0xFF, *bufWriteBase + *bufReadBase);
                     bufWriteBase++;
                     bufReadBase++;
@@ -596,8 +596,8 @@ void lightfx_render_lights_to_frontbuffer()
             }
         }
         else {
-            for (sint32 y = 0; y < bufWriteHeight; y++) {
-                for (sint32 x = 0; x < bufWriteWidth; x++) {
+            for (int32_t y = 0; y < bufWriteHeight; y++) {
+                for (int32_t x = 0; x < bufWriteWidth; x++) {
                     *bufWriteBase = std::min(0xFF, *bufWriteBase + (((*bufReadBase) * (1 + entry->lightIntensity)) >> 8));
                     bufWriteBase++;
                     bufReadBase++;
@@ -620,7 +620,7 @@ const rct_palette * lightfx_get_palette()
     return &gPalette_light;
 }
 
-void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sint16 y, uint16 z, uint8 lightType)
+void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x, int16_t y, uint16_t z, uint8_t lightType)
 {
     if (LightListCurrentCountBack == 15999) {
         return;
@@ -628,7 +628,7 @@ void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sin
 
 //  log_warning("%i lights in back", LightListCurrentCountBack);
 
-    for (uint32 i = 0; i < LightListCurrentCountBack; i++) {
+    for (uint32_t i = 0; i < LightListCurrentCountBack; i++) {
         lightlist_entry *entry = &_LightListBack[i];
         if (entry->lightID != lightID)
             continue;
@@ -661,10 +661,10 @@ void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sin
 //  log_warning("new 3d light");
 }
 
-void lightfx_add_3d_light_magic_from_drawing_tile(LocationXY16 mapPosition, sint16 offsetX, sint16 offsetY, sint16 offsetZ, uint8 lightType)
+void lightfx_add_3d_light_magic_from_drawing_tile(LocationXY16 mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, uint8_t lightType)
 {
-    sint16 x = mapPosition.x + offsetX;
-    sint16 y = mapPosition.y + offsetY;
+    int16_t x = mapPosition.x + offsetX;
+    int16_t y = mapPosition.y + offsetY;
 
     switch (get_current_rotation()) {
     case 0:
@@ -690,17 +690,17 @@ void lightfx_add_3d_light_magic_from_drawing_tile(LocationXY16 mapPosition, sint
     lightfx_add_3d_light((x << 16) | y, (offsetZ << 8) | LIGHTFX_LIGHT_QUALIFIER_MAP, x, y, offsetZ, lightType);
 }
 
-uint32 lightfx_get_light_polution()
+uint32_t lightfx_get_light_polution()
 {
     return _lightPolution_front;
 }
 
 void lightfx_add_lights_magic_vehicles()
 {
-    uint16 spriteIndex = gSpriteListHead[SPRITE_LIST_TRAIN];
+    uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_TRAIN];
     while (spriteIndex != SPRITE_INDEX_NULL) {
         rct_vehicle * vehicle = &(get_sprite(spriteIndex)->vehicle);
-        uint16 vehicleID = spriteIndex;
+        uint16_t vehicleID = spriteIndex;
         spriteIndex = vehicle->next;
 
         rct_vehicle *mother_vehicle = vehicle;
@@ -709,7 +709,7 @@ void lightfx_add_lights_magic_vehicles()
             continue;
         }
 
-        for (uint16 q = vehicleID; q != SPRITE_INDEX_NULL; ) {
+        for (uint16_t q = vehicleID; q != SPRITE_INDEX_NULL; ) {
             vehicle = GET_VEHICLE(q);
 
             vehicleID = q;
@@ -717,13 +717,13 @@ void lightfx_add_lights_magic_vehicles()
                 break;
             q = vehicle->next_vehicle_on_train;
 
-            sint16 place_x, place_y, place_z;
+            int16_t place_x, place_y, place_z;
 
             place_x = vehicle->x;
             place_y = vehicle->y;
             place_z = vehicle->z;
 
-            static constexpr const sint16 offsetLookup[32] = { 10, 10, 9, 8, 7, 6, 4, 2, 0, -2, -4, -6, -7, -8, -9, -10, -10, -10, -9, -8, -7, -6, -4, -2, 0, 2, 4, 6, 7, 8, 9, 10 };
+            static constexpr const int16_t offsetLookup[32] = { 10, 10, 9, 8, 7, 6, 4, 2, 0, -2, -4, -6, -7, -8, -9, -10, -10, -10, -9, -8, -7, -6, -4, -2, 0, 2, 4, 6, 7, 8, 9, 10 };
 
             Ride *ride = get_ride(vehicle->ride);
             switch (ride->type) {
@@ -808,7 +808,7 @@ void lightfx_add_lights_magic_vehicles()
     }
 }
 
-void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b)
+void lightfx_apply_palette_filter(uint8_t i, uint8_t *r, uint8_t *g, uint8_t *b)
 {
     float night = (float)(pow(gDayNightCycle, 1.5));
 
@@ -949,55 +949,55 @@ void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b)
         addLightNatG *= 1.0f - envFog;
         addLightNatB *= 1.0f - envFog;
 
-        *r = (uint8)(std::min(255.0f, std::max(0.0f, (-overExpose + (float)(*r) * reduceColourNat * natLightR + envFog * fogR + addLightNatR))));
-        *g = (uint8)(std::min(255.0f, std::max(0.0f, (-overExpose + (float)(*g) * reduceColourNat * natLightG + envFog * fogG + addLightNatG))));
-        *b = (uint8)(std::min(255.0f, std::max(0.0f, (-overExpose + (float)(*b) * reduceColourNat * natLightB + envFog * fogB + addLightNatB))));
+        *r = (uint8_t)(std::min(255.0f, std::max(0.0f, (-overExpose + (float)(*r) * reduceColourNat * natLightR + envFog * fogR + addLightNatR))));
+        *g = (uint8_t)(std::min(255.0f, std::max(0.0f, (-overExpose + (float)(*g) * reduceColourNat * natLightG + envFog * fogG + addLightNatG))));
+        *b = (uint8_t)(std::min(255.0f, std::max(0.0f, (-overExpose + (float)(*b) * reduceColourNat * natLightB + envFog * fogB + addLightNatB))));
 
         rct_palette_entry * dstEntry = &gPalette_light.entries[i];
-        dstEntry->red = (uint8)(std::min<float>(0xFF, ((float)(*r) * reduceColourLit * boost + lightFog) * elecMultR));
-        dstEntry->green = (uint8)(std::min<float>(0xFF, ((float)(*g) * reduceColourLit * boost + lightFog) * elecMultG));
-        dstEntry->blue = (uint8)(std::min<float>(0xFF, ((float)(*b) * reduceColourLit * boost + lightFog) * elecMultB));
+        dstEntry->red = (uint8_t)(std::min<float>(0xFF, ((float)(*r) * reduceColourLit * boost + lightFog) * elecMultR));
+        dstEntry->green = (uint8_t)(std::min<float>(0xFF, ((float)(*g) * reduceColourLit * boost + lightFog) * elecMultG));
+        dstEntry->blue = (uint8_t)(std::min<float>(0xFF, ((float)(*b) * reduceColourLit * boost + lightFog) * elecMultB));
     }
 }
 
-static uint8 mix_light(uint32 a, uint32 b, uint32 intensity)
+static uint8_t mix_light(uint32_t a, uint32_t b, uint32_t intensity)
 {
     intensity = intensity * 6;
-    uint32 bMul = (b * intensity) >> 8;
-    uint32 ab = a + bMul;
-    uint8 result = std::min<uint32>(255, ab);
+    uint32_t bMul = (b * intensity) >> 8;
+    uint32_t ab = a + bMul;
+    uint8_t result = std::min<uint32_t>(255, ab);
     return result;
 }
 
 void lightfx_render_to_texture(
     void * dstPixels,
-    uint32 dstPitch,
-    uint8 * bits,
-    uint32 width,
-    uint32 height,
-    const uint32 * palette,
-    const uint32 * lightPalette)
+    uint32_t dstPitch,
+    uint8_t * bits,
+    uint32_t width,
+    uint32_t height,
+    const uint32_t * palette,
+    const uint32_t * lightPalette)
 {
     lightfx_update_viewport_settings();
     lightfx_swap_buffers();
     lightfx_prepare_light_list();
     lightfx_render_lights_to_frontbuffer();
 
-    uint8 * lightBits = (uint8 *)lightfx_get_front_buffer();
+    uint8_t * lightBits = (uint8_t *)lightfx_get_front_buffer();
     if (lightBits == nullptr) {
         return;
     }
 
-    for (uint32 y = 0; y < height; y++) {
+    for (uint32_t y = 0; y < height; y++) {
         uintptr_t dstOffset = (uintptr_t)(y * dstPitch);
-        uint32 * dst = (uint32 *)((uintptr_t)dstPixels + dstOffset);
-        for (uint32 x = 0; x < width; x++) {
-            uint8 * src = &bits[y * width + x];
-            uint32 darkColour = palette[*src];
-            uint32 lightColour = lightPalette[*src];
-            uint8 lightIntensity = lightBits[y * width + x];
+        uint32_t * dst = (uint32_t *)((uintptr_t)dstPixels + dstOffset);
+        for (uint32_t x = 0; x < width; x++) {
+            uint8_t * src = &bits[y * width + x];
+            uint32_t darkColour = palette[*src];
+            uint32_t lightColour = lightPalette[*src];
+            uint8_t lightIntensity = lightBits[y * width + x];
 
-            uint32 colour = 0;
+            uint32_t colour = 0;
             if (lightIntensity == 0) {
                 colour = darkColour;
             } else {

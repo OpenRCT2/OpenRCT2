@@ -39,7 +39,7 @@ using namespace OpenRCT2::Network;
 static char _playerName[32 + 1];
 static std::vector<server_entry> _serverEntries;
 static std::mutex _mutex;
-static uint32 _numPlayersOnline = 0;
+static uint32_t _numPlayersOnline = 0;
 static rct_string_id status_text = STR_SERVER_LIST_CONNECTING;
 
 // clang-format off
@@ -74,15 +74,15 @@ static rct_widget window_server_list_widgets[] = {
 static void window_server_list_close(rct_window *w);
 static void window_server_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_server_list_resize(rct_window *w);
-static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_server_list_update(rct_window *w);
-static void window_server_list_scroll_getsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-static void window_server_list_scroll_mousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_server_list_scroll_mouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_server_list_scroll_getsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void window_server_list_scroll_mousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_server_list_scroll_mouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_server_list_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_server_list_invalidate(rct_window *w);
 static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 static rct_window_event_list window_server_list_events = {
     window_server_list_close,
@@ -121,10 +121,10 @@ enum {
     DDIDX_FAVOURITE
 };
 
-static sint32 _hoverButtonIndex = -1;
+static int32_t _hoverButtonIndex = -1;
 static std::string _version;
 
-static void server_list_get_item_button(sint32 buttonIndex, sint32 x, sint32 y, sint32 width, sint32 *outX, sint32 *outY);
+static void server_list_get_item_button(int32_t buttonIndex, int32_t x, int32_t y, int32_t width, int32_t *outX, int32_t *outY);
 static void server_list_load_server_entries();
 static void server_list_save_server_entries();
 static void dispose_server_entry_list();
@@ -174,7 +174,7 @@ rct_window * window_server_list_open()
     safe_strcpy(_playerName, gConfigNetwork.player_name, sizeof(_playerName));
 
     server_list_load_server_entries();
-    window->no_list_items = (uint16)_serverEntries.size();
+    window->no_list_items = (uint16_t)_serverEntries.size();
 
 #ifndef DISABLE_HTTP
     fetch_servers();
@@ -201,8 +201,8 @@ static void window_server_list_mouseup(rct_window *w, rct_widgetindex widgetInde
         break;
     case WIDX_LIST:
         {
-            sint32 serverIndex = w->selected_list_item;
-            if (serverIndex >= 0 && serverIndex < (sint32)_serverEntries.size())
+            int32_t serverIndex = w->selected_list_item;
+            if (serverIndex >= 0 && serverIndex < (int32_t)_serverEntries.size())
             {
                 const auto &server = _serverEntries[serverIndex];
                 if (is_version_valid(server.version))
@@ -236,10 +236,10 @@ static void window_server_list_resize(rct_window *w)
     window_set_resize(w, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 }
 
-static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     auto serverIndex = w->selected_list_item;
-    if (serverIndex >= 0 && serverIndex < (sint32)_serverEntries.size())
+    if (serverIndex >= 0 && serverIndex < (int32_t)_serverEntries.size())
     {
         auto &server = _serverEntries[serverIndex];
         switch (dropdownIndex)
@@ -274,21 +274,21 @@ static void window_server_list_update(rct_window *w)
     }
 }
 
-static void window_server_list_scroll_getsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+static void window_server_list_scroll_getsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height)
 {
     *width = 0;
     *height = w->no_list_items * ITEM_HEIGHT;
 }
 
-static void window_server_list_scroll_mousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_server_list_scroll_mousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    sint32 serverIndex = w->selected_list_item;
+    int32_t serverIndex = w->selected_list_item;
     if (serverIndex < 0) return;
-    if (serverIndex >= (sint32)_serverEntries.size()) return;
+    if (serverIndex >= (int32_t)_serverEntries.size()) return;
 
     rct_widget *listWidget = &w->widgets[WIDX_LIST];
-    sint32 ddx = w->x + listWidget->left + x + 2 - w->scrolls[0].h_left;
-    sint32 ddy = w->y + listWidget->top + y + 2 - w->scrolls[0].v_top;
+    int32_t ddx = w->x + listWidget->left + x + 2 - w->scrolls[0].h_left;
+    int32_t ddy = w->y + listWidget->top + y + 2 - w->scrolls[0].v_top;
 
     gDropdownItemsFormat[0] = STR_JOIN_GAME;
     if (_serverEntries[serverIndex].favourite) {
@@ -299,20 +299,20 @@ static void window_server_list_scroll_mousedown(rct_window *w, sint32 scrollInde
     window_dropdown_show_text(ddx, ddy, 0, COLOUR_GREY, 0, 2);
 }
 
-static void window_server_list_scroll_mouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_server_list_scroll_mouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
     // Item
-    sint32 index = y / ITEM_HEIGHT;
+    int32_t index = y / ITEM_HEIGHT;
     if (index < 0 || index >= w->no_list_items) {
         index = -1;
     }
 
-    sint32 hoverButtonIndex = -1;
+    int32_t hoverButtonIndex = -1;
     if (index != -1) {
-        sint32 width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
-        sint32 sy = index * ITEM_HEIGHT;
-        for (sint32 i = 0; i < 2; i++) {
-            sint32 bx, by;
+        int32_t width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+        int32_t sy = index * ITEM_HEIGHT;
+        for (int32_t i = 0; i < 2; i++) {
+            int32_t bx, by;
 
             server_list_get_item_button(i, 0, sy, width, &bx, &by);
             if (x >= bx && y >= by && x < bx + 24 && y < by + 24) {
@@ -322,8 +322,8 @@ static void window_server_list_scroll_mouseover(rct_window *w, sint32 scrollInde
         }
     }
 
-    sint32 width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
-    sint32 right = width - 3 - 14 - 10;
+    int32_t width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+    int32_t right = width - 3 - 14 - 10;
     if (x < right)
     {
         w->widgets[WIDX_LIST].tooltip = STR_NONE;
@@ -385,11 +385,11 @@ static void window_server_list_invalidate(rct_window *w)
     window_server_list_widgets[WIDX_CLOSE].left = w->width - 2 - 11;
     window_server_list_widgets[WIDX_CLOSE].right = w->width - 2 - 11 + 10;
 
-    sint32 margin = 6;
-    sint32 buttonHeight = 13;
-    sint32 buttonTop = w->height - margin - buttonHeight - 13;
-    sint32 buttonBottom = buttonTop + buttonHeight;
-    sint32 listBottom = buttonTop - margin;
+    int32_t margin = 6;
+    int32_t buttonHeight = 13;
+    int32_t buttonTop = w->height - margin - buttonHeight - 13;
+    int32_t buttonBottom = buttonTop + buttonHeight;
+    int32_t listBottom = buttonTop - margin;
 
     window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].right = w->width - 6;
     window_server_list_widgets[WIDX_LIST].left = 6;
@@ -402,7 +402,7 @@ static void window_server_list_invalidate(rct_window *w)
     window_server_list_widgets[WIDX_START_SERVER].top = buttonTop;
     window_server_list_widgets[WIDX_START_SERVER].bottom = buttonBottom;
 
-    w->no_list_items = (uint16)_serverEntries.size();
+    w->no_list_items = (uint16_t)_serverEntries.size();
 }
 
 static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -419,18 +419,18 @@ static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_draw_string_left(dpi, status_text, (void *)&_numPlayersOnline, COLOUR_WHITE, w->x + 8, w->y + w->height - 15);
 }
 
-static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex)
 {
     std::lock_guard<std::mutex> guard(_mutex);
 
-    uint8 paletteIndex = ColourMapA[w->colours[1]].mid_light;
+    uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
-    sint32 width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+    int32_t width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
 
-    sint32 y = 0;
+    int32_t y = 0;
     w->widgets[WIDX_LIST].tooltip = STR_NONE;
-    for (sint32 i = 0; i < w->no_list_items; i++) {
+    for (int32_t i = 0; i < w->no_list_items; i++) {
         if (y >= dpi->y + dpi->height) continue;
         // if (y + ITEM_HEIGHT < dpi->y) continue;
 
@@ -444,7 +444,7 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
             w->widgets[WIDX_LIST].tooltip = STR_NETWORK_VERSION_TIP;
         }
 
-        sint32 colour = w->colours[1];
+        int32_t colour = w->colours[1];
         if (serverDetails->favourite) {
             colour = COLOUR_YELLOW;
         }
@@ -456,11 +456,11 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
             gfx_draw_string(dpi, serverDetails->name.c_str(), colour, 3, y + 3);
         }
 
-        sint32 right = width - 3 - 14;
+        int32_t right = width - 3 - 14;
 
         // Draw compatibility icon
         right -= 10;
-        sint32 compatibilitySpriteId;
+        int32_t compatibilitySpriteId;
         if (serverDetails->version.empty()) {
             // Server not online...
             compatibilitySpriteId = SPR_G2_RCT1_CLOSE_BUTTON_0;
@@ -485,14 +485,14 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
         if (serverDetails->maxplayers > 0) {
             snprintf(players, 32, "%d/%d", serverDetails->players, serverDetails->maxplayers);
         }
-        sint32 numPlayersStringWidth = gfx_get_string_width(players);
+        int32_t numPlayersStringWidth = gfx_get_string_width(players);
         gfx_draw_string(dpi, players, w->colours[1], right - numPlayersStringWidth, y + 3);
 
         y += ITEM_HEIGHT;
     }
 }
 
-static void server_list_get_item_button(sint32 buttonIndex, sint32 x, sint32 y, sint32 width, sint32 *outX, sint32 *outY)
+static void server_list_get_item_button(int32_t buttonIndex, int32_t x, int32_t y, int32_t width, int32_t *outX, int32_t *outY)
 {
     *outX = width - 3 - 36 - (30 * buttonIndex);
     *outY = y + 2;
@@ -587,7 +587,7 @@ static void sort_servers()
 
 static void join_server(std::string address)
 {
-    sint32 port = gConfigNetwork.default_port;
+    int32_t port = gConfigNetwork.default_port;
     auto beginBracketIndex = address.find('[');
     auto endBracketIndex = address.find(']');
     auto dotIndex = address.find('.');
@@ -642,13 +642,13 @@ static void fetch_servers()
     Http::DoAsync(request, fetch_servers_callback);
 }
 
-static uint32 get_total_player_count()
+static uint32_t get_total_player_count()
 {
     return std::accumulate(
         _serverEntries.begin(),
         _serverEntries.end(),
         0,
-        [](uint32 acc, const server_entry &entry)
+        [](uint32_t acc, const server_entry &entry)
         {
             return acc + entry.players;
         });
@@ -673,7 +673,7 @@ static void fetch_servers_callback(Http::Response & response)
         return;
     }
 
-    sint32 status = (sint32)json_integer_value(jsonStatus);
+    int32_t status = (int32_t)json_integer_value(jsonStatus);
     if (status != 200) {
         status_text = STR_SERVER_LIST_MASTER_SERVER_FAILED;
         window_invalidate_by_class(WC_SERVER_LIST);
@@ -689,8 +689,8 @@ static void fetch_servers_callback(Http::Response & response)
         return;
     }
 
-    sint32 count = (sint32)json_array_size(jsonServers);
-    for (sint32 i = 0; i < count; i++) {
+    int32_t count = (int32_t)json_array_size(jsonServers);
+    for (int32_t i = 0; i < count; i++) {
         json_t *server = json_array_get(jsonServers, i);
         if (!json_is_object(server)) {
             continue;
@@ -713,7 +713,7 @@ static void fetch_servers_callback(Http::Response & response)
             continue;
         }
 
-        auto address = String::StdFormat("%s:%d", json_string_value(addressIp), (sint32)json_integer_value(port));
+        auto address = String::StdFormat("%s:%d", json_string_value(addressIp), (int32_t)json_integer_value(port));
         {
             std::lock_guard<std::mutex> guard(_mutex);
             auto &newserver = add_server_entry(address);
@@ -721,8 +721,8 @@ static void fetch_servers_callback(Http::Response & response)
             newserver.requiresPassword = json_is_true(requiresPassword);
             newserver.description = (description == nullptr ? "" : json_string_value(description));
             newserver.version = json_string_value(version);
-            newserver.players = (uint8)json_integer_value(players);
-            newserver.maxplayers = (uint8)json_integer_value(maxPlayers);
+            newserver.players = (uint8_t)json_integer_value(players);
+            newserver.maxplayers = (uint8_t)json_integer_value(maxPlayers);
         }
     }
 

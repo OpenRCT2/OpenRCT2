@@ -24,15 +24,15 @@
 void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
-    _legacyType.small_scenery.flags = stream->ReadValue<uint32>();
-    _legacyType.small_scenery.height = stream->ReadValue<uint8>();
-    _legacyType.small_scenery.tool_id = stream->ReadValue<uint8>();
-    _legacyType.small_scenery.price = stream->ReadValue<sint16>();
-    _legacyType.small_scenery.removal_price = stream->ReadValue<sint16>();
+    _legacyType.small_scenery.flags = stream->ReadValue<uint32_t>();
+    _legacyType.small_scenery.height = stream->ReadValue<uint8_t>();
+    _legacyType.small_scenery.tool_id = stream->ReadValue<uint8_t>();
+    _legacyType.small_scenery.price = stream->ReadValue<int16_t>();
+    _legacyType.small_scenery.removal_price = stream->ReadValue<int16_t>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
-    _legacyType.small_scenery.animation_delay = stream->ReadValue<uint16>();
-    _legacyType.small_scenery.animation_mask = stream->ReadValue<uint16>();
-    _legacyType.small_scenery.num_frames = stream->ReadValue<uint16>();
+    _legacyType.small_scenery.animation_delay = stream->ReadValue<uint16_t>();
+    _legacyType.small_scenery.animation_mask = stream->ReadValue<uint16_t>();
+    _legacyType.small_scenery.num_frames = stream->ReadValue<uint16_t>();
     _legacyType.small_scenery.scenery_tab_id = 0xFF;
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
@@ -88,9 +88,9 @@ void SmallSceneryObject::Unload()
     _legacyType.image = 0;
 }
 
-void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
+void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const
 {
-    uint32 imageId = _legacyType.image;
+    uint32_t imageId = _legacyType.image;
     if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
     {
         imageId |= 0x20D00000;
@@ -100,8 +100,8 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint
         }
     }
 
-    sint32 x = width / 2;
-    sint32 y = (height / 2) + (_legacyType.small_scenery.height / 2);
+    int32_t x = width / 2;
+    int32_t y = (height / 2) + (_legacyType.small_scenery.height / 2);
     y = std::min(y, height - 16);
 
     if ((scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_FULL_TILE)) &&
@@ -133,12 +133,12 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint
     }
 }
 
-std::vector<uint8> SmallSceneryObject::ReadFrameOffsets(IStream * stream)
+std::vector<uint8_t> SmallSceneryObject::ReadFrameOffsets(IStream * stream)
 {
-    uint8 frameOffset;
-    auto data = std::vector<uint8>();
-    data.push_back(stream->ReadValue<uint8>());
-    while ((frameOffset = stream->ReadValue<uint8>()) != 0xFF)
+    uint8_t frameOffset;
+    auto data = std::vector<uint8_t>();
+    data.push_back(stream->ReadValue<uint8_t>());
+    while ((frameOffset = stream->ReadValue<uint8_t>()) != 0xFF)
     {
         data.push_back(frameOffset);
     }
@@ -241,7 +241,7 @@ void SmallSceneryObject::ReadJson(IReadObjectContext * context, const json_t * r
     _legacyType.small_scenery.num_frames = json_integer_value(json_object_get(properties, "numFrames"));
 
     // Flags
-    _legacyType.small_scenery.flags = ObjectJsonHelpers::GetFlags<uint32>(properties, {
+    _legacyType.small_scenery.flags = ObjectJsonHelpers::GetFlags<uint32_t>(properties, {
         { "SMALL_SCENERY_FLAG_VOFFSET_CENTRE", SMALL_SCENERY_FLAG_VOFFSET_CENTRE },
         { "requiresFlatSurface", SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE },
         { "isRotatable", SMALL_SCENERY_FLAG_ROTATABLE },
@@ -305,9 +305,9 @@ void SmallSceneryObject::ReadJson(IReadObjectContext * context, const json_t * r
     ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }
 
-std::vector<uint8> SmallSceneryObject::ReadJsonFrameOffsets(const json_t * jFrameOffsets)
+std::vector<uint8_t> SmallSceneryObject::ReadJsonFrameOffsets(const json_t * jFrameOffsets)
 {
-    std::vector<uint8> offsets;
+    std::vector<uint8_t> offsets;
     size_t index;
     const json_t * jOffset;
     json_array_foreach(jFrameOffsets, index, jOffset)

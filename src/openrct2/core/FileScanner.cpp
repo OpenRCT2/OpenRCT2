@@ -45,11 +45,11 @@ struct DirectoryChild
     std::string Name;
 
     // Files only
-    uint64 Size         = 0;
-    uint64 LastModified = 0;
+    uint64_t Size         = 0;
+    uint64_t LastModified = 0;
 };
 
-static uint32 GetPathChecksum(const utf8 * path);
+static uint32_t GetPathChecksum(const utf8 * path);
 static bool MatchWildcard(const utf8 * fileName, const utf8 * pattern);
 
 class FileScannerBase : public IFileScanner
@@ -59,7 +59,7 @@ private:
     {
         std::string                 Path;
         std::vector<DirectoryChild> Listing;
-        sint32                      Index = 0;
+        int32_t                      Index = 0;
     };
 
     // Options
@@ -129,7 +129,7 @@ public:
         {
             DirectoryState * state = &_directoryStack.top();
             state->Index++;
-            if (state->Index >= (sint32)state->Listing.size())
+            if (state->Index >= (int32_t)state->Listing.size())
             {
                 _directoryStack.pop();
             }
@@ -266,8 +266,8 @@ private:
         else
         {
             result.Type = DIRECTORY_CHILD_TYPE::DC_FILE;
-            result.Size = ((uint64)child->nFileSizeHigh << 32ULL) | (uint64)child->nFileSizeLow;
-            result.LastModified = ((uint64)child->ftLastWriteTime.dwHighDateTime << 32ULL) | (uint64)child->ftLastWriteTime.dwLowDateTime;
+            result.Size = ((uint64_t)child->nFileSizeHigh << 32ULL) | (uint64_t)child->nFileSizeLow;
+            result.LastModified = ((uint64_t)child->ftLastWriteTime.dwHighDateTime << 32ULL) | (uint64_t)child->ftLastWriteTime.dwLowDateTime;
         }
         return result;
     }
@@ -288,10 +288,10 @@ public:
     void GetDirectoryChildren(std::vector<DirectoryChild> &children, const std::string &path) override
     {
         struct dirent * * namelist;
-        sint32 count = scandir(path.c_str(), &namelist, FilterFunc, alphasort);
+        int32_t count = scandir(path.c_str(), &namelist, FilterFunc, alphasort);
         if (count > 0)
         {
-            for (sint32 i = 0; i < count; i++)
+            for (int32_t i = 0; i < count; i++)
             {
                 const struct dirent * node = namelist[i];
                 if (!String::Equals(node->d_name, ".") &&
@@ -307,7 +307,7 @@ public:
     }
 
 private:
-    static sint32 FilterFunc(const struct dirent * d)
+    static int32_t FilterFunc(const struct dirent * d)
     {
         return 1;
     }
@@ -331,7 +331,7 @@ private:
             Path::Append(path, pathSize, node->d_name);
 
             struct stat statInfo{};
-            sint32 statRes = stat(path, &statInfo);
+            int32_t statRes = stat(path, &statInfo);
             if (statRes != -1)
             {
                 result.Size = statInfo.st_size;
@@ -371,8 +371,8 @@ void Path::QueryDirectory(QueryDirectoryResult * result, const std::string &patt
         result->TotalFiles++;
         result->TotalFileSize += fileInfo->Size;
         result->FileDateModifiedChecksum ^=
-            (uint32)(fileInfo->LastModified >> 32) ^
-            (uint32)(fileInfo->LastModified & 0xFFFFFFFF);
+            (uint32_t)(fileInfo->LastModified >> 32) ^
+            (uint32_t)(fileInfo->LastModified & 0xFFFFFFFF);
         result->FileDateModifiedChecksum = ror32(result->FileDateModifiedChecksum, 5);
         result->PathChecksum += GetPathChecksum(path);
     }
@@ -398,9 +398,9 @@ std::vector<std::string> Path::GetDirectories(const std::string &path)
     return subDirectories;
 }
 
-static uint32 GetPathChecksum(const utf8 * path)
+static uint32_t GetPathChecksum(const utf8 * path)
 {
-    uint32 hash = 0xD8430DED;
+    uint32_t hash = 0xD8430DED;
     for (const utf8 * ch = path; *ch != '\0'; ch++)
     {
         hash += (*ch);

@@ -81,15 +81,15 @@ static rct_widget window_loadsave_widgets[] =
 static void window_loadsave_close(rct_window *w);
 static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_loadsave_resize(rct_window *w);
-static void window_loadsave_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_loadsave_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_loadsave_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void window_loadsave_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_loadsave_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_loadsave_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_loadsave_compute_max_date_width();
 static void window_loadsave_invalidate(rct_window *w);
 static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 static rct_window_event_list window_loadsave_events =
 {
@@ -139,7 +139,7 @@ struct LoadSaveListItem
     time_t date_modified;
     std::string date_formatted;
     std::string time_formatted;
-    uint8 type;
+    uint8_t type;
     bool loaded;
 };
 
@@ -151,12 +151,12 @@ static char _shortenedDirectory[MAX_PATH];
 static char _parentDirectory[MAX_PATH];
 static char _extension[32];
 static char _defaultName[MAX_PATH];
-static sint32 _type;
+static int32_t _type;
 
-static sint32 maxDateWidth = 0;
-static sint32 maxTimeWidth = 0;
+static int32_t maxDateWidth = 0;
+static int32_t maxTimeWidth = 0;
 
-static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, const char *directory, const char *extension);
+static void window_loadsave_populate_list(rct_window *w, int32_t includeNewItem, const char *directory, const char *extension);
 static void window_loadsave_select(rct_window *w, const char *path);
 static void window_loadsave_sort_list();
 
@@ -167,7 +167,7 @@ void window_loadsave_set_loadsave_callback(loadsave_callback cb)
     _loadSaveCallback = cb;
 }
 
-static sint32 window_loadsave_get_dir(utf8 *last_save, char *path, const char *subdir, size_t pathSize)
+static int32_t window_loadsave_get_dir(utf8 *last_save, char *path, const char *subdir, size_t pathSize)
 {
     if (last_save && platform_ensure_directory_exists(last_save))
         safe_strcpy(path, last_save, pathSize);
@@ -183,7 +183,7 @@ static sint32 window_loadsave_get_dir(utf8 *last_save, char *path, const char *s
     return 1;
 }
 
-rct_window *window_loadsave_open(sint32 type, const char *defaultName)
+rct_window *window_loadsave_open(int32_t type, const char *defaultName)
 {
     _loadSaveCallback = nullptr;
     _type = type;
@@ -280,7 +280,7 @@ rct_window *window_loadsave_open(sint32 type, const char *defaultName)
         return nullptr;
     }
 
-    w->no_list_items = static_cast<uint16>(_listItems.size());
+    w->no_list_items = static_cast<uint16_t>(_listItems.size());
     window_init_scroll_widgets(w);
     window_loadsave_compute_max_date_width();
 
@@ -311,7 +311,7 @@ static bool browse(bool isSave, char *path, size_t pathSize)
 {
     file_dialog_desc desc = {};
     const utf8 * extension = "";
-    uint32 fileType = FILE_EXTENSION_UNKNOWN;
+    uint32_t fileType = FILE_EXTENSION_UNKNOWN;
     rct_string_id title = STR_NONE;
     switch (_type & 0x0E)
     {
@@ -413,7 +413,7 @@ static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         safe_strcpy(path, _parentDirectory, sizeof(path));
         window_loadsave_populate_list(w, isSave, path, _extension);
         window_init_scroll_widgets(w);
-        w->no_list_items = static_cast<uint16>(_listItems.size());
+        w->no_list_items = static_cast<uint16_t>(_listItems.size());
         break;
 
     case WIDX_NEW_FILE:
@@ -435,7 +435,7 @@ static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             safe_strcpy(path, _directory, sizeof(path));
             window_loadsave_populate_list(w, isSave, path, _extension);
             window_init_scroll_widgets(w);
-            w->no_list_items = static_cast<uint16>(_listItems.size());
+            w->no_list_items = static_cast<uint16_t>(_listItems.size());
         }
         break;
 
@@ -486,19 +486,19 @@ static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 
         window_loadsave_populate_list(w, isSave, path, _extension);
         window_init_scroll_widgets(w);
-        w->no_list_items = static_cast<uint16>(_listItems.size());
+        w->no_list_items = static_cast<uint16_t>(_listItems.size());
         break;
     }
 }
 
-static void window_loadsave_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+static void window_loadsave_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height)
 {
     *height = w->no_list_items * SCROLLABLE_ROW_HEIGHT;
 }
 
-static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_loadsave_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    sint32 selectedItem;
+    int32_t selectedItem;
 
     selectedItem = y / SCROLLABLE_ROW_HEIGHT;
     if (selectedItem >= w->no_list_items)
@@ -507,7 +507,7 @@ static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, s
     if (_listItems[selectedItem].type == TYPE_DIRECTORY)
     {
         // The selected item is a folder
-        sint32 includeNewItem;
+        int32_t includeNewItem;
 
         w->no_list_items = 0;
         w->selected_list_item = -1;
@@ -519,7 +519,7 @@ static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, s
         window_loadsave_populate_list(w, includeNewItem, directory, _extension);
         window_init_scroll_widgets(w);
 
-        w->no_list_items = static_cast<uint16>(_listItems.size());
+        w->no_list_items = static_cast<uint16_t>(_listItems.size());
     }
     else
     {
@@ -532,9 +532,9 @@ static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, s
     }
 }
 
-static void window_loadsave_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_loadsave_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    sint32 selectedItem;
+    int32_t selectedItem;
 
     selectedItem = y / SCROLLABLE_ROW_HEIGHT;
     if (selectedItem >= w->no_list_items)
@@ -577,7 +577,7 @@ static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex
             window_loadsave_populate_list(w, (_type & 1) == LOADSAVETYPE_SAVE, path, _extension);
             window_init_scroll_widgets(w);
 
-            w->no_list_items = static_cast<uint16>(_listItems.size());
+            w->no_list_items = static_cast<uint16_t>(_listItems.size());
             window_invalidate(w);
             break;
 
@@ -707,14 +707,14 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
         w->y + sort_date_widget.top + 1);
 }
 
-static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex)
 {
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
-    const sint32 listWidth = w->widgets[WIDX_SCROLL].right - w->widgets[WIDX_SCROLL].left;
+    const int32_t listWidth = w->widgets[WIDX_SCROLL].right - w->widgets[WIDX_SCROLL].left;
 
-    for (sint32 i = 0; i < w->no_list_items; i++)
+    for (int32_t i = 0; i < w->no_list_items; i++)
     {
-        sint32 y = i * SCROLLABLE_ROW_HEIGHT;
+        int32_t y = i * SCROLLABLE_ROW_HEIGHT;
         if (y > dpi->y + dpi->height)
             break;
 
@@ -739,13 +739,13 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
         // Print filename
         set_format_arg(0, rct_string_id, STR_STRING);
         set_format_arg(2, char*, _listItems[i].name.c_str());
-        sint32 max_file_width = w->widgets[WIDX_SORT_NAME].right - w->widgets[WIDX_SORT_NAME].left - 10;
+        int32_t max_file_width = w->widgets[WIDX_SORT_NAME].right - w->widgets[WIDX_SORT_NAME].left - 10;
         gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 10, y, max_file_width);
 
         // Print formatted modified date, if this is a file
         if (_listItems[i].type == TYPE_FILE)
         {
-            sint32 offset = w->widgets[WIDX_SORT_DATE].left + maxDateWidth;
+            int32_t offset = w->widgets[WIDX_SORT_DATE].left + maxDateWidth;
 
             set_format_arg(0, rct_string_id, STR_STRING);
             set_format_arg(2, char*, _listItems[i].date_formatted.c_str());
@@ -782,7 +782,7 @@ static void window_loadsave_sort_list()
     std::sort(_listItems.begin(), _listItems.end(), list_item_sort);
 }
 
-static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, const char *directory, const char *extension)
+static void window_loadsave_populate_list(rct_window *w, int32_t includeNewItem, const char *directory, const char *extension)
 {
     utf8 absoluteDirectory[MAX_PATH];
     Path::GetAbsolute(absoluteDirectory, Util::CountOf(absoluteDirectory), directory);
@@ -800,12 +800,12 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
     window_loadsave_widgets[WIDX_NEW_FILE].type = includeNewItem ? WWT_BUTTON : WWT_EMPTY;
     window_loadsave_widgets[WIDX_NEW_FOLDER].type = includeNewItem ? WWT_BUTTON : WWT_EMPTY;
 
-    sint32 drives = platform_get_drives();
+    int32_t drives = platform_get_drives();
     if (str_is_null_or_empty(directory) && drives)
     {
         // List Windows drives
         w->disabled_widgets |= (1 << WIDX_NEW_FILE) | (1 << WIDX_NEW_FOLDER) | (1 << WIDX_UP);
-        for (sint32 x = 0; x < 26; x++)
+        for (int32_t x = 0; x < 26; x++)
         {
             if (drives & (1 << x))
             {
@@ -922,7 +922,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
     window_invalidate(w);
 }
 
-static void window_loadsave_invoke_callback(sint32 result, const utf8 * path)
+static void window_loadsave_invoke_callback(int32_t result, const utf8 * path)
 {
     if (_loadSaveCallback != nullptr)
     {
@@ -1025,11 +1025,11 @@ static void window_loadsave_select(rct_window *w, const char *path)
     case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO):
     {
         save_path(&gConfigGeneral.last_save_scenario_directory, pathBuffer);
-        sint32 parkFlagsBackup = gParkFlags;
+        int32_t parkFlagsBackup = gParkFlags;
         gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
         gS6Info.editor_step = 255;
         safe_strcpy(gScenarioFileName, pathBuffer, sizeof(gScenarioFileName));
-        sint32 success = scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2);
+        int32_t success = scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2);
         gParkFlags = parkFlagsBackup;
 
         if (success)
@@ -1061,7 +1061,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
     case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK):
     {
         path_set_extension(pathBuffer, "td6", sizeof(pathBuffer));
-        sint32 success = track_design_save_to_file(pathBuffer);
+        int32_t success = track_design_save_to_file(pathBuffer);
 
         if (success)
         {
@@ -1198,8 +1198,8 @@ static void window_overwrite_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
     set_format_arg(0, rct_string_id, STR_STRING);
     set_format_arg(2, char *, _window_overwrite_prompt_name);
 
-    sint32 x = w->x + w->width / 2;
-    sint32 y = w->y + (w->height / 2) - 3;
+    int32_t x = w->x + w->width / 2;
+    int32_t y = w->y + (w->height / 2) - 3;
     gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, COLOUR_BLACK);
 }
 

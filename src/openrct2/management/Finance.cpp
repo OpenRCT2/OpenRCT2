@@ -44,24 +44,24 @@ const money32 research_cost_table[RESEARCH_FUNDING_COUNT] =
     MONEY(400, 00)       // Maximum funding
 };
 
-static constexpr const sint32 dword_988E60[RCT_EXPENDITURE_TYPE_COUNT] = {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0};
+static constexpr const int32_t dword_988E60[RCT_EXPENDITURE_TYPE_COUNT] = {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0};
 
 money32 gInitialCash;
 money32 gCash;
 money32 gBankLoan;
-uint8   gBankLoanInterestRate;
+uint8_t   gBankLoanInterestRate;
 money32 gMaxBankLoan;
 money32 gCurrentExpenditure;
 money32 gCurrentProfit;
 money32 gHistoricalProfit;
 money32 gWeeklyProfitAverageDividend;
-uint16  gWeeklyProfitAverageDivisor;
+uint16_t  gWeeklyProfitAverageDivisor;
 money32 gCashHistory[FINANCE_GRAPH_SIZE];
 money32 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
 money32 gParkValueHistory[FINANCE_GRAPH_SIZE];
 money32 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][RCT_EXPENDITURE_TYPE_COUNT];
 
-uint8 gCommandExpenditureType;
+uint8_t gCommandExpenditureType;
 
 /**
  * Pay an amount of money.
@@ -92,7 +92,7 @@ void finance_payment(money32 amount, rct_expenditure_type type)
 void finance_pay_wages()
 {
     rct_peep * peep;
-    uint16 spriteIndex;
+    uint16_t spriteIndex;
 
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
@@ -111,7 +111,7 @@ void finance_pay_wages()
 **/
 void finance_pay_research()
 {
-    uint8 level;
+    uint8_t level;
 
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
@@ -131,7 +131,7 @@ void finance_pay_interest()
     // This variable uses the 64-bit type as the computation below can involve multiplying very large numbers
     // that will overflow money32 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
     money64 current_loan          = gBankLoan;
-    uint8   current_interest_rate = gBankLoanInterestRate;
+    uint8_t   current_interest_rate = gBankLoanInterestRate;
     money32 interest_to_pay;
 
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
@@ -150,7 +150,7 @@ void finance_pay_interest()
  */
 void finance_pay_ride_upkeep()
 {
-    sint32 i;
+    int32_t i;
     Ride * ride;
 
     FOR_ALL_RIDES(i, ride)
@@ -162,7 +162,7 @@ void finance_pay_ride_upkeep()
 
         if (ride->status != RIDE_STATUS_CLOSED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            sint16 upkeep = ride->upkeep_cost;
+            int16_t upkeep = ride->upkeep_cost;
             if (upkeep != -1)
             {
                 ride->total_profit -= upkeep;
@@ -180,7 +180,7 @@ void finance_pay_ride_upkeep()
 
 void finance_reset_history()
 {
-    for (sint32 i = 0; i < FINANCE_GRAPH_SIZE; i++)
+    for (int32_t i = 0; i < FINANCE_GRAPH_SIZE; i++)
     {
         gCashHistory[i]         = MONEY32_UNDEFINED;
         gWeeklyProfitHistory[i] = MONEY32_UNDEFINED;
@@ -195,7 +195,7 @@ void finance_reset_history()
 void finance_init()
 {
     // It only initialises the first month
-    for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++)
+    for (uint32_t i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++)
     {
         gExpenditureTable[0][i] = 0;
     }
@@ -237,7 +237,7 @@ void finance_update_daily_profit()
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Staff costs
-        uint16 sprite_index;
+        uint16_t sprite_index;
         rct_peep * peep;
 
         FOR_ALL_STAFF(sprite_index, peep)
@@ -246,7 +246,7 @@ void finance_update_daily_profit()
         }
 
         // Research costs
-        uint8 level = gResearchFundingLevel;
+        uint8_t level = gResearchFundingLevel;
         current_profit -= research_cost_table[level];
 
         // Loan costs
@@ -255,7 +255,7 @@ void finance_update_daily_profit()
 
         // Ride costs
         Ride * ride;
-        sint32 i;
+        int32_t i;
         FOR_ALL_RIDES(i, ride)
         {
             if (ride->status != RIDE_STATUS_CLOSED && ride->upkeep_cost != MONEY16_UNDEFINED)
@@ -308,7 +308,7 @@ void finance_shift_expenditure_table()
     if (gDateMonthsElapsed >= EXPENDITURE_TABLE_MONTH_COUNT)
     {
         money32 sum = 0;
-        for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++)
+        for (uint32_t i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++)
         {
             sum += gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT - 1][i];
         }
@@ -325,7 +325,7 @@ void finance_shift_expenditure_table()
     }
 
     // Zero the beginning of the table, which is the new month
-    for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++)
+    for (uint32_t i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++)
     {
         gExpenditureTable[0][i] = 0;
     }

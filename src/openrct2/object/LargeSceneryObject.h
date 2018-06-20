@@ -19,7 +19,7 @@ class LargeSceneryObject final : public SceneryObject
 {
 private:
     rct_scenery_entry                       _legacyType = {};
-    uint32                                  _baseImageId = 0;
+    uint32_t                                  _baseImageId = 0;
     std::vector<rct_large_scenery_tile>     _tiles;
     std::unique_ptr<rct_large_scenery_text> _3dFont;
 
@@ -33,7 +33,7 @@ public:
     void Load() override;
     void Unload() override;
 
-    void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const override;
+    void DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const override;
 
 private:
     static std::vector<rct_large_scenery_tile> ReadTiles(IStream * stream);

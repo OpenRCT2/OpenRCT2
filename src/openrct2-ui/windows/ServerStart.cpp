@@ -166,7 +166,7 @@ static void window_server_start_scenarioselect_callback(const utf8 *path)
     }
 }
 
-static void window_server_start_loadsave_callback(sint32 result, const utf8 * path)
+static void window_server_start_loadsave_callback(int32_t result, const utf8 * path)
 {
     if (result == MODAL_RESULT_OK && context_load_park_from_file(path)) {
         network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
@@ -326,7 +326,7 @@ static void window_server_start_invalidate(rct_window *w)
     colour_scheme_update_by_class(w, WC_SERVER_LIST);
 
     widget_set_checkbox_value(w, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
-    set_format_arg(18, uint16, gConfigNetwork.maxplayers);
+    set_format_arg(18, uint16_t, gConfigNetwork.maxplayers);
 }
 
 static void window_server_start_paint(rct_window *w, rct_drawpixelinfo *dpi)

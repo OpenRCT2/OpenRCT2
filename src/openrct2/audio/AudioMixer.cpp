@@ -35,7 +35,7 @@ void Mixer_Init(const char * device)
     audioContext->SetOutputDevice(std::string(device));
 }
 
-void * Mixer_Play_Effect(size_t id, sint32 loop, sint32 volume, float pan, double rate, sint32 deleteondone)
+void * Mixer_Play_Effect(size_t id, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone)
 {
     IAudioChannel * channel = nullptr;
     if (gConfigSound.sound_enabled)
@@ -50,7 +50,7 @@ void * Mixer_Play_Effect(size_t id, sint32 loop, sint32 volume, float pan, doubl
             if (mixer != nullptr)
             {
                 mixer->Lock();
-                IAudioSource * source = mixer->GetSoundSource((sint32)id);
+                IAudioSource * source = mixer->GetSoundSource((int32_t)id);
                 channel = mixer->Play(source, loop, deleteondone != 0, false);
                 if (channel != nullptr)
                 {
@@ -74,7 +74,7 @@ void Mixer_Stop_Channel(void * channel)
     }
 }
 
-void Mixer_Channel_Volume(void * channel, sint32 volume)
+void Mixer_Channel_Volume(void * channel, int32_t volume)
 {
     IAudioMixer * audioMixer = GetMixer();
     if (audioMixer != nullptr)
@@ -107,27 +107,27 @@ void Mixer_Channel_Rate(void* channel, double rate)
     }
 }
 
-sint32 Mixer_Channel_IsPlaying(void * channel)
+int32_t Mixer_Channel_IsPlaying(void * channel)
 {
     return static_cast<IAudioChannel*>(channel)->IsPlaying();
 }
 
-uint64 Mixer_Channel_GetOffset(void * channel)
+uint64_t Mixer_Channel_GetOffset(void * channel)
 {
     return static_cast<IAudioChannel*>(channel)->GetOffset();
 }
 
-sint32 Mixer_Channel_SetOffset(void * channel, uint64 offset)
+int32_t Mixer_Channel_SetOffset(void * channel, uint64_t offset)
 {
     return static_cast<IAudioChannel*>(channel)->SetOffset(offset);
 }
 
-void Mixer_Channel_SetGroup(void * channel, sint32 group)
+void Mixer_Channel_SetGroup(void * channel, int32_t group)
 {
     static_cast<IAudioChannel *>(channel)->SetGroup(group);
 }
 
-void * Mixer_Play_Music(sint32 pathId, sint32 loop, sint32 streaming)
+void * Mixer_Play_Music(int32_t pathId, int32_t loop, int32_t streaming)
 {
     IAudioChannel * channel = nullptr;
     IAudioMixer * mixer = GetMixer();
@@ -169,17 +169,17 @@ void Mixer_SetVolume(float volume)
     GetMixer()->SetVolume(volume);
 }
 
-sint32 DStoMixerVolume(sint32 volume)
+int32_t DStoMixerVolume(int32_t volume)
 {
-    return (sint32)(MIXER_VOLUME_MAX * (std::pow(10.0f, (float)volume / 2000)));
+    return (int32_t)(MIXER_VOLUME_MAX * (std::pow(10.0f, (float)volume / 2000)));
 }
 
-float DStoMixerPan(sint32 pan)
+float DStoMixerPan(int32_t pan)
 {
     return (((float)pan + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2;
 }
 
-double DStoMixerRate(sint32 frequency)
+double DStoMixerRate(int32_t frequency)
 {
     return (double)frequency / 22050;
 }

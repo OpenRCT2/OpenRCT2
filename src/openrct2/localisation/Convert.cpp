@@ -29,8 +29,8 @@ static std::wstring DecodeToWideChar(const std::string_view& src)
         if (c == 255)
         {
             // Push next two characters
-            uint8 a = 0;
-            uint8 b = 0;
+            uint8_t a = 0;
+            uint8_t b = 0;
             if (it != src.end())
             {
                 a = *it++;
@@ -89,17 +89,17 @@ static std::string Encode(const std::string_view& src)
 {
     std::string dst;
     const utf8 * ch = src.data();
-    sint32 codepoint;
+    int32_t codepoint;
     while ((codepoint = utf8_get_next(ch, &ch)) != 0)
     {
         codepoint = encoding_convert_unicode_to_rct2(codepoint);
-        if (codepoint <= std::numeric_limits<uint8>::max())
+        if (codepoint <= std::numeric_limits<uint8_t>::max())
         {
             dst.push_back(codepoint);
         }
-        else if (codepoint <= std::numeric_limits<uint16>::max())
+        else if (codepoint <= std::numeric_limits<uint16_t>::max())
         {
-            dst.push_back((char)(uint8)0xFF);
+            dst.push_back((char)(uint8_t)0xFF);
             dst.push_back((codepoint >> 8) & 0xFF);
             dst.push_back(codepoint & 0xFF);
         }
@@ -112,7 +112,7 @@ static std::string Encode(const std::string_view& src)
     return dst;
 }
 
-static sint32 GetCodePageForRCT2Language(RCT2LanguageId languageId)
+static int32_t GetCodePageForRCT2Language(RCT2LanguageId languageId)
 {
     switch (languageId)
     {

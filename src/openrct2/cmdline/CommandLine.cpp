@@ -17,7 +17,7 @@
 
 #pragma region CommandLineArgEnumerator
 
-CommandLineArgEnumerator::CommandLineArgEnumerator(const char * const * arguments, sint32 count)
+CommandLineArgEnumerator::CommandLineArgEnumerator(const char * const * arguments, int32_t count)
 {
     _arguments = arguments;
     _count = count;
@@ -55,12 +55,12 @@ bool CommandLineArgEnumerator::TryPop()
     }
 }
 
-bool CommandLineArgEnumerator::TryPopInteger(sint32 * result)
+bool CommandLineArgEnumerator::TryPopInteger(int32_t * result)
 {
     char const * arg;
     if (TryPopString(&arg))
     {
-        *result = (sint32)atol(arg);
+        *result = (int32_t)atol(arg);
         return true;
     }
 
@@ -487,7 +487,7 @@ namespace CommandLine
             *((bool *)option->OutAddress) = true;
             return true;
         case CMDLINE_TYPE_INTEGER:
-            *((sint32 *)option->OutAddress) = (sint32)atol(valueString);
+            *((int32_t *)option->OutAddress) = (int32_t)atol(valueString);
             return true;
         case CMDLINE_TYPE_REAL:
             *((float *)option->OutAddress) = (float)atof(valueString);
@@ -541,7 +541,7 @@ namespace CommandLine
     }
 } // namespace CommandLine
 
-sint32 cmdline_run(const char * * argv, sint32 argc)
+int32_t cmdline_run(const char * * argv, int32_t argc)
 {
     auto argEnumerator = CommandLineArgEnumerator(argv, argc);
 

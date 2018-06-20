@@ -37,16 +37,16 @@ rct_banner gBanners[MAX_BANNERS];
  *
  *  rct2: 0x006B7EAB
  */
-static uint8 banner_get_ride_index_at(sint32 x, sint32 y, sint32 z)
+static uint8_t banner_get_ride_index_at(int32_t x, int32_t y, int32_t z)
 {
     rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
-    uint8 resultRideIndex = RIDE_ID_NULL;
+    uint8_t resultRideIndex = RIDE_ID_NULL;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
-        uint8 rideIndex = track_element_get_ride_index(tileElement);
+        uint8_t rideIndex = track_element_get_ride_index(tileElement);
         Ride* ride = get_ride(rideIndex);
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;
@@ -60,9 +60,9 @@ static uint8 banner_get_ride_index_at(sint32 x, sint32 y, sint32 z)
     return resultRideIndex;
 }
 
-static money32 BannerRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 direction, uint8 flags)
+static money32 BannerRemove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint8_t flags)
 {
-    sint32 z = baseHeight * 8;
+    int32_t z = baseHeight * 8;
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
     gCommandPosition.x = x + 16;
     gCommandPosition.y = y + 16;
@@ -118,10 +118,10 @@ static money32 BannerRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 directio
     return refund;
 }
 
-static money32 BannerSetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 direction, uint8 colour, uint8 flags)
+static money32 BannerSetColour(int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint8_t colour, uint8_t flags)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    sint32 z = (baseHeight * 8);
+    int32_t z = (baseHeight * 8);
     gCommandPosition.x = x + 16;
     gCommandPosition.y = y + 16;
     gCommandPosition.z = z;
@@ -165,7 +165,7 @@ static money32 BannerSetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 direc
 }
 
 static money32 BannerPlace(
-    sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direction, uint8 colour, uint8 type, BannerIndex* bannerIndex, uint8 flags)
+    int16_t x, int16_t y, uint8_t pathBaseHeight, uint8_t direction, uint8_t colour, uint8_t type, BannerIndex* bannerIndex, uint8_t flags)
 {
     gCommandPosition.x = x + 16;
     gCommandPosition.y = y + 16;
@@ -216,7 +216,7 @@ static money32 BannerPlace(
         return MONEY32_UNDEFINED;
     }
 
-    uint8 baseHeight = (pathBaseHeight + 1) * 2;
+    uint8_t baseHeight = (pathBaseHeight + 1) * 2;
     tileElement = map_get_banner_element_at(x / 32, y / 32, baseHeight, direction);
     if (tileElement != nullptr)
     {
@@ -274,7 +274,7 @@ static money32 BannerPlace(
     return bannerEntry->banner.price;
 }
 
-static money32 BannerSetStyle(BannerIndex bannerIndex, uint8 colour, uint8 textColour, uint8 bannerFlags, uint8 flags)
+static money32 BannerSetStyle(BannerIndex bannerIndex, uint8_t colour, uint8_t textColour, uint8_t bannerFlags, uint8_t flags)
 {
     if (bannerIndex >= MAX_BANNERS)
     {
@@ -306,11 +306,11 @@ static money32 BannerSetStyle(BannerIndex bannerIndex, uint8 colour, uint8 textC
         tileElement->properties.banner.flags &= ~(1 << tileElement->properties.banner.position);
     }
 
-    sint32 colourCodepoint = FORMAT_COLOUR_CODE_START + banner->text_colour;
+    int32_t colourCodepoint = FORMAT_COLOUR_CODE_START + banner->text_colour;
 
     utf8 buffer[256];
     format_string(buffer, 256, banner->string_idx, nullptr);
-    sint32 firstCodepoint = utf8_get_next(buffer, nullptr);
+    int32_t firstCodepoint = utf8_get_next(buffer, nullptr);
     if (firstCodepoint >= FORMAT_COLOUR_CODE_START && firstCodepoint <= FORMAT_COLOUR_CODE_END)
     {
         utf8_write_codepoint(buffer, colourCodepoint);
@@ -371,7 +371,7 @@ void banner_init()
  *
  *  rct2: 0x006BA278
  */
-BannerIndex create_new_banner(uint8 flags)
+BannerIndex create_new_banner(uint8_t flags)
 {
     BannerIndex bannerIndex = BannerGetNewIndex();
 
@@ -412,7 +412,7 @@ rct_tile_element* banner_get_tile_element(BannerIndex bannerIndex)
  *
  *  rct2: 0x006B7D86
  */
-uint8 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z)
+uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
 {
     Ride *ride;
 
@@ -429,18 +429,18 @@ uint8 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z)
         {   0,   0 }
     };
 
-    for (size_t i = 0; i < (sint32)Util::CountOf(NeighbourCheckOrder); i++)
+    for (size_t i = 0; i < (int32_t)Util::CountOf(NeighbourCheckOrder); i++)
     {
-        uint8 rideIndex = banner_get_ride_index_at(x + NeighbourCheckOrder[i].x, y + NeighbourCheckOrder[i].y, z);
+        uint8_t rideIndex = banner_get_ride_index_at(x + NeighbourCheckOrder[i].x, y + NeighbourCheckOrder[i].y, z);
         if (rideIndex != RIDE_ID_NULL)
         {
             return rideIndex;
         }
     }
 
-    uint8 index;
-    uint8 rideIndex = RIDE_ID_NULL;
-    sint32 resultDistance = std::numeric_limits<sint32>::max();
+    uint8_t index;
+    uint8_t rideIndex = RIDE_ID_NULL;
+    int32_t resultDistance = std::numeric_limits<int32_t>::max();
     FOR_ALL_RIDES(index, ride)
     {
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
@@ -450,9 +450,9 @@ uint8 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z)
         if (location.xy == RCT_XY8_UNDEFINED)
             continue;
 
-        sint32 rideX = location.x * 32;
-        sint32 rideY = location.y * 32;
-        sint32 distance = abs(x - rideX) + abs(y - rideY);
+        int32_t rideX = location.x * 32;
+        int32_t rideY = location.y * 32;
+        int32_t distance = abs(x - rideX) + abs(y - rideY);
         if (distance < resultDistance)
         {
             resultDistance = distance;
@@ -489,7 +489,7 @@ void fix_duplicated_banners()
                 // multiple tiles that should both refer to the same banner index.
                 if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
                 {
-                    uint8 bannerIndex = tileElement->properties.banner.index;
+                    uint8_t bannerIndex = tileElement->properties.banner.index;
                     if (activeBanners[bannerIndex])
                     {
                         log_info(
@@ -542,13 +542,13 @@ void fix_duplicated_banners()
  *  rct2: 0x006BA058
  */
 void game_command_remove_banner(
-    sint32 *                  eax,
-    sint32 *                  ebx,
-    sint32 *                  ecx,
-    sint32 *                  edx,
-    [[maybe_unused]] sint32 * esi,
-    [[maybe_unused]] sint32 * edi,
-    [[maybe_unused]] sint32 * ebp)
+    int32_t *                  eax,
+    int32_t *                  ebx,
+    int32_t *                  ecx,
+    int32_t *                  edx,
+    [[maybe_unused]] int32_t * esi,
+    [[maybe_unused]] int32_t * edi,
+    [[maybe_unused]] int32_t * ebp)
 {
     *ebx = BannerRemove(
         *eax & 0xFFFF,
@@ -564,13 +564,13 @@ void game_command_remove_banner(
  *  rct2: 0x006BA16A
  */
 void game_command_set_banner_colour(
-    sint32 *                  eax,
-    sint32 *                  ebx,
-    sint32 *                  ecx,
-    sint32 *                  edx,
-    [[maybe_unused]] sint32 * esi,
-    [[maybe_unused]] sint32 * edi,
-    sint32 *                  ebp)
+    int32_t *                  eax,
+    int32_t *                  ebx,
+    int32_t *                  ecx,
+    int32_t *                  edx,
+    [[maybe_unused]] int32_t * esi,
+    [[maybe_unused]] int32_t * edi,
+    int32_t *                  ebp)
 {
     *ebx = BannerSetColour(
         *eax & 0xFFFF,
@@ -587,7 +587,7 @@ void game_command_set_banner_colour(
  *  rct2: 0x006B9E6D
  */
 void game_command_place_banner(
-    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
+    int32_t * eax, int32_t * ebx, int32_t * ecx, int32_t * edx, [[maybe_unused]] int32_t * esi, int32_t * edi, int32_t * ebp)
 {
     *ebx = BannerPlace(
         *eax & 0xFFFF,
@@ -602,13 +602,13 @@ void game_command_place_banner(
 }
 
 void game_command_set_banner_style(
-    [[maybe_unused]] sint32 * eax,
-    sint32 *                  ebx,
-    sint32 *                  ecx,
-    sint32 *                  edx,
-    [[maybe_unused]] sint32 * esi,
-    sint32 *                  edi,
-    sint32 *                  ebp)
+    [[maybe_unused]] int32_t * eax,
+    int32_t *                  ebx,
+    int32_t *                  ecx,
+    int32_t *                  edx,
+    [[maybe_unused]] int32_t * esi,
+    int32_t *                  edi,
+    int32_t *                  ebp)
 {
     *ebx = BannerSetStyle(
         *ecx & 0xFF,

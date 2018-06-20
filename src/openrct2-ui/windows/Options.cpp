@@ -412,7 +412,7 @@ static constexpr const rct_string_id window_options_fullscreen_mode_names[] = {
     STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS,
 };
 
-const sint32 window_options_tab_animation_divisor[] =
+const int32_t window_options_tab_animation_divisor[] =
 {
     4, // WINDOW_OPTIONS_PAGE_DISPLAY,
     1, // WINDOW_OPTIONS_PAGE_RENDERING,
@@ -423,7 +423,7 @@ const sint32 window_options_tab_animation_divisor[] =
     2, // WINDOW_OPTIONS_PAGE_ADVANCED,
     1  // WINDOW_OPTIONS_PAGE_TWITCH,
 };
-const sint32 window_options_tab_animation_frames[] =
+const int32_t window_options_tab_animation_frames[] =
 {
      8, // WINDOW_OPTIONS_PAGE_DISPLAY,
      1, // WINDOW_OPTIONS_PAGE_RENDERING,
@@ -435,11 +435,11 @@ const sint32 window_options_tab_animation_frames[] =
      1  // WINDOW_OPTIONS_PAGE_TWITCH,
 };
 
-static void window_options_set_page(rct_window *w, sint32 page);
+static void window_options_set_page(rct_window *w, int32_t page);
 static void window_options_set_pressed_tab(rct_window *w);
-static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, sint32 page, sint32 spriteIndex);
+static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, int32_t page, int32_t spriteIndex);
 static void window_options_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
-static void window_options_show_dropdown(rct_window *w, rct_widget *widget, sint32 num_items);
+static void window_options_show_dropdown(rct_window *w, rct_widget *widget, int32_t num_items);
 static void window_options_update_height_markers();
 
 #pragma region Events
@@ -447,11 +447,11 @@ static void window_options_update_height_markers();
 static void window_options_close(rct_window *w);
 static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_options_update(rct_window *w);
 static void window_options_invalidate(rct_window *w);
 static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_options_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
+static void window_options_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void window_options_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_options_tooltip(rct_window *w, rct_widgetindex widgetIndex, rct_string_id *stringid);
 
@@ -501,7 +501,7 @@ static rct_window_event_list window_options_events = {
     (1 << WIDX_TAB_7) | \
     (1 << WIDX_TAB_8)
 
-static uint64 window_options_page_enabled_widgets[] = {
+static uint64_t window_options_page_enabled_widgets[] = {
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_RESOLUTION) |
     (1 << WIDX_RESOLUTION_DROPDOWN) |
@@ -610,7 +610,7 @@ static uint64 window_options_page_enabled_widgets[] = {
 #pragma endregion
 
 static struct Resolution * _resolutions = nullptr;
-static sint32 _numResolutions = 0;
+static int32_t _numResolutions = 0;
 
 /**
 *
@@ -991,7 +991,7 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 */
 static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    uint32 num_items;
+    uint32_t num_items;
 
     widget = &w->widgets[widgetIndex - 1];
 
@@ -1002,13 +1002,13 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
         {
             _numResolutions = context_get_resolutions(&_resolutions);
 
-            sint32 selectedResolution = -1;
-            for (sint32 i = 0; i < _numResolutions; i++) {
+            int32_t selectedResolution = -1;
+            for (int32_t i = 0; i < _numResolutions; i++) {
                 struct Resolution *resolution = &_resolutions[i];
 
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 
-                uint16 *args = (uint16*)&gDropdownItemsArgs[i];
+                uint16_t *args = (uint16_t*)&gDropdownItemsArgs[i];
                 args[0] = STR_RESOLUTION_X_BY_Y;
                 args[1] = resolution->Width;
                 args[2] = resolution->Height;
@@ -1039,12 +1039,12 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
             break;
         case WIDX_DRAWING_ENGINE_DROPDOWN:
         {
-            sint32 numItems = 3;
+            int32_t numItems = 3;
 #ifdef DISABLE_OPENGL
             numItems = 2;
 #endif
 
-            for (sint32 i = 0; i < numItems; i++) {
+            for (int32_t i = 0; i < numItems; i++) {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItemsArgs[i] = DrawingEngineStringIds[i];
             }
@@ -1182,7 +1182,7 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
             audio_populate_devices();
 
             // populate the list with the sound devices
-            for (size_t i = 0; (sint32)i < gAudioDeviceCount; i++) {
+            for (size_t i = 0; (int32_t)i < gAudioDeviceCount; i++) {
                 gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
                 gDropdownItemsArgs[i] = (uintptr_t)gAudioDevices[i].name;
             }
@@ -1209,7 +1209,7 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
     case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
         switch (widgetIndex) {
         case WIDX_THEMES_DROPDOWN:
-            num_items = (uint32)theme_manager_get_num_available_themes();
+            num_items = (uint32_t)theme_manager_get_num_available_themes();
 
             for (size_t i = 0; i < num_items; i++) {
                 gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
@@ -1227,7 +1227,7 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
                 widget->right - widget->left - 3
             );
 
-            dropdown_set_checked((sint32)theme_manager_get_active_available_theme_index(), true);
+            dropdown_set_checked((int32_t)theme_manager_get_active_available_theme_index(), true);
             widget_invalidate(w, WIDX_THEMES_DROPDOWN);
             break;
         }
@@ -1236,7 +1236,7 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
     case WINDOW_OPTIONS_PAGE_MISC:
         switch (widgetIndex) {
         case WIDX_TITLE_SEQUENCE_DROPDOWN:
-            num_items = (sint32)title_sequence_manager_get_count();
+            num_items = (int32_t)title_sequence_manager_get_count();
             for (size_t i = 0; i < num_items; i++) {
                 gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
                 gDropdownItemsArgs[i] = (uintptr_t)title_sequence_manager_get_name(i);
@@ -1251,7 +1251,7 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
                 num_items
             );
 
-            dropdown_set_checked((sint32)title_get_current_sequence(), true);
+            dropdown_set_checked((int32_t)title_get_current_sequence(), true);
             break;
         case WIDX_SCENARIO_GROUPING_DROPDOWN:
             num_items = 2;
@@ -1309,7 +1309,7 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
 *
 *  rct2: 0x006BB076
 */
-static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1)
         return;
@@ -1324,8 +1324,8 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
                     gConfigGeneral.fullscreen_width = resolution->Width;
                     gConfigGeneral.fullscreen_height = resolution->Height;
 
-                    if (gConfigGeneral.fullscreen_mode == static_cast<sint32>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
-                        context_set_fullscreen_mode(static_cast<sint32>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN));
+                    if (gConfigGeneral.fullscreen_mode == static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+                        context_set_fullscreen_mode(static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN));
 
                     config_save_default();
                     gfx_invalidate_screen();
@@ -1336,17 +1336,17 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
             if (dropdownIndex != gConfigGeneral.fullscreen_mode){
                 context_set_fullscreen_mode(dropdownIndex);
 
-                gConfigGeneral.fullscreen_mode = (uint8)dropdownIndex;
+                gConfigGeneral.fullscreen_mode = (uint8_t)dropdownIndex;
                 config_save_default();
                 gfx_invalidate_screen();
             }
             break;
         case WIDX_DRAWING_ENGINE_DROPDOWN:
             if (dropdownIndex != gConfigGeneral.drawing_engine) {
-                sint32 srcEngine = drawing_engine_get_type();
-                sint32 dstEngine = dropdownIndex;
+                int32_t srcEngine = drawing_engine_get_type();
+                int32_t dstEngine = dropdownIndex;
 
-                gConfigGeneral.drawing_engine = (uint8)dstEngine;
+                gConfigGeneral.drawing_engine = (uint8_t)dstEngine;
                 bool recreate_window = drawing_engine_requires_new_window(srcEngine, dstEngine);
                 platform_refresh_video(recreate_window);
                 config_save_default();
@@ -1357,7 +1357,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
             // Note: offset by one to compensate for lack of NN option.
             if ((dropdownIndex + 1) != gConfigGeneral.scale_quality)
             {
-                gConfigGeneral.scale_quality = (uint8)dropdownIndex + 1;
+                gConfigGeneral.scale_quality = (uint8_t)dropdownIndex + 1;
                 config_save_default();
                 gfx_invalidate_screen();
                 context_trigger_resize();
@@ -1390,22 +1390,22 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
             break;
         case WIDX_CURRENCY_DROPDOWN:
             if(dropdownIndex == CURRENCY_CUSTOM + 1) { // Add 1 because the separator occupies a position
-                gConfigGeneral.currency_format = (sint8)dropdownIndex - 1;
+                gConfigGeneral.currency_format = (int8_t)dropdownIndex - 1;
                 context_open_window(WC_CUSTOM_CURRENCY_CONFIG);
             } else {
-                gConfigGeneral.currency_format = (sint8)dropdownIndex;
+                gConfigGeneral.currency_format = (int8_t)dropdownIndex;
             }
             config_save_default();
             gfx_invalidate_screen();
             break;
         case WIDX_DISTANCE_DROPDOWN:
-            gConfigGeneral.measurement_format = (sint8)dropdownIndex;
+            gConfigGeneral.measurement_format = (int8_t)dropdownIndex;
             config_save_default();
             window_options_update_height_markers();
             break;
         case WIDX_TEMPERATURE_DROPDOWN:
             if (dropdownIndex != gConfigGeneral.temperature_format) {
-                gConfigGeneral.temperature_format = (sint8)dropdownIndex;
+                gConfigGeneral.temperature_format = (int8_t)dropdownIndex;
                 config_save_default();
                 gfx_invalidate_screen();
             }
@@ -1436,7 +1436,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
             break;
         case WIDX_DATE_FORMAT_DROPDOWN:
             if (dropdownIndex != gConfigGeneral.date_format) {
-                gConfigGeneral.date_format = (uint8)dropdownIndex;
+                gConfigGeneral.date_format = (uint8_t)dropdownIndex;
                 config_save_default();
                 gfx_invalidate_screen();
             }
@@ -1469,7 +1469,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
                 context_show_error(STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND, STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND_HINT);
             }
             else {
-                gConfigSound.title_music = (sint8)dropdownIndex;
+                gConfigSound.title_music = (int8_t)dropdownIndex;
                 config_save_default();
                 window_invalidate(w);
             }
@@ -1495,7 +1495,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
     case WINDOW_OPTIONS_PAGE_MISC:
         switch (widgetIndex) {
         case WIDX_TITLE_SEQUENCE_DROPDOWN:
-            if (dropdownIndex != (sint32)title_get_current_sequence()) {
+            if (dropdownIndex != (int32_t)title_get_current_sequence()) {
                 title_sequence_change_preset((size_t)dropdownIndex);
                 config_save_default();
                 window_invalidate(w);
@@ -1503,7 +1503,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
             break;
         case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
             if (dropdownIndex != gConfigGeneral.default_inspection_interval) {
-                gConfigGeneral.default_inspection_interval = (uint8)dropdownIndex;
+                gConfigGeneral.default_inspection_interval = (uint8_t)dropdownIndex;
                 config_save_default();
                 window_invalidate(w);
             }
@@ -1523,7 +1523,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
         switch (widgetIndex) {
         case WIDX_AUTOSAVE_DROPDOWN:
             if (dropdownIndex != gConfigGeneral.autosave_frequency) {
-                gConfigGeneral.autosave_frequency = (uint8)dropdownIndex;
+                gConfigGeneral.autosave_frequency = (uint8_t)dropdownIndex;
                 config_save_default();
                 window_invalidate(w);
             }
@@ -1560,11 +1560,11 @@ static void window_options_invalidate(rct_window *w)
     case WINDOW_OPTIONS_PAGE_DISPLAY:
     {
         // Resolution dropdown caption.
-        set_format_arg(16, uint16, (uint16)gConfigGeneral.fullscreen_width);
-        set_format_arg(18, uint16, (uint16)gConfigGeneral.fullscreen_height);
+        set_format_arg(16, uint16_t, (uint16_t)gConfigGeneral.fullscreen_width);
+        set_format_arg(18, uint16_t, (uint16_t)gConfigGeneral.fullscreen_height);
 
         // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
-        if (gConfigGeneral.fullscreen_mode != static_cast<sint32>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+        if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
         {
             w->disabled_widgets |= (1 << WIDX_RESOLUTION_DROPDOWN);
             w->disabled_widgets |= (1 << WIDX_RESOLUTION);
@@ -1731,9 +1731,9 @@ static void window_options_invalidate(rct_window *w)
         if (w->frame_no == 0)
         {
             widget = &window_options_audio_widgets[WIDX_SOUND_VOLUME];
-            w->scrolls[0].h_left = (sint16)ceil((gConfigSound.sound_volume / 100.0f) * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
+            w->scrolls[0].h_left = (int16_t)ceil((gConfigSound.sound_volume / 100.0f) * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
             widget = &window_options_audio_widgets[WIDX_MUSIC_VOLUME];
-            w->scrolls[1].h_left = (sint16)ceil((gConfigSound.ride_music_volume / 100.0f) * (w->scrolls[1].h_right - ((widget->right - widget->left) - 1)));
+            w->scrolls[1].h_left = (int16_t)ceil((gConfigSound.ride_music_volume / 100.0f) * (w->scrolls[1].h_right - ((widget->right - widget->left) - 1)));
         }
 
         widget_scroll_update_thumbs(w, WIDX_SOUND_VOLUME);
@@ -1813,9 +1813,9 @@ static void window_options_invalidate(rct_window *w)
     }
 
     // Automatically adjust window height to fit widgets
-    sint32 y = 0;
+    int32_t y = 0;
     for (widget = &w->widgets[WIDX_PAGE_START]; widget->type != WWT_LAST; widget++) {
-        y = std::max<sint32>(y, widget->bottom);
+        y = std::max<int32_t>(y, widget->bottom);
     }
     w->height = y + 6;
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -1830,9 +1830,9 @@ static void window_options_update(rct_window *w)
 
     if (w->page == WINDOW_OPTIONS_PAGE_AUDIO) {
         rct_widget *widget = &window_options_audio_widgets[WIDX_SOUND_VOLUME];
-        uint8 sound_volume = (uint8)(((float)w->scrolls[0].h_left / (w->scrolls[0].h_right - ((widget->right - widget->left) - 1))) * 100);
+        uint8_t sound_volume = (uint8_t)(((float)w->scrolls[0].h_left / (w->scrolls[0].h_right - ((widget->right - widget->left) - 1))) * 100);
         widget = &window_options_audio_widgets[WIDX_MUSIC_VOLUME];
-        uint8 ride_music_volume = (uint8)(((float)w->scrolls[1].h_left / (w->scrolls[1].h_right - ((widget->right - widget->left) - 1))) * 100);
+        uint8_t ride_music_volume = (uint8_t)(((float)w->scrolls[1].h_left / (w->scrolls[1].h_right - ((widget->right - widget->left) - 1))) * 100);
         if (sound_volume != gConfigSound.sound_volume) {
             gConfigSound.sound_volume = sound_volume;
             config_save_default();
@@ -1861,8 +1861,8 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(dpi, STR_FULLSCREEN_MODE, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_FULLSCREEN].top + 1);
 
         // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
-        sint32 colour = w->colours[1];
-        if (gConfigGeneral.fullscreen_mode != static_cast<sint32>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+        int32_t colour = w->colours[1];
+        if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
         {
             colour |= COLOUR_FLAG_INSET;
         }
@@ -1871,7 +1871,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(dpi, STR_UI_SCALING_DESC, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_SCALE].top + 1);
         gfx_draw_string_left(dpi, STR_DRAWING_ENGINE, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_DRAWING_ENGINE].top + 1);
 
-        sint32 scale = (sint32)(gConfigGeneral.window_scale * 100);
+        int32_t scale = (int32_t)(gConfigGeneral.window_scale * 100);
         gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &scale, w->colours[1], w->x + w->widgets[WIDX_SCALE].left + 1, w->y + w->widgets[WIDX_SCALE].top + 1);
 
         colour = w->colours[1];
@@ -1929,9 +1929,9 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
         rct_widget pathWidget = window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON];
 
         // Apply vertical alignment if appropriate.
-        sint32 widgetHeight = pathWidget.bottom - pathWidget.top;
-        sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
-        uint32 padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
+        int32_t widgetHeight = pathWidget.bottom - pathWidget.top;
+        int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+        uint32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
 
         gfx_draw_string_left_clipped(
             dpi,
@@ -1948,7 +1948,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 }
 
 // helper function, all dropdown boxes have similar properties
-static void window_options_show_dropdown(rct_window *w, rct_widget *widget, sint32 num_items)
+static void window_options_show_dropdown(rct_window *w, rct_widget *widget, int32_t num_items)
 {
     window_dropdown_show_text_custom_width(
         w->x + widget->left,
@@ -1968,7 +1968,7 @@ static void window_options_update_height_markers()
     gfx_invalidate_screen();
 }
 
-static void window_options_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+static void window_options_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height)
 {
     if (w->page == WINDOW_OPTIONS_PAGE_AUDIO) {
         *width = 1000;
@@ -2020,7 +2020,7 @@ static void window_options_tooltip(rct_window *w, rct_widgetindex widgetIndex, r
 
 #pragma region Common
 
-static void window_options_set_page(rct_window *w, sint32 page)
+static void window_options_set_page(rct_window *w, int32_t page)
 {
     w->page = page;
     w->frame_no = 0;
@@ -2037,23 +2037,23 @@ static void window_options_set_page(rct_window *w, sint32 page)
 
 static void window_options_set_pressed_tab(rct_window *w)
 {
-    sint32 i;
+    int32_t i;
     for (i = 0; i < WINDOW_OPTIONS_PAGE_COUNT; i++)
         w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
-static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, sint32 page, sint32 spriteIndex)
+static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, int32_t page, int32_t spriteIndex)
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
     rct_widget *widget = &w->widgets[widgetIndex];
 
-    sint16 l = w->x + widget->left;
-    sint16 t = w->y + widget->top;
+    int16_t l = w->x + widget->left;
+    int16_t t = w->y + widget->top;
 
     if (!(w->disabled_widgets & (1LL << widgetIndex))) {
         if (w->page == page) {
-            sint32 frame = w->frame_no / window_options_tab_animation_divisor[w->page];
+            int32_t frame = w->frame_no / window_options_tab_animation_divisor[w->page];
             spriteIndex += (frame % window_options_tab_animation_frames[w->page]);
         }
 
@@ -2061,7 +2061,7 @@ static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w,
         gfx_draw_sprite(dpi, spriteIndex, l, t, 0);
     } else {
         // Get the window background colour
-        uint8 window_colour = NOT_TRANSLUCENT(w->colours[widget->colour]);
+        uint8_t window_colour = NOT_TRANSLUCENT(w->colours[widget->colour]);
 
         // Draw greyed out (light border bottom right shadow)
         gfx_draw_sprite_solid(dpi, spriteIndex, l + 1, t + 1, ColourMapA[window_colour].lighter);

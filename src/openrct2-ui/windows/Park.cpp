@@ -150,7 +150,7 @@ static void window_park_entrance_close(rct_window *w);
 static void window_park_entrance_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_park_entrance_resize(rct_window *w);
 static void window_park_entrance_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_park_entrance_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_park_entrance_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_park_entrance_update(rct_window *w);
 static void window_park_entrance_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_park_entrance_invalidate(rct_window *w);
@@ -425,7 +425,7 @@ static rct_window_event_list *window_park_page_events[] = {
 
 #pragma region Enabled widgets
 
-static uint32 window_park_page_enabled_widgets[] = {
+static uint32_t window_park_page_enabled_widgets[] = {
     (1 << WIDX_CLOSE) |
     (1 << WIDX_TAB_1) |
     (1 << WIDX_TAB_2) |
@@ -499,7 +499,7 @@ static uint32 window_park_page_enabled_widgets[] = {
     (1 << WIDX_TAB_7)
 };
 
-static uint32 window_park_page_hold_down_widgets[] = {
+static uint32_t window_park_page_hold_down_widgets[] = {
     0,
     0,
     0,
@@ -516,7 +516,7 @@ static uint32 window_park_page_hold_down_widgets[] = {
 
 struct window_park_award {
     rct_string_id text;
-    uint32 sprite;
+    uint32_t sprite;
 };
 
 static constexpr const window_park_award ParkAwards[] = {
@@ -541,7 +541,7 @@ static constexpr const window_park_award ParkAwards[] = {
 // clang-format on
 
 static void window_park_init_viewport(rct_window *w);
-static void window_park_set_page(rct_window *w, sint32 page);
+static void window_park_set_page(rct_window *w, int32_t page);
 static void window_park_anchor_border_widgets(rct_window *w);
 static void window_park_set_pressed_tab(rct_window *w);
 static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
@@ -562,7 +562,7 @@ static rct_window *window_park_open()
     w->page = WINDOW_PARK_PAGE_ENTRANCE;
     w->viewport_focus_coordinates.y = 0;
     w->frame_no = 0;
-    w->list_information_type = std::numeric_limits<uint16>::max();
+    w->list_information_type = std::numeric_limits<uint16_t>::max();
     w->numberOfStaff = -1;
     w->var_492 = 0;
     window_park_set_disabled_tabs(w);
@@ -583,7 +583,7 @@ static void window_park_set_disabled_tabs(rct_window *w)
 static void window_park_prepare_window_title_text()
 {
     set_format_arg(0, rct_string_id, gParkName);
-    set_format_arg(2, uint32, gParkNameArgs);
+    set_format_arg(2, uint32_t, gParkNameArgs);
 }
 
 #pragma region Entrance page
@@ -652,7 +652,7 @@ static void window_park_entrance_mouseup(rct_window *w, rct_widgetindex widgetIn
         window_scroll_to_viewport(w);
         break;
     case WIDX_RENAME:
-        set_format_arg(16, uint32, gParkNameArgs);
+        set_format_arg(16, uint32_t, gParkNameArgs);
         window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, USER_STRING_MAX_LENGTH);
         break;
     case WIDX_CLOSE_LIGHT:
@@ -709,7 +709,7 @@ static void window_park_entrance_mousedown(rct_window *w, rct_widgetindex widget
  *
  *  rct2: 0x006682B8
  */
-static void window_park_entrance_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_park_entrance_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (widgetIndex == WIDX_OPEN_OR_CLOSE) {
         if (dropdownIndex == -1)
@@ -754,7 +754,7 @@ static void window_park_entrance_textinput(rct_window *w, rct_widgetindex widget
  */
 static void window_park_entrance_invalidate(rct_window *w)
 {
-    sint32 i, height;
+    int32_t i, height;
 
     w->widgets = window_park_page_widgets[w->page];
     window_init_scroll_widgets(w);
@@ -763,7 +763,7 @@ static void window_park_entrance_invalidate(rct_window *w)
 
     // Set open / close park button state
     set_format_arg(0, rct_string_id, gParkName);
-    set_format_arg(2, uint32, gParkNameArgs);
+    set_format_arg(2, uint32_t, gParkNameArgs);
     window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
     window_park_entrance_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2 + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
     window_park_entrance_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2 + widget_is_pressed(w, WIDX_OPEN_LIGHT);
@@ -864,7 +864,7 @@ static void window_park_entrance_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_park_init_viewport(rct_window *w)
 {
-    sint32 i, x, y, z, r, xy, zr, viewportFlags;
+    int32_t i, x, y, z, r, xy, zr, viewportFlags;
     x = y = z = r = xy = zr = 0;
     rct_viewport *viewport;
 
@@ -887,7 +887,7 @@ static void window_park_init_viewport(rct_window *w)
     if (w->viewport == nullptr) {
         viewportFlags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     } else {
-        // if (w->var_482 == x && w->var_484 == y && w->var_486 == z && (uint16)w->var_488 >> 8 == r)
+        // if (w->var_482 == x && w->var_484 == y && w->var_486 == z && (uint16_t)w->var_488 >> 8 == r)
         //  return;
 
         viewport = w->viewport;
@@ -1025,7 +1025,7 @@ static void window_park_rating_invalidate(rct_window *w)
  */
 static void window_park_rating_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 x, y;
+    int32_t x, y;
     rct_widget *widget;
 
     window_draw_widgets(w, dpi);
@@ -1045,7 +1045,7 @@ static void window_park_rating_paint(rct_window *w, rct_drawpixelinfo *dpi)
     x += widget->left + 22;
     y += widget->top + 26;
 
-    graph_draw_uint8(dpi, gParkRatingHistory, 32, x, y);
+    graph_draw_uint8_t(dpi, gParkRatingHistory, 32, x, y);
 }
 
 #pragma endregion
@@ -1142,7 +1142,7 @@ static void window_park_guests_invalidate(rct_window *w)
  */
 static void window_park_guests_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 x, y;
+    int32_t x, y;
     rct_widget *widget;
 
     window_draw_widgets(w, dpi);
@@ -1162,7 +1162,7 @@ static void window_park_guests_paint(rct_window *w, rct_drawpixelinfo *dpi)
     x += widget->left + 22;
     y += widget->top + 26;
 
-    graph_draw_uint8(dpi, gGuestsInParkHistory, 32, x, y);
+    graph_draw_uint8_t(dpi, gGuestsInParkHistory, 32, x, y);
 }
 
 #pragma endregion
@@ -1196,7 +1196,7 @@ static void window_park_price_resize(rct_window *w)
  */
 static void window_park_price_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    sint32 newFee;
+    int32_t newFee;
 
     switch (widgetIndex) {
     case WIDX_CLOSE:
@@ -1265,7 +1265,7 @@ static void window_park_price_invalidate(rct_window *w)
     }
 
     money16 parkEntranceFee = park_get_entrance_fee();
-    set_format_arg(6, uint32, parkEntranceFee);
+    set_format_arg(6, uint32_t, parkEntranceFee);
     window_park_price_widgets[WIDX_PRICE].text = parkEntranceFee == 0 ? STR_FREE : STR_ARG_6_CURRENCY2DP;
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
@@ -1278,7 +1278,7 @@ static void window_park_price_invalidate(rct_window *w)
  */
 static void window_park_price_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 x, y;
+    int32_t x, y;
 
     window_draw_widgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
@@ -1320,7 +1320,7 @@ static void window_park_stats_resize(rct_window *w)
  */
 static void window_park_stats_update(rct_window *w)
 {
-    sint32 i;
+    int32_t i;
 
     w->frame_no++;
     widget_invalidate(w, WIDX_TAB_5);
@@ -1367,7 +1367,7 @@ static void window_park_stats_invalidate(rct_window *w)
  */
 static void window_park_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 x, y, parkSize, stringIndex;
+    int32_t x, y, parkSize, stringIndex;
 
     window_draw_widgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
@@ -1382,20 +1382,20 @@ static void window_park_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
         stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
         parkSize = squaredmetres_to_squaredfeet(parkSize);
     }
-    set_format_arg(0, uint32, parkSize);
+    set_format_arg(0, uint32_t, parkSize);
     gfx_draw_string_left(dpi, stringIndex, gCommonFormatArgs, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
     // Draw number of rides / attractions
-    if (w->list_information_type != (uint16)-1) {
-        set_format_arg(0, uint32, w->list_information_type);
+    if (w->list_information_type != (uint16_t)-1) {
+        set_format_arg(0, uint32_t, w->list_information_type);
         gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
     y += LIST_ROW_HEIGHT;
 
     // Draw number of staff
     if (w->numberOfStaff != -1) {
-        set_format_arg(0, uint32, w->numberOfStaff);
+        set_format_arg(0, uint32_t, w->numberOfStaff);
         gfx_draw_string_left(dpi, STR_STAFF_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
     y += LIST_ROW_HEIGHT;
@@ -1533,7 +1533,7 @@ static void window_park_objective_invalidate(rct_window *w)
  */
 static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 x, y;
+    int32_t x, y;
 
     window_draw_widgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
@@ -1551,8 +1551,8 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
     y += LIST_ROW_HEIGHT;
 
     // Objective
-    set_format_arg(0, uint16, gScenarioObjectiveNumGuests);
-    set_format_arg(2, sint16, date_get_total_months(MONTH_OCTOBER, gScenarioObjectiveYear));
+    set_format_arg(0, uint16_t, gScenarioObjectiveNumGuests);
+    set_format_arg(2, int16_t, date_get_total_months(MONTH_OCTOBER, gScenarioObjectiveYear));
     set_format_arg(4, money32, gScenarioObjectiveCurrency);
 
     y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 221, ObjectiveNames[gScenarioObjectiveType], COLOUR_BLACK);
@@ -1560,7 +1560,7 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     // Objective outcome
     if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED) {
-        if ((uint32)gScenarioCompletedCompanyValue == 0x80000001) {
+        if ((uint32_t)gScenarioCompletedCompanyValue == 0x80000001) {
             // Objective failed
             gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 222, STR_OBJECTIVE_FAILED, COLOUR_BLACK);
         } else {
@@ -1667,10 +1667,10 @@ static void window_park_awards_paint(rct_window *w, rct_drawpixelinfo *dpi)
     window_draw_widgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
 
-    sint32 x = w->x + window_park_awards_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-    sint32 y = w->y + window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4;
-    sint32 count = 0;
-    for (sint32 i = 0; i < MAX_AWARDS; i++) {
+    int32_t x = w->x + window_park_awards_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+    int32_t y = w->y + window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+    int32_t count = 0;
+    for (int32_t i = 0; i < MAX_AWARDS; i++) {
         Award *award = &gCurrentAwards[i];
         if (award->Time == 0)
             continue;
@@ -1694,9 +1694,9 @@ static void window_park_awards_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x00668496
  */
-static void window_park_set_page(rct_window *w, sint32 page)
+static void window_park_set_page(rct_window *w, int32_t page)
 {
-    sint32 listen;
+    int32_t listen;
 
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
         if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
@@ -1742,7 +1742,7 @@ static void window_park_anchor_border_widgets(rct_window *w)
 
 static void window_park_set_pressed_tab(rct_window *w)
 {
-    sint32 i;
+    int32_t i;
     for (i = 0; i < 7; i++)
         w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
@@ -1750,7 +1750,7 @@ static void window_park_set_pressed_tab(rct_window *w)
 
 static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 {
-    sint32 sprite_idx;
+    int32_t sprite_idx;
 
     // Entrance tab
     if (!(w->disabled_widgets & (1 << WIDX_TAB_1)))

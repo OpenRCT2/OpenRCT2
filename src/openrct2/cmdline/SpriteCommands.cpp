@@ -16,7 +16,7 @@
 #define SZ_CLOSEST   "closest"
 #define SZ_DITHERING "dithering"
 
-sint32 gSpriteMode = 0;
+int32_t gSpriteMode = 0;
 
 static const char * _mode;
 
@@ -49,8 +49,8 @@ static exitcode_t HandleSprite(CommandLineArgEnumerator *argEnumerator)
     Memory::Free(_mode);
 
     const char * * argv = (const char * *)argEnumerator->GetArguments() + argEnumerator->GetIndex() - 1;
-    sint32 argc = argEnumerator->GetCount() - argEnumerator->GetIndex() + 1;
-    sint32 result = cmdline_for_sprite(argv, argc);
+    int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex() + 1;
+    int32_t result = cmdline_for_sprite(argv, argc);
     if (result < 0) {
         return EXITCODE_FAIL;
     }

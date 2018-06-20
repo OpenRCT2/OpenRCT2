@@ -64,7 +64,7 @@ bool TryClassifyFile(IStream * stream, ClassifiedFileInfo * result)
 static bool TryClassifyAsS6(IStream * stream, ClassifiedFileInfo * result)
 {
     bool success = false;
-    uint64 originalPosition = stream->GetPosition();
+    uint64_t originalPosition = stream->GetPosition();
     try
     {
         auto chunkReader = SawyerChunkReader(stream);
@@ -92,17 +92,17 @@ static bool TryClassifyAsS6(IStream * stream, ClassifiedFileInfo * result)
 static bool TryClassifyAsS4(IStream * stream, ClassifiedFileInfo * result)
 {
     bool success = false;
-    uint64 originalPosition = stream->GetPosition();
+    uint64_t originalPosition = stream->GetPosition();
     try
     {
         size_t dataLength = (size_t)stream->GetLength();
-        auto deleter_lambda = [dataLength](uint8 * ptr) { Memory::FreeArray(ptr, dataLength); };
-        std::unique_ptr<uint8, decltype(deleter_lambda)> data(stream->ReadArray<uint8>(dataLength), deleter_lambda);
+        auto deleter_lambda = [dataLength](uint8_t * ptr) { Memory::FreeArray(ptr, dataLength); };
+        std::unique_ptr<uint8_t, decltype(deleter_lambda)> data(stream->ReadArray<uint8_t>(dataLength), deleter_lambda);
         stream->SetPosition(originalPosition);
-        sint32 fileTypeVersion = sawyercoding_detect_file_type(data.get(), dataLength);
+        int32_t fileTypeVersion = sawyercoding_detect_file_type(data.get(), dataLength);
 
-        sint32 type = fileTypeVersion & FILE_TYPE_MASK;
-        sint32 version = fileTypeVersion & FILE_VERSION_MASK;
+        int32_t type = fileTypeVersion & FILE_TYPE_MASK;
+        int32_t version = fileTypeVersion & FILE_VERSION_MASK;
 
         if (type == FILE_TYPE_SV4)
         {
@@ -129,21 +129,21 @@ static bool TryClassifyAsS4(IStream * stream, ClassifiedFileInfo * result)
 static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFileInfo * result)
 {
     bool success = false;
-    uint64 originalPosition = stream->GetPosition();
+    uint64_t originalPosition = stream->GetPosition();
     try
     {
         size_t dataLength = (size_t)stream->GetLength();
-        auto deleter_lambda = [dataLength](uint8 * ptr) { Memory::FreeArray(ptr, dataLength); };
-        std::unique_ptr<uint8, decltype(deleter_lambda)> data(stream->ReadArray<uint8>(dataLength), deleter_lambda);
+        auto deleter_lambda = [dataLength](uint8_t * ptr) { Memory::FreeArray(ptr, dataLength); };
+        std::unique_ptr<uint8_t, decltype(deleter_lambda)> data(stream->ReadArray<uint8_t>(dataLength), deleter_lambda);
         stream->SetPosition(originalPosition);
 
         if (sawyercoding_validate_track_checksum(data.get(), dataLength))
         {
-            std::unique_ptr<uint8, decltype(&Memory::Free<uint8>)> td6data(Memory::Allocate<uint8>(0x10000), &Memory::Free<uint8>);
+            std::unique_ptr<uint8_t, decltype(&Memory::Free<uint8_t>)> td6data(Memory::Allocate<uint8_t>(0x10000), &Memory::Free<uint8_t>);
             size_t td6len = sawyercoding_decode_td6(data.get(), td6data.get(), dataLength);
             if (td6data != nullptr && td6len >= 8)
             {
-                uint8 version = (td6data.get()[7] >> 2) & 3;
+                uint8_t version = (td6data.get()[7] >> 2) & 3;
                 if (version <= 2)
                 {
                     result->Type = FILE_TYPE::TRACK_DESIGN;
@@ -161,7 +161,7 @@ static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFileInfo * result)
     return success;
 }
 
-uint32 get_file_extension_type(const utf8 * path)
+uint32_t get_file_extension_type(const utf8 * path)
 {
     auto extension = Path::GetExtension(path);
     if (String::Equals(extension, ".dat", true)) return FILE_EXTENSION_DAT;

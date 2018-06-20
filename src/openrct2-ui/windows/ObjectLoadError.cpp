@@ -54,11 +54,11 @@ static rct_string_id get_object_type_string(const rct_object_entry *entry);
 static void window_object_load_error_close(rct_window *w);
 static void window_object_load_error_update(rct_window *w);
 static void window_object_load_error_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_object_load_error_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-static void window_object_load_error_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_object_load_error_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_object_load_error_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void window_object_load_error_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_object_load_error_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_object_load_error_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_object_load_error_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_object_load_error_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 static rct_window_event_list window_object_load_error_events = {
     window_object_load_error_close,
@@ -93,7 +93,7 @@ static rct_window_event_list window_object_load_error_events = {
 // clang-format on
 
 static std::vector<rct_object_entry> _invalid_entries;
-static sint32 highlighted_index = -1;
+static int32_t highlighted_index = -1;
 static std::string file_path;
 
 /**
@@ -105,7 +105,7 @@ static std::string file_path;
 static rct_string_id get_object_type_string(const rct_object_entry *entry)
 {
     rct_string_id result;
-    uint8 objectType = object_entry_get_type(entry);
+    uint8_t objectType = object_entry_get_type(entry);
     switch (objectType) {
         case OBJECT_TYPE_RIDE:
             result = STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS;
@@ -162,11 +162,11 @@ static void copy_object_names_to_clipboard(rct_window *w)
     utf8 * buffer       = new utf8[buffer_len]{};
 
     size_t cur_len = 0;
-    for (uint16 i = 0; i < w->no_list_items; i++) {
+    for (uint16_t i = 0; i < w->no_list_items; i++) {
         cur_len += (8 + line_sep_len);
         assert(cur_len < buffer_len);
 
-        uint16 nameLength = 8;
+        uint16_t nameLength = 8;
         for (; nameLength > 0; nameLength--)
         {
             if (_invalid_entries[i].name[nameLength - 1] != ' ')
@@ -206,7 +206,7 @@ rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects
     }
 
     // Refresh list items and path
-    window->no_list_items = (uint16)numMissingObjects;
+    window->no_list_items = (uint16_t)numMissingObjects;
     file_path = path;
 
     window_invalidate(window);
@@ -252,10 +252,10 @@ static void window_object_load_error_mouseup(rct_window *w, rct_widgetindex widg
     }
 }
 
-static void window_object_load_error_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_object_load_error_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
     // Highlight item that the cursor is over, or remove highlighting if none
-    sint32 selected_item;
+    int32_t selected_item;
     selected_item = y / SCROLLABLE_ROW_HEIGHT;
     if (selected_item < 0 || selected_item >= w->no_list_items)
         highlighted_index = -1;
@@ -265,7 +265,7 @@ static void window_object_load_error_scrollmouseover(rct_window *w, sint32 scrol
     widget_invalidate(w, WIDX_SCROLL);
 }
 
-static void window_object_load_error_select_element_from_list(rct_window *w, sint32 index)
+static void window_object_load_error_select_element_from_list(rct_window *w, int32_t index)
 {
     if (index < 0 || index > w->no_list_items) {
         w->selected_list_item = -1;
@@ -276,14 +276,14 @@ static void window_object_load_error_select_element_from_list(rct_window *w, sin
     widget_invalidate(w, WIDX_SCROLL);
 }
 
-static void window_object_load_error_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_object_load_error_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    sint32 selected_item;
+    int32_t selected_item;
     selected_item = y / SCROLLABLE_ROW_HEIGHT;
     window_object_load_error_select_element_from_list(w, selected_item);
 }
 
-static void window_object_load_error_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+static void window_object_load_error_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height)
 {
     *height = w->no_list_items * SCROLLABLE_ROW_HEIGHT;
 }
@@ -302,14 +302,14 @@ static void window_object_load_error_paint(rct_window *w, rct_drawpixelinfo *dpi
     gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, w->x + 5, w->y + 43, WW-5);
 }
 
-static void window_object_load_error_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+static void window_object_load_error_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex)
 {
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
-    const sint32 list_width = w->widgets[WIDX_SCROLL].right - w->widgets[WIDX_SCROLL].left;
+    const int32_t list_width = w->widgets[WIDX_SCROLL].right - w->widgets[WIDX_SCROLL].left;
 
-    for (sint32 i = 0; i < w->no_list_items; i++)
+    for (int32_t i = 0; i < w->no_list_items; i++)
     {
-        sint32 y = i * SCROLLABLE_ROW_HEIGHT;
+        int32_t y = i * SCROLLABLE_ROW_HEIGHT;
         if (y > dpi->y + dpi->height)
             break;
 

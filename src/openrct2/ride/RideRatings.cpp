@@ -66,7 +66,7 @@ using ride_ratings_calculation = void (*)(Ride *ride);
 
 rct_ride_rating_calc_data gRideRatingsCalcData;
 
-static ride_ratings_calculation ride_ratings_get_calculate_func(uint8 rideType);
+static ride_ratings_calculation ride_ratings_get_calculate_func(uint8_t rideType);
 
 static void ride_ratings_update_state();
 static void ride_ratings_update_state_0();
@@ -80,7 +80,7 @@ static void ride_ratings_calculate(Ride *ride);
 static void ride_ratings_calculate_value(Ride *ride);
 static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElement);
 
-static void ride_ratings_add(rating_tuple * rating, sint32 excitement, sint32 intensity, sint32 nausea);
+static void ride_ratings_add(rating_tuple * rating, int32_t excitement, int32_t intensity, int32_t nausea);
 
 /**
  * This is a small hack function to keep calling the ride rating processor until
@@ -143,7 +143,7 @@ static void ride_ratings_update_state()
  */
 static void ride_ratings_update_state_0()
 {
-    sint32 currentRide = gRideRatingsCalcData.current_ride;
+    int32_t currentRide = gRideRatingsCalcData.current_ride;
 
     currentRide++;
     if (currentRide == 255) {
@@ -164,7 +164,7 @@ static void ride_ratings_update_state_0()
 static void ride_ratings_update_state_1()
 {
     gRideRatingsCalcData.proximity_total = 0;
-    for (sint32 i = 0; i < PROXIMITY_COUNT; i++) {
+    for (int32_t i = 0; i < PROXIMITY_COUNT; i++) {
         gRideRatingsCalcData.proximity_scores[i] = 0;
     }
     gRideRatingsCalcData.num_brakes = 0;
@@ -180,17 +180,17 @@ static void ride_ratings_update_state_1()
  */
 static void ride_ratings_update_state_2()
 {
-    const sint32 rideIndex = gRideRatingsCalcData.current_ride;
+    const int32_t rideIndex = gRideRatingsCalcData.current_ride;
     Ride *ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED) {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
     }
 
-    sint32 x = gRideRatingsCalcData.proximity_x / 32;
-    sint32 y = gRideRatingsCalcData.proximity_y / 32;
-    sint32 z = gRideRatingsCalcData.proximity_z / 8;
-    sint32 trackType = gRideRatingsCalcData.proximity_track_type;
+    int32_t x = gRideRatingsCalcData.proximity_x / 32;
+    int32_t y = gRideRatingsCalcData.proximity_y / 32;
+    int32_t z = gRideRatingsCalcData.proximity_z / 8;
+    int32_t trackType = gRideRatingsCalcData.proximity_track_type;
 
     rct_tile_element *tileElement = map_get_first_element_at(x, y);
     do {
@@ -204,7 +204,7 @@ static void ride_ratings_update_state_2()
             (tile_element_get_track_sequence(tileElement) == 0 && trackType == track_element_get_type(tileElement)))
         {
             if (trackType == TRACK_ELEM_END_STATION) {
-                sint32 entranceIndex = tile_element_get_station(tileElement);
+                int32_t entranceIndex = tile_element_get_station(tileElement);
                 gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                 if (ride_get_entrance_location(rideIndex, entranceIndex).isNull())
                 {
@@ -285,10 +285,10 @@ static void ride_ratings_update_state_5()
         return;
     }
 
-    sint32 x = gRideRatingsCalcData.proximity_x / 32;
-    sint32 y = gRideRatingsCalcData.proximity_y / 32;
-    sint32 z = gRideRatingsCalcData.proximity_z / 8;
-    sint32 trackType = gRideRatingsCalcData.proximity_track_type;
+    int32_t x = gRideRatingsCalcData.proximity_x / 32;
+    int32_t y = gRideRatingsCalcData.proximity_y / 32;
+    int32_t z = gRideRatingsCalcData.proximity_z / 8;
+    int32_t trackType = gRideRatingsCalcData.proximity_track_type;
 
     rct_tile_element *tileElement = map_get_first_element_at(x, y);
     do {
@@ -332,7 +332,7 @@ static void ride_ratings_update_state_5()
  */
 static void ride_ratings_begin_proximity_loop()
 {
-    const sint32 rideIndex = gRideRatingsCalcData.current_ride;
+    const int32_t rideIndex = gRideRatingsCalcData.current_ride;
     Ride *ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED) {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
@@ -344,7 +344,7 @@ static void ride_ratings_begin_proximity_loop()
         return;
     }
 
-    for (sint32 i = 0; i < MAX_STATIONS; i++) {
+    for (int32_t i = 0; i < MAX_STATIONS; i++) {
         if (ride->station_starts[i].xy != RCT_XY8_UNDEFINED) {
             gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             if (ride_get_entrance_location(rideIndex, i).isNull())
@@ -352,9 +352,9 @@ static void ride_ratings_begin_proximity_loop()
                 gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             }
 
-            sint32 x = ride->station_starts[i].x * 32;
-            sint32 y = ride->station_starts[i].y * 32;
-            sint32 z = ride->station_heights[i] * 8;
+            int32_t x = ride->station_starts[i].x * 32;
+            int32_t y = ride->station_starts[i].y * 32;
+            int32_t z = ride->station_heights[i] * 8;
 
             gRideRatingsCalcData.proximity_x = x;
             gRideRatingsCalcData.proximity_y = y;
@@ -370,7 +370,7 @@ static void ride_ratings_begin_proximity_loop()
     gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
 
-static void proximity_score_increment(sint32 type)
+static void proximity_score_increment(int32_t type)
 {
     gRideRatingsCalcData.proximity_scores[type]++;
 }
@@ -379,10 +379,10 @@ static void proximity_score_increment(sint32 type)
  *
  *  rct2: 0x006B6207
  */
-static void ride_ratings_score_close_proximity_in_direction(rct_tile_element *inputTileElement, sint32 direction)
+static void ride_ratings_score_close_proximity_in_direction(rct_tile_element *inputTileElement, int32_t direction)
 {
-    sint32 x = gRideRatingsCalcData.proximity_x + CoordsDirectionDelta[direction].x;
-    sint32 y = gRideRatingsCalcData.proximity_y + CoordsDirectionDelta[direction].y;
+    int32_t x = gRideRatingsCalcData.proximity_x + CoordsDirectionDelta[direction].x;
+    int32_t y = gRideRatingsCalcData.proximity_y + CoordsDirectionDelta[direction].y;
     if (x < 0 || y < 0 || x >= (32 * 256) || y >= (32 * 256))
         return;
 
@@ -397,13 +397,13 @@ static void ride_ratings_score_close_proximity_in_direction(rct_tile_element *in
             }
             break;
         case TILE_ELEMENT_TYPE_PATH:
-            if (abs((sint32)inputTileElement->base_height - (sint32)tileElement->base_height) <= 2) {
+            if (abs((int32_t)inputTileElement->base_height - (int32_t)tileElement->base_height) <= 2) {
                 proximity_score_increment(PROXIMITY_PATH_SIDE_CLOSE);
             }
             break;
         case TILE_ELEMENT_TYPE_TRACK:
             if (track_element_get_ride_index(inputTileElement) != track_element_get_ride_index(tileElement)) {
-                if (abs((sint32)inputTileElement->base_height - (sint32)tileElement->base_height) <= 2) {
+                if (abs((int32_t)inputTileElement->base_height - (int32_t)tileElement->base_height) <= 2) {
                     proximity_score_increment(PROXIMITY_FOREIGN_TRACK_SIDE_CLOSE);
                 }
             }
@@ -423,14 +423,14 @@ static void ride_ratings_score_close_proximity_in_direction(rct_tile_element *in
 
 }
 
-static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element *inputTileElement, sint32 x, sint32 y)
+static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element *inputTileElement, int32_t x, int32_t y)
 {
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
         switch (tileElement->GetType()) {
         case TILE_ELEMENT_TYPE_PATH:
         {
-            sint32 zDiff = (sint32)tileElement->base_height - (sint32)inputTileElement->base_height;
+            int32_t zDiff = (int32_t)tileElement->base_height - (int32_t)inputTileElement->base_height;
             if (zDiff >= 0 && zDiff <= 16)
             {
                 proximity_score_increment(PROXIMITY_PATH_TROUGH_VERTICAL_LOOP);
@@ -442,7 +442,7 @@ static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element *in
             bool elementsAreAt90DegAngle = ((tileElement->GetDirection() ^ inputTileElement->GetDirection()) & 1) != 0;
             if (elementsAreAt90DegAngle)
             {
-                sint32 zDiff = (sint32)tileElement->base_height - (sint32)inputTileElement->base_height;
+                int32_t zDiff = (int32_t)tileElement->base_height - (int32_t)inputTileElement->base_height;
                 if (zDiff >= 0 && zDiff <= 16)
                 {
                     proximity_score_increment(PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP);
@@ -464,13 +464,13 @@ static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element *in
  */
 static void ride_ratings_score_close_proximity_loops(rct_tile_element *inputTileElement)
 {
-    sint32 trackType = track_element_get_type(inputTileElement);
+    int32_t trackType = track_element_get_type(inputTileElement);
     if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP) {
-        sint32 x = gRideRatingsCalcData.proximity_x;
-        sint32 y = gRideRatingsCalcData.proximity_y;
+        int32_t x = gRideRatingsCalcData.proximity_x;
+        int32_t y = gRideRatingsCalcData.proximity_y;
         ride_ratings_score_close_proximity_loops_helper(inputTileElement, x, y);
 
-        sint32 direction = tile_element_get_direction(inputTileElement);
+        int32_t direction = tile_element_get_direction(inputTileElement);
         x = gRideRatingsCalcData.proximity_x + CoordsDirectionDelta[direction].x;
         y = gRideRatingsCalcData.proximity_y + CoordsDirectionDelta[direction].y;
         ride_ratings_score_close_proximity_loops_helper(inputTileElement, x, y);
@@ -488,11 +488,11 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElemen
     }
 
     gRideRatingsCalcData.proximity_total++;
-    sint32 x = gRideRatingsCalcData.proximity_x;
-    sint32 y = gRideRatingsCalcData.proximity_y;
+    int32_t x = gRideRatingsCalcData.proximity_x;
+    int32_t y = gRideRatingsCalcData.proximity_y;
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        sint32 waterHeight;
+        int32_t waterHeight;
         switch (tileElement->GetType()) {
         case TILE_ELEMENT_TYPE_SURFACE:
             gRideRatingsCalcData.proximity_base_height = tileElement->base_height;
@@ -501,7 +501,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElemen
             }
             waterHeight = surface_get_water_height(tileElement);
             if (waterHeight != 0) {
-                sint32 z = waterHeight * 16;
+                int32_t z = waterHeight * 16;
                 if (z <= gRideRatingsCalcData.proximity_z) {
                     proximity_score_increment(PROXIMITY_WATER_OVER);
                     if (z == gRideRatingsCalcData.proximity_z) {
@@ -542,9 +542,9 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElemen
             break;
         case TILE_ELEMENT_TYPE_TRACK:
         {
-            sint32 trackType = track_element_get_type(tileElement);
+            int32_t trackType = track_element_get_type(tileElement);
             if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP) {
-                sint32 sequence = tile_element_get_track_sequence(tileElement);
+                int32_t sequence = tile_element_get_track_sequence(tileElement);
                 if (sequence == 3 || sequence == 6) {
                     if (tileElement->base_height - inputTileElement->clearance_height <= 10) {
                         proximity_score_increment(PROXIMITY_THROUGH_VERTICAL_LOOP);
@@ -565,7 +565,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElemen
                     proximity_score_increment(PROXIMITY_FOREIGN_TRACK_TOUCH_ABOVE);
                 }
                 if (inputTileElement->clearance_height + 2 == tileElement->base_height) {
-                    if ((uint8)(inputTileElement->clearance_height + 10) >= tileElement->base_height) {
+                    if ((uint8_t)(inputTileElement->clearance_height + 10) >= tileElement->base_height) {
                         proximity_score_increment(PROXIMITY_FOREIGN_TRACK_CLOSE_ABOVE);
                     }
                 }
@@ -610,7 +610,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElemen
         } // switch tileElement->GetType
     } while (!(tileElement++)->IsLastForTile());
 
-    uint8 direction = tile_element_get_direction(inputTileElement);
+    uint8_t direction = tile_element_get_direction(inputTileElement);
     ride_ratings_score_close_proximity_in_direction(inputTileElement, (direction + 1) & 3);
     ride_ratings_score_close_proximity_in_direction(inputTileElement, (direction - 1) & 3);
     ride_ratings_score_close_proximity_loops(inputTileElement);
@@ -645,7 +645,7 @@ static void ride_ratings_calculate(Ride *ride)
 
 static void ride_ratings_calculate_value(Ride *ride)
 {
-    struct row { sint32 months, multiplier, divisor, summand; };
+    struct row { int32_t months, multiplier, divisor, summand; };
     static const row age_table_new[] = {
         {5,         3,          2,          0},   // 1.5x
         {13,        6,          5,          0},   // 1.2x
@@ -680,12 +680,12 @@ static void ride_ratings_calculate_value(Ride *ride)
     }
 
     // Start with the base ratings, multiplied by the ride type specific weights for excitement, intensity and nausea.
-    sint32 value =
+    int32_t value =
         (((ride->excitement * RideRatings[ride->type].excitement) * 32) >> 15) +
         (((ride->intensity  * RideRatings[ride->type].intensity) * 32) >> 15) +
         (((ride->nausea     * RideRatings[ride->type].nausea) * 32) >> 15);
 
-    sint32 monthsOld = 0;
+    int32_t monthsOld = 0;
     if (!gCheatsDisableRideValueAging) {
         monthsOld = gDateMonthsElapsed - ride->build_date;
     }
@@ -717,9 +717,9 @@ static void ride_ratings_calculate_value(Ride *ride)
     }
 
     // Other ride of same type penalty
-    sint32 otherRidesOfSameType = 0;
+    int32_t otherRidesOfSameType = 0;
     Ride *ride2;
-    sint32 i;
+    int32_t i;
     FOR_ALL_RIDES(i, ride2) {
         if (ride2->type == ride->type && ride2->status == RIDE_STATUS_OPEN)
             otherRidesOfSameType++;
@@ -736,19 +736,19 @@ static void ride_ratings_calculate_value(Ride *ride)
  * inputs
  * - edi: ride ptr
  */
-static uint16 ride_compute_upkeep(Ride *ride)
+static uint16_t ride_compute_upkeep(Ride *ride)
 {
     // data stored at 0x0057E3A8, incrementing 18 bytes at a time
-    uint16 upkeep = initialUpkeepCosts[ride->type];
+    uint16_t upkeep = initialUpkeepCosts[ride->type];
 
-    uint16 trackCost = costPerTrackPiece[ride->type];
-    uint8 dl = ride->drops;
+    uint16_t trackCost = costPerTrackPiece[ride->type];
+    uint8_t dl = ride->drops;
 
     dl = dl >> 6;
     dl = dl & 3;
     upkeep += trackCost * dl;
 
-    uint32 totalLength = ride_get_total_length(ride) >> 16;
+    uint32_t totalLength = ride_get_total_length(ride) >> 16;
 
     // The data originally here was 20's and 0's. The 20's all represented
     // rides that had tracks. The 0's were fixed rides like crooked house or
@@ -757,7 +757,7 @@ static uint16 ride_compute_upkeep(Ride *ride)
     if (hasRunningTrack[ride->type]) {
         totalLength *= 20;
     }
-    upkeep += (uint16)(totalLength >> 10);
+    upkeep += (uint16_t)(totalLength >> 10);
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) {
         // The original code read from a table starting at 0x0097E3AE and
@@ -768,7 +768,7 @@ static uint16 ride_compute_upkeep(Ride *ride)
     }
 
     // Add maintenance cost for reverser track pieces
-    uint16 reverserMaintenanceCost = 80;
+    uint16_t reverserMaintenanceCost = 80;
     if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER) {
         reverserMaintenanceCost = 10;
     }
@@ -830,14 +830,14 @@ static void ride_ratings_apply_adjustments(Ride *ride, rating_tuple *ratings)
 
     // Apply ride entry multipliers
     ride_ratings_add(ratings,
-        (((sint32)ratings->excitement * rideEntry->excitement_multiplier) >> 7),
-        (((sint32)ratings->intensity  * rideEntry->intensity_multiplier) >> 7),
-        (((sint32)ratings->nausea     * rideEntry->nausea_multiplier) >> 7));
+        (((int32_t)ratings->excitement * rideEntry->excitement_multiplier) >> 7),
+        (((int32_t)ratings->intensity  * rideEntry->intensity_multiplier) >> 7),
+        (((int32_t)ratings->nausea     * rideEntry->nausea_multiplier) >> 7));
 
     // Apply total air time
 #ifdef ORIGINAL_RATINGS
     if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_AIR_TIME) {
-        uint16 totalAirTime = ride->total_air_time;
+        uint16_t totalAirTime = ride->total_air_time;
         if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS) {
             if (totalAirTime >= 96) {
                 totalAirTime -= 96;
@@ -851,11 +851,11 @@ static void ride_ratings_apply_adjustments(Ride *ride, rating_tuple *ratings)
     }
 #else
     if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_AIR_TIME) {
-        sint32 excitementModifier;
-        sint32 nauseaModifier;
+        int32_t excitementModifier;
+        int32_t nauseaModifier;
         if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS) {
             // Limit airtime bonus for heartline twister coaster (see issues #2031 and #2064)
-            excitementModifier = std::min<uint16>(ride->total_air_time, 96) / 8;
+            excitementModifier = std::min<uint16_t>(ride->total_air_time, 96) / 8;
         } else {
             excitementModifier = ride->total_air_time / 8;
         }
@@ -891,23 +891,23 @@ static void ride_ratings_apply_intensity_penalty(rating_tuple *ratings)
 static void set_unreliability_factor(Ride *ride)
 {
     // The bigger the difference in lift speed and minimum the higher the unreliability
-    uint8 lift_speed_adjustment = RideLiftData[ride->type].minimum_speed;
+    uint8_t lift_speed_adjustment = RideLiftData[ride->type].minimum_speed;
     ride->unreliability_factor += (ride->lift_hill_speed - lift_speed_adjustment) * 2;
 }
 
-static uint32 get_proximity_score_helper_1(uint16 x, uint16 max, uint32 multiplier)
+static uint32_t get_proximity_score_helper_1(uint16_t x, uint16_t max, uint32_t multiplier)
 {
     return (std::min(x, max) * multiplier) >> 16;
 }
 
-static uint32 get_proximity_score_helper_2(uint16 x, uint16 additionIfNotZero, uint16 max, uint32 multiplier)
+static uint32_t get_proximity_score_helper_2(uint16_t x, uint16_t additionIfNotZero, uint16_t max, uint32_t multiplier)
 {
-    uint32 result = x;
+    uint32_t result = x;
     if (result != 0) result += additionIfNotZero;
-    return (std::min<sint32>(result, max) * multiplier) >> 16;
+    return (std::min<int32_t>(result, max) * multiplier) >> 16;
 }
 
-static uint32 get_proximity_score_helper_3(uint16 x, uint16 resultIfNotZero)
+static uint32_t get_proximity_score_helper_3(uint16_t x, uint16_t resultIfNotZero)
 {
     return x == 0 ? 0 : resultIfNotZero;
 }
@@ -916,11 +916,11 @@ static uint32 get_proximity_score_helper_3(uint16 x, uint16 resultIfNotZero)
  *
  *  rct2: 0x0065E277
  */
-static uint32 ride_ratings_get_proximity_score()
+static uint32_t ride_ratings_get_proximity_score()
 {
-    const uint16 * scores = gRideRatingsCalcData.proximity_scores;
+    const uint16_t * scores = gRideRatingsCalcData.proximity_scores;
 
-    uint32 result = 0;
+    uint32_t result = 0;
     result += get_proximity_score_helper_1(scores[PROXIMITY_WATER_OVER                  ]    ,      60, 0x00AAAA);
     result += get_proximity_score_helper_1(scores[PROXIMITY_WATER_TOUCH                 ]    ,      22, 0x0245D1);
     result += get_proximity_score_helper_1(scores[PROXIMITY_WATER_LOW                   ]    ,      10, 0x020000);
@@ -954,21 +954,21 @@ static uint32 ride_ratings_get_proximity_score()
  * Calculates how much of the track is sheltered in eighths.
  *  rct2: 0x0065E72D
  */
-static sint32 get_num_of_sheltered_eighths(Ride *ride)
+static int32_t get_num_of_sheltered_eighths(Ride *ride)
 {
-    sint32 totalLength = ride_get_total_length(ride);
-    sint32 shelteredLength = ride->sheltered_length;
-    sint32 lengthEighth = totalLength / 8;
-    sint32 lengthCounter = lengthEighth;
-    sint32 numShelteredEighths = 0;
-    for (sint32 i = 0; i < 7; i++) {
+    int32_t totalLength = ride_get_total_length(ride);
+    int32_t shelteredLength = ride->sheltered_length;
+    int32_t lengthEighth = totalLength / 8;
+    int32_t lengthCounter = lengthEighth;
+    int32_t numShelteredEighths = 0;
+    for (int32_t i = 0; i < 7; i++) {
         if (shelteredLength >= lengthCounter) {
             lengthCounter += lengthEighth;
             numShelteredEighths++;
         }
     }
 
-    sint32 dh = numShelteredEighths;
+    int32_t dh = numShelteredEighths;
     rct_ride_entry *rideType = get_ride_entry(ride->subtype);
     if (rideType == nullptr)
     {
@@ -982,9 +982,9 @@ static sint32 get_num_of_sheltered_eighths(Ride *ride)
 
 static rating_tuple get_flat_turns_rating(Ride* ride)
 {
-    sint32 no_3_plus_turns = get_turn_count_3_elements(ride, 0);
-    sint32 no_2_turns = get_turn_count_2_elements(ride, 0);
-    sint32 no_1_turns = get_turn_count_1_element(ride, 0);
+    int32_t no_3_plus_turns = get_turn_count_3_elements(ride, 0);
+    int32_t no_2_turns = get_turn_count_2_elements(ride, 0);
+    int32_t no_1_turns = get_turn_count_1_element(ride, 0);
 
     rating_tuple rating;
     rating.excitement = (no_3_plus_turns * 0x28000) >> 16;
@@ -1008,9 +1008,9 @@ static rating_tuple get_flat_turns_rating(Ride* ride)
  */
 static rating_tuple get_banked_turns_rating(Ride* ride)
 {
-    sint32 no_3_plus_turns = get_turn_count_3_elements(ride, 1);
-    sint32 no_2_turns = get_turn_count_2_elements(ride, 1);
-    sint32 no_1_turns = get_turn_count_1_element(ride, 1);
+    int32_t no_3_plus_turns = get_turn_count_3_elements(ride, 1);
+    int32_t no_2_turns = get_turn_count_2_elements(ride, 1);
+    int32_t no_1_turns = get_turn_count_1_element(ride, 1);
 
     rating_tuple rating;
     rating.excitement = (no_3_plus_turns * 0x3C000) >> 16;
@@ -1035,10 +1035,10 @@ static rating_tuple get_banked_turns_rating(Ride* ride)
 static rating_tuple get_sloped_turns_rating(Ride* ride) {
     rating_tuple rating;
 
-    sint32 no_4_plus_turns = get_turn_count_4_plus_elements(ride, 2);
-    sint32 no_3_turns = get_turn_count_3_elements(ride, 2);
-    sint32 no_2_turns = get_turn_count_2_elements(ride, 2);
-    sint32 no_1_turns = get_turn_count_1_element(ride, 2);
+    int32_t no_4_plus_turns = get_turn_count_4_plus_elements(ride, 2);
+    int32_t no_3_turns = get_turn_count_3_elements(ride, 2);
+    int32_t no_2_turns = get_turn_count_2_elements(ride, 2);
+    int32_t no_1_turns = get_turn_count_1_element(ride, 2);
 
     rating.excitement = (std::min(no_4_plus_turns, 4) * 0x78000) >> 16;
     rating.excitement += (std::min(no_3_turns, 6) * 273066) >> 16;
@@ -1054,18 +1054,18 @@ static rating_tuple get_sloped_turns_rating(Ride* ride) {
  *
  *  rct2: 0x0065E0F2
  */
-static rating_tuple get_inversions_ratings(uint8 inversions) {
+static rating_tuple get_inversions_ratings(uint8_t inversions) {
     rating_tuple rating;
 
-    rating.excitement = (std::min<sint32>(inversions, 6) * 0x1AAAAA) >> 16;
+    rating.excitement = (std::min<int32_t>(inversions, 6) * 0x1AAAAA) >> 16;
     rating.intensity = (inversions * 0x320000) >> 16;
     rating.nausea = (inversions * 0x15AAAA) >> 16;
 
     return rating;
 }
 
-static rating_tuple get_special_track_elements_rating(uint8 type, Ride *ride) {
-    sint32 excitement = 0, intensity = 0, nausea = 0;
+static rating_tuple get_special_track_elements_rating(uint8_t type, Ride *ride) {
+    int32_t excitement = 0, intensity = 0, nausea = 0;
     if (type == RIDE_TYPE_GHOST_TRAIN) {
         if (ride_has_spinning_tunnel(ride)) {
             excitement += 40;
@@ -1095,14 +1095,14 @@ static rating_tuple get_special_track_elements_rating(uint8 type, Ride *ride) {
             nausea     += 23;
         }
     }
-    uint8 helix_sections = ride_get_helix_sections(ride);
-    sint32 al = std::min<sint32>(helix_sections, 9);
+    uint8_t helix_sections = ride_get_helix_sections(ride);
+    int32_t al = std::min<int32_t>(helix_sections, 9);
     excitement += (al * 254862) >> 16;
 
-    al = std::min<sint32>(helix_sections, 11);
+    al = std::min<int32_t>(helix_sections, 11);
     intensity += (al * 148945) >> 16;
 
-    al = std::max<sint32>(helix_sections - 5, 0);
+    al = std::max<int32_t>(helix_sections - 5, 0);
     al = std::min(al, 10);
     nausea += (al * 0x140000) >> 16;
 
@@ -1116,7 +1116,7 @@ static rating_tuple get_special_track_elements_rating(uint8 type, Ride *ride) {
  */
 static rating_tuple ride_ratings_get_turns_ratings(Ride *ride)
 {
-    sint32 excitement = 0, intensity = 0, nausea = 0;
+    int32_t excitement = 0, intensity = 0, nausea = 0;
 
     rating_tuple special_track_element_rating = get_special_track_elements_rating(ride->type, ride);
     excitement += special_track_element_rating.excitement;
@@ -1153,15 +1153,15 @@ static rating_tuple ride_ratings_get_turns_ratings(Ride *ride)
  */
 static rating_tuple ride_ratings_get_sheltered_ratings(Ride *ride)
 {
-    sint32 sheltered_length_shifted = (ride->sheltered_length) >> 16;
-    uint32 eax = std::min(sheltered_length_shifted, 1000);
-    sint32 excitement = (eax * 9175) >> 16;
+    int32_t sheltered_length_shifted = (ride->sheltered_length) >> 16;
+    uint32_t eax = std::min(sheltered_length_shifted, 1000);
+    int32_t excitement = (eax * 9175) >> 16;
 
     eax = std::min(sheltered_length_shifted, 2000);
-    sint32 intensity = (eax * 0x2666) >> 16;
+    int32_t intensity = (eax * 0x2666) >> 16;
 
     eax = std::min(sheltered_length_shifted, 1000);
-    sint32 nausea = (eax * 0x4000) >> 16;
+    int32_t nausea = (eax * 0x4000) >> 16;
 
     /*eax = (ride->var_11C * 30340) >> 16;*/
     /*nausea += eax;*/
@@ -1176,8 +1176,8 @@ static rating_tuple ride_ratings_get_sheltered_ratings(Ride *ride)
         nausea     += 15;
     }
 
-    uint8 lowerval = ride->num_sheltered_sections & 0x1F;
-    lowerval = std::min<uint8>(lowerval, 11);
+    uint8_t lowerval = ride->num_sheltered_sections & 0x1F;
+    lowerval = std::min<uint8_t>(lowerval, 11);
     excitement += (lowerval * 774516) >> 16;
 
     rating_tuple rating = { (ride_rating)excitement, (ride_rating)intensity, (ride_rating)nausea };
@@ -1241,7 +1241,7 @@ static rating_tuple ride_ratings_get_drop_ratings(Ride *ride)
     };
 
     // Apply number of drops factor
-    sint32 drops = ride->drops & 0x3F;
+    int32_t drops = ride->drops & 0x3F;
     result.excitement += (std::min(9, drops) * 728177) >> 16;
     result.intensity += (drops * 928426) >> 16;
     result.nausea += (drops * 655360) >> 16;
@@ -1259,10 +1259,10 @@ static rating_tuple ride_ratings_get_drop_ratings(Ride *ride)
  * Calculates a score based on the surrounding scenery.
  *  rct2: 0x0065E557
  */
-static sint32 ride_ratings_get_scenery_score(Ride *ride)
+static int32_t ride_ratings_get_scenery_score(Ride *ride)
 {
-    sint8 i = ride_get_first_valid_station_start(ride);
-    sint32 x, y;
+    int8_t i = ride_get_first_valid_station_start(ride);
+    int32_t x, y;
 
     if (i == -1)
     {
@@ -1282,7 +1282,7 @@ static sint32 ride_ratings_get_scenery_score(Ride *ride)
         y = location.y;
     }
 
-    sint32 z = tile_element_height(x * 32, y * 32) & 0xFFFF;
+    int32_t z = tile_element_height(x * 32, y * 32) & 0xFFFF;
 
     // Check if station is underground, returns a fixed mediocre score since you can't have scenery underground
     if (z > ride->station_heights[i] * 8)
@@ -1291,16 +1291,16 @@ static sint32 ride_ratings_get_scenery_score(Ride *ride)
     }
 
     // Count surrounding scenery items
-    sint32 numSceneryItems = 0;
-    for (sint32 yy = std::max(y - 5, 0); yy <= std::min(y + 5, 255); yy++) {
-        for (sint32 xx = std::max(x - 5, 0); xx <= std::min(x + 5, 255); xx++) {
+    int32_t numSceneryItems = 0;
+    for (int32_t yy = std::max(y - 5, 0); yy <= std::min(y + 5, 255); yy++) {
+        for (int32_t xx = std::max(x - 5, 0); xx <= std::min(x + 5, 255); xx++) {
             // Count scenery items on this tile
             rct_tile_element *tileElement = map_get_first_element_at(xx, yy);
             do {
                 if (tileElement->flags & (1 << 4))
                     continue;
 
-                sint32 type = tileElement->GetType();
+                int32_t type = tileElement->GetType();
                 if (type == TILE_ELEMENT_TYPE_SMALL_SCENERY || type == TILE_ELEMENT_TYPE_LARGE_SCENERY)
                     numSceneryItems++;
             } while (!(tileElement++)->IsLastForTile());
@@ -1312,7 +1312,7 @@ static sint32 ride_ratings_get_scenery_score(Ride *ride)
 
 #pragma region Ride rating calculation helpers
 
-static void ride_ratings_set(rating_tuple *ratings, sint32 excitement, sint32 intensity, sint32 nausea)
+static void ride_ratings_set(rating_tuple *ratings, int32_t excitement, int32_t intensity, int32_t nausea)
 {
     ratings->excitement = 0;
     ratings->intensity = 0;
@@ -1323,17 +1323,17 @@ static void ride_ratings_set(rating_tuple *ratings, sint32 excitement, sint32 in
 /**
  * Add to a ride rating with overflow protection.
  */
-static void ride_ratings_add(rating_tuple * rating, sint32 excitement, sint32 intensity, sint32 nausea)
+static void ride_ratings_add(rating_tuple * rating, int32_t excitement, int32_t intensity, int32_t nausea)
 {
-    sint32 newExcitement = rating->excitement + excitement;
-    sint32 newIntensity = rating->intensity + intensity;
-    sint32 newNausea = rating->nausea + nausea;
-    rating->excitement = Math::Clamp<sint32>(0, newExcitement, INT16_MAX);
-    rating->intensity = Math::Clamp<sint32>(0, newIntensity, INT16_MAX);
-    rating->nausea = Math::Clamp<sint32>(0, newNausea, INT16_MAX);
+    int32_t newExcitement = rating->excitement + excitement;
+    int32_t newIntensity = rating->intensity + intensity;
+    int32_t newNausea = rating->nausea + nausea;
+    rating->excitement = Math::Clamp<int32_t>(0, newExcitement, INT16_MAX);
+    rating->intensity = Math::Clamp<int32_t>(0, newIntensity, INT16_MAX);
+    rating->nausea = Math::Clamp<int32_t>(0, newNausea, INT16_MAX);
 }
 
-static void ride_ratings_apply_length(rating_tuple *ratings, Ride *ride, sint32 maxLength, sint32 excitementMultiplier)
+static void ride_ratings_apply_length(rating_tuple *ratings, Ride *ride, int32_t maxLength, int32_t excitementMultiplier)
 {
     ride_ratings_add(ratings,
         (std::min(ride_get_total_length(ride) >> 16, maxLength) * excitementMultiplier) >> 16,
@@ -1341,7 +1341,7 @@ static void ride_ratings_apply_length(rating_tuple *ratings, Ride *ride, sint32 
         0);
 }
 
-static void ride_ratings_apply_synchronisation(rating_tuple *ratings, Ride *ride, sint32 excitement, sint32 intensity)
+static void ride_ratings_apply_synchronisation(rating_tuple *ratings, Ride *ride, int32_t excitement, int32_t intensity)
 {
     if ((ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) &&
         ride_has_adjacent_station(ride)
@@ -1350,7 +1350,7 @@ static void ride_ratings_apply_synchronisation(rating_tuple *ratings, Ride *ride
     }
 }
 
-static void ride_ratings_apply_train_length(rating_tuple *ratings, Ride *ride, sint32 excitementMultiplier)
+static void ride_ratings_apply_train_length(rating_tuple *ratings, Ride *ride, int32_t excitementMultiplier)
 {
     ride_ratings_add(ratings,
         ((ride->num_cars_per_train - 1) * excitementMultiplier) >> 16,
@@ -1358,25 +1358,25 @@ static void ride_ratings_apply_train_length(rating_tuple *ratings, Ride *ride, s
         0);
 }
 
-static void ride_ratings_apply_max_speed(rating_tuple *ratings, Ride *ride, sint32 excitementMultiplier, sint32 intensityMultiplier, sint32 nauseaMultiplier)
+static void ride_ratings_apply_max_speed(rating_tuple *ratings, Ride *ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
-    sint32 modifier = ride->max_speed >> 16;
+    int32_t modifier = ride->max_speed >> 16;
     ride_ratings_add(ratings,
         (modifier * excitementMultiplier) >> 16,
         (modifier * intensityMultiplier) >> 16,
         (modifier * nauseaMultiplier) >> 16);
 }
 
-static void ride_ratings_apply_average_speed(rating_tuple *ratings, Ride *ride, sint32 excitementMultiplier, sint32 intensityMultiplier)
+static void ride_ratings_apply_average_speed(rating_tuple *ratings, Ride *ride, int32_t excitementMultiplier, int32_t intensityMultiplier)
 {
-    sint32 modifier = ride->average_speed >> 16;
+    int32_t modifier = ride->average_speed >> 16;
     ride_ratings_add(ratings,
         (modifier * excitementMultiplier) >> 16,
         (modifier * intensityMultiplier) >> 16,
         0);
 }
 
-static void ride_ratings_apply_duration(rating_tuple *ratings, Ride *ride, sint32 maxDuration, sint32 excitementMultiplier)
+static void ride_ratings_apply_duration(rating_tuple *ratings, Ride *ride, int32_t maxDuration, int32_t excitementMultiplier)
 {
     ride_ratings_add(ratings,
         (std::min(ride_get_total_time(ride), maxDuration) * excitementMultiplier) >> 16,
@@ -1384,7 +1384,7 @@ static void ride_ratings_apply_duration(rating_tuple *ratings, Ride *ride, sint3
         0);
 }
 
-static void ride_ratings_apply_gforces(rating_tuple *ratings, Ride *ride, sint32 excitementMultiplier, sint32 intensityMultiplier, sint32 nauseaMultiplier)
+static void ride_ratings_apply_gforces(rating_tuple *ratings, Ride *ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
     rating_tuple subRating = ride_ratings_get_gforce_ratings(ride);
     ride_ratings_add(ratings,
@@ -1393,7 +1393,7 @@ static void ride_ratings_apply_gforces(rating_tuple *ratings, Ride *ride, sint32
         (subRating.nausea * nauseaMultiplier) >> 16);
 }
 
-static void ride_ratings_apply_turns(rating_tuple *ratings, Ride *ride, sint32 excitementMultiplier, sint32 intensityMultiplier, sint32 nauseaMultiplier)
+static void ride_ratings_apply_turns(rating_tuple *ratings, Ride *ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
     rating_tuple subRating = ride_ratings_get_turns_ratings(ride);
     ride_ratings_add(ratings,
@@ -1402,7 +1402,7 @@ static void ride_ratings_apply_turns(rating_tuple *ratings, Ride *ride, sint32 e
         (subRating.nausea * nauseaMultiplier) >> 16);
 }
 
-static void ride_ratings_apply_drops(rating_tuple *ratings, Ride *ride, sint32 excitementMultiplier, sint32 intensityMultiplier, sint32 nauseaMultiplier)
+static void ride_ratings_apply_drops(rating_tuple *ratings, Ride *ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
     rating_tuple subRating = ride_ratings_get_drop_ratings(ride);
     ride_ratings_add(ratings,
@@ -1411,7 +1411,7 @@ static void ride_ratings_apply_drops(rating_tuple *ratings, Ride *ride, sint32 e
         (subRating.nausea * nauseaMultiplier) >> 16);
 }
 
-static void ride_ratings_apply_sheltered_ratings(rating_tuple *ratings, Ride *ride, sint32 excitementMultiplier, sint32 intensityMultiplier, sint32 nauseaMultiplier)
+static void ride_ratings_apply_sheltered_ratings(rating_tuple *ratings, Ride *ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
     rating_tuple subRating = ride_ratings_get_sheltered_ratings(ride);
     ride_ratings_add(ratings,
@@ -1420,7 +1420,7 @@ static void ride_ratings_apply_sheltered_ratings(rating_tuple *ratings, Ride *ri
         (subRating.nausea * nauseaMultiplier) >> 16);
 }
 
-static void ride_ratings_apply_operation_option(rating_tuple *ratings, Ride *ride, sint32 excitementMultiplier, sint32 intensityMultiplier, sint32 nauseaMultiplier)
+static void ride_ratings_apply_operation_option(rating_tuple *ratings, Ride *ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
     ride_ratings_add(ratings,
         (ride->operation_option * excitementMultiplier) >> 16,
@@ -1428,7 +1428,7 @@ static void ride_ratings_apply_operation_option(rating_tuple *ratings, Ride *rid
         (ride->operation_option * nauseaMultiplier) >> 16);
 }
 
-static void ride_ratings_apply_rotations(rating_tuple *ratings, Ride *ride, sint32 excitementMultiplier, sint32 intensityMultiplier, sint32 nauseaMultiplier)
+static void ride_ratings_apply_rotations(rating_tuple *ratings, Ride *ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
     ride_ratings_add(ratings,
         ride->rotations * excitementMultiplier,
@@ -1436,7 +1436,7 @@ static void ride_ratings_apply_rotations(rating_tuple *ratings, Ride *ride, sint
         ride->rotations * nauseaMultiplier);
 }
 
-static void ride_ratings_apply_proximity(rating_tuple *ratings, sint32 excitementMultiplier)
+static void ride_ratings_apply_proximity(rating_tuple *ratings, int32_t excitementMultiplier)
 {
     ride_ratings_add(ratings,
         (ride_ratings_get_proximity_score() * excitementMultiplier) >> 16,
@@ -1444,7 +1444,7 @@ static void ride_ratings_apply_proximity(rating_tuple *ratings, sint32 excitemen
         0);
 }
 
-static void ride_ratings_apply_scenery(rating_tuple *ratings, Ride *ride, sint32 excitementMultiplier)
+static void ride_ratings_apply_scenery(rating_tuple *ratings, Ride *ride, int32_t excitementMultiplier)
 {
     ride_ratings_add(ratings,
         (ride_ratings_get_scenery_score(ride) * excitementMultiplier) >> 16,
@@ -1452,7 +1452,7 @@ static void ride_ratings_apply_scenery(rating_tuple *ratings, Ride *ride, sint32
         0);
 }
 
-static void ride_ratings_apply_highest_drop_height_penalty(rating_tuple *ratings, Ride *ride, sint32 minHighestDropHeight, sint32 excitementPenalty, sint32 intensityPenalty, sint32 nauseaPenalty)
+static void ride_ratings_apply_highest_drop_height_penalty(rating_tuple *ratings, Ride *ride, int32_t minHighestDropHeight, int32_t excitementPenalty, int32_t intensityPenalty, int32_t nauseaPenalty)
 {
     if (ride->highest_drop_height < minHighestDropHeight) {
         ratings->excitement /= excitementPenalty;
@@ -1461,7 +1461,7 @@ static void ride_ratings_apply_highest_drop_height_penalty(rating_tuple *ratings
     }
 }
 
-static void ride_ratings_apply_max_speed_penalty(rating_tuple *ratings, Ride *ride, sint32 minMaxSpeed, sint32 excitementPenalty, sint32 intensityPenalty, sint32 nauseaPenalty)
+static void ride_ratings_apply_max_speed_penalty(rating_tuple *ratings, Ride *ride, int32_t minMaxSpeed, int32_t excitementPenalty, int32_t intensityPenalty, int32_t nauseaPenalty)
 {
     if (ride->max_speed < minMaxSpeed) {
         ratings->excitement /= excitementPenalty;
@@ -1470,7 +1470,7 @@ static void ride_ratings_apply_max_speed_penalty(rating_tuple *ratings, Ride *ri
     }
 }
 
-static void ride_ratings_apply_num_drops_penalty(rating_tuple *ratings, Ride *ride, sint32 minNumDrops, sint32 excitementPenalty, sint32 intensityPenalty, sint32 nauseaPenalty)
+static void ride_ratings_apply_num_drops_penalty(rating_tuple *ratings, Ride *ride, int32_t minNumDrops, int32_t excitementPenalty, int32_t intensityPenalty, int32_t nauseaPenalty)
 {
     if ((ride->drops & 0x3F) < minNumDrops) {
         ratings->excitement /= excitementPenalty;
@@ -1479,7 +1479,7 @@ static void ride_ratings_apply_num_drops_penalty(rating_tuple *ratings, Ride *ri
     }
 }
 
-static void ride_ratings_apply_max_negative_g_penalty(rating_tuple *ratings, Ride *ride, sint32 maxMaxNegativeVerticalG, sint32 excitementPenalty, sint32 intensityPenalty, sint32 nauseaPenalty)
+static void ride_ratings_apply_max_negative_g_penalty(rating_tuple *ratings, Ride *ride, int32_t maxMaxNegativeVerticalG, int32_t excitementPenalty, int32_t intensityPenalty, int32_t nauseaPenalty)
 {
     if (ride->max_negative_vertical_g >= maxMaxNegativeVerticalG) {
         ratings->excitement /= excitementPenalty;
@@ -1488,7 +1488,7 @@ static void ride_ratings_apply_max_negative_g_penalty(rating_tuple *ratings, Rid
     }
 }
 
-static void ride_ratings_apply_max_lateral_g_penalty(rating_tuple *ratings, Ride *ride, sint32 minMaxLateralG, sint32 excitementPenalty, sint32 intensityPenalty, sint32 nauseaPenalty)
+static void ride_ratings_apply_max_lateral_g_penalty(rating_tuple *ratings, Ride *ride, int32_t minMaxLateralG, int32_t excitementPenalty, int32_t intensityPenalty, int32_t nauseaPenalty)
 {
     if (ride->max_lateral_g < minMaxLateralG) {
         ratings->excitement /= excitementPenalty;
@@ -1510,7 +1510,7 @@ static void ride_ratings_apply_excessive_lateral_g_penalty(rating_tuple *ratings
 #endif
 }
 
-static void ride_ratings_apply_first_length_penalty(rating_tuple *ratings, Ride *ride, sint32 minFirstLength, sint32 excitementPenalty, sint32 intensityPenalty, sint32 nauseaPenalty)
+static void ride_ratings_apply_first_length_penalty(rating_tuple *ratings, Ride *ride, int32_t minFirstLength, int32_t excitementPenalty, int32_t intensityPenalty, int32_t nauseaPenalty)
 {
     if (ride->length[0] < minFirstLength) {
         ratings->excitement /= excitementPenalty;
@@ -1760,7 +1760,7 @@ static void ride_ratings_calculate_miniature_railway(Ride *ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    sint32 edx = get_num_of_sheltered_eighths(ride);
+    int32_t edx = get_num_of_sheltered_eighths(ride);
     if (((edx >> 8) & 0xFF) >= 4)
         ride->excitement /= 4;
 
@@ -1796,7 +1796,7 @@ static void ride_ratings_calculate_monorail(Ride *ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    sint32 edx = get_num_of_sheltered_eighths(ride);
+    int32_t edx = get_num_of_sheltered_eighths(ride);
     if (((edx >> 8) & 0xFF) >= 4)
         ride->excitement /= 4;
 
@@ -2012,7 +2012,7 @@ static void ride_ratings_calculate_launched_freefall(Ride *ride)
             RIDE_RATING(0,45));
     }
 
-    sint32 excitementModifier = ((ride_get_total_length(ride) >> 16) * 32768) >> 16;
+    int32_t excitementModifier = ((ride_get_total_length(ride) >> 16) * 32768) >> 16;
     ride_ratings_add(&ratings, excitementModifier, 0, 0);
 
 #ifdef ORIGINAL_RATINGS
@@ -2025,7 +2025,7 @@ static void ride_ratings_calculate_launched_freefall(Ride *ride)
         // Fix #3282: When the ride mode is in downward launch mode, the intensity and
         //            nausea were fixed regardless of how high the ride is. The following
         //            calculation is based on roto-drop which is a similar mechanic.
-        sint32 lengthFactor = ((ride_get_total_length(ride) >> 16) * 209715) >> 16;
+        int32_t lengthFactor = ((ride_get_total_length(ride) >> 16) * 209715) >> 16;
         ride_ratings_add(&ratings, lengthFactor, lengthFactor * 2, lengthFactor * 2);
     }
 #endif
@@ -2112,7 +2112,7 @@ static void ride_ratings_calculate_observation_tower(Ride *ride)
     ride->inversions &= 0x1F;
     ride->inversions |= 7 << 5;
 
-    sint32 edx = get_num_of_sheltered_eighths(ride);
+    int32_t edx = get_num_of_sheltered_eighths(ride);
     if (((edx >> 8) & 0xFF) >= 5)
         ride->excitement /= 4;
 }
@@ -2277,7 +2277,7 @@ static void ride_ratings_calculate_chairlift(Ride *ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    sint32 edx = get_num_of_sheltered_eighths(ride);
+    int32_t edx = get_num_of_sheltered_eighths(ride);
     if (((edx >> 8) & 0xFF) >= 4)
         ride->excitement /= 4;
 
@@ -2341,7 +2341,7 @@ static void ride_ratings_calculate_maze(Ride *ride)
     rating_tuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1,30), RIDE_RATING(0,50), RIDE_RATING(0,00));
 
-    sint32 size = std::min<uint16>(ride->maze_tiles, 100);
+    int32_t size = std::min<uint16_t>(ride->maze_tiles, 100);
     ride_ratings_add(&ratings,
         size,
         size * 2,
@@ -2411,7 +2411,7 @@ static void ride_ratings_calculate_go_karts(Ride *ride)
             RIDE_RATING(0,50),
             0);
 
-        sint32 lapsFactor = (ride->num_laps - 1) * 30;
+        int32_t lapsFactor = (ride->num_laps - 1) * 30;
         ride_ratings_add(&ratings,
             lapsFactor,
             lapsFactor / 2,
@@ -2432,7 +2432,7 @@ static void ride_ratings_calculate_go_karts(Ride *ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    sint32 edx = get_num_of_sheltered_eighths(ride);
+    int32_t edx = get_num_of_sheltered_eighths(ride);
 
     ride->inversions &= 0x1F;
     ride->inversions |= edx << 5;
@@ -2854,7 +2854,7 @@ static void ride_ratings_calculate_reverse_freefall_coaster(Ride *ride)
 
 static void ride_ratings_calculate_lift(Ride *ride)
 {
-    sint32 totalLength;
+    int32_t totalLength;
 
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
@@ -3211,7 +3211,7 @@ static void ride_ratings_calculate_suspended_monorail(Ride *ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    sint32 edx = get_num_of_sheltered_eighths(ride);
+    int32_t edx = get_num_of_sheltered_eighths(ride);
     if (((edx >> 8) & 0xFF) >= 4)
         ride->excitement /= 4;
 
@@ -3235,7 +3235,7 @@ static void ride_ratings_calculate_reverser_roller_coaster(Ride *ride)
     ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
     ride_ratings_apply_average_speed(&ratings, ride, 364088, 655360);
 
-    sint32 numReversers = std::min<uint16>(gRideRatingsCalcData.num_reversers, 6);
+    int32_t numReversers = std::min<uint16_t>(gRideRatingsCalcData.num_reversers, 6);
     ride_rating reverserRating = numReversers * RIDE_RATING(0,20);
     ride_ratings_add(&ratings,
         reverserRating,
@@ -3688,7 +3688,7 @@ static void ride_ratings_calculate_roto_drop(Ride *ride)
     rating_tuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2,80), RIDE_RATING(3,50), RIDE_RATING(3,50));
 
-    sint32 lengthFactor = ((ride_get_total_length(ride) >> 16) * 209715) >> 16;
+    int32_t lengthFactor = ((ride_get_total_length(ride) >> 16) * 209715) >> 16;
     ride_ratings_add(&ratings,
         lengthFactor,
         lengthFactor * 2,
@@ -4353,7 +4353,7 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[RIDE_TYP
     ride_ratings_calculate_lim_launched_roller_coaster,         // LIM_LAUNCHED_ROLLER_COASTER
 };
 
-static ride_ratings_calculation ride_ratings_get_calculate_func(uint8 rideType)
+static ride_ratings_calculation ride_ratings_get_calculate_func(uint8_t rideType)
 {
     return ride_ratings_calculate_func_table[rideType];
 }

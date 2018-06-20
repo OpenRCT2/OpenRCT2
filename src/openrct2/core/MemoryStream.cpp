@@ -34,7 +34,7 @@ MemoryStream::MemoryStream(size_t capacity)
     _position = _data;
 }
 
-MemoryStream::MemoryStream(void * data, size_t dataSize, uint8 access)
+MemoryStream::MemoryStream(void * data, size_t dataSize, uint8_t access)
 {
     _access = access;
     _dataCapacity = dataSize;
@@ -87,24 +87,24 @@ bool MemoryStream::CanWrite() const
     return (_access & MEMORY_ACCESS::WRITE) != 0;
 }
 
-uint64 MemoryStream::GetLength() const
+uint64_t MemoryStream::GetLength() const
 {
     return _dataSize;
 }
 
-uint64 MemoryStream::GetPosition() const
+uint64_t MemoryStream::GetPosition() const
 {
-    return (uint64)((uintptr_t)_position - (uintptr_t)_data);
+    return (uint64_t)((uintptr_t)_position - (uintptr_t)_data);
 }
 
-void MemoryStream::SetPosition(uint64 position)
+void MemoryStream::SetPosition(uint64_t position)
 {
     Seek(position, STREAM_SEEK_BEGIN);
 }
 
-void MemoryStream::Seek(sint64 offset, sint32 origin)
+void MemoryStream::Seek(int64_t offset, int32_t origin)
 {
-    uint64 newPosition;
+    uint64_t newPosition;
     switch (origin) {
     default:
     case STREAM_SEEK_BEGIN:
@@ -125,30 +125,30 @@ void MemoryStream::Seek(sint64 offset, sint32 origin)
     _position = (void*)((uintptr_t)_data + (uintptr_t)newPosition);
 }
 
-void MemoryStream::Read(void * buffer, uint64 length)
+void MemoryStream::Read(void * buffer, uint64_t length)
 {
-    uint64 position = GetPosition();
+    uint64_t position = GetPosition();
     if (position + length > _dataSize)
     {
         throw IOException("Attempted to read past end of stream.");
     }
 
-    std::copy_n((const uint8 *)_position, length, (uint8 *)buffer);
+    std::copy_n((const uint8_t *)_position, length, (uint8_t *)buffer);
     _position = (void*)((uintptr_t)_position + length);
 }
 
-uint64 MemoryStream::TryRead(void * buffer, uint64 length)
+uint64_t MemoryStream::TryRead(void * buffer, uint64_t length)
 {
-    uint64 remainingBytes = GetLength() - GetPosition();
-    uint64 bytesToRead = std::min(length, remainingBytes);
+    uint64_t remainingBytes = GetLength() - GetPosition();
+    uint64_t bytesToRead = std::min(length, remainingBytes);
     Read(buffer, bytesToRead);
     return bytesToRead;
 }
 
-void MemoryStream::Write(const void * buffer, uint64 length)
+void MemoryStream::Write(const void * buffer, uint64_t length)
 {
-    uint64 position = GetPosition();
-    uint64 nextPosition = position + length;
+    uint64_t position = GetPosition();
+    uint64_t nextPosition = position + length;
     if (nextPosition > _dataCapacity)
     {
         if (_access & MEMORY_ACCESS::OWNER)
@@ -161,7 +161,7 @@ void MemoryStream::Write(const void * buffer, uint64 length)
         }
     }
 
-    std::copy_n((const uint8 *)buffer, length, (uint8 *)_position);
+    std::copy_n((const uint8_t *)buffer, length, (uint8_t *)_position);
     _position = (void*)((uintptr_t)_position + length);
     _dataSize = std::max<size_t>(_dataSize, (size_t)nextPosition);
 }
@@ -176,7 +176,7 @@ void MemoryStream::EnsureCapacity(size_t capacity)
             newCapacity *= 2;
         }
 
-        uint64 position = GetPosition();
+        uint64_t position = GetPosition();
         _dataCapacity = newCapacity;
         _data = Memory::Reallocate(_data, _dataCapacity);
         _position = (void *)((uintptr_t)_data + (uintptr_t)position);

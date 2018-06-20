@@ -110,11 +110,11 @@ namespace OpenRCT2
         class KeyboardShortcuts
         {
         private:
-            constexpr static sint32 CURRENT_FILE_VERSION = 1;
-            static const uint16 DefaultKeys[SHORTCUT_COUNT];
+            constexpr static int32_t CURRENT_FILE_VERSION = 1;
+            static const uint16_t DefaultKeys[SHORTCUT_COUNT];
 
             std::shared_ptr<IPlatformEnvironment> const _env;
-            uint16 _keys[SHORTCUT_COUNT];
+            uint16_t _keys[SHORTCUT_COUNT];
 
         public:
             KeyboardShortcuts(const std::shared_ptr<IPlatformEnvironment>& env);
@@ -124,28 +124,28 @@ namespace OpenRCT2
             bool Load();
             bool Save();
 
-            std::string GetShortcutString(sint32 shortcut) const;
+            std::string GetShortcutString(int32_t shortcut) const;
 
-            void Set(sint32 key);
-            sint32 GetFromKey(sint32 key);
-            void GetKeyboardMapScroll(const uint8 * keysState, sint32 * x, sint32 * y) const;
+            void Set(int32_t key);
+            int32_t GetFromKey(int32_t key);
+            void GetKeyboardMapScroll(const uint8_t * keysState, int32_t * x, int32_t * y) const;
         };
     } // namespace Input
 } // namespace OpenRCT2
 
 /** The current shortcut being changed. */
-extern uint8 gKeyboardShortcutChangeId;
+extern uint8_t gKeyboardShortcutChangeId;
 extern const rct_string_id ShortcutStringIds[SHORTCUT_COUNT];
 
 void keyboard_shortcuts_reset();
 bool keyboard_shortcuts_load();
 bool keyboard_shortcuts_save();
-void keyboard_shortcuts_set(sint32 key);
-sint32 keyboard_shortcuts_get_from_key(sint32 key);
-void keyboard_shortcuts_format_string(char * buffer, size_t bufferSize, sint32 shortcut);
+void keyboard_shortcuts_set(int32_t key);
+int32_t keyboard_shortcuts_get_from_key(int32_t key);
+void keyboard_shortcuts_format_string(char * buffer, size_t bufferSize, int32_t shortcut);
 
-void keyboard_shortcut_handle(sint32 key);
-void keyboard_shortcut_handle_command(sint32 shortcutIndex);
-void keyboard_shortcut_format_string(char *buffer, size_t size, uint16 shortcutKey);
+void keyboard_shortcut_handle(int32_t key);
+void keyboard_shortcut_handle_command(int32_t shortcutIndex);
+void keyboard_shortcut_format_string(char *buffer, size_t size, uint16_t shortcutKey);
 
-void get_keyboard_map_scroll(const uint8 * keysState, sint32 * x, sint32 * y);
+void get_keyboard_map_scroll(const uint8_t * keysState, int32_t * x, int32_t * y);

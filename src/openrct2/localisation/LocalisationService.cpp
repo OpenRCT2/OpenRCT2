@@ -22,7 +22,7 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Localisation;
 
 static constexpr rct_string_id NONSTEX_BASE_STRING_ID = 3463;
-static constexpr uint16 MAX_OBJECT_CACHED_STRINGS = 2048;
+static constexpr uint16_t MAX_OBJECT_CACHED_STRINGS = 2048;
 
 LocalisationService::LocalisationService(const std::shared_ptr<IPlatformEnvironment>& env)
     : _env(env)
@@ -63,7 +63,7 @@ const char * LocalisationService::GetString(rct_string_id id) const
     return result;
 }
 
-std::string LocalisationService::GetLanguagePath(uint32 languageId) const
+std::string LocalisationService::GetLanguagePath(uint32_t languageId) const
 {
     auto locale = std::string(LanguagesDescriptors[languageId].locale);
     auto languageDirectory = _env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::LANGUAGE);
@@ -71,7 +71,7 @@ std::string LocalisationService::GetLanguagePath(uint32 languageId) const
     return languagePath;
 }
 
-void LocalisationService::OpenLanguage(sint32 id, IObjectManager& objectManager)
+void LocalisationService::OpenLanguage(int32_t id, IObjectManager& objectManager)
 {
     CloseLanguages();
     if (id == LANGUAGE_UNDEFINED)
@@ -117,7 +117,7 @@ std::tuple<rct_string_id, rct_string_id, rct_string_id> LocalisationService::Get
     return std::make_tuple(result0, result1, result2);
 }
 
-rct_string_id LocalisationService::GetObjectOverrideStringId(const char * identifier, uint8 index) const
+rct_string_id LocalisationService::GetObjectOverrideStringId(const char * identifier, uint8_t index) const
 {
     if (_languageCurrent == nullptr)
     {
@@ -146,7 +146,7 @@ void LocalisationService::FreeObjectString(rct_string_id stringId)
     }
 }
 
-sint32 LocalisationService_GetCurrentLanguage()
+int32_t LocalisationService_GetCurrentLanguage()
 {
     const auto& localisationService = GetContext()->GetLocalisationService();
     return localisationService.GetCurrentLanguage();

@@ -19,7 +19,7 @@
 
 namespace Platform
 {
-    uint32 GetTicks()
+    uint32_t GetTicks()
     {
         return platform_get_ticks();
     }

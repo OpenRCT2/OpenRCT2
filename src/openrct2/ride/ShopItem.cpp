@@ -12,8 +12,8 @@
 #include "../sprites.h"
 #include "ShopItem.h"
 
-uint32 gSamePriceThroughoutParkA;
-uint32 gSamePriceThroughoutParkB;
+uint32_t gSamePriceThroughoutParkA;
+uint32_t gSamePriceThroughoutParkB;
 
 /** rct2: 0x00982164 */
 static const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT] =
@@ -193,7 +193,7 @@ const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT] =
     { STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BOWL_BLUE,        STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE,     STR_SHOP_ITEM_PLURAL_EMPTY_BOWL_BLUE,       STR_SHOP_ITEM_INDEFINITE_EMPTY_BOWL_BLUE,       STR_SHOP_ITEM_DISPLAY_EMPTY_BOWL_BLUE       },
 };
 
-const uint32 ShopItemImage[SHOP_ITEM_COUNT] =
+const uint32_t ShopItemImage[SHOP_ITEM_COUNT] =
 {
     SPR_SHOP_ITEM_BALLOON,
     SPR_SHOP_ITEM_TOY,
@@ -251,31 +251,31 @@ const uint32 ShopItemImage[SHOP_ITEM_COUNT] =
     SPR_SHOP_ITEM_EMPTY_BOWL_BLUE,
 };
 
-money32 get_shop_item_cost(sint32 shopItem)
+money32 get_shop_item_cost(int32_t shopItem)
 {
     return ShopItemStats[shopItem].cost;
 }
 
-money16 get_shop_base_value(sint32 shopItem)
+money16 get_shop_base_value(int32_t shopItem)
 {
     return ShopItemStats[shopItem].base_value;
 }
 
-money16 get_shop_cold_value(sint32 shopItem)
+money16 get_shop_cold_value(int32_t shopItem)
 {
     return ShopItemStats[shopItem].cold_value;
 }
 
-money16 get_shop_hot_value(sint32 shopItem)
+money16 get_shop_hot_value(int32_t shopItem)
 {
     return ShopItemStats[shopItem].hot_value;
 }
 
-money32 shop_item_get_common_price(Ride* forRide, sint32 shopItem)
+money32 shop_item_get_common_price(Ride* forRide, int32_t shopItem)
 {
     rct_ride_entry* rideEntry;
     Ride* ride;
-    sint32 i;
+    int32_t i;
 
     FOR_ALL_RIDES(i, ride)
     {
@@ -304,14 +304,14 @@ money32 shop_item_get_common_price(Ride* forRide, sint32 shopItem)
     return MONEY32_UNDEFINED;
 }
 
-bool shop_item_is_photo(sint32 shopItem)
+bool shop_item_is_photo(int32_t shopItem)
 {
     return (
         shopItem == SHOP_ITEM_PHOTO || shopItem == SHOP_ITEM_PHOTO2 ||
         shopItem == SHOP_ITEM_PHOTO3 || shopItem == SHOP_ITEM_PHOTO4);
 }
 
-bool shop_item_has_common_price(sint32 shopItem)
+bool shop_item_has_common_price(int32_t shopItem)
 {
     if (shopItem < 32)
     {
@@ -323,7 +323,7 @@ bool shop_item_has_common_price(sint32 shopItem)
     }
 }
 
-bool shop_item_is_food_or_drink(sint32 shopItem)
+bool shop_item_is_food_or_drink(int32_t shopItem)
 {
     switch (shopItem)
     {
@@ -361,7 +361,7 @@ bool shop_item_is_food_or_drink(sint32 shopItem)
     }
 }
 
-bool shop_item_is_food(sint32 shopItem)
+bool shop_item_is_food(int32_t shopItem)
 {
     switch (shopItem)
     {
@@ -391,7 +391,7 @@ bool shop_item_is_food(sint32 shopItem)
     }
 }
 
-bool shop_item_is_drink(sint32 shopItem)
+bool shop_item_is_drink(int32_t shopItem)
 {
     switch (shopItem)
     {
@@ -409,7 +409,7 @@ bool shop_item_is_drink(sint32 shopItem)
     }
 }
 
-bool shop_item_is_souvenir(sint32 shopItem)
+bool shop_item_is_souvenir(int32_t shopItem)
 {
     switch (shopItem)
     {

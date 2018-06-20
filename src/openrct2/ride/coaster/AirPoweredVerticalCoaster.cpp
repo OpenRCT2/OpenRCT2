@@ -162,10 +162,10 @@ enum
     SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_SE_NE_PART_0 = 22333,
 };
 
-static uint32 air_powered_vertical_rc_get_support_colour(paint_session * session)
+static uint32_t air_powered_vertical_rc_get_support_colour(paint_session * session)
 {
-    uint32 colourFlags = session->TrackColours[SCHEME_SUPPORTS];
-    uint32 trackColour = session->TrackColours[SCHEME_TRACK];
+    uint32_t colourFlags = session->TrackColours[SCHEME_SUPPORTS];
+    uint32_t trackColour = session->TrackColours[SCHEME_TRACK];
     if (trackColour & IMAGE_TYPE_REMAP_2_PLUS)
     {
         colourFlags |= (trackColour & 0x9F000000);
@@ -176,20 +176,20 @@ static uint32 air_powered_vertical_rc_get_support_colour(paint_session * session
 /** rct2: 0x008AFAD4 */
 static void air_powered_vertical_rc_track_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4] = {
+    static constexpr const uint32_t imageIds[4] = {
         SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
         SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
         SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
         SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
     };
 
-    uint32 imageId = imageIds[direction] | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = imageIds[direction] | session->TrackColours[SCHEME_TRACK];
     sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -202,13 +202,13 @@ static void air_powered_vertical_rc_track_flat(
 
 static void air_powered_vertical_rc_track_station(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][2] = {
+    static constexpr const uint32_t imageIds[4][2] = {
         { SPR_AIR_POWERED_VERTICAL_RC_STATION_SW_NE, SPR_STATION_BASE_B_SW_NE },
         { SPR_AIR_POWERED_VERTICAL_RC_STATION_NW_SE, SPR_STATION_BASE_B_NW_SE },
         { SPR_AIR_POWERED_VERTICAL_RC_STATION_SW_NE, SPR_STATION_BASE_B_SW_NE },
@@ -233,10 +233,10 @@ static void air_powered_vertical_rc_track_station(
 
 static void air_powered_vertical_rc_track_right_quarter_turn_5(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     static constexpr const sprite_bb imageIds[4][5] = {
@@ -317,10 +317,10 @@ static void air_powered_vertical_rc_track_right_quarter_turn_5(
 
 static void air_powered_vertical_rc_track_left_quarter_turn_5(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -331,20 +331,20 @@ static void air_powered_vertical_rc_track_left_quarter_turn_5(
 /** rct2: 0x008AFB74 */
 static void air_powered_vertical_rc_track_flat_to_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][2] = {
+    static constexpr const uint32_t imageIds[4][2] = {
         { SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_SW_NE, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_SW_NE },
         { SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_NW_SE, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_NW_SE },
         { SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_NE_SW, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_NE_SW },
         { SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_SE_NW, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_SE_NW },
     };
 
-    uint32 imageId = imageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = imageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
     sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
 
     if (direction == 0 || direction == 1)
@@ -364,20 +364,20 @@ static void air_powered_vertical_rc_track_flat_to_left_bank(
 /** rct2: 0x008AFB84 */
 static void air_powered_vertical_rc_track_flat_to_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][2] = {
+    static constexpr const uint32_t imageIds[4][2] = {
         { SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_RIGHT_BANK_SW_NE, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_SW_NE },
         { SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_RIGHT_BANK_NW_SE, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_NW_SE },
         { SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_RIGHT_BANK_NE_SW, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_NE_SW },
         { SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_RIGHT_BANK_SE_NW, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_SE_NW },
     };
 
-    uint32 imageId = imageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = imageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
     sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
 
     if (direction == 2 || direction == 3)
@@ -396,10 +396,10 @@ static void air_powered_vertical_rc_track_flat_to_right_bank(
 
 static void air_powered_vertical_rc_track_left_bank_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     air_powered_vertical_rc_track_flat_to_right_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height,
@@ -409,10 +409,10 @@ static void air_powered_vertical_rc_track_left_bank_to_flat(
 /** rct2: 0x008AFBA4 */
 static void air_powered_vertical_rc_track_right_bank_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     air_powered_vertical_rc_track_flat_to_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -420,10 +420,10 @@ static void air_powered_vertical_rc_track_right_bank_to_flat(
 
 static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     static constexpr const sprite_bb imageIds[4][5] = {
@@ -462,13 +462,13 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(
 
     if (direction == 1 && trackSequence == 6)
     {
-        uint32 imageId =
+        uint32_t imageId =
             SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_NW_SW_PART_4 | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
     }
     else if (direction == 3 && trackSequence == 0)
     {
-        uint32 imageId =
+        uint32_t imageId =
             SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_SE_NE_PART_0 | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 1, 32, 26, height, 27, 0, height);
     }
@@ -518,10 +518,10 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(
 
 static void air_powered_vertical_rc_track_banked_left_quarter_turn_5(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -532,20 +532,20 @@ static void air_powered_vertical_rc_track_banked_left_quarter_turn_5(
 /** rct2: 0x008AFBD4 */
 static void air_powered_vertical_rc_track_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4] = {
+    static constexpr const uint32_t imageIds[4] = {
         SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_SW_NE,
         SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_NW_SE,
         SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_NE_SW,
         SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_SE_NW,
     };
 
-    uint32 imageId = imageIds[direction] | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = imageIds[direction] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 1)
     {
         sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
@@ -565,10 +565,10 @@ static void air_powered_vertical_rc_track_left_bank(
 
 static void air_powered_vertical_rc_track_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     air_powered_vertical_rc_track_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -576,20 +576,20 @@ static void air_powered_vertical_rc_track_right_bank(
 
 static void air_powered_vertical_rc_track_brakes(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4] = {
+    static constexpr const uint32_t imageIds[4] = {
         SPR_AIR_POWERED_VERTICAL_RC_BRAKES_NW_SE,
         SPR_AIR_POWERED_VERTICAL_RC_BRAKES_SW_NE,
         SPR_AIR_POWERED_VERTICAL_RC_BRAKES_NW_SE,
         SPR_AIR_POWERED_VERTICAL_RC_BRAKES_SW_NE,
     };
 
-    uint32 imageId = imageIds[direction] | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = imageIds[direction] | session->TrackColours[SCHEME_TRACK];
     sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -602,13 +602,13 @@ static void air_powered_vertical_rc_track_brakes(
 
 static void air_powered_vertical_rc_track_vertical_slope_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 trackImageIds[7][4] = {
+    static constexpr const uint32_t trackImageIds[7][4] = {
         {
             SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SW_NE_0,
             SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NW_SE_0,
@@ -648,7 +648,7 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
         },
     };
 
-    static constexpr const uint32 supportImageIds[7][4] = {
+    static constexpr const uint32_t supportImageIds[7][4] = {
         {
             22264,
             SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NW_SE_0,
@@ -693,13 +693,13 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
         },
     };
 
-    static constexpr const sint8  bbHeights03[]    = { 1, 6, 14, 37, 76 };
-    static constexpr const sint8  bbHeights12[]    = { 1, 6, 14, 27, 59 };
-    static constexpr const sint32 supportHeights[] = { 48, 64, 128, 176, 208, 240, 240 };
+    static constexpr const int8_t  bbHeights03[]    = { 1, 6, 14, 37, 76 };
+    static constexpr const int8_t  bbHeights12[]    = { 1, 6, 14, 27, 59 };
+    static constexpr const int32_t supportHeights[] = { 48, 64, 128, 176, 208, 240, 240 };
 
-    uint32 supportsImageId = supportImageIds[trackSequence][direction] | air_powered_vertical_rc_get_support_colour(session);
-    uint32 trackImageId    = trackImageIds[trackSequence][direction] | session->TrackColours[SCHEME_TRACK];
-    sint8  bbHeight;
+    uint32_t supportsImageId = supportImageIds[trackSequence][direction] | air_powered_vertical_rc_get_support_colour(session);
+    uint32_t trackImageId    = trackImageIds[trackSequence][direction] | session->TrackColours[SCHEME_TRACK];
+    int8_t  bbHeight;
     bool   isDirection03 = (direction == 0 || direction == 3);
     switch (trackSequence)
     {
@@ -767,7 +767,7 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
     case 5:
         if (wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr))
         {
-            uint32 floorImageId;
+            uint32_t floorImageId;
             if (direction & 1)
             {
                 floorImageId = SPR_FLOOR_PLANKS_90_DEG | session->TrackColours[SCHEME_SUPPORTS];
@@ -809,20 +809,20 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
 
 static void air_powered_vertical_rc_track_vertical_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][2] = {
+    static constexpr const uint32_t imageIds[4][2] = {
         { SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_UP_SW_NE_SEQ_0, SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_UP_SW_NE_SEQ_1 },
         { SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_UP_NW_SE_SEQ_0, SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_UP_NW_SE_SEQ_1 },
         { SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_UP_NE_SW_SEQ_0, SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_UP_NE_SW_SEQ_1 },
         { SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_UP_SE_NW_SEQ_0, SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_UP_SE_NW_SEQ_1 },
     };
 
-    uint32 imageId;
+    uint32_t imageId;
     switch (trackSequence)
     {
     case 0:
@@ -850,10 +850,10 @@ static void air_powered_vertical_rc_track_vertical_up(
 
 static void air_powered_vertical_rc_track_vertical_top(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (direction == 2 || direction == 3)
@@ -863,7 +863,7 @@ static void air_powered_vertical_rc_track_vertical_top(
         return;
     }
 
-    static constexpr const uint32 imageIds[4][6] = {
+    static constexpr const uint32_t imageIds[4][6] = {
         { SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_TOP_SUPPORT_SW_NE, SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_TOP_TRACK_SW_NE_SEQ_0,
           SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_TOP_TRACK_SW_NE_SEQ_1,
           SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_TOP_TRACK_SW_NE_SEQ_2, SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_TOP_SUPPORT_NE_SW,
@@ -874,7 +874,7 @@ static void air_powered_vertical_rc_track_vertical_top(
           SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_TOP_TRACK_NW_SE_SEQ_3 },
     };
 
-    uint32 imageIdS, imageIdT;
+    uint32_t imageIdS, imageIdT;
     switch (trackSequence)
     {
     case 0:
@@ -937,10 +937,10 @@ static void air_powered_vertical_rc_track_vertical_top(
 
 static void air_powered_vertical_rc_track_vertical_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     air_powered_vertical_rc_track_vertical_up(session, rideIndex, trackSequence ^ 1, (direction + 2) & 3, height, tileElement);
@@ -948,17 +948,17 @@ static void air_powered_vertical_rc_track_vertical_down(
 
 static void air_powered_vertical_rc_track_vertical_slope_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     air_powered_vertical_rc_track_vertical_slope_up(session, rideIndex, 6 - trackSequence, (direction + 2) & 3, height,
                                                     tileElement);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int32_t trackType, int32_t direction)
 {
     switch (trackType)
     {

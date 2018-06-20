@@ -66,5 +66,5 @@ size_t title_get_current_sequence();
 bool title_preview_sequence(size_t value);
 void title_stop_previewing_sequence();
 bool title_is_previewing_sequence();
-void DrawOpenRCT2(rct_drawpixelinfo * dpi, sint32 x, sint32 y);
+void DrawOpenRCT2(rct_drawpixelinfo * dpi, int32_t x, int32_t y);
 

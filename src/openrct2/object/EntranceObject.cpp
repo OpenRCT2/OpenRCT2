@@ -17,8 +17,8 @@
 void EntranceObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
-    _legacyType.scrolling_mode = stream->ReadValue<uint8>();
-    _legacyType.text_height = stream->ReadValue<uint8>();
+    _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
+    _legacyType.text_height = stream->ReadValue<uint8_t>();
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
     GetImageTable().Read(context, stream);
@@ -48,12 +48,12 @@ void EntranceObject::Unload()
     _legacyType.image_id = 0;
 }
 
-void EntranceObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
+void EntranceObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const
 {
-    sint32 x = width / 2;
-    sint32 y = height / 2;
+    int32_t x = width / 2;
+    int32_t y = height / 2;
 
-    uint32 imageId = _legacyType.image_id;
+    uint32_t imageId = _legacyType.image_id;
     gfx_draw_sprite(dpi, imageId + 1, x - 32, y + 14, 0);
     gfx_draw_sprite(dpi, imageId + 0, x +  0, y + 28, 0);
     gfx_draw_sprite(dpi, imageId + 2, x + 32, y + 44, 0);

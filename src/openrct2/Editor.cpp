@@ -40,9 +40,9 @@ using namespace OpenRCT2;
 
 namespace Editor
 {
-    static std::array<std::vector<uint8>, OBJECT_TYPE_COUNT> _editorSelectedObjectFlags;
+    static std::array<std::vector<uint8_t>, OBJECT_TYPE_COUNT> _editorSelectedObjectFlags;
 
-    static void ConvertSaveToScenarioCallback(sint32 result, const utf8 * path);
+    static void ConvertSaveToScenarioCallback(int32_t result, const utf8 * path);
     static void SetAllLandOwned();
     static bool LoadLandscapeFromSV4(const char * path);
     static bool LoadLandscapeFromSC4(const char * path);
@@ -86,7 +86,7 @@ namespace Editor
         context_open_intent(&intent);
     }
 
-    static void ConvertSaveToScenarioCallback(sint32 result, const utf8 * path)
+    static void ConvertSaveToScenarioCallback(int32_t result, const utf8 * path)
     {
         if (result != MODAL_RESULT_OK)
         {
@@ -174,7 +174,7 @@ namespace Editor
      */
     static void SetAllLandOwned()
     {
-        sint32 mapSize = gMapSize;
+        int32_t mapSize = gMapSize;
 
         game_do_command(64, 1, 64, 2, GAME_COMMAND_SET_LAND_OWNERSHIP, (mapSize - 3) * 32, (mapSize - 3) * 32);
     }
@@ -189,7 +189,7 @@ namespace Editor
         //        after we have loaded a new park.
         window_close_all();
 
-        uint32 extension = get_file_extension_type(path);
+        uint32_t extension = get_file_extension_type(path);
         switch (extension)
         {
         case FILE_EXTENSION_SC6:
@@ -278,7 +278,7 @@ namespace Editor
 
         //
         {
-            sint32 i;
+            int32_t i;
             Ride * ride;
             FOR_ALL_RIDES(i, ride)
                 {
@@ -289,7 +289,7 @@ namespace Editor
         ride_init_all();
 
         //
-        for (sint32 i = 0; i < MAX_SPRITES; i++)
+        for (int32_t i = 0; i < MAX_SPRITES; i++)
         {
             rct_sprite * sprite = get_sprite(i);
             user_string_free(sprite->unknown.name_string_idx);
@@ -343,7 +343,7 @@ namespace Editor
                 MONEY(5000000, 00)
             );
 
-            gBankLoanInterestRate = Math::Clamp((uint8)5, gBankLoanInterestRate, (uint8)80);
+            gBankLoanInterestRate = Math::Clamp((uint8_t)5, gBankLoanInterestRate, (uint8_t)80);
         }
 
         climate_reset(gClimate);
@@ -429,7 +429,7 @@ namespace Editor
      *
      *  rct2: 0x006AB9B8
      */
-    sint32 CheckObjectSelection()
+    int32_t CheckObjectSelection()
     {
         bool isTrackDesignerManager =
                  gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
@@ -473,14 +473,14 @@ namespace Editor
      */
     bool CheckPark()
     {
-        sint32 parkSize = park_calculate_size();
+        int32_t parkSize = park_calculate_size();
         if (parkSize == 0)
         {
             gGameCommandErrorText = STR_PARK_MUST_OWN_SOME_LAND;
             return false;
         }
 
-        for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++)
+        for (int32_t i = 0; i < MAX_PARK_ENTRANCES; i++)
         {
             if (gParkEntrances[i].x != LOCATION_NULL)
             {
@@ -501,10 +501,10 @@ namespace Editor
                 continue;
             }
 
-            sint32 x         = parkEntrance.x;
-            sint32 y         = parkEntrance.y;
-            sint32 z         = parkEntrance.z / 8;
-            sint32 direction = parkEntrance.direction ^ 2;
+            int32_t x         = parkEntrance.x;
+            int32_t y         = parkEntrance.y;
+            int32_t z         = parkEntrance.z / 8;
+            int32_t direction = parkEntrance.direction ^ 2;
 
             switch (footpath_is_connected_to_map_edge(x, y, z, direction, 0))
             {
@@ -522,7 +522,7 @@ namespace Editor
             }
         }
 
-        for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++)
+        for (int32_t i = 0; i < MAX_PEEP_SPAWNS; i++)
         {
             if (gPeepSpawns[i].x != PEEP_SPAWN_UNDEFINED)
             {
@@ -540,13 +540,13 @@ namespace Editor
     }
 
     void GameCommandEditScenarioOptions(
-        [[maybe_unused]] sint32 * eax,
-        sint32 *                  ebx,
-        sint32 *                  ecx,
-        sint32 *                  edx,
-        [[maybe_unused]] sint32 * esi,
-        [[maybe_unused]] sint32 * edi,
-        [[maybe_unused]] sint32 * ebp)
+        [[maybe_unused]] int32_t * eax,
+        int32_t *                  ebx,
+        int32_t *                  ecx,
+        int32_t *                  edx,
+        [[maybe_unused]] int32_t * esi,
+        [[maybe_unused]] int32_t * edi,
+        [[maybe_unused]] int32_t * ebp)
     {
         if (!(*ebx & GAME_COMMAND_FLAG_APPLY))
         {
@@ -757,9 +757,9 @@ namespace Editor
         *ebx = 0;
     }
 
-    uint8 GetSelectedObjectFlags(sint32 objectType, size_t index)
+    uint8_t GetSelectedObjectFlags(int32_t objectType, size_t index)
     {
-        uint8 result = 0;
+        uint8_t result = 0;
         auto &list = _editorSelectedObjectFlags[objectType];
         if (list.size() > index)
         {
@@ -768,7 +768,7 @@ namespace Editor
         return result;
     }
 
-    void ClearSelectedObject(sint32 objectType, size_t index, uint32 flags)
+    void ClearSelectedObject(int32_t objectType, size_t index, uint32_t flags)
     {
         auto &list = _editorSelectedObjectFlags[objectType];
         if (list.size() <= index)
@@ -778,7 +778,7 @@ namespace Editor
         list[index] &= ~flags;
     }
 
-    void SetSelectedObject(sint32 objectType, size_t index, uint32 flags)
+    void SetSelectedObject(int32_t objectType, size_t index, uint32_t flags)
     {
         auto &list = _editorSelectedObjectFlags[objectType];
         if (list.size() <= index)
@@ -794,7 +794,7 @@ void editor_open_windows_for_current_step()
     Editor::OpenWindowsForCurrentStep();
 }
 
-void game_command_edit_scenario_options(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+void game_command_edit_scenario_options(int32_t * eax, int32_t * ebx, int32_t * ecx, int32_t * edx, int32_t * esi, int32_t * edi, int32_t * ebp)
 {
     Editor::GameCommandEditScenarioOptions(eax, ebx, ecx, edx, esi, edi, ebp);
 }

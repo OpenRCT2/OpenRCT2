@@ -16,18 +16,18 @@ interface ILanguagePack
 {
     virtual ~ILanguagePack() = default;
 
-    virtual uint16 GetId() const abstract;
-    virtual uint32 GetCount() const abstract;
+    virtual uint16_t GetId() const abstract;
+    virtual uint32_t GetCount() const abstract;
 
     virtual void            RemoveString(rct_string_id stringId) abstract;
     virtual void            SetString(rct_string_id stringId, const std::string &str) abstract;
     virtual const utf8 *    GetString(rct_string_id stringId) const abstract;
-    virtual rct_string_id   GetObjectOverrideStringId(const char * objectIdentifier, uint8 index) abstract;
-    virtual rct_string_id   GetScenarioOverrideStringId(const utf8 * scenarioFilename, uint8 index) abstract;
+    virtual rct_string_id   GetObjectOverrideStringId(const char * objectIdentifier, uint8_t index) abstract;
+    virtual rct_string_id   GetScenarioOverrideStringId(const utf8 * scenarioFilename, uint8_t index) abstract;
 };
 
 namespace LanguagePackFactory
 {
-    ILanguagePack * FromFile(uint16 id, const utf8 * path);
-    ILanguagePack * FromText(uint16 id, const utf8 * text);
+    ILanguagePack * FromFile(uint16_t id, const utf8 * path);
+    ILanguagePack * FromText(uint16_t id, const utf8 * text);
 }

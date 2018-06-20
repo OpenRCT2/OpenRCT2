@@ -21,7 +21,7 @@ class NetworkUser final
 public:
     std::string         Hash;
     std::string         Name;
-    Nullable<uint8>     GroupId;
+    Nullable<uint8_t>     GroupId;
     bool                Remove;
 
     static NetworkUser * FromJson(json_t * json);
@@ -45,7 +45,7 @@ public:
      */
     void Save();
 
-    void UnsetUsersOfGroup(uint8 groupId);
+    void UnsetUsersOfGroup(uint8_t groupId);
     void RemoveUser(const std::string &hash);
 
     NetworkUser * GetUserByHash(const std::string &hash);

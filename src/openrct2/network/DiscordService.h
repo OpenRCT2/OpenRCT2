@@ -17,7 +17,7 @@
 class DiscordService final
 {
 private:
-    uint32 _ticksSinceLastRefresh = std::numeric_limits<uint32>::max();
+    uint32_t _ticksSinceLastRefresh = std::numeric_limits<uint32_t>::max();
 
 public:
     DiscordService();

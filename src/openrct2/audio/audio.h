@@ -26,55 +26,55 @@ struct audio_device
 
 struct rct_ride_music
 {
-    uint8 ride_id;
-    uint8 tune_id;
-    sint16 volume;
-    sint16 pan;
-    uint16 frequency;
+    uint8_t ride_id;
+    uint8_t tune_id;
+    int16_t volume;
+    int16_t pan;
+    uint16_t frequency;
     void* sound_channel;
 };
 
 struct rct_ride_music_info
 {
-    uint8 path_id;
-    uint32 offset;
-    uint32 length;
+    uint8_t path_id;
+    uint32_t offset;
+    uint32_t length;
 };
 
 struct rct_ride_music_params
 {
-    uint8 ride_id;
-    uint8 tune_id;
-    sint32 offset;
-    sint16 volume;
-    sint16 pan;
-    uint16 frequency;
+    uint8_t ride_id;
+    uint8_t tune_id;
+    int32_t offset;
+    int16_t volume;
+    int16_t pan;
+    uint16_t frequency;
 };
 
 struct rct_vehicle_sound
 {
-    uint16 id;
-    sint16 volume;
-    uint16 sound1_id;
-    sint16 sound1_volume;
-    sint16 sound1_pan;
-    uint16 sound1_freq;
-    uint16 sound2_id;
-    sint16 sound2_volume;
-    sint16 sound2_pan;
-    uint16 sound2_freq;
+    uint16_t id;
+    int16_t volume;
+    uint16_t sound1_id;
+    int16_t sound1_volume;
+    int16_t sound1_pan;
+    uint16_t sound1_freq;
+    uint16_t sound2_id;
+    int16_t sound2_volume;
+    int16_t sound2_pan;
+    uint16_t sound2_freq;
     void* sound1_channel;
     void* sound2_channel;
 };
 
 struct rct_vehicle_sound_params
 {
-    uint16 id;
-    sint16 pan_x;
-    sint16 pan_y;
-    uint16 frequency;
-    sint16 volume;
-    uint16 priority;
+    uint16_t id;
+    int16_t pan_x;
+    int16_t pan_y;
+    uint16_t frequency;
+    int16_t volume;
+    uint16_t priority;
 };
 
 enum RCT2_SOUND
@@ -146,11 +146,11 @@ enum RCT2_SOUND
 };
 
 extern audio_device *   gAudioDevices;
-extern sint32           gAudioDeviceCount;
-extern sint32           gAudioCurrentDevice;
+extern int32_t           gAudioDeviceCount;
+extern int32_t           gAudioCurrentDevice;
 
 extern bool     gGameSoundsOff;
-extern sint32   gVolumeAdjustZoom;
+extern int32_t   gVolumeAdjustZoom;
 
 extern void *   gTitleMusicChannel;
 extern void *   gRainSoundChannel;
@@ -182,7 +182,7 @@ void audio_init_ride_sounds_and_info();
 * Loads the ride sounds.
 * rct2: 0x006BA9B5
 */
-void audio_init_ride_sounds(sint32 device);
+void audio_init_ride_sounds(int32_t device);
 /**
 * Temporarily stops playing sounds until audio_unpause_sounds() is called.
 * rct2: 0x006BABB4
@@ -196,7 +196,7 @@ void audio_pause_sounds();
 * sound at a position relative to the centre of the viewport.
 * @return 0 if the sound was not out of range; otherwise, soundId.
 */
-sint32 audio_play_sound(sint32 soundId, sint32 volume, sint32 pan);
+int32_t audio_play_sound(int32_t soundId, int32_t volume, int32_t pan);
 /**
 * Plays the specified sound at a virtual location.
 * @param soundId The sound effect to play.
@@ -205,7 +205,7 @@ sint32 audio_play_sound(sint32 soundId, sint32 volume, sint32 pan);
 * @param z The z coordinate of the location.
 * @return 0 if the sound was not out of range; otherwise, soundId.
 */
-sint32 audio_play_sound_at_location(sint32 soundId, sint16 x, sint16 y, sint16 z);
+int32_t audio_play_sound_at_location(int32_t soundId, int16_t x, int16_t y, int16_t z);
 /**
 * Populates the gAudioDevices array with the available audio devices.
 */

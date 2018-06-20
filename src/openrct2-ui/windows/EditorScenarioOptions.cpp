@@ -175,7 +175,7 @@ static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawp
 static void window_editor_scenario_options_park_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_scenario_options_park_resize(rct_window *w);
 static void window_editor_scenario_options_park_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
-static void window_editor_scenario_options_park_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_editor_scenario_options_park_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_editor_scenario_options_park_update(rct_window *w);
 static void window_editor_scenario_options_park_invalidate(rct_window *w);
 static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -292,7 +292,7 @@ static rct_window_event_list *window_editor_scenario_options_page_events[] = {
     (1ULL << WIDX_TAB_2) |\
     (1ULL << WIDX_TAB_3)
 
-static uint64 window_editor_scenario_options_page_enabled_widgets[] = {
+static uint64_t window_editor_scenario_options_page_enabled_widgets[] = {
     ALWAYS_ENABLED_WIDGETS |
         (1ULL << WIDX_NO_MONEY) |
         (1ULL << WIDX_INITIAL_CASH_INCREASE) |
@@ -331,7 +331,7 @@ static uint64 window_editor_scenario_options_page_enabled_widgets[] = {
         (1ULL << WIDX_HARD_GUEST_GENERATION)
 };
 
-static uint32 window_editor_scenario_options_page_hold_down_widgets[] = {
+static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
     (1ULL << WIDX_INITIAL_CASH_INCREASE) |
         (1ULL << WIDX_INITIAL_CASH_DECREASE) |
         (1ULL << WIDX_INITIAL_LOAN_INCREASE) |
@@ -390,7 +390,7 @@ rct_window * window_editor_scenario_options_open()
 
 static void window_editor_scenario_options_set_pressed_tab(rct_window *w)
 {
-    sint32 i;
+    int32_t i;
     for (i = 0; i < WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT; i++)
         w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
@@ -414,7 +414,7 @@ static void window_editor_scenario_options_anchor_border_widgets(rct_window *w)
 static void window_editor_scenario_options_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi)
 {
     rct_widget *widget;
-    sint32 spriteIndex;
+    int32_t spriteIndex;
 
     // Tab 1
     widget = &w->widgets[WIDX_TAB_1];
@@ -442,7 +442,7 @@ static void window_editor_scenario_options_draw_tab_images(rct_window *w, rct_dr
  *
  *  rct2: 0x00668496
  */
-static void window_editor_scenario_options_set_page(rct_window *w, sint32 page)
+static void window_editor_scenario_options_set_page(rct_window *w, int32_t page)
 {
     if (w->page == page)
         return;
@@ -480,7 +480,7 @@ static void window_editor_scenario_options_financial_mouseup(rct_window *w, rct_
         break;
     case WIDX_NO_MONEY:
     {
-        sint32 newMoneySetting;
+        int32_t newMoneySetting;
 
         if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         {
@@ -710,7 +710,7 @@ static void window_editor_scenario_options_financial_invalidate(rct_window *w)
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)) ||
         (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY))) {
         w->pressed_widgets |= (1 << WIDX_NO_MONEY);
-        for (sint32 i = WIDX_INITIAL_CASH; i <= WIDX_FORBID_MARKETING; i++)
+        for (int32_t i = WIDX_INITIAL_CASH; i <= WIDX_FORBID_MARKETING; i++)
             w->widgets[i].type = WWT_EMPTY;
     } else {
         w->pressed_widgets &= ~(1 << WIDX_NO_MONEY);
@@ -745,7 +745,7 @@ static void window_editor_scenario_options_financial_invalidate(rct_window *w)
  */
 static void window_editor_scenario_options_financial_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 x, y;
+    int32_t x, y;
 
     window_draw_widgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
@@ -788,7 +788,7 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
         x = w->x + w->widgets[WIDX_INTEREST_RATE].left + 1;
         y = w->y + w->widgets[WIDX_INTEREST_RATE].top;
 
-        sint16 interestRate = Math::Clamp<sint16>(INT16_MIN, (sint16)gBankLoanInterestRate, INT16_MAX);
+        int16_t interestRate = Math::Clamp<int16_t>(INT16_MIN, (int16_t)gBankLoanInterestRate, INT16_MAX);
         gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &interestRate, COLOUR_BLACK, x, y);
     }
 }
@@ -1047,7 +1047,7 @@ static void window_editor_scenario_options_guests_invalidate(rct_window *w)
  */
 static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 x, y, arg;
+    int32_t x, y, arg;
 
     window_draw_widgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
@@ -1331,7 +1331,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window *w, rct_wid
  *
  *  rct2: 0x00671060
  */
-static void window_editor_scenario_options_park_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_editor_scenario_options_park_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (widgetIndex == WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN && dropdownIndex != -1) {
         game_do_command(
@@ -1364,7 +1364,7 @@ static void window_editor_scenario_options_park_update(rct_window *w)
  */
 static void window_editor_scenario_options_park_invalidate(rct_window *w)
 {
-    uint64 pressedWidgets;
+    uint64_t pressedWidgets;
 
     rct_widget *widgets = window_editor_scenario_options_widgets[w->page];
     if (w->widgets != widgets) {
@@ -1376,7 +1376,7 @@ static void window_editor_scenario_options_park_invalidate(rct_window *w)
 
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)) ||
         (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY))) {
-        for (sint32 i = WIDX_LAND_COST; i <= WIDX_ENTRY_PRICE_DECREASE; i++)
+        for (int32_t i = WIDX_LAND_COST; i <= WIDX_ENTRY_PRICE_DECREASE; i++)
             w->widgets[i].type = WWT_EMPTY;
     }
     else
@@ -1436,7 +1436,7 @@ static void window_editor_scenario_options_park_invalidate(rct_window *w)
  */
 static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 x, y, arg;
+    int32_t x, y, arg;
     rct_string_id stringId;
 
     window_draw_widgets(w, dpi);

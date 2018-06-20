@@ -88,35 +88,35 @@ enum
     SPR_GO_KARTS_START_LIGHTS_GREEN_SE_NW              = 20819,
 };
 
-static constexpr const uint32 go_karts_track_pieces_starting_grid_end[4][2] = {
+static constexpr const uint32_t go_karts_track_pieces_starting_grid_end[4][2] = {
     { SPR_GO_KARTS_STARTING_GRID_END_SW_NE, SPR_GO_KARTS_STARTING_GRID_END_FRONT_SW_NE },
     { SPR_GO_KARTS_STARTING_GRID_END_NW_SE, SPR_GO_KARTS_STARTING_GRID_END_FRONT_NW_SE },
     { SPR_GO_KARTS_STARTING_GRID_END_NE_SW, SPR_GO_KARTS_STARTING_GRID_END_FRONT_NE_SW },
     { SPR_GO_KARTS_STARTING_GRID_END_SE_NW, SPR_GO_KARTS_STARTING_GRID_END_FRONT_SE_NW },
 };
 
-static constexpr const uint32 go_karts_track_pieces_starting_grid[4][2] = {
+static constexpr const uint32_t go_karts_track_pieces_starting_grid[4][2] = {
     { SPR_GO_KARTS_STARTING_GRID_SW_NE, SPR_GO_KARTS_STARTING_GRID_FRONT_SW_NE },
     { SPR_GO_KARTS_STARTING_GRID_NW_SE, SPR_GO_KARTS_STARTING_GRID_FRONT_NW_SE },
     { SPR_GO_KARTS_STARTING_GRID_NE_SW, SPR_GO_KARTS_STARTING_GRID_FRONT_NE_SW },
     { SPR_GO_KARTS_STARTING_GRID_SE_NW, SPR_GO_KARTS_STARTING_GRID_FRONT_SE_NW },
 };
 
-static constexpr const uint32 go_karts_track_pieces_25_deg_up[4][2] = {
+static constexpr const uint32_t go_karts_track_pieces_25_deg_up[4][2] = {
     { SPR_GO_KARTS_25_DEG_UP_SW_NE, SPR_GO_KARTS_25_DEG_UP_FRONT_SW_NE },
     { SPR_GO_KARTS_25_DEG_UP_NW_SE, SPR_GO_KARTS_25_DEG_UP_FRONT_NW_SE },
     { SPR_GO_KARTS_25_DEG_UP_NE_SW, SPR_GO_KARTS_25_DEG_UP_FRONT_NE_SW },
     { SPR_GO_KARTS_25_DEG_UP_SE_NW, SPR_GO_KARTS_25_DEG_UP_FRONT_SE_NW },
 };
 
-static constexpr const uint32 go_karts_track_pieces_flat_to_25_deg_up[4][2] = {
+static constexpr const uint32_t go_karts_track_pieces_flat_to_25_deg_up[4][2] = {
     { SPR_GO_KARTS_FLAT_TO_25_DEG_UP_SW_NE, SPR_GO_KARTS_FLAT_TO_25_DEG_UP_FRONT_SW_NE },
     { SPR_GO_KARTS_FLAT_TO_25_DEG_UP_NW_SE, SPR_GO_KARTS_FLAT_TO_25_DEG_UP_FRONT_NW_SE },
     { SPR_GO_KARTS_FLAT_TO_25_DEG_UP_NE_SW, SPR_GO_KARTS_FLAT_TO_25_DEG_UP_FRONT_NE_SW },
     { SPR_GO_KARTS_FLAT_TO_25_DEG_UP_SE_NW, SPR_GO_KARTS_FLAT_TO_25_DEG_UP_FRONT_SE_NW },
 };
 
-static constexpr const uint32 go_karts_track_pieces_25_deg_up_to_flat[4][2] = {
+static constexpr const uint32_t go_karts_track_pieces_25_deg_up_to_flat[4][2] = {
     { SPR_GO_KARTS_25_DEG_UP_TO_FLAT_SW_NE, SPR_GO_KARTS_25_DEG_UP_TO_FLAT_FRONT_SW_NE },
     { SPR_GO_KARTS_25_DEG_UP_TO_FLAT_NW_SE, SPR_GO_KARTS_25_DEG_UP_TO_FLAT_FRONT_NW_SE },
     { SPR_GO_KARTS_25_DEG_UP_TO_FLAT_NE_SW, SPR_GO_KARTS_25_DEG_UP_TO_FLAT_FRONT_NE_SW },
@@ -126,13 +126,13 @@ static constexpr const uint32 go_karts_track_pieces_25_deg_up_to_flat[4][2] = {
 /** rct2: 0x0074A748 */
 static void paint_go_karts_track_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    uint32 imageId;
+    uint32_t imageId;
     if (direction == 0 || direction == 2)
     {
         imageId = SPR_GO_KARTS_FLAT_SW_NE | session->TrackColours[SCHEME_TRACK];
@@ -163,13 +163,13 @@ static void paint_go_karts_track_flat(
 /** rct2: 0x0074A758 */
 static void paint_go_karts_track_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    uint32         imageId;
+    uint32_t         imageId;
     paint_struct * ps;
 
     imageId = go_karts_track_pieces_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
@@ -221,13 +221,13 @@ static void paint_go_karts_track_25_deg_up(
 /** rct2: 0x0074A768 */
 static void paint_go_karts_track_flat_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    uint32         imageId;
+    uint32_t         imageId;
     paint_struct * ps;
 
     imageId = go_karts_track_pieces_flat_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
@@ -279,13 +279,13 @@ static void paint_go_karts_track_flat_to_25_deg_up(
 /** rct2: 0x */
 static void paint_go_karts_track_25_deg_up_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    uint32         imageId;
+    uint32_t         imageId;
     paint_struct * ps;
 
     imageId = go_karts_track_pieces_25_deg_up_to_flat[direction][0] | session->TrackColours[SCHEME_TRACK];
@@ -337,10 +337,10 @@ static void paint_go_karts_track_25_deg_up_to_flat(
 /** rct2: 0x0074A788 */
 static void paint_go_karts_track_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     paint_go_karts_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
@@ -349,10 +349,10 @@ static void paint_go_karts_track_25_deg_down(
 /** rct2: 0x0074A798 */
 static void paint_go_karts_track_flat_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     paint_go_karts_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
@@ -361,10 +361,10 @@ static void paint_go_karts_track_flat_to_25_deg_down(
 /** rct2: 0x0074A7A8 */
 static void paint_go_karts_track_25_deg_down_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     paint_go_karts_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
@@ -373,10 +373,10 @@ static void paint_go_karts_track_25_deg_down_to_flat(
 /** rct2: 0x */
 static void paint_go_karts_station(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     LocationXY16                             position      = session->MapPosition;
@@ -384,8 +384,8 @@ static void paint_go_karts_station(
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 
     bool   hasFence;
-    uint32 imageId;
-    const uint32(*sprites)[2] = go_karts_track_pieces_starting_grid;
+    uint32_t imageId;
+    const uint32_t(*sprites)[2] = go_karts_track_pieces_starting_grid;
 
     if (track_element_get_type(tileElement) == TRACK_ELEM_END_STATION)
     {
@@ -488,13 +488,13 @@ static void paint_go_karts_station(
 /** rct2: 0x0074A7E8 */
 static void paint_go_karts_track_left_quarter_turn_1_tile(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    uint32 imageId;
+    uint32_t imageId;
 
     switch (direction)
     {
@@ -562,10 +562,10 @@ static void paint_go_karts_track_left_quarter_turn_1_tile(
 /** rct2: 0x0074A7F8 */
 static void paint_go_karts_track_right_quarter_turn_1_tile(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     paint_go_karts_track_left_quarter_turn_1_tile(session, rideIndex, trackSequence, (direction + 3) % 4, height, tileElement);
@@ -574,7 +574,7 @@ static void paint_go_karts_track_right_quarter_turn_1_tile(
 /**
  * rct2: 0x0074A668
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_go_karts(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_go_karts(int32_t trackType, int32_t direction)
 {
     switch (trackType)
     {

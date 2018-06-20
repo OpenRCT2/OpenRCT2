@@ -34,34 +34,34 @@
 using namespace OpenRCT2;
 
 //#define DEBUG_SHOW_DIRTY_BOX
-uint8 gShowGridLinesRefCount;
-uint8 gShowLandRightsRefCount;
-uint8 gShowConstuctionRightsRefCount;
+uint8_t gShowGridLinesRefCount;
+uint8_t gShowLandRightsRefCount;
+uint8_t gShowConstuctionRightsRefCount;
 
 rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 rct_viewport *g_music_tracking_viewport;
 
 static rct_tile_element *_interaction_element = nullptr;
 
-sint16 gSavedViewX;
-sint16 gSavedViewY;
-uint8 gSavedViewZoom;
-uint8 gSavedViewRotation;
+int16_t gSavedViewX;
+int16_t gSavedViewY;
+uint8_t gSavedViewZoom;
+uint8_t gSavedViewRotation;
 
 paint_entry *gNextFreePaintStruct;
-uint8 gCurrentRotation;
-uint32 gCurrentViewportFlags = 0;
+uint8_t gCurrentRotation;
+uint32_t gCurrentViewportFlags = 0;
 
-static uint32 _currentImageType;
+static uint32_t _currentImageType;
 
 static rct_drawpixelinfo _viewportDpi1;
 static rct_drawpixelinfo _viewportDpi2;
-static uint8 _interactionSpriteType;
-static sint16 _interactionMapX;
-static sint16 _interactionMapY;
-static uint16 _unk9AC154;
+static uint8_t _interactionSpriteType;
+static int16_t _interactionMapX;
+static int16_t _interactionMapY;
+static uint16_t _unk9AC154;
 
-static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags);
+static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32_t viewFlags);
 static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi);
 
 /**
@@ -79,7 +79,7 @@ void viewport_init_all()
     window_init_all();
 
     // Setting up viewports
-    for (sint32 i = 0; i < MAX_VIEWPORT_COUNT; i++) {
+    for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++) {
         g_viewport_list[i].width = 0;
     }
 
@@ -104,13 +104,13 @@ void viewport_init_all()
  * out_x : ax
  * out_y : bx
  */
-void centre_2d_coordinates(sint32 x, sint32 y, sint32 z, sint32 * out_x, sint32 * out_y, rct_viewport * viewport){
-    sint32 start_x = x;
+void centre_2d_coordinates(int32_t x, int32_t y, int32_t z, int32_t * out_x, int32_t * out_y, rct_viewport * viewport){
+    int32_t start_x = x;
 
     LocationXYZ16 coord_3d = {
-        /* .x = */ (sint16)x,
-        /* .y = */ (sint16)y,
-        /* .z = */ (sint16)z
+        /* .x = */ (int16_t)x,
+        /* .y = */ (int16_t)y,
+        /* .z = */ (int16_t)z
     };
 
     LocationXY16 coord_2d = coordinate_3d_to_2d(&coord_3d, get_current_rotation());
@@ -146,10 +146,10 @@ void centre_2d_coordinates(sint32 x, sint32 y, sint32 z, sint32 * out_x, sint32 
 *  flags:  edx top most 2 bits 0b_X1 for zoom clear see below for 2nd bit.
 *  w:      esi
 */
-void viewport_create(rct_window *w, sint32 x, sint32 y, sint32 width, sint32 height, sint32 zoom, sint32 centre_x, sint32 centre_y, sint32 centre_z, char flags, sint16 sprite)
+void viewport_create(rct_window *w, int32_t x, int32_t y, int32_t width, int32_t height, int32_t zoom, int32_t centre_x, int32_t centre_y, int32_t centre_z, char flags, int16_t sprite)
 {
     rct_viewport* viewport = nullptr;
-    for (sint32 i = 0; i < MAX_VIEWPORT_COUNT; i++) {
+    for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++) {
         if (g_viewport_list[i].width == 0) {
             viewport = &g_viewport_list[i];
             break;
@@ -189,7 +189,7 @@ void viewport_create(rct_window *w, sint32 x, sint32 y, sint32 width, sint32 hei
         w->viewport_target_sprite = SPRITE_INDEX_NULL;
     }
 
-    sint32 view_x, view_y;
+    int32_t view_x, view_y;
     centre_2d_coordinates(centre_x, centre_y, centre_z, &view_x, &view_y, viewport);
 
     w->saved_view_x = view_x;
@@ -204,24 +204,24 @@ void viewport_create(rct_window *w, sint32 x, sint32 y, sint32 width, sint32 hei
  * edx is assumed to be (and always is) the current rotation, so it is not
  * needed as parameter.
  */
-void viewport_adjust_for_map_height(sint16* x, sint16* y, sint16 *z)
+void viewport_adjust_for_map_height(int16_t* x, int16_t* y, int16_t *z)
 {
-    sint16 start_x = *x;
-    sint16 start_y = *y;
-    sint16 height = 0;
+    int16_t start_x = *x;
+    int16_t start_y = *y;
+    int16_t height = 0;
 
-    uint32 rotation = get_current_rotation();
+    uint32_t rotation = get_current_rotation();
     LocationXY16 pos;
-    for (sint32 i = 0; i < 6; i++) {
+    for (int32_t i = 0; i < 6; i++) {
         pos = viewport_coord_to_map_coord(start_x, start_y, height);
         height = tile_element_height((0xFFFF) & pos.x, (0xFFFF) & pos.y);
 
         // HACK: This is to prevent the x and y values being set to values outside
         // of the map. This can happen when the height is larger than the map size.
-        sint16 max = gMapSizeMinus2;
+        int16_t max = gMapSizeMinus2;
         if (pos.x > max && pos.y > max) {
-            sint32 x_corr[] = { -1, 1, 1, -1 };
-            sint32 y_corr[] = { -1, -1, 1, 1 };
+            int32_t x_corr[] = { -1, 1, 1, -1 };
+            int32_t y_corr[] = { -1, -1, 1, 1 };
             pos.x += x_corr[rotation] * height;
             pos.y += y_corr[rotation] * height;
         }
@@ -235,7 +235,7 @@ void viewport_adjust_for_map_height(sint16* x, sint16* y, sint16 *z)
 /*
 *  rct2: 0x006E7FF3
 */
-static void viewport_redraw_after_shift(rct_drawpixelinfo *dpi, rct_window *window, rct_viewport *viewport, sint32 x, sint32 y)
+static void viewport_redraw_after_shift(rct_drawpixelinfo *dpi, rct_window *window, rct_viewport *viewport, int32_t x, int32_t y)
 {
     // sub-divide by intersecting windows
     if (window != nullptr)
@@ -313,10 +313,10 @@ static void viewport_redraw_after_shift(rct_drawpixelinfo *dpi, rct_window *wind
     }
     else
     {
-        sint16 left = viewport->x;
-        sint16 right = viewport->x + viewport->width;
-        sint16 top = viewport->y;
-        sint16 bottom = viewport->y + viewport->height;
+        int16_t left = viewport->x;
+        int16_t right = viewport->x + viewport->width;
+        int16_t top = viewport->y;
+        int16_t bottom = viewport->y + viewport->height;
 
         // if moved more than the viewport size
         if (abs(x) < viewport->width && abs(y) < viewport->height)
@@ -327,14 +327,14 @@ static void viewport_redraw_after_shift(rct_drawpixelinfo *dpi, rct_window *wind
             if (x > 0)
             {
                 // draw left
-                sint16 _right = viewport->x + x;
+                int16_t _right = viewport->x + x;
                 window_draw_all(dpi, left, top, _right, bottom);
                 left += x;
             }
             else if (x < 0)
             {
                 // draw right
-                sint16 _left = viewport->x + viewport->width + x;
+                int16_t _left = viewport->x + viewport->width + x;
                 window_draw_all(dpi, _left, top, right, bottom);
                 right += x;
             }
@@ -360,7 +360,7 @@ static void viewport_redraw_after_shift(rct_drawpixelinfo *dpi, rct_window *wind
     }
 }
 
-static void viewport_shift_pixels(rct_drawpixelinfo *dpi, rct_window* window, rct_viewport* viewport, sint16 x_diff, sint16 y_diff)
+static void viewport_shift_pixels(rct_drawpixelinfo *dpi, rct_window* window, rct_viewport* viewport, int16_t x_diff, int16_t y_diff)
 {
     for (auto i = window_get_index(window); i < g_window_list.size(); i++)
     {
@@ -394,15 +394,15 @@ static void viewport_shift_pixels(rct_drawpixelinfo *dpi, rct_window* window, rc
     viewport_redraw_after_shift(dpi, window, viewport, x_diff, y_diff);
 }
 
-static void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport)
+static void viewport_move(int16_t x, int16_t y, rct_window* w, rct_viewport* viewport)
 {
-    uint8 zoom = (1 << viewport->zoom);
+    uint8_t zoom = (1 << viewport->zoom);
 
     // Note: do not do the subtraction and then divide!
     // Note: Due to arithmetic shift != /zoom a shift will have to be used
     // hopefully when 0x006E7FF3 is finished this can be converted to /zoom.
-    sint16 x_diff = (viewport->view_x >> viewport->zoom) - (x >> viewport->zoom);
-    sint16 y_diff = (viewport->view_y >> viewport->zoom) - (y >> viewport->zoom);
+    int16_t x_diff = (viewport->view_x >> viewport->zoom) - (x >> viewport->zoom);
+    int16_t y_diff = (viewport->view_y >> viewport->zoom) - (y >> viewport->zoom);
 
     viewport->view_x = x;
     viewport->view_y = y;
@@ -411,10 +411,10 @@ static void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewp
     if ((!x_diff) && (!y_diff))return;
 
     if (w->flags & WF_7){
-        sint32 left = std::max<sint32>(viewport->x, 0);
-        sint32 top = std::max<sint32>(viewport->y, 0);
-        sint32 right = std::min<sint32>(viewport->x + viewport->width, context_get_width());
-        sint32 bottom = std::min<sint32>(viewport->y + viewport->height, context_get_height());
+        int32_t left = std::max<int32_t>(viewport->x, 0);
+        int32_t top = std::max<int32_t>(viewport->y, 0);
+        int32_t right = std::min<int32_t>(viewport->x + viewport->width, context_get_width());
+        int32_t bottom = std::min<int32_t>(viewport->y + viewport->height, context_get_height());
 
         if (left >= right) return;
         if (top >= bottom) return;
@@ -436,7 +436,7 @@ static void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewp
         viewport->x = 0;
     }
 
-    sint32 eax = viewport->x + viewport->width - context_get_width();
+    int32_t eax = viewport->x + viewport->width - context_get_width();
     if (eax > 0){
         viewport->width -= eax;
         viewport->view_width -= eax * zoom;
@@ -474,19 +474,19 @@ static void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewp
 }
 
 //rct2: 0x006E7A15
-static void viewport_set_underground_flag(sint32 underground, rct_window* window, rct_viewport* viewport)
+static void viewport_set_underground_flag(int32_t underground, rct_window* window, rct_viewport* viewport)
 {
     if (window->classification != WC_MAIN_WINDOW)
     {
         if (!underground)
         {
-            sint32 bit = viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+            int32_t bit = viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
             viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
             if (!bit) return;
         }
         else
         {
-            sint32 bit = viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+            int32_t bit = viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
             viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
             if (bit) return;
         }
@@ -518,14 +518,14 @@ void viewport_update_position(rct_window * window)
 
     viewport_set_underground_flag(0, window, viewport);
 
-    sint16 x = window->saved_view_x + viewport->view_width / 2;
-    sint16 y = window->saved_view_y + viewport->view_height / 2;
+    int16_t x = window->saved_view_x + viewport->view_width / 2;
+    int16_t y = window->saved_view_y + viewport->view_height / 2;
     LocationXY16 mapCoord;
 
     mapCoord = viewport_coord_to_map_coord(x, y, 0);
 
     // Clamp to the map minimum value
-    sint32 at_map_edge = 0;
+    int32_t at_map_edge = 0;
     if (mapCoord.x < MAP_MINIMUM_X_Y)
     {
         mapCoord.x = MAP_MINIMUM_X_Y;
@@ -551,7 +551,7 @@ void viewport_update_position(rct_window * window)
 
     if (at_map_edge)
     {
-        sint32 _2d_x, _2d_y;
+        int32_t _2d_x, _2d_y;
         centre_2d_coordinates(mapCoord.x, mapCoord.y, 0, &_2d_x, &_2d_y, viewport);
 
         window->saved_view_x = _2d_x;
@@ -563,7 +563,7 @@ void viewport_update_position(rct_window * window)
     if (window->flags & WF_SCROLLING_TO_LOCATION)
     {
         // Moves the viewport if focusing in on an item
-        uint8 flags = 0;
+        uint8_t flags = 0;
         x -= viewport->view_x;
         if (x < 0)
         {
@@ -604,12 +604,12 @@ void viewport_update_sprite_follow(rct_window *window)
     if (window->viewport_target_sprite != SPRITE_INDEX_NULL && window->viewport) {
         rct_sprite* sprite = get_sprite(window->viewport_target_sprite);
 
-        sint32 height = (tile_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF) - 16;
-        sint32 underground = sprite->unknown.z < height;
+        int32_t height = (tile_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF) - 16;
+        int32_t underground = sprite->unknown.z < height;
 
         viewport_set_underground_flag(underground, window, window->viewport);
 
-        sint32 centre_x, centre_y;
+        int32_t centre_x, centre_y;
         centre_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &centre_x, &centre_y,
                               window->viewport);
 
@@ -672,7 +672,7 @@ void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
     }
     else
     {
-        uint8 final_check = 1;
+        uint8_t final_check = 1;
         if (peep->state == PEEP_STATE_ON_RIDE
             || peep->state == PEEP_STATE_ENTERING_RIDE
             || (peep->state == PEEP_STATE_LEAVING_RIDE && peep->x == LOCATION_NULL))
@@ -682,7 +682,7 @@ void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
             {
                 rct_vehicle * train = GET_VEHICLE(ride->vehicles[peep->current_train]);
-                sint32 car = peep->current_car;
+                int32_t car = peep->current_car;
 
                 for (; car != 0; car--)
                 {
@@ -696,9 +696,9 @@ void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
         if (peep->x == LOCATION_NULL && final_check)
         {
             Ride * ride = get_ride(peep->current_ride);
-            sint32 x = ride->overall_view.x * 32 + 16;
-            sint32 y = ride->overall_view.y * 32 + 16;
-            sint32 height = tile_element_height(x, y);
+            int32_t x = ride->overall_view.x * 32 + 16;
+            int32_t y = ride->overall_view.y * 32 + 16;
+            int32_t height = tile_element_height(x, y);
             height += 32;
             focus.coordinate.x = x;
             focus.coordinate.y = y;
@@ -760,7 +760,7 @@ void viewport_update_smart_vehicle_follow(rct_window * window)
  *  edi: dpi
  *  ebp: bottom
  */
-void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, sint32 left, sint32 top, sint32 right, sint32 bottom)
+void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     if (right <= viewport->x) return;
     if (bottom <= viewport->y) return;
@@ -768,13 +768,13 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, sint32 left
     if (top >= viewport->y + viewport->height)return;
 
 #ifdef DEBUG_SHOW_DIRTY_BOX
-    sint32 l = left, t = top, r = right, b = bottom;
+    int32_t l = left, t = top, r = right, b = bottom;
 #endif
 
-    left = std::max<sint32>(left - viewport->x, 0);
-    right = std::min<sint32>(right - viewport->x, viewport->width);
-    top = std::max<sint32>(top - viewport->y, 0);
-    bottom = std::min<sint32>(bottom - viewport->y, viewport->height);
+    left = std::max<int32_t>(left - viewport->x, 0);
+    right = std::min<int32_t>(right - viewport->x, viewport->width);
+    top = std::max<int32_t>(top - viewport->y, 0);
+    bottom = std::min<int32_t>(bottom - viewport->y, viewport->height);
 
     left <<= viewport->zoom;
     right <<= viewport->zoom;
@@ -806,12 +806,12 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, sint32 left
  *  edi: dpi
  *  ebp: bottom
  */
-void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, sint16 left, sint16 top, sint16 right, sint16 bottom)
+void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom)
 {
-    uint32 viewFlags = viewport->flags;
-    uint16 width = right - left;
-    uint16 height = bottom - top;
-    uint16 bitmask = 0xFFFF & (0xFFFF << viewport->zoom);
+    uint32_t viewFlags = viewport->flags;
+    uint16_t width = right - left;
+    uint16_t height = bottom - top;
+    uint16_t bitmask = 0xFFFF & (0xFFFF << viewport->zoom);
 
     width &= bitmask;
     height &= bitmask;
@@ -820,11 +820,11 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, sint16 left,
     right = left + width;
     bottom = top + height;
 
-    sint16 x = (sint16)(left - (sint16)(viewport->view_x & bitmask));
+    int16_t x = (int16_t)(left - (int16_t)(viewport->view_x & bitmask));
     x >>= viewport->zoom;
     x += viewport->x;
 
-    sint16 y = (sint16)(top - (sint16)(viewport->view_y & bitmask));
+    int16_t y = (int16_t)(top - (int16_t)(viewport->view_y & bitmask));
     y >>= viewport->zoom;
     y += viewport->y;
 
@@ -837,24 +837,24 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, sint16 left,
     dpi1.pitch = (dpi->width + dpi->pitch) - (width >> viewport->zoom);
     dpi1.zoom_level = viewport->zoom;
 
-    // make sure, the compare operation is done in sint16 to avoid the loop becoming an infiniteloop.
+    // make sure, the compare operation is done in int16_t to avoid the loop becoming an infiniteloop.
     // this as well as the [x += 32] in the loop causes signed integer overflow -> undefined behaviour.
-    sint16 rightBorder = dpi1.x + dpi1.width;
+    int16_t rightBorder = dpi1.x + dpi1.width;
 
     // Splits the area into 32 pixel columns and renders them
     for (x = floor2(dpi1.x, 32); x < rightBorder; x += 32) {
         rct_drawpixelinfo dpi2 = dpi1;
         if (x >= dpi2.x) {
-            sint16 leftPitch = x - dpi2.x;
+            int16_t leftPitch = x - dpi2.x;
             dpi2.width -= leftPitch;
             dpi2.bits += leftPitch >> dpi2.zoom_level;
             dpi2.pitch += leftPitch >> dpi2.zoom_level;
             dpi2.x = x;
         }
 
-        sint16 paintRight = dpi2.x + dpi2.width;
+        int16_t paintRight = dpi2.x + dpi2.width;
         if (paintRight >= x + 32) {
-            sint16 rightPitch = paintRight - x - 32;
+            int16_t rightPitch = paintRight - x - 32;
             paintRight -= rightPitch;
             dpi2.pitch += rightPitch >> dpi2.zoom_level;
         }
@@ -864,12 +864,12 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, sint16 left,
     }
 }
 
-static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
+static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32_t viewFlags)
 {
     gCurrentViewportFlags = viewFlags;
 
     if (viewFlags & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_CLIP_VIEW)) {
-        uint8 colour = 10;
+        uint8_t colour = 10;
         if (viewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES) {
             colour = 0;
         }
@@ -914,21 +914,21 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi)
  *
  *  rct2: 0x0068958D
  */
-void screen_pos_to_map_pos(sint16 *x, sint16 *y, sint32 *direction)
+void screen_pos_to_map_pos(int16_t *x, int16_t *y, int32_t *direction)
 {
     screen_get_map_xy(*x, *y, x, y, nullptr);
     if (*x == LOCATION_NULL)
         return;
 
-    sint32 my_direction;
-    sint32 dist_from_centre_x = abs(*x % 32);
-    sint32 dist_from_centre_y = abs(*y % 32);
+    int32_t my_direction;
+    int32_t dist_from_centre_x = abs(*x % 32);
+    int32_t dist_from_centre_y = abs(*y % 32);
     if (dist_from_centre_x > 8 && dist_from_centre_x < 24 &&
         dist_from_centre_y > 8 && dist_from_centre_y < 24) {
         my_direction = 4;
     } else {
-        sint16 mod_x = *x & 0x1F;
-        sint16 mod_y = *y & 0x1F;
+        int16_t mod_x = *x & 0x1F;
+        int16_t mod_y = *y & 0x1F;
         if (mod_x <= 16) {
             if (mod_y < 16) {
                 my_direction = 2;
@@ -949,7 +949,7 @@ void screen_pos_to_map_pos(sint16 *x, sint16 *y, sint32 *direction)
     if (direction != nullptr) *direction = my_direction;
 }
 
-LocationXY16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16 y)
+LocationXY16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16_t x, uint16_t y)
 {
     LocationXY16 ret;
     ret.x = ((x - viewport->x) << viewport->zoom) + viewport->view_x;
@@ -957,7 +957,7 @@ LocationXY16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, ui
     return ret;
 }
 
-LocationXY16 viewport_coord_to_map_coord(sint32 x, sint32 y, sint32 z)
+LocationXY16 viewport_coord_to_map_coord(int32_t x, int32_t y, int32_t z)
 {
     LocationXY16 ret = {};
     switch (get_current_rotation()) {
@@ -1093,17 +1093,17 @@ void hide_construction_rights()
  *
  *  rct2: 0x006CB70A
  */
-void viewport_set_visibility(uint8 mode)
+void viewport_set_visibility(uint8_t mode)
 {
     rct_window* window = window_get_main();
 
     if (window != nullptr) {
         rct_viewport* edi = window->viewport;
-        uint32 invalidate = 0;
+        uint32_t invalidate = 0;
 
         switch (mode) {
         case 0: { //Set all these flags to 0, and invalidate if any were active
-            uint32 mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_SEETHROUGH_RIDES |
+            uint32_t mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_SEETHROUGH_RIDES |
                 VIEWPORT_FLAG_SEETHROUGH_SCENERY | VIEWPORT_FLAG_SEETHROUGH_PATHS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS |
                 VIEWPORT_FLAG_LAND_HEIGHTS | VIEWPORT_FLAG_TRACK_HEIGHTS |
                 VIEWPORT_FLAG_PATH_HEIGHTS | VIEWPORT_FLAG_INVISIBLE_PEEPS |
@@ -1128,7 +1128,7 @@ void viewport_set_visibility(uint8 mode)
         case 5: //6CB7D8
             //Set underground off, invalidate if it was on
             invalidate += edi->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-            edi->flags &= ~((uint16)VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+            edi->flags &= ~((uint16_t)VIEWPORT_FLAG_UNDERGROUND_INSIDE);
             break;
         }
         if (invalidate != 0)
@@ -1147,7 +1147,7 @@ static void store_interaction_info(paint_struct *ps)
         || ps->sprite_type == 11 // 11 as a type seems to not exist, maybe part of the typo mentioned later on.
         || ps->sprite_type > VIEWPORT_INTERACTION_ITEM_BANNER) return;
 
-    uint16 mask;
+    uint16_t mask;
     if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_BANNER)
         // I think CS made a typo here. Let's replicate the original behaviour.
         mask = 1 << (ps->sprite_type - 3);
@@ -1165,7 +1165,7 @@ static void store_interaction_info(paint_struct *ps)
 /**
  * rct2: 0x00679236, 0x00679662, 0x00679B0D, 0x00679FF1
  */
-static bool pixel_is_present_bmp(uint32 imageType, const rct_g1_element * g1, const uint8 * index, const uint8 * palette)
+static bool pixel_is_present_bmp(uint32_t imageType, const rct_g1_element * g1, const uint8_t * index, const uint8_t * palette)
 {
     // Probably used to check for corruption
     if (!(g1->flags & G1_FLAG_BMP)) {
@@ -1186,13 +1186,13 @@ static bool pixel_is_present_bmp(uint32 imageType, const rct_g1_element * g1, co
 /**
  * rct2: 0x0067933B, 0x00679788, 0x00679C4A, 0x0067A117
  */
-static bool is_pixel_present_rle(const uint8 *esi, sint16 x_start_point, sint16 y_start_point, sint32 round) {
-    const uint8 *ebx = esi + ((uint16 *) esi)[y_start_point];
+static bool is_pixel_present_rle(const uint8_t *esi, int16_t x_start_point, int16_t y_start_point, int32_t round) {
+    const uint8_t *ebx = esi + ((uint16_t *) esi)[y_start_point];
 
-    uint8 last_data_line = 0;
+    uint8_t last_data_line = 0;
     while (!last_data_line) {
-        sint32 no_pixels = *ebx++;
-        uint8 gap_size = *ebx++;
+        int32_t no_pixels = *ebx++;
+        uint8_t gap_size = *ebx++;
 
         last_data_line = no_pixels & 0x80;
 
@@ -1220,7 +1220,7 @@ static bool is_pixel_present_rle(const uint8 *esi, sint16 x_start_point, sint16 
             }
         }
 
-        sint32 x_start = gap_size - x_start_point;
+        int32_t x_start = gap_size - x_start_point;
         if (x_start <= 0) {
             no_pixels += x_start;
             if (no_pixels <= 0) {
@@ -1261,7 +1261,7 @@ static bool is_pixel_present_rle(const uint8 *esi, sint16 x_start_point, sint16 
  * @param y (dx)
  * @return value originally stored in 0x00141F569
  */
-static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 y, const uint8 * palette)
+static bool sub_679074(rct_drawpixelinfo *dpi, int32_t imageId, int16_t x, int16_t y, const uint8_t * palette)
 {
     const rct_g1_element * g1 = gfx_get_g1_element(imageId & 0x7FFFF);
     if (g1 == nullptr)
@@ -1278,27 +1278,27 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
             // TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
             rct_drawpixelinfo zoomed_dpi = {
                 /* .bits = */ dpi->bits,
-                /* .x = */ (sint16)(dpi->x >> 1),
-                /* .y = */ (sint16)(dpi->y >> 1),
+                /* .x = */ (int16_t)(dpi->x >> 1),
+                /* .y = */ (int16_t)(dpi->y >> 1),
                 /* .height = */ dpi->height,
                 /* .width = */ dpi->width,
                 /* .pitch = */ dpi->pitch,
-                /* .zoom_level = */ (uint16)(dpi->zoom_level - 1)
+                /* .zoom_level = */ (uint16_t)(dpi->zoom_level - 1)
             };
 
             return sub_679074(&zoomed_dpi, imageId - g1->zoomed_offset, x / 2, y / 2, palette);
         }
     }
 
-    sint32 round = 1 << dpi->zoom_level;
+    int32_t round = 1 << dpi->zoom_level;
 
     if (g1->flags & G1_FLAG_RLE_COMPRESSION) {
         y -= (round - 1);
     }
 
     y += g1->y_offset;
-    sint16 yStartPoint = 0;
-    sint16 height = g1->height;
+    int16_t yStartPoint = 0;
+    int16_t height = g1->height;
     if (dpi->zoom_level != 0) {
         if (height % 2) {
             height--;
@@ -1318,7 +1318,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
     }
 
     y = floor2(y, round);
-    sint16 yEndPoint = height;
+    int16_t yEndPoint = height;
     y -= dpi->y;
     if (y < 0) {
         yEndPoint += y;
@@ -1339,8 +1339,8 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
         }
     }
 
-    sint16 xStartPoint = 0;
-    sint16 xEndPoint = g1->width;
+    int16_t xStartPoint = 0;
+    int16_t xEndPoint = g1->width;
 
     x += g1->x_offset;
     x = floor2(x, round);
@@ -1368,8 +1368,8 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
         return is_pixel_present_rle(g1->offset, xStartPoint, yStartPoint, round);
     }
 
-    uint8 *offset = g1->offset + (yStartPoint * g1->width) + xStartPoint;
-    uint32 imageType = _currentImageType;
+    uint8_t *offset = g1->offset + (yStartPoint * g1->width) + xStartPoint;
+    uint32_t imageType = _currentImageType;
 
     if (!(g1->flags & G1_FLAG_1)) {
         return pixel_is_present_bmp(imageType, g1, offset, palette);
@@ -1379,14 +1379,14 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
     assert(false);
 
     // The code below is untested.
-    sint32 total_no_pixels = g1->width * g1->height;
-    uint8 *source_pointer = g1->offset;
-    uint8 *new_source_pointer_start = (uint8 *)malloc(total_no_pixels);
-    uint8 *new_source_pointer = (*&new_source_pointer_start);// 0x9E3D28;
+    int32_t total_no_pixels = g1->width * g1->height;
+    uint8_t *source_pointer = g1->offset;
+    uint8_t *new_source_pointer_start = (uint8_t *)malloc(total_no_pixels);
+    uint8_t *new_source_pointer = (*&new_source_pointer_start);// 0x9E3D28;
     intptr_t ebx1;
-    sint32 ecx;
+    int32_t ecx;
     while (total_no_pixels > 0) {
-        sint8 no_pixels = *source_pointer;
+        int8_t no_pixels = *source_pointer;
         if (no_pixels >= 0) {
             source_pointer++;
             total_no_pixels -= no_pixels;
@@ -1398,19 +1398,19 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
         ecx = no_pixels;
         no_pixels &= 0x7;
         ecx >>= 3;//SAR
-        uintptr_t eax = ((sint32) no_pixels) << 8;
+        uintptr_t eax = ((int32_t) no_pixels) << 8;
         ecx = -ecx;//Odd
         eax = (eax & 0xFF00) + *(source_pointer + 1);
         total_no_pixels -= ecx;
         source_pointer += 2;
         ebx1 = (uintptr_t) new_source_pointer - eax;
         eax = (uintptr_t) source_pointer;
-        source_pointer = (uint8 *) ebx1;
+        source_pointer = (uint8_t *) ebx1;
         ebx1 = eax;
         eax = 0;
         memcpy((char *) new_source_pointer, (char *) source_pointer, ecx);
         new_source_pointer += ecx;
-        source_pointer = (uint8 *) ebx1;
+        source_pointer = (uint8_t *) ebx1;
     }
 
     bool output = pixel_is_present_bmp(imageType, g1, new_source_pointer_start + (uintptr_t) offset, palette);
@@ -1423,17 +1423,17 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
  *
  *  rct2: 0x00679023
  */
-static bool sub_679023(rct_drawpixelinfo *dpi, sint32 imageId, sint32 x, sint32 y)
+static bool sub_679023(rct_drawpixelinfo *dpi, int32_t imageId, int32_t x, int32_t y)
 {
-    const uint8 * palette = nullptr;
+    const uint8_t * palette = nullptr;
     imageId &= ~IMAGE_TYPE_TRANSPARENT;
     if (imageId & IMAGE_TYPE_REMAP) {
         _currentImageType = IMAGE_TYPE_REMAP;
-        sint32 index = (imageId >> 19) & 0x7F;
+        int32_t index = (imageId >> 19) & 0x7F;
         if (imageId & IMAGE_TYPE_REMAP_2_PLUS) {
             index &= 0x1F;
         }
-        sint32 g1Index = palette_to_g1_offset[index];
+        int32_t g1Index = palette_to_g1_offset[index];
         const rct_g1_element * g1 = gfx_get_g1_element(g1Index);
         if (g1 != nullptr)
         {
@@ -1489,28 +1489,28 @@ void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps)
  * tileElement: edx
  * viewport: edi
  */
-void get_map_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 flags, sint16 *x, sint16 *y, sint32 *interactionType, rct_tile_element **tileElement, rct_viewport **viewport)
+void get_map_coordinates_from_pos(int32_t screenX, int32_t screenY, int32_t flags, int16_t *x, int16_t *y, int32_t *interactionType, rct_tile_element **tileElement, rct_viewport **viewport)
 {
     rct_window* window = window_find_from_point(screenX, screenY);
     get_map_coordinates_from_pos_window(window, screenX, screenY, flags, x, y, interactionType, tileElement, viewport);
 }
 
-void get_map_coordinates_from_pos_window(rct_window * window, sint32 screenX, sint32 screenY, sint32 flags, sint16 * x, sint16 * y,
-    sint32 * interactionType, rct_tile_element ** tileElement, rct_viewport ** viewport)
+void get_map_coordinates_from_pos_window(rct_window * window, int32_t screenX, int32_t screenY, int32_t flags, int16_t * x, int16_t * y,
+    int32_t * interactionType, rct_tile_element ** tileElement, rct_viewport ** viewport)
 {
     _unk9AC154 = flags & 0xFFFF;
     _interactionSpriteType = 0;
     if (window != nullptr && window->viewport != nullptr)
     {
         rct_viewport* myviewport = window->viewport;
-        screenX -= (sint32)myviewport->x;
-        screenY -= (sint32)myviewport->y;
-        if (screenX >= 0 && screenX < (sint32)myviewport->width && screenY >= 0 && screenY < (sint32)myviewport->height)
+        screenX -= (int32_t)myviewport->x;
+        screenY -= (int32_t)myviewport->y;
+        if (screenX >= 0 && screenX < (int32_t)myviewport->width && screenY >= 0 && screenY < (int32_t)myviewport->height)
         {
             screenX <<= myviewport->zoom;
             screenY <<= myviewport->zoom;
-            screenX += (sint32)myviewport->view_x;
-            screenY += (sint32)myviewport->view_y;
+            screenX += (int32_t)myviewport->view_x;
+            screenY += (int32_t)myviewport->view_y;
             _viewportDpi1.zoom_level = myviewport->zoom;
             screenX &= (0xFFFF << myviewport->zoom) & 0xFFFF;
             screenY &= (0xFFFF << myviewport->zoom) & 0xFFFF;
@@ -1540,7 +1540,7 @@ void get_map_coordinates_from_pos_window(rct_window * window, sint32 screenX, si
 /**
  * Left, top, right and bottom represent 2D map coordinates at zoom 0.
  */
-void viewport_invalidate(rct_viewport *viewport, sint32 left, sint32 top, sint32 right, sint32 bottom)
+void viewport_invalidate(rct_viewport *viewport, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // if unknown viewport visibility, use the containing window to discover the status
     if (viewport->visibility == VC_UNKNOWN)
@@ -1559,17 +1559,17 @@ void viewport_invalidate(rct_viewport *viewport, sint32 left, sint32 top, sint32
 
     if (viewport->visibility == VC_COVERED) return;
 
-    sint32 viewportLeft = viewport->view_x;
-    sint32 viewportTop = viewport->view_y;
-    sint32 viewportRight = viewport->view_x + viewport->view_width;
-    sint32 viewportBottom = viewport->view_y + viewport->view_height;
+    int32_t viewportLeft = viewport->view_x;
+    int32_t viewportTop = viewport->view_y;
+    int32_t viewportRight = viewport->view_x + viewport->view_width;
+    int32_t viewportBottom = viewport->view_y + viewport->view_height;
     if (right > viewportLeft && bottom > viewportTop) {
         left = std::max(left, viewportLeft);
         top = std::max(top, viewportTop);
         right = std::min(right, viewportRight);
         bottom = std::min(bottom, viewportBottom);
 
-        uint8 zoom = 1 << viewport->zoom;
+        uint8_t zoom = 1 << viewport->zoom;
         left -= viewportLeft;
         top -= viewportTop;
         right -= viewportLeft;
@@ -1586,7 +1586,7 @@ void viewport_invalidate(rct_viewport *viewport, sint32 left, sint32 top, sint32
     }
 }
 
-static rct_viewport *viewport_find_from_point(sint32 screenX, sint32 screenY)
+static rct_viewport *viewport_find_from_point(int32_t screenX, int32_t screenY)
 {
     rct_window *w = window_find_from_point(screenX, screenY);
     if (w == nullptr)
@@ -1616,9 +1616,9 @@ static rct_viewport *viewport_find_from_point(sint32 screenX, sint32 screenY)
  *      tile_element: edx ?
  *      viewport: edi
  */
-void screen_get_map_xy(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, rct_viewport **viewport) {
-    sint16 my_x, my_y;
-    sint32 interactionType;
+void screen_get_map_xy(int32_t screenX, int32_t screenY, int16_t *x, int16_t *y, rct_viewport **viewport) {
+    int16_t my_x, my_y;
+    int32_t interactionType;
     rct_viewport *myViewport = nullptr;
     get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, nullptr, &myViewport);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
@@ -1627,13 +1627,13 @@ void screen_get_map_xy(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, rct
     }
 
     LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenX, screenY);
-    LocationXY16 map_pos = { (sint16)(my_x + 16), (sint16)(my_y + 16) };
+    LocationXY16 map_pos = { (int16_t)(my_x + 16), (int16_t)(my_y + 16) };
 
-    for (sint32 i = 0; i < 5; i++) {
-        sint32 z = tile_element_height(map_pos.x, map_pos.y);
+    for (int32_t i = 0; i < 5; i++) {
+        int32_t z = tile_element_height(map_pos.x, map_pos.y);
         map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-        map_pos.x = Math::Clamp<sint16>(map_pos.x, my_x, my_x + 31);
-        map_pos.y = Math::Clamp<sint16>(map_pos.y, my_y, my_y + 31);
+        map_pos.x = Math::Clamp<int16_t>(map_pos.x, my_x, my_x + 31);
+        map_pos.y = Math::Clamp<int16_t>(map_pos.y, my_y, my_y + 31);
     }
 
     *x = map_pos.x;
@@ -1646,7 +1646,7 @@ void screen_get_map_xy(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, rct
  *
  *  rct2: 0x006894D4
  */
-void screen_get_map_xy_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY)
+void screen_get_map_xy_with_z(int16_t screenX, int16_t screenY, int16_t z, int16_t *mapX, int16_t *mapY)
 {
     rct_viewport *viewport = viewport_find_from_point(screenX, screenY);
     if (viewport == nullptr) {
@@ -1671,7 +1671,7 @@ void screen_get_map_xy_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *
  *
  *  rct2: 0x00689604
  */
-void screen_get_map_xy_quadrant(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *quadrant)
+void screen_get_map_xy_quadrant(int16_t screenX, int16_t screenY, int16_t *mapX, int16_t *mapY, uint8_t *quadrant)
 {
     screen_get_map_xy(screenX, screenY, mapX, mapY, nullptr);
     if (*mapX == LOCATION_NULL)
@@ -1686,7 +1686,7 @@ void screen_get_map_xy_quadrant(sint16 screenX, sint16 screenY, sint16 *mapX, si
  *
  *  rct2: 0x0068964B
  */
-void screen_get_map_xy_quadrant_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY, uint8 *quadrant)
+void screen_get_map_xy_quadrant_with_z(int16_t screenX, int16_t screenY, int16_t z, int16_t *mapX, int16_t *mapY, uint8_t *quadrant)
 {
     screen_get_map_xy_with_z(screenX, screenY, z, mapX, mapY);
     if (*mapX == LOCATION_NULL)
@@ -1701,7 +1701,7 @@ void screen_get_map_xy_quadrant_with_z(sint16 screenX, sint16 screenY, sint16 z,
  *
  *  rct2: 0x00689692
  */
-void screen_get_map_xy_side(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *side)
+void screen_get_map_xy_side(int16_t screenX, int16_t screenY, int16_t *mapX, int16_t *mapY, uint8_t *side)
 {
     screen_get_map_xy(screenX, screenY, mapX, mapY, nullptr);
     if (*mapX == LOCATION_NULL)
@@ -1716,7 +1716,7 @@ void screen_get_map_xy_side(sint16 screenX, sint16 screenY, sint16 *mapX, sint16
  *
  *  rct2: 0x006896DC
  */
-void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY, uint8 *side)
+void screen_get_map_xy_side_with_z(int16_t screenX, int16_t screenY, int16_t z, int16_t *mapX, int16_t *mapY, uint8_t *side)
 {
     screen_get_map_xy_with_z(screenX, screenY, z, mapX, mapY);
     if (*mapX == LOCATION_NULL)
@@ -1735,19 +1735,19 @@ void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sin
  *
  * @returns rotation in range 0-3 (inclusive)
  */
-uint8 get_current_rotation()
+uint8_t get_current_rotation()
 {
-    uint8 rotation = gCurrentRotation;
-    uint8 rotation_masked = rotation & 3;
+    uint8_t rotation = gCurrentRotation;
+    uint8_t rotation_masked = rotation & 3;
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     if (rotation != rotation_masked) {
-        log_error("Found wrong rotation %d! Will return %d instead.", (uint32)rotation, (uint32)rotation_masked);
+        log_error("Found wrong rotation %d! Will return %d instead.", (uint32_t)rotation, (uint32_t)rotation_masked);
     }
 #endif // DEBUG_LEVEL_1
     return rotation_masked;
 }
 
-sint16 get_height_marker_offset()
+int16_t get_height_marker_offset()
 {
     // Height labels in units
     if (gConfigGeneral.show_height_as_units)

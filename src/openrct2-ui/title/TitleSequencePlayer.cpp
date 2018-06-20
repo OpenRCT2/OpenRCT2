@@ -50,11 +50,11 @@ private:
 
     size_t          _sequenceId = 0;
     TitleSequence * _sequence = nullptr;
-    sint32          _position = 0;
-    sint32          _waitCounter = 0;
+    int32_t          _position = 0;
+    int32_t          _waitCounter = 0;
 
-    sint32          _lastScreenWidth = 0;
-    sint32          _lastScreenHeight = 0;
+    int32_t          _lastScreenWidth = 0;
+    int32_t          _lastScreenHeight = 0;
     CoordsXY        _viewCentreLocation = {};
 
 public:
@@ -69,7 +69,7 @@ public:
         Eject();
     }
 
-    sint32 GetCurrentPosition() const override
+    int32_t GetCurrentPosition() const override
     {
         return _position;
     }
@@ -105,7 +105,7 @@ public:
 
     bool Update() override
     {
-        sint32 entryPosition = _position;
+        int32_t entryPosition = _position;
         FixViewLocation();
 
         if (_sequence == nullptr)
@@ -115,7 +115,7 @@ public:
         }
 
         // Check that position is valid
-        if (_position >= (sint32)_sequence->NumCommands)
+        if (_position >= (int32_t)_sequence->NumCommands)
         {
             _position = 0;
             return false;
@@ -175,9 +175,9 @@ public:
         _waitCounter = 0;
     }
 
-    void Seek(sint32 targetPosition) override
+    void Seek(int32_t targetPosition) override
     {
-        if (targetPosition < 0 || targetPosition >= (sint32)_sequence->NumCommands)
+        if (targetPosition < 0 || targetPosition >= (int32_t)_sequence->NumCommands)
         {
             throw std::runtime_error("Invalid position.");
         }
@@ -191,7 +191,7 @@ public:
             targetPosition = 0;
         }
         // Set position to the last LOAD command before target position
-        for (sint32 i = targetPosition; i >= 0; i--)
+        for (int32_t i = targetPosition; i >= 0; i--)
         {
             const TitleCommand * command = &_sequence->Commands[i];
             if ((_position == i && _position != targetPosition) || TitleSequenceIsLoadCommand(command))
@@ -226,7 +226,7 @@ private:
     void IncrementPosition()
     {
         _position++;
-        if (_position >= (sint32)_sequence->NumCommands)
+        if (_position >= (int32_t)_sequence->NumCommands)
         {
             _position = 0;
         }
@@ -234,7 +234,7 @@ private:
 
     bool SkipToNextLoadCommand()
     {
-        sint32 entryPosition = _position;
+        int32_t entryPosition = _position;
         const TitleCommand * command;
         do
         {
@@ -253,7 +253,7 @@ private:
             break;
         case TITLE_SCRIPT_WAIT:
             // The waitCounter is measured in 25-ms game ticks. Previously it was seconds * 40 ticks/second, now it is ms / 25 ms/tick
-            _waitCounter = std::max<sint32>(1, command->Milliseconds / (uint32)GAME_UPDATE_TIME_MS);
+            _waitCounter = std::max<int32_t>(1, command->Milliseconds / (uint32_t)GAME_UPDATE_TIME_MS);
             break;
         case TITLE_SCRIPT_LOADMM:
         {
@@ -274,8 +274,8 @@ private:
         }
         case TITLE_SCRIPT_LOCATION:
         {
-            sint32 x = command->X * 32 + 16;
-            sint32 y = command->Y * 32 + 16;
+            int32_t x = command->X * 32 + 16;
+            int32_t y = command->Y * 32 + 16;
             SetViewLocation(x, y);
             break;
         }
@@ -286,7 +286,7 @@ private:
             SetViewZoom(command->Zoom);
             break;
         case TITLE_SCRIPT_SPEED:
-            gGameSpeed = Math::Clamp<uint8>(1, command->Speed, 4);
+            gGameSpeed = Math::Clamp<uint8_t>(1, command->Speed, 4);
             break;
         case TITLE_SCRIPT_FOLLOW:
             FollowSprite(command->SpriteIndex);
@@ -297,7 +297,7 @@ private:
         case TITLE_SCRIPT_LOAD:
         {
             bool loadSuccess = false;
-            uint8 saveIndex = command->SaveIndex;
+            uint8_t saveIndex = command->SaveIndex;
             TitleSequenceParkHandle * parkHandle = TitleSequenceGetParkHandle(_sequence, saveIndex);
             if (parkHandle != nullptr)
             {
@@ -360,7 +360,7 @@ private:
         return true;
     }
 
-    void SetViewZoom(const uint32 &zoom)
+    void SetViewZoom(const uint32_t &zoom)
     {
         rct_window * w = window_get_main();
         if (w != nullptr && w->viewport != nullptr)
@@ -369,19 +369,19 @@ private:
         }
     }
 
-    void RotateView(uint32 count)
+    void RotateView(uint32_t count)
     {
         rct_window * w = window_get_main();
         if (w != nullptr)
         {
-            for (uint32 i = 0; i < count; i++)
+            for (uint32_t i = 0; i < count; i++)
             {
                 window_rotate_camera(w, 1);
             }
         }
     }
 
-    void FollowSprite(uint16 spriteIndex)
+    void FollowSprite(uint16_t spriteIndex)
     {
         rct_window * w = window_get_main();
         if (w != nullptr)
@@ -515,13 +515,13 @@ private:
      * @param x X position in map tiles.
      * @param y Y position in map tiles.
      */
-    void SetViewLocation(sint32 x, sint32 y)
+    void SetViewLocation(int32_t x, int32_t y)
     {
         // Update viewport
         rct_window * w = window_get_main();
         if (w != nullptr)
         {
-            sint32 z = tile_element_height(x, y);
+            int32_t z = tile_element_height(x, y);
 
             // Prevent scroll adjustment due to window placement when in-game
             auto oldScreenFlags = gScreenFlags;

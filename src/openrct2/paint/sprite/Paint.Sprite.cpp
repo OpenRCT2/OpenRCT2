@@ -21,7 +21,7 @@
  * Paint Quadrant
  *  rct2: 0x0069E8B0
  */
-void sprite_paint_setup(paint_session * session, const uint16 x, const uint16 y)
+void sprite_paint_setup(paint_session * session, const uint16_t x, const uint16_t y)
 {
     if ((x & 0xe000) | (y & 0xe000))
     {
@@ -33,7 +33,7 @@ void sprite_paint_setup(paint_session * session, const uint16 x, const uint16 y)
         return;
     }
 
-    uint16 sprite_idx = sprite_get_first_in_quadrant(x, y);
+    uint16_t sprite_idx = sprite_get_first_in_quadrant(x, y);
     if (sprite_idx == SPRITE_INDEX_NULL)
     {
         return;
@@ -95,7 +95,7 @@ void sprite_paint_setup(paint_session * session, const uint16 x, const uint16 y)
             continue;
         }
 
-        sint32 image_direction = session->CurrentRotation;
+        int32_t image_direction = session->CurrentRotation;
         image_direction <<= 3;
         image_direction += spr->unknown.sprite_direction;
         image_direction &= 0x1F;

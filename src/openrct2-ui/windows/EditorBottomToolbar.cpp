@@ -200,7 +200,7 @@ static bool window_editor_bottom_toolbar_check_object_selection()
 {
     rct_window *w;
 
-    sint32 missingObjectType = Editor::CheckObjectSelection();
+    int32_t missingObjectType = Editor::CheckObjectSelection();
     if (missingObjectType < 0) {
         window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
         return true;
@@ -336,7 +336,7 @@ void window_editor_bottom_toolbar_invalidate(rct_window *w)
 {
     colour_scheme_update_by_class(w, (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR : WC_EDITOR_TRACK_BOTTOM_TOOLBAR);
 
-    uint16 screenWidth = context_get_width();
+    uint16_t screenWidth = context_get_width();
     window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left = screenWidth - 200;
     window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right = screenWidth - 1;
     window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].left = screenWidth - 198;
@@ -429,10 +429,10 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 w->colours[1], INSET_RECT_F_30);
         }
 
-        sint16 stateX =
+        int16_t stateX =
             (window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right +
             window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left) / 2 + w->x;
-        sint16 stateY = w->height - 0x0C + w->y;
+        int16_t stateY = w->height - 0x0C + w->y;
         gfx_draw_string_centred(dpi, EditorStepNames[gS6Info.editor_step],
             stateX, stateY, NOT_TRANSLUCENT(w->colours[2]) | COLOUR_FLAG_OUTLINE, nullptr);
 
@@ -441,16 +441,16 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 6 + w->x,
                 window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->y, 0);
 
-            sint32 textColour = NOT_TRANSLUCENT(w->colours[1]);
+            int32_t textColour = NOT_TRANSLUCENT(w->colours[1]);
             if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR &&
                 gHoverWidget.widget_index == WIDX_PREVIOUS_STEP_BUTTON
             ) {
                 textColour = COLOUR_WHITE;
             }
 
-            sint16 textX = (window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 30 +
+            int16_t textX = (window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 30 +
                 window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right) / 2 + w->x;
-            sint16 textY = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->y;
+            int16_t textY = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->y;
 
             rct_string_id stringId = EditorStepNames[gS6Info.editor_step - 1];
             if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
@@ -465,7 +465,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 29 + w->x,
                 window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->y, 0);
 
-            sint32 textColour = NOT_TRANSLUCENT(w->colours[1]);
+            int32_t textColour = NOT_TRANSLUCENT(w->colours[1]);
 
             if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR &&
                 gHoverWidget.widget_index == WIDX_NEXT_STEP_BUTTON
@@ -473,9 +473,9 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 textColour = COLOUR_WHITE;
             }
 
-            sint16 textX = (window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left +
+            int16_t textX = (window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left +
                 window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 30) / 2 + w->x;
-            sint16 textY = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->y;
+            int16_t textY = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->y;
 
             rct_string_id stringId = EditorStepNames[gS6Info.editor_step + 1];
             if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)

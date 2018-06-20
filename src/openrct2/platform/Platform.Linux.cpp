@@ -149,7 +149,7 @@ namespace Platform
             log_fatal("failed to read /proc/self/exe");
         }
 #elif defined(__FreeBSD__)
-        const sint32 mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
+        const int32_t mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
         auto exeLen = sizeof(exePath);
         if (sysctl(mib, 4, exePath, &exeLen, nullptr, 0) == -1)
         {

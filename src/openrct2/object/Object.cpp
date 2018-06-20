@@ -46,7 +46,7 @@ Object::~Object()
     Memory::Free(_identifier);
 }
 
-std::string Object::GetOverrideString(uint8 index) const
+std::string Object::GetOverrideString(uint8_t index) const
 {
     const char * identifier = GetIdentifier();
     rct_string_id stringId = language_get_object_override_string_id(identifier, index);
@@ -59,7 +59,7 @@ std::string Object::GetOverrideString(uint8 index) const
     return String::ToStd(result);
 }
 
-std::string Object::GetString(uint8 index) const
+std::string Object::GetString(uint8_t index) const
 {
     auto sz = GetOverrideString(index);
     if (sz.empty())
@@ -69,7 +69,7 @@ std::string Object::GetString(uint8 index) const
     return sz;
 }
 
-std::string Object::GetString(sint32 language, uint8 index) const
+std::string Object::GetString(int32_t language, uint8_t index) const
 {
     return GetStringTable().GetString(language, index);
 }
@@ -84,7 +84,7 @@ rct_object_entry Object::GetScgPathXHeader()
     return Object::CreateHeader("SCGPATHX", 207140231, 890227440);
 }
 
-rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32 flags, uint32 checksum)
+rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32_t flags, uint32_t checksum)
 {
     rct_object_entry header = {};
     header.flags = flags;
@@ -93,7 +93,7 @@ rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint
     return header;
 }
 
-void Object::SetSourceGame(const uint8 sourceGame)
+void Object::SetSourceGame(const uint8_t sourceGame)
 {
     // FIXME: Temporary disabled because it breaks exporting to vanilla.
     /*_objectEntry.flags &= 0x0F;
@@ -709,7 +709,7 @@ std::string Object::GetName() const
     return GetString(OBJ_STRING_ID_NAME);
 }
 
-std::string Object::GetName(sint32 language) const
+std::string Object::GetName(int32_t language) const
 {
     return GetString(language, OBJ_STRING_ID_NAME);
 }

@@ -35,7 +35,7 @@
 
 using namespace OpenRCT2;
 
-static sint32 ScenarioCategoryCompare(sint32 categoryA, sint32 categoryB)
+static int32_t ScenarioCategoryCompare(int32_t categoryA, int32_t categoryB)
 {
     if (categoryA == categoryB) return 0;
     if (categoryA == SCENARIO_CATEGORY_DLC) return -1;
@@ -45,7 +45,7 @@ static sint32 ScenarioCategoryCompare(sint32 categoryA, sint32 categoryB)
     return Math::Sign(categoryA - categoryB);
 }
 
-static sint32 scenario_index_entry_CompareByCategory(const scenario_index_entry &entryA,
+static int32_t scenario_index_entry_CompareByCategory(const scenario_index_entry &entryA,
                                                   const scenario_index_entry &entryB)
 {
     // Order by category
@@ -68,7 +68,7 @@ static sint32 scenario_index_entry_CompareByCategory(const scenario_index_entry 
     }
 }
 
-static sint32 scenario_index_entry_CompareByIndex(const scenario_index_entry &entryA,
+static int32_t scenario_index_entry_CompareByIndex(const scenario_index_entry &entryA,
                                                const scenario_index_entry &entryB)
 {
     // Order by source game
@@ -78,7 +78,7 @@ static sint32 scenario_index_entry_CompareByIndex(const scenario_index_entry &en
     }
 
     // Then by index / category / name
-    uint8 sourceGame = entryA.source_game;
+    uint8_t sourceGame = entryA.source_game;
     switch (sourceGame) {
     default:
         if (entryA.source_index == -1 && entryB.source_index == -1)
@@ -119,8 +119,8 @@ static void scenario_highscore_free(scenario_highscore_entry * highscore)
 class ScenarioFileIndex final : public FileIndex<scenario_index_entry>
 {
 private:
-    static constexpr uint32 MAGIC_NUMBER = 0x58444953; // SIDX
-    static constexpr uint16 VERSION = 3;
+    static constexpr uint32_t MAGIC_NUMBER = 0x58444953; // SIDX
+    static constexpr uint16_t VERSION = 3;
     static constexpr auto PATTERN = "*.sc4;*.sc6";
 
 public:
@@ -138,7 +138,7 @@ public:
     }
 
 protected:
-    std::tuple<bool, scenario_index_entry> Create(sint32, const std::string &path) const override
+    std::tuple<bool, scenario_index_entry> Create(int32_t, const std::string &path) const override
     {
         scenario_index_entry entry;
         auto timestamp = File::GetLastModified(path);
@@ -177,17 +177,17 @@ protected:
         scenario_index_entry item;
 
         stream->Read(item.path, sizeof(item.path));
-        item.timestamp = stream->ReadValue<uint64>();
+        item.timestamp = stream->ReadValue<uint64_t>();
 
-        item.category = stream->ReadValue<uint8>();
-        item.source_game = stream->ReadValue<uint8>();
-        item.source_index = stream->ReadValue<sint16>();
-        item.sc_id = stream->ReadValue<uint16>();
+        item.category = stream->ReadValue<uint8_t>();
+        item.source_game = stream->ReadValue<uint8_t>();
+        item.source_index = stream->ReadValue<int16_t>();
+        item.sc_id = stream->ReadValue<uint16_t>();
 
-        item.objective_type = stream->ReadValue<uint8>();
-        item.objective_arg_1 = stream->ReadValue<uint8>();
-        item.objective_arg_2 = stream->ReadValue<sint32>();
-        item.objective_arg_3 = stream->ReadValue<sint16>();
+        item.objective_type = stream->ReadValue<uint8_t>();
+        item.objective_arg_1 = stream->ReadValue<uint8_t>();
+        item.objective_arg_2 = stream->ReadValue<int32_t>();
+        item.objective_arg_3 = stream->ReadValue<int16_t>();
         item.highscore = nullptr;
 
         stream->Read(item.internal_name, sizeof(item.internal_name));
@@ -201,7 +201,7 @@ private:
     /**
      * Reads basic information from a scenario file.
      */
-    static bool GetScenarioInfo(const std::string &path, uint64 timestamp, scenario_index_entry * entry)
+    static bool GetScenarioInfo(const std::string &path, uint64_t timestamp, scenario_index_entry * entry)
     {
         log_verbose("GetScenarioInfo(%s, %d, ...)", path.c_str(), timestamp);
         try
@@ -255,7 +255,7 @@ private:
         return false;
     }
 
-    static scenario_index_entry CreateNewScenarioEntry(const std::string &path, uint64 timestamp, rct_s6_info * s6Info)
+    static scenario_index_entry CreateNewScenarioEntry(const std::string &path, uint64_t timestamp, rct_s6_info * s6Info)
     {
         scenario_index_entry entry = {};
 
@@ -316,7 +316,7 @@ private:
 class ScenarioRepository final : public IScenarioRepository
 {
 private:
-    static constexpr uint32 HighscoreFileVersion = 1;
+    static constexpr uint32_t HighscoreFileVersion = 1;
 
     std::shared_ptr<IPlatformEnvironment> const _env;
     ScenarioFileIndex const _fileIndex;
@@ -335,7 +335,7 @@ public:
         ClearHighscores();
     }
 
-    void Scan(sint32 language) override
+    void Scan(int32_t language) override
     {
         ImportMegaPark();
 
@@ -411,7 +411,7 @@ public:
         return nullptr;
     }
 
-    bool TryRecordHighscore(sint32 language, const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) override
+    bool TryRecordHighscore(int32_t language, const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) override
     {
         // Scan the scenarios so we have a fresh list to query. This is to prevent the issue of scenario completions
         // not getting recorded, see #4951.
@@ -566,7 +566,7 @@ private:
         try
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
-            uint32 fileVersion = fs.ReadValue<uint32>();
+            uint32_t fileVersion = fs.ReadValue<uint32_t>();
             if (fileVersion != 1)
             {
                 Console::Error::WriteLine("Invalid or incompatible highscores file.");
@@ -575,8 +575,8 @@ private:
 
             ClearHighscores();
 
-            uint32 numHighscores = fs.ReadValue<uint32>();
-            for (uint32 i = 0; i < numHighscores; i++)
+            uint32_t numHighscores = fs.ReadValue<uint32_t>();
+            for (uint32_t i = 0; i < numHighscores; i++)
             {
                 scenario_highscore_entry * highscore = InsertHighscore();
                 highscore->fileName = fs.ReadString();
@@ -622,7 +622,7 @@ private:
 
             // Load header
             auto header = fs.ReadValue<rct_scores_header>();
-            for (uint32 i = 0; i < header.ScenarioCount; i++)
+            for (uint32_t i = 0; i < header.ScenarioCount; i++)
             {
                 // Read legacy entry
                 auto scBasic = fs.ReadValue<rct_scores_entry>();
@@ -707,8 +707,8 @@ private:
         try
         {
             auto fs = FileStream(path, FILE_MODE_WRITE);
-            fs.WriteValue<uint32>(HighscoreFileVersion);
-            fs.WriteValue<uint32>((uint32)_highscores.size());
+            fs.WriteValue<uint32_t>(HighscoreFileVersion);
+            fs.WriteValue<uint32_t>((uint32_t)_highscores.size());
             for (size_t i = 0; i < _highscores.size(); i++)
             {
                 const scenario_highscore_entry * highscore = _highscores[i];

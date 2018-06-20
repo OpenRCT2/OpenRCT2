@@ -10,10 +10,10 @@
 #include "Localisation.h"
 #include <wchar.h>
 
-uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr)
+uint32_t utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr)
 {
-    sint32 result;
-    sint32 numBytes;
+    int32_t result;
+    int32_t numBytes;
 
     if (!(char_ptr[0] & 0x80)) {
         result = char_ptr[0];
@@ -38,7 +38,7 @@ uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr)
     return result;
 }
 
-utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint)
+utf8 *utf8_write_codepoint(utf8 *dst, uint32_t codepoint)
 {
     if (codepoint <= 0x7F) {
         dst[0] = (utf8)codepoint;
@@ -65,9 +65,9 @@ utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint)
  * Inserts the given codepoint at the given address, shifting all characters after along.
  * @returns the size of the inserted codepoint.
  */
-sint32 utf8_insert_codepoint(utf8 *dst, uint32 codepoint)
+int32_t utf8_insert_codepoint(utf8 *dst, uint32_t codepoint)
 {
-    sint32 shift = utf8_get_codepoint_length(codepoint);
+    int32_t shift = utf8_get_codepoint_length(codepoint);
     utf8 *endPoint = get_string_end(dst);
     memmove(dst + shift, dst, endPoint - dst + 1);
     utf8_write_codepoint(dst, codepoint);
@@ -81,7 +81,7 @@ bool utf8_is_codepoint_start(const utf8 *text)
     return false;
 }
 
-sint32 utf8_get_codepoint_length(sint32 codepoint)
+int32_t utf8_get_codepoint_length(int32_t codepoint)
 {
     if (codepoint <= 0x7F) {
         return 1;
@@ -98,11 +98,11 @@ sint32 utf8_get_codepoint_length(sint32 codepoint)
  * Gets the number of characters / codepoints in a UTF-8 string (not necessarily 1:1 with bytes and not including null
  * terminator).
  */
-sint32 utf8_length(const utf8 *text)
+int32_t utf8_length(const utf8 *text)
 {
     const utf8 *ch = text;
 
-    sint32 count = 0;
+    int32_t count = 0;
     while (utf8_get_next(ch, &ch) != 0) {
         count++;
     }
@@ -115,9 +115,9 @@ wchar_t *utf8_to_widechar(const utf8 *src)
     wchar_t *dst = result;
 
     const utf8 *ch = src;
-    sint32 codepoint;
+    int32_t codepoint;
     while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
-        if ((uint32)codepoint > 0xFFFF) {
+        if ((uint32_t)codepoint > 0xFFFF) {
             *dst++ = '?';
         } else {
             *dst++ = codepoint;
@@ -148,11 +148,11 @@ utf8 *widechar_to_utf8(const wchar_t *src)
  */
 utf8 *get_string_end(const utf8 *text)
 {
-    sint32 codepoint;
+    int32_t codepoint;
     const utf8 *ch = text;
 
     while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
-        sint32 argLength = utf8_get_format_code_arg_length(codepoint);
+        int32_t argLength = utf8_get_format_code_arg_length(codepoint);
         ch += argLength;
     }
     return (utf8*)(ch - 1);
@@ -169,12 +169,12 @@ size_t get_string_size(const utf8 *text)
 /**
  * Return the number of visible characters (excludes format codes) in the given UTF-8 string.
  */
-sint32 get_string_length(const utf8 *text)
+int32_t get_string_length(const utf8 *text)
 {
-    sint32 codepoint;
+    int32_t codepoint;
     const utf8 *ch = text;
 
-    sint32 count = 0;
+    int32_t count = 0;
     while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
         if (utf8_is_format_code(codepoint)) {
             ch += utf8_get_format_code_arg_length(codepoint);
@@ -185,7 +185,7 @@ sint32 get_string_length(const utf8 *text)
     return count;
 }
 
-sint32 utf8_get_format_code_arg_length(sint32 codepoint)
+int32_t utf8_get_format_code_arg_length(int32_t codepoint)
 {
     switch (codepoint) {
     case FORMAT_MOVE_X:
@@ -207,7 +207,7 @@ void utf8_remove_formatting(utf8* string, bool allowColours) {
     utf8* writePtr = string;
 
     while (true) {
-        uint32 code = utf8_get_next(readPtr, (const utf8**)&readPtr);
+        uint32_t code = utf8_get_next(readPtr, (const utf8**)&readPtr);
 
         if (code == 0) {
             *writePtr = 0;
@@ -218,7 +218,7 @@ void utf8_remove_formatting(utf8* string, bool allowColours) {
     }
 }
 
-bool utf8_is_format_code(sint32 codepoint)
+bool utf8_is_format_code(int32_t codepoint)
 {
     if (codepoint < 32) return true;
     if (codepoint >= FORMAT_ARGUMENT_CODE_START && codepoint <= FORMAT_ARGUMENT_CODE_END) return true;
@@ -227,7 +227,7 @@ bool utf8_is_format_code(sint32 codepoint)
     return false;
 }
 
-bool utf8_is_colour_code(sint32 codepoint)
+bool utf8_is_colour_code(int32_t codepoint)
 {
     if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END) return true;
     return false;

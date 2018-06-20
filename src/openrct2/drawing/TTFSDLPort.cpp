@@ -88,7 +88,7 @@ struct c_glyph {
     int maxy;
     int yoffset;
     int advance;
-    uint16 cached;
+    uint16_t cached;
 };
 
 /* The structure used to hold internal font information */
@@ -195,12 +195,12 @@ static int TTF_strikethrough_top_row(TTF_Font *font)
     return font->height / 2;
 }
 
-static void TTF_initLineMectrics(const TTF_Font *font, const TTFSurface *textbuf, const int row, uint8 **pdst, int *pheight)
+static void TTF_initLineMectrics(const TTF_Font *font, const TTFSurface *textbuf, const int row, uint8_t **pdst, int *pheight)
 {
-    uint8 *dst;
+    uint8_t *dst;
     int height;
 
-    dst = (uint8 *)textbuf->pixels;
+    dst = (uint8_t *)textbuf->pixels;
     if (row > 0) {
         dst += row * textbuf->pitch;
     }
@@ -221,8 +221,8 @@ outline into account.
 static void TTF_drawLine_Solid(const TTF_Font *font, const TTFSurface *textbuf, const int row)
 {
     int line;
-    uint8 *dst_check = (uint8*)textbuf->pixels + textbuf->pitch * textbuf->h;
-    uint8 *dst;
+    uint8_t *dst_check = (uint8_t*)textbuf->pixels + textbuf->pitch * textbuf->h;
+    uint8_t *dst;
     int height;
 
     TTF_initLineMectrics(font, textbuf, row, &dst, &height);
@@ -242,8 +242,8 @@ static void TTF_drawLine_Solid(const TTF_Font *font, const TTFSurface *textbuf, 
 static void TTF_drawLine_Shaded(const TTF_Font *font, const TTFSurface *textbuf, const int row)
 {
     int line;
-    uint8 *dst_check = (uint8*) textbuf->pixels + textbuf->pitch * textbuf->h;
-    uint8 *dst;
+    uint8_t *dst_check = (uint8_t*) textbuf->pixels + textbuf->pitch * textbuf->h;
+    uint8_t *dst;
     int height;
 
     TTF_initLineMectrics(font, textbuf, row, &dst, &height);
@@ -339,7 +339,7 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE *src, int freesrc, int ptsize, long in
     FT_Fixed scale;
     FT_Stream stream;
     FT_CharMap found;
-    sint64 position;
+    int64_t position;
     int i;
 
     if (!TTF_initialized) {
@@ -543,7 +543,7 @@ static void Flush_Cache(TTF_Font* font)
     }
 }
 
-static FT_Error Load_Glyph(TTF_Font* font, uint16 ch, c_glyph* cached, int want)
+static FT_Error Load_Glyph(TTF_Font* font, uint16_t ch, c_glyph* cached, int want)
 {
     FT_Face face;
     FT_Error error;
@@ -832,7 +832,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16 ch, c_glyph* cached, int want)
             int col;
             int offset;
             int pixel;
-            uint8* pixmap;
+            uint8_t* pixmap;
 
             /* The pixmap is a little hard, we have to add and clamp */
             for (row = dst->rows - 1; row >= 0; --row) {
@@ -847,7 +847,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16 ch, c_glyph* cached, int want)
                             if (pixel > NUM_GRAYS - 1) {
                                 pixel = NUM_GRAYS - 1;
                             }
-                            pixmap[col] = (uint8)pixel;
+                            pixmap[col] = (uint8_t)pixel;
                         }
                     }
                 }
@@ -874,7 +874,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16 ch, c_glyph* cached, int want)
     return 0;
 }
 
-static FT_Error Find_Glyph(TTF_Font* font, uint16 ch, int want)
+static FT_Error Find_Glyph(TTF_Font* font, uint16_t ch, int want)
 {
     int retval = 0;
     int hsize = sizeof(font->cache) / sizeof(font->cache[0]);
@@ -910,13 +910,13 @@ void TTF_CloseFont(TTF_Font* font)
 
 /* Gets a unicode value from a UTF-8 encoded string and advance the string */
 #define UNKNOWN_UNICODE 0xFFFD
-static uint32 UTF8_getch(const char **src, size_t *srclen)
+static uint32_t UTF8_getch(const char **src, size_t *srclen)
 {
-    const uint8 *p = *(const uint8**)src;
+    const uint8_t *p = *(const uint8_t**)src;
     size_t left = 0;
     [[maybe_unused]] bool overlong = false;
     bool underflow = false;
-    uint32 ch = UNKNOWN_UNICODE;
+    uint32_t ch = UNKNOWN_UNICODE;
 
     if (*srclen == 0) {
         return UNKNOWN_UNICODE;
@@ -926,7 +926,7 @@ static uint32 UTF8_getch(const char **src, size_t *srclen)
             if (p[0] == 0xFC && (p[1] & 0xFC) == 0x80) {
                 overlong = true;
             }
-            ch = (uint32)(p[0] & 0x01);
+            ch = (uint32_t)(p[0] & 0x01);
             left = 5;
         }
     }
@@ -935,7 +935,7 @@ static uint32 UTF8_getch(const char **src, size_t *srclen)
             if (p[0] == 0xF8 && (p[1] & 0xF8) == 0x80) {
                 overlong = true;
             }
-            ch = (uint32)(p[0] & 0x03);
+            ch = (uint32_t)(p[0] & 0x03);
             left = 4;
         }
     }
@@ -944,7 +944,7 @@ static uint32 UTF8_getch(const char **src, size_t *srclen)
             if (p[0] == 0xF0 && (p[1] & 0xF0) == 0x80) {
                 overlong = true;
             }
-            ch = (uint32)(p[0] & 0x07);
+            ch = (uint32_t)(p[0] & 0x07);
             left = 3;
         }
     }
@@ -953,7 +953,7 @@ static uint32 UTF8_getch(const char **src, size_t *srclen)
             if (p[0] == 0xE0 && (p[1] & 0xE0) == 0x80) {
                 overlong = true;
             }
-            ch = (uint32)(p[0] & 0x0F);
+            ch = (uint32_t)(p[0] & 0x0F);
             left = 2;
         }
     }
@@ -962,13 +962,13 @@ static uint32 UTF8_getch(const char **src, size_t *srclen)
             if ((p[0] & 0xDE) == 0xC0) {
                 overlong = true;
             }
-            ch = (uint32)(p[0] & 0x1F);
+            ch = (uint32_t)(p[0] & 0x1F);
             left = 1;
         }
     }
     else {
         if ((p[0] & 0x80) == 0x00) {
-            ch = (uint32)p[0];
+            ch = (uint32_t)p[0];
         }
     }
     ++*src;
@@ -1040,7 +1040,7 @@ int TTF_SizeUTF8(TTF_Font *font, const char *text, int *w, int *h)
     textlen = strlen(text);
     x = 0;
     while (textlen > 0) {
-        uint16 c = UTF8_getch(&text, &textlen);
+        uint16_t c = UTF8_getch(&text, &textlen);
         if (c == UNICODE_BOM_NATIVE || c == UNICODE_BOM_SWAPPED) {
             continue;
         }
@@ -1128,16 +1128,16 @@ int TTF_SizeUTF8(TTF_Font *font, const char *text, int *w, int *h)
     return status;
 }
 
-TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unused]] uint32 colour)
+TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unused]] uint32_t colour)
 {
     bool first;
     int xstart;
     int width;
     int height;
     TTFSurface* textbuf;
-    uint8* src;
-    uint8* dst;
-    uint8 *dst_check;
+    uint8_t* src;
+    uint8_t* dst;
+    uint8_t *dst_check;
     unsigned int row, col;
     c_glyph *glyph;
 
@@ -1167,7 +1167,7 @@ TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unuse
 
     /* Adding bound checking to avoid all kinds of memory corruption errors
     that may occur. */
-    dst_check = (uint8*)textbuf->pixels + textbuf->pitch * textbuf->h;
+    dst_check = (uint8_t*)textbuf->pixels + textbuf->pitch * textbuf->h;
 
     /* check kerning */
     use_kerning = FT_HAS_KERNING(font->face) && font->kerning;
@@ -1177,7 +1177,7 @@ TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unuse
     first = true;
     xstart = 0;
     while (textlen > 0) {
-        uint16 c = UTF8_getch(&text, &textlen);
+        uint16_t c = UTF8_getch(&text, &textlen);
         if (c == UNICODE_BOM_NATIVE || c == UNICODE_BOM_SWAPPED) {
             continue;
         }
@@ -1217,7 +1217,7 @@ TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unuse
             if ((signed)row + glyph->yoffset >= textbuf->h) {
                 continue;
             }
-            dst = (uint8*)textbuf->pixels +
+            dst = (uint8_t*)textbuf->pixels +
                 (row + glyph->yoffset) * textbuf->pitch +
                 xstart + glyph->minx;
             src = current->buffer + row * current->pitch;
@@ -1248,16 +1248,16 @@ TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unuse
     return textbuf;
 }
 
-TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unused]] uint32 fg, [[maybe_unused]] uint32 bg)
+TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unused]] uint32_t fg, [[maybe_unused]] uint32_t bg)
 {
     bool first;
     int xstart;
     int width;
     int height;
     TTFSurface* textbuf;
-    uint8* src;
-    uint8* dst;
-    uint8* dst_check;
+    uint8_t* src;
+    uint8_t* dst;
+    uint8_t* dst_check;
     unsigned int row, col;
     FT_Bitmap* current;
     c_glyph *glyph;
@@ -1288,7 +1288,7 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
 
     /* Adding bound checking to avoid all kinds of memory corruption errors
        that may occur. */
-    dst_check = (uint8*) textbuf->pixels + textbuf->pitch * textbuf->h;
+    dst_check = (uint8_t*) textbuf->pixels + textbuf->pitch * textbuf->h;
 
     /* check kerning */
     use_kerning = FT_HAS_KERNING(font->face) && font->kerning;
@@ -1299,7 +1299,7 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
     xstart = 0;
     while (textlen > 0)
     {
-        uint16 c = UTF8_getch(&text, &textlen);
+        uint16_t c = UTF8_getch(&text, &textlen);
         if (c == UNICODE_BOM_NATIVE || c == UNICODE_BOM_SWAPPED)
         {
             continue;
@@ -1352,7 +1352,7 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
                 continue;
             }
 
-            dst = (uint8*) textbuf->pixels +
+            dst = (uint8_t*) textbuf->pixels +
                 (row+glyph->yoffset) * textbuf->pitch +
                 xstart + glyph->minx;
             src = current->buffer + row * current->pitch;

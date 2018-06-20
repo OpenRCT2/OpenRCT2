@@ -87,7 +87,7 @@ namespace Platform
     std::string GetCurrentExecutablePath()
     {
         char exePath[MAX_PATH];
-        uint32 size = MAX_PATH;
+        uint32_t size = MAX_PATH;
         int result = _NSGetExecutablePath(exePath, &size);
         if (result == 0)
         {

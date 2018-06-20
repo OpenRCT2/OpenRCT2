@@ -31,7 +31,7 @@ private:
     GLuint              _backDepth;
 
 public:
-    SwapFramebuffer(sint32 width, sint32 height);
+    SwapFramebuffer(int32_t width, int32_t height);
 
     const OpenGLFramebuffer &GetFinalFramebuffer() const { return _opaqueFramebuffer; }
     GLuint GetBackDepthTexture() const { return _backDepth; }

@@ -13,26 +13,26 @@
 
 #pragma pack(push, 1)
 struct rct_tile_element_surface_properties {
-    uint8 slope; //4 0xE0 Edge Style, 0x1F Slope
-    uint8 terrain; //5 0xE0 Terrain Style, 0x1F Water height
-    uint8 grass_length; //6
-    uint8 ownership; //7
+    uint8_t slope; //4 0xE0 Edge Style, 0x1F Slope
+    uint8_t terrain; //5 0xE0 Terrain Style, 0x1F Water height
+    uint8_t grass_length; //6
+    uint8_t ownership; //7
 };
 assert_struct_size(rct_tile_element_surface_properties, 4);
 
 struct rct_tile_element_path_properties {
-    uint8 type; //4 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is diagonal, 0x03 Rotation
-    uint8 additions; //5
-    uint8 edges; //6
+    uint8_t type; //4 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is diagonal, 0x03 Rotation
+    uint8_t additions; //5
+    uint8_t edges; //6
     union {
-        uint8 addition_status; //7
-        uint8 ride_index;
+        uint8_t addition_status; //7
+        uint8_t ride_index;
     };
 };
 assert_struct_size(rct_tile_element_path_properties, 4);
 
 struct rct_tile_element_track_properties {
-    uint8 type; //4
+    uint8_t type; //4
     union {
         struct {
             // The lower 4 bits are the track sequence.
@@ -46,53 +46,53 @@ struct rct_tile_element_track_properties {
             // - Bits 7 and 8 are never set
             // - Bits 5 and 6 are set when a vehicle triggers the on-ride photo and act like a countdown from 3.
             // - If any of the bits 5-8 are set, the game counts it as a photo being taken.
-            uint8 sequence; //5.
-            uint8 colour; //6
+            uint8_t sequence; //5.
+            uint8_t colour; //6
         };
-        uint16 maze_entry; // 5
+        uint16_t maze_entry; // 5
     };
-    uint8 ride_index; //7
+    uint8_t ride_index; //7
 };
 assert_struct_size(rct_tile_element_track_properties, 4);
 
 struct rct_tile_element_scenery_properties {
-    uint8 type; //4
-    uint8 age; //5
-    uint8 colour_1; //6
-    uint8 colour_2; //7
+    uint8_t type; //4
+    uint8_t age; //5
+    uint8_t colour_1; //6
+    uint8_t colour_2; //7
 };
 assert_struct_size(rct_tile_element_scenery_properties, 4);
 
 struct rct_tile_element_entrance_properties {
-    uint8 type; //4
-    uint8 index; //5
-    uint8 path_type; //6
-    uint8 ride_index; //7
+    uint8_t type; //4
+    uint8_t index; //5
+    uint8_t path_type; //6
+    uint8_t ride_index; //7
 };
 assert_struct_size(rct_tile_element_entrance_properties, 4);
 
 struct rct_tile_element_wall_properties {
-    uint8 type; //4
+    uint8_t type; //4
     union {
-        uint8 colour_3; //5
+        uint8_t colour_3; //5
         BannerIndex banner_index; // 5
     };
-    uint8 colour_1; //6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
-    uint8 animation; //7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
+    uint8_t colour_1; //6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
+    uint8_t animation; //7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 };
 assert_struct_size(rct_tile_element_wall_properties, 4);
 
 struct rct_tile_element_scenerymultiple_properties {
-    uint16 type; //4
-    uint8 colour[2]; //6
+    uint16_t type; //4
+    uint8_t colour[2]; //6
 };
 assert_struct_size(rct_tile_element_scenerymultiple_properties, 4);
 
 struct rct_tile_element_banner_properties {
     BannerIndex index; // 4
-    uint8 position; //5
-    uint8 flags; //6
-    uint8 unused; //7
+    uint8_t position; //5
+    uint8_t flags; //6
+    uint8_t unused; //7
 };
 assert_struct_size(rct_tile_element_banner_properties, 4);
 
@@ -113,20 +113,20 @@ assert_struct_size(rct_tile_element_properties, 4);
 * size: 0x08
 */
 struct rct_tile_element {
-    uint8 type; //0
-    uint8 flags; //1
-    uint8 base_height; //2
-    uint8 clearance_height; //3
+    uint8_t type; //0
+    uint8_t flags; //1
+    uint8_t base_height; //2
+    uint8_t clearance_height; //3
     rct_tile_element_properties properties;
 
-    uint8 GetType() const;
-    void  SetType(uint8 newType);
-    uint8 GetDirection() const;
-    void  SetDirection(uint8 direction);
-    uint8 GetDirectionWithOffset(uint8 offset) const;
+    uint8_t GetType() const;
+    void  SetType(uint8_t newType);
+    uint8_t GetDirection() const;
+    void  SetDirection(uint8_t direction);
+    uint8_t GetDirectionWithOffset(uint8_t offset) const;
     bool  IsLastForTile() const;
     bool  IsGhost() const;
-    uint8 GetSceneryQuadrant() const;
+    uint8_t GetSceneryQuadrant() const;
 };
 assert_struct_size(rct_tile_element, 8);
 #pragma pack(pop)
@@ -201,8 +201,8 @@ enum
 #define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK      0b00001111
 #define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK  0b11110000
 
-sint32 tile_element_get_direction(const rct_tile_element * element);
-sint32 tile_element_get_direction_with_offset(const rct_tile_element * element, uint8 offset);
+int32_t tile_element_get_direction(const rct_tile_element * element);
+int32_t tile_element_get_direction_with_offset(const rct_tile_element * element, uint8_t offset);
 BannerIndex tile_element_get_banner_index(rct_tile_element* tileElement);
 bool tile_element_is_ghost(const rct_tile_element * element);
 bool tile_element_is_underground(rct_tile_element * tileElement);
@@ -212,4 +212,4 @@ bool tile_element_is_last_for_tile(const rct_tile_element *element);
 void tile_element_set_banner_index(rct_tile_element* tileElement, BannerIndex bannerIndex);
 void tile_element_remove_banner_entry(rct_tile_element *tileElement);
 
-uint8 tile_element_get_ride_index(const rct_tile_element * tileElement);
+uint8_t tile_element_get_ride_index(const rct_tile_element * tileElement);

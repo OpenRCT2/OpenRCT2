@@ -23,7 +23,7 @@ enum
     SPR_SPACE_RINGS_FENCE_NW = 22149,
 };
 
-static constexpr const uint32 space_rings_fence_sprites[] = {
+static constexpr const uint32_t space_rings_fence_sprites[] = {
     SPR_SPACE_RINGS_FENCE_NE,
     SPR_SPACE_RINGS_FENCE_SE,
     SPR_SPACE_RINGS_FENCE_SW,
@@ -31,30 +31,30 @@ static constexpr const uint32 space_rings_fence_sprites[] = {
 };
 
 /** rct2: 0x00768A3B */
-static void paint_space_rings_structure(paint_session * session, Ride * ride, uint8 direction, uint32 segment, sint32 height)
+static void paint_space_rings_structure(paint_session * session, Ride * ride, uint8_t direction, uint32_t segment, int32_t height)
 {
     const rct_tile_element * savedTileElement = static_cast<const rct_tile_element *>(session->CurrentlyDrawnItem);
 
-    uint32 vehicleIndex = (segment - direction) & 0x3;
+    uint32_t vehicleIndex = (segment - direction) & 0x3;
 
     if (ride->num_stations == 0 || vehicleIndex < ride->num_vehicles)
     {
         rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
         rct_vehicle *    vehicle   = nullptr;
 
-        sint32 frameNum = direction;
+        int32_t frameNum = direction;
 
-        uint32 baseImageId = rideEntry->vehicles[0].base_image_id;
+        uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
 
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
         {
             session->InteractionType    = VIEWPORT_INTERACTION_ITEM_SPRITE;
             vehicle                     = GET_VEHICLE(ride->vehicles[vehicleIndex]);
             session->CurrentlyDrawnItem = vehicle;
-            frameNum += (sint8)vehicle->vehicle_sprite_type * 4;
+            frameNum += (int8_t)vehicle->vehicle_sprite_type * 4;
         }
 
-        uint32 imageColourFlags = session->TrackColours[SCHEME_MISC];
+        uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
         if ((ride->colour_scheme_type & 3) != RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN)
         {
             vehicleIndex = 0;
@@ -66,7 +66,7 @@ static void paint_space_rings_structure(paint_session * session, Ride * ride, ui
                                                           ride->vehicle_colours[vehicleIndex].trim_colour);
         }
 
-        uint32 imageId = (baseImageId + frameNum) | imageColourFlags;
+        uint32_t imageId = (baseImageId + frameNum) | imageColourFlags;
         sub_98197C(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height);
 
         if (vehicle != nullptr && vehicle->num_peeps > 0)
@@ -85,19 +85,19 @@ static void paint_space_rings_structure(paint_session * session, Ride * ride, ui
 /** rct2: 0x00767C40 */
 static void paint_space_rings(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
-    sint32   edges    = edges_3x3[trackSequence];
+    int32_t   edges    = edges_3x3[trackSequence];
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
-    uint32 imageId;
+    uint32_t imageId;
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
@@ -140,7 +140,7 @@ static void paint_space_rings(
         break;
     }
 
-    sint32 cornerSegments = 0;
+    int32_t cornerSegments = 0;
     switch (trackSequence)
     {
     case 0:
@@ -179,7 +179,7 @@ static void paint_space_rings(
 /**
  * rct2: 0x0x00767A40
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(int32_t trackType, int32_t direction)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {

@@ -20,7 +20,7 @@ enum
     JUMPING_FOUNTAIN_TYPE_SNOW
 };
 
-void jumping_fountain_begin(sint32 type, sint32 x, sint32 y, const rct_tile_element * tileElement);
-void jumping_fountain_create(sint32 type, sint32 x, sint32 y, sint32 z, sint32 direction, sint32 flags, sint32 iteration);
+void jumping_fountain_begin(int32_t type, int32_t x, int32_t y, const rct_tile_element * tileElement);
+void jumping_fountain_create(int32_t type, int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags, int32_t iteration);
 void jumping_fountain_update(rct_jumping_fountain * jumpingFountain);
 

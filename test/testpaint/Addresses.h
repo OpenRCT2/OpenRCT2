@@ -39,7 +39,7 @@
  * P = Parity flag
  * All other bits are undefined.
  */
-sint32 RCT2_CALLPROC_X(sint32 address, sint32 _eax, sint32 _ebx, sint32 _ecx, sint32 _edx, sint32 _esi, sint32 _edi, sint32 _ebp);
+int32_t RCT2_CALLPROC_X(int32_t address, int32_t _eax, int32_t _ebx, int32_t _ecx, int32_t _edx, int32_t _esi, int32_t _edi, int32_t _ebp);
 
 
 

@@ -12,7 +12,7 @@
 
 // clang-format off
 /** rct2: 0x0099F100 */
-static constexpr const uint8 Rotation1TimeToSpriteMap_0[] = {
+static constexpr const uint8_t Rotation1TimeToSpriteMap_0[] = {
     0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
     0,   0,   0,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,
     1,   1,   1,   1,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,
@@ -65,7 +65,7 @@ static constexpr const uint8 Rotation1TimeToSpriteMap_0[] = {
 };
 
 /** rct2: 0x0099F422 */
-static constexpr const uint8 Rotation1TimeToSpriteMap_1[] = {
+static constexpr const uint8_t Rotation1TimeToSpriteMap_1[] = {
     0,   0,   0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,
     5,   6,   6,   6,   7,   7,   7,   8,   8,   8,   9,   9,   9,  10,  10,  10,  11,
     11,  11,  12,  12,  12,  13,  13,  13,  14,  14,  14,  15,  15,  15,  16,  16,  16,
@@ -109,7 +109,7 @@ static constexpr const uint8 Rotation1TimeToSpriteMap_1[] = {
 };
 
 /** rct2: 0x0099F6AB */
-static constexpr const uint8 Rotation1TimeToSpriteMap_2[] = {
+static constexpr const uint8_t Rotation1TimeToSpriteMap_2[] = {
     0,   0,   0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,
     5,   6,   6,   6,   7,   7,   7,   8,   8,   8,   9,   9,   9,  10,  10,  10,  11,
     11,  11,  12,  12,  12,  13,  13,  13,  14,  14,  14,  15,  15,  15,  16,  16,  16,
@@ -162,14 +162,14 @@ static constexpr const uint8 Rotation1TimeToSpriteMap_2[] = {
 };
 
 /** rct2: 0x0099F0F4 */
-const uint8 * Rotation1TimeToSpriteMaps[] = {
+const uint8_t * Rotation1TimeToSpriteMaps[] = {
     Rotation1TimeToSpriteMap_0,
     Rotation1TimeToSpriteMap_1,
     Rotation1TimeToSpriteMap_2,
 };
 
 /** rct2: 0x009A2434 */
-static constexpr const uint8 Rotation2TimeToSpriteMap_0[] = {
+static constexpr const uint8_t Rotation2TimeToSpriteMap_0[] = {
     0,   0,   0,   0,   0,   0,   0,   0,   1,   1,   1,   1,   1,   1,   1,   1,   2,
     2,   2,   2,   2,   2,   2,   2,   3,   3,   3,   3,   3,   3,   3,   3,   4,   4,
     4,   4,   4,   4,   4,   4,   5,   5,   5,   5,   5,   5,   5,   5,   6,   6,   6,
@@ -211,7 +211,7 @@ static constexpr const uint8 Rotation2TimeToSpriteMap_0[] = {
 };
 
 /** rct2: 0x009A26A6 */
-static constexpr const uint8 Rotation2TimeToSpriteMap_1[] = {
+static constexpr const uint8_t Rotation2TimeToSpriteMap_1[] = {
     46,  46,  47,  47,  48,  48,  46,  46,  47,  47,  48,  48,  46,  46,  47,  47,  48,
     48,  46,  46,  47,  47,  48,  48,  46,  46,  47,  47,  48,  48,  46,  46,  47,  47,
     48,  48,  46,  46,  47,  47,  48,  48,  46,  46,  47,  47,  48,  48,  46,  46,  47,
@@ -222,7 +222,7 @@ static constexpr const uint8 Rotation2TimeToSpriteMap_1[] = {
 };
 
 /** rct2: 0x009A270E */
-static constexpr const uint8 Rotation2TimeToSpriteMap_2[] = {
+static constexpr const uint8_t Rotation2TimeToSpriteMap_2[] = {
     43,  43,  44,  44,  45,  45,  43,  43,  44,  44,  45,  45,  43,  43,  44,  44,  45,
     45,  40,  40,  41,  41,  42,  42,  40,  40,  41,  41,  42,  42,  40,  40,  41,  41,
     42,  42,  37,  37,  38,  38,  39,  39,  37,  37,  38,  38,  39,  39,  37,  37,  38,
@@ -255,14 +255,14 @@ static constexpr const uint8 Rotation2TimeToSpriteMap_2[] = {
 };
 
 /** rct2: 0x009A2428 */
-const uint8 * Rotation2TimeToSpriteMaps[] = {
+const uint8_t * Rotation2TimeToSpriteMaps[] = {
     Rotation2TimeToSpriteMap_0,
     Rotation2TimeToSpriteMap_1,
     Rotation2TimeToSpriteMap_2,
 };
 
 /** rct2: 0x0099EB28 */
-static constexpr const uint8 Rotation3TimeToSpriteMap_0[] = {
+static constexpr const uint8_t Rotation3TimeToSpriteMap_0[] = {
     0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
     0,   0,   0,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,
     1,   1,   1,   1,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,   2,
@@ -299,7 +299,7 @@ static constexpr const uint8 Rotation3TimeToSpriteMap_0[] = {
 };
 
 /** rct2: 0x0099ED49 */
-static constexpr const uint8 Rotation3TimeToSpriteMap_1[] = {
+static constexpr const uint8_t Rotation3TimeToSpriteMap_1[] = {
     0,   0,   0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,
     5,   6,   6,   6,   7,   7,   7,   8,   8,   8,   9,   9,   9,  10,  10,  10,  11,
     11,  11,  12,  12,  12,  13,  13,  13,  14,  14,  14,  15,  15,  15,  16,  16,  16,
@@ -327,7 +327,7 @@ static constexpr const uint8 Rotation3TimeToSpriteMap_1[] = {
 };
 
 /** rct2: 0x0099EED1 */
-static constexpr const uint8 Rotation3TimeToSpriteMap_2[] = {
+static constexpr const uint8_t Rotation3TimeToSpriteMap_2[] = {
     0,   0,   0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,
     5,   6,   6,   6,   7,   7,   7,   8,   8,   8,   9,   9,   9,  10,  10,  10,  11,
     11,  11,  12,  12,  12,  13,  13,  13,  14,  14,  14,  15,  15,  15,  16,  16,  16,
@@ -364,7 +364,7 @@ static constexpr const uint8 Rotation3TimeToSpriteMap_2[] = {
 };
 
 /** rct2: 0x0099EB1C */
-const uint8 * Rotation3TimeToSpriteMaps[] = {
+const uint8_t * Rotation3TimeToSpriteMaps[] = {
     Rotation3TimeToSpriteMap_0,
     Rotation3TimeToSpriteMap_1,
     Rotation3TimeToSpriteMap_2,
@@ -709,7 +709,7 @@ const top_spin_time_to_sprite_map * TopSpinTimeToSpriteMaps[] = {
 };
 
 /** rct2: 0x009A0434 */
-const uint8 MotionSimulatorTimeToSpriteMap[] = {
+const uint8_t MotionSimulatorTimeToSpriteMap[] = {
     0,  0,  0,  4,  4,  4,  5,  5,  5,  6,  6,  6,  7,  7,  7,  8,  8,  8,  9,  9,  9,
     10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15,
     15, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
@@ -792,10 +792,10 @@ const uint8 MotionSimulatorTimeToSpriteMap[] = {
     0xFF,
 };
 
-const sint32 MotionSimulatorTimeToSpriteMapCount = static_cast<sint32>(Util::CountOf(MotionSimulatorTimeToSpriteMap));
+const int32_t MotionSimulatorTimeToSpriteMapCount = static_cast<int32_t>(Util::CountOf(MotionSimulatorTimeToSpriteMap));
 
 /** rct2: 0x009A2930 */
-const sint32 dword_9A2930[] = {
+const int32_t dword_9A2930[] = {
     0,      // 0000
     8716,   // 0001
     8716,   // 0010
@@ -815,7 +815,7 @@ const sint32 dword_9A2930[] = {
 };
 
 /** rct2: 0x009A2970 */
-const sint32 dword_9A2970[] = {
+const int32_t dword_9A2970[] = {
           0,    // 0
     -124548,    // 1
     -243318,    // 2
@@ -879,7 +879,7 @@ const sint32 dword_9A2970[] = {
 };
 
 /** rct2: 0x009A3684 */
-const sint32 SpriteDirectionToSoundDirection[] = {
+const int32_t SpriteDirectionToSoundDirection[] = {
     -0x4000,    // 0
     -0x3000,    // 1
     -0x2000,    // 2

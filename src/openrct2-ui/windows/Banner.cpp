@@ -70,7 +70,7 @@ static rct_widget window_banner_widgets[] = {
 
 static void window_banner_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_banner_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_banner_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_banner_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_banner_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_banner_viewport_rotate(rct_window *w);
 static void window_banner_invalidate(rct_window *w);
@@ -137,8 +137,8 @@ rct_window * window_banner_open(rct_windownumber number)
     w->number = number;
     window_init_scroll_widgets(w);
 
-    sint32 view_x = gBanners[w->number].x << 5;
-    sint32 view_y = gBanners[w->number].y << 5;
+    int32_t view_x = gBanners[w->number].x << 5;
+    int32_t view_y = gBanners[w->number].y << 5;
 
     rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
     while(1) {
@@ -152,7 +152,7 @@ rct_window * window_banner_open(rct_windownumber number)
         tile_element++;
     }
 
-    sint32 view_z = tile_element->base_height<<3;
+    int32_t view_z = tile_element->base_height<<3;
     w->frame_no = view_z;
 
     view_x += 16;
@@ -187,8 +187,8 @@ rct_window * window_banner_open(rct_windownumber number)
 static void window_banner_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
     rct_banner* banner = &gBanners[w->number];
-    sint32 x = banner->x << 5;
-    sint32 y = banner->y << 5;
+    int32_t x = banner->x << 5;
+    int32_t y = banner->y << 5;
 
     rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
 
@@ -229,7 +229,7 @@ static void window_banner_mousedown(rct_window *w, rct_widgetindex widgetIndex, 
         break;
     case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
 
-        for( sint32 i = 0; i < 13; ++i){
+        for( int32_t i = 0; i < 13; ++i){
             gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[i] = BannerColouredTextFormats[i + 1];
         }
@@ -256,7 +256,7 @@ static void window_banner_mousedown(rct_window *w, rct_widgetindex widgetIndex, 
  *
  *  rct2: 0x6ba517
  */
-static void window_banner_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_banner_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     rct_banner* banner = &gBanners[w->number];
 
@@ -350,9 +350,9 @@ static void window_banner_viewport_rotate(rct_window *w)
 
     rct_banner* banner = &gBanners[w->number];
 
-    sint32 view_x = (banner->x << 5) + 16;
-    sint32 view_y = (banner->y << 5) + 16;
-    sint32 view_z = w->frame_no;
+    int32_t view_x = (banner->x << 5) + 16;
+    int32_t view_y = (banner->y << 5) + 16;
+    int32_t view_z = w->frame_no;
 
     // Create viewport
     rct_widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];

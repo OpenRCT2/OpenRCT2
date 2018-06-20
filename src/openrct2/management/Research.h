@@ -21,16 +21,16 @@ struct rct_research_item
     // Bit 16 (0: scenery entry, 1: ride entry)
     union
     {
-        sint32 rawValue;
+        int32_t rawValue;
         struct
         {
-            uint8 entryIndex;
-            uint8 baseRideType;
-            uint8 type; // 0: scenery entry, 1: ride entry
-            uint8 flags;
+            uint8_t entryIndex;
+            uint8_t baseRideType;
+            uint8_t type; // 0: scenery entry, 1: ride entry
+            uint8_t flags;
         };
     };
-    uint8 category;
+    uint8_t category;
 
     bool IsInventedEndMarker() const;
     bool IsRandomEndMarker() const;
@@ -91,17 +91,17 @@ enum {
     RESEARCH_CATEGORY_SCENERY_GROUP
 };
 
-extern uint8 gResearchFundingLevel;
-extern uint8 gResearchPriorities;
-extern uint16 gResearchProgress;
-extern uint8 gResearchProgressStage;
-extern uint8 gResearchExpectedMonth;
-extern uint8 gResearchExpectedDay;
+extern uint8_t gResearchFundingLevel;
+extern uint8_t gResearchPriorities;
+extern uint16_t gResearchProgress;
+extern uint8_t gResearchProgressStage;
+extern uint8_t gResearchExpectedMonth;
+extern uint8_t gResearchExpectedDay;
 extern rct_research_item gResearchLastItem;
 extern rct_research_item gResearchNextItem;
 
 extern rct_research_item gResearchItems[MAX_RESEARCH_ITEMS];
-extern uint8 gResearchUncompletedCategories;
+extern uint8_t gResearchUncompletedCategories;
 extern bool gSilentResearch;
 
 void research_reset_items();
@@ -113,22 +113,22 @@ void research_populate_list_researched();
 void research_process_random_items();
 
 void research_finish_item(rct_research_item * researchItem);
-void research_insert(sint32 researched, sint32 rawValue, uint8 category);
+void research_insert(int32_t researched, int32_t rawValue, uint8_t category);
 void research_remove(rct_research_item * researchItem);
 
-void research_insert_ride_entry(uint8 entryIndex, bool researched);
-void research_insert_scenery_group_entry(uint8 entryIndex, bool researched);
+void research_insert_ride_entry(uint8_t entryIndex, bool researched);
+void research_insert_scenery_group_entry(uint8_t entryIndex, bool researched);
 
-void ride_type_set_invented(uint32 rideType);
-void ride_entry_set_invented(sint32 rideEntryIndex);
-void scenery_set_invented(uint16 sceneryItem);
-void scenery_set_not_invented(uint16 sceneryItem);
-bool ride_type_is_invented(uint32 rideType);
-bool ride_entry_is_invented(sint32 rideEntryIndex);
-bool track_piece_is_available_for_ride_type(uint8 rideType, sint32 trackType);
-bool scenery_group_is_invented(sint32 sgIndex);
-void scenery_group_set_invented(sint32 sgIndex);
-bool scenery_is_invented(uint16 sceneryItem);
+void ride_type_set_invented(uint32_t rideType);
+void ride_entry_set_invented(int32_t rideEntryIndex);
+void scenery_set_invented(uint16_t sceneryItem);
+void scenery_set_not_invented(uint16_t sceneryItem);
+bool ride_type_is_invented(uint32_t rideType);
+bool ride_entry_is_invented(int32_t rideEntryIndex);
+bool track_piece_is_available_for_ride_type(uint8_t rideType, int32_t trackType);
+bool scenery_group_is_invented(int32_t sgIndex);
+void scenery_group_set_invented(int32_t sgIndex);
+bool scenery_is_invented(uint16_t sceneryItem);
 void set_all_scenery_items_invented();
 void set_all_scenery_items_not_invented();
 void set_all_scenery_groups_not_invented();
@@ -137,7 +137,7 @@ void set_every_ride_type_not_invented();
 void set_every_ride_entry_invented();
 void set_every_ride_entry_not_invented();
 rct_string_id research_item_get_name(const rct_research_item * researchItem);
-rct_string_id research_get_friendly_base_ride_type_name(uint8 trackType, rct_ride_entry * rideEntry);
+rct_string_id research_get_friendly_base_ride_type_name(uint8_t trackType, rct_ride_entry * rideEntry);
 void research_remove_flags();
 void research_fix();
 

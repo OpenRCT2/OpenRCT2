@@ -26,18 +26,18 @@
 struct StaffSetNameAction : public GameActionBase<GAME_COMMAND_SET_STAFF_NAME, GameActionResult>
 {
 private:
-    uint16 _spriteIndex;
+    uint16_t _spriteIndex;
     std::string _name;
 
 public:
     StaffSetNameAction() {}
-    StaffSetNameAction(uint16 spriteIndex, const std::string& name)
+    StaffSetNameAction(uint16_t spriteIndex, const std::string& name)
         : _spriteIndex(spriteIndex),
         _name(name)
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
@@ -95,7 +95,7 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
         }
 
-        set_format_arg(0, uint32, peep->id);
+        set_format_arg(0, uint32_t, peep->id);
         utf8 * curName = gCommonStringFormatBuffer;
         rct_string_id curId = peep->name_string_idx;
         format_string(curName, 256, curId, gCommonFormatArgs);

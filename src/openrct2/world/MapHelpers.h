@@ -19,7 +19,7 @@ enum {
     SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
 };
 
-sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b);
-sint32 tile_smooth(sint32 x, sint32 y);
+int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b);
+int32_t tile_smooth(int32_t x, int32_t y);
 
 #endif

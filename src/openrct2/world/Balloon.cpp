@@ -50,7 +50,7 @@ void rct_balloon::Update()
             frame++;
             sprite_move(x, y, z + 1, (rct_sprite*)this);
 
-            sint32 maxZ = 1967 - ((x ^ y) & 31);
+            int32_t maxZ = 1967 - ((x ^ y) & 31);
             if (z >= maxZ)
             {
                 Pop();
@@ -65,14 +65,14 @@ void rct_balloon::Press()
     {
         // There is a random chance that pressing the balloon will not pop it
         // and instead shift it slightly
-        uint32 random = scenario_rand();
+        uint32_t random = scenario_rand();
         if ((sprite_index & 7) || (random & 0xFFFF) < 0x2000)
         {
             Pop();
         }
         else
         {
-            sint16 shift = ((random & 0x80000000) ? -6 : 6);
+            int16_t shift = ((random & 0x80000000) ? -6 : 6);
             sprite_move(x + shift, y, z, (rct_sprite *)this);
         }
     }
@@ -85,7 +85,7 @@ void rct_balloon::Pop()
     audio_play_sound_at_location(SOUND_BALLOON_POP, x, y, z);
 }
 
-static money32 game_command_balloon_press(uint16 spriteIndex, uint8 flags)
+static money32 game_command_balloon_press(uint16_t spriteIndex, uint8_t flags)
 {
     rct_sprite * sprite = try_get_sprite(spriteIndex);
     if (sprite == nullptr || !sprite->IsBalloon())
@@ -104,7 +104,7 @@ static money32 game_command_balloon_press(uint16 spriteIndex, uint8 flags)
     }
 }
 
-void create_balloon(sint32 x, sint32 y, sint32 z, sint32 colour, bool isPopped)
+void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopped)
 {
     rct_sprite* sprite = create_sprite(2);
     if (sprite != nullptr)
@@ -128,13 +128,13 @@ void balloon_update(rct_balloon * balloon)
 }
 
 void game_command_balloon_press(
-    sint32 *                  eax,
-    sint32 *                  ebx,
-    [[maybe_unused]] sint32 * ecx,
-    [[maybe_unused]] sint32 * edx,
-    [[maybe_unused]] sint32 * esi,
-    [[maybe_unused]] sint32 * edi,
-    [[maybe_unused]] sint32 * ebp)
+    int32_t *                  eax,
+    int32_t *                  ebx,
+    [[maybe_unused]] int32_t * ecx,
+    [[maybe_unused]] int32_t * edx,
+    [[maybe_unused]] int32_t * esi,
+    [[maybe_unused]] int32_t * edi,
+    [[maybe_unused]] int32_t * ebp)
 {
     *ebx = game_command_balloon_press(*eax & 0xFFFF, *ebx & 0xFF);
 }

@@ -19,9 +19,9 @@
 using namespace OpenRCT2::Localisation;
 
 #ifndef NO_TTF
-uint8 const HINTING_DISABLED         =  0;
-uint8 const HINTING_THRESHOLD_LOW    = 40;
-uint8 const HINTING_THRESHOLD_MEDIUM = 60;
+uint8_t const HINTING_DISABLED         =  0;
+uint8_t const HINTING_THRESHOLD_LOW    = 40;
+uint8_t const HINTING_THRESHOLD_MEDIUM = 60;
 
 // clang-format off
 TTFFontSetDescriptor TTFFontMSGothic = { {

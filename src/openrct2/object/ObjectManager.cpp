@@ -61,7 +61,7 @@ public:
         return _loadedObjects[index];
     }
 
-    Object * GetLoadedObject(sint32 objectType, size_t index) override
+    Object * GetLoadedObject(int32_t objectType, size_t index) override
     {
         if (index >= (size_t)object_entry_group_counts[objectType])
         {
@@ -86,9 +86,9 @@ public:
         return loadedObject;
     }
 
-    uint8 GetLoadedObjectEntryIndex(const Object * object) override
+    uint8_t GetLoadedObjectEntryIndex(const Object * object) override
     {
-        uint8 result = UINT8_MAX;
+        uint8_t result = UINT8_MAX;
         size_t index = GetLoadedObjectIndex(object);
         if (index != SIZE_MAX)
         {
@@ -106,8 +106,8 @@ public:
             loadedObject = ori->LoadedObject;
             if (loadedObject == nullptr)
             {
-                uint8 objectType = object_entry_get_type(&ori->ObjectEntry);
-                sint32 slot = FindSpareSlot(objectType);
+                uint8_t objectType = object_entry_get_type(&ori->ObjectEntry);
+                int32_t slot = FindSpareSlot(objectType);
                 if (slot != -1)
                 {
                     loadedObject = GetOrLoadObject(ori);
@@ -250,7 +250,7 @@ private:
         return LoadObject(&entry);
     }
 
-    sint32 FindSpareSlot(uint8 objectType)
+    int32_t FindSpareSlot(uint8_t objectType)
     {
         size_t firstIndex = GetIndexFromTypeEntry(objectType, 0);
         size_t endIndex = firstIndex + object_entry_group_counts[objectType];
@@ -259,11 +259,11 @@ private:
             if (_loadedObjects.size() <= i)
             {
                 _loadedObjects.resize(i + 1);
-                return (sint32)i;
+                return (int32_t)i;
             }
             else if (_loadedObjects[i] == nullptr)
             {
-                return (sint32)i;
+                return (int32_t)i;
             }
         }
         return -1;
@@ -393,13 +393,13 @@ private:
         window_close_by_class(WC_SCENERY);
     }
 
-    uint8 GetPrimarySceneryGroupEntryIndex(Object * loadedObject)
+    uint8_t GetPrimarySceneryGroupEntryIndex(Object * loadedObject)
     {
         auto sceneryObject = dynamic_cast<SceneryObject *>(loadedObject);
         const rct_object_entry * primarySGEntry = sceneryObject->GetPrimarySceneryGroup();
         Object * sgObject = GetLoadedObject(primarySGEntry);
 
-        uint8 entryIndex = 255;
+        uint8_t entryIndex = 255;
         if (sgObject != nullptr)
         {
             entryIndex = GetLoadedObjectEntryIndex(sgObject);
@@ -420,7 +420,7 @@ private:
     {
         std::vector<rct_object_entry> invalidEntries;
         invalidEntries.reserve(OBJECT_ENTRY_COUNT);
-        for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
+        for (int32_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
         {
             auto entry = entries[i];
             const ObjectRepositoryItem * ori = nullptr;
@@ -620,14 +620,14 @@ private:
         Console::Error::WriteLine("[%s] Object could not be loaded.", objName);
     }
 
-    static sint32 GetIndexFromTypeEntry(sint32 objectType, size_t entryIndex)
+    static int32_t GetIndexFromTypeEntry(int32_t objectType, size_t entryIndex)
     {
-        sint32 result = 0;
-        for (sint32 i = 0; i < objectType; i++)
+        int32_t result = 0;
+        for (int32_t i = 0; i < objectType; i++)
         {
             result += object_entry_group_counts[i];
         }
-        result += (sint32)entryIndex;
+        result += (int32_t)entryIndex;
         return result;
     }
 };
@@ -651,11 +651,11 @@ void * object_manager_get_loaded_object(const rct_object_entry * entry)
     return (void *)loadedObject;
 }
 
-uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
+uint8_t object_manager_get_loaded_object_entry_index(const void * loadedObject)
 {
     auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
     const Object * object = static_cast<const Object *>(loadedObject);
-    uint8 entryIndex = objectManager->GetLoadedObjectEntryIndex(object);
+    uint8_t entryIndex = objectManager->GetLoadedObjectEntryIndex(object);
     return entryIndex;
 }
 

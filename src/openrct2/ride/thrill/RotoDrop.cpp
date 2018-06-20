@@ -31,11 +31,11 @@ enum
  *
  *  rct2: 0x006D5DA9
  */
-void vehicle_visual_roto_drop(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z,
+void vehicle_visual_roto_drop(paint_session * session, int32_t x, int32_t imageDirection, int32_t y, int32_t z,
                               const rct_vehicle * vehicle, const rct_ride_entry_vehicle * vehicleEntry)
 {
-    sint32 image_id;
-    sint32 baseImage_id = (vehicleEntry->base_image_id + 4) + ((vehicle->animation_frame / 4) & 0x3);
+    int32_t image_id;
+    int32_t baseImage_id = (vehicleEntry->base_image_id + 4) + ((vehicle->animation_frame / 4) & 0x3);
     if (vehicle->restraints_position >= 64)
     {
         baseImage_id += 7;
@@ -50,11 +50,11 @@ void vehicle_visual_roto_drop(paint_session * session, sint32 x, sint32 imageDir
     image_id = (baseImage_id + 4) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
     sub_98197C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
 
-    uint8 riding_peep_sprites[64];
+    uint8_t riding_peep_sprites[64];
     memset(riding_peep_sprites, 0xFF, sizeof(riding_peep_sprites));
-    for (sint32 i = 0; i < vehicle->num_peeps; i++)
+    for (int32_t i = 0; i < vehicle->num_peeps; i++)
     {
-        uint8 cl = (i & 3) * 16;
+        uint8_t cl = (i & 3) * 16;
         cl += (i & 0xFC);
         cl += vehicle->animation_frame / 4;
         cl += (imageDirection / 8) * 16;
@@ -63,9 +63,9 @@ void vehicle_visual_roto_drop(paint_session * session, sint32 x, sint32 imageDir
     }
 
     // Draw riding peep sprites in back to front order:
-    for (sint32 j = 0; j <= 48; j++)
+    for (int32_t j = 0; j <= 48; j++)
     {
-        sint32 i = (j % 2) ? (48 - (j / 2)) : (j / 2);
+        int32_t i = (j % 2) ? (48 - (j / 2)) : (j / 2);
         if (riding_peep_sprites[i] != 0xFF)
         {
             baseImage_id = vehicleEntry->base_image_id + 20 + i;
@@ -87,21 +87,21 @@ void vehicle_visual_roto_drop(paint_session * session, sint32 x, sint32 imageDir
 /** rct2: 0x00886194 */
 static void paint_roto_drop_base(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
-    sint32   edges    = edges_3x3[trackSequence];
+    int32_t   edges    = edges_3x3[trackSequence];
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    uint32 imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
+    uint32_t imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
     track_paint_util_paint_fences(
@@ -134,7 +134,7 @@ static void paint_roto_drop_base(
         return;
     }
 
-    sint32 blockedSegments = 0;
+    int32_t blockedSegments = 0;
     switch (trackSequence)
     {
     case 1:
@@ -170,10 +170,10 @@ static void paint_roto_drop_base(
 /** rct2: 0x008861A4 */
 static void paint_roto_drop_tower_section(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (trackSequence == 1)
@@ -181,7 +181,7 @@ static void paint_roto_drop_tower_section(
         return;
     }
 
-    uint32 imageId = SPR_ROTO_DROP_TOWER_SEGMENT | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = SPR_ROTO_DROP_TOWER_SEGMENT | session->TrackColours[SCHEME_TRACK];
     sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
 
     const rct_tile_element * nextTileElement = tileElement + 1;
@@ -200,7 +200,7 @@ static void paint_roto_drop_tower_section(
 /**
  * rct2: 0x00886074
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_roto_drop(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_roto_drop(int32_t trackType, int32_t direction)
 {
     switch (trackType)
     {

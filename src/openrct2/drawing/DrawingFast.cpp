@@ -13,22 +13,22 @@
 
 #include "Drawing.h"
 
-template<sint32 image_type, sint32 zoom_level>
-static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
-                                      uint8* RESTRICT dest_bits_pointer,
-                                      const uint8* RESTRICT palette_pointer,
+template<int32_t image_type, int32_t zoom_level>
+static void FASTCALL DrawRLESprite2(const uint8_t* RESTRICT source_bits_pointer,
+                                      uint8_t* RESTRICT dest_bits_pointer,
+                                      const uint8_t* RESTRICT palette_pointer,
                                       const rct_drawpixelinfo *RESTRICT dpi,
-                                      sint32 source_y_start,
-                                      sint32 height,
-                                      sint32 source_x_start,
-                                      sint32 width)
+                                      int32_t source_y_start,
+                                      int32_t height,
+                                      int32_t source_x_start,
+                                      int32_t width)
 {
     // The distance between two samples in the source image.
     // We draw the image at 1 / (2^zoom_level) scale.
-    sint32 zoom_amount = 1 << zoom_level;
+    int32_t zoom_amount = 1 << zoom_level;
 
     // Width of one screen line in the dest buffer
-    sint32 line_width = (dpi->width >> zoom_level) + dpi->pitch;
+    int32_t line_width = (dpi->width >> zoom_level) + dpi->pitch;
 
     // Move up to the first line of the image if source_y_start is negative. Why does this even occur?
     if (source_y_start < 0)
@@ -39,26 +39,26 @@ static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
     }
 
     //For every line in the image
-    for (sint32 i = 0; i < height; i += zoom_amount)
+    for (int32_t i = 0; i < height; i += zoom_amount)
     {
-        sint32 y = source_y_start + i;
+        int32_t y = source_y_start + i;
 
         //The first part of the source pointer is a list of offsets to different lines
         //This will move the pointer to the correct source line.
-        const uint8 *lineData = source_bits_pointer + ((uint16*)source_bits_pointer)[y];
-        uint8* loop_dest_pointer = dest_bits_pointer + line_width * (i >> zoom_level);
+        const uint8_t *lineData = source_bits_pointer + ((uint16_t*)source_bits_pointer)[y];
+        uint8_t* loop_dest_pointer = dest_bits_pointer + line_width * (i >> zoom_level);
 
-        uint8 isEndOfLine = 0;
+        uint8_t isEndOfLine = 0;
 
         // For every data chunk in the line
         while (!isEndOfLine)
         {
-            const uint8* copySrc = lineData;
-            //uint8* copyDest = loop_dest_pointer;
+            const uint8_t* copySrc = lineData;
+            //uint8_t* copyDest = loop_dest_pointer;
 
             // Read chunk metadata
-            uint8 dataSize    = *copySrc++;
-            uint8 firstPixelX = *copySrc++;
+            uint8_t dataSize    = *copySrc++;
+            uint8_t firstPixelX = *copySrc++;
 
             isEndOfLine = dataSize & 0x80;  // If the last bit in dataSize is set, then this is the last line
             dataSize &= 0x7F;               // The rest of the bits are the actual size
@@ -66,8 +66,8 @@ static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
             //Have our next source pointer point to the next data section
             lineData = copySrc + dataSize;
 
-            sint32 x_start = firstPixelX - source_x_start;
-            sint32 numPixels = dataSize;
+            int32_t x_start = firstPixelX - source_x_start;
+            int32_t numPixels = dataSize;
 
             if (x_start > 0)
             {
@@ -96,7 +96,7 @@ static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
             if (x_start + numPixels > width)
                 numPixels = width - x_start;
 
-            uint8 *copyDest = loop_dest_pointer + (x_start >> zoom_level);
+            uint8_t *copyDest = loop_dest_pointer + (x_start >> zoom_level);
 
             //Finally after all those checks, copy the image onto the drawing surface
             //If the image type is not a basic one we require to mix the pixels
@@ -106,7 +106,7 @@ static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
                 {
                     if (image_type & IMAGE_TYPE_TRANSPARENT)
                     {
-                        uint16 color = ((*copySrc << 8) | *copyDest) - 0x100;
+                        uint16_t color = ((*copySrc << 8) | *copyDest) - 0x100;
                         *copyDest = palette_pointer[color];
                     }
                     else
@@ -119,7 +119,7 @@ static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
             {
                 for (int j = 0; j < numPixels; j += zoom_amount, copyDest++)
                 {
-                    uint8 pixel = *copyDest;
+                    uint8_t pixel = *copyDest;
                     pixel = palette_pointer[pixel];
                     *copyDest = pixel;
                 }
@@ -145,17 +145,17 @@ static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
 #define DrawRLESpriteHelper2(image_type, zoom_level) \
     DrawRLESprite2<image_type, zoom_level>(source_bits_pointer, dest_bits_pointer, palette_pointer, dpi, source_y_start, height, source_x_start, width)
 
-template<sint32 image_type>
-static void FASTCALL DrawRLESprite1(const uint8* source_bits_pointer,
-                                      uint8* dest_bits_pointer,
-                                      const uint8* palette_pointer,
+template<int32_t image_type>
+static void FASTCALL DrawRLESprite1(const uint8_t* source_bits_pointer,
+                                      uint8_t* dest_bits_pointer,
+                                      const uint8_t* palette_pointer,
                                       const rct_drawpixelinfo *dpi,
-                                      sint32 source_y_start,
-                                      sint32 height,
-                                      sint32 source_x_start,
-                                      sint32 width)
+                                      int32_t source_y_start,
+                                      int32_t height,
+                                      int32_t source_x_start,
+                                      int32_t width)
 {
-    sint32 zoom_level = dpi->zoom_level;
+    int32_t zoom_level = dpi->zoom_level;
     switch (zoom_level) {
     case 0: DrawRLESpriteHelper2(image_type, 0); break;
     case 1: DrawRLESpriteHelper2(image_type, 1); break;
@@ -173,15 +173,15 @@ static void FASTCALL DrawRLESprite1(const uint8* source_bits_pointer,
  * This function copies the sprite data onto the screen
  *  rct2: 0x0067AA18
  */
-void FASTCALL gfx_rle_sprite_to_buffer(const uint8* RESTRICT source_bits_pointer,
-                                         uint8* RESTRICT dest_bits_pointer,
-                                         const uint8* RESTRICT palette_pointer,
+void FASTCALL gfx_rle_sprite_to_buffer(const uint8_t* RESTRICT source_bits_pointer,
+                                         uint8_t* RESTRICT dest_bits_pointer,
+                                         const uint8_t* RESTRICT palette_pointer,
                                          const rct_drawpixelinfo * RESTRICT dpi,
-                                         sint32 image_type,
-                                         sint32 source_y_start,
-                                         sint32 height,
-                                         sint32 source_x_start,
-                                         sint32 width)
+                                         int32_t image_type,
+                                         int32_t source_y_start,
+                                         int32_t height,
+                                         int32_t source_x_start,
+                                         int32_t width)
 {
     if (image_type & IMAGE_TYPE_REMAP)
     {

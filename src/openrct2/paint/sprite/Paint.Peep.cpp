@@ -19,12 +19,12 @@
  *
  *  rct2: 0x0068F0FB
  */
-void peep_paint(paint_session * session, const rct_peep * peep, sint32 imageDirection)
+void peep_paint(paint_session * session, const rct_peep * peep, int32_t imageDirection)
 {
 #ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available()) {
         if (peep->type == PEEP_TYPE_STAFF) {
-            sint16 peep_x, peep_y, peep_z;
+            int16_t peep_x, peep_y, peep_z;
 
             peep_x = peep->x;
             peep_y = peep->y;
@@ -63,8 +63,8 @@ void peep_paint(paint_session * session, const rct_peep * peep, sint32 imageDire
 
     rct_peep_animation_entry sprite = g_peep_animation_entries[peep->sprite_type];
 
-    uint8 spriteType = peep->action_sprite_type;
-    uint8 imageOffset = peep->action_sprite_image_offset;
+    uint8_t spriteType = peep->action_sprite_type;
+    uint8_t imageOffset = peep->action_sprite_image_offset;
 
     if (peep->action == PEEP_ACTION_NONE_1) {
         spriteType = peep->next_action_sprite_type;
@@ -73,8 +73,8 @@ void peep_paint(paint_session * session, const rct_peep * peep, sint32 imageDire
     
     // In the following 4 calls to sub_98197C/sub_98199C, we add 5 (instead of 3) to the
     //  bound_box_offset_z to make sure peeps are drawn on top of railways
-    uint32 baseImageId = (imageDirection >> 3) + sprite.sprite_animation[spriteType].base_image + imageOffset * 4;
-    uint32 imageId = baseImageId | peep->tshirt_colour << 19 | peep->trousers_colour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+    uint32_t baseImageId = (imageDirection >> 3) + sprite.sprite_animation[spriteType].base_image + imageOffset * 4;
+    uint32_t imageId = baseImageId | peep->tshirt_colour << 19 | peep->trousers_colour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     sub_98197C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
 
     if (baseImageId >= 10717 && baseImageId < 10749) {

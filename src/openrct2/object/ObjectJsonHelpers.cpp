@@ -56,16 +56,16 @@ namespace ObjectJsonHelpers
             defaultValue;
     }
 
-    sint32 GetInteger(const json_t * obj, const std::string &name, const sint32 &defaultValue)
+    int32_t GetInteger(const json_t * obj, const std::string &name, const int32_t &defaultValue)
     {
         auto value = json_object_get(obj, name.c_str());
         if (json_is_integer(value))
         {
-            sint64 val = json_integer_value(value);
-            if (val >= std::numeric_limits<sint32>::min() &&
-                val <= std::numeric_limits<sint32>::max())
+            int64_t val = json_integer_value(value);
+            if (val >= std::numeric_limits<int32_t>::min() &&
+                val <= std::numeric_limits<int32_t>::max())
             {
-                return static_cast<sint32>(val);
+                return static_cast<int32_t>(val);
             }
         }
         return defaultValue;
@@ -99,9 +99,9 @@ namespace ObjectJsonHelpers
         return result;
     }
 
-    std::vector<sint32> GetJsonIntegerArray(const json_t * arr)
+    std::vector<int32_t> GetJsonIntegerArray(const json_t * arr)
     {
-        std::vector<sint32> result;
+        std::vector<int32_t> result;
         if (json_is_array(arr))
         {
             auto count = json_array_size(arr);
@@ -119,9 +119,9 @@ namespace ObjectJsonHelpers
         return result;
     }
 
-    uint8 ParseCursor(const std::string &s, uint8 defaultValue)
+    uint8_t ParseCursor(const std::string &s, uint8_t defaultValue)
     {
-        static const std::unordered_map<std::string, uint8> LookupTable
+        static const std::unordered_map<std::string, uint8_t> LookupTable
         {
             { "CURSOR_BLANK",           CURSOR_BLANK },
             { "CURSOR_UP_ARROW",        CURSOR_UP_ARROW },
@@ -167,10 +167,10 @@ namespace ObjectJsonHelpers
         return entry;
     }
 
-    static std::vector<sint32> ParseRange(std::string s)
+    static std::vector<int32_t> ParseRange(std::string s)
     {
         // Currently only supports [###] or [###..###]
-        std::vector<sint32> result = { };
+        std::vector<int32_t> result = { };
         if (s.length() >= 3 && s[0] == '[' && s[s.length() - 1] == ']')
         {
             s = s.substr(1, s.length() - 2);
@@ -225,7 +225,7 @@ namespace ObjectJsonHelpers
         return objectPath;
     }
 
-    static std::vector<rct_g1_element> LoadObjectImages(IReadObjectContext * context, const std::string &name, const std::vector<sint32> &range)
+    static std::vector<rct_g1_element> LoadObjectImages(IReadObjectContext * context, const std::string &name, const std::vector<int32_t> &range)
     {
         std::vector<rct_g1_element> result;
         auto objectPath = FindLegacyObject(name);
@@ -233,7 +233,7 @@ namespace ObjectJsonHelpers
         if (obj != nullptr)
         {
             auto &imgTable = static_cast<const Object *>(obj)->GetImageTable();
-            auto numImages = (sint32)imgTable.GetCount();
+            auto numImages = (int32_t)imgTable.GetCount();
             auto images = imgTable.GetImages();
             size_t placeHoldersAdded = 0;
             for (auto i : range)
@@ -243,7 +243,7 @@ namespace ObjectJsonHelpers
                     auto &objg1 = images[i];
                     auto length = g1_calculate_data_size(&objg1);
                     auto g1 = objg1;
-                    g1.offset = (uint8 *)std::malloc(length);
+                    g1.offset = (uint8_t *)std::malloc(length);
                     std::memcpy(g1.offset, objg1.offset, length);
                     result.push_back(g1);
                 }
@@ -292,7 +292,7 @@ namespace ObjectJsonHelpers
                         auto &csg1 = *gfx_get_g1_element(SPR_CSG_BEGIN + i);
                         auto length = g1_calculate_data_size(&csg1);
                         auto g1 = csg1;
-                        g1.offset = (uint8 *)std::malloc(length);
+                        g1.offset = (uint8_t *)std::malloc(length);
                         std::memcpy(g1.offset, csg1.offset, length);
                         result.push_back(g1);
                     }
@@ -316,7 +316,7 @@ namespace ObjectJsonHelpers
                     {
                         auto length = g1_calculate_data_size(og1);
                         auto g1 = *og1;
-                        g1.offset = (uint8 *)std::malloc(length);
+                        g1.offset = (uint8_t *)std::malloc(length);
                         std::memcpy(g1.offset, og1->offset, length);
                         result.push_back(g1);
                     }
@@ -395,7 +395,7 @@ namespace ObjectJsonHelpers
         return result;
     }
 
-    static uint8 ParseStringId(const std::string &s)
+    static uint8_t ParseStringId(const std::string &s)
     {
         if (s == "name") return OBJ_STRING_ID_NAME;
         if (s == "description") return OBJ_STRING_ID_DESCRIPTION;

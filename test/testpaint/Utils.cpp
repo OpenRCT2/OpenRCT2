@@ -14,7 +14,7 @@
 #include <openrct2/ride/TrackData.h>
 
 namespace Utils {
-    int getTrackSequenceCount(uint8 rideType, uint8 trackType) {
+    int getTrackSequenceCount(uint8_t rideType, uint8_t trackType) {
         int sequenceCount = 0;
         const rct_preview_track **trackBlocks;
 
@@ -35,7 +35,7 @@ namespace Utils {
         return sequenceCount;
     }
 
-    bool rideSupportsTrackType(uint8 rideType, uint8 trackType) {
+    bool rideSupportsTrackType(uint8_t rideType, uint8_t trackType) {
         TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
 
         if (newPaintGetter == nullptr) {
@@ -53,7 +53,7 @@ namespace Utils {
         return true;
     }
 
-    bool rideIsImplemented(uint8 rideType) {
+    bool rideIsImplemented(uint8_t rideType) {
         TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
         return (newPaintGetter != 0);
     }

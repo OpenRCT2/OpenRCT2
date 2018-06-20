@@ -45,10 +45,10 @@ void X8RainDrawer::SetDPI(rct_drawpixelinfo * dpi)
     _screenDPI = dpi;
 }
 
-void X8RainDrawer::Draw(sint32 x, sint32 y, sint32 width, sint32 height, sint32 xStart, sint32 yStart)
+void X8RainDrawer::Draw(int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart)
 {
     // clang-format off
-    static constexpr const uint8 RainPattern[] =
+    static constexpr const uint8_t RainPattern[] =
     {
         32, 32, 0, 12, 0, 14, 0, 16, 255, 0, 255, 0, 255, 0, 255, 0, 255,
         0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
@@ -57,36 +57,36 @@ void X8RainDrawer::Draw(sint32 x, sint32 y, sint32 width, sint32 height, sint32 
     };
     // clang-format on
 
-    const uint8 * pattern = RainPattern;
-    uint8 patternXSpace = *pattern++;
-    uint8 patternYSpace = *pattern++;
+    const uint8_t * pattern = RainPattern;
+    uint8_t patternXSpace = *pattern++;
+    uint8_t patternYSpace = *pattern++;
 
-    uint8 patternStartXOffset = xStart % patternXSpace;
-    uint8 patternStartYOffset = yStart % patternYSpace;
+    uint8_t patternStartXOffset = xStart % patternXSpace;
+    uint8_t patternStartYOffset = yStart % patternYSpace;
 
-    uint32 pixelOffset = (_screenDPI->pitch + _screenDPI->width) * y + x;
-    uint8 patternYPos = patternStartYOffset % patternYSpace;
+    uint32_t pixelOffset = (_screenDPI->pitch + _screenDPI->width) * y + x;
+    uint8_t patternYPos = patternStartYOffset % patternYSpace;
 
-    uint8 * screenBits = _screenDPI->bits;
+    uint8_t * screenBits = _screenDPI->bits;
 
     //Stores the colours of changed pixels
     RainPixel * newPixels = &_rainPixels[_rainPixelsCount];
     for (; height != 0; height--)
     {
-        uint8 patternX = pattern[patternYPos * 2];
+        uint8_t patternX = pattern[patternYPos * 2];
         if (patternX != 0xFF)
         {
-            if (_rainPixelsCount < (_rainPixelsCapacity - (uint32)width))
+            if (_rainPixelsCount < (_rainPixelsCapacity - (uint32_t)width))
             {
-                uint32 finalPixelOffset = width + pixelOffset;
+                uint32_t finalPixelOffset = width + pixelOffset;
 
-                uint32 xPixelOffset = pixelOffset;
-                xPixelOffset += ((uint8)(patternX - patternStartXOffset)) % patternXSpace;
+                uint32_t xPixelOffset = pixelOffset;
+                xPixelOffset += ((uint8_t)(patternX - patternStartXOffset)) % patternXSpace;
 
-                uint8 patternPixel = pattern[patternYPos * 2 + 1];
+                uint8_t patternPixel = pattern[patternYPos * 2 + 1];
                 for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
                 {
-                    uint8 current_pixel = screenBits[xPixelOffset];
+                    uint8_t current_pixel = screenBits[xPixelOffset];
                     screenBits[xPixelOffset] = patternPixel;
                     _rainPixelsCount++;
 
@@ -106,9 +106,9 @@ void X8RainDrawer::Restore()
 {
     if (_rainPixelsCount > 0)
     {
-        uint32  numPixels = (_screenDPI->width + _screenDPI->pitch) * _screenDPI->height;
-        uint8 * bits = _screenDPI->bits;
-        for (uint32 i = 0; i < _rainPixelsCount; i++)
+        uint32_t  numPixels = (_screenDPI->width + _screenDPI->pitch) * _screenDPI->height;
+        uint8_t * bits = _screenDPI->bits;
+        for (uint32_t i = 0; i < _rainPixelsCount; i++)
         {
             RainPixel rainPixel = _rainPixels[i];
             if (rainPixel.Position >= numPixels)
@@ -148,9 +148,9 @@ void X8DrawingEngine::Initialise()
 {
 }
 
-void X8DrawingEngine::Resize(uint32 width, uint32 height)
+void X8DrawingEngine::Resize(uint32_t width, uint32_t height)
 {
-    uint32 pitch = width;
+    uint32_t pitch = width;
     ConfigureBits(width, height, pitch);
 }
 
@@ -163,12 +163,12 @@ void X8DrawingEngine::SetVSync([[maybe_unused]] bool vsync)
     // Not applicable for this engine
 }
 
-void X8DrawingEngine::Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom)
+void X8DrawingEngine::Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     left = std::max(left, 0);
     top = std::max(top, 0);
-    right = std::min(right, (sint32)_width);
-    bottom = std::min(bottom, (sint32)_height);
+    right = std::min(right, (int32_t)_width);
+    bottom = std::min(bottom, (int32_t)_height);
 
     if (left >= right) return;
     if (top >= bottom) return;
@@ -181,12 +181,12 @@ void X8DrawingEngine::Invalidate(sint32 left, sint32 top, sint32 right, sint32 b
     top >>= _dirtyGrid.BlockShiftY;
     bottom >>= _dirtyGrid.BlockShiftY;
 
-    uint32 dirtyBlockColumns = _dirtyGrid.BlockColumns;
-    uint8 * screenDirtyBlocks = _dirtyGrid.Blocks;
-    for (sint16 y = top; y <= bottom; y++)
+    uint32_t dirtyBlockColumns = _dirtyGrid.BlockColumns;
+    uint8_t * screenDirtyBlocks = _dirtyGrid.Blocks;
+    for (int16_t y = top; y <= bottom; y++)
     {
-        uint32 yOffset = y * dirtyBlockColumns;
-        for (sint16 x = left; x <= right; x++)
+        uint32_t yOffset = y * dirtyBlockColumns;
+        for (int16_t x = left; x <= right; x++)
         {
             screenDirtyBlocks[yOffset + x] = 0xFF;
         }
@@ -232,7 +232,7 @@ void X8DrawingEngine::PaintRain()
     DrawRain(&_bitsDPI, &_rainDrawer);
 }
 
-void X8DrawingEngine::CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy)
+void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy)
 {
     if (dx == 0 && dy == 0) return;
 
@@ -241,18 +241,18 @@ void X8DrawingEngine::CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, 
     // NOTE: when zooming, there can be x, y, dx, dy combinations that go off the
     // screen; hence the checks. This code should ultimately not be called when
     // zooming because this function is specific to updating the screen on move
-    sint32 lmargin = std::min(x - dx, 0);
-    sint32 rmargin = std::min((sint32)_width - (x - dx + width), 0);
-    sint32 tmargin = std::min(y - dy, 0);
-    sint32 bmargin = std::min((sint32)_height - (y - dy + height), 0);
+    int32_t lmargin = std::min(x - dx, 0);
+    int32_t rmargin = std::min((int32_t)_width - (x - dx + width), 0);
+    int32_t tmargin = std::min(y - dy, 0);
+    int32_t bmargin = std::min((int32_t)_height - (y - dy + height), 0);
     x -= lmargin;
     y -= tmargin;
     width += lmargin + rmargin;
     height += tmargin + bmargin;
 
-    sint32  stride = _bitsDPI.width + _bitsDPI.pitch;
-    uint8 * to = _bitsDPI.bits + y * stride + x;
-    uint8 * from = _bitsDPI.bits + (y - dy) * stride + x - dx;
+    int32_t  stride = _bitsDPI.width + _bitsDPI.pitch;
+    uint8_t * to = _bitsDPI.bits + y * stride + x;
+    uint8_t * from = _bitsDPI.bits + (y - dy) * stride + x - dx;
 
     if (dy > 0)
     {
@@ -263,7 +263,7 @@ void X8DrawingEngine::CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, 
     }
 
     // Move bytes
-    for (sint32 i = 0; i < height; i++)
+    for (int32_t i = 0; i < height; i++)
     {
         memmove(to, from, width);
         to += stride;
@@ -271,7 +271,7 @@ void X8DrawingEngine::CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, 
     }
 }
 
-sint32 X8DrawingEngine::Screenshot()
+int32_t X8DrawingEngine::Screenshot()
 {
     return screenshot_dump_png(&_bitsDPI);
 }
@@ -292,7 +292,7 @@ DRAWING_ENGINE_FLAGS X8DrawingEngine::GetFlags()
     return DEF_DIRTY_OPTIMISATIONS;
 }
 
-void X8DrawingEngine::InvalidateImage([[maybe_unused]] uint32 image)
+void X8DrawingEngine::InvalidateImage([[maybe_unused]] uint32_t image)
 {
     // Not applicable for this engine
 }
@@ -302,10 +302,10 @@ rct_drawpixelinfo * X8DrawingEngine::GetDPI()
     return &_bitsDPI;
 }
 
-void X8DrawingEngine::ConfigureBits(uint32 width, uint32 height, uint32 pitch)
+void X8DrawingEngine::ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch)
 {
     size_t  newBitsSize = pitch * height;
-    uint8 * newBits = new uint8[newBitsSize];
+    uint8_t * newBits = new uint8_t[newBitsSize];
     if (_bits == nullptr)
     {
         std::fill_n(newBits, newBitsSize, 0);
@@ -318,12 +318,12 @@ void X8DrawingEngine::ConfigureBits(uint32 width, uint32 height, uint32 pitch)
         }
         else
         {
-            uint8 * src = _bits;
-            uint8 * dst = newBits;
+            uint8_t * src = _bits;
+            uint8_t * dst = newBits;
 
-            uint32 minWidth = std::min(_width, width);
-            uint32 minHeight = std::min(_height, height);
-            for (uint32 y = 0; y < minHeight; y++)
+            uint32_t minWidth = std::min(_width, width);
+            uint32_t minHeight = std::min(_height, height);
+            for (uint32_t y = 0; y < minHeight; y++)
             {
                 std::copy_n(src, minWidth, dst);
                 if (pitch - minWidth > 0)
@@ -362,7 +362,7 @@ void X8DrawingEngine::ConfigureBits(uint32 width, uint32 height, uint32 pitch)
 }
 
 void X8DrawingEngine::OnDrawDirtyBlock(
-    [[maybe_unused]] uint32 x, [[maybe_unused]] uint32 y, [[maybe_unused]] uint32 columns, [[maybe_unused]] uint32 rows)
+    [[maybe_unused]] uint32_t x, [[maybe_unused]] uint32_t y, [[maybe_unused]] uint32_t columns, [[maybe_unused]] uint32_t rows)
 {
 }
 
@@ -376,27 +376,27 @@ void X8DrawingEngine::ConfigureDirtyGrid()
     _dirtyGrid.BlockRows = (_height >> _dirtyGrid.BlockShiftY) + 1;
 
     delete [] _dirtyGrid.Blocks;
-    _dirtyGrid.Blocks = new uint8[_dirtyGrid.BlockColumns * _dirtyGrid.BlockRows];
+    _dirtyGrid.Blocks = new uint8_t[_dirtyGrid.BlockColumns * _dirtyGrid.BlockRows];
 }
 
 void X8DrawingEngine::DrawAllDirtyBlocks()
 {
-    uint32  dirtyBlockColumns = _dirtyGrid.BlockColumns;
-    uint32  dirtyBlockRows = _dirtyGrid.BlockRows;
-    uint8 * dirtyBlocks = _dirtyGrid.Blocks;
+    uint32_t  dirtyBlockColumns = _dirtyGrid.BlockColumns;
+    uint32_t  dirtyBlockRows = _dirtyGrid.BlockRows;
+    uint8_t * dirtyBlocks = _dirtyGrid.Blocks;
 
-    for (uint32 x = 0; x < dirtyBlockColumns; x++)
+    for (uint32_t x = 0; x < dirtyBlockColumns; x++)
     {
-        for (uint32 y = 0; y < dirtyBlockRows; y++)
+        for (uint32_t y = 0; y < dirtyBlockRows; y++)
         {
-            uint32 yOffset = y * dirtyBlockColumns;
+            uint32_t yOffset = y * dirtyBlockColumns;
             if (dirtyBlocks[yOffset + x] == 0)
             {
                 continue;
             }
 
             // Determine columns
-            uint32 xx;
+            uint32_t xx;
             for (xx = x; xx < dirtyBlockColumns; xx++)
             {
                 if (dirtyBlocks[yOffset + xx] == 0)
@@ -404,13 +404,13 @@ void X8DrawingEngine::DrawAllDirtyBlocks()
                     break;
                 }
             }
-            uint32 columns = xx - x;
+            uint32_t columns = xx - x;
 
             // Check rows
-            uint32 yy;
+            uint32_t yy;
             for (yy = y; yy < dirtyBlockRows; yy++)
             {
-                uint32 yyOffset = yy * dirtyBlockColumns;
+                uint32_t yyOffset = yy * dirtyBlockColumns;
                 for (xx = x; xx < x + columns; xx++)
                 {
                     if (dirtyBlocks[yyOffset + xx] == 0)
@@ -421,32 +421,32 @@ void X8DrawingEngine::DrawAllDirtyBlocks()
             }
 
         endRowCheck:
-            uint32 rows = yy - y;
+            uint32_t rows = yy - y;
             DrawDirtyBlocks(x, y, columns, rows);
         }
     }
 }
 
-void X8DrawingEngine::DrawDirtyBlocks(uint32 x, uint32 y, uint32 columns, uint32 rows)
+void X8DrawingEngine::DrawDirtyBlocks(uint32_t x, uint32_t y, uint32_t columns, uint32_t rows)
 {
-    uint32  dirtyBlockColumns = _dirtyGrid.BlockColumns;
-    uint8 * screenDirtyBlocks = _dirtyGrid.Blocks;
+    uint32_t  dirtyBlockColumns = _dirtyGrid.BlockColumns;
+    uint8_t * screenDirtyBlocks = _dirtyGrid.Blocks;
 
     // Unset dirty blocks
-    for (uint32 top = y; top < y + rows; top++)
+    for (uint32_t top = y; top < y + rows; top++)
     {
-        uint32 topOffset = top * dirtyBlockColumns;
-        for (uint32 left = x; left < x + columns; left++)
+        uint32_t topOffset = top * dirtyBlockColumns;
+        for (uint32_t left = x; left < x + columns; left++)
         {
             screenDirtyBlocks[topOffset + left] = 0;
         }
     }
 
     // Determine region in pixels
-    uint32 left = std::max<uint32>(0, x * _dirtyGrid.BlockWidth);
-    uint32 top = std::max<uint32>(0, y * _dirtyGrid.BlockHeight);
-    uint32 right = std::min(_width, left + (columns * _dirtyGrid.BlockWidth));
-    uint32 bottom = std::min(_height, top + (rows * _dirtyGrid.BlockHeight));
+    uint32_t left = std::max<uint32_t>(0, x * _dirtyGrid.BlockWidth);
+    uint32_t top = std::max<uint32_t>(0, y * _dirtyGrid.BlockHeight);
+    uint32_t right = std::min(_width, left + (columns * _dirtyGrid.BlockWidth));
+    uint32_t bottom = std::min(_height, top + (rows * _dirtyGrid.BlockHeight));
     if (right <= left || bottom <= top)
     {
         return;
@@ -471,15 +471,15 @@ IDrawingEngine * X8DrawingContext::GetEngine()
     return _engine;
 }
 
-void X8DrawingContext::Clear(uint8 paletteIndex)
+void X8DrawingContext::Clear(uint8_t paletteIndex)
 {
     rct_drawpixelinfo * dpi = _dpi;
 
-    sint32 w = dpi->width >> dpi->zoom_level;
-    sint32 h = dpi->height >> dpi->zoom_level;
-    uint8 * ptr = dpi->bits;
+    int32_t w = dpi->width >> dpi->zoom_level;
+    int32_t h = dpi->height >> dpi->zoom_level;
+    uint8_t * ptr = dpi->bits;
 
-    for (sint32 y = 0; y < h; y++)
+    for (int32_t y = 0; y < h; y++)
     {
         std::fill_n(ptr, w, paletteIndex);
         ptr += w + dpi->pitch;
@@ -488,7 +488,7 @@ void X8DrawingContext::Clear(uint8 paletteIndex)
 
 /** rct2: 0x0097FF04 */
 // clang-format off
-static constexpr const uint16 Pattern[] = {
+static constexpr const uint16_t Pattern[] = {
     0b0111111110000000,
     0b0011111111000000,
     0b0001111111100000,
@@ -508,7 +508,7 @@ static constexpr const uint16 Pattern[] = {
 };
 
 /** rct2: 0x0097FF14 */
-static constexpr const uint16 PatternInverse[] = {
+static constexpr const uint16_t PatternInverse[] = {
     0b1000000001111111,
     0b1100000000111111,
     0b1110000000011111,
@@ -528,13 +528,13 @@ static constexpr const uint16 PatternInverse[] = {
 };
 
 /** rct2: 0x0097FEFC */
-static constexpr const uint16 * Patterns[] = {
+static constexpr const uint16_t * Patterns[] = {
     Pattern,
     PatternInverse
 };
 // clang-format on
 
-void X8DrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom)
+void X8DrawingContext::FillRect(uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     rct_drawpixelinfo * dpi = _dpi;
 
@@ -545,45 +545,45 @@ void X8DrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 r
     if (bottom < dpi->y) return;
     if (top >= dpi->y + dpi->height) return;
 
-    uint16 crossPattern = 0;
+    uint16_t crossPattern = 0;
 
-    sint32 startX = left - dpi->x;
+    int32_t startX = left - dpi->x;
     if (startX < 0)
     {
         crossPattern ^= startX;
         startX = 0;
     }
 
-    sint32 endX = right - dpi->x + 1;
+    int32_t endX = right - dpi->x + 1;
     if (endX > dpi->width)
     {
         endX = dpi->width;
     }
 
-    sint32 startY = top - dpi->y;
+    int32_t startY = top - dpi->y;
     if (startY < 0)
     {
         crossPattern ^= startY;
         startY = 0;
     }
 
-    sint32 endY = bottom - dpi->y + 1;
+    int32_t endY = bottom - dpi->y + 1;
     if (endY > dpi->height)
     {
         endY = dpi->height;
     }
 
-    sint32 width = endX - startX;
-    sint32 height = endY - startY;
+    int32_t width = endX - startX;
+    int32_t height = endY - startY;
 
     if (colour & 0x1000000)
     {
         // Cross hatching
-        uint8 * dst = (startY * (dpi->width + dpi->pitch)) + startX + dpi->bits;
-        for (sint32 i = 0; i < height; i++)
+        uint8_t * dst = (startY * (dpi->width + dpi->pitch)) + startX + dpi->bits;
+        for (int32_t i = 0; i < height; i++)
         {
-            uint8 * nextdst = dst + dpi->width + dpi->pitch;
-            uint32  p = ror32(crossPattern, 1);
+            uint8_t * nextdst = dst + dpi->width + dpi->pitch;
+            uint32_t  p = ror32(crossPattern, 1);
             p = (p & 0xFFFF0000) | width;
 
             // Fill every other pixel with the colour
@@ -606,25 +606,25 @@ void X8DrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 r
     }
     else if (colour & 0x4000000)
     {
-        uint8 * dst = startY * (dpi->width + dpi->pitch) + startX + dpi->bits;
+        uint8_t * dst = startY * (dpi->width + dpi->pitch) + startX + dpi->bits;
 
         // The pattern loops every 15 lines this is which
         // part the pattern is on.
-        sint32 patternY = (startY + dpi->y) % 16;
+        int32_t patternY = (startY + dpi->y) % 16;
 
         // The pattern loops every 15 pixels this is which
         // part the pattern is on.
-        sint32 startPatternX = (startX + dpi->x) % 16;
-        sint32 patternX = startPatternX;
+        int32_t startPatternX = (startX + dpi->x) % 16;
+        int32_t patternX = startPatternX;
 
-        const uint16 * patternsrc = Patterns[colour >> 28]; // or possibly uint8)[esi*4] ?
+        const uint16_t * patternsrc = Patterns[colour >> 28]; // or possibly uint8_t)[esi*4] ?
 
-        for (sint32 numLines = height; numLines > 0; numLines--)
+        for (int32_t numLines = height; numLines > 0; numLines--)
         {
-            uint8 * nextdst = dst + dpi->width + dpi->pitch;
-            uint16  pattern = patternsrc[patternY];
+            uint8_t * nextdst = dst + dpi->width + dpi->pitch;
+            uint16_t  pattern = patternsrc[patternY];
 
-            for (sint32 numPixels = width; numPixels > 0; numPixels--)
+            for (int32_t numPixels = width; numPixels > 0; numPixels--)
             {
                 if (pattern & (1 << patternX))
                 {
@@ -640,8 +640,8 @@ void X8DrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 r
     }
     else
     {
-        uint8 * dst = startY * (dpi->width + dpi->pitch) + startX + dpi->bits;
-        for (sint32 i = 0; i < height; i++)
+        uint8_t * dst = startY * (dpi->width + dpi->pitch) + startX + dpi->bits;
+        for (int32_t i = 0; i < height; i++)
         {
             std::fill_n(dst, width, colour & 0xFF);
             dst += dpi->width + dpi->pitch;
@@ -649,7 +649,7 @@ void X8DrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 r
     }
 }
 
-void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32 top, sint32 right, sint32 bottom)
+void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     rct_drawpixelinfo * dpi = _dpi;
 
@@ -660,53 +660,53 @@ void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32
     if (bottom < dpi->y) return;
     if (top >= dpi->y + dpi->height) return;
 
-    sint32 startX = left - dpi->x;
+    int32_t startX = left - dpi->x;
     if (startX < 0)
     {
         startX = 0;
     }
 
-    sint32 endX = right - dpi->x + 1;
+    int32_t endX = right - dpi->x + 1;
     if (endX > dpi->width)
     {
         endX = dpi->width;
     }
 
-    sint32 startY = top - dpi->y;
+    int32_t startY = top - dpi->y;
     if (startY < 0)
     {
         startY = 0;
     }
 
-    sint32 endY = bottom - dpi->y + 1;
+    int32_t endY = bottom - dpi->y + 1;
     if (endY > dpi->height)
     {
         endY = dpi->height;
     }
 
-    sint32 width = endX - startX;
-    sint32 height = endY - startY;
+    int32_t width = endX - startX;
+    int32_t height = endY - startY;
 
 
     //0x2000000
     // 00678B7E   00678C83
     // Location in screen buffer?
-    uint8 * dst = dpi->bits + (uint32)((startY >> (dpi->zoom_level)) * ((dpi->width >> dpi->zoom_level) + dpi->pitch) + (startX >> dpi->zoom_level));
+    uint8_t * dst = dpi->bits + (uint32_t)((startY >> (dpi->zoom_level)) * ((dpi->width >> dpi->zoom_level) + dpi->pitch) + (startX >> dpi->zoom_level));
 
     // Find colour in colour table?
-    uint16 g1Index = palette_to_g1_offset[palette];
+    uint16_t g1Index = palette_to_g1_offset[palette];
     auto g1Element = gfx_get_g1_element(g1Index);
     if (g1Element != nullptr)
     {
         auto g1Bits = g1Element->offset;
-        const sint32 scaled_width = width >> dpi->zoom_level;
-        const sint32 step = ((dpi->width >> dpi->zoom_level) + dpi->pitch);
+        const int32_t scaled_width = width >> dpi->zoom_level;
+        const int32_t step = ((dpi->width >> dpi->zoom_level) + dpi->pitch);
 
         // Fill the rectangle with the colours from the colour table
-        for (sint32 i = 0; i < height >> dpi->zoom_level; i++)
+        for (int32_t i = 0; i < height >> dpi->zoom_level; i++)
         {
-            uint8 * nextdst = dst + step * i;
-            for (sint32 j = 0; j < scaled_width; j++)
+            uint8_t * nextdst = dst + step * i;
+            for (int32_t j = 0; j < scaled_width; j++)
             {
                 *(nextdst + j) = g1Bits[*(nextdst + j)];
             }
@@ -714,24 +714,24 @@ void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32
     }
 }
 
-void X8DrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2)
+void X8DrawingContext::DrawLine(uint32_t colour, int32_t x1, int32_t y1, int32_t x2, int32_t y2)
 {
     gfx_draw_line_software(_dpi, x1, y1, x2, y2, colour);
 }
 
-void X8DrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour)
+void X8DrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour)
 {
     gfx_draw_sprite_software(_dpi, image, x, y, tertiaryColour);
 }
 
-void X8DrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage)
+void X8DrawingContext::DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage)
 {
     gfx_draw_sprite_raw_masked_software(_dpi, x, y, maskImage, colourImage);
 }
 
-void X8DrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour)
+void X8DrawingContext::DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uint8_t colour)
 {
-    uint8 palette[256];
+    uint8_t palette[256];
     memset(palette, colour, 256);
     palette[0] = 0;
 
@@ -739,7 +739,7 @@ void X8DrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 c
     gfx_draw_sprite_palette_set_software(_dpi, image | IMAGE_TYPE_REMAP, x, y, palette, nullptr);
 }
 
-void X8DrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette)
+void X8DrawingContext::DrawGlyph(uint32_t image, int32_t x, int32_t y, uint8_t * palette)
 {
     gfx_draw_sprite_palette_set_software(_dpi, image, x, y, palette, nullptr);
 }

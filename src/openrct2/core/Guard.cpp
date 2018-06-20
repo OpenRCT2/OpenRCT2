@@ -101,7 +101,7 @@ namespace Guard
             // Show message box if we are not building for testing
             char buffer[512];
             GetAssertMessage(buffer, sizeof(buffer), formattedMessage);
-            sint32 result = MessageBoxA(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
+            int32_t result = MessageBoxA(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
             if (result == IDABORT)
             {
                 ForceCrash();

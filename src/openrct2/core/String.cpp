@@ -133,12 +133,12 @@ namespace String
         return str == nullptr || str[0] == '\0';
     }
 
-    sint32 Compare(const std::string &a, const std::string &b, bool ignoreCase)
+    int32_t Compare(const std::string &a, const std::string &b, bool ignoreCase)
     {
         return Compare(a.c_str(), b.c_str(), ignoreCase);
     }
 
-    sint32 Compare(const utf8 * a, const utf8 * b, bool ignoreCase)
+    int32_t Compare(const utf8 * a, const utf8 * b, bool ignoreCase)
     {
         if (a == b) return 0;
         if (a == nullptr) a = "";
@@ -317,7 +317,7 @@ namespace String
         utf8 * buffer = Memory::Allocate<utf8>(bufferSize);
 
         // Start with initial buffer
-        sint32 len = vsnprintf(buffer, bufferSize, format, args);
+        int32_t len = vsnprintf(buffer, bufferSize, format, args);
         if (len < 0)
         {
             Memory::Free(buffer);
@@ -451,7 +451,7 @@ namespace String
 
     const utf8 * SkipBOM(const utf8 * buffer)
     {
-        if ((uint8)buffer[0] == 0xEF && (uint8)buffer[1] == 0xBB && (uint8)buffer[2] == 0xBF)
+        if ((uint8_t)buffer[0] == 0xEF && (uint8_t)buffer[1] == 0xBB && (uint8_t)buffer[2] == 0xBF)
         {
             return buffer + 3;
         }
@@ -589,7 +589,7 @@ namespace String
     }
 
 #ifndef _WIN32
-    static const char* GetIcuCodePage(sint32 codePage)
+    static const char* GetIcuCodePage(int32_t codePage)
     {
         switch (codePage)
         {
@@ -616,7 +616,7 @@ namespace String
         }
     }
 
-    static std::string CodePageFromUnicode(icu::UnicodeString src, sint32 dstCodePage)
+    static std::string CodePageFromUnicode(icu::UnicodeString src, int32_t dstCodePage)
     {
         UConverter* conv;
         UErrorCode status = U_ZERO_ERROR;
@@ -656,7 +656,7 @@ namespace String
     }
 #endif
 
-    std::string Convert(const std::string_view& src, sint32 srcCodePage, sint32 dstCodePage)
+    std::string Convert(const std::string_view& src, int32_t srcCodePage, int32_t dstCodePage)
     {
 #ifdef _WIN32
         // Convert from source code page to UTF-16

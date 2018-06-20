@@ -63,14 +63,14 @@ private:
 
     TextureCache * _textureCache = nullptr;
 
-    sint32 _offsetX    = 0;
-    sint32 _offsetY    = 0;
-    sint32 _clipLeft   = 0;
-    sint32 _clipTop    = 0;
-    sint32 _clipRight  = 0;
-    sint32 _clipBottom = 0;
+    int32_t _offsetX    = 0;
+    int32_t _offsetY    = 0;
+    int32_t _clipLeft   = 0;
+    int32_t _clipTop    = 0;
+    int32_t _clipRight  = 0;
+    int32_t _clipBottom = 0;
 
-    sint32 _drawCount  = 0;
+    int32_t _drawCount  = 0;
 
     struct
     {
@@ -89,18 +89,18 @@ public:
     const OpenGLFramebuffer & GetFinalFramebuffer() const { return _swapFramebuffer->GetFinalFramebuffer(); }
 
     void Initialise();
-    void Resize(sint32 width, sint32 height);
+    void Resize(int32_t width, int32_t height);
     void ResetPalette();
     void StartNewDraw();
 
-    void Clear(uint8 paletteIndex) override;
-    void FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h) override;
-    void FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32 top, sint32 right, sint32 bottom) override;
-    void DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2) override;
-    void DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour) override;
-    void DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage) override;
-    void DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour) override;
-    void DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette) override;
+    void Clear(uint8_t paletteIndex) override;
+    void FillRect(uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
+    void FilterRect(FILTER_PALETTE_ID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
+    void DrawLine(uint32_t colour, int32_t x1, int32_t y1, int32_t x2, int32_t y2) override;
+    void DrawSprite(uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour) override;
+    void DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage) override;
+    void DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uint8_t colour) override;
+    void DrawGlyph(uint32_t image, int32_t x, int32_t y, uint8_t * palette) override;
 
     void FlushCommandBuffers();
 
@@ -118,11 +118,11 @@ private:
     SDL_Window *        _window     = nullptr;
     SDL_GLContext       _context    = nullptr;
 
-    uint32  _width      = 0;
-    uint32  _height     = 0;
-    uint32  _pitch      = 0;
+    uint32_t  _width      = 0;
+    uint32_t  _height     = 0;
+    uint32_t  _pitch      = 0;
     size_t  _bitsSize   = 0;
-    uint8 * _bits       = nullptr;
+    uint8_t * _bits       = nullptr;
 
     rct_drawpixelinfo _bitsDPI  = {};
 
@@ -184,7 +184,7 @@ public:
         _applyPaletteShader = new ApplyPaletteShader();
     }
 
-    void Resize(uint32 width, uint32 height) override
+    void Resize(uint32_t width, uint32_t height) override
     {
         ConfigureBits(width, height, width);
         ConfigureCanvas();
@@ -193,7 +193,7 @@ public:
 
     void SetPalette(const rct_palette_entry * palette) override
     {
-        for (sint32 i = 0; i < 256; i++)
+        for (int32_t i = 0; i < 256; i++)
         {
             SDL_Color colour;
             colour.r = palette[i].red;
@@ -218,7 +218,7 @@ public:
         SDL_GL_SetSwapInterval(vsync);
     }
 
-    void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) override
+    void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) override
     {
     }
 
@@ -276,16 +276,16 @@ public:
         // Not implemented
     }
 
-    sint32 Screenshot() override
+    int32_t Screenshot() override
     {
         const OpenGLFramebuffer & framebuffer = _drawingContext->GetFinalFramebuffer();
         framebuffer.Bind();
         framebuffer.GetPixels(_bitsDPI);
-        sint32 result = screenshot_dump_png(&_bitsDPI);
+        int32_t result = screenshot_dump_png(&_bitsDPI);
         return result;
     }
 
-    void CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) override
+    void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override
     {
         // Not applicable for this engine
     }
@@ -306,7 +306,7 @@ public:
         return DEF_NONE;
     }
 
-    void InvalidateImage(uint32 image) override
+    void InvalidateImage(uint32_t image) override
     {
         _drawingContext->GetTextureCache()
                        ->InvalidateImage(image);
@@ -329,10 +329,10 @@ private:
         return version;
     }
 
-    void ConfigureBits(uint32 width, uint32 height, uint32 pitch)
+    void ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch)
     {
         size_t  newBitsSize = pitch * height;
-        uint8 * newBits = new uint8[newBitsSize];
+        uint8_t * newBits = new uint8_t[newBitsSize];
         if (_bits == nullptr)
         {
             std::fill_n(newBits, newBitsSize, 0);
@@ -345,12 +345,12 @@ private:
             }
             else
             {
-                uint8 * src = _bits;
-                uint8 * dst = newBits;
+                uint8_t * src = _bits;
+                uint8_t * dst = newBits;
 
-                uint32 minWidth = std::min(_width, width);
-                uint32 minHeight = std::min(_height, height);
-                for (uint32 y = 0; y < minHeight; y++)
+                uint32_t minWidth = std::min(_width, width);
+                uint32_t minHeight = std::min(_height, height);
+                for (uint32_t y = 0; y < minHeight; y++)
                 {
                     std::copy_n(src, minWidth, dst);
                     if (pitch - minWidth > 0)
@@ -401,7 +401,7 @@ private:
         }
         if (GetContext()->GetUiContext()->GetScaleQuality() == SCALE_QUALITY_SMOOTH_NN)
         {
-            uint32 scale = std::ceil(gConfigGeneral.window_scale);
+            uint32_t scale = std::ceil(gConfigGeneral.window_scale);
             _smoothScaleFramebuffer = new OpenGLFramebuffer(_width * scale, _height * scale, false, false);
         }
     }
@@ -445,7 +445,7 @@ void OpenGLDrawingContext::Initialise()
     _drawLineShader = new DrawLineShader();
 }
 
-void OpenGLDrawingContext::Resize(sint32 width, sint32 height)
+void OpenGLDrawingContext::Resize(int32_t width, int32_t height)
 {
     _commandBuffers.lines.clear();
     _commandBuffers.rects.clear();
@@ -471,12 +471,12 @@ void OpenGLDrawingContext::StartNewDraw()
     _swapFramebuffer->Clear();
 }
 
-void OpenGLDrawingContext::Clear(uint8 paletteIndex)
+void OpenGLDrawingContext::Clear(uint8_t paletteIndex)
 {
     FillRect(paletteIndex, _clipLeft - _offsetX, _clipTop - _offsetY, _clipRight - _offsetX, _clipBottom - _offsetY);
 }
 
-void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom)
+void OpenGLDrawingContext::FillRect(uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     left += _offsetX;
     top += _offsetY;
@@ -508,7 +508,7 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
     }
 }
 
-void OpenGLDrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32 top, sint32 right, sint32 bottom)
+void OpenGLDrawingContext::FilterRect(FILTER_PALETTE_ID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     left += _offsetX;
     top += _offsetY;
@@ -529,7 +529,7 @@ void OpenGLDrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, si
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2)
+void OpenGLDrawingContext::DrawLine(uint32_t colour, int32_t x1, int32_t y1, int32_t x2, int32_t y2)
 {
     x1 += _offsetX;
     y1 += _offsetY;
@@ -544,9 +544,9 @@ void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour)
+void OpenGLDrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour)
 {
-    sint32 g1Id = image & 0x7FFFF;
+    int32_t g1Id = image & 0x7FFFF;
     auto g1Element = gfx_get_g1_element(g1Id);
     if (g1Element == nullptr)
     {
@@ -575,12 +575,12 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
         }
     }
 
-    uint8 zoomLevel = (1 << _dpi->zoom_level);
+    uint8_t zoomLevel = (1 << _dpi->zoom_level);
 
-    sint32 left = x + g1Element->x_offset;
-    sint32 top = y + g1Element->y_offset;
+    int32_t left = x + g1Element->x_offset;
+    int32_t top = y + g1Element->y_offset;
 
-    sint32 zoom_mask = 0xFFFFFFFF << _dpi->zoom_level;
+    int32_t zoom_mask = 0xFFFFFFFF << _dpi->zoom_level;
     if (_dpi->zoom_level && g1Element->flags & G1_FLAG_RLE_COMPRESSION){
         top -= ~zoom_mask;
     }
@@ -592,8 +592,8 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
 
     left &= zoom_mask;
 
-    sint32 right = left + g1Element->width;
-    sint32 bottom = top + g1Element->height;
+    int32_t right = left + g1Element->width;
+    int32_t bottom = top + g1Element->height;
 
     if (_dpi->zoom_level && g1Element->flags & G1_FLAG_RLE_COMPRESSION) {
         bottom += top & ~zoom_mask;
@@ -645,7 +645,7 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     else if ((image & IMAGE_TYPE_REMAP) || (image & IMAGE_TYPE_TRANSPARENT))
     {
         paletteCount = 1;
-        uint32 palette = (image >> 19) & 0xFF;
+        uint32_t palette = (image >> 19) & 0xFF;
         palettes.x = TextureCache::PaletteToY(palette);
         if (palette == PALETTE_WATER)
         {
@@ -689,7 +689,7 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     }
 }
 
-void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage)
+void OpenGLDrawingContext::DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage)
 {
     auto g1ElementMask = gfx_get_g1_element(maskImage & 0x7FFFF);
     auto g1ElementColour = gfx_get_g1_element(colourImage & 0x7FFFF);
@@ -701,17 +701,17 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
     const auto textureMask = _textureCache->GetOrLoadImageTexture(maskImage);
     const auto textureColour = _textureCache->GetOrLoadImageTexture(colourImage);
 
-    uint8 zoomLevel = (1 << _dpi->zoom_level);
+    uint8_t zoomLevel = (1 << _dpi->zoom_level);
 
-    sint32 drawOffsetX = g1ElementMask->x_offset;
-    sint32 drawOffsetY = g1ElementMask->y_offset;
-    sint32 drawWidth = std::min(g1ElementMask->width, g1ElementColour->width);
-    sint32 drawHeight = std::min(g1ElementMask->height, g1ElementColour->height);
+    int32_t drawOffsetX = g1ElementMask->x_offset;
+    int32_t drawOffsetY = g1ElementMask->y_offset;
+    int32_t drawWidth = std::min(g1ElementMask->width, g1ElementColour->width);
+    int32_t drawHeight = std::min(g1ElementMask->height, g1ElementColour->height);
 
-    sint32 left = x + drawOffsetX;
-    sint32 top = y + drawOffsetY;
-    sint32 right = left + drawWidth;
-    sint32 bottom = top + drawHeight;
+    int32_t left = x + drawOffsetX;
+    int32_t top = y + drawOffsetY;
+    int32_t right = left + drawWidth;
+    int32_t bottom = top + drawHeight;
 
     if (left > right)
     {
@@ -751,11 +751,11 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour)
+void OpenGLDrawingContext::DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uint8_t colour)
 {
     assert((colour & 0xFF) > 0u);
 
-    sint32 g1Id = image & 0x7FFFF;
+    int32_t g1Id = image & 0x7FFFF;
     auto g1Element = gfx_get_g1_element(g1Id);
     if (g1Element == nullptr)
     {
@@ -764,15 +764,15 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
 
     const auto texture = _textureCache->GetOrLoadImageTexture(image);
 
-    sint32 drawOffsetX = g1Element->x_offset;
-    sint32 drawOffsetY = g1Element->y_offset;
-    sint32 drawWidth = (uint16)g1Element->width;
-    sint32 drawHeight = (uint16)g1Element->height;
+    int32_t drawOffsetX = g1Element->x_offset;
+    int32_t drawOffsetY = g1Element->y_offset;
+    int32_t drawWidth = (uint16_t)g1Element->width;
+    int32_t drawHeight = (uint16_t)g1Element->height;
 
-    sint32 left = x + drawOffsetX;
-    sint32 top = y + drawOffsetY;
-    sint32 right = left + drawWidth;
-    sint32 bottom = top + drawHeight;
+    int32_t left = x + drawOffsetX;
+    int32_t top = y + drawOffsetY;
+    int32_t right = left + drawWidth;
+    int32_t bottom = top + drawHeight;
 
     if (left > right)
     {
@@ -802,7 +802,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette)
+void OpenGLDrawingContext::DrawGlyph(uint32_t image, int32_t x, int32_t y, uint8_t * palette)
 {
     auto g1Element = gfx_get_g1_element(image & 0x7FFFF);
     if (g1Element == nullptr)
@@ -812,15 +812,15 @@ void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * p
 
     const auto texture = _textureCache->GetOrLoadGlyphTexture(image, palette);
 
-    sint32 drawOffsetX = g1Element->x_offset;
-    sint32 drawOffsetY = g1Element->y_offset;
-    sint32 drawWidth = (uint16)g1Element->width;
-    sint32 drawHeight = (uint16)g1Element->height;
+    int32_t drawOffsetX = g1Element->x_offset;
+    int32_t drawOffsetY = g1Element->y_offset;
+    int32_t drawWidth = (uint16_t)g1Element->width;
+    int32_t drawHeight = (uint16_t)g1Element->height;
 
-    sint32 left = x + drawOffsetX;
-    sint32 top = y + drawOffsetY;
-    sint32 right = left + drawWidth;
-    sint32 bottom = top + drawHeight;
+    int32_t left = x + drawOffsetX;
+    int32_t top = y + drawOffsetY;
+    int32_t right = left + drawWidth;
+    int32_t bottom = top + drawHeight;
 
     if (left > right)
     {
@@ -899,8 +899,8 @@ void OpenGLDrawingContext::HandleTransparency()
     _drawRectShader->Use();
     _drawRectShader->SetInstances(_commandBuffers.transparent);
 
-    sint32 max_depth = MaxTransparencyDepth(_commandBuffers.transparent);
-    for (sint32 i=0; i < max_depth; ++i)
+    int32_t max_depth = MaxTransparencyDepth(_commandBuffers.transparent);
+    for (int32_t i=0; i < max_depth; ++i)
     {
         _swapFramebuffer->BindTransparent();
 
@@ -934,8 +934,8 @@ void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo * dpi)
 
     assert(bitsOffset < bitsSize);
 
-    _clipLeft = (sint32)(bitsOffset % (screenDPI->width + screenDPI->pitch));
-    _clipTop = (sint32)(bitsOffset / (screenDPI->width + screenDPI->pitch));
+    _clipLeft = (int32_t)(bitsOffset % (screenDPI->width + screenDPI->pitch));
+    _clipTop = (int32_t)(bitsOffset / (screenDPI->width + screenDPI->pitch));
 
     _clipRight = _clipLeft + (dpi->width >> dpi->zoom_level);
     _clipBottom = _clipTop + (dpi->height >> dpi->zoom_level);

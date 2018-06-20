@@ -15,16 +15,16 @@
 
 #include <immintrin.h>
 
-void mask_avx2(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
-               uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap)
+void mask_avx2(int32_t width, int32_t height, const uint8_t * RESTRICT maskSrc, const uint8_t * RESTRICT colourSrc,
+               uint8_t * RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
 {
     if (width == 32)
     {
-        const sint32 maskWrapSIMD = maskWrap + 32;
-        const sint32 colourWrapSIMD = colourWrap + 32;
-        const sint32 dstWrapSIMD = dstWrap + 32;
+        const int32_t maskWrapSIMD = maskWrap + 32;
+        const int32_t colourWrapSIMD = colourWrap + 32;
+        const int32_t dstWrapSIMD = dstWrap + 32;
         const __m256i zero = {};
-        for (sint32 yy = 0; yy < height; yy++) {
+        for (int32_t yy = 0; yy < height; yy++) {
             const __m256i colour   = _mm256_lddqu_si256((const __m256i *)(colourSrc + yy * colourWrapSIMD));
             const __m256i mask     = _mm256_lddqu_si256((const __m256i *)(maskSrc   + yy * maskWrapSIMD));
             const __m256i dest     = _mm256_lddqu_si256((const __m256i *)(dst       + yy * dstWrapSIMD));
@@ -46,8 +46,8 @@ void mask_avx2(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, cons
 #error You have to compile this file with AVX2 enabled, when targeting x86!
 #endif
 
-void mask_avx2(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
-               uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap)
+void mask_avx2(int32_t width, int32_t height, const uint8_t * RESTRICT maskSrc, const uint8_t * RESTRICT colourSrc,
+               uint8_t * RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
 {
     openrct2_assert(false, "AVX2 function called on a CPU that doesn't support AVX2");
 }

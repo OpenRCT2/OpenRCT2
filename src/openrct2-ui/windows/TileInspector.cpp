@@ -417,8 +417,8 @@ static rct_widget *PageWidgets[] = {
 
 static struct {
     // Offsets from the bottom of the window
-    sint16 details_top_offset, details_bottom_offset;
-    sint16 properties_top_offset, properties_bottom_offset;
+    int16_t details_top_offset, details_bottom_offset;
+    int16_t properties_top_offset, properties_bottom_offset;
     // String to be displayed in the details groupbox
     rct_string_id string_id;
 } PageGroupBoxSettings[] = {
@@ -434,18 +434,18 @@ static struct {
 };
 
 // clang-format on
-static constexpr sint32 ViewportInteractionFlags = VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_SPRITE
+static constexpr int32_t ViewportInteractionFlags = VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_SPRITE
     & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_SCENERY & VIEWPORT_INTERACTION_MASK_FOOTPATH
     & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM & VIEWPORT_INTERACTION_MASK_PARK & VIEWPORT_INTERACTION_MASK_WALL
     & VIEWPORT_INTERACTION_MASK_LARGE_SCENERY & VIEWPORT_INTERACTION_MASK_BANNER;
 
-static sint16 windowTileInspectorHighlightedIndex = -1;
+static int16_t windowTileInspectorHighlightedIndex = -1;
 static bool windowTileInspectorTileSelected = false;
-static sint32 windowTileInspectorToolMouseX = 0;
-static sint32 windowTileInspectorToolMouseY = 0;
+static int32_t windowTileInspectorToolMouseX = 0;
+static int32_t windowTileInspectorToolMouseY = 0;
 static bool windowTileInspectorToolCtrlDown = false;
-static sint32 windowTileInspectorToolMapX = 0;
-static sint32 windowTileInspectorToolMapY = 0;
+static int32_t windowTileInspectorToolMapX = 0;
+static int32_t windowTileInspectorToolMapY = 0;
 static bool windowTileInspectorApplyToAll = false;
 static bool windowTileInspectorElementCopied = false;
 static rct_tile_element tileInspectorCopiedElement;
@@ -454,17 +454,17 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
 static void window_tile_inspector_resize(rct_window *w);
 static void window_tile_inspector_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_tile_inspector_update(rct_window *w);
-static void window_tile_inspector_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
-static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_tile_inspector_update_selected_tile(rct_window *w, sint32 x, sint32 y);
-static void window_tile_inspector_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_tile_inspector_tool_drag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_tile_inspector_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-static void window_tile_inspector_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_tile_inspector_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_tile_inspector_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_tile_inspector_update_selected_tile(rct_window *w, int32_t x, int32_t y);
+static void window_tile_inspector_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_tile_inspector_tool_drag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_tile_inspector_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void window_tile_inspector_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_tile_inspector_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_tile_inspector_invalidate(rct_window *w);
 static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 static void window_tile_inspector_set_page(rct_window* w, const TILE_INSPECTOR_PAGE page);
 
 // clang-format off
@@ -499,7 +499,7 @@ static rct_window_event_list TileInspectorWindowEvents = {
     window_tile_inspector_scrollpaint
 };
 
-static uint64 PageEnabledWidgets[] = {
+static uint64_t PageEnabledWidgets[] = {
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT),
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SURFACE_BUTTON_REMOVE_FENCES) | (1ULL << WIDX_SURFACE_BUTTON_RESTORE_FENCES) | (1ULL << WIDX_SURFACE_CHECK_CORNER_N) | (1ULL << WIDX_SURFACE_CHECK_CORNER_E) | (1ULL << WIDX_SURFACE_CHECK_CORNER_S) | (1ULL << WIDX_SURFACE_CHECK_CORNER_W) | (1ULL << WIDX_SURFACE_CHECK_DIAGONAL),
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_SLOPED) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
@@ -512,7 +512,7 @@ static uint64 PageEnabledWidgets[] = {
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_CORRUPT_BUTTON_CLAMP),
 };
 
-static uint64 PageHoldDownWidgets[] = {
+static uint64_t PageHoldDownWidgets[] = {
     (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE),
     (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_DECREASE),
     (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE),
@@ -525,7 +525,7 @@ static uint64 PageHoldDownWidgets[] = {
     (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE),
 };
 
-static uint64 PageDisabledWidgets[] = {
+static uint64_t PageDisabledWidgets[] = {
     (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_MOVE_UP) | (1ULL << WIDX_BUTTON_MOVE_DOWN) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY),
     0,
     0,
@@ -585,7 +585,7 @@ static rct_tile_element* window_tile_inspector_get_selected_element(rct_window *
     return map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + windowTileInspectorSelectedIndex;
 }
 
-static void window_tile_inspector_select_element_from_list(rct_window *w, sint32 index)
+static void window_tile_inspector_select_element_from_list(rct_window *w, int32_t index)
 {
     if (index < 0 || index >= windowTileInspectorElementCount)
     {
@@ -605,7 +605,7 @@ static void window_tile_inspector_load_tile(rct_window* w, rct_tile_element* ele
     w->scrolls[0].v_top = 0;
 
     rct_tile_element* element = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
-    sint16 numItems = 0;
+    int16_t numItems = 0;
     do
     {
         if (element == elementToSelect)
@@ -621,7 +621,7 @@ static void window_tile_inspector_load_tile(rct_window* w, rct_tile_element* ele
     window_invalidate(w);
 }
 
-static void window_tile_inspector_insert_corrupt_element(sint32 elementIndex)
+static void window_tile_inspector_insert_corrupt_element(int32_t elementIndex)
 {
     openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount,
                     "elementIndex out of range");
@@ -636,7 +636,7 @@ static void window_tile_inspector_insert_corrupt_element(sint32 elementIndex)
     );
 }
 
-static void window_tile_inspector_remove_element(sint32 elementIndex)
+static void window_tile_inspector_remove_element(int32_t elementIndex)
 {
     openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount,
         "elementIndex out of range");
@@ -651,7 +651,7 @@ static void window_tile_inspector_remove_element(sint32 elementIndex)
     );
 }
 
-static void window_tile_inspector_rotate_element(sint32 elementIndex)
+static void window_tile_inspector_rotate_element(int32_t elementIndex)
 {
     openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount,
         "elementIndex out of range");
@@ -667,7 +667,7 @@ static void window_tile_inspector_rotate_element(sint32 elementIndex)
 }
 
 // Swap element with its parent
-static void window_tile_inspector_swap_elements(sint16 first, sint16 second)
+static void window_tile_inspector_swap_elements(int16_t first, int16_t second)
 {
     openrct2_assert(first >= 0 && first < windowTileInspectorElementCount,
                     "first out of range");
@@ -709,7 +709,7 @@ static void window_tile_inspector_copy_element(rct_window *w)
 static void window_tile_inspector_paste_element(rct_window *w)
 {
     // Construct the data to send using the surface's properties
-    sint32 data[2];
+    int32_t data[2];
     memcpy(&data[0], &tileInspectorCopiedElement, 8);
     assert_struct_size(data, sizeof(tileInspectorCopiedElement));
 
@@ -724,7 +724,7 @@ static void window_tile_inspector_paste_element(rct_window *w)
     );
 }
 
-static void window_tile_inspector_base_height_offset(sint16 elementIndex, sint8 heightOffset)
+static void window_tile_inspector_base_height_offset(int16_t elementIndex, int8_t heightOffset)
 {
     game_do_command(
         TILE_INSPECTOR_ANY_BASE_HEIGHT_OFFSET,
@@ -750,7 +750,7 @@ static void window_tile_inspector_surface_show_park_fences(bool showFences)
     );
 }
 
-static void window_tile_inspector_surface_toggle_corner(sint32 cornerIndex)
+static void window_tile_inspector_surface_toggle_corner(int32_t cornerIndex)
 {
     game_do_command(
         TILE_INSPECTOR_SURFACE_TOGGLE_CORNER,
@@ -776,7 +776,7 @@ static void window_tile_inspector_surface_toggle_diagonal()
     );
 }
 
-static void window_tile_inspector_path_set_sloped(sint32 elementIndex, bool sloped)
+static void window_tile_inspector_path_set_sloped(int32_t elementIndex, bool sloped)
 {
     game_do_command(
         TILE_INSPECTOR_PATH_SET_SLOPE,
@@ -789,7 +789,7 @@ static void window_tile_inspector_path_set_sloped(sint32 elementIndex, bool slop
     );
 }
 
-static void window_tile_inspector_path_toggle_edge(sint32 elementIndex, sint32 cornerIndex)
+static void window_tile_inspector_path_toggle_edge(int32_t elementIndex, int32_t cornerIndex)
 {
     openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount,
         "elementIndex out of range");
@@ -805,7 +805,7 @@ static void window_tile_inspector_path_toggle_edge(sint32 elementIndex, sint32 c
     );
 }
 
-static void window_tile_inspector_entrance_make_usable(sint32 elementIndex)
+static void window_tile_inspector_entrance_make_usable(int32_t elementIndex)
 {
     Guard::ArgumentInRange(elementIndex, 0, windowTileInspectorElementCount - 1);
     game_do_command(
@@ -819,7 +819,7 @@ static void window_tile_inspector_entrance_make_usable(sint32 elementIndex)
     );
 }
 
-static void window_tile_inspector_wall_set_slope(sint32 elementIndex, sint32 slopeValue)
+static void window_tile_inspector_wall_set_slope(int32_t elementIndex, int32_t slopeValue)
 {
     // Make sure only the correct bits are set
     openrct2_assert((slopeValue & 0xC0) == slopeValue, "slopeValue doesn't match its mask");
@@ -835,7 +835,7 @@ static void window_tile_inspector_wall_set_slope(sint32 elementIndex, sint32 slo
     );
 }
 
-static void window_tile_inspector_track_block_height_offset(sint32 elementIndex, sint8 heightOffset)
+static void window_tile_inspector_track_block_height_offset(int32_t elementIndex, int8_t heightOffset)
 {
     game_do_command(
         TILE_INSPECTOR_TRACK_BASE_HEIGHT_OFFSET,
@@ -848,7 +848,7 @@ static void window_tile_inspector_track_block_height_offset(sint32 elementIndex,
     );
 }
 
-static void window_tile_inspector_track_block_set_lift(sint32 elementIndex, bool entireTrackBlock, bool chain)
+static void window_tile_inspector_track_block_set_lift(int32_t elementIndex, bool entireTrackBlock, bool chain)
 {
     game_do_command(
         TILE_INSPECTOR_TRACK_SET_CHAIN,
@@ -861,7 +861,7 @@ static void window_tile_inspector_track_block_set_lift(sint32 elementIndex, bool
     );
 }
 
-static void window_tile_inspector_quarter_tile_set(sint32 elementIndex, const sint32 quarterIndex)
+static void window_tile_inspector_quarter_tile_set(int32_t elementIndex, const int32_t quarterIndex)
 {
     // quarterIndex is widget index relative to WIDX_SCENERY_CHECK_QUARTER_N, so a value from 0-3
     openrct2_assert(quarterIndex >= 0 && quarterIndex < 4, "quarterIndex out of range");
@@ -877,7 +877,7 @@ static void window_tile_inspector_quarter_tile_set(sint32 elementIndex, const si
     );
 }
 
-static void window_tile_inspector_toggle_quadrant_collosion(sint32 elementIndex, const sint32 quadrantIndex)
+static void window_tile_inspector_toggle_quadrant_collosion(int32_t elementIndex, const int32_t quadrantIndex)
 {
     game_do_command(
         TILE_INSPECTOR_SCENERY_SET_QUARTER_COLLISION,
@@ -890,7 +890,7 @@ static void window_tile_inspector_toggle_quadrant_collosion(sint32 elementIndex,
     );
 }
 
-static void window_tile_inspector_banner_toggle_block(sint32 elementIndex, sint32 edgeIndex)
+static void window_tile_inspector_banner_toggle_block(int32_t elementIndex, int32_t edgeIndex)
 {
     openrct2_assert(edgeIndex >= 0 && edgeIndex < 4, "edgeIndex out of range");
 
@@ -908,7 +908,7 @@ static void window_tile_inspector_banner_toggle_block(sint32 elementIndex, sint3
     );
 }
 
-static void window_tile_inspector_clamp_corrupt(sint32 elementIndex)
+static void window_tile_inspector_clamp_corrupt(int32_t elementIndex)
 {
     game_do_command(
         TILE_INSPECTOR_CORRUPT_CLAMP,
@@ -932,7 +932,7 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
         window_tile_inspector_insert_corrupt_element(windowTileInspectorSelectedIndex);
         break;
     case WIDX_BUTTON_REMOVE: {
-        sint32 nextItemToSelect = windowTileInspectorSelectedIndex - 1;
+        int32_t nextItemToSelect = windowTileInspectorSelectedIndex - 1;
         window_tile_inspector_remove_element(windowTileInspectorSelectedIndex);
         window_tile_inspector_select_element_from_list(w, nextItemToSelect);
         break;
@@ -998,9 +998,9 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
         case WIDX_PATH_CHECK_EDGE_N:
         {
             // 0 = east/right, 1 = south/bottom, 2 = west/left, 3 = north/top
-            const sint32 eswn = (widgetIndex - WIDX_PATH_CHECK_EDGE_E) / 2;
+            const int32_t eswn = (widgetIndex - WIDX_PATH_CHECK_EDGE_E) / 2;
             // Transform to world orientation
-            const sint32 index = (eswn - get_current_rotation()) & 3;
+            const int32_t index = (eswn - get_current_rotation()) & 3;
             window_tile_inspector_path_toggle_edge(windowTileInspectorSelectedIndex, index + 4);  // The corners are stored in the 4 most significant bits, hence the + 4
             break;
         }
@@ -1010,9 +1010,9 @@ static void window_tile_inspector_mouseup(rct_window *w, rct_widgetindex widgetI
         case WIDX_PATH_CHECK_EDGE_NW:
         {
             // 0 = NE, 1 = SE, 2 = SW, 3 = NW
-            const sint32 neseswnw = (widgetIndex - WIDX_PATH_CHECK_EDGE_NE) / 2;
+            const int32_t neseswnw = (widgetIndex - WIDX_PATH_CHECK_EDGE_NE) / 2;
             // Transform to world orientation
-            const sint32 index = (neseswnw - get_current_rotation()) & 3;
+            const int32_t index = (neseswnw - get_current_rotation()) & 3;
             window_tile_inspector_path_toggle_edge(windowTileInspectorSelectedIndex, index);
             break;
         }
@@ -1100,19 +1100,19 @@ static void window_tile_inspector_mousedown(rct_window *w, rct_widgetindex widge
     switch (widgetIndex)
     {
         case WIDX_SPINNER_X_INCREASE:
-            windowTileInspectorTileX = std::min<uint32>(windowTileInspectorTileX + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
+            windowTileInspectorTileX = std::min<uint32_t>(windowTileInspectorTileX + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
             window_tile_inspector_load_tile(w, nullptr);
             break;
         case WIDX_SPINNER_X_DECREASE:
-            windowTileInspectorTileX = std::max<uint32>(windowTileInspectorTileX - 1, 0);
+            windowTileInspectorTileX = std::max<uint32_t>(windowTileInspectorTileX - 1, 0);
             window_tile_inspector_load_tile(w, nullptr);
             break;
         case WIDX_SPINNER_Y_INCREASE:
-            windowTileInspectorTileY = std::min<uint32>(windowTileInspectorTileY + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
+            windowTileInspectorTileY = std::min<uint32_t>(windowTileInspectorTileY + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
             window_tile_inspector_load_tile(w, nullptr);
             break;
         case WIDX_SPINNER_Y_DECREASE:
-            windowTileInspectorTileY = std::max<uint32>(windowTileInspectorTileY - 1, 0);
+            windowTileInspectorTileY = std::max<uint32_t>(windowTileInspectorTileY - 1, 0);
             window_tile_inspector_load_tile(w, nullptr);
             break;
     } // switch widget index
@@ -1286,7 +1286,7 @@ static void window_tile_inspector_update(rct_window *w)
         window_close(w);
 }
 
-static void window_tile_inspector_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_tile_inspector_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1) {
         return;
@@ -1308,14 +1308,14 @@ static void window_tile_inspector_dropdown(rct_window *w, rct_widgetindex widget
     }
 }
 
-static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     map_invalidate_selection_rect();
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
 
-    sint16 mapX = x;
-    sint16 mapY = y;
+    int16_t mapX = x;
+    int16_t mapY = y;
     rct_tile_element* clickedElement = nullptr;
     if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))
     {
@@ -1347,7 +1347,7 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
     map_invalidate_selection_rect();
 }
 
-static void window_tile_inspector_update_selected_tile(rct_window* w, sint32 x, sint32 y)
+static void window_tile_inspector_update_selected_tile(rct_window* w, int32_t x, int32_t y)
 {
     const bool ctrlIsHeldDown = input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z);
 
@@ -1362,8 +1362,8 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, sint32 x, 
     windowTileInspectorToolMouseY = y;
     windowTileInspectorToolCtrlDown = ctrlIsHeldDown;
 
-    sint16 mapX = x;
-    sint16 mapY = y;
+    int16_t mapX = x;
+    int16_t mapY = y;
     rct_tile_element* clickedElement = nullptr;
     if (ctrlIsHeldDown)
     {
@@ -1396,17 +1396,17 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, sint32 x, 
     window_tile_inspector_load_tile(w, clickedElement);
 }
 
-static void window_tile_inspector_tool_down(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_tile_inspector_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     window_tile_inspector_update_selected_tile(w, x, y);
 }
 
-static void window_tile_inspector_tool_drag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_tile_inspector_tool_drag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     window_tile_inspector_update_selected_tile(w, x, y);
 }
 
-static void window_tile_inspector_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+static void window_tile_inspector_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height)
 {
     *width = WW - 30;
     *height = windowTileInspectorElementCount * SCROLLABLE_ROW_HEIGHT;
@@ -1436,16 +1436,16 @@ static void window_tile_inspector_set_page(rct_window *w, const TILE_INSPECTOR_P
     w->pressed_widgets = 0;
 }
 
-static void window_tile_inspector_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_tile_inspector_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
     // Because the list items are displayed in reverse order, subtract the calculated index from the amount of elements
-    const sint16 index = windowTileInspectorElementCount - (y - 1) / SCROLLABLE_ROW_HEIGHT - 1;
+    const int16_t index = windowTileInspectorElementCount - (y - 1) / SCROLLABLE_ROW_HEIGHT - 1;
     window_tile_inspector_select_element_from_list(w, index);
 }
 
-static void window_tile_inspector_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_tile_inspector_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    sint16 index = windowTileInspectorElementCount - (y - 1) / SCROLLABLE_ROW_HEIGHT - 1;
+    int16_t index = windowTileInspectorElementCount - (y - 1) / SCROLLABLE_ROW_HEIGHT - 1;
     if (index < 0 || index >= windowTileInspectorElementCount)
         windowTileInspectorHighlightedIndex = -1;
     else
@@ -1538,7 +1538,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
 
     // Using a switch, because I don't think giving each page their own callbacks is
     // needed here, as only the mouseup and invalidate functions are different.
-    const sint32 propertiesAnchor = w->widgets[WIDX_GROUPBOX_PROPERTIES].top;
+    const int32_t propertiesAnchor = w->widgets[WIDX_GROUPBOX_PROPERTIES].top;
     const rct_tile_element *const tileElement = window_tile_inspector_get_selected_element(w);
 
     switch (w->page) {
@@ -1689,7 +1689,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
         w->widgets[WIDX_WALL_DROPDOWN_SLOPE].text = WallSlopeStringIds[tileElement->GetSceneryQuadrant()];
         w->widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].top = GBBT(propertiesAnchor, 1) + 4;
         w->widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].bottom = GBBB(propertiesAnchor, 1) - 4;
-        const uint8 wallType = tileElement->properties.wall.type;
+        const uint8_t wallType = tileElement->properties.wall.type;
         const rct_wall_scenery_entry wallEntry = get_wall_entry(wallType)->wall;
         const bool canBeSloped = !(wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
         // Wall slope dropdown
@@ -1782,8 +1782,8 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     if (windowTileInspectorSelectedIndex != -1) {
         // X and Y of first element in detail box
-        sint32 x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
-        sint32 y = w->y + w->widgets[WIDX_GROUPBOX_DETAILS].top + 14;
+        int32_t x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
+        int32_t y = w->y + w->widgets[WIDX_GROUPBOX_DETAILS].top + 14;
 
         // Get map element
         rct_tile_element *const tileElement = window_tile_inspector_get_selected_element(w);
@@ -1796,8 +1796,8 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_TERAIN, &terrainNameId, COLOUR_DARK_GREEN, x, y);
 
             // Edge texture name
-            sint32 idx = surface_get_terrain_edge(tileElement);
-            openrct2_assert((uint32)idx < Util::CountOf(TerrainEdgeTypeStringIds), "Tried accessing invalid entry %d in terrainEdgeTypeStringIds", idx);
+            int32_t idx = surface_get_terrain_edge(tileElement);
+            openrct2_assert((uint32_t)idx < Util::CountOf(TerrainEdgeTypeStringIds), "Tried accessing invalid entry %d in terrainEdgeTypeStringIds", idx);
             rct_string_id terrainEdgeNameId = TerrainEdgeTypeStringIds[surface_get_terrain_edge(tileElement)];
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_EDGE, &terrainEdgeNameId, COLOUR_DARK_GREEN, x, y + 11);
 
@@ -1811,7 +1811,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_OWNERSHIP, &landOwnership, COLOUR_DARK_GREEN, x, y + 22);
 
             // Water level
-            sint32 waterLevel = surface_get_water_height(tileElement);
+            int32_t waterLevel = surface_get_water_height(tileElement);
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, &waterLevel, COLOUR_DARK_GREEN, x, y + 33);
 
             // Properties
@@ -1822,7 +1822,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             // Current base height
             x = w->x + w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].left + 3;
-            sint32 baseHeight = tileElement->base_height;
+            int32_t baseHeight = tileElement->base_height;
             gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
 
             // Raised corners
@@ -1840,7 +1840,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             // Path addition
             if (footpath_element_has_path_scenery(tileElement)) {
-                const uint8 pathAdditionType = footpath_element_get_path_scenery_index(tileElement);
+                const uint8_t pathAdditionType = footpath_element_get_path_scenery_index(tileElement);
                 rct_string_id additionNameId = get_footpath_item_entry(pathAdditionType)->name;
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS, &additionNameId, COLOUR_DARK_GREEN, x, y + 11);
             }
@@ -1855,7 +1855,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             // Current base height
             x = w->x + w->widgets[WIDX_PATH_SPINNER_HEIGHT].left + 3;
-            sint32 baseHeight = tileElement->base_height;
+            int32_t baseHeight = tileElement->base_height;
             gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
 
             // Path connections
@@ -1868,17 +1868,17 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
         case TILE_INSPECTOR_PAGE_TRACK: {
             // Details
             // Ride
-            sint16 rideId = track_element_get_ride_index(tileElement);
+            int16_t rideId = track_element_get_ride_index(tileElement);
             Ride *ride = get_ride(rideId);
             rct_string_id rideType = RideNaming[ride->type].name;
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, &rideType, COLOUR_DARK_GREEN, x, y);
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_ID, &rideId, COLOUR_DARK_GREEN, x, y + 11);
             set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(0 + sizeof(rct_string_id), uint32, ride->name_arguments);
+            set_format_arg(0 + sizeof(rct_string_id), uint32_t, ride->name_arguments);
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, gCommonFormatArgs, COLOUR_DARK_GREEN, x, y + 22);
             // Track
-            sint16 trackType = track_element_get_type(tileElement);
-            sint16 sequenceNumber = tile_element_get_track_sequence(tileElement);
+            int16_t trackType = track_element_get_type(tileElement);
+            int16_t sequenceNumber = tile_element_get_track_sequence(tileElement);
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_PIECE_ID, &trackType, COLOUR_DARK_GREEN, x, y + 33);
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_SEQUENCE, &sequenceNumber, COLOUR_DARK_GREEN, x, y + 44);
 
@@ -1889,7 +1889,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             // Current base height
             x = w->x + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].left + 3;
-            sint32 baseHeight = tileElement->base_height;
+            int32_t baseHeight = tileElement->base_height;
             gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
             break;
         }
@@ -1897,14 +1897,14 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
         case TILE_INSPECTOR_PAGE_SCENERY: {
             // Details
             // Age
-            sint16 age = tileElement->properties.scenery.age;
+            int16_t age = tileElement->properties.scenery.age;
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_AGE, &age, COLOUR_DARK_GREEN, x, y);
 
             // Quadrant value
             const rct_scenery_entry * sceneryEntry = get_small_scenery_entry(tileElement->properties.scenery.type);
             if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
             {
-                sint16 quadrant = tileElement->GetSceneryQuadrant();
+                int16_t quadrant = tileElement->GetSceneryQuadrant();
                 static rct_string_id quadrant_string_idx[] = {
                     STR_TILE_INSPECTOR_SCENERY_QUADRANT_SW,
                     STR_TILE_INSPECTOR_SCENERY_QUADRANT_NW,
@@ -1915,7 +1915,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             }
 
             // Scenery ID
-            sint16 idx = tileElement->properties.scenery.type;
+            int16_t idx = tileElement->properties.scenery.type;
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_ENTRY_IDX, &idx, COLOUR_DARK_GREEN, x, y + 22);
 
             // Properties
@@ -1925,7 +1925,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             // Current base height
             x = w->x + w->widgets[WIDX_SCENERY_SPINNER_HEIGHT].left + 3;
-            sint32 baseHeight = tileElement->base_height;
+            int32_t baseHeight = tileElement->base_height;
             gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
 
             // Quarter tile
@@ -1947,15 +1947,15 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             if (tileElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE) {
                 // Park entrance ID
-                sint32 middleX = windowTileInspectorTileX << 5;
-                sint32 middleY = windowTileInspectorTileY << 5;
+                int32_t middleX = windowTileInspectorTileX << 5;
+                int32_t middleY = windowTileInspectorTileY << 5;
                 // TODO: Make this work with Left/Right park entrance parts
-                sint16 parkEntranceIndex = park_entrance_get_index(middleX, middleY, tileElement->base_height * 8);
+                int16_t parkEntranceIndex = park_entrance_get_index(middleX, middleY, tileElement->base_height * 8);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &parkEntranceIndex, COLOUR_DARK_GREEN, x, y + 11);
             }
             else
             {
-                sint16 rideEntranceIndex = (tileElement->properties.entrance.index & 0x30) >> 4; // TODO: use mask or function
+                int16_t rideEntranceIndex = (tileElement->properties.entrance.index & 0x30) >> 4; // TODO: use mask or function
                 if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE)
                 {
                     // Ride entrance ID
@@ -1977,7 +1977,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             }
             else {
                 // Ride ID
-                sint16 rideId = tileElement->properties.entrance.ride_index;
+                int16_t rideId = tileElement->properties.entrance.ride_index;
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, &rideId, COLOUR_DARK_GREEN, x, y + 22);
             }
 
@@ -1988,7 +1988,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             // Current base height
             x = w->x + w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].left + 3;
-            sint32 baseHeight = tileElement->base_height;
+            int32_t baseHeight = tileElement->base_height;
             gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
             break;
         }
@@ -1996,7 +1996,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
         case TILE_INSPECTOR_PAGE_WALL: {
             // Details
             // Type
-            sint16 wallType = tileElement->properties.wall.type;
+            int16_t wallType = tileElement->properties.wall.type;
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_WALL_TYPE, &wallType, COLOUR_DARK_GREEN, x, y);
 
             // Banner info
@@ -2015,7 +2015,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             // Current base height
             x = w->x + w->widgets[WIDX_WALL_SPINNER_HEIGHT].left + 3;
-            sint32 baseHeight = tileElement->base_height;
+            int32_t baseHeight = tileElement->base_height;
             gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
 
             // Slope label
@@ -2029,11 +2029,11 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
         {
             // Details
             // Type
-            sint16 largeSceneryType = scenery_large_get_type(tileElement);
+            int16_t largeSceneryType = scenery_large_get_type(tileElement);
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_TYPE, &largeSceneryType, COLOUR_DARK_GREEN, x, y);
 
             // Part ID
-            sint16 pieceID = scenery_large_get_sequence(tileElement);
+            int16_t pieceID = scenery_large_get_sequence(tileElement);
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_PIECE_ID, &pieceID, COLOUR_DARK_GREEN, x, y + 11);
 
             // Banner info
@@ -2055,7 +2055,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             // Current base height
             x = w->x + w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].left + 3;
-            sint32 baseHeight = tileElement->base_height;
+            int32_t baseHeight = tileElement->base_height;
             gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
             break;
         }
@@ -2064,7 +2064,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
         {
             // Details
             // Banner info
-            const uint8 bannerIndex = tileElement->properties.banner.index;
+            const uint8_t bannerIndex = tileElement->properties.banner.index;
             if (gBanners[bannerIndex].flags & BANNER_FLAG_NO_ENTRY) {
                 rct_string_id noEntryStringIdx = STR_NO_ENTRY;
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &noEntryStringIdx, COLOUR_DARK_GREEN, x, y);
@@ -2080,7 +2080,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             // Current base height
             x = w->x + w->widgets[WIDX_BANNER_SPINNER_HEIGHT].left + 3;
-            sint32 baseHeight = tileElement->base_height;
+            int32_t baseHeight = tileElement->base_height;
             gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
 
             // Blocked paths
@@ -2099,7 +2099,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             // Current base height
             x = w->x + w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].left + 3;
-            sint32 baseHeight = tileElement->base_height;
+            int32_t baseHeight = tileElement->base_height;
             gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
             break;
         }
@@ -2107,13 +2107,13 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
 }
 
-static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, sint32 scrollIndex)
+static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    const sint32 listWidth = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+    const int32_t listWidth = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
-    sint32 y = SCROLLABLE_ROW_HEIGHT * (windowTileInspectorElementCount - 1);
-    sint32 i = 0;
+    int32_t y = SCROLLABLE_ROW_HEIGHT * (windowTileInspectorElementCount - 1);
+    int32_t i = 0;
     char buffer[256];
 
     if (!windowTileInspectorTileSelected)
@@ -2125,7 +2125,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     do {
         const bool selectedRow = i == windowTileInspectorSelectedIndex;
         const bool hoveredRow = i == windowTileInspectorHighlightedIndex;
-        sint32 type = tileElement->GetType();
+        int32_t type = tileElement->GetType();
         const char* typeName = "";
 
         if (selectedRow)
@@ -2192,8 +2192,8 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
             typeName = buffer;
         }
 
-        const sint32 baseHeight = tileElement->base_height;
-        const sint32 clearanceHeight = tileElement->clearance_height;
+        const int32_t baseHeight = tileElement->base_height;
+        const int32_t clearanceHeight = tileElement->clearance_height;
         const bool ghost = (tileElement->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
         const bool broken = (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN) != 0;
         const bool last = (tileElement->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
@@ -2201,19 +2201,19 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
         const rct_string_id stringFormat = (selectedRow || hoveredRow) ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
 
         // Undo relative scroll offset, but keep the 3 pixel padding
-        const sint32 x = -w->widgets[WIDX_LIST].left;
+        const int32_t x = -w->widgets[WIDX_LIST].left;
         set_format_arg(0, rct_string_id, STR_STRING);
         set_format_arg(2, char*, typeName);
         gfx_draw_string_left_clipped(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_TYPE + 3, y, COL_X_BH); // 3px padding
 
         // Base height
         set_format_arg(0, rct_string_id, STR_FORMAT_INTEGER);
-        set_format_arg(2, sint32, baseHeight);
+        set_format_arg(2, int32_t, baseHeight);
         gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_BH, y);
 
         // Clearance height
         set_format_arg(0, rct_string_id, STR_FORMAT_INTEGER);
-        set_format_arg(2, sint32, clearanceHeight);
+        set_format_arg(2, int32_t, clearanceHeight);
         gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, x + COL_X_CH, y);
 
         // Checkmarks for ghost, broken en last for tile

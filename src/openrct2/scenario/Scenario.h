@@ -31,12 +31,12 @@ struct ParkLoadResult;
  * size: 0x20
  */
 struct rct_s6_header {
-    uint8 type;                 // 0x00
-    uint8 classic_flag;         // 0x01
-    uint16 num_packed_objects;  // 0x02
-    uint32 version;             // 0x04
-    uint32 magic_number;        // 0x08
-    uint8 pad_0C[0x14];
+    uint8_t type;                 // 0x00
+    uint8_t classic_flag;         // 0x01
+    uint16_t num_packed_objects;  // 0x02
+    uint32_t version;             // 0x04
+    uint32_t magic_number;        // 0x08
+    uint8_t pad_0C[0x14];
 };
 assert_struct_size(rct_s6_header, 0x20);
 
@@ -45,13 +45,13 @@ assert_struct_size(rct_s6_header, 0x20);
  * size: 0x198
  */
 struct rct_s6_info {
-    uint8 editor_step;
-    uint8 category;             // 0x01
-    uint8 objective_type;       // 0x02
-    uint8 objective_arg_1;      // 0x03
-    sint32 objective_arg_2;     // 0x04
-    sint16 objective_arg_3;     // 0x08
-    uint8 pad_00A[0x3E];
+    uint8_t editor_step;
+    uint8_t category;             // 0x01
+    uint8_t objective_type;       // 0x02
+    uint8_t objective_arg_1;      // 0x03
+    int32_t objective_arg_2;     // 0x04
+    int16_t objective_arg_3;     // 0x08
+    uint8_t pad_00A[0x3E];
     char name[64];              // 0x48
     char details[256];          // 0x88
     rct_object_entry entry;     // 0x188
@@ -73,7 +73,7 @@ struct rct_stex_entry {
     rct_string_id scenario_name;    // 0x00
     rct_string_id park_name;        // 0x02
     rct_string_id details;          // 0x04
-    uint8 var_06;
+    uint8_t var_06;
 };
 assert_struct_size(rct_stex_entry, 7);
 
@@ -92,90 +92,90 @@ struct rct_s6_data {
     rct_object_entry objects[OBJECT_ENTRY_COUNT];
 
     // SC6[4]
-    uint16 elapsed_months;
-    uint16 current_day;
-    uint32 scenario_ticks;
-    uint32 scenario_srand_0;
-    uint32 scenario_srand_1;
+    uint16_t elapsed_months;
+    uint16_t current_day;
+    uint32_t scenario_ticks;
+    uint32_t scenario_srand_0;
+    uint32_t scenario_srand_1;
 
     // SC6[5]
     rct_tile_element tile_elements[RCT2_MAX_TILE_ELEMENTS];
 
     // SC6[6]
-    uint32 next_free_tile_element_pointer_index;
+    uint32_t next_free_tile_element_pointer_index;
     rct_sprite sprites[RCT2_MAX_SPRITES];
-    uint16 sprite_lists_head[6];
-    uint16 sprite_lists_count[6];
+    uint16_t sprite_lists_head[6];
+    uint16_t sprite_lists_count[6];
     rct_string_id park_name;
-    uint8 pad_013573D6[2];
-    uint32 park_name_args;
+    uint8_t pad_013573D6[2];
+    uint32_t park_name_args;
     money32 initial_cash;
     money32 current_loan;
-    uint32 park_flags;
+    uint32_t park_flags;
     money16 park_entrance_fee;
-    uint16 rct1_park_entrance_x;
-    uint16 rct1_park_entrance_y;
-    uint8 pad_013573EE[2];
-    uint8 rct1_park_entrance_z;
-    uint8 pad_013573F1;
+    uint16_t rct1_park_entrance_x;
+    uint16_t rct1_park_entrance_y;
+    uint8_t pad_013573EE[2];
+    uint8_t rct1_park_entrance_z;
+    uint8_t pad_013573F1;
     rct12_peep_spawn peep_spawns[RCT12_MAX_PEEP_SPAWNS];
-    uint8 guest_count_change_modifier;
-    uint8 current_research_level;
-    uint8 pad_01357400[4];
-    uint32 researched_ride_types[RCT2_MAX_RESEARCHED_RIDE_TYPE_QUADS];
-    uint32 researched_ride_entries[RCT2_MAX_RESEARCHED_RIDE_ENTRY_QUADS];
-    uint32 researched_track_types_a[128];
-    uint32 researched_track_types_b[128];
+    uint8_t guest_count_change_modifier;
+    uint8_t current_research_level;
+    uint8_t pad_01357400[4];
+    uint32_t researched_ride_types[RCT2_MAX_RESEARCHED_RIDE_TYPE_QUADS];
+    uint32_t researched_ride_entries[RCT2_MAX_RESEARCHED_RIDE_ENTRY_QUADS];
+    uint32_t researched_track_types_a[128];
+    uint32_t researched_track_types_b[128];
 
     // SC6[7]
-    uint16 guests_in_park;
-    uint16 guests_heading_for_park;
+    uint16_t guests_in_park;
+    uint16_t guests_heading_for_park;
 
     // Ignored in scenario
     money32 expenditure_table[RCT12_EXPENDITURE_TABLE_MONTH_COUNT][RCT12_EXPENDITURE_TYPE_COUNT];
 
     // SC6[8]
-    uint16 last_guests_in_park;
-    uint8 pad_01357BCA[3];
-    uint8 handyman_colour;
-    uint8 mechanic_colour;
-    uint8 security_colour;
+    uint16_t last_guests_in_park;
+    uint8_t pad_01357BCA[3];
+    uint8_t handyman_colour;
+    uint8_t mechanic_colour;
+    uint8_t security_colour;
 
     // Ignored in scenario
-    uint32 researched_scenery_items[RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS];
+    uint32_t researched_scenery_items[RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS];
 
     // SC6[9]
-    uint16 park_rating;
+    uint16_t park_rating;
 
     // Ignored in scenario
-    uint8 park_rating_history[32];
-    uint8 guests_in_park_history[32];
+    uint8_t park_rating_history[32];
+    uint8_t guests_in_park_history[32];
 
     // SC6[10]
-    uint8 active_research_types;
-    uint8 research_progress_stage;
-    uint32 last_researched_item_subject;
-    uint8 pad_01357CF8[1000];
-    uint32 next_research_item;
-    uint16 research_progress;
-    uint8 next_research_category;
-    uint8 next_research_expected_day;
-    uint8 next_research_expected_month;
-    uint8 guest_initial_happiness;
-    uint16 park_size;
-    uint16 guest_generation_probability;
-    uint16 total_ride_value_for_money;
+    uint8_t active_research_types;
+    uint8_t research_progress_stage;
+    uint32_t last_researched_item_subject;
+    uint8_t pad_01357CF8[1000];
+    uint32_t next_research_item;
+    uint16_t research_progress;
+    uint8_t next_research_category;
+    uint8_t next_research_expected_day;
+    uint8_t next_research_expected_month;
+    uint8_t guest_initial_happiness;
+    uint16_t park_size;
+    uint16_t guest_generation_probability;
+    uint16_t total_ride_value_for_money;
     money32 maximum_loan;
     money16 guest_initial_cash;
-    uint8 guest_initial_hunger;
-    uint8 guest_initial_thirst;
-    uint8 objective_type;
-    uint8 objective_year;
-    uint8 pad_013580FA[2];
+    uint8_t guest_initial_hunger;
+    uint8_t guest_initial_thirst;
+    uint8_t objective_type;
+    uint8_t objective_year;
+    uint8_t pad_013580FA[2];
     money32 objective_currency;
-    uint16 objective_guests;
-    uint8 campaign_weeks_left[20];
-    uint8 campaign_ride_index[22];
+    uint16_t objective_guests;
+    uint8_t campaign_weeks_left[20];
+    uint8_t campaign_ride_index[22];
 
     // Ignored in scenario
     money32 balance_history[RCT12_FINANCE_GRAPH_SIZE];
@@ -183,9 +183,9 @@ struct rct_s6_data {
     // SC6[11]
     money32 current_expenditure;
     money32 current_profit;
-    uint32 weekly_profit_average_dividend;
-    uint16 weekly_profit_average_divisor;
-    uint8 pad_0135833A[2];
+    uint32_t weekly_profit_average_dividend;
+    uint16_t weekly_profit_average_divisor;
+    uint8_t pad_0135833A[2];
 
     // Ignored in scenario
     money32 weekly_profit_history[RCT12_FINANCE_GRAPH_SIZE];
@@ -198,95 +198,95 @@ struct rct_s6_data {
 
     // SC6[13]
     money32 completed_company_value;
-    uint32 total_admissions;
+    uint32_t total_admissions;
     money32 income_from_admissions;
     money32 company_value;
-    uint8 peep_warning_throttle[16];
+    uint8_t peep_warning_throttle[16];
     rct12_award awards[RCT12_MAX_AWARDS];
     money16 land_price;
     money16 construction_rights_price;
-    uint16 word_01358774;
-    uint8 pad_01358776[2];
-    uint32 cd_key;
-    uint8 pad_0135877C[64];
-    uint32 game_version_number;
+    uint16_t word_01358774;
+    uint8_t pad_01358776[2];
+    uint32_t cd_key;
+    uint8_t pad_0135877C[64];
+    uint32_t game_version_number;
     money32 completed_company_value_record;
-    uint32 loan_hash;
-    uint16 ride_count;
-    uint8 pad_013587CA[6];
+    uint32_t loan_hash;
+    uint16_t ride_count;
+    uint8_t pad_013587CA[6];
     money32 historical_profit;
-    uint8 pad_013587D4[4];
+    uint8_t pad_013587D4[4];
     char scenario_completed_name[32];
     money32 cash;
-    uint8 pad_013587FC[50];
-    uint16 park_rating_casualty_penalty;
-    uint16 map_size_units;
-    uint16 map_size_minus_2;
-    uint16 map_size;
-    uint16 map_max_xy;
-    uint32 same_price_throughout;
-    uint16 suggested_max_guests;
-    uint16 park_rating_warning_days;
-    uint8 last_entrance_style;
-    uint8 rct1_water_colour;
-    uint8 pad_01358842[2];
+    uint8_t pad_013587FC[50];
+    uint16_t park_rating_casualty_penalty;
+    uint16_t map_size_units;
+    uint16_t map_size_minus_2;
+    uint16_t map_size;
+    uint16_t map_max_xy;
+    uint32_t same_price_throughout;
+    uint16_t suggested_max_guests;
+    uint16_t park_rating_warning_days;
+    uint8_t last_entrance_style;
+    uint8_t rct1_water_colour;
+    uint8_t pad_01358842[2];
     rct_research_item research_items[MAX_RESEARCH_ITEMS];
-    uint16 map_base_z;
+    uint16_t map_base_z;
     char scenario_name[64];
     char scenario_description[256];
-    uint8 current_interest_rate;
-    uint8 pad_0135934B;
-    uint32 same_price_throughout_extended;
-    sint16 park_entrance_x[RCT12_MAX_PARK_ENTRANCES];
-    sint16 park_entrance_y[RCT12_MAX_PARK_ENTRANCES];
-    sint16 park_entrance_z[RCT12_MAX_PARK_ENTRANCES];
-    uint8 park_entrance_direction[RCT12_MAX_PARK_ENTRANCES];
+    uint8_t current_interest_rate;
+    uint8_t pad_0135934B;
+    uint32_t same_price_throughout_extended;
+    int16_t park_entrance_x[RCT12_MAX_PARK_ENTRANCES];
+    int16_t park_entrance_y[RCT12_MAX_PARK_ENTRANCES];
+    int16_t park_entrance_z[RCT12_MAX_PARK_ENTRANCES];
+    uint8_t park_entrance_direction[RCT12_MAX_PARK_ENTRANCES];
     char scenario_filename[256];
-    uint8 saved_expansion_pack_names[3256];
+    uint8_t saved_expansion_pack_names[3256];
     rct_banner banners[RCT2_MAX_BANNERS_IN_PARK];
     char custom_strings[RCT12_MAX_USER_STRINGS][RCT12_USER_STRING_MAX_LENGTH];
-    uint32 game_ticks_1;
+    uint32_t game_ticks_1;
     rct2_ride rides[RCT12_MAX_RIDES_IN_PARK];
-    uint16 saved_age;
-    uint16 saved_view_x;
-    uint16 saved_view_y;
-    uint8 saved_view_zoom;
-    uint8 saved_view_rotation;
+    uint16_t saved_age;
+    uint16_t saved_view_x;
+    uint16_t saved_view_y;
+    uint8_t saved_view_zoom;
+    uint8_t saved_view_rotation;
     rct_map_animation map_animations[RCT2_MAX_ANIMATED_OBJECTS];
-    uint16 num_map_animations;
-    uint8 pad_0138B582[2];
+    uint16_t num_map_animations;
+    uint8_t pad_0138B582[2];
     rct_ride_rating_calc_data ride_ratings_calc_data;
-    uint8 pad_0138B5D0[60];
+    uint8_t pad_0138B5D0[60];
     rct_ride_measurement ride_measurements[8];
-    uint32 next_guest_index;
-    uint16 grass_and_scenery_tilepos;
-    uint32 patrol_areas[(RCT2_MAX_STAFF + RCT12_STAFF_TYPE_COUNT) * RCT12_PATROL_AREA_SIZE];
-    uint8 staff_modes[RCT2_MAX_STAFF + RCT12_STAFF_TYPE_COUNT];
-    uint8 pad_13CA73E;
-    uint8 pad_13CA73F;
-    uint8 byte_13CA740;
-    uint8 pad_13CA741;
-    uint8 byte_13CA742[4]; // unused
-    uint8 climate;
-    uint8 pad_013CA747;
-    uint16 climate_update_timer;
-    uint8 current_weather;
-    uint8 next_weather;
-    uint8 temperature;
-    uint8 next_temperature;
-    uint8 current_weather_effect;
-    uint8 next_weather_effect;
-    uint8 current_weather_gloom;
-    uint8 next_weather_gloom;
-    uint8 current_rain_level;
-    uint8 next_rain_level;
+    uint32_t next_guest_index;
+    uint16_t grass_and_scenery_tilepos;
+    uint32_t patrol_areas[(RCT2_MAX_STAFF + RCT12_STAFF_TYPE_COUNT) * RCT12_PATROL_AREA_SIZE];
+    uint8_t staff_modes[RCT2_MAX_STAFF + RCT12_STAFF_TYPE_COUNT];
+    uint8_t pad_13CA73E;
+    uint8_t pad_13CA73F;
+    uint8_t byte_13CA740;
+    uint8_t pad_13CA741;
+    uint8_t byte_13CA742[4]; // unused
+    uint8_t climate;
+    uint8_t pad_013CA747;
+    uint16_t climate_update_timer;
+    uint8_t current_weather;
+    uint8_t next_weather;
+    uint8_t temperature;
+    uint8_t next_temperature;
+    uint8_t current_weather_effect;
+    uint8_t next_weather_effect;
+    uint8_t current_weather_gloom;
+    uint8_t next_weather_gloom;
+    uint8_t current_rain_level;
+    uint8_t next_rain_level;
     rct12_news_item news_items[RCT12_MAX_NEWS_ITEMS];
     char rct1_scenario_name[62];     // Unused in RCT2
-    uint16 rct1_scenario_slot_index; // Unused in RCT2
-    uint32 rct1_scenario_flags;      // Unused in RCT2
-    uint16 wide_path_tile_loop_x;
-    uint16 wide_path_tile_loop_y;
-    uint8 pad_13CE778[434];
+    uint16_t rct1_scenario_slot_index; // Unused in RCT2
+    uint32_t rct1_scenario_flags;      // Unused in RCT2
+    uint16_t wide_path_tile_loop_x;
+    uint16_t wide_path_tile_loop_y;
+    uint8_t pad_13CE778[434];
 };
 assert_struct_size(rct_s6_data, 0x46b44a);
 #pragma pack(pop)
@@ -353,16 +353,16 @@ enum {
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
-extern uint32 gScenarioTicks;
-extern uint32 gScenarioSrand0;
-extern uint32 gScenarioSrand1;
+extern uint32_t gScenarioTicks;
+extern uint32_t gScenarioSrand0;
+extern uint32_t gScenarioSrand1;
 
-extern uint8 gScenarioObjectiveType;
-extern uint8 gScenarioObjectiveYear;
-extern uint16 gScenarioObjectiveNumGuests;
+extern uint8_t gScenarioObjectiveType;
+extern uint8_t gScenarioObjectiveYear;
+extern uint16_t gScenarioObjectiveNumGuests;
 extern money32 gScenarioObjectiveCurrency;
 
-extern uint16 gScenarioParkRatingWarningDays;
+extern uint16_t gScenarioParkRatingWarningDays;
 extern money32 gScenarioCompletedCompanyValue;
 extern money32 gScenarioCompanyValueRecord;
 
@@ -373,8 +373,8 @@ extern char gScenarioCompletedBy[32];
 extern char gScenarioSavePath[260];
 extern char gScenarioExpansionPacks[3256];
 extern bool gFirstTimeSaving;
-extern uint16 gSavedAge;
-extern uint32 gLastAutoSaveUpdate;
+extern uint16_t gSavedAge;
+extern uint32_t gLastAutoSaveUpdate;
 
 extern char gScenarioFileName[260];
 
@@ -383,18 +383,18 @@ void scenario_begin();
 void scenario_update();
 
 #ifdef DEBUG_DESYNC
-uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 line, const void *data);
+uint32_t dbg_scenario_rand(const char *file, const char *function, const uint32_t line, const void *data);
 #define scenario_rand() dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, NULL)
 #define scenario_rand_data(data) dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, data)
-void dbg_report_desync(uint32 tick, uint32 srand0, uint32 server_srand0, const char *clientHash, const char *serverHash);
+void dbg_report_desync(uint32_t tick, uint32_t srand0, uint32_t server_srand0, const char *clientHash, const char *serverHash);
 #else
-uint32 scenario_rand();
+uint32_t scenario_rand();
 #endif
 
-uint32 scenario_rand_max(uint32 max);
+uint32_t scenario_rand_max(uint32_t max);
 
 bool scenario_prepare_for_save();
-sint32 scenario_save(const utf8 * path, sint32 flags);
+int32_t scenario_save(const utf8 * path, int32_t flags);
 void scenario_remove_trackless_rides(rct_s6_data *s6);
 void scenario_fix_ghosts(rct_s6_data *s6);
 void scenario_failure();

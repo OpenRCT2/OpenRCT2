@@ -32,7 +32,7 @@
 
 using namespace OpenRCT2;
 
-uint8 gScreenshotCountdown = 0;
+uint8_t gScreenshotCountdown = 0;
 
 static bool WriteDpiToFile(const std::string_view& path, const rct_drawpixelinfo * dpi, const rct_palette& palette)
 {
@@ -46,7 +46,7 @@ static bool WriteDpiToFile(const std::string_view& path, const rct_drawpixelinfo
         image.Depth = 8;
         image.Stride = dpi->width + dpi->pitch;
         image.Palette = std::make_unique<rct_palette>(palette);
-        image.Pixels = std::vector<uint8>(pixels8, pixels8 + pixelsLen);
+        image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
         Imaging::WriteToFile(path, image, IMAGE_FORMAT::PNG);
         return true;
     }
@@ -63,7 +63,7 @@ static bool WriteDpiToFile(const std::string_view& path, const rct_drawpixelinfo
  */
 void screenshot_check()
 {
-    sint32 screenshotIndex;
+    int32_t screenshotIndex;
 
     if (gScreenshotCountdown != 0) {
         gScreenshotCountdown--;
@@ -83,12 +83,12 @@ void screenshot_check()
 }
 
 static void screenshot_get_rendered_palette(rct_palette* palette) {
-    for (sint32 i = 0; i < 256; i++) {
+    for (int32_t i = 0; i < 256; i++) {
         palette->entries[i] = gPalette[i];
     }
 }
 
-static sint32 screenshot_get_next_path(char *path, size_t size)
+static int32_t screenshot_get_next_path(char *path, size_t size)
 {
     char screenshotPath[MAX_PATH];
 
@@ -141,9 +141,9 @@ static sint32 screenshot_get_next_path(char *path, size_t size)
     // might be possible when switching timezones
     // in the unlikely case that this does happen,
     // append (%d) to the filename and increment
-    // this sint32 until it doesn't overwrite any
+    // this int32_t until it doesn't overwrite any
     // other file in the directory.
-    sint32 i;
+    int32_t i;
     for (i = 1; i < 1000; i++) {
         // Glue together path and filename
         snprintf(fileNameCh, leftBytes, "%s %d-%02d-%02d %02d-%02d-%02d (%d).png", park_name, currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute, currentTime.second, i);
@@ -157,10 +157,10 @@ static sint32 screenshot_get_next_path(char *path, size_t size)
     return -1;
 }
 
-sint32 screenshot_dump_png(rct_drawpixelinfo *dpi)
+int32_t screenshot_dump_png(rct_drawpixelinfo *dpi)
 {
     // Get a free screenshot path
-    sint32 index;
+    int32_t index;
     char path[MAX_PATH] = "";
     if ((index = screenshot_get_next_path(path, MAX_PATH)) == -1) {
         return -1;
@@ -179,16 +179,16 @@ sint32 screenshot_dump_png(rct_drawpixelinfo *dpi)
     }
 }
 
-sint32 screenshot_dump_png_32bpp(sint32 width, sint32 height, const void *pixels)
+int32_t screenshot_dump_png_32bpp(int32_t width, int32_t height, const void *pixels)
 {
     // Get a free screenshot path
-    sint32 index;
+    int32_t index;
     char path[MAX_PATH] = "";
     if ((index = screenshot_get_next_path(path, MAX_PATH)) == -1) {
         return -1;
     }
 
-    const auto pixels8 = (const uint8 *)pixels;
+    const auto pixels8 = (const uint8_t *)pixels;
     const auto pixelsLen = width * 4 * height;
 
     try
@@ -198,7 +198,7 @@ sint32 screenshot_dump_png_32bpp(sint32 width, sint32 height, const void *pixels
         image.Height = height;
         image.Depth = 32;
         image.Stride = width * 4;
-        image.Pixels = std::vector<uint8>(pixels8, pixels8 + pixelsLen);
+        image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
         Imaging::WriteToFile(path, image, IMAGE_FORMAT::PNG_32);
         return index;
     }
@@ -211,19 +211,19 @@ sint32 screenshot_dump_png_32bpp(sint32 width, sint32 height, const void *pixels
 
 void screenshot_giant()
 {
-    sint32 originalRotation = get_current_rotation();
-    sint32 originalZoom = 0;
+    int32_t originalRotation = get_current_rotation();
+    int32_t originalZoom = 0;
 
     rct_window *mainWindow = window_get_main();
     rct_viewport * vp = window_get_viewport(mainWindow);
     if (mainWindow != nullptr && vp != nullptr)
         originalZoom = vp->zoom;
 
-    sint32 rotation = originalRotation;
-    sint32 zoom = originalZoom;
-    sint32 mapSize = gMapSize;
-    sint32 resolutionWidth = (mapSize * 32 * 2) >> zoom;
-    sint32 resolutionHeight = (mapSize * 32 * 1) >> zoom;
+    int32_t rotation = originalRotation;
+    int32_t zoom = originalZoom;
+    int32_t mapSize = gMapSize;
+    int32_t resolutionWidth = (mapSize * 32 * 2) >> zoom;
+    int32_t resolutionHeight = (mapSize * 32 * 1) >> zoom;
 
     resolutionWidth += 8;
     resolutionHeight += 128;
@@ -238,11 +238,11 @@ void screenshot_giant()
     viewport.var_11 = 0;
     viewport.flags = 0;
 
-    sint32 centreX = (mapSize / 2) * 32 + 16;
-    sint32 centreY = (mapSize / 2) * 32 + 16;
+    int32_t centreX = (mapSize / 2) * 32 + 16;
+    int32_t centreY = (mapSize / 2) * 32 + 16;
 
-    sint32 x = 0, y = 0;
-    sint32 z = tile_element_height(centreX, centreY) & 0xFFFF;
+    int32_t x = 0, y = 0;
+    int32_t z = tile_element_height(centreX, centreY) & 0xFFFF;
     switch (rotation) {
     case 0:
         x = centreY - centreX;
@@ -277,7 +277,7 @@ void screenshot_giant()
     dpi.height = resolutionHeight;
     dpi.pitch = 0;
     dpi.zoom_level = 0;
-    dpi.bits = (uint8 *)malloc(dpi.width * dpi.height);
+    dpi.bits = (uint8_t *)malloc(dpi.width * dpi.height);
 
     viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
 
@@ -302,7 +302,7 @@ void screenshot_giant()
     context_show_error(STR_SCREENSHOT_SAVED_AS, STR_NONE);
 }
 
-static void benchgfx_render_screenshots(const char *inputPath, std::unique_ptr<IContext>& context, uint32 iterationCount)
+static void benchgfx_render_screenshots(const char *inputPath, std::unique_ptr<IContext>& context, uint32_t iterationCount)
 {
     if (!context->LoadParkFromFile(inputPath))
     {
@@ -312,9 +312,9 @@ static void benchgfx_render_screenshots(const char *inputPath, std::unique_ptr<I
     gIntroState = INTRO_STATE_NONE;
     gScreenFlags = SCREEN_FLAGS_PLAYING;
 
-    sint32 mapSize = gMapSize;
-    sint32 resolutionWidth = (mapSize * 32 * 2);
-    sint32 resolutionHeight = (mapSize * 32 * 1);
+    int32_t mapSize = gMapSize;
+    int32_t resolutionWidth = (mapSize * 32 * 2);
+    int32_t resolutionHeight = (mapSize * 32 * 1);
 
     resolutionWidth += 8;
     resolutionHeight += 128;
@@ -329,11 +329,11 @@ static void benchgfx_render_screenshots(const char *inputPath, std::unique_ptr<I
     viewport.var_11 = 0;
     viewport.flags = 0;
 
-    sint32 customX = (gMapSize / 2) * 32 + 16;
-    sint32 customY = (gMapSize / 2) * 32 + 16;
+    int32_t customX = (gMapSize / 2) * 32 + 16;
+    int32_t customY = (gMapSize / 2) * 32 + 16;
 
-    sint32 x = 0, y = 0;
-    sint32 z = tile_element_height(customX, customY) & 0xFFFF;
+    int32_t x = 0, y = 0;
+    int32_t z = tile_element_height(customX, customY) & 0xFFFF;
     x = customY - customX;
     y = ((customX + customY) / 2) - z;
 
@@ -351,10 +351,10 @@ static void benchgfx_render_screenshots(const char *inputPath, std::unique_ptr<I
     dpi.width = resolutionWidth;
     dpi.height = resolutionHeight;
     dpi.pitch = 0;
-    dpi.bits = (uint8 *)malloc(dpi.width * dpi.height);
+    dpi.bits = (uint8_t *)malloc(dpi.width * dpi.height);
 
     auto startTime = std::chrono::high_resolution_clock::now();
-    for (uint32 i = 0; i < iterationCount; i++)
+    for (uint32_t i = 0; i < iterationCount; i++)
     {
         // Render at various zoom levels
         dpi.zoom_level = i & 3;
@@ -372,7 +372,7 @@ static void benchgfx_render_screenshots(const char *inputPath, std::unique_ptr<I
     free(dpi.bits);
 }
 
-sint32 cmdline_for_gfxbench(const char **argv, sint32 argc)
+int32_t cmdline_for_gfxbench(const char **argv, int32_t argc)
 {
     if (argc != 1 && argc != 2) {
         printf("Usage: openrct2 benchgfx <file> [<iteration_count>]\n");
@@ -380,7 +380,7 @@ sint32 cmdline_for_gfxbench(const char **argv, sint32 argc)
     }
 
     core_init();
-    sint32 iterationCount = 40;
+    int32_t iterationCount = 40;
     if (argc == 2)
     {
         iterationCount = atoi(argv[1]);
@@ -403,10 +403,10 @@ sint32 cmdline_for_gfxbench(const char **argv, sint32 argc)
     return 1;
 }
 
-sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOptions * options)
+int32_t cmdline_for_screenshot(const char * * argv, int32_t argc, ScreenshotOptions * options)
 {
     // Don't include options in the count (they have been handled by CommandLine::ParseOptions already)
-    for (sint32 i = 0; i < argc; i++)
+    for (int32_t i = 0; i < argc; i++)
     {
         if (argv[i][0] == '-')
         {
@@ -427,7 +427,7 @@ sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOption
     bool customLocation = false;
     bool centreMapX = false;
     bool centreMapY = false;
-    sint32 resolutionWidth, resolutionHeight, customX = 0, customY = 0, customZoom, customRotation = 0;
+    int32_t resolutionWidth, resolutionHeight, customX = 0, customY = 0, customZoom, customRotation = 0;
 
     const char *inputPath = argv[0];
     const char *outputPath = argv[1];
@@ -487,7 +487,7 @@ sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOption
         gIntroState = INTRO_STATE_NONE;
         gScreenFlags = SCREEN_FLAGS_PLAYING;
 
-        sint32 mapSize = gMapSize;
+        int32_t mapSize = gMapSize;
         if (resolutionWidth == 0 || resolutionHeight == 0) {
             resolutionWidth = (mapSize * 32 * 2) >> customZoom;
             resolutionHeight = (mapSize * 32 * 1) >> customZoom;
@@ -512,8 +512,8 @@ sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOption
             if (centreMapY)
                 customY = (mapSize / 2) * 32 + 16;
 
-            sint32 x = 0, y = 0;
-            sint32 z = tile_element_height(customX, customY) & 0xFFFF;
+            int32_t x = 0, y = 0;
+            int32_t z = tile_element_height(customX, customY) & 0xFFFF;
             switch (customRotation) {
             case 0:
                 x = customY - customX;
@@ -553,7 +553,7 @@ sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOption
                 return -1;
             }
 
-            uint8 customWeather = options->weather - 1;
+            uint8_t customWeather = options->weather - 1;
             climate_force_weather(customWeather);
         }
 
@@ -567,7 +567,7 @@ sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOption
         dpi.height = resolutionHeight;
         dpi.pitch = 0;
         dpi.zoom_level = 0;
-        dpi.bits = (uint8 *)malloc(dpi.width * dpi.height);
+        dpi.bits = (uint8_t *)malloc(dpi.width * dpi.height);
 
         if (options->hide_guests)
         {

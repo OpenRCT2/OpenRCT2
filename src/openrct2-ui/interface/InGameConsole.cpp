@@ -82,13 +82,13 @@ void InGameConsole::Input(CONSOLE_INPUT input)
         break;
     case CONSOLE_INPUT_SCROLL_PREVIOUS:
     {
-        sint32 scrollAmt = GetNumVisibleLines() - 1;
+        int32_t scrollAmt = GetNumVisibleLines() - 1;
         Scroll(scrollAmt);
         break;
     }
     case CONSOLE_INPUT_SCROLL_NEXT:
     {
-        sint32 scrollAmt = GetNumVisibleLines() - 1;
+        int32_t scrollAmt = GetNumVisibleLines() - 1;
         Scroll(-scrollAmt);
         break;
     }
@@ -108,7 +108,7 @@ void InGameConsole::ClearInput()
 void InGameConsole::HistoryAdd(const utf8 * src)
 {
     if (_consoleHistoryCount >= CONSOLE_HISTORY_SIZE) {
-        for (sint32 i = 0; i < _consoleHistoryCount - 1; i++)
+        for (int32_t i = 0; i < _consoleHistoryCount - 1; i++)
             memcpy(_consoleHistory[i], _consoleHistory[i + 1], CONSOLE_INPUT_SIZE);
         _consoleHistoryCount--;
     }
@@ -118,7 +118,7 @@ void InGameConsole::HistoryAdd(const utf8 * src)
 
 void InGameConsole::ScrollToEnd()
 {
-    _consoleScrollPos = std::max<sint32>(0, (sint32)_consoleLines.size() - GetNumVisibleLines());
+    _consoleScrollPos = std::max<int32_t>(0, (int32_t)_consoleLines.size() - GetNumVisibleLines());
 }
 
 void InGameConsole::RefreshCaret()
@@ -126,14 +126,14 @@ void InGameConsole::RefreshCaret()
     _consoleCaretTicks = 0;
 }
 
-void InGameConsole::Scroll(sint32 linesToScroll)
+void InGameConsole::Scroll(int32_t linesToScroll)
 {
-    const sint32 maxVisibleLines = GetNumVisibleLines();
-    const sint32 numLines = (sint32)_consoleLines.size();
+    const int32_t maxVisibleLines = GetNumVisibleLines();
+    const int32_t numLines = (int32_t)_consoleLines.size();
     if (numLines > maxVisibleLines)
     {
-        sint32 maxScrollValue = numLines - maxVisibleLines;
-        _consoleScrollPos     = Math::Clamp<sint32>(0, _consoleScrollPos - linesToScroll, maxScrollValue);
+        int32_t maxScrollValue = numLines - maxVisibleLines;
+        _consoleScrollPos     = Math::Clamp<int32_t>(0, _consoleScrollPos - linesToScroll, maxScrollValue);
     }
 }
 
@@ -182,7 +182,7 @@ void InGameConsole::Toggle()
     }
 }
 
-void InGameConsole::WriteLine(const std::string &input, uint32 colourFormat)
+void InGameConsole::WriteLine(const std::string &input, uint32_t colourFormat)
 {
     // Include text colour format only for special cases
     // The draw function handles the default text colour differently
@@ -251,9 +251,9 @@ void InGameConsole::Draw(rct_drawpixelinfo * dpi) const
     // Set font
     gCurrentFontSpriteBase           = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
     gCurrentFontFlags                = 0;
-    uint8        textColour          = NOT_TRANSLUCENT(theme_get_colour(WC_CONSOLE, 1));
-    const sint32 lineHeight          = font_get_line_height(gCurrentFontSpriteBase);
-    const sint32 maxLines            = GetNumVisibleLines();
+    uint8_t        textColour          = NOT_TRANSLUCENT(theme_get_colour(WC_CONSOLE, 1));
+    const int32_t lineHeight          = font_get_line_height(gCurrentFontSpriteBase);
+    const int32_t maxLines            = GetNumVisibleLines();
 
     // This is something of a hack to ensure the text is actually black
     // as opposed to a desaturated grey
@@ -280,13 +280,13 @@ void InGameConsole::Draw(rct_drawpixelinfo * dpi) const
     gfx_filter_rect(dpi, _consoleLeft, _consoleBottom - lineHeight - 10, _consoleRight, _consoleBottom - 1, PALETTE_51);
 
     // Paint background colour.
-    uint8 backgroundColour = theme_get_colour(WC_CONSOLE, 0);
+    uint8_t backgroundColour = theme_get_colour(WC_CONSOLE, 0);
     gfx_fill_rect_inset(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
     gfx_fill_rect_inset(dpi, _consoleLeft + 1, _consoleTop + 1, _consoleRight - 1, _consoleBottom - 1, backgroundColour, INSET_RECT_FLAG_BORDER_INSET);
 
     std::string lineBuffer;
-    sint32      x = _consoleLeft + CONSOLE_EDGE_PADDING;
-    sint32      y = _consoleTop + CONSOLE_EDGE_PADDING;
+    int32_t      x = _consoleLeft + CONSOLE_EDGE_PADDING;
+    int32_t      y = _consoleTop + CONSOLE_EDGE_PADDING;
 
     // Draw text inside console
     for (std::size_t i = 0; i < _consoleLines.size() && i < (size_t)maxLines; i++) {
@@ -304,16 +304,16 @@ void InGameConsole::Draw(rct_drawpixelinfo * dpi) const
 
     // Draw caret
     if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD) {
-        sint32 caretX = x + gfx_get_string_width(_consoleCurrentLine);
-        sint32 caretY = y + lineHeight;
+        int32_t caretX = x + gfx_get_string_width(_consoleCurrentLine);
+        int32_t caretY = y + lineHeight;
 
-        uint8 caretColour = ColourMapA[BASE_COLOUR(textColour)].lightest;
+        uint8_t caretColour = ColourMapA[BASE_COLOUR(textColour)].lightest;
         gfx_fill_rect(dpi, caretX, caretY, caretX + CONSOLE_CARET_WIDTH, caretY, caretColour);
     }
 
     // What about border colours?
-    uint8 borderColour1 = ColourMapA[BASE_COLOUR(backgroundColour)].light;
-    uint8 borderColour2 = ColourMapA[BASE_COLOUR(backgroundColour)].mid_dark;
+    uint8_t borderColour1 = ColourMapA[BASE_COLOUR(backgroundColour)].light;
+    uint8_t borderColour2 = ColourMapA[BASE_COLOUR(backgroundColour)].mid_dark;
 
     // Input area top border
     gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - lineHeight - 11, _consoleRight, _consoleBottom - lineHeight - 11, borderColour1);
@@ -325,10 +325,10 @@ void InGameConsole::Draw(rct_drawpixelinfo * dpi) const
 }
 
 // Calculates the amount of visible lines, based on the console size, excluding the input line.
-sint32 InGameConsole::GetNumVisibleLines() const
+int32_t InGameConsole::GetNumVisibleLines() const
 {
-    const sint32 lineHeight     = font_get_line_height(gCurrentFontSpriteBase);
-    const sint32 consoleHeight  = _consoleBottom - _consoleTop;
-    const sint32 drawableHeight = consoleHeight - 2 * lineHeight - 4; // input line, separator - padding
+    const int32_t lineHeight     = font_get_line_height(gCurrentFontSpriteBase);
+    const int32_t consoleHeight  = _consoleBottom - _consoleTop;
+    const int32_t drawableHeight = consoleHeight - 2 * lineHeight - 4; // input line, separator - padding
     return drawableHeight / lineHeight;
 }

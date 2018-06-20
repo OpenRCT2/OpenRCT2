@@ -19,8 +19,8 @@ struct IntentData
     enum DATATYPE { DT_INT, DT_STRING, DT_POINTER, DT_CLOSE_CALLBACK } type;
 
     union {
-        uint32 unsignedInt;
-        sint32 signedInt;
+        uint32_t unsignedInt;
+        int32_t signedInt;
     } intVal;
     std::string stringVal;
     close_callback closeCallbackVal;
@@ -31,20 +31,20 @@ class Intent
 {
 private:
     rct_windowclass _Class;
-    std::map<uint32, IntentData> _Data;
+    std::map<uint32_t, IntentData> _Data;
 public:
     explicit Intent(rct_windowclass windowclass);
     rct_windowclass GetWindowClass() const;
-    void * GetPointerExtra(uint32 key) const;
-    std::string GetStringExtra(uint32 key) const;
-    uint32 GetUIntExtra(uint32 key) const;
-    sint32 GetSIntExtra(uint32 key) const;
-    close_callback GetCloseCallbackExtra(uint32 key) const;
-    Intent * putExtra(uint32 key, uint32 value);
-    Intent * putExtra(uint32 key, void * value);
-    Intent * putExtra(uint32 key, sint32 value);
-    Intent * putExtra(uint32 key, std::string value);
-    Intent * putExtra(uint32 key, close_callback value);
+    void * GetPointerExtra(uint32_t key) const;
+    std::string GetStringExtra(uint32_t key) const;
+    uint32_t GetUIntExtra(uint32_t key) const;
+    int32_t GetSIntExtra(uint32_t key) const;
+    close_callback GetCloseCallbackExtra(uint32_t key) const;
+    Intent * putExtra(uint32_t key, uint32_t value);
+    Intent * putExtra(uint32_t key, void * value);
+    Intent * putExtra(uint32_t key, int32_t value);
+    Intent * putExtra(uint32_t key, std::string value);
+    Intent * putExtra(uint32_t key, close_callback value);
 };
 
 enum

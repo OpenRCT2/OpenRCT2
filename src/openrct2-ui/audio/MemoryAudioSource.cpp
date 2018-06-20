@@ -27,11 +27,11 @@ namespace OpenRCT2::Audio
     {
     private:
         AudioFormat         _format = {};
-        std::vector<uint8>  _data;
-        uint8 *             _dataSDL = nullptr;
+        std::vector<uint8_t>  _data;
+        uint8_t *             _dataSDL = nullptr;
         size_t              _length = 0;
 
-        const uint8 * GetData()
+        const uint8_t * GetData()
         {
             return _dataSDL != nullptr ? _dataSDL : _data.data();
         }
@@ -42,7 +42,7 @@ namespace OpenRCT2::Audio
             Unload();
         }
 
-        uint64 GetLength() const override
+        uint64_t GetLength() const override
         {
             return _length;
         }
@@ -52,17 +52,17 @@ namespace OpenRCT2::Audio
             return _format;
         }
 
-        size_t Read(void * dst, uint64 offset, size_t len) override
+        size_t Read(void * dst, uint64_t offset, size_t len) override
         {
             size_t bytesToRead = 0;
             if (offset < _length)
             {
-                bytesToRead = (size_t)std::min<uint64>(len, _length - offset);
+                bytesToRead = (size_t)std::min<uint64_t>(len, _length - offset);
 
                 auto src = GetData();
                 if (src != nullptr)
                 {
-                    std::copy_n(src + offset, bytesToRead, (uint8 *)dst);
+                    std::copy_n(src + offset, bytesToRead, (uint8_t *)dst);
                 }
             }
             return bytesToRead;
@@ -79,7 +79,7 @@ namespace OpenRCT2::Audio
             if (rw != nullptr)
             {
                 SDL_AudioSpec audiospec = {};
-                uint32 audioLen;
+                uint32_t audioLen;
                 SDL_AudioSpec * spec = SDL_LoadWAV_RW(rw, false, &audiospec, &_dataSDL, &audioLen);
                 if (spec != nullptr)
                 {
@@ -112,17 +112,17 @@ namespace OpenRCT2::Audio
             SDL_RWops * rw = SDL_RWFromFile(path, "rb");
             if (rw != nullptr)
             {
-                uint32 numSounds;
+                uint32_t numSounds;
                 SDL_RWread(rw, &numSounds, sizeof(numSounds), 1);
                 if (index < numSounds)
                 {
                     SDL_RWseek(rw, index * 4, RW_SEEK_CUR);
 
-                    uint32 pcmOffset;
+                    uint32_t pcmOffset;
                     SDL_RWread(rw, &pcmOffset, sizeof(pcmOffset), 1);
                     SDL_RWseek(rw, pcmOffset, RW_SEEK_SET);
 
-                    uint32 pcmSize;
+                    uint32_t pcmSize;
                     SDL_RWread(rw, &pcmSize, sizeof(pcmSize), 1);
                     _length = pcmSize;
 
@@ -160,9 +160,9 @@ namespace OpenRCT2::Audio
                 if (SDL_BuildAudioCVT(&cvt, _format.format, _format.channels, _format.freq, format->format, format->channels, format->freq) >= 0)
                 {
                     auto src = GetData();
-                    auto cvtBuffer = std::vector<uint8>(_length * cvt.len_mult);
+                    auto cvtBuffer = std::vector<uint8_t>(_length * cvt.len_mult);
                     std::copy_n(src, _length, cvtBuffer.data());
-                    cvt.len = (sint32)_length;
+                    cvt.len = (int32_t)_length;
                     cvt.buf = cvtBuffer.data();
                     if (SDL_ConvertAudio(&cvt) >= 0)
                     {

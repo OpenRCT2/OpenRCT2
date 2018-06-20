@@ -25,7 +25,7 @@
 
 using namespace OpenRCT2;
 
-constexpr sint32 updatesToTest = 10;
+constexpr int32_t updatesToTest = 10;
 
 TEST(MultiLaunchTest, all)
 {

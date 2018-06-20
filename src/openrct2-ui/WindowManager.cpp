@@ -132,7 +132,7 @@ public:
         }
     }
 
-    rct_window * OpenView(uint8 view) override
+    rct_window * OpenView(uint8_t view) override
     {
         switch (view)
         {
@@ -168,7 +168,7 @@ public:
         }
     }
 
-    rct_window * OpenDetails(uint8 type, sint32 id) override
+    rct_window * OpenDetails(uint8_t type, int32_t id) override
     {
         switch (type)
         {
@@ -212,7 +212,7 @@ public:
             return window_guest_list_open_with_filter(intent->GetSIntExtra(INTENT_EXTRA_GUEST_LIST_FILTER), intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
         case WC_LOADSAVE:
         {
-            uint32 type = intent->GetUIntExtra(INTENT_EXTRA_LOADSAVE_TYPE);
+            uint32_t type = intent->GetUIntExtra(INTENT_EXTRA_LOADSAVE_TYPE);
             std::string defaultName = intent->GetStringExtra(INTENT_EXTRA_PATH);
             loadsave_callback callback = (loadsave_callback) intent->GetPointerExtra(INTENT_EXTRA_CALLBACK);
             rct_window *w = window_loadsave_open(type, defaultName.c_str());
@@ -363,7 +363,7 @@ public:
         case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
         {
             rct_vehicle * vehicle = static_cast<rct_vehicle *>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
-            sint32 viewVehicleIndex;
+            int32_t viewVehicleIndex;
             Ride * ride;
             rct_window * w;
 
@@ -418,7 +418,7 @@ public:
 
         case INTENT_ACTION_UPDATE_BANNER:
         {
-            uint8 bannerIndex = static_cast<uint8>(intent.GetUIntExtra(INTENT_EXTRA_BANNER_INDEX));
+            uint8_t bannerIndex = static_cast<uint8_t>(intent.GetUIntExtra(INTENT_EXTRA_BANNER_INDEX));
 
             rct_window * w = window_find_by_number(WC_BANNER, bannerIndex);
             if (w != nullptr)
@@ -462,14 +462,14 @@ public:
         input_handle_keyboard(isTitle);
     }
 
-    std::string GetKeyboardShortcutString(sint32 shortcut) override
+    std::string GetKeyboardShortcutString(int32_t shortcut) override
     {
         utf8 buffer[256];
         keyboard_shortcuts_format_string(buffer, sizeof(buffer), shortcut);
         return std::string(buffer);
     }
 
-    void SetMainView(sint32 x, sint32 y, sint32 zoom, sint32 rotation) override
+    void SetMainView(int32_t x, int32_t y, int32_t zoom, int32_t rotation) override
     {
         auto mainWindow = window_get_main();
         if (mainWindow != nullptr)

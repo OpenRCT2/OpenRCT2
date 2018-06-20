@@ -14,21 +14,21 @@
 struct source_desc
 {
     const utf8 * title;
-    uint8        id;
-    uint8        source;
-    sint32       index;
-    uint8        category;
+    uint8_t        id;
+    uint8_t        source;
+    int32_t       index;
+    uint8_t        category;
 };
 
 namespace ScenarioSources
 {
     bool TryGetByName(const utf8 * name, source_desc * outDesc);
-    bool TryGetById(uint8 id, source_desc * outDesc);
+    bool TryGetById(uint8_t id, source_desc * outDesc);
     void NormaliseName(utf8 * buffer, size_t bufferSize, const utf8 * name);
 }
 
 bool scenario_get_source_desc(const utf8 *name, source_desc *outDesc);
-bool scenario_get_source_desc_by_id(uint8 id, source_desc *outDesc);
+bool scenario_get_source_desc_by_id(uint8_t id, source_desc *outDesc);
 void scenario_normalise_name(utf8 *buffer, size_t bufferSize, utf8 *name);
 
 

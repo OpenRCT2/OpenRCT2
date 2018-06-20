@@ -22,7 +22,7 @@ enum SpriteGroup {
 };
 
 static void canonicalizeFunctionCall(function_call *call);
-static SpriteGroup getSpriteGroup(uint16 spriteIndex);
+static SpriteGroup getSpriteGroup(uint16_t spriteIndex);
 
 bool FunctionCall::AssertsEquals(std::vector<function_call> expected, std::vector<function_call> actual) {
     if (expected.size() != actual.size()) {
@@ -49,7 +49,7 @@ bool FunctionCall::AssertsEquals(function_call expected, function_call actual) {
         return false;
     }
 
-    uint8 function = expected.function;
+    uint8_t function = expected.function;
 
     if (function == SUPPORTS_WOOD_A || function == SUPPORTS_WOOD_B) {
         if (expected.supports.type != actual.supports.type) return false;
@@ -117,7 +117,7 @@ static void canonicalizeFunctionCall(function_call *call) {
     call->function = PAINT_98196C;
 }
 
-static SpriteGroup getSpriteGroup(uint16 spriteIndex) {
+static SpriteGroup getSpriteGroup(uint16_t spriteIndex) {
     if (spriteIndex >= 14568 && spriteIndex <= 14571) {
         return SPRITEGROUP_FENCE_METAL_A;
     }

@@ -50,24 +50,24 @@ namespace OpenRCT2::Ui
             }
         };
 
-        constexpr static sint32 BASE_CURSOR_WIDTH  = 32;
-        constexpr static sint32 BASE_CURSOR_HEIGHT = 32;
+        constexpr static int32_t BASE_CURSOR_WIDTH  = 32;
+        constexpr static int32_t BASE_CURSOR_HEIGHT = 32;
 
         CURSOR_ID _currentCursor  = CURSOR_UNDEFINED;
-        uint8 _currentCursorScale = 1;
+        uint8_t _currentCursorScale = 1;
 
-        std::map<uint8, CursorSetHolder> _scaledCursors;
+        std::map<uint8_t, CursorSetHolder> _scaledCursors;
 
     public:
         ~CursorRepository();
         void LoadCursors();
         CURSOR_ID GetCurrentCursor();
         void SetCurrentCursor(CURSOR_ID cursorId);
-        void SetCursorScale(uint8 cursorScale);
+        void SetCursorScale(uint8_t cursorScale);
 
     private:
-        SDL_Cursor * Create(const CursorData * cursorInfo, uint8 scale);
-        void GenerateScaledCursorSetHolder(uint8 scale);
+        SDL_Cursor * Create(const CursorData * cursorInfo, uint8_t scale);
+        void GenerateScaledCursorSetHolder(uint8_t scale);
         static const CursorData * GetCursorData(CURSOR_ID cursorId);
     };
 }

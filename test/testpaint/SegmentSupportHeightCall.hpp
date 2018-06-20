@@ -16,9 +16,9 @@
 
 struct SegmentSupportCall
 {
-    uint16 segments;
-    sint32 height;
-    sint16 slope;
+    uint16_t segments;
+    int32_t height;
+    int16_t slope;
 
     bool operator<(const SegmentSupportCall &other) const {
         if (height != other.height) {
@@ -35,7 +35,7 @@ struct SegmentSupportCall
 
 class SegmentSupportHeightCall {
 public:
-    static std::vector<SegmentSupportCall> getSegmentCalls(support_height supports[9], uint8 rotation);
+    static std::vector<SegmentSupportCall> getSegmentCalls(support_height supports[9], uint8_t rotation);
     static bool CallsMatch(std::vector<SegmentSupportCall> tileSegmentSupportCalls[4]);
     static bool CallsEqual(std::vector<SegmentSupportCall> lhs, std::vector<SegmentSupportCall> rhs);
     static bool FindMostCommonSupportCall(std::vector<SegmentSupportCall> calls[4], std::vector<SegmentSupportCall> * out);

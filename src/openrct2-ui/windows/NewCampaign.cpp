@@ -20,7 +20,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 
-#define SELECTED_RIDE_UNDEFINED ((uint16)0xFFFF)
+#define SELECTED_RIDE_UNDEFINED ((uint16_t)0xFFFF)
 
 // clang-format off
 enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {
@@ -53,7 +53,7 @@ static rct_widget window_new_campaign_widgets[] = {
 
 static void window_new_campaign_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_new_campaign_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_new_campaign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_new_campaign_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_new_campaign_invalidate(rct_window *w);
 static void window_new_campaign_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -89,25 +89,25 @@ static rct_window_event_list window_new_campaign_events = {
 };
 // clang-format on
 
-static uint8 window_new_campaign_rides[MAX_RIDES];
-static uint8 window_new_campaign_shop_items[64];
+static uint8_t window_new_campaign_rides[MAX_RIDES];
+static uint8_t window_new_campaign_shop_items[64];
 
-static sint32 ride_value_compare(const void *a, const void *b)
+static int32_t ride_value_compare(const void *a, const void *b)
 {
     Ride *rideA, *rideB;
 
-    rideA = get_ride(*((uint8*)a));
-    rideB = get_ride(*((uint8*)b));
+    rideA = get_ride(*((uint8_t*)a));
+    rideB = get_ride(*((uint8_t*)b));
     return rideB->value - rideA->value;
 }
 
-static sint32 ride_name_compare(const void *a, const void *b)
+static int32_t ride_name_compare(const void *a, const void *b)
 {
     char rideAName[256], rideBName[256];
     Ride *rideA, *rideB;
 
-    rideA = get_ride(*((uint8*)a));
-    rideB = get_ride(*((uint8*)b));
+    rideA = get_ride(*((uint8_t*)a));
+    rideB = get_ride(*((uint8_t*)b));
 
     format_string(rideAName, 256, rideA->name, &rideA->name_arguments);
     format_string(rideBName, 256, rideB->name, &rideB->name_arguments);
@@ -119,11 +119,11 @@ static sint32 ride_name_compare(const void *a, const void *b)
  *
  *  rct2: 0x0069E16F
  */
-rct_window * window_new_campaign_open(sint16 campaignType)
+rct_window * window_new_campaign_open(int16_t campaignType)
 {
     rct_window *w;
     Ride *ride;
-    sint32 i, numApplicableRides;
+    int32_t i, numApplicableRides;
 
     w = window_bring_to_front_by_class(WC_NEW_CAMPAIGN);
     if (w != nullptr) {
@@ -178,12 +178,12 @@ rct_window * window_new_campaign_open(sint16 campaignType)
     // Take top 128 most valuable rides
     if (numApplicableRides > DROPDOWN_ITEMS_MAX_SIZE)
     {
-        qsort(window_new_campaign_rides, numApplicableRides, sizeof(uint8), ride_value_compare);
+        qsort(window_new_campaign_rides, numApplicableRides, sizeof(uint8_t), ride_value_compare);
         numApplicableRides = DROPDOWN_ITEMS_MAX_SIZE;
     }
 
     // Sort rides by name
-    qsort(window_new_campaign_rides, numApplicableRides, sizeof(uint8), ride_name_compare);
+    qsort(window_new_campaign_rides, numApplicableRides, sizeof(uint8_t), ride_name_compare);
 
     window_new_campaign_rides[numApplicableRides] = 255;
 
@@ -196,10 +196,10 @@ rct_window * window_new_campaign_open(sint16 campaignType)
  */
 static void window_new_campaign_get_shop_items()
 {
-    sint32 i, numItems;
+    int32_t i, numItems;
     Ride * ride;
 
-    uint64 items = 0;
+    uint64_t items = 0;
     FOR_ALL_RIDES(i, ride)
     {
         rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
@@ -207,7 +207,7 @@ static void window_new_campaign_get_shop_items()
         {
             continue;
         }
-        uint8 itemType = rideEntry->shop_item;
+        uint8_t itemType = rideEntry->shop_item;
         if (itemType != SHOP_ITEM_NONE && shop_item_is_food_or_drink(itemType))
             items |= 1ULL << itemType;
     }
@@ -267,8 +267,8 @@ static void window_new_campaign_mousedown(rct_window *w, rct_widgetindex widgetI
         if (w->campaign.campaign_type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
             window_new_campaign_get_shop_items();
             if (window_new_campaign_shop_items[0] != 255) {
-                sint32 numItems = 0;
-                for (sint32 i = 0; i < DROPDOWN_ITEMS_MAX_SIZE; i++) {
+                int32_t numItems = 0;
+                for (int32_t i = 0; i < DROPDOWN_ITEMS_MAX_SIZE; i++) {
                     if (window_new_campaign_shop_items[i] == 255)
                         break;
 
@@ -289,15 +289,15 @@ static void window_new_campaign_mousedown(rct_window *w, rct_widgetindex widgetI
                 );
             }
         } else {
-            sint32 numItems = 0;
-            for (sint32 i = 0; i < DROPDOWN_ITEMS_MAX_SIZE; i++)
+            int32_t numItems = 0;
+            for (int32_t i = 0; i < DROPDOWN_ITEMS_MAX_SIZE; i++)
             {
                 if (window_new_campaign_rides[i] == 255)
                     break;
 
                 Ride * ride = get_ride(window_new_campaign_rides[i]);
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[i] = ((uint64)ride->name_arguments << 16ULL) | ride->name;
+                gDropdownItemsArgs[i] = ((uint64_t)ride->name_arguments << 16ULL) | ride->name;
                 numItems++;
             }
 
@@ -329,7 +329,7 @@ static void window_new_campaign_mousedown(rct_window *w, rct_widgetindex widgetI
  *
  *  rct2: 0x0069E537
  */
-static void window_new_campaign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_new_campaign_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (widgetIndex != WIDX_RIDE_DROPDOWN_BUTTON)
         return;
@@ -366,7 +366,7 @@ static void window_new_campaign_invalidate(rct_window *w)
         if (w->campaign.ride_id != SELECTED_RIDE_UNDEFINED) {
             Ride *ride = get_ride(w->campaign.ride_id);
             window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].text = ride->name;
-            set_format_arg(0, uint32, ride->name_arguments);
+            set_format_arg(0, uint32_t, ride->name_arguments);
         }
         break;
     case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
@@ -395,7 +395,7 @@ static void window_new_campaign_invalidate(rct_window *w)
  */
 static void window_new_campaign_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 x, y;
+    int32_t x, y;
 
     window_draw_widgets(w, dpi);
 

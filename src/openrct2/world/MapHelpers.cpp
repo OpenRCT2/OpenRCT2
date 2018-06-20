@@ -16,10 +16,10 @@
 /**
  * Not perfect, this still leaves some particular tiles unsmoothed.
  */
-sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
+int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
 {
-    sint32 i, x, y, count, doubleCorner, raisedLand = 0;
-    uint8 highest, cornerHeights[4];
+    int32_t i, x, y, count, doubleCorner, raisedLand = 0;
+    uint8_t highest, cornerHeights[4];
     rct_tile_element *tileElement, *tileElement2;
     for (y = t; y < b; y++) {
         for (x = l; x < r; x++) {
@@ -49,7 +49,7 @@ sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
 
             if (highest >= tileElement->base_height + 4) {
                 count = 0;
-                sint32 canCompensate = 1;
+                int32_t canCompensate = 1;
                 for (i = 0; i < 4; i++)
                     if (cornerHeights[i] == highest){
                         count++;
@@ -57,7 +57,7 @@ sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
                         // Check if surrounding corners aren't too high. The current tile
                         // can't compensate for all the height differences anymore if it has
                         // the extra height slope.
-                        sint32 highestOnLowestSide;
+                        int32_t highestOnLowestSide;
                         switch (i){
                         default:
                         case 0:
@@ -179,7 +179,7 @@ sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
  * This does not change the base height, unless all corners have been raised.
  * @returns 0 if no edits were made, 1 otherwise
  */
-sint32 tile_smooth(sint32 x, sint32 y)
+int32_t tile_smooth(int32_t x, int32_t y)
 {
     rct_tile_element *const surfaceElement = map_get_surface_element_at(x, y);
 
@@ -196,23 +196,23 @@ sint32 tile_smooth(sint32 x, sint32 y)
     
     union
     {
-        sint32 baseheight[8];
+        int32_t baseheight[8];
         struct { 
-            sint32 N; 
-            sint32 NW;
-            sint32 W; 
-            sint32 NE; 
-            sint32 SW; 
-            sint32 E; 
-            sint32 SE; 
-            sint32 S; 
+            int32_t N;
+            int32_t NW;
+            int32_t W;
+            int32_t NE;
+            int32_t SW;
+            int32_t E;
+            int32_t SE;
+            int32_t S;
         };
     } neighbourHeightOffset = {};
 
     // Find the neighbour base heights
-    for (sint32 index = 0, y_offset = -1; y_offset <= 1; y_offset++)
+    for (int32_t index = 0, y_offset = -1; y_offset <= 1; y_offset++)
     {
-        for (sint32 x_offset = -1; x_offset <= 1; x_offset++)
+        for (int32_t x_offset = -1; x_offset <= 1; x_offset++)
         {
             // Skip self
             if (y_offset == 0 && x_offset == 0)
@@ -230,12 +230,12 @@ sint32 tile_smooth(sint32 x, sint32 y)
     }
 
     // Count number from the three tiles that is currently higher
-    sint8 thresholdW = Math::Clamp(0, neighbourHeightOffset.SW, 1) + Math::Clamp(0, neighbourHeightOffset.W, 1) + Math::Clamp(0, neighbourHeightOffset.NW, 1);
-    sint8 thresholdN = Math::Clamp(0, neighbourHeightOffset.NW, 1) + Math::Clamp(0, neighbourHeightOffset.N, 1) + Math::Clamp(0, neighbourHeightOffset.NE, 1);
-    sint8 thresholdE = Math::Clamp(0, neighbourHeightOffset.NE, 1) + Math::Clamp(0, neighbourHeightOffset.E, 1) + Math::Clamp(0, neighbourHeightOffset.SE, 1);
-    sint8 thresholdS = Math::Clamp(0, neighbourHeightOffset.SE, 1) + Math::Clamp(0, neighbourHeightOffset.S, 1) + Math::Clamp(0, neighbourHeightOffset.SW, 1);
+    int8_t thresholdW = Math::Clamp(0, neighbourHeightOffset.SW, 1) + Math::Clamp(0, neighbourHeightOffset.W, 1) + Math::Clamp(0, neighbourHeightOffset.NW, 1);
+    int8_t thresholdN = Math::Clamp(0, neighbourHeightOffset.NW, 1) + Math::Clamp(0, neighbourHeightOffset.N, 1) + Math::Clamp(0, neighbourHeightOffset.NE, 1);
+    int8_t thresholdE = Math::Clamp(0, neighbourHeightOffset.NE, 1) + Math::Clamp(0, neighbourHeightOffset.E, 1) + Math::Clamp(0, neighbourHeightOffset.SE, 1);
+    int8_t thresholdS = Math::Clamp(0, neighbourHeightOffset.SE, 1) + Math::Clamp(0, neighbourHeightOffset.S, 1) + Math::Clamp(0, neighbourHeightOffset.SW, 1);
 
-    uint8 slope = TILE_ELEMENT_SLOPE_FLAT;
+    uint8_t slope = TILE_ELEMENT_SLOPE_FLAT;
     slope |= (thresholdW >= 1) ? SLOPE_W_THRESHOLD_FLAGS : 0;
     slope |= (thresholdN >= 1) ? SLOPE_N_THRESHOLD_FLAGS : 0;
     slope |= (thresholdE >= 1) ? SLOPE_E_THRESHOLD_FLAGS : 0;
@@ -251,7 +251,7 @@ sint32 tile_smooth(sint32 x, sint32 y)
     }
 
     // Check if the calculated slope is the same already
-    uint8 currentSlope = surfaceElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
+    uint8_t currentSlope = surfaceElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
     if (currentSlope == slope)
     {
         return 0;
@@ -263,7 +263,7 @@ sint32 tile_smooth(sint32 x, sint32 y)
     {
         // All corners are raised, raise the entire tile instead.
         surfaceElement->base_height = (surfaceElement->clearance_height += 2);
-        uint8 waterHeight = surface_get_water_height(surfaceElement) * 2;
+        uint8_t waterHeight = surface_get_water_height(surfaceElement) * 2;
         if (waterHeight <= surfaceElement->base_height)
         {
             surfaceElement->properties.surface.terrain &= ~TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;

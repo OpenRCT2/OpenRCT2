@@ -80,9 +80,9 @@ static constexpr const rct_string_id music_credits_rct2[] = {
 };
 
 static void window_music_credits_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_music_credits_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
+static void window_music_credits_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void window_music_credits_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 static rct_window_event_list window_music_credits_events = {
     nullptr,
@@ -165,10 +165,10 @@ static void window_music_credits_mouseup(rct_window *w, rct_widgetindex widgetIn
  *
  *  rct2: 0x0066DB37
  */
-static void window_music_credits_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+static void window_music_credits_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height)
 {
-    sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
-    *height = static_cast<sint32>(Util::CountOf(music_credits) + Util::CountOf(music_credits_rct2)) * lineHeight + 12;
+    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    *height = static_cast<int32_t>(Util::CountOf(music_credits) + Util::CountOf(music_credits_rct2)) * lineHeight + 12;
 }
 
 /**
@@ -184,12 +184,12 @@ static void window_music_credits_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x0066D7BF
  */
-static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex)
 {
-    sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
-    sint32 x = 245;
-    sint32 y = 2;
+    int32_t x = 245;
+    int32_t y = 2;
 
     for (size_t i = 0; i < Util::CountOf(music_credits); i++) {
         gfx_draw_string_centred(dpi, music_credits[i], x, y, COLOUR_BLACK, nullptr);

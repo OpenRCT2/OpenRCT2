@@ -33,45 +33,45 @@ using namespace OpenRCT2;
 void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(8, STREAM_SEEK_CURRENT);
-    _legacyType.flags = stream->ReadValue<uint32>();
+    _legacyType.flags = stream->ReadValue<uint32_t>();
     for (auto &rideType : _legacyType.ride_type)
     {
-        rideType = stream->ReadValue<uint8>();
+        rideType = stream->ReadValue<uint8_t>();
     }
-    _legacyType.min_cars_in_train = stream->ReadValue<uint8>();
-    _legacyType.max_cars_in_train = stream->ReadValue<uint8>();
-    _legacyType.cars_per_flat_ride = stream->ReadValue<uint8>();
-    _legacyType.zero_cars = stream->ReadValue<uint8>();
-    _legacyType.tab_vehicle = stream->ReadValue<uint8>();
-    _legacyType.default_vehicle = stream->ReadValue<uint8>();
-    _legacyType.front_vehicle = stream->ReadValue<uint8>();
-    _legacyType.second_vehicle = stream->ReadValue<uint8>();
-    _legacyType.rear_vehicle = stream->ReadValue<uint8>();
-    _legacyType.third_vehicle = stream->ReadValue<uint8>();
-    _legacyType.pad_019 = stream->ReadValue<uint8>();
+    _legacyType.min_cars_in_train = stream->ReadValue<uint8_t>();
+    _legacyType.max_cars_in_train = stream->ReadValue<uint8_t>();
+    _legacyType.cars_per_flat_ride = stream->ReadValue<uint8_t>();
+    _legacyType.zero_cars = stream->ReadValue<uint8_t>();
+    _legacyType.tab_vehicle = stream->ReadValue<uint8_t>();
+    _legacyType.default_vehicle = stream->ReadValue<uint8_t>();
+    _legacyType.front_vehicle = stream->ReadValue<uint8_t>();
+    _legacyType.second_vehicle = stream->ReadValue<uint8_t>();
+    _legacyType.rear_vehicle = stream->ReadValue<uint8_t>();
+    _legacyType.third_vehicle = stream->ReadValue<uint8_t>();
+    _legacyType.pad_019 = stream->ReadValue<uint8_t>();
     for (auto &vehicleEntry : _legacyType.vehicles)
     {
         ReadLegacyVehicle(context, stream, &vehicleEntry);
     }
     stream->Seek(4, STREAM_SEEK_CURRENT);
-    _legacyType.excitement_multiplier = stream->ReadValue<sint8>();
-    _legacyType.intensity_multiplier = stream->ReadValue<sint8>();
-    _legacyType.nausea_multiplier = stream->ReadValue<sint8>();
-    _legacyType.max_height = stream->ReadValue<uint8>();
-    _legacyType.enabledTrackPieces = stream->ReadValue<uint64>();
-    _legacyType.category[0] = stream->ReadValue<uint8>();
-    _legacyType.category[1] = stream->ReadValue<uint8>();
-    _legacyType.shop_item = stream->ReadValue<uint8>();
-    _legacyType.shop_item_secondary = stream->ReadValue<uint8>();
+    _legacyType.excitement_multiplier = stream->ReadValue<int8_t>();
+    _legacyType.intensity_multiplier = stream->ReadValue<int8_t>();
+    _legacyType.nausea_multiplier = stream->ReadValue<int8_t>();
+    _legacyType.max_height = stream->ReadValue<uint8_t>();
+    _legacyType.enabledTrackPieces = stream->ReadValue<uint64_t>();
+    _legacyType.category[0] = stream->ReadValue<uint8_t>();
+    _legacyType.category[1] = stream->ReadValue<uint8_t>();
+    _legacyType.shop_item = stream->ReadValue<uint8_t>();
+    _legacyType.shop_item_secondary = stream->ReadValue<uint8_t>();
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
     GetStringTable().Read(context, stream, OBJ_STRING_ID_DESCRIPTION);
     GetStringTable().Read(context, stream, OBJ_STRING_ID_CAPACITY);
 
     // Read preset colours, by default there are 32
-    _presetColours.count = stream->ReadValue<uint8>();
+    _presetColours.count = stream->ReadValue<uint8_t>();
 
-    sint32 coloursCount = _presetColours.count;
+    int32_t coloursCount = _presetColours.count;
     // To indicate a ride has different colours each train the count
     // is set to 255. There are only actually 32 colours though.
     if (coloursCount == 255)
@@ -79,26 +79,26 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
         coloursCount = 32;
     }
 
-    for (uint8 i = 0; i < coloursCount; i++)
+    for (uint8_t i = 0; i < coloursCount; i++)
     {
         _presetColours.list[i] = stream->ReadValue<vehicle_colour>();
     }
 
     // Read peep loading positions
-    for (sint32 i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE_ENTRY; i++)
+    for (int32_t i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE_ENTRY; i++)
     {
         _peepLoadingWaypoints[i].clear();
         _peepLoadingPositions[i].clear();
 
-        uint16 numPeepLoadingPositions = stream->ReadValue<uint8>();
+        uint16_t numPeepLoadingPositions = stream->ReadValue<uint8_t>();
         if (numPeepLoadingPositions == 255)
         {
-            numPeepLoadingPositions = stream->ReadValue<uint16>();
+            numPeepLoadingPositions = stream->ReadValue<uint16_t>();
         }
         
         if (_legacyType.vehicles[i].flags & VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS)
         {
-            _legacyType.vehicles[i].peep_loading_waypoint_segments = stream->ReadValue<sint8>() == 0 ? 0 : 4;
+            _legacyType.vehicles[i].peep_loading_waypoint_segments = stream->ReadValue<int8_t>() == 0 ? 0 : 4;
             if (_legacyType.ride_type[0] == RIDE_TYPE_ENTERPRISE)
             {
                 _legacyType.vehicles[i].peep_loading_waypoint_segments = 8;
@@ -106,16 +106,16 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 
             Guard::Assert(((numPeepLoadingPositions - 1) % 8) == 0, "Malformed peep loading positions");
 
-            for (sint32 j = 1; j < numPeepLoadingPositions; j += 4 * 2)
+            for (int32_t j = 1; j < numPeepLoadingPositions; j += 4 * 2)
             {
                 std::array<sLocationXY8, 3> entry;
-                entry[0].x = stream->ReadValue<sint8>();
-                entry[0].y = stream->ReadValue<sint8>();
-                entry[1].x = stream->ReadValue<sint8>();
-                entry[1].y = stream->ReadValue<sint8>();
-                entry[2].x = stream->ReadValue<sint8>();
-                entry[2].y = stream->ReadValue<sint8>();
-                stream->ReadValue<uint16>(); // Skip blanks
+                entry[0].x = stream->ReadValue<int8_t>();
+                entry[0].y = stream->ReadValue<int8_t>();
+                entry[1].x = stream->ReadValue<int8_t>();
+                entry[1].y = stream->ReadValue<int8_t>();
+                entry[2].x = stream->ReadValue<int8_t>();
+                entry[2].y = stream->ReadValue<int8_t>();
+                stream->ReadValue<uint16_t>(); // Skip blanks
 
                 _peepLoadingWaypoints[i].push_back(entry);
             }
@@ -124,8 +124,8 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
         {
             _legacyType.vehicles[i].peep_loading_waypoint_segments = 0;
 
-            auto data = stream->ReadArray<sint8>(numPeepLoadingPositions);
-            _peepLoadingPositions[i] = std::vector<sint8>(data, data + numPeepLoadingPositions);
+            auto data = stream->ReadArray<int8_t>(numPeepLoadingPositions);
+            _peepLoadingPositions[i] = std::vector<int8_t>(data, data + numPeepLoadingPositions);
             Memory::Free(data);
         }
     }
@@ -158,8 +158,8 @@ void RideObject::Load()
     _legacyType.images_offset = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.vehicle_preset_list = &_presetColours;
 
-    sint32 cur_vehicle_images_offset = _legacyType.images_offset + MAX_RIDE_TYPES_PER_RIDE_ENTRY;
-    for (sint32 i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE_ENTRY; i++)
+    int32_t cur_vehicle_images_offset = _legacyType.images_offset + MAX_RIDE_TYPES_PER_RIDE_ENTRY;
+    for (int32_t i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE_ENTRY; i++)
     {
         rct_ride_entry_vehicle * vehicleEntry = &_legacyType.vehicles[i];
         if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT)
@@ -171,11 +171,11 @@ void RideObject::Load()
             // 0x6DE946
             vehicleEntry->base_num_frames = CalculateNumVerticalFrames(vehicleEntry) * CalculateNumHorizontalFrames(vehicleEntry);
             vehicleEntry->base_image_id = cur_vehicle_images_offset;
-            sint32 image_index = vehicleEntry->base_image_id;
+            int32_t image_index = vehicleEntry->base_image_id;
 
             if (vehicleEntry->car_visual != VEHICLE_VISUAL_RIVER_RAPIDS)
             {
-                sint32 b = vehicleEntry->base_num_frames * 32;
+                int32_t b = vehicleEntry->base_num_frames * 32;
 
                 if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_11) b /= 2;
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) b /= 8;
@@ -299,7 +299,7 @@ void RideObject::Load()
 
             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_10))
             {
-                sint32 num_images = cur_vehicle_images_offset - vehicleEntry->base_image_id;
+                int32_t num_images = cur_vehicle_images_offset - vehicleEntry->base_image_id;
                 if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_13)
                 {
                     num_images *= 2;
@@ -336,9 +336,9 @@ void RideObject::Unload()
     _legacyType.images_offset = 0;
 }
 
-void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] sint32 width, [[maybe_unused]] sint32 height) const
+void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t width, [[maybe_unused]] int32_t height) const
 {
-    uint32 imageId = _legacyType.images_offset;
+    uint32_t imageId = _legacyType.images_offset;
 
     for (auto rideType : _legacyType.ride_type)
     {
@@ -363,30 +363,30 @@ std::string RideObject::GetCapacity() const
 
 void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
 {
-    for (sint32 i = 0; i < RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    for (int32_t i = 0; i < RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
         item->RideInfo.RideType[i] = _legacyType.ride_type[i];
     }
-    for (sint32 i = 0; i < RCT2_MAX_CATEGORIES_PER_RIDE; i++)
+    for (int32_t i = 0; i < RCT2_MAX_CATEGORIES_PER_RIDE; i++)
     {
         item->RideInfo.RideCategory[i] = _legacyType.category[i];
     }
 
-    uint8 flags = 0;
+    uint8_t flags = 0;
     item->RideInfo.RideFlags = flags;
 
     // Find the first non-null ride type, to be used when checking the ride group
-    uint8 rideTypeIdx = ride_entry_get_first_non_null_ride_type(&_legacyType);
+    uint8_t rideTypeIdx = ride_entry_get_first_non_null_ride_type(&_legacyType);
 
     // Determines the ride group. Will fall back to 0 if there is none found.
-    uint8 rideGroupIndex = 0;
+    uint8_t rideGroupIndex = 0;
 
     const RideGroup * rideGroup = RideGroupManager::GetRideGroup(rideTypeIdx, &_legacyType);
 
     // If the ride group is nullptr, the track type does not have ride groups.
     if (rideGroup != nullptr)
     {
-        for (uint8 i = rideGroupIndex + 1; i < MAX_RIDE_GROUPS_PER_RIDE_TYPE; i++)
+        for (uint8_t i = rideGroupIndex + 1; i < MAX_RIDE_GROUPS_PER_RIDE_TYPE; i++)
         {
             const RideGroup * irg = RideGroupManager::RideGroupFind(rideTypeIdx, i);
 
@@ -407,40 +407,40 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
 void RideObject::ReadLegacyVehicle(
     [[maybe_unused]] IReadObjectContext* context, IStream* stream, rct_ride_entry_vehicle* vehicle)
 {
-    vehicle->rotation_frame_mask = stream->ReadValue<uint16>();
+    vehicle->rotation_frame_mask = stream->ReadValue<uint16_t>();
     stream->Seek(2 * 1, STREAM_SEEK_CURRENT);
-    vehicle->spacing = stream->ReadValue<uint32>();
-    vehicle->car_mass = stream->ReadValue<uint16>();
-    vehicle->tab_height = stream->ReadValue<sint8>();
-    vehicle->num_seats = stream->ReadValue<uint8>();
-    vehicle->sprite_flags = stream->ReadValue<uint16>();
-    vehicle->sprite_width = stream->ReadValue<uint8>();
-    vehicle->sprite_height_negative = stream->ReadValue<uint8>();
-    vehicle->sprite_height_positive = stream->ReadValue<uint8>();
-    vehicle->animation = stream->ReadValue<uint8>();
-    vehicle->flags = stream->ReadValue<uint32>();
-    vehicle->base_num_frames = stream->ReadValue<uint16>();
+    vehicle->spacing = stream->ReadValue<uint32_t>();
+    vehicle->car_mass = stream->ReadValue<uint16_t>();
+    vehicle->tab_height = stream->ReadValue<int8_t>();
+    vehicle->num_seats = stream->ReadValue<uint8_t>();
+    vehicle->sprite_flags = stream->ReadValue<uint16_t>();
+    vehicle->sprite_width = stream->ReadValue<uint8_t>();
+    vehicle->sprite_height_negative = stream->ReadValue<uint8_t>();
+    vehicle->sprite_height_positive = stream->ReadValue<uint8_t>();
+    vehicle->animation = stream->ReadValue<uint8_t>();
+    vehicle->flags = stream->ReadValue<uint32_t>();
+    vehicle->base_num_frames = stream->ReadValue<uint16_t>();
     stream->Seek(15 * 4, STREAM_SEEK_CURRENT);
-    vehicle->no_seating_rows = stream->ReadValue<uint8>();
-    vehicle->spinning_inertia = stream->ReadValue<uint8>();
-    vehicle->spinning_friction = stream->ReadValue<uint8>();
-    vehicle->friction_sound_id = stream->ReadValue<uint8>();
-    vehicle->log_flume_reverser_vehicle_type = stream->ReadValue<uint8>();
-    vehicle->sound_range = stream->ReadValue<uint8>();
-    vehicle->double_sound_frequency = stream->ReadValue<uint8>();
-    vehicle->powered_acceleration = stream->ReadValue<uint8>();
-    vehicle->powered_max_speed = stream->ReadValue<uint8>();
-    vehicle->car_visual = stream->ReadValue<uint8>();
-    vehicle->effect_visual = stream->ReadValue<uint8>();
-    vehicle->draw_order = stream->ReadValue<uint8>();
-    vehicle->num_vertical_frames_override = stream->ReadValue<uint8>();
+    vehicle->no_seating_rows = stream->ReadValue<uint8_t>();
+    vehicle->spinning_inertia = stream->ReadValue<uint8_t>();
+    vehicle->spinning_friction = stream->ReadValue<uint8_t>();
+    vehicle->friction_sound_id = stream->ReadValue<uint8_t>();
+    vehicle->log_flume_reverser_vehicle_type = stream->ReadValue<uint8_t>();
+    vehicle->sound_range = stream->ReadValue<uint8_t>();
+    vehicle->double_sound_frequency = stream->ReadValue<uint8_t>();
+    vehicle->powered_acceleration = stream->ReadValue<uint8_t>();
+    vehicle->powered_max_speed = stream->ReadValue<uint8_t>();
+    vehicle->car_visual = stream->ReadValue<uint8_t>();
+    vehicle->effect_visual = stream->ReadValue<uint8_t>();
+    vehicle->draw_order = stream->ReadValue<uint8_t>();
+    vehicle->num_vertical_frames_override = stream->ReadValue<uint8_t>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
 }
 
-uint8 RideObject::CalculateNumVerticalFrames(const rct_ride_entry_vehicle * vehicleEntry)
+uint8_t RideObject::CalculateNumVerticalFrames(const rct_ride_entry_vehicle * vehicleEntry)
 {
     // 0x6DE90B
-    uint8 numVerticalFrames;
+    uint8_t numVerticalFrames;
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES)
     {
         numVerticalFrames = vehicleEntry->num_vertical_frames_override;
@@ -474,9 +474,9 @@ uint8 RideObject::CalculateNumVerticalFrames(const rct_ride_entry_vehicle * vehi
     return numVerticalFrames;
 }
 
-uint8 RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * vehicleEntry)
+uint8_t RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * vehicleEntry)
 {
-    uint8 numHorizontalFrames;
+    uint8_t numHorizontalFrames;
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SWINGING)
     {
         if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) && !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SLIDE_SWING))
@@ -514,7 +514,7 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
     auto rideTypes = ObjectJsonHelpers::GetJsonStringArray(json_object_get(properties, "type"));
     for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
-        uint8 rideType = RIDE_TYPE_NULL;
+        uint8_t rideType = RIDE_TYPE_NULL;
         if (i < rideTypes.size())
         {
             rideType = ParseRideType(rideTypes[i]);
@@ -620,7 +620,7 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
         _presetColours = ReadJsonCarColours(json_object_get(properties, "carColours"));
     }
 
-    _legacyType.flags |= ObjectJsonHelpers::GetFlags<uint32>(properties, {
+    _legacyType.flags |= ObjectJsonHelpers::GetFlags<uint32_t>(properties, {
         { "noInversions", RIDE_ENTRY_FLAG_NO_INVERSIONS },
         { "noBanking", RIDE_ENTRY_FLAG_NO_BANKED_TRACK },
         { "playDepartSound", RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND },
@@ -785,8 +785,8 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
                     {
                         if (json_is_array(waypoint) && json_array_size(waypoint) >= 2)
                         {
-                            auto x = (sint8)json_integer_value(json_array_get(waypoint, 0));
-                            auto y = (sint8)json_integer_value(json_array_get(waypoint, 1));
+                            auto x = (int8_t)json_integer_value(json_array_get(waypoint, 0));
+                            auto y = (int8_t)json_integer_value(json_array_get(waypoint, 1));
                             entry[j] = { x, y };
                         }
                     }
@@ -797,7 +797,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
     }
 
     auto jFrames = json_object_get(jCar, "frames");
-    car.sprite_flags = ObjectJsonHelpers::GetFlags<uint16>(jFrames, {
+    car.sprite_flags = ObjectJsonHelpers::GetFlags<uint16_t>(jFrames, {
         { "flat", VEHICLE_SPRITE_FLAG_FLAT },
         { "gentleSlopes", VEHICLE_SPRITE_FLAG_GENTLE_SLOPES },
         { "steepSlopes", VEHICLE_SPRITE_FLAG_STEEP_SLOPES },
@@ -815,7 +815,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
         { "curvedLiftHill", VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL },
         { "VEHICLE_SPRITE_FLAG_15", VEHICLE_SPRITE_FLAG_15 } });
 
-    car.flags |= ObjectJsonHelpers::GetFlags<uint32>(jCar, {
+    car.flags |= ObjectJsonHelpers::GetFlags<uint32_t>(jCar, {
         { "VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY", VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY },
         { "VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS", VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS },
         { "VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH", VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH },
@@ -920,7 +920,7 @@ std::vector<vehicle_colour> RideObject::ReadJsonColourConfiguration(const json_t
     return config;
 }
 
-bool RideObject::IsRideTypeShopOrFacility(uint8 rideType)
+bool RideObject::IsRideTypeShopOrFacility(uint8_t rideType)
 {
     switch (rideType)
     {
@@ -937,9 +937,9 @@ bool RideObject::IsRideTypeShopOrFacility(uint8 rideType)
     }
 }
 
-uint8 RideObject::ParseRideType(const std::string &s)
+uint8_t RideObject::ParseRideType(const std::string &s)
 {
-    static const std::unordered_map<std::string, uint8> LookupTable
+    static const std::unordered_map<std::string, uint8_t> LookupTable
     {
         { "spiral_rc",                  RIDE_TYPE_SPIRAL_ROLLER_COASTER },
         { "stand_up_rc",                RIDE_TYPE_STAND_UP_ROLLER_COASTER },
@@ -1027,9 +1027,9 @@ uint8 RideObject::ParseRideType(const std::string &s)
         RIDE_TYPE_NULL;
 }
 
-uint8 RideObject::ParseRideCategory(const std::string &s)
+uint8_t RideObject::ParseRideCategory(const std::string &s)
 {
-    static const std::unordered_map<std::string, uint8> LookupTable
+    static const std::unordered_map<std::string, uint8_t> LookupTable
     {
         { "transport",      RIDE_CATEGORY_TRANSPORT },
         { "gentle",         RIDE_CATEGORY_GENTLE },
@@ -1044,9 +1044,9 @@ uint8 RideObject::ParseRideCategory(const std::string &s)
         RIDE_CATEGORY_TRANSPORT;
 }
 
-uint8 RideObject::ParseShopItem(const std::string &s)
+uint8_t RideObject::ParseShopItem(const std::string &s)
 {
-    static const std::unordered_map<std::string, uint8> LookupTable
+    static const std::unordered_map<std::string, uint8_t> LookupTable
     {
         { "burger",             SHOP_ITEM_BURGER },
         { "chips",              SHOP_ITEM_CHIPS },

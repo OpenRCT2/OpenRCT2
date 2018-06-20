@@ -23,7 +23,7 @@ enum class SPECIAL_FOLDER
 
 namespace Platform
 {
-    uint32 GetTicks();
+    uint32_t GetTicks();
     std::string GetEnvironmentVariable(const std::string &name);
     std::string GetFolderPath(SPECIAL_FOLDER folder);
     std::string GetInstallPath();
@@ -39,7 +39,7 @@ namespace Platform
     std::string FormatTime(std::time_t timestamp);
 
 #ifdef _WIN32
-    bool IsOSVersionAtLeast(uint32 major, uint32 minor, uint32 build);
+    bool IsOSVersionAtLeast(uint32_t major, uint32_t minor, uint32_t build);
 #endif
 
     bool IsColourTerminalSupported();

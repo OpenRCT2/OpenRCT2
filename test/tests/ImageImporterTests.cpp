@@ -23,12 +23,12 @@ public:
         return Path::Combine(TestData::GetBasePath(), "images", name.data());
     }
 
-    static uint32 GetHash(void * buffer, size_t bufferLength)
+    static uint32_t GetHash(void * buffer, size_t bufferLength)
     {
-        uint32 hash = 27;
+        uint32_t hash = 27;
         for (size_t i = 0; i < bufferLength; i++)
         {
-            hash = (13 * hash) + ((uint8 *)buffer)[i];
+            hash = (13 * hash) + ((uint8_t *)buffer)[i];
         }
         return hash;
     }

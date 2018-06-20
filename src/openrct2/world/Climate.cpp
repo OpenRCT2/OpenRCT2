@@ -25,7 +25,7 @@
 #include "../windows/Intent.h"
 #include "../Context.h"
 
-constexpr sint32 MAX_THUNDER_INSTANCES = 2;
+constexpr int32_t MAX_THUNDER_INSTANCES = 2;
 
 enum class THUNDER_STATUS
 {
@@ -35,9 +35,9 @@ enum class THUNDER_STATUS
 
 struct WeatherTransition
 {
-    sint8 BaseTemperature;
-    sint8 DistributionSize;
-    sint8 Distribution[24];
+    int8_t BaseTemperature;
+    int8_t DistributionSize;
+    int8_t Distribution[24];
 };
 
 extern const WeatherTransition *    ClimateTransitions[4];
@@ -45,31 +45,31 @@ extern const WeatherState           ClimateWeatherData[6];
 extern const FILTER_PALETTE_ID      ClimateWeatherGloomColours[4];
 
 // Climate data
-uint8           gClimate;
+uint8_t           gClimate;
 ClimateState    gClimateCurrent;
 ClimateState    gClimateNext;
-uint16          gClimateUpdateTimer;
-uint16          gClimateLightningFlash;
+uint16_t          gClimateUpdateTimer;
+uint16_t          gClimateLightningFlash;
 
 // Sound data
-static sint32           _rainVolume = 1;
-static uint32           _lightningTimer;
-static uint32           _thunderTimer;
+static int32_t           _rainVolume = 1;
+static uint32_t           _lightningTimer;
+static uint32_t           _thunderTimer;
 static void *           _thunderSoundChannels[MAX_THUNDER_INSTANCES];
 static THUNDER_STATUS   _thunderStatus[MAX_THUNDER_INSTANCES] = { THUNDER_STATUS::NONE, THUNDER_STATUS::NONE };
-static uint32           _thunderSoundId;
-static sint32           _thunderVolume;
-static sint32           _thunderStereoEcho = 0;
+static uint32_t           _thunderSoundId;
+static int32_t           _thunderVolume;
+static int32_t           _thunderStereoEcho = 0;
 
-static sint8 climate_step_weather_level(sint8 currentWeatherLevel, sint8 nextWeatherLevel);
-static void climate_determine_future_weather(sint32 randomDistribution);
+static int8_t climate_step_weather_level(int8_t currentWeatherLevel, int8_t nextWeatherLevel);
+static void climate_determine_future_weather(int32_t randomDistribution);
 static void climate_update_rain_sound();
 static void climate_update_thunder_sound();
 static void climate_update_lightning();
 static void climate_update_thunder();
-static void climate_play_thunder(sint32 instanceIndex, sint32 soundId, sint32 volume, sint32 pan);
+static void climate_play_thunder(int32_t instanceIndex, int32_t soundId, int32_t volume, int32_t pan);
 
-sint32 climate_celsius_to_fahrenheit(sint32 celsius)
+int32_t climate_celsius_to_fahrenheit(int32_t celsius)
 {
     return (celsius * 29) / 16 + 32;
 }
@@ -77,10 +77,10 @@ sint32 climate_celsius_to_fahrenheit(sint32 celsius)
 /**
  * Set climate and determine start weather.
  */
-void climate_reset(sint32 climate)
+void climate_reset(int32_t climate)
 {
-    uint8 weather = WEATHER_PARTIALLY_CLOUDY;
-    sint32 month = date_get_month(gDateMonthsElapsed);
+    uint8_t weather = WEATHER_PARTIALLY_CLOUDY;
+    int32_t month = date_get_month(gDateMonthsElapsed);
     const WeatherTransition * transition = &ClimateTransitions[climate][month];
     const WeatherState * weatherState = &ClimateWeatherData[weather];
 
@@ -168,7 +168,7 @@ void climate_update()
     else if (gClimateCurrent.WeatherEffect == WEATHER_EFFECT_STORM)
     {
         // Create new thunder and lightning
-        uint32 randomNumber = util_rand();
+        uint32_t randomNumber = util_rand();
         if ((randomNumber & 0xFFFF) <= 0x1B4)
         {
             randomNumber >>= 16;
@@ -178,7 +178,7 @@ void climate_update()
     }
 }
 
-void climate_force_weather(uint8 weather)
+void climate_force_weather(uint8_t weather)
 {
     const auto weatherState = &ClimateWeatherData[weather];
     gClimateCurrent.Weather = weather;
@@ -221,9 +221,9 @@ FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState &state
     return paletteId;
 }
 
-uint32 climate_get_weather_sprite_id(const ClimateState &state)
+uint32_t climate_get_weather_sprite_id(const ClimateState &state)
 {
-    uint32 spriteId = SPR_WEATHER_SUN;
+    uint32_t spriteId = SPR_WEATHER_SUN;
     if (state.Weather < Util::CountOf(ClimateWeatherData))
     {
         spriteId = ClimateWeatherData[state.Weather].SpriteId;
@@ -231,7 +231,7 @@ uint32 climate_get_weather_sprite_id(const ClimateState &state)
     return spriteId;
 }
 
-static sint8 climate_step_weather_level(sint8 currentWeatherLevel, sint8 nextWeatherLevel)
+static int8_t climate_step_weather_level(int8_t currentWeatherLevel, int8_t nextWeatherLevel)
 {
     if (nextWeatherLevel > currentWeatherLevel)
     {
@@ -249,13 +249,13 @@ static sint8 climate_step_weather_level(sint8 currentWeatherLevel, sint8 nextWea
 * for nextWeather. The other weather parameters are then looked up depending only on the
 * next weather.
 */
-static void climate_determine_future_weather(sint32 randomDistribution)
+static void climate_determine_future_weather(int32_t randomDistribution)
 {
-    sint8 month = date_get_month(gDateMonthsElapsed);
+    int8_t month = date_get_month(gDateMonthsElapsed);
 
     // Generate a random variable with values 0 up to DistributionSize-1 and chose weather from the distribution table accordingly
     const WeatherTransition * transition = &ClimateTransitions[gClimate][month];
-    sint8 nextWeather = transition->Distribution[((randomDistribution & 0xFF) * transition->DistributionSize) >> 8];
+    int8_t nextWeather = transition->Distribution[((randomDistribution & 0xFF) * transition->DistributionSize) >> 8];
     gClimateNext.Weather = nextWeather;
 
     const auto nextWeatherState = &ClimateWeatherData[nextWeather];
@@ -320,7 +320,7 @@ static void climate_update_thunder_sound()
     }
 
     // Stop thunder sounds if they have finished
-    for (sint32 i = 0; i < MAX_THUNDER_INSTANCES; i++)
+    for (int32_t i = 0; i < MAX_THUNDER_INSTANCES; i++)
     {
         if (_thunderStatus[i] != THUNDER_STATUS::NONE)
         {
@@ -355,7 +355,7 @@ static void climate_update_thunder()
     _thunderTimer--;
     if (_thunderTimer == 0)
     {
-        uint32 randomNumber = util_rand();
+        uint32_t randomNumber = util_rand();
         if (randomNumber & 0x10000)
         {
             if (_thunderStatus[0] == THUNDER_STATUS::NONE &&
@@ -363,7 +363,7 @@ static void climate_update_thunder()
             {
                 // Play thunder on left side
                 _thunderSoundId = (randomNumber & 0x20000) ? SOUND_THUNDER_1 : SOUND_THUNDER_2;
-                _thunderVolume = (-((sint32)((randomNumber >> 18) & 0xFF))) * 8;
+                _thunderVolume = (-((int32_t)((randomNumber >> 18) & 0xFF))) * 8;
                 climate_play_thunder(0, _thunderSoundId, _thunderVolume, -10000);
 
                 // Let thunder play on right side
@@ -375,14 +375,14 @@ static void climate_update_thunder()
             if (_thunderStatus[0] == THUNDER_STATUS::NONE)
             {
                 _thunderSoundId = (randomNumber & 0x20000) ? SOUND_THUNDER_1 : SOUND_THUNDER_2;
-                sint32 pan = (((randomNumber >> 18) & 0xFF) - 128) * 16;
+                int32_t pan = (((randomNumber >> 18) & 0xFF) - 128) * 16;
                 climate_play_thunder(0, _thunderSoundId, 0, pan);
             }
         }
     }
 }
 
-static void climate_play_thunder(sint32 instanceIndex, sint32 soundId, sint32 volume, sint32 pan)
+static void climate_play_thunder(int32_t instanceIndex, int32_t soundId, int32_t volume, int32_t pan)
 {
     _thunderSoundChannels[instanceIndex] = Mixer_Play_Effect(soundId, MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), 1, 0);
     if (_thunderSoundChannels[instanceIndex] != nullptr)

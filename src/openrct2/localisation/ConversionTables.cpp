@@ -143,7 +143,7 @@ const encoding_convert_entry RCT2ToUnicodeTable[256] =
     { 124, FORMAT_INT32 },
     { 125, FORMAT_COMMA2DP32 },
     { 126, FORMAT_COMMA16 },
-    { 127, FORMAT_UINT16 },
+    { 127, FORMAT_uint16_t },
     { 128, FORMAT_CURRENCY2DP },
     { 129, FORMAT_CURRENCY },
     { 130, FORMAT_STRINGID },
@@ -274,9 +274,9 @@ const encoding_convert_entry RCT2ToUnicodeTable[256] =
     { 255, 255 }
 };
 
-static sint32 encoding_search_compare(const void *pKey, const void *pEntry)
+static int32_t encoding_search_compare(const void *pKey, const void *pEntry)
 {
-    uint16 key = *((uint16*)pKey);
+    uint16_t key = *((uint16_t*)pKey);
     encoding_convert_entry *entry = (encoding_convert_entry*)pEntry;
     if (key < entry->code) return -1;
     if (key > entry->code) return 1;
@@ -295,7 +295,7 @@ wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str)
     return encoding_convert_x_to_unicode(rct2str, RCT2ToUnicodeTable, Util::CountOf(RCT2ToUnicodeTable));
 }
 
-uint32 encoding_convert_unicode_to_rct2(uint32 unicode)
+uint32_t encoding_convert_unicode_to_rct2(uint32_t unicode)
 {
     // Can't do a binary search as it's sorted by RCT2 code, not unicode
     for (const auto& entry : RCT2ToUnicodeTable)

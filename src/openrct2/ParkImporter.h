@@ -87,9 +87,9 @@ public:
 class UnsupportedRCTCFlagException : public std::exception
 {
 public:
-    uint8 const Flag;
+    uint8_t const Flag;
 
-    explicit UnsupportedRCTCFlagException(uint8 flag)
+    explicit UnsupportedRCTCFlagException(uint8_t flag)
         : Flag(flag)
     {
     }

@@ -31,19 +31,19 @@
 #include "Paint.TileElement.h"
 
 #ifdef __TESTPAINT__
-uint16 testPaintVerticalTunnelHeight;
+uint16_t testPaintVerticalTunnelHeight;
 #endif
 
-static void blank_tiles_paint(paint_session * session, sint32 x, sint32 y);
-static void sub_68B3FB(paint_session * session, sint32 x, sint32 y);
+static void blank_tiles_paint(paint_session * session, int32_t x, int32_t y);
+static void sub_68B3FB(paint_session * session, int32_t x, int32_t y);
 
-const sint32 SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4;
+const int32_t SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4;
 
 /**
  *
  *  rct2: 0x0068B35F
  */
-void tile_element_paint_setup(paint_session * session, sint32 x, sint32 y)
+void tile_element_paint_setup(paint_session * session, int32_t x, int32_t y)
 {
     if (
         x < gMapSizeUnits &&
@@ -66,7 +66,7 @@ void tile_element_paint_setup(paint_session * session, sint32 x, sint32 y)
  *
  *  rct2: 0x0068B2B7
  */
-void sub_68B2B7(paint_session * session, sint32 x, sint32 y)
+void sub_68B2B7(paint_session * session, int32_t x, int32_t y)
 {
     if (
         x < gMapSizeUnits &&
@@ -89,9 +89,9 @@ void sub_68B2B7(paint_session * session, sint32 x, sint32 y)
  *
  *  rct2: 0x0068B60E
  */
-static void blank_tiles_paint(paint_session * session, sint32 x, sint32 y)
+static void blank_tiles_paint(paint_session * session, int32_t x, int32_t y)
 {
-    sint32 dx = 0;
+    int32_t dx = 0;
     switch (session->CurrentRotation)
     {
     case 0:
@@ -113,7 +113,7 @@ static void blank_tiles_paint(paint_session * session, sint32 x, sint32 y)
     }
     dx /= 2;
     dx -= 16;
-    sint32 bx = dx + 32;
+    int32_t bx = dx + 32;
 
     rct_drawpixelinfo * dpi = session->DPI;
     if (bx <= dpi->y) return;
@@ -133,7 +133,7 @@ bool gShowSupportSegmentHeights = false;
  *
  *  rct2: 0x0068B3FB
  */
-static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
+static void sub_68B3FB(paint_session * session, int32_t x, int32_t y)
 {
     rct_drawpixelinfo *dpi = session->DPI;
 
@@ -154,7 +154,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     session->MapPosition.y = y;
 
     rct_tile_element* tile_element = map_get_first_element_at(x >> 5, y >> 5);
-    uint8             rotation     = session->CurrentRotation;
+    uint8_t             rotation     = session->CurrentRotation;
 
     bool partOfVirtualFloor = false;
 #ifndef __TESTPAINT__
@@ -164,7 +164,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     }
 #endif // __TESTPAINT__
 
-    sint32 dx = 0;
+    int32_t dx = 0;
     switch (rotation) {
     case 0:
         dx = x + y;
@@ -189,15 +189,15 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
         session->MapPosition.x == gMapSelectArrowPosition.x &&
         session->MapPosition.y == gMapSelectArrowPosition.y
     ) {
-        uint8 arrowRotation =
+        uint8_t arrowRotation =
             (rotation
             + (gMapSelectArrowDirection & 3)) & 3;
 
-        uint32 imageId =
+        uint32_t imageId =
             arrowRotation +
             (gMapSelectArrowDirection & 0xFC) +
             0x20900C27;
-        sint32 arrowZ = gMapSelectArrowPosition.z;
+        int32_t arrowZ = gMapSelectArrowPosition.z;
 
         session->SpritePosition.x = x;
         session->SpritePosition.y = y;
@@ -205,16 +205,16 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
 
         sub_98197C(session, imageId, 0, 0, 32, 32, -1, arrowZ, 0, 0, arrowZ + 18);
     }
-    sint32 bx = dx + 52;
+    int32_t bx = dx + 52;
 
     if (bx <= dpi->y)
         return;
 
     const rct_tile_element* element = tile_element;//push tile_element
 
-    uint16 max_height = 0;
+    uint16_t max_height = 0;
     do{
-        max_height = std::max(max_height, (uint16)element->clearance_height);
+        max_height = std::max(max_height, (uint16_t)element->clearance_height);
     } while (!(element++)->IsLastForTile());
 
     element--;
@@ -245,14 +245,14 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     session->SpritePosition.x = x;
     session->SpritePosition.y = y;
     session->DidPassSurface = false;
-    sint32 previousHeight = 0;
+    int32_t previousHeight = 0;
     do {
         // Only paint tile_elements below the clip height.
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->base_height > gClipHeight))
             continue;
 
-        sint32 direction = tile_element_get_direction_with_offset(tile_element, rotation);
-        sint32 height = tile_element->base_height * 8;
+        int32_t direction = tile_element_get_direction_with_offset(tile_element, rotation);
+        int32_t height = tile_element->base_height * 8;
 
         // If we are on a new height level, look through elements on the
         //  same height and store any types might be relevant to others
@@ -346,16 +346,16 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
         return;
     }
 
-    static constexpr const sint32 segmentPositions[][3] = {
+    static constexpr const int32_t segmentPositions[][3] = {
         {0, 6, 2},
         {5, 4, 8},
         {1, 7, 3},
     };
 
-    for (sint32 sy = 0; sy < 3; sy++) {
-        for (sint32 sx = 0; sx < 3; sx++) {
-            uint16 segmentHeight = session->SupportSegments[segmentPositions[sy][sx]].height;
-            sint32 imageColourFlats = 0b101111 << 19 | IMAGE_TYPE_TRANSPARENT;
+    for (int32_t sy = 0; sy < 3; sy++) {
+        for (int32_t sx = 0; sx < 3; sx++) {
+            uint16_t segmentHeight = session->SupportSegments[segmentPositions[sy][sx]].height;
+            int32_t imageColourFlats = 0b101111 << 19 | IMAGE_TYPE_TRANSPARENT;
             if (segmentHeight == 0xFFFF) {
                 segmentHeight = session->Support.height;
                 // white: 0b101101
@@ -365,8 +365,8 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
             // Only draw supports below the clipping height.
             if ((gCurrentViewportFlags & VIEWPORT_FLAG_CLIP_VIEW) && (segmentHeight > gClipHeight)) continue;
 
-            sint32 xOffset = sy * 10;
-            sint32 yOffset = -22 + sx * 10;
+            int32_t xOffset = sy * 10;
+            int32_t yOffset = -22 + sx * 10;
             paint_struct * ps      = sub_98197C(
                 session, 5504 | imageColourFlats, xOffset, yOffset, 10, 10, 1, segmentHeight, xOffset + 1, yOffset + 16,
                 segmentHeight);
@@ -379,25 +379,25 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     }
 }
 
-void paint_util_push_tunnel_left(paint_session * session, uint16 height, uint8 type)
+void paint_util_push_tunnel_left(paint_session * session, uint16_t height, uint8_t type)
 {
-    session->LeftTunnels[session->LeftTunnelCount] = {static_cast<uint8>((height / 16)), type};
+    session->LeftTunnels[session->LeftTunnelCount] = {static_cast<uint8_t>((height / 16)), type};
     if (session->LeftTunnelCount < TUNNEL_MAX_COUNT - 1) {
         session->LeftTunnels[session->LeftTunnelCount + 1] = {0xFF, 0xFF};
         session->LeftTunnelCount++;
     }
 }
 
-void paint_util_push_tunnel_right(paint_session * session, uint16 height, uint8 type)
+void paint_util_push_tunnel_right(paint_session * session, uint16_t height, uint8_t type)
 {
-    session->RightTunnels[session->RightTunnelCount] = {static_cast<uint8>((height / 16)), type};
+    session->RightTunnels[session->RightTunnelCount] = {static_cast<uint8_t>((height / 16)), type};
     if (session->RightTunnelCount < TUNNEL_MAX_COUNT - 1) {
         session->RightTunnels[session->RightTunnelCount + 1] = {0xFF, 0xFF};
         session->RightTunnelCount++;
     }
 }
 
-void paint_util_set_vertical_tunnel(paint_session * session, uint16 height)
+void paint_util_set_vertical_tunnel(paint_session * session, uint16_t height)
 {
 #ifdef __TESTPAINT__
     testPaintVerticalTunnelHeight = height;
@@ -405,7 +405,7 @@ void paint_util_set_vertical_tunnel(paint_session * session, uint16 height)
     session->VerticalTunnelHeight = height / 16;
 }
 
-void paint_util_set_general_support_height(paint_session * session, sint16 height, uint8 slope)
+void paint_util_set_general_support_height(paint_session * session, int16_t height, uint8_t slope)
 {
     if (session->Support.height >= height) {
         return;
@@ -414,13 +414,13 @@ void paint_util_set_general_support_height(paint_session * session, sint16 heigh
     paint_util_force_set_general_support_height(session, height, slope);
 }
 
-void paint_util_force_set_general_support_height(paint_session * session, sint16 height, uint8 slope)
+void paint_util_force_set_general_support_height(paint_session * session, int16_t height, uint8_t slope)
 {
     session->Support.height = height;
     session->Support.slope = slope;
 }
 
-const uint16 segment_offsets[9] = {
+const uint16_t segment_offsets[9] = {
     SEGMENT_B4,
     SEGMENT_B8,
     SEGMENT_BC,
@@ -432,10 +432,10 @@ const uint16 segment_offsets[9] = {
     SEGMENT_D4
 };
 
-void paint_util_set_segment_support_height(paint_session * session, sint32 segments, uint16 height, uint8 slope)
+void paint_util_set_segment_support_height(paint_session * session, int32_t segments, uint16_t height, uint8_t slope)
 {
     support_height * supportSegments = session->SupportSegments;
-    for (sint32 s = 0; s < 9; s++) {
+    for (int32_t s = 0; s < 9; s++) {
         if (segments & segment_offsets[s]) {
             supportSegments[s].height = height;
             if (height != 0xFFFF) {
@@ -445,9 +445,9 @@ void paint_util_set_segment_support_height(paint_session * session, sint32 segme
     }
 }
 
-uint16 paint_util_rotate_segments(uint16 segments, uint8 rotation)
+uint16_t paint_util_rotate_segments(uint16_t segments, uint8_t rotation)
 {
-    uint8 temp = segments & 0xFF;
+    uint8_t temp = segments & 0xFF;
     temp = rol8(temp, rotation * 2);
 
     return (segments & 0xFF00) | temp;

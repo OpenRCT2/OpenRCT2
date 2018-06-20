@@ -15,7 +15,7 @@
 #include <openrct2/windows/tile_inspector.h>
 #include <openrct2/ride/Ride.h>
 
-using loadsave_callback       = void (*)(sint32 result, const utf8 * path);
+using loadsave_callback       = void (*)(int32_t result, const utf8 * path);
 using scenarioselect_callback = void (*)(const utf8 *path);
 struct rct_peep;
 struct rct_tile_element;
@@ -45,7 +45,7 @@ rct_window * window_options_open();
 rct_window * window_save_prompt_open();
 rct_window * window_server_list_open();
 rct_window * window_server_start_open();
-rct_window * window_shortcut_change_open(sint32 selected_key);
+rct_window * window_shortcut_change_open(int32_t selected_key);
 rct_window * window_shortcut_keys_open();
 rct_window * window_staff_list_open();
 rct_window * window_staff_open(rct_peep* peep);
@@ -70,26 +70,26 @@ rct_window * window_park_objective_open();
 rct_window * window_park_rating_open();
 
 rct_window * window_banner_open(rct_windownumber number);
-rct_window * window_ride_demolish_prompt_open(sint32 rideIndex);
-rct_window * window_ride_refurbish_prompt_open(sint32 rideIndex);
+rct_window * window_ride_demolish_prompt_open(int32_t rideIndex);
+rct_window * window_ride_refurbish_prompt_open(int32_t rideIndex);
 rct_window * window_sign_open(rct_windownumber number);
 rct_window * window_sign_small_open(rct_windownumber number);
-rct_window * window_player_open(uint8 id);
-rct_window * window_new_campaign_open(sint16 campaignType);
+rct_window * window_player_open(uint8_t id);
+rct_window * window_new_campaign_open(int16_t campaignType);
 
 rct_window * window_install_track_open(const utf8* path);
 void window_guest_list_init_vars();
 void window_guest_list_refresh_list();
 rct_window * window_guest_list_open();
-rct_window * window_guest_list_open_with_filter(sint32 type, sint32 index);
+rct_window * window_guest_list_open_with_filter(int32_t type, int32_t index);
 rct_window * window_staff_fire_prompt_open(rct_peep* peep);
-void window_title_editor_open(sint32 tab);
-void window_title_command_editor_open(struct TitleSequence * sequence, sint32 command, bool insert);
+void window_title_editor_open(int32_t tab);
+void window_title_command_editor_open(struct TitleSequence * sequence, int32_t command, bool insert);
 rct_window * window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor);
 
 rct_window * window_error_open(rct_string_id title, rct_string_id message);
 
-rct_window * window_loadsave_open(sint32 type, const char *defaultName);
+rct_window * window_loadsave_open(int32_t type, const char *defaultName);
 void window_loadsave_set_loadsave_callback(loadsave_callback cb);
 rct_window * window_track_place_open(const struct track_design_file_ref *tdFileRef);
 rct_window * window_track_manage_open(struct track_design_file_ref *tdFileRef);
@@ -109,7 +109,7 @@ void window_new_ride_focus(ride_list_item rideItem);
 rct_window * window_ride_list_open();
 void window_ride_list_refresh_list(rct_window * w);
 
-rct_window * window_ride_main_open(sint32 rideIndex);
+rct_window * window_ride_main_open(int32_t rideIndex);
 rct_window * window_ride_open_track(rct_tile_element * tileElement);
 rct_window * window_ride_open_vehicle(rct_vehicle * vehicle);
 void window_ride_measurements_design_cancel();
@@ -128,8 +128,8 @@ rct_window * window_network_status_open_password();
 void window_network_status_close();
 
 void window_text_input_key(rct_window * w, char keychar);
-void window_text_input_open(rct_window * call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength);
-void window_text_input_raw_open(rct_window * call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, const_utf8string existing_text, sint32 maxLength);
+void window_text_input_open(rct_window * call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength);
+void window_text_input_raw_open(rct_window * call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, const_utf8string existing_text, int32_t maxLength);
 
 rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects, const rct_object_entry * missingObjects);
 
@@ -143,12 +143,12 @@ bool clear_scenery_tool_is_active();
 bool water_tool_is_active();
 
 rct_window * window_scenery_open();
-bool window_scenery_set_selected_item(sint32 sceneryId);
+bool window_scenery_set_selected_item(int32_t sceneryId);
 void window_scenery_set_default_placement_configuration();
 void window_scenery_init();
 void window_scenery_reset_selected_scenery_items();
 
-extern uint8 gToolbarDirtyFlags;
+extern uint8_t gToolbarDirtyFlags;
 rct_window * window_game_bottom_toolbar_open();
 void window_game_bottom_toolbar_invalidate_news_item();
 
@@ -159,7 +159,7 @@ void window_tile_inspector_clear_clipboard();
 
 rct_window * window_editor_object_selection_open();
 
-void window_tooltip_reset(sint32 x, sint32 y);
-void window_tooltip_show(rct_string_id id, sint32 x, sint32 y);
-void window_tooltip_open(rct_window * widgetWindow, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+void window_tooltip_reset(int32_t x, int32_t y);
+void window_tooltip_show(rct_string_id id, int32_t x, int32_t y);
+void window_tooltip_open(rct_window * widgetWindow, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 void window_tooltip_close();

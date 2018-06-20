@@ -39,7 +39,7 @@ GameState::GameState()
 /**
  * Initialises the map, park etc. basically all S6 data.
  */
-void GameState::InitAll(sint32 mapSize)
+void GameState::InitAll(int32_t mapSize)
 {
     gInMapInitCode = true;
 
@@ -73,7 +73,7 @@ void GameState::Update()
 {
     gInUpdateCode = true;
 
-    uint32 numUpdates;
+    uint32_t numUpdates;
 
     // 0x006E3AEC // screen_game_process_mouse_input();
     screenshot_check();
@@ -96,7 +96,7 @@ void GameState::Update()
     else
     {
         numUpdates = gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
-        numUpdates = Math::Clamp<uint32>(1, numUpdates, GAME_MAX_UPDATES);
+        numUpdates = Math::Clamp<uint32_t>(1, numUpdates, GAME_MAX_UPDATES);
     }
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK)
@@ -122,7 +122,7 @@ void GameState::Update()
     }
 
     // Update the game one or more times
-    for (uint32 i = 0; i < numUpdates; i++)
+    for (uint32_t i = 0; i < numUpdates; i++)
     {
         UpdateLogic();
         if (gGameSpeed == 1)

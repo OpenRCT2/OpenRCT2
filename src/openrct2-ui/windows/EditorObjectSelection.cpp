@@ -60,10 +60,10 @@ enum
     FILTER_ALL = FILTER_RIDES | FILTER_RCT1 | FILTER_AA | FILTER_LL | FILTER_RCT2 | FILTER_WW | FILTER_TT | FILTER_OO | FILTER_CUSTOM | FILTER_SELECTED | FILTER_NONSELECTED,
 };
 
-static constexpr uint8 _numSourceGameItems = 8;
+static constexpr uint8_t _numSourceGameItems = 8;
 
-static uint32 _filter_flags;
-static uint16 _filter_object_counts[OBJECT_TYPE_COUNT];
+static uint32_t _filter_flags;
+static uint16_t _filter_object_counts[OBJECT_TYPE_COUNT];
 
 static char _filter_string[MAX_PATH];
 
@@ -82,7 +82,7 @@ static char _filter_string[MAX_PATH];
 struct ObjectPageDesc
 {
     rct_string_id Caption;
-    uint32 Image;
+    uint32_t Image;
     bool IsAdvanced;
 };
 
@@ -167,15 +167,15 @@ static void window_editor_object_selection_close(rct_window *w);
 static void window_editor_object_selection_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_editor_object_selection_resize(rct_window *w);
 static void window_editor_object_selection_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_editor_object_selection_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_editor_object_selection_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_editor_object_selection_update(rct_window *w);
-static void window_editor_object_selection_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-static void window_editor_object_selection_scroll_mousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_editor_object_selection_scroll_mouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_editor_object_selection_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void window_editor_object_selection_scroll_mousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_editor_object_selection_scroll_mouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_editor_object_selection_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_editor_object_selection_invalidate(rct_window *w);
 static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 static void window_editor_object_selection_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
 static rct_window_event_list window_editor_object_selection_events = {
@@ -212,22 +212,22 @@ static rct_window_event_list window_editor_object_selection_events = {
 
 #pragma endregion
 
-static constexpr const sint32 window_editor_object_selection_animation_loops[] = { 20, 32, 10, 72, 24, 28, 16 };
-static constexpr const sint32 window_editor_object_selection_animation_divisor[] = { 4, 8, 2, 4, 4, 4, 2 };
+static constexpr const int32_t window_editor_object_selection_animation_loops[] = { 20, 32, 10, 72, 24, 28, 16 };
+static constexpr const int32_t window_editor_object_selection_animation_divisor[] = { 4, 8, 2, 4, 4, 4, 2 };
 
-static void window_editor_object_set_page(rct_window *w, sint32 page);
+static void window_editor_object_set_page(rct_window *w, int32_t page);
 static void window_editor_object_selection_set_pressed_tab(rct_window *w);
-static sint32 get_object_from_object_selection(uint8 object_type, sint32 y);
+static int32_t get_object_from_object_selection(uint8_t object_type, int32_t y);
 static void window_editor_object_selection_manage_tracks();
 static void editor_load_selected_objects();
-static bool filter_selected(uint8 objectFlags);
+static bool filter_selected(uint8_t objectFlags);
 static bool filter_string(const ObjectRepositoryItem * item);
 static bool filter_source(const ObjectRepositoryItem * item);
 static bool filter_chunks(const ObjectRepositoryItem * item);
 static void filter_update_counts();
 
 static std::string object_get_description(const void * object);
-static sint32 get_selected_object_type(rct_window * w);
+static int32_t get_selected_object_type(rct_window * w);
 
 enum {
     RIDE_SORT_TYPE,
@@ -252,7 +252,7 @@ struct list_item {
     const ObjectRepositoryItem * repositoryItem;
     rct_object_entry *entry;
     rct_object_filters *filter;
-    uint8 *flags;
+    uint8_t *flags;
 };
 
 static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item);
@@ -260,7 +260,7 @@ static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item);
 using sortFunc_t = bool (*)(const list_item &, const list_item &);
 
 static std::vector<list_item> _listItems;
-static sint32 _listSortType = RIDE_SORT_TYPE;
+static int32_t _listSortType = RIDE_SORT_TYPE;
 static bool _listSortDescending = false;
 static void * _loadedObject = nullptr;
 
@@ -281,7 +281,7 @@ static bool visible_list_sort_ride_type(const list_item &a, const list_item &b)
 {
     auto rideTypeA = language_get_string(get_ride_type_string_id(a.repositoryItem));
     auto rideTypeB = language_get_string(get_ride_type_string_id(b.repositoryItem));
-    sint32 result = String::Compare(rideTypeA, rideTypeB);
+    int32_t result = String::Compare(rideTypeA, rideTypeB);
     return result != 0 ?
         result < 0 :
         visible_list_sort_ride_name(a, b);
@@ -289,16 +289,16 @@ static bool visible_list_sort_ride_type(const list_item &a, const list_item &b)
 
 static void visible_list_refresh(rct_window *w)
 {
-    sint32 numObjects = (sint32)object_repository_get_items_count();
+    int32_t numObjects = (int32_t)object_repository_get_items_count();
 
     visible_list_dispose();
     w->selected_list_item = -1;
 
     const ObjectRepositoryItem *items = object_repository_get_items();
-    for (sint32 i = 0; i < numObjects; i++) {
-        uint8 selectionFlags = _objectSelectionFlags[i];
+    for (int32_t i = 0; i < numObjects; i++) {
+        uint8_t selectionFlags = _objectSelectionFlags[i];
         const ObjectRepositoryItem * item = &items[i];
-        uint8 objectType = item->ObjectEntry.flags & 0x0F;
+        uint8_t objectType = item->ObjectEntry.flags & 0x0F;
         if (objectType == get_selected_object_type(w) && !(selectionFlags & OBJECT_SELECTION_FLAG_6) &&
             filter_source(item) &&
             filter_string(item) &&
@@ -357,7 +357,7 @@ static void window_editor_object_selection_init_widgets()
     {
         _window_editor_object_selection_widgets_initialised = true;
         auto tabWidget = widgets[widgets.size() - 2];
-        for (sint32 i = 1; i < OBJECT_TYPE_COUNT; i++)
+        for (int32_t i = 1; i < OBJECT_TYPE_COUNT; i++)
         {
             widgets.insert(widgets.end() - 1, tabWidget);
         }
@@ -397,12 +397,12 @@ rct_window * window_editor_object_selection_open()
         (1 << WIDX_FILTER_CLEAR_BUTTON) |
         (1 << WIDX_CLOSE) |
         (1 << WIDX_LIST_SORT_TYPE) |
-        (((uint32)1) << WIDX_LIST_SORT_RIDE);
+        (((uint32_t)1) << WIDX_LIST_SORT_RIDE);
 
     _filter_flags = gConfigInterface.object_selection_filter_flags;
     memset(_filter_string, 0, sizeof(_filter_string));
 
-    for (sint32 i = WIDX_TAB_1; i < WIDX_TAB_1 + OBJECT_TYPE_COUNT; i++)
+    for (int32_t i = WIDX_TAB_1; i < WIDX_TAB_1 + OBJECT_TYPE_COUNT; i++)
     {
         window->enabled_widgets |= (1LL << i);
     }
@@ -570,7 +570,7 @@ static void window_editor_object_selection_resize(rct_window *w)
 
 void window_editor_object_selection_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    sint32 numSelectionItems = 0;
+    int32_t numSelectionItems = 0;
 
     switch (widgetIndex) {
     case WIDX_FILTER_DROPDOWN:
@@ -614,7 +614,7 @@ void window_editor_object_selection_mousedown(rct_window *w, rct_widgetindex wid
             _numSourceGameItems + numSelectionItems
             );
 
-        for (sint32 i = 0; i < _numSourceGameItems; i++)
+        for (int32_t i = 0; i < _numSourceGameItems; i++)
         {
             if (_filter_flags & (1 << i))
             {
@@ -631,7 +631,7 @@ void window_editor_object_selection_mousedown(rct_window *w, rct_widgetindex wid
     }
 }
 
-static void window_editor_object_selection_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_editor_object_selection_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1)
         return;
@@ -665,27 +665,27 @@ static void window_editor_object_selection_dropdown(rct_window *w, rct_widgetind
  *
  *  rct2: 0x006AB031
  */
-static void window_editor_object_selection_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+static void window_editor_object_selection_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height)
 {
-    *height = (sint32)(_listItems.size() * 12);
+    *height = (int32_t)(_listItems.size() * 12);
 }
 
 /**
  *
  *  rct2: 0x006AB0B6
  */
-static void window_editor_object_selection_scroll_mousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_editor_object_selection_scroll_mousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
     // Used for in-game object selection cheat to prevent crashing the game
     // when windows attempt to draw objects that don't exist any more
     window_close_all_except_class(WC_EDITOR_OBJECT_SELECTION);
 
-    sint32 selected_object = get_object_from_object_selection(get_selected_object_type(w), y);
+    int32_t selected_object = get_object_from_object_selection(get_selected_object_type(w), y);
     if (selected_object == -1)
         return;
 
     list_item * listItem = &_listItems[selected_object];
-    uint8 object_selection_flags = *listItem->flags;
+    uint8_t object_selection_flags = *listItem->flags;
     if (object_selection_flags & OBJECT_SELECTION_FLAG_6)
         return;
 
@@ -708,7 +708,7 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, sint3
         return;
     }
 
-    sint32 ebx = 6;
+    int32_t ebx = 6;
     // If already selected
     if (!(object_selection_flags & OBJECT_SELECTION_FLAG_SELECTED))
         ebx = 7;
@@ -738,12 +738,12 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, sint3
  *
  *  rct2: 0x006AB079
  */
-static void window_editor_object_selection_scroll_mouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_editor_object_selection_scroll_mouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    sint32 selectedObject = get_object_from_object_selection(get_selected_object_type(w), y);
+    int32_t selectedObject = get_object_from_object_selection(get_selected_object_type(w), y);
     if (selectedObject != -1) {
         list_item * listItem = &_listItems[selectedObject];
-        uint8 objectSelectionFlags = *listItem->flags;
+        uint8_t objectSelectionFlags = *listItem->flags;
         if (objectSelectionFlags & OBJECT_SELECTION_FLAG_6) {
             selectedObject = -1;
         }
@@ -830,8 +830,8 @@ static void window_editor_object_selection_invalidate(rct_window *w)
 
     // Align tabs, hide advanced ones
     bool advancedMode = (w->list_information_type & 1) != 0;
-    sint32 x = 3;
-    for (sint32 i = 0; i < OBJECT_TYPE_COUNT; i++)
+    int32_t x = 3;
+    for (int32_t i = 0; i < OBJECT_TYPE_COUNT; i++)
     {
         auto widget = &w->widgets[WIDX_TAB_1 + i];
         if ((!advancedMode && ObjectSelectionPages[i].IsAdvanced) ||
@@ -850,7 +850,7 @@ static void window_editor_object_selection_invalidate(rct_window *w)
 
     if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TRACK_DESIGNER)) {
         w->widgets[WIDX_ADVANCED].type = WWT_EMPTY;
-        for (sint32 i = 1; i < OBJECT_TYPE_COUNT; i++)
+        for (int32_t i = 1; i < OBJECT_TYPE_COUNT; i++)
         {
             w->widgets[WIDX_TAB_1 + i].type = WWT_EMPTY;
         }
@@ -882,25 +882,25 @@ static void window_editor_object_selection_invalidate(rct_window *w)
             (1 << WIDX_FILTER_RIDE_TAB_GENTLE) | (1 << WIDX_FILTER_RIDE_TAB_COASTER) | (1 << WIDX_FILTER_RIDE_TAB_THRILL) |
             (1 << WIDX_FILTER_RIDE_TAB_WATER) | (1 << WIDX_FILTER_RIDE_TAB_STALL);
 
-        for (sint32 i = 0; i < 7; i++)
+        for (int32_t i = 0; i < 7; i++)
             w->pressed_widgets &= ~(1 << (WIDX_FILTER_RIDE_TAB_ALL + i));
 
         if ((_filter_flags & FILTER_RIDES) == FILTER_RIDES)
             w->pressed_widgets |= (1 << WIDX_FILTER_RIDE_TAB_ALL);
         else
         {
-            for (sint32 i = 0; i < 6; i++)
+            for (int32_t i = 0; i < 6; i++)
             {
                 if (_filter_flags & (1 << (_numSourceGameItems + i)))
-                    w->pressed_widgets |= (uint64)(1ULL << (WIDX_FILTER_RIDE_TAB_TRANSPORT + i));
+                    w->pressed_widgets |= (uint64_t)(1ULL << (WIDX_FILTER_RIDE_TAB_TRANSPORT + i));
             }
         }
 
         w->widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WWT_IMGBTN;
-        for (sint32 i = WIDX_FILTER_RIDE_TAB_ALL; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
+        for (int32_t i = WIDX_FILTER_RIDE_TAB_ALL; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
             w->widgets[i].type = WWT_TAB;
 
-        sint32 width_limit = (w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left - 15) / 2;
+        int32_t width_limit = (w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left - 15) / 2;
 
         w->widgets[WIDX_LIST_SORT_TYPE].type = WWT_TABLE_HEADER;
         w->widgets[WIDX_LIST_SORT_TYPE].top = w->widgets[WIDX_FILTER_STRING_BUTTON].bottom + 3;
@@ -921,7 +921,7 @@ static void window_editor_object_selection_invalidate(rct_window *w)
         w->enabled_widgets &= ~((1 << WIDX_FILTER_RIDE_TAB_ALL) | (1 << WIDX_FILTER_RIDE_TAB_TRANSPORT) |
             (1 << WIDX_FILTER_RIDE_TAB_GENTLE) | (1 << WIDX_FILTER_RIDE_TAB_COASTER) | (1 << WIDX_FILTER_RIDE_TAB_THRILL) |
             (1 << WIDX_FILTER_RIDE_TAB_WATER) | (1 << WIDX_FILTER_RIDE_TAB_STALL));
-        for (sint32 i = WIDX_FILTER_RIDE_TAB_FRAME; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
+        for (int32_t i = WIDX_FILTER_RIDE_TAB_FRAME; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
             w->widgets[i].type = WWT_EMPTY;
 
         w->widgets[WIDX_LIST_SORT_TYPE].type = WWT_EMPTY;
@@ -935,7 +935,7 @@ static void window_editor_object_selection_invalidate(rct_window *w)
  */
 static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 i, x, y, width;
+    int32_t i, x, y, width;
     rct_widget *widget;
     rct_object_entry *highlightedEntry;
     rct_string_id stringId;
@@ -955,8 +955,8 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
         }
     }
 
-    const sint32 ride_tabs[] = { SPR_TAB_RIDE_16, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_TRANSPORT_0, SPR_TAB_RIDES_GENTLE_0, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_ROLLER_COASTERS_0, SPR_TAB_RIDES_THRILL_0, SPR_TAB_RIDES_WATER_0, SPR_TAB_RIDES_SHOP_0, SPR_TAB_FINANCES_RESEARCH_0 };
-    const sint32 ThrillRidesTabAnimationSequence[] = {
+    const int32_t ride_tabs[] = { SPR_TAB_RIDE_16, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_TRANSPORT_0, SPR_TAB_RIDES_GENTLE_0, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_ROLLER_COASTERS_0, SPR_TAB_RIDES_THRILL_0, SPR_TAB_RIDES_WATER_0, SPR_TAB_RIDES_SHOP_0, SPR_TAB_FINANCES_RESEARCH_0 };
+    const int32_t ThrillRidesTabAnimationSequence[] = {
         5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0
     };
 
@@ -968,8 +968,8 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
             if (widget->type == WWT_EMPTY)
                 continue;
 
-            sint32 spriteIndex = ride_tabs[i];
-            sint32 frame = 0;
+            int32_t spriteIndex = ride_tabs[i];
+            int32_t frame = 0;
             if (i != 0 && w->pressed_widgets & (1ULL << (WIDX_FILTER_RIDE_TAB_ALL + i))) {
                 frame = w->frame_no / window_editor_object_selection_animation_divisor[i - 1];
             }
@@ -998,13 +998,13 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
         x = w->x + 3;
         y = w->y + w->height - 13;
 
-        sint32 numSelected = _numSelectedObjectsForType[get_selected_object_type(w)];
-        sint32 totalSelectable = object_entry_group_counts[get_selected_object_type(w)];
+        int32_t numSelected = _numSelectedObjectsForType[get_selected_object_type(w)];
+        int32_t totalSelectable = object_entry_group_counts[get_selected_object_type(w)];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             totalSelectable = 4;
 
-        set_format_arg(0, uint16, numSelected);
-        set_format_arg(2, uint16, totalSelectable);
+        set_format_arg(0, uint16_t, numSelected);
+        set_format_arg(2, uint16_t, totalSelectable);
         gfx_draw_string_left(dpi, STR_OBJECT_SELECTION_SELECTION_SIZE, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
 
@@ -1034,7 +1034,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
         x = w->x + widget->left + 1;
         y = w->y + widget->top + 1;
         width = widget->right - widget->left - 1;
-        sint32 height = widget->bottom - widget->top - 1;
+        int32_t height = widget->bottom - widget->top - 1;
         if (clip_drawpixelinfo(&clipDPI, dpi, x, y, width, height)) {
             object_draw_preview(_loadedObject, &clipDPI, width, height);
         }
@@ -1088,13 +1088,13 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
  *
  *  rct2: 0x006AADA3
  */
-static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex)
 {
-    sint32 x, y, colour, colour2;
+    int32_t x, y, colour, colour2;
 
     bool ridePage = (get_selected_object_type(w) == OBJECT_TYPE_RIDE);
 
-    uint8 paletteIndex = ColourMapA[w->colours[1]].mid_light;
+    uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
     y = 0;
@@ -1136,7 +1136,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
                 gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
             }
 
-            sint32 width_limit = (w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left - x) / 2;
+            int32_t width_limit = (w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left - x) / 2;
 
             if (ridePage) {
                 // Draw ride type
@@ -1160,7 +1160,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
     }
 }
 
-static void window_editor_object_set_page(rct_window *w, sint32 page)
+static void window_editor_object_set_page(rct_window *w, int32_t page)
 {
     if (w->selected_tab == page)
         return;
@@ -1185,7 +1185,7 @@ static void window_editor_object_set_page(rct_window *w, sint32 page)
 
 static void window_editor_object_selection_set_pressed_tab(rct_window *w)
 {
-    for (sint32 i = 0; i < OBJECT_TYPE_COUNT; i++)
+    for (int32_t i = 0; i < OBJECT_TYPE_COUNT; i++)
     {
         w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
     }
@@ -1200,9 +1200,9 @@ static void window_editor_object_selection_set_pressed_tab(rct_window *w)
  *
  *  rct2: 0x006AA703
  */
-static sint32 get_object_from_object_selection(uint8 object_type, sint32 y)
+static int32_t get_object_from_object_selection(uint8_t object_type, int32_t y)
 {
-    sint32 listItemIndex = y / 12;
+    int32_t listItemIndex = y / 12;
     if (listItemIndex < 0 || (size_t)listItemIndex >= _listItems.size())
         return -1;
 
@@ -1220,11 +1220,11 @@ static void window_editor_object_selection_manage_tracks()
 
     gS6Info.editor_step = EDITOR_STEP_TRACK_DESIGNS_MANAGER;
 
-    sint32 entry_index = 0;
+    int32_t entry_index = 0;
     for (; object_entry_get_chunk(OBJECT_TYPE_RIDE, entry_index) == nullptr; entry_index++);
 
     rct_ride_entry* ride_entry = get_ride_entry(entry_index);
-    uint8 ride_type = ride_entry_get_first_non_null_ride_type(ride_entry);
+    uint8_t ride_type = ride_entry_get_first_non_null_ride_type(ride_entry);
 
     auto intent = Intent(WC_TRACK_DESIGN_LIST);
     intent.putExtra(INTENT_EXTRA_RIDE_TYPE, ride_type);
@@ -1238,9 +1238,9 @@ static void window_editor_object_selection_manage_tracks()
  */
 static void editor_load_selected_objects()
 {
-    sint32 numItems = (sint32)object_repository_get_items_count();
+    int32_t numItems = (int32_t)object_repository_get_items_count();
     const ObjectRepositoryItem * items = object_repository_get_items();
-    for (sint32 i = 0; i < numItems; i++) {
+    for (int32_t i = 0; i < numItems; i++) {
         if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED) {
             const ObjectRepositoryItem * item = &items[i];
             const rct_object_entry * entry = &item->ObjectEntry;
@@ -1252,11 +1252,11 @@ static void editor_load_selected_objects()
                 }
                 else if (!(gScreenFlags & SCREEN_FLAGS_EDITOR)) {
                     // Defaults selected items to researched (if in-game)
-                    uint8 objectType = object_entry_get_type(entry);
-                    uint8 entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+                    uint8_t objectType = object_entry_get_type(entry);
+                    uint8_t entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
                     if (objectType == OBJECT_TYPE_RIDE) {
                         rct_ride_entry *rideEntry = get_ride_entry(entryIndex);
-                        uint8 rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                        uint8_t rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
                         research_insert(1, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | entryIndex, rideEntry->category[0]);
                     }
                     else if (objectType == OBJECT_TYPE_SCENERY_GROUP) {
@@ -1307,7 +1307,7 @@ static void window_editor_object_selection_textinput(rct_window *w, rct_widgetin
     window_invalidate(w);
 }
 
-static bool filter_selected(uint8 objectFlag)
+static bool filter_selected(uint8_t objectFlag)
 {
     if (_FILTER_SELECTED == _FILTER_NONSELECTED) {
         return true;
@@ -1347,13 +1347,13 @@ static bool filter_string(const ObjectRepositoryItem * item)
     safe_strcpy(filter_lower, _filter_string, sizeof(_filter_string));
 
     // Make use of lowercase characters only
-    for (sint32 i = 0; name_lower[i] != '\0'; i++)
+    for (int32_t i = 0; name_lower[i] != '\0'; i++)
         name_lower[i] = (char)tolower(name_lower[i]);
-    for (sint32 i = 0; type_lower[i] != '\0'; i++)
+    for (int32_t i = 0; type_lower[i] != '\0'; i++)
         type_lower[i] = (char)tolower(type_lower[i]);
-    for (sint32 i = 0; object_path[i] != '\0'; i++)
+    for (int32_t i = 0; object_path[i] != '\0'; i++)
         object_path[i] = (char)tolower(object_path[i]);
-    for (sint32 i = 0; filter_lower[i] != '\0'; i++)
+    for (int32_t i = 0; filter_lower[i] != '\0'; i++)
         filter_lower[i] = (char)tolower(filter_lower[i]);
 
     // Check if the searched string exists in the name, ride type, or filename
@@ -1369,7 +1369,7 @@ static bool filter_source(const ObjectRepositoryItem * item)
     if (_FILTER_ALL)
         return true;
 
-    uint8 source = object_entry_get_source_game(&item->ObjectEntry);
+    uint8_t source = object_entry_get_source_game(&item->ObjectEntry);
     return (_FILTER_RCT1 && source == OBJECT_SOURCE_RCT1) ||
            (_FILTER_AA && source == OBJECT_SOURCE_ADDED_ATTRACTIONS) ||
            (_FILTER_LL && source == OBJECT_SOURCE_LOOPY_LANDSCAPES) ||
@@ -1392,8 +1392,8 @@ static bool filter_chunks(const ObjectRepositoryItem * item)
     switch (item->ObjectEntry.flags & 0x0F) {
     case OBJECT_TYPE_RIDE:
 
-        uint8 rideType = 0;
-        for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+        uint8_t rideType = 0;
+        for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
         {
             if (item->RideInfo.RideType[i] != RIDE_TYPE_NULL)
             {
@@ -1413,7 +1413,7 @@ static void filter_update_counts()
 {
     if (!_FILTER_ALL || strlen(_filter_string) > 0) {
         const auto &selectionFlags = _objectSelectionFlags;
-        for (sint32 i = 0; i < 11; i++) {
+        for (int32_t i = 0; i < 11; i++) {
             _filter_object_counts[i] = 0;
         }
 
@@ -1426,7 +1426,7 @@ static void filter_update_counts()
                 filter_chunks(item) &&
                 filter_selected(selectionFlags[i])
             ) {
-                uint8 objectType = item->ObjectEntry.flags & 0xF;
+                uint8_t objectType = item->ObjectEntry.flags & 0xF;
                 _filter_object_counts[objectType]++;
             }
         }
@@ -1436,9 +1436,9 @@ static void filter_update_counts()
 static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item)
 {
     rct_string_id result = STR_NONE;
-    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
-        uint8 rideType = item->RideInfo.RideType[i];
+        uint8_t rideType = item->RideInfo.RideType[i];
         if (rideType != RIDE_TYPE_NULL)
         {
             if (RideGroupManager::RideTypeHasRideGroups(rideType))
@@ -1471,7 +1471,7 @@ static std::string object_get_description(const void * object)
     }
 }
 
-static sint32 get_selected_object_type(rct_window * w)
+static int32_t get_selected_object_type(rct_window * w)
 {
     return w->selected_tab;
 }

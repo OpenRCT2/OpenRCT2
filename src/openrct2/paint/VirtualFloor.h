@@ -21,16 +21,16 @@ enum VirtualFloorStyles
 
 struct paint_session;
 
-uint16 virtual_floor_get_height();
+uint16_t virtual_floor_get_height();
 
 bool virtual_floor_is_enabled();
-void virtual_floor_set_height(sint16 height);
+void virtual_floor_set_height(int16_t height);
 
 void virtual_floor_enable();
 void virtual_floor_disable();
 void virtual_floor_invalidate();
 
-bool virtual_floor_tile_is_floor(sint16 x, sint16 y);
+bool virtual_floor_tile_is_floor(int16_t x, int16_t y);
 
 void virtual_floor_paint(paint_session * session);
 

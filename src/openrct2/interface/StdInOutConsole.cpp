@@ -86,7 +86,7 @@ void StdInOutConsole::Close()
     openrct2_finish();
 }
 
-void StdInOutConsole::WriteLine(const std::string &s, uint32 colourFormat)
+void StdInOutConsole::WriteLine(const std::string &s, uint32_t colourFormat)
 {
     std::string formatBegin;
     if (colourFormat != FORMAT_WINDOW_COLOUR_2)

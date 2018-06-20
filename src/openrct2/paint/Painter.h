@@ -35,8 +35,8 @@ namespace OpenRCT2
             std::shared_ptr<Ui::IUiContext> const _uiContext;
 
             time_t  _lastSecond = 0;
-            sint32  _currentFPS = 0;
-            sint32  _frames     = 0;
+            int32_t  _currentFPS = 0;
+            int32_t  _frames     = 0;
 
         public:
             explicit Painter(const std::shared_ptr<Ui::IUiContext>& uiContext);

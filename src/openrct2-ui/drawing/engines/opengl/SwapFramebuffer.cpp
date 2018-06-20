@@ -16,7 +16,7 @@ constexpr GLfloat depthValue[1] = { 1.0f };
 constexpr GLfloat depthValueTransparent[1] = { 0.0f };
 constexpr GLuint indexValue[4] = { 0, 0, 0, 0 };
 
-SwapFramebuffer::SwapFramebuffer(sint32 width, sint32 height) :
+SwapFramebuffer::SwapFramebuffer(int32_t width, int32_t height) :
 _opaqueFramebuffer(width, height), _transparentFramebuffer(width, height),
 _mixFramebuffer(width, height, false), _backDepth(OpenGLFramebuffer::CreateDepthTexture(width, height))
 {
