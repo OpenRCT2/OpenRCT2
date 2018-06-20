@@ -42,7 +42,7 @@ public:
         WriteProperty(name, value ? "true" : "false");
     }
 
-    void Writeint32_t(const std::string &name, int32_t value) override
+    void WriteInt32(const std::string &name, int32_t value) override
     {
         WriteProperty(name, std::to_string(value));
     }

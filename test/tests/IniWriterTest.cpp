@@ -134,11 +134,11 @@ TEST_F(IniWriterTest, create_loose_int32_t_entry)
     MemoryStream ms(1000);
     IIniWriter * iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
-    iw->Writeint32_t("one", 1);
-    iw->Writeint32_t("zero", 0);
-    iw->Writeint32_t("minusone", -1);
-    iw->Writeint32_t("intmin", (std::numeric_limits<int32_t>::min)());
-    iw->Writeint32_t("intmax", (std::numeric_limits<int32_t>::max)());
+    iw->WriteInt32("one", 1);
+    iw->WriteInt32("zero", 0);
+    iw->WriteInt32("minusone", -1);
+    iw->WriteInt32("intmin", (std::numeric_limits<int32_t>::min)());
+    iw->WriteInt32("intmax", (std::numeric_limits<int32_t>::max)());
     uint8_t null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 73);
@@ -178,8 +178,8 @@ TEST_F(IniWriterTest, create_multiple_section_with_values)
     iw->WriteSection("bool");
     iw->WriteBoolean("boolval", true);
     iw->WriteSection("int");
-    iw->Writeint32_t("one", 1);
-    iw->Writeint32_t("zero", 0);
+    iw->WriteInt32("one", 1);
+    iw->WriteInt32("zero", 0);
     iw->WriteSection("string");
     iw->WriteString("path", u8"C:'\\some/dir\\here/神鷹暢遊");
     uint8_t null_terminator = 0;

@@ -37,7 +37,7 @@ TEST_F(IniReaderTest, create_empty)
     ASSERT_EQ(ir->GetCString("expects", nullptr), nullptr);
     ASSERT_EQ(ir->GetEnum<int32_t>("spanish", 12345, Enum_Currency), 12345);
     ASSERT_EQ(ir->GetFloat("inquisition", 1.234f), 1.234f);
-    ASSERT_EQ(ir->Getint32_t("universal_answer", 42), 42);
+    ASSERT_EQ(ir->GetInt32("universal_answer", 42), 42);
     delete ir;
 }
 
@@ -51,23 +51,23 @@ TEST_F(IniReaderTest, read_prepared)
     ASSERT_EQ(ir->ReadSection("doesnt_exist"), false);
     ASSERT_EQ(ir->ReadSection("bool"), true);
     // name of section
-    ASSERT_EQ(ir->Getint32_t("bool", 42), 42);
+    ASSERT_EQ(ir->GetInt32("bool", 42), 42);
     // value from different section
-    ASSERT_EQ(ir->Getint32_t("one", 42), 42);
+    ASSERT_EQ(ir->GetInt32("one", 42), 42);
     // existing value as different type
-    ASSERT_EQ(ir->Getint32_t("boolval", 42), 42);
+    ASSERT_EQ(ir->GetInt32("boolval", 42), 42);
     ASSERT_EQ(ir->GetBoolean("boolval", false), true);
     // skip one section
     ASSERT_EQ(ir->ReadSection("string"), true);
     // values from different sections
-    ASSERT_EQ(ir->Getint32_t("one", 42), 42);
+    ASSERT_EQ(ir->GetInt32("one", 42), 42);
     ASSERT_EQ(ir->GetBoolean("boolval", false), true);
     const utf8 * str = ir->GetCString("path", nullptr);
     ASSERT_STREQ(str, u8"C:'\\some/dir\\here/神鷹暢遊");
     Memory::Free(str);
     // go back a section
     ASSERT_EQ(ir->ReadSection("int"), true);
-    ASSERT_EQ(ir->Getint32_t("one", 42), 1);
+    ASSERT_EQ(ir->GetInt32("one", 42), 1);
     delete ir;
 }
 
@@ -90,7 +90,7 @@ TEST_F(IniReaderTest, read_duplicate)
     ASSERT_EQ(ir->GetBoolean("one", false), false);
     ASSERT_EQ(ir->GetBoolean("two", false), false);
     ASSERT_EQ(ir->GetBoolean("three", false), true);
-    ASSERT_EQ(ir->Getint32_t("fortytwo", 100), 41);
+    ASSERT_EQ(ir->GetInt32("fortytwo", 100), 41);
     ASSERT_EQ(ir->ReadSection("section"), true);
     // test 4 times, there are only 3 sections
     ASSERT_EQ(ir->ReadSection("section"), true);
