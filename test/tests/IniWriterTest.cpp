@@ -101,7 +101,7 @@ TEST_F(IniWriterTest, create_loose_enum_entry)
     uint8_t null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 34);
-    ASSERT_LE(ms.GetPosition(), 36); // Accommodate for varying-sized newline (Windows)
+    ASSERT_LE(ms.GetPosition(), 37); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
     const char * ini = (const char *)ms.ReadString();
