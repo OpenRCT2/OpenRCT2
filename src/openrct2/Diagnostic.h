@@ -10,7 +10,7 @@
 #ifndef _DIAGNOSTIC_H_
 #define _DIAGNOSTIC_H_
 
-#include "common.h"
+#include <cstdint>
 
 enum DIAGNOSTIC_LEVEL {
     DIAGNOSTIC_LEVEL_FATAL,
