@@ -134,7 +134,7 @@ public:
         return result;
     }
 
-    int32_t Getint32_t(const std::string &name, int32_t defaultValue) const override
+    int32_t GetInt32(const std::string &name, int32_t defaultValue) const override
     {
         int32_t result = defaultValue;
         std::string value;
@@ -379,7 +379,7 @@ public:
         return defaultValue;
     }
 
-    int32_t Getint32_t([[maybe_unused]] const std::string& name, int32_t defaultValue) const override
+    int32_t GetInt32([[maybe_unused]] const std::string& name, int32_t defaultValue) const override
     {
         return defaultValue;
     }

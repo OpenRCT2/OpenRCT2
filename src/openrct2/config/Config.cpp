@@ -142,17 +142,17 @@ namespace Config
         {
             auto model = &gConfigGeneral;
             model->always_show_gridlines = reader->GetBoolean("always_show_gridlines", false);
-            model->autosave_frequency = reader->Getint32_t("autosave", AUTOSAVE_EVERY_5MINUTES);
+            model->autosave_frequency = reader->GetInt32("autosave", AUTOSAVE_EVERY_5MINUTES);
             model->confirmation_prompt = reader->GetBoolean("confirmation_prompt", false);
             model->currency_format = reader->GetEnum<int32_t>("currency_format", platform_get_locale_currency(), Enum_Currency);
-            model->custom_currency_rate = reader->Getint32_t("custom_currency_rate", 10);
+            model->custom_currency_rate = reader->GetInt32("custom_currency_rate", 10);
             model->custom_currency_affix = reader->GetEnum<int32_t>("custom_currency_affix", CURRENCY_SUFFIX, Enum_CurrencySymbolAffix);
             model->custom_currency_symbol = reader->GetCString("custom_currency_symbol", "Ctm");
             model->edge_scrolling = reader->GetBoolean("edge_scrolling", true);
-            model->edge_scrolling_speed = reader->Getint32_t("edge_scrolling_speed", 12);
-            model->fullscreen_mode = reader->Getint32_t("fullscreen_mode", 0);
-            model->fullscreen_height = reader->Getint32_t("fullscreen_height", -1);
-            model->fullscreen_width = reader->Getint32_t("fullscreen_width", -1);
+            model->edge_scrolling_speed = reader->GetInt32("edge_scrolling_speed", 12);
+            model->fullscreen_mode = reader->GetInt32("fullscreen_mode", 0);
+            model->fullscreen_height = reader->GetInt32("fullscreen_height", -1);
+            model->fullscreen_width = reader->GetInt32("fullscreen_width", -1);
             model->rct1_path = reader->GetCString("rct1_path", nullptr);
             model->rct2_path = reader->GetCString("game_path", nullptr);
             model->landscape_smoothing = reader->GetBoolean("landscape_smoothing", true);
@@ -163,10 +163,10 @@ namespace Config
             model->debugging_tools = reader->GetBoolean("debugging_tools", false);
             model->show_height_as_units = reader->GetBoolean("show_height_as_units", false);
             model->temperature_format = reader->GetEnum<int32_t>("temperature_format", platform_get_locale_temperature_format(), Enum_Temperature);
-            model->window_height = reader->Getint32_t("window_height", -1);
-            model->window_snap_proximity = reader->Getint32_t("window_snap_proximity", 5);
-            model->window_width = reader->Getint32_t("window_width", -1);
-            model->default_display = reader->Getint32_t("default_display", 0);
+            model->window_height = reader->GetInt32("window_height", -1);
+            model->window_snap_proximity = reader->GetInt32("window_snap_proximity", 5);
+            model->window_width = reader->GetInt32("window_width", -1);
+            model->default_display = reader->GetInt32("default_display", 0);
             model->drawing_engine = reader->GetEnum<int32_t>("drawing_engine", DRAWING_ENGINE_SOFTWARE, Enum_DrawingEngine);
             model->uncap_fps = reader->GetBoolean("uncap_fps", false);
             model->use_vsync = reader->GetBoolean("use_vsync", true);
@@ -179,10 +179,10 @@ namespace Config
             model->date_format = reader->GetEnum<int32_t>("date_format", platform_get_locale_date_format(), Enum_DateFormat);
             model->auto_staff_placement = reader->GetBoolean("auto_staff", true);
             model->handymen_mow_default = reader->GetBoolean("handymen_mow_default", false);
-            model->default_inspection_interval = reader->Getint32_t("default_inspection_interval", 2);
+            model->default_inspection_interval = reader->GetInt32("default_inspection_interval", 2);
             model->last_run_version = reader->GetCString("last_run_version", nullptr);
             model->invert_viewport_drag = reader->GetBoolean("invert_viewport_drag", false);
-            model->load_save_sort = reader->Getint32_t("load_save_sort", SORT_NAME_ASCENDING);
+            model->load_save_sort = reader->GetInt32("load_save_sort", SORT_NAME_ASCENDING);
             model->minimize_fullscreen_focus_loss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
 
             // Default config setting is false until the games canvas can be separated from the effect
@@ -198,14 +198,14 @@ namespace Config
             model->show_fps = reader->GetBoolean("show_fps", false);
             model->trap_cursor = reader->GetBoolean("trap_cursor", false);
             model->auto_open_shops = reader->GetBoolean("auto_open_shops", false);
-            model->scenario_select_mode = reader->Getint32_t("scenario_select_mode", SCENARIO_SELECT_MODE_ORIGIN);
+            model->scenario_select_mode = reader->GetInt32("scenario_select_mode", SCENARIO_SELECT_MODE_ORIGIN);
             model->scenario_unlocking_enabled = reader->GetBoolean("scenario_unlocking_enabled", true);
             model->scenario_hide_mega_park = reader->GetBoolean("scenario_hide_mega_park", true);
             model->last_save_game_directory = reader->GetCString("last_game_directory", nullptr);
             model->last_save_landscape_directory = reader->GetCString("last_landscape_directory", nullptr);
             model->last_save_scenario_directory = reader->GetCString("last_scenario_directory", nullptr);
             model->last_save_track_directory = reader->GetCString("last_track_directory", nullptr);
-            model->window_limit = reader->Getint32_t("window_limit", WINDOW_LIMIT_MAX);
+            model->window_limit = reader->GetInt32("window_limit", WINDOW_LIMIT_MAX);
             model->zoom_to_cursor = reader->GetBoolean("zoom_to_cursor", true);
             model->render_weather_effects = reader->GetBoolean("render_weather_effects", true);
             model->render_weather_gloom = reader->GetBoolean("render_weather_gloom", true);
@@ -220,17 +220,17 @@ namespace Config
         auto model = &gConfigGeneral;
         writer->WriteSection("general");
         writer->WriteBoolean("always_show_gridlines", model->always_show_gridlines);
-        writer->Writeint32_t("autosave", model->autosave_frequency);
+        writer->WriteInt32("autosave", model->autosave_frequency);
         writer->WriteBoolean("confirmation_prompt", model->confirmation_prompt);
         writer->WriteEnum<int32_t>("currency_format", model->currency_format, Enum_Currency);
-        writer->Writeint32_t("custom_currency_rate", model->custom_currency_rate);
+        writer->WriteInt32("custom_currency_rate", model->custom_currency_rate);
         writer->WriteEnum<int32_t>("custom_currency_affix", model->custom_currency_affix, Enum_CurrencySymbolAffix);
         writer->WriteString("custom_currency_symbol", model->custom_currency_symbol);
         writer->WriteBoolean("edge_scrolling", model->edge_scrolling);
-        writer->Writeint32_t("edge_scrolling_speed", model->edge_scrolling_speed);
-        writer->Writeint32_t("fullscreen_mode", model->fullscreen_mode);
-        writer->Writeint32_t("fullscreen_height", model->fullscreen_height);
-        writer->Writeint32_t("fullscreen_width", model->fullscreen_width);
+        writer->WriteInt32("edge_scrolling_speed", model->edge_scrolling_speed);
+        writer->WriteInt32("fullscreen_mode", model->fullscreen_mode);
+        writer->WriteInt32("fullscreen_height", model->fullscreen_height);
+        writer->WriteInt32("fullscreen_width", model->fullscreen_width);
         writer->WriteString("rct1_path", model->rct1_path);
         writer->WriteString("game_path", model->rct2_path);
         writer->WriteBoolean("landscape_smoothing", model->landscape_smoothing);
@@ -241,10 +241,10 @@ namespace Config
         writer->WriteBoolean("debugging_tools", model->debugging_tools);
         writer->WriteBoolean("show_height_as_units", model->show_height_as_units);
         writer->WriteEnum<int32_t>("temperature_format", model->temperature_format, Enum_Temperature);
-        writer->Writeint32_t("window_height", model->window_height);
-        writer->Writeint32_t("window_snap_proximity", model->window_snap_proximity);
-        writer->Writeint32_t("window_width", model->window_width);
-        writer->Writeint32_t("default_display", model->default_display);
+        writer->WriteInt32("window_height", model->window_height);
+        writer->WriteInt32("window_snap_proximity", model->window_snap_proximity);
+        writer->WriteInt32("window_width", model->window_width);
+        writer->WriteInt32("default_display", model->default_display);
         writer->WriteEnum<int32_t>("drawing_engine", model->drawing_engine, Enum_DrawingEngine);
         writer->WriteBoolean("uncap_fps", model->uncap_fps);
         writer->WriteBoolean("use_vsync", model->use_vsync);
@@ -253,10 +253,10 @@ namespace Config
         writer->WriteEnum<int32_t>("date_format", model->date_format, Enum_DateFormat);
         writer->WriteBoolean("auto_staff", model->auto_staff_placement);
         writer->WriteBoolean("handymen_mow_default", model->handymen_mow_default);
-        writer->Writeint32_t("default_inspection_interval", model->default_inspection_interval);
+        writer->WriteInt32("default_inspection_interval", model->default_inspection_interval);
         writer->WriteString("last_run_version", model->last_run_version);
         writer->WriteBoolean("invert_viewport_drag", model->invert_viewport_drag);
-        writer->Writeint32_t("load_save_sort", model->load_save_sort);
+        writer->WriteInt32("load_save_sort", model->load_save_sort);
         writer->WriteBoolean("minimize_fullscreen_focus_loss", model->minimize_fullscreen_focus_loss);
         writer->WriteBoolean("day_night_cycle", model->day_night_cycle);
         writer->WriteBoolean("enable_light_fx", model->enable_light_fx);
@@ -269,14 +269,14 @@ namespace Config
         writer->WriteBoolean("show_fps", model->show_fps);
         writer->WriteBoolean("trap_cursor", model->trap_cursor);
         writer->WriteBoolean("auto_open_shops", model->auto_open_shops);
-        writer->Writeint32_t("scenario_select_mode", model->scenario_select_mode);
+        writer->WriteInt32("scenario_select_mode", model->scenario_select_mode);
         writer->WriteBoolean("scenario_unlocking_enabled", model->scenario_unlocking_enabled);
         writer->WriteBoolean("scenario_hide_mega_park", model->scenario_hide_mega_park);
         writer->WriteString("last_game_directory", model->last_save_game_directory);
         writer->WriteString("last_landscape_directory", model->last_save_landscape_directory);
         writer->WriteString("last_scenario_directory", model->last_save_scenario_directory);
         writer->WriteString("last_track_directory", model->last_save_track_directory);
-        writer->Writeint32_t("window_limit", model->window_limit);
+        writer->WriteInt32("window_limit", model->window_limit);
         writer->WriteBoolean("zoom_to_cursor", model->zoom_to_cursor);
         writer->WriteBoolean("render_weather_effects", model->render_weather_effects);
         writer->WriteBoolean("render_weather_gloom", model->render_weather_gloom);
@@ -299,7 +299,7 @@ namespace Config
             model->console_small_font = reader->GetBoolean("console_small_font", false);
             model->current_theme_preset = reader->GetCString("current_theme", "*RCT2");
             model->current_title_sequence_preset = reader->GetCString("current_title_sequence", "*OPENRCT2");
-            model->object_selection_filter_flags = reader->Getint32_t("object_selection_filter_flags", 0x3FFF);
+            model->object_selection_filter_flags = reader->GetInt32("object_selection_filter_flags", 0x3FFF);
         }
     }
 
@@ -315,7 +315,7 @@ namespace Config
         writer->WriteBoolean("console_small_font", model->console_small_font);
         writer->WriteString("current_theme", model->current_theme_preset);
         writer->WriteString("current_title_sequence", model->current_title_sequence_preset);
-        writer->Writeint32_t("object_selection_filter_flags", model->object_selection_filter_flags);
+        writer->WriteInt32("object_selection_filter_flags", model->object_selection_filter_flags);
     }
 
     static void ReadSound(IIniReader * reader)
@@ -323,12 +323,12 @@ namespace Config
         if (reader->ReadSection("sound"))
         {
             auto model = &gConfigSound;
-            model->master_volume = reader->Getint32_t("master_volume", 100);
-            model->title_music = reader->Getint32_t("title_music", 2);
+            model->master_volume = reader->GetInt32("master_volume", 100);
+            model->title_music = reader->GetInt32("title_music", 2);
             model->sound_enabled = reader->GetBoolean("sound", true);
-            model->sound_volume = reader->Getint32_t("sound_volume", 100);
+            model->sound_volume = reader->GetInt32("sound_volume", 100);
             model->ride_music_enabled = reader->GetBoolean("ride_music", true);
-            model->ride_music_volume = reader->Getint32_t("ride_music_volume", 100);
+            model->ride_music_volume = reader->GetInt32("ride_music_volume", 100);
             model->audio_focus = reader->GetBoolean("audio_focus", false);
             model->device = reader->GetCString("audio_device", nullptr);
         }
@@ -338,12 +338,12 @@ namespace Config
     {
         auto model = &gConfigSound;
         writer->WriteSection("sound");
-        writer->Writeint32_t("master_volume", model->master_volume);
-        writer->Writeint32_t("title_music", model->title_music);
+        writer->WriteInt32("master_volume", model->master_volume);
+        writer->WriteInt32("title_music", model->title_music);
         writer->WriteBoolean("sound", model->sound_enabled);
-        writer->Writeint32_t("sound_volume", model->sound_volume);
+        writer->WriteInt32("sound_volume", model->sound_volume);
         writer->WriteBoolean("ride_music", model->ride_music_enabled);
-        writer->Writeint32_t("ride_music_volume", model->ride_music_volume);
+        writer->WriteInt32("ride_music_volume", model->ride_music_volume);
         writer->WriteBoolean("audio_focus", model->audio_focus);
         writer->WriteString("audio_device", model->device);
     }
@@ -370,12 +370,12 @@ namespace Config
 
             auto model = &gConfigNetwork;
             model->player_name = String::Duplicate(playerName);
-            model->default_port = reader->Getint32_t("default_port", NETWORK_DEFAULT_PORT);
+            model->default_port = reader->GetInt32("default_port", NETWORK_DEFAULT_PORT);
             model->listen_address = reader->GetCString("listen_address", "");
             model->default_password = reader->GetCString("default_password", nullptr);
             model->stay_connected = reader->GetBoolean("stay_connected", true);
             model->advertise = reader->GetBoolean("advertise", true);
-            model->maxplayers = reader->Getint32_t("maxplayers", 16);
+            model->maxplayers = reader->GetInt32("maxplayers", 16);
             model->server_name = reader->GetCString("server_name", "Server");
             model->server_description = reader->GetCString("server_description", nullptr);
             model->server_greeting = reader->GetCString("server_greeting", nullptr);
@@ -395,12 +395,12 @@ namespace Config
         auto model = &gConfigNetwork;
         writer->WriteSection("network");
         writer->WriteString("player_name", model->player_name);
-        writer->Writeint32_t("default_port", model->default_port);
+        writer->WriteInt32("default_port", model->default_port);
         writer->WriteString("listen_address", model->listen_address);
         writer->WriteString("default_password", model->default_password);
         writer->WriteBoolean("stay_connected", model->stay_connected);
         writer->WriteBoolean("advertise", model->advertise);
-        writer->Writeint32_t("maxplayers", model->maxplayers);
+        writer->WriteInt32("maxplayers", model->maxplayers);
         writer->WriteString("server_name", model->server_name);
         writer->WriteString("server_description", model->server_description);
         writer->WriteString("server_greeting", model->server_greeting);
@@ -497,18 +497,18 @@ namespace Config
             auto model = &gConfigFonts;
             model->file_name = reader->GetCString("file_name", nullptr);
             model->font_name = reader->GetCString("font_name", nullptr);
-            model->x_offset = reader->Getint32_t("x_offset", false);
-            model->y_offset = reader->Getint32_t("y_offset", true);
-            model->size_tiny = reader->Getint32_t("size_tiny", true);
-            model->size_small = reader->Getint32_t("size_small", false);
-            model->size_medium = reader->Getint32_t("size_medium", false);
-            model->size_big = reader->Getint32_t("size_big", false);
-            model->height_tiny = reader->Getint32_t("height_tiny", false);
-            model->height_small = reader->Getint32_t("height_small", false);
-            model->height_medium = reader->Getint32_t("height_medium", false);
-            model->height_big = reader->Getint32_t("height_big", false);
+            model->x_offset = reader->GetInt32("x_offset", false);
+            model->y_offset = reader->GetInt32("y_offset", true);
+            model->size_tiny = reader->GetInt32("size_tiny", true);
+            model->size_small = reader->GetInt32("size_small", false);
+            model->size_medium = reader->GetInt32("size_medium", false);
+            model->size_big = reader->GetInt32("size_big", false);
+            model->height_tiny = reader->GetInt32("height_tiny", false);
+            model->height_small = reader->GetInt32("height_small", false);
+            model->height_medium = reader->GetInt32("height_medium", false);
+            model->height_big = reader->GetInt32("height_big", false);
             model->enable_hinting = reader->GetBoolean("enable_hinting", true);
-            model->hinting_threshold = reader->Getint32_t("hinting_threshold", false);
+            model->hinting_threshold = reader->GetInt32("hinting_threshold", false);
         }
     }
 
@@ -518,18 +518,18 @@ namespace Config
         writer->WriteSection("font");
         writer->WriteString("file_name", model->file_name);
         writer->WriteString("font_name", model->font_name);
-        writer->Writeint32_t("x_offset", model->x_offset);
-        writer->Writeint32_t("y_offset", model->y_offset);
-        writer->Writeint32_t("size_tiny", model->size_tiny);
-        writer->Writeint32_t("size_small", model->size_small);
-        writer->Writeint32_t("size_medium", model->size_medium);
-        writer->Writeint32_t("size_big", model->size_big);
-        writer->Writeint32_t("height_tiny", model->height_tiny);
-        writer->Writeint32_t("height_small", model->height_small);
-        writer->Writeint32_t("height_medium", model->height_medium);
-        writer->Writeint32_t("height_big", model->height_big);
+        writer->WriteInt32("x_offset", model->x_offset);
+        writer->WriteInt32("y_offset", model->y_offset);
+        writer->WriteInt32("size_tiny", model->size_tiny);
+        writer->WriteInt32("size_small", model->size_small);
+        writer->WriteInt32("size_medium", model->size_medium);
+        writer->WriteInt32("size_big", model->size_big);
+        writer->WriteInt32("height_tiny", model->height_tiny);
+        writer->WriteInt32("height_small", model->height_small);
+        writer->WriteInt32("height_medium", model->height_medium);
+        writer->WriteInt32("height_big", model->height_big);
         writer->WriteBoolean("enable_hinting", model->enable_hinting);
-        writer->Writeint32_t("hinting_threshold", model->hinting_threshold);
+        writer->WriteInt32("hinting_threshold", model->hinting_threshold);
     }
 
     static bool SetDefaults()
