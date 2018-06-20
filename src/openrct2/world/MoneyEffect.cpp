@@ -26,7 +26,7 @@ static constexpr const LocationXY16 _moneyEffectMoveOffset[] = {
  *
  *  rct2: 0x0067351F
  */
-void money_effect_create_at(money32 value, sint32 x, sint32 y, sint32 z, bool vertical)
+void money_effect_create_at(money32 value, int32_t x, int32_t y, int32_t z, bool vertical)
 {
     if (value == MONEY(0, 00))
         return;
@@ -46,7 +46,7 @@ void money_effect_create_at(money32 value, sint32 x, sint32 y, sint32 z, bool ve
     moneyEffect->num_movements     = 0;
     moneyEffect->move_delay        = 0;
 
-    sint16 offsetX = 0;
+    int16_t offsetX = 0;
     if (!gOpenRCT2NoGraphics)
     {
         // Construct string to display
@@ -115,9 +115,9 @@ void money_effect_update(rct_money_effect * moneyEffect)
         return;
     }
 
-    sint32 x = moneyEffect->x;
-    sint32 y = moneyEffect->y;
-    sint32 z = moneyEffect->z;
+    int32_t x = moneyEffect->x;
+    int32_t y = moneyEffect->y;
+    int32_t z = moneyEffect->z;
     moneyEffect->move_delay = 0;
 
     if (moneyEffect->vertical)

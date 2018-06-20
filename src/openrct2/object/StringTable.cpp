@@ -16,7 +16,7 @@
 #include "Object.h"
 #include "StringTable.h"
 
-static constexpr const uint8 RCT2ToOpenRCT2LanguageId[] =
+static constexpr const uint8_t RCT2ToOpenRCT2LanguageId[] =
 {
     LANGUAGE_ENGLISH_UK,
     LANGUAGE_ENGLISH_US,
@@ -38,7 +38,7 @@ static bool StringIsBlank(const utf8 * str)
 {
     for (auto ch = str; *ch != '\0'; ch++)
     {
-        if (!isblank((uint8)*ch))
+        if (!isblank((uint8_t)*ch))
         {
             return false;
         }
@@ -46,14 +46,14 @@ static bool StringIsBlank(const utf8 * str)
     return true;
 }
 
-void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8 id)
+void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8_t id)
 {
     try
     {
         RCT2LanguageId rct2LanguageId;
-        while ((rct2LanguageId = (RCT2LanguageId)stream->ReadValue<uint8>()) != RCT2_LANGUAGE_ID_END)
+        while ((rct2LanguageId = (RCT2LanguageId)stream->ReadValue<uint8_t>()) != RCT2_LANGUAGE_ID_END)
         {
-            uint8 languageId =
+            uint8_t languageId =
                 (rct2LanguageId <= RCT2_LANGUAGE_ID_PORTUGUESE) ?
                 RCT2ToOpenRCT2LanguageId[rct2LanguageId] :
                 LANGUAGE_UNDEFINED;
@@ -82,7 +82,7 @@ void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8 id)
     Sort();
 }
 
-std::string StringTable::GetString(uint8 id) const
+std::string StringTable::GetString(uint8_t id) const
 {
     for (auto &string : _strings)
     {
@@ -94,7 +94,7 @@ std::string StringTable::GetString(uint8 id) const
     return std::string();
 }
 
-std::string StringTable::GetString(uint8 language, uint8 id) const
+std::string StringTable::GetString(uint8_t language, uint8_t id) const
 {
     for (auto &string : _strings)
     {
@@ -106,7 +106,7 @@ std::string StringTable::GetString(uint8 language, uint8 id) const
     return std::string();
 }
 
-void StringTable::SetString(uint8 id, uint8 language, const std::string &text)
+void StringTable::SetString(uint8_t id, uint8_t language, const std::string &text)
 {
     StringTableEntry entry;
     entry.Id = id;

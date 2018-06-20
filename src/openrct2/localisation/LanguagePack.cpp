@@ -23,15 +23,15 @@
 #include "LanguagePack.h"
 
 // Don't try to load more than language files that exceed 64 MiB
-constexpr uint64 MAX_LANGUAGE_SIZE = 64 * 1024 * 1024;
-constexpr uint64 MAX_OBJECT_OVERRIDES = 4096;
-constexpr uint64 MAX_SCENARIO_OVERRIDES = 4096;
+constexpr uint64_t MAX_LANGUAGE_SIZE = 64 * 1024 * 1024;
+constexpr uint64_t MAX_OBJECT_OVERRIDES = 4096;
+constexpr uint64_t MAX_SCENARIO_OVERRIDES = 4096;
 
 constexpr rct_string_id ObjectOverrideBase             = 0x6000;
-constexpr sint32           ObjectOverrideMaxStringCount   = 3;
+constexpr int32_t           ObjectOverrideMaxStringCount   = 3;
 
 constexpr rct_string_id ScenarioOverrideBase           = 0x7000;
-constexpr sint32           ScenarioOverrideMaxStringCount = 3;
+constexpr int32_t           ScenarioOverrideMaxStringCount = 3;
 
 struct ObjectOverride
 {
@@ -48,7 +48,7 @@ struct ScenarioOverride
 class LanguagePack final : public ILanguagePack
 {
 private:
-    uint16 const _id;
+    uint16_t const _id;
     std::vector<std::string>      _strings;
     std::vector<ObjectOverride>   _objectOverrides;
     std::vector<ScenarioOverride> _scenarioOverrides;
@@ -61,7 +61,7 @@ private:
     ScenarioOverride * _currentScenarioOverride = nullptr;
 
 public:
-    static LanguagePack * FromFile(uint16 id, const utf8 * path)
+    static LanguagePack * FromFile(uint16_t id, const utf8 * path)
     {
         Guard::ArgumentNotNull(path);
 
@@ -95,12 +95,12 @@ public:
         return result;
     }
 
-    static LanguagePack * FromText(uint16 id, const utf8 * text)
+    static LanguagePack * FromText(uint16_t id, const utf8 * text)
     {
         return new LanguagePack(id, text);
     }
 
-    LanguagePack(uint16 id, const utf8 * text)
+    LanguagePack(uint16_t id, const utf8 * text)
         : _id(id)
     {
         Guard::ArgumentNotNull(text);
@@ -117,14 +117,14 @@ public:
         _currentScenarioOverride = nullptr;
     }
 
-    uint16 GetId() const override
+    uint16_t GetId() const override
     {
         return _id;
     }
 
-    uint32 GetCount() const override
+    uint32_t GetCount() const override
     {
-        return (uint32)_strings.size();
+        return (uint32_t)_strings.size();
     }
 
     void RemoveString(rct_string_id stringId) override
@@ -147,9 +147,9 @@ public:
     {
         if (stringId >= ScenarioOverrideBase)
         {
-            sint32 offset = stringId - ScenarioOverrideBase;
-            sint32 ooIndex = offset / ScenarioOverrideMaxStringCount;
-            sint32 ooStringIndex = offset % ScenarioOverrideMaxStringCount;
+            int32_t offset = stringId - ScenarioOverrideBase;
+            int32_t ooIndex = offset / ScenarioOverrideMaxStringCount;
+            int32_t ooStringIndex = offset % ScenarioOverrideMaxStringCount;
 
             if (_scenarioOverrides.size() > (size_t)ooIndex && !_scenarioOverrides[ooIndex].strings[ooStringIndex].empty())
             {
@@ -162,9 +162,9 @@ public:
         }
         else if (stringId >= ObjectOverrideBase)
         {
-            sint32 offset = stringId - ObjectOverrideBase;
-            sint32 ooIndex = offset / ObjectOverrideMaxStringCount;
-            sint32 ooStringIndex = offset % ObjectOverrideMaxStringCount;
+            int32_t offset = stringId - ObjectOverrideBase;
+            int32_t ooIndex = offset / ObjectOverrideMaxStringCount;
+            int32_t ooStringIndex = offset % ObjectOverrideMaxStringCount;
 
             if (_objectOverrides.size() > (size_t)ooIndex && !_objectOverrides[ooIndex].strings[ooStringIndex].empty())
             {
@@ -188,12 +188,12 @@ public:
         }
     }
 
-    rct_string_id GetObjectOverrideStringId(const char * objectIdentifier, uint8 index) override
+    rct_string_id GetObjectOverrideStringId(const char * objectIdentifier, uint8_t index) override
     {
         Guard::ArgumentNotNull(objectIdentifier);
         Guard::Assert(index < ObjectOverrideMaxStringCount);
 
-        sint32 ooIndex = 0;
+        int32_t ooIndex = 0;
         for (const ObjectOverride &objectOverride : _objectOverrides)
         {
             if (strncmp(objectOverride.name, objectIdentifier, 8) == 0)
@@ -210,12 +210,12 @@ public:
         return STR_NONE;
     }
 
-    rct_string_id GetScenarioOverrideStringId(const utf8 * scenarioFilename, uint8 index) override
+    rct_string_id GetScenarioOverrideStringId(const utf8 * scenarioFilename, uint8_t index) override
     {
         Guard::ArgumentNotNull(scenarioFilename);
         Guard::Assert(index < ScenarioOverrideMaxStringCount);
 
-        sint32 ooIndex = 0;
+        int32_t ooIndex = 0;
         for (const ScenarioOverride &scenarioOverride : _scenarioOverrides)
         {
             if (String::Equals(scenarioOverride.filename.c_str(), scenarioFilename, true))
@@ -486,7 +486,7 @@ private:
         // Validate identifier
         const utf8 * identifier = sb.GetBuffer();
 
-        sint32 stringId;
+        int32_t stringId;
         if (_currentGroup.empty())
         {
             if (sscanf(identifier, "STR_%4d", &stringId) != 1)
@@ -516,7 +516,7 @@ private:
         {
             if (codepoint == '{')
             {
-                uint32 token;
+                uint32_t token;
                 bool isByte;
                 if (ParseToken(reader, &token, &isByte))
                 {
@@ -526,7 +526,7 @@ private:
                     }
                     else
                     {
-                        sb.Append((sint32)token);
+                        sb.Append((int32_t)token);
                     }
                 }
                 else
@@ -565,7 +565,7 @@ private:
         }
     }
 
-    bool ParseToken(IStringReader * reader, uint32 * token, bool * isByte)
+    bool ParseToken(IStringReader * reader, uint32_t * token, bool * isByte)
     {
         auto sb = StringBuilder();
         codepoint_t codepoint;
@@ -592,7 +592,7 @@ private:
         // Handle explicit byte values
         if (*token == 0)
         {
-            sint32 number;
+            int32_t number;
             if (sscanf(tokenName, "%d", &number) == 1)
             {
                 *token = Math::Clamp(0, number, 255);
@@ -606,13 +606,13 @@ private:
 
 namespace LanguagePackFactory
 {
-    ILanguagePack * FromFile(uint16 id, const utf8 * path)
+    ILanguagePack * FromFile(uint16_t id, const utf8 * path)
     {
         auto languagePack = LanguagePack::FromFile(id, path);
         return languagePack;
     }
 
-    ILanguagePack * FromText(uint16 id, const utf8 * text)
+    ILanguagePack * FromText(uint16_t id, const utf8 * text)
     {
         auto languagePack = LanguagePack::FromText(id, text);
         return languagePack;

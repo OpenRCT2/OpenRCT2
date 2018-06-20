@@ -59,9 +59,9 @@ static rct_window_event_list window_map_tooltip_events = {
 
 #define MAP_TOOLTIP_ARGS
 
-static sint32 _lastCursorX;
-static sint32 _lastCursorY;
-static sint32 _cursorHoldDuration;
+static int32_t _lastCursorX;
+static int32_t _lastCursorY;
+static int32_t _cursorHoldDuration;
 
 static void window_map_tooltip_open();
 
@@ -78,7 +78,7 @@ void window_map_tooltip_update_visibility()
         return;
     }
 
-    sint32 cursorX, cursorY;
+    int32_t cursorX, cursorY;
 
     const CursorState * state = context_get_cursor_state();
     cursorX = state->x;
@@ -114,7 +114,7 @@ void window_map_tooltip_update_visibility()
 static void window_map_tooltip_open()
 {
     rct_window* w;
-    sint32 x, y, width, height;
+    int32_t x, y, width, height;
 
     width = 200;
     height = 44;

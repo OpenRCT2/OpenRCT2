@@ -15,11 +15,11 @@ interface ITitleSequencePlayer
 {
     virtual ~ITitleSequencePlayer() = default;
 
-    virtual sint32 GetCurrentPosition() const abstract;
+    virtual int32_t GetCurrentPosition() const abstract;
 
     virtual bool Begin(size_t titleSequenceId) abstract;
     virtual void Reset() abstract;
     virtual bool Update() abstract;
-    virtual void Seek(sint32 position) abstract;
+    virtual void Seek(int32_t position) abstract;
     virtual void Eject() abstract;
 };

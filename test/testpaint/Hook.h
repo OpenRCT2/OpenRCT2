@@ -23,7 +23,7 @@ enum {
     X86_FLAG_SIGN = 1 << 7,
 };
 
-using hook_function = uint8 (*)(registers * regs);
+using hook_function = uint8_t (*)(registers * regs);
 
 void addhook(uintptr_t address, hook_function function);
 

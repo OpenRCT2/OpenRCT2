@@ -38,13 +38,13 @@ namespace OpenRCT2::Audio
         virtual void Close() abstract;
         virtual void Lock() abstract;
         virtual void Unlock() abstract;
-        virtual IAudioChannel * Play(IAudioSource * source, sint32 loop, bool deleteondone, bool deletesourceondone) abstract;
+        virtual IAudioChannel * Play(IAudioSource * source, int32_t loop, bool deleteondone, bool deletesourceondone) abstract;
         virtual void Stop(IAudioChannel * channel) abstract;
         virtual bool LoadMusic(size_t pathid) abstract;
         virtual void SetVolume(float volume) abstract;
 
-        virtual IAudioSource * GetSoundSource(sint32 id) abstract;
-        virtual IAudioSource * GetMusicSource(sint32 id) abstract;
+        virtual IAudioSource * GetSoundSource(int32_t id) abstract;
+        virtual IAudioSource * GetMusicSource(int32_t id) abstract;
     };
 } // namespace OpenRCT2::Audio
 
@@ -56,19 +56,19 @@ namespace OpenRCT2::Audio
 #endif
 
 void Mixer_Init(const char * device);
-void* Mixer_Play_Effect(size_t id, sint32 loop, sint32 volume, float pan, double rate, sint32 deleteondone);
+void* Mixer_Play_Effect(size_t id, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone);
 void Mixer_Stop_Channel(void* channel);
-void Mixer_Channel_Volume(void* channel, sint32 volume);
+void Mixer_Channel_Volume(void* channel, int32_t volume);
 void Mixer_Channel_Pan(void* channel, float pan);
 void Mixer_Channel_Rate(void* channel, double rate);
-sint32 Mixer_Channel_IsPlaying(void* channel);
-uint64 Mixer_Channel_GetOffset(void* channel);
-sint32 Mixer_Channel_SetOffset(void* channel, uint64 offset);
-void Mixer_Channel_SetGroup(void* channel, sint32 group);
-void* Mixer_Play_Music(sint32 pathId, sint32 loop, sint32 streaming);
+int32_t Mixer_Channel_IsPlaying(void* channel);
+uint64_t Mixer_Channel_GetOffset(void* channel);
+int32_t Mixer_Channel_SetOffset(void* channel, uint64_t offset);
+void Mixer_Channel_SetGroup(void* channel, int32_t group);
+void* Mixer_Play_Music(int32_t pathId, int32_t loop, int32_t streaming);
 void Mixer_SetVolume(float volume);
 
-sint32 DStoMixerVolume(sint32 volume);
-float DStoMixerPan(sint32 pan);
-double DStoMixerRate(sint32 frequency);
+int32_t DStoMixerVolume(int32_t volume);
+float DStoMixerPan(int32_t pan);
+double DStoMixerRate(int32_t frequency);
 

@@ -105,10 +105,10 @@ enum {
 #define TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK   0x1F // in rct_tile_element.properties.surface.terrain
 #define TILE_ELEMENT_SURFACE_TERRAIN_MASK        0xE0 // in rct_tile_element.properties.surface.terrain
 
-sint32 surface_get_terrain(const rct_tile_element * element);
-sint32 surface_get_terrain_edge(const rct_tile_element * element);
-void surface_set_terrain(rct_tile_element * element, sint32 terrain);
-void surface_set_terrain_edge(rct_tile_element * element, sint32 terrain);
+int32_t surface_get_terrain(const rct_tile_element * element);
+int32_t surface_get_terrain_edge(const rct_tile_element * element);
+void surface_set_terrain(rct_tile_element * element, int32_t terrain);
+void surface_set_terrain_edge(rct_tile_element * element, int32_t terrain);
 
 // ~Oli414: Needs to renamed. This function is specific to the surface object.
-sint32 surface_get_water_height(const rct_tile_element * tileElement); 
+int32_t surface_get_water_height(const rct_tile_element * tileElement);

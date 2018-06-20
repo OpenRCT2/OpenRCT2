@@ -33,7 +33,7 @@ NetworkUser * NetworkUser::FromJson(json_t * json)
         user->Hash = std::string(hash);
         user->Name = std::string(name);
         if (!json_is_null(jsonGroupId)) {
-            user->GroupId = (uint8)json_integer_value(jsonGroupId);
+            user->GroupId = (uint8_t)json_integer_value(jsonGroupId);
         }
         user->Remove = false;
         return user;
@@ -171,7 +171,7 @@ void NetworkUserManager::Save()
     json_decref(jsonUsers);
 }
 
-void NetworkUserManager::UnsetUsersOfGroup(uint8 groupId)
+void NetworkUserManager::UnsetUsersOfGroup(uint8_t groupId)
 {
     for (const auto &kvp : _usersByHash)
     {

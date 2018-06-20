@@ -40,12 +40,12 @@ public:
     virtual const char *    GetError() abstract;
     virtual const char *    GetHostName() const abstract;
 
-    virtual void         Listen(uint16 port)                       abstract;
-    virtual void         Listen(const char * address, uint16 port) abstract;
+    virtual void         Listen(uint16_t port)                       abstract;
+    virtual void         Listen(const char * address, uint16_t port) abstract;
     virtual ITcpSocket * Accept()                                  abstract;
 
-    virtual void Connect(const char * address, uint16 port)      abstract;
-    virtual void ConnectAsync(const char * address, uint16 port) abstract;
+    virtual void Connect(const char * address, uint16_t port)      abstract;
+    virtual void ConnectAsync(const char * address, uint16_t port) abstract;
 
     virtual size_t             SendData(const void * buffer, size_t size)                     abstract;
     virtual NETWORK_READPACKET ReceiveData(void * buffer, size_t size, size_t * sizeReceived) abstract;
@@ -61,6 +61,6 @@ void DisposeWSA();
 
 namespace Convert
 {
-    uint16 HostToNetwork(uint16 value);
-    uint16 NetworkToHost(uint16 value);
+    uint16_t HostToNetwork(uint16_t value);
+    uint16_t NetworkToHost(uint16_t value);
 }

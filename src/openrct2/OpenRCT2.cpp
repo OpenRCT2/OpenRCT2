@@ -9,8 +9,8 @@
 
 #include "OpenRCT2.h"
 
-sint32 gExitCode;
-sint32 gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
+int32_t gExitCode;
+int32_t gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
 utf8 gExePath[MAX_PATH];
 utf8 gCustomUserDataPath[MAX_PATH] = { 0 };
@@ -24,7 +24,7 @@ bool gOpenRCT2NoGraphics = false;
 bool gOpenRCT2ShowChangelog;
 bool gOpenRCT2SilentBreakpad;
 
-uint32 gCurrentDrawCount = 0;
-uint8 gScreenFlags;
-uint32 gScreenAge;
-uint8 gSavePromptMode;
+uint32_t gCurrentDrawCount = 0;
+uint8_t gScreenFlags;
+uint32_t gScreenAge;
+uint8_t gSavePromptMode;

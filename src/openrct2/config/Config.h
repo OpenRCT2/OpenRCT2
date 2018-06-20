@@ -18,15 +18,15 @@ struct GeneralConfiguration
     utf8 *      rct2_path;
 
     // Display
-    sint32      default_display;
-    sint32      window_width;
-    sint32      window_height;
-    sint32      fullscreen_mode;
-    sint32      fullscreen_width;
-    sint32      fullscreen_height;
+    int32_t      default_display;
+    int32_t      window_width;
+    int32_t      window_height;
+    int32_t      fullscreen_mode;
+    int32_t      fullscreen_width;
+    int32_t      fullscreen_height;
     float       window_scale;
-    sint32      drawing_engine;
-    sint32      scale_quality;
+    int32_t      drawing_engine;
+    int32_t      scale_quality;
     bool        uncap_fps;
     bool        use_vsync;
     bool        show_fps;
@@ -35,7 +35,7 @@ struct GeneralConfiguration
     // Map rendering
     bool        landscape_smoothing;
     bool        always_show_gridlines;
-    sint32      virtual_floor_style;
+    int32_t      virtual_floor_style;
     bool        day_night_cycle;
     bool        enable_light_fx;
     bool        upper_case_banners;
@@ -45,38 +45,38 @@ struct GeneralConfiguration
     bool        show_guest_purchases;
 
     // Localisation
-    sint32      language;
-    sint32      measurement_format;
-    sint32      temperature_format;
+    int32_t      language;
+    int32_t      measurement_format;
+    int32_t      temperature_format;
     bool        show_height_as_units;
-    sint32      date_format;
-    sint32      currency_format;
-    sint32      custom_currency_rate;
-    sint32      custom_currency_affix;
+    int32_t      date_format;
+    int32_t      currency_format;
+    int32_t      custom_currency_rate;
+    int32_t      custom_currency_affix;
     utf8 *      custom_currency_symbol;
 
     // Controls
     bool        edge_scrolling;
-    sint32      edge_scrolling_speed;
+    int32_t      edge_scrolling_speed;
     bool        trap_cursor;
     bool        invert_viewport_drag;
     bool        zoom_to_cursor;
 
     // Miscellaneous
     bool        play_intro;
-    sint32      window_snap_proximity;
+    int32_t      window_snap_proximity;
     bool        allow_loading_with_incorrect_checksum;
     bool        save_plugin_data;
     bool        test_unfinished_tracks;
     bool        no_test_crashes;
     bool        debugging_tools;
-    sint32      autosave_frequency;
+    int32_t      autosave_frequency;
     bool        auto_staff_placement;
     bool        handymen_mow_default;
     bool        auto_open_shops;
-    sint32      default_inspection_interval;
-    sint32      window_limit;
-    sint32      scenario_select_mode;
+    int32_t      default_inspection_interval;
+    int32_t      window_limit;
+    int32_t      scenario_select_mode;
     bool        scenario_unlocking_enabled;
     bool        scenario_hide_mega_park;
     bool        steam_overlay_pause;
@@ -84,7 +84,7 @@ struct GeneralConfiguration
     bool        allow_early_completion;
 
     bool        confirmation_prompt;
-    sint32      load_save_sort;
+    int32_t      load_save_sort;
     utf8 *      last_save_game_directory;
     utf8 *      last_save_landscape_directory;
     utf8 *      last_save_scenario_directory;
@@ -102,18 +102,18 @@ struct InterfaceConfiguration
     bool        console_small_font;
     utf8 *      current_theme_preset;
     utf8 *      current_title_sequence_preset;
-    sint32      object_selection_filter_flags;
+    int32_t      object_selection_filter_flags;
 };
 
 struct SoundConfiguration
 {
     utf8 *      device;
-    uint8       master_volume;
-    uint8       title_music;
+    uint8_t       master_volume;
+    uint8_t       title_music;
     bool        sound_enabled;
-    uint8       sound_volume;
+    uint8_t       sound_volume;
     bool        ride_music_enabled;
-    uint8       ride_music_volume;
+    uint8_t       ride_music_volume;
     bool        audio_focus;
 };
 
@@ -131,12 +131,12 @@ struct TwitchConfiguration
 struct NetworkConfiguration
 {
     utf8 *      player_name;
-    sint32      default_port;
+    int32_t      default_port;
     char *      listen_address;
     utf8 *      default_password;
     bool        stay_connected;
     bool        advertise;
-    sint32      maxplayers;
+    int32_t      maxplayers;
     utf8 *      server_name;
     utf8 *      server_description;
     utf8 *      server_greeting;
@@ -175,18 +175,18 @@ struct FontConfiguration
 {
     utf8 *      file_name;
     utf8 *      font_name;
-    sint32      x_offset;
-    sint32      y_offset;
-    sint32      size_tiny;
-    sint32      size_small;
-    sint32      size_medium;
-    sint32      size_big;
-    sint32      height_tiny;
-    sint32      height_small;
-    sint32      height_medium;
-    sint32      height_big;
+    int32_t      x_offset;
+    int32_t      y_offset;
+    int32_t      size_tiny;
+    int32_t      size_small;
+    int32_t      size_medium;
+    int32_t      size_big;
+    int32_t      height_tiny;
+    int32_t      height_small;
+    int32_t      height_medium;
+    int32_t      height_big;
     bool        enable_hinting;
-    sint32      hinting_threshold;
+    int32_t      hinting_threshold;
 };
 
 enum SORT

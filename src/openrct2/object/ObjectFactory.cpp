@@ -37,7 +37,7 @@
 interface IFileDataRetriever
 {
     virtual ~IFileDataRetriever() = default;
-    virtual std::vector<uint8> GetData(const std::string_view& path) const abstract;
+    virtual std::vector<uint8_t> GetData(const std::string_view& path) const abstract;
 };
 
 class FileSystemDataRetriever : public IFileDataRetriever
@@ -51,7 +51,7 @@ public:
     {
     }
 
-    std::vector<uint8> GetData(const std::string_view& path) const override
+    std::vector<uint8_t> GetData(const std::string_view& path) const override
     {
         auto absolutePath = Path::Combine(_basePath, path.data());
         return File::ReadAllBytes(absolutePath);
@@ -69,7 +69,7 @@ public:
     {
     }
 
-    std::vector<uint8> GetData(const std::string_view& path) const override
+    std::vector<uint8_t> GetData(const std::string_view& path) const override
     {
         return _zipArchive.GetFileData(path);
     }
@@ -113,7 +113,7 @@ public:
         return _loadImages;
     }
 
-    std::vector<uint8> GetData(const std::string_view& path) override
+    std::vector<uint8_t> GetData(const std::string_view& path) override
     {
         if (_fileDataRetriever != nullptr)
         {
@@ -122,7 +122,7 @@ public:
         return {};
     }
 
-    void LogWarning(uint32 code, const utf8* text) override
+    void LogWarning(uint32_t code, const utf8* text) override
     {
         _wasWarning = true;
 
@@ -132,7 +132,7 @@ public:
         }
     }
 
-    void LogError(uint32 code, const utf8* text) override
+    void LogError(uint32_t code, const utf8* text) override
     {
         _wasError = true;
 
@@ -227,7 +227,7 @@ namespace ObjectFactory
     Object * CreateObject(const rct_object_entry &entry)
     {
         Object * result;
-        uint8 objectType = object_entry_get_type(&entry);
+        uint8_t objectType = object_entry_get_type(&entry);
         switch (objectType) {
         case OBJECT_TYPE_RIDE:
             result = new RideObject(entry);
@@ -268,7 +268,7 @@ namespace ObjectFactory
         return result;
     }
 
-    static uint8 ParseObjectType(const std::string &s)
+    static uint8_t ParseObjectType(const std::string &s)
     {
         if (s == "ride") return OBJECT_TYPE_RIDE;
         if (s == "footpath") return OBJECT_TYPE_PATHS;

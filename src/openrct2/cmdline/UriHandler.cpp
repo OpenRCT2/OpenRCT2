@@ -17,7 +17,7 @@ static exitcode_t HandleUri(const std::string &uri);
 
 #ifndef DISABLE_NETWORK
 static exitcode_t HandleUriJoin(const std::vector<std::string> &args);
-static bool TryParseHostnamePort(const std::string &hostnamePort, std::string * outHostname, sint32 * outPort, sint32 defaultPort);
+static bool TryParseHostnamePort(const std::string &hostnamePort, std::string * outHostname, int32_t * outPort, int32_t defaultPort);
 #endif
 
 exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator * enumerator)
@@ -58,7 +58,7 @@ static exitcode_t HandleUri(const std::string &uri)
 static exitcode_t HandleUriJoin(const std::vector<std::string> &args)
 {
     std::string hostname;
-    sint32 port;
+    int32_t port;
     if (args.size() > 1 && TryParseHostnamePort(args[1], &hostname, &port, NETWORK_DEFAULT_PORT))
     {
         // Set the network start configuration
@@ -74,13 +74,13 @@ static exitcode_t HandleUriJoin(const std::vector<std::string> &args)
     }
 }
 
-static bool TryParseHostnamePort(const std::string &hostnamePort, std::string * outHostname, sint32 * outPort, sint32 defaultPort)
+static bool TryParseHostnamePort(const std::string &hostnamePort, std::string * outHostname, int32_t * outPort, int32_t defaultPort)
 {
     try
     {
         // Argument is in hostname:port format, so we need to split
         std::string hostname = hostnamePort;
-        sint32 port = defaultPort;
+        int32_t port = defaultPort;
         size_t colonIndex = hostnamePort.find_first_of(':');
         if (colonIndex != std::string::npos)
         {

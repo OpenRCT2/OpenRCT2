@@ -43,17 +43,17 @@ static void window_staff_list_close(rct_window *w);
 static void window_staff_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_staff_list_resize(rct_window *w);
 static void window_staff_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_staff_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_staff_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_staff_list_update(rct_window *w);
-static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 static void window_staff_list_toolabort(rct_window *w, rct_widgetindex widgetIndex);
-static void window_staff_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-static void window_staff_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_staff_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_staff_list_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void window_staff_list_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_staff_list_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_staff_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_staff_list_invalidate(rct_window *w);
 static void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 static rct_window_event_list window_staff_list_events = {
     window_staff_list_close,
@@ -126,11 +126,11 @@ static rct_widget window_staff_list_widgets[] = {
     { WIDGETS_END },
 };
 
-static uint16 _window_staff_list_selected_type_count = 0;
-static sint32 _windowStaffListHighlightedIndex;
-static sint32 _windowStaffListSelectedTab = WINDOW_STAFF_LIST_TAB_HANDYMEN;
+static uint16_t _window_staff_list_selected_type_count = 0;
+static int32_t _windowStaffListHighlightedIndex;
+static int32_t _windowStaffListSelectedTab = WINDOW_STAFF_LIST_TAB_HANDYMEN;
 
-static uint8 window_staff_list_get_random_entertainer_costume();
+static uint8_t window_staff_list_get_random_entertainer_costume();
 
 struct staff_naming_convention
 {
@@ -213,10 +213,10 @@ static void window_staff_list_mouseup(rct_window *w, rct_widgetindex widgetIndex
         break;
     case WIDX_STAFF_LIST_HIRE_BUTTON:
     {
-        sint32 staffType = _windowStaffListSelectedTab;
+        int32_t staffType = _windowStaffListSelectedTab;
         if (staffType == STAFF_TYPE_ENTERTAINER)
         {
-            uint8 costume = window_staff_list_get_random_entertainer_costume();
+            uint8_t costume = window_staff_list_get_random_entertainer_costume();
             staffType += costume;
         }
         hire_new_staff_member(staffType);
@@ -264,7 +264,7 @@ static void window_staff_list_resize(rct_window *w)
 */
 static void window_staff_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    sint16 newSelectedTab;
+    int16_t newSelectedTab;
 
     switch (widgetIndex) {
     case WIDX_STAFF_LIST_HANDYMEN_TAB:
@@ -274,7 +274,7 @@ static void window_staff_list_mousedown(rct_window *w, rct_widgetindex widgetInd
         newSelectedTab = widgetIndex - WIDX_STAFF_LIST_HANDYMEN_TAB;;
         if (_windowStaffListSelectedTab == newSelectedTab)
             break;
-        _windowStaffListSelectedTab = (uint8)newSelectedTab;
+        _windowStaffListSelectedTab = (uint8_t)newSelectedTab;
         window_invalidate(w);
         w->scrolls[0].v_top = 0;
         window_staff_list_cancel_tools(w);
@@ -291,7 +291,7 @@ static void window_staff_list_mousedown(rct_window *w, rct_widgetindex widgetInd
 *
 *  rct2: 0x006BD9A6
 */
-static void window_staff_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_staff_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (widgetIndex == WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER && dropdownIndex != -1)
     {
@@ -314,7 +314,7 @@ void window_staff_list_update(rct_window *w)
 
         // Enable highlighting of these staff members in map window
         if (window_find_by_class(WC_MAP) != nullptr) {
-            sint32 spriteIndex;
+            int32_t spriteIndex;
             rct_peep * peep;
             gWindowMapFlashingFlags |= (1 << 2);
             FOR_ALL_STAFF(spriteIndex, peep) {
@@ -332,12 +332,12 @@ void window_staff_list_update(rct_window *w)
  *
  *  rct2: 0x006BD990
  */
-static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     if (widgetIndex == WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON) {
-        sint32 selectedPeepType = _windowStaffListSelectedTab;
+        int32_t selectedPeepType = _windowStaffListSelectedTab;
 
-        sint32 direction;
+        int32_t direction;
         rct_tile_element *tileElement;
         footpath_get_coordinates_from_pos(x, y, &x, &y, &direction, &tileElement);
         if (x == 0x8000)
@@ -345,9 +345,9 @@ static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetInde
 
         bool isPatrolAreaSet = staff_is_patrol_area_set(200 + selectedPeepType, x, y);
 
-        uint16 spriteIndex;
+        uint16_t spriteIndex;
         rct_peep *peep, *closestPeep = nullptr;
-        sint32 closestPeepDistance = std::numeric_limits<sint32>::max();
+        int32_t closestPeepDistance = std::numeric_limits<int32_t>::max();
         FOR_ALL_STAFF(spriteIndex, peep) {
             if (peep->staff_type != selectedPeepType)
                 continue;
@@ -365,7 +365,7 @@ static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetInde
                 continue;
             }
 
-            sint32 distance = abs(x - peep->x) + abs(y - peep->y);
+            int32_t distance = abs(x - peep->x) + abs(y - peep->y);
             if (distance < closestPeepDistance) {
                 closestPeepDistance = distance;
                 closestPeep = peep;
@@ -401,12 +401,12 @@ void window_staff_list_toolabort(rct_window *w, rct_widgetindex widgetIndex)
 *
 *  rct2: 0x006BDBE6
 */
-void window_staff_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+void window_staff_list_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height)
 {
-    sint32 i, spriteIndex;
+    int32_t i, spriteIndex;
     rct_peep *peep;
 
-    uint16 staffCount = 0;
+    uint16_t staffCount = 0;
     FOR_ALL_STAFF(spriteIndex, peep) {
         if (peep->staff_type == _windowStaffListSelectedTab)
             staffCount++;
@@ -435,9 +435,9 @@ void window_staff_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *
 *
 *  rct2: 0x006BDC9A
 */
-void window_staff_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+void window_staff_list_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    sint32 i, spriteIndex;
+    int32_t i, spriteIndex;
     rct_peep *peep;
 
     i = y / SCROLLABLE_ROW_HEIGHT;
@@ -465,9 +465,9 @@ void window_staff_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32
 *
 *  rct2: 0x006BDC6B
 */
-void window_staff_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+void window_staff_list_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    sint32 i;
+    int32_t i;
 
     i = y / SCROLLABLE_ROW_HEIGHT;
     if (i != _windowStaffListHighlightedIndex) {
@@ -491,14 +491,14 @@ void window_staff_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_s
 */
 void window_staff_list_invalidate(rct_window *w)
 {
-    sint32 pressed_widgets = w->pressed_widgets & ~(
+    int32_t pressed_widgets = w->pressed_widgets & ~(
             (1LL << WIDX_STAFF_LIST_HANDYMEN_TAB) |
             (1LL << WIDX_STAFF_LIST_MECHANICS_TAB) |
             (1LL << WIDX_STAFF_LIST_SECURITY_TAB) |
             (1LL << WIDX_STAFF_LIST_ENTERTAINERS_TAB)
     );
-    uint8 tabIndex = _windowStaffListSelectedTab;
-    uint8 widgetIndex = tabIndex + WIDX_STAFF_LIST_HANDYMEN_TAB;
+    uint8_t tabIndex = _windowStaffListSelectedTab;
+    uint8_t widgetIndex = tabIndex + WIDX_STAFF_LIST_HANDYMEN_TAB;
 
     w->pressed_widgets = pressed_widgets | (1ULL << widgetIndex);
     window_staff_list_widgets[WIDX_STAFF_LIST_HIRE_BUTTON].text = StaffNamingConvention[tabIndex].action_hire;
@@ -507,7 +507,7 @@ void window_staff_list_invalidate(rct_window *w)
     if (tabIndex < 3) {
         window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_COLOURBTN;
         window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image =
-            SPRITE_ID_PALETTE_COLOUR_1((uint32)staff_get_colour(tabIndex)) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+            SPRITE_ID_PALETTE_COLOUR_1((uint32_t)staff_get_colour(tabIndex)) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
     }
     if (_quick_fire_mode)
         w->pressed_widgets |= (1ULL << WIDX_STAFF_LIST_QUICK_FIRE);
@@ -539,8 +539,8 @@ void window_staff_list_invalidate(rct_window *w)
 */
 void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 i;
-    uint8 selectedTab;
+    int32_t i;
+    uint8_t selectedTab;
 
     // Widgets
     window_draw_widgets(w, dpi);
@@ -604,27 +604,27 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(dpi, STR_UNIFORM_COLOUR, w, COLOUR_BLACK, w->x + 6, window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + w->y + 1);
     }
 
-    sint32 staffTypeStringId = StaffNamingConvention[selectedTab].plural;
+    int32_t staffTypeStringId = StaffNamingConvention[selectedTab].plural;
     // If the number of staff for a given type is 1, we use the singular forms of the names
     if (_window_staff_list_selected_type_count == 1) {
         staffTypeStringId = StaffNamingConvention[selectedTab].singular;
     }
 
-    set_format_arg(0, uint16, _window_staff_list_selected_type_count);
+    set_format_arg(0, uint16_t, _window_staff_list_selected_type_count);
     set_format_arg(2, rct_string_id, staffTypeStringId);
 
     gfx_draw_string_left(dpi, STR_STAFF_LIST_COUNTER, gCommonFormatArgs, COLOUR_BLACK, w->x + 4, window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom + w->y + 2);
 }
 
 /** rct2: 0x00992A08 */
-static constexpr const uint32 staffOrderBaseSprites[] = {
+static constexpr const uint32_t staffOrderBaseSprites[] = {
     SPR_STAFF_ORDERS_SWEEPING,
     SPR_STAFF_ORDERS_INSPECT_RIDES,
     0,
     0,
 };
 
-static constexpr const uint32 staffCostumeSprites[] = {
+static constexpr const uint32_t staffCostumeSprites[] = {
     SPR_STAFF_COSTUME_PANDA,
     SPR_STAFF_COSTUME_TIGER,
     SPR_STAFF_COSTUME_ELEPHANT,
@@ -642,19 +642,19 @@ static constexpr const uint32 staffCostumeSprites[] = {
 *
 *  rct2: 0x006BD785
 */
-void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex)
 {
-    sint32 spriteIndex, y, i, staffOrderIcon_x, staffOrders, staffOrderSprite;
-    uint32 argument_1, argument_2;
-    uint8 selectedTab;
+    int32_t spriteIndex, y, i, staffOrderIcon_x, staffOrders, staffOrderSprite;
+    uint32_t argument_1, argument_2;
+    uint8_t selectedTab;
     rct_peep *peep;
 
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
     // How much space do we have for the name and action columns? (Discount scroll area and icons.)
-    sint32 nonIconSpace = w->widgets[WIDX_STAFF_LIST_LIST].right - w->widgets[WIDX_STAFF_LIST_LIST].left - 15 - 68;
-    sint32 columnSize = nonIconSpace / 2;
-    sint32 actionOffset = w->widgets[WIDX_STAFF_LIST_LIST].right - columnSize - 15;
+    int32_t nonIconSpace = w->widgets[WIDX_STAFF_LIST_LIST].right - w->widgets[WIDX_STAFF_LIST_LIST].left - 15 - 68;
+    int32_t columnSize = nonIconSpace / 2;
+    int32_t actionOffset = w->widgets[WIDX_STAFF_LIST_LIST].right - columnSize - 15;
 
     y = 0;
     i = 0;
@@ -670,7 +670,7 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
 
             if (y + 11 >= dpi->y)
             {
-                sint32 format = (_quick_fire_mode ? STR_RED_STRINGID : STR_BLACK_STRING);
+                int32_t format = (_quick_fire_mode ? STR_RED_STRINGID : STR_BLACK_STRING);
 
                 if (i == _windowStaffListHighlightedIndex)
                 {
@@ -679,12 +679,12 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
                 }
 
                 set_format_arg(0, rct_string_id, peep->name_string_idx);
-                set_format_arg(2, uint32, peep->id);
+                set_format_arg(2, uint32_t, peep->id);
                 gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y, columnSize);
 
                 get_arguments_from_action(peep, &argument_1, &argument_2);
-                set_format_arg(0, uint32, argument_1);
-                set_format_arg(4, uint32, argument_2);
+                set_format_arg(0, uint32_t, argument_1);
+                set_format_arg(4, uint32_t, argument_2);
                 gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, actionOffset, y, columnSize);
 
                 // True if a patrol path is set for the worker
@@ -722,14 +722,14 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
     }
 }
 
-static uint8 window_staff_list_get_random_entertainer_costume()
+static uint8_t window_staff_list_get_random_entertainer_costume()
 {
-    uint8 result = ENTERTAINER_COSTUME_PANDA;
-    uint8 costumeList[ENTERTAINER_COSTUME_COUNT];
-    sint32 numCostumes = staff_get_available_entertainer_costume_list(costumeList);
+    uint8_t result = ENTERTAINER_COSTUME_PANDA;
+    uint8_t costumeList[ENTERTAINER_COSTUME_COUNT];
+    int32_t numCostumes = staff_get_available_entertainer_costume_list(costumeList);
     if (numCostumes > 0)
     {
-        sint32 index = util_rand() % numCostumes;
+        int32_t index = util_rand() % numCostumes;
         result = costumeList[index];
     }
     return result;

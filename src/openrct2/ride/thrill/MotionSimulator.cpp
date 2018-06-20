@@ -31,7 +31,7 @@ enum
  *  rct2: 0x0076522A
  */
 static void paint_motionsimulator_vehicle(
-    paint_session * session, sint8 offsetX, sint8 offsetY, uint8 direction, sint32 height, const rct_tile_element * tileElement)
+    paint_session * session, int8_t offsetX, int8_t offsetY, uint8_t direction, int32_t height, const rct_tile_element * tileElement)
 {
     Ride *           ride      = get_ride(track_element_get_ride_index(tileElement));
     rct_ride_entry * rideEntry = get_ride_entry_by_ride(ride);
@@ -41,7 +41,7 @@ static void paint_motionsimulator_vehicle(
     rct_vehicle * vehicle = nullptr;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
-        uint16 spriteIndex = ride->vehicles[0];
+        uint16_t spriteIndex = ride->vehicles[0];
         if (spriteIndex != SPRITE_INDEX_NULL)
         {
             vehicle                     = GET_VEHICLE(spriteIndex);
@@ -50,7 +50,7 @@ static void paint_motionsimulator_vehicle(
         }
     }
 
-    uint32 simulatorImageId = rideEntry->vehicles[0].base_image_id + direction;
+    uint32_t simulatorImageId = rideEntry->vehicles[0].base_image_id + direction;
     if (vehicle != nullptr)
     {
         if (vehicle->restraints_position >= 64)
@@ -63,7 +63,7 @@ static void paint_motionsimulator_vehicle(
         }
     }
 
-    uint32 imageColourFlags = session->TrackColours[SCHEME_MISC];
+    uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
         imageColourFlags =
@@ -71,8 +71,8 @@ static void paint_motionsimulator_vehicle(
     }
     simulatorImageId |= imageColourFlags;
 
-    sint16 offsetZ = height + 2;
-    uint32 imageId;
+    int16_t offsetZ = height + 2;
+    uint32_t imageId;
     switch (direction)
     {
     case 0:
@@ -128,15 +128,15 @@ static void paint_motionsimulator_vehicle(
 /** rct2: 0x008A85C4 */
 static void paint_motionsimulator(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];
 
-    sint32   edges    = edges_2x2[trackSequence];
+    int32_t   edges    = edges_2x2[trackSequence];
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = { session->MapPosition.x, session->MapPosition.y };
 
@@ -167,7 +167,7 @@ static void paint_motionsimulator(
  *
  *  rct2: 0x00763520
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int32_t trackType, int32_t direction)
 {
     switch (trackType)
     {

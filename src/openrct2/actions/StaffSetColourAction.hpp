@@ -23,18 +23,18 @@
 struct StaffSetColourAction : public GameActionBase<GAME_COMMAND_SET_STAFF_COLOUR, GameActionResult>
 {
 private:
-    uint8 _staffType;
-    uint8 _colour;
+    uint8_t _staffType;
+    uint8_t _colour;
 
 public:
     StaffSetColourAction() {}
-    StaffSetColourAction(uint8 staffType, uint8 colour)
+    StaffSetColourAction(uint8_t staffType, uint8_t colour)
         : _staffType(staffType),
           _colour(colour)
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
@@ -65,7 +65,7 @@ public:
         }
 
         // Update each staff member's uniform
-        sint32 spriteIndex;
+        int32_t spriteIndex;
         rct_peep * peep;
         FOR_ALL_PEEPS(spriteIndex, peep)
         {

@@ -130,10 +130,10 @@ namespace OpenRCT2::Ui
                 std::string resultExtension = Path::GetExtension(resultFilename);
                 if (resultExtension.empty())
                 {
-                    sint32 filterIndex = openFileName.nFilterIndex - 1;
+                    int32_t filterIndex = openFileName.nFilterIndex - 1;
 
                     assert(filterIndex >= 0);
-                    assert(filterIndex < (sint32)desc.Filters.size());
+                    assert(filterIndex < (int32_t)desc.Filters.size());
 
                     std::string pattern = desc.Filters[filterIndex].Pattern;
                     std::string patternExtension = Path::GetExtension(pattern);

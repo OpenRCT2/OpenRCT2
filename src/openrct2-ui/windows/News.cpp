@@ -40,11 +40,11 @@ static rct_widget window_news_widgets[] = {
 
 static void window_news_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_news_update(rct_window *w);
-static void window_news_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-static void window_news_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_news_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void window_news_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_news_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 static rct_window_event_list window_news_events = {
     nullptr,
@@ -105,8 +105,8 @@ rct_window * window_news_open()
 // sub_66E4BA:
     rct_widget *widget;
 
-    sint32 width = 0;
-    sint32 height = 0;
+    int32_t width = 0;
+    int32_t height = 0;
     window_get_scroll_size(window, 0, &width, &height);
     widget = &window_news_widgets[WIDX_SCROLL];
     window->scrolls[0].v_top = std::max(0, height - (widget->bottom - widget->top - 1));
@@ -115,7 +115,7 @@ rct_window * window_news_open()
     return window;
 }
 
-static sint32 window_news_get_item_height()
+static int32_t window_news_get_item_height()
 {
     return 4 * font_get_line_height(gCurrentFontSpriteBase) + 2;
 }
@@ -143,7 +143,7 @@ static void window_news_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  */
 static void window_news_update(rct_window *w)
 {
-    sint32 i, j, x, y, z;
+    int32_t i, j, x, y, z;
 
     if (w->news.var_480 == -1 ||
         --w->news.var_484 != 0)
@@ -189,12 +189,12 @@ static void window_news_update(rct_window *w)
  *
  *  rct2: 0x0066EA3C
  */
-static void window_news_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+static void window_news_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height)
 {
-    sint32 itemHeight = window_news_get_item_height();
+    int32_t itemHeight = window_news_get_item_height();
 
     *height = 0;
-    for (sint32 i = 11; i < 61; i++)
+    for (int32_t i = 11; i < 61; i++)
     {
         if (news_item_is_empty(i))
             break;
@@ -207,10 +207,10 @@ static void window_news_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 
  *
  *  rct2: 0x0066EA5C
  */
-static void window_news_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_news_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    sint32 itemHeight = window_news_get_item_height();
-    sint32 i, buttonIndex;
+    int32_t itemHeight = window_news_get_item_height();
+    int32_t i, buttonIndex;
 
     buttonIndex = 0;
     for (i = 11; i < 61; i++)
@@ -274,11 +274,11 @@ static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x0066E4EE
  */
-static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex)
 {
-    sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
-    sint32 itemHeight = window_news_get_item_height();
-    sint32 i, x, y, yy, press;
+    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    int32_t itemHeight = window_news_get_item_height();
+    int32_t i, x, y, yy, press;
 
     y = 0;
     for (i = 11; i < 61; i++)
@@ -314,7 +314,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
 
             press = 0;
             if (w->news.var_480 != -1) {
-                const uint8 idx = 11 + w->news.var_480;
+                const uint8_t idx = 11 + w->news.var_480;
                 news_item_is_valid_idx(idx);
                 if (i == idx && w->news.var_482 == 1)
                     press = INSET_RECT_FLAG_BORDER_INSET;
@@ -334,11 +334,11 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
                 }
 
                 rct_peep* peep = GET_PEEP(newsItem->Assoc);
-                sint32 clip_x = 10, clip_y = 19;
+                int32_t clip_x = 10, clip_y = 19;
 
                 // If normal peep set sprite to normal (no food)
                 // If staff set sprite to staff sprite
-                sint32 sprite_type = 0;
+                int32_t sprite_type = 0;
                 if (peep->type == PEEP_TYPE_STAFF){
                     sprite_type = peep->sprite_type;
                     if (peep->staff_type == STAFF_TYPE_ENTERTAINER){
@@ -346,7 +346,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
                     }
                 }
 
-                uint32 image_id = g_peep_animation_entries[sprite_type].sprite_animation->base_image;
+                uint32_t image_id = g_peep_animation_entries[sprite_type].sprite_animation->base_image;
                 image_id += 0xA0000001;
                 image_id |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24);
 
@@ -379,7 +379,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
 
             press = 0;
             if (w->news.var_480 != -1) {
-                const uint8 idx = 11 + w->news.var_480;
+                const uint8_t idx = 11 + w->news.var_480;
                 news_item_is_valid_idx(idx);
                 if (i == idx && w->news.var_482 == 2)
                     press = 0x20;

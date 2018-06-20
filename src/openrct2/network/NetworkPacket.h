@@ -18,24 +18,24 @@
 class NetworkPacket final
 {
 public:
-    uint16                              Size = 0;
-    std::shared_ptr<std::vector<uint8>> Data = std::make_shared<std::vector<uint8>>();
+    uint16_t                              Size = 0;
+    std::shared_ptr<std::vector<uint8_t>> Data = std::make_shared<std::vector<uint8_t>>();
     size_t                              BytesTransferred = 0;
     size_t                              BytesRead = 0;
 
     static std::unique_ptr<NetworkPacket> Allocate();
     static std::unique_ptr<NetworkPacket> Duplicate(NetworkPacket& packet);
 
-    uint8 * GetData();
-    sint32  GetCommand();
+    uint8_t * GetData();
+    int32_t  GetCommand();
 
     void Clear();
     bool CommandRequiresAuth();
 
-    const uint8 * Read(size_t size);
+    const uint8_t * Read(size_t size);
     const utf8 *  ReadString();
 
-    void Write(const uint8 * bytes, size_t size);
+    void Write(const uint8_t * bytes, size_t size);
     void WriteString(const utf8 * string);
 
     template <typename T>
@@ -56,7 +56,7 @@ public:
     template <typename T>
     NetworkPacket & operator <<(T value) {
         T swapped = ByteSwapBE(value);
-        uint8 * bytes = (uint8 *)&swapped;
+        uint8_t * bytes = (uint8_t *)&swapped;
         Data->insert(Data->end(), bytes, bytes + sizeof(value));
         return *this;
     }

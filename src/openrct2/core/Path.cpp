@@ -247,7 +247,7 @@ namespace Path
             if (count != -1)
             {
                 // Find a file which matches by name (case insensitive)
-                for (sint32 i = 0; i < count; i++)
+                for (int32_t i = 0; i < count; i++)
                 {
                     if (String::Equals(files[i]->d_name, fileName.c_str(), true))
                     {
@@ -257,7 +257,7 @@ namespace Path
                 }
 
                 // Free memory
-                for (sint32 i = 0; i < count; i++)
+                for (int32_t i = 0; i < count; i++)
                 {
                     free(files[i]);
                 }

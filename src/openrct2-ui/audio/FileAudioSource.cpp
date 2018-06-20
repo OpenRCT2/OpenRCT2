@@ -25,8 +25,8 @@ namespace OpenRCT2::Audio
     private:
         AudioFormat _format = {};
         SDL_RWops * _rw = nullptr;
-        uint64      _dataBegin = 0;
-        uint64      _dataLength = 0;
+        uint64_t      _dataBegin = 0;
+        uint64_t      _dataLength = 0;
 
     public:
         ~FileAudioSource()
@@ -34,7 +34,7 @@ namespace OpenRCT2::Audio
             Unload();
         }
 
-        uint64 GetLength() const override
+        uint64_t GetLength() const override
         {
             return _dataLength;
         }
@@ -44,17 +44,17 @@ namespace OpenRCT2::Audio
             return _format;
         }
 
-        size_t Read(void * dst, uint64 offset, size_t len) override
+        size_t Read(void * dst, uint64_t offset, size_t len) override
         {
             size_t bytesRead = 0;
-            sint64 currentPosition = SDL_RWtell(_rw);
+            int64_t currentPosition = SDL_RWtell(_rw);
             if (currentPosition != -1)
             {
-                size_t bytesToRead = (size_t)std::min<uint64>(len, _dataLength - offset);
-                sint64 dataOffset = _dataBegin + offset;
+                size_t bytesToRead = (size_t)std::min<uint64_t>(len, _dataLength - offset);
+                int64_t dataOffset = _dataBegin + offset;
                 if (currentPosition != dataOffset)
                 {
-                    sint64 newPosition = SDL_RWseek(_rw, dataOffset, SEEK_SET);
+                    int64_t newPosition = SDL_RWseek(_rw, dataOffset, SEEK_SET);
                     if (newPosition == -1)
                     {
                         return 0;
@@ -67,11 +67,11 @@ namespace OpenRCT2::Audio
 
         bool LoadWAV(SDL_RWops * rw)
         {
-            const uint32 DATA = 0x61746164;
-            const uint32 FMT  = 0x20746D66;
-            const uint32 RIFF = 0x46464952;
-            const uint32 WAVE = 0x45564157;
-            const uint16 pcmformat = 0x0001;
+            const uint32_t DATA = 0x61746164;
+            const uint32_t FMT  = 0x20746D66;
+            const uint32_t RIFF = 0x46464952;
+            const uint32_t WAVE = 0x45564157;
+            const uint16_t pcmformat = 0x0001;
 
             Unload();
 
@@ -81,7 +81,7 @@ namespace OpenRCT2::Audio
             }
             _rw = rw;
 
-            uint32 chunkId = SDL_ReadLE32(rw);
+            uint32_t chunkId = SDL_ReadLE32(rw);
             if (chunkId != RIFF)
             {
                 log_verbose("Not a WAV file");
@@ -90,21 +90,21 @@ namespace OpenRCT2::Audio
 
             // Read and discard chunk size
             SDL_ReadLE32(rw);
-            uint32 chunkFormat = SDL_ReadLE32(rw);
+            uint32_t chunkFormat = SDL_ReadLE32(rw);
             if (chunkFormat != WAVE)
             {
                 log_verbose("Not in WAVE format");
                 return false;
             }
 
-            uint32 fmtChunkSize = FindChunk(rw, FMT);
+            uint32_t fmtChunkSize = FindChunk(rw, FMT);
             if (!fmtChunkSize)
             {
                 log_verbose("Could not find FMT chunk");
                 return false;
             }
 
-            uint64 chunkStart = SDL_RWtell(rw);
+            uint64_t chunkStart = SDL_RWtell(rw);
 
             WaveFormat waveFormat;
             SDL_RWread(rw, &waveFormat, sizeof(waveFormat), 1);
@@ -128,7 +128,7 @@ namespace OpenRCT2::Audio
             }
             _format.channels = waveFormat.channels;
 
-            uint32 dataChunkSize = FindChunk(rw, DATA);
+            uint32_t dataChunkSize = FindChunk(rw, DATA);
             if (dataChunkSize == 0)
             {
                 log_verbose("Could not find DATA chunk");
@@ -141,18 +141,18 @@ namespace OpenRCT2::Audio
         }
 
     private:
-        uint32 FindChunk(SDL_RWops * rw, uint32 wantedId)
+        uint32_t FindChunk(SDL_RWops * rw, uint32_t wantedId)
         {
-            uint32 subchunkId = SDL_ReadLE32(rw);
-            uint32 subchunkSize = SDL_ReadLE32(rw);
+            uint32_t subchunkId = SDL_ReadLE32(rw);
+            uint32_t subchunkSize = SDL_ReadLE32(rw);
             if (subchunkId == wantedId)
             {
                 return subchunkSize;
             }
-            const uint32 FACT = 0x74636166;
-            const uint32 LIST = 0x5453494c;
-            const uint32 BEXT = 0x74786562;
-            const uint32 JUNK = 0x4B4E554A;
+            const uint32_t FACT = 0x74636166;
+            const uint32_t LIST = 0x5453494c;
+            const uint32_t BEXT = 0x74786562;
+            const uint32_t JUNK = 0x4B4E554A;
             while (subchunkId == FACT || subchunkId == LIST || subchunkId == BEXT || subchunkId == JUNK)
             {
                 SDL_RWseek(rw, subchunkSize, RW_SEEK_CUR);

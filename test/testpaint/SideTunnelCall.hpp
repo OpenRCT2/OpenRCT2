@@ -19,14 +19,14 @@ enum {
 };
 
 struct TunnelCall {
-    uint8 call;
-    sint16 offset;
-    uint8 type;
+    uint8_t call;
+    int16_t offset;
+    uint8_t type;
 };
 
 namespace SideTunnelCall {
-    sint16 GetTunnelOffset(uint32 baseHeight, tunnel_entry calls[3]);
-    TunnelCall ExtractTunnelCalls(tunnel_entry * list, uint8 count, uint16 baseHeight, bool * error);
+    int16_t GetTunnelOffset(uint32_t baseHeight, tunnel_entry calls[3]);
+    TunnelCall ExtractTunnelCalls(tunnel_entry * list, uint8_t count, uint16_t baseHeight, bool * error);
 
     bool TunnelPatternsMatch(TunnelCall expected[4], TunnelCall actual[4]);
     void GetTunnelCallReferencePattern(TunnelCall tunnelCalls[4][4], TunnelCall (*out)[4]);

@@ -17,13 +17,13 @@
 void WallObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
-    _legacyType.wall.tool_id = stream->ReadValue<uint8>();
-    _legacyType.wall.flags = stream->ReadValue<uint8>();
-    _legacyType.wall.height = stream->ReadValue<uint8>();
-    _legacyType.wall.flags2 = stream->ReadValue<uint8>();
-    _legacyType.wall.price = stream->ReadValue<uint16>();
-    _legacyType.wall.scenery_tab_id = stream->ReadValue<uint8>();
-    _legacyType.wall.scrolling_mode = stream->ReadValue<uint8>();
+    _legacyType.wall.tool_id = stream->ReadValue<uint8_t>();
+    _legacyType.wall.flags = stream->ReadValue<uint8_t>();
+    _legacyType.wall.height = stream->ReadValue<uint8_t>();
+    _legacyType.wall.flags2 = stream->ReadValue<uint8_t>();
+    _legacyType.wall.price = stream->ReadValue<uint16_t>();
+    _legacyType.wall.scenery_tab_id = stream->ReadValue<uint8_t>();
+    _legacyType.wall.scrolling_mode = stream->ReadValue<uint8_t>();
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
 
@@ -55,15 +55,15 @@ void WallObject::Unload()
     _legacyType.image = 0;
 }
 
-void WallObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
+void WallObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const
 {
-    sint32 x = width / 2;
-    sint32 y = height / 2;
+    int32_t x = width / 2;
+    int32_t y = height / 2;
 
     x += 14;
     y += (_legacyType.wall.height * 2) + 16;
 
-    uint32 imageId = 0x20D00000 | _legacyType.image;
+    uint32_t imageId = 0x20D00000 | _legacyType.image;
     if (_legacyType.wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
     {
         imageId |= 0x92000000;
@@ -99,7 +99,7 @@ void WallObject::ReadJson(IReadObjectContext * context, const json_t * root)
     SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
 
     // Flags
-    _legacyType.wall.flags = ObjectJsonHelpers::GetFlags<uint8>(properties, {
+    _legacyType.wall.flags = ObjectJsonHelpers::GetFlags<uint8_t>(properties, {
         { "hasPrimaryColour", WALL_SCENERY_HAS_PRIMARY_COLOUR },
         { "hasSecondaryColour", WALL_SCENERY_HAS_SECONDARY_COLOUR },
         { "hasTernaryColour", WALL_SCENERY_HAS_TERNARY_COLOUR },
@@ -107,7 +107,7 @@ void WallObject::ReadJson(IReadObjectContext * context, const json_t * root)
         { "isBanner", WALL_SCENERY_IS_BANNER },
         { "isDoor", WALL_SCENERY_IS_DOOR },
         { "isLongDoorAnimation", WALL_SCENERY_LONG_DOOR_ANIMATION }});
-    _legacyType.wall.flags2 = ObjectJsonHelpers::GetFlags<uint8>(properties, {
+    _legacyType.wall.flags2 = ObjectJsonHelpers::GetFlags<uint8_t>(properties, {
         { "isOpaque", WALL_SCENERY_2_IS_OPAQUE },
         { "isAnimated", WALL_SCENERY_2_ANIMATED }});
 

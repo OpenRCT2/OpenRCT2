@@ -85,7 +85,7 @@ void DrawLineShader::GetLocations()
     vVertMat    = GetAttributeLocation("vVertMat");
 }
 
-void DrawLineShader::SetScreenSize(sint32 width, sint32 height)
+void DrawLineShader::SetScreenSize(int32_t width, int32_t height)
 {
     glUniform2i(uScreenSize, width, height);
 }

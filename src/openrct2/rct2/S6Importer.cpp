@@ -60,7 +60,7 @@ private:
 
     const utf8 *    _s6Path = nullptr;
     rct_s6_data     _s6 { };
-    uint8           _gameVersion = 0;
+    uint8_t           _gameVersion = 0;
 
 public:
     S6Importer(std::shared_ptr<IObjectRepository> objectRepository, std::shared_ptr<IObjectManager> objectManager)
@@ -140,7 +140,7 @@ public:
 
         // Read packed objects
         // TODO try to contain this more and not store objects until later
-        for (uint16 i = 0; i < _s6.header.num_packed_objects; i++)
+        for (uint16_t i = 0; i < _s6.header.num_packed_objects; i++)
         {
             _objectRepository->ExportPackedObject(stream);
         }
@@ -203,12 +203,12 @@ public:
         memcpy(gTileElements, _s6.tile_elements, sizeof(_s6.tile_elements));
 
         gNextFreeTileElementPointerIndex = _s6.next_free_tile_element_pointer_index;
-        for (sint32 i = 0; i < RCT2_MAX_SPRITES; i++)
+        for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
         {
             memcpy(get_sprite(i), &_s6.sprites[i], sizeof(rct_sprite));
         }
 
-        for (sint32 i = 0; i < NUM_SPRITE_LISTS; i++)
+        for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++)
         {
             gSpriteListHead[i]  = _s6.sprite_lists_head[i];
             gSpriteListCount[i] = _s6.sprite_lists_count[i];
@@ -306,7 +306,7 @@ public:
         memcpy(gPeepWarningThrottle, _s6.peep_warning_throttle, sizeof(_s6.peep_warning_throttle));
 
         // Awards
-        for (sint32 i = 0; i < RCT12_MAX_AWARDS; i++)
+        for (int32_t i = 0; i < RCT12_MAX_AWARDS; i++)
         {
             rct12_award * src = &_s6.awards[i];
             Award *       dst = &gCurrentAwards[i];
@@ -348,7 +348,7 @@ public:
         // pad_0135934B
         gSamePriceThroughoutParkB = _s6.same_price_throughout_extended;
         // Preserve compatibility with vanilla RCT2's save format.
-        for (uint8 i = 0; i < RCT12_MAX_PARK_ENTRANCES; i++)
+        for (uint8_t i = 0; i < RCT12_MAX_PARK_ENTRANCES; i++)
         {
             gParkEntrances[i].x         = _s6.park_entrance_x[i];
             gParkEntrances[i].y         = _s6.park_entrance_y[i];
@@ -443,7 +443,7 @@ public:
         // We try to fix the cycles on import, hence the 'true' parameter
         check_for_sprite_list_cycles(true);
         check_for_spatial_index_cycles(true);
-        sint32 disjoint_sprites_count = fix_disjoint_sprites();
+        int32_t disjoint_sprites_count = fix_disjoint_sprites();
         // This one is less harmful, no need to assert for it ~janisozaur
         if (disjoint_sprites_count > 0)
         {
@@ -464,7 +464,7 @@ public:
 
     void ImportRides()
     {
-        for (uint8 index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
+        for (uint8_t index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
         {
             auto src = &_s6.rides[index];
             auto dst = get_ride(index);
@@ -480,7 +480,7 @@ public:
         }
     }
 
-    void ImportRide(Ride * dst, const rct2_ride * src, const uint8 rideIndex)
+    void ImportRide(Ride * dst, const rct2_ride * src, const uint8_t rideIndex)
     {
         memset(dst, 0, sizeof(Ride));
 
@@ -490,7 +490,7 @@ public:
         dst->mode = src->mode;
         dst->colour_scheme_type = src->colour_scheme_type;
 
-        for (uint8 i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i ++)
+        for (uint8_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i ++)
         {
             dst->vehicle_colours[i] = src->vehicle_colours[i];
         }
@@ -502,7 +502,7 @@ public:
 
         dst->overall_view = src->overall_view;
 
-        for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
+        for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
             dst->station_starts[i] = src->station_starts[i];
             dst->station_heights[i] = src->station_heights[i];
@@ -531,7 +531,7 @@ public:
             dst->queue_length[i] = src->queue_length[i];
         }
         // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
-        for (sint32 i = RCT12_MAX_STATIONS_PER_RIDE; i < MAX_STATIONS; i++)
+        for (int32_t i = RCT12_MAX_STATIONS_PER_RIDE; i < MAX_STATIONS; i++)
         {
             dst->station_starts[i].xy = RCT_XY8_UNDEFINED;
             dst->train_at_station[i] = 255;
@@ -540,11 +540,11 @@ public:
             dst->last_peep_in_queue[i] = SPRITE_INDEX_NULL;
         }
 
-        for (sint32 i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE; i++)
+        for (int32_t i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE; i++)
         {
             dst->vehicles[i] = src->vehicles[i];
         }
-        for (sint32 i = RCT2_MAX_VEHICLES_PER_RIDE; i < MAX_VEHICLES_PER_RIDE; i++)
+        for (int32_t i = RCT2_MAX_VEHICLES_PER_RIDE; i < MAX_VEHICLES_PER_RIDE; i++)
         {
             dst->vehicles[i] = SPRITE_INDEX_NULL;
         }
@@ -602,14 +602,14 @@ public:
         dst->cur_num_customers = src->cur_num_customers;
         dst->num_customers_timeout = src->num_customers_timeout;
 
-        for (uint8 i = 0; i < RCT2_CUSTOMER_HISTORY_SIZE; i++)
+        for (uint8_t i = 0; i < RCT2_CUSTOMER_HISTORY_SIZE; i++)
         {
             dst->num_customers[i] = src->num_customers[i];
         }
 
         dst->price = src->price;
 
-        for (uint8 i = 0; i < 2; i++)
+        for (uint8_t i = 0; i < 2; i++)
         {
             dst->chairlift_bullwheel_location[i] = src->chairlift_bullwheel_location[i];
             dst->chairlift_bullwheel_z[i] = src->chairlift_bullwheel_z[i];
@@ -666,7 +666,7 @@ public:
         dst->inspection_interval = src->inspection_interval;
         dst->last_inspection = src->last_inspection;
 
-        for (uint8 i = 0; i < RCT2_DOWNTIME_HISTORY_SIZE; i++)
+        for (uint8_t i = 0; i < RCT2_DOWNTIME_HISTORY_SIZE; i++)
         {
             dst->downtime_history[i] = src->downtime_history[i];
         }
@@ -682,7 +682,7 @@ public:
         dst->income_per_hour = src->income_per_hour;
         dst->profit = src->profit;
 
-        for (uint8 i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
+        for (uint8_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
         {
             dst->track_colour_main[i] = src->track_colour_main[i];
             dst->track_colour_additional[i] = src->track_colour_additional[i];
@@ -697,7 +697,7 @@ public:
         dst->guests_favourite = src->guests_favourite;
         dst->lifecycle_flags = src->lifecycle_flags;
 
-        for (uint8 i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
+        for (uint8_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
         {
             dst->vehicle_colours_extended[i] = src->vehicle_colours_extended[i];
         }
@@ -718,11 +718,11 @@ public:
     {
         set_every_ride_type_not_invented();
 
-        for (sint32 rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++)
+        for (int32_t rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++)
         {
-            sint32 quadIndex = rideType >> 5;
-            sint32 bitIndex  = rideType & 0x1F;
-            bool   invented  = (_s6.researched_ride_types[quadIndex] & ((uint32) 1 << bitIndex));
+            int32_t quadIndex = rideType >> 5;
+            int32_t bitIndex  = rideType & 0x1F;
+            bool   invented  = (_s6.researched_ride_types[quadIndex] & ((uint32_t) 1 << bitIndex));
 
             if (invented)
                 ride_type_set_invented(rideType);
@@ -733,11 +733,11 @@ public:
     {
         set_every_ride_entry_not_invented();
 
-        for (sint32 rideEntryIndex = 0; rideEntryIndex < MAX_RIDE_OBJECTS; rideEntryIndex++)
+        for (int32_t rideEntryIndex = 0; rideEntryIndex < MAX_RIDE_OBJECTS; rideEntryIndex++)
         {
-            sint32 quadIndex = rideEntryIndex >> 5;
-            sint32 bitIndex  = rideEntryIndex & 0x1F;
-            bool   invented  = (_s6.researched_ride_entries[quadIndex] & ((uint32) 1 << bitIndex));
+            int32_t quadIndex = rideEntryIndex >> 5;
+            int32_t bitIndex  = rideEntryIndex & 0x1F;
+            bool   invented  = (_s6.researched_ride_entries[quadIndex] & ((uint32_t) 1 << bitIndex));
 
             if (invented)
                 ride_entry_set_invented(rideEntryIndex);
@@ -748,11 +748,11 @@ public:
     {
         set_all_scenery_items_not_invented();
 
-        for (uint16 sceneryEntryIndex = 0; sceneryEntryIndex < RCT2_MAX_RESEARCHED_SCENERY_ITEMS; sceneryEntryIndex++)
+        for (uint16_t sceneryEntryIndex = 0; sceneryEntryIndex < RCT2_MAX_RESEARCHED_SCENERY_ITEMS; sceneryEntryIndex++)
         {
-            sint32 quadIndex = sceneryEntryIndex >> 5;
-            sint32 bitIndex  = sceneryEntryIndex & 0x1F;
-            bool   invented  = (_s6.researched_scenery_items[quadIndex] & ((uint32) 1 << bitIndex));
+            int32_t quadIndex = sceneryEntryIndex >> 5;
+            int32_t bitIndex  = sceneryEntryIndex & 0x1F;
+            bool   invented  = (_s6.researched_scenery_items[quadIndex] & ((uint32_t) 1 << bitIndex));
 
             if (invented)
                 scenery_set_invented(sceneryEntryIndex);
@@ -811,10 +811,10 @@ public:
         }
     }
 
-    void ImportNumRiders(Ride * dst, const uint8 rideIndex)
+    void ImportNumRiders(Ride * dst, const uint8_t rideIndex)
     {
         // The number of riders might have overflown or underflown. Re-calculate the value.
-        uint16 numRiders = 0;
+        uint16_t numRiders = 0;
         for (const rct_sprite sprite : _s6.sprites)
         {
             if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)

@@ -38,10 +38,10 @@ struct ObjectRepositoryItem
     Object *           LoadedObject{};
     struct
     {
-        uint8   RideFlags;
-        uint8   RideCategory[MAX_CATEGORIES_PER_RIDE];
-        uint8   RideType[MAX_RIDE_TYPES_PER_RIDE_ENTRY];
-        uint8   RideGroupIndex;
+        uint8_t   RideFlags;
+        uint8_t   RideCategory[MAX_CATEGORIES_PER_RIDE];
+        uint8_t   RideType[MAX_RIDE_TYPES_PER_RIDE_ENTRY];
+        uint8_t   RideGroupIndex;
     } RideInfo;
     struct
     {
@@ -53,8 +53,8 @@ interface IObjectRepository
 {
     virtual ~IObjectRepository() = default;
 
-    virtual void                            LoadOrConstruct(sint32 language) abstract;
-    virtual void                            Construct(sint32 language) abstract;
+    virtual void                            LoadOrConstruct(int32_t language) abstract;
+    virtual void                            Construct(int32_t language) abstract;
     virtual size_t                          GetNumObjects() const abstract;
     virtual const ObjectRepositoryItem *    GetObjects() const abstract;
     virtual const ObjectRepositoryItem *    FindObject(const utf8 * name) const abstract;
@@ -83,4 +83,4 @@ const ObjectRepositoryItem *    object_repository_find_object_by_name(const char
 void *                          object_repository_load_object(const rct_object_entry * objectEntry);
 
 void            object_delete(void * object);
-void            object_draw_preview(const void * object, rct_drawpixelinfo * dpi, sint32 width, sint32 height);
+void            object_draw_preview(const void * object, rct_drawpixelinfo * dpi, int32_t width, int32_t height);

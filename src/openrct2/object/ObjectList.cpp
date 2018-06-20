@@ -22,7 +22,7 @@
 
 // 98DA00
 // clang-format off
-sint32 object_entry_group_counts[] = {
+int32_t object_entry_group_counts[] = {
     MAX_RIDE_OBJECTS,          // rides
     MAX_SMALL_SCENERY_OBJECTS, // small scenery
     MAX_LARGE_SCENERY_OBJECTS, // large scenery
@@ -37,7 +37,7 @@ sint32 object_entry_group_counts[] = {
 };
 
 // 98DA2C
-sint32 object_entry_group_encoding[] = {
+int32_t object_entry_group_encoding[] = {
     CHUNK_ENCODING_RLE,
     CHUNK_ENCODING_RLE,
     CHUNK_ENCODING_RLE,
@@ -54,21 +54,21 @@ sint32 object_entry_group_encoding[] = {
 
 bool object_entry_is_empty(const rct_object_entry *entry)
 {
-    uint64 a, b;
-    memcpy(&a, (uint8 *)entry, 8);
-    memcpy(&b, (uint8 *)entry + 8, 8);
+    uint64_t a, b;
+    memcpy(&a, (uint8_t *)entry, 8);
+    memcpy(&b, (uint8_t *)entry + 8, 8);
 
     if (a == 0xFFFFFFFFFFFFFFFF && b == 0xFFFFFFFFFFFFFFFF) return true;
     if (a == 0 && b == 0) return true;
     return false;
 }
 
-uint8 object_entry_get_type(const rct_object_entry * objectEntry)
+uint8_t object_entry_get_type(const rct_object_entry * objectEntry)
 {
     return (objectEntry->flags & 0x0F);
 }
 
-uint8 object_entry_get_source_game(const rct_object_entry * objectEntry)
+uint8_t object_entry_get_source_game(const rct_object_entry * objectEntry)
 {
     return (objectEntry->flags & 0xF0) >> 4;
 }
@@ -88,16 +88,16 @@ void object_create_identifier_name(char* string_buffer, size_t size, const rct_o
  * bl = entry_index
  * ecx = entry_type
  */
-bool find_object_in_entry_group(const rct_object_entry * entry, uint8 * entry_type, uint8 * entry_index)
+bool find_object_in_entry_group(const rct_object_entry * entry, uint8_t * entry_type, uint8_t * entry_index)
 {
-    sint32 objectType = object_entry_get_type(entry);
+    int32_t objectType = object_entry_get_type(entry);
     if (objectType >= OBJECT_TYPE_COUNT)
     {
         return false;
     }
 
     auto maxObjects = object_entry_group_counts[objectType];
-    for (sint32 i = 0; i < maxObjects; i++)
+    for (int32_t i = 0; i < maxObjects; i++)
     {
         if (object_entry_get_chunk(objectType, i) != nullptr)
         {
@@ -113,9 +113,9 @@ bool find_object_in_entry_group(const rct_object_entry * entry, uint8 * entry_ty
     return false;
 }
 
-void get_type_entry_index(size_t index, uint8 * outObjectType, uint8 * outEntryIndex)
+void get_type_entry_index(size_t index, uint8_t * outObjectType, uint8_t * outEntryIndex)
 {
-    uint8 objectType = OBJECT_TYPE_RIDE;
+    uint8_t objectType = OBJECT_TYPE_RIDE;
     for (size_t groupCount : object_entry_group_counts)
     {
         if (index >= groupCount) {
@@ -127,12 +127,12 @@ void get_type_entry_index(size_t index, uint8 * outObjectType, uint8 * outEntryI
     }
 
     if (outObjectType != nullptr) *outObjectType = objectType;
-    if (outEntryIndex != nullptr) *outEntryIndex = (uint8)index;
+    if (outEntryIndex != nullptr) *outEntryIndex = (uint8_t)index;
 }
 
 const rct_object_entry * get_loaded_object_entry(size_t index)
 {
-    uint8 objectType, entryIndex;
+    uint8_t objectType, entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
 
     return object_entry_get_entry(objectType, entryIndex);
@@ -140,7 +140,7 @@ const rct_object_entry * get_loaded_object_entry(size_t index)
 
 void * get_loaded_object_chunk(size_t index)
 {
-    uint8 objectType, entryIndex;
+    uint8_t objectType, entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
     return object_entry_get_chunk(objectType, entryIndex);
 }
@@ -152,10 +152,10 @@ void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_obj
     buffer[bufferSize - 1] = 0;
 }
 
-void * object_entry_get_chunk(sint32 objectType, size_t index)
+void * object_entry_get_chunk(int32_t objectType, size_t index)
 {
     size_t objectIndex = index;
-    for (sint32 i = 0; i < objectType; i++)
+    for (int32_t i = 0; i < objectType; i++)
     {
         objectIndex += object_entry_group_counts[i];
     }
@@ -170,7 +170,7 @@ void * object_entry_get_chunk(sint32 objectType, size_t index)
     return result;
 }
 
-const rct_object_entry * object_entry_get_entry(sint32 objectType, size_t index)
+const rct_object_entry * object_entry_get_entry(int32_t objectType, size_t index)
 {
     const rct_object_entry * result = nullptr;
     auto objectMgr = OpenRCT2::GetContext()->GetObjectManager();

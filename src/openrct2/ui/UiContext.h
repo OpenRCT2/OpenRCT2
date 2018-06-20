@@ -25,7 +25,7 @@ namespace OpenRCT2
     {
         interface IDrawingEngineFactory;
         interface IRainDrawer;
-        using DrawRainFunc = void(*)(OpenRCT2::Drawing::IRainDrawer * rainDrawer, sint32 left, sint32 top, sint32 width, sint32 height);
+        using DrawRainFunc = void(*)(OpenRCT2::Drawing::IRainDrawer * rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
     } // namespace Drawing
 
     namespace Ui
@@ -41,8 +41,8 @@ namespace OpenRCT2
 
         inline bool operator <(const Resolution& lhs, const Resolution& rhs)
         {
-            sint32 areaA = lhs.Width * lhs.Height;
-            sint32 areaB = rhs.Width * rhs.Height;
+            int32_t areaA = lhs.Width * lhs.Height;
+            int32_t areaB = rhs.Width * rhs.Height;
             if (areaA == areaB)
             {
                 return lhs.Width < rhs.Width;
@@ -97,9 +97,9 @@ namespace OpenRCT2
             virtual void    CloseWindow() abstract;
             virtual void    RecreateWindow() abstract;
             virtual void *  GetWindow() abstract;
-            virtual sint32  GetWidth() abstract;
-            virtual sint32  GetHeight() abstract;
-            virtual sint32  GetScaleQuality() abstract;
+            virtual int32_t  GetWidth() abstract;
+            virtual int32_t  GetHeight() abstract;
+            virtual int32_t  GetScaleQuality() abstract;
             virtual void    SetFullscreenMode(FULLSCREEN_MODE mode) abstract;
             virtual std::vector<Resolution> GetFullscreenResolutions() abstract;
             virtual bool HasFocus() abstract;
@@ -116,14 +116,14 @@ namespace OpenRCT2
             virtual const CursorState * GetCursorState() abstract;
             virtual CURSOR_ID           GetCursor() abstract;
             virtual void                SetCursor(CURSOR_ID cursor) abstract;
-            virtual void                SetCursorScale(uint8 scale) abstract;
+            virtual void                SetCursorScale(uint8_t scale) abstract;
             virtual void                SetCursorVisible(bool value) abstract;
-            virtual void                GetCursorPosition(sint32 * x, sint32 * y) abstract;
-            virtual void                SetCursorPosition(sint32 x, sint32 y) abstract;
+            virtual void                GetCursorPosition(int32_t * x, int32_t * y) abstract;
+            virtual void                SetCursorPosition(int32_t x, int32_t y) abstract;
             virtual void                SetCursorTrap(bool value) abstract;
-            virtual const uint8 *       GetKeysState() abstract;
-            virtual const uint8 *       GetKeysPressed() abstract;
-            virtual void                SetKeysPressed(uint32 keysym, uint8 scancode) abstract;
+            virtual const uint8_t *       GetKeysState() abstract;
+            virtual const uint8_t *       GetKeysPressed() abstract;
+            virtual void                SetKeysPressed(uint32_t keysym, uint8_t scancode) abstract;
 
             // Drawing
             virtual std::shared_ptr<Drawing::IDrawingEngineFactory> GetDrawingEngineFactory() abstract;

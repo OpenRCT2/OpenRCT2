@@ -70,14 +70,14 @@ enum OBJECT_SOURCE_GAME
  */
 struct rct_object_entry {
     union {
-        uint8 end_flag; // needed not to read past allocated buffer.
-        uint32 flags;
+        uint8_t end_flag; // needed not to read past allocated buffer.
+        uint32_t flags;
     };
     union {
         char nameWOC[12];
         struct {
             char name[8];
-            uint32 checksum;
+            uint32_t checksum;
         };
     };
 
@@ -106,8 +106,8 @@ assert_struct_size(rct_object_entry_group, 8);
 #endif
 
 struct rct_ride_filters {
-    uint8 category[2];
-    uint8 ride_type;
+    uint8_t category[2];
+    uint8_t ride_type;
 };
 assert_struct_size(rct_ride_filters, 3);
 
@@ -130,10 +130,10 @@ interface IReadObjectContext
 
     virtual IObjectRepository& GetObjectRepository() abstract;
     virtual bool ShouldLoadImages() abstract;
-    virtual std::vector<uint8> GetData(const std::string_view& path) abstract;
+    virtual std::vector<uint8_t> GetData(const std::string_view& path) abstract;
 
-    virtual void LogWarning(uint32 code, const utf8 * text) abstract;
-    virtual void LogError(uint32 code, const utf8 * text) abstract;
+    virtual void LogWarning(uint32_t code, const utf8 * text) abstract;
+    virtual void LogError(uint32_t code, const utf8 * text) abstract;
 };
 
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
@@ -154,11 +154,11 @@ protected:
     const StringTable & GetStringTable() const { return _stringTable; }
     ImageTable &        GetImageTable() { return _imageTable; }
 
-    std::string         GetOverrideString(uint8 index) const;
-    std::string         GetString(uint8 index) const;
-    std::string         GetString(sint32 language, uint8 index) const;
+    std::string         GetOverrideString(uint8_t index) const;
+    std::string         GetString(uint8_t index) const;
+    std::string         GetString(int32_t language, uint8_t index) const;
 
-    void                SetSourceGame(const uint8 sourceGame);
+    void                SetSourceGame(const uint8_t sourceGame);
     bool                IsRCT1Object();
     bool                IsAAObject();
     bool                IsLLObject();
@@ -178,11 +178,11 @@ public:
     virtual void Load() abstract;
     virtual void Unload() abstract;
 
-    virtual void DrawPreview(rct_drawpixelinfo * /*dpi*/, sint32 /*width*/, sint32 /*height*/) const { }
+    virtual void DrawPreview(rct_drawpixelinfo * /*dpi*/, int32_t /*width*/, int32_t /*height*/) const { }
 
-    virtual uint8           GetObjectType() const final { return _objectEntry.flags & 0x0F; }
+    virtual uint8_t           GetObjectType() const final { return _objectEntry.flags & 0x0F; }
     virtual std::string     GetName() const;
-    virtual std::string     GetName(sint32 language) const;
+    virtual std::string     GetName(int32_t language) const;
 
     virtual void SetRepositoryItem(ObjectRepositoryItem * /*item*/) const { }
 
@@ -190,14 +190,14 @@ public:
 
     rct_object_entry GetScgWallsHeader();
     rct_object_entry GetScgPathXHeader();
-    rct_object_entry CreateHeader(const char name[9], uint32 flags, uint32 checksum);
+    rct_object_entry CreateHeader(const char name[9], uint32_t flags, uint32_t checksum);
 
 };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
     #pragma GCC diagnostic pop
 #endif
 
-enum OBJECT_ERROR : uint32
+enum OBJECT_ERROR : uint32_t
 {
     OBJECT_ERROR_OK,
     OBJECT_ERROR_UNKNOWN,
@@ -208,20 +208,20 @@ enum OBJECT_ERROR : uint32
     OBJECT_ERROR_UNEXPECTED_EOF,
 };
 
-extern sint32 object_entry_group_counts[];
-extern sint32 object_entry_group_encoding[];
+extern int32_t object_entry_group_counts[];
+extern int32_t object_entry_group_encoding[];
 
 void object_list_load();
 
 bool object_entry_is_empty(const rct_object_entry *entry);
 bool object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
-sint32 object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength);
-bool find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
+int32_t object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength);
+bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_type, uint8_t* entry_index);
 void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
 
 const rct_object_entry * object_list_find(rct_object_entry *entry);
 
 void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);
 
-void * object_entry_get_chunk(sint32 objectType, size_t index);
-const rct_object_entry * object_entry_get_entry(sint32 objectType, size_t index);
+void * object_entry_get_chunk(int32_t objectType, size_t index);
+const rct_object_entry * object_entry_get_entry(int32_t objectType, size_t index);

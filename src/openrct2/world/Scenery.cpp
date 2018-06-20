@@ -26,40 +26,40 @@
 #include "SmallScenery.h"
 #include "Wall.h"
 
-uint8 gWindowSceneryActiveTabIndex;
-uint16 gWindowSceneryTabSelections[20];
-uint8 gWindowSceneryClusterEnabled;
-uint8 gWindowSceneryPaintEnabled;
-uint8 gWindowSceneryRotation;
+uint8_t gWindowSceneryActiveTabIndex;
+uint16_t gWindowSceneryTabSelections[20];
+uint8_t gWindowSceneryClusterEnabled;
+uint8_t gWindowSceneryPaintEnabled;
+uint8_t gWindowSceneryRotation;
 colour_t gWindowSceneryPrimaryColour;
 colour_t gWindowScenerySecondaryColour;
 colour_t gWindowSceneryTertiaryColour;
 bool gWindowSceneryEyedropperEnabled;
 
 rct_tile_element *gSceneryTileElement;
-uint8 gSceneryTileElementType;
+uint8_t gSceneryTileElementType;
 
 money32 gSceneryPlaceCost;
-sint16 gSceneryPlaceObject;
-sint16 gSceneryPlaceZ;
-uint8 gSceneryPlacePathType;
-uint8 gSceneryPlacePathSlope;
-uint8 gSceneryPlaceRotation;
+int16_t gSceneryPlaceObject;
+int16_t gSceneryPlaceZ;
+uint8_t gSceneryPlacePathType;
+uint8_t gSceneryPlacePathSlope;
+uint8_t gSceneryPlaceRotation;
 
-uint8 gSceneryGhostType;
+uint8_t gSceneryGhostType;
 LocationXYZ16 gSceneryGhostPosition;
-uint32 gSceneryGhostPathObjectType;
-uint8 gSceneryGhostWallRotation;
+uint32_t gSceneryGhostPathObjectType;
+uint8_t gSceneryGhostWallRotation;
 
-sint16 gSceneryShiftPressed;
-sint16 gSceneryShiftPressX;
-sint16 gSceneryShiftPressY;
-sint16 gSceneryShiftPressZOffset;
+int16_t gSceneryShiftPressed;
+int16_t gSceneryShiftPressX;
+int16_t gSceneryShiftPressY;
+int16_t gSceneryShiftPressZOffset;
 
-sint16 gSceneryCtrlPressed;
-sint16 gSceneryCtrlPressZ;
+int16_t gSceneryCtrlPressed;
+int16_t gSceneryCtrlPressZ;
 
-uint8 gSceneryGroundFlags;
+uint8_t gSceneryGroundFlags;
 
 money32 gClearSceneryCost;
 
@@ -71,9 +71,9 @@ const LocationXY8 ScenerySubTileOffsets[] = {
     { 23,  7 }
 };
 
-void scenery_increase_age(sint32 x, sint32 y, rct_tile_element *tileElement);
+void scenery_increase_age(int32_t x, int32_t y, rct_tile_element *tileElement);
 
-void scenery_update_tile(sint32 x, sint32 y)
+void scenery_update_tile(int32_t x, int32_t y)
 {
     rct_tile_element *tileElement;
 
@@ -109,7 +109,7 @@ void scenery_update_tile(sint32 x, sint32 y)
  *
  *  rct2: 0x006E33D9
  */
-void scenery_update_age(sint32 x, sint32 y, rct_tile_element *tileElement)
+void scenery_update_age(int32_t x, int32_t y, rct_tile_element *tileElement)
 {
     rct_tile_element *tileElementAbove;
     rct_scenery_entry *sceneryEntry;
@@ -168,13 +168,13 @@ void scenery_update_age(sint32 x, sint32 y, rct_tile_element *tileElement)
     map_invalidate_tile_zoom1(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
 }
 
-void scenery_increase_age(sint32 x, sint32 y, rct_tile_element *tileElement)
+void scenery_increase_age(int32_t x, int32_t y, rct_tile_element *tileElement)
 {
     if (tileElement->flags & SMALL_SCENERY_FLAG_ANIMATED)
         return;
 
     if (tileElement->properties.scenery.age < 255) {
-        uint8 newAge = tileElement->properties.scenery.age++;
+        uint8_t newAge = tileElement->properties.scenery.age++;
 
         // Only invalidate tiles when scenery crosses the withering threshholds, and can be withered.
         if (newAge == SCENERY_WITHER_AGE_THRESHOLD_1 || newAge == SCENERY_WITHER_AGE_THRESHOLD_2)
@@ -194,7 +194,7 @@ void scenery_increase_age(sint32 x, sint32 y, rct_tile_element *tileElement)
  *  rct2: 0x006E2712
  */
 void scenery_remove_ghost_tool_placement(){
-    sint16 x, y, z;
+    int16_t x, y, z;
 
     x = gSceneryGhostPosition.x;
     y = gSceneryGhostPosition.y;
@@ -272,7 +272,7 @@ void scenery_remove_ghost_tool_placement(){
     }
 }
 
-rct_scenery_entry *get_small_scenery_entry(sint32 entryIndex)
+rct_scenery_entry *get_small_scenery_entry(int32_t entryIndex)
 {
     rct_scenery_entry * result = nullptr;
     auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
@@ -287,7 +287,7 @@ rct_scenery_entry *get_small_scenery_entry(sint32 entryIndex)
     return result;
 }
 
-rct_scenery_entry *get_large_scenery_entry(sint32 entryIndex)
+rct_scenery_entry *get_large_scenery_entry(int32_t entryIndex)
 {
     rct_scenery_entry * result = nullptr;
     auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
@@ -302,7 +302,7 @@ rct_scenery_entry *get_large_scenery_entry(sint32 entryIndex)
     return result;
 }
 
-rct_scenery_entry *get_wall_entry(sint32 entryIndex)
+rct_scenery_entry *get_wall_entry(int32_t entryIndex)
 {
     rct_scenery_entry * result = nullptr;
     auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
@@ -317,7 +317,7 @@ rct_scenery_entry *get_wall_entry(sint32 entryIndex)
     return result;
 }
 
-rct_scenery_entry *get_banner_entry(sint32 entryIndex)
+rct_scenery_entry *get_banner_entry(int32_t entryIndex)
 {
     rct_scenery_entry * result = nullptr;
     auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
@@ -332,7 +332,7 @@ rct_scenery_entry *get_banner_entry(sint32 entryIndex)
     return result;
 }
 
-rct_scenery_entry *get_footpath_item_entry(sint32 entryIndex)
+rct_scenery_entry *get_footpath_item_entry(int32_t entryIndex)
 {
     rct_scenery_entry * result = nullptr;
     auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
@@ -347,7 +347,7 @@ rct_scenery_entry *get_footpath_item_entry(sint32 entryIndex)
     return result;
 }
 
-rct_scenery_group_entry *get_scenery_group_entry(sint32 entryIndex)
+rct_scenery_group_entry *get_scenery_group_entry(int32_t entryIndex)
 {
     rct_scenery_group_entry * result = nullptr;
     auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
@@ -362,7 +362,7 @@ rct_scenery_group_entry *get_scenery_group_entry(sint32 entryIndex)
     return result;
 }
 
-sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex)
+int32_t get_scenery_id_from_entry_index(uint8_t objectType, int32_t entryIndex)
 {
     switch (objectType) {
     case OBJECT_TYPE_SMALL_SCENERY: return entryIndex + SCENERY_SMALL_SCENERY_ID_MIN;
@@ -374,7 +374,7 @@ sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex)
     }
 }
 
-sint32 wall_entry_get_door_sound(const rct_scenery_entry * wallEntry)
+int32_t wall_entry_get_door_sound(const rct_scenery_entry * wallEntry)
 {
     return (wallEntry->wall.flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT;
 }

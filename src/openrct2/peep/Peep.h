@@ -330,7 +330,7 @@ enum PEEP_ACTION_SPRITE_TYPE
     PEEP_ACTION_SPRITE_TYPE_WITHDRAW_MONEY            = 36
 };
 
-enum PEEP_FLAGS : uint32
+enum PEEP_FLAGS : uint32_t
 {
     PEEP_FLAGS_LEAVING_PARK                       = (1 << 0),
     PEEP_FLAGS_SLOW_WALK                          = (1 << 1),
@@ -512,213 +512,213 @@ enum PEEP_RIDE_DECISION
 #pragma pack(push, 1)
 struct rct_peep_thought
 {
-    uint8 type;  // 0
-    uint8 item;  // 1
-    uint8 freshness; // 2 larger is less fresh
-    uint8 fresh_timeout; // 3 updates every tick
+    uint8_t type;  // 0
+    uint8_t item;  // 1
+    uint8_t freshness; // 2 larger is less fresh
+    uint8_t fresh_timeout; // 3 updates every tick
 };
 assert_struct_size(rct_peep_thought, 4);
 
 struct rct_peep
 {
-    uint8  sprite_identifier; // 0x00
-    uint8  misc_identifier;         // 0x01
-    uint16 next_in_quadrant;        // 0x02
-    uint16 next;                    // 0x04
-    uint16 previous;                // 0x06
-    uint8  linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+    uint8_t  sprite_identifier; // 0x00
+    uint8_t  misc_identifier;         // 0x01
+    uint16_t next_in_quadrant;        // 0x02
+    uint16_t next;                    // 0x04
+    uint16_t previous;                // 0x06
+    uint8_t  linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
     // Height from centre of sprite to bottom
-    uint8  sprite_height_negative; // 0x09
-    uint16 sprite_index;           // 0x0A
-    uint16 flags;                  // 0x0C
-    sint16 x;                      // 0x0E
-    sint16 y;                      // 0x10
-    sint16 z;                      // 0x12
+    uint8_t  sprite_height_negative; // 0x09
+    uint16_t sprite_index;           // 0x0A
+    uint16_t flags;                  // 0x0C
+    int16_t x;                      // 0x0E
+    int16_t y;                      // 0x10
+    int16_t z;                      // 0x12
     // Width from centre of sprite to edge
-    uint8 sprite_width; // 0x14
+    uint8_t sprite_width; // 0x14
     // Height from centre of sprite to top
-    uint8         sprite_height_positive; // 0x15
-    sint16        sprite_left;            // 0x16
-    sint16        sprite_top;             // 0x18
-    sint16        sprite_right;           // 0x1A
-    sint16        sprite_bottom;          // 0x1C
-    uint8         sprite_direction;       // 0x1E
-    uint8         pad_1F[3];
+    uint8_t         sprite_height_positive; // 0x15
+    int16_t        sprite_left;            // 0x16
+    int16_t        sprite_top;             // 0x18
+    int16_t        sprite_right;           // 0x1A
+    int16_t        sprite_bottom;          // 0x1C
+    uint8_t         sprite_direction;       // 0x1E
+    uint8_t         pad_1F[3];
     rct_string_id name_string_idx; // 0x22
-    uint16        next_x;          // 0x24
-    uint16        next_y;          // 0x26
-    uint8         next_z;          // 0x28
-    uint8         next_flags;     // 0x29
-    uint8         outside_of_park; // 0x2A
-    uint8         state;           // 0x2B
-    uint8         sub_state;       // 0x2C
-    uint8         sprite_type;     // 0x2D
-    uint8         type;            // 0x2E
+    uint16_t        next_x;          // 0x24
+    uint16_t        next_y;          // 0x26
+    uint8_t         next_z;          // 0x28
+    uint8_t         next_flags;     // 0x29
+    uint8_t         outside_of_park; // 0x2A
+    uint8_t         state;           // 0x2B
+    uint8_t         sub_state;       // 0x2C
+    uint8_t         sprite_type;     // 0x2D
+    uint8_t         type;            // 0x2E
     union {
-        uint8 staff_type;  // 0x2F
-        uint8 no_of_rides; // 0x2F
+        uint8_t staff_type;  // 0x2F
+        uint8_t no_of_rides; // 0x2F
     };
-    uint8   tshirt_colour;         // 0x30
-    uint8   trousers_colour;       // 0x31
-    uint16  destination_x;         // 0x32 Location that the peep is trying to get to
-    uint16  destination_y;         // 0x34
-    uint8   destination_tolerance; // 0x36 How close to destination before next action/state 0 = exact
-    uint8   var_37;
-    uint8   energy;           // 0x38
-    uint8   energy_target;    // 0x39
-    uint8   happiness;        // 0x3A
-    uint8   happiness_target; // 0x3B
-    uint8   nausea;           // 0x3C
-    uint8   nausea_target;    // 0x3D
-    uint8   hunger;           // 0x3E
-    uint8   thirst;           // 0x3F
-    uint8   toilet;           // 0x40
-    uint8   mass;             // 0x41
-    uint8   time_to_consume;  // 0x42
-    uint8   intensity; // 0x43 The max intensity is stored in the first 4 bits, and the min intensity in the second 4 bits
-    uint8   nausea_tolerance;        // 0x44
-    uint8   window_invalidate_flags; // 0x45
+    uint8_t   tshirt_colour;         // 0x30
+    uint8_t   trousers_colour;       // 0x31
+    uint16_t  destination_x;         // 0x32 Location that the peep is trying to get to
+    uint16_t  destination_y;         // 0x34
+    uint8_t   destination_tolerance; // 0x36 How close to destination before next action/state 0 = exact
+    uint8_t   var_37;
+    uint8_t   energy;           // 0x38
+    uint8_t   energy_target;    // 0x39
+    uint8_t   happiness;        // 0x3A
+    uint8_t   happiness_target; // 0x3B
+    uint8_t   nausea;           // 0x3C
+    uint8_t   nausea_target;    // 0x3D
+    uint8_t   hunger;           // 0x3E
+    uint8_t   thirst;           // 0x3F
+    uint8_t   toilet;           // 0x40
+    uint8_t   mass;             // 0x41
+    uint8_t   time_to_consume;  // 0x42
+    uint8_t   intensity; // 0x43 The max intensity is stored in the first 4 bits, and the min intensity in the second 4 bits
+    uint8_t   nausea_tolerance;        // 0x44
+    uint8_t   window_invalidate_flags; // 0x45
     money16 paid_on_drink;           // 0x46
-    uint8   ride_types_been_on[16];  // 0x48
-    uint32  item_extra_flags;        // 0x58
-    uint8   photo2_ride_ref;         // 0x5C
-    uint8   photo3_ride_ref;         // 0x5D
-    uint8   photo4_ride_ref;         // 0x5E
-    uint8   pad_5F[0x09];            // 0x5F
-    uint8   current_ride;            // 0x68
-    uint8   current_ride_station;    // 0x69
-    uint8   current_train;           // 0x6A
+    uint8_t   ride_types_been_on[16];  // 0x48
+    uint32_t  item_extra_flags;        // 0x58
+    uint8_t   photo2_ride_ref;         // 0x5C
+    uint8_t   photo3_ride_ref;         // 0x5D
+    uint8_t   photo4_ride_ref;         // 0x5E
+    uint8_t   pad_5F[0x09];            // 0x5F
+    uint8_t   current_ride;            // 0x68
+    uint8_t   current_ride_station;    // 0x69
+    uint8_t   current_train;           // 0x6A
     union {
         struct
         {
-            uint8 current_car;  // 0x6B
-            uint8 current_seat; // 0x6C
+            uint8_t current_car;  // 0x6B
+            uint8_t current_seat; // 0x6C
         };
-        uint16 time_to_sitdown; // 0x6B
+        uint16_t time_to_sitdown; // 0x6B
         struct
         {
-            uint8 time_to_stand;  // 0x6B
-            uint8 standing_flags; // 0x6C
+            uint8_t time_to_stand;  // 0x6B
+            uint8_t standing_flags; // 0x6C
         };
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
-    uint8 special_sprite;     // 0x6D
-    uint8 action_sprite_type; // 0x6E
+    uint8_t special_sprite;     // 0x6D
+    uint8_t action_sprite_type; // 0x6E
     // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which
     // reads this again
-    uint8 next_action_sprite_type;    // 0x6F
-    uint8 action_sprite_image_offset; // 0x70
-    uint8 action;                     // 0x71
-    uint8 action_frame;               // 0x72
-    uint8 step_progress;              // 0x73
+    uint8_t next_action_sprite_type;    // 0x6F
+    uint8_t action_sprite_image_offset; // 0x70
+    uint8_t action;                     // 0x71
+    uint8_t action_frame;               // 0x72
+    uint8_t step_progress;              // 0x73
     union {
-        uint16 mechanic_time_since_call;  // time getting to ride to fix
-        uint16 next_in_queue; // 0x74
+        uint16_t mechanic_time_since_call;  // time getting to ride to fix
+        uint16_t next_in_queue; // 0x74
     };
-    uint8 pad_76; // Previously this was set to 0 but never used.
-    uint8 pad_77;
+    uint8_t pad_76; // Previously this was set to 0 but never used.
+    uint8_t pad_77;
     union {
-        uint8 maze_last_edge; // 0x78
-        uint8 direction;      // Direction ?
+        uint8_t maze_last_edge; // 0x78
+        uint8_t direction;      // Direction ?
     };
-    uint8  interaction_ride_index;
-    uint16 time_in_queue;     // 0x7A
-    uint8  rides_been_on[32]; // 0x7C
+    uint8_t  interaction_ride_index;
+    uint16_t time_in_queue;     // 0x7A
+    uint8_t  rides_been_on[32]; // 0x7C
     // 255 bit bitmap of every ride the peep has been on see
     // window_peep_rides_update for how to use.
-    uint32           id;                          // 0x9C
+    uint32_t           id;                          // 0x9C
     money32          cash_in_pocket;              // 0xA0
     money32          cash_spent;                  // 0xA4
-    sint32           time_in_park;                // 0xA8
-    sint8            rejoin_queue_timeout;        // 0xAC whilst waiting for a free vehicle (or pair) in the entrance
-    uint8            previous_ride;               // 0xAD
-    uint16           previous_ride_time_out;      // 0xAE
+    int32_t           time_in_park;                // 0xA8
+    int8_t            rejoin_queue_timeout;        // 0xAC whilst waiting for a free vehicle (or pair) in the entrance
+    uint8_t            previous_ride;               // 0xAD
+    uint16_t           previous_ride_time_out;      // 0xAE
     rct_peep_thought thoughts[PEEP_MAX_THOUGHTS]; // 0xB0
-    uint8            path_check_optimisation;     // 0xC4 see peep.checkForPath
+    uint8_t            path_check_optimisation;     // 0xC4 see peep.checkForPath
     union {
-        uint8 staff_id;                 // 0xC5
-        uint8 guest_heading_to_ride_id; // 0xC5
+        uint8_t staff_id;                 // 0xC5
+        uint8_t guest_heading_to_ride_id; // 0xC5
     };
     union {
-        uint8 staff_orders;           // 0xC6
-        uint8 peep_is_lost_countdown; // 0xC6
+        uint8_t staff_orders;           // 0xC6
+        uint8_t peep_is_lost_countdown; // 0xC6
     };
-    uint8     photo1_ride_ref;     // 0xC7
-    uint32    peep_flags;          // 0xC8
+    uint8_t     photo1_ride_ref;     // 0xC7
+    uint32_t    peep_flags;          // 0xC8
     rct12_xyzd8 pathfind_goal;       // 0xCC
     rct12_xyzd8 pathfind_history[4]; // 0xD0
-    uint8     no_action_frame_num;  // 0xE0
+    uint8_t     no_action_frame_num;  // 0xE0
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
-    uint8 litter_count; // 0xE1
+    uint8_t litter_count; // 0xE1
     union {
-        uint8 time_on_ride; // 0xE2
-        uint8 staff_mowing_timeout;       // 0xE2
+        uint8_t time_on_ride; // 0xE2
+        uint8_t staff_mowing_timeout;       // 0xE2
     };
     // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
-    uint8 disgusting_count; // 0xE3
+    uint8_t disgusting_count; // 0xE3
     union {
         money16 paid_to_enter;     // 0xE4
-        uint16  staff_lawns_mown;  // 0xE4
-        uint16  staff_rides_fixed; // 0xE4
+        uint16_t  staff_lawns_mown;  // 0xE4
+        uint16_t  staff_rides_fixed; // 0xE4
     };
     union {
         money16 paid_on_rides;         // 0xE6
-        uint16  staff_gardens_watered; // 0xE6
-        uint16  staff_rides_inspected; // 0xE6
+        uint16_t  staff_gardens_watered; // 0xE6
+        uint16_t  staff_rides_inspected; // 0xE6
     };
     union {
         money16 paid_on_food;       // 0xE8
-        uint16  staff_litter_swept; // 0xE8
+        uint16_t  staff_litter_swept; // 0xE8
     };
     union {
         money16 paid_on_souvenirs;  // 0xEA
-        uint16  staff_bins_emptied; // 0xEA
+        uint16_t  staff_bins_emptied; // 0xEA
     };
-    uint8  no_of_food;      // 0xEC
-    uint8  no_of_drinks;    // 0xED
-    uint8  no_of_souvenirs; // 0xEE
-    uint8  vandalism_seen;  // 0xEF 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
-    uint8  voucher_type;      // 0xF0
-    uint8  voucher_arguments; // 0xF1 ride_id or string_offset_id
-    uint8  surroundings_thought_timeout; // 0xF2
-    uint8  angriness;             // 0xF3
-    uint8  time_lost;             // 0xF4 the time the peep has been lost when it reaches 254 generates the lost thought
-    uint8  days_in_queue;         // 0xF5
-    uint8  balloon_colour;        // 0xF6
-    uint8  umbrella_colour;       // 0xF7
-    uint8  hat_colour;            // 0xF8
-    uint8  favourite_ride;        // 0xF9
-    uint8  favourite_ride_rating; // 0xFA
-    uint8  pad_FB;
-    uint32 item_standard_flags; // 0xFC
+    uint8_t  no_of_food;      // 0xEC
+    uint8_t  no_of_drinks;    // 0xED
+    uint8_t  no_of_souvenirs; // 0xEE
+    uint8_t  vandalism_seen;  // 0xEF 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
+    uint8_t  voucher_type;      // 0xF0
+    uint8_t  voucher_arguments; // 0xF1 ride_id or string_offset_id
+    uint8_t  surroundings_thought_timeout; // 0xF2
+    uint8_t  angriness;             // 0xF3
+    uint8_t  time_lost;             // 0xF4 the time the peep has been lost when it reaches 254 generates the lost thought
+    uint8_t  days_in_queue;         // 0xF5
+    uint8_t  balloon_colour;        // 0xF6
+    uint8_t  umbrella_colour;       // 0xF7
+    uint8_t  hat_colour;            // 0xF8
+    uint8_t  favourite_ride;        // 0xF9
+    uint8_t  favourite_ride_rating; // 0xFA
+    uint8_t  pad_FB;
+    uint32_t item_standard_flags; // 0xFC
 
 public: // Peep
     void Update();
-    bool UpdateAction(sint16 * actionX, sint16 * actionY, sint16 * xy_distance);
+    bool UpdateAction(int16_t * actionX, int16_t * actionY, int16_t * xy_distance);
     bool UpdateAction();
-    void SetState(uint8 new_state);
+    void SetState(uint8_t new_state);
     void Remove();
     void Invalidate();
     void UpdateCurrentActionSpriteType();
-    void SwitchToSpecialSprite(uint8 special_sprite_id);
+    void SwitchToSpecialSprite(uint8_t special_sprite_id);
     void StateReset();
-    void MoveTo(sint16 destX, sint16 destY, sint16 destZ);
-    uint8 GetNextDirection() const;
+    void MoveTo(int16_t destX, int16_t destY, int16_t destZ);
+    uint8_t GetNextDirection() const;
     bool GetNextIsSloped() const;
     bool GetNextIsSurface() const;
-    void SetNextFlags(uint8 next_direction, bool is_sloped, bool is_surface);
+    void SetNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface);
     void Pickup();
-    void PickupAbort(sint32 old_x);
+    void PickupAbort(int32_t old_x);
     bool Place(TileCoordsXYZ location, bool apply);
 public: // Guest
-    void Tick128UpdateGuest(sint32 index);
+    void Tick128UpdateGuest(int32_t index);
     void RemoveFromQueue();
-    bool HasItem(sint32 peepItem) const;
+    bool HasItem(int32_t peepItem) const;
     bool HasFood() const;
     bool HasDrink() const;
     bool HasEmptyContainer() const;
-    void OnEnterRide(uint8 rideIndex);
-    void OnExitRide(uint8 rideIndex);
+    void OnEnterRide(uint8_t rideIndex);
+    void OnExitRide(uint8_t rideIndex);
     void RemoveFromRide();
     void UpdateSpriteType();
     bool HeadingForRideOrParkExit() const;
@@ -767,7 +767,7 @@ private: // Staff update
     void UpdateEmptyingBin();
     void UpdateWatering();
     void UpdateAnswering();
-    void UpdateFixing(sint32 steps);
+    void UpdateFixing(int32_t steps);
     bool UpdateFixingEnterStation(Ride * ride);
     bool UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride * ride);
     bool UpdateFixingFixVehicle(bool firstRun, Ride * ride);
@@ -778,64 +778,64 @@ private: // Staff update
     bool UpdateFixingFixStationStart(bool firstRun, Ride * ride);
     bool UpdateFixingFixStationBrakes(bool firstRun, Ride * ride);
     bool UpdateFixingMoveToStationExit(bool firstRun, Ride * ride);
-    bool UpdateFixingFinishFixOrInspect(bool firstRun, sint32 steps, Ride * ride);
+    bool UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride * ride);
     bool UpdateFixingLeaveByEntranceExit(bool firstRun, Ride * ride);
-    void UpdateRideInspected(sint32 rideIndex);
+    void UpdateRideInspected(int32_t rideIndex);
     void UpdateHeadingToInspect();
 
     // TODO: Make these private again when done refactoring
 public: // Peep
     bool   CheckForPath();
-    void   PerformNextAction(uint8 & pathing_result);
-    void   PerformNextAction(uint8 & pathing_result, rct_tile_element *& tile_result);
-    sint32 GetZOnSlope(sint32 tile_x, sint32 tile_y);
+    void   PerformNextAction(uint8_t & pathing_result);
+    void   PerformNextAction(uint8_t & pathing_result, rct_tile_element *& tile_result);
+    int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
     void   SwitchNextActionSpriteType();
-    uint8  GetActionSpriteType();
+    uint8_t  GetActionSpriteType();
 
 public: // Guest
-    void   StopPurchaseThought(uint8 ride_type);
+    void   StopPurchaseThought(uint8_t ride_type);
     void   TryGetUpFromSitting();
-    void   ChoseNotToGoOnRide(sint32 rideIndex, bool peepAtRide, bool updateLastRide);
+    void   ChoseNotToGoOnRide(int32_t rideIndex, bool peepAtRide, bool updateLastRide);
     void   PickRideToGoOn();
     void   ReadMap();
-    bool   ShouldGoOnRide(sint32 rideIndex, sint32 entranceNum, bool atQueue, bool thinking);
-    bool   ShouldGoToShop(sint32 rideIndex, bool peepAtShop);
+    bool   ShouldGoOnRide(int32_t rideIndex, int32_t entranceNum, bool atQueue, bool thinking);
+    bool   ShouldGoToShop(int32_t rideIndex, bool peepAtShop);
     bool   ShouldFindBench();
     bool   UpdateWalkingFindBench();
     bool   UpdateWalkingFindBin();
     void   SpendMoney(money16 & peep_expend_type, money32 amount);
     void   SpendMoney(money32 amount);
-    void   SetHasRidden(sint32 rideIndex);
-    bool   HasRidden(sint32 rideIndex) const;
-    void   SetHasRiddenRideType(sint32 rideType);
-    bool   HasRiddenRideType(sint32 rideType) const;
-    sint32 HasFoodStandardFlag() const;
-    sint32 HasFoodExtraFlag() const;
+    void   SetHasRidden(int32_t rideIndex);
+    bool   HasRidden(int32_t rideIndex) const;
+    void   SetHasRiddenRideType(int32_t rideType);
+    bool   HasRiddenRideType(int32_t rideType) const;
+    int32_t HasFoodStandardFlag() const;
+    int32_t HasFoodExtraFlag() const;
     bool   HasDrinkStandardFlag() const;
     bool   HasDrinkExtraFlag() const;
-    sint32 HasEmptyContainerStandardFlag() const;
-    sint32 HasEmptyContainerExtraFlag() const;
+    int32_t HasEmptyContainerStandardFlag() const;
+    int32_t HasEmptyContainerExtraFlag() const;
     void   CheckIfLost();
     void   CheckCantFindRide();
     void   CheckCantFindExit();
-    bool   DecideAndBuyItem(uint8 rideIndex, sint32 shopItem, money32 price);
-    void   SetSpriteType(uint8 new_sprite_type);
+    bool   DecideAndBuyItem(uint8_t rideIndex, int32_t shopItem, money32 price);
+    void   SetSpriteType(uint8_t new_sprite_type);
 };
 assert_struct_size(rct_peep, 0x100);
 #pragma pack(pop)
 
 struct rct_sprite_bounds
 {
-    uint8 sprite_width;           // 0x00
-    uint8 sprite_height_negative; // 0x01
-    uint8 sprite_height_positive; // 0x02
+    uint8_t sprite_width;           // 0x00
+    uint8_t sprite_height_negative; // 0x01
+    uint8_t sprite_height_positive; // 0x02
 };
 
 struct rct_peep_animation
 {
-    uint32        base_image; // 0x00
+    uint32_t        base_image; // 0x00
     size_t        num_frames;
-    const uint8 * frame_offsets;
+    const uint8_t * frame_offsets;
 };
 
 struct rct_peep_animation_entry
@@ -903,26 +903,26 @@ enum
 extern rct_peep_animation_entry g_peep_animation_entries[PEEP_SPRITE_TYPE_COUNT];
 extern const bool gSpriteTypeToSlowWalkMap[48];
 
-extern uint8  gGuestChangeModifier;
-extern uint16 gNumGuestsInPark;
-extern uint16 gNumGuestsInParkLastWeek;
-extern uint16 gNumGuestsHeadingForPark;
+extern uint8_t  gGuestChangeModifier;
+extern uint16_t gNumGuestsInPark;
+extern uint16_t gNumGuestsInParkLastWeek;
+extern uint16_t gNumGuestsHeadingForPark;
 
 extern money16 gGuestInitialCash;
-extern uint8   gGuestInitialHappiness;
-extern uint8   gGuestInitialHunger;
-extern uint8   gGuestInitialThirst;
+extern uint8_t   gGuestInitialHappiness;
+extern uint8_t   gGuestInitialHunger;
+extern uint8_t   gGuestInitialThirst;
 
-extern uint32 gNextGuestNumber;
+extern uint32_t gNextGuestNumber;
 
-extern uint8 gPeepWarningThrottle[16];
+extern uint8_t gPeepWarningThrottle[16];
 
 extern TileCoordsXYZ gPeepPathFindGoalPosition;
 extern bool      gPeepPathFindIgnoreForeignQueues;
-extern uint8     gPeepPathFindQueueRideIndex;
+extern uint8_t     gPeepPathFindQueueRideIndex;
 
-rct_peep * try_get_guest(uint16 spriteIndex);
-sint32     peep_get_staff_count();
+rct_peep * try_get_guest(uint16_t spriteIndex);
+int32_t     peep_get_staff_count();
 bool       peep_can_be_picked_up(rct_peep * peep);
 void       peep_update_all();
 void       peep_problem_warnings_update();
@@ -930,16 +930,16 @@ void       peep_stop_crowd_noise();
 void       peep_update_crowd_noise();
 void       peep_update_days_in_queue();
 void       peep_applause();
-rct_peep * peep_generate(sint32 x, sint32 y, sint32 z);
-void       get_arguments_from_action(rct_peep * peep, uint32 * argument_1, uint32 * argument_2);
+rct_peep * peep_generate(int32_t x, int32_t y, int32_t z);
+void       get_arguments_from_action(rct_peep * peep, uint32_t * argument_1, uint32_t * argument_2);
 void       peep_thought_set_format_args(rct_peep_thought * thought);
-sint32     get_peep_face_sprite_small(rct_peep * peep);
-sint32     get_peep_face_sprite_large(rct_peep * peep);
-sint32     peep_check_easteregg_name(sint32 index, rct_peep * peep);
-sint32     peep_get_easteregg_name_id(rct_peep * peep);
-bool       peep_pickup_command(uint32 peepnum, sint32 x, sint32 y, sint32 z, sint32 action, bool apply);
-void       game_command_pickup_guest(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                     sint32 * ebp);
+int32_t     get_peep_face_sprite_small(rct_peep * peep);
+int32_t     get_peep_face_sprite_large(rct_peep * peep);
+int32_t     peep_check_easteregg_name(int32_t index, rct_peep * peep);
+int32_t     peep_get_easteregg_name_id(rct_peep * peep);
+bool       peep_pickup_command(uint32_t peepnum, int32_t x, int32_t y, int32_t z, int32_t action, bool apply);
+void       game_command_pickup_guest(int32_t * eax, int32_t * ebx, int32_t * ecx, int32_t * edx, int32_t * esi, int32_t * edi,
+                                     int32_t * ebp);
 void       peep_sprite_remove(rct_peep * peep);
 
 void peep_window_state_update(rct_peep * peep);
@@ -950,25 +950,25 @@ void peep_decrement_num_riders(rct_peep * peep);
  * ah:thought_arguments
  * esi: peep
  */
-void peep_insert_new_thought(rct_peep * peep, uint8 thought_type, uint8 thought_arguments);
+void peep_insert_new_thought(rct_peep * peep, uint8_t thought_type, uint8_t thought_arguments);
 
 void peep_set_map_tooltip(rct_peep * peep);
 
-void SwitchToSpecialSprite(rct_peep * peep, uint8 special_sprite_id);
+void SwitchToSpecialSprite(rct_peep * peep, uint8_t special_sprite_id);
 void peep_update_name_sort(rct_peep * peep);
 void peep_sort();
 void peep_update_names(bool realNames);
 
-void guest_set_name(uint16 spriteIndex, const char * name);
+void guest_set_name(uint16_t spriteIndex, const char * name);
 void peep_handle_easteregg_name(rct_peep * peep);
-void game_command_set_guest_name(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                 sint32 * ebp);
+void game_command_set_guest_name(int32_t * eax, int32_t * ebx, int32_t * ecx, int32_t * edx, int32_t * esi, int32_t * edi,
+                                 int32_t * ebp);
 
-sint32 peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep * peep);
+int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep * peep);
 void   peep_reset_pathfind_goal(rct_peep * peep);
 
-bool is_valid_path_z_and_direction(rct_tile_element * tileElement, sint32 currentZ, sint32 currentDirection);
-sint32 guest_path_finding(rct_peep * peep);
+bool is_valid_path_z_and_direction(rct_tile_element * tileElement, int32_t currentZ, int32_t currentDirection);
+int32_t guest_path_finding(rct_peep * peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 #define PATHFIND_DEBUG 0 // Set to 0 to disable pathfinding debugging;

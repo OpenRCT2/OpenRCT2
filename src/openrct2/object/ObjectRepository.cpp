@@ -49,7 +49,7 @@ struct ObjectEntryHash
 {
     size_t operator()(const rct_object_entry &entry) const
     {
-        uint32 hash = 5381;
+        uint32_t hash = 5381;
         for (auto i : entry.name)
         {
             hash = ((hash << 5) + hash) + i;
@@ -71,8 +71,8 @@ using ObjectEntryMap = std::unordered_map<rct_object_entry, size_t, ObjectEntryH
 class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
-    static constexpr uint32 MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16 VERSION = 17;
+    static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
+    static constexpr uint16_t VERSION = 17;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -92,7 +92,7 @@ public:
     }
 
 public:
-    std::tuple<bool, ObjectRepositoryItem> Create([[maybe_unused]] sint32 language, const std::string& path) const override
+    std::tuple<bool, ObjectRepositoryItem> Create([[maybe_unused]] int32_t language, const std::string& path) const override
     {
         Object * object = nullptr;
         auto extension = Path::GetExtension(path);
@@ -130,19 +130,19 @@ protected:
 
         switch (object_entry_get_type(&item.ObjectEntry)) {
         case OBJECT_TYPE_RIDE:
-            stream->WriteValue<uint8>(item.RideInfo.RideFlags);
-            for (sint32 i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
+            stream->WriteValue<uint8_t>(item.RideInfo.RideFlags);
+            for (int32_t i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
             {
-                stream->WriteValue<uint8>(item.RideInfo.RideCategory[i]);
+                stream->WriteValue<uint8_t>(item.RideInfo.RideCategory[i]);
             }
-            for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+            for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
             {
-                stream->WriteValue<uint8>(item.RideInfo.RideType[i]);
+                stream->WriteValue<uint8_t>(item.RideInfo.RideType[i]);
             }
-            stream->WriteValue<uint8>(item.RideInfo.RideGroupIndex);
+            stream->WriteValue<uint8_t>(item.RideInfo.RideGroupIndex);
             break;
         case OBJECT_TYPE_SCENERY_GROUP:
-            stream->WriteValue<uint16>((uint16)item.SceneryGroupInfo.Entries.size());
+            stream->WriteValue<uint16_t>((uint16_t)item.SceneryGroupInfo.Entries.size());
             for (const auto& entry : item.SceneryGroupInfo.Entries)
             {
                 stream->WriteValue<rct_object_entry>(entry);
@@ -161,20 +161,20 @@ protected:
 
         switch (object_entry_get_type(&item.ObjectEntry)) {
         case OBJECT_TYPE_RIDE:
-            item.RideInfo.RideFlags = stream->ReadValue<uint8>();
-            for (sint32 i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
+            item.RideInfo.RideFlags = stream->ReadValue<uint8_t>();
+            for (int32_t i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
             {
-                item.RideInfo.RideCategory[i] = stream->ReadValue<uint8>();
+                item.RideInfo.RideCategory[i] = stream->ReadValue<uint8_t>();
             }
-            for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+            for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
             {
-                item.RideInfo.RideType[i] = stream->ReadValue<uint8>();
+                item.RideInfo.RideType[i] = stream->ReadValue<uint8_t>();
             }
-            item.RideInfo.RideGroupIndex = stream->ReadValue<uint8>();
+            item.RideInfo.RideGroupIndex = stream->ReadValue<uint8_t>();
             break;
         case OBJECT_TYPE_SCENERY_GROUP:
             {
-                auto numEntries = stream->ReadValue<uint16>();
+                auto numEntries = stream->ReadValue<uint16_t>();
                 item.SceneryGroupInfo.Entries = std::vector<rct_object_entry>(numEntries);
                 for (size_t i = 0; i < numEntries; i++)
                 {
@@ -214,7 +214,7 @@ public:
         ClearItems();
     }
 
-    void LoadOrConstruct(sint32 language) override
+    void LoadOrConstruct(int32_t language) override
     {
         ClearItems();
         auto items = _fileIndex.LoadOrBuild(language);
@@ -222,7 +222,7 @@ public:
         SortItems();
     }
 
-    void Construct(sint32 language) override
+    void Construct(int32_t language) override
     {
         auto items = _fileIndex.Rebuild(language);
         AddItems(items);
@@ -450,7 +450,7 @@ private:
     {
         if (fixChecksum)
         {
-            uint32 realChecksum = object_calculate_checksum(entry, data, dataSize);
+            uint32_t realChecksum = object_calculate_checksum(entry, data, dataSize);
             if (realChecksum != entry->checksum)
             {
                 char objectName[9];
@@ -464,14 +464,14 @@ private:
 
                 // Create new data blob with appended bytes
                 size_t newDataSize = dataSize + extraBytesCount;
-                uint8 * newData = Memory::Allocate<uint8>(newDataSize);
-                uint8 * newDataSaltOffset = newData + dataSize;
-                std::copy_n((const uint8 *)data, dataSize, newData);
-                std::copy_n((const uint8 *)extraBytes, extraBytesCount, newDataSaltOffset);
+                uint8_t * newData = Memory::Allocate<uint8_t>(newDataSize);
+                uint8_t * newDataSaltOffset = newData + dataSize;
+                std::copy_n((const uint8_t *)data, dataSize, newData);
+                std::copy_n((const uint8_t *)extraBytes, extraBytesCount, newDataSaltOffset);
 
                 try
                 {
-                    uint32 newRealChecksum = object_calculate_checksum(entry, newData, newDataSize);
+                    uint32_t newRealChecksum = object_calculate_checksum(entry, newData, newDataSize);
                     if (newRealChecksum != entry->checksum)
                     {
                         Console::Error::WriteLine("CalculateExtraBytesToFixChecksum failed to fix checksum.");
@@ -498,12 +498,12 @@ private:
         }
 
         // Encode data
-        uint8 objectType = object_entry_get_type(entry);
+        uint8_t objectType = object_entry_get_type(entry);
         sawyercoding_chunk_header chunkHeader;
         chunkHeader.encoding = object_entry_group_encoding[objectType];
-        chunkHeader.length = (uint32)dataSize;
-        uint8 * encodedDataBuffer = Memory::Allocate<uint8>(0x600000);
-        size_t encodedDataSize = sawyercoding_write_chunk_buffer(encodedDataBuffer, (uint8 *)data, chunkHeader);
+        chunkHeader.length = (uint32_t)dataSize;
+        uint8_t * encodedDataBuffer = Memory::Allocate<uint8_t>(0x600000);
+        size_t encodedDataSize = sawyercoding_write_chunk_buffer(encodedDataBuffer, (uint8_t *)data, chunkHeader);
 
         // Save to file
         try
@@ -521,15 +521,15 @@ private:
         }
     }
 
-    static void * CalculateExtraBytesToFixChecksum(sint32 currentChecksum, sint32 targetChecksum, size_t * outSize)
+    static void * CalculateExtraBytesToFixChecksum(int32_t currentChecksum, int32_t targetChecksum, size_t * outSize)
     {
         // Allocate 11 extra bytes to manipulate the checksum
-        uint8 * salt = Memory::Allocate<uint8>(11);
+        uint8_t * salt = Memory::Allocate<uint8_t>(11);
         if (outSize != nullptr) *outSize = 11;
 
         // Next work out which bits need to be flipped to make the current checksum match the one in the file
         // The bitwise rotation compensates for the rotation performed during the checksum calculation*/
-        sint32 bitsToFlip = targetChecksum ^ ((currentChecksum << 25) | (currentChecksum >> 7));
+        int32_t bitsToFlip = targetChecksum ^ ((currentChecksum << 25) | (currentChecksum >> 7));
 
         // Each set bit encountered during encoding flips one bit of the resulting checksum (so each bit of the checksum is an
         // XOR of bits from the file). Here, we take each bit that should be flipped in the checksum and set one of the bits in
@@ -553,7 +553,7 @@ private:
     void GetPathForNewObject(utf8 * buffer, size_t bufferSize, const char * name)
     {
         char normalisedName[9] = { 0 };
-        for (sint32 i = 0; i < 8; i++)
+        for (int32_t i = 0; i < 8; i++)
         {
             if (name[i] != ' ')
             {
@@ -572,7 +572,7 @@ private:
         Path::Append(buffer, bufferSize, normalisedName);
         String::Append(buffer, bufferSize, ".DAT");
 
-        uint32 counter = 2;
+        uint32_t counter = 2;
         for (; platform_file_exists(buffer);)
         {
             utf8 counterString[8];
@@ -737,7 +737,7 @@ void object_delete(void * object)
     }
 }
 
-void object_draw_preview(const void * object, rct_drawpixelinfo * dpi, sint32 width, sint32 height)
+void object_draw_preview(const void * object, rct_drawpixelinfo * dpi, int32_t width, int32_t height)
 {
     const Object * baseObject = static_cast<const Object *>(object);
     baseObject->DrawPreview(dpi, width, height);
@@ -752,7 +752,7 @@ bool object_entry_compare(const rct_object_entry * a, const rct_object_entry * b
         {
             return false;
         }
-        sint32 match = memcmp(a->name, b->name, 8);
+        int32_t match = memcmp(a->name, b->name, 8);
         if (match)
         {
             return false;
@@ -764,7 +764,7 @@ bool object_entry_compare(const rct_object_entry * a, const rct_object_entry * b
         {
             return false;
         }
-        sint32 match = memcmp(a->name, b->name, 8);
+        int32_t match = memcmp(a->name, b->name, 8);
         if (match)
         {
             return false;
@@ -777,20 +777,20 @@ bool object_entry_compare(const rct_object_entry * a, const rct_object_entry * b
     return true;
 }
 
-sint32 object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength)
+int32_t object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength)
 {
-    const uint8 * entryBytePtr = (uint8 *)entry;
+    const uint8_t * entryBytePtr = (uint8_t *)entry;
 
-    uint32 checksum = 0xF369A75B;
+    uint32_t checksum = 0xF369A75B;
     checksum ^= entryBytePtr[0];
     checksum = rol32(checksum, 11);
-    for (sint32 i = 4; i < 12; i++)
+    for (int32_t i = 4; i < 12; i++)
     {
         checksum ^= entryBytePtr[i];
         checksum = rol32(checksum, 11);
     }
 
-    uint8 *      dataBytes    = (uint8 *)data;
+    uint8_t *      dataBytes    = (uint8_t *)data;
     const size_t dataLength32 = dataLength - (dataLength & 31);
     for (size_t i = 0; i < 32; i++)
     {
@@ -806,5 +806,5 @@ sint32 object_calculate_checksum(const rct_object_entry * entry, const void * da
         checksum = rol32(checksum, 11);
     }
 
-    return (sint32)checksum;
+    return (int32_t)checksum;
 }

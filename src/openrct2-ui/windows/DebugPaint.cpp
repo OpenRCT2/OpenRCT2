@@ -18,7 +18,7 @@
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/ride/TrackPaint.h>
 
-static sint32 ResizeLanguage = LANGUAGE_UNDEFINED;
+static int32_t ResizeLanguage = LANGUAGE_UNDEFINED;
 
 // clang-format off
 enum WINDOW_DEBUG_PAINT_WIDGET_IDX
@@ -156,14 +156,14 @@ static void window_debug_paint_invalidate(rct_window * w)
         window_invalidate(w);
 
         // Find the width of the longest string
-        sint16 newWidth = 0;
+        int16_t newWidth = 0;
         for (size_t widgetIndex = WIDX_TOGGLE_SHOW_WIDE_PATHS; widgetIndex <= WIDX_TOGGLE_SHOW_DIRTY_VISUALS; widgetIndex++)
         {
             auto stringIdx = w->widgets[widgetIndex].text;
             auto string = ls.GetString(stringIdx);
             Guard::ArgumentNotNull(string);
             auto width = gfx_get_string_width(string);
-            newWidth = std::max<sint16>(width, newWidth);
+            newWidth = std::max<int16_t>(width, newWidth);
         }
 
         // Add padding for both sides (8) and the offset for the text after the checkbox (15)

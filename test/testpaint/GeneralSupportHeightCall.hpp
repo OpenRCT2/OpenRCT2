@@ -12,8 +12,8 @@
 #include <openrct2/common.h>
 
 struct SupportCall {
-    sint32 height;
-    sint16 slope;
+    int32_t height;
+    int16_t slope;
 
     friend bool operator==(const SupportCall& lhs, const SupportCall& rhs) {
         if (lhs.height != rhs.height) return false;

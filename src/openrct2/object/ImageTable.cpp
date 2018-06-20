@@ -35,19 +35,19 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
 
     try
     {
-        uint32 numImages = stream->ReadValue<uint32>();
-        uint32 imageDataSize = stream->ReadValue<uint32>();
+        uint32_t numImages = stream->ReadValue<uint32_t>();
+        uint32_t imageDataSize = stream->ReadValue<uint32_t>();
 
-        uint64 headerTableSize = numImages * 16;
-        uint64 remainingBytes = stream->GetLength() - stream->GetPosition() - headerTableSize;
+        uint64_t headerTableSize = numImages * 16;
+        uint64_t remainingBytes = stream->GetLength() - stream->GetPosition() - headerTableSize;
         if (remainingBytes > imageDataSize)
         {
             context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table size longer than expected.");
-            imageDataSize = (uint32)remainingBytes;
+            imageDataSize = (uint32_t)remainingBytes;
         }
 
         auto dataSize = (size_t)imageDataSize;
-        auto data = std::make_unique<uint8[]>(dataSize);
+        auto data = std::make_unique<uint8_t[]>(dataSize);
         if (data == nullptr)
         {
             context->LogError(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table too large.");
@@ -57,19 +57,19 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
         // Read g1 element headers
         uintptr_t imageDataBase = (uintptr_t)data.get();
         std::vector<rct_g1_element> newEntries;
-        for (uint32 i = 0; i < numImages; i++)
+        for (uint32_t i = 0; i < numImages; i++)
         {
             rct_g1_element g1Element;
 
-            uintptr_t imageDataOffset = (uintptr_t)stream->ReadValue<uint32>();
-            g1Element.offset = (uint8*)(imageDataBase + imageDataOffset);
+            uintptr_t imageDataOffset = (uintptr_t)stream->ReadValue<uint32_t>();
+            g1Element.offset = (uint8_t*)(imageDataBase + imageDataOffset);
 
-            g1Element.width = stream->ReadValue<sint16>();
-            g1Element.height = stream->ReadValue<sint16>();
-            g1Element.x_offset = stream->ReadValue<sint16>();
-            g1Element.y_offset = stream->ReadValue<sint16>();
-            g1Element.flags = stream->ReadValue<uint16>();
-            g1Element.zoomed_offset = stream->ReadValue<uint16>();
+            g1Element.width = stream->ReadValue<int16_t>();
+            g1Element.height = stream->ReadValue<int16_t>();
+            g1Element.x_offset = stream->ReadValue<int16_t>();
+            g1Element.y_offset = stream->ReadValue<int16_t>();
+            g1Element.flags = stream->ReadValue<uint16_t>();
+            g1Element.zoomed_offset = stream->ReadValue<uint16_t>();
 
             newEntries.push_back(g1Element);
         }
@@ -105,7 +105,7 @@ void ImageTable::AddImage(const rct_g1_element * g1)
     }
     else
     {
-        newg1.offset = new uint8[length];
+        newg1.offset = new uint8_t[length];
         std::copy_n(g1->offset, length, newg1.offset);
     }
     _entries.push_back(newg1);

@@ -112,7 +112,7 @@ static bool OnCrash(const wchar_t * dumpPath,
     {
         LPITEMIDLIST pidl = ILCreateFromPathW(dumpPath);
         LPITEMIDLIST files[2];
-        uint32 numFiles = 0;
+        uint32_t numFiles = 0;
 
         files[numFiles++] = ILCreateFromPathW(dumpFilePath);
         if (savedGameDumped)
@@ -122,7 +122,7 @@ static bool OnCrash(const wchar_t * dumpPath,
         if (pidl != nullptr) {
             SHOpenFolderAndSelectItems(pidl, numFiles, (LPCITEMIDLIST *)files, 0);
             ILFree(pidl);
-            for (uint32 i = 0; i < numFiles; i++)
+            for (uint32_t i = 0; i < numFiles; i++)
             {
                 ILFree(files[i]);
             }

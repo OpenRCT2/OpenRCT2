@@ -19,8 +19,8 @@
 #include "../interface/Window.h"
 #include "../OpenRCT2.h"
 
-static void WriteConvertFromAndToMessage(uint32 sourceFileType, uint32 destinationFileType);
-static const utf8 * GetFileTypeFriendlyName(uint32 fileType);
+static void WriteConvertFromAndToMessage(uint32_t sourceFileType, uint32_t destinationFileType);
+static const utf8 * GetFileTypeFriendlyName(uint32_t fileType);
 
 exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerator)
 {
@@ -40,7 +40,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
 
     utf8 sourcePath[MAX_PATH];
     Path::GetAbsolute(sourcePath, sizeof(sourcePath), rawSourcePath);
-    uint32 sourceFileType = get_file_extension_type(sourcePath);
+    uint32_t sourceFileType = get_file_extension_type(sourcePath);
 
     // Get the destination path
     const utf8 * rawDestinationPath;
@@ -52,7 +52,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
 
     utf8 destinationPath[MAX_PATH];
     Path::GetAbsolute(destinationPath, sizeof(sourcePath), rawDestinationPath);
-    uint32 destinationFileType = get_file_extension_type(destinationPath);
+    uint32_t destinationFileType = get_file_extension_type(destinationPath);
 
     // Validate target type
     if (destinationFileType != FILE_EXTENSION_SC6 &&
@@ -143,7 +143,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
     return EXITCODE_OK;
 }
 
-static void WriteConvertFromAndToMessage(uint32 sourceFileType, uint32 destinationFileType)
+static void WriteConvertFromAndToMessage(uint32_t sourceFileType, uint32_t destinationFileType)
 {
     const utf8 * sourceFileTypeName = GetFileTypeFriendlyName(sourceFileType);
     const utf8 * destinationFileTypeName = GetFileTypeFriendlyName(destinationFileType);
@@ -151,7 +151,7 @@ static void WriteConvertFromAndToMessage(uint32 sourceFileType, uint32 destinati
     Console::WriteLine();
 }
 
-static const utf8 * GetFileTypeFriendlyName(uint32 fileType)
+static const utf8 * GetFileTypeFriendlyName(uint32_t fileType)
 {
     switch (fileType) {
     case FILE_EXTENSION_SC4: return "RollerCoaster Tycoon 1 scenario";

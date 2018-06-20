@@ -16,7 +16,7 @@
  * Draws a horizontal line of specified colour to a buffer.
  *  rct2: 0x0068474C
  */
-static void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, sint32 y, sint32 x, sint32 no_pixels)
+static void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int32_t y, int32_t x, int32_t no_pixels)
 {
     y -= dpi->y;
 
@@ -46,7 +46,7 @@ static void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, sint32 
     }
 
     // Get the buffer we are drawing to and move to the first coordinate.
-    uint8* bits_pointer = dpi->bits + y*(dpi->pitch + dpi->width) + x;
+    uint8_t* bits_pointer = dpi->bits + y*(dpi->pitch + dpi->width) + x;
 
     // Draw the line to the specified colour
     for (; no_pixels > 0; --no_pixels, ++bits_pointer){
@@ -64,7 +64,7 @@ static void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, sint32 
  * y2 (dx)
  * colour (ebp)
  */
-void gfx_draw_line_software(rct_drawpixelinfo *dpi, sint32 x1, sint32 y1, sint32 x2, sint32 y2, sint32 colour)
+void gfx_draw_line_software(rct_drawpixelinfo *dpi, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t colour)
 {
     // Check to make sure the line is within the drawing area
     if ((x1 < dpi->x) && (x2 < dpi->x)){
@@ -86,10 +86,10 @@ void gfx_draw_line_software(rct_drawpixelinfo *dpi, sint32 x1, sint32 y1, sint32
     // Bresenham's algorithm
 
     // If vertical plot points upwards
-    sint32 steep = std::abs(y2 - y1) > std::abs(x2 - x1);
+    int32_t steep = std::abs(y2 - y1) > std::abs(x2 - x1);
     if (steep){
-        sint32 temp_y2 = y2;
-        sint32 temp_x2 = x2;
+        int32_t temp_y2 = y2;
+        int32_t temp_x2 = x2;
         y2 = x1;
         x2 = y1;
         y1 = temp_x2;
@@ -98,25 +98,25 @@ void gfx_draw_line_software(rct_drawpixelinfo *dpi, sint32 x1, sint32 y1, sint32
 
     // If line is right to left swap direction
     if (x1 > x2){
-        sint32 temp_y2 = y2;
-        sint32 temp_x2 = x2;
+        int32_t temp_y2 = y2;
+        int32_t temp_x2 = x2;
         y2 = y1;
         x2 = x1;
         y1 = temp_y2;
         x1 = temp_x2;
     }
 
-    sint32 delta_x = x2 - x1;
-    sint32 delta_y = std::abs(y2 - y1);
-    sint32 error = delta_x / 2;
-    sint32 y_step;
-    sint32 y = y1;
+    int32_t delta_x = x2 - x1;
+    int32_t delta_y = std::abs(y2 - y1);
+    int32_t error = delta_x / 2;
+    int32_t y_step;
+    int32_t y = y1;
 
     // Direction of step
     if (y1 < y2)y_step = 1;
     else y_step = -1;
 
-    for (sint32 x = x1, x_start = x1, no_pixels = 1; x < x2; ++x,++no_pixels){
+    for (int32_t x = x1, x_start = x1, no_pixels = 1; x < x2; ++x,++no_pixels){
         // Vertical lines are drawn 1 pixel at a time
         if (steep)gfx_draw_line_on_buffer(dpi, colour, x, y, 1);
 

@@ -26,4 +26,4 @@ interface INetworkServerAdvertiser
     virtual void                Update() abstract;
 };
 
-INetworkServerAdvertiser * CreateServerAdvertiser(uint16 port);
+INetworkServerAdvertiser * CreateServerAdvertiser(uint16_t port);

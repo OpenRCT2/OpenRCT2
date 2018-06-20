@@ -22,10 +22,10 @@
 /** rct2: 0x008A7AF8 */
 static void corkscrew_rc_track_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -83,13 +83,13 @@ static void corkscrew_rc_track_flat(
 /** rct2: 0x008A7D68, 0x008A7D78, 0x008A7D88 */
 static void corkscrew_rc_track_station(
     paint_session *          session,
-    uint8                    rideIndex,
-    [[maybe_unused]] uint8   trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    [[maybe_unused]] uint8_t   trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    static constexpr const uint32 imageIds[4][3] = {
+    static constexpr const uint32_t imageIds[4][3] = {
         { 16236, 16232, SPR_STATION_BASE_A_SW_NE },
         { 16237, 16233, SPR_STATION_BASE_A_NW_SE },
         { 16236, 16232, SPR_STATION_BASE_A_SW_NE },
@@ -118,10 +118,10 @@ static void corkscrew_rc_track_station(
 /** rct2: 0x008A7B08 */
 static void corkscrew_rc_track_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -192,10 +192,10 @@ static void corkscrew_rc_track_25_deg_up(
 /** rct2: 0x008A7B18 */
 static void corkscrew_rc_track_60_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -266,10 +266,10 @@ static void corkscrew_rc_track_60_deg_up(
 /** rct2: 0x008A7B28 */
 static void corkscrew_rc_track_flat_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -340,10 +340,10 @@ static void corkscrew_rc_track_flat_to_25_deg_up(
 /** rct2: 0x008A7B38 */
 static void corkscrew_rc_track_25_deg_up_to_60_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -422,10 +422,10 @@ static void corkscrew_rc_track_25_deg_up_to_60_deg_up(
 /** rct2: 0x008A7B48 */
 static void corkscrew_rc_track_60_deg_up_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -504,10 +504,10 @@ static void corkscrew_rc_track_60_deg_up_to_25_deg_up(
 /** rct2: 0x008A7B58 */
 static void corkscrew_rc_track_25_deg_up_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -578,10 +578,10 @@ static void corkscrew_rc_track_25_deg_up_to_flat(
 /** rct2: 0x008A7B68 */
 static void corkscrew_rc_track_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -590,10 +590,10 @@ static void corkscrew_rc_track_25_deg_down(
 /** rct2: 0x008A7B78 */
 static void corkscrew_rc_track_60_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -602,10 +602,10 @@ static void corkscrew_rc_track_60_deg_down(
 /** rct2: 0x008A7B88 */
 static void corkscrew_rc_track_flat_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -614,10 +614,10 @@ static void corkscrew_rc_track_flat_to_25_deg_down(
 /** rct2: 0x008A7B98 */
 static void corkscrew_rc_track_25_deg_down_to_60_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_60_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -626,10 +626,10 @@ static void corkscrew_rc_track_25_deg_down_to_60_deg_down(
 /** rct2: 0x008A7BA8 */
 static void corkscrew_rc_track_60_deg_down_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_25_deg_up_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -638,10 +638,10 @@ static void corkscrew_rc_track_60_deg_down_to_25_deg_down(
 /** rct2: 0x008A7BB8 */
 static void corkscrew_rc_track_25_deg_down_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -650,10 +650,10 @@ static void corkscrew_rc_track_25_deg_down_to_flat(
 /** rct2: 0x008A7BC8 */
 static void corkscrew_rc_track_left_quarter_turn_5(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -809,10 +809,10 @@ static void corkscrew_rc_track_left_quarter_turn_5(
 /** rct2: 0x008A7BD8 */
 static void corkscrew_rc_track_right_quarter_turn_5(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -822,10 +822,10 @@ static void corkscrew_rc_track_right_quarter_turn_5(
 /** rct2: 0x008A7BE8 */
 static void corkscrew_rc_track_flat_to_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -864,10 +864,10 @@ static void corkscrew_rc_track_flat_to_left_bank(
 /** rct2: 0x008A7BF8 */
 static void corkscrew_rc_track_flat_to_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -906,10 +906,10 @@ static void corkscrew_rc_track_flat_to_right_bank(
 /** rct2: 0x008A7C08 */
 static void corkscrew_rc_track_left_bank_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -948,10 +948,10 @@ static void corkscrew_rc_track_left_bank_to_flat(
 /** rct2: 0x008A7C18 */
 static void corkscrew_rc_track_right_bank_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -990,10 +990,10 @@ static void corkscrew_rc_track_right_bank_to_flat(
 /** rct2: 0x008A7C28 */
 static void corkscrew_rc_track_banked_left_quarter_turn_5(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -1153,10 +1153,10 @@ static void corkscrew_rc_track_banked_left_quarter_turn_5(
 /** rct2: 0x008A7C38 */
 static void corkscrew_rc_track_banked_right_quarter_turn_5(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -1166,10 +1166,10 @@ static void corkscrew_rc_track_banked_right_quarter_turn_5(
 /** rct2: 0x008A7C48 */
 static void corkscrew_rc_track_left_bank_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -1215,10 +1215,10 @@ static void corkscrew_rc_track_left_bank_to_25_deg_up(
 /** rct2: 0x008A7C58 */
 static void corkscrew_rc_track_right_bank_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -1264,10 +1264,10 @@ static void corkscrew_rc_track_right_bank_to_25_deg_up(
 /** rct2: 0x008A7C68 */
 static void corkscrew_rc_track_25_deg_up_to_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -1313,10 +1313,10 @@ static void corkscrew_rc_track_25_deg_up_to_left_bank(
 /** rct2: 0x008A7C78 */
 static void corkscrew_rc_track_25_deg_up_to_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -1362,10 +1362,10 @@ static void corkscrew_rc_track_25_deg_up_to_right_bank(
 /** rct2: 0x008A7C88 */
 static void corkscrew_rc_track_left_bank_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_25_deg_up_to_right_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1374,10 +1374,10 @@ static void corkscrew_rc_track_left_bank_to_25_deg_down(
 /** rct2: 0x008A7C98 */
 static void corkscrew_rc_track_right_bank_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_25_deg_up_to_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1386,10 +1386,10 @@ static void corkscrew_rc_track_right_bank_to_25_deg_down(
 /** rct2: 0x008A7CA8 */
 static void corkscrew_rc_track_25_deg_down_to_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_right_bank_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1398,10 +1398,10 @@ static void corkscrew_rc_track_25_deg_down_to_left_bank(
 /** rct2: 0x008A7CB8 */
 static void corkscrew_rc_track_25_deg_down_to_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_left_bank_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1410,10 +1410,10 @@ static void corkscrew_rc_track_25_deg_down_to_right_bank(
 /** rct2: 0x008A7CC8 */
 static void corkscrew_rc_track_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -1448,10 +1448,10 @@ static void corkscrew_rc_track_left_bank(
 /** rct2: 0x008A7CD8 */
 static void corkscrew_rc_track_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1460,10 +1460,10 @@ static void corkscrew_rc_track_right_bank(
 /** rct2: 0x008A7CE8 */
 static void corkscrew_rc_track_left_quarter_turn_5_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -1614,10 +1614,10 @@ static void corkscrew_rc_track_left_quarter_turn_5_25_deg_up(
 /** rct2: 0x008A7CF8 */
 static void corkscrew_rc_track_right_quarter_turn_5_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -1768,10 +1768,10 @@ static void corkscrew_rc_track_right_quarter_turn_5_25_deg_up(
 /** rct2: 0x008A7D08 */
 static void corkscrew_rc_track_left_quarter_turn_5_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -1782,10 +1782,10 @@ static void corkscrew_rc_track_left_quarter_turn_5_25_deg_down(
 /** rct2: 0x008A7D18 */
 static void corkscrew_rc_track_right_quarter_turn_5_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -1796,10 +1796,10 @@ static void corkscrew_rc_track_right_quarter_turn_5_25_deg_down(
 /** rct2: 0x008A7D28 */
 static void corkscrew_rc_track_s_bend_left(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -1925,10 +1925,10 @@ static void corkscrew_rc_track_s_bend_left(
 /** rct2: 0x008A7D38 */
 static void corkscrew_rc_track_s_bend_right(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -2054,10 +2054,10 @@ static void corkscrew_rc_track_s_bend_right(
 /** rct2: 0x008A7D48 */
 static void corkscrew_rc_track_left_vertical_loop(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -2283,10 +2283,10 @@ static void corkscrew_rc_track_left_vertical_loop(
 /** rct2: 0x008A7D58 */
 static void corkscrew_rc_track_right_vertical_loop(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -2480,10 +2480,10 @@ static void corkscrew_rc_track_right_vertical_loop(
 /** rct2: 0x008A7D98 */
 static void corkscrew_rc_track_left_quarter_turn_3(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -2584,10 +2584,10 @@ static void corkscrew_rc_track_left_quarter_turn_3(
 /** rct2: 0x008A7DA8 */
 static void corkscrew_rc_track_right_quarter_turn_3(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -2597,10 +2597,10 @@ static void corkscrew_rc_track_right_quarter_turn_3(
 /** rct2: 0x008A7DB8 */
 static void corkscrew_rc_track_left_quarter_turn_3_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -2705,10 +2705,10 @@ static void corkscrew_rc_track_left_quarter_turn_3_bank(
 /** rct2: 0x008A7DC8 */
 static void corkscrew_rc_track_right_quarter_turn_3_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -2718,10 +2718,10 @@ static void corkscrew_rc_track_right_quarter_turn_3_bank(
 /** rct2: 0x008A7DD8 */
 static void corkscrew_rc_track_left_quarter_turn_3_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -2793,10 +2793,10 @@ static void corkscrew_rc_track_left_quarter_turn_3_25_deg_up(
 /** rct2: 0x008A7DE8 */
 static void corkscrew_rc_track_right_quarter_turn_3_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -2871,10 +2871,10 @@ static void corkscrew_rc_track_right_quarter_turn_3_25_deg_up(
 /** rct2: 0x008A7DF8 */
 static void corkscrew_rc_track_left_quarter_turn_3_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -2885,10 +2885,10 @@ static void corkscrew_rc_track_left_quarter_turn_3_25_deg_down(
 /** rct2: 0x008A7E08 */
 static void corkscrew_rc_track_right_quarter_turn_3_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -2899,10 +2899,10 @@ static void corkscrew_rc_track_right_quarter_turn_3_25_deg_down(
 /** rct2: 0x008A7E18 */
 static void corkscrew_rc_track_half_loop_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -3012,10 +3012,10 @@ static void corkscrew_rc_track_half_loop_up(
 /** rct2: 0x008A7E28 */
 static void corkscrew_rc_track_half_loop_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_half_loop_up(session, rideIndex, 3 - trackSequence, direction, height, tileElement);
@@ -3024,10 +3024,10 @@ static void corkscrew_rc_track_half_loop_down(
 /** rct2: 0x008A7E38 */
 static void corkscrew_rc_track_left_corkscrew_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -3127,10 +3127,10 @@ static void corkscrew_rc_track_left_corkscrew_up(
 /** rct2: 0x008A7E48 */
 static void corkscrew_rc_track_right_corkscrew_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -3231,10 +3231,10 @@ static void corkscrew_rc_track_right_corkscrew_up(
 /** rct2: 0x008A7E58 */
 static void corkscrew_rc_track_left_corkscrew_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_right_corkscrew_up(session, rideIndex, 2 - trackSequence, (direction + 1) & 3, height, tileElement);
@@ -3243,10 +3243,10 @@ static void corkscrew_rc_track_left_corkscrew_down(
 /** rct2: 0x008A7E68 */
 static void corkscrew_rc_track_right_corkscrew_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_left_corkscrew_up(session, rideIndex, 2 - trackSequence, (direction - 1) & 3, height, tileElement);
@@ -3255,10 +3255,10 @@ static void corkscrew_rc_track_right_corkscrew_down(
 /** rct2: 0x008A7E78 */
 static void corkscrew_rc_track_left_half_banked_helix_up_small(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -3461,10 +3461,10 @@ static void corkscrew_rc_track_left_half_banked_helix_up_small(
 /** rct2: 0x008A7E88 */
 static void corkscrew_rc_track_right_half_banked_helix_up_small(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -3667,10 +3667,10 @@ static void corkscrew_rc_track_right_half_banked_helix_up_small(
 /** rct2: 0x008A7E98 */
 static void corkscrew_rc_track_left_half_banked_helix_down_small(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (trackSequence >= 4)
@@ -3686,10 +3686,10 @@ static void corkscrew_rc_track_left_half_banked_helix_down_small(
 /** rct2: 0x008A7EA8 */
 static void corkscrew_rc_track_right_half_banked_helix_down_small(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (trackSequence >= 4)
@@ -3705,10 +3705,10 @@ static void corkscrew_rc_track_right_half_banked_helix_down_small(
 /** rct2: 0x008A7EB8 */
 static void corkscrew_rc_track_left_half_banked_helix_up_large(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -4021,10 +4021,10 @@ static void corkscrew_rc_track_left_half_banked_helix_up_large(
 /** rct2: 0x008A7EC8 */
 static void corkscrew_rc_track_right_half_banked_helix_up_large(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -4337,10 +4337,10 @@ static void corkscrew_rc_track_right_half_banked_helix_up_large(
 /** rct2: 0x008A7ED8 */
 static void corkscrew_rc_track_left_half_banked_helix_down_large(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (trackSequence >= 7)
@@ -4356,10 +4356,10 @@ static void corkscrew_rc_track_left_half_banked_helix_down_large(
 /** rct2: 0x008A7EE8 */
 static void corkscrew_rc_track_right_half_banked_helix_down_large(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (trackSequence >= 7)
@@ -4375,10 +4375,10 @@ static void corkscrew_rc_track_right_half_banked_helix_down_large(
 /** rct2: 0x008A7F18 */
 static void corkscrew_rc_track_left_quarter_turn_1_60_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -4416,10 +4416,10 @@ static void corkscrew_rc_track_left_quarter_turn_1_60_deg_up(
 /** rct2: 0x008A7EF8 */
 static void corkscrew_rc_track_right_quarter_turn_1_60_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -4457,10 +4457,10 @@ static void corkscrew_rc_track_right_quarter_turn_1_60_deg_up(
 /** rct2: 0x008A7F08 */
 static void corkscrew_rc_track_left_quarter_turn_1_60_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_right_quarter_turn_1_60_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height,
@@ -4470,10 +4470,10 @@ static void corkscrew_rc_track_left_quarter_turn_1_60_deg_down(
 /** rct2: 0x008A7F28 */
 static void corkscrew_rc_track_right_quarter_turn_1_60_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_left_quarter_turn_1_60_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height,
@@ -4483,10 +4483,10 @@ static void corkscrew_rc_track_right_quarter_turn_1_60_deg_down(
 /** rct2: 0x008A7F38 */
 static void corkscrew_rc_track_brakes(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -4515,10 +4515,10 @@ static void corkscrew_rc_track_brakes(
 /** rct2: 0x008A7F48 */
 static void corkscrew_rc_track_on_ride_photo(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -4561,10 +4561,10 @@ static void corkscrew_rc_track_on_ride_photo(
 /** rct2: 0x008A8198 */
 static void corkscrew_rc_track_flat_to_60_deg_up_long_base(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -4700,10 +4700,10 @@ static void corkscrew_rc_track_flat_to_60_deg_up_long_base(
 /** rct2: 0x008A81A8 */
 static void corkscrew_rc_track_60_deg_up_to_flat_long_base(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -4839,10 +4839,10 @@ static void corkscrew_rc_track_60_deg_up_to_flat_long_base(
 /** rct2: 0x008A81B8 */
 static void corkscrew_rc_track_flat_to_60_deg_down_long_base(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_flat_to_60_deg_up_long_base(session, rideIndex, 3 - trackSequence, (direction + 2) & 3, height,
@@ -4852,10 +4852,10 @@ static void corkscrew_rc_track_flat_to_60_deg_down_long_base(
 /** rct2: 0x008A81C8 */
 static void corkscrew_rc_track_60_deg_up_to_flat_long_base122(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     corkscrew_rc_track_60_deg_up_to_flat_long_base(session, rideIndex, 3 - trackSequence, (direction + 2) & 3, height,
@@ -4865,10 +4865,10 @@ static void corkscrew_rc_track_60_deg_up_to_flat_long_base122(
 /** rct2: 0x008A7F68 */
 static void corkscrew_rc_track_left_eighth_to_diag(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -4994,10 +4994,10 @@ static void corkscrew_rc_track_left_eighth_to_diag(
 /** rct2: 0x008A7F78 */
 static void corkscrew_rc_track_right_eighth_to_diag(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -5123,10 +5123,10 @@ static void corkscrew_rc_track_right_eighth_to_diag(
 /** rct2: 0x008A7F88 */
 static void corkscrew_rc_track_left_eighth_to_orthogonal(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -5136,10 +5136,10 @@ static void corkscrew_rc_track_left_eighth_to_orthogonal(
 /** rct2: 0x008A7F98 */
 static void corkscrew_rc_track_right_eighth_to_orthogonal(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -5149,10 +5149,10 @@ static void corkscrew_rc_track_right_eighth_to_orthogonal(
 /** rct2: 0x008A7FA8 */
 static void corkscrew_rc_track_left_eighth_bank_to_diag(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -5278,10 +5278,10 @@ static void corkscrew_rc_track_left_eighth_bank_to_diag(
 /** rct2: 0x008A7FB8 */
 static void corkscrew_rc_track_right_eighth_bank_to_diag(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -5407,10 +5407,10 @@ static void corkscrew_rc_track_right_eighth_bank_to_diag(
 /** rct2: 0x008A7FC8 */
 static void corkscrew_rc_track_left_eighth_bank_to_orthogonal(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -5420,10 +5420,10 @@ static void corkscrew_rc_track_left_eighth_bank_to_orthogonal(
 /** rct2: 0x008A7FD8 */
 static void corkscrew_rc_track_right_eighth_bank_to_orthogonal(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -5433,10 +5433,10 @@ static void corkscrew_rc_track_right_eighth_bank_to_orthogonal(
 /** rct2: 0x008A7F58 */
 static void corkscrew_rc_track_diag_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -5575,10 +5575,10 @@ static void corkscrew_rc_track_diag_flat(
 /** rct2: 0x008A8008 */
 static void corkscrew_rc_track_diag_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -5717,10 +5717,10 @@ static void corkscrew_rc_track_diag_25_deg_up(
 /** rct2: 0x008A8068 */
 static void corkscrew_rc_track_diag_60_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -5859,10 +5859,10 @@ static void corkscrew_rc_track_diag_60_deg_up(
 /** rct2: 0x008A7FE8 */
 static void corkscrew_rc_track_diag_flat_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -6001,10 +6001,10 @@ static void corkscrew_rc_track_diag_flat_to_25_deg_up(
 /** rct2: 0x008A8048 */
 static void corkscrew_rc_track_diag_25_deg_up_to_60_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -6143,10 +6143,10 @@ static void corkscrew_rc_track_diag_25_deg_up_to_60_deg_up(
 /** rct2: 0x008A8058 */
 static void corkscrew_rc_track_diag_60_deg_up_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -6285,10 +6285,10 @@ static void corkscrew_rc_track_diag_60_deg_up_to_25_deg_up(
 /** rct2: 0x008A7FF8 */
 static void corkscrew_rc_track_diag_25_deg_up_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -6427,10 +6427,10 @@ static void corkscrew_rc_track_diag_25_deg_up_to_flat(
 /** rct2: 0x008A8038 */
 static void corkscrew_rc_track_diag_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -6569,10 +6569,10 @@ static void corkscrew_rc_track_diag_25_deg_down(
 /** rct2: 0x008A8098 */
 static void corkscrew_rc_track_diag_60_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -6711,10 +6711,10 @@ static void corkscrew_rc_track_diag_60_deg_down(
 /** rct2: 0x008A8018 */
 static void corkscrew_rc_track_diag_flat_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -6851,10 +6851,10 @@ static void corkscrew_rc_track_diag_flat_to_25_deg_down(
 /** rct2: 0x008A8078 */
 static void corkscrew_rc_track_diag_25_deg_down_to_60_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -6993,10 +6993,10 @@ static void corkscrew_rc_track_diag_25_deg_down_to_60_deg_down(
 /** rct2: 0x008A8088 */
 static void corkscrew_rc_track_diag_60_deg_down_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7135,10 +7135,10 @@ static void corkscrew_rc_track_diag_60_deg_down_to_25_deg_down(
 /** rct2: 0x008A8028 */
 static void corkscrew_rc_track_diag_25_deg_down_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7277,10 +7277,10 @@ static void corkscrew_rc_track_diag_25_deg_down_to_flat(
 /** rct2: 0x008A80C8 */
 static void corkscrew_rc_track_diag_flat_to_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7351,10 +7351,10 @@ static void corkscrew_rc_track_diag_flat_to_left_bank(
 /** rct2: 0x008A80D8 */
 static void corkscrew_rc_track_diag_flat_to_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7425,10 +7425,10 @@ static void corkscrew_rc_track_diag_flat_to_right_bank(
 /** rct2: 0x008A80E8 */
 static void corkscrew_rc_track_diag_left_bank_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7499,10 +7499,10 @@ static void corkscrew_rc_track_diag_left_bank_to_flat(
 /** rct2: 0x008A80F8 */
 static void corkscrew_rc_track_diag_right_bank_to_flat(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7573,10 +7573,10 @@ static void corkscrew_rc_track_diag_right_bank_to_flat(
 /** rct2: 0x008A8128 */
 static void corkscrew_rc_track_diag_left_bank_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7647,10 +7647,10 @@ static void corkscrew_rc_track_diag_left_bank_to_25_deg_up(
 /** rct2: 0x008A8138 */
 static void corkscrew_rc_track_diag_right_bank_to_25_deg_up(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7721,10 +7721,10 @@ static void corkscrew_rc_track_diag_right_bank_to_25_deg_up(
 /** rct2: 0x008A8108 */
 static void corkscrew_rc_track_diag_25_deg_up_to_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7795,10 +7795,10 @@ static void corkscrew_rc_track_diag_25_deg_up_to_left_bank(
 /** rct2: 0x008A8118 */
 static void corkscrew_rc_track_diag_25_deg_up_to_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7869,10 +7869,10 @@ static void corkscrew_rc_track_diag_25_deg_up_to_right_bank(
 /** rct2: 0x008A8148 */
 static void corkscrew_rc_track_diag_left_bank_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -7941,10 +7941,10 @@ static void corkscrew_rc_track_diag_left_bank_to_25_deg_down(
 /** rct2: 0x008A8158 */
 static void corkscrew_rc_track_diag_right_bank_to_25_deg_down(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -8013,10 +8013,10 @@ static void corkscrew_rc_track_diag_right_bank_to_25_deg_down(
 /** rct2: 0x008A8168 */
 static void corkscrew_rc_track_diag_25_deg_down_to_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -8087,10 +8087,10 @@ static void corkscrew_rc_track_diag_25_deg_down_to_left_bank(
 /** rct2: 0x008A8178 */
 static void corkscrew_rc_track_diag_25_deg_down_to_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -8161,10 +8161,10 @@ static void corkscrew_rc_track_diag_25_deg_down_to_right_bank(
 /** rct2: 0x008A80A8 */
 static void corkscrew_rc_track_diag_left_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -8233,10 +8233,10 @@ static void corkscrew_rc_track_diag_left_bank(
 /** rct2: 0x008A80B8 */
 static void corkscrew_rc_track_diag_right_bank(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (trackSequence)
@@ -8305,10 +8305,10 @@ static void corkscrew_rc_track_diag_right_bank(
 /** rct2: 0x008A8188 */
 static void corkscrew_rc_track_block_brakes(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     switch (direction)
@@ -8333,10 +8333,10 @@ static void corkscrew_rc_track_block_brakes(
 
 static void corkscrew_rc_track_booster(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     if (!is_csg_loaded())
@@ -8345,10 +8345,10 @@ static void corkscrew_rc_track_booster(
         return;
     }
 
-    uint32 sprite_ne_sw_behind = SPR_CSG_BEGIN + 56213;
-    uint32 sprite_nw_se_behind = SPR_CSG_BEGIN + 56214;
-    uint32 sprite_ne_sw_after  = SPR_CSG_BEGIN + 56215;
-    uint32 sprite_nw_se_after  = SPR_CSG_BEGIN + 56216;
+    uint32_t sprite_ne_sw_behind = SPR_CSG_BEGIN + 56213;
+    uint32_t sprite_nw_se_behind = SPR_CSG_BEGIN + 56214;
+    uint32_t sprite_ne_sw_after  = SPR_CSG_BEGIN + 56215;
+    uint32_t sprite_nw_se_after  = SPR_CSG_BEGIN + 56216;
 
     switch (direction)
     {
@@ -8377,7 +8377,7 @@ static void corkscrew_rc_track_booster(
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_corkscrew_rc(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_corkscrew_rc(int32_t trackType, int32_t direction)
 {
     switch (trackType)
     {

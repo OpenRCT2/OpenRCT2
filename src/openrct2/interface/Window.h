@@ -29,18 +29,18 @@ struct scenario_index_entry;
 #define TEXT_INPUT_SIZE 1024
 #define TOP_TOOLBAR_HEIGHT 27
 
-extern uint16 TextInputDescriptionArgs[4];
+extern uint16_t TextInputDescriptionArgs[4];
 extern char gTextBoxInput[TEXT_INPUT_SIZE];
-extern sint32 gMaxTextBoxInputLength;
-extern sint32 gTextBoxFrameNo;
+extern int32_t gMaxTextBoxInputLength;
+extern int32_t gTextBoxFrameNo;
 extern bool gUsingWidgetTextBox;
 extern struct TextInputSession * gTextInput;
 
 using wndproc = void(struct rct_window*, union rct_window_event*);
 
-using rct_windowclass = uint8;
-using rct_windownumber = uint16;
-using rct_widgetindex = sint16;
+using rct_windowclass = uint8_t;
+using rct_windownumber = uint16_t;
+using rct_widgetindex = int16_t;
 
 struct window_identifier {
     rct_windowclass classification;
@@ -59,16 +59,16 @@ extern widget_identifier gCurrentTextBox;
  * size: 0x10
  */
 struct rct_widget {
-    uint8 type;                     // 0x00
-    uint8 colour;                   // 0x01
-    sint16 left;                    // 0x02
-    sint16 right;                   // 0x04
-    sint16 top;                     // 0x06
-    sint16 bottom;                  // 0x08
+    uint8_t type;                     // 0x00
+    uint8_t colour;                   // 0x01
+    int16_t left;                    // 0x02
+    int16_t right;                   // 0x04
+    int16_t top;                     // 0x06
+    int16_t bottom;                  // 0x08
     union {                         // 0x0A
-        uint32 image;
+        uint32_t image;
         rct_string_id text;
-        uint32 content;
+        uint32_t content;
         utf8 * string;
     };
     rct_string_id tooltip;          // 0x0E
@@ -78,18 +78,18 @@ struct rct_widget {
  * Viewport structure
  */
 struct rct_viewport {
-    sint16 width;                   // 0x00
-    sint16 height;                  // 0x02
-    sint16 x;                       // 0x04
-    sint16 y;                       // 0x06
-    sint16 view_x;                  // 0x08
-    sint16 view_y;                  // 0x0A
-    sint16 view_width;              // 0x0C
-    sint16 view_height;             // 0x0E
-    uint32 flags;                   // 0x12
-    uint8 zoom;                     // 0x10
-    uint8 var_11;
-    uint8 visibility;               // VISIBILITY_CACHE
+    int16_t width;                   // 0x00
+    int16_t height;                  // 0x02
+    int16_t x;                       // 0x04
+    int16_t y;                       // 0x06
+    int16_t view_x;                  // 0x08
+    int16_t view_y;                  // 0x0A
+    int16_t view_width;              // 0x0C
+    int16_t view_height;             // 0x0E
+    uint32_t flags;                   // 0x12
+    uint8_t zoom;                     // 0x10
+    uint8_t var_11;
+    uint8_t visibility;               // VISIBILITY_CACHE
 };
 
 /**
@@ -97,18 +97,18 @@ struct rct_viewport {
  * size: 0x12
  */
 struct rct_scroll {
-    uint16 flags;               // 0x00
-    uint16 h_left;              // 0x02
-    uint16 h_right;             // 0x04
-    uint16 h_thumb_left;        // 0x06
-    uint16 h_thumb_right;       // 0x08
-    uint16 v_top;               // 0x0A
-    uint16 v_bottom;            // 0x0C
-    uint16 v_thumb_top;         // 0x0E
-    uint16 v_thumb_bottom;      // 0x10
+    uint16_t flags;               // 0x00
+    uint16_t h_left;              // 0x02
+    uint16_t h_right;             // 0x04
+    uint16_t h_thumb_left;        // 0x06
+    uint16_t h_thumb_right;       // 0x08
+    uint16_t v_top;               // 0x0A
+    uint16_t v_bottom;            // 0x0C
+    uint16_t v_thumb_top;         // 0x0E
+    uint16_t v_thumb_bottom;      // 0x10
 };
 
-constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<uint16>::max();
+constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<uint16_t>::max();
 
 /**
  * Viewport focus structure.
@@ -116,25 +116,25 @@ constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<uint16>::max();
  * Use sprite.type to work out type.
  */
 struct coordinate_focus {
-    sint16 var_480;
-    sint16 x; //0x482
-    sint16 y; //0x484 & VIEWPORT_FOCUS_Y_MASK
-    sint16 z; //0x486
-    uint8 rotation;//0x488
-    uint8 zoom;//0x489
-    sint16 width;
-    sint16 height;
+    int16_t var_480;
+    int16_t x; //0x482
+    int16_t y; //0x484 & VIEWPORT_FOCUS_Y_MASK
+    int16_t z; //0x486
+    uint8_t rotation;//0x488
+    uint8_t zoom;//0x489
+    int16_t width;
+    int16_t height;
 };
 
 // Type is viewport_target_sprite_id & 0x80000000 != 0
 struct sprite_focus {
-    sint16 var_480;
-    uint16 sprite_id; //0x482
-    uint8 pad_484;
-    uint8 type; //0x485 & VIEWPORT_FOCUS_TYPE_MASK
-    uint16 pad_486;
-    uint8 rotation; //0x488
-    uint8 zoom; //0x489
+    int16_t var_480;
+    uint16_t sprite_id; //0x482
+    uint8_t pad_484;
+    uint8_t type; //0x485 & VIEWPORT_FOCUS_TYPE_MASK
+    uint16_t pad_486;
+    uint8_t rotation; //0x488
+    uint8_t zoom; //0x489
 };
 
 #define VIEWPORT_FOCUS_TYPE_MASK 0xC0
@@ -149,72 +149,72 @@ struct rct_window_event_list {
     void (*mouse_up)(struct rct_window*, rct_widgetindex);
     void (*resize)(struct rct_window*);
     void (*mouse_down)(struct rct_window*, rct_widgetindex, rct_widget*);
-    void (*dropdown)(struct rct_window*, rct_widgetindex, sint32);
+    void (*dropdown)(struct rct_window*, rct_widgetindex, int32_t);
     void (*unknown_05)(struct rct_window*);
     void (*update)(struct rct_window*);
     void (*unknown_07)(struct rct_window*);
     void (*unknown_08)(struct rct_window*);
-    void (*tool_update)(struct rct_window*, rct_widgetindex, sint32, sint32);
-    void (*tool_down)(struct rct_window*, rct_widgetindex, sint32, sint32);
-    void (*tool_drag)(struct rct_window*, rct_widgetindex, sint32, sint32);
-    void (*tool_up)(struct rct_window*, rct_widgetindex, sint32, sint32);
+    void (*tool_update)(struct rct_window*, rct_widgetindex, int32_t, int32_t);
+    void (*tool_down)(struct rct_window*, rct_widgetindex, int32_t, int32_t);
+    void (*tool_drag)(struct rct_window*, rct_widgetindex, int32_t, int32_t);
+    void (*tool_up)(struct rct_window*, rct_widgetindex, int32_t, int32_t);
     void (*tool_abort)(struct rct_window*, rct_widgetindex);
     void (*unknown_0E)(struct rct_window*);
-    void (*get_scroll_size)(struct rct_window*, sint32, sint32*, sint32*);
-    void (*scroll_mousedown)(struct rct_window*, sint32, sint32, sint32);
-    void (*scroll_mousedrag)(struct rct_window*, sint32, sint32, sint32);
-    void (*scroll_mouseover)(struct rct_window*, sint32, sint32, sint32);
+    void (*get_scroll_size)(struct rct_window*, int32_t, int32_t*, int32_t*);
+    void (*scroll_mousedown)(struct rct_window*, int32_t, int32_t, int32_t);
+    void (*scroll_mousedrag)(struct rct_window*, int32_t, int32_t, int32_t);
+    void (*scroll_mouseover)(struct rct_window*, int32_t, int32_t, int32_t);
     void (*text_input)(struct rct_window*, rct_widgetindex, char*);
     void (*viewport_rotate)(struct rct_window*);
-    void (*unknown_15)(struct rct_window*, sint32, sint32);
+    void (*unknown_15)(struct rct_window*, int32_t, int32_t);
     void (*tooltip)(struct rct_window*, rct_widgetindex, rct_string_id*);
-    void (*cursor)(struct rct_window*, rct_widgetindex, sint32, sint32, sint32*);
-    void (*moved)(struct rct_window*, sint32, sint32);
+    void (*cursor)(struct rct_window*, rct_widgetindex, int32_t, int32_t, int32_t*);
+    void (*moved)(struct rct_window*, int32_t, int32_t);
     void (*invalidate)(struct rct_window*);
     void (*paint)(struct rct_window*, rct_drawpixelinfo*);
-    void (*scroll_paint)(struct rct_window*, rct_drawpixelinfo*, sint32);
+    void (*scroll_paint)(struct rct_window*, rct_drawpixelinfo*, int32_t);
 };
 
 struct campaign_variables {
-    sint16 campaign_type;
-    sint16 no_weeks; //0x482
-    uint16 ride_id; //0x484
-    uint32 pad_486;
+    int16_t campaign_type;
+    int16_t no_weeks; //0x482
+    uint16_t ride_id; //0x484
+    uint32_t pad_486;
 };
 
 struct new_ride_variables {
-    sint16 selected_ride_id; //0x480
-    sint16 highlighted_ride_id; //0x482
-    uint16 pad_484;
-    uint16 pad_486;
-    uint16 selected_ride_countdown; //488
+    int16_t selected_ride_id; //0x480
+    int16_t highlighted_ride_id; //0x482
+    uint16_t pad_484;
+    uint16_t pad_486;
+    uint16_t selected_ride_countdown; //488
 };
 
 struct news_variables {
-    sint16 var_480;
-    sint16 var_482;
-    uint16 var_484;
-    uint16 var_486;
-    uint16 var_488;
+    int16_t var_480;
+    int16_t var_482;
+    uint16_t var_484;
+    uint16_t var_486;
+    uint16_t var_488;
 };
 
 struct map_variables {
-    sint16 rotation;
-    sint16 var_482;
-    uint16 var_484;
-    uint16 var_486;
-    uint16 var_488;
+    int16_t rotation;
+    int16_t var_482;
+    uint16_t var_484;
+    uint16_t var_486;
+    uint16_t var_488;
 };
 
 struct ride_variables {
-    sint16 view;
-    sint32 var_482;
-    sint32 var_486;
+    int16_t view;
+    int32_t var_482;
+    int32_t var_486;
 };
 
 struct scenery_variables {
-    sint16 selected_scenery_id;
-    sint16 hover_counter;
+    int16_t selected_scenery_id;
+    int16_t hover_counter;
 };
 
 struct track_list_variables {
@@ -223,7 +223,7 @@ struct track_list_variables {
 };
 
 struct error_variables {
-    uint16 var_480;
+    uint16_t var_480;
 };
 
 struct rct_window;
@@ -521,7 +521,7 @@ enum TOOL_IDX {
     TOOL_ENTRANCE_DOWN = 24,
 };
 
-using modal_callback = void (*)(sint32 result);
+using modal_callback = void (*)(int32_t result);
 using close_callback = void (*)();
 
 #define WINDOW_LIMIT_MIN 4
@@ -530,8 +530,8 @@ using close_callback = void (*)();
 
 extern rct_window * gWindowAudioExclusive;
 
-extern uint16 gWindowUpdateTicks;
-extern uint16 gWindowMapFlashingFlags;
+extern uint16_t gWindowUpdateTicks;
+extern uint16_t gWindowMapFlashingFlags;
 
 extern colour_t gCurrentWindowColours[4];
 
@@ -542,22 +542,22 @@ void window_dispatch_update_all();
 void window_update_all_viewports();
 void window_update_all();
 
-void window_set_window_limit(sint32 value);
+void window_set_window_limit(int32_t value);
 
-rct_window *window_create(sint32 x, sint32 y, sint32 width, sint32 height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags);
-rct_window *window_create_auto_pos(sint32 width, sint32 height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags);
-rct_window *window_create_centred(sint32 width, sint32 height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags);
+rct_window *window_create(int32_t x, int32_t y, int32_t width, int32_t height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16_t flags);
+rct_window *window_create_auto_pos(int32_t width, int32_t height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16_t flags);
+rct_window *window_create_centred(int32_t width, int32_t height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16_t flags);
 void window_close(rct_window *window);
 void window_close_by_class(rct_windowclass cls);
 void window_close_by_number(rct_windowclass cls, rct_windownumber number);
 void window_close_top();
 void window_close_all();
 void window_close_all_except_class(rct_windowclass cls);
-void window_close_all_except_flags(uint16 flags);
+void window_close_all_except_flags(uint16_t flags);
 rct_window *window_find_by_class(rct_windowclass cls);
 rct_window *window_find_by_number(rct_windowclass cls, rct_windownumber number);
-rct_window *window_find_from_point(sint32 x, sint32 y);
-rct_widgetindex window_find_widget_from_point(rct_window *w, sint32 x, sint32 y);
+rct_window *window_find_from_point(int32_t x, int32_t y);
+rct_widgetindex window_find_widget_from_point(rct_window *w, int32_t x, int32_t y);
 void window_invalidate(rct_window *window);
 void window_invalidate_by_class(rct_windowclass cls);
 void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number);
@@ -567,11 +567,11 @@ void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex
 void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, rct_widgetindex widgetIndex);
 void window_init_scroll_widgets(rct_window *w);
 void window_update_scroll_widgets(rct_window *w);
-sint32 window_get_scroll_data_index(rct_window *w, rct_widgetindex widget_index);
+int32_t window_get_scroll_data_index(rct_window *w, rct_widgetindex widget_index);
 
 rct_window *window_bring_to_front(rct_window *w);
 rct_window *window_bring_to_front_by_class(rct_windowclass cls);
-rct_window *window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16 flags);
+rct_window *window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16_t flags);
 rct_window *window_bring_to_front_by_number(rct_windowclass cls, rct_windownumber number);
 
 void window_push_others_right(rct_window *w);
@@ -579,28 +579,28 @@ void window_push_others_below(rct_window *w1);
 
 rct_window *window_get_main();
 
-void window_set_location(rct_window *w, sint32 x, sint32 y, sint32 z);
+void window_set_location(rct_window *w, int32_t x, int32_t y, int32_t z);
 void window_scroll_to_viewport(rct_window *w);
-void window_scroll_to_location(rct_window *w, sint32 x, sint32 y, sint32 z);
-void window_rotate_camera(rct_window *w, sint32 direction);
-void window_viewport_get_map_coords_by_cursor(rct_window *w, sint16 *map_x, sint16 *map_y, sint16 *offset_x, sint16 *offset_y);
-void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint16 map_y, sint16 offset_x, sint16 offset_y);
-void window_zoom_set(rct_window *w, sint32 zoomLevel, bool atCursor);
+void window_scroll_to_location(rct_window *w, int32_t x, int32_t y, int32_t z);
+void window_rotate_camera(rct_window *w, int32_t direction);
+void window_viewport_get_map_coords_by_cursor(rct_window *w, int16_t *map_x, int16_t *map_y, int16_t *offset_x, int16_t *offset_y);
+void window_viewport_centre_tile_around_cursor(rct_window *w, int16_t map_x, int16_t map_y, int16_t offset_x, int16_t offset_y);
+void window_zoom_set(rct_window *w, int32_t zoomLevel, bool atCursor);
 void window_zoom_in(rct_window *w, bool atCursor);
 void window_zoom_out(rct_window *w, bool atCursor);
 void main_window_zoom(bool zoomIn, bool atCursor);
 
-void window_show_textinput(rct_window *w, rct_widgetindex widgetIndex, uint16 title, uint16 text, sint32 value);
+void window_show_textinput(rct_window *w, rct_widgetindex widgetIndex, uint16_t title, uint16_t text, int32_t value);
 
-void window_draw_all(rct_drawpixelinfo *dpi, sint16 left, sint16 top, sint16 right, sint16 bottom);
-void window_draw(rct_drawpixelinfo *dpi, rct_window *w, sint32 left, sint32 top, sint32 right, sint32 bottom);
+void window_draw_all(rct_drawpixelinfo *dpi, int16_t left, int16_t top, int16_t right, int16_t bottom);
+void window_draw(rct_drawpixelinfo *dpi, rct_window *w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi);
 void window_draw_viewport(rct_drawpixelinfo *dpi, rct_window *w);
 
-void window_set_position(rct_window *w, sint32 x, sint32 y);
-void window_move_position(rct_window *w, sint32 dx, sint32 dy);
-void window_resize(rct_window *w, sint32 dw, sint32 dh);
-void window_set_resize(rct_window *w, sint32 minWidth, sint32 minHeight, sint32 maxWidth, sint32 maxHeight);
+void window_set_position(rct_window *w, int32_t x, int32_t y);
+void window_move_position(rct_window *w, int32_t dx, int32_t dy);
+void window_resize(rct_window *w, int32_t dw, int32_t dh);
+void window_set_resize(rct_window *w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight);
 
 bool tool_set(rct_window *w, rct_widgetindex widgetIndex, TOOL_IDX tool);
 void tool_cancel();
@@ -612,59 +612,59 @@ void window_update_viewport_ride_music();
 rct_viewport * window_get_viewport(rct_window * window);
 
 // Open window functions
-void window_relocate_windows(sint32 width, sint32 height);
-void window_resize_gui(sint32 width, sint32 height);
-void window_resize_gui_scenario_editor(sint32 width, sint32 height);
+void window_relocate_windows(int32_t width, int32_t height);
+void window_resize_gui(int32_t width, int32_t height);
+void window_resize_gui_scenario_editor(int32_t width, int32_t height);
 void window_ride_construct(rct_window *w);
-void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY);
-void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY);
-void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY);
+void ride_construction_toolupdate_entrance_exit(int32_t screenX, int32_t screenY);
+void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY);
+void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY);
 
-void window_bubble_list_item(rct_window* w, sint32 item_position);
+void window_bubble_list_item(rct_window* w, int32_t item_position);
 
 void window_align_tabs( rct_window *w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id );
 
 void window_staff_list_init_vars();
 
-void game_command_callback_pickup_guest(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
-void game_command_callback_pickup_staff(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
+void game_command_callback_pickup_guest(int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
+void game_command_callback_pickup_staff(int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
 
 void window_event_close_call(rct_window* w);
 void window_event_mouse_up_call(rct_window* w, rct_widgetindex widgetIndex);
 void window_event_resize_call(rct_window* w);
 void window_event_mouse_down_call(rct_window *w, rct_widgetindex widgetIndex);
-void window_event_dropdown_call(rct_window* w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+void window_event_dropdown_call(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 void window_event_unknown_05_call(rct_window* w);
 void window_event_update_call(rct_window *w);
 void window_event_unknown_07_call(rct_window* w);
 void window_event_unknown_08_call(rct_window* w);
-void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 void window_event_tool_abort_call(rct_window* w, rct_widgetindex widgetIndex);
 void window_event_unknown_0E_call(rct_window* w);
-void window_get_scroll_size(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-void window_event_scroll_mousedown_call(rct_window* w, sint32 scrollIndex, sint32 x, sint32 y);
-void window_event_scroll_mousedrag_call(rct_window* w, sint32 scrollIndex, sint32 x, sint32 y);
-void window_event_scroll_mouseover_call(rct_window* w, sint32 scrollIndex, sint32 x, sint32 y);
+void window_get_scroll_size(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y);
+void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y);
+void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y);
 void window_event_textinput_call(rct_window *w, rct_widgetindex widgetIndex, char *text);
 void window_event_viewport_rotate_call(rct_window* w);
-void window_event_unknown_15_call(rct_window* w, sint32 scrollIndex, sint32 scrollAreaType);
+void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType);
 rct_string_id window_event_tooltip_call(rct_window* w, rct_widgetindex widgetIndex);
-sint32 window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-void window_event_moved_call(rct_window* w, sint32 x, sint32 y);
+int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+void window_event_moved_call(rct_window* w, int32_t x, int32_t y);
 void window_event_invalidate_call(rct_window* w);
 void window_event_paint_call(rct_window* w, rct_drawpixelinfo *dpi);
-void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 void invalidate_all_windows_after_input();
 void textinput_cancel();
 
-void window_move_and_snap(rct_window *w, sint32 newWindowX, sint32 newWindowY, sint32 snapProximity);
-sint32 window_can_resize(rct_window *w);
+void window_move_and_snap(rct_window *w, int32_t newWindowX, int32_t newWindowY, int32_t snapProximity);
+int32_t window_can_resize(rct_window *w);
 
-void window_start_textbox(rct_window *call_w, rct_widgetindex call_widget, rct_string_id existing_text, char *existing_args, sint32 maxLength);
+void window_start_textbox(rct_window *call_w, rct_widgetindex call_widget, rct_string_id existing_text, char *existing_args, int32_t maxLength);
 void window_cancel_textbox();
 void window_update_textbox_caret();
 void window_update_textbox();
@@ -696,11 +696,11 @@ void window_ride_construction_keyboard_shortcut_demolish_current();
 void window_follow_sprite(rct_window * w, size_t spriteIndex);
 void window_unfollow_sprite(rct_window * w);
 
-bool window_ride_construction_update_state(sint32 *trackType, sint32 *trackDirection, sint32 *rideIndex, sint32 *_liftHillAndAlternativeState, sint32 *x, sint32 *y, sint32 *z, sint32 *properties);
-money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 liftHillAndAlternativeState, sint32 x, sint32 y, sint32 z);
+bool window_ride_construction_update_state(int32_t *trackType, int32_t *trackDirection, int32_t *rideIndex, int32_t *_liftHillAndAlternativeState, int32_t *x, int32_t *y, int32_t *z, int32_t *properties);
+money32 place_provisional_track_piece(int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, int32_t x, int32_t y, int32_t z);
 
-extern uint64 _enabledRidePieces;
-extern uint8 _rideConstructionState2;
+extern uint64_t _enabledRidePieces;
+extern uint8_t _rideConstructionState2;
 extern bool _stationConstructed;
 extern bool _deferClose;
 

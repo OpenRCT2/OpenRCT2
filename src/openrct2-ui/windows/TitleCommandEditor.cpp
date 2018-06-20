@@ -29,8 +29,8 @@
 
 // clang-format off
 struct TITLE_COMMAND_ORDER {
-    // originally a uint8, but the new millisecond wait times require a uint16.
-    uint16 command;
+    // originally a uint8_t, but the new millisecond wait times require a uint16_t.
+    uint16_t command;
     rct_string_id nameStringId;
     rct_string_id descStringId;
 };
@@ -77,7 +77,7 @@ enum WINDOW_WATER_WIDGET_IDX {
 #define WHA ((WW-WS*2)/2)
 
 static bool _window_title_command_editor_insert;
-static sint32 _window_title_command_editor_index;
+static int32_t _window_title_command_editor_index;
 #define BUF_SIZE 50
 static char textbox1Buffer[BUF_SIZE];
 static char textbox2Buffer[BUF_SIZE];
@@ -113,17 +113,17 @@ static rct_widget window_title_command_editor_widgets[] = {
 static void window_title_command_editor_close(rct_window * w);
 static void window_title_command_editor_mouseup(rct_window * w, rct_widgetindex widgetIndex);
 static void window_title_command_editor_mousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget);
-static void window_title_command_editor_dropdown(rct_window * w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_title_command_editor_dropdown(rct_window * w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_title_command_editor_update(rct_window * w);
-static void window_title_command_editor_tool_down(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_title_command_editor_tool_down(rct_window * w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 static void window_title_command_editor_invalidate(rct_window * w);
 static void window_title_command_editor_paint(rct_window * w, rct_drawpixelinfo * dpi);
 static void window_title_command_editor_textinput(rct_window * w, rct_widgetindex widgetIndex, char * text);
 static void scenario_select_callback(const utf8 * path);
-static sint32 get_command_info_index(sint32 index);
-static TITLE_COMMAND_ORDER get_command_info(sint32 index);
+static int32_t get_command_info_index(int32_t index);
+static TITLE_COMMAND_ORDER get_command_info(int32_t index);
 static LocationXY16 get_location();
-static uint8 get_zoom();
+static uint8_t get_zoom();
 
 static rct_window_event_list window_title_command_editor_events = {
     window_title_command_editor_close,
@@ -167,9 +167,9 @@ static void scenario_select_callback(const utf8 * path)
     }
 }
 
-static sint32 get_command_info_index(sint32 index)
+static int32_t get_command_info_index(int32_t index)
 {
-    for (sint32 i = 0; i < (sint32)NUM_COMMANDS; i++)
+    for (int32_t i = 0; i < (int32_t)NUM_COMMANDS; i++)
     {
         if (_window_title_command_editor_orders[i].command == index)
             return i;
@@ -177,9 +177,9 @@ static sint32 get_command_info_index(sint32 index)
     return 0;
 }
 
-static TITLE_COMMAND_ORDER get_command_info(sint32 index)
+static TITLE_COMMAND_ORDER get_command_info(int32_t index)
 {
-    for (sint32 i = 0; i < (sint32)NUM_COMMANDS; i++)
+    for (int32_t i = 0; i < (int32_t)NUM_COMMANDS; i++)
     {
         if (_window_title_command_editor_orders[i].command == index)
             return _window_title_command_editor_orders[i];
@@ -193,7 +193,7 @@ static LocationXY16 get_location()
     rct_window * w = window_get_main();
     if (w != nullptr)
     {
-        sint32 interactionType;
+        int32_t interactionType;
         rct_tile_element * tileElement;
 
         get_map_coordinates_from_pos_window(w, w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &tileElement, nullptr);
@@ -207,9 +207,9 @@ static LocationXY16 get_location()
     return mapCoord;
 }
 
-static uint8 get_zoom()
+static uint8_t get_zoom()
 {
-    uint8 zoom = 0;
+    uint8_t zoom = 0;
     rct_window * w = window_get_main();
     if (w != nullptr)
     {
@@ -227,7 +227,7 @@ static bool sprite_selector_tool_is_active()
     return true;
 }
 
-void window_title_command_editor_open(TitleSequence * sequence, sint32 index, bool insert)
+void window_title_command_editor_open(TitleSequence * sequence, int32_t index, bool insert)
 {
     _sequence = sequence;
 
@@ -335,14 +335,14 @@ static void window_title_command_editor_mouseup(rct_window * w, rct_widgetindex 
         if (command.Type == TITLE_SCRIPT_LOCATION)
         {
             LocationXY16 mapCoord = get_location();
-            command.X = (uint8)mapCoord.x;
-            command.Y = (uint8)mapCoord.y;
+            command.X = (uint8_t)mapCoord.x;
+            command.Y = (uint8_t)mapCoord.y;
             snprintf(textbox1Buffer, BUF_SIZE, "%d", command.X);
             snprintf(textbox2Buffer, BUF_SIZE, "%d", command.Y);
         }
         else if (command.Type == TITLE_SCRIPT_ZOOM)
         {
-            uint8 zoom = get_zoom();
+            uint8_t zoom = get_zoom();
             command.Zoom = zoom;
             snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Zoom);
         }
@@ -420,8 +420,8 @@ static void window_title_command_editor_mousedown(rct_window * w, rct_widgetinde
     case WIDX_INPUT_DROPDOWN:
         if (command.Type == TITLE_SCRIPT_SPEED)
         {
-            sint32 numItems = 4;
-            for (sint32 i = 0; i < numItems; i++)
+            int32_t numItems = 4;
+            for (int32_t i = 0; i < numItems; i++)
             {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItemsArgs[i] = SpeedNames[i];
@@ -441,8 +441,8 @@ static void window_title_command_editor_mousedown(rct_window * w, rct_widgetinde
         }
         else if (command.Type == TITLE_SCRIPT_LOAD)
         {
-            sint32 numItems = (sint32)_sequence->NumSaves;
-            for (sint32 i = 0; i < numItems; i++)
+            int32_t numItems = (int32_t)_sequence->NumSaves;
+            for (int32_t i = 0; i < numItems; i++)
             {
                 gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
                 gDropdownItemsArgs[i] = (uintptr_t)_sequence->Saves[i];
@@ -464,7 +464,7 @@ static void window_title_command_editor_mousedown(rct_window * w, rct_widgetinde
     }
 }
 
-static void window_title_command_editor_dropdown(rct_window * w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_title_command_editor_dropdown(rct_window * w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1)
         return;
@@ -492,8 +492,8 @@ static void window_title_command_editor_dropdown(rct_window * w, rct_widgetindex
         case TITLE_SCRIPT_LOCATION:
         {
             LocationXY16 mapCoord = get_location();
-            command.X = (uint8)mapCoord.x;
-            command.Y = (uint8)mapCoord.y;
+            command.X = (uint8_t)mapCoord.x;
+            command.Y = (uint8_t)mapCoord.y;
             snprintf(textbox1Buffer, BUF_SIZE, "%d", command.X);
             snprintf(textbox2Buffer, BUF_SIZE, "%d", command.Y);
             break;
@@ -537,14 +537,14 @@ static void window_title_command_editor_dropdown(rct_window * w, rct_widgetindex
         case TITLE_SCRIPT_SPEED:
             if (dropdownIndex != command.Speed - 1)
             {
-                command.Speed = (uint8)(dropdownIndex + 1);
+                command.Speed = (uint8_t)(dropdownIndex + 1);
                 window_invalidate(w);
             }
             break;
         case TITLE_SCRIPT_LOAD:
             if (dropdownIndex != command.SaveIndex)
             {
-                command.SaveIndex = (uint8)dropdownIndex;
+                command.SaveIndex = (uint8_t)dropdownIndex;
                 window_invalidate(w);
             }
             break;
@@ -556,7 +556,7 @@ static void window_title_command_editor_dropdown(rct_window * w, rct_widgetindex
 static void window_title_command_editor_textinput(rct_window * w, rct_widgetindex widgetIndex, char * text)
 {
     char * end;
-    sint32 value = strtol(widgetIndex != WIDX_TEXTBOX_Y ? textbox1Buffer : textbox2Buffer, &end, 10);
+    int32_t value = strtol(widgetIndex != WIDX_TEXTBOX_Y ? textbox1Buffer : textbox2Buffer, &end, 10);
     if (value < 0) value = 0;
     // The Wait command is the only one with acceptable values greater than 255.
     if (value > 255 && command.Type != TITLE_SCRIPT_WAIT) value = 255;
@@ -571,7 +571,7 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
                 {
                     if (value < 100) value = 100;
                     if (value > 65000) value = 65000;
-                    command.Milliseconds = (uint16)value;
+                    command.Milliseconds = (uint16_t)value;
                     snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Milliseconds);
                 }
                 else
@@ -579,7 +579,7 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
                     // Both Rotate and Zoom have a maximum value of 3, but Rotate has a min value of 1 not 0.
                     if (value > 3) value = 3;
                     if (value < 1 && command.Type == TITLE_SCRIPT_ROTATE) value = 1;
-                    command.Rotations = (uint8)value;
+                    command.Rotations = (uint8_t)value;
                     snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Rotations);
                 }
             }
@@ -595,7 +595,7 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
         {
             if (*end == '\0')
             {
-                command.X = (uint8)value;
+                command.X = (uint8_t)value;
             }
             snprintf(textbox1Buffer, BUF_SIZE, "%d", command.X);
             window_invalidate(w);
@@ -610,7 +610,7 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
         {
             if (*end == '\0')
             {
-                command.Y = (uint8)value;
+                command.Y = (uint8_t)value;
             }
             snprintf(textbox2Buffer, BUF_SIZE, "%d", command.Y);
             window_invalidate(w);
@@ -633,15 +633,15 @@ static void window_title_command_editor_update(rct_window * w)
     }
 }
 
-static void window_title_command_editor_tool_down(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_title_command_editor_tool_down(rct_window * w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     viewport_interaction_info info;
     viewport_interaction_get_item_left(x, y, &info);
 
     if (info.type == VIEWPORT_INTERACTION_ITEM_SPRITE)
     {
-        uint16 spriteIndex = info.sprite->unknown.sprite_index;
-        uint16 spriteIdentifier = info.sprite->unknown.sprite_identifier;
+        uint16_t spriteIndex = info.sprite->unknown.sprite_index;
+        uint16_t spriteIdentifier = info.sprite->unknown.sprite_identifier;
         bool validSprite = false;
         if (spriteIdentifier == SPRITE_IDENTIFIER_PEEP)
         {
@@ -654,7 +654,7 @@ static void window_title_command_editor_tool_down(rct_window * w, rct_widgetinde
             validSprite = true;
             rct_vehicle * vehicle = GET_VEHICLE(spriteIndex);
             Ride * ride = get_ride(vehicle->ride);
-            set_format_arg(16, uint32, ride->name_arguments);
+            set_format_arg(16, uint32_t, ride->name_arguments);
             format_string(command.SpriteName, USER_STRING_MAX_LENGTH, ride->name, &ride->name_arguments);
         }
         else if (spriteIdentifier == SPRITE_IDENTIFIER_LITTER)
@@ -786,7 +786,7 @@ static void window_title_command_editor_paint(rct_window * w, rct_drawpixelinfo 
     }
     if (command.Type == TITLE_SCRIPT_FOLLOW)
     {
-        uint8 colour = COLOUR_BLACK;
+        uint8_t colour = COLOUR_BLACK;
         rct_string_id spriteString = STR_TITLE_COMMAND_EDITOR_FORMAT_SPRITE_NAME;
         if (command.SpriteIndex != SPRITE_INDEX_NULL)
         {

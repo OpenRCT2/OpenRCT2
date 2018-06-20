@@ -58,7 +58,7 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 }
 #endif // NO_TTF
 
-bool platform_has_matching_language(NSString *preferredLocale, uint16* languageIdentifier)
+bool platform_has_matching_language(NSString *preferredLocale, uint16_t* languageIdentifier)
 {
     @autoreleasepool
     {
@@ -100,13 +100,13 @@ bool platform_has_matching_language(NSString *preferredLocale, uint16* languageI
     }
 }
 
-uint16 platform_get_locale_language()
+uint16_t platform_get_locale_language()
 {
     @autoreleasepool
     {
         NSArray<NSString*> *preferredLanguages = [NSLocale preferredLanguages];
         for (NSString *preferredLanguage in preferredLanguages) {
-            uint16 languageIdentifier;
+            uint16_t languageIdentifier;
             if (platform_has_matching_language(preferredLanguage, &languageIdentifier)) {
                 return languageIdentifier;
             }
@@ -117,7 +117,7 @@ uint16 platform_get_locale_language()
     }
 }
 
-uint8 platform_get_locale_currency()
+uint8_t platform_get_locale_currency()
 {
     @autoreleasepool
     {
@@ -126,7 +126,7 @@ uint8 platform_get_locale_currency()
     }
 }
 
-uint8 platform_get_locale_measurement_format()
+uint8_t platform_get_locale_measurement_format()
 {
     @autoreleasepool
     {

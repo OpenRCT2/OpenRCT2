@@ -31,15 +31,15 @@ public:
     NetworkPacket                               InboundPacket;
     NETWORK_AUTH                                AuthStatus      = NETWORK_AUTH_NONE;
     NetworkPlayer *                             Player          = nullptr;
-    uint32                                      PingTime        = 0;
+    uint32_t                                      PingTime        = 0;
     NetworkKey                                  Key;
-    std::vector<uint8>                          Challenge;
+    std::vector<uint8_t>                          Challenge;
     std::vector<const ObjectRepositoryItem *>   RequestedObjects;
 
     NetworkConnection();
     ~NetworkConnection();
 
-    sint32  ReadPacket();
+    int32_t  ReadPacket();
     void QueuePacket(std::unique_ptr<NetworkPacket> packet, bool front = false);
     void SendQueuedPackets();
     void ResetLastPacketTime();
@@ -51,7 +51,7 @@ public:
 
 private:
     std::list<std::unique_ptr<NetworkPacket>>   _outboundPackets;
-    uint32                                      _lastPacketTime = 0;
+    uint32_t                                      _lastPacketTime = 0;
     utf8 *                                      _lastDisconnectReason   = nullptr;
 
     bool SendPacket(NetworkPacket &packet);

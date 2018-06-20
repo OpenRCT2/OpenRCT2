@@ -16,8 +16,8 @@ utf8 * IStream::ReadString()
 {
     std::vector<utf8> result;
 
-    uint8 ch;
-    while ((ch = ReadValue<uint8>()) != 0)
+    uint8_t ch;
+    while ((ch = ReadValue<uint8_t>()) != 0)
     {
         result.push_back(ch);
     }
@@ -31,8 +31,8 @@ utf8 * IStream::ReadString()
 std::string IStream::ReadStdString()
 {
     std::string result;
-    uint8 ch;
-    while ((ch = ReadValue<uint8>()) != 0)
+    uint8_t ch;
+    while ((ch = ReadValue<uint8_t>()) != 0)
     {
         result.push_back(ch);
     }
@@ -43,7 +43,7 @@ void IStream::WriteString(const utf8 * str)
 {
     if (str == nullptr)
     {
-        WriteValue<uint8>(0);
+        WriteValue<uint8_t>(0);
     }
     else
     {

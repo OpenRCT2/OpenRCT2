@@ -24,12 +24,12 @@ enum
     SPR_DODGEMS_FENCE_TOP_LEFT     = 21937
 };
 
-static constexpr const uint32 dodgems_fence_sprites[] = { SPR_DODGEMS_FENCE_TOP_RIGHT, SPR_DODGEMS_FENCE_BOTTOM_RIGHT,
+static constexpr const uint32_t dodgems_fence_sprites[] = { SPR_DODGEMS_FENCE_TOP_RIGHT, SPR_DODGEMS_FENCE_BOTTOM_RIGHT,
                                          SPR_DODGEMS_FENCE_BOTTOM_LEFT, SPR_DODGEMS_FENCE_TOP_LEFT };
 
-static void paint_dodgems_roof(paint_session * session, sint32 height, sint32 offset)
+static void paint_dodgems_roof(paint_session * session, int32_t height, int32_t offset)
 {
-    uint32 image_id = (SPR_DODGEMS_ROOF_FRAME + offset) | session->TrackColours[SCHEME_TRACK];
+    uint32_t image_id = (SPR_DODGEMS_ROOF_FRAME + offset) | session->TrackColours[SCHEME_TRACK];
     sub_98196C(session, image_id, 0, 0, 32, 32, 2, height);
 
     image_id = (SPR_DODGEMS_ROOF_GLASS + offset) | (PALETTE_DARKEN_3 << 19) | IMAGE_TYPE_TRANSPARENT;
@@ -38,21 +38,21 @@ static void paint_dodgems_roof(paint_session * session, sint32 height, sint32 of
 
 static void paint_dodgems(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    uint8 relativeTrackSequence = track_map_4x4[direction][trackSequence];
+    uint8_t relativeTrackSequence = track_map_4x4[direction][trackSequence];
 
-    sint32   edges    = edges_4x4[relativeTrackSequence];
+    int32_t   edges    = edges_4x4[relativeTrackSequence];
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    uint32 imageId = SPR_DODGEMS_FLOOR | session->TrackColours[SCHEME_SUPPORTS];
+    uint32_t imageId = SPR_DODGEMS_FLOOR | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 30, 30, 1, height, 1, 1, height);
 
     track_paint_util_paint_fences(
@@ -97,7 +97,7 @@ static void paint_dodgems(
 /**
  * rct2:
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_dodgems(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_dodgems(int32_t trackType, int32_t direction)
 {
     if (trackType != FLAT_TRACK_ELEM_4_X_4)
     {

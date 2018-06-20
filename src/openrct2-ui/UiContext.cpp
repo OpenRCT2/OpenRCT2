@@ -59,7 +59,7 @@ using namespace OpenRCT2::Ui;
 class UiContext final : public IUiContext
 {
 private:
-    constexpr static uint32 TOUCH_DOUBLE_TIMEOUT = 300;
+    constexpr static uint32_t TOUCH_DOUBLE_TIMEOUT = 300;
 
     IPlatformUiContext * const      _platformUiContext;
     IWindowManager * const          _windowManager;
@@ -67,9 +67,9 @@ private:
     CursorRepository _cursorRepository;
 
     SDL_Window *    _window = nullptr;
-    sint32          _width  = 0;
-    sint32          _height = 0;
-    sint32          _scaleQuality = 0;
+    int32_t          _width  = 0;
+    int32_t          _height = 0;
+    int32_t          _scaleQuality = 0;
 
     bool _resolutionsAllowAnyAspectRatio = false;
     std::vector<Resolution> _fsResolutions;
@@ -80,10 +80,10 @@ private:
     KeyboardShortcuts   _keyboardShortcuts;
     TextComposition     _textComposition;
     CursorState         _cursorState            = {};
-    uint32              _lastKeyPressed         = 0;
-    const uint8 *       _keysState              = nullptr;
-    uint8               _keysPressed[256]       = {};
-    uint32              _lastGestureTimestamp   = 0;
+    uint32_t              _lastKeyPressed         = 0;
+    const uint8_t *       _keysState              = nullptr;
+    uint8_t               _keysPressed[256]       = {};
+    uint32_t              _lastGestureTimestamp   = 0;
     float               _gestureRadius          = 0;
 
     InGameConsole       _inGameConsole;
@@ -132,25 +132,25 @@ public:
         return _window;
     }
 
-    sint32 GetWidth() override
+    int32_t GetWidth() override
     {
         return _width;
     }
 
-    sint32 GetHeight() override
+    int32_t GetHeight() override
     {
         return _height;
     }
 
-    sint32 GetScaleQuality() override
+    int32_t GetScaleQuality() override
     {
         return _scaleQuality;
     }
 
     void SetFullscreenMode(FULLSCREEN_MODE mode) override
     {
-        static constexpr const sint32 SDLFSFlags[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
-        uint32 windowFlags = SDLFSFlags[(sint32)mode];
+        static constexpr const int32_t SDLFSFlags[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
+        uint32_t windowFlags = SDLFSFlags[(int32_t)mode];
 
         // HACK Changing window size when in fullscreen usually has no effect
         if (mode == FULLSCREEN_MODE::FULLSCREEN)
@@ -187,13 +187,13 @@ public:
 
     bool HasFocus() override
     {
-        uint32 windowFlags = GetWindowFlags();
+        uint32_t windowFlags = GetWindowFlags();
         return (windowFlags & SDL_WINDOW_INPUT_FOCUS) != 0;
     }
 
     bool IsMinimised() override
     {
-        uint32 windowFlags = GetWindowFlags();
+        uint32_t windowFlags = GetWindowFlags();
         return (windowFlags & SDL_WINDOW_MINIMIZED) ||
                (windowFlags & SDL_WINDOW_HIDDEN);
     }
@@ -209,12 +209,12 @@ public:
         return &_cursorState;
     }
 
-    const uint8 * GetKeysState() override
+    const uint8_t * GetKeysState() override
     {
         return _keysState;
     }
 
-    const uint8 * GetKeysPressed() override
+    const uint8_t * GetKeysPressed() override
     {
         return _keysPressed;
     }
@@ -229,7 +229,7 @@ public:
         _cursorRepository.SetCurrentCursor(cursor);
     }
 
-    void SetCursorScale(uint8 scale) override
+    void SetCursorScale(uint8_t scale) override
     {
         _cursorRepository.SetCursorScale(scale);
     }
@@ -239,12 +239,12 @@ public:
         SDL_ShowCursor(value ? SDL_ENABLE : SDL_DISABLE);
     }
 
-    void GetCursorPosition(sint32 * x, sint32 * y) override
+    void GetCursorPosition(int32_t * x, int32_t * y) override
     {
         SDL_GetMouseState(x, y);
     }
 
-    void SetCursorPosition(sint32 x, sint32 y) override
+    void SetCursorPosition(int32_t x, int32_t y) override
     {
         SDL_WarpMouseInWindow(nullptr, x, y);
     }
@@ -254,7 +254,7 @@ public:
         SDL_SetWindowGrab(_window, value ? SDL_TRUE : SDL_FALSE);
     }
 
-    void SetKeysPressed(uint32 keysym, uint8 scancode) override
+    void SetKeysPressed(uint32_t keysym, uint8_t scancode) override
     {
         _lastKeyPressed = keysym;
         _keysPressed[scancode] = 1;
@@ -268,10 +268,10 @@ public:
 
     void DrawRainAnimation(IRainDrawer* rainDrawer, rct_drawpixelinfo* dpi, DrawRainFunc drawFunc) override
     {
-        sint32 left = dpi->x;
-        sint32 right = left + dpi->width;
-        sint32 top = dpi->y;
-        sint32 bottom = top + dpi->height;
+        int32_t left = dpi->x;
+        int32_t right = left + dpi->width;
+        int32_t top = dpi->y;
+        int32_t bottom = top + dpi->height;
 
         for (auto& w : g_window_list)
         {
@@ -341,7 +341,7 @@ public:
                 case SDL_WINDOWEVENT_RESTORED:
                 {
                     // Update default display index
-                    sint32 displayIndex = SDL_GetWindowDisplayIndex(_window);
+                    int32_t displayIndex = SDL_GetWindowDisplayIndex(_window);
                     if (displayIndex != gConfigGeneral.default_display)
                     {
                         gConfigGeneral.default_display = displayIndex;
@@ -364,8 +364,8 @@ public:
                 }
                 break;
             case SDL_MOUSEMOTION:
-                _cursorState.x = (sint32)(e.motion.x / gConfigGeneral.window_scale);
-                _cursorState.y = (sint32)(e.motion.y / gConfigGeneral.window_scale);
+                _cursorState.x = (int32_t)(e.motion.x / gConfigGeneral.window_scale);
+                _cursorState.y = (int32_t)(e.motion.y / gConfigGeneral.window_scale);
                 break;
             case SDL_MOUSEWHEEL:
                 if (_inGameConsole.IsOpen())
@@ -377,8 +377,8 @@ public:
                 break;
             case SDL_MOUSEBUTTONDOWN:
             {
-                sint32 x = (sint32)(e.button.x / gConfigGeneral.window_scale);
-                sint32 y = (sint32)(e.button.y / gConfigGeneral.window_scale);
+                int32_t x = (int32_t)(e.button.x / gConfigGeneral.window_scale);
+                int32_t y = (int32_t)(e.button.y / gConfigGeneral.window_scale);
                 switch (e.button.button) {
                 case SDL_BUTTON_LEFT:
                     store_mouse_input(MOUSE_STATE_LEFT_PRESS, x, y);
@@ -398,8 +398,8 @@ public:
             }
             case SDL_MOUSEBUTTONUP:
             {
-                sint32 x = (sint32)(e.button.x / gConfigGeneral.window_scale);
-                sint32 y = (sint32)(e.button.y / gConfigGeneral.window_scale);
+                int32_t x = (int32_t)(e.button.x / gConfigGeneral.window_scale);
+                int32_t y = (int32_t)(e.button.y / gConfigGeneral.window_scale);
                 switch (e.button.button) {
                 case SDL_BUTTON_LEFT:
                     store_mouse_input(MOUSE_STATE_LEFT_RELEASE, x, y);
@@ -420,13 +420,13 @@ public:
             // Apple sends touchscreen events for trackpads, so ignore these events on macOS
 #ifndef __MACOSX__
             case SDL_FINGERMOTION:
-                _cursorState.x = (sint32)(e.tfinger.x * _width);
-                _cursorState.y = (sint32)(e.tfinger.y * _height);
+                _cursorState.x = (int32_t)(e.tfinger.x * _width);
+                _cursorState.y = (int32_t)(e.tfinger.y * _height);
                 break;
             case SDL_FINGERDOWN:
             {
-                sint32 x = (sint32)(e.tfinger.x * _width);
-                sint32 y = (sint32)(e.tfinger.y * _height);
+                int32_t x = (int32_t)(e.tfinger.x * _width);
+                int32_t y = (int32_t)(e.tfinger.y * _height);
 
                 _cursorState.touchIsDouble = (!_cursorState.touchIsDouble &&
                     e.tfinger.timestamp - _cursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
@@ -449,8 +449,8 @@ public:
             }
             case SDL_FINGERUP:
             {
-                sint32 x = (sint32)(e.tfinger.x * _width);
-                sint32 y = (sint32)(e.tfinger.y * _height);
+                int32_t x = (int32_t)(e.tfinger.x * _width);
+                int32_t y = (int32_t)(e.tfinger.y * _height);
 
                 if (_cursorState.touchIsDouble)
                 {
@@ -481,8 +481,8 @@ public:
                     _gestureRadius += e.mgesture.dDist;
 
                     // Zoom gesture
-                    constexpr sint32 tolerance = 128;
-                    sint32 gesturePixels = (sint32)(_gestureRadius * _width);
+                    constexpr int32_t tolerance = 128;
+                    int32_t gesturePixels = (int32_t)(_gestureRadius * _width);
                     if (abs(gesturePixels) > tolerance)
                     {
                         _gestureRadius = 0;
@@ -504,7 +504,7 @@ public:
         _cursorState.any = _cursorState.left | _cursorState.middle | _cursorState.right;
 
         // Updates the state of the keys
-        sint32 numKeys = 256;
+        int32_t numKeys = 256;
         _keysState = SDL_GetKeyboardState(&numKeys);
     }
 
@@ -521,7 +521,7 @@ public:
             _scaleQuality = SCALE_QUALITY_NN;
         }
 
-        sint32 scaleQuality = _scaleQuality;
+        int32_t scaleQuality = _scaleQuality;
         if (_scaleQuality == SCALE_QUALITY_SMOOTH_NN)
         {
             scaleQuality = SCALE_QUALITY_LINEAR;
@@ -529,7 +529,7 @@ public:
         snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", scaleQuality);
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
-        sint32 width, height;
+        int32_t width, height;
         SDL_GetWindowSize(_window, &width, &height);
         OnResize(width, height);
     }
@@ -539,9 +539,9 @@ public:
         SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
 
         // Set window position to default display
-        sint32 defaultDisplay = Math::Clamp(0, gConfigGeneral.default_display, 0xFFFF);
-        sint32 x = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);
-        sint32 y = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);
+        int32_t defaultDisplay = Math::Clamp(0, gConfigGeneral.default_display, 0xFFFF);
+        int32_t x = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);
+        int32_t y = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);
 
         CreateWindow(x, y);
 
@@ -562,7 +562,7 @@ public:
     void RecreateWindow() override
     {
         // Use the position of the current window for the new window
-        sint32 x, y;
+        int32_t x, y;
         SDL_SetWindowFullscreen(_window, 0);
         SDL_GetWindowPosition(_window, &x, &y);
 
@@ -608,16 +608,16 @@ public:
     }
 
 private:
-    void CreateWindow(sint32 x, sint32 y)
+    void CreateWindow(int32_t x, int32_t y)
     {
         // Get saved window size
-        sint32 width = gConfigGeneral.window_width;
-        sint32 height = gConfigGeneral.window_height;
+        int32_t width = gConfigGeneral.window_width;
+        int32_t height = gConfigGeneral.window_height;
         if (width <= 0) width = 640;
         if (height <= 0) height = 480;
 
         // Create window in window first rather than fullscreen so we have the display the window is on first
-        uint32 flags = SDL_WINDOW_RESIZABLE;
+        uint32_t flags = SDL_WINDOW_RESIZABLE;
         if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_OPENGL)
         {
             flags |= SDL_WINDOW_OPENGL;
@@ -643,15 +643,15 @@ private:
         TriggerResize();
     }
 
-    void OnResize(sint32 width, sint32 height)
+    void OnResize(int32_t width, int32_t height)
     {
         // Scale the native window size to the game's canvas size
-        _width = (sint32)(width / gConfigGeneral.window_scale);
-        _height = (sint32)(height / gConfigGeneral.window_scale);
+        _width = (int32_t)(width / gConfigGeneral.window_scale);
+        _height = (int32_t)(height / gConfigGeneral.window_scale);
 
         drawing_engine_resize();
 
-        uint32 flags = SDL_GetWindowFlags(_window);
+        uint32_t flags = SDL_GetWindowFlags(_window);
         if ((flags & SDL_WINDOW_MINIMIZED) == 0)
         {
             window_resize_gui(_width, _height);
@@ -661,7 +661,7 @@ private:
         gfx_invalidate_screen();
 
         // Check if the window has been resized in windowed mode and update the config file accordingly
-        sint32 nonWindowFlags =
+        int32_t nonWindowFlags =
 #ifndef __MACOSX__
             SDL_WINDOW_MAXIMIZED |
 #endif
@@ -683,8 +683,8 @@ private:
     void UpdateFullscreenResolutions()
     {
         // Query number of display modes
-        sint32 displayIndex = SDL_GetWindowDisplayIndex(_window);
-        sint32 numDisplayModes = SDL_GetNumDisplayModes(displayIndex);
+        int32_t displayIndex = SDL_GetWindowDisplayIndex(_window);
+        int32_t numDisplayModes = SDL_GetNumDisplayModes(displayIndex);
 
         // Get desktop aspect ratio
         SDL_DisplayMode mode;
@@ -693,7 +693,7 @@ private:
         // Get resolutions
         auto resolutions = std::vector<Resolution>();
         float desktopAspectRatio = (float)mode.w / mode.h;
-        for (sint32 i = 0; i < numDisplayModes; i++)
+        for (int32_t i = 0; i < numDisplayModes; i++)
         {
             SDL_GetDisplayMode(displayIndex, i, &mode);
             if (mode.w > 0 && mode.h > 0)
@@ -710,8 +710,8 @@ private:
         std::sort(resolutions.begin(), resolutions.end(),
             [](const Resolution &a, const Resolution &b) -> bool
             {
-                sint32 areaA = a.Width * a.Height;
-                sint32 areaB = b.Width * b.Height;
+                int32_t areaA = a.Width * a.Height;
+                int32_t areaB = b.Width * b.Height;
                 return areaA < areaB;
             });
 
@@ -733,11 +733,11 @@ private:
         _fsResolutions = resolutions;
     }
 
-    Resolution GetClosestResolution(sint32 inWidth, sint32 inHeight)
+    Resolution GetClosestResolution(int32_t inWidth, int32_t inHeight)
     {
         Resolution result = { 640, 480 };
-        sint32 closestAreaDiff = -1;
-        sint32 destinationArea = inWidth * inHeight;
+        int32_t closestAreaDiff = -1;
+        int32_t destinationArea = inWidth * inHeight;
         for (const Resolution &resolution : _fsResolutions)
         {
             // Check if exact match
@@ -748,7 +748,7 @@ private:
             }
 
             // Check if area is closer to best match
-            sint32 areaDiff = std::abs((resolution.Width * resolution.Height) - destinationArea);
+            int32_t areaDiff = std::abs((resolution.Width * resolution.Height) - destinationArea);
             if (closestAreaDiff == -1 || areaDiff < closestAreaDiff)
             {
                 closestAreaDiff = areaDiff;
@@ -758,7 +758,7 @@ private:
         return result;
     }
 
-    uint32 GetWindowFlags()
+    uint32_t GetWindowFlags()
     {
         return SDL_GetWindowFlags(_window);
     }
@@ -766,10 +766,10 @@ private:
     static void DrawRainWindow(
         IRainDrawer * rainDrawer,
         rct_window * original_w,
-        sint16 left,
-        sint16 right,
-        sint16 top,
-        sint16 bottom,
+        int16_t left,
+        int16_t right,
+        int16_t top,
+        int16_t bottom,
         DrawRainFunc drawFunc)
     {
         rct_window * w{};
@@ -781,10 +781,10 @@ private:
                 auto vp = original_w->viewport;
                 if (vp != nullptr)
                 {
-                    left = std::max<sint16>(left, vp->x);
-                    right = std::min<sint16>(right, vp->x + vp->width);
-                    top = std::max<sint16>(top, vp->y);
-                    bottom = std::min<sint16>(bottom, vp->y + vp->height);
+                    left = std::max<int16_t>(left, vp->x);
+                    right = std::min<int16_t>(right, vp->x + vp->width);
+                    top = std::max<int16_t>(top, vp->y);
+                    bottom = std::min<int16_t>(bottom, vp->y + vp->height);
                     if (left < right && top < bottom)
                     {
                         auto width = right - left;
@@ -818,7 +818,7 @@ private:
             return;
         }
 
-        sint16 w_right = RCT_WINDOW_RIGHT(w);
+        int16_t w_right = RCT_WINDOW_RIGHT(w);
         if (right > w_right) {
             DrawRainWindow(rainDrawer, original_w, left, w_right, top, bottom, drawFunc);
 
@@ -835,7 +835,7 @@ private:
             return;
         }
 
-        sint16 w_bottom = RCT_WINDOW_BOTTOM(w);
+        int16_t w_bottom = RCT_WINDOW_BOTTOM(w);
         if (bottom > w_bottom)
         {
             DrawRainWindow(rainDrawer, original_w, left, right, top, w_bottom, drawFunc);

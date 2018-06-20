@@ -30,21 +30,21 @@ static constexpr const LocationXY16 lengths[] = {
  *
  *  rct2: 0x006DFF47
  */
-void scenery_paint(paint_session * session, uint8 direction, sint32 height, const rct_tile_element * tileElement)
+void scenery_paint(paint_session * session, uint8_t direction, int32_t height, const rct_tile_element * tileElement)
 {
     if (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     {
         return;
     }
-    //RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (sint32)tileElement, 0, 0); return;
+    //RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (int32_t)tileElement, 0, 0); return;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
     LocationXYZ16 boxlength;
     LocationXYZ16 boxoffset;
     boxoffset.x = 0;
     boxoffset.y = 0;
     boxoffset.z = height;
-    sint32 baseImageid = 0;
-    const sint32 rotation = session->CurrentRotation;
+    int32_t baseImageid = 0;
+    const int32_t rotation = session->CurrentRotation;
     if (gTrackDesignSaveMode) {
         if (!track_design_save_contains_tile_element(tileElement)) {
             baseImageid = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
@@ -54,7 +54,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, cons
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         baseImageid = CONSTRUCTION_MARKER;
     }
-    uint32 dword_F64EB0 = baseImageid;
+    uint32_t dword_F64EB0 = baseImageid;
 
     rct_scenery_entry *entry = get_small_scenery_entry(tileElement->properties.scenery.type);
 
@@ -66,8 +66,8 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, cons
     baseImageid = entry->image + direction;
     boxlength.x = 2;
     boxlength.y = 2;
-    sint8 x_offset = 0;
-    sint8 y_offset = 0;
+    int8_t x_offset = 0;
+    int8_t y_offset = 0;
     if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_FULL_TILE))
     {
         if (scenery_small_entry_has_flag(entry,  SMALL_SCENERY_FLAG_HALF_SPACE)) {
@@ -104,7 +104,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, cons
         }
     } else {
         // 6DFFC2:
-        uint8 ecx = (tileElement->GetSceneryQuadrant() + rotation) & 3;
+        uint8_t ecx = (tileElement->GetSceneryQuadrant() + rotation) & 3;
         x_offset = ScenerySubTileOffsets[ecx].x;
         y_offset = ScenerySubTileOffsets[ecx].y;
         boxoffset.x = x_offset;
@@ -149,7 +149,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, cons
         if (dword_F64EB0 == 0) {
             // Draw translucent overlay:
             // TODO: Name palette entries
-            sint32 image_id = (baseImageid & 0x7FFFF) + (GlassPaletteIds[scenery_small_get_primary_colour(tileElement)] << 19) + 0x40000004;
+            int32_t image_id = (baseImageid & 0x7FFFF) + (GlassPaletteIds[scenery_small_get_primary_colour(tileElement)] << 19) + 0x40000004;
             sub_98199C(
                 session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                 boxoffset.y, boxoffset.z);
@@ -162,7 +162,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, cons
             // 6E01A9:
             if (scenery_small_entry_has_flag(entry,  SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1)) {
                 // 6E0512:
-                sint32 image_id = ((gCurrentTicks / 2) & 0xF) + entry->image + 4;
+                int32_t image_id = ((gCurrentTicks / 2) & 0xF) + entry->image + 4;
                 if (dword_F64EB0 != 0) {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
@@ -172,7 +172,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, cons
             } else
             if (scenery_small_entry_has_flag(entry,  SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4)) {
                 // 6E043B:
-                sint32 image_id = ((gCurrentTicks / 2) & 0xF) + entry->image + 8;
+                int32_t image_id = ((gCurrentTicks / 2) & 0xF) + entry->image + 8;
                 if (dword_F64EB0 != 0) {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
@@ -198,8 +198,8 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, cons
             } else
             if (scenery_small_entry_has_flag(entry,  SMALL_SCENERY_FLAG_IS_CLOCK)) {
                 // 6E035C:
-                sint32 minuteImageOffset = ((gRealTimeOfDay.minute + 6) * 17) / 256;
-                sint32 timeImageBase = gRealTimeOfDay.hour;
+                int32_t minuteImageOffset = ((gRealTimeOfDay.minute + 6) * 17) / 256;
+                int32_t timeImageBase = gRealTimeOfDay.hour;
                 while (timeImageBase >= 12) {
                     timeImageBase -= 12;
                 }
@@ -207,7 +207,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, cons
                 if (timeImageBase >= 48) {
                     timeImageBase -= 48;
                 }
-                sint32 image_id = timeImageBase + (direction * 12);
+                int32_t image_id = timeImageBase + (direction * 12);
                 if (image_id >= 48) {
                     image_id -= 48;
                 }
@@ -234,7 +234,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, cons
             } else
             if (scenery_small_entry_has_flag(entry,  SMALL_SCENERY_FLAG_SWAMP_GOO)) {
                 // 6E02F6:
-                sint32 image_id = gCurrentTicks;
+                int32_t image_id = gCurrentTicks;
                 image_id += session->SpritePosition.x / 4;
                 image_id += session->SpritePosition.y / 4;
                 image_id = (image_id / 4) & 15;
@@ -248,17 +248,17 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, cons
             }
             else if (scenery_small_entry_has_flag(entry,  SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
             {
-                sint32 frame = gCurrentTicks;
+                int32_t frame = gCurrentTicks;
                 if (!(scenery_small_entry_has_flag(entry,  SMALL_SCENERY_FLAG_COG))) {
                     // 6E01F8:
                     frame += ((session->SpritePosition.x / 4) + (session->SpritePosition.y / 4));
                     frame += (tileElement->type & 0xC0) / 16;
                 }
                 // 6E0222:
-                uint16 delay = entry->small_scenery.animation_delay & 0xFF;
+                uint16_t delay = entry->small_scenery.animation_delay & 0xFF;
                 frame >>= delay;
                 frame &= entry->small_scenery.animation_mask;
-                sint32 image_id = 0;
+                int32_t image_id = 0;
                 if (frame < entry->small_scenery.num_frames) {
                     image_id = entry->small_scenery.frame_offsets[frame];
                 }
@@ -296,13 +296,13 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, cons
     // 6E0556: Draw supports:
     if (scenery_small_get_supports_needed(tileElement)) {
         if (!(scenery_small_entry_has_flag(entry,  SMALL_SCENERY_FLAG_NO_SUPPORTS))) {
-            sint32 ax = 0;
-            sint32 supportHeight = height;
+            int32_t ax = 0;
+            int32_t supportHeight = height;
             if (supportHeight & 0xF) {
                 supportHeight &= 0xFFFFFFF0;
                 ax = 49;
             }
-            uint32 supportImageColourFlags = IMAGE_TYPE_REMAP;
+            uint32_t supportImageColourFlags = IMAGE_TYPE_REMAP;
             if (scenery_small_entry_has_flag(entry,  SMALL_SCENERY_FLAG_PAINT_SUPPORTS))
             {
                 supportImageColourFlags = SPRITE_ID_PALETTE_COLOUR_1(scenery_small_get_primary_colour(tileElement));

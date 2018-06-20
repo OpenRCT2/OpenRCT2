@@ -71,7 +71,7 @@ enum DIAGNOSTIC_LEVEL {
 extern bool _log_levels[DIAGNOSTIC_LEVEL_COUNT];
 
 void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char *format, ...);
-void diagnostic_log_with_location(DIAGNOSTIC_LEVEL diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...);
+void diagnostic_log_with_location(DIAGNOSTIC_LEVEL diagnosticLevel, const char *file, const char *function, int32_t line, const char *format, ...);
 
 #ifdef _MSC_VER
 #define diagnostic_log_macro(level, format, ...)    diagnostic_log_with_location(level, __FILE__, __FUNCTION__, __LINE__, format, ## __VA_ARGS__)

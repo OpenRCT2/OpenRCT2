@@ -25,18 +25,18 @@
 struct RideSetNameAction : public GameActionBase<GAME_COMMAND_SET_RIDE_NAME, GameActionResult>
 {
 private:
-    sint32 _rideIndex = -1;
+    int32_t _rideIndex = -1;
     std::string _name;
 
 public:
     RideSetNameAction() {}
-    RideSetNameAction(sint32 rideIndex, const std::string& name)
+    RideSetNameAction(int32_t rideIndex, const std::string& name)
         : _rideIndex(rideIndex),
         _name(name)
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }

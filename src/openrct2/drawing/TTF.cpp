@@ -32,34 +32,34 @@ struct ttf_cache_entry
     TTFSurface *    surface;
     TTF_Font *      font;
     utf8 *          text;
-    uint32          lastUseTick;
+    uint32_t          lastUseTick;
 };
 
 struct ttf_getwidth_cache_entry
 {
-    uint32      width;
+    uint32_t      width;
     TTF_Font *  font;
     utf8 *      text;
-    uint32      lastUseTick;
+    uint32_t      lastUseTick;
 };
 
 static ttf_cache_entry _ttfSurfaceCache[TTF_SURFACE_CACHE_SIZE] = {};
-static sint32 _ttfSurfaceCacheCount = 0;
-static sint32 _ttfSurfaceCacheHitCount = 0;
-static sint32 _ttfSurfaceCacheMissCount = 0;
+static int32_t _ttfSurfaceCacheCount = 0;
+static int32_t _ttfSurfaceCacheHitCount = 0;
+static int32_t _ttfSurfaceCacheMissCount = 0;
 
 static ttf_getwidth_cache_entry _ttfGetWidthCache[TTF_GETWIDTH_CACHE_SIZE] = {};
-static sint32 _ttfGetWidthCacheCount = 0;
-static sint32 _ttfGetWidthCacheHitCount = 0;
-static sint32 _ttfGetWidthCacheMissCount = 0;
+static int32_t _ttfGetWidthCacheCount = 0;
+static int32_t _ttfGetWidthCacheHitCount = 0;
+static int32_t _ttfGetWidthCacheMissCount = 0;
 
-static TTF_Font * ttf_open_font(const utf8 * fontPath, sint32 ptSize);
+static TTF_Font * ttf_open_font(const utf8 * fontPath, int32_t ptSize);
 static void ttf_close_font(TTF_Font * font);
-static uint32 ttf_surface_cache_hash(TTF_Font * font, const utf8 * text);
+static uint32_t ttf_surface_cache_hash(TTF_Font * font, const utf8 * text);
 static void ttf_surface_cache_dispose(ttf_cache_entry * entry);
 static void ttf_surface_cache_dispose_all();
 static void ttf_getwidth_cache_dispose_all();
-static bool ttf_get_size(TTF_Font * font, const utf8 * text, sint32 * width, sint32 * height);
+static bool ttf_get_size(TTF_Font * font, const utf8 * text, int32_t * width, int32_t * height);
 static TTFSurface * ttf_render(TTF_Font * font, const utf8 * text);
 
 bool ttf_initialise()
@@ -70,7 +70,7 @@ bool ttf_initialise()
             return false;
         }
 
-        for (sint32 i = 0; i < FONT_SIZE_COUNT; i++) {
+        for (int32_t i = 0; i < FONT_SIZE_COUNT; i++) {
             TTFFontDescriptor *fontDesc = &(gCurrentTTFFontSet->size[i]);
 
             utf8 fontPath[MAX_PATH];
@@ -100,7 +100,7 @@ void ttf_dispose()
         ttf_surface_cache_dispose_all();
         ttf_getwidth_cache_dispose_all();
 
-        for (sint32 i = 0; i < 4; i++) {
+        for (int32_t i = 0; i < 4; i++) {
             TTFFontDescriptor *fontDesc = &(gCurrentTTFFontSet->size[i]);
             if (fontDesc->font != nullptr) {
                 ttf_close_font(fontDesc->font);
@@ -113,7 +113,7 @@ void ttf_dispose()
     }
 }
 
-static TTF_Font * ttf_open_font(const utf8 * fontPath, sint32 ptSize)
+static TTF_Font * ttf_open_font(const utf8 * fontPath, int32_t ptSize)
 {
     return TTF_OpenFont(fontPath, ptSize);
 }
@@ -123,9 +123,9 @@ static void ttf_close_font(TTF_Font * font)
     TTF_CloseFont(font);
 }
 
-static uint32 ttf_surface_cache_hash(TTF_Font *font, const utf8 *text)
+static uint32_t ttf_surface_cache_hash(TTF_Font *font, const utf8 *text)
 {
-    uint32 hash = (uint32)((((uintptr_t)font * 23) ^ 0xAAAAAAAA) & 0xFFFFFFFF);
+    uint32_t hash = (uint32_t)((((uintptr_t)font * 23) ^ 0xAAAAAAAA) & 0xFFFFFFFF);
     for (const utf8 *ch = text; *ch != 0; ch++) {
         hash = ror32(hash, 3) ^ (*ch * 13);
     }
@@ -146,7 +146,7 @@ static void ttf_surface_cache_dispose(ttf_cache_entry *entry)
 
 static void ttf_surface_cache_dispose_all()
 {
-    for (sint32 i = 0; i < TTF_SURFACE_CACHE_SIZE; i++) {
+    for (int32_t i = 0; i < TTF_SURFACE_CACHE_SIZE; i++) {
         ttf_surface_cache_dispose(&_ttfSurfaceCache[i]);
         _ttfSurfaceCacheCount--;
     }
@@ -159,7 +159,7 @@ void ttf_toggle_hinting()
         return;
     }
 
-    for (sint32 i = 0; i < FONT_SIZE_COUNT; i++)
+    for (int32_t i = 0; i < FONT_SIZE_COUNT; i++)
     {
         TTFFontDescriptor *fontDesc = &(gCurrentTTFFontSet->size[i]);
         bool use_hinting = gConfigFonts.enable_hinting && fontDesc->hinting_threshold;
@@ -176,9 +176,9 @@ TTFSurface * ttf_surface_cache_get_or_add(TTF_Font * font, const utf8 * text)
 {
     ttf_cache_entry *entry;
 
-    uint32 hash = ttf_surface_cache_hash(font, text);
-    sint32 index = hash % TTF_SURFACE_CACHE_SIZE;
-    for (sint32 i = 0; i < TTF_SURFACE_CACHE_SIZE; i++) {
+    uint32_t hash = ttf_surface_cache_hash(font, text);
+    int32_t index = hash % TTF_SURFACE_CACHE_SIZE;
+    for (int32_t i = 0; i < TTF_SURFACE_CACHE_SIZE; i++) {
         entry = &_ttfSurfaceCache[index];
 
         // Check if entry is a hit
@@ -231,19 +231,19 @@ static void ttf_getwidth_cache_dispose(ttf_getwidth_cache_entry *entry)
 
 static void ttf_getwidth_cache_dispose_all()
 {
-    for (sint32 i = 0; i < TTF_GETWIDTH_CACHE_SIZE; i++) {
+    for (int32_t i = 0; i < TTF_GETWIDTH_CACHE_SIZE; i++) {
         ttf_getwidth_cache_dispose(&_ttfGetWidthCache[i]);
         _ttfGetWidthCacheCount--;
     }
 }
 
-uint32 ttf_getwidth_cache_get_or_add(TTF_Font * font, const utf8 * text)
+uint32_t ttf_getwidth_cache_get_or_add(TTF_Font * font, const utf8 * text)
 {
     ttf_getwidth_cache_entry *entry;
 
-    uint32 hash = ttf_surface_cache_hash(font, text);
-    sint32 index = hash % TTF_GETWIDTH_CACHE_SIZE;
-    for (sint32 i = 0; i < TTF_GETWIDTH_CACHE_SIZE; i++) {
+    uint32_t hash = ttf_surface_cache_hash(font, text);
+    int32_t index = hash % TTF_GETWIDTH_CACHE_SIZE;
+    for (int32_t i = 0; i < TTF_GETWIDTH_CACHE_SIZE; i++) {
         entry = &_ttfGetWidthCache[index];
 
         // Check if entry is a hit
@@ -267,7 +267,7 @@ uint32 ttf_getwidth_cache_get_or_add(TTF_Font * font, const utf8 * text)
     entry = &_ttfGetWidthCache[index];
     ttf_getwidth_cache_dispose(entry);
 
-    sint32 width, height;
+    int32_t width, height;
     ttf_get_size(font, text, &width, &height);
 
     _ttfGetWidthCacheMissCount++;
@@ -280,7 +280,7 @@ uint32 ttf_getwidth_cache_get_or_add(TTF_Font * font, const utf8 * text)
     return entry->width;
 }
 
-TTFFontDescriptor * ttf_get_font_from_sprite_base(uint16 spriteBase)
+TTFFontDescriptor * ttf_get_font_from_sprite_base(uint16_t spriteBase)
 {
     return &gCurrentTTFFontSet->size[font_get_size_from_sprite_base(spriteBase)];
 }
@@ -290,7 +290,7 @@ bool ttf_provides_glyph(const TTF_Font * font, codepoint_t codepoint)
     return TTF_GlyphIsProvided(font, codepoint);
 }
 
-static bool ttf_get_size(TTF_Font * font, const utf8 * text, sint32 * outWidth, sint32 * outHeight)
+static bool ttf_get_size(TTF_Font * font, const utf8 * text, int32_t * outWidth, int32_t * outHeight)
 {
     return TTF_SizeUTF8(font, text, outWidth, outHeight);
 }

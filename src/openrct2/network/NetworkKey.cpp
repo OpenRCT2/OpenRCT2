@@ -188,7 +188,7 @@ std::string NetworkKey::PublicKeyHash()
     return nullptr;
 }
 
-bool NetworkKey::Sign(const uint8 * md, const size_t len, char ** signature, size_t * out_size)
+bool NetworkKey::Sign(const uint8_t * md, const size_t len, char ** signature, size_t * out_size)
 {
     try
     {
@@ -208,7 +208,7 @@ bool NetworkKey::Sign(const uint8 * md, const size_t len, char ** signature, siz
     }
 }
 
-bool NetworkKey::Verify(const uint8 * md, const size_t len, const char * sig, const size_t siglen)
+bool NetworkKey::Verify(const uint8_t * md, const size_t len, const char * sig, const size_t siglen)
 {
     try
     {

@@ -23,12 +23,12 @@ private:
     GLuint _id;
     GLuint _texture;
     GLuint _depth;
-    sint32 _width;
-    sint32 _height;
+    int32_t _width;
+    int32_t _height;
 
 public:
     explicit OpenGLFramebuffer(SDL_Window * window);
-    OpenGLFramebuffer(sint32 width, sint32 height, bool depth = true, bool integer = true);
+    OpenGLFramebuffer(int32_t width, int32_t height, bool depth = true, bool integer = true);
     ~OpenGLFramebuffer();
 
     OpenGLFramebuffer(const OpenGLFramebuffer &) = delete;
@@ -48,5 +48,5 @@ public:
     GLuint SwapDepthTexture(GLuint depth);
     void Copy(OpenGLFramebuffer &src, GLenum filter);
 
-    static GLuint CreateDepthTexture(sint32 width, sint32 height);
+    static GLuint CreateDepthTexture(int32_t width, int32_t height);
 };

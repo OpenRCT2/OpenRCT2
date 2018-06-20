@@ -48,10 +48,10 @@ enum CURRENCY_AFFIX {
 struct currency_descriptor {
     char isoCode[4];
     // Rate is relative to 0.10 GBP
-    sint32 rate;
-    uint8 affix_unicode;
+    int32_t rate;
+    uint8_t affix_unicode;
     utf8 symbol_unicode[CURRENCY_SYMBOL_MAX_SIZE];
-    uint8 affix_ascii;
+    uint8_t affix_ascii;
     char symbol_ascii[CURRENCY_SYMBOL_MAX_SIZE];
     rct_string_id stringId;
 };

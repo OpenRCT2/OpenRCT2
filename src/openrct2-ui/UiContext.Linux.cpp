@@ -255,7 +255,7 @@ namespace OpenRCT2::Ui
             return DIALOG_TYPE::NONE;
         }
 
-        static sint32 Execute(const std::string &command, std::string * output = nullptr)
+        static int32_t Execute(const std::string &command, std::string * output = nullptr)
         {
 #ifndef __EMSCRIPTEN__
             log_verbose("executing \"%s\"...\n", command.c_str());

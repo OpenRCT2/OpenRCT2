@@ -25,7 +25,7 @@ private:
 public:
     explicit PlatformEnvironment(DIRBASE_VALUES basePaths)
     {
-        for (sint32 i = 0; i < DIRBASE_COUNT; i++)
+        for (int32_t i = 0; i < DIRBASE_COUNT; i++)
         {
             _basePath[i] = basePaths[i];
         }

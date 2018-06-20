@@ -161,7 +161,7 @@ static void window_water_mousedown(rct_window *w, rct_widgetindex widgetIndex, r
 
 static void window_water_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
-    sint32 size;
+    int32_t size;
     char* end;
 
     if (widgetIndex != WIDX_PREVIEW || text == nullptr)
@@ -214,7 +214,7 @@ static void window_water_invalidate(rct_window *w)
  */
 static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 x, y;
+    int32_t x, y;
 
     x = w->x + (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2;
     y = w->y + (window_water_widgets[WIDX_PREVIEW].top + window_water_widgets[WIDX_PREVIEW].bottom) / 2;

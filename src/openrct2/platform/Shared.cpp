@@ -60,23 +60,23 @@ char * strndup(const char * src, size_t size)
 #endif // !((defined (_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700) || (defined(__APPLE__) && defined(__MACH__)))
 
 #ifdef _WIN32
-static uint32        _frequency = 0;
+static uint32_t        _frequency = 0;
 static LARGE_INTEGER _entryTimestamp;
 #endif
 
-using update_palette_func = void (*)(const uint8 *, sint32, sint32);
+using update_palette_func = void (*)(const uint8_t *, int32_t, int32_t);
 
 rct_palette_entry gPalette[256];
 
-void platform_update_palette(const uint8 * colours, sint32 start_index, sint32 num_colours)
+void platform_update_palette(const uint8_t * colours, int32_t start_index, int32_t num_colours)
 {
     colours += start_index * 4;
 
-    for (sint32 i = start_index; i < num_colours + start_index; i++)
+    for (int32_t i = start_index; i < num_colours + start_index; i++)
     {
-        uint8 r = colours[2];
-        uint8 g = colours[1];
-        uint8 b = colours[0];
+        uint8_t r = colours[2];
+        uint8_t g = colours[1];
+        uint8_t b = colours[0];
 
 #ifdef __ENABLE_LIGHTFX__
         if (lightfx_is_available())
@@ -116,7 +116,7 @@ void platform_update_palette(const uint8 * colours, sint32 start_index, sint32 n
 
 void platform_toggle_windowed_mode()
 {
-    sint32 targetMode = gConfigGeneral.fullscreen_mode == 0 ? 2 : 0;
+    int32_t targetMode = gConfigGeneral.fullscreen_mode == 0 ? 2 : 0;
     context_set_fullscreen_mode(targetMode);
     gConfigGeneral.fullscreen_mode = targetMode;
     config_save_default();
@@ -144,12 +144,12 @@ static void platform_ticks_init()
 #ifdef _WIN32
     LARGE_INTEGER freq;
     QueryPerformanceFrequency(&freq);
-    _frequency = (uint32)(freq.QuadPart / 1000);
+    _frequency = (uint32_t)(freq.QuadPart / 1000);
     QueryPerformanceCounter(&_entryTimestamp);
 #endif
 }
 
-uint32 platform_get_ticks()
+uint32_t platform_get_ticks()
 {
 #ifdef _WIN32
     LARGE_INTEGER pfc;
@@ -158,9 +158,9 @@ uint32 platform_get_ticks()
     LARGE_INTEGER runningDelta;
     runningDelta.QuadPart = pfc.QuadPart - _entryTimestamp.QuadPart;
 
-    return (uint32)(runningDelta.QuadPart / _frequency);
+    return (uint32_t)(runningDelta.QuadPart / _frequency);
 #elif defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
-    return (uint32)(((mach_absolute_time() * _mach_base_info.numer) / _mach_base_info.denom) / 1000000);
+    return (uint32_t)(((mach_absolute_time() * _mach_base_info.numer) / _mach_base_info.denom) / 1000000);
 #else
     struct timespec ts;
     if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0)
@@ -168,11 +168,11 @@ uint32 platform_get_ticks()
         log_fatal("clock_gettime failed");
         exit(-1);
     }
-    return (uint32)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
+    return (uint32_t)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 #endif
 }
 
-void platform_sleep(uint32 ms)
+void platform_sleep(uint32_t ms)
 {
 #ifdef _WIN32
     Sleep(ms);
@@ -181,14 +181,14 @@ void platform_sleep(uint32 ms)
 #endif
 }
 
-uint8 platform_get_currency_value(const char * currCode)
+uint8_t platform_get_currency_value(const char * currCode)
 {
     if (currCode == nullptr || strlen(currCode) < 3)
     {
         return CURRENCY_POUNDS;
     }
 
-    for (sint32 currency = 0; currency < CURRENCY_END; ++currency)
+    for (int32_t currency = 0; currency < CURRENCY_END; ++currency)
     {
         if (strncmp(currCode, CurrencyDescriptors[currency].isoCode, 3) == 0)
         {

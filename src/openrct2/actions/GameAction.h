@@ -25,7 +25,7 @@
 /**
  * Common error codes for game actions.
  */
-enum class GA_ERROR : uint16
+enum class GA_ERROR : uint16_t
 {
     OK,
     INVALID_PARAMETERS,
@@ -47,9 +47,9 @@ enum class GA_ERROR : uint16
 
 namespace GA_FLAGS
 {
-    constexpr uint16 ALLOW_WHILE_PAUSED = 1 << 0;
-    constexpr uint16 CLIENT_ONLY        = 1 << 1;
-    constexpr uint16 EDITOR_ONLY        = 1 << 2;
+    constexpr uint16_t ALLOW_WHILE_PAUSED = 1 << 0;
+    constexpr uint16_t CLIENT_ONLY        = 1 << 1;
+    constexpr uint16_t EDITOR_ONLY        = 1 << 2;
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
@@ -69,15 +69,15 @@ public:
     GA_ERROR                Error = GA_ERROR::OK;
     rct_string_id           ErrorTitle = STR_NONE;
     rct_string_id           ErrorMessage = STR_NONE;
-    std::array<uint8, 12>   ErrorMessageArgs;
+    std::array<uint8_t, 12>   ErrorMessageArgs;
     CoordsXYZ               Position = {};
     money32                 Cost = 0;
-    uint16                  ExpenditureType = 0;
+    uint16_t                  ExpenditureType = 0;
 
     GameActionResult() = default;
     GameActionResult(GA_ERROR error, rct_string_id message);
     GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message);
-    GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message, uint8 * args);
+    GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message, uint8_t * args);
     GameActionResult(const GameActionResult&) = delete;
     virtual ~GameActionResult() {};
 };
@@ -89,27 +89,27 @@ public:
     using Callback_t = std::function<void(const struct GameAction *, const GameActionResult *)>;
 
 private:
-    uint32 const _type;
+    uint32_t const _type;
 
-    uint32 _playerId    = 0;    // Callee
-    uint32 _flags       = 0;    // GAME_COMMAND_FLAGS
-    uint32 _networkId   = 0;
+    uint32_t _playerId    = 0;    // Callee
+    uint32_t _flags       = 0;    // GAME_COMMAND_FLAGS
+    uint32_t _networkId   = 0;
     Callback_t _callback;
 
 public:
-    GameAction(uint32 type)
+    GameAction(uint32_t type)
         : _type(type)
     {
     }
 
     virtual ~GameAction() = default;
 
-    uint32 GetPlayer() const
+    uint32_t GetPlayer() const
     {
         return _playerId;
     }
 
-    void SetPlayer(uint32 playerId)
+    void SetPlayer(uint32_t playerId)
     {
         _playerId = playerId;
     }
@@ -117,7 +117,7 @@ public:
     /**
     * Gets the GA_FLAGS flags that are enabled for this game action.
     */
-    virtual uint16 GetActionFlags() const
+    virtual uint16_t GetActionFlags() const
     {
         // Make sure we execute some things only on the client.
         if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 ||
@@ -132,17 +132,17 @@ public:
     /**
     * Currently used for GAME_COMMAND_FLAGS, needs refactoring once everything is replaced.
     */
-    uint32 GetFlags() const
+    uint32_t GetFlags() const
     {
         return _flags;
     }
 
-    uint32 SetFlags(uint32 flags)
+    uint32_t SetFlags(uint32_t flags)
     {
         return _flags = flags;
     }
 
-    uint32 GetType() const
+    uint32_t GetType() const
     {
         return _type;
     }
@@ -162,7 +162,7 @@ public:
         _networkId = id;
     }
 
-    uint32 GetNetworkId() const
+    uint32_t GetNetworkId() const
     {
         return _networkId;
     }
@@ -195,13 +195,13 @@ public:
 #pragma GCC diagnostic pop
 #endif
 
-template<uint32 TType, typename TResultType>
+template<uint32_t TType, typename TResultType>
 struct GameActionBase : GameAction
 {
 public:
     using Result = TResultType;
 
-    static constexpr uint32 TYPE = TType;
+    static constexpr uint32_t TYPE = TType;
 
     GameActionBase()
         : GameAction(TYPE)
@@ -230,10 +230,10 @@ namespace GameActions
 {
     void                    Initialize();
     void                    Register();
-    GameAction::Ptr         Create(uint32 id);
+    GameAction::Ptr         Create(uint32_t id);
     GameActionResult::Ptr   Query(const GameAction * action);
     GameActionResult::Ptr   Execute(const GameAction * action);
-    GameActionFactory       Register(uint32 id, GameActionFactory action);
+    GameActionFactory       Register(uint32_t id, GameActionFactory action);
 
     template<typename T>
     static GameActionFactory Register()

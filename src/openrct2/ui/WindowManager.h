@@ -25,8 +25,8 @@ namespace OpenRCT2::Ui
         virtual ~IWindowManager() = default;
         virtual void Init() abstract;
         virtual rct_window * OpenWindow(rct_windowclass wc) abstract;
-        virtual rct_window * OpenView(uint8 view) abstract;
-        virtual rct_window * OpenDetails(uint8 type, sint32 id) abstract;
+        virtual rct_window * OpenView(uint8_t view) abstract;
+        virtual rct_window * OpenDetails(uint8_t type, int32_t id) abstract;
         virtual rct_window * OpenIntent(Intent * intent) abstract;
         virtual void BroadcastIntent(const Intent &intent) abstract;
         virtual rct_window * ShowError(rct_string_id title, rct_string_id message) abstract;
@@ -34,8 +34,8 @@ namespace OpenRCT2::Ui
         virtual void UpdateMapTooltip() abstract;
         virtual void HandleInput() abstract;
         virtual void HandleKeyboard(bool isTitle) abstract;
-        virtual std::string GetKeyboardShortcutString(sint32 shortcut) abstract;
-        virtual void SetMainView(sint32 x, sint32 y, sint32 zoom, sint32 rotation) abstract;
+        virtual std::string GetKeyboardShortcutString(int32_t shortcut) abstract;
+        virtual void SetMainView(int32_t x, int32_t y, int32_t zoom, int32_t rotation) abstract;
         virtual void UpdateMouseWheel() abstract;
         virtual rct_window* GetOwner(const rct_viewport* viewport) abstract;
     };

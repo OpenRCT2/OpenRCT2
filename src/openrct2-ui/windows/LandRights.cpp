@@ -52,9 +52,9 @@ static void window_land_rights_invalidate(rct_window *w);
 static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_land_rights_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_land_rights_inputsize(rct_window *w);
-static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 static void window_land_rights_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static bool land_rights_tool_is_active();
 
@@ -94,7 +94,7 @@ static rct_window_event_list window_land_rights_events = {
 #define LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS 0
 #define LAND_RIGHTS_MODE_BUY_LAND 1
 
-static uint8 _landRightsMode;
+static uint8_t _landRightsMode;
 static money32 _landRightsCost;
 
 rct_window * window_land_rights_open()
@@ -195,7 +195,7 @@ static void window_land_rights_mousedown(rct_window *w, rct_widgetindex widgetIn
 
 static void window_land_rights_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
-    sint32 size;
+    int32_t size;
     char* end;
 
     if (widgetIndex != WIDX_PREVIEW || text == nullptr)
@@ -254,7 +254,7 @@ static void window_land_rights_invalidate(rct_window *w)
 
 static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 x, y;
+    int32_t x, y;
 
     x = w->x + (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2;
     y = w->y + (window_land_rights_widgets[WIDX_PREVIEW].top + window_land_rights_widgets[WIDX_PREVIEW].bottom) / 2;
@@ -275,7 +275,7 @@ static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
 }
 
-static void window_land_rights_tool_update_land_rights(sint16 x, sint16 y)
+static void window_land_rights_tool_update_land_rights(int16_t x, int16_t y)
 {
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -291,7 +291,7 @@ static void window_land_rights_tool_update_land_rights(sint16 x, sint16 y)
         return;
     }
 
-    uint8 state_changed = 0;
+    uint8_t state_changed = 0;
 
     if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)) {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -303,11 +303,11 @@ static void window_land_rights_tool_update_land_rights(sint16 x, sint16 y)
         state_changed++;
     }
 
-    sint16 tool_size = gLandToolSize;
+    int16_t tool_size = gLandToolSize;
     if (tool_size == 0)
         tool_size = 1;
 
-    sint16 tool_length = (tool_size - 1) * 32;
+    int16_t tool_length = (tool_size - 1) * 32;
 
     // Move to tool bottom left
     mapTile.x -= (tool_size - 1) * 16;
@@ -373,7 +373,7 @@ static void window_land_rights_toolabort(rct_window *w, rct_widgetindex widgetIn
  *
  *  rct2: 0x006681D1
  */
-static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     window_land_rights_tool_update_land_rights(x, y);
 }
@@ -382,7 +382,7 @@ static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetI
  *
  *  rct2: 0x006681E6
  */
-static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
     {
@@ -420,7 +420,7 @@ static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetInd
  *
  *  rct2: 0x006681FB
  */
-static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND) {
         if (x != LOCATION_NULL)

@@ -28,5 +28,5 @@ public:
     void Load() override;
     void Unload() override;
 
-    void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const override;
+    void DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const override;
 };

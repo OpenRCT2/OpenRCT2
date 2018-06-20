@@ -15,7 +15,7 @@
 #include "../../world/Sprite.h"
 
 // 1 2 0 3 4
-static constexpr const uint8 track_map_1x5[][5] = {
+static constexpr const uint8_t track_map_1x5[][5] = {
     { 0, 1, 2, 3, 4 },
     { 0, 4, 3, 2, 1 },
     { 0, 4, 3, 2, 1 },
@@ -24,14 +24,14 @@ static constexpr const uint8 track_map_1x5[][5] = {
 
 struct pirate_ship_bound_box
 {
-    sint16 length_x;
-    sint16 length_y;
-    sint16 offset_x;
-    sint16 offset_y;
+    int16_t length_x;
+    int16_t length_y;
+    int16_t offset_x;
+    int16_t offset_y;
 };
 
 /** rct2: 0x008A83B0 */
-static constexpr const uint32 pirate_ship_base_sprite_offset[] = { 0, 9, 0, 9 };
+static constexpr const uint32_t pirate_ship_base_sprite_offset[] = { 0, 9, 0, 9 };
 
 /** rct2: 0x008A83C0 */
 static constexpr const pirate_ship_bound_box pirate_ship_data[] = {
@@ -49,23 +49,23 @@ enum
     SPR_PIRATE_SHIP_FRAME_FRONT_NW_SE = 21997,
 };
 
-static constexpr const uint32 pirate_ship_frame_sprites[][2] = {
+static constexpr const uint32_t pirate_ship_frame_sprites[][2] = {
     { SPR_PIRATE_SHIP_FRAME_SW_NE, SPR_PIRATE_SHIP_FRAME_FRONT_SW_NE },
     { SPR_PIRATE_SHIP_FRAME_NW_SE, SPR_PIRATE_SHIP_FRAME_FRONT_NW_SE },
 };
 
 /** rct2: 0x4AF254 */
-static void paint_pirate_ship_structure(paint_session * session, Ride * ride, uint8 direction, sint8 axisOffset, uint16 height)
+static void paint_pirate_ship_structure(paint_session * session, Ride * ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
-    uint32 imageId, baseImageId;
+    uint32_t imageId, baseImageId;
 
     const rct_tile_element * savedTileElement = static_cast<const rct_tile_element *>(session->CurrentlyDrawnItem);
 
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle *    vehicle  = nullptr;
 
-    sint8 xOffset = !(direction & 1) ? axisOffset : 0;
-    sint8 yOffset = (direction & 1) ? axisOffset : 0;
+    int8_t xOffset = !(direction & 1) ? axisOffset : 0;
+    int8_t yOffset = (direction & 1) ? axisOffset : 0;
 
     height += 7;
 
@@ -80,7 +80,7 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
     baseImageId = rideEntry->vehicles[0].base_image_id + pirate_ship_base_sprite_offset[direction];
     if (vehicle != nullptr)
     {
-        sint32 rotation = (sint8)vehicle->vehicle_sprite_type;
+        int32_t rotation = (int8_t)vehicle->vehicle_sprite_type;
         if (rotation != 0)
         {
             if (direction & 2)
@@ -96,7 +96,7 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
         }
     }
 
-    uint32 imageColourFlags = session->TrackColours[SCHEME_MISC];
+    uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
         imageColourFlags =
@@ -119,8 +119,8 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
 
     if (dpi->zoom_level <= 1 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        sint32 peep   = 0;
-        sint32 offset = 1;
+        int32_t peep   = 0;
+        int32_t offset = 1;
         while (peep < 16)
         {
             if (vehicle->num_peeps <= peep)
@@ -128,7 +128,7 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
                 break;
             }
 
-            sint32 frameNum = offset + (direction >> 1);
+            int32_t frameNum = offset + (direction >> 1);
             imageColourFlags =
                 SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[peep], vehicle->peep_tshirt_colours[peep + 1]);
             imageId = (baseImageId + frameNum) | imageColourFlags;
@@ -168,17 +168,17 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
 /** rct2: 0x008A85C4 */
 static void paint_pirate_ship(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
-    uint8    relativeTrackSequence = track_map_1x5[direction][trackSequence];
+    uint8_t    relativeTrackSequence = track_map_1x5[direction][trackSequence];
     Ride *   ride                  = get_ride(rideIndex);
     LocationXY16 position              = session->MapPosition;
 
-    uint32 imageId;
+    uint32_t imageId;
     bool   hasFence;
 
     if (relativeTrackSequence == 1 || relativeTrackSequence == 4)
@@ -320,7 +320,7 @@ static void paint_pirate_ship(
 /**
  * rct2: 0x008A83E0
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_pirate_ship(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_pirate_ship(int32_t trackType, int32_t direction)
 {
     if (trackType != FLAT_TRACK_ELEM_1_X_5)
     {

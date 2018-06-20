@@ -9,12 +9,12 @@
 
 #include "VerticalTunnelCall.hpp"
 
-uint16 VerticalTunnelCall::GetTunnelHeight(uint16 baseHeight, uint8 *calls) {
+uint16_t VerticalTunnelCall::GetTunnelHeight(uint16_t baseHeight, uint8_t *calls) {
     if (calls[0] == 0 && calls[1] == 0 && calls[2] == 0) {
         return 0;
     }
 
-    for (sint16 offset = 0; offset <= 256; offset += 8) {
+    for (int16_t offset = 0; offset <= 256; offset += 8) {
         if (calls[0] != (baseHeight - 8 + offset) / 16) continue;
         if (calls[1] != (baseHeight + 0 + offset) / 16) continue;
         if (calls[2] != (baseHeight + 8 + offset) / 16) continue;
@@ -26,7 +26,7 @@ uint16 VerticalTunnelCall::GetTunnelHeight(uint16 baseHeight, uint8 *calls) {
     return 0;
 }
 
-bool VerticalTunnelCall::HeightIsConsistent(uint16 *heights) {
+bool VerticalTunnelCall::HeightIsConsistent(uint16_t *heights) {
     for (int i = 1; i < 4; ++i) {
         if (heights[i] != heights[0]) return false;
     }

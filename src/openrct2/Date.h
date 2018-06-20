@@ -19,28 +19,28 @@ namespace OpenRCT2
     class Date final
     {
     private:
-        uint16 _monthTicks      = 0;
-        uint32 _monthsElapsed   = 0;
+        uint16_t _monthTicks      = 0;
+        uint32_t _monthsElapsed   = 0;
 
     public:
         Date() = default;
-        Date(uint32 monthsElapsed, uint16 monthTicks);
+        Date(uint32_t monthsElapsed, uint16_t monthTicks);
 
-        static Date FromYMD(sint32 year, sint32 month = 0, sint32 day = 0);
+        static Date FromYMD(int32_t year, int32_t month = 0, int32_t day = 0);
 
         void Update();
 
-        uint16 GetMonthTicks() const;
-        uint32 GetMonthsElapsed() const;
-        sint32 GetDay() const;
-        sint32 GetMonth() const;
-        sint32 GetYear() const;
+        uint16_t GetMonthTicks() const;
+        uint32_t GetMonthsElapsed() const;
+        int32_t GetDay() const;
+        int32_t GetMonth() const;
+        int32_t GetYear() const;
 
         bool IsDayStart() const;
         bool IsWeekStart() const;
         bool IsFortnightStart() const;
         bool IsMonthStart() const;
 
-        static sint32 GetDaysInMonth(sint32 month);
+        static int32_t GetDaysInMonth(int32_t month);
     };
 }

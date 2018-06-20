@@ -19,16 +19,16 @@ struct rct_tile_element;
 #pragma pack(push, 1)
 /* size 0x12 */
 struct attached_paint_struct {
-    uint32 image_id;        // 0x00
+    uint32_t image_id;        // 0x00
     union {
-        uint32 tertiary_colour;
+        uint32_t tertiary_colour;
         // If masked image_id is masked_id
-        uint32 colour_image_id;
+        uint32_t colour_image_id;
     };
-    uint16 x;       // 0x08
-    uint16 y;       // 0x0A
-    uint8 flags;    // 0x0C
-    uint8 pad_0D;
+    uint16_t x;       // 0x08
+    uint16_t y;       // 0x0A
+    uint8_t flags;    // 0x0C
+    uint8_t pad_0D;
     attached_paint_struct* next;    //0x0E
 };
 #ifdef PLATFORM_32BIT
@@ -43,36 +43,36 @@ enum PAINT_QUADRANT_FLAGS {
 };
 
 struct paint_struct_bound_box {
-    uint16 x;
-    uint16 y;
-    uint16 z;
-    uint16 x_end;
-    uint16 y_end;
-    uint16 z_end;
+    uint16_t x;
+    uint16_t y;
+    uint16_t z;
+    uint16_t x_end;
+    uint16_t y_end;
+    uint16_t z_end;
 };
 
 /* size 0x34 */
 struct paint_struct {
-    uint32 image_id;        // 0x00
+    uint32_t image_id;        // 0x00
     union {
-        uint32 tertiary_colour; // 0x04
+        uint32_t tertiary_colour; // 0x04
         // If masked image_id is masked_id
-        uint32 colour_image_id; // 0x04
+        uint32_t colour_image_id; // 0x04
     };
     paint_struct_bound_box bounds; // 0x08
-    uint16 x;               // 0x14
-    uint16 y;               // 0x16
-    uint16 quadrant_index;
-    uint8 flags;
-    uint8 quadrant_flags;
+    uint16_t x;               // 0x14
+    uint16_t y;               // 0x16
+    uint16_t quadrant_index;
+    uint8_t flags;
+    uint8_t quadrant_flags;
     attached_paint_struct* attached_ps; //0x1C
     paint_struct* var_20;
     paint_struct* next_quadrant_ps; // 0x24
-    uint8 sprite_type;      //0x28
-    uint8 var_29;
-    uint16 pad_2A;
-    uint16 map_x;           // 0x2C
-    uint16 map_y;           // 0x2E
+    uint8_t sprite_type;      //0x28
+    uint8_t var_29;
+    uint16_t pad_2A;
+    uint16_t map_x;           // 0x2C
+    uint16_t map_y;           // 0x2E
     rct_tile_element *tileElement; // 0x30 (or sprite pointer)
 };
 #ifdef PLATFORM_32BIT
@@ -84,10 +84,10 @@ assert_struct_size(paint_struct, 0x34);
 struct paint_string_struct {
     rct_string_id string_id;        // 0x00
     paint_string_struct *next;      // 0x02
-    uint16 x;                       // 0x06
-    uint16 y;                       // 0x08
-    uint32 args[4];                 // 0x0A
-    uint8 *y_offsets;               // 0x1A
+    uint16_t x;                       // 0x06
+    uint16_t y;                       // 0x08
+    uint32_t args[4];                 // 0x0A
+    uint8_t *y_offsets;               // 0x1A
 };
 #ifdef PLATFORM_32BIT
 assert_struct_size(paint_string_struct, 0x1e);
@@ -101,7 +101,7 @@ union paint_entry {
 };
 
 struct sprite_bb {
-    uint32 sprite_id;
+    uint32_t sprite_id;
     LocationXYZ16 offset;
     LocationXYZ16 bb_offset;
     LocationXYZ16 bb_size;
@@ -112,14 +112,14 @@ enum PAINT_STRUCT_FLAGS {
 };
 
 struct support_height {
-    uint16 height;
-    uint8 slope;
-    uint8 pad;
+    uint16_t height;
+    uint8_t slope;
+    uint8_t pad;
 };
 
 struct tunnel_entry {
-    uint8 height;
-    uint8 type;
+    uint8_t height;
+    uint8_t type;
 };
 
 #define MAX_PAINT_QUADRANTS 512
@@ -130,8 +130,8 @@ struct paint_session
     rct_drawpixelinfo *      DPI;
     paint_entry              PaintStructs[4000];
     paint_struct *           Quadrants[MAX_PAINT_QUADRANTS];
-    uint32                   QuadrantBackIndex;
-    uint32                   QuadrantFrontIndex;
+    uint32_t                   QuadrantBackIndex;
+    uint32_t                   QuadrantFrontIndex;
     const void *             CurrentlyDrawnItem;
     paint_entry *            EndOfPaintStructArray;
     paint_entry *            NextFreePaintStruct;
@@ -139,8 +139,8 @@ struct paint_session
     paint_struct             UnkF1A4CC;
     paint_struct *           UnkF1AD28;
     attached_paint_struct *  UnkF1AD2C;
-    uint8                    InteractionType;
-    uint8                    CurrentRotation;
+    uint8_t                    InteractionType;
+    uint8_t                    CurrentRotation;
     support_height           SupportSegments[9];
     support_height           Support;
     paint_string_struct *    PSStringHead;
@@ -148,23 +148,23 @@ struct paint_session
     paint_struct *           WoodenSupportsPrependTo;
     LocationXY16             MapPosition;
     tunnel_entry             LeftTunnels[TUNNEL_MAX_COUNT];
-    uint8                    LeftTunnelCount;
+    uint8_t                    LeftTunnelCount;
     tunnel_entry             RightTunnels[TUNNEL_MAX_COUNT];
-    uint8                    RightTunnelCount;
-    uint8                    VerticalTunnelHeight;
+    uint8_t                    RightTunnelCount;
+    uint8_t                    VerticalTunnelHeight;
     const rct_tile_element * SurfaceElement;
     rct_tile_element *       PathElementOnSameHeight;
     rct_tile_element *       TrackElementOnSameHeight;
     bool                     DidPassSurface;
-    uint8                    Unk141E9DB;
-    uint16                   WaterHeight;
-    uint32                   TrackColours[4];
+    uint8_t                    Unk141E9DB;
+    uint16_t                   WaterHeight;
+    uint32_t                   TrackColours[4];
 };
 
 extern paint_session gPaintSession;
 
 // Globals for paint clipping
-extern uint8 gClipHeight;
+extern uint8_t gClipHeight;
 extern LocationXY8 gClipSelectionA;
 extern LocationXY8 gClipSelectionB;
 
@@ -177,74 +177,74 @@ extern bool gPaintWidePathsAsGhost;
 
 paint_struct * sub_98196C(
     paint_session * session,
-    uint32          image_id,
-    sint8           x_offset,
-    sint8           y_offset,
-    sint16          bound_box_length_x,
-    sint16          bound_box_length_y,
-    sint8           bound_box_length_z,
-    sint16          z_offset);
+    uint32_t          image_id,
+    int8_t           x_offset,
+    int8_t           y_offset,
+    int16_t          bound_box_length_x,
+    int16_t          bound_box_length_y,
+    int8_t           bound_box_length_z,
+    int16_t          z_offset);
 paint_struct * sub_98197C(
     paint_session * session,
-    uint32          image_id,
-    sint8           x_offset,
-    sint8           y_offset,
-    sint16          bound_box_length_x,
-    sint16          bound_box_length_y,
-    sint8           bound_box_length_z,
-    sint16          z_offset,
-    sint16          bound_box_offset_x,
-    sint16          bound_box_offset_y,
-    sint16          bound_box_offset_z);
+    uint32_t          image_id,
+    int8_t           x_offset,
+    int8_t           y_offset,
+    int16_t          bound_box_length_x,
+    int16_t          bound_box_length_y,
+    int8_t           bound_box_length_z,
+    int16_t          z_offset,
+    int16_t          bound_box_offset_x,
+    int16_t          bound_box_offset_y,
+    int16_t          bound_box_offset_z);
 paint_struct * sub_98198C(
     paint_session * session,
-    uint32          image_id,
-    sint8           x_offset,
-    sint8           y_offset,
-    sint16          bound_box_length_x,
-    sint16          bound_box_length_y,
-    sint8           bound_box_length_z,
-    sint16          z_offset,
-    sint16          bound_box_offset_x,
-    sint16          bound_box_offset_y,
-    sint16          bound_box_offset_z);
+    uint32_t          image_id,
+    int8_t           x_offset,
+    int8_t           y_offset,
+    int16_t          bound_box_length_x,
+    int16_t          bound_box_length_y,
+    int8_t           bound_box_length_z,
+    int16_t          z_offset,
+    int16_t          bound_box_offset_x,
+    int16_t          bound_box_offset_y,
+    int16_t          bound_box_offset_z);
 paint_struct * sub_98199C(
     paint_session * session,
-    uint32          image_id,
-    sint8           x_offset,
-    sint8           y_offset,
-    sint16          bound_box_length_x,
-    sint16          bound_box_length_y,
-    sint8           bound_box_length_z,
-    sint16          z_offset,
-    sint16          bound_box_offset_x,
-    sint16          bound_box_offset_y,
-    sint16          bound_box_offset_z);
+    uint32_t          image_id,
+    int8_t           x_offset,
+    int8_t           y_offset,
+    int16_t          bound_box_length_x,
+    int16_t          bound_box_length_y,
+    int8_t           bound_box_length_z,
+    int16_t          z_offset,
+    int16_t          bound_box_offset_x,
+    int16_t          bound_box_offset_y,
+    int16_t          bound_box_offset_z);
 
-paint_struct * sub_98196C_rotated(paint_session * session, uint8 direction, uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset);
-paint_struct * sub_98197C_rotated(paint_session * session, uint8 direction, uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z);
-paint_struct * sub_98199C_rotated(paint_session * session, uint8 direction, uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z);
+paint_struct * sub_98196C_rotated(paint_session * session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x, int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset);
+paint_struct * sub_98197C_rotated(paint_session * session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x, int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x, int16_t bound_box_offset_y, int16_t bound_box_offset_z);
+paint_struct * sub_98199C_rotated(paint_session * session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x, int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x, int16_t bound_box_offset_y, int16_t bound_box_offset_z);
 
-void paint_util_push_tunnel_rotated(paint_session * session, uint8 direction, uint16 height, uint8 type);
+void paint_util_push_tunnel_rotated(paint_session * session, uint8_t direction, uint16_t height, uint8_t type);
 
-bool paint_attach_to_previous_attach(paint_session * session, uint32 image_id, uint16 x, uint16 y);
-bool paint_attach_to_previous_ps(paint_session * session, uint32 image_id, uint16 x, uint16 y);
-void paint_floating_money_effect(paint_session * session, money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation);
+bool paint_attach_to_previous_attach(paint_session * session, uint32_t image_id, uint16_t x, uint16_t y);
+bool paint_attach_to_previous_ps(paint_session * session, uint32_t image_id, uint16_t x, uint16_t y);
+void paint_floating_money_effect(paint_session * session, money32 amount, rct_string_id string_id, int16_t y, int16_t z, int8_t y_offsets[], int16_t offset_x, uint32_t rotation);
 
 paint_session * paint_session_alloc(rct_drawpixelinfo * dpi);
 void paint_session_free(paint_session *);
 void paint_session_generate(paint_session * session);
 paint_struct paint_session_arrange(paint_session * session);
-paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadrantIndex, uint8 flag, uint8 rotation);
-void paint_draw_structs(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags);
+paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16_t quadrantIndex, uint8_t flag, uint8_t rotation);
+void paint_draw_structs(rct_drawpixelinfo * dpi, paint_struct * ps, uint32_t viewFlags);
 void paint_draw_money_structs(rct_drawpixelinfo * dpi, paint_string_struct * ps);
 
 // TESTING
 #ifdef __TESTPAINT__
     void testpaint_clear_ignore();
-    void testpaint_ignore(uint8 direction, uint8 trackSequence);
+    void testpaint_ignore(uint8_t direction, uint8_t trackSequence);
     void testpaint_ignore_all();
-    bool testpaint_is_ignored(uint8 direction, uint8 trackSequence);
+    bool testpaint_is_ignored(uint8_t direction, uint8_t trackSequence);
 
     #define TESTPAINT_IGNORE(direction, trackSequence) testpaint_ignore(direction, trackSequence)
     #define TESTPAINT_IGNORE_ALL() testpaint_ignore_all()

@@ -33,9 +33,9 @@ enum
 };
 
 /** The exit code for OpenRCT2 when it exits. */
-extern sint32 gExitCode;
+extern int32_t gExitCode;
 
-extern sint32 gOpenRCT2StartupAction;
+extern int32_t gOpenRCT2StartupAction;
 extern utf8 gOpenRCT2StartupActionPath[512];
 extern utf8 gExePath[MAX_PATH];
 extern utf8 gCustomUserDataPath[MAX_PATH];
@@ -48,19 +48,19 @@ extern bool gOpenRCT2ShowChangelog;
 extern bool gOpenRCT2SilentBreakpad;
 
 #ifndef DISABLE_NETWORK
-extern sint32 gNetworkStart;
+extern int32_t gNetworkStart;
 extern char gNetworkStartHost[128];
-extern sint32 gNetworkStartPort;
+extern int32_t gNetworkStartPort;
 extern char* gNetworkStartAddress;
 #endif
 
-extern uint32 gCurrentDrawCount;
-extern uint8 gScreenFlags;
-extern uint32 gScreenAge;
-extern uint8 gSavePromptMode;
+extern uint32_t gCurrentDrawCount;
+extern uint8_t gScreenFlags;
+extern uint32_t gScreenAge;
+extern uint8_t gSavePromptMode;
 
 void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize);
 void openrct2_finish();
 
-sint32 cmdline_run(const char * * argv, sint32 argc);
+int32_t cmdline_run(const char * * argv, int32_t argc);
 

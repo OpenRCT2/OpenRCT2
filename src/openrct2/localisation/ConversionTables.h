@@ -13,11 +13,11 @@
 
 struct encoding_convert_entry
 {
-    uint16 code;
-    uint32 unicode;
+    uint16_t code;
+    uint32_t unicode;
 };
 
 extern const encoding_convert_entry RCT2ToUnicodeTable[256];
 
 wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str);
-uint32 encoding_convert_unicode_to_rct2(uint32 unicode);
+uint32_t encoding_convert_unicode_to_rct2(uint32_t unicode);

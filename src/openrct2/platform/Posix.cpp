@@ -122,7 +122,7 @@ bool platform_directory_exists(const utf8 *path)
     char buffer[MAX_PATH];
     platform_utf8_to_multibyte(path, buffer, MAX_PATH);
     struct stat dirinfo;
-    sint32 result = stat(buffer, &dirinfo);
+    int32_t result = stat(buffer, &dirinfo);
     log_verbose("checking dir %s, result = %d, is_dir = %d", buffer, result, S_ISDIR(dirinfo.st_mode));
     if ((result != 0) || !S_ISDIR(dirinfo.st_mode))
     {
@@ -271,7 +271,7 @@ bool platform_lock_single_instance()
     // take care of that, because flock keeps the lock as long as the
     // file is open and closes it automatically on file close.
     // This is intentional.
-    sint32 pidFile = open(pidFilePath, O_CREAT | O_RDWR, 0666);
+    int32_t pidFile = open(pidFilePath, O_CREAT | O_RDWR, 0666);
 
     if (pidFile == -1) {
         log_warning("Cannot open lock file for writing.");
@@ -297,7 +297,7 @@ bool platform_lock_single_instance()
     return true;
 }
 
-sint32 platform_get_drives() {
+int32_t platform_get_drives() {
     // POSIX systems do not know drives. Return 0.
     return 0;
 }
@@ -363,7 +363,7 @@ bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath)
 
 bool platform_file_delete(const utf8 *path)
 {
-    sint32 ret = unlink(path);
+    int32_t ret = unlink(path);
     return ret == 0;
 }
 
@@ -375,7 +375,7 @@ time_t platform_file_get_modified_time(const utf8* path){
     return 100;
 }
 
-uint8 platform_get_locale_temperature_format(){
+uint8_t platform_get_locale_temperature_format(){
 // LC_MEASUREMENT is GNU specific.
 #ifdef LC_MEASUREMENT
     const char *langstring = setlocale(LC_MEASUREMENT, "");
@@ -395,7 +395,7 @@ uint8 platform_get_locale_temperature_format(){
     return TEMPERATURE_FORMAT_C;
 }
 
-uint8 platform_get_locale_date_format()
+uint8_t platform_get_locale_date_format()
 {
     return DATE_FORMAT_DAY_MONTH_YEAR;
 }
@@ -409,7 +409,7 @@ datetime64 platform_get_datetime_now_utc()
 
     // Epoch starts from: 1970-01-01T00:00:00Z
     // Convert to ticks from 0001-01-01T00:00:00Z
-    uint64 utcEpochTicks = (uint64)tv.tv_sec * 10000000ULL + tv.tv_usec * 10;
+    uint64_t utcEpochTicks = (uint64_t)tv.tv_sec * 10000000ULL + tv.tv_usec * 10;
     datetime64 utcNow = epochAsTicks + utcEpochTicks;
     return utcNow;
 }

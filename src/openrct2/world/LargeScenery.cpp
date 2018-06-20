@@ -49,23 +49,23 @@ void scenery_large_set_banner_id(rct_tile_element * tileElement, BannerIndex ban
     tileElement->properties.scenerymultiple.colour[1] |= (bannerIndex & 7) << 5;
 }
 
-sint32 scenery_large_get_type(const rct_tile_element * tileElement)
+int32_t scenery_large_get_type(const rct_tile_element * tileElement)
 {
     return (tileElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
 }
 
-sint32 scenery_large_get_sequence(const rct_tile_element * tileElement)
+int32_t scenery_large_get_sequence(const rct_tile_element * tileElement)
 {
     return (tileElement->properties.scenerymultiple.type >> 10);
 }
 
-void scenery_large_set_type(rct_tile_element * tileElement, uint16 type)
+void scenery_large_set_type(rct_tile_element * tileElement, uint16_t type)
 {
     tileElement->properties.scenerymultiple.type &= ~TILE_ELEMENT_LARGE_TYPE_MASK;
     tileElement->properties.scenerymultiple.type |= (type & TILE_ELEMENT_LARGE_TYPE_MASK);
 }
 
-void scenery_large_set_sequence(rct_tile_element * tileElement, uint16 sequence)
+void scenery_large_set_sequence(rct_tile_element * tileElement, uint16_t sequence)
 {
     tileElement->properties.scenerymultiple.type &= TILE_ELEMENT_LARGE_TYPE_MASK;
     tileElement->properties.scenerymultiple.type |= (sequence << 10);

@@ -105,7 +105,7 @@ static void window_research_development_paint(rct_window *w, rct_drawpixelinfo *
 
 static void window_research_funding_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_research_funding_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_research_funding_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_research_funding_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_research_funding_update(rct_window *w);
 static void window_research_funding_invalidate(rct_window *w);
 static void window_research_funding_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -183,7 +183,7 @@ static rct_window_event_list *window_research_page_events[] = {
 
 #pragma region Enabled widgets
 
-static uint32 window_research_page_enabled_widgets[] = {
+static uint32_t window_research_page_enabled_widgets[] = {
     (1 << WIDX_CLOSE) |
     (1 << WIDX_TAB_1) |
     (1 << WIDX_TAB_2) |
@@ -205,7 +205,7 @@ static uint32 window_research_page_enabled_widgets[] = {
 
 #pragma endregion
 
-const sint32 window_research_tab_animation_loops[] = { 16, 16 };
+const int32_t window_research_tab_animation_loops[] = { 16, 16 };
 
 static constexpr const rct_string_id ResearchCategoryNames[] = {
     STR_RESEARCH_CATEGORY_TRANSPORT,
@@ -225,7 +225,7 @@ static constexpr const rct_string_id ResearchStageNames[] = {
 };
 // clang-format on
 
-static void window_research_set_page(rct_window *w, sint32 page);
+static void window_research_set_page(rct_window *w, int32_t page);
 static void window_research_set_pressed_tab(rct_window *w);
 static void window_research_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 
@@ -312,7 +312,7 @@ static void window_research_development_invalidate(rct_window *w)
     window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_EMPTY;
     if (gResearchLastItem.rawValue != RESEARCHED_ITEMS_SEPARATOR)
     {
-        uint8 type = gResearchLastItem.type;
+        uint8_t type = gResearchLastItem.type;
         window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
         window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = type == RESEARCH_ENTRY_TYPE_RIDE? SPR_NEW_RIDE : SPR_NEW_SCENERY;
     }
@@ -334,8 +334,8 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 {
     baseWidgetIndex = baseWidgetIndex - WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP;
 
-    sint32 x = w->x + 10;
-    sint32 y = w->y + w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
+    int32_t x = w->x + 10;
+    int32_t y = w->y + w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
     rct_string_id stringId;
 
     if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL) {
@@ -372,7 +372,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
         // Expected
         set_format_arg(0, rct_string_id, STR_RESEARCH_STAGE_UNKNOWN);
         if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH) {
-            uint16 expectedDay = gResearchExpectedDay;
+            uint16_t expectedDay = gResearchExpectedDay;
             if (expectedDay != 255) {
                 // TODO: Should probably use game date format setting
                 set_format_arg(0, rct_string_id, STR_RESEARCH_EXPECTED_FORMAT);
@@ -391,7 +391,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
     if (gResearchLastItem.rawValue != RESEARCHED_ITEMS_SEPARATOR)
     {
         stringId = research_item_get_name(&gResearchLastItem);
-        uint8 type = gResearchLastItem.type;
+        uint8_t type = gResearchLastItem.type;
         lastDevelopmentFormat = (type == RESEARCH_ENTRY_TYPE_RIDE) ? STR_RESEARCH_RIDE_LABEL : STR_RESEARCH_SCENERY_LABEL;
 
         gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, lastDevelopmentFormat, COLOUR_BLACK);
@@ -440,7 +440,7 @@ static void window_research_funding_mouseup(rct_window *w, rct_widgetindex widge
 static void window_research_funding_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     rct_widget *dropdownWidget;
-    sint32 i;
+    int32_t i;
 
     if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON)
         return;
@@ -462,7 +462,7 @@ static void window_research_funding_mousedown(rct_window *w, rct_widgetindex wid
         dropdownWidget->right - dropdownWidget->left - 3
     );
 
-    sint32 currentResearchLevel = gResearchFundingLevel;
+    int32_t currentResearchLevel = gResearchFundingLevel;
     dropdown_set_checked(currentResearchLevel, true);
 }
 
@@ -470,7 +470,7 @@ static void window_research_funding_mousedown(rct_window *w, rct_widgetindex wid
  *
  *  rct2: 0x0069DB6D
  */
-static void window_research_funding_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_research_funding_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || dropdownIndex == -1)
         return;
@@ -514,15 +514,15 @@ static void window_research_funding_invalidate(rct_window *w)
         window_research_funding_widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WWT_BUTTON;
 
         // Current funding
-        sint32 currentResearchLevel = gResearchFundingLevel;
+        int32_t currentResearchLevel = gResearchFundingLevel;
         window_research_funding_widgets[WIDX_RESEARCH_FUNDING].text = ResearchFundingLevelNames[currentResearchLevel];
     }
 
     // Checkboxes
-    uint8 activeResearchTypes = gResearchPriorities;
-    for (sint32 i = 0; i < 7; i++) {
-        sint32 mask = 1 << i;
-        sint32 widgetMask = 1 << (i + WIDX_TRANSPORT_RIDES);
+    uint8_t activeResearchTypes = gResearchPriorities;
+    for (int32_t i = 0; i < 7; i++) {
+        int32_t mask = 1 << i;
+        int32_t widgetMask = 1 << (i + WIDX_TRANSPORT_RIDES);
 
         // Set checkbox disabled if research type is complete
         if (gResearchUncompletedCategories & mask) {
@@ -557,7 +557,7 @@ void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, r
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return;
 
-    sint32 currentResearchLevel = gResearchFundingLevel;
+    int32_t currentResearchLevel = gResearchFundingLevel;
     money32 currentResearchCostPerWeek = research_cost_table[currentResearchLevel];
     gfx_draw_string_left(dpi, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek, COLOUR_BLACK, w->x + 10, w->y + 77);
 }
@@ -570,7 +570,7 @@ void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, r
  *
  *  rct2: 0x0069CAC5
  */
-static void window_research_set_page(rct_window *w, sint32 page)
+static void window_research_set_page(rct_window *w, int32_t page)
 {
     w->page = page;
     w->frame_no = 0;
@@ -603,19 +603,19 @@ static void window_research_set_page(rct_window *w, sint32 page)
 
 static void window_research_set_pressed_tab(rct_window *w)
 {
-    sint32 i;
+    int32_t i;
     for (i = 0; i < WINDOW_RESEARCH_PAGE_COUNT; i++)
         w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
-static void window_research_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, sint32 page, sint32 spriteIndex)
+static void window_research_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, int32_t page, int32_t spriteIndex)
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 
     if (!(w->disabled_widgets & (1LL << widgetIndex))) {
         if (w->page == page) {
-            sint32 frame = w->frame_no / 2;
+            int32_t frame = w->frame_no / 2;
             if (page == WINDOW_RESEARCH_PAGE_DEVELOPMENT)
                 frame %= 8;
             spriteIndex += frame;

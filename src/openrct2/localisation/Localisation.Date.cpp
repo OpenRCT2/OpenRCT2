@@ -13,11 +13,11 @@
 #include "Date.h"
 #include "StringIds.h"
 
-uint16 gDateMonthTicks;
-uint16 gDateMonthsElapsed;
+uint16_t gDateMonthTicks;
+uint16_t gDateMonthsElapsed;
 
 // rct2: 0x00993988
-const sint16 days_in_month[MONTH_COUNT] = { 31, 30, 31, 30, 31, 31, 30, 31 };
+const int16_t days_in_month[MONTH_COUNT] = { 31, 30, 31, 30, 31, 31, 30, 31 };
 
 // clang-format off
 const rct_string_id DateFormatStringIds[] = {
@@ -37,17 +37,17 @@ const rct_string_id DateFormatStringFormatIds[] = {
 
 openrct_timeofday gRealTimeOfDay;
 
-sint32 date_get_month(sint32 months)
+int32_t date_get_month(int32_t months)
 {
     return months % MONTH_COUNT;
 }
 
-sint32 date_get_year(sint32 months)
+int32_t date_get_year(int32_t months)
 {
     return months / MONTH_COUNT;
 }
 
-sint32 date_get_total_months(sint32 month, sint32 year)
+int32_t date_get_total_months(int32_t month, int32_t year)
 {
     return (year - 1) * MONTH_COUNT + month;
 }
@@ -63,7 +63,7 @@ void date_reset()
     gCurrentTicks = 0;
 }
 
-void date_set(sint32 year, sint32 month, sint32 day)
+void date_set(int32_t year, int32_t month, int32_t day)
 {
     year = Math::Clamp(1, year, 8192);
     month = Math::Clamp(1, month, (int)MONTH_COUNT);
@@ -74,7 +74,7 @@ void date_set(sint32 year, sint32 month, sint32 day)
 
 void date_update()
 {
-    sint32 monthTicks = gDateMonthTicks + 4;
+    int32_t monthTicks = gDateMonthTicks + 4;
     if (monthTicks >= 0x10000)
     {
         gDateMonthTicks = 0;
@@ -82,7 +82,7 @@ void date_update()
     }
     else
     {
-        gDateMonthTicks = floor2((uint16)monthTicks, 4);
+        gDateMonthTicks = floor2((uint16_t)monthTicks, 4);
     }
 }
 
@@ -96,29 +96,29 @@ void date_update_real_time_of_day()
     gRealTimeOfDay.hour = now->tm_hour;
 }
 
-bool date_is_day_start(sint32 monthTicks)
+bool date_is_day_start(int32_t monthTicks)
 {
     if (monthTicks < 4)
     {
         return false;
     }
-    sint32 prevMonthTick = monthTicks - 4;
-    sint32 currentMonth = date_get_month(gDateMonthsElapsed);
-    sint32 currentDaysInMonth = days_in_month[currentMonth];
+    int32_t prevMonthTick = monthTicks - 4;
+    int32_t currentMonth = date_get_month(gDateMonthsElapsed);
+    int32_t currentDaysInMonth = days_in_month[currentMonth];
     return ((currentDaysInMonth * monthTicks) >> 16 != (currentDaysInMonth * prevMonthTick) >> 16);
 }
 
-bool date_is_week_start(sint32 monthTicks)
+bool date_is_week_start(int32_t monthTicks)
 {
     return (monthTicks & 0x3FFF) == 0;
 }
 
-bool date_is_fortnight_start(sint32 monthTicks)
+bool date_is_fortnight_start(int32_t monthTicks)
 {
     return (monthTicks & 0x7FFF) == 0;
 }
 
-bool date_is_month_start(sint32 monthTicks)
+bool date_is_month_start(int32_t monthTicks)
 {
     return (monthTicks == 0);
 }

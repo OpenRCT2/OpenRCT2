@@ -24,20 +24,20 @@
 struct ParkMarketingAction : public GameActionBase<GAME_COMMAND_START_MARKETING_CAMPAIGN, GameActionResult>
 {
 private:
-    sint32 _type;
-    sint32 _item;
-    sint32 _numWeeks;
+    int32_t _type;
+    int32_t _item;
+    int32_t _numWeeks;
 
 public:
     ParkMarketingAction() {}
-    ParkMarketingAction(sint32 type, sint32 item, sint32 numWeeks)
+    ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks)
         : _type(type),
           _item(item),
           _numWeeks(numWeeks)
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }

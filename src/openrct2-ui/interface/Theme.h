@@ -34,14 +34,14 @@ size_t       theme_manager_get_active_available_theme_index();
 void         theme_manager_set_active_available_theme(size_t index);
 size_t       theme_get_index_for_name(const utf8 * name);
 
-colour_t theme_get_colour(rct_windowclass wc, uint8 index);
-void     theme_set_colour(rct_windowclass wc, uint8 index, colour_t colour);
-uint8    theme_get_flags();
-void     theme_set_flags(uint8 flags);
+colour_t theme_get_colour(rct_windowclass wc, uint8_t index);
+void     theme_set_colour(rct_windowclass wc, uint8_t index, colour_t colour);
+uint8_t    theme_get_flags();
+void     theme_set_flags(uint8_t flags);
 void     theme_save();
 void     theme_rename(const utf8 * name);
 void     theme_duplicate(const utf8 * name);
 void     theme_delete();
 
-uint8         theme_desc_get_num_colours(rct_windowclass wc);
+uint8_t         theme_desc_get_num_colours(rct_windowclass wc);
 rct_string_id theme_desc_get_name(rct_windowclass wc);

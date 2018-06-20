@@ -24,9 +24,9 @@ namespace ScenarioSources
 
     struct ScenarioTitleDescriptor
     {
-        const uint8  Id;
+        const uint8_t  Id;
         const utf8 * Title;
-        const uint8  Category;
+        const uint8_t  Category;
     };
 
     #pragma region Scenario Data
@@ -322,7 +322,7 @@ namespace ScenarioSources
     {
         Guard::ArgumentNotNull(outDesc, GUARD_LINE);
 
-        sint32 currentIndex = 0;
+        int32_t currentIndex = 0;
         for (size_t i = 0; i < Util::CountOf(ScenarioTitlesBySource); i++)
         {
             for (size_t j = 0; j < ScenarioTitlesBySource[i].count; j++)
@@ -332,7 +332,7 @@ namespace ScenarioSources
                 {
                     outDesc->title = desc->Title;
                     outDesc->id = desc->Id;
-                    outDesc->source = (uint8)i;
+                    outDesc->source = (uint8_t)i;
                     outDesc->index = currentIndex;
                     outDesc->category = desc->Category;
                     return true;
@@ -349,11 +349,11 @@ namespace ScenarioSources
         return false;
     }
 
-    bool TryGetById(uint8 id, source_desc * outDesc)
+    bool TryGetById(uint8_t id, source_desc * outDesc)
     {
         Guard::ArgumentNotNull(outDesc, GUARD_LINE);
 
-        sint32 currentIndex = 0;
+        int32_t currentIndex = 0;
         for (size_t i = 0; i < Util::CountOf(ScenarioTitlesBySource); i++)
         {
             for (size_t j = 0; j < ScenarioTitlesBySource[i].count; j++)
@@ -363,7 +363,7 @@ namespace ScenarioSources
                 {
                     outDesc->title = desc->Title;
                     outDesc->id = desc->Id;
-                    outDesc->source = (uint8)i;
+                    outDesc->source = (uint8_t)i;
                     outDesc->index = currentIndex;
                     outDesc->category = desc->Category;
                     return true;
@@ -419,7 +419,7 @@ bool scenario_get_source_desc(const utf8 * name, source_desc * outDesc)
     return ScenarioSources::TryGetByName(name, outDesc);
 }
 
-bool scenario_get_source_desc_by_id(uint8 id, source_desc * outDesc)
+bool scenario_get_source_desc_by_id(uint8_t id, source_desc * outDesc)
 {
     return ScenarioSources::TryGetById(id, outDesc);
 }

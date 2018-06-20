@@ -24,18 +24,18 @@
 struct SignSetNameAction : public GameActionBase<GAME_COMMAND_SET_SIGN_NAME, GameActionResult>
 {
 private:
-    sint32 _bannerIndex;
+    int32_t _bannerIndex;
     std::string _name;
 
 public:
     SignSetNameAction() = default;
-    SignSetNameAction(sint32 bannerIndex, const std::string& name)
+    SignSetNameAction(int32_t bannerIndex, const std::string& name)
         : _bannerIndex(bannerIndex)
         , _name(name)
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
@@ -72,8 +72,8 @@ public:
     {
         rct_banner* banner = &gBanners[_bannerIndex];
 
-        sint32 x = banner->x << 5;
-        sint32 y = banner->y << 5;
+        int32_t x = banner->x << 5;
+        int32_t y = banner->y << 5;
 
         if (_name.empty() == false)
         {
@@ -95,7 +95,7 @@ public:
         else
         {
             // If empty name take closest ride name.
-            uint8 rideIndex = banner_get_closest_ride_index(x, y, 16);
+            uint8_t rideIndex = banner_get_closest_ride_index(x, y, 16);
             if (rideIndex == RIDE_ID_NULL)
             {
                 return MakeResult();

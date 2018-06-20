@@ -27,8 +27,8 @@ static bool SortSegmentSupportCalls(SegmentSupportCall lhs, SegmentSupportCall r
     return lhs.segments < rhs.segments;
 }
 
-std::vector<SegmentSupportCall> SegmentSupportHeightCall::getSegmentCalls(support_height *supports, uint8 rotation) {
-    uint16 positionsRemaining = SEGMENTS_ALL;
+std::vector<SegmentSupportCall> SegmentSupportHeightCall::getSegmentCalls(support_height *supports, uint8_t rotation) {
+    uint16_t positionsRemaining = SEGMENTS_ALL;
 
     for (int i = 0; i < 9; i++) {
         if (supports[i].height == 0 && supports[i].slope == 0xFF) {
@@ -58,7 +58,7 @@ std::vector<SegmentSupportCall> SegmentSupportHeightCall::getSegmentCalls(suppor
             }
         }
 
-        uint16 positionsMatched = 0;
+        uint16_t positionsMatched = 0;
         for (int i = 0; i < 9; i++) {
             if (supports[i].height == referenceSupport.height && supports[i].slope == referenceSupport.slope) {
                 positionsMatched |= segment_offsets[i];

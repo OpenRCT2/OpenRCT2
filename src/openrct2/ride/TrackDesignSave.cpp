@@ -37,7 +37,7 @@
 #define TRACK_TD6_MAX_ELEMENTS 8192
 
 bool gTrackDesignSaveMode = false;
-uint8 gTrackDesignSaveRideIndex = 255;
+uint8_t gTrackDesignSaveRideIndex = 255;
 
 static size_t _trackSavedTileElementsCount;
 static rct_tile_element *_trackSavedTileElements[TRACK_MAX_SAVED_TILE_ELEMENTS];
@@ -46,16 +46,16 @@ static size_t _trackSavedTileElementsDescCount;
 static rct_td6_scenery_element _trackSavedTileElementsDesc[TRACK_MAX_SAVED_TILE_ELEMENTS];
 
 static rct_track_td6 *_trackDesign;
-static uint8 _trackSaveDirection;
+static uint8_t _trackSaveDirection;
 
-static bool track_design_save_should_select_scenery_around(sint32 rideIndex, rct_tile_element *tileElement);
-static void track_design_save_select_nearby_scenery_for_tile(sint32 rideIndex, sint32 cx, sint32 cy);
-static bool track_design_save_add_tile_element(sint32 interactionType, sint32 x, sint32 y, rct_tile_element *tileElement);
-static void track_design_save_remove_tile_element(sint32 interactionType, sint32 x, sint32 y, rct_tile_element *tileElement);
+static bool track_design_save_should_select_scenery_around(int32_t rideIndex, rct_tile_element *tileElement);
+static void track_design_save_select_nearby_scenery_for_tile(int32_t rideIndex, int32_t cx, int32_t cy);
+static bool track_design_save_add_tile_element(int32_t interactionType, int32_t x, int32_t y, rct_tile_element *tileElement);
+static void track_design_save_remove_tile_element(int32_t interactionType, int32_t x, int32_t y, rct_tile_element *tileElement);
 static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6);
-static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex);
-static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td6);
-static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track_td6 *td6);
+static rct_track_td6 *track_design_save_to_td6(uint8_t rideIndex);
+static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6 *td6);
+static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_track_td6 *td6);
 
 void track_design_save_init()
 {
@@ -70,7 +70,7 @@ void track_design_save_init()
  *
  *  rct2: 0x006D2B07
  */
-void track_design_save_select_tile_element(sint32 interactionType, sint32 x, sint32 y, rct_tile_element *tileElement, bool collect)
+void track_design_save_select_tile_element(int32_t interactionType, int32_t x, int32_t y, rct_tile_element *tileElement, bool collect)
 {
     if (track_design_save_contains_tile_element(tileElement)) {
         if (!collect) {
@@ -92,12 +92,12 @@ void track_design_save_select_tile_element(sint32 interactionType, sint32 x, sin
  *
  *  rct2: 0x006D303D
  */
-void track_design_save_select_nearby_scenery(sint32 rideIndex)
+void track_design_save_select_nearby_scenery(int32_t rideIndex)
 {
     rct_tile_element *tileElement;
 
-    for (sint32 y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++) {
-        for (sint32 x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++) {
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++) {
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++) {
             tileElement = map_get_first_element_at(x, y);
             do {
                 if (track_design_save_should_select_scenery_around(rideIndex, tileElement)) {
@@ -120,7 +120,7 @@ void track_design_save_reset_scenery()
     gfx_invalidate_screen();
 }
 
-static void track_design_save_callback(sint32 result, [[maybe_unused]] const utf8 * path)
+static void track_design_save_callback(int32_t result, [[maybe_unused]] const utf8 * path)
 {
     free(_trackDesign->track_elements);
     free(_trackDesign->entrance_elements);
@@ -137,7 +137,7 @@ static void track_design_save_callback(sint32 result, [[maybe_unused]] const utf
  *
  *  rct2: 0x006D2804, 0x006D264D
  */
-bool track_design_save(uint8 rideIndex)
+bool track_design_save(uint8_t rideIndex)
 {
     Ride* ride = get_ride(rideIndex);
 
@@ -188,9 +188,9 @@ bool track_design_save_contains_tile_element(const rct_tile_element * tileElemen
     return false;
 }
 
-static sint32 tile_element_get_total_element_count(rct_tile_element *tileElement)
+static int32_t tile_element_get_total_element_count(rct_tile_element *tileElement)
 {
-    sint32 elementCount;
+    int32_t elementCount;
     rct_scenery_entry *sceneryEntry;
     rct_large_scenery_tile *tile;
 
@@ -207,7 +207,7 @@ static sint32 tile_element_get_total_element_count(rct_tile_element *tileElement
         do {
             tile++;
             elementCount++;
-        } while (tile->x_offset != (sint16)(uint16)0xFFFF);
+        } while (tile->x_offset != (int16_t)(uint16_t)0xFFFF);
         return elementCount;
 
     default:
@@ -240,7 +240,7 @@ static bool track_design_save_can_add_tile_element(rct_tile_element *tileElement
  *
  *  rct2: 0x006D2F4C
  */
-static void track_design_save_push_tile_element(sint32 x, sint32 y, rct_tile_element *tileElement)
+static void track_design_save_push_tile_element(int32_t x, int32_t y, rct_tile_element *tileElement)
 {
     if (_trackSavedTileElementsCount < TRACK_MAX_SAVED_TILE_ELEMENTS) {
         _trackSavedTileElements[_trackSavedTileElementsCount++] = tileElement;
@@ -252,7 +252,7 @@ static void track_design_save_push_tile_element(sint32 x, sint32 y, rct_tile_ele
  *
  *  rct2: 0x006D2FA7
  */
-static void track_design_save_push_tile_element_desc(const rct_object_entry * entry, sint32 x, sint32 y, sint32 z, uint8 flags, uint8 primaryColour, uint8 secondaryColour)
+static void track_design_save_push_tile_element_desc(const rct_object_entry * entry, int32_t x, int32_t y, int32_t z, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
 {
     rct_td6_scenery_element *item = &_trackSavedTileElementsDesc[_trackSavedTileElementsDescCount++];
     item->scenery_object = *entry;
@@ -264,29 +264,29 @@ static void track_design_save_push_tile_element_desc(const rct_object_entry * en
     item->secondary_colour = secondaryColour;
 }
 
-static void track_design_save_add_scenery(sint32 x, sint32 y, rct_tile_element *tileElement)
+static void track_design_save_add_scenery(int32_t x, int32_t y, rct_tile_element *tileElement)
 {
-    sint32 entryType = tileElement->properties.scenery.type;
+    int32_t entryType = tileElement->properties.scenery.type;
     auto entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
 
-    uint8 flags = 0;
+    uint8_t flags = 0;
     flags |= tileElement->type & 3;
     flags |= (tileElement->type & 0xC0) >> 4;
 
-    uint8 primaryColour = scenery_small_get_primary_colour(tileElement);
-    uint8 secondaryColour = scenery_small_get_secondary_colour(tileElement);
+    uint8_t primaryColour = scenery_small_get_primary_colour(tileElement);
+    uint8_t secondaryColour = scenery_small_get_secondary_colour(tileElement);
 
     track_design_save_push_tile_element(x, y, tileElement);
     track_design_save_push_tile_element_desc(entry, x, y, tileElement->base_height, flags, primaryColour, secondaryColour);
 }
 
-static void track_design_save_add_large_scenery(sint32 x, sint32 y, rct_tile_element *tileElement)
+static void track_design_save_add_large_scenery(int32_t x, int32_t y, rct_tile_element *tileElement)
 {
     rct_large_scenery_tile *sceneryTiles, *tile;
-    sint32 x0, y0, z0, z;
-    sint32 direction, sequence;
+    int32_t x0, y0, z0, z;
+    int32_t direction, sequence;
 
-    sint32 entryType = scenery_large_get_type(tileElement);
+    int32_t entryType = scenery_large_get_type(tileElement);
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
@@ -301,8 +301,8 @@ static void track_design_save_add_large_scenery(sint32 x, sint32 y, rct_tile_ele
     // Iterate through each tile of the large scenery element
     sequence = 0;
     for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++) {
-        sint16 offsetX = tile->x_offset;
-        sint16 offsetY = tile->y_offset;
+        int16_t offsetX = tile->x_offset;
+        int16_t offsetY = tile->y_offset;
         rotate_map_coordinates(&offsetX, &offsetY, direction);
 
         x = x0 + offsetX;
@@ -313,9 +313,9 @@ static void track_design_save_add_large_scenery(sint32 x, sint32 y, rct_tile_ele
         {
             if (sequence == 0)
             {
-                uint8 flags = tileElement->type & 3;
-                uint8 primaryColour = scenery_large_get_primary_colour(tileElement);
-                uint8 secondaryColour = scenery_large_get_secondary_colour(tileElement);
+                uint8_t flags = tileElement->type & 3;
+                uint8_t primaryColour = scenery_large_get_primary_colour(tileElement);
+                uint8_t secondaryColour = scenery_large_get_secondary_colour(tileElement);
 
                 track_design_save_push_tile_element_desc(entry, x, y, z, flags, primaryColour, secondaryColour);
             }
@@ -324,28 +324,28 @@ static void track_design_save_add_large_scenery(sint32 x, sint32 y, rct_tile_ele
     }
 }
 
-static void track_design_save_add_wall(sint32 x, sint32 y, rct_tile_element *tileElement)
+static void track_design_save_add_wall(int32_t x, int32_t y, rct_tile_element *tileElement)
 {
-    sint32 entryType = tileElement->properties.wall.type;
+    int32_t entryType = tileElement->properties.wall.type;
     auto entry = object_entry_get_entry(OBJECT_TYPE_WALLS, entryType);
 
-    uint8 flags = 0;
+    uint8_t flags = 0;
     flags |= tileElement->type & 3;
     flags |= wall_get_tertiary_colour(tileElement) << 2;
 
-    uint8 secondaryColour = wall_get_secondary_colour(tileElement);
-    uint8 primaryColour = wall_get_primary_colour(tileElement);
+    uint8_t secondaryColour = wall_get_secondary_colour(tileElement);
+    uint8_t primaryColour = wall_get_primary_colour(tileElement);
 
     track_design_save_push_tile_element(x, y, tileElement);
     track_design_save_push_tile_element_desc(entry, x, y, tileElement->base_height, flags, primaryColour, secondaryColour);
 }
 
-static void track_design_save_add_footpath(sint32 x, sint32 y, rct_tile_element *tileElement)
+static void track_design_save_add_footpath(int32_t x, int32_t y, rct_tile_element *tileElement)
 {
-    sint32 entryType = tileElement->properties.path.type >> 4;
+    int32_t entryType = tileElement->properties.path.type >> 4;
     auto entry = object_entry_get_entry(OBJECT_TYPE_PATHS, entryType);
 
-    uint8 flags = 0;
+    uint8_t flags = 0;
     flags |= tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
     flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) << 2;
     flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) << 5;
@@ -359,7 +359,7 @@ static void track_design_save_add_footpath(sint32 x, sint32 y, rct_tile_element 
  *
  *  rct2: 0x006D2B3C
  */
-static bool track_design_save_add_tile_element(sint32 interactionType, sint32 x, sint32 y, rct_tile_element *tileElement)
+static bool track_design_save_add_tile_element(int32_t interactionType, int32_t x, int32_t y, rct_tile_element *tileElement)
 {
     if (!track_design_save_can_add_tile_element(tileElement)) {
         return false;
@@ -387,7 +387,7 @@ static bool track_design_save_add_tile_element(sint32 interactionType, sint32 x,
  *
  *  rct2: 0x006D2F78
  */
-static void track_design_save_pop_tile_element(sint32 x, sint32 y, rct_tile_element *tileElement)
+static void track_design_save_pop_tile_element(int32_t x, int32_t y, rct_tile_element *tileElement)
 {
     map_invalidate_tile_full(x, y);
 
@@ -418,7 +418,7 @@ static void track_design_save_pop_tile_element(sint32 x, sint32 y, rct_tile_elem
  *
  *  rct2: 0x006D2FDD
  */
-static void track_design_save_pop_tile_element_desc(const rct_object_entry *entry, sint32 x, sint32 y, sint32 z, uint8 flags)
+static void track_design_save_pop_tile_element_desc(const rct_object_entry *entry, int32_t x, int32_t y, int32_t z, uint8_t flags)
 {
     size_t removeIndex = SIZE_MAX;
     for (size_t i = 0; i < _trackSavedTileElementsDescCount; i++) {
@@ -445,12 +445,12 @@ static void track_design_save_pop_tile_element_desc(const rct_object_entry *entr
     }
 }
 
-static void track_design_save_remove_scenery(sint32 x, sint32 y, rct_tile_element *tileElement)
+static void track_design_save_remove_scenery(int32_t x, int32_t y, rct_tile_element *tileElement)
 {
-    sint32 entryType = tileElement->properties.scenery.type;
+    int32_t entryType = tileElement->properties.scenery.type;
     auto entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
 
-    uint8 flags = 0;
+    uint8_t flags = 0;
     flags |= tileElement->type & 3;
     flags |= (tileElement->type & 0xC0) >> 4;
 
@@ -458,13 +458,13 @@ static void track_design_save_remove_scenery(sint32 x, sint32 y, rct_tile_elemen
     track_design_save_pop_tile_element_desc(entry, x, y, tileElement->base_height, flags);
 }
 
-static void track_design_save_remove_large_scenery(sint32 x, sint32 y, rct_tile_element *tileElement)
+static void track_design_save_remove_large_scenery(int32_t x, int32_t y, rct_tile_element *tileElement)
 {
     rct_large_scenery_tile *sceneryTiles, *tile;
-    sint32 x0, y0, z0, z;
-    sint32 direction, sequence;
+    int32_t x0, y0, z0, z;
+    int32_t direction, sequence;
 
-    sint32 entryType = scenery_large_get_type(tileElement);
+    int32_t entryType = scenery_large_get_type(tileElement);
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
@@ -479,8 +479,8 @@ static void track_design_save_remove_large_scenery(sint32 x, sint32 y, rct_tile_
     // Iterate through each tile of the large scenery element
     sequence = 0;
     for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++) {
-        sint16 offsetX = tile->x_offset;
-        sint16 offsetY = tile->y_offset;
+        int16_t offsetX = tile->x_offset;
+        int16_t offsetY = tile->y_offset;
         rotate_map_coordinates(&offsetX, &offsetY, direction);
 
         x = x0 + offsetX;
@@ -491,7 +491,7 @@ static void track_design_save_remove_large_scenery(sint32 x, sint32 y, rct_tile_
         {
             if (sequence == 0)
             {
-                uint8 flags = tileElement->type & 3;
+                uint8_t flags = tileElement->type & 3;
                 track_design_save_pop_tile_element_desc(entry, x, y, z, flags);
             }
             track_design_save_pop_tile_element(x, y, tileElement);
@@ -499,12 +499,12 @@ static void track_design_save_remove_large_scenery(sint32 x, sint32 y, rct_tile_
     }
 }
 
-static void track_design_save_remove_wall(sint32 x, sint32 y, rct_tile_element *tileElement)
+static void track_design_save_remove_wall(int32_t x, int32_t y, rct_tile_element *tileElement)
 {
-    sint32 entryType = tileElement->properties.wall.type;
+    int32_t entryType = tileElement->properties.wall.type;
     auto entry = object_entry_get_entry(OBJECT_TYPE_WALLS, entryType);
 
-    uint8 flags = 0;
+    uint8_t flags = 0;
     flags |= tileElement->type & 3;
     flags |= wall_get_tertiary_colour(tileElement) << 2;
 
@@ -512,12 +512,12 @@ static void track_design_save_remove_wall(sint32 x, sint32 y, rct_tile_element *
     track_design_save_pop_tile_element_desc(entry, x, y, tileElement->base_height, flags);
 }
 
-static void track_design_save_remove_footpath(sint32 x, sint32 y, rct_tile_element *tileElement)
+static void track_design_save_remove_footpath(int32_t x, int32_t y, rct_tile_element *tileElement)
 {
-    sint32 entryType = tileElement->properties.path.type >> 4;
+    int32_t entryType = tileElement->properties.path.type >> 4;
     auto entry = object_entry_get_entry(OBJECT_TYPE_PATHS, entryType);
 
-    uint8 flags = 0;
+    uint8_t flags = 0;
     flags |= tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
     flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) << 2;
     flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) << 5;
@@ -531,7 +531,7 @@ static void track_design_save_remove_footpath(sint32 x, sint32 y, rct_tile_eleme
  *
  *  rct2: 0x006D2B3C
  */
-static void track_design_save_remove_tile_element(sint32 interactionType, sint32 x, sint32 y, rct_tile_element *tileElement)
+static void track_design_save_remove_tile_element(int32_t interactionType, int32_t x, int32_t y, rct_tile_element *tileElement)
 {
     switch (interactionType) {
     case VIEWPORT_INTERACTION_ITEM_SCENERY:
@@ -549,7 +549,7 @@ static void track_design_save_remove_tile_element(sint32 interactionType, sint32
     }
 }
 
-static bool track_design_save_should_select_scenery_around(sint32 rideIndex, rct_tile_element *tileElement)
+static bool track_design_save_should_select_scenery_around(int32_t rideIndex, rct_tile_element *tileElement)
 {
     switch (tileElement->GetType()) {
     case TILE_ELEMENT_TYPE_PATH:
@@ -572,15 +572,15 @@ static bool track_design_save_should_select_scenery_around(sint32 rideIndex, rct
     return false;
 }
 
-static void track_design_save_select_nearby_scenery_for_tile(sint32 rideIndex, sint32 cx, sint32 cy)
+static void track_design_save_select_nearby_scenery_for_tile(int32_t rideIndex, int32_t cx, int32_t cy)
 {
     rct_tile_element *tileElement;
 
-    for (sint32 y = cy - TRACK_NEARBY_SCENERY_DISTANCE; y <= cy + TRACK_NEARBY_SCENERY_DISTANCE; y++) {
-        for (sint32 x = cx - TRACK_NEARBY_SCENERY_DISTANCE; x <= cx + TRACK_NEARBY_SCENERY_DISTANCE; x++) {
+    for (int32_t y = cy - TRACK_NEARBY_SCENERY_DISTANCE; y <= cy + TRACK_NEARBY_SCENERY_DISTANCE; y++) {
+        for (int32_t x = cx - TRACK_NEARBY_SCENERY_DISTANCE; x <= cx + TRACK_NEARBY_SCENERY_DISTANCE; x++) {
             tileElement = map_get_first_element_at(x, y);
             do {
-                sint32 interactionType = VIEWPORT_INTERACTION_ITEM_NONE;
+                int32_t interactionType = VIEWPORT_INTERACTION_ITEM_NONE;
                 switch (tileElement->GetType()) {
                 case TILE_ELEMENT_TYPE_PATH:
                     if (!(tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE))
@@ -616,7 +616,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
     size_t totalSceneryElementsSize = _trackSavedTileElementsDescCount * sizeof(rct_td6_scenery_element);
     td6->scenery_elements = (rct_td6_scenery_element *)malloc(totalSceneryElementsSize + 1);
     memcpy(td6->scenery_elements, _trackSavedTileElementsDesc, totalSceneryElementsSize);
-    *((uint8*)&td6->scenery_elements[_trackSavedTileElementsDescCount]) = 0xFF;
+    *((uint8_t*)&td6->scenery_elements[_trackSavedTileElementsDescCount]) = 0xFF;
 
     // Run an element loop
     for (size_t i = 0; i < _trackSavedTileElementsDescCount; i++) {
@@ -625,14 +625,14 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
         switch (object_entry_get_type(&scenery->scenery_object)) {
         case OBJECT_TYPE_PATHS:
         {
-            uint8 slope = (scenery->flags & 0x60) >> 5;
+            uint8_t slope = (scenery->flags & 0x60) >> 5;
             slope -= _trackSaveDirection;
 
             scenery->flags &= 0x9F;
             scenery->flags |= ((slope & 3) << 5);
 
             // Direction of connection on path
-            uint8 direction = scenery->flags & 0xF;
+            uint8_t direction = scenery->flags & 0xF;
             // Rotate the direction by the track direction
             direction = ((direction << 4) >> _trackSaveDirection);
 
@@ -642,7 +642,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
         }
         case OBJECT_TYPE_WALLS:
         {
-            uint8 direction = scenery->flags & 3;
+            uint8_t direction = scenery->flags & 3;
             direction -= _trackSaveDirection;
 
             scenery->flags &= 0xFC;
@@ -651,8 +651,8 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
         }
         default:
         {
-            uint8 direction = scenery->flags & 3;
-            uint8 quadrant = (scenery->flags & 0x0C) >> 2;
+            uint8_t direction = scenery->flags & 3;
+            uint8_t quadrant = (scenery->flags & 0x0C) >> 2;
 
             direction -= _trackSaveDirection;
             quadrant -= _trackSaveDirection;
@@ -663,8 +663,8 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
         }
         }
 
-        sint16 x = ((uint8)scenery->x) * 32 - gTrackPreviewOrigin.x;
-        sint16 y = ((uint8)scenery->y) * 32 - gTrackPreviewOrigin.y;
+        int16_t x = ((uint8_t)scenery->x) * 32 - gTrackPreviewOrigin.x;
+        int16_t y = ((uint8_t)scenery->y) * 32 - gTrackPreviewOrigin.y;
         rotate_map_coordinates(&x, &y, (0 - _trackSaveDirection) & 3);
         x /= 32;
         y /= 32;
@@ -675,10 +675,10 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
             return false;
         }
 
-        scenery->x = (sint8)x;
-        scenery->y = (sint8)y;
+        scenery->x = (int8_t)x;
+        scenery->y = (int8_t)y;
 
-        sint32 z = scenery->z * 8 - gTrackPreviewOrigin.z;
+        int32_t z = scenery->z * 8 - gTrackPreviewOrigin.z;
         z /= 8;
         if (z > 127 || z < -126) {
             context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY);
@@ -695,7 +695,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
  *
  *  rct2: 0x006CE44F
  */
-static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex)
+static rct_track_td6 *track_design_save_to_td6(uint8_t rideIndex)
 {
     rct_track_td6 *td6 = (rct_track_td6 *)calloc(1, sizeof(rct_track_td6));
     Ride *ride = get_ride(rideIndex);
@@ -712,13 +712,13 @@ static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex)
         (ride->colour_scheme_type & 3) |
         (1 << 3); // Version .TD6
 
-    for (sint32 i = 0; i < RCT12_MAX_VEHICLES_PER_RIDE; i++)
+    for (int32_t i = 0; i < RCT12_MAX_VEHICLES_PER_RIDE; i++)
     {
         td6->vehicle_colours[i] = ride->vehicle_colours[i];
         td6->vehicle_additional_colour[i] = ride->vehicle_colours_extended[i];
     }
 
-    for (sint32 i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
+    for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {
         td6->track_spine_colour[i] = ride->track_colour_main[i];
         td6->track_rail_colour[i] = ride->track_colour_additional[i];
@@ -736,8 +736,8 @@ static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex)
         (ride->num_circuits << 5);
 
     td6->entrance_style = ride->entrance_style;
-    td6->max_speed = (sint8)(ride->max_speed / 65536);
-    td6->average_speed = (sint8)(ride->average_speed / 65536);
+    td6->max_speed = (int8_t)(ride->max_speed / 65536);
+    td6->average_speed = (int8_t)(ride->average_speed / 65536);
     td6->ride_length = ride_get_total_length(ride) / 65536;
     td6->max_positive_vertical_g = ride->max_positive_vertical_g / 32;
     td6->max_negative_vertical_g = ride->max_negative_vertical_g / 32;
@@ -746,11 +746,11 @@ static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex)
     td6->drops = ride->drops;
     td6->highest_drop_height = ride->highest_drop_height;
 
-    uint16 total_air_time = (ride->total_air_time * 123) / 1024;
+    uint16_t total_air_time = (ride->total_air_time * 123) / 1024;
     if (total_air_time > 255) {
         total_air_time = 0;
     }
-    td6->total_air_time = (uint8)total_air_time;
+    td6->total_air_time = (uint8_t)total_air_time;
 
     td6->excitement = ride->ratings.excitement / 10;
     td6->intensity = ride->ratings.intensity / 10;
@@ -778,12 +778,12 @@ static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex)
  *
  *  rct2: 0x006CEAAE
  */
-static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td6)
+static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6 *td6)
 {
     rct_tile_element *tileElement = nullptr;
     bool mapFound = false;
-    sint16 startX = 0;
-    sint16 startY = 0;
+    int16_t startX = 0;
+    int16_t startY = 0;
     for (startY = 0; startY < 8192; startY += 32) {
         for (startX = 0; startX < 8192; startX += 32) {
             tileElement = map_get_first_element_at(startX >> 5, startY >> 5);
@@ -809,7 +809,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
         return false;
     }
 
-    gTrackPreviewOrigin = { startX, startY, (sint16)(tileElement->base_height * 8) };
+    gTrackPreviewOrigin = { startX, startY, (int16_t)(tileElement->base_height * 8) };
 
     size_t numMazeElements = 0;
     td6->maze_elements = (rct_td6_maze_element *)calloc(8192, sizeof(rct_td6_maze_element));
@@ -818,7 +818,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     // x is defined here as we can start the search
     // on tile start_x, start_y but then the next row
     // must restart on 0
-    for (sint16 y = startY, x = startX; y < 8192; y += 32) {
+    for (int16_t y = startY, x = startX; y < 8192; y += 32) {
         for (; x < 8192; x += 32) {
             tileElement = map_get_first_element_at(x / 32, y / 32);
             do {
@@ -851,8 +851,8 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
         return false;
     }
 
-    sint16 x = location.x * 32;
-    sint16 y = location.y * 32;
+    int16_t x = location.x * 32;
+    int16_t y = location.y * 32;
 
     tileElement = map_get_first_element_at(location.x, location.y);
     do {
@@ -862,11 +862,11 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     } while (!(tileElement++)->IsLastForTile());
     // Add something that stops this from walking off the end
 
-    uint8 entrance_direction = tile_element_get_direction(tileElement);
+    uint8_t entrance_direction = tile_element_get_direction(tileElement);
     maze->direction = entrance_direction;
     maze->type = 8;
-    maze->x = (sint8)((x - startX) / 32);
-    maze->y = (sint8)((y - startY) / 32);
+    maze->x = (int8_t)((x - startX) / 32);
+    maze->y = (int8_t)((y - startY) / 32);
     maze++;
     numMazeElements++;
 
@@ -888,11 +888,11 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     } while (!(tileElement++)->IsLastForTile());
     // Add something that stops this from walking off the end
 
-    uint8 exit_direction = tile_element_get_direction(tileElement);
+    uint8_t exit_direction = tile_element_get_direction(tileElement);
     maze->direction = exit_direction;
     maze->type = 0x80;
-    maze->x = (sint8)((x - startX) / 32);
-    maze->y = (sint8)((y - startY) / 32);
+    maze->x = (int8_t)((x - startX) / 32);
+    maze->y = (int8_t)((y - startY) / 32);
     maze++;
     maze->all = 0;
     maze++;
@@ -907,7 +907,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     td6->maze_elements = (rct_td6_maze_element *)realloc(td6->maze_elements, numMazeElements * sizeof(rct_td6_maze_element));
 
     // Save global vars as they are still used by scenery
-    sint16 startZ = gTrackPreviewOrigin.z;
+    int16_t startZ = gTrackPreviewOrigin.z;
     place_virtual_track(td6, PTD_OPERATION_DRAW_OUTLINES, true, 0, 4096, 4096, 0);
     gTrackPreviewOrigin = { startX, startY, startZ };
 
@@ -924,7 +924,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
  *
  *  rct2: 0x006CE68D
  */
-static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track_td6 *td6)
+static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_track_td6 *td6)
 {
     Ride *ride = get_ride(rideIndex);
     CoordsXYE trackElement;
@@ -936,9 +936,9 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 
     ride_get_start_of_track(&trackElement);
 
-    sint32 z = trackElement.element->base_height * 8;
-    uint8 track_type = track_element_get_type(trackElement.element);
-    uint8 direction = tile_element_get_direction(trackElement.element);
+    int32_t z = trackElement.element->base_height * 8;
+    uint8_t track_type = track_element_get_type(trackElement.element);
+    uint8_t direction = tile_element_get_direction(trackElement.element);
     _trackSaveDirection = direction;
 
     if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0)) {
@@ -952,9 +952,9 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
     // start.
     rct_tile_element *initialMap = trackElement.element;
 
-    sint16 start_x = trackElement.x;
-    sint16 start_y = trackElement.y;
-    sint16 start_z = z + trackCoordinates->z_begin;
+    int16_t start_x = trackElement.x;
+    int16_t start_y = trackElement.y;
+    int16_t start_z = z + trackCoordinates->z_begin;
     gTrackPreviewOrigin = { start_x, start_y, start_z };
 
     size_t numTrackElements = 0;
@@ -966,7 +966,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
             track->type = TRACK_ELEM_255_ALIAS;
         }
 
-        uint8 bh;
+        uint8_t bh;
         if (track_element_has_speed_setting(track->type))
         {
             bh = tile_element_get_brake_booster_speed(trackElement.element) >> 1;
@@ -976,7 +976,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
             bh = track_element_get_seat_rotation(trackElement.element);
         }
 
-        uint8 flags = (trackElement.element->type & (1 << 7)) | bh;
+        uint8_t flags = (trackElement.element->type & (1 << 7)) | bh;
         flags |= track_element_get_colour_scheme(trackElement.element) << 4;
         if (
             RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE &&
@@ -1013,15 +1013,15 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
     while (trackElement.element != initialMap);
 
     td6->track_elements = (rct_td6_track_element *)realloc(td6->track_elements, numTrackElements * sizeof(rct_td6_track_element) + 1);
-    *((uint8*)&td6->track_elements[numTrackElements]) = 0xFF;
+    *((uint8_t*)&td6->track_elements[numTrackElements]) = 0xFF;
 
     size_t numEntranceElements = 0;
     td6->entrance_elements = (rct_td6_entrance_element *)calloc(32, sizeof(rct_td6_entrance_element));
     rct_td6_entrance_element *entrance = td6->entrance_elements;
 
     // First entrances, second exits
-    for (sint32 i = 0; i < 2; i++) {
-        for (sint32 station_index = 0; station_index < RCT12_MAX_STATIONS_PER_RIDE; station_index++) {
+    for (int32_t i = 0; i < 2; i++) {
+        for (int32_t station_index = 0; station_index < RCT12_MAX_STATIONS_PER_RIDE; station_index++) {
             z = ride->station_heights[station_index];
 
             TileCoordsXYZD location;
@@ -1035,8 +1035,8 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
                 continue;
             }
 
-            sint16 x = location.x * 32;
-            sint16 y = location.y * 32;
+            int16_t x = location.x * 32;
+            int16_t y = location.y * 32;
 
             rct_tile_element *tile_element = map_get_first_element_at(x >> 5, y >> 5);
             do {
@@ -1045,7 +1045,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
             } while (!(tile_element++)->IsLastForTile());
             // Add something that stops this from walking off the end
 
-            uint8 entrance_direction = tile_element_get_direction(tile_element);
+            uint8_t entrance_direction = tile_element_get_direction(tile_element);
             entrance_direction -= _trackSaveDirection;
             entrance_direction &= TILE_ELEMENT_DIRECTION_MASK;
             entrance->direction = entrance_direction;
@@ -1082,7 +1082,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
         }
     }
     td6->entrance_elements = (rct_td6_entrance_element *)realloc(td6->entrance_elements, numEntranceElements * sizeof(rct_td6_entrance_element) + 1);
-    *((uint8*)&td6->entrance_elements[numEntranceElements]) = 0xFF;
+    *((uint8_t*)&td6->entrance_elements[numEntranceElements]) = 0xFF;
 
     place_virtual_track(td6, PTD_OPERATION_DRAW_OUTLINES, true, 0, 4096, 4096, 0);
 
@@ -1174,7 +1174,7 @@ bool track_design_save_to_file(const utf8 *path)
 {
     rct_track_td6 *td6 = _trackDesign;
     const rct_td6_maze_element EndMarkerForMaze = {};
-    const uint8 EndMarker = 0xFF;
+    const uint8_t EndMarker = 0xFF;
 
     window_close_construction_windows();
 
@@ -1194,9 +1194,9 @@ bool track_design_save_to_file(const utf8 *path)
     auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
 
     // Encode TD6 data
-    uint8 *encodedData = (uint8 *)malloc(0x8000);
+    uint8_t *encodedData = (uint8_t *)malloc(0x8000);
     assert(td6Buffer.ptr != nullptr);
-    size_t encodedDataLength = sawyercoding_encode_td6((uint8*)td6Buffer.ptr, encodedData, td6Buffer.length);
+    size_t encodedDataLength = sawyercoding_encode_td6((uint8_t*)td6Buffer.ptr, encodedData, td6Buffer.length);
 
     // Save encoded TD6 data to file
     bool result;

@@ -22,16 +22,16 @@ interface ITrackDesignRepository;
 
 class Intent;
 struct rct_window;
-using rct_windowclass = uint8;
+using rct_windowclass = uint8_t;
 
 struct CursorState
 {
-    sint32  x, y;
-    uint8   left, middle, right, any;
-    sint32  wheel;
-    sint32  old;
+    int32_t  x, y;
+    uint8_t   left, middle, right, any;
+    int32_t  wheel;
+    int32_t  old;
     bool    touch, touchIsDouble;
-    uint32  touchDownTimestamp;
+    uint32_t  touchDownTimestamp;
 };
 
 struct TextInputSession
@@ -48,8 +48,8 @@ struct TextInputSession
 
 struct Resolution
 {
-    sint32 Width;
-    sint32 Height;
+    int32_t Width;
+    int32_t Height;
 };
 
 enum
@@ -102,10 +102,10 @@ namespace OpenRCT2
         virtual std::shared_ptr<IObjectRepository> GetObjectRepository() abstract;
         virtual ITrackDesignRepository * GetTrackDesignRepository() abstract;
         virtual IScenarioRepository *    GetScenarioRepository() abstract;
-        virtual sint32 GetDrawingEngineType() abstract;
+        virtual int32_t GetDrawingEngineType() abstract;
         virtual Drawing::IDrawingEngine * GetDrawingEngine() abstract;
 
-        virtual sint32 RunOpenRCT2(int argc, const char * * argv) abstract;
+        virtual int32_t RunOpenRCT2(int argc, const char * * argv) abstract;
 
         virtual bool Initialise() abstract;
         virtual void InitialiseDrawingEngine() abstract;
@@ -119,7 +119,7 @@ namespace OpenRCT2
         /**
          * This is deprecated, use IPlatformEnvironment.
          */
-        virtual std::string GetPathLegacy(sint32 pathId) abstract;
+        virtual std::string GetPathLegacy(int32_t pathId) abstract;
     };
 
     std::unique_ptr<IContext> CreateContext();
@@ -203,30 +203,30 @@ enum
 };
 
 void context_init();
-void context_setcurrentcursor(sint32 cursor);
+void context_setcurrentcursor(int32_t cursor);
 void context_update_cursor_scale();
 void context_hide_cursor();
 void context_show_cursor();
-void context_get_cursor_position(sint32 * x, sint32 * y);
-void context_get_cursor_position_scaled(sint32 * x, sint32 * y);
-void context_set_cursor_position(sint32 x, sint32 y);
+void context_get_cursor_position(int32_t * x, int32_t * y);
+void context_get_cursor_position_scaled(int32_t * x, int32_t * y);
+void context_set_cursor_position(int32_t x, int32_t y);
 const CursorState * context_get_cursor_state();
-const uint8 * context_get_keys_state();
-const uint8 * context_get_keys_pressed();
+const uint8_t * context_get_keys_state();
+const uint8_t * context_get_keys_pressed();
 TextInputSession * context_start_text_input(utf8 * buffer, size_t maxLength);
 void context_stop_text_input();
 bool context_is_input_active();
 void context_trigger_resize();
-void context_set_fullscreen_mode(sint32 mode);
+void context_set_fullscreen_mode(int32_t mode);
 void context_recreate_window();
-sint32 context_get_resolutions(struct Resolution * * outResolutions);
-sint32 context_get_width();
-sint32 context_get_height();
+int32_t context_get_resolutions(struct Resolution * * outResolutions);
+int32_t context_get_width();
+int32_t context_get_height();
 bool context_has_focus();
 void context_set_cursor_trap(bool value);
 rct_window * context_open_window(rct_windowclass wc);
-rct_window * context_open_detail_window(uint8 type, sint32 id);
-rct_window * context_open_window_view(uint8 view);
+rct_window * context_open_detail_window(uint8_t type, int32_t id);
+rct_window * context_open_window_view(uint8_t view);
 rct_window * context_show_error(rct_string_id title, rct_string_id message);
 rct_window * context_open_intent(Intent * intent);
 void context_broadcast_intent(Intent * intent);
@@ -234,8 +234,8 @@ void context_force_close_window_by_class(rct_windowclass wc);
 void context_update_map_tooltip();
 void context_handle_input();
 void context_input_handle_keyboard(bool isTitle);
-bool context_read_bmp(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const utf8 * path);
+bool context_read_bmp(void * * outPixels, uint32_t * outWidth, uint32_t * outHeight, const utf8 * path);
 void context_quit();
-const utf8 * context_get_path_legacy(sint32 pathId);
+const utf8 * context_get_path_legacy(int32_t pathId);
 bool context_load_park_from_file(const utf8 * path);
 bool context_load_park_from_stream(void * stream);

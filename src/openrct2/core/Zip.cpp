@@ -17,7 +17,7 @@ class ZipArchive final : public IZipArchive
 private:
     zip_t * _zip;
     ZIP_ACCESS _access;
-    std::vector<std::vector<uint8>> _writeBuffers;
+    std::vector<std::vector<uint8_t>> _writeBuffers;
 
 public:
     ZipArchive(const std::string_view& path, ZIP_ACCESS access)
@@ -28,7 +28,7 @@ public:
             zipOpenMode = ZIP_CREATE;
         }
 
-        sint32 error;
+        int32_t error;
         _zip = zip_open(path.data(), zipOpenMode, &error);
         if (_zip == nullptr)
         {
@@ -59,7 +59,7 @@ public:
         return result;
     }
 
-    uint64 GetFileSize(size_t index) const override
+    uint64_t GetFileSize(size_t index) const override
     {
         zip_stat_t zipFileStat;
         if (zip_stat_index(_zip, index, 0, &zipFileStat) == ZIP_ER_OK)
@@ -72,9 +72,9 @@ public:
         }
     }
 
-    std::vector<uint8> GetFileData(const std::string_view& path) const override
+    std::vector<uint8_t> GetFileData(const std::string_view& path) const override
     {
-        std::vector<uint8> result;
+        std::vector<uint8_t> result;
         auto index = GetIndexFromPath(path);
         auto dataSize = GetFileSize(index);
         if (dataSize > 0 && dataSize < SIZE_MAX)
@@ -83,7 +83,7 @@ public:
             if (zipFile != nullptr)
             {
                 result.resize((size_t)dataSize);
-                uint64 readBytes = zip_fread(zipFile, result.data(), dataSize);
+                uint64_t readBytes = zip_fread(zipFile, result.data(), dataSize);
                 if (readBytes != dataSize)
                 {
                     result.clear();
@@ -95,7 +95,7 @@ public:
         return result;
     }
 
-    void SetFileData(const std::string_view& path, std::vector<uint8>&& data) override
+    void SetFileData(const std::string_view& path, std::vector<uint8_t>&& data) override
     {
         // Push buffer to an internal list as libzip requires access to it until the zip
         // handle is closed.

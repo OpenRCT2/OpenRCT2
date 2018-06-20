@@ -32,14 +32,14 @@ interface ITrackDesignRepository
     virtual ~ITrackDesignRepository() = default;
 
     virtual size_t GetCount() const abstract;
-    virtual size_t GetCountForObjectEntry(uint8 rideType, const std::string &entry) const abstract;
-    virtual size_t GetCountForRideGroup(uint8 rideType, const RideGroup * rideGroup) const abstract;
-    virtual std::vector<track_design_file_ref> GetItemsForObjectEntry(uint8 rideType,
+    virtual size_t GetCountForObjectEntry(uint8_t rideType, const std::string &entry) const abstract;
+    virtual size_t GetCountForRideGroup(uint8_t rideType, const RideGroup * rideGroup) const abstract;
+    virtual std::vector<track_design_file_ref> GetItemsForObjectEntry(uint8_t rideType,
                                                                       const std::string &entry) const abstract;
-    virtual std::vector<track_design_file_ref> GetItemsForRideGroup(uint8 rideType,
+    virtual std::vector<track_design_file_ref> GetItemsForRideGroup(uint8_t rideType,
                                                                     const RideGroup * rideGroup) const abstract;
 
-    virtual void Scan(sint32 language) abstract;
+    virtual void Scan(int32_t language) abstract;
     virtual bool Delete(const std::string &path) abstract;
     virtual std::string Rename(const std::string &path, const std::string &newName) abstract;
     virtual std::string Install(const std::string &path) abstract;

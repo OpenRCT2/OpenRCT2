@@ -25,14 +25,14 @@
 struct PlaceParkEntranceAction : public GameActionBase<GAME_COMMAND_PLACE_PARK_ENTRANCE, GameActionResult>
 {
 private:
-    sint16 _x;
-    sint16 _y;
-    sint16 _z;
-    uint8 _direction;
+    int16_t _x;
+    int16_t _y;
+    int16_t _z;
+    uint8_t _direction;
 
 public:
     PlaceParkEntranceAction() {}
-    PlaceParkEntranceAction(sint16 x, sint16 y, sint16 z, sint16 direction) :
+    PlaceParkEntranceAction(int16_t x, int16_t y, int16_t z, int16_t direction) :
         _x(x),
         _y(y),
         _z(z),
@@ -40,7 +40,7 @@ public:
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameActionBase::GetActionFlags() | GA_FLAGS::EDITOR_ONLY;
     }
@@ -75,8 +75,8 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
         }
 
-        sint8 entranceNum = -1;
-        for (uint8 i = 0; i < MAX_PARK_ENTRANCES; ++i)
+        int8_t entranceNum = -1;
+        for (uint8_t i = 0; i < MAX_PARK_ENTRANCES; ++i)
         {
             if (gParkEntrances[i].x == LOCATION_NULL)
             {
@@ -90,10 +90,10 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
         }
 
-        sint8 zLow = _z * 2;
-        sint8 zHigh = zLow + 12;
+        int8_t zLow = _z * 2;
+        int8_t zHigh = zLow + 12;
         LocationXY16 entranceLoc = { _x, _y };
-        for (uint8 index = 0; index < 3; index++)
+        for (uint8_t index = 0; index < 3; index++)
         {
             if (index == 1)
             {
@@ -127,7 +127,7 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        uint32 flags = GetFlags();
+        uint32_t flags = GetFlags();
 
         gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
 
@@ -135,8 +135,8 @@ public:
         gCommandPosition.y = _y;
         gCommandPosition.z = _z * 16;
 
-        sint8 entranceNum = -1;
-        for (uint8 i = 0; i < MAX_PARK_ENTRANCES; ++i)
+        int8_t entranceNum = -1;
+        for (uint8_t i = 0; i < MAX_PARK_ENTRANCES; ++i)
         {
             if (gParkEntrances[i].x == LOCATION_NULL)
             {
@@ -152,10 +152,10 @@ public:
         gParkEntrances[entranceNum].z = _z * 16;
         gParkEntrances[entranceNum].direction = _direction;
 
-        sint8 zLow = _z * 2;
-        sint8 zHigh = zLow + 12;
+        int8_t zLow = _z * 2;
+        int8_t zHigh = zLow + 12;
         CoordsXY entranceLoc = { _x, _y };
-        for (uint8 index = 0; index < 3; index++)
+        for (uint8_t index = 0; index < 3; index++)
         {
             if (index == 1)
             {

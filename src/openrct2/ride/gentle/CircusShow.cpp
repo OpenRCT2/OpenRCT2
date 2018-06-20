@@ -17,7 +17,7 @@
 /**
  * rct2: 0x0077084A
  */
-static void paint_circus_show_tent(paint_session * session, uint8 rideIndex, uint8 direction, sint8 al, sint8 cl, uint16 height)
+static void paint_circus_show_tent(paint_session * session, uint8_t rideIndex, uint8_t direction, int8_t al, int8_t cl, uint16_t height)
 {
     const rct_tile_element * savedTileElement = static_cast<const rct_tile_element *>(session->CurrentlyDrawnItem);
 
@@ -30,8 +30,8 @@ static void paint_circus_show_tent(paint_session * session, uint8 rideIndex, uin
         session->CurrentlyDrawnItem = GET_VEHICLE(ride->vehicles[0]);
     }
 
-    uint32 imageColourFlags = session->TrackColours[SCHEME_MISC];
-    uint32 imageId          = rideEntry->vehicles[0].base_image_id;
+    uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
+    uint32_t imageId          = rideEntry->vehicles[0].base_image_id;
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
         imageColourFlags =
@@ -49,15 +49,15 @@ static void paint_circus_show_tent(paint_session * session, uint8 rideIndex, uin
  */
 static void paint_circus_show(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
-    sint32   edges    = edges_3x3[trackSequence];
+    int32_t   edges    = edges_3x3[trackSequence];
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
@@ -91,7 +91,7 @@ static void paint_circus_show(
         break;
     }
 
-    sint32 cornerSegments = 0;
+    int32_t cornerSegments = 0;
     switch (trackSequence)
     {
     case 1:
@@ -120,7 +120,7 @@ static void paint_circus_show(
 /**
  * rct2: 0x0076F8D4
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_circus_show(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_circus_show(int32_t trackType, int32_t direction)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {

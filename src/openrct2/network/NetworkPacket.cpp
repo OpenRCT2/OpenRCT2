@@ -24,16 +24,16 @@ std::unique_ptr<NetworkPacket> NetworkPacket::Duplicate(NetworkPacket &packet)
     return std::make_unique<NetworkPacket>(packet);
 }
 
-uint8 * NetworkPacket::GetData()
+uint8_t * NetworkPacket::GetData()
 {
     return &(*Data)[0];
 }
 
-sint32 NetworkPacket::GetCommand()
+int32_t NetworkPacket::GetCommand()
 {
-    if (Data->size() >= sizeof(uint32))
+    if (Data->size() >= sizeof(uint32_t))
     {
-        return ByteSwapBE(*(uint32 *)(&(*Data)[0]));
+        return ByteSwapBE(*(uint32_t *)(&(*Data)[0]));
     }
     else
     {
@@ -62,17 +62,17 @@ bool NetworkPacket::CommandRequiresAuth()
     }
 }
 
-void NetworkPacket::Write(const uint8 * bytes, size_t size)
+void NetworkPacket::Write(const uint8_t * bytes, size_t size)
 {
     Data->insert(Data->end(), bytes, bytes + size);
 }
 
 void NetworkPacket::WriteString(const utf8 * string)
 {
-    Write((uint8 *)string, strlen(string) + 1);
+    Write((uint8_t *)string, strlen(string) + 1);
 }
 
-const uint8 * NetworkPacket::Read(size_t size)
+const uint8_t * NetworkPacket::Read(size_t size)
 {
     if (BytesRead + size > NetworkPacket::Size)
     {
@@ -80,7 +80,7 @@ const uint8 * NetworkPacket::Read(size_t size)
     }
     else
     {
-        uint8 * data = &GetData()[BytesRead];
+        uint8_t * data = &GetData()[BytesRead];
         BytesRead += size;
         return data;
     }

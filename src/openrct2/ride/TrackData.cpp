@@ -529,7 +529,7 @@ const rct_track_coordinates TrackCoordinates[256] = {
 };
 
 /** rct2: 0x0099BA64 */
-const uint8 TrackSequenceProperties[][16] = {
+const uint8_t TrackSequenceProperties[][16] = {
     { 0 },
     /* TRACK_ELEM_END_STATION */    { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
     /* TRACK_ELEM_BEGIN_STATION */  { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -789,7 +789,7 @@ const uint8 TrackSequenceProperties[][16] = {
 };
 
 /** rct2: 0x0099CA64 */
-const uint8 FlatRideTrackSequenceProperties[][16] = {
+const uint8_t FlatRideTrackSequenceProperties[][16] = {
     { 0 },
     /* 1 */ { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
     /* 2 */ { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -1049,7 +1049,7 @@ const uint8 FlatRideTrackSequenceProperties[][16] = {
 };
 
 // rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63)
-const uint64 RideTypePossibleTrackConfigurations[RIDE_TYPE_COUNT] = {
+const uint64_t RideTypePossibleTrackConfigurations[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_SPIRAL_ROLLER_COASTER              */  (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_SLOPE_ROLL_BANKING) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_LIFT_HILL_CURVED),
     /* RIDE_TYPE_STAND_UP_ROLLER_COASTER            */  (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_VERTICAL_LOOP) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HALF_LOOP) | (1ULL << TRACK_CORKSCREW) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_BLOCK_BRAKES),
     /* RIDE_TYPE_SUSPENDED_SWINGING_COASTER         */  (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HELIX_LARGE_UNBANKED) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES),
@@ -5461,7 +5461,7 @@ const rct_preview_track *FlatRideTrackBlocks[256] = {
     FlatRideTrackBlocks255
 };
 
-const uint8 TrackPieceLengths[256] = {
+const uint8_t TrackPieceLengths[256] = {
     32,     // TRACK_ELEM_FLAT
     32,     // TRACK_ELEM_END_STATION
     32,     // TRACK_ELEM_BEGIN_STATION
@@ -6481,7 +6481,7 @@ const track_descriptor gTrackDescriptors[142] = {
 
 #define CREATE_VEHICLE_INFO(VAR, ...) \
     static constexpr const rct_vehicle_info VAR##_data [] = __VA_ARGS__ ; \
-    static constexpr const rct_vehicle_info_list VAR = { static_cast<uint16>(Util::CountOf(VAR##_data)), VAR##_data };
+    static constexpr const rct_vehicle_info_list VAR = { static_cast<uint16_t>(Util::CountOf(VAR##_data)), VAR##_data };
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_8BE57A, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
@@ -29717,7 +29717,7 @@ constexpr const rct_vehicle_info_list * const * gTrackVehicleInfo[17] = {
 };
 
 /** rct2: 0x00993D1C */
-const sint16 AlternativeTrackTypes[256] = {
+const int16_t AlternativeTrackTypes[256] = {
     TRACK_ELEM_FLAT_COVERED,                        // TRACK_ELEM_FLAT
     -1,
     -1,
@@ -30751,7 +30751,7 @@ const dodgems_track_size DodgemsTrackSize[] = {
 };
 
 /** rct2: 0x0099EA1C */
-const uint8 TrackElementMirrorMap[] = {
+const uint8_t TrackElementMirrorMap[] = {
     TRACK_ELEM_FLAT,
     TRACK_ELEM_END_STATION,
     TRACK_ELEM_BEGIN_STATION,
@@ -31011,7 +31011,7 @@ const uint8 TrackElementMirrorMap[] = {
 };
 
 /** rct2: 0x00999694 */
-const uint32 TrackHeightMarkerPositions[256] = {
+const uint32_t TrackHeightMarkerPositions[256] = {
     (1 << 0), // TRACK_ELEM_FLAT
     (1 << 0), // TRACK_ELEM_END_STATION
     (1 << 0), // TRACK_ELEM_BEGIN_STATION
@@ -31271,7 +31271,7 @@ const uint32 TrackHeightMarkerPositions[256] = {
 };
 
 /** rct2: 0x00999A94 */
-const uint8 TrackSequenceElementAllowedWallEdges[][16] = {
+const uint8_t TrackSequenceElementAllowedWallEdges[][16] = {
     { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TRACK_ELEM_FLAT
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TRACK_ELEM_END_STATION
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TRACK_ELEM_BEGIN_STATION
@@ -31531,7 +31531,7 @@ const uint8 TrackSequenceElementAllowedWallEdges[][16] = {
 };
 
 /** rct2: 0x0099AA94 */
-const uint8 FlatRideTrackSequenceElementAllowedWallEdges[][16] = {
+const uint8_t FlatRideTrackSequenceElementAllowedWallEdges[][16] = {
     { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 },
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 },
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 },
@@ -31788,7 +31788,7 @@ const uint8 FlatRideTrackSequenceElementAllowedWallEdges[][16] = {
 };
 
 /** rct2: 0x0099443C */
-const uint16 FlatTrackFlags[] = {
+const uint16_t FlatTrackFlags[] = {
     /*                                                                 */   TRACK_ELEM_FLAG_ALLOW_LIFT_HILL,
     /*                                                                 */   0,
     /*                                                                 */   0,
@@ -32046,7 +32046,7 @@ const uint16 FlatTrackFlags[] = {
 };
 
 /** rct2: 0x0099423C */
-const uint16 TrackFlags[] = {
+const uint16_t TrackFlags[] = {
     /* TRACK_ELEM_FLAT                                                 */   TRACK_ELEM_FLAG_ALLOW_LIFT_HILL,
     /* TRACK_ELEM_END_STATION                                          */   0,
     /* TRACK_ELEM_BEGIN_STATION                                        */   0,

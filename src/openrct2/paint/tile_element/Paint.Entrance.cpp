@@ -21,16 +21,16 @@
 #include "Paint.TileElement.h"
 #include "../../drawing/LightFX.h"
 
-static uint32 _unk9E32BC;
+static uint32_t _unk9E32BC;
 
 /**
  *
  *  rct2: 0x0066508C, 0x00665540
  */
-static void ride_entrance_exit_paint(paint_session * session, uint8 direction, sint32 height, const rct_tile_element * tile_element)
+static void ride_entrance_exit_paint(paint_session * session, uint8_t direction, int32_t height, const rct_tile_element * tile_element)
 {
 
-    uint8 is_exit = tile_element->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
+    uint8_t is_exit = tile_element->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
 
     if (gTrackDesignSaveMode || (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)) {
         if (tile_element->properties.entrance.ride_index != gTrackDesignSaveRideIndex)
@@ -65,8 +65,8 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
 
     const rct_ride_entrance_definition *style = &RideEntranceDefinitions[ride->entrance_style];
 
-    uint8 colour_1, colour_2;
-    uint32 transparant_image_id = 0, image_id = 0;
+    uint8_t colour_1, colour_2;
+    uint32_t transparant_image_id = 0, image_id = 0;
     if (style->base_image_id & IMAGE_TYPE_TRANSPARENT) {
         colour_1 = GlassPaletteIds[ride->track_colour_main[0]];
         transparant_image_id = (colour_1 << 19) | IMAGE_TYPE_TRANSPARENT;
@@ -99,10 +99,10 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
     // Each entrance is split into 2 images for drawing
     // Certain entrance styles have another 2 images to draw for coloured windows
 
-    sint8 ah = is_exit ? 0x23 : 0x33;
+    int8_t ah = is_exit ? 0x23 : 0x33;
 
-    sint16 lengthY = (direction & 1) ? 28 : 2;
-    sint16 lengthX = (direction & 1) ? 2 : 28;
+    int16_t lengthY = (direction & 1) ? 28 : 2;
+    int16_t lengthX = (direction & 1) ? 2 : 28;
 
     sub_98197C(session, image_id, 0, 0, lengthX, lengthY, ah, height, 2, 2, height);
 
@@ -139,8 +139,8 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
         !(tile_element->flags & TILE_ELEMENT_FLAG_GHOST) &&
         tile_element->properties.entrance.ride_index != 0xFF){
 
-        set_format_arg(0, uint32, 0);
-        set_format_arg(4, uint32, 0);
+        set_format_arg(0, uint32_t, 0);
+        set_format_arg(4, uint32_t, 0);
 
         rct_string_id string_id = STR_RIDE_ENTRANCE_CLOSED;
 
@@ -148,7 +148,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
             !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)){
 
             set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(2, uint32, ride->name_arguments);
+            set_format_arg(2, uint32_t, ride->name_arguments);
 
             string_id = STR_RIDE_ENTRANCE_NAME;
         }
@@ -162,8 +162,8 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
 
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
 
-        uint16 string_width = gfx_get_string_width(entrance_string);
-        uint16 scroll = (gCurrentTicks / 2) % string_width;
+        uint16_t string_width = gfx_get_string_width(entrance_string);
+        uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
         sub_98199C(
             session, scrolling_text_setup(session, string_id, scroll, style->scrolling_mode), 0, 0, 0x1C, 0x1C, 0x33,
@@ -186,7 +186,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
  *
  *  rct2: 0x006658ED
  */
-static void park_entrance_paint(paint_session * session, uint8 direction, sint32 height, const rct_tile_element * tile_element)
+static void park_entrance_paint(paint_session * session, uint8_t direction, int32_t height, const rct_tile_element * tile_element)
 {
     if (gTrackDesignSaveMode || (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
@@ -199,7 +199,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
 
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
     _unk9E32BC = 0;
-    uint32 image_id, ghost_id = 0;
+    uint32_t image_id, ghost_id = 0;
     if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST){
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         ghost_id = CONSTRUCTION_MARKER;
@@ -208,7 +208,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
 
     // Index to which part of the entrance
     // Middle, left, right
-    uint8 part_index = tile_element->properties.entrance.index & 0xF;
+    uint8_t part_index = tile_element->properties.entrance.index & 0xF;
     rct_footpath_entry * path_entry = nullptr;
 
     // The left and right of the park entrance often have this set to 127.
@@ -218,7 +218,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
 
 
     rct_entrance_type* entrance;
-    uint8 di = ((direction / 2 + part_index / 2) & 1) ? 0x1A : 0x20;
+    uint8_t di = ((direction / 2 + part_index / 2) & 1) ? 0x1A : 0x20;
 
     switch (part_index){
     case 0:
@@ -242,12 +242,12 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
 
         {
             rct_string_id park_text_id = STR_BANNER_TEXT_CLOSED;
-            set_format_arg(0, uint32, 0);
-            set_format_arg(4, uint32, 0);
+            set_format_arg(0, uint32_t, 0);
+            set_format_arg(4, uint32_t, 0);
 
             if (gParkFlags & PARK_FLAGS_PARK_OPEN){
                 set_format_arg(0, rct_string_id, gParkName);
-                set_format_arg(2, uint32, gParkNameArgs);
+                set_format_arg(2, uint32_t, gParkNameArgs);
 
                 park_text_id = STR_BANNER_TEXT_FORMAT;
             }
@@ -261,14 +261,14 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
 
             gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
 
-            uint16 string_width = gfx_get_string_width(park_name);
-            uint16 scroll = (gCurrentTicks / 2) % string_width;
+            uint16_t string_width = gfx_get_string_width(park_name);
+            uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
             if (entrance->scrolling_mode == 0xFF)
                 break;
 
-            sint32 stsetup = scrolling_text_setup(session, park_text_id, scroll, entrance->scrolling_mode + direction / 2);
-            sint32 text_height = height + entrance->text_height;
+            int32_t stsetup = scrolling_text_setup(session, park_text_id, scroll, entrance->scrolling_mode + direction / 2);
+            int32_t text_height = height + entrance->text_height;
             sub_98199C(session, stsetup, 0, 0, 0x1C, 0x1C, 0x2F, text_height, 2, 2, text_height);
         }
         break;
@@ -298,7 +298,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
  *
  *  rct2: 0x00664FD4
  */
-void entrance_paint(paint_session * session, uint8 direction, sint32 height, const rct_tile_element * tile_element)
+void entrance_paint(paint_session * session, uint8_t direction, int32_t height, const rct_tile_element * tile_element)
 {
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_LABEL;
 
@@ -309,8 +309,8 @@ void entrance_paint(paint_session * session, uint8 direction, sint32 height, con
 
         if (entrance_get_directions(tile_element) & 0xF){
 
-            sint32 z = tile_element->base_height * 8 + 3;
-            uint32 image_id = 0x20101689 + get_height_marker_offset() + (z / 16);
+            int32_t z = tile_element->base_height * 8 + 3;
+            uint32_t image_id = 0x20101689 + get_height_marker_offset() + (z / 16);
             image_id -= gMapBaseZ;
 
             sub_98197C(session, image_id, 16, 16, 1, 1, 0, height, 31, 31, z + 64);

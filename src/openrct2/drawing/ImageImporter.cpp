@@ -16,12 +16,12 @@
 using namespace OpenRCT2::Drawing;
 using ImportResult = ImageImporter::ImportResult;
 
-constexpr sint32 PALETTE_TRANSPARENT = -1;
+constexpr int32_t PALETTE_TRANSPARENT = -1;
 
 ImportResult ImageImporter::Import(
     const Image& image,
-    sint32 offsetX,
-    sint32 offsetY,
+    int32_t offsetX,
+    int32_t offsetY,
     IMPORT_FLAGS flags,
     IMPORT_MODE mode) const
 {
@@ -44,7 +44,7 @@ ImportResult ImageImporter::Import(
         EncodeRaw(pixels.data(), width, height);
 
     rct_g1_element outElement;
-    outElement.offset = (uint8 *)buffer;
+    outElement.offset = (uint8_t *)buffer;
     outElement.width = width;
     outElement.height = height;
     outElement.flags = (flags & IMPORT_FLAGS::RLE ? G1_FLAG_RLE_COMPRESSION : G1_FLAG_BMP);
@@ -59,33 +59,33 @@ ImportResult ImageImporter::Import(
     return result;
 }
 
-std::vector<sint32> ImageImporter::GetPixels(const uint8 * pixels, uint32 width, uint32 height, IMPORT_FLAGS flags, IMPORT_MODE mode)
+std::vector<int32_t> ImageImporter::GetPixels(const uint8_t * pixels, uint32_t width, uint32_t height, IMPORT_FLAGS flags, IMPORT_MODE mode)
 {
-    std::vector<sint32> buffer;
+    std::vector<int32_t> buffer;
     buffer.reserve(width * height);
 
     // A larger range is needed for proper dithering
     auto palettedSrc = pixels;
-    std::unique_ptr<sint16[]> rgbaSrcBuffer;
+    std::unique_ptr<int16_t[]> rgbaSrcBuffer;
     if (!(flags & IMPORT_FLAGS::KEEP_PALETTE))
     {
-        rgbaSrcBuffer = std::make_unique<sint16[]>(height * width * 4);
+        rgbaSrcBuffer = std::make_unique<int16_t[]>(height * width * 4);
     }
 
     auto rgbaSrc = rgbaSrcBuffer.get();
     if (!(flags & IMPORT_FLAGS::KEEP_PALETTE))
     {
-        for (uint32 x = 0; x < height * width * 4; x++)
+        for (uint32_t x = 0; x < height * width * 4; x++)
         {
-            rgbaSrc[x] = (sint16)pixels[x];
+            rgbaSrc[x] = (int16_t)pixels[x];
         }
     }
 
-    for (uint32 y = 0; y < height; y++)
+    for (uint32_t y = 0; y < height; y++)
     {
-        for (uint32 x = 0; x < width; x++)
+        for (uint32_t x = 0; x < width; x++)
         {
-            sint32 paletteIndex;
+            int32_t paletteIndex;
             if (flags & IMPORT_FLAGS::KEEP_PALETTE)
             {
                 paletteIndex = *palettedSrc;
@@ -110,39 +110,39 @@ std::vector<sint32> ImageImporter::GetPixels(const uint8 * pixels, uint32 width,
     return buffer;
 }
 
-std::tuple<void *, size_t> ImageImporter::EncodeRaw(const sint32 * pixels, uint32 width, uint32 height)
+std::tuple<void *, size_t> ImageImporter::EncodeRaw(const int32_t * pixels, uint32_t width, uint32_t height)
 {
     auto bufferLength = width * height;
-    auto buffer = (uint8 *)std::malloc(bufferLength);
+    auto buffer = (uint8_t *)std::malloc(bufferLength);
     for (size_t i = 0; i < bufferLength; i++)
     {
         auto p = pixels[i];
-        buffer[i] = (p == PALETTE_TRANSPARENT ? 0 : (uint8)p);
+        buffer[i] = (p == PALETTE_TRANSPARENT ? 0 : (uint8_t)p);
     }
     return std::make_tuple(buffer, bufferLength);
 }
 
-std::tuple<void *, size_t> ImageImporter::EncodeRLE(const sint32 * pixels, uint32 width, uint32 height)
+std::tuple<void *, size_t> ImageImporter::EncodeRLE(const int32_t * pixels, uint32_t width, uint32_t height)
 {
     struct RLECode
     {
-        uint8 NumPixels{};
-        uint8 OffsetX{};
+        uint8_t NumPixels{};
+        uint8_t OffsetX{};
     };
 
     auto src = pixels;
-    auto buffer = (uint8 *)std::malloc((height * 2) + (width * height * 16));
+    auto buffer = (uint8_t *)std::malloc((height * 2) + (width * height * 16));
     if (buffer == nullptr)
     {
         throw std::bad_alloc();
     }
 
     std::memset(buffer, 0, (height * 2) + (width * height * 16));
-    auto yOffsets = (uint16 *)buffer;
+    auto yOffsets = (uint16_t *)buffer;
     auto dst = buffer + (height * 2);
-    for (uint32 y = 0; y < height; y++)
+    for (uint32_t y = 0; y < height; y++)
     {
-        yOffsets[y] = (uint16)(dst - buffer);
+        yOffsets[y] = (uint16_t)(dst - buffer);
 
         auto previousCode = (RLECode *)nullptr;
         auto currentCode = (RLECode *)dst;
@@ -151,9 +151,9 @@ std::tuple<void *, size_t> ImageImporter::EncodeRLE(const sint32 * pixels, uint3
         auto startX = 0;
         auto npixels = 0;
         bool pushRun = false;
-        for (uint32 x = 0; x < width; x++)
+        for (uint32_t x = 0; x < width; x++)
         {
-            sint32 paletteIndex = *src++;
+            int32_t paletteIndex = *src++;
             if (paletteIndex == PALETTE_TRANSPARENT)
             {
                 if (npixels != 0)
@@ -171,7 +171,7 @@ std::tuple<void *, size_t> ImageImporter::EncodeRLE(const sint32 * pixels, uint3
                 }
 
                 npixels++;
-                *dst++ = (uint8)paletteIndex;
+                *dst++ = (uint8_t)paletteIndex;
             }
             if (npixels == 127 || x == width - 1)
             {
@@ -216,7 +216,7 @@ std::tuple<void *, size_t> ImageImporter::EncodeRLE(const sint32 * pixels, uint3
     }
 
     auto bufferLength = (size_t)(dst - buffer);
-    buffer = (uint8 * )realloc(buffer, bufferLength);
+    buffer = (uint8_t * )realloc(buffer, bufferLength);
     if (buffer == nullptr)
     {
         throw std::bad_alloc();
@@ -224,7 +224,7 @@ std::tuple<void *, size_t> ImageImporter::EncodeRLE(const sint32 * pixels, uint3
     return std::make_tuple(buffer, bufferLength);
 }
 
-sint32 ImageImporter::CalculatePaletteIndex(IMPORT_MODE mode, sint16 * rgbaSrc, sint32 x, sint32 y, sint32 width, sint32 height)
+int32_t ImageImporter::CalculatePaletteIndex(IMPORT_MODE mode, int16_t * rgbaSrc, int32_t x, int32_t y, int32_t width, int32_t height)
 {
     auto palette = StandardPalette;
     auto paletteIndex = GetPaletteIndex(palette, rgbaSrc);
@@ -239,9 +239,9 @@ sint32 ImageImporter::CalculatePaletteIndex(IMPORT_MODE mode, sint16 * rgbaSrc, 
     {
         if (!IsTransparentPixel(rgbaSrc) && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc)))
         {
-            auto dr = rgbaSrc[0] - (sint16)(palette[paletteIndex].Red);
-            auto dg = rgbaSrc[1] - (sint16)(palette[paletteIndex].Green);
-            auto db = rgbaSrc[2] - (sint16)(palette[paletteIndex].Blue);
+            auto dr = rgbaSrc[0] - (int16_t)(palette[paletteIndex].Red);
+            auto dg = rgbaSrc[1] - (int16_t)(palette[paletteIndex].Green);
+            auto db = rgbaSrc[2] - (int16_t)(palette[paletteIndex].Blue);
 
             if (x + 1 < width)
             {
@@ -291,15 +291,15 @@ sint32 ImageImporter::CalculatePaletteIndex(IMPORT_MODE mode, sint16 * rgbaSrc, 
     return paletteIndex;
 }
 
-sint32 ImageImporter::GetPaletteIndex(const PaletteBGRA * palette, sint16 * colour)
+int32_t ImageImporter::GetPaletteIndex(const PaletteBGRA * palette, int16_t * colour)
 {
     if (!IsTransparentPixel(colour))
     {
-        for (sint32 i = 0; i < 256; i++)
+        for (int32_t i = 0; i < 256; i++)
         {
-            if ((sint16)(palette[i].Red) == colour[0] &&
-                (sint16)(palette[i].Green) == colour[1] &&
-                (sint16)(palette[i].Blue) == colour[2])
+            if ((int16_t)(palette[i].Red) == colour[0] &&
+                (int16_t)(palette[i].Green) == colour[1] &&
+                (int16_t)(palette[i].Blue) == colour[2])
             {
                 return i;
             }
@@ -308,7 +308,7 @@ sint32 ImageImporter::GetPaletteIndex(const PaletteBGRA * palette, sint16 * colo
     return PALETTE_TRANSPARENT;
 }
 
-bool ImageImporter::IsTransparentPixel(const sint16 * colour)
+bool ImageImporter::IsTransparentPixel(const int16_t * colour)
 {
     return colour[3] < 128;
 }
@@ -316,7 +316,7 @@ bool ImageImporter::IsTransparentPixel(const sint16 * colour)
 /**
  * @returns true if pixel index is an index not used for remapping.
  */
-bool ImageImporter::IsChangablePixel(sint32 paletteIndex)
+bool ImageImporter::IsChangablePixel(int32_t paletteIndex)
 {
     if (paletteIndex == PALETTE_TRANSPARENT)
         return true;
@@ -333,20 +333,20 @@ bool ImageImporter::IsChangablePixel(sint32 paletteIndex)
     return true;
 }
 
-sint32 ImageImporter::GetClosestPaletteIndex(const PaletteBGRA * palette, const sint16 * colour)
+int32_t ImageImporter::GetClosestPaletteIndex(const PaletteBGRA * palette, const int16_t * colour)
 {
-    auto smallestError = (uint32)-1;
+    auto smallestError = (uint32_t)-1;
     auto bestMatch = PALETTE_TRANSPARENT;
-    for (sint32 x = 0; x < 256; x++)
+    for (int32_t x = 0; x < 256; x++)
     {
         if (IsChangablePixel(x))
         {
-            uint32 error =
-                ((sint16)(palette[x].Red) - colour[0]) * ((sint16)(palette[x].Red) - colour[0]) +
-                ((sint16)(palette[x].Green) - colour[1]) * ((sint16)(palette[x].Green) - colour[1]) +
-                ((sint16)(palette[x].Blue) - colour[2]) * ((sint16)(palette[x].Blue) - colour[2]);
+            uint32_t error =
+                ((int16_t)(palette[x].Red) - colour[0]) * ((int16_t)(palette[x].Red) - colour[0]) +
+                ((int16_t)(palette[x].Green) - colour[1]) * ((int16_t)(palette[x].Green) - colour[1]) +
+                ((int16_t)(palette[x].Blue) - colour[2]) * ((int16_t)(palette[x].Blue) - colour[2]);
 
-            if (smallestError == (uint32)-1 || smallestError > error)
+            if (smallestError == (uint32_t)-1 || smallestError > error)
             {
                 bestMatch = x;
                 smallestError = error;

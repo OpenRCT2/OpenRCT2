@@ -18,25 +18,25 @@ class CommandLineArgEnumerator final
 {
 private:
     const char * const * _arguments;
-    uint16               _count;
-    uint16               _index;
+    uint16_t               _count;
+    uint16_t               _index;
 
 public:
     const char * const * GetArguments() const { return _arguments; }
-    uint16               GetCount()     const { return _count; }
-    uint16               GetIndex()     const { return _index; }
+    uint16_t               GetCount()     const { return _count; }
+    uint16_t               GetIndex()     const { return _index; }
 
-    CommandLineArgEnumerator(const char * const * arguments, sint32 count);
+    CommandLineArgEnumerator(const char * const * arguments, int32_t count);
 
     void Reset();
     bool Backtrack();
     bool TryPop();
-    bool TryPopInteger(sint32 * result);
+    bool TryPopInteger(int32_t * result);
     bool TryPopReal(float * result);
     bool TryPopString(const char * * result);
 };
 
-using exitcode_t      = sint32;
+using exitcode_t      = int32_t;
 using CommandLineFunc = exitcode_t (*)(CommandLineArgEnumerator *);
 
 enum
@@ -54,7 +54,7 @@ struct CommandLineExample
 
 struct CommandLineOptionDefinition
 {
-    uint8        Type;
+    uint8_t        Type;
     void *       OutAddress;
     char         ShortName;
     const char * LongName;

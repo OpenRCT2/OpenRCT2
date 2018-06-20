@@ -22,7 +22,7 @@
 
 #define DROPDOWN_ITEM_HEIGHT 12
 
-sint32 gAppropriateImageDropdownItemsPerRow[] = {
+int32_t gAppropriateImageDropdownItemsPerRow[] = {
     1, 1, 1, 1, 2, 2, 3, 3, 4,
     3, 5, 4, 4, 5, 5, 5, 4, 5,
     6, 5, 5, 7, 4, 5, 6, 5, 6,
@@ -34,56 +34,56 @@ enum {
 };
 
 static rct_widget window_dropdown_widgets[] = {
-    { WWT_IMGBTN, 0, 0, 0, 0, 0, (uint32) SPR_NONE, STR_NONE },
+    { WWT_IMGBTN, 0, 0, 0, 0, 0, (uint32_t) SPR_NONE, STR_NONE },
     { WIDGETS_END },
 };
 
-static sint32 _dropdown_num_columns;
-static sint32 _dropdown_num_rows;
-static sint32 _dropdown_item_width;
-static sint32 _dropdown_item_height;
+static int32_t _dropdown_num_columns;
+static int32_t _dropdown_num_rows;
+static int32_t _dropdown_item_width;
+static int32_t _dropdown_item_height;
 static bool _dropdown_list_vertically;
 
-sint32 gDropdownNumItems;
+int32_t gDropdownNumItems;
 rct_string_id gDropdownItemsFormat[DROPDOWN_ITEMS_MAX_SIZE];
-sint64 gDropdownItemsArgs[DROPDOWN_ITEMS_MAX_SIZE];
+int64_t gDropdownItemsArgs[DROPDOWN_ITEMS_MAX_SIZE];
 static bool _dropdownItemsChecked[DROPDOWN_ITEMS_MAX_SIZE];
 static bool _dropdownItemsDisabled[DROPDOWN_ITEMS_MAX_SIZE];
 bool gDropdownIsColour;
-sint32 gDropdownLastColourHover;
-sint32 gDropdownHighlightedIndex;
-sint32 gDropdownDefaultIndex;
+int32_t gDropdownLastColourHover;
+int32_t gDropdownHighlightedIndex;
+int32_t gDropdownDefaultIndex;
 
-bool dropdown_is_checked(sint32 index)
+bool dropdown_is_checked(int32_t index)
 {
-    if (index < 0 || index >= (sint32)Util::CountOf(_dropdownItemsDisabled))
+    if (index < 0 || index >= (int32_t)Util::CountOf(_dropdownItemsDisabled))
     {
         return false;
     }
     return _dropdownItemsChecked[index];
 }
 
-bool dropdown_is_disabled(sint32 index)
+bool dropdown_is_disabled(int32_t index)
 {
-    if (index < 0 || index >= (sint32)Util::CountOf(_dropdownItemsDisabled))
+    if (index < 0 || index >= (int32_t)Util::CountOf(_dropdownItemsDisabled))
     {
         return true;
     }
     return _dropdownItemsDisabled[index];
 }
 
-void dropdown_set_checked(sint32 index, bool value)
+void dropdown_set_checked(int32_t index, bool value)
 {
-    if (index < 0 || index >= (sint32)Util::CountOf(_dropdownItemsDisabled))
+    if (index < 0 || index >= (int32_t)Util::CountOf(_dropdownItemsDisabled))
     {
         return;
     }
     _dropdownItemsChecked[index] = value;
 }
 
-void dropdown_set_disabled(sint32 index, bool value)
+void dropdown_set_disabled(int32_t index, bool value)
 {
-    if (index < 0 || index >= (sint32)Util::CountOf(_dropdownItemsDisabled))
+    if (index < 0 || index >= (int32_t)Util::CountOf(_dropdownItemsDisabled))
     {
         return;
     }
@@ -136,9 +136,9 @@ static rct_window_event_list window_dropdown_events = {
  * @param num_items (bx)
  * @param colour (al)
  */
-void window_dropdown_show_text(sint32 x, sint32 y, sint32 extray, uint8 colour, uint8 flags, size_t num_items)
+void window_dropdown_show_text(int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, size_t num_items)
 {
-    sint32 string_width, max_string_width;
+    int32_t string_width, max_string_width;
     char buffer[256];
 
     // Calculate the longest string width
@@ -165,7 +165,7 @@ void window_dropdown_show_text(sint32 x, sint32 y, sint32 extray, uint8 colour, 
  * @param colour (al)
  * @param custom_height (ah) requires flag set as well
  */
-void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, uint8 colour, uint8 custom_height, uint8 flags, size_t num_items, sint32 width)
+void window_dropdown_show_text_custom_width(int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t custom_height, uint8_t flags, size_t num_items, int32_t width)
 {
     rct_window* w;
 
@@ -178,7 +178,7 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
     // Set and calculate num items, rows and columns
     _dropdown_item_width = width;
     _dropdown_item_height = (flags & DROPDOWN_FLAG_CUSTOM_HEIGHT) ? custom_height : DROPDOWN_ITEM_HEIGHT;
-    gDropdownNumItems = (sint32)num_items;
+    gDropdownNumItems = (int32_t)num_items;
     // There must always be at least one column to prevent dividing by zero
     if (gDropdownNumItems == 0)
     {
@@ -195,9 +195,9 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
     _dropdown_list_vertically = true;
 
     width = _dropdown_item_width * _dropdown_num_columns + 3;
-    sint32 height = _dropdown_item_height * _dropdown_num_rows + 3;
-    sint32 screenWidth = context_get_width();
-    sint32 screenHeight = context_get_height();
+    int32_t height = _dropdown_item_height * _dropdown_num_rows + 3;
+    int32_t screenWidth = context_get_width();
+    int32_t screenHeight = context_get_height();
     if (x + width > screenWidth)
         x = std::max(0, screenWidth - width);
     if (y + height > screenHeight)
@@ -243,9 +243,9 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
  * @param itemHeight (ah)
  * @param numColumns (bl)
  */
-void window_dropdown_show_image(sint32 x, sint32 y, sint32 extray, uint8 colour, uint8 flags, sint32 numItems, sint32 itemWidth, sint32 itemHeight, sint32 numColumns)
+void window_dropdown_show_image(int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, int32_t numItems, int32_t itemWidth, int32_t itemHeight, int32_t numColumns)
 {
-    sint32 width, height;
+    int32_t width, height;
     rct_window* w;
 
     input_set_flag((INPUT_FLAGS) (INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
@@ -280,8 +280,8 @@ void window_dropdown_show_image(sint32 x, sint32 y, sint32 extray, uint8 colour,
     width = _dropdown_item_width * _dropdown_num_columns + 3;
     height = _dropdown_item_height * _dropdown_num_rows + 3;
 
-    sint32 screenWidth = context_get_width();
-    sint32 screenHeight = context_get_height();
+    int32_t screenWidth = context_get_width();
+    int32_t screenHeight = context_get_height();
     if (x + width > screenWidth)
         x = std::max(0, screenWidth - width);
     if (y + height > screenHeight)
@@ -319,12 +319,12 @@ void window_dropdown_close()
 
 static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 cell_x, cell_y, l, t, r, b, item, image, colour;
+    int32_t cell_x, cell_y, l, t, r, b, item, image, colour;
 
     window_draw_widgets(w, dpi);
 
-    sint32 highlightedIndex = gDropdownHighlightedIndex;
-    for (sint32 i = 0; i < gDropdownNumItems; i++) {
+    int32_t highlightedIndex = gDropdownHighlightedIndex;
+    for (int32_t i = 0; i < gDropdownNumItems; i++) {
         if (_dropdown_list_vertically) {
             cell_x = i / _dropdown_num_rows;
             cell_y = i % _dropdown_num_rows;
@@ -362,7 +362,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
             item = gDropdownItemsFormat[i];
             if (item == DROPDOWN_FORMAT_LAND_PICKER || item == DROPDOWN_FORMAT_COLOUR_PICKER) {
                 // Image item
-                image = (uint32)gDropdownItemsArgs[i];
+                image = (uint32_t)gDropdownItemsArgs[i];
                 if (item == DROPDOWN_FORMAT_COLOUR_PICKER && highlightedIndex == i)
                     image++;
 
@@ -406,23 +406,23 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
  * New function based on 6e914e
  * returns -1 if index is invalid
  */
-sint32 dropdown_index_from_point(sint32 x, sint32 y, rct_window *w)
+int32_t dropdown_index_from_point(int32_t x, int32_t y, rct_window *w)
 {
-    sint32 top = y - w->y - 2;
+    int32_t top = y - w->y - 2;
     if (top < 0) return -1;
 
-    sint32 left = x - w->x;
+    int32_t left = x - w->x;
     if (left >= w->width) return -1;
     left -= 2;
     if (left < 0) return -1;
 
-    sint32 column_no = left / _dropdown_item_width;
+    int32_t column_no = left / _dropdown_item_width;
     if (column_no >= _dropdown_num_columns) return -1;
 
-    sint32 row_no = top / _dropdown_item_height;
+    int32_t row_no = top / _dropdown_item_height;
     if (row_no >= _dropdown_num_rows) return -1;
 
-    sint32 dropdown_index;
+    int32_t dropdown_index;
     if (_dropdown_list_vertically)
         dropdown_index = column_no * _dropdown_num_rows + row_no;
     else
@@ -436,11 +436,11 @@ sint32 dropdown_index_from_point(sint32 x, sint32 y, rct_window *w)
 /**
  *  rct2: 0x006ED43D
  */
-void window_dropdown_show_colour(rct_window *w, rct_widget *widget, uint8 dropdownColour, uint8 selectedColour)
+void window_dropdown_show_colour(rct_window *w, rct_widget *widget, uint8_t dropdownColour, uint8_t selectedColour)
 {
-    sint32 defaultIndex = -1;
+    int32_t defaultIndex = -1;
     // Set items
-    for (uint64 i = 0; i < COLOUR_COUNT; i++)
+    for (uint64_t i = 0; i < COLOUR_COUNT; i++)
     {
         if (selectedColour == i)
             defaultIndex = i;

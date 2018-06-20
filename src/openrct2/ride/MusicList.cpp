@@ -14,10 +14,10 @@
 #include "MusicList.h"
 
 
-#define MAKE_TUNEID_LIST(...) std::vector<uint8>({__VA_ARGS__})
+#define MAKE_TUNEID_LIST(...) std::vector<uint8_t>({__VA_ARGS__})
 
 // 0x009AEF28
-std::vector<uint8> gRideMusicStyleTuneIds[] =
+std::vector<uint8_t> gRideMusicStyleTuneIds[] =
 {
     MAKE_TUNEID_LIST(TUNE_DODGEMS_BEAT),                             // MUSIC_STYLE_DODGEMS_BEAT
     MAKE_TUNEID_LIST(                                                // MUSIC_STYLE_FAIRGROUND_ORGAN

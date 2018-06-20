@@ -31,14 +31,14 @@ const money16 AdvertisingCampaignPricePerWeek[] =
     MONEY(200, 00)   // RIDE
 };
 
-static constexpr const sint32 AdvertisingCampaignGuestGenerationProbabilities[] = {400, 300, 200, 200, 250, 200};
+static constexpr const int32_t AdvertisingCampaignGuestGenerationProbabilities[] = {400, 300, 200, 200, 250, 200};
 
-uint8 gMarketingCampaignDaysLeft[20];
-uint8 gMarketingCampaignRideIndex[22];
+uint8_t gMarketingCampaignDaysLeft[20];
+uint8_t gMarketingCampaignRideIndex[22];
 
-sint32 marketing_get_campaign_guest_generation_probability(sint32 campaign)
+int32_t marketing_get_campaign_guest_generation_probability(int32_t campaign)
 {
-    sint32 probability = AdvertisingCampaignGuestGenerationProbabilities[campaign];
+    int32_t probability = AdvertisingCampaignGuestGenerationProbabilities[campaign];
     Ride   * ride;
 
     // Lower probability of guest generation if price was already low
@@ -68,12 +68,12 @@ sint32 marketing_get_campaign_guest_generation_probability(sint32 campaign)
  */
 void marketing_update()
 {
-    for (sint32 campaign = 0; campaign < ADVERTISING_CAMPAIGN_COUNT; campaign++)
+    for (int32_t campaign = 0; campaign < ADVERTISING_CAMPAIGN_COUNT; campaign++)
     {
         if (gCheatsNeverendingMarketing)
             continue;
 
-        sint32 active = (gMarketingCampaignDaysLeft[campaign] & CAMPAIGN_ACTIVE_FLAG) != 0;
+        int32_t active = (gMarketingCampaignDaysLeft[campaign] & CAMPAIGN_ACTIVE_FLAG) != 0;
         if (gMarketingCampaignDaysLeft[campaign] == 0)
             continue;
 
@@ -88,14 +88,14 @@ void marketing_update()
         if (--gMarketingCampaignDaysLeft[campaign] != 0)
             continue;
 
-        sint32 campaignItem = gMarketingCampaignRideIndex[campaign];
+        int32_t campaignItem = gMarketingCampaignRideIndex[campaign];
 
         // This sets the string parameters for the marketing types that have an argument.
         if (campaign == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign == ADVERTISING_CAMPAIGN_RIDE)
         {
             Ride * ride = get_ride(campaignItem);
             set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(2, uint32, ride->name_arguments);
+            set_format_arg(2, uint32_t, ride->name_arguments);
         }
         else if (campaign == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
         {
@@ -109,7 +109,7 @@ void marketing_update()
     }
 }
 
-void marketing_set_guest_campaign(rct_peep * peep, sint32 campaign)
+void marketing_set_guest_campaign(rct_peep * peep, int32_t campaign)
 {
     switch (campaign)
     {
@@ -142,9 +142,9 @@ void marketing_set_guest_campaign(rct_peep * peep, sint32 campaign)
     }
 }
 
-bool marketing_is_campaign_type_applicable(sint32 campaignType)
+bool marketing_is_campaign_type_applicable(int32_t campaignType)
 {
-    sint32         i;
+    int32_t         i;
     Ride           * ride;
     rct_ride_entry * rideEntry;
 

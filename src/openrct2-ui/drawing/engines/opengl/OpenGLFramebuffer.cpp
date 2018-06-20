@@ -25,7 +25,7 @@ OpenGLFramebuffer::OpenGLFramebuffer(SDL_Window * window)
     SDL_GetWindowSize(window, &_width, &_height);
 }
 
-OpenGLFramebuffer::OpenGLFramebuffer(sint32 width, sint32 height, bool depth, bool integer)
+OpenGLFramebuffer::OpenGLFramebuffer(int32_t width, int32_t height, bool depth, bool integer)
 {
     _width = width;
     _height = height;
@@ -88,15 +88,15 @@ void OpenGLFramebuffer::GetPixels(rct_drawpixelinfo &dpi) const
 {
     assert(dpi.width == _width && dpi.height == _height);
 
-    auto pixels = std::make_unique<uint8[]>(_width * _height);
+    auto pixels = std::make_unique<uint8_t[]>(_width * _height);
     glBindTexture(GL_TEXTURE_2D, _texture);
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
     glGetTexImage(GL_TEXTURE_2D, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, pixels.get());
 
     // Flip pixels vertically on copy
-    uint8 * src = pixels.get() + ((_height - 1) * _width);
-    uint8 * dst = dpi.bits;
-    for (sint32 y = 0; y < _height; y++)
+    uint8_t * src = pixels.get() + ((_height - 1) * _width);
+    uint8_t * dst = dpi.bits;
+    for (int32_t y = 0; y < _height; y++)
     {
         std::copy_n(src, _width, dst);
         src -= _width;
@@ -136,7 +136,7 @@ void OpenGLFramebuffer::Copy(OpenGLFramebuffer &src, GLenum filter)
     Bind();
 }
 
-GLuint OpenGLFramebuffer::CreateDepthTexture(sint32 width, sint32 height)
+GLuint OpenGLFramebuffer::CreateDepthTexture(int32_t width, int32_t height)
 {
     GLuint depth;
     glGenTextures(1, &depth);

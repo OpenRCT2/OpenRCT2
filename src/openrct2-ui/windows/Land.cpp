@@ -53,7 +53,7 @@ static rct_widget window_land_widgets[] = {
 static void window_land_close(rct_window *w);
 static void window_land_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_land_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_land_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_land_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_land_update(rct_window *w);
 static void window_land_invalidate(rct_window *w);
 static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -92,8 +92,8 @@ static rct_window_event_list window_land_events = {
 };
 // clang-format on
 
-static sint32 _selectedFloorTexture;
-static sint32 _selectedWallTexture;
+static int32_t _selectedFloorTexture;
+static int32_t _selectedWallTexture;
 
 /**
  *
@@ -210,9 +210,9 @@ static void window_land_mousedown(rct_window *w, rct_widgetindex widgetIndex, rc
  *
  *  rct2: 0x00664090
  */
-static void window_land_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_land_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    sint32 type;
+    int32_t type;
 
     switch (widgetIndex) {
     case WIDX_FLOOR:
@@ -221,7 +221,7 @@ static void window_land_dropdown(rct_window *w, rct_widgetindex widgetIndex, sin
 
         type = (dropdownIndex == -1) ?
             _selectedFloorTexture :
-            (uint32)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
+            (uint32_t)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
 
         if (gLandToolTerrainSurface == type) {
             gLandToolTerrainSurface = 255;
@@ -250,7 +250,7 @@ static void window_land_dropdown(rct_window *w, rct_widgetindex widgetIndex, sin
 
 static void window_land_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
-    sint32 size;
+    int32_t size;
     char* end;
 
     if (widgetIndex != WIDX_PREVIEW || text == nullptr)
@@ -311,7 +311,7 @@ static void window_land_invalidate(rct_window *w)
  */
 static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    sint32 x, y, numTiles;
+    int32_t x, y, numTiles;
     money32 price;
     rct_widget *previewWidget = &window_land_widgets[WIDX_PREVIEW];
 

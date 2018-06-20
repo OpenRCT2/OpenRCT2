@@ -16,10 +16,10 @@
 
 struct rct_crooked_house_bound_box
 {
-    sint16 offset_x;
-    sint16 offset_y;
-    sint16 length_x;
-    sint16 length_y;
+    int16_t offset_x;
+    int16_t offset_y;
+    int16_t length_x;
+    int16_t length_y;
 };
 
 static constexpr const rct_crooked_house_bound_box crooked_house_data[] = { { 6, 0, 42, 24 },
@@ -31,8 +31,8 @@ static constexpr const rct_crooked_house_bound_box crooked_house_data[] = { { 6,
 /**
  *  rct2: 0x0088ABA4
  */
-static void paint_crooked_house_structure(paint_session * session, uint8 direction, uint8 x_offset, uint8 y_offset,
-                                          uint32 segment, sint32 height)
+static void paint_crooked_house_structure(paint_session * session, uint8_t direction, uint8_t x_offset, uint8_t y_offset,
+                                          uint32_t segment, int32_t height)
 {
     const rct_tile_element * original_tile_element = static_cast<const rct_tile_element *>(session->CurrentlyDrawnItem);
 
@@ -50,7 +50,7 @@ static void paint_crooked_house_structure(paint_session * session, uint8 directi
         }
     }
 
-    uint32 image_id = (direction + rideEntry->vehicles[0].base_image_id) | session->TrackColours[SCHEME_MISC];
+    uint32_t image_id = (direction + rideEntry->vehicles[0].base_image_id) | session->TrackColours[SCHEME_MISC];
 
     rct_crooked_house_bound_box boundBox = crooked_house_data[segment];
     sub_98197C(
@@ -60,15 +60,15 @@ static void paint_crooked_house_structure(paint_session * session, uint8 directi
 
 static void paint_crooked_house(
     paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
+    uint8_t                    rideIndex,
+    uint8_t                    trackSequence,
+    uint8_t                    direction,
+    int32_t                   height,
     const rct_tile_element * tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
-    sint32   edges    = edges_3x3[trackSequence];
+    int32_t   edges    = edges_3x3[trackSequence];
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
@@ -95,7 +95,7 @@ static void paint_crooked_house(
         // case 8: sub_88ABA4(rideIndex, 224, 0, 3, height); break;
     }
 
-    sint32 cornerSegments = 0;
+    int32_t cornerSegments = 0;
     switch (trackSequence)
     {
     case 1:
@@ -121,7 +121,7 @@ static void paint_crooked_house(
     paint_util_set_general_support_height(session, height + 128, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(int32_t trackType, int32_t direction)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {

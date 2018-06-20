@@ -55,23 +55,23 @@ void lightfx_update_viewport_settings();
 void* lightfx_get_front_buffer();
 const rct_palette * lightfx_get_palette();
 
-void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sint16 y, uint16 z, uint8 lightType);
+void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x, int16_t y, uint16_t z, uint8_t lightType);
 
-void lightfx_add_3d_light_magic_from_drawing_tile(LocationXY16 mapPosition, sint16 offsetX, sint16 offsetY, sint16 offsetZ, uint8 lightType);
+void lightfx_add_3d_light_magic_from_drawing_tile(LocationXY16 mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, uint8_t lightType);
 
 void lightfx_add_lights_magic_vehicles();
 
-uint32 lightfx_get_light_polution();
+uint32_t lightfx_get_light_polution();
 
-void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b);
+void lightfx_apply_palette_filter(uint8_t i, uint8_t *r, uint8_t *g, uint8_t *b);
 void lightfx_render_to_texture(
     void * dstPixels,
-    uint32 dstPitch,
-    uint8 * bits,
-    uint32 width,
-    uint32 height,
-    const uint32 * palette,
-    const uint32 * lightPalette);
+    uint32_t dstPitch,
+    uint8_t * bits,
+    uint32_t width,
+    uint32_t height,
+    const uint32_t * palette,
+    const uint32_t * lightPalette);
 
 #endif // __ENABLE_LIGHTFX__
 

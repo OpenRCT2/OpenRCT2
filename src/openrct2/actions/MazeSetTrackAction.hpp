@@ -23,7 +23,7 @@
 #include "../world/Park.h"
 
 /** rct2: 0x00993CE9 */
-static constexpr const uint8 byte_993CE9[] =
+static constexpr const uint8_t byte_993CE9[] =
 {
     0xFF, 0xE0, 0xFF,
     14, 0, 1, 2,
@@ -33,13 +33,13 @@ static constexpr const uint8 byte_993CE9[] =
 };
 
 /** rct2: 0x00993CFC */
-static constexpr const uint8 byte_993CFC[] =
+static constexpr const uint8_t byte_993CFC[] =
 {
     5, 12, 0xFF, 0xFF, 9, 0, 0xFF, 0xFF, 13, 4, 0xFF, 0xFF, 1, 8, 0xFF, 0xFF
 };
 
 /** rct2: 0x00993D0C */
-static constexpr const uint8 byte_993D0C[] =
+static constexpr const uint8_t byte_993D0C[] =
 {
     3, 0, 0xFF, 0xFF, 0, 1, 0xFF, 0xFF, 1, 2, 0xFF, 0xFF, 2, 3, 0xFF, 0xFF
 };
@@ -48,17 +48,17 @@ static constexpr const uint8 byte_993D0C[] =
 struct MazeSetTrackAction : public GameActionBase<GAME_COMMAND_SET_MAZE_TRACK, GameActionResult>
 {
 private:
-    uint16 _x;
-    uint16 _y;
-    uint16 _z;
+    uint16_t _x;
+    uint16_t _y;
+    uint16_t _z;
     bool _initialPlacement;
-    uint8 _direction;
-    uint8 _rideIndex;
-    uint8 _mode;
+    uint8_t _direction;
+    uint8_t _rideIndex;
+    uint8_t _mode;
 
 public:
     MazeSetTrackAction() {}
-    MazeSetTrackAction(uint16 x, uint16 y, uint16 z, bool initialPlacement, uint8 direction, uint8 rideIndex, uint8 mode)
+    MazeSetTrackAction(uint16_t x, uint16_t y, uint16_t z, bool initialPlacement, uint8_t direction, uint8_t rideIndex, uint8_t mode)
         : _x(x),
         _y(y),
         _z(z),
@@ -69,7 +69,7 @@ public:
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
@@ -120,10 +120,10 @@ public:
             return res;
         }
 
-        uint8 baseHeight = _z >> 3;
-        uint8 clearanceHeight = (_z + 32) >> 3;
+        uint8_t baseHeight = _z >> 3;
+        uint8_t clearanceHeight = (_z + 32) >> 3;
 
-        sint8 heightDifference = baseHeight - tileElement->base_height;
+        int8_t heightDifference = baseHeight - tileElement->base_height;
         if (heightDifference >= 0 && !gCheatsDisableSupportLimits)
         {
             heightDifference = heightDifference >> 1;
@@ -201,15 +201,15 @@ public:
             return res;
         }
 
-        uint32 flags = GetFlags();
+        uint32_t flags = GetFlags();
         if (!(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_2))
         {
             footpath_remove_litter(_x, _y, _z);
             wall_remove_at(floor2(_x, 32), floor2(_y, 32), _z, _z + 32);
         }
 
-        uint8 baseHeight = _z >> 3;
-        uint8 clearanceHeight = (_z + 32) >> 3;
+        uint8_t baseHeight = _z >> 3;
+        uint8_t clearanceHeight = (_z + 32) >> 3;
 
         rct_tile_element * tileElement = map_get_track_element_at_of_type_from_ride(_x, _y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
@@ -220,8 +220,8 @@ public:
             money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
             res->Cost = price / 2 * 10;
 
-            uint16 flooredX = floor2(_x, 32);
-            uint16 flooredY = floor2(_y, 32);
+            uint16_t flooredX = floor2(_x, 32);
+            uint16_t flooredY = floor2(_y, 32);
 
             tileElement = tile_element_insert(_x / 32, _y / 32, baseHeight, 0xF);
             assert(tileElement != nullptr);
@@ -255,7 +255,7 @@ public:
         {
         case GC_SET_MAZE_TRACK_BUILD:
         {
-            uint8 segmentOffset = MazeGetSegmentBit(_x, _y);
+            uint8_t segmentOffset = MazeGetSegmentBit(_x, _y);
 
             tileElement->properties.track.maze_entry &= ~(1 << segmentOffset);
 
@@ -264,11 +264,11 @@ public:
                 segmentOffset = byte_993CE9[(_direction + segmentOffset)];
                 tileElement->properties.track.maze_entry &= ~(1 << segmentOffset);
 
-                uint8 temp_edx = byte_993CFC[segmentOffset];
+                uint8_t temp_edx = byte_993CFC[segmentOffset];
                 if (temp_edx != 0xFF)
                 {
-                    uint16 previousElementX = floor2(_x, 32) - CoordsDirectionDelta[_direction].x;
-                    uint16 previousElementY = floor2(_y, 32) - CoordsDirectionDelta[_direction].y;
+                    uint16_t previousElementX = floor2(_x, 32) - CoordsDirectionDelta[_direction].x;
+                    uint16_t previousElementY = floor2(_y, 32) - CoordsDirectionDelta[_direction].y;
 
                     rct_tile_element * previousTileElement = map_get_track_element_at_of_type_from_ride(
                         previousElementX,
@@ -297,8 +297,8 @@ public:
         case GC_SET_MAZE_TRACK_FILL:
             if (!_initialPlacement)
             {
-                uint16 previousSegmentX = _x - CoordsDirectionDelta[_direction].x / 2;
-                uint16 previousSegmentY = _y - CoordsDirectionDelta[_direction].y / 2;
+                uint16_t previousSegmentX = _x - CoordsDirectionDelta[_direction].x / 2;
+                uint16_t previousSegmentY = _y - CoordsDirectionDelta[_direction].y / 2;
 
                 tileElement = map_get_track_element_at_of_type_from_ride(
                     previousSegmentX,
@@ -316,7 +316,7 @@ public:
                     return res;
                 }
 
-                uint32 segmentBit = MazeGetSegmentBit(previousSegmentX, previousSegmentY);
+                uint32_t segmentBit = MazeGetSegmentBit(previousSegmentX, previousSegmentY);
 
                 tileElement->properties.track.maze_entry |= (1 << segmentBit);
                 segmentBit--;
@@ -329,9 +329,9 @@ public:
                 {
                     tileElement->properties.track.maze_entry |= (1 << segmentBit);
 
-                    uint32 direction1 = byte_993D0C[segmentBit];
-                    uint16 nextElementX = floor2(previousSegmentX, 32) + CoordsDirectionDelta[direction1].x;
-                    uint16 nextElementY = floor2(previousSegmentY, 32) + CoordsDirectionDelta[direction1].y;
+                    uint32_t direction1 = byte_993D0C[segmentBit];
+                    uint16_t nextElementX = floor2(previousSegmentX, 32) + CoordsDirectionDelta[direction1].x;
+                    uint16_t nextElementY = floor2(previousSegmentY, 32) + CoordsDirectionDelta[direction1].y;
 
                     rct_tile_element * tmp_tileElement = map_get_track_element_at_of_type_from_ride(
                         nextElementX,
@@ -342,7 +342,7 @@ public:
 
                     if (tmp_tileElement != nullptr)
                     {
-                        uint8 edx11 = byte_993CFC[segmentBit];
+                        uint8_t edx11 = byte_993CFC[segmentBit];
                         tmp_tileElement->properties.track.maze_entry |= 1 << (edx11);
                     }
 
@@ -366,10 +366,10 @@ public:
     }
 
 private:
-    uint8 MazeGetSegmentBit(uint16 x, uint16 y) const
+    uint8_t MazeGetSegmentBit(uint16_t x, uint16_t y) const
     {
-        uint8 minorX = x & 0x1F; // 0 or 16
-        uint8 minorY = y & 0x1F; // 0 or 16
+        uint8_t minorX = x & 0x1F; // 0 or 16
+        uint8_t minorY = y & 0x1F; // 0 or 16
 
         if (minorX == 0 && minorY == 0)
         {

@@ -18,10 +18,10 @@
  * size: 0x06
  */
 struct rct_map_animation {
-    uint8 baseZ;
-    uint8 type;
-    uint16 x;
-    uint16 y;
+    uint8_t baseZ;
+    uint8_t type;
+    uint16_t x;
+    uint16_t y;
 };
 assert_struct_size(rct_map_animation, 6);
 #pragma pack(pop)
@@ -46,10 +46,10 @@ enum {
 
 #define MAX_ANIMATED_OBJECTS 2000
 
-extern uint16 gNumMapAnimations;
+extern uint16_t gNumMapAnimations;
 extern rct_map_animation gAnimatedObjects[MAX_ANIMATED_OBJECTS];
 
-void map_animation_create(sint32 type, sint32 x, sint32 y, sint32 z);
+void map_animation_create(int32_t type, int32_t x, int32_t y, int32_t z);
 void map_animation_invalidate_all();
 
 #endif

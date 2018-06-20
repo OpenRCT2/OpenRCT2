@@ -20,7 +20,7 @@
 
 struct rct_peep;
 
-enum : uint32
+enum : uint32_t
 {
     PARK_FLAGS_PARK_OPEN = (1 << 0),
     PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT = (1 << 1),
@@ -58,18 +58,18 @@ namespace OpenRCT2
 
         bool IsOpen() const;
 
-        uint16  GetParkRating() const;
+        uint16_t  GetParkRating() const;
         money32 GetParkValue() const;
         money32 GetCompanyValue() const;
 
         void Initialise();
         void Update(const Date &date);
 
-        sint32          CalculateParkSize() const;
-        sint32          CalculateParkRating() const;
+        int32_t          CalculateParkSize() const;
+        int32_t          CalculateParkRating() const;
         money32         CalculateParkValue() const;
         money32         CalculateCompanyValue() const;
-        static uint8    CalculateGuestInitialHappiness(uint8 percentage);
+        static uint8_t    CalculateGuestInitialHappiness(uint8_t percentage);
 
         rct_peep *  GenerateGuest();
 
@@ -79,11 +79,11 @@ namespace OpenRCT2
     private:
         money32     CalculateRideValue(const Ride * ride) const;
         money16     CalculateTotalRideValueForMoney() const;
-        uint32      CalculateSuggestedMaxGuests() const;
-        uint32      CalculateGuestGenerationProbability() const;
+        uint32_t      CalculateSuggestedMaxGuests() const;
+        uint32_t      CalculateGuestGenerationProbability() const;
 
         void        GenerateGuests();
-        rct_peep *  GenerateGuestFromCampaign(sint32 campaign);
+        rct_peep *  GenerateGuestFromCampaign(int32_t campaign);
 
     };
 }
@@ -100,49 +100,49 @@ enum
 };
 
 extern rct_string_id gParkName;
-extern uint32 gParkNameArgs;
-extern uint32 gParkFlags;
-extern uint16 gParkRating;
+extern uint32_t gParkNameArgs;
+extern uint32_t gParkFlags;
+extern uint16_t gParkRating;
 extern money16 gParkEntranceFee;
-extern uint16 gParkSize;
+extern uint16_t gParkSize;
 extern money16 gLandPrice;
 extern money16 gConstructionRightsPrice;
 
-extern uint32 gTotalAdmissions;
+extern uint32_t gTotalAdmissions;
 extern money32 gTotalIncomeFromAdmissions;
 
 extern money32 gParkValue;
 extern money32 gCompanyValue;
 
-extern sint16 gParkRatingCasualtyPenalty;
-extern uint8 gParkRatingHistory[32];
-extern uint8 gGuestsInParkHistory[32];
-extern sint32 _guestGenerationProbability;
-extern sint32 _suggestedGuestMaximum;
+extern int16_t gParkRatingCasualtyPenalty;
+extern uint8_t gParkRatingHistory[32];
+extern uint8_t gGuestsInParkHistory[32];
+extern int32_t _guestGenerationProbability;
+extern int32_t _suggestedGuestMaximum;
 
-void set_forced_park_rating(sint32 rating);
-sint32 get_forced_park_rating();
+void set_forced_park_rating(int32_t rating);
+int32_t get_forced_park_rating();
 
-sint32 park_is_open();
-sint32 park_calculate_size();
+int32_t park_is_open();
+int32_t park_calculate_size();
 
 void reset_park_entry();
 
 void update_park_fences(CoordsXY coords);
 void update_park_fences_around_tile(CoordsXY coords);
 
-uint8 calculate_guest_initial_happiness(uint8 percentage);
+uint8_t calculate_guest_initial_happiness(uint8_t percentage);
 
-void park_set_open(sint32 open);
-sint32 park_entrance_get_index(sint32 x, sint32 y, sint32 z);
+void park_set_open(int32_t open);
+int32_t park_entrance_get_index(int32_t x, int32_t y, int32_t z);
 void park_set_name(const char *name);
 void park_set_entrance_fee(money32 value);
 
-sint32 map_buy_land_rights(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 setting, sint32 flags);
+int32_t map_buy_land_rights(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t setting, int32_t flags);
 
-void game_command_set_park_entrance_fee(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
-void game_command_set_park_open(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
-void game_command_buy_land_rights(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
+void game_command_set_park_entrance_fee(int32_t *eax, int32_t *ebx, int32_t *ecx, int32_t *edx, int32_t *esi, int32_t *edi, int32_t *ebp);
+void game_command_set_park_open(int32_t *eax, int32_t *ebx, int32_t *ecx, int32_t *edx, int32_t *esi, int32_t *edi, int32_t *ebp);
+void game_command_buy_land_rights(int32_t *eax, int32_t *ebx, int32_t *ecx, int32_t *edx, int32_t *esi, int32_t *edi, int32_t *ebp);
 
 money16 park_get_entrance_fee();
 

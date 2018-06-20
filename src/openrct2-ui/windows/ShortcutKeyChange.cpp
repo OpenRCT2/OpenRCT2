@@ -70,7 +70,7 @@ static rct_window_event_list window_shortcut_change_events = {
 };
 // clang-format on
 
-rct_window * window_shortcut_change_open(sint32 selected_key)
+rct_window * window_shortcut_change_open(int32_t selected_key)
 {
     // Move this to window_shortcut_change_open
     window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
@@ -105,8 +105,8 @@ static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
     window_draw_widgets(w, dpi);
 
-    sint32 x = w->x + 125;
-    sint32 y = w->y + 30;
+    int32_t x = w->x + 125;
+    int32_t y = w->y + 30;
 
     set_format_arg(0, rct_string_id, ShortcutStringIds[gKeyboardShortcutChangeId]);
     gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 242, STR_SHORTCUT_CHANGE_PROMPT, COLOUR_BLACK);

@@ -13,7 +13,7 @@
 #include "../peep/Staff.h"
 #include "Research.h"
 
-using rct_expenditure_type = sint32;
+using rct_expenditure_type = int32_t;
 
 enum {
     RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION,
@@ -42,7 +42,7 @@ extern const money32 research_cost_table[RESEARCH_FUNDING_COUNT];
 extern money32 gInitialCash;
 extern money32 gCash;
 extern money32 gBankLoan;
-extern uint8 gBankLoanInterestRate;
+extern uint8_t gBankLoanInterestRate;
 extern money32 gMaxBankLoan;
 extern money32 gCurrentExpenditure;
 extern money32 gCurrentProfit;
@@ -54,13 +54,13 @@ extern money32 gCurrentProfit;
 extern money32 gHistoricalProfit;
 
 extern money32 gWeeklyProfitAverageDividend;
-extern uint16 gWeeklyProfitAverageDivisor;
+extern uint16_t gWeeklyProfitAverageDivisor;
 extern money32 gCashHistory[FINANCE_GRAPH_SIZE];
 extern money32 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
 extern money32 gParkValueHistory[FINANCE_GRAPH_SIZE];
 extern money32 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][RCT_EXPENDITURE_TYPE_COUNT];
 
-extern uint8 gCommandExpenditureType;
+extern uint8_t gCommandExpenditureType;
 
 void finance_payment(money32 amount, rct_expenditure_type type);
 void finance_pay_wages();

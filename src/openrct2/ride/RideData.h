@@ -48,43 +48,43 @@ struct rct_ride_name_convention {
 };
 
 struct rct_ride_entrance_definition {
-    uint32 sprite_index;
-    uint16 height;
-    uint16 scrolling_mode;
-    uint32 base_image_id;
+    uint32_t sprite_index;
+    uint16_t height;
+    uint16_t scrolling_mode;
+    uint32_t base_image_id;
     rct_string_id string_id;
-    uint16 colour_use_flags;
+    uint16_t colour_use_flags;
 };
 
 struct rct_ride_data_4 {
-    uint8 price;
-    uint8 price_secondary;
-    uint16 flags;
-    uint8 default_music;
-    uint8 alternate_type;
-    uint8 pad[2] = {};
+    uint8_t price;
+    uint8_t price_secondary;
+    uint16_t flags;
+    uint8_t default_music;
+    uint8_t alternate_type;
+    uint8_t pad[2] = {};
 };
 
 struct ride_cost {
-    uint16 track_price;
-    uint16 support_price;
+    uint16_t track_price;
+    uint16_t support_price;
 };
 
 struct rct_ride_data_5 {
-    uint8 max_height;
-    uint8 clearance_height;
-    sint8 z_offset;
-    uint8 max_mass;
-    uint8 z;
-    uint8 price;
-    uint8 bonus_value;      // Deprecated. Use rideBonusValue instead
-    uint8 pad = 0;
+    uint8_t max_height;
+    uint8_t clearance_height;
+    int8_t z_offset;
+    uint8_t max_mass;
+    uint8_t z;
+    uint8_t price;
+    uint8_t bonus_value;      // Deprecated. Use rideBonusValue instead
+    uint8_t pad = 0;
 };
 
 struct rct_ride_lift_data {
-    uint8 sound_id;
-    uint8 minimum_speed;
-    uint8 maximum_speed;
+    uint8_t sound_id;
+    uint8_t minimum_speed;
+    uint8_t maximum_speed;
 };
 
 enum {
@@ -113,37 +113,37 @@ enum {
 };
 
 extern const bool hasRunningTrack[RIDE_TYPE_COUNT];
-extern const uint8 initialUpkeepCosts[RIDE_TYPE_COUNT];
-extern const uint8 costPerTrackPiece[RIDE_TYPE_COUNT];
+extern const uint8_t initialUpkeepCosts[RIDE_TYPE_COUNT];
+extern const uint8_t costPerTrackPiece[RIDE_TYPE_COUNT];
 
-extern const uint8 costPerVehicle[RIDE_TYPE_COUNT];
+extern const uint8_t costPerVehicle[RIDE_TYPE_COUNT];
 extern const bool chargeUpkeepForTrainLength[RIDE_TYPE_COUNT];
-extern const uint8 costPerStation[RIDE_TYPE_COUNT];
-extern const uint8 rideBonusValue[RIDE_TYPE_COUNT];
+extern const uint8_t costPerStation[RIDE_TYPE_COUNT];
+extern const uint8_t rideBonusValue[RIDE_TYPE_COUNT];
 
 extern const ride_component_name RideComponentNames[RIDE_COMPONENT_TYPE_COUNT];
 extern const rct_ride_name_convention RideNameConvention[RIDE_TYPE_COUNT];
 extern const rct_ride_name RideNaming[RIDE_TYPE_COUNT];
-extern const uint8 RideAvailableModes[];
-extern const uint8 AllRideModesAvailable[];
-extern const uint8 RideAvailableBreakdowns[];
+extern const uint8_t RideAvailableModes[];
+extern const uint8_t AllRideModesAvailable[];
+extern const uint8_t RideAvailableBreakdowns[];
 
 extern const rct_ride_entrance_definition RideEntranceDefinitions[RIDE_ENTRANCE_STYLE_COUNT];
 extern const rct_ride_lift_data RideLiftData[RIDE_TYPE_COUNT];
 
 extern const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT];
-extern const sint32 RidePhotoItems[RIDE_TYPE_COUNT];
+extern const int32_t RidePhotoItems[RIDE_TYPE_COUNT];
 extern const ride_cost RideTrackCosts[RIDE_TYPE_COUNT];
 extern const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT];
 
 extern const rct_ride_entry_vehicle CableLiftVehicle;
 
-extern const uint16 RideFilmLength[3];
-extern const uint16 RideCrookedHouseLength[1];
+extern const uint16_t RideFilmLength[3];
+extern const uint16_t RideCrookedHouseLength[1];
 
 extern const rating_tuple RideRatings[RIDE_TYPE_COUNT];
 
-extern const uint8 RideConstructionDefaultTrackType[RIDE_TYPE_COUNT];
+extern const uint8_t RideConstructionDefaultTrackType[RIDE_TYPE_COUNT];
 
 extern const track_colour_preset_list RideColourPresets[RIDE_TYPE_COUNT];
 

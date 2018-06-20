@@ -16,8 +16,8 @@
 struct FileInfo
 {
     const utf8 *    Name;
-    uint64          Size;
-    uint64          LastModified;
+    uint64_t          Size;
+    uint64_t          LastModified;
 };
 
 interface IFileScanner
@@ -34,10 +34,10 @@ interface IFileScanner
 
 struct QueryDirectoryResult
 {
-    uint32 TotalFiles;
-    uint64 TotalFileSize;
-    uint32 FileDateModifiedChecksum;
-    uint32 PathChecksum;
+    uint32_t TotalFiles;
+    uint64_t TotalFileSize;
+    uint32_t FileDateModifiedChecksum;
+    uint32_t PathChecksum;
 };
 
 namespace Path

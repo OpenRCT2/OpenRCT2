@@ -69,36 +69,36 @@ struct widget_ref {
     rct_widgetindex widget_index;
 };
 
-extern uint8 gInputPlaceObjectModifier;
+extern uint8_t gInputPlaceObjectModifier;
 
-extern sint32 gInputDragLastX;
-extern sint32 gInputDragLastY;
+extern int32_t gInputDragLastX;
+extern int32_t gInputDragLastY;
 
 extern widget_ref gHoverWidget;
 extern widget_ref gPressedWidget;
 
-extern uint16 gTooltipTimeout;
+extern uint16_t gTooltipTimeout;
 extern widget_ref gTooltipWidget;
-extern sint32 gTooltipCursorX;
-extern sint32 gTooltipCursorY;
+extern int32_t gTooltipCursorX;
+extern int32_t gTooltipCursorY;
 
 extern TOOL_IDX gCurrentToolId;
 extern widget_ref gCurrentToolWidget;
 
 // TODO: Move to openrct2-ui and make static again
 extern INPUT_STATE _inputState;
-extern uint8 _inputFlags;
-extern uint16 _tooltipNotShownTicks;
+extern uint8_t _inputFlags;
+extern uint16_t _tooltipNotShownTicks;
 
-void input_window_position_begin(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+void input_window_position_begin(rct_window *w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 
 void title_handle_keyboard_input();
 void game_handle_input();
 void game_handle_keyboard_input();
 void game_handle_edge_scroll();
-sint32 get_next_key();
+int32_t get_next_key();
 
-void store_mouse_input(sint32 state, sint32 x, sint32 y);
+void store_mouse_input(int32_t state, int32_t x, int32_t y);
 
 void input_set_flag(INPUT_FLAGS flag, bool on);
 bool input_test_flag(INPUT_FLAGS flag);
@@ -113,6 +113,6 @@ void reset_tooltip_not_shown();
 
 void input_reset_place_obj_modifier();
 
-void input_scroll_viewport(sint32 scrollX, sint32 scrollY);
+void input_scroll_viewport(int32_t scrollX, int32_t scrollY);
 
 #endif

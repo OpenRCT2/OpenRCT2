@@ -22,18 +22,18 @@ struct ParkSetResearchFundingAction : public GameActionBase<GAME_COMMAND_SET_RES
 {
 private:
     // TODO change to std::optional when C++17
-    uint32 _priorities;
-    uint8 _fundingAmount;
+    uint32_t _priorities;
+    uint8_t _fundingAmount;
 
 public:
     ParkSetResearchFundingAction() {}
-    ParkSetResearchFundingAction(uint32 priorities, uint8 fundingAmount)
+    ParkSetResearchFundingAction(uint32_t priorities, uint8_t fundingAmount)
         : _priorities(priorities),
           _fundingAmount(fundingAmount)
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }

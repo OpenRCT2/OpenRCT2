@@ -33,7 +33,7 @@ static std::vector<utf8 *> GetSaves(const utf8 * path);
 static std::vector<utf8 *> GetSaves(IZipArchive * zip);
 static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLength, std::vector<utf8 *> saves);
 static void LegacyScriptGetLine(IStream * stream, char * parts);
-static std::vector<uint8> ReadScriptFile(const utf8 * path);
+static std::vector<uint8_t> ReadScriptFile(const utf8 * path);
 static std::string LegacyScriptWrite(TitleSequence * seq);
 
 TitleSequence * CreateTitleSequence()
@@ -45,7 +45,7 @@ TitleSequence * CreateTitleSequence()
 
 TitleSequence * LoadTitleSequence(const utf8 * path)
 {
-    std::vector<uint8> script;
+    std::vector<uint8_t> script;
     std::vector<utf8 *> saves;
     bool isZip;
 
@@ -128,7 +128,7 @@ TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t
             if (zip != nullptr)
             {
                 auto data = zip->GetFileData(filename);
-                auto dataForMs = Memory::Allocate<uint8>(data.size());
+                auto dataForMs = Memory::Allocate<uint8_t>(data.size());
                 std::copy_n(data.data(), data.size(), dataForMs);
                 auto ms = new MemoryStream(dataForMs, data.size(), MEMORY_ACCESS::READ | MEMORY_ACCESS::OWNER);
 
@@ -183,7 +183,7 @@ bool TitleSequenceSave(TitleSequence * seq)
         auto script = LegacyScriptWrite(seq);
         if (seq->IsZip)
         {
-            auto fdata = std::vector<uint8>(script.begin(), script.end());
+            auto fdata = std::vector<uint8_t>(script.begin(), script.end());
             auto zip = Zip::Open(seq->Path, ZIP_ACCESS::WRITE);
             zip->SetFileData("script.txt", std::move(fdata));
         }
@@ -406,7 +406,7 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
                 {
                     if (String::Equals(part1, saves[i], true))
                     {
-                        command.SaveIndex = (uint8)i;
+                        command.SaveIndex = (uint8_t)i;
                         break;
                     }
                 }
@@ -482,19 +482,19 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
 
 static void LegacyScriptGetLine(IStream * stream, char * parts)
 {
-    for (sint32 i = 0; i < 3; i++)
+    for (int32_t i = 0; i < 3; i++)
     {
         parts[i * 128] = 0;
     }
-    sint32 part = 0;
-    sint32 cindex = 0;
-    sint32 whitespace = 1;
-    sint32 comment = 0;
+    int32_t part = 0;
+    int32_t cindex = 0;
+    int32_t whitespace = 1;
+    int32_t comment = 0;
     bool load = false;
     bool sprite = false;
     for (; part < 3;)
     {
-        sint32 c = 0;
+        int32_t c = 0;
         if (stream->TryRead(&c, 1) != 1)
         {
             c = EOF;
@@ -545,9 +545,9 @@ static void LegacyScriptGetLine(IStream * stream, char * parts)
     }
 }
 
-static std::vector<uint8> ReadScriptFile(const utf8 * path)
+static std::vector<uint8_t> ReadScriptFile(const utf8 * path)
 {
-    std::vector<uint8> result;
+    std::vector<uint8_t> result;
     try
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);

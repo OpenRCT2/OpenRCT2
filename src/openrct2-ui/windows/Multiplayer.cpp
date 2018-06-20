@@ -109,7 +109,7 @@ static rct_widget *window_multiplayer_page_widgets[] = {
     window_multiplayer_options_widgets
 };
 
-static constexpr const uint64 window_multiplayer_page_enabled_widgets[] = {
+static constexpr const uint64_t window_multiplayer_page_enabled_widgets[] = {
     (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4),
     (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4),
     (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_DEFAULT_GROUP) | (1 << WIDX_DEFAULT_GROUP_DROPDOWN) | (1 << WIDX_ADD_GROUP) | (1 << WIDX_REMOVE_GROUP) | (1 << WIDX_RENAME_GROUP) | (1 << WIDX_SELECTED_GROUP) | (1 << WIDX_SELECTED_GROUP_DROPDOWN),
@@ -123,7 +123,7 @@ static constexpr rct_string_id WindowMultiplayerPageTitles[] = {
     STR_MULTIPLAYER_OPTIONS_TITLE,
 };
 
-static uint8 _selectedGroup = 0;
+static uint8_t _selectedGroup = 0;
 
 static void window_multiplayer_information_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_multiplayer_information_resize(rct_window *w);
@@ -134,25 +134,25 @@ static void window_multiplayer_information_paint(rct_window *w, rct_drawpixelinf
 static void window_multiplayer_players_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_multiplayer_players_resize(rct_window *w);
 static void window_multiplayer_players_update(rct_window *w);
-static void window_multiplayer_players_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-static void window_multiplayer_players_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_multiplayer_players_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_multiplayer_players_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void window_multiplayer_players_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_multiplayer_players_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_multiplayer_players_invalidate(rct_window *w);
 static void window_multiplayer_players_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 static void window_multiplayer_groups_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_multiplayer_groups_resize(rct_window *w);
 static void window_multiplayer_groups_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_multiplayer_groups_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_multiplayer_groups_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_multiplayer_groups_update(rct_window *w);
-static void window_multiplayer_groups_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-static void window_multiplayer_groups_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_multiplayer_groups_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_multiplayer_groups_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void window_multiplayer_groups_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_multiplayer_groups_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_multiplayer_groups_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_multiplayer_groups_invalidate(rct_window *w);
 static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 static void window_multiplayer_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_multiplayer_options_resize(rct_window *w);
@@ -292,11 +292,11 @@ static rct_window_event_list *window_multiplayer_page_events[] = {
 };
 // clang-format on
 
-static constexpr const sint32 window_multiplayer_animation_divisor[] = { 4, 4, 2, 2 };
-static constexpr const sint32 window_multiplayer_animation_frames[] = { 8, 8, 7, 4 };
+static constexpr const int32_t window_multiplayer_animation_divisor[] = { 4, 4, 2, 2 };
+static constexpr const int32_t window_multiplayer_animation_frames[] = { 8, 8, 7, 4 };
 
 static void window_multiplayer_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_multiplayer_set_page(rct_window* w, sint32 page);
+static void window_multiplayer_set_page(rct_window* w, int32_t page);
 
 static bool _windowInformationSizeDirty;
 static LocationXY16 _windowInformationSize;
@@ -313,7 +313,7 @@ rct_window * window_multiplayer_open()
     return window;
 }
 
-static void window_multiplayer_set_page(rct_window* w, sint32 page)
+static void window_multiplayer_set_page(rct_window* w, int32_t page)
 {
     _windowInformationSizeDirty = true;
 
@@ -348,7 +348,7 @@ static void window_multiplayer_anchor_border_widgets(rct_window *w)
 
 static void window_multiplayer_set_pressed_tab(rct_window *w)
 {
-    for (sint32 i = 0; i < 2; i++) {
+    for (int32_t i = 0; i < 2; i++) {
         w->pressed_widgets &= ~(1 << (WIDX_TAB1 + i));
     }
     w->pressed_widgets |= 1LL << (WIDX_TAB1 + w->page);
@@ -357,7 +357,7 @@ static void window_multiplayer_set_pressed_tab(rct_window *w)
 static void window_multiplayer_groups_show_group_dropdown(rct_window *w, rct_widget *widget)
 {
     rct_widget *dropdownWidget;
-    sint32 numItems, i;
+    int32_t numItems, i;
 
     dropdownWidget = widget - 1;
 
@@ -411,21 +411,21 @@ static LocationXY16 window_multiplayer_information_get_size()
         return _windowInformationSize;
     }
 
-    sint32 width = 450;
-    sint32 height = 60;
-    sint32 minNumLines = 5;
-    sint32 descNumLines, fontSpriteBase;
+    int32_t width = 450;
+    int32_t height = 60;
+    int32_t minNumLines = 5;
+    int32_t descNumLines, fontSpriteBase;
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     utf8 * buffer = _strdup(network_get_server_description());
     gfx_wrap_string(buffer, width, &descNumLines, &fontSpriteBase);
     free(buffer);
 
-    sint32 lineHeight = font_get_line_height(fontSpriteBase);
+    int32_t lineHeight = font_get_line_height(fontSpriteBase);
     height += (minNumLines + descNumLines) * lineHeight;
 
     _windowInformationSizeDirty = false;
-    _windowInformationSize = { (sint16)width, (sint16)height };
+    _windowInformationSize = { (int16_t)width, (int16_t)height };
     return _windowInformationSize;
 }
 
@@ -457,9 +457,9 @@ static void window_multiplayer_information_paint(rct_window *w, rct_drawpixelinf
     if (clip_drawpixelinfo(&clippedDPI, dpi, w->x, w->y, w->width, w->height)) {
         dpi = &clippedDPI;
 
-        sint32 x = 3;
-        sint32 y = 50;
-        sint32 width = w->width - 6;
+        int32_t x = 3;
+        int32_t y = 50;
+        int32_t width = w->width - 6;
 
         const utf8 * name = network_get_server_name();
         {
@@ -533,9 +533,9 @@ static void window_multiplayer_players_update(rct_window *w)
     widget_invalidate(w, WIDX_TAB1 + w->page);
 }
 
-static void window_multiplayer_players_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+static void window_multiplayer_players_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height)
 {
-    sint32 i;
+    int32_t i;
 
     if (w->selected_list_item != -1) {
         w->selected_list_item = -1;
@@ -552,9 +552,9 @@ static void window_multiplayer_players_scrollgetsize(rct_window *w, sint32 scrol
     }
 }
 
-static void window_multiplayer_players_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_multiplayer_players_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    sint32 index;
+    int32_t index;
 
     index = y / SCROLLABLE_ROW_HEIGHT;
     if (index >= w->no_list_items)
@@ -566,9 +566,9 @@ static void window_multiplayer_players_scrollmousedown(rct_window *w, sint32 scr
     window_player_open(network_get_player_id(index));
 }
 
-static void window_multiplayer_players_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_multiplayer_players_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    sint32 index;
+    int32_t index;
 
     index = y / SCROLLABLE_ROW_HEIGHT;
     if (index >= w->no_list_items)
@@ -590,7 +590,7 @@ static void window_multiplayer_players_invalidate(rct_window *w)
 static void window_multiplayer_players_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
     rct_string_id stringId;
-    sint32 x, y;
+    int32_t x, y;
 
     window_draw_widgets(w, dpi);
     window_multiplayer_draw_tab_images(w, dpi);
@@ -602,10 +602,10 @@ static void window_multiplayer_players_paint(rct_window *w, rct_drawpixelinfo *d
     gfx_draw_string_left(dpi, stringId, &w->no_list_items, w->colours[2], x, y);
 }
 
-static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex)
 {
-    sint32 y = 0;
-    for (sint32 i = 0; i < network_get_num_players(); i++) {
+    int32_t y = 0;
+    for (int32_t i = 0; i < network_get_num_players(); i++) {
         if (y > dpi->y + dpi->height) {
             break;
         }
@@ -616,7 +616,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 
             // Draw player name
             char* lineCh = buffer;
-            sint32 colour = COLOUR_BLACK;
+            int32_t colour = COLOUR_BLACK;
             if (i == w->selected_list_item)
             {
                 gfx_filter_rect(dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
@@ -637,7 +637,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 
             // Draw group name
             lineCh = buffer;
-            sint32 group = network_get_group_index(network_get_player_group(i));
+            int32_t group = network_get_group_index(network_get_player_group(i));
             if (group != -1) {
                 lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);
                 safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
@@ -646,7 +646,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
             }
 
             // Draw last action
-            sint32 action = network_get_player_last_action(i, 2000);
+            int32_t action = network_get_player_last_action(i, 2000);
             set_format_arg(0, rct_string_id, STR_ACTION_NA);
             if (action != -999) {
                 set_format_arg(0, rct_string_id, network_get_action_name_string_id(action));
@@ -655,7 +655,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 
             // Draw ping
             lineCh = buffer;
-            sint32 ping = network_get_player_ping(i);
+            int32_t ping = network_get_player_ping(i);
             if (ping <= 100) {
                 lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
             } else
@@ -696,7 +696,7 @@ static void window_multiplayer_groups_mouseup(rct_window *w, rct_widgetindex wid
         game_do_command(1 | (_selectedGroup << 8), GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_MODIFY_GROUPS, 0, 0);
         break;
     case WIDX_RENAME_GROUP:;
-        sint32 groupIndex = network_get_group_index(_selectedGroup);
+        int32_t groupIndex = network_get_group_index(_selectedGroup);
         const utf8 *groupName = network_get_group_name(groupIndex);
         window_text_input_raw_open(w, widgetIndex, STR_GROUP_NAME, STR_ENTER_NEW_NAME_FOR_THIS_GROUP, (utf8*)groupName, 32);
         break;
@@ -726,7 +726,7 @@ static void window_multiplayer_groups_mousedown(rct_window *w, rct_widgetindex w
     }
 }
 
-static void window_multiplayer_groups_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_multiplayer_groups_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1) {
         return;
@@ -750,9 +750,9 @@ static void window_multiplayer_groups_update(rct_window *w)
     widget_invalidate(w, WIDX_TAB1 + w->page);
 }
 
-static void window_multiplayer_groups_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+static void window_multiplayer_groups_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height)
 {
-    sint32 i;
+    int32_t i;
 
     if (w->selected_list_item != -1) {
         w->selected_list_item = -1;
@@ -769,9 +769,9 @@ static void window_multiplayer_groups_scrollgetsize(rct_window *w, sint32 scroll
     }
 }
 
-static void window_multiplayer_groups_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_multiplayer_groups_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    sint32 index;
+    int32_t index;
 
     index = y / SCROLLABLE_ROW_HEIGHT;
     if (index >= w->no_list_items)
@@ -783,9 +783,9 @@ static void window_multiplayer_groups_scrollmousedown(rct_window *w, sint32 scro
     game_do_command(2 | (_selectedGroup << 8), GAME_COMMAND_FLAG_APPLY, index, 0, GAME_COMMAND_MODIFY_GROUPS, 0, 0);
 }
 
-static void window_multiplayer_groups_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_multiplayer_groups_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    sint32 index;
+    int32_t index;
 
     index = y / SCROLLABLE_ROW_HEIGHT;
     if (index >= w->no_list_items)
@@ -803,9 +803,9 @@ static void window_multiplayer_groups_text_input(rct_window *w, rct_widgetindex 
     if (text == nullptr)
         return;
 
-    game_do_command(3 | (_selectedGroup << 8) | (1 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 0)), GAME_COMMAND_MODIFY_GROUPS, *((sint32*)(text + 8)), *((sint32*)(text + 4)));
-    game_do_command(3 | (_selectedGroup << 8) | (2 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 12)), GAME_COMMAND_MODIFY_GROUPS, *((sint32*)(text + 20)), *((sint32*)(text + 16)));
-    game_do_command(3 | (_selectedGroup << 8) | (0 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 24)), GAME_COMMAND_MODIFY_GROUPS, *((sint32*)(text + 32)), *((sint32*)(text + 28)));
+    game_do_command(3 | (_selectedGroup << 8) | (1 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((int32_t*)(text + 0)), GAME_COMMAND_MODIFY_GROUPS, *((int32_t*)(text + 8)), *((int32_t*)(text + 4)));
+    game_do_command(3 | (_selectedGroup << 8) | (2 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((int32_t*)(text + 12)), GAME_COMMAND_MODIFY_GROUPS, *((int32_t*)(text + 20)), *((int32_t*)(text + 16)));
+    game_do_command(3 | (_selectedGroup << 8) | (0 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((int32_t*)(text + 24)), GAME_COMMAND_MODIFY_GROUPS, *((int32_t*)(text + 32)), *((int32_t*)(text + 28)));
 }
 
 static void window_multiplayer_groups_invalidate(rct_window *w)
@@ -828,7 +828,7 @@ static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dp
     window_multiplayer_draw_tab_images(w, dpi);
 
     rct_widget* widget = &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP];
-    sint32 group = network_get_group_index(network_get_default_group());
+    int32_t group = network_get_group_index(network_get_default_group());
     if (group != -1) {
         char buffer[300];
         char* lineCh;
@@ -847,8 +847,8 @@ static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dp
         );
     }
 
-    sint32 x = w->x + window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].left + 4;
-    sint32 y = w->y + window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].top + 4;
+    int32_t x = w->x + window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].left + 4;
+    int32_t y = w->y + window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].top + 4;
 
     gfx_draw_string_left(dpi, STR_DEFAULT_GROUP, nullptr, w->colours[2], x, y);
 
@@ -877,13 +877,13 @@ static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dp
     }
 }
 
-static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex)
 {
-    sint32 y = 0;
+    int32_t y = 0;
 
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
-    for (sint32 i = 0; i < network_get_num_actions(); i++) {
+    for (int32_t i = 0; i < network_get_num_actions(); i++) {
         if (i == w->selected_list_item) {
             gfx_filter_rect(dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
         }
@@ -894,7 +894,7 @@ static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelin
         if (y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi->y)
         {
             char buffer[300] = {0};
-            sint32 groupindex = network_get_group_index(_selectedGroup);
+            int32_t groupindex = network_get_group_index(_selectedGroup);
             if (groupindex != -1){
                 if (network_can_perform_action(groupindex, i)) {
                     char* lineCh = buffer;
@@ -905,7 +905,7 @@ static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelin
             }
 
             // Draw action name
-            set_format_arg(0, uint16, network_get_action_name_string_id(i));
+            set_format_arg(0, uint16_t, network_get_action_name_string_id(i));
             gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, 10, y);
         }
         y += SCROLLABLE_ROW_HEIGHT;
@@ -979,15 +979,15 @@ static void window_multiplayer_options_paint(rct_window *w, rct_drawpixelinfo *d
 
 #pragma endregion
 
-static void window_multiplayer_draw_tab_image(rct_window *w, rct_drawpixelinfo *dpi, sint32 page, sint32 spriteIndex)
+static void window_multiplayer_draw_tab_image(rct_window *w, rct_drawpixelinfo *dpi, int32_t page, int32_t spriteIndex)
 {
     rct_widgetindex widgetIndex = WIDX_TAB1 + page;
 
     if (!widget_is_disabled(w, widgetIndex)) {
         if (w->page == page) {
-            sint32 numFrames = window_multiplayer_animation_frames[w->page];
+            int32_t numFrames = window_multiplayer_animation_frames[w->page];
             if (numFrames > 1) {
-                sint32 frame = w->frame_no / window_multiplayer_animation_divisor[w->page];
+                int32_t frame = w->frame_no / window_multiplayer_animation_divisor[w->page];
                 spriteIndex += (frame % numFrames);
             }
         }

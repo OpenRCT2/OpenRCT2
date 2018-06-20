@@ -63,22 +63,22 @@
 
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 
-uint16 gTicksSinceLastUpdate;
-uint8  gGamePaused    = 0;
-sint32 gGameSpeed     = 1;
+uint16_t gTicksSinceLastUpdate;
+uint8_t  gGamePaused    = 0;
+int32_t gGameSpeed     = 1;
 float  gDayNightCycle = 0;
 bool   gInUpdateCode  = false;
 bool   gInMapInitCode = false;
-sint32 gGameCommandNestLevel;
+int32_t gGameCommandNestLevel;
 bool   gGameCommandIsNetworked;
 char   gCurrentLoadedPath[MAX_PATH];
 
 bool gLoadKeepWindowsOpen = false;
 
-uint8 gUnk13CA740;
-uint8 gUnk141F568;
+uint8_t gUnk13CA740;
+uint8_t gUnk141F568;
 
-uint32 gCurrentTicks;
+uint32_t gCurrentTicks;
 
 // clang-format off
 GAME_COMMAND_CALLBACK_POINTER * game_command_callback = nullptr;
@@ -95,18 +95,18 @@ static GAME_COMMAND_CALLBACK_POINTER * const game_command_callback_table[] = {
     game_command_callback_pickup_staff
 };
 // clang-format on
-sint32 game_command_playerid = -1;
+int32_t game_command_playerid = -1;
 
 rct_string_id gGameCommandErrorTitle;
 rct_string_id gGameCommandErrorText;
-uint8         gErrorType;
+uint8_t         gErrorType;
 rct_string_id gErrorStringId;
 
 using namespace OpenRCT2;
 
-sint32 game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER * callback)
+int32_t game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER * callback)
 {
-    for (uint32 i = 0; i < Util::CountOf(game_command_callback_table); i++)
+    for (uint32_t i = 0; i < Util::CountOf(game_command_callback_table); i++)
     {
         if (game_command_callback_table[i] == callback)
         {
@@ -116,7 +116,7 @@ sint32 game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER * callback)
     return 0;
 }
 
-GAME_COMMAND_CALLBACK_POINTER * game_command_callback_get_callback(uint32 index)
+GAME_COMMAND_CALLBACK_POINTER * game_command_callback_get_callback(uint32_t index)
 {
     if (index < Util::CountOf(game_command_callback_table))
     {
@@ -178,7 +178,7 @@ void update_palette_effects()
     if (gClimateLightningFlash == 1)
     {
         // Change palette to lighter colour during lightning
-        sint32 palette = SPR_GAME_PALETTE_DEFAULT;
+        int32_t palette = SPR_GAME_PALETTE_DEFAULT;
 
         if (water_type != nullptr)
         {
@@ -187,10 +187,10 @@ void update_palette_effects()
         const rct_g1_element * g1 = gfx_get_g1_element(palette);
         if (g1 != nullptr)
         {
-            sint32 xoffset = g1->x_offset;
+            int32_t xoffset = g1->x_offset;
             xoffset = xoffset * 4;
-            uint8 * paletteOffset = gGamePalette + xoffset;
-            for (sint32 i = 0; i < g1->width; i++)
+            uint8_t * paletteOffset = gGamePalette + xoffset;
+            for (int32_t i = 0; i < g1->width; i++)
             {
                 paletteOffset[(i * 4) + 0] = -((0xFF - g1->offset[(i * 3) + 0]) / 2) - 1;
                 paletteOffset[(i * 4) + 1] = -((0xFF - g1->offset[(i * 3) + 1]) / 2) - 1;
@@ -205,7 +205,7 @@ void update_palette_effects()
         if (gClimateLightningFlash == 2)
         {
             // Change palette back to normal after lightning
-            sint32 palette = SPR_GAME_PALETTE_DEFAULT;
+            int32_t palette = SPR_GAME_PALETTE_DEFAULT;
 
             if (water_type != nullptr)
             {
@@ -215,10 +215,10 @@ void update_palette_effects()
             const rct_g1_element * g1 = gfx_get_g1_element(palette);
             if (g1 != nullptr)
             {
-                sint32 xoffset = g1->x_offset;
+                int32_t xoffset = g1->x_offset;
                 xoffset = xoffset * 4;
-                uint8 * paletteOffset = gGamePalette + xoffset;
-                for (sint32 i = 0; i < g1->width; i++)
+                uint8_t * paletteOffset = gGamePalette + xoffset;
+                for (int32_t i = 0; i < g1->width; i++)
                 {
                     paletteOffset[(i * 4) + 0] = g1->offset[(i * 3) + 0];
                     paletteOffset[(i * 4) + 1] = g1->offset[(i * 3) + 1];
@@ -228,7 +228,7 @@ void update_palette_effects()
         }
 
         // Animate the water/lava/chain movement palette
-        uint32 shade = 0;
+        uint32_t shade = 0;
         if (gConfigGeneral.render_weather_gloom)
         {
             auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
@@ -241,9 +241,9 @@ void update_palette_effects()
                 }
             }
         }
-        uint32 j = gPaletteEffectFrame;
-        j = (((uint16) ((~j / 2) * 128) * 15) >> 16);
-        uint32 waterId = SPR_GAME_PALETTE_WATER;
+        uint32_t j = gPaletteEffectFrame;
+        j = (((uint16_t) ((~j / 2) * 128) * 15) >> 16);
+        uint32_t waterId = SPR_GAME_PALETTE_WATER;
         if (water_type != nullptr)
         {
             waterId = water_type->palette_index_1;
@@ -251,10 +251,10 @@ void update_palette_effects()
         const rct_g1_element * g1 = gfx_get_g1_element(shade + waterId);
         if (g1 != nullptr)
         {
-            uint8 * vs = &g1->offset[j * 3];
-            uint8 * vd = &gGamePalette[230 * 4];
-            sint32      n = 5;
-            for (sint32 i = 0; i < n; i++)
+            uint8_t * vs = &g1->offset[j * 3];
+            uint8_t * vd = &gGamePalette[230 * 4];
+            int32_t      n = 5;
+            for (int32_t i = 0; i < n; i++)
             {
                 vd[0] = vs[0];
                 vd[1] = vs[1];
@@ -276,10 +276,10 @@ void update_palette_effects()
         g1 = gfx_get_g1_element(shade + waterId);
         if (g1 != nullptr)
         {
-            uint8 * vs = &g1->offset[j * 3];
-            uint8 * vd = &gGamePalette[235 * 4];
-            sint32      n = 5;
-            for (sint32 i = 0; i < n; i++)
+            uint8_t * vs = &g1->offset[j * 3];
+            uint8_t * vd = &gGamePalette[235 * 4];
+            int32_t      n = 5;
+            for (int32_t i = 0; i < n; i++)
             {
                 vd[0] = vs[0];
                 vd[1] = vs[1];
@@ -293,15 +293,15 @@ void update_palette_effects()
             }
         }
 
-        j       = ((uint16) (gPaletteEffectFrame * -960) * 3) >> 16;
+        j       = ((uint16_t) (gPaletteEffectFrame * -960) * 3) >> 16;
         waterId = SPR_GAME_PALETTE_4;
         g1      = gfx_get_g1_element(shade + waterId);
         if (g1 != nullptr)
         {
-            uint8 * vs = &g1->offset[j * 3];
-            uint8 * vd = &gGamePalette[243 * 4];
-            sint32  n  = 3;
-            for (sint32 i = 0; i < n; i++)
+            uint8_t * vs = &g1->offset[j * 3];
+            uint8_t * vd = &gGamePalette[243 * 4];
+            int32_t  n  = 3;
+            for (int32_t i = 0; i < n; i++)
             {
                 vd[0] = vs[0];
                 vd[1] = vs[1];
@@ -329,7 +329,7 @@ void update_palette_effects()
  *
  * @param cost (ebp)
  */
-static sint32 game_check_affordability(sint32 cost)
+static int32_t game_check_affordability(int32_t cost)
 {
     if (cost <= 0)
         return cost;
@@ -338,7 +338,7 @@ static sint32 game_check_affordability(sint32 cost)
     if (cost <= gCash)
         return cost;
 
-    set_format_arg(0, uint32, cost);
+    set_format_arg(0, uint32_t, cost);
 
     gGameCommandErrorText = STR_NOT_ENOUGH_CASH_REQUIRES;
     return MONEY32_UNDEFINED;
@@ -351,7 +351,7 @@ static sint32 game_check_affordability(sint32 cost)
  * @param ebx flags
  * @param esi command
  */
-sint32 game_do_command(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
+int32_t game_do_command(int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp)
 {
     return game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 }
@@ -363,10 +363,10 @@ sint32 game_do_command(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 es
 * @param ebx flags
 * @param esi command
 */
-sint32 game_do_command_p(uint32 command, sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+int32_t game_do_command_p(uint32_t command, int32_t * eax, int32_t * ebx, int32_t * ecx, int32_t * edx, int32_t * esi, int32_t * edi, int32_t * ebp)
 {
-    sint32 cost, flags;
-    sint32 original_ebx, original_edx, original_esi, original_edi, original_ebp;
+    int32_t cost, flags;
+    int32_t original_ebx, original_edx, original_esi, original_edi, original_ebp;
 
     *esi = command;
     original_ebx = *ebx;
@@ -424,7 +424,7 @@ sint32 game_do_command_p(uint32 command, sint32 * eax, sint32 * ebx, sint32 * ec
     if (cost != MONEY32_UNDEFINED)
     {
         // Check funds
-        sint32 insufficientFunds = 0;
+        int32_t insufficientFunds = 0;
         if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_2) && !(flags & GAME_COMMAND_FLAG_5) && cost != 0)
             insufficientFunds = game_check_affordability(cost);
 
@@ -704,7 +704,7 @@ void game_log_multiplayer_command(int command, const int * eax, const int * ebx,
     else if (command == GAME_COMMAND_PLACE_SCENERY || command == GAME_COMMAND_PLACE_WALL ||
              command == GAME_COMMAND_PLACE_LARGE_SCENERY || command == GAME_COMMAND_PLACE_BANNER)
     {
-        uint8 flags = *ebx & 0xFF;
+        uint8_t flags = *ebx & 0xFF;
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
             // Don't log ghost previews being removed
@@ -722,7 +722,7 @@ void game_log_multiplayer_command(int command, const int * eax, const int * ebx,
     else if (command == GAME_COMMAND_REMOVE_SCENERY || command == GAME_COMMAND_REMOVE_WALL ||
              command == GAME_COMMAND_REMOVE_LARGE_SCENERY || command == GAME_COMMAND_REMOVE_BANNER)
     {
-        uint8 flags = *ebx & 0xFF;
+        uint8_t flags = *ebx & 0xFF;
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
             // Don't log ghost previews being removed
@@ -760,7 +760,7 @@ void game_log_multiplayer_command(int command, const int * eax, const int * ebx,
             if (nameChunkOffset < 0)
                 nameChunkOffset = 2;
             nameChunkOffset *= 12;
-            nameChunkOffset  = std::min(nameChunkOffset, (sint32) (Util::CountOf(banner_name) - 12));
+            nameChunkOffset  = std::min(nameChunkOffset, (int32_t) (Util::CountOf(banner_name) - 12));
             memcpy(banner_name + nameChunkOffset + 0, edx, 4);
             memcpy(banner_name + nameChunkOffset + 4, ebp, 4);
             memcpy(banner_name + nameChunkOffset + 8, edi, 4);
@@ -835,13 +835,13 @@ bool game_is_not_paused()
  *  rct2: 0x00667C15
  */
 void game_pause_toggle(
-    [[maybe_unused]] sint32 * eax,
-    sint32 *                  ebx,
-    [[maybe_unused]] sint32 * ecx,
-    [[maybe_unused]] sint32 * edx,
-    [[maybe_unused]] sint32 * esi,
-    [[maybe_unused]] sint32 * edi,
-    [[maybe_unused]] sint32 * ebp)
+    [[maybe_unused]] int32_t * eax,
+    int32_t *                  ebx,
+    [[maybe_unused]] int32_t * ecx,
+    [[maybe_unused]] int32_t * edx,
+    [[maybe_unused]] int32_t * esi,
+    [[maybe_unused]] int32_t * edi,
+    [[maybe_unused]] int32_t * ebp)
 {
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
         pause_toggle();
@@ -854,13 +854,13 @@ void game_pause_toggle(
  *  rct2: 0x0066DB5F
  */
 static void game_load_or_quit(
-    [[maybe_unused]] sint32 * eax,
-    sint32 *                  ebx,
-    [[maybe_unused]] sint32 * ecx,
-    sint32 *                  edx,
-    [[maybe_unused]] sint32 * esi,
-    sint32 *                  edi,
-    [[maybe_unused]] sint32 * ebp)
+    [[maybe_unused]] int32_t * eax,
+    int32_t *                  ebx,
+    [[maybe_unused]] int32_t * ecx,
+    int32_t *                  edx,
+    [[maybe_unused]] int32_t * esi,
+    int32_t *                  edi,
+    [[maybe_unused]] int32_t * ebp)
 {
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
     {
@@ -901,7 +901,7 @@ void utf8_to_rct2_self(char * buffer, size_t length)
     char       * dst = buffer;
     while (*src != 0 && i < length - 1)
     {
-        if (*src == (char) (uint8) 0xFF)
+        if (*src == (char) (uint8_t) 0xFF)
         {
             if (i < length - 3)
             {
@@ -965,7 +965,7 @@ void game_convert_strings_to_utf8()
 
 void game_convert_news_items_to_utf8()
 {
-    for (sint32 i = 0; i < MAX_NEWS_ITEMS; i++)
+    for (int32_t i = 0; i < MAX_NEWS_ITEMS; i++)
     {
         NewsItem * newsItem = news_item_get(i);
 
@@ -1011,8 +1011,8 @@ void game_fix_save_vars()
 {
     // Recalculates peep count after loading a save to fix corrupted files
     rct_peep * peep;
-    uint16 spriteIndex;
-    uint16 peepCount = 0;
+    uint16_t spriteIndex;
+    uint16_t peepCount = 0;
     FOR_ALL_GUESTS(spriteIndex, peep)
     {
         if (!peep->outside_of_park)
@@ -1031,18 +1031,18 @@ void game_fix_save_vars()
     {
         if (peep->current_ride_station >= MAX_STATIONS)
         {
-            const uint8 srcStation = peep->current_ride_station;
-            const uint8 rideIdx = peep->current_ride;
+            const uint8_t srcStation = peep->current_ride_station;
+            const uint8_t rideIdx = peep->current_ride;
             if (rideIdx == RIDE_ID_NULL)
             {
                 continue;
             }
-            set_format_arg(0, uint32, peep->id);
+            set_format_arg(0, uint32_t, peep->id);
             utf8 * curName = gCommonStringFormatBuffer;
             rct_string_id curId = peep->name_string_idx;
             format_string(curName, 256, curId, gCommonFormatArgs);
             log_warning("Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName, srcStation, rideIdx);
-            sint8 station = ride_get_first_valid_station_exit(get_ride(rideIdx));
+            int8_t station = ride_get_first_valid_station_exit(get_ride(rideIdx));
             if (station == -1)
             {
                 log_warning("Couldn't find station, removing peep %u", spriteIndex);
@@ -1067,9 +1067,9 @@ void game_fix_save_vars()
 
     // Fixes broken saves where a surface element could be null
     // and broken saves with incorrect invisible map border tiles
-    for (sint32 y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
-        for (sint32 x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
             rct_tile_element * tileElement = map_get_surface_element_at(x, y);
 
@@ -1214,7 +1214,7 @@ void save_game_as()
     delete intent;
 }
 
-static sint32 compare_autosave_file_paths(const void * a, const void * b)
+static int32_t compare_autosave_file_paths(const void * a, const void * b)
 {
     return strcmp(*(char **) a, *(char **) b);
 }
@@ -1304,7 +1304,7 @@ void game_autosave()
 {
     const char * subDirectory  = "save";
     const char * fileExtension = ".sv6";
-    uint32 saveFlags = 0x80000000;
+    uint32_t saveFlags = 0x80000000;
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
         subDirectory  = "landscape";
@@ -1344,7 +1344,7 @@ void game_autosave()
     scenario_save(path, saveFlags);
 }
 
-static void game_load_or_quit_no_save_prompt_callback(sint32 result, const utf8 * path)
+static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8 * path)
 {
     if (result == MODAL_RESULT_OK)
     {

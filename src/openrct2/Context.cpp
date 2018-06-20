@@ -104,15 +104,15 @@ namespace OpenRCT2
         std::unique_ptr<TitleScreen> _titleScreen;
         std::unique_ptr<GameState> _gameState;
 
-        sint32 _drawingEngineType = DRAWING_ENGINE_SOFTWARE;
+        int32_t _drawingEngineType = DRAWING_ENGINE_SOFTWARE;
         std::unique_ptr<IDrawingEngine> _drawingEngine;
         std::unique_ptr<Painter> _painter;
 
         bool    _initialised = false;
         bool    _isWindowMinimised = false;
-        uint32  _lastTick = 0;
-        uint32  _accumulator = 0;
-        uint32  _lastUpdateTick = 0;
+        uint32_t  _lastTick = 0;
+        uint32_t  _accumulator = 0;
+        uint32_t  _lastUpdateTick = 0;
         bool    _variableFrame = false;
 
         /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to false. */
@@ -194,7 +194,7 @@ namespace OpenRCT2
             return _scenarioRepository.get();
         }
 
-        sint32 GetDrawingEngineType() override
+        int32_t GetDrawingEngineType() override
         {
             return _drawingEngineType;
         }
@@ -204,7 +204,7 @@ namespace OpenRCT2
             return _drawingEngine.get();
         }
 
-        sint32 RunOpenRCT2(int argc, const char * * argv) override
+        int32_t RunOpenRCT2(int argc, const char * * argv) override
         {
             if (Initialise())
             {
@@ -232,7 +232,7 @@ namespace OpenRCT2
             context_open_window(WC_SAVE_PROMPT);
         }
 
-        std::string GetPathLegacy(sint32 pathId) override
+        std::string GetPathLegacy(int32_t pathId) override
         {
             static constexpr const char * const LegacyFileNames[PATH_ID_END] =
             {
@@ -431,7 +431,7 @@ namespace OpenRCT2
 #endif
             }
             gScenarioTicks = 0;
-            util_srand((uint32)time(nullptr));
+            util_srand((uint32_t)time(nullptr));
             input_reset_place_obj_modifier();
             viewport_init_all();
 
@@ -597,7 +597,7 @@ namespace OpenRCT2
                         auto intent = Intent(WC_OBJECT_LOAD_ERROR);
                         intent.putExtra(INTENT_EXTRA_PATH, path);
                         intent.putExtra(INTENT_EXTRA_LIST, (void *)e.MissingObjects.data());
-                        intent.putExtra(INTENT_EXTRA_LIST_COUNT, (uint32)e.MissingObjects.size());
+                        intent.putExtra(INTENT_EXTRA_LIST_COUNT, (uint32_t)e.MissingObjects.size());
 
                         auto windowManager = _uiContext->GetWindowManager();
                         windowManager->OpenIntent(&intent);
@@ -612,7 +612,7 @@ namespace OpenRCT2
                         }
 
                         auto windowManager = _uiContext->GetWindowManager();
-                        set_format_arg(0, uint16, e.Flag);
+                        set_format_arg(0, uint16_t, e.Flag);
                         windowManager->ShowError(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE);
                     }
                     catch (const std::exception& e)
@@ -862,16 +862,16 @@ namespace OpenRCT2
 
         void RunFixedFrame()
         {
-            uint32 currentTick = platform_get_ticks();
+            uint32_t currentTick = platform_get_ticks();
 
             if (_lastTick == 0)
             {
                 _lastTick = currentTick;
             }
 
-            uint32 elapsed = currentTick - _lastTick;
+            uint32_t elapsed = currentTick - _lastTick;
             _lastTick = currentTick;
-            _accumulator = std::min(_accumulator + elapsed, (uint32)GAME_UPDATE_MAX_THRESHOLD);
+            _accumulator = std::min(_accumulator + elapsed, (uint32_t)GAME_UPDATE_MAX_THRESHOLD);
 
             _uiContext->ProcessMessages();
 
@@ -894,7 +894,7 @@ namespace OpenRCT2
 
         void RunVariableFrame()
         {
-            uint32 currentTick = platform_get_ticks();
+            uint32_t currentTick = platform_get_ticks();
 
             bool draw = !_isWindowMinimised && !gOpenRCT2Headless;
 
@@ -904,10 +904,10 @@ namespace OpenRCT2
                 _lastTick = currentTick;
             }
 
-            uint32 elapsed = currentTick - _lastTick;
+            uint32_t elapsed = currentTick - _lastTick;
 
             _lastTick = currentTick;
-            _accumulator = std::min(_accumulator + elapsed, (uint32)GAME_UPDATE_MAX_THRESHOLD);
+            _accumulator = std::min(_accumulator + elapsed, (uint32_t)GAME_UPDATE_MAX_THRESHOLD);
 
             _uiContext->ProcessMessages();
 
@@ -941,8 +941,8 @@ namespace OpenRCT2
 
         void Update()
         {
-            uint32 currentUpdateTick = platform_get_ticks();
-            gTicksSinceLastUpdate = std::min<uint32>(currentUpdateTick - _lastUpdateTick, 500);
+            uint32_t currentUpdateTick = platform_get_ticks();
+            gTicksSinceLastUpdate = std::min<uint32_t>(currentUpdateTick - _lastUpdateTick, 500);
             _lastUpdateTick = currentUpdateTick;
 
             if (game_is_not_paused())
@@ -1077,14 +1077,14 @@ void openrct2_finish()
     GetContext()->Finish();
 }
 
-void context_setcurrentcursor(sint32 cursor)
+void context_setcurrentcursor(int32_t cursor)
 {
     GetContext()->GetUiContext()->SetCursor((CURSOR_ID)cursor);
 }
 
 void context_update_cursor_scale()
 {
-    GetContext()->GetUiContext()->SetCursorScale(static_cast<uint8>(std::round(gConfigGeneral.window_scale)));
+    GetContext()->GetUiContext()->SetCursorScale(static_cast<uint8_t>(std::round(gConfigGeneral.window_scale)));
 }
 
 void context_hide_cursor()
@@ -1097,21 +1097,21 @@ void context_show_cursor()
     GetContext()->GetUiContext()->SetCursorVisible(true);
 }
 
-void context_get_cursor_position(sint32 * x, sint32 * y)
+void context_get_cursor_position(int32_t * x, int32_t * y)
 {
     GetContext()->GetUiContext()->GetCursorPosition(x, y);
 }
 
-void context_get_cursor_position_scaled(sint32 * x, sint32 * y)
+void context_get_cursor_position_scaled(int32_t * x, int32_t * y)
 {
     context_get_cursor_position(x, y);
 
     // Compensate for window scaling.
-    *x = (sint32)std::ceil(*x / gConfigGeneral.window_scale);
-    *y = (sint32)std::ceil(*y / gConfigGeneral.window_scale);
+    *x = (int32_t)std::ceil(*x / gConfigGeneral.window_scale);
+    *y = (int32_t)std::ceil(*y / gConfigGeneral.window_scale);
 }
 
-void context_set_cursor_position(sint32 x, sint32 y)
+void context_set_cursor_position(int32_t x, int32_t y)
 {
     GetContext()->GetUiContext()->SetCursorPosition(x, y);
 }
@@ -1121,12 +1121,12 @@ const CursorState * context_get_cursor_state()
     return GetContext()->GetUiContext()->GetCursorState();
 }
 
-const uint8 * context_get_keys_state()
+const uint8_t * context_get_keys_state()
 {
     return GetContext()->GetUiContext()->GetKeysState();
 }
 
-const uint8 * context_get_keys_pressed()
+const uint8_t * context_get_keys_pressed()
 {
     return GetContext()->GetUiContext()->GetKeysPressed();
 }
@@ -1151,7 +1151,7 @@ void context_trigger_resize()
     return GetContext()->GetUiContext()->TriggerResize();
 }
 
-void context_set_fullscreen_mode(sint32 mode)
+void context_set_fullscreen_mode(int32_t mode)
 {
     return GetContext()->GetUiContext()->SetFullscreenMode((FULLSCREEN_MODE)mode);
 }
@@ -1161,21 +1161,21 @@ void context_recreate_window()
     GetContext()->GetUiContext()->RecreateWindow();
 }
 
-sint32 context_get_resolutions(Resolution * * outResolutions)
+int32_t context_get_resolutions(Resolution * * outResolutions)
 {
 auto resolutions = GetContext()->GetUiContext()->GetFullscreenResolutions();
-sint32 count = (sint32)resolutions.size();
+int32_t count = (int32_t)resolutions.size();
 *outResolutions = Memory::AllocateArray<Resolution>(count);
 std::copy_n(resolutions.begin(), count, *outResolutions);
 return count;
 }
 
-sint32 context_get_width()
+int32_t context_get_width()
 {
     return GetContext()->GetUiContext()->GetWidth();
 }
 
-sint32 context_get_height()
+int32_t context_get_height()
 {
     return GetContext()->GetUiContext()->GetHeight();
 }
@@ -1202,7 +1202,7 @@ rct_window * context_open_window_view(rct_windowclass wc)
     return windowManager->OpenView(wc);
 }
 
-rct_window * context_open_detail_window(uint8 type, sint32 id)
+rct_window * context_open_detail_window(uint8_t type, int32_t id)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenDetails(type, id);
@@ -1255,7 +1255,7 @@ void context_quit()
     GetContext()->Quit();
 }
 
-const utf8 * context_get_path_legacy(sint32 pathId)
+const utf8 * context_get_path_legacy(int32_t pathId)
 {
     static utf8 result[MAX_PATH];
     auto path = GetContext()->GetPathLegacy(pathId);

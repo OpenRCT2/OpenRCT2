@@ -20,7 +20,7 @@
 #include "MapAnimation.h"
 #include "Surface.h"
 
-static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 flags)
+static money32 SmallSceneryRemove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t quadrant, uint8_t sceneryType, uint8_t flags)
 {
     if (!map_is_location_valid({x, y}))
     {
@@ -112,10 +112,10 @@ static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 qu
     return (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : cost;
 }
 
-static money32 SmallScenerySetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 primaryColour, uint8 secondaryColour, uint8 flags)
+static money32 SmallScenerySetColour(int16_t x, int16_t y, uint8_t baseHeight, uint8_t quadrant, uint8_t sceneryType, uint8_t primaryColour, uint8_t secondaryColour, uint8_t flags)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    sint32 z = baseHeight * 8;
+    int32_t z = baseHeight * 8;
     gCommandPosition.x = x + 16;
     gCommandPosition.y = y + 16;
     gCommandPosition.z = z;
@@ -151,15 +151,15 @@ static money32 SmallScenerySetColour(sint16 x, sint16 y, uint8 baseHeight, uint8
     return 0;
 }
 
-static money32 SmallSceneryPlace(sint16 x,
-    sint16 y,
-    sint16 targetHeight,
-    uint8 quadrant,
-    uint8 rotation,
-    uint8 sceneryType,
-    uint8 primaryColour,
-    uint8 secondaryColour,
-    uint8 flags)
+static money32 SmallSceneryPlace(int16_t x,
+    int16_t y,
+    int16_t targetHeight,
+    uint8_t quadrant,
+    uint8_t rotation,
+    uint8_t sceneryType,
+    uint8_t primaryColour,
+    uint8_t secondaryColour,
+    uint8_t flags)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 
@@ -170,7 +170,7 @@ static money32 SmallSceneryPlace(sint16 x,
     {
         supportsRequired = true;
     }
-    sint32 baseHeight = tile_element_height(x, y);
+    int32_t baseHeight = tile_element_height(x, y);
     // If on water
     if (baseHeight & 0xFFFF0000)
     {
@@ -219,8 +219,8 @@ static money32 SmallSceneryPlace(sint16 x,
     }
 
     // Check if sub tile height is any different compared to actual surface tile height
-    sint32 x2 = x;
-    sint32 y2 = y;
+    int32_t x2 = x;
+    int32_t y2 = y;
     if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
     {
         x2 += 16;
@@ -268,7 +268,7 @@ static money32 SmallSceneryPlace(sint16 x,
 
     if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surface_get_water_height(surfaceElement) > 0)
     {
-        sint32 water_height = (surface_get_water_height(surfaceElement) * 16) - 1;
+        int32_t water_height = (surface_get_water_height(surfaceElement) * 16) - 1;
         if (water_height > targetHeight)
         {
             gGameCommandErrorText = STR_CANT_BUILD_THIS_UNDERWATER;
@@ -332,10 +332,10 @@ static money32 SmallSceneryPlace(sint16 x,
         }
     }
 
-    sint32 zLow = targetHeight / 8;
-    sint32 zHigh = zLow + ceil2(sceneryEntry->small_scenery.height, 8) / 8;
-    uint8 collisionQuadrants = 0xF;
-    uint8 blSupports = 0;
+    int32_t zLow = targetHeight / 8;
+    int32_t zHigh = zLow + ceil2(sceneryEntry->small_scenery.height, 8) / 8;
+    uint8_t collisionQuadrants = 0xF;
+    uint8_t blSupports = 0;
     if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
     {
         collisionQuadrants = 1 << (quadrant ^ 2);
@@ -404,7 +404,7 @@ static money32 SmallSceneryPlace(sint16 x,
     rct_tile_element* newElement = tile_element_insert(x / 32, y / 32, zLow, collisionQuadrants);
     assert(newElement != nullptr);
     gSceneryTileElement = newElement;
-    uint8 type = quadrant << 6;
+    uint8_t type = quadrant << 6;
     type |= TILE_ELEMENT_TYPE_SMALL_SCENERY;
     type |= rotation;
     newElement->type = type;
@@ -438,13 +438,13 @@ static money32 SmallSceneryPlace(sint16 x,
  *  rct2: 0x006E0E01
  */
 void game_command_remove_scenery(
-    sint32 *                  eax,
-    sint32 *                  ebx,
-    sint32 *                  ecx,
-    sint32 *                  edx,
-    [[maybe_unused]] sint32 * esi,
-    [[maybe_unused]] sint32 * edi,
-    [[maybe_unused]] sint32 * ebp)
+    int32_t *                  eax,
+    int32_t *                  ebx,
+    int32_t *                  ecx,
+    int32_t *                  edx,
+    [[maybe_unused]] int32_t * esi,
+    [[maybe_unused]] int32_t * edi,
+    [[maybe_unused]] int32_t * ebp)
 {
     *ebx = SmallSceneryRemove(
         *eax & 0xFFFF,
@@ -461,13 +461,13 @@ void game_command_remove_scenery(
  *  rct2: 0x006E0F26
  */
 void game_command_set_scenery_colour(
-    sint32 *                  eax,
-    sint32 *                  ebx,
-    sint32 *                  ecx,
-    sint32 *                  edx,
-    [[maybe_unused]] sint32 * esi,
-    [[maybe_unused]] sint32 * edi,
-    sint32 *                  ebp)
+    int32_t *                  eax,
+    int32_t *                  ebx,
+    int32_t *                  ecx,
+    int32_t *                  edx,
+    [[maybe_unused]] int32_t * esi,
+    [[maybe_unused]] int32_t * edi,
+    int32_t *                  ebp)
 {
     *ebx = SmallScenerySetColour(
         *eax & 0xFFFF,
@@ -485,7 +485,7 @@ void game_command_set_scenery_colour(
  *
  *  rct2: 0x006E0D6E, 0x006B8D88
  */
-sint32 map_place_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price)
+int32_t map_place_scenery_clear_func(rct_tile_element** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price)
 {
     if ((*tile_element)->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return 1;
@@ -522,7 +522,7 @@ sint32 map_place_scenery_clear_func(rct_tile_element** tile_element, sint32 x, s
  *
  *  rct2: 0x006C5A4F, 0x006CDE57, 0x006A6733, 0x0066637E
  */
-sint32 map_place_non_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price)
+int32_t map_place_non_scenery_clear_func(rct_tile_element** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price)
 {
     if ((*tile_element)->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return 1;
@@ -557,7 +557,7 @@ sint32 map_place_non_scenery_clear_func(rct_tile_element** tile_element, sint32 
  *  rct2: 0x006E08F4
  */
 void game_command_place_scenery(
-    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
+    int32_t * eax, int32_t * ebx, int32_t * ecx, int32_t * edx, [[maybe_unused]] int32_t * esi, int32_t * edi, int32_t * ebp)
 {
     *ebx = SmallSceneryPlace(
         *eax & 0xFFFF,
@@ -572,24 +572,24 @@ void game_command_place_scenery(
     );
 }
 
-sint32 scenery_small_get_primary_colour(const rct_tile_element * tileElement)
+int32_t scenery_small_get_primary_colour(const rct_tile_element * tileElement)
 {
     return tileElement->properties.scenery.colour_1 & TILE_ELEMENT_COLOUR_MASK;
 }
 
-sint32 scenery_small_get_secondary_colour(const rct_tile_element * tileElement)
+int32_t scenery_small_get_secondary_colour(const rct_tile_element * tileElement)
 {
     return tileElement->properties.scenery.colour_2 & TILE_ELEMENT_COLOUR_MASK;
 }
 
-void scenery_small_set_primary_colour(rct_tile_element * tileElement, uint32 colour)
+void scenery_small_set_primary_colour(rct_tile_element * tileElement, uint32_t colour)
 {
     assert(colour <= 31);
     tileElement->properties.scenery.colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
     tileElement->properties.scenery.colour_1 |= colour;
 }
 
-void scenery_small_set_secondary_colour(rct_tile_element * tileElement, uint32 colour)
+void scenery_small_set_secondary_colour(rct_tile_element * tileElement, uint32_t colour)
 {
     assert(colour <= 31);
     tileElement->properties.scenery.colour_2 &= ~TILE_ELEMENT_COLOUR_MASK;
@@ -606,7 +606,7 @@ void scenery_small_set_supports_needed(rct_tile_element * tileElement)
     tileElement->properties.scenery.colour_1 |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
 }
 
-bool scenery_small_entry_has_flag(const rct_scenery_entry * sceneryEntry, uint32 flags)
+bool scenery_small_entry_has_flag(const rct_scenery_entry * sceneryEntry, uint32_t flags)
 {
     return (bool)(sceneryEntry->small_scenery.flags & flags);
 }

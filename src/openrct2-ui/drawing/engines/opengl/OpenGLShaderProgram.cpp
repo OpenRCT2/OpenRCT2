@@ -76,7 +76,7 @@ std::string OpenGLShader::ReadSourceCode(const std::string &path)
 {
     auto fs = FileStream(path, FILE_MODE_OPEN);
 
-    uint64 fileLength = fs.GetLength();
+    uint64_t fileLength = fs.GetLength();
     if (fileLength > MaxSourceSize)
     {
         throw IOException("Shader source too large.");

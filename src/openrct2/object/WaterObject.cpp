@@ -20,7 +20,7 @@
 void WaterObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(14, STREAM_SEEK_CURRENT);
-    _legacyType.flags = stream->ReadValue<uint16>();
+    _legacyType.flags = stream->ReadValue<uint16_t>();
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
     GetImageTable().Read(context, stream);
@@ -45,18 +45,18 @@ void WaterObject::Unload()
     _legacyType.string_idx = 0;
 }
 
-void WaterObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
+void WaterObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const
 {
     // Write (no image)
-    sint32 x = width / 2;
-    sint32 y = height / 2;
+    int32_t x = width / 2;
+    int32_t y = height / 2;
     gfx_draw_string_centred(dpi, STR_WINDOW_NO_IMAGE, x, y, COLOUR_BLACK, nullptr);
 }
 
 void WaterObject::ReadJson([[maybe_unused]] IReadObjectContext* context, const json_t* root)
 {
     auto properties = json_object_get(root, "properties");
-    _legacyType.flags = ObjectJsonHelpers::GetFlags<uint16>(properties, {
+    _legacyType.flags = ObjectJsonHelpers::GetFlags<uint16_t>(properties, {
         { "allowDucks", WATER_FLAGS_ALLOW_DUCKS }});
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
@@ -92,7 +92,7 @@ void WaterObject::ReadJsonPalette(const json_t * jPalette)
     auto jColours = json_object_get(jPalette, "colours");
     auto numColours = json_array_size(jColours);
 
-    auto data = std::make_unique<uint8[]>(numColours * 3);
+    auto data = std::make_unique<uint8_t[]>(numColours * 3);
     size_t dataIndex = 0;
 
     size_t index;
@@ -112,19 +112,19 @@ void WaterObject::ReadJsonPalette(const json_t * jPalette)
 
     rct_g1_element g1 = {};
     g1.offset = data.get();
-    g1.width = (sint16)numColours;
-    g1.x_offset = (sint16)paletteStartIndex;
+    g1.width = (int16_t)numColours;
+    g1.x_offset = (int16_t)paletteStartIndex;
     g1.flags = G1_FLAG_PALETTE;
 
     auto &imageTable = GetImageTable();
     imageTable.AddImage(&g1);
 }
 
-uint32 WaterObject::ParseColour(const std::string &s) const
+uint32_t WaterObject::ParseColour(const std::string &s) const
 {
-    uint8 r = 0;
-    uint8 g = 0;
-    uint8 b = 0;
+    uint8_t r = 0;
+    uint8_t g = 0;
+    uint8_t b = 0;
     if (s[0] == '#' && s.size() == 7)
     {
         // Expect #RRGGBB

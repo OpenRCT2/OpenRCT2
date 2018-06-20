@@ -87,8 +87,8 @@ static void window_maze_construction_mouseup(rct_window *w, rct_widgetindex widg
 static void window_maze_construction_resize(rct_window *w);
 static void window_maze_construction_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_maze_construction_update(rct_window *w);
-static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 static void window_maze_construction_invalidate(rct_window *w);
 static void window_maze_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -127,7 +127,7 @@ static rct_window_event_list window_maze_construction_events = {
 
 #pragma endregion
 
-static void window_maze_construction_construct(sint32 direction);
+static void window_maze_construction_construct(int32_t direction);
 
 /**
  *
@@ -175,10 +175,10 @@ static void window_maze_construction_close(rct_window *w)
 
     hide_gridlines();
 
-    uint8 rideIndex = _currentRideIndex;
+    uint8_t rideIndex = _currentRideIndex;
     Ride* ride = get_ride(rideIndex);
     if (ride->overall_view.xy == RCT_XY8_UNDEFINED) {
-        sint32 savedPausedState = gGamePaused;
+        int32_t savedPausedState = gGamePaused;
         gGamePaused = 0;
         ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         gGamePaused = savedPausedState;
@@ -194,14 +194,14 @@ static void window_maze_construction_entrance_mouseup(rct_window *w, rct_widgeti
         return;
 
     gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
-    gRideEntranceExitPlaceRideIndex = (uint8)w->number;
+    gRideEntranceExitPlaceRideIndex = (uint8_t)w->number;
     gRideEntranceExitPlaceStationIndex = 0;
     input_set_flag(INPUT_FLAG_6, true);
 
     ride_construction_invalidate_current_track();
 
     // ???
-    uint8 old_state = _rideConstructionState;
+    uint8_t old_state = _rideConstructionState;
     _rideConstructionState = RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT;
     if (old_state != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT)
         _rideConstructionState = old_state;
@@ -239,7 +239,7 @@ static void window_maze_construction_mouseup(rct_window *w, rct_widgetindex widg
  */
 static void window_maze_construction_resize(rct_window *w)
 {
-    uint64 disabledWidgets = 0;
+    uint64_t disabledWidgets = 0;
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_PLACE) {
         disabledWidgets |= (
             (1ULL << WIDX_MAZE_BUILD_MODE) |
@@ -253,7 +253,7 @@ static void window_maze_construction_resize(rct_window *w)
     }
 
     // Set and invalidate the changed widgets
-    uint64 currentDisabledWidgets = w->disabled_widgets;
+    uint64_t currentDisabledWidgets = w->disabled_widgets;
     if (currentDisabledWidgets == disabledWidgets)
         return;
 
@@ -333,7 +333,7 @@ static void window_maze_construction_update(rct_window *w)
  *
  *  rct2: 0x006CD63E
  */
-static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     switch (widgetIndex){
     case WIDX_MAZE_DIRECTION_GROUPBOX:
@@ -350,7 +350,7 @@ static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex w
  *
  *  rct2: 0x006C825F
  */
-static void window_maze_construction_entrance_tooldown(sint32 x, sint32 y, rct_window* w){
+static void window_maze_construction_entrance_tooldown(int32_t x, int32_t y, rct_window* w){
     ride_construction_invalidate_current_track();
 
     map_invalidate_selection_rect();
@@ -358,14 +358,14 @@ static void window_maze_construction_entrance_tooldown(sint32 x, sint32 y, rct_w
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    sint32 direction = 0;
+    int32_t direction = 0;
     ride_get_entrance_or_exit_position_from_screen_position(x, y, &x, &y, &direction);
 
     if (gRideEntranceExitPlaceDirection == 0xFF)
         return;
 
-    uint8 rideIndex = gRideEntranceExitPlaceRideIndex;
-    uint8 entranceExitType = gRideEntranceExitPlaceType;
+    uint8_t rideIndex = gRideEntranceExitPlaceRideIndex;
+    uint8_t entranceExitType = gRideEntranceExitPlaceType;
     if (entranceExitType == ENTRANCE_TYPE_RIDE_ENTRANCE) {
         gGameCommandErrorTitle = STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
     } else {
@@ -407,7 +407,7 @@ static void window_maze_construction_entrance_tooldown(sint32 x, sint32 y, rct_w
  *
  *  rct2: 0x006CD65D
  */
-static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     switch (widgetIndex){
     case WIDX_MAZE_DIRECTION_GROUPBOX:
@@ -430,7 +430,7 @@ static void window_maze_construction_invalidate(rct_window *w)
 
     // Set window title arguments
     set_format_arg(4, rct_string_id, ride->name);
-    set_format_arg(6, uint32, ride->name_arguments);
+    set_format_arg(6, uint32_t, ride->name_arguments);
 }
 
 /**
@@ -454,7 +454,7 @@ void window_maze_construction_update_pressed_widgets()
     if (w == nullptr)
         return;
 
-    uint64 pressedWidgets = w->pressed_widgets;
+    uint64_t pressedWidgets = w->pressed_widgets;
     pressedWidgets &= ~(1ULL << WIDX_MAZE_BUILD_MODE);
     pressedWidgets &= ~(1ULL << WIDX_MAZE_MOVE_MODE);
     pressedWidgets &= ~(1ULL << WIDX_MAZE_FILL_MODE);
@@ -479,9 +479,9 @@ void window_maze_construction_update_pressed_widgets()
  *
  *  rct2: 0x006CD4AB
  */
-static void window_maze_construction_construct(sint32 direction)
+static void window_maze_construction_construct(int32_t direction)
 {
-    sint32 x, y, z, flags, mode;
+    int32_t x, y, z, flags, mode;
 
     ride_construction_invalidate_current_track();
 

@@ -21,11 +21,11 @@
 void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
-    _legacyType.path_bit.flags = stream->ReadValue<uint16>();
-    _legacyType.path_bit.draw_type = stream->ReadValue<uint8>();
-    _legacyType.path_bit.tool_id = stream->ReadValue<uint8>();
-    _legacyType.path_bit.price = stream->ReadValue<sint16>();
-    _legacyType.path_bit.scenery_tab_id = stream->ReadValue<uint8>();
+    _legacyType.path_bit.flags = stream->ReadValue<uint16_t>();
+    _legacyType.path_bit.draw_type = stream->ReadValue<uint8_t>();
+    _legacyType.path_bit.tool_id = stream->ReadValue<uint8_t>();
+    _legacyType.path_bit.price = stream->ReadValue<int16_t>();
+    _legacyType.path_bit.scenery_tab_id = stream->ReadValue<uint8_t>();
     stream->Seek(1, STREAM_SEEK_CURRENT);
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
@@ -78,14 +78,14 @@ void FootpathItemObject::Unload()
     _legacyType.image = 0;
 }
 
-void FootpathItemObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
+void FootpathItemObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const
 {
-    sint32 x = width / 2;
-    sint32 y = height / 2;
+    int32_t x = width / 2;
+    int32_t y = height / 2;
     gfx_draw_sprite(dpi, _legacyType.image, x - 22, y - 24, 0);
 }
 
-static uint8 ParseDrawType(const std::string &s)
+static uint8_t ParseDrawType(const std::string &s)
 {
     if (s == "lamp") return PATH_BIT_DRAW_TYPE_LIGHTS;
     if (s == "bin") return PATH_BIT_DRAW_TYPE_BINS;
@@ -104,7 +104,7 @@ void FootpathItemObject::ReadJson(IReadObjectContext * context, const json_t * r
     SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
 
     // Flags
-    _legacyType.path_bit.flags = ObjectJsonHelpers::GetFlags<uint16>(properties, {
+    _legacyType.path_bit.flags = ObjectJsonHelpers::GetFlags<uint16_t>(properties, {
         { "isBin", PATH_BIT_FLAG_IS_BIN },
         { "isBench", PATH_BIT_FLAG_IS_BENCH },
         { "isBreakable", PATH_BIT_FLAG_BREAKABLE },

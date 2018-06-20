@@ -80,7 +80,7 @@ void S6Exporter::Save(IStream * stream, bool isScenario)
 {
     _s6.header.type               = isScenario ? S6_TYPE_SCENARIO : S6_TYPE_SAVEDGAME;
     _s6.header.classic_flag       = 0;
-    _s6.header.num_packed_objects = uint16(ExportObjectsList.size());
+    _s6.header.num_packed_objects = uint16_t(ExportObjectsList.size());
     _s6.header.version            = S6_RCT2_VERSION;
     _s6.header.magic_number       = S6_MAGIC_NUMBER;
     _s6.game_version_number       = 201028;
@@ -135,8 +135,8 @@ void S6Exporter::Save(IStream * stream, bool isScenario)
 
     // Read all written bytes back into a single buffer
     stream->SetPosition(0);
-    auto   data = std::unique_ptr<uint8, std::function<void(uint8 *)>>(stream->ReadArray<uint8>(fileSize), Memory::Free<uint8>);
-    uint32 checksum = sawyercoding_calculate_checksum(data.get(), fileSize);
+    auto   data = std::unique_ptr<uint8_t, std::function<void(uint8_t *)>>(stream->ReadArray<uint8_t>(fileSize), Memory::Free<uint8_t>);
+    uint32_t checksum = sawyercoding_calculate_checksum(data.get(), fileSize);
 
     // Write the checksum on the end
     stream->SetPosition(fileSize);
@@ -145,9 +145,9 @@ void S6Exporter::Save(IStream * stream, bool isScenario)
 
 void S6Exporter::Export()
 {
-    sint32 spatial_cycle = check_for_spatial_index_cycles(false);
-    sint32 regular_cycle = check_for_sprite_list_cycles(false);
-    sint32 disjoint_sprites_count = fix_disjoint_sprites();
+    int32_t spatial_cycle = check_for_spatial_index_cycles(false);
+    int32_t regular_cycle = check_for_sprite_list_cycles(false);
+    int32_t disjoint_sprites_count = fix_disjoint_sprites();
     openrct2_assert(spatial_cycle == -1, "Sprite cycle exists in spatial list %d", spatial_cycle);
     openrct2_assert(regular_cycle == -1, "Sprite cycle exists in regular list %d", regular_cycle);
     // This one is less harmful, no need to assert for it ~janisozaur
@@ -164,10 +164,10 @@ void S6Exporter::Export()
         auto temp = utf8_to_rct2(gS6Info.details);
         safe_strcpy(_s6.info.details, temp.data(), sizeof(_s6.info.details));
     }
-    uint32 researchedTrackPiecesA[128];
-    uint32 researchedTrackPiecesB[128];
+    uint32_t researchedTrackPiecesA[128];
+    uint32_t researchedTrackPiecesB[128];
 
-    for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
+    for (int32_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
     {
         const rct_object_entry * entry     = get_loaded_object_entry(i);
         void *                   entryData = get_loaded_object_chunk(i);
@@ -196,12 +196,12 @@ void S6Exporter::Export()
     // compression ratios. Especially useful for multiplayer servers that
     // use zlib on the sent stream.
     sprite_clear_all_unused();
-    for (sint32 i = 0; i < RCT2_MAX_SPRITES; i++)
+    for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
     {
         memcpy(&_s6.sprites[i], get_sprite(i), sizeof(rct_sprite));
     }
 
-    for (sint32 i = 0; i < NUM_SPRITE_LISTS; i++)
+    for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++)
     {
         _s6.sprite_lists_head[i]  = gSpriteListHead[i];
         _s6.sprite_lists_count[i] = gSpriteListCount[i];
@@ -224,7 +224,7 @@ void S6Exporter::Export()
     ExportResearchedRideTypes();
     ExportResearchedRideEntries();
     // Not used by OpenRCT2 any more, but left in to keep RCT2 export working.
-    for (uint8 i = 0; i < Util::CountOf(RideTypePossibleTrackConfigurations); i++)
+    for (uint8_t i = 0; i < Util::CountOf(RideTypePossibleTrackConfigurations); i++)
     {
         researchedTrackPiecesA[i] = (RideTypePossibleTrackConfigurations[i]         ) & 0xFFFFFFFFULL;
         researchedTrackPiecesB[i] = (RideTypePossibleTrackConfigurations[i] >> 32ULL) & 0xFFFFFFFFULL;
@@ -296,7 +296,7 @@ void S6Exporter::Export()
     memcpy(_s6.peep_warning_throttle, gPeepWarningThrottle, sizeof(_s6.peep_warning_throttle));
 
     // Awards
-    for (sint32 i = 0; i < RCT12_MAX_AWARDS; i++)
+    for (int32_t i = 0; i < RCT12_MAX_AWARDS; i++)
     {
         Award *       src = &gCurrentAwards[i];
         rct12_award * dst = &_s6.awards[i];
@@ -338,7 +338,7 @@ void S6Exporter::Export()
     // pad_0135934B
     _s6.same_price_throughout_extended = gSamePriceThroughoutParkB;
     // Preserve compatibility with vanilla RCT2's save format.
-    for (uint8 i = 0; i < RCT12_MAX_PARK_ENTRANCES; i++)
+    for (uint8_t i = 0; i < RCT12_MAX_PARK_ENTRANCES; i++)
     {
         _s6.park_entrance_x[i]         = gParkEntrances[i].x;
         _s6.park_entrance_y[i]         = gParkEntrances[i].y;
@@ -424,14 +424,14 @@ void S6Exporter::ExportPeepSpawns()
     for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
     {
         _s6.peep_spawns[i] = {
-            (uint16)gPeepSpawns[i].x, (uint16)gPeepSpawns[i].y, (uint8)(gPeepSpawns[i].z / 16), gPeepSpawns[i].direction
+            (uint16_t)gPeepSpawns[i].x, (uint16_t)gPeepSpawns[i].y, (uint8_t)(gPeepSpawns[i].z / 16), gPeepSpawns[i].direction
         };
     }
 }
 
-uint32 S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32 maxBankLoan)
+uint32_t S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32_t maxBankLoan)
 {
-    sint32 value = 0x70093A;
+    int32_t value = 0x70093A;
     value -= initialCash;
     value = ror32(value, 5);
     value -= bankLoan;
@@ -443,7 +443,7 @@ uint32 S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32 max
 
 void S6Exporter::ExportRides()
 {
-    for (sint32 index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
+    for (int32_t index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
     {
         auto src = get_ride(index);
         auto dst = &_s6.rides[index];
@@ -469,7 +469,7 @@ void S6Exporter::ExportRide(rct2_ride * dst, const Ride * src)
     dst->mode = src->mode;
     dst->colour_scheme_type = src->colour_scheme_type;
 
-    for (uint8 i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i ++)
+    for (uint8_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i ++)
     {
         dst->vehicle_colours[i] = src->vehicle_colours[i];
     }
@@ -481,7 +481,7 @@ void S6Exporter::ExportRide(rct2_ride * dst, const Ride * src)
 
     dst->overall_view = src->overall_view;
 
-    for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
+    for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
     {
         dst->station_starts[i] = src->station_starts[i];
         dst->station_heights[i] = src->station_heights[i];
@@ -493,13 +493,13 @@ void S6Exporter::ExportRide(rct2_ride * dst, const Ride * src)
         if (entrance.isNull())
             dst->entrances[i].xy = RCT_XY8_UNDEFINED;
         else
-            dst->entrances[i] = { (uint8)entrance.x, (uint8)entrance.y };
+            dst->entrances[i] = { (uint8_t)entrance.x, (uint8_t)entrance.y };
 
         TileCoordsXYZD exit = ride_get_exit_location(src, i);
         if (exit.isNull())
             dst->exits[i].xy = RCT_XY8_UNDEFINED;
         else
-            dst->exits[i] = { (uint8)exit.x, (uint8)exit.y };
+            dst->exits[i] = { (uint8_t)exit.x, (uint8_t)exit.y };
 
         dst->last_peep_in_queue[i] = src->last_peep_in_queue[i];
 
@@ -511,7 +511,7 @@ void S6Exporter::ExportRide(rct2_ride * dst, const Ride * src)
         dst->queue_length[i] = src->queue_length[i];
     }
 
-    for (uint8 i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE; i++)
+    for (uint8_t i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE; i++)
     {
         dst->vehicles[i] = src->vehicles[i];
     }
@@ -569,14 +569,14 @@ void S6Exporter::ExportRide(rct2_ride * dst, const Ride * src)
     dst->cur_num_customers = src->cur_num_customers;
     dst->num_customers_timeout = src->num_customers_timeout;
 
-    for (uint8 i = 0; i < RCT2_CUSTOMER_HISTORY_SIZE; i++)
+    for (uint8_t i = 0; i < RCT2_CUSTOMER_HISTORY_SIZE; i++)
     {
         dst->num_customers[i] = src->num_customers[i];
     }
 
     dst->price = src->price;
 
-    for (uint8 i = 0; i < 2; i++)
+    for (uint8_t i = 0; i < 2; i++)
     {
         dst->chairlift_bullwheel_location[i] = src->chairlift_bullwheel_location[i];
         dst->chairlift_bullwheel_z[i] = src->chairlift_bullwheel_z[i];
@@ -631,7 +631,7 @@ void S6Exporter::ExportRide(rct2_ride * dst, const Ride * src)
     dst->inspection_interval = src->inspection_interval;
     dst->last_inspection = src->last_inspection;
 
-    for (uint8 i = 0; i < RCT2_DOWNTIME_HISTORY_SIZE; i++)
+    for (uint8_t i = 0; i < RCT2_DOWNTIME_HISTORY_SIZE; i++)
     {
         dst->downtime_history[i] = src->downtime_history[i];
     }
@@ -647,7 +647,7 @@ void S6Exporter::ExportRide(rct2_ride * dst, const Ride * src)
     dst->income_per_hour = src->income_per_hour;
     dst->profit = src->profit;
 
-    for (uint8 i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
+    for (uint8_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {
         dst->track_colour_main[i] = src->track_colour_main[i];
         dst->track_colour_additional[i] = src->track_colour_additional[i];
@@ -662,7 +662,7 @@ void S6Exporter::ExportRide(rct2_ride * dst, const Ride * src)
     dst->guests_favourite = src->guests_favourite;
     dst->lifecycle_flags = src->lifecycle_flags;
 
-    for (uint8 i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
+    for (uint8_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
     {
         dst->vehicle_colours_extended[i] = src->vehicle_colours_extended[i];
     }
@@ -686,13 +686,13 @@ void S6Exporter::ExportResearchedRideTypes()
         std::end(_s6.researched_ride_types),
         false);
 
-    for (sint32 rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++)
+    for (int32_t rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++)
     {
         if (ride_type_is_invented(rideType))
         {
-            sint32 quadIndex = rideType >> 5;
-            sint32 bitIndex  = rideType & 0x1F;
-            _s6.researched_ride_types[quadIndex] |= (uint32) 1 << bitIndex;
+            int32_t quadIndex = rideType >> 5;
+            int32_t bitIndex  = rideType & 0x1F;
+            _s6.researched_ride_types[quadIndex] |= (uint32_t) 1 << bitIndex;
         }
     }
 }
@@ -704,13 +704,13 @@ void S6Exporter::ExportResearchedRideEntries()
         std::end(_s6.researched_ride_entries),
         false);
 
-    for (sint32 rideEntryIndex = 0; rideEntryIndex < MAX_RIDE_OBJECTS; rideEntryIndex++)
+    for (int32_t rideEntryIndex = 0; rideEntryIndex < MAX_RIDE_OBJECTS; rideEntryIndex++)
     {
         if (ride_entry_is_invented(rideEntryIndex))
         {
-            sint32 quadIndex = rideEntryIndex >> 5;
-            sint32 bitIndex  = rideEntryIndex & 0x1F;
-            _s6.researched_ride_entries[quadIndex] |= (uint32) 1 << bitIndex;
+            int32_t quadIndex = rideEntryIndex >> 5;
+            int32_t bitIndex  = rideEntryIndex & 0x1F;
+            _s6.researched_ride_entries[quadIndex] |= (uint32_t) 1 << bitIndex;
         }
     }
 }
@@ -722,13 +722,13 @@ void S6Exporter::ExportResearchedSceneryItems()
         std::end(_s6.researched_scenery_items),
         false);
 
-    for (uint16 sceneryEntryIndex = 0; sceneryEntryIndex < RCT2_MAX_RESEARCHED_SCENERY_ITEMS; sceneryEntryIndex++)
+    for (uint16_t sceneryEntryIndex = 0; sceneryEntryIndex < RCT2_MAX_RESEARCHED_SCENERY_ITEMS; sceneryEntryIndex++)
     {
         if (scenery_is_invented(sceneryEntryIndex))
         {
-            sint32 quadIndex = sceneryEntryIndex >> 5;
-            sint32 bitIndex  = sceneryEntryIndex & 0x1F;
-            _s6.researched_scenery_items[quadIndex] |= (uint32) 1 << bitIndex;
+            int32_t quadIndex = sceneryEntryIndex >> 5;
+            int32_t bitIndex  = sceneryEntryIndex & 0x1F;
+            _s6.researched_scenery_items[quadIndex] |= (uint32_t) 1 << bitIndex;
         }
     }
 }
@@ -738,7 +738,7 @@ void S6Exporter::ExportResearchList()
     memcpy(_s6.research_items, gResearchItems, sizeof(_s6.research_items));
 }
 
-enum : uint32
+enum : uint32_t
 {
     S6_SAVE_FLAG_EXPORT    = 1 << 0,
     S6_SAVE_FLAG_SCENARIO  = 1 << 1,
@@ -750,7 +750,7 @@ enum : uint32
  *  rct2: 0x006754F5
  * @param flags bit 0: pack objects, 1: save as scenario
  */
-sint32 scenario_save(const utf8 * path, sint32 flags)
+int32_t scenario_save(const utf8 * path, int32_t flags)
 {
     if (flags & S6_SAVE_FLAG_SCENARIO)
     {

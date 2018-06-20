@@ -37,9 +37,9 @@ namespace OpenRCT2::Audio
 
         virtual void StartTitleMusic() abstract;
 
-        virtual IAudioChannel * PlaySound(sint32 soundId, sint32 volume, sint32 pan) abstract;
-        virtual IAudioChannel * PlaySoundAtLocation(sint32 soundId, sint16 x, sint16 y, sint16 z) abstract;
-        virtual IAudioChannel * PlaySoundPanned(sint32 soundId, sint32 pan, sint16 x, sint16 y, sint16 z) abstract;
+        virtual IAudioChannel * PlaySound(int32_t soundId, int32_t volume, int32_t pan) abstract;
+        virtual IAudioChannel * PlaySoundAtLocation(int32_t soundId, int16_t x, int16_t y, int16_t z) abstract;
+        virtual IAudioChannel * PlaySoundPanned(int32_t soundId, int32_t pan, int16_t x, int16_t y, int16_t z) abstract;
 
         virtual void ToggleAllSounds() abstract;
         virtual void PauseSounds() abstract;

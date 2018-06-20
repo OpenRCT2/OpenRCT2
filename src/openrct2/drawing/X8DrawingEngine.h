@@ -26,13 +26,13 @@ namespace OpenRCT2
 
         struct DirtyGrid
         {
-            uint32  BlockShiftX;
-            uint32  BlockShiftY;
-            uint32  BlockWidth;
-            uint32  BlockHeight;
-            uint32  BlockColumns;
-            uint32  BlockRows;
-            uint8 * Blocks;
+            uint32_t  BlockShiftX;
+            uint32_t  BlockShiftY;
+            uint32_t  BlockWidth;
+            uint32_t  BlockHeight;
+            uint32_t  BlockColumns;
+            uint32_t  BlockRows;
+            uint8_t * Blocks;
         };
 
         class X8RainDrawer final : public IRainDrawer
@@ -40,14 +40,14 @@ namespace OpenRCT2
         private:
             struct RainPixel
             {
-                uint32 Position;
-                uint8  Colour;
+                uint32_t Position;
+                uint8_t  Colour;
             };
 
-            static constexpr uint32 MaxRainPixels = 0xFFFE;
+            static constexpr uint32_t MaxRainPixels = 0xFFFE;
 
             size_t              _rainPixelsCapacity = MaxRainPixels;
-            uint32              _rainPixelsCount    = 0;
+            uint32_t              _rainPixelsCount    = 0;
             RainPixel *         _rainPixels         = nullptr;
             rct_drawpixelinfo * _screenDPI          = nullptr;
 
@@ -55,7 +55,7 @@ namespace OpenRCT2
             X8RainDrawer();
             ~X8RainDrawer();
             void SetDPI(rct_drawpixelinfo * dpi);
-            void Draw(sint32 x, sint32 y, sint32 width, sint32 height, sint32 xStart, sint32 yStart) override;
+            void Draw(int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart) override;
             void Restore();
         };
 
@@ -66,11 +66,11 @@ namespace OpenRCT2
         class X8DrawingEngine : public IDrawingEngine
         {
         protected:
-            uint32  _width      = 0;
-            uint32  _height     = 0;
-            uint32  _pitch      = 0;
+            uint32_t  _width      = 0;
+            uint32_t  _height     = 0;
+            uint32_t  _pitch      = 0;
             size_t  _bitsSize   = 0;
-            uint8 * _bits       = nullptr;
+            uint8_t * _bits       = nullptr;
 
             DirtyGrid   _dirtyGrid  = {};
 
@@ -88,32 +88,32 @@ namespace OpenRCT2
             ~X8DrawingEngine() override;
 
             void Initialise() override;
-            void Resize(uint32 width, uint32 height) override;
+            void Resize(uint32_t width, uint32_t height) override;
             void SetPalette(const rct_palette_entry * palette) override;
             void SetVSync(bool vsync) override;
-            void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) override;
+            void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) override;
             void BeginDraw() override;
             void EndDraw() override;
             void PaintWindows() override;
             void PaintRain() override;
-            void CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) override;
-            sint32 Screenshot() override;
+            void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override;
+            int32_t Screenshot() override;
             IDrawingContext * GetDrawingContext(rct_drawpixelinfo * dpi) override;
             rct_drawpixelinfo * GetDrawingPixelInfo() override;
             DRAWING_ENGINE_FLAGS GetFlags() override;
-            void InvalidateImage(uint32 image) override;
+            void InvalidateImage(uint32_t image) override;
 
             rct_drawpixelinfo * GetDPI();
 
         protected:
-            void ConfigureBits(uint32 width, uint32 height, uint32 pitch);
-            virtual void OnDrawDirtyBlock(uint32 x, uint32 y, uint32 columns, uint32 rows);
+            void ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch);
+            virtual void OnDrawDirtyBlock(uint32_t x, uint32_t y, uint32_t columns, uint32_t rows);
 
         private:
             void ConfigureDirtyGrid();
             static void ResetWindowVisbilities();
             void DrawAllDirtyBlocks();
-            void DrawDirtyBlocks(uint32 x, uint32 y, uint32 columns, uint32 rows);
+            void DrawDirtyBlocks(uint32_t x, uint32_t y, uint32_t columns, uint32_t rows);
         };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
     #pragma GCC diagnostic pop
@@ -130,14 +130,14 @@ namespace OpenRCT2
 
             IDrawingEngine * GetEngine() override;
 
-            void Clear(uint8 paletteIndex) override;
-            void FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h) override;
-            void FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32 top, sint32 right, sint32 bottom) override;
-            void DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2) override;
-            void DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour) override;
-            void DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage) override;
-            void DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour) override;
-            void DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette) override;
+            void Clear(uint8_t paletteIndex) override;
+            void FillRect(uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
+            void FilterRect(FILTER_PALETTE_ID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
+            void DrawLine(uint32_t colour, int32_t x1, int32_t y1, int32_t x2, int32_t y2) override;
+            void DrawSprite(uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour) override;
+            void DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage) override;
+            void DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uint8_t colour) override;
+            void DrawGlyph(uint32_t image, int32_t x, int32_t y, uint8_t * palette) override;
 
             void SetDPI(rct_drawpixelinfo * dpi);
         };

@@ -11,13 +11,13 @@
 #include "Input.h"
 
 INPUT_STATE _inputState;
-uint8 _inputFlags;
-uint8 gInputPlaceObjectModifier;
+uint8_t _inputFlags;
+uint8_t gInputPlaceObjectModifier;
 
 widget_ref gHoverWidget;
 widget_ref gPressedWidget;
 
-uint16 _tooltipNotShownTicks;
+uint16_t _tooltipNotShownTicks;
 
 TOOL_IDX gCurrentToolId;
 widget_ref gCurrentToolWidget;

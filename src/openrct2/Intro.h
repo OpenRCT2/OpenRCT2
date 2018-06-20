@@ -29,7 +29,7 @@ enum INTRO_STATE {
     INTRO_STATE_FINISH              = 255,
 };
 
-extern uint8 gIntroState;
+extern uint8_t gIntroState;
 
 void intro_update();
 void intro_draw(rct_drawpixelinfo *dpi);

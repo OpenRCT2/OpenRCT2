@@ -15,8 +15,8 @@ namespace SawyerEncoding
 {
     bool ValidateChecksum(IStream * stream)
     {
-        uint64 initialPosition = stream->GetPosition();
-        uint64 dataSize = stream->GetLength() - initialPosition;
+        uint64_t initialPosition = stream->GetPosition();
+        uint64_t dataSize = stream->GetLength() - initialPosition;
         if (dataSize < 8)
         {
             return false;
@@ -26,14 +26,14 @@ namespace SawyerEncoding
         try
         {
             // Calculate checksum
-            uint32 checksum = 0;
+            uint32_t checksum = 0;
             do
             {
-                uint8 buffer[4096];
-                uint64 bufferSize = std::min<uint64>(dataSize, sizeof(buffer));
+                uint8_t buffer[4096];
+                uint64_t bufferSize = std::min<uint64_t>(dataSize, sizeof(buffer));
                 stream->Read(buffer, bufferSize);
 
-                for (uint64 i = 0; i < bufferSize; i++)
+                for (uint64_t i = 0; i < bufferSize; i++)
                 {
                     checksum += buffer[i];
                 }
@@ -43,7 +43,7 @@ namespace SawyerEncoding
             while (dataSize != 0);
 
             // Read file checksum
-            uint32 fileChecksum = stream->ReadValue<uint32>();
+            uint32_t fileChecksum = stream->ReadValue<uint32_t>();
 
             // Rewind back to original position
             stream->SetPosition(initialPosition);

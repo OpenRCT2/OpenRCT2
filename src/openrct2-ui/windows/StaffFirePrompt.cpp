@@ -126,10 +126,10 @@ static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi)
     rct_peep* peep = &get_sprite(w->number)->peep;
 
     set_format_arg(0, rct_string_id, peep->name_string_idx);
-    set_format_arg(2, uint32, peep->id);
+    set_format_arg(2, uint32_t, peep->id);
 
-    sint32 x = w->x + WW / 2;
-    sint32 y = w->y + (WH / 2) - 3;
+    int32_t x = w->x + WW / 2;
+    int32_t y = w->y + (WH / 2) - 3;
 
     gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_FIRE_STAFF_ID, COLOUR_BLACK);
 }

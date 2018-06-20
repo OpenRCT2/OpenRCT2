@@ -32,7 +32,7 @@ namespace OpenRCT2
         Date& GetDate() { return _date; }
         Park& GetPark() { return *_park; }
 
-        void InitAll(sint32 mapSize);
+        void InitAll(int32_t mapSize);
         void Update();
         void UpdateLogic();
     };

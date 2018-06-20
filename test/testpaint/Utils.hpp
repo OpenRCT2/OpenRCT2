@@ -12,7 +12,7 @@
 #include <openrct2/common.h>
 
 namespace Utils {
-    int getTrackSequenceCount(uint8 rideType, uint8 trackType);
-    bool rideSupportsTrackType(uint8 rideType, uint8 trackType);
-    bool rideIsImplemented(uint8 rideType);
+    int getTrackSequenceCount(uint8_t rideType, uint8_t trackType);
+    bool rideSupportsTrackType(uint8_t rideType, uint8_t trackType);
+    bool rideIsImplemented(uint8_t rideType);
 }
