@@ -9,14 +9,19 @@
 
 #if defined(__APPLE__) && defined(__MACH__)
 
+#include "../config/Config.h"
+#include "../localisation/Language.h"
+#include "../util/Util.h"
+#include "platform.h"
+
+// undefine `interface` and `abstract`, because it's causing conflicts with Objective-C's keywords
+#undef interface
+#undef abstract
+
 #import <AppKit/AppKit.h>
 #import <Foundation/Foundation.h>
 #include <mach-o/dyld.h>
 #include <pwd.h>
-#include "platform.h"
-#include "../util/Util.h"
-#include "../localisation/Language.h"
-#include "../config/Config.h"
 
 void macos_disallow_automatic_window_tabbing()
 {
