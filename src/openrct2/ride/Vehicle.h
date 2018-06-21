@@ -250,7 +250,7 @@ enum : uint32_t
     VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES = 1 << 12,  // Setting this will cause the game to set vehicleEntry->num_vertical_frames to vehicleEntry->num_vertical_frames_override, rather than determining it itself.
     VEHICLE_ENTRY_FLAG_13 = 1 << 13,
     VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES = 1 << 14,    // 16x additional frames for vehicle. A spinning item with additional frames must always face forward to load/unload. Spinning without can load/unload at 4 rotations.
-    VEHICLE_ENTRY_FLAG_15 = 1 << 15,
+    VEHICLE_ENTRY_FLAG_LIFT = 1 << 15,
     VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1 = 1 << 16,
     VEHICLE_ENTRY_FLAG_SWINGING = 1 << 17,
     VEHICLE_ENTRY_FLAG_SPINNING = 1 << 18,

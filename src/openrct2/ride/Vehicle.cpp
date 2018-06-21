@@ -4631,7 +4631,7 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
     uint8_t randDirection = scenario_rand() & 3;
 
     rct_ride_entry * rideEntry = get_ride_entry(vehicle->ride_subtype);
-    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_7) || vehicle->lost_time_out > 1920)
+    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_WANDERING) || vehicle->lost_time_out > 1920)
     {
         if (scenario_rand() & 1)
         {
@@ -8387,7 +8387,7 @@ loc_6DB967:
     rct_vehicle * head = vehicle_get_head(GET_VEHICLE(regs.bp));
 
     regs.eax = abs(vehicle->velocity - head->velocity);
-    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_18))
+    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
     {
         if (regs.eax > 0xE0000)
         {
@@ -8709,7 +8709,7 @@ loc_6DBE7F:
     rct_vehicle * v4 = gCurrentVehicle;
     regs.eax         = abs(v4->velocity - v3->velocity);
 
-    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_18))
+    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
     {
         if (regs.eax > 0xE0000)
         {
@@ -9554,7 +9554,7 @@ static void vehicle_update_track_motion_powered_ride_acceleration(rct_vehicle * 
         poweredAcceleration /= quarterForce;
     }
 
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_15)
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_LIFT)
     {
         poweredAcceleration *= 4;
     }
