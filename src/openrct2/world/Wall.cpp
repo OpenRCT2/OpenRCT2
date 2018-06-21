@@ -85,7 +85,7 @@ static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
     }
 
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-    if (rideEntry->flags & RIDE_ENTRY_FLAG_16)
+    if (rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_DOOR_CONSTRUCTION)
     {
         return false;
     }
