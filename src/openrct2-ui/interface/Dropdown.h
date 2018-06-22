@@ -9,13 +9,13 @@
 
 #pragma once
 
-#include <openrct2/common.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2/common.h>
 
-#define DROPDOWN_SEPARATOR            0
+#define DROPDOWN_SEPARATOR 0
 #define DROPDOWN_FORMAT_COLOUR_PICKER 0xFFFE
-#define DROPDOWN_FORMAT_LAND_PICKER   0xFFFF
-#define DROPDOWN_ITEMS_MAX_SIZE       128
+#define DROPDOWN_FORMAT_LAND_PICKER 0xFFFF
+#define DROPDOWN_ITEMS_MAX_SIZE 128
 
 enum
 {
@@ -39,9 +39,27 @@ void dropdown_set_checked(int32_t index, bool value);
 void dropdown_set_disabled(int32_t index, bool value);
 
 void window_dropdown_show_text(int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, size_t num_items);
-void window_dropdown_show_text_custom_width(int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t custom_height, uint8_t flags, size_t num_items, int32_t width);
-void window_dropdown_show_image(int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, int32_t numItems, int32_t itemWidth, int32_t itemHeight, int32_t numColumns);
+void window_dropdown_show_text_custom_width(
+    int32_t x,
+    int32_t y,
+    int32_t extray,
+    uint8_t colour,
+    uint8_t custom_height,
+    uint8_t flags,
+    size_t num_items,
+    int32_t width);
+void window_dropdown_show_image(
+    int32_t x,
+    int32_t y,
+    int32_t extray,
+    uint8_t colour,
+    uint8_t flags,
+    int32_t numItems,
+    int32_t itemWidth,
+    int32_t itemHeight,
+    int32_t numColumns);
 void window_dropdown_close();
 int32_t dropdown_index_from_point(int32_t x, int32_t y, rct_window* w);
-void window_dropdown_show_colour(rct_window *w, rct_widget *widget, uint8_t dropdownColour, uint8_t selectedColour);
-void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
+void window_dropdown_show_colour(rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour);
+void window_dropdown_show_colour_available(
+    rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
