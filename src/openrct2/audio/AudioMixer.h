@@ -11,9 +11,9 @@
 
 #include "../common.h"
 
-#define MIXER_VOLUME_MAX        128
-#define MIXER_LOOP_NONE         0
-#define MIXER_LOOP_INFINITE     (-1)
+#define MIXER_VOLUME_MAX 128
+#define MIXER_LOOP_NONE 0
+#define MIXER_LOOP_INFINITE (-1)
 
 enum MIXER_GROUP
 {
@@ -34,17 +34,17 @@ namespace OpenRCT2::Audio
     {
         virtual ~IAudioMixer() = default;
 
-        virtual void Init(const char * device) abstract;
+        virtual void Init(const char* device) abstract;
         virtual void Close() abstract;
         virtual void Lock() abstract;
         virtual void Unlock() abstract;
-        virtual IAudioChannel * Play(IAudioSource * source, int32_t loop, bool deleteondone, bool deletesourceondone) abstract;
+        virtual IAudioChannel* Play(IAudioSource * source, int32_t loop, bool deleteondone, bool deletesourceondone) abstract;
         virtual void Stop(IAudioChannel * channel) abstract;
         virtual bool LoadMusic(size_t pathid) abstract;
         virtual void SetVolume(float volume) abstract;
 
-        virtual IAudioSource * GetSoundSource(int32_t id) abstract;
-        virtual IAudioSource * GetMusicSource(int32_t id) abstract;
+        virtual IAudioSource* GetSoundSource(int32_t id) abstract;
+        virtual IAudioSource* GetMusicSource(int32_t id) abstract;
     };
 } // namespace OpenRCT2::Audio
 
@@ -55,7 +55,7 @@ namespace OpenRCT2::Audio
 #define DSBPAN_RIGHT 10000
 #endif
 
-void Mixer_Init(const char * device);
+void Mixer_Init(const char* device);
 void* Mixer_Play_Effect(size_t id, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone);
 void Mixer_Stop_Channel(void* channel);
 void Mixer_Channel_Volume(void* channel, int32_t volume);
@@ -71,4 +71,3 @@ void Mixer_SetVolume(float volume);
 int32_t DStoMixerVolume(int32_t volume);
 float DStoMixerPan(int32_t pan);
 double DStoMixerRate(int32_t frequency);
-

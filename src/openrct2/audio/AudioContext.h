@@ -9,10 +9,11 @@
 
 #pragma once
 
+#include "../common.h"
+
 #include <memory>
 #include <string>
 #include <vector>
-#include "../common.h"
 
 namespace OpenRCT2::Audio
 {
@@ -27,19 +28,18 @@ namespace OpenRCT2::Audio
     {
         virtual ~IAudioContext() = default;
 
-        virtual IAudioMixer * GetMixer() abstract;
+        virtual IAudioMixer* GetMixer() abstract;
 
         virtual std::vector<std::string> GetOutputDevices() abstract;
-        virtual void SetOutputDevice(const std::string &deviceName) abstract;
+        virtual void SetOutputDevice(const std::string& deviceName) abstract;
 
-        virtual IAudioSource * CreateStreamFromWAV(const std::string &path) abstract;
-
+        virtual IAudioSource* CreateStreamFromWAV(const std::string& path) abstract;
 
         virtual void StartTitleMusic() abstract;
 
-        virtual IAudioChannel * PlaySound(int32_t soundId, int32_t volume, int32_t pan) abstract;
-        virtual IAudioChannel * PlaySoundAtLocation(int32_t soundId, int16_t x, int16_t y, int16_t z) abstract;
-        virtual IAudioChannel * PlaySoundPanned(int32_t soundId, int32_t pan, int16_t x, int16_t y, int16_t z) abstract;
+        virtual IAudioChannel* PlaySound(int32_t soundId, int32_t volume, int32_t pan) abstract;
+        virtual IAudioChannel* PlaySoundAtLocation(int32_t soundId, int16_t x, int16_t y, int16_t z) abstract;
+        virtual IAudioChannel* PlaySoundPanned(int32_t soundId, int32_t pan, int16_t x, int16_t y, int16_t z) abstract;
 
         virtual void ToggleAllSounds() abstract;
         virtual void PauseSounds() abstract;
