@@ -12,10 +12,11 @@
 
 #include "../common.h"
 
-uint32_t format_get_code(const char *token);
-const char *format_get_token(uint32_t code);
+uint32_t format_get_code(const char* token);
+const char* format_get_token(uint32_t code);
 
-enum {
+enum
+{
     // Font format codes
 
     // The next byte specifies the X coordinate
@@ -135,22 +136,22 @@ enum {
 enum RCT2Polish
 {
     RCT2_A_OGONEK_UC = 159, // 0x9F
-    RCT2_C_ACUTE_UC = 162, // 0xA2
+    RCT2_C_ACUTE_UC = 162,  // 0xA2
     RCT2_E_OGONEK_UC = 166, // 0xA6
-    RCT2_N_ACUTE_UC = 198, // 0xC6
+    RCT2_N_ACUTE_UC = 198,  // 0xC6
     RCT2_L_STROKE_UC = 167, // 0xA7
-    RCT2_S_ACUTE_UC = 208, // 0xD0
-    RCT2_Z_DOT_UC = 216, // 0xD8
-    RCT2_Z_ACUTE_UC = 215, // 0xD7
+    RCT2_S_ACUTE_UC = 208,  // 0xD0
+    RCT2_Z_DOT_UC = 216,    // 0xD8
+    RCT2_Z_ACUTE_UC = 215,  // 0xD7
 
     RCT2_A_OGONEK = 221, // 0xDD
-    RCT2_C_ACUTE = 222, // 0xDE
+    RCT2_C_ACUTE = 222,  // 0xDE
     RCT2_E_OGONEK = 230, // 0xE6
-    RCT2_N_ACUTE = 240, // 0xF0
+    RCT2_N_ACUTE = 240,  // 0xF0
     RCT2_L_STROKE = 247, // 0xF7
-    RCT2_S_ACUTE = 248, // 0xF8
-    RCT2_Z_DOT = 253, // 0xFD
-    RCT2_Z_ACUTE = 254, // 0xFE
+    RCT2_S_ACUTE = 248,  // 0xF8
+    RCT2_Z_DOT = 253,    // 0xFD
+    RCT2_Z_ACUTE = 254,  // 0xFE
 };
 
 enum UnicodePolish
