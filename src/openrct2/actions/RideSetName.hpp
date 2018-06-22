@@ -29,10 +29,12 @@ private:
     std::string _name;
 
 public:
-    RideSetNameAction() {}
+    RideSetNameAction()
+    {
+    }
     RideSetNameAction(int32_t rideIndex, const std::string& name)
-        : _rideIndex(rideIndex),
-        _name(name)
+        : _rideIndex(rideIndex)
+        , _name(name)
     {
     }
 
@@ -50,7 +52,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        Ride *ride = get_ride(_rideIndex);
+        Ride* ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);
@@ -59,10 +61,12 @@ public:
 
         if (_name.empty())
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_INVALID_RIDE_ATTRACTION_NAME);
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_INVALID_RIDE_ATTRACTION_NAME);
         }
 
-        rct_string_id newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
+        rct_string_id newUserStringId
+            = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
         if (newUserStringId == 0)
         {
             // TODO: Probably exhausted, introduce new error.
@@ -75,9 +79,10 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_string_id newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
+        rct_string_id newUserStringId
+            = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
 
-        Ride *ride = get_ride(_rideIndex);
+        Ride* ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);

@@ -9,18 +9,17 @@
 
 #pragma once
 
+#include "../Cheats.h"
+#include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
-#include "../OpenRCT2.h"
-#include "GameAction.h"
-
-#include "../Cheats.h"
 #include "../management/Finance.h"
 #include "../world/Entrance.h"
-#include "../world/Park.h"
 #include "../world/Footpath.h"
 #include "../world/MapAnimation.h"
+#include "../world/Park.h"
 #include "../world/Sprite.h"
+#include "GameAction.h"
 
 struct PlaceParkEntranceAction : public GameActionBase<GAME_COMMAND_PLACE_PARK_ENTRANCE, GameActionResult>
 {
@@ -31,12 +30,14 @@ private:
     uint8_t _direction;
 
 public:
-    PlaceParkEntranceAction() {}
-    PlaceParkEntranceAction(int16_t x, int16_t y, int16_t z, int16_t direction) :
-        _x(x),
-        _y(y),
-        _z(z),
-        _direction(direction)
+    PlaceParkEntranceAction()
+    {
+    }
+    PlaceParkEntranceAction(int16_t x, int16_t y, int16_t z, int16_t direction)
+        : _x(x)
+        , _y(y)
+        , _z(z)
+        , _direction(direction)
     {
     }
 
@@ -56,7 +57,8 @@ public:
     {
         if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::NOT_IN_EDITOR_MODE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::NOT_IN_EDITOR_MODE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
         }
 
         gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
@@ -72,7 +74,8 @@ public:
 
         if (_x <= 32 || _y <= 32 || _x >= (gMapSizeUnits - 32) || _y >= (gMapSizeUnits - 32))
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
         }
 
         int8_t entranceNum = -1;
@@ -87,7 +90,8 @@ public:
 
         if (entranceNum == -1)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
         }
 
         int8_t zLow = _z * 2;
@@ -110,7 +114,8 @@ public:
             {
                 if (!map_can_construct_at(entranceLoc.x, entranceLoc.y, zLow, zHigh, 0xF))
                 {
-                    return std::make_unique<GameActionResult>(GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
+                    return std::make_unique<GameActionResult>(
+                        GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
                 }
             }
 
@@ -118,7 +123,8 @@ public:
             rct_tile_element* entranceElement = map_get_park_entrance_element_at(entranceLoc.x, entranceLoc.y, zLow, false);
             if (entranceElement != nullptr)
             {
-                return std::make_unique<GameActionResult>(GA_ERROR::ITEM_ALREADY_PLACED, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
+                return std::make_unique<GameActionResult>(
+                    GA_ERROR::ITEM_ALREADY_PLACED, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
             }
         }
 
@@ -195,10 +201,10 @@ public:
             }
 
             update_park_fences(entranceLoc);
-            update_park_fences({entranceLoc.x - 32, entranceLoc.y});
-            update_park_fences({entranceLoc.x + 32, entranceLoc.y});
-            update_park_fences({entranceLoc.x, entranceLoc.y - 32});
-            update_park_fences({entranceLoc.x, entranceLoc.y + 32});
+            update_park_fences({ entranceLoc.x - 32, entranceLoc.y });
+            update_park_fences({ entranceLoc.x + 32, entranceLoc.y });
+            update_park_fences({ entranceLoc.x, entranceLoc.y - 32 });
+            update_park_fences({ entranceLoc.x, entranceLoc.y + 32 });
 
             map_invalidate_tile(entranceLoc.x, entranceLoc.y, newElement->base_height * 8, newElement->clearance_height * 8);
 

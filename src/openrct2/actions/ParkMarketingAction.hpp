@@ -29,11 +29,13 @@ private:
     int32_t _numWeeks;
 
 public:
-    ParkMarketingAction() {}
+    ParkMarketingAction()
+    {
+    }
     ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks)
-        : _type(type),
-          _item(item),
-          _numWeeks(numWeeks)
+        : _type(type)
+        , _item(item)
+        , _numWeeks(numWeeks)
     {
     }
 
@@ -50,14 +52,14 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if ((size_t)_type >= Util::CountOf(AdvertisingCampaignPricePerWeek) ||
-            _numWeeks >= 256)
+        if ((size_t)_type >= Util::CountOf(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_START_MARKETING_CAMPAIGN);
         }
         if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_START_MARKETING_CAMPAIGN, STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);
+            return MakeResult(
+                GA_ERROR::DISALLOWED, STR_CANT_START_MARKETING_CAMPAIGN, STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);
         }
 
         return CreateResult();
@@ -65,7 +67,7 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        gMarketingCampaignDaysLeft[_type]  = _numWeeks | CAMPAIGN_ACTIVE_FLAG;
+        gMarketingCampaignDaysLeft[_type] = _numWeeks | CAMPAIGN_ACTIVE_FLAG;
         gMarketingCampaignRideIndex[_type] = _item;
 
         // We are only interested in invalidating the finances (marketing) window

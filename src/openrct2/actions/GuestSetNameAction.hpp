@@ -9,18 +9,17 @@
 
 #pragma once
 
-#include "../core/MemoryStream.h"
-#include "../localisation/StringIds.h"
-#include "GameAction.h"
-
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Sprite.h"
+#include "GameAction.h"
 
 struct GuestSetNameAction : public GameActionBase<GAME_COMMAND_SET_GUEST_NAME, GameActionResult>
 {
@@ -29,10 +28,12 @@ private:
     std::string _name;
 
 public:
-    GuestSetNameAction() {}
+    GuestSetNameAction()
+    {
+    }
     GuestSetNameAction(uint16_t spriteIndex, const std::string& name)
-        : _spriteIndex(spriteIndex),
-        _name(name)
+        : _spriteIndex(spriteIndex)
+        , _name(name)
     {
     }
 
@@ -50,7 +51,6 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        
         if (_spriteIndex >= MAX_SPRITES)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_NAME_GUEST, STR_NONE);
@@ -58,17 +58,19 @@ public:
 
         if (_name.empty())
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_NAME_GUEST, STR_ERR_INVALID_NAME_FOR_GUEST);
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::INVALID_PARAMETERS, STR_CANT_NAME_GUEST, STR_ERR_INVALID_NAME_FOR_GUEST);
         }
 
-        rct_peep * peep = GET_PEEP(_spriteIndex);
+        rct_peep* peep = GET_PEEP(_spriteIndex);
         if (peep->type != PEEP_TYPE_GUEST)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_NAME_GUEST, STR_NONE);
         }
 
-        rct_string_id newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
+        rct_string_id newUserStringId
+            = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
         if (newUserStringId == 0)
         {
             // TODO: Probably exhausted, introduce new error.
@@ -81,14 +83,15 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_string_id newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
+        rct_string_id newUserStringId
+            = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
         if (newUserStringId == 0)
         {
             // TODO: Probably exhausted, introduce new error.
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_CANT_NAME_GUEST, gGameCommandErrorText);
         }
-        
-        rct_peep * peep = GET_PEEP(_spriteIndex);
+
+        rct_peep* peep = GET_PEEP(_spriteIndex);
         if (peep->type != PEEP_TYPE_GUEST)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
@@ -96,7 +99,7 @@ public:
         }
 
         set_format_arg(0, uint32_t, peep->id);
-        utf8 * curName = gCommonStringFormatBuffer;
+        utf8* curName = gCommonStringFormatBuffer;
         rct_string_id curId = peep->name_string_idx;
         format_string(curName, 256, curId, gCommonFormatArgs);
 
