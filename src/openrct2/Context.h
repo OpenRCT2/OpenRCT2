@@ -26,24 +26,24 @@ using rct_windowclass = uint8_t;
 
 struct CursorState
 {
-    int32_t  x, y;
-    uint8_t   left, middle, right, any;
-    int32_t  wheel;
-    int32_t  old;
-    bool    touch, touchIsDouble;
-    uint32_t  touchDownTimestamp;
+    int32_t x, y;
+    uint8_t left, middle, right, any;
+    int32_t wheel;
+    int32_t old;
+    bool touch, touchIsDouble;
+    uint32_t touchDownTimestamp;
 };
 
 struct TextInputSession
 {
-    utf8 * Buffer;          // UTF-8 stream
-    size_t BufferSize;      // Maximum number of bytes (excluding null terminator)
-    size_t Size;            // Number of bytes (excluding null terminator)
-    size_t Length;          // Number of codepoints
-    size_t SelectionStart;  // Selection start, in bytes
-    size_t SelectionSize;   // Selection length in bytes
+    utf8* Buffer;          // UTF-8 stream
+    size_t BufferSize;     // Maximum number of bytes (excluding null terminator)
+    size_t Size;           // Number of bytes (excluding null terminator)
+    size_t Length;         // Number of codepoints
+    size_t SelectionStart; // Selection start, in bytes
+    size_t SelectionSize;  // Selection length in bytes
 
-    const utf8 * ImeBuffer; // IME UTF-8 stream
+    const utf8* ImeBuffer; // IME UTF-8 stream
 };
 
 struct Resolution
@@ -95,24 +95,25 @@ namespace OpenRCT2
 
         virtual std::shared_ptr<Audio::IAudioContext> GetAudioContext() abstract;
         virtual std::shared_ptr<Ui::IUiContext> GetUiContext() abstract;
-        virtual GameState * GetGameState() abstract;
+        virtual GameState* GetGameState() abstract;
         virtual std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() abstract;
         virtual Localisation::LocalisationService& GetLocalisationService() abstract;
         virtual std::shared_ptr<IObjectManager> GetObjectManager() abstract;
         virtual std::shared_ptr<IObjectRepository> GetObjectRepository() abstract;
-        virtual ITrackDesignRepository * GetTrackDesignRepository() abstract;
-        virtual IScenarioRepository *    GetScenarioRepository() abstract;
+        virtual ITrackDesignRepository* GetTrackDesignRepository() abstract;
+        virtual IScenarioRepository* GetScenarioRepository() abstract;
         virtual int32_t GetDrawingEngineType() abstract;
-        virtual Drawing::IDrawingEngine * GetDrawingEngine() abstract;
+        virtual Drawing::IDrawingEngine* GetDrawingEngine() abstract;
 
-        virtual int32_t RunOpenRCT2(int argc, const char * * argv) abstract;
+        virtual int32_t RunOpenRCT2(int argc, const char** argv) abstract;
 
         virtual bool Initialise() abstract;
         virtual void InitialiseDrawingEngine() abstract;
         virtual void DisposeDrawingEngine() abstract;
-        virtual bool LoadParkFromFile(const std::string &path, bool loadTitleScreenOnFail = false) abstract;
-        virtual bool LoadParkFromStream(IStream * stream, const std::string &path, bool loadTitleScreenFirstOnFail = false) abstract;
-        virtual void WriteLine(const std::string &s) abstract;
+        virtual bool LoadParkFromFile(const std::string& path, bool loadTitleScreenOnFail = false) abstract;
+        virtual bool LoadParkFromStream(IStream * stream, const std::string& path, bool loadTitleScreenFirstOnFail = false)
+            abstract;
+        virtual void WriteLine(const std::string& s) abstract;
         virtual void Finish() abstract;
         virtual void Quit() abstract;
 
@@ -127,7 +128,7 @@ namespace OpenRCT2
         const std::shared_ptr<IPlatformEnvironment>& env,
         const std::shared_ptr<Audio::IAudioContext>& audioContext,
         const std::shared_ptr<Ui::IUiContext>& uiContext);
-    IContext * GetContext();
+    IContext* GetContext();
 } // namespace OpenRCT2
 
 enum
@@ -207,35 +208,35 @@ void context_setcurrentcursor(int32_t cursor);
 void context_update_cursor_scale();
 void context_hide_cursor();
 void context_show_cursor();
-void context_get_cursor_position(int32_t * x, int32_t * y);
-void context_get_cursor_position_scaled(int32_t * x, int32_t * y);
+void context_get_cursor_position(int32_t* x, int32_t* y);
+void context_get_cursor_position_scaled(int32_t* x, int32_t* y);
 void context_set_cursor_position(int32_t x, int32_t y);
-const CursorState * context_get_cursor_state();
-const uint8_t * context_get_keys_state();
-const uint8_t * context_get_keys_pressed();
-TextInputSession * context_start_text_input(utf8 * buffer, size_t maxLength);
+const CursorState* context_get_cursor_state();
+const uint8_t* context_get_keys_state();
+const uint8_t* context_get_keys_pressed();
+TextInputSession* context_start_text_input(utf8* buffer, size_t maxLength);
 void context_stop_text_input();
 bool context_is_input_active();
 void context_trigger_resize();
 void context_set_fullscreen_mode(int32_t mode);
 void context_recreate_window();
-int32_t context_get_resolutions(struct Resolution * * outResolutions);
+int32_t context_get_resolutions(struct Resolution** outResolutions);
 int32_t context_get_width();
 int32_t context_get_height();
 bool context_has_focus();
 void context_set_cursor_trap(bool value);
-rct_window * context_open_window(rct_windowclass wc);
-rct_window * context_open_detail_window(uint8_t type, int32_t id);
-rct_window * context_open_window_view(uint8_t view);
-rct_window * context_show_error(rct_string_id title, rct_string_id message);
-rct_window * context_open_intent(Intent * intent);
-void context_broadcast_intent(Intent * intent);
+rct_window* context_open_window(rct_windowclass wc);
+rct_window* context_open_detail_window(uint8_t type, int32_t id);
+rct_window* context_open_window_view(uint8_t view);
+rct_window* context_show_error(rct_string_id title, rct_string_id message);
+rct_window* context_open_intent(Intent* intent);
+void context_broadcast_intent(Intent* intent);
 void context_force_close_window_by_class(rct_windowclass wc);
 void context_update_map_tooltip();
 void context_handle_input();
 void context_input_handle_keyboard(bool isTitle);
-bool context_read_bmp(void * * outPixels, uint32_t * outWidth, uint32_t * outHeight, const utf8 * path);
+bool context_read_bmp(void** outPixels, uint32_t* outWidth, uint32_t* outHeight, const utf8* path);
 void context_quit();
-const utf8 * context_get_path_legacy(int32_t pathId);
-bool context_load_park_from_file(const utf8 * path);
-bool context_load_park_from_stream(void * stream);
+const utf8* context_get_path_legacy(int32_t pathId);
+bool context_load_park_from_file(const utf8* path);
+bool context_load_park_from_stream(void* stream);

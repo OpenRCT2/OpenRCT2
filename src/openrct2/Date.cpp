@@ -7,21 +7,22 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "localisation/Date.h"
+
+#include "Date.h"
 #include "core/Guard.hpp"
 #include "core/Math.hpp"
-#include "localisation/Date.h"
-#include "Date.h"
 
 using namespace OpenRCT2;
 
-constexpr int32_t MONTH_TICKS_INCREMENT  = 4;
-constexpr int32_t MASK_WEEK_TICKS        = 0x3FFF;
-constexpr int32_t MASK_FORTNIGHT_TICKS   = 0x7FFF;
-constexpr int32_t MASK_MONTH_TICKS       = 0xFFFF;
+constexpr int32_t MONTH_TICKS_INCREMENT = 4;
+constexpr int32_t MASK_WEEK_TICKS = 0x3FFF;
+constexpr int32_t MASK_FORTNIGHT_TICKS = 0x7FFF;
+constexpr int32_t MASK_MONTH_TICKS = 0xFFFF;
 
 Date::Date(uint32_t monthsElapsed, uint16_t monthTicks)
-    : _monthTicks(monthTicks),
-      _monthsElapsed(monthsElapsed)
+    : _monthTicks(monthTicks)
+    , _monthsElapsed(monthsElapsed)
 {
 }
 

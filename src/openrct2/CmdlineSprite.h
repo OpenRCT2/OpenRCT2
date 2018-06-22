@@ -12,7 +12,7 @@
 
 #include "common.h"
 
-int32_t cmdline_for_sprite(const char **argv, int32_t argc);
+int32_t cmdline_for_sprite(const char** argv, int32_t argc);
 extern int32_t gSpriteMode;
 
 #endif

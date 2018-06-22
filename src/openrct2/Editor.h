@@ -18,7 +18,7 @@ namespace Editor
     void ConvertSaveToScenario();
     void LoadTrackDesigner();
     void LoadTrackManager();
-    bool LoadLandscape(const utf8 *path);
+    bool LoadLandscape(const utf8* path);
 
     bool CheckPark();
     int32_t CheckObjectSelection();
@@ -33,14 +33,14 @@ namespace Editor
 
 enum RCT2_EDITOR_STEP
 {
-    EDITOR_STEP_OBJECT_SELECTION,           // 0
-    EDITOR_STEP_LANDSCAPE_EDITOR,           // 1
-    EDITOR_STEP_INVENTIONS_LIST_SET_UP,     // 2
-    EDITOR_STEP_OPTIONS_SELECTION,          // 3
-    EDITOR_STEP_OBJECTIVE_SELECTION,        // 4
-    EDITOR_STEP_SAVE_SCENARIO,              // 5
-    EDITOR_STEP_ROLLERCOASTER_DESIGNER,     // 6
-    EDITOR_STEP_TRACK_DESIGNS_MANAGER       // 7
+    EDITOR_STEP_OBJECT_SELECTION,       // 0
+    EDITOR_STEP_LANDSCAPE_EDITOR,       // 1
+    EDITOR_STEP_INVENTIONS_LIST_SET_UP, // 2
+    EDITOR_STEP_OPTIONS_SELECTION,      // 3
+    EDITOR_STEP_OBJECTIVE_SELECTION,    // 4
+    EDITOR_STEP_SAVE_SCENARIO,          // 5
+    EDITOR_STEP_ROLLERCOASTER_DESIGNER, // 6
+    EDITOR_STEP_TRACK_DESIGNS_MANAGER   // 7
 };
 
 enum
@@ -70,6 +70,7 @@ enum
 
 void editor_open_windows_for_current_step();
 
-void game_command_edit_scenario_options(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
+void game_command_edit_scenario_options(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 #endif

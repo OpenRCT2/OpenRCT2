@@ -34,8 +34,8 @@ extern bool gCheatsAllowArbitraryRideTypeChanges;
 extern bool gCheatsIgnoreResearchStatus;
 extern bool gCheatsEnableAllDrawableTrackPieces;
 
-
-enum {
+enum
+{
     CHEAT_SANDBOXMODE,
     CHEAT_DISABLECLEARANCECHECKS,
     CHEAT_DISABLESUPPORTLIMITS,
@@ -87,7 +87,8 @@ enum {
     CHEAT_DATE_SET,
 };
 
-enum {
+enum
+{
     GUEST_PARAMETER_HAPPINESS,
     GUEST_PARAMETER_ENERGY,
     GUEST_PARAMETER_HUNGER,
@@ -98,14 +99,15 @@ enum {
     GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY
 };
 
-enum {
+enum
+{
     OBJECT_MONEY,
     OBJECT_PARK_MAP,
     OBJECT_BALLOON,
     OBJECT_UMBRELLA
 };
 
-#define CHEATS_GIVE_GUESTS_MONEY MONEY(1000,00)
+#define CHEATS_GIVE_GUESTS_MONEY MONEY(1000, 00)
 #define CHEATS_TRAM_INCREMENT 250
 #define CHEATS_STAFF_FAST_SPEED 0xFF
 #define CHEATS_STAFF_NORMAL_SPEED 0x60

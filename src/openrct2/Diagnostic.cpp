@@ -7,10 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Diagnostic.h"
+
+#include "core/String.hpp"
+
 #include <cstdarg>
 #include <cstdio>
-#include "core/String.hpp"
-#include "Diagnostic.h"
 
 #ifdef __ANDROID__
 #include <android/log.h>
@@ -19,22 +21,24 @@
 [[maybe_unused]] static bool _log_location_enabled = true;
 bool _log_levels[DIAGNOSTIC_LEVEL_COUNT] = { true, true, true, false, true };
 
-static FILE * diagnostic_get_stream(DIAGNOSTIC_LEVEL level)
+static FILE* diagnostic_get_stream(DIAGNOSTIC_LEVEL level)
 {
-    switch (level) {
-    case DIAGNOSTIC_LEVEL_VERBOSE:
-    case DIAGNOSTIC_LEVEL_INFORMATION:
-        return stdout;
-    default:
-        return stderr;
+    switch (level)
+    {
+        case DIAGNOSTIC_LEVEL_VERBOSE:
+        case DIAGNOSTIC_LEVEL_INFORMATION:
+            return stdout;
+        default:
+            return stderr;
     }
 }
 
 #ifdef __ANDROID__
 
-int _android_log_priority[DIAGNOSTIC_LEVEL_COUNT] = {ANDROID_LOG_FATAL, ANDROID_LOG_ERROR, ANDROID_LOG_WARN, ANDROID_LOG_VERBOSE, ANDROID_LOG_INFO};
+int _android_log_priority[DIAGNOSTIC_LEVEL_COUNT]
+    = { ANDROID_LOG_FATAL, ANDROID_LOG_ERROR, ANDROID_LOG_WARN, ANDROID_LOG_VERBOSE, ANDROID_LOG_INFO };
 
-void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char *format, ...)
+void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char* format, ...)
 {
     va_list args;
 
@@ -46,7 +50,8 @@ void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char *format, ...)
     va_end(args);
 }
 
-void diagnostic_log_with_location(DIAGNOSTIC_LEVEL diagnosticLevel, const char *file, const char *function, int32_t line, const char *format, ...)
+void diagnostic_log_with_location(
+    DIAGNOSTIC_LEVEL diagnosticLevel, const char* file, const char* function, int32_t line, const char* format, ...)
 {
     va_list args;
     char buf[1024];
@@ -63,15 +68,9 @@ void diagnostic_log_with_location(DIAGNOSTIC_LEVEL diagnosticLevel, const char *
 
 #else
 
-static constexpr const char * _level_strings[] = {
-    "FATAL",
-    "ERROR",
-    "WARNING",
-    "VERBOSE",
-    "INFO"
-};
+static constexpr const char* _level_strings[] = { "FATAL", "ERROR", "WARNING", "VERBOSE", "INFO" };
 
-void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char *format, ...)
+void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char* format, ...)
 {
     va_list args;
     if (_log_levels[diagnosticLevel])
@@ -89,7 +88,8 @@ void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char *format, ...)
     }
 }
 
-void diagnostic_log_with_location(DIAGNOSTIC_LEVEL diagnosticLevel, const char *file, const char *function, int32_t line, const char *format, ...)
+void diagnostic_log_with_location(
+    DIAGNOSTIC_LEVEL diagnosticLevel, const char* file, const char* function, int32_t line, const char* format, ...)
 {
     va_list args;
     if (_log_levels[diagnosticLevel])

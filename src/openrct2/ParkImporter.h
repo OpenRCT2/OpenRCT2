@@ -10,7 +10,6 @@
 #pragma once
 
 #include "common.h"
-
 #include "object/Object.h"
 
 enum PARK_LOAD_ERROR
@@ -22,10 +21,11 @@ enum PARK_LOAD_ERROR
     PARK_LOAD_ERROR_UNKNOWN = 255
 };
 
+#include "core/String.hpp"
+
 #include <memory>
 #include <string>
 #include <vector>
-#include "core/String.hpp"
 
 interface IObjectManager;
 interface IObjectRepository;
@@ -51,13 +51,11 @@ interface IParkImporter
 public:
     virtual ~IParkImporter() = default;
 
-    virtual ParkLoadResult  Load(const utf8 * path) abstract;
-    virtual ParkLoadResult  LoadSavedGame(const utf8 * path, bool skipObjectCheck = false) abstract;
-    virtual ParkLoadResult  LoadScenario(const utf8 * path, bool skipObjectCheck = false) abstract;
-    virtual ParkLoadResult  LoadFromStream(IStream * stream,
-                                           bool isScenario,
-                                           bool skipObjectCheck = false,
-                                           const utf8 * path = String::Empty) abstract;
+    virtual ParkLoadResult Load(const utf8* path) abstract;
+    virtual ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) abstract;
+    virtual ParkLoadResult LoadScenario(const utf8* path, bool skipObjectCheck = false) abstract;
+    virtual ParkLoadResult LoadFromStream(
+        IStream * stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) abstract;
 
     virtual void Import() abstract;
     virtual bool GetDetails(scenario_index_entry * dst) abstract;
@@ -65,13 +63,14 @@ public:
 
 namespace ParkImporter
 {
-    std::unique_ptr<IParkImporter> Create(const std::string &hintPath);
+    std::unique_ptr<IParkImporter> Create(const std::string& hintPath);
     std::unique_ptr<IParkImporter> CreateS4();
-    std::unique_ptr<IParkImporter> CreateS6(std::shared_ptr<IObjectRepository> objectRepository, std::shared_ptr<IObjectManager> objectManager);
+    std::unique_ptr<IParkImporter>
+        CreateS6(std::shared_ptr<IObjectRepository> objectRepository, std::shared_ptr<IObjectManager> objectManager);
 
-    bool ExtensionIsRCT1(const std::string &extension);
-    bool ExtensionIsScenario(const std::string &extension);
-}
+    bool ExtensionIsRCT1(const std::string& extension);
+    bool ExtensionIsScenario(const std::string& extension);
+} // namespace ParkImporter
 
 class ObjectLoadException : public std::exception
 {
