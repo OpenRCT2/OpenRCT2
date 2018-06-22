@@ -9,9 +9,10 @@
 
 #pragma once
 
-#include <memory>
 #include "../common.h"
 #include "SawyerChunk.h"
+
+#include <memory>
 
 interface IStream;
 
@@ -22,28 +23,27 @@ interface IStream;
 class SawyerChunkWriter final
 {
 private:
-    IStream * const _stream = nullptr;
+    IStream* const _stream = nullptr;
 
 public:
-    explicit SawyerChunkWriter(IStream * stream);
+    explicit SawyerChunkWriter(IStream* stream);
 
     /**
      * Writes a chunk to the stream.
      */
-    void WriteChunk(const SawyerChunk * chunk);
+    void WriteChunk(const SawyerChunk* chunk);
 
     /**
      * Writes a chunk to the stream containing the given buffer.
      * @param src The source buffer.
      * @param length The size of the source buffer.
      */
-    void WriteChunk(const void * src, size_t length, SAWYER_ENCODING encoding);
+    void WriteChunk(const void* src, size_t length, SAWYER_ENCODING encoding);
 
     /**
      * Writes a chunk to the stream containing the given type.
      */
-    template<typename T>
-    void WriteChunk(const T * src, SAWYER_ENCODING encoding)
+    template<typename T> void WriteChunk(const T* src, SAWYER_ENCODING encoding)
     {
         WriteChunk(src, sizeof(T), encoding);
     }
