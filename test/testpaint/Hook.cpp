@@ -15,9 +15,9 @@
 #ifndef NO_RCT2
 
 #ifdef _WIN32
-    #include <windows.h>
+#include <windows.h>
 #else
-    #include <sys/mman.h>
+#include <sys/mman.h>
 #endif // _WIN32
 
 #include "Hook.h"
@@ -31,18 +31,18 @@ registers gHookRegisters = {};
 
 // This macro writes a little-endian 4-byte long value into *data
 // It is used to avoid type punning.
-#define write_address_strictalias(data, addr) \
-    *(data + 0) = ((addr) & 0x000000ff) >> 0; \
-    *(data + 1) = ((addr) & 0x0000ff00) >> 8; \
-    *(data + 2) = ((addr) & 0x00ff0000) >> 16; \
-    *(data + 3) = ((addr) & 0xff000000) >> 24;
+#define write_address_strictalias(data, addr)                                                                                  \
+    *(data + 0) = ((addr)&0x000000ff) >> 0;                                                                                    \
+    *(data + 1) = ((addr)&0x0000ff00) >> 8;                                                                                    \
+    *(data + 2) = ((addr)&0x00ff0000) >> 16;                                                                                   \
+    *(data + 3) = ((addr)&0xff000000) >> 24;
 
 static void hookfunc(uintptr_t address, uintptr_t hookAddress, int32_t stacksize)
 {
     int32_t i = 0;
     uint8_t data[HOOK_BYTE_COUNT] = {};
 
-    uintptr_t registerAddress = (uintptr_t) &gHookRegisters;
+    uintptr_t registerAddress = (uintptr_t)&gHookRegisters;
 
     data[i++] = 0x89; // mov [gHookRegisters], eax
     data[i++] = (0b000 << 3) | 0b101;
@@ -93,7 +93,6 @@ static void hookfunc(uintptr_t address, uintptr_t hookAddress, int32_t stacksize
 
     write_address_strictalias(&data[i], hookAddress - address - i - 4);
     i += 4;
-
 
     data[i++] = 0x83; // add esp, 4
     data[i++] = 0xC4;
@@ -153,13 +152,14 @@ static void hookfunc(uintptr_t address, uintptr_t hookAddress, int32_t stacksize
     WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
 #else
     // We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
-    memcpy((void *)address, data, i);
+    memcpy((void*)address, data, i);
 #endif // _WIN32
 }
 
 void addhook(uintptr_t address, hook_function function)
 {
-    if (!_hookTableAddress) {
+    if (!_hookTableAddress)
+    {
         size_t size = _maxHooks * HOOK_BYTE_COUNT;
 #ifdef _WIN32
         _hookTableAddress = VirtualAllocEx(GetCurrentProcess(), NULL, size, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
@@ -172,10 +172,11 @@ void addhook(uintptr_t address, hook_function function)
         }
 #endif // _WIN32
     }
-    if (_hookTableOffset > _maxHooks) {
+    if (_hookTableOffset > _maxHooks)
+    {
         return;
     }
-    uint32_t hookaddress = (uint32_t)((uint64_t)(_hookTableAddress) & 0xFFFFFFFF) + (_hookTableOffset * HOOK_BYTE_COUNT);
+    uint32_t hookaddress = (uint32_t)((uint64_t)(_hookTableAddress)&0xFFFFFFFF) + (_hookTableOffset * HOOK_BYTE_COUNT);
     uint8_t data[9];
     int32_t i = 0;
     data[i++] = 0xE9; // jmp
@@ -188,15 +189,15 @@ void addhook(uintptr_t address, hook_function function)
     WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
 #else
     // We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
-    int32_t err = mprotect((void *)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_WRITE);
+    int32_t err = mprotect((void*)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_WRITE);
     if (err != 0)
     {
         perror("mprotect");
     }
 
-    memcpy((void *)address, data, i);
+    memcpy((void*)address, data, i);
 
-    err = mprotect((void *)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_EXEC);
+    err = mprotect((void*)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_EXEC);
     if (err != 0)
     {
         perror("mprotect");

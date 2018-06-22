@@ -11,23 +11,30 @@
 
 #include <openrct2/common.h>
 
-struct SupportCall {
+struct SupportCall
+{
     int32_t height;
     int16_t slope;
 
-    friend bool operator==(const SupportCall& lhs, const SupportCall& rhs) {
-        if (lhs.height != rhs.height) return false;
-        if (lhs.slope != rhs.slope) return false;
+    friend bool operator==(const SupportCall& lhs, const SupportCall& rhs)
+    {
+        if (lhs.height != rhs.height)
+            return false;
+        if (lhs.slope != rhs.slope)
+            return false;
 
         return true;
     }
 
-    bool operator!=(const SupportCall &other) const {
+    bool operator!=(const SupportCall& other) const
+    {
         return !(*this == other);
     }
 
-    bool operator<(const SupportCall &other) const {
-        if (height != other.height) {
+    bool operator<(const SupportCall& other) const
+    {
+        if (height != other.height)
+        {
             return height < other.height;
         }
 
@@ -35,10 +42,11 @@ struct SupportCall {
     }
 };
 
-namespace GeneralSupportHeightCall {
+namespace GeneralSupportHeightCall
+{
     bool CallsMatch(SupportCall tileSupportCalls[4]);
 
-    bool FindMostCommonSupportCall(SupportCall calls[4], SupportCall *out);
+    bool FindMostCommonSupportCall(SupportCall calls[4], SupportCall* out);
 
-    bool AssertEquals(const SupportCall *lhs, const SupportCall *rhs);
-};
+    bool AssertEquals(const SupportCall* lhs, const SupportCall* rhs);
+}; // namespace GeneralSupportHeightCall

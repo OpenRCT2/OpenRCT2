@@ -9,8 +9,9 @@
 
 #pragma once
 
-#include <openrct2/common.h>
 #include "TestPaint.hpp"
+
+#include <openrct2/common.h>
 
 enum
 {
@@ -51,7 +52,8 @@ struct function_call
     } supports;
 };
 
-class FunctionCall {
+class FunctionCall
+{
 public:
     static bool AssertsEquals(function_call expected, function_call actual);
     static bool AssertsEquals(std::vector<function_call> expected, std::vector<function_call> actual);

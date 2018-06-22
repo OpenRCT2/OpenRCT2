@@ -13,19 +13,19 @@
 #include <openrct2/common.h>
 
 #ifdef USE_MMAP
-    #if defined(PLATFORM_64BIT)
-        #define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x200000000)
-    #elif defined(PLATFORM_32BIT)
-        #define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x09000000)
-    #else
-        #error "Unknown platform"
-    #endif
+#if defined(PLATFORM_64BIT)
+#define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x200000000)
+#elif defined(PLATFORM_32BIT)
+#define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x09000000)
 #else
-    #define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x8a4000)
+#error "Unknown platform"
+#endif
+#else
+#define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x8a4000)
 #endif
 
-#define RCT2_ADDRESS(address, type)             ((type*)(GOOD_PLACE_FOR_DATA_SEGMENT - 0x8a4000 + (address)))
-#define RCT2_GLOBAL(address, type)              (*((type*)(GOOD_PLACE_FOR_DATA_SEGMENT - 0x8a4000 + (address))))
+#define RCT2_ADDRESS(address, type) ((type*)(GOOD_PLACE_FOR_DATA_SEGMENT - 0x8a4000 + (address)))
+#define RCT2_GLOBAL(address, type) (*((type*)(GOOD_PLACE_FOR_DATA_SEGMENT - 0x8a4000 + (address))))
 
 /**
  * Returns the flags register
@@ -39,8 +39,7 @@
  * P = Parity flag
  * All other bits are undefined.
  */
-int32_t RCT2_CALLPROC_X(int32_t address, int32_t _eax, int32_t _ebx, int32_t _ecx, int32_t _edx, int32_t _esi, int32_t _edi, int32_t _ebp);
-
-
+int32_t RCT2_CALLPROC_X(
+    int32_t address, int32_t _eax, int32_t _ebx, int32_t _ecx, int32_t _edx, int32_t _esi, int32_t _edi, int32_t _ebp);
 
 #endif
