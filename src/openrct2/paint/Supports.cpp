@@ -7,10 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Supports.h"
+
 #include "../interface/Viewport.h"
 #include "../world/Surface.h"
 #include "Paint.h"
-#include "Supports.h"
 #include "tile_element/Paint.TileElement.h"
 
 /** rct2: 0x0097AF20, 0x0097AF21 */
@@ -335,24 +336,30 @@ static constexpr const uint16_t word_97B3C4[] = {
  * @param[out] underground (Carry flag) true if underground.
  * @returns (al) true if any supports have been drawn, otherwise false.
  */
-bool wooden_a_supports_paint_setup(paint_session * session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags, bool* underground)
+bool wooden_a_supports_paint_setup(
+    paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags, bool* underground)
 {
-    if (underground != nullptr){
+    if (underground != nullptr)
+    {
         *underground = false;
     }
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    {
         return false;
     }
 
-    if (!(session->Unk141E9DB & G141E9DB_FLAG_1)) {
+    if (!(session->Unk141E9DB & G141E9DB_FLAG_1))
+    {
         return false;
     }
 
     int32_t z = floor2(session->Support.height + 15, 16);
     height -= z;
-    if (height < 0) {
-        if (underground != nullptr) {
+    if (height < 0)
+    {
+        if (underground != nullptr)
+        {
             *underground = true;
         }
         return false;
@@ -364,23 +371,31 @@ bool wooden_a_supports_paint_setup(paint_session * session, int32_t supportType,
 
     // Draw base support (usually shaped to the slope)
     int32_t slope = session->Support.slope;
-    if (slope & (1 << 5)) {
+    if (slope & (1 << 5))
+    {
         // Above scenery (just put a base piece above it)
         drawFlatPiece = true;
-    } else if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) {
+    }
+    else if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+    {
         // Steep diagonal (place the correct shaped support for the slope)
         height -= 2;
-        if (height < 0) {
-            if (underground != nullptr) {
+        if (height < 0)
+        {
+            if (underground != nullptr)
+            {
                 *underground = true;
             }
             return false;
         }
 
         int32_t imageId = WoodenSupportImageIds[supportType].slope;
-        if (imageId == 0) {
+        if (imageId == 0)
+        {
             drawFlatPiece = true;
-        } else {
+        }
+        else
+        {
             imageId += word_97B3C4[slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
             imageId |= imageColourFlags;
             sub_98197C(session, imageId, 0, 0, 32, 32, 11, z, 0, 0, z + 2);
@@ -390,20 +405,27 @@ bool wooden_a_supports_paint_setup(paint_session * session, int32_t supportType,
             hasSupports = true;
         }
         z += 32;
-    } else if ((slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0) {
+    }
+    else if ((slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
+    {
         // 1 to 3 quarters up
         height--;
-        if (height < 0) {
-            if (underground != nullptr) {
+        if (height < 0)
+        {
+            if (underground != nullptr)
+            {
                 *underground = true;
             }
             return false;
         }
 
         int32_t imageId = WoodenSupportImageIds[supportType].slope;
-        if (imageId == 0) {
+        if (imageId == 0)
+        {
             drawFlatPiece = true;
-        } else {
+        }
+        else
+        {
             imageId += word_97B3C4[slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
             imageId |= imageColourFlags;
 
@@ -414,15 +436,18 @@ bool wooden_a_supports_paint_setup(paint_session * session, int32_t supportType,
     }
 
     // Draw flat base support
-    if (drawFlatPiece) {
+    if (drawFlatPiece)
+    {
         int32_t imageId = WoodenSupportImageIds[supportType].flat | imageColourFlags;
         sub_98196C(session, imageId, 0, 0, 32, 32, 0, z - 2);
         hasSupports = true;
     }
 
     // Draw repeated supports for left over space
-    while (height != 0) {
-        if ((z & 16) == 0 && height >= 2 && z + 16 != session->WaterHeight) {
+    while (height != 0)
+    {
+        if ((z & 16) == 0 && height >= 2 && z + 16 != session->WaterHeight)
+        {
             // Full support
             int32_t imageId = WoodenSupportImageIds[supportType].full | imageColourFlags;
             uint8_t ah = height == 2 ? 23 : 28;
@@ -430,7 +455,9 @@ bool wooden_a_supports_paint_setup(paint_session * session, int32_t supportType,
             hasSupports = true;
             z += 32;
             height -= 2;
-        } else {
+        }
+        else
+        {
             // Half support
             int32_t imageId = WoodenSupportImageIds[supportType].half | imageColourFlags;
             uint8_t ah = height == 1 ? 7 : 12;
@@ -442,27 +469,51 @@ bool wooden_a_supports_paint_setup(paint_session * session, int32_t supportType,
     }
 
     // Draw special pieces, e.g. curved supports
-    if (special != 0) {
+    if (special != 0)
+    {
         special = (special - 1) & 0xFFFF;
 
         int32_t imageId = WoodenCurveSupportImageIds[supportType];
-        if (imageId != 0 && byte_97B23C[special].var_7 != 0) {
+        if (imageId != 0 && byte_97B23C[special].var_7 != 0)
+        {
             imageId += special;
             imageId |= imageColourFlags;
 
             unk_supports_desc_bound_box bBox = byte_97B23C[special].bounding_box;
 
-            if (byte_97B23C[special].var_6 == 0 || session->WoodenSupportsPrependTo == nullptr) {
+            if (byte_97B23C[special].var_6 == 0 || session->WoodenSupportsPrependTo == nullptr)
+            {
                 sub_98197C(
-                    session, imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y,
+                    session,
+                    imageId,
+                    0,
+                    0,
+                    bBox.length.x,
+                    bBox.length.y,
+                    bBox.length.z,
+                    z,
+                    bBox.offset.x,
+                    bBox.offset.y,
                     bBox.offset.z + z);
                 hasSupports = true;
-            } else {
+            }
+            else
+            {
                 hasSupports = true;
-                paint_struct * ps = sub_98198C(
-                    session, imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y,
+                paint_struct* ps = sub_98198C(
+                    session,
+                    imageId,
+                    0,
+                    0,
+                    bBox.length.x,
+                    bBox.length.y,
+                    bBox.length.z,
+                    z,
+                    bBox.offset.x,
+                    bBox.offset.y,
                     bBox.offset.z + z);
-                if (ps != nullptr) {
+                if (ps != nullptr)
+                {
                     paint_struct* edi = session->WoodenSupportsPrependTo;
                     edi->var_20 = ps;
                 }
@@ -485,25 +536,32 @@ bool wooden_a_supports_paint_setup(paint_session * session, int32_t supportType,
  *
  * @return (al) whether supports have been drawn
  */
-bool wooden_b_supports_paint_setup(paint_session * session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags, bool * underground)
+bool wooden_b_supports_paint_setup(
+    paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags, bool* underground)
 {
     bool _9E32B1 = false;
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
-        if (underground != nullptr) *underground = false; // AND
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    {
+        if (underground != nullptr)
+            *underground = false; // AND
         return false;
     }
 
-    if (!(session->Unk141E9DB & G141E9DB_FLAG_1)) {
-        if (underground != nullptr) *underground = false; // AND
+    if (!(session->Unk141E9DB & G141E9DB_FLAG_1))
+    {
+        if (underground != nullptr)
+            *underground = false; // AND
         return false;
     }
 
     uint16_t baseHeight = ceil2(session->Support.height, 16);
     int16_t supportLength = height - baseHeight;
 
-    if (supportLength < 0) {
-        if (underground != nullptr) *underground = true; // STC
+    if (supportLength < 0)
+    {
+        if (underground != nullptr)
+            *underground = true; // STC
         return false;
     }
 
@@ -511,20 +569,28 @@ bool wooden_b_supports_paint_setup(paint_session * session, int32_t supportType,
 
     bool goTo662E8B = false;
 
-    if (session->Support.slope & 0x20) {
+    if (session->Support.slope & 0x20)
+    {
         goTo662E8B = true;
-    } else if (session->Support.slope & 0x10) {
+    }
+    else if (session->Support.slope & 0x10)
+    {
         heightSteps -= 2;
-        if (heightSteps < 0) {
-            if (underground != nullptr) *underground = true; // STC
+        if (heightSteps < 0)
+        {
+            if (underground != nullptr)
+                *underground = true; // STC
             return false;
         }
 
         uint32_t imageId = WoodenSupportImageIds[supportType].slope;
-        if (imageId == 0) {
+        if (imageId == 0)
+        {
             baseHeight += 32;
             goTo662E8B = true;
-        } else {
+        }
+        else
+        {
             imageId += word_97B3C4[session->Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
 
             sub_98197C(session, imageId | imageColourFlags, 0, 0, 32, 32, 11, baseHeight, 0, 0, baseHeight + 2);
@@ -535,18 +601,25 @@ bool wooden_b_supports_paint_setup(paint_session * session, int32_t supportType,
 
             _9E32B1 = true;
         }
-    } else if ((session->Support.slope & 0x0F) != 0) {
+    }
+    else if ((session->Support.slope & 0x0F) != 0)
+    {
         heightSteps -= 1;
-        if (heightSteps < 0) {
-            if (underground != nullptr) *underground = true; // STC
+        if (heightSteps < 0)
+        {
+            if (underground != nullptr)
+                *underground = true; // STC
             return false;
         }
 
         uint32_t imageId = WoodenSupportImageIds[supportType].slope;
-        if (imageId == 0) {
+        if (imageId == 0)
+        {
             baseHeight += 16;
             goTo662E8B = true;
-        } else {
+        }
+        else
+        {
             imageId += word_97B3C4[session->Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
 
             sub_98197C(session, imageId | imageColourFlags, 0, 0, 32, 32, 3, baseHeight, 0, 0, baseHeight + 2);
@@ -557,28 +630,49 @@ bool wooden_b_supports_paint_setup(paint_session * session, int32_t supportType,
     }
 
     bool skipTo663004 = false;
-    if (goTo662E8B) {
-        if (heightSteps == 0) {
+    if (goTo662E8B)
+    {
+        if (heightSteps == 0)
+        {
             skipTo663004 = true;
-        } else {
+        }
+        else
+        {
             sub_98196C(session, WoodenSupportImageIds[supportType].flat | imageColourFlags, 0, 0, 32, 32, 0, baseHeight - 2);
             _9E32B1 = true;
         }
     }
 
-    if (!skipTo663004) {
-        while (heightSteps > 0) {
-            if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == session->WaterHeight) {
+    if (!skipTo663004)
+    {
+        while (heightSteps > 0)
+        {
+            if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == session->WaterHeight)
+            {
                 sub_98196C(
-                    session, WoodenSupportImageIds[supportType].half | imageColourFlags, 0, 0, 32, 32,
-                    ((heightSteps == 1) ? 7 : 12), baseHeight);
+                    session,
+                    WoodenSupportImageIds[supportType].half | imageColourFlags,
+                    0,
+                    0,
+                    32,
+                    32,
+                    ((heightSteps == 1) ? 7 : 12),
+                    baseHeight);
                 heightSteps -= 1;
                 baseHeight += 16;
                 _9E32B1 = true;
-            } else {
+            }
+            else
+            {
                 sub_98196C(
-                    session, WoodenSupportImageIds[supportType].full | imageColourFlags, 0, 0, 32, 32,
-                    ((heightSteps == 2) ? 23 : 28), baseHeight);
+                    session,
+                    WoodenSupportImageIds[supportType].full | imageColourFlags,
+                    0,
+                    0,
+                    32,
+                    32,
+                    ((heightSteps == 2) ? 23 : 28),
+                    baseHeight);
                 heightSteps -= 2;
                 baseHeight += 32;
                 _9E32B1 = true;
@@ -586,35 +680,60 @@ bool wooden_b_supports_paint_setup(paint_session * session, int32_t supportType,
         }
     }
 
-    if (special != 0) {
+    if (special != 0)
+    {
         uint16_t specialIndex = (special - 1) & 0xFFFF;
 
         uint32_t imageId = WoodenCurveSupportImageIds[supportType];
         unk_supports_desc supportsDesc = byte_97B23C[specialIndex];
 
-        if (imageId != 0 && supportsDesc.var_7 != 0) { // byte_97B23C[special].var_7 is never 0
+        if (imageId != 0 && supportsDesc.var_7 != 0)
+        { // byte_97B23C[special].var_7 is never 0
             imageId = (imageId + specialIndex) | imageColourFlags;
 
             unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
 
-            if (supportsDesc.var_6 == 0 || session->WoodenSupportsPrependTo == nullptr) {
+            if (supportsDesc.var_6 == 0 || session->WoodenSupportsPrependTo == nullptr)
+            {
                 sub_98197C(
-                    session, imageId | imageColourFlags, 0, 0, boundBox.length.x, boundBox.length.y, boundBox.length.z,
-                    baseHeight, boundBox.offset.x, boundBox.offset.y, boundBox.offset.z + baseHeight);
+                    session,
+                    imageId | imageColourFlags,
+                    0,
+                    0,
+                    boundBox.length.x,
+                    boundBox.length.y,
+                    boundBox.length.z,
+                    baseHeight,
+                    boundBox.offset.x,
+                    boundBox.offset.y,
+                    boundBox.offset.z + baseHeight);
                 _9E32B1 = true;
-            } else {
-                paint_struct * paintStruct = sub_98198C(
-                    session, imageId | imageColourFlags, 0, 0, boundBox.length.x, boundBox.length.y, boundBox.length.z,
-                    baseHeight, boundBox.offset.x, boundBox.offset.y, boundBox.offset.z + baseHeight);
+            }
+            else
+            {
+                paint_struct* paintStruct = sub_98198C(
+                    session,
+                    imageId | imageColourFlags,
+                    0,
+                    0,
+                    boundBox.length.x,
+                    boundBox.length.y,
+                    boundBox.length.z,
+                    baseHeight,
+                    boundBox.offset.x,
+                    boundBox.offset.y,
+                    boundBox.offset.z + baseHeight);
                 _9E32B1 = true;
-                if (paintStruct != nullptr) {
+                if (paintStruct != nullptr)
+                {
                     session->WoodenSupportsPrependTo->var_20 = paintStruct;
                 }
             }
         }
     }
 
-    if (underground != nullptr) *underground = false; // AND
+    if (underground != nullptr)
+        *underground = false; // AND
     return _9E32B1;
 }
 
@@ -627,15 +746,18 @@ bool wooden_b_supports_paint_setup(paint_session * session, int32_t supportType,
  * @param imageColourFlags (ebp)
  *  rct2: 0x00663105
  */
-bool metal_a_supports_paint_setup(paint_session * session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, uint32_t imageColourFlags)
+bool metal_a_supports_paint_setup(
+    paint_session* session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, uint32_t imageColourFlags)
 {
-    support_height * supportSegments = session->SupportSegments;
+    support_height* supportSegments = session->SupportSegments;
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    {
         return false;
     }
 
-    if (!(session->Unk141E9DB & G141E9DB_FLAG_1)) {
+    if (!(session->Unk141E9DB & G141E9DB_FLAG_1))
+    {
         return false;
     }
 
@@ -644,7 +766,8 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8_t supportType, 
 
     const uint8_t rotation = session->CurrentRotation;
     int16_t unk9E3294 = -1;
-    if (height < supportSegments[segment].height){
+    if (height < supportSegments[segment].height)
+    {
         unk9E3294 = height;
 
         height -= supportTypeToHeight[supportType];
@@ -654,16 +777,20 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8_t supportType, 
         const uint8_t* esi = &(_97AF32[rotation * 2]);
 
         uint8_t newSegment = esi[segment * 8];
-        if (height <= supportSegments[newSegment].height) {
+        if (height <= supportSegments[newSegment].height)
+        {
             esi += 72;
             newSegment = esi[segment * 8];
-            if (height <= supportSegments[newSegment].height) {
+            if (height <= supportSegments[newSegment].height)
+            {
                 esi += 72;
                 newSegment = esi[segment * 8];
-                if (height <= supportSegments[newSegment].height) {
+                if (height <= supportSegments[newSegment].height)
+                {
                     esi += 72;
                     newSegment = esi[segment * 8];
-                    if (height <= supportSegments[newSegment].height) {
+                    if (height <= supportSegments[newSegment].height)
+                    {
                         return false;
                     }
                 }
@@ -687,13 +814,13 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8_t supportType, 
         segment = newSegment;
     }
     int16_t si = height;
-    if (supportSegments[segment].slope & (1 << 5) ||
-        height - supportSegments[segment].height < 6 ||
-        _97B15C[supportType].base_id == 0
-        ) {
-
+    if (supportSegments[segment].slope & (1 << 5) || height - supportSegments[segment].height < 6
+        || _97B15C[supportType].base_id == 0)
+    {
         height = supportSegments[segment].height;
-    }else{
+    }
+    else
+    {
         int8_t xOffset = loc_97AF20[segment].x;
         int8_t yOffset = loc_97AF20[segment].y;
 
@@ -706,17 +833,18 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8_t supportType, 
         height = supportSegments[segment].height + 6;
     }
 
-
     // Work out if a small support segment required to bring support to normal
     // size (aka floor2(x, 16))
     int16_t heightDiff = floor2(height + 16, 16);
-    if (heightDiff > si) {
+    if (heightDiff > si)
+    {
         heightDiff = si;
     }
 
     heightDiff -= height;
 
-    if (heightDiff > 0) {
+    if (heightDiff > 0)
+    {
         int8_t xOffset = loc_97AF20[segment].x;
         int8_t yOffset = loc_97AF20[segment].y;
 
@@ -728,14 +856,16 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8_t supportType, 
     }
 
     height += heightDiff;
-    //6632e6
+    // 6632e6
 
-    for (uint8_t count = 0; ;count++) {
+    for (uint8_t count = 0;; count++)
+    {
         if (count >= 4)
             count = 0;
 
         int16_t z = height + 16;
-        if (z > si) {
+        if (z > si)
+        {
             z = si;
         }
 
@@ -766,7 +896,8 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8_t supportType, 
     if (special == 0)
         return true;
 
-    if (special < 0) {
+    if (special < 0)
+    {
         special = -special;
         height--;
     }
@@ -776,9 +907,11 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8_t supportType, 
     int16_t boundBoxOffsetZ = height;
     si = height + special;
 
-    while (1) {
+    while (1)
+    {
         int16_t z = height + 16;
-        if (z > si) {
+        if (z > si)
+        {
             z = si;
         }
 
@@ -800,9 +933,9 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8_t supportType, 
 
     return true;
 
-    //int32_t eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
-    //RCT2_CALLFUNC_X(0x00663105, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
-    //return eax & 0xFF;
+    // int32_t eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
+    // RCT2_CALLFUNC_X(0x00663105, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
+    // return eax & 0xFF;
 }
 
 /**
@@ -817,120 +950,159 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8_t supportType, 
  *
  * @return (Carry Flag)
  */
-bool metal_b_supports_paint_setup(paint_session * session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, uint32_t imageColourFlags)
+bool metal_b_supports_paint_setup(
+    paint_session* session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, uint32_t imageColourFlags)
 {
-    support_height * supportSegments = session->SupportSegments;
+    support_height* supportSegments = session->SupportSegments;
     uint8_t originalSegment = segment;
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    {
         return false; // AND
     }
 
-    if (!(session->Unk141E9DB & G141E9DB_FLAG_1)) {
+    if (!(session->Unk141E9DB & G141E9DB_FLAG_1))
+    {
         return false; // AND
     }
 
     uint16_t _9E3294 = 0xFFFF;
     int32_t baseHeight = height;
 
-    if (height < supportSegments[segment].height) {
+    if (height < supportSegments[segment].height)
+    {
         _9E3294 = height;
 
         baseHeight -= supportTypeToHeight[supportType];
-        if (baseHeight < 0) {
+        if (baseHeight < 0)
+        {
             return false; // AND
         }
 
         uint16_t baseIndex = session->CurrentRotation * 2;
 
         uint8_t ebp = _97AF32[baseIndex + segment * 8];
-        if (baseHeight <= supportSegments[ebp].height) {
+        if (baseHeight <= supportSegments[ebp].height)
+        {
             baseIndex += 9 * 4 * 2; // 9 segments, 4 directions, 2 values
             uint8_t ebp2 = _97AF32[baseIndex + segment * 8];
-            if (baseHeight <= supportSegments[ebp2].height) {
+            if (baseHeight <= supportSegments[ebp2].height)
+            {
                 baseIndex += 9 * 4 * 2;
                 uint8_t ebp3 = _97AF32[baseIndex + segment * 8];
-                if (baseHeight <= supportSegments[ebp3].height) {
+                if (baseHeight <= supportSegments[ebp3].height)
+                {
                     baseIndex += 9 * 4 * 2;
                     uint8_t ebp4 = _97AF32[baseIndex + segment * 8];
-                    if (baseHeight <= supportSegments[ebp4].height) {
+                    if (baseHeight <= supportSegments[ebp4].height)
+                    {
                         return true; // STC
                     }
                 }
-
             }
         }
 
         ebp = _97AF32[baseIndex + segment * 8 + 1];
-        if (ebp >= 4) {
+        if (ebp >= 4)
+        {
             return true; // STC
         }
 
         sub_98196C(
-            session, _metalSupportTypeToCrossbeamImages[supportType][ebp] | imageColourFlags,
-            loc_97AF20[originalSegment].x + loc_97B052[ebp].x, loc_97AF20[originalSegment].y + loc_97B052[ebp].y,
-            _97B062[ebp].x, _97B062[ebp].y, 1, baseHeight);
+            session,
+            _metalSupportTypeToCrossbeamImages[supportType][ebp] | imageColourFlags,
+            loc_97AF20[originalSegment].x + loc_97B052[ebp].x,
+            loc_97AF20[originalSegment].y + loc_97B052[ebp].y,
+            _97B062[ebp].x,
+            _97B062[ebp].y,
+            1,
+            baseHeight);
     }
 
     int32_t si = baseHeight;
 
-    if ((supportSegments[segment].slope & 0x20)
-        || (baseHeight - supportSegments[segment].height < 6)
-        || (_97B15C[supportType].base_id == 0)) {
+    if ((supportSegments[segment].slope & 0x20) || (baseHeight - supportSegments[segment].height < 6)
+        || (_97B15C[supportType].base_id == 0))
+    {
         baseHeight = supportSegments[segment].height;
-    } else {
+    }
+    else
+    {
         uint32_t imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
         uint32_t imageId = _97B15C[supportType].base_id + imageOffset;
 
         sub_98196C(
-            session, imageId | imageColourFlags, loc_97AF20[segment].x, loc_97AF20[segment].y, 0, 0, 5,
+            session,
+            imageId | imageColourFlags,
+            loc_97AF20[segment].x,
+            loc_97AF20[segment].y,
+            0,
+            0,
+            5,
             supportSegments[segment].height);
 
         baseHeight = supportSegments[segment].height + 6;
     }
 
     int16_t heightDiff = floor2(baseHeight + 16, 16);
-    if (heightDiff > si) {
+    if (heightDiff > si)
+    {
         heightDiff = si;
     }
 
     heightDiff -= baseHeight;
-    if (heightDiff > 0) {
+    if (heightDiff > 0)
+    {
         sub_98196C(
-            session, (_97B15C[supportType].beam_id + (heightDiff - 1)) | imageColourFlags, loc_97AF20[segment].x,
-            loc_97AF20[segment].y, 0, 0, heightDiff - 1, baseHeight);
+            session,
+            (_97B15C[supportType].beam_id + (heightDiff - 1)) | imageColourFlags,
+            loc_97AF20[segment].x,
+            loc_97AF20[segment].y,
+            0,
+            0,
+            heightDiff - 1,
+            baseHeight);
     }
 
     baseHeight += heightDiff;
 
-
     int16_t endHeight;
 
-
     int32_t i = 1;
-    while (true) {
+    while (true)
+    {
         endHeight = baseHeight + 16;
-        if (endHeight > si) {
+        if (endHeight > si)
+        {
             endHeight = si;
         }
 
         int16_t beamLength = endHeight - baseHeight;
 
-        if (beamLength <= 0) {
+        if (beamLength <= 0)
+        {
             break;
         }
 
         uint32_t imageId = _97B15C[supportType].beam_id + (beamLength - 1);
 
-        if (i % 4 == 0) {
+        if (i % 4 == 0)
+        {
             // Each fourth run, draw a special image
-            if (beamLength == 16) {
+            if (beamLength == 16)
+            {
                 imageId += 1;
             }
         }
 
         sub_98196C(
-            session, imageId | imageColourFlags, loc_97AF20[segment].x, loc_97AF20[segment].y, 0, 0, beamLength - 1,
+            session,
+            imageId | imageColourFlags,
+            loc_97AF20[segment].x,
+            loc_97AF20[segment].y,
+            0,
+            0,
+            beamLength - 1,
             baseHeight);
 
         baseHeight += beamLength;
@@ -940,24 +1112,37 @@ bool metal_b_supports_paint_setup(paint_session * session, uint8_t supportType, 
     supportSegments[segment].height = _9E3294;
     supportSegments[segment].slope = 0x20;
 
-    if (special != 0) {
+    if (special != 0)
+    {
         baseHeight = height;
         si = height + special;
-        while (true) {
+        while (true)
+        {
             endHeight = baseHeight + 16;
-            if (endHeight > si) {
+            if (endHeight > si)
+            {
                 endHeight = si;
             }
 
             int16_t beamLength = endHeight - baseHeight;
-            if (beamLength <= 0) {
+            if (beamLength <= 0)
+            {
                 break;
             }
 
             uint32_t imageId = _97B15C[supportType].beam_id + (beamLength - 1);
             sub_98197C(
-                session, imageId | imageColourFlags, loc_97AF20[originalSegment].x, loc_97AF20[originalSegment].y, 0, 0, 0,
-                baseHeight, loc_97AF20[originalSegment].x, loc_97AF20[originalSegment].y, height);
+                session,
+                imageId | imageColourFlags,
+                loc_97AF20[originalSegment].x,
+                loc_97AF20[originalSegment].y,
+                0,
+                0,
+                0,
+                baseHeight,
+                loc_97AF20[originalSegment].x,
+                loc_97AF20[originalSegment].y,
+                height);
             baseHeight += beamLength;
         }
     }
@@ -977,25 +1162,36 @@ bool metal_b_supports_paint_setup(paint_session * session, uint8_t supportType, 
  *
  * @return Whether supports were drawn
  */
-bool path_a_supports_paint_setup(paint_session * session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags,
-                                 rct_footpath_entry * pathEntry, bool * underground)
+bool path_a_supports_paint_setup(
+    paint_session* session,
+    int32_t supportType,
+    int32_t special,
+    int32_t height,
+    uint32_t imageColourFlags,
+    rct_footpath_entry* pathEntry,
+    bool* underground)
 {
-    if (underground != nullptr) {
+    if (underground != nullptr)
+    {
         *underground = false; // AND
     }
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    {
         return false;
     }
 
-    if (!(session->Unk141E9DB & G141E9DB_FLAG_1)) {
+    if (!(session->Unk141E9DB & G141E9DB_FLAG_1))
+    {
         return false;
     }
 
     uint16_t baseHeight = ceil2(session->Support.height, 16);
     int32_t supportLength = height - baseHeight;
-    if (supportLength < 0) {
-        if (underground != nullptr) *underground = true; // STC
+    if (supportLength < 0)
+    {
+        if (underground != nullptr)
+            *underground = true; // STC
         return false;
     }
 
@@ -1003,18 +1199,24 @@ bool path_a_supports_paint_setup(paint_session * session, int32_t supportType, i
 
     int16_t heightSteps = supportLength / 16;
 
-    if (session->Support.slope & 0x20) {
-        //save dx2
+    if (session->Support.slope & 0x20)
+    {
+        // save dx2
         sub_98196C(session, (pathEntry->bridge_image + 48) | imageColourFlags, 0, 0, 32, 32, 0, baseHeight - 2);
         hasSupports = true;
-    } else if (session->Support.slope & 0x10) {
+    }
+    else if (session->Support.slope & 0x10)
+    {
         heightSteps -= 2;
-        if (heightSteps < 0) {
-            if (underground != nullptr) *underground = true; // STC
+        if (heightSteps < 0)
+        {
+            if (underground != nullptr)
+                *underground = true; // STC
             return false;
         }
 
-        uint32_t imageId = (supportType * 24) + word_97B3C4[session->Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK] + pathEntry->bridge_image;
+        uint32_t imageId = (supportType * 24) + word_97B3C4[session->Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]
+            + pathEntry->bridge_image;
 
         sub_98197C(session, imageId | imageColourFlags, 0, 0, 32, 32, 11, baseHeight, 0, 0, baseHeight + 2);
         baseHeight += 16;
@@ -1023,15 +1225,19 @@ bool path_a_supports_paint_setup(paint_session * session, int32_t supportType, i
         baseHeight += 16;
 
         hasSupports = true;
-
-    } else if (session->Support.slope & 0x0F) {
+    }
+    else if (session->Support.slope & 0x0F)
+    {
         heightSteps -= 1;
-        if (heightSteps < 0) {
-            if (underground != nullptr) *underground = true; // STC
+        if (heightSteps < 0)
+        {
+            if (underground != nullptr)
+                *underground = true; // STC
             return false;
         }
 
-        uint32_t ebx = (supportType * 24) + word_97B3C4[session->Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK] + pathEntry->bridge_image;
+        uint32_t ebx = (supportType * 24) + word_97B3C4[session->Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]
+            + pathEntry->bridge_image;
 
         sub_98197C(session, ebx | imageColourFlags, 0, 0, 32, 32, 11, baseHeight, 0, 0, baseHeight + 2);
 
@@ -1039,16 +1245,19 @@ bool path_a_supports_paint_setup(paint_session * session, int32_t supportType, i
         baseHeight += 16;
     }
 
-    while (heightSteps > 0) {
-        if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == session->WaterHeight) {
-
+    while (heightSteps > 0)
+    {
+        if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == session->WaterHeight)
+        {
             uint32_t imageId = (supportType * 24) + pathEntry->bridge_image + 23;
 
             sub_98196C(session, imageId | imageColourFlags, 0, 0, 32, 32, ((heightSteps == 1) ? 7 : 12), baseHeight);
             heightSteps -= 1;
             baseHeight += 16;
             hasSupports = true;
-        } else {
+        }
+        else
+        {
             uint32_t imageId = (supportType * 24) + pathEntry->bridge_image + 22;
 
             sub_98196C(session, imageId | imageColourFlags, 0, 0, 32, 32, ((heightSteps == 2) ? 23 : 28), baseHeight);
@@ -1058,7 +1267,8 @@ bool path_a_supports_paint_setup(paint_session * session, int32_t supportType, i
         }
     }
 
-    if (special != 0) {
+    if (special != 0)
+    {
         uint16_t specialIndex = (special - 1) & 0xFFFF;
 
         uint32_t imageId = pathEntry->bridge_image + 55 + specialIndex;
@@ -1066,23 +1276,46 @@ bool path_a_supports_paint_setup(paint_session * session, int32_t supportType, i
         unk_supports_desc supportsDesc = byte_98D8D4[specialIndex];
         unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
 
-        if (supportsDesc.var_6 == 0 || session->WoodenSupportsPrependTo == nullptr) {
+        if (supportsDesc.var_6 == 0 || session->WoodenSupportsPrependTo == nullptr)
+        {
             sub_98197C(
-                session, imageId | imageColourFlags, 0, 0, boundBox.length.y, boundBox.length.x, boundBox.length.z, baseHeight,
-                boundBox.offset.x, boundBox.offset.y, baseHeight + boundBox.offset.z);
+                session,
+                imageId | imageColourFlags,
+                0,
+                0,
+                boundBox.length.y,
+                boundBox.length.x,
+                boundBox.length.z,
+                baseHeight,
+                boundBox.offset.x,
+                boundBox.offset.y,
+                baseHeight + boundBox.offset.z);
             hasSupports = true;
-        } else {
-            paint_struct * paintStruct = sub_98198C(
-                session, imageId | imageColourFlags, 0, 0, boundBox.length.y, boundBox.length.x, boundBox.length.z, baseHeight,
-                boundBox.offset.x, boundBox.offset.y, baseHeight + boundBox.offset.z);
+        }
+        else
+        {
+            paint_struct* paintStruct = sub_98198C(
+                session,
+                imageId | imageColourFlags,
+                0,
+                0,
+                boundBox.length.y,
+                boundBox.length.x,
+                boundBox.length.z,
+                baseHeight,
+                boundBox.offset.x,
+                boundBox.offset.y,
+                baseHeight + boundBox.offset.z);
             hasSupports = true;
-            if (paintStruct != nullptr) {
+            if (paintStruct != nullptr)
+            {
                 session->WoodenSupportsPrependTo->var_20 = paintStruct;
             }
         }
     }
 
-    if (underground != nullptr) *underground = false; // AND
+    if (underground != nullptr)
+        *underground = false; // AND
 
     return hasSupports;
 }
@@ -1099,36 +1332,52 @@ bool path_a_supports_paint_setup(paint_session * session, int32_t supportType, i
  *
  * @return Whether supports were drawn
  */
-bool path_b_supports_paint_setup(paint_session * session, int32_t segment, int32_t special, int32_t height, uint32_t imageColourFlags,
-                                 rct_footpath_entry * pathEntry)
+bool path_b_supports_paint_setup(
+    paint_session* session,
+    int32_t segment,
+    int32_t special,
+    int32_t height,
+    uint32_t imageColourFlags,
+    rct_footpath_entry* pathEntry)
 {
-    support_height * supportSegments = session->SupportSegments;
+    support_height* supportSegments = session->SupportSegments;
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    {
         return false; // AND
     }
 
-    if (!(session->Unk141E9DB & G141E9DB_FLAG_1)) {
+    if (!(session->Unk141E9DB & G141E9DB_FLAG_1))
+    {
         return false; // AND
     }
 
-    if (height < supportSegments[segment].height) {
+    if (height < supportSegments[segment].height)
+    {
         return true; // STC
     }
 
     uint16_t baseHeight;
 
-    if ((supportSegments[segment].slope & 0x20)
-        || (height - supportSegments[segment].height < 6)
-        || !(pathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE)) {
+    if ((supportSegments[segment].slope & 0x20) || (height - supportSegments[segment].height < 6)
+        || !(pathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE))
+    {
         baseHeight = supportSegments[segment].height;
-    } else {
+    }
+    else
+    {
         uint8_t imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
         baseHeight = supportSegments[segment].height;
 
         sub_98196C(
-            session, (pathEntry->bridge_image + 37 + imageOffset) | imageColourFlags, loc_97AF20[segment].x,
-            loc_97AF20[segment].y, 0, 0, 5, baseHeight);
+            session,
+            (pathEntry->bridge_image + 37 + imageOffset) | imageColourFlags,
+            loc_97AF20[segment].x,
+            loc_97AF20[segment].y,
+            0,
+            0,
+            5,
+            baseHeight);
         baseHeight += 6;
     }
 
@@ -1136,54 +1385,75 @@ bool path_b_supports_paint_setup(paint_session * session, int32_t segment, int32
     // dx = baseHeight
 
     int16_t heightDiff = floor2(baseHeight + 16, 16);
-    if (heightDiff > height) {
+    if (heightDiff > height)
+    {
         heightDiff = height;
     }
 
     heightDiff -= baseHeight;
 
-    if (heightDiff > 0) {
+    if (heightDiff > 0)
+    {
         sub_98196C(
-            session, (pathEntry->bridge_image + 20 + (heightDiff - 1)) | imageColourFlags, loc_97AF20[segment].x,
-            loc_97AF20[segment].y, 0, 0, heightDiff - 1, baseHeight);
+            session,
+            (pathEntry->bridge_image + 20 + (heightDiff - 1)) | imageColourFlags,
+            loc_97AF20[segment].x,
+            loc_97AF20[segment].y,
+            0,
+            0,
+            heightDiff - 1,
+            baseHeight);
     }
 
     baseHeight += heightDiff;
 
     bool keepGoing = true;
-    while (keepGoing) {
+    while (keepGoing)
+    {
         int16_t z;
 
-        for (int32_t i = 0; i < 4; ++i) {
+        for (int32_t i = 0; i < 4; ++i)
+        {
             z = baseHeight + 16;
-            if (z > height) {
+            if (z > height)
+            {
                 z = height;
             }
             z -= baseHeight;
 
-            if (z <= 0) {
+            if (z <= 0)
+            {
                 keepGoing = false;
                 break;
             }
 
-            if (i == 3) {
+            if (i == 3)
+            {
                 // Only do the z check in the fourth run.
                 break;
             }
 
             sub_98196C(
-                session, (pathEntry->bridge_image + 20 + (z - 1)) | imageColourFlags, loc_97AF20[segment].x,
-                loc_97AF20[segment].y, 0, 0, (z - 1), baseHeight);
+                session,
+                (pathEntry->bridge_image + 20 + (z - 1)) | imageColourFlags,
+                loc_97AF20[segment].x,
+                loc_97AF20[segment].y,
+                0,
+                0,
+                (z - 1),
+                baseHeight);
 
             baseHeight += z;
         }
 
-        if (keepGoing == false) {
+        if (keepGoing == false)
+        {
             break;
         }
 
         uint32_t imageId = pathEntry->bridge_image + 20 + (z - 1);
-        if (z == 16) {
+        if (z == 16)
+        {
             imageId += 1;
         }
 
@@ -1197,24 +1467,37 @@ bool path_b_supports_paint_setup(paint_session * session, int32_t segment, int32
     supportSegments[segment].height = 0xFFFF;
     supportSegments[segment].slope = 0x20;
 
-    if (special != 0) {
+    if (special != 0)
+    {
         int16_t si = special + baseHeight;
 
-        while (true) {
+        while (true)
+        {
             int16_t z = baseHeight + 16;
-            if (z > si) {
+            if (z > si)
+            {
                 z = si;
             }
 
             z -= baseHeight;
-            if (z <= 0) {
+            if (z <= 0)
+            {
                 break;
             }
 
             uint32_t imageId = pathEntry->bridge_image + 20 + (z - 1);
             sub_98197C(
-                session, imageId | imageColourFlags, loc_97AF20[segment].x, loc_97AF20[segment].y, 0, 0, 0, baseHeight,
-                loc_97AF20[segment].x, loc_97AF20[segment].y, baseHeight);
+                session,
+                imageId | imageColourFlags,
+                loc_97AF20[segment].x,
+                loc_97AF20[segment].y,
+                0,
+                0,
+                0,
+                baseHeight,
+                loc_97AF20[segment].x,
+                loc_97AF20[segment].y,
+                baseHeight);
 
             baseHeight += z;
         }

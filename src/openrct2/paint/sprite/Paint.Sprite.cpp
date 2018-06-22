@@ -8,20 +8,21 @@
  *****************************************************************************/
 
 #include "Paint.Sprite.h"
-#include "../Paint.h"
+
 #include "../../drawing/Drawing.h"
-#include "../../world/Sprite.h"
-#include "../../ride/RideData.h"
 #include "../../interface/Viewport.h"
 #include "../../peep/Staff.h"
-#include "../../ride/VehiclePaint.h"
+#include "../../ride/RideData.h"
 #include "../../ride/TrackDesign.h"
+#include "../../ride/VehiclePaint.h"
+#include "../../world/Sprite.h"
+#include "../Paint.h"
 
 /**
  * Paint Quadrant
  *  rct2: 0x0069E8B0
  */
-void sprite_paint_setup(paint_session * session, const uint16_t x, const uint16_t y)
+void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t y)
 {
     if ((x & 0xe000) | (y & 0xe000))
     {
@@ -47,7 +48,8 @@ void sprite_paint_setup(paint_session * session, const uint16_t x, const uint16_
 
     const bool highlightPathIssues = (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
-    for (const rct_sprite* spr = get_sprite(sprite_idx); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.next_in_quadrant)
+    for (const rct_sprite* spr = get_sprite(sprite_idx); sprite_idx != SPRITE_INDEX_NULL;
+         sprite_idx = spr->unknown.next_in_quadrant)
     {
         spr = get_sprite(sprite_idx);
 
@@ -55,7 +57,7 @@ void sprite_paint_setup(paint_session * session, const uint16_t x, const uint16_
         {
             if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
-                rct_peep * peep = (rct_peep*)spr;
+                rct_peep* peep = (rct_peep*)spr;
                 if (!(peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_HANDYMAN))
                 {
                     continue;
@@ -107,21 +109,21 @@ void sprite_paint_setup(paint_session * session, const uint16_t x, const uint16_
 
         switch (spr->unknown.sprite_identifier)
         {
-        case SPRITE_IDENTIFIER_VEHICLE:
-            vehicle_paint(session, (rct_vehicle*)spr, image_direction);
-            break;
-        case SPRITE_IDENTIFIER_PEEP:
-            peep_paint(session, (rct_peep*)spr, image_direction);
-            break;
-        case SPRITE_IDENTIFIER_MISC:
-            misc_paint(session, spr, image_direction);
-            break;
-        case SPRITE_IDENTIFIER_LITTER:
-            litter_paint(session, (rct_litter*)spr, image_direction);
-            break;
-        default:
-            assert(false);
-            break;
+            case SPRITE_IDENTIFIER_VEHICLE:
+                vehicle_paint(session, (rct_vehicle*)spr, image_direction);
+                break;
+            case SPRITE_IDENTIFIER_PEEP:
+                peep_paint(session, (rct_peep*)spr, image_direction);
+                break;
+            case SPRITE_IDENTIFIER_MISC:
+                misc_paint(session, spr, image_direction);
+                break;
+            case SPRITE_IDENTIFIER_LITTER:
+                litter_paint(session, (rct_litter*)spr, image_direction);
+                break;
+            default:
+                assert(false);
+                break;
         }
     }
 }
