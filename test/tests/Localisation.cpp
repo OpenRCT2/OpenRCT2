@@ -7,8 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "helpers/StringHelpers.hpp"
 #include "openrct2/localisation/Localisation.h"
+
+#include "helpers/StringHelpers.hpp"
+
 #include <gtest/gtest.h>
 
 class Localisation : public testing::Test

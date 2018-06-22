@@ -7,21 +7,21 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <string>
+#include "TestData.h"
+
 #include <gtest/gtest.h>
-#include <openrct2/audio/AudioContext.h>
 #include <openrct2/Context.h>
-#include <openrct2/core/File.h>
-#include <openrct2/core/Path.hpp>
-#include <openrct2/core/String.hpp>
+#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
-#include <openrct2/ride/Ride.h>
-#include "TestData.h"
-
+#include <openrct2/audio/AudioContext.h>
+#include <openrct2/core/File.h>
+#include <openrct2/core/Path.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/platform/platform.h>
-#include <openrct2/Game.h>
+#include <openrct2/ride/Ride.h>
+#include <string>
 
 using namespace OpenRCT2;
 

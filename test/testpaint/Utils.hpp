@@ -11,8 +11,9 @@
 
 #include <openrct2/common.h>
 
-namespace Utils {
+namespace Utils
+{
     int getTrackSequenceCount(uint8_t rideType, uint8_t trackType);
     bool rideSupportsTrackType(uint8_t rideType, uint8_t trackType);
     bool rideIsImplemented(uint8_t rideType);
-}
+} // namespace Utils

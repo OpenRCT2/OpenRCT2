@@ -7,26 +7,25 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <string>
+#include "TestData.h"
+
+#include <gtest/gtest.h>
 #include <openrct2/core/Crypt.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/network/NetworkKey.h>
-#include <gtest/gtest.h>
-#include "TestData.h"
+#include <string>
 
 class CryptTests : public testing::Test
 {
 public:
-    template<typename T>
-    void AssertHash(std::string expected, T hash)
+    template<typename T> void AssertHash(std::string expected, T hash)
     {
         auto actual = StringToHex(hash);
         ASSERT_EQ(expected, actual);
     }
 
-    template<typename T>
-    std::string StringToHex(T input)
+    template<typename T> std::string StringToHex(T input)
     {
         std::string result;
         result.reserve(input.size() * 2);
@@ -61,11 +60,9 @@ TEST_F(CryptTests, SHA1_Basic)
 
 TEST_F(CryptTests, SHA1_Multiple)
 {
-    std::string input[] = {
-        "Merry-go-round 2 looks too intense for me",
-        "This park is really clean and tidy",
-        "This balloon from Balloon Stall 1 is really good value"
-    };
+    std::string input[] = { "Merry-go-round 2 looks too intense for me",
+                            "This park is really clean and tidy",
+                            "This balloon from Balloon Stall 1 is really good value" };
 
     auto alg = Crypt::CreateSHA1();
     for (auto s : input)
@@ -94,11 +91,9 @@ TEST_F(CryptTests, SHA1_Many)
     auto alg = Crypt::CreateSHA1();
 
     // First digest
-    std::string inputA[] = {
-        "Merry-go-round 2 looks too intense for me",
-        "This park is really clean and tidy",
-        "This balloon from Balloon Stall 1 is really good value"
-    };
+    std::string inputA[] = { "Merry-go-round 2 looks too intense for me",
+                             "This park is really clean and tidy",
+                             "This balloon from Balloon Stall 1 is really good value" };
     for (auto s : inputA)
     {
         alg->Update(s.data(), s.size());
