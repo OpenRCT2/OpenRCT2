@@ -16,7 +16,7 @@
 #define DECRYPT_MONEY(money) ((money32)rol32((money) ^ 0xF4EC9621, 13))
 #define ENCRYPT_MONEY(money) ((money32)(ror32((money), 13) ^ 0xF4EC9621))
 
-#define MAX_ENTRANCE_FEE MONEY(200,00)
+#define MAX_ENTRANCE_FEE MONEY(200, 00)
 
 struct rct_peep;
 
@@ -37,10 +37,10 @@ enum : uint32_t
     PARK_FLAGS_PARK_FREE_ENTRY = (1 << 13),
     PARK_FLAGS_DIFFICULT_PARK_RATING = (1 << 14),
     PARK_FLAGS_LOCK_REAL_NAMES_OPTION_DEPRECATED = (1 << 15), // Deprecated now we use a persistent 'real names' setting
-    PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),  // equivalent to PARK_FLAGS_NO_MONEY, but used in scenario editor
-    PARK_FLAGS_SPRITES_INITIALISED = (1 << 18), // After a scenario is loaded this prevents edits in the scenario editor
+    PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),                 // equivalent to PARK_FLAGS_NO_MONEY, but used in scenario editor
+    PARK_FLAGS_SPRITES_INITIALISED = (1 << 18),  // After a scenario is loaded this prevents edits in the scenario editor
     PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19), // Not used anymore
-    PARK_FLAGS_UNLOCK_ALL_PRICES = (1u << 31), // OpenRCT2 only!
+    PARK_FLAGS_UNLOCK_ALL_PRICES = (1u << 31),   // OpenRCT2 only!
 };
 
 struct rct_peep;
@@ -58,35 +58,34 @@ namespace OpenRCT2
 
         bool IsOpen() const;
 
-        uint16_t  GetParkRating() const;
+        uint16_t GetParkRating() const;
         money32 GetParkValue() const;
         money32 GetCompanyValue() const;
 
         void Initialise();
-        void Update(const Date &date);
+        void Update(const Date& date);
 
-        int32_t          CalculateParkSize() const;
-        int32_t          CalculateParkRating() const;
-        money32         CalculateParkValue() const;
-        money32         CalculateCompanyValue() const;
-        static uint8_t    CalculateGuestInitialHappiness(uint8_t percentage);
+        int32_t CalculateParkSize() const;
+        int32_t CalculateParkRating() const;
+        money32 CalculateParkValue() const;
+        money32 CalculateCompanyValue() const;
+        static uint8_t CalculateGuestInitialHappiness(uint8_t percentage);
 
-        rct_peep *  GenerateGuest();
+        rct_peep* GenerateGuest();
 
         void ResetHistories();
         void UpdateHistories();
 
     private:
-        money32     CalculateRideValue(const Ride * ride) const;
-        money16     CalculateTotalRideValueForMoney() const;
-        uint32_t      CalculateSuggestedMaxGuests() const;
-        uint32_t      CalculateGuestGenerationProbability() const;
+        money32 CalculateRideValue(const Ride* ride) const;
+        money16 CalculateTotalRideValueForMoney() const;
+        uint32_t CalculateSuggestedMaxGuests() const;
+        uint32_t CalculateGuestGenerationProbability() const;
 
-        void        GenerateGuests();
-        rct_peep *  GenerateGuestFromCampaign(int32_t campaign);
-
+        void GenerateGuests();
+        rct_peep* GenerateGuestFromCampaign(int32_t campaign);
     };
-}
+} // namespace OpenRCT2
 
 enum
 {
@@ -135,14 +134,17 @@ uint8_t calculate_guest_initial_happiness(uint8_t percentage);
 
 void park_set_open(int32_t open);
 int32_t park_entrance_get_index(int32_t x, int32_t y, int32_t z);
-void park_set_name(const char *name);
+void park_set_name(const char* name);
 void park_set_entrance_fee(money32 value);
 
 int32_t map_buy_land_rights(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t setting, int32_t flags);
 
-void game_command_set_park_entrance_fee(int32_t *eax, int32_t *ebx, int32_t *ecx, int32_t *edx, int32_t *esi, int32_t *edi, int32_t *ebp);
-void game_command_set_park_open(int32_t *eax, int32_t *ebx, int32_t *ecx, int32_t *edx, int32_t *esi, int32_t *edi, int32_t *ebp);
-void game_command_buy_land_rights(int32_t *eax, int32_t *ebx, int32_t *ecx, int32_t *edx, int32_t *esi, int32_t *edi, int32_t *ebp);
+void game_command_set_park_entrance_fee(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
+void game_command_set_park_open(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
+void game_command_buy_land_rights(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 money16 park_get_entrance_fee();
 

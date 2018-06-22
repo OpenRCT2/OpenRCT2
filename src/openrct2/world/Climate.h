@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../common.h"
-
 #include "../drawing/Drawing.h"
 
 enum CLIMATE
@@ -47,11 +46,11 @@ enum RAIN_LEVEL
 
 struct WeatherState
 {
-    int8_t   TemperatureDelta;
-    int8_t   EffectLevel;
-    int8_t   GloomLevel;
-    int8_t   RainLevel;
-    uint32_t  SpriteId;
+    int8_t TemperatureDelta;
+    int8_t EffectLevel;
+    int8_t GloomLevel;
+    int8_t RainLevel;
+    uint32_t SpriteId;
 };
 
 struct ClimateState
@@ -63,11 +62,11 @@ struct ClimateState
     uint8_t RainLevel;
 };
 
-extern uint8_t        gClimate;
+extern uint8_t gClimate;
 extern ClimateState gClimateCurrent;
 extern ClimateState gClimateNext;
-extern uint16_t       gClimateUpdateTimer;
-extern uint16_t       gClimateLightningFlash;
+extern uint16_t gClimateUpdateTimer;
+extern uint16_t gClimateLightningFlash;
 
 int32_t climate_celsius_to_fahrenheit(int32_t celsius);
 void climate_reset(int32_t climate);
@@ -76,5 +75,5 @@ void climate_update_sound();
 void climate_force_weather(uint8_t weather);
 
 bool climate_is_raining();
-FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState &state);
-uint32_t climate_get_weather_sprite_id(const ClimateState &state);
+FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state);
+uint32_t climate_get_weather_sprite_id(const ClimateState& state);

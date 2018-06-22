@@ -7,83 +7,80 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../common.h"
-#include <cmath>
-#include <cstring>
-#include <vector>
+#include "MapGen.h"
 
 #include "../Context.h"
+#include "../Game.h"
+#include "../common.h"
 #include "../core/Guard.hpp"
+#include "../core/Imaging.h"
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
-#include "../Game.h"
-#include "../core/Imaging.h"
 #include "../localisation/StringIds.h"
 #include "../object/Object.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"
 #include "Map.h"
 #include "MapHelpers.h"
-#include "MapGen.h"
 #include "Scenery.h"
 #include "SmallScenery.h"
 #include "Surface.h"
+
+#include <cmath>
+#include <cstring>
+#include <vector>
 
 #pragma region Height map struct
 
 static struct
 {
     uint32_t width, height;
-    uint8_t * mono_bitmap;
-} _heightMapData = {
-    0,
-    0,
-    nullptr
-};
+    uint8_t* mono_bitmap;
+} _heightMapData = { 0, 0, nullptr };
 
 #pragma endregion Height map struct
 
 #pragma region Random objects
 
-static constexpr const char * GrassTrees[] = {
+static constexpr const char* GrassTrees[] = {
     // Dark
-    "TCF     ",     // Caucasian Fir Tree
-    "TRF     ",     // Red Fir Tree
-    "TRF2    ",     // Red Fir Tree
-    "TSP     ",     // Scots Pine Tree
-    "TMZP    ",     // Montezuma Pine Tree
-    "TAP     ",     // Aleppo Pine Tree
-    "TCRP    ",     // Corsican Pine Tree
-    "TBP     ",     // Black Poplar Tree
+    "TCF     ", // Caucasian Fir Tree
+    "TRF     ", // Red Fir Tree
+    "TRF2    ", // Red Fir Tree
+    "TSP     ", // Scots Pine Tree
+    "TMZP    ", // Montezuma Pine Tree
+    "TAP     ", // Aleppo Pine Tree
+    "TCRP    ", // Corsican Pine Tree
+    "TBP     ", // Black Poplar Tree
 
     // Light
-    "TCL     ",     // Cedar of Lebanon Tree
-    "TEL     ",     // European Larch Tree
+    "TCL     ", // Cedar of Lebanon Tree
+    "TEL     ", // European Larch Tree
 };
 
-static constexpr const char * DesertTrees[] = {
-    "TMP     ",     // Monkey-Puzzle Tree
-    "THL     ",     // Honey Locust Tree
-    "TH1     ",     // Canary Palm Tree
-    "TH2     ",     // Palm Tree
-    "TPM     ",     // Palm Tree
-    "TROPT1  ",     // Tree
-    "TBC     ",     // Cactus
-    "TSC     ",     // Cactus
+static constexpr const char* DesertTrees[] = {
+    "TMP     ", // Monkey-Puzzle Tree
+    "THL     ", // Honey Locust Tree
+    "TH1     ", // Canary Palm Tree
+    "TH2     ", // Palm Tree
+    "TPM     ", // Palm Tree
+    "TROPT1  ", // Tree
+    "TBC     ", // Cactus
+    "TSC     ", // Cactus
 };
 
-static constexpr const char * SnowTrees[] = {
-    "TCFS    ",     // Snow-covered Caucasian Fir Tree
-    "TNSS    ",     // Snow-covered Norway Spruce Tree
-    "TRF3    ",     // Snow-covered Red Fir Tree
-    "TRFS    ",     // Snow-covered Red Fir Tree
+static constexpr const char* SnowTrees[] = {
+    "TCFS    ", // Snow-covered Caucasian Fir Tree
+    "TNSS    ", // Snow-covered Norway Spruce Tree
+    "TRF3    ", // Snow-covered Red Fir Tree
+    "TRFS    ", // Snow-covered Red Fir Tree
 };
 
 #pragma endregion
 
 // Randomly chosen base terrains. We rarely want a whole map made out of chequerboard or rock.
-static constexpr const uint8_t BaseTerrain[] = {TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_LIGHT, TERRAIN_DIRT, TERRAIN_ICE};
+static constexpr const uint8_t BaseTerrain[] = { TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_LIGHT, TERRAIN_DIRT, TERRAIN_ICE };
 
 #define BLOB_HEIGHT 255
 
@@ -92,10 +89,10 @@ static void mapgen_set_water_level(int32_t waterLevel);
 static void mapgen_smooth_height(int32_t iterations);
 static void mapgen_set_height();
 
-static void mapgen_simplex(mapgen_settings * settings);
+static void mapgen_simplex(mapgen_settings* settings);
 
-static int32_t  _heightSize;
-static uint8_t * _height;
+static int32_t _heightSize;
+static uint8_t* _height;
 
 static int32_t get_height(int32_t x, int32_t y)
 {
@@ -111,10 +108,10 @@ static void set_height(int32_t x, int32_t y, int32_t height)
         _height[x + y * _heightSize] = height;
 }
 
-void mapgen_generate_blank(mapgen_settings * settings)
+void mapgen_generate_blank(mapgen_settings* settings)
 {
     int32_t x, y;
-    rct_tile_element * tileElement;
+    rct_tile_element* tileElement;
 
     map_clear_all_elements();
 
@@ -126,7 +123,7 @@ void mapgen_generate_blank(mapgen_settings * settings)
             tileElement = map_get_surface_element_at(x, y);
             surface_set_terrain(tileElement, settings->floor);
             surface_set_terrain_edge(tileElement, settings->wall);
-            tileElement->base_height      = settings->height;
+            tileElement->base_height = settings->height;
             tileElement->clearance_height = settings->height;
         }
     }
@@ -134,17 +131,17 @@ void mapgen_generate_blank(mapgen_settings * settings)
     mapgen_set_water_level(settings->water_level);
 }
 
-void mapgen_generate(mapgen_settings * settings)
+void mapgen_generate(mapgen_settings* settings)
 {
     int32_t x, y, mapSize, floorTexture, wallTexture, waterLevel;
-    rct_tile_element * tileElement;
+    rct_tile_element* tileElement;
 
-    util_srand((int32_t) platform_get_ticks());
+    util_srand((int32_t)platform_get_ticks());
 
-    mapSize      = settings->mapSize;
+    mapSize = settings->mapSize;
     floorTexture = settings->floor;
-    wallTexture  = settings->wall;
-    waterLevel   = settings->water_level;
+    wallTexture = settings->wall;
+    waterLevel = settings->water_level;
 
     if (floorTexture == -1)
         floorTexture = BaseTerrain[util_rand() % Util::CountOf(BaseTerrain)];
@@ -154,15 +151,15 @@ void mapgen_generate(mapgen_settings * settings)
         // Base edge type on surface type
         switch (floorTexture)
         {
-        case TERRAIN_DIRT:
-            wallTexture = TERRAIN_EDGE_WOOD_RED;
-            break;
-        case TERRAIN_ICE:
-            wallTexture = TERRAIN_EDGE_ICE;
-            break;
-        default:
-            wallTexture = TERRAIN_EDGE_ROCK;
-            break;
+            case TERRAIN_DIRT:
+                wallTexture = TERRAIN_EDGE_WOOD_RED;
+                break;
+            case TERRAIN_ICE:
+                wallTexture = TERRAIN_EDGE_ICE;
+                break;
+            default:
+                wallTexture = TERRAIN_EDGE_ROCK;
+                break;
         }
     }
 
@@ -177,14 +174,14 @@ void mapgen_generate(mapgen_settings * settings)
             tileElement = map_get_surface_element_at(x, y);
             surface_set_terrain(tileElement, floorTexture);
             surface_set_terrain_edge(tileElement, wallTexture);
-            tileElement->base_height      = settings->height;
+            tileElement->base_height = settings->height;
             tileElement->clearance_height = settings->height;
         }
     }
 
     // Create the temporary height map and initialise
     _heightSize = mapSize * 2;
-    _height     = new uint8_t[_heightSize * _heightSize];
+    _height = new uint8_t[_heightSize * _heightSize];
     memset(_height, 0, _heightSize * _heightSize * sizeof(uint8_t));
 
     mapgen_simplex(settings);
@@ -195,7 +192,9 @@ void mapgen_generate(mapgen_settings * settings)
     delete[] _height;
 
     // Set the tile slopes so that there are no cliffs
-    while (map_smooth(1, 1, mapSize - 1, mapSize - 1)) {}
+    while (map_smooth(1, 1, mapSize - 1, mapSize - 1))
+    {
+    }
 
     // Add the water
     mapgen_set_water_level(waterLevel);
@@ -206,12 +205,12 @@ void mapgen_generate(mapgen_settings * settings)
     {
         switch (util_rand() % 4)
         {
-        case 0:
-            beachTexture = TERRAIN_SAND;
-            break;
-        case 1:
-            beachTexture = TERRAIN_SAND_LIGHT;
-            break;
+            case 0:
+                beachTexture = TERRAIN_SAND;
+                break;
+            case 1:
+                beachTexture = TERRAIN_SAND_LIGHT;
+                break;
         }
     }
     for (y = 1; y < mapSize - 1; y++)
@@ -235,21 +234,21 @@ void mapgen_generate(mapgen_settings * settings)
 static void mapgen_place_tree(int32_t type, int32_t x, int32_t y)
 {
     int32_t surfaceZ;
-    rct_tile_element  * tileElement;
-    rct_scenery_entry * sceneryEntry = get_small_scenery_entry(type);
+    rct_tile_element* tileElement;
+    rct_scenery_entry* sceneryEntry = get_small_scenery_entry(type);
     if (sceneryEntry == nullptr)
     {
         return;
     }
 
-    surfaceZ    = tile_element_height(x * 32 + 16, y * 32 + 16) / 8;
+    surfaceZ = tile_element_height(x * 32 + 16, y * 32 + 16) / 8;
     tileElement = tile_element_insert(x, y, surfaceZ, (1 | 2 | 4 | 8));
     assert(tileElement != nullptr);
     tileElement->clearance_height = surfaceZ + (sceneryEntry->small_scenery.height >> 3);
 
-    tileElement->type                    = TILE_ELEMENT_TYPE_SMALL_SCENERY | (util_rand() & 3);
+    tileElement->type = TILE_ELEMENT_TYPE_SMALL_SCENERY | (util_rand() & 3);
     tileElement->properties.scenery.type = type;
-    tileElement->properties.scenery.age  = 0;
+    tileElement->properties.scenery.age = 0;
     scenery_small_set_primary_colour(tileElement, COLOUR_YELLOW);
 }
 
@@ -314,7 +313,7 @@ static void mapgen_place_trees()
     {
         for (int32_t x = 1; x < gMapSize - 1; x++)
         {
-            rct_tile_element * tileElement = map_get_surface_element_at(x, y);
+            rct_tile_element* tileElement = map_get_surface_element_at(x, y);
 
             // Exclude water tiles
             if (surface_get_water_height(tileElement) > 0)
@@ -323,7 +322,6 @@ static void mapgen_place_trees()
             pos.x = x;
             pos.y = y;
             availablePositions.push_back(pos);
-
         }
     }
 
@@ -335,47 +333,48 @@ static void mapgen_place_trees()
             continue;
 
         tmp = availablePositions[i];
-        availablePositions[i]      = availablePositions[rindex];
+        availablePositions[i] = availablePositions[rindex];
         availablePositions[rindex] = tmp;
     }
 
     // Place trees
-    float  treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
-    int32_t numTrees        = std::min(std::max(4, (int32_t) (availablePositions.size() * treeToLandRatio)), (int32_t)availablePositions.size());
+    float treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
+    int32_t numTrees
+        = std::min(std::max(4, (int32_t)(availablePositions.size() * treeToLandRatio)), (int32_t)availablePositions.size());
 
     for (int32_t i = 0; i < numTrees; i++)
     {
         pos = availablePositions[i];
 
         int32_t type = -1;
-        rct_tile_element * tileElement = map_get_surface_element_at(pos.x, pos.y);
+        rct_tile_element* tileElement = map_get_surface_element_at(pos.x, pos.y);
         switch (surface_get_terrain(tileElement))
         {
-        case TERRAIN_GRASS:
-        case TERRAIN_DIRT:
-        case TERRAIN_GRASS_CLUMPS:
-            if (grassTreeIds.size() == 0)
+            case TERRAIN_GRASS:
+            case TERRAIN_DIRT:
+            case TERRAIN_GRASS_CLUMPS:
+                if (grassTreeIds.size() == 0)
+                    break;
+
+                type = grassTreeIds[util_rand() % grassTreeIds.size()];
                 break;
 
-            type = grassTreeIds[util_rand() % grassTreeIds.size()];
-            break;
+            case TERRAIN_SAND:
+            case TERRAIN_SAND_DARK:
+            case TERRAIN_SAND_LIGHT:
+                if (desertTreeIds.size() == 0)
+                    break;
 
-        case TERRAIN_SAND:
-        case TERRAIN_SAND_DARK:
-        case TERRAIN_SAND_LIGHT:
-            if (desertTreeIds.size() == 0)
+                if (util_rand() % 4 == 0)
+                    type = desertTreeIds[util_rand() % desertTreeIds.size()];
                 break;
 
-            if (util_rand() % 4 == 0)
-                type = desertTreeIds[util_rand() % desertTreeIds.size()];
-            break;
+            case TERRAIN_ICE:
+                if (snowTreeIds.size() == 0)
+                    break;
 
-        case TERRAIN_ICE:
-            if (snowTreeIds.size() == 0)
+                type = snowTreeIds[util_rand() % snowTreeIds.size()];
                 break;
-
-            type = snowTreeIds[util_rand() % snowTreeIds.size()];
-            break;
         }
 
         if (type != -1)
@@ -389,7 +388,7 @@ static void mapgen_place_trees()
 static void mapgen_set_water_level(int32_t waterLevel)
 {
     int32_t x, y, mapSize;
-    rct_tile_element * tileElement;
+    rct_tile_element* tileElement;
 
     mapSize = gMapSize;
 
@@ -411,7 +410,7 @@ static void mapgen_smooth_height(int32_t iterations)
 {
     int32_t i, x, y, xx, yy, avg;
     int32_t arraySize = _heightSize * _heightSize * sizeof(uint8_t);
-    uint8_t * copyHeight = new uint8_t[arraySize];
+    uint8_t* copyHeight = new uint8_t[arraySize];
 
     for (i = 0; i < iterations; i++)
     {
@@ -420,7 +419,7 @@ static void mapgen_smooth_height(int32_t iterations)
         {
             for (x = 1; x < _heightSize - 1; x++)
             {
-                avg     = 0;
+                avg = 0;
                 for (yy = -1; yy <= 1; yy++)
                 {
                     for (xx = -1; xx <= 1; xx++)
@@ -443,10 +442,10 @@ static void mapgen_smooth_height(int32_t iterations)
 static void mapgen_set_height()
 {
     int32_t x, y, heightX, heightY, mapSize;
-    rct_tile_element * tileElement;
+    rct_tile_element* tileElement;
 
     mapSize = _heightSize / 2;
-    for (y  = 1; y < mapSize - 1; y++)
+    for (y = 1; y < mapSize - 1; y++)
     {
         for (x = 1; x < mapSize - 1; x++)
         {
@@ -461,7 +460,7 @@ static void mapgen_set_height()
             uint8_t baseHeight = (q00 + q01 + q10 + q11) / 4;
 
             tileElement = map_get_surface_element_at(x, y);
-            tileElement->base_height      = std::max(2, baseHeight * 2);
+            tileElement->base_height = std::max(2, baseHeight * 2);
             tileElement->clearance_height = tileElement->base_height;
 
             if (q00 > baseHeight)
@@ -493,7 +492,7 @@ static uint8_t perm[512];
 
 static void noise_rand()
 {
-    for (auto &i : perm)
+    for (auto& i : perm)
     {
         i = util_rand() & 0xFF;
     }
@@ -501,9 +500,9 @@ static void noise_rand()
 
 static float fractal_noise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence)
 {
-    float       total     = 0.0f;
-    float       amplitude = persistence;
-    for (int32_t i         = 0; i < octaves; i++)
+    float total = 0.0f;
+    float amplitude = persistence;
+    for (int32_t i = 0; i < octaves; i++)
     {
         total += generate(x * frequency, y * frequency) * amplitude;
         frequency *= lacunarity;
@@ -520,13 +519,13 @@ static float generate(float x, float y)
     float n0, n1, n2; // Noise contributions from the three corners
 
     // Skew the input space to determine which simplex cell we're in
-    float  s  = (x + y) * F2; // Hairy factor for 2D
-    float  xs = x + s;
-    float  ys = y + s;
-    int32_t i  = fast_floor(xs);
-    int32_t j  = fast_floor(ys);
+    float s = (x + y) * F2; // Hairy factor for 2D
+    float xs = x + s;
+    float ys = y + s;
+    int32_t i = fast_floor(xs);
+    int32_t j = fast_floor(ys);
 
-    float t  = (float) (i + j) * G2;
+    float t = (float)(i + j) * G2;
     float X0 = i - t; // Unskew the cell origin back to (x,y) space
     float Y0 = j - t;
     float x0 = x - X0; // The x,y distances from the cell origin
@@ -544,7 +543,7 @@ static float generate(float x, float y)
     {
         i1 = 0;
         j1 = 1;
-    }      // upper triangle, YX order: (0,0)->(0,1)->(1,1)
+    } // upper triangle, YX order: (0,0)->(0,1)->(1,1)
 
     // A step of (1,0) in (i,j) means a step of (1-c,-c) in (x,y), and
     // a step of (0,1) in (i,j) means a step of (-c,1-c) in (x,y), where
@@ -600,25 +599,25 @@ static float generate(float x, float y)
 
 static int32_t fast_floor(float x)
 {
-    return (x > 0) ? ((int32_t) x) : (((int32_t) x) - 1);
+    return (x > 0) ? ((int32_t)x) : (((int32_t)x) - 1);
 }
 
 static float grad(int32_t hash, float x, float y)
 {
-    int32_t h = hash & 7;      // Convert low 3 bits of hash code
-    float  u = h < 4 ? x : y;  // into 8 simple gradient directions,
-    float  v = h < 4 ? y : x;  // and compute the dot product with (x,y).
+    int32_t h = hash & 7;    // Convert low 3 bits of hash code
+    float u = h < 4 ? x : y; // into 8 simple gradient directions,
+    float v = h < 4 ? y : x; // and compute the dot product with (x,y).
     return ((h & 1) != 0 ? -u : u) + ((h & 2) != 0 ? -2.0f * v : 2.0f * v);
 }
 
-static void mapgen_simplex(mapgen_settings * settings)
+static void mapgen_simplex(mapgen_settings* settings)
 {
     int32_t x, y;
 
-    float  freq    = settings->simplex_base_freq * (1.0f / _heightSize);
+    float freq = settings->simplex_base_freq * (1.0f / _heightSize);
     int32_t octaves = settings->simplex_octaves;
 
-    int32_t low  = settings->simplex_low;
+    int32_t low = settings->simplex_low;
     int32_t high = settings->simplex_high;
 
     noise_rand();
@@ -626,10 +625,10 @@ static void mapgen_simplex(mapgen_settings * settings)
     {
         for (x = 0; x < _heightSize; x++)
         {
-            float noiseValue           = Math::Clamp(-1.0f, fractal_noise(x, y, freq, octaves, 2.0f, 0.65f), 1.0f);
+            float noiseValue = Math::Clamp(-1.0f, fractal_noise(x, y, freq, octaves, 2.0f, 0.65f), 1.0f);
             float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;
 
-            set_height(x, y, low + (int32_t) (normalisedNoiseValue * high));
+            set_height(x, y, low + (int32_t)(normalisedNoiseValue * high));
         }
     }
 }
@@ -638,7 +637,7 @@ static void mapgen_simplex(mapgen_settings * settings)
 
 #pragma region Heightmap
 
-bool mapgen_load_heightmap(const utf8 * path)
+bool mapgen_load_heightmap(const utf8* path)
 {
     auto format = Imaging::GetImageFormatFromPath(path);
     if (format == IMAGE_FORMAT::PNG)
@@ -709,17 +708,17 @@ bool mapgen_load_heightmap(const utf8 * path)
 void mapgen_unload_heightmap()
 {
     SafeDeleteArray(_heightMapData.mono_bitmap);
-    _heightMapData.width       = 0;
-    _heightMapData.height      = 0;
+    _heightMapData.width = 0;
+    _heightMapData.height = 0;
 }
 
 /**
  * Applies box blur to the surface N times
  */
-static void mapgen_smooth_heightmap(uint8_t * src, int32_t strength)
+static void mapgen_smooth_heightmap(uint8_t* src, int32_t strength)
 {
     // Create buffer to store one channel
-    uint8_t * dest = new uint8_t[_heightMapData.width * _heightMapData.height];
+    uint8_t* dest = new uint8_t[_heightMapData.width * _heightMapData.height];
 
     for (int32_t i = 0; i < strength; i++)
     {
@@ -737,8 +736,8 @@ static void mapgen_smooth_heightmap(uint8_t * src, int32_t strength)
                     {
                         // Clamp x and y so they stay within the image
                         // This assumes the height map is not tiled, and increases the weight of the edges
-                        const int32_t readX = Math::Clamp((int32_t) x + offsetX, 0, (int32_t) _heightMapData.width - 1);
-                        const int32_t readY = Math::Clamp((int32_t) y + offsetY, 0, (int32_t) _heightMapData.height - 1);
+                        const int32_t readX = Math::Clamp((int32_t)x + offsetX, 0, (int32_t)_heightMapData.width - 1);
+                        const int32_t readY = Math::Clamp((int32_t)y + offsetY, 0, (int32_t)_heightMapData.height - 1);
                         heightSum += src[readX + readY * _heightMapData.width];
                     }
                 }
@@ -761,14 +760,14 @@ static void mapgen_smooth_heightmap(uint8_t * src, int32_t strength)
     delete[] dest;
 }
 
-void mapgen_generate_from_heightmap(mapgen_settings * settings)
+void mapgen_generate_from_heightmap(mapgen_settings* settings)
 {
     openrct2_assert(_heightMapData.width == _heightMapData.height, "Invalid height map size");
     openrct2_assert(_heightMapData.mono_bitmap != nullptr, "No height map loaded");
     openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
 
     // Make a copy of the original height map that we can edit
-    uint8_t * dest = new uint8_t[_heightMapData.width * _heightMapData.height];
+    uint8_t* dest = new uint8_t[_heightMapData.width * _heightMapData.height];
     memcpy(dest, _heightMapData.mono_bitmap, _heightMapData.width * _heightMapData.width);
 
     map_init(_heightMapData.width + 2); // + 2 for the black tiles around the map
@@ -791,8 +790,8 @@ void mapgen_generate_from_heightmap(mapgen_settings * settings)
             for (uint32_t x = 0; x < _heightMapData.width; x++)
             {
                 uint8_t value = dest[x + y * _heightMapData.width];
-                maxValue    = std::max(maxValue, value);
-                minValue    = std::min(minValue, value);
+                maxValue = std::max(maxValue, value);
+                minValue = std::min(minValue, value);
             }
         }
 
@@ -807,7 +806,7 @@ void mapgen_generate_from_heightmap(mapgen_settings * settings)
     openrct2_assert(maxValue > minValue, "Input range is invalid");
     openrct2_assert(settings->simplex_high > settings->simplex_low, "Output range is invalid");
 
-    const uint8_t rangeIn  = maxValue - minValue;
+    const uint8_t rangeIn = maxValue - minValue;
     const uint8_t rangeOut = settings->simplex_high - settings->simplex_low;
 
     for (uint32_t y = 0; y < _heightMapData.height; y++)
@@ -815,12 +814,12 @@ void mapgen_generate_from_heightmap(mapgen_settings * settings)
         for (uint32_t x = 0; x < _heightMapData.width; x++)
         {
             // The x and y axis are flipped in the world, so this uses y for x and x for y.
-            rct_tile_element * const surfaceElement = map_get_surface_element_at(y + 1, x + 1);
+            rct_tile_element* const surfaceElement = map_get_surface_element_at(y + 1, x + 1);
 
             // Read value from bitmap, and convert its range
             uint8_t value = dest[x + y * _heightMapData.width];
-            value = (uint8_t) ((float) (value - minValue) / rangeIn * rangeOut) + settings->simplex_low;
-            surfaceElement->base_height      = value;
+            value = (uint8_t)((float)(value - minValue) / rangeIn * rangeOut) + settings->simplex_low;
+            surfaceElement->base_height = value;
 
             // Floor to even number
             surfaceElement->base_height /= 2;

@@ -7,23 +7,24 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../audio/audio.h"
-#include "../audio/AudioMixer.h"
+#include "Climate.h"
+
 #include "../Cheats.h"
+#include "../Context.h"
+#include "../Game.h"
+#include "../OpenRCT2.h"
+#include "../audio/AudioMixer.h"
+#include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../drawing/Drawing.h"
-#include "../Game.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
-#include "../OpenRCT2.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
 #include "../util/Util.h"
-#include "Climate.h"
 #include "../windows/Intent.h"
-#include "../Context.h"
 
 constexpr int32_t MAX_THUNDER_INSTANCES = 2;
 
@@ -40,26 +41,26 @@ struct WeatherTransition
     int8_t Distribution[24];
 };
 
-extern const WeatherTransition *    ClimateTransitions[4];
-extern const WeatherState           ClimateWeatherData[6];
-extern const FILTER_PALETTE_ID      ClimateWeatherGloomColours[4];
+extern const WeatherTransition* ClimateTransitions[4];
+extern const WeatherState ClimateWeatherData[6];
+extern const FILTER_PALETTE_ID ClimateWeatherGloomColours[4];
 
 // Climate data
-uint8_t           gClimate;
-ClimateState    gClimateCurrent;
-ClimateState    gClimateNext;
-uint16_t          gClimateUpdateTimer;
-uint16_t          gClimateLightningFlash;
+uint8_t gClimate;
+ClimateState gClimateCurrent;
+ClimateState gClimateNext;
+uint16_t gClimateUpdateTimer;
+uint16_t gClimateLightningFlash;
 
 // Sound data
-static int32_t           _rainVolume = 1;
-static uint32_t           _lightningTimer;
-static uint32_t           _thunderTimer;
-static void *           _thunderSoundChannels[MAX_THUNDER_INSTANCES];
-static THUNDER_STATUS   _thunderStatus[MAX_THUNDER_INSTANCES] = { THUNDER_STATUS::NONE, THUNDER_STATUS::NONE };
-static uint32_t           _thunderSoundId;
-static int32_t           _thunderVolume;
-static int32_t           _thunderStereoEcho = 0;
+static int32_t _rainVolume = 1;
+static uint32_t _lightningTimer;
+static uint32_t _thunderTimer;
+static void* _thunderSoundChannels[MAX_THUNDER_INSTANCES];
+static THUNDER_STATUS _thunderStatus[MAX_THUNDER_INSTANCES] = { THUNDER_STATUS::NONE, THUNDER_STATUS::NONE };
+static uint32_t _thunderSoundId;
+static int32_t _thunderVolume;
+static int32_t _thunderStereoEcho = 0;
 
 static int8_t climate_step_weather_level(int8_t currentWeatherLevel, int8_t nextWeatherLevel);
 static void climate_determine_future_weather(int32_t randomDistribution);
@@ -81,8 +82,8 @@ void climate_reset(int32_t climate)
 {
     uint8_t weather = WEATHER_PARTIALLY_CLOUDY;
     int32_t month = date_get_month(gDateMonthsElapsed);
-    const WeatherTransition * transition = &ClimateTransitions[climate][month];
-    const WeatherState * weatherState = &ClimateWeatherData[weather];
+    const WeatherTransition* transition = &ClimateTransitions[climate][month];
+    const WeatherState* weatherState = &ClimateWeatherData[weather];
 
     gClimate = climate;
     gClimateCurrent.Weather = weather;
@@ -109,7 +110,8 @@ void climate_reset(int32_t climate)
 void climate_update()
 {
     // Only do climate logic if playing (not in scenario editor or title screen)
-    if (gScreenFlags & (~SCREEN_FLAGS_PLAYING)) return;
+    if (gScreenFlags & (~SCREEN_FLAGS_PLAYING))
+        return;
 
     if (!gCheatsFreezeClimate)
     {
@@ -141,12 +143,14 @@ void climate_update()
                     }
                     else if (gClimateNext.RainLevel <= RAIN_LEVEL_HEAVY)
                     {
-                        gClimateCurrent.RainLevel = climate_step_weather_level(gClimateCurrent.RainLevel, gClimateNext.RainLevel);
+                        gClimateCurrent.RainLevel
+                            = climate_step_weather_level(gClimateCurrent.RainLevel, gClimateNext.RainLevel);
                     }
                 }
                 else
                 {
-                    gClimateCurrent.WeatherGloom = climate_step_weather_level(gClimateCurrent.WeatherGloom, gClimateNext.WeatherGloom);
+                    gClimateCurrent.WeatherGloom
+                        = climate_step_weather_level(gClimateCurrent.WeatherGloom, gClimateNext.WeatherGloom);
                     gfx_invalidate_screen();
                 }
             }
@@ -157,7 +161,6 @@ void climate_update()
                 context_broadcast_intent(&intent);
             }
         }
-
     }
 
     if (_thunderTimer != 0)
@@ -193,13 +196,16 @@ void climate_force_weather(uint8_t weather)
     gfx_invalidate_screen();
 }
 
-
 void climate_update_sound()
 {
-    if (gAudioCurrentDevice == -1) return;
-    if (gGameSoundsOff) return;
-    if (!gConfigSound.sound_enabled) return;
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) return;
+    if (gAudioCurrentDevice == -1)
+        return;
+    if (gGameSoundsOff)
+        return;
+    if (!gConfigSound.sound_enabled)
+        return;
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        return;
 
     climate_update_rain_sound();
     climate_update_thunder_sound();
@@ -210,7 +216,7 @@ bool climate_is_raining()
     return gClimateCurrent.RainLevel != RAIN_LEVEL_NONE;
 }
 
-FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState &state)
+FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state)
 {
     auto paletteId = PALETTE_NULL;
     auto gloom = state.WeatherGloom;
@@ -221,7 +227,7 @@ FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState &state
     return paletteId;
 }
 
-uint32_t climate_get_weather_sprite_id(const ClimateState &state)
+uint32_t climate_get_weather_sprite_id(const ClimateState& state)
 {
     uint32_t spriteId = SPR_WEATHER_SUN;
     if (state.Weather < Util::CountOf(ClimateWeatherData))
@@ -244,17 +250,18 @@ static int8_t climate_step_weather_level(int8_t currentWeatherLevel, int8_t next
 }
 
 /**
-* Calculates future weather development.
-* RCT2 implements this as discrete probability distributions dependant on month and climate
-* for nextWeather. The other weather parameters are then looked up depending only on the
-* next weather.
-*/
+ * Calculates future weather development.
+ * RCT2 implements this as discrete probability distributions dependant on month and climate
+ * for nextWeather. The other weather parameters are then looked up depending only on the
+ * next weather.
+ */
 static void climate_determine_future_weather(int32_t randomDistribution)
 {
     int8_t month = date_get_month(gDateMonthsElapsed);
 
-    // Generate a random variable with values 0 up to DistributionSize-1 and chose weather from the distribution table accordingly
-    const WeatherTransition * transition = &ClimateTransitions[gClimate][month];
+    // Generate a random variable with values 0 up to DistributionSize-1 and chose weather from the distribution table
+    // accordingly
+    const WeatherTransition* transition = &ClimateTransitions[gClimate][month];
     int8_t nextWeather = transition->Distribution[((randomDistribution & 0xFF) * transition->DistributionSize) >> 8];
     gClimateNext.Weather = nextWeather;
 
@@ -269,8 +276,7 @@ static void climate_determine_future_weather(int32_t randomDistribution)
 
 static void climate_update_rain_sound()
 {
-    if (gClimateCurrent.WeatherEffect == WEATHER_EFFECT_RAIN ||
-        gClimateCurrent.WeatherEffect == WEATHER_EFFECT_STORM)
+    if (gClimateCurrent.WeatherEffect == WEATHER_EFFECT_RAIN || gClimateCurrent.WeatherEffect == WEATHER_EFFECT_STORM)
     {
         // Start playing the rain sound
         if (gRainSoundChannel == nullptr)
@@ -324,7 +330,7 @@ static void climate_update_thunder_sound()
     {
         if (_thunderStatus[i] != THUNDER_STATUS::NONE)
         {
-            void * channel = _thunderSoundChannels[i];
+            void* channel = _thunderSoundChannels[i];
             if (!Mixer_Channel_IsPlaying(channel))
             {
                 Mixer_Stop_Channel(channel);
@@ -336,9 +342,12 @@ static void climate_update_thunder_sound()
 
 static void climate_update_lightning()
 {
-    if (_lightningTimer == 0) return;
-    if (gConfigGeneral.disable_lightning_effect) return;
-    if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom) return;
+    if (_lightningTimer == 0)
+        return;
+    if (gConfigGeneral.disable_lightning_effect)
+        return;
+    if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom)
+        return;
 
     _lightningTimer--;
     if (gClimateLightningFlash == 0)
@@ -358,8 +367,7 @@ static void climate_update_thunder()
         uint32_t randomNumber = util_rand();
         if (randomNumber & 0x10000)
         {
-            if (_thunderStatus[0] == THUNDER_STATUS::NONE &&
-                _thunderStatus[1] == THUNDER_STATUS::NONE)
+            if (_thunderStatus[0] == THUNDER_STATUS::NONE && _thunderStatus[1] == THUNDER_STATUS::NONE)
             {
                 // Play thunder on left side
                 _thunderSoundId = (randomNumber & 0x20000) ? SOUND_THUNDER_1 : SOUND_THUNDER_2;
@@ -384,7 +392,8 @@ static void climate_update_thunder()
 
 static void climate_play_thunder(int32_t instanceIndex, int32_t soundId, int32_t volume, int32_t pan)
 {
-    _thunderSoundChannels[instanceIndex] = Mixer_Play_Effect(soundId, MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), 1, 0);
+    _thunderSoundChannels[instanceIndex]
+        = Mixer_Play_Effect(soundId, MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), 1, 0);
     if (_thunderSoundChannels[instanceIndex] != nullptr)
     {
         _thunderStatus[instanceIndex] = THUNDER_STATUS::PLAYING;
@@ -393,8 +402,7 @@ static void climate_play_thunder(int32_t instanceIndex, int32_t soundId, int32_t
 
 #pragma region Climate / Weather data tables
 
-const FILTER_PALETTE_ID ClimateWeatherGloomColours[4] =
-{
+const FILTER_PALETTE_ID ClimateWeatherGloomColours[4] = {
     PALETTE_NULL,
     PALETTE_DARKEN_1,
     PALETTE_DARKEN_2,
@@ -402,19 +410,17 @@ const FILTER_PALETTE_ID ClimateWeatherGloomColours[4] =
 };
 
 // There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
-const WeatherState ClimateWeatherData[6] =
-{
-    { 10, WEATHER_EFFECT_NONE,  0, RAIN_LEVEL_NONE,  SPR_WEATHER_SUN        }, // Sunny
-    {  5, WEATHER_EFFECT_NONE,  0, RAIN_LEVEL_NONE,  SPR_WEATHER_SUN_CLOUD  }, // Partially Cloudy
-    {  0, WEATHER_EFFECT_NONE,  0, RAIN_LEVEL_NONE,  SPR_WEATHER_CLOUD      }, // Cloudy
-    { -2, WEATHER_EFFECT_RAIN,  1, RAIN_LEVEL_LIGHT, SPR_WEATHER_LIGHT_RAIN }, // Rain
-    { -4, WEATHER_EFFECT_RAIN,  2, RAIN_LEVEL_HEAVY, SPR_WEATHER_HEAVY_RAIN }, // Heavy Rain
-    {  2, WEATHER_EFFECT_STORM, 2, RAIN_LEVEL_HEAVY, SPR_WEATHER_STORM      }, // Thunderstorm
+const WeatherState ClimateWeatherData[6] = {
+    { 10, WEATHER_EFFECT_NONE, 0, RAIN_LEVEL_NONE, SPR_WEATHER_SUN },         // Sunny
+    { 5, WEATHER_EFFECT_NONE, 0, RAIN_LEVEL_NONE, SPR_WEATHER_SUN_CLOUD },    // Partially Cloudy
+    { 0, WEATHER_EFFECT_NONE, 0, RAIN_LEVEL_NONE, SPR_WEATHER_CLOUD },        // Cloudy
+    { -2, WEATHER_EFFECT_RAIN, 1, RAIN_LEVEL_LIGHT, SPR_WEATHER_LIGHT_RAIN }, // Rain
+    { -4, WEATHER_EFFECT_RAIN, 2, RAIN_LEVEL_HEAVY, SPR_WEATHER_HEAVY_RAIN }, // Heavy Rain
+    { 2, WEATHER_EFFECT_STORM, 2, RAIN_LEVEL_HEAVY, SPR_WEATHER_STORM },      // Thunderstorm
 };
 
-static constexpr const WeatherTransition ClimateTransitionsCoolAndWet[] =
-{
-    {  8, 18, { 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 0, 0, 0, 0, 0 } },
+static constexpr const WeatherTransition ClimateTransitionsCoolAndWet[] = {
+    { 8, 18, { 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 0, 0, 0, 0, 0 } },
     { 10, 21, { 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 0, 0 } },
     { 14, 17, { 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 0, 0, 0, 0, 0, 0 } },
     { 17, 17, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 0, 0, 0, 0, 0, 0 } },
@@ -437,25 +443,24 @@ static constexpr const WeatherTransition ClimateTransitionsHotAndDry[] = {
     { 12, 15, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0 } },
     { 14, 12, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
     { 16, 11, { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
-    { 19,  9, { 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
+    { 19, 9, { 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
     { 21, 13, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
     { 22, 11, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
     { 21, 12, { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
     { 16, 13, { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
 };
 static constexpr const WeatherTransition ClimateTransitionsCold[] = {
-    {  4, 18, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 4, 0, 0, 0, 0, 0 } },
-    {  5, 21, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 0, 0 } },
-    {  7, 17, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 0, 0, 0, 0, 0, 0 } },
-    {  9, 17, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 0, 0, 0, 0, 0, 0 } },
+    { 4, 18, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 4, 0, 0, 0, 0, 0 } },
+    { 5, 21, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 0, 0 } },
+    { 7, 17, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 0, 0, 0, 0, 0, 0 } },
+    { 9, 17, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 0, 0, 0, 0, 0, 0 } },
     { 10, 23, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 4 } },
     { 11, 23, { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 5 } },
-    {  9, 19, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 4, 5, 0, 0, 0, 0 } },
-    {  6, 16, { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0 } },
+    { 9, 19, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 4, 5, 0, 0, 0, 0 } },
+    { 6, 16, { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0 } },
 };
 
-const WeatherTransition * ClimateTransitions[] =
-{
+const WeatherTransition* ClimateTransitions[] = {
     ClimateTransitionsCoolAndWet,
     ClimateTransitionsWarm,
     ClimateTransitionsHotAndDry,
