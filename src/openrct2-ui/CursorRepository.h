@@ -9,11 +9,9 @@
 
 #pragma once
 
-#include <map>
-#include <functional>
-
 #include <SDL2/SDL.h>
-
+#include <functional>
+#include <map>
 #include <openrct2/interface/Cursors.h>
 
 struct SDL_Cursor;
@@ -26,9 +24,10 @@ namespace OpenRCT2::Ui
         class CursorSetHolder
         {
         private:
-            SDL_Cursor * _cursors[CURSOR_COUNT] = {nullptr};
+            SDL_Cursor* _cursors[CURSOR_COUNT] = { nullptr };
+
         public:
-            CursorSetHolder(const std::function<SDL_Cursor *(CURSOR_ID)> & getCursor)
+            CursorSetHolder(const std::function<SDL_Cursor*(CURSOR_ID)>& getCursor)
             {
                 for (size_t i = 0; i < CURSOR_COUNT; i++)
                 {
@@ -44,16 +43,16 @@ namespace OpenRCT2::Ui
                 }
             }
 
-            SDL_Cursor * getScaledCursor(CURSOR_ID cursorId)
+            SDL_Cursor* getScaledCursor(CURSOR_ID cursorId)
             {
                 return _cursors[cursorId];
             }
         };
 
-        constexpr static int32_t BASE_CURSOR_WIDTH  = 32;
+        constexpr static int32_t BASE_CURSOR_WIDTH = 32;
         constexpr static int32_t BASE_CURSOR_HEIGHT = 32;
 
-        CURSOR_ID _currentCursor  = CURSOR_UNDEFINED;
+        CURSOR_ID _currentCursor = CURSOR_UNDEFINED;
         uint8_t _currentCursorScale = 1;
 
         std::map<uint8_t, CursorSetHolder> _scaledCursors;
@@ -66,8 +65,8 @@ namespace OpenRCT2::Ui
         void SetCursorScale(uint8_t cursorScale);
 
     private:
-        SDL_Cursor * Create(const CursorData * cursorInfo, uint8_t scale);
+        SDL_Cursor* Create(const CursorData* cursorInfo, uint8_t scale);
         void GenerateScaledCursorSetHolder(uint8_t scale);
-        static const CursorData * GetCursorData(CURSOR_ID cursorId);
+        static const CursorData* GetCursorData(CURSOR_ID cursorId);
     };
-}
+} // namespace OpenRCT2::Ui

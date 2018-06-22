@@ -9,29 +9,27 @@
 
 #ifdef __ANDROID__
 
-#include <dlfcn.h>
-#include <sstream>
-#include <stdexcept>
-#include <openrct2/common.h>
-#include <openrct2/core/String.hpp>
-#include <openrct2/ui/UiContext.h>
 #include "UiContext.h"
 
 #include <SDL.h>
+#include <dlfcn.h>
+#include <openrct2/common.h>
+#include <openrct2/core/String.hpp>
+#include <openrct2/ui/UiContext.h>
+#include <sstream>
+#include <stdexcept>
 
 namespace OpenRCT2::Ui
 {
-
     class AndroidContext final : public IPlatformUiContext
     {
     private:
-
     public:
         AndroidContext()
         {
         }
 
-        void SetWindowIcon(SDL_Window * window) override
+        void SetWindowIcon(SDL_Window* window) override
         {
         }
 
@@ -40,21 +38,21 @@ namespace OpenRCT2::Ui
             return false;
         }
 
-        void ShowMessageBox(SDL_Window * window, const std::string &message) override
+        void ShowMessageBox(SDL_Window* window, const std::string& message) override
         {
             log_verbose(message.c_str());
 
             STUB();
         }
 
-        std::string ShowFileDialog(SDL_Window * window, const FileDialogDesc &desc) override
+        std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
         {
             STUB();
 
             return nullptr;
         }
 
-        std::string ShowDirectoryDialog(SDL_Window * window, const std::string &title) override
+        std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) override
         {
             log_info(title.c_str());
             STUB();
@@ -63,10 +61,10 @@ namespace OpenRCT2::Ui
         }
     };
 
-    IPlatformUiContext * CreatePlatformUiContext()
+    IPlatformUiContext* CreatePlatformUiContext()
     {
         return new AndroidContext();
     }
-}
+} // namespace OpenRCT2::Ui
 
 #endif // __ANDROID__

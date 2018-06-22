@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include <openrct2/common.h>
 #include <openrct2/Context.h>
+#include <openrct2/common.h>
 #include <openrct2/ui/UiContext.h>
 
 union SDL_Event;
@@ -25,26 +25,26 @@ namespace OpenRCT2::Ui
     private:
         TextInputSession _session = {};
 
-        bool    _imeActive = false;
-        int32_t  _imeStart = 0;
-        int32_t  _imeLength = 0;
-        utf8    _imeBuffer[32] = {};
+        bool _imeActive = false;
+        int32_t _imeStart = 0;
+        int32_t _imeLength = 0;
+        utf8 _imeBuffer[32] = {};
 
     public:
         bool IsActive();
-        TextInputSession * Start(utf8 * buffer, size_t bufferSize);
+        TextInputSession* Start(utf8* buffer, size_t bufferSize);
         void Stop();
-        void HandleMessage(const SDL_Event * e);
+        void HandleMessage(const SDL_Event* e);
 
     private:
         void CursorHome();
         void CursorEnd();
         void CursorLeft();
         void CursorRight();
-        void Insert(const utf8 * text);
+        void Insert(const utf8* text);
         void InsertCodepoint(codepoint_t codepoint);
         void Clear();
         void Delete();
         void RecalculateLength();
     };
-}
+} // namespace OpenRCT2::Ui
