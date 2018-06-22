@@ -7,19 +7,21 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/common.h>
+#include "AudioContext.h"
+
+#include "../SDLException.h"
+
 #include <SDL2/SDL.h>
 #include <openrct2/audio/AudioContext.h>
+#include <openrct2/common.h>
 #include <openrct2/core/String.hpp>
-#include "../SDLException.h"
-#include "AudioContext.h"
 
 namespace OpenRCT2::Audio
 {
     class AudioContext : public IAudioContext
     {
     private:
-        IAudioMixer * _audioMixer = nullptr;
+        IAudioMixer* _audioMixer = nullptr;
 
     public:
         AudioContext()
@@ -37,7 +39,7 @@ namespace OpenRCT2::Audio
             SDL_QuitSubSystem(SDL_INIT_AUDIO);
         }
 
-        IAudioMixer * GetMixer() override
+        IAudioMixer* GetMixer() override
         {
             return _audioMixer;
         }
@@ -54,9 +56,9 @@ namespace OpenRCT2::Audio
             return devices;
         }
 
-        void SetOutputDevice(const std::string &deviceName) override
+        void SetOutputDevice(const std::string& deviceName) override
         {
-            const char * szDeviceName = nullptr;
+            const char* szDeviceName = nullptr;
             if (!deviceName.empty())
             {
                 szDeviceName = deviceName.c_str();
@@ -64,27 +66,56 @@ namespace OpenRCT2::Audio
             _audioMixer->Init(szDeviceName);
         }
 
-        IAudioSource * CreateStreamFromWAV(const std::string &path) override
+        IAudioSource* CreateStreamFromWAV(const std::string& path) override
         {
             return AudioSource::CreateStreamFromWAV(path);
         }
 
-        void StartTitleMusic() override { }
+        void StartTitleMusic() override
+        {
+        }
 
-        IAudioChannel * PlaySound(int32_t soundId, int32_t volume, int32_t pan) override { return nullptr; }
-        IAudioChannel * PlaySoundAtLocation(int32_t soundId, int16_t x, int16_t y, int16_t z) override { return nullptr; }
-        IAudioChannel * PlaySoundPanned(int32_t soundId, int32_t pan, int16_t x, int16_t y, int16_t z) override { return nullptr; }
+        IAudioChannel* PlaySound(int32_t soundId, int32_t volume, int32_t pan) override
+        {
+            return nullptr;
+        }
+        IAudioChannel* PlaySoundAtLocation(int32_t soundId, int16_t x, int16_t y, int16_t z) override
+        {
+            return nullptr;
+        }
+        IAudioChannel* PlaySoundPanned(int32_t soundId, int32_t pan, int16_t x, int16_t y, int16_t z) override
+        {
+            return nullptr;
+        }
 
-        void ToggleAllSounds() override { }
-        void PauseSounds() override { }
-        void UnpauseSounds() override { }
+        void ToggleAllSounds() override
+        {
+        }
+        void PauseSounds() override
+        {
+        }
+        void UnpauseSounds() override
+        {
+        }
 
-        void StopAll() override { }
-        void StopCrowdSound() override { }
-        void StopRainSound() override { }
-        void StopRideMusic() override { }
-        void StopTitleMusic() override { }
-        void StopVehicleSounds() override { }
+        void StopAll() override
+        {
+        }
+        void StopCrowdSound() override
+        {
+        }
+        void StopRainSound() override
+        {
+        }
+        void StopRideMusic() override
+        {
+        }
+        void StopTitleMusic() override
+        {
+        }
+        void StopVehicleSounds() override
+        {
+        }
     };
 
     std::unique_ptr<IAudioContext> CreateAudioContext()
