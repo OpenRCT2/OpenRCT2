@@ -7,27 +7,28 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/String.hpp"
 #include "../network/network.h"
-#include "../OpenRCT2.h"
 #include "CommandLine.hpp"
 
-static exitcode_t HandleUri(const std::string &uri);
+static exitcode_t HandleUri(const std::string& uri);
 
 #ifndef DISABLE_NETWORK
-static exitcode_t HandleUriJoin(const std::vector<std::string> &args);
-static bool TryParseHostnamePort(const std::string &hostnamePort, std::string * outHostname, int32_t * outPort, int32_t defaultPort);
+static exitcode_t HandleUriJoin(const std::vector<std::string>& args);
+static bool
+    TryParseHostnamePort(const std::string& hostnamePort, std::string* outHostname, int32_t* outPort, int32_t defaultPort);
 #endif
 
-exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator * enumerator)
+exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator* enumerator)
 {
-    const utf8 * uri;
+    const utf8* uri;
     if (enumerator->TryPopString(&uri))
     {
         if (String::StartsWith(uri, "openrct2://"))
         {
-            const utf8 * uriCommand = uri + 11;
+            const utf8* uriCommand = uri + 11;
             return HandleUri(uriCommand);
         }
     }
@@ -36,7 +37,7 @@ exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator * enumerator)
     return EXITCODE_FAIL;
 }
 
-static exitcode_t HandleUri(const std::string &uri)
+static exitcode_t HandleUri(const std::string& uri)
 {
     exitcode_t result = EXITCODE_CONTINUE;
     auto args = String::Split(uri, "/");
@@ -55,7 +56,7 @@ static exitcode_t HandleUri(const std::string &uri)
 
 #ifndef DISABLE_NETWORK
 
-static exitcode_t HandleUriJoin(const std::vector<std::string> &args)
+static exitcode_t HandleUriJoin(const std::vector<std::string>& args)
 {
     std::string hostname;
     int32_t port;
@@ -74,7 +75,8 @@ static exitcode_t HandleUriJoin(const std::vector<std::string> &args)
     }
 }
 
-static bool TryParseHostnamePort(const std::string &hostnamePort, std::string * outHostname, int32_t * outPort, int32_t defaultPort)
+static bool
+    TryParseHostnamePort(const std::string& hostnamePort, std::string* outHostname, int32_t* outPort, int32_t defaultPort)
 {
     try
     {
@@ -91,7 +93,7 @@ static bool TryParseHostnamePort(const std::string &hostnamePort, std::string * 
         *outHostname = hostname;
         return true;
     }
-    catch (const std::exception &)
+    catch (const std::exception&)
     {
         return false;
     }
