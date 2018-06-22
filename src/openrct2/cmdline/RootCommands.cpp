@@ -7,26 +7,26 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <ctime>
-#include <memory>
-
-#include "../config/Config.h"
 #include "../Context.h"
-#include "../platform/Crash.h"
-#include "../platform/platform.h"
-#include "../localisation/Language.h"
+#include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
+#include "../Version.h"
+#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../localisation/Language.h"
 #include "../network/network.h"
 #include "../object/ObjectRepository.h"
-#include "../OpenRCT2.h"
-#include "../PlatformEnvironment.h"
-#include "../Version.h"
+#include "../platform/Crash.h"
+#include "../platform/platform.h"
 #include "CommandLine.hpp"
+
+#include <ctime>
+#include <memory>
 
 #ifdef USE_BREAKPAD
 #define IMPLIES_SILENT_BREAKPAD ", implies --silent-breakpad"
@@ -35,27 +35,27 @@
 #endif // USE_BREAKPAD
 
 #ifndef DISABLE_NETWORK
-int32_t  gNetworkStart = NETWORK_MODE_NONE;
+int32_t gNetworkStart = NETWORK_MODE_NONE;
 char gNetworkStartHost[128];
-int32_t  gNetworkStartPort = NETWORK_DEFAULT_PORT;
+int32_t gNetworkStartPort = NETWORK_DEFAULT_PORT;
 char* gNetworkStartAddress = nullptr;
 
-static uint32_t _port            = 0;
-static char*  _address         = nullptr;
+static uint32_t _port = 0;
+static char* _address = nullptr;
 #endif
 
-static bool   _help            = false;
-static bool   _version         = false;
-static bool   _noInstall       = false;
-static bool   _all             = false;
-static bool   _about           = false;
-static bool   _verbose         = false;
-static bool   _headless        = false;
-static utf8 * _password        = nullptr;
-static utf8 * _userDataPath    = nullptr;
-static utf8 * _openrctDataPath = nullptr;
-static utf8 * _rct2DataPath    = nullptr;
-static bool   _silentBreakpad  = false;
+static bool _help = false;
+static bool _version = false;
+static bool _noInstall = false;
+static bool _all = false;
+static bool _about = false;
+static bool _verbose = false;
+static bool _headless = false;
+static utf8* _password = nullptr;
+static utf8* _userDataPath = nullptr;
+static utf8* _openrctDataPath = nullptr;
+static utf8* _rct2DataPath = nullptr;
+static bool _silentBreakpad = false;
 
 // clang-format off
 static constexpr const CommandLineOptionDefinition StandardOptions[]
@@ -163,7 +163,8 @@ exitcode_t CommandLine::HandleCommandDefault()
     {
         PrintAbout();
         result = EXITCODE_OK;
-    } else
+    }
+    else
     {
         if (_verbose)
         {
@@ -222,7 +223,7 @@ exitcode_t CommandLine::HandleCommandDefault()
     return result;
 }
 
-exitcode_t HandleNoCommand(CommandLineArgEnumerator * enumerator)
+exitcode_t HandleNoCommand(CommandLineArgEnumerator* enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
     if (result != EXITCODE_CONTINUE)
@@ -230,7 +231,7 @@ exitcode_t HandleNoCommand(CommandLineArgEnumerator * enumerator)
         return result;
     }
 
-    const char * parkUri;
+    const char* parkUri;
     if (enumerator->TryPopString(&parkUri) && parkUri[0] != '-')
     {
         String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
@@ -240,7 +241,7 @@ exitcode_t HandleNoCommand(CommandLineArgEnumerator * enumerator)
     return EXITCODE_CONTINUE;
 }
 
-exitcode_t HandleCommandEdit(CommandLineArgEnumerator * enumerator)
+exitcode_t HandleCommandEdit(CommandLineArgEnumerator* enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
     if (result != EXITCODE_CONTINUE)
@@ -248,7 +249,7 @@ exitcode_t HandleCommandEdit(CommandLineArgEnumerator * enumerator)
         return result;
     }
 
-    const char * parkUri;
+    const char* parkUri;
     if (!enumerator->TryPopString(&parkUri))
     {
         Console::Error::WriteLine("Expected path or URL to a saved park.");
@@ -260,7 +261,7 @@ exitcode_t HandleCommandEdit(CommandLineArgEnumerator * enumerator)
     return EXITCODE_CONTINUE;
 }
 
-exitcode_t HandleCommandIntro([[maybe_unused]] CommandLineArgEnumerator * enumerator)
+exitcode_t HandleCommandIntro([[maybe_unused]] CommandLineArgEnumerator* enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
     if (result != EXITCODE_CONTINUE)
@@ -274,7 +275,7 @@ exitcode_t HandleCommandIntro([[maybe_unused]] CommandLineArgEnumerator * enumer
 
 #ifndef DISABLE_NETWORK
 
-exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator)
+exitcode_t HandleCommandHost(CommandLineArgEnumerator* enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
     if (result != EXITCODE_CONTINUE)
@@ -282,7 +283,7 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator)
         return result;
     }
 
-    const char * parkUri;
+    const char* parkUri;
     if (!enumerator->TryPopString(&parkUri))
     {
         Console::Error::WriteLine("Expected path or URL to a scenario or saved park.");
@@ -299,7 +300,7 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator)
     return EXITCODE_CONTINUE;
 }
 
-exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator)
+exitcode_t HandleCommandJoin(CommandLineArgEnumerator* enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
     if (result != EXITCODE_CONTINUE)
@@ -307,7 +308,7 @@ exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator)
         return result;
     }
 
-    const char * hostname;
+    const char* hostname;
     if (!enumerator->TryPopString(&hostname))
     {
         Console::Error::WriteLine("Expected a hostname or IP address to the server to connect to.");
@@ -322,7 +323,7 @@ exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator)
 
 #endif // DISABLE_NETWORK
 
-static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
+static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
     if (result != EXITCODE_CONTINUE)
@@ -331,7 +332,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
     }
 
     // Get the path that was passed
-    const utf8 * rawPath;
+    const utf8* rawPath;
     if (!enumerator->TryPopString(&rawPath))
     {
         Console::Error::WriteLine("Expected a path.");
@@ -383,7 +384,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
     }
 }
 
-static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumerator * enumerator)
+static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumerator* enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
     if (result != EXITCODE_CONTINUE)
@@ -401,7 +402,7 @@ static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumer
 }
 
 #if defined(_WIN32) && !defined(__MINGW32__)
-static exitcode_t HandleCommandRegisterShell([[maybe_unused]] CommandLineArgEnumerator * enumerator)
+static exitcode_t HandleCommandRegisterShell([[maybe_unused]] CommandLineArgEnumerator* enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
     if (result != EXITCODE_CONTINUE)
@@ -449,9 +450,9 @@ static void PrintVersion()
 
 static void PrintLaunchInformation()
 {
-    char        buffer[256];
-    time_t      timer;
-    struct tm * tmInfo;
+    char buffer[256];
+    time_t timer;
+    struct tm* tmInfo;
 
     // Print name and version information
     openrct2_write_full_version_info(buffer, sizeof(buffer));

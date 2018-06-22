@@ -12,13 +12,13 @@
 #include "../core/String.hpp"
 #include "CommandLine.hpp"
 
-#define SZ_DEFAULT   "default"
-#define SZ_CLOSEST   "closest"
+#define SZ_DEFAULT "default"
+#define SZ_CLOSEST "closest"
 #define SZ_DITHERING "dithering"
 
 int32_t gSpriteMode = 0;
 
-static const char * _mode;
+static const char* _mode;
 
 // clang-format off
 static constexpr const CommandLineOptionDefinition SpriteOptions[]
@@ -42,16 +42,19 @@ const CommandLineCommand CommandLine::SpriteCommands[]
 };
 // clang-format on
 
-static exitcode_t HandleSprite(CommandLineArgEnumerator *argEnumerator)
+static exitcode_t HandleSprite(CommandLineArgEnumerator* argEnumerator)
 {
-    if      (String::Equals(_mode, SZ_CLOSEST,   true)) gSpriteMode = 1;
-    else if (String::Equals(_mode, SZ_DITHERING, true)) gSpriteMode = 2;
+    if (String::Equals(_mode, SZ_CLOSEST, true))
+        gSpriteMode = 1;
+    else if (String::Equals(_mode, SZ_DITHERING, true))
+        gSpriteMode = 2;
     Memory::Free(_mode);
 
-    const char * * argv = (const char * *)argEnumerator->GetArguments() + argEnumerator->GetIndex() - 1;
+    const char** argv = (const char**)argEnumerator->GetArguments() + argEnumerator->GetIndex() - 1;
     int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex() + 1;
     int32_t result = cmdline_for_sprite(argv, argc);
-    if (result < 0) {
+    if (result < 0)
+    {
         return EXITCODE_FAIL;
     }
     return EXITCODE_OK;
