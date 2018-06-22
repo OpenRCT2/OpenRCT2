@@ -13,7 +13,8 @@
 #include "../common.h"
 #include "Ride.h"
 
-struct ride_component_name {
+struct ride_component_name
+{
     rct_string_id singular;
     rct_string_id plural;
     rct_string_id capitalised;
@@ -23,7 +24,8 @@ struct ride_component_name {
     rct_string_id number;
 };
 
-enum RIDE_COMPONENT_TYPE {
+enum RIDE_COMPONENT_TYPE
+{
     RIDE_COMPONENT_TYPE_TRAIN,
     RIDE_COMPONENT_TYPE_BOAT,
     RIDE_COMPONENT_TYPE_TRACK,
@@ -41,13 +43,15 @@ enum RIDE_COMPONENT_TYPE {
     RIDE_COMPONENT_TYPE_COUNT
 };
 
-struct rct_ride_name_convention {
+struct rct_ride_name_convention
+{
     RIDE_COMPONENT_TYPE vehicle;
     RIDE_COMPONENT_TYPE structure;
     RIDE_COMPONENT_TYPE station;
 };
 
-struct rct_ride_entrance_definition {
+struct rct_ride_entrance_definition
+{
     uint32_t sprite_index;
     uint16_t height;
     uint16_t scrolling_mode;
@@ -56,7 +60,8 @@ struct rct_ride_entrance_definition {
     uint16_t colour_use_flags;
 };
 
-struct rct_ride_data_4 {
+struct rct_ride_data_4
+{
     uint8_t price;
     uint8_t price_secondary;
     uint16_t flags;
@@ -65,33 +70,37 @@ struct rct_ride_data_4 {
     uint8_t pad[2] = {};
 };
 
-struct ride_cost {
+struct ride_cost
+{
     uint16_t track_price;
     uint16_t support_price;
 };
 
-struct rct_ride_data_5 {
+struct rct_ride_data_5
+{
     uint8_t max_height;
     uint8_t clearance_height;
     int8_t z_offset;
     uint8_t max_mass;
     uint8_t z;
     uint8_t price;
-    uint8_t bonus_value;      // Deprecated. Use rideBonusValue instead
+    uint8_t bonus_value; // Deprecated. Use rideBonusValue instead
     uint8_t pad = 0;
 };
 
-struct rct_ride_lift_data {
+struct rct_ride_lift_data
+{
     uint8_t sound_id;
     uint8_t minimum_speed;
     uint8_t maximum_speed;
 };
 
-enum {
+enum
+{
     RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK = (1 << 0),
     RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT = (1 << 1),
     RIDE_TYPE_FLAG4_ALLOW_MUSIC = (1 << 2),
-    RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE = (1 << 3),  // Used by the Flying RC, Lay-down RC, Multi-dimension RC
+    RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE = (1 << 3), // Used by the Flying RC, Lay-down RC, Multi-dimension RC
     RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES = (1 << 4),
     RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT = (1 << 5),
     RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS = (1 << 6),
@@ -106,7 +115,8 @@ enum {
     RIDE_TYPE_FLAG4_START_CONSTRUCTION_INVERTED = (1 << 15), // This is only set on the Flying RC and its alternative type.
 };
 
-enum {
+enum
+{
     RIDE_TYPE_NO_ALTERNATIVES = 0,
     RIDE_TYPE_ALTERNATIVE_TRACK_PIECES = 1, // Dinghy slide and Water Coaster
     RIDE_TYPE_ALTERNATIVE_TRACK_TYPE = 2,   // Flying RC, Lay-down RC, Multi-dimension RC

@@ -7,33 +7,32 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../audio/audio.h"
-#include "../common.h"
-#include "../Context.h"
-#include "../core/Util.hpp"
 #include "MusicList.h"
 
+#include "../Context.h"
+#include "../audio/audio.h"
+#include "../common.h"
+#include "../core/Util.hpp"
 
-#define MAKE_TUNEID_LIST(...) std::vector<uint8_t>({__VA_ARGS__})
+#define MAKE_TUNEID_LIST(...) std::vector<uint8_t>({ __VA_ARGS__ })
 
 // 0x009AEF28
-std::vector<uint8_t> gRideMusicStyleTuneIds[] =
-{
-    MAKE_TUNEID_LIST(TUNE_DODGEMS_BEAT),                             // MUSIC_STYLE_DODGEMS_BEAT
-    MAKE_TUNEID_LIST(                                                // MUSIC_STYLE_FAIRGROUND_ORGAN
-            TUNE_CHILDREN_OF_THE_REGIMENT,
-            TUNE_SERENADE_OP_21,
-            TUNE_IN_CONTINENTAL_MOOD,
-            TUNE_WEDDING_JOURNEY,
-            TUNE_TALES_FROM_THE_VIENNA_WOODS,
-            TUNE_SLAVONIC_DANCE,
-            TUNE_CSS_10,
-            TUNE_DAS_ALPENHORN,
-            TUNE_BELLA_BELLA_BIMBA,
-            TUNE_THE_BLOND_SAILOR,
-            TUNE_POET_AND_PEASANT_OVERTURE,
-            TUNE_WALTZ_MEDLEY,
-            TUNE_CSS_16),
+std::vector<uint8_t> gRideMusicStyleTuneIds[] = {
+    MAKE_TUNEID_LIST(TUNE_DODGEMS_BEAT), // MUSIC_STYLE_DODGEMS_BEAT
+    MAKE_TUNEID_LIST(                    // MUSIC_STYLE_FAIRGROUND_ORGAN
+        TUNE_CHILDREN_OF_THE_REGIMENT,
+        TUNE_SERENADE_OP_21,
+        TUNE_IN_CONTINENTAL_MOOD,
+        TUNE_WEDDING_JOURNEY,
+        TUNE_TALES_FROM_THE_VIENNA_WOODS,
+        TUNE_SLAVONIC_DANCE,
+        TUNE_CSS_10,
+        TUNE_DAS_ALPENHORN,
+        TUNE_BELLA_BELLA_BIMBA,
+        TUNE_THE_BLOND_SAILOR,
+        TUNE_POET_AND_PEASANT_OVERTURE,
+        TUNE_WALTZ_MEDLEY,
+        TUNE_CSS_16),
     MAKE_TUNEID_LIST(TUNE_CAESARS_MARCH),                            // MUSIC_STYLE_ROMAN_FANFARE
     MAKE_TUNEID_LIST(TUNE_NINJAS_NOODLES),                           // MUSIC_STYLE_ORIENTAL
     MAKE_TUNEID_LIST(TUNE_INVADERS),                                 // MUSIC_STYLE_MARTIAN
@@ -67,54 +66,57 @@ std::vector<uint8_t> gRideMusicStyleTuneIds[] =
     MAKE_TUNEID_LIST(TUNE_SWEAT_DREAMS),                             // MUSIC_STYLE_CANDY_STYLE
 };
 
-#define INIT_MUSIC_INFO(path_id, offset) { path_id, offset, 0 }
+#define INIT_MUSIC_INFO(path_id, offset)                                                                                       \
+    {                                                                                                                          \
+        path_id, offset, 0                                                                                                     \
+    }
 
-//0x009AF1C8
+// 0x009AF1C8
 rct_ride_music_info gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS] = {
-        INIT_MUSIC_INFO(PATH_ID_CSS4,  1378),
-        INIT_MUSIC_INFO(PATH_ID_CSS5,  1378),
-        INIT_MUSIC_INFO(PATH_ID_CSS6,  1378),
-        INIT_MUSIC_INFO(PATH_ID_CSS7,  1378),
-        INIT_MUSIC_INFO(PATH_ID_CSS8,  1378),
-        INIT_MUSIC_INFO(PATH_ID_CSS9,  1378),
-        INIT_MUSIC_INFO(0,             1378),         // Referred to the nearly empty CSS10.DAT file
-        INIT_MUSIC_INFO(PATH_ID_CSS11, 1378),
-        INIT_MUSIC_INFO(PATH_ID_CSS12, 1378),
-        INIT_MUSIC_INFO(PATH_ID_CSS13, 1378),
-        INIT_MUSIC_INFO(PATH_ID_CSS14, 1378),
-        INIT_MUSIC_INFO(PATH_ID_CSS15, 1378),
-        INIT_MUSIC_INFO(0,             1378),         // Referred to the nearly empty CSS16.DAT file
-        INIT_MUSIC_INFO(PATH_ID_CSS3,   689),
-        INIT_MUSIC_INFO(PATH_ID_CSS17, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS18, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS19, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS20, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS21, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS22, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS23, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS24, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS25, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS26, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS27, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS28, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS29, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS30, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS31, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS32, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS33, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS34, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS35, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS36, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS37, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS38, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CUSTOM1, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CUSTOM2, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS39, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS40, 1378),
-        INIT_MUSIC_INFO(PATH_ID_CSS41, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS42, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS43, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS44, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS45, 2756),
-        INIT_MUSIC_INFO(PATH_ID_CSS46, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS4, 1378),
+    INIT_MUSIC_INFO(PATH_ID_CSS5, 1378),
+    INIT_MUSIC_INFO(PATH_ID_CSS6, 1378),
+    INIT_MUSIC_INFO(PATH_ID_CSS7, 1378),
+    INIT_MUSIC_INFO(PATH_ID_CSS8, 1378),
+    INIT_MUSIC_INFO(PATH_ID_CSS9, 1378),
+    INIT_MUSIC_INFO(0, 1378), // Referred to the nearly empty CSS10.DAT file
+    INIT_MUSIC_INFO(PATH_ID_CSS11, 1378),
+    INIT_MUSIC_INFO(PATH_ID_CSS12, 1378),
+    INIT_MUSIC_INFO(PATH_ID_CSS13, 1378),
+    INIT_MUSIC_INFO(PATH_ID_CSS14, 1378),
+    INIT_MUSIC_INFO(PATH_ID_CSS15, 1378),
+    INIT_MUSIC_INFO(0, 1378), // Referred to the nearly empty CSS16.DAT file
+    INIT_MUSIC_INFO(PATH_ID_CSS3, 689),
+    INIT_MUSIC_INFO(PATH_ID_CSS17, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS18, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS19, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS20, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS21, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS22, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS23, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS24, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS25, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS26, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS27, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS28, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS29, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS30, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS31, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS32, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS33, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS34, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS35, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS36, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS37, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS38, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CUSTOM1, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CUSTOM2, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS39, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS40, 1378),
+    INIT_MUSIC_INFO(PATH_ID_CSS41, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS42, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS43, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS44, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS45, 2756),
+    INIT_MUSIC_INFO(PATH_ID_CSS46, 2756),
 };
