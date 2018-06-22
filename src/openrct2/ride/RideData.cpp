@@ -17,15 +17,16 @@
  * https://gist.github.com/kevinburke/eaeb1d8149a6eef0dcc1
  */
 
+#include "RideData.h"
+
 #include "../audio/audio.h"
 #include "../core/Util.hpp"
 #include "../interface/Colour.h"
 #include "../localisation/Localisation.h"
 #include "../sprites.h"
 #include "Ride.h"
-#include "Track.h"
-#include "RideData.h"
 #include "ShopItem.h"
+#include "Track.h"
 
 // clang-format off
 const bool hasRunningTrack[RIDE_TYPE_COUNT] = {
