@@ -7,17 +7,19 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <memory>
+#include "ParkImporter.h"
+
 #include "Context.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
-#include "ParkImporter.h"
+
+#include <memory>
 
 namespace ParkImporter
 {
-    std::unique_ptr<IParkImporter> Create(const std::string &hintPath)
+    std::unique_ptr<IParkImporter> Create(const std::string& hintPath)
     {
         std::unique_ptr<IParkImporter> parkImporter;
         std::string extension = Path::GetExtension(hintPath);
@@ -33,15 +35,13 @@ namespace ParkImporter
         return parkImporter;
     }
 
-    bool ExtensionIsRCT1(const std::string &extension)
+    bool ExtensionIsRCT1(const std::string& extension)
     {
-        return String::Equals(extension, ".sc4", true) ||
-            String::Equals(extension, ".sv4", true);
+        return String::Equals(extension, ".sc4", true) || String::Equals(extension, ".sv4", true);
     }
 
-    bool ExtensionIsScenario(const std::string &extension)
+    bool ExtensionIsScenario(const std::string& extension)
     {
-        return String::Equals(extension, ".sc4", true) ||
-            String::Equals(extension, ".sc6", true);
+        return String::Equals(extension, ".sc4", true) || String::Equals(extension, ".sc6", true);
     }
-}
+} // namespace ParkImporter

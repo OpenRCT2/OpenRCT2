@@ -7,13 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "PlatformEnvironment.h"
+
+#include "OpenRCT2.h"
 #include "config/Config.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
-#include "OpenRCT2.h"
-#include "platform/platform.h"
 #include "platform/Platform2.h"
-#include "PlatformEnvironment.h"
+#include "platform/platform.h"
 
 using namespace OpenRCT2;
 
@@ -39,18 +40,19 @@ public:
     std::string GetDirectoryPath(DIRBASE base, DIRID did) const override
     {
         auto basePath = GetDirectoryPath(base);
-        const utf8 * directoryName;
-        switch (base) {
-        default:
-        case DIRBASE::RCT1:
-        case DIRBASE::RCT2:
-            directoryName = DirectoryNamesRCT2[(size_t)did];
-            break;
-        case DIRBASE::OPENRCT2:
-        case DIRBASE::USER:
-        case DIRBASE::CONFIG:
-            directoryName = DirectoryNamesOpenRCT2[(size_t)did];
-            break;
+        const utf8* directoryName;
+        switch (base)
+        {
+            default:
+            case DIRBASE::RCT1:
+            case DIRBASE::RCT2:
+                directoryName = DirectoryNamesRCT2[(size_t)did];
+                break;
+            case DIRBASE::OPENRCT2:
+            case DIRBASE::USER:
+            case DIRBASE::CONFIG:
+                directoryName = DirectoryNamesOpenRCT2[(size_t)did];
+                break;
         }
 
         return Path::Combine(basePath, directoryName);
@@ -64,40 +66,40 @@ public:
         return Path::Combine(basePath, fileName);
     }
 
-    void SetBasePath(DIRBASE base, const std::string &path) override
+    void SetBasePath(DIRBASE base, const std::string& path) override
     {
         _basePath[(size_t)base] = path;
     }
 
 private:
-    static const char * DirectoryNamesRCT2[];
-    static const char * DirectoryNamesOpenRCT2[];
-    static const char * FileNames[];
+    static const char* DirectoryNamesRCT2[];
+    static const char* DirectoryNamesOpenRCT2[];
+    static const char* FileNames[];
 
     static DIRBASE GetDefaultBaseDirectory(PATHID pathid)
     {
         switch (pathid)
         {
-        case PATHID::CONFIG:
-        case PATHID::CONFIG_KEYBOARD:
-            return DIRBASE::CONFIG;
-        case PATHID::CACHE_OBJECTS:
-        case PATHID::CACHE_TRACKS:
-        case PATHID::CACHE_SCENARIOS:
-            return DIRBASE::CACHE;
-        case PATHID::MP_DAT:
-            return DIRBASE::RCT1;
-        case PATHID::SCORES_RCT2:
-            return DIRBASE::RCT2;
-        case PATHID::CHANGELOG:
-            return DIRBASE::DOCUMENTATION;
-        case PATHID::NETWORK_GROUPS:
-        case PATHID::NETWORK_SERVERS:
-        case PATHID::NETWORK_USERS:
-        case PATHID::SCORES:
-        case PATHID::SCORES_LEGACY:
-        default:
-            return DIRBASE::USER;
+            case PATHID::CONFIG:
+            case PATHID::CONFIG_KEYBOARD:
+                return DIRBASE::CONFIG;
+            case PATHID::CACHE_OBJECTS:
+            case PATHID::CACHE_TRACKS:
+            case PATHID::CACHE_SCENARIOS:
+                return DIRBASE::CACHE;
+            case PATHID::MP_DAT:
+                return DIRBASE::RCT1;
+            case PATHID::SCORES_RCT2:
+                return DIRBASE::RCT2;
+            case PATHID::CHANGELOG:
+                return DIRBASE::DOCUMENTATION;
+            case PATHID::NETWORK_GROUPS:
+            case PATHID::NETWORK_SERVERS:
+            case PATHID::NETWORK_USERS:
+            case PATHID::SCORES:
+            case PATHID::SCORES_LEGACY:
+            default:
+                return DIRBASE::USER;
         }
     }
 };

@@ -13,11 +13,22 @@
 #include <memory>
 #include <string>
 #ifdef __EMSCRIPTEN__
-    #include <emscripten.h>
+#include <emscripten.h>
 #endif // __EMSCRIPTEN__
-#include "audio/AudioContext.h"
 #include "Context.h"
-#include "ui/UiContext.h"
+#include "Editor.h"
+#include "FileClassifier.h"
+#include "Game.h"
+#include "GameState.h"
+#include "Input.h"
+#include "Intro.h"
+#include "OpenRCT2.h"
+#include "ParkImporter.h"
+#include "PlatformEnvironment.h"
+#include "Version.h"
+#include "audio/AudioContext.h"
+#include "audio/audio.h"
+#include "config/Config.h"
 #include "core/Console.hpp"
 #include "core/File.h"
 #include "core/FileScanner.h"
@@ -29,45 +40,31 @@
 #include "core/String.hpp"
 #include "core/Util.hpp"
 #include "drawing/IDrawingEngine.h"
-#include "localisation/Localisation.h"
-#include "FileClassifier.h"
-#include "GameState.h"
-#include "network/network.h"
-#include "object/ObjectManager.h"
-#include "object/ObjectRepository.h"
-#include "OpenRCT2.h"
-#include "paint/Painter.h"
-#include "ParkImporter.h"
-#include "platform/Crash.h"
-#include "PlatformEnvironment.h"
-#include "ride/TrackDesignRepository.h"
-#include "scenario/Scenario.h"
-#include "scenario/ScenarioRepository.h"
-#include "title/TitleScreen.h"
-#include "title/TitleSequenceManager.h"
-#include "ui/WindowManager.h"
-#include "world/Park.h"
-#include "Version.h"
-
-#include "Editor.h"
-#include "Game.h"
-#include "Input.h"
-#include "Intro.h"
-#include "audio/audio.h"
-#include "config/Config.h"
 #include "drawing/LightFX.h"
 #include "interface/Chat.h"
 #include "interface/InteractiveConsole.h"
 #include "interface/Viewport.h"
-#include "Intro.h"
 #include "localisation/Date.h"
+#include "localisation/Localisation.h"
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
 #include "network/Http.h"
 #include "network/network.h"
 #include "network/twitch.h"
+#include "object/ObjectManager.h"
+#include "object/ObjectRepository.h"
+#include "paint/Painter.h"
+#include "platform/Crash.h"
 #include "platform/platform.h"
+#include "ride/TrackDesignRepository.h"
+#include "scenario/Scenario.h"
+#include "scenario/ScenarioRepository.h"
+#include "title/TitleScreen.h"
+#include "title/TitleSequenceManager.h"
+#include "ui/UiContext.h"
+#include "ui/WindowManager.h"
 #include "util/Util.h"
+#include "world/Park.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
@@ -95,7 +92,7 @@ namespace OpenRCT2
 #ifdef __ENABLE_DISCORD__
         std::unique_ptr<DiscordService> _discordService;
 #endif
-        StdInOutConsole             _stdInOutConsole;
+        StdInOutConsole _stdInOutConsole;
 #ifndef DISABLE_HTTP
         Network::Http::Http _http;
 #endif
@@ -108,31 +105,32 @@ namespace OpenRCT2
         std::unique_ptr<IDrawingEngine> _drawingEngine;
         std::unique_ptr<Painter> _painter;
 
-        bool    _initialised = false;
-        bool    _isWindowMinimised = false;
-        uint32_t  _lastTick = 0;
-        uint32_t  _accumulator = 0;
-        uint32_t  _lastUpdateTick = 0;
-        bool    _variableFrame = false;
+        bool _initialised = false;
+        bool _isWindowMinimised = false;
+        uint32_t _lastTick = 0;
+        uint32_t _accumulator = 0;
+        uint32_t _lastUpdateTick = 0;
+        bool _variableFrame = false;
 
-        /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to false. */
+        /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to
+         * false. */
         bool _finished = false;
 
     public:
         // Singleton of Context.
         // Remove this when GetContext() is no longer called so that
         // multiple instances can be created in parallel
-        static Context * Instance;
+        static Context* Instance;
 
     public:
         Context(
             const std::shared_ptr<IPlatformEnvironment>& env,
             const std::shared_ptr<IAudioContext>& audioContext,
             const std::shared_ptr<IUiContext>& uiContext)
-            : _env(env),
-            _audioContext(audioContext),
-            _uiContext(uiContext),
-            _localisationService(std::make_shared<LocalisationService>(env))
+            : _env(env)
+            , _audioContext(audioContext)
+            , _uiContext(uiContext)
+            , _localisationService(std::make_shared<LocalisationService>(env))
         {
             Instance = this;
         }
@@ -159,7 +157,7 @@ namespace OpenRCT2
             return _uiContext;
         }
 
-        GameState * GetGameState() override
+        GameState* GetGameState() override
         {
             return _gameState.get();
         }
@@ -184,12 +182,12 @@ namespace OpenRCT2
             return _objectRepository;
         }
 
-        ITrackDesignRepository * GetTrackDesignRepository() override
+        ITrackDesignRepository* GetTrackDesignRepository() override
         {
             return _trackDesignRepository.get();
         }
 
-        IScenarioRepository * GetScenarioRepository() override
+        IScenarioRepository* GetScenarioRepository() override
         {
             return _scenarioRepository.get();
         }
@@ -199,12 +197,12 @@ namespace OpenRCT2
             return _drawingEngineType;
         }
 
-        IDrawingEngine * GetDrawingEngine() override
+        IDrawingEngine* GetDrawingEngine() override
         {
             return _drawingEngine.get();
         }
 
-        int32_t RunOpenRCT2(int argc, const char * * argv) override
+        int32_t RunOpenRCT2(int argc, const char** argv) override
         {
             if (Initialise())
             {
@@ -213,7 +211,7 @@ namespace OpenRCT2
             return gExitCode;
         }
 
-        void WriteLine(const std::string &s) override
+        void WriteLine(const std::string& s) override
         {
             _stdInOutConsole.WriteLine(s);
         }
@@ -234,60 +232,14 @@ namespace OpenRCT2
 
         std::string GetPathLegacy(int32_t pathId) override
         {
-            static constexpr const char * const LegacyFileNames[PATH_ID_END] =
-            {
-                nullptr,
-                nullptr,
-                "css1.dat",
-                "css2.dat",
-                "css4.dat",
-                "css5.dat",
-                "css6.dat",
-                "css7.dat",
-                "css8.dat",
-                "css9.dat",
-                "css11.dat",
-                "css12.dat",
-                "css13.dat",
-                "css14.dat",
-                "css15.dat",
-                "css3.dat",
-                "css17.dat",
-                "css18.dat",
-                "css19.dat",
-                "css20.dat",
-                "css21.dat",
-                "css22.dat",
-                nullptr,
-                "css23.dat",
-                "css24.dat",
-                "css25.dat",
-                "css26.dat",
-                "css27.dat",
-                "css28.dat",
-                "css29.dat",
-                "css30.dat",
-                "css31.dat",
-                "css32.dat",
-                "css33.dat",
-                "css34.dat",
-                "css35.dat",
-                "css36.dat",
-                "css37.dat",
-                "css38.dat",
-                "CUSTOM1.WAV",
-                "CUSTOM2.WAV",
-                "css39.dat",
-                "css40.dat",
-                "css41.dat",
-                nullptr,
-                "css42.dat",
-                "css43.dat",
-                "css44.dat",
-                "css45.dat",
-                "css46.dat",
-                "css50.dat"
-            };
+            static constexpr const char* const LegacyFileNames[PATH_ID_END]
+                = { nullptr,       nullptr,     "css1.dat",  "css2.dat",  "css4.dat",  "css5.dat",  "css6.dat",  "css7.dat",
+                    "css8.dat",    "css9.dat",  "css11.dat", "css12.dat", "css13.dat", "css14.dat", "css15.dat", "css3.dat",
+                    "css17.dat",   "css18.dat", "css19.dat", "css20.dat", "css21.dat", "css22.dat", nullptr,     "css23.dat",
+                    "css24.dat",   "css25.dat", "css26.dat", "css27.dat", "css28.dat", "css29.dat", "css30.dat", "css31.dat",
+                    "css32.dat",   "css33.dat", "css34.dat", "css35.dat", "css36.dat", "css37.dat", "css38.dat", "CUSTOM1.WAV",
+                    "CUSTOM2.WAV", "css39.dat", "css40.dat", "css41.dat", nullptr,     "css42.dat", "css43.dat", "css44.dat",
+                    "css45.dat",   "css46.dat", "css50.dat" };
 
             std::string result;
             if (pathId == PATH_ID_CSS50)
@@ -479,7 +431,7 @@ namespace OpenRCT2
                     drawingEngine->SetVSync(gConfigGeneral.use_vsync);
                     _drawingEngine = std::unique_ptr<IDrawingEngine>(std::move(drawingEngine));
                 }
-                catch (const std::exception &ex)
+                catch (const std::exception& ex)
                 {
                     _painter = nullptr;
                     if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
@@ -509,27 +461,26 @@ namespace OpenRCT2
             _painter = nullptr;
         }
 
-        bool LoadParkFromFile(const std::string &path, bool loadTitleScreenOnFail) final override
+        bool LoadParkFromFile(const std::string& path, bool loadTitleScreenOnFail) final override
         {
             try
             {
                 auto fs = FileStream(path, FILE_MODE_OPEN);
                 return LoadParkFromStream(&fs, path, loadTitleScreenOnFail);
             }
-            catch (const std::exception &e)
+            catch (const std::exception& e)
             {
                 Console::Error::WriteLine(e.what());
             }
             return false;
         }
 
-        bool LoadParkFromStream(IStream * stream, const std::string &path, bool loadTitleScreenFirstOnFail) final override
+        bool LoadParkFromStream(IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail) final override
         {
             ClassifiedFileInfo info;
             if (TryClassifyFile(stream, &info))
             {
-                if (info.Type == FILE_TYPE::SAVED_GAME ||
-                    info.Type == FILE_TYPE::SCENARIO)
+                if (info.Type == FILE_TYPE::SAVED_GAME || info.Type == FILE_TYPE::SCENARIO)
                 {
                     std::unique_ptr<IParkImporter> parkImporter;
                     if (info.Version <= FILE_TYPE_S4_CUTOFF)
@@ -545,7 +496,8 @@ namespace OpenRCT2
 
                     try
                     {
-                        auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
+                        auto result
+                            = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
                         _objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
                         parkImporter->Import();
                         String::Set(gScenarioSavePath, Util::CountOf(gScenarioSavePath), path.c_str());
@@ -596,7 +548,7 @@ namespace OpenRCT2
                         // which the window function doesn't like
                         auto intent = Intent(WC_OBJECT_LOAD_ERROR);
                         intent.putExtra(INTENT_EXTRA_PATH, path);
-                        intent.putExtra(INTENT_EXTRA_LIST, (void *)e.MissingObjects.data());
+                        intent.putExtra(INTENT_EXTRA_LIST, (void*)e.MissingObjects.data());
                         intent.putExtra(INTENT_EXTRA_LIST_COUNT, (uint32_t)e.MissingObjects.size());
 
                         auto windowManager = _uiContext->GetWindowManager();
@@ -649,7 +601,8 @@ namespace OpenRCT2
                     {
                         utf8 path[MAX_PATH];
                         config_get_default_path(path, sizeof(path));
-                        Console::Error::WriteLine("An RCT2 install directory must be specified! Please edit \"game_path\" in %s.\n", path);
+                        Console::Error::WriteLine(
+                            "An RCT2 install directory must be specified! Please edit \"game_path\" in %s.\n", path);
                         return std::string();
                     }
                 }
@@ -696,95 +649,96 @@ namespace OpenRCT2
                 }
             }
 
-            switch (gOpenRCT2StartupAction) {
-            case STARTUP_ACTION_INTRO:
-                gIntroState = INTRO_STATE_PUBLISHER_BEGIN;
-                title_load();
-                break;
-            case STARTUP_ACTION_TITLE:
-                title_load();
-                break;
-            case STARTUP_ACTION_OPEN:
+            switch (gOpenRCT2StartupAction)
             {
-                // A path that includes "://" is illegal with all common filesystems, so it is almost certainly a URL
-                // This way all cURL supported protocols, like http, ftp, scp and smb are automatically handled
-                if (strstr(gOpenRCT2StartupActionPath, "://") != nullptr)
+                case STARTUP_ACTION_INTRO:
+                    gIntroState = INTRO_STATE_PUBLISHER_BEGIN;
+                    title_load();
+                    break;
+                case STARTUP_ACTION_TITLE:
+                    title_load();
+                    break;
+                case STARTUP_ACTION_OPEN:
                 {
+                    // A path that includes "://" is illegal with all common filesystems, so it is almost certainly a URL
+                    // This way all cURL supported protocols, like http, ftp, scp and smb are automatically handled
+                    if (strstr(gOpenRCT2StartupActionPath, "://") != nullptr)
+                    {
 #ifndef DISABLE_HTTP
-                    // Download park and open it using its temporary filename
-                    void * data;
-                    size_t dataSize = Network::Http::DownloadPark(gOpenRCT2StartupActionPath, &data);
-                    if (dataSize == 0)
-                    {
-                        title_load();
-                        break;
-                    }
-
-                    auto ms = MemoryStream(data, dataSize, MEMORY_ACCESS::OWNER);
-                    if (!LoadParkFromStream(&ms, gOpenRCT2StartupActionPath, true))
-                    {
-                        Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
-                        title_load();
-                        break;
-                    }
-#endif
-                }
-                else
-                {
-                    try
-                    {
-                        if (!LoadParkFromFile(gOpenRCT2StartupActionPath, true))
+                        // Download park and open it using its temporary filename
+                        void* data;
+                        size_t dataSize = Network::Http::DownloadPark(gOpenRCT2StartupActionPath, &data);
+                        if (dataSize == 0)
                         {
+                            title_load();
                             break;
                         }
-                    }
-                    catch (const std::exception &ex)
-                    {
-                        Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
-                        Console::Error::WriteLine("%s", ex.what());
-                        title_load();
-                        break;
-                    }
-                }
 
-                gScreenFlags = SCREEN_FLAGS_PLAYING;
-
-#ifndef DISABLE_NETWORK
-                if (gNetworkStart == NETWORK_MODE_SERVER)
-                {
-                    if (gNetworkStartPort == 0)
-                    {
-                        gNetworkStartPort = gConfigNetwork.default_port;
-                    }
-
-                    if (String::IsNullOrEmpty(gNetworkStartAddress))
-                    {
-                        gNetworkStartAddress = gConfigNetwork.listen_address;
-                    }
-
-                    if (String::IsNullOrEmpty(gCustomPassword))
-                    {
-                        network_set_password(gConfigNetwork.default_password);
+                        auto ms = MemoryStream(data, dataSize, MEMORY_ACCESS::OWNER);
+                        if (!LoadParkFromStream(&ms, gOpenRCT2StartupActionPath, true))
+                        {
+                            Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
+                            title_load();
+                            break;
+                        }
+#endif
                     }
                     else
                     {
-                        network_set_password(gCustomPassword);
+                        try
+                        {
+                            if (!LoadParkFromFile(gOpenRCT2StartupActionPath, true))
+                            {
+                                break;
+                            }
+                        }
+                        catch (const std::exception& ex)
+                        {
+                            Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
+                            Console::Error::WriteLine("%s", ex.what());
+                            title_load();
+                            break;
+                        }
                     }
-                    network_begin_server(gNetworkStartPort, gNetworkStartAddress);
-                }
+
+                    gScreenFlags = SCREEN_FLAGS_PLAYING;
+
+#ifndef DISABLE_NETWORK
+                    if (gNetworkStart == NETWORK_MODE_SERVER)
+                    {
+                        if (gNetworkStartPort == 0)
+                        {
+                            gNetworkStartPort = gConfigNetwork.default_port;
+                        }
+
+                        if (String::IsNullOrEmpty(gNetworkStartAddress))
+                        {
+                            gNetworkStartAddress = gConfigNetwork.listen_address;
+                        }
+
+                        if (String::IsNullOrEmpty(gCustomPassword))
+                        {
+                            network_set_password(gConfigNetwork.default_password);
+                        }
+                        else
+                        {
+                            network_set_password(gCustomPassword);
+                        }
+                        network_begin_server(gNetworkStartPort, gNetworkStartAddress);
+                    }
 #endif // DISABLE_NETWORK
-                break;
-            }
-            case STARTUP_ACTION_EDIT:
-                if (String::SizeOf(gOpenRCT2StartupActionPath) == 0)
-                {
-                    Editor::Load();
+                    break;
                 }
-                else if (!Editor::LoadLandscape(gOpenRCT2StartupActionPath))
-                {
-                    title_load();
-                }
-                break;
+                case STARTUP_ACTION_EDIT:
+                    if (String::SizeOf(gOpenRCT2StartupActionPath) == 0)
+                    {
+                        Editor::Load();
+                    }
+                    else if (!Editor::LoadLandscape(gOpenRCT2StartupActionPath))
+                    {
+                        title_load();
+                    }
+                    break;
             }
 
 #ifndef DISABLE_NETWORK
@@ -808,16 +762,20 @@ namespace OpenRCT2
 
         bool ShouldRunVariableFrame()
         {
-            if (!gConfigGeneral.uncap_fps) return false;
-            if (gGameSpeed > 4) return false;
-            if (gOpenRCT2Headless) return false;
-            if (_uiContext->IsMinimised()) return false;
+            if (!gConfigGeneral.uncap_fps)
+                return false;
+            if (gGameSpeed > 4)
+                return false;
+            if (gOpenRCT2Headless)
+                return false;
+            if (_uiContext->IsMinimised())
+                return false;
             return true;
         }
 
         /**
-        * Run the main game loop until the finished flag is set.
-        */
+         * Run the main game loop until the finished flag is set.
+         */
         void RunGameLoop()
         {
             log_verbose("begin openrct2 loop");
@@ -828,14 +786,16 @@ namespace OpenRCT2
             do
             {
                 RunFrame();
-            }
-            while (!_finished);
+            } while (!_finished);
 #else
-            emscripten_set_main_loop_arg([](void * vctx) ->
-                {
-                    auto ctx = reinterpret_cast<Context *>(vctx);
+            emscripten_set_main_loop_arg(
+                [](void* vctx) -> {
+                    auto ctx = reinterpret_cast<Context*>(vctx);
                     ctx->RunFrame();
-                }, this, 0, 1);
+                },
+                this,
+                0,
+                1);
 #endif // __EMSCRIPTEN__
             log_verbose("finish openrct2 loop");
         }
@@ -914,7 +874,7 @@ namespace OpenRCT2
             while (_accumulator >= GAME_UPDATE_TIME_MS)
             {
                 // Get the original position of each sprite
-                if(draw)
+                if (draw)
                     sprite_position_tween_store_a();
 
                 Update();
@@ -922,7 +882,7 @@ namespace OpenRCT2
                 _accumulator -= GAME_UPDATE_TIME_MS;
 
                 // Get the next position of each sprite
-                if(draw)
+                if (draw)
                     sprite_position_tween_store_b();
             }
 
@@ -979,22 +939,22 @@ namespace OpenRCT2
         }
 
         /**
-        * Copy saved games and landscapes to user directory
-        */
+         * Copy saved games and landscapes to user directory
+         */
         void CopyOriginalUserFilesOver()
         {
             CopyOriginalUserFilesOver(DIRID::SAVE, "*.sv6");
             CopyOriginalUserFilesOver(DIRID::LANDSCAPE, "*.sc6");
         }
 
-        void CopyOriginalUserFilesOver(DIRID dirid, const std::string &pattern)
+        void CopyOriginalUserFilesOver(DIRID dirid, const std::string& pattern)
         {
             auto src = _env->GetDirectoryPath(DIRBASE::RCT2, dirid);
             auto dst = _env->GetDirectoryPath(DIRBASE::USER, dirid);
             CopyOriginalUserFilesOver(src, dst, pattern);
         }
 
-        void CopyOriginalUserFilesOver(const std::string &srcRoot, const std::string &dstRoot, const std::string &pattern)
+        void CopyOriginalUserFilesOver(const std::string& srcRoot, const std::string& dstRoot, const std::string& pattern)
         {
             log_verbose("CopyOriginalUserFilesOver('%s', '%s', '%s')", srcRoot.c_str(), dstRoot.c_str(), pattern.c_str());
 
@@ -1031,7 +991,7 @@ namespace OpenRCT2
         }
     };
 
-    Context * Context::Instance = nullptr;
+    Context* Context::Instance = nullptr;
 
     std::unique_ptr<IContext> CreateContext()
     {
@@ -1046,28 +1006,28 @@ namespace OpenRCT2
         return std::make_unique<Context>(env, audioContext, uiContext);
     }
 
-    IContext * GetContext()
+    IContext* GetContext()
     {
         return Context::Instance;
     }
-}
+} // namespace OpenRCT2
 
 void context_init()
 {
     GetContext()->GetUiContext()->GetWindowManager()->Init();
 }
 
-bool context_load_park_from_file(const utf8 * path)
+bool context_load_park_from_file(const utf8* path)
 {
     return GetContext()->LoadParkFromFile(path);
 }
 
-bool context_load_park_from_stream(void * stream)
+bool context_load_park_from_stream(void* stream)
 {
     return GetContext()->LoadParkFromStream((IStream*)stream, "");
 }
 
-void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize)
+void openrct2_write_full_version_info(utf8* buffer, size_t bufferSize)
 {
     String::Set(buffer, bufferSize, gVersionInfoFull);
 }
@@ -1097,12 +1057,12 @@ void context_show_cursor()
     GetContext()->GetUiContext()->SetCursorVisible(true);
 }
 
-void context_get_cursor_position(int32_t * x, int32_t * y)
+void context_get_cursor_position(int32_t* x, int32_t* y)
 {
     GetContext()->GetUiContext()->GetCursorPosition(x, y);
 }
 
-void context_get_cursor_position_scaled(int32_t * x, int32_t * y)
+void context_get_cursor_position_scaled(int32_t* x, int32_t* y)
 {
     context_get_cursor_position(x, y);
 
@@ -1116,22 +1076,22 @@ void context_set_cursor_position(int32_t x, int32_t y)
     GetContext()->GetUiContext()->SetCursorPosition(x, y);
 }
 
-const CursorState * context_get_cursor_state()
+const CursorState* context_get_cursor_state()
 {
     return GetContext()->GetUiContext()->GetCursorState();
 }
 
-const uint8_t * context_get_keys_state()
+const uint8_t* context_get_keys_state()
 {
     return GetContext()->GetUiContext()->GetKeysState();
 }
 
-const uint8_t * context_get_keys_pressed()
+const uint8_t* context_get_keys_pressed()
 {
     return GetContext()->GetUiContext()->GetKeysPressed();
 }
 
-TextInputSession * context_start_text_input(utf8 * buffer, size_t maxLength)
+TextInputSession* context_start_text_input(utf8* buffer, size_t maxLength)
 {
     return GetContext()->GetUiContext()->StartTextInput(buffer, maxLength);
 }
@@ -1161,13 +1121,13 @@ void context_recreate_window()
     GetContext()->GetUiContext()->RecreateWindow();
 }
 
-int32_t context_get_resolutions(Resolution * * outResolutions)
+int32_t context_get_resolutions(Resolution** outResolutions)
 {
-auto resolutions = GetContext()->GetUiContext()->GetFullscreenResolutions();
-int32_t count = (int32_t)resolutions.size();
-*outResolutions = Memory::AllocateArray<Resolution>(count);
-std::copy_n(resolutions.begin(), count, *outResolutions);
-return count;
+    auto resolutions = GetContext()->GetUiContext()->GetFullscreenResolutions();
+    int32_t count = (int32_t)resolutions.size();
+    *outResolutions = Memory::AllocateArray<Resolution>(count);
+    std::copy_n(resolutions.begin(), count, *outResolutions);
+    return count;
 }
 
 int32_t context_get_width()
@@ -1190,31 +1150,31 @@ void context_set_cursor_trap(bool value)
     GetContext()->GetUiContext()->SetCursorTrap(value);
 }
 
-rct_window * context_open_window(rct_windowclass wc)
+rct_window* context_open_window(rct_windowclass wc)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenWindow(wc);
 }
 
-rct_window * context_open_window_view(rct_windowclass wc)
+rct_window* context_open_window_view(rct_windowclass wc)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenView(wc);
 }
 
-rct_window * context_open_detail_window(uint8_t type, int32_t id)
+rct_window* context_open_detail_window(uint8_t type, int32_t id)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenDetails(type, id);
 }
 
-rct_window * context_open_intent(Intent * intent)
+rct_window* context_open_intent(Intent* intent)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->OpenIntent(intent);
 }
 
-void context_broadcast_intent(Intent * intent)
+void context_broadcast_intent(Intent* intent)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->BroadcastIntent(*intent);
@@ -1226,7 +1186,7 @@ void context_force_close_window_by_class(rct_windowclass windowClass)
     windowManager->ForceClose(windowClass);
 }
 
-rct_window * context_show_error(rct_string_id title, rct_string_id message)
+rct_window* context_show_error(rct_string_id title, rct_string_id message)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     return windowManager->ShowError(title, message);
@@ -1255,7 +1215,7 @@ void context_quit()
     GetContext()->Quit();
 }
 
-const utf8 * context_get_path_legacy(int32_t pathId)
+const utf8* context_get_path_legacy(int32_t pathId)
 {
     static utf8 result[MAX_PATH];
     auto path = GetContext()->GetPathLegacy(pathId);
@@ -1263,7 +1223,7 @@ const utf8 * context_get_path_legacy(int32_t pathId)
     return result;
 }
 
-bool platform_open_common_file_dialog(utf8 * outFilename, file_dialog_desc * desc, size_t outSize)
+bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc, size_t outSize)
 {
     try
     {
@@ -1272,7 +1232,7 @@ bool platform_open_common_file_dialog(utf8 * outFilename, file_dialog_desc * des
         desc2.Title = String::ToStd(desc->title);
         desc2.InitialDirectory = String::ToStd(desc->initial_directory);
         desc2.DefaultFilename = String::ToStd(desc->default_filename);
-        for (const auto &filter : desc->filters)
+        for (const auto& filter : desc->filters)
         {
             if (filter.name != nullptr)
             {
@@ -1283,7 +1243,7 @@ bool platform_open_common_file_dialog(utf8 * outFilename, file_dialog_desc * des
         String::Set(outFilename, outSize, result.c_str());
         return !result.empty();
     }
-    catch (const std::exception &ex)
+    catch (const std::exception& ex)
     {
         log_error(ex.what());
         outFilename[0] = '\0';
@@ -1291,14 +1251,14 @@ bool platform_open_common_file_dialog(utf8 * outFilename, file_dialog_desc * des
     }
 }
 
-utf8 * platform_open_directory_browser(const utf8 * title)
+utf8* platform_open_directory_browser(const utf8* title)
 {
     try
     {
         std::string result = GetContext()->GetUiContext()->ShowDirectoryDialog(title);
         return String::Duplicate(result.c_str());
     }
-    catch (const std::exception &ex)
+    catch (const std::exception& ex)
     {
         log_error(ex.what());
         return nullptr;
@@ -1314,7 +1274,7 @@ bool platform_place_string_on_clipboard(utf8* target)
  * This function is deprecated.
  * Use IPlatformEnvironment instead.
  */
-void platform_get_user_directory(utf8 * outPath, const utf8 * subDirectory, size_t outSize)
+void platform_get_user_directory(utf8* outPath, const utf8* subDirectory, size_t outSize)
 {
     auto env = GetContext()->GetPlatformEnvironment();
     auto path = env->GetDirectoryPath(DIRBASE::USER);
@@ -1329,7 +1289,7 @@ void platform_get_user_directory(utf8 * outPath, const utf8 * subDirectory, size
  * This function is deprecated.
  * Use IPlatformEnvironment instead.
  */
-void platform_get_openrct_data_path(utf8 * outPath, size_t outSize)
+void platform_get_openrct_data_path(utf8* outPath, size_t outSize)
 {
     auto env = GetContext()->GetPlatformEnvironment();
     auto path = env->GetDirectoryPath(DIRBASE::OPENRCT2);

@@ -7,10 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <array>
-#include <vector>
-#include "Context.h"
 #include "Editor.h"
+
+#include "Context.h"
 #include "EditorObjectSelectionSession.h"
 #include "FileClassifier.h"
 #include "Game.h"
@@ -26,15 +25,18 @@
 #include "peep/Staff.h"
 #include "rct1/RCT1.h"
 #include "scenario/Scenario.h"
+#include "ui/UiContext.h"
+#include "ui/WindowManager.h"
 #include "util/Util.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
 #include "world/Entrance.h"
 #include "world/Footpath.h"
-#include "world/Scenery.h"
 #include "world/Park.h"
-#include "ui/UiContext.h"
-#include "ui/WindowManager.h"
+#include "world/Scenery.h"
+
+#include <array>
+#include <vector>
 
 using namespace OpenRCT2;
 
@@ -42,12 +44,12 @@ namespace Editor
 {
     static std::array<std::vector<uint8_t>, OBJECT_TYPE_COUNT> _editorSelectedObjectFlags;
 
-    static void ConvertSaveToScenarioCallback(int32_t result, const utf8 * path);
+    static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path);
     static void SetAllLandOwned();
-    static bool LoadLandscapeFromSV4(const char * path);
-    static bool LoadLandscapeFromSC4(const char * path);
+    static bool LoadLandscapeFromSV4(const char* path);
+    static bool LoadLandscapeFromSC4(const char* path);
     static void FinaliseMainView();
-    static bool ReadS6(const char * path);
+    static bool ReadS6(const char* path);
     static void ClearMapForEditing(bool fromSave);
 
     /**
@@ -65,7 +67,7 @@ namespace Editor
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gS6Info.category = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
-        rct_window * mainWindow = context_open_window_view(WV_EDITOR_MAIN);
+        rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
         window_set_location(mainWindow, 2400, 2400, 112);
         load_palette();
         gScreenAge = 0;
@@ -82,11 +84,11 @@ namespace Editor
         tool_cancel();
         auto intent = Intent(WC_LOADSAVE);
         intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-        intent.putExtra(INTENT_EXTRA_CALLBACK, (void *) ConvertSaveToScenarioCallback);
+        intent.putExtra(INTENT_EXTRA_CALLBACK, (void*)ConvertSaveToScenarioCallback);
         context_open_intent(&intent);
     }
 
-    static void ConvertSaveToScenarioCallback(int32_t result, const utf8 * path)
+    static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path)
     {
         if (result != MODAL_RESULT_OK)
         {
@@ -110,7 +112,7 @@ namespace Editor
 
         safe_strcpy(gS6Info.name, gScenarioName, 64);
         safe_strcpy(gS6Info.details, gScenarioDetails, 256);
-        gS6Info.objective_type  = gScenarioObjectiveType;
+        gS6Info.objective_type = gScenarioObjectiveType;
         gS6Info.objective_arg_1 = gScenarioObjectiveYear;
         gS6Info.objective_arg_2 = gScenarioObjectiveCurrency;
         gS6Info.objective_arg_3 = gScenarioObjectiveNumGuests;
@@ -118,7 +120,7 @@ namespace Editor
 
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
-        gS6Info.category    = SCENARIO_CATEGORY_OTHER;
+        gS6Info.category = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
         news_item_init_queue();
         context_open_window_view(WV_EDITOR_MAIN);
@@ -134,7 +136,7 @@ namespace Editor
     {
         audio_stop_all_music_and_sounds();
         gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
-        gScreenAge   = 0;
+        gScreenAge = 0;
 
         object_manager_unload_all_objects();
         object_list_load();
@@ -142,7 +144,7 @@ namespace Editor
         SetAllLandOwned();
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         viewport_init_all();
-        rct_window * mainWindow = context_open_window_view(WV_EDITOR_MAIN);
+        rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
         window_set_location(mainWindow, 2400, 2400, 112);
         load_palette();
     }
@@ -155,7 +157,7 @@ namespace Editor
     {
         audio_stop_all_music_and_sounds();
         gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
-        gScreenAge   = 0;
+        gScreenAge = 0;
 
         object_manager_unload_all_objects();
         object_list_load();
@@ -163,7 +165,7 @@ namespace Editor
         SetAllLandOwned();
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         viewport_init_all();
-        rct_window * mainWindow = context_open_window_view(WV_EDITOR_MAIN);
+        rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
         window_set_location(mainWindow, 2400, 2400, 112);
         load_palette();
     }
@@ -183,7 +185,7 @@ namespace Editor
      *
      *  rct2: 0x006758C0
      */
-    bool LoadLandscape(const utf8 * path)
+    bool LoadLandscape(const utf8* path)
     {
         // #4996: Make sure the object selection window closes here to prevent unload objects
         //        after we have loaded a new park.
@@ -192,15 +194,15 @@ namespace Editor
         uint32_t extension = get_file_extension_type(path);
         switch (extension)
         {
-        case FILE_EXTENSION_SC6:
-        case FILE_EXTENSION_SV6:
-            return ReadS6(path);
-        case FILE_EXTENSION_SC4:
-            return LoadLandscapeFromSC4(path);
-        case FILE_EXTENSION_SV4:
-            return LoadLandscapeFromSV4(path);
-        default:
-            return false;
+            case FILE_EXTENSION_SC6:
+            case FILE_EXTENSION_SV6:
+                return ReadS6(path);
+            case FILE_EXTENSION_SC4:
+                return LoadLandscapeFromSC4(path);
+            case FILE_EXTENSION_SV4:
+                return LoadLandscapeFromSV4(path);
+            default:
+                return false;
         }
     }
 
@@ -208,13 +210,13 @@ namespace Editor
      *
      *  rct2: 0x006A2B02
      */
-    static bool LoadLandscapeFromSV4(const char * path)
+    static bool LoadLandscapeFromSV4(const char* path)
     {
         load_from_sv4(path);
         ClearMapForEditing(true);
 
         gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
-        gScreenAge   = 0;
+        gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
         context_open_window_view(WV_EDITOR_MAIN);
@@ -222,13 +224,13 @@ namespace Editor
         return true;
     }
 
-    static bool LoadLandscapeFromSC4(const char * path)
+    static bool LoadLandscapeFromSC4(const char* path)
     {
         load_from_sc4(path);
         ClearMapForEditing(false);
 
         gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
-        gScreenAge   = 0;
+        gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
         context_open_window_view(WV_EDITOR_MAIN);
@@ -240,9 +242,9 @@ namespace Editor
      *
      *  rct2: 0x006758FE
      */
-    static bool ReadS6(const char * path)
+    static bool ReadS6(const char* path)
     {
-        auto extension  = path_get_extension(path);
+        auto extension = path_get_extension(path);
         if (_stricmp(extension, ".sc6") == 0)
         {
             load_from_sc6(path);
@@ -255,7 +257,7 @@ namespace Editor
         ClearMapForEditing(true);
 
         gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
-        gScreenAge   = 0;
+        gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
         context_open_window_view(WV_EDITOR_MAIN);
@@ -268,7 +270,7 @@ namespace Editor
         map_remove_all_rides();
 
         //
-        for (auto &banner : gBanners)
+        for (auto& banner : gBanners)
         {
             if (banner.type == 255)
             {
@@ -279,11 +281,11 @@ namespace Editor
         //
         {
             int32_t i;
-            Ride * ride;
-            FOR_ALL_RIDES(i, ride)
-                {
-                    user_string_free(ride->name);
-                }
+            Ride* ride;
+            FOR_ALL_RIDES (i, ride)
+            {
+                user_string_free(ride->name);
+            }
         }
 
         ride_init_all();
@@ -291,16 +293,16 @@ namespace Editor
         //
         for (int32_t i = 0; i < MAX_SPRITES; i++)
         {
-            rct_sprite * sprite = get_sprite(i);
+            rct_sprite* sprite = get_sprite(i);
             user_string_free(sprite->unknown.name_string_idx);
         }
 
         reset_sprite_list();
         staff_reset_modes();
-        gNumGuestsInPark         = 0;
+        gNumGuestsInPark = 0;
         gNumGuestsHeadingForPark = 0;
         gNumGuestsInParkLastWeek = 0;
-        gGuestChangeModifier     = 0;
+        gGuestChangeModifier = 0;
         if (fromSave)
         {
             research_populate_list_random();
@@ -331,17 +333,9 @@ namespace Editor
             gInitialCash = std::min(gInitialCash, 100000);
             finance_reset_cash_to_initial();
 
-            gBankLoan = Math::Clamp(
-                MONEY(0, 00),
-                gBankLoan,
-                MONEY(5000000, 00)
-            );
+            gBankLoan = Math::Clamp(MONEY(0, 00), gBankLoan, MONEY(5000000, 00));
 
-            gMaxBankLoan = Math::Clamp(
-                MONEY(0, 00),
-                gMaxBankLoan,
-                MONEY(5000000, 00)
-            );
+            gMaxBankLoan = Math::Clamp(MONEY(0, 00), gMaxBankLoan, MONEY(5000000, 00));
 
             gBankLoanInterestRate = Math::Clamp((uint8_t)5, gBankLoanInterestRate, (uint8_t)80);
         }
@@ -364,48 +358,48 @@ namespace Editor
 
         switch (gS6Info.editor_step)
         {
-        case EDITOR_STEP_OBJECT_SELECTION:
-            if (window_find_by_class(WC_EDITOR_OBJECT_SELECTION))
-            {
-                return;
-            }
+            case EDITOR_STEP_OBJECT_SELECTION:
+                if (window_find_by_class(WC_EDITOR_OBJECT_SELECTION))
+                {
+                    return;
+                }
 
-            if (window_find_by_class(WC_INSTALL_TRACK))
-            {
-                return;
-            }
+                if (window_find_by_class(WC_INSTALL_TRACK))
+                {
+                    return;
+                }
 
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
-            {
-                object_manager_unload_all_objects();
-            }
+                if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+                {
+                    object_manager_unload_all_objects();
+                }
 
-            context_open_window(WC_EDITOR_OBJECT_SELECTION);
-            break;
-        case EDITOR_STEP_INVENTIONS_LIST_SET_UP:
-            if (window_find_by_class(WC_EDITOR_INVENTION_LIST))
-            {
-                return;
-            }
+                context_open_window(WC_EDITOR_OBJECT_SELECTION);
+                break;
+            case EDITOR_STEP_INVENTIONS_LIST_SET_UP:
+                if (window_find_by_class(WC_EDITOR_INVENTION_LIST))
+                {
+                    return;
+                }
 
-            context_open_window(WC_EDITOR_INVENTION_LIST);
-            break;
-        case EDITOR_STEP_OPTIONS_SELECTION:
-            if (window_find_by_class(WC_EDITOR_SCENARIO_OPTIONS))
-            {
-                return;
-            }
+                context_open_window(WC_EDITOR_INVENTION_LIST);
+                break;
+            case EDITOR_STEP_OPTIONS_SELECTION:
+                if (window_find_by_class(WC_EDITOR_SCENARIO_OPTIONS))
+                {
+                    return;
+                }
 
-            context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
-            break;
-        case EDITOR_STEP_OBJECTIVE_SELECTION:
-            if (window_find_by_class(WC_EDTIOR_OBJECTIVE_OPTIONS))
-            {
-                return;
-            }
+                context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
+                break;
+            case EDITOR_STEP_OBJECTIVE_SELECTION:
+                if (window_find_by_class(WC_EDTIOR_OBJECTIVE_OPTIONS))
+                {
+                    return;
+                }
 
-            context_open_window(WC_EDTIOR_OBJECTIVE_OPTIONS);
-            break;
+                context_open_window(WC_EDTIOR_OBJECTIVE_OPTIONS);
+                break;
         }
     }
 
@@ -431,8 +425,7 @@ namespace Editor
      */
     int32_t CheckObjectSelection()
     {
-        bool isTrackDesignerManager =
-                 gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
+        bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
 
         if (!isTrackDesignerManager)
         {
@@ -494,31 +487,31 @@ namespace Editor
             }
         }
 
-        for (const auto &parkEntrance : gParkEntrances)
+        for (const auto& parkEntrance : gParkEntrances)
         {
             if (parkEntrance.x == LOCATION_NULL)
             {
                 continue;
             }
 
-            int32_t x         = parkEntrance.x;
-            int32_t y         = parkEntrance.y;
-            int32_t z         = parkEntrance.z / 8;
+            int32_t x = parkEntrance.x;
+            int32_t y = parkEntrance.y;
+            int32_t z = parkEntrance.z / 8;
             int32_t direction = parkEntrance.direction ^ 2;
 
             switch (footpath_is_connected_to_map_edge(x, y, z, direction, 0))
             {
-            case FOOTPATH_SEARCH_NOT_FOUND:
-                gGameCommandErrorText = STR_PARK_ENTRANCE_WRONG_DIRECTION_OR_NO_PATH;
-                return false;
-            case FOOTPATH_SEARCH_INCOMPLETE:
-            case FOOTPATH_SEARCH_TOO_COMPLEX:
-                gGameCommandErrorText = STR_PARK_ENTRANCE_PATH_INCOMPLETE_OR_COMPLEX;
-                return false;
-            case FOOTPATH_SEARCH_SUCCESS:
-                // Run the search again and unown the path
-                footpath_is_connected_to_map_edge(x, y, z, direction, (1 << 5));
-                break;
+                case FOOTPATH_SEARCH_NOT_FOUND:
+                    gGameCommandErrorText = STR_PARK_ENTRANCE_WRONG_DIRECTION_OR_NO_PATH;
+                    return false;
+                case FOOTPATH_SEARCH_INCOMPLETE:
+                case FOOTPATH_SEARCH_TOO_COMPLEX:
+                    gGameCommandErrorText = STR_PARK_ENTRANCE_PATH_INCOMPLETE_OR_COMPLEX;
+                    return false;
+                case FOOTPATH_SEARCH_SUCCESS:
+                    // Run the search again and unown the path
+                    footpath_is_connected_to_map_edge(x, y, z, direction, (1 << 5));
+                    break;
             }
         }
 
@@ -540,13 +533,13 @@ namespace Editor
     }
 
     void GameCommandEditScenarioOptions(
-        [[maybe_unused]] int32_t * eax,
-        int32_t *                  ebx,
-        int32_t *                  ecx,
-        int32_t *                  edx,
-        [[maybe_unused]] int32_t * esi,
-        [[maybe_unused]] int32_t * edi,
-        [[maybe_unused]] int32_t * ebp)
+        [[maybe_unused]] int32_t* eax,
+        int32_t* ebx,
+        int32_t* ecx,
+        int32_t* edx,
+        [[maybe_unused]] int32_t* esi,
+        [[maybe_unused]] int32_t* edi,
+        [[maybe_unused]] int32_t* ebp)
     {
         if (!(*ebx & GAME_COMMAND_FLAG_APPLY))
         {
@@ -556,202 +549,202 @@ namespace Editor
 
         switch (*ecx)
         {
-        case EDIT_SCENARIOOPTIONS_SETNOMONEY:
-            if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-            {
-                if (*edx != 0)
+            case EDIT_SCENARIOOPTIONS_SETNOMONEY:
+                if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
                 {
-                    gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
+                    if (*edx != 0)
+                    {
+                        gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
+                    }
+                    else
+                    {
+                        gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
+                    }
                 }
                 else
                 {
-                    gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
+                    if (*edx != 0)
+                    {
+                        gParkFlags |= PARK_FLAGS_NO_MONEY;
+                    }
+                    else
+                    {
+                        gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+                    }
+                    // Invalidate all windows that have anything to do with finance
+                    window_invalidate_by_class(WC_RIDE);
+                    window_invalidate_by_class(WC_PEEP);
+                    window_invalidate_by_class(WC_PARK_INFORMATION);
+                    window_invalidate_by_class(WC_FINANCES);
+                    window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+                    window_invalidate_by_class(WC_TOP_TOOLBAR);
                 }
-            }
-            else
-            {
-                if (*edx != 0)
-                {
-                    gParkFlags |= PARK_FLAGS_NO_MONEY;
-                }
-                else
-                {
-                    gParkFlags &= ~PARK_FLAGS_NO_MONEY;
-                }
-                // Invalidate all windows that have anything to do with finance
-                window_invalidate_by_class(WC_RIDE);
-                window_invalidate_by_class(WC_PEEP);
-                window_invalidate_by_class(WC_PARK_INFORMATION);
+                break;
+            case EDIT_SCENARIOOPTIONS_SETINITIALCASH:
+                gInitialCash = Math::Clamp(MONEY(0, 00), *edx, MONEY(1000000, 00));
+                gCash = gInitialCash;
                 window_invalidate_by_class(WC_FINANCES);
                 window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
-            }
-            break;
-        case EDIT_SCENARIOOPTIONS_SETINITIALCASH:
-            gInitialCash   = Math::Clamp(MONEY(0, 00), *edx, MONEY(1000000, 00));
-            gCash = gInitialCash;
-            window_invalidate_by_class(WC_FINANCES);
-            window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
-            break;
-        case EDIT_SCENARIOOPTIONS_SETINITIALLOAN:
-            gBankLoan    = Math::Clamp(MONEY(0, 00), *edx, MONEY(5000000, 00));
-            gMaxBankLoan = std::max(gBankLoan, gMaxBankLoan);
-            window_invalidate_by_class(WC_FINANCES);
-            break;
-        case EDIT_SCENARIOOPTIONS_SETMAXIMUMLOANSIZE:
-            gMaxBankLoan = Math::Clamp(MONEY(0, 00), *edx, MONEY(5000000, 00));
-            gBankLoan    = std::min(gBankLoan, gMaxBankLoan);
-            window_invalidate_by_class(WC_FINANCES);
-            break;
-        case EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE:
-            gBankLoanInterestRate = Math::Clamp(0, *edx, 80);
-            window_invalidate_by_class(WC_FINANCES);
-            break;
-        case EDIT_SCENARIOOPTIONS_SETFORBIDMARKETINGCAMPAIGNS:
-            if (*edx != 0)
-            {
-                gParkFlags |= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
-            }
-            else
-            {
-                gParkFlags &= ~PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
-            }
-            break;
-        case EDIT_SCENARIOOPTIONS_SETAVERAGECASHPERGUEST:
-            gGuestInitialCash = Math::Clamp(MONEY(0, 00), *edx, MONEY(1000, 00));
-            break;
-        case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS:
-            gGuestInitialHappiness = Math::Clamp(40, *edx, 250);
-            break;
-        case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHUNGER:
-            gGuestInitialHunger = Math::Clamp(40, *edx, 250);
-            break;
-        case EDIT_SCENARIOOPTIONS_SETGUESTINITIALTHIRST:
-            gGuestInitialThirst = Math::Clamp(40, *edx, 250);
-            break;
-        case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERLESSINTENSERIDES:
-            if (*edx != 0)
-            {
-                gParkFlags |= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
-            }
-            else
-            {
-                gParkFlags &= ~PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
-            }
-            break;
-        case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERMOREINTENSERIDES:
-            if (*edx != 0)
-            {
-                gParkFlags |= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
-            }
-            else
-            {
-                gParkFlags &= ~PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
-            }
-            break;
-        case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYLAND:
-            gLandPrice = Math::Clamp(MONEY(5, 00), *edx, MONEY(200, 00));
-            break;
-        case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYCONSTRUCTIONRIGHTS:
-            gConstructionRightsPrice = Math::Clamp(MONEY(5, 00), *edx, MONEY(200, 00));
-            break;
-        case EDIT_SCENARIOOPTIONS_SETPARKCHARGEMETHOD:
-            if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-            {
-                if (*edx == 0)
+                break;
+            case EDIT_SCENARIOOPTIONS_SETINITIALLOAN:
+                gBankLoan = Math::Clamp(MONEY(0, 00), *edx, MONEY(5000000, 00));
+                gMaxBankLoan = std::max(gBankLoan, gMaxBankLoan);
+                window_invalidate_by_class(WC_FINANCES);
+                break;
+            case EDIT_SCENARIOOPTIONS_SETMAXIMUMLOANSIZE:
+                gMaxBankLoan = Math::Clamp(MONEY(0, 00), *edx, MONEY(5000000, 00));
+                gBankLoan = std::min(gBankLoan, gMaxBankLoan);
+                window_invalidate_by_class(WC_FINANCES);
+                break;
+            case EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE:
+                gBankLoanInterestRate = Math::Clamp(0, *edx, 80);
+                window_invalidate_by_class(WC_FINANCES);
+                break;
+            case EDIT_SCENARIOOPTIONS_SETFORBIDMARKETINGCAMPAIGNS:
+                if (*edx != 0)
                 {
-                    gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
-                    gParkEntranceFee = MONEY(0, 00);
-                }
-                else if (*edx == 1)
-                {
-                    gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-                    gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
-                    gParkEntranceFee = MONEY(10, 00);
+                    gParkFlags |= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
                 }
                 else
                 {
-                    gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
-                    gParkEntranceFee = MONEY(10, 00);
+                    gParkFlags &= ~PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
                 }
-            }
-            else
-            {
-                if (*edx == 0)
+                break;
+            case EDIT_SCENARIOOPTIONS_SETAVERAGECASHPERGUEST:
+                gGuestInitialCash = Math::Clamp(MONEY(0, 00), *edx, MONEY(1000, 00));
+                break;
+            case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS:
+                gGuestInitialHappiness = Math::Clamp(40, *edx, 250);
+                break;
+            case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHUNGER:
+                gGuestInitialHunger = Math::Clamp(40, *edx, 250);
+                break;
+            case EDIT_SCENARIOOPTIONS_SETGUESTINITIALTHIRST:
+                gGuestInitialThirst = Math::Clamp(40, *edx, 250);
+                break;
+            case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERLESSINTENSERIDES:
+                if (*edx != 0)
                 {
-                    gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
-                }
-                else if (*edx == 1)
-                {
-                    gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-                    gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gParkFlags |= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
                 }
                 else
                 {
-                    gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gParkFlags &= ~PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
                 }
+                break;
+            case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERMOREINTENSERIDES:
+                if (*edx != 0)
+                {
+                    gParkFlags |= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+                }
+                else
+                {
+                    gParkFlags &= ~PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+                }
+                break;
+            case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYLAND:
+                gLandPrice = Math::Clamp(MONEY(5, 00), *edx, MONEY(200, 00));
+                break;
+            case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYCONSTRUCTIONRIGHTS:
+                gConstructionRightsPrice = Math::Clamp(MONEY(5, 00), *edx, MONEY(200, 00));
+                break;
+            case EDIT_SCENARIOOPTIONS_SETPARKCHARGEMETHOD:
+                if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+                {
+                    if (*edx == 0)
+                    {
+                        gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                        gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                        gParkEntranceFee = MONEY(0, 00);
+                    }
+                    else if (*edx == 1)
+                    {
+                        gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                        gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                        gParkEntranceFee = MONEY(10, 00);
+                    }
+                    else
+                    {
+                        gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                        gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                        gParkEntranceFee = MONEY(10, 00);
+                    }
+                }
+                else
+                {
+                    if (*edx == 0)
+                    {
+                        gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                        gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    }
+                    else if (*edx == 1)
+                    {
+                        gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                        gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    }
+                    else
+                    {
+                        gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                        gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    }
+                    window_invalidate_by_class(WC_PARK_INFORMATION);
+                    window_invalidate_by_class(WC_RIDE);
+                }
+                break;
+            case EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE:
+                gParkEntranceFee = Math::Clamp(MONEY(0, 00), *edx, MAX_ENTRANCE_FEE);
                 window_invalidate_by_class(WC_PARK_INFORMATION);
-                window_invalidate_by_class(WC_RIDE);
-            }
-            break;
-        case EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE:
-            gParkEntranceFee = Math::Clamp(MONEY(0, 00), *edx, MAX_ENTRANCE_FEE);
-            window_invalidate_by_class(WC_PARK_INFORMATION);
-            break;
-        case EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL:
-            if (*edx != 0)
-            {
-                gParkFlags |= PARK_FLAGS_FORBID_TREE_REMOVAL;
-            }
-            else
-            {
-                gParkFlags &= ~PARK_FLAGS_FORBID_TREE_REMOVAL;
-            }
-            break;
-        case EDIT_SCENARIOOPTIONS_SETFORBIDLANDSCAPECHANGES:
-            if (*edx != 0)
-            {
-                gParkFlags |= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
-            }
-            else
-            {
-                gParkFlags &= ~PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
-            }
-            break;
-        case EDIT_SCENARIOOPTIONS_SETFORBIDHIGHCONSTRUCTION:
-            if (*edx != 0)
-            {
-                gParkFlags |= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
-            }
-            else
-            {
-                gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
-            }
-            break;
-        case EDIT_SCENARIOOPTIONS_SETPARKRATINGHIGHERDIFFICULTLEVEL:
-            if (*edx != 0)
-            {
-                gParkFlags |= PARK_FLAGS_DIFFICULT_PARK_RATING;
-            }
-            else
-            {
-                gParkFlags &= ~PARK_FLAGS_DIFFICULT_PARK_RATING;
-            }
-            break;
-        case EDIT_SCENARIOOPTIONS_SETGUESTGENERATIONHIGHERDIFFICULTLEVEL:
-            if (*edx != 0)
-            {
-                gParkFlags |= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
-            }
-            else
-            {
-                gParkFlags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
-            }
-            break;
+                break;
+            case EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL:
+                if (*edx != 0)
+                {
+                    gParkFlags |= PARK_FLAGS_FORBID_TREE_REMOVAL;
+                }
+                else
+                {
+                    gParkFlags &= ~PARK_FLAGS_FORBID_TREE_REMOVAL;
+                }
+                break;
+            case EDIT_SCENARIOOPTIONS_SETFORBIDLANDSCAPECHANGES:
+                if (*edx != 0)
+                {
+                    gParkFlags |= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
+                }
+                else
+                {
+                    gParkFlags &= ~PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
+                }
+                break;
+            case EDIT_SCENARIOOPTIONS_SETFORBIDHIGHCONSTRUCTION:
+                if (*edx != 0)
+                {
+                    gParkFlags |= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+                }
+                else
+                {
+                    gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+                }
+                break;
+            case EDIT_SCENARIOOPTIONS_SETPARKRATINGHIGHERDIFFICULTLEVEL:
+                if (*edx != 0)
+                {
+                    gParkFlags |= PARK_FLAGS_DIFFICULT_PARK_RATING;
+                }
+                else
+                {
+                    gParkFlags &= ~PARK_FLAGS_DIFFICULT_PARK_RATING;
+                }
+                break;
+            case EDIT_SCENARIOOPTIONS_SETGUESTGENERATIONHIGHERDIFFICULTLEVEL:
+                if (*edx != 0)
+                {
+                    gParkFlags |= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
+                }
+                else
+                {
+                    gParkFlags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
+                }
+                break;
         }
         window_invalidate_by_class(WC_EDITOR_SCENARIO_OPTIONS);
         *ebx = 0;
@@ -760,7 +753,7 @@ namespace Editor
     uint8_t GetSelectedObjectFlags(int32_t objectType, size_t index)
     {
         uint8_t result = 0;
-        auto &list = _editorSelectedObjectFlags[objectType];
+        auto& list = _editorSelectedObjectFlags[objectType];
         if (list.size() > index)
         {
             result = list[index];
@@ -770,7 +763,7 @@ namespace Editor
 
     void ClearSelectedObject(int32_t objectType, size_t index, uint32_t flags)
     {
-        auto &list = _editorSelectedObjectFlags[objectType];
+        auto& list = _editorSelectedObjectFlags[objectType];
         if (list.size() <= index)
         {
             list.resize(index + 1);
@@ -780,22 +773,22 @@ namespace Editor
 
     void SetSelectedObject(int32_t objectType, size_t index, uint32_t flags)
     {
-        auto &list = _editorSelectedObjectFlags[objectType];
+        auto& list = _editorSelectedObjectFlags[objectType];
         if (list.size() <= index)
         {
             list.resize(index + 1);
         }
         list[index] |= flags;
     }
-}
+} // namespace Editor
 
 void editor_open_windows_for_current_step()
 {
     Editor::OpenWindowsForCurrentStep();
 }
 
-void game_command_edit_scenario_options(int32_t * eax, int32_t * ebx, int32_t * ecx, int32_t * edx, int32_t * esi, int32_t * edi, int32_t * ebp)
+void game_command_edit_scenario_options(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp)
 {
     Editor::GameCommandEditScenarioOptions(eax, ebx, ecx, edx, esi, edi, ebp);
 }
-

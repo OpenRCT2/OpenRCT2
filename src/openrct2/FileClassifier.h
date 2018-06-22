@@ -43,7 +43,7 @@ struct ClassifiedFileInfo
 };
 
 #define FILE_TYPE_S4_CUTOFF 2
-bool TryClassifyFile(const std::string &path, ClassifiedFileInfo * result);
-bool TryClassifyFile(IStream * stream, ClassifiedFileInfo * result);
+bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result);
+bool TryClassifyFile(IStream* stream, ClassifiedFileInfo* result);
 
-uint32_t get_file_extension_type(const utf8 * path);
+uint32_t get_file_extension_type(const utf8* path);
