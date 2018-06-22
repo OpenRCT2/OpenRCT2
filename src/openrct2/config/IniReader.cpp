@@ -7,29 +7,31 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "IniReader.hpp"
+
+#include "../common.h"
+#include "../core/IStream.hpp"
+#include "../core/String.hpp"
+#include "../core/StringBuilder.hpp"
+
 #include <cctype>
 #include <initializer_list>
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include "../common.h"
-#include "../core/IStream.hpp"
-#include "../core/String.hpp"
-#include "../core/StringBuilder.hpp"
-#include "IniReader.hpp"
 
 /**
  * Simple tuple (start, length) representing a text span in a buffer.
  */
 struct Span
 {
-    size_t Start    = 0;
-    size_t Length   = 0;
+    size_t Start = 0;
+    size_t Length = 0;
 
     Span() = default;
     Span(size_t start, size_t length)
-        : Start(start),
-          Length(length)
+        : Start(start)
+        , Length(length)
     {
     }
 };
@@ -39,28 +41,28 @@ struct Span
  */
 struct LineRange
 {
-    size_t Start    = 0;
-    size_t End      = 0;
+    size_t Start = 0;
+    size_t End = 0;
 
     LineRange() = default;
     LineRange(size_t start, size_t end)
-        : Start(start),
-          End(end)
+        : Start(start)
+        , End(end)
     {
     }
 };
 
 struct StringIHash
 {
-    std::size_t operator()(const std::string &s) const
+    std::size_t operator()(const std::string& s) const
     {
         using Traits = std::char_traits<char>;
         std::size_t seed = 0;
-        for (const char &c : s)
+        for (const char& c : s)
         {
             const Traits::int_type value = std::toupper(Traits::to_int_type(c));
             // Simple Hash Combine as used by Boost.Functional/Hash
-            seed ^= value + 0x9e3779b9 + (seed<<6) + (seed>>2);
+            seed ^= value + 0x9e3779b9 + (seed << 6) + (seed >> 2);
         }
         return seed;
     }
@@ -68,16 +70,18 @@ struct StringIHash
 
 struct StringICmp
 {
-    bool operator()(const std::string &a, const std::string &b) const
+    bool operator()(const std::string& a, const std::string& b) const
     {
         using Traits = std::char_traits<char>;
-        if (a.size() != b.size()) return false;
+        if (a.size() != b.size())
+            return false;
         const char *s1 = a.data(), *s2 = b.data();
         for (std::size_t i = a.size(); i > 0; --i, ++s1, ++s2)
         {
             const int c1 = std::toupper(Traits::to_int_type(*s1));
             const int c2 = std::toupper(Traits::to_int_type(*s2));
-            if (c1 != c2) return false;
+            if (c1 != c2)
+                return false;
         }
         return true;
     }
@@ -86,13 +90,13 @@ struct StringICmp
 class IniReader final : public IIniReader
 {
 private:
-    std::vector<uint8_t>                                                      _buffer;
-    std::vector<Span>                                                       _lines;
-    std::unordered_map<std::string, LineRange, StringIHash, StringICmp>     _sections;
-    std::unordered_map<std::string, std::string, StringIHash, StringICmp>   _values;
+    std::vector<uint8_t> _buffer;
+    std::vector<Span> _lines;
+    std::unordered_map<std::string, LineRange, StringIHash, StringICmp> _sections;
+    std::unordered_map<std::string, std::string, StringIHash, StringICmp> _values;
 
 public:
-    explicit IniReader(IStream * stream)
+    explicit IniReader(IStream* stream)
     {
         uint64_t length = stream->GetLength() - stream->GetPosition();
         _buffer.resize(length);
@@ -111,7 +115,7 @@ public:
         ParseSections();
     }
 
-    bool ReadSection(const std::string &name) override
+    bool ReadSection(const std::string& name) override
     {
         auto it = _sections.find(name);
         if (it == _sections.end())
@@ -123,7 +127,7 @@ public:
         return true;
     }
 
-    bool GetBoolean(const std::string &name, bool defaultValue) const override
+    bool GetBoolean(const std::string& name, bool defaultValue) const override
     {
         bool result = defaultValue;
         std::string value;
@@ -134,7 +138,7 @@ public:
         return result;
     }
 
-    int32_t GetInt32(const std::string &name, int32_t defaultValue) const override
+    int32_t GetInt32(const std::string& name, int32_t defaultValue) const override
     {
         int32_t result = defaultValue;
         std::string value;
@@ -144,14 +148,14 @@ public:
             {
                 result = std::stoi(value);
             }
-            catch (const std::exception &)
+            catch (const std::exception&)
             {
             }
         }
         return result;
     }
 
-    float GetFloat(const std::string &name, float defaultValue) const override
+    float GetFloat(const std::string& name, float defaultValue) const override
     {
         float result = defaultValue;
         std::string value;
@@ -161,14 +165,14 @@ public:
             {
                 result = std::stof(value);
             }
-            catch (const std::exception &)
+            catch (const std::exception&)
             {
             }
         }
         return result;
     }
 
-    std::string GetString(const std::string &name, const std::string &defaultValue) const override
+    std::string GetString(const std::string& name, const std::string& defaultValue) const override
     {
         std::string result;
         if (!TryGetString(name, &result))
@@ -178,7 +182,7 @@ public:
         return result;
     }
 
-    bool TryGetString(const std::string &name, std::string * outValue) const override
+    bool TryGetString(const std::string& name, std::string* outValue) const override
     {
         auto it = _values.find(name);
         if (it == _values.end())
@@ -197,8 +201,8 @@ private:
         {
             return;
         }
-        utf8 * file = (utf8 *)_buffer.data();
-        utf8 * content = String::SkipBOM(file);
+        utf8* file = (utf8*)_buffer.data();
+        utf8* content = String::SkipBOM(file);
         if (file != content)
         {
             size_t skipLength = content - file;
@@ -295,7 +299,7 @@ private:
         _values[key] = value;
     }
 
-    std::string TrimComment(const std::string &s)
+    std::string TrimComment(const std::string& s)
     {
         char inQuotes = 0;
         bool escaped = false;
@@ -319,7 +323,7 @@ private:
         return s;
     }
 
-    std::string UnquoteValue(const std::string &s)
+    std::string UnquoteValue(const std::string& s)
     {
         std::string result = s;
         size_t length = s.size();
@@ -333,7 +337,7 @@ private:
         return result;
     }
 
-    std::string UnescapeValue(const std::string &s)
+    std::string UnescapeValue(const std::string& s)
     {
         if (s.find_first_of('\\') == std::string::npos)
         {
@@ -359,7 +363,7 @@ private:
 
     std::string GetLine(size_t index)
     {
-        utf8 * szBuffer = (utf8 *)_buffer.data();
+        utf8* szBuffer = (utf8*)_buffer.data();
         auto span = _lines[index];
         auto line = std::string(szBuffer + span.Start, span.Length);
         return line;
@@ -400,7 +404,7 @@ public:
     }
 };
 
-utf8 * IIniReader::GetCString(const std::string &name, const utf8 * defaultValue) const
+utf8* IIniReader::GetCString(const std::string& name, const utf8* defaultValue) const
 {
     std::string szValue;
     if (!TryGetString(name, &szValue))
@@ -411,12 +415,12 @@ utf8 * IIniReader::GetCString(const std::string &name, const utf8 * defaultValue
     return String::Duplicate(szValue.c_str());
 }
 
-IIniReader * CreateIniReader(IStream * stream)
+IIniReader* CreateIniReader(IStream* stream)
 {
     return new IniReader(stream);
 }
 
-IIniReader * CreateDefaultIniReader()
+IIniReader* CreateDefaultIniReader()
 {
     return new DefaultIniReader();
 }
